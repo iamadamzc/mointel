@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-const SCHEMA_VERSION = 2;
+const SCHEMA_VERSION = 3;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -152,6 +152,104 @@ CREATE TABLE IF NOT EXISTS universe (
   classification_reason     TEXT,
   discovery_eligible        INTEGER NOT NULL DEFAULT 1
 );
+
+/* ------------------------------------------------------------------ research */
+
+-- One research job per ticker per trading date. The partial unique index below
+-- is what makes queueing idempotent: repeated discovery, a rank change or a
+-- hammered REANALYZE button cannot create a second live job for one ticker.
+CREATE TABLE IF NOT EXISTS research_jobs (
+  id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+  ticker               TEXT NOT NULL,
+  trading_date         TEXT NOT NULL,
+  status               TEXT NOT NULL,
+  priority             REAL NOT NULL DEFAULT 0,
+  reason               TEXT NOT NULL DEFAULT '',
+  queued_at            TEXT NOT NULL,
+  started_at           TEXT,
+  completed_at         TEXT,
+  retry_count          INTEGER NOT NULL DEFAULT 0,
+  error                TEXT,
+  evidence_fingerprint TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_research_jobs_status
+  ON research_jobs (trading_date, status, priority DESC);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_research_jobs_live
+  ON research_jobs (ticker, trading_date)
+  WHERE status IN ('QUEUED', 'COLLECTING', 'SOURCES_READY', 'ANALYZING');
+
+-- Ticker to SEC registrant. Kept separately from the universe table because a
+-- mapping is evidence with its own confidence and provenance, not a market
+-- attribute.
+CREATE TABLE IF NOT EXISTS issuer_registry (
+  ticker           TEXT PRIMARY KEY,
+  company_name     TEXT,
+  cik              TEXT,
+  exchange         TEXT,
+  country          TEXT,
+  foreign_issuer   INTEGER,
+  cik_confidence   TEXT NOT NULL DEFAULT 'NONE',
+  mapping_source   TEXT,
+  ir_url           TEXT,
+  last_verified_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_issuer_registry_cik ON issuer_registry (cik);
+
+-- Retained public evidence. content_hash is unique per ticker so the same
+-- document collected twice is one row; excerpt holds only the limited text
+-- analysis needs, never a whole filing or a whole article.
+CREATE TABLE IF NOT EXISTS research_sources (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  ticker       TEXT NOT NULL,
+  source_type  TEXT NOT NULL,
+  title        TEXT,
+  url          TEXT NOT NULL,
+  published_at TEXT,
+  fetched_at   TEXT NOT NULL,
+  accession    TEXT,
+  sec_form     TEXT,
+  authority    TEXT NOT NULL,
+  content_hash TEXT NOT NULL,
+  excerpt      TEXT,
+  metadata     TEXT NOT NULL DEFAULT '{}',
+  active       INTEGER NOT NULL DEFAULT 1
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_research_sources_hash
+  ON research_sources (ticker, content_hash);
+CREATE INDEX IF NOT EXISTS idx_research_sources_ticker ON research_sources (ticker, authority);
+CREATE INDEX IF NOT EXISTS idx_research_sources_accession ON research_sources (ticker, accession);
+
+-- Every analysis ever produced. Nothing here is updated in place, so the chain
+-- through supersedes_id can always reconstruct what a conclusion used to be.
+CREATE TABLE IF NOT EXISTS research_analysis_versions (
+  id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+  ticker               TEXT NOT NULL,
+  generated_at         TEXT NOT NULL,
+  evidence_fingerprint TEXT NOT NULL,
+  model                TEXT,
+  analysis_version     INTEGER NOT NULL,
+  dossier              TEXT NOT NULL,
+  source_ids           TEXT NOT NULL DEFAULT '[]',
+  supersedes_id        INTEGER
+);
+CREATE INDEX IF NOT EXISTS idx_research_versions_ticker
+  ON research_analysis_versions (ticker, generated_at DESC);
+
+-- Pointer to the current version per ticker. Deliberately thin: the dossier
+-- itself lives in research_analysis_versions so "current" can move without any
+-- analysis being lost.
+CREATE TABLE IF NOT EXISTS research_dossiers (
+  ticker             TEXT PRIMARY KEY,
+  current_version_id INTEGER NOT NULL,
+  updated_at         TEXT NOT NULL,
+  FOREIGN KEY (current_version_id) REFERENCES research_analysis_versions (id)
+);
+
+-- Single-row research worker health, mirroring feed_health.
+CREATE TABLE IF NOT EXISTS research_health (
+  id      INTEGER PRIMARY KEY CHECK (id = 1),
+  payload TEXT NOT NULL
+);
 `;
 
 /**
@@ -188,10 +286,38 @@ function migrate(db: MarketDatabase): void {
   db.exec('CREATE INDEX IF NOT EXISTS idx_universe_eligible ON universe (discovery_eligible)');
 }
 
+/** Where schema backups are written. Inside data/, which git ignores. */
+export function schemaBackupDirectory(dbPath: string): string {
+  return path.join(path.dirname(dbPath), 'backups');
+}
+
+/**
+ * Snapshots the store before a schema upgrade touches it.
+ *
+ * VACUUM INTO is used rather than a file copy because the live store runs in
+ * WAL mode: a plain copy of the .db file would miss anything still sitting in
+ * the -wal, producing a backup that is quietly behind the original. VACUUM INTO
+ * writes a single consistent file and cannot run inside a transaction, which is
+ * why this happens before the migration opens one.
+ */
+function createSchemaBackup(db: MarketDatabase, dbPath: string, fromVersion: number): string {
+  const directory = schemaBackupDirectory(dbPath);
+  fs.mkdirSync(directory, { recursive: true });
+
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const base = path.basename(dbPath, path.extname(dbPath));
+  const target = path.join(directory, `${base}-v${fromVersion}-${stamp}.db`);
+
+  db.prepare('VACUUM INTO ?').run(target);
+  return target;
+}
+
 export interface OpenOptions {
   readonly?: boolean;
   /** Skip schema creation (used by the read-only Next.js connection). */
   skipSchema?: boolean;
+  /** Called with the backup path when a schema upgrade snapshots the store. */
+  onSchemaBackup?: (info: { path: string; fromVersion: number; toVersion: number }) => void;
 }
 
 export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketDatabase {
@@ -209,9 +335,28 @@ export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketD
   db.pragma('busy_timeout = 5000');
 
   if (!options.readonly && !options.skipSchema) {
-    db.exec(SCHEMA);
-    migrate(db);
-    db.pragma(`user_version = ${SCHEMA_VERSION}`);
+    const fromVersion = Number(db.pragma('user_version', { simple: true }));
+
+    // Back up only a real upgrade of an existing store. A brand-new database
+    // reports 0 and has nothing to lose; a current one reports SCHEMA_VERSION
+    // and is left alone, so ordinary startups do not accumulate copies.
+    if (fromVersion > 0 && fromVersion < SCHEMA_VERSION) {
+      const backupPath = createSchemaBackup(db, dbPath, fromVersion);
+      options.onSchemaBackup?.({
+        path: backupPath,
+        fromVersion,
+        toVersion: SCHEMA_VERSION,
+      });
+    }
+
+    // One transaction: SQLite makes DDL transactional, so a failure part way
+    // through leaves the store on the old schema rather than half-upgraded.
+    const upgrade = db.transaction(() => {
+      db.exec(SCHEMA);
+      migrate(db);
+      db.pragma(`user_version = ${SCHEMA_VERSION}`);
+    });
+    upgrade();
   }
 
   return db;
@@ -257,6 +402,13 @@ export function claimStoreForMode(db: MarketDatabase, mode: string): { cleared: 
     // simulator or test run so the next live start is instant. Synthetic
     // baselines are dropped as soon as a different mode claims the store.
     db.prepare("DELETE FROM rvol_baseline WHERE mode <> 'LIVE' AND mode <> ?").run(mode);
+
+    // Research jobs are bound to a trading session and to demand state, so they
+    // are cleared with it. Collected evidence and analyses are not: a filing and
+    // what it says are public facts that a simulator run cannot invalidate.
+    // Dropping them would re-fetch SEC unnecessarily on every mode switch.
+    db.exec('DELETE FROM research_jobs; DELETE FROM research_health;');
+
     setMeta(db, 'market_mode', mode);
   });
 
