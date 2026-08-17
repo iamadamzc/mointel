@@ -25,6 +25,7 @@ import {
 import { buildSummary } from '@/lib/data/rows';
 import type { DashboardState } from '@/lib/data/types';
 import type { MarketHealthView } from '@/lib/market/health';
+import type { ResearchHealthView } from '@/lib/research/health';
 import type { DiscoveryState, MarketFeedHealth } from '@/lib/market/types';
 import { useClock } from '@/lib/hooks/useClock';
 import { useDashboard } from '@/lib/hooks/useDashboard';
@@ -76,6 +77,21 @@ const OFFLINE_HEALTH_VIEW: MarketHealthView = {
   heartbeatAgeSeconds: null,
   live: false,
   thresholds: { freshSeconds: 90, staleSeconds: 240 },
+};
+
+/** Until the first payload lands, the engine is unknown — reported as offline. */
+const OFFLINE_RESEARCH: ResearchHealthView = {
+  state: 'OFFLINE',
+  label: 'Research: engine offline',
+  detail: 'No market payload has been received yet',
+  tone: 'neg',
+  queuedJobs: 0,
+  activeJobs: [],
+  activeCount: 0,
+  lastCompletedTicker: null,
+  lastCompletedAt: null,
+  heartbeatAgeSeconds: null,
+  running: false,
 };
 
 const OFFLINE_DISCOVERY: DiscoveryState = {
@@ -207,6 +223,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
 
   const health = market.snapshot?.health ?? OFFLINE_HEALTH;
   const healthView = market.snapshot?.marketHealth ?? OFFLINE_HEALTH_VIEW;
+  const researchHealth = market.snapshot?.researchHealth ?? OFFLINE_RESEARCH;
   const discovery = market.snapshot?.discovery ?? OFFLINE_DISCOVERY;
 
   return (
@@ -215,6 +232,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         meta={data.meta}
         marketHealth={health}
         healthView={healthView}
+        researchHealth={researchHealth}
         discovery={discovery}
         now={now}
         mounted={mounted}

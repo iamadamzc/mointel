@@ -120,15 +120,20 @@ async function main(): Promise<void> {
   let lastCompletedAt: string | null = null;
   const latencies: number[] = [];
 
-  const health = (state: ResearchHealth['state'], active: string[]) => {
+  // Remembered so the heartbeat below can keep republishing the current state
+  // while a long collection is in flight.
+  let currentState: ResearchHealth['state'] = 'IDLE';
+  let currentActive: string[] = [];
+
+  const publishHealth = () => {
     const tradingDate =
       (db.prepare('SELECT MAX(trading_date) AS d FROM ticker_session').get() as { d: string | null })
         .d ?? '';
     const jobs = readJobsForDate(db, tradingDate);
     writeResearchHealth(db, {
-      state,
+      state: currentState,
       queuedJobs: jobs.filter((job) => job.status === 'QUEUED').length,
-      activeJobs: active,
+      activeJobs: currentActive,
       lastCompletedTicker,
       lastCompletedAt,
       secAvailable: sec.available,
@@ -138,6 +143,35 @@ async function main(): Promise<void> {
       updatedAt: new Date().toISOString(),
     });
   };
+
+  const health = (state: ResearchHealth['state'], active: string[]) => {
+    currentState = state;
+    currentActive = active;
+    publishHealth();
+  };
+
+  /*
+   * A heartbeat, not just a status write.
+   *
+   * The dashboard can only tell a stopped worker from a quiet one by the age of
+   * this row, and the main loop parks inside a collection for minutes at a
+   * time. Without an independent tick a healthy worker mid-job would go dark
+   * and read as OFFLINE — which is precisely the false alarm that would teach
+   * somebody to stop trusting the indicator.
+   */
+  const heartbeat = setInterval(() => {
+    try {
+      publishHealth();
+    } catch {
+      // A heartbeat that cannot write is not worth crashing the worker over;
+      // the row going stale is itself the correct signal.
+    }
+  }, POLL_MS);
+  heartbeat.unref?.();
+
+  const stopHeartbeat = () => clearInterval(heartbeat);
+  process.on('SIGINT', stopHeartbeat);
+  process.on('SIGTERM', stopHeartbeat);
 
   log(`[research] worker started, polling every ${POLL_MS}ms\n`);
 

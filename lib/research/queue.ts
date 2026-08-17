@@ -81,11 +81,21 @@ export interface QueueDecision {
   jobId: number | null;
 }
 
+/** Job states that mean work is already under way for this ticker. */
+const LIVE_STATUSES = ['QUEUED', 'COLLECTING', 'SOURCES_READY', 'ANALYZING'];
+
 /**
- * Queues research for eligible Top-N names that lack current analysis.
+ * Reconciles research coverage for the eligible Top-N.
  *
- * A ticker is skipped when a live job already exists or an accepted dossier
- * already covers the current evidence; both are cheap local checks.
+ * Deliberately reconciliatory rather than edge-triggered: it looks at the
+ * population that is on the board NOW and asks whether each name is covered,
+ * rather than reacting to a crossing event. A crossing observed by nobody —
+ * because the worker had not started yet, or was down, or had just restarted —
+ * is not a crossing that gets researched, which is how Top-12 names ended up
+ * sitting at NOT YET ANALYZED indefinitely.
+ *
+ * Every eligible name therefore converges to a live job, an accepted dossier,
+ * or an explicit failure. None of those is "nothing".
  */
 export function queueDiscoveryResearch(
   db: MarketDatabase,
@@ -102,11 +112,8 @@ export function queueDiscoveryResearch(
 
   for (const { candidate, priority } of ordered) {
     const existingJob = readLatestJobForTicker(db, candidate.ticker, options.tradingDate);
-    const live =
-      existingJob &&
-      ['QUEUED', 'COLLECTING', 'SOURCES_READY', 'ANALYZING'].includes(existingJob.status);
 
-    if (live) {
+    if (existingJob && LIVE_STATUSES.includes(existingJob.status)) {
       decisions.push({
         ticker: candidate.ticker,
         queued: false,
@@ -127,6 +134,12 @@ export function queueDiscoveryResearch(
       });
       continue;
     }
+
+    /*
+     * A finished job without an accepted dossier is deliberately re-openable,
+     * so a name whose evidence has since changed can be analyzed again. The
+     * accepted-dossier check above is what stops that becoming a loop.
+     */
 
     const jobId = enqueueResearchJob(db, {
       ticker: candidate.ticker,

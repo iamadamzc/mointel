@@ -345,6 +345,7 @@ export interface BackfillSummary {
 }
 
 import type { AutoIntelligence } from '../research/view';
+import type { ResearchHealthView } from '../research/health';
 import type { MarketHealthView } from './health';
 
 export type DeskEventType =
@@ -385,6 +386,13 @@ export interface MarketSnapshot {
    * for itself that a connected socket means live data.
    */
   marketHealth: MarketHealthView;
+  /**
+   * Automatic-research engine health, reported independently of Sheet health.
+   *
+   * A current Google Sheet says nothing about whether the research worker is
+   * running, and conflating the two hid a stopped engine for hours.
+   */
+  researchHealth: ResearchHealthView;
   discovery: DiscoveryState;
   /** Every tracked ticker the dashboard may need, keyed by symbol. */
   demand: Record<string, DemandState>;

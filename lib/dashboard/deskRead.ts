@@ -240,6 +240,11 @@ function resolveConclusion(options: {
   field: DeskField;
   /** True when some usable analysis exists for this ticker, from either side. */
   analysed: boolean;
+  /**
+   * What to say when nothing is analysed yet but work is under way, e.g.
+   * ANALYSIS PENDING. Null when the ticker genuinely has nothing happening.
+   */
+  inFlightLabel: string | null;
 }): DeskConclusion {
   const { sheetLabel, autoLabel, comparison, conflicted, field } = options;
 
@@ -275,6 +280,23 @@ function resolveConclusion(options: {
       tone: 'dim',
       provenance: 'NONE',
       title: UNRESOLVED_DETAIL[field],
+      otherLabel: null,
+    };
+  }
+
+  /*
+   * Research is running, so the field is not unanalyzed — it is unfinished.
+   *
+   * Saying NOT ANALYZED here put that label beside a status mark reading
+   * ANALYSIS PENDING on the same cell, which reads as a contradiction and is
+   * simply out of date the moment a job starts.
+   */
+  if (options.inFlightLabel) {
+    return {
+      label: options.inFlightLabel,
+      tone: 'dim',
+      provenance: 'NONE',
+      title: 'Automatic research is under way for this ticker.',
       otherLabel: null,
     };
   }
@@ -486,10 +508,16 @@ export function resolveConclusions(row: DeskRow): DeskConclusions {
 
   // Some usable analysis exists, even if this particular field has no answer.
   const analysed = row.intelligenceState.hasSheet || row.intelligenceState.hasAuto;
+  const inFlightLabel =
+    row.intelligenceState.status === 'ANALYSIS_PENDING' ||
+    row.intelligenceState.status === 'FAILED'
+      ? row.intelligenceState.label
+      : null;
 
   const cycle = resolveConclusion({
     field: 'cycle',
     analysed,
+    inFlightLabel,
     sheetLabel: sheet && sheet.cycle.state !== 'UNCLASSIFIED' ? sheet.cycle.display : null,
     sheetTone: sheetCycleTone(sheet?.cycle.state ?? ''),
     sheetTitle: sheet?.cycle.raw ?? null,
@@ -506,6 +534,7 @@ export function resolveConclusions(row: DeskRow): DeskConclusions {
   const catalyst = resolveConclusion({
     field: 'catalyst',
     analysed,
+    inFlightLabel,
     sheetLabel:
       sheet && sheet.catalyst.gradeBucket !== 'UNCLASSIFIED'
         ? sheet.catalyst.gradeRaw || sheet.catalyst.gradeBucket
@@ -525,6 +554,7 @@ export function resolveConclusions(row: DeskRow): DeskConclusions {
   const structure = resolveConclusion({
     field: 'structure',
     analysed,
+    inFlightLabel,
     sheetLabel:
       sheet && sheet.structure.state !== 'UNCLASSIFIED'
         ? sheet.structure.state.replace(/_/g, ' ')

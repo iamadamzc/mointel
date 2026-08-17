@@ -336,9 +336,13 @@ describe('normalized intelligence status', () => {
     expect(read.structure.label).toBe('NOT ANALYZED');
   });
 
-  it('says NOT ANALYZED while a job is still running with nothing accepted', () => {
-    // Pending is not partial: no conclusion has been accepted yet, so no
-    // dimension can be described as unresolved-after-analysis.
+  it('says a job is under way rather than calling the ticker unanalyzed', () => {
+    /*
+     * Pending is not partial — no conclusion has been accepted — but it is not
+     * "not analyzed" either. Labelling the fields NOT ANALYZED put that text
+     * directly beside a status mark reading ANALYSIS PENDING on the same row,
+     * and went stale the instant a job started.
+     */
     const read = buildDeskRead(
       buildDeskRow(
         'PART',
@@ -349,6 +353,15 @@ describe('normalized intelligence status', () => {
       ),
     );
 
+    expect(read.intelligence.status).toBe('ANALYSIS_PENDING');
+    for (const field of [read.cycle, read.catalyst, read.structure]) {
+      expect(field.label).toBe('ANALYSIS PENDING');
+      expect(field.label).not.toBe('NOT ANALYZED');
+    }
+  });
+
+  it('still says NOT ANALYZED when nothing is happening at all', () => {
+    const read = buildDeskRead(buildDeskRow('PART', null, null, demand('PART')));
     expect(read.cycle.label).toBe('NOT ANALYZED');
   });
 

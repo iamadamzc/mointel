@@ -1,8 +1,12 @@
 # Momentum Intelligence Trading Desk — one-click launcher.
 #
-# Opens the dashboard and the Alpaca SIP worker as two panes of a single
-# Windows Terminal window, then opens the dashboard in the browser once it
-# answers. Safe to run twice: anything already running is left alone.
+# Opens the dashboard, the Alpaca SIP worker and the automatic research worker
+# as three panes of a single Windows Terminal window, then opens the dashboard
+# in the browser once it answers. Safe to run twice: anything already running is
+# left alone.
+#
+# All three panes matter. The desk previously launched only the first two, so
+# the research engine had to be started by hand and normal use left it off.
 #
 # Alpaca permits ONE concurrent SIP connection per account, so starting a
 # second worker would kill the live one. The guard below is not cosmetic.
@@ -24,18 +28,19 @@ function Test-DevServer {
     }
 }
 
-function Test-Worker {
+function Test-Process([string]$Pattern) {
     $procs = Get-CimInstance Win32_Process -Filter "Name = 'node.exe'" -ErrorAction SilentlyContinue
     foreach ($p in $procs) {
-        if ($p.CommandLine -and $p.CommandLine -match 'worker[\\/]alpaca\.ts') { return $true }
+        if ($p.CommandLine -and $p.CommandLine -match $Pattern) { return $true }
     }
     return $false
 }
 
 $devUp = Test-DevServer
-$workerUp = Test-Worker
+$workerUp = Test-Process 'worker[\\/]alpaca\.ts'
+$researchUp = Test-Process 'worker[\\/]research\.ts'
 
-if ($devUp -and $workerUp) {
+if ($devUp -and $workerUp -and $researchUp) {
     Write-Host 'Desk already running — opening the dashboard.' -ForegroundColor Green
     Start-Process $Url
     Start-Sleep -Seconds 1
@@ -71,6 +76,18 @@ if (-not $workerUp) {
     Write-Host 'Alpaca worker already streaming — leaving it alone.' -ForegroundColor Yellow
 }
 
+if (-not $researchUp) {
+    $research = @('powershell', '-NoProfile', '-NoExit', '-File', $Pane, 'research')
+    if ($wtArgs.Count -gt 0) {
+        # Split horizontally so the research log sits under the market feed.
+        $wtArgs += @(';', 'split-pane', '-H') + $research
+    } else {
+        $wtArgs += @('new-tab', '--title', 'Momentum-Desk') + $research
+    }
+} else {
+    Write-Host 'Research worker already running — leaving it alone.' -ForegroundColor Yellow
+}
+
 $wt = Get-Command wt.exe -ErrorAction SilentlyContinue
 if ($wt) {
     Start-Process -FilePath $wt.Source -ArgumentList $wtArgs
@@ -83,6 +100,10 @@ if ($wt) {
     if (-not $workerUp) {
         Start-Process powershell -WorkingDirectory $Root -ArgumentList @(
             '-NoProfile', '-NoExit', '-File', $Pane, 'worker')
+    }
+    if (-not $researchUp) {
+        Start-Process powershell -WorkingDirectory $Root -ArgumentList @(
+            '-NoProfile', '-NoExit', '-File', $Pane, 'research')
     }
 }
 

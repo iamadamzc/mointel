@@ -2,8 +2,10 @@
 
 import { DataFreshness } from '@/components/DataFreshness';
 import { MarketStatus } from '@/components/MarketStatus';
+import { ResearchEngineStatus } from '@/components/ResearchEngineStatus';
 import type { DataSourceMeta } from '@/lib/data/types';
 import type { MarketHealthView } from '@/lib/market/health';
+import type { ResearchHealthView } from '@/lib/research/health';
 import type { DiscoveryState, MarketFeedHealth } from '@/lib/market/types';
 import { formatEtClock, formatEtDate } from '@/lib/format';
 
@@ -12,6 +14,8 @@ interface DashboardHeaderProps {
   marketHealth: MarketFeedHealth;
   /** Combined connection + freshness verdict from the market snapshot. */
   healthView: MarketHealthView;
+  /** Automatic-research engine health. Independent of Sheet freshness. */
+  researchHealth: ResearchHealthView;
   discovery: DiscoveryState;
   now: number;
   mounted: boolean;
@@ -24,6 +28,7 @@ export function DashboardHeader({
   meta,
   marketHealth,
   healthView,
+  researchHealth,
   discovery,
   now,
   mounted,
@@ -53,14 +58,17 @@ export function DashboardHeader({
         </div>
 
         <div className="ml-auto flex flex-wrap items-center gap-x-4 gap-y-2">
-          {/* Market and research health are reported independently: one generic
-              status light would hide which of the two sources is stale. */}
+          {/* Three independent lights: the market feed, the automatic research
+              engine, and the Google Sheet. One generic status would hide which
+              of them is actually down — and a current Sheet was reading as
+              reassurance while the research engine was stopped. */}
           <MarketStatus
             health={marketHealth}
             marketHealth={healthView}
             discovery={discovery}
             mounted={mounted}
           />
+          <ResearchEngineStatus health={researchHealth} mounted={mounted} />
           <DataFreshness meta={meta} now={now} mounted={mounted} transportError={transportError} />
           <button
             type="button"

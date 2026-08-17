@@ -22,9 +22,11 @@ import {
 import {
   readCurrentAnalyses,
   readLatestJobForTicker,
+  readResearchHealth,
   readSourcesByIds,
   researchTablesPresent,
 } from './store/researchRepo';
+import { projectResearchHealth } from '../research/health';
 import {
   RESEARCH_STATUS_LABEL,
   resolveDisplayStatus,
@@ -146,6 +148,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
     return {
       health,
       marketHealth: healthView(health, 'CLOSED', config),
+      researchHealth: projectResearchHealth({ health: null, now: Date.now() }),
       discovery: emptyDiscovery(config),
       demand: {},
       intelligence: {},
@@ -243,6 +246,12 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
     return {
       health,
       marketHealth: healthView(health, sessionPhase, config),
+      // The research engine reports itself; a stopped worker leaves a stale
+      // heartbeat, which the projection reads as OFFLINE rather than IDLE.
+      researchHealth: projectResearchHealth({
+        health: researchTablesPresent(db) ? readResearchHealth(db) : null,
+        now: Date.now(),
+      }),
       discovery,
       demand,
       intelligence,
@@ -258,6 +267,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
     return {
       health,
       marketHealth: healthView(health, 'CLOSED', config),
+      researchHealth: projectResearchHealth({ health: null, now: Date.now() }),
       discovery: emptyDiscovery(config),
       demand: {},
       intelligence: {},

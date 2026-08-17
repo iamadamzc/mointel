@@ -11,7 +11,7 @@
 
 param(
     [Parameter(Mandatory)]
-    [ValidateSet('dev', 'worker')]
+    [ValidateSet('dev', 'worker', 'research')]
     [string]$Task
 )
 
@@ -25,5 +25,11 @@ switch ($Task) {
     'worker' {
         Write-Host 'ALPACA SIP WORKER' -ForegroundColor Cyan
         npm run market:alpaca
+    }
+    'research' {
+        # The third pane. Without it the desk runs with its research engine
+        # off, and every newly discovered name stays NOT YET ANALYZED.
+        Write-Host 'AUTOMATIC RESEARCH WORKER' -ForegroundColor Cyan
+        npm run research
     }
 }

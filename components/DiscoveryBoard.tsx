@@ -338,7 +338,9 @@ function Conclusion({
         title={value.title ?? value.label}
         className={width}
       />
-      <ProvenanceMark row={row} />
+      {/* No source reached this field, so the label already says what the
+          status mark would — printing both read as a contradiction. */}
+      {value.provenance === 'NONE' ? null : <ProvenanceMark row={row} />}
     </span>
   );
 }
