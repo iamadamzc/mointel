@@ -146,8 +146,18 @@ export interface ResearchSource {
   /** SEC form type, e.g. 8-K, 6-K, 424B5. */
   secForm: string | null;
   authority: SourceAuthority;
-  /** Hash of the retained content; the dedupe key for identical documents. */
+  /**
+   * Hash of the normalised body alone. Two different accessions carrying the
+   * same text share this, which is what makes recycled or duplicated content
+   * detectable. It is deliberately NOT the dedupe key.
+   */
   contentHash: string;
+  /**
+   * Identity of this specific document, including its accession. This is the
+   * dedupe key: re-fetching one filing collapses, but two legally distinct
+   * filings stay distinct even when their wording is identical.
+   */
+  documentFingerprint: string;
   excerpt: string | null;
   metadata: Record<string, unknown>;
   /**

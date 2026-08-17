@@ -4,7 +4,12 @@ import path from 'node:path';
 import Database from 'better-sqlite3';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { claimStoreForMode, openDatabase, schemaBackupDirectory } from '@/lib/market/store/db';
+import {
+  claimStoreForMode,
+  openDatabase,
+  schemaBackupDirectory,
+  SCHEMA_VERSION,
+} from '@/lib/market/store/db';
 import { insertDeskEvents } from '@/lib/market/store/repo';
 import {
   claimQueuedJobs,
@@ -20,6 +25,7 @@ import {
   readKnownAccessions,
   readLatestJobForTicker,
   readOrphanedJobs,
+  readRecycledContent,
   readSources,
   requeueJobForRetry,
   researchTablesPresent,
@@ -61,6 +67,7 @@ function source(overrides: Partial<NewResearchSource> = {}): NewResearchSource {
     secForm: '8-K',
     authority: 'SEC',
     contentHash: 'hash-a',
+    documentFingerprint: 'doc-a',
     excerpt: 'The company announced a partnership.',
     metadata: {},
     active: true,
@@ -141,7 +148,7 @@ describe('research schema', () => {
     // Reopening migrates in place; the expensive RVOL baselines are untouched.
     const migrated = openDatabase(file);
     expect(researchTablesPresent(migrated)).toBe(true);
-    expect(migrated.pragma('user_version', { simple: true })).toBe(3);
+    expect(migrated.pragma('user_version', { simple: true })).toBe(SCHEMA_VERSION);
   });
 
   it('backs the store up before upgrading it, exactly once', () => {
@@ -178,7 +185,7 @@ describe('research schema', () => {
 
     expect(backups).toHaveLength(1);
     expect(backups[0].fromVersion).toBe(2);
-    expect(backups[0].toVersion).toBe(3);
+    expect(backups[0].toVersion).toBe(SCHEMA_VERSION);
     expect(fs.existsSync(backups[0].path)).toBe(true);
     expect(backups[0].path.startsWith(schemaBackupDirectory(file))).toBe(true);
 
@@ -417,9 +424,42 @@ describe('research sources', () => {
     const db = temporaryDb();
     insertResearchSources(db, [
       source(),
-      source({ contentHash: 'hash-b', accession: '0001234567-26-000002', secForm: '424B5' }),
+      source({
+        contentHash: 'hash-b',
+        documentFingerprint: 'doc-b',
+        accession: '0001234567-26-000002',
+        secForm: '424B5',
+      }),
     ]);
     expect(readSources(db, 'SLE')).toHaveLength(2);
+  });
+
+  it('keeps two filings that share wording as two documents', () => {
+    const db = temporaryDb();
+    // Real case: routine cover-page filings are frequently byte-identical, but
+    // they are separate legal filings and each accession must survive.
+    insertResearchSources(db, [
+      source({ accession: 'A-1', documentFingerprint: 'doc-a1', contentHash: 'same-body' }),
+      source({ accession: 'A-2', documentFingerprint: 'doc-a2', contentHash: 'same-body' }),
+    ]);
+
+    const stored = readSources(db, 'SLE');
+    expect(stored).toHaveLength(2);
+    expect(stored.map((s) => s.accession).sort()).toEqual(['A-1', 'A-2']);
+  });
+
+  it('still reports identical content across different accessions as recycled', () => {
+    const db = temporaryDb();
+    insertResearchSources(db, [
+      source({ accession: 'A-1', documentFingerprint: 'doc-a1', contentHash: 'same-body' }),
+      source({ accession: 'A-2', documentFingerprint: 'doc-a2', contentHash: 'same-body' }),
+      source({ accession: 'A-3', documentFingerprint: 'doc-a3', contentHash: 'different' }),
+    ]);
+
+    const recycled = readRecycledContent(db, 'SLE');
+    expect(recycled).toHaveLength(1);
+    expect(recycled[0].count).toBe(2);
+    expect(recycled[0].accessions.sort()).toEqual(['A-1', 'A-2']);
   });
 
   it('tracks known accessions for new-filing detection', () => {

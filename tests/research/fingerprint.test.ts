@@ -20,6 +20,7 @@ function source(overrides: Partial<NewResearchSource> = {}): NewResearchSource {
     secForm: '8-K',
     authority: 'SEC',
     contentHash: 'hash-a',
+    documentFingerprint: 'doc-a',
     excerpt: null,
     metadata: {},
     active: true,

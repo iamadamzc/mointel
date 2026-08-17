@@ -334,6 +334,7 @@ interface SourceRow {
   sec_form: string | null;
   authority: string;
   content_hash: string;
+  document_fingerprint: string;
   excerpt: string | null;
   metadata: string;
   active: number;
@@ -359,6 +360,7 @@ function toSource(row: SourceRow): ResearchSource {
     secForm: row.sec_form,
     authority: row.authority as SourceAuthority,
     contentHash: row.content_hash,
+    documentFingerprint: row.document_fingerprint,
     excerpt: row.excerpt,
     metadata,
     active: row.active === 1,
@@ -366,12 +368,15 @@ function toSource(row: SourceRow): ResearchSource {
 }
 
 /**
- * Inserts sources, skipping any whose (ticker, content_hash) already exists.
+ * Inserts sources, skipping any whose (ticker, document_fingerprint) exists.
+ *
+ * Dedupe is on document identity, not body text. Re-collecting one filing
+ * collapses to a single row and keeps the evidence fingerprint stable, while
+ * two legally distinct filings survive as two rows even when their wording is
+ * byte-identical — which routine cover-page filings frequently are.
  *
  * Returns the ids of every supplied source, existing or new, so a caller can
- * cite what it just collected without a second query. Identical documents are
- * never duplicated, which is what keeps the evidence fingerprint stable across
- * repeated collection of an unchanged filing set.
+ * cite what it just collected without a second query.
  */
 export function insertResearchSources(
   db: MarketDatabase,
@@ -382,13 +387,13 @@ export function insertResearchSources(
   const insert = db.prepare(
     `INSERT OR IGNORE INTO research_sources
        (ticker, source_type, title, url, published_at, fetched_at, accession,
-        sec_form, authority, content_hash, excerpt, metadata, active)
+        sec_form, authority, content_hash, document_fingerprint, excerpt, metadata, active)
      VALUES
        (@ticker, @sourceType, @title, @url, @publishedAt, @fetchedAt, @accession,
-        @secForm, @authority, @contentHash, @excerpt, @metadata, @active)`,
+        @secForm, @authority, @contentHash, @documentFingerprint, @excerpt, @metadata, @active)`,
   );
   const lookup = db.prepare(
-    'SELECT id FROM research_sources WHERE ticker = ? AND content_hash = ?',
+    'SELECT id FROM research_sources WHERE ticker = ? AND document_fingerprint = ?',
   );
 
   const run = db.transaction((batch: NewResearchSource[]): number[] => {
@@ -405,17 +410,54 @@ export function insertResearchSources(
         secForm: source.secForm,
         authority: source.authority,
         contentHash: source.contentHash,
+        documentFingerprint: source.documentFingerprint,
         excerpt: source.excerpt,
         metadata: JSON.stringify(source.metadata ?? {}),
         active: source.active ? 1 : 0,
       });
-      const row = lookup.get(source.ticker, source.contentHash) as { id: number } | undefined;
+      const row = lookup.get(source.ticker, source.documentFingerprint) as
+        | { id: number }
+        | undefined;
       if (row) ids.push(row.id);
     }
     return ids;
   });
 
   return run(sources);
+}
+
+export interface RecycledContent {
+  contentHash: string;
+  accessions: string[];
+  count: number;
+}
+
+/**
+ * Groups of documents that share a body but were filed separately.
+ *
+ * Recycled content is a signal in its own right — a company re-issuing an
+ * identical release, or a prospectus supplement repeating an earlier one — and
+ * it is only visible because dedupe keys on identity rather than on text.
+ */
+export function readRecycledContent(db: MarketDatabase, ticker: string): RecycledContent[] {
+  if (!researchTablesPresent(db)) return [];
+  const rows = db
+    .prepare(
+      `SELECT content_hash,
+              COUNT(*) AS n,
+              GROUP_CONCAT(COALESCE(accession, '?')) AS accessions
+         FROM research_sources
+        WHERE ticker = ?
+        GROUP BY content_hash
+       HAVING COUNT(*) > 1`,
+    )
+    .all(ticker) as Array<{ content_hash: string; n: number; accessions: string }>;
+
+  return rows.map((row) => ({
+    contentHash: row.content_hash,
+    accessions: row.accessions.split(','),
+    count: row.n,
+  }));
 }
 
 export function readSources(

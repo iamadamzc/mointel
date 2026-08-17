@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -195,27 +195,36 @@ CREATE TABLE IF NOT EXISTS issuer_registry (
 );
 CREATE INDEX IF NOT EXISTS idx_issuer_registry_cik ON issuer_registry (cik);
 
--- Retained public evidence. content_hash is unique per ticker so the same
--- document collected twice is one row; excerpt holds only the limited text
--- analysis needs, never a whole filing or a whole article.
+-- Retained public evidence. excerpt holds only the limited text analysis needs,
+-- never a whole filing or a whole article.
+--
+-- Two hashes, deliberately:
+--   document_fingerprint  identity of this document, accession included. It is
+--                         the dedupe key, so two legally distinct filings never
+--                         collapse into one row even when their text matches.
+--   content_hash          hash of the normalised body alone, so recycled or
+--                         duplicated content is still detectable across
+--                         different accessions.
 CREATE TABLE IF NOT EXISTS research_sources (
-  id           INTEGER PRIMARY KEY AUTOINCREMENT,
-  ticker       TEXT NOT NULL,
-  source_type  TEXT NOT NULL,
-  title        TEXT,
-  url          TEXT NOT NULL,
-  published_at TEXT,
-  fetched_at   TEXT NOT NULL,
-  accession    TEXT,
-  sec_form     TEXT,
-  authority    TEXT NOT NULL,
-  content_hash TEXT NOT NULL,
-  excerpt      TEXT,
-  metadata     TEXT NOT NULL DEFAULT '{}',
-  active       INTEGER NOT NULL DEFAULT 1
+  id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+  ticker               TEXT NOT NULL,
+  source_type          TEXT NOT NULL,
+  title                TEXT,
+  url                  TEXT NOT NULL,
+  published_at         TEXT,
+  fetched_at           TEXT NOT NULL,
+  accession            TEXT,
+  sec_form             TEXT,
+  authority            TEXT NOT NULL,
+  content_hash         TEXT NOT NULL,
+  document_fingerprint TEXT NOT NULL DEFAULT '',
+  excerpt              TEXT,
+  metadata             TEXT NOT NULL DEFAULT '{}',
+  active               INTEGER NOT NULL DEFAULT 1
 );
-CREATE UNIQUE INDEX IF NOT EXISTS idx_research_sources_hash
-  ON research_sources (ticker, content_hash);
+-- The document_fingerprint indexes are created in migrate(), not here: this
+-- block runs before the ALTER TABLE that adds the column to an existing store,
+-- so indexing it at this point fails on any database created before v4.
 CREATE INDEX IF NOT EXISTS idx_research_sources_ticker ON research_sources (ticker, authority);
 CREATE INDEX IF NOT EXISTS idx_research_sources_accession ON research_sources (ticker, accession);
 
@@ -271,6 +280,11 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'universe', column: 'classification_source', definition: 'TEXT' },
   { table: 'universe', column: 'classification_reason', definition: 'TEXT' },
   { table: 'universe', column: 'discovery_eligible', definition: 'INTEGER NOT NULL DEFAULT 1' },
+  {
+    table: 'research_sources',
+    column: 'document_fingerprint',
+    definition: "TEXT NOT NULL DEFAULT ''",
+  },
 ];
 
 function migrate(db: MarketDatabase): void {
@@ -279,6 +293,31 @@ function migrate(db: MarketDatabase): void {
     if (columns.length === 0) continue;
     if (columns.some((existing) => existing.name === column)) continue;
     db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+  }
+
+  // v3 made (ticker, content_hash) unique, which would collapse two distinct
+  // filings that share wording. Identity now lives in document_fingerprint, so
+  // the old constraint is dropped and content_hash keeps a plain index for
+  // recycled-content detection.
+  const sources = db.prepare('PRAGMA table_info(research_sources)').all() as Array<{
+    name: string;
+  }>;
+  if (sources.length > 0) {
+    db.exec('DROP INDEX IF EXISTS idx_research_sources_hash');
+    // Backfill identity for rows written under v3 so the unique index below can
+    // be created without collisions on the default empty string.
+    db.exec(
+      `UPDATE research_sources
+          SET document_fingerprint = COALESCE(accession, '') || ':' || content_hash
+        WHERE document_fingerprint = ''`,
+    );
+    db.exec(
+      `CREATE UNIQUE INDEX IF NOT EXISTS idx_research_sources_document
+         ON research_sources (ticker, document_fingerprint)`,
+    );
+    db.exec(
+      'CREATE INDEX IF NOT EXISTS idx_research_sources_content ON research_sources (content_hash)',
+    );
   }
 
   // Created after the ALTERs: an index cannot reference a column that an older

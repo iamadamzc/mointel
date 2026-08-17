@@ -1,0 +1,180 @@
+/**
+ * SEC HTTP client.
+ *
+ * Every SEC request in the project goes through here, which is what makes the
+ * rate ceiling, the declared User-Agent and the backoff policy actually global
+ * rather than a convention each collector is trusted to follow.
+ *
+ * Deliberately narrow: it fetches a URL SEC published and returns the body. It
+ * does not discover links, follow redirects into other hosts, or crawl. Callers
+ * ask for documents an active research job needs.
+ */
+
+import type { SecConfig } from '../config';
+import { secAvailability } from '../config';
+import { RateLimiter } from './limiter';
+
+const RETRYABLE_STATUS = new Set([403, 429, 500, 502, 503, 504]);
+const MAX_ATTEMPTS = 4;
+const BASE_BACKOFF_MS = 500;
+const MAX_BACKOFF_MS = 15_000;
+
+export class SecUnavailableError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'SecUnavailableError';
+  }
+}
+
+export class SecRequestError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+    readonly url: string,
+  ) {
+    super(message);
+    this.name = 'SecRequestError';
+  }
+}
+
+export interface SecFetchResult {
+  url: string;
+  body: string;
+  status: number;
+  /** True when served from the in-process cache without touching the network. */
+  cached: boolean;
+}
+
+export interface SecClientOptions {
+  config: SecConfig;
+  fetchImpl?: typeof fetch;
+  sleep?: (ms: number) => Promise<void>;
+  now?: () => number;
+}
+
+const defaultSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+/**
+ * Parses Retry-After, which SEC may send as seconds or as an HTTP date.
+ * Returns null when absent or unparseable, leaving the caller on exponential
+ * backoff rather than guessing.
+ */
+export function parseRetryAfter(header: string | null, nowMs: number): number | null {
+  if (!header) return null;
+
+  const seconds = Number(header.trim());
+  if (Number.isFinite(seconds) && seconds >= 0) return seconds * 1000;
+
+  const date = Date.parse(header);
+  if (Number.isFinite(date)) {
+    const delta = date - nowMs;
+    return delta > 0 ? delta : 0;
+  }
+  return null;
+}
+
+export function backoffDelayMs(attempt: number): number {
+  return Math.min(BASE_BACKOFF_MS * 2 ** (attempt - 1), MAX_BACKOFF_MS);
+}
+
+export class SecClient {
+  private readonly limiter: RateLimiter;
+  private readonly cache = new Map<string, SecFetchResult>();
+  private readonly fetchImpl: typeof fetch;
+  private readonly sleep: (ms: number) => Promise<void>;
+  private readonly now: () => number;
+  private networkRequests = 0;
+
+  constructor(private readonly options: SecClientOptions) {
+    this.fetchImpl = options.fetchImpl ?? fetch;
+    this.sleep = options.sleep ?? defaultSleep;
+    this.now = options.now ?? Date.now;
+    this.limiter = new RateLimiter({
+      maxRequestsPerSecond: options.config.maxRequestsPerSecond,
+      now: this.now,
+      sleep: this.sleep,
+    });
+  }
+
+  /** Requests that actually reached the network, excluding cache hits. */
+  get requestCount(): number {
+    return this.networkRequests;
+  }
+
+  clearCache(): void {
+    this.cache.clear();
+  }
+
+  /**
+   * Fetches a SEC URL, or returns the cached body from an earlier fetch in this
+   * process. The cache is what stops one job's filing set from being re-fetched
+   * by the next job that needs the same document.
+   */
+  async get(url: string): Promise<SecFetchResult> {
+    const availability = secAvailability(this.options.config);
+    if (!availability.available) {
+      // Refusing here rather than sending an anonymous request is the required
+      // behavior: SEC gets no traffic it cannot attribute.
+      throw new SecUnavailableError(availability.detail);
+    }
+
+    const cached = this.cache.get(url);
+    if (cached) return { ...cached, cached: true };
+
+    let lastError: Error | null = null;
+
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
+      await this.limiter.acquire();
+      this.networkRequests += 1;
+
+      let response: Response;
+      try {
+        response = await this.fetchImpl(url, {
+          headers: {
+            // SEC requires this to identify the requester.
+            'User-Agent': this.options.config.userAgent as string,
+            'Accept-Encoding': 'gzip, deflate',
+          },
+        });
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        if (attempt < MAX_ATTEMPTS) await this.sleep(backoffDelayMs(attempt));
+        continue;
+      }
+
+      if (response.ok) {
+        const body = await response.text();
+        const result: SecFetchResult = { url, body, status: response.status, cached: false };
+        this.cache.set(url, result);
+        return result;
+      }
+
+      if (!RETRYABLE_STATUS.has(response.status)) {
+        // 404 for a document that does not exist is an answer, not a failure to
+        // retry against.
+        throw new SecRequestError(`SEC responded ${response.status}`, response.status, url);
+      }
+
+      // 403 and 429 both mean "you are asking too much". Slow the shared
+      // schedule so every job backs off, not only this one.
+      const retryAfter = parseRetryAfter(response.headers.get('retry-after'), this.now());
+      const delay = retryAfter ?? backoffDelayMs(attempt);
+      this.limiter.penalise(delay);
+      lastError = new SecRequestError(`SEC responded ${response.status}`, response.status, url);
+
+      if (attempt < MAX_ATTEMPTS) await this.sleep(delay);
+    }
+
+    throw lastError ?? new SecRequestError('SEC request failed', 0, url);
+  }
+
+  /** Fetches and parses JSON, surfacing a parse failure as a request error. */
+  async getJson<T>(url: string): Promise<{ data: T; cached: boolean }> {
+    const result = await this.get(url);
+    try {
+      return { data: JSON.parse(result.body) as T, cached: result.cached };
+    } catch {
+      throw new SecRequestError('SEC returned unparseable JSON', result.status, url);
+    }
+  }
+}
