@@ -10,12 +10,24 @@
  * reason string, never as the value itself.
  */
 
+import { DEFAULT_CATALYST_WINDOWS } from './time';
+
 /** SEC publishes a 10 req/s ceiling. We stay well under it deliberately. */
 const DEFAULT_SEC_RATE = 5;
 const DEFAULT_ACTIVE_POLL_SECONDS = 60;
 const DEFAULT_AUTO_RANK = 12;
 const DEFAULT_CONCURRENCY = 2;
 const DEFAULT_CATALYST_REFRESH_MINUTES = 10;
+const DEFAULT_RESEARCH_MODEL = 'gpt-5.6-terra';
+/** Deterministic known-source checks are cheap enough to run every minute. */
+const DEFAULT_SOURCE_POLL_SECONDS = 60;
+/**
+ * Discovery costs a model call, so it is spaced far wider than source polling.
+ * A ticker whose catalyst is still unknown is checked more often than one whose
+ * canonical source is already established — the first has something to find.
+ */
+const DEFAULT_WEB_DISCOVERY_UNRESOLVED_MINUTES = 10;
+const DEFAULT_WEB_DISCOVERY_RESOLVED_MINUTES = 30;
 
 export interface SecConfig {
   /**
@@ -27,8 +39,45 @@ export interface SecConfig {
   activePollSeconds: number;
 }
 
+/**
+ * Model tiers. Only the interpreter/discovery factories read these; no model
+ * string appears anywhere else in the codebase.
+ */
+export interface ModelConfig {
+  apiKey: string | null;
+  /** Default full research model. */
+  researchModel: string;
+  /** Selective escalation for difficult or conflicting dossiers. */
+  escalationModel: string;
+  /** Low-cost tier for change detection and source location. */
+  changeDetectModel: string;
+}
+
+export interface CatalystConfig {
+  /** Deterministic known-source polling. Cheap: no model, no web search. */
+  sourcePollSeconds: number;
+  /**
+   * How often a *currently relevant* ticker with no established recent source
+   * may run a low-cost discovery check.
+   *
+   * A press release can cross a newswire without touching SEC submissions or a
+   * company feed, so an unchanged local fingerprint is not proof that nothing
+   * happened. This interval is therefore allowed to trigger a bounded discovery
+   * check — but only the cheap source-locator tier, and never interpretation.
+   */
+  webDiscoveryUnresolvedMinutes: number;
+  /** The same, for a ticker whose recent canonical source is already known. */
+  webDiscoveryResolvedMinutes: number;
+  /** How recent a source must be to bear on current attention. */
+  activeFreshnessHours: number;
+  /** How far back sources are collected for context and recycling detection. */
+  contextLookbackDays: number;
+}
+
 export interface ResearchConfig {
   sec: SecConfig;
+  model: ModelConfig;
+  catalyst: CatalystConfig;
   autoRank: number;
   concurrency: number;
   catalystRefreshMinutes: number;
@@ -42,12 +91,44 @@ function positiveNumber(raw: string | undefined, fallback: number): number {
 
 export function readResearchConfig(env: NodeJS.ProcessEnv = process.env): ResearchConfig {
   const userAgent = env.SEC_USER_AGENT?.trim();
+  const apiKey = env.OPENAI_API_KEY?.trim();
+  const researchModel = env.OPENAI_RESEARCH_MODEL?.trim() || DEFAULT_RESEARCH_MODEL;
 
   return {
     sec: {
       userAgent: userAgent ? userAgent : null,
       maxRequestsPerSecond: positiveNumber(env.SEC_MAX_REQUESTS_PER_SECOND, DEFAULT_SEC_RATE),
       activePollSeconds: positiveNumber(env.SEC_ACTIVE_POLL_SECONDS, DEFAULT_ACTIVE_POLL_SECONDS),
+    },
+    model: {
+      apiKey: apiKey ? apiKey : null,
+      researchModel,
+      // Both tiers fall back to the research model, so tiering is an
+      // optimisation the system never depends on.
+      escalationModel: env.OPENAI_ESCALATION_MODEL?.trim() || researchModel,
+      changeDetectModel: env.OPENAI_CHANGE_DETECT_MODEL?.trim() || researchModel,
+    },
+    catalyst: {
+      sourcePollSeconds: positiveNumber(
+        env.CATALYST_SOURCE_POLL_SECONDS,
+        DEFAULT_SOURCE_POLL_SECONDS,
+      ),
+      webDiscoveryUnresolvedMinutes: positiveNumber(
+        env.CATALYST_WEB_DISCOVERY_UNRESOLVED_MINUTES,
+        DEFAULT_WEB_DISCOVERY_UNRESOLVED_MINUTES,
+      ),
+      webDiscoveryResolvedMinutes: positiveNumber(
+        env.CATALYST_WEB_DISCOVERY_RESOLVED_MINUTES,
+        DEFAULT_WEB_DISCOVERY_RESOLVED_MINUTES,
+      ),
+      activeFreshnessHours: positiveNumber(
+        env.CATALYST_ACTIVE_FRESHNESS_HOURS,
+        DEFAULT_CATALYST_WINDOWS.activeFreshnessHours,
+      ),
+      contextLookbackDays: positiveNumber(
+        env.CATALYST_CONTEXT_LOOKBACK_DAYS,
+        DEFAULT_CATALYST_WINDOWS.contextLookbackDays,
+      ),
     },
     autoRank: positiveNumber(env.RESEARCH_AUTO_RANK, DEFAULT_AUTO_RANK),
     concurrency: positiveNumber(env.RESEARCH_CONCURRENCY, DEFAULT_CONCURRENCY),
@@ -88,4 +169,23 @@ export function secAvailability(config: SecConfig): Availability {
   }
 
   return { available: true, detail: `configured, ${config.maxRequestsPerSecond} req/s ceiling` };
+}
+
+/**
+ * Whether an interpretation/discovery model is configured.
+ *
+ * Reports availability and model names only. The key itself is never returned,
+ * logged, or included in a diagnostic.
+ */
+export function modelAvailability(config: ModelConfig): Availability {
+  if (!config.apiKey) {
+    return {
+      available: false,
+      detail: 'OPENAI_API_KEY not set — source collection continues without interpretation',
+    };
+  }
+  return {
+    available: true,
+    detail: `research=${config.researchModel} discovery=${config.changeDetectModel}`,
+  };
 }

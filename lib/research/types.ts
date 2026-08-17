@@ -11,6 +11,8 @@
  * default to a high value.
  */
 
+import type { TimePrecision } from './time';
+
 /* --------------------------------------------------------------- job states */
 
 /**
@@ -90,7 +92,55 @@ export interface IssuerRecord {
   /** Company IR/news URL, persisted so it is not rediscovered every analysis. */
   irUrl: string | null;
   lastVerifiedAt: string | null;
+  /** Reusable company-source metadata; see CompanySourceRegistry. */
+  companySources?: CompanySourceRegistry;
 }
+
+/**
+ * Where an issuer publishes its own news.
+ *
+ * Persisted per issuer and reused. Rediscovering a company's newsroom on every
+ * refresh would burn a web-discovery call to learn something that does not
+ * change, which is exactly what the cheap-first rule exists to prevent.
+ */
+export interface CompanySourceRegistry {
+  investorRelationsUrl: string | null;
+  newsroomUrl: string | null;
+  pressReleaseIndexUrl: string | null;
+  /** RSS or Atom feed, when the issuer publishes one. Cheapest source of all. */
+  feedUrl: string | null;
+  /** How these were found: SEC filing, web discovery, manual. */
+  discoveryMethod: string | null;
+  confidence: Confidence;
+  lastVerifiedAt: string | null;
+  /** Why a source could not be established or used, when that is the case. */
+  note: string | null;
+  /**
+   * When web discovery last ran for this issuer, and the evidence fingerprint
+   * it ran against.
+   *
+   * Both are needed to honour the cheap-first rule. A ticker with no recent
+   * news satisfies "nothing recent found" on every single poll, so without
+   * remembering the last attempt, that condition alone would re-trigger a paid
+   * discovery call every minute for exactly the quiet names least likely to
+   * reward one.
+   */
+  lastDiscoveryAt: string | null;
+  lastDiscoveryFingerprint: string | null;
+}
+
+export const EMPTY_COMPANY_SOURCES: CompanySourceRegistry = {
+  investorRelationsUrl: null,
+  newsroomUrl: null,
+  pressReleaseIndexUrl: null,
+  feedUrl: null,
+  discoveryMethod: null,
+  confidence: 'UNKNOWN',
+  lastVerifiedAt: null,
+  note: null,
+  lastDiscoveryAt: null,
+  lastDiscoveryFingerprint: null,
+};
 
 /* ----------------------------------------------------------------- evidence */
 
@@ -119,12 +169,29 @@ export const SOURCE_AUTHORITY_RANK: Record<SourceAuthority, number> = {
 
 export type SourceType =
   | 'SEC_FILING'
+  | 'SEC_EXHIBIT'
   | 'SEC_SUBMISSIONS'
   | 'SEC_COMPANY_FACTS'
+  | 'COMPANY_IR'
+  | 'COMPANY_NEWSROOM'
   | 'COMPANY_RELEASE'
   | 'NEWSWIRE'
+  | 'SECONDARY_DISCOVERY'
   | 'WEB_SEARCH'
   | 'MARKET_HISTORY';
+
+/**
+ * Factual state of catalyst source collection.
+ *
+ * Deliberately not a verdict. "No recent source located" is a statement about
+ * our coverage, not about whether a catalyst exists — that judgement, and the
+ * phrase NO FRESH CATALYST FOUND, belong to Phase 4 after coverage is weighed.
+ */
+export type CatalystCollectionState =
+  | 'RECENT_SOURCE_LOCATED'
+  | 'NO_RECENT_SOURCE_LOCATED'
+  | 'COVERAGE_INCOMPLETE'
+  | 'SOURCE_DISCOVERY_FAILED';
 
 /**
  * One retained piece of public evidence.
@@ -165,10 +232,32 @@ export interface ResearchSource {
    * stays stored — it is history, not garbage — but is no longer current.
    */
   active: boolean;
+  /**
+   * Groups copies of one underlying announcement. The same release routinely
+   * exists as an SEC exhibit, an IR post and a newswire item; those are three
+   * source records but one event, and counting them as three catalysts would
+   * badly misrepresent what happened.
+   */
+  clusterId: string | null;
+  /** True for the highest-authority member of its cluster. */
+  canonical: boolean;
+  /** Publication time with its precision; see lib/research/time.ts. */
+  publishedPrecision: TimePrecision;
 }
 
-/** A source not yet assigned a database id. */
-export type NewResearchSource = Omit<ResearchSource, 'id'>;
+/**
+ * A source not yet assigned a database id.
+ *
+ * Cluster membership and canonical status are optional because they are decided
+ * by the clustering pass after collection, not by the collector that found the
+ * document. A collector states what it found; it does not decide which copy of
+ * an announcement wins.
+ */
+export type NewResearchSource = Omit<
+  ResearchSource,
+  'id' | 'clusterId' | 'canonical' | 'publishedPrecision'
+> &
+  Partial<Pick<ResearchSource, 'clusterId' | 'canonical' | 'publishedPrecision'>>;
 
 /* ------------------------------------------------------------- supply ledger */
 

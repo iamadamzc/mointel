@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 4;
+export const SCHEMA_VERSION = 5;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -191,7 +191,11 @@ CREATE TABLE IF NOT EXISTS issuer_registry (
   cik_confidence   TEXT NOT NULL DEFAULT 'NONE',
   mapping_source   TEXT,
   ir_url           TEXT,
-  last_verified_at TEXT
+  last_verified_at TEXT,
+  -- Where the issuer publishes its own news. Established once and reused: a
+  -- newsroom URL does not change often enough to justify rediscovering it on
+  -- every refresh, and rediscovery costs a web-search call.
+  company_sources  TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_issuer_registry_cik ON issuer_registry (cik);
 
@@ -220,7 +224,14 @@ CREATE TABLE IF NOT EXISTS research_sources (
   document_fingerprint TEXT NOT NULL DEFAULT '',
   excerpt              TEXT,
   metadata             TEXT NOT NULL DEFAULT '{}',
-  active               INTEGER NOT NULL DEFAULT 1
+  active               INTEGER NOT NULL DEFAULT 1,
+  -- Copies of one announcement share a cluster; exactly one is canonical.
+  -- Duplicates are never deleted, because provenance is the point.
+  cluster_id           TEXT,
+  canonical            INTEGER NOT NULL DEFAULT 0,
+  -- Precision of published_at. A date-only release must never be mistaken for
+  -- a timed one; in premarket that difference decides everything.
+  published_precision  TEXT NOT NULL DEFAULT 'UNKNOWN'
 );
 -- The document_fingerprint indexes are created in migrate(), not here: this
 -- block runs before the ALTER TABLE that adds the column to an existing store,
@@ -285,6 +296,14 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
     column: 'document_fingerprint',
     definition: "TEXT NOT NULL DEFAULT ''",
   },
+  { table: 'research_sources', column: 'cluster_id', definition: 'TEXT' },
+  { table: 'research_sources', column: 'canonical', definition: 'INTEGER NOT NULL DEFAULT 0' },
+  {
+    table: 'research_sources',
+    column: 'published_precision',
+    definition: "TEXT NOT NULL DEFAULT 'UNKNOWN'",
+  },
+  { table: 'issuer_registry', column: 'company_sources', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {
@@ -317,6 +336,9 @@ function migrate(db: MarketDatabase): void {
     );
     db.exec(
       'CREATE INDEX IF NOT EXISTS idx_research_sources_content ON research_sources (content_hash)',
+    );
+    db.exec(
+      'CREATE INDEX IF NOT EXISTS idx_research_sources_cluster ON research_sources (ticker, cluster_id)',
     );
   }
 

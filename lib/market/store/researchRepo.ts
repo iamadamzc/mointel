@@ -10,8 +10,10 @@
  */
 
 import type { MarketDatabase } from './db';
+import type { TimePrecision } from '../../research/time';
 import type {
   CikConfidence,
+  CompanySourceRegistry,
   IssuerRecord,
   NewResearchSource,
   ResearchAnalysisVersion,
@@ -23,7 +25,7 @@ import type {
   SourceAuthority,
   SourceType,
 } from '../../research/types';
-import { ANALYSIS_VERSION } from '../../research/types';
+import { ANALYSIS_VERSION, EMPTY_COMPANY_SOURCES } from '../../research/types';
 
 /* -------------------------------------------------------------- table guard */
 
@@ -257,6 +259,7 @@ interface IssuerRow {
   mapping_source: string | null;
   ir_url: string | null;
   last_verified_at: string | null;
+  company_sources: string | null;
 }
 
 function toIssuer(row: IssuerRow): IssuerRecord {
@@ -272,7 +275,17 @@ function toIssuer(row: IssuerRow): IssuerRecord {
     mappingSource: row.mapping_source,
     irUrl: row.ir_url,
     lastVerifiedAt: row.last_verified_at,
+    companySources: parseCompanySources(row.company_sources),
   };
+}
+
+function parseCompanySources(raw: string | null): CompanySourceRegistry | undefined {
+  if (!raw) return undefined;
+  try {
+    return { ...EMPTY_COMPANY_SOURCES, ...(JSON.parse(raw) as CompanySourceRegistry) };
+  } catch {
+    return undefined;
+  }
 }
 
 /**
@@ -284,10 +297,10 @@ export function upsertIssuer(db: MarketDatabase, issuer: IssuerRecord): void {
   db.prepare(
     `INSERT INTO issuer_registry
        (ticker, company_name, cik, exchange, country, foreign_issuer,
-        cik_confidence, mapping_source, ir_url, last_verified_at)
+        cik_confidence, mapping_source, ir_url, last_verified_at, company_sources)
      VALUES
        (@ticker, @companyName, @cik, @exchange, @country, @foreignIssuer,
-        @cikConfidence, @mappingSource, @irUrl, @lastVerifiedAt)
+        @cikConfidence, @mappingSource, @irUrl, @lastVerifiedAt, @companySources)
      ON CONFLICT(ticker) DO UPDATE SET
        company_name     = COALESCE(excluded.company_name, company_name),
        cik              = COALESCE(excluded.cik, cik),
@@ -297,7 +310,8 @@ export function upsertIssuer(db: MarketDatabase, issuer: IssuerRecord): void {
        cik_confidence   = excluded.cik_confidence,
        mapping_source   = COALESCE(excluded.mapping_source, mapping_source),
        ir_url           = COALESCE(excluded.ir_url, ir_url),
-       last_verified_at = COALESCE(excluded.last_verified_at, last_verified_at)`,
+       last_verified_at = COALESCE(excluded.last_verified_at, last_verified_at),
+       company_sources  = COALESCE(excluded.company_sources, company_sources)`,
   ).run({
     ticker: issuer.ticker,
     companyName: issuer.companyName,
@@ -309,6 +323,7 @@ export function upsertIssuer(db: MarketDatabase, issuer: IssuerRecord): void {
     mappingSource: issuer.mappingSource,
     irUrl: issuer.irUrl,
     lastVerifiedAt: issuer.lastVerifiedAt,
+    companySources: issuer.companySources ? JSON.stringify(issuer.companySources) : null,
   });
 }
 
@@ -338,6 +353,9 @@ interface SourceRow {
   excerpt: string | null;
   metadata: string;
   active: number;
+  cluster_id: string | null;
+  canonical: number;
+  published_precision: string;
 }
 
 function toSource(row: SourceRow): ResearchSource {
@@ -364,6 +382,9 @@ function toSource(row: SourceRow): ResearchSource {
     excerpt: row.excerpt,
     metadata,
     active: row.active === 1,
+    clusterId: row.cluster_id,
+    canonical: row.canonical === 1,
+    publishedPrecision: (row.published_precision ?? 'UNKNOWN') as TimePrecision,
   };
 }
 
@@ -387,10 +408,12 @@ export function insertResearchSources(
   const insert = db.prepare(
     `INSERT OR IGNORE INTO research_sources
        (ticker, source_type, title, url, published_at, fetched_at, accession,
-        sec_form, authority, content_hash, document_fingerprint, excerpt, metadata, active)
+        sec_form, authority, content_hash, document_fingerprint, excerpt, metadata,
+        active, cluster_id, canonical, published_precision)
      VALUES
        (@ticker, @sourceType, @title, @url, @publishedAt, @fetchedAt, @accession,
-        @secForm, @authority, @contentHash, @documentFingerprint, @excerpt, @metadata, @active)`,
+        @secForm, @authority, @contentHash, @documentFingerprint, @excerpt, @metadata,
+        @active, @clusterId, @canonical, @publishedPrecision)`,
   );
   const lookup = db.prepare(
     'SELECT id FROM research_sources WHERE ticker = ? AND document_fingerprint = ?',
@@ -414,6 +437,9 @@ export function insertResearchSources(
         excerpt: source.excerpt,
         metadata: JSON.stringify(source.metadata ?? {}),
         active: source.active ? 1 : 0,
+        clusterId: source.clusterId ?? null,
+        canonical: source.canonical ? 1 : 0,
+        publishedPrecision: source.publishedPrecision ?? 'UNKNOWN',
       });
       const row = lookup.get(source.ticker, source.documentFingerprint) as
         | { id: number }
@@ -491,6 +517,42 @@ export function readKnownAccessions(db: MarketDatabase, ticker: string): Set<str
     )
     .all(ticker) as Array<{ accession: string }>;
   return new Set(rows.map((row) => row.accession));
+}
+
+/**
+ * Assigns a cluster and marks its canonical member.
+ *
+ * Copies are never deleted — an SEC exhibit, an IR post and a newswire item are
+ * three separate public records of one announcement, and each has independent
+ * provenance value. Clustering only records that they are the same event so
+ * they are not counted as three.
+ */
+export function assignSourceCluster(
+  db: MarketDatabase,
+  clusterId: string,
+  memberIds: number[],
+  canonicalId: number,
+): void {
+  if (memberIds.length === 0) return;
+
+  const setCluster = db.prepare(
+    'UPDATE research_sources SET cluster_id = ?, canonical = ? WHERE id = ?',
+  );
+  const run = db.transaction(() => {
+    for (const id of memberIds) setCluster.run(clusterId, id === canonicalId ? 1 : 0, id);
+  });
+  run();
+}
+
+/** Canonical source of each cluster for a ticker. */
+export function readCanonicalSources(db: MarketDatabase, ticker: string): ResearchSource[] {
+  if (!researchTablesPresent(db)) return [];
+  const rows = db
+    .prepare(
+      'SELECT * FROM research_sources WHERE ticker = ? AND canonical = 1 ORDER BY published_at DESC',
+    )
+    .all(ticker) as SourceRow[];
+  return rows.map(toSource);
 }
 
 /** Marks superseded sources inactive without deleting them. History is kept. */

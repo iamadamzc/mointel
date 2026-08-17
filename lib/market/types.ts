@@ -342,7 +342,12 @@ export type DeskEventType =
   | 'HALT'
   | 'RESUME'
   | 'RVOL_RANK_ENTRY'
-  | 'DISCOVERY_QUALIFIED';
+  | 'DISCOVERY_QUALIFIED'
+  /**
+   * A new public source appeared for a ticker. Deliberately factual: it says
+   * evidence changed, not that the news is good, fresh enough or tradeable.
+   */
+  | 'CATALYST_SOURCE_CHANGE';
 
 /**
  * A deterministic, evidence-backed desk event. Events describe observed market
