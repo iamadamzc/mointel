@@ -55,6 +55,37 @@ function trim(value: number): string {
   return String(rounded);
 }
 
+/** Market prices: sub-dollar names need more precision than $20 names. */
+export function formatPrice(value: number | null | undefined): string {
+  if (value === null || value === undefined || !Number.isFinite(value)) return '—';
+  if (value >= 1000) return value.toFixed(0);
+  if (value >= 1) return value.toFixed(2);
+  return value.toFixed(4);
+}
+
+export function formatSignedPercent(value: number | null | undefined, digits = 1): string {
+  if (value === null || value === undefined || !Number.isFinite(value)) return '—';
+  return `${value > 0 ? '+' : ''}${value.toFixed(digits)}%`;
+}
+
+/** RVOL and float turnover are multiples: "23.4x". */
+export function formatMultiple(value: number | null | undefined, digits = 1): string {
+  if (value === null || value === undefined || !Number.isFinite(value)) return '—';
+  if (value >= 100) return `${value.toFixed(0)}x`;
+  return `${value.toFixed(digits)}x`;
+}
+
+/** Rank movement, where positive means the ticker climbed the board. */
+export function formatRankChange(value: number | null | undefined): string {
+  if (value === null || value === undefined || !Number.isFinite(value) || value === 0) return '—';
+  return value > 0 ? `+${value}` : String(value);
+}
+
+export function formatCount(value: number | null | undefined): string {
+  if (value === null || value === undefined || !Number.isFinite(value)) return '—';
+  return formatCompactCount(value);
+}
+
 /** Splits a "$1.24/$1.40 resistance; $0.88 support" cell into readable parts. */
 export function splitLevels(raw: string): string[] {
   return raw

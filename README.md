@@ -1,6 +1,6 @@
 # Momentum Intelligence Trading Desk
 
-A local, dark, institutional-style intelligence dashboard for U.S. small-cap momentum traders.
+A local, dark, institutional-style intelligence desk for U.S. small-cap momentum traders.
 
 It is not a stock scanner and not a trading platform. It answers a specific set of questions at a glance:
 
@@ -12,190 +12,304 @@ It is not a stock scanner and not a trading platform. It answers a specific set 
 - Is there dilution, resale supply, warrants, convertibles, PIPEs, ATMs, or reverse-split distortion?
 - What are the major levels and warnings?
 
-This milestone (V0) reads an existing Google Sheet and renders it as a trading workstation. There is no market-data ingestion, no OpenAI integration, no auth, no billing, no broker integration, no charts.
+Two independent engines answer different halves of that:
 
----
+- **Demand** comes from Alpaca SIP market data. It discovers *what the market is doing*.
+- **Research** comes from the Google Sheet. It explains *what that means structurally*.
 
-## What the prototype does
-
-- Reads the `TODAY` and `RESEARCH` tabs of the Trading Desk spreadsheet with one batched Google Sheets request.
-- Normalizes human-formatted cells (`$0.502`, `659.9K`, `24.4%`, `UNKNOWN`, emoji-prefixed classifications) into typed application objects, while preserving the original display text.
-- Joins `TODAY` rows to `RESEARCH` records by ticker, using the most recent `Report Date` when a ticker has several.
-- Renders a header with an America/New_York clock and sync state, a market summary strip, a Primary Focus card row (current priority A), a dense sortable watchlist, and a full per-ticker dossier drawer.
-- Polls itself every ~4 seconds while caching upstream reads for ~10 seconds, so browser refresh rate is decoupled from Google API usage.
-- Falls back to the last good payload with a visible `STALE DATA` state when Google fails, instead of blanking the desk.
-- Runs with zero credentials against a realistic built-in mock dataset.
-
-**Google Sheets is a temporary prototype data store. All dashboard UI must depend on normalized application types, not spreadsheet coordinates, so the data source can later be replaced without rewriting the product.**
-
----
-
-## Install and run
-
-Requirements: Node.js 20+ (developed on 22) and npm.
-
-```bash
-npm install
-npm run dev
-```
-
-Open <http://localhost:3000>.
-
-With no `.env.local` present the app starts in **mock mode** and displays a `MOCK DATA` badge in the header.
-
-Other commands:
-
-```bash
-npm run build      # production build
-npm start          # run the production build
-npm run lint       # eslint
-npm run typecheck  # tsc --noEmit
-```
-
----
-
-## Environment variables
-
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `GOOGLE_SHEET_ID` | for live mode | Spreadsheet ID of the Trading Desk sheet |
-| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | for live mode | Service-account address the sheet is shared with |
-| `GOOGLE_PRIVATE_KEY` | for live mode | Service-account private key, one line, `\n`-escaped, in double quotes |
-| `USE_MOCK_DATA` | no | Set to `true` to force mock mode even when credentials exist |
-
-Copy `.env.example` to `.env.local` and fill it in. `.env*` is gitignored.
-
-`GOOGLE_PRIVATE_KEY` is normalized on read: surrounding quotes are stripped, `\n` escapes become real newlines, and stray carriage returns are removed. If the value does not look like a PEM private key, the app treats credentials as absent and falls back to mock mode rather than crashing.
-
----
-
-## Google Sheets service-account setup
-
-1. **Create or choose a Google Cloud project** at <https://console.cloud.google.com>.
-2. **Enable the Google Sheets API** for that project (APIs & Services → Library → Google Sheets API → Enable).
-3. **Create service-account credentials**: IAM & Admin → Service Accounts → Create service account → Keys → Add key → Create new key → JSON. A JSON key file downloads.
-4. **Put the credentials in `.env.local`**:
-   - `GOOGLE_SERVICE_ACCOUNT_EMAIL` = the `client_email` field from the JSON.
-   - `GOOGLE_PRIVATE_KEY` = the `private_key` field, on one line, wrapped in double quotes, with real newlines replaced by `\n`.
-   - `GOOGLE_SHEET_ID` = the id from the spreadsheet URL.
-5. **Share the spreadsheet** with the service-account email as **Viewer** (Share → paste the address → Viewer).
-6. **Restart the app** (`npm run dev`). The header switches from `MOCK DATA` to `LIVE / SHEET DATA`.
-
-Keep the downloaded JSON key file out of the repository. `.gitignore` already excludes `mointel-*.json`, `service-account*.json`, and `credentials*.json`.
-
-### Optional: `sourceUpdatedAt`
-
-The payload exposes `meta.sourceUpdatedAt`, the spreadsheet's last-modified time. It requires the **Google Drive API** to also be enabled on the project. If Drive is disabled, the field stays `null`, the lookup is disabled for the process, and nothing else is affected.
-
----
-
-## Mock mode
-
-Mock mode activates when any of the three Google variables is missing or unusable, or when `USE_MOCK_DATA=true`.
-
-The mock rows in `lib/data/providers/mock.ts` are written **in the same column order as the real spreadsheet** and pushed through the same normalizers, so mock mode exercises the real parsing path rather than a parallel one. The dataset covers:
-
-| Ticker | Scenario |
-| --- | --- |
-| `VNTX` | Fresh / frontside A-priority primary with premarket follow-through and an explicitly clean structure |
-| `HLRA` | Frontside — warning whose `Revised Priority` promotes it to A |
-| `QBTL` | Dirty float: variable-priced convertible, active ATM, unverifiable float |
-| `DRSN` | Backside former superrunner with an effective resale registration |
-| `KAVU` | Unknown float / unknown structure after a reverse split, and a deliberately short RESEARCH row |
-
-Mock tickers are fictional. The header always shows a `MOCK DATA` badge so mock output is never mistaken for the live sheet.
+Those are deliberately never merged into a single verdict. A ticker can have **DEMAND DETECTED** with no **STRUCTURAL ANALYSIS AVAILABLE**, and the desk says exactly that.
 
 ---
 
 ## Architecture
 
 ```
-Browser (client components)
-        │  fetch /api/dashboard every ~4s
-        ▼
-app/api/dashboard/route.ts
-        │
-        ▼
-lib/data/index.ts ......... provider selection + ~10s cache + stale fallback
-        │
-        ├── lib/data/providers/googleSheets.ts ... one batched values.batchGet
-        └── lib/data/providers/mock.ts ........... built-in rows, same normalizers
-                    │
-                    ▼
-        lib/data/rows.ts ......... the only module aware of column positions
-        lib/data/normalize.ts .... parsing + classification rules
-                    │
-                    ▼
-        lib/data/types.ts ........ MomentumTicker, StructuralResearch, DashboardState
+                         ┌─ Google Sheets → Research / Structure ─┐
+                         │                                        │
+Alpaca SIP → Demand Engine → Local State (SQLite) → State Merge → Dashboard
+                         │
+                         └─ Desk Events / Discovery
+```
+
+Concretely:
+
+```
+worker (npm run market:alpaca)              Next.js (npm run dev)
+┌──────────────────────────────┐            ┌────────────────────────────┐
+│ ONE Alpaca SIP WebSocket     │            │ /api/dashboard  (research) │
+│  bars:*  updatedBars:*       │            │ /api/market     (demand)   │
+│  statuses:*                  │            │                            │
+│  trades/quotes/lulds: Top-50 │            │ DashboardShell             │
+│         ↓                    │            │   mergeDesk(research,      │
+│ DemandEngine                 │            │             demand)        │
+│   cumulative volume          │  SQLite    │   DiscoveryBoard           │
+│   Daily RVOL + ranking       │  (WAL)     │   DeskEventFeed            │
+│   discovery latch            │ ─────────▶ │   PrimaryFocus / Watchlist │
+│   desk events                │            │   TickerDrawer             │
+│         ↓                    │            │                            │
+│ flush every 1s               │            │ polls /api/market every 1s │
+└──────────────────────────────┘            └────────────────────────────┘
 ```
 
 Rules the codebase holds to:
 
-- React components never talk to Google. The browser only ever calls `/api/dashboard`.
-- Credentials are server-only; `lib/data/index.ts` and the Sheets provider import `server-only`.
-- Column indexes appear in exactly one file (`lib/data/rows.ts`).
-- Parsing is conservative: a number is parsed only when the whole cell is numeric, explicit `Unknown` never becomes `0`, and no structure is called `CLEAN` unless the source says `CLEAN`.
+- **One long-lived market connection.** Never one socket per ticker, per request, or in the browser. Symbol interest changes are subscribe/unsubscribe diffs on the open socket.
+- **The browser never talks to Alpaca or Google.** It only calls `/api/dashboard` and `/api/market`.
+- **Alpaca credentials never enter the web process.** Only the worker loads them; Next.js just reads the local SQLite store.
+- **Nothing is written back to Google Sheets.** The sheet is read-only research, not the live-state database.
+- **Unknown stays unknown.** No unknown value is ever coerced to zero, and no classification is asserted that the source did not state.
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for where future components attach.
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for module-level detail and future integration points.
 
 ---
 
-## File structure
+## Running it
 
-```
-app/
-  api/dashboard/route.ts     JSON endpoint; the only thing the browser fetches
-  layout.tsx                 fonts, metadata, dark shell
-  page.tsx                   server component; renders first paint from the cache
-  globals.css                design tokens (state colors), dense scrollbars, change flash
-components/
-  DashboardShell.tsx         client orchestrator: polling, filters, sort, selection
-  DashboardHeader.tsx        title, ET clock, sync state, manual refresh
-  DataFreshness.tsx          LIVE / MOCK / STALE indicator and last-sync age
-  MarketSummary.tsx          summary strip counts
-  FilterBar.tsx              search + priority / cycle / structure / catalyst filters
-  PrimaryFocus.tsx           compact intelligence cards for current priority A
-  MomentumTable.tsx          dense sortable watchlist
-  TickerDrawer.tsx           full dossier: overview, catalyst, cycle, structure, levels, desk read
-  StatusBadge.tsx            badge primitive plus state-to-tone mapping
-lib/
-  data/
-    types.ts                 normalized application types
-    normalize.ts             cell parsing and classification rules
-    rows.ts                  column mapping, research selection, summary counts
-    index.ts                 provider selection, cache, stale fallback
-    providers/
-      googleSheets.ts        live provider (server-only)
-      mock.ts                credential-free provider
-  dashboard/view.ts          client-side filtering and sorting
-  hooks/useDashboard.ts      polling feed and change detection
-  hooks/useClock.ts          hydration-safe ET clock
-  format.ts                  display formatting helpers
-docs/ARCHITECTURE.md         where future subsystems attach
+Requirements: Node.js 20+ (developed on 22), npm.
+
+```bash
+npm install
 ```
 
+**Terminal 1 — the dashboard**
+
+```bash
+npm run dev            # http://localhost:3000
+```
+
+**Terminal 2 — the market feed**
+
+```bash
+npm run market:alpaca  # one long-lived Alpaca SIP connection
+```
+
+Both are needed for live demand data. The dashboard runs perfectly well on its own — it just shows research with `MARKET: WORKER OFFLINE`.
+
+### All commands
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | The dashboard on http://localhost:3000 |
+| `npm run market:alpaca` | The live SIP worker: bootstrap, then stream |
+| `npm run market:sim` | Deterministic simulator (no Alpaca, no market hours needed) |
+| `npm run market:test` | Alpaca official test stream (FAKEPACA) diagnostics |
+| `npm run market:diagnose` | Reports credentials, SIP auth, REST, WebSocket, store and research health |
+| `npm run market:baseline` | Pre-builds the 20-session RVOL baselines and exits |
+| `npm test` | Vitest suite (109 tests) |
+| `npm run lint` / `npm run typecheck` / `npm run build` | Quality gates |
+
+### Typical trading morning
+
+```bash
+# Terminal 1
+npm run dev
+
+# Terminal 2 (any time from 04:00 ET; it reconstructs the session if you start late)
+npm run market:alpaca
+```
+
+Optionally run `npm run market:baseline` before the open so the first start is instant, and `npm run market:diagnose` if anything looks wrong.
+
 ---
 
-## Behavior notes
+## Credentials
 
-**Latest price / change / volume.** Premarket wins, then after hours, then the RTH close. A cell that explicitly says `Unknown` is treated as absent for this choice, so the desk shows the best real number available. The session actually being displayed is labelled `PM` / `AH` / `RTH` everywhere.
+### Alpaca
 
-**Priority.** `Revised Priority` becomes the current priority when populated; the original `Priority` is preserved and shown in the dossier, and a `REV` marker appears next to the badge.
+The worker accepts credentials from either source, in this order:
 
-**Warnings and catalysts.** `PM Warning Shot` supersedes `Warning Shot`; `PM Catalyst/Update` supersedes `Catalyst`. The superseded original is preserved in the dossier.
+1. `APCA_API_KEY_ID` / `APCA_API_SECRET_KEY` (plus optional `ALPACA_DATA_FEED=sip`) in `.env.local`.
+2. Any root-level `.txt` / `.env*` file containing them. Both `KEY=VALUE` lines and the bare two-token layout Alpaca's key dialog produces are accepted.
 
-**Structure.** `DIRTY FLOAT` and `UNKNOWN` are surfaced as prominent badges only when those words appear in the source text. Anything else is `Unclassified` — never `Clean`. The underlying cycle and grade strings, including emoji, are displayed unaltered; only their color is derived.
+Credentials are sent only as request headers and websocket auth frames. They are never logged, never written back to disk, and never reach the browser — the Next.js process does not load them at all. Every Alpaca error message is passed through a redactor before it is logged or persisted.
 
-**Sorting.** Priority sorts A → B → C → AVOID → EXCLUDED, with the largest current move first inside each band. Numeric columns sort numerically when parsed; unparsed and `Unknown` values always sort last regardless of direction.
+Root-level `*.txt` files are gitignored, as are `.env*`, the SQLite store, and the Google service-account JSON.
 
-**Refresh.** The browser polls every 4 seconds and pauses while the tab is hidden. The server serves a cached payload for 10 seconds and de-duplicates concurrent refreshes, so many browser polls collapse into few Google reads. `Refresh` sends `?force=1` and bypasses the TTL. Rows that changed since the previous poll get a brief tint; row order is not disturbed except by the active sort.
+**SIP is not silently downgraded.** If the account lacks SIP entitlement, the worker surfaces a fatal, explicit error (Alpaca code 408/409) and reports `SIP not entitled` in the header rather than quietly falling back to IEX.
+
+### Google Sheets
+
+Unchanged from the previous milestone: copy `.env.example` to `.env.local` and fill in `GOOGLE_SHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL` and `GOOGLE_PRIVATE_KEY` (one line, `\n`-escaped, in double quotes), then share the sheet with the service-account address as Viewer.
+
+1. Create or choose a Google Cloud project.
+2. Enable the Google Sheets API.
+3. Create service-account credentials and download the JSON key.
+4. Put `client_email` and `private_key` into `.env.local`.
+5. Share the Trading Desk spreadsheet with that address as **Viewer**.
+6. Restart the app.
 
 ---
 
-## Future integration points
+## Daily RVOL — the exact definition
 
-Not implemented in this milestone. See `docs/ARCHITECTURE.md` for the intended seams.
+```
+Daily RVOL = current cumulative trading-day volume
+           ÷ average full-session volume over the previous 20 eligible full trading sessions
+```
 
-- Live market-data provider, RVOL ranking, float turnover, effective float turnover, momentum acceleration, halt detection
-- Event-driven OpenAI analysis, live commentary feed, Dirty Float state changes, Chop Risk, Flush Risk, Live Confirmation
-- Historical ticker dossiers, PostgreSQL persistence, multi-user broadcast distribution
+The denominator is **fixed for the entire session**, so Daily RVOL rises naturally as cumulative volume accumulates.
+
+It is explicitly **not**:
+
+- volume at this minute ÷ average volume at the same minute
+- a rolling intraday relative-volume comparison
+- time-normalized expected volume
+- volume acceleration
+
+This comes from completed backtesting and must not be replaced. `lib/market/rvol.ts` is the only implementation, and `tests/market/rvol.test.ts` asserts the definition, including an explicit test that it is not time-of-day normalized.
+
+**Unknown denominator ⇒ unknown RVOL.** A ticker with no usable baseline is not ranked at all; it is never treated as a zero.
+
+### The 20-session baseline
+
+Built from Alpaca **split-adjusted** daily SIP bars so a reverse split cannot make historical share volume incomparable to today's share basis.
+
+Excluded from the average: the current (incomplete) session, weekends, holidays, zero/missing-volume pseudo-sessions, and early-close sessions (identified from Alpaca's market calendar, where `close != 16:00`).
+
+Stored per symbol with full provenance: baseline date, previous close and its date, average volume, session count, target session count, the session dates used, data source, feed, adjustment method, and calculation timestamp.
+
+If fewer than 20 eligible sessions exist, the real sample size is stored and the ticker reports **RVOL CONFIDENCE: LOW** — the desk never claims a 20-session baseline it does not have. (At the last build: 12,323 symbols at full confidence, 737 reduced-sample.)
+
+Previous close is the most recent prior session's close, including a half day, because that genuinely is the last print of the prior session — even though half days are excluded from the *average*.
+
+---
+
+## Discovery
+
+**Universe.** Active, tradable US equities from Alpaca's asset list (NYSE / NASDAQ / ARCA / AMEX / BATS). No crypto, no options, no OTC by default. If the asset endpoint is unavailable the worker degrades to sheet tickers plus symbols seen on the wildcard bar stream, and the header shows `UNIVERSE: DEGRADED`.
+
+**Price range.** `$1–$20` at the moment of discovery, configurable via `DISCOVERY_PRICE_MIN` / `DISCOVERY_PRICE_MAX`. There is deliberately no float cutoff, no catalyst requirement, no fixed RVOL threshold and no fixed percentage-gain threshold.
+
+**Ranking.** Cross-sectional Daily RVOL rank, descending, recomputed every second. `rvol`, `rvolRank`, `previousRvolRank` and `rvolRankChange` are all tracked (rank change is positive when a ticker climbs).
+
+**Top 12 / Top 50.** The trader-facing discovery population defaults to the Top 12 (`RVOL_DISCOVERY_RANK`), switchable to Top 25 / Top 50 in the UI. Internally the Top 50 (`RVOL_INTERNAL_RANK`) is retained and streamed at high resolution. Falling outside the Top 50 does not delete a ticker's market state.
+
+**Price-range latch.** When a ticker first qualifies inside the price range, the desk stores `qualifiedAt`, `qualifiedPrice`, `qualifiedRvol` and `qualifiedRank` and latches it for the rest of the session. A super-runner that trades through $20 stays ranked and visible. The latch resets on a new trading session.
+
+**High-resolution interest set** = TODAY-sheet tickers ∪ Top 50 Daily RVOL ∪ latched session candidates, capped at 250 symbols. These get `trades`, `quotes` and `lulds` subscriptions; the rest of the market is covered by wildcard minute bars only. Whole-market quotes and trades are deliberately never subscribed.
+
+---
+
+## Market session semantics
+
+America/New_York, DST-aware, with no date library.
+
+| Phase | Window |
+| --- | --- |
+| PREMARKET | 04:00–09:30 ET |
+| RTH | 09:30–16:00 ET |
+| AFTER HOURS | 16:00–20:00 ET |
+
+The momentum trading date is the ET trading date. Observations outside `04:00–20:00 ET` of the current trading date are rejected, which is what stops Sunday-night prints from landing in Monday's cumulative volume. Outside market hours the desk rolls forward to the next scheduled session rather than replaying the previous one. SIP overnight data is out of scope for this milestone.
+
+### Startup / mid-session reconstruction
+
+The worker is correct whether it starts at 04:00, 07:00, 08:45 or 11:00. On startup it:
+
+1. resolves the ET trading date and session phase from Alpaca's market calendar,
+2. loads or builds the RVOL baselines (persisted, so restarts are instant),
+3. reads multi-symbol **snapshots** to rebuild cumulative volume, previous close, session high/low and last price for the whole candidate band,
+4. reads true **minute bars** from 04:00 ET for the focused set, so late corrections and precise high/low work where it matters,
+5. writes state, then transitions to the live WebSocket.
+
+Alpaca daily bars were verified to carry full 04:00–20:00 session volume (matched against minute-bar sums to within 0.4%), which is what makes the snapshot bootstrap correct and cheap. Cumulative volume for the focused set is derived purely from minute bars keyed by `symbol + minute`, so an `updatedBars` correction **replaces** that minute rather than being added to it.
+
+Reconstructed highs are marked as already-established, so restarting mid-session does not replay the morning's highs as fresh `NEW_HOD` events.
+
+---
+
+## Desk events
+
+Deterministic, evidence-backed, and deduplicated in SQLite by a stable key. They describe observed market facts only.
+
+| Event | Fires when | Dedup rule |
+| --- | --- | --- |
+| `NEW_HOD` | A previously established session high is genuinely exceeded | Once per 60s per symbol, keyed by the high value; the first high of the session (and any backfilled high) is not an event |
+| `HALT` | Trading status transitions into halted | Keyed by symbol + status timestamp |
+| `RESUME` | Trading status transitions out of halted | Keyed by symbol + status timestamp |
+| `RVOL_RANK_ENTRY` | A ticker enters the Top 12 from outside it | Once per entry episode; re-entry only counts after 5 minutes outside |
+| `DISCOVERY_QUALIFIED` | A ticker first satisfies the price universe and enters the ranked population | Once per symbol per trading date |
+
+**Rank means abnormal participation deserves investigation.** It does not mean buy, good trade, clean structure, strong catalyst, frontside, or continuation. That separation is preserved in naming and in the UI.
+
+---
+
+## Feed health and freshness
+
+The header reports the two sources **independently** — there is no single "LIVE" light that could hide which one is stale:
+
+```
+MARKET: ALPACA SIP — LIVE     RESEARCH: GOOGLE SHEET — CURRENT
+```
+
+Market status also shows session phase, last message age, high-resolution symbol count, reconnect count and universe mode. Connection state moves through `CONNECTING → CONNECTED → AUTHENTICATED → STREAMING`, with `DEGRADED`, `DISCONNECTED` and `ERROR` surfaced explicitly.
+
+Feed health and ticker freshness are separate concepts: feed health comes from connection and whole-market activity, while a ticker is marked quiet from *its own* timestamps. One illiquid stock not printing never marks the whole feed dead.
+
+If Alpaca disconnects, the last known market state is preserved and marked stale — prices, volume and RVOL are never zeroed — and the worker reconnects with exponential backoff plus jitter, capped at 30s.
+
+---
+
+## Modes
+
+| Mode | Command | How it looks |
+| --- | --- | --- |
+| Sheet only | `npm run dev` | `MARKET: WORKER OFFLINE`, research unaffected |
+| Sheet + simulator | `+ npm run market:sim` | Amber `SIMULATOR` chip and a full-width banner: synthetic values, must not be traded |
+| Sheet + Alpaca SIP | `+ npm run market:alpaca` | `MARKET: ALPACA SIP — LIVE` |
+| Test stream | `npm run market:test` | FAKEPACA diagnostics, written to a separate `data/market-test.db` |
+
+The state store records which mode owns it. Switching modes clears session state so simulated or test prints can never be mistaken for real market data. Baselines built from real historical data survive a simulator run; synthetic baselines do not survive a return to live.
+
+---
+
+## Configuration
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `RVOL_DISCOVERY_RANK` | `12` | Trader-facing discovery population size |
+| `RVOL_INTERNAL_RANK` | `50` | Internal high-resolution candidate count |
+| `DISCOVERY_PRICE_MIN` / `MAX` | `1` / `20` | Discovery price universe |
+| `RVOL_BASELINE_SESSIONS` | `20` | Target baseline sessions |
+| `MARKET_DB_PATH` | `data/market.db` | Local state store |
+| `MARKET_CLIENT_POLL_MS` | `1000` | Browser market poll cadence |
+| `MARKET_FLUSH_INTERVAL_MS` | `1000` | Worker flush/recompute cadence |
+| `MARKET_HEARTBEAT_STALE_MS` | `15000` | Worker heartbeat staleness threshold |
+| `MARKET_TICKER_STALE_SECONDS` | `300` | Per-ticker quiet threshold during an active session |
+| `MARKET_MINUTE_BAR_RETENTION_DAYS` | `3` | Minute-bar retention |
+| `ALPACA_REST_BATCH_SIZE` / `_CONCURRENCY` | `200` / `4` | Multi-symbol request sizing |
+| `ALPACA_DEBUG` | `0` | Verbose worker logging |
+| `USE_MOCK_DATA` | unset | Force the mock research provider |
+| `DEMAND_TRADING_DATE_OVERRIDE` | unset | **Diagnostics only.** Forces a trading date so a completed session can be reconstructed outside market hours |
+
+---
+
+## Data retention
+
+The local store keeps: RVOL baselines (one row per symbol), per-symbol session state for the current trading date, minute bars for the last 3 trading dates for tracked symbols only, desk events, feed health, and the cached asset universe.
+
+Minute bars for untracked whole-market symbols are **not** persisted. This is a live desk, not a tick warehouse.
+
+---
+
+## Known prototype limitations
+
+- Minute-bar corrections that arrive for a minute already inside a snapshot-reconstructed volume base are ignored rather than applied, because the original value for that minute was never stored. Symbols in the focused minute-bar set are unaffected.
+- Session high/low merges bar-derived and trade-derived extremes; the bar-only value is not stored separately.
+- Halt normalization maps CTA and UTP status codes explicitly and falls back to status text; anything unmapped stays `UNKNOWN` with the raw code preserved. Exchange-authoritative halt feeds (Nasdaq/NYSE) are a later milestone.
+- LULD bands are recorded and displayed but are not a halt prediction, and the band is not the guaranteed halt price.
+- Preferred shares and other non-common equities (e.g. `PSA.PRM`) are inside the default universe and can appear in the ranking. Excluding them is a product decision, not a technical one, so nothing was excluded unilaterally.
+- The worker reads the TODAY-ticker list from `/api/dashboard` once a minute rather than holding Google credentials itself. If the dashboard is not running, no sheet tickers are pinned until it is.
+- Google Sheet polling frequency is unchanged from the previous milestone, and nothing is ever written back to the sheet.
+
+---
+
+## Testing
+
+```bash
+npm test
+```
+
+109 tests covering SIP parsing and malformed-frame safety, minute-bar accumulation and correction, the exact Daily RVOL formula (including that it is not time-of-day normalized), baseline construction and confidence, ranking and rank change, event generation and deduplication, price-range latching, session reset, quote/spread edge cases, stale-observation guards, halt/resume transitions, reconnect backoff, REST pagination and batching, mid-session reconstruction, store round-trips and mode segregation, sheet-only operation, the demand/research merge, credential redaction, and that no credential material reaches the client bundle.
+
+**Google Sheets is a temporary prototype data store. All dashboard UI must depend on normalized application types, not spreadsheet coordinates, so the data source can later be replaced without rewriting the product.**

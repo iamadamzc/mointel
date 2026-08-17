@@ -1,0 +1,162 @@
+/**
+ * State merge: Alpaca demand + Google research -> one desk row per ticker.
+ *
+ * The central product distinction lives here. A ticker discovered by the market
+ * feed has DEMAND DETECTED. A ticker researched on the sheet has STRUCTURAL
+ * ANALYSIS AVAILABLE. They are independent: a discovery name with no research
+ * shows NOT YET ANALYZED, never a fabricated "clean" classification.
+ */
+
+import { computeDisplayedFloatTurnover } from '@/lib/market/derive';
+import type { DemandState, MarketSnapshot } from '@/lib/market/types';
+import type { DashboardState, MomentumTicker, StructuralResearch } from '@/lib/data/types';
+
+export interface DeskRow {
+  ticker: string;
+  /** TODAY-sheet row, when the desk has analyzed this name. */
+  research: MomentumTicker | null;
+  /** RESEARCH-tab record, when one exists. */
+  researchRecord: StructuralResearch | null;
+  demand: DemandState | null;
+  /** The market feed is currently tracking this ticker. */
+  demandDetected: boolean;
+  /** The research layer has something to say about this ticker. */
+  analysisAvailable: boolean;
+  /** Displayed (vendor-reported) float used for turnover, when numeric. */
+  displayedFloat: number | null;
+  displayedFloatSource: 'RESEARCH' | 'TODAY' | null;
+  /** Cumulative session volume / displayed float. NOT effective float turnover. */
+  displayedFloatTurnover: number | null;
+}
+
+/**
+ * Picks a usable numeric float. Sheet cells often carry UNKNOWN or DIRTY FLOAT
+ * instead of a number; those parse to null and must stay null.
+ */
+function resolveDisplayedFloat(
+  research: MomentumTicker | null,
+  record: StructuralResearch | null,
+): { value: number | null; source: DeskRow['displayedFloatSource'] } {
+  if (record?.float.value !== null && record?.float.value !== undefined && record.float.value > 0) {
+    return { value: record.float.value, source: 'RESEARCH' };
+  }
+  if (research?.float.value !== null && research?.float.value !== undefined && research.float.value > 0) {
+    return { value: research.float.value, source: 'TODAY' };
+  }
+  return { value: null, source: null };
+}
+
+export function buildDeskRow(
+  ticker: string,
+  research: MomentumTicker | null,
+  researchRecord: StructuralResearch | null,
+  demand: DemandState | null,
+): DeskRow {
+  const float = resolveDisplayedFloat(research, researchRecord);
+
+  return {
+    ticker,
+    research,
+    researchRecord,
+    demand,
+    demandDetected: demand !== null,
+    analysisAvailable: research !== null || researchRecord !== null,
+    displayedFloat: float.value,
+    displayedFloatSource: float.source,
+    displayedFloatTurnover: computeDisplayedFloatTurnover(
+      demand?.cumulativeVolume ?? null,
+      float.value,
+    ),
+  };
+}
+
+export interface MergedDesk {
+  rows: Map<string, DeskRow>;
+  /** Discovery ranking order, highest Daily RVOL first. */
+  discovery: DeskRow[];
+  /** Every ticker present on the TODAY sheet, sheet order preserved. */
+  watchlist: DeskRow[];
+}
+
+export function mergeDesk(
+  dashboard: DashboardState | null,
+  market: MarketSnapshot | null,
+): MergedDesk {
+  const rows = new Map<string, DeskRow>();
+
+  const sheetTickers = dashboard?.tickers ?? [];
+  const researchByTicker = dashboard?.research ?? {};
+  const demandByTicker = market?.demand ?? {};
+
+  for (const ticker of sheetTickers) {
+    rows.set(
+      ticker.ticker,
+      buildDeskRow(
+        ticker.ticker,
+        ticker,
+        researchByTicker[ticker.ticker] ?? null,
+        demandByTicker[ticker.ticker] ?? null,
+      ),
+    );
+  }
+
+  for (const [symbol, demand] of Object.entries(demandByTicker)) {
+    if (rows.has(symbol)) continue;
+    rows.set(symbol, buildDeskRow(symbol, null, researchByTicker[symbol] ?? null, demand));
+  }
+
+  const discovery = (market?.discovery.ranked ?? [])
+    .map((state) => rows.get(state.ticker))
+    .filter((row): row is DeskRow => row !== undefined);
+
+  const watchlist = sheetTickers
+    .map((ticker) => rows.get(ticker.ticker))
+    .filter((row): row is DeskRow => row !== undefined);
+
+  return { rows, discovery, watchlist };
+}
+
+/**
+ * The price the desk should display for a sheet ticker.
+ *
+ * Live Alpaca data wins when present — the sheet close is a snapshot of a
+ * moment that has passed — but the source is always labelled so nobody has to
+ * guess which number they are looking at.
+ */
+export interface DisplayPrice {
+  price: number | null;
+  percentChange: number | null;
+  volume: number | null;
+  source: 'ALPACA' | 'SHEET' | 'NONE';
+  sessionLabel: string;
+  stale: boolean;
+}
+
+export function resolveDisplayPrice(row: DeskRow): DisplayPrice {
+  const demand = row.demand;
+
+  if (demand && demand.price !== null) {
+    return {
+      price: demand.price,
+      percentChange: demand.percentChange,
+      volume: demand.cumulativeVolume,
+      source: 'ALPACA',
+      sessionLabel: demand.priceSource === 'sip-trade' ? 'SIP' : 'BAR',
+      stale: demand.freshness.stale,
+    };
+  }
+
+  const sheet = row.research;
+  if (sheet) {
+    return {
+      price: sheet.price.value,
+      percentChange: sheet.changePct.value,
+      volume: sheet.volume.value,
+      source: 'SHEET',
+      sessionLabel: sheet.price.session,
+      stale: false,
+    };
+  }
+
+  return { price: null, percentChange: null, volume: null, source: 'NONE', sessionLabel: '—', stale: false };
+}

@@ -1,11 +1,15 @@
 'use client';
 
 import { DataFreshness } from '@/components/DataFreshness';
+import { MarketStatus } from '@/components/MarketStatus';
 import type { DataSourceMeta } from '@/lib/data/types';
+import type { DiscoveryState, MarketFeedHealth } from '@/lib/market/types';
 import { formatEtClock, formatEtDate } from '@/lib/format';
 
 interface DashboardHeaderProps {
   meta: DataSourceMeta;
+  marketHealth: MarketFeedHealth;
+  discovery: DiscoveryState;
   now: number;
   mounted: boolean;
   refreshing: boolean;
@@ -15,6 +19,8 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({
   meta,
+  marketHealth,
+  discovery,
   now,
   mounted,
   refreshing,
@@ -42,7 +48,10 @@ export function DashboardHeader({
           <span className="hidden text-[11px] text-ink-3 md:inline">{date}</span>
         </div>
 
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex flex-wrap items-center gap-x-4 gap-y-2">
+          {/* Market and research health are reported independently: one generic
+              status light would hide which of the two sources is stale. */}
+          <MarketStatus health={marketHealth} discovery={discovery} now={now} mounted={mounted} />
           <DataFreshness meta={meta} now={now} mounted={mounted} transportError={transportError} />
           <button
             type="button"
@@ -57,7 +66,19 @@ export function DashboardHeader({
 
       {meta.error || transportError ? (
         <div className="border-t border-neg/25 bg-neg/8 px-4 py-1 text-[11px] text-neg">
-          {transportError ? `Dashboard API unreachable: ${transportError}` : meta.error}
+          {transportError ? `Research API unreachable: ${transportError}` : meta.error}
+        </div>
+      ) : null}
+
+      {marketHealth.mode === 'SIMULATOR' ? (
+        <div className="border-t border-warn/30 bg-warn/12 px-4 py-1 text-[11px] font-semibold tracking-wide text-warn uppercase">
+          Simulator mode — market values on this screen are synthetic and must not be traded
+        </div>
+      ) : null}
+
+      {marketHealth.mode === 'TEST' ? (
+        <div className="border-t border-warn/30 bg-warn/12 px-4 py-1 text-[11px] font-semibold tracking-wide text-warn uppercase">
+          Alpaca test stream (FAKEPACA) — diagnostics only, not market data
         </div>
       ) : null}
     </header>

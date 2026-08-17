@@ -1,0 +1,228 @@
+import { describe, expect, it } from 'vitest';
+
+import { buildDeskRow, mergeDesk, resolveDisplayPrice } from '@/lib/dashboard/merge';
+import { normalizeSheetRows } from '@/lib/data/rows';
+import { MockProvider } from '@/lib/data/providers/mock';
+import type { DashboardState } from '@/lib/data/types';
+import type { DemandState, MarketSnapshot } from '@/lib/market/types';
+
+function demand(ticker: string, overrides: Partial<DemandState> = {}): DemandState {
+  return {
+    ticker,
+    tradingDate: '2026-08-14',
+    price: 6.22,
+    priceSource: 'sip-trade',
+    priceAt: '2026-08-14T13:31:00.000Z',
+    barClose: 6.2,
+    barAt: '2026-08-14T13:31:00.000Z',
+    previousClose: 4.92,
+    previousCloseSource: 'alpaca-daily-bar',
+    percentChange: 26.4,
+    cumulativeVolume: 3_840_000,
+    volumeSource: 'minute-bars',
+    sessionHigh: 6.4,
+    sessionLow: 4.9,
+    rvol: 3.1,
+    rvolRank: 1,
+    previousRvolRank: 4,
+    rvolRankChange: 3,
+    rvolConfidence: 'OK',
+    baselineSessions: 20,
+    baselineAverageVolume: 1_250_000,
+    baselineCalculatedAt: '2026-08-14T08:00:00.000Z',
+    baselineAdjustment: 'split',
+    quote: { bid: 6.2, bidSize: 3, ask: 6.24, askSize: 4, spread: 0.04, spreadPct: 0.64, at: null, invalid: false },
+    luld: { lower: null, upper: null, at: null },
+    haltState: 'TRADING',
+    haltRaw: null,
+    haltAt: null,
+    highRes: true,
+    qualified: null,
+    latched: false,
+    feed: 'sip',
+    freshness: { lastEventAt: '2026-08-14T13:31:00.000Z', ageSeconds: 2, stale: false },
+    updatedAt: '2026-08-14T13:31:02.000Z',
+    ...overrides,
+  };
+}
+
+function snapshot(demands: DemandState[]): MarketSnapshot {
+  return {
+    health: {
+      mode: 'LIVE',
+      feed: 'sip',
+      connectionState: 'STREAMING',
+      sipEntitlement: 'VERIFIED',
+      lastMessageAt: null,
+      lastBarAt: null,
+      lastTradeAt: null,
+      lastQuoteAt: null,
+      lastStatusAt: null,
+      reconnectCount: 0,
+      lastError: null,
+      lastErrorAt: null,
+      subscriptions: { bars: '*', updatedBars: '*', statuses: '*', trades: 0, quotes: 0, lulds: 0 },
+      highResCount: demands.length,
+      universeMode: 'FULL',
+      workerStartedAt: null,
+      heartbeatAt: new Date().toISOString(),
+      stale: false,
+      offline: false,
+      backfill: null,
+    },
+    discovery: {
+      tradingDate: '2026-08-14',
+      sessionPhase: 'RTH',
+      universeMode: 'FULL',
+      eligibleCount: demands.length,
+      rankedCount: demands.length,
+      baselineCount: 100,
+      trackedCount: demands.length,
+      discoveryRank: 12,
+      internalRank: 50,
+      priceMin: 1,
+      priceMax: 20,
+      ranked: demands,
+      calculatedAt: '2026-08-14T13:31:02.000Z',
+    },
+    demand: Object.fromEntries(demands.map((state) => [state.ticker, state])),
+    events: [],
+    fetchedAt: '2026-08-14T13:31:02.000Z',
+  };
+}
+
+async function mockDashboard(): Promise<DashboardState> {
+  const payload = await new MockProvider().load();
+  return {
+    ...payload,
+    meta: { ...payload.meta, stale: false, cacheAgeMs: 0 },
+  };
+}
+
+describe('displayed float turnover in the merge (requirements 19, 20)', () => {
+  it('uses the RESEARCH float when it is numeric', () => {
+    const rows = normalizeSheetRows(
+      [['A — PRIMARY', 'ABCD', 'United States', '🟢 FRESH / FRONTSIDE', '$5.00']],
+      [['2026-08-14', 'ABCD', 'United States', 'Test Co', '$5.00', '', '', '', '1,920,000']],
+    );
+
+    const row = buildDeskRow('ABCD', rows.tickers[0]!, rows.research.ABCD!, demand('ABCD'));
+
+    expect(row.displayedFloat).toBe(1_920_000);
+    expect(row.displayedFloatSource).toBe('RESEARCH');
+    expect(row.displayedFloatTurnover).toBe(2);
+  });
+
+  it('does not calculate turnover when the float reads UNKNOWN or DIRTY FLOAT', () => {
+    for (const floatCell of ['UNKNOWN', 'DIRTY FLOAT', '', 'Unknown']) {
+      const rows = normalizeSheetRows(
+        [['A — PRIMARY', 'ABCD', 'US', '🟢 FRESH / FRONTSIDE', '$5.00', '', '', '', floatCell]],
+        [['2026-08-14', 'ABCD', 'US', 'Test Co', '$5.00', '', '', '', floatCell]],
+      );
+
+      const row = buildDeskRow('ABCD', rows.tickers[0]!, rows.research.ABCD!, demand('ABCD'));
+      expect(row.displayedFloat).toBeNull();
+      expect(row.displayedFloatTurnover).toBeNull();
+    }
+  });
+
+  it('does not calculate turnover without live volume', () => {
+    const rows = normalizeSheetRows(
+      [['A — PRIMARY', 'ABCD', 'US', '🟢 FRESH / FRONTSIDE', '$5.00', '', '', '', '2,000,000']],
+      [],
+    );
+    const row = buildDeskRow('ABCD', rows.tickers[0]!, null, null);
+    expect(row.displayedFloatTurnover).toBeNull();
+  });
+});
+
+describe('demand detected vs structural analysis available', () => {
+  it('marks a discovery-only ticker as not analyzed', async () => {
+    const dashboard = await mockDashboard();
+    const merged = mergeDesk(dashboard, snapshot([demand('NEWNAME')]));
+
+    const row = merged.rows.get('NEWNAME')!;
+    expect(row.demandDetected).toBe(true);
+    expect(row.analysisAvailable).toBe(false);
+    expect(row.research).toBeNull();
+    expect(row.researchRecord).toBeNull();
+    // No fabricated structure classification of any kind.
+    expect(row.displayedFloat).toBeNull();
+  });
+
+  it('marks a sheet ticker with no market data as analyzed but not detected', async () => {
+    const dashboard = await mockDashboard();
+    const merged = mergeDesk(dashboard, snapshot([]));
+
+    const row = merged.rows.get('VNTX')!;
+    expect(row.analysisAvailable).toBe(true);
+    expect(row.demandDetected).toBe(false);
+    expect(row.demand).toBeNull();
+  });
+
+  it('joins both when a sheet ticker is also discovered', async () => {
+    const dashboard = await mockDashboard();
+    const merged = mergeDesk(dashboard, snapshot([demand('VNTX')]));
+
+    const row = merged.rows.get('VNTX')!;
+    expect(row.analysisAvailable).toBe(true);
+    expect(row.demandDetected).toBe(true);
+    expect(row.research?.ticker).toBe('VNTX');
+    expect(row.demand?.rvolRank).toBe(1);
+  });
+});
+
+describe('Alpaca state cannot overwrite research classification (requirement 21)', () => {
+  it('leaves DIRTY FLOAT intact regardless of live turnover', async () => {
+    const dashboard = await mockDashboard();
+    const before = dashboard.tickers.find((ticker) => ticker.ticker === 'QBTL')!;
+    expect(before.structure.state).toBe('DIRTY_FLOAT');
+
+    const merged = mergeDesk(
+      dashboard,
+      snapshot([demand('QBTL', { cumulativeVolume: 500_000_000, rvol: 240 })]),
+    );
+
+    const row = merged.rows.get('QBTL')!;
+    expect(row.research?.structure.state).toBe('DIRTY_FLOAT');
+    expect(row.research?.structure.badges).toEqual(['DIRTY FLOAT']);
+    expect(row.researchRecord?.floatQualityState).toBe('DIRTY_FLOAT');
+    // The demand side carries no structure fields at all.
+    expect(Object.keys(row.demand ?? {})).not.toContain('structure');
+  });
+
+  it('never promotes an unclassified structure to CLEAN because of market activity', async () => {
+    const dashboard = await mockDashboard();
+    const merged = mergeDesk(dashboard, snapshot([demand('KAVU', { rvol: 99 })]));
+    const row = merged.rows.get('KAVU')!;
+    expect(row.research?.structure.state).toBe('UNKNOWN_STRUCTURE');
+  });
+});
+
+describe('sheet-only operation without the market worker (requirement 32)', () => {
+  it('produces a complete watchlist when there is no market snapshot at all', async () => {
+    const dashboard = await mockDashboard();
+    const merged = mergeDesk(dashboard, null);
+
+    expect(merged.watchlist).toHaveLength(dashboard.tickers.length);
+    expect(merged.discovery).toHaveLength(0);
+    for (const row of merged.watchlist) {
+      expect(row.demand).toBeNull();
+      expect(row.demandDetected).toBe(false);
+      expect(row.analysisAvailable).toBe(true);
+    }
+
+    const price = resolveDisplayPrice(merged.rows.get('VNTX')!);
+    expect(price.source).toBe('SHEET');
+    expect(price.price).toBeGreaterThan(0);
+  });
+
+  it('prefers live Alpaca values when they exist, and labels the source', async () => {
+    const dashboard = await mockDashboard();
+    const merged = mergeDesk(dashboard, snapshot([demand('VNTX', { price: 9.99 })]));
+
+    const price = resolveDisplayPrice(merged.rows.get('VNTX')!);
+    expect(price.source).toBe('ALPACA');
+    expect(price.price).toBe(9.99);
+  });
+});

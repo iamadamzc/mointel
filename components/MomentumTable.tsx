@@ -8,9 +8,10 @@ import {
   cycleTone,
   sessionTone,
 } from '@/components/StatusBadge';
+import type { DeskRow } from '@/lib/dashboard/merge';
 import type { SortKey, SortState } from '@/lib/dashboard/view';
 import type { MomentumTicker } from '@/lib/data/types';
-import { truncate } from '@/lib/format';
+import { formatMultiple, formatPrice, formatSignedPercent, truncate } from '@/lib/format';
 
 interface MomentumTableProps {
   tickers: MomentumTicker[];
@@ -19,6 +20,8 @@ interface MomentumTableProps {
   onSelect: (ticker: string) => void;
   selectedTicker: string | null;
   changedTickers: Set<string>;
+  /** Merged demand state, keyed by ticker. Empty when no market worker is running. */
+  deskRows: Map<string, DeskRow>;
 }
 
 interface ColumnDefinition {
@@ -35,6 +38,9 @@ const COLUMNS: ColumnDefinition[] = [
   { key: 'price', label: 'Price', sortKey: 'price', className: 'w-[84px]', align: 'right' },
   { key: 'changePct', label: '%', sortKey: 'changePct', className: 'w-[76px]', align: 'right' },
   { key: 'session', label: 'Sess', className: 'w-[54px]' },
+  { key: 'live', label: 'Live', className: 'w-[80px]', align: 'right' },
+  { key: 'livePct', label: 'Live %', className: 'w-[74px]', align: 'right' },
+  { key: 'rvol', label: 'RVOL', className: 'w-[92px]', align: 'right' },
   { key: 'cycle', label: 'Cycle', className: 'w-[186px]' },
   { key: 'volume', label: 'Volume', sortKey: 'volume', className: 'w-[96px]', align: 'right' },
   { key: 'float', label: 'Float', sortKey: 'float', className: 'w-[108px]', align: 'right' },
@@ -53,9 +59,10 @@ export function MomentumTable({
   onSelect,
   selectedTicker,
   changedTickers,
+  deskRows,
 }: MomentumTableProps) {
   return (
-    <section className="flex min-h-0 flex-1 flex-col">
+    <section className="flex flex-col">
       <div className="flex items-baseline gap-2 px-4 py-2">
         <h2 className="text-[11px] font-semibold tracking-[0.14em] text-ink-2 uppercase">
           Watchlist
@@ -63,7 +70,9 @@ export function MomentumTable({
         <span className="num text-[11px] text-ink-3">{tickers.length}</span>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-auto border-t border-line">
+      {/* Horizontal scroll only: the page owns vertical scrolling now that the
+          discovery board and event feed share it. */}
+      <div className="overflow-x-auto border-t border-line">
         <table className="w-full border-collapse text-[12px]">
           <thead className="sticky top-0 z-10">
             <tr className="bg-panel-2">
@@ -109,6 +118,7 @@ export function MomentumTable({
                 <TableRow
                   key={ticker.ticker}
                   ticker={ticker}
+                  deskRow={deskRows.get(ticker.ticker) ?? null}
                   selected={selectedTicker === ticker.ticker}
                   changed={changedTickers.has(ticker.ticker)}
                   onSelect={onSelect}
@@ -124,16 +134,19 @@ export function MomentumTable({
 
 function TableRow({
   ticker,
+  deskRow,
   selected,
   changed,
   onSelect,
 }: {
   ticker: MomentumTicker;
+  deskRow: DeskRow | null;
   selected: boolean;
   changed: boolean;
   onSelect: (ticker: string) => void;
 }) {
   const structureText = ticker.structure.raw || ticker.structure.floatRaw;
+  const demand = deskRow?.demand ?? null;
 
   return (
     <tr
@@ -170,6 +183,38 @@ function TableRow({
           tone={sessionTone(ticker.price.session)}
           title={`Displayed values come from the ${ticker.price.session} session`}
         />
+      </td>
+
+      <td
+        className="num px-2 py-1.5 text-right align-middle font-semibold text-ink"
+        title={
+          demand
+            ? `Alpaca ${demand.priceSource ?? 'feed'} at ${demand.priceAt ?? 'unknown time'}`
+            : 'No live market data for this ticker'
+        }
+      >
+        {demand ? formatPrice(demand.price) : <span className="text-ink-3">—</span>}
+      </td>
+
+      <td
+        className={`num px-2 py-1.5 text-right align-middle font-semibold ${changeTone(
+          demand?.percentChange ?? null,
+        )}`}
+      >
+        {demand ? formatSignedPercent(demand.percentChange) : <span className="text-ink-3">—</span>}
+      </td>
+
+      <td className="num px-2 py-1.5 text-right align-middle text-ink-2">
+        {demand?.rvol !== null && demand?.rvol !== undefined ? (
+          <span className={demand.rvolConfidence === 'LOW' ? 'text-warn' : 'text-ink'}>
+            {formatMultiple(demand.rvol)}
+            {demand.rvolRank !== null ? (
+              <span className="ml-1 text-[10px] text-accent">#{demand.rvolRank}</span>
+            ) : null}
+          </span>
+        ) : (
+          '—'
+        )}
       </td>
 
       <td className="px-2 py-1.5 align-middle">

@@ -23,26 +23,34 @@ export function DataFreshness({ meta, now, mounted, transportError }: DataFreshn
     <div className="flex items-center gap-3">
       <div className="flex items-center gap-2">
         {isMock ? (
-          <StatusBadge label="Mock Data" tone="warn" title="No Google credentials configured — showing built-in mock dataset" />
+          <StatusBadge
+            label="Research: Mock Data"
+            tone="warn"
+            title="No Google credentials configured — showing built-in mock dataset"
+          />
         ) : (
-          <span className="inline-flex items-center gap-1.5 rounded-sm border border-pos/35 bg-pos/12 px-1.5 py-px text-[10px] font-semibold tracking-wide text-pos uppercase">
-            <span className={`h-1.5 w-1.5 rounded-full bg-pos ${degraded ? '' : 'live-dot'}`} />
-            Live / Sheet Data
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-sm border px-1.5 py-px text-[10px] font-semibold tracking-wide uppercase ${
+              degraded ? 'border-neg/35 bg-neg/12 text-neg' : 'border-pos/35 bg-pos/12 text-pos'
+            }`}
+            title={
+              degraded
+                ? (transportError ?? meta.error ?? 'Sheet read failed; showing last good data')
+                : 'Google Sheet research is current'
+            }
+          >
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${degraded ? 'bg-neg' : 'bg-pos'} ${degraded ? '' : 'live-dot'}`}
+            />
+            Research: Google Sheet — {degraded ? 'Stale' : 'Current'}
           </span>
         )}
-        {degraded ? (
-          <StatusBadge
-            label="Stale Data"
-            tone="neg"
-            title={transportError ?? meta.error ?? 'Upstream read failed; showing last good data'}
-          />
-        ) : null}
       </div>
 
-      <div className="hidden text-[11px] text-ink-3 sm:block">
-        <span className="text-ink-2">Last sync</span>{' '}
+      <div className="hidden text-[11px] text-ink-3 xl:block">
+        <span className="text-ink-2">Sheet sync</span>{' '}
         <span className="num text-ink">{syncedAt}</span>
-        {age !== null ? <span className="num text-ink-3"> · {age}s ago</span> : null}
+        {age !== null ? <span className="num text-ink-3"> · {age}s</span> : null}
       </div>
     </div>
   );

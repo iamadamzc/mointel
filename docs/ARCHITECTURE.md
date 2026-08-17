@@ -1,114 +1,145 @@
 # Architecture
 
-How V0 is put together, and where each planned subsystem attaches. Nothing in the "future" sections is implemented yet; they are recorded so the current seams stay in the right places.
+How the desk is put together, and where each planned subsystem attaches. Nothing in the "future" sections is implemented; they are recorded so the current seams stay in the right places.
 
 ---
 
 ## 1. Current shape
 
 ```
-┌───────────────────────────────────────────────────────────────┐
-│ Browser                                                       │
-│   DashboardShell (client)                                     │
-│     ├── DashboardHeader / DataFreshness                       │
-│     ├── MarketSummary                                         │
-│     ├── FilterBar        ─┐                                   │
-│     ├── PrimaryFocus      ├─ lib/dashboard/view.ts (pure)     │
-│     ├── MomentumTable    ─┘                                   │
-│     └── TickerDrawer                                          │
-│   lib/hooks/useDashboard.ts  — polls every ~4s                │
-└───────────────────────────┬───────────────────────────────────┘
-                            │ GET /api/dashboard  (the only call)
-┌───────────────────────────▼───────────────────────────────────┐
-│ Server                                                        │
-│   app/api/dashboard/route.ts                                  │
-│   lib/data/index.ts                                           │
-│     • provider selection (credentials present? mock?)         │
-│     • ~10s cache, single-flight refresh                       │
-│     • stale fallback to last good payload                     │
-│   ├── providers/googleSheets.ts  (server-only, batched read)  │
-│   └── providers/mock.ts                                       │
-│   lib/data/rows.ts       — column positions live ONLY here    │
-│   lib/data/normalize.ts  — parsing + classification           │
-│   lib/data/types.ts      — the contract everything depends on │
-└───────────────────────────────────────────────────────────────┘
+                         ┌─ Google Sheets → Research / Structure ─┐
+                         │                                        │
+Alpaca SIP → Demand Engine → Local State (SQLite) → State Merge → Dashboard
+                         │
+                         └─ Desk Events / Discovery
+```
+
+Two processes, one shared local store:
+
+```
+┌──────────────────────── worker process (npm run market:alpaca) ──────────────────────┐
+│ worker/alpaca.ts        entry point: bootstrap, then stream                           │
+│ worker/runtime.ts       session resolution, universe, baselines, backfill, flush loop │
+│   lib/market/alpaca/stream.ts   ONE websocket, auth + subscription diffs + backoff    │
+│   lib/market/alpaca/rest.ts     multi-symbol REST, pagination, 429 backoff            │
+│   lib/market/alpaca/messages.ts total message parsing (never throws)                  │
+│   lib/market/engine.ts          DemandEngine: state, RVOL, ranking, latch, events     │
+│   lib/market/rvol.ts            the exact Daily RVOL definition + baselines + ranking │
+│   lib/market/derive.ts          percent change, spread, displayed float turnover      │
+│   lib/market/session.ts         ET session model, DST-aware, no date library          │
+│   lib/market/store/{db,repo}.ts SQLite schema and every SQL statement                 │
+└───────────────────────────────────────┬──────────────────────────────────────────────┘
+                                        │ SQLite (WAL): worker writes, web reads
+┌───────────────────────────────────────▼──────────────────────────────────────────────┐
+│ Next.js process (npm run dev)                                                         │
+│   app/api/market/route.ts     → lib/market/readModel.ts  (read-only connection)       │
+│   app/api/dashboard/route.ts  → lib/data/*               (Google Sheets, 10s cache)   │
+│   components/DashboardShell   → lib/dashboard/merge.ts   (demand + research)          │
+│     DiscoveryBoard · DeskEventFeed · PrimaryFocus · MomentumTable · TickerDrawer       │
+└──────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Layer rules
 
-1. **UI depends on types, never on the source.** Components import from `lib/data/types.ts`. No component knows a column letter, a tab name, or that Google exists.
-2. **Providers satisfy `DashboardDataProvider`.** A provider's only job is to produce `tickers`, `research`, `summary`, and provenance `meta`.
-3. **Column knowledge is confined to `lib/data/rows.ts`.** Swapping the source means writing a provider that produces normalized objects; it does not mean touching the UI.
-4. **Server-only boundary.** `lib/data/index.ts` and the Sheets provider import `server-only`, so credentials cannot leak into a client bundle even by accident.
-5. **Normalization is conservative.** Explicit `Unknown` stays unknown. Classifications are only asserted when the source states them. Original display text is always preserved next to any parsed value.
+1. **The UI depends on types, never on a source.** Components import from `lib/data/types.ts` and `lib/market/types.ts`. No component knows a column letter, an Alpaca payload shape, or that SQLite exists.
+2. **One long-lived market connection.** `AlpacaStream` is instantiated once per worker. Interest changes are subscribe/unsubscribe diffs; the socket is never recycled to change symbols.
+3. **Credentials are worker-only.** `lib/market/credentials.ts` is never imported by anything under `app/`, `components/` or `lib/hooks`, and a test enforces that. The Next.js process reads SQLite and nothing else.
+4. **One state system.** SQLite is the only persistence. Do not add a second.
+5. **Unknown stays unknown.** No unknown value becomes zero; no classification is asserted that a source did not state.
+6. **Demand ≠ analysis.** `DemandState` carries no structure, catalyst or cycle fields. The merge layer joins them without collapsing them.
+
+### The demand pipeline
+
+```
+wildcard bars (whole market)
+        │  price inside $1–$20 and baseline known?
+        ├── no  → dropped (or queued for lazy baseline hydration)
+        └── yes → DemandEngine.ingest
+                    minute_volumes[symbol][ts] = volume   (upsert, so corrections replace)
+                    cumulative = volumeBase + Σ minute_volumes
+                    sessionHigh/Low, price (newest timestamp wins)
+                          │
+                    every 1s: recompute()
+                          rvol = cumulative ÷ baseline.averageVolume
+                          rank = descending cross-sectional sort
+                          latch, high-res selection, desk events
+                          │
+                    flush(): upsert dirty rows, write health, publish high-res diff
+```
+
+`trades`, `quotes`, `statuses` and `lulds` update price, spread, halt state and LULD bands for the high-resolution set. Trades never increment cumulative volume — minute bars are the canonical volume input, which is what makes `updatedBars` corrections safe.
 
 ### Caching and freshness
 
-`lib/data/index.ts` holds a single cache entry on `globalThis` (so it survives dev hot reloads):
-
-- Fresh cache (< `CACHE_TTL_MS`, 10s) → served directly.
-- Expired → one upstream read; concurrent callers share the in-flight promise.
-- Upstream failure with a cache present → last good payload, `stale: true`, explanatory `meta.error`.
-- Upstream failure with no cache → empty payload, `stale: true`, `meta.error` set. The UI renders empty state rather than crashing.
-
-`meta` carries `provider`, `fetchedAt`, `sourceUpdatedAt`, `stale`, `error`, `cacheAgeMs`, `sourceTitle`, and non-fatal `warnings` (skipped rows, tickers with no RESEARCH record).
+- **Research**: `lib/data/index.ts` holds a 10s cache with single-flight refresh and a last-good-data stale fallback. The browser polls `/api/dashboard` every 4s.
+- **Market**: the worker flushes every 1s; the browser polls `/api/market` every 1s. Worker heartbeat older than `MARKET_HEARTBEAT_STALE_MS` marks the feed stale; 4× that marks it offline.
+- **Ticker freshness** is computed per ticker from its own last market event, never from the connection state.
 
 ---
 
 ## 2. Where future subsystems attach
 
-### Replacing the data store (PostgreSQL or a service)
+### Replacing the research store (PostgreSQL or a service)
 
-Write `lib/data/providers/postgres.ts` implementing `DashboardDataProvider` and add it to the selection logic in `lib/data/index.ts`. Nothing else changes. If the store returns already-normalized records, it can skip `rows.ts` entirely; `rows.ts` exists for spreadsheet-shaped inputs.
+Write `lib/data/providers/postgres.ts` implementing `DashboardDataProvider` and add it to the selection logic in `lib/data/index.ts`. Nothing else changes.
 
-### Live market-data provider
+### Replacing the market store
 
-A second provider concern, not a replacement: quotes/volume arrive far faster than the research sheet changes.
+`lib/market/store/repo.ts` is the only module with SQL. A different store implements the same functions. The read model (`lib/market/readModel.ts`) and the worker are the only callers.
 
-- Add `lib/data/providers/marketData.ts` behind a `MarketDataProvider` interface (quote, session, volume, halt state by symbol).
-- Compose in `lib/data/index.ts`: research/structure from the sheet or database, live fields from the market-data provider, merged into `MomentumTicker` before the payload is cached.
-- `SessionValue.session` already models which session a number came from, so a live feed slots into the existing display contract.
-- Push transport (SSE/WebSocket) replaces polling at `lib/hooks/useDashboard.ts` only; the payload shape stays the same.
+### RVOL ranking engine extensions, float turnover, momentum acceleration
 
-### Derived momentum metrics
+These are computations over normalized state, not new sources, and belong beside `lib/market/rvol.ts` and `lib/market/derive.ts`:
 
-RVOL ranking, float turnover, effective float turnover, and momentum acceleration are computations over normalized data, not new sources. They belong in a `lib/analytics/` module that takes `MomentumTicker[]` (plus historical bars once available) and returns derived fields.
+- Add optional fields to `DemandState` so the UI renders them when present.
+- Each derived metric must carry its own confidence state. Effective Float Turnover in particular is **not** `displayedFloatTurnover`: it needs a supply-adjusted denominator from the structural engine, and must not be inferred from a vendor float.
 
-- Add optional fields to `MomentumTicker` (e.g. `rvol?: DerivedMetric`) so the UI can render them when present and ignore them when not.
-- Each derived metric must carry its own confidence/unknown state: effective float turnover is meaningless when the float is `UNKNOWN`, and the product must keep saying so rather than emitting a number.
+### Halt prediction, Chop Risk, Flush Risk, Live Confirmation
 
-### Halt detection
+Stateful classifications that change during a session, so they need history the current store deliberately bounds:
 
-A market-data provider capability plus a `haltState` field on `MomentumTicker`. Render as a badge alongside the session chip in `MomentumTable` and `PrimaryFocus`; no new page structure needed.
+- Extend retention or add a session-snapshot table.
+- Add a `stateChanges` collection to the market payload and a change-log strip in `TickerDrawer`.
+- `HaltState`, `StructureState` and `CycleState` are closed unions precisely so transitions are expressible.
+
+### Exchange-authoritative halt feeds
+
+Nasdaq/NYSE public halt feeds become a second observation source feeding `DemandEngine.applyHaltTransition`, with source precedence recorded on the event. The normalization seam already exists in `lib/market/alpaca/messages.ts::normalizeHaltState`.
 
 ### Event-driven OpenAI analysis
 
-- New server module `lib/intelligence/` with an explicit trigger surface (structure change detected, new filing, cycle transition, halt).
-- Runs server-side only, writes results into the store, and surfaces them through the same `/api/dashboard` payload as additional typed fields — the UI must never call a model provider directly.
-- Outputs are attributed and timestamped so a generated read is visually distinguishable from a human analyst note.
+- New server module `lib/intelligence/` with an explicit trigger surface (structure change, new filing, cycle transition, halt).
+- Runs in the worker or a sibling process, writes results into the store, and surfaces through the same payload — the UI must never call a model provider directly.
+- Outputs must be attributed and timestamped so a generated read is visually distinguishable from a human analyst note.
 
-### Dirty Float state changes, Chop Risk, Flush Risk, Live Confirmation
+### Dirty Float reclassification and overhang absorption
 
-These are stateful classifications that change during a session, so they need history that V0 does not keep.
+Explicitly out of scope here. `displayedFloatTurnover` is computed from the *displayed* float and must never feed back into structure classification; a test enforces that Alpaca state cannot overwrite a Dirty Float classification.
 
-- Requires a persistence layer (PostgreSQL) recording per-ticker snapshots over time.
-- Add a `stateChanges` collection to the payload and a change-log strip in `TickerDrawer`.
-- `StructureState` and `CycleState` are already closed unions, which is what makes transitions expressible.
+### Live commentary feed and historical dossiers
 
-### Live commentary feed
-
-Server-owned append-only stream keyed by ticker and timestamp, delivered over the same push channel as live quotes. UI slot: a right-hand column in the shell, or a tab inside `TickerDrawer`.
-
-### Historical ticker dossiers
-
-`RESEARCH` already carries `Report Date`, and `selectLatestResearch()` in `lib/data/rows.ts` is deliberately the single place that decides which record wins. Keeping every record instead of the latest is a change to that function plus a date selector in the dossier.
+`RESEARCH` already carries `Report Date`, and `selectLatestResearch()` in `lib/data/rows.ts` is the single place that decides which record wins — keeping every record is a change to that function plus a date selector in the dossier.
 
 ### Multi-user broadcast distribution
 
-The server cache is already the single point of truth for upstream reads, which is the right place to fan out from. Broadcasting means promoting that cache to a shared process (or Redis) and pushing updates to subscribers rather than answering polls. Authentication and per-user watchlists would sit in front of `/api/dashboard`, which stays the single client contract.
+The worker's flush is already the single fan-out point. Broadcasting means promoting the local store to a shared one and pushing updates to subscribers instead of answering polls. Authentication and per-user watchlists sit in front of `/api/dashboard` and `/api/market`, which stay the only client contracts.
 
 ---
 
-## 3. Deliberate non-goals in V0
+## 3. Data model
 
-Market-data ingestion, OpenAI integration, authentication, billing, user accounts, broker integration, charts, Level 2, Time & Sales, and automated trading are all out of scope for this milestone. The Google Sheet is treated as strictly read-only.
+| Table | Purpose | Retention |
+| --- | --- | --- |
+| `rvol_baseline` | Fixed RVOL denominator per symbol with full provenance | Rebuilt when a new completed session makes it stale |
+| `minute_bars` | Canonical cumulative-volume input, keyed `symbol + ts` | Last 3 trading dates, tracked symbols only |
+| `ticker_session` | Per-symbol session state, one row per symbol per trading date | Current session |
+| `desk_events` | Deterministic events, unique by `dedupe_key` | Current session |
+| `feed_health` | Single-row worker health payload | Latest only |
+| `universe` | Cached tradable asset list | Refreshed roughly daily |
+| `meta` | Trading date, session phase, discovery summary, owning market mode | Latest only |
+
+---
+
+## 4. Deliberate non-goals in this milestone
+
+OpenAI analysis, automated SEC research, IR/newswire scraping, Dirty Float reclassification, overhang absorption conclusions, Effective Float Turnover, automated Chop/Flush Risk, buy/sell signals, order execution, broker integration, Level 2, Time & Sales UI, customer accounts and billing are all out of scope. Alpaca is used strictly as a market-data source, and the Google Sheet remains strictly read-only.

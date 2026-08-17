@@ -12,25 +12,37 @@ import {
   sessionTone,
   structureTone,
 } from '@/components/StatusBadge';
+import { HaltBadge } from '@/components/DiscoveryBoard';
+import type { DeskRow } from '@/lib/dashboard/merge';
 import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
+import {
+  formatCount,
+  formatEtTimestamp,
+  formatMultiple,
+  formatPrice,
+  formatSignedPercent,
+} from '@/lib/format';
 
 interface TickerDrawerProps {
-  ticker: MomentumTicker | null;
+  /** The merged desk row. May carry demand only, research only, or both. */
+  row: DeskRow | null;
   research: StructuralResearch | undefined;
   onClose: () => void;
 }
 
-export function TickerDrawer({ ticker, research, onClose }: TickerDrawerProps) {
+export function TickerDrawer({ row, research, onClose }: TickerDrawerProps) {
   useEffect(() => {
-    if (!ticker) return;
+    if (!row) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [ticker, onClose]);
+  }, [row, onClose]);
 
-  if (!ticker) return null;
+  if (!row) return null;
+
+  const ticker = row.research;
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
@@ -44,28 +56,36 @@ export function TickerDrawer({ ticker, research, onClose }: TickerDrawerProps) {
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label={`${ticker.ticker} dossier`}
+        aria-label={`${row.ticker} dossier`}
         className="relative flex h-full w-full max-w-[860px] flex-col border-l border-line-2 bg-panel shadow-2xl"
       >
-        <DrawerHeader ticker={ticker} research={research} onClose={onClose} />
+        <DrawerHeader row={row} research={research} onClose={onClose} />
 
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-4 pb-10">
-          <Overview ticker={ticker} research={research} />
-          <Catalyst ticker={ticker} research={research} />
-          <MomentumCycle ticker={ticker} research={research} />
-          <StructuralIntelligence ticker={ticker} research={research} />
-          <Levels ticker={ticker} research={research} />
-          <DeskRead ticker={ticker} research={research} />
+          <Demand row={row} />
 
-          {!research ? (
-            <p className="mt-4 rounded-sm border border-dashed border-warn/40 bg-warn/8 px-3 py-2 text-[11px] text-warn">
-              No RESEARCH record found for {ticker.ticker}. Only TODAY data is shown.
-            </p>
+          {ticker ? (
+            <>
+              <Overview ticker={ticker} research={research} />
+              <Catalyst ticker={ticker} research={research} />
+              <MomentumCycle ticker={ticker} research={research} />
+              <StructuralIntelligence ticker={ticker} research={research} />
+              <Levels ticker={ticker} research={research} />
+              <DeskRead ticker={ticker} research={research} />
+
+              {!research ? (
+                <p className="mt-4 rounded-sm border border-dashed border-warn/40 bg-warn/8 px-3 py-2 text-[11px] text-warn">
+                  No RESEARCH record found for {ticker.ticker}. Only TODAY data is shown.
+                </p>
+              ) : (
+                <p className="mt-6 text-[10px] text-ink-3">
+                  RESEARCH record: row {research.sourceRow}, report date{' '}
+                  {research.reportDate || 'unknown'}. TODAY row {ticker.sourceRow}.
+                </p>
+              )}
+            </>
           ) : (
-            <p className="mt-6 text-[10px] text-ink-3">
-              RESEARCH record: row {research.sourceRow}, report date {research.reportDate || 'unknown'}.
-              TODAY row {ticker.sourceRow}.
-            </p>
+            <NotAnalyzedPanel symbol={row.ticker} research={research} />
           )}
         </div>
       </aside>
@@ -73,54 +93,117 @@ export function TickerDrawer({ ticker, research, onClose }: TickerDrawerProps) {
   );
 }
 
+/**
+ * Shown for a ticker the market feed discovered but the research desk has not
+ * analyzed. It states exactly that, rather than inventing a classification.
+ */
+function NotAnalyzedPanel({
+  symbol,
+  research,
+}: {
+  symbol: string;
+  research: StructuralResearch | undefined;
+}) {
+  if (research) {
+    return (
+      <Section title="Structural Analysis">
+        <p className="mb-3 text-[12px] text-ink-2">
+          {symbol} is not on today&apos;s TODAY sheet, but an earlier RESEARCH record exists
+          (report date {research.reportDate || 'unknown'}). Treat it as historical, not as a
+          current desk read.
+        </p>
+        <ProseField label="Company" value={research.company} />
+        <ProseField label="Warning Flags" value={research.warningFlags} className="mt-3" tone="warn" />
+        <ProseField label="Supply Evidence" value={research.supplyEvidence} className="mt-3" />
+        <ProseField label="Analyst Notes" value={research.analystNotes} className="mt-3" />
+      </Section>
+    );
+  }
+
+  return (
+    <Section title="Structural Analysis">
+      <div className="flex flex-wrap items-center gap-2">
+        <StatusBadge label="Not yet analyzed" tone="dim" />
+      </div>
+      <p className="mt-3 text-[12px] leading-relaxed text-ink-2">
+        {symbol} was discovered by the market feed on abnormal participation. The research desk
+        has not produced a catalyst, cycle, structure or float assessment for it. Nothing here
+        should be read as a clean structure, a legitimate catalyst, or a frontside classification —
+        only that demand was detected and deserves investigation.
+      </p>
+    </Section>
+  );
+}
+
 function DrawerHeader({
-  ticker,
+  row,
   research,
   onClose,
 }: {
-  ticker: MomentumTicker;
+  row: DeskRow;
   research: StructuralResearch | undefined;
   onClose: () => void;
 }) {
+  const ticker = row.research;
+  const demand = row.demand;
+
+  const headlinePrice = demand?.price ?? ticker?.price.value ?? null;
+  const headlineChange = demand?.percentChange ?? ticker?.changePct.value ?? null;
+  const headlineSource = demand ? (demand.feed === 'sip' ? 'SIP' : demand.feed.toUpperCase()) : ticker?.price.session ?? '—';
+
   return (
     <div className="border-b border-line-2 bg-panel-2 px-5 py-3">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="flex items-center gap-2.5">
             <span className="text-[26px] leading-none font-bold tracking-tight text-ink">
-              {ticker.ticker}
+              {row.ticker}
             </span>
-            <PriorityBadge
-              bucket={ticker.priority.bucket}
-              raw={ticker.priority.raw}
-              isRevised={ticker.priority.isRevised}
-            />
-            <StatusBadge
-              label={ticker.cycle.display}
-              tone={cycleTone(ticker.cycle.state)}
-              title={ticker.cycle.raw}
-            />
+            {ticker ? (
+              <>
+                <PriorityBadge
+                  bucket={ticker.priority.bucket}
+                  raw={ticker.priority.raw}
+                  isRevised={ticker.priority.isRevised}
+                />
+                <StatusBadge
+                  label={ticker.cycle.display}
+                  tone={cycleTone(ticker.cycle.state)}
+                  title={ticker.cycle.raw}
+                />
+              </>
+            ) : (
+              <StatusBadge label="Not yet analyzed" tone="dim" />
+            )}
+            {demand?.rvolRank !== null && demand?.rvolRank !== undefined ? (
+              <StatusBadge label={`RVOL #${demand.rvolRank}`} tone="accent" />
+            ) : null}
           </div>
           <div className="mt-1 truncate text-[12px] text-ink-2">
             {research?.company || 'Company name not in RESEARCH'}
-            {ticker.country ? <span className="text-ink-3"> · {ticker.country}</span> : null}
+            {ticker?.country ? <span className="text-ink-3"> · {ticker.country}</span> : null}
           </div>
         </div>
 
         <div className="flex items-start gap-4">
           <div className="text-right">
             <div className="num text-[24px] leading-none font-semibold text-ink">
-              {ticker.price.display}
+              {demand ? formatPrice(headlinePrice) : (ticker?.price.display ?? '—')}
             </div>
             <div className="mt-1 flex items-center justify-end gap-1.5">
               <span
-                className={`num text-[14px] leading-none font-semibold ${changeTone(ticker.changePct.value)}`}
+                className={`num text-[14px] leading-none font-semibold ${changeTone(headlineChange)}`}
               >
-                {ticker.changePct.display}
+                {demand ? formatSignedPercent(headlineChange) : (ticker?.changePct.display ?? '—')}
               </span>
               <StatusBadge
-                label={ticker.price.session === 'NONE' ? '—' : ticker.price.session}
-                tone={sessionTone(ticker.price.session)}
+                label={headlineSource === 'NONE' ? '—' : headlineSource}
+                tone={demand ? 'accent' : sessionTone(ticker?.price.session ?? 'NONE')}
+                title={
+                  demand
+                    ? 'Live Alpaca market data'
+                    : 'Google Sheet value — no live market data for this ticker'
+                }
               />
             </div>
           </div>
@@ -136,6 +219,138 @@ function DrawerHeader({
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Live market telemetry from Alpaca. Deliberately separate from the research
+ * sections below: demand detected is not structural analysis.
+ */
+function Demand({ row }: { row: DeskRow | null }) {
+  const demand = row?.demand ?? null;
+
+  if (!demand) {
+    return (
+      <Section title="Demand — Alpaca">
+        <p className="text-[12px] text-ink-3">
+          No live market state for this ticker. Start the market worker with{' '}
+          <code className="text-ink-2">npm run market:alpaca</code> to populate demand telemetry.
+        </p>
+      </Section>
+    );
+  }
+
+  return (
+    <Section title={`Demand — Alpaca ${demand.feed.toUpperCase()}`}>
+      <div className="mb-3 flex flex-wrap items-center gap-2">
+        <StatusBadge label="Demand detected" tone="accent" />
+        {demand.highRes ? (
+          <StatusBadge label="High-res stream" tone="neutral" title="Subscribed to trades, quotes and LULD bands" />
+        ) : null}
+        {demand.latched ? (
+          <StatusBadge
+            label="Session latch"
+            tone="warn"
+            title="Qualified inside the discovery price range and retained for the session"
+          />
+        ) : null}
+        {demand.rvolConfidence === 'LOW' ? (
+          <StatusBadge
+            label="RVOL confidence: low"
+            tone="warn"
+            title={`Baseline built from ${demand.baselineSessions ?? 0} eligible sessions`}
+          />
+        ) : null}
+        <HaltBadge state={demand.haltState} raw={demand.haltRaw} />
+        {demand.freshness.stale ? (
+          <StatusBadge
+            label="Ticker quiet"
+            tone="warn"
+            title="No market event for this ticker recently; the feed itself may still be healthy"
+          />
+        ) : null}
+      </div>
+
+      <div className="grid grid-cols-2 gap-x-6 gap-y-3 md:grid-cols-4">
+        <Field label="Price" value={formatPrice(demand.price)} numeric />
+        <Field label="% Change" value={formatSignedPercent(demand.percentChange)} numeric />
+        <Field label="Previous Close" value={formatPrice(demand.previousClose)} numeric />
+        <Field label="Session Volume" value={formatCount(demand.cumulativeVolume)} numeric />
+        <Field label="Daily RVOL" value={formatMultiple(demand.rvol)} numeric />
+        <Field
+          label="RVOL Rank"
+          value={demand.rvolRank !== null ? `#${demand.rvolRank}` : 'Unranked'}
+          numeric
+        />
+        <Field
+          label="Rank Change"
+          value={
+            demand.rvolRankChange === null
+              ? 'New'
+              : demand.rvolRankChange > 0
+                ? `+${demand.rvolRankChange}`
+                : String(demand.rvolRankChange)
+          }
+          numeric
+        />
+        <Field
+          label="Displayed Float Turnover"
+          value={formatMultiple(row?.displayedFloatTurnover)}
+          numeric
+        />
+        <Field label="Session High" value={formatPrice(demand.sessionHigh)} numeric />
+        <Field label="Session Low" value={formatPrice(demand.sessionLow)} numeric />
+        <Field
+          label="Bid / Ask"
+          value={
+            demand.quote.bid !== null || demand.quote.ask !== null
+              ? `${formatPrice(demand.quote.bid)} × ${formatPrice(demand.quote.ask)}`
+              : 'No quote'
+          }
+          numeric
+        />
+        <Field
+          label="Spread"
+          value={
+            demand.quote.spread !== null
+              ? `${formatPrice(demand.quote.spread)} (${demand.quote.spreadPct?.toFixed(2) ?? '—'}%)`
+              : demand.quote.invalid
+                ? 'Invalid / crossed'
+                : '—'
+          }
+          numeric
+        />
+        <Field
+          label="LULD Band"
+          value={
+            demand.luld.lower !== null || demand.luld.upper !== null
+              ? `${formatPrice(demand.luld.lower)} – ${formatPrice(demand.luld.upper)}`
+              : 'Not published'
+          }
+          numeric
+        />
+        <Field label="Halt State" value={demand.haltState} />
+        <Field label="Price Source" value={demand.priceSource ?? '—'} />
+        <Field
+          label="Last Market Event"
+          value={
+            demand.freshness.lastEventAt
+              ? `${formatEtTimestamp(demand.freshness.lastEventAt) ?? '—'} (${demand.freshness.ageSeconds ?? '—'}s)`
+              : 'None'
+          }
+          numeric
+        />
+      </div>
+
+      <p className="mt-3 text-[10px] leading-relaxed text-ink-3">
+        Baseline: {demand.baselineSessions ?? 0} eligible full sessions,{' '}
+        {demand.baselineAdjustment ?? 'unknown'}-adjusted, average{' '}
+        {formatCount(demand.baselineAverageVolume)} shares, calculated{' '}
+        {demand.baselineCalculatedAt ? new Date(demand.baselineCalculatedAt).toISOString() : '—'}.
+        Previous close from {demand.previousCloseSource ?? 'unknown source'}. Volume from{' '}
+        {demand.volumeSource ?? 'unknown source'}. Level 1 spread only — this is not depth.
+      </p>
+    </Section>
   );
 }
 

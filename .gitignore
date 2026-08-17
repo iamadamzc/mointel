@@ -53,3 +53,15 @@ next-env.d.ts
 
 # local agent session settings
 .claude/settings.local.json
+
+# alpaca / market credentials dropped as root-level text files
+/*.txt
+/alpaca*.env
+/apca*
+
+# local state store (market database) and logs
+/data/
+*.db
+*.db-wal
+*.db-shm
+/logs/

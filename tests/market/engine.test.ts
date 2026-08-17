@@ -1,0 +1,528 @@
+import { beforeEach, describe, expect, it } from 'vitest';
+
+import { DemandEngine, type EngineEvent } from '@/lib/market/engine';
+import type { MarketObservation, RvolBaseline } from '@/lib/market/types';
+
+const TRADING_DATE = '2026-08-14';
+
+/** 09:31 ET on the trading date, expressed in UTC. */
+function ts(minutesAfter930 = 0, seconds = 0): string {
+  const base = Date.UTC(2026, 7, 14, 13, 30, 0); // 09:30 ET (EDT = UTC-4)
+  return new Date(base + minutesAfter930 * 60_000 + seconds * 1000).toISOString();
+}
+
+function baseline(symbol: string, averageVolume: number | null, sessionCount = 20): RvolBaseline {
+  return {
+    symbol,
+    baselineDate: TRADING_DATE,
+    previousClose: 4,
+    previousCloseDate: '2026-08-13',
+    averageVolume,
+    sessionCount,
+    targetSessions: 20,
+    sessionDates: [],
+    dataSource: 'test',
+    feed: 'sip',
+    adjustment: 'split',
+    calculatedAt: '2026-08-14T08:00:00.000Z',
+  };
+}
+
+function bar(
+  symbol: string,
+  at: string,
+  values: { o?: number; h?: number; l?: number; c: number; v: number },
+  kind: 'bar' | 'updatedBar' = 'bar',
+): MarketObservation {
+  const close = values.c;
+  return {
+    symbol,
+    kind,
+    ts: at,
+    receivedAt: at,
+    feed: 'sip',
+    price: close,
+    bar: {
+      symbol,
+      ts: at,
+      open: values.o ?? close,
+      high: values.h ?? close,
+      low: values.l ?? close,
+      close,
+      volume: values.v,
+      tradeCount: null,
+      vwap: null,
+      source: kind === 'bar' ? 'live-bar' : 'live-updated-bar',
+      receivedAt: at,
+    },
+  };
+}
+
+function trade(symbol: string, at: string, price: number): MarketObservation {
+  return { symbol, kind: 'trade', ts: at, receivedAt: at, feed: 'sip', price, size: 100 };
+}
+
+function status(symbol: string, at: string, code: string, message: string): MarketObservation {
+  return {
+    symbol,
+    kind: 'status',
+    ts: at,
+    receivedAt: at,
+    feed: 'sip',
+    statusCode: code,
+    statusMessage: message,
+  };
+}
+
+let clock = Date.UTC(2026, 7, 14, 13, 31, 0);
+
+function createEngine(options: Partial<ConstructorParameters<typeof DemandEngine>[0]> = {}) {
+  return new DemandEngine({
+    tradingDate: TRADING_DATE,
+    feed: 'sip',
+    discoveryRank: 12,
+    internalRank: 50,
+    priceMin: 1,
+    priceMax: 20,
+    baselineSessions: 20,
+    now: () => clock,
+    ...options,
+  });
+}
+
+beforeEach(() => {
+  clock = Date.UTC(2026, 7, 14, 13, 31, 0);
+});
+
+describe('cumulative minute-bar volume (requirements 3, 4)', () => {
+  it('accumulates minute volume across bars', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['ABCD', baseline('ABCD', 1_000_000)]]));
+    engine.track('ABCD');
+
+    engine.ingest(bar('ABCD', ts(1), { c: 2, v: 10_000 }));
+    engine.ingest(bar('ABCD', ts(2), { c: 2.1, v: 15_000 }));
+    engine.ingest(bar('ABCD', ts(3), { c: 2.2, v: 5_000 }));
+
+    expect(engine.getDemandState('ABCD')?.cumulativeVolume).toBe(30_000);
+  });
+
+  it('replaces a corrected minute instead of double counting it', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['ABCD', baseline('ABCD', 1_000_000)]]));
+    engine.track('ABCD');
+
+    engine.ingest(bar('ABCD', ts(1), { c: 2, v: 10_000 }));
+    engine.ingest(bar('ABCD', ts(2), { c: 2.1, v: 15_000 }));
+    expect(engine.getDemandState('ABCD')?.cumulativeVolume).toBe(25_000);
+
+    // The exchange corrects minute 2 upward.
+    engine.ingest(bar('ABCD', ts(2), { c: 2.1, v: 40_000 }, 'updatedBar'));
+    expect(engine.getDemandState('ABCD')?.cumulativeVolume).toBe(50_000);
+
+    // And downward.
+    engine.ingest(bar('ABCD', ts(2), { c: 2.1, v: 1_000 }, 'updatedBar'));
+    expect(engine.getDemandState('ABCD')?.cumulativeVolume).toBe(11_000);
+  });
+
+  it('ignores bars outside the session window so overnight prints never leak in', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['ABCD', baseline('ABCD', 1_000_000)]]));
+    engine.track('ABCD');
+
+    // 22:00 ET the previous evening: rejected, and volume stays unknown rather
+    // than being invented as zero.
+    engine.ingest(bar('ABCD', '2026-08-14T02:00:00.000Z', { c: 2, v: 999_999 }));
+    expect(engine.getDemandState('ABCD')?.cumulativeVolume).toBeNull();
+
+    engine.ingest(bar('ABCD', ts(1), { c: 2, v: 1_000 }));
+    expect(engine.getDemandState('ABCD')?.cumulativeVolume).toBe(1_000);
+  });
+});
+
+describe('startup mid-session reconstruction (requirement 29)', () => {
+  it('starts from the reconstructed base rather than zero', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['ABCD', baseline('ABCD', 1_000_000)]]));
+
+    engine.seedSession('ABCD', {
+      volumeBase: 4_000_000,
+      volumeBaseThrough: ts(30),
+      volumeBaseSource: 'alpaca-snapshot-daily-bar',
+      sessionHigh: 6.4,
+      sessionLow: 3.9,
+      price: 6.2,
+      priceAt: ts(30),
+      priceSource: 'sip-snapshot',
+      previousClose: 4,
+      previousCloseSource: 'alpaca-daily-bar',
+    });
+
+    const seeded = engine.getDemandState('ABCD');
+    expect(seeded?.cumulativeVolume).toBe(4_000_000);
+    expect(seeded?.rvol).toBe(4);
+    expect(seeded?.sessionHigh).toBe(6.4);
+    expect(seeded?.percentChange).toBeCloseTo(55, 5);
+
+    // Live bars after the reconstruction point add on top of the base.
+    engine.ingest(bar('ABCD', ts(31), { c: 6.3, v: 250_000 }));
+    expect(engine.getDemandState('ABCD')?.cumulativeVolume).toBe(4_250_000);
+
+    // A bar already covered by the base is not counted twice.
+    engine.ingest(bar('ABCD', ts(29), { c: 6.1, v: 900_000 }));
+    expect(engine.getDemandState('ABCD')?.cumulativeVolume).toBe(4_250_000);
+  });
+});
+
+describe('stale observations cannot overwrite newer state (requirement 24)', () => {
+  it('keeps the newest trade price and quote', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['ABCD', baseline('ABCD', 1_000_000)]]));
+    engine.track('ABCD');
+
+    engine.ingest(trade('ABCD', ts(10), 5.5));
+    engine.ingest(trade('ABCD', ts(5), 2.2));
+    expect(engine.getDemandState('ABCD')?.price).toBe(5.5);
+
+    engine.ingest({
+      symbol: 'ABCD',
+      kind: 'quote',
+      ts: ts(10),
+      receivedAt: ts(10),
+      feed: 'sip',
+      bid: 5.4,
+      bidSize: 2,
+      ask: 5.6,
+      askSize: 3,
+    });
+    engine.ingest({
+      symbol: 'ABCD',
+      kind: 'quote',
+      ts: ts(4),
+      receivedAt: ts(4),
+      feed: 'sip',
+      bid: 1,
+      bidSize: 1,
+      ask: 9,
+      askSize: 1,
+    });
+
+    expect(engine.getDemandState('ABCD')?.quote.bid).toBe(5.4);
+    expect(engine.getDemandState('ABCD')?.quote.ask).toBe(5.6);
+  });
+});
+
+describe('NEW_HOD events (requirement 25)', () => {
+  it('does not fire on the first established high, fires once per genuine new high', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['ABCD', baseline('ABCD', 1_000_000)]]));
+    engine.track('ABCD');
+
+    engine.ingest(bar('ABCD', ts(1), { c: 5, h: 5, l: 4.9, v: 10_000 }));
+    expect(hodEvents(engine.recompute().events)).toHaveLength(0);
+
+    engine.ingest(bar('ABCD', ts(2), { c: 5.4, h: 5.5, l: 5, v: 10_000 }));
+    const first = hodEvents(engine.recompute().events);
+    expect(first).toHaveLength(1);
+    expect(first[0]!.payload.high).toBe(5.5);
+
+    // Same high again: no repeat.
+    engine.ingest(bar('ABCD', ts(3), { c: 5.2, h: 5.5, l: 5, v: 10_000 }));
+    expect(hodEvents(engine.recompute().events)).toHaveLength(0);
+
+    // Higher high inside the cooldown window: suppressed.
+    engine.ingest(bar('ABCD', ts(4), { c: 5.6, h: 5.7, l: 5, v: 10_000 }));
+    expect(hodEvents(engine.recompute().events)).toHaveLength(0);
+
+    // Once the cooldown passes, the newest high is reported once.
+    clock += 61_000;
+    engine.ingest(bar('ABCD', ts(5), { c: 5.9, h: 6, l: 5.5, v: 10_000 }));
+    const second = hodEvents(engine.recompute().events);
+    expect(second).toHaveLength(1);
+    expect(second[0]!.payload.high).toBe(6);
+    expect(second[0]!.dedupeKey).not.toBe(first[0]!.dedupeKey);
+  });
+
+  it('does not fire for a high reconstructed at startup', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['ABCD', baseline('ABCD', 1_000_000)]]));
+    engine.seedSession('ABCD', {
+      volumeBase: 1_000_000,
+      volumeBaseThrough: ts(30),
+      volumeBaseSource: 'alpaca-snapshot-daily-bar',
+      sessionHigh: 12,
+      sessionLow: 4,
+      price: 11,
+      priceAt: ts(30),
+    });
+
+    expect(hodEvents(engine.recompute().events)).toHaveLength(0);
+  });
+
+  it('does not replay backfilled minute-bar highs as new highs after a restart', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['ABCD', baseline('ABCD', 1_000_000)]]));
+
+    // Snapshot seeds an RTH-only high, then the minute backfill reveals a
+    // higher extended-hours print. That is history, not a fresh HOD.
+    engine.seedSession('ABCD', {
+      volumeBase: 0,
+      volumeBaseThrough: null,
+      volumeBaseSource: 'alpaca-snapshot-daily-bar',
+      sessionHigh: 5.37,
+      sessionLow: 4.9,
+    });
+    engine.ingest(bar('ABCD', ts(1), { c: 7.2, h: 7.21, l: 5, v: 500_000 }));
+    engine.markBackfillComplete();
+
+    expect(hodEvents(engine.recompute().events)).toHaveLength(0);
+    expect(engine.getDemandState('ABCD')?.sessionHigh).toBe(7.21);
+
+    // A genuinely new high after the backfill still reports.
+    engine.ingest(bar('ABCD', ts(2), { c: 7.5, h: 7.55, l: 7.2, v: 10_000 }));
+    expect(hodEvents(engine.recompute().events)).toHaveLength(1);
+  });
+});
+
+describe('halt and resume transitions (requirements 26, 27)', () => {
+  it('emits HALT on entering and RESUME on leaving the halted state, once each', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['ABCD', baseline('ABCD', 1_000_000)]]));
+    engine.track('ABCD');
+
+    expect(engine.ingest(status('ABCD', ts(1), 'T', 'Trading Resumption'))).toHaveLength(0);
+
+    const halted = engine.ingest(status('ABCD', ts(2), 'H', 'Trading Halt'));
+    expect(halted).toHaveLength(1);
+    expect(halted[0]!.type).toBe('HALT');
+    expect(engine.getDemandState('ABCD')?.haltState).toBe('HALTED');
+
+    // Repeated halt status is not a transition.
+    expect(engine.ingest(status('ABCD', ts(3), 'H', 'Trading Halt'))).toHaveLength(0);
+
+    const resumed = engine.ingest(status('ABCD', ts(4), 'T', 'Trading Resumption'));
+    expect(resumed).toHaveLength(1);
+    expect(resumed[0]!.type).toBe('RESUME');
+    expect(engine.getDemandState('ABCD')?.haltState).toBe('TRADING');
+
+    expect(engine.ingest(status('ABCD', ts(5), 'T', 'Trading Resumption'))).toHaveLength(0);
+  });
+
+  it('preserves the raw exchange status alongside the normalized state', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['ABCD', baseline('ABCD', 1_000_000)]]));
+    engine.track('ABCD');
+    engine.ingest(status('ABCD', ts(2), 'H', 'Trading Halt'));
+
+    const state = engine.getDemandState('ABCD');
+    expect(state?.haltRaw).toContain('H');
+    expect(state?.haltRaw).toContain('Trading Halt');
+  });
+
+  it('ignores status messages for symbols it is not tracking', () => {
+    const engine = createEngine();
+    expect(engine.ingest(status('NOTTRACKED', ts(1), 'H', 'Trading Halt'))).toHaveLength(0);
+    expect(engine.isTracked('NOTTRACKED')).toBe(false);
+  });
+});
+
+describe('discovery rank entry events (requirements 14, 15)', () => {
+  function seedBoard(engine: DemandEngine, count: number) {
+    const baselines = new Map<string, RvolBaseline>();
+    for (let index = 0; index < count; index += 1) {
+      const symbol = `SY${String(index).padStart(2, '0')}`;
+      baselines.set(symbol, baseline(symbol, 1_000_000));
+    }
+    engine.setBaselines(baselines);
+    for (const symbol of baselines.keys()) engine.track(symbol);
+
+    // Descending volume so SY00 ranks 1 and SY19 ranks 20.
+    let index = 0;
+    for (const symbol of baselines.keys()) {
+      engine.ingest(bar(symbol, ts(1), { c: 5, v: 5_000_000 - index * 100_000 }));
+      index += 1;
+    }
+  }
+
+  it('fires exactly one RVOL_RANK_ENTRY when a ticker enters the Top 12', () => {
+    const engine = createEngine();
+    seedBoard(engine, 20);
+
+    const first = engine.recompute();
+    const entries = first.events.filter((event) => event.type === 'RVOL_RANK_ENTRY');
+    expect(entries).toHaveLength(12);
+    expect(entries.map((event) => event.symbol)).toContain('SY00');
+
+    // Steady state: no repeats while the ticker stays inside.
+    engine.ingest(bar('SY00', ts(2), { c: 5, v: 10_000 }));
+    const second = engine.recompute();
+    expect(second.events.filter((event) => event.type === 'RVOL_RANK_ENTRY')).toHaveLength(0);
+  });
+
+  it('suppresses re-entry inside the cooldown and allows it afterwards', () => {
+    const engine = createEngine();
+    seedBoard(engine, 20);
+    engine.recompute();
+
+    // Push SY19 (rank 20) to the top.
+    engine.ingest(bar('SY19', ts(2), { c: 5, v: 50_000_000 }));
+    const promoted = engine.recompute();
+    expect(promoted.events.filter((event) => event.type === 'RVOL_RANK_ENTRY')).toHaveLength(1);
+
+    // Drop it back out by lifting everyone else.
+    for (let index = 0; index < 19; index += 1) {
+      engine.ingest(bar(`SY${String(index).padStart(2, '0')}`, ts(3), { c: 5, v: 90_000_000 }));
+    }
+    const demoted = engine.recompute();
+    expect(demoted.events.filter((event) => event.type === 'RVOL_RANK_ENTRY')).toHaveLength(0);
+    expect(engine.getDemandState('SY19')?.rvolRank).toBeGreaterThan(12);
+
+    // Immediate re-entry: suppressed, because it never really left.
+    engine.ingest(bar('SY19', ts(4), { c: 5, v: 900_000_000 }));
+    const quickReentry = engine.recompute();
+    expect(
+      quickReentry.events.filter(
+        (event) => event.type === 'RVOL_RANK_ENTRY' && event.symbol === 'SY19',
+      ),
+    ).toHaveLength(0);
+
+    // Leave again, wait past the cooldown, then re-enter: reported.
+    for (let index = 0; index < 19; index += 1) {
+      engine.ingest(bar(`SY${String(index).padStart(2, '0')}`, ts(5), { c: 5, v: 9_000_000_000 }));
+    }
+    engine.recompute();
+    clock += 6 * 60_000;
+    engine.ingest(bar('SY19', ts(6), { c: 5, v: 90_000_000_000 }));
+    const lateReentry = engine.recompute();
+    expect(
+      lateReentry.events.filter(
+        (event) => event.type === 'RVOL_RANK_ENTRY' && event.symbol === 'SY19',
+      ),
+    ).toHaveLength(1);
+  });
+});
+
+describe('price-range qualification and session latch (requirements 16, 17, 18)', () => {
+  it('latches a ticker that qualifies inside the discovery range', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['RUN', baseline('RUN', 1_000_000)]]));
+    engine.track('RUN');
+
+    engine.ingest(bar('RUN', ts(1), { c: 6.5, v: 3_000_000 }));
+    const result = engine.recompute();
+
+    const state = engine.getDemandState('RUN');
+    expect(state?.latched).toBe(true);
+    expect(state?.qualified?.price).toBe(6.5);
+    expect(state?.qualified?.rank).toBe(1);
+    expect(state?.qualified?.rvol).toBe(3);
+    expect(result.events.some((event) => event.type === 'DISCOVERY_QUALIFIED')).toBe(true);
+  });
+
+  it('keeps a super-runner ranked after it trades above the discovery maximum', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['RUN', baseline('RUN', 1_000_000)]]));
+    engine.track('RUN');
+
+    engine.ingest(bar('RUN', ts(1), { c: 6.5, v: 3_000_000 }));
+    engine.recompute();
+
+    // The move carries it well above $20.
+    engine.ingest(bar('RUN', ts(20), { c: 41.75, v: 8_000_000 }));
+    const result = engine.recompute();
+
+    const state = engine.getDemandState('RUN');
+    expect(state?.price).toBe(41.75);
+    expect(state?.rvolRank).toBe(1);
+    expect(state?.latched).toBe(true);
+    expect(state?.qualified?.price).toBe(6.5);
+    expect(result.eligibleCount).toBe(1);
+  });
+
+  it('does not qualify a ticker that never traded inside the range', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['HIGH', baseline('HIGH', 1_000_000)]]));
+    engine.track('HIGH');
+
+    engine.ingest(bar('HIGH', ts(1), { c: 240, v: 9_000_000 }));
+    const result = engine.recompute();
+
+    expect(engine.getDemandState('HIGH')?.latched).toBe(false);
+    expect(engine.getDemandState('HIGH')?.rvolRank).toBeNull();
+    expect(result.eligibleCount).toBe(0);
+  });
+
+  it('clears the latch on a session reset', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['RUN', baseline('RUN', 1_000_000)]]));
+    engine.track('RUN');
+    engine.ingest(bar('RUN', ts(1), { c: 6.5, v: 3_000_000 }));
+    engine.recompute();
+    expect(engine.getDemandState('RUN')?.latched).toBe(true);
+
+    engine.resetSession('2026-08-17');
+
+    expect(engine.getDemandState('RUN')).toBeNull();
+    expect(engine.trackedCount).toBe(0);
+    expect(engine.tradingDate).toBe('2026-08-17');
+  });
+});
+
+describe('unknown baselines produce unknown RVOL (requirement 11)', () => {
+  it('tracks the ticker but leaves RVOL and rank null', () => {
+    const engine = createEngine();
+    engine.setBaselines(new Map([['NOBASE', baseline('NOBASE', null, 0)]]));
+    engine.track('NOBASE');
+
+    engine.ingest(bar('NOBASE', ts(1), { c: 5, v: 4_000_000 }));
+    const result = engine.recompute();
+
+    const state = engine.getDemandState('NOBASE');
+    expect(state?.cumulativeVolume).toBe(4_000_000);
+    expect(state?.rvol).toBeNull();
+    expect(state?.rvolRank).toBeNull();
+    expect(state?.rvolConfidence).toBe('UNKNOWN');
+    expect(result.eligibleCount).toBe(0);
+  });
+});
+
+describe('high-resolution interest set', () => {
+  it('is the union of sheet names, top internal ranks and latched candidates', () => {
+    const engine = createEngine({ internalRank: 3 });
+    const baselines = new Map<string, RvolBaseline>();
+    for (const symbol of ['AAA', 'BBB', 'CCC', 'DDD', 'EEE', 'SHEET', 'EXPENSIVE']) {
+      baselines.set(symbol, baseline(symbol, 1_000_000));
+    }
+    engine.setBaselines(baselines);
+    engine.setPinnedSymbols(['SHEET']);
+
+    for (const [index, symbol] of ['AAA', 'BBB', 'CCC', 'DDD', 'EEE'].entries()) {
+      engine.track(symbol);
+      engine.ingest(bar(symbol, ts(1), { c: 5, v: 5_000_000 - index * 500_000 }));
+    }
+
+    // Never inside the discovery price range: not ranked, never latched.
+    engine.track('EXPENSIVE');
+    engine.ingest(bar('EXPENSIVE', ts(1), { c: 480, v: 9_000_000 }));
+
+    engine.recompute();
+    const highRes = engine.highResSymbols();
+
+    // TODAY-sheet name, even though it has no market data yet.
+    expect(highRes).toContain('SHEET');
+    // Top internal ranks.
+    expect(highRes).toContain('AAA');
+    expect(highRes).toContain('BBB');
+    expect(highRes).toContain('CCC');
+    // Latched earlier in the session, now outside the top 3 — still watched.
+    expect(highRes).toContain('DDD');
+    expect(highRes).toContain('EEE');
+    expect(engine.getDemandState('EEE')?.rvolRank).toBeGreaterThan(3);
+    // Neither pinned, ranked, nor latched.
+    expect(highRes).not.toContain('EXPENSIVE');
+  });
+});
+
+function hodEvents(events: EngineEvent[]): EngineEvent[] {
+  return events.filter((event) => event.type === 'NEW_HOD');
+}
