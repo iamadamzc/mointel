@@ -22,6 +22,7 @@ import {
   resolveTradingSession,
   sessionPhaseForMinutes,
 } from '../lib/market/session';
+import type { SessionPhase } from '../lib/market/types';
 
 type Status = 'OK' | 'FAIL' | 'WARN' | 'INFO';
 
@@ -92,7 +93,7 @@ async function main(): Promise<void> {
   }
 
   // ---- websocket auth ------------------------------------------------------
-  const wsResult = await probeStream(credentials, config.debug);
+  const wsResult = await probeStream(credentials, config.debug, sessionPhase);
   report('WebSocket', wsResult.connected ? 'OK' : 'FAIL', wsResult.connectionDetail);
   report(
     `${credentials.feed.toUpperCase()} authentication`,
@@ -116,7 +117,11 @@ async function main(): Promise<void> {
     report(
       'Live SIP prints',
       wsResult.messages > 0 ? 'OK' : 'WARN',
-      `${wsResult.messages} whole-market messages in ${wsResult.seconds}s during ${sessionPhase}`,
+      `${wsResult.messages} whole-market messages in ${wsResult.seconds}s during ${sessionPhase}` +
+        (wsResult.messages === 0
+          ? ' — whole-market bars publish once per minute, so re-run with a longer ' +
+            'MARKET_DIAGNOSE_SECONDS before concluding the feed is dead'
+          : ''),
     );
   }
 
@@ -190,8 +195,13 @@ interface StreamProbe {
 function probeStream(
   credentials: ReturnType<typeof findAlpacaCredentials>['credentials'],
   debug: boolean,
+  sessionPhase: SessionPhase,
 ): Promise<StreamProbe> {
-  const seconds = Number(process.env.MARKET_DIAGNOSE_SECONDS ?? 8);
+  // Whole-market bars are published once per minute, so a short sample during
+  // an open session reports zero prints purely by missing the publish tick.
+  // Sample across a minute boundary when a session is actually running.
+  const defaultSeconds = sessionPhase === 'CLOSED' ? 8 : 70;
+  const seconds = Number(process.env.MARKET_DIAGNOSE_SECONDS ?? defaultSeconds);
 
   return new Promise((resolve) => {
     const result: StreamProbe = {
