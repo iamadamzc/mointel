@@ -14,6 +14,7 @@ import {
 } from '@/components/StatusBadge';
 import { HaltBadge } from '@/components/DiscoveryBoard';
 import { AutomaticIntelligence } from '@/components/AutomaticIntelligence';
+import { LevelLadder } from '@/components/LevelLadder';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { CycleLevels } from '@/lib/data/cycleLevels';
 import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
@@ -68,6 +69,10 @@ export function TickerDrawer({ row, research, onClose }: TickerDrawerProps) {
 
           {/* Automatic research sits above sheet research so a Discovery name
               with no sheet row still leads with its intelligence. */}
+          {/* The level map is the first thing a trader wants, so it sits above
+              the research narrative. */}
+          <LevelLadder map={row.levelMap} Section={Section} />
+
           <AutomaticIntelligence
             intel={row.intelligence}
             comparison={row.comparison}
@@ -644,8 +649,10 @@ function Levels({
   ticker: MomentumTicker;
   research: StructuralResearch | undefined;
 }) {
+  // The normalised ladder is rendered above; these are the verbatim source
+  // cells, kept so a trader can audit what the ladder was built from.
   return (
-    <Section title="Levels">
+    <Section title="Level Sources (verbatim)">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         <ProseField label="Key Levels (TODAY)" value={ticker.keyLevels} numeric />
         <ProseField label="Daily Resistance" value={research?.dailyResistance ?? ''} numeric />

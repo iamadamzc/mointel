@@ -289,3 +289,46 @@ describe('duplicate TODAY rows', () => {
     expect(kept.map((r) => r.ticker)).toEqual(['AAA', 'BBB']);
   });
 });
+
+describe('level map view model', () => {
+  it('reaches the desk row already grouped and measured', () => {
+    // The component must receive structured levels, not prose to re-parse.
+    const row = buildDeskRow(
+      'ACME',
+      null,
+      null,
+      demand('ACME', { price: 6.22, sessionHigh: 6.48, sessionLow: 5.9 }),
+    );
+
+    expect(row.levelMap.currentPrice).toBe(6.22);
+    expect(row.levelMap.empty).toBe(false);
+
+    // Session high above, session low below, both measured from price.
+    expect(row.levelMap.above[0].nearestPrice).toBe(6.48);
+    expect(row.levelMap.above[0].distanceAbs).toBeCloseTo(0.26, 4);
+    expect(row.levelMap.below.some((z) => z.nearestPrice === 5.9)).toBe(true);
+
+    // Derived round numbers are present but never lead over a real level.
+    expect(row.levelMap.above[0].dominantType).toBe('HOD');
+  });
+
+  it('orders each side nearest-first for the ladder', () => {
+    const row = buildDeskRow(
+      'ACME',
+      null,
+      null,
+      demand('ACME', { price: 6.22, sessionHigh: 7.4, sessionLow: 5.1 }),
+    );
+
+    const above = row.levelMap.above.map((z) => z.distanceAbs ?? 0);
+    const below = row.levelMap.below.map((z) => z.distanceAbs ?? 0);
+    expect([...above].sort((a, b) => a - b)).toEqual(above);
+    expect([...below].sort((a, b) => a - b)).toEqual(below);
+  });
+
+  it('degrades to an empty map rather than throwing when nothing is known', () => {
+    const row = buildDeskRow('NONE', null, null, null);
+    expect(row.levelMap.empty).toBe(true);
+    expect(row.levelMap.currentPrice).toBeNull();
+  });
+});

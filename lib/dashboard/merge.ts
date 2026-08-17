@@ -9,6 +9,7 @@
 
 import { computeDisplayedFloatTurnover } from '@/lib/market/derive';
 import { deriveCycleLevels, type CycleLevels } from '@/lib/data/cycleLevels';
+import { buildLevelMap, type LevelMap } from '@/lib/data/priceLevels';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
 import type { DashboardState, MomentumTicker, StructuralResearch } from '@/lib/data/types';
 import type { AutoIntelligence } from '@/lib/research/view';
@@ -36,6 +37,13 @@ export interface DeskRow {
   displayedFloatTurnover: number | null;
   /** Current-cycle high vs historical resistance, kept strictly separate. */
   cycleLevels: CycleLevels;
+  /**
+   * Structured price-level ladder centred on current price.
+   *
+   * Built here rather than in a component so the UI receives grouped, ordered,
+   * measured levels instead of the prose it used to re-parse in the browser.
+   */
+  levelMap: LevelMap;
   /**
    * Accepted automatic research, when any exists.
    *
@@ -82,6 +90,12 @@ export function buildDeskRow(
 ): DeskRow {
   const float = resolveDisplayedFloat(research, researchRecord);
 
+  const cycleLevels = deriveCycleLevels({
+    ticker: research,
+    research: researchRecord,
+    currentPrice: demand?.price ?? research?.price.value ?? null,
+  });
+
   // Sheet research is read-only input here. Nothing in this function writes to
   // it, and a disagreement never resolves by discarding one side.
   const comparison = compareSheetAndAuto({
@@ -115,10 +129,19 @@ export function buildDeskRow(
       demand?.cumulativeVolume ?? null,
       float.value,
     ),
-    cycleLevels: deriveCycleLevels({
-      ticker: research,
-      research: researchRecord,
+    cycleLevels,
+    levelMap: buildLevelMap({
       currentPrice: demand?.price ?? research?.price.value ?? null,
+      spread: demand?.quote.spread ?? null,
+      spreadPct: demand?.quote.spreadPct ?? null,
+      sessionHigh: demand?.sessionHigh ?? null,
+      sessionLow: demand?.sessionLow ?? null,
+      referenceRthClose: demand?.referenceRthClose ?? null,
+      referenceBasis: demand?.referenceRthCloseBasis ?? null,
+      keyLevels: research?.keyLevels ?? null,
+      dailyResistance: researchRecord?.dailyResistance ?? null,
+      dailySupport: researchRecord?.dailySupport ?? null,
+      cycleLevels: cycleLevels,
     }),
     intelligence,
     provenance: comparison.provenance,

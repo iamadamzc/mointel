@@ -8,6 +8,7 @@ import {
   changeTone,
   cycleTone,
 } from '@/components/StatusBadge';
+import { CompactLevels } from '@/components/LevelLadder';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import {
   CATALYST_GRADE_LABEL,
@@ -104,6 +105,7 @@ export function DiscoveryBoard({
                 <Th className="w-[86px]" align="right">Volume</Th>
                 <Th className="w-[86px]" align="right">Float</Th>
                 <Th className="w-[84px]" align="right">Float Turn</Th>
+                <Th className="w-[210px]">Levels</Th>
                 <Th className="w-[168px]">Cycle</Th>
                 <Th className="w-[140px]">Catalyst</Th>
                 <Th className="w-[136px]">Structure</Th>
@@ -252,6 +254,12 @@ function DiscoveryRow({
         }
       >
         {formatMultiple(row.displayedFloatTurnover)}
+      </td>
+
+      {/* Nearest levels either side of price, so the board answers "what is
+          above me" without opening the drawer. */}
+      <td className="px-2 py-1.5 align-middle">
+        <CompactLevels map={row.levelMap} />
       </td>
 
       <td className="px-2 py-1.5 align-middle">
