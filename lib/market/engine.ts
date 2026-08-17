@@ -114,6 +114,15 @@ interface TickerRuntime {
   haltAt: string | null;
 
   highRes: boolean;
+  /**
+   * First moment this session that rank crossed into the discovery threshold.
+   *
+   * Distinct from qualifiedAt, which marks entry to the tracked population at
+   * ANY rank. Only this field answers "when did it reach the Top N", which is
+   * what time-to-intelligence has to be measured from. Written once and never
+   * overwritten, so a name that leaves and re-enters keeps its original entry.
+   */
+  top12EnteredAt: string | null;
   qualifiedAt: string | null;
   qualifiedPrice: number | null;
   qualifiedRvol: number | null;
@@ -288,6 +297,7 @@ export class DemandEngine {
       haltRaw: null,
       haltAt: null,
       highRes: false,
+      top12EnteredAt: null,
       qualifiedAt: null,
       qualifiedPrice: null,
       qualifiedRvol: null,
@@ -696,6 +706,19 @@ export class DemandEngine {
       // ---- discovery rank entry ----------------------------------------
       const inside = result.rank <= this.options.discoveryRank;
       if (inside && !runtime.insideDiscoveryRank) {
+        /*
+         * Stamp the first crossing into the threshold, once per session.
+         *
+         * Deliberately outside the event-cooldown guard below: that cooldown
+         * exists to suppress duplicate desk events on rapid re-entry, and
+         * measurement must not inherit a rule written for notification volume.
+         * The stamp is never rewritten, so re-entry cannot restart the clock.
+         */
+        if (!runtime.top12EnteredAt) {
+          runtime.top12EnteredAt = nowIso;
+          runtime.dirty = true;
+        }
+
         const eligibleForEvent =
           runtime.leftDiscoveryRankAt === null ||
           nowMs - runtime.leftDiscoveryRankAt >= RANK_REENTRY_COOLDOWN_MS;
@@ -957,6 +980,7 @@ export class DemandEngine {
       haltRaw: runtime.haltRaw,
       haltAt: runtime.haltAt,
       highRes: runtime.highRes,
+      top12EnteredAt: runtime.top12EnteredAt,
       qualified: runtime.qualifiedAt
         ? {
             at: runtime.qualifiedAt,

@@ -257,6 +257,7 @@ export interface TickerSessionRow {
   halt_raw: string | null;
   halt_at: string | null;
   high_res: number;
+  top12_entered_at: string | null;
   qualified_at: string | null;
   qualified_price: number | null;
   qualified_rvol: number | null;
@@ -318,6 +319,7 @@ export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandSt
     haltRaw: row.halt_raw,
     haltAt: row.halt_at,
     highRes: row.high_res === 1,
+    top12EnteredAt: row.top12_entered_at,
     qualified: row.qualified_at
       ? {
           at: row.qualified_at,
@@ -349,7 +351,7 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       bid, bid_size, ask, ask_size, quote_at, spread, spread_pct, quote_invalid,
       luld_lower, luld_upper, luld_at,
       halt_state, halt_raw, halt_at,
-      high_res, qualified_at, qualified_price, qualified_rvol, qualified_rank, latched,
+      high_res, top12_entered_at, qualified_at, qualified_price, qualified_rvol, qualified_rank, latched,
       feed, last_event_at, updated_at
     ) VALUES (
       @symbol, @trading_date, @price, @price_source, @price_at, @bar_close, @bar_at,
@@ -363,7 +365,7 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       @bid, @bid_size, @ask, @ask_size, @quote_at, @spread, @spread_pct, @quote_invalid,
       @luld_lower, @luld_upper, @luld_at,
       @halt_state, @halt_raw, @halt_at,
-      @high_res, @qualified_at, @qualified_price, @qualified_rvol, @qualified_rank, @latched,
+      @high_res, @top12_entered_at, @qualified_at, @qualified_price, @qualified_rvol, @qualified_rank, @latched,
       @feed, @last_event_at, @updated_at
     )
     ON CONFLICT(symbol, trading_date) DO UPDATE SET
@@ -397,6 +399,9 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       luld_lower = excluded.luld_lower, luld_upper = excluded.luld_upper, luld_at = excluded.luld_at,
       halt_state = excluded.halt_state, halt_raw = excluded.halt_raw, halt_at = excluded.halt_at,
       high_res = excluded.high_res,
+      -- COALESCE: the first crossing is never rewritten by a later flush, so a
+      -- name that leaves and re-enters the threshold keeps its original entry.
+      top12_entered_at = COALESCE(ticker_session.top12_entered_at, excluded.top12_entered_at),
       qualified_at = excluded.qualified_at, qualified_price = excluded.qualified_price,
       qualified_rvol = excluded.qualified_rvol, qualified_rank = excluded.qualified_rank,
       latched = excluded.latched,

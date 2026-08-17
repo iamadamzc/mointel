@@ -94,6 +94,7 @@ function demand(symbol: string, rank: number | null): DemandState {
     haltRaw: 'T | Trading Resumption',
     haltAt: '2026-08-14T13:31:00.000Z',
     highRes: true,
+    top12EnteredAt: null,
     qualified: { at: '2026-08-14T13:31:00.000Z', price: 6.22, rvol: 4.1, rank: 1 },
     latched: true,
     feed: 'sip',
@@ -310,5 +311,41 @@ describe('feed health', () => {
     setMeta(db, 'trading_date', '2026-08-14');
     expect(getMeta(db, 'trading_date')).toBe('2026-08-14');
     db.close();
+  });
+});
+
+describe('Top-N entry stamp persistence', () => {
+  it('persists the entry stamp alongside qualification, not instead of it', () => {
+    const db = temporaryDb();
+    const state = demand('ACME', 4);
+    state.top12EnteredAt = '2026-08-17T13:45:00.000Z';
+
+    upsertTickerSessions(db, [toRow(state)]);
+    const [read] = readDemandStates(db, state.tradingDate, {
+      limit: 10,
+      extraSymbols: ['ACME'],
+    });
+
+    expect(read.top12EnteredAt).toBe('2026-08-17T13:45:00.000Z');
+    // Both stamps coexist; the entry stamp never replaces qualification.
+    expect(read.qualified).not.toBeNull();
+  });
+
+  it('never overwrites the first entry stamp on a later flush', () => {
+    const db = temporaryDb();
+    const state = demand('ACME', 4);
+    state.top12EnteredAt = '2026-08-17T13:45:00.000Z';
+    upsertTickerSessions(db, [toRow(state)]);
+
+    // A later flush arriving with a different stamp must not move the origin
+    // that time-to-intelligence is measured from.
+    state.top12EnteredAt = '2026-08-17T15:10:00.000Z';
+    upsertTickerSessions(db, [toRow(state)]);
+
+    const [read] = readDemandStates(db, state.tradingDate, {
+      limit: 10,
+      extraSymbols: ['ACME'],
+    });
+    expect(read.top12EnteredAt).toBe('2026-08-17T13:45:00.000Z');
   });
 });

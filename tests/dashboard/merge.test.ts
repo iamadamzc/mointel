@@ -41,6 +41,7 @@ function demand(ticker: string, overrides: Partial<DemandState> = {}): DemandSta
     haltRaw: null,
     haltAt: null,
     highRes: true,
+    top12EnteredAt: null,
     qualified: null,
     latched: false,
     feed: 'sip',

@@ -53,7 +53,8 @@ function readCandidates(db: MarketDatabase, tradingDate: string, autoRank: numbe
     .prepare(
       `SELECT s.symbol AS ticker, s.rvol_rank AS rank, s.rvol, s.percent_change AS percentChange,
               s.cumulative_volume AS cumulativeVolume, s.spread_pct AS spreadPct,
-              s.latched, s.qualified_at AS qualifiedAt, u.classification
+              s.latched, s.top12_entered_at AS top12EnteredAt,
+              s.qualified_at AS qualifiedAt, u.classification
          FROM ticker_session s
          LEFT JOIN universe u ON u.symbol = s.symbol
         WHERE s.trading_date = ? AND s.rvol_rank IS NOT NULL AND s.rvol_rank <= ?
@@ -71,6 +72,7 @@ function readCandidates(db: MarketDatabase, tradingDate: string, autoRank: numbe
         spreadPct: r.spreadPct === null ? null : Number(r.spreadPct),
         latched: r.latched === 1,
         classification: r.classification === null ? null : String(r.classification),
+        top12EnteredAt: r.top12EnteredAt === null ? null : String(r.top12EnteredAt),
         qualifiedAt: r.qualifiedAt === null ? null : String(r.qualifiedAt),
       };
     });

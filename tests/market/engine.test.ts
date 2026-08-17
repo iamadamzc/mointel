@@ -359,6 +359,81 @@ describe('discovery rank entry events (requirements 14, 15)', () => {
     expect(second.events.filter((event) => event.type === 'RVOL_RANK_ENTRY')).toHaveLength(0);
   });
 
+  it('stamps Top-N entry once, separately from qualification', () => {
+    const engine = createEngine();
+    seedBoard(engine, 20);
+    engine.recompute();
+
+    const inside = engine.getDemandState('SY00');
+    const outside = engine.getDemandState('SY19');
+
+    expect(inside?.top12EnteredAt).not.toBeNull();
+    // Rank 20 never crossed the threshold, so it carries no entry stamp even
+    // though it qualified into the tracked population.
+    expect(outside?.top12EnteredAt).toBeNull();
+    expect(outside?.qualified).not.toBeNull();
+
+    // qualifiedAt marks entry at ANY rank and is retained, not replaced.
+    expect(inside?.qualified).not.toBeNull();
+  });
+
+  it('does not rewrite the entry stamp when a ticker re-enters', () => {
+    const engine = createEngine();
+    seedBoard(engine, 20);
+    engine.recompute();
+
+    const original = engine.getDemandState('SY00')?.top12EnteredAt;
+    expect(original).not.toBeNull();
+
+    // Push SY00 out of the threshold, then bring it back.
+    for (let index = 1; index < 20; index += 1) {
+      engine.ingest(bar(`SY${String(index).padStart(2, '0')}`, ts(2), { c: 5, v: 90_000_000 }));
+    }
+    engine.recompute();
+    expect(engine.getDemandState('SY00')?.rvolRank).toBeGreaterThan(12);
+
+    clock += 6 * 60_000;
+    engine.ingest(bar('SY00', ts(3), { c: 5, v: 900_000_000 }));
+    engine.recompute();
+
+    // Latency is measured from the FIRST crossing; re-entry must not restart it.
+    expect(engine.getDemandState('SY00')?.top12EnteredAt).toBe(original);
+  });
+
+  it('stamps entry even when the cooldown suppresses the event', () => {
+    /*
+     * The cooldown exists to limit desk-event volume on rapid re-entry.
+     * Measurement must not inherit a rule written for notification volume, so
+     * the stamp is set independently of whether an event fires.
+     */
+    const engine = createEngine();
+    seedBoard(engine, 20);
+    engine.recompute();
+
+    // SY19 has never been inside, so its first crossing stamps and fires.
+    engine.ingest(bar('SY19', ts(2), { c: 5, v: 50_000_000 }));
+    const promoted = engine.recompute();
+    expect(
+      promoted.events.filter((e) => e.type === 'RVOL_RANK_ENTRY' && e.symbol === 'SY19'),
+    ).toHaveLength(1);
+    const stamped = engine.getDemandState('SY19')?.top12EnteredAt;
+    expect(stamped).not.toBeNull();
+
+    // Force it out and straight back in: the event is suppressed by cooldown
+    // while the original stamp is preserved untouched.
+    for (let index = 0; index < 19; index += 1) {
+      engine.ingest(bar(`SY${String(index).padStart(2, '0')}`, ts(3), { c: 5, v: 90_000_000 }));
+    }
+    engine.recompute();
+    engine.ingest(bar('SY19', ts(4), { c: 5, v: 900_000_000 }));
+    const quick = engine.recompute();
+
+    expect(
+      quick.events.filter((e) => e.type === 'RVOL_RANK_ENTRY' && e.symbol === 'SY19'),
+    ).toHaveLength(0);
+    expect(engine.getDemandState('SY19')?.top12EnteredAt).toBe(stamped);
+  });
+
   it('suppresses re-entry inside the cooldown and allows it afterwards', () => {
     const engine = createEngine();
     seedBoard(engine, 20);

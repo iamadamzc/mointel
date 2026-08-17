@@ -1101,6 +1101,7 @@ export function toRow(state: DemandState): TickerSessionRow {
     halt_raw: state.haltRaw,
     halt_at: state.haltAt,
     high_res: state.highRes ? 1 : 0,
+    top12_entered_at: state.top12EnteredAt,
     qualified_at: state.qualified?.at ?? null,
     qualified_price: state.qualified?.price ?? null,
     qualified_rvol: state.qualified?.rvol ?? null,

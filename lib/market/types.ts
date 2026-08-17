@@ -260,6 +260,13 @@ export interface DemandState {
   haltAt: string | null;
 
   highRes: boolean;
+  /**
+   * First crossing into the discovery rank threshold this session.
+   *
+   * Separate from `qualified`, which marks entry to the tracked population at
+   * any rank. Kept alongside it rather than replacing it.
+   */
+  top12EnteredAt: string | null;
   qualified: DiscoveryQualification | null;
   latched: boolean;
 

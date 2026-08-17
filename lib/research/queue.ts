@@ -20,6 +20,12 @@ export interface QueueCandidate {
   spreadPct: number | null;
   latched: boolean;
   classification: string | null;
+  /**
+   * First crossing into the discovery threshold. The correct origin for
+   * time-to-intelligence.
+   */
+  top12EnteredAt: string | null;
+  /** Entry to the tracked population at any rank. Retained, not replaced. */
   qualifiedAt: string | null;
 }
 
@@ -128,8 +134,15 @@ export function queueDiscoveryResearch(
       priority,
       reason: `top ${options.autoRank} at rank ${candidate.rank}`,
       queuedAt,
-      // The board-entry time is what time-to-intelligence is measured from.
-      top12At: candidate.qualifiedAt ?? queuedAt,
+      /*
+       * Board entry is the origin for time-to-intelligence.
+       *
+       * qualifiedAt is only a fallback: it marks entry to the tracked
+       * population at ANY rank, so using it as the origin measured from the
+       * wrong event and inflated the metric by hours for names that qualified
+       * early and reached the Top N much later.
+       */
+      top12At: candidate.top12EnteredAt ?? candidate.qualifiedAt ?? queuedAt,
     });
 
     decisions.push({

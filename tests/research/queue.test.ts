@@ -45,6 +45,7 @@ function candidate(overrides: Partial<QueueCandidate> = {}): QueueCandidate {
     spreadPct: 0.8,
     latched: true,
     classification: 'COMMON_EQUITY',
+    top12EnteredAt: '2026-08-17T13:45:00Z',
     qualifiedAt: '2026-08-17T13:30:00Z',
     ...overrides,
   };
@@ -96,9 +97,24 @@ describe('queueing', () => {
     expect(readLatestJobForTicker(db, 'AAA', DATE)?.status).toBe('QUEUED');
   });
 
-  it('stamps board entry so time-to-intelligence can be measured from it', () => {
+  it('measures from Top-N entry, not from discovery qualification', () => {
+    /*
+     * qualifiedAt marks entry to the tracked population at ANY rank, so using it
+     * as the origin measured the wrong event — a name that qualified in
+     * premarket and reached the Top N hours later showed an inflated latency.
+     */
     const db = temporaryDb();
     queueDiscoveryResearch(db, [candidate()], { tradingDate: DATE, autoRank: 12, now: NOW });
+    expect(readLatestJobForTicker(db, 'ACME', DATE)?.top12At).toBe('2026-08-17T13:45:00Z');
+  });
+
+  it('falls back to qualification only when no entry stamp exists', () => {
+    const db = temporaryDb();
+    queueDiscoveryResearch(db, [candidate({ top12EnteredAt: null })], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: NOW,
+    });
     expect(readLatestJobForTicker(db, 'ACME', DATE)?.top12At).toBe('2026-08-17T13:30:00Z');
   });
 

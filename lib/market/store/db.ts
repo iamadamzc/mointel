@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 8;
+export const SCHEMA_VERSION = 9;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -106,6 +106,9 @@ CREATE TABLE IF NOT EXISTS ticker_session (
   halt_raw               TEXT,
   halt_at                TEXT,
   high_res               INTEGER NOT NULL DEFAULT 0,
+  -- First crossing into the discovery rank threshold this session. Distinct
+  -- from qualified_at, which marks entry at any rank; both are retained.
+  top12_entered_at       TEXT,
   qualified_at           TEXT,
   qualified_price        REAL,
   qualified_rvol         REAL,
@@ -349,6 +352,7 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'research_jobs', column: 'sources_ready_at', definition: 'TEXT' },
   { table: 'research_jobs', column: 'analysis_started_at', definition: 'TEXT' },
   { table: 'research_jobs', column: 'accepted_at', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'top12_entered_at', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {
