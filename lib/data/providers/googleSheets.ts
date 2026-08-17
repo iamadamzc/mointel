@@ -1,0 +1,155 @@
+/**
+ * Google Sheets provider (server-only).
+ *
+ * Reads the TODAY and RESEARCH tabs with a single batched values request and
+ * converts them into normalized application objects. The sheet is treated as
+ * strictly read-only.
+ */
+
+import 'server-only';
+import { JWT } from 'google-auth-library';
+
+import { normalizeSheetRows } from '../rows';
+import type { DashboardDataProvider, DataSourceMeta } from '../types';
+
+const SHEETS_SCOPE = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+const DRIVE_METADATA_SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+
+export const TODAY_RANGE = 'TODAY!A1:AA';
+export const RESEARCH_RANGE = 'RESEARCH!A1:AK';
+
+export interface GoogleSheetsCredentials {
+  sheetId: string;
+  clientEmail: string;
+  privateKey: string;
+}
+
+/**
+ * `.env` files cannot hold real newlines comfortably, so private keys are
+ * stored with escaped "\n" sequences. Some hosts also wrap the value in quotes.
+ */
+export function normalizePrivateKey(rawKey: string): string {
+  let key = rawKey.trim();
+  if (
+    (key.startsWith('"') && key.endsWith('"')) ||
+    (key.startsWith("'") && key.endsWith("'"))
+  ) {
+    key = key.slice(1, -1);
+  }
+  return key.replace(/\\n/g, '\n').replace(/\r/g, '');
+}
+
+/** Returns credentials only when all three variables are present and usable. */
+export function readCredentialsFromEnv(): GoogleSheetsCredentials | null {
+  const sheetId = process.env.GOOGLE_SHEET_ID?.trim();
+  const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL?.trim();
+  const rawKey = process.env.GOOGLE_PRIVATE_KEY;
+
+  if (!sheetId || !clientEmail || !rawKey) return null;
+
+  const privateKey = normalizePrivateKey(rawKey);
+  if (!privateKey.includes('BEGIN') || !privateKey.includes('PRIVATE KEY')) return null;
+
+  return { sheetId, clientEmail, privateKey };
+}
+
+interface BatchGetResponse {
+  valueRanges?: Array<{ range?: string; values?: string[][] }>;
+}
+
+interface SpreadsheetMetaResponse {
+  properties?: { title?: string };
+}
+
+export class GoogleSheetsProvider implements DashboardDataProvider {
+  readonly kind = 'google-sheets' as const;
+
+  private readonly credentials: GoogleSheetsCredentials;
+  private client: JWT | null = null;
+  private cachedTitle: string | null = null;
+  /** Drive API is optional; once it fails we stop asking on every refresh. */
+  private driveModifiedTimeAvailable = true;
+
+  constructor(credentials: GoogleSheetsCredentials) {
+    this.credentials = credentials;
+  }
+
+  private getClient(): JWT {
+    if (!this.client) {
+      this.client = new JWT({
+        email: this.credentials.clientEmail,
+        key: this.credentials.privateKey,
+        scopes: [SHEETS_SCOPE, DRIVE_METADATA_SCOPE],
+      });
+    }
+    return this.client;
+  }
+
+  private async fetchTitle(): Promise<string | null> {
+    if (this.cachedTitle) return this.cachedTitle;
+    try {
+      const response = await this.getClient().request<SpreadsheetMetaResponse>({
+        url: `https://sheets.googleapis.com/v4/spreadsheets/${this.credentials.sheetId}?fields=properties.title`,
+      });
+      this.cachedTitle = response.data.properties?.title ?? null;
+    } catch {
+      this.cachedTitle = null;
+    }
+    return this.cachedTitle;
+  }
+
+  /** Best-effort: requires the Drive API to be enabled on the Google Cloud project. */
+  private async fetchSourceUpdatedAt(): Promise<string | null> {
+    if (!this.driveModifiedTimeAvailable) return null;
+    try {
+      const response = await this.getClient().request<{ modifiedTime?: string }>({
+        url: `https://www.googleapis.com/drive/v3/files/${this.credentials.sheetId}?fields=modifiedTime`,
+      });
+      return response.data.modifiedTime ?? null;
+    } catch {
+      this.driveModifiedTimeAvailable = false;
+      return null;
+    }
+  }
+
+  async load() {
+    const url =
+      `https://sheets.googleapis.com/v4/spreadsheets/${this.credentials.sheetId}/values:batchGet` +
+      `?ranges=${encodeURIComponent(TODAY_RANGE)}` +
+      `&ranges=${encodeURIComponent(RESEARCH_RANGE)}` +
+      `&valueRenderOption=FORMATTED_VALUE&majorDimension=ROWS`;
+
+    const response = await this.getClient().request<BatchGetResponse>({ url });
+    const ranges = response.data.valueRanges ?? [];
+
+    const todayValues = ranges[0]?.values ?? [];
+    const researchValues = ranges[1]?.values ?? [];
+
+    // Drop the header row from each tab; blank tabs must not throw.
+    const todayRows = todayValues.slice(1);
+    const researchRows = researchValues.slice(1);
+
+    const normalized = normalizeSheetRows(todayRows, researchRows);
+
+    const [sourceTitle, sourceUpdatedAt] = await Promise.all([
+      this.fetchTitle(),
+      this.fetchSourceUpdatedAt(),
+    ]);
+
+    const meta: Omit<DataSourceMeta, 'cacheAgeMs' | 'stale'> = {
+      provider: this.kind,
+      fetchedAt: new Date().toISOString(),
+      sourceUpdatedAt,
+      error: null,
+      sourceTitle,
+      warnings: normalized.warnings,
+    };
+
+    return {
+      tickers: normalized.tickers,
+      research: normalized.research,
+      summary: normalized.summary,
+      meta,
+    };
+  }
+}

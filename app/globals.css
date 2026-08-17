@@ -1,26 +1,110 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Trading-desk palette. Colors communicate STATE, not decoration:
+ * green = fresh/frontside strength, amber = warning, red = backside/danger,
+ * blue = informational, everything else is neutral chrome.
+ */
+@theme {
+  --color-desk: #06080b;
+  --color-panel: #0c0f14;
+  --color-panel-2: #11151c;
+  --color-panel-3: #161b23;
+  --color-line: #1b212a;
+  --color-line-2: #29313d;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-ink: #e9edf3;
+  --color-ink-2: #97a1b0;
+  --color-ink-3: #646d7c;
+
+  --color-pos: #2fc46f;
+  --color-warn: #e8ac33;
+  --color-neg: #f4574e;
+  --color-accent: #4d93ff;
+  --color-muted: #6d788a;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-desk);
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Numeric columns must stay column-aligned as values tick. */
+.num {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Dense dark scrollbars so panels do not read as light-mode widgets. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-2) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--color-line-2);
+  border-radius: 6px;
+  border: 2px solid var(--color-desk);
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Row-level change acknowledgement: a brief tint, no motion. */
+@keyframes row-change {
+  0% {
+    background-color: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.row-changed {
+  animation: row-change 2.4s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row-changed {
+    animation: none;
+    background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  }
+}
+
+/* Live indicator: slow, low-contrast, non-distracting. */
+@keyframes live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.live-dot {
+  animation: live-pulse 2.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot {
+    animation: none;
+  }
 }
