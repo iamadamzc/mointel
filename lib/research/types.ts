@@ -61,6 +61,11 @@ export interface ResearchJob {
   error: string | null;
   /** Fingerprint of the evidence this job last analyzed. */
   evidenceFingerprint: string | null;
+  /* Lifecycle stamps, for time-to-intelligence. */
+  top12At: string | null;
+  sourcesReadyAt: string | null;
+  analysisStartedAt: string | null;
+  acceptedAt: string | null;
 }
 
 /* ---------------------------------------------------------- issuer registry */
@@ -320,7 +325,12 @@ export type CatalystStatus =
  * `FLOW_DOMINANT` requires affirmative live-demand evidence. Finding no news is
  * not evidence of flow; that case is `NONE_IDENTIFIED`.
  */
-export type CatalystType = 'NEWS_DRIVEN' | 'FLOW_DOMINANT' | 'SECONDARY_STALE' | 'NONE_IDENTIFIED';
+export type CatalystType =
+  | 'NEWS_DRIVEN'
+  | 'FLOW_DOMINANT'
+  | 'SECONDARY_STALE'
+  | 'NONE_IDENTIFIED'
+  | 'UNKNOWN';
 
 /** Maps onto the desk's existing catalyst language. */
 export type CatalystGrade =
@@ -328,7 +338,8 @@ export type CatalystGrade =
   | 'LEGITIMATE_POSITIVE'
   | 'MODERATE_MIXED_SECONDARY'
   | 'WEAK_NEGATIVE_DILUTIVE'
-  | 'NONE';
+  | 'NONE'
+  | 'UNKNOWN';
 
 export type CatalystFreshness = 'FRESH' | 'RECENT' | 'STALE' | 'UNKNOWN';
 
@@ -365,6 +376,8 @@ export interface CatalystFindings {
   plausiblyExplainsMove: boolean | null;
   confidence: Confidence;
   evidenceSourceIds: number[];
+  /** What could not be established. Stated, not silently omitted. */
+  unknowns: string[];
 }
 
 export interface StructureFindings {
@@ -376,6 +389,7 @@ export interface StructureFindings {
    * `floatConfidence` stays `UNKNOWN`.
    */
   displayedFloat: number | null;
+  displayedFloatDate: string | null;
   displayedFloatSource: string | null;
   floatConfidence: Confidence;
   structureClassification: StructureClassification;
@@ -386,7 +400,11 @@ export interface StructureFindings {
   summary: string | null;
   confidence: Confidence;
   evidenceSourceIds: number[];
+  unknowns: string[];
 }
+
+/** How much prior momentum history a name carries. */
+export type FormerRunnerStatus = 'NONE' | 'FORMER_RUNNER' | 'FORMER_SUPERRUNNER' | 'UNKNOWN';
 
 export interface CycleFindings {
   cycleClassification: CycleClassification;
@@ -398,11 +416,15 @@ export interface CycleFindings {
    */
   currentCycleHigh: number | null;
   currentCycleHighConfidence: Confidence;
+  /** Only meaningful relative to a real current-cycle high. */
+  currentGivebackPct: number | null;
   historicalResistance: number | null;
-  formerRunnerStatus: string | null;
+  formerRunnerStatus: FormerRunnerStatus;
   recentMajorRuns: string[];
+  cycleWarnings: string[];
   confidence: Confidence;
   evidenceSourceIds: number[];
+  unknowns: string[];
 }
 
 export interface ResearchDossier {
@@ -434,6 +456,8 @@ export interface ResearchAnalysisVersion {
   sourceIds: number[];
   /** Version this one replaces, forming a reconstructible chain. */
   supersedesId: number | null;
+  /** How the analysis was produced; see the pipeline for what is recorded. */
+  metadata: Record<string, unknown>;
 }
 
 /** Current dossier schema version. Bump when the shape changes. */

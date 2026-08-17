@@ -17,6 +17,18 @@ import {
   readDemandStates,
   readFeedHealth,
 } from './store/repo';
+import {
+  readCurrentAnalyses,
+  readLatestJobForTicker,
+  readSourcesByIds,
+  researchTablesPresent,
+} from './store/researchRepo';
+import {
+  RESEARCH_STATUS_LABEL,
+  resolveDisplayStatus,
+  toEvidenceLink,
+  type AutoIntelligence,
+} from '../research/view';
 import type { DiscoveryState, MarketFeedHealth, MarketSnapshot } from './types';
 
 const globalStore = globalThis as typeof globalThis & {
@@ -124,6 +136,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       health: offlineHealth('Market worker has not written a state store yet.'),
       discovery: emptyDiscovery(config),
       demand: {},
+      intelligence: {},
       events: [],
       fetchedAt,
     };
@@ -193,10 +206,20 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
     const demand: Record<string, (typeof states)[number]> = {};
     for (const state of states) demand[state.ticker] = state;
 
+    // Automatic research rides along with the market payload because it lives
+    // in the same store. It is a read-only projection: the dashboard never
+    // touches the evidence tables directly.
+    const intelligence = readIntelligence(
+      db,
+      tradingDate,
+      states.map((state) => state.ticker),
+    );
+
     return {
       health,
       discovery,
       demand,
+      intelligence,
       events: readDeskEvents(db, tradingDate, 60),
       fetchedAt,
     };
@@ -209,8 +232,60 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       ),
       discovery: emptyDiscovery(config),
       demand: {},
+      intelligence: {},
       events: [],
       fetchedAt,
     };
   }
+}
+
+/**
+ * Reads accepted automatic research for the given tickers.
+ *
+ * Degrades to an empty map rather than throwing: this connection is read-only
+ * and may meet a store written before the research tables existed, and a page
+ * render must not depend on the research worker ever having run.
+ */
+function readIntelligence(
+  db: MarketDatabase,
+  tradingDate: string,
+  tickers: string[],
+): Record<string, AutoIntelligence> {
+  const result: Record<string, AutoIntelligence> = {};
+  if (!researchTablesPresent(db) || tickers.length === 0) return result;
+
+  const analyses = readCurrentAnalyses(db, tickers);
+
+  for (const ticker of tickers) {
+    const analysis = analyses.get(ticker) ?? null;
+    const job = readLatestJobForTicker(db, ticker, tradingDate);
+    if (!analysis && !job) continue;
+
+    const coverageIncomplete = analysis?.metadata.coverageIncomplete === true;
+    const status = resolveDisplayStatus({
+      job,
+      hasAnalysis: analysis !== null,
+      coverageIncomplete,
+      conflict: false,
+    });
+
+    result[ticker] = {
+      ticker,
+      status,
+      statusLabel: RESEARCH_STATUS_LABEL[status],
+      analysis,
+      provenance: analysis ? 'AUTO' : 'NONE',
+      generatedAt: analysis?.generatedAt ?? null,
+      model: analysis?.model ?? null,
+      schemaVersion:
+        typeof analysis?.metadata.schemaVersion === 'number'
+          ? analysis.metadata.schemaVersion
+          : null,
+      analysisVersionId: analysis?.id ?? null,
+      coverageIncomplete,
+      evidence: analysis ? readSourcesByIds(db, analysis.sourceIds).map(toEvidenceLink) : [],
+    };
+  }
+
+  return result;
 }

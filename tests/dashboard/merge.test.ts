@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildDeskRow, mergeDesk, resolveDisplayPrice } from '@/lib/dashboard/merge';
+import { dedupeSheetRows, buildDeskRow, mergeDesk, resolveDisplayPrice } from '@/lib/dashboard/merge';
 import { normalizeSheetRows } from '@/lib/data/rows';
 import { MockProvider } from '@/lib/data/providers/mock';
 import type { DashboardState } from '@/lib/data/types';
@@ -90,6 +90,7 @@ function snapshot(demands: DemandState[]): MarketSnapshot {
       calculatedAt: '2026-08-14T13:31:02.000Z',
     },
     demand: Object.fromEntries(demands.map((state) => [state.ticker, state])),
+    intelligence: {},
     events: [],
     fetchedAt: '2026-08-14T13:31:02.000Z',
   };
@@ -228,5 +229,62 @@ describe('sheet-only operation without the market worker (requirement 32)', () =
     const price = resolveDisplayPrice(merged.rows.get('VNTX')!);
     expect(price.source).toBe('ALPACA');
     expect(price.price).toBe(9.99);
+  });
+});
+
+describe('duplicate TODAY rows', () => {
+  /**
+   * The live sheet carries a ticker twice: a populated research row and a later
+   * placeholder. Keying by ticker in sheet order let the placeholder win, which
+   * erased a completed human analysis and made a researched name read as
+   * unanalyzed on the board.
+   */
+  function row(ticker: string, classified: boolean, sourceRow: number) {
+    return {
+      ticker,
+      sourceRow,
+      cycle: {
+        raw: '',
+        display: '',
+        state: classified ? ('FRONTSIDE_WARNING' as const) : ('UNCLASSIFIED' as const),
+      },
+      structure: {
+        raw: '',
+        floatRaw: '',
+        state: classified ? ('DIRTY_FLOAT' as const) : ('UNCLASSIFIED' as const),
+        badges: [],
+      },
+      catalyst: {
+        gradeRaw: '',
+        gradeBucket: classified ? ('A' as const) : ('UNCLASSIFIED' as const),
+        latest: '',
+        original: '',
+        latestTime: '',
+        originalTime: '',
+        hasPremarketUpdate: false,
+      },
+      priority: {
+        raw: '',
+        bucket: classified ? ('A' as const) : ('UNCLASSIFIED' as const),
+        isRevised: false,
+      },
+    } as unknown as Parameters<typeof dedupeSheetRows>[0][number];
+  }
+
+  it('keeps the row that actually states conclusions', () => {
+    const kept = dedupeSheetRows([row('IVF', true, 4), row('IVF', false, 17)]);
+    expect(kept).toHaveLength(1);
+    expect(kept[0].sourceRow).toBe(4);
+    expect(kept[0].structure.state).toBe('DIRTY_FLOAT');
+  });
+
+  it('keeps the populated row regardless of sheet order', () => {
+    const kept = dedupeSheetRows([row('IVF', false, 17), row('IVF', true, 4)]);
+    expect(kept[0].structure.state).toBe('DIRTY_FLOAT');
+  });
+
+  it('leaves distinct tickers untouched and preserves order', () => {
+    const kept = dedupeSheetRows([row('AAA', true, 1), row('BBB', true, 2)]);
+    expect(kept.map((r) => r.ticker)).toEqual(['AAA', 'BBB']);
   });
 });

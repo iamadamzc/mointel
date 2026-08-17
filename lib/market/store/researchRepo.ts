@@ -56,6 +56,10 @@ interface JobRow {
   retry_count: number;
   error: string | null;
   evidence_fingerprint: string | null;
+  top12_at: string | null;
+  sources_ready_at: string | null;
+  analysis_started_at: string | null;
+  accepted_at: string | null;
 }
 
 function toJob(row: JobRow): ResearchJob {
@@ -72,6 +76,10 @@ function toJob(row: JobRow): ResearchJob {
     retryCount: row.retry_count,
     error: row.error,
     evidenceFingerprint: row.evidence_fingerprint,
+    top12At: row.top12_at,
+    sourcesReadyAt: row.sources_ready_at,
+    analysisStartedAt: row.analysis_started_at,
+    acceptedAt: row.accepted_at,
   };
 }
 
@@ -81,6 +89,8 @@ export interface EnqueueRequest {
   priority: number;
   reason: string;
   queuedAt: string;
+  /** When the ticker first entered the ranked board, if known. */
+  top12At?: string | null;
 }
 
 /**
@@ -95,10 +105,10 @@ export function enqueueResearchJob(db: MarketDatabase, request: EnqueueRequest):
   const result = db
     .prepare(
       `INSERT OR IGNORE INTO research_jobs
-         (ticker, trading_date, status, priority, reason, queued_at)
-       VALUES (@ticker, @tradingDate, 'QUEUED', @priority, @reason, @queuedAt)`,
+         (ticker, trading_date, status, priority, reason, queued_at, top12_at)
+       VALUES (@ticker, @tradingDate, 'QUEUED', @priority, @reason, @queuedAt, @top12At)`,
     )
-    .run(request);
+    .run({ ...request, top12At: request.top12At ?? null });
 
   return result.changes > 0 ? Number(result.lastInsertRowid) : null;
 }
@@ -149,11 +159,29 @@ export function updateJobStatus(
   db.prepare('UPDATE research_jobs SET status = ? WHERE id = ?').run(status, id);
 }
 
+/**
+ * Advances a job to the next stage and stamps when it happened.
+ *
+ * One statement per transition keeps the timeline honest: a stamp is written
+ * when the stage actually starts, never backfilled from a later observation.
+ */
+export function markJobStage(
+  db: MarketDatabase,
+  id: number,
+  stage: 'SOURCES_READY' | 'ANALYZING',
+  at: string,
+): void {
+  const column = stage === 'SOURCES_READY' ? 'sources_ready_at' : 'analysis_started_at';
+  db.prepare(`UPDATE research_jobs SET status = ?, ${column} = ? WHERE id = ?`).run(stage, at, id);
+}
+
 export interface JobCompletion {
   status: Extract<ResearchJobStatus, 'COMPLETE' | 'PARTIAL' | 'FAILED'>;
   completedAt: string;
   error?: string | null;
   evidenceFingerprint?: string | null;
+  /** When an accepted dossier was stored, for time-to-intelligence. */
+  acceptedAt?: string | null;
 }
 
 export function completeJob(db: MarketDatabase, id: number, completion: JobCompletion): void {
@@ -162,7 +190,8 @@ export function completeJob(db: MarketDatabase, id: number, completion: JobCompl
         SET status = @status,
             completed_at = @completedAt,
             error = @error,
-            evidence_fingerprint = COALESCE(@evidenceFingerprint, evidence_fingerprint)
+            evidence_fingerprint = COALESCE(@evidenceFingerprint, evidence_fingerprint),
+            accepted_at = COALESCE(@acceptedAt, accepted_at)
       WHERE id = @id`,
   ).run({
     id,
@@ -170,6 +199,7 @@ export function completeJob(db: MarketDatabase, id: number, completion: JobCompl
     completedAt: completion.completedAt,
     error: completion.error ?? null,
     evidenceFingerprint: completion.evidenceFingerprint ?? null,
+    acceptedAt: completion.acceptedAt ?? null,
   });
 }
 
@@ -577,6 +607,7 @@ interface VersionRow {
   dossier: string;
   source_ids: string;
   supersedes_id: number | null;
+  metadata: string | null;
 }
 
 function toVersion(row: VersionRow): ResearchAnalysisVersion {
@@ -590,7 +621,17 @@ function toVersion(row: VersionRow): ResearchAnalysisVersion {
     dossier: JSON.parse(row.dossier) as ResearchDossier,
     sourceIds: JSON.parse(row.source_ids) as number[],
     supersedesId: row.supersedes_id,
+    metadata: parseJson(row.metadata),
   };
+}
+
+function parseJson(raw: string | null): Record<string, unknown> {
+  if (!raw) return {};
+  try {
+    return JSON.parse(raw) as Record<string, unknown>;
+  } catch {
+    return {};
+  }
 }
 
 export interface NewAnalysisVersion {
@@ -600,6 +641,8 @@ export interface NewAnalysisVersion {
   model: string | null;
   dossier: ResearchDossier;
   sourceIds: number[];
+  /** How the analysis was produced: versions, repairs, escalation, usage. */
+  metadata?: Record<string, unknown>;
 }
 
 /**
@@ -622,10 +665,10 @@ export function saveAnalysisVersion(
       .prepare(
         `INSERT INTO research_analysis_versions
            (ticker, generated_at, evidence_fingerprint, model, analysis_version,
-            dossier, source_ids, supersedes_id)
+            dossier, source_ids, supersedes_id, metadata)
          VALUES
            (@ticker, @generatedAt, @evidenceFingerprint, @model, @analysisVersion,
-            @dossier, @sourceIds, @supersedesId)`,
+            @dossier, @sourceIds, @supersedesId, @metadata)`,
       )
       .run({
         ticker: analysis.ticker,
@@ -636,6 +679,7 @@ export function saveAnalysisVersion(
         dossier: JSON.stringify(analysis.dossier),
         sourceIds: JSON.stringify(analysis.sourceIds),
         supersedesId: current?.current_version_id ?? null,
+        metadata: JSON.stringify(analysis.metadata ?? {}),
       });
 
     const id = Number(result.lastInsertRowid);

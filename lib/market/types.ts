@@ -337,6 +337,8 @@ export interface BackfillSummary {
   notes: string[];
 }
 
+import type { AutoIntelligence } from '../research/view';
+
 export type DeskEventType =
   | 'NEW_HOD'
   | 'HALT'
@@ -371,6 +373,8 @@ export interface MarketSnapshot {
   discovery: DiscoveryState;
   /** Every tracked ticker the dashboard may need, keyed by symbol. */
   demand: Record<string, DemandState>;
+  /** Accepted automatic research, keyed by symbol. Empty until Phase 4 runs. */
+  intelligence: Record<string, AutoIntelligence>;
   events: DeskEvent[];
   fetchedAt: string;
 }

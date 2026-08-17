@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 5;
+export const SCHEMA_VERSION = 8;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -170,7 +170,13 @@ CREATE TABLE IF NOT EXISTS research_jobs (
   completed_at         TEXT,
   retry_count          INTEGER NOT NULL DEFAULT 0,
   error                TEXT,
-  evidence_fingerprint TEXT
+  evidence_fingerprint TEXT,
+  -- Lifecycle stamps. Time-to-intelligence is a product metric, so the stages
+  -- are recorded as they happen rather than reconstructed afterwards.
+  top12_at             TEXT,
+  sources_ready_at     TEXT,
+  analysis_started_at  TEXT,
+  accepted_at          TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_research_jobs_status
   ON research_jobs (trading_date, status, priority DESC);
@@ -250,7 +256,12 @@ CREATE TABLE IF NOT EXISTS research_analysis_versions (
   analysis_version     INTEGER NOT NULL,
   dossier              TEXT NOT NULL,
   source_ids           TEXT NOT NULL DEFAULT '[]',
-  supersedes_id        INTEGER
+  supersedes_id        INTEGER,
+  -- Provenance of the analysis itself: schema and prompt versions, repair and
+  -- escalation history, validation outcome, token usage and latency. Kept so a
+  -- conclusion can be audited against how it was produced, not only against
+  -- what it cited.
+  metadata             TEXT NOT NULL DEFAULT '{}'
 );
 CREATE INDEX IF NOT EXISTS idx_research_versions_ticker
   ON research_analysis_versions (ticker, generated_at DESC);
@@ -264,6 +275,31 @@ CREATE TABLE IF NOT EXISTS research_dossiers (
   updated_at         TEXT NOT NULL,
   FOREIGN KEY (current_version_id) REFERENCES research_analysis_versions (id)
 );
+
+-- Split-adjusted daily bars, kept for momentum-cycle context only.
+--
+-- Deliberately a separate table from minute_bars, which stays on its short
+-- 3-day live-state retention. Cycle classification needs months of history;
+-- live state needs minutes. Widening minute retention to serve cycle history
+-- would grow the hot path to solve a cold-path problem.
+CREATE TABLE IF NOT EXISTS daily_bars (
+  symbol       TEXT NOT NULL,
+  trading_date TEXT NOT NULL,
+  open         REAL,
+  high         REAL,
+  low          REAL,
+  close        REAL,
+  volume       INTEGER,
+  trade_count  INTEGER,
+  vwap         REAL,
+  -- Split adjustment is recorded so a later change of basis is detectable
+  -- rather than silently mixing adjusted and unadjusted prices.
+  adjustment   TEXT NOT NULL DEFAULT 'split',
+  source       TEXT NOT NULL,
+  fetched_at   TEXT NOT NULL,
+  PRIMARY KEY (symbol, trading_date)
+);
+CREATE INDEX IF NOT EXISTS idx_daily_bars_symbol ON daily_bars (symbol, trading_date DESC);
 
 -- Single-row research worker health, mirroring feed_health.
 CREATE TABLE IF NOT EXISTS research_health (
@@ -304,6 +340,15 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
     definition: "TEXT NOT NULL DEFAULT 'UNKNOWN'",
   },
   { table: 'issuer_registry', column: 'company_sources', definition: 'TEXT' },
+  {
+    table: 'research_analysis_versions',
+    column: 'metadata',
+    definition: "TEXT NOT NULL DEFAULT '{}'",
+  },
+  { table: 'research_jobs', column: 'top12_at', definition: 'TEXT' },
+  { table: 'research_jobs', column: 'sources_ready_at', definition: 'TEXT' },
+  { table: 'research_jobs', column: 'analysis_started_at', definition: 'TEXT' },
+  { table: 'research_jobs', column: 'accepted_at', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {

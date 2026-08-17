@@ -15,6 +15,10 @@ import { TICKER_MAP_URL } from '../lib/research/sec/tickerMap';
 import { submissionsUrl } from '../lib/research/sec/submissions';
 import { OpenAiDiscoveryProvider } from '../lib/research/catalyst/openaiDiscovery';
 import { NoopDiscoveryProvider } from '../lib/research/catalyst/discovery';
+import {
+  AUTOMATIC_DOSSIER_SCHEMA_VERSION,
+  INTERPRETER_PROMPT_VERSION,
+} from '../lib/research/interpret/schema';
 import { databaseExists, openDatabase } from '../lib/market/store/db';
 import { countJobsByStatus, researchTablesPresent } from '../lib/market/store/researchRepo';
 
@@ -120,6 +124,41 @@ async function main(): Promise<void> {
         ).n;
         record('Change detection', 'OK', `${clustered} cluster(s), ${canonical} canonical source(s)`);
       }
+
+      // Interpretation layer state.
+      const versionColumns = (
+        db.prepare('PRAGMA table_info(research_analysis_versions)').all() as Array<{ name: string }>
+      ).map((column) => column.name);
+
+      if (!versionColumns.includes('metadata')) {
+        record('Analysis versioning', 'WARN', 'store predates Phase 4 analysis metadata');
+      } else {
+        const versions = (
+          db.prepare('SELECT COUNT(*) AS n FROM research_analysis_versions').get() as { n: number }
+        ).n;
+        const current = (
+          db.prepare('SELECT COUNT(*) AS n FROM research_dossiers').get() as { n: number }
+        ).n;
+        const chained = (
+          db
+            .prepare('SELECT COUNT(*) AS n FROM research_analysis_versions WHERE supersedes_id IS NOT NULL')
+            .get() as { n: number }
+        ).n;
+        record(
+          'Analysis versioning',
+          'OK',
+          `${versions} version(s), ${current} current dossier(s), ${chained} superseded`,
+        );
+
+        const latest = db
+          .prepare('SELECT ticker, generated_at, model FROM research_analysis_versions ORDER BY id DESC LIMIT 1')
+          .get() as { ticker: string; generated_at: string; model: string | null } | undefined;
+        record(
+          'Last dossier',
+          latest ? 'OK' : 'WARN',
+          latest ? `${latest.ticker} at ${latest.generated_at} via ${latest.model ?? 'unknown'}` : 'none accepted yet',
+        );
+      }
     }
     db.close();
   }
@@ -169,6 +208,23 @@ async function main(): Promise<void> {
     'Company source collector',
     'OK',
     `poll ${config.catalyst.sourcePollSeconds}s; discovery ${config.catalyst.webDiscoveryUnresolvedMinutes}m unresolved / ${config.catalyst.webDiscoveryResolvedMinutes}m resolved`,
+  );
+  record(
+    'Interpreter',
+    model.available ? 'OK' : 'WARN',
+    model.available
+      ? `${config.model.researchModel} (escalation ${config.model.escalationModel})`
+      : 'unavailable — collection continues, interpretation does not',
+  );
+  record(
+    'Dossier schema',
+    'INFO',
+    `schema v${AUTOMATIC_DOSSIER_SCHEMA_VERSION}, prompt v${INTERPRETER_PROMPT_VERSION}, strict JSON enforced`,
+  );
+  record(
+    'Guardrails',
+    'OK',
+    'float/shelf/EFFECT/resale/warrant/cycle-high/absorption rules active',
   );
   record(
     'Catalyst windows',

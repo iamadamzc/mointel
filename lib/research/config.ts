@@ -11,6 +11,7 @@
  */
 
 import { DEFAULT_CATALYST_WINDOWS } from './time';
+import { DEFAULT_CYCLE_HISTORY_TRADING_DAYS } from './history';
 
 /** SEC publishes a 10 req/s ceiling. We stay well under it deliberately. */
 const DEFAULT_SEC_RATE = 5;
@@ -74,10 +75,22 @@ export interface CatalystConfig {
   contextLookbackDays: number;
 }
 
+export interface CycleHistoryConfig {
+  /**
+   * Daily sessions retained for momentum-cycle context.
+   *
+   * Separate from minute-bar retention on purpose: cycle history needs months,
+   * live state needs minutes, and widening the hot path to serve the cold one
+   * would be the wrong trade.
+   */
+  tradingDays: number;
+}
+
 export interface ResearchConfig {
   sec: SecConfig;
   model: ModelConfig;
   catalyst: CatalystConfig;
+  cycleHistory: CycleHistoryConfig;
   autoRank: number;
   concurrency: number;
   catalystRefreshMinutes: number;
@@ -128,6 +141,12 @@ export function readResearchConfig(env: NodeJS.ProcessEnv = process.env): Resear
       contextLookbackDays: positiveNumber(
         env.CATALYST_CONTEXT_LOOKBACK_DAYS,
         DEFAULT_CATALYST_WINDOWS.contextLookbackDays,
+      ),
+    },
+    cycleHistory: {
+      tradingDays: positiveNumber(
+        env.CYCLE_HISTORY_TRADING_DAYS,
+        DEFAULT_CYCLE_HISTORY_TRADING_DAYS,
       ),
     },
     autoRank: positiveNumber(env.RESEARCH_AUTO_RANK, DEFAULT_AUTO_RANK),

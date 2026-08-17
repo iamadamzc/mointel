@@ -13,6 +13,7 @@ import {
   structureTone,
 } from '@/components/StatusBadge';
 import { HaltBadge } from '@/components/DiscoveryBoard';
+import { AutomaticIntelligence } from '@/components/AutomaticIntelligence';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { CycleLevels } from '@/lib/data/cycleLevels';
 import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
@@ -65,6 +66,17 @@ export function TickerDrawer({ row, research, onClose }: TickerDrawerProps) {
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-4 pb-10">
           <Demand row={row} />
 
+          {/* Automatic research sits above sheet research so a Discovery name
+              with no sheet row still leads with its intelligence. */}
+          <AutomaticIntelligence
+            intel={row.intelligence}
+            comparison={row.comparison}
+            Section={Section}
+            Field={Field}
+            FieldLabel={FieldLabel}
+            ProseField={ProseField}
+          />
+
           {ticker ? (
             <>
               <Overview ticker={ticker} research={research} />
@@ -85,7 +97,7 @@ export function TickerDrawer({ row, research, onClose }: TickerDrawerProps) {
                 </p>
               )}
             </>
-          ) : (
+          ) : row.intelligence?.analysis ? null : (
             <NotAnalyzedPanel symbol={row.ticker} research={research} />
           )}
         </div>

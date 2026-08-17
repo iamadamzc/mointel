@@ -9,6 +9,12 @@ import {
   cycleTone,
 } from '@/components/StatusBadge';
 import type { DeskRow } from '@/lib/dashboard/merge';
+import {
+  CATALYST_GRADE_LABEL,
+  CYCLE_LABEL,
+  type AutoIntelligence,
+} from '@/lib/research/view';
+import type { CycleClassification, StructureClassification } from '@/lib/research/types';
 import type { DiscoveryState } from '@/lib/market/types';
 import {
   formatCount,
@@ -160,6 +166,7 @@ function DiscoveryRow({
 }) {
   const demand = row.demand;
   const research = row.research;
+  const auto = row.intelligence;
 
   return (
     <tr
@@ -249,14 +256,27 @@ function DiscoveryRow({
 
       <td className="px-2 py-1.5 align-middle">
         {research ? (
-          <StatusBadge
-            label={research.cycle.display}
-            tone={cycleTone(research.cycle.state)}
-            title={research.cycle.raw}
-            className="max-w-[160px]"
-          />
+          <span className="flex items-center gap-1">
+            <StatusBadge
+              label={research.cycle.display}
+              tone={cycleTone(research.cycle.state)}
+              title={research.cycle.raw}
+              className="max-w-[160px]"
+            />
+            <ProvenanceMark row={row} />
+          </span>
+        ) : auto?.analysis ? (
+          <span className="flex items-center gap-1">
+            <StatusBadge
+              label={CYCLE_LABEL[auto.analysis.dossier.cycle.cycleClassification]}
+              tone={autoCycleTone(auto.analysis.dossier.cycle.cycleClassification)}
+              title={auto.analysis.dossier.cycle.reasoning ?? undefined}
+              className="max-w-[160px]"
+            />
+            <ProvenanceMark row={row} />
+          </span>
         ) : (
-          <NotAnalyzed />
+          <ResearchStatus intel={auto} />
         )}
       </td>
 
@@ -274,8 +294,15 @@ function DiscoveryRow({
           >
             {truncate(research.catalyst.gradeRaw || '—', 20)}
           </span>
+        ) : auto?.analysis ? (
+          <span
+            className="text-[11px] font-semibold text-ink-1"
+            title={auto.analysis.dossier.catalyst.summary ?? undefined}
+          >
+            {truncate(CATALYST_GRADE_LABEL[auto.analysis.dossier.catalyst.catalystGrade], 24)}
+          </span>
         ) : (
-          <NotAnalyzed />
+          <ResearchStatus intel={auto} />
         )}
       </td>
 
@@ -285,8 +312,13 @@ function DiscoveryRow({
             state={research.structure.state}
             raw={research.structure.raw || research.structure.floatRaw}
           />
+        ) : auto?.analysis ? (
+          <StructureBadge
+            state={autoStructureState(auto.analysis.dossier.structure.structureClassification)}
+            raw={auto.analysis.dossier.structure.summary ?? ''}
+          />
         ) : (
-          <NotAnalyzed />
+          <ResearchStatus intel={auto} />
         )}
       </td>
 
@@ -300,6 +332,92 @@ function DiscoveryRow({
         <HaltBadge state={demand?.haltState ?? 'UNKNOWN'} raw={demand?.haltRaw ?? null} />
       </td>
     </tr>
+  );
+}
+
+/**
+ * Maps the automatic cycle classification onto the existing badge tones, so a
+ * dossier and a sheet row read identically on the board.
+ */
+function autoCycleTone(cycle: CycleClassification) {
+  switch (cycle) {
+    case 'GREEN_FRESH_FRONTSIDE':
+      return cycleTone('FRESH_FRONTSIDE');
+    case 'YELLOW_FRONTSIDE_WARNING':
+      return cycleTone('FRONTSIDE_WARNING');
+    case 'RED_BACKSIDE':
+      return cycleTone('BACKSIDE');
+    default:
+      return cycleTone('UNCLASSIFIED');
+  }
+}
+
+/** UNKNOWN maps to UNKNOWN_STRUCTURE, never to CLEAN. */
+function autoStructureState(structure: StructureClassification) {
+  switch (structure) {
+    case 'CLEAN':
+      return 'CLEAN' as const;
+    case 'DIRTY_FLOAT':
+      return 'DIRTY_FLOAT' as const;
+    case 'CAUTION':
+      return 'UNKNOWN_STRUCTURE' as const;
+    default:
+      return 'UNKNOWN_STRUCTURE' as const;
+  }
+}
+
+const PROVENANCE_LABEL: Record<string, string> = {
+  AUTO: 'auto',
+  SHEET: 'sheet',
+  SHEET_AUTO_AGREE: 'sheet + auto',
+  AUTO_NEWER: 'sheet + auto',
+  SHEET_NEWER: 'sheet + auto',
+  CONFLICT: 'conflict',
+  NONE: '',
+};
+
+/**
+ * Source marker.
+ *
+ * Quiet by default — where intelligence came from matters less than what it
+ * says. CONFLICT is the exception and is coloured, because a disagreement
+ * between the human review and the automatic layer is itself the finding and
+ * must not be hidden behind a silently-chosen winner.
+ */
+function ProvenanceMark({ row }: { row: DeskRow }) {
+  const label = PROVENANCE_LABEL[row.provenance] ?? '';
+  if (!label) return null;
+
+  const conflict = row.provenance === 'CONFLICT';
+  const reasons = row.comparison?.conflictReasons.join(', ') ?? '';
+  const intel = row.intelligence;
+
+  return (
+    <span
+      className={`text-[9px] uppercase tracking-wider ${conflict ? 'text-warn' : 'text-ink-3'}`}
+      title={
+        conflict
+          ? `Sheet and automatic research disagree (${reasons}). Both conclusions are shown in the drawer.`
+          : `${label}${intel?.model ? ` · ${intel.model}` : ''}${
+              intel?.coverageIncomplete ? ' · coverage incomplete' : ''
+            }`
+      }
+    >
+      {conflict ? 'conflict' : intel?.coverageIncomplete ? `${label}·partial` : label}
+    </span>
+  );
+}
+
+/**
+ * What a cell shows before a dossier exists. Progress is stated plainly so
+ * nobody has to wonder whether anything is happening.
+ */
+function ResearchStatus({ intel }: { intel: AutoIntelligence | null }) {
+  if (!intel || intel.status === 'NOT_ANALYZED') return <NotAnalyzed />;
+  return (
+    <span className="text-[10px] uppercase tracking-wide text-ink-3" title="Automatic research">
+      {intel.statusLabel}
+    </span>
   );
 }
 
