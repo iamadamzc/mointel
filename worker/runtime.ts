@@ -146,7 +146,36 @@ export class MarketRuntime {
     this.credentials = options.credentials;
     this.enforceSessionWindow = options.enforceSessionWindow ?? true;
 
-    this.db = openDatabase(this.config.dbPath);
+    /*
+     * Schema upgrades are announced.
+     *
+     * Every research worker already logs its own; this one did not, so the live
+     * store could be snapshotted and migrated in complete silence and an
+     * operator had to go looking in data/backups to find out whether the safety
+     * net had fired at all. A backup is exactly the kind of action that should
+     * leave a trace in the log without anyone having to ask.
+     */
+    const upgrade: { toVersion: number | null } = { toVersion: null };
+
+    this.db = openDatabase(this.config.dbPath, {
+      onSchemaBackup: (info) => {
+        upgrade.toVersion = info.toVersion;
+        this.logger.info(`[db] schema upgrade v${info.fromVersion} → v${info.toVersion}`);
+        this.logger.info(`[db] backup created: ${info.path}`);
+
+        const line = `[db] backup integrity: ${info.integrity}`;
+        // A bad copy does not stop the migration — it is transactional, and the
+        // store being read is the one that just produced this file — but it
+        // must not scroll past looking like every other startup line.
+        if (info.integrity === 'ok') this.logger.info(line);
+        else this.logger.error(line);
+      },
+    });
+
+    if (upgrade.toVersion !== null) {
+      this.logger.info(`[db] migration complete: v${upgrade.toVersion}`);
+    }
+
     const claim = claimStoreForMode(this.db, options.mode);
     if (claim.cleared) {
       this.logger.info(`[store] cleared state from a previous mode; now ${options.mode}`);

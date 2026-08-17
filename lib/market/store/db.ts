@@ -432,7 +432,11 @@ export function schemaBackupDirectory(dbPath: string): string {
  * writes a single consistent file and cannot run inside a transaction, which is
  * why this happens before the migration opens one.
  */
-function createSchemaBackup(db: MarketDatabase, dbPath: string, fromVersion: number): string {
+function createSchemaBackup(
+  db: MarketDatabase,
+  dbPath: string,
+  fromVersion: number,
+): { path: string; integrity: string } {
   const directory = schemaBackupDirectory(dbPath);
   fs.mkdirSync(directory, { recursive: true });
 
@@ -441,7 +445,27 @@ function createSchemaBackup(db: MarketDatabase, dbPath: string, fromVersion: num
   const target = path.join(directory, `${base}-v${fromVersion}-${stamp}.db`);
 
   db.prepare('VACUUM INTO ?').run(target);
-  return target;
+
+  /*
+   * The copy is read back before it is trusted.
+   *
+   * A backup nobody has opened is a hope, not a safety net, and the whole point
+   * of this file is the moment somebody reaches for it. VACUUM INTO writes a
+   * fresh consistent database, so a failure here means the disk is in trouble
+   * rather than the logic — which is worth saying loudly, but not worth
+   * refusing to start a live desk over. The caller decides how to report it;
+   * the migration below is transactional either way.
+   */
+  let integrity: string;
+  try {
+    const copy = new Database(target, { readonly: true });
+    integrity = String(copy.pragma('integrity_check', { simple: true }));
+    copy.close();
+  } catch (error) {
+    integrity = `unreadable: ${(error as Error).message}`;
+  }
+
+  return { path: target, integrity };
 }
 
 export interface OpenOptions {
@@ -449,7 +473,13 @@ export interface OpenOptions {
   /** Skip schema creation (used by the read-only Next.js connection). */
   skipSchema?: boolean;
   /** Called with the backup path when a schema upgrade snapshots the store. */
-  onSchemaBackup?: (info: { path: string; fromVersion: number; toVersion: number }) => void;
+  onSchemaBackup?: (info: {
+    path: string;
+    fromVersion: number;
+    toVersion: number;
+    /** `integrity_check` on the copy: 'ok', or what went wrong. */
+    integrity: string;
+  }) => void;
 }
 
 export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketDatabase {
@@ -473,9 +503,10 @@ export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketD
     // reports 0 and has nothing to lose; a current one reports SCHEMA_VERSION
     // and is left alone, so ordinary startups do not accumulate copies.
     if (fromVersion > 0 && fromVersion < SCHEMA_VERSION) {
-      const backupPath = createSchemaBackup(db, dbPath, fromVersion);
+      const backup = createSchemaBackup(db, dbPath, fromVersion);
       options.onSchemaBackup?.({
-        path: backupPath,
+        path: backup.path,
+        integrity: backup.integrity,
         fromVersion,
         toVersion: SCHEMA_VERSION,
       });

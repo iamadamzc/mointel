@@ -3,7 +3,13 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { claimStoreForMode, getMeta, openDatabase, setMeta } from '@/lib/market/store/db';
+import {
+  SCHEMA_VERSION,
+  claimStoreForMode,
+  getMeta,
+  openDatabase,
+  setMeta,
+} from '@/lib/market/store/db';
 import {
   countBaselines,
   insertDeskEvents,
@@ -347,5 +353,86 @@ describe('Top-N entry stamp persistence', () => {
       extraSymbols: ['ACME'],
     });
     expect(read.top12EnteredAt).toBe('2026-08-17T13:45:00.000Z');
+  });
+});
+
+/**
+ * Schema upgrades must leave a trace.
+ *
+ * The backup itself already worked — but the market worker created it without
+ * saying so, and a safety action nobody can see in the log is one an operator
+ * only discovers by going looking on disk after the fact.
+ */
+describe('schema upgrade reporting', () => {
+  function agedStore(fromVersion: number): string {
+    const file = path.join(
+      fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-upgrade-')),
+      'market.db',
+    );
+    temporaryFiles.push(file);
+
+    // Build a real store, then wind its version back to stand in for one
+    // written before the current schema.
+    const seed = openDatabase(file);
+    upsertBaselines(seed, [baseline('ACME')], 'LIVE');
+    seed.pragma(`user_version = ${fromVersion}`);
+    seed.close();
+
+    return file;
+  }
+
+  it('reports the upgrade, the backup path and the backup integrity', () => {
+    const file = agedStore(SCHEMA_VERSION - 2);
+    const seen: Array<{
+      path: string;
+      fromVersion: number;
+      toVersion: number;
+      integrity: string;
+    }> = [];
+
+    const db = openDatabase(file, { onSchemaBackup: (info) => seen.push(info) });
+
+    expect(seen).toHaveLength(1);
+    expect(seen[0].fromVersion).toBe(SCHEMA_VERSION - 2);
+    expect(seen[0].toVersion).toBe(SCHEMA_VERSION);
+
+    // The path is a real file, and the copy has been read back rather than
+    // merely written.
+    expect(fs.existsSync(seen[0].path)).toBe(true);
+    expect(seen[0].integrity).toBe('ok');
+
+    // And the upgrade actually happened.
+    expect(Number(db.pragma('user_version', { simple: true }))).toBe(SCHEMA_VERSION);
+    db.close();
+  });
+
+  it('backs up the data the operator would reach for', () => {
+    const file = agedStore(SCHEMA_VERSION - 2);
+    let backupPath = '';
+    openDatabase(file, { onSchemaBackup: (info) => (backupPath = info.path) }).close();
+
+    const copy = openDatabase(backupPath, { readonly: true, skipSchema: true });
+    expect(countBaselines(copy, '2026-08-14')).toBe(1);
+    copy.close();
+  });
+
+  it('says nothing on an ordinary startup, because nothing was backed up', () => {
+    const file = path.join(
+      fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-upgrade-')),
+      'market.db',
+    );
+    temporaryFiles.push(file);
+
+    let calls = 0;
+    const count = () => {
+      calls += 1;
+    };
+
+    // A brand-new store has nothing to lose, and a current one has nothing to
+    // do; neither should accumulate copies or log an upgrade that did not run.
+    openDatabase(file, { onSchemaBackup: count }).close();
+    openDatabase(file, { onSchemaBackup: count }).close();
+
+    expect(calls).toBe(0);
   });
 });
