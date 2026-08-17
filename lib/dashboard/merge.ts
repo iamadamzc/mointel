@@ -8,6 +8,7 @@
  */
 
 import { computeDisplayedFloatTurnover } from '@/lib/market/derive';
+import { deriveCycleLevels, type CycleLevels } from '@/lib/data/cycleLevels';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
 import type { DashboardState, MomentumTicker, StructuralResearch } from '@/lib/data/types';
 
@@ -27,6 +28,8 @@ export interface DeskRow {
   displayedFloatSource: 'RESEARCH' | 'TODAY' | null;
   /** Cumulative session volume / displayed float. NOT effective float turnover. */
   displayedFloatTurnover: number | null;
+  /** Current-cycle high vs historical resistance, kept strictly separate. */
+  cycleLevels: CycleLevels;
 }
 
 /**
@@ -67,6 +70,11 @@ export function buildDeskRow(
       demand?.cumulativeVolume ?? null,
       float.value,
     ),
+    cycleLevels: deriveCycleLevels({
+      ticker: research,
+      research: researchRecord,
+      currentPrice: demand?.price ?? research?.price.value ?? null,
+    }),
   };
 }
 

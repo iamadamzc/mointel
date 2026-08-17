@@ -486,6 +486,67 @@ describe('unknown baselines produce unknown RVOL (requirement 11)', () => {
   });
 });
 
+describe('ranked discovery is restricted to operating-company equity', () => {
+  it('keeps a preferred series out of the ranking while still tracking it', () => {
+    const engine = createEngine({
+      // Mirrors the classification layer: PSA.PRM is a preferred series.
+      isDiscoveryEligible: (symbol) => symbol !== 'PSA.PRM',
+    });
+
+    engine.setBaselines(
+      new Map([
+        ['PSA.PRM', baseline('PSA.PRM', 100_000)],
+        ['FIEE', baseline('FIEE', 1_000_000)],
+      ]),
+    );
+    engine.track('PSA.PRM');
+    engine.track('FIEE');
+
+    // The preferred has the far higher RVOL and would otherwise rank first.
+    engine.ingest(bar('PSA.PRM', ts(1), { c: 15.67, v: 4_000_000 }));
+    engine.ingest(bar('FIEE', ts(1), { c: 6.22, v: 2_000_000 }));
+
+    const result = engine.recompute();
+
+    expect(engine.getDemandState('PSA.PRM')?.rvolRank).toBeNull();
+    expect(engine.getDemandState('FIEE')?.rvolRank).toBe(1);
+    expect(result.eligibleCount).toBe(1);
+
+    // Still tracked, with its market state intact — just not ranked.
+    const preferred = engine.getDemandState('PSA.PRM');
+    expect(preferred).not.toBeNull();
+    expect(preferred?.cumulativeVolume).toBe(4_000_000);
+    expect(preferred?.rvol).toBeCloseTo(40, 5);
+  });
+
+  it('ranks everything when no classification evidence is available', () => {
+    const engine = createEngine();
+    engine.setBaselines(
+      new Map([
+        ['PSA.PRM', baseline('PSA.PRM', 100_000)],
+        ['FIEE', baseline('FIEE', 1_000_000)],
+      ]),
+    );
+    engine.track('PSA.PRM');
+    engine.track('FIEE');
+    engine.ingest(bar('PSA.PRM', ts(1), { c: 15.67, v: 4_000_000 }));
+    engine.ingest(bar('FIEE', ts(1), { c: 6.22, v: 2_000_000 }));
+
+    expect(engine.recompute().eligibleCount).toBe(2);
+  });
+
+  it('does not emit discovery events for an ineligible instrument', () => {
+    const engine = createEngine({ isDiscoveryEligible: (symbol) => symbol !== 'ABCD.WS' });
+    engine.setBaselines(new Map([['ABCD.WS', baseline('ABCD.WS', 100_000)]]));
+    engine.track('ABCD.WS');
+    engine.ingest(bar('ABCD.WS', ts(1), { c: 2, v: 5_000_000 }));
+
+    const result = engine.recompute();
+    expect(result.events).toHaveLength(0);
+    expect(engine.getDemandState('ABCD.WS')?.latched).toBe(false);
+  });
+});
+
 describe('high-resolution interest set', () => {
   it('is the union of sheet names, top internal ranks and latched candidates', () => {
     const engine = createEngine({ internalRank: 3 });

@@ -11,6 +11,7 @@ import type {
   MarketFeedHealth,
   MarketMinuteBar,
   RvolBaseline,
+  SecurityClassification,
 } from '../types';
 
 /* ------------------------------------------------------------------ baselines */
@@ -220,6 +221,10 @@ export interface TickerSessionRow {
   bar_at: string | null;
   previous_close: number | null;
   previous_close_source: string | null;
+  reference_rth_close: number | null;
+  reference_rth_close_date: string | null;
+  reference_rth_close_source: string | null;
+  reference_rth_close_basis: string | null;
   percent_change: number | null;
   volume_base: number;
   volume_base_through: string | null;
@@ -278,6 +283,12 @@ export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandSt
     barAt: row.bar_at,
     previousClose: row.previous_close,
     previousCloseSource: (row.previous_close_source as DemandState['previousCloseSource']) ?? null,
+    referenceRthClose: row.reference_rth_close,
+    referenceRthCloseDate: row.reference_rth_close_date,
+    referenceRthCloseSource:
+      (row.reference_rth_close_source as DemandState['referenceRthCloseSource']) ?? null,
+    referenceRthCloseBasis:
+      (row.reference_rth_close_basis as DemandState['referenceRthCloseBasis']) ?? null,
     percentChange: row.percent_change,
     cumulativeVolume: row.cumulative_volume,
     volumeSource: row.volume_source,
@@ -328,7 +339,9 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
   const statement = db.prepare(`
     INSERT INTO ticker_session (
       symbol, trading_date, price, price_source, price_at, bar_close, bar_at,
-      previous_close, previous_close_source, percent_change,
+      previous_close, previous_close_source,
+      reference_rth_close, reference_rth_close_date, reference_rth_close_source,
+      reference_rth_close_basis, percent_change,
       volume_base, volume_base_through, volume_base_source, cumulative_volume, volume_source,
       session_high, session_low,
       rvol, rvol_rank, previous_rvol_rank, rvol_rank_change, rvol_confidence,
@@ -340,7 +353,9 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       feed, last_event_at, updated_at
     ) VALUES (
       @symbol, @trading_date, @price, @price_source, @price_at, @bar_close, @bar_at,
-      @previous_close, @previous_close_source, @percent_change,
+      @previous_close, @previous_close_source,
+      @reference_rth_close, @reference_rth_close_date, @reference_rth_close_source,
+      @reference_rth_close_basis, @percent_change,
       @volume_base, @volume_base_through, @volume_base_source, @cumulative_volume, @volume_source,
       @session_high, @session_low,
       @rvol, @rvol_rank, @previous_rvol_rank, @rvol_rank_change, @rvol_confidence,
@@ -356,6 +371,10 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       bar_close = excluded.bar_close, bar_at = excluded.bar_at,
       previous_close = excluded.previous_close,
       previous_close_source = excluded.previous_close_source,
+      reference_rth_close = excluded.reference_rth_close,
+      reference_rth_close_date = excluded.reference_rth_close_date,
+      reference_rth_close_source = excluded.reference_rth_close_source,
+      reference_rth_close_basis = excluded.reference_rth_close_basis,
       percent_change = excluded.percent_change,
       volume_base = excluded.volume_base,
       volume_base_through = excluded.volume_base_through,
@@ -551,16 +570,29 @@ export interface UniverseAsset {
   tradable: boolean;
   status: string | null;
   source: string;
+  classification: SecurityClassification;
 }
 
 export function replaceUniverse(db: MarketDatabase, assets: UniverseAsset[]): void {
   const updatedAt = new Date().toISOString();
   const statement = db.prepare(`
-    INSERT INTO universe (symbol, name, exchange, tradable, status, source, updated_at)
-    VALUES (@symbol, @name, @exchange, @tradable, @status, @source, @updatedAt)
+    INSERT INTO universe (
+      symbol, name, exchange, tradable, status, source, updated_at,
+      classification, classification_confidence, classification_source,
+      classification_reason, discovery_eligible
+    )
+    VALUES (
+      @symbol, @name, @exchange, @tradable, @status, @source, @updatedAt,
+      @classification, @confidence, @classificationSource, @reason, @eligible
+    )
     ON CONFLICT(symbol) DO UPDATE SET
       name = excluded.name, exchange = excluded.exchange, tradable = excluded.tradable,
-      status = excluded.status, source = excluded.source, updated_at = excluded.updated_at
+      status = excluded.status, source = excluded.source, updated_at = excluded.updated_at,
+      classification = excluded.classification,
+      classification_confidence = excluded.classification_confidence,
+      classification_source = excluded.classification_source,
+      classification_reason = excluded.classification_reason,
+      discovery_eligible = excluded.discovery_eligible
   `);
 
   const run = db.transaction((batch: UniverseAsset[]) => {
@@ -573,6 +605,11 @@ export function replaceUniverse(db: MarketDatabase, assets: UniverseAsset[]): vo
         status: asset.status,
         source: asset.source,
         updatedAt,
+        classification: asset.classification.classification,
+        confidence: asset.classification.confidence,
+        classificationSource: asset.classification.source,
+        reason: asset.classification.reason,
+        eligible: asset.classification.discoveryEligible ? 1 : 0,
       });
     }
   });
@@ -585,6 +622,74 @@ export function readUniverseSymbols(db: MarketDatabase): string[] {
     .prepare('SELECT symbol FROM universe WHERE tradable = 1 ORDER BY symbol')
     .all() as Array<{ symbol: string }>;
   return rows.map((row) => row.symbol);
+}
+
+/** Cached universe rows, used to reclassify without re-listing assets. */
+export function readUniverseRows(
+  db: MarketDatabase,
+): Array<{ symbol: string; name: string | null; exchange: string | null; classification: string }> {
+  return db
+    .prepare('SELECT symbol, name, exchange, classification FROM universe WHERE tradable = 1')
+    .all() as Array<{
+    symbol: string;
+    name: string | null;
+    exchange: string | null;
+    classification: string;
+  }>;
+}
+
+/** Applies a freshly computed classification to already-cached universe rows. */
+export function updateUniverseClassifications(
+  db: MarketDatabase,
+  classifications: SecurityClassification[],
+): void {
+  const statement = db.prepare(`
+    UPDATE universe
+    SET classification = @classification,
+        classification_confidence = @confidence,
+        classification_source = @source,
+        classification_reason = @reason,
+        discovery_eligible = @eligible
+    WHERE symbol = @symbol
+  `);
+
+  const run = db.transaction((batch: SecurityClassification[]) => {
+    for (const entry of batch) {
+      statement.run({
+        symbol: entry.symbol,
+        classification: entry.classification,
+        confidence: entry.confidence,
+        source: entry.source,
+        reason: entry.reason,
+        eligible: entry.discoveryEligible ? 1 : 0,
+      });
+    }
+  });
+
+  run(classifications);
+}
+
+/** Symbols allowed to compete in the ranked common-equity Discovery board. */
+export function readDiscoveryEligibleSymbols(db: MarketDatabase): Set<string> {
+  const rows = db
+    .prepare('SELECT symbol FROM universe WHERE tradable = 1 AND discovery_eligible = 1')
+    .all() as Array<{ symbol: string }>;
+  return new Set(rows.map((row) => row.symbol));
+}
+
+export function readClassificationCounts(
+  db: MarketDatabase,
+): Array<{ classification: string; count: number; eligible: number }> {
+  return db
+    .prepare(
+      `SELECT classification,
+              COUNT(*) AS count,
+              SUM(discovery_eligible) AS eligible
+       FROM universe WHERE tradable = 1
+       GROUP BY classification
+       ORDER BY count DESC`,
+    )
+    .all() as Array<{ classification: string; count: number; eligible: number }>;
 }
 
 export function universeUpdatedAt(db: MarketDatabase): string | null {

@@ -39,6 +39,14 @@ Two processes, one shared local store:
 └──────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+### Semantic invariants
+
+Three distinctions are load-bearing enough that they have their own modules and tests:
+
+1. **Reference close ≠ previous close.** `lib/market/derive.ts::resolveReferenceRthClose` picks the prior session's 16:00 ET close during premarket and RTH, and the current day's close after 16:00. Alpaca's 1Day bar close was verified against minute bars to be the official closing-auction print (full-session volume, regular-session OHLC), so it is the source; minute bars would miss the auction.
+2. **Ranked universe ≠ Alpaca `us_equity`.** `lib/market/securities.ts` classifies every asset and only `COMMON_EQUITY`, `ADR_ADS` and `UNKNOWN` may be ranked. Ineligible instruments are still tracked and viewable.
+3. **Current-cycle high ≠ historical resistance.** `lib/data/cycleLevels.ts` classifies each sheet level and only computes a giveback from an affirmatively current-cycle high.
+
 ### Layer rules
 
 1. **The UI depends on types, never on a source.** Components import from `lib/data/types.ts` and `lib/market/types.ts`. No component knows a column letter, an Alpaca payload shape, or that SQLite exists.

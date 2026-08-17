@@ -14,6 +14,7 @@ import {
 } from '@/components/StatusBadge';
 import { HaltBadge } from '@/components/DiscoveryBoard';
 import type { DeskRow } from '@/lib/dashboard/merge';
+import type { CycleLevels } from '@/lib/data/cycleLevels';
 import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
 import {
   formatCount,
@@ -68,7 +69,7 @@ export function TickerDrawer({ row, research, onClose }: TickerDrawerProps) {
             <>
               <Overview ticker={ticker} research={research} />
               <Catalyst ticker={ticker} research={research} />
-              <MomentumCycle ticker={ticker} research={research} />
+              <MomentumCycle ticker={ticker} research={research} levels={row.cycleLevels} />
               <StructuralIntelligence ticker={ticker} research={research} />
               <Levels ticker={ticker} research={research} />
               <DeskRead ticker={ticker} research={research} />
@@ -274,7 +275,19 @@ function Demand({ row }: { row: DeskRow | null }) {
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 md:grid-cols-4">
         <Field label="Price" value={formatPrice(demand.price)} numeric />
         <Field label="% Change" value={formatSignedPercent(demand.percentChange)} numeric />
-        <Field label="Previous Close" value={formatPrice(demand.previousClose)} numeric />
+        <Field
+          label={
+            demand.referenceRthCloseBasis === 'CURRENT_SESSION'
+              ? "Reference Close (today's RTH)"
+              : 'Reference Close (prior RTH)'
+          }
+          value={
+            demand.referenceRthClose !== null
+              ? `${formatPrice(demand.referenceRthClose)}${demand.referenceRthCloseDate ? ` · ${demand.referenceRthCloseDate}` : ''}`
+              : 'Unknown'
+          }
+          numeric
+        />
         <Field label="Session Volume" value={formatCount(demand.cumulativeVolume)} numeric />
         <Field label="Daily RVOL" value={formatMultiple(demand.rvol)} numeric />
         <Field
@@ -347,7 +360,12 @@ function Demand({ row }: { row: DeskRow | null }) {
         {demand.baselineAdjustment ?? 'unknown'}-adjusted, average{' '}
         {formatCount(demand.baselineAverageVolume)} shares, calculated{' '}
         {demand.baselineCalculatedAt ? new Date(demand.baselineCalculatedAt).toISOString() : '—'}.
-        Previous close from {demand.previousCloseSource ?? 'unknown source'}. Volume from{' '}
+        Percent change measured against the{' '}
+        {demand.referenceRthCloseBasis === 'CURRENT_SESSION' ? 'current' : 'prior'} session&apos;s
+        16:00 ET regular-session close
+        {demand.referenceRthCloseDate ? ` (${demand.referenceRthCloseDate})` : ''}, source{' '}
+        {demand.referenceRthCloseSource ?? 'unknown'}. Prior session close{' '}
+        {formatPrice(demand.previousClose)}. Volume from{' '}
         {demand.volumeSource ?? 'unknown source'}. Level 1 spread only — this is not depth.
       </p>
     </Section>
@@ -453,21 +471,90 @@ function Catalyst({
   );
 }
 
+/**
+ * Current-cycle levels and historical resistance are presented as separate
+ * concepts. A 52-week high is not the high of the move happening now, and the
+ * distance to it is not a current giveback — showing them interchangeably is
+ * what this section exists to prevent.
+ */
 function MomentumCycle({
   ticker,
   research,
+  levels,
 }: {
   ticker: MomentumTicker;
   research: StructuralResearch | undefined;
+  levels: CycleLevels;
 }) {
+  const { currentCycleHigh, historicalResistance, unverifiedRunHigh, sheetReportedFlush } = levels;
+
   return (
     <Section title="Momentum Cycle">
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 md:grid-cols-4">
-        <Field label="Cycle Classification" value={research?.cycleClassificationRaw || ticker.cycle.raw} />
-        <Field label="Recent Run High (TODAY)" value={ticker.recentRunHigh.display} numeric />
-        <Field label="Recent Cycle High" value={research?.recentCycleHigh.display ?? ''} numeric />
-        <Field label="Flush From High" value={research?.flushFromHighPct.display ?? ticker.flushFromHighPct.display} numeric />
+        <Field
+          label="Cycle Classification"
+          value={research?.cycleClassificationRaw || ticker.cycle.raw}
+        />
+        {currentCycleHigh ? (
+          <Field label="Current Cycle High" value={currentCycleHigh.raw} numeric />
+        ) : (
+          <div className="min-w-0">
+            <FieldLabel>Current Cycle High</FieldLabel>
+            <div className="mt-1 text-[12px] leading-snug text-ink-3">Not established</div>
+          </div>
+        )}
+        {levels.givebackFromCurrentCycleHighPct !== null ? (
+          <Field
+            label="Current Giveback"
+            value={`${levels.givebackFromCurrentCycleHighPct.toFixed(1)}%`}
+            numeric
+          />
+        ) : null}
       </div>
+
+      {historicalResistance ? (
+        <div className="mt-3 rounded-sm border border-line bg-panel/60 px-3 py-2">
+          <div className="flex flex-wrap items-baseline gap-2">
+            <FieldLabel>Historical Resistance</FieldLabel>
+            <span className="num text-[13px] font-semibold text-ink">
+              {historicalResistance.value !== null
+                ? formatPrice(historicalResistance.value)
+                : historicalResistance.raw}
+            </span>
+            {historicalResistance.label ? (
+              <StatusBadge label={historicalResistance.label} tone="dim" />
+            ) : null}
+          </div>
+          <p className="mt-1 text-[11px] leading-relaxed text-ink-3">
+            {historicalResistance.raw} · {historicalResistance.field}. {historicalResistance.reason}.
+            This is a prior level, not the high of the current move.
+          </p>
+          {sheetReportedFlush && sheetReportedFlush.basisKind === 'HISTORICAL' ? (
+            <p className="mt-1 text-[11px] leading-relaxed text-ink-3">
+              Sheet-reported distance from that historical level: {sheetReportedFlush.raw} (raw sheet
+              value, retained for audit — not a current-cycle giveback).
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+
+      {unverifiedRunHigh ? (
+        <div className="mt-3">
+          <FieldLabel>Recent Run High (unverified basis)</FieldLabel>
+          <p className="num mt-1 text-[12px] text-ink-2">
+            {unverifiedRunHigh.raw}{' '}
+            <span className="text-[11px] text-ink-3">
+              — {unverifiedRunHigh.field}; nothing establishes whether this belongs to the current
+              cycle
+            </span>
+          </p>
+          {sheetReportedFlush && sheetReportedFlush.basisKind !== 'HISTORICAL' ? (
+            <p className="mt-1 text-[11px] text-ink-3">
+              Sheet-reported flush from that level: {sheetReportedFlush.raw}.
+            </p>
+          ) : null}
+        </div>
+      ) : null}
 
       <ProseField label="Cycle Reasoning" value={research?.cycleReasoning ?? ''} className="mt-3" />
       <ProseField label="Recent Major Runs" value={research?.recentMajorRuns ?? ''} className="mt-3" />

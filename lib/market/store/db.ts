@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -70,6 +70,10 @@ CREATE TABLE IF NOT EXISTS ticker_session (
   bar_at                 TEXT,
   previous_close         REAL,
   previous_close_source  TEXT,
+  reference_rth_close        REAL,
+  reference_rth_close_date   TEXT,
+  reference_rth_close_source TEXT,
+  reference_rth_close_basis  TEXT,
   percent_change         REAL,
   volume_base            INTEGER NOT NULL DEFAULT 0,
   volume_base_through    TEXT,
@@ -141,9 +145,48 @@ CREATE TABLE IF NOT EXISTS universe (
   tradable   INTEGER NOT NULL DEFAULT 1,
   status     TEXT,
   source     TEXT NOT NULL,
-  updated_at TEXT NOT NULL
+  updated_at TEXT NOT NULL,
+  classification            TEXT NOT NULL DEFAULT 'UNKNOWN',
+  classification_confidence TEXT NOT NULL DEFAULT 'LOW',
+  classification_source     TEXT,
+  classification_reason     TEXT,
+  discovery_eligible        INTEGER NOT NULL DEFAULT 1
 );
 `;
+
+/**
+ * Columns added after the first release. SQLite has no "ADD COLUMN IF NOT
+ * EXISTS", so existing stores are migrated in place rather than rebuilt — the
+ * RVOL baselines in them are expensive to recompute.
+ */
+const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }> = [
+  { table: 'ticker_session', column: 'reference_rth_close', definition: 'REAL' },
+  { table: 'ticker_session', column: 'reference_rth_close_date', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'reference_rth_close_source', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'reference_rth_close_basis', definition: 'TEXT' },
+  { table: 'universe', column: 'classification', definition: "TEXT NOT NULL DEFAULT 'UNKNOWN'" },
+  {
+    table: 'universe',
+    column: 'classification_confidence',
+    definition: "TEXT NOT NULL DEFAULT 'LOW'",
+  },
+  { table: 'universe', column: 'classification_source', definition: 'TEXT' },
+  { table: 'universe', column: 'classification_reason', definition: 'TEXT' },
+  { table: 'universe', column: 'discovery_eligible', definition: 'INTEGER NOT NULL DEFAULT 1' },
+];
+
+function migrate(db: MarketDatabase): void {
+  for (const { table, column, definition } of ADDED_COLUMNS) {
+    const columns = db.prepare(`PRAGMA table_info(${table})`).all() as Array<{ name: string }>;
+    if (columns.length === 0) continue;
+    if (columns.some((existing) => existing.name === column)) continue;
+    db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+  }
+
+  // Created after the ALTERs: an index cannot reference a column that an older
+  // store has not been migrated to yet.
+  db.exec('CREATE INDEX IF NOT EXISTS idx_universe_eligible ON universe (discovery_eligible)');
+}
 
 export interface OpenOptions {
   readonly?: boolean;
@@ -167,6 +210,7 @@ export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketD
 
   if (!options.readonly && !options.skipSchema) {
     db.exec(SCHEMA);
+    migrate(db);
     db.pragma(`user_version = ${SCHEMA_VERSION}`);
   }
 

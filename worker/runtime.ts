@@ -19,8 +19,12 @@ import {
   insertDeskEvents,
   loadBaselines,
   pruneMinuteBars,
+  readClassificationCounts,
+  readDiscoveryEligibleSymbols,
+  readUniverseRows,
   readUniverseSymbols,
   replaceUniverse,
+  updateUniverseClassifications,
   universeUpdatedAt,
   upsertBaselines,
   upsertMinuteBars,
@@ -28,12 +32,19 @@ import {
   writeFeedHealth,
   type TickerSessionRow,
 } from '../lib/market/store/repo';
+import {
+  classifySecurity,
+  summarizeClassifications,
+  CLASSIFIER_VERSION,
+  type ClassificationSummary,
+} from '../lib/market/securities';
 import { DemandEngine, type EngineEvent } from '../lib/market/engine';
 import { buildBaseline, computeDailyRvol } from '../lib/market/rvol';
 import {
   addDays,
   etDateString,
   etWallClockToUtc,
+  hasRthClosed,
   minuteKey,
   resolveTradingSession,
   sessionPhaseForMinutes,
@@ -58,6 +69,7 @@ import type {
 const CALENDAR_META_KEY = 'calendar';
 const CALENDAR_FETCHED_KEY = 'calendar_fetched_at';
 const UNIVERSE_MAX_AGE_MS = 20 * 60 * 60 * 1000; // refresh roughly daily
+const CLASSIFIER_VERSION_KEY = 'classifier_version';
 
 export interface RuntimeLogger {
   info: (message: string) => void;
@@ -118,6 +130,12 @@ export class MarketRuntime {
   private sheetSymbols: string[] = [];
   private onHighResChange: ((symbols: string[]) => void) | null = null;
   private lastHighResKey = '';
+  /** Symbols permitted in the ranked common-equity discovery universe. */
+  private discoveryEligible = new Set<string>();
+  private classificationSummary: ClassificationSummary | null = null;
+  /** Set once today's official RTH close has been captured after 16:00 ET. */
+  private rthCloseCaptured = false;
+  private rthCloseCaptureInFlight = false;
 
   constructor(options: RuntimeOptions) {
     this.config = options.config;
@@ -284,7 +302,13 @@ export class MarketRuntime {
       baselineSessions: this.config.baselineSessions,
       enforceSessionWindow: this.enforceSessionWindow,
       onPromotionCandidate: (symbol) => this.queuePromotion(symbol),
+      // No classification evidence at all means no filtering, so a missing
+      // universe table can never silently empty the discovery board.
+      isDiscoveryEligible: (symbol) =>
+        this.discoveryEligible.size === 0 || this.discoveryEligible.has(symbol),
     });
+
+    this.engine.setRthClosed(hasRthClosed(now, this.tradingDate));
 
     this.logger.info(
       `[session] trading date ${this.tradingDate} (${this.sessionPhase}${this.sessionPending ? ', pending' : ''})`,
@@ -300,12 +324,18 @@ export class MarketRuntime {
 
     if (cached.length > 0 && fresh) {
       this.universeMode = 'FULL';
-      this.logger.info(`[demand] universe: ${cached.length} cached US equities`);
+      this.reclassifyCachedUniverseIfNeeded();
+      this.loadDiscoveryEligibility();
+      this.logger.info(
+        `[demand] universe: ${cached.length} cached US equities ` +
+          `(${this.discoveryEligible.size} eligible for common-equity discovery)`,
+      );
       return cached;
     }
 
     if (!this.rest) {
       this.universeMode = cached.length > 0 ? 'FULL' : 'SHEET_ONLY';
+      this.loadDiscoveryEligibility();
       return cached;
     }
 
@@ -319,28 +349,95 @@ export class MarketRuntime {
           isSupportedExchange(asset.exchange),
       );
 
+      // Alpaca's us_equity class mixes operating-company stock with preferreds,
+      // warrants, rights, units and ETPs. Classify before ranking anything.
+      const classified = equities.map((asset) => ({
+        asset,
+        classification: classifySecurity({
+          symbol: asset.symbol,
+          name: asset.name ?? null,
+          exchange: asset.exchange ?? null,
+        }),
+      }));
+
       replaceUniverse(
         this.db,
-        equities.map((asset) => ({
+        classified.map(({ asset, classification }) => ({
           symbol: asset.symbol,
           name: asset.name ?? null,
           exchange: asset.exchange ?? null,
           tradable: true,
           status: asset.status ?? null,
           source: 'alpaca-assets',
+          classification,
         })),
       );
 
+      setMeta(this.db, CLASSIFIER_VERSION_KEY, CLASSIFIER_VERSION);
+      const summary = summarizeClassifications(classified.map((entry) => entry.classification));
+      this.classificationSummary = summary;
       this.universeMode = 'FULL';
+      this.loadDiscoveryEligibility();
+
       this.logger.info(`[demand] universe: ${equities.length} active US equities`);
+      this.logger.info(
+        `[demand] discovery-eligible (common/ADR/unknown): ${summary.eligible}; ` +
+          `excluded ${summary.excluded} — ` +
+          Object.entries(summary.byClass)
+            .filter(([name, count]) => count > 0 && !['COMMON_EQUITY', 'ADR_ADS', 'UNKNOWN'].includes(name))
+            .map(([name, count]) => `${name} ${count}`)
+            .join(', '),
+      );
+
       return equities.map((asset) => asset.symbol);
     } catch (error) {
       this.universeMode = cached.length > 0 ? 'FULL' : 'DEGRADED_ASSETS';
+      this.loadDiscoveryEligibility();
       this.logger.warn(
         `[demand] asset list unavailable (${this.redactError(error)}); running in degraded universe mode`,
       );
       return cached;
     }
+  }
+
+  /**
+   * Loads the ranked-discovery allow list. An empty universe table means we
+   * have no classification evidence at all, in which case nothing is filtered —
+   * absence of evidence must not silently empty the board.
+   */
+  private loadDiscoveryEligibility(): void {
+    this.discoveryEligible = readDiscoveryEligibleSymbols(this.db);
+  }
+
+  /**
+   * A universe cached before the classification layer existed carries no
+   * evidence at all. Reclassify it in place from the stored name and venue
+   * rather than re-listing every asset from Alpaca.
+   */
+  private reclassifyCachedUniverseIfNeeded(): void {
+    const rows = readUniverseRows(this.db);
+    if (rows.length === 0) return;
+
+    const storedVersion = getMeta(this.db, CLASSIFIER_VERSION_KEY);
+    const alreadyClassified = rows.some((row) => row.classification !== 'UNKNOWN');
+    if (alreadyClassified && storedVersion === CLASSIFIER_VERSION) return;
+
+    const classifications = rows.map((row) =>
+      classifySecurity({ symbol: row.symbol, name: row.name, exchange: row.exchange }),
+    );
+    updateUniverseClassifications(this.db, classifications);
+    setMeta(this.db, CLASSIFIER_VERSION_KEY, CLASSIFIER_VERSION);
+
+    const summary = summarizeClassifications(classifications);
+    this.classificationSummary = summary;
+    this.logger.info(
+      `[demand] reclassified ${summary.total} cached assets: ` +
+        `${summary.eligible} discovery-eligible, ${summary.excluded} excluded`,
+    );
+  }
+
+  get classificationCounts(): Array<{ classification: string; count: number; eligible: number }> {
+    return readClassificationCounts(this.db);
   }
 
   /* ------------------------------------------------------------ baselines */
@@ -483,20 +580,45 @@ export class MarketRuntime {
     const snapshotMinute = minuteKey(new Date());
     const rvolPreview: Array<{ symbol: string; rvol: number }> = [];
 
+    const rthClosed = hasRthClosed(new Date(), this.tradingDate);
+    this.engine.setRthClosed(rthClosed);
+    this.rthCloseCaptured = rthClosed;
+
     for (const [symbol, snapshot] of snapshots) {
       const dailyBar = snapshot.dailyBar;
       const belongsToSession =
         dailyBar && etDateString(new Date(dailyBar.t)) === this.tradingDate;
 
       const volume = belongsToSession ? dailyBar.v : 0;
-      const previousClose =
-        baselines.get(symbol)?.previousClose ?? snapshot.prevDailyBar?.c ?? null;
+      const baseline = baselines.get(symbol);
+      const previousClose = baseline?.previousClose ?? snapshot.prevDailyBar?.c ?? null;
 
       const latestTrade = snapshot.latestTrade;
       const tradeBelongs =
         latestTrade?.t && etDateString(new Date(latestTrade.t)) === this.tradingDate;
 
+      // A same-day daily bar only carries a CLOSE once the regular session has
+      // ended; before 16:00 ET its `c` is just the running last price.
+      const todayRthClose =
+        rthClosed && belongsToSession
+          ? {
+              close: dailyBar.c,
+              date: this.tradingDate,
+              source: 'alpaca-daily-bar-rth-close' as const,
+            }
+          : undefined;
+
       this.engine.seedSession(symbol, {
+        priorRthClose: {
+          close: previousClose,
+          date: baseline?.previousCloseDate ?? (snapshot.prevDailyBar?.t
+            ? etDateString(new Date(snapshot.prevDailyBar.t))
+            : null),
+          source: baseline?.previousClose
+            ? 'alpaca-daily-bar-rth-close'
+            : 'alpaca-snapshot-prev-daily-bar',
+        },
+        todayRthClose,
         volumeBase: volume,
         volumeBaseThrough: belongsToSession ? snapshotMinute : null,
         volumeBaseSource: 'alpaca-snapshot-daily-bar',
@@ -707,7 +829,63 @@ export class MarketRuntime {
         this.logger.error(`[demand] flush failed: ${this.redactError(error)}`);
       }
       void this.drainPromotions();
+      void this.captureTodayRthClose();
     }, this.config.flushIntervalMs);
+  }
+
+  /**
+   * Captures the current trading date's official 16:00 ET close.
+   *
+   * Percent change switches reference at the closing bell, so a worker that has
+   * been running since premarket needs today's close the moment the regular
+   * session ends. One snapshot pass over the tracked symbols supplies it —
+   * Alpaca's daily bar close is the official closing-auction print, which a
+   * minute bar cannot reproduce.
+   */
+  private async captureTodayRthClose(): Promise<void> {
+    if (this.rthCloseCaptured || this.rthCloseCaptureInFlight || !this.rest) return;
+
+    const now = new Date();
+    if (!hasRthClosed(now, this.tradingDate)) return;
+
+    // Give the closing auction a moment to settle before asking for it.
+    const secondsSinceClose = (now.getTime() - etWallClockToUtc(this.tradingDate, 16, 0).getTime()) / 1000;
+    if (secondsSinceClose < 120) return;
+
+    this.rthCloseCaptureInFlight = true;
+    try {
+      this.engine.setRthClosed(true);
+
+      const symbols = this.engine.symbolsMissingTodayRthClose();
+      if (symbols.length === 0) {
+        this.rthCloseCaptured = true;
+        return;
+      }
+
+      const snapshots = await this.rest.getSnapshots(symbols);
+      let captured = 0;
+
+      for (const [symbol, snapshot] of snapshots) {
+        const dailyBar = snapshot.dailyBar;
+        if (!dailyBar || etDateString(new Date(dailyBar.t)) !== this.tradingDate) continue;
+        this.engine.setTodayRthClose(symbol, {
+          close: dailyBar.c,
+          date: this.tradingDate,
+          source: 'alpaca-daily-bar-rth-close',
+        });
+        captured += 1;
+      }
+
+      this.rthCloseCaptured = true;
+      this.logger.info(
+        `[demand] captured today's 16:00 ET regular-session close for ${captured} symbols; ` +
+          'percent change now references the current session',
+      );
+    } catch (error) {
+      this.logger.warn(`[demand] RTH close capture failed: ${this.redactError(error)}`);
+    } finally {
+      this.rthCloseCaptureInFlight = false;
+    }
   }
 
   /** Persists dirty state, recomputes ranking, and republishes health. */
@@ -887,6 +1065,10 @@ export function toRow(state: DemandState): TickerSessionRow {
     bar_at: state.barAt,
     previous_close: state.previousClose,
     previous_close_source: state.previousCloseSource,
+    reference_rth_close: state.referenceRthClose,
+    reference_rth_close_date: state.referenceRthCloseDate,
+    reference_rth_close_source: state.referenceRthCloseSource,
+    reference_rth_close_basis: state.referenceRthCloseBasis,
     percent_change: state.percentChange,
     volume_base: 0,
     volume_base_through: null,

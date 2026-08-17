@@ -14,7 +14,12 @@
  */
 
 import { computeDailyRvol, rankByRvol, rvolConfidenceFor } from './rvol';
-import { computePercentChange, computeQuoteState, isNewerObservation } from './derive';
+import {
+  computePercentChange,
+  computeQuoteState,
+  isNewerObservation,
+  resolveReferenceRthClose,
+} from './derive';
 import { normalizeHaltState } from './alpaca/messages';
 import { sessionEndUtc, sessionStartUtc } from './session';
 import type {
@@ -24,6 +29,8 @@ import type {
   MarketFeed,
   MarketObservation,
   QuoteState,
+  ReferenceRthClose,
+  RthCloseReading,
   RvolBaseline,
   RvolConfidence,
 } from './types';
@@ -56,6 +63,10 @@ export interface SessionSeed {
   priceSource?: DemandState['priceSource'];
   previousClose?: number | null;
   previousCloseSource?: DemandState['previousCloseSource'];
+  /** The PRIOR session's official 16:00 ET close. */
+  priorRthClose?: RthCloseReading;
+  /** The CURRENT trading date's official 16:00 ET close, once it exists. */
+  todayRthClose?: RthCloseReading;
 }
 
 interface TickerRuntime {
@@ -80,6 +91,10 @@ interface TickerRuntime {
 
   previousClose: number | null;
   previousCloseSource: DemandState['previousCloseSource'] | null;
+  /** Official regular-session closes, kept per session so the reference can switch at 16:00. */
+  priorRthClose: RthCloseReading;
+  todayRthClose: RthCloseReading;
+  reference: ReferenceRthClose | null;
   percentChange: number | null;
 
   baseline: RvolBaseline | null;
@@ -134,6 +149,12 @@ export interface EngineOptions {
   enforceSessionWindow?: boolean;
   /** Called when an untracked symbol looks like a discovery candidate. */
   onPromotionCandidate?: (symbol: string, price: number) => void;
+  /**
+   * Restricts the ranked Discovery universe to operating-company equity.
+   * A symbol that fails this is still tracked and still shown — it simply does
+   * not compete for a rank. Absent, everything is eligible.
+   */
+  isDiscoveryEligible?: (symbol: string) => boolean;
   now?: () => number;
 }
 
@@ -150,6 +171,8 @@ export class DemandEngine {
   private readonly tickers = new Map<string, TickerRuntime>();
   private baselines = new Map<string, RvolBaseline>();
   private previousRanks = new Map<string, number>();
+  /** True once the current trading date's regular session has ended. */
+  private rthClosed = false;
   /** Symbols pinned into the high-resolution set (TODAY sheet names). */
   private pinnedSymbols = new Set<string>();
   private sessionStartMs: number;
@@ -238,6 +261,9 @@ export class DemandEngine {
       barAt: null,
       previousClose: null,
       previousCloseSource: null,
+      priorRthClose: { close: null, date: null, source: null },
+      todayRthClose: { close: null, date: null, source: null },
+      reference: null,
       percentChange: null,
       baseline: null,
       rvol: null,
@@ -293,7 +319,57 @@ export class DemandEngine {
         runtime.previousCloseSource = 'alpaca-daily-bar';
         runtime.dirty = true;
       }
+
+      // The baseline's previous close is the prior session's DAILY bar close,
+      // which Alpaca reports as the official 16:00 ET regular-session close.
+      runtime.priorRthClose = {
+        close: baseline.previousClose,
+        date: baseline.previousCloseDate,
+        source: 'alpaca-daily-bar-rth-close',
+      };
     }
+  }
+
+  /**
+   * Records the current trading date's official regular-session close.
+   *
+   * Only call this once the regular session has actually ended: before 16:00 ET
+   * a same-day daily bar carries the running last price, not a close.
+   */
+  setTodayRthClose(symbol: string, reading: RthCloseReading): void {
+    const runtime = this.tickers.get(symbol.toUpperCase());
+    if (!runtime) return;
+    if (reading.close === null || !Number.isFinite(reading.close) || reading.close <= 0) return;
+
+    runtime.todayRthClose = reading;
+    this.refreshDerived(runtime);
+    runtime.dirty = true;
+  }
+
+  /**
+   * Tells the engine whether the regular session for the current trading date
+   * has ended. This is what flips the percent-change reference from the prior
+   * session's close to today's close at exactly 16:00 ET.
+   */
+  setRthClosed(closed: boolean): void {
+    if (this.rthClosed === closed) return;
+    this.rthClosed = closed;
+    for (const runtime of this.tickers.values()) {
+      this.refreshDerived(runtime);
+      runtime.dirty = true;
+    }
+  }
+
+  get isRthClosed(): boolean {
+    return this.rthClosed;
+  }
+
+  /** Symbols still missing today's regular-session close after it has ended. */
+  symbolsMissingTodayRthClose(): string[] {
+    if (!this.rthClosed) return [];
+    return [...this.tickers.values()]
+      .filter((runtime) => runtime.todayRthClose.close === null)
+      .map((runtime) => runtime.symbol);
   }
 
   /**
@@ -338,6 +414,17 @@ export class DemandEngine {
         runtime.previousClose = seed.previousClose;
         runtime.previousCloseSource = seed.previousCloseSource ?? 'alpaca-snapshot';
       }
+    }
+
+    if (seed.priorRthClose && seed.priorRthClose.close !== null) {
+      // A baseline-derived close is authoritative; a snapshot fills the gap.
+      if (runtime.priorRthClose.source !== 'alpaca-daily-bar-rth-close') {
+        runtime.priorRthClose = seed.priorRthClose;
+      }
+    }
+
+    if (seed.todayRthClose && seed.todayRthClose.close !== null) {
+      runtime.todayRthClose = seed.todayRthClose;
     }
 
     this.refreshDerived(runtime);
@@ -487,12 +574,26 @@ export class DemandEngine {
 
   private refreshDerived(runtime: TickerRuntime): void {
     runtime.cumulativeVolume = runtime.volumeBase + runtime.minuteSum;
-    runtime.percentChange = computePercentChange(runtime.price, runtime.previousClose);
+
+    // Percent change is measured against the most recent RELEVANT official
+    // regular-session close, which is today's close only after 16:00 ET.
+    runtime.reference = resolveReferenceRthClose(
+      runtime.priorRthClose,
+      runtime.todayRthClose,
+      this.rthClosed,
+    );
+    runtime.percentChange = computePercentChange(runtime.price, runtime.reference?.close ?? null);
+
     runtime.rvol = computeDailyRvol(runtime.cumulativeVolume, runtime.baseline?.averageVolume ?? null);
   }
 
   private inPriceRange(price: number): boolean {
     return price >= this.options.priceMin && price <= this.options.priceMax;
+  }
+
+  /** Operating-company equity only; everything else is tracked but unranked. */
+  private isRankEligible(symbol: string): boolean {
+    return this.options.isDiscoveryEligible ? this.options.isDiscoveryEligible(symbol) : true;
   }
 
   /**
@@ -526,7 +627,7 @@ export class DemandEngine {
       const priceEligible =
         runtime.price !== null && (this.inPriceRange(runtime.price) || runtime.latched);
 
-      if (runtime.rvol !== null && priceEligible) {
+      if (runtime.rvol !== null && priceEligible && this.isRankEligible(runtime.symbol)) {
         eligible.push({ symbol: runtime.symbol, rvol: runtime.rvol });
       }
     }
@@ -832,6 +933,10 @@ export class DemandEngine {
       barAt: runtime.barAt,
       previousClose: runtime.previousClose,
       previousCloseSource: runtime.previousCloseSource,
+      referenceRthClose: runtime.reference?.close ?? null,
+      referenceRthCloseDate: runtime.reference?.date ?? null,
+      referenceRthCloseSource: runtime.reference?.source ?? null,
+      referenceRthCloseBasis: runtime.reference?.basis ?? null,
       percentChange: runtime.percentChange,
       cumulativeVolume: runtime.cumulativeVolume,
       volumeSource: runtime.volumeSource,

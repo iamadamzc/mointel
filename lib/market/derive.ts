@@ -3,7 +3,55 @@
  * placeholder number when an input is unknown or invalid.
  */
 
-import type { QuoteState } from './types';
+import type { QuoteState, ReferenceRthClose, RthCloseReading } from './types';
+
+/**
+ * Chooses the official regular-session close that percent change is measured
+ * against.
+ *
+ *   PREMARKET  04:00–09:30  -> the PRIOR session's 16:00 ET close
+ *   RTH        09:30–16:00  -> the PRIOR session's 16:00 ET close
+ *   AFTER HOURS 16:00–20:00 -> TODAY's 16:00 ET close
+ *
+ * The switch happens exactly when the regular session ends, so a Friday 18:00
+ * quote is measured against Friday's close rather than Thursday's. Before
+ * 16:00 the day has no close of its own, so the prior session is used no
+ * matter what the clock says.
+ *
+ * Returns null when no usable reference exists — percent change must then stay
+ * unknown rather than fall back to something misleading.
+ */
+export function resolveReferenceRthClose(
+  priorSession: RthCloseReading | null | undefined,
+  todaySession: RthCloseReading | null | undefined,
+  rthHasClosed: boolean,
+): ReferenceRthClose | null {
+  const usable = (reading: RthCloseReading | null | undefined): reading is RthCloseReading =>
+    Boolean(reading) &&
+    reading!.close !== null &&
+    Number.isFinite(reading!.close as number) &&
+    (reading!.close as number) > 0;
+
+  if (rthHasClosed && usable(todaySession)) {
+    return {
+      close: todaySession.close as number,
+      date: todaySession.date,
+      source: todaySession.source,
+      basis: 'CURRENT_SESSION',
+    };
+  }
+
+  if (usable(priorSession)) {
+    return {
+      close: priorSession.close as number,
+      date: priorSession.date,
+      source: priorSession.source,
+      basis: 'PRIOR_SESSION',
+    };
+  }
+
+  return null;
+}
 
 export function computePercentChange(
   price: number | null | undefined,

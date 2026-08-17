@@ -174,9 +174,44 @@ Previous close is the most recent prior session's close, including a half day, b
 
 ---
 
+## Percent change and the reference close
+
+Percent change is measured against the most recent **relevant official regular-session close**, not simply "yesterday":
+
+| Session phase | Reference close |
+| --- | --- |
+| PREMARKET 04:00–09:30 ET | the **prior** session's 16:00 ET close |
+| RTH 09:30–16:00 ET | the **prior** session's 16:00 ET close |
+| AFTER HOURS 16:00–20:00 ET | the **current** day's 16:00 ET close |
+
+```
+percentChange = (currentPrice - referenceRthClose) / referenceRthClose * 100
+```
+
+So Monday 07:00 ET compares against Friday's close, and Friday 18:00 ET compares against Friday's own close rather than Thursday's. The switch happens exactly at the closing bell; before 16:00 the day has no close of its own, so the prior session is used regardless of the clock. With no usable reference, percent change stays **unknown** rather than falling back to something misleading.
+
+Every ticker carries `referenceRthClose`, `referenceRthCloseDate`, `referenceRthCloseSource` and `referenceRthCloseBasis` (`PRIOR_SESSION` / `CURRENT_SESSION`). The prior session's close is retained separately as `previousClose` for audit.
+
+**Source.** Alpaca's 1Day bar close, verified against minute bars to be the official closing-auction print and *not* the 20:00 ET extended-hours last trade. Alpaca's daily bar carries full-session **volume** but regular-session **OHLC** — on 2026-08-14 FIEE's daily close was $5.00 (the RTH close) while it traded to $6.22 after hours, and for WETO the daily close of $8.22 matched the closing auction where the last minute bar did not. Deriving the close from minute bars would therefore be *less* accurate, so the daily bar is used deliberately rather than by default.
+
+A worker running across 16:00 ET captures the day's official close with a single snapshot pass a couple of minutes after the bell, then flips every tracked ticker's reference to the current session.
+
 ## Discovery
 
 **Universe.** Active, tradable US equities from Alpaca's asset list (NYSE / NASDAQ / ARCA / AMEX / BATS). No crypto, no options, no OTC by default. If the asset endpoint is unavailable the worker degrades to sheet tickers plus symbols seen on the wildcard bar stream, and the header shows `UNIVERSE: DEGRADED`.
+
+**Security classification.** Alpaca's `us_equity` class mixes operating-company stock with preferred series, warrants, rights, units, ETFs, ETNs and closed-end funds. Every asset is classified before it can be ranked:
+
+| Class | Ranked in Discovery |
+| --- | --- |
+| `COMMON_EQUITY`, `ADR_ADS`, `UNKNOWN` | yes |
+| `PREFERRED`, `WARRANT`, `RIGHT`, `UNIT`, `ETF_ETP`, `FUND`, `OTHER` | no |
+
+Foreign issuers and ADRs are explicitly kept — only instrument *type* excludes a name, never its domicile. `UNKNOWN` stays eligible, because absence of evidence is not evidence that something is a non-common instrument. Each decision records its classification, confidence and the rule that produced it, and ineligible instruments are still tracked and still viewable — they simply do not compete for a rank.
+
+Evidence is read from the issuer name, the symbol suffix convention and the listing venue, in that order. ADR wording is tested before warrant/right/unit because ADS descriptions routinely contain those words in prose ("each representing the right to receive one Class A ordinary share"), and warrant/right/unit patterns are anchored to the instrument-designation position at the end of the name.
+
+Bumping `CLASSIFIER_VERSION` in `lib/market/securities.ts` re-classifies the cached universe on the next worker start.
 
 **Price range.** `$1–$20` at the moment of discovery, configurable via `DISCOVERY_PRICE_MIN` / `DISCOVERY_PRICE_MAX`. There is deliberately no float cutoff, no catalyst requirement, no fixed RVOL threshold and no fixed percentage-gain threshold.
 
@@ -189,6 +224,20 @@ Previous close is the most recent prior session's close, including a half day, b
 **High-resolution interest set** = TODAY-sheet tickers ∪ Top 50 Daily RVOL ∪ latched session candidates, capped at 250 symbols. These get `trades`, `quotes` and `lulds` subscriptions; the rest of the market is covered by wildcard minute bars only. Whole-market quotes and trades are deliberately never subscribed.
 
 ---
+
+## Momentum-cycle levels vs historical resistance
+
+A 52-week high, an old run high, or any other historical resistance is **not** the current momentum-cycle high, and the distance to it is **not** a current giveback.
+
+The sheet mixes both meanings in the same columns — FIEE carries `Recent Cycle High = $10.59 (52-week proxy)` — so every level cell is classified before it is displayed:
+
+- **`currentCycleHigh`** — only populated on affirmative evidence that the level belongs to the move happening now. `givebackFromCurrentCycleHighPct` is computed from it and from nothing else.
+- **`historicalResistance`** — 52-week highs, prior run highs, all-time highs, anything annotated as a proxy. Displayed with its label and its raw sheet text.
+- **`unverifiedRunHigh`** — a level with no evidence either way, shown as exactly that rather than promoted.
+
+An unlabelled level that matches one the sheet annotates as historical elsewhere (or that the sheet narrative describes as a 52-week high at the same price) inherits the historical classification. The sheet's own `Flush From High %` is preserved for audit alongside the level it was measured from, and is never presented as a current-cycle giveback when that basis is historical.
+
+The live Alpaca session high is shown separately in the Demand section. It is deliberately **not** equated with a multi-day momentum-cycle high.
 
 ## Market session semantics
 
@@ -298,7 +347,8 @@ Minute bars for untracked whole-market symbols are **not** persisted. This is a 
 - Session high/low merges bar-derived and trade-derived extremes; the bar-only value is not stored separately.
 - Halt normalization maps CTA and UTP status codes explicitly and falls back to status text; anything unmapped stays `UNKNOWN` with the raw code preserved. Exchange-authoritative halt feeds (Nasdaq/NYSE) are a later milestone.
 - LULD bands are recorded and displayed but are not a halt prediction, and the band is not the guaranteed halt price.
-- Preferred shares and other non-common equities (e.g. `PSA.PRM`) are inside the default universe and can appear in the ranking. Excluding them is a product decision, not a technical one, so nothing was excluded unilaterally.
+- Security classification is inferred from issuer names, symbol conventions and listing venue, because Alpaca's asset payload has no authoritative security-type field. It is deliberately biased toward keeping a name: an unrecognised symbol suffix stays eligible. A proper exchange security master (SIP security type, or a vendor reference feed) would replace `lib/market/securities.ts` wholesale and is the documented upgrade path.
+- Structured products, SPAC-adjacent instruments and trust certificates are the least certain classifications; a handful land in `OTHER` on name evidence alone.
 - The worker reads the TODAY-ticker list from `/api/dashboard` once a minute rather than holding Google credentials itself. If the dashboard is not running, no sheet tickers are pinned until it is.
 - Google Sheet polling frequency is unchanged from the previous milestone, and nothing is ever written back to the sheet.
 

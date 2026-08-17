@@ -41,6 +41,68 @@ export type PriceSource =
 
 export type PreviousCloseSource = 'alpaca-daily-bar' | 'alpaca-snapshot' | 'sheet' | 'simulator';
 
+/**
+ * Where an official 16:00 ET regular-session close came from.
+ *
+ * `alpaca-daily-bar-rth-close` is Alpaca's 1Day bar close. This was verified
+ * against minute bars to be the official closing-auction print rather than the
+ * 20:00 ET extended-hours last trade: Alpaca's daily bar carries full-session
+ * VOLUME but regular-session OHLC. See docs/ARCHITECTURE.md.
+ */
+export type RthCloseSource =
+  | 'alpaca-daily-bar-rth-close'
+  | 'alpaca-snapshot-prev-daily-bar'
+  | 'simulator'
+  | 'sheet';
+
+/** One session's official regular-hours close. */
+export interface RthCloseReading {
+  close: number | null;
+  date: string | null;
+  source: RthCloseSource | null;
+}
+
+/**
+ * The close percent change is actually measured against, plus which session it
+ * belongs to. Named explicitly rather than "previousClose", because during
+ * after-hours the correct reference is the CURRENT day's close.
+ */
+export interface ReferenceRthClose {
+  close: number;
+  date: string | null;
+  source: RthCloseSource | null;
+  basis: 'PRIOR_SESSION' | 'CURRENT_SESSION';
+}
+
+/**
+ * Normalized instrument classification. The ranked Discovery board targets
+ * operating-company equity; everything else is tracked but not ranked.
+ */
+export type SecurityClass =
+  | 'COMMON_EQUITY'
+  | 'ADR_ADS'
+  | 'PREFERRED'
+  | 'WARRANT'
+  | 'RIGHT'
+  | 'UNIT'
+  | 'ETF_ETP'
+  | 'FUND'
+  | 'OTHER'
+  | 'UNKNOWN';
+
+export type ClassificationConfidence = 'HIGH' | 'MEDIUM' | 'LOW';
+
+export interface SecurityClassification {
+  symbol: string;
+  classification: SecurityClass;
+  confidence: ClassificationConfidence;
+  /** Which rule fired, for audit. */
+  source: string;
+  reason: string;
+  /** Whether this instrument may compete in the ranked Discovery universe. */
+  discoveryEligible: boolean;
+}
+
 /** Confidence in the RVOL denominator. LOW means fewer than the target sessions. */
 export type RvolConfidence = 'OK' | 'LOW' | 'UNKNOWN';
 
@@ -159,8 +221,20 @@ export interface DemandState {
   barClose: number | null;
   barAt: string | null;
 
+  /** The prior session's official RTH close. Kept for audit and for context. */
   previousClose: number | null;
   previousCloseSource: PreviousCloseSource | null;
+
+  /**
+   * The close percent change is measured against for the CURRENT session
+   * phase: the prior session's close during premarket and RTH, the current
+   * day's close once the regular session has ended.
+   */
+  referenceRthClose: number | null;
+  referenceRthCloseDate: string | null;
+  referenceRthCloseSource: RthCloseSource | null;
+  referenceRthCloseBasis: ReferenceRthClose['basis'] | null;
+
   percentChange: number | null;
 
   cumulativeVolume: number | null;

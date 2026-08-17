@@ -116,6 +116,21 @@ export function sessionEndUtc(tradingDate: string): Date {
   return etWallClockToUtc(tradingDate, 20, 0);
 }
 
+/** The 16:00 ET regular-session close for a trading date. */
+export function rthCloseUtc(tradingDate: string): Date {
+  return etWallClockToUtc(tradingDate, 16, 0);
+}
+
+/**
+ * True once the regular session for `tradingDate` has ended.
+ *
+ * This is what decides whether the day's own RTH close exists yet: before
+ * 16:00 ET the percent-change reference must still be the PRIOR session.
+ */
+export function hasRthClosed(now: Date, tradingDate: string): boolean {
+  return now.getTime() >= rthCloseUtc(tradingDate).getTime();
+}
+
 export function sessionPhaseForMinutes(minutes: number): SessionPhase {
   if (minutes >= PREMARKET_START_MIN && minutes < RTH_START_MIN) return 'PREMARKET';
   if (minutes >= RTH_START_MIN && minutes < RTH_END_MIN) return 'RTH';
