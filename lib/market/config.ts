@@ -38,8 +38,18 @@ export interface MarketConfig {
   clientPollMs: number;
   /** Worker heartbeat older than this marks the feed offline in the UI. */
   heartbeatStaleMs: number;
+  /**
+   * Whole-market message age, in seconds, beyond which the feed stops being
+   * FRESH. Measured on the global stream, not on any one ticker: an illiquid
+   * name going quiet says nothing about the SIP connection.
+   */
+  marketDataFreshSeconds: number;
+  /** Whole-market message age beyond which the feed is STALE rather than degraded. */
+  marketDataStaleSeconds: number;
   /** A high-res ticker quiet longer than this during RTH is marked stale. */
   tickerStaleSeconds: number;
+  /** How many tickers the user may keep in the Focus strip at once. */
+  focusMaxTickers: number;
   /** Minute bars older than this many trading dates are pruned. */
   minuteBarRetentionDays: number;
   debug: boolean;
@@ -66,7 +76,12 @@ export function loadMarketConfig(env: NodeJS.ProcessEnv = process.env): MarketCo
     flushIntervalMs: num(env.MARKET_FLUSH_INTERVAL_MS, 1000),
     clientPollMs: num(env.MARKET_CLIENT_POLL_MS, 1000),
     heartbeatStaleMs: num(env.MARKET_HEARTBEAT_STALE_MS, 15_000),
+    // 90s absorbs an ordinary lull in whole-market traffic; 240s does not. A
+    // four-minute silence during RTH is not a quiet tape, it is a problem.
+    marketDataFreshSeconds: num(env.MARKET_DATA_FRESH_SECONDS, 90),
+    marketDataStaleSeconds: num(env.MARKET_DATA_STALE_SECONDS, 240),
     tickerStaleSeconds: num(env.MARKET_TICKER_STALE_SECONDS, 300),
+    focusMaxTickers: num(env.FOCUS_MAX_TICKERS, 6),
     minuteBarRetentionDays: num(env.MARKET_MINUTE_BAR_RETENTION_DAYS, 3),
     debug: bool(env.ALPACA_DEBUG),
     tradingDateOverride: override && /^\d{4}-\d{2}-\d{2}$/.test(override) ? override : null,

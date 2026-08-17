@@ -8,24 +8,27 @@ import { DiscoveryBoard } from '@/components/DiscoveryBoard';
 import { FilterBar } from '@/components/FilterBar';
 import { MarketSummary } from '@/components/MarketSummary';
 import { MomentumTable } from '@/components/MomentumTable';
-import { PrimaryFocus } from '@/components/PrimaryFocus';
+import { FocusStrip } from '@/components/FocusStrip';
 import { TickerDrawer } from '@/components/TickerDrawer';
-import { mergeDesk } from '@/lib/dashboard/merge';
+import { dedupeSheetRows, mergeDesk } from '@/lib/dashboard/merge';
 import {
   DEFAULT_FILTERS,
   DEFAULT_SORT,
   applyFilters,
   isFilterActive,
-  selectPrimaryFocus,
+  selectFocusRows,
   sortTickers,
   type FilterState,
   type SortKey,
   type SortState,
 } from '@/lib/dashboard/view';
+import { buildSummary } from '@/lib/data/rows';
 import type { DashboardState } from '@/lib/data/types';
+import type { MarketHealthView } from '@/lib/market/health';
 import type { DiscoveryState, MarketFeedHealth } from '@/lib/market/types';
 import { useClock } from '@/lib/hooks/useClock';
 import { useDashboard } from '@/lib/hooks/useDashboard';
+import { useFocus } from '@/lib/hooks/useFocus';
 import { useMarket } from '@/lib/hooks/useMarket';
 
 /** Numeric columns are most useful largest-first on the first click. */
@@ -61,6 +64,20 @@ const OFFLINE_HEALTH: MarketFeedHealth = {
   backfill: null,
 };
 
+/** Shown before the first market payload arrives; never claims LIVE. */
+const OFFLINE_HEALTH_VIEW: MarketHealthView = {
+  state: 'OFFLINE',
+  connection: 'OFFLINE',
+  freshness: 'UNKNOWN',
+  label: 'Market: worker offline',
+  detail: 'No market payload has been received yet',
+  tone: 'neg',
+  messageAgeSeconds: null,
+  heartbeatAgeSeconds: null,
+  live: false,
+  thresholds: { freshSeconds: 90, staleSeconds: 240 },
+};
+
 const OFFLINE_DISCOVERY: DiscoveryState = {
   tradingDate: '',
   sessionPhase: 'CLOSED',
@@ -81,9 +98,21 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   const feed = useDashboard();
   const data = feed.data ?? initialState;
 
+  const focus = useFocus();
+
+  /*
+   * Focused tickers are requested alongside the sheet names.
+   *
+   * Without this a pinned name that falls out of the tracked population would
+   * lose its live telemetry, and a Focus card is supposed to survive exactly
+   * that — a name sliding from #3 to #80 is when a trader most wants it in
+   * front of them.
+   */
   const sheetSymbols = useMemo(
-    () => (data?.tickers ?? []).map((ticker) => ticker.ticker),
-    [data],
+    () => [
+      ...new Set([...(data?.tickers ?? []).map((ticker) => ticker.ticker), ...focus.tickers]),
+    ],
+    [data, focus.tickers],
   );
   const market = useMarket(sheetSymbols);
 
@@ -92,13 +121,66 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const { now, mounted } = useClock();
 
-  const tickers = useMemo(() => data?.tickers ?? [], [data]);
+  /*
+   * Collapsed to one row per ticker before anything filters or sorts it.
+   *
+   * The TODAY sheet legitimately carries a name twice — a researched row and a
+   * later placeholder — and `mergeDesk` already collapses that internally. The
+   * shell was still handing the raw list to the filters, so the watchlist
+   * rendered the same ticker twice under the same React key, and a duplicated
+   * A-priority name would have produced two identical Primary cards.
+   */
+  const tickers = useMemo(() => dedupeSheetRows(data?.tickers ?? []), [data]);
+
+  /*
+   * Recounted over the collapsed list.
+   *
+   * The provider counts sheet ROWS, so the strip read "27 names tracked" above
+   * a watchlist of 16 names. A metric labelled Names Tracked has to count
+   * names, and every classification count under it has to agree.
+   */
+  const summary = useMemo(() => buildSummary(tickers), [tickers]);
 
   const merged = useMemo(() => mergeDesk(data, market.snapshot), [data, market.snapshot]);
 
+  /*
+   * One telemetry lookup, shared by every list on the page.
+   *
+   * The watchlist shows live price and change, so it must also SORT on them —
+   * ordering a table by numbers it is not displaying is its own small lie.
+   */
+  const telemetry = useCallback(
+    (ticker: string) => merged.rows.get(ticker)?.telemetry ?? null,
+    [merged],
+  );
+
   const filtered = useMemo(() => applyFilters(tickers, filters), [tickers, filters]);
-  const sorted = useMemo(() => sortTickers(filtered, sort), [filtered, sort]);
-  const primary = useMemo(() => selectPrimaryFocus(filtered), [filtered]);
+  const sorted = useMemo(
+    () => sortTickers(filtered, sort, telemetry),
+    [filtered, sort, telemetry],
+  );
+  // The user's list, resolved to rows. Never recomputed from priority.
+  const focusRows = useMemo(
+    () => selectFocusRows(focus.tickers, merged.rows),
+    [focus.tickers, merged],
+  );
+
+  /**
+   * Who the event feed considers relevant.
+   *
+   * Primary names, whatever is currently inside the discovery rank threshold,
+   * and everything the desk otherwise tracks. Events outside all three are kept
+   * and reachable, just not allowed to dominate the default feed.
+   */
+  const eventUniverse = useMemo(() => {
+    const rank = market.snapshot?.discovery.discoveryRank ?? 12;
+    return {
+      // Focused names are, by definition, the ones this trader is watching.
+      primary: new Set(focus.tickers),
+      topRanked: new Set(merged.discovery.slice(0, rank).map((row) => row.ticker)),
+      tracked: new Set(merged.rows.keys()),
+    };
+  }, [focus.tickers, merged, market.snapshot]);
 
   const selectedRow = useMemo(
     () => (selectedTicker ? (merged.rows.get(selectedTicker) ?? null) : null),
@@ -124,6 +206,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   }
 
   const health = market.snapshot?.health ?? OFFLINE_HEALTH;
+  const healthView = market.snapshot?.marketHealth ?? OFFLINE_HEALTH_VIEW;
   const discovery = market.snapshot?.discovery ?? OFFLINE_DISCOVERY;
 
   return (
@@ -131,6 +214,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
       <DashboardHeader
         meta={data.meta}
         marketHealth={health}
+        healthView={healthView}
         discovery={discovery}
         now={now}
         mounted={mounted}
@@ -140,7 +224,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
       />
 
       <MarketSummary
-        summary={data.summary}
+        summary={summary}
         visibleCount={filtered.length}
         filtered={isFilterActive(filters)}
       />
@@ -154,26 +238,44 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         isActive={isFilterActive(filters)}
       />
 
+      {/*
+        * Hierarchy: the compact Primary strip, then Discovery as the dominant
+        * surface, then a contextual event rail, then the analyzed watchlist as
+        * clearly secondary material. Discovery used to sit above a tall Primary
+        * card that spent most of a screen on one name.
+        */}
       <main className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+        <FocusStrip
+          rows={focusRows}
+          changedTickers={feed.changedTickers}
+          onSelect={setSelectedTicker}
+          onToggleFocus={focus.toggle}
+          limit={focus.limit}
+          message={focus.message}
+          onDismissMessage={focus.dismissMessage}
+        />
+
         <DiscoveryBoard
           discovery={discovery}
           rows={merged.discovery}
           onSelect={setSelectedTicker}
           selectedTicker={selectedTicker}
           marketOffline={health.offline}
+          isFocused={focus.isFocused}
+          onToggleFocus={focus.toggle}
         />
 
         {market.snapshot && market.snapshot.events.length > 0 ? (
-          <DeskEventFeed events={market.snapshot.events} onSelect={setSelectedTicker} />
+          <DeskEventFeed
+            events={market.snapshot.events}
+            universe={eventUniverse}
+            onSelect={setSelectedTicker}
+          />
         ) : null}
 
-        <PrimaryFocus
-          tickers={primary}
-          changedTickers={feed.changedTickers}
-          onSelect={setSelectedTicker}
-        />
-
         <MomentumTable
+          isFocused={focus.isFocused}
+          onToggleFocus={focus.toggle}
           tickers={sorted}
           sort={sort}
           onSortChange={handleSortChange}
@@ -202,6 +304,8 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
       <TickerDrawer
         row={selectedRow}
         research={selectedTicker ? data.research[selectedTicker] : undefined}
+        focused={selectedTicker ? focus.isFocused(selectedTicker) : false}
+        onToggleFocus={focus.toggle}
         onClose={() => setSelectedTicker(null)}
       />
     </div>

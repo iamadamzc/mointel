@@ -5,6 +5,7 @@ import {
   etMinutesOfDay,
   etWallClockToUtc,
   minuteKey,
+  resolveSessionPhase,
   resolveTradingSession,
   sessionPhaseAt,
   sessionPhaseForMinutes,
@@ -90,5 +91,104 @@ describe('America/New_York session model', () => {
 
   it('truncates timestamps to the minute for bar keying', () => {
     expect(minuteKey(new Date('2026-08-14T13:31:47.918Z'))).toBe('2026-08-14T13:31:00.000Z');
+  });
+});
+
+/**
+ * The authoritative phase, as every consumer sees it.
+ *
+ * The desk reported PREMARKET at 11:40 ET because the phase was resolved once
+ * when the worker started — in premarket — and then re-persisted verbatim on
+ * every flush for the rest of the day. It is now derived from the clock at read
+ * time, so these boundaries are what the header, the reference-close logic and
+ * the ticker-staleness rule all agree on.
+ */
+describe('authoritative session phase', () => {
+  const DAY = '2026-08-17'; // a Monday, EDT
+
+  function at(clock: string): ReturnType<typeof resolveSessionPhase> {
+    const [hour, minute = 0, second = 0] = clock.split(':').map(Number);
+    return resolveSessionPhase({
+      now: etWallClockToUtc(DAY, hour, minute, second),
+      tradingDate: DAY,
+      isTradingDay: true,
+    });
+  }
+
+  it('places every boundary on the correct side', () => {
+    expect(at('03:59:59')).toBe('CLOSED');
+    expect(at('04:00:00')).toBe('PREMARKET');
+    expect(at('09:29:59')).toBe('PREMARKET');
+    expect(at('09:30:00')).toBe('RTH');
+    expect(at('15:59:59')).toBe('RTH');
+    expect(at('16:00:00')).toBe('AFTER_HOURS');
+    expect(at('19:59:59')).toBe('AFTER_HOURS');
+    expect(at('20:00:00')).toBe('CLOSED');
+  });
+
+  it('reports RTH during RTH, whatever the worker resolved at startup', () => {
+    // The exact reading from the live dashboard that exposed the bug.
+    expect(at('11:40:00')).toBe('RTH');
+  });
+
+  it('holds through both DST regimes', () => {
+    // Summer, EDT: 13:40 UTC is 09:40 ET.
+    expect(
+      resolveSessionPhase({
+        now: new Date('2026-07-15T13:40:00Z'),
+        tradingDate: '2026-07-15',
+        isTradingDay: true,
+      }),
+    ).toBe('RTH');
+
+    // Winter, EST: the same UTC instant is 08:40 ET, still premarket.
+    expect(
+      resolveSessionPhase({
+        now: new Date('2026-01-15T13:40:00Z'),
+        tradingDate: '2026-01-15',
+        isTradingDay: true,
+      }),
+    ).toBe('PREMARKET');
+
+    // And 14:40 UTC in winter is 09:40 ET.
+    expect(
+      resolveSessionPhase({
+        now: new Date('2026-01-15T14:40:00Z'),
+        tradingDate: '2026-01-15',
+        isTradingDay: true,
+      }),
+    ).toBe('RTH');
+  });
+
+  it('is CLOSED on a non-trading day no matter the clock', () => {
+    expect(
+      resolveSessionPhase({
+        now: etWallClockToUtc('2026-08-15', 11, 40),
+        tradingDate: '2026-08-15',
+        isTradingDay: false,
+      }),
+    ).toBe('CLOSED');
+  });
+
+  it('is CLOSED while the desk holds a session that is not today', () => {
+    // Sunday evening, working Monday's session: Sunday's clock says nothing
+    // about Monday's phase.
+    expect(
+      resolveSessionPhase({
+        now: new Date('2026-08-17T01:00:00Z'),
+        tradingDate: '2026-08-17',
+        isTradingDay: true,
+      }),
+    ).toBe('CLOSED');
+  });
+
+  it('judges the clock alone when no session is being held', () => {
+    expect(
+      resolveSessionPhase({
+        now: etWallClockToUtc(DAY, 11, 40),
+        tradingDate: null,
+        isTradingDay: true,
+      }),
+    ).toBe('RTH');
   });
 });

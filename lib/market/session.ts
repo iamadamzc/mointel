@@ -147,6 +147,31 @@ export function sessionPhaseAt(date: Date, isTradingDay: boolean): SessionPhase 
   return sessionPhaseForMinutes(etMinutesOfDay(date));
 }
 
+/**
+ * THE authoritative session phase, for every consumer.
+ *
+ * The phase is a function of the clock, so it must be evaluated against the
+ * current instant every time it is read. It used to be resolved once when the
+ * worker started and then re-persisted verbatim on every flush, which meant a
+ * desk started in premarket still reported PREMARKET at 11:40 ET — the label
+ * described when the worker booted, not what the market was doing.
+ *
+ * `tradingDate` guards the other direction: when the desk is holding a session
+ * that has not arrived yet (overnight, weekend, holiday), today's wall clock
+ * must not be read as that session's phase.
+ */
+export function resolveSessionPhase(options: {
+  now: Date;
+  /** The session the desk is working, or null to judge the clock alone. */
+  tradingDate: string | null;
+  isTradingDay: boolean;
+}): SessionPhase {
+  const { now, tradingDate, isTradingDay } = options;
+  if (!isTradingDay) return 'CLOSED';
+  if (tradingDate && tradingDate !== etDateString(now)) return 'CLOSED';
+  return sessionPhaseForMinutes(etMinutesOfDay(now));
+}
+
 /** True while the product session window is open on a trading day. */
 export function isSessionOpen(date: Date, isTradingDay: boolean): boolean {
   return sessionPhaseAt(date, isTradingDay) !== 'CLOSED';

@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 9;
+export const SCHEMA_VERSION = 10;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -309,6 +309,28 @@ CREATE TABLE IF NOT EXISTS research_health (
   id      INTEGER PRIMARY KEY CHECK (id = 1),
   payload TEXT NOT NULL
 );
+
+-- The trader's own attention list, scoped to a trading date.
+--
+-- Deliberately separate from every system-generated ranking. Discovery says
+-- what the market thinks matters and Desk Priority says what the research desk
+-- concluded; this table says what THIS person wants kept in front of them, and
+-- nothing may overwrite it but them. Momentum focus does not survive the
+-- session, so rows are keyed by trading date and today starts clean.
+--
+-- This is the one table the Next.js process writes: it records a user action,
+-- which the market worker has no way to observe.
+CREATE TABLE IF NOT EXISTS focus_tickers (
+  ticker        TEXT NOT NULL,
+  trading_date  TEXT NOT NULL,
+  pinned_at     TEXT NOT NULL,
+  display_order INTEGER NOT NULL DEFAULT 0,
+  -- 'USER' or 'SEED'. A seeded row is still removable; the distinction only
+  -- records how it arrived.
+  source        TEXT NOT NULL DEFAULT 'USER',
+  PRIMARY KEY (ticker, trading_date)
+);
+CREATE INDEX IF NOT EXISTS idx_focus_date ON focus_tickers (trading_date, display_order);
 `;
 
 /**

@@ -10,6 +10,11 @@
 import { computeDisplayedFloatTurnover } from '@/lib/market/derive';
 import { deriveCycleLevels, type CycleLevels } from '@/lib/data/cycleLevels';
 import { buildLevelMap, type LevelMap } from '@/lib/data/priceLevels';
+import { buildTelemetry, type MarketTelemetry } from '@/lib/dashboard/telemetry';
+import {
+  resolveIntelligenceState,
+  type IntelligenceState,
+} from '@/lib/dashboard/intelligence';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
 import type { DashboardState, MomentumTicker, StructuralResearch } from '@/lib/data/types';
 import type { AutoIntelligence } from '@/lib/research/view';
@@ -26,6 +31,14 @@ export interface DeskRow {
   /** RESEARCH-tab record, when one exists. */
   researchRecord: StructuralResearch | null;
   demand: DemandState | null;
+  /**
+   * The market telemetry every surface must display.
+   *
+   * Carried on the row rather than resolved per component, so the board, the
+   * Primary strip and the drawer cannot show three different prices for one
+   * ticker at one moment.
+   */
+  telemetry: MarketTelemetry;
   /** The market feed is currently tracking this ticker. */
   demandDetected: boolean;
   /** The research layer has something to say about this ticker. */
@@ -61,6 +74,14 @@ export interface DeskRow {
   provenance: MergeProvenance;
   /** Field-level comparison, retained so the drawer can show both sides. */
   comparison: SheetAutoComparison | null;
+  /**
+   * The single trader-facing research status.
+   *
+   * Every surface that displays one reads this. Components used to infer it —
+   * the drawer header called a ticker NOT YET ANALYZED whenever it had no sheet
+   * row, even with an accepted automatic dossier open beneath it.
+   */
+  intelligenceState: IntelligenceState;
 }
 
 /**
@@ -90,10 +111,13 @@ export function buildDeskRow(
 ): DeskRow {
   const float = resolveDisplayedFloat(research, researchRecord);
 
+  // Resolved once, here, and reused for every price-shaped decision below.
+  const telemetry = buildTelemetry({ ticker, demand, sheet: research });
+
   const cycleLevels = deriveCycleLevels({
     ticker: research,
     research: researchRecord,
-    currentPrice: demand?.price ?? research?.price.value ?? null,
+    currentPrice: telemetry.price,
   });
 
   // Sheet research is read-only input here. Nothing in this function writes to
@@ -118,6 +142,7 @@ export function buildDeskRow(
     research,
     researchRecord,
     demand,
+    telemetry,
     demandDetected: demand !== null,
     // Automatic intelligence counts as analysis too: a Discovery name with an
     // accepted dossier is analyzed even though it has never reached the sheet.
@@ -131,11 +156,11 @@ export function buildDeskRow(
     ),
     cycleLevels,
     levelMap: buildLevelMap({
-      currentPrice: demand?.price ?? research?.price.value ?? null,
-      spread: demand?.quote.spread ?? null,
-      spreadPct: demand?.quote.spreadPct ?? null,
-      sessionHigh: demand?.sessionHigh ?? null,
-      sessionLow: demand?.sessionLow ?? null,
+      currentPrice: telemetry.price,
+      spread: telemetry.spread,
+      spreadPct: telemetry.spreadPct,
+      sessionHigh: telemetry.sessionHigh,
+      sessionLow: telemetry.sessionLow,
       referenceRthClose: demand?.referenceRthClose ?? null,
       referenceBasis: demand?.referenceRthCloseBasis ?? null,
       keyLevels: research?.keyLevels ?? null,
@@ -146,6 +171,11 @@ export function buildDeskRow(
     intelligence,
     provenance: comparison.provenance,
     comparison: research || intelligence?.analysis ? comparison : null,
+    intelligenceState: resolveIntelligenceState({
+      sheet: research,
+      intelligence,
+      comparison: research || intelligence?.analysis ? comparison : null,
+    }),
   };
 }
 
@@ -248,11 +278,11 @@ export function mergeDesk(
 }
 
 /**
- * The price the desk should display for a sheet ticker.
+ * The price the desk should display for a ticker.
  *
- * Live Alpaca data wins when present — the sheet close is a snapshot of a
- * moment that has passed — but the source is always labelled so nobody has to
- * guess which number they are looking at.
+ * A narrow view of `row.telemetry`, kept as a named export because "which price
+ * do we show" is a question worth answering explicitly. It resolves nothing on
+ * its own — the precedence lives in one place, and this reads it.
  */
 export interface DisplayPrice {
   price: number | null;
@@ -264,30 +294,6 @@ export interface DisplayPrice {
 }
 
 export function resolveDisplayPrice(row: DeskRow): DisplayPrice {
-  const demand = row.demand;
-
-  if (demand && demand.price !== null) {
-    return {
-      price: demand.price,
-      percentChange: demand.percentChange,
-      volume: demand.cumulativeVolume,
-      source: 'ALPACA',
-      sessionLabel: demand.priceSource === 'sip-trade' ? 'SIP' : 'BAR',
-      stale: demand.freshness.stale,
-    };
-  }
-
-  const sheet = row.research;
-  if (sheet) {
-    return {
-      price: sheet.price.value,
-      percentChange: sheet.changePct.value,
-      volume: sheet.volume.value,
-      source: 'SHEET',
-      sessionLabel: sheet.price.session,
-      stale: false,
-    };
-  }
-
-  return { price: null, percentChange: null, volume: null, source: 'NONE', sessionLabel: '—', stale: false };
+  const { price, percentChange, volume, source, sourceLabel, stale } = row.telemetry;
+  return { price, percentChange, volume, source, sessionLabel: sourceLabel, stale };
 }

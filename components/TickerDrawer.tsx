@@ -11,10 +11,14 @@ import {
   cycleTone,
   sessionTone,
   structureTone,
+  type Tone,
 } from '@/components/StatusBadge';
 import { HaltBadge } from '@/components/DiscoveryBoard';
 import { AutomaticIntelligence } from '@/components/AutomaticIntelligence';
+import { DeskReadPanel } from '@/components/DeskRead';
+import { FocusToggle } from '@/components/FocusToggle';
 import { LevelLadder } from '@/components/LevelLadder';
+import { buildDeskRead, buildStructureSummary } from '@/lib/dashboard/deskRead';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { CycleLevels } from '@/lib/data/cycleLevels';
 import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
@@ -30,10 +34,18 @@ interface TickerDrawerProps {
   /** The merged desk row. May carry demand only, research only, or both. */
   row: DeskRow | null;
   research: StructuralResearch | undefined;
+  focused: boolean;
+  onToggleFocus: (ticker: string) => void;
   onClose: () => void;
 }
 
-export function TickerDrawer({ row, research, onClose }: TickerDrawerProps) {
+export function TickerDrawer({
+  row,
+  research,
+  focused,
+  onToggleFocus,
+  onClose,
+}: TickerDrawerProps) {
   useEffect(() => {
     if (!row) return;
     const onKeyDown = (event: KeyboardEvent) => {
@@ -62,20 +74,33 @@ export function TickerDrawer({ row, research, onClose }: TickerDrawerProps) {
         aria-label={`${row.ticker} dossier`}
         className="relative flex h-full w-full max-w-[860px] flex-col border-l border-line-2 bg-panel shadow-2xl"
       >
-        <DrawerHeader row={row} research={research} onClose={onClose} />
+        <DrawerHeader
+          row={row}
+          research={research}
+          focused={focused}
+          onToggleFocus={onToggleFocus}
+          onClose={onClose}
+        />
 
+        {/*
+          * Three tiers, in the order a trader needs them.
+          *
+          * Tier 1 answers the question — live state, conclusions, levels.
+          * Tier 2 is the intelligence behind those conclusions.
+          * Tier 3 is the audit trail, collapsed, because it is the material a
+          * trader consults over five minutes rather than five seconds. Nothing
+          * was deleted in the reorganisation; a conflict warning is never in a
+          * closed section.
+          */}
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-4 pb-10">
-          <Demand row={row} />
+          <DeskReadPanel read={buildDeskRead(row)} />
 
-          {/* Automatic research sits above sheet research so a Discovery name
-              with no sheet row still leads with its intelligence. */}
-          {/* The level map is the first thing a trader wants, so it sits above
-              the research narrative. */}
           <LevelLadder map={row.levelMap} Section={Section} />
 
           <AutomaticIntelligence
             intel={row.intelligence}
             comparison={row.comparison}
+            structure={buildStructureSummary(row)}
             Section={Section}
             Field={Field}
             FieldLabel={FieldLabel}
@@ -84,27 +109,34 @@ export function TickerDrawer({ row, research, onClose }: TickerDrawerProps) {
 
           {ticker ? (
             <>
-              <Overview ticker={ticker} research={research} />
-              <Catalyst ticker={ticker} research={research} />
               <MomentumCycle ticker={ticker} research={research} levels={row.cycleLevels} />
-              <StructuralIntelligence ticker={ticker} research={research} />
-              <Levels ticker={ticker} research={research} />
-              <DeskRead ticker={ticker} research={research} />
 
-              {!research ? (
-                <p className="mt-4 rounded-sm border border-dashed border-warn/40 bg-warn/8 px-3 py-2 text-[11px] text-warn">
-                  No RESEARCH record found for {ticker.ticker}. Only TODAY data is shown.
-                </p>
-              ) : (
-                <p className="mt-6 text-[10px] text-ink-3">
-                  RESEARCH record: row {research.sourceRow}, report date{' '}
-                  {research.reportDate || 'unknown'}. TODAY row {ticker.sourceRow}.
-                </p>
-              )}
+              <Collapsible title="Sheet Research (verbatim)">
+                <Overview ticker={ticker} research={research} />
+                <Catalyst ticker={ticker} research={research} />
+                <StructuralIntelligence ticker={ticker} research={research} />
+                <Levels ticker={ticker} research={research} />
+                <SheetDeskNotes ticker={ticker} research={research} />
+
+                {!research ? (
+                  <p className="mt-4 rounded-sm border border-dashed border-warn/40 bg-warn/8 px-3 py-2 text-[11px] text-warn">
+                    No RESEARCH record found for {ticker.ticker}. Only TODAY data is shown.
+                  </p>
+                ) : (
+                  <p className="mt-2 text-[10px] text-ink-3">
+                    RESEARCH record: row {research.sourceRow}, report date{' '}
+                    {research.reportDate || 'unknown'}. TODAY row {ticker.sourceRow}.
+                  </p>
+                )}
+              </Collapsible>
             </>
-          ) : row.intelligence?.analysis ? null : (
+          ) : row.intelligenceState.status === 'NOT_ANALYZED' ? (
             <NotAnalyzedPanel symbol={row.ticker} research={research} />
-          )}
+          ) : null}
+
+          <Collapsible title="Live Market Telemetry">
+            <Demand row={row} />
+          </Collapsible>
         </div>
       </aside>
     </div>
@@ -156,24 +188,31 @@ function NotAnalyzedPanel({
 function DrawerHeader({
   row,
   research,
+  focused,
+  onToggleFocus,
   onClose,
 }: {
   row: DeskRow;
   research: StructuralResearch | undefined;
+  focused: boolean;
+  onToggleFocus: (ticker: string) => void;
   onClose: () => void;
 }) {
   const ticker = row.research;
-  const demand = row.demand;
-
-  const headlinePrice = demand?.price ?? ticker?.price.value ?? null;
-  const headlineChange = demand?.percentChange ?? ticker?.changePct.value ?? null;
-  const headlineSource = demand ? (demand.feed === 'sip' ? 'SIP' : demand.feed.toUpperCase()) : ticker?.price.session ?? '—';
+  // The same projection the board used to pick this row's price.
+  const t = row.telemetry;
 
   return (
     <div className="border-b border-line-2 bg-panel-2 px-5 py-3">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="flex items-center gap-2.5">
+            <FocusToggle
+              ticker={row.ticker}
+              focused={focused}
+              onToggle={onToggleFocus}
+              className="text-[18px]"
+            />
             <span className="text-[26px] leading-none font-bold tracking-tight text-ink">
               {row.ticker}
             </span>
@@ -190,11 +229,18 @@ function DrawerHeader({
                   title={ticker.cycle.raw}
                 />
               </>
-            ) : (
-              <StatusBadge label="Not yet analyzed" tone="dim" />
-            )}
-            {demand?.rvolRank !== null && demand?.rvolRank !== undefined ? (
-              <StatusBadge label={`RVOL #${demand.rvolRank}`} tone="accent" />
+            ) : null}
+            {/* The status comes from the shared projection. This header used to
+                decide for itself that a ticker with no sheet row was
+                unanalyzed, contradicting the accepted automatic intelligence
+                rendered a few lines below it. */}
+            <StatusBadge
+              label={row.intelligenceState.label}
+              tone={row.intelligenceState.tone as Tone}
+              title={row.intelligenceState.detail}
+            />
+            {t.rvolRank !== null ? (
+              <StatusBadge label={`RVOL #${t.rvolRank}`} tone="accent" />
             ) : null}
           </div>
           <div className="mt-1 truncate text-[12px] text-ink-2">
@@ -206,23 +252,28 @@ function DrawerHeader({
         <div className="flex items-start gap-4">
           <div className="text-right">
             <div className="num text-[24px] leading-none font-semibold text-ink">
-              {demand ? formatPrice(headlinePrice) : (ticker?.price.display ?? '—')}
+              {formatPrice(t.price)}
             </div>
             <div className="mt-1 flex items-center justify-end gap-1.5">
               <span
-                className={`num text-[14px] leading-none font-semibold ${changeTone(headlineChange)}`}
+                className={`num text-[14px] leading-none font-semibold ${changeTone(t.percentChange)}`}
               >
-                {demand ? formatSignedPercent(headlineChange) : (ticker?.changePct.display ?? '—')}
+                {formatSignedPercent(t.percentChange)}
               </span>
               <StatusBadge
-                label={headlineSource === 'NONE' ? '—' : headlineSource}
-                tone={demand ? 'accent' : sessionTone(ticker?.price.session ?? 'NONE')}
+                label={t.sourceLabel}
+                tone={
+                  t.source === 'ALPACA'
+                    ? 'accent'
+                    : sessionTone(ticker?.price.session ?? 'NONE')
+                }
                 title={
-                  demand
+                  t.source === 'ALPACA'
                     ? 'Live Alpaca market data'
                     : 'Google Sheet value — no live market data for this ticker'
                 }
               />
+              {t.stale ? <StatusBadge label="stale" tone="warn" /> : null}
             </div>
           </div>
 
@@ -267,9 +318,9 @@ function Demand({ row }: { row: DeskRow | null }) {
         ) : null}
         {demand.latched ? (
           <StatusBadge
-            label="Session latch"
-            tone="warn"
-            title="Qualified inside the discovery price range and retained for the session"
+            label="Retained for session"
+            tone="neutral"
+            title="Qualified inside the discovery price range and kept tracked for the rest of the session. An engine detail, surfaced here for audit only."
           />
         ) : null}
         {demand.rvolConfidence === 'LOW' ? (
@@ -662,7 +713,8 @@ function Levels({
   );
 }
 
-function DeskRead({
+/** The sheet's own notes. Distinct from the live Desk Read at the top. */
+function SheetDeskNotes({
   ticker,
   research,
 }: {
@@ -670,7 +722,7 @@ function DeskRead({
   research: StructuralResearch | undefined;
 }) {
   return (
-    <Section title="Desk Read">
+    <Section title="Desk Notes (Sheet)">
       <ProseField
         label={ticker.warning.source === 'PM' ? 'Current Warning (PM)' : 'Current Warning'}
         value={ticker.warning.current}
@@ -683,6 +735,23 @@ function DeskRead({
       <ProseField label="Analyst Notes (RESEARCH)" value={research?.analystNotes ?? ''} className="mt-3" />
       <ProseField label="Notes (TODAY)" value={ticker.notes} className="mt-3" />
     </Section>
+  );
+}
+
+/**
+ * A Tier 3 group: present, complete, and out of the way until asked for.
+ *
+ * Used only for audit material. Anything a trader must not miss — a conflict,
+ * a structural warning — stays above this line.
+ */
+function Collapsible({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <details className="mb-5 rounded-sm border border-line bg-panel-2/40">
+      <summary className="cursor-pointer px-4 py-2 text-[10px] font-semibold tracking-[0.16em] text-ink-3 uppercase hover:text-ink-2">
+        {title}
+      </summary>
+      <div className="px-4 pt-1 pb-2">{children}</div>
+    </details>
   );
 }
 
@@ -739,8 +808,9 @@ function ProseField({
         <FieldLabel>{label}</FieldLabel>
         {hint ? <span className="num text-[10px] text-ink-3">{hint}</span> : null}
       </div>
+      {/* Capped measure: full-drawer-width prose is a wall, not a paragraph. */}
       <p
-        className={`mt-1 text-[12px] leading-relaxed break-words ${numeric ? 'num' : ''} ${
+        className={`mt-1 max-w-[78ch] text-[12px] leading-relaxed break-words ${numeric ? 'num' : ''} ${
           !value ? 'text-ink-3' : tone === 'warn' ? 'text-warn/90' : 'text-ink-2'
         }`}
       >

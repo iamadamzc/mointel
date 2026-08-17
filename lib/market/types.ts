@@ -345,6 +345,7 @@ export interface BackfillSummary {
 }
 
 import type { AutoIntelligence } from '../research/view';
+import type { MarketHealthView } from './health';
 
 export type DeskEventType =
   | 'NEW_HOD'
@@ -377,6 +378,13 @@ export interface DeskEvent {
 /** Payload served by /api/market. */
 export interface MarketSnapshot {
   health: MarketFeedHealth;
+  /**
+   * Connection and data freshness, already combined into one verdict.
+   *
+   * Resolved on the server against its own clock so no component can decide
+   * for itself that a connected socket means live data.
+   */
+  marketHealth: MarketHealthView;
   discovery: DiscoveryState;
   /** Every tracked ticker the dashboard may need, keyed by symbol. */
   demand: Record<string, DemandState>;

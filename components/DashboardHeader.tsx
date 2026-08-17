@@ -3,12 +3,15 @@
 import { DataFreshness } from '@/components/DataFreshness';
 import { MarketStatus } from '@/components/MarketStatus';
 import type { DataSourceMeta } from '@/lib/data/types';
+import type { MarketHealthView } from '@/lib/market/health';
 import type { DiscoveryState, MarketFeedHealth } from '@/lib/market/types';
 import { formatEtClock, formatEtDate } from '@/lib/format';
 
 interface DashboardHeaderProps {
   meta: DataSourceMeta;
   marketHealth: MarketFeedHealth;
+  /** Combined connection + freshness verdict from the market snapshot. */
+  healthView: MarketHealthView;
   discovery: DiscoveryState;
   now: number;
   mounted: boolean;
@@ -20,6 +23,7 @@ interface DashboardHeaderProps {
 export function DashboardHeader({
   meta,
   marketHealth,
+  healthView,
   discovery,
   now,
   mounted,
@@ -51,7 +55,12 @@ export function DashboardHeader({
         <div className="ml-auto flex flex-wrap items-center gap-x-4 gap-y-2">
           {/* Market and research health are reported independently: one generic
               status light would hide which of the two sources is stale. */}
-          <MarketStatus health={marketHealth} discovery={discovery} now={now} mounted={mounted} />
+          <MarketStatus
+            health={marketHealth}
+            marketHealth={healthView}
+            discovery={discovery}
+            mounted={mounted}
+          />
           <DataFreshness meta={meta} now={now} mounted={mounted} transportError={transportError} />
           <button
             type="button"

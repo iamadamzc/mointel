@@ -75,6 +75,18 @@ function snapshot(demands: DemandState[]): MarketSnapshot {
       offline: false,
       backfill: null,
     },
+    marketHealth: {
+      state: 'LIVE',
+      connection: 'STREAMING',
+      freshness: 'FRESH',
+      label: 'Market: Alpaca SIP — LIVE',
+      detail: 'Streaming',
+      tone: 'pos',
+      messageAgeSeconds: 1,
+      heartbeatAgeSeconds: 1,
+      live: true,
+      thresholds: { freshSeconds: 90, staleSeconds: 240 },
+    },
     discovery: {
       tradingDate: '2026-08-14',
       sessionPhase: 'RTH',

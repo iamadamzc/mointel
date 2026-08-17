@@ -357,15 +357,36 @@ describe('compact board row', () => {
 
   it('gives the nearest levels each side with signed distances', () => {
     const row = toCompactRow(map);
-    expect(row.now).toBe('6.22');
-    expect(row.spreadPct).toBe('0.32%');
-
     expect(row.nextUp[0].price).toBe('6.48');
     expect(row.nextUp[0].type).toBe('HOD');
     expect(row.nextUp[0].distance).toBe('+0.26');
 
     expect(row.nextDown[0].price).toBe('6.00');
     expect(row.nextDown[0].distance).toBe('-0.22');
+  });
+
+  it('carries no current-price row', () => {
+    /*
+     * The board has its own Price and Spread columns. A NOW row inside the
+     * level cell restated both and took a third of the cell to do it, so the
+     * model deliberately has no field for it.
+     */
+    const row = toCompactRow(map);
+    expect(row).not.toHaveProperty('now');
+    expect(row).not.toHaveProperty('spreadPct');
+    expect(Object.keys(row).sort()).toEqual(['atPriceNote', 'empty', 'nextDown', 'nextUp']);
+  });
+
+  it('notes price sitting ON a level, which the Price column cannot say', () => {
+    const onLevel = buildLevelMap({
+      currentPrice: 6.22,
+      keyLevels: '$6.22 resistance',
+      includeRoundLevels: false,
+    });
+    expect(toCompactRow(onLevel).atPriceNote).toBe('at resistance');
+
+    // And says nothing when price is simply between levels.
+    expect(toCompactRow(map).atPriceNote).toBeNull();
   });
 
   it('caps how many levels reach the board', () => {
@@ -489,6 +510,52 @@ describe('relationship to current price', () => {
       includeRoundLevels: false,
     });
     expect(toCompactRow(map).nextUp[0].stateLabel).toBe('LOST SUPPORT');
+  });
+});
+
+/* -------------------------------------------------------- drawer ladder */
+
+describe('drawer level ladder', () => {
+  /*
+   * The compact board cell lost its NOW row; the drawer ladder did not change.
+   * It still receives the full map, centred on current price, with everything
+   * the compact row drops for space.
+   */
+  const map = buildLevelMap({
+    currentPrice: 6.22,
+    spread: 0.02,
+    spreadPct: 0.32,
+    sessionHigh: 6.48,
+    sessionLow: 5.7,
+    keyLevels: '$6.75/$7.00 resistance; $6.00/$5.88 support',
+    includeRoundLevels: true,
+  });
+
+  it('still centres on current price', () => {
+    expect(map.currentPrice).toBe(6.22);
+    expect(map.spreadPct).toBe(0.32);
+  });
+
+  it('still returns every zone, not just the two the board shows', () => {
+    expect(map.above.length).toBeGreaterThan(2);
+    expect(map.below.length).toBeGreaterThan(2);
+
+    const compact = toCompactRow(map, 2);
+    expect(compact.nextUp.length).toBe(2);
+    expect(map.above.length).toBeGreaterThan(compact.nextUp.length);
+  });
+
+  it('still orders each side nearest-first for the price axis', () => {
+    const above = map.above.map((zone) => zone.distanceAbs ?? 0);
+    const below = map.below.map((zone) => zone.distanceAbs ?? 0);
+    expect([...above].sort((a, b) => a - b)).toEqual(above);
+    expect([...below].sort((a, b) => a - b)).toEqual(below);
+  });
+
+  it('still reports the between note and the level types', () => {
+    expect(map.betweenNote).toContain('Inside');
+    expect(map.above.some((zone) => zone.dominantType === 'HOD')).toBe(true);
+    expect(map.below.some((zone) => zone.dominantType === 'SUPPORT')).toBe(true);
   });
 });
 

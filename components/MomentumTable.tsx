@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import {
   PriorityBadge,
   StatusBadge,
@@ -8,10 +10,17 @@ import {
   cycleTone,
   sessionTone,
 } from '@/components/StatusBadge';
+import { FocusToggle } from '@/components/FocusToggle';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { SortKey, SortState } from '@/lib/dashboard/view';
 import type { MomentumTicker } from '@/lib/data/types';
-import { formatMultiple, formatPrice, formatSignedPercent, truncate } from '@/lib/format';
+import {
+  formatCount,
+  formatMultiple,
+  formatPrice,
+  formatSignedPercent,
+  truncate,
+} from '@/lib/format';
 
 interface MomentumTableProps {
   tickers: MomentumTicker[];
@@ -22,6 +31,8 @@ interface MomentumTableProps {
   changedTickers: Set<string>;
   /** Merged demand state, keyed by ticker. Empty when no market worker is running. */
   deskRows: Map<string, DeskRow>;
+  isFocused: (ticker: string) => boolean;
+  onToggleFocus: (ticker: string) => void;
 }
 
 interface ColumnDefinition {
@@ -32,14 +43,20 @@ interface ColumnDefinition {
   align?: 'right';
 }
 
+/*
+ * One price column, not two.
+ *
+ * This table used to show the sheet's price and percentage first and a separate
+ * "Live" pair further right, which meant the first number a trader read was the
+ * older one. Price and % now carry whatever the shared projection resolved —
+ * live when it exists — and the Src column says which it was.
+ */
 const COLUMNS: ColumnDefinition[] = [
   { key: 'priority', label: 'Pri', sortKey: 'priority', className: 'w-[64px]' },
-  { key: 'ticker', label: 'Ticker', sortKey: 'ticker', className: 'w-[92px]' },
+  { key: 'ticker', label: 'Ticker', sortKey: 'ticker', className: 'w-[104px]' },
   { key: 'price', label: 'Price', sortKey: 'price', className: 'w-[84px]', align: 'right' },
   { key: 'changePct', label: '%', sortKey: 'changePct', className: 'w-[76px]', align: 'right' },
-  { key: 'session', label: 'Sess', className: 'w-[54px]' },
-  { key: 'live', label: 'Live', className: 'w-[80px]', align: 'right' },
-  { key: 'livePct', label: 'Live %', className: 'w-[74px]', align: 'right' },
+  { key: 'session', label: 'Src', className: 'w-[54px]' },
   { key: 'rvol', label: 'RVOL', className: 'w-[92px]', align: 'right' },
   { key: 'cycle', label: 'Cycle', className: 'w-[186px]' },
   { key: 'volume', label: 'Volume', sortKey: 'volume', className: 'w-[96px]', align: 'right' },
@@ -60,18 +77,39 @@ export function MomentumTable({
   selectedTicker,
   changedTickers,
   deskRows,
+  isFocused,
+  onToggleFocus,
 }: MomentumTableProps) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <section className="flex flex-col">
-      <div className="flex items-baseline gap-2 px-4 py-2">
+    <section className="flex flex-col border-t border-line">
+      {/*
+       * Deliberately subordinate to Discovery.
+       *
+       * The two tables overlap heavily by name, and giving them equal weight
+       * asked a trader to work out which one to believe. Discovery is what the
+       * market is saying right now; this is what the desk has already studied,
+       * so it sits below and starts closed.
+       */}
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        className="flex items-baseline gap-2 px-4 py-2 text-left hover:bg-panel-2"
+      >
+        <span className="num w-3 text-[10px] text-ink-3">{open ? '▾' : '▸'}</span>
         <h2 className="text-[11px] font-semibold tracking-[0.14em] text-ink-2 uppercase">
-          Watchlist
+          Analyzed Watchlist
         </h2>
         <span className="num text-[11px] text-ink-3">{tickers.length}</span>
-      </div>
+        <span className="text-[10px] text-ink-3">
+          names the desk has researched · Discovery above is what the market is doing now
+        </span>
+      </button>
 
-      {/* Horizontal scroll only: the page owns vertical scrolling now that the
-          discovery board and event feed share it. */}
+      {!open ? null : (
+      /* Horizontal scroll only: the page owns vertical scrolling now that the
+         discovery board and event feed share it. */
       <div className="overflow-x-auto border-t border-line">
         <table className="w-full border-collapse text-[12px]">
           <thead className="sticky top-0 z-10">
@@ -122,12 +160,15 @@ export function MomentumTable({
                   selected={selectedTicker === ticker.ticker}
                   changed={changedTickers.has(ticker.ticker)}
                   onSelect={onSelect}
+                  focused={isFocused(ticker.ticker)}
+                  onToggleFocus={onToggleFocus}
                 />
               ))
             )}
           </tbody>
         </table>
       </div>
+      )}
     </section>
   );
 }
@@ -138,15 +179,21 @@ function TableRow({
   selected,
   changed,
   onSelect,
+  focused,
+  onToggleFocus,
 }: {
   ticker: MomentumTicker;
   deskRow: DeskRow | null;
   selected: boolean;
   changed: boolean;
   onSelect: (ticker: string) => void;
+  focused: boolean;
+  onToggleFocus: (ticker: string) => void;
 }) {
   const structureText = ticker.structure.raw || ticker.structure.floatRaw;
   const demand = deskRow?.demand ?? null;
+  // Same projection as Discovery and the Primary strip; never a second opinion.
+  const t = deskRow?.telemetry ?? null;
 
   return (
     <tr
@@ -164,52 +211,57 @@ function TableRow({
       </td>
 
       <td className="px-2 py-1.5 align-middle">
-        <span className="text-[14px] font-bold tracking-tight text-ink">{ticker.ticker}</span>
-      </td>
-
-      <td className="num px-2 py-1.5 text-right align-middle font-semibold text-ink">
-        {ticker.price.display}
-      </td>
-
-      <td
-        className={`num px-2 py-1.5 text-right align-middle font-semibold ${changeTone(ticker.changePct.value)}`}
-      >
-        {ticker.changePct.display}
-      </td>
-
-      <td className="px-2 py-1.5 align-middle">
-        <StatusBadge
-          label={ticker.price.session === 'NONE' ? '—' : ticker.price.session}
-          tone={sessionTone(ticker.price.session)}
-          title={`Displayed values come from the ${ticker.price.session} session`}
-        />
+        <span className="flex items-center gap-1">
+          <FocusToggle ticker={ticker.ticker} focused={focused} onToggle={onToggleFocus} />
+          <span className="text-[14px] font-bold tracking-tight text-ink">{ticker.ticker}</span>
+        </span>
       </td>
 
       <td
         className="num px-2 py-1.5 text-right align-middle font-semibold text-ink"
         title={
-          demand
-            ? `Alpaca ${demand.priceSource ?? 'feed'} at ${demand.priceAt ?? 'unknown time'}`
-            : 'No live market data for this ticker'
+          t?.source === 'ALPACA'
+            ? `Alpaca ${demand?.priceSource ?? 'feed'} at ${demand?.priceAt ?? 'unknown time'}`
+            : `Google Sheet ${ticker.price.session} value — no live market data for this ticker`
         }
       >
-        {demand ? formatPrice(demand.price) : <span className="text-ink-3">—</span>}
+        {t ? formatPrice(t.price) : ticker.price.display}
       </td>
 
       <td
         className={`num px-2 py-1.5 text-right align-middle font-semibold ${changeTone(
-          demand?.percentChange ?? null,
+          t ? t.percentChange : ticker.changePct.value,
         )}`}
       >
-        {demand ? formatSignedPercent(demand.percentChange) : <span className="text-ink-3">—</span>}
+        {t ? formatSignedPercent(t.percentChange) : ticker.changePct.display}
+      </td>
+
+      <td className="px-2 py-1.5 align-middle">
+        {t?.source === 'ALPACA' ? (
+          <StatusBadge
+            label={t.stale ? `${t.sourceLabel}·stale` : t.sourceLabel}
+            tone={t.stale ? 'warn' : 'accent'}
+            title={
+              t.stale
+                ? `Last live print, ${t.ageSeconds ?? '—'}s old`
+                : 'Live Alpaca market data'
+            }
+          />
+        ) : (
+          <StatusBadge
+            label={ticker.price.session === 'NONE' ? '—' : ticker.price.session}
+            tone={sessionTone(ticker.price.session)}
+            title={`Google Sheet ${ticker.price.session} value`}
+          />
+        )}
       </td>
 
       <td className="num px-2 py-1.5 text-right align-middle text-ink-2">
-        {demand?.rvol !== null && demand?.rvol !== undefined ? (
-          <span className={demand.rvolConfidence === 'LOW' ? 'text-warn' : 'text-ink'}>
-            {formatMultiple(demand.rvol)}
-            {demand.rvolRank !== null ? (
-              <span className="ml-1 text-[10px] text-accent">#{demand.rvolRank}</span>
+        {t?.rvol !== null && t?.rvol !== undefined ? (
+          <span className={t.rvolConfidence === 'LOW' ? 'text-warn' : 'text-ink'}>
+            {formatMultiple(t.rvol)}
+            {t.rvolRank !== null ? (
+              <span className="ml-1 text-[10px] text-accent">#{t.rvolRank}</span>
             ) : null}
           </span>
         ) : (
@@ -226,8 +278,13 @@ function TableRow({
         />
       </td>
 
-      <td className="num px-2 py-1.5 text-right align-middle text-ink-2" title={ticker.volume.raw}>
-        {ticker.volume.display}
+      <td
+        className="num px-2 py-1.5 text-right align-middle text-ink-2"
+        title={
+          t?.source === 'ALPACA' ? 'Cumulative live session volume' : ticker.volume.raw
+        }
+      >
+        {t?.source === 'ALPACA' ? formatCount(t.volume) : ticker.volume.display}
       </td>
 
       <td className="num px-2 py-1.5 text-right align-middle text-ink-2" title={ticker.float.raw}>

@@ -9,6 +9,8 @@
 import 'server-only';
 
 import { loadMarketConfig } from './config';
+import { projectMarketHealth } from './health';
+import { resolveSessionPhase } from './session';
 import { databaseExists, getMeta, openDatabase, type MarketDatabase } from './store/db';
 import {
   countBaselines,
@@ -110,6 +112,14 @@ function emptyDiscovery(config: ReturnType<typeof loadMarketConfig>): DiscoveryS
   };
 }
 
+/**
+ * What the worker actually writes into `discovery_summary`.
+ *
+ * `isTradingDay` is calendar knowledge only the worker has; `sessionPhase` is a
+ * convenience copy that readers deliberately ignore in favour of the clock.
+ */
+type StoredSummary = Partial<DiscoveryState> & { isTradingDay?: boolean };
+
 export interface MarketSnapshotOptions {
   /** Extra symbols to include even when unranked (TODAY-sheet tickers). */
   extraSymbols?: string[];
@@ -132,8 +142,10 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
   }
 
   if (!db) {
+    const health = offlineHealth('Market worker has not written a state store yet.');
     return {
-      health: offlineHealth('Market worker has not written a state store yet.'),
+      health,
+      marketHealth: healthView(health, 'CLOSED', config),
       discovery: emptyDiscovery(config),
       demand: {},
       intelligence: {},
@@ -155,15 +167,29 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
     health.stale = heartbeatAge > config.heartbeatStaleMs;
     health.offline = !Number.isFinite(heartbeatAge) || heartbeatAge > config.heartbeatStaleMs * 4;
 
-    let summary: Partial<DiscoveryState> = {};
+    let summary: StoredSummary = {};
     const rawSummary = getMeta(db, 'discovery_summary');
     if (rawSummary) {
       try {
-        summary = JSON.parse(rawSummary) as Partial<DiscoveryState>;
+        summary = JSON.parse(rawSummary) as StoredSummary;
       } catch {
         summary = {};
       }
     }
+
+    /*
+     * The session phase is derived here, not read.
+     *
+     * The stored value is whatever the worker last flushed; trusting it made the
+     * header report the phase at worker startup for the rest of the day. Only
+     * the trading-day flag genuinely has to come from the worker, because the
+     * market calendar is not available on this side.
+     */
+    const sessionPhase = resolveSessionPhase({
+      now: new Date(),
+      tradingDate: tradingDate || null,
+      isTradingDay: summary.isTradingDay ?? tradingDate !== '',
+    });
 
     const states = readDemandStates(db, tradingDate, {
       limit: config.internalRank,
@@ -177,10 +203,9 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
         ? Math.round((nowMs - Date.parse(state.freshness.lastEventAt)) / 1000)
         : null;
       state.freshness.ageSeconds = age;
+      // Quiet only means something while the market is open.
       state.freshness.stale =
-        summary.sessionPhase !== undefined && summary.sessionPhase !== 'CLOSED'
-          ? age === null || age > config.tickerStaleSeconds
-          : false;
+        sessionPhase !== 'CLOSED' ? age === null || age > config.tickerStaleSeconds : false;
     }
 
     const ranked = states
@@ -189,7 +214,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
 
     const discovery: DiscoveryState = {
       tradingDate,
-      sessionPhase: summary.sessionPhase ?? 'CLOSED',
+      sessionPhase,
       universeMode: summary.universeMode ?? health.universeMode,
       eligibleCount: summary.eligibleCount ?? ranked.length,
       rankedCount: summary.rankedCount ?? ranked.length,
@@ -217,6 +242,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
 
     return {
       health,
+      marketHealth: healthView(health, sessionPhase, config),
       discovery,
       demand,
       intelligence,
@@ -226,10 +252,12 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
   } catch (error) {
     // A schema change or a mid-write file swap should degrade, not 500.
     resetConnection();
+    const health = offlineHealth(
+      `Market state store unreadable: ${(error as Error).message.slice(0, 160)}`,
+    );
     return {
-      health: offlineHealth(
-        `Market state store unreadable: ${(error as Error).message.slice(0, 160)}`,
-      ),
+      health,
+      marketHealth: healthView(health, 'CLOSED', config),
       discovery: emptyDiscovery(config),
       demand: {},
       intelligence: {},
@@ -237,6 +265,24 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       fetchedAt,
     };
   }
+}
+
+/** Resolved here, against the server clock, so every surface reads one verdict. */
+function healthView(
+  health: MarketFeedHealth,
+  sessionPhase: DiscoveryState['sessionPhase'],
+  config: ReturnType<typeof loadMarketConfig>,
+) {
+  return projectMarketHealth({
+    health,
+    sessionPhase,
+    now: Date.now(),
+    thresholds: {
+      freshSeconds: config.marketDataFreshSeconds,
+      staleSeconds: config.marketDataStaleSeconds,
+      heartbeatStaleMs: config.heartbeatStaleMs,
+    },
+  });
 }
 
 /**

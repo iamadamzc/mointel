@@ -46,6 +46,7 @@ import {
   etWallClockToUtc,
   hasRthClosed,
   minuteKey,
+  resolveSessionPhase,
   resolveTradingSession,
   sessionPhaseForMinutes,
   etMinutesOfDay,
@@ -313,6 +314,27 @@ export class MarketRuntime {
     this.logger.info(
       `[session] trading date ${this.tradingDate} (${this.sessionPhase}${this.sessionPending ? ', pending' : ''})`,
     );
+  }
+
+  /**
+   * The session phase right now, recomputed rather than remembered.
+   *
+   * A worker started in premarket runs for hours, so a phase resolved once at
+   * startup is wrong for most of the session. Every flush asks the clock again
+   * through the same shared function the read model uses.
+   */
+  currentSessionPhase(now = new Date()): SessionPhase {
+    // Diagnostic override: the trading date is deliberately not today, so the
+    // wall clock is the only thing left to judge the phase by.
+    if (this.config.tradingDateOverride) {
+      return sessionPhaseForMinutes(etMinutesOfDay(now));
+    }
+
+    return resolveSessionPhase({
+      now,
+      tradingDate: this.tradingDate || null,
+      isTradingDay: this.tradingDate ? this.isTradingDay(this.tradingDate) : false,
+    });
   }
 
   /* ------------------------------------------------------------ universe */
@@ -890,6 +912,9 @@ export class MarketRuntime {
 
   /** Persists dirty state, recomputes ranking, and republishes health. */
   flush(): void {
+    // Clock-derived, so it is re-read here rather than carried from startup.
+    this.sessionPhase = this.currentSessionPhase();
+
     if (this.pendingBars.length > 0) {
       const bars = this.pendingBars;
       this.pendingBars = [];
@@ -930,6 +955,9 @@ export class MarketRuntime {
       priceMin: this.config.discoveryPriceMin,
       priceMax: this.config.discoveryPriceMax,
       sessionPhase: this.sessionPhase,
+      // The calendar fact the read model cannot look up for itself. The phase
+      // above is only a convenience copy; readers re-derive it from the clock.
+      isTradingDay: this.tradingDate ? this.isTradingDay(this.tradingDate) : false,
     }));
 
     this.health.heartbeatAt = new Date().toISOString();

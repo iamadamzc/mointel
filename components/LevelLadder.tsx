@@ -12,7 +12,7 @@
  * trader can answer "what is above me and how far" without reading a sentence.
  */
 
-import type { LevelMap, LevelZone } from '@/lib/data/priceLevels';
+import type { CompactLevel, LevelMap, LevelZone } from '@/lib/data/priceLevels';
 import { levelTypeLabel, toCompactRow } from '@/lib/data/priceLevels';
 
 function priceText(value: number): string {
@@ -21,11 +21,53 @@ function priceText(value: number): string {
 
 /* ------------------------------------------------------------ compact cell */
 
+function CompactSide({
+  side,
+  levels,
+  distanceClass,
+}: {
+  side: 'up' | 'dn';
+  levels: CompactLevel[];
+  distanceClass: string;
+}) {
+  // Plain-text copy for the hover title, so clipping never loses a level.
+  const full = levels
+    .map((level) =>
+      [level.price, level.type, level.stateLabel, level.distance].filter(Boolean).join(' '),
+    )
+    .join(' · ');
+
+  return (
+    <div className="flex items-baseline gap-1" title={full || undefined}>
+      <span className="w-[22px] shrink-0 text-[9px] uppercase tracking-wider text-ink-3">
+        {side}
+      </span>
+      {levels.length === 0 ? (
+        <span className="text-[10px] text-ink-3">open</span>
+      ) : (
+        <span className="num truncate whitespace-nowrap text-[10px] text-ink-2">
+          {levels.map((level, index) => (
+            <span key={index}>
+              {index > 0 ? <span className="text-ink-3"> · </span> : null}
+              <span className="text-ink-1">{level.price}</span>{' '}
+              <span className="text-ink-3">{level.type}</span>
+              {level.stateLabel ? <span className="text-warn"> {level.stateLabel}</span> : null}{' '}
+              <span className={distanceClass}>{level.distance}</span>
+            </span>
+          ))}
+        </span>
+      )}
+    </div>
+  );
+}
+
 /**
  * Board cell: nearest levels either side of price.
  *
- * Distances are signed relative to current price so direction is readable
- * without tracing which row it sits on.
+ * Two lines, not three. The current price used to sit between them, which
+ * repeated the Price column a few cells to the left and spent a third of the
+ * cell saying nothing new. Distances are signed, so direction reads without
+ * needing an anchor row.
  */
 export function CompactLevels({ map }: { map: LevelMap }) {
   const row = toCompactRow(map, 2);
@@ -35,59 +77,15 @@ export function CompactLevels({ map }: { map: LevelMap }) {
   }
 
   return (
-    <div className="flex flex-col gap-[1px] leading-tight">
-      <div className="flex items-baseline gap-1">
-        <span className="w-[26px] shrink-0 text-[9px] uppercase tracking-wider text-ink-3">up</span>
-        {row.nextUp.length === 0 ? (
-          <span className="text-[10px] text-ink-3">open</span>
-        ) : (
-          <span className="num truncate text-[10px] text-ink-2">
-            {row.nextUp.map((level, index) => (
-              <span key={index}>
-                {index > 0 ? <span className="text-ink-3"> · </span> : null}
-                <span className="text-ink-1">{level.price}</span>{' '}
-                <span className="text-ink-3">{level.type}</span>
-                {level.stateLabel ? (
-                  <span className="text-warn"> {level.stateLabel}</span>
-                ) : null}{' '}
-                <span className="text-pos">{level.distance}</span>
-              </span>
-            ))}
-          </span>
-        )}
-      </div>
+    <div className="flex min-w-0 flex-col gap-[1px] leading-tight">
+      <CompactSide side="up" levels={row.nextUp} distanceClass="text-pos" />
+      <CompactSide side="dn" levels={row.nextDown} distanceClass="text-warn" />
 
-      {/* Current price is the anchor, so it is the only emphasised line. */}
-      <div className="flex items-baseline gap-1">
-        <span className="w-[26px] shrink-0 text-[9px] uppercase tracking-wider text-ink-3">now</span>
-        <span className="num text-[11px] font-semibold text-ink">{row.now ?? '—'}</span>
-        {row.spreadPct ? (
-          <span className="num text-[9px] text-ink-3" title="Level 1 NBBO spread">
-            {row.spreadPct}
-          </span>
-        ) : null}
-      </div>
-
-      <div className="flex items-baseline gap-1">
-        <span className="w-[26px] shrink-0 text-[9px] uppercase tracking-wider text-ink-3">dn</span>
-        {row.nextDown.length === 0 ? (
-          <span className="text-[10px] text-ink-3">open</span>
-        ) : (
-          <span className="num truncate text-[10px] text-ink-2">
-            {row.nextDown.map((level, index) => (
-              <span key={index}>
-                {index > 0 ? <span className="text-ink-3"> · </span> : null}
-                <span className="text-ink-1">{level.price}</span>{' '}
-                <span className="text-ink-3">{level.type}</span>
-                {level.stateLabel ? (
-                  <span className="text-warn"> {level.stateLabel}</span>
-                ) : null}{' '}
-                <span className="text-warn">{level.distance}</span>
-              </span>
-            ))}
-          </span>
-        )}
-      </div>
+      {/* The one current-price fact the Price column cannot express: price is
+          sitting on a level rather than between two. */}
+      {row.atPriceNote ? (
+        <div className="text-[9px] uppercase tracking-wider text-accent">{row.atPriceNote}</div>
+      ) : null}
     </div>
   );
 }

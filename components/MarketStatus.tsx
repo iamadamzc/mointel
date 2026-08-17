@@ -1,117 +1,76 @@
 'use client';
 
-import { StatusBadge, type Tone } from '@/components/StatusBadge';
+import { StatusBadge } from '@/components/StatusBadge';
+import type { MarketHealthView } from '@/lib/market/health';
 import type { DiscoveryState, MarketFeedHealth } from '@/lib/market/types';
-import { secondsSince } from '@/lib/format';
 
 interface MarketStatusProps {
   health: MarketFeedHealth;
+  /** Connection and freshness, already combined server-side. */
+  marketHealth: MarketHealthView;
   discovery: DiscoveryState;
-  now: number;
   mounted: boolean;
 }
 
-interface Presentation {
-  label: string;
-  tone: Tone;
-  detail: string;
-}
+const TONE_CLASS: Record<MarketHealthView['tone'], string> = {
+  pos: 'border-pos/35 bg-pos/12 text-pos',
+  warn: 'border-warn/35 bg-warn/12 text-warn',
+  neg: 'border-neg/35 bg-neg/12 text-neg',
+  accent: 'border-accent/35 bg-accent/12 text-accent',
+  dim: 'border-line bg-panel-2 text-ink-3',
+};
+
+const DOT_CLASS: Record<MarketHealthView['tone'], string> = {
+  pos: 'bg-pos',
+  warn: 'bg-warn',
+  neg: 'bg-neg',
+  accent: 'bg-accent',
+  dim: 'bg-ink-3',
+};
 
 /**
  * Market feed health, deliberately independent from the research indicator.
- * One generic "LIVE" light that masks which source is stale would be worse than
- * no light at all.
+ *
+ * The verdict is not computed here. This renders a projection that already
+ * combined socket state with whole-market data freshness, because a component
+ * that decides for itself is how the desk ended up showing a green LIVE badge
+ * next to a message age of 227 seconds.
  */
-function present(health: MarketFeedHealth): Presentation {
-  if (health.offline || health.mode === 'OFFLINE') {
-    return {
-      label: 'Market: worker offline',
-      tone: 'dim',
-      detail: health.lastError ?? 'Start it with npm run market:alpaca',
-    };
-  }
-
-  if (health.mode === 'SIMULATOR') {
-    return { label: 'Market: SIMULATOR', tone: 'warn', detail: 'Simulated data — not a market feed' };
-  }
-
-  if (health.mode === 'TEST') {
-    return { label: 'Market: TEST STREAM', tone: 'warn', detail: 'Alpaca FAKEPACA diagnostics feed' };
-  }
-
-  const feed = health.feed.toUpperCase();
-
-  if (health.sipEntitlement === 'DENIED') {
-    return {
-      label: `Market: ${feed} not entitled`,
-      tone: 'neg',
-      detail: health.lastError ?? 'Account lacks the required market-data subscription',
-    };
-  }
-
-  switch (health.connectionState) {
-    case 'STREAMING':
-      return {
-        label: `Market: Alpaca ${feed} — ${health.stale ? 'STALE' : 'LIVE'}`,
-        tone: health.stale ? 'warn' : 'pos',
-        detail: health.stale ? 'Worker heartbeat is late' : 'Streaming',
-      };
-    case 'AUTHENTICATED':
-      return { label: `Market: Alpaca ${feed} — authenticated`, tone: 'accent', detail: 'Subscribing' };
-    case 'CONNECTED':
-    case 'CONNECTING':
-      return { label: `Market: Alpaca ${feed} — connecting`, tone: 'accent', detail: 'Handshake in progress' };
-    case 'DEGRADED':
-      return { label: `Market: Alpaca ${feed} — degraded`, tone: 'warn', detail: health.lastError ?? '' };
-    case 'ERROR':
-      return { label: `Market: Alpaca ${feed} — error`, tone: 'neg', detail: health.lastError ?? '' };
-    default:
-      return {
-        label: `Market: Alpaca ${feed} — disconnected`,
-        tone: 'neg',
-        detail: health.lastError ?? 'Reconnecting',
-      };
-  }
-}
-
-export function MarketStatus({ health, discovery, now, mounted }: MarketStatusProps) {
-  const presentation = present(health);
-  const messageAge = mounted ? secondsSince(health.lastMessageAt, now) : null;
-  const live = presentation.tone === 'pos';
+export function MarketStatus({ health, marketHealth, discovery, mounted }: MarketStatusProps) {
+  const age = marketHealth.messageAgeSeconds;
 
   return (
     <div className="flex items-center gap-2.5">
       <span
-        title={presentation.detail}
+        title={marketHealth.detail}
         className={`inline-flex items-center gap-1.5 rounded-sm border px-1.5 py-px text-[10px] font-semibold tracking-wide uppercase ${
-          presentation.tone === 'pos'
-            ? 'border-pos/35 bg-pos/12 text-pos'
-            : presentation.tone === 'warn'
-              ? 'border-warn/35 bg-warn/12 text-warn'
-              : presentation.tone === 'neg'
-                ? 'border-neg/35 bg-neg/12 text-neg'
-                : presentation.tone === 'accent'
-                  ? 'border-accent/35 bg-accent/12 text-accent'
-                  : 'border-line bg-panel-2 text-ink-3'
+          TONE_CLASS[marketHealth.tone]
         }`}
       >
         <span
-          className={`h-1.5 w-1.5 rounded-full ${
-            presentation.tone === 'pos'
-              ? 'bg-pos'
-              : presentation.tone === 'warn'
-                ? 'bg-warn'
-                : presentation.tone === 'neg'
-                  ? 'bg-neg'
-                  : 'bg-ink-3'
-          } ${live && !health.stale ? 'live-dot' : ''}`}
+          className={`h-1.5 w-1.5 rounded-full ${DOT_CLASS[marketHealth.tone]} ${
+            marketHealth.live ? 'live-dot' : ''
+          }`}
         />
-        {presentation.label}
+        {marketHealth.label}
       </span>
 
       <div className="hidden text-[11px] text-ink-3 lg:block">
         <span className="text-ink-2">{discovery.sessionPhase.replace('_', ' ')}</span>
-        {messageAge !== null ? <span className="num"> · msg {messageAge}s</span> : null}
+        {mounted && age !== null ? (
+          <span
+            className={`num ${
+              // The number carries the same verdict as the badge beside it.
+              marketHealth.freshness === 'FRESH' || marketHealth.freshness === 'NOT_EXPECTED'
+                ? ''
+                : 'text-warn'
+            }`}
+            title={`Newest whole-market message. Fresh under ${marketHealth.thresholds.freshSeconds}s, stale beyond ${marketHealth.thresholds.staleSeconds}s.`}
+          >
+            {' '}
+            msg {age}s
+          </span>
+        ) : null}
         {health.highResCount > 0 ? <span className="num"> · hi-res {health.highResCount}</span> : null}
         {health.reconnectCount > 0 ? (
           <span className="num text-warn"> · reconnects {health.reconnectCount}</span>

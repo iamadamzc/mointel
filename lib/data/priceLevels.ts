@@ -680,11 +680,23 @@ export interface CompactLevel {
   isZone: boolean;
 }
 
+/**
+ * The board cell's model.
+ *
+ * Deliberately has no current-price field. The board already has a Price column
+ * and a Spread column, so a NOW row inside the level cell restated what was two
+ * columns to its left and pushed the levels — the only thing the cell exists to
+ * show — into less space. Its absence is structural rather than a styling
+ * choice, so it cannot quietly come back.
+ */
 export interface CompactLevelRow {
   nextUp: CompactLevel[];
-  now: string | null;
-  spreadPct: string | null;
   nextDown: CompactLevel[];
+  /**
+   * Set only when price is sitting ON a level, which the Price column cannot
+   * express. This is the one current-price fact that adds information here.
+   */
+  atPriceNote: string | null;
   empty: boolean;
 }
 
@@ -725,9 +737,11 @@ export function selectForBoard(zones: readonly LevelZone[], perSide: number): Le
 export function toCompactRow(map: LevelMap, perSide = 2): CompactLevelRow {
   return {
     nextUp: selectForBoard(map.above, perSide).map((zone) => toCompact(zone, '+')),
-    now: map.currentPrice === null ? null : formatPrice(map.currentPrice),
-    spreadPct: map.spreadPct === null ? null : `${map.spreadPct.toFixed(2)}%`,
     nextDown: selectForBoard(map.below, perSide).map((zone) => toCompact(zone, '-')),
+    atPriceNote:
+      map.atPrice.length > 0
+        ? `at ${map.atPrice.map((level) => TYPE_LABEL[level.type]).join(' · ')}`
+        : null,
     empty: map.empty,
   };
 }
