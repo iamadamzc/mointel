@@ -27,15 +27,19 @@ import { OpenAiInterpreter } from '../lib/research/interpret/openaiInterpreter';
 import { NoopInterpreter } from '../lib/research/interpret/interpreter';
 import { loadSheetPriors } from '../lib/research/merge/sheetPrior';
 import { interpretTicker } from '../lib/research/interpret/pipeline';
+import { computeEvidenceFingerprint } from '../lib/research/fingerprint';
 import { queueDiscoveryResearch, timeToIntelligence, type QueueCandidate } from '../lib/research/queue';
 import { ensureDailyHistory } from '../lib/research/historyFetch';
 import { openDatabase, type MarketDatabase } from '../lib/market/store/db';
 import {
   claimQueuedJobs,
+  clearRetryState,
   completeJob,
   markJobStage,
   readJobsForDate,
   readOrphanedJobs,
+  readSources,
+  recordResearchFailure,
   requeueJobForRetry,
   writeResearchHealth,
 } from '../lib/market/store/researchRepo';
@@ -286,9 +290,21 @@ async function main(): Promise<void> {
           });
 
           if (report.dossier) {
+            // It works now, so whatever it failed on before is history.
+            clearRetryState(db, job.ticker, tradingDate);
             lastCompletedTicker = job.ticker;
             lastCompletedAt = acceptedAt;
             latencies.push(Date.now() - started);
+          } else if (status === 'FAILED') {
+            const state = recordResearchFailure(db, {
+              ticker: job.ticker,
+              tradingDate,
+              evidenceFingerprint:
+                report.evidenceFingerprint ?? computeEvidenceFingerprint(readSources(db, job.ticker)),
+              error: report.error ?? null,
+              now: new Date(),
+            });
+            log(`[research] ${job.ticker} failure ${state.attempts} recorded`);
           }
 
           const timing = timeToIntelligence({ ...job, acceptedAt });
@@ -306,6 +322,24 @@ async function main(): Promise<void> {
             completedAt: new Date().toISOString(),
             error: message.slice(0, 300),
           });
+
+          /*
+           * A thrown failure never reached a fingerprint of its own, so the
+           * evidence on file is used instead. Without this the count would be
+           * keyed on '' and a crash loop would look like the same failure even
+           * after new filings arrived.
+           */
+          const state = recordResearchFailure(db, {
+            ticker: job.ticker,
+            tradingDate,
+            evidenceFingerprint: computeEvidenceFingerprint(readSources(db, job.ticker)),
+            error: message,
+            now: new Date(),
+          });
+          log(
+            `[research] ${job.ticker} failure ${state.attempts} recorded` +
+              (state.nextAttemptAt ? `, next attempt after ${state.nextAttemptAt}` : ''),
+          );
         }
       }),
     );

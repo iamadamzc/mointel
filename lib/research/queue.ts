@@ -9,7 +9,15 @@
  */
 
 import type { MarketDatabase } from '../market/store/db';
-import { enqueueResearchJob, readCurrentAnalysis, readLatestJobForTicker } from '../market/store/researchRepo';
+import {
+  enqueueResearchJob,
+  readCurrentAnalysis,
+  readLatestJobForTicker,
+  readRetryState,
+  readSources,
+} from '../market/store/researchRepo';
+import { computeEvidenceFingerprint } from './fingerprint';
+import { evaluateRetry } from './retry';
 
 export interface QueueCandidate {
   ticker: string;
@@ -100,7 +108,18 @@ const LIVE_STATUSES = ['QUEUED', 'COLLECTING', 'SOURCES_READY', 'ANALYZING'];
 export function queueDiscoveryResearch(
   db: MarketDatabase,
   candidates: readonly QueueCandidate[],
-  options: { tradingDate: string; autoRank: number; now: Date },
+  options: {
+    tradingDate: string;
+    autoRank: number;
+    now: Date;
+    maxAttempts?: number;
+    /**
+     * Fingerprint of the evidence currently on file. Injectable for tests;
+     * by default it is computed from stored sources, which costs one local
+     * read and no network — the same evidence the analysis would have used.
+     */
+    currentFingerprint?: (ticker: string) => string;
+  },
 ): QueueDecision[] {
   const decisions: QueueDecision[] = [];
   const queuedAt = options.now.toISOString();
@@ -109,6 +128,10 @@ export function queueDiscoveryResearch(
     .filter((candidate) => isEligible(candidate, options.autoRank))
     .map((candidate) => ({ candidate, priority: priorityScore(candidate, options.autoRank) }))
     .sort((a, b) => b.priority - a.priority);
+
+  const fingerprintFor =
+    options.currentFingerprint ??
+    ((ticker: string) => computeEvidenceFingerprint(readSources(db, ticker)));
 
   for (const { candidate, priority } of ordered) {
     const existingJob = readLatestJobForTicker(db, candidate.ticker, options.tradingDate);
@@ -138,8 +161,28 @@ export function queueDiscoveryResearch(
     /*
      * A finished job without an accepted dossier is deliberately re-openable,
      * so a name whose evidence has since changed can be analyzed again. The
-     * accepted-dossier check above is what stops that becoming a loop.
+     * accepted-dossier check above stops that repeating once an analysis
+     * lands; the retry policy below stops it repeating when one never does.
      */
+    const verdict = evaluateRetry({
+      state: readRetryState(db, candidate.ticker, options.tradingDate),
+      currentFingerprint: fingerprintFor(candidate.ticker),
+      now: options.now,
+      maxAttempts: options.maxAttempts,
+    });
+
+    if (!verdict.allow) {
+      decisions.push({
+        ticker: candidate.ticker,
+        queued: false,
+        reason: verdict.blocked
+          ? `left explicitly FAILED: ${verdict.reason}`
+          : `deferred: ${verdict.reason}`,
+        priority,
+        jobId: existingJob?.id ?? null,
+      });
+      continue;
+    }
 
     const jobId = enqueueResearchJob(db, {
       ticker: candidate.ticker,

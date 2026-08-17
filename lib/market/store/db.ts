@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 10;
+export const SCHEMA_VERSION = 11;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -308,6 +308,29 @@ CREATE INDEX IF NOT EXISTS idx_daily_bars_symbol ON daily_bars (symbol, trading_
 CREATE TABLE IF NOT EXISTS research_health (
   id      INTEGER PRIMARY KEY CHECK (id = 1),
   payload TEXT NOT NULL
+);
+
+-- Why a ticker is not being retried, and how many times it has failed.
+--
+-- Keyed by ticker AND trading date, so the block is session-scoped: tomorrow
+-- starts clean without anyone clearing anything. The evidence fingerprint is
+-- carried as a column rather than part of the key because it answers a
+-- different question — "is this the SAME failure?" A different fingerprint
+-- means the inputs changed, so the count resets and the name is analysed again.
+--
+-- Retry state cannot live on research_jobs: requeueing inserts a NEW row, so a
+-- per-row retry_count resets every attempt and bounds nothing.
+CREATE TABLE IF NOT EXISTS research_retry_state (
+  ticker               TEXT NOT NULL,
+  trading_date         TEXT NOT NULL,
+  evidence_fingerprint TEXT NOT NULL,
+  attempts             INTEGER NOT NULL DEFAULT 0,
+  first_failed_at      TEXT NOT NULL,
+  last_failed_at       TEXT NOT NULL,
+  -- Backoff gate; a transient failure waits rather than hammering.
+  next_attempt_at      TEXT,
+  last_error           TEXT,
+  PRIMARY KEY (ticker, trading_date)
 );
 
 -- The trader's own attention list, scoped to a trading date.

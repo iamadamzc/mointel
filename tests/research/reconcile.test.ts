@@ -12,7 +12,10 @@ import {
   markJobStage,
   readJobsForDate,
   readLatestJobForTicker,
+  clearRetryState,
   readOrphanedJobs,
+  readRetryState,
+  recordResearchFailure,
   requeueJobForRetry,
 } from '@/lib/market/store/researchRepo';
 import type { ResearchHealth } from '@/lib/research/types';
@@ -267,5 +270,183 @@ describe('research engine health', () => {
     const view = projectResearchHealth({ health: health({ state: 'ERROR' }), now: NOW });
     expect(view.state).toBe('ERROR');
     expect(view.running).toBe(true);
+  });
+});
+
+/* ------------------------------------------------------------ retry safety */
+
+/**
+ * The failure mode these close: reconciliation asks the same question every
+ * five seconds, and each retry writes a NEW research_jobs row — so the per-row
+ * retry_count resets every attempt and bounded nothing. A name failing
+ * deterministically produced an unbounded sequence of fresh jobs, spending a
+ * model call each time, for the rest of the session.
+ */
+describe('retry safety', () => {
+  const EVIDENCE = 'fingerprint-a';
+  const NEW_EVIDENCE = 'fingerprint-b';
+
+  function reconcileWith(
+    db: MarketDatabase,
+    fingerprint: string,
+    now = new Date('2026-08-17T15:00:00Z'),
+  ) {
+    return queueDiscoveryResearch(db, [candidate('AAAA', 1)], {
+      tradingDate: DATE,
+      autoRank: AUTO_RANK,
+      now,
+      currentFingerprint: () => fingerprint,
+    });
+  }
+
+  /** Runs one full attempt: queue, claim, fail, record. */
+  function failOnce(db: MarketDatabase, fingerprint: string, now: Date) {
+    const decisions = reconcileWith(db, fingerprint, now);
+    if (!decisions[0]?.queued) return decisions[0];
+
+    const [claimed] = claimQueuedJobs(db, DATE, 1, now.toISOString());
+    completeJob(db, claimed.id, {
+      status: 'FAILED',
+      completedAt: now.toISOString(),
+      error: 'deterministic failure',
+    });
+    recordResearchFailure(db, {
+      ticker: 'AAAA',
+      tradingDate: DATE,
+      evidenceFingerprint: fingerprint,
+      error: 'deterministic failure',
+      now,
+    });
+    return decisions[0];
+  }
+
+  it('cannot create an infinite sequence of fresh jobs on unchanged evidence', () => {
+    const db = temporaryDb();
+
+    // Twenty cycles, each far enough apart to clear any backoff.
+    for (let cycle = 0; cycle < 20; cycle += 1) {
+      failOnce(db, EVIDENCE, new Date(Date.parse('2026-08-17T15:00:00Z') + cycle * 3_600_000));
+    }
+
+    // Three attempts, not twenty.
+    expect(readJobsForDate(db, DATE)).toHaveLength(3);
+
+    const verdict = reconcileWith(
+      db,
+      EVIDENCE,
+      new Date('2026-08-18T00:00:00Z'),
+    )[0];
+    expect(verdict.queued).toBe(false);
+    expect(verdict.reason).toContain('explicitly FAILED');
+  });
+
+  it('leaves the ticker in an explicit FAILED state, not silently uncovered', () => {
+    const db = temporaryDb();
+    for (let cycle = 0; cycle < 5; cycle += 1) {
+      failOnce(db, EVIDENCE, new Date(Date.parse('2026-08-17T15:00:00Z') + cycle * 3_600_000));
+    }
+
+    expect(readLatestJobForTicker(db, 'AAAA', DATE)?.status).toBe('FAILED');
+  });
+
+  it('defers rather than blocks while the backoff is still running', () => {
+    const db = temporaryDb();
+    const start = new Date('2026-08-17T15:00:00Z');
+    failOnce(db, EVIDENCE, start);
+
+    // One second later the first backoff step has not elapsed.
+    const verdict = reconcileWith(db, EVIDENCE, new Date(start.getTime() + 1_000))[0];
+    expect(verdict.queued).toBe(false);
+    expect(verdict.reason).toContain('deferred');
+    expect(verdict.reason).not.toContain('explicitly FAILED');
+
+    // Well past it, the retry is allowed.
+    expect(reconcileWith(db, EVIDENCE, new Date(start.getTime() + 600_000))[0].queued).toBe(true);
+  });
+
+  it('lets new evidence straight through a block', () => {
+    const db = temporaryDb();
+    for (let cycle = 0; cycle < 5; cycle += 1) {
+      failOnce(db, EVIDENCE, new Date(Date.parse('2026-08-17T15:00:00Z') + cycle * 3_600_000));
+    }
+    expect(reconcileWith(db, EVIDENCE, new Date('2026-08-18T00:00:00Z'))[0].queued).toBe(false);
+
+    // A filing lands. The fingerprint changes, and the name is analysed again
+    // immediately — no timer, no manual step.
+    const verdict = reconcileWith(db, NEW_EVIDENCE, new Date('2026-08-18T00:00:01Z'))[0];
+    expect(verdict.queued).toBe(true);
+  });
+
+  it('scopes the block to the trading date', () => {
+    const db = temporaryDb();
+    for (let cycle = 0; cycle < 5; cycle += 1) {
+      failOnce(db, EVIDENCE, new Date(Date.parse('2026-08-17T15:00:00Z') + cycle * 3_600_000));
+    }
+
+    // Tomorrow starts clean without anyone clearing anything.
+    const tomorrow = queueDiscoveryResearch(db, [candidate('AAAA', 1)], {
+      tradingDate: '2026-08-18',
+      autoRank: AUTO_RANK,
+      now: new Date('2026-08-18T13:30:00Z'),
+      currentFingerprint: () => EVIDENCE,
+    });
+    expect(tomorrow[0].queued).toBe(true);
+  });
+
+  it('clears the block when a person asks for a retry', () => {
+    const db = temporaryDb();
+    for (let cycle = 0; cycle < 5; cycle += 1) {
+      failOnce(db, EVIDENCE, new Date(Date.parse('2026-08-17T15:00:00Z') + cycle * 3_600_000));
+    }
+    expect(reconcileWith(db, EVIDENCE, new Date('2026-08-18T00:00:00Z'))[0].queued).toBe(false);
+
+    clearRetryState(db, 'AAAA', DATE);
+
+    expect(reconcileWith(db, EVIDENCE, new Date('2026-08-18T00:00:01Z'))[0].queued).toBe(true);
+  });
+
+  it('clears the block when an analysis is finally accepted', () => {
+    const db = temporaryDb();
+    failOnce(db, EVIDENCE, new Date('2026-08-17T15:00:00Z'));
+    expect(readRetryState(db, 'AAAA', DATE)?.attempts).toBe(1);
+
+    // The worker clears the state the moment a dossier is accepted.
+    clearRetryState(db, 'AAAA', DATE);
+    expect(readRetryState(db, 'AAAA', DATE)).toBeNull();
+  });
+
+  it('restarts the count when the failure is against different evidence', () => {
+    const db = temporaryDb();
+    const start = Date.parse('2026-08-17T15:00:00Z');
+
+    failOnce(db, EVIDENCE, new Date(start));
+    failOnce(db, EVIDENCE, new Date(start + 3_600_000));
+    expect(readRetryState(db, 'AAAA', DATE)?.attempts).toBe(2);
+
+    // A different failure is not the same failure; it must not inherit a
+    // budget that was spent on a problem the name no longer has.
+    recordResearchFailure(db, {
+      ticker: 'AAAA',
+      tradingDate: DATE,
+      evidenceFingerprint: NEW_EVIDENCE,
+      error: 'different failure',
+      now: new Date(start + 7_200_000),
+    });
+
+    const state = readRetryState(db, 'AAAA', DATE)!;
+    expect(state.attempts).toBe(1);
+    expect(state.evidenceFingerprint).toBe(NEW_EVIDENCE);
+  });
+
+  it('still allows ordinary reanalysis for a name that never failed', () => {
+    const db = temporaryDb();
+
+    // The retry policy must not become a general brake: a finished job with no
+    // accepted dossier is still re-openable when evidence moves on.
+    reconcileWith(db, EVIDENCE);
+    const [claimed] = claimQueuedJobs(db, DATE, 1, new Date().toISOString());
+    completeJob(db, claimed.id, { status: 'PARTIAL', completedAt: new Date().toISOString() });
+
+    expect(reconcileWith(db, NEW_EVIDENCE)[0].queued).toBe(true);
   });
 });

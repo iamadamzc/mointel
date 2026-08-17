@@ -26,6 +26,7 @@ import type {
   SourceType,
 } from '../../research/types';
 import { ANALYSIS_VERSION, EMPTY_COMPANY_SOURCES } from '../../research/types';
+import { nextRetryState, type RetryState } from '../../research/retry';
 
 /* -------------------------------------------------------------- table guard */
 
@@ -771,4 +772,126 @@ export function readResearchHealth(db: MarketDatabase): ResearchHealth | null {
   } catch {
     return null;
   }
+}
+
+/* ------------------------------------------------------------- retry state */
+
+interface RetryRow {
+  ticker: string;
+  trading_date: string;
+  evidence_fingerprint: string;
+  attempts: number;
+  first_failed_at: string;
+  last_failed_at: string;
+  next_attempt_at: string | null;
+  last_error: string | null;
+}
+
+function toRetryState(row: RetryRow): RetryState {
+  return {
+    ticker: row.ticker,
+    tradingDate: row.trading_date,
+    evidenceFingerprint: row.evidence_fingerprint,
+    attempts: row.attempts,
+    firstFailedAt: row.first_failed_at,
+    lastFailedAt: row.last_failed_at,
+    nextAttemptAt: row.next_attempt_at,
+    lastError: row.last_error,
+  };
+}
+
+/**
+ * The retry table arrived after the research tables did.
+ *
+ * A store written by an older worker has research_jobs but not this, and the
+ * web process reads it through a skipSchema connection that will not create it.
+ * Checked explicitly so that gap degrades to "no block recorded" instead of
+ * throwing on every reconciliation cycle.
+ */
+function retryTablePresent(db: MarketDatabase): boolean {
+  const row = db
+    .prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'research_retry_state'")
+    .get() as { name: string } | undefined;
+  return row !== undefined;
+}
+
+export function readRetryState(
+  db: MarketDatabase,
+  ticker: string,
+  tradingDate: string,
+): RetryState | null {
+  if (!retryTablePresent(db)) return null;
+  const row = db
+    .prepare('SELECT * FROM research_retry_state WHERE ticker = ? AND trading_date = ?')
+    .get(ticker, tradingDate) as RetryRow | undefined;
+  return row ? toRetryState(row) : null;
+}
+
+/** All blocks for a date, so the desk can report what it has given up on. */
+export function readRetryStates(db: MarketDatabase, tradingDate: string): RetryState[] {
+  if (!retryTablePresent(db)) return [];
+  const rows = db
+    .prepare('SELECT * FROM research_retry_state WHERE trading_date = ?')
+    .all(tradingDate) as RetryRow[];
+  return rows.map(toRetryState);
+}
+
+export function writeRetryState(db: MarketDatabase, state: RetryState): void {
+  db.prepare(
+    `INSERT INTO research_retry_state
+       (ticker, trading_date, evidence_fingerprint, attempts,
+        first_failed_at, last_failed_at, next_attempt_at, last_error)
+     VALUES (@ticker, @tradingDate, @evidenceFingerprint, @attempts,
+             @firstFailedAt, @lastFailedAt, @nextAttemptAt, @lastError)
+     ON CONFLICT(ticker, trading_date) DO UPDATE SET
+       evidence_fingerprint = excluded.evidence_fingerprint,
+       attempts             = excluded.attempts,
+       first_failed_at      = excluded.first_failed_at,
+       last_failed_at       = excluded.last_failed_at,
+       next_attempt_at      = excluded.next_attempt_at,
+       last_error           = excluded.last_error`,
+  ).run(state);
+}
+
+/**
+ * Records a failure and returns the resulting state.
+ *
+ * Read and write share a transaction so two workers failing the same ticker at
+ * once cannot both read `attempts = 1` and each write back `2`, quietly
+ * doubling the budget.
+ */
+export function recordResearchFailure(
+  db: MarketDatabase,
+  options: {
+    ticker: string;
+    tradingDate: string;
+    evidenceFingerprint: string;
+    error: string | null;
+    now: Date;
+    backoffBaseMs?: number;
+  },
+): RetryState {
+  const record = db.transaction(() => {
+    const previous = readRetryState(db, options.ticker, options.tradingDate);
+    const next = nextRetryState({ previous, ...options });
+    writeRetryState(db, next);
+    return next;
+  });
+
+  return record();
+}
+
+/**
+ * Clears the block for a ticker.
+ *
+ * Called when an analysis is accepted — the name plainly works now — and by the
+ * manual retry control, which is a person overriding the automatic ceiling on
+ * purpose.
+ */
+export function clearRetryState(db: MarketDatabase, ticker: string, tradingDate: string): void {
+  if (!retryTablePresent(db)) return;
+  db.prepare('DELETE FROM research_retry_state WHERE ticker = ? AND trading_date = ?').run(
+    ticker,
+    tradingDate,
+  );
 }

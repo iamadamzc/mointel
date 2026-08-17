@@ -12,6 +12,7 @@
  * instead of an absent one.
  */
 
+import { RetryAnalysis } from '@/components/RetryAnalysis';
 import { StatusBadge, changeTone, type Tone } from '@/components/StatusBadge';
 import type {
   DeskConclusion,
@@ -203,6 +204,9 @@ export function DeskReadPanel({ read }: { read: DeskRead }) {
           title={read.intelligence.detail}
         />
       </div>
+
+      {/* A ceiling reached is not a verdict that the name cannot be analysed. */}
+      {read.intelligence.status === 'FAILED' ? <RetryAnalysis ticker={read.ticker} /> : null}
 
       <div className="mt-2.5 flex flex-wrap items-baseline gap-x-5 gap-y-1 border-t border-line pt-2">
         <Stat label="RVOL" value={formatMultiple(t.rvol)} />
