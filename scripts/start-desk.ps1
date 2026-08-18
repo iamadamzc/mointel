@@ -22,8 +22,13 @@ if ($wt) {
     # The title must be a single token. Start-Process's quoting of an argument
     # containing a space does not survive Windows Terminal's own re-parse, which
     # then treats the second word as the command and the window dies silently.
+    #
+    # -d is not optional. new-tab ignores the working directory it was launched
+    # from and uses the profile's startingDirectory, so without this the desk
+    # starts in whatever folder the user's terminal profile points at and npm
+    # fails on a missing package.json.
     Start-Process -FilePath $wt.Source -WorkingDirectory $Root -ArgumentList @(
-        'new-tab', '--title', 'Momentum-Desk',
+        'new-tab', '--title', 'Momentum-Desk', '-d', $Root,
         'cmd', '/c', 'npm run desk'
     )
 } else {
