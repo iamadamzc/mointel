@@ -69,10 +69,30 @@ sudo -u "$SERVICE_USER" env -C "$RELEASE" NODE_ENV=production npm run build
 # ---------------------------------------------------------------- install ---
 
 log "installing nginx site"
+# The shared location file first: both server blocks include it, and installing
+# a server block that references a file which is not there yet fails the test.
+install -m 0644 "$RELEASE/deploy/aws/nginx-locations.conf" /etc/nginx/mointel-locations.conf
 install -m 0644 "$RELEASE/deploy/aws/nginx.conf" /etc/nginx/sites-available/mointel
 ln -sfn /etc/nginx/sites-available/mointel /etc/nginx/sites-enabled/mointel
 rm -f /etc/nginx/sites-enabled/default
 [ -f /etc/nginx/mointel.htpasswd ] || fail "/etc/nginx/mointel.htpasswd is missing — run sync-env.sh first"
+
+# The direct-HTTPS listener, re-rendered from the release so a change to it
+# ships like any other file. Only if setup-tls.sh has run and the certificate
+# it obtained is still on disk — otherwise nginx would refuse to start over a
+# missing certificate and take the whole desk down with it.
+if [ -f /etc/mointel/tls-domain ]; then
+  TLS_DOMAIN="$(head -1 /etc/mointel/tls-domain)"
+  if [ -n "$TLS_DOMAIN" ] && [ -f "/etc/letsencrypt/live/$TLS_DOMAIN/fullchain.pem" ]; then
+    log "installing the direct HTTPS site for $TLS_DOMAIN"
+    sed "s|__DOMAIN__|$TLS_DOMAIN|g" "$RELEASE/deploy/aws/nginx-tls.conf"       > /etc/nginx/sites-available/mointel-tls
+    ln -sfn /etc/nginx/sites-available/mointel-tls /etc/nginx/sites-enabled/mointel-tls
+  else
+    log "tls-domain is set to '$TLS_DOMAIN' but no certificate is present; skipping the HTTPS site"
+    rm -f /etc/nginx/sites-enabled/mointel-tls
+  fi
+fi
+
 nginx -t || fail "nginx configuration is invalid"
 
 log "installing the status command"
