@@ -95,7 +95,8 @@ Both are needed for live demand data. The dashboard runs perfectly well on its o
 | `npm run market:test` | Alpaca official test stream (FAKEPACA) diagnostics |
 | `npm run market:diagnose` | Reports credentials, SIP auth, REST, WebSocket, store and research health |
 | `npm run market:baseline` | Pre-builds the 20-session RVOL baselines and exits |
-| `npm test` | Vitest suite (109 tests) |
+| `npm run assessments` | The scheduled desk assessments (06:10 … 22:00); part of `npm run desk` |
+| `npm test` | Vitest suite |
 | `npm run lint` / `npm run typecheck` / `npm run build` | Quality gates |
 
 ### Typical trading morning
