@@ -104,6 +104,16 @@ export interface CoverageSummary {
   secSourceCount: number;
   catalystSourceCount: number;
   canonicalClusterCount: number;
+  /**
+   * Catalyst sources that are not SEC documents.
+   *
+   * Reported separately from catalystSourceCount because an 8-K exhibit is both
+   * a catalyst source and an SEC document: counting them together is what let an
+   * SEC-only bundle describe itself as gap-free.
+   */
+  nonSecCatalystSourceCount: number;
+  /** Whether an IR, newsroom or newswire location is known for this issuer. */
+  companySourceKnown: boolean;
   latestSourceAt: string | null;
   hasCurrentReport: boolean;
   hasRegistrationEvidence: boolean;
@@ -321,10 +331,43 @@ export function buildEvidenceBundle(
     (source) => source.sourceType === 'SEC_COMPANY_FACTS',
   );
 
+  /*
+   * Whether anything OUTSIDE the SEC was ever located for this issuer.
+   *
+   * This is the gap the XOS incident exposed. Xos announced an Air Force
+   * contract through GlobeNewswire at 16:30 ET; the SEC bundle ran to 13
+   * August; and because an 8-K exhibit counts as a catalyst source, the
+   * collection satisfied "a catalyst source was located" and reported itself
+   * complete. The analysis then said, accurately and uselessly, that no company
+   * announcement dated 17 August had been supplied — while the coverage flag
+   * told every downstream reader the evidence had no holes.
+   *
+   * An exhibit is an SEC document. It says nothing about whether the issuer's
+   * own newsroom was reached, and on this store the web-discovery pass resolves
+   * a company source for only a small minority of issuers. So SEC-only coverage
+   * is now stated as what it is: adequate for filings, silent on anything the
+   * company published directly.
+   */
+  const nonSecCatalystSources = catalystSources.filter(
+    (source) => source.authority !== 'SEC',
+  );
+  const companySourceKnown = Boolean(
+    issuer?.companySources?.feedUrl ??
+      issuer?.companySources?.pressReleaseIndexUrl ??
+      issuer?.companySources?.newsroomUrl ??
+      issuer?.companySources?.investorRelationsUrl,
+  );
+
   const gaps: string[] = [];
   if (!issuer?.cik) gaps.push('no SEC registrant matched for this ticker');
   if (secSources.length === 0) gaps.push('no SEC evidence collected');
   if (catalystSources.length === 0) gaps.push('no catalyst source located');
+  if (nonSecCatalystSources.length === 0 && !companySourceKnown) {
+    gaps.push(
+      'no company IR, newsroom or newswire source located; catalyst coverage is SEC-only ' +
+        'and an announcement published outside a filing would not have been seen',
+    );
+  }
   if (!hasSharesOutstanding) gaps.push('no reported share count available');
   if (!hasRegistrationEvidence) {
     gaps.push('no registration or prospectus evidence collected; supply picture may be incomplete');
@@ -368,6 +411,8 @@ export function buildEvidenceBundle(
     coverage: {
       secSourceCount: secSources.length,
       catalystSourceCount: catalystSources.length,
+      nonSecCatalystSourceCount: nonSecCatalystSources.length,
+      companySourceKnown,
       canonicalClusterCount: clusters.size,
       latestSourceAt: latest?.publishedAt ?? null,
       hasCurrentReport,

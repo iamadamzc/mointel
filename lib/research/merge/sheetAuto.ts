@@ -38,6 +38,18 @@ export type ConflictReason =
   | 'SHEET_INCOMPLETE'
   | 'AUTO_INCOMPLETE'
   | 'AUTO_NEW_EVIDENCE'
+  /**
+   * The human review saw an event the automatic layer never received.
+   *
+   * The counterpart of AUTO_NEW_EVIDENCE, and the reason the XOS disagreement
+   * was mislabelled: both sides had a populated conclusion, so the classifier
+   * fell through to INTERPRETATION_DIFFERENCE and reported that they had read
+   * the same evidence and judged it differently. They had not. The sheet was
+   * describing a 17 August contract announcement; the automatic bundle ended on
+   * 13 August. Calling that a difference of judgement hides the only fact that
+   * mattered, which is that one side was never shown the news.
+   */
+  | 'AUTO_SOURCE_GAP'
   | 'POTENTIAL_SHEET_ERROR'
   | 'UNKNOWN';
 
@@ -133,6 +145,8 @@ interface CompareContext {
   autoUnknown: boolean;
   /** Deterministic collection recorded gaps. */
   autoIncomplete: boolean;
+  /** The sheet was observed after the newest evidence the automatic layer holds. */
+  autoBehindSheet: boolean;
   /** The sheet's own value is an explicit "unknown", not a conclusion. */
   sheetUnknown: boolean;
   /** Automatic evidence postdates the human review. */
@@ -169,7 +183,23 @@ function compare(
   let reason: ConflictReason;
   let detail: string;
 
-  if (context.autoIncomplete || context.autoUnknown) {
+  /*
+   * Catalyst only, deliberately.
+   *
+   * "The sheet saw a newer event" is a statement about an announcement, and
+   * only the catalyst conclusion rests on announcements. Structure rests on
+   * registration and financing filings and cycle on price history, so a review
+   * written after the newest source says nothing about whether those two were
+   * reading the same evidence. Applying this to every field would relabel
+   * genuine product-definition disputes — SGLY's DIRTY FLOAT against CAUTION is
+   * exactly that, and it must stay an interpretation difference.
+   */
+  if (context.autoBehindSheet && field === 'catalyst') {
+    reason = 'AUTO_SOURCE_GAP';
+    detail =
+      'the two conclusions rest on different evidence: the human review reflects an event ' +
+      'published after the newest source the automatic analysis holds';
+  } else if (context.autoIncomplete || context.autoUnknown) {
     reason = 'AUTO_INCOMPLETE';
     detail = 'automatic coverage is incomplete, so its conclusion is the weaker one';
   } else if (context.sheetUnknown) {
@@ -254,6 +284,19 @@ export function compareSheetAndAuto(options: CompareOptions): SheetAutoCompariso
 
   // Stale means the issuer published something after the human looked, not
   // merely that our analysis ran afterwards.
+  /*
+   * The sheet is looking at something newer than anything the automatic layer
+   * has. Computed from the same two timestamps as sheetStale, in the other
+   * direction: if the human observed the row after the newest source AUTO
+   * collected, the two are not disagreeing about one event, they are describing
+   * different ones.
+   */
+  const autoBehindSheet = Boolean(
+    sheet.observedAt &&
+      options.autoLatestSourceAt &&
+      Date.parse(sheet.observedAt) > Date.parse(options.autoLatestSourceAt),
+  );
+
   const sheetStale = Boolean(
     sheet.observedAt &&
       options.autoLatestSourceAt &&
@@ -265,6 +308,7 @@ export function compareSheetAndAuto(options: CompareOptions): SheetAutoCompariso
     autoIncomplete: options.autoCoverageIncomplete,
     sheetUnknown: false,
     sheetStale,
+    autoBehindSheet,
   };
 
   const sheetStructure = sheetStructureToAuto(sheet.structure?.state);

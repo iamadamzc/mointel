@@ -133,6 +133,7 @@ function bundle(overrides: Partial<ResearchEvidenceBundle> = {}): ResearchEviden
     ],
     coverage: {
       secSourceCount: 4, catalystSourceCount: 2, canonicalClusterCount: 2,
+      nonSecCatalystSourceCount: 1, companySourceKnown: true,
       latestSourceAt: '2026-08-17T11:00:00Z', hasCurrentReport: true,
       hasRegistrationEvidence: true, hasSharesOutstanding: true,
       incomplete: false, gaps: [],
@@ -146,6 +147,7 @@ function incompleteBundle(): ResearchEvidenceBundle {
   return bundle({
     coverage: {
       secSourceCount: 0, catalystSourceCount: 0, canonicalClusterCount: 0,
+      nonSecCatalystSourceCount: 0, companySourceKnown: false,
       latestSourceAt: null, hasCurrentReport: false, hasRegistrationEvidence: false,
       hasSharesOutstanding: false, incomplete: true,
       gaps: ['no SEC evidence collected'],
@@ -647,6 +649,23 @@ function seed(db: ReturnType<typeof temporaryDb>) {
       accession: '0000000123-26-000002', secForm: 'S-3', authority: 'SEC',
       contentHash: 'h3', documentFingerprint: 'd3',
       excerpt: 'Shelf registration statement.', metadata: {}, active: true,
+    },
+    /*
+     * A company release, so the default fixture represents an ordinarily
+     * covered ticker rather than the XOS failure mode.
+     *
+     * Without this every test here would seed SEC-only evidence, which now
+     * reports incomplete coverage by design — and the suite would go on
+     * asserting that an SEC-only bundle is gap-free, which is the belief that
+     * let the XOS incident through in the first place.
+     */
+    {
+      ticker: 'ACME', sourceType: 'NEWSWIRE', title: 'ACME announces a contract award',
+      url: 'https://www.globenewswire.com/news-release/acme-contract',
+      publishedAt: '2026-08-17T11:00:00Z', fetchedAt: '2026-08-17T12:00:00Z',
+      accession: null, secForm: null, authority: 'NEWSWIRE',
+      contentHash: 'h4', documentFingerprint: 'd4',
+      excerpt: 'The Company announced a contract award.', metadata: {}, active: true,
     },
   ]);
 }
