@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 16;
+export const SCHEMA_VERSION = 17;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -211,7 +211,15 @@ CREATE TABLE IF NOT EXISTS research_jobs (
   -- Recorded rather than recomputed: rank moves between qualification and
   -- execution, so asking "is this material?" when collection begins asks about
   -- a different moment than the one that justified the work.
-  trigger              TEXT
+  trigger              TEXT,
+  -- What the catalyst collector actually did on this job, as sanitized JSON.
+  --
+  -- Recorded because the alternative was SSH. Proving a resolution happened —
+  -- which mode ran, what it cost, whether the fingerprint moved — required
+  -- reading journald on the box, so nobody could answer it from the desk's own
+  -- reads. No URLs of failed probes, no prompts, no page bodies: counts, modes
+  -- and the resolved location only.
+  collector_report     TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_research_jobs_status
   ON research_jobs (trading_date, status, priority DESC);
@@ -528,6 +536,7 @@ CREATE TABLE IF NOT EXISTS review_tokens (
  */
 const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }> = [
   { table: 'research_jobs', column: 'trigger', definition: 'TEXT' },
+  { table: 'research_jobs', column: 'collector_report', definition: 'TEXT' },
   { table: 'ticker_session', column: 'reference_rth_close', definition: 'REAL' },
   { table: 'ticker_session', column: 'reference_rth_close_date', definition: 'TEXT' },
   { table: 'ticker_session', column: 'reference_rth_close_source', definition: 'TEXT' },

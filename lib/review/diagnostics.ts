@@ -37,7 +37,12 @@ import {
   SCHEMA_VERSION,
   type MarketDatabase,
 } from '../market/store/db';
-import { countJobsByStatus, readJobsForDate, readResearchHealth } from '../market/store/researchRepo';
+import {
+  countJobsByStatus,
+  readJobsForDate,
+  readRecentCollectorReports,
+  readResearchHealth,
+} from '../market/store/researchRepo';
 import { readAssessmentHealth } from '../market/store/assessmentRepo';
 import type { IntelligenceStatus } from '../dashboard/intelligence';
 
@@ -400,6 +405,26 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
       atEt: etClock(job.completedAt ?? job.queuedAt),
       retries: job.retryCount,
       error: sanitize(job.error, 160),
+    })),
+    /*
+     * What the collector did, readable without an SSH session.
+     *
+     * Whether a resolution happened, which tier paid for it, and whether the
+     * evidence actually moved were facts that existed only in journald — so the
+     * one question worth asking after a source-collection repair could not be
+     * answered from the desk's own reads.
+     */
+    recentCollection: (store ? readRecentCollectorReports(store, 12) : []).map((report) => ({
+      ticker: report.ticker,
+      atEt: etClock(report.at),
+      mode: report.discoveryMode ?? 'none',
+      detail: sanitize(report.companySourceDetail, 120),
+      companySource: sanitize(report.companySourceUrl, 200),
+      companySourceShape: report.companySourceShape,
+      modelCalls: report.modelCalls,
+      sourcesAdded: report.sourcesAdded,
+      fingerprintChanged: report.fingerprintChanged,
+      state: report.state,
     })),
     averageLatencySeconds,
     latencySampleSize: latencies.length,

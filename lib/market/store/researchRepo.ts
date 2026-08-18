@@ -989,3 +989,66 @@ export function clearRetryState(db: MarketDatabase, ticker: string, tradingDate:
     tradingDate,
   );
 }
+
+/**
+ * What the catalyst collector did on one job, in a form a reader can check.
+ *
+ * Deliberately narrow. Enough to answer "did resolution actually happen, what
+ * did it cost, and did the evidence move" without journald, and nothing that
+ * could leak a prompt, a page body or a probe URL that failed.
+ */
+export interface CollectorReportRecord {
+  /** RESOLVER, DISCOVERY, or null when neither paid tier ran. */
+  discoveryMode: string | null;
+  /** Sanitized outcome, e.g. "located newsroom index". */
+  companySourceDetail: string | null;
+  /** The durable location on file after this pass, when there is one. */
+  companySourceUrl: string | null;
+  companySourceShape: string | null;
+  modelCalls: number;
+  sourcesAdded: number;
+  fingerprintChanged: boolean;
+  state: string;
+}
+
+export function recordCollectorReport(
+  db: MarketDatabase,
+  id: number,
+  report: CollectorReportRecord,
+): void {
+  db.prepare('UPDATE research_jobs SET collector_report = ? WHERE id = ?').run(
+    JSON.stringify(report),
+    id,
+  );
+}
+
+export interface CollectorReportRow extends CollectorReportRecord {
+  ticker: string;
+  at: string | null;
+}
+
+/** The most recent collector reports, newest first. */
+export function readRecentCollectorReports(
+  db: MarketDatabase,
+  limit: number,
+): CollectorReportRow[] {
+  const rows = db
+    .prepare(
+      `SELECT ticker, collector_report, COALESCE(completed_at, started_at, queued_at) AS at
+         FROM research_jobs
+        WHERE collector_report IS NOT NULL
+        ORDER BY id DESC
+        LIMIT ?`,
+    )
+    .all(limit) as Array<{ ticker: string; collector_report: string; at: string | null }>;
+
+  const reports: CollectorReportRow[] = [];
+  for (const row of rows) {
+    try {
+      reports.push({ ticker: row.ticker, at: row.at, ...JSON.parse(row.collector_report) });
+    } catch {
+      // A malformed row is not worth failing a diagnostics read over.
+    }
+  }
+  return reports;
+}

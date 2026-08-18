@@ -46,6 +46,7 @@ import {
   clearRetryState,
   completeJob,
   markJobStage,
+  recordCollectorReport,
   readBoardCandidates,
   readJobsForDate,
   readOrphanedJobs,
@@ -336,6 +337,27 @@ async function main(): Promise<void> {
               `fingerprint=${catalystReport.fingerprintChanged ? 'changed' : 'unchanged'} ` +
               `models=${catalystReport.modelCalls} · ${catalystReport.companySourceDetail}`,
           );
+
+          /*
+           * The same facts, stored where a reader can reach them.
+           *
+           * The line above only existed in journald, so proving a resolution
+           * had happened meant an SSH session — which is exactly what was
+           * unavailable when it mattered.
+           */
+          recordCollectorReport(db, job.id, {
+            discoveryMode: catalystReport.discoveryMode,
+            companySourceDetail: catalystReport.companySourceDetail,
+            companySourceUrl:
+              catalystReport.companySources.feedUrl ??
+              catalystReport.companySources.pressReleaseIndexUrl ??
+              catalystReport.companySources.newsroomUrl,
+            companySourceShape: catalystReport.companySources.sourceShape,
+            modelCalls: catalystReport.modelCalls,
+            sourcesAdded: catalystReport.newSourceCount,
+            fingerprintChanged: catalystReport.fingerprintChanged,
+            state: catalystReport.state,
+          });
 
           markJobStage(db, job.id, 'SOURCES_READY', new Date().toISOString());
           log(`[research] ${job.ticker} sources ready`);
