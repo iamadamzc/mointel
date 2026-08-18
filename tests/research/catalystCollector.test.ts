@@ -881,3 +881,141 @@ describe('IR registry', () => {
     expect(report.discoveryMode).not.toBe('RESOLVER');
   });
 });
+
+describe('urgent first qualification', () => {
+  /*
+   * ENRD is the case this exists for. It printed a new high at 06:30:01,
+   * spiked to $10.53 by 06:31, entered the Top 12 at 06:32 and was analysed
+   * twenty seconds later — while the release that caused all of it had
+   * published at 06:30. Under the ordinary alternating cooldown the first pass
+   * buys a resolution and the release waits for the next one, which is an
+   * interval too late for the only moment anybody was looking.
+   */
+  const QUALIFIED: MaterialDemandEvent = {
+    kind: 'ENTERED_TOP_N',
+    detail: 'entered the discovery Top 12 at #5',
+  } as MaterialDemandEvent;
+
+  it('collects the release in the SAME pass the ticker qualifies', async () => {
+    const db = temporaryDb();
+    // The issuer's publishing location is known, so there is nothing to resolve
+    // and the release must be read immediately rather than an interval later.
+    seedIssuer(db, 'https://acme.example.net/rss');
+    const discovery = new CountingDiscovery();
+
+    const report = await withCompanyFetch(
+      { 'https://acme.example.net/rss': RSS_BODY },
+      () =>
+        collectCatalystEvidence(
+          db,
+          fakeSecClient({}),
+          discovery,
+          { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+          { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', materialEvent: QUALIFIED },
+        ),
+    );
+
+    // What matters is that the release is in THIS pass's evidence rather than
+    // the next one. A qualifying name may also buy one search; it may not buy
+    // a resolution it does not need.
+    expect(report.companyReleases).toHaveLength(1);
+    expect(report.fingerprintChanged).toBe(true);
+    expect(report.companySourceDetail).not.toContain('urgent');
+    expect(discovery.calls).toBeLessThanOrEqual(1);
+  });
+
+  it('resolves and reads the source within one pass when unresolved', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, null);
+    const discovery = new CountingDiscovery();
+
+    const report = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(
+        db,
+        fakeSecClient({}),
+        discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', materialEvent: QUALIFIED },
+      ),
+    );
+
+    // Resolution was attempted ahead of the known-source read, so anything it
+    // finds is fetched now rather than next interval. discoveryMode records the
+    // last tier to run, which is the fallback when resolution finds nothing —
+    // the resolver's own turn is recorded on companySourceDetail.
+    expect(report.companySourceDetail).toContain('urgent');
+  });
+
+  it('falls back to general discovery in the same pass when resolution finds nothing', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, null);
+    const discovery = new CountingDiscovery();
+
+    const report = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(
+        db,
+        fakeSecClient({}),
+        discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', materialEvent: QUALIFIED },
+      ),
+    );
+
+    // Two calls is the ceiling, and only for this one episode: a resolution
+    // that finds nothing must not leave the name with no search at all.
+    expect(discovery.calls).toBeLessThanOrEqual(2);
+    expect(report.modelCalls).toBeLessThanOrEqual(2);
+  });
+
+  it('spends nothing extra on the polls that follow', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, null);
+    const discovery = new CountingDiscovery();
+
+    const run = (minutes: number, materialEvent: MaterialDemandEvent | null = null) =>
+      withCompanyFetch({}, () =>
+        collectCatalystEvidence(
+          db,
+          fakeSecClient({}),
+          discovery,
+          { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+          {
+            ticker: 'ACME',
+            now: new Date(NOW.getTime() + minutes * 60_000),
+            materialEvent,
+          },
+        ),
+      );
+
+    await run(0, QUALIFIED);
+    const afterQualification = discovery.calls;
+
+    // Ordinary polling for the next few minutes buys nothing: the episode is
+    // over and the interval governs again.
+    await run(1);
+    await run(2);
+    await run(3);
+
+    expect(discovery.calls).toBe(afterQualification);
+  });
+
+  it('never treats background polling as urgent', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, null);
+    const discovery = new CountingDiscovery();
+
+    // No material event: a quiet name the desk merely glanced at.
+    const report = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(
+        db,
+        fakeSecClient({}),
+        discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' },
+      ),
+    );
+
+    expect(report.companySourceDetail).not.toContain('urgent');
+    expect(discovery.calls).toBeLessThanOrEqual(1);
+  });
+});

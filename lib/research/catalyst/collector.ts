@@ -320,6 +320,65 @@ export async function collectCatalystEvidence(
     warnings.push('no CIK on file; SEC exhibit collection skipped');
   }
 
+  /*
+   * ------------------------------------------------- 2a½. urgent resolution
+   *
+   * A name qualifying for the first time cannot wait a discovery interval.
+   *
+   * ENRD is the case: it printed a new high at 06:30:01, spiked to $10.53 by
+   * 06:31, entered the Top 12 at 06:32, and was analysed twenty seconds later
+   * — while the GlobeNewswire release that caused all of it had published at
+   * 06:30. Under the ordinary alternating cooldown the first pass buys a
+   * resolution and the release itself waits for the next one, which is an
+   * interval too late for the only moment anybody was looking.
+   *
+   * So the first episode gets resolution AHEAD of the known-source read, which
+   * means a source located here is fetched in this same pass rather than the
+   * next. `neverAttempted` is the whole condition and it is self-limiting: the
+   * clock is stamped below, so this branch can never run twice for an issuer.
+   */
+  const usableCompanySourceBefore = Boolean(
+    registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl,
+  );
+  const firstQualification =
+    registry.lastDiscoveryAt === null &&
+    // A MATERIAL demand change, not merely a first look. Background polling of
+    // a quiet name is never urgent, and treating it as such would buy a model
+    // call for every ticker the desk has ever glanced at.
+    (input.materialEvent ?? null) !== null &&
+    input.relevant !== false &&
+    discovery.available &&
+    !input.disableDiscovery;
+
+  let urgentResolutionRan = false;
+  let urgentResolutionResolved = false;
+
+  if (firstQualification && !usableCompanySourceBefore) {
+    urgentResolutionRan = true;
+    report.discoveryMode = 'RESOLVER';
+    try {
+      const resolution = await resolveCompanySources(db, discovery, {
+        ticker,
+        companyName: input.companyName ?? issuer?.companyName ?? null,
+        userAgent: companyUserAgent(config.sec.userAgent),
+        now,
+      });
+      Object.assign(registry, resolution.registry);
+      report.modelCalls += resolution.modelCalls;
+      report.companySourceDetail = `urgent: ${resolution.detail}`;
+      urgentResolutionResolved = Boolean(
+        registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl,
+      );
+    } catch (error) {
+      warnings.push(
+        `urgent issuer source resolution failed: ${
+          error instanceof Error ? error.name : 'error'
+        }`,
+      );
+      report.companySourceDetail = 'urgent resolution failed';
+    }
+  }
+
   // ------------------------------------------------- 2b. known company sources
   const userAgent = companyUserAgent(config.sec.userAgent);
   const knownSourceUrl = registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl;
@@ -481,8 +540,15 @@ export async function collectCatalystEvidence(
   const usableCompanySource = Boolean(
     registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl,
   );
+  /*
+   * The steady-state resolver turn. Skipped when the urgent branch above
+   * already took it, so a first qualification never buys two resolutions.
+   */
   const resolverDue =
-    discoveryNeeded && !usableCompanySource && registry.lastDiscoveryMode !== 'RESOLVER';
+    discoveryNeeded &&
+    !urgentResolutionRan &&
+    !usableCompanySource &&
+    registry.lastDiscoveryMode !== 'RESOLVER';
 
   if (resolverDue) {
     report.discoveryMode = 'RESOLVER';
@@ -523,7 +589,14 @@ export async function collectCatalystEvidence(
           : neverAttempted
             ? 'FIRST_CHECK'
             : 'INTERVAL';
-  } else if (discoveryNeeded) {
+  } else if (discoveryNeeded && !(urgentResolutionRan && urgentResolutionResolved)) {
+    /*
+     * Reached on an ordinary alternating pass, and also immediately after an
+     * urgent resolution that found nothing — that is the second of the two
+     * calls this first episode is allowed. When urgent resolution DID find a
+     * source, 2b has already read it deterministically and a paid search would
+     * be buying an answer we hold.
+     */
     report.discoveryMode = 'DISCOVERY';
     const since = new Date(now.getTime() - config.catalyst.activeFreshnessHours * 3600_000)
       .toISOString()
@@ -604,6 +677,18 @@ export async function collectCatalystEvidence(
     report.discoveryDetail = `${
       hasRecentCanonical ? 'canonical source established' : 'awaiting interval'
     }; next discovery in ~${waitMinutes}m (${intervalMinutes}m tier)`;
+  }
+
+  /*
+   * A successful urgent resolution still spends the episode. Without this the
+   * clock stays unset and the very next poll would look like another first
+   * qualification.
+   */
+  if (urgentResolutionRan && registry.lastDiscoveryAt === null) {
+    registry.lastDiscoveryAt = now.toISOString();
+    registry.lastDiscoveryFingerprint = deterministicFingerprint;
+    registry.lastDiscoveryMode = 'RESOLVER';
+    report.discoveryTrigger = report.discoveryTrigger ?? 'FIRST_CHECK';
   }
 
   report.discoveryIntervalMinutes = intervalMinutes;
