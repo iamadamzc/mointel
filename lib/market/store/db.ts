@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 14;
+export const SCHEMA_VERSION = 15;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -488,6 +488,30 @@ CREATE INDEX IF NOT EXISTS idx_desk_assessment_tickers_ticker
 CREATE TABLE IF NOT EXISTS assessment_health (
   id      INTEGER PRIMARY KEY CHECK (id = 1),
   payload TEXT NOT NULL
+);
+
+/* -------------------------------------------------------------------- review */
+
+-- Temporary read-only capabilities for outside inspection.
+--
+-- The raw token is NEVER stored. What is written here is a SHA-256 of it, so
+-- this table leaking gives an attacker nothing usable — the same reason a
+-- password file stores hashes. The token itself exists only in the operator's
+-- terminal at the moment it is created and in the URL they hand out.
+--
+-- A capability is valid only while all three hold: the hash matches, now is
+-- before expires_at, and revoked_at is null. Revocation is immediate because it
+-- is checked on every request rather than cached.
+CREATE TABLE IF NOT EXISTS review_tokens (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  token_hash   TEXT NOT NULL UNIQUE,
+  label        TEXT,
+  created_at   TEXT NOT NULL,
+  expires_at   TEXT NOT NULL,
+  revoked_at   TEXT,
+  -- Written at most once a minute, so an inspector polling once a second does
+  -- not turn a read-only session into a write storm.
+  last_used_at TEXT
 );
 `;
 

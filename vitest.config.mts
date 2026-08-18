@@ -13,6 +13,16 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': rootDir,
+      /*
+       * `server-only` throws on import to stop server modules being pulled into
+       * a client bundle. That is a bundling guard, and there is no bundle here:
+       * the tests run in Node, which is the environment those modules are
+       * written for. Next resolves this package to an empty module under the
+       * `react-server` condition and the workers run with that condition set,
+       * so pointing at the same empty module is what the real runtimes already
+       * do rather than a hole opened for the tests.
+       */
+      'server-only': path.join(rootDir, 'node_modules/server-only/empty.js'),
     },
   },
 });

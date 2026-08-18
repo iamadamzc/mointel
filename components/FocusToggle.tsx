@@ -1,5 +1,7 @@
 'use client';
 
+import { useDeskMode } from '@/lib/hooks/useDeskMode';
+
 /**
  * The pin control.
  *
@@ -8,6 +10,11 @@
  * Focus strip; an outline means it is not. Clicking never selects the row it
  * sits in — the two actions are unrelated and conflating them would open a
  * drawer every time somebody pinned something.
+ *
+ * In a read-only review session it renders nothing at all rather than a
+ * disabled star. A greyed-out control still says "this is yours to change,
+ * later" — which is not true for a reviewer, and the empty space says so
+ * without needing a tooltip to explain itself.
  */
 export function FocusToggle({
   ticker,
@@ -20,6 +27,9 @@ export function FocusToggle({
   onToggle: (ticker: string) => void;
   className?: string;
 }) {
+  const { readOnly } = useDeskMode();
+  if (readOnly) return null;
+
   return (
     <button
       type="button"

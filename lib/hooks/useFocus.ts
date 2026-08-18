@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { useDeskMode } from '@/lib/hooks/useDeskMode';
+
 /**
  * The user's Focus list.
  *
@@ -36,6 +38,7 @@ interface FocusPayload {
 const FOCUS_POLL_MS = 15_000;
 
 export function useFocus(): FocusState {
+  const { apiBase, readOnly } = useDeskMode();
   const [tickers, setTickers] = useState<string[]>([]);
   const [tradingDate, setTradingDate] = useState('');
   const [limit, setLimit] = useState(6);
@@ -54,7 +57,7 @@ export function useFocus(): FocusState {
 
   const load = useCallback(async () => {
     try {
-      const response = await fetch('/api/focus', { cache: 'no-store' });
+      const response = await fetch(`${apiBase}/focus`, { cache: 'no-store' });
       if (!response.ok) return;
       const payload = (await response.json()) as FocusPayload;
       if (!mountedRef.current || pendingRef.current > 0) return;
@@ -64,7 +67,7 @@ export function useFocus(): FocusState {
     } finally {
       if (mountedRef.current) setLoading(false);
     }
-  }, [apply]);
+  }, [apiBase, apply]);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -84,6 +87,17 @@ export function useFocus(): FocusState {
 
   const toggle = useCallback(
     (ticker: string) => {
+      /*
+       * A review session cannot pin.
+       *
+       * The controls are hidden there, so this should be unreachable — but a
+       * keyboard shortcut, a stale render or a future component that forgets to
+       * ask could still call it, and the optimistic update below would show the
+       * star filling in before the server refused. Better to do nothing than to
+       * lie for one render.
+       */
+      if (readOnly) return;
+
       const symbol = ticker.toUpperCase();
       const focused = tickers.includes(symbol);
       const action = focused ? 'unpin' : 'pin';
@@ -96,7 +110,7 @@ export function useFocus(): FocusState {
 
       void (async () => {
         try {
-          const response = await fetch('/api/focus', {
+          const response = await fetch(`${apiBase}/focus`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action, ticker: symbol }),
@@ -121,7 +135,7 @@ export function useFocus(): FocusState {
         }
       })();
     },
-    [apply, tickers],
+    [apiBase, apply, readOnly, tickers],
   );
 
   const isFocused = useCallback((ticker: string) => tickers.includes(ticker.toUpperCase()), [tickers]);

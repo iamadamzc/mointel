@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { useDeskMode } from '@/lib/hooks/useDeskMode';
 import type { DashboardState, MomentumTicker } from '@/lib/data/types';
 
 /** Browser poll interval. The server cache (10s) absorbs these into far fewer Sheets reads. */
@@ -28,6 +29,7 @@ function signatureMap(tickers: MomentumTicker[]): Map<string, string> {
 }
 
 export function useDashboard(): DashboardFeed {
+  const { apiBase } = useDeskMode();
   const [data, setData] = useState<DashboardState | null>(null);
   const [initialLoading, setInitialLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -47,7 +49,7 @@ export function useDashboard(): DashboardFeed {
     if (options.force) setRefreshing(true);
 
     try {
-      const response = await fetch(`/api/dashboard${options.force ? '?force=1' : ''}`, {
+      const response = await fetch(`${apiBase}/dashboard${options.force ? '?force=1' : ''}`, {
         signal: controller.signal,
         cache: 'no-store',
       });
@@ -87,7 +89,7 @@ export function useDashboard(): DashboardFeed {
         setRefreshing(false);
       }
     }
-  }, []);
+  }, [apiBase]);
 
   useEffect(() => {
     mountedRef.current = true;

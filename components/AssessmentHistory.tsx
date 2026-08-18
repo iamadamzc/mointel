@@ -6,6 +6,7 @@ import { StatusBadge } from '@/components/StatusBadge';
 import type { AssessmentTickerRecord } from '@/lib/market/store/assessmentRepo';
 import type { AssessmentPanel, AssessmentSummary } from '@/lib/desk/view';
 import { formatCount, formatMultiple, formatPrice, formatSignedPercent } from '@/lib/format';
+import { useDeskMode } from '@/lib/hooks/useDeskMode';
 
 interface AssessmentHistoryProps {
   panel: AssessmentPanel;
@@ -77,6 +78,7 @@ interface SnapshotResponse {
  * written at capture time and says so at the top.
  */
 export function AssessmentSnapshotBoard({ id }: { id: number }) {
+  const { apiBase } = useDeskMode();
   const [data, setData] = useState<SnapshotResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -86,7 +88,7 @@ export function AssessmentSnapshotBoard({ id }: { id: number }) {
   useEffect(() => {
     let cancelled = false;
 
-    fetch(`/api/assessments?id=${id}`)
+    fetch(`${apiBase}/assessments?id=${id}`)
       .then(async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return (await response.json()) as SnapshotResponse;
@@ -101,7 +103,7 @@ export function AssessmentSnapshotBoard({ id }: { id: number }) {
     return () => {
       cancelled = true;
     };
-  }, [id]);
+  }, [apiBase, id]);
 
   if (error) {
     return (

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { useDeskMode } from '@/lib/hooks/useDeskMode';
 import type { MarketSnapshot } from '@/lib/market/types';
 
 /**
@@ -18,6 +19,7 @@ export interface MarketFeedState {
 }
 
 export function useMarket(extraSymbols: string[]): MarketFeedState {
+  const { apiBase } = useDeskMode();
   const [snapshot, setSnapshot] = useState<MarketSnapshot | null>(null);
   const [transportError, setTransportError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -34,7 +36,7 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
 
     try {
       const query = symbols ? `?symbols=${encodeURIComponent(symbols)}` : '';
-      const response = await fetch(`/api/market${query}`, {
+      const response = await fetch(`${apiBase}/market${query}`, {
         signal: controller.signal,
         cache: 'no-store',
       });
@@ -52,7 +54,7 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
     } finally {
       if (mountedRef.current) setLoading(false);
     }
-  }, []);
+  }, [apiBase]);
 
   useEffect(() => {
     mountedRef.current = true;

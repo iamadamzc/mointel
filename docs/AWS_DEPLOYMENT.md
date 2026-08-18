@@ -134,6 +134,102 @@ curl -u adam:<password> https://dwwep02jje2ag.cloudfront.net/api/health
 It reports web, database reachability, schema version, and market / research /
 assessment state. It reports no keys, no prompts and no filing text.
 
+## Read-only review sessions
+
+Basic Auth is right for the person who owns the desk and useless for showing it
+to anybody else: an HTTP auth challenge cannot be completed by an automated
+browsing tool, and handing out the permanent password to solve a temporary
+problem trades a day's convenience for an indefinite exposure.
+
+So there is a second way in, and only one:
+
+```
+https://dwwep02jje2ag.cloudfront.net/review/<token>/
+https://dwwep02jje2ag.cloudfront.net/review/<token>/diagnostics
+https://dwwep02jje2ag.cloudfront.net/review/<token>/api/diagnostics   (JSON)
+```
+
+### Security model
+
+| | |
+| --- | --- |
+| Permanent Basic Auth | unchanged, still protects `/` and `/api/*` |
+| Review token | 256 bits of randomness, base64url, in the URL path |
+| Stored as | SHA-256 only — **the raw token is never written to the database** |
+| Verified | on every request, against the store, with `timingSafeEqual` |
+| Expires | 24 hours by default, configurable at creation |
+| Revocable | immediately, and checked per request so there is no TTL to wait out |
+| Writes | none — see below |
+| Logged | Nginx `access_log` is off for `/review/`, because the token is the path |
+
+**Read-only is structural, not cosmetic.** Three things hold it up, and they
+fail independently:
+
+1. `proxy.ts` refuses any method but `GET`/`HEAD` under `/review/` with a 403,
+   before a handler sees the request. A mutation endpoint added next year is
+   therefore already closed to reviewers on the day it is written.
+2. The review API namespace implements no mutating handler at all. A test walks
+   every `route.ts` under `app/review` and fails if one appears, or if one
+   forgets to call `guardReviewApi`.
+3. The review Focus route does not seed. The owner's `GET /api/focus` populates
+   an empty list from the day's A-priority names on first read — a write, and
+   one allowed only once per trading date. Seeding from a reviewer's page load
+   would spend it and leave the owner's strip empty all session.
+
+Focus stars and the reanalysis button are absent in review mode too, but that is
+a courtesy: a control that would return 403 is worse than no control.
+
+### Create, list, revoke
+
+From Windows, against production:
+
+```powershell
+.\scripts\aws-create-review.ps1                          # 24 hours
+.\scripts\aws-create-review.ps1 -Hours 48 -Label chatgpt
+.\scripts\aws-create-review.ps1 -Action list
+.\scripts\aws-create-review.ps1 -Action revoke -Id 3
+.\scripts\aws-create-review.ps1 -Action revoke-all
+```
+
+Or on the server directly:
+
+```bash
+sudo -u mointel env -C /opt/mointel/current \
+  MARKET_DB_PATH=/var/lib/mointel/market.db \
+  MOINTEL_PUBLIC_URL=https://dwwep02jje2ag.cloudfront.net \
+  npm run review:create -- --hours 24 --label chatgpt
+```
+
+`review:list` shows label, created, expires, status and last use. It never
+prints a token or a hash — there is nothing stored that could be shown.
+
+### If a review URL is exposed
+
+```powershell
+.\scripts\aws-create-review.ps1 -Action revoke-all
+```
+
+That is the whole incident response. Revocation is checked on every request, so
+the link stops working on the next one. Nothing else needs rotating: a review
+token grants no write access, exposes no credential, and cannot reach the owner's
+desk at `/`.
+
+### What diagnostics reports
+
+Deployment (git SHA, uptime, UTC/ET time, server timezone) · market worker (SIP
+state, session, board, message ages, ranked/tracked counts, reconnects, last
+sanitized error) · research worker (health, queue, model names, SEC and
+interpreter configuration) · assessment scheduler (last, next, late flag,
+heartbeat) · Google Sheet (fetch time, cache age, staleness, row counts) ·
+database (schema version, sizes, WAL, journal mode, backups, disk) · server
+resources (memory, load, CPU count) · intelligence coverage (status counts,
+un-analysed Top N) · deterministic consistency checks · a bounded, sanitized
+recent-error list.
+
+It reports no keys, no prompts, no filing text and no environment values, runs
+no integrity check, makes no model call, and queues no work. Tests assert the
+first of those by reading the module's own source.
+
 ## Deploying a new version
 
 From the development machine, in Git Bash:

@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { useDeskMode } from '@/lib/hooks/useDeskMode';
+
 /**
  * Manual override for the automatic retry ceiling.
  *
@@ -14,6 +16,7 @@ import { useState } from 'react';
  * name up on its next pass, through the same path as everything else.
  */
 export function RetryAnalysis({ ticker }: { ticker: string }) {
+  const { apiBase, readOnly } = useDeskMode();
   const [state, setState] = useState<'idle' | 'working' | 'done' | 'error'>('idle');
   const [message, setMessage] = useState<string | null>(null);
 
@@ -21,7 +24,7 @@ export function RetryAnalysis({ ticker }: { ticker: string }) {
     setState('working');
     setMessage(null);
     try {
-      const response = await fetch('/api/research/retry', {
+      const response = await fetch(`${apiBase}/research/retry`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ticker }),
@@ -40,6 +43,10 @@ export function RetryAnalysis({ ticker }: { ticker: string }) {
       setMessage((error as Error).message);
     }
   }
+
+  // Retrying analysis spends model calls and queues real work. A reviewer is
+  // here to observe the desk, not to make it do things.
+  if (readOnly) return null;
 
   return (
     <div className="mt-3 flex flex-wrap items-center gap-2">
