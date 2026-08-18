@@ -203,8 +203,11 @@ function toSummary(source: ResearchSource): CatalystSourceSummary {
  * resolver would store but left this file judging a source usable by "is any
  * URL present", so an issuer holding a leaf looked resolved, never took the
  * resolver's turn, and burned its one recovery episode on a discovery pass.
+ *
+ * Version 4 clears leaves left behind by an unresolved verdict, so a row that
+ * nothing will act on stops reading as though a newsroom were on file.
  */
-export const RESOLVER_VERSION = 3;
+export const RESOLVER_VERSION = 4;
 
 /** Source types that constitute catalyst evidence rather than structure. */
 const CATALYST_TYPES = new Set<SourceType>([

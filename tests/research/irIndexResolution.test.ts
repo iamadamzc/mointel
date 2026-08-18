@@ -378,3 +378,36 @@ describe('the collector agrees with the resolver about what is usable', () => {
     expect(RESOLVER_VERSION).toBeGreaterThanOrEqual(3);
   });
 });
+
+describe('what an unresolved verdict leaves behind', () => {
+  it('drops a leaf left over from the old contract', async () => {
+    // Production kept these: hasUsableSource already refused them, so nothing
+    // acted on them, but the row still read as though a newsroom were on file.
+    seed('ENRD', {
+      newsroomUrl: ENRD_LEAF,
+      pressReleaseIndexUrl: ENRD_LEAF,
+      investorRelationsUrl: 'https://www.einride.tech',
+      lastDiscoveryAt: '2026-08-18T21:13:26.392Z',
+    });
+    serve({}); // nothing fetchable, as einride.tech/press proved to be
+
+    const result = await resolveCompanySources(db, resolverOffering(ENRD_LEAF), OPTIONS);
+
+    expect(result.registry.newsroomUrl).toBeNull();
+    expect(result.registry.pressReleaseIndexUrl).toBeNull();
+    expect(result.registry.note).toContain('no durable company collection point');
+    // The company domain is still a fact worth keeping.
+    expect(result.registry.investorRelationsUrl).toBe('https://www.einride.tech');
+    // And the discovery clock is untouched.
+    expect(result.registry.lastDiscoveryAt).toBe('2026-08-18T21:13:26.392Z');
+  });
+
+  it('keeps a durable source that is already on file', async () => {
+    seed('ENRD', { pressReleaseIndexUrl: ENRD_INDEX, sourceShape: 'INDEX' });
+
+    const result = await resolveCompanySources(db, resolverOffering(ENRD_INDEX), OPTIONS);
+
+    expect(result.registry.pressReleaseIndexUrl).toBe(ENRD_INDEX);
+    expect(result.modelCalls).toBe(0);
+  });
+});

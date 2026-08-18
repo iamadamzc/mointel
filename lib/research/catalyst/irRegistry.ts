@@ -141,8 +141,19 @@ export async function resolveCompanySources(
      * release. Recording a newswire URL here would have looked like success and
      * permanently blocked that path.
      */
+    /*
+     * A leaf left over from the old contract is dropped, not kept.
+     *
+     * hasUsableSource already refuses it, so it changes no behaviour — but a
+     * registry row reading `newsroomUrl: .../press/einride-teams-up-with-tuv-sud`
+     * tells a reader this issuer has a newsroom on file when the resolver has
+     * just concluded the opposite. State nobody should act on should not be
+     * stored as though they might.
+     */
     const registry: CompanySourceRegistry = {
       ...stored,
+      newsroomUrl: null,
+      pressReleaseIndexUrl: null,
       discoveryMethod: resolver.name,
       confidence: 'UNKNOWN',
       note: 'no durable company collection point located',
