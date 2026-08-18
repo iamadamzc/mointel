@@ -121,6 +121,7 @@ function seedIssuer(db: ReturnType<typeof temporaryDb>, feedUrl: string | null) 
           note: null,
           lastDiscoveryAt: null,
           lastDiscoveryFingerprint: null,
+    lastDiscoveryMode: null,
         }
       : undefined,
   });
@@ -393,7 +394,13 @@ describe('catalyst collection', () => {
       ],
     });
 
-    const report = await withCompanyFetch({}, () =>
+    /*
+     * Two passes, because an issuer with no known publishing location gets the
+     * resolver's turn first and general discovery's turn second. That
+     * alternation is deliberate: running both on one pass would double the
+     * model spend for exactly the names that resolve worst.
+     */
+    const first = await withCompanyFetch({}, () =>
       collectCatalystEvidence(
         db,
         fakeSecClient({}),
@@ -402,7 +409,20 @@ describe('catalyst collection', () => {
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' },
       ),
     );
+    expect(first.discoveryMode).toBe('RESOLVER');
 
+    const report = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(
+        db,
+        fakeSecClient({}),
+        discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        // Far enough past the interval that the next paid pass is due.
+        { ticker: 'ACME', now: new Date(NOW.getTime() + 6 * 3600_000), tradingDate: '2026-08-17' },
+      ),
+    );
+
+    expect(report.discoveryMode).toBe('DISCOVERY');
     expect(report.newSourceCount).toBe(1);
     expect(report.fingerprintChanged).toBe(true);
     expect(report.eventsEmitted).toContain('CATALYST_SOURCE_CHANGE');
@@ -780,5 +800,84 @@ describe('IR registry', () => {
 
     expect(result.modelCalls).toBe(0);
     expect(result.registry.note).toContain('no discovery provider');
+  });
+  it('spends nothing on the resolver before a paid pass is due', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, null);
+    const discovery = new CountingDiscovery({ sources: [] });
+
+    // First pass takes the resolver's turn and sets the clock.
+    await withCompanyFetch({}, () =>
+      collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
+    );
+    const afterFirst = discovery.calls;
+
+    // A rapid re-poll a minute later must buy nothing at all. This is what the
+    // seven cost tests protect, and what the earlier draft broke.
+    const second = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: new Date(NOW.getTime() + 60_000), tradingDate: '2026-08-17' }),
+    );
+
+    expect(discovery.calls).toBe(afterFirst);
+    expect(second.discoveryMode).toBeNull();
+    expect(second.modelCalls).toBe(0);
+  });
+
+  it('gives one turn per eligible pass, never two', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, null);
+    const discovery = new CountingDiscovery({ sources: [] });
+
+    const first = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
+    );
+
+    // One tier ran, so at most one provider call was bought.
+    expect(first.discoveryMode).toBe('RESOLVER');
+    expect(discovery.calls).toBeLessThanOrEqual(1);
+  });
+
+  it('still reaches general discovery after the resolver finds nothing', async () => {
+    // The failure mode worth preventing: an issuer whose IR site cannot be
+    // located retrying that same lookup forever and never getting the fallback.
+    const db = temporaryDb();
+    seedIssuer(db, null);
+    const discovery = new CountingDiscovery({ sources: [] });
+
+    const first = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
+    );
+    const second = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: new Date(NOW.getTime() + 6 * 3600_000), tradingDate: '2026-08-17' }),
+    );
+
+    expect(first.discoveryMode).toBe('RESOLVER');
+    expect(second.discoveryMode).toBe('DISCOVERY');
+  });
+
+  it('never offers the resolver a turn once a source is known', async () => {
+    const db = temporaryDb();
+    // A feed URL means the registry already knows where this issuer publishes.
+    seedIssuer(db, 'https://acme.example.net/feed.xml');
+    const discovery = new CountingDiscovery({ sources: [] });
+
+    const report = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
+    );
+
+    // Knowing where they publish is the resolver's entire job. It is done.
+    expect(report.discoveryMode).not.toBe('RESOLVER');
   });
 });

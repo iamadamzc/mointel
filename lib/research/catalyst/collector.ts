@@ -39,6 +39,7 @@ import type {
 } from '../types';
 import { EMPTY_COMPANY_SOURCES, SOURCE_AUTHORITY_RANK } from '../types';
 import type { SecClient } from '../sec/client';
+import { resolveCompanySources } from './irRegistry';
 import { clusterSources, type SourceCluster } from './cluster';
 import {
   buildReleaseEvidence,
@@ -128,6 +129,10 @@ export interface CatalystCollectionReport {
   /** True when web discovery was invoked. */
   discoveryRan: boolean;
   discoveryDetail: string;
+  /** Which paid tier ran this pass, when one did. */
+  discoveryMode: 'RESOLVER' | 'DISCOVERY' | null;
+  /** What issuer-source resolution did, or why it was not offered a turn. */
+  companySourceDetail: string;
   /** Why discovery ran, when it did. */
   discoveryTrigger: 'FORCED' | 'FIRST_CHECK' | 'MATERIAL_EVENT' | 'INTERVAL' | null;
   /** Which interval tier applied, in minutes. */
@@ -231,6 +236,8 @@ export async function collectCatalystEvidence(
     fingerprintChanged: false,
     discoveryRan: false,
     discoveryDetail: 'not required',
+    discoveryMode: null,
+    companySourceDetail: 'not attempted',
     discoveryTrigger: null,
     discoveryIntervalMinutes: 0,
     resolved: false,
@@ -457,7 +464,67 @@ export async function collectCatalystEvidence(
       materialEvent !== null ||
       (!justResolved && (neverAttempted || intervalElapsed)));
 
-  if (discoveryNeeded) {
+  /*
+   * Where the issuer publishes is a different question from what it published,
+   * and until this ran in production nobody was asking the first one.
+   *
+   * resolveCompanySources existed and worked, but was wired only into the
+   * standalone research:catalyst diagnostic — so the registry stayed empty for
+   * every ticker the desk actually researched, knownSourceUrl above was always
+   * null, and the deterministic IR path never ran. Four issuers of thirty-nine
+   * had a company source, and those came from hand-run diagnostics.
+   *
+   * It runs under the SAME gate as general discovery rather than a timer of its
+   * own, so a resolver call can only happen when a paid pass was already due,
+   * and the two tiers alternate so one pass never buys two model calls.
+   */
+  const usableCompanySource = Boolean(
+    registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl,
+  );
+  const resolverDue =
+    discoveryNeeded && !usableCompanySource && registry.lastDiscoveryMode !== 'RESOLVER';
+
+  if (resolverDue) {
+    report.discoveryMode = 'RESOLVER';
+    try {
+      const resolution = await resolveCompanySources(db, discovery, {
+        ticker,
+        companyName: input.companyName ?? issuer?.companyName ?? null,
+        userAgent: config.sec.userAgent,
+        now,
+      });
+      Object.assign(registry, resolution.registry);
+      report.modelCalls += resolution.modelCalls;
+      report.companySourceDetail = resolution.detail;
+      report.discoveryRan = resolution.resolved;
+      report.discoveryDetail = `issuer source resolution: ${resolution.detail}`;
+    } catch (error) {
+      // A failed IR lookup must never take SEC collection down with it, and
+      // must not consume the next pass's turn either — the mode below records
+      // that the resolver had this one.
+      warnings.push(
+        `issuer source resolution failed: ${error instanceof Error ? error.name : 'error'}`,
+      );
+      report.companySourceDetail = 'resolution failed';
+      report.discoveryDetail = 'issuer source resolution failed';
+    }
+
+    // The turn is spent either way. The next eligible pass belongs to general
+    // discovery, so an issuer whose IR site cannot be found still gets the
+    // fallback rather than retrying the same failing lookup forever.
+    registry.lastDiscoveryAt = now.toISOString();
+    registry.lastDiscoveryFingerprint = deterministicFingerprint;
+    registry.lastDiscoveryMode = 'RESOLVER';
+    report.discoveryTrigger =
+      input.forceDiscovery === true
+        ? 'FORCED'
+        : materialEvent
+          ? 'MATERIAL_EVENT'
+          : neverAttempted
+            ? 'FIRST_CHECK'
+            : 'INTERVAL';
+  } else if (discoveryNeeded) {
+    report.discoveryMode = 'DISCOVERY';
     const since = new Date(now.getTime() - config.catalyst.activeFreshnessHours * 3600_000)
       .toISOString()
       .slice(0, 10);
@@ -506,6 +573,7 @@ export async function collectCatalystEvidence(
     // time since the last paid check.
     registry.lastDiscoveryAt = now.toISOString();
     registry.lastDiscoveryFingerprint = deterministicFingerprint;
+    registry.lastDiscoveryMode = 'DISCOVERY';
     report.discoveryTrigger =
       input.forceDiscovery === true
         ? 'FORCED'

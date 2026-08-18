@@ -132,6 +132,17 @@ export interface CompanySourceRegistry {
    */
   lastDiscoveryAt: string | null;
   lastDiscoveryFingerprint: string | null;
+  /**
+   * Which paid tier ran on the last eligible pass.
+   *
+   * An issuer with no known publishing location needs two different things: to
+   * be told WHERE it publishes (the resolver) and to be told WHAT it published
+   * (general web search). Running both on one pass would double the model spend
+   * for exactly the names that resolve worst, so they alternate — one call per
+   * eligible pass, both capabilities within two. Once a usable source is known
+   * the resolver stops being offered a turn at all.
+   */
+  lastDiscoveryMode: 'RESOLVER' | 'DISCOVERY' | null;
 }
 
 export const EMPTY_COMPANY_SOURCES: CompanySourceRegistry = {
@@ -145,6 +156,7 @@ export const EMPTY_COMPANY_SOURCES: CompanySourceRegistry = {
   note: null,
   lastDiscoveryAt: null,
   lastDiscoveryFingerprint: null,
+  lastDiscoveryMode: null,
 };
 
 /* ----------------------------------------------------------------- evidence */
