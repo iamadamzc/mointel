@@ -244,6 +244,53 @@ Deleting the API deletes its routes, integrations and stage with it. The review
 tokens are unaffected — they live in the store, not in the transport — so revoke
 them separately with `review:revoke-all` when the inspection is finished.
 
+### The MCP server
+
+ChatGPT could not fetch this application through any of the three transports
+above — two of its failures had nothing to do with the server, so a fourth
+hostname was not the answer. It calls the desk instead:
+
+```
+https://<origin>/mcp/<token>
+```
+
+Streamable HTTP, POST only. `GET` answers 405, which the spec permits, because
+no tool here would ever push anything. No session id is issued, so every request
+is authorised on its own and a revoked capability stops working on the next
+call.
+
+**Origins that work:** the CloudFront distribution and the direct sslip.io
+origin. **Not** the API Gateway proxy — its routes are `GET`/`HEAD` only by
+design, and MCP is entirely POST.
+
+**Auth** is the same review capability, for a specific reason rather than
+convenience: ChatGPT's no-auth connector mode sends no `Authorization` header,
+so the secret must live where that client will keep it — the URL. A 256-bit path
+segment is the same secret a bearer token is; it is stored only as a SHA-256, it
+expires, and `review:revoke` kills it. Clients that can send headers may use
+`Authorization: Bearer <token>` instead.
+
+**Eight read-only tools:** `get_desk_status`, `get_discovery`, `get_focus`,
+`get_ticker`, `get_recent_events`, `get_assessment_status`, `get_assessment`,
+`get_diagnostics`. Each is annotated `readOnlyHint: true` — ChatGPT treats a tool
+without it as a write action and prompts before every call.
+
+They are not a second view of the data. `get_ticker` calls `buildDeskRead` and
+`buildStructureSummary`, the drawer's own functions; `get_discovery` returns rows
+from the same `mergeDesk` the board renders. A disagreement between a tool and
+the screen is therefore a real bug, not an artefact of this layer.
+
+**Prove it before involving ChatGPT:**
+
+```bash
+node scripts/mcp-probe.mjs https://98-85-49-227.sslip.io/mcp/<token>
+node scripts/mcp-probe.mjs https://98-85-49-227.sslip.io/mcp/<token> get_ticker '{"ticker":"XOS"}'
+```
+
+It walks initialize → initialized → tools/list → tools/call and names the step
+that broke. When a connector fails inside somebody else's product, you otherwise
+cannot tell whether the handshake, the transport, the auth or the tool was wrong.
+
 ### Do not put a review token on a sudo command line
 
 `sudo` writes the command it ran to the journal, argv and all. So this records
