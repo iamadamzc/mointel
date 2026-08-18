@@ -48,6 +48,20 @@ if (-not (Test-Path $KeyPath)) {
   throw "SSH key not found at $KeyPath"
 }
 
+# ssh is not always on PowerShell's PATH even where it is installed: Windows
+# ships OpenSSH under System32 and Git for Windows carries its own, and
+# neither is guaranteed to resolve by name from a PowerShell session.
+$ssh = (Get-Command ssh -ErrorAction SilentlyContinue).Source
+if (-not $ssh) {
+  $ssh = @(
+    (Join-Path $env:WINDIR 'System32\OpenSSH\ssh.exe'),
+    'C:\Program Files\Git\usr\bin\ssh.exe'
+  ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+}
+if (-not $ssh) {
+  throw 'No ssh client found. Install Windows OpenSSH, or run this from Git Bash.'
+}
+
 # Built on the server side so the operator command is exactly the documented one.
 $npmArgs = switch ($Action) {
   'create'     { $extra = "-- --hours $Hours"; if ($Label) { $extra += " --label $Label" }; "review:create $extra" }
@@ -67,7 +81,7 @@ $remote = @(
 
 Write-Host "[review] $Action on $ServerHost" -ForegroundColor DarkGray
 
-& ssh -o StrictHostKeyChecking=no -i $KeyPath "ubuntu@$ServerHost" $remote
+& $ssh -o StrictHostKeyChecking=no -i $KeyPath "ubuntu@$ServerHost" $remote
 
 if ($LASTEXITCODE -ne 0) {
   throw "The remote command failed with exit code $LASTEXITCODE"

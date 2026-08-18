@@ -144,7 +144,7 @@ problem trades a day's convenience for an indefinite exposure.
 So there is a second way in, and only one:
 
 ```
-https://dwwep02jje2ag.cloudfront.net/review/<token>/
+https://dwwep02jje2ag.cloudfront.net/review/<token>
 https://dwwep02jje2ag.cloudfront.net/review/<token>/diagnostics
 https://dwwep02jje2ag.cloudfront.net/review/<token>/api/diagnostics   (JSON)
 ```

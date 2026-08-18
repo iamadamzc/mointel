@@ -19,6 +19,7 @@ import { StatusBadge, changeTone, type Tone } from '@/components/StatusBadge';
 import { buildDeskRead, type DeskRead, type DeskReadLevel } from '@/lib/dashboard/deskRead';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import { formatMultiple, formatPrice, formatSignedPercent } from '@/lib/format';
+import { useDeskMode } from '@/lib/hooks/useDeskMode';
 
 interface FocusStripProps {
   rows: DeskRow[];
@@ -40,6 +41,7 @@ export function FocusStrip({
   message,
   onDismissMessage,
 }: FocusStripProps) {
+  const { readOnly } = useDeskMode();
   return (
     <section className="border-b border-line bg-desk px-4 py-2">
       <div className="mb-1.5 flex items-baseline gap-2">
@@ -63,7 +65,12 @@ export function FocusStrip({
 
       {rows.length === 0 ? (
         <p className="text-[11px] text-ink-3">
-          Pin a ticker from Discovery with ☆ to keep it here.
+          {/* A review session has no stars to click, so telling a reviewer to
+              click one describes a control they cannot see and reads as a bug
+              in the page rather than a property of the session. */}
+          {readOnly
+            ? 'Nothing is pinned for this session.'
+            : 'Pin a ticker from Discovery with ☆ to keep it here.'}
         </p>
       ) : (
         <div className="flex flex-wrap gap-2">

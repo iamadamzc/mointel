@@ -58,7 +58,10 @@ function create(): void {
   console.log('');
   console.log('  Read-only review session created.');
   console.log('');
-  console.log(`  URL      ${BASE_URL}/review/${token}/`);
+  // No trailing slash: Next redirects `/review/<token>/` to the same path
+  // without one, and a 308 on the first request is a hop that some
+  // automated fetchers handle less gracefully than a browser does.
+  console.log(`  URL      ${BASE_URL}/review/${token}`);
   console.log('');
   console.log(`  id       ${record.id}`);
   if (record.label) console.log(`  label    ${record.label}`);
