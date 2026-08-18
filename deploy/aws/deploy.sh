@@ -107,7 +107,17 @@ fi
 journalctl -u mointel-migrate -n 20 --no-pager || true
 
 log "starting services"
-systemctl enable --now mointel.target >/dev/null 2>&1 || true
+
+# `enable`, deliberately not `enable --now`.
+#
+# mointel.target Wants= all four services, including the market worker, so
+# starting the target starts a second Alpaca SIP connection — which does not
+# fail loudly, it silently displaces whichever one was already connected. That
+# is correct on boot, when this machine is meant to own the connection, and
+# wrong during a deploy, when it may not be. Enabling without starting gets the
+# boot behaviour without the deploy-time surprise.
+systemctl enable mointel.target >/dev/null 2>&1 || true
+
 for unit in "${RUNTIME_UNITS[@]}"; do
   systemctl enable "$unit" >/dev/null 2>&1 || true
   systemctl start "$unit"

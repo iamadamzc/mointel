@@ -32,6 +32,11 @@ RestartSec=10
 
 KillSignal=SIGTERM
 TimeoutStopSec=30
+# These two workers poll in a loop and let SIGTERM end the process rather than
+# unwinding to a zero exit. systemd reads 143 as a crash, so a clean stop left
+# `systemctl status` saying "failed" — which is exactly the word that has to
+# still mean something at 06:00.
+SuccessExitStatus=143 SIGTERM
 
 StandardOutput=journal
 StandardError=journal
