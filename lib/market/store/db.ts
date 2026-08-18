@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 15;
+export const SCHEMA_VERSION = 16;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -205,7 +205,13 @@ CREATE TABLE IF NOT EXISTS research_jobs (
   top12_at             TEXT,
   sources_ready_at     TEXT,
   analysis_started_at  TEXT,
-  accepted_at          TEXT
+  accepted_at          TEXT,
+  -- The demand episode that created this job, captured at queue time.
+  --
+  -- Recorded rather than recomputed: rank moves between qualification and
+  -- execution, so asking "is this material?" when collection begins asks about
+  -- a different moment than the one that justified the work.
+  trigger              TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_research_jobs_status
   ON research_jobs (trading_date, status, priority DESC);
@@ -521,6 +527,7 @@ CREATE TABLE IF NOT EXISTS review_tokens (
  * RVOL baselines in them are expensive to recompute.
  */
 const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }> = [
+  { table: 'research_jobs', column: 'trigger', definition: 'TEXT' },
   { table: 'ticker_session', column: 'reference_rth_close', definition: 'REAL' },
   { table: 'ticker_session', column: 'reference_rth_close_date', definition: 'TEXT' },
   { table: 'ticker_session', column: 'reference_rth_close_source', definition: 'TEXT' },

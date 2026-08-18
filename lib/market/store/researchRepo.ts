@@ -59,6 +59,7 @@ interface JobRow {
   error: string | null;
   evidence_fingerprint: string | null;
   top12_at: string | null;
+  trigger: string | null;
   sources_ready_at: string | null;
   analysis_started_at: string | null;
   accepted_at: string | null;
@@ -79,6 +80,7 @@ function toJob(row: JobRow): ResearchJob {
     error: row.error,
     evidenceFingerprint: row.evidence_fingerprint,
     top12At: row.top12_at,
+    trigger: row.trigger ?? null,
     sourcesReadyAt: row.sources_ready_at,
     analysisStartedAt: row.analysis_started_at,
     acceptedAt: row.accepted_at,
@@ -175,6 +177,11 @@ export interface EnqueueRequest {
   queuedAt: string;
   /** When the ticker first entered the ranked board, if known. */
   top12At?: string | null;
+  /**
+   * The demand episode that justified this job, as it stood when the job was
+   * created. Null for ordinary background refreshes.
+   */
+  trigger?: string | null;
 }
 
 /**
@@ -189,10 +196,14 @@ export function enqueueResearchJob(db: MarketDatabase, request: EnqueueRequest):
   const result = db
     .prepare(
       `INSERT OR IGNORE INTO research_jobs
-         (ticker, trading_date, status, priority, reason, queued_at, top12_at)
-       VALUES (@ticker, @tradingDate, 'QUEUED', @priority, @reason, @queuedAt, @top12At)`,
+         (ticker, trading_date, status, priority, reason, queued_at, top12_at, trigger)
+       VALUES (@ticker, @tradingDate, 'QUEUED', @priority, @reason, @queuedAt, @top12At, @trigger)`,
     )
-    .run({ ...request, top12At: request.top12At ?? null });
+    .run({
+      ...request,
+      top12At: request.top12At ?? null,
+      trigger: request.trigger ?? null,
+    });
 
   return result.changes > 0 ? Number(result.lastInsertRowid) : null;
 }

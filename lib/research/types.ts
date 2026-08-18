@@ -63,6 +63,14 @@ export interface ResearchJob {
   evidenceFingerprint: string | null;
   /* Lifecycle stamps, for time-to-intelligence. */
   top12At: string | null;
+  /**
+   * The demand episode that created this job, recorded at queue time.
+   *
+   * Read rather than recomputed: rank moves between qualification and
+   * execution, so deciding materiality when collection begins would judge a
+   * different moment than the one that justified the work.
+   */
+  trigger: string | null;
   sourcesReadyAt: string | null;
   analysisStartedAt: string | null;
   acceptedAt: string | null;

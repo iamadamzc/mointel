@@ -21,6 +21,10 @@ import { modelAvailability, readResearchConfig, secAvailability } from '../lib/r
 import { SecClient } from '../lib/research/sec/client';
 import { collectSecEvidence, TickerMapCache } from '../lib/research/sec/collector';
 import { collectCatalystEvidence } from '../lib/research/catalyst/collector';
+import type { MaterialDemandEvent } from '../lib/research/catalyst/collector';
+
+/** Triggers the collector recognises as a material demand episode. */
+const MATERIAL_TRIGGERS = new Set(['ENTERED_TOP_N', 'RANK_IMPROVED', 'HALT', 'RESUME']);
 import { NoopDiscoveryProvider } from '../lib/research/catalyst/discovery';
 import { OpenAiDiscoveryProvider } from '../lib/research/catalyst/openaiDiscovery';
 import { OpenAiInterpreter } from '../lib/research/interpret/openaiInterpreter';
@@ -258,12 +262,52 @@ async function main(): Promise<void> {
             expectedName: universe?.name ?? null,
             expectedExchange: universe?.exchange ?? null,
           });
-          await collectCatalystEvidence(
+          /*
+           * The trigger travels with the job, and this is the line that was
+           * missing.
+           *
+           * The collector has always accepted a materialEvent — an early,
+           * ahead-of-interval look for a name that just did something — and
+           * production never supplied one, so that path and the urgent
+           * first-qualification path built on top of it were both dead. ENRD
+           * qualified at 06:32 and was analysed twenty seconds later holding
+           * SEC evidence that stopped on 21 July.
+           *
+           * It is read from the job rather than recomputed from current rank:
+           * a name can qualify at 06:32 and be down ten places by the time the
+           * job runs, and the question the collector needs answered is what
+           * justified the work, not where the ticker sits now.
+           */
+          const catalystReport = await collectCatalystEvidence(
             db,
             secClient,
             discovery,
             { sec: config.sec, catalyst: config.catalyst },
-            { ticker: job.ticker, companyName: universe?.name ?? null, tradingDate },
+            {
+              ticker: job.ticker,
+              companyName: universe?.name ?? null,
+              tradingDate,
+              // Narrowed against the union rather than cast: an unrecognised
+              // value in the column must read as "no material episode", not as
+              // a trigger the collector has never heard of.
+              materialEvent: MATERIAL_TRIGGERS.has(job.trigger ?? '')
+                ? {
+                    kind: job.trigger as MaterialDemandEvent['kind'],
+                    detail: job.reason,
+                  }
+                : null,
+            },
+          );
+
+          // Stop discarding what the collector worked out. One line, and it is
+          // the difference between diagnosing the next incident and repeating
+          // this investigation.
+          log(
+            `[catalyst] ${job.ticker} mode=${catalystReport.discoveryMode ?? 'none'} ` +
+              `trigger=${catalystReport.discoveryTrigger ?? 'none'} ` +
+              `sources+${catalystReport.newSourceCount} ` +
+              `fingerprint=${catalystReport.fingerprintChanged ? 'changed' : 'unchanged'} ` +
+              `models=${catalystReport.modelCalls} · ${catalystReport.companySourceDetail}`,
           );
 
           markJobStage(db, job.id, 'SOURCES_READY', new Date().toISOString());

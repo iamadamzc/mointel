@@ -216,6 +216,16 @@ export function queueDiscoveryResearch(
        * early and reached the Top N much later.
        */
       top12At: candidate.top12EnteredAt ?? candidate.qualifiedAt ?? queuedAt,
+      /*
+       * A first crossing into the ranked board is the material episode. It is
+       * captured here, at the moment that justified the job, because rank moves
+       * and the collector must not have to guess later what this was about.
+       * Focus-list refreshes and ordinary re-polls carry no trigger.
+       */
+      trigger:
+        candidate.top12EnteredAt !== null && candidate.rank <= options.autoRank
+          ? 'ENTERED_TOP_N'
+          : null,
     });
 
     decisions.push({
