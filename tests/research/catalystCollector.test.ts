@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { openDatabase } from '@/lib/market/store/db';
 import {
@@ -18,6 +18,10 @@ import {
   RESOLVER_VERSION,
 } from '@/lib/research/catalyst/collector';
 import { resolveCompanySources } from '@/lib/research/catalyst/irRegistry';
+import type {
+  CompanySourceCandidate,
+  CompanySourceResolverProvider,
+} from '@/lib/research/catalyst/companySourceContract';
 import type {
   CatalystSourceDiscoveryProvider,
   DiscoveryResult,
@@ -58,6 +62,43 @@ const CATALYST_CONFIG: CatalystConfig = {
 };
 
 const NOW = new Date('2026-08-17T13:00:00Z');
+
+/**
+ * The company-source resolver, counted the same way discovery is.
+ *
+ * It answers a different question and costs its own call, so the cost tests
+ * need to see it separately rather than inferring it from discovery traffic.
+ */
+class CountingResolver implements CompanySourceResolverProvider {
+  readonly name = 'test-resolver';
+  available = true;
+  calls = 0;
+
+  constructor(private readonly candidates: CompanySourceCandidate[] = []) {}
+
+  async resolve() {
+    this.calls += 1;
+    return { candidates: this.candidates, modelCalls: 1, detail: 'test resolver' };
+  }
+}
+
+/**
+ * Paid lookups this pass, whichever provider made them.
+ *
+ * Resolution and discovery alternate — an unresolved issuer is told WHERE it
+ * publishes on one eligible pass and asked WHAT it published on the next — so
+ * the ceiling that matters is the total per pass, not either counter alone.
+ * The split itself is asserted in the resolver-contract tests.
+ */
+function paidLookups(discovery: CountingDiscovery, resolverDouble: CountingResolver): number {
+  return discovery.calls + resolverDouble.calls;
+}
+
+/** Fresh per test; individual tests replace it when they need a resolution. */
+let resolver: CountingResolver;
+beforeEach(() => {
+  resolver = new CountingResolver();
+});
 
 /** Counts every call so "zero model calls" can be asserted, not assumed. */
 class CountingDiscovery implements CatalystSourceDiscoveryProvider {
@@ -123,7 +164,8 @@ function seedIssuer(db: ReturnType<typeof temporaryDb>, feedUrl: string | null) 
           lastDiscoveryAt: null,
           lastDiscoveryFingerprint: null,
           resolverVersion: RESOLVER_VERSION,
-    lastDiscoveryMode: null,
+          lastDiscoveryMode: null,
+          sourceShape: 'FEED' as const,
         }
       : undefined,
   });
@@ -159,6 +201,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: NOW },
         ),
@@ -187,6 +230,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: NOW },
         ),
@@ -216,12 +260,13 @@ describe('catalyst collection', () => {
         db,
         fakeSecClient({}),
         discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW },
       ),
     );
 
-    expect(discovery.calls).toBe(1);
+    expect(paidLookups(discovery, resolver)).toBe(1);
     expect(report.discoveryRan).toBe(true);
     expect(report.modelCalls).toBe(1);
   });
@@ -241,6 +286,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           // Time advances across polls; evidence does not.
           { ticker: 'ACME', now: new Date(NOW.getTime() + i * 60_000) },
@@ -265,6 +311,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: new Date(NOW.getTime() + i * 60_000) },
         ),
@@ -272,7 +319,7 @@ describe('catalyst collection', () => {
     }
 
     // One attempt, then the spacing holds it back.
-    expect(discovery.calls).toBe(1);
+    expect(paidLookups(discovery, resolver)).toBe(1);
   });
 
   it('remembers the discovery attempt even for a ticker with no issuer row', async () => {
@@ -287,13 +334,14 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'UNKNOWN', companyName: null, now: new Date(NOW.getTime() + i * 60_000) },
         ),
       );
     }
 
-    expect(discovery.calls).toBe(1);
+    expect(paidLookups(discovery, resolver)).toBe(1);
   });
 
   it('makes zero web or model calls before the discovery interval', async () => {
@@ -307,6 +355,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: new Date(NOW.getTime() + minutes * 60_000) },
         ),
@@ -316,7 +365,7 @@ describe('catalyst collection', () => {
     const second = await run(2);
     const third = await run(9); // still inside the 10m unresolved interval
 
-    expect(discovery.calls).toBe(1);
+    expect(paidLookups(discovery, resolver)).toBe(1);
     expect(second.modelCalls).toBe(0);
     expect(third.modelCalls).toBe(0);
   });
@@ -332,6 +381,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: new Date(NOW.getTime() + minutes * 60_000) },
         ),
@@ -342,7 +392,7 @@ describe('catalyst collection', () => {
 
     // A newswire release can appear without any source we already poll moving,
     // so an unchanged local fingerprint is not proof that nothing happened.
-    expect(discovery.calls).toBe(2);
+    expect(paidLookups(discovery, resolver)).toBe(2);
     expect(later.discoveryTrigger).toBe('INTERVAL');
     expect(later.discoveryIntervalMinutes).toBe(10);
     expect(later.modelCalls).toBe(1);
@@ -359,6 +409,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: new Date(NOW.getTime() + minutes * 60_000) },
         ),
@@ -407,6 +458,7 @@ describe('catalyst collection', () => {
         db,
         fakeSecClient({}),
         discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' },
       ),
@@ -418,6 +470,7 @@ describe('catalyst collection', () => {
         db,
         fakeSecClient({}),
         discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         // Far enough past the interval that the next paid pass is due.
         { ticker: 'ACME', now: new Date(NOW.getTime() + 6 * 3600_000), tradingDate: '2026-08-17' },
@@ -452,6 +505,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: new Date(NOW.getTime() + minutes * 60_000) },
         ),
@@ -480,6 +534,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: new Date(NOW.getTime() + i * 20 * 60_000), relevant: false },
         ),
@@ -501,6 +556,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: new Date(NOW.getTime() + minutes * 60_000), materialEvent },
         ),
@@ -508,10 +564,10 @@ describe('catalyst collection', () => {
 
     await run(0);
     await run(2); // inside the interval, nothing happened
-    expect(discovery.calls).toBe(1);
+    expect(paidLookups(discovery, resolver)).toBe(1);
 
     const early = await run(3, { kind: 'HALT', detail: 'trading halted' });
-    expect(discovery.calls).toBe(2);
+    expect(paidLookups(discovery, resolver)).toBe(2);
     expect(early.discoveryTrigger).toBe('MATERIAL_EVENT');
   });
 
@@ -527,6 +583,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: new Date(NOW.getTime() + hour * 3600_000) },
         ),
@@ -549,13 +606,14 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: new Date(NOW.getTime() + offsetMinutes * 60_000) },
         ),
       );
 
     await run(0);
-    expect(discovery.calls).toBe(1);
+    expect(paidLookups(discovery, resolver)).toBe(1);
 
     // Something genuinely new lands, and enough time has passed.
     insertResearchSources(db, [
@@ -578,7 +636,7 @@ describe('catalyst collection', () => {
     ]);
 
     await run(31);
-    expect(discovery.calls).toBe(2);
+    expect(paidLookups(discovery, resolver)).toBe(2);
   });
 
   it('links a SEC exhibit to its parent filing', async () => {
@@ -625,6 +683,7 @@ describe('catalyst collection', () => {
         db,
         sec,
         new CountingDiscovery(),
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, disableDiscovery: true },
       ),
@@ -649,6 +708,7 @@ describe('catalyst collection', () => {
         db,
         fakeSecClient({}),
         new CountingDiscovery(),
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, disableDiscovery: true },
       ),
@@ -678,6 +738,7 @@ describe('catalyst collection', () => {
         db,
         fakeSecClient({}),
         new CountingDiscovery(),
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, disableDiscovery: true },
       );
@@ -709,6 +770,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           unavailable,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: NOW },
         ),
@@ -732,6 +794,7 @@ describe('catalyst collection', () => {
           db,
           fakeSecClient({}),
           new CountingDiscovery(),
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: NOW },
         ),
@@ -754,7 +817,7 @@ describe('IR registry', () => {
     seedIssuer(db, 'https://acme.example.net/rss');
     const discovery = new CountingDiscovery();
 
-    const result = await resolveCompanySources(db, discovery, {
+    const result = await resolveCompanySources(db, resolver, {
       ticker: 'ACME',
       companyName: 'Acme Inc.',
       userAgent: 'test',
@@ -770,24 +833,23 @@ describe('IR registry', () => {
   it('records a negative result so it is not re-asked every cycle', async () => {
     const db = temporaryDb();
     seedIssuer(db, null);
-    const discovery = new CountingDiscovery({ sources: [] });
 
-    await resolveCompanySources(db, discovery, {
+    await resolveCompanySources(db, resolver, {
       ticker: 'ACME',
       companyName: 'Acme Inc.',
       userAgent: 'test',
       now: NOW,
     });
-    const second = await resolveCompanySources(db, discovery, {
+    const second = await resolveCompanySources(db, resolver, {
       ticker: 'ACME',
       companyName: 'Acme Inc.',
       userAgent: 'test',
       now: new Date(NOW.getTime() + 60_000),
     });
 
-    expect(discovery.calls).toBe(1);
+    expect(resolver.calls).toBe(1);
     expect(second.modelCalls).toBe(0);
-    expect(second.registry.note).toContain('no company-originated source');
+    expect(second.registry.note).toContain('no durable company collection point');
   });
 
   it('does not call a model when no provider is available', async () => {
@@ -796,12 +858,12 @@ describe('IR registry', () => {
 
     const result = await resolveCompanySources(
       db,
-      { name: 'none', available: false, discover: async () => ({ sources: [], ran: false, modelCalls: 0, detail: '' }) },
+      { name: 'none', available: false, resolve: async () => ({ candidates: [], modelCalls: 0, detail: '' }) },
       { ticker: 'ACME', companyName: 'Acme Inc.', userAgent: 'test', now: NOW },
     );
 
     expect(result.modelCalls).toBe(0);
-    expect(result.registry.note).toContain('no discovery provider');
+    expect(result.registry.note).toContain('no resolver provider');
   });
   it('spends nothing on the resolver before a paid pass is due', async () => {
     const db = temporaryDb();
@@ -811,6 +873,7 @@ describe('IR registry', () => {
     // First pass takes the resolver's turn and sets the clock.
     await withCompanyFetch({}, () =>
       collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
     );
@@ -820,6 +883,7 @@ describe('IR registry', () => {
     // seven cost tests protect, and what the earlier draft broke.
     const second = await withCompanyFetch({}, () =>
       collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: new Date(NOW.getTime() + 60_000), tradingDate: '2026-08-17' }),
     );
@@ -836,6 +900,7 @@ describe('IR registry', () => {
 
     const first = await withCompanyFetch({}, () =>
       collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
     );
@@ -854,11 +919,13 @@ describe('IR registry', () => {
 
     const first = await withCompanyFetch({}, () =>
       collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
     );
     const second = await withCompanyFetch({}, () =>
       collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: new Date(NOW.getTime() + 6 * 3600_000), tradingDate: '2026-08-17' }),
     );
@@ -875,6 +942,7 @@ describe('IR registry', () => {
 
     const report = await withCompanyFetch({}, () =>
       collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
     );
@@ -912,6 +980,7 @@ describe('urgent first qualification', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', materialEvent: QUALIFIED },
         ),
@@ -936,6 +1005,7 @@ describe('urgent first qualification', () => {
         db,
         fakeSecClient({}),
         discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', materialEvent: QUALIFIED },
       ),
@@ -958,6 +1028,7 @@ describe('urgent first qualification', () => {
         db,
         fakeSecClient({}),
         discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', materialEvent: QUALIFIED },
       ),
@@ -980,6 +1051,7 @@ describe('urgent first qualification', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           {
             ticker: 'ACME',
@@ -1012,6 +1084,7 @@ describe('urgent first qualification', () => {
         db,
         fakeSecClient({}),
         discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' },
       ),
@@ -1026,15 +1099,17 @@ describe('resolver success feeds the same collection pass', () => {
   /*
    * The provider contract, documented by exercising it.
    *
-   * resolveCompanySources calls discovery.discover() and looks for a source
-   * whose kind is COMPANY_IR or COMPANY_NEWSROOM — nothing else counts, because
-   * a newswire copy says where one release lived, not where the issuer
-   * publishes. It writes that URL to newsroomUrl and pressReleaseIndexUrl, and
+   * resolveCompanySources asks a dedicated resolver where the issuer publishes
+   * and accepts only a durable collection point — a feed, or a page that proves
+   * it lists releases. A newswire copy says where one release lived, not where
+   * the issuer publishes, and a single release page is frozen by construction.
+   * The accepted URL is written to newsroomUrl and pressReleaseIndexUrl, and
    * the collector's known-company-source read picks it up from there.
    *
-   * This double sits at that boundary and returns a newsroom the way a real
-   * provider would. The registry is NOT preloaded: it starts unresolved and the
-   * resolver is what fills it, which is the whole point of the test.
+   * The doubles sit at that boundary: the resolver names a feed, and discovery
+   * is left idle to prove the resolution cost one call and not two. The registry
+   * is NOT preloaded — it starts unresolved and the resolver fills it, which is
+   * the whole point of the test.
    */
   class ResolvingDiscovery implements CatalystSourceDiscoveryProvider {
     readonly name = 'resolving';
@@ -1075,7 +1150,10 @@ describe('resolver success feeds the same collection pass', () => {
   it('resolves, fetches and collects the release in one pass', async () => {
     const db = temporaryDb();
     seedIssuer(db, null); // unresolved: nothing on file
-    const discovery = new ResolvingDiscovery('https://acme.example.net/rss');
+    const discovery = new CountingDiscovery();
+    resolver = new CountingResolver([
+      { url: 'https://acme.example.net/rss', kind: 'FEED', confidence: 'HIGH', rationale: null },
+    ]);
 
     const report = await withCompanyFetch(
       { 'https://acme.example.net/rss': RSS_BODY },
@@ -1084,6 +1162,7 @@ describe('resolver success feeds the same collection pass', () => {
           db,
           fakeSecClient({}),
           discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', materialEvent: QUALIFIED },
         ),
@@ -1097,7 +1176,8 @@ describe('resolver success feeds the same collection pass', () => {
     expect(report.fingerprintChanged).toBe(true);
 
     // One resolution, and no separate search on top of it.
-    expect(discovery.calls).toBe(1);
+    expect(resolver.calls).toBe(1);
+    expect(discovery.calls).toBe(0);
     expect(report.modelCalls).toBe(1);
   });
 
@@ -1109,6 +1189,7 @@ describe('resolver success feeds the same collection pass', () => {
 
     await withCompanyFetch(routes, () =>
       collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', materialEvent: QUALIFIED }),
     );
@@ -1119,6 +1200,7 @@ describe('resolver success feeds the same collection pass', () => {
     for (const minutes of [1, 2, 5]) {
       const later = await withCompanyFetch(routes, () =>
         collectCatalystEvidence(db, fakeSecClient({}), discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           {
             ticker: 'ACME',
@@ -1168,6 +1250,7 @@ describe('recovery for issuers poisoned by the old resolver', () => {
         lastDiscoveryFingerprint: null,
         lastDiscoveryMode: null,
         resolverVersion: null,
+        sourceShape: null,
       },
     });
   }
@@ -1179,6 +1262,7 @@ describe('recovery for issuers poisoned by the old resolver', () => {
 
     const report = await withCompanyFetch({}, () =>
       collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
     );
@@ -1196,6 +1280,7 @@ describe('recovery for issuers poisoned by the old resolver', () => {
     const run = (minutes: number) =>
       withCompanyFetch({}, () =>
         collectCatalystEvidence(db, fakeSecClient({}), discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           {
             ticker: 'ACME',
@@ -1225,6 +1310,7 @@ describe('recovery for issuers poisoned by the old resolver', () => {
 
     const report = await withCompanyFetch({}, () =>
       collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
         { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
     );
@@ -1242,6 +1328,7 @@ describe('recovery for issuers poisoned by the old resolver', () => {
       { 'https://acme.example.net/rss': RSS_BODY },
       () =>
         collectCatalystEvidence(db, fakeSecClient({}), discovery,
+          resolver,
           { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
           { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
     );

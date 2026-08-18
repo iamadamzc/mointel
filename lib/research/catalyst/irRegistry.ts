@@ -5,23 +5,37 @@
  * refresh would spend a model call to relearn something that did not change,
  * which is precisely the waste the cheap-first rule exists to prevent. So this
  * runs once per issuer and the result is persisted.
+ *
+ * What gets persisted matters as much as whether anything does. The only useful
+ * answer is a durable collection point — a feed or an index that will list a
+ * future announcement. A single release is worse than no answer at all: it
+ * satisfies the usable-source check, retires the resolver for that issuer, and
+ * leaves every later pass re-reading one frozen page.
  */
 
 import type { MarketDatabase } from '../../market/store/db';
 import { readIssuer, upsertIssuer } from '../../market/store/researchRepo';
 import { EMPTY_COMPANY_SOURCES, type CompanySourceRegistry } from '../types';
-import type { CatalystSourceDiscoveryProvider } from './discovery';
 import { fetchCompanyPage, companyUserAgent } from './companySource';
 import { looksLikeFeed } from './feeds';
+import {
+  classifyCollectionPoint,
+  countSiblingLinks,
+  looksLikeLeafArticle,
+  type CompanySourceResolverProvider,
+} from './companySourceContract';
 
 /** Feed paths worth probing once an issuer domain is known. */
 const FEED_PATHS = ['/rss', '/feed', '/rss.xml', '/feed.xml', '/news/rss', '/investors/rss'];
 
 /**
  * Where issuers commonly list releases, for sites that publish them off the
- * root rather than under a directory the release URL reveals.
+ * root rather than under a directory a release URL would reveal.
  */
 const INDEX_PATHS = ['/press', '/news', '/newsroom', '/press-releases', '/media', '/investors'];
+
+/** Most candidates worth fetching before giving up and letting discovery run. */
+const MAX_CANDIDATE_PROBES = 6;
 
 export interface ResolveOptions {
   ticker: string;
@@ -40,22 +54,33 @@ export interface ResolveResult {
   detail: string;
 }
 
-function hasUsableSource(registry: CompanySourceRegistry): boolean {
-  return Boolean(
-    registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl,
-  );
+/**
+ * True when the stored answer will still be useful tomorrow.
+ *
+ * A feed or an index qualifies. An article does not, and neither does a legacy
+ * entry whose shape was never recorded but whose URL reads as a release — those
+ * are the rows written before the distinction existed, and they are exactly the
+ * ones that need re-resolving.
+ */
+export function hasUsableSource(registry: CompanySourceRegistry): boolean {
+  if (registry.feedUrl) return true;
+  const stored = registry.pressReleaseIndexUrl ?? registry.newsroomUrl;
+  if (!stored) return false;
+  if (registry.sourceShape === 'ARTICLE') return false;
+  if (registry.sourceShape === null && looksLikeLeafArticle(stored)) return false;
+  return true;
 }
 
 /**
  * Establishes where an issuer publishes news, reusing a stored answer.
  *
- * Returns immediately when the registry already holds a usable source — the
+ * Returns immediately when the registry already holds a durable source — the
  * common case after the first run, and the one that keeps model spend near
  * zero across a trading session.
  */
 export async function resolveCompanySources(
   db: MarketDatabase,
-  discovery: CatalystSourceDiscoveryProvider,
+  resolver: CompanySourceResolverProvider,
   options: ResolveOptions,
 ): Promise<ResolveResult> {
   const now = options.now ?? new Date();
@@ -83,12 +108,12 @@ export async function resolveCompanySources(
     }
   }
 
-  if (!discovery.available) {
+  if (!resolver.available) {
     const registry: CompanySourceRegistry = {
       ...stored,
       discoveryMethod: 'unavailable',
       confidence: 'UNKNOWN',
-      note: 'no discovery provider; IR source not established',
+      note: 'no resolver provider; IR source not established',
       lastVerifiedAt: now.toISOString(),
     };
     persist(db, options.ticker, registry);
@@ -96,30 +121,32 @@ export async function resolveCompanySources(
       registry,
       resolved: false,
       modelCalls: 0,
-      detail: 'discovery unavailable; IR source unknown',
+      detail: 'resolver unavailable; IR source unknown',
     };
   }
 
-  const result = await discovery.discover({
+  const userAgent = companyUserAgent(options.userAgent);
+  const result = await resolver.resolve({
     ticker: options.ticker,
     companyName: options.companyName,
-    // Ask for anything recent; we want the newsroom, not a specific story.
-    since: new Date(now.getTime() - 90 * 86_400_000).toISOString().slice(0, 10),
-    knownUrls: [],
   });
 
-  // The company's own pages are the only useful answer here. A newswire copy
-  // tells us where one release lived, not where the issuer publishes.
-  const companyHit = result.sources.find(
-    (source) => source.kind === 'COMPANY_IR' || source.kind === 'COMPANY_NEWSROOM',
-  );
+  const durable = await selectCollectionPoint(result.candidates, userAgent);
 
-  if (!companyHit) {
+  if (!durable) {
+    /*
+     * Unresolved, deliberately. Returning nothing keeps the bounded discovery
+     * fallback available on the next eligible pass, which is how XOS — whose
+     * every candidate was a GlobeNewswire copy — still reached its Air Force
+     * release. Recording a newswire URL here would have looked like success and
+     * permanently blocked that path.
+     */
     const registry: CompanySourceRegistry = {
       ...stored,
-      discoveryMethod: discovery.name,
+      discoveryMethod: resolver.name,
       confidence: 'UNKNOWN',
-      note: 'no company-originated source located',
+      note: 'no durable company collection point located',
+      sourceShape: null,
       lastVerifiedAt: now.toISOString(),
     };
     persist(db, options.ticker, registry);
@@ -127,55 +154,94 @@ export async function resolveCompanySources(
       registry,
       resolved: true,
       modelCalls: result.modelCalls,
-      detail: 'no company source located',
+      detail: 'no durable company source located',
     };
   }
 
   let origin: URL;
   try {
-    origin = new URL(companyHit.url);
+    origin = new URL(durable.url);
   } catch {
     return { registry: stored, resolved: true, modelCalls: result.modelCalls, detail: 'bad URL' };
   }
 
-  const userAgent = companyUserAgent(options.userAgent);
-
-  /*
-   * The model answers "where was this published", so what comes back is one
-   * release, not the page that lists releases. Storing the release itself is
-   * worse than storing nothing: it satisfies hasUsableSource(), so the resolver
-   * never runs again, and every later pass re-reads one frozen article that by
-   * construction can never mention a newer announcement. ENRD resolved to a
-   * story about a safety-verification partnership and kept reporting July while
-   * the Tesla Semi release sat one directory above it.
-   */
-  const index = await probeIndex(origin, userAgent);
-
   const registry: CompanySourceRegistry = {
     ...stored,
-    newsroomUrl: index ?? companyHit.url,
-    pressReleaseIndexUrl: stored.pressReleaseIndexUrl ?? index ?? companyHit.url,
+    newsroomUrl: durable.url,
+    pressReleaseIndexUrl: durable.url,
     investorRelationsUrl: stored.investorRelationsUrl ?? origin.origin,
-    discoveryMethod: discovery.name,
-    confidence: companyHit.confidence === 'HIGH' ? 'HIGH' : 'MEDIUM',
+    feedUrl: durable.shape === 'FEED' ? durable.url : stored.feedUrl,
+    sourceShape: durable.shape,
+    discoveryMethod: resolver.name,
+    confidence: 'HIGH',
     note: null,
     lastVerifiedAt: now.toISOString(),
   };
 
   // A feed, if one exists, is cheaper and better dated than any HTML index, so
   // it is worth a few probes now to avoid parsing pages later.
-  const feed = await probeFeed(origin.origin, userAgent);
-  if (feed) registry.feedUrl = feed;
+  if (!registry.feedUrl) {
+    const feed = await probeFeed(origin.origin, userAgent);
+    if (feed) registry.feedUrl = feed;
+  }
 
   persist(db, options.ticker, registry);
 
-  const located = index ? 'newsroom index' : 'newsroom';
   return {
     registry,
     resolved: true,
     modelCalls: result.modelCalls,
-    detail: feed ? `located ${located} and feed` : `located ${located}`,
+    detail: `located ${durable.shape === 'FEED' ? 'feed' : 'newsroom index'}`,
   };
+}
+
+interface DurablePoint {
+  url: string;
+  shape: 'FEED' | 'INDEX';
+}
+
+/**
+ * Picks the first candidate that proves itself a collection point.
+ *
+ * Each candidate is fetched and judged on what it served, never on the label
+ * the model attached. A candidate that turns out to be one release is not
+ * discarded — it is used as a starting point to walk up to the page that lists
+ * it, which is how a model that answers with the Tesla release still yields
+ * `/press`.
+ */
+async function selectCollectionPoint(
+  candidates: readonly { url: string }[],
+  userAgent: string,
+): Promise<DurablePoint | null> {
+  const seen = new Set<string>();
+  let fallbackFromArticle: DurablePoint | null = null;
+
+  for (const candidate of candidates.slice(0, MAX_CANDIDATE_PROBES)) {
+    if (seen.has(candidate.url)) continue;
+    seen.add(candidate.url);
+
+    const page = await fetchCompanyPage(candidate.url, { userAgent, timeoutMs: 6000 });
+    const verdict = classifyCollectionPoint(candidate.url, page.failure ? null : page.body);
+
+    if (verdict.shape === 'FEED') return { url: candidate.url, shape: 'FEED' };
+    if (verdict.shape === 'INDEX') return { url: candidate.url, shape: 'INDEX' };
+
+    if (verdict.shape === 'ARTICLE' && !fallbackFromArticle) {
+      const index = await probeIndex(candidate.url, userAgent);
+      if (index) fallbackFromArticle = { url: index, shape: 'INDEX' };
+    }
+  }
+
+  return fallbackFromArticle;
+}
+
+async function probeFeed(origin: string, userAgent: string): Promise<string | null> {
+  for (const path of FEED_PATHS) {
+    const url = `${origin}${path}`;
+    const page = await fetchCompanyPage(url, { userAgent, timeoutMs: 6000 });
+    if (!page.failure && page.body && looksLikeFeed(page.body)) return url;
+  }
+  return null;
 }
 
 /**
@@ -183,7 +249,7 @@ export async function resolveCompanySources(
  *
  * `/press/some-release` yields `/press`. The nearest ancestor is tried first
  * because that is where the issuer actually filed the release; the generic
- * names below are only for sites that publish releases off the root.
+ * names are only for sites that publish releases off the root.
  */
 export function ancestorPaths(pathname: string): string[] {
   const segments = pathname.split('/').filter(Boolean);
@@ -194,18 +260,9 @@ export function ancestorPaths(pathname: string): string[] {
   return paths;
 }
 
-/**
- * True when a page lists several releases rather than being one.
- *
- * Two sibling links is the whole test. An index has many, an article has none —
- * except for "related release" rails, which is why one is not enough.
- */
+/** True when a page links several siblings below `prefix`, as an index does. */
 export function listsReleases(body: string, prefix: string): boolean {
-  const quoted = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const pattern = new RegExp(`href="(?:https?://[^"/]+)?${quoted}/[^"#?]+`, 'gi');
-  const links = new Set<string>();
-  for (const match of body.matchAll(pattern)) links.add(match[0]);
-  return links.size >= 2;
+  return countSiblingLinks(body, prefix) >= 2;
 }
 
 /**
@@ -214,7 +271,14 @@ export function listsReleases(body: string, prefix: string): boolean {
  * Deterministic and model-free: a handful of conditional GETs against a domain
  * the resolver has already identified.
  */
-async function probeIndex(article: URL, userAgent: string): Promise<string | null> {
+async function probeIndex(articleUrl: string, userAgent: string): Promise<string | null> {
+  let article: URL;
+  try {
+    article = new URL(articleUrl);
+  } catch {
+    return null;
+  }
+
   const candidates: string[] = [];
   for (const path of ancestorPaths(article.pathname)) candidates.push(`${article.origin}${path}`);
   for (const path of INDEX_PATHS) {
@@ -226,17 +290,7 @@ async function probeIndex(article: URL, userAgent: string): Promise<string | nul
     if (url === article.href) continue;
     const page = await fetchCompanyPage(url, { userAgent, timeoutMs: 6000 });
     if (page.failure || !page.body) continue;
-    const prefix = new URL(url).pathname.replace(/\/$/, '');
-    if (prefix && listsReleases(page.body, prefix)) return url;
-  }
-  return null;
-}
-
-async function probeFeed(origin: string, userAgent: string): Promise<string | null> {
-  for (const path of FEED_PATHS) {
-    const url = `${origin}${path}`;
-    const page = await fetchCompanyPage(url, { userAgent, timeoutMs: 6000 });
-    if (!page.failure && page.body && looksLikeFeed(page.body)) return url;
+    if (classifyCollectionPoint(url, page.body).shape === 'INDEX') return url;
   }
   return null;
 }

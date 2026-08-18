@@ -20,7 +20,10 @@ loadWorkerEnv();
 import { modelAvailability, readResearchConfig, secAvailability } from '../lib/research/config';
 import { SecClient } from '../lib/research/sec/client';
 import { NoopDiscoveryProvider } from '../lib/research/catalyst/discovery';
-import { OpenAiDiscoveryProvider } from '../lib/research/catalyst/openaiDiscovery';
+import {
+  OpenAiDiscoveryProvider,
+  OpenAiCompanySourceResolver,
+} from '../lib/research/catalyst/openaiDiscovery';
 import {
   collectCatalystEvidence,
   type MaterialDemandEvent,
@@ -210,6 +213,9 @@ async function main(): Promise<void> {
     config.model.apiKey && !noDiscovery
       ? new OpenAiDiscoveryProvider({ config: config.model })
       : new NoopDiscoveryProvider();
+    const resolver = config.model.apiKey
+      ? new OpenAiCompanySourceResolver({ config: config.model })
+      : null;
 
   console.log(
     `[catalyst] ${tradingDate}, ${symbols.length} ticker(s), discovery=${discovery.available ? discovery.name : 'off'}\n`,
@@ -223,7 +229,7 @@ async function main(): Promise<void> {
     const issuer = readIssuer(db, symbol);
 
     if (issuer && discovery.available) {
-      const resolved = await resolveCompanySources(db, discovery, {
+      const resolved = await resolveCompanySources(db, resolver ?? { name: "none", available: false, resolve: async () => ({ candidates: [], modelCalls: 0, detail: "no resolver" }) }, {
         ticker: symbol,
         companyName: issuer.companyName,
         userAgent: config.sec.userAgent,
@@ -248,6 +254,7 @@ async function main(): Promise<void> {
         db,
         secClient,
         discovery,
+      resolver,
         { sec: config.sec, catalyst: config.catalyst },
         {
           ticker: symbol,
@@ -283,6 +290,7 @@ async function main(): Promise<void> {
           db,
           secClient,
           discovery,
+        resolver,
           { sec: config.sec, catalyst: config.catalyst },
           {
             ticker: symbol,

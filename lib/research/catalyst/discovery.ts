@@ -15,7 +15,7 @@
 
 import { hashContent } from '../fingerprint';
 import { normaliseTimestamp, type NormalisedTime } from '../time';
-import type { SourceAuthority } from '../types';
+import type { SourceAuthority, SourceType } from '../types';
 
 export type DiscoveredSourceKind =
   | 'COMPANY_IR'
@@ -277,4 +277,28 @@ export function validateDiscovered(
 
 export function discoveryContentHash(source: DiscoveredSource): string {
   return hashContent(`${source.url}\n${source.title}\n${source.published.utc ?? ''}`);
+}
+
+/**
+ * The stored source type for a discovered kind.
+ *
+ * Kept beside authorityForKind so the two cannot drift. They did: everything
+ * that was not SECONDARY was filed as NEWSWIRE, so an issuer's own press page
+ * arrived carrying authority COMPANY_IR and type NEWSWIRE at once. Downstream
+ * reads that ask "is the company's own source covered" consult the type, and
+ * were told no while the authority said yes.
+ */
+export function sourceTypeForKind(kind: DiscoveredSourceKind): SourceType {
+  switch (kind) {
+    case 'SEC':
+      return 'SEC_FILING';
+    case 'COMPANY_IR':
+      return 'COMPANY_IR';
+    case 'COMPANY_NEWSROOM':
+      return 'COMPANY_NEWSROOM';
+    case 'NEWSWIRE':
+      return 'NEWSWIRE';
+    default:
+      return 'SECONDARY_DISCOVERY';
+  }
 }

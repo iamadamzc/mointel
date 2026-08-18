@@ -209,3 +209,22 @@ export function withinContextLookback(
 }
 
 export { MARKET_TIME_ZONE };
+
+/**
+ * What to publish for a stored timestamp, without inventing precision.
+ *
+ * A DATE_ONLY source is stored at noon UTC so it lands on the right calendar
+ * day in market time. That is an internal convenience, and reading it out as an
+ * instant turns it into a claim the source never made: MCP reported Einride's
+ * own press page as published at 12:00:00Z when the page carries a date and
+ * nothing else, while the newswire copy of the same announcement carried a real
+ * 06:30 ET stamp. Callers that need an instant should use the exact-timed copy;
+ * callers that display this get the date.
+ */
+export function publishedDisplay(
+  utc: string | null | undefined,
+  precision: TimePrecision,
+): string | null {
+  if (!utc) return null;
+  return precision === 'DATE_ONLY' ? utc.slice(0, 10) : utc;
+}

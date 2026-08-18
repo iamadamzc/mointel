@@ -120,6 +120,16 @@ export interface CompanySourceRegistry {
   investorRelationsUrl: string | null;
   newsroomUrl: string | null;
   pressReleaseIndexUrl: string | null;
+  /**
+   * What the stored location actually is.
+   *
+   * A feed or an index will list an announcement that has not happened yet; a
+   * single article never will. Recording the difference is what stops a leaf
+   * page from counting as a usable source, ending resolution and freezing the
+   * issuer on whatever it said that day. Null means it was stored before this
+   * distinction existed and cannot be trusted.
+   */
+  sourceShape: 'FEED' | 'INDEX' | 'ARTICLE' | null;
   /** RSS or Atom feed, when the issuer publishes one. Cheapest source of all. */
   feedUrl: string | null;
   /** How these were found: SEC filing, web discovery, manual. */
@@ -177,6 +187,7 @@ export const EMPTY_COMPANY_SOURCES: CompanySourceRegistry = {
   lastDiscoveryFingerprint: null,
   lastDiscoveryMode: null,
   resolverVersion: null,
+  sourceShape: null,
 };
 
 /* ----------------------------------------------------------------- evidence */

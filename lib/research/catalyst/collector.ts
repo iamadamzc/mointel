@@ -40,6 +40,18 @@ import type {
 import { EMPTY_COMPANY_SOURCES, SOURCE_AUTHORITY_RANK } from '../types';
 import type { SecClient } from '../sec/client';
 import { resolveCompanySources } from './irRegistry';
+import type { CompanySourceResolverProvider } from './companySourceContract';
+
+/*
+ * Stands in when no resolver is configured, so the collector keeps one code
+ * path. It reports unavailable rather than throwing, which leaves the bounded
+ * discovery fallback intact.
+ */
+const UNAVAILABLE_RESOLVER: CompanySourceResolverProvider = {
+  name: 'none',
+  available: false,
+  resolve: async () => ({ candidates: [], modelCalls: 0, detail: 'no resolver configured' }),
+};
 import { clusterSources, type SourceCluster } from './cluster';
 import {
   buildReleaseEvidence,
@@ -50,6 +62,7 @@ import {
 } from './companySource';
 import {
   authorityForKind,
+  sourceTypeForKind,
   discoveryContentHash,
   type CatalystSourceDiscoveryProvider,
 } from './discovery';
@@ -181,8 +194,12 @@ function toSummary(source: ResearchSource): CatalystSourceSummary {
  * issuer whose registry carries an older value gets one recovery episode, once,
  * and is then stamped forward — which is what makes the recovery idempotent
  * across restarts rather than a loop.
+ *
+ * Version 2 is the dedicated company-source contract. Version 1 asked the
+ * announcement prompt, so it stored leaf articles and newswire copies as though
+ * they were collection points; those registries need one more attempt.
  */
-export const RESOLVER_VERSION = 1;
+export const RESOLVER_VERSION = 2;
 
 /** Source types that constitute catalyst evidence rather than structure. */
 const CATALYST_TYPES = new Set<SourceType>([
@@ -214,6 +231,7 @@ export async function collectCatalystEvidence(
   db: MarketDatabase,
   secClient: SecClient,
   discovery: CatalystSourceDiscoveryProvider,
+  resolver: CompanySourceResolverProvider | null,
   config: { sec: SecConfig; catalyst: CatalystConfig },
   input: CatalystCollectionInput,
 ): Promise<CatalystCollectionReport> {
@@ -388,7 +406,7 @@ export async function collectCatalystEvidence(
     urgentResolutionRan = true;
     report.discoveryMode = 'RESOLVER';
     try {
-      const resolution = await resolveCompanySources(db, discovery, {
+      const resolution = await resolveCompanySources(db, resolver ?? UNAVAILABLE_RESOLVER, {
         ticker,
         companyName: input.companyName ?? issuer?.companyName ?? null,
         userAgent: companyUserAgent(config.sec.userAgent),
@@ -584,7 +602,7 @@ export async function collectCatalystEvidence(
   if (resolverDue) {
     report.discoveryMode = 'RESOLVER';
     try {
-      const resolution = await resolveCompanySources(db, discovery, {
+      const resolution = await resolveCompanySources(db, resolver ?? UNAVAILABLE_RESOLVER, {
         ticker,
         companyName: input.companyName ?? issuer?.companyName ?? null,
         userAgent: config.sec.userAgent,
@@ -647,7 +665,7 @@ export async function collectCatalystEvidence(
 
     const discovered: NewResearchSource[] = result.sources.map((source) => ({
       ticker,
-      sourceType: source.kind === 'SECONDARY' ? 'SECONDARY_DISCOVERY' : 'NEWSWIRE',
+      sourceType: sourceTypeForKind(source.kind),
       title: source.title,
       url: source.url,
       publishedAt: source.published.utc,

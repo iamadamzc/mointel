@@ -41,11 +41,24 @@ function catalystEvidenceLatest(intelligence: AutoIntelligence | null): string |
   if (!intelligence || !Array.isArray(ids) || ids.length === 0) return null;
 
   const wanted = new Set(ids);
-  const published = intelligence.evidence
-    .filter((link) => wanted.has(link.id) && link.publishedAt)
+  const cited = intelligence.evidence.filter((link) => wanted.has(link.id) && link.publishedAt);
+
+  /*
+   * Exact stamps decide the ordering when any are present.
+   *
+   * A date-only page is stored at noon UTC so it lands on the right calendar
+   * day, and noon sorts after a real 06:30 ET newswire stamp for the very same
+   * announcement — so mixing the two ranks the imprecise copy as the later
+   * event. When an exact timestamp exists it is the honest answer; date-only
+   * values are only compared against each other.
+   */
+  const exact = cited
+    .filter((link) => link.publishedPrecision === 'EXACT')
     .map((link) => link.publishedAt as string)
     .sort();
+  if (exact.length > 0) return exact[exact.length - 1];
 
+  const published = cited.map((link) => link.publishedAt as string).sort();
   return published.length > 0 ? published[published.length - 1] : null;
 }
 

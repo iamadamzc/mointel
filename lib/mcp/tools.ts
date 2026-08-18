@@ -24,6 +24,8 @@
 import 'server-only';
 
 import { getDashboardState } from '../data';
+import { publishedDisplay, type TimePrecision } from '../research/time';
+import type { AutoIntelligence } from '../research/view';
 import { mergeDesk } from '../dashboard/merge';
 import { buildDeskRead, buildStructureSummary } from '../dashboard/deskRead';
 import { prioritizeEvents, relevantEvents } from '../dashboard/events';
@@ -303,7 +305,7 @@ export const TOOLS: McpTool[] = [
         comparison: row.comparison,
         sheet: row.research,
         supplyLedger: row.researchRecord,
-        intelligence: row.intelligence,
+        intelligence: withHonestTimestamps(row.intelligence),
         researchStatus: dashboard.research[ticker] ? 'RESEARCH_RECORD_PRESENT' : 'NO_RESEARCH_RECORD',
       };
     },
@@ -452,4 +454,23 @@ export function describeTools() {
     outputSchema: tool.outputSchema,
     annotations: { title: tool.title, ...READ_ONLY_ANNOTATIONS },
   }));
+}
+
+/**
+ * Strips fabricated precision from evidence timestamps before publishing.
+ *
+ * Date-only sources are stored at noon UTC so they land on the right calendar
+ * day; emitting that as `publishedAt` told readers Einride's own press page was
+ * published at 12:00:00Z when it carries no time at all. The precision was
+ * already recorded alongside — it just was not being honoured on the way out.
+ */
+function withHonestTimestamps(intelligence: AutoIntelligence | null): AutoIntelligence | null {
+  if (!intelligence) return intelligence;
+  return {
+    ...intelligence,
+    evidence: intelligence.evidence.map((link) => ({
+      ...link,
+      publishedAt: publishedDisplay(link.publishedAt, link.publishedPrecision as TimePrecision),
+    })),
+  };
 }

@@ -26,7 +26,10 @@ import type { MaterialDemandEvent } from '../lib/research/catalyst/collector';
 /** Triggers the collector recognises as a material demand episode. */
 const MATERIAL_TRIGGERS = new Set(['ENTERED_TOP_N', 'RANK_IMPROVED', 'HALT', 'RESUME']);
 import { NoopDiscoveryProvider } from '../lib/research/catalyst/discovery';
-import { OpenAiDiscoveryProvider } from '../lib/research/catalyst/openaiDiscovery';
+import {
+  OpenAiDiscoveryProvider,
+  OpenAiCompanySourceResolver,
+} from '../lib/research/catalyst/openaiDiscovery';
 import { OpenAiInterpreter } from '../lib/research/interpret/openaiInterpreter';
 import { NoopInterpreter } from '../lib/research/interpret/interpreter';
 import { loadSheetPriors } from '../lib/research/merge/sheetPrior';
@@ -101,6 +104,10 @@ async function main(): Promise<void> {
   const discovery = config.model.apiKey
     ? new OpenAiDiscoveryProvider({ config: config.model })
     : new NoopDiscoveryProvider();
+  // Same transport and tier as discovery, different question entirely.
+  const companySourceResolver = config.model.apiKey
+    ? new OpenAiCompanySourceResolver({ config: config.model })
+    : null;
   const interpreter = config.model.apiKey
     ? new OpenAiInterpreter({ config: config.model, timeoutMs: 300_000 })
     : new NoopInterpreter();
@@ -301,6 +308,7 @@ async function main(): Promise<void> {
             db,
             secClient,
             discovery,
+            companySourceResolver,
             { sec: config.sec, catalyst: config.catalyst },
             {
               ticker: job.ticker,
