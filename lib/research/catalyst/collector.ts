@@ -39,7 +39,7 @@ import type {
 } from '../types';
 import { EMPTY_COMPANY_SOURCES, SOURCE_AUTHORITY_RANK } from '../types';
 import type { SecClient } from '../sec/client';
-import { resolveCompanySources } from './irRegistry';
+import { resolveCompanySources, hasUsableSource } from './irRegistry';
 import type { CompanySourceResolverProvider } from './companySourceContract';
 
 /*
@@ -197,9 +197,14 @@ function toSummary(source: ResearchSource): CatalystSourceSummary {
  *
  * Version 2 is the dedicated company-source contract. Version 1 asked the
  * announcement prompt, so it stored leaf articles and newswire copies as though
- * they were collection points; those registries need one more attempt.
+ * they were collection points.
+ *
+ * Version 3 is that fix reaching the collector. Version 2 corrected what the
+ * resolver would store but left this file judging a source usable by "is any
+ * URL present", so an issuer holding a leaf looked resolved, never took the
+ * resolver's turn, and burned its one recovery episode on a discovery pass.
  */
-export const RESOLVER_VERSION = 2;
+export const RESOLVER_VERSION = 3;
 
 /** Source types that constitute catalyst evidence rather than structure. */
 const CATALYST_TYPES = new Set<SourceType>([
@@ -366,7 +371,7 @@ export async function collectCatalystEvidence(
    * clock is stamped below, so this branch can never run twice for an issuer.
    */
   const usableCompanySourceBefore = Boolean(
-    registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl,
+    hasUsableSource(registry),
   );
   /*
    * One recovery episode for an issuer last touched by the old resolver.
@@ -416,7 +421,7 @@ export async function collectCatalystEvidence(
       report.modelCalls += resolution.modelCalls;
       report.companySourceDetail = `urgent: ${resolution.detail}`;
       urgentResolutionResolved = Boolean(
-        registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl,
+        hasUsableSource(registry),
       );
     } catch (error) {
       warnings.push(
@@ -430,7 +435,17 @@ export async function collectCatalystEvidence(
 
   // ------------------------------------------------- 2b. known company sources
   const userAgent = companyUserAgent(config.sec.userAgent);
-  const knownSourceUrl = registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl;
+  /*
+   * Only a durable location is worth reading.
+   *
+   * A stored leaf article satisfies neither: re-fetching it yields the same
+   * frozen story every pass, and counting it as coverage is what let ENRD
+   * report a July catalyst while holding a URL that could never mention a
+   * newer release.
+   */
+  const knownSourceUrl = hasUsableSource(registry)
+    ? (registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl)
+    : null;
 
   if (knownSourceUrl) {
     const page = await fetchCompanyPage(knownSourceUrl, { userAgent });
@@ -587,7 +602,7 @@ export async function collectCatalystEvidence(
    * and the two tiers alternate so one pass never buys two model calls.
    */
   const usableCompanySource = Boolean(
-    registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl,
+    hasUsableSource(registry),
   );
   /*
    * The steady-state resolver turn. Skipped when the urgent branch above

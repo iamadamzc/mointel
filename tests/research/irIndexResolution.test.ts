@@ -19,6 +19,7 @@ import {
   type CompanySourceResolverProvider,
 } from '@/lib/research/catalyst/companySourceContract';
 import { EMPTY_COMPANY_SOURCES } from '@/lib/research/types';
+import { RESOLVER_VERSION } from '@/lib/research/catalyst/collector';
 
 /**
  * The company-source resolver contract.
@@ -332,5 +333,48 @@ describe('registries already holding a leaf article', () => {
 
     expect(second.modelCalls).toBe(0);
     expect(resolver.calls).toBe(1);
+  });
+});
+
+/* ------------------------------------------- the collector's own judgement */
+
+describe('the collector agrees with the resolver about what is usable', () => {
+  /*
+   * Production caught this and the unit tests had not.
+   *
+   * hasUsableSource was corrected in the resolver, but the collector kept its
+   * own inline test — "is any URL present" — so ENRD, still holding the TUV SUD
+   * article, looked resolved. It never took the resolver's turn, spent its one
+   * recovery episode on a discovery pass, and stamped itself forward with the
+   * leaf intact. One predicate, used by both, is the only version of this that
+   * cannot drift again.
+   */
+  it('does not consider a stored leaf article a usable source', () => {
+    expect(
+      hasUsableSource({
+        ...EMPTY_COMPANY_SOURCES,
+        newsroomUrl: ENRD_LEAF,
+        pressReleaseIndexUrl: ENRD_LEAF,
+        investorRelationsUrl: 'https://www.einride.tech',
+        sourceShape: null,
+        confidence: 'HIGH',
+      }),
+    ).toBe(false);
+  });
+
+  it('considers a durable index usable', () => {
+    expect(
+      hasUsableSource({
+        ...EMPTY_COMPANY_SOURCES,
+        newsroomUrl: ENRD_INDEX,
+        pressReleaseIndexUrl: ENRD_INDEX,
+        sourceShape: 'INDEX',
+      }),
+    ).toBe(true);
+  });
+
+  it('advances the resolver version so stranded registries get another episode', () => {
+    // Bumped because the fix above changes which issuers can resolve at all.
+    expect(RESOLVER_VERSION).toBeGreaterThanOrEqual(3);
   });
 });
