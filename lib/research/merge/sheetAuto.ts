@@ -76,6 +76,36 @@ export interface SheetAutoComparison {
 }
 
 /** Maps the sheet's cycle vocabulary onto the automatic classification. */
+/** Calendar day of an instant, for comparisons the clock cannot support. */
+function dayOf(iso: string): string | null {
+  const parsed = Date.parse(iso);
+  return Number.isFinite(parsed) ? new Date(parsed).toISOString().slice(0, 10) : null;
+}
+
+/**
+ * The date the sheet's catalyst actually refers to.
+ *
+ * NOT when the row was read. `observedAt` is the moment the desk fetched the
+ * spreadsheet, which is always "a few seconds ago" and therefore always later
+ * than any evidence — using it to decide who is behind would mark every
+ * automatic analysis as missing something.
+ *
+ * The sheet records times like "2026-08-17; exact time Unknown", so the time of
+ * day is frequently absent. That is recorded rather than guessed: a comparison
+ * that needs an ordering the data cannot support does not get one.
+ */
+export function sheetCatalystDate(
+  field: CatalystField | undefined,
+): { date: string; exact: boolean } | null {
+  const raw = field?.latestTime?.trim();
+  if (!raw) return null;
+
+  const match = /(\d{4}-\d{2}-\d{2})/.exec(raw);
+  if (!match) return null;
+
+  return { date: match[1], exact: !/unknown/i.test(raw) && /\d{1,2}:\d{2}/.test(raw) };
+}
+
 function sheetCycleToAuto(state: CycleField['state'] | undefined): string | null {
   switch (state) {
     case 'FRESH_FRONTSIDE':
@@ -291,10 +321,22 @@ export function compareSheetAndAuto(options: CompareOptions): SheetAutoCompariso
    * collected, the two are not disagreeing about one event, they are describing
    * different ones.
    */
+  const sheetCatalystAt = sheetCatalystDate(sheet.catalyst);
+  const autoCatalystDay = options.autoLatestSourceAt
+    ? dayOf(options.autoLatestSourceAt)
+    : null;
+
+  /*
+   * Compared by calendar day, and only when the sheet is STRICTLY later.
+   *
+   * XOS is the case this has to get right: the sheet says 17 August with the
+   * time unknown, and the newest catalyst evidence the analysis holds is the
+   * 13th. Four days apart is a fact the data supports. Had both said the 17th,
+   * one of them without a time, the honest answer is that we cannot order them
+   * — and manufacturing one would turn "we don't know" into an accusation.
+   */
   const autoBehindSheet = Boolean(
-    sheet.observedAt &&
-      options.autoLatestSourceAt &&
-      Date.parse(sheet.observedAt) > Date.parse(options.autoLatestSourceAt),
+    sheetCatalystAt && autoCatalystDay && sheetCatalystAt.date > autoCatalystDay,
   );
 
   const sheetStale = Boolean(
