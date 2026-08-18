@@ -17,6 +17,12 @@ import { looksLikeFeed } from './feeds';
 /** Feed paths worth probing once an issuer domain is known. */
 const FEED_PATHS = ['/rss', '/feed', '/rss.xml', '/feed.xml', '/news/rss', '/investors/rss'];
 
+/**
+ * Where issuers commonly list releases, for sites that publish them off the
+ * root rather than under a directory the release URL reveals.
+ */
+const INDEX_PATHS = ['/press', '/news', '/newsroom', '/press-releases', '/media', '/investors'];
+
 export interface ResolveOptions {
   ticker: string;
   companyName: string | null;
@@ -132,10 +138,23 @@ export async function resolveCompanySources(
     return { registry: stored, resolved: true, modelCalls: result.modelCalls, detail: 'bad URL' };
   }
 
+  const userAgent = companyUserAgent(options.userAgent);
+
+  /*
+   * The model answers "where was this published", so what comes back is one
+   * release, not the page that lists releases. Storing the release itself is
+   * worse than storing nothing: it satisfies hasUsableSource(), so the resolver
+   * never runs again, and every later pass re-reads one frozen article that by
+   * construction can never mention a newer announcement. ENRD resolved to a
+   * story about a safety-verification partnership and kept reporting July while
+   * the Tesla Semi release sat one directory above it.
+   */
+  const index = await probeIndex(origin, userAgent);
+
   const registry: CompanySourceRegistry = {
     ...stored,
-    newsroomUrl: companyHit.url,
-    pressReleaseIndexUrl: stored.pressReleaseIndexUrl ?? companyHit.url,
+    newsroomUrl: index ?? companyHit.url,
+    pressReleaseIndexUrl: stored.pressReleaseIndexUrl ?? index ?? companyHit.url,
     investorRelationsUrl: stored.investorRelationsUrl ?? origin.origin,
     discoveryMethod: discovery.name,
     confidence: companyHit.confidence === 'HIGH' ? 'HIGH' : 'MEDIUM',
@@ -145,17 +164,72 @@ export async function resolveCompanySources(
 
   // A feed, if one exists, is cheaper and better dated than any HTML index, so
   // it is worth a few probes now to avoid parsing pages later.
-  const feed = await probeFeed(origin.origin, companyUserAgent(options.userAgent));
+  const feed = await probeFeed(origin.origin, userAgent);
   if (feed) registry.feedUrl = feed;
 
   persist(db, options.ticker, registry);
 
+  const located = index ? 'newsroom index' : 'newsroom';
   return {
     registry,
     resolved: true,
     modelCalls: result.modelCalls,
-    detail: feed ? 'located newsroom and feed' : 'located newsroom',
+    detail: feed ? `located ${located} and feed` : `located ${located}`,
   };
+}
+
+/**
+ * Paths above a release, nearest first.
+ *
+ * `/press/some-release` yields `/press`. The nearest ancestor is tried first
+ * because that is where the issuer actually filed the release; the generic
+ * names below are only for sites that publish releases off the root.
+ */
+export function ancestorPaths(pathname: string): string[] {
+  const segments = pathname.split('/').filter(Boolean);
+  const paths: string[] = [];
+  for (let depth = segments.length - 1; depth >= 1; depth -= 1) {
+    paths.push(`/${segments.slice(0, depth).join('/')}`);
+  }
+  return paths;
+}
+
+/**
+ * True when a page lists several releases rather than being one.
+ *
+ * Two sibling links is the whole test. An index has many, an article has none —
+ * except for "related release" rails, which is why one is not enough.
+ */
+export function listsReleases(body: string, prefix: string): boolean {
+  const quoted = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const pattern = new RegExp(`href="(?:https?://[^"/]+)?${quoted}/[^"#?]+`, 'gi');
+  const links = new Set<string>();
+  for (const match of body.matchAll(pattern)) links.add(match[0]);
+  return links.size >= 2;
+}
+
+/**
+ * Walks up from a release to the page that lists it.
+ *
+ * Deterministic and model-free: a handful of conditional GETs against a domain
+ * the resolver has already identified.
+ */
+async function probeIndex(article: URL, userAgent: string): Promise<string | null> {
+  const candidates: string[] = [];
+  for (const path of ancestorPaths(article.pathname)) candidates.push(`${article.origin}${path}`);
+  for (const path of INDEX_PATHS) {
+    const url = `${article.origin}${path}`;
+    if (!candidates.includes(url)) candidates.push(url);
+  }
+
+  for (const url of candidates.slice(0, 8)) {
+    if (url === article.href) continue;
+    const page = await fetchCompanyPage(url, { userAgent, timeoutMs: 6000 });
+    if (page.failure || !page.body) continue;
+    const prefix = new URL(url).pathname.replace(/\/$/, '');
+    if (prefix && listsReleases(page.body, prefix)) return url;
+  }
+  return null;
 }
 
 async function probeFeed(origin: string, userAgent: string): Promise<string | null> {
