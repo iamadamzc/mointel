@@ -203,6 +203,47 @@ sudo -u mointel env -C /opt/mointel/current \
 `review:list` shows label, created, expires, status and last use. It never
 prints a token or a hash — there is nothing stored that could be shown.
 
+### Reaching the desk when a transport is blocked
+
+The review capability is the same in every case; what changes is the road to it.
+There are now three, in the order they were added, because each earlier one
+turned out to be unreachable from some client that mattered:
+
+| Transport | Hostname | Notes |
+| --- | --- | --- |
+| Lightsail distribution | `dwwep02jje2ag.cloudfront.net` | production; keep |
+| Direct origin | `98-85-49-227.sslip.io` | Let's Encrypt on the static IP, no CDN |
+| API Gateway HTTP API | `u306vfhoz4.execute-api.us-east-1.amazonaws.com` | **temporary**, for external inspection |
+
+All three end at the same Nginx, the same Next.js process and the same store.
+No transport adds a worker, a process or a copy of the data, and Basic Auth on
+`/` is enforced once, by Nginx, for all of them.
+
+The API Gateway API is an HTTP API with `GET /`, `HEAD /`, `GET /{proxy+}` and
+`HEAD /{proxy+}` routed to an `HTTP_PROXY` integration on the sslip.io origin.
+There is deliberately no `ANY` route: a POST has nothing to match and is refused
+with 404 by API Gateway before the application is involved at all, which is a
+second barrier in front of the one proxy.ts already provides.
+
+Access logging is deliberately **off** on the stage. The review token is in the
+request path, and an access log is a file that gets copied and read by people
+who were never given the link. Cost is per request only — $1.00/million, no
+fixed monthly charge and no VPC link, NAT, ALB, Lambda, WAF or custom domain.
+
+**Deleting the temporary API** (does not touch CloudFront or the sslip.io
+origin, and restarts nothing):
+
+```bash
+aws apigatewayv2 delete-api --profile magellan_admin --region us-east-1   --api-id u306vfhoz4
+
+# confirm it is gone
+aws apigatewayv2 get-apis --profile magellan_admin --region us-east-1   --query "Items[?Name=='mointel-chatgpt-review']"
+```
+
+Deleting the API deletes its routes, integrations and stage with it. The review
+tokens are unaffected — they live in the store, not in the transport — so revoke
+them separately with `review:revoke-all` when the inspection is finished.
+
 ### Do not put a review token on a sudo command line
 
 `sudo` writes the command it ran to the journal, argv and all. So this records
