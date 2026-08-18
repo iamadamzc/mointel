@@ -96,15 +96,34 @@ ln -sfn "$RELEASE" "$CURRENT"
 log "current -> $SHA"
 
 # The migration owner runs against the new code, on its own, before any writer
-# is started. RemainAfterExit means a re-run needs an explicit reset.
+# is started.
+#
+# Invoked directly rather than through `systemctl start mointel-migrate`.
+#
+# That unit is a Type=oneshot with RemainAfterExit, so re-running it means
+# stopping it first — and the four runtime services declare Requires= on it.
+# systemd propagates a stop across Requires=, so stopping the migrate unit stops
+# every service that requires it, INCLUDING the market worker this script goes
+# out of its way not to touch. That cost a live SIP connection once; it does not
+# get to do it twice.
+#
+# The unit still exists and still owns the boot path, where Requires= is exactly
+# the guarantee wanted: nothing starts until the migration has exited 0. Here
+# the same entry point runs as the same user against the same store, and a
+# non-zero exit stops the deploy before any writer has seen it.
+#
+# Only the store path is passed. The migration needs nothing else, so no
+# credential is put on a command line to do it.
 log "migrating schema"
-systemctl reset-failed mointel-migrate.service 2>/dev/null || true
-systemctl stop mointel-migrate.service 2>/dev/null || true
-if ! systemctl start mointel-migrate.service; then
-  journalctl -u mointel-migrate -n 40 --no-pager || true
+MOINTEL_DB_PATH="$(sed -n 's/^MARKET_DB_PATH=//p' /etc/mointel/mointel.env | head -1)"
+[ -n "$MOINTEL_DB_PATH" ] || fail "MARKET_DB_PATH is not set in /etc/mointel/mointel.env"
+
+if ! sudo -u "$SERVICE_USER" env -C "$RELEASE" \
+       NODE_ENV=production \
+       MARKET_DB_PATH="$MOINTEL_DB_PATH" \
+       /usr/bin/node node_modules/tsx/dist/cli.mjs worker/migrate.ts; then
   fail "schema migration failed — nothing was started against it"
 fi
-journalctl -u mointel-migrate -n 20 --no-pager || true
 
 log "starting services"
 
