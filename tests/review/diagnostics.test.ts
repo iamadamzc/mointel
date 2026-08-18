@@ -104,8 +104,12 @@ describe('what diagnostics is allowed to read', () => {
   });
 
   it('does not run a full integrity check on every request', () => {
-    // A 230 MB store would turn a page load into a minutes-long read.
-    expect(source).not.toContain('integrity_check');
+    // A 230 MB store would turn a page load into a minutes-long read, so the
+    // page reports the most recent RECORDED result instead. What matters is
+    // that the pragma is never invoked here — the words may appear in a
+    // comment explaining precisely why it is not.
+    expect(source).not.toMatch(/pragma\(\s*['"`]integrity_check/);
+    expect(source).toContain('last_integrity_check');
   });
 });
 

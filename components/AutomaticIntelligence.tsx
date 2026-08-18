@@ -383,10 +383,14 @@ export function AutomaticIntelligence({
             <ul className="mt-1 space-y-1">
               {intel.evidence.map((source) => (
                 <li key={source.id} className="text-[11px]">
+                  {/* noopener is implied by noreferrer in current browsers, but
+                      stated anyway: this opens an SEC page from a desk that may be
+                      running behind a capability URL, and the opened tab must not
+                      get a handle back to this one. */}
                   <a
                     href={source.url}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="text-ink-1 underline decoration-dotted underline-offset-2"
                   >
                     [{source.id}] {source.secForm ?? source.sourceType}

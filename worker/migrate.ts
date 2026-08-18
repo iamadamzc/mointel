@@ -20,6 +20,7 @@ import { loadMarketConfig } from '../lib/market/config';
 import {
   databaseExists,
   openDatabase,
+  setMeta,
   SCHEMA_VERSION,
   type MarketDatabase,
 } from '../lib/market/store/db';
@@ -66,6 +67,23 @@ async function main(): Promise<void> {
     // difference between a boot delay measured in seconds and one measured in
     // minutes. Deployments run the full check separately, once.
     const check = String(db.pragma('quick_check', { simple: true }));
+
+    /*
+     * Recorded, not just logged.
+     *
+     * The diagnostics page has to answer "is the store sound" without running
+     * a full integrity_check on every request — on a store this size that
+     * would turn a page load into a minutes-long read. This is the most recent
+     * time anybody actually asked, and what the answer was, which is the
+     * honest thing to report in its place.
+     */
+    setMeta(db, 'last_integrity_check', JSON.stringify({
+      result: check,
+      kind: 'quick_check',
+      at: new Date().toISOString(),
+      schemaVersion: version,
+    }));
+
     if (check !== 'ok') throw new Error(`quick_check failed: ${check}`);
 
     log(`schema v${version}, quick_check ok, ${backups} backup(s) written`);

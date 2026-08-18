@@ -29,7 +29,16 @@ import { getDashboardState } from '../data';
 import { getMarketSnapshot, listAssessments } from '../market/readModel';
 import { mergeDesk } from '../dashboard/merge';
 import { resolveActiveBoard } from '../market/board';
-import { databaseExists, openDatabase, schemaBackupDirectory, SCHEMA_VERSION } from '../market/store/db';
+import {
+  databaseExists,
+  getMeta,
+  openDatabase,
+  schemaBackupDirectory,
+  SCHEMA_VERSION,
+  type MarketDatabase,
+} from '../market/store/db';
+import { countJobsByStatus, readJobsForDate, readResearchHealth } from '../market/store/researchRepo';
+import { readAssessmentHealth } from '../market/store/assessmentRepo';
 import type { IntelligenceStatus } from '../dashboard/intelligence';
 
 /* ------------------------------------------------------------------ helpers */
@@ -166,6 +175,23 @@ function deployment(now: Date): Record<string, unknown> {
   };
 }
 
+/**
+ * A read-only handle for the sections that need more than the read model gives.
+ *
+ * Opened per request and closed again rather than cached: this page is asked
+ * for occasionally by one reviewer, and a long-lived extra connection to the
+ * store is a cost with no reader to pay for it.
+ */
+function openStore(): MarketDatabase | null {
+  const { dbPath } = loadMarketConfig();
+  if (!databaseExists(dbPath)) return null;
+  try {
+    return openDatabase(dbPath, { readonly: true, skipSchema: true });
+  } catch {
+    return null;
+  }
+}
+
 /* --------------------------------------------------------------- database */
 
 function database(): Record<string, unknown> {
@@ -181,6 +207,7 @@ function database(): Record<string, unknown> {
     expectedSchemaVersion: SCHEMA_VERSION,
     backups: null,
     latestBackup: null,
+    lastIntegrityCheck: null,
     diskFreeGb: null,
     diskTotalGb: null,
     diskUsedPercent: null,
@@ -196,6 +223,20 @@ function database(): Record<string, unknown> {
       const db = openDatabase(dbPath, { readonly: true, skipSchema: true });
       result.schemaVersion = Number(db.pragma('user_version', { simple: true }));
       result.journalMode = String(db.pragma('journal_mode', { simple: true }));
+
+      // The most recent time anybody actually checked, not a check run now:
+      // integrity_check on a store this size is a minutes-long read, and a
+      // diagnostics page that does it per request is a denial of service with
+      // extra steps. The migration owner records this on every start.
+      const recorded = getMeta(db, 'last_integrity_check');
+      if (recorded) {
+        try {
+          result.lastIntegrityCheck = JSON.parse(recorded) as unknown;
+        } catch {
+          result.lastIntegrityCheck = { result: 'unreadable record' };
+        }
+      }
+
       db.close();
     } catch (error) {
       result.error = sanitize((error as Error).message);
@@ -259,6 +300,7 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
   const now = new Date();
   const nowMs = now.getTime();
 
+  const store = openStore();
   const snapshot = getMarketSnapshot();
   const dashboard = await getDashboardState();
   const merged = mergeDesk(dashboard, snapshot);
@@ -312,6 +354,33 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
     lastErrorAt: health.lastErrorAt,
   };
 
+  /*
+   * Job history, read from the store rather than inferred from the health row.
+   *
+   * "The engine is idle" and "the engine has failed every job today" look
+   * identical from the health record alone, and they are the two most different
+   * states this worker has.
+   */
+  const jobs = store ? readJobsForDate(store, discovery.tradingDate) : [];
+  const jobCounts = store ? countJobsByStatus(store, discovery.tradingDate) : {};
+  const stored = store ? readResearchHealth(store) : null;
+
+  const completed = jobs
+    .filter((job) => job.completedAt && job.status === 'COMPLETE')
+    .sort((a, b) => (a.completedAt! < b.completedAt! ? 1 : -1));
+  const failed = jobs
+    .filter((job) => job.status === 'FAILED' || job.error)
+    .sort((a, b) => ((a.completedAt ?? a.queuedAt) < (b.completedAt ?? b.queuedAt) ? 1 : -1));
+
+  // Queue-to-accepted, over the jobs that actually finished. The number a
+  // trader cares about is how long a name waits for intelligence.
+  const latencies = completed
+    .map((job) => Date.parse(job.completedAt!) - Date.parse(job.queuedAt))
+    .filter((ms) => Number.isFinite(ms) && ms >= 0);
+  const averageLatencySeconds = latencies.length
+    ? Math.round(latencies.reduce((total, ms) => total + ms, 0) / latencies.length / 1000)
+    : null;
+
   const researchSection = {
     state: research.state,
     label: research.label,
@@ -319,10 +388,32 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
     queuedJobs: research.queuedJobs,
     activeCount: research.activeCount,
     activeJobs: research.activeJobs,
+    jobsByStatus: jobCounts,
+    jobsToday: jobs.length,
+    recentlyCompleted: completed.slice(0, 8).map((job) => ({
+      ticker: job.ticker,
+      completedAtEt: etClock(job.completedAt),
+      retries: job.retryCount,
+    })),
+    recentlyFailed: failed.slice(0, 8).map((job) => ({
+      ticker: job.ticker,
+      atEt: etClock(job.completedAt ?? job.queuedAt),
+      retries: job.retryCount,
+      error: sanitize(job.error, 160),
+    })),
+    averageLatencySeconds,
+    latencySampleSize: latencies.length,
     lastCompletedTicker: research.lastCompletedTicker,
     lastCompletedAt: research.lastCompletedAt,
     lastCompletedAtEt: etClock(research.lastCompletedAt),
     heartbeatAgeSeconds: research.heartbeatAgeSeconds,
+    // Connectivity as the worker last found it, not merely as configured.
+    // "A key is set" and "SEC is answering" are different facts, and only the
+    // second one explains an empty dossier.
+    secAvailable: stored?.secAvailable ?? null,
+    secDetail: sanitize(stored?.secDetail),
+    interpreterAvailable: stored?.modelAvailable ?? null,
+    interpreterDetail: sanitize(stored?.modelDetail),
     // Model NAMES are configuration, not secrets, and knowing which tier
     // produced a dossier is half of judging it. Keys never appear.
     researchModel: process.env.OPENAI_RESEARCH_MODEL ?? null,
@@ -333,6 +424,7 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
     secRateLimitPerSecond: Number(process.env.SEC_MAX_REQUESTS_PER_SECOND ?? 5),
   };
 
+  const assessmentHealth = store ? readAssessmentHealth(store) : null;
   const nextAssessment = panel.next;
   const assessments = {
     state: panel.scheduler.state,
@@ -368,6 +460,27 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
     },
     totalRecorded: assessmentList.length,
     failed: assessmentList.filter((entry) => entry.status !== 'COMPLETE').length,
+    // Ran, but not when it was supposed to. The desk records this rather than
+    // hiding it, because an assessment generated at 06:40 for the 06:25
+    // checkpoint is not a 06:25 assessment and backtesting has to be able to
+    // tell the difference.
+    generatedLateToday: panel.today.filter((entry) => entry.generatedLate).length,
+    mostRecentFailure: (() => {
+      const bad = assessmentList.find((entry) => entry.status !== 'COMPLETE');
+      return bad
+        ? {
+            id: bad.id,
+            type: bad.type,
+            status: bad.status,
+            tradingDate: bad.tradingDate,
+            scheduledForEt: etClock(bad.scheduledFor),
+            notes: sanitize(bad.notes, 200),
+          }
+        : null;
+    })(),
+    schedulerHeartbeatAtEt: etClock(assessmentHealth?.updatedAt),
+    schedulerHeartbeatAgeSeconds: ageSeconds(assessmentHealth?.updatedAt, nowMs),
+    lastError: sanitize(assessmentHealth?.lastError),
   };
 
   const sheet = {
@@ -575,6 +688,54 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
     });
   }
 
+  /*
+   * Service status without looking at processes.
+   *
+   * `systemctl is-active` would be the obvious source and is the wrong one: it
+   * says a process exists, not that it is doing its job, and reading other
+   * processes on this box means reading command lines that carry an
+   * EnvironmentFile's worth of credentials. A worker that is running and not
+   * writing is the failure worth catching, and only the heartbeat sees it.
+   */
+  const services = {
+    web: { state: 'RUNNING', evidence: 'this response' },
+    market: {
+      state: health.offline ? 'DOWN' : health.stale ? 'STALE' : 'RUNNING',
+      heartbeatAgeSeconds: marketHealth.heartbeatAgeSeconds,
+    },
+    research: {
+      state: research.running ? 'RUNNING' : 'DOWN',
+      heartbeatAgeSeconds: research.heartbeatAgeSeconds,
+    },
+    assessments: {
+      state: panel.scheduler.running ? 'RUNNING' : 'DOWN',
+      heartbeatAgeSeconds: ageSeconds(assessmentHealth?.updatedAt, nowMs),
+    },
+  };
+
+  /* Snapshot rows whose parent assessment no longer exists. */
+  if (store) {
+    try {
+      const orphans = store
+        .prepare(
+          `SELECT COUNT(*) AS n FROM desk_assessment_tickers
+            WHERE assessment_id NOT IN (SELECT id FROM desk_assessments)`,
+        )
+        .get() as { n: number };
+      if (orphans.n > 0) {
+        consistency.push({
+          severity: 'ERROR',
+          check: 'assessment.orphanRows',
+          detail:
+            `${orphans.n} snapshot ticker row(s) have no parent assessment. A frozen ` +
+            'snapshot is only trustworthy while its rows and its header agree.',
+        });
+      }
+    } catch {
+      // The table may predate this check on a very old store.
+    }
+  }
+
   const db = database();
   if (db.schemaVersion !== null && db.schemaVersion !== SCHEMA_VERSION) {
     consistency.push({
@@ -633,7 +794,7 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
     });
   }
 
-  return {
+  const payload: ReviewDiagnostics = {
     generatedAt: now.toISOString(),
     deployment: deployment(now),
     market,
@@ -641,11 +802,14 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
     assessments,
     sheet,
     database: db,
-    resources: resources(),
+    resources: { ...resources(), services },
     intelligence,
     consistency,
     // Bounded on purpose: a diagnostics page that scrolls is a log, and a log
     // is the thing this deliberately is not.
     recentErrors: recentErrors.slice(0, 20),
   };
+
+  store?.close();
+  return payload;
 }
