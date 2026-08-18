@@ -11,8 +11,10 @@ const TYPE_TONE: Record<string, string> = {
   HALT: 'text-neg',
   RESUME: 'text-accent',
   RVOL_RANK_ENTRY: 'text-accent',
+  AH_RANK_ENTRY: 'text-accent',
   DISCOVERY_QUALIFIED: 'text-ink-2',
   CATALYST_SOURCE_CHANGE: 'text-accent',
+  DESK_ASSESSMENT: 'text-ink-2',
 };
 
 const TYPE_LABEL: Record<string, string> = {
@@ -20,8 +22,10 @@ const TYPE_LABEL: Record<string, string> = {
   HALT: 'HALT',
   RESUME: 'RESUME',
   RVOL_RANK_ENTRY: 'RVOL RANK ENTRY',
+  AH_RANK_ENTRY: 'AH RANK ENTRY',
   DISCOVERY_QUALIFIED: 'DISCOVERY',
   CATALYST_SOURCE_CHANGE: 'SOURCE CHANGE',
+  DESK_ASSESSMENT: 'ASSESSMENT',
 };
 
 /**

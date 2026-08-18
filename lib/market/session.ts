@@ -2,14 +2,22 @@
  * America/New_York session model, DST-aware, with no date library.
  *
  * Product definition (not the exchange's own definition):
- *   PREMARKET   04:00–09:30 ET
- *   RTH         09:30–16:00 ET
- *   AFTER HOURS 16:00–20:00 ET
+ *   PREMARKET     04:00–09:30 ET
+ *   RTH           09:30–close (16:00 ET, or the exchange's early close)
+ *   AFTER HOURS   close–20:00 ET
+ *   POST_MARKET   20:00–22:00 ET   SIP extended trading over, AH state frozen
+ *   NEXT_DAY_PREP 22:00–04:00 ET   the recap has run; the desk faces tomorrow
  *
  * The momentum trading date is the ET calendar date. Overnight SIP data is out
  * of scope for this milestone, which is why the session window starts at 04:00
  * rather than at the previous evening — Sunday-night prints must never land in
  * Monday's cumulative volume.
+ *
+ * POST_MARKET and NEXT_DAY_PREP are deliberately distinct from CLOSED. CLOSED
+ * means "not a session at all"; those two mean "the market is done for today
+ * and the desk is doing something specific with what it saw". The dashboard has
+ * to be able to say which, because "no new SIP prints are expected" and "the
+ * research engine is still working" are different facts.
  */
 
 import type { SessionPhase } from './types';
@@ -18,11 +26,35 @@ export const MARKET_TIME_ZONE = 'America/New_York';
 
 export const PREMARKET_START_MIN = 4 * 60; // 04:00
 export const RTH_START_MIN = 9 * 60 + 30; // 09:30
-export const RTH_END_MIN = 16 * 60; // 16:00
+export const RTH_END_MIN = 16 * 60; // 16:00 on a normal session
 export const AFTER_HOURS_END_MIN = 20 * 60; // 20:00
+/** The 22:00 ET recap closes the trading date and turns the desk to tomorrow. */
+export const NEXT_DAY_PREP_MIN = 22 * 60; // 22:00
 
 /** A normal full session closes at 16:00 ET; anything earlier is a partial day. */
 export const FULL_SESSION_CLOSE = '16:00';
+
+/**
+ * One trading date's regular-session close, in minutes since ET midnight.
+ *
+ * Everything after the close — the after-hours window, the AH reference price,
+ * the RTH_CLOSE assessment, the last 30-minute RTH checkpoint — hangs off this
+ * one number, so an early-close day must never be assumed to be 16:00.
+ */
+export function closeMinutesFromClock(close: string | null | undefined): number {
+  if (!close) return RTH_END_MIN;
+  const match = /^(\d{1,2}):(\d{2})$/.exec(close.trim());
+  if (!match) return RTH_END_MIN;
+  const minutes = Number(match[1]) * 60 + Number(match[2]);
+  if (!Number.isFinite(minutes) || minutes <= RTH_START_MIN || minutes > AFTER_HOURS_END_MIN) {
+    return RTH_END_MIN;
+  }
+  return minutes;
+}
+
+export function isEarlyClose(closeMinutes: number): boolean {
+  return closeMinutes < RTH_END_MIN;
+}
 
 const partsFormatter = new Intl.DateTimeFormat('en-US', {
   timeZone: MARKET_TIME_ZONE,
@@ -116,35 +148,67 @@ export function sessionEndUtc(tradingDate: string): Date {
   return etWallClockToUtc(tradingDate, 20, 0);
 }
 
-/** The 16:00 ET regular-session close for a trading date. */
-export function rthCloseUtc(tradingDate: string): Date {
-  return etWallClockToUtc(tradingDate, 16, 0);
+/**
+ * The regular-session close for a trading date.
+ *
+ * `closeMinutes` comes from the exchange calendar. It defaults to 16:00 so
+ * every existing caller keeps its meaning, but an early-close day must pass the
+ * real close: on 3 July the after-hours session starts at 13:00, and a desk
+ * that assumes 16:00 spends three hours calling live after-hours trading "RTH".
+ */
+export function rthCloseUtc(tradingDate: string, closeMinutes: number = RTH_END_MIN): Date {
+  return etWallClockToUtc(tradingDate, 0, closeMinutes);
+}
+
+/** Start of the after-hours session: the instant the regular session ended. */
+export function afterHoursStartUtc(
+  tradingDate: string,
+  closeMinutes: number = RTH_END_MIN,
+): Date {
+  return rthCloseUtc(tradingDate, closeMinutes);
 }
 
 /**
  * True once the regular session for `tradingDate` has ended.
  *
- * This is what decides whether the day's own RTH close exists yet: before
- * 16:00 ET the percent-change reference must still be the PRIOR session.
+ * This is what decides whether the day's own RTH close exists yet: before the
+ * close the percent-change reference must still be the PRIOR session.
  */
-export function hasRthClosed(now: Date, tradingDate: string): boolean {
-  return now.getTime() >= rthCloseUtc(tradingDate).getTime();
+export function hasRthClosed(
+  now: Date,
+  tradingDate: string,
+  closeMinutes: number = RTH_END_MIN,
+): boolean {
+  return now.getTime() >= rthCloseUtc(tradingDate, closeMinutes).getTime();
 }
 
-export function sessionPhaseForMinutes(minutes: number): SessionPhase {
+export function sessionPhaseForMinutes(
+  minutes: number,
+  closeMinutes: number = RTH_END_MIN,
+): SessionPhase {
   if (minutes >= PREMARKET_START_MIN && minutes < RTH_START_MIN) return 'PREMARKET';
-  if (minutes >= RTH_START_MIN && minutes < RTH_END_MIN) return 'RTH';
-  if (minutes >= RTH_END_MIN && minutes < AFTER_HOURS_END_MIN) return 'AFTER_HOURS';
-  return 'CLOSED';
+  if (minutes >= RTH_START_MIN && minutes < closeMinutes) return 'RTH';
+  if (minutes >= closeMinutes && minutes < AFTER_HOURS_END_MIN) return 'AFTER_HOURS';
+  if (minutes >= AFTER_HOURS_END_MIN && minutes < NEXT_DAY_PREP_MIN) return 'POST_MARKET';
+  return 'NEXT_DAY_PREP';
 }
 
 /**
  * Session phase at an instant. `isTradingDay` comes from the market calendar;
  * without it a weekend would otherwise look like a normal session.
  */
-export function sessionPhaseAt(date: Date, isTradingDay: boolean): SessionPhase {
+export function sessionPhaseAt(
+  date: Date,
+  isTradingDay: boolean,
+  closeMinutes: number = RTH_END_MIN,
+): SessionPhase {
   if (!isTradingDay) return 'CLOSED';
-  return sessionPhaseForMinutes(etMinutesOfDay(date));
+  return sessionPhaseForMinutes(etMinutesOfDay(date), closeMinutes);
+}
+
+/** True while SIP prints are still expected for this phase. */
+export function isMarketDataExpected(phase: SessionPhase): boolean {
+  return phase === 'PREMARKET' || phase === 'RTH' || phase === 'AFTER_HOURS';
 }
 
 /**
@@ -165,16 +229,38 @@ export function resolveSessionPhase(options: {
   /** The session the desk is working, or null to judge the clock alone. */
   tradingDate: string | null;
   isTradingDay: boolean;
+  /** The exchange close for `tradingDate`, in minutes since ET midnight. */
+  closeMinutes?: number;
 }): SessionPhase {
   const { now, tradingDate, isTradingDay } = options;
+  const closeMinutes = options.closeMinutes ?? RTH_END_MIN;
   if (!isTradingDay) return 'CLOSED';
-  if (tradingDate && tradingDate !== etDateString(now)) return 'CLOSED';
-  return sessionPhaseForMinutes(etMinutesOfDay(now));
+
+  /*
+   * The desk is holding a session other than today's.
+   *
+   * That happens after the 22:00 recap and overnight, when the trading date has
+   * already rolled forward to the next session. The clock cannot describe a day
+   * that has not started, but the desk is not idle either — it is preparing for
+   * that session, which is what NEXT_DAY_PREP says.
+   */
+  if (tradingDate && tradingDate !== etDateString(now)) {
+    const minutes = etMinutesOfDay(now);
+    return minutes >= NEXT_DAY_PREP_MIN || minutes < PREMARKET_START_MIN
+      ? 'NEXT_DAY_PREP'
+      : 'CLOSED';
+  }
+
+  return sessionPhaseForMinutes(etMinutesOfDay(now), closeMinutes);
 }
 
 /** True while the product session window is open on a trading day. */
-export function isSessionOpen(date: Date, isTradingDay: boolean): boolean {
-  return sessionPhaseAt(date, isTradingDay) !== 'CLOSED';
+export function isSessionOpen(
+  date: Date,
+  isTradingDay: boolean,
+  closeMinutes: number = RTH_END_MIN,
+): boolean {
+  return isMarketDataExpected(sessionPhaseAt(date, isTradingDay, closeMinutes));
 }
 
 /** Truncates a timestamp to its minute, matching how bars are keyed. */
@@ -205,22 +291,28 @@ export interface TradingSessionResolution {
 /**
  * Resolves the trading date the desk should be showing.
  *
- * Inside a trading day's 04:00–20:00 window that day is used. Outside it (after
- * 20:00, overnight, weekends, holidays) the desk rolls forward to the next
- * scheduled session, which starts empty rather than replaying the previous day.
+ * A trading date now ends at 22:00 ET rather than 20:00. The two hours between
+ * the end of SIP extended trading and the 22:00 recap belong to the session
+ * that just happened: the desk is still watching filings against it, and the
+ * recap that closes it out has not run yet. Rolling forward at 20:00 would
+ * throw the day's after-hours state away two hours before anything summarised
+ * it. After 22:00 (and overnight, weekends, holidays) the desk rolls forward to
+ * the next scheduled session, which starts empty rather than replaying the
+ * previous day.
  */
 export function resolveTradingSession(
   now: Date,
   isTradingDay: (date: string) => boolean,
   nextTradingDate: (afterDate: string) => string | null,
+  closeMinutesFor: (date: string) => number = () => RTH_END_MIN,
 ): TradingSessionResolution {
   const today = etDateString(now);
   const minutes = etMinutesOfDay(now);
 
-  if (isTradingDay(today) && minutes >= PREMARKET_START_MIN && minutes < AFTER_HOURS_END_MIN) {
+  if (isTradingDay(today) && minutes >= PREMARKET_START_MIN && minutes < NEXT_DAY_PREP_MIN) {
     return {
       tradingDate: today,
-      phase: sessionPhaseForMinutes(minutes),
+      phase: sessionPhaseForMinutes(minutes, closeMinutesFor(today)),
       pending: false,
       isTradingDay: true,
     };
@@ -228,13 +320,15 @@ export function resolveTradingSession(
 
   // Before 04:00 on a trading day the session is still that day, just pending.
   if (isTradingDay(today) && minutes < PREMARKET_START_MIN) {
-    return { tradingDate: today, phase: 'CLOSED', pending: true, isTradingDay: true };
+    return { tradingDate: today, phase: 'NEXT_DAY_PREP', pending: true, isTradingDay: true };
   }
 
   const next = nextTradingDate(today);
   return {
     tradingDate: next ?? today,
-    phase: 'CLOSED',
+    // After the 22:00 recap on a trading day the desk is explicitly preparing
+    // the next session; on a weekend or holiday it is simply closed.
+    phase: isTradingDay(today) && minutes >= NEXT_DAY_PREP_MIN ? 'NEXT_DAY_PREP' : 'CLOSED',
     pending: true,
     isTradingDay: next !== null,
   };

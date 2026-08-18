@@ -16,7 +16,7 @@
 import 'server-only';
 
 import { loadMarketConfig } from './config';
-import { resolveSessionPhase } from './session';
+import { isMarketDataExpected, resolveSessionPhase } from './session';
 import { databaseExists, getMeta, openDatabase, type MarketDatabase } from './store/db';
 import {
   ensureFocusTable,
@@ -110,7 +110,19 @@ export function getFocus(options: { seedCandidates?: string[] } = {}): FocusView
       isTradingDay: true,
     });
 
-    if (options.seedCandidates && !isFocusSeeded(db, tradingDate) && phase !== 'CLOSED') {
+    /*
+     * `isMarketDataExpected`, not `phase !== 'CLOSED'`.
+     *
+     * POST_MARKET and NEXT_DAY_PREP are no longer CLOSED, and at 22:30 the
+     * trading date has already rolled to the next session — so the looser
+     * check would seed tomorrow's Focus from tonight's board and consume the
+     * one seed that day is allowed before anyone had seen it.
+     */
+    if (
+      options.seedCandidates &&
+      !isFocusSeeded(db, tradingDate) &&
+      isMarketDataExpected(phase)
+    ) {
       seedFocus(db, {
         tradingDate,
         candidates: options.seedCandidates,

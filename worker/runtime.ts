@@ -42,14 +42,18 @@ import { DemandEngine, type EngineEvent } from '../lib/market/engine';
 import { buildBaseline, computeDailyRvol } from '../lib/market/rvol';
 import {
   addDays,
+  afterHoursStartUtc,
+  closeMinutesFromClock,
   etDateString,
   etWallClockToUtc,
   hasRthClosed,
+  isEarlyClose,
   minuteKey,
   resolveSessionPhase,
   resolveTradingSession,
   sessionPhaseForMinutes,
   etMinutesOfDay,
+  RTH_END_MIN,
 } from '../lib/market/session';
 import { AlpacaRestClient, chunk, type AlpacaCalendarDay } from '../lib/market/alpaca/rest';
 import { redact, type AlpacaCredentials } from '../lib/market/credentials';
@@ -298,6 +302,23 @@ export class MarketRuntime {
     );
   }
 
+  /**
+   * The exchange's regular close for a date, in minutes since ET midnight.
+   *
+   * Everything after the bell hangs off this: the AH window, the AH reference
+   * price, the last 30-minute checkpoint and the RTH_CLOSE assessment. On 3
+   * July a desk that assumes 16:00 spends three hours calling live after-hours
+   * trading "RTH", so the calendar answers wherever it can.
+   */
+  closeMinutesFor(date: string): number {
+    return closeMinutesFromClock(this.calendarByDate.get(date)?.close ?? null);
+  }
+
+  get rthCloseClock(): string {
+    const minutes = this.closeMinutesFor(this.tradingDate);
+    return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+  }
+
   /* ------------------------------------------------------------- session */
 
   async resolveSession(now = new Date()): Promise<void> {
@@ -316,6 +337,7 @@ export class MarketRuntime {
         now,
         (date) => this.isTradingDay(date),
         (date) => this.nextTradingDate(date),
+        (date) => this.closeMinutesFor(date),
       );
       this.tradingDate = resolution.tradingDate;
       this.sessionPhase = resolution.phase;
@@ -330,6 +352,7 @@ export class MarketRuntime {
       priceMin: this.config.discoveryPriceMin,
       priceMax: this.config.discoveryPriceMax,
       baselineSessions: this.config.baselineSessions,
+      rthCloseMinutes: this.closeMinutesFor(this.tradingDate),
       enforceSessionWindow: this.enforceSessionWindow,
       onPromotionCandidate: (symbol) => this.queuePromotion(symbol),
       // No classification evidence at all means no filtering, so a missing
@@ -338,10 +361,18 @@ export class MarketRuntime {
         this.discoveryEligible.size === 0 || this.discoveryEligible.has(symbol),
     });
 
-    this.engine.setRthClosed(hasRthClosed(now, this.tradingDate));
+    // `observed: false` — this desk was not running at the bell, so it may not
+    // claim to know the regular session's high, low or final volume, and its
+    // after-hours volume stays unknown until the window is reconstructed.
+    const closeMinutes = this.closeMinutesFor(this.tradingDate);
+    if (hasRthClosed(now, this.tradingDate, closeMinutes)) {
+      this.engine.setRthClosed(true, { observed: false });
+    }
 
+    const closeClock = this.rthCloseClock;
     this.logger.info(
-      `[session] trading date ${this.tradingDate} (${this.sessionPhase}${this.sessionPending ? ', pending' : ''})`,
+      `[session] trading date ${this.tradingDate} (${this.sessionPhase}${this.sessionPending ? ', pending' : ''})` +
+        (isEarlyClose(closeMinutes) ? ` — EARLY CLOSE ${closeClock} ET` : ''),
     );
   }
 
@@ -363,7 +394,14 @@ export class MarketRuntime {
       now,
       tradingDate: this.tradingDate || null,
       isTradingDay: this.tradingDate ? this.isTradingDay(this.tradingDate) : false,
+      closeMinutes: this.tradingDate ? this.closeMinutesFor(this.tradingDate) : RTH_END_MIN,
     });
+  }
+
+  /** The board the current session should be ranked by. */
+  currentBoard(now = new Date()): 'DAILY_RVOL' | 'AFTER_HOURS' {
+    const phase = this.currentSessionPhase(now);
+    return phase === 'AFTER_HOURS' || phase === 'POST_MARKET' ? 'AFTER_HOURS' : 'DAILY_RVOL';
   }
 
   /* ------------------------------------------------------------ universe */
@@ -631,9 +669,19 @@ export class MarketRuntime {
     const snapshotMinute = minuteKey(new Date());
     const rvolPreview: Array<{ symbol: string; rvol: number }> = [];
 
-    const rthClosed = hasRthClosed(new Date(), this.tradingDate);
-    this.engine.setRthClosed(rthClosed);
+    const closeMinutes = this.closeMinutesFor(this.tradingDate);
+    const ahStartMs = afterHoursStartUtc(this.tradingDate, closeMinutes).getTime();
+    const rthClosed = hasRthClosed(new Date(), this.tradingDate, closeMinutes);
+    // Already applied in resolveSession; repeated here for the case where the
+    // bell rang between the two. `observed: false` either way — this desk did
+    // not watch the close happen.
+    this.engine.setRthClosed(rthClosed, { observed: false });
     this.rthCloseCaptured = rthClosed;
+
+    /** Symbols with a print after the bell; only these need an AH reconstruction. */
+    const ahActive: string[] = [];
+    /** Symbols that demonstrably did not trade after the bell: AH volume is 0. */
+    const ahSilent: string[] = [];
 
     for (const [symbol, snapshot] of snapshots) {
       const dailyBar = snapshot.dailyBar;
@@ -686,6 +734,19 @@ export class MarketRuntime {
 
       const rvol = computeDailyRvol(volume, baselines.get(symbol)?.averageVolume ?? null);
       if (rvol !== null) rvolPreview.push({ symbol, rvol });
+
+      /*
+       * The snapshot's own latest trade decides who needs an after-hours
+       * reconstruction. A name whose last print predates the bell has an AH
+       * volume of exactly zero — a fact, recorded as one — and a name that has
+       * traded since needs its window rebuilt minute by minute, because the
+       * daily bar cannot say which of its shares changed hands after 16:00.
+       */
+      if (rthClosed && belongsToSession) {
+        const lastTradeMs = latestTrade?.t ? Date.parse(latestTrade.t) : NaN;
+        if (Number.isFinite(lastTradeMs) && lastTradeMs >= ahStartMs) ahActive.push(symbol);
+        else if (Number.isFinite(lastTradeMs)) ahSilent.push(symbol);
+      }
     }
 
     // ---- 2. minute bars for the focused set --------------------------------
@@ -753,6 +814,17 @@ export class MarketRuntime {
       }
     }
 
+    // ---- 3. after-hours reconstruction --------------------------------------
+    if (rthClosed) {
+      await this.reconstructAfterHours({
+        active: ahActive,
+        silent: ahSilent,
+        ahStart: new Date(ahStartMs),
+        end,
+        summary,
+      });
+    }
+
     summary.throughEt = end.toISOString();
     summary.completedAt = new Date().toISOString();
     this.backfill = summary;
@@ -766,6 +838,119 @@ export class MarketRuntime {
     );
 
     return summary;
+  }
+
+  /**
+   * Rebuilds the after-hours window a desk that started late did not see.
+   *
+   * The daily bar carries the whole session's volume in one number, so it
+   * cannot say how much of it traded after the bell. Minute bars can, and only
+   * for the names that actually printed since the close — which the snapshot
+   * already told us. Everything else is recorded as a known zero rather than
+   * left unknown, because "did not trade after hours" is exactly the fact that
+   * should drop a daytime leader off the evening board.
+   *
+   * A symbol this cannot cover keeps coverage PARTIAL and is not ranked. That
+   * is deliberate: an under-counted evening ranked against complete ones would
+   * be worse than an absent one.
+   */
+  private async reconstructAfterHours(input: {
+    active: string[];
+    silent: string[];
+    ahStart: Date;
+    end: Date;
+    summary: BackfillSummary;
+  }): Promise<void> {
+    const { active, silent, ahStart, end, summary } = input;
+
+    /*
+     * The handover boundary is the start of the current minute, and the seed
+     * stops one millisecond short of it.
+     *
+     * The minute in progress is still accumulating, so a reconstruction that
+     * claimed it would both under-count it and block the live bar that
+     * completes it — the engine skips any bar at or before the seed's
+     * watermark. Ending just before the boundary hands that whole minute to
+     * the live stream, which is the only source that will see all of it.
+     */
+    const boundaryMs = Date.parse(minuteKey(end));
+    const seedEnd = new Date(boundaryMs - 1);
+    const through = seedEnd.toISOString();
+
+    for (const symbol of silent) {
+      this.engine.seedAfterHours(symbol, {
+        volume: 0,
+        through,
+        source: 'alpaca-snapshot-no-post-close-trade',
+      });
+    }
+
+    if (active.length === 0 || !this.rest || seedEnd <= ahStart) {
+      summary.notes.push(
+        `after-hours reconstruction: ${silent.length} silent, ${active.length} active`,
+      );
+      return;
+    }
+
+    this.logger.info(
+      `[demand] reconstructing the after-hours window for ${active.length} symbols ` +
+        `(${ahStart.toISOString()} → ${through})`,
+    );
+
+    let covered = 0;
+    let bars = 0;
+
+    try {
+      const minuteBars = await this.rest.getBars(active, {
+        timeframe: '1Min',
+        start: ahStart.toISOString(),
+        end: through,
+        adjustment: 'split',
+      });
+
+      for (const symbol of active) {
+        const symbolBars = minuteBars.get(symbol) ?? [];
+        let volume = 0;
+        let high: number | null = null;
+        let low: number | null = null;
+
+        for (const bar of symbolBars) {
+          // Alpaca's window is inclusive at the start; a bar stamped exactly at
+          // the bell belongs to after-hours, one before it does not. The minute
+          // in progress belongs to the live stream, not here.
+          const at = Date.parse(bar.t);
+          if (at < ahStart.getTime() || at >= boundaryMs) continue;
+          volume += bar.v;
+          high = high === null || bar.h > high ? bar.h : high;
+          low = low === null || bar.l < low ? bar.l : low;
+          bars += 1;
+        }
+
+        this.engine.seedAfterHours(symbol, {
+          volume,
+          through,
+          source: 'alpaca-historical-minute-bars-ah',
+          high,
+          low,
+        });
+        covered += 1;
+      }
+
+      this.logger.info(
+        `[demand] after-hours reconstruction complete: ${covered} symbols, ` +
+          `${bars.toLocaleString()} minute bars`,
+      );
+      summary.notes.push(
+        `after-hours reconstruction: ${covered} active symbols rebuilt, ${silent.length} silent`,
+      );
+    } catch (error) {
+      // Leaves those symbols PARTIAL, which reads as unknown rather than zero.
+      this.logger.warn(
+        `[demand] after-hours reconstruction failed: ${this.redactError(error)}; ` +
+          `${active.length} symbols stay unranked on the AH board`,
+      );
+      summary.notes.push('after-hours reconstruction failed; AH participation unknown');
+    }
   }
 
   /* ------------------------------------------------------- lazy promotion */
@@ -793,6 +978,12 @@ export class MarketRuntime {
 
       const snapshots = await this.rest.getSnapshots(batch);
       const snapshotMinute = minuteKey(new Date());
+      const closeMinutes = this.closeMinutesFor(this.tradingDate);
+      const ahStart = afterHoursStartUtc(this.tradingDate, closeMinutes);
+      const rthClosed = hasRthClosed(new Date(), this.tradingDate, closeMinutes);
+      const ahActive: string[] = [];
+      const ahSilent: string[] = [];
+
       for (const [symbol, snapshot] of snapshots) {
         const dailyBar = snapshot.dailyBar;
         if (!dailyBar || etDateString(new Date(dailyBar.t)) !== this.tradingDate) continue;
@@ -802,6 +993,41 @@ export class MarketRuntime {
           volumeBaseSource: 'alpaca-snapshot-daily-bar',
           sessionHigh: dailyBar.h,
           sessionLow: dailyBar.l,
+          todayRthClose: rthClosed
+            ? { close: dailyBar.c, date: this.tradingDate, source: 'alpaca-daily-bar-rth-close' }
+            : undefined,
+        });
+
+        if (!rthClosed) continue;
+        const lastTradeMs = snapshot.latestTrade?.t ? Date.parse(snapshot.latestTrade.t) : NaN;
+        if (Number.isFinite(lastTradeMs) && lastTradeMs >= ahStart.getTime()) ahActive.push(symbol);
+        else if (Number.isFinite(lastTradeMs)) ahSilent.push(symbol);
+      }
+
+      /*
+       * A name promoted after the bell is exactly the case the after-hours
+       * board exists for: irrelevant all day, moving now. It must arrive with a
+       * complete AH window, or it would be tracked and still unrankable.
+       */
+      if (rthClosed && (ahActive.length > 0 || ahSilent.length > 0)) {
+        await this.reconstructAfterHours({
+          active: ahActive,
+          silent: ahSilent,
+          ahStart,
+          end: new Date(),
+          summary: this.backfill ?? {
+            startedAt: new Date().toISOString(),
+            completedAt: null,
+            tradingDate: this.tradingDate,
+            throughEt: null,
+            symbolsRequested: 0,
+            symbolsWithBars: 0,
+            minuteBarsIngested: 0,
+            snapshotSymbols: 0,
+            baselinesLoaded: 0,
+            baselinesBuilt: 0,
+            notes: [],
+          },
         });
       }
 
@@ -897,16 +1123,16 @@ export class MarketRuntime {
     if (this.rthCloseCaptured || this.rthCloseCaptureInFlight || !this.rest) return;
 
     const now = new Date();
-    if (!hasRthClosed(now, this.tradingDate)) return;
+    const closeMinutes = this.closeMinutesFor(this.tradingDate);
+    if (!hasRthClosed(now, this.tradingDate, closeMinutes)) return;
 
     // Give the closing auction a moment to settle before asking for it.
-    const secondsSinceClose = (now.getTime() - etWallClockToUtc(this.tradingDate, 16, 0).getTime()) / 1000;
+    const secondsSinceClose =
+      (now.getTime() - afterHoursStartUtc(this.tradingDate, closeMinutes).getTime()) / 1000;
     if (secondsSinceClose < 120) return;
 
     this.rthCloseCaptureInFlight = true;
     try {
-      this.engine.setRthClosed(true);
-
       const symbols = this.engine.symbolsMissingTodayRthClose();
       if (symbols.length === 0) {
         this.rthCloseCaptured = true;
@@ -939,10 +1165,30 @@ export class MarketRuntime {
     }
   }
 
+  /**
+   * Flips the engine into the after-hours session the moment the bell rings.
+   *
+   * Deliberately separate from capturing the official close, which has to wait
+   * for the auction to print. Waiting for that before starting the AH window
+   * would drop the first two minutes of after-hours volume — the two minutes
+   * most likely to contain the print that put a name on the evening board.
+   */
+  private syncRthClosed(now = new Date()): void {
+    if (this.engine.isRthClosed) return;
+    if (!hasRthClosed(now, this.tradingDate, this.closeMinutesFor(this.tradingDate))) return;
+
+    this.engine.setRthClosed(true, { observed: true });
+    this.logger.info(
+      `[session] regular session closed (${this.rthCloseClock} ET) — ` +
+        'RTH state frozen, after-hours metrics start at zero',
+    );
+  }
+
   /** Persists dirty state, recomputes ranking, and republishes health. */
   flush(): void {
     // Clock-derived, so it is re-read here rather than carried from startup.
     this.sessionPhase = this.currentSessionPhase();
+    this.syncRthClosed();
 
     if (this.pendingBars.length > 0) {
       const bars = this.pendingBars;
@@ -976,6 +1222,8 @@ export class MarketRuntime {
       eligibleCount: result.eligibleCount,
       rankedCount: result.rankedCount,
       trackedCount: result.trackedCount,
+      ahEligibleCount: result.ahEligibleCount,
+      ahRankedCount: result.ahRankedCount,
       baselineCount: this.engine.baselineCount,
       calculatedAt: result.calculatedAt,
       universeMode: this.universeMode,
@@ -984,9 +1232,14 @@ export class MarketRuntime {
       priceMin: this.config.discoveryPriceMin,
       priceMax: this.config.discoveryPriceMax,
       sessionPhase: this.sessionPhase,
-      // The calendar fact the read model cannot look up for itself. The phase
-      // above is only a convenience copy; readers re-derive it from the clock.
+      // The calendar facts the read model cannot look up for itself. The phase
+      // above is only a convenience copy; readers re-derive it from the clock,
+      // which is why the close has to travel with it — without the real close
+      // an early-close day would be read as RTH until 16:00.
       isTradingDay: this.tradingDate ? this.isTradingDay(this.tradingDate) : false,
+      rthClose: this.rthCloseClock,
+      rthCloseMinutes: this.closeMinutesFor(this.tradingDate),
+      afterHoursStart: this.engine.afterHoursStart,
     }));
 
     this.health.heartbeatAt = new Date().toISOString();
@@ -1164,6 +1417,28 @@ export function toRow(state: DemandState): TickerSessionRow {
     qualified_rvol: state.qualified?.rvol ?? null,
     qualified_rank: state.qualified?.rank ?? null,
     latched: state.latched ? 1 : 0,
+    ah_volume: state.afterHours.volume,
+    ah_participation: state.afterHours.participation,
+    ah_percent_change: state.afterHours.percentChange,
+    ah_reference_close: state.afterHours.referenceClose,
+    ah_high: state.afterHours.high,
+    ah_low: state.afterHours.low,
+    ah_rank: state.afterHours.rank,
+    ah_previous_rank: state.afterHours.previousRank,
+    ah_rank_change: state.afterHours.rankChange,
+    ah_coverage: state.afterHours.coverage,
+    ah_entered_topn_at: state.afterHours.enteredTopNAt,
+    ah_entered_rank: state.afterHours.enteredRank,
+    ah_qualified_at: state.afterHours.qualifiedAt,
+    ah_qualification_price: state.afterHours.qualificationPrice,
+    ah_latched: state.afterHours.latched ? 1 : 0,
+    rth_final_close: state.rthFinal?.close ?? null,
+    rth_final_high: state.rthFinal?.high ?? null,
+    rth_final_low: state.rthFinal?.low ?? null,
+    rth_final_volume: state.rthFinal?.volume ?? null,
+    rth_final_rvol: state.rthFinal?.rvol ?? null,
+    rth_final_rank: state.rthFinal?.rvolRank ?? null,
+    rth_final_frozen_at: state.rthFinal?.frozenAt ?? null,
     feed: state.feed,
     last_event_at: state.freshness.lastEventAt,
     updated_at: state.updatedAt,

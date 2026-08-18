@@ -35,8 +35,12 @@ export interface RankedEvent {
 const TYPE_WEIGHT: Record<DeskEventType, number> = {
   HALT: 0,
   RESUME: 0,
+  // A completed checkpoint is the desk's own timeline; it sorts with the
+  // material events rather than competing with per-ticker noise.
+  DESK_ASSESSMENT: 0,
   CATALYST_SOURCE_CHANGE: 1,
   RVOL_RANK_ENTRY: 2,
+  AH_RANK_ENTRY: 2,
   DISCOVERY_QUALIFIED: 3,
   NEW_HOD: 4,
 };
@@ -51,6 +55,9 @@ const ALWAYS_RELEVANT: ReadonlySet<DeskEventType> = new Set<DeskEventType>([
   'HALT',
   'RESUME',
   'CATALYST_SOURCE_CHANGE',
+  // Not attached to a ticker in the current universe at all: it describes the
+  // desk itself, and the desk is always in view.
+  'DESK_ASSESSMENT',
 ]);
 
 const RELEVANCE_WEIGHT: Record<EventRelevance, number> = {

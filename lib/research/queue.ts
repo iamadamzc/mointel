@@ -21,7 +21,16 @@ import { evaluateRetry } from './retry';
 
 export interface QueueCandidate {
   ticker: string;
+  /** Rank on the ACTIVE session board — Daily RVOL by day, AH after the bell. */
   rank: number;
+  /**
+   * On the trader's Focus list.
+   *
+   * A focused name stays research-relevant after it falls off the board: a
+   * stock sliding from #3 to #80 is when its structure matters most, and the
+   * trader has explicitly said they are still watching it.
+   */
+  focused?: boolean;
   rvol: number | null;
   percentChange: number | null;
   cumulativeVolume: number | null;
@@ -41,7 +50,7 @@ export interface QueueCandidate {
 const ELIGIBLE_CLASSES = new Set(['COMMON_EQUITY', 'ADR_ADS', 'UNKNOWN']);
 
 export function isEligible(candidate: QueueCandidate, autoRank: number): boolean {
-  if (candidate.rank > autoRank) return false;
+  if (candidate.rank > autoRank && !candidate.focused) return false;
   return ELIGIBLE_CLASSES.has(candidate.classification ?? 'UNKNOWN');
 }
 
@@ -78,6 +87,10 @@ export function priorityScore(candidate: QueueCandidate, autoRank: number): numb
   // A latched name has already proven it belongs on the board.
   if (candidate.latched) score += 4;
 
+  // Explicitly watched by the trader. Enough to jump a queue, never enough to
+  // decide whether anything else runs.
+  if (candidate.focused) score += 8;
+
   return Math.round(score * 100) / 100;
 }
 
@@ -112,6 +125,8 @@ export function queueDiscoveryResearch(
     tradingDate: string;
     autoRank: number;
     now: Date;
+    /** Which board produced these candidates; recorded on the job for audit. */
+    board?: string;
     maxAttempts?: number;
     /**
      * Fingerprint of the evidence currently on file. Injectable for tests;
@@ -188,7 +203,9 @@ export function queueDiscoveryResearch(
       ticker: candidate.ticker,
       tradingDate: options.tradingDate,
       priority,
-      reason: `top ${options.autoRank} at rank ${candidate.rank}`,
+      reason: candidate.focused && candidate.rank > options.autoRank
+        ? 'focus list'
+        : `${options.board ?? 'top'} ${options.autoRank} at rank ${candidate.rank}`,
       queuedAt,
       /*
        * Board entry is the origin for time-to-intelligence.

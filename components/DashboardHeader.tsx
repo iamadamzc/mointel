@@ -1,8 +1,10 @@
 'use client';
 
 import { DataFreshness } from '@/components/DataFreshness';
+import { DeskAssessmentStatus } from '@/components/DeskAssessmentStatus';
 import { MarketStatus } from '@/components/MarketStatus';
 import { ResearchEngineStatus } from '@/components/ResearchEngineStatus';
+import type { AssessmentPanel } from '@/lib/desk/view';
 import type { DataSourceMeta } from '@/lib/data/types';
 import type { MarketHealthView } from '@/lib/market/health';
 import type { ResearchHealthView } from '@/lib/research/health';
@@ -16,6 +18,8 @@ interface DashboardHeaderProps {
   healthView: MarketHealthView;
   /** Automatic-research engine health. Independent of Sheet freshness. */
   researchHealth: ResearchHealthView;
+  /** Session headline plus the last and next scheduled checkpoints. */
+  assessments: AssessmentPanel;
   discovery: DiscoveryState;
   now: number;
   mounted: boolean;
@@ -29,6 +33,7 @@ export function DashboardHeader({
   marketHealth,
   healthView,
   researchHealth,
+  assessments,
   discovery,
   now,
   mounted,
@@ -57,11 +62,17 @@ export function DashboardHeader({
           <span className="hidden text-[11px] text-ink-3 md:inline">{date}</span>
         </div>
 
+        {/* What the desk is looking at, in words. The board's own numbers
+            cannot say that the session changed underneath them. */}
+        <DeskAssessmentStatus panel={assessments} mounted={mounted} />
+
         <div className="ml-auto flex flex-wrap items-center gap-x-4 gap-y-2">
-          {/* Three independent lights: the market feed, the automatic research
-              engine, and the Google Sheet. One generic status would hide which
-              of them is actually down — and a current Sheet was reading as
-              reassurance while the research engine was stopped. */}
+          {/* Four independent lights: the market feed, the automatic research
+              engine, the assessment scheduler, and the Google Sheet. One
+              generic status would hide which of them is actually down — a
+              current Sheet was reading as reassurance while the research
+              engine was stopped, and neither of them says whether the
+              scheduled checkpoints are still being taken. */}
           <MarketStatus
             health={marketHealth}
             marketHealth={healthView}

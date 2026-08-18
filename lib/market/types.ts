@@ -10,7 +10,21 @@ export type MarketFeed = 'sip' | 'iex' | 'simulator' | 'test';
 
 export type MarketMode = 'LIVE' | 'SIMULATOR' | 'TEST' | 'OFFLINE';
 
-export type SessionPhase = 'CLOSED' | 'PREMARKET' | 'RTH' | 'AFTER_HOURS';
+/**
+ * POST_MARKET (20:00–22:00) and NEXT_DAY_PREP (22:00–04:00) are separate from
+ * CLOSED on purpose: the market is finished but the desk is not, and the header
+ * has to be able to say which of those is true. See lib/market/session.ts.
+ */
+export type SessionPhase =
+  | 'CLOSED'
+  | 'PREMARKET'
+  | 'RTH'
+  | 'AFTER_HOURS'
+  | 'POST_MARKET'
+  | 'NEXT_DAY_PREP';
+
+/** Which cross-sectional ranking the active Discovery board is ordered by. */
+export type DiscoveryBoard = 'DAILY_RVOL' | 'AFTER_HOURS';
 
 export type ConnectionState =
   | 'CONNECTING'
@@ -197,6 +211,71 @@ export interface DiscoveryQualification {
   rank: number | null;
 }
 
+/**
+ * How much of the after-hours window this ticker's AH volume actually covers.
+ *
+ *   COMPLETE  accounted for from the closing bell onwards
+ *   PARTIAL   the desk started mid-session and could not reconstruct the gap
+ *   NONE      the regular session has not ended, or nothing is known yet
+ *
+ * PARTIAL exists so an under-counted number is never ranked as if it were the
+ * whole story. An unknown AH participation stays unknown, exactly as an unknown
+ * RVOL denominator does.
+ */
+export type AfterHoursCoverage = 'NONE' | 'PARTIAL' | 'COMPLETE';
+
+/**
+ * The regular session's final state, frozen at the closing bell.
+ *
+ * Kept verbatim so the day remains auditable after AH state has moved on, and
+ * so the AH reference price is the official close rather than whatever the last
+ * extended-hours print happened to be.
+ */
+export interface RthFinalState {
+  close: number | null;
+  high: number | null;
+  low: number | null;
+  volume: number | null;
+  rvol: number | null;
+  rvolRank: number | null;
+  frozenAt: string | null;
+}
+
+/**
+ * After-hours session state, measured from the closing bell.
+ *
+ * Deliberately parallel to — never merged with — the day's cumulative state.
+ * `participation` is NOT Daily RVOL: it divides after-hours volume alone by the
+ * same 20-session full-day denominator, and answers "how big is this evening
+ * relative to a normal whole day for this stock".
+ */
+export interface AfterHoursState {
+  /** Volume traded since the regular-session close. Never includes RTH volume. */
+  volume: number | null;
+  /** afterHoursVolume ÷ averageFullSessionVolume20. Null when either is unknown. */
+  participation: number | null;
+  /** (price − today's RTH close) ÷ today's RTH close × 100. */
+  percentChange: number | null;
+  /** The official close the AH move is measured from. */
+  referenceClose: number | null;
+  high: number | null;
+  low: number | null;
+  /** Cross-sectional AH participation rank. Independent of Daily RVOL rank. */
+  rank: number | null;
+  previousRank: number | null;
+  rankChange: number | null;
+  coverage: AfterHoursCoverage;
+  /** First crossing into the AH discovery threshold, this AH session only. */
+  enteredTopNAt: string | null;
+  enteredRank: number | null;
+  /** Entry into the tracked AH population, at any rank. */
+  qualifiedAt: string | null;
+  /** Price at AH qualification — the point the $1–$20 rule was applied. */
+  qualificationPrice: number | null;
+  /** Retained for this AH session after qualifying inside the price band. */
+  latched: boolean;
+}
+
 export interface FreshnessState {
   /** Last market event of any kind for this ticker. */
   lastEventAt: string | null;
@@ -261,14 +340,22 @@ export interface DemandState {
 
   highRes: boolean;
   /**
-   * First crossing into the discovery rank threshold this session.
+   * First crossing into the DAYTIME discovery rank threshold this session.
    *
    * Separate from `qualified`, which marks entry to the tracked population at
-   * any rank. Kept alongside it rather than replacing it.
+   * any rank. Kept alongside it rather than replacing it. The after-hours
+   * equivalent is `afterHours.enteredTopNAt` and is deliberately a different
+   * field: research latency for an AH discovery must be measured from AH board
+   * entry, not from a daytime qualification that happened eight hours earlier.
    */
   top12EnteredAt: string | null;
   qualified: DiscoveryQualification | null;
   latched: boolean;
+
+  /** Frozen regular-session state; null until the closing bell. */
+  rthFinal: RthFinalState | null;
+  /** After-hours session state. Zeroed at the close, not carried over from RTH. */
+  afterHours: AfterHoursState;
 
   feed: MarketFeed;
   freshness: FreshnessState;
@@ -279,6 +366,21 @@ export interface DemandState {
 export interface DiscoveryState {
   tradingDate: string;
   sessionPhase: SessionPhase;
+  /**
+   * Which ranking `ranked` is ordered by RIGHT NOW.
+   *
+   * The board is a function of the session, not a user preference: after the
+   * closing bell a full-day RVOL leaderboard answers "what was busy today",
+   * which is not the question anyone is asking at 16:30.
+   */
+  board: DiscoveryBoard;
+  /** Trader-facing description of the active ranking, e.g. 'AH Participation'. */
+  rankingLabel: string;
+  /** ISO instant the after-hours session began, once the bell has rung. */
+  afterHoursStart: string | null;
+  /** The exchange's regular close for this date, 'HH:MM' ET. */
+  rthClose: string;
+  earlyClose: boolean;
   universeMode: UniverseMode;
   /** Symbols with a valid RVOL denominator AND an eligible price (or latched). */
   eligibleCount: number;
@@ -346,6 +448,7 @@ export interface BackfillSummary {
 
 import type { AutoIntelligence } from '../research/view';
 import type { ResearchHealthView } from '../research/health';
+import type { AssessmentPanel } from '../desk/view';
 import type { MarketHealthView } from './health';
 
 export type DeskEventType =
@@ -354,6 +457,10 @@ export type DeskEventType =
   | 'RESUME'
   | 'RVOL_RANK_ENTRY'
   | 'DISCOVERY_QUALIFIED'
+  /** Entered the after-hours discovery threshold. Distinct from the daytime one. */
+  | 'AH_RANK_ENTRY'
+  /** A scheduled desk assessment completed and was persisted. */
+  | 'DESK_ASSESSMENT'
   /**
    * A new public source appeared for a ticker. Deliberately factual: it says
    * evidence changed, not that the news is good, fresh enough or tradeable.
@@ -393,6 +500,15 @@ export interface MarketSnapshot {
    * running, and conflating the two hid a stopped engine for hours.
    */
   researchHealth: ResearchHealthView;
+  /**
+   * Scheduled desk assessments: what the desk last concluded, when it concludes
+   * next, and whether the scheduler is alive at all.
+   *
+   * Reported independently of both the market feed and the research engine. A
+   * green Sheet light said nothing about the research worker, and neither of
+   * them says anything about whether checkpoints are still being taken.
+   */
+  assessments: AssessmentPanel;
   discovery: DiscoveryState;
   /** Every tracked ticker the dashboard may need, keyed by symbol. */
   demand: Record<string, DemandState>;

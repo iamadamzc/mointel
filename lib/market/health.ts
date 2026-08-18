@@ -19,6 +19,7 @@
  * separately on each ticker's own freshness field.
  */
 
+import { isMarketDataExpected } from './session';
 import type { MarketFeedHealth, SessionPhase } from './types';
 
 export type ConnectionHealth =
@@ -111,7 +112,13 @@ export function classifyFreshness(options: {
   freshSeconds: number;
   staleSeconds: number;
 }): DataFreshness {
-  if (options.sessionPhase === 'CLOSED') return 'NOT_EXPECTED';
+  /*
+   * Nothing is expected once SIP extended trading ends at 20:00, even though
+   * the socket stays connected and the desk stays busy. A green LIVE badge at
+   * 20:30 says new prints are arriving, which is false — and the research
+   * engine being active is a different fact, reported separately.
+   */
+  if (!isMarketDataExpected(options.sessionPhase)) return 'NOT_EXPECTED';
 
   const age = options.messageAgeSeconds;
   // Connected during a session and nothing has ever arrived: not a lull.
@@ -216,11 +223,18 @@ export function projectMarketHealth(options: {
     heartbeatAgeSeconds !== null && heartbeatAgeSeconds * 1000 > thresholds.heartbeatStaleMs;
 
   if (freshness === 'NOT_EXPECTED') {
+    const closedDetail =
+      sessionPhase === 'POST_MARKET'
+        ? 'Extended trading ended at 20:00 ET; the after-hours state is frozen and no new SIP prints are expected'
+        : sessionPhase === 'NEXT_DAY_PREP'
+          ? 'Market closed for the day; no SIP prints expected until 04:00 ET'
+          : 'Outside the 04:00–20:00 ET session window; no market data expected';
+
     return {
       ...base,
       state: 'IDLE',
-      label: `Market: ${feed} — connected`,
-      detail: 'Outside the 04:00–20:00 ET session window; no market data expected',
+      label: `Market: ${feed} — closed`,
+      detail: closedDetail,
       tone: 'dim',
       live: false,
     };

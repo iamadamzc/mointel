@@ -31,14 +31,27 @@ describe('America/New_York session model', () => {
   });
 
   it('classifies the product session phases', () => {
-    expect(sessionPhaseForMinutes(3 * 60 + 59)).toBe('CLOSED');
+    // 20:00–22:00 and 22:00–04:00 are deliberately NOT 'CLOSED': the market is
+    // finished for the day but the desk is not, and the header has to be able
+    // to say which of those is true.
+    expect(sessionPhaseForMinutes(3 * 60 + 59)).toBe('NEXT_DAY_PREP');
     expect(sessionPhaseForMinutes(4 * 60)).toBe('PREMARKET');
     expect(sessionPhaseForMinutes(9 * 60 + 29)).toBe('PREMARKET');
     expect(sessionPhaseForMinutes(9 * 60 + 30)).toBe('RTH');
     expect(sessionPhaseForMinutes(15 * 60 + 59)).toBe('RTH');
     expect(sessionPhaseForMinutes(16 * 60)).toBe('AFTER_HOURS');
     expect(sessionPhaseForMinutes(19 * 60 + 59)).toBe('AFTER_HOURS');
-    expect(sessionPhaseForMinutes(20 * 60)).toBe('CLOSED');
+    expect(sessionPhaseForMinutes(20 * 60)).toBe('POST_MARKET');
+    expect(sessionPhaseForMinutes(21 * 60 + 59)).toBe('POST_MARKET');
+    expect(sessionPhaseForMinutes(22 * 60)).toBe('NEXT_DAY_PREP');
+  });
+
+  it('moves the after-hours boundary to the exchange close on an early-close day', () => {
+    const earlyClose = 13 * 60;
+    expect(sessionPhaseForMinutes(12 * 60 + 59, earlyClose)).toBe('RTH');
+    expect(sessionPhaseForMinutes(13 * 60, earlyClose)).toBe('AFTER_HOURS');
+    // The same clock reading on a normal session is still regular hours.
+    expect(sessionPhaseForMinutes(13 * 60)).toBe('RTH');
   });
 
   it('treats a non-trading day as closed regardless of the clock', () => {
@@ -116,14 +129,18 @@ describe('authoritative session phase', () => {
   }
 
   it('places every boundary on the correct side', () => {
-    expect(at('03:59:59')).toBe('CLOSED');
+    expect(at('03:59:59')).toBe('NEXT_DAY_PREP');
     expect(at('04:00:00')).toBe('PREMARKET');
     expect(at('09:29:59')).toBe('PREMARKET');
     expect(at('09:30:00')).toBe('RTH');
     expect(at('15:59:59')).toBe('RTH');
     expect(at('16:00:00')).toBe('AFTER_HOURS');
     expect(at('19:59:59')).toBe('AFTER_HOURS');
-    expect(at('20:00:00')).toBe('CLOSED');
+    // SIP extended trading is over, but the day's after-hours state is not
+    // discarded until the 22:00 recap has summarised it.
+    expect(at('20:00:00')).toBe('POST_MARKET');
+    expect(at('21:59:59')).toBe('POST_MARKET');
+    expect(at('22:00:00')).toBe('NEXT_DAY_PREP');
   });
 
   it('reports RTH during RTH, whatever the worker resolved at startup', () => {

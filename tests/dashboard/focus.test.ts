@@ -18,6 +18,7 @@ import {
   unpinFocus,
 } from '@/lib/market/store/focusRepo';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
+import { emptyAfterHours } from '@/lib/market/afterHours';
 
 const temporaryFiles: string[] = [];
 
@@ -206,6 +207,8 @@ function demand(ticker: string, overrides: Partial<DemandState> = {}): DemandSta
     top12EnteredAt: null,
     qualified: null,
     latched: false,
+    rthFinal: null,
+    afterHours: emptyAfterHours(),
     feed: 'sip',
     freshness: { lastEventAt: '2026-08-17T15:40:00.000Z', ageSeconds: 3, stale: false },
     updatedAt: '2026-08-17T15:40:02.000Z',

@@ -8,6 +8,8 @@ import { normalizeSheetRows } from '@/lib/data/rows';
 import { MockProvider } from '@/lib/data/providers/mock';
 import type { DashboardState } from '@/lib/data/types';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
+import { emptyAfterHours } from '@/lib/market/afterHours';
+import { emptyAssessmentPanel } from '@/lib/desk/view';
 
 function demand(ticker: string, overrides: Partial<DemandState> = {}): DemandState {
   return {
@@ -56,6 +58,8 @@ function demand(ticker: string, overrides: Partial<DemandState> = {}): DemandSta
     top12EnteredAt: null,
     qualified: null,
     latched: false,
+    rthFinal: null,
+    afterHours: emptyAfterHours(),
     feed: 'sip',
     freshness: { lastEventAt: '2026-08-17T15:40:00.000Z', ageSeconds: 3, stale: false },
     updatedAt: '2026-08-17T15:40:02.000Z',
@@ -210,6 +214,7 @@ function snapshot(demands: DemandState[]): MarketSnapshot {
       live: true,
       thresholds: { freshSeconds: 90, staleSeconds: 240 },
     },
+    assessments: emptyAssessmentPanel(),
     researchHealth: {
       state: 'IDLE',
       label: 'Research: idle',
@@ -226,6 +231,11 @@ function snapshot(demands: DemandState[]): MarketSnapshot {
     discovery: {
       tradingDate: '2026-08-17',
       sessionPhase: 'RTH',
+      board: 'DAILY_RVOL',
+      rankingLabel: 'Daily RVOL',
+      afterHoursStart: null,
+      rthClose: '16:00',
+      earlyClose: false,
       universeMode: 'FULL',
       eligibleCount: demands.length,
       rankedCount: demands.length,

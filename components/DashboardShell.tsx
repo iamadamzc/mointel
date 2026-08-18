@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from 'react';
 
+import { AssessmentSelector, AssessmentSnapshotBoard } from '@/components/AssessmentHistory';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { DeskEventFeed } from '@/components/DeskEventFeed';
 import { DiscoveryBoard } from '@/components/DiscoveryBoard';
@@ -25,6 +26,7 @@ import {
 import { buildSummary } from '@/lib/data/rows';
 import type { DashboardState } from '@/lib/data/types';
 import type { MarketHealthView } from '@/lib/market/health';
+import { emptyAssessmentPanel, type AssessmentPanel } from '@/lib/desk/view';
 import type { ResearchHealthView } from '@/lib/research/health';
 import type { DiscoveryState, MarketFeedHealth } from '@/lib/market/types';
 import { useClock } from '@/lib/hooks/useClock';
@@ -94,9 +96,19 @@ const OFFLINE_RESEARCH: ResearchHealthView = {
   running: false,
 };
 
+/** Until the first payload lands, the scheduler is unknown — reported as offline. */
+const OFFLINE_ASSESSMENTS: AssessmentPanel = emptyAssessmentPanel(
+  'No market payload has been received yet',
+);
+
 const OFFLINE_DISCOVERY: DiscoveryState = {
   tradingDate: '',
   sessionPhase: 'CLOSED',
+  board: 'DAILY_RVOL',
+  rankingLabel: 'Daily RVOL',
+  afterHoursStart: null,
+  rthClose: '16:00',
+  earlyClose: false,
   universeMode: 'SHEET_ONLY',
   eligibleCount: 0,
   rankedCount: 0,
@@ -135,6 +147,11 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
   const [sort, setSort] = useState<SortState>(DEFAULT_SORT);
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
+  /**
+   * Which assessment the Discovery area is showing. Null is LIVE, and LIVE is
+   * the default — the history is for review, not for trading from.
+   */
+  const [selectedAssessment, setSelectedAssessment] = useState<number | null>(null);
   const { now, mounted } = useClock();
 
   /*
@@ -225,6 +242,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   const healthView = market.snapshot?.marketHealth ?? OFFLINE_HEALTH_VIEW;
   const researchHealth = market.snapshot?.researchHealth ?? OFFLINE_RESEARCH;
   const discovery = market.snapshot?.discovery ?? OFFLINE_DISCOVERY;
+  const assessments = market.snapshot?.assessments ?? OFFLINE_ASSESSMENTS;
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-desk">
@@ -233,6 +251,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         marketHealth={health}
         healthView={healthView}
         researchHealth={researchHealth}
+        assessments={assessments}
         discovery={discovery}
         now={now}
         mounted={mounted}
@@ -273,15 +292,31 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           onDismissMessage={focus.dismissMessage}
         />
 
-        <DiscoveryBoard
-          discovery={discovery}
-          rows={merged.discovery}
-          onSelect={setSelectedTicker}
-          selectedTicker={selectedTicker}
-          marketOffline={health.offline}
-          isFocused={focus.isFocused}
-          onToggleFocus={focus.toggle}
-        />
+        {/* The checkpoint selector sits with Discovery because that is what it
+            replaces: choosing a past assessment swaps the live board for the
+            frozen one, rather than showing both and inviting a comparison
+            between numbers captured hours apart. */}
+        <div className="flex items-center justify-end border-b border-line bg-desk px-4 pt-2">
+          <AssessmentSelector
+            panel={assessments}
+            selectedId={selectedAssessment}
+            onSelect={setSelectedAssessment}
+          />
+        </div>
+
+        {selectedAssessment === null ? (
+          <DiscoveryBoard
+            discovery={discovery}
+            rows={merged.discovery}
+            onSelect={setSelectedTicker}
+            selectedTicker={selectedTicker}
+            marketOffline={health.offline}
+            isFocused={focus.isFocused}
+            onToggleFocus={focus.toggle}
+          />
+        ) : (
+          <AssessmentSnapshotBoard key={selectedAssessment} id={selectedAssessment} />
+        )}
 
         {market.snapshot && market.snapshot.events.length > 0 ? (
           <DeskEventFeed

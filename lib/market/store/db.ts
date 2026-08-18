@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 11;
+export const SCHEMA_VERSION = 14;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -114,6 +114,32 @@ CREATE TABLE IF NOT EXISTS ticker_session (
   qualified_rvol         REAL,
   qualified_rank         INTEGER,
   latched                INTEGER NOT NULL DEFAULT 0,
+  -- After-hours session, measured from the closing bell and stored alongside
+  -- the day rather than replacing it. Both boards remain readable at once, so
+  -- Daily RVOL stays available as context while AH decides the AH order.
+  ah_volume              INTEGER,
+  ah_participation       REAL,
+  ah_percent_change      REAL,
+  ah_reference_close     REAL,
+  ah_high                REAL,
+  ah_low                 REAL,
+  ah_rank                INTEGER,
+  ah_previous_rank       INTEGER,
+  ah_rank_change         INTEGER,
+  ah_coverage            TEXT NOT NULL DEFAULT 'NONE',
+  ah_entered_topn_at     TEXT,
+  ah_entered_rank        INTEGER,
+  ah_qualified_at        TEXT,
+  ah_qualification_price REAL,
+  ah_latched             INTEGER NOT NULL DEFAULT 0,
+  -- The regular session as it stood at the bell, frozen for the audit trail.
+  rth_final_close        REAL,
+  rth_final_high         REAL,
+  rth_final_low          REAL,
+  rth_final_volume       INTEGER,
+  rth_final_rvol         REAL,
+  rth_final_rank         INTEGER,
+  rth_final_frozen_at    TEXT,
   feed                   TEXT NOT NULL,
   last_event_at          TEXT,
   updated_at             TEXT NOT NULL,
@@ -354,6 +380,115 @@ CREATE TABLE IF NOT EXISTS focus_tickers (
   PRIMARY KEY (ticker, trading_date)
 );
 CREATE INDEX IF NOT EXISTS idx_focus_date ON focus_tickers (trading_date, display_order);
+
+/* --------------------------------------------------------- desk assessments */
+
+-- One row per scheduled checkpoint the desk actually reached.
+--
+-- Append-only. A snapshot is never updated once it completes, because its whole
+-- value is being able to ask later "what did the desk believe at 10:30, and was
+-- it right?" — a question a mutable row cannot answer.
+--
+-- The UNIQUE constraint below is the idempotency mechanism. It is a database
+-- constraint rather than a read-then-write check on purpose: two workers, a
+-- restart mid-run and a catch-up pass all race, and only the store can settle
+-- it atomically.
+CREATE TABLE IF NOT EXISTS desk_assessments (
+  id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+  trading_date          TEXT NOT NULL,
+  -- The session this assessment PREPARES, when that differs from the one it
+  -- summarises: a Friday 22:00 recap targets Monday.
+  target_trading_date   TEXT,
+  assessment_type       TEXT NOT NULL,
+  -- Wall-clock ET the checkpoint was scheduled for, as an ISO instant.
+  scheduled_for         TEXT NOT NULL,
+  started_at            TEXT NOT NULL,
+  completed_at          TEXT,
+  -- 1 when it ran late (desk was down at the scheduled time). Never hidden:
+  -- an assessment generated at 06:40 for the 06:25 checkpoint is not a 06:25
+  -- assessment, and backtesting has to be able to tell.
+  generated_late        INTEGER NOT NULL DEFAULT 0,
+  session_phase         TEXT NOT NULL,
+  status                TEXT NOT NULL,
+  -- Which ranking produced assessment_rank, so a snapshot is self-describing.
+  board                 TEXT NOT NULL DEFAULT 'DAILY_RVOL',
+  ranking_definition    TEXT NOT NULL DEFAULT '',
+  -- Compact hashes of the market and research inputs. Equal fingerprints mean
+  -- nothing material changed, which is what keeps model calls off the clock.
+  market_fingerprint    TEXT,
+  research_fingerprint  TEXT,
+  ticker_count          INTEGER NOT NULL DEFAULT 0,
+  model_calls           INTEGER NOT NULL DEFAULT 0,
+  runtime_ms            INTEGER,
+  notes                 TEXT NOT NULL DEFAULT '',
+  metadata              TEXT NOT NULL DEFAULT '{}'
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_desk_assessments_slot
+  ON desk_assessments (trading_date, assessment_type, scheduled_for);
+CREATE INDEX IF NOT EXISTS idx_desk_assessments_date
+  ON desk_assessments (trading_date, scheduled_for);
+
+-- One row per ticker included in one assessment. Immutable, like its parent.
+CREATE TABLE IF NOT EXISTS desk_assessment_tickers (
+  assessment_id        INTEGER NOT NULL,
+  ticker               TEXT NOT NULL,
+  -- Rank WITHIN this assessment, under the parent's board definition.
+  assessment_rank      INTEGER,
+  -- The live rank on the active board at the moment of capture. Usually equal
+  -- to assessment_rank; kept separately so an experimental ordering can never
+  -- be mistaken for the board the desk was actually showing.
+  live_session_rank    INTEGER,
+  price                REAL,
+  percent_change       REAL,
+  rvol                 REAL,
+  rvol_rank            INTEGER,
+  ah_percent_change    REAL,
+  ah_volume            INTEGER,
+  ah_participation     REAL,
+  ah_rank              INTEGER,
+  volume               INTEGER,
+  spread_pct           REAL,
+  session_high         REAL,
+  session_low          REAL,
+  -- The official close this row's percent change was measured against, and
+  -- which session it belongs to. A snapshot has to be able to say what its own
+  -- numbers were relative to, without consulting live state that has moved on.
+  reference_close      REAL,
+  reference_basis      TEXT,
+  -- Timestamp of the market data this row was built from, per ticker.
+  price_at             TEXT,
+  cycle                TEXT,
+  catalyst             TEXT,
+  structure            TEXT,
+  intelligence_status  TEXT,
+  intelligence_source  TEXT,
+  analysis_version_id  INTEGER,
+  -- Hash of the evidence on file for this ticker at capture time. Comparing it
+  -- to the previous assessment's is how "new filing" is detected without
+  -- re-reading a single document.
+  evidence_fingerprint TEXT,
+  -- Compact hash of the objective market facts a cycle call depends on. When
+  -- this is unchanged the existing Cycle is reused and no model runs.
+  cycle_fingerprint    TEXT,
+  level_summary        TEXT,
+  halt_state           TEXT,
+  focus                INTEGER NOT NULL DEFAULT 0,
+  warnings             TEXT NOT NULL DEFAULT '[]',
+  -- Deterministic diff against this ticker's row in the previous assessment.
+  changed_fields       TEXT NOT NULL DEFAULT '[]',
+  change_summary       TEXT NOT NULL DEFAULT '',
+  PRIMARY KEY (assessment_id, ticker),
+  FOREIGN KEY (assessment_id) REFERENCES desk_assessments (id)
+);
+CREATE INDEX IF NOT EXISTS idx_desk_assessment_tickers_ticker
+  ON desk_assessment_tickers (ticker);
+
+-- Single-row assessment worker health, mirroring feed_health and
+-- research_health. A green Sheet light must never imply the scheduler is alive.
+CREATE TABLE IF NOT EXISTS assessment_health (
+  id      INTEGER PRIMARY KEY CHECK (id = 1),
+  payload TEXT NOT NULL
+);
 `;
 
 /**
@@ -398,6 +533,41 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'research_jobs', column: 'analysis_started_at', definition: 'TEXT' },
   { table: 'research_jobs', column: 'accepted_at', definition: 'TEXT' },
   { table: 'ticker_session', column: 'top12_entered_at', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'ah_volume', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'ah_participation', definition: 'REAL' },
+  { table: 'ticker_session', column: 'ah_percent_change', definition: 'REAL' },
+  { table: 'ticker_session', column: 'ah_reference_close', definition: 'REAL' },
+  { table: 'ticker_session', column: 'ah_high', definition: 'REAL' },
+  { table: 'ticker_session', column: 'ah_low', definition: 'REAL' },
+  { table: 'ticker_session', column: 'ah_rank', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'ah_previous_rank', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'ah_rank_change', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'ah_coverage', definition: "TEXT NOT NULL DEFAULT 'NONE'" },
+  { table: 'ticker_session', column: 'ah_entered_topn_at', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'ah_entered_rank', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'ah_qualified_at', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'ah_qualification_price', definition: 'REAL' },
+  { table: 'ticker_session', column: 'ah_latched', definition: 'INTEGER NOT NULL DEFAULT 0' },
+  { table: 'ticker_session', column: 'rth_final_close', definition: 'REAL' },
+  { table: 'ticker_session', column: 'rth_final_high', definition: 'REAL' },
+  { table: 'ticker_session', column: 'rth_final_low', definition: 'REAL' },
+  { table: 'ticker_session', column: 'rth_final_volume', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'rth_final_rvol', definition: 'REAL' },
+  { table: 'ticker_session', column: 'rth_final_rank', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'rth_final_frozen_at', definition: 'TEXT' },
+  /*
+   * v13. These two are in the CREATE TABLE above as well, and they still have
+   * to be here: a store created under v12 already has desk_assessment_tickers,
+   * so CREATE TABLE IF NOT EXISTS is a no-op and the new columns would never
+   * appear. Editing a CREATE TABLE only helps stores that do not exist yet.
+   */
+  { table: 'desk_assessment_tickers', column: 'evidence_fingerprint', definition: 'TEXT' },
+  { table: 'desk_assessment_tickers', column: 'cycle_fingerprint', definition: 'TEXT' },
+  // v14: per-row provenance — what the percent change was measured against,
+  // and the timestamp of the market data behind it.
+  { table: 'desk_assessment_tickers', column: 'reference_close', definition: 'REAL' },
+  { table: 'desk_assessment_tickers', column: 'reference_basis', definition: 'TEXT' },
+  { table: 'desk_assessment_tickers', column: 'price_at', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {
@@ -439,6 +609,9 @@ function migrate(db: MarketDatabase): void {
   // Created after the ALTERs: an index cannot reference a column that an older
   // store has not been migrated to yet.
   db.exec('CREATE INDEX IF NOT EXISTS idx_universe_eligible ON universe (discovery_eligible)');
+  db.exec(
+    'CREATE INDEX IF NOT EXISTS idx_ticker_session_ah_rank ON ticker_session (trading_date, ah_rank)',
+  );
 }
 
 /** Where schema backups are written. Inside data/, which git ignores. */
@@ -594,6 +767,12 @@ export function claimStoreForMode(db: MarketDatabase, mode: string): { cleared: 
     // what it says are public facts that a simulator run cannot invalidate.
     // Dropping them would re-fetch SEC unnecessarily on every mode switch.
     db.exec('DELETE FROM research_jobs; DELETE FROM research_health;');
+
+    // Assessments describe a market state, so a simulated one must never be
+    // left behind looking like a record of a real session.
+    db.exec(
+      'DELETE FROM desk_assessment_tickers; DELETE FROM desk_assessments; DELETE FROM assessment_health;',
+    );
 
     setMeta(db, 'market_mode', mode);
   });

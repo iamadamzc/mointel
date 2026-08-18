@@ -6,6 +6,7 @@ import { normalizeSheetRows } from '@/lib/data/rows';
 import type { DemandState } from '@/lib/market/types';
 import type { ResearchDossier } from '@/lib/research/types';
 import type { AutoIntelligence } from '@/lib/research/view';
+import { emptyAfterHours } from '@/lib/market/afterHours';
 
 function demand(overrides: Partial<DemandState> = {}): DemandState {
   return {
@@ -54,6 +55,8 @@ function demand(overrides: Partial<DemandState> = {}): DemandState {
     top12EnteredAt: null,
     qualified: null,
     latched: false,
+    rthFinal: null,
+    afterHours: emptyAfterHours(),
     feed: 'sip',
     freshness: { lastEventAt: '2026-08-17T15:40:00.000Z', ageSeconds: 3, stale: false },
     updatedAt: '2026-08-17T15:40:02.000Z',

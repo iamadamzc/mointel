@@ -27,6 +27,7 @@ import type {
 } from '../../research/types';
 import { ANALYSIS_VERSION, EMPTY_COMPANY_SOURCES } from '../../research/types';
 import { nextRetryState, type RetryState } from '../../research/retry';
+import type { QueueCandidate } from '../../research/queue';
 
 /* -------------------------------------------------------------- table guard */
 
@@ -82,6 +83,88 @@ function toJob(row: JobRow): ResearchJob {
     analysisStartedAt: row.analysis_started_at,
     acceptedAt: row.accepted_at,
   };
+}
+
+/**
+ * The population the research engine should be covering right now.
+ *
+ * Reads the ACTIVE session board, not Daily RVOL. During premarket and RTH the
+ * two are the same thing; after the bell they are not, and a research engine
+ * still reconciling the day's leaders at 17:00 leaves every genuinely new
+ * after-hours mover sitting at NOT YET ANALYZED.
+ *
+ * Focus names come along regardless of rank. A name the trader has pinned is
+ * research-relevant whether or not the board currently agrees, and a stock
+ * sliding from #3 to #80 is when its structure matters most.
+ */
+export function readBoardCandidates(
+  db: MarketDatabase,
+  options: { tradingDate: string; autoRank: number; board: 'DAILY_RVOL' | 'AFTER_HOURS' },
+): QueueCandidate[] {
+  const afterHours = options.board === 'AFTER_HOURS';
+  const rankColumn = afterHours ? 'ah_rank' : 'rvol_rank';
+
+  const rows = db
+    .prepare(
+      `SELECT s.symbol AS ticker, s.${rankColumn} AS rank,
+              s.rvol, s.rvol_rank AS rvolRank,
+              s.percent_change AS percentChange,
+              s.ah_percent_change AS ahPercentChange,
+              s.ah_volume AS ahVolume,
+              s.cumulative_volume AS cumulativeVolume, s.spread_pct AS spreadPct,
+              s.latched, s.ah_latched AS ahLatched,
+              s.top12_entered_at AS top12EnteredAt,
+              s.ah_entered_topn_at AS ahEnteredTopNAt,
+              s.qualified_at AS qualifiedAt,
+              s.ah_qualified_at AS ahQualifiedAt,
+              u.classification,
+              (SELECT COUNT(*) FROM focus_tickers f
+                WHERE f.ticker = s.symbol AND f.trading_date = s.trading_date) AS focused
+         FROM ticker_session s
+         LEFT JOIN universe u ON u.symbol = s.symbol
+        WHERE s.trading_date = @tradingDate
+          AND ((s.${rankColumn} IS NOT NULL AND s.${rankColumn} <= @autoRank)
+               OR EXISTS (SELECT 1 FROM focus_tickers f
+                           WHERE f.ticker = s.symbol AND f.trading_date = s.trading_date))
+        ORDER BY s.${rankColumn} IS NULL, s.${rankColumn} ASC`,
+    )
+    .all({ tradingDate: options.tradingDate, autoRank: options.autoRank });
+
+  const numeric = (value: unknown): number | null =>
+    value === null || value === undefined ? null : Number(value);
+  const text = (value: unknown): string | null =>
+    value === null || value === undefined ? null : String(value);
+
+  return rows.map((row) => {
+    const r = row as Record<string, unknown>;
+    const rank = numeric(r.rank);
+
+    return {
+      ticker: String(r.ticker),
+      // A focused name outside the board still queues; it simply waits behind
+      // the board, which is what a rank just past the threshold does.
+      rank: rank ?? options.autoRank + 1,
+      focused: Number(r.focused ?? 0) > 0,
+      rvol: numeric(r.rvol),
+      // On the after-hours board the move and the volume that matter are the
+      // evening's, not the day's.
+      percentChange: afterHours ? numeric(r.ahPercentChange) : numeric(r.percentChange),
+      cumulativeVolume: afterHours ? numeric(r.ahVolume) : numeric(r.cumulativeVolume),
+      spreadPct: numeric(r.spreadPct),
+      latched: afterHours ? r.ahLatched === 1 : r.latched === 1,
+      classification: text(r.classification),
+      /*
+       * Board entry, measured on the board that queued this name.
+       *
+       * An after-hours discovery's latency runs from its AH entry: a stock that
+       * qualified at 06:40 and first mattered at 17:10 did not take eleven
+       * hours to analyse, and recording that it did would make the headline
+       * product metric meaningless.
+       */
+      top12EnteredAt: afterHours ? text(r.ahEnteredTopNAt) : text(r.top12EnteredAt),
+      qualifiedAt: afterHours ? text(r.ahQualifiedAt) : text(r.qualifiedAt),
+    };
+  });
 }
 
 export interface EnqueueRequest {

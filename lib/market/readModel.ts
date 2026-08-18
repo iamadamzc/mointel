@@ -10,7 +10,27 @@ import 'server-only';
 
 import { loadMarketConfig } from './config';
 import { projectMarketHealth } from './health';
-import { resolveSessionPhase } from './session';
+import { resolveActiveBoard } from './board';
+import { afterHoursStartUtc, isEarlyClose, isMarketDataExpected } from './session';
+import {
+  assessmentTablesPresent,
+  readAssessment,
+  readAssessmentHealth,
+  readAssessments,
+  readAssessmentTickers,
+  readRecentAssessments,
+  type AssessmentRecord,
+  type AssessmentTickerRecord,
+} from './store/assessmentRepo';
+import { buildSchedule, nextAssessment } from '../desk/schedule';
+import {
+  describeSession,
+  emptyAssessmentPanel,
+  projectSchedulerHealth,
+  toNext,
+  type AssessmentPanel,
+  type AssessmentSummary,
+} from '../desk/view';
 import { databaseExists, getMeta, openDatabase, type MarketDatabase } from './store/db';
 import {
   countBaselines,
@@ -100,6 +120,11 @@ function emptyDiscovery(config: ReturnType<typeof loadMarketConfig>): DiscoveryS
   return {
     tradingDate: '',
     sessionPhase: 'CLOSED',
+    board: 'DAILY_RVOL',
+    rankingLabel: 'Daily RVOL',
+    afterHoursStart: null,
+    rthClose: '16:00',
+    earlyClose: false,
     universeMode: 'SHEET_ONLY',
     eligibleCount: 0,
     rankedCount: 0,
@@ -120,11 +145,115 @@ function emptyDiscovery(config: ReturnType<typeof loadMarketConfig>): DiscoveryS
  * `isTradingDay` is calendar knowledge only the worker has; `sessionPhase` is a
  * convenience copy that readers deliberately ignore in favour of the clock.
  */
-type StoredSummary = Partial<DiscoveryState> & { isTradingDay?: boolean };
+type StoredSummary = Partial<DiscoveryState> & {
+  isTradingDay?: boolean;
+  rthCloseMinutes?: number;
+  ahEligibleCount?: number;
+  ahRankedCount?: number;
+};
 
 export interface MarketSnapshotOptions {
   /** Extra symbols to include even when unranked (TODAY-sheet tickers). */
   extraSymbols?: string[];
+}
+
+function toAssessmentSummary(record: AssessmentRecord): AssessmentSummary {
+  const scheduled = new Date(record.scheduledFor);
+  const clock = Number.isFinite(scheduled.getTime())
+    ? new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+      }).format(scheduled)
+    : '';
+
+  return {
+    id: record.id,
+    type: record.assessmentType,
+    label: ASSESSMENT_LABELS[record.assessmentType] ?? record.assessmentType,
+    clock,
+    scheduledFor: record.scheduledFor,
+    completedAt: record.completedAt,
+    generatedLate: record.generatedLate,
+    board: record.board,
+    rankingDefinition: record.rankingDefinition,
+    tickerCount: record.tickerCount,
+    status: record.status,
+    notes: record.notes,
+    tradingDate: record.tradingDate,
+    targetTradingDate: record.targetTradingDate,
+    experimental: record.metadata.experimental != null,
+  };
+}
+
+const ASSESSMENT_LABELS: Record<string, string> = {
+  NEXT_DAY_RECAP: '22:00 recap',
+  STRUCTURAL_REFRESH: 'Structural refresh',
+  PREMARKET_0625: 'First market scan',
+  PREMARKET_0645: 'Premarket reassessment',
+  PREMARKET_0700: 'Late-mover scan',
+  OPEN_SPIKE_ASSESSMENT: 'Open spike assessment',
+  RTH_INTERVAL: 'RTH reassessment',
+  RTH_CLOSE: 'RTH close',
+};
+
+const OFFLINE_PANEL: AssessmentPanel = emptyAssessmentPanel();
+
+/**
+ * The assessment panel: last checkpoint, next checkpoint, today's history.
+ *
+ * Degrades to "scheduler offline" rather than throwing. A store written before
+ * the assessment tables existed must still render a desk.
+ */
+function buildAssessmentPanel(
+  db: MarketDatabase,
+  options: {
+    tradingDate: string;
+    closeMinutes: number;
+    phase: DiscoveryState['sessionPhase'];
+    board: string;
+    rthClose: string;
+    earlyClose: boolean;
+    now: Date;
+  },
+): AssessmentPanel {
+  if (!assessmentTablesPresent(db) || !options.tradingDate) return OFFLINE_PANEL;
+
+  const records = readAssessments(db, options.tradingDate);
+  const completed = records.filter((record) => record.status !== 'RUNNING');
+  const today = completed.map(toAssessmentSummary);
+  const last = today.length > 0 ? today[today.length - 1] : null;
+
+  const schedule = buildSchedule({
+    tradingDate: options.tradingDate,
+    closeMinutes: options.closeMinutes,
+  });
+  const next = toNext(nextAssessment(schedule, options.now));
+
+  const { headline, subline } = describeSession({
+    phase: options.phase,
+    board: options.board,
+    rthClose: options.rthClose,
+    earlyClose: options.earlyClose,
+    last,
+    next,
+    tradingDate: options.tradingDate,
+    targetTradingDate: last?.targetTradingDate ?? null,
+  });
+
+  return {
+    tradingDate: options.tradingDate,
+    headline,
+    subline,
+    last,
+    next,
+    today,
+    scheduler: projectSchedulerHealth({
+      health: readAssessmentHealth(db),
+      now: options.now.getTime(),
+    }),
+  };
 }
 
 /**
@@ -149,6 +278,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       health,
       marketHealth: healthView(health, 'CLOSED', config),
       researchHealth: projectResearchHealth({ health: null, now: Date.now() }),
+      assessments: OFFLINE_PANEL,
       discovery: emptyDiscovery(config),
       demand: {},
       intelligence: {},
@@ -188,15 +318,25 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
      * the trading-day flag genuinely has to come from the worker, because the
      * market calendar is not available on this side.
      */
-    const sessionPhase = resolveSessionPhase({
+    const {
+      phase: sessionPhase,
+      board,
+      rankingLabel,
+      closeMinutes,
+    } = resolveActiveBoard({
       now: new Date(),
-      tradingDate: tradingDate || null,
-      isTradingDay: summary.isTradingDay ?? tradingDate !== '',
+      tradingDate,
+      facts: {
+        isTradingDay: summary.isTradingDay ?? tradingDate !== '',
+        rthClose: summary.rthClose,
+        rthCloseMinutes: summary.rthCloseMinutes,
+      },
     });
 
     const states = readDemandStates(db, tradingDate, {
       limit: config.internalRank,
       extraSymbols: options.extraSymbols,
+      board,
     });
 
     // Ticker freshness is judged per ticker, never from the connection alone.
@@ -206,21 +346,48 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
         ? Math.round((nowMs - Date.parse(state.freshness.lastEventAt)) / 1000)
         : null;
       state.freshness.ageSeconds = age;
-      // Quiet only means something while the market is open.
-      state.freshness.stale =
-        sessionPhase !== 'CLOSED' ? age === null || age > config.tickerStaleSeconds : false;
+      // Quiet only means something while prints are still expected. After
+      // 20:00 every ticker is quiet, and marking the whole board stale would
+      // report a fault where there is only a closed market.
+      state.freshness.stale = isMarketDataExpected(sessionPhase)
+        ? age === null || age > config.tickerStaleSeconds
+        : false;
     }
 
-    const ranked = states
-      .filter((state) => state.rvolRank !== null)
-      .sort((a, b) => (a.rvolRank as number) - (b.rvolRank as number));
+    /*
+     * Ordered by the ACTIVE board, not by Daily RVOL.
+     *
+     * This is the line that decides what a trader sees at 16:30. Ranking the
+     * evening by a full-day cumulative metric is what made the desk answer
+     * "what was busy today" long after anybody stopped asking it.
+     */
+    const ranked =
+      board === 'AFTER_HOURS'
+        ? states
+            .filter((state) => state.afterHours.rank !== null)
+            .sort((a, b) => (a.afterHours.rank as number) - (b.afterHours.rank as number))
+        : states
+            .filter((state) => state.rvolRank !== null)
+            .sort((a, b) => (a.rvolRank as number) - (b.rvolRank as number));
 
     const discovery: DiscoveryState = {
       tradingDate,
       sessionPhase,
+      board,
+      rankingLabel,
+      afterHoursStart:
+        tradingDate && (board === 'AFTER_HOURS' || sessionPhase === 'NEXT_DAY_PREP')
+          ? (summary.afterHoursStart ??
+            afterHoursStartUtc(tradingDate, closeMinutes).toISOString())
+          : null,
+      rthClose: summary.rthClose ?? '16:00',
+      earlyClose: isEarlyClose(closeMinutes),
       universeMode: summary.universeMode ?? health.universeMode,
-      eligibleCount: summary.eligibleCount ?? ranked.length,
-      rankedCount: summary.rankedCount ?? ranked.length,
+      eligibleCount:
+        (board === 'AFTER_HOURS' ? summary.ahEligibleCount : summary.eligibleCount) ??
+        ranked.length,
+      rankedCount:
+        (board === 'AFTER_HOURS' ? summary.ahRankedCount : summary.rankedCount) ?? ranked.length,
       baselineCount: summary.baselineCount ?? countBaselines(db, tradingDate),
       trackedCount: summary.trackedCount ?? countTrackedSymbols(db, tradingDate),
       discoveryRank: summary.discoveryRank ?? config.discoveryRank,
@@ -252,6 +419,18 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
         health: researchTablesPresent(db) ? readResearchHealth(db) : null,
         now: Date.now(),
       }),
+      // And the scheduler reports itself too, for the same reason: neither a
+      // live feed nor a working research engine says anything about whether
+      // the desk's scheduled checkpoints are still being taken.
+      assessments: buildAssessmentPanel(db, {
+        tradingDate,
+        closeMinutes,
+        phase: sessionPhase,
+        board,
+        rthClose: discovery.rthClose,
+        earlyClose: discovery.earlyClose,
+        now: new Date(),
+      }),
       discovery,
       demand,
       intelligence,
@@ -268,12 +447,76 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       health,
       marketHealth: healthView(health, 'CLOSED', config),
       researchHealth: projectResearchHealth({ health: null, now: Date.now() }),
+      assessments: OFFLINE_PANEL,
       discovery: emptyDiscovery(config),
       demand: {},
       intelligence: {},
       events: [],
       fetchedAt,
     };
+  }
+}
+
+/**
+ * One frozen assessment, with the tickers exactly as they were recorded.
+ *
+ * Nothing live is merged in. A historical snapshot showing today's prices next
+ * to 10:30's ranks would be worse than not having the history at all — it
+ * would look like a record and behave like a lie.
+ */
+export function getAssessmentSnapshot(id: number): {
+  assessment: AssessmentSummary | null;
+  tickers: AssessmentTickerRecord[];
+  /** Always true. States plainly that this view is not live. */
+  snapshot: true;
+} {
+  const config = loadMarketConfig();
+  let db: MarketDatabase | null;
+  try {
+    db = connection(config.dbPath);
+  } catch {
+    resetConnection();
+    db = null;
+  }
+
+  if (!db || !assessmentTablesPresent(db)) {
+    return { assessment: null, tickers: [], snapshot: true };
+  }
+
+  try {
+    const record = readAssessment(db, id);
+    if (!record || record.status === 'RUNNING') {
+      return { assessment: null, tickers: [], snapshot: true };
+    }
+    return {
+      assessment: toAssessmentSummary(record),
+      tickers: readAssessmentTickers(db, id),
+      snapshot: true,
+    };
+  } catch {
+    resetConnection();
+    return { assessment: null, tickers: [], snapshot: true };
+  }
+}
+
+/** The assessment history selector's options, newest first, across dates. */
+export function listAssessments(limit = 60): AssessmentSummary[] {
+  const config = loadMarketConfig();
+  let db: MarketDatabase | null;
+  try {
+    db = connection(config.dbPath);
+  } catch {
+    resetConnection();
+    db = null;
+  }
+
+  if (!db || !assessmentTablesPresent(db)) return [];
+
+  try {
+    return readRecentAssessments(db, limit).map(toAssessmentSummary);
+  } catch {
+    resetConnection();
+    return [];
   }
 }
 

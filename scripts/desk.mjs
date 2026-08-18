@@ -164,6 +164,19 @@ const SERVICES = [
     // The research worker needs the server condition to load server-only code.
     args: ['node_modules/tsx/dist/cli.mjs', '--conditions=react-server', 'worker/research.ts'],
   },
+  {
+    name: 'assess',
+    colour: '[32m',
+    // The scheduled desk assessments: 06:10, 06:25, 06:45, 07:00, 09:25, every
+    // 30 minutes through RTH, the close, and the 22:00 recap. Supervised like
+    // the others so nobody has to remember which process owns which checkpoint,
+    // and so a stopped scheduler shows up as a light rather than as silence.
+    args: [
+      'node_modules/tsx/dist/cli.mjs',
+      '--conditions=react-server',
+      'worker/desk-assessments.ts',
+    ],
+  },
 ];
 
 const RESET = '[0m';

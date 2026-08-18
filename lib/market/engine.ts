@@ -14,6 +14,7 @@
  */
 
 import { computeDailyRvol, rankByRvol, rvolConfidenceFor } from './rvol';
+import { computeAhParticipation, computeAhPercentChange, rankByAfterHours } from './afterHours';
 import {
   computePercentChange,
   computeQuoteState,
@@ -21,8 +22,10 @@ import {
   resolveReferenceRthClose,
 } from './derive';
 import { normalizeHaltState } from './alpaca/messages';
-import { sessionEndUtc, sessionStartUtc } from './session';
+import { afterHoursStartUtc, RTH_END_MIN, sessionEndUtc, sessionStartUtc } from './session';
 import type {
+  AfterHoursCoverage,
+  AfterHoursState,
   DemandState,
   DeskEventType,
   HaltState,
@@ -31,6 +34,7 @@ import type {
   QuoteState,
   ReferenceRthClose,
   RthCloseReading,
+  RthFinalState,
   RvolBaseline,
   RvolConfidence,
 } from './types';
@@ -48,6 +52,23 @@ export interface EngineEvent {
   message: string;
   payload: Record<string, unknown>;
   dedupeKey: string;
+}
+
+/**
+ * Reconstructed after-hours state for a desk that started after the bell.
+ *
+ * Deliberately separate from SessionSeed: it never touches cumulative day
+ * volume. A snapshot's daily bar already contains the after-hours prints, so
+ * adding them again here would double count the day.
+ */
+export interface AfterHoursSeed {
+  /** Volume traded between the close and `through`. */
+  volume: number;
+  /** Minutes at or before this instant are already inside `volume`. */
+  through: string | null;
+  source: string;
+  high?: number | null;
+  low?: number | null;
 }
 
 export interface SessionSeed {
@@ -138,6 +159,33 @@ interface TickerRuntime {
   rankEpisode: number;
   insideDiscoveryRank: boolean;
   leftDiscoveryRankAt: number | null;
+
+  /* ---- after-hours session, measured from the closing bell ---------------- */
+
+  /** Minute volumes at or after the close, excluding anything inside ahSeed. */
+  ahMinuteSum: number;
+  ahSeedVolume: number;
+  ahSeedThrough: string | null;
+  ahSeedSource: string | null;
+  ahCoverage: AfterHoursCoverage;
+  ahHigh: number | null;
+  ahLow: number | null;
+  ahRank: number | null;
+  ahPreviousRank: number | null;
+  ahRankChange: number | null;
+  ahEnteredTopNAt: string | null;
+  ahEnteredRank: number | null;
+  ahQualifiedAt: string | null;
+  ahQualificationPrice: number | null;
+  ahLatched: boolean;
+  ahRankEpisode: number;
+  insideAhRank: boolean;
+  leftAhRankAt: number | null;
+
+  /** Regular-session state as it stood at the bell. Null until it rings. */
+  rthFinal: RthFinalState | null;
+  /** True when rthFinal was rebuilt after the fact rather than observed live. */
+  rthFinalReconstructed: boolean;
 }
 
 export interface EngineOptions {
@@ -148,6 +196,12 @@ export interface EngineOptions {
   priceMin: number;
   priceMax: number;
   baselineSessions: number;
+  /**
+   * The exchange's regular-session close, in minutes since ET midnight.
+   * Defaults to 16:00; an early-close day must pass the calendar's real close
+   * or the after-hours session starts hours late.
+   */
+  rthCloseMinutes?: number;
   /** Hard cap on high-resolution subscriptions. */
   highResMax?: number;
   /**
@@ -171,6 +225,9 @@ export interface RecomputeResult {
   eligibleCount: number;
   rankedCount: number;
   trackedCount: number;
+  /** Symbols with a usable AH participation, so an AH rank means something. */
+  ahEligibleCount: number;
+  ahRankedCount: number;
   events: EngineEvent[];
   calculatedAt: string;
 }
@@ -180,20 +237,52 @@ export class DemandEngine {
   private readonly tickers = new Map<string, TickerRuntime>();
   private baselines = new Map<string, RvolBaseline>();
   private previousRanks = new Map<string, number>();
+  private previousAhRanks = new Map<string, number>();
   /** True once the current trading date's regular session has ended. */
   private rthClosed = false;
   /** Symbols pinned into the high-resolution set (TODAY sheet names). */
   private pinnedSymbols = new Set<string>();
   private sessionStartMs: number;
   private sessionEndMs: number;
+  /** The closing bell: the instant the after-hours session begins. */
+  private ahStartMs: number;
+  private ahStartIso: string;
+  private rthCloseMinutes: number;
 
   tradingDate: string;
 
   constructor(options: EngineOptions) {
     this.options = options;
     this.tradingDate = options.tradingDate;
+    this.rthCloseMinutes = options.rthCloseMinutes ?? RTH_END_MIN;
     this.sessionStartMs = sessionStartUtc(options.tradingDate).getTime();
     this.sessionEndMs = sessionEndUtc(options.tradingDate).getTime();
+    const ahStart = afterHoursStartUtc(options.tradingDate, this.rthCloseMinutes);
+    this.ahStartMs = ahStart.getTime();
+    this.ahStartIso = ahStart.toISOString();
+  }
+
+  /** The instant the regular session ends, i.e. where after-hours starts. */
+  get afterHoursStart(): string {
+    return this.ahStartIso;
+  }
+
+  get closeMinutes(): number {
+    return this.rthCloseMinutes;
+  }
+
+  /**
+   * Adopts the exchange's real close for this date.
+   *
+   * The calendar arrives from Alpaca after the engine is constructed, so an
+   * early close is applied here rather than being guessed at construction.
+   */
+  setRthCloseMinutes(minutes: number): void {
+    if (minutes === this.rthCloseMinutes) return;
+    this.rthCloseMinutes = minutes;
+    const ahStart = afterHoursStartUtc(this.tradingDate, minutes);
+    this.ahStartMs = ahStart.getTime();
+    this.ahStartIso = ahStart.toISOString();
   }
 
   private now(): number {
@@ -205,8 +294,13 @@ export class DemandEngine {
     this.tradingDate = tradingDate;
     this.sessionStartMs = sessionStartUtc(tradingDate).getTime();
     this.sessionEndMs = sessionEndUtc(tradingDate).getTime();
+    const ahStart = afterHoursStartUtc(tradingDate, this.rthCloseMinutes);
+    this.ahStartMs = ahStart.getTime();
+    this.ahStartIso = ahStart.toISOString();
     this.tickers.clear();
     this.previousRanks.clear();
+    this.previousAhRanks.clear();
+    this.rthClosed = false;
   }
 
   setBaselines(baselines: Map<string, RvolBaseline>): void {
@@ -310,10 +404,53 @@ export class DemandEngine {
       rankEpisode: 0,
       insideDiscoveryRank: false,
       leftDiscoveryRankAt: null,
+
+      ahMinuteSum: 0,
+      ahSeedVolume: 0,
+      ahSeedThrough: null,
+      ahSeedSource: null,
+      /*
+       * A symbol first seen after the bell cannot claim to know what it did at
+       * 16:05, so its after-hours volume starts UNKNOWN rather than zero. The
+       * runtime fills the gap by reconstructing the window (see
+       * seedAfterHours); until it does, this name is not ranked on the AH board
+       * instead of being ranked as if it had been silent.
+       */
+      ahCoverage: this.rthClosed ? 'PARTIAL' : 'NONE',
+      ahHigh: null,
+      ahLow: null,
+      ahRank: null,
+      ahPreviousRank: null,
+      ahRankChange: null,
+      ahEnteredTopNAt: null,
+      ahEnteredRank: null,
+      ahQualifiedAt: null,
+      ahQualificationPrice: null,
+      ahLatched: false,
+      ahRankEpisode: 0,
+      insideAhRank: false,
+      leftAhRankAt: null,
+      rthFinal: null,
+      rthFinalReconstructed: false,
     };
 
     this.tickers.set(symbol, runtime);
     this.attachBaseline(runtime);
+
+    /*
+     * A ticker adopted after the bell still needs a frozen regular session.
+     *
+     * The freeze normally happens when setRthClosed flips, but on a desk that
+     * starts mid-evening the ticker map is empty at that moment and every
+     * symbol arrives afterwards. Without this the day's record would be null
+     * for the entire universe on any restart after 16:00. What can be
+     * recovered is filled in later — the official close by setTodayRthClose,
+     * the regular session's volume once the evening's is known.
+     */
+    if (this.rthClosed) {
+      this.freezeRthState(runtime, new Date(this.now()).toISOString(), false);
+    }
+
     return runtime;
   }
 
@@ -352,22 +489,166 @@ export class DemandEngine {
     if (reading.close === null || !Number.isFinite(reading.close) || reading.close <= 0) return;
 
     runtime.todayRthClose = reading;
+
+    /*
+     * The official close corrects the provisional one.
+     *
+     * The freeze happens at the bell, but the closing auction takes a minute or
+     * two to print, so the frozen close starts as the last regular-session
+     * trade the desk saw. Once Alpaca's daily bar supplies the real auction
+     * price, that is what the day's record should say — and it is also the
+     * reference every after-hours percent change is measured from.
+     */
+    if (runtime.rthFinal) runtime.rthFinal.close = reading.close;
+
     this.refreshDerived(runtime);
     runtime.dirty = true;
   }
 
   /**
    * Tells the engine whether the regular session for the current trading date
-   * has ended. This is what flips the percent-change reference from the prior
-   * session's close to today's close at exactly 16:00 ET.
+   * has ended.
+   *
+   * This is the session boundary. It flips the percent-change reference from
+   * the prior session's close to today's close, freezes the regular session's
+   * final state for the audit trail, and initialises after-hours metrics AT
+   * ZERO — not at whatever the day happened to have accumulated. Everything
+   * that makes the 16:30 board answer a different question than the 15:30 board
+   * starts here.
+   *
+   * `observed` says whether the transition was watched live. A desk running
+   * through the bell sees every subsequent print, so its after-hours volume is
+   * complete by construction; a desk that starts at 17:30 has a gap it must
+   * reconstruct before it may claim a number.
    */
-  setRthClosed(closed: boolean): void {
+  setRthClosed(closed: boolean, options: { observed?: boolean } = {}): void {
     if (this.rthClosed === closed) return;
     this.rthClosed = closed;
+
+    if (!closed) {
+      for (const runtime of this.tickers.values()) {
+        runtime.rthFinal = null;
+        runtime.rthFinalReconstructed = false;
+        runtime.ahCoverage = 'NONE';
+        this.refreshDerived(runtime);
+        runtime.dirty = true;
+      }
+      this.previousAhRanks.clear();
+      return;
+    }
+
+    const observed = options.observed ?? true;
+    const frozenAt = new Date(this.now()).toISOString();
+
     for (const runtime of this.tickers.values()) {
+      this.freezeRthState(runtime, frozenAt, observed);
+      this.initializeAfterHours(runtime, observed);
       this.refreshDerived(runtime);
       runtime.dirty = true;
     }
+  }
+
+  /**
+   * Captures the regular session exactly as it ended.
+   *
+   * Nothing here is ever recomputed from live state afterwards: the point of a
+   * freeze is that tomorrow's audit sees what the board saw at the bell, not a
+   * number that kept moving until 20:00.
+   */
+  private freezeRthState(runtime: TickerRuntime, frozenAt: string, observed: boolean): void {
+    if (runtime.rthFinal) return;
+
+    if (!observed) {
+      // Started after the bell: the close itself is recoverable from the daily
+      // bar, the rest is not. Unknown stays unknown rather than being filled in
+      // with after-hours-contaminated numbers.
+      runtime.rthFinal = {
+        close: runtime.todayRthClose.close,
+        high: null,
+        low: null,
+        volume: null,
+        rvol: null,
+        rvolRank: null,
+        frozenAt,
+      };
+      runtime.rthFinalReconstructed = true;
+      return;
+    }
+
+    runtime.rthFinal = {
+      close: runtime.todayRthClose.close ?? runtime.price,
+      high: runtime.sessionHigh,
+      low: runtime.sessionLow,
+      volume: runtime.cumulativeVolume,
+      rvol: runtime.rvol,
+      rvolRank: runtime.rvolRank,
+      frozenAt,
+    };
+    runtime.rthFinalReconstructed = false;
+  }
+
+  /** Zeroes after-hours metrics at the bell. RTH volume never leaks across. */
+  private initializeAfterHours(runtime: TickerRuntime, observed: boolean): void {
+    runtime.ahSeedVolume = 0;
+    runtime.ahSeedThrough = null;
+    runtime.ahSeedSource = observed ? 'live-from-close' : null;
+    runtime.ahHigh = null;
+    runtime.ahLow = null;
+    runtime.ahRank = null;
+    runtime.ahPreviousRank = null;
+    runtime.ahRankChange = null;
+    runtime.ahCoverage = observed ? 'COMPLETE' : 'PARTIAL';
+
+    // Any minute already in the map that belongs to the after-hours window
+    // counts; everything before the bell does not.
+    runtime.ahMinuteSum = 0;
+    for (const [ts, volume] of runtime.minuteVolumes) {
+      if (Date.parse(ts) >= this.ahStartMs) runtime.ahMinuteSum += volume;
+    }
+  }
+
+  /**
+   * Supplies the after-hours window a restarted desk could not observe.
+   *
+   * Never touches cumulative day volume: a snapshot's daily bar already
+   * contains these prints, so counting them again would inflate Daily RVOL.
+   */
+  seedAfterHours(symbol: string, seed: AfterHoursSeed): void {
+    const runtime = this.tickers.get(symbol.toUpperCase());
+    if (!runtime) return;
+    if (!Number.isFinite(seed.volume) || seed.volume < 0) return;
+
+    runtime.ahSeedVolume = Math.round(seed.volume);
+    runtime.ahSeedThrough = seed.through;
+    runtime.ahSeedSource = seed.source;
+    runtime.ahCoverage = 'COMPLETE';
+
+    if (seed.through) {
+      for (const [ts, volume] of runtime.minuteVolumes) {
+        if (ts <= seed.through && Date.parse(ts) >= this.ahStartMs) {
+          runtime.ahMinuteSum -= volume;
+        }
+      }
+      if (runtime.ahMinuteSum < 0) runtime.ahMinuteSum = 0;
+    }
+
+    if (seed.high !== undefined && seed.high !== null) {
+      runtime.ahHigh = maxOrValue(runtime.ahHigh, seed.high);
+    }
+    if (seed.low !== undefined && seed.low !== null) {
+      runtime.ahLow = minOrValue(runtime.ahLow, seed.low);
+    }
+
+    this.refreshDerived(runtime);
+    runtime.dirty = true;
+  }
+
+  /** Symbols whose after-hours volume is still unknown, so still unrankable. */
+  symbolsMissingAfterHoursCoverage(): string[] {
+    if (!this.rthClosed) return [];
+    return [...this.tickers.values()]
+      .filter((runtime) => runtime.ahCoverage !== 'COMPLETE')
+      .map((runtime) => runtime.symbol);
   }
 
   get isRthClosed(): boolean {
@@ -435,6 +716,14 @@ export class DemandEngine {
 
     if (seed.todayRthClose && seed.todayRthClose.close !== null) {
       runtime.todayRthClose = seed.todayRthClose;
+
+      // A reconstructed freeze has no close of its own — the desk was not
+      // running at the bell to see one. The official close from the daily bar
+      // is exactly that value, so the day's record gets it here rather than
+      // staying null on every restart after 16:00.
+      if (runtime.rthFinal && runtime.rthFinal.close === null) {
+        runtime.rthFinal.close = seed.todayRthClose.close;
+      }
     }
 
     this.refreshDerived(runtime);
@@ -524,6 +813,18 @@ export class DemandEngine {
     }
     runtime.minuteVolumes.set(bar.ts, bar.volume);
 
+    // The same minute, counted a second time against the after-hours window.
+    // A bar at or after the bell belongs to both the day and the evening; one
+    // before it belongs only to the day, which is what keeps regular-session
+    // volume out of the after-hours number.
+    if (Date.parse(bar.ts) >= this.ahStartMs) {
+      if (!runtime.ahSeedThrough || bar.ts > runtime.ahSeedThrough) {
+        runtime.ahMinuteSum += previous !== undefined ? bar.volume - previous : bar.volume;
+      }
+      runtime.ahHigh = maxOrValue(runtime.ahHigh, bar.high);
+      runtime.ahLow = minOrValue(runtime.ahLow, bar.low);
+    }
+
     runtime.sessionHigh = maxOrValue(runtime.sessionHigh, bar.high);
     runtime.sessionLow = minOrValue(runtime.sessionLow, bar.low);
 
@@ -560,6 +861,11 @@ export class DemandEngine {
     runtime.sessionHigh = maxOrValue(runtime.sessionHigh, price);
     runtime.sessionLow = minOrValue(runtime.sessionLow, price);
 
+    if (Date.parse(observation.ts) >= this.ahStartMs) {
+      runtime.ahHigh = maxOrValue(runtime.ahHigh, price);
+      runtime.ahLow = minOrValue(runtime.ahLow, price);
+    }
+
     this.refreshDerived(runtime);
   }
 
@@ -586,7 +892,7 @@ export class DemandEngine {
     runtime.cumulativeVolume = runtime.volumeBase + runtime.minuteSum;
 
     // Percent change is measured against the most recent RELEVANT official
-    // regular-session close, which is today's close only after 16:00 ET.
+    // regular-session close, which is today's close only after the bell.
     runtime.reference = resolveReferenceRthClose(
       runtime.priorRthClose,
       runtime.todayRthClose,
@@ -595,6 +901,52 @@ export class DemandEngine {
     runtime.percentChange = computePercentChange(runtime.price, runtime.reference?.close ?? null);
 
     runtime.rvol = computeDailyRvol(runtime.cumulativeVolume, runtime.baseline?.averageVolume ?? null);
+
+    /*
+     * A reconstructed freeze can still recover the regular session's volume
+     * once the after-hours window is known: the day total minus the evening is
+     * what the bell saw. It is filled in once and then left alone.
+     */
+    if (
+      runtime.rthFinal &&
+      runtime.rthFinalReconstructed &&
+      runtime.rthFinal.volume === null &&
+      runtime.ahCoverage === 'COMPLETE' &&
+      runtime.cumulativeVolume !== null
+    ) {
+      const ahVolume = runtime.ahSeedVolume + runtime.ahMinuteSum;
+      runtime.rthFinal.volume = Math.max(0, runtime.cumulativeVolume - ahVolume);
+    }
+  }
+
+  /** After-hours volume, or null while the window is not fully accounted for. */
+  private afterHoursVolume(runtime: TickerRuntime): number | null {
+    if (!this.rthClosed) return null;
+    if (runtime.ahCoverage !== 'COMPLETE') return null;
+    return runtime.ahSeedVolume + runtime.ahMinuteSum;
+  }
+
+  private afterHoursStateOf(runtime: TickerRuntime): AfterHoursState {
+    const volume = this.afterHoursVolume(runtime);
+    const referenceClose = this.rthClosed ? runtime.todayRthClose.close : null;
+
+    return {
+      volume,
+      participation: computeAhParticipation(volume, runtime.baseline?.averageVolume ?? null),
+      percentChange: computeAhPercentChange(runtime.price, referenceClose),
+      referenceClose,
+      high: this.rthClosed ? runtime.ahHigh : null,
+      low: this.rthClosed ? runtime.ahLow : null,
+      rank: runtime.ahRank,
+      previousRank: runtime.ahPreviousRank,
+      rankChange: runtime.ahRankChange,
+      coverage: runtime.ahCoverage,
+      enteredTopNAt: runtime.ahEnteredTopNAt,
+      enteredRank: runtime.ahEnteredRank,
+      qualifiedAt: runtime.ahQualifiedAt,
+      qualificationPrice: runtime.ahQualificationPrice,
+      latched: runtime.ahLatched,
+    };
   }
 
   private inPriceRange(price: number): boolean {
@@ -766,15 +1118,180 @@ export class DemandEngine {
       [...ranks.entries()].map(([symbol, result]) => [symbol, result.rank]),
     );
 
+    const afterHours = this.recomputeAfterHours(nowMs, nowIso, events);
+
     this.applyHighResSelection();
 
     return {
       eligibleCount: eligible.length,
       rankedCount: ranks.size,
       trackedCount: this.tickers.size,
+      ahEligibleCount: afterHours.eligibleCount,
+      ahRankedCount: afterHours.rankedCount,
       events,
       calculatedAt: nowIso,
     };
+  }
+
+  /**
+   * The after-hours cross-section.
+   *
+   * Runs only once the bell has gone, and is completely independent of the
+   * daytime board: its own eligibility, its own latch, its own entry stamp. A
+   * name that led the day on Daily RVOL earns nothing here — if it is not
+   * trading after 16:00 its participation is 0 and it sinks, which is the whole
+   * point.
+   */
+  private recomputeAfterHours(
+    nowMs: number,
+    nowIso: string,
+    events: EngineEvent[],
+  ): { eligibleCount: number; rankedCount: number } {
+    if (!this.rthClosed) {
+      return { eligibleCount: 0, rankedCount: 0 };
+    }
+
+    const eligible: Array<{
+      symbol: string;
+      participation: number | null;
+      percentChange: number | null;
+      volume: number | null;
+    }> = [];
+    const participationBySymbol = new Map<string, number>();
+
+    for (const runtime of this.tickers.values()) {
+      const volume = this.afterHoursVolume(runtime);
+      const participation = computeAhParticipation(
+        volume,
+        runtime.baseline?.averageVolume ?? null,
+      );
+      if (participation === null) continue;
+
+      /*
+       * A name that has not traded since the bell is not ON the after-hours
+       * board. Its zero is a recorded fact and still readable as context, but
+       * ranking it would fill the evening's Top 12 with alphabetically-sorted
+       * silence in the first minutes after the close — and would stamp a board
+       * entry on every tracked symbol at 16:00.
+       *
+       * This is what makes a daytime leader fall off the evening board rather
+       * than merely sink within it.
+       */
+      if (participation <= 0) continue;
+
+      /*
+       * The $1–$20 rule, applied at the relevant point of the AFTER-HOURS move.
+       * A name that qualified in range and then ran through $20 this evening
+       * stays on the board for this session; the daytime latch has no say here.
+       */
+      const priceEligible =
+        runtime.price !== null && (this.inPriceRange(runtime.price) || runtime.ahLatched);
+      if (!priceEligible) continue;
+      if (!this.isRankEligible(runtime.symbol)) continue;
+
+      eligible.push({
+        symbol: runtime.symbol,
+        participation,
+        percentChange: computeAhPercentChange(runtime.price, runtime.todayRthClose.close),
+        volume,
+      });
+      participationBySymbol.set(runtime.symbol, participation);
+    }
+
+    const ranks = rankByAfterHours(eligible, this.previousAhRanks);
+
+    for (const runtime of this.tickers.values()) {
+      const result = ranks.get(runtime.symbol);
+
+      if (!result) {
+        if (runtime.ahRank !== null) {
+          runtime.ahPreviousRank = runtime.ahRank;
+          runtime.ahRank = null;
+          runtime.ahRankChange = null;
+          runtime.dirty = true;
+        }
+        if (runtime.insideAhRank) {
+          runtime.insideAhRank = false;
+          runtime.leftAhRankAt = nowMs;
+        }
+        continue;
+      }
+
+      if (runtime.ahRank !== result.rank || runtime.ahRankChange !== result.rankChange) {
+        runtime.dirty = true;
+      }
+
+      runtime.ahRank = result.rank;
+      runtime.ahPreviousRank = result.previousRank;
+      runtime.ahRankChange = result.rankChange;
+
+      // ---- after-hours qualification latch --------------------------------
+      const participation = participationBySymbol.get(runtime.symbol) ?? null;
+      if (
+        !runtime.ahQualifiedAt &&
+        runtime.price !== null &&
+        this.inPriceRange(runtime.price)
+      ) {
+        runtime.ahQualifiedAt = nowIso;
+        runtime.ahQualificationPrice = runtime.price;
+        runtime.ahLatched = true;
+        runtime.dirty = true;
+      }
+
+      // ---- after-hours board entry ----------------------------------------
+      const inside = result.rank <= this.options.discoveryRank;
+      if (inside && !runtime.insideAhRank) {
+        /*
+         * Stamped from AH board entry, never from the daytime one. Research
+         * latency for an evening discovery has to be measured from the moment
+         * the name appeared HERE — a stock that qualified at 06:40 and first
+         * mattered at 17:10 did not take eleven hours to analyse.
+         */
+        if (!runtime.ahEnteredTopNAt) {
+          runtime.ahEnteredTopNAt = nowIso;
+          runtime.ahEnteredRank = result.rank;
+          runtime.dirty = true;
+        }
+
+        const eligibleForEvent =
+          runtime.leftAhRankAt === null || nowMs - runtime.leftAhRankAt >= RANK_REENTRY_COOLDOWN_MS;
+
+        if (eligibleForEvent) {
+          runtime.ahRankEpisode += 1;
+          const ahPercent = computeAhPercentChange(runtime.price, runtime.todayRthClose.close);
+          events.push({
+            tradingDate: this.tradingDate,
+            ts: nowIso,
+            type: 'AH_RANK_ENTRY',
+            symbol: runtime.symbol,
+            message:
+              `Entered after-hours Top ${this.options.discoveryRank} at #${result.rank}` +
+              (ahPercent !== null ? ` — ${ahPercent >= 0 ? '+' : ''}${ahPercent.toFixed(1)}% AH` : ''),
+            payload: {
+              rank: result.rank,
+              previousRank: result.previousRank,
+              ahParticipation: participation ?? null,
+              ahVolume: this.afterHoursVolume(runtime),
+              ahPercentChange: ahPercent,
+              discoveryRank: this.options.discoveryRank,
+              episode: runtime.ahRankEpisode,
+            },
+            dedupeKey: `AH_RANK_ENTRY:${this.tradingDate}:${runtime.symbol}:${runtime.ahRankEpisode}`,
+          });
+        }
+        runtime.insideAhRank = true;
+        runtime.leftAhRankAt = null;
+      } else if (!inside && runtime.insideAhRank) {
+        runtime.insideAhRank = false;
+        runtime.leftAhRankAt = nowMs;
+      }
+    }
+
+    this.previousAhRanks = new Map(
+      [...ranks.entries()].map(([symbol, result]) => [symbol, result.rank]),
+    );
+
+    return { eligibleCount: eligible.length, rankedCount: ranks.size };
   }
 
   private trackDiscoveryRankExit(runtime: TickerRuntime, nowMs: number): void {
@@ -867,8 +1384,14 @@ export class DemandEngine {
   }
 
   /**
-   * High-resolution interest set = TODAY-sheet names + top internal RVOL ranks
-   * + latched session candidates, capped so one connection cannot be flooded.
+   * High-resolution interest set = TODAY-sheet names + the top of the ACTIVE
+   * board + latched session candidates, capped so one connection cannot be
+   * flooded.
+   *
+   * After the bell the active board is the after-hours one, so trades and
+   * quotes follow the evening's movers rather than staying pointed at whatever
+   * led the day — otherwise the names the desk is actually watching at 17:00
+   * would be the only ones without high-resolution data.
    */
   private applyHighResSelection(): void {
     const selected = new Set<string>();
@@ -877,12 +1400,26 @@ export class DemandEngine {
       if (this.tickers.has(symbol)) selected.add(symbol);
     }
 
+    const rankOf = (runtime: TickerRuntime): number | null =>
+      this.rthClosed ? runtime.ahRank : runtime.rvolRank;
+
     const ranked = [...this.tickers.values()]
-      .filter((runtime) => runtime.rvolRank !== null)
-      .sort((a, b) => (a.rvolRank as number) - (b.rvolRank as number));
+      .filter((runtime) => rankOf(runtime) !== null)
+      .sort((a, b) => (rankOf(a) as number) - (rankOf(b) as number));
 
     for (const runtime of ranked) {
-      if ((runtime.rvolRank as number) <= this.options.internalRank) selected.add(runtime.symbol);
+      if ((rankOf(runtime) as number) <= this.options.internalRank) selected.add(runtime.symbol);
+    }
+
+    // The day's leaders keep their subscriptions through the evening: a Focus
+    // name or a daytime leader must not go dark just because it is quiet now.
+    if (this.rthClosed) {
+      const daytime = [...this.tickers.values()]
+        .filter((runtime) => runtime.rvolRank !== null)
+        .sort((a, b) => (a.rvolRank as number) - (b.rvolRank as number));
+      for (const runtime of daytime) {
+        if ((runtime.rvolRank as number) <= this.options.discoveryRank) selected.add(runtime.symbol);
+      }
     }
 
     for (const runtime of this.tickers.values()) {
@@ -990,6 +1527,8 @@ export class DemandEngine {
           }
         : null,
       latched: runtime.latched,
+      rthFinal: runtime.rthFinal ? { ...runtime.rthFinal } : null,
+      afterHours: this.afterHoursStateOf(runtime),
       feed: this.options.feed,
       freshness: {
         lastEventAt: runtime.lastEventAt,

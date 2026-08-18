@@ -28,14 +28,16 @@ import { NoopInterpreter } from '../lib/research/interpret/interpreter';
 import { loadSheetPriors } from '../lib/research/merge/sheetPrior';
 import { interpretTicker } from '../lib/research/interpret/pipeline';
 import { computeEvidenceFingerprint } from '../lib/research/fingerprint';
-import { queueDiscoveryResearch, timeToIntelligence, type QueueCandidate } from '../lib/research/queue';
+import { queueDiscoveryResearch, timeToIntelligence } from '../lib/research/queue';
 import { ensureDailyHistory } from '../lib/research/historyFetch';
-import { openDatabase, type MarketDatabase } from '../lib/market/store/db';
+import { openDatabase, getMeta, type MarketDatabase } from '../lib/market/store/db';
+import { resolveActiveBoard, type BoardDescriptor } from '../lib/market/board';
 import {
   claimQueuedJobs,
   clearRetryState,
   completeJob,
   markJobStage,
+  readBoardCandidates,
   readJobsForDate,
   readOrphanedJobs,
   readSources,
@@ -52,34 +54,27 @@ function log(message: string): void {
   console.log(message);
 }
 
-function readCandidates(db: MarketDatabase, tradingDate: string, autoRank: number): QueueCandidate[] {
-  return db
-    .prepare(
-      `SELECT s.symbol AS ticker, s.rvol_rank AS rank, s.rvol, s.percent_change AS percentChange,
-              s.cumulative_volume AS cumulativeVolume, s.spread_pct AS spreadPct,
-              s.latched, s.top12_entered_at AS top12EnteredAt,
-              s.qualified_at AS qualifiedAt, u.classification
-         FROM ticker_session s
-         LEFT JOIN universe u ON u.symbol = s.symbol
-        WHERE s.trading_date = ? AND s.rvol_rank IS NOT NULL AND s.rvol_rank <= ?
-        ORDER BY s.rvol_rank ASC`,
-    )
-    .all(tradingDate, autoRank)
-    .map((row) => {
-      const r = row as Record<string, unknown>;
-      return {
-        ticker: String(r.ticker),
-        rank: Number(r.rank),
-        rvol: r.rvol === null ? null : Number(r.rvol),
-        percentChange: r.percentChange === null ? null : Number(r.percentChange),
-        cumulativeVolume: r.cumulativeVolume === null ? null : Number(r.cumulativeVolume),
-        spreadPct: r.spreadPct === null ? null : Number(r.spreadPct),
-        latched: r.latched === 1,
-        classification: r.classification === null ? null : String(r.classification),
-        top12EnteredAt: r.top12EnteredAt === null ? null : String(r.top12EnteredAt),
-        qualifiedAt: r.qualifiedAt === null ? null : String(r.qualifiedAt),
-      };
-    });
+/**
+ * The board the desk is showing right now.
+ *
+ * Phase is derived from the clock, exactly as the dashboard derives it; the
+ * calendar facts this process cannot look up — is this a trading day, when
+ * does it close — travel in the summary the market worker writes. Both
+ * processes reading the same resolver is what stops the dashboard showing the
+ * after-hours board while the research engine still queues the day's leaders.
+ */
+function activeBoard(db: MarketDatabase, tradingDate: string): BoardDescriptor {
+  let facts: { isTradingDay?: boolean; rthClose?: string; rthCloseMinutes?: number } = {};
+  const raw = getMeta(db, 'discovery_summary');
+  if (raw) {
+    try {
+      facts = JSON.parse(raw) as typeof facts;
+    } catch {
+      facts = {};
+    }
+  }
+
+  return resolveActiveBoard({ now: new Date(), tradingDate, facts });
 }
 
 async function main(): Promise<void> {
@@ -120,6 +115,7 @@ async function main(): Promise<void> {
   }
 
   let cycles = 0;
+  let lastBoard: string | null = null;
   let lastCompletedTicker: string | null = null;
   let lastCompletedAt: string | null = null;
   const latencies: number[] = [];
@@ -198,10 +194,21 @@ async function main(): Promise<void> {
     const sheetPriors = sheetLoad.priors;
 
     // ---------------------------------------------------------- queue
-    const candidates = readCandidates(db, tradingDate, config.autoRank);
+    const board = activeBoard(db, tradingDate);
+    if (board.board !== lastBoard) {
+      log(`[research] following the ${board.title.toUpperCase()} board (${board.rankingLabel})`);
+      lastBoard = board.board;
+    }
+
+    const candidates = readBoardCandidates(db, {
+      tradingDate,
+      autoRank: config.autoRank,
+      board: board.board,
+    });
     const decisions = queueDiscoveryResearch(db, candidates, {
       tradingDate,
       autoRank: config.autoRank,
+      board: board.board === 'AFTER_HOURS' ? 'after-hours top' : 'top',
       now: new Date(),
     });
     for (const decision of decisions.filter((item) => item.queued)) {

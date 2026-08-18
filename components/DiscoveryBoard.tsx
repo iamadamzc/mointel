@@ -42,16 +42,47 @@ export function DiscoveryBoard({
   const [size, setSize] = useState<ViewSize>(12);
   const visible = rows.slice(0, size);
 
+  /*
+   * The board changes with the session, and says so.
+   *
+   * At 16:30 the columns and the title both have to make it obvious that this
+   * is post-close activity. A board that still reads DISCOVERY / Daily RVOL
+   * after the bell implies the ranking means something it no longer means.
+   */
+  const afterHours = discovery.board === 'AFTER_HOURS';
+  const frozen = discovery.sessionPhase === 'POST_MARKET';
+
   return (
     <section className="border-b border-line bg-desk px-4 py-3">
       <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
         <h2 className="text-[11px] font-semibold tracking-[0.14em] text-ink uppercase">
-          Discovery
+          {afterHours ? 'After-Hours Discovery' : 'Discovery'}
         </h2>
         <span className="text-[10px] text-ink-3">
-          cross-sectional Daily RVOL rank · ${discovery.priceMin}–${discovery.priceMax} discovery
-          range
+          {afterHours ? (
+            <>
+              cross-sectional AH Participation rank{' '}
+              <span className="text-ink-3">
+                (volume since the {discovery.rthClose} ET close ÷ 20-session average full day)
+              </span>{' '}
+              · ${discovery.priceMin}–${discovery.priceMax} discovery range
+            </>
+          ) : (
+            <>
+              cross-sectional Daily RVOL rank · ${discovery.priceMin}–${discovery.priceMax}{' '}
+              discovery range
+            </>
+          )}
         </span>
+
+        {frozen ? (
+          <span
+            className="text-[9px] font-semibold tracking-wide text-warn uppercase"
+            title="Extended trading ended at 20:00 ET. These are the session's final after-hours numbers; they are no longer moving."
+          >
+            frozen 20:00
+          </span>
+        ) : null}
 
         <div className="ml-auto flex items-center gap-3">
           <span className="num text-[10px] text-ink-3">
@@ -82,9 +113,11 @@ export function DiscoveryBoard({
         <p className="rounded-sm border border-dashed border-line-2 bg-panel px-3 py-4 text-[12px] text-ink-3">
           {marketOffline
             ? 'Market worker is not running. Start it with `npm run market:alpaca` to populate discovery.'
-            : discovery.sessionPhase === 'CLOSED'
+            : discovery.sessionPhase === 'CLOSED' || discovery.sessionPhase === 'NEXT_DAY_PREP'
               ? `No session in progress. Discovery populates from 04:00 ET on ${discovery.tradingDate || 'the next session'}.`
-              : 'No names currently qualify for the discovery universe.'}
+              : afterHours
+                ? 'Nothing has traded enough since the close to rank on after-hours participation yet.'
+                : 'No names currently qualify for the discovery universe.'}
         </p>
       ) : (
         <div className="overflow-x-auto rounded-sm border border-line-2">
@@ -93,13 +126,27 @@ export function DiscoveryBoard({
               <tr className="bg-panel-2">
                 <Th className="w-[46px]">Rank</Th>
                 <Th className="w-[104px]">Ticker</Th>
-                <Th className="w-[80px]" align="right">Price</Th>
-                <Th className="w-[74px]" align="right">%</Th>
-                <Th className="w-[84px]" align="right">Daily RVOL</Th>
-                <Th className="w-[58px]" align="right">Δ Rank</Th>
-                <Th className="w-[86px]" align="right">Volume</Th>
-                <Th className="w-[86px]" align="right">Float</Th>
-                <Th className="w-[84px]" align="right">Float Turn</Th>
+                {afterHours ? (
+                  <>
+                    <Th className="w-[80px]" align="right">AH Price</Th>
+                    <Th className="w-[74px]" align="right">AH %</Th>
+                    <Th className="w-[88px]" align="right">AH Particip.</Th>
+                    <Th className="w-[58px]" align="right">Δ Rank</Th>
+                    <Th className="w-[86px]" align="right">AH Volume</Th>
+                    <Th className="w-[92px]" align="right">AH H/L</Th>
+                    <Th className="w-[84px]" align="right">Daily RVOL</Th>
+                  </>
+                ) : (
+                  <>
+                    <Th className="w-[80px]" align="right">Price</Th>
+                    <Th className="w-[74px]" align="right">%</Th>
+                    <Th className="w-[84px]" align="right">Daily RVOL</Th>
+                    <Th className="w-[58px]" align="right">Δ Rank</Th>
+                    <Th className="w-[86px]" align="right">Volume</Th>
+                    <Th className="w-[86px]" align="right">Float</Th>
+                    <Th className="w-[84px]" align="right">Float Turn</Th>
+                  </>
+                )}
                 <Th className="w-[210px]">Levels</Th>
                 <Th className="w-[168px]">Cycle</Th>
                 <Th className="w-[140px]">Catalyst</Th>
@@ -119,6 +166,7 @@ export function DiscoveryBoard({
                   onToggleFocus={onToggleFocus}
                   priceMin={discovery.priceMin}
                   priceMax={discovery.priceMax}
+                  afterHours={afterHours}
                 />
               ))}
             </tbody>
@@ -127,9 +175,21 @@ export function DiscoveryBoard({
       )}
 
       <p className="mt-1.5 text-[10px] text-ink-3">
-        Daily RVOL = cumulative session volume ÷ average volume over the previous{' '}
-        {discovery.internalRank > 0 ? '20' : '20'} eligible full sessions. High rank means abnormal
-        participation worth investigating — not a trade, a catalyst, or a clean structure.
+        {afterHours ? (
+          <>
+            AH Participation = volume since the {discovery.rthClose} ET close ÷ average volume over
+            the previous 20 eligible full sessions. It is deliberately not Daily RVOL: the
+            numerator is one evening, not a trading day. AH % is measured against today&apos;s
+            official close. High rank means abnormal after-hours participation worth investigating
+            — not a trade, a catalyst, or a clean structure.
+          </>
+        ) : (
+          <>
+            Daily RVOL = cumulative session volume ÷ average volume over the previous 20 eligible
+            full sessions. High rank means abnormal participation worth investigating — not a
+            trade, a catalyst, or a clean structure.
+          </>
+        )}
       </p>
     </section>
   );
@@ -164,6 +224,7 @@ function DiscoveryRow({
   onToggleFocus,
   priceMin,
   priceMax,
+  afterHours,
 }: {
   row: DeskRow;
   selected: boolean;
@@ -172,6 +233,7 @@ function DiscoveryRow({
   onToggleFocus: (ticker: string) => void;
   priceMin: number;
   priceMax: number;
+  afterHours: boolean;
 }) {
   const demand = row.demand;
   // One projection for every surface: whatever the Focus strip shows for this
@@ -179,8 +241,12 @@ function DiscoveryRow({
   const t = row.telemetry;
   // And the same three conclusions the drawer resolves.
   const conclusions = resolveConclusions(row);
+  const ah = demand?.afterHours ?? null;
   const retention = retentionNote({
-    latched: demand?.latched ?? false,
+    // After the bell, retention is the AH latch: a name that qualified inside
+    // the band this evening and then ran through $20 is retained for THIS
+    // session, independently of whatever the daytime board decided.
+    latched: (afterHours ? ah?.latched : demand?.latched) ?? false,
     price: t.price,
     priceMin,
     priceMax,
@@ -194,7 +260,7 @@ function DiscoveryRow({
       }`}
     >
       <td className="num px-2 py-1.5 align-middle font-semibold text-accent">
-        {t.rvolRank ?? '—'}
+        {(afterHours ? (ah?.rank ?? null) : t.rvolRank) ?? '—'}
       </td>
 
       <td className="px-2 py-1.5 align-middle">
@@ -226,62 +292,127 @@ function DiscoveryRow({
         {formatPrice(t.price)}
       </td>
 
-      <td
-        className={`num px-2 py-1.5 text-right align-middle font-semibold ${changeTone(
-          t.percentChange,
-        )}`}
-      >
-        {formatSignedPercent(t.percentChange)}
-      </td>
+      {afterHours ? (
+        <>
+          <td
+            className={`num px-2 py-1.5 text-right align-middle font-semibold ${changeTone(
+              ah?.percentChange ?? null,
+            )}`}
+            title={
+              ah?.referenceClose
+                ? `Versus today's official ${ah.referenceClose.toFixed(2)} regular-session close`
+                : "Today's official close is not available yet"
+            }
+          >
+            {formatSignedPercent(ah?.percentChange ?? null)}
+          </td>
 
-      <td
-        className="num px-2 py-1.5 text-right align-middle font-semibold text-ink"
-        title={
-          t.rvolConfidence === 'LOW'
-            ? `Reduced sample: ${demand?.baselineSessions ?? 0} eligible sessions`
-            : demand?.baselineSessions
-              ? `${demand.baselineSessions}-session baseline, split-adjusted`
-              : 'No baseline'
-        }
-      >
-        <span className={t.rvolConfidence === 'LOW' ? 'text-warn' : undefined}>
-          {formatMultiple(t.rvol)}
-        </span>
-        {t.rvolConfidence === 'LOW' ? (
-          <span className="ml-1 text-[9px] font-semibold text-warn uppercase">low</span>
-        ) : null}
-      </td>
+          <td
+            className="num px-2 py-1.5 text-right align-middle font-semibold text-ink"
+            title={
+              ah?.coverage !== 'COMPLETE'
+                ? 'After-hours volume for this name is not fully accounted for, so participation is unknown rather than assumed'
+                : `After-hours volume ÷ ${demand?.baselineSessions ?? 20}-session average full-day volume. Not Daily RVOL.`
+            }
+          >
+            {formatMultiple(ah?.participation ?? null)}
+          </td>
 
-      <td
-        className={`num px-2 py-1.5 text-right align-middle ${
-          (t.rvolRankChange ?? 0) > 0
-            ? 'text-pos'
-            : (t.rvolRankChange ?? 0) < 0
-              ? 'text-neg'
-              : 'text-ink-3'
-        }`}
-      >
-        {formatRankChange(t.rvolRankChange)}
-      </td>
+          <td
+            className={`num px-2 py-1.5 text-right align-middle ${
+              (ah?.rankChange ?? 0) > 0
+                ? 'text-pos'
+                : (ah?.rankChange ?? 0) < 0
+                  ? 'text-neg'
+                  : 'text-ink-3'
+            }`}
+          >
+            {formatRankChange(ah?.rankChange ?? null)}
+          </td>
 
-      <td className="num px-2 py-1.5 text-right align-middle text-ink-2">
-        {formatCount(t.volume)}
-      </td>
+          <td
+            className="num px-2 py-1.5 text-right align-middle text-ink-2"
+            title="Volume traded since the regular-session close. Regular-hours volume is not included."
+          >
+            {ah?.volume === null || ah?.volume === undefined ? '—' : formatCount(ah.volume)}
+          </td>
 
-      <td className="num px-2 py-1.5 text-right align-middle text-ink-2">
-        {row.displayedFloat !== null ? formatCount(row.displayedFloat) : '—'}
-      </td>
+          <td className="num px-2 py-1.5 text-right align-middle text-[11px] text-ink-3" title="After-hours high / low, reset at the close">
+            {ah?.high !== null && ah?.high !== undefined ? formatPrice(ah.high) : '—'}
+            {' / '}
+            {ah?.low !== null && ah?.low !== undefined ? formatPrice(ah.low) : '—'}
+          </td>
 
-      <td
-        className="num px-2 py-1.5 text-right align-middle text-ink-2"
-        title={
-          row.displayedFloatTurnover === null
-            ? 'Displayed float unknown or invalid — turnover not calculated'
-            : `Cumulative volume ÷ displayed float (${row.displayedFloatSource}). Not effective float turnover.`
-        }
-      >
-        {formatMultiple(row.displayedFloatTurnover)}
-      </td>
+          {/* Kept as context, never as the order. */}
+          <td
+            className="num px-2 py-1.5 text-right align-middle text-ink-3"
+            title={`Daily RVOL for the whole session, shown as context. The board above is ranked on after-hours participation.${
+              demand?.rvolRank ? ` Day rank #${demand.rvolRank}.` : ''
+            }`}
+          >
+            {formatMultiple(t.rvol)}
+          </td>
+        </>
+      ) : (
+        <>
+          <td
+            className={`num px-2 py-1.5 text-right align-middle font-semibold ${changeTone(
+              t.percentChange,
+            )}`}
+          >
+            {formatSignedPercent(t.percentChange)}
+          </td>
+
+          <td
+            className="num px-2 py-1.5 text-right align-middle font-semibold text-ink"
+            title={
+              t.rvolConfidence === 'LOW'
+                ? `Reduced sample: ${demand?.baselineSessions ?? 0} eligible sessions`
+                : demand?.baselineSessions
+                  ? `${demand.baselineSessions}-session baseline, split-adjusted`
+                  : 'No baseline'
+            }
+          >
+            <span className={t.rvolConfidence === 'LOW' ? 'text-warn' : undefined}>
+              {formatMultiple(t.rvol)}
+            </span>
+            {t.rvolConfidence === 'LOW' ? (
+              <span className="ml-1 text-[9px] font-semibold text-warn uppercase">low</span>
+            ) : null}
+          </td>
+
+          <td
+            className={`num px-2 py-1.5 text-right align-middle ${
+              (t.rvolRankChange ?? 0) > 0
+                ? 'text-pos'
+                : (t.rvolRankChange ?? 0) < 0
+                  ? 'text-neg'
+                  : 'text-ink-3'
+            }`}
+          >
+            {formatRankChange(t.rvolRankChange)}
+          </td>
+
+          <td className="num px-2 py-1.5 text-right align-middle text-ink-2">
+            {formatCount(t.volume)}
+          </td>
+
+          <td className="num px-2 py-1.5 text-right align-middle text-ink-2">
+            {row.displayedFloat !== null ? formatCount(row.displayedFloat) : '—'}
+          </td>
+
+          <td
+            className="num px-2 py-1.5 text-right align-middle text-ink-2"
+            title={
+              row.displayedFloatTurnover === null
+                ? 'Displayed float unknown or invalid — turnover not calculated'
+                : `Cumulative volume ÷ displayed float (${row.displayedFloatSource}). Not effective float turnover.`
+            }
+          >
+            {formatMultiple(row.displayedFloatTurnover)}
+          </td>
+        </>
+      )}
 
       {/* Nearest levels either side of price, so the board answers "what is
           above me" without opening the drawer. Width is clamped so a long level

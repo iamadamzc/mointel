@@ -25,6 +25,7 @@ import {
 } from '@/lib/market/store/repo';
 import { toRow } from '@/worker/runtime';
 import type { DemandState, MarketFeedHealth, RvolBaseline } from '@/lib/market/types';
+import { emptyAfterHours } from '@/lib/market/afterHours';
 
 const temporaryFiles: string[] = [];
 
@@ -103,6 +104,8 @@ function demand(symbol: string, rank: number | null): DemandState {
     top12EnteredAt: null,
     qualified: { at: '2026-08-14T13:31:00.000Z', price: 6.22, rvol: 4.1, rank: 1 },
     latched: true,
+    rthFinal: null,
+    afterHours: emptyAfterHours(),
     feed: 'sip',
     freshness: { lastEventAt: '2026-08-14T13:31:00.000Z', ageSeconds: 1, stale: false },
     updatedAt: '2026-08-14T13:31:01.000Z',
