@@ -33,6 +33,8 @@ import { loadSheetPriors } from '../lib/research/merge/sheetPrior';
 import { interpretTicker } from '../lib/research/interpret/pipeline';
 import { computeEvidenceFingerprint } from '../lib/research/fingerprint';
 import { queueDiscoveryResearch, timeToIntelligence } from '../lib/research/queue';
+import { queueResolverRecovery } from '../lib/research/recovery';
+import { RESOLVER_VERSION } from '../lib/research/catalyst/collector';
 import { ensureDailyHistory } from '../lib/research/historyFetch';
 import { openDatabase, getMeta, type MarketDatabase } from '../lib/market/store/db';
 import { resolveActiveBoard, type BoardDescriptor } from '../lib/market/board';
@@ -119,6 +121,9 @@ async function main(): Promise<void> {
   }
 
   let cycles = 0;
+  // Tickers this process has already given a recovery slot; the durable guard
+  // is the resolver stamp written during collection.
+  const recoveryAttempted = new Set<string>();
   let lastBoard: string | null = null;
   let lastCompletedTicker: string | null = null;
   let lastCompletedAt: string | null = null;
@@ -217,6 +222,20 @@ async function main(): Promise<void> {
     });
     for (const decision of decisions.filter((item) => item.queued)) {
       log(`[research] ${decision.ticker} queued priority=${decision.priority}`);
+    }
+
+    /*
+     * Recovery rides the same queue as ordinary research, after the board has
+     * had first claim on the cycle's slots. A faded name must never displace a
+     * name the desk is ranking right now.
+     */
+    for (const recovered of queueResolverRecovery(db, {
+      tradingDate,
+      resolverVersion: RESOLVER_VERSION,
+      now: new Date(),
+      attempted: recoveryAttempted,
+    }).filter((item) => item.queued)) {
+      log(`[research] ${recovered.ticker} queued for resolver recovery`);
     }
 
     // ---------------------------------------------------------- work
