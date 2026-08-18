@@ -203,6 +203,19 @@ sudo -u mointel env -C /opt/mointel/current \
 `review:list` shows label, created, expires, status and last use. It never
 prints a token or a hash — there is nothing stored that could be shown.
 
+### Do not put a review token on a sudo command line
+
+`sudo` writes the command it ran to the journal, argv and all. So this records
+the capability in `/var/log/journal` where nothing else does:
+
+```bash
+sudo grep -c "$TOKEN" /var/log/nginx/*.log     # DON'T
+```
+
+Nginx does not log it (`access_log off` for the prefix), the application never
+prints it, and the deploy never sees it — an operator checking up on it by hand
+is the one path that leaks it. Search by prefix instead, or revoke afterwards.
+
 ### If a review URL is exposed
 
 ```powershell
