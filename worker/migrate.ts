@@ -1,0 +1,80 @@
+/**
+ * `npm run migrate` — the schema migration owner.
+ *
+ * Nothing on a developer's machine needs this: the market worker migrates the
+ * store when it opens it, as it always has. It exists for the server, where
+ * four services start at once and three of them are writers. Running this to
+ * completion first means exactly one process decides whether the store needs
+ * upgrading, takes exactly one backup, and either succeeds or fails loudly
+ * before a single writer is allowed to touch the file.
+ *
+ * It is a one-shot: it opens the store, reports what it found, and exits.
+ * A non-zero exit is the signal systemd uses to hold the desk down, so every
+ * failure path here has to be honest rather than optimistic.
+ */
+
+import { loadWorkerEnv } from './env';
+loadWorkerEnv();
+
+import { loadMarketConfig } from '../lib/market/config';
+import {
+  databaseExists,
+  openDatabase,
+  SCHEMA_VERSION,
+  type MarketDatabase,
+} from '../lib/market/store/db';
+
+function log(message: string): void {
+  console.log(`[migrate] ${message}`);
+}
+
+function readVersion(db: MarketDatabase): number {
+  return Number(db.pragma('user_version', { simple: true }));
+}
+
+async function main(): Promise<void> {
+  const config = loadMarketConfig();
+  const existed = databaseExists(config.dbPath);
+
+  log(`store: ${config.dbPath}`);
+  log(existed ? 'existing store found' : 'no store yet — one will be created');
+
+  let backups = 0;
+
+  const db = openDatabase(config.dbPath, {
+    onSchemaBackup: (info) => {
+      backups += 1;
+      log(`schema upgrade v${info.fromVersion} → v${info.toVersion}`);
+      log(`backup: ${info.path}`);
+      const line = `backup integrity: ${info.integrity}`;
+      if (info.integrity === 'ok') log(line);
+      else console.error(`[migrate] ${line}`);
+    },
+  });
+
+  try {
+    const version = readVersion(db);
+    if (version !== SCHEMA_VERSION) {
+      // openDatabase's upgrade is transactional, so reaching here without the
+      // expected version means the migration did not take. Refusing to exit 0
+      // is the whole point of this unit: no writer should start behind it.
+      throw new Error(`store is at v${version}, expected v${SCHEMA_VERSION}`);
+    }
+
+    // quick_check is the structural half of integrity_check without the full
+    // index cross-reference, which on a multi-hundred-megabyte store is the
+    // difference between a boot delay measured in seconds and one measured in
+    // minutes. Deployments run the full check separately, once.
+    const check = String(db.pragma('quick_check', { simple: true }));
+    if (check !== 'ok') throw new Error(`quick_check failed: ${check}`);
+
+    log(`schema v${version}, quick_check ok, ${backups} backup(s) written`);
+  } finally {
+    db.close();
+  }
+}
+
+main().catch((error: unknown) => {
+  console.error(`[migrate] failed: ${(error as Error).message}`);
+  process.exitCode = 1;
+});

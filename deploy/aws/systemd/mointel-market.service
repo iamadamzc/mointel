@@ -1,0 +1,55 @@
+[Unit]
+# The one Alpaca SIP market connection.
+#
+# The account permits exactly one concurrent SIP stream. A second connection
+# does not fail loudly — it silently displaces the first, and the desk goes
+# quiet without anything looking broken. systemd guarantees a single instance
+# of a unit, which is precisely the guarantee this needs; the local supervisor's
+# lock file exists to provide the same thing on Windows.
+#
+# The consequence for operations: before starting this, the local desk on the
+# development machine must be stopped. See the cutover section of the
+# deployment guide.
+Description=Momentum Intelligence — Alpaca SIP market worker
+Documentation=file:///opt/mointel/current/docs/AWS_DEPLOYMENT.md
+After=network-online.target mointel-migrate.service
+Wants=network-online.target
+Requires=mointel-migrate.service
+PartOf=mointel.target
+
+# Five failures in five minutes is a broken build, not a blip. Giving up lets
+# `systemctl status` say so instead of burying it in a restart loop.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=mointel
+Group=mointel
+WorkingDirectory=/opt/mointel/current
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/mointel/mointel.env
+ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs worker/alpaca.ts
+
+Restart=always
+# Longer than the others on purpose: reconnecting to Alpaca in a tight loop
+# after an auth failure is how an account gets rate limited.
+RestartSec=15
+
+# The worker flushes its state and closes the store on SIGTERM. Killing it
+# before that finishes loses the last second of session state.
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mointel-market
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/mointel /opt/mointel/current
+
+[Install]
+WantedBy=mointel.target

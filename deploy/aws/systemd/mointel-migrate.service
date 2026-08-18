@@ -1,0 +1,48 @@
+[Unit]
+# The schema migration owner.
+#
+# Four services open this store on boot and three of them are writers. Left to
+# themselves they all compare user_version against the build's SCHEMA_VERSION at
+# the same instant, and on the one boot after a schema change they all decide it
+# needs upgrading: three VACUUM INTO copies, three backups, three transactions
+# replaying the same ALTERs, and — as the concurrency test demonstrates — at
+# least one worker dying with "database is locked" and crash-looping.
+#
+# This unit runs to completion before any of them start. It is a Type=oneshot
+# with RemainAfterExit, so the ordering below is a real barrier rather than a
+# race the scheduler usually wins: nothing that requires it starts until it has
+# exited 0. A non-zero exit holds the whole desk down, which is the correct
+# outcome — a writer must never open a store whose schema it does not
+# understand.
+Description=Momentum Intelligence — schema migration
+Documentation=file:///opt/mointel/current/docs/AWS_DEPLOYMENT.md
+After=network-online.target
+Wants=network-online.target
+PartOf=mointel.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=mointel
+Group=mointel
+WorkingDirectory=/opt/mointel/current
+EnvironmentFile=/etc/mointel/mointel.env
+ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs worker/migrate.ts
+
+# A migration that hangs is worse than one that fails: it holds the lock and
+# every other service waits behind it.
+TimeoutStartSec=600
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mointel-migrate
+
+# The desk needs its own data and nothing else on the filesystem.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/mointel
+
+[Install]
+WantedBy=mointel.target

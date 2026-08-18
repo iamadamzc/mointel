@@ -1,0 +1,45 @@
+[Unit]
+# The dashboard: Next.js in production mode, bound to loopback only.
+#
+# Nginx is the only thing that talks to it, and the Lightsail firewall does not
+# open 3000, so binding to 127.0.0.1 is belt and braces — but it is the belt
+# that survives somebody widening the firewall later.
+Description=Momentum Intelligence — dashboard (Next.js)
+Documentation=file:///opt/mointel/current/docs/AWS_DEPLOYMENT.md
+After=network-online.target mointel-migrate.service
+Wants=network-online.target
+Requires=mointel-migrate.service
+PartOf=mointel.target
+
+# Five failures in five minutes is a broken build, not a blip. Giving up lets
+# `systemctl status` say so instead of burying it in a restart loop.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=mointel
+Group=mointel
+WorkingDirectory=/opt/mointel/current
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/mointel/mointel.env
+ExecStart=/usr/bin/node node_modules/next/dist/bin/next start -H 127.0.0.1 -p 3000
+
+Restart=always
+RestartSec=10
+
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mointel-web
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/mointel /opt/mointel/current
+
+[Install]
+WantedBy=mointel.target

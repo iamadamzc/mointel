@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "desk": "node scripts/desk.mjs",
+    "migrate": "tsx worker/migrate.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",

@@ -1,0 +1,47 @@
+[Unit]
+# The Desk Assessment scheduler: 06:10, 06:25, 06:45, 07:00, 09:25, every 30
+# minutes through RTH, the close, and the 22:00 recap.
+#
+# Every one of those is an America/New_York wall-clock time resolved against the
+# exchange calendar in application code. The server runs UTC and must keep
+# running UTC — see the timezone section of the deployment guide. Nothing here
+# should ever set TZ.
+Description=Momentum Intelligence — desk assessment scheduler
+Documentation=file:///opt/mointel/current/docs/AWS_DEPLOYMENT.md
+After=network-online.target mointel-migrate.service
+Wants=network-online.target
+Requires=mointel-migrate.service
+PartOf=mointel.target
+
+# Five failures in five minutes is a broken build, not a blip. Giving up lets
+# `systemctl status` say so instead of burying it in a restart loop.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=mointel
+Group=mointel
+WorkingDirectory=/opt/mointel/current
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/mointel/mointel.env
+ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs --conditions=react-server worker/desk-assessments.ts
+
+Restart=always
+RestartSec=10
+
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mointel-assess
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/mointel /opt/mointel/current
+
+[Install]
+WantedBy=mointel.target

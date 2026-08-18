@@ -1,0 +1,15 @@
+[Unit]
+# The whole desk, as one thing.
+#
+# `systemctl stop mointel.target` stops all five units; starting it starts them
+# in dependency order, migration first. This is the server's equivalent of
+# closing the desk window on Windows, and it is what the cutover procedure uses
+# so nobody has to remember five unit names in the right order.
+Description=Momentum Intelligence Trading Desk
+Documentation=file:///opt/mointel/current/docs/AWS_DEPLOYMENT.md
+Requires=mointel-migrate.service
+After=mointel-migrate.service
+Wants=mointel-web.service mointel-market.service mointel-research.service mointel-assess.service
+
+[Install]
+WantedBy=multi-user.target

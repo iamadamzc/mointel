@@ -1,0 +1,45 @@
+[Unit]
+# The automatic research engine: SEC collection, catalyst discovery and the
+# interpretation layer. Talks to sec.gov and the OpenAI API, so it is the one
+# service whose failures are usually somebody else's outage.
+Description=Momentum Intelligence — research worker
+Documentation=file:///opt/mointel/current/docs/AWS_DEPLOYMENT.md
+After=network-online.target mointel-migrate.service
+Wants=network-online.target
+Requires=mointel-migrate.service
+PartOf=mointel.target
+
+# Five failures in five minutes is a broken build, not a blip. Giving up lets
+# `systemctl status` say so instead of burying it in a restart loop.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=mointel
+Group=mointel
+WorkingDirectory=/opt/mointel/current
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/mointel/mointel.env
+# --conditions=react-server: the research worker reaches into server-only
+# modules, which resolve differently without it.
+ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs --conditions=react-server worker/research.ts
+
+Restart=always
+RestartSec=10
+
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mointel-research
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/mointel /opt/mointel/current
+
+[Install]
+WantedBy=mointel.target

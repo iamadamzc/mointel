@@ -664,6 +664,87 @@ function createSchemaBackup(
   return { path: target, integrity };
 }
 
+/** How long a process waits for another one's migration before giving up. */
+const MIGRATION_LOCK_WAIT_MS = 120_000;
+/** A lock older than this belonged to a process that died holding it. */
+const MIGRATION_LOCK_STALE_MS = 300_000;
+
+/** Blocks the calling thread. openDatabase is synchronous, so this has to be. */
+function sleepSync(ms: number): void {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+/**
+ * Serialises schema work across processes.
+ *
+ * Four services open this store on boot, and three of them are writers that
+ * will migrate it. Nothing in SQLite prevents them all deciding at once that
+ * the store is out of date: each would run VACUUM INTO and leave its own
+ * backup, and the migration transaction that lost the race would replay the
+ * ALTERs against an already-upgraded schema. Production orders a one-shot
+ * migrate unit ahead of the rest (see deploy/aws/systemd), but a worker started
+ * by hand answers to no unit file, so the guarantee lives here too.
+ *
+ * An exclusively-created lock file is the mechanism: `wx` is atomic on both
+ * Windows and Linux, which SQLite advisory locks across separate connections
+ * are not. The loser waits for the winner to finish and then re-reads
+ * user_version, so it sees the upgraded store rather than repeating the work.
+ */
+function withMigrationLock<T>(dbPath: string, run: () => T): T {
+  const lockPath = `${dbPath}.migrate.lock`;
+  const deadline = Date.now() + MIGRATION_LOCK_WAIT_MS;
+
+  for (;;) {
+    try {
+      const handle = fs.openSync(lockPath, 'wx');
+      try {
+        fs.writeSync(
+          handle,
+          JSON.stringify({ pid: process.pid, at: new Date().toISOString() }),
+        );
+      } finally {
+        fs.closeSync(handle);
+      }
+
+      try {
+        return run();
+      } finally {
+        try {
+          fs.rmSync(lockPath, { force: true });
+        } catch {
+          /* the next process will treat it as stale */
+        }
+      }
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error;
+
+      // A process killed mid-migration leaves its lock behind. The migration
+      // itself is transactional, so the store is not half-upgraded; only the
+      // lock is stranded, and refusing to start over it would be worse.
+      let age = 0;
+      try {
+        age = Date.now() - fs.statSync(lockPath).mtimeMs;
+      } catch {
+        continue; // released while we looked at it
+      }
+
+      if (age > MIGRATION_LOCK_STALE_MS) {
+        fs.rmSync(lockPath, { force: true });
+        continue;
+      }
+
+      if (Date.now() > deadline) {
+        throw new Error(
+          `timed out after ${MIGRATION_LOCK_WAIT_MS / 1000}s waiting for another process ` +
+            `to finish migrating ${dbPath}`,
+        );
+      }
+
+      sleepSync(100);
+    }
+  }
+}
+
 export interface OpenOptions {
   readonly?: boolean;
   /** Skip schema creation (used by the read-only Next.js connection). */
@@ -693,29 +774,34 @@ export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketD
   db.pragma('busy_timeout = 5000');
 
   if (!options.readonly && !options.skipSchema) {
-    const fromVersion = Number(db.pragma('user_version', { simple: true }));
+    // The version is read inside the lock, not outside it: a process that
+    // waited its turn must judge the store the winner left behind, not the one
+    // it found on arrival.
+    withMigrationLock(dbPath, () => {
+      const fromVersion = Number(db.pragma('user_version', { simple: true }));
 
-    // Back up only a real upgrade of an existing store. A brand-new database
-    // reports 0 and has nothing to lose; a current one reports SCHEMA_VERSION
-    // and is left alone, so ordinary startups do not accumulate copies.
-    if (fromVersion > 0 && fromVersion < SCHEMA_VERSION) {
-      const backup = createSchemaBackup(db, dbPath, fromVersion);
-      options.onSchemaBackup?.({
-        path: backup.path,
-        integrity: backup.integrity,
-        fromVersion,
-        toVersion: SCHEMA_VERSION,
+      // Back up only a real upgrade of an existing store. A brand-new database
+      // reports 0 and has nothing to lose; a current one reports SCHEMA_VERSION
+      // and is left alone, so ordinary startups do not accumulate copies.
+      if (fromVersion > 0 && fromVersion < SCHEMA_VERSION) {
+        const backup = createSchemaBackup(db, dbPath, fromVersion);
+        options.onSchemaBackup?.({
+          path: backup.path,
+          integrity: backup.integrity,
+          fromVersion,
+          toVersion: SCHEMA_VERSION,
+        });
+      }
+
+      // One transaction: SQLite makes DDL transactional, so a failure part way
+      // through leaves the store on the old schema rather than half-upgraded.
+      const upgrade = db.transaction(() => {
+        db.exec(SCHEMA);
+        migrate(db);
+        db.pragma(`user_version = ${SCHEMA_VERSION}`);
       });
-    }
-
-    // One transaction: SQLite makes DDL transactional, so a failure part way
-    // through leaves the store on the old schema rather than half-upgraded.
-    const upgrade = db.transaction(() => {
-      db.exec(SCHEMA);
-      migrate(db);
-      db.pragma(`user_version = ${SCHEMA_VERSION}`);
+      upgrade();
     });
-    upgrade();
   }
 
   return db;
