@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { compareSheetAndAuto } from '@/lib/research/merge/sheetAuto';
+import { validateDiscovered } from '@/lib/research/catalyst/discovery';
 import type { ResearchDossier } from '@/lib/research/types';
 
 /**
@@ -214,5 +215,59 @@ describe('a disagreement caused by different evidence', () => {
 
     const catalyst = result.comparisons.find((entry) => entry.field === 'catalyst');
     expect(catalyst?.reason).toBe('AUTO_SOURCE_GAP');
+  });
+});
+
+describe('source authority cannot be claimed, only earned', () => {
+  const validate = (entry: Record<string, unknown>) =>
+    validateDiscovered({ sources: [entry] }, new Set<string>()).accepted[0];
+
+  const base = { title: 'Something happened', relevance: 'issuer named', confidence: 'HIGH' };
+
+  it('honours a recognised newswire host', () => {
+    expect(
+      validate({ ...base, url: 'https://www.globenewswire.com/news-release/x', kind: 'NEWSWIRE' })
+        ?.kind,
+    ).toBe('NEWSWIRE');
+  });
+
+  it('refuses newswire authority to an unrecognised host that claims it', () => {
+    /*
+     * The XOS shape. Discovery returned a Reddit thread; a model that had
+     * labelled it NEWSWIRE would previously have been believed, and the link
+     * stored with newswire authority on nothing but its own assertion.
+     */
+    expect(
+      validate({ ...base, url: 'https://www.reddit.com/r/XosInc/comments/1vrj419/x', kind: 'NEWSWIRE' })
+        ?.kind,
+    ).toBe('SECONDARY');
+  });
+
+  it('refuses SEC authority to a host that is not the SEC', () => {
+    expect(validate({ ...base, url: 'https://filings.acme-corp.co/filing', kind: 'SEC' })?.kind).toBe(
+      'SECONDARY',
+    );
+  });
+
+  it('still lets an issuer name its own site as a newsroom', () => {
+    // Every company domain is an unrecognised host; no allowlist could hold
+    // them all. The claim stands here and the registry validates it downstream.
+    expect(
+      validate({ ...base, url: 'https://einride.tech/newsroom', kind: 'COMPANY_NEWSROOM' })?.kind,
+    ).toBe('COMPANY_NEWSROOM');
+  });
+
+  it('demotes an unclassified host that claims nothing', () => {
+    expect(validate({ ...base, url: 'https://random-aggregator.co/post' })?.kind).toBe('SECONDARY');
+  });
+
+  it('never marks a secondary source as an original', () => {
+    const source = validate({
+      ...base,
+      url: 'https://www.reddit.com/r/XosInc/comments/1vrj419/x',
+      kind: 'NEWSWIRE',
+      appearsOriginal: true,
+    });
+    expect(source?.appearsOriginal).toBe(false);
   });
 });

@@ -1019,3 +1019,115 @@ describe('urgent first qualification', () => {
     expect(discovery.calls).toBeLessThanOrEqual(1);
   });
 });
+
+describe('resolver success feeds the same collection pass', () => {
+  /*
+   * The provider contract, documented by exercising it.
+   *
+   * resolveCompanySources calls discovery.discover() and looks for a source
+   * whose kind is COMPANY_IR or COMPANY_NEWSROOM — nothing else counts, because
+   * a newswire copy says where one release lived, not where the issuer
+   * publishes. It writes that URL to newsroomUrl and pressReleaseIndexUrl, and
+   * the collector's known-company-source read picks it up from there.
+   *
+   * This double sits at that boundary and returns a newsroom the way a real
+   * provider would. The registry is NOT preloaded: it starts unresolved and the
+   * resolver is what fills it, which is the whole point of the test.
+   */
+  class ResolvingDiscovery implements CatalystSourceDiscoveryProvider {
+    readonly name = 'resolving';
+    available = true;
+    calls = 0;
+
+    constructor(private readonly newsroomUrl: string) {}
+
+    async discover(): Promise<DiscoveryResult> {
+      this.calls += 1;
+      return {
+        ran: true,
+        modelCalls: 1,
+        detail: 'located newsroom',
+        sources: [
+          {
+            title: 'Acme Newsroom',
+            url: this.newsroomUrl,
+            publisher: 'Acme Inc.',
+            published: normaliseTimestamp('2026-08-17T11:30:00Z'),
+            // An unclassified host: classifyHost returns null for a company's
+            // own domain, so the declared kind is what carries it through.
+            kind: 'COMPANY_NEWSROOM',
+            relevance: 'issuer newsroom',
+            appearsOriginal: true,
+            confidence: 'HIGH',
+          },
+        ],
+      };
+    }
+  }
+
+  const QUALIFIED: MaterialDemandEvent = {
+    kind: 'ENTERED_TOP_N',
+    detail: 'entered the discovery Top 12 at #5',
+  } as MaterialDemandEvent;
+
+  it('resolves, fetches and collects the release in one pass', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, null); // unresolved: nothing on file
+    const discovery = new ResolvingDiscovery('https://acme.example.net/rss');
+
+    const report = await withCompanyFetch(
+      { 'https://acme.example.net/rss': RSS_BODY },
+      () =>
+        collectCatalystEvidence(
+          db,
+          fakeSecClient({}),
+          discovery,
+          { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+          { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', materialEvent: QUALIFIED },
+        ),
+    );
+
+    // The location was unknown when this pass began and the release is in its
+    // evidence by the time it ends. That is the sequence ENRD needed at 06:32.
+    expect(report.companySources.newsroomUrl).toBe('https://acme.example.net/rss');
+    expect(report.companyReleases).toHaveLength(1);
+    expect(report.companyReleases[0].title).toBe('Acme Announces Major Contract Award');
+    expect(report.fingerprintChanged).toBe(true);
+
+    // One resolution, and no separate search on top of it.
+    expect(discovery.calls).toBe(1);
+    expect(report.modelCalls).toBe(1);
+  });
+
+  it('does not repeat the urgent spend on later polls', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, null);
+    const discovery = new ResolvingDiscovery('https://acme.example.net/rss');
+    const routes = { 'https://acme.example.net/rss': RSS_BODY };
+
+    await withCompanyFetch(routes, () =>
+      collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', materialEvent: QUALIFIED }),
+    );
+    const afterEpisode = discovery.calls;
+
+    // Same evidence, ordinary polls. The source is known now, so the resolver
+    // is never offered another turn and nothing new is bought.
+    for (const minutes of [1, 2, 5]) {
+      const later = await withCompanyFetch(routes, () =>
+        collectCatalystEvidence(db, fakeSecClient({}), discovery,
+          { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+          {
+            ticker: 'ACME',
+            now: new Date(NOW.getTime() + minutes * 60_000),
+            tradingDate: '2026-08-17',
+          }),
+      );
+      expect(later.fingerprintChanged).toBe(false);
+      expect(later.modelCalls).toBe(0);
+    }
+
+    expect(discovery.calls).toBe(afterEpisode);
+  });
+});

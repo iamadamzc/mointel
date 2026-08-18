@@ -231,11 +231,31 @@ export function validateDiscovered(
     }
 
     const claimedKind = entry.kind as DiscoveredSourceKind | undefined;
-    // The host is authoritative about what a source is. A model calling a
-    // Yahoo Finance page "company IR" must not be able to promote a mirror
-    // above the original it copied.
+    /*
+     * The host decides what a source is; the model only gets to speak where
+     * the host cannot.
+     *
+     * A recognised host always wins outright — a model calling a Yahoo Finance
+     * page "company IR" must not promote a mirror above the original it copied.
+     * The subtler case is an UNRECOGNISED host, where the model's claim used to
+     * be accepted unchallenged: XOS's discovery returned a Reddit thread, and
+     * had the model labelled it NEWSWIRE it would have been stored with
+     * newswire authority on nothing but its say-so.
+     *
+     * So the two claims that assert a recognised publisher — NEWSWIRE and SEC —
+     * are only honoured by a matching host, because those categories ARE their
+     * hosts: a newswire that is not on a newswire domain is not a newswire.
+     * COMPANY_IR and COMPANY_NEWSROOM are different in kind. Every issuer's own
+     * site is an unrecognised host by definition, and no global allowlist could
+     * contain them all, so the claim is allowed to stand here and is validated
+     * downstream against the issuer's identity by the registry.
+     */
     const hostKind = classifyHost(url);
-    const kind: DiscoveredSourceKind = hostKind ?? claimedKind ?? 'SECONDARY';
+    const CLAIMS_RECOGNISED_PUBLISHER =
+      claimedKind === 'NEWSWIRE' || claimedKind === 'SEC';
+
+    const kind: DiscoveredSourceKind =
+      hostKind ?? (CLAIMS_RECOGNISED_PUBLISHER ? 'SECONDARY' : claimedKind ?? 'SECONDARY');
 
     accepted.push({
       title,
