@@ -85,10 +85,20 @@ export async function resolveCompanySources(
 ): Promise<ResolveResult> {
   const now = options.now ?? new Date();
   const issuer = readIssuer(db, options.ticker);
-  const stored: CompanySourceRegistry = {
+  const raw: CompanySourceRegistry = {
     ...EMPTY_COMPANY_SOURCES,
     ...(issuer?.companySources ?? {}),
   };
+
+  /*
+   * Shed a non-durable location before anything else looks at this row.
+   *
+   * Done here rather than on the unresolved path because the cooldown returns
+   * first: ENRD recorded a negative, then every later pass short-circuited on
+   * it and the leaf stayed on the row for another day. This costs no model
+   * call — it is a stored value the current contract has already refused.
+   */
+  const stored = shedNonDurable(db, options.ticker, raw);
 
   if (!options.force && hasUsableSource(stored)) {
     return { registry: stored, resolved: false, modelCalls: 0, detail: 'reused stored IR source' };
@@ -141,19 +151,8 @@ export async function resolveCompanySources(
      * release. Recording a newswire URL here would have looked like success and
      * permanently blocked that path.
      */
-    /*
-     * A leaf left over from the old contract is dropped, not kept.
-     *
-     * hasUsableSource already refuses it, so it changes no behaviour — but a
-     * registry row reading `newsroomUrl: .../press/einride-teams-up-with-tuv-sud`
-     * tells a reader this issuer has a newsroom on file when the resolver has
-     * just concluded the opposite. State nobody should act on should not be
-     * stored as though they might.
-     */
     const registry: CompanySourceRegistry = {
       ...stored,
-      newsroomUrl: null,
-      pressReleaseIndexUrl: null,
       discoveryMethod: resolver.name,
       confidence: 'UNKNOWN',
       note: 'no durable company collection point located',
@@ -304,6 +303,28 @@ async function probeIndex(articleUrl: string, userAgent: string): Promise<string
     if (classifyCollectionPoint(url, page.body).shape === 'INDEX') return url;
   }
   return null;
+}
+
+/**
+ * Removes a stored location the current contract would not accept.
+ *
+ * hasUsableSource already refuses it, so this changes no behaviour — but a row
+ * naming a newsroom tells a reader the issuer has one, and leaving ENRD's
+ * .../press/einride-teams-up-with-tuv-sud on file said exactly that while the
+ * resolver's own note underneath said no durable collection point was found.
+ */
+function shedNonDurable(
+  db: MarketDatabase,
+  ticker: string,
+  registry: CompanySourceRegistry,
+): CompanySourceRegistry {
+  if (hasUsableSource(registry)) return registry;
+  if (!registry.newsroomUrl && !registry.pressReleaseIndexUrl) return registry;
+
+  // The company domain survives; that part is still true.
+  const shed = { ...registry, newsroomUrl: null, pressReleaseIndexUrl: null };
+  persist(db, ticker, shed);
+  return shed;
 }
 
 function persist(db: MarketDatabase, ticker: string, registry: CompanySourceRegistry): void {
