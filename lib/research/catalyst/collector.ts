@@ -174,6 +174,16 @@ function toSummary(source: ResearchSource): CatalystSourceSummary {
   };
 }
 
+/**
+ * The current resolver implementation.
+ *
+ * Bumped when a change makes previously-unresolvable issuers resolvable. Every
+ * issuer whose registry carries an older value gets one recovery episode, once,
+ * and is then stamped forward — which is what makes the recovery idempotent
+ * across restarts rather than a loop.
+ */
+export const RESOLVER_VERSION = 1;
+
 /** Source types that constitute catalyst evidence rather than structure. */
 const CATALYST_TYPES = new Set<SourceType>([
   'SEC_EXHIBIT',
@@ -340,12 +350,33 @@ export async function collectCatalystEvidence(
   const usableCompanySourceBefore = Boolean(
     registry.feedUrl ?? registry.pressReleaseIndexUrl ?? registry.newsroomUrl,
   );
+  /*
+   * One recovery episode for an issuer last touched by the old resolver.
+   *
+   * XOS and ENRD were both attempted under a production path that never called
+   * the resolver at all, so their lastDiscoveryAt is populated and the urgent
+   * gate below can never fire for them. This makes exactly those rows eligible
+   * once — no timestamp is cleared, no symbol is named — and the stamp below
+   * closes it whether the attempt succeeded or failed.
+   */
+  const staleResolver =
+    // Attempted before, by an implementation that could not succeed. A brand
+    // new issuer is not poisoned — it reaches the ordinary first-qualification
+    // path and must not buy a model call merely for being seen.
+    registry.lastDiscoveryAt !== null &&
+    (registry.resolverVersion ?? 0) < RESOLVER_VERSION &&
+    input.relevant !== false &&
+    discovery.available &&
+    !input.disableDiscovery;
+
   const firstQualification =
-    registry.lastDiscoveryAt === null &&
+    (registry.lastDiscoveryAt === null || staleResolver) &&
     // A MATERIAL demand change, not merely a first look. Background polling of
     // a quiet name is never urgent, and treating it as such would buy a model
-    // call for every ticker the desk has ever glanced at.
-    (input.materialEvent ?? null) !== null &&
+    // call for every ticker the desk has ever glanced at. A recovery episode is
+    // the one exception: those issuers were already judged worth researching by
+    // the path that failed them.
+    ((input.materialEvent ?? null) !== null || staleResolver) &&
     input.relevant !== false &&
     discovery.available &&
     !input.disableDiscovery;
@@ -581,6 +612,7 @@ export async function collectCatalystEvidence(
     registry.lastDiscoveryAt = now.toISOString();
     registry.lastDiscoveryFingerprint = deterministicFingerprint;
     registry.lastDiscoveryMode = 'RESOLVER';
+    registry.resolverVersion = RESOLVER_VERSION;
     report.discoveryTrigger =
       input.forceDiscovery === true
         ? 'FORCED'
@@ -647,6 +679,7 @@ export async function collectCatalystEvidence(
     registry.lastDiscoveryAt = now.toISOString();
     registry.lastDiscoveryFingerprint = deterministicFingerprint;
     registry.lastDiscoveryMode = 'DISCOVERY';
+    registry.resolverVersion = RESOLVER_VERSION;
     report.discoveryTrigger =
       input.forceDiscovery === true
         ? 'FORCED'
@@ -684,6 +717,12 @@ export async function collectCatalystEvidence(
    * clock stays unset and the very next poll would look like another first
    * qualification.
    */
+  if (urgentResolutionRan) {
+    // Advances even on failure. A resolver that cannot find this issuer must
+    // not re-enter recovery on the next poll, or a restart, or forever.
+    registry.resolverVersion = RESOLVER_VERSION;
+  }
+
   if (urgentResolutionRan && registry.lastDiscoveryAt === null) {
     registry.lastDiscoveryAt = now.toISOString();
     registry.lastDiscoveryFingerprint = deterministicFingerprint;

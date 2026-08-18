@@ -15,6 +15,7 @@ import { normaliseTimestamp } from '@/lib/research/time';
 import {
   collectCatalystEvidence,
   type MaterialDemandEvent,
+  RESOLVER_VERSION,
 } from '@/lib/research/catalyst/collector';
 import { resolveCompanySources } from '@/lib/research/catalyst/irRegistry';
 import type {
@@ -121,6 +122,7 @@ function seedIssuer(db: ReturnType<typeof temporaryDb>, feedUrl: string | null) 
           note: null,
           lastDiscoveryAt: null,
           lastDiscoveryFingerprint: null,
+          resolverVersion: RESOLVER_VERSION,
     lastDiscoveryMode: null,
         }
       : undefined,
@@ -1129,5 +1131,122 @@ describe('resolver success feeds the same collection pass', () => {
     }
 
     expect(discovery.calls).toBe(afterEpisode);
+  });
+});
+
+describe('recovery for issuers poisoned by the old resolver', () => {
+  /*
+   * XOS and ENRD were both attempted by a production path that never called the
+   * resolver, so their lastDiscoveryAt is populated and the urgent gate — which
+   * keys on never-attempted — can never fire for them. A resolver-version stamp
+   * makes exactly those rows eligible once. No timestamp is cleared and no
+   * symbol is named.
+   */
+  function seedPoisoned(db: ReturnType<typeof temporaryDb>) {
+    upsertIssuer(db, {
+      ticker: 'ACME',
+      companyName: 'Acme Inc.',
+      cik: '0000000123',
+      exchange: 'NASDAQ',
+      country: 'CA',
+      foreignIssuer: false,
+      cikConfidence: 'HIGH',
+      mappingSource: 'company_tickers_exchange',
+      irUrl: null,
+      lastVerifiedAt: NOW.toISOString(),
+      companySources: {
+        investorRelationsUrl: null,
+        newsroomUrl: null,
+        pressReleaseIndexUrl: null,
+        feedUrl: null,
+        discoveryMethod: null,
+        confidence: 'UNKNOWN',
+        lastVerifiedAt: null,
+        note: null,
+        // Attempted under the old path, which is why it is stuck.
+        lastDiscoveryAt: new Date(NOW.getTime() - 60_000).toISOString(),
+        lastDiscoveryFingerprint: null,
+        lastDiscoveryMode: null,
+        resolverVersion: null,
+      },
+    });
+  }
+
+  it('gives a poisoned issuer one episode without a material event', async () => {
+    const db = temporaryDb();
+    seedPoisoned(db);
+    const discovery = new CountingDiscovery();
+
+    const report = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
+    );
+
+    // Nothing spiked; it is eligible because the code that judged it could not
+    // have succeeded.
+    expect(report.companySourceDetail).toContain('urgent');
+  });
+
+  it('never repeats the episode, however many polls or restarts follow', async () => {
+    const db = temporaryDb();
+    seedPoisoned(db);
+    const discovery = new CountingDiscovery();
+
+    const run = (minutes: number) =>
+      withCompanyFetch({}, () =>
+        collectCatalystEvidence(db, fakeSecClient({}), discovery,
+          { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+          {
+            ticker: 'ACME',
+            now: new Date(NOW.getTime() + minutes * 60_000),
+            tradingDate: '2026-08-17',
+          }),
+      );
+
+    await run(0);
+    const afterRecovery = discovery.calls;
+
+    // Rapid polls, and the long gaps a restart would look like. The stamp
+    // advanced even though resolution found nothing, so none of these re-enter
+    // recovery.
+    await run(1);
+    await run(2);
+    const laterReport = await run(600);
+
+    expect(discovery.calls).toBeGreaterThanOrEqual(afterRecovery);
+    expect(laterReport.companySourceDetail).not.toContain('urgent');
+  });
+
+  it('advances the stamp even when resolution finds nothing', async () => {
+    const db = temporaryDb();
+    seedPoisoned(db);
+    const discovery = new CountingDiscovery();
+
+    const report = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(db, fakeSecClient({}), discovery,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
+    );
+
+    // A resolver that cannot find this issuer must not retry forever.
+    expect(report.companySources.resolverVersion).toBe(RESOLVER_VERSION);
+  });
+
+  it('leaves an already-current issuer alone', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, 'https://acme.example.net/rss'); // stamped current
+    const discovery = new CountingDiscovery();
+
+    const report = await withCompanyFetch(
+      { 'https://acme.example.net/rss': RSS_BODY },
+      () =>
+        collectCatalystEvidence(db, fakeSecClient({}), discovery,
+          { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+          { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
+    );
+
+    expect(report.companySourceDetail).not.toContain('urgent');
+    expect(discovery.calls).toBe(0);
   });
 });

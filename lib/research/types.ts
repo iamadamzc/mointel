@@ -151,6 +151,17 @@ export interface CompanySourceRegistry {
    * the resolver stops being offered a turn at all.
    */
   lastDiscoveryMode: 'RESOLVER' | 'DISCOVERY' | null;
+  /**
+   * Which resolver implementation last processed this issuer.
+   *
+   * Rows written before the resolver was wired into production carry a stale
+   * value, and their populated lastDiscoveryAt would otherwise suppress the
+   * repair forever: the urgent path keys on never-attempted, and these issuers
+   * have all been attempted — by a code path that could not succeed. Bumping
+   * the version makes exactly those rows eligible for one recovery episode,
+   * without clearing a timestamp or naming a ticker.
+   */
+  resolverVersion: number | null;
 }
 
 export const EMPTY_COMPANY_SOURCES: CompanySourceRegistry = {
@@ -165,6 +176,7 @@ export const EMPTY_COMPANY_SOURCES: CompanySourceRegistry = {
   lastDiscoveryAt: null,
   lastDiscoveryFingerprint: null,
   lastDiscoveryMode: null,
+  resolverVersion: null,
 };
 
 /* ----------------------------------------------------------------- evidence */
