@@ -229,15 +229,51 @@ desk at `/`.
 
 ### What diagnostics reports
 
-Deployment (git SHA, uptime, UTC/ET time, server timezone) · market worker (SIP
-state, session, board, message ages, ranked/tracked counts, reconnects, last
-sanitized error) · research worker (health, queue, model names, SEC and
-interpreter configuration) · assessment scheduler (last, next, late flag,
-heartbeat) · Google Sheet (fetch time, cache age, staleness, row counts) ·
-database (schema version, sizes, WAL, journal mode, backups, disk) · server
-resources (memory, load, CPU count) · intelligence coverage (status counts,
-un-analysed Top N) · deterministic consistency checks · a bounded, sanitized
-recent-error list.
+**Deployment** — git SHA, node version, process and server uptime, UTC and ET
+time, server timezone.
+
+**Market worker** — health state, SIP connection and entitlement, session phase,
+trading date, active board, last whole-market message / bar / trade / quote and
+their ages, freshness state and thresholds, ranked / tracked / eligible /
+baseline counts, subscriptions, reconnect count, worker start time, last
+sanitized error.
+
+**Research worker** — health, queue, active jobs, jobs by status, recent
+completions, recent failures with sanitized errors, queue-to-accepted latency,
+SEC availability *as the worker last found it* (not merely "a key is set"),
+interpreter availability, and the research / escalation / change-detect model
+names. No keys, no prompts, no filing text.
+
+**Assessment scheduler** — state, last and next checkpoint with ET times, how
+many of today's ran late, most recent failure, scheduler heartbeat age, last
+error.
+
+**Google Sheet** — provider, fetch time, cache age, staleness, row counts,
+warnings.
+
+**Database** — schema version against the build's expectation, file and WAL
+size, journal mode, backup count and newest backup, free disk, and the most
+recent *recorded* integrity result. A full `PRAGMA integrity_check` is never run
+per request — on a 230 MB store that is a minutes-long read — so the migration
+owner records its `quick_check` on every start and the page reports when it was
+last asked and what the answer was.
+
+**Server resources** — memory, load average, CPU count, and a per-service state
+for web / market / research / assessments derived from heartbeats rather than
+`systemctl`. A process that exists and is not writing is the failure worth
+catching, and reading other processes' command lines on this box would mean
+reading an EnvironmentFile's worth of credentials.
+
+**Intelligence coverage** — counts by status, and any Top-N name still
+un-analysed while the engine is healthy.
+
+**Consistency checks** — session/board/trading-date agreement between the clock,
+the market worker and the scheduler; ranked names priced off the sheet rather
+than the feed; stale telemetry; duplicate checkpoints; overdue scheduler;
+snapshot rows with no parent assessment; schema drift; disk pressure.
+
+**Recent errors** — bounded to 20, sanitized, drawn from state the desk already
+records. Never raw journald.
 
 It reports no keys, no prompts, no filing text and no environment values, runs
 no integrity check, makes no model call, and queues no work. Tests assert the
