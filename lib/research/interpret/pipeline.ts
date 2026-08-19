@@ -14,6 +14,7 @@ import {
   readCurrentAnalysis,
   readSources,
   saveAnalysisVersion,
+  recordModelUsage,
 } from '../../market/store/researchRepo';
 import { computeEvidenceFingerprint } from '../fingerprint';
 import type { ResearchDossier } from '../types';
@@ -90,6 +91,10 @@ function addUsage(metrics: InterpretationMetrics, usage: InterpretUsage): void {
 export interface InterpretOptions {
   ticker: string;
   tradingDate: string;
+  /** The job this interpretation belongs to, for token attribution. */
+  jobId?: number | null;
+  /** Why the job existed, carried through so spend can be grouped by purpose. */
+  trigger?: string | null;
   priorHumanAnalysis?: SheetPriorAnalysis | null;
   /**
    * Normalised human conclusions for deterministic comparison. Supplying this
@@ -120,6 +125,30 @@ export async function interpretTicker(
   const ticker = options.ticker.trim().toUpperCase();
   const log = options.onLog ?? (() => undefined);
   const metrics = emptyMetrics();
+
+  /*
+   * Interpretation is where most of the day's tokens go, so each tier is
+   * recorded separately: a repair and an escalation cost very different things
+   * and were previously indistinguishable in the aggregate.
+   */
+  const noteUsage = (stage: string, model: string, usage: InterpretUsage) => {
+    try {
+      recordModelUsage(db, {
+        tradingDate: options.tradingDate,
+        at: new Date().toISOString(),
+        jobId: options.jobId ?? null,
+        ticker: options.ticker.trim().toUpperCase(),
+        model,
+        stage,
+        trigger: options.trigger ?? null,
+        inputTokens: usage.inputTokens,
+        cachedInputTokens: usage.cachedInputTokens,
+        outputTokens: usage.outputTokens,
+      });
+    } catch {
+      // Accounting must never take an interpretation down with it.
+    }
+  };
 
   const sources = readSources(db, ticker);
   const fingerprint = computeEvidenceFingerprint(sources);
@@ -175,6 +204,7 @@ export async function interpretTicker(
   const first = await interpreter.interpret(bundle);
   metrics.terraCalls += 1;
   addUsage(metrics, first.usage);
+  noteUsage('INTERPRETATION', first.model, first.usage);
   base.model = first.model;
 
   if (!first.dossier) {
@@ -202,6 +232,7 @@ export async function interpretTicker(
     metrics.repairCalls += 1;
     metrics.terraCalls += 1;
     addUsage(metrics, repair.usage);
+    noteUsage('REPAIR', repair.model, repair.usage);
     repaired = true;
 
     if (repair.dossier) {
@@ -266,6 +297,7 @@ export async function interpretTicker(
       : await escalationInterpreter.interpret(bundle);
     metrics.escalationCalls += 1;
     addUsage(metrics, escalation.usage);
+    noteUsage('ESCALATION', escalation.model, escalation.usage);
 
     if (escalation.dossier) {
       const escalatedValidation = validateDossier(escalation.dossier, bundle);

@@ -47,6 +47,8 @@ export interface ResolveOptions {
 
 export interface ResolveResult {
   registry: CompanySourceRegistry;
+  /** Token counts for the resolver call, when one was made and reported. */
+  usage?: import('./discovery').ProviderUsage | null;
   /** True when resolution actually ran rather than reusing stored values. */
   resolved: boolean;
   modelCalls: number;
@@ -175,6 +177,7 @@ export async function resolveCompanySources(
       registry,
       resolved: true,
       modelCalls: result.modelCalls,
+      usage: result.usage ?? null,
       detail: 'no durable company source located',
     };
   }
@@ -183,7 +186,7 @@ export async function resolveCompanySources(
   try {
     origin = new URL(durable.url);
   } catch {
-    return { registry: stored, resolved: true, modelCalls: result.modelCalls, detail: 'bad URL' };
+    return { registry: stored, resolved: true, modelCalls: result.modelCalls, usage: result.usage ?? null, detail: 'bad URL' };
   }
 
   const registry: CompanySourceRegistry = {
@@ -212,6 +215,7 @@ export async function resolveCompanySources(
     registry,
     resolved: true,
     modelCalls: result.modelCalls,
+    usage: result.usage ?? null,
     detail: `located ${durable.shape === 'FEED' ? 'feed' : 'newsroom index'}`,
   };
 }

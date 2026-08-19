@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 17;
+export const SCHEMA_VERSION = 18;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -221,6 +221,40 @@ CREATE TABLE IF NOT EXISTS research_jobs (
   -- and the resolved location only.
   collector_report     TEXT
 );
+CREATE TABLE IF NOT EXISTS research_recovery_episodes (
+  ticker           TEXT NOT NULL,
+  resolver_version INTEGER NOT NULL,
+  job_id           INTEGER,
+  created_at       TEXT NOT NULL,
+  PRIMARY KEY (ticker, resolver_version)
+);
+
+CREATE TABLE IF NOT EXISTS research_qualification_episodes (
+  ticker       TEXT NOT NULL,
+  trading_date TEXT NOT NULL,
+  entered_at   TEXT NOT NULL,
+  job_id       INTEGER,
+  created_at   TEXT NOT NULL,
+  PRIMARY KEY (ticker, trading_date, entered_at)
+);
+
+CREATE TABLE IF NOT EXISTS model_usage (
+  id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+  trading_date        TEXT NOT NULL,
+  at                  TEXT NOT NULL,
+  job_id              INTEGER,
+  ticker              TEXT,
+  model               TEXT NOT NULL,
+  stage               TEXT NOT NULL,
+  trigger             TEXT,
+  calls               INTEGER NOT NULL DEFAULT 1,
+  input_tokens        INTEGER,
+  cached_input_tokens INTEGER,
+  output_tokens       INTEGER,
+  counts_available    INTEGER NOT NULL DEFAULT 1
+);
+CREATE INDEX IF NOT EXISTS idx_model_usage_date ON model_usage (trading_date);
+
 CREATE INDEX IF NOT EXISTS idx_research_jobs_status
   ON research_jobs (trading_date, status, priority DESC);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_research_jobs_live

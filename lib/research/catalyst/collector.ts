@@ -40,6 +40,8 @@ import type {
 import { EMPTY_COMPANY_SOURCES, SOURCE_AUTHORITY_RANK } from '../types';
 import type { SecClient } from '../sec/client';
 import { resolveCompanySources, hasUsableSource } from './irRegistry';
+import { recordModelUsage } from '../../market/store/researchRepo';
+import type { ProviderUsage } from './discovery';
 import type { CompanySourceResolverProvider } from './companySourceContract';
 
 /*
@@ -107,6 +109,15 @@ export interface CatalystCollectionInput {
   relevant?: boolean;
   /** A demand-state change permitting discovery ahead of the interval. */
   materialEvent?: MaterialDemandEvent | null;
+  /**
+   * This job holds the durable recovery claim for the current resolver version.
+   *
+   * Set by the worker from the job's trigger rather than derived here, so a
+   * restart cannot re-authorise work whose claim was already spent.
+   */
+  recoveryEpisode?: boolean;
+  /** The job this collection belongs to, so token spend can be attributed. */
+  jobId?: number | null;
   /** Forces web discovery to be considered regardless of spacing. */
   forceDiscovery?: boolean;
   /** Skips web discovery entirely; used to prove the zero-model path. */
@@ -143,7 +154,7 @@ export interface CatalystCollectionReport {
   discoveryRan: boolean;
   discoveryDetail: string;
   /** Which paid tier ran this pass, when one did. */
-  discoveryMode: 'RESOLVER' | 'DISCOVERY' | null;
+  discoveryMode: 'RESOLVER' | 'DISCOVERY' | 'RECOVERY' | null;
   /** What issuer-source resolution did, or why it was not offered a turn. */
   companySourceDetail: string;
   /** Why discovery ran, when it did. */
@@ -249,6 +260,32 @@ export async function collectCatalystEvidence(
   const startedAt = Date.now();
   const now = input.now ?? new Date();
   const ticker = input.ticker.trim().toUpperCase();
+
+  /*
+   * Attribute every paid call to a stage and a purpose.
+   *
+   * Written here rather than inside the provider because only the collector
+   * knows why the call was made — the same discovery request is worth very
+   * different things behind a material event and behind an interval poll.
+   */
+  const noteUsage = (stage: string, usage: ProviderUsage | null | undefined) => {
+    try {
+      recordModelUsage(db, {
+        tradingDate: input.tradingDate ?? now.toISOString().slice(0, 10),
+        at: now.toISOString(),
+        jobId: input.jobId ?? null,
+        ticker,
+        model: usage?.model ?? 'unknown',
+        stage,
+        trigger: input.recoveryEpisode ? 'RESOLVER_RECOVERY' : (input.materialEvent?.kind ?? null),
+        inputTokens: usage?.inputTokens ?? null,
+        cachedInputTokens: usage?.cachedInputTokens ?? null,
+        outputTokens: usage?.outputTokens ?? null,
+      });
+    } catch {
+      // Accounting must never take a collection down with it.
+    }
+  };
   const warnings: string[] = [];
   const inaccessible: CatalystCollectionReport['inaccessible'] = [];
 
@@ -398,24 +435,38 @@ export async function collectCatalystEvidence(
     discovery.available &&
     !input.disableDiscovery;
 
+  /*
+   * Urgency is a demand event, and only a demand event.
+   *
+   * staleResolver used to satisfy this on its own, which meant that after a
+   * resolver-version bump every collection in the desk printed "urgent" and
+   * took the ahead-of-interval branch — 170 of them on 18 August, none carrying
+   * a trigger. Recovery is real work but it is not urgent work, so it now has
+   * its own branch below and its own mode.
+   */
   const firstQualification =
-    (registry.lastDiscoveryAt === null || staleResolver) &&
-    // A MATERIAL demand change, not merely a first look. Background polling of
-    // a quiet name is never urgent, and treating it as such would buy a model
-    // call for every ticker the desk has ever glanced at. A recovery episode is
-    // the one exception: those issuers were already judged worth researching by
-    // the path that failed them.
-    ((input.materialEvent ?? null) !== null || staleResolver) &&
+    registry.lastDiscoveryAt === null &&
+    (input.materialEvent ?? null) !== null &&
     input.relevant !== false &&
     discovery.available &&
     !input.disableDiscovery;
 
+  /*
+   * The one recovery episode this issuer is entitled to at this version.
+   *
+   * Authorised by the queue, which holds the durable claim, rather than
+   * inferred here from registry state — inferring it is what let a restart
+   * re-open work that had already been done.
+   */
+  const recoveryEpisode = input.recoveryEpisode === true && staleResolver;
+
   let urgentResolutionRan = false;
   let urgentResolutionResolved = false;
 
-  if (firstQualification && !usableCompanySourceBefore) {
+  if ((firstQualification || recoveryEpisode) && !usableCompanySourceBefore) {
     urgentResolutionRan = true;
-    report.discoveryMode = 'RESOLVER';
+    report.discoveryMode = recoveryEpisode && !firstQualification ? 'RECOVERY' : 'RESOLVER';
+    const label = recoveryEpisode && !firstQualification ? 'recovery' : 'urgent';
     try {
       const resolution = await resolveCompanySources(db, resolver ?? UNAVAILABLE_RESOLVER, {
         ticker,
@@ -425,17 +476,18 @@ export async function collectCatalystEvidence(
       });
       Object.assign(registry, resolution.registry);
       report.modelCalls += resolution.modelCalls;
-      report.companySourceDetail = `urgent: ${resolution.detail}`;
+      if (resolution.modelCalls > 0) noteUsage(label === 'recovery' ? 'RECOVERY' : 'RESOLVER', resolution.usage);
+      report.companySourceDetail = `${label}: ${resolution.detail}`;
       urgentResolutionResolved = Boolean(
         hasUsableSource(registry),
       );
     } catch (error) {
       warnings.push(
-        `urgent issuer source resolution failed: ${
+        `${label} issuer source resolution failed: ${
           error instanceof Error ? error.name : 'error'
         }`,
       );
-      report.companySourceDetail = 'urgent resolution failed';
+      report.companySourceDetail = `${label} resolution failed`;
     }
   }
 
@@ -585,6 +637,18 @@ export async function collectCatalystEvidence(
   // The interval then governs the next look.
   const justResolved = changedThisRun && hasRecentCanonical;
 
+  /*
+   * Deliberately NOT gated on a stored negative resolver result.
+   *
+   * Suppressing interval discovery for issuers whose newsroom could not be
+   * located would have removed the path that actually found XOS: its Air Force
+   * release arrived on an INTERVAL discovery pass, not a material one, months
+   * after the resolver had given up on its Squarespace site. "We cannot find
+   * where you publish" and "nothing was published" are different questions, and
+   * conflating them would blind the desk to exactly the small caps that need
+   * it most. The 170 wasted calls were recovery-driven, and bounding recovery
+   * removes them without touching catalyst freshness.
+   */
   const discoveryNeeded =
     !input.disableDiscovery &&
     discovery.available &&
@@ -631,6 +695,7 @@ export async function collectCatalystEvidence(
       });
       Object.assign(registry, resolution.registry);
       report.modelCalls += resolution.modelCalls;
+      if (resolution.modelCalls > 0) noteUsage('RESOLVER', resolution.usage);
       report.companySourceDetail = resolution.detail;
       report.discoveryRan = resolution.resolved;
       report.discoveryDetail = `issuer source resolution: ${resolution.detail}`;
@@ -683,6 +748,7 @@ export async function collectCatalystEvidence(
     report.discoveryRan = result.ran;
     report.discoveryDetail = result.detail;
     report.modelCalls += result.modelCalls;
+    if (result.modelCalls > 0) noteUsage('DISCOVERY', result.usage);
 
     const discovered: NewResearchSource[] = result.sources.map((source) => ({
       ticker,

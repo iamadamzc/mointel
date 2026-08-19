@@ -1264,12 +1264,17 @@ describe('recovery for issuers poisoned by the old resolver', () => {
       collectCatalystEvidence(db, fakeSecClient({}), discovery,
         resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
-        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
+        // Authorised by the queue, which holds the durable claim. The collector
+        // no longer decides this for itself: inferring it from registry state
+        // is what let five restarts re-open work that was already done.
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', recoveryEpisode: true }),
     );
 
     // Nothing spiked; it is eligible because the code that judged it could not
-    // have succeeded.
-    expect(report.companySourceDetail).toContain('urgent');
+    // have succeeded. It is recovery work, and it says so — not "urgent".
+    expect(report.discoveryMode).toBe('RECOVERY');
+    expect(report.companySourceDetail).toContain('recovery');
+    expect(report.companySourceDetail).not.toContain('urgent');
   });
 
   it('never repeats the episode, however many polls or restarts follow', async () => {
@@ -1312,7 +1317,7 @@ describe('recovery for issuers poisoned by the old resolver', () => {
       collectCatalystEvidence(db, fakeSecClient({}), discovery,
         resolver,
         { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
-        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17' }),
+        { ticker: 'ACME', now: NOW, tradingDate: '2026-08-17', recoveryEpisode: true }),
     );
 
     // A resolver that cannot find this issuer must not retry forever.

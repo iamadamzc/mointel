@@ -45,6 +45,7 @@ import {
   claimQueuedJobs,
   clearRetryState,
   completeJob,
+  RECOVERY_TRIGGER,
   markJobStage,
   recordCollectorReport,
   readBoardCandidates,
@@ -129,9 +130,6 @@ async function main(): Promise<void> {
   }
 
   let cycles = 0;
-  // Tickers this process has already given a recovery slot; the durable guard
-  // is the resolver stamp written during collection.
-  const recoveryAttempted = new Set<string>();
   let lastBoard: string | null = null;
   let lastCompletedTicker: string | null = null;
   let lastCompletedAt: string | null = null;
@@ -241,7 +239,6 @@ async function main(): Promise<void> {
       tradingDate,
       resolverVersion: RESOLVER_VERSION,
       now: new Date(),
-      attempted: recoveryAttempted,
     }).filter((item) => item.queued)) {
       log(`[research] ${recovered.ticker} queued for resolver recovery`);
     }
@@ -318,7 +315,9 @@ async function main(): Promise<void> {
               // Narrowed against the union rather than cast: an unrecognised
               // value in the column must read as "no material episode", not as
               // a trigger the collector has never heard of.
-              materialEvent: MATERIAL_TRIGGERS.has(job.trigger ?? '')
+              jobId: job.id,
+            recoveryEpisode: job.trigger === RECOVERY_TRIGGER,
+            materialEvent: MATERIAL_TRIGGERS.has(job.trigger ?? '')
                 ? {
                     kind: job.trigger as MaterialDemandEvent['kind'],
                     detail: job.reason,

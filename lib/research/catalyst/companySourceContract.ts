@@ -44,6 +44,8 @@ export interface CompanySourceRequest {
 
 export interface CompanySourceResolution {
   candidates: CompanySourceCandidate[];
+  /** Null when no call was made, or when the provider returned no counts. */
+  usage?: import('./discovery').ProviderUsage | null;
   modelCalls: number;
   detail: string;
 }

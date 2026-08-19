@@ -10,6 +10,7 @@
 
 import type { MarketDatabase } from '../market/store/db';
 import {
+  claimQualificationEpisode,
   enqueueResearchJob,
   readCurrentAnalysis,
   readLatestJobForTicker,
@@ -222,8 +223,25 @@ export function queueDiscoveryResearch(
        * and the collector must not have to guess later what this was about.
        * Focus-list refreshes and ordinary re-polls carry no trigger.
        */
+      /*
+       * Only the crossing itself qualifies.
+       *
+       * The old test was "is it on the board now", which every poll satisfies
+       * while a ticker sits there. CXAI climbing 12 → 10 → 8 was three separate
+       * ENTERED_TOP_N jobs in 173 seconds, each buying a model call, for one
+       * qualification. Claiming the episode by its entry timestamp collapses
+       * those to one and still lets a genuine exit and re-entry — which
+       * produces a new timestamp — qualify again.
+       */
       trigger:
-        candidate.top12EnteredAt !== null && candidate.rank <= options.autoRank
+        candidate.top12EnteredAt !== null &&
+        candidate.rank <= options.autoRank &&
+        claimQualificationEpisode(db, {
+          ticker: candidate.ticker,
+          tradingDate: options.tradingDate,
+          enteredAt: candidate.top12EnteredAt,
+          createdAt: queuedAt,
+        })
           ? 'ENTERED_TOP_N'
           : null,
     });

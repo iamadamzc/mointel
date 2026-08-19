@@ -39,8 +39,28 @@ export interface OpenAiDiscoveryOptions {
 
 interface ResponsesPayload {
   output?: Array<{ type?: string; content?: Array<{ type?: string; text?: string }> }>;
-  usage?: { input_tokens?: number; output_tokens?: number };
+  usage?: {
+    input_tokens?: number;
+    output_tokens?: number;
+    input_tokens_details?: { cached_tokens?: number };
+  };
   status?: string;
+}
+
+/**
+ * Token counts as the provider reported them.
+ *
+ * Returns null when the response carried none, so an absent count reads as
+ * unavailable downstream rather than as zero.
+ */
+function usageOf(payload: ResponsesPayload, model: string) {
+  if (payload.usage?.input_tokens === undefined) return null;
+  return {
+    model,
+    inputTokens: payload.usage.input_tokens ?? null,
+    cachedInputTokens: payload.usage.input_tokens_details?.cached_tokens ?? null,
+    outputTokens: payload.usage.output_tokens ?? null,
+  };
 }
 
 function buildPrompt(request: DiscoveryRequest): string {
@@ -174,6 +194,7 @@ export class OpenAiDiscoveryProvider implements CatalystSourceDiscoveryProvider 
 
     return {
       sources: accepted,
+      usage: usageOf(payload, this.model),
       ran: true,
       modelCalls: 1,
       detail: `located ${accepted.length} candidate source(s)${
@@ -269,6 +290,7 @@ export class OpenAiCompanySourceResolver implements CompanySourceResolverProvide
     const candidates = parseCandidates(parsed);
     return {
       candidates,
+      usage: usageOf(payload, this.model),
       modelCalls: 1,
       detail: `offered ${candidates.length} collection point(s)`,
     };

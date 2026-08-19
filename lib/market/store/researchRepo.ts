@@ -1052,3 +1052,244 @@ export function readRecentCollectorReports(
   }
   return reports;
 }
+
+/* ------------------------------------------------------------- episodes */
+
+/**
+ * Claims one recovery episode for a ticker at a resolver version.
+ *
+ * The claim and the job are written in one transaction, so the two can never
+ * disagree: a marked attempt always has a job, and a recovery job always has a
+ * mark. Both halves matter. The old in-process Set lost every mark on restart —
+ * five restarts on 18 August turned 67 intended episodes into 239 jobs — and a
+ * mark without a job would strand an issuer permanently.
+ *
+ * Returns null when this ticker already had its episode at this version, or
+ * when a live job for the ticker already exists. A terminal COMPLETE, PARTIAL
+ * or FAILED does NOT release the claim: a 429 is a reason to retry the job, not
+ * a reason to invent another one.
+ */
+export function claimRecoveryEpisode(
+  db: MarketDatabase,
+  request: { ticker: string; resolverVersion: number; tradingDate: string; queuedAt: string },
+): number | null {
+  const claim = db.transaction(() => {
+    const marked = db
+      .prepare(
+        `INSERT OR IGNORE INTO research_recovery_episodes
+           (ticker, resolver_version, job_id, created_at)
+         VALUES (?, ?, NULL, ?)`,
+      )
+      .run(request.ticker, request.resolverVersion, request.queuedAt);
+
+    if (marked.changes === 0) return null;
+
+    const jobId = enqueueResearchJob(db, {
+      ticker: request.ticker,
+      tradingDate: request.tradingDate,
+      priority: 0,
+      reason: 'resolver recovery',
+      queuedAt: request.queuedAt,
+      top12At: request.queuedAt,
+      trigger: RECOVERY_TRIGGER,
+    });
+
+    if (jobId === null) {
+      // A live job already exists. Release the claim so this ticker still gets
+      // its episode once that job clears, rather than losing it to a race.
+      db.prepare(
+        'DELETE FROM research_recovery_episodes WHERE ticker = ? AND resolver_version = ?',
+      ).run(request.ticker, request.resolverVersion);
+      return null;
+    }
+
+    db.prepare(
+      'UPDATE research_recovery_episodes SET job_id = ? WHERE ticker = ? AND resolver_version = ?',
+    ).run(jobId, request.ticker, request.resolverVersion);
+
+    return jobId;
+  });
+
+  return claim();
+}
+
+/** The trigger recovery jobs carry. Deliberately not a material demand event. */
+export const RECOVERY_TRIGGER = 'RESOLVER_RECOVERY';
+
+/** True when this ticker already used its episode at this resolver version. */
+export function recoveryEpisodeExists(
+  db: MarketDatabase,
+  ticker: string,
+  resolverVersion: number,
+): boolean {
+  const row = db
+    .prepare(
+      'SELECT 1 AS hit FROM research_recovery_episodes WHERE ticker = ? AND resolver_version = ?',
+    )
+    .get(ticker, resolverVersion) as { hit: number } | undefined;
+  return row !== undefined;
+}
+
+/**
+ * Claims a board-qualification episode, keyed by the crossing itself.
+ *
+ * `enteredAt` is the moment the ticker crossed into the ranked board, so a name
+ * climbing 12 → 10 → 8 presents the same value three times and qualifies once.
+ * A genuine exit and re-entry produces a new `enteredAt`, and therefore a new
+ * episode. Persisted because rank drift outlives any process: CXAI produced
+ * three ENTERED_TOP_N jobs in 173 seconds while never leaving the board.
+ */
+export function claimQualificationEpisode(
+  db: MarketDatabase,
+  request: { ticker: string; tradingDate: string; enteredAt: string; createdAt: string },
+): boolean {
+  const result = db
+    .prepare(
+      `INSERT OR IGNORE INTO research_qualification_episodes
+         (ticker, trading_date, entered_at, job_id, created_at)
+       VALUES (?, ?, ?, NULL, ?)`,
+    )
+    .run(request.ticker, request.tradingDate, request.enteredAt, request.createdAt);
+  return result.changes > 0;
+}
+
+/* --------------------------------------------------------- token accounting */
+
+export interface ModelUsageRecord {
+  tradingDate: string;
+  at: string;
+  jobId?: number | null;
+  ticker?: string | null;
+  model: string;
+  /** RESOLVER, DISCOVERY, INTERPRETATION, REPAIR or ESCALATION. */
+  stage: string;
+  trigger?: string | null;
+  calls?: number;
+  inputTokens?: number | null;
+  cachedInputTokens?: number | null;
+  outputTokens?: number | null;
+}
+
+/**
+ * Records what one model call cost.
+ *
+ * A provider that does not return counts is recorded with counts_available = 0
+ * rather than a guess, so a stage with no numbers reads as unavailable instead
+ * of free.
+ */
+export function recordModelUsage(db: MarketDatabase, usage: ModelUsageRecord): void {
+  const available =
+    usage.inputTokens !== null && usage.inputTokens !== undefined ? 1 : 0;
+  db.prepare(
+    `INSERT INTO model_usage
+       (trading_date, at, job_id, ticker, model, stage, trigger, calls,
+        input_tokens, cached_input_tokens, output_tokens, counts_available)
+     VALUES (@tradingDate, @at, @jobId, @ticker, @model, @stage, @trigger, @calls,
+             @inputTokens, @cachedInputTokens, @outputTokens, @available)`,
+  ).run({
+    tradingDate: usage.tradingDate,
+    at: usage.at,
+    jobId: usage.jobId ?? null,
+    ticker: usage.ticker ?? null,
+    model: usage.model,
+    stage: usage.stage,
+    trigger: usage.trigger ?? null,
+    calls: usage.calls ?? 1,
+    inputTokens: usage.inputTokens ?? null,
+    cachedInputTokens: usage.cachedInputTokens ?? null,
+    outputTokens: usage.outputTokens ?? null,
+    available,
+  });
+}
+
+export interface TokenBreakdownRow {
+  key: string;
+  calls: number;
+  inputTokens: number;
+  cachedInputTokens: number;
+  outputTokens: number;
+  /** Calls whose provider returned no counts. */
+  unavailableCalls: number;
+}
+
+/** Groups the day's spend by one dimension of `model_usage`. */
+function tokensBy(db: MarketDatabase, tradingDate: string, expression: string): TokenBreakdownRow[] {
+  return db
+    .prepare(
+      `SELECT ${expression} AS key,
+              COUNT(*) AS calls,
+              COALESCE(SUM(input_tokens), 0) AS inputTokens,
+              COALESCE(SUM(cached_input_tokens), 0) AS cachedInputTokens,
+              COALESCE(SUM(output_tokens), 0) AS outputTokens,
+              SUM(CASE WHEN counts_available = 0 THEN 1 ELSE 0 END) AS unavailableCalls
+         FROM model_usage
+        WHERE trading_date = ?
+        GROUP BY key
+        ORDER BY inputTokens DESC`,
+    )
+    .all(tradingDate) as TokenBreakdownRow[];
+}
+
+export interface DailyTokenReport {
+  tradingDate: string;
+  total: TokenBreakdownRow;
+  byModel: TokenBreakdownRow[];
+  byStage: TokenBreakdownRow[];
+  byTrigger: TokenBreakdownRow[];
+  byFingerprint: TokenBreakdownRow[];
+  bySourcesAdded: TokenBreakdownRow[];
+  /** Spend on jobs that added no source AND moved no fingerprint. */
+  wasted: TokenBreakdownRow;
+}
+
+/**
+ * What the desk spent today, and how much of it bought nothing.
+ *
+ * The last part is the reason this exists. On 18 August the day's model calls
+ * were visible only as a count, so 174 calls that added no source and changed
+ * no fingerprint looked identical to the five that did.
+ */
+export function readDailyTokenReport(db: MarketDatabase, tradingDate: string): DailyTokenReport {
+  const outcome = `(SELECT j.collector_report FROM research_jobs j WHERE j.id = model_usage.job_id)`;
+  const changed = `json_extract(${outcome}, '$.fingerprintChanged')`;
+  const added = `json_extract(${outcome}, '$.sourcesAdded')`;
+
+  const [total] = tokensBy(db, tradingDate, `'total'`);
+  const [wasted] = db
+    .prepare(
+      `SELECT 'unproductive' AS key,
+              COUNT(*) AS calls,
+              COALESCE(SUM(input_tokens), 0) AS inputTokens,
+              COALESCE(SUM(cached_input_tokens), 0) AS cachedInputTokens,
+              COALESCE(SUM(output_tokens), 0) AS outputTokens,
+              SUM(CASE WHEN counts_available = 0 THEN 1 ELSE 0 END) AS unavailableCalls
+         FROM model_usage
+        WHERE trading_date = ?
+          AND COALESCE(${changed}, 0) = 0
+          AND COALESCE(${added}, 0) = 0`,
+    )
+    .all(tradingDate) as TokenBreakdownRow[];
+
+  return {
+    tradingDate,
+    total: total ?? emptyTokenRow('total'),
+    byModel: tokensBy(db, tradingDate, 'model'),
+    byStage: tokensBy(db, tradingDate, 'stage'),
+    byTrigger: tokensBy(db, tradingDate, `COALESCE(trigger, 'none')`),
+    byFingerprint: tokensBy(
+      db,
+      tradingDate,
+      `CASE WHEN ${changed} IS NULL THEN 'unknown' WHEN ${changed} = 1 THEN 'changed' ELSE 'unchanged' END`,
+    ),
+    bySourcesAdded: tokensBy(
+      db,
+      tradingDate,
+      `CASE WHEN ${added} IS NULL THEN 'unknown' WHEN ${added} > 0 THEN 'sources_added' ELSE 'none_added' END`,
+    ),
+    wasted: wasted ?? emptyTokenRow('unproductive'),
+  };
+}
+
+function emptyTokenRow(key: string): TokenBreakdownRow {
+  return { key, calls: 0, inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, unavailableCalls: 0 };
+}

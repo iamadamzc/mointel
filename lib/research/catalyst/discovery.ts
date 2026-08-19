@@ -47,8 +47,18 @@ export interface DiscoveryRequest {
   knownUrls: string[];
 }
 
+/** What one model call cost, when the provider reports it. */
+export interface ProviderUsage {
+  model: string;
+  inputTokens: number | null;
+  cachedInputTokens: number | null;
+  outputTokens: number | null;
+}
+
 export interface DiscoveryResult {
   sources: DiscoveredSource[];
+  /** Null when no call was made, or when the provider returned no counts. */
+  usage?: ProviderUsage | null;
   /** True when the provider ran; false when unavailable or skipped. */
   ran: boolean;
   /** Model calls actually issued by this request. */

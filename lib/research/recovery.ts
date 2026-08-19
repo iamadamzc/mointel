@@ -3,26 +3,24 @@
  *
  * When the resolver changes, issuers already carrying a `lastDiscoveryAt` are
  * suppressed by the ordinary discovery interval: the collector sees a recent
- * attempt and declines to spend another call. The collector's own staleness
- * check lifts that suppression, but only for a ticker that is actually being
- * collected — and collection only happens for names the board is currently
- * ranking.
+ * attempt and declines to spend another call. This sweep gives each stranded
+ * issuer exactly one episode at the new version.
  *
- * That leaves a gap the XOS repair made visible. A name can spike, be
- * researched against the old resolver, then fade off the board within the hour.
- * It is still on today's list, still holding a dossier a trader may read, and
- * it will never be collected again today — so it never receives the corrected
- * pass. ENRD is exactly that: researched at 07:00, down 15.6% by 10:00, no
- * longer ranked, still describing a July catalyst on a day it announced a
- * partnership.
+ * "Exactly one" has to survive restarts, and originally it did not. The claim
+ * lived in a Set inside the worker's main(), so every restart cleared it and
+ * re-opened all 67 tickers. Five restarts on 18 August — four of them
+ * deployments — turned an intended 67 episodes into 239 jobs and 179 model
+ * calls, of which 174 added nothing. The claim is now a row in the database,
+ * keyed by ticker and resolver version, written in the same transaction as the
+ * job it authorises.
  *
- * So the sweep is deliberately scoped to names already researched today rather
- * than to the market universe: the population is small, already known, and the
- * only one where a stale dossier is being shown to anyone.
+ * Scope is names already researched today rather than the market universe: the
+ * population is small, already known, and the only one where a stale dossier is
+ * being shown to anyone.
  */
 
 import type { MarketDatabase } from '../market/store/db';
-import { enqueueResearchJob, readIssuer } from '../market/store/researchRepo';
+import { claimRecoveryEpisode, readIssuer } from '../market/store/researchRepo';
 import { EMPTY_COMPANY_SOURCES, type CompanySourceRegistry } from './types';
 
 export interface RecoveryDecision {
@@ -37,17 +35,12 @@ export interface RecoveryOptions {
   resolverVersion: number;
   now: Date;
   /**
-   * Most jobs to create per sweep. The cap is the rate limit: recovery competes
-   * with live research for the same worker slots, and a name that faded is by
-   * definition less urgent than one the board is ranking now.
+   * Most jobs to create per sweep. The cap is the rate limit, but it was never
+   * the bound that mattered: the loop polls every five seconds, so two per
+   * cycle is twenty-four a minute. The durable claim is what actually bounds
+   * this; the cap only smooths it.
    */
   limit?: number;
-  /**
-   * Tickers already attempted by this process. The durable guard is the
-   * resolver stamp written during collection; this only stops a retry storm in
-   * the window before that stamp lands, or if collection cannot stamp at all.
-   */
-  attempted?: Set<string>;
 }
 
 function registryFor(db: MarketDatabase, ticker: string): CompanySourceRegistry {
@@ -81,44 +74,40 @@ export function queueResolverRecovery(
   options: RecoveryOptions,
 ): RecoveryDecision[] {
   const limit = options.limit ?? 2;
-  const attempted = options.attempted ?? new Set<string>();
   const queuedAt = options.now.toISOString();
 
+  /*
+   * Candidates are filtered in SQL against claims already made, so a sweep on a
+   * freshly started worker does no work at all when nothing changed — the case
+   * that used to cost a full re-sweep every deployment.
+   */
   const rows = db
     .prepare(
-      `SELECT ticker, MAX(queued_at) AS last_queued
-         FROM research_jobs
-        WHERE trading_date = ?
-        GROUP BY ticker
+      `SELECT j.ticker AS ticker, MAX(j.queued_at) AS last_queued
+         FROM research_jobs j
+         LEFT JOIN research_recovery_episodes e
+           ON e.ticker = j.ticker AND e.resolver_version = ?
+        WHERE j.trading_date = ? AND e.ticker IS NULL
+        GROUP BY j.ticker
         ORDER BY last_queued DESC`,
     )
-    .all(options.tradingDate) as Array<{ ticker: string }>;
+    .all(options.resolverVersion, options.tradingDate) as Array<{ ticker: string }>;
 
   const decisions: RecoveryDecision[] = [];
 
   for (const row of rows) {
     if (decisions.length >= limit) break;
-    if (attempted.has(row.ticker)) continue;
     if (!needsResolverRecovery(registryFor(db, row.ticker), options.resolverVersion)) continue;
 
-    attempted.add(row.ticker);
-
-    /*
-     * No trigger. Recovery is not a material demand episode, and labelling it
-     * as one would buy an ahead-of-interval model call the cost tests exist to
-     * prevent. The collector's staleness check is what lifts the interval here.
-     */
-    const jobId = enqueueResearchJob(db, {
+    const jobId = claimRecoveryEpisode(db, {
       ticker: row.ticker,
+      resolverVersion: options.resolverVersion,
       tradingDate: options.tradingDate,
-      priority: 0,
-      reason: 'resolver recovery',
       queuedAt,
-      top12At: queuedAt,
-      trigger: null,
     });
 
-    decisions.push({ ticker: row.ticker, queued: jobId !== null, jobId });
+    if (jobId === null) continue;
+    decisions.push({ ticker: row.ticker, queued: true, jobId });
   }
 
   return decisions;

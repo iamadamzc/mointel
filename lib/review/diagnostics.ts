@@ -40,6 +40,7 @@ import {
 import {
   countJobsByStatus,
   readJobsForDate,
+  readDailyTokenReport,
   readRecentCollectorReports,
   readResearchHealth,
 } from '../market/store/researchRepo';
@@ -406,6 +407,14 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
       retries: job.retryCount,
       error: sanitize(job.error, 160),
     })),
+    /*
+     * The day's model spend, and how much of it bought nothing.
+     *
+     * A call count alone hid the shape of the problem: 179 recovery calls read
+     * the same as the 5 useful ones. Counts come from the provider or are
+     * marked unavailable — never estimated.
+     */
+    tokens: store ? readDailyTokenReport(store, discovery.tradingDate) : null,
     /*
      * What the collector did, readable without an SSH session.
      *
