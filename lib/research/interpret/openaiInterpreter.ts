@@ -12,6 +12,7 @@
  */
 
 import type { ModelConfig } from '../config';
+import { describeFailure, readProviderFailure } from '../providerError';
 import type { ResearchDossier } from '../types';
 import type { ResearchEvidenceBundle } from './bundle';
 import {
@@ -244,13 +245,16 @@ export class OpenAiInterpreter implements ResearchInterpreter {
       });
 
       if (!response.ok) {
-        // Status only: the body can echo the prompt, which carries evidence.
+        // Code and type only. The message can echo the prompt, which carries
+        // evidence; the code cannot, and without it an exhausted balance is
+        // indistinguishable from a rate limit.
+        const failure = await readProviderFailure(response);
         return {
           dossier: null,
           model: this.model,
           usage: empty,
           durationMs: Date.now() - startedAt,
-          error: `HTTP ${response.status}`,
+          error: describeFailure(failure),
         };
       }
       payload = (await response.json()) as ResponsesPayload;

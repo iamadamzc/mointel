@@ -26,6 +26,7 @@ import {
   type CompanySourceResolution,
   type CompanySourceResolverProvider,
 } from './companySourceContract';
+import { describeFailure, readProviderFailure } from '../providerError';
 
 const RESPONSES_URL = 'https://api.openai.com/v1/responses';
 
@@ -148,13 +149,14 @@ export class OpenAiDiscoveryProvider implements CatalystSourceDiscoveryProvider 
       });
 
       if (!response.ok) {
-        // Status only. The response body can echo request content, and this
-        // path is logged.
+        // Code and type only. The message can echo request content; the code
+        // is what separates "slow down" from "the account is empty".
+        const failure = await readProviderFailure(response);
         return {
           sources: [],
           ran: true,
           modelCalls: 1,
-          detail: `discovery failed: HTTP ${response.status}`,
+          detail: `discovery failed: ${describeFailure(failure)}`,
         };
       }
 
@@ -258,9 +260,9 @@ export class OpenAiCompanySourceResolver implements CompanySourceResolverProvide
         signal: this.options.timeoutMs ? AbortSignal.timeout(this.options.timeoutMs) : undefined,
       });
 
-      // Status only; the body can echo request content and this path is logged.
       if (!response.ok) {
-        return { candidates: [], modelCalls: 1, detail: `resolver failed: HTTP ${response.status}` };
+        const failure = await readProviderFailure(response);
+        return { candidates: [], modelCalls: 1, detail: `resolver failed: ${describeFailure(failure)}` };
       }
 
       payload = (await response.json()) as ResponsesPayload;
