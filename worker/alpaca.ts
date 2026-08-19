@@ -58,15 +58,30 @@ async function main(): Promise<void> {
     logger.info(`[alpaca] ${access.detail}`);
   }
 
-  const universe = await runtime.ensureUniverse();
-  await runtime.refreshSheetSymbols();
+  /*
+   * Session-scoped bootstrap.
+   *
+   * Named because it runs twice: once here, and again whenever the calendar
+   * moves the desk onto a new trading date. A long-lived worker used to do this
+   * only at startup, so on 19 August it streamed a whole premarket into the
+   * 18th — right ranks, right prices, wrong day.
+   */
+  const bootstrapTradingDate = async () => {
+    const universe = await runtime.ensureUniverse();
+    await runtime.refreshSheetSymbols();
 
-  const pinned = runtime.pinnedSheetSymbols;
-  const baselineSymbols = universe.length > 0 ? universe : pinned;
-  await runtime.ensureBaselines(baselineSymbols);
-  await runtime.bootstrapSession(pinned);
-  runtime.pruneRetention();
-  runtime.flush();
+    const pinned = runtime.pinnedSheetSymbols;
+    const baselineSymbols = universe.length > 0 ? universe : pinned;
+    await runtime.ensureBaselines(baselineSymbols);
+    await runtime.bootstrapSession(pinned);
+    runtime.pruneRetention();
+    runtime.flush();
+  };
+
+  await bootstrapTradingDate();
+  runtime.onSessionRoll = async () => {
+    await bootstrapTradingDate();
+  };
 
   // ---- live stream ---------------------------------------------------------
   const url = credentials.feed === 'sip' ? ALPACA_ENDPOINTS.streamSip : ALPACA_ENDPOINTS.streamIex;

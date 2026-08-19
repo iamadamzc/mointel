@@ -333,3 +333,28 @@ export function resolveTradingSession(
     isTradingDay: next !== null,
   };
 }
+
+/**
+ * The trading date a long-lived worker should move to, or null to stay put.
+ *
+ * A process that resolves its trading date once at startup keeps it forever.
+ * On 19 August the market worker had been up since the 18th: the feed was
+ * healthy and streaming, `flush()` re-read the session phase from the clock
+ * every tick — the comment there even says so — but `tradingDate` was carried
+ * from startup, so a full premarket of August 19 trades, quotes and 1.1 million
+ * minute bars were written against August 18. Ranks, RVOL and cumulative volume
+ * all stayed on yesterday's session, and the desk reported CLOSED at 07:25 ET.
+ *
+ * Kept as a pure decision so the crossing can be tested by moving a clock
+ * rather than by running a worker overnight.
+ */
+export function rolledTradingDate(
+  currentTradingDate: string,
+  now: Date,
+  isTradingDay: (date: string) => boolean,
+  nextTradingDate: (afterDate: string) => string | null,
+  closeMinutesFor: (date: string) => number = () => RTH_END_MIN,
+): string | null {
+  const resolution = resolveTradingSession(now, isTradingDay, nextTradingDate, closeMinutesFor);
+  return resolution.tradingDate === currentTradingDate ? null : resolution.tradingDate;
+}

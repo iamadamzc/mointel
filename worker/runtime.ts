@@ -51,6 +51,7 @@ import {
   minuteKey,
   resolveSessionPhase,
   resolveTradingSession,
+  rolledTradingDate,
   sessionPhaseForMinutes,
   etMinutesOfDay,
   RTH_END_MIN,
@@ -320,6 +321,52 @@ export class MarketRuntime {
   }
 
   /* ------------------------------------------------------------- session */
+
+  /**
+   * Re-bootstraps the session-scoped state after a date roll.
+   *
+   * Supplied by the worker so a roll replays the same startup path it already
+   * trusts — baselines and session bootstrap — rather than a second, subtly
+   * different version of it.
+   */
+  onSessionRoll: ((now: Date) => Promise<void>) | null = null;
+
+  private rollInFlight = false;
+
+  /**
+   * Moves the desk onto a new trading date when the calendar has.
+   *
+   * Called from the flush loop, because a worker that runs for days otherwise
+   * keeps the date it resolved at startup. That is exactly what happened on
+   * 19 August: streaming and healthy, writing a full premarket of bars into the
+   * previous session.
+   */
+  async rollTradingDateIfNeeded(now = new Date()): Promise<void> {
+    if (this.config.tradingDateOverride) return;
+    if (this.rollInFlight) return;
+
+    await this.ensureCalendar(etDateString(now));
+    const next = rolledTradingDate(
+      this.tradingDate,
+      now,
+      (date) => this.isTradingDay(date),
+      (date) => this.nextTradingDate(date),
+      (date) => this.closeMinutesFor(date),
+    );
+    if (next === null) return;
+
+    this.rollInFlight = true;
+    const from = this.tradingDate;
+    try {
+      await this.resolveSession(now);
+      if (this.onSessionRoll) await this.onSessionRoll(now);
+      this.logger.info(`[session] trading date rolled ${from} -> ${this.tradingDate}`);
+    } catch (error) {
+      this.logger.error(`[session] trading-date roll failed: ${this.redactError(error)}`);
+    } finally {
+      this.rollInFlight = false;
+    }
+  }
 
   async resolveSession(now = new Date()): Promise<void> {
     const reference = this.config.tradingDateOverride ?? etDateString(now);
@@ -1100,6 +1147,9 @@ export class MarketRuntime {
   startFlushLoop(): void {
     if (this.flushTimer) return;
     this.flushTimer = setInterval(() => {
+      // Before flushing: a flush writes bars against this.tradingDate, so the
+      // date has to be current before any of them land.
+      void this.rollTradingDateIfNeeded();
       try {
         this.flush();
       } catch (error) {
