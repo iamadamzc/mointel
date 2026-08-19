@@ -411,3 +411,41 @@ describe('what an unresolved verdict leaves behind', () => {
     expect(result.modelCalls).toBe(0);
   });
 });
+
+describe('legacy rows whose shape was never recorded', () => {
+  /*
+   * Guessing from the URL let too much through. Production still held
+   * `/eslim-02-eha26/` and `readnews.php?cid=186&id=152` as press indexes —
+   * both single articles, neither slug-shaped enough to be caught.
+   */
+  it.each([
+    'https://www.hutch-med.com/eslim-02-eha26/',
+    'https://cdthb.cn/en/readnews.php?cid=186&id=152',
+    'https://investors.aixcrypto.ai/node/9586/html',
+    'https://www.univest.us/news/',
+  ])('treats %s as unverified rather than usable', (url) => {
+    expect(
+      hasUsableSource({ ...EMPTY_COMPANY_SOURCES, pressReleaseIndexUrl: url, sourceShape: null }),
+    ).toBe(false);
+  });
+
+  it('trusts a shape that was actually recorded', () => {
+    expect(
+      hasUsableSource({
+        ...EMPTY_COMPANY_SOURCES,
+        pressReleaseIndexUrl: 'https://www.univest.us/news/',
+        sourceShape: 'INDEX',
+      }),
+    ).toBe(true);
+  });
+
+  it('still trusts a feed, which proved itself when it was stored', () => {
+    expect(
+      hasUsableSource({
+        ...EMPTY_COMPANY_SOURCES,
+        feedUrl: 'https://acme.example.net/rss',
+        sourceShape: null,
+      }),
+    ).toBe(true);
+  });
+});

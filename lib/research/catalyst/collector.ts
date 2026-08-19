@@ -206,8 +206,11 @@ function toSummary(source: ResearchSource): CatalystSourceSummary {
  *
  * Version 4 clears leaves left behind by an unresolved verdict, so a row that
  * nothing will act on stops reading as though a newsroom were on file.
+ *
+ * Version 5 stops trusting rows whose shape was never recorded at all, which is
+ * most of what the old contract wrote.
  */
-export const RESOLVER_VERSION = 4;
+export const RESOLVER_VERSION = 5;
 
 /** Source types that constitute catalyst evidence rather than structure. */
 const CATALYST_TYPES = new Set<SourceType>([

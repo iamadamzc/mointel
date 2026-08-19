@@ -21,7 +21,6 @@ import { looksLikeFeed } from './feeds';
 import {
   classifyCollectionPoint,
   countSiblingLinks,
-  looksLikeLeafArticle,
   type CompanySourceResolverProvider,
 } from './companySourceContract';
 
@@ -57,18 +56,30 @@ export interface ResolveResult {
 /**
  * True when the stored answer will still be useful tomorrow.
  *
- * A feed or an index qualifies. An article does not, and neither does a legacy
- * entry whose shape was never recorded but whose URL reads as a release — those
- * are the rows written before the distinction existed, and they are exactly the
- * ones that need re-resolving.
+ * A feed or a verified index qualifies. An article does not, and neither does a
+ * row whose shape was never recorded — those were written before the page was
+ * ever checked, and they are exactly the ones that need re-resolving.
  */
 export function hasUsableSource(registry: CompanySourceRegistry): boolean {
+  // A feed proved itself when it was stored: probeFeed only keeps a URL that
+  // actually served a feed document.
   if (registry.feedUrl) return true;
+
   const stored = registry.pressReleaseIndexUrl ?? registry.newsroomUrl;
   if (!stored) return false;
   if (registry.sourceShape === 'ARTICLE') return false;
-  if (registry.sourceShape === null && looksLikeLeafArticle(stored)) return false;
-  return true;
+
+  /*
+   * An unrecorded shape is an unverified one, and unverified is not usable.
+   *
+   * Guessing from the URL instead let too much through. Production still held
+   * `/eslim-02-eha26/` and `readnews.php?cid=186&id=152` as press indexes: too
+   * few words in the slug to look like releases, and both single articles. The
+   * question "does this page list releases" has an answer, and it comes from
+   * fetching the page — so a row that never recorded one gets re-resolved
+   * rather than believed.
+   */
+  return registry.sourceShape !== null;
 }
 
 /**
