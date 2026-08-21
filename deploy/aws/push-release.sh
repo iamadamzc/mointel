@@ -38,11 +38,34 @@ fi
 # ------------------------------------------------------------- preflight ---
 #
 # What is about to run, and is the rollback baseline still there. Runs on the
-# SERVER, because the checkpoint clock that matters is the scheduler's.
+# SERVER either way, because the checkpoint clock that matters is the
+# scheduler's, not this laptop's.
+#
+# It runs from the DEPLOYED release when that release has a preflight, and
+# otherwise from the commit being shipped, streamed over the connection.
+#
+# That fallback is not a convenience. preflight.sh and this script arrived in
+# the same commit, so the first release carrying the gate could never install
+# it: the gate refused every deployment because the file it wanted lived only
+# in the release it was blocking. A safety check that cannot be installed is
+# not a safety check, and "no preflight on the server" must mean "run the new
+# one", never "skip it".
 SSH_PRE=(ssh -i "$KEY" -o StrictHostKeyChecking=no "ubuntu@$HOST")
-if ! "${SSH_PRE[@]}" "sudo DEPLOY_WINDOW_OVERRIDE='${DEPLOY_WINDOW_OVERRIDE:-}' PROTECTED_MINUTES='${PROTECTED_MINUTES:-5}' bash /opt/mointel/current/deploy/aws/preflight.sh"; then
+PREFLIGHT_ENV="sudo DEPLOY_WINDOW_OVERRIDE='${DEPLOY_WINDOW_OVERRIDE:-}' PROTECTED_MINUTES='${PROTECTED_MINUTES:-5}'"
+
+preflight_refused() {
   echo "[release] preflight refused the deployment; nothing was shipped" >&2
   exit 3
+}
+
+if "${SSH_PRE[@]}" "test -f /opt/mointel/current/deploy/aws/preflight.sh"; then
+  "${SSH_PRE[@]}" "$PREFLIGHT_ENV bash /opt/mointel/current/deploy/aws/preflight.sh" || preflight_refused
+else
+  echo "[release] the deployed release carries no preflight; running the one from $SHORT" >&2
+  # The gate from the commit being shipped, evaluated against the server's
+  # clock. `bash -s` reads it from the connection, so nothing is written to
+  # the instance before the gate has passed.
+  git show "$SHA:deploy/aws/preflight.sh" | "${SSH_PRE[@]}" "$PREFLIGHT_ENV bash -s" || preflight_refused
 fi
 
 echo "[release] deploying $SHORT to $HOST"
