@@ -74,6 +74,63 @@ function spend(jobId: number, stage: string, trigger: string, input: number | nu
   });
 }
 
+describe('the tool_config column', () => {
+  it('is added to a store created before it existed', () => {
+    /*
+     * The v19 migration, exercised rather than assumed. Production is a v18
+     * store: it has model_usage and no tool_config, and every writer opens it
+     * on boot. ADDED_COLUMNS runs on open regardless of user_version, which is
+     * what makes that safe — this proves it.
+     */
+    const file = path.join(directory, 'aged.db');
+    const seed = openDatabase(file);
+    seed.exec('ALTER TABLE model_usage DROP COLUMN tool_config');
+    seed.pragma('user_version = 18');
+    seed.close();
+
+    const aged = openDatabase(file);
+    try {
+      const columns = aged
+        .prepare('PRAGMA table_info(model_usage)')
+        .all() as Array<{ name: string }>;
+      expect(columns.map((c) => c.name)).toContain('tool_config');
+
+      recordModelUsage(aged, {
+        tradingDate: DATE,
+        at: '2026-08-18T21:00:05.000Z',
+        ticker: 'XOS',
+        model: 'gpt-5.6-luna',
+        stage: 'RESOLVER',
+        trigger: 'INTERVAL_RECHECK',
+        inputTokens: 100,
+        toolConfig: 'web_search:low;domains:v1',
+      });
+      const row = aged
+        .prepare('SELECT tool_config FROM model_usage')
+        .get() as { tool_config: string | null };
+      expect(row.tool_config).toBe('web_search:low;domains:v1');
+    } finally {
+      aged.close();
+    }
+  });
+
+  it('is null for a call that used no hosted search', () => {
+    recordModelUsage(db, {
+      tradingDate: DATE,
+      at: '2026-08-18T21:00:05.000Z',
+      ticker: 'XOS',
+      model: 'gpt-5.6-terra',
+      stage: 'INTERPRETATION',
+      trigger: 'ENTERED_TOP_N',
+      inputTokens: 9000,
+    });
+    const row = db
+      .prepare("SELECT tool_config FROM model_usage WHERE stage = 'INTERPRETATION'")
+      .get() as { tool_config: string | null };
+    expect(row.tool_config).toBeNull();
+  });
+});
+
 describe('the daily token report', () => {
   it('separates spend that added a source from spend that did not', () => {
     const useful = job('XOS', { sourcesAdded: 1, fingerprintChanged: true });
