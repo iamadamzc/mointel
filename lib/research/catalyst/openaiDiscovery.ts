@@ -27,6 +27,7 @@ import {
   type CompanySourceResolverProvider,
 } from './companySourceContract';
 import { describeFailure, readProviderFailure } from '../providerError';
+import { blockedSearchDomains } from './domainPolicy';
 
 const RESPONSES_URL = 'https://api.openai.com/v1/responses';
 
@@ -118,10 +119,18 @@ export class OpenAiDiscoveryProvider implements CatalystSourceDiscoveryProvider 
       };
     }
 
+    const blocked = blockedSearchDomains();
     const body = {
       model: this.model,
       input: buildPrompt(request),
-      tools: [{ type: 'web_search' }],
+      tools: [
+        {
+          type: 'web_search',
+          // Derived from the deterministic rejection rule, never hand-listed.
+          // An empty policy sends no filter at all rather than an empty one.
+          ...(blocked.length > 0 ? { filters: { blocked_domains: blocked } } : {}),
+        },
+      ],
       text: {
         format: {
           type: 'json_schema',

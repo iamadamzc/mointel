@@ -14,6 +14,7 @@
  */
 
 import { hashContent } from '../fingerprint';
+import { domainRole } from './domainPolicy';
 import { normaliseTimestamp, type NormalisedTime } from '../time';
 import type { SourceAuthority, SourceType } from '../types';
 
@@ -137,41 +138,26 @@ export const DISCOVERY_SCHEMA = {
 
 /* -------------------------------------------------------------- validation */
 
-/** Hosts whose pages are mirrors rather than original publications. */
-const SECONDARY_HOSTS = [
-  'finance.yahoo.com',
-  'stocktwits.com',
-  'investing.com',
-  'benzinga.com',
-  'seekingalpha.com',
-  'marketbeat.com',
-  'msn.com',
-  'nasdaq.com',
-  'fool.com',
-];
-
+/**
+ * What the host says a source is.
+ *
+ * The lists themselves live in `domainPolicy`, because the web-search filter
+ * has to agree with this function about what a domain means and a second copy
+ * would drift from the first the day either changed.
+ */
 export function classifyHost(url: string): DiscoveredSourceKind | null {
-  let host: string;
-  try {
-    host = new URL(url).hostname.toLowerCase();
-  } catch {
-    return null;
+  switch (domainRole(url)) {
+    case 'SEC':
+      return 'SEC';
+    case 'NEWSWIRE':
+      return 'NEWSWIRE';
+    case 'MIRROR':
+      return 'SECONDARY';
+    // A placeholder is not a kind of source; validateDiscovered refuses it
+    // outright rather than classifying it.
+    default:
+      return null;
   }
-
-  if (host.endsWith('sec.gov')) return 'SEC';
-  if (
-    host.includes('prnewswire') ||
-    host.includes('globenewswire') ||
-    host.includes('accesswire') ||
-    host.includes('businesswire') ||
-    host.includes('newsfilecorp')
-  ) {
-    return 'NEWSWIRE';
-  }
-  if (SECONDARY_HOSTS.some((secondary) => host === secondary || host.endsWith(`.${secondary}`))) {
-    return 'SECONDARY';
-  }
-  return null;
 }
 
 export function authorityForKind(kind: DiscoveredSourceKind): SourceAuthority {
@@ -230,7 +216,10 @@ export function validateDiscovered(
       continue;
     }
 
-    if (/example\.(com|org|net)$/i.test(parsed.hostname) || /\{|\}|\.\.\./.test(url)) {
+    if (domainRole(url) === 'PLACEHOLDER' || /\{|\}|\.\.\./.test(url)) {
+      // The one rejection that is decided by domain, and therefore the one
+      // that may drive the search filter. blockedSearchDomains() is derived
+      // from the same list this reads.
       rejected.push({ url, reason: 'placeholder or templated URL' });
       continue;
     }
