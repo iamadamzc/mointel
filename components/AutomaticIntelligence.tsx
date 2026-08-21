@@ -11,6 +11,7 @@
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
+import { etTimestamp, relativeAge } from '@/lib/dashboard/why';
 import type { SheetAutoComparison } from '@/lib/research/merge/sheetAuto';
 import {
   CATALYST_GRADE_LABEL,
@@ -18,6 +19,49 @@ import {
   STRUCTURE_LABEL,
   type AutoIntelligence,
 } from '@/lib/research/view';
+
+/**
+ * An engine enum, said in words.
+ *
+ * `SECONDARY_STALE`, `AUTO_SOURCE_GAP`, `REGISTERED_RESALE · POSSIBLY_ACTIVE`
+ * and `INTERPRETATION_DIFFERENCE` were all rendered verbatim into a trader's
+ * dossier. They describe how the engine reached a conclusion, not what is true
+ * about the stock, and that is exactly the class of label this desk has already
+ * rejected once. The named cases below carry a real explanation; anything not
+ * named at least stops shouting in snake case.
+ */
+const ENUM_PHRASE: Record<string, string> = {
+  AUTO_SOURCE_GAP: 'the automatic pass had not seen the newer source',
+  INTERPRETATION_DIFFERENCE: 'both sides had evidence and read it differently',
+  SHEET_ONLY: 'only the human review reached a conclusion',
+  AUTO_ONLY: 'only the automatic analysis reached a conclusion',
+  AGREE: 'agree',
+  DISAGREE: 'disagree',
+  NONE_FOUND: 'no catalyst found',
+  FRESH_FOUND: 'fresh catalyst found',
+  SECONDARY_STALE: 'secondary and stale',
+  POSSIBLY_ACTIVE: 'possibly active',
+  NOT_YET_ACTIVE: 'not yet active',
+  REGISTERED_RESALE: 'registered resale',
+  SHELF_CAPACITY: 'shelf capacity',
+  FORMER_RUNNER: 'former runner',
+  FORMER_SUPERRUNNER: 'former superrunner',
+};
+
+export function humanise(value: string | null | undefined): string {
+  if (!value) return 'unknown';
+  const known = ENUM_PHRASE[value];
+  if (known) return known;
+  return value.replace(/_/g, ' ').toLowerCase();
+}
+
+/** An instant a trader can act on: ET wall clock, with its age beside it. */
+function timeWithAge(at: string | null | undefined): string {
+  const stamp = etTimestamp(at);
+  if (!stamp) return 'unknown';
+  const age = relativeAge(at, Date.now());
+  return age ? `${stamp} · ${age} ago` : stamp;
+}
 
 /**
  * Sheet / AUTO reconciliation, sized to the finding.
@@ -59,7 +103,7 @@ function SheetVsAuto({
             <td className="py-0.5 pr-2">{item.sheet ?? '—'}</td>
             <td className="py-0.5 pr-2">{item.auto ?? '—'}</td>
             <td className="py-0.5 text-ink-3">
-              {item.agreement === 'DISAGREE' ? (item.reason ?? 'UNKNOWN') : item.agreement}
+              {humanise(item.agreement === 'DISAGREE' ? item.reason : item.agreement)}
             </td>
           </tr>
         ))}
@@ -73,7 +117,7 @@ function SheetVsAuto({
     return (
       <Section title="Provenance">
         <div className="flex flex-wrap items-center gap-2">
-          <StatusBadge label={comparison.provenance.replace(/_/g, ' ')} tone="dim" />
+          <StatusBadge label={humanise(comparison.provenance)} tone="dim" />
           <span className="text-[10px] text-ink-3">
             the human review and the automatic layer do not materially disagree
           </span>
@@ -132,8 +176,8 @@ function StructureSummaryBlock({
           >
             {summary.float}
           </span>
-          <span className="text-[9px] tracking-wider text-ink-3 uppercase">
-            {summary.floatConfidence}
+          <span className="text-[10px] tracking-wider text-ink-3 uppercase">
+            {summary.floatConfidence.toLowerCase()} confidence
           </span>
         </span>
       </div>
@@ -144,10 +188,12 @@ function StructureSummaryBlock({
           <ul className="mt-1 space-y-0.5">
             {summary.supply.map((line, index) => (
               <li key={index} className="flex items-baseline gap-2 text-[11px]">
-                <span className="w-[150px] shrink-0 truncate text-ink-1">{line.label}</span>
+                <span className="w-[150px] shrink-0 truncate text-ink-1" title={line.label}>
+                  {line.label}
+                </span>
                 <span className="num w-[130px] shrink-0 text-ink-2">{line.amount ?? '—'}</span>
                 {/* Capacity is capacity. It is never restated as selling. */}
-                <span className="text-[10px] tracking-wide text-ink-3 uppercase">{line.status}</span>
+                <span className="text-[10px] tracking-wide text-ink-3">{line.status.toLowerCase()}</span>
               </li>
             ))}
           </ul>
@@ -159,6 +205,51 @@ function StructureSummaryBlock({
           {summary.keyWarning}
         </p>
       ) : null}
+    </div>
+  );
+}
+
+/**
+ * A list of independent findings, rendered as a list.
+ *
+ * Every one of these fields is already an array in the dossier — separate
+ * warnings, separate unresolved questions, separate prior runs. The drawer was
+ * flattening them with `.join('; ')`, which produced run-on paragraphs with a
+ * visible `.;` seam where one finding ended and the next began, and made four
+ * distinct risks read as one long sentence nobody can count or scan.
+ */
+function ListField({
+  label,
+  items,
+  tone,
+  className = '',
+  FieldLabel,
+}: {
+  label: string;
+  items: readonly string[];
+  tone?: 'warn';
+  className?: string;
+  FieldLabel: (props: { children: React.ReactNode }) => React.ReactElement;
+}) {
+  if (items.length === 0) return null;
+
+  return (
+    <div className={`min-w-0 ${className}`}>
+      <div className="flex items-baseline gap-2">
+        <FieldLabel>{label}</FieldLabel>
+        {items.length > 1 ? (
+          <span className="num text-[10px] text-ink-3">{items.length}</span>
+        ) : null}
+      </div>
+      <ul
+        className={`mt-1 max-w-[78ch] list-disc space-y-1 pl-4 text-[12px] leading-relaxed ${
+          tone === 'warn' ? 'text-warn/90' : 'text-ink-2'
+        }`}
+      >
+        {items.map((item, index) => (
+          <li key={`${index}-${item.slice(0, 24)}`}>{item.replace(/;\s*$/, '')}</li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -201,6 +292,19 @@ export function AutomaticIntelligence({
 
   const { catalyst, structure, cycle } = intel.analysis.dossier;
 
+  /*
+   * The structure summary above already leads with the first warning, so the
+   * list below starts after it. Printing both put the identical reverse-split
+   * sentence on screen twice inside one bordered card, which reads as the desk
+   * repeating itself rather than as two findings.
+   */
+  const eventTime = timeWithAge(catalyst.eventTimestamp);
+  const generatedAt = timeWithAge(intel.generatedAt);
+
+  const remainingWarnings = structureSummary?.keyWarning
+    ? structure.structuralWarnings.filter((warning) => warning !== structureSummary.keyWarning)
+    : structure.structuralWarnings;
+
   return (
     <>
       {comparison && comparison.comparisons.length > 0 ? (
@@ -209,8 +313,9 @@ export function AutomaticIntelligence({
       <Section title="Why It Is Moving">
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge label={CATALYST_GRADE_LABEL[catalyst.catalystGrade]} tone="dim" />
-          <span className="text-[10px] uppercase tracking-wide text-ink-3">
-            {catalyst.catalystStatus} · {catalyst.freshness} · confidence {catalyst.confidence}
+          <span className="text-[11px] tracking-wide text-ink-3">
+            {humanise(catalyst.catalystStatus)} · {humanise(catalyst.freshness)} · confidence{' '}
+            {humanise(catalyst.confidence)}
           </span>
         </div>
         <ProseField label="Summary" value={catalyst.summary ?? '—'} className="mt-3" />
@@ -219,7 +324,10 @@ export function AutomaticIntelligence({
           value={catalyst.whyTradersMayCare ?? '—'}
           className="mt-3"
         />
-        <Field label="Event time" value={catalyst.eventTimestamp ?? 'unknown'} />
+        {/* ET wall clock with its age beside it. A raw UTC ISO string made the
+            trader do timezone arithmetic to answer the only question that
+            matters about a catalyst: how old is it. */}
+        <Field label="Event time" value={eventTime} />
         <Field
           label="Plausibly explains move"
           value={
@@ -230,9 +338,12 @@ export function AutomaticIntelligence({
                 : 'no'
           }
         />
-        {catalyst.unknowns.length > 0 ? (
-          <ProseField label="Unresolved" value={catalyst.unknowns.join('; ')} className="mt-3" />
-        ) : null}
+        <ListField
+          label="Unresolved"
+          items={catalyst.unknowns}
+          className="mt-3"
+          FieldLabel={FieldLabel}
+        />
       </Section>
 
       <Section title="Structural Intelligence — Automatic">
@@ -258,7 +369,7 @@ export function AutomaticIntelligence({
               }
               numeric
             />
-            <Field label="Float confidence" value={structure.floatConfidence} />
+            <Field label="Float confidence" value={humanise(structure.floatConfidence)} />
           </>
         )}
 
@@ -274,7 +385,7 @@ export function AutomaticIntelligence({
             }
             numeric
           />
-          <Field label="Analysis confidence" value={structure.confidence} />
+          <Field label="Analysis confidence" value={humanise(structure.confidence)} />
         </div>
 
         <ProseField label="Summary" value={structure.summary ?? '—'} className="mt-3" />
@@ -285,13 +396,14 @@ export function AutomaticIntelligence({
             <ul className="mt-1 space-y-1">
               {structure.supplyLedger.map((block, index) => (
                 <li key={index} className="text-[11px] text-ink-2">
-                  <span className="text-ink-1">{block.type}</span> · {block.status}
+                  <span className="text-ink-1">{humanise(block.type)}</span> ·{' '}
+                  {humanise(block.status)}
                   {block.amountShares !== null
                     ? ` · ${block.amountShares.toLocaleString()} shares`
                     : block.dollarCapacity !== null
                       ? ` · $${block.dollarCapacity.toLocaleString()} capacity`
                       : ''}
-                  {block.registrationStatus ? ` · ${block.registrationStatus}` : ''}
+                  {block.registrationStatus ? ` · ${humanise(block.registrationStatus)}` : ''}
                   {block.evidenceSourceIds.length > 0
                     ? ` · sources ${block.evidenceSourceIds.join(', ')}`
                     : ''}
@@ -301,24 +413,31 @@ export function AutomaticIntelligence({
           </div>
         ) : null}
 
-        {structure.structuralWarnings.length > 0 ? (
-          <ProseField
-            label="Warnings"
-            value={structure.structuralWarnings.join('; ')}
-            className="mt-3"
-            tone="warn"
-          />
-        ) : null}
-        {structure.reverseSplitHistory.length > 0 ? (
-          <ProseField
-            label="Reverse splits"
-            value={structure.reverseSplitHistory.join('; ')}
-            className="mt-3"
-          />
-        ) : null}
-        {structure.unknowns.length > 0 ? (
-          <ProseField label="Unresolved" value={structure.unknowns.join('; ')} className="mt-3" />
-        ) : null}
+        {/*
+          * The headline warning is already rendered by the structure summary
+          * above, so it is not printed a second time here. The drawer used to
+          * show the identical reverse-split sentence twice inside one card,
+          * both instances visible in a single screen.
+          */}
+        <ListField
+          label="Warnings"
+          items={remainingWarnings}
+          className="mt-3"
+          tone="warn"
+          FieldLabel={FieldLabel}
+        />
+        <ListField
+          label="Reverse splits"
+          items={structure.reverseSplitHistory}
+          className="mt-3"
+          FieldLabel={FieldLabel}
+        />
+        <ListField
+          label="Unresolved"
+          items={structure.unknowns}
+          className="mt-3"
+          FieldLabel={FieldLabel}
+        />
       </Section>
 
       <Section title="Momentum Cycle — Automatic">
@@ -341,27 +460,25 @@ export function AutomaticIntelligence({
           value={cycle.historicalResistance === null ? 'unknown' : String(cycle.historicalResistance)}
           numeric
         />
-        <Field label="Former runner" value={cycle.formerRunnerStatus} />
-        {cycle.recentMajorRuns.length > 0 ? (
-          <ProseField
-            label="Recent major runs"
-            value={cycle.recentMajorRuns.join('; ')}
-            className="mt-3"
-          />
-        ) : null}
-        {cycle.cycleWarnings.length > 0 ? (
-          <ProseField
-            label="Cycle warnings"
-            value={cycle.cycleWarnings.join('; ')}
-            className="mt-3"
-            tone="warn"
-          />
-        ) : null}
+        <Field label="Former runner" value={humanise(cycle.formerRunnerStatus)} />
+        <ListField
+          label="Recent major runs"
+          items={cycle.recentMajorRuns}
+          className="mt-3"
+          FieldLabel={FieldLabel}
+        />
+        <ListField
+          label="Cycle warnings"
+          items={cycle.cycleWarnings}
+          className="mt-3"
+          tone="warn"
+          FieldLabel={FieldLabel}
+        />
       </Section>
 
       <Section title="Evidence & Provenance">
-        <Field label="Analysis source" value={intel.provenance} />
-        <Field label="Generated" value={intel.generatedAt ?? 'unknown'} />
+        <Field label="Analysis source" value={humanise(intel.provenance)} />
+        <Field label="Generated" value={generatedAt} />
         <Field label="Model" value={intel.model ?? 'unknown'} />
         <Field
           label="Analysis version"
@@ -398,7 +515,7 @@ export function AutomaticIntelligence({
                     {source.title ? ` — ${source.title}` : ''}
                   </a>
                   <span className="ml-1 text-ink-3">
-                    {source.authority}
+                    {humanise(source.authority)}
                     {source.publishedAt ? ` · ${source.publishedAt.slice(0, 10)}` : ''}
                     {source.publishedPrecision === 'DATE_ONLY' ? ' (date only)' : ''}
                   </span>

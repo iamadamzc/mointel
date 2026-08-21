@@ -88,6 +88,14 @@ export interface StructureSummary {
  */
 export interface DeskNarrative {
   text: string | null;
+  /**
+   * The complete source text behind `text`.
+   *
+   * `text` is condensed to fit the strip; this is what a hover reveals and
+   * what the drawer prints in full, so a sentence trimmed for the layout is
+   * never a sentence the trader cannot reach.
+   */
+  fullText: string | null;
   provenance: ConclusionProvenance;
   /** Short disclosure, e.g. "AUTO COVERAGE INCOMPLETE". Null when none applies. */
   qualifier: string | null;
@@ -390,6 +398,7 @@ function condense(text: string, limit = 240): string {
 
 const EMPTY_NARRATIVE: DeskNarrative = {
   text: null,
+  fullText: null,
   provenance: 'NONE',
   qualifier: null,
   counterText: null,
@@ -433,6 +442,7 @@ function mergeNarrative(options: {
     // the state is named. Nothing is resolved here.
     return {
       text: condense(sheetText),
+      fullText: sheetText,
       provenance: 'CONFLICT',
       qualifier: 'SOURCES DISAGREE',
       counterText: condense(autoText),
@@ -445,6 +455,7 @@ function mergeNarrative(options: {
     // written against linked evidence — so it carries the agreed conclusion.
     return {
       text: condense(autoText),
+      fullText: autoText,
       provenance: 'SHEET_AUTO',
       qualifier: null,
       counterText: null,
@@ -458,6 +469,7 @@ function mergeNarrative(options: {
     const incomplete = autoText !== null || options.coverageIncomplete || !options.autoUsable;
     return {
       text: condense(sheetText),
+      fullText: sheetText,
       provenance: 'SHEET',
       qualifier: incomplete && (options.coverageIncomplete || !options.autoUsable)
         ? 'AUTO COVERAGE INCOMPLETE'
@@ -469,6 +481,7 @@ function mergeNarrative(options: {
 
   return {
     text: condense(autoText as string),
+    fullText: autoText,
     provenance: 'AUTO',
     qualifier: options.coverageIncomplete ? 'AUTO COVERAGE INCOMPLETE' : null,
     counterText: null,

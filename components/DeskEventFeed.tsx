@@ -125,6 +125,7 @@ export function DeskEventFeed({
                   {TYPE_LABEL[item.event.type] ?? item.event.type}
                 </span>
                 <span
+                  title={item.event.message}
                   className={`truncate text-[11px] ${
                     item.relevance === 'BACKGROUND' ? 'text-ink-3' : 'text-ink-2'
                   }`}

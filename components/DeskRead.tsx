@@ -138,7 +138,15 @@ function Narrative({
         ) : null}
       </div>
 
+      {/* The strip condenses long source text to keep the Desk Read readable
+          at a glance; hovering shows the sentence in full, and the drawer's
+          own sections print it complete a few inches below. */}
       <p
+        title={
+          narrative.fullText && narrative.fullText !== narrative.text
+            ? narrative.fullText
+            : undefined
+        }
         className={`mt-1 max-w-[70ch] text-[12px] leading-relaxed ${warn ? 'text-warn/90' : 'text-ink-2'}`}
       >
         {narrative.text}
