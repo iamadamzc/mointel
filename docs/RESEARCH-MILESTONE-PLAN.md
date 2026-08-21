@@ -1,9 +1,9 @@
 # Automatic Public Intelligence Research — build plan
 
-Working plan for the milestone specified in `prompt3.md`. Kept in the repo so an
+Working plan for the milestone specified in `prompts/prompt3.md`. Kept in the repo so an
 interrupted session can resume without re-deriving the sequence.
 
-Spec is authoritative. Where this plan and `prompt3.md` disagree, the spec wins.
+Spec is authoritative. Where this plan and `prompts/prompt3.md` disagree, the spec wins.
 
 ---
 
