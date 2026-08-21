@@ -52,6 +52,15 @@ export interface ModelConfig {
   escalationModel: string;
   /** Low-cost tier for change detection and source location. */
   changeDetectModel: string;
+  /**
+   * How much retrieved page content the resolver's hosted search may load.
+   *
+   * Defaults to the provider default so this change is inert until the replay
+   * gate has been run. The resolver is the honest candidate for `low`: it names
+   * a candidate URL and the application then fetches and classifies that page
+   * itself, so the model's reading of it is not what the decision rests on.
+   */
+  resolverSearchContext: 'low' | 'medium' | 'high' | null;
 }
 
 export interface CatalystConfig {
@@ -96,6 +105,18 @@ export interface ResearchConfig {
   catalystRefreshMinutes: number;
 }
 
+/**
+ * The hosted-search context size, or null to leave the provider's default.
+ *
+ * An unrecognised value reads as "not configured" rather than being passed
+ * through: the API rejects an unknown enum, and a typo in an env var must not
+ * take research down.
+ */
+function searchContext(raw: string | undefined): 'low' | 'medium' | 'high' | null {
+  const value = raw?.trim().toLowerCase();
+  return value === 'low' || value === 'medium' || value === 'high' ? value : null;
+}
+
 function positiveNumber(raw: string | undefined, fallback: number): number {
   if (!raw) return fallback;
   const value = Number(raw);
@@ -120,6 +141,7 @@ export function readResearchConfig(env: NodeJS.ProcessEnv = process.env): Resear
       // optimisation the system never depends on.
       escalationModel: env.OPENAI_ESCALATION_MODEL?.trim() || researchModel,
       changeDetectModel: env.OPENAI_CHANGE_DETECT_MODEL?.trim() || researchModel,
+      resolverSearchContext: searchContext(env.RESEARCH_RESOLVER_SEARCH_CONTEXT),
     },
     catalyst: {
       sourcePollSeconds: positiveNumber(

@@ -309,6 +309,7 @@ export async function collectCatalystEvidence(
     stage: string,
     purpose: string,
     usage: ProviderUsage | null | undefined,
+    toolConfig?: string | null,
   ) => {
     try {
       recordModelUsage(db, {
@@ -322,6 +323,7 @@ export async function collectCatalystEvidence(
         inputTokens: usage?.inputTokens ?? null,
         cachedInputTokens: usage?.cachedInputTokens ?? null,
         outputTokens: usage?.outputTokens ?? null,
+        toolConfig: toolConfig ?? null,
       });
     } catch {
       // Accounting must never take a collection down with it.
@@ -527,6 +529,7 @@ export async function collectCatalystEvidence(
             ? RECOVERY_TRIGGER
             : usagePurposeFor('MATERIAL_EVENT', input.materialEvent ?? null),
           resolution.usage,
+          resolution.toolConfig,
         );
       }
       report.companySourceDetail = `${label}: ${resolution.detail}`;
@@ -765,7 +768,9 @@ export async function collectCatalystEvidence(
       });
       Object.assign(registry, resolution.registry);
       report.modelCalls += resolution.modelCalls;
-      if (resolution.modelCalls > 0) noteUsage('RESOLVER', discoveryPurpose, resolution.usage);
+      if (resolution.modelCalls > 0) {
+        noteUsage('RESOLVER', discoveryPurpose, resolution.usage, resolution.toolConfig);
+      }
       report.companySourceDetail = resolution.detail;
       report.discoveryRan = resolution.resolved;
       report.discoveryDetail = `issuer source resolution: ${resolution.detail}`;
@@ -811,7 +816,9 @@ export async function collectCatalystEvidence(
     report.discoveryRan = result.ran;
     report.discoveryDetail = result.detail;
     report.modelCalls += result.modelCalls;
-    if (result.modelCalls > 0) noteUsage('DISCOVERY', discoveryPurpose, result.usage);
+    if (result.modelCalls > 0) {
+      noteUsage('DISCOVERY', discoveryPurpose, result.usage, result.toolConfig);
+    }
 
     const discovered: NewResearchSource[] = result.sources.map((source) => ({
       ticker,

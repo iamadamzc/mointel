@@ -107,7 +107,13 @@ async function main(): Promise<void> {
     : new NoopDiscoveryProvider();
   // Same transport and tier as discovery, different question entirely.
   const companySourceResolver = config.model.apiKey
-    ? new OpenAiCompanySourceResolver({ config: config.model })
+    ? new OpenAiCompanySourceResolver({
+        config: config.model,
+        // Null leaves the provider default. The value is recorded against
+        // every call it pays for, so a token comparison across days can tell
+        // which configuration produced which bill.
+        searchContextSize: config.model.resolverSearchContext ?? undefined,
+      })
     : null;
   const interpreter = config.model.apiKey
     ? new OpenAiInterpreter({ config: config.model, timeoutMs: 300_000 })

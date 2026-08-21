@@ -46,6 +46,8 @@ export interface CompanySourceResolution {
   candidates: CompanySourceCandidate[];
   /** Null when no call was made, or when the provider returned no counts. */
   usage?: import('./discovery').ProviderUsage | null;
+  /** How the hosted search was configured, when one was used. */
+  toolConfig?: string | null;
   modelCalls: number;
   detail: string;
 }

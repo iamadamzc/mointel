@@ -46,6 +46,7 @@ const MODEL_CONFIG = {
   researchModel: 'terra-model',
   escalationModel: 'sol-model',
   changeDetectModel: 'luna-model',
+      resolverSearchContext: null,
 };
 
 function dossier(overrides: Partial<ResearchDossier> = {}): ResearchDossier {

@@ -60,6 +60,8 @@ export interface DiscoveryResult {
   sources: DiscoveredSource[];
   /** Null when no call was made, or when the provider returned no counts. */
   usage?: ProviderUsage | null;
+  /** How the hosted search was configured, when one was used. */
+  toolConfig?: string | null;
   /** True when the provider ran; false when unavailable or skipped. */
   ran: boolean;
   /** Model calls actually issued by this request. */

@@ -86,7 +86,13 @@ class CountingDiscovery implements CatalystSourceDiscoveryProvider {
 
   async discover(): Promise<DiscoveryResult> {
     this.calls += 1;
-    return { sources: [], ran: true, modelCalls: 1, detail: 'ran' };
+    return {
+      sources: [],
+      ran: true,
+      modelCalls: 1,
+      detail: 'ran',
+      toolConfig: 'web_search:default;domains:v1',
+    };
   }
 }
 
@@ -99,7 +105,12 @@ class CountingResolver implements CompanySourceResolverProvider {
 
   async resolve() {
     this.calls += 1;
-    return { candidates: this.candidates, modelCalls: 1, detail: 'test resolver' };
+    return {
+      candidates: this.candidates,
+      modelCalls: 1,
+      detail: 'test resolver',
+      toolConfig: 'web_search:low;domains:v1',
+    };
   }
 }
 
@@ -116,11 +127,12 @@ interface UsageRow {
   stage: string;
   trigger: string | null;
   ticker: string;
+  tool_config: string | null;
 }
 
 function usageRows(db: MarketDatabase): UsageRow[] {
   return db
-    .prepare('SELECT stage, trigger, ticker FROM model_usage ORDER BY id')
+    .prepare('SELECT stage, trigger, ticker, tool_config FROM model_usage ORDER BY id')
     .all() as UsageRow[];
 }
 
@@ -320,6 +332,22 @@ describe('the purpose recorded against a paid call', () => {
         }
       }
     }
+  });
+
+  it('records how the search was configured alongside what it cost', async () => {
+    /*
+     * The other half of attribution. Knowing a call cost 44,591 tokens is not
+     * useful next week unless the row also says what the search was told to
+     * retrieve — otherwise a configuration change and a coverage change look
+     * identical in the ledger.
+     */
+    const db = temporaryDb();
+    seedIssuer(db, { lastDiscoveryAt: AN_HOUR_AGO, lastDiscoveryMode: 'DISCOVERY' });
+    await collect(db, new CountingDiscovery(), new CountingResolver());
+
+    const [row] = usageRows(db);
+    expect(row.stage).toBe('RESOLVER');
+    expect(row.tool_config).toBe('web_search:low;domains:v1');
   });
 
   it('maps every trigger to a purpose, with no silent fallthrough', () => {

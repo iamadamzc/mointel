@@ -23,6 +23,16 @@
 /** The API caps each filter list; exceeding it is an error, not a truncation. */
 export const MAX_SEARCH_FILTER_DOMAINS = 100;
 
+/**
+ * Bumped whenever a list below changes.
+ *
+ * Recorded against every call the policy configured, so a token comparison
+ * across days can tell whether the search was buying the same thing. Without
+ * it, adding a blocked domain and reading the resulting drop as a saving is
+ * indistinguishable from reading it as a coverage loss.
+ */
+export const DOMAIN_POLICY_VERSION = 1;
+
 /** What a recognised domain is, independent of what a model calls it. */
 export type DomainRole = 'SEC' | 'NEWSWIRE' | 'MIRROR' | 'PLACEHOLDER';
 

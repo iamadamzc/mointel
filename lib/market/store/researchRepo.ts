@@ -1196,6 +1196,15 @@ export interface ModelUsageRecord {
   inputTokens?: number | null;
   cachedInputTokens?: number | null;
   outputTokens?: number | null;
+  /**
+   * How the hosted search was configured, when the call used one.
+   *
+   * Without it a token comparison across days compares two different products:
+   * the same resolver at low and at medium search context buys different
+   * amounts of retrieved page content for different money, and the ledger
+   * recorded only the money.
+   */
+  toolConfig?: string | null;
 }
 
 /**
@@ -1211,9 +1220,11 @@ export function recordModelUsage(db: MarketDatabase, usage: ModelUsageRecord): v
   db.prepare(
     `INSERT INTO model_usage
        (trading_date, at, job_id, ticker, model, stage, trigger, calls,
-        input_tokens, cached_input_tokens, output_tokens, counts_available)
+        input_tokens, cached_input_tokens, output_tokens, counts_available,
+        tool_config)
      VALUES (@tradingDate, @at, @jobId, @ticker, @model, @stage, @trigger, @calls,
-             @inputTokens, @cachedInputTokens, @outputTokens, @available)`,
+             @inputTokens, @cachedInputTokens, @outputTokens, @available,
+             @toolConfig)`,
   ).run({
     tradingDate: usage.tradingDate,
     at: usage.at,
@@ -1227,6 +1238,7 @@ export function recordModelUsage(db: MarketDatabase, usage: ModelUsageRecord): v
     cachedInputTokens: usage.cachedInputTokens ?? null,
     outputTokens: usage.outputTokens ?? null,
     available,
+    toolConfig: usage.toolConfig ?? null,
   });
 }
 

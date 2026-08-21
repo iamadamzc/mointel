@@ -27,9 +27,19 @@ import {
   type CompanySourceResolverProvider,
 } from './companySourceContract';
 import { describeFailure, readProviderFailure } from '../providerError';
-import { blockedSearchDomains } from './domainPolicy';
+import { blockedSearchDomains, DOMAIN_POLICY_VERSION } from './domainPolicy';
 
 const RESPONSES_URL = 'https://api.openai.com/v1/responses';
+
+/**
+ * How much retrieved page content the hosted search puts in context.
+ *
+ * The provider's default is `medium`. It is the dominant cost of both classes
+ * below — a resolver prompt is 254 tokens and a resolver call bills 24,708 —
+ * so it is stated explicitly rather than inherited, and recorded against every
+ * call it pays for.
+ */
+export type SearchContextSize = 'low' | 'medium' | 'high';
 
 export interface OpenAiDiscoveryOptions {
   config: ModelConfig;
@@ -37,6 +47,8 @@ export interface OpenAiDiscoveryOptions {
   /** Overrides the tier; defaults to the change-detection model. */
   model?: string;
   timeoutMs?: number;
+  /** Defaults to the provider's own default rather than silently choosing. */
+  searchContextSize?: SearchContextSize;
 }
 
 interface ResponsesPayload {
@@ -105,6 +117,11 @@ export class OpenAiDiscoveryProvider implements CatalystSourceDiscoveryProvider 
 
   get available(): boolean {
     return this.options.config.apiKey !== null;
+  }
+
+  /** What this provider was configured to buy, for the token ledger. */
+  get toolConfig(): string {
+    return `web_search:default;domains:v${DOMAIN_POLICY_VERSION}`;
   }
 
   async discover(request: DiscoveryRequest): Promise<DiscoveryResult> {
@@ -206,6 +223,7 @@ export class OpenAiDiscoveryProvider implements CatalystSourceDiscoveryProvider 
     return {
       sources: accepted,
       usage: usageOf(payload, this.model),
+      toolConfig: this.toolConfig,
       ran: true,
       modelCalls: 1,
       detail: `located ${accepted.length} candidate source(s)${
@@ -227,10 +245,17 @@ export class OpenAiCompanySourceResolver implements CompanySourceResolverProvide
   readonly name = 'openai-company-source';
   private readonly fetchImpl: typeof fetch;
   private readonly model: string;
+  private readonly searchContextSize: SearchContextSize | null;
 
   constructor(private readonly options: OpenAiDiscoveryOptions) {
     this.fetchImpl = options.fetchImpl ?? fetch;
     this.model = options.model ?? options.config.changeDetectModel;
+    this.searchContextSize = options.searchContextSize ?? null;
+  }
+
+  /** What this provider was configured to buy, for the token ledger. */
+  get toolConfig(): string {
+    return `web_search:${this.searchContextSize ?? 'default'};domains:v${DOMAIN_POLICY_VERSION}`;
   }
 
   get available(): boolean {
@@ -245,7 +270,14 @@ export class OpenAiCompanySourceResolver implements CompanySourceResolverProvide
     const body = {
       model: this.model,
       input: buildResolverPrompt(request),
-      tools: [{ type: 'web_search' }],
+      tools: [
+        {
+          type: 'web_search',
+          ...(this.searchContextSize
+            ? { search_context_size: this.searchContextSize }
+            : {}),
+        },
+      ],
       text: {
         format: {
           type: 'json_schema',
@@ -302,6 +334,7 @@ export class OpenAiCompanySourceResolver implements CompanySourceResolverProvide
     return {
       candidates,
       usage: usageOf(payload, this.model),
+      toolConfig: this.toolConfig,
       modelCalls: 1,
       detail: `offered ${candidates.length} collection point(s)`,
     };

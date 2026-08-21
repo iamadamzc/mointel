@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 18;
+export const SCHEMA_VERSION = 19;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -251,7 +251,9 @@ CREATE TABLE IF NOT EXISTS model_usage (
   input_tokens        INTEGER,
   cached_input_tokens INTEGER,
   output_tokens       INTEGER,
-  counts_available    INTEGER NOT NULL DEFAULT 1
+  counts_available    INTEGER NOT NULL DEFAULT 1,
+  /* How the hosted search was configured for this call; null when no tool. */
+  tool_config         TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_model_usage_date ON model_usage (trading_date);
 
@@ -642,6 +644,14 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'desk_assessment_tickers', column: 'reference_close', definition: 'REAL' },
   { table: 'desk_assessment_tickers', column: 'reference_basis', definition: 'TEXT' },
   { table: 'desk_assessment_tickers', column: 'price_at', definition: 'TEXT' },
+  /*
+   * v19. What the hosted search was configured to do when this call was made.
+   *
+   * Token comparisons across days are meaningless without it: a resolver call
+   * at low search context and one at medium are different products bought at
+   * different prices, and the ledger recorded only the price.
+   */
+  { table: 'model_usage', column: 'tool_config', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {
