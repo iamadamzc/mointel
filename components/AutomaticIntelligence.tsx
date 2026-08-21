@@ -11,6 +11,7 @@
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
+import { humanise } from '@/lib/dashboard/language';
 import { etTimestamp, relativeAge } from '@/lib/dashboard/why';
 import type { SheetAutoComparison } from '@/lib/research/merge/sheetAuto';
 import {
@@ -19,41 +20,6 @@ import {
   STRUCTURE_LABEL,
   type AutoIntelligence,
 } from '@/lib/research/view';
-
-/**
- * An engine enum, said in words.
- *
- * `SECONDARY_STALE`, `AUTO_SOURCE_GAP`, `REGISTERED_RESALE · POSSIBLY_ACTIVE`
- * and `INTERPRETATION_DIFFERENCE` were all rendered verbatim into a trader's
- * dossier. They describe how the engine reached a conclusion, not what is true
- * about the stock, and that is exactly the class of label this desk has already
- * rejected once. The named cases below carry a real explanation; anything not
- * named at least stops shouting in snake case.
- */
-const ENUM_PHRASE: Record<string, string> = {
-  AUTO_SOURCE_GAP: 'the automatic pass had not seen the newer source',
-  INTERPRETATION_DIFFERENCE: 'both sides had evidence and read it differently',
-  SHEET_ONLY: 'only the human review reached a conclusion',
-  AUTO_ONLY: 'only the automatic analysis reached a conclusion',
-  AGREE: 'agree',
-  DISAGREE: 'disagree',
-  NONE_FOUND: 'no catalyst found',
-  FRESH_FOUND: 'fresh catalyst found',
-  SECONDARY_STALE: 'secondary and stale',
-  POSSIBLY_ACTIVE: 'possibly active',
-  NOT_YET_ACTIVE: 'not yet active',
-  REGISTERED_RESALE: 'registered resale',
-  SHELF_CAPACITY: 'shelf capacity',
-  FORMER_RUNNER: 'former runner',
-  FORMER_SUPERRUNNER: 'former superrunner',
-};
-
-export function humanise(value: string | null | undefined): string {
-  if (!value) return 'unknown';
-  const known = ENUM_PHRASE[value];
-  if (known) return known;
-  return value.replace(/_/g, ' ').toLowerCase();
-}
 
 /** An instant a trader can act on: ET wall clock, with its age beside it. */
 function timeWithAge(at: string | null | undefined): string {
@@ -100,8 +66,10 @@ function SheetVsAuto({
         {comparison.comparisons.map((item) => (
           <tr key={item.field} className={item.agreement === 'DISAGREE' ? 'text-warn' : 'text-ink-2'}>
             <td className="py-0.5 pr-2">{item.field}</td>
-            <td className="py-0.5 pr-2">{item.sheet ?? '—'}</td>
-            <td className="py-0.5 pr-2">{item.auto ?? '—'}</td>
+            {/* Both sides in words. These are classification values, and
+                YELLOW_FRONTSIDE_WARNING is not a thing anybody says. */}
+            <td className="py-0.5 pr-2">{item.sheet ? humanise(item.sheet) : '—'}</td>
+            <td className="py-0.5 pr-2">{item.auto ? humanise(item.auto) : '—'}</td>
             <td className="py-0.5 text-ink-3">
               {humanise(item.agreement === 'DISAGREE' ? item.reason : item.agreement)}
             </td>
@@ -510,7 +478,7 @@ export function AutomaticIntelligence({
                     rel="noopener noreferrer"
                     className="text-ink-1 underline decoration-dotted underline-offset-2"
                   >
-                    [{source.id}] {source.secForm ?? source.sourceType}
+                    [{source.id}] {source.secForm ?? humanise(source.sourceType)}
                     {source.accession ? ` · ${source.accession}` : ''}
                     {source.title ? ` — ${source.title}` : ''}
                   </a>
