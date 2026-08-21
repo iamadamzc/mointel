@@ -5,6 +5,7 @@ import { resolveIntelligenceState } from '@/lib/dashboard/intelligence';
 import { buildDeskRow } from '@/lib/dashboard/merge';
 import { normalizeSheetRows } from '@/lib/data/rows';
 import type { DemandState } from '@/lib/market/types';
+import { emptySessionVwapSet } from '@/lib/market/vwap';
 import type { ResearchDossier } from '@/lib/research/types';
 import type { AutoIntelligence } from '@/lib/research/view';
 import { emptyAfterHours } from '@/lib/market/afterHours';
@@ -29,6 +30,7 @@ function demand(ticker: string): DemandState {
     volumeSource: 'minute-bars',
     sessionHigh: 8.73,
     sessionLow: 3.02,
+    vwap: emptySessionVwapSet(),
     rvol: 26.2,
     rvolRank: 11,
     previousRvolRank: 11,

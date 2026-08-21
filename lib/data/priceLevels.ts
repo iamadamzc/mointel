@@ -29,6 +29,8 @@ export type PriceLevelType =
   | 'LOD'
   | 'PM_HIGH'
   | 'PM_LOW'
+  | 'RTH_HIGH'
+  | 'AH_HIGH'
   | 'PRIOR_DAY_HIGH'
   | 'PRIOR_DAY_LOW'
   | 'PRIOR_DAY_CLOSE'
@@ -78,6 +80,8 @@ export type LevelSource =
   | 'SHEET_DAILY_RESISTANCE'
   | 'SHEET_DAILY_SUPPORT'
   | 'RESEARCH_HISTORICAL'
+  | 'SESSION_VWAP'
+  | 'DAILY_HISTORY'
   | 'DERIVED_ROUND';
 
 export interface PriceLevel {
@@ -175,6 +179,8 @@ const TYPE_PRIORITY: Record<PriceLevelType, number> = {
   RECLAIM: 3,
   PM_HIGH: 4,
   PM_LOW: 4,
+  RTH_HIGH: 4,
+  AH_HIGH: 4,
   VWAP: 5,
   PRIOR_DAY_HIGH: 6,
   PRIOR_DAY_LOW: 6,
@@ -191,6 +197,8 @@ const TYPE_LABEL: Record<PriceLevelType, string> = {
   LOD: 'LOD',
   PM_HIGH: 'PM high',
   PM_LOW: 'PM low',
+  RTH_HIGH: 'RTH high',
+  AH_HIGH: 'AH high',
   PRIOR_DAY_HIGH: 'PD high',
   PRIOR_DAY_LOW: 'PD low',
   PRIOR_DAY_CLOSE: 'PD close',
@@ -277,7 +285,11 @@ const SELECTION_WEIGHT: Record<PriceLevelType, number> = {
   RECLAIM: 1.2,
   PM_HIGH: 1.3,
   PM_LOW: 1.3,
-  VWAP: 1.5,
+  RTH_HIGH: 1.3,
+  AH_HIGH: 1.3,
+  // The session average is one of the two levels a momentum trader checks
+  // first, so it competes for a compact slot rather than being weighted out.
+  VWAP: 1.25,
   PRIOR_DAY_HIGH: 1.7,
   PRIOR_DAY_LOW: 1.7,
   PRIOR_DAY_CLOSE: 1.7,
@@ -389,6 +401,20 @@ export interface LevelMapInput {
   dailySupport?: string | null;
   /** Historical resistance from research. Never treated as a session level. */
   cycleLevels?: CycleLevels | null;
+  /**
+   * The session average, already resolved for the session the desk is in.
+   *
+   * Carries its own label — PM VWAP, RTH VWAP, AH VWAP — because a level called
+   * simply "VWAP" does not say which session's average it is. VWAP asserts no
+   * directional role, so it never receives a lost/reclaimed overlay.
+   */
+  sessionVwap?: { price: number; label: string } | null;
+  /** The verified blue-sky ceiling. Unverified levels are never passed here. */
+  blueSkyCeiling?: { price: number; date: string | null } | null;
+  /** Session highs, each named for the session it belongs to. */
+  premarketHigh?: number | null;
+  rthHigh?: number | null;
+  afterHoursHigh?: number | null;
   /** Include derived round numbers. */
   includeRoundLevels?: boolean;
 }
@@ -428,6 +454,50 @@ function collectLevels(input: LevelMapInput): { levels: PriceLevel[]; unparsed: 
   }
   if (typeof input.sessionLow === 'number' && input.sessionLow > 0) {
     levels.push(makeLevel(input.sessionLow, 'LOD', 'SESSION', 'session low'));
+  }
+
+  // Session highs, each named for the session that made it. A premarket high
+  // and an after-hours high are different facts and the ladder says which.
+  if (typeof input.premarketHigh === 'number' && input.premarketHigh > 0) {
+    levels.push(makeLevel(input.premarketHigh, 'PM_HIGH', 'SESSION', 'premarket high'));
+  }
+  if (typeof input.rthHigh === 'number' && input.rthHigh > 0) {
+    levels.push(makeLevel(input.rthHigh, 'RTH_HIGH', 'SESSION', 'regular-session high'));
+  }
+  if (typeof input.afterHoursHigh === 'number' && input.afterHoursHigh > 0) {
+    levels.push(makeLevel(input.afterHoursHigh, 'AH_HIGH', 'SESSION', 'after-hours high'));
+  }
+
+  /*
+   * The session average.
+   *
+   * Its note carries the session name so the ladder cannot show "VWAP" without
+   * saying which session's. Nothing here decides whether price is holding it.
+   */
+  if (input.sessionVwap && input.sessionVwap.price > 0) {
+    levels.push(
+      makeLevel(input.sessionVwap.price, 'VWAP', 'SESSION_VWAP', input.sessionVwap.label),
+    );
+  }
+
+  /*
+   * The verified blue-sky ceiling.
+   *
+   * Only ever a level that passed verification — split-adjusted, deep enough,
+   * corroborated, and not a bad print. An unverified ceiling is not passed in,
+   * so it can never appear on the ladder as though it were a real one.
+   */
+  if (input.blueSkyCeiling && input.blueSkyCeiling.price > 0) {
+    levels.push(
+      makeLevel(
+        input.blueSkyCeiling.price,
+        'BLUE_SKY',
+        'DAILY_HISTORY',
+        input.blueSkyCeiling.date
+          ? `prior ceiling, ${input.blueSkyCeiling.date}`
+          : 'prior ceiling',
+      ),
+    );
   }
 
   // The reference close is only a prior-day close when it belongs to the prior

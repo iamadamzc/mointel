@@ -23,6 +23,17 @@ import {
 } from './derive';
 import { normalizeHaltState } from './alpaca/messages';
 import { afterHoursStartUtc, RTH_END_MIN, sessionEndUtc, sessionStartUtc } from './session';
+import {
+  VWAP_LABEL,
+  VWAP_SESSION_KEY,
+  barNotional,
+  computeVwap,
+  vwapSessionForTs,
+  vwapSessionStartMs,
+  type SessionVwap,
+  type SessionVwapSet,
+  type VwapSession,
+} from './vwap';
 import type {
   AfterHoursCoverage,
   AfterHoursState,
@@ -100,6 +111,19 @@ interface TickerRuntime {
   volumeBaseSource: string | null;
   cumulativeVolume: number | null;
   volumeSource: string | null;
+
+  /*
+   * Session VWAP, accumulated per session from the same minute bars.
+   *
+   * `minuteNotional` mirrors `minuteVolumes` exactly so a corrected bar adjusts
+   * the average by a delta rather than being counted twice — the same rule that
+   * keeps cumulative volume correct. The per-session sums are scalars, so the
+   * whole feature costs one extra Map per ticker, not three.
+   */
+  minuteNotional: Map<string, number>;
+  vwapNotional: Record<keyof SessionVwapSet, number>;
+  vwapVolume: Record<keyof SessionVwapSet, number>;
+  vwapMinutes: Record<keyof SessionVwapSet, number>;
 
   sessionHigh: number | null;
   sessionLow: number | null;
@@ -355,6 +379,10 @@ export class DemandEngine {
       volumeBaseSource: null,
       cumulativeVolume: null,
       volumeSource: null,
+      minuteNotional: new Map(),
+      vwapNotional: { premarket: 0, regular: 0, afterHours: 0 },
+      vwapVolume: { premarket: 0, regular: 0, afterHours: 0 },
+      vwapMinutes: { premarket: 0, regular: 0, afterHours: 0 },
       sessionHigh: null,
       sessionLow: null,
       price: null,
@@ -675,12 +703,15 @@ export class DemandEngine {
     runtime.volumeBaseSource = seed.volumeBaseSource;
     runtime.volumeSource = seed.volumeBaseSource;
 
-    // Drop any live minutes already covered by the new base.
+    // Drop any live minutes already covered by the new base. The VWAP buckets
+    // follow the same minutes out, or the average would keep counting notional
+    // whose volume has just been handed back to the reconstructed base.
     if (seed.volumeBaseThrough) {
       for (const [ts, volume] of runtime.minuteVolumes) {
         if (ts <= seed.volumeBaseThrough) {
           runtime.minuteVolumes.delete(ts);
           runtime.minuteSum -= volume;
+          this.dropVwapMinute(runtime, ts, volume);
         }
       }
     }
@@ -812,6 +843,7 @@ export class DemandEngine {
       runtime.minuteSum += bar.volume;
     }
     runtime.minuteVolumes.set(bar.ts, bar.volume);
+    this.accumulateVwap(runtime, bar, previous);
 
     // The same minute, counted a second time against the after-hours window.
     // A bar at or after the bell belongs to both the day and the evening; one
@@ -844,6 +876,94 @@ export class DemandEngine {
       : 'minute-bars';
 
     this.refreshDerived(runtime);
+  }
+
+  /**
+   * Folds one minute bar into the VWAP bucket for the session it happened in.
+   *
+   * A corrected bar arrives with the same timestamp as the one it replaces, so
+   * the bucket is adjusted by the delta on both sides of the ratio. Anything
+   * outside 04:00–20:00 ET on this trading date has no bucket and is ignored.
+   */
+  private accumulateVwap(
+    runtime: TickerRuntime,
+    bar: NonNullable<MarketObservation['bar']>,
+    previousVolume: number | undefined,
+  ): void {
+    const session = vwapSessionForTs(bar.ts, this.tradingDate, this.rthCloseMinutes);
+    if (!session) return;
+
+    const key = VWAP_SESSION_KEY[session];
+    const notional = barNotional(bar);
+    const previousNotional = runtime.minuteNotional.get(bar.ts);
+
+    if (previousNotional !== undefined) {
+      runtime.vwapNotional[key] += notional - previousNotional;
+      runtime.vwapVolume[key] += bar.volume - (previousVolume ?? 0);
+    } else {
+      runtime.vwapNotional[key] += notional;
+      runtime.vwapVolume[key] += bar.volume;
+      runtime.vwapMinutes[key] += 1;
+    }
+
+    runtime.minuteNotional.set(bar.ts, notional);
+  }
+
+  /** Removes a minute from whichever VWAP bucket owns it. */
+  private dropVwapMinute(runtime: TickerRuntime, ts: string, volume: number): void {
+    const session = vwapSessionForTs(ts, this.tradingDate, this.rthCloseMinutes);
+    if (!session) return;
+
+    const key = VWAP_SESSION_KEY[session];
+    const notional = runtime.minuteNotional.get(ts);
+    if (notional === undefined) return;
+
+    runtime.minuteNotional.delete(ts);
+    runtime.vwapNotional[key] -= notional;
+    runtime.vwapVolume[key] -= volume;
+    runtime.vwapMinutes[key] = Math.max(0, runtime.vwapMinutes[key] - 1);
+  }
+
+  /**
+   * The three session averages, each carrying how much of its session it saw.
+   *
+   * A reconstructed volume base carries volume with no per-minute notional
+   * behind it, so any session the base reaches into is PARTIAL: real minutes
+   * were averaged, but not all of the session's shares were in the divisor.
+   * Sessions that start after the base ends are unaffected and stay COMPLETE.
+   */
+  private vwapStateOf(runtime: TickerRuntime): SessionVwapSet {
+    const baseThroughMs =
+      runtime.volumeBaseThrough && runtime.volumeBase > 0
+        ? Date.parse(runtime.volumeBaseThrough)
+        : null;
+
+    const read = (session: VwapSession): SessionVwap => {
+      const key = VWAP_SESSION_KEY[session];
+      const volume = runtime.vwapVolume[key];
+      const vwap = computeVwap(runtime.vwapNotional[key], volume);
+
+      if (vwap === null || runtime.vwapMinutes[key] === 0) {
+        return { session, label: VWAP_LABEL[session], vwap: null, volume: null, coverage: 'UNAVAILABLE' };
+      }
+
+      const startMs = vwapSessionStartMs(session, this.tradingDate, this.rthCloseMinutes);
+      const partial = baseThroughMs !== null && baseThroughMs >= startMs;
+
+      return {
+        session,
+        label: VWAP_LABEL[session],
+        vwap,
+        volume,
+        coverage: partial ? 'PARTIAL' : 'COMPLETE',
+      };
+    };
+
+    return {
+      premarket: read('PREMARKET'),
+      regular: read('RTH'),
+      afterHours: read('AFTER_HOURS'),
+    };
   }
 
   private ingestTrade(runtime: TickerRuntime, observation: MarketObservation): void {
@@ -1502,6 +1622,7 @@ export class DemandEngine {
       volumeSource: runtime.volumeSource,
       sessionHigh: runtime.sessionHigh,
       sessionLow: runtime.sessionLow,
+      vwap: this.vwapStateOf(runtime),
       rvol: runtime.rvol,
       rvolRank: runtime.rvolRank,
       previousRvolRank: runtime.previousRvolRank,

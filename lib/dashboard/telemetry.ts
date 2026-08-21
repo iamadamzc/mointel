@@ -21,7 +21,13 @@
  */
 
 import type { MomentumTicker } from '@/lib/data/types';
-import type { DemandState, HaltState, RvolConfidence } from '@/lib/market/types';
+import type { DemandState, HaltState, RvolConfidence, SessionPhase } from '@/lib/market/types';
+import {
+  selectSessionVwap,
+  vwapDistance,
+  type SessionVwap,
+  type VwapDistance,
+} from '@/lib/market/vwap';
 
 export type TelemetrySource = 'ALPACA' | 'SHEET' | 'NONE';
 
@@ -46,6 +52,17 @@ export interface MarketTelemetry {
   luldLower: number | null;
   luldUpper: number | null;
 
+  /*
+   * The session average and where price sits against it.
+   *
+   * Session-scoped and labelled — PM VWAP before the open, RTH VWAP during the
+   * day, AH VWAP after the bell. Null when the feed has no usable minutes for
+   * the session the desk is actually in, never the previous session's number
+   * wearing the current session's name.
+   */
+  vwap: SessionVwap | null;
+  vwapDistance: VwapDistance | null;
+
   haltState: HaltState;
   haltRaw: string | null;
 
@@ -63,6 +80,8 @@ export interface TelemetryInput {
   demand: DemandState | null;
   /** TODAY-sheet row, used only when no live price exists at all. */
   sheet: MomentumTicker | null;
+  /** Decides which session's VWAP is the current one. */
+  sessionPhase?: SessionPhase;
 }
 
 function liveLabel(demand: DemandState): string {
@@ -72,12 +91,35 @@ function liveLabel(demand: DemandState): string {
   return demand.feed.toUpperCase();
 }
 
+/**
+ * The session average for the phase the desk is in, and where price sits.
+ *
+ * An UNAVAILABLE reading is dropped to null here rather than passed on with a
+ * price of null attached to a label — a cell that renders "RTH VWAP —" reads
+ * as a broken number, where showing nothing reads as what it is.
+ */
+function resolveVwap(
+  demand: DemandState | null,
+  phase: SessionPhase | undefined,
+  price: number | null,
+): { vwap: SessionVwap | null; vwapDistance: VwapDistance | null } {
+  if (!demand) return { vwap: null, vwapDistance: null };
+
+  const reading = selectSessionVwap(demand.vwap, phase ?? 'CLOSED');
+  if (reading.coverage === 'UNAVAILABLE' || reading.vwap === null) {
+    return { vwap: null, vwapDistance: null };
+  }
+
+  return { vwap: reading, vwapDistance: vwapDistance(price, reading.vwap) };
+}
+
 export function buildTelemetry(input: TelemetryInput): MarketTelemetry {
   const { demand, sheet } = input;
 
   // Live data with an actual price is the only thing that can be current.
   if (demand !== null && demand.price !== null) {
     return {
+      ...resolveVwap(demand, input.sessionPhase, demand.price),
       ticker: input.ticker,
       price: demand.price,
       percentChange: demand.percentChange,
@@ -111,6 +153,10 @@ export function buildTelemetry(input: TelemetryInput): MarketTelemetry {
    */
   if (sheet) {
     return {
+      // A sheet price is not a live print, so it is never placed against a
+      // live session average.
+      vwap: null,
+      vwapDistance: null,
       ticker: input.ticker,
       price: sheet.price.value,
       percentChange: sheet.changePct.value,
@@ -140,6 +186,8 @@ export function buildTelemetry(input: TelemetryInput): MarketTelemetry {
   }
 
   return {
+    vwap: null,
+    vwapDistance: null,
     ticker: input.ticker,
     price: null,
     percentChange: null,

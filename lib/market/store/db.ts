@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 20;
+export const SCHEMA_VERSION = 21;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -82,6 +82,18 @@ CREATE TABLE IF NOT EXISTS ticker_session (
   volume_source          TEXT,
   session_high           REAL,
   session_low            REAL,
+  -- Session VWAP, accumulated separately per session. A premarket average is
+  -- never carried into the regular session, and each reading records how much
+  -- of its own session the calculation actually covered.
+  pm_vwap                REAL,
+  pm_vwap_volume         INTEGER,
+  pm_vwap_coverage       TEXT NOT NULL DEFAULT 'UNAVAILABLE',
+  rth_vwap               REAL,
+  rth_vwap_volume        INTEGER,
+  rth_vwap_coverage      TEXT NOT NULL DEFAULT 'UNAVAILABLE',
+  ah_vwap                REAL,
+  ah_vwap_volume         INTEGER,
+  ah_vwap_coverage       TEXT NOT NULL DEFAULT 'UNAVAILABLE',
   rvol                   REAL,
   rvol_rank              INTEGER,
   previous_rvol_rank     INTEGER,
@@ -641,6 +653,29 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'ticker_session', column: 'rth_final_rvol', definition: 'REAL' },
   { table: 'ticker_session', column: 'rth_final_rank', definition: 'INTEGER' },
   { table: 'ticker_session', column: 'rth_final_frozen_at', definition: 'TEXT' },
+  // v21 — session VWAP. Existing rows default to UNAVAILABLE rather than to a
+  // zero that would read as "the average was $0.00".
+  { table: 'ticker_session', column: 'pm_vwap', definition: 'REAL' },
+  { table: 'ticker_session', column: 'pm_vwap_volume', definition: 'INTEGER' },
+  {
+    table: 'ticker_session',
+    column: 'pm_vwap_coverage',
+    definition: "TEXT NOT NULL DEFAULT 'UNAVAILABLE'",
+  },
+  { table: 'ticker_session', column: 'rth_vwap', definition: 'REAL' },
+  { table: 'ticker_session', column: 'rth_vwap_volume', definition: 'INTEGER' },
+  {
+    table: 'ticker_session',
+    column: 'rth_vwap_coverage',
+    definition: "TEXT NOT NULL DEFAULT 'UNAVAILABLE'",
+  },
+  { table: 'ticker_session', column: 'ah_vwap', definition: 'REAL' },
+  { table: 'ticker_session', column: 'ah_vwap_volume', definition: 'INTEGER' },
+  {
+    table: 'ticker_session',
+    column: 'ah_vwap_coverage',
+    definition: "TEXT NOT NULL DEFAULT 'UNAVAILABLE'",
+  },
   /*
    * v13. These two are in the CREATE TABLE above as well, and they still have
    * to be here: a store created under v12 already has desk_assessment_tickers,

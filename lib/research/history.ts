@@ -75,6 +75,22 @@ export function readDailyBars(
   return rows.reverse();
 }
 
+/**
+ * The adjustment basis of a symbol's retained daily bars.
+ *
+ * Null when there are none, and null when the window mixes bases — a series
+ * that is half split-adjusted and half raw is not internally comparable, and
+ * anything derived from it (a ceiling, a prior high) would be wrong by whatever
+ * the split ratio was.
+ */
+export function dailyBarAdjustment(db: MarketDatabase, symbol: string): string | null {
+  const rows = db
+    .prepare('SELECT DISTINCT adjustment FROM daily_bars WHERE symbol = ?')
+    .all(symbol) as Array<{ adjustment: string }>;
+  if (rows.length !== 1) return null;
+  return rows[0]!.adjustment;
+}
+
 export function dailyBarCount(db: MarketDatabase, symbol: string): number {
   const row = db
     .prepare('SELECT COUNT(*) AS n FROM daily_bars WHERE symbol = ?')

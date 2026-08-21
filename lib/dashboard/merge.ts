@@ -15,7 +15,8 @@ import {
   resolveIntelligenceState,
   type IntelligenceState,
 } from '@/lib/dashboard/intelligence';
-import type { DemandState, MarketSnapshot } from '@/lib/market/types';
+import { UNAVAILABLE_THRESHOLD, resolveBlueSky, type BlueSkyState } from '@/lib/market/blueSky';
+import type { DemandState, MarketSnapshot, SessionPhase } from '@/lib/market/types';
 import type { DashboardState, MomentumTicker, StructuralResearch } from '@/lib/data/types';
 import type { AutoIntelligence } from '@/lib/research/view';
 import {
@@ -120,6 +121,19 @@ export interface DeskRow {
    * row, even with an accepted automatic dossier open beneath it.
    */
   intelligenceState: IntelligenceState;
+  /**
+   * Blue-sky price state, resolved on the server from split-adjusted daily
+   * bars. Always present — a ticker with no history carries the explicit
+   * unavailable state, so no surface has to guess what silence meant.
+   */
+  blueSky: BlueSkyState;
+}
+
+/** Extra context the merge needs but a single row cannot know for itself. */
+export interface DeskRowContext {
+  /** Decides which session's VWAP is current. */
+  sessionPhase?: SessionPhase;
+  blueSky?: BlueSkyState;
 }
 
 /**
@@ -146,11 +160,20 @@ export function buildDeskRow(
   demand: DemandState | null,
   intelligence: AutoIntelligence | null = null,
   sheetObservedAt: string | null = null,
+  context: DeskRowContext = {},
 ): DeskRow {
   const float = resolveDisplayedFloat(research, researchRecord);
 
   // Resolved once, here, and reused for every price-shaped decision below.
-  const telemetry = buildTelemetry({ ticker, demand, sheet: research });
+  const telemetry = buildTelemetry({
+    ticker,
+    demand,
+    sheet: research,
+    sessionPhase: context.sessionPhase,
+  });
+
+  // Resolved before the level map so a verified ceiling can join the ladder.
+  const blueSky = context.blueSky ?? resolveBlueSky(UNAVAILABLE_THRESHOLD, telemetry.price);
 
   const cycleLevels = deriveCycleLevels({
     ticker: research,
@@ -200,7 +223,21 @@ export function buildDeskRow(
       currentPrice: telemetry.price,
       spread: telemetry.spread,
       spreadPct: telemetry.spreadPct,
-      sessionHigh: telemetry.sessionHigh,
+      // Before the open the running session high IS the premarket high, and
+      // saying so is the difference between a ladder that reads and one that
+      // makes the trader work out which session made the level.
+      sessionHigh: context.sessionPhase === 'PREMARKET' ? null : telemetry.sessionHigh,
+      premarketHigh: context.sessionPhase === 'PREMARKET' ? telemetry.sessionHigh : null,
+      rthHigh: demand?.rthFinal?.high ?? null,
+      afterHoursHigh: demand?.afterHours.high ?? null,
+      sessionVwap:
+        telemetry.vwap && telemetry.vwap.vwap !== null
+          ? { price: telemetry.vwap.vwap, label: telemetry.vwap.label }
+          : null,
+      blueSkyCeiling:
+        blueSky.threshold.verified && blueSky.threshold.price !== null
+          ? { price: blueSky.threshold.price, date: blueSky.threshold.date }
+          : null,
       sessionLow: telemetry.sessionLow,
       referenceRthClose: demand?.referenceRthClose ?? null,
       referenceBasis: demand?.referenceRthCloseBasis ?? null,
@@ -217,6 +254,10 @@ export function buildDeskRow(
       intelligence,
       comparison: research || intelligence?.analysis ? comparison : null,
     }),
+    // Server-resolved when the snapshot carried one. A row built without a
+    // snapshot has no daily history to reason from, which is unavailable —
+    // not open sky.
+    blueSky,
   };
 }
 
@@ -276,7 +317,11 @@ export function mergeDesk(
   const researchByTicker = dashboard?.research ?? {};
   const demandByTicker = market?.demand ?? {};
   const intelligenceByTicker = market?.intelligence ?? {};
+  const blueSkyByTicker = market?.blueSky ?? {};
   const sheetObservedAt = dashboard?.meta.fetchedAt ?? null;
+  // One session for the whole merge, so two rows can never disagree about
+  // which VWAP is the current one.
+  const sessionPhase = market?.discovery.sessionPhase;
 
   for (const ticker of sheetTickers) {
     rows.set(
@@ -288,6 +333,7 @@ export function mergeDesk(
         demandByTicker[ticker.ticker] ?? null,
         intelligenceByTicker[ticker.ticker] ?? null,
         sheetObservedAt,
+        { sessionPhase, blueSky: blueSkyByTicker[ticker.ticker] },
       ),
     );
   }
@@ -303,6 +349,7 @@ export function mergeDesk(
         demand,
         intelligenceByTicker[symbol] ?? null,
         sheetObservedAt,
+        { sessionPhase, blueSky: blueSkyByTicker[symbol] },
       ),
     );
   }

@@ -4,6 +4,7 @@
  */
 
 import type { MarketDatabase } from './db';
+import { VWAP_LABEL, type SessionVwap, type VwapCoverage, type VwapSession } from '../vwap';
 import type {
   DemandState,
   DeskEvent,
@@ -233,6 +234,15 @@ export interface TickerSessionRow {
   volume_source: string | null;
   session_high: number | null;
   session_low: number | null;
+  pm_vwap: number | null;
+  pm_vwap_volume: number | null;
+  pm_vwap_coverage: string | null;
+  rth_vwap: number | null;
+  rth_vwap_volume: number | null;
+  rth_vwap_coverage: string | null;
+  ah_vwap: number | null;
+  ah_vwap_volume: number | null;
+  ah_vwap_coverage: string | null;
   rvol: number | null;
   rvol_rank: number | null;
   previous_rvol_rank: number | null;
@@ -290,6 +300,32 @@ export interface TickerSessionRow {
   updated_at: string;
 }
 
+/**
+ * One stored VWAP reading.
+ *
+ * A row written before v21 has no VWAP columns at all, and a row whose session
+ * never produced usable minutes stored none. Both read back as UNAVAILABLE —
+ * the value is only trusted when the coverage stored beside it says it can be.
+ */
+function readSessionVwap(
+  session: VwapSession,
+  vwap: number | null,
+  volume: number | null,
+  coverage: string | null,
+): SessionVwap {
+  const known: VwapCoverage =
+    coverage === 'COMPLETE' || coverage === 'PARTIAL' ? coverage : 'UNAVAILABLE';
+  const usable = known !== 'UNAVAILABLE' && typeof vwap === 'number' && vwap > 0;
+
+  return {
+    session,
+    label: VWAP_LABEL[session],
+    vwap: usable ? vwap : null,
+    volume: usable ? volume : null,
+    coverage: usable ? known : 'UNAVAILABLE',
+  };
+}
+
 export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandState {
   const lastEventAt = row.last_event_at;
   const ageSeconds = lastEventAt
@@ -317,6 +353,16 @@ export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandSt
     volumeSource: row.volume_source,
     sessionHigh: row.session_high,
     sessionLow: row.session_low,
+    vwap: {
+      premarket: readSessionVwap('PREMARKET', row.pm_vwap, row.pm_vwap_volume, row.pm_vwap_coverage),
+      regular: readSessionVwap('RTH', row.rth_vwap, row.rth_vwap_volume, row.rth_vwap_coverage),
+      afterHours: readSessionVwap(
+        'AFTER_HOURS',
+        row.ah_vwap,
+        row.ah_vwap_volume,
+        row.ah_vwap_coverage,
+      ),
+    },
     rvol: row.rvol,
     rvolRank: row.rvol_rank,
     previousRvolRank: row.previous_rvol_rank,
@@ -397,6 +443,9 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       reference_rth_close_basis, percent_change,
       volume_base, volume_base_through, volume_base_source, cumulative_volume, volume_source,
       session_high, session_low,
+      pm_vwap, pm_vwap_volume, pm_vwap_coverage,
+      rth_vwap, rth_vwap_volume, rth_vwap_coverage,
+      ah_vwap, ah_vwap_volume, ah_vwap_coverage,
       rvol, rvol_rank, previous_rvol_rank, rvol_rank_change, rvol_confidence,
       baseline_sessions, baseline_average, baseline_calculated_at, baseline_adjustment,
       bid, bid_size, ask, ask_size, quote_at, spread, spread_pct, quote_invalid,
@@ -416,6 +465,9 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       @reference_rth_close_basis, @percent_change,
       @volume_base, @volume_base_through, @volume_base_source, @cumulative_volume, @volume_source,
       @session_high, @session_low,
+      @pm_vwap, @pm_vwap_volume, @pm_vwap_coverage,
+      @rth_vwap, @rth_vwap_volume, @rth_vwap_coverage,
+      @ah_vwap, @ah_vwap_volume, @ah_vwap_coverage,
       @rvol, @rvol_rank, @previous_rvol_rank, @rvol_rank_change, @rvol_confidence,
       @baseline_sessions, @baseline_average, @baseline_calculated_at, @baseline_adjustment,
       @bid, @bid_size, @ask, @ask_size, @quote_at, @spread, @spread_pct, @quote_invalid,
@@ -445,6 +497,12 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       cumulative_volume = excluded.cumulative_volume,
       volume_source = excluded.volume_source,
       session_high = excluded.session_high, session_low = excluded.session_low,
+      pm_vwap = excluded.pm_vwap, pm_vwap_volume = excluded.pm_vwap_volume,
+      pm_vwap_coverage = excluded.pm_vwap_coverage,
+      rth_vwap = excluded.rth_vwap, rth_vwap_volume = excluded.rth_vwap_volume,
+      rth_vwap_coverage = excluded.rth_vwap_coverage,
+      ah_vwap = excluded.ah_vwap, ah_vwap_volume = excluded.ah_vwap_volume,
+      ah_vwap_coverage = excluded.ah_vwap_coverage,
       rvol = excluded.rvol, rvol_rank = excluded.rvol_rank,
       previous_rvol_rank = excluded.previous_rvol_rank,
       rvol_rank_change = excluded.rvol_rank_change,

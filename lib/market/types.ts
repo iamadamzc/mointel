@@ -6,6 +6,9 @@
  * reported as unknown — never coerced to zero.
  */
 
+import type { BlueSkyState } from './blueSky';
+import type { SessionVwapSet } from './vwap';
+
 export type MarketFeed = 'sip' | 'iex' | 'simulator' | 'test';
 
 export type MarketMode = 'LIVE' | 'SIMULATOR' | 'TEST' | 'OFFLINE';
@@ -321,6 +324,16 @@ export interface DemandState {
   sessionHigh: number | null;
   sessionLow: number | null;
 
+  /**
+   * Premarket, regular-hours and after-hours VWAP, accumulated separately.
+   *
+   * Never one number called "VWAP": which session an average belongs to is
+   * part of what it means, and carrying the premarket average into the regular
+   * session would quote the wrong one under the right name. Each reading
+   * states its own coverage. See lib/market/vwap.ts.
+   */
+  vwap: SessionVwapSet;
+
   rvol: number | null;
   rvolRank: number | null;
   previousRvolRank: number | null;
@@ -540,6 +553,14 @@ export interface MarketSnapshot {
   demand: Record<string, DemandState>;
   /** Accepted automatic research, keyed by symbol. Empty until Phase 4 runs. */
   intelligence: Record<string, AutoIntelligence>;
+  /**
+   * Blue-sky price state, keyed by symbol.
+   *
+   * Derived from retained split-adjusted daily bars only. A symbol with no
+   * daily history carries an explicit unavailable state rather than being
+   * absent, so the drawer can always say which of the five things is true.
+   */
+  blueSky: Record<string, BlueSkyState>;
   events: DeskEvent[];
   fetchedAt: string;
 }

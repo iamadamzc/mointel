@@ -25,6 +25,7 @@ import {
 } from '@/lib/market/store/repo';
 import { toRow } from '@/worker/runtime';
 import type { DemandState, MarketFeedHealth, RvolBaseline } from '@/lib/market/types';
+import { emptySessionVwapSet } from '@/lib/market/vwap';
 import { emptyAfterHours } from '@/lib/market/afterHours';
 
 const temporaryFiles: string[] = [];
@@ -86,6 +87,7 @@ function demand(symbol: string, rank: number | null): DemandState {
     volumeSource: 'minute-bars',
     sessionHigh: 6.4,
     sessionLow: 4.9,
+    vwap: emptySessionVwapSet(),
     rvol: 4.1,
     rvolRank: rank,
     previousRvolRank: null,
@@ -140,6 +142,50 @@ describe('state store round trip', () => {
     expect(states[0]!.latched).toBe(true);
     expect(states[0]!.quote.spreadPct).toBeCloseTo(0.64, 5);
     expect(states[0]!.luld.upper).toBe(7);
+    db.close();
+  });
+
+  it('round-trips each session VWAP with its own coverage', () => {
+    const db = temporaryDb();
+    const state = demand('ABCD', 1);
+    state.vwap = {
+      premarket: {
+        session: 'PREMARKET',
+        label: 'PM VWAP',
+        vwap: 4.87,
+        volume: 812_400,
+        coverage: 'COMPLETE',
+      },
+      regular: {
+        session: 'RTH',
+        label: 'RTH VWAP',
+        vwap: 6.05,
+        volume: 4_100_000,
+        coverage: 'PARTIAL',
+      },
+      afterHours: {
+        session: 'AFTER_HOURS',
+        label: 'AH VWAP',
+        vwap: null,
+        volume: null,
+        coverage: 'UNAVAILABLE',
+      },
+    };
+    upsertTickerSessions(db, [toRow(state)]);
+
+    const loaded = readDemandStates(db, '2026-08-14', { limit: 10 })[0]!;
+    expect(loaded.vwap.premarket).toEqual({
+      session: 'PREMARKET',
+      label: 'PM VWAP',
+      vwap: 4.87,
+      volume: 812_400,
+      coverage: 'COMPLETE',
+    });
+    expect(loaded.vwap.regular.coverage).toBe('PARTIAL');
+    expect(loaded.vwap.regular.vwap).toBeCloseTo(6.05, 6);
+    // An unavailable session reads back as unavailable, never as $0.00.
+    expect(loaded.vwap.afterHours.vwap).toBeNull();
+    expect(loaded.vwap.afterHours.coverage).toBe('UNAVAILABLE');
     db.close();
   });
 
@@ -358,6 +404,70 @@ describe('Top-N entry stamp persistence', () => {
       extraSymbols: ['ACME'],
     });
     expect(read.top12EnteredAt).toBe('2026-08-17T13:45:00.000Z');
+  });
+});
+
+describe('the v21 session-VWAP columns', () => {
+  it('are added to a store created before they existed', () => {
+    /*
+     * The v21 migration, exercised rather than assumed. Production opens a
+     * store that has ticker_session without any VWAP column, and three writers
+     * open it on boot. ADDED_COLUMNS runs on open regardless of user_version,
+     * which is what makes that safe — editing CREATE TABLE alone would migrate
+     * nothing and the first INSERT would fail. This proves the ALTER lands and
+     * that a write through upsertTickerSessions reaches the new columns.
+     */
+    const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-vwap-')), 'market.db');
+    temporaryFiles.push(file);
+
+    const seed = openDatabase(file);
+    for (const column of [
+      'pm_vwap',
+      'pm_vwap_volume',
+      'pm_vwap_coverage',
+      'rth_vwap',
+      'rth_vwap_volume',
+      'rth_vwap_coverage',
+      'ah_vwap',
+      'ah_vwap_volume',
+      'ah_vwap_coverage',
+    ]) {
+      seed.exec(`ALTER TABLE ticker_session DROP COLUMN ${column}`);
+    }
+    seed.pragma('user_version = 20');
+    seed.close();
+
+    const aged = openDatabase(file);
+    try {
+      const columns = (
+        aged.prepare('PRAGMA table_info(ticker_session)').all() as Array<{ name: string }>
+      ).map((column) => column.name);
+      expect(columns).toContain('pm_vwap_coverage');
+      expect(columns).toContain('rth_vwap');
+      expect(columns).toContain('ah_vwap_volume');
+
+      const state = demand('ACME', 1);
+      state.vwap = {
+        ...emptySessionVwapSet(),
+        regular: {
+          session: 'RTH',
+          label: 'RTH VWAP',
+          vwap: 6.05,
+          volume: 4_100_000,
+          coverage: 'COMPLETE',
+        },
+      };
+      upsertTickerSessions(aged, [toRow(state)]);
+
+      const loaded = readDemandStates(aged, '2026-08-14', { limit: 5 })[0]!;
+      expect(loaded.vwap.regular.vwap).toBeCloseTo(6.05, 6);
+      expect(loaded.vwap.regular.coverage).toBe('COMPLETE');
+      // A row written before v21 has no stored coverage at all, and must read
+      // back as unavailable rather than as an average of zero.
+      expect(loaded.vwap.premarket.coverage).toBe('UNAVAILABLE');
+    } finally {
+      aged.close();
+    }
   });
 });
 

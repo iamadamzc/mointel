@@ -5,6 +5,7 @@ import { normalizeSheetRows } from '@/lib/data/rows';
 import { MockProvider } from '@/lib/data/providers/mock';
 import type { DashboardState } from '@/lib/data/types';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
+import { emptySessionVwapSet } from '@/lib/market/vwap';
 import { emptyAfterHours } from '@/lib/market/afterHours';
 import { emptyAssessmentPanel } from '@/lib/desk/view';
 
@@ -28,6 +29,7 @@ function demand(ticker: string, overrides: Partial<DemandState> = {}): DemandSta
     volumeSource: 'minute-bars',
     sessionHigh: 6.4,
     sessionLow: 4.9,
+    vwap: emptySessionVwapSet(),
     rvol: 3.1,
     rvolRank: 1,
     previousRvolRank: 4,
@@ -129,6 +131,7 @@ function snapshot(demands: DemandState[]): MarketSnapshot {
     },
     demand: Object.fromEntries(demands.map((state) => [state.ticker, state])),
     intelligence: {},
+    blueSky: {},
     events: [],
     fetchedAt: '2026-08-14T13:31:02.000Z',
   };

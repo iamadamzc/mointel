@@ -18,6 +18,7 @@ import {
   unpinFocus,
 } from '@/lib/market/store/focusRepo';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
+import { emptySessionVwapSet } from '@/lib/market/vwap';
 import { emptyAfterHours } from '@/lib/market/afterHours';
 
 const temporaryFiles: string[] = [];
@@ -180,6 +181,7 @@ function demand(ticker: string, overrides: Partial<DemandState> = {}): DemandSta
     volumeSource: 'minute-bars',
     sessionHigh: 6.69,
     sessionLow: 5.32,
+    vwap: emptySessionVwapSet(),
     rvol: 2.02,
     rvolRank: 88,
     previousRvolRank: 92,
@@ -259,6 +261,7 @@ describe('focus cards', () => {
       discovery: { ranked: [] },
       demand: { VNTX: demand('VNTX') },
       intelligence: {},
+      blueSky: {},
       events: [],
     } as unknown as MarketSnapshot;
 

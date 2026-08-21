@@ -46,6 +46,18 @@ import {
   readSourcesByIds,
   researchTablesPresent,
 } from './store/researchRepo';
+import {
+  DEFAULT_CYCLE_HISTORY_TRADING_DAYS,
+  dailyBarAdjustment,
+  readDailyBars,
+} from '../research/history';
+import {
+  UNAVAILABLE_THRESHOLD,
+  resolveBlueSky,
+  resolveBlueSkyThreshold,
+  type BlueSkyState,
+  type BlueSkyThreshold,
+} from './blueSky';
 import { projectResearchHealth } from '../research/health';
 import {
   RESEARCH_STATUS_LABEL,
@@ -262,6 +274,47 @@ function buildAssessmentPanel(
  * Assembles the market payload. Never throws: when the worker has not run, the
  * dashboard must still render Google research on its own.
  */
+/*
+ * Blue-sky ceilings move once a day at most, and the dashboard asks for the
+ * market snapshot once a second. Re-reading ninety daily bars per symbol per
+ * second to answer a question whose input changes overnight would be a real
+ * cost for no freshness, so the threshold is cached and only the placement of
+ * the current price against it is recomputed.
+ */
+const BLUE_SKY_TTL_MS = 10 * 60_000;
+const BLUE_SKY_CACHE_LIMIT = 600;
+const blueSkyCache = new Map<string, { at: number; threshold: BlueSkyThreshold }>();
+
+export function resetBlueSkyCache(): void {
+  blueSkyCache.clear();
+}
+
+function blueSkyThreshold(
+  db: MarketDatabase,
+  symbol: string,
+  tradingDate: string,
+): BlueSkyThreshold {
+  const key = `${symbol}|${tradingDate}`;
+  const cached = blueSkyCache.get(key);
+  if (cached && Date.now() - cached.at < BLUE_SKY_TTL_MS) return cached.threshold;
+
+  let threshold: BlueSkyThreshold;
+  try {
+    const bars = readDailyBars(db, symbol, DEFAULT_CYCLE_HISTORY_TRADING_DAYS);
+    threshold = resolveBlueSkyThreshold(bars, {
+      tradingDate,
+      adjustment: dailyBarAdjustment(db, symbol),
+    });
+  } catch {
+    // A store written before daily_bars existed must not take the board down.
+    threshold = { ...UNAVAILABLE_THRESHOLD };
+  }
+
+  if (blueSkyCache.size >= BLUE_SKY_CACHE_LIMIT) blueSkyCache.clear();
+  blueSkyCache.set(key, { at: Date.now(), threshold });
+  return threshold;
+}
+
 export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSnapshot {
   const config = loadMarketConfig();
   const fetchedAt = new Date().toISOString();
@@ -284,6 +337,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       discovery: emptyDiscovery(config),
       demand: {},
       intelligence: {},
+      blueSky: {},
       events: [],
       fetchedAt,
     };
@@ -412,6 +466,14 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       states.map((state) => state.ticker),
     );
 
+    const blueSky: Record<string, BlueSkyState> = {};
+    for (const state of states) {
+      blueSky[state.ticker] = resolveBlueSky(
+        blueSkyThreshold(db, state.ticker, tradingDate),
+        state.price,
+      );
+    }
+
     return {
       health,
       marketHealth: healthView(health, sessionPhase, config),
@@ -436,6 +498,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       discovery,
       demand,
       intelligence,
+      blueSky,
       events: readDeskEvents(db, tradingDate, 60),
       fetchedAt,
     };
@@ -453,6 +516,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       discovery: emptyDiscovery(config),
       demand: {},
       intelligence: {},
+      blueSky: {},
       events: [],
       fetchedAt,
     };
