@@ -115,6 +115,60 @@ and **not** generated. Missed 30-minute intervals never accumulate: the desk
 performs one current assessment and records the gap rather than manufacturing a
 dozen snapshots out of the present.
 
+### Catch-up windows
+
+How long after its minute a checkpoint is still worth running. Chosen from what
+supersedes what, not from one arbitrary grace period.
+
+| Checkpoint | Window | Until | Why that boundary |
+| --- | --- | --- | --- |
+| `NEXT_DAY_RECAP` | 6h | 04:00 ET | premarket opens; a recap generated after that is describing a session that has started moving, under a 22:00 label |
+| `STRUCTURAL_REFRESH` | 3h15 | 09:25 ET | nothing else reassesses structure before the open |
+| `PREMARKET_0625` | 20m | 06:45 | the next scan supersedes it |
+| `PREMARKET_0645` | 15m | 07:00 | the next scan supersedes it |
+| `PREMARKET_0700` | 60m | 08:00 | nothing else until 09:25, so a late start still deserves one |
+| `OPEN_SPIKE_ASSESSMENT` | 10m | 09:35 | strictly a pre-open state; after the open there is no pre-open to record |
+| `RTH_INTERVAL` | 30m | the next slot | missed intervals do not queue up |
+| `RTH_CLOSE` | 4h | 20:00 ET | until extended trading ends and the recap takes over |
+
+`NEXT_DAY_RECAP` ends at 04:00 rather than at the 06:10 structural refresh
+because the two are not really substitutes: 06:10 is a structural pass over the
+new session, while the recap is a record of the completed one. 04:00 is the last
+minute at which nothing has moved since the thing being recapped.
+
+A checkpoint whose window closes without running is written to the ledger as
+`MISSED_SUPERSEDED`, with the reason. That record is the point: two 22:00 recaps
+went missing on 19 and 20 August and the only evidence was their absence.
+
+### When a checkpoint disappears entirely
+
+Catch-up can only rescue a checkpoint that was *scheduled*. On 19 August the
+market worker learned to roll its own trading date at 22:00 ET — the exact
+minute the recap is due — and the scheduler derived its candidate sessions from
+the trading date and from `MAX(ticker_session.trading_date)`, both of which had
+already advanced. The finished session left the schedule at the instant its last
+checkpoint became due, so there was nothing to run, miss, or catch up.
+
+Candidate sessions now include the previous one from the **exchange calendar**,
+which is the one source that does not move when the desk does. Expired
+checkpoints are reconciled on every scheduler cycle, so a gap survives in the
+ledger instead of being inferable only from an absence.
+
+### Deploying near a checkpoint
+
+`push-release.sh` runs `deploy/aws/preflight.sh` on the server first. It reports
+the previous and next checkpoint and refuses an ordinary deployment within
+**5 minutes** of one — long enough to cover a slow deploy (60-90s) plus a
+scheduler poll (20s) with room to spare.
+
+```bash
+# proceed anyway; the reason is printed and lands in the deploy output
+DEPLOY_WINDOW_OVERRIDE="production incident: symbol loop" \
+  deploy/aws/push-release.sh <host> <key> HEAD
+```
+
+An override does not switch catch-up off.
+
 On an early-close day the last interval and the close assessment move with the
 exchange calendar.
 
@@ -164,6 +218,28 @@ npm run research:diagnose    # SEC + model configuration and reachability
 npx tsx scripts/health-demo.ts 1 55 227 600
                              # how the market badge reads at a given data age
 ```
+
+## Release retention and rollback pins
+
+Retention keeps the newest `KEEP_RELEASES` (3) release directories, **after**
+excluding the active release and every pinned one. Count alone removed
+`372f5eb` three deployments after it was designated the rollback baseline —
+which is how many deployments it took to fix the incident that made it the
+baseline.
+
+```bash
+deploy/aws/pins.sh list
+deploy/aws/pins.sh pin   <sha> rollback-baseline "why"
+deploy/aws/pins.sh unpin rollback-baseline
+deploy/aws/pins.sh check          # every pin still has its release and backup
+deploy/aws/prune.sh  <active-sha> --dry-run
+```
+
+A pin records the sha, the `SCHEMA_VERSION` that release's code expects, when
+and why it was pinned, and the newest database backup at that schema version —
+because rolling code back across a schema change without the matching backup is
+not a rollback, it is an outage with extra steps. `pins.sh check` runs during
+every deployment and warns if a pin has become unsatisfiable.
 
 ## Where state lives
 

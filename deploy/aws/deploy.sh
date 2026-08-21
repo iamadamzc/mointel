@@ -201,14 +201,12 @@ echo
 
 # ---------------------------------------------------------------- retention ---
 
-# Keep the previous working releases so a rollback is a symlink switch rather
-# than a rebuild.
-mapfile -t old < <(ls -1dt "$RELEASES"/*/ 2>/dev/null | tail -n +$((KEEP_RELEASES + 1)))
-for directory in "${old[@]:-}"; do
-  [ -z "$directory" ] && continue
-  [ "$(readlink -f "$directory")" = "$(readlink -f "$CURRENT")" ] && continue
-  log "removing old release $(basename "$directory")"
-  rm -rf "$directory"
-done
+# Retention. The decision lives in prune.sh so it can be exercised without
+# deploying; the active release and every pinned release are never candidates.
+KEEP_RELEASES="$KEEP_RELEASES" RELEASES="$RELEASES"   bash "$RELEASE/deploy/aws/prune.sh" "$(basename "$(readlink -f "$CURRENT")")" || true
+
+bash "$RELEASE/deploy/aws/pins.sh" check || log "WARNING: a pinned release or its backup is missing"
+log "pins:"
+bash "$RELEASE/deploy/aws/pins.sh" list | sed 's/^/[deploy]   /'
 
 log "deployed $SHA"

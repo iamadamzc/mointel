@@ -38,6 +38,7 @@ import {
   readAssessmentTickers,
   readClaimedSlots,
   readPreviousAssessment,
+  recordMissedAssessment,
   writeAssessmentHealth,
   type AssessmentHealth,
   type AssessmentTickerRecord,
@@ -49,11 +50,16 @@ import {
   readLatestJobForTicker,
   readSources,
 } from '../lib/market/store/researchRepo';
+import {
+  candidateTradingDates,
+  nextTradingDate,
+} from '../lib/desk/checkpointDates';
 import { computeEvidenceFingerprint } from '../lib/research/fingerprint';
 import { resolveDisplayStatus } from '../lib/research/view';
 import {
   buildSchedule,
   dueAssessments,
+  expiredAssessments,
   nextAssessment,
   slotKey,
   type ScheduledAssessment,
@@ -71,6 +77,14 @@ const POLL_MS = Number(process.env.ASSESSMENT_POLL_MS ?? 20_000);
 const MAX_CYCLES = Number(process.env.ASSESSMENT_MAX_CYCLES ?? 0); // 0 = forever
 /** A RUNNING row older than this belonged to a worker that died. */
 const STALE_RUNNING_MS = 10 * 60_000;
+/**
+ * Past this, a run is filling in a gap rather than merely starting late.
+ *
+ * `generatedLate` fires after 90 seconds and catches an ordinary slow tick.
+ * This marks the runs a backtest must treat differently: a 06:10 refresh that
+ * began at 08:30 recorded a different market than one that began at 06:10:04.
+ */
+const CATCH_UP_AFTER_SECONDS = 300;
 
 function log(message: string): void {
   console.log(message);
@@ -111,23 +125,6 @@ function sessionFacts(db: MarketDatabase): SessionFacts {
   }
 }
 
-/** Next scheduled session from the cached exchange calendar. */
-function nextTradingDateFrom(db: MarketDatabase, date: string): string | null {
-  const raw = getMeta(db, 'calendar');
-  if (!raw) return null;
-  try {
-    const days = JSON.parse(raw) as Array<{ date: string }>;
-    return (
-      days
-        .map((day) => day.date)
-        .filter((day) => day > date)
-        .sort()[0] ?? null
-    );
-  } catch {
-    return null;
-  }
-}
-
 function closeMinutesFor(db: MarketDatabase, date: string): number {
   const raw = getMeta(db, 'calendar');
   if (raw) {
@@ -141,27 +138,6 @@ function closeMinutesFor(db: MarketDatabase, date: string): number {
   }
   const facts = sessionFacts(db);
   return facts.rthCloseMinutes ?? closeMinutesFromClock(facts.rthClose ?? null) ?? RTH_END_MIN;
-}
-
-/**
- * The sessions worth scheduling right now.
- *
- * Two, deliberately. The trading date rolls forward at 22:00, which is the
- * exact minute the previous session's recap is due — so the session the desk
- * is now facing and the session that just ended are both live concerns for a
- * couple of hours.
- */
-function candidateDates(db: MarketDatabase): string[] {
-  const dates = new Set<string>();
-  const meta = getMeta(db, 'trading_date');
-  if (meta) dates.add(meta);
-
-  const latest = (
-    db.prepare('SELECT MAX(trading_date) AS d FROM ticker_session').get() as { d: string | null }
-  ).d;
-  if (latest) dates.add(latest);
-
-  return [...dates].sort();
 }
 
 interface TickerRow {
@@ -420,7 +396,7 @@ async function main(): Promise<void> {
     try {
       const facts = sessionFacts(db);
       const discoveryRank = facts.discoveryRank ?? config.discoveryRank;
-      const dates = candidateDates(db);
+      const dates = candidateTradingDates(db);
 
       let health: AssessmentHealth = {
         state: 'IDLE',
@@ -437,7 +413,7 @@ async function main(): Promise<void> {
         const schedule = buildSchedule({
           tradingDate,
           closeMinutes: closeMinutesFor(db, tradingDate),
-          nextTradingDate: nextTradingDateFrom(db, tradingDate),
+          nextTradingDate: nextTradingDate(db, tradingDate),
         });
 
         // Only the session the desk is currently facing drives the "next"
@@ -448,10 +424,40 @@ async function main(): Promise<void> {
           health.nextAssessmentAt = upcoming?.scheduledFor ?? null;
         }
 
+        const claimed = readClaimedSlots(db, tradingDate);
+
+        /*
+         * Reconcile first, on every cycle and therefore on every startup.
+         *
+         * A checkpoint whose window has closed is written down as missed
+         * before anything else runs, so the gap survives in the ledger instead
+         * of being inferable only from an absence. This is what was missing
+         * when two 22:00 recaps vanished: nothing ran, and nothing recorded
+         * that nothing ran.
+         */
+        for (const expired of expiredAssessments({ schedule, now, completed: claimed })) {
+          const first = recordMissedAssessment(db, {
+            tradingDate: expired.scheduled.tradingDate,
+            targetTradingDate: expired.scheduled.targetTradingDate,
+            assessmentType: expired.scheduled.type,
+            scheduledFor: expired.scheduled.scheduledFor,
+            sessionPhase: expired.scheduled.sessionPhase,
+            board: boardForAssessment(expired.scheduled).board,
+            reason: expired.reason,
+            recordedAt: now.toISOString(),
+          });
+          if (first) {
+            log(
+              `[assess] MISSED ${expired.scheduled.type} for ${expired.scheduled.tradingDate} ` +
+                `(${expired.scheduled.clock} ET): ${expired.reason}`,
+            );
+          }
+        }
+
         const due = dueAssessments({
           schedule,
           now,
-          completed: readClaimedSlots(db, tradingDate),
+          completed: claimed,
         });
 
         for (const item of due) {
@@ -527,6 +533,7 @@ function runAssessment(
     scheduledFor: scheduled.scheduledFor,
     startedAt,
     generatedLate: item.generatedLate,
+    catchUp: item.lateBySeconds > CATCH_UP_AFTER_SECONDS,
     sessionPhase: scheduled.sessionPhase,
     board: board.board,
     rankingDefinition: board.rankingLabel,

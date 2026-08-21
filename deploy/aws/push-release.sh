@@ -35,6 +35,16 @@ if ! git diff --quiet "$SHA" -- ':!*.md' ':!*.png'; then
   echo "[release] WARNING: tracked files differ from $SHORT — deploying the commit, not the working tree" >&2
 fi
 
+# ------------------------------------------------------------- preflight ---
+#
+# What is about to run, and is the rollback baseline still there. Runs on the
+# SERVER, because the checkpoint clock that matters is the scheduler's.
+SSH_PRE=(ssh -i "$KEY" -o StrictHostKeyChecking=no "ubuntu@$HOST")
+if ! "${SSH_PRE[@]}" "sudo DEPLOY_WINDOW_OVERRIDE='${DEPLOY_WINDOW_OVERRIDE:-}' PROTECTED_MINUTES='${PROTECTED_MINUTES:-5}' bash /opt/mointel/current/deploy/aws/preflight.sh"; then
+  echo "[release] preflight refused the deployment; nothing was shipped" >&2
+  exit 3
+fi
+
 echo "[release] deploying $SHORT to $HOST"
 
 SSH=(ssh -i "$KEY" -o StrictHostKeyChecking=no "ubuntu@$HOST")

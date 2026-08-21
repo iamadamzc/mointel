@@ -44,7 +44,7 @@ import {
   readRecentCollectorReports,
   readResearchHealth,
 } from '../market/store/researchRepo';
-import { readAssessmentHealth } from '../market/store/assessmentRepo';
+import { readAssessmentHealth, readCheckpointLedger } from '../market/store/assessmentRepo';
 import type { IntelligenceStatus } from '../dashboard/intelligence';
 
 /* ------------------------------------------------------------------ helpers */
@@ -469,6 +469,21 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
     headline: panel.headline,
     subline: panel.subline,
     completedToday: panel.today.length,
+    /*
+     * The checkpoint ledger, including what did NOT run.
+     *
+     * Everything else here describes assessments that happened. Two 22:00
+     * recaps went missing while every one of those numbers looked healthy.
+     */
+    checkpoints: store
+      ? readCheckpointLedger(store, {
+          // A window wide enough to contain last night's recap, which is the
+          // checkpoint most likely to be missing and least likely to be noticed.
+          sinceTradingDate: new Date(Date.parse(`${discovery.tradingDate}T12:00:00Z`) - 5 * 86_400_000)
+            .toISOString()
+            .slice(0, 10),
+        })
+      : null,
     last: panel.last && {
       id: panel.last.id,
       type: panel.last.type,

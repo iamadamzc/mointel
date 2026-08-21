@@ -274,6 +274,42 @@ export function dueAssessments(options: {
   return due.sort((a, b) => a.scheduled.minutes - b.scheduled.minutes);
 }
 
+/**
+ * Checkpoints whose time has passed, which never ran, and whose window has
+ * closed.
+ *
+ * Deliberately separate from `dueAssessments`, which only reports these when a
+ * later run of the same type follows them. When nothing follows — the last
+ * checkpoint of a session, or a date that has scrolled entirely into the past —
+ * they were reported to nobody and left no trace. Two 22:00 recaps went missing
+ * that way and the only evidence was their absence.
+ *
+ * Running them is still refused: a snapshot's value is that it recorded a
+ * moment, and a 22:00 recap generated at 07:00 is a different claim. They are
+ * recorded as missed instead.
+ */
+export function expiredAssessments(options: {
+  schedule: readonly ScheduledAssessment[];
+  now: Date;
+  completed: ReadonlySet<string>;
+}): Array<{ scheduled: ScheduledAssessment; reason: string }> {
+  const nowMs = options.now.getTime();
+
+  return options.schedule
+    .filter(
+      (item) =>
+        Date.parse(item.scheduledFor) <= nowMs &&
+        !options.completed.has(slotKey(item)) &&
+        nowMs > Date.parse(item.relevantUntil),
+    )
+    .map((item) => ({
+      scheduled: item,
+      reason:
+        `catch-up window closed at ${item.relevantUntil}; ` +
+        `${Math.round((nowMs - Date.parse(item.relevantUntil)) / 60_000)} minutes ago`,
+    }));
+}
+
 /** Stable identity of one scheduled slot. Matches the store's unique index. */
 export function slotKey(item: Pick<ScheduledAssessment, 'type' | 'scheduledFor'>): string {
   return `${item.type}@${item.scheduledFor}`;

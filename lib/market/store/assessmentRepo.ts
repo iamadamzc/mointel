@@ -22,7 +22,17 @@ export function assessmentTablesPresent(db: MarketDatabase): boolean {
   return row !== undefined;
 }
 
-export type AssessmentStatus = 'RUNNING' | 'COMPLETE' | 'PARTIAL' | 'FAILED';
+/**
+ * MISSED_SUPERSEDED is not a run. It is the record that one should have
+ * happened and no longer can, which is the only thing that makes a silently
+ * absent checkpoint visible after the fact.
+ */
+export type AssessmentStatus =
+  | 'RUNNING'
+  | 'COMPLETE'
+  | 'PARTIAL'
+  | 'FAILED'
+  | 'MISSED_SUPERSEDED';
 
 export interface AssessmentRecord {
   id: number;
@@ -146,6 +156,14 @@ export interface ClaimRequest {
   scheduledFor: string;
   startedAt: string;
   generatedLate: boolean;
+  /**
+   * True when this run is filling in a checkpoint whose minute has passed.
+   *
+   * Distinct from `generatedLate`, which is true of any run a few seconds
+   * behind. A backtest needs to tell a 06:10 refresh that started at 06:10:04
+   * from one that started at 08:30.
+   */
+  catchUp?: boolean;
   sessionPhase: string;
   board: string;
   rankingDefinition: string;
@@ -172,15 +190,19 @@ export function claimAssessmentSlot(db: MarketDatabase, request: ClaimRequest): 
       `INSERT INTO desk_assessments (
          trading_date, target_trading_date, assessment_type, scheduled_for,
          started_at, completed_at, generated_late, session_phase, status,
-         board, ranking_definition, ticker_count, model_calls, notes, metadata
+         board, ranking_definition, ticker_count, model_calls, notes, metadata,
+         attempt_count, catch_up
        ) VALUES (
          @tradingDate, @targetTradingDate, @assessmentType, @scheduledFor,
          @startedAt, NULL, @generatedLate, @sessionPhase, 'RUNNING',
-         @board, @rankingDefinition, 0, 0, '', '{}'
+         @board, @rankingDefinition, 0, 0, '', '{}',
+         1, @catchUp
        )
        ON CONFLICT (trading_date, assessment_type, scheduled_for) DO UPDATE SET
          started_at = excluded.started_at,
-         generated_late = excluded.generated_late
+         generated_late = excluded.generated_late,
+         catch_up = excluded.catch_up,
+         attempt_count = desk_assessments.attempt_count + 1
        WHERE desk_assessments.status = 'RUNNING'
          AND desk_assessments.started_at < @staleBefore`,
     )
@@ -191,6 +213,7 @@ export function claimAssessmentSlot(db: MarketDatabase, request: ClaimRequest): 
       scheduledFor: request.scheduledFor,
       startedAt: request.startedAt,
       generatedLate: request.generatedLate ? 1 : 0,
+      catchUp: request.catchUp ? 1 : 0,
       sessionPhase: request.sessionPhase,
       board: request.board,
       rankingDefinition: request.rankingDefinition,
@@ -221,6 +244,8 @@ export interface CompletionRequest {
   researchFingerprint: string | null;
   notes: string;
   metadata: Record<string, unknown>;
+  /** Sanitized failure text when the run ended badly. */
+  failure?: string | null;
 }
 
 export function completeAssessment(
@@ -234,7 +259,7 @@ export function completeAssessment(
             model_calls = @modelCalls, runtime_ms = @runtimeMs,
             market_fingerprint = @marketFingerprint,
             research_fingerprint = @researchFingerprint,
-            notes = @notes, metadata = @metadata
+            notes = @notes, metadata = @metadata, failure = @failure
       WHERE id = @id AND status = 'RUNNING'`,
   ).run({
     id,
@@ -247,7 +272,61 @@ export function completeAssessment(
     researchFingerprint: completion.researchFingerprint,
     notes: completion.notes.slice(0, 2000),
     metadata: JSON.stringify(completion.metadata),
+    failure: completion.failure ?? null,
   });
+}
+
+/**
+ * Records a checkpoint that should have run and no longer can.
+ *
+ * Idempotent under the slot's unique identity, and deliberately refuses to
+ * overwrite a real run: `WHERE status = 'MISSED_SUPERSEDED'` on the conflict
+ * path means a completed assessment can never be downgraded to a miss by a
+ * later reconciliation pass.
+ *
+ * Returns true when this call created the record, so the caller logs the gap
+ * once rather than on every scheduler cycle for the rest of the day.
+ */
+export function recordMissedAssessment(
+  db: MarketDatabase,
+  request: {
+    tradingDate: string;
+    targetTradingDate: string | null;
+    assessmentType: string;
+    scheduledFor: string;
+    sessionPhase: string;
+    board: string;
+    reason: string;
+    recordedAt: string;
+  },
+): boolean {
+  const result = db
+    .prepare(
+      `INSERT INTO desk_assessments (
+         trading_date, target_trading_date, assessment_type, scheduled_for,
+         started_at, completed_at, generated_late, session_phase, status,
+         board, ranking_definition, ticker_count, model_calls, notes, metadata,
+         attempt_count, catch_up, superseded_reason
+       ) VALUES (
+         @tradingDate, @targetTradingDate, @assessmentType, @scheduledFor,
+         @recordedAt, @recordedAt, 0, @sessionPhase, 'MISSED_SUPERSEDED',
+         @board, '', 0, 0, '', '{}',
+         0, 0, @reason
+       )
+       ON CONFLICT (trading_date, assessment_type, scheduled_for) DO NOTHING`,
+    )
+    .run({
+      tradingDate: request.tradingDate,
+      targetTradingDate: request.targetTradingDate,
+      assessmentType: request.assessmentType,
+      scheduledFor: request.scheduledFor,
+      sessionPhase: request.sessionPhase,
+      board: request.board,
+      reason: request.reason.slice(0, 500),
+      recordedAt: request.recordedAt,
+    });
+
+  return result.changes > 0;
 }
 
 export function insertAssessmentTickers(
@@ -368,6 +447,73 @@ export function readRecentAssessments(db: MarketDatabase, limit = 60): Assessmen
     )
     .all(limit) as AssessmentRow[];
   return rows.map(toRecord);
+}
+
+export interface CheckpointLedgerSummary {
+  completed: number;
+  catchUp: number;
+  missedSuperseded: number;
+  failed: number;
+  /** A claim currently held, with its age, or null when nothing is running. */
+  activeLease: { type: string; scheduledFor: string; startedAt: string } | null;
+  /** Missed checkpoints, most recent first. The point of the whole exercise. */
+  missed: Array<{
+    type: string;
+    tradingDate: string;
+    scheduledFor: string;
+    reason: string | null;
+  }>;
+}
+
+/**
+ * What the scheduler has and has not done lately.
+ *
+ * `missedSuperseded` is the number worth watching: it was zero for two nights
+ * while two recaps went missing, because a checkpoint that never entered the
+ * schedule left nothing to count.
+ */
+export function readCheckpointLedger(
+  db: MarketDatabase,
+  options: { sinceTradingDate: string; missedLimit?: number },
+): CheckpointLedgerSummary {
+  const counts = db
+    .prepare(
+      `SELECT status, SUM(catch_up) AS catchUp, COUNT(*) AS n
+         FROM desk_assessments
+        WHERE trading_date >= ?
+        GROUP BY status`,
+    )
+    .all(options.sinceTradingDate) as Array<{ status: string; catchUp: number; n: number }>;
+
+  const by = (status: string) => counts.find((row) => row.status === status)?.n ?? 0;
+
+  const lease = db
+    .prepare(
+      `SELECT assessment_type AS type, scheduled_for AS scheduledFor, started_at AS startedAt
+         FROM desk_assessments
+        WHERE status = 'RUNNING'
+        ORDER BY started_at DESC LIMIT 1`,
+    )
+    .get() as { type: string; scheduledFor: string; startedAt: string } | undefined;
+
+  const missed = db
+    .prepare(
+      `SELECT assessment_type AS type, trading_date AS tradingDate,
+              scheduled_for AS scheduledFor, superseded_reason AS reason
+         FROM desk_assessments
+        WHERE status = 'MISSED_SUPERSEDED' AND trading_date >= ?
+        ORDER BY scheduled_for DESC LIMIT ?`,
+    )
+    .all(options.sinceTradingDate, options.missedLimit ?? 20) as CheckpointLedgerSummary['missed'];
+
+  return {
+    completed: by('COMPLETE') + by('PARTIAL'),
+    catchUp: counts.reduce((total, row) => total + (row.catchUp ?? 0), 0),
+    missedSuperseded: by('MISSED_SUPERSEDED'),
+    failed: by('FAILED'),
+    activeLease: lease ?? null,
+    missed,
+  };
 }
 
 export function readAssessment(db: MarketDatabase, id: number): AssessmentRecord | null {

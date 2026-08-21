@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 19;
+export const SCHEMA_VERSION = 20;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -471,7 +471,17 @@ CREATE TABLE IF NOT EXISTS desk_assessments (
   model_calls           INTEGER NOT NULL DEFAULT 0,
   runtime_ms            INTEGER,
   notes                 TEXT NOT NULL DEFAULT '',
-  metadata              TEXT NOT NULL DEFAULT '{}'
+  metadata              TEXT NOT NULL DEFAULT '{}',
+  -- How many times a claim was taken for this slot, including reclaims after
+  -- a lease expired. A run that keeps being retried is visible as one row.
+  attempt_count         INTEGER NOT NULL DEFAULT 0,
+  -- 1 when this ran as a catch-up rather than at its scheduled minute. Distinct
+  -- from generated_late, which is true of any run a few seconds behind.
+  catch_up              INTEGER NOT NULL DEFAULT 0,
+  -- Sanitized failure text for a run that ended badly.
+  failure               TEXT,
+  -- Why a checkpoint was never run, for status MISSED_SUPERSEDED.
+  superseded_reason     TEXT
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_desk_assessments_slot
   ON desk_assessments (trading_date, assessment_type, scheduled_for);
@@ -652,6 +662,19 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
    * different prices, and the ledger recorded only the price.
    */
   { table: 'model_usage', column: 'tool_config', definition: 'TEXT' },
+  /*
+   * v20. The scheduled-run ledger grows the fields that make a missed
+   * checkpoint visible.
+   *
+   * desk_assessments was already a durable, uniquely-keyed, atomically-claimed
+   * record of runs that HAPPENED. What it could not express was a run that
+   * should have happened and did not, so two consecutive 22:00 recaps went
+   * missing without leaving anything behind to notice.
+   */
+  { table: 'desk_assessments', column: 'attempt_count', definition: 'INTEGER NOT NULL DEFAULT 0' },
+  { table: 'desk_assessments', column: 'catch_up', definition: 'INTEGER NOT NULL DEFAULT 0' },
+  { table: 'desk_assessments', column: 'failure', definition: 'TEXT' },
+  { table: 'desk_assessments', column: 'superseded_reason', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {
