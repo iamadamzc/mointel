@@ -201,6 +201,7 @@ function snapshot(demands: DemandState[]): MarketSnapshot {
       stale: false,
       offline: false,
       backfill: null,
+      rejectedSymbols: [],
     },
     marketHealth: {
       state: 'LIVE',

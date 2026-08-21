@@ -19,6 +19,7 @@ import {
   structureBadges,
   structureState,
 } from './normalize';
+import { plausibleSymbol } from './sheetTable';
 import type {
   MarketSummary,
   MomentumTicker,
@@ -167,9 +168,16 @@ const R = {
   supplyEvidence: 36,
 } as const;
 
-export function mapTodayRow(row: unknown[], sourceRow: number): MomentumTicker | null {
-  const ticker = cell(row, T.ticker).toUpperCase();
-  if (!ticker) return null;
+export function mapTodayRow(
+  row: unknown[],
+  sourceRow: number,
+  tickerColumn: number = T.ticker,
+): MomentumTicker | null {
+  const ticker = cell(row, tickerColumn).toUpperCase();
+  // Structure decides which column; shape decides whether the cell can be a
+  // symbol at all. A presentation cell that survived both is still not a pin
+  // until the canonical universe recognises it.
+  if (!ticker || !plausibleSymbol(ticker)) return null;
 
   const originalPriority = cell(row, T.priority);
   const revisedPriority = cell(row, T.revisedPriority);
@@ -281,9 +289,13 @@ export function mapTodayRow(row: unknown[], sourceRow: number): MomentumTicker |
   return ticker_;
 }
 
-export function mapResearchRow(row: unknown[], sourceRow: number): StructuralResearch | null {
-  const ticker = cell(row, R.ticker).toUpperCase();
-  if (!ticker) return null;
+export function mapResearchRow(
+  row: unknown[],
+  sourceRow: number,
+  tickerColumn: number = R.ticker,
+): StructuralResearch | null {
+  const ticker = cell(row, tickerColumn).toUpperCase();
+  if (!ticker || !plausibleSymbol(ticker)) return null;
 
   const reportDate = cell(row, R.reportDate);
   const cycleRaw = cell(row, R.cycleClassification);
@@ -393,24 +405,44 @@ export function buildSummary(tickers: MomentumTicker[]): MarketSummary {
 }
 
 /** Normalizes raw TODAY / RESEARCH rows (headers already removed). */
-export function normalizeSheetRows(todayRows: unknown[][], researchRows: unknown[][]) {
+/**
+ * Where each tab's table was found.
+ *
+ * Supplied by the provider, which locates the table rather than assuming it
+ * starts at row 1. Defaults keep the historical behaviour for callers that
+ * already hold plain data rows, which is every test and the mock provider.
+ */
+export interface SheetTablePlacement {
+  todayTickerColumn?: number;
+  researchTickerColumn?: number;
+  todayFirstSheetRow?: number;
+  researchFirstSheetRow?: number;
+}
+
+export function normalizeSheetRows(
+  todayRows: unknown[][],
+  researchRows: unknown[][],
+  placement: SheetTablePlacement = {},
+) {
   const warnings: string[] = [];
+  const todayFirstRow = placement.todayFirstSheetRow ?? 2;
+  const researchFirstRow = placement.researchFirstSheetRow ?? 2;
 
   const tickers: MomentumTicker[] = [];
   todayRows.forEach((row, index) => {
-    const mapped = mapTodayRow(row, index + 2); // +2: 1-based rows, header consumed
+    const mapped = mapTodayRow(row, index + todayFirstRow, placement.todayTickerColumn);
     if (mapped) tickers.push(mapped);
     else if (row.some((value) => String(value ?? '').trim())) {
-      warnings.push(`TODAY row ${index + 2} skipped: no ticker.`);
+      warnings.push(`TODAY row ${index + todayFirstRow} skipped: no ticker.`);
     }
   });
 
   const researchRecords: StructuralResearch[] = [];
   researchRows.forEach((row, index) => {
-    const mapped = mapResearchRow(row, index + 2);
+    const mapped = mapResearchRow(row, index + researchFirstRow, placement.researchTickerColumn);
     if (mapped) researchRecords.push(mapped);
     else if (row.some((value) => String(value ?? '').trim())) {
-      warnings.push(`RESEARCH row ${index + 2} skipped: no ticker.`);
+      warnings.push(`RESEARCH row ${index + researchFirstRow} skipped: no ticker.`);
     }
   });
 

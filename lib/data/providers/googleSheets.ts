@@ -9,7 +9,8 @@
 import 'server-only';
 import { JWT } from 'google-auth-library';
 
-import { normalizeSheetRows } from '../rows';
+import { normalizeSheetRows, TODAY_COLUMNS, RESEARCH_COLUMNS } from '../rows';
+import { locateTable } from '../sheetTable';
 import type { DashboardDataProvider, DataSourceMeta } from '../types';
 
 const SHEETS_SCOPE = 'https://www.googleapis.com/auth/spreadsheets.readonly';
@@ -125,11 +126,47 @@ export class GoogleSheetsProvider implements DashboardDataProvider {
     const todayValues = ranges[0]?.values ?? [];
     const researchValues = ranges[1]?.values ?? [];
 
-    // Drop the header row from each tab; blank tabs must not throw.
-    const todayRows = todayValues.slice(1);
-    const researchRows = researchValues.slice(1);
+    /*
+     * Locate each table rather than assuming its header is row 1.
+     *
+     * A tab is a canvas. TODAY carries the watchlist and, below it, a second
+     * block with its own TICKER header and a summary area of labels and
+     * numbers. slice(1) read all of it as one table and turned `TICKER`,
+     * `OBSERVED PM`, prices and percentages into pinned symbols.
+     */
+    const todayTable = locateTable(todayValues, {
+      keyHeader: 'Ticker',
+      expectedHeaders: TODAY_COLUMNS,
+    });
+    const researchTable = locateTable(researchValues, {
+      keyHeader: 'Ticker',
+      expectedHeaders: RESEARCH_COLUMNS,
+    });
 
-    const normalized = normalizeSheetRows(todayRows, researchRows);
+    /*
+     * Fail closed on an unreadable tab.
+     *
+     * Returning nothing would blank the board and returning the raw grid is
+     * what caused the incident, so an unlocatable table throws and the caller's
+     * cache keeps serving the last good read.
+     */
+    if (todayValues.length > 0 && !todayTable) {
+      throw new Error('TODAY tab: could not locate the ticker table; keeping the previous read');
+    }
+    if (researchValues.length > 0 && !researchTable) {
+      throw new Error('RESEARCH tab: could not locate the ticker table; keeping the previous read');
+    }
+
+    const normalized = normalizeSheetRows(
+      todayTable?.rows ?? [],
+      researchTable?.rows ?? [],
+      {
+        todayTickerColumn: todayTable?.keyColumnIndex,
+        researchTickerColumn: researchTable?.keyColumnIndex,
+        todayFirstSheetRow: todayTable?.firstDataSheetRow,
+        researchFirstSheetRow: researchTable?.firstDataSheetRow,
+      },
+    );
 
     const [sourceTitle, sourceUpdatedAt] = await Promise.all([
       this.fetchTitle(),

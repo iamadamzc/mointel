@@ -65,6 +65,7 @@ const OFFLINE_HEALTH: MarketFeedHealth = {
   stale: true,
   offline: true,
   backfill: null,
+      rejectedSymbols: [],
 };
 
 /** Shown before the first market payload arrives; never claims LIVE. */

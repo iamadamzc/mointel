@@ -312,6 +312,7 @@ describe('feed health', () => {
       stale: false,
       offline: false,
       backfill: null,
+      rejectedSymbols: [],
     };
 
     writeFeedHealth(db, health);

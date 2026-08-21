@@ -430,6 +430,24 @@ export interface MarketFeedHealth {
   /** Derived on read: no worker heartbeat at all. */
   offline: boolean;
   backfill: BackfillSummary | null;
+  /**
+   * Values that were refused before reaching the market-data provider.
+   *
+   * One entry per distinct value with a count, never one per attempt: the
+   * failure this records produced 21,473 identical log lines in a day, and a
+   * diagnostic that reproduces the flood is not a diagnostic.
+   */
+  rejectedSymbols: RejectedSymbol[];
+}
+
+export interface RejectedSymbol {
+  symbol: string;
+  /** Where the value came from, e.g. `today-sheet` or `rth-close-capture`. */
+  source: string;
+  reason: string;
+  firstSeenAt: string;
+  lastSeenAt: string;
+  count: number;
 }
 
 export interface BackfillSummary {

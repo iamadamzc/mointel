@@ -56,7 +56,19 @@ import {
   etMinutesOfDay,
   RTH_END_MIN,
 } from '../lib/market/session';
-import { AlpacaRestClient, chunk, type AlpacaCalendarDay } from '../lib/market/alpaca/rest';
+import {
+  SymbolAdmission,
+  invalidSymbolFrom,
+  isolateInvalidSymbols,
+  type RejectedSymbolRecord,
+} from '../lib/market/symbolAdmission';
+import {
+  AlpacaHttpError,
+  AlpacaRestClient,
+  chunk,
+  type AlpacaCalendarDay,
+  type AlpacaSnapshot,
+} from '../lib/market/alpaca/rest';
 import { redact, type AlpacaCredentials } from '../lib/market/credentials';
 import type { MarketConfig } from '../lib/market/config';
 import type {
@@ -75,6 +87,8 @@ import type {
 const CALENDAR_META_KEY = 'calendar';
 const CALENDAR_FETCHED_KEY = 'calendar_fetched_at';
 const UNIVERSE_MAX_AGE_MS = 20 * 60 * 60 * 1000; // refresh roughly daily
+/** How long the admission gate reuses its view of the universe. */
+const UNIVERSE_ADMISSION_CACHE_MS = 10 * 60 * 1000;
 const CLASSIFIER_VERSION_KEY = 'classifier_version';
 
 export interface RuntimeLogger {
@@ -223,6 +237,7 @@ export class MarketRuntime {
       stale: false,
       offline: false,
       backfill: null,
+      rejectedSymbols: [],
     };
   }
 
@@ -1183,13 +1198,21 @@ export class MarketRuntime {
 
     this.rthCloseCaptureInFlight = true;
     try {
-      const symbols = this.engine.symbolsMissingTodayRthClose();
+      const tracked = this.engine.symbolsMissingTodayRthClose();
+      // Validate immediately before the request, not only at ingestion. The
+      // ingestion gate should already have caught this; a boundary that trusts
+      // an upstream gate is not a boundary.
+      const { accepted: symbols } = this.admission.validate(tracked, 'rth-close-capture');
+
       if (symbols.length === 0) {
         this.rthCloseCaptured = true;
         return;
       }
 
-      const snapshots = await this.rest.getSnapshots(symbols);
+      const snapshots = await this.fetchSnapshotsIsolatingBadSymbols(
+        symbols,
+        'rth-close-capture',
+      );
       let captured = 0;
 
       for (const [symbol, snapshot] of snapshots) {
@@ -1209,10 +1232,49 @@ export class MarketRuntime {
           'percent change now references the current session',
       );
     } catch (error) {
-      this.logger.warn(`[demand] RTH close capture failed: ${this.redactError(error)}`);
+      /*
+       * Latch on the way out, always.
+       *
+       * This assignment used to live at the end of the try, after the request,
+       * so a throw left the flag false and the flush loop called this again one
+       * second later — 21,473 identical failures in 24 hours. One capture
+       * attempt per session is the contract; a failed attempt is still an
+       * attempt, and the next session resets it.
+       */
+      this.rthCloseCaptured = true;
+      this.logger.warn(
+        `[demand] RTH close capture failed, not retried this session: ${this.redactError(error)}`,
+      );
     } finally {
       this.rthCloseCaptureInFlight = false;
     }
+  }
+
+  /**
+   * Snapshots for many symbols, surviving one that the provider rejects.
+   *
+   * Alpaca answers a batch containing an unknown symbol with a 400 for the
+   * whole batch, so a single bad member returns nothing for the good ones. On
+   * a named invalid symbol the offender is quarantined and the request is made
+   * again without it; anything else propagates, because an auth failure or an
+   * outage must not be mistaken for a bad ticker.
+   *
+   * Bounded by construction: each attempt must remove at least one symbol, and
+   * MAX_INVALID_SYMBOL_RETRIES caps it regardless.
+   */
+  private fetchSnapshotsIsolatingBadSymbols(
+    symbols: string[],
+    source: string,
+  ): Promise<Map<string, AlpacaSnapshot>> {
+    return isolateInvalidSymbols<Map<string, AlpacaSnapshot>>({
+      symbols,
+      request: (batch) => this.rest!.getSnapshots(batch),
+      invalidSymbol: (error) =>
+        error instanceof AlpacaHttpError ? invalidSymbolFrom(error.status, error.body) : null,
+      onQuarantine: (symbol) =>
+        this.admission.reject(symbol, source, 'provider rejected: invalid symbol'),
+      empty: () => new Map(),
+    });
   }
 
   /**
@@ -1295,6 +1357,7 @@ export class MarketRuntime {
     this.health.heartbeatAt = new Date().toISOString();
     this.health.universeMode = this.universeMode;
     this.health.backfill = this.backfill;
+    this.health.rejectedSymbols = this.rejectedSymbols;
     writeFeedHealth(this.db, this.health);
   }
 
@@ -1330,6 +1393,35 @@ export class MarketRuntime {
     this.health.universeMode = mode;
   }
 
+  /* ------------------------------------------------- symbol admission */
+
+  /** Cached so admission does not read the universe table once per symbol. */
+  private universeCache: { symbols: Set<string>; loadedAt: number } | null = null;
+
+  private readonly admission = new SymbolAdmission({
+    knownSymbols: () => {
+      const age = this.universeCache ? Date.now() - this.universeCache.loadedAt : Infinity;
+      if (!this.universeCache || age > UNIVERSE_ADMISSION_CACHE_MS) {
+        this.universeCache = {
+          symbols: new Set(readUniverseSymbols(this.db)),
+          loadedAt: Date.now(),
+        };
+      }
+      return this.universeCache.symbols;
+    },
+    onFirstRejection: (record) => {
+      this.logger.warn(
+        `[demand] symbol refused: ${JSON.stringify(record.symbol)} ` +
+          `(${record.source}; ${record.reason})`,
+      );
+    },
+  });
+
+  /** Rejected-symbol state for diagnostics. Values only; no sheet content. */
+  get rejectedSymbols(): RejectedSymbolRecord[] {
+    return this.admission.rejected;
+  }
+
   /* -------------------------------------------------------- sheet symbols */
 
   /**
@@ -1345,16 +1437,50 @@ export class MarketRuntime {
       });
       if (!response.ok) return;
       const payload = (await response.json()) as { tickers?: Array<{ ticker?: string }> };
-      const symbols = (payload.tickers ?? [])
-        .map((entry) => entry.ticker?.toUpperCase())
+      const candidates = (payload.tickers ?? [])
+        .map((entry) => entry.ticker?.trim().toUpperCase())
         .filter((symbol): symbol is string => Boolean(symbol));
 
-      if (symbols.length === 0) return;
-      const changed = symbols.join(',') !== this.sheetSymbols.join(',');
-      this.sheetSymbols = symbols;
-      this.engine.setPinnedSymbols(symbols);
+      if (candidates.length === 0) return;
+
+      /*
+       * The last gate before a spreadsheet cell becomes a tracked symbol.
+       *
+       * Upstream parsing should already have rejected anything that is not a
+       * ticker, and on 19 August it did not: `TICKER` and `OBSERVED PM` were
+       * pinned, tracked, and then sent to Alpaca once a second for two days.
+       * Checking the canonical universe here costs one Set lookup and does not
+       * depend on the sheet being well formed.
+       */
+      const { accepted, rejected } = this.admission.validate(candidates, 'today-sheet');
+
+      /*
+       * Never blank the pins.
+       *
+       * If everything was rejected the sheet is misread, not empty, and the
+       * previously pinned set is better information than nothing.
+       */
+      if (accepted.length === 0) {
+        if (rejected.length > 0) {
+          this.logger.warn(
+            `[research] TODAY sheet produced no usable tickers from ${candidates.length} ` +
+              'candidates; keeping the previous pins',
+          );
+        }
+        return;
+      }
+
+      const changed = accepted.join(',') !== this.sheetSymbols.join(',');
+      this.sheetSymbols = accepted;
+      this.engine.setPinnedSymbols(accepted);
       if (changed) {
-        this.logger.info(`[research] TODAY sheet tickers pinned: ${symbols.join(', ')}`);
+        this.logger.info(`[research] TODAY sheet tickers pinned: ${accepted.join(', ')}`);
+        if (rejected.length > 0) {
+          this.logger.warn(
+            `[research] TODAY sheet: ignored ${rejected.length} non-symbol value(s): ` +
+              rejected.map((value) => JSON.stringify(value)).join(', '),
+          );
+        }
       }
     } catch {
       // The dashboard may not be running; the desk still works without pins.

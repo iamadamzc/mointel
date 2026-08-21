@@ -113,6 +113,7 @@ function offlineHealth(reason: string): MarketFeedHealth {
     stale: true,
     offline: true,
     backfill: null,
+      rejectedSymbols: [],
   };
 }
 

@@ -17,6 +17,7 @@ function health(overrides: Partial<MarketFeedHealth> = {}): MarketFeedHealth {
     feed: 'sip',
     connectionState: 'STREAMING',
     sipEntitlement: 'VERIFIED',
+    rejectedSymbols: [],
     lastMessageAt: secondsAgo(2),
     lastBarAt: null,
     lastTradeAt: null,
