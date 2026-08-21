@@ -44,6 +44,7 @@ import {
 } from '../lib/market/store/assessmentRepo';
 import {
   enqueueResearchJob,
+  INTERVAL_RECHECK,
   readCurrentAnalyses,
   readLatestJobForTicker,
   readSources,
@@ -602,6 +603,12 @@ function captureAndPersist(
       reason,
       queuedAt: new Date().toISOString(),
       top12At: null,
+      /*
+       * Structural refreshes and cycle re-looks are exactly what the name says:
+       * the desk asking again. Naming them keeps their model spend attributable
+       * without promoting them to demand events, which they are not.
+       */
+      trigger: INTERVAL_RECHECK,
     });
     if (jobId !== null) queued.push(ticker);
   };

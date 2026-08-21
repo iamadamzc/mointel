@@ -12,6 +12,7 @@ import type { MarketDatabase } from '../market/store/db';
 import {
   claimQualificationEpisode,
   enqueueResearchJob,
+  INTERVAL_RECHECK,
   readCurrentAnalysis,
   readLatestJobForTicker,
   readRetryState,
@@ -221,7 +222,12 @@ export function queueDiscoveryResearch(
        * A first crossing into the ranked board is the material episode. It is
        * captured here, at the moment that justified the job, because rank moves
        * and the collector must not have to guess later what this was about.
-       * Focus-list refreshes and ordinary re-polls carry no trigger.
+       *
+       * Focus-list refreshes and ordinary re-polls are re-looks, and they say
+       * so. They previously carried no trigger at all, which made "we are
+       * looking again" indistinguishable from "we forgot to record why" in
+       * every ledger downstream. The descriptive `reason` above is unchanged,
+       * so naming the purpose adds a category without losing the detail.
        */
       /*
        * Only the crossing itself qualifies.
@@ -243,7 +249,7 @@ export function queueDiscoveryResearch(
           createdAt: queuedAt,
         })
           ? 'ENTERED_TOP_N'
-          : null,
+          : INTERVAL_RECHECK,
     });
 
     decisions.push({

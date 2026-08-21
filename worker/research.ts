@@ -23,8 +23,6 @@ import { collectSecEvidence, TickerMapCache } from '../lib/research/sec/collecto
 import { collectCatalystEvidence } from '../lib/research/catalyst/collector';
 import type { MaterialDemandEvent } from '../lib/research/catalyst/collector';
 
-/** Triggers the collector recognises as a material demand episode. */
-const MATERIAL_TRIGGERS = new Set(['ENTERED_TOP_N', 'RANK_IMPROVED', 'HALT', 'RESUME']);
 import { NoopDiscoveryProvider } from '../lib/research/catalyst/discovery';
 import {
   OpenAiDiscoveryProvider,
@@ -49,6 +47,7 @@ import {
   markJobStage,
   recordCollectorReport,
   readBoardCandidates,
+  MATERIAL_TRIGGERS,
   readJobsForDate,
   readOrphanedJobs,
   readSources,

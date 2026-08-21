@@ -5,7 +5,12 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { openDatabase, type MarketDatabase } from '@/lib/market/store/db';
 import { queueDiscoveryResearch } from '@/lib/research/queue';
-import { readJobsForDate } from '@/lib/market/store/researchRepo';
+import {
+  INTERVAL_RECHECK,
+  MATERIAL_TRIGGERS,
+  RECOVERY_TRIGGER,
+  readJobsForDate,
+} from '@/lib/market/store/researchRepo';
 
 /**
  * The trigger that justified a research job, carried from the event to the
@@ -79,19 +84,36 @@ describe('the trigger recorded on a research job', () => {
     expect(jobs[0].trigger).toBe('ENTERED_TOP_N');
   });
 
-  it('records no trigger for a name that never crossed the board', () => {
-    // Ordinary background research. Nothing happened; nothing is urgent.
-    queue([candidate({ top12EnteredAt: null, rank: 30 })], 12);
+  it('marks a name that never crossed the board as a re-look', () => {
+    // Ordinary background research. Nothing happened; nothing is urgent — but
+    // it is still spending, so it says what it is.
+    queue([candidate({ top12EnteredAt: null, rank: 8 })], 12);
 
     const jobs = readJobsForDate(db, DATE);
-    expect(jobs[0]?.trigger ?? null).toBeNull();
+    expect(jobs).toHaveLength(1);
+    expect(jobs[0].trigger).toBe(INTERVAL_RECHECK);
   });
 
-  it('records no trigger for a focus-list refresh below the board', () => {
+  it('marks a focus-list refresh below the board as a re-look', () => {
     queue([candidate({ top12EnteredAt: null, rank: 80, focused: true })], 12);
 
     const jobs = readJobsForDate(db, DATE);
-    expect(jobs[0]?.trigger ?? null).toBeNull();
+    expect(jobs).toHaveLength(1);
+    expect(jobs[0].trigger).toBe(INTERVAL_RECHECK);
+  });
+
+  it('never lets a re-look pass for a material demand event', () => {
+    /*
+     * The guard that makes naming re-looks safe. MATERIAL_TRIGGERS is what
+     * grants the ahead-of-interval branch, and if INTERVAL_RECHECK ever landed
+     * in it every poll would buy the urgent path — which is the 18 August
+     * failure in a different costume.
+     */
+    queue([candidate({ top12EnteredAt: null, rank: 8 })], 12);
+
+    const [job] = readJobsForDate(db, DATE);
+    expect(MATERIAL_TRIGGERS.has(job.trigger ?? '')).toBe(false);
+    expect(job.trigger).not.toBe(RECOVERY_TRIGGER);
   });
 
   it('keeps the original trigger when rank moves after the job is created', () => {

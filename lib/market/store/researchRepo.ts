@@ -1116,6 +1116,34 @@ export function claimRecoveryEpisode(
 /** The trigger recovery jobs carry. Deliberately not a material demand event. */
 export const RECOVERY_TRIGGER = 'RESOLVER_RECOVERY';
 
+/**
+ * The purpose carried by work that exists only to look again.
+ *
+ * Structural refreshes, cycle re-looks and elapsed-interval discovery are all
+ * the desk re-asking a question it has already asked once. That is legitimate
+ * work and it is the single largest line in the token ledger, so it is named.
+ *
+ * Deliberately absent from MATERIAL_TRIGGERS: naming a re-look must not promote
+ * it to a demand event, or every poll would buy the ahead-of-interval branch.
+ */
+export const INTERVAL_RECHECK = 'INTERVAL_RECHECK';
+
+/**
+ * Job triggers that grant the ahead-of-interval branch.
+ *
+ * The whole trigger vocabulary lives here so membership of this set is decided
+ * in the same file that names its members. It used to be declared inside the
+ * research worker, where nothing stopped a new trigger being added elsewhere
+ * and silently failing to be material — or worse, being added here and
+ * accidentally becoming material.
+ */
+export const MATERIAL_TRIGGERS: ReadonlySet<string> = new Set([
+  'ENTERED_TOP_N',
+  'RANK_IMPROVED',
+  'HALT',
+  'RESUME',
+]);
+
 /** True when this ticker already used its episode at this resolver version. */
 export function recoveryEpisodeExists(
   db: MarketDatabase,

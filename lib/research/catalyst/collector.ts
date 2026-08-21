@@ -23,6 +23,9 @@ import {
   readIssuer,
   readSources,
   upsertIssuer,
+  INTERVAL_RECHECK,
+  RECOVERY_TRIGGER,
+  recordModelUsage,
 } from '../../market/store/researchRepo';
 import { insertDeskEvents } from '../../market/store/repo';
 import { etDateString } from '../../market/session';
@@ -40,7 +43,6 @@ import type {
 import { EMPTY_COMPANY_SOURCES, SOURCE_AUTHORITY_RANK } from '../types';
 import type { SecClient } from '../sec/client';
 import { resolveCompanySources, hasUsableSource } from './irRegistry';
-import { recordModelUsage } from '../../market/store/researchRepo';
 import type { ProviderUsage } from './discovery';
 import type { CompanySourceResolverProvider } from './companySourceContract';
 
@@ -136,6 +138,34 @@ export interface CatalystSourceSummary {
   canonical: boolean;
 }
 
+/** Why a paid discovery or resolution pass ran. */
+export type DiscoveryTrigger = 'FORCED' | 'FIRST_CHECK' | 'MATERIAL_EVENT' | 'INTERVAL';
+
+/**
+ * The purpose recorded against a paid call, from the same derivation that sets
+ * the report's trigger.
+ *
+ * One mapping, so the report and the ledger cannot disagree about why money was
+ * spent. A material event reports the event's own kind, because that vocabulary
+ * is already what the queue writes on the job and what the diagnostics group by;
+ * everything else reports the branch that authorised the call.
+ */
+export function usagePurposeFor(
+  trigger: DiscoveryTrigger,
+  materialEvent: MaterialDemandEvent | null,
+): string {
+  switch (trigger) {
+    case 'MATERIAL_EVENT':
+      return materialEvent?.kind ?? 'MATERIAL_EVENT';
+    case 'FORCED':
+      return 'FORCED_DISCOVERY';
+    case 'FIRST_CHECK':
+      return 'FIRST_CHECK';
+    case 'INTERVAL':
+      return INTERVAL_RECHECK;
+  }
+}
+
 export interface CatalystCollectionReport {
   ticker: string;
   state: CatalystCollectionState;
@@ -158,7 +188,7 @@ export interface CatalystCollectionReport {
   /** What issuer-source resolution did, or why it was not offered a turn. */
   companySourceDetail: string;
   /** Why discovery ran, when it did. */
-  discoveryTrigger: 'FORCED' | 'FIRST_CHECK' | 'MATERIAL_EVENT' | 'INTERVAL' | null;
+  discoveryTrigger: DiscoveryTrigger | null;
   /** Which interval tier applied, in minutes. */
   discoveryIntervalMinutes: number;
   /** True when a recent canonical source is already established. */
@@ -267,8 +297,19 @@ export async function collectCatalystEvidence(
    * Written here rather than inside the provider because only the collector
    * knows why the call was made — the same discovery request is worth very
    * different things behind a material event and behind an interval poll.
+   *
+   * The purpose is a required argument rather than something derived inside,
+   * which is the whole repair. Deriving it from the material event alone meant
+   * the interval poll — the branch this comment already singled out as the one
+   * worth telling apart — recorded no purpose at all: on 20 August that was 42
+   * of 81 discovery calls and 2.13M input tokens that could not be attributed
+   * to a reason. A caller that cannot name why it is spending does not spend.
    */
-  const noteUsage = (stage: string, usage: ProviderUsage | null | undefined) => {
+  const noteUsage = (
+    stage: string,
+    purpose: string,
+    usage: ProviderUsage | null | undefined,
+  ) => {
     try {
       recordModelUsage(db, {
         tradingDate: input.tradingDate ?? now.toISOString().slice(0, 10),
@@ -277,7 +318,7 @@ export async function collectCatalystEvidence(
         ticker,
         model: usage?.model ?? 'unknown',
         stage,
-        trigger: input.recoveryEpisode ? 'RESOLVER_RECOVERY' : (input.materialEvent?.kind ?? null),
+        trigger: purpose,
         inputTokens: usage?.inputTokens ?? null,
         cachedInputTokens: usage?.cachedInputTokens ?? null,
         outputTokens: usage?.outputTokens ?? null,
@@ -476,7 +517,18 @@ export async function collectCatalystEvidence(
       });
       Object.assign(registry, resolution.registry);
       report.modelCalls += resolution.modelCalls;
-      if (resolution.modelCalls > 0) noteUsage(label === 'recovery' ? 'RECOVERY' : 'RESOLVER', resolution.usage);
+      if (resolution.modelCalls > 0) {
+        // Both branches that reach here are named by construction: recovery
+        // holds a durable claim, and a first qualification requires a material
+        // event, so neither can fall through to an unattributed call.
+        noteUsage(
+          label === 'recovery' ? 'RECOVERY' : 'RESOLVER',
+          label === 'recovery'
+            ? RECOVERY_TRIGGER
+            : usagePurposeFor('MATERIAL_EVENT', input.materialEvent ?? null),
+          resolution.usage,
+        );
+      }
       report.companySourceDetail = `${label}: ${resolution.detail}`;
       urgentResolutionResolved = Boolean(
         hasUsableSource(registry),
@@ -632,6 +684,24 @@ export async function collectCatalystEvidence(
   // A material demand change is a reason to look early, ahead of the interval.
   const materialEvent = input.materialEvent ?? null;
 
+  /*
+   * Why this pass would run, decided once.
+   *
+   * Both paid branches below used to re-derive this expression independently,
+   * and both derived it AFTER spending — so the ledger recorded the call and
+   * the report recorded the reason, with nothing joining them. Deciding it here
+   * lets the same value pay for the call and describe it.
+   */
+  const discoveryTrigger: DiscoveryTrigger =
+    input.forceDiscovery === true
+      ? 'FORCED'
+      : materialEvent
+        ? 'MATERIAL_EVENT'
+        : neverAttempted
+          ? 'FIRST_CHECK'
+          : 'INTERVAL';
+  const discoveryPurpose = usagePurposeFor(discoveryTrigger, materialEvent);
+
   // Deterministic collection just produced a recent canonical source, so the
   // question is answered for now and paying to ask it again would be waste.
   // The interval then governs the next look.
@@ -695,7 +765,7 @@ export async function collectCatalystEvidence(
       });
       Object.assign(registry, resolution.registry);
       report.modelCalls += resolution.modelCalls;
-      if (resolution.modelCalls > 0) noteUsage('RESOLVER', resolution.usage);
+      if (resolution.modelCalls > 0) noteUsage('RESOLVER', discoveryPurpose, resolution.usage);
       report.companySourceDetail = resolution.detail;
       report.discoveryRan = resolution.resolved;
       report.discoveryDetail = `issuer source resolution: ${resolution.detail}`;
@@ -717,14 +787,7 @@ export async function collectCatalystEvidence(
     registry.lastDiscoveryFingerprint = deterministicFingerprint;
     registry.lastDiscoveryMode = 'RESOLVER';
     registry.resolverVersion = RESOLVER_VERSION;
-    report.discoveryTrigger =
-      input.forceDiscovery === true
-        ? 'FORCED'
-        : materialEvent
-          ? 'MATERIAL_EVENT'
-          : neverAttempted
-            ? 'FIRST_CHECK'
-            : 'INTERVAL';
+    report.discoveryTrigger = discoveryTrigger;
   } else if (discoveryNeeded && !(urgentResolutionRan && urgentResolutionResolved)) {
     /*
      * Reached on an ordinary alternating pass, and also immediately after an
@@ -748,7 +811,7 @@ export async function collectCatalystEvidence(
     report.discoveryRan = result.ran;
     report.discoveryDetail = result.detail;
     report.modelCalls += result.modelCalls;
-    if (result.modelCalls > 0) noteUsage('DISCOVERY', result.usage);
+    if (result.modelCalls > 0) noteUsage('DISCOVERY', discoveryPurpose, result.usage);
 
     const discovered: NewResearchSource[] = result.sources.map((source) => ({
       ticker,
@@ -785,14 +848,7 @@ export async function collectCatalystEvidence(
     registry.lastDiscoveryFingerprint = deterministicFingerprint;
     registry.lastDiscoveryMode = 'DISCOVERY';
     registry.resolverVersion = RESOLVER_VERSION;
-    report.discoveryTrigger =
-      input.forceDiscovery === true
-        ? 'FORCED'
-        : materialEvent
-          ? 'MATERIAL_EVENT'
-          : neverAttempted
-            ? 'FIRST_CHECK'
-            : 'INTERVAL';
+    report.discoveryTrigger = discoveryTrigger;
   } else if (!relevant) {
     // A name that has dropped off the board stops costing money. Its evidence
     // is retained; only the paid refresh stops.
