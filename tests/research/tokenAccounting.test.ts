@@ -114,6 +114,37 @@ describe('the tool_config column', () => {
     }
   });
 
+  it('groups the day’s spend by how the search was configured', () => {
+    /*
+     * The comparison this exists for. Two days at different context sizes are
+     * two different products, and a report that only totals tokens cannot say
+     * which one it is describing.
+     */
+    recordModelUsage(db, {
+      tradingDate: DATE, at: '2026-08-18T21:00:01.000Z', ticker: 'A',
+      model: 'm', stage: 'RESOLVER', trigger: 'INTERVAL_RECHECK',
+      inputTokens: 20_000, toolConfig: 'web_search:low;domains:v1',
+    });
+    recordModelUsage(db, {
+      tradingDate: DATE, at: '2026-08-18T21:00:02.000Z', ticker: 'B',
+      model: 'm', stage: 'DISCOVERY', trigger: 'INTERVAL_RECHECK',
+      inputTokens: 44_000, toolConfig: 'web_search:default;domains:v1',
+    });
+    recordModelUsage(db, {
+      tradingDate: DATE, at: '2026-08-18T21:00:03.000Z', ticker: 'C',
+      model: 'm', stage: 'INTERPRETATION', trigger: 'ENTERED_TOP_N',
+      inputTokens: 9_000,
+    });
+
+    const rows = readDailyTokenReport(db, DATE).byToolConfig;
+    const keyed = Object.fromEntries(rows.map((r) => [r.key, r.inputTokens]));
+    expect(keyed['web_search:low;domains:v1']).toBe(20_000);
+    expect(keyed['web_search:default;domains:v1']).toBe(44_000);
+    // A call with no hosted search is named, not dropped and not blamed on a
+    // configuration it never had.
+    expect(keyed['no tool']).toBe(9_000);
+  });
+
   it('is null for a call that used no hosted search', () => {
     recordModelUsage(db, {
       tradingDate: DATE,

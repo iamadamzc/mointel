@@ -1276,6 +1276,8 @@ export interface DailyTokenReport {
   byModel: TokenBreakdownRow[];
   byStage: TokenBreakdownRow[];
   byTrigger: TokenBreakdownRow[];
+  /** Spend grouped by how the hosted search was configured for the call. */
+  byToolConfig: TokenBreakdownRow[];
   byFingerprint: TokenBreakdownRow[];
   bySourcesAdded: TokenBreakdownRow[];
   /** Spend on jobs that added no source AND moved no fingerprint. */
@@ -1316,6 +1318,7 @@ export function readDailyTokenReport(db: MarketDatabase, tradingDate: string): D
     byModel: tokensBy(db, tradingDate, 'model'),
     byStage: tokensBy(db, tradingDate, 'stage'),
     byTrigger: tokensBy(db, tradingDate, `COALESCE(trigger, 'none')`),
+    byToolConfig: tokensBy(db, tradingDate, `COALESCE(tool_config, 'no tool')`),
     byFingerprint: tokensBy(
       db,
       tradingDate,
