@@ -51,12 +51,21 @@ export interface AlpacaSnapshot {
 export class AlpacaHttpError extends Error {
   readonly status: number;
   readonly body: string;
+  /**
+   * The provider's own `Retry-After`, in milliseconds, when it sent one.
+   *
+   * The client already waits on this internally; it is carried out to callers
+   * so a caller doing its own pacing waits as long as the provider asked
+   * rather than guessing a shorter interval and being throttled again.
+   */
+  readonly retryAfterMs: number | null;
 
-  constructor(status: number, body: string) {
+  constructor(status: number, body: string, retryAfterMs: number | null = null) {
     super(`Alpaca HTTP ${status}: ${body.slice(0, 300)}`);
     this.name = 'AlpacaHttpError';
     this.status = status;
     this.body = body;
+    this.retryAfterMs = retryAfterMs;
   }
 }
 
@@ -129,7 +138,14 @@ export class AlpacaRestClient {
         continue;
       }
 
-      throw new AlpacaHttpError(response.status, redact(body, this.credentials));
+      const retryAfterHeader = Number(response.headers.get('retry-after'));
+      throw new AlpacaHttpError(
+        response.status,
+        redact(body, this.credentials),
+        Number.isFinite(retryAfterHeader) && retryAfterHeader > 0
+          ? retryAfterHeader * 1000
+          : null,
+      );
     }
   }
 

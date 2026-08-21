@@ -313,6 +313,7 @@ describe('feed health', () => {
       offline: false,
       backfill: null,
       rejectedSymbols: [],
+      rthCloseCapture: null,
     };
 
     writeFeedHealth(db, health);

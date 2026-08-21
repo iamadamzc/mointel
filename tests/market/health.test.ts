@@ -18,6 +18,7 @@ function health(overrides: Partial<MarketFeedHealth> = {}): MarketFeedHealth {
     connectionState: 'STREAMING',
     sipEntitlement: 'VERIFIED',
     rejectedSymbols: [],
+    rthCloseCapture: null,
     lastMessageAt: secondsAgo(2),
     lastBarAt: null,
     lastTradeAt: null,

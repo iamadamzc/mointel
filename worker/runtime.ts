@@ -56,6 +56,7 @@ import {
   etMinutesOfDay,
   RTH_END_MIN,
 } from '../lib/market/session';
+import { RthCloseCapture } from '../lib/market/rthCloseCapture';
 import {
   SymbolAdmission,
   invalidSymbolFrom,
@@ -153,8 +154,8 @@ export class MarketRuntime {
   /** Symbols permitted in the ranked common-equity discovery universe. */
   private discoveryEligible = new Set<string>();
   private classificationSummary: ClassificationSummary | null = null;
-  /** Set once today's official RTH close has been captured after 16:00 ET. */
-  private rthCloseCaptured = false;
+  /** When today's official RTH close may be asked for, and whether it was. */
+  private readonly rthClose = new RthCloseCapture();
   private rthCloseCaptureInFlight = false;
 
   constructor(options: RuntimeOptions) {
@@ -238,6 +239,7 @@ export class MarketRuntime {
       offline: false,
       backfill: null,
       rejectedSymbols: [],
+      rthCloseCapture: null,
     };
   }
 
@@ -738,7 +740,17 @@ export class MarketRuntime {
     // bell rang between the two. `observed: false` either way — this desk did
     // not watch the close happen.
     this.engine.setRthClosed(rthClosed, { observed: false });
-    this.rthCloseCaptured = rthClosed;
+    /*
+     * The capture episode is NOT pre-latched here.
+     *
+     * This used to set `rthCloseCaptured = rthClosed`, on the reasoning that a
+     * bootstrap after the bell has already seeded closes from the same daily
+     * bars the capture would ask for. That holds only when the seed covered
+     * every symbol; when it did not, the blanket latch meant a worker started
+     * after 16:00 never captured the official close at all. Letting the machine
+     * ask `symbolsMissingTodayRthClose()` costs one request when there is a gap
+     * and none when there is not.
+     */
 
     /** Symbols with a print after the bell; only these need an AH reconstruction. */
     const ahActive: string[] = [];
@@ -1185,7 +1197,11 @@ export class MarketRuntime {
    * minute bar cannot reproduce.
    */
   private async captureTodayRthClose(): Promise<void> {
-    if (this.rthCloseCaptured || this.rthCloseCaptureInFlight || !this.rest) return;
+    if (!this.rest) return;
+
+    // A new session gets a clean attempt, whatever happened in the last one.
+    this.rthClose.beginTradingDate(this.tradingDate);
+    if (this.rthCloseCaptureInFlight || !this.rthClose.shouldAttempt()) return;
 
     const now = new Date();
     const closeMinutes = this.closeMinutesFor(this.tradingDate);
@@ -1199,22 +1215,35 @@ export class MarketRuntime {
     this.rthCloseCaptureInFlight = true;
     try {
       const tracked = this.engine.symbolsMissingTodayRthClose();
-      // Validate immediately before the request, not only at ingestion. The
-      // ingestion gate should already have caught this; a boundary that trusts
-      // an upstream gate is not a boundary.
-      const { accepted: symbols } = this.admission.validate(tracked, 'rth-close-capture');
-
-      if (symbols.length === 0) {
-        this.rthCloseCaptured = true;
+      if (tracked.length === 0) {
+        // Nothing is missing a close: the episode is finished, successfully.
+        this.rthClose.recordSuccess(0);
         return;
       }
 
+      // Validate immediately before the request, not only at ingestion. A
+      // boundary that trusts an upstream gate is not a boundary.
+      const { accepted: symbols, rejected } = this.admission.validate(
+        tracked,
+        'rth-close-capture',
+      );
+
+      if (symbols.length === 0) {
+        const detail =
+          `every tracked symbol was refused (${rejected.length} of ${tracked.length}); ` +
+          'no closing reference can be captured for this session';
+        this.rthClose.recordNoValidSymbols(detail);
+        this.logger.error(`[demand] RTH close capture abandoned: ${detail}`);
+        return;
+      }
+
+      this.rthClose.noteAttempt();
       const snapshots = await this.fetchSnapshotsIsolatingBadSymbols(
         symbols,
         'rth-close-capture',
       );
-      let captured = 0;
 
+      let captured = 0;
       for (const [symbol, snapshot] of snapshots) {
         const dailyBar = snapshot.dailyBar;
         if (!dailyBar || etDateString(new Date(dailyBar.t)) !== this.tradingDate) continue;
@@ -1226,42 +1255,40 @@ export class MarketRuntime {
         captured += 1;
       }
 
-      this.rthCloseCaptured = true;
+      /*
+       * The latch, and the only place it is set from a request.
+       *
+       * Reached only when the valid subset actually came back — after any
+       * invalid member has been quarantined and the request retried without it.
+       */
+      this.rthClose.recordSuccess(captured);
       this.logger.info(
         `[demand] captured today's 16:00 ET regular-session close for ${captured} symbols; ` +
           'percent change now references the current session',
       );
     } catch (error) {
       /*
-       * Latch on the way out, always.
+       * Transient or unclassified: schedule, never latch.
        *
-       * This assignment used to live at the end of the try, after the request,
-       * so a throw left the flag false and the flush loop called this again one
-       * second later — 21,473 identical failures in 24 hours. One capture
-       * attempt per session is the contract; a failed attempt is still an
-       * attempt, and the next session resets it.
+       * A 401, 429, 500 or timeout says nothing about whether a close exists,
+       * so treating one as "attempted, move on" would throw away the session's
+       * price reference over a blip. The machine backs off instead, and says so
+       * in health once it has been failing long enough to matter.
        */
-      this.rthCloseCaptured = true;
-      this.logger.warn(
-        `[demand] RTH close capture failed, not retried this session: ${this.redactError(error)}`,
-      );
+      const retryAfterMs = error instanceof AlpacaHttpError ? error.retryAfterMs : null;
+      this.rthClose.recordFailure({ detail: this.redactError(error), retryAfterMs });
+
+      const { state, consecutiveFailures, nextAttemptAt } = this.rthClose.status;
+      const line =
+        `[demand] RTH close capture failed (${consecutiveFailures} in a row), ` +
+        `next attempt ${nextAttemptAt}: ${this.redactError(error)}`;
+      if (state === 'DEGRADED') this.logger.error(line);
+      else this.logger.warn(line);
     } finally {
       this.rthCloseCaptureInFlight = false;
     }
   }
 
-  /**
-   * Snapshots for many symbols, surviving one that the provider rejects.
-   *
-   * Alpaca answers a batch containing an unknown symbol with a 400 for the
-   * whole batch, so a single bad member returns nothing for the good ones. On
-   * a named invalid symbol the offender is quarantined and the request is made
-   * again without it; anything else propagates, because an auth failure or an
-   * outage must not be mistaken for a bad ticker.
-   *
-   * Bounded by construction: each attempt must remove at least one symbol, and
-   * MAX_INVALID_SYMBOL_RETRIES caps it regardless.
-   */
   private fetchSnapshotsIsolatingBadSymbols(
     symbols: string[],
     source: string,
@@ -1358,6 +1385,7 @@ export class MarketRuntime {
     this.health.universeMode = this.universeMode;
     this.health.backfill = this.backfill;
     this.health.rejectedSymbols = this.rejectedSymbols;
+    this.health.rthCloseCapture = this.rthClose.status;
     writeFeedHealth(this.db, this.health);
   }
 

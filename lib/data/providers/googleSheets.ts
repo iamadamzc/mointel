@@ -9,7 +9,13 @@
 import 'server-only';
 import { JWT } from 'google-auth-library';
 
-import { normalizeSheetRows, TODAY_COLUMNS, RESEARCH_COLUMNS } from '../rows';
+import {
+  normalizeSheetRows,
+  TODAY_COLUMNS,
+  TODAY_TABLE_SIGNATURE,
+  RESEARCH_COLUMNS,
+  RESEARCH_TABLE_SIGNATURE,
+} from '../rows';
 import { locateTable } from '../sheetTable';
 import type { DashboardDataProvider, DataSourceMeta } from '../types';
 
@@ -136,11 +142,13 @@ export class GoogleSheetsProvider implements DashboardDataProvider {
      */
     const todayTable = locateTable(todayValues, {
       keyHeader: 'Ticker',
-      expectedHeaders: TODAY_COLUMNS,
+      requiredHeaders: TODAY_TABLE_SIGNATURE,
+      boundaryHeaders: TODAY_COLUMNS,
     });
     const researchTable = locateTable(researchValues, {
       keyHeader: 'Ticker',
-      expectedHeaders: RESEARCH_COLUMNS,
+      requiredHeaders: RESEARCH_TABLE_SIGNATURE,
+      boundaryHeaders: RESEARCH_COLUMNS,
     });
 
     /*

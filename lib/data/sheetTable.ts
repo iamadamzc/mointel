@@ -40,40 +40,69 @@ export interface LocateOptions {
   /** The column that identifies a row, e.g. `TICKER`. */
   keyHeader: string;
   /**
-   * Other headers the real table is expected to carry.
+   * The table's identity. EVERY one of these must be present.
    *
-   * A row is only a header if it names the key column AND enough of these.
-   * Without that a single stray cell reading "Ticker" anywhere on the canvas
-   * would be promoted to a table header.
+   * "Ticker plus four familiar columns" is not an identity. The TODAY tab
+   * carries two legitimate tables with a TICKER header — the watchlist and the
+   * 09:25 opening-spike assessment — and they share exactly four column names
+   * (Ticker, Catalyst Grade, Cycle, PM Volume). A loose rule matched both and
+   * picked the watchlist only because it happens to be higher up the sheet.
+   * Reorder the tab and the desk would silently start pinning the other one.
    */
-  expectedHeaders: readonly string[];
-  /** How many of `expectedHeaders` a header row must match. */
-  minimumHeaderMatches?: number;
+  requiredHeaders: readonly string[];
+  /**
+   * A looser signature used ONLY to find where the table ends.
+   *
+   * The next table terminates this one, and the next table is by definition not
+   * this table, so it cannot be recognised by the strict identity above.
+   */
+  boundaryHeaders: readonly string[];
+  minimumBoundaryMatches?: number;
 }
 
-const DEFAULT_MINIMUM_MATCHES = 4;
+const DEFAULT_MINIMUM_BOUNDARY_MATCHES = 3;
 
-/** True when this row names the key column and enough of its companions. */
-function isHeaderRow(row: unknown[], options: LocateOptions): boolean {
-  const cells = new Set(row.map(normaliseHeader).filter((cell) => cell.length > 0));
+function headerCells(row: unknown[]): Set<string> {
+  return new Set(row.map(normaliseHeader).filter((cell) => cell.length > 0));
+}
+
+/** The one table this caller means, by every column that defines it. */
+function isIdentityRow(row: unknown[], options: LocateOptions): boolean {
+  const cells = headerCells(row);
+  return options.requiredHeaders.every((header) => cells.has(normaliseHeader(header)));
+}
+
+/** Any table header, used to find the end of the one we selected. */
+function isBoundaryRow(row: unknown[], options: LocateOptions): boolean {
+  const cells = headerCells(row);
   if (!cells.has(normaliseHeader(options.keyHeader))) return false;
 
-  const wanted = options.expectedHeaders.map(normaliseHeader);
-  const matches = wanted.filter((header) => cells.has(header)).length;
-  return matches >= (options.minimumHeaderMatches ?? DEFAULT_MINIMUM_MATCHES);
+  const matches = options.boundaryHeaders
+    .map(normaliseHeader)
+    .filter((header) => cells.has(header)).length;
+  return matches >= (options.minimumBoundaryMatches ?? DEFAULT_MINIMUM_BOUNDARY_MATCHES);
 }
 
 /**
- * The first real table in a grid, or null when there is not one.
+ * The table this caller means, or null when the grid does not contain exactly
+ * one of them.
  *
- * Null is a legitimate and important answer. The caller is expected to keep
- * whatever it last read successfully rather than accept an empty or reinvented
- * interpretation of the canvas.
+ * Null is a legitimate and important answer, and so is null-because-two. The
+ * caller keeps whatever it last read successfully rather than guessing between
+ * candidates or reinventing the canvas.
  */
 export function locateTable(grid: unknown[][], options: LocateOptions): LocatedTable | null {
-  const headerRowIndex = grid.findIndex((row) => isHeaderRow(row, options));
-  if (headerRowIndex === -1) return null;
+  const matches: number[] = [];
+  grid.forEach((row, index) => {
+    if (isIdentityRow(row, options)) matches.push(index);
+  });
 
+  // Zero: the tab was renamed, restructured, or is not the tab we think.
+  // More than one: the signature no longer identifies anything, and choosing
+  // the first is the behaviour this exists to remove.
+  if (matches.length !== 1) return null;
+
+  const headerRowIndex = matches[0];
   const header = grid[headerRowIndex].map(normaliseHeader);
   const keyColumnIndex = header.indexOf(normaliseHeader(options.keyHeader));
   if (keyColumnIndex === -1) return null;
@@ -83,11 +112,11 @@ export function locateTable(grid: unknown[][], options: LocateOptions): LocatedT
    *
    * Deliberately NOT "the first blank row": a watchlist can carry a spacer
    * between groups, and ending there would silently truncate it. A second
-   * header is unambiguous — nobody writes the column names again mid-table.
+   * header is unambiguous — nobody writes column names again mid-table.
    */
   let end = grid.length;
   for (let index = headerRowIndex + 1; index < grid.length; index += 1) {
-    if (isHeaderRow(grid[index], options)) {
+    if (isBoundaryRow(grid[index], options)) {
       end = index;
       break;
     }

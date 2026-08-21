@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { locateTable, readSymbolColumn } from '@/lib/data/sheetTable';
-import { normalizeSheetRows, TODAY_COLUMNS } from '@/lib/data/rows';
+import { normalizeSheetRows, TODAY_COLUMNS, TODAY_TABLE_SIGNATURE } from '@/lib/data/rows';
 import { DemandEngine } from '@/lib/market/engine';
 
 /**
@@ -15,6 +15,12 @@ import { DemandEngine } from '@/lib/market/engine';
 
 const HEADER = [...TODAY_COLUMNS] as string[];
 
+const WATCHLIST = {
+  keyHeader: 'Ticker',
+  requiredHeaders: TODAY_TABLE_SIGNATURE,
+  boundaryHeaders: TODAY_COLUMNS,
+};
+
 function todayRow(ticker: string): string[] {
   const row = new Array(TODAY_COLUMNS.length).fill('');
   row[1] = ticker;
@@ -23,7 +29,7 @@ function todayRow(ticker: string): string[] {
 
 /** Stands in for the provider's read-and-locate step. */
 function readSheet(grid: string[][]): string[] | null {
-  const table = locateTable(grid, { keyHeader: 'Ticker', expectedHeaders: TODAY_COLUMNS });
+  const table = locateTable(grid, WATCHLIST);
   if (!table) return null; // unreadable: the caller keeps its last good set
   return readSymbolColumn(table).symbols;
 }
@@ -44,6 +50,26 @@ describe('an unreadable tab', () => {
     if (next !== null) pinned = next;
 
     expect(pinned).toEqual(['BEEM', 'EVAX']);
+  });
+
+  it('refuses to choose when two tables answer to the same signature', () => {
+    /*
+     * Not a hypothetical. If the watchlist were ever duplicated on the tab,
+     * "take the first" would silently pick one and the other would be invisible
+     * — and which one it picked would depend on their order on the sheet.
+     */
+    const grid = [HEADER, todayRow('BEEM'), [], HEADER, todayRow('HUIZ')];
+    expect(locateTable(grid, WATCHLIST)).toBeNull();
+  });
+
+  it('is not fooled by the tab’s other legitimate TICKER table', () => {
+    // Shares Ticker, Catalyst Grade, Cycle and PM Volume with the watchlist —
+    // exactly the four that a loose rule accepted as identity.
+    const spike = [
+      'Rank', 'Ticker', 'Decision', 'Current PM Price', 'PM Change %',
+      'PM Volume', 'PM High', 'Off PM High %', 'Catalyst Grade', 'Cycle',
+    ];
+    expect(locateTable([spike, ['1', 'HUIZ']], WATCHLIST)).toBeNull();
   });
 
   it('accepts a genuinely empty table as an empty list', () => {
@@ -86,11 +112,12 @@ describe('the mapper and the locator agree about the table', () => {
       todayRow('BEEM'),
       todayRow('EVAX'),
       [],
-      HEADER, // the second table on the tab
-      todayRow('HUIZ'),
+      // The tab's other real table: a TICKER header that is not the watchlist.
+      ['Rank', 'Ticker', 'Decision', 'PM Volume', 'Catalyst Grade', 'Cycle'],
+      ['1', 'HUIZ'],
       ['OBSERVED PM', '$123.19'],
     ];
-    const table = locateTable(grid, { keyHeader: 'Ticker', expectedHeaders: TODAY_COLUMNS })!;
+    const table = locateTable(grid, WATCHLIST)!;
     const { tickers } = normalizeSheetRows(table.rows, [], {
       todayTickerColumn: table.keyColumnIndex,
       todayFirstSheetRow: table.firstDataSheetRow,

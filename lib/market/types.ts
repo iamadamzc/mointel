@@ -438,6 +438,14 @@ export interface MarketFeedHealth {
    * diagnostic that reproduces the flood is not a diagnostic.
    */
   rejectedSymbols: RejectedSymbol[];
+  /**
+   * Whether the session's official closing reference was obtained.
+   *
+   * Prominent because its absence is silent everywhere else: percent change
+   * simply keeps referencing the previous session and nothing on the board says
+   * why. It went uncaptured for two days before anyone noticed.
+   */
+  rthCloseCapture: import('./rthCloseCapture').RthCloseCaptureStatus | null;
 }
 
 export interface RejectedSymbol {

@@ -6,7 +6,7 @@ import {
   plausibleSymbol,
   readSymbolColumn,
 } from '@/lib/data/sheetTable';
-import { normalizeSheetRows, TODAY_COLUMNS } from '@/lib/data/rows';
+import { normalizeSheetRows, TODAY_COLUMNS, TODAY_TABLE_SIGNATURE } from '@/lib/data/rows';
 
 /**
  * A tab is a canvas, not a table.
@@ -33,6 +33,48 @@ function todayRow(ticker: string, extras: Record<number, string> = {}): string[]
 
 const HEADER = [...TODAY_COLUMNS] as string[];
 
+/**
+ * The tab's OTHER legitimate table, verbatim from the live sheet.
+ *
+ * It is a real watchlist artefact — the 09:25 opening-spike assessment — and it
+ * has a TICKER header of its own. It shares exactly four column names with the
+ * watchlist: Ticker, Catalyst Grade, Cycle and PM Volume. A rule of "TICKER
+ * plus four familiar columns" therefore matches BOTH, and picked the right one
+ * only because it sits higher on the sheet.
+ */
+const SPIKE_HEADER = [
+  'Rank',
+  'Ticker',
+  'Decision',
+  'Current PM Price',
+  'PM Change %',
+  'PM Volume',
+  'PM High',
+  'Off PM High %',
+  'Catalyst Grade',
+  'Cycle',
+  'Opening Spike Thesis',
+  'Must Hold or Reclaim',
+  'Invalidation',
+  'Spread/Liquidity',
+  'Supply/Structure Risk',
+  'Opening Spike Plan',
+];
+
+/** How every caller asks for the watchlist. */
+const WATCHLIST = {
+  keyHeader: 'Ticker',
+  requiredHeaders: TODAY_TABLE_SIGNATURE,
+  boundaryHeaders: TODAY_COLUMNS,
+};
+
+function spikeRow(rank: number, ticker: string): string[] {
+  const row = new Array(SPIKE_HEADER.length).fill('');
+  row[0] = String(rank);
+  row[1] = ticker;
+  return row;
+}
+
 const TODAY_GRID: string[][] = [
   HEADER, //                                    row 1  header
   todayRow('BEEM', { 0: 'B — SECONDARY' }), //  row 2
@@ -42,9 +84,10 @@ const TODAY_GRID: string[][] = [
   todayRow('TNON'), //                          row 6
   [], //                                        row 7  spacer
   [], //                                        row 8  spacer
-  HEADER, //                                    row 9  a SECOND header
-  todayRow('HUIZ'), //                          row 10
-  todayRow('SGLY'), //                          row 11
+  ['9:25 AM OPENING SPIKE ASSESSMENT'], //      row 9  a section label
+  SPIKE_HEADER, //                              row 10 the SECOND real table
+  spikeRow(1, 'HUIZ'), //                       row 11
+  spikeRow(2, 'SGLY'), //                       row 12
   //                                            the summary block below it
   ['OBSERVED PM', '$123.19', '+95.66%', '20.48M'],
   ['', 'OBSERVED PM'],
@@ -54,10 +97,7 @@ const TODAY_GRID: string[][] = [
 ];
 
 describe('locating the table on a multi-table tab', () => {
-  const table = locateTable(TODAY_GRID, {
-    keyHeader: 'Ticker',
-    expectedHeaders: TODAY_COLUMNS,
-  });
+  const table = locateTable(TODAY_GRID, WATCHLIST);
 
   it('finds the first header row rather than assuming row 1', () => {
     expect(table).not.toBeNull();
@@ -87,6 +127,30 @@ describe('locating the table on a multi-table tab', () => {
     }
   });
 
+  it('picks the watchlist even when the other table comes first', () => {
+    /*
+     * The requirement in one test. Under "first row with TICKER plus four
+     * companions" this grid yields the opening-spike table, because it shares
+     * exactly four column names with the watchlist and now sits higher up.
+     * Identity must not depend on position on the canvas.
+     */
+    const inverted = [
+      ['9:25 AM OPENING SPIKE ASSESSMENT'],
+      SPIKE_HEADER,
+      spikeRow(1, 'HUIZ'),
+      spikeRow(2, 'SGLY'),
+      [],
+      HEADER,
+      todayRow('BEEM'),
+      todayRow('EVAX'),
+    ];
+
+    const found = locateTable(inverted, WATCHLIST)!;
+    expect(found).not.toBeNull();
+    expect(readSymbolColumn(found).symbols).toEqual(['BEEM', 'EVAX']);
+    expect(readSymbolColumn(found).symbols).not.toContain('HUIZ');
+  });
+
   it('is unaffected by the order of the non-ticker columns', () => {
     // Same table, columns shuffled: the header names the column, so the
     // position it happens to sit in must not matter.
@@ -96,7 +160,7 @@ describe('locating the table on a multi-table tab', () => {
       row.length === TODAY_COLUMNS.length ? reorder(row as string[]) : row,
     );
 
-    const found = locateTable(grid, { keyHeader: 'Ticker', expectedHeaders: TODAY_COLUMNS });
+    const found = locateTable(grid, WATCHLIST);
     expect(found).not.toBeNull();
     expect(readSymbolColumn(found!).symbols).toEqual(['BEEM', 'EVAX', 'BTCT', 'RITR', 'TNON']);
   });
@@ -109,7 +173,7 @@ describe('failing closed', () => {
       ['', 'BEEM'],
       ['', 'EVAX'],
     ];
-    expect(locateTable(grid, { keyHeader: 'Ticker', expectedHeaders: TODAY_COLUMNS })).toBeNull();
+    expect(locateTable(grid, WATCHLIST)).toBeNull();
   });
 
   it('returns null when a row names Ticker but is not the table header', () => {
@@ -122,11 +186,11 @@ describe('failing closed', () => {
       ['Notes', 'Ticker', 'to watch'],
       ['', 'BEEM'],
     ];
-    expect(locateTable(grid, { keyHeader: 'Ticker', expectedHeaders: TODAY_COLUMNS })).toBeNull();
+    expect(locateTable(grid, WATCHLIST)).toBeNull();
   });
 
   it('returns null for an empty grid', () => {
-    expect(locateTable([], { keyHeader: 'Ticker', expectedHeaders: TODAY_COLUMNS })).toBeNull();
+    expect(locateTable([], WATCHLIST)).toBeNull();
   });
 });
 
@@ -140,7 +204,7 @@ describe('reading the ticker column', () => {
       todayRow(''), // a spacer inside the table is not an error
       todayRow('evax'),
     ];
-    const table = locateTable(grid, { keyHeader: 'Ticker', expectedHeaders: TODAY_COLUMNS })!;
+    const table = locateTable(grid, WATCHLIST)!;
     const { symbols, rejected } = readSymbolColumn(table);
 
     expect(symbols).toEqual(['BEEM', 'EVAX']);
@@ -149,13 +213,13 @@ describe('reading the ticker column', () => {
 
   it('preserves sheet order, because that order is the trader’s priority', () => {
     const grid = [HEADER, todayRow('ZZZ'), todayRow('AAA'), todayRow('MMM')];
-    const table = locateTable(grid, { keyHeader: 'Ticker', expectedHeaders: TODAY_COLUMNS })!;
+    const table = locateTable(grid, WATCHLIST)!;
     expect(readSymbolColumn(table).symbols).toEqual(['ZZZ', 'AAA', 'MMM']);
   });
 
   it('reports presentation cells that appear inside the table', () => {
     const grid = [HEADER, todayRow('BEEM'), todayRow('$17.98'), todayRow('+28.43%')];
-    const table = locateTable(grid, { keyHeader: 'Ticker', expectedHeaders: TODAY_COLUMNS })!;
+    const table = locateTable(grid, WATCHLIST)!;
     const { symbols, rejected } = readSymbolColumn(table);
 
     expect(symbols).toEqual(['BEEM']);

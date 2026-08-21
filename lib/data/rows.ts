@@ -98,6 +98,33 @@ export const RESEARCH_COLUMNS = [
   'Supply Evidence',
 ] as const;
 
+/**
+ * The columns that identify the TODAY watchlist and nothing else on the tab.
+ *
+ * Measured against the live sheet on 21 August. The tab's other TICKER table —
+ * the 09:25 opening-spike assessment — is headed
+ * `Rank, Ticker, Decision, Current PM Price, PM Change %, PM Volume, PM High,
+ * Off PM High %, Catalyst Grade, Cycle, …` and carries none of these four. It
+ * does share Ticker, Catalyst Grade, Cycle and PM Volume, which is why a
+ * "TICKER plus four familiar columns" rule matched both tables.
+ */
+export const TODAY_TABLE_SIGNATURE = [
+  'Ticker',
+  'Priority',
+  'Country of Origin',
+  'Float',
+  'Structure Flags',
+] as const;
+
+/** The same, for the RESEARCH tab, which is a single table today. */
+export const RESEARCH_TABLE_SIGNATURE = [
+  'Ticker',
+  'Report Date',
+  'Company',
+  'Float Source URL',
+  'Analyst Notes',
+] as const;
+
 const T = {
   priority: 0,
   ticker: 1,

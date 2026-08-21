@@ -79,6 +79,7 @@ function snapshot(demands: DemandState[]): MarketSnapshot {
       offline: false,
       backfill: null,
       rejectedSymbols: [],
+      rthCloseCapture: null,
     },
     marketHealth: {
       state: 'LIVE',
