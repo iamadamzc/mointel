@@ -7,16 +7,13 @@
  * 21,473 identical failures in twenty-four hours, and not one regular-session
  * close captured in that time.
  *
- * Two rules come out of that, and they are separate on purpose.
+ * One rule comes out of that: a provider saying "this symbol does not exist" is
+ * a fact, not a transient error. It is remembered, the offender is removed, and
+ * the remaining symbols proceed — because letting one bad member void a batch of
+ * two hundred good ones is how a spreadsheet label stopped the desk from knowing
+ * where anything closed.
  *
- * The first is admission: a value becomes a symbol by being in the canonical
- * universe, not by looking like one. `TICKER` looks like one.
- *
- * The second is that a provider saying "this symbol does not exist" is a fact,
- * not a transient error. It is remembered, the offender is removed, and the
- * remaining symbols are allowed to proceed — because the alternative, letting
- * one bad member void a batch of two hundred good ones, is how a label stopped
- * the desk from knowing where anything closed.
+ * What does NOT gate a request is the tradable-asset list. See `validate`.
  */
 
 export interface RejectedSymbolRecord {
@@ -24,21 +21,27 @@ export interface RejectedSymbolRecord {
   /** Where the value came from, e.g. `today-sheet`. */
   source: string;
   reason: string;
+  /** True when this symbol is refused; false when it is merely unrecognised. */
+  blocking: boolean;
   firstSeenAt: string;
   lastSeenAt: string;
   count: number;
 }
 
 export interface AdmissionResult {
+  /** May be requested. Includes symbols the tradable list has never heard of. */
   accepted: string[];
-  rejected: string[];
+  /** Refused outright: the provider has already said these do not exist. */
+  blocked: string[];
+  /** Accepted, but absent from the tradable universe. Advisory only. */
+  unknown: string[];
 }
 
 export interface SymbolAdmissionOptions {
   /** The canonical symbol set. Called per validation so it can be cached. */
   knownSymbols: () => Set<string>;
   now?: () => Date;
-  /** Called once per newly refused value, never once per attempt. */
+  /** Called once per newly noted value, never once per attempt. */
   onFirstRejection?: (record: RejectedSymbolRecord) => void;
 }
 
@@ -54,59 +57,88 @@ export class SymbolAdmission {
   /**
    * Splits candidates into what may be requested and what may not.
    *
-   * Fails OPEN on an empty universe. A store that has not yet loaded the asset
-   * list runs in SHEET_ONLY mode by design, and refusing every symbol because
-   * none can be confirmed would take the desk down to fix a spreadsheet bug.
+   * Only the provider's own refusal blocks a symbol. Absence from the universe
+   * is recorded and does NOT.
+   *
+   * That distinction was learned the expensive way. `universe` is Alpaca's
+   * TRADABLE asset list, not its data coverage: OMH is absent from all 13,120
+   * rows of it and the snapshot endpoint answers for OMH with a 310-million
+   * share day. Vetoing pins on that list would have quietly deleted a real
+   * mover from the trader's own watchlist — the same category error as
+   * rejecting ATH.PRD for containing a dot, one layer up.
+   *
+   * What keeps a spreadsheet label out of a request is the parser that refuses
+   * to read one as a ticker, and the quarantine below for anything that gets
+   * past it. Neither of those needs the tradable list to be complete.
    */
   validate(candidates: readonly string[], source: string): AdmissionResult {
     const known = this.options.knownSymbols();
     const accepted: string[] = [];
-    const rejected: string[] = [];
+    const blocked: string[] = [];
+    const unknown: string[] = [];
 
     for (const candidate of candidates) {
       const symbol = candidate.trim().toUpperCase();
       if (symbol.length === 0) continue;
 
       const held = this.rejections.get(symbol);
-      if (held) {
-        rejected.push(symbol);
-        this.reject(symbol, source, held.reason);
+      if (held?.blocking) {
+        blocked.push(symbol);
+        this.note(symbol, source, held.reason, true);
         continue;
       }
+
       if (known.size > 0 && !known.has(symbol)) {
-        rejected.push(symbol);
-        this.reject(symbol, source, 'not in universe');
-        continue;
+        unknown.push(symbol);
+        this.note(symbol, source, 'not in the tradable universe', false);
       }
       accepted.push(symbol);
     }
 
-    return { accepted, rejected };
+    return { accepted, blocked, unknown };
   }
 
-  /** Records a refusal, collapsing repeats into a count and a last-seen time. */
+  /**
+   * Blocks a symbol permanently. Only the provider's own verdict gets here.
+   *
+   * Permanent for the life of the process: an Alpaca 400 naming a symbol is not
+   * a transient condition, and retrying it is not a recovery strategy.
+   */
   reject(symbol: string, source: string, reason: string): void {
+    this.note(symbol.trim().toUpperCase(), source, reason, true);
+  }
+
+  /** Records an observation, collapsing repeats into a count and last-seen. */
+  private note(symbol: string, source: string, reason: string, blocking: boolean): void {
     const at = this.now.toISOString();
     const existing = this.rejections.get(symbol);
     if (existing) {
       existing.lastSeenAt = at;
       existing.count += 1;
+      // Advisory can harden into blocking; never the other way round.
+      if (blocking && !existing.blocking) {
+        existing.blocking = true;
+        existing.reason = reason;
+        this.options.onFirstRejection?.({ ...existing });
+      }
       return;
     }
     const record: RejectedSymbolRecord = {
       symbol,
       source,
       reason,
+      blocking,
       firstSeenAt: at,
       lastSeenAt: at,
       count: 1,
     };
     this.rejections.set(symbol, record);
-    this.options.onFirstRejection?.(record);
+    this.options.onFirstRejection?.({ ...record });
   }
 
+  /** True when this symbol is permanently blocked from provider requests. */
   has(symbol: string): boolean {
-    return this.rejections.has(symbol.trim().toUpperCase());
+    return this.rejections.get(symbol.trim().toUpperCase())?.blocking === true;
   }
 
   /** One entry per distinct value, for diagnostics. */

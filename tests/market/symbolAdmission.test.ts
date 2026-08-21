@@ -26,16 +26,51 @@ function admission(overrides: Partial<AdmissionOptions> = {}) {
   return new SymbolAdmission({ knownSymbols: () => UNIVERSE, ...overrides });
 }
 
-describe('admission against the canonical universe', () => {
-  it('accepts real symbols and refuses values that are not companies', () => {
+describe('the tradable universe is advisory, not authority', () => {
+  it('watches a real ticker the tradable list has never heard of', () => {
+    /*
+     * OMH, verbatim. It appears in none of the 13,120 rows of Alpaca's tradable
+     * asset list, and the snapshot endpoint answers for it with a 310-million
+     * share day. `universe` describes what can be TRADED through Alpaca, not
+     * what it serves data for, and vetoing pins on it deletes real movers from
+     * the trader's own watchlist.
+     */
     const gate = admission();
-    const { accepted, rejected } = gate.validate(
-      ['BEEM', 'TICKER', 'EVAX', 'OBSERVED PM'],
-      'today-sheet',
-    );
+    const { accepted, unknown, blocked } = gate.validate(['BEEM', 'OMH'], 'today-sheet');
 
-    expect(accepted).toEqual(['BEEM', 'EVAX']);
-    expect(rejected).toEqual(['TICKER', 'OBSERVED PM']);
+    expect(accepted).toEqual(['BEEM', 'OMH']);
+    expect(unknown).toEqual(['OMH']);
+    expect(blocked).toEqual([]);
+  });
+
+  it('still records the unrecognised symbol, so a typo stays visible', () => {
+    const gate = admission();
+    gate.validate(['OMH'], 'today-sheet');
+
+    const [record] = gate.rejected;
+    expect(record.symbol).toBe('OMH');
+    expect(record.blocking).toBe(false);
+    expect(record.reason).toBe('not in the tradable universe');
+  });
+
+  it('blocks only what the provider itself refused', () => {
+    const gate = admission();
+    gate.reject('OBSERVED PM', 'rth-close-capture', 'provider rejected: invalid symbol');
+
+    const { accepted, blocked } = gate.validate(['BEEM', 'OBSERVED PM', 'OMH'], 'today-sheet');
+    expect(accepted).toEqual(['BEEM', 'OMH']);
+    expect(blocked).toEqual(['OBSERVED PM']);
+  });
+
+  it('hardens an advisory note into a block when the provider refuses it', () => {
+    const gate = admission();
+    gate.validate(['OMH'], 'today-sheet');
+    expect(gate.has('OMH')).toBe(false);
+
+    gate.reject('OMH', 'rth-close-capture', 'provider rejected: invalid symbol');
+
+    expect(gate.has('OMH')).toBe(true);
+    expect(gate.validate(['OMH'], 'today-sheet').accepted).toEqual([]);
   });
 
   it('keeps provider-supported symbols a letters-only rule would destroy', () => {
@@ -51,24 +86,22 @@ describe('admission against the canonical universe', () => {
     expect(gate.validate(['  beem ', 'Evax'], 'today-sheet').accepted).toEqual(['BEEM', 'EVAX']);
   });
 
-  it('fails open when the universe has not loaded', () => {
-    /*
-     * SHEET_ONLY mode is a supported state, not a fault. Refusing every symbol
-     * because none can be confirmed would take the desk down to fix a
-     * spreadsheet bug, which is a worse outcome than the bug.
-     */
+  it('notes nothing when the universe has not loaded', () => {
+    // SHEET_ONLY mode is a supported state, not a fault, and every symbol being
+    // "unknown" there would be noise rather than information.
     const gate = new SymbolAdmission({ knownSymbols: () => new Set() });
-    expect(gate.validate(['BEEM', 'ANYTHING'], 'today-sheet').accepted).toEqual([
-      'BEEM',
-      'ANYTHING',
-    ]);
+    const { accepted, unknown } = gate.validate(['BEEM', 'ANYTHING'], 'today-sheet');
+
+    expect(accepted).toEqual(['BEEM', 'ANYTHING']);
+    expect(unknown).toEqual([]);
   });
 });
 
 describe('remembering a refusal', () => {
   it('reports one entry per distinct value, with a count rather than repeats', () => {
     const gate = admission();
-    for (let attempt = 0; attempt < 500; attempt += 1) {
+    gate.reject('OBSERVED PM', 'rth-close-capture', 'provider rejected: invalid symbol');
+    for (let attempt = 0; attempt < 499; attempt += 1) {
       gate.validate(['OBSERVED PM'], 'today-sheet');
     }
 
@@ -85,24 +118,24 @@ describe('remembering a refusal', () => {
 
     expect(seen).toHaveLength(1);
     expect(seen[0].source).toBe('today-sheet');
+    expect(seen[0].blocking).toBe(false);
   });
 
   it('carries first-seen and last-seen so an operator can date the problem', () => {
     let clock = Date.parse('2026-08-19T20:02:01.000Z');
     const gate = admission({ now: () => new Date(clock) });
 
-    gate.validate(['OBSERVED PM'], 'today-sheet');
+    gate.reject('OBSERVED PM', 'rth-close-capture', 'provider rejected: invalid symbol');
     clock += 3600_000;
     gate.validate(['OBSERVED PM'], 'rth-close-capture');
 
     const [record] = gate.rejected;
     expect(record.firstSeenAt).toBe('2026-08-19T20:02:01.000Z');
     expect(record.lastSeenAt).toBe('2026-08-19T21:02:01.000Z');
-    // The reason stays the one that condemned it, not the latest caller's.
-    expect(record.reason).toBe('not in universe');
+    expect(record.reason).toBe('provider rejected: invalid symbol');
   });
 
-  it('refuses a quarantined symbol even if the universe later contains it', () => {
+  it('refuses a blocked symbol even if the universe later contains it', () => {
     const known = new Set(['BEEM']);
     const gate = new SymbolAdmission({ knownSymbols: () => known });
 
@@ -273,7 +306,8 @@ describe('the loop cannot come back', () => {
 
     for (let cycle = 0; cycle < 100; cycle += 1) {
       const { accepted } = gate.validate(tracked, 'rth-close-capture');
-      if (accepted.includes('OBSERVED PM')) requestsSeeingJunk += 1;
+      // Cycle 0 legitimately still contains it: nothing has refused it yet.
+      if (accepted.includes('OBSERVED PM') && cycle > 0) requestsSeeingJunk += 1;
       await isolateInvalidSymbols({
         symbols: accepted,
         request,
@@ -284,9 +318,19 @@ describe('the loop cannot come back', () => {
     }
 
     expect(requestsSeeingJunk).toBe(0);
-    expect(request).toHaveBeenCalledTimes(100); // one clean call per cycle
+    /*
+     * 101, not 100, and the extra one is the whole point: cycle 0 sends the
+     * junk once because nothing has refused it yet, Alpaca refuses it, and the
+     * isolation retry completes the cycle without it. Every cycle after that is
+     * a single clean call. One wasted request per process, against 21,473 a day.
+     */
+    expect(request).toHaveBeenCalledTimes(101);
+    // One record, however many times it was seen — and it is a block now, not
+    // the advisory note it started as. 101 sightings: one before the provider
+    // ruled on it, the ruling itself, then one per remaining cycle.
     expect(gate.rejected).toHaveLength(1);
-    expect(gate.rejected[0].count).toBe(100);
+    expect(gate.rejected[0].blocking).toBe(true);
+    expect(gate.rejected[0].count).toBe(101);
   });
 
   const bad = (symbol: string) =>

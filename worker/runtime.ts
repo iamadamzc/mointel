@@ -1223,14 +1223,14 @@ export class MarketRuntime {
 
       // Validate immediately before the request, not only at ingestion. A
       // boundary that trusts an upstream gate is not a boundary.
-      const { accepted: symbols, rejected } = this.admission.validate(
+      const { accepted: symbols, blocked } = this.admission.validate(
         tracked,
         'rth-close-capture',
       );
 
       if (symbols.length === 0) {
         const detail =
-          `every tracked symbol was refused (${rejected.length} of ${tracked.length}); ` +
+          `every tracked symbol is blocked (${blocked.length} of ${tracked.length}); ` +
           'no closing reference can be captured for this session';
         this.rthClose.recordNoValidSymbols(detail);
         this.logger.error(`[demand] RTH close capture abandoned: ${detail}`);
@@ -1477,19 +1477,22 @@ export class MarketRuntime {
        * Upstream parsing should already have rejected anything that is not a
        * ticker, and on 19 August it did not: `TICKER` and `OBSERVED PM` were
        * pinned, tracked, and then sent to Alpaca once a second for two days.
-       * Checking the canonical universe here costs one Set lookup and does not
-       * depend on the sheet being well formed.
+       *
+       * Only a symbol the provider has already refused is dropped here. Absence
+       * from the tradable universe is noted and nothing more — that list does
+       * not describe data coverage, and treating it as authority would have
+       * deleted OMH, a 310-million-share day, from the trader's own watchlist.
        */
-      const { accepted, rejected } = this.admission.validate(candidates, 'today-sheet');
+      const { accepted, blocked, unknown } = this.admission.validate(candidates, 'today-sheet');
 
       /*
        * Never blank the pins.
        *
-       * If everything was rejected the sheet is misread, not empty, and the
+       * If everything was refused the sheet is misread, not empty, and the
        * previously pinned set is better information than nothing.
        */
       if (accepted.length === 0) {
-        if (rejected.length > 0) {
+        if (blocked.length > 0) {
           this.logger.warn(
             `[research] TODAY sheet produced no usable tickers from ${candidates.length} ` +
               'candidates; keeping the previous pins',
@@ -1503,10 +1506,18 @@ export class MarketRuntime {
       this.engine.setPinnedSymbols(accepted);
       if (changed) {
         this.logger.info(`[research] TODAY sheet tickers pinned: ${accepted.join(', ')}`);
-        if (rejected.length > 0) {
+        if (blocked.length > 0) {
           this.logger.warn(
-            `[research] TODAY sheet: ignored ${rejected.length} non-symbol value(s): ` +
-              rejected.map((value) => JSON.stringify(value)).join(', '),
+            `[research] TODAY sheet: dropped ${blocked.length} refused value(s): ` +
+              blocked.map((value) => JSON.stringify(value)).join(', '),
+          );
+        }
+        if (unknown.length > 0) {
+          // Watched anyway. Worth saying, because a genuine typo looks the same
+          // as a real ticker the tradable list has not heard of.
+          this.logger.info(
+            `[research] TODAY sheet: ${unknown.length} pin(s) not in the tradable universe, ` +
+              `watching regardless: ${unknown.join(', ')}`,
           );
         }
       }
