@@ -12,8 +12,6 @@ interface FilterBarProps {
   filters: FilterState;
   onChange: (next: FilterState) => void;
   onReset: () => void;
-  resultCount: number;
-  totalCount: number;
   isActive: boolean;
 }
 
@@ -24,22 +22,39 @@ interface OptionGroupProps<T extends string> {
   onSelect: (value: T) => void;
 }
 
+/**
+ * One filter dimension.
+ *
+ * A radio group, and announced as one. These were eight unrelated buttons with
+ * no pressed state, so assistive technology could not say which option was
+ * active — and the A/B/C chips measured 21×23px, under the 24px minimum target
+ * size.
+ */
 function OptionGroup<T extends string>({ label, value, options, onSelect }: OptionGroupProps<T>) {
   return (
-    <div className="flex items-center gap-1.5">
-      <span className="text-[10px] font-medium tracking-[0.08em] text-ink-3 uppercase">
+    <div className="flex shrink-0 items-center gap-1.5">
+      <span
+        id={`filter-${label.toLowerCase()}`}
+        className="text-[11px] font-medium tracking-[0.08em] text-ink-3 uppercase"
+      >
         {label}
       </span>
-      <div className="flex overflow-hidden rounded-sm border border-line-2">
+      <div
+        role="radiogroup"
+        aria-labelledby={`filter-${label.toLowerCase()}`}
+        className="flex overflow-hidden rounded-sm border border-line-2"
+      >
         {options.map((option) => {
           const active = option.value === value;
           return (
             <button
               key={option.value}
               type="button"
+              role="radio"
+              aria-checked={active}
               title={option.title}
               onClick={() => onSelect(option.value)}
-              className={`border-r border-line-2 px-2 py-1 text-[11px] font-semibold tracking-wide uppercase transition-colors last:border-r-0 ${
+              className={`min-h-[24px] min-w-[26px] border-r border-line-2 px-2 py-1 text-[11px] font-semibold tracking-wide uppercase transition-colors last:border-r-0 ${
                 active
                   ? 'bg-accent/15 text-accent'
                   : 'bg-panel-2 text-ink-3 hover:bg-panel-3 hover:text-ink-2'
@@ -54,17 +69,18 @@ function OptionGroup<T extends string>({ label, value, options, onSelect }: Opti
   );
 }
 
-export function FilterBar({
-  filters,
-  onChange,
-  onReset,
-  resultCount,
-  totalCount,
-  isActive,
-}: FilterBarProps) {
+export function FilterBar({ filters, onChange, onReset, isActive }: FilterBarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-line bg-panel px-4 py-2">
-      <div className="relative">
+    /*
+     * An inline group inside the session line, not a band of its own.
+     *
+     * The counts above and the filters here are one control surface — clicking
+     * "3 warning" and pressing the Cycle · Warning chip do the same thing — so
+     * they share a row. Two stacked bands spent 74px of a 551px viewport on
+     * chrome that reads as one idea.
+     */
+    <div className="flex shrink-0 items-center gap-x-3 border-l border-line pl-3">
+      <div className="relative shrink-0">
         <input
           type="search"
           value={filters.search}
@@ -72,7 +88,7 @@ export function FilterBar({
           placeholder="Search ticker"
           spellCheck={false}
           autoComplete="off"
-          className="w-40 rounded-sm border border-line-2 bg-panel-2 px-2 py-1 text-[12px] font-semibold tracking-wide text-ink uppercase placeholder:font-normal placeholder:tracking-normal placeholder:text-ink-3 placeholder:normal-case focus:border-accent/60 focus:outline-none"
+          className="w-32 rounded-sm border border-line-2 bg-panel-2 px-2 py-1 text-[12px] font-semibold tracking-wide text-ink uppercase placeholder:font-normal placeholder:tracking-normal placeholder:text-ink-3 placeholder:normal-case focus:border-accent/60 focus:outline-none"
         />
       </div>
 
@@ -124,15 +140,12 @@ export function FilterBar({
         ]}
       />
 
-      <div className="ml-auto flex items-center gap-3">
-        <span className="num text-[11px] text-ink-3">
-          {resultCount} / {totalCount}
-        </span>
+      <div className="flex shrink-0 items-center gap-2">
         {isActive ? (
           <button
             type="button"
             onClick={onReset}
-            className="rounded-sm border border-line-2 bg-panel-2 px-2 py-1 text-[11px] font-semibold tracking-wide text-ink-2 uppercase hover:border-accent/50 hover:text-ink"
+            className="min-h-[24px] rounded-sm border border-line-2 bg-panel-2 px-2 py-1 text-[11px] font-semibold tracking-wide text-ink-2 uppercase hover:border-accent/50 hover:text-ink"
           >
             Clear
           </button>

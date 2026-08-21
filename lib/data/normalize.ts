@@ -23,6 +23,22 @@ import type {
 
 export const EMPTY_DISPLAY = '—';
 
+/**
+ * Strips a leading status emoji from a human-authored classification.
+ *
+ * The sheet writes "🟢 FRESH / FRONTSIDE" and "🔴 BACKSIDE". The emoji says
+ * the same thing the badge's own colour and the word already say — three
+ * statements of one fact — and it costs roughly fourteen pixels of a label
+ * that has to fit a column. Dropping it also helps rather than hurts
+ * colour-blind reading, because the word was always the part doing the work.
+ *
+ * `raw` is untouched everywhere it is kept for provenance; only the display
+ * string loses the glyph.
+ */
+export function withoutStatusEmoji(value: string): string {
+  return value.replace(/^[\p{Extended_Pictographic}️]+\s*/u, '').trim();
+}
+
 const UNKNOWN_PATTERN = /^(unknown|unk|n\/a|na|tbd|none|not verified|--?|—)$/i;
 
 /** Trims a raw cell and collapses whitespace without altering meaningful text. */

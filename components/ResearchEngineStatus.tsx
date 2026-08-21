@@ -50,27 +50,19 @@ export function ResearchEngineStatus({
         {health.label}
       </span>
 
-      {/* The queue is the part a trader can act on: it says whether the names
-          currently on the board are actually being worked. */}
-      {mounted ? (
-        <span className="hidden text-[11px] text-ink-3 xl:block">
-          <span
-            className={`num ${health.queuedJobs > 0 ? 'text-ink-2' : ''}`}
-            title="Research jobs waiting to start"
-          >
-            q {health.queuedJobs}
-          </span>
-          <span
-            className={`num ${health.activeCount > 0 ? 'text-accent' : ''}`}
-            title={
-              health.activeCount > 0
-                ? `Currently analyzing ${health.activeJobs.join(', ')}`
-                : 'No job currently running'
-            }
-          >
-            {' '}
-            · a {health.activeCount}
-          </span>
+      {/*
+       * What the engine is working on, in words, and only when it is working.
+       *
+       * `q 0 · a 0` was on screen at all times: two abbreviations that mean
+       * nothing to a trader and, at zero, say nothing to anybody. The queue
+       * still matters when a name on the board is waiting, so it appears
+       * exactly then. Counters for their own sake belong to diagnostics.
+       */}
+      {mounted && (health.activeCount > 0 || health.queuedJobs > 0) ? (
+        <span className="text-[11px] text-ink-2">
+          {health.activeCount > 0
+            ? `analyzing ${health.activeJobs.slice(0, 2).join(', ')}`
+            : `${health.queuedJobs} queued`}
         </span>
       ) : null}
     </div>

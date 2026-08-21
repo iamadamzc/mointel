@@ -24,6 +24,16 @@ interface AssessmentHistoryProps {
 export function AssessmentSelector({ panel, selectedId, onSelect }: AssessmentHistoryProps) {
   const options = panel.today;
 
+  /*
+   * A control with one option is not a control.
+   *
+   * Before the day's first checkpoint the select contained only "Live", and it
+   * still occupied a full-width row of the board's vertical space to say "no
+   * checkpoints recorded yet today" — which the header's next-checkpoint line
+   * already says, better.
+   */
+  if (options.length === 0) return null;
+
   return (
     <div className="flex items-center gap-2">
       <label
@@ -56,9 +66,6 @@ export function AssessmentSelector({ panel, selectedId, onSelect }: AssessmentHi
             </option>
           ))}
       </select>
-      {options.length === 0 ? (
-        <span className="text-[10px] text-ink-3">no checkpoints recorded yet today</span>
-      ) : null}
     </div>
   );
 }

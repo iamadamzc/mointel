@@ -29,6 +29,30 @@ const DOT_CLASS: Record<MarketHealthView['tone'], string> = {
 };
 
 /**
+ * Session phases, in trader language.
+ *
+ * A label map rather than a string transform. The transform was
+ * `sessionPhase.replace('_', ' ')`, which replaces the first underscore only,
+ * so the header read `NEXT DAY_PREP` in every screenshot ever taken of it.
+ */
+const SESSION_PHASE_LABEL: Record<DiscoveryState['sessionPhase'], string> = {
+  CLOSED: 'Closed',
+  PREMARKET: 'Premarket',
+  RTH: 'Regular hours',
+  AFTER_HOURS: 'After hours',
+  POST_MARKET: 'Post-market',
+  NEXT_DAY_PREP: 'Next-day prep',
+};
+
+function ageDetail(
+  age: number | null,
+  thresholds: MarketHealthView['thresholds'],
+): string | undefined {
+  if (age === null) return undefined;
+  return `Newest whole-market message ${age}s ago. Fresh under ${thresholds.freshSeconds}s, stale beyond ${thresholds.staleSeconds}s.`;
+}
+
+/**
  * Market feed health, deliberately independent from the research indicator.
  *
  * The verdict is not computed here. This renders a projection that already
@@ -55,26 +79,23 @@ export function MarketStatus({ health, marketHealth, discovery, mounted }: Marke
         {marketHealth.label}
       </span>
 
-      <div className="hidden text-[11px] text-ink-3 lg:block">
-        <span className="text-ink-2">{discovery.sessionPhase.replace('_', ' ')}</span>
-        {mounted && age !== null ? (
-          <span
-            className={`num ${
-              // The number carries the same verdict as the badge beside it.
-              marketHealth.freshness === 'FRESH' || marketHealth.freshness === 'NOT_EXPECTED'
-                ? ''
-                : 'text-warn'
-            }`}
-            title={`Newest whole-market message. Fresh under ${marketHealth.thresholds.freshSeconds}s, stale beyond ${marketHealth.thresholds.staleSeconds}s.`}
-          >
-            {' '}
-            msg {age}s
-          </span>
-        ) : null}
-        {health.highResCount > 0 ? <span className="num"> · hi-res {health.highResCount}</span> : null}
-        {health.reconnectCount > 0 ? (
-          <span className="num text-warn"> · reconnects {health.reconnectCount}</span>
-        ) : null}
+      {/*
+       * The session, in words a trader uses.
+       *
+       * What used to sit here — `msg 227s`, `hi-res 6`, `reconnects 3`, and a
+       * phase label reading `NEXT DAY_PREP` because only the first underscore
+       * was replaced — is engine bookkeeping. It belongs to the diagnostics
+       * page, and it was crowding out the one scheduling fact the trader
+       * actually uses, which now sits beside it.
+       *
+       * Data age is not deleted, only demoted: when the feed is not fresh the
+       * badge beside this is already carrying that verdict in its own colour,
+       * and the exact second count is on hover.
+       */}
+      <div className="text-[11px] text-ink-2">
+        <span title={ageDetail(mounted ? age : null, marketHealth.thresholds)}>
+          {SESSION_PHASE_LABEL[discovery.sessionPhase] ?? discovery.sessionPhase}
+        </span>
       </div>
 
       {discovery.universeMode !== 'FULL' && health.mode !== 'OFFLINE' ? (

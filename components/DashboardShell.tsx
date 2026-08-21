@@ -125,10 +125,21 @@ const OFFLINE_DISCOVERY: DiscoveryState = {
 };
 
 export function DashboardShell({ initialState }: { initialState: DashboardState | null }) {
-  const feed = useDashboard();
-  const data = feed.data ?? initialState;
-
+  const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const focus = useFocus();
+
+  /*
+   * The dossiers this page can actually show: whatever the drawer has open and
+   * whatever is pinned. Everything else is fetched when it is opened. The
+   * payload used to carry every stored RESEARCH record on every poll.
+   */
+  const openTickers = useMemo(
+    () => (selectedTicker ? [...focus.tickers, selectedTicker] : focus.tickers),
+    [focus.tickers, selectedTicker],
+  );
+
+  const feed = useDashboard(openTickers);
+  const data = feed.data ?? initialState;
 
   /*
    * Focused tickers are requested alongside the sheet names.
@@ -148,7 +159,6 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
 
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
   const [sort, setSort] = useState<SortState>(DEFAULT_SORT);
-  const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   /**
    * Which assessment the Discovery area is showing. Null is LIVE, and LIVE is
    * the default — the history is for review, not for trading from.
@@ -262,28 +272,34 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         onRefresh={feed.refresh}
       />
 
+      {/* Counts and filters are one control surface, so they are one line. */}
       <MarketSummary
         summary={summary}
         visibleCount={filtered.length}
         filtered={isFilterActive(filters)}
-      />
-
-      <FilterBar
         filters={filters}
         onChange={setFilters}
-        onReset={() => setFilters(DEFAULT_FILTERS)}
-        resultCount={filtered.length}
-        totalCount={tickers.length}
-        isActive={isFilterActive(filters)}
-      />
+      >
+        <FilterBar
+          filters={filters}
+          onChange={setFilters}
+          onReset={() => setFilters(DEFAULT_FILTERS)}
+          isActive={isFilterActive(filters)}
+        />
+      </MarketSummary>
 
       {/*
-        * Hierarchy: the compact Primary strip, then Discovery as the dominant
-        * surface, then a contextual event rail, then the analyzed watchlist as
-        * clearly secondary material. Discovery used to sit above a tall Primary
-        * card that spent most of a screen on one name.
+        * Hierarchy: the compact Focus strip, then Discovery as the dominant
+        * surface, then a contextual event rail, then the researched watchlist
+        * as clearly secondary material.
+        *
+        * `main` owns BOTH scroll axes. That is what makes the boards' sticky
+        * column headers work: `position: sticky` resolves against the nearest
+        * scrollport, and the old per-table `overflow-x-auto` wrapper became
+        * that scrollport without ever scrolling vertically, so the header sat
+        * inert and scrolled away with the rows.
         */}
-      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+      <main className="flex min-h-0 flex-1 flex-col overflow-x-auto overflow-y-auto">
         <FocusStrip
           rows={focusRows}
           changedTickers={feed.changedTickers}
@@ -298,13 +314,15 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             replaces: choosing a past assessment swaps the live board for the
             frozen one, rather than showing both and inviting a comparison
             between numbers captured hours apart. */}
-        <div className="flex items-center justify-end border-b border-line bg-desk px-4 pt-2">
-          <AssessmentSelector
-            panel={assessments}
-            selectedId={selectedAssessment}
-            onSelect={setSelectedAssessment}
-          />
-        </div>
+        {assessments.today.length > 0 ? (
+          <div className="flex items-center justify-end border-b border-line bg-desk px-4 py-1">
+            <AssessmentSelector
+              panel={assessments}
+              selectedId={selectedAssessment}
+              onSelect={setSelectedAssessment}
+            />
+          </div>
+        ) : null}
 
         {selectedAssessment === null ? (
           <DiscoveryBoard
@@ -315,6 +333,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             marketOffline={health.offline}
             isFocused={focus.isFocused}
             onToggleFocus={focus.toggle}
+            changedTickers={feed.changedTickers}
           />
         ) : (
           <AssessmentSnapshotBoard key={selectedAssessment} id={selectedAssessment} />
@@ -338,6 +357,11 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           selectedTicker={selectedTicker}
           changedTickers={feed.changedTickers}
           deskRows={merged.rows}
+          // Premarket before 04:00, after 20:00, at the weekend: Discovery has
+          // nothing to rank and this is the only list worth reading. Making the
+          // trader click to reveal it is what left the desk showing a screen of
+          // controls above an empty board.
+          defaultOpen={merged.discovery.length === 0}
         />
 
         {data.meta.warnings.length > 0 ? (

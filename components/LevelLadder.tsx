@@ -14,6 +14,8 @@
 
 import type { CompactLevel, LevelMap, LevelZone } from '@/lib/data/priceLevels';
 import { levelTypeLabel, toCompactRow } from '@/lib/data/priceLevels';
+import { ClampedText } from '@/components/ClampedText';
+import { describeBlueSkyWindow, type BlueSkyState } from '@/lib/market/blueSky';
 
 function priceText(value: number): string {
   return value < 1 ? value.toFixed(3) : value.toFixed(2);
@@ -120,14 +122,50 @@ function ZoneRow({ zone, side }: { zone: LevelZone; side: 'ABOVE' | 'BELOW' }) {
         {zone.distancePct === null ? '' : ` / ${zone.distancePct.toFixed(1)}%`}
       </span>
 
-      {/* A zone lists what it is made of, so merging never hides a source. */}
-      <span className="truncate text-[10px] text-ink-3">
-        {isZone
-          ? zone.members
-              .map((member) => `${priceText(member.price)} ${levelTypeLabel(member.type)}`)
-              .join(' · ')
-          : (zone.members[0]?.note ?? '')}
-      </span>
+      {/* A zone lists what it is made of, so merging never hides a source.
+          Clipped by the column, revealed on hover, whole in the DOM. */}
+      <ClampedText
+        className="text-[10px] text-ink-3"
+        text={
+          isZone
+            ? zone.members
+                .map((member) => `${priceText(member.price)} ${levelTypeLabel(member.type)}`)
+                .join(' · ')
+            : (zone.members[0]?.note ?? '')
+        }
+      />
+    </div>
+  );
+}
+
+const BLUE_SKY_TONE: Record<BlueSkyState['status'], string> = {
+  IN_BLUE_SKY: 'border-accent/50 text-accent',
+  BLUE_SKY_ABOVE: 'border-line-2 text-ink-1',
+  NOT_BLUE_SKY: 'border-line-2 text-ink-2',
+  UNVERIFIED: 'border-line-2 text-ink-3',
+  UNAVAILABLE: 'border-line-2 text-ink-3',
+};
+
+/**
+ * The blue-sky state, stated once and honestly.
+ *
+ * Five outcomes and no sixth: in verified blue sky, blue sky above a named
+ * level, not blue sky with overhead named, the level exists but could not be
+ * verified, or there is no daily history to verify it from. The ceiling is the
+ * highest prior-session high in the retained split-adjusted window — never an
+ * all-time high, never a 52-week high, and never an unadjusted pre-split price
+ * — and the line under it says so, so the number is read for what it is.
+ */
+function BlueSkyLine({ state }: { state: BlueSkyState }) {
+  const window = describeBlueSkyWindow(state.threshold);
+  const detail = state.threshold.verified
+    ? window
+    : (state.threshold.unverifiedReason ?? window);
+
+  return (
+    <div className={`mb-3 border-l-2 pl-2 ${BLUE_SKY_TONE[state.status]}`}>
+      <p className="text-[12px] font-semibold tracking-wide uppercase">{state.label}</p>
+      {detail ? <p className="mt-0.5 text-[11px] text-ink-3">{detail}</p> : null}
     </div>
   );
 }
@@ -140,14 +178,18 @@ function ZoneRow({ zone, side }: { zone: LevelZone; side: 'ABOVE' | 'BELOW' }) {
  */
 export function LevelLadder({
   map,
+  blueSky,
   Section,
 }: {
   map: LevelMap;
+  /** The one honest blue-sky state for this ticker. Always rendered. */
+  blueSky: BlueSkyState;
   Section: (props: { title: string; children: React.ReactNode }) => React.ReactElement;
 }) {
   if (map.empty) {
     return (
       <Section title="Level Ladder">
+        <BlueSkyLine state={blueSky} />
         <p className="text-[12px] text-ink-2">No key levels available for this ticker.</p>
       </Section>
     );
@@ -158,6 +200,8 @@ export function LevelLadder({
 
   return (
     <Section title="Level Ladder">
+      <BlueSkyLine state={blueSky} />
+
       {map.airPocketAbove ? (
         <p className="mb-2 text-[11px] text-ink-3">{map.airPocketAbove}</p>
       ) : null}
@@ -178,11 +222,14 @@ export function LevelLadder({
           <span className="num w-[76px] shrink-0 text-[11px] text-ink-3">
             {map.spreadPct === null ? '' : `${map.spreadPct.toFixed(2)}% sprd`}
           </span>
-          <span className="truncate text-[10px] text-ink-3">
-            {map.atPrice.length > 0
-              ? `at ${map.atPrice.map((level) => levelTypeLabel(level.type)).join(' · ')}`
-              : (map.betweenNote ?? '')}
-          </span>
+          <ClampedText
+            className="text-[10px] text-ink-3"
+            text={
+              map.atPrice.length > 0
+                ? `at ${map.atPrice.map((level) => levelTypeLabel(level.type)).join(' · ')}`
+                : (map.betweenNote ?? '')
+            }
+          />
         </div>
 
         {map.below.map((zone) => (

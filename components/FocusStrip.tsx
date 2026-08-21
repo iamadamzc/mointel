@@ -42,6 +42,25 @@ export function FocusStrip({
   onDismissMessage,
 }: FocusStripProps) {
   const { readOnly } = useDeskMode();
+
+  /*
+   * Empty is one line, not a section.
+   *
+   * An unused Focus strip was a 55px band carrying a heading, a counter and a
+   * sentence explaining a control the trader can see for themselves — vertical
+   * space taken from the board to say nothing.
+   */
+  if (rows.length === 0 && !message) {
+    return (
+      <section className="flex items-baseline gap-2 border-b border-line bg-desk px-4 py-1">
+        <h2 className="text-[11px] font-semibold tracking-[0.14em] text-ink-3 uppercase">Focus</h2>
+        <span className="text-[11px] text-ink-3">
+          {readOnly ? 'Nothing pinned for this session.' : 'Pin a ticker with ☆ to keep it here.'}
+        </span>
+      </section>
+    );
+  }
+
   return (
     <section className="border-b border-line bg-desk px-4 py-2">
       <div className="mb-1.5 flex items-baseline gap-2">
@@ -212,7 +231,8 @@ function FocusCard({
       {read.structuralWarning.text ? (
         <p
           className="mt-1.5 line-clamp-1 border-t border-line pt-1.5 text-[10px] leading-snug text-warn/90"
-          title={`${read.structuralWarning.text}${
+          // The full sentence, not the condensed one the card shows.
+          title={`${read.structuralWarning.fullText ?? read.structuralWarning.text}${
             read.structuralWarning.qualifier ? ` (${read.structuralWarning.qualifier})` : ''
           }`}
         >

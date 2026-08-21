@@ -18,6 +18,7 @@ import {
   proseCell,
   structureBadges,
   structureState,
+  withoutStatusEmoji,
 } from './normalize';
 import { plausibleSymbol } from './sheetTable';
 import type {
@@ -253,7 +254,8 @@ export function mapTodayRow(
     },
     cycle: {
       raw: cycleRaw,
-      display: cycleRaw || '—',
+      // The badge already carries the state in its colour and its word.
+      display: withoutStatusEmoji(cycleRaw) || '—',
       state: cycleState(cycleRaw),
     },
     catalyst: {

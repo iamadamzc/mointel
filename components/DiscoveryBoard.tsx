@@ -2,20 +2,24 @@
 
 import { useState } from 'react';
 
-import { StatusBadge, changeTone, type Tone } from '@/components/StatusBadge';
-import { FocusToggle } from '@/components/FocusToggle';
-import { CompactLevels } from '@/components/LevelLadder';
+import { StatusBadge, type Tone } from '@/components/StatusBadge';
+import {
+  ChangeMarker,
+  HaltBadge,
+  PriceMoveCell,
+  RiskCell,
+  RvolCell,
+  TickerCell,
+  WhyCell,
+} from '@/components/DecisionCells';
+import { rowKeyboardProps } from '@/components/tableKeyboard';
 import type { DeskRow } from '@/lib/dashboard/merge';
-import { resolveConclusions, type DeskConclusion } from '@/lib/dashboard/deskRead';
+import { resolveConclusions } from '@/lib/dashboard/deskRead';
+import { resolveRisk } from '@/lib/dashboard/risk';
+import { resolveWhy } from '@/lib/dashboard/why';
 import { retentionNote } from '@/lib/dashboard/view';
 import type { DiscoveryState } from '@/lib/market/types';
-import {
-  formatCount,
-  formatMultiple,
-  formatPrice,
-  formatRankChange,
-  formatSignedPercent,
-} from '@/lib/format';
+import { formatCount, formatMultiple, formatRankChange } from '@/lib/format';
 
 const VIEW_SIZES = [12, 25, 50] as const;
 type ViewSize = (typeof VIEW_SIZES)[number];
@@ -28,8 +32,22 @@ interface DiscoveryBoardProps {
   marketOffline: boolean;
   isFocused: (ticker: string) => boolean;
   onToggleFocus: (ticker: string) => void;
+  changedTickers: Set<string>;
 }
 
+/**
+ * The primary decision surface.
+ *
+ * Seven fields and a change marker, and nothing else: Rank, Ticker,
+ * Price/Move/VWAP, RVOL, Why, Risk, Cycle. The board used to carry fifteen
+ * columns totalling 1,504px against a 1,022px viewport, which put the fields
+ * that decide whether to look further off the right-hand edge — and took the
+ * ticker with them when you scrolled to reach them.
+ *
+ * Levels are not here. They belong to the drawer's ladder, in full, rather than
+ * as a clipped list competing with Why and Risk for the width those two need.
+ * Spread is not here either: this desk is not replacing Level 2.
+ */
 export function DiscoveryBoard({
   discovery,
   rows,
@@ -38,6 +56,7 @@ export function DiscoveryBoard({
   marketOffline,
   isFocused,
   onToggleFocus,
+  changedTickers,
 }: DiscoveryBoardProps) {
   const [size, setSize] = useState<ViewSize>(12);
   const visible = rows.slice(0, size);
@@ -53,31 +72,20 @@ export function DiscoveryBoard({
   const frozen = discovery.sessionPhase === 'POST_MARKET';
 
   return (
-    <section className="border-b border-line bg-desk px-4 py-3">
-      <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+    <section className="border-b border-line bg-desk px-4 py-2">
+      <div className="mb-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
         <h2 className="text-[11px] font-semibold tracking-[0.14em] text-ink uppercase">
           {afterHours ? 'After-Hours Discovery' : 'Discovery'}
         </h2>
-        <span className="text-[10px] text-ink-3">
-          {afterHours ? (
-            <>
-              cross-sectional AH Participation rank{' '}
-              <span className="text-ink-3">
-                (volume since the {discovery.rthClose} ET close ÷ 20-session average full day)
-              </span>{' '}
-              · ${discovery.priceMin}–${discovery.priceMax} discovery range
-            </>
-          ) : (
-            <>
-              cross-sectional Daily RVOL rank · ${discovery.priceMin}–${discovery.priceMax}{' '}
-              discovery range
-            </>
-          )}
+        <span className="text-[11px] text-ink-3">
+          {afterHours
+            ? `AH participation rank · $${discovery.priceMin}–$${discovery.priceMax}`
+            : `Daily RVOL rank · $${discovery.priceMin}–$${discovery.priceMax}`}
         </span>
 
         {frozen ? (
           <span
-            className="text-[9px] font-semibold tracking-wide text-warn uppercase"
+            className="text-[10px] font-semibold tracking-wide text-warn uppercase"
             title="Extended trading ended at 20:00 ET. These are the session's final after-hours numbers; they are no longer moving."
           >
             frozen 20:00
@@ -85,9 +93,8 @@ export function DiscoveryBoard({
         ) : null}
 
         <div className="ml-auto flex items-center gap-3">
-          <span className="num text-[10px] text-ink-3">
+          <span className="num text-[11px] text-ink-3">
             {discovery.eligibleCount.toLocaleString()} eligible ·{' '}
-            {discovery.baselineCount.toLocaleString()} baselines ·{' '}
             {discovery.trackedCount.toLocaleString()} tracked
           </span>
           <div className="flex overflow-hidden rounded-sm border border-line-2">
@@ -95,8 +102,9 @@ export function DiscoveryBoard({
               <button
                 key={option}
                 type="button"
+                aria-pressed={option === size}
                 onClick={() => setSize(option)}
-                className={`border-r border-line-2 px-2 py-1 text-[11px] font-semibold tracking-wide uppercase transition-colors last:border-r-0 ${
+                className={`min-h-[24px] border-r border-line-2 px-2 py-1 text-[11px] font-semibold tracking-wide uppercase transition-colors last:border-r-0 ${
                   option === size
                     ? 'bg-accent/15 text-accent'
                     : 'bg-panel-2 text-ink-3 hover:bg-panel-3 hover:text-ink-2'
@@ -110,9 +118,13 @@ export function DiscoveryBoard({
       </div>
 
       {visible.length === 0 ? (
-        <p className="rounded-sm border border-dashed border-line-2 bg-panel px-3 py-4 text-[12px] text-ink-3">
+        <p className="rounded-sm border border-dashed border-line-2 bg-panel px-3 py-4 text-[12px] text-ink-2">
           {marketOffline
-            ? 'Market worker is not running. Start it with `npm run market:alpaca` to populate discovery.'
+            ? // No shell command here. The desk is one supervised process and a
+              // second market worker silently displaces the live SIP connection,
+              // so telling a trader to start one is worse than telling them
+              // nothing.
+              'Market feed is not running. Discovery cannot populate until it reconnects.'
             : discovery.sessionPhase === 'CLOSED' || discovery.sessionPhase === 'NEXT_DAY_PREP'
               ? `No session in progress. Discovery populates from 04:00 ET on ${discovery.tradingDate || 'the next session'}.`
               : afterHours
@@ -120,68 +132,56 @@ export function DiscoveryBoard({
                 : 'No names currently qualify for the discovery universe.'}
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-sm border border-line-2">
-          <table className="w-full border-collapse text-[12px]">
-            <thead>
-              <tr className="bg-panel-2">
-                <Th className="w-[46px]">Rank</Th>
-                <Th className="w-[104px]">Ticker</Th>
-                {afterHours ? (
-                  <>
-                    <Th className="w-[80px]" align="right">AH Price</Th>
-                    <Th className="w-[74px]" align="right">AH %</Th>
-                    <Th className="w-[88px]" align="right">AH Particip.</Th>
-                    <Th className="w-[58px]" align="right">Δ Rank</Th>
-                    <Th className="w-[86px]" align="right">AH Volume</Th>
-                    <Th className="w-[92px]" align="right">AH H/L</Th>
-                    <Th className="w-[84px]" align="right">Daily RVOL</Th>
-                  </>
-                ) : (
-                  <>
-                    <Th className="w-[80px]" align="right">Price</Th>
-                    <Th className="w-[74px]" align="right">%</Th>
-                    <Th className="w-[84px]" align="right">Daily RVOL</Th>
-                    <Th className="w-[58px]" align="right">Δ Rank</Th>
-                    <Th className="w-[86px]" align="right">Volume</Th>
-                    <Th className="w-[86px]" align="right">Float</Th>
-                    <Th className="w-[84px]" align="right">Float Turn</Th>
-                  </>
-                )}
-                <Th className="w-[210px]">Levels</Th>
-                <Th className="w-[168px]">Cycle</Th>
-                <Th className="w-[140px]">Catalyst</Th>
-                <Th className="w-[136px]">Structure</Th>
-                <Th className="w-[76px]" align="right">Spread</Th>
-                <Th className="w-[72px]">Halt</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {visible.map((row) => (
-                <DiscoveryRow
-                  key={row.ticker}
-                  row={row}
-                  selected={selectedTicker === row.ticker}
-                  onSelect={onSelect}
-                  focused={isFocused(row.ticker)}
-                  onToggleFocus={onToggleFocus}
-                  priceMin={discovery.priceMin}
-                  priceMax={discovery.priceMax}
-                  afterHours={afterHours}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <table className="w-full table-fixed border-collapse border-t border-line">
+          <caption className="sr-only">
+            {afterHours ? 'After-hours discovery' : 'Discovery'} board, ranked by{' '}
+            {discovery.rankingLabel}. Use the arrow keys to move between rows and Enter to open a
+            ticker.
+          </caption>
+          <thead className="sticky top-0 z-10 bg-panel-2">
+            <tr>
+              <Th className="w-[24px]" srOnly>
+                Changed
+              </Th>
+              <Th className="w-[44px]" align="right">
+                Rank
+              </Th>
+              <Th className="w-[112px]">Ticker</Th>
+              <Th className="w-[172px]">Price · Move · VWAP</Th>
+              <Th className="w-[68px]" align="right">
+                RVOL
+              </Th>
+              <Th>Why</Th>
+              <Th>Risk</Th>
+              <Th className="w-[152px]">Cycle</Th>
+            </tr>
+          </thead>
+          <tbody>
+            {visible.map((row) => (
+              <DiscoveryRow
+                key={row.ticker}
+                row={row}
+                selected={selectedTicker === row.ticker}
+                changed={changedTickers.has(row.ticker)}
+                onSelect={onSelect}
+                focused={isFocused(row.ticker)}
+                onToggleFocus={onToggleFocus}
+                priceMin={discovery.priceMin}
+                priceMax={discovery.priceMax}
+                afterHours={afterHours}
+              />
+            ))}
+          </tbody>
+        </table>
       )}
 
-      <p className="mt-1.5 text-[10px] text-ink-3">
+      <p className="mt-1.5 text-[11px] text-ink-3">
         {afterHours ? (
           <>
             AH Participation = volume since the {discovery.rthClose} ET close ÷ average volume over
             the previous 20 eligible full sessions. It is deliberately not Daily RVOL: the
-            numerator is one evening, not a trading day. AH % is measured against today&apos;s
-            official close. High rank means abnormal after-hours participation worth investigating
-            — not a trade, a catalyst, or a clean structure.
+            numerator is one evening, not a trading day. High rank means abnormal after-hours
+            participation worth investigating — not a trade, a catalyst, or a clean structure.
           </>
         ) : (
           <>
@@ -199,19 +199,21 @@ function Th({
   children,
   className = '',
   align,
+  srOnly = false,
 }: {
   children: React.ReactNode;
   className?: string;
   align?: 'right';
+  srOnly?: boolean;
 }) {
   return (
     <th
       scope="col"
-      className={`border-b border-line-2 px-2 py-1.5 text-[10px] font-semibold tracking-[0.08em] whitespace-nowrap text-ink-3 uppercase ${
+      className={`border-b border-line-2 bg-panel-2 px-2 py-1 text-[11px] font-semibold tracking-[0.08em] whitespace-nowrap text-ink-3 uppercase ${
         align === 'right' ? 'text-right' : 'text-left'
       } ${className}`}
     >
-      {children}
+      {srOnly ? <span className="sr-only">{children}</span> : children}
     </th>
   );
 }
@@ -219,6 +221,7 @@ function Th({
 function DiscoveryRow({
   row,
   selected,
+  changed,
   onSelect,
   focused,
   onToggleFocus,
@@ -228,6 +231,7 @@ function DiscoveryRow({
 }: {
   row: DeskRow;
   selected: boolean;
+  changed: boolean;
   onSelect: (ticker: string) => void;
   focused: boolean;
   onToggleFocus: (ticker: string) => void;
@@ -239,276 +243,111 @@ function DiscoveryRow({
   // One projection for every surface: whatever the Focus strip shows for this
   // ticker, this row shows the same numbers from the same object.
   const t = row.telemetry;
-  // And the same three conclusions the drawer resolves.
   const conclusions = resolveConclusions(row);
+  const risk = resolveRisk(row);
+  const why = resolveWhy(row);
   const ah = demand?.afterHours ?? null;
   const retention = retentionNote({
-    // After the bell, retention is the AH latch: a name that qualified inside
-    // the band this evening and then ran through $20 is retained for THIS
-    // session, independently of whatever the daytime board decided.
     latched: (afterHours ? ah?.latched : demand?.latched) ?? false,
     price: t.price,
     priceMin,
     priceMax,
   });
 
+  /*
+   * One saturated colour per row, by precedence.
+   *
+   * A halt outranks a backside cycle, which outranks a blue-sky crossing. The
+   * board previously coloured every one of them at once, which is how six rows
+   * produced a wall of amber and red in which nothing stood out.
+   */
+  const halted = t.haltState === 'HALTED' || t.haltState === 'RESUMING';
+  const backside = conclusions.cycle.tone === 'neg';
+
+  const rank = (afterHours ? (ah?.rank ?? null) : t.rvolRank) ?? null;
+  const rankChange = afterHours ? (ah?.rankChange ?? null) : t.rvolRankChange;
+
   return (
     <tr
-      onClick={() => onSelect(row.ticker)}
-      className={`cursor-pointer border-b border-line/70 transition-colors hover:bg-panel-2 ${
-        selected ? 'bg-accent/10' : 'bg-panel/40'
-      }`}
-    >
-      <td className="num px-2 py-1.5 align-middle font-semibold text-accent">
-        {(afterHours ? (ah?.rank ?? null) : t.rvolRank) ?? '—'}
-      </td>
-
-      <td className="px-2 py-1.5 align-middle">
-        <div className="flex items-center gap-1">
-          {/* Pinning is a display choice; it changes nothing about this row. */}
-          <FocusToggle ticker={row.ticker} focused={focused} onToggle={onToggleFocus} />
-          <span className="text-[14px] font-bold tracking-tight text-ink">{row.ticker}</span>
-          {/* Only shown when the retention is actually doing something. */}
-          {retention ? (
-            <span
-              title={`Qualified at $${demand?.qualified?.price.toFixed(2) ?? '—'} inside the $${priceMin}–$${priceMax} discovery band and kept for the session after leaving it`}
-              className="text-[9px] font-semibold tracking-wide whitespace-nowrap text-accent uppercase"
-            >
-              {retention}
-            </span>
-          ) : null}
-          {t.stale ? (
-            <span
-              title={`No market event for ${t.ageSeconds ?? '—'}s — this is the last live print, not a current one`}
-              className="text-[9px] font-semibold tracking-wide text-warn uppercase"
-            >
-              stale
-            </span>
-          ) : null}
-        </div>
-      </td>
-
-      <td className="num px-2 py-1.5 text-right align-middle font-semibold text-ink">
-        {formatPrice(t.price)}
-      </td>
-
-      {afterHours ? (
-        <>
-          <td
-            className={`num px-2 py-1.5 text-right align-middle font-semibold ${changeTone(
-              ah?.percentChange ?? null,
-            )}`}
-            title={
-              ah?.referenceClose
-                ? `Versus today's official ${ah.referenceClose.toFixed(2)} regular-session close`
-                : "Today's official close is not available yet"
-            }
-          >
-            {formatSignedPercent(ah?.percentChange ?? null)}
-          </td>
-
-          <td
-            className="num px-2 py-1.5 text-right align-middle font-semibold text-ink"
-            title={
-              ah?.coverage !== 'COMPLETE'
-                ? 'After-hours volume for this name is not fully accounted for, so participation is unknown rather than assumed'
-                : `After-hours volume ÷ ${demand?.baselineSessions ?? 20}-session average full-day volume. Not Daily RVOL.`
-            }
-          >
-            {formatMultiple(ah?.participation ?? null)}
-          </td>
-
-          <td
-            className={`num px-2 py-1.5 text-right align-middle ${
-              (ah?.rankChange ?? 0) > 0
-                ? 'text-pos'
-                : (ah?.rankChange ?? 0) < 0
-                  ? 'text-neg'
-                  : 'text-ink-3'
-            }`}
-          >
-            {formatRankChange(ah?.rankChange ?? null)}
-          </td>
-
-          <td
-            className="num px-2 py-1.5 text-right align-middle text-ink-2"
-            title="Volume traded since the regular-session close. Regular-hours volume is not included."
-          >
-            {ah?.volume === null || ah?.volume === undefined ? '—' : formatCount(ah.volume)}
-          </td>
-
-          <td className="num px-2 py-1.5 text-right align-middle text-[11px] text-ink-3" title="After-hours high / low, reset at the close">
-            {ah?.high !== null && ah?.high !== undefined ? formatPrice(ah.high) : '—'}
-            {' / '}
-            {ah?.low !== null && ah?.low !== undefined ? formatPrice(ah.low) : '—'}
-          </td>
-
-          {/* Kept as context, never as the order. */}
-          <td
-            className="num px-2 py-1.5 text-right align-middle text-ink-3"
-            title={`Daily RVOL for the whole session, shown as context. The board above is ranked on after-hours participation.${
-              demand?.rvolRank ? ` Day rank #${demand.rvolRank}.` : ''
-            }`}
-          >
-            {formatMultiple(t.rvol)}
-          </td>
-        </>
-      ) : (
-        <>
-          <td
-            className={`num px-2 py-1.5 text-right align-middle font-semibold ${changeTone(
-              t.percentChange,
-            )}`}
-          >
-            {formatSignedPercent(t.percentChange)}
-          </td>
-
-          <td
-            className="num px-2 py-1.5 text-right align-middle font-semibold text-ink"
-            title={
-              t.rvolConfidence === 'LOW'
-                ? `Reduced sample: ${demand?.baselineSessions ?? 0} eligible sessions`
-                : demand?.baselineSessions
-                  ? `${demand.baselineSessions}-session baseline, split-adjusted`
-                  : 'No baseline'
-            }
-          >
-            <span className={t.rvolConfidence === 'LOW' ? 'text-warn' : undefined}>
-              {formatMultiple(t.rvol)}
-            </span>
-            {t.rvolConfidence === 'LOW' ? (
-              <span className="ml-1 text-[9px] font-semibold text-warn uppercase">low</span>
-            ) : null}
-          </td>
-
-          <td
-            className={`num px-2 py-1.5 text-right align-middle ${
-              (t.rvolRankChange ?? 0) > 0
-                ? 'text-pos'
-                : (t.rvolRankChange ?? 0) < 0
-                  ? 'text-neg'
-                  : 'text-ink-3'
-            }`}
-          >
-            {formatRankChange(t.rvolRankChange)}
-          </td>
-
-          <td className="num px-2 py-1.5 text-right align-middle text-ink-2">
-            {formatCount(t.volume)}
-          </td>
-
-          <td className="num px-2 py-1.5 text-right align-middle text-ink-2">
-            {row.displayedFloat !== null ? formatCount(row.displayedFloat) : '—'}
-          </td>
-
-          <td
-            className="num px-2 py-1.5 text-right align-middle text-ink-2"
-            title={
-              row.displayedFloatTurnover === null
-                ? 'Displayed float unknown or invalid — turnover not calculated'
-                : `Cumulative volume ÷ displayed float (${row.displayedFloatSource}). Not effective float turnover.`
-            }
-          >
-            {formatMultiple(row.displayedFloatTurnover)}
-          </td>
-        </>
+      {...rowKeyboardProps(
+        `${row.ticker}, rank ${rank ?? 'unranked'}. ${why.grade} catalyst. ${risk.label}. Open dossier.`,
+        () => onSelect(row.ticker),
       )}
-
-      {/* Nearest levels either side of price, so the board answers "what is
-          above me" without opening the drawer. Width is clamped so a long level
-          list cannot push the structure and halt columns off the screen — the
-          drawer holds the full ladder. */}
-      <td className="max-w-[230px] px-2 py-1.5 align-middle">
-        <CompactLevels map={row.levelMap} />
+      onClick={() => onSelect(row.ticker)}
+      className={`cursor-pointer border-b border-line/70 transition-colors hover:bg-panel-2 focus-visible:bg-panel-2 ${
+        selected ? 'bg-accent/10' : 'bg-panel/40'
+      } ${changed ? 'row-changed' : ''}`}
+    >
+      <td className="px-1 py-1 text-center align-middle">
+        <ChangeMarker changed={changed} />
       </td>
 
-      <td className="px-2 py-1.5 align-middle">
-        <Conclusion row={row} value={conclusions.cycle} width="max-w-[160px]" />
+      <td className="num px-2 py-1 text-right align-middle">
+        <span className="text-[13px] font-semibold text-accent">{rank ?? '—'}</span>
+        {rankChange ? (
+          <span
+            className={`ml-1 text-[10px] ${rankChange > 0 ? 'text-pos' : 'text-neg'}`}
+            title="Rank movement since the previous ranking pass"
+          >
+            {formatRankChange(rankChange)}
+          </span>
+        ) : null}
       </td>
 
-      <td className="px-2 py-1.5 align-middle">
-        <Conclusion row={row} value={conclusions.catalyst} width="max-w-[132px]" />
+      <td className="px-2 py-1 align-middle">
+        <TickerCell
+          ticker={row.ticker}
+          focused={focused}
+          onToggleFocus={onToggleFocus}
+          stale={t.stale}
+          ageSeconds={t.ageSeconds}
+          retention={retention}
+        />
+        {afterHours ? (
+          // One line: a wrapped second line here made every row in the evening
+          // board taller than the same row during the day.
+          <span
+            className="num block truncate text-[10px] whitespace-nowrap text-ink-3"
+            title={`${formatCount(ah?.volume ?? null)} traded since the close · ${formatMultiple(
+              ah?.participation ?? null,
+            )} of a normal full day's volume`}
+          >
+            {formatCount(ah?.volume ?? null)} · {formatMultiple(ah?.participation ?? null)}
+          </span>
+        ) : null}
       </td>
 
-      <td className="px-2 py-1.5 align-middle">
-        <Conclusion row={row} value={conclusions.structure} width="max-w-[128px]" />
+      <td className="px-2 py-1 align-middle">
+        <PriceMoveCell
+          telemetry={t}
+          blueSky={row.blueSky}
+          suppressBlueSky={halted || backside}
+        />
       </td>
 
-      <td className="num px-2 py-1.5 text-right align-middle text-ink-2" title="Level 1 NBBO spread — not depth">
-        {t.spreadPct !== null ? `${t.spreadPct.toFixed(2)}%` : '—'}
+      <td className="px-2 py-1 text-right align-middle">
+        <RvolCell telemetry={t} />
       </td>
 
-      <td className="px-2 py-1.5 align-middle">
-        <HaltBadge state={t.haltState} raw={t.haltRaw} />
+      <td className="px-2 py-1 align-middle">
+        <WhyCell why={why} />
+      </td>
+
+      <td className="px-2 py-1 align-middle">
+        <RiskCell risk={risk} />
+      </td>
+
+      <td className="px-2 py-1 align-middle">
+        <span className="flex flex-col items-start gap-0.5">
+          <StatusBadge
+            label={conclusions.cycle.label}
+            tone={conclusions.cycle.tone as Tone}
+            title={conclusions.cycle.title ?? conclusions.cycle.label}
+            className="max-w-full"
+          />
+          <HaltBadge state={t.haltState} raw={t.haltRaw} />
+        </span>
       </td>
     </tr>
   );
-}
-
-/**
- * One resolved conclusion, plus where it came from.
- *
- * The board used to build these itself from whichever source it found first,
- * so a dimension the analysis left open could read UNKNOWN here and NOT
- * ANALYZED in the drawer for the same ticker at the same moment.
- */
-function Conclusion({
-  row,
-  value,
-  width,
-}: {
-  row: DeskRow;
-  value: DeskConclusion;
-  width: string;
-}) {
-  return (
-    <span className="flex items-center gap-1">
-      <StatusBadge
-        label={value.label}
-        tone={value.tone as Tone}
-        title={value.title ?? value.label}
-        className={width}
-      />
-      {/* No source reached this field, so the label already says what the
-          status mark would — printing both read as a contradiction. */}
-      {value.provenance === 'NONE' ? null : <ProvenanceMark row={row} />}
-    </span>
-  );
-}
-
-/**
- * Source marker.
- *
- * Quiet by default — where intelligence came from matters less than what it
- * says. CONFLICT is the exception and is coloured, because a genuine
- * disagreement between the human review and the automatic layer is itself the
- * finding. It reads the shared status so the board and the drawer cannot
- * describe the same ticker differently.
- */
-function ProvenanceMark({ row }: { row: DeskRow }) {
-  const state = row.intelligenceState;
-  if (state.status === 'NOT_ANALYZED') return null;
-
-  const conflict = state.status === 'CONFLICT';
-  const label = conflict
-    ? 'conflict'
-    : state.status === 'PARTIAL_AUTO'
-      ? 'auto·partial'
-      : state.label.toLowerCase();
-
-  return (
-    <span
-      className={`text-[9px] uppercase tracking-wider ${conflict ? 'text-warn' : 'text-ink-3'}`}
-      title={state.detail}
-    >
-      {label}
-    </span>
-  );
-}
-
-export function HaltBadge({ state, raw }: { state: string; raw: string | null }) {
-  if (state === 'HALTED') return <StatusBadge label="Halted" tone="neg" title={raw ?? 'Halted'} />;
-  if (state === 'RESUMING') return <StatusBadge label="Resuming" tone="warn" title={raw ?? 'Resuming'} />;
-  if (state === 'TRADING') return <StatusBadge label="Trading" tone="pos" title={raw ?? 'Trading'} />;
-  return <span className="text-[10px] text-ink-3">—</span>;
 }

@@ -44,6 +44,22 @@ export function DeskAssessmentStatus({ panel, mounted }: DeskAssessmentStatusPro
         {scheduler.label}
       </span>
 
+      {/*
+       * When the desk next reads the board.
+       *
+       * This was inside `subline`, in a block gated at `xl` — so on the 1,022px
+       * viewport the desk actually runs at, the one scheduling fact a trader
+       * uses was never rendered at all, while `hi-res 6` and `msg 227s` were
+       * always visible. The server has known `assessments.next.scheduledFor`
+       * the whole time.
+       */}
+      {mounted && panel.next ? (
+        <span className="text-[11px] whitespace-nowrap text-ink-2">
+          Next <span className="num font-semibold text-ink">{panel.next.clock}</span>{' '}
+          <span className="text-ink-3">{panel.next.label.toLowerCase()}</span>
+        </span>
+      ) : null}
+
       {mounted ? (
         <div className="hidden min-w-0 text-[11px] xl:block">
           <span className="font-semibold tracking-wide text-ink-2 uppercase">

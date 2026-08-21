@@ -46,7 +46,12 @@ export function DashboardHeader({
 
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-panel/95 backdrop-blur">
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 px-4 py-2.5">
+      {/*
+       * One row, tighter. The header, the summary and the filter bar together
+       * used 199px of a 551px viewport — 36% of the desk permanently occupied
+       * by chrome, leaving 352px for the board itself.
+       */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-1.5">
         <div className="flex items-baseline gap-2.5">
           <h1 className="text-[13px] leading-none font-semibold tracking-[0.14em] text-ink uppercase">
             Momentum Intelligence
@@ -56,7 +61,7 @@ export function DashboardHeader({
           </span>
         </div>
 
-        <div className="flex items-baseline gap-2 border-l border-line pl-5">
+        <div className="flex items-baseline gap-2 border-l border-line pl-4">
           <span className="num text-[15px] leading-none font-semibold text-ink">{clock}</span>
           <span className="text-[10px] font-semibold tracking-wide text-ink-3 uppercase">ET</span>
           <span className="hidden text-[11px] text-ink-3 md:inline">{date}</span>
@@ -66,7 +71,7 @@ export function DashboardHeader({
             cannot say that the session changed underneath them. */}
         <DeskAssessmentStatus panel={assessments} mounted={mounted} />
 
-        <div className="ml-auto flex flex-wrap items-center gap-x-4 gap-y-2">
+        <div className="ml-auto flex flex-wrap items-center gap-x-3 gap-y-1">
           {/* Four independent lights: the market feed, the automatic research
               engine, the assessment scheduler, and the Google Sheet. One
               generic status would hide which of them is actually down — a
@@ -85,7 +90,7 @@ export function DashboardHeader({
             type="button"
             onClick={onRefresh}
             disabled={refreshing}
-            className="rounded-sm border border-line-2 bg-panel-2 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-ink-2 uppercase transition-colors hover:border-accent/50 hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
+            className="min-h-[24px] rounded-sm border border-line-2 bg-panel-2 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-ink-2 uppercase transition-colors hover:border-accent/50 hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
           >
             {refreshing ? 'Syncing…' : 'Refresh'}
           </button>
