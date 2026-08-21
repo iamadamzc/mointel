@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import {
   PriorityBadge,
@@ -13,7 +13,7 @@ import {
   structureTone,
   type Tone,
 } from '@/components/StatusBadge';
-import { HaltBadge } from '@/components/DiscoveryBoard';
+import { HaltBadge } from '@/components/DecisionCells';
 import { AutomaticIntelligence } from '@/components/AutomaticIntelligence';
 import { DeskReadPanel } from '@/components/DeskRead';
 import { FocusToggle } from '@/components/FocusToggle';
@@ -46,13 +46,74 @@ export function TickerDrawer({
   onToggleFocus,
   onClose,
 }: TickerDrawerProps) {
+  const panelRef = useRef<HTMLElement | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const restoreFocusTo = useRef<HTMLElement | null>(null);
+
+  /*
+   * Focus management for a dialog that declares `aria-modal="true"`.
+   *
+   * It declared that and did none of it: focus stayed on <body> when the drawer
+   * opened, one Tab moved into the board *behind* the drawer, and closing it
+   * left focus wherever it had wandered. A screen-reader user was told a modal
+   * had opened and then tabbed straight into the content it was covering.
+   *
+   * Three behaviours, in the order a dialog needs them: move focus in, keep it
+   * in, and give it back to the row that opened the drawer.
+   */
   useEffect(() => {
     if (!row) return;
+
+    restoreFocusTo.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    headingRef.current?.focus();
+
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const panel = panelRef.current;
+      if (!panel) return;
+
+      const focusable = [
+        ...panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])',
+        ),
+      ].filter((element) => element.offsetParent !== null || element === document.activeElement);
+
+      if (focusable.length === 0) {
+        event.preventDefault();
+        headingRef.current?.focus();
+        return;
+      }
+
+      const first = focusable[0]!;
+      const last = focusable[focusable.length - 1]!;
+      const active = document.activeElement;
+
+      if (!panel.contains(active)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+        return;
+      }
+      if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      }
     };
+
     document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      // Back to the row that opened it, so the board keeps its place.
+      restoreFocusTo.current?.focus?.();
+    };
   }, [row, onClose]);
 
   if (!row) return null;
@@ -69,6 +130,7 @@ export function TickerDrawer({
       />
 
       <aside
+        ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label={`${row.ticker} dossier`}
@@ -80,6 +142,7 @@ export function TickerDrawer({
           focused={focused}
           onToggleFocus={onToggleFocus}
           onClose={onClose}
+          headingRef={headingRef}
         />
 
         {/*
@@ -95,7 +158,7 @@ export function TickerDrawer({
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-4 pb-10">
           <DeskReadPanel read={buildDeskRead(row)} />
 
-          <LevelLadder map={row.levelMap} Section={Section} />
+          <LevelLadder map={row.levelMap} blueSky={row.blueSky} Section={Section} />
 
           <AutomaticIntelligence
             intel={row.intelligence}
@@ -191,12 +254,14 @@ function DrawerHeader({
   focused,
   onToggleFocus,
   onClose,
+  headingRef,
 }: {
   row: DeskRow;
   research: StructuralResearch | undefined;
   focused: boolean;
   onToggleFocus: (ticker: string) => void;
   onClose: () => void;
+  headingRef: React.Ref<HTMLHeadingElement>;
 }) {
   const ticker = row.research;
   // The same projection the board used to pick this row's price.
@@ -213,9 +278,14 @@ function DrawerHeader({
               onToggle={onToggleFocus}
               className="text-[18px]"
             />
-            <span className="text-[26px] leading-none font-bold tracking-tight text-ink">
+            {/* The dialog's own heading, and where focus lands when it opens. */}
+            <h2
+              ref={headingRef}
+              tabIndex={-1}
+              className="text-[26px] leading-none font-bold tracking-tight text-ink outline-none"
+            >
               {row.ticker}
-            </span>
+            </h2>
             {ticker ? (
               <>
                 <PriorityBadge
@@ -243,7 +313,10 @@ function DrawerHeader({
               <StatusBadge label={`RVOL #${t.rvolRank}`} tone="accent" />
             ) : null}
           </div>
-          <div className="mt-1 truncate text-[12px] text-ink-2">
+          <div
+            className="mt-1 truncate text-[12px] text-ink-2"
+            title={research?.company || undefined}
+          >
             {research?.company || 'Company name not in RESEARCH'}
             {ticker?.country ? <span className="text-ink-3"> · {ticker.country}</span> : null}
           </div>
