@@ -183,6 +183,41 @@ export async function getDashboardState(
   }
 }
 
+/**
+ * Trims the RESEARCH map to the records the page can actually display.
+ *
+ * The provider loads every RESEARCH row the sheet holds — 128 dossiers — and
+ * the dashboard payload carried all of them on every poll: 376KB every four
+ * seconds to render six rows, which is roughly 340MB an hour of JSON parsed on
+ * the main thread of a machine that is also running charts and Level 2.
+ *
+ * The rows on screen need their own records, and the drawer needs the record
+ * for whatever the trader has open, so `extra` carries the selected and focused
+ * names. Everything else is fetched when it is opened, not before.
+ *
+ * Scoping happens after the server-side cache, so this changes what is sent
+ * over the wire and nothing about how often Google is read.
+ */
+export function scopeResearch(
+  state: DashboardState,
+  extra: readonly string[] = [],
+): DashboardState {
+  const wanted = new Set<string>();
+  for (const ticker of state.tickers) wanted.add(ticker.ticker);
+  for (const symbol of extra) {
+    const upper = symbol.trim().toUpperCase();
+    if (upper) wanted.add(upper);
+  }
+
+  const research: DashboardState['research'] = {};
+  for (const symbol of wanted) {
+    const record = state.research[symbol];
+    if (record) research[symbol] = record;
+  }
+
+  return { ...state, research };
+}
+
 function withMeta(
   payload: ProviderPayload,
   patch: { stale: boolean; cacheAgeMs: number; error: string | null },

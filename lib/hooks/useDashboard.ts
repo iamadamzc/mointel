@@ -28,8 +28,16 @@ function signatureMap(tickers: MomentumTicker[]): Map<string, string> {
   return new Map(tickers.map((ticker) => [ticker.ticker, ticker.changeSignature]));
 }
 
-export function useDashboard(): DashboardFeed {
+/**
+ * @param openTickers Symbols the page has open beyond its own rows — the
+ * selected ticker and anything pinned to Focus. The payload carries dossiers
+ * for the rows plus these, rather than for every RESEARCH record on file.
+ */
+export function useDashboard(openTickers: readonly string[] = []): DashboardFeed {
   const { apiBase } = useDeskMode();
+  // Stable across renders that do not change the set, so the poll's identity
+  // does not churn and restart the interval on every keystroke elsewhere.
+  const openKey = [...new Set(openTickers)].sort().join(',');
   const [data, setData] = useState<DashboardState | null>(null);
   const [initialLoading, setInitialLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -37,6 +45,7 @@ export function useDashboard(): DashboardFeed {
   const [changedTickers, setChangedTickers] = useState<Set<string>>(new Set());
 
   const signaturesRef = useRef<Map<string, string>>(new Map());
+  const etagRef = useRef<string | null>(null);
   const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inflightRef = useRef<AbortController | null>(null);
   const mountedRef = useRef(true);
@@ -49,12 +58,50 @@ export function useDashboard(): DashboardFeed {
     if (options.force) setRefreshing(true);
 
     try {
-      const response = await fetch(`${apiBase}/dashboard${options.force ? '?force=1' : ''}`, {
+      const query = new URLSearchParams();
+      if (options.force) query.set('force', '1');
+      if (openKey) query.set('tickers', openKey);
+      const suffix = query.size > 0 ? `?${query}` : '';
+
+      const response = await fetch(`${apiBase}/dashboard${suffix}`, {
         signal: controller.signal,
         cache: 'no-store',
+        // The desk polls every four seconds and usually nothing has changed.
+        // A 304 is the whole response in that case: no body, no re-parse.
+        headers: etagRef.current ? { 'If-None-Match': etagRef.current } : undefined,
       });
+
+      if (response.status === 304) {
+        /*
+         * The desk state is unchanged. Nothing is re-parsed — but the sheet was
+         * re-read, so the freshness stamp still advances. It travels as headers
+         * precisely because a 304 has no body to carry it, and leaving the old
+         * stamp in place would show a sync age climbing past a sheet that had
+         * just been confirmed current.
+         */
+        if (!mountedRef.current) return;
+        const fetchedAt = response.headers.get('x-desk-fetched-at');
+        const cacheAgeMs = Number(response.headers.get('x-desk-cache-age-ms'));
+        if (fetchedAt) {
+          setData((current) =>
+            current
+              ? {
+                  ...current,
+                  meta: {
+                    ...current.meta,
+                    fetchedAt,
+                    cacheAgeMs: Number.isFinite(cacheAgeMs) ? cacheAgeMs : current.meta.cacheAgeMs,
+                  },
+                }
+              : current,
+          );
+        }
+        setTransportError(null);
+        return;
+      }
       if (!response.ok) throw new Error(`API responded ${response.status}`);
 
+      etagRef.current = response.headers.get('etag');
       const payload = (await response.json()) as DashboardState;
       if (!mountedRef.current) return;
 
@@ -89,7 +136,7 @@ export function useDashboard(): DashboardFeed {
         setRefreshing(false);
       }
     }
-  }, [apiBase]);
+  }, [apiBase, openKey]);
 
   useEffect(() => {
     mountedRef.current = true;

@@ -9,6 +9,16 @@ export default defineConfig({
     environment: 'node',
     include: ['tests/**/*.test.ts'],
     globals: false,
+    /*
+     * The default 5s is a Node-unit-test default, and several suites here are
+     * not Node unit tests: the release-retention and MCP side-effect suites
+     * spawn shells and build real SQLite stores on disk, ten deployments at a
+     * time. They pass in a second when run alone and time out at five when the
+     * whole suite is running beside them — a property of the machine, not of
+     * the assertions. Raising the ceiling makes a red run mean a real failure.
+     */
+    testTimeout: 30_000,
+    hookTimeout: 30_000,
   },
   resolve: {
     alias: {
