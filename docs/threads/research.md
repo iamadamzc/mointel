@@ -68,8 +68,15 @@ manual release.
 tags these correctly. Excluding billing-class failures from the attempt count
 makes a top-up self-healing.
 
-**It has now recurred identically on 2026-08-19 and 2026-08-21.** It was flagged
-both times and deferred both times. Verified still unimplemented 2026-08-23.
+**Done 2026-08-23 in `2433470`** — committed, not yet deployed. Billing failures
+back off and record but never become terminal, so a top-up heals the board on
+its own; backoff is capped at fifteen minutes so an exempt failure cannot
+schedule a name past the close. Hand to Ops for the next deploy.
+
+Worth doing next, and deliberately not built here: **the cooldown is per-ticker
+when the fact is global.** "The account is empty" is one truth, and twenty-one
+tickers each discovering it separately is twenty-one probes for one answer. A
+single global gate would be strictly better.
 
 **2. Interpreter tiering was designed but never exercised.** `Terra` is the
 default full research model. The abstraction was deliberately preserved so `Sol`

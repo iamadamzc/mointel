@@ -52,9 +52,10 @@ what was asked, not current instructions. Several are superseded.
 
 As of the last session, **2026-08-21**:
 
-- Work is on branch **`session-aware-discovery`**, **53 commits ahead of
-  `origin/main`**, pushed, tree clean apart from untracked docs. `main` is the
-  old desk — never build or deploy from it.
+- **`main` is the trunk and the only branch.** The long-lived
+  `session-aware-discovery` branch was fast-forwarded into it on 2026-08-23 and
+  deleted; nothing was lost. If you find a session assuming `main` is stale,
+  that assumption expired.
 - Production is **`32e47c9`**, schema **v21**, on Lightsail `98.85.49.227`
   behind CloudFront `https://dwwep02jje2ag.cloudfront.net/`, Basic Auth with two
   logins.
@@ -66,9 +67,6 @@ As of the last session, **2026-08-21**:
 
 ## Housekeeping
 
-`docs/designaudit.md` is a byte-identical duplicate of
-`docs/Design/designaudit.md`. `docs/Design/` is the canonical location and the
-root-level copy should be deleted — left in place for now pending a decision.
-
-`docs/Design/` is **untracked in git**. The audit report is the authority for
-Phase 2, so it should be committed before that work starts.
+Both settled on 2026-08-23 in `c8f95a3`: `docs/Design/` is committed, and the
+duplicate `docs/designaudit.md` is gone. `docs/Design/` is the canonical home
+for design documents.

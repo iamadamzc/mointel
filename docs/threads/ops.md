@@ -40,17 +40,32 @@ production, not just the fallback.
 
 ## Open items
 
-**1. The Momentum Desk shortcut is a live hazard.** It still launches a full
-*local* desk. Alpaca permits one concurrent SIP connection per account and a
-second worker does not error — it silently kills the live one. Double-clicking
-it out of habit takes production down. Flagged twice across sessions, never
-fixed. It should be repointed at the CloudFront URL or removed.
-Shortcut lives in `C:\Users\adshu\OneDrive\Desktop` (OneDrive-redirected, so it
-also syncs to machines where `A:\mointel` does not exist).
+**1. Two commits are waiting to be deployed.** `63e0773` (launcher, no runtime
+effect on the server) and `2433470` (the billing-class retry exemption).
+Production is still on `32e47c9`. The retry change is the one that matters:
+until it ships, the next empty OpenAI balance needs a manual release again.
 
-**2. `main` is 53 commits behind.** Not urgent, but every session has to be told
-this or it will reason about the wrong tree. Either merge or decide out loud
-that `session-aware-discovery` is the trunk now.
+**2. The release-bootstrap test is flaky.** `tests/desk/releaseBootstrap.test.ts`
+failed once under the full parallel suite on 2026-08-23 — `is live on` absent
+from the output — then passed in isolation and on a clean re-run, both at HEAD
+and with changes applied. Unexplained. A flaky test in the deploy path is worth
+chasing before it has to be trusted during an incident.
+
+## Closed
+
+**~~The Momentum Desk shortcut is a live hazard.~~** Fixed 2026-08-23 in
+`63e0773`. `scripts/start-desk.ps1` now opens production in the browser by
+default and needs an explicit `-Local` to start a desk that takes the SIP
+connection. Fixing the default rather than the `.lnk` fixed both shortcuts on
+the Desktop, including the `- Copy`, and any that OneDrive has synced elsewhere.
+Verified by running it: browser opened, no desk processes started.
+
+**~~`main` is 53 commits behind.~~** Resolved 2026-08-23. `main` was
+fast-forwarded to `c8f95a3` and the `session-aware-discovery` branch was deleted
+locally and on the remote. **There is now one branch, `main`, and it is the
+trunk.** Nothing was lost — every commit is on `main`. Deploy tooling was
+unaffected either way: `push-release.sh` ships a sha via `git archive` and
+references no branch.
 
 ## Before you deploy
 

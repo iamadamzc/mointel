@@ -14,9 +14,9 @@ anything.
 
 The brief that produced it is [`../Design/designaudit.md`](../Design/designaudit.md).
 
-> **Commit `docs/Design/` first.** The folder is untracked. The document this
-> thread is built on is not in version control, and `docs/designaudit.md` is a
-> stray identical copy of the brief.
+Both were committed on 2026-08-23 in `c8f95a3`, and the stray duplicate of the
+brief at `docs/designaudit.md` was removed. `docs/Design/` is the canonical home
+for design documents.
 
 ## Scope
 
@@ -104,5 +104,5 @@ building.
 >
 > You do not deploy; the Ops thread does. Produce commits and hand them over.
 >
-> Start by committing `docs/Design/` (it is untracked), then tell me what you
-> think Phase 2 should tackle first and which §11 answers you need from me.
+> Start by telling me what you think Phase 2 should tackle first and which §11
+> answers you need from me. Do not write code until we have settled that.
