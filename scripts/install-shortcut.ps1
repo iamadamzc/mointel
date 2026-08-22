@@ -1,4 +1,7 @@
 # Creates (or refreshes) the "Momentum Desk" shortcut on the Desktop.
+#
+# The shortcut OPENS PRODUCTION in the browser. It does not start a local desk:
+# production owns the single permitted Alpaca SIP connection. See start-desk.ps1.
 # Run once: powershell -ExecutionPolicy Bypass -File scripts\install-shortcut.ps1
 
 $ErrorActionPreference = 'Stop'
@@ -20,7 +23,7 @@ $link.TargetPath = (Get-Command powershell.exe).Source
 $link.Arguments = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$Launcher`""
 $link.WorkingDirectory = $Root
 $link.IconLocation = "$Icon,0"
-$link.Description = 'Start the Momentum Intelligence trading desk (dashboard + Alpaca SIP worker)'
+$link.Description = 'Open the Momentum Intelligence trading desk (production, on AWS)'
 $link.WindowStyle = 7  # launcher itself stays minimized; the desk window is what shows
 $link.Save()
 
