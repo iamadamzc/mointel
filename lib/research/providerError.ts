@@ -75,3 +75,23 @@ export function describeFailure(failure: ProviderFailure): string {
   const detail = failure.code ?? failure.type;
   return detail ? `HTTP ${failure.status} (${detail})` : `HTTP ${failure.status}`;
 }
+
+/**
+ * Recognises a billing failure from an error string this module produced.
+ *
+ * The retry policy runs from `research_retry_state.last_error`, which is what
+ * survives a worker restart — the `ProviderFailure` itself is long gone by
+ * then. Reading the marker back out of the recorded line keeps one vocabulary
+ * (`BILLING_ERROR_CODES`) in one place, rather than adding a column that says
+ * again what the line already says.
+ *
+ * This reads a string THIS module wrote, in a format it controls, over a fixed
+ * and character-filtered vocabulary. It is not parsing a provider's prose.
+ */
+export function isBillingError(message: string | null | undefined): boolean {
+  if (!message) return false;
+  for (const code of BILLING_ERROR_CODES) {
+    if (message.includes(code)) return true;
+  }
+  return false;
+}

@@ -14,14 +14,36 @@
  * is a different question and is always allowed through — which is why the
  * block clears the moment the fingerprint changes rather than on a timer.
  *
+ * One class of failure is exempt from the ceiling entirely: a refusal to bill.
+ * It is not a fact about the ticker, and no number of attempts makes it one.
+ * See `evaluateRetry`.
+ *
  * Pure policy: no database, no clock of its own.
  */
+
+import { isBillingError } from './providerError';
 
 /** Attempts against one unchanged fingerprint before the name is left FAILED. */
 export const DEFAULT_MAX_ATTEMPTS = 3;
 
 /** First backoff step. Doubles per attempt: 30s, 60s, 120s. */
 export const DEFAULT_BACKOFF_BASE_MS = 30_000;
+
+/**
+ * Ceiling on one backoff step.
+ *
+ * Doubling is only safe while something bounds the count. The attempt ceiling
+ * used to be that bound, so three attempts could never exceed 120s and no cap
+ * was needed. Billing failures are now exempt from the ceiling, which means
+ * `attempts` can climb for as long as an account stays empty — and an
+ * uncapped 30s * 2^(n-1) reaches months within a morning. A name silently
+ * scheduled past the close is worse than one that is honestly blocked.
+ *
+ * Fifteen minutes is chosen against the failure it exists for: a topped-up
+ * balance should heal the board within one coffee, and 21 tickers probing
+ * four times an hour is not a load worth optimising away.
+ */
+export const DEFAULT_MAX_BACKOFF_MS = 15 * 60_000;
 
 export interface RetryState {
   ticker: string;
@@ -44,10 +66,19 @@ export type RetryVerdict =
   /** Out of attempts on unchanged evidence. Terminal until something changes. */
   | { allow: false; blocked: true; reason: string; attempts: number };
 
-/** Exponential backoff for the Nth attempt (1-based). */
-export function backoffMs(attempts: number, baseMs = DEFAULT_BACKOFF_BASE_MS): number {
+/** Exponential backoff for the Nth attempt (1-based), capped. */
+export function backoffMs(
+  attempts: number,
+  baseMs = DEFAULT_BACKOFF_BASE_MS,
+  maxMs = DEFAULT_MAX_BACKOFF_MS,
+): number {
   const step = Math.max(1, attempts);
-  return baseMs * 2 ** (step - 1);
+  /*
+   * 2 ** step overflows to Infinity long before a real outage would get there.
+   * Clamping here rather than at the call site keeps `new Date(now + backoff)`
+   * from throwing RangeError on a date it cannot represent.
+   */
+  return Math.min(baseMs * 2 ** (step - 1), maxMs);
 }
 
 /**
@@ -83,7 +114,22 @@ export function evaluateRetry(options: {
     return { allow: true, blocked: false, reason: 'evidence changed since the last failure' };
   }
 
-  if (state.attempts >= maxAttempts) {
+  /*
+   * An empty account is not a verdict about this ticker.
+   *
+   * The ceiling exists to stop the desk re-asking a question that keeps
+   * failing for its own reasons. A billing failure never asked the question:
+   * the request died at the provider, at zero tokens, and says nothing about
+   * the evidence. Counting it toward a terminal block means a top-up does not
+   * heal the board — someone has to release every name by hand, which is
+   * exactly what happened on 19 and 21 August.
+   *
+   * So billing failures still back off, and still record, but never become
+   * terminal. Money is the one failure a person fixes elsewhere.
+   */
+  const billing = isBillingError(state.lastError);
+
+  if (!billing && state.attempts >= maxAttempts) {
     return {
       allow: false,
       blocked: true,
@@ -101,7 +147,13 @@ export function evaluateRetry(options: {
     };
   }
 
-  return { allow: true, blocked: false, reason: `retry ${state.attempts + 1}` };
+  return {
+    allow: true,
+    blocked: false,
+    reason: billing
+      ? `retry ${state.attempts + 1} after a billing failure`
+      : `retry ${state.attempts + 1}`,
+  };
 }
 
 /**
