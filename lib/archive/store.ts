@@ -25,7 +25,7 @@ import Database from 'better-sqlite3';
 
 export type ArchiveDatabase = Database.Database;
 
-export const ARCHIVE_SCHEMA_VERSION = 2;
+export const ARCHIVE_SCHEMA_VERSION = 3;
 
 export const DEFAULT_ARCHIVE_PATH = path.join(process.cwd(), 'data', 'archive.db');
 
@@ -157,6 +157,23 @@ CREATE TABLE IF NOT EXISTS symbol_desk_day (
   checkpoints_in_flight   INTEGER NOT NULL DEFAULT 0,
   -- UNKNOWN reached after a look actually ran. An honest verdict, not a gap.
   checkpoints_honest_unknown INTEGER NOT NULL DEFAULT 0,
+  -- Checkpoints that ran after their scheduled minute. 19 August is thin for
+  -- reasons status does not record, so cadence is stored rather than assumed.
+  checkpoints_late        INTEGER NOT NULL DEFAULT 0,
+
+  -- WHETHER THE GRADE WAS FRESH. The assessment scheduler makes no model calls,
+  -- so the week the research pipeline was failing still produced a full set of
+  -- checkpoints and intelligence_status still reads AVAILABLE. What stalled is
+  -- the analysis behind the grade, and only the version id shows it: zero means
+  -- the backing analysis was first seen on this date, three means the grade has
+  -- not been revisited in three sessions. Null means no look produced a grade.
+  grade_analysis_version_id INTEGER,
+  grade_age_sessions      INTEGER,
+  -- 1 when the analysis was already in use on the first date on record for this
+  -- symbol, so the age above is a lower bound. A window starting inside the
+  -- outage censors every grade in it and would make a stalled pipeline look
+  -- fresh, so this must be checked before any age is believed.
+  grade_age_censored      INTEGER NOT NULL DEFAULT 0,
 
   reached_board           INTEGER NOT NULL DEFAULT 0,
   best_rank               INTEGER,
@@ -275,6 +292,12 @@ function migrate(db: ArchiveDatabase, fromVersion: number): void {
   };
 
   db.transaction(() => {
+    if (fromVersion < 3) {
+      addColumn('symbol_desk_day', 'checkpoints_late', 'INTEGER NOT NULL DEFAULT 0');
+      addColumn('symbol_desk_day', 'grade_analysis_version_id', 'INTEGER');
+      addColumn('symbol_desk_day', 'grade_age_sessions', 'INTEGER');
+      addColumn('symbol_desk_day', 'grade_age_censored', 'INTEGER NOT NULL DEFAULT 0');
+    }
     if (fromVersion < 2) {
       addColumn('symbol_outcomes', 'split_sessions_ago', 'INTEGER');
       // split_detected was redundant with split_sessions_ago = 0 and could not

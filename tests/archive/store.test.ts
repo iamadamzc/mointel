@@ -46,6 +46,8 @@ function checkpoint(overrides: Partial<CheckpointRow> = {}): CheckpointRow {
     scheduledFor: '2026-08-18T14:00:00.000Z',
     assessmentType: 'RTH_INTERVAL',
     sessionPhase: 'RTH',
+    generatedLate: 0,
+    catchUp: 0,
     assessmentRank: 1,
     liveSessionRank: 1,
     focus: 0,
@@ -56,6 +58,8 @@ function checkpoint(overrides: Partial<CheckpointRow> = {}): CheckpointRow {
     catalyst: 'LEGITIMATE_POSITIVE',
     intelligenceStatus: 'INTELLIGENCE_AVAILABLE',
     intelligenceSource: 'AUTO',
+    analysisVersionId: 7,
+    evidenceFingerprint: 'abc123',
     ...overrides,
   };
 }

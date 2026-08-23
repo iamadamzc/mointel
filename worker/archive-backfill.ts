@@ -46,6 +46,7 @@ import {
   sessionStartUtc,
 } from '../lib/market/session';
 import {
+  ageCatalystGrades,
   chainReferenceCloses,
   coverageByDay,
   readCheckpointRows,
@@ -146,7 +147,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const deskDays = chainReferenceCloses(rollUpDeskDays(rows));
+  const deskDays = ageCatalystGrades(chainReferenceCloses(rollUpDeskDays(rows)));
   const dates = [...new Set(deskDays.map((day) => day.tradingDate))].sort();
   const noBaseline = deskDays.filter((day) => day.referenceClose === null).length;
 
@@ -453,6 +454,7 @@ function printCoverage(reports: ReturnType<typeof coverageByDay>): void {
     '  ' +
       'date'.padEnd(12) +
       'chkpts'.padStart(7) +
+      'late'.padStart(6) +
       'syms'.padStart(6) +
       'graded'.padStart(8) +
       'unk-ok'.padStart(8) +
@@ -466,6 +468,7 @@ function printCoverage(reports: ReturnType<typeof coverageByDay>): void {
       '  ' +
         report.tradingDate.padEnd(12) +
         String(report.assessments).padStart(7) +
+        String(report.lateCheckpoints).padStart(6) +
         String(report.symbols).padStart(6) +
         String(report.graded).padStart(8) +
         String(report.unknownHonest).padStart(8) +
@@ -481,7 +484,38 @@ function printCoverage(reports: ReturnType<typeof coverageByDay>): void {
   console.log(
     '  failed / inflt / nolook = evidence about the PIPELINE, not about the market.',
   );
-  console.log('  usable = (graded + unk-ok) / symbols assessed that day.\n');
+  console.log('  usable = (graded + unk-ok) / symbols assessed that day.');
+
+  /*
+   * The second table is the one that matters for the week the research pipeline
+   * was failing. The assessment scheduler makes no model calls, so an outage
+   * costs no checkpoints and the first table stays green straight through it.
+   * A grade that stops ageing is what the outage looks like from inside an
+   * intact snapshot.
+   */
+  console.log('\n  IS THE GRADE FRESH, OR JUST STILL THERE?');
+  console.log(
+    '  ' +
+      'date'.padEnd(12) +
+      'fresh'.padStart(7) +
+      'carried'.padStart(9) +
+      'censored'.padStart(10) +
+      'median age'.padStart(12),
+  );
+  for (const report of reports) {
+    console.log(
+      '  ' +
+        report.tradingDate.padEnd(12) +
+        String(report.gradesFresh).padStart(7) +
+        String(report.gradesCarried).padStart(9) +
+        String(report.gradesCensored).padStart(10) +
+        (report.medianGradeAge === null ? '-' : report.medianGradeAge.toFixed(1)).padStart(12),
+    );
+  }
+  console.log('\n  fresh = the analysis behind the grade was first seen that day.');
+  console.log('  carried = an older analysis; research did not revisit the name.');
+  console.log('  censored = the analysis predates the window, so the age is a lower bound.');
+  console.log('  A window starting inside the outage censors everything and hides a stall.\n');
 }
 
 main().catch((error) => {

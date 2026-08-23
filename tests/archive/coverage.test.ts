@@ -10,6 +10,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  ageCatalystGrades,
   chainReferenceCloses,
   classifyLook,
   coverageByDay,
@@ -29,6 +30,8 @@ function row(overrides: Partial<CheckpointRow> = {}): CheckpointRow {
     scheduledFor: '2026-08-18T10:25:00.000Z',
     assessmentType: 'PREMARKET_0625',
     sessionPhase: 'PREMARKET',
+    generatedLate: 0,
+    catchUp: 0,
     assessmentRank: 3,
     liveSessionRank: 3,
     focus: 0,
@@ -39,6 +42,8 @@ function row(overrides: Partial<CheckpointRow> = {}): CheckpointRow {
     catalyst: null,
     intelligenceStatus: 'NOT_ANALYZED',
     intelligenceSource: 'NONE',
+    analysisVersionId: 7,
+    evidenceFingerprint: 'abc123',
     ...overrides,
   };
 }
@@ -280,5 +285,138 @@ describe('coverageByDay', () => {
     expect(report.assessments).toBe(2);
     expect(report.symbols).toBe(2);
     expect(report.checkpointRows).toBe(3);
+  });
+});
+
+describe('ageCatalystGrades', () => {
+  /*
+   * The measure that separates the two halves of Q1's premise. The assessment
+   * scheduler makes no model calls, so the week the research pipeline was
+   * failing still produced a full set of checkpoints and intelligence_status
+   * still reads AVAILABLE throughout. Only the analysis behind the grade
+   * stalled, and only the version id shows it.
+   */
+  function graded(date: string, version: number, at: string): CheckpointRow {
+    return row({
+      tradingDate: date,
+      scheduledFor: at,
+      catalyst: 'LEGITIMATE_POSITIVE',
+      intelligenceStatus: 'INTELLIGENCE_AVAILABLE',
+      analysisVersionId: version,
+    });
+  }
+
+  it('counts sessions since the backing analysis was first seen', () => {
+    const days = ageCatalystGrades(
+      rollUpDeskDays([
+        graded('2026-08-18', 40, '2026-08-18T14:00:00.000Z'),
+        graded('2026-08-19', 51, '2026-08-19T14:00:00.000Z'),
+        graded('2026-08-20', 51, '2026-08-20T14:00:00.000Z'),
+        graded('2026-08-21', 51, '2026-08-21T14:00:00.000Z'),
+      ]),
+    );
+
+    // Refreshed on the 19th, then never revisited: the status column reads
+    // AVAILABLE on all three days and only this tells them apart.
+    expect(days.map((day) => day.gradeAgeSessions)).toEqual([0, 0, 1, 2]);
+    expect(days.map((day) => day.gradeAgeCensored)).toEqual([1, 0, 0, 0]);
+  });
+
+  it('censors every day of a run whose analysis predates the window', () => {
+    /*
+     * The hazard in one test. An extract that begins inside the outage sees a
+     * version that was already in use on its first date, so nothing in the run
+     * has a knowable age — the first day would otherwise read as freshly graded
+     * and the rest as barely aged, which is precisely how a stalled pipeline
+     * disguises itself. Every day here is a lower bound and says so.
+     */
+    const days = ageCatalystGrades(
+      rollUpDeskDays([
+        graded('2026-08-19', 51, '2026-08-19T14:00:00.000Z'),
+        graded('2026-08-20', 51, '2026-08-20T14:00:00.000Z'),
+      ]),
+    );
+
+    expect(days.map((day) => day.gradeAgeSessions)).toEqual([0, 1]);
+    expect(days.map((day) => day.gradeAgeCensored)).toEqual([1, 1]);
+  });
+
+  it('counts sessions present for the symbol, not calendar days', () => {
+    // A weekend must not age a grade, and a day the name was off the board is
+    // not a session it can be credited with.
+    const days = ageCatalystGrades(
+      rollUpDeskDays([
+        graded('2026-08-18', 40, '2026-08-18T14:00:00.000Z'),
+        graded('2026-08-19', 40, '2026-08-19T14:00:00.000Z'),
+        graded('2026-08-24', 40, '2026-08-24T14:00:00.000Z'),
+      ]),
+    );
+
+    expect(days.map((day) => day.gradeAgeSessions)).toEqual([0, 1, 2]);
+  });
+
+  it('leaves the age null when no look produced a grade', () => {
+    const [day] = ageCatalystGrades(
+      rollUpDeskDays([row({ intelligenceStatus: 'NOT_ANALYZED', analysisVersionId: null })]),
+    );
+
+    expect(day.gradeAnalysisVersionId).toBeNull();
+    expect(day.gradeAgeSessions).toBeNull();
+    expect(day.gradeAgeCensored).toBe(0);
+  });
+
+  it('ages each symbol against its own history', () => {
+    const days = ageCatalystGrades(
+      rollUpDeskDays([
+        { ...graded('2026-08-18', 40, '2026-08-18T14:00:00.000Z'), ticker: 'AAA' },
+        { ...graded('2026-08-19', 40, '2026-08-19T14:00:00.000Z'), ticker: 'AAA' },
+        { ...graded('2026-08-19', 99, '2026-08-19T14:00:00.000Z'), ticker: 'BBB' },
+      ]),
+    );
+
+    const aaa = days.filter((day) => day.symbol === 'AAA');
+    expect(aaa.map((day) => day.gradeAgeSessions)).toEqual([0, 1]);
+    expect(days.find((day) => day.symbol === 'BBB')?.gradeAgeSessions).toBe(0);
+  });
+});
+
+describe('coverageByDay cadence and freshness', () => {
+  it('counts a late checkpoint once, not once per ticker on the board', () => {
+    const rows = [
+      row({ assessmentId: 1, ticker: 'AAA', generatedLate: 1 }),
+      row({ assessmentId: 1, ticker: 'BBB', generatedLate: 1 }),
+      row({ assessmentId: 2, ticker: 'AAA', scheduledFor: '2026-08-18T14:00:00.000Z' }),
+    ];
+    const [report] = coverageByDay(ageCatalystGrades(rollUpDeskDays(rows)), rows);
+
+    // A 25-name board would otherwise report 25 late checkpoints for one.
+    expect(report.lateCheckpoints).toBe(1);
+    expect(report.assessments).toBe(2);
+  });
+
+  it('excludes censored ages from the median rather than mixing bounds in', () => {
+    const rows = [
+      row({
+        ticker: 'OLD',
+        tradingDate: '2026-08-19',
+        catalyst: 'STRONG',
+        intelligenceStatus: 'INTELLIGENCE_AVAILABLE',
+        analysisVersionId: 10,
+      }),
+      row({
+        ticker: 'NEW',
+        tradingDate: '2026-08-19',
+        catalyst: 'STRONG',
+        intelligenceStatus: 'INTELLIGENCE_AVAILABLE',
+        analysisVersionId: 11,
+      }),
+    ];
+    const [report] = coverageByDay(ageCatalystGrades(rollUpDeskDays(rows)), rows);
+
+    // Both are first-seen-in-window, so both are lower bounds and there is
+    // nothing honest to take a median of.
+    expect(report.gradesCensored).toBe(2);
+    expect(report.gradesFresh).toBe(0);
+    expect(report.medianGradeAge).toBeNull();
   });
 });

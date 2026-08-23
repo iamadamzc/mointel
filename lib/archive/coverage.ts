@@ -14,6 +14,15 @@
  * are already distinguishable per ticker per checkpoint. Nothing new has to be
  * captured to hold coverage constant — it only has to be read.
  *
+ * What that leaves open, and what the second half of this module measures: the
+ * assessment scheduler makes ZERO model calls, so an exhausted research budget
+ * never stopped a checkpoint from being written. The rows for the failing week
+ * exist and look normal. Whether the catalyst grade INSIDE them was refreshed
+ * that day or carried from an older analysis is a different question, and it is
+ * Q1's independent variable. `analysis_version_id` answers it: a grade whose
+ * backing version has not changed in three sessions is a grade research did not
+ * revisit, whatever its status column says.
+ *
  * This module reads `market.db` and never writes to it.
  */
 
@@ -113,6 +122,10 @@ export interface CheckpointRow {
   scheduledFor: string;
   assessmentType: string;
   sessionPhase: string;
+  /** 1 when the checkpoint ran after its scheduled minute. */
+  generatedLate: number;
+  /** 1 when it ran as a catch-up rather than at its scheduled minute. */
+  catchUp: number;
   assessmentRank: number | null;
   liveSessionRank: number | null;
   focus: number;
@@ -123,15 +136,48 @@ export interface CheckpointRow {
   catalyst: string | null;
   intelligenceStatus: string | null;
   intelligenceSource: string | null;
+  /** The analysis backing this row's grade. Null when no analysis existed. */
+  analysisVersionId: number | null;
+  evidenceFingerprint: string | null;
 }
 
-const CHECKPOINT_SQL = `
+/**
+ * Columns this module wants that a store may predate.
+ *
+ * The local development store is schema v15 and production is v21, so a query
+ * naming every current column breaks against the one it was not written for.
+ * That is not hypothetical: `catch_up` does not exist locally at all. Each of
+ * these falls back to a constant, which keeps the same code working against an
+ * extract from either.
+ */
+const OPTIONAL_COLUMNS: Record<string, string> = {
+  'a.catch_up': '0',
+  'a.generated_late': '0',
+  't.analysis_version_id': 'NULL',
+  't.evidence_fingerprint': 'NULL',
+};
+
+function selectable(db: Database.Database, table: string, qualified: string): string {
+  const column = qualified.split('.')[1];
+  const present = (
+    db.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[]
+  ).some((row) => row.name === column);
+  return present ? qualified : OPTIONAL_COLUMNS[qualified];
+}
+
+function checkpointSql(db: Database.Database): string {
+  const a = (column: string) => selectable(db, 'desk_assessments', column);
+  const t = (column: string) => selectable(db, 'desk_assessment_tickers', column);
+
+  return `
   SELECT a.id                  AS assessmentId,
          a.trading_date        AS tradingDate,
          t.ticker              AS ticker,
          a.scheduled_for       AS scheduledFor,
          a.assessment_type     AS assessmentType,
          a.session_phase       AS sessionPhase,
+         ${a('a.generated_late')}      AS generatedLate,
+         ${a('a.catch_up')}            AS catchUp,
          t.assessment_rank     AS assessmentRank,
          t.live_session_rank   AS liveSessionRank,
          t.focus               AS focus,
@@ -141,11 +187,14 @@ const CHECKPOINT_SQL = `
          t.reference_basis     AS referenceBasis,
          t.catalyst            AS catalyst,
          t.intelligence_status AS intelligenceStatus,
-         t.intelligence_source AS intelligenceSource
+         t.intelligence_source AS intelligenceSource,
+         ${t('t.analysis_version_id')} AS analysisVersionId,
+         ${t('t.evidence_fingerprint')} AS evidenceFingerprint
     FROM desk_assessment_tickers t
     JOIN desk_assessments a ON a.id = t.assessment_id
    WHERE a.status = 'COMPLETE'
 `;
+}
 
 /**
  * Every completed checkpoint row, oldest first.
@@ -170,7 +219,7 @@ export function readCheckpointRows(
   }
 
   const sql =
-    CHECKPOINT_SQL +
+    checkpointSql(db) +
     (clauses.length > 0 ? ` AND ${clauses.join(' AND ')}` : '') +
     ' ORDER BY a.trading_date, a.scheduled_for, a.id, t.ticker';
 
@@ -195,6 +244,31 @@ export interface SymbolDeskDay {
   checkpointsFailed: number;
   checkpointsInFlight: number;
   checkpointsHonestUnknown: number;
+  /** Checkpoints that ran after their scheduled minute. */
+  checkpointsLate: number;
+
+  /**
+   * The analysis backing `catalystLast`. Null when no look produced a grade.
+   */
+  gradeAnalysisVersionId: number | null;
+  /**
+   * Sessions since that analysis was FIRST seen for this symbol. Zero means it
+   * was produced or first served on this date; three means the grade has not
+   * been revisited in three sessions, whatever the status column says.
+   *
+   * This is the measure that separates the two halves of Q1's premise. The
+   * assessment scheduler makes no model calls, so the failing week produced a
+   * full set of checkpoints; only the research behind them stalled. A grade
+   * that stops ageing is what a stalled pipeline looks like from inside an
+   * intact snapshot.
+   */
+  gradeAgeSessions: number | null;
+  /**
+   * 1 when the backing analysis was already in use on the FIRST date available
+   * for this symbol, so its age is a lower bound rather than a measurement.
+   * A window that starts inside the outage censors every grade in it.
+   */
+  gradeAgeCensored: number;
   reachedBoard: number;
   bestRank: number | null;
   firstBoardEntryAt: string | null;
@@ -239,7 +313,7 @@ export function rollUpDeskDays(rows: readonly CheckpointRow[]): SymbolDeskDay[] 
   const bases = new Map<string, Set<string>>();
 
   for (const row of rows) {
-    const key = `${row.tradingDate} ${row.ticker}`;
+    const key = `${row.tradingDate} ${row.ticker}`;
     let day = byKey.get(key);
     if (!day) {
       day = {
@@ -259,6 +333,10 @@ export function rollUpDeskDays(rows: readonly CheckpointRow[]): SymbolDeskDay[] 
         checkpointsFailed: 0,
         checkpointsInFlight: 0,
         checkpointsHonestUnknown: 0,
+        checkpointsLate: 0,
+        gradeAnalysisVersionId: null,
+        gradeAgeSessions: null,
+        gradeAgeCensored: 0,
         reachedBoard: 0,
         bestRank: null,
         firstBoardEntryAt: null,
@@ -288,6 +366,7 @@ export function rollUpDeskDays(rows: readonly CheckpointRow[]): SymbolDeskDay[] 
     else day.checkpointsNotLooked += 1;
 
     if (look === 'LOOKED' && row.catalyst === 'UNKNOWN') day.checkpointsHonestUnknown += 1;
+    if (row.generatedLate) day.checkpointsLate += 1;
 
     // A grade only counts as the desk's read when a look actually produced it.
     if (look === 'LOOKED' && row.catalyst !== null) {
@@ -297,6 +376,7 @@ export function rollUpDeskDays(rows: readonly CheckpointRow[]): SymbolDeskDay[] 
       }
       day.catalystLast = row.catalyst;
       day.catalystLastAt = row.scheduledFor;
+      day.gradeAnalysisVersionId = row.analysisVersionId;
       if (strengthIndex(row.catalyst) < strengthIndex(day.catalystBest)) {
         day.catalystBest = row.catalyst;
       }
@@ -347,6 +427,57 @@ export function rollUpDeskDays(rows: readonly CheckpointRow[]): SymbolDeskDay[] 
   return [...byKey.values()].sort(
     (a, b) => a.tradingDate.localeCompare(b.tradingDate) || a.symbol.localeCompare(b.symbol),
   );
+}
+
+/**
+ * Ages each symbol-day's catalyst grade against the analysis behind it.
+ *
+ * Q1's independent variable is the catalyst grade, and on 19-21 August those
+ * grades were written while the research pipeline was failing. The rows exist —
+ * the assessment scheduler makes no model calls, so nothing stopped it writing
+ * them — but a grade served from a three-session-old analysis is not the same
+ * evidence as one produced that morning, and `intelligence_status` cannot tell
+ * the two apart. `analysis_version_id` can.
+ *
+ * Age is counted in sessions PRESENT IN THE DATA for that symbol, not calendar
+ * days, so a weekend does not inflate it and a symbol absent from the board for
+ * a day is not credited with a session it was never assessed in.
+ *
+ * `gradeAgeCensored` is the honest part. If the backing analysis was already in
+ * use on the first date available for a symbol, its real age is unknown and the
+ * number is a lower bound. An extract that begins inside the outage censors
+ * every grade in it, which would make a stalled pipeline look fresh.
+ */
+export function ageCatalystGrades(days: readonly SymbolDeskDay[]): SymbolDeskDay[] {
+  const bySymbol = new Map<string, SymbolDeskDay[]>();
+  for (const day of days) {
+    const list = bySymbol.get(day.symbol) ?? [];
+    list.push(day);
+    bySymbol.set(day.symbol, list);
+  }
+
+  for (const list of bySymbol.values()) {
+    list.sort((a, b) => a.tradingDate.localeCompare(b.tradingDate));
+    // The index of the first session each analysis version was seen in.
+    const firstSeen = new Map<number, number>();
+
+    list.forEach((day, index) => {
+      const version = day.gradeAnalysisVersionId;
+      if (version === null) {
+        day.gradeAgeSessions = null;
+        day.gradeAgeCensored = 0;
+        return;
+      }
+      if (!firstSeen.has(version)) firstSeen.set(version, index);
+      const origin = firstSeen.get(version) as number;
+      day.gradeAgeSessions = index - origin;
+      // Already in use in the earliest session on record for this symbol, so
+      // how much older it is cannot be known from this window.
+      day.gradeAgeCensored = origin === 0 ? 1 : 0;
+    });
+  }
+
+  return [...days];
 }
 
 /**
@@ -411,6 +542,22 @@ export interface DayCoverageReport {
   /** Symbols whose grade is admissible as evidence, over symbols assessed. */
   admissibleRate: number;
   gradeCounts: Record<string, number>;
+  /**
+   * Distinct checkpoints that ran after their scheduled minute — counted per
+   * assessment, not per ticker row, or a 25-name board multiplies it by 25.
+   */
+  lateCheckpoints: number;
+  /** Graded symbols whose backing analysis was first seen on this date. */
+  gradesFresh: number;
+  /** Graded symbols served from an analysis at least one session old. */
+  gradesCarried: number;
+  /**
+   * Graded symbols whose age is a lower bound because the analysis predates
+   * the window. Report it; a censored day cannot be compared with a clean one.
+   */
+  gradesCensored: number;
+  /** Median sessions since the backing analysis, over uncensored grades. */
+  medianGradeAge: number | null;
 }
 
 export function coverageByDay(
@@ -418,6 +565,7 @@ export function coverageByDay(
   rows: readonly CheckpointRow[],
 ): DayCoverageReport[] {
   const assessmentsByDate = new Map<string, Set<number>>();
+  const lateByDate = new Map<string, Set<number>>();
   const rowsByDate = new Map<string, number>();
   for (const row of rows) {
     let set = assessmentsByDate.get(row.tradingDate);
@@ -426,6 +574,16 @@ export function coverageByDay(
       assessmentsByDate.set(row.tradingDate, set);
     }
     set.add(row.assessmentId);
+
+    if (row.generatedLate) {
+      let late = lateByDate.get(row.tradingDate);
+      if (!late) {
+        late = new Set();
+        lateByDate.set(row.tradingDate, late);
+      }
+      late.add(row.assessmentId);
+    }
+
     rowsByDate.set(row.tradingDate, (rowsByDate.get(row.tradingDate) ?? 0) + 1);
   }
 
@@ -445,6 +603,11 @@ export function coverageByDay(
         noLook: 0,
         admissibleRate: 0,
         gradeCounts: {},
+        lateCheckpoints: lateByDate.get(day.tradingDate)?.size ?? 0,
+        gradesFresh: 0,
+        gradesCarried: 0,
+        gradesCensored: 0,
+        medianGradeAge: null,
       };
       byDate.set(day.tradingDate, report);
     }
@@ -458,12 +621,36 @@ export function coverageByDay(
 
     const grade = day.catalystBest ?? 'NO_GRADE';
     report.gradeCounts[grade] = (report.gradeCounts[grade] ?? 0) + 1;
+
+    if (day.gradeAgeSessions !== null) {
+      if (day.gradeAgeCensored) report.gradesCensored += 1;
+      else if (day.gradeAgeSessions === 0) report.gradesFresh += 1;
+      else report.gradesCarried += 1;
+    }
+  }
+
+  // Median over uncensored ages only: a censored age is a lower bound, and
+  // mixing bounds with measurements produces a number that means neither.
+  const uncensoredAges = new Map<string, number[]>();
+  for (const day of deskDays) {
+    if (day.gradeAgeSessions === null || day.gradeAgeCensored) continue;
+    const list = uncensoredAges.get(day.tradingDate) ?? [];
+    list.push(day.gradeAgeSessions);
+    uncensoredAges.set(day.tradingDate, list);
   }
 
   for (const report of byDate.values()) {
     report.admissibleRate =
       report.symbols === 0 ? 0 : (report.graded + report.unknownHonest) / report.symbols;
+    report.medianGradeAge = median(uncensoredAges.get(report.tradingDate) ?? []);
   }
 
   return [...byDate.values()].sort((a, b) => a.tradingDate.localeCompare(b.tradingDate));
+}
+
+function median(values: readonly number[]): number | null {
+  if (values.length === 0) return null;
+  const sorted = [...values].sort((a, b) => a - b);
+  const middle = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 1 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
 }

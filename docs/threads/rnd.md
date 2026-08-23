@@ -136,6 +136,16 @@ coverage and research coverage are independent. *What the desk looked at* is
 intact for the whole window; only *what it managed to learn* was degraded.
 That is the distinction Q1 turns on, and it is now known rather than assumed.
 
+**What that lets Q1 claim, stated so it is not overread.** Any question about
+the *characteristics of the names that ran* — board, rank, RVOL, price, what
+else was competing — is answerable across the full period at normal quality;
+none of it depended on research. The catalyst grade is the part still in
+question, and the open issue is no longer "is it missing" but "was the analysis
+behind it produced during the window". `intelligence_status` reads `AVAILABLE`
+straight through the outage, because a grade served from an existing analysis
+genuinely is available. **The caveat was replaced by a measurement, not
+removed** — see the findings note.
+
 **Two things Ops handed over, both unexamined here:**
 
 1. **19 August is thin, and not for a reason status records.** The full
@@ -150,6 +160,18 @@ That is the distinction Q1 turns on, and it is now known rather than assumed.
    independent variable. Ops did not query it: it is this thread's call on its
    own extract. Worth settling before any outcome is attributed to a catalyst
    grade from that window.
+
+   **Instrumented 2026-08-23; the answer needs the extract.** `analysis_version_id`
+   is already on every ticker row and already in the two-table extract, so
+   `ageCatalystGrades` can say for each symbol-day how many sessions old the
+   analysis behind its grade is. Zero means produced that day; three means
+   research has not revisited the name in three sessions while
+   `intelligence_status` still reads `AVAILABLE`. **Consequence for how the
+   extract is cut: it must NOT start at 19 August.** A window beginning inside
+   the outage censors every grade in it — the first day reads as freshly graded
+   and the rest as barely aged, which is how a stalled pipeline disguises
+   itself. Take the full five dates on record, and further back if production
+   holds more. Costs nothing; the payload is a few MB either way.
 
 **Still waiting on Ops: the extract itself, one `npm run archive:export` from
 the production store.** It

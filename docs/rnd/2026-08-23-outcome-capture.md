@@ -18,6 +18,7 @@ says about two trading dates, which is not enough dates to conclude anything.
 | Research coverage and the desk-day rollup | `lib/archive/coverage.ts` |
 | Upserts and run provenance | `lib/archive/repo.ts` |
 | Split basis and the lookback | `lib/archive/splits.ts` |
+| Grade freshness — `ageCatalystGrades` | `lib/archive/coverage.ts` |
 | The assessment extract Ops runs on production | `lib/archive/export.ts` |
 | The backfill | `worker/archive-backfill.ts` |
 | The extract CLI | `worker/archive-export.ts` |
@@ -184,12 +185,17 @@ Each symbol-day gets one verdict:
 The first two are evidence about the market. The last three are evidence about
 the pipeline, and an analysis that pools them is measuring its own outage.
 
+**This is necessary and, as of the production count, no longer sufficient.**
+A grade served from a stale analysis reads `GRADED` and is admissible by the
+table above while being worth nothing on the date it is attached to. See *What
+`model_calls = 0` changes* below, and the freshness measure that answers it.
+
 ### What the two available dates show
 
 ```
-  date         chkpts  syms  graded  unk-ok  failed  inflt  nolook   usable
-  2026-08-17        2    37      18       8       0      0      11      70%
-  2026-08-18       12    63      36       4      10      0      13      63%
+  date         chkpts  late  syms  graded  unk-ok  failed  inflt  nolook   usable
+  2026-08-17        2     2    37      18       8       0      0      11      70%
+  2026-08-18       12     4    63      36       4      10      0      13      63%
 ```
 
 **Coverage is not missing at random, and that matters more than the rate.**
@@ -204,6 +210,93 @@ pipeline's misses are concentrated entirely in the names that went nowhere. For
 Q1 that is a favourable bias — the catalyst question is about movers, and the
 movers are the population research actually reaches — but it also means the
 `NO_LOOK` bucket must never be treated as a random sample of anything.
+
+### What `model_calls = 0` changes about what Q1 can claim
+
+The single most useful fact to come out of the count, and it is structural
+rather than statistical. **The assessment scheduler makes no model calls** —
+`model_calls` is 0 on all 75 rows — so an exhausted OpenAI balance could never
+have stopped a checkpoint being written. Assessment coverage and research
+coverage are independent systems that happened to be discussed as one.
+
+This charter and the archive spec both said reduced catalyst *detection* is
+indistinguishable from absent catalysts, and treated that as the thing that
+could sink the analysis. It is now a **measurable distinction**, and Q1 is in a
+better position than either document assumed. Precisely:
+
+**What Q1 can now claim.** *What the desk looked at* is intact for the whole
+window. The board, the ranks, RVOL, the prices, which names were competing for
+attention — none of it depended on research, and none of it is degraded on
+19-21 August. So any question of the form *what were the characteristics of the
+names that ran* is answerable across the full period, at the same quality as a
+normal week.
+
+**What it still cannot claim, and this is the part that moved rather than
+vanished.** *What the desk learned* was degraded, and the catalyst grade is Q1's
+independent variable. The distinction is no longer "is the grade missing" —
+`intelligence_status` already answered that, and it reads `AVAILABLE` straight
+through the outage, because a grade served from an existing analysis is
+genuinely available. The question is whether the analysis behind it was produced
+during the window or predates it. A three-session-old grade attached to a name
+that ran on 21 August is not evidence about 21 August.
+
+**So the caveat has been replaced by a measurement, not removed.** Coverage as
+originally defined — did a look happen — is necessary and no longer sufficient.
+Freshness is the other half.
+
+### Answering the second handover: were the grades on 19-21 August any good?
+
+Ops handed this over rather than querying it, correctly: it is Q1's independent
+variable and it is this thread's call. `ageCatalystGrades` in
+`lib/archive/coverage.ts` settles it, and it needs no extra tables — the
+signal is `analysis_version_id`, already on every ticker row and already in the
+two-table extract.
+
+`grade_age_sessions` counts sessions between a trading date and the first date
+that symbol's backing analysis was seen. **Zero** means the analysis was
+produced or first served that day. **Three** means research has not revisited
+the name in three sessions, whatever the status column says. Null means no look
+produced a grade at all.
+
+The local store shows the mechanism working on real data. MYSZ carried analysis
+version 46 from the 08-17 recap through every one of 08-18's checkpoints — one
+grade, unchanged, `INTELLIGENCE_AVAILABLE` throughout. SGLY moved 47 → 52 → 67
+across the same period. Identical status columns, completely different evidence.
+
+`grade_age_censored` is the honest half and it matters more than the age.
+If a symbol's backing analysis was already in use on the **first** date
+available, its real age is unknown and the number is only a lower bound. On the
+two local dates, 58 of the 66 graded symbol-days are censored — which is the
+correct answer for a two-day window and a warning about how the production
+extract must be cut:
+
+> **Do not extract 19-21 August alone.** A window that begins inside the outage
+> censors every grade in it: the first day reads as freshly graded and the rest
+> as barely aged, which is exactly how a stalled pipeline disguises itself. The
+> extract has to start well before 19 August — the full five dates on record at
+> minimum, and further back if production holds more.
+
+That constraint costs nothing. The extract is bounded by `--from` / `--to` and
+the payload is a few MB either way.
+
+### The cadence, which cannot be assumed
+
+The other handover. The schedule is 19 checkpoints a day; 08-18, 08-20 and
+08-21 each have all 19, and **08-19 has 16, with three absent rather than marked
+missed**, plus 2 of the 16 flagged `generated_late`. Nothing here averages over
+checkpoints or assumes an even cadence, and the coverage report now prints
+observed checkpoints and late checkpoints per day so an uneven one is visible
+rather than discovered later. Late checkpoints are counted per assessment, not
+per ticker row — a 25-name board would otherwise report 25.
+
+### A schema difference that would have broken the first production run
+
+Found while building the above, and worth recording because it is invisible
+until it fails: **the local development store is schema v15 and production is
+v21.** `desk_assessments.catch_up` does not exist locally at all. A query naming
+every current column runs here and breaks there, or the reverse. `coverage.ts`
+now probes `PRAGMA table_info` and substitutes a constant for any optional
+column a store predates, so the same code works against either.
 
 ---
 
@@ -372,31 +465,21 @@ byte-identical output. The remaining risk is that it is a point-in-time copy, so
 it wants re-running as sessions accumulate — which is what `--from` / `--to`
 are for.
 
-### The go/no-go comes first, and none of the above may be needed
+### The go/no-go came back go
 
-**Did the desk record checkpoints on 19, 20 and 21 August at all?** Those are
-the days the research pipeline was failing, and the rows may simply not exist.
-Ops is answering it now by hand-rolling the same two-table read in `sqlite3`,
-which needs nothing on the box — the fourth route in the table, and the reason
-the deploy question can wait.
+Ops answered it read-only on production, before anything was copied. Recorded in
+[ops.md](../threads/ops.md) Open item 5 and [rnd.md](../threads/rnd.md) at
+`c705f0b`; the numbers below are from those, not from a chat.
 
-**If that comes back zero, the extract question is moot and Q1 needs rethinking
-rather than more instrumentation.** Worth being plain about what that would
-mean, because the instinct will be to build something:
+| Date | Assessments | Ticker rows |
+| --- | --- | --- |
+| 2026-08-19 | 16 | 400 |
+| 2026-08-20 | 19 | 450 |
+| 2026-08-21 | 19 | 475 |
 
-- Q1 as posed cannot be answered for the week it is about. Coverage cannot be
-  held constant over dates with no coverage record, and no amount of capture
-  built today reaches backwards.
-- It is not a null result either. "The desk was down" says nothing about whether
-  movers carry catalysts; it is an absence of evidence, and recording it as a
-  verdict would be the exact failure the *report the null* rule is meant to
-  prevent.
-- The live options would be to re-scope Q1 onto the dates the desk did record
-  and accept a smaller, later window; or to reframe it as a forward question and
-  answer it from here on, which makes the capture already built the whole
-  contribution and pushes the answer out by weeks.
-- Either way the register should reflect it. A Q1 that cannot be worked is debt,
-  and the charter's rule is that a question is active or closed.
+75 assessments over five dates, 25 tickers each, `COMPLETE` 74 and
+`MISSED_SUPERSEDED` 1. The contingency written here — that a zero would make Q1
+unanswerable rather than instrumentable — did not arise.
 
 **Ordering once the dates land.** The split test goes first, ahead of Q5. It
 serves Q1, which is active and capped at two; Q5 would need opening, and on two
