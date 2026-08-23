@@ -335,6 +335,96 @@ the output?** That needs a run, not a read. Until it is answered, Design has
 deferred §9 item 15 (single conflict signal) rather than reducing it — promoting
 a conflict signal that may be an artefact would be worse than the buried one.
 
+**8. The structure classification was shaped by the prompt, not by the market.**
+*Found 2026-08-23 after the trader said every float reads as a dirty float.*
+
+His observation was right and the cause was not what any of us guessed. Our own
+classifier calls `DIRTY_FLOAT` on **17%** of dossiers and the Sheet independently
+calls it on **19%** — those agree, and neither is over-firing. What the board
+shows is the *Sheet's* text: every string in the RISK column of the screenshot he
+sent matches `TODAY!R` verbatim, and three of those rows (PLAG, CYPH, GAUZ) have
+no automatic dossier at all.
+
+The real defect is on our side and it is the opposite shape. Across 94 dossiers
+`CLEAN` was chosen **zero** times, and `CLEAN_REQUIRES_RECONCILIATION` never
+fired once — so CLEAN was not proposed and downgraded, **it was never proposed**.
+The prompt states only the negative rule and never says what would justify CLEAN,
+while the guardrail holds a precise, satisfiable test the model is never shown.
+`CAUTION`, the only verdict guarded by nothing, took 64%.
+
+Shipped in `1df1d75`: a positive CLEAN criterion and a CAUTION definition as
+`SYSTEM_PROMPT_B`, both switches defaulting off; `CAUTION_REQUIRES_IDENTIFIED_SUPPLY`;
+and `supplyBound`, a deterministic floor under the supply-to-float ratio. **The
+CAUTION rule moves 0 of 60 real CAUTION dossiers** — it is a backstop, not a
+reclassifier, so the 64% will only move if the prompt moves it. That is what the
+three-arm run in item 0 decides. **Nothing here has decided that B is better.**
+
+The binding acceptance criterion is the trader's actual risk: **the `DIRTY_FLOAT`
+rate must not fall.** If telling the model what CLEAN means stops it calling real
+dirty floats dirty, B is wrong and gets reverted.
+
+**9. The desk has no float of its own, and that is a blocker on retiring the
+Sheet.** `resolveDisplayedFloat` (`lib/dashboard/merge.ts:143`) has exactly two
+branches, `RESEARCH` and `TODAY`. Both are spreadsheet tabs. Every float number
+on the board is the ChatGPT task's, sourced from stockanalysis.com. Of 1,437
+collected sources, **1,408 are SEC** and there is no float source anywhere.
+
+So `floatConfidence` is `UNKNOWN` on 93 of 94 dossiers. That is not timidity —
+it is the correct answer, and the float rules must not be softened to make it go
+away. The fix is collection.
+
+The trader chose deriving float from filings we already reach: shares
+outstanding minus affiliate and restricted holdings. **Settle this before writing
+it: SC 13G filers are passive institutions and their shares ARE float.** Only
+affiliates come out — officers, directors and 10% owners via Section 16, plus
+13D control blocks. Subtracting 13G holders would understate float and
+manufacture the false dirty-float calls this thread was asked to prevent.
+
+Not started, and deliberately sequenced after the bound has run: `OWNERSHIP` is
+`maxFetch: 1` with the rationale *"holder context only; not a supply proof"*, and
+Forms 3/4/5 are not in the taxonomy at all, so this is real new collection with
+real error bars.
+
+**10. Volume can prove supply was NOT absorbed. It can never prove it was.**
+*Raised by the trader, who asked whether N× turnover means the outstanding
+shares have cycled through.*
+
+It does not, and his own tape is the argument: IVF turned over its entire share
+count **47.6 times** on 2026-08-17, TRUG 12.7x, MYSZ 12.2x. Ownership did not
+rotate 47 times. Any "≥ N× ⇒ cycled through" rule would mark every real runner
+clean on the day it runs hardest — and it is the inference
+`NO_ABSORPTION_INFERENCE` already exists to block.
+
+What survives is the bound: cumulative volume is an *upper bound* on what could
+have been distributed, so volume **below** the overhang proves it cannot have
+been absorbed, while volume above it proves nothing. Mirror of `supplyBound`,
+which is conclusive when high. It will rarely bind on a runner; it binds on quiet
+names carrying a large overhang, which is exactly where it is worth having.
+
+Real absorption evidence is filings, not tape, and all of it is inside the SEC
+surface already reached: 424B supplements reporting shares sold, 10-Q ATM
+disclosure, **Form 144 (already collected, 12 of them)**, and 13D/G amendments
+showing a stake fall. The trader's instinct that clean-versus-dirty should evolve
+daily is right; the driver is filings plus the volume floor.
+
+Seam: the tape half is R&D's, in `A:	rade_research\momentumiscosity`. Its
+SPEC §12.3 already lists "Active overhang and cumulative volume" as a future
+structural model, gated on the tape model being evaluated first — a gate now
+reached, since that line is closed. §373 wants flow as a fraction of float
+*"where point-in-time float is trustworthy"*, and item 9 is why it is not.
+
+**11. The resolver re-asks a question that has already failed.** For the seventy
+issuers with no stored company source, `resolverDue` alternates with discovery
+indefinitely, so every other paid pass buys a model call to re-ask "where does
+this issuer publish" — and gets the same answer. Discovery must keep running
+regardless (that is what found XOS), so the backoff belongs on resolution alone.
+
+Deliberately not fixed on 2026-08-23: it is a scheduling change to paid calls and
+it wants its own measurement rather than a late edit. `9ee0b4b` fixed the
+adjacent correctness bug — `hasUsableSource` believed every legacy row because
+`undefined !== null` — which had frozen all four "resolved" issuers on single
+article pages that can never list a new release.
+
 ## Working rules
 
 - **Facts come from deterministic parsing; the model only interprets.** Never
