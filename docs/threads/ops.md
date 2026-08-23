@@ -118,6 +118,15 @@ machine where contamination would matter. Nobody has run it there; found by
 reading. The fix is to make the test store explicit rather than conditional, or
 to refuse to start when the resolved path is the live store.
 
+**Assigned to this thread by the trader, 2026-08-23**, alongside the flake, on
+the grounds that both are `worker/` CLI defects and the fixture work is already
+open here. Of the two fixes offered above, **refusing to start when the resolved
+path is the live store is the stronger one** and this thread should say which it
+took: an explicit test store still fails open if someone passes the wrong path,
+while a refusal fails closed. Item 5's second half applies directly — whatever
+is done, the documented safety property is the thing a test should assert, since
+the property was written down here and was false.
+
 **4. The release-bootstrap test is flaky, and it has now gone red on a real
 deploy decision.** `tests/desk/releaseBootstrap.test.ts` fails intermittently
 under the full parallel suite and passes in isolation and on a clean re-run.
