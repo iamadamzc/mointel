@@ -334,30 +334,50 @@ call with tokens spent and nothing recorded, and can leave a claimed row with no
 process behind it. Fixed by Research at `97f198d`, one line, mirroring
 `alpaca.ts`.
 
-**~~That is a candidate mechanism for the ten QUEUED rows.~~ It is not, and I
-recorded a hypothesis as though it were a lead.** Research checked it against
-the rows rather than accepting it: **all ten carry `started_at` NULL and
-`retry_count` 0**, so none was ever claimed — and an orphan of a killed worker
-would have been, because `requeueJobForRetry` runs on rows that were mid-flight.
-A kill cannot produce a row that was never started.
+**The ten QUEUED rows: what is dead, what is established, what is open.** *Two
+mechanisms have now been proposed and both died on the same rows. This section
+has recorded each as a finding in turn, so it is rewritten to hold the **state of
+the question** rather than a third answer — a paragraph naming the current best
+guess needs replacing every time the guess moves, and reads as settled in
+between.*
 
-**The real cause is in the timestamps.** They are queued at 02:00 UTC — 22:00
-ET, the `NEXT_DAY_RECAP` checkpoint, which queues research for the session that
-has just ended. But the worker takes its trading date from `MAX(trading_date)`
-in `ticker_session`, and by 22:00 the next session's rows are already seeded.
-**So a job queued for a finished date is never claimed by anything, ever**, and
-they accumulate two and eight at a time.
+**Dead — a SIGKILL orphan.** All ten carry `started_at` NULL and `retry_count` 0,
+so none was ever claimed; `requeueJobForRetry` only touches rows that were
+mid-flight. Disproved by Research. The signal-handler bug was real and is fixed
+at `97f198d`; it just does not produce these.
 
-That is Ops's own first hypothesis from this morning — *"abandoned rows from an
-earlier trading date that nothing will ever pick up"* — confirmed rather than
-guessed. Which it is matters, because the two hypotheses wanted **opposite
-fixes**: these want expiring or claiming deliberately, not counting as backlog.
+**Dead — "queued for a finished date, so never claimable".** Disproved by Ops
+against the snapshot, read-only:
 
-**The lesson is not "do not hypothesise".** Ops's guess is what sent Research to
-the rows, and the rows produced the answer. What I did wrong is narrower: I
-wrote a hypothesis into a charter in the voice of a finding, one line after
-recording that a retraction only reaches the sentence it edits. *Candidate
-mechanism* and *mechanism* read identically to whoever finds this next week.
+| recap for | queued | started | stranded |
+| --- | ---: | ---: | ---: |
+| 2026-08-17 | 8 | 6 | 2 |
+| 2026-08-18 | 10 | **10** | 0 |
+| 2026-08-21 | 8 | 0 | **8** |
+
+Sixteen of twenty-six ran and one recap claimed ten of ten, so nothing is
+structurally unclaimable. **It is intermittent and concentrated on two dates.**
+
+**Established, and it is the operational part: these will NOT clear on Monday.**
+Every recap job that started did so **within nought to two minutes of being
+queued** — claiming is immediate. So the ten were passed over at the time; they
+are not waiting for a session to come round. The phrase *"queued for a finished
+date"* invites exactly that wait, and both Ops and I nearly took it.
+
+**Established: stranding is confined to this one checkpoint.** Of the 938 jobs
+queued at every other hour, **zero** were ever left unstarted.
+
+**Established, weakly: the cost is a refresh rather than coverage.** The only
+historically checkable pair, CRGO and MYSZ stranded from the 17th, each already
+carried two analyses that same day. n=2 — evidence, not proof. It puts the size
+nearer *ten stale rows* than *a checkpoint silently dropping its work*, which
+were the two sizes in question.
+
+**Open, and narrower than either dead hypothesis: why did one recap claim ten of
+ten and another nought of eight?** The nought-of-eight is Friday's, at the end of
+the week the pipeline spent failing on an empty balance. **Ops named that as a
+candidate and explicitly did not assert it.** Checking worker health at 02:00 UTC
+on 2026-08-22 is cheap and either confirms or kills it.
 
 This sits beside the two rules below rather than replacing them. "A check that
 cannot fail isn't a check" is about whether an observation can come out badly;
