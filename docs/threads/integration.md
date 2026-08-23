@@ -61,6 +61,35 @@ is deliberately left to the trader.** `lib/review/` was operational machinery an
 small; `lib/market/` decides who does most future work on this desk, and that is
 larger than a routing call.
 
+## Do not ask the trader to arbitrate work that is in motion
+
+**Corrected by him twice within twenty minutes on 2026-08-24, and the second
+correction was the real one.** The first fault looked like staleness — I
+reported a deploy as clean without checking what anyone was doing. The fix
+seemed to be *check first*. It was not enough.
+
+I checked, found Design mid-edit, and then **asked him to decide whether to hold
+the deploy until Design committed.** Design committed while I was writing the
+question. Both things I put to him resolved themselves before he read them.
+
+**Checking more often does not fix this.** Any state I check is already old when
+he reads it, and a thread mid-execution will finish without him. The failure is
+putting a *live* state in front of the one person who cannot act on it faster
+than the threads can.
+
+So: **only bring him what is settled and needs a decision, or genuinely blocked
+on him.** Work in flight needs to finish, not to be arbitrated. If the answer
+would change depending on what a running thread does in the next two minutes,
+it is not a question for him — it is a question for the thread, or for this one
+to decide under the order-and-process delegation.
+
+His attention is the scarcest resource on this desk and the only one that does
+not parallelise. Two of tonight's questions spent it on outcomes that arrived
+without him.
+
+**And shorter.** Volume is part of the same fault: a decision buried in a status
+report costs him the reading as well as the deciding.
+
 ## Relaying between threads
 
 **This thread is the message bus, as of 2026-08-23.** The shared README carries
