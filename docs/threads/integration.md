@@ -71,6 +71,23 @@ concurrent building is rare.
    robust answer and it is not free: a worktree needs its own `node_modules`.
    Reach for it when rule 2 becomes the bottleneck, not before.
 
+5. **`git stash` is not safe on this tree, and a stat line is not a review.**
+   Added 2026-08-23 after a stash push/pop round trip over two doc paths
+   silently dropped **264 lines of already-committed content belonging to three
+   threads** — the R&D register's own rows, a section gating Q1's verdict, and
+   two handovers from Design. It was committed without the file being re-read,
+   caught afterwards, and recovered whole from the stash object.
+
+   Two rules out of one incident. **Do not `git stash` to test whether a failure
+   predates your edits** — commit to a scratch branch, or copy the files aside.
+   A stash round trip on a tree several threads write to can return less than it
+   took. And **read the diff, not the stat line, before committing a shared
+   document.** `264 deletions, 50 insertions` was on screen and was the whole
+   warning; a deletion count larger than the work you did is the signal.
+
+   This one is cheap to obey and the incident that produced it was recoverable
+   only by luck of `pop` leaving the object behind.
+
 ## Open items
 
 **1. `docs/ARCHITECTURE.md` §4 is stale, and part of it is still being cited as
