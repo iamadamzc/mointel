@@ -13,16 +13,16 @@ was built around turns out not to bite the way anyone expected.
 Sections written before the extract arrived have been left in place and marked,
 rather than rewritten to look prescient.
 
-> **ANSWERED 2026-08-23: the stored catalyst grade is NOT independent of the
-> Sheet.** Every finding resting on it stays suspended, and the fix is now a
-> choice rather than a wait. See *Provenance — answered, and it is contamination*. The split-timing result and everything derived from market data are
-> unaffected.
+> **RETRACTED, same day. The contamination finding did not survive a larger
+> sample, and what replaced it is worse for Q1.** The catalyst grade is not
+> reproducible run to run for roughly a third of names — noise rather than bias,
+> and noise cannot be subtracted. Worse, measurement error in the independent
+> variable biases any association toward zero, which is Q1's own hypothesis. See
+> *Provenance — retracted, and the real problem is noise*.
 >
-> **The register entry for this is not yet in [rnd.md](../threads/rnd.md)** —
-> that file was modified in the working tree by Design when this was written, and
-> a thread does not edit another's open file. To be carried over when the tree is
-> clear: the catalyst-rate resolution below, the float finding, and the second
-> ledger's overlap.
+> The split-timing result, Q5, coverage and everything else derived from market
+> data are unaffected. What is suspended is Pillar 4's catalyst rate and the
+> catalyst-definition resolution, both of which read the grade.
 
 ---
 
@@ -447,6 +447,13 @@ context — including a null, which is the failure mode this thread is most
 exposed to, since "movers do not carry catalysts" and "the other model did not
 find one either" would be indistinguishable.
 
+> *Superseded 2026-08-23.* `sheetPrior` was tested and the effect is not
+> established, so this is no longer what gates a verdict. The hold stands for a
+> different and harder reason — the grade is ~1/3 irreproducible — and the
+> failure mode named above turns out to be the right one for the wrong cause: a
+> noisy measure biases toward the null on its own, with no second model needed.
+> See *Provenance — retracted, and the real problem is noise*.
+
 One correction to this note while the subject is open. It said earlier that
 `intelligence_status` and the grade "agree exactly", and that phrasing invites
 being read as two sources corroborating each other. It is not that. It is a
@@ -455,94 +462,120 @@ The inference it actually supports is narrow and still holds: a missed look and
 an honest `UNKNOWN` are distinguishable. It was never an independence check, and
 if the Sheet can influence either field it would not become one.
 
-### Provenance — answered, and it is contamination
+### Provenance — retracted, and the real problem is noise
 
-*Research, 2026-08-23, replayed against a production snapshot with no
-re-collection so every arm saw byte-identical evidence.*
+*Research, 2026-08-23, retracted its own result the same day after widening from
+two control runs to four. Recorded in full because this thread acted on the
+first version and the correction changes what Q1 can be asked.*
 
-Removing the Sheet's prior from the interpreter's context changed **2 of 6**
-catalyst grades. The control — the same configuration run twice — moved **0 of
-6**. So the effect is real and it is not run-to-run noise.
+**What was reported first**, and what this note recorded in `05b430e`: removing
+the Sheet's prior changed 2 of 6 catalyst grades against a control variance of
+0 of 6.
 
-The control is what makes that readable, and it carries a second finding this
-archive has to act on: **`structureClassification` moved 2 of 6 on identical
-input.** A third of it is not reproducible. Nothing here has ever used the
-stored `structure` field and nothing will until that is understood; it is
-recorded so a later pass does not pick it up assuming it is stable.
+**What four runs per arm show:**
 
-Research is explicit that 2 of 6 is a direction and not a rate, that only one of
-the two moves is directionally consistent with anchoring, and that six names is
-not a chosen sample but the entire measurable population — the prior exists only
-for TODAY-tab tickers, TODAY holds 9 rows, and 3 have no collected evidence.
-Widening by adding priorless tickers would make both arms byte-identical and
-drag the rate toward a false null. No mechanism is asserted at this n and none is
-assumed here.
-
-**The contamination surface is bounded, and that is the useful part.** The
-RESEARCH tab's 205 rows never reach the interpreter at all — `loadSheetPriors`
-indexes `state.tickers`, which `normalizeSheetRows` builds from TODAY alone. So
-the Sheet reaches the board, not the corpus.
-
-#### Why "restrict to clean ticker-days" is the wrong option here
-
-Research offers two routes and says neither is theirs to choose: restrict Q1 to
-ticker-days with no TODAY row, or re-derive the grades prior-free. The first is
-free and the second costs a run. **This archive's numbers argue against the free
-one**, on two grounds.
-
-**It is not executable from here.** TODAY-tab membership per date is not in the
-extract. The archive records `intelligence_source` as `AUTO` or `NONE` and
-nothing that distinguishes a ticker that carried a prior from one that did not.
-The Sheet's dated tabs for 17-21 August might supply it; that is another read of
-a surface this thread does not touch.
-
-**And it would not be a neutral filter.** TODAY held **42-56 rows** on 17-21
-August. Graded board symbols per day here were 27, 49, 31, 51, 53. The
-contaminated set is the same order of magnitude as the whole graded population,
-so on a day like 08-20 — 51 graded symbols against a TODAY tab of up to 56 —
-very little may survive the filter.
-
-Worse, what it removes is not random. TODAY is the Sheet's own momentum
-watchlist, $2-$10 with float under 20M, and this archive can measure how that
-band lands on its own population:
-
-| | share inside $2-$10 |
+| | of 6 tickers |
 | --- | --- |
-| all 252 board symbols | 63% (159) |
-| the 77 distinct names that ran 50%+ | **82% (63)** |
+| unstable *within* the 4 control runs | 2 |
+| unstable *within* the 4 prior-free runs | 3 |
+| **stable in both arms but different between them** | **0** |
 
-**Movers are markedly likelier than the board average to sit in the Sheet's
-universe**, so they are likelier to have carried a prior. Restricting to clean
-ticker-days therefore strips out the population Q1 is about, preferentially. A
-clean-but-depleted sample that under-represents movers would answer a different
-question and look like it had answered this one.
+The last row is the one that matters and it is zero. The two names reported as
+moved — BTOG and CDTG — are exactly the two that vary within the control set on
+their own. The original control variance of 0 of 6 came from two runs that
+happened to agree, so noise was measured against too small an estimate of noise.
 
-That is the argument for re-deriving. Two conditions on such a run if it
-happens: it must **replay stored evidence rather than re-collect**, exactly as
-the experiment above did — a grade formed from today's news about a name that
-ran on 19 August is worthless — and it should cover **2026-08-17 to 08-21**, the
-window this archive holds.
+**The independence effect is not established.** That is not "the prior does not
+matter": the code path is real and `sheetPrior` reaches the interpreter's
+context on every call. Six names cannot tell. One asymmetry survives — OLOX is
+`LEGITIMATE_POSITIVE` in all four control runs and mixed across the four
+prior-free runs, which is consistent with the prior acting as an **anchor that
+reduces variance** rather than shifting the grade. That is a hypothesis on one
+ticker and nothing here uses it.
 
-#### What this changes, and what it does not
+#### The replacement problem is worse, because noise cannot be corrected for
 
-| Result | Status |
-| --- | --- |
-| Split timing, hypothesis 3 | **unaffected** — daily and minute bars, board membership, never a dossier |
-| Where the day's high falls (Q5) | **unaffected** |
-| Coverage classification | **unaffected** — whether an analysis existed, not what shaped it |
-| Grade freshness on 19-21 August | stands as a fact about currency |
-| Pillar 4 catalyst rate | **suspended, and now known to be contaminated rather than merely at risk** |
-| The catalyst-definition resolution below | **suspended with it** — same variable |
+Contamination is a bias. A bias has a direction, and a direction can be
+subtracted. What the wider sample found instead is that **the catalyst grade is
+not reproducible for roughly a third of names on identical evidence** — and the
+stored grades in this archive are single draws from that distribution.
 
-One consequence for the second ledger. Its grades are still independently
-produced — nothing here writes to the Sheet — but our grades are now known to
-have seen the Sheet's answer on TODAY names. So *comparing ours against theirs
-is circular on exactly the names most likely to matter*. The fallback recorded
-earlier is now the live path rather than a contingency: use the Sheet's own
-grade as the independent variable, or re-derive ours prior-free. Not both, and
-never a comparison between the two.
+The consequence for Q1 is specific and it is not a matter of degree:
 
-### structureClassification: what the archive can and cannot say about it
+> **Measurement error in the independent variable attenuates any association
+> toward zero.** Q1 asks whether a catalyst predicts a name running. If a third
+> of the catalyst measure is a coin-flip, the observed catalyst-to-outcome
+> relationship is biased toward *no relationship* — which is Q1's own
+> hypothesis. A noisy measure would tend to confirm it regardless of the truth.
+
+That is the failure this thread is most exposed to, because its working rule is
+to report the null. A null produced by measurement error looks exactly like a
+null produced by the market, and nothing in a one-shot output distinguishes
+them.
+
+#### What that does to the authorised re-derivation
+
+The run was authorised to remove Sheet contamination. Contamination is no longer
+established, so the run's original justification is largely gone — and a
+**one-shot** prior-free grade is a fresh single draw carrying the same
+irreproducibility as the stored grade it would replace. Swapping one noisy draw
+for another, to remove an effect that has not been shown to exist, buys close to
+nothing.
+
+Research reached the same place independently and is flagging it rather than
+shipping single-run numbers that would look authoritative: usable grades need
+repeats per version and a modal grade, roughly 3x the authorised spend. The
+executing run will arrive labelled one-shot with per-ticker instability marked,
+which is the right way to ship it.
+
+#### What this archive can add: most grade churn is not information
+
+The production record puts a number on it. Across 1248 consecutive checkpoint
+pairs, catalyst moved **29 times in 56 re-analyses — 52%** — and never once in
+1192 same-version pairs.
+
+Set that against Research's finding that re-running on *identical* evidence
+moves the grade for about a third of names. Then of the 52% observed churn,
+something on the order of 33 points is the model disagreeing with itself and
+only the remainder is new evidence changing the answer. **Most of what looks
+like the desk revising its view is the interpreter being re-run**, not the
+market moving.
+
+The arithmetic is deliberately loose — the noise estimate is 2 of 6 names, the
+two rates are not simply additive, and the production comparison cannot hold
+evidence constant. It is an order of magnitude, not a decomposition. But the
+direction is not in doubt and it bears on anything that reads grade transitions
+as events, which is the same caution `structureClassification` already needed.
+
+#### Join arithmetic, which the retraction does not change
+
+*From Integration, and corroborated here.* A replay emits one grade per
+**ticker**, not per symbol-day — `readSources` has no date filter, so every run
+bundles all of a ticker's evidence. Of the tickers with a stored analysis in the
+window, those with more than one stored version cannot have a single prior-free
+number attributed to a particular day *if the stored grade moved between
+versions*.
+
+This archive's full population gives the same ratio as Integration's
+contaminated subset: of 172 tickers with a stored analysis, 128 have one
+version, 44 have several, and **29 of those 44 (66%) carry a differing grade** —
+against Integration's 19 of 29, also 66%.
+
+One refinement worth having. The split is not "single-version clean, multi
+ambiguous". A ticker with several versions whose grade **never moved** is also
+cleanly joinable, because there is nothing to attribute — every symbol-day
+carries the same stored grade and a single prior-free number compares against a
+constant. That is 15 more tickers here and 10 in Integration's subset, so the
+clean set is **37 of 56 rather than 27**.
+
+`as-of` source filtering would retire the problem for all of them, at roughly 2x
+interpretations plus a code change. It would also retire the snapshot-pinning
+condition, since look-ahead would be excluded by construction rather than by the
+accident that only one source in the current snapshot postdates the window —
+**an accident that decays**, because every day that passes adds sources that
+postdate it.
+
+### structureClassification: what the archive can and cannot say about it### structureClassification: what the archive can and cannot say about it
 
 *Routed here by Integration 2026-08-23 as the measurement half of a finding it
 gave Design. Three questions were put; the first two are answerable from the
@@ -793,6 +826,13 @@ direction only. That yields two cases:
   circular* — but the Sheet's own grade is still independently produced. It can
   then be used as Q1's independent variable **instead of** ours for names in the
   overlap, rather than as a check on ours.
+
+*Resolved 2026-08-23 into neither case cleanly.* The prior's effect is not
+established, so the first case is the live one — but the comparison is limited
+by something this section did not anticipate. Our grade is ~1/3 irreproducible,
+so comparing it against another labelling measures the disagreement of both.
+Agreement would still be informative; disagreement much less so; and no rate
+should be quoted until the noise floor on our side is known.
 
 So the ledger has a use either way. What collapses in the bad case is the
 comparison, not the second labelling. That is a better position than it first

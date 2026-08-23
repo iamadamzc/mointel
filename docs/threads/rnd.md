@@ -32,7 +32,7 @@ questions is a thread that has stopped working.
 
 | # | Question | Opened | Status |
 | --- | --- | --- | --- |
-| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — the stored catalyst grade is contaminated by the Sheet; needs a prior-free re-derivation before any verdict |
+| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — the catalyst grade is ~1/3 irreproducible run to run, which biases any answer toward Q1's own hypothesis; no verdict until that is handled |
 | Q2 | What share of qualifying movers ever produce a tradeable pullback at all? | 2026-08-23 | proposed |
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | proposed |
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | dormant — see closed lines below |
@@ -139,14 +139,59 @@ exhaustion on 19, 20 and 21 August, resolver rework throughout. Reduced catalyst
 *detection* is indistinguishable from absent catalysts. This is the first
 analysis to run, not a caveat to append.
 
-**ANSWERED 2026-08-23: the stored catalyst grade is not independent of the
-Sheet.** *Research, replayed against a production snapshot with byte-identical
-evidence across arms.* Removing the Sheet's prior from the interpreter's context
-changed **2 of 6** catalyst grades against a control variance of **0 of 6**. The
-effect is real; the mechanism is not asserted at that n, and 2 of 6 is a
-direction rather than a rate — the prior exists only for TODAY-tab tickers and
-TODAY currently holds 9 rows, 3 without evidence, so six names is the entire
-measurable population rather than a chosen sample.
+**RETRACTED the same day, and the replacement is worse.** *Research widened its
+independence test from two control runs to four and withdrew the result.* The
+first report — 2 of 6 catalyst grades moved when the Sheet's prior was removed,
+against a control variance of 0 of 6 — did not survive. With four runs per arm:
+2 of 6 tickers are unstable *within* the control set, 3 of 6 within the
+prior-free set, and **0 of 6 are stable in both arms yet different between
+them**. The two names reported as moved are exactly the two that vary anyway.
+The original control variance came from two runs that happened to agree.
+
+**The independence effect is not established** — which is not "the prior does
+not matter". The code path is real and `sheetPrior` reaches the interpreter on
+every call; six names cannot tell. One asymmetry survives on one ticker, that
+the prior may act as an anchor reducing variance rather than shifting the grade.
+Hypothesis, not finding, unused here.
+
+**What replaced it is the harder problem: the catalyst grade is not reproducible
+for roughly a third of names on identical evidence**, and every stored grade in
+the archive is a single draw from that distribution. Contamination is a bias and
+a bias can be subtracted. Noise cannot. And it fails in the one direction this
+thread must not fail: **measurement error in the independent variable attenuates
+any association toward zero**, so a noisy catalyst measure biases Q1 toward "no
+relationship", which is Q1's own hypothesis. A null produced by measurement error
+is indistinguishable from a null produced by the market, and this thread's
+working rule is to report nulls.
+
+**The authorised re-derivation has lost most of its justification.** It was
+authorised to remove contamination that is no longer established, and a
+*one-shot* prior-free grade is a fresh single draw with the same
+irreproducibility as the stored grade it replaces. Research reached this
+independently and is flagging the cost of doing it properly — repeats per
+version and a modal grade, roughly 3x — rather than shipping single-run numbers
+that would read as authoritative. The executing run will arrive labelled
+one-shot with per-ticker instability marked. **The decision on the 3x is the
+trader's and the premise has changed since he authorised the original.**
+
+**What this archive adds.** Catalyst moved in 29 of 56 re-analyses (52%) and
+never in 1192 same-version pairs. Against a re-run instability of about a third,
+most of that 52% is the model disagreeing with itself rather than new evidence
+changing the answer. The arithmetic is loose — 2 of 6 names, rates that are not
+additive, and a production comparison that cannot hold evidence constant — but
+the direction is not in doubt, and it bears on anything reading grade
+transitions as events.
+
+**Join arithmetic, unchanged by the retraction.** A replay emits one grade per
+ticker, not per symbol-day; `readSources` has no date filter. Of 172 tickers
+with a stored analysis here, 128 have one version and 44 have several, of which
+29 (66%) carry a differing grade — matching Integration's 19 of 29 on the
+contaminated subset exactly. One refinement: a multi-version ticker whose grade
+never moved is *also* cleanly joinable, since every symbol-day carries the same
+stored grade, so the clean set is **37 of 56 rather than 27**. `as-of` source
+filtering would retire the problem entirely at ~2x interpretations, and would
+also retire snapshot-pinning — look-ahead is currently excluded only by the
+accident that one source postdates the window, and that accident decays daily.
 
 **Also from the control, and it lands here: `structureClassification` moved 2 of
 6 on identical input.** A third of it is not reproducible. Nothing in this
@@ -219,15 +264,17 @@ here; this thread carries why Q1 needs it, not how it is executed.
 
 **Everything not resting on the grade is unaffected**: the split test, Q5,
 coverage, outcomes. What is suspended is Pillar 4's catalyst rate and the
-catalyst-definition resolution, both of which read the same variable — and they
-are now known to be contaminated rather than merely at risk.
+catalyst-definition resolution, both of which read the same variable — suspended
+now for irreproducibility rather than contamination, which is the harder of the
+two to work around.
 
-**Consequence for the second ledger.** Its grades remain independently produced,
-since nothing here writes to the Sheet. But ours have now been shown to see the
-Sheet's answer on TODAY names, so *comparing the two is circular on exactly the
-names most likely to matter*. The earlier fallback is the live path: use the
-Sheet's grade as the independent variable, or re-derive ours prior-free. Never a
-comparison between them.
+**Consequence for the second ledger.** With contamination unestablished, the
+comparison is back on the table in principle — two graders over one window, and
+nothing here writes to the Sheet so their side was never at risk. In practice it
+is limited by the same noise: comparing a ~1/3 irreproducible grade against
+another labelling measures the disagreement of both. Agreement would still be
+informative, disagreement much less so, and neither should be quoted as a rate
+until the noise floor on our side is known.
 
 **A second outcome ledger exists over the same window**, and it changes what Q1
 can do. *Reported by Integration 2026-08-23; not read by this thread.* The Sheet
