@@ -617,6 +617,48 @@ urgent — Design's Phase 2 proceeds without it — but it gates the phase after
 
 Distinct from item 5, which is about the input's reliability today.
 
+**UPGRADED 2026-08-23 by the trader: this is now the critical path, not a thing
+that gates the phase after.** He asked whether all four ChatGPT tasks still need
+to run. Three of the four sit on desk checkpoint times and duplicate work the
+application already does. **Tasks 1 and 2 cannot stop, because they are the only
+writers of the desk's float** — `resolveDisplayedFloat` reads the RESEARCH tab
+then TODAY, and task 1 is the sole writer of `TODAY!A:S` where float is column
+I. So this inventory is what stands between the desk and retiring half its
+ChatGPT workflow.
+
+**The audit has two halves and the item only covered one.**
+
+*Outputs — the 65 fields, as already scoped.* For each: does this pipeline
+already produce it, could it, or would absorbing it mean building something new?
+
+*Inputs — the sources, which nothing has looked at.* The tasks draw on SEC
+EDGAR, exchange notices, issuer IR, newswires and market-data pages. The
+workbook persists **928 URL appearances across 64 domains**, and the mix is not
+what the source policy says: **float is sourced from StockAnalysis 157 times
+against SEC 10.** So for each source class the tasks use, does this desk reach
+an equivalent — and where it does not, is that a gap or a deliberate drop?
+
+**The finding that makes the input half matter, and it lands on Phase C.** A
+derived float built from SEC filings **will not match** the Sheet's float,
+because the Sheet's is a vendor-displayed number and the derivation is a
+filing-computed one. Those are different definitions of the same word. Audit
+F-19 is already that contradiction on screen — SUGP showing `Float 0.70M
+displayed` on the watchlist against `FLOAT Unknown` in the drawer. **Replacing
+the Sheet's float is not a like-for-like swap and should not be planned as one.**
+
+**PHASE C IS REOPENED.** It was paused on the reasoning that `supplyBound` may
+answer the trading question often enough that an estimated float is not worth
+its error bars. That was sound when nothing depended on it. It is now the
+critical path to retiring the Sheet, which is a consideration the pause did not
+weigh.
+
+**One table, not three.** *Integration's call.* Research produces both
+inventories; Design annotates which of the 65 must survive on screen; R&D
+annotates which it needs for the archive. **The table stays in one place and
+Integration keeps it there** — a three-way coverage audit that lives in three
+charters is precisely the failure this thread exists to prevent, and it would
+not be discovered until someone retired a field another thread was reading.
+
 **7. `sheetPrior` does reach the interpreter — the two reads are not
 independent.** *Established in code by Design, 2026-08-23, and handed over
 because the empirical half is this thread's.*
