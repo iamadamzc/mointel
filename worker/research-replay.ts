@@ -20,6 +20,14 @@
  *      single re-derived grade is therefore a draw, not a measurement, and a
  *      third of them would be a coin flip that nothing in the output marks.
  *
+ *      The output is a modal value and an AGREEMENT FRACTION, never a bare
+ *      mode. An unlabelled mode of three draws is a coin flip wearing a
+ *      measurement's clothes; the same mode carrying "3 of 5 agreed" is a
+ *      measurement with its own error beside it, and the consumer can weight
+ *      rather than exclude. That distinction is the whole design: on a sample
+ *      already thin on controls, discarding a quarter of it costs more than
+ *      down-weighting it.
+ *
  *      Repeats REMOVE THE MOST UNSTABLE; they do not certify the rest. Agreement
  *      is not stability: for a ticker whose true split is 75/25 two draws agree
  *      62% of the time, at 60/40 it is 52%, at 90/10 it is 82%. Three draws cut
@@ -27,10 +35,11 @@
  *      unstable names at every draw count anyone would pay for, and the honest
  *      claim is a filter rather than a guarantee.
  *
- *      Draws stop the moment two disagree, because instability is established at
- *      that point and further draws buy nothing. Every marginal draw is
- *      therefore spent only where it is still informative — confirming an
- *      agreement, never re-confirming a disagreement.
+ *      All three classifications are recorded per draw, not just the catalyst
+ *      grade. They come from the same dossier and cost nothing extra, and it
+ *      means one run answers the reproducibility question for cycle and
+ *      structure on the same population instead of three separate runs on
+ *      three different ones.
  *
  *   3. NEVER PRODUCTION. Point MARKET_DB_PATH at a copy. interpretTicker calls
  *      saveAnalysisVersion, so a replay writes dossiers, and on the live store
@@ -56,40 +65,64 @@ interface StoredVersion {
   dossier: string;
 }
 
+interface FieldOutcome {
+  stored: string;
+  /** Every draw, in order. The raw material; everything else derives from it. */
+  draws: string[];
+  /** Most common draw. Never presented without `agreement` beside it. */
+  modal: string;
+  /** Draws agreeing with the mode, over draws taken. The reliability weight. */
+  agreement: number;
+  unanimous: boolean;
+  changedFromStored: boolean;
+}
+
 interface ReplayRow {
   ticker: string;
   /** The stored analysis this replays, and the join key for the archive. */
   storedVersionId: number;
   storedGeneratedAt: string;
-  storedCatalystGrade: string;
   /** Evidence cutoff used, by collection time. */
   asOf: string;
   sourcesVisible: number;
-  /** One grade per repeat, in order. */
-  priorFreeGrades: string[];
-  /** True when every repeat agreed. Only these are safe to join on. */
-  stable: boolean;
-  /** Present only when stable; deliberately absent rather than a modal guess. */
-  priorFreeCatalystGrade: string | null;
-  changedFromStored: boolean | null;
+  catalyst: FieldOutcome;
+  cycle: FieldOutcome;
+  structure: FieldOutcome;
+}
+
+function summarise(stored: string, draws: string[]): FieldOutcome {
+  const counts = new Map<string, number>();
+  for (const draw of draws) counts.set(draw, (counts.get(draw) ?? 0) + 1);
+  const [modal, hits] = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
+  return {
+    stored,
+    draws,
+    modal,
+    agreement: hits / draws.length,
+    unanimous: counts.size === 1,
+    changedFromStored: modal !== stored,
+  };
 }
 
 function parseArgs(argv: string[]) {
   const tickers: string[] = [];
+  let versionIds: number[] = [];
   let from = '2026-08-17';
   let to = '2026-08-22';
-  let maxDraws = 2;
+  let draws = 5;
   let out = 'replay-result.json';
   let concurrency = 4;
   for (const arg of argv) {
     if (arg.startsWith('--from=')) from = arg.split('=')[1] ?? from;
     else if (arg.startsWith('--to=')) to = arg.split('=')[1] ?? to;
-    else if (arg.startsWith('--max-draws=')) maxDraws = Number(arg.split('=')[1]) || maxDraws;
+    else if (arg.startsWith('--draws=')) draws = Number(arg.split('=')[1]) || draws;
+    else if (arg.startsWith('--versions='))
+      versionIds = (arg.split('=')[1] ?? '').split(',').map(Number).filter(Number.isFinite);
     else if (arg.startsWith('--out=')) out = arg.split('=')[1] ?? out;
     else if (arg.startsWith('--concurrency=')) concurrency = Number(arg.split('=')[1]) || concurrency;
     else if (!arg.startsWith('--')) tickers.push(arg.toUpperCase());
   }
-  return { tickers, from, to, maxDraws, out, concurrency };
+  return { tickers, versionIds, from, to, draws, out, concurrency };
 }
 
 async function main(): Promise<void> {
@@ -128,23 +161,33 @@ async function main(): Promise<void> {
    * Snapshotted before anything runs. Each replay appends its own version, so
    * re-reading this list mid-run would start replaying the replays.
    */
-  const versions = db
-    .prepare(
-      `SELECT id, ticker, generated_at, dossier FROM research_analysis_versions
-        WHERE ticker IN (${args.tickers.map(() => '?').join(',')})
-          AND generated_at >= ? AND generated_at < ?
-        ORDER BY ticker, generated_at`,
-    )
-    .all(...args.tickers, args.from, args.to) as StoredVersion[];
+  const versions = (
+    args.versionIds.length > 0
+      ? db
+          .prepare(
+            `SELECT id, ticker, generated_at, dossier FROM research_analysis_versions
+              WHERE id IN (${args.versionIds.map(() => '?').join(',')}) ORDER BY id`,
+          )
+          .all(...args.versionIds)
+      : db
+          .prepare(
+            `SELECT id, ticker, generated_at, dossier FROM research_analysis_versions
+              WHERE ticker IN (${args.tickers.map(() => '?').join(',')})
+                AND generated_at >= ? AND generated_at < ?
+              ORDER BY ticker, generated_at`,
+          )
+          .all(...args.tickers, args.from, args.to)
+  ) as StoredVersion[];
 
   console.log(
     `[replay] ${versions.length} stored version(s) across ${args.tickers.length} ticker(s), ` +
-      `up to ${args.maxDraws} draw(s) each; a disagreement stops that version early`,
+      `${args.draws} draw(s) each = ${versions.length * args.draws} interpretations`,
   );
 
   const rows: ReplayRow[] = [];
   let inputTokens = 0;
   let outputTokens = 0;
+  let cachedTokens = 0;
 
   /*
    * Versions are replayed concurrently.
@@ -162,14 +205,24 @@ async function main(): Promise<void> {
     for (;;) {
       const version = queue.shift();
       if (!version) return;
-      const storedGrade = String(JSON.parse(version.dossier).catalyst?.catalystGrade ?? 'UNKNOWN');
-      const grades: string[] = [];
+      const stored = JSON.parse(version.dossier);
+      const catalystDraws: string[] = [];
+      const cycleDraws: string[] = [];
+      const structureDraws: string[] = [];
       let sourcesVisible = 0;
 
-      for (let run = 0; run < args.maxDraws; run += 1) {
-        // Established unstable: a third draw cannot change the verdict.
-        if (new Set(grades).size > 1) break;
-
+      /*
+       * Every draw is taken, with no early stop.
+       *
+       * An earlier build stopped as soon as two draws disagreed, which was
+       * right when the output was a binary stable/unstable and each draw cost
+       * full price. It is wrong now: the output is an agreement FRACTION, and
+       * stopping early destroys the very distribution it measures. Draws after
+       * the first are also nearly free on input — the request is byte-identical
+       * and 61% of a two-draw run's input tokens were cache hits — so the only
+       * real cost of depth is output.
+       */
+      for (let run = 0; run < args.draws; run += 1) {
         const report = await interpretTicker(db, interpreter, null, {
           ticker: version.ticker,
           tradingDate: version.generated_at.slice(0, 10),
@@ -186,27 +239,28 @@ async function main(): Promise<void> {
         sourcesVisible = report.sourceCount;
         inputTokens += report.metrics.inputTokens;
         outputTokens += report.metrics.outputTokens;
-        grades.push(String(report.dossier?.catalyst?.catalystGrade ?? 'FAILED'));
+        cachedTokens += report.metrics.cachedInputTokens;
+        catalystDraws.push(String(report.dossier?.catalyst?.catalystGrade ?? 'FAILED'));
+        cycleDraws.push(String(report.dossier?.cycle?.cycleClassification ?? 'FAILED'));
+        structureDraws.push(String(report.dossier?.structure?.structureClassification ?? 'FAILED'));
       }
 
-      const stable = new Set(grades).size === 1;
-      rows.push({
+      const row: ReplayRow = {
         ticker: version.ticker,
         storedVersionId: version.id,
         storedGeneratedAt: version.generated_at,
-        storedCatalystGrade: storedGrade,
         asOf: version.generated_at,
         sourcesVisible,
-        priorFreeGrades: grades,
-        stable,
-        priorFreeCatalystGrade: stable ? grades[0] : null,
-        changedFromStored: stable ? grades[0] !== storedGrade : null,
-      });
+        catalyst: summarise(String(stored.catalyst?.catalystGrade ?? 'UNKNOWN'), catalystDraws),
+        cycle: summarise(String(stored.cycle?.cycleClassification ?? 'UNKNOWN'), cycleDraws),
+        structure: summarise(String(stored.structure?.structureClassification ?? 'UNKNOWN'), structureDraws),
+      };
+      rows.push(row);
 
       console.log(
-        `  ${version.ticker.padEnd(6)} v${String(version.id).padEnd(5)} ` +
-          `stored=${storedGrade.padEnd(26)} priorFree=${grades.join('|')}` +
-          `${stable ? '' : '   UNSTABLE'}`,
+        `  ${version.ticker.padEnd(6)} v${String(version.id).toString().padEnd(5)} ` +
+          `cat ${row.catalyst.modal.padEnd(26)} ${Math.round(row.catalyst.agreement * 100)}%  ` +
+          `cyc ${Math.round(row.cycle.agreement * 100)}%  str ${Math.round(row.structure.agreement * 100)}%`,
       );
     }
   };
@@ -218,15 +272,38 @@ async function main(): Promise<void> {
   // Deterministic output regardless of completion order.
   rows.sort((a, b) => a.storedVersionId - b.storedVersionId);
 
-  const stable = rows.filter((row) => row.stable);
-  const changed = stable.filter((row) => row.changedFromStored);
-  fs.writeFileSync(args.out, JSON.stringify({ rows, tokens: { inputTokens, outputTokens } }, null, 2));
+  fs.writeFileSync(
+    args.out,
+    JSON.stringify(
+      { draws: args.draws, rows, tokens: { inputTokens, outputTokens, cachedTokens } },
+      null,
+      2,
+    ),
+  );
 
+  const report = (label: string, pick: (row: ReplayRow) => FieldOutcome) => {
+    const all = rows.map(pick);
+    const unanimous = all.filter((f) => f.unanimous).length;
+    const mean = all.reduce((sum, f) => sum + f.agreement, 0) / all.length;
+    const changed = all.filter((f) => f.changedFromStored).length;
+    console.log(
+      `  ${label.padEnd(10)} unanimous ${String(unanimous).padStart(4)}/${all.length}  ` +
+        `mean agreement ${(mean * 100).toFixed(0)}%  ` +
+        `modal differs from stored ${String(changed).padStart(4)}`,
+    );
+  };
+
+  console.log(`
+[replay] ${rows.length} version(s) x ${args.draws} draw(s)`);
+  report('catalyst', (row) => row.catalyst);
+  report('cycle', (row) => row.cycle);
+  report('structure', (row) => row.structure);
   console.log(
-    `\n[replay] ${rows.length} version(s): ${stable.length} stable, ` +
-      `${rows.length - stable.length} unstable and NOT joinable.\n` +
-      `[replay] of the stable, ${changed.length} differ from the stored grade.\n` +
-      `[replay] tokens in=${inputTokens.toLocaleString()} out=${outputTokens.toLocaleString()}\n` +
+    `
+[replay] tokens in=${inputTokens.toLocaleString()} ` +
+      `(cached ${cachedTokens.toLocaleString()}, ${Math.round((cachedTokens / Math.max(1, inputTokens)) * 100)}%) ` +
+      `out=${outputTokens.toLocaleString()}
+` +
       `[replay] written to ${args.out}`,
   );
 }
