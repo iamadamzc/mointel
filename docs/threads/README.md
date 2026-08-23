@@ -113,7 +113,7 @@ As of the last session, **2026-08-21**:
   `session-aware-discovery` branch was fast-forwarded into it on 2026-08-23 and
   deleted; nothing was lost. If you find a session assuming `main` is stale,
   that assumption expired.
-- Production is **`32e47c9`**, schema **v21**, on Lightsail `98.85.49.227`
+- Production is **`fd9556f`**, schema **v21**, on Lightsail `98.85.49.227`
   behind CloudFront `https://dwwep02jje2ag.cloudfront.net/`, Basic Auth with two
   logins.
 - Credentials live in `A:\AWS_creds\` — **outside the repo, and they stay there.**
