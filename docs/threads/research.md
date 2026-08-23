@@ -338,6 +338,43 @@ trader alongside the other open cost decisions.
 off two runs; four runs say otherwise. Anything resting on "catalyst is stable
 on fixed evidence" needs revisiting — see the retraction note in item 10.
 
+**13. Cycle migration: the order, and who owns each step.** *Decided by
+Integration 2026-08-23 under a standing delegation of order-and-process calls.
+Research proposed the sequence and reversed its own first proposal before
+anyone acted on it.*
+
+**Step 1 — wire `resolveCycleHistory` into the pipeline. Research. Do it.**
+Additive, both values coexist, nothing breaks, and Design switches when ready.
+The alternative leaves a pure function wired into nothing, which rots and whose
+correctness nobody can check against real data.
+
+**Step 2 — switch the readers. Split, not handed over whole.** Research listed
+these as Design's; two are not:
+
+| Surface | Owner |
+| --- | --- |
+| `components/AutomaticIntelligence.tsx`, `TickerDrawer.tsx` | Design |
+| `lib/dashboard/deskRead.ts`, `intelligence.ts`, `merge.ts` | Design |
+| `lib/data/cycleLevels.ts` | **Research** |
+| `lib/research/merge/sheetAuto.ts` | **Research** |
+
+`sheetAuto.ts` sits inside the apparatus Design is *deciding about*, which is
+not the same as owning the file. And `cycleLevels.ts` is the Sheet data layer —
+Research's, and the place its own best consequence lands: a computed cycle high
+is `CURRENT_CYCLE` **by construction** with a start date bounding it, so most of
+that file's classification guesswork disappears rather than being ported.
+
+**Step 3 — delete the five model fields. Research, and NOT bundled into step
+2.** Two reasons. A schema change is not Design's, and it reaches the store Ops
+deploys. And step 3 must follow step 2 **deployed and verified**, not merely
+merged — delete the fields while the switch still has a defect and there is no
+fallback to read. Still one schema change, just not adjacent to the switch.
+
+**Working-tree note rather than a blocker:** `lib/archive/` is modified in the
+tree. It is disjoint from this work, but a gate run may go red in
+`tests/archive/` on changes that are not Research's. Stage by explicit path and
+do not chase a failure there.
+
 **1. Billing-class failures should not consume the retry budget.** This is the
 one concrete piece of unfinished code in the project.
 
