@@ -291,7 +291,28 @@ market state"* and writes them to the live store on the only machine where that
 sentence matters. Neither is a typo; both are a guarantee documented in the file
 and contradicted by the file.
 
-Two in one day, found by two different threads, neither by a test. The narrow
+**Three now, and the third supplies a better rule than mine.** `research-replay`
+reported *"123 versions: 123 stable, 0 unstable, 43 differ"* having made **no
+model calls at all** — clean, internally consistent, entirely invented. A
+standalone worker does not load `.env.local`, so the interpreter fell back to
+`Noop`; `interpretTicker` then did the right thing for the wrong caller and
+returned the previously accepted dossier, because a live desk is better served
+by yesterday's verified analysis than by nothing. Its only tell was
+`tokens in=0 out=0`, a counter added for **cost** reasons rather than
+correctness.
+
+Research's generalisation is sharper than the one I wrote here and should
+replace it: **a degradation that is correct for the live desk can be a
+fabrication for an analysis tool.** Every graceful fallback in `lib/research/`
+is worth re-reading with that distinction in mind — and the same applies to
+`lib/archive/`, which R&D built against the same libraries.
+
+That reframes all three. `archive-export.ts` deleting a directory, and
+`test-stream.ts` finding the live store, are not really *bugs in `worker/`* —
+they are **behaviour correct for one caller invoked by another**, in files
+nothing exercises. The gate cannot see any of it.
+
+Three in one day, found by three different threads, none by a test. The narrow
 question below stands and is now better evidenced: it is not about deleting.
 **Any `worker/` CLI that resolves a production path should be reachable by the
 gate, and its documented safety property should be the thing the test asserts.**

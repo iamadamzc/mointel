@@ -166,9 +166,27 @@ practice governs:
 - **Exit** is weakness: volume fading on 10-second candles, price reversing, or
   satisfaction with the gain.
 - **The five pillars** — up 10%+, $2-$20, 5x RVOL, breaking news catalyst, float
-  under 10M — are the selection rule the product encodes. **Pillar 4 is
-  currently breaking**, and understanding why is what
-  [../DATA-ARCHIVE.md](../DATA-ARCHIVE.md) exists for.
+  under 10M — are the selection rule the product encodes.
+- **Pillar 4 has now been measured, and the answer is a bounded negative.**
+  *R&D, 2026-08-23, `0d5c0a4`.* Across 211 symbol-days on prior-free,
+  as-of-filtered, five-draw grades: a `STRONG` or `LEGITIMATE_POSITIVE`
+  catalyst appears on **16.7% of movers (n=84) against 13.4% of non-movers
+  (n=127)** — a 3.3-point difference, z=0.66, p=0.51.
+
+  **Read this precisely, because the precise version is the whole point.** It
+  does **not** say catalysts do not matter. Measurement error attenuates any
+  association toward zero, so the instrument cannot support "no
+  relationship" — it supports a **ceiling**. Corrected for 15%
+  misclassification the interval is −9.5 to +18.9 points, and **a true
+  20-point difference would have shown as 14 and been caught.** So: no large
+  relationship of the kind Pillar 4 asserts, on this window, by this measure.
+  A small one is not excluded.
+
+  Two limits that travel with it and must not be dropped when it is quoted:
+  the window is 2026-08-17 to 08-21 and **cannot be extended backwards**, and
+  every stored grade this rests on was produced by a pipeline blind to the
+  share count in 62% of cases. [../DATA-ARCHIVE.md](../DATA-ARCHIVE.md) and
+  the R&D register carry the working.
 
 Terminology is trader-facing. Labels describing engine internals get rejected.
 
