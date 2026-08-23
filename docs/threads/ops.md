@@ -107,6 +107,34 @@ corrected; the choice of route is left here, where it belongs:
 - do not run it there at all: hand-roll the two-table read with `sqlite3`, which
   needs nothing on the box and is what answers the go/no-go count today.
 
+**Decided 2026-08-23 by the trader: deploy.** The argument that settled it is
+Open item 6 — `git archive` ships `lib/archive/` on the next release whatever
+is decided here, so the question was never *whether* that code reaches
+production, only *when* and *how visibly*. Doing it deliberately through the
+gate, in a closed-market window, beats it arriving unannounced inside the next
+feature deploy. The hand-rolled route was rejected because it would mean
+writing by hand what `tests/archive/export.test.ts` already proves — that test
+asserts which tables leave the box, and it is the guarantee the whole approach
+rests on.
+
+**Deploy `HEAD`, not `8170f58`.** `746b3ef` is the reason: `coverage.ts` named
+columns that exist on the local store at schema v15 and not on production at
+v21, so it now probes `table_info` instead. Shipping `8170f58` would put the
+version that breaks on first production contact on the box. It also clears a
+literal NUL byte that has been in `coverage.ts` since `5834b9e`.
+
+**Push before deploying.** `push-release.sh` archives out of the local repo, so
+a deploy would otherwise leave production running code held on one laptop and
+in no remote.
+
+**Expect the drift in Open item 1 to come straight back**, and leave it. With
+`RESTART_MARKET` at its default the market worker keeps running from the
+`fd9556f` release while everything else moves — that is the feature, not a
+regression, and Monday's premarket is the first open for the worker restarted
+at 01:27 UTC. Do not restart it to tidy the drift away. Whether `fd9556f` wants
+a pin while the worker lives in it is this thread's call; keep-3 retention
+covers the next two deploys either way.
+
 **The go/no-go is answered, and it is go.** Read-only on 2026-08-23 at 21:40 ET,
 schema read from the live table definitions rather than assumed:
 
