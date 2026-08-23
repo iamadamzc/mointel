@@ -25,7 +25,7 @@ import Database from 'better-sqlite3';
 
 export type ArchiveDatabase = Database.Database;
 
-export const ARCHIVE_SCHEMA_VERSION = 1;
+export const ARCHIVE_SCHEMA_VERSION = 2;
 
 export const DEFAULT_ARCHIVE_PATH = path.join(process.cwd(), 'data', 'archive.db');
 
@@ -53,8 +53,16 @@ CREATE TABLE IF NOT EXISTS symbol_outcomes (
   -- the split-adjusted close — the economically correct comparison — and
   -- raw_prior_close keeps the as-seen figure so the evidence is not lost.
   -- Without this, RCON on 2026-08-18 reads as a 29,811% gain.
-  split_detected     INTEGER,
+  -- The as-seen prior close, kept when reference_basis says it was restated.
   raw_prior_close    REAL,
+  -- Sessions between the most recent split and this date, within the lookback
+  -- window in lib/archive/splits.ts. Zero means the split took effect ON this
+  -- date, which is exactly when the baseline needed restating — so there is no
+  -- separate boolean for that; reference_basis records the restatement and this
+  -- records the event. Null means none found IN THE WINDOW, never "this name
+  -- has never split". Q1's third hypothesis is that the catalyst moved to the
+  -- filing cabinet; this makes the free half of it queryable.
+  split_sessions_ago INTEGER,
 
   -- Full product session, 04:00-20:00 ET.
   session_high       REAL,
@@ -218,18 +226,65 @@ export function openArchive(file: string = DEFAULT_ARCHIVE_PATH): ArchiveDatabas
   const db = new Database(file);
   db.pragma('journal_mode = WAL');
   db.pragma('busy_timeout = 30000');
-  db.exec(SCHEMA);
 
+  const existed =
+    (
+      db
+        .prepare("SELECT COUNT(*) AS n FROM sqlite_master WHERE type='table' AND name='symbol_outcomes'")
+        .get() as { n: number }
+    ).n > 0;
   const current = Number(db.pragma('user_version', { simple: true }));
+
   if (current > ARCHIVE_SCHEMA_VERSION) {
     db.close();
     throw new Error(
       `archive at ${file} is schema v${current}, newer than this build's v${ARCHIVE_SCHEMA_VERSION}`,
     );
   }
+
+  db.exec(SCHEMA);
+  // CREATE TABLE IF NOT EXISTS is a no-op on a store that already has the
+  // table, so a column added to SCHEMA never reaches an existing archive.
+  // Editing the CREATE only helps stores that do not exist yet — the same trap
+  // documented in lib/market/store/db.ts. Migrations carry the rest.
+  if (existed && current < ARCHIVE_SCHEMA_VERSION) migrate(db, current);
   db.pragma(`user_version = ${ARCHIVE_SCHEMA_VERSION}`);
 
   return db;
+}
+
+/**
+ * Forward-only migrations, applied in order from the store's current version.
+ *
+ * The archive is meant to outlive every other store here, so it gets real
+ * migrations rather than "delete it and re-run the backfill" — even though
+ * today that would work, because today it is one file on one machine.
+ */
+function migrate(db: ArchiveDatabase, fromVersion: number): void {
+  const columns = (table: string): Set<string> =>
+    new Set(
+      (db.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[]).map(
+        (row) => row.name,
+      ),
+    );
+
+  const addColumn = (table: string, column: string, definition: string): void => {
+    if (!columns(table).has(column)) {
+      db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+    }
+  };
+
+  db.transaction(() => {
+    if (fromVersion < 2) {
+      addColumn('symbol_outcomes', 'split_sessions_ago', 'INTEGER');
+      // split_detected was redundant with split_sessions_ago = 0 and could not
+      // be populated for rows whose baseline came from the desk's own record,
+      // so it was null exactly where the two would have been compared.
+      if (columns('symbol_outcomes').has('split_detected')) {
+        db.exec('ALTER TABLE symbol_outcomes DROP COLUMN split_detected');
+      }
+    }
+  })();
 }
 
 /**

@@ -9,12 +9,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import {
-  deriveFollowThrough,
-  deriveOutcome,
-  resolvePriorClose,
-  type RawMinuteBar,
-} from '@/lib/archive/outcomes';
+import { deriveFollowThrough, deriveOutcome, type RawMinuteBar } from '@/lib/archive/outcomes';
 import { etWallClockToUtc } from '@/lib/market/session';
 
 const DATE = '2026-08-18';
@@ -216,35 +211,5 @@ describe('official close', () => {
 
     expect(outcome.officialClose).toBeNull();
     expect(outcome.gainToClosePct).toBeCloseTo(10, 6);
-  });
-});
-
-describe('resolvePriorClose', () => {
-  it('uses the split-adjusted close when a reverse split sits in between', () => {
-    // RCON, 2026-08-18. The raw prior close is pre-split; measuring the day
-    // against it reports a 29,811% gain.
-    const resolved = resolvePriorClose(0.0224, 4.48);
-
-    expect(resolved.splitDetected).toBe(true);
-    expect(resolved.referenceClose).toBe(4.48);
-    expect(resolved.rawPriorClose).toBe(0.0224);
-  });
-
-  it('keeps the raw close when the two bases agree', () => {
-    const resolved = resolvePriorClose(4.49, 4.49);
-
-    expect(resolved.splitDetected).toBe(false);
-    expect(resolved.referenceClose).toBe(4.49);
-  });
-
-  it('does not call rounding noise a split', () => {
-    expect(resolvePriorClose(2.0, 2.001).splitDetected).toBe(false);
-  });
-
-  it('falls back to raw when no adjusted close was fetched', () => {
-    const resolved = resolvePriorClose(3.1, null);
-
-    expect(resolved.splitDetected).toBe(false);
-    expect(resolved.referenceClose).toBe(3.1);
   });
 });

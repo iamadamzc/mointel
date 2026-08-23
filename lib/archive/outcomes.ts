@@ -45,13 +45,13 @@ export interface SymbolOutcome {
   tradingDate: string;
   referenceClose: number | null;
   referenceBasis: string | null;
-  /**
-   * 1 when a reverse split sits between the prior session and this one, 0 when
-   * checked and none found, null when not checked. Never read null as "no".
-   */
-  splitDetected: number | null;
   /** The as-seen prior close, kept even when the adjusted one is the baseline. */
   rawPriorClose: number | null;
+  /**
+   * Sessions between the most recent split and this date, within the lookback
+   * window. Null means none found IN THE WINDOW, never "never split".
+   */
+  splitSessionsAgo: number | null;
   sessionHigh: number | null;
   sessionLow: number | null;
   timeOfHigh: string | null;
@@ -101,8 +101,8 @@ export interface DeriveOutcomeInput {
   referenceBasis?: string | null;
   /** Regular-session close in minutes since ET midnight; 16:00 on a full day. */
   closeMinutes?: number;
-  splitDetected?: number | null;
   rawPriorClose?: number | null;
+  splitSessionsAgo?: number | null;
   adjustmentBasis?: string;
   source?: string;
   asOf?: string;
@@ -137,8 +137,8 @@ export function deriveOutcome(input: DeriveOutcomeInput): SymbolOutcome {
     tradingDate: input.tradingDate,
     referenceClose: reference,
     referenceBasis: input.referenceBasis ?? null,
-    splitDetected: input.splitDetected ?? null,
     rawPriorClose: input.rawPriorClose ?? null,
+    splitSessionsAgo: input.splitSessionsAgo ?? null,
     sessionHigh: null,
     sessionLow: null,
     timeOfHigh: null,
@@ -272,34 +272,6 @@ export function deriveFollowThrough(
   }
 
   return { nextOpen, nextHigh: finite(nextHigh) };
-}
-
-/**
- * Whether a split sits between a past session and now, and what baseline to use.
- *
- * Alpaca's `split` adjustment restates history onto the CURRENT share basis, so
- * fetching the same past close both ways and comparing is a definitive test.
- * A ratio heuristic cannot work here: a 1:100 reverse split and a 100x rally
- * are the same number, and this universe produces both.
- *
- * When a split is found the adjusted close is the right baseline — it is what
- * the market and the desk would quote the day's percentage against — and the
- * raw figure is kept so the as-seen record is not lost. Without this, RCON on
- * 2026-08-18 reads as a 29,811% gain off a pre-split $0.0224.
- */
-export function resolvePriorClose(
-  rawClose: number,
-  adjustedClose: number | null | undefined,
-): { referenceClose: number; splitDetected: boolean; rawPriorClose: number } {
-  const comparable =
-    adjustedClose !== null && adjustedClose !== undefined && adjustedClose > 0;
-  // A half-percent tolerance: dividend and rounding noise are not splits.
-  const split = comparable && Math.abs(adjustedClose - rawClose) > 0.005 * adjustedClose;
-  return {
-    referenceClose: split ? (adjustedClose as number) : rawClose,
-    splitDetected: split,
-    rawPriorClose: rawClose,
-  };
 }
 
 function finite(value: number): number | null {

@@ -17,7 +17,10 @@ says about two trading dates, which is not enough dates to conclude anything.
 | Outcome derivation from raw minute bars | `lib/archive/outcomes.ts` |
 | Research coverage and the desk-day rollup | `lib/archive/coverage.ts` |
 | Upserts and run provenance | `lib/archive/repo.ts` |
+| Split basis and the lookback | `lib/archive/splits.ts` |
+| The assessment extract Ops runs on production | `lib/archive/export.ts` |
 | The backfill | `worker/archive-backfill.ts` |
+| The extract CLI | `worker/archive-export.ts` |
 
 ```bash
 npm run archive:coverage
@@ -49,9 +52,10 @@ where a mode switch can still destroy it — see *Handed to Ops* below.
 
 ---
 
-## Four things the build found that the spec did not anticipate
+## Five things the build found that the spec did not anticipate
 
-These cost time, and each one would have silently corrupted the analysis.
+These cost time. The first four would each have silently corrupted the
+analysis; the fifth is the one that turns a hazard into evidence.
 
 ### 1. `daily_bars` cannot serve the backfill
 
@@ -100,19 +104,22 @@ came back with a raw prior close of **$0.0224** against a session that traded
 $3.02-$6.70 — a reported gain of **29,811%**. CXAI the same day gave 6,821%.
 
 A ratio heuristic cannot fix this: in this universe a 1:100 reverse split and a
-100x rally are the same number. The test used instead is definitive — fetch the
-same past close both `raw` and `split`, and a disagreement **is** a split,
-because the split adjustment restates history onto the current share basis.
-`resolvePriorClose` in `lib/archive/outcomes.ts` implements it, the baseline
-becomes the split-adjusted close, and `raw_prior_close` and `split_detected`
-keep the as-seen evidence.
+100x rally are the same number. The test used instead is definitive — the split
+adjustment restates history onto the current share basis, so `adjusted / raw`
+for a session is its cumulative split factor, and where that factor **changes
+between two sessions**, a split sits between them.
+
+The first version of this compared one session's raw close against its own
+adjusted close, and that is subtly wrong in a way that leaves no trace. The
+adjustment restates onto the basis at *fetch* time, so a disagreement means "a
+split happened between that date and today" — including splits that happened
+**after** the session being measured. A name that ran on Tuesday and
+reverse-split the following week would have had its Tuesday baseline silently
+restated onto a basis Tuesday never traded on. Comparing the two sessions'
+factors isolates only the split that actually sits between them.
+`lib/archive/splits.ts` holds both, with the failure case as a named test.
 
 With that in place the whole captured range is -9.8% to +643.8%.
-
-Worth noting for Q1's third hypothesis — that the catalyst moved from the news
-wire to the filing cabinet: **`split_detected` is now a recorded field**, so
-"did a reverse split precede the run" is directly queryable rather than
-something that has to be looked up by hand.
 
 ### 4. `rth_close` is not the official close
 
@@ -124,6 +131,34 @@ On a thin small cap the cross moves the print.
 Both are now stored. `rth_close` is the last continuous-trading price;
 `official_close` and `official_volume` come from the daily bar and are what
 `gain_to_close_pct` is measured against.
+
+### 5. Splits as evidence, not just as a hazard
+
+Added after the first pass, because the measurement fix left the interesting
+half on the floor. Q1's third hypothesis is that the catalyst moved from the
+news wire to the filing cabinet — reverse splits, offering completions, S-1
+effectiveness — and the pattern that predicts is not *split and run the same
+day*. It is a split, then a run days or weeks later once the float is clean.
+
+Detection that only looks at the immediately-prior session cannot see that. So
+`split_sessions_ago` records how many sessions back the most recent split took
+effect, over a 30-session window. On the two dates available the difference is
+the whole finding:
+
+| | symbol-days |
+| --- | --- |
+| split took effect that day | 2 |
+| split within the prior 30 sessions | **21** |
+
+A boolean would have seen two. Twenty-one of a hundred is a population worth
+testing against.
+
+Null in that column means **none found within the window** — never "this name
+has never split". There is no separate `split_detected` boolean: it was the
+same fact as `split_sessions_ago = 0`, and it could not be populated at all for
+rows whose baseline came from the desk's own record, so it was null in exactly
+the places the two would have been compared. `reference_basis` records whether
+a restatement happened; this column records the event.
 
 ---
 
@@ -276,11 +311,60 @@ decision.
    switch on production would destroy it. The archive's day-grain mirror
    reduces the loss; it does not prevent it.
 2. **The backfill has only ever run against the stale local store.** To cover
-   the dates Q1 needs, it has to run against production — either on the server,
-   or here against a `VACUUM INTO` snapshot pulled down. Read-only either way.
+   the dates Q1 needs, Ops has to produce an extract from production. See
+   *Getting the production dates* below — the command exists and needs no
+   deploy.
 3. The desk's recorded closing price disagrees with the official close on a
    third of names. Some of that is the closing auction, which is expected; the
    size of the residual has not been checked and may be a real capture defect.
+
+## Getting the production dates
+
+Agreed 2026-08-23: a **two-table extract**, not a full snapshot and not a run on
+the server.
+
+The backfill reads exactly two tables and fetches everything else from Alpaca,
+so that is all that has to leave the box:
+
+| | payload | code on production |
+| --- | --- | --- |
+| Ops runs the backfill there | store + archive back | **yes — a deploy** |
+| Full `VACUUM INTO` snapshot | ~250-450 MB | no |
+| **Two-table extract** | **~1-3 MB** | no |
+
+`npm run archive:export` produces it. It opens the source **read-only**, makes
+no network calls, touches no credentials, and what it writes contains no prices,
+no research text and nothing about the trader —
+`tests/archive/export.test.ts` asserts the table list rather than trusting it.
+It prints a count per trading date, so the same command answers *did the desk
+actually record checkpoints on 19, 20 and 21 August* — which is worth knowing
+before anything is copied, because those are the days the pipeline was failing
+and the assessments may simply not be there.
+
+```
+npm run archive:export -- --market-db /var/lib/mointel/market.db                           --out /tmp/assessments.db --dry-run     # counts only
+npm run archive:export -- --market-db /var/lib/mointel/market.db                           --out /tmp/assessments.db
+```
+
+Then, here:
+
+```
+npm run archive:backfill -- --market-db <the extract>
+```
+
+Verified end to end on the local store: a 596 KB extract drives the backfill to
+byte-identical output. The remaining risk is that it is a point-in-time copy, so
+it wants re-running as sessions accumulate — which is what the `--from` / `--to`
+bounds are for.
+
+**Ordering once the dates land.** The split test goes first, ahead of Q5. It
+serves Q1, which is active and capped at two; Q5 would need opening, and on two
+dates it is a curiosity rather than a finding, so its "answerable without
+production data" advantage was overstated. Two caveats on the split test:
+`split_sessions_ago` covers reverse splits only, so it tests perhaps a third of
+hypothesis 3 — offering completions and S-1 effectiveness would need the SEC
+evidence in `research_sources`. And 21 symbol-days over two dates is a hint
+about the instrument, not about the market.
 
 ## Related
 

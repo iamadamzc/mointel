@@ -86,6 +86,42 @@ describe('archive store', () => {
     archive.close();
   });
 
+  it('migrates a v1 archive forward without losing its rows', () => {
+    /*
+     * CREATE TABLE IF NOT EXISTS is a no-op on a store that already has the
+     * table, so a column added to SCHEMA never reaches an existing archive —
+     * the same trap documented in lib/market/store/db.ts. This asserts the
+     * migration path actually runs, on a store built the way v1 built it.
+     */
+    const dir = temporaryDir();
+    const file = path.join(dir, 'archive.db');
+
+    const v1 = openArchive(file);
+    upsertOutcomes(v1, [deriveOutcome({ symbol: 'TEST', tradingDate: DATE, bars: [] })]);
+    // Put the store back into the shape v1 actually shipped.
+    v1.exec('ALTER TABLE symbol_outcomes DROP COLUMN split_sessions_ago');
+    v1.exec('ALTER TABLE symbol_outcomes ADD COLUMN split_detected INTEGER');
+    v1.pragma('user_version = 1');
+    v1.close();
+
+    const migrated = openArchive(file);
+    const columns = (
+      migrated.prepare('PRAGMA table_info(symbol_outcomes)').all() as { name: string }[]
+    ).map((row) => row.name);
+
+    expect(columns).toContain('split_sessions_ago');
+    expect(columns).not.toContain('split_detected');
+    expect(Number(migrated.pragma('user_version', { simple: true }))).toBe(
+      ARCHIVE_SCHEMA_VERSION,
+    );
+    const kept = migrated.prepare('SELECT COUNT(*) AS n FROM symbol_outcomes').get() as {
+      n: number;
+    };
+    expect(kept.n).toBe(1);
+
+    migrated.close();
+  });
+
   it('stamps its schema version and refuses a newer file', () => {
     const dir = temporaryDir();
     const file = path.join(dir, 'archive.db');

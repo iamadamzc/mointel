@@ -51,12 +51,13 @@ import {
   readCheckpointRows,
   rollUpDeskDays,
 } from '../lib/archive/coverage';
+import { deriveFollowThrough, deriveOutcome, type SymbolOutcome } from '../lib/archive/outcomes';
 import {
-  deriveFollowThrough,
-  deriveOutcome,
-  resolvePriorClose,
-  type SymbolOutcome,
-} from '../lib/archive/outcomes';
+  resolveBaseline,
+  sessionsSinceSplit,
+  SPLIT_LOOKBACK_SESSIONS,
+  type DailyClosePair,
+} from '../lib/archive/splits';
 import { existingOutcomeKeys, upsertDeskDays, upsertOutcomes } from '../lib/archive/repo';
 import {
   DEFAULT_ARCHIVE_PATH,
@@ -64,6 +65,15 @@ import {
   openMarketStoreReadOnly,
   startRun,
 } from '../lib/archive/store';
+
+/**
+ * Calendar days of daily bars fetched before the first assessed date.
+ *
+ * The lookback is counted in SESSIONS, so the fetch has to over-reach in
+ * calendar days to guarantee it has them: roughly seven calendar days per five
+ * sessions, plus slack for holidays.
+ */
+const SPLIT_LOOKBACK_CALENDAR_DAYS = Math.ceil(SPLIT_LOOKBACK_SESSIONS * 1.6) + 14;
 
 interface Options {
   from: string | null;
@@ -205,25 +215,23 @@ async function main(): Promise<void> {
   //
   // The desk's as-seen record is preferred and used first, but it only exists
   // for names the desk had on the board the day before. A name that first
-  // appears in a 22:00 recap has no prior-session reference at all, and
-  // without this its every percentage would stay null — the archive would be
-  // blind to exactly the late-arriving names Q1 is about. Fetched raw, so it
-  // is on the same unadjusted basis as everything else here.
-  const sessions = calendar.map((day) => day.date).sort();
+  // appears in a 22:00 recap has no prior-session reference at all, and without
+  // this its every percentage would stay null — the archive would be blind to
+  // exactly the late-arriving names Q1 is about.
   const allSymbols = [...new Set(deskDays.map((day) => day.symbol))];
-  const earliest = sessions[Math.max(0, sessions.indexOf(dates[0]) - 1)];
-  const dailyStart = earliest === dates[0] ? addDays(dates[0], -7) : earliest;
+  // Reaching well before the first assessed date so the split lookback has
+  // something to look back over. Daily bars for a few dozen symbols over a
+  // couple of months is a rounding error against the minute fetch.
   const dailyWindow = {
     timeframe: '1Day',
-    start: sessionStartUtc(dailyStart).toISOString(),
+    start: sessionStartUtc(addDays(dates[0], -SPLIT_LOOKBACK_CALENDAR_DAYS)).toISOString(),
     end: sessionEndUtc(dates[dates.length - 1]).toISOString(),
   } as const;
   const daily = await client.getBars(allSymbols, { ...dailyWindow, adjustment: 'raw' });
-  // The same window on the CURRENT share basis. Where the two disagree for a
-  // past date, a split happened in between — a definitive test, and far better
-  // than any ratio heuristic for a universe where a 1:100 reverse split and a
-  // 100x rally are the same number.
+  // The same window on the CURRENT share basis. Comparing the two per session
+  // is what makes a split detectable at all — see lib/archive/splits.ts.
   const dailyAdjusted = await client.getBars(allSymbols, { ...dailyWindow, adjustment: 'split' });
+
   const adjustedByKey = new Map<string, number>();
   for (const [symbol, series] of dailyAdjusted) {
     for (const bar of series) {
@@ -231,47 +239,53 @@ async function main(): Promise<void> {
     }
   }
 
+  // One paired series per symbol, ascending. Both the baseline resolution and
+  // the split lookback read this.
+  const pairsBySymbol = new Map<string, DailyClosePair[]>();
   // The official close and volume, per symbol-day. The last regular-session
   // minute bar excludes the closing auction, which on a thin small cap moves
   // the print by several percent, so the official number has to come from here.
   const dailyByKey = new Map<string, { c: number; v: number }>();
   for (const [symbol, series] of daily) {
+    const pairs: DailyClosePair[] = [];
     for (const bar of series) {
-      dailyByKey.set(`${etDateString(new Date(bar.t))} ${symbol}`, { c: bar.c, v: bar.v });
+      const date = etDateString(new Date(bar.t));
+      dailyByKey.set(`${date} ${symbol}`, { c: bar.c, v: bar.v });
+      pairs.push({ date, raw: bar.c, adjusted: adjustedByKey.get(`${date} ${symbol}`) ?? null });
     }
+    pairs.sort((a, b) => a.date.localeCompare(b.date));
+    pairsBySymbol.set(symbol, pairs);
   }
 
-  const splitFlags = new Map<string, { split: boolean; rawPriorClose: number }>();
+  // Only for rows whose baseline was recovered from the tape: the as-seen close
+  // that reference_basis says was restated. Rows using the desk's own reference
+  // need no such record, because the desk saw that session's basis directly.
+  const rawPriorCloses = new Map<string, number>();
   {
     let fetched = 0;
     let splits = 0;
     for (const day of deskDays) {
       if (day.referenceClose !== null) continue;
-      const series = daily.get(day.symbol);
-      if (!series) continue;
-      // The last daily bar strictly before this trading date. Reading the
-      // series rather than the calendar means a symbol that did not trade the
-      // previous session is handled the same way a halt is: by using the last
-      // session it actually printed in.
-      let close: number | null = null;
-      let closeDate: string | null = null;
-      for (const bar of series) {
-        const barDate = etDateString(new Date(bar.t));
-        if (barDate >= day.tradingDate) break;
-        close = bar.c;
-        closeDate = barDate;
-      }
-      if (close === null || close <= 0) continue;
+      const pairs = pairsBySymbol.get(day.symbol);
+      if (!pairs) continue;
 
-      const resolved = resolvePriorClose(close, adjustedByKey.get(`${closeDate} ${day.symbol}`));
+      // The last session strictly before this trading date. Reading the series
+      // rather than the calendar means a symbol that did not trade the previous
+      // session is handled the same way a halt is: by using the last session it
+      // actually printed in.
+      const index = pairs.findIndex((pair) => pair.date >= day.tradingDate);
+      const priorIndex = (index === -1 ? pairs.length : index) - 1;
+      if (priorIndex < 0) continue;
+      const prior = pairs[priorIndex];
+      if (prior.raw <= 0) continue;
+
+      const target = pairs.find((pair) => pair.date === day.tradingDate) ?? null;
+      const resolved = resolveBaseline(prior, target);
       day.referenceClose = resolved.referenceClose;
       day.referenceBasis = resolved.splitDetected
         ? 'PRIOR_SESSION_SPLIT_ADJUSTED'
         : 'PRIOR_SESSION_FETCHED';
-      splitFlags.set(`${day.tradingDate} ${day.symbol}`, {
-        split: resolved.splitDetected,
-        rawPriorClose: resolved.rawPriorClose,
-      });
+      rawPriorCloses.set(`${day.tradingDate} ${day.symbol}`, resolved.rawPriorClose);
       if (resolved.splitDetected) splits += 1;
       fetched += 1;
     }
@@ -282,8 +296,8 @@ async function main(): Promise<void> {
     }
     if (splits > 0) {
       console.log(
-        `[archive] ${splits} of those crossed a SPLIT and are measured against the ` +
-          'split-adjusted close; the as-seen figure is kept in raw_prior_close',
+        `[archive] ${splits} of those crossed a SPLIT and are restated onto the session's ` +
+          'own basis; the as-seen figure is kept in raw_prior_close',
       );
     }
   }
@@ -337,10 +351,8 @@ async function main(): Promise<void> {
         referenceBasis: desk?.referenceBasis ?? null,
         closeMinutes,
         dailyBar: dailyByKey.get(`${date} ${symbol}`) ?? null,
-        splitDetected: splitFlags.has(`${date} ${symbol}`)
-          ? Number(splitFlags.get(`${date} ${symbol}`)?.split)
-          : null,
-        rawPriorClose: splitFlags.get(`${date} ${symbol}`)?.rawPriorClose ?? null,
+        rawPriorClose: rawPriorCloses.get(`${date} ${symbol}`) ?? null,
+        splitSessionsAgo: sessionsSinceSplit(pairsBySymbol.get(symbol) ?? [], date),
         asOf,
       });
       if (outcome.minuteBarCount === 0) empty += 1;

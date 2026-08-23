@@ -123,6 +123,18 @@ The instrument exists; the data does not yet. It has only ever run against the
 stale local store, which ends 2026-08-18. **Q1 turns on 19, 20 and 21 August,
 and those dates live only on production.**
 
+**Waiting on Ops: one `npm run archive:export` from the production store.** It
+opens the store read-only, needs no deploy, and produces ~1-3 MB rather than a
+250 MB+ snapshot — the backfill reads two tables and fetches the rest from
+Alpaca. The same command reports checkpoints per trading date, which also
+answers whether the desk recorded anything on the three days in question. Full
+procedure in the findings note.
+
+**Ordering once those dates land**: the split test first, because it serves Q1,
+which is active. `split_sessions_ago` makes the reverse-split half of Q1's third
+hypothesis a query — 21 of 100 symbol-days had a split within 30 sessions, where
+a same-day-only check saw 2. Q5 stays proposed until Q1 has a verdict.
+
 What was already there and turned out to be enough:
 
 - `desk_assessments` and `desk_assessment_tickers` are **append-only**, with 40+

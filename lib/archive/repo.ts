@@ -20,7 +20,7 @@ export function upsertOutcomes(
 
   const statement = db.prepare(
     `INSERT INTO symbol_outcomes
-       (symbol, trading_date, reference_close, reference_basis, split_detected, raw_prior_close,
+       (symbol, trading_date, reference_close, reference_basis, raw_prior_close, split_sessions_ago,
         session_high, session_low, time_of_high, max_gain_pct, time_of_max_gain,
         volume, dollar_volume, premarket_high, premarket_high_at,
         rth_open, rth_high, rth_low, rth_close, official_close, official_volume,
@@ -28,7 +28,7 @@ export function upsertOutcomes(
         next_open, next_high, halt_count, luld_event_count,
         minute_bar_count, adjustment_basis, source, as_of, run_id)
      VALUES
-       (@symbol, @tradingDate, @referenceClose, @referenceBasis, @splitDetected, @rawPriorClose,
+       (@symbol, @tradingDate, @referenceClose, @referenceBasis, @rawPriorClose, @splitSessionsAgo,
         @sessionHigh, @sessionLow, @timeOfHigh, @maxGainPct, @timeOfMaxGain,
         @volume, @dollarVolume, @premarketHigh, @premarketHighAt,
         @rthOpen, @rthHigh, @rthLow, @rthClose, @officialClose, @officialVolume,
@@ -38,8 +38,8 @@ export function upsertOutcomes(
      ON CONFLICT(symbol, trading_date) DO UPDATE SET
        reference_close = excluded.reference_close,
        reference_basis = excluded.reference_basis,
-       split_detected = excluded.split_detected,
        raw_prior_close = excluded.raw_prior_close,
+       split_sessions_ago = excluded.split_sessions_ago,
        session_high = excluded.session_high,
        session_low = excluded.session_low,
        time_of_high = excluded.time_of_high,
