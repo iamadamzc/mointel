@@ -175,12 +175,13 @@ one-shot with per-ticker instability marked. **The decision on the 3x is the
 trader's and the premise has changed since he authorised the original.**
 
 **What this archive adds.** Catalyst moved in 29 of 56 re-analyses (52%) and
-never in 1192 same-version pairs. Against a re-run instability of about a third,
-most of that 52% is the model disagreeing with itself rather than new evidence
-changing the answer. The arithmetic is loose — 2 of 6 names, rates that are not
-additive, and a production comparison that cannot hold evidence constant — but
-the direction is not in doubt, and it bears on anything reading grade
-transitions as events.
+never in 1192 same-version pairs. Against a 33% noise floor, and treating noise
+and real change as independent, the implied real-change rate is around 28% —
+**comparable to the noise, with neither dominating.** The arithmetic is
+illustrative, not an estimate: six names, an independence assumption, and a
+production comparison that cannot hold evidence constant. What survives is that
+the noise floor is large enough that grade transitions cannot be read as events
+without saying so.
 
 **Join arithmetic, unchanged by the retraction.** A replay emits one grade per
 ticker, not per symbol-day; `readSources` has no date filter. Of 172 tickers
@@ -207,12 +208,18 @@ changed" means "the name was re-analysed", and an unknown fraction of those are
 re-generation. **The ageing mechanism already covers it**: `analysis_version_id`
 is per row and backs the whole dossier, and that zero row is what licenses
 saying so, so nothing new needs capturing if structure is ever archived. And
-**this archive cannot re-measure the 2-of-6 rate** — over the same 56
-re-analyses structure and catalyst each moved 29 times, and catalyst is known
-stable at 0 of 6 on fixed evidence, which proves the production figure is
-dominated by genuine evidence change rather than instability. 52% is not a
-competing estimate and must not be quoted as one. Separating the two needs
-evidence held constant, which is Research's replay instrument.
+**this archive cannot re-measure those rates.** An earlier version of this
+argued the 52% was dominated by real evidence change because catalyst was
+"known stable at 0 of 6"; that came from two control runs and is withdrawn. The
+four-run figures are **cycle 2 of 6, catalyst 2 of 6, structure 3 of 6** —
+nothing is known stable. Against those floors the observed 52% implies a real-
+change rate near 28% for catalyst, where neither noise nor signal dominates, and
+near 4% for structure, where the noise floor essentially *is* the observed churn
+and no room is left for signal. That last one is robust to the exact numbers,
+since 50% and 52% are the same to any precision six names support. 52% remains
+not a competing estimate — but because it is an inseparable mixture, not because
+it is mostly signal. **The zero row is what stands untouched**: it is a
+structural fact about the archive, not an inference from anyone's controls.
 
 Worth having in front of whoever decides the field's future: `structure` takes
 **three values** over 1459 non-null rows — `CAUTION` 871, `UNKNOWN` 365,

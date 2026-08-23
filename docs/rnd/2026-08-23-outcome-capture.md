@@ -528,24 +528,28 @@ repeats per version and a modal grade, roughly 3x the authorised spend. The
 executing run will arrive labelled one-shot with per-ticker instability marked,
 which is the right way to ship it.
 
-#### What this archive can add: most grade churn is not information
+#### What this archive can add: how much grade churn is information
 
-The production record puts a number on it. Across 1248 consecutive checkpoint
+The production record puts bounds on it. Across 1248 consecutive checkpoint
 pairs, catalyst moved **29 times in 56 re-analyses — 52%** — and never once in
 1192 same-version pairs.
 
-Set that against Research's finding that re-running on *identical* evidence
-moves the grade for about a third of names. Then of the 52% observed churn,
-something on the order of 33 points is the model disagreeing with itself and
-only the remainder is new evidence changing the answer. **Most of what looks
-like the desk revising its view is the interpreter being re-run**, not the
-market moving.
+Set that against a re-run instability of 2 of 6 on identical evidence. Treating
+noise and real change as independent, a 33% floor under a 52% observed rate
+leaves a real-change rate around 28%. **Noise and signal are comparable and
+neither dominates** — the churn is roughly half the interpreter disagreeing with
+itself and half the evidence having moved.
 
-The arithmetic is deliberately loose — the noise estimate is 2 of 6 names, the
-two rates are not simply additive, and the production comparison cannot hold
-evidence constant. It is an order of magnitude, not a decomposition. But the
-direction is not in doubt and it bears on anything that reads grade transitions
-as events, which is the same caution `structureClassification` already needed.
+An earlier version of this section said most of it was noise, and an earlier
+section still said most of it was signal. Both overclaimed; the honest answer is
+that they are the same order and this data cannot separate them further.
+
+The arithmetic is illustrative rather than an estimate. The floor comes from six
+names — a 2-of-6 rate carries a 95% interval from roughly 4% to 78% — the
+independence assumption is an assumption, and the production comparison cannot
+hold evidence constant, which is the whole reason the indirect route is needed.
+What survives all of that is the ordering: the noise floor is large enough that
+grade transitions cannot be read as events without saying so.
 
 #### Join arithmetic, which the retraction does not change
 
@@ -616,20 +620,49 @@ verification that licenses saying so, since structure never moves while the
 version holds. If structure is ever added here, the ageing mechanism built for
 the catalyst grade covers it with no new capture. Nothing to build today.
 
-**Should the 2-of-6 rate be re-measured at this archive's sample sizes?** No,
-and the production numbers are the reason rather than an excuse. Over the same
-56 re-analyses, structure and catalyst each moved 29 times — identical rates,
-with 13 moving independently of the other in each direction. Under Research's
-controlled design catalyst was stable at 0 of 6. A field known to be stable on
-fixed evidence moving 52% of the time here is proof that **this measurement is
-dominated by genuine evidence change**, not by instability: a version change
-means new evidence was collected, so both fields have a legitimate reason to
-move and the design cannot separate the two.
+**Should these rates be re-measured at this archive's sample sizes?** No, and
+the reasoning below replaces an earlier argument of mine that rested on a
+premise Research has since withdrawn.
 
-**So 52% is not a competing estimate of anything and must not be quoted as one.**
-Separating noise from real change needs evidence held constant, which is
-Research's replay instrument and costs a run. Observational data cannot
-substitute for it at any n.
+*What I argued, and why it is dead.* I said the 52% could not be a noise
+estimate because catalyst moved on the identical 29 re-analyses while being
+"known stable at 0 of 6" on fixed evidence. That 0 of 6 came from two control
+runs. At four runs per arm the revised figures — all from the same data and
+therefore comparable — are **cycle 2 of 6, catalyst 2 of 6, structure 3 of 6**.
+Nothing is known stable. The supporting step is gone.
+
+*What the numbers actually support.* Take the observed 52% against each field's
+own noise floor, treating noise and real change as independent:
+
+| Field | noise floor | observed churn on re-analysis | implied real-change rate |
+| --- | --- | --- | --- |
+| catalyst | 2 of 6 (33%) | 52% | ~28% |
+| structure | 3 of 6 (50%) | 52% | **~4%** |
+
+For catalyst the two are comparable and **neither dominates** — which means both
+of my previous statements were wrong, in opposite directions. For structure the
+noise floor essentially *is* the observed churn: there is no room left for
+signal, and that conclusion is robust to the exact numbers because 50% and 52%
+are the same to any precision this data supports.
+
+The arithmetic is illustrative and not an estimate. The floors come from six
+names — a 2-of-6 rate has a 95% interval running from roughly 4% to 78% — the
+independence assumption is an assumption, and the production comparison cannot
+hold evidence constant, which is the whole reason this indirect route is needed
+at all.
+
+*What still stands, untouched.* The zero row: **0 moves across 1192 same-version
+pairs**, on every field. That is a structural fact about the archive rather than
+an inference from anyone's control runs, and it was never resting on the
+withdrawn premise. It establishes that nothing is spuriously rewritten within a
+version — which is the archive's integrity claim — and it is what licenses
+saying `analysis_version_id` already covers structure. It does not, and never
+did, say anything about whether cross-version changes are signal or noise.
+
+**So 52% is still not a competing estimate, but for a different reason than I
+gave.** It is a mixture that observational data cannot separate, not a
+demonstration that it is mostly signal. Separating them needs evidence held
+constant, which is Research's replay instrument.
 
 One thing the extract does add, unprompted and relevant to whether the field is
 worth stabilising: `structure` takes **three values** across 1459 non-null rows —
