@@ -66,7 +66,34 @@ data layer needs and cannot reach SQLite.
 Both of those produce commits. **They come here to be deployed.** Take the
 handoff, run the gate, deploy — do not review their design decisions.
 
-## State as of 2026-08-23
+## State as of 2026-08-23 (evening)
+
+Production is **`5ee47d8`**, schema **v21**, deployed 16:17 ET Sunday — the fifth
+deploy of the weekend, carrying Design's `aa98b70` (the Move label moved onto the
+visible button) so Monday's verification list is four of four rather than three.
+Gate at that sha: **1239 tests / 80 files**, lint, typecheck, build. No
+migration. All four services active plus nginx. Health `ok`.
+
+**SIP untouched for the fifth deploy running** — `mointel-market` still pid
+129202, `NRestarts=0`, start still Sun 01:27:36 UTC, no journal entries in any
+deploy window. Still deliberately on `fd9556f`.
+
+**The nginx asset fix is now reconciled, not merely agreeing.** It was
+hand-applied by reload; `deploy.sh` reinstalls that file from the release, so
+until this deploy the running config and the repo agreed only because they had
+been made to. They are now the same artifact — `diff` of the installed file
+against the release copy is identical — and it was re-tested through CloudFront
+afterwards: build asset **200** without auth, `/api/market` still **401**. A
+hand-applied config surviving a deploy is not something to assume.
+
+**The pin earned its keep a second time.** This deploy's prune removed `775c5a9`
+and printed `keep fd9556f (pinned)`. Two consecutive deploys where the pin, not
+keep-3, is the only thing holding the directory the live worker runs from.
+
+**Live but unverified**, per `abf38e1`: whether the Move button reads the session
+wording is Design's claim, not this thread's.
+
+## State as of 2026-08-23 (morning — superseded above, kept for the reasoning)
 
 Production is **`28c7f12`**, schema **v21**, deployed 04:04 ET Sunday — the third
 deploy of the weekend, taking Research's `55f3e20` handoff (the share-count bug
