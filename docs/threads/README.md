@@ -324,6 +324,59 @@ category, what the desk believed at an instant, while leaving untouched
 everything that could be re-fetched. It destroys precisely the wrong half.**
 The archive is out of its reach; `desk_assessment_tickers` is not.
 
+## There is no such thing as "the float", and it is measurable
+
+**Established 2026-08-24 from a manual Scanz pull of 18 board names, float and
+shares outstanding taken from the same panel at the same instant.** Every float
+anywhere is somebody's computation — there is no `float` field in any SEC
+filing. Vendors derive it and disagree.
+
+**Four of eighteen are arithmetically impossible.** Float is a subset of shares
+outstanding, and Scanz's own documentation says so: *"Float is similar to
+outstanding shares, except it only counts shares that are currently available
+for investors to trade."*
+
+| | Float | Shares Out | Float/SO |
+| --- | ---: | ---: | ---: |
+| CDTG | 2,766,994 | 541,000 | **511%** |
+| TNON | 604,972 | 322,753 | **187%** |
+| AEIS | 39,622,303 | 38,027,612 | **104%** |
+| SGLY | 520,964 | 520,963 | one share over |
+
+Plus two ADR unit mismatches — FENG 0.91%, HUIZ 0.44% — float apparently in ADSs
+against ordinary shares. **Six of eighteen carry a detectable defect.**
+
+**Splits are neither necessary nor sufficient**, established by R&D over two
+years of history: CDTG split 1:25 about 57 sessions back, TNON 1:35 about 8
+back, SGLY 1:14 about 18 back — but **AEIS has no split in two years and is
+still broken**, and **PFSA split four sessions before the pull and is internally
+consistent.** Even where a split exists the magnitudes do not reconcile: CDTG's
+5.11 against a 1:25, TNON's 1.87 against a 1:35. The direction fits, the size
+does not.
+
+**So the design conclusion is: do the check, do not predict it.** `float > SO`
+fires on all four bad rows whatever the cause. A recent-split flag catches two,
+wrongly clears AEIS and SGLY, and wrongly flags PFSA — **wrong on three of
+five.** If a float-confidence signal ships with a split component, that
+component is the part that will mislead.
+
+**ADRs are 11% of the board**, not an edge case — the desk already classifies
+them (`ADR_ADS`, `lib/market/securities.ts`, 291 symbols), and 27 of 252 board
+symbols qualify. So `float/SO < 2%` checks roughly one name in nine.
+
+**Why this beats a multi-vendor range**, in R&D's framing: cross-vendor
+disagreement tells you *one of them is wrong*. **`float > SO` tells you which
+number to refuse**, from one source, for free, with no second licence and no
+adjudication.
+
+**Buildable with data the desk already holds, but not yet co-located.**
+`sharesOutstanding` and `sharesOutstandingDate` are on the research dossier
+(`lib/research/types.ts:490`) for 62 of 77 issuers since `55f3e20`; float
+resolves in `lib/dashboard/merge.ts`; the ADR class sits in `lib/market/`. Three
+modules, and **`lib/market/` is the one no charter owns.** Plumbing rather than
+new data — and against SEC-filed shares outstanding the test is *stronger* than
+Scanz's own, because the denominator is filed rather than derived.
+
 ## Facts every thread starts from
 
 As of the last session, **2026-08-23**:
