@@ -44,6 +44,19 @@ export const BACKSIDE_RETRACEMENT = 0.5;
  * 2x is the desk's own eligibility floor. Volume returning to normal is what
  * resets the dial: a move is over when nobody is trading it any more, not when
  * some number of days have passed.
+ *
+ * Three sessions is measured, not assumed. Chance a cycle still makes a NEW
+ * high within five sessions, after N consecutive quiet ones:
+ *
+ *   1 quiet session   5.9%
+ *   2                 5.1%
+ *   3                 3.7%
+ *   4                 3.9%
+ *   5                 3.9%
+ *
+ * One or two quiet sessions still leave a real chance the move comes back. By
+ * three it has fallen by a third and the curve flattens — four and five buy
+ * nothing. The elbow is the threshold.
  */
 export const SHADOW_RVOL = 2;
 export const SHADOW_SESSIONS = 3;
