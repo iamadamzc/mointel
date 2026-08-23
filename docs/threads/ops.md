@@ -24,17 +24,27 @@ handoff, run the gate, deploy — do not review their design decisions.
 
 ## State as of 2026-08-23
 
-Production is **`775c5a9`**, schema **v21**, deployed 22:37 ET Saturday into the
-closed-market window — the second deploy of the evening, carrying R&D's archive
-tooling so the assessment extract could be cut from the release. Gate green at
-that sha: **1150 tests / 76 files**, lint, typecheck, build. No migration, as
-expected: `SCHEMA_VERSION` is 21 on both sides and migrate wrote 0 backups.
-Market IDLE, connection STREAMING. Research IDLE. Assessments idle, next
-`STRUCTURAL_REFRESH` Monday 06:10 ET.
+Production is **`28c7f12`**, schema **v21**, deployed 04:04 ET Sunday — the third
+deploy of the weekend, taking Research's `55f3e20` handoff (the share-count bug
+fix; no worker loop, no retry path, no schema change) and, with it, R&D's
+`85bd8e9` fix for the export `rm -rf`. Gate at that sha: **1173 tests / 76
+files**, lint, typecheck, build. No migration: `SCHEMA_VERSION` is 21 on both
+sides, migrate wrote 0 backups. Market IDLE, connection STREAMING. Research
+IDLE. Assessments idle, next `STRUCTURAL_REFRESH` Monday 06:10 ET.
 
-Both deploys ran with `RESTART_MARKET` at its default of `no`, and the SIP
-connection was never touched by either — `mointel-market` `NRestarts=0` across
-both, no journal entries in either deploy window.
+**The gate went red on its first run and was not waved through** — 1172/1173,
+`releaseBootstrap` again, a different assertion from the morning's. Isolated
+5/5, full re-run 1173/1173. See Open item 4; the sighting is what upgraded that
+item from odd to owned.
+
+The `rm -rf` hold is lifted: `grep -c rmSync` on the deployed
+`worker/archive-export.ts` is **0**, and `--dry-run` is now a genuine read that
+ignores `--out` entirely. Verified on the box, not taken on report.
+
+All three deploys ran with `RESTART_MARKET` at its default of `no`, and the SIP
+connection was never touched by any of them — `mointel-market` `NRestarts=0`
+throughout, still pid 129202 from the 01:27:36 restart, no journal entries in
+any deploy window.
 
 **The market worker deliberately runs an older release than `current`, and that
 is the design.** It was restarted once, at 01:27:36 UTC, to clear drift it had
@@ -47,6 +57,12 @@ two more deploys, but "retention will probably cover it" is exactly the
 reasoning that was wrong about `80437c3`. The pin comes off when the worker next
 moves. It earned itself immediately: the `775c5a9` deploy's prune removed
 `80437c3` — the very directory the worker was running from this morning.
+
+Three deploys in, the arithmetic has caught up: prune has now removed `80437c3`
+and `32e47c9`, and retention holds `28c7f12`, `775c5a9`, `fd9556f`. **The next
+deploy is the one where keep-3 would drop `fd9556f` and the pin becomes the only
+thing keeping the running worker's directory alive.** That is the deploy the pin
+was placed for.
 
 **Two rollback pins now exist**: `market-worker-release` = `fd9556f` and
 `rollback-baseline` = `372f5eb` (schema v18). This
