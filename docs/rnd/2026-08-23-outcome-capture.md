@@ -1296,6 +1296,79 @@ read-time filter over the same fact — so this is a pure improvement rather tha
 a redefinition. Not built; it changes a column a live finding reads from and is
 worth doing deliberately.
 
+#### Second Scanz pull: arithmetic verified, two counts off, and a correction of my own
+
+*44 more names, 2026-08-24. Integration asked for verification rather than
+agreement, having been wrong twice on this data. Every ratio recomputed from the
+raw figures.*
+
+**All the arithmetic is right.** SDOT 1440.6%, TWG 1097.6%, AUUD 971.0%, ZSTK
+284.6%, BTOG 150.3%; SCNI 0.020%, XTLB 0.159%, ADXN 0.678%, EVAX 1.362%, ZKH
+1.631%, JFU 1.963%; STKH 421.8%. Row counts confirm: 33 main, 11 ADR
+supplement, 2 floats missing with SO present.
+
+**Two counts do not reconcile, and both matter because this decides a build.**
+
+*`float > SO` is 8 or 9 depending on an unstated judgement.* Second pull gives 5,
+first pull gave 4 — CDTG, TNON, AEIS and SGLY. That is 9. The headline of 8
+requires excluding **SGLY, where float exceeds SO by exactly one share**
+(520,964 against 520,963). That exclusion is defensible and I made the same call
+myself, but it is a judgement about rounding rather than a count, and it should
+be stated rather than absorbed.
+
+*The ADR denominator is not 12.* Computable ratios: 10 in the supplement —
+ENRDW has no SO — plus YJ is 11, or 13 if the first pull's FENG and HUIZ are
+included. The numerator of 8 works on the 11 (six under 2%, plus YJ, plus STKH);
+on 13 it is 10. **8 of 11 or 10 of 13, not 8 of 12.** The direction is unaffected
+either way; the rate is high on any reading.
+
+**A name nobody flagged: SIMA at 1.802%.** A non-ADR, classified
+`COMMON_EQUITY`, under the 2% unit-mismatch threshold and not on anyone's list.
+Either it is a second misclassified ADR like YJ, or the ratio test has a false
+positive on an ordinary share. It is in the archive and never ran — best gain 6%
+— so nothing turned on it, but it is the first evidence about the *specificity*
+of the 2% test and it points the wrong way.
+
+##### Does `float > SO` correlate with anything here?
+
+Ten flagged names, nine in the archive, against the 25 clean names from the same
+pull:
+
+| | in archive | ever ran 50%+ | had a split | ADR |
+| --- | --- | --- | --- | --- |
+| flagged (`float > SO`) | 9 | 7 (**78%**) | **9 (100%)** | 1 |
+| clean, same pull | 25 | 16 (64%) | 13 (52%) | 0 |
+| whole archive | 252 | 77 (31%) | — | 27 |
+
+**Not with outcome.** 78% against 64% on nine names is nothing, and both are far
+above the 31% baseline because *both samples were drawn from names the trader was
+already looking at*. The comparison inside the pull is the only valid one and it
+shows no effect. Nor with price — flagged spans $0.86 to $13.18, clean $0.97 to
+$11.59 — nor with ADR status, one of nine.
+
+**So "nothing" is the answer, and it is the one that makes the arithmetic check
+the only viable signal.** There is no cheaper predictor hiding here; the test has
+to be the test.
+
+##### Correcting myself: "splits explain at most half" was wrong
+
+Every one of the nine flagged names in the archive has a split — 9 of 9, at 0,
+6, 15, 18, 54, 60, 94, 262 and 271 sessions. Yesterday this note said splits were
+"neither necessary nor sufficient" and explained at most half, on the strength of
+CDTG reading null and SGLY looking like rounding.
+
+**That was measured on the 30-session cap, which is the very thing this thread
+removed hours later.** CDTG is 54 sessions, SGLY is 15. The reasoning was wrong
+and I should have distrusted it for exactly the reason I gave Integration when
+*they* made the same mistake: absence of detection is not detection of absence.
+
+The conclusion survives, on better grounds. **Splits do not discriminate**, not
+because flagged names lack them but because **13 of 25 clean names have one
+too** — over a ~400-session window a split is a common event, not a rare one.
+AEIS is still the counterexample with none in two years. So a confidence signal
+built on "was there a recent split" remains the wrong design, and the arithmetic
+check remains the right one. Same answer, sounder reason.
+
 #### The 65-field audit: what this thread will annotate for
 
 Research produces the inventory, Design annotates what must survive on screen,
