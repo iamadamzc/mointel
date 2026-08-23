@@ -111,6 +111,34 @@ cannot be cited on its own. Design has flagged this rather than editing a shared
 document; the fix is either to date-scope the section to the milestone it
 described or to split the still-true entries out of it.
 
+## Observations go stale; this thread reports them anyway
+
+**Added 2026-08-23 after the third instance, which finally named the shared
+cause.** The section below is about attributing a file to a thread. It is a
+special case of something broader:
+
+1. `rnd.md` reported as held by R&D — three times, twice after the rule below
+   existed. R&D said outright that something was "reading a stale snapshot".
+2. `design-audit-report.md` §11 listed as carrying a retracted claim. It never
+   did; the reading was of a document as it had been described, not as it was.
+3. **"It is 11:47 ET"**, quoted to two threads while planning a deploy window.
+   It had been 11:47 ET when the clock was read. By the time it was quoted the
+   real time was 15:31 ET — nearly four hours stale. Ops caught it, and noted
+   that it made the window *wider* than described so nothing was lost. **The
+   checkpoint arithmetic depends on that number.** Deploy preflight refuses
+   within five minutes of a checkpoint; a stale clock is exactly how a thread
+   talks itself into a window that has closed.
+
+The common failure is not carelessness about any one fact. It is that **this
+thread's whole job is reading state and telling other threads about it**, and
+the reading and the telling are separated by minutes or hours of other work.
+Every observation it relays is a snapshot presented as a present tense.
+
+So: **re-read anything time-sensitive at the moment of reporting it, or stamp
+it.** A clock, a `git status`, a session list, a deploy state. "As of 11:47
+ET" costs three words and cannot mislead; "it is 11:47 ET" is a claim about
+now that was true once. When it is cheap, re-read. When it is not, stamp it.
+
 ## `git status` does not say who
 
 **Added 2026-08-23 after this thread got it wrong twice.** I reported
