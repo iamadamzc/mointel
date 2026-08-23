@@ -55,7 +55,7 @@ interface ResponsesPayload {
  * because a model that follows them produces better output than one that gets
  * corrected, and neither is trusted alone.
  */
-export const SYSTEM_PROMPT = `You are the interpretation layer of a momentum trading desk's research system.
+export const SYSTEM_PROMPT_A = `You are the interpretation layer of a momentum trading desk's research system.
 
 You receive an evidence bundle that was collected by a separate deterministic
 pipeline: SEC filings and exhibits, company and newswire sources, and market
@@ -98,6 +98,53 @@ without support in the collected sources.
 
 Never produce buy or sell instructions, price targets, or trading advice.
 Describe what the evidence shows and what remains unknown.`;
+
+/**
+ * Variant B: the same instructions, with a positive criterion for CLEAN and a
+ * definition for CAUTION.
+ *
+ * Variant A says only when NOT to reach CLEAN and which way to fall, and never
+ * says what would justify it -- while CLEAN_REQUIRES_RECONCILIATION holds a
+ * precise, satisfiable test the model is never shown. Across 94 dossiers CLEAN
+ * was chosen zero times and that guardrail never fired once: CLEAN was not
+ * proposed and downgraded, it was never proposed. CAUTION, the only verdict
+ * guarded by nothing, took 64%.
+ *
+ * Built by substitution rather than as a second literal so the two variants
+ * cannot drift anywhere except the passage under test. The substring is
+ * asserted at module load: a later edit to A that silently stopped producing B
+ * would otherwise leave the experiment comparing A with A.
+ *
+ * UNDER TEST, NOT ADOPTED. RESEARCH_PROMPT_VARIANT selects it, the default is A,
+ * and deploying this changes nothing until someone asks for B.
+ */
+const CLEAN_RULE_A = `- CLEAN requires affirmative evidence that the structure was reconciled. The
+  absence of a detected warning is NOT evidence of CLEAN. Prefer UNKNOWN.`;
+
+const CLEAN_RULE_B = `- CLEAN requires affirmative evidence that the structure was reconciled, which
+  means ALL of: coverage has no recorded gaps; registration evidence was
+  located; a reported share count is present; you cite at least one source; and
+  you have marked no supply block KNOWN_ACTIVE beyond a negligible amount. The
+  absence of a detected warning is NOT evidence of CLEAN - but where every one
+  of those holds, CLEAN is the correct answer and UNKNOWN is not.
+- CAUTION means supply was identified and could not be quantified or dated. It
+  is not a way to avoid deciding. Where nothing was identified at all, say
+  UNKNOWN. Where the CLEAN conditions above all hold, say CLEAN.`;
+
+if (!SYSTEM_PROMPT_A.includes(CLEAN_RULE_A)) {
+  throw new Error('SYSTEM_PROMPT_A no longer contains the CLEAN rule variant B substitutes');
+}
+
+export const SYSTEM_PROMPT_B = SYSTEM_PROMPT_A.replace(CLEAN_RULE_A, CLEAN_RULE_B);
+
+export type PromptVariant = 'A' | 'B';
+
+export function systemPromptFor(variant: PromptVariant): string {
+  return variant === 'B' ? SYSTEM_PROMPT_B : SYSTEM_PROMPT_A;
+}
+
+/** The default variant, under its original name, for existing callers. */
+export const SYSTEM_PROMPT = SYSTEM_PROMPT_A;
 
 function buildInput(bundle: ResearchEvidenceBundle): string {
   return [
@@ -169,6 +216,7 @@ function buildAdjudicationInput(request: AdjudicationRequest): string {
 export class OpenAiInterpreter implements ResearchInterpreter {
   readonly name: string;
   readonly model: string;
+  private readonly systemPrompt: string;
   private readonly fetchImpl: typeof fetch;
 
   constructor(private readonly options: OpenAiInterpreterOptions) {
@@ -178,6 +226,7 @@ export class OpenAiInterpreter implements ResearchInterpreter {
         ? options.config.escalationModel
         : options.config.researchModel;
     this.name = options.tier === 'ESCALATION' ? 'openai-escalation' : 'openai-research';
+    this.systemPrompt = systemPromptFor(options.config.promptVariant ?? 'A');
   }
 
   get available(): boolean {
@@ -212,7 +261,7 @@ export class OpenAiInterpreter implements ResearchInterpreter {
 
     const body = {
       model: this.model,
-      instructions: SYSTEM_PROMPT,
+      instructions: this.systemPrompt,
       input,
       // Explicitly empty. Interpretation must not reach past the evidence
       // store; source discovery belongs to Phase 3.

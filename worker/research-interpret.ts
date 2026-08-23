@@ -128,7 +128,7 @@ async function main(): Promise<void> {
   const sheetLoad = await loadSheetPriors();
   const sheetPriors = sheetLoad.priors;
   console.log(
-    `[interpret] ${tradingDate}, ${symbols.length} ticker(s), model=${interpreter.model}, sheet priors=${sheetPriors.size}${sheetLoad.error ? ` (sheet unavailable: ${sheetLoad.error})` : ''}\n`,
+    `[interpret] ${tradingDate}, ${symbols.length} ticker(s), prompt=${config.model.promptVariant}, prior=${config.model.omitSheetPrior ? 'OMITTED' : 'included'}, model=${interpreter.model}, sheet priors=${sheetPriors.size}${sheetLoad.error ? ` (sheet unavailable: ${sheetLoad.error})` : ''}\n`,
   );
 
   const totals = { terra: 0, sol: 0, repair: 0, input: 0, output: 0, ms: 0, accepted: 0 };
@@ -144,7 +144,8 @@ async function main(): Promise<void> {
       const report = await interpretTicker(db, interpreter, escalation, {
         ticker: symbol,
         tradingDate,
-        priorHumanAnalysis: prior?.analysis ?? null,
+        // Snapshot still supplied; only the model's exposure to the prior varies.
+        priorHumanAnalysis: config.model.omitSheetPrior ? null : (prior?.analysis ?? null),
         sheetSnapshot: prior?.snapshot ?? null,
         force,
         onLog: (message) => console.log(`  ${message}`),

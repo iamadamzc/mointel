@@ -16,9 +16,28 @@ import type {
   Confidence,
   ResearchDossier,
   StructureClassification,
+  SupplyBand,
   SupplyBlock,
   SupplyBound,
 } from '../types';
+
+/**
+ * Below this the established supply cannot move the name and must not veto
+ * CLEAN.
+ *
+ * The one number in this file not derived from evidence. The bands around it
+ * come from the observed spread of block sizes; this cut point is a judgement,
+ * named so it is visible and tunable rather than buried in a comparison.
+ */
+const NEGLIGIBLE_SUPPLY_RATIO = 0.01;
+
+function supplyBandFor(ratio: number): SupplyBand {
+  if (ratio >= 1) return 'EXCEEDS_SHARE_COUNT';
+  if (ratio >= 0.5) return 'SEVERE';
+  if (ratio >= 0.1) return 'HEAVY';
+  if (ratio >= NEGLIGIBLE_SUPPLY_RATIO) return 'PRESENT';
+  return 'NEGLIGIBLE';
+}
 
 export type ViolationSeverity = 'REJECT' | 'DOWNGRADE';
 
@@ -200,6 +219,7 @@ function computeSupplyBound(
     activeSupplyShares,
     sharesOutstanding: reported.shares,
     ratioLowerBound,
+    band: supplyBandFor(ratioLowerBound),
     exceedsSharesOutstanding: activeSupplyShares >= reported.shares,
     blocksCounted,
     blocksWithoutShareCount,
@@ -354,13 +374,46 @@ export function validateDossier(
     }
   }
 
+  /*
+   * Validated before the classification checks below, not after.
+   *
+   * `corrected.structure` starts with an empty ledger, so while this ran later
+   * every check that read `structure.supplyLedger` saw `[]` — which silently
+   * reduced DIRTY_FLOAT_REQUIRES_EVIDENCE from "neither a ledger nor cited
+   * evidence" to "no cited evidence". CLEAN now depends on the ledger too, so
+   * the order is load-bearing rather than incidental.
+   */
+  structure.supplyLedger = dossier.structure.supplyLedger.map((block, index) =>
+    validateSupplyBlock(block, index, bundle, violations),
+  );
+  structure.supplyBound = computeSupplyBound(structure.supplyLedger, bundle);
+
   // Absence of a warning is not evidence of cleanliness.
   if (structure.structureClassification === 'CLEAN') {
+    /*
+     * Established supply that could not be quantified always vetoes CLEAN —
+     * that is the definition of CAUTION. Quantified supply vetoes it unless the
+     * bound is NEGLIGIBLE, because a hard "any active block" rule treated
+     * 26,768 acquisition shares like 21M registered resale shares and would
+     * have kept CLEAN unreachable for a new reason.
+     */
+    const unquantifiedActiveSupply = structure.supplyLedger.some(
+      (block) =>
+        block.status === 'KNOWN_ACTIVE' &&
+        !(typeof block.amountShares === 'number' && block.amountShares > 0),
+    );
+    const materialSupply =
+      structure.supplyBound !== null &&
+      structure.supplyBound !== undefined &&
+      structure.supplyBound.band !== 'NEGLIGIBLE';
+
     const reconciled =
       !bundle.coverage.incomplete &&
       bundle.coverage.hasRegistrationEvidence &&
       bundle.coverage.hasSharesOutstanding &&
-      structure.evidenceSourceIds.length > 0;
+      structure.evidenceSourceIds.length > 0 &&
+      !unquantifiedActiveSupply &&
+      !materialSupply;
 
     if (!reconciled) {
       violations.push(
@@ -368,12 +421,37 @@ export function validateDossier(
           'CLEAN_REQUIRES_RECONCILIATION',
           'DOWNGRADE',
           'structure.structureClassification',
-          'CLEAN requires affirmative evidence that the structure was reconciled. Coverage is incomplete or key structural evidence is missing, so the absence of a detected warning does not support CLEAN.',
+          unquantifiedActiveSupply || materialSupply
+            ? 'CLEAN was asserted while the ledger carries live supply. Established supply that is unquantified, or quantified above the negligible band, is a reason to reconcile rather than a structure that has been reconciled.'
+            : 'CLEAN requires affirmative evidence that the structure was reconciled. Coverage is incomplete or key structural evidence is missing, so the absence of a detected warning does not support CLEAN.',
         ),
       );
       structure.structureClassification = 'UNKNOWN' as StructureClassification;
       structure.confidence = downgradeConfidence(structure.confidence);
     }
+  }
+
+  /*
+   * CAUTION was the only verdict guarded by nothing, so it was the cheapest
+   * answer available and took 64% of the board while CLEAN took none. It means
+   * supply was identified and could not be pinned down; with nothing identified
+   * at all, the honest answer is UNKNOWN.
+   */
+  if (
+    structure.structureClassification === 'CAUTION' &&
+    structure.supplyLedger.length === 0 &&
+    structure.structuralWarnings.length === 0
+  ) {
+    violations.push(
+      violation(
+        'CAUTION_REQUIRES_IDENTIFIED_SUPPLY',
+        'DOWNGRADE',
+        'structure.structureClassification',
+        'CAUTION was asserted with no supply block and no structural warning. CAUTION means supply was identified but could not be quantified or dated; where nothing was identified the answer is UNKNOWN.',
+      ),
+    );
+    structure.structureClassification = 'UNKNOWN' as StructureClassification;
+    structure.confidence = downgradeConfidence(structure.confidence);
   }
 
   // DIRTY_FLOAT is a strong claim and must rest on identified supply.
@@ -401,10 +479,6 @@ export function validateDossier(
     );
   }
 
-  structure.supplyLedger = dossier.structure.supplyLedger.map((block, index) =>
-    validateSupplyBlock(block, index, bundle, violations),
-  );
-
   // Unknown never becomes zero.
   if (structure.sharesOutstanding === 0) {
     violations.push(
@@ -423,14 +497,6 @@ export function validateDossier(
     );
     structure.displayedFloat = null;
   }
-
-  /*
-   * Computed last in this section, over the ledger the checks above have
-   * already corrected, so a rejected or downgraded block cannot reach the
-   * numerator. Derived, so no violation is raised either way: a bound is an
-   * observation about the evidence, not a fault in the output.
-   */
-  structure.supplyBound = computeSupplyBound(structure.supplyLedger, bundle);
 
   /* ---------------------------------------------------------------- cycle */
 

@@ -15,7 +15,8 @@ import { validateDossier } from '@/lib/research/interpret/guardrails';
 import { EMPTY_HISTORY_SUMMARY } from '@/lib/research/history';
 import { shouldEscalate } from '@/lib/research/interpret/escalation';
 import { interpretTicker } from '@/lib/research/interpret/pipeline';
-import { OpenAiInterpreter, SYSTEM_PROMPT } from '@/lib/research/interpret/openaiInterpreter';
+import { OpenAiInterpreter, SYSTEM_PROMPT, SYSTEM_PROMPT_A, SYSTEM_PROMPT_B, systemPromptFor } from '@/lib/research/interpret/openaiInterpreter';
+import { readResearchConfig } from '@/lib/research/config';
 import { NoopInterpreter, type InterpretResult, type ResearchInterpreter } from '@/lib/research/interpret/interpreter';
 import { AUTOMATIC_DOSSIER_SCHEMA } from '@/lib/research/interpret/schema';
 import { compareSheetAndAuto } from '@/lib/research/merge/sheetAuto';
@@ -47,6 +48,8 @@ const MODEL_CONFIG = {
   escalationModel: 'sol-model',
   changeDetectModel: 'luna-model',
       resolverSearchContext: null,
+  promptVariant: 'A' as const,
+  omitSheetPrior: false,
 };
 
 function dossier(overrides: Partial<ResearchDossier> = {}): ResearchDossier {
@@ -78,7 +81,10 @@ function dossier(overrides: Partial<ResearchDossier> = {}): ResearchDossier {
       floatConfidence: 'UNKNOWN',
       structureClassification: 'CAUTION',
       supplyLedger: [],
-      structuralWarnings: [],
+      // CAUTION means supply was identified and could not be pinned down. All
+      // 60 real CAUTION dossiers carry a ledger or a warning; none carry
+      // neither, so the fixture states one.
+      structuralWarnings: ['Shelf on file; capacity not quantified.'],
       reverseSplitHistory: [],
       knownRegistrationStatus: null,
       summary: 'Shelf on file.',
@@ -1308,5 +1314,139 @@ describe('supply bound', () => {
     expect(result.violations.map((v) => v.rule)).toContain('REGISTRATION_IS_NOT_SELLING');
     expect(result.dossier.structure.supplyBound!.activeSupplyShares).toBe(1_000_000);
     expect(result.dossier.structure.supplyBound!.exceedsSharesOutstanding).toBe(false);
+  });
+});
+
+describe('supply materiality bands', () => {
+  const reported = {
+    shares: 10_000_000, asOf: '2026-08-11',
+    concept: 'dei:EntityCommonStockSharesOutstanding', sourceId: 1,
+    note: 'shares outstanding is not float' as const,
+  };
+
+  function boundFor(shares: number) {
+    return validateDossier(
+      dossier({
+        structure: {
+          ...dossier().structure,
+          supplyLedger: [supply({ type: 'RECENT_OFFERING', amountShares: shares, status: 'KNOWN_ACTIVE' })],
+        },
+      }),
+      bundle({ reportedSharesOutstanding: reported }),
+    ).dossier.structure.supplyBound;
+  }
+
+  // The observed blocks span 26,768 to 21,254,106 shares. A single boolean at
+  // 1.0 called those the same finding.
+  it.each([
+    [26_768, 'NEGLIGIBLE'],
+    [201_120, 'PRESENT'],
+    [2_500_000, 'HEAVY'],
+    [7_000_000, 'SEVERE'],
+    [12_000_000, 'EXCEEDS_SHARE_COUNT'],
+  ])('bands %i shares as %s', (shares, band) => {
+    expect(boundFor(shares as number)!.band).toBe(band);
+  });
+});
+
+describe('CLEAN and CAUTION gates', () => {
+  const reported = {
+    shares: 10_000_000, asOf: '2026-08-11',
+    concept: 'dei:EntityCommonStockSharesOutstanding', sourceId: 1,
+    note: 'shares outstanding is not float' as const,
+  };
+
+  function clean(ledger: SupplyBlock[]) {
+    return validateDossier(
+      dossier({
+        structure: {
+          ...dossier().structure,
+          structureClassification: 'CLEAN',
+          structuralWarnings: [],
+          supplyLedger: ledger,
+        },
+      }),
+      bundle({ reportedSharesOutstanding: reported }),
+    );
+  }
+
+  it('allows CLEAN when established supply is negligible', () => {
+    const result = clean([supply({ type: 'ACQUISITION_SHARES', amountShares: 26_768, status: 'KNOWN_ACTIVE' })]);
+    expect(result.dossier.structure.structureClassification).toBe('CLEAN');
+    expect(result.violations.map((v) => v.rule)).not.toContain('CLEAN_REQUIRES_RECONCILIATION');
+  });
+
+  it('blocks CLEAN once established supply is material', () => {
+    const result = clean([supply({ type: 'RECENT_OFFERING', amountShares: 2_500_000, status: 'KNOWN_ACTIVE' })]);
+    expect(result.dossier.structure.structureClassification).toBe('UNKNOWN');
+    expect(result.violations.map((v) => v.rule)).toContain('CLEAN_REQUIRES_RECONCILIATION');
+  });
+
+  it('blocks CLEAN on established supply nobody could quantify', () => {
+    // No share count, so no bound exists — the veto cannot come from the ratio
+    // and has to come from the block being live and unmeasured.
+    const result = clean([supply({ type: 'ATM', amountShares: null, dollarCapacity: 5_000_000, status: 'KNOWN_ACTIVE' })]);
+    expect(result.dossier.structure.structureClassification).toBe('UNKNOWN');
+  });
+
+  it('sends CAUTION with nothing identified back to UNKNOWN', () => {
+    const result = validateDossier(
+      dossier({
+        structure: {
+          ...dossier().structure,
+          structureClassification: 'CAUTION',
+          supplyLedger: [],
+          structuralWarnings: [],
+        },
+      }),
+      bundle(),
+    );
+    expect(result.violations.map((v) => v.rule)).toContain('CAUTION_REQUIRES_IDENTIFIED_SUPPLY');
+    expect(result.dossier.structure.structureClassification).toBe('UNKNOWN');
+  });
+
+  it('leaves CAUTION alone when supply really was identified', () => {
+    const result = validateDossier(
+      dossier({
+        structure: {
+          ...dossier().structure,
+          structureClassification: 'CAUTION',
+          supplyLedger: [supply({ type: 'WARRANTS', amountShares: null, status: 'POSSIBLY_ACTIVE' })],
+        },
+      }),
+      bundle(),
+    );
+    expect(result.dossier.structure.structureClassification).toBe('CAUTION');
+  });
+});
+
+describe('prompt variants', () => {
+  it('B differs from A only in the CLEAN and CAUTION passage', () => {
+    expect(SYSTEM_PROMPT_B).not.toBe(SYSTEM_PROMPT_A);
+    expect(SYSTEM_PROMPT_B).toMatch(/CAUTION means supply was identified/);
+    expect(SYSTEM_PROMPT_B).toMatch(/CLEAN is the correct answer and UNKNOWN is not/);
+    // Everything the desk relies on must survive the substitution.
+    for (const rule of [
+      /Shares outstanding is NOT float/,
+      /dollar shelf is capacity/i,
+      /never produce buy or sell instructions/i,
+      /High turnover proves nothing about\s+absorption/,
+      /HUMAN_REVIEWED_PRIOR_ANALYSIS/,
+    ]) {
+      expect(SYSTEM_PROMPT_A).toMatch(rule);
+      expect(SYSTEM_PROMPT_B).toMatch(rule);
+    }
+  });
+
+  it('defaults to A, so deploying the variant changes nothing', () => {
+    expect(systemPromptFor('A')).toBe(SYSTEM_PROMPT_A);
+    expect(readResearchConfig({ SEC_USER_AGENT: 'x' } as unknown as NodeJS.ProcessEnv).model.promptVariant).toBe('A');
+    expect(readResearchConfig({ SEC_USER_AGENT: 'x' } as unknown as NodeJS.ProcessEnv).model.omitSheetPrior).toBe(false);
+  });
+
+  it('selects the arms from the environment', () => {
+    const env = { SEC_USER_AGENT: 'x', RESEARCH_PROMPT_VARIANT: 'b', RESEARCH_OMIT_SHEET_PRIOR: '1' } as unknown as NodeJS.ProcessEnv;
+    expect(readResearchConfig(env).model.promptVariant).toBe('B');
+    expect(readResearchConfig(env).model.omitSheetPrior).toBe(true);
   });
 });

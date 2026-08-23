@@ -375,6 +375,28 @@ export interface SupplyBlock {
  * below 1.0 therefore means "not proven from established supply alone", never
  * "clean".
  */
+/**
+ * Materiality band for a supply bound.
+ *
+ * A single boolean at 1.0 treated 26,768 acquisition shares and 21,254,106
+ * registered resale shares as the same finding, which they are not — the
+ * observed blocks span three orders of magnitude. Banding is on the RATIO, not
+ * the raw count, because a million shares is noise against a 45M base and fatal
+ * against a 1.9M float.
+ *
+ * The bands are not symmetric in what they license. Because the denominator is
+ * an upper bound on float, a HIGH band is conclusive — the true ratio is at
+ * least that — while NEGLIGIBLE proves almost nothing, since 1% of shares
+ * outstanding could be 5% of a float that is a fifth of the share count. So
+ * NEGLIGIBLE only removes a veto; it is never evidence for CLEAN.
+ */
+export type SupplyBand =
+  | 'NEGLIGIBLE'
+  | 'PRESENT'
+  | 'HEAVY'
+  | 'SEVERE'
+  | 'EXCEEDS_SHARE_COUNT';
+
 export interface SupplyBound {
   /** Sum of amountShares across KNOWN_ACTIVE blocks that state a share count. */
   activeSupplyShares: number;
@@ -382,6 +404,8 @@ export interface SupplyBound {
   sharesOutstanding: number;
   /** activeSupplyShares / sharesOutstanding. A LOWER bound on supply-to-float. */
   ratioLowerBound: number;
+  /** Banded form of the ratio. Prefer this on any surface; see SupplyBand. */
+  band: SupplyBand;
   /** True when established supply alone equals or exceeds the entire share count. */
   exceedsSharesOutstanding: boolean;
   /** How many ledger blocks the numerator rests on. */

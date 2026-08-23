@@ -26,6 +26,8 @@ const MODEL: ModelConfig = {
   escalationModel: 'e',
   changeDetectModel: 'c',
   resolverSearchContext: null,
+  promptVariant: 'A' as const,
+  omitSheetPrior: false,
 };
 
 interface Captured {

@@ -372,7 +372,10 @@ async function main(): Promise<void> {
           const report = await interpretTicker(db, interpreter, escalation, {
             ticker: job.ticker,
             tradingDate,
-            priorHumanAnalysis: prior?.analysis ?? null,
+            // Arm control: the snapshot is deliberately still supplied, so the
+            // comparison and its escalation path are unchanged and only the
+            // model's exposure to the prior varies.
+            priorHumanAnalysis: config.model.omitSheetPrior ? null : (prior?.analysis ?? null),
             sheetSnapshot: prior?.snapshot ?? null,
             onLog: log,
           });
