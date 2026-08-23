@@ -376,6 +376,7 @@ async function main(): Promise<void> {
             // comparison and its escalation path are unchanged and only the
             // model's exposure to the prior varies.
             priorHumanAnalysis: config.model.omitSheetPrior ? null : (prior?.analysis ?? null),
+            promptVariant: config.model.promptVariant,
             sheetSnapshot: prior?.snapshot ?? null,
             onLog: log,
           });

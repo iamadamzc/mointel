@@ -146,6 +146,7 @@ async function main(): Promise<void> {
         tradingDate,
         // Snapshot still supplied; only the model's exposure to the prior varies.
         priorHumanAnalysis: config.model.omitSheetPrior ? null : (prior?.analysis ?? null),
+        promptVariant: config.model.promptVariant,
         sheetSnapshot: prior?.snapshot ?? null,
         force,
         onLog: (message) => console.log(`  ${message}`),

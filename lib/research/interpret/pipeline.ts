@@ -96,6 +96,8 @@ export interface InterpretOptions {
   /** Why the job existed, carried through so spend can be grouped by purpose. */
   trigger?: string | null;
   priorHumanAnalysis?: SheetPriorAnalysis | null;
+  /** Recorded on the stored analysis so replay arms are self-labelling. */
+  promptVariant?: 'A' | 'B';
   /**
    * Normalised human conclusions for deterministic comparison. Supplying this
    * is what makes the SHEET_AUTO_CONFLICT criterion reachable at all.
@@ -349,6 +351,17 @@ export async function interpretTicker(
     metadata: {
       schemaVersion: AUTOMATIC_DOSSIER_SCHEMA_VERSION,
       promptVersion: INTERPRETER_PROMPT_VERSION,
+      /*
+       * Which arm produced this row.
+       *
+       * promptVersion alone cannot say: variant B changes the instructions
+       * without changing the schema, so both variants report version 1 and
+       * three replay arms would land as indistinguishable rows distinguished
+       * only by the order someone ran them in. Recorded per row so a diff reads
+       * the store rather than a run log.
+       */
+      promptVariant: options.promptVariant ?? 'A',
+      sheetPriorOmitted: options.priorHumanAnalysis === null && options.sheetSnapshot != null,
       repaired,
       repairCount: metrics.repairCalls,
       escalated,
