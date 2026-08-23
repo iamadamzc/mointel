@@ -543,6 +543,47 @@ measured negative rather than a blind spot. And that `sourceShape` was undefined
 across the registry — withdrawn; the field does not exist in that schema and its
 absence was read as breakage.
 
+### The grades in this window were made without the share count
+
+*Reported by Research via Integration, 2026-08-23.* The reported share count was
+parsed into metadata that `toBundleSource` never forwarded, so **the interpreter
+never saw it** — while coverage recorded the fact as present. Fixed; it now
+reaches the model for 62 of 77 issuers, against 27 of 94 before.
+
+This is a quality boundary running straight through this archive. Every catalyst
+grade in the 17-21 August window was produced *before* that fix, by a model that
+in most cases had not been shown the share count. The grades are not wrong for
+it, but they were made on less than their own coverage claimed, and a re-run
+after the fix would not be reproducing them — it would be answering a better-fed
+question. Any comparison across that boundary has to say which side it is on.
+
+It bears hardest on hypothesis 3. Share count is the supply variable, and
+supply events are precisely what that hypothesis says the catalyst became. The
+split result stands regardless — `split_sessions_ago` comes from raw and
+split-adjusted daily bars and never touches a dossier — but the *catalyst-grade*
+half of testing hypothesis 3 was run blind to the number most relevant to it.
+
+Two things worth carrying forward:
+
+- **The supply bound is now banded rather than boolean**, on the ratio rather
+  than the raw count: `NEGLIGIBLE`, `PRESENT`, `HEAVY`, `SEVERE`,
+  `EXCEEDS_SHARE_COUNT`. Deliberately asymmetric — a high band is conclusive
+  because the denominator is an upper bound on float, while `NEGLIGIBLE` proves
+  almost nothing. That asymmetry has to survive into any analysis: the bands are
+  not a scale and their midpoint is not a middle. It is the first supply
+  variable that would be usable for hypothesis 3 beyond splits, and this archive
+  does not capture it yet.
+- **A status field claiming more than it delivered** is the same shape as the
+  problem this note has hit twice already — `intelligence_status` reading
+  `AVAILABLE` for a grade served from an older analysis, and `rth_close` looking
+  like the official close. Coverage said the share count was present; the model
+  had never seen it. Worth stating as a pattern rather than three coincidences,
+  because the next one will look like the last two.
+
+This archive's own coverage measure is not affected: it classifies whether an
+analysis *existed*, not what went into one. That is a narrower claim than it
+might look, and narrow is why it survives.
+
 ### Float is Sheet-derived, which reaches this archive
 
 `resolveDisplayedFloat` (`lib/dashboard/merge.ts:143`) has exactly two branches,
