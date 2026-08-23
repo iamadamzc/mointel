@@ -262,6 +262,25 @@ As of the last session, **2026-08-23**:
   part that is false. Three of those four times are this desk's own
   checkpoints, inherited from the same workflow. Open in
   [research.md](research.md) item 5 and audit §11 item 1.
+- **Two of the four ChatGPT tasks are PAUSED as of 2026-08-23.** `9:25 Opening
+  Spike Assessment` and `Close & Learn Momentum` — both **paused, not deleted**,
+  last run Friday 2026-08-21, reversible in one click. Nothing on the desk reads
+  either: `load()` requests only `TODAY!A1:AA` and `RESEARCH!A1:AK`, so dated
+  tabs are never fetched, and the 09:25 block is bounded out of TODAY by the
+  identity test.
+
+  **Still running, and they must be:** `After-Hours Momentum Recap` (22:00) and
+  `Premarket Momentum Confirmation` (06:10). Task 1 is the sole writer of
+  `TODAY!A:S` where float is column I; task 2 updates `RESEARCH`, adds newly
+  qualifying premarket names, and fills `T:AA`, which supplies
+  `catalyst.latest`, `catalyst.latestTime` and `warning.current`. **Stopping
+  either degrades the board silently, with no error anywhere.**
+
+  **The consequence with a date on it: the Sheet's outcome ledger closes at
+  2026-08-21.** `OUTCOMES`, `PATTERNS` and the dated-tab scorecards stop
+  accumulating from that session. The 148 graded rows and nine dated tabs remain
+  and are still readable — they are simply now a **closed corpus** rather than a
+  growing one. Anything wanting more of that data has to be built here.
 - **Retiring the Sheet takes pillar 5 with it unless float is replaced first.**
   `resolveDisplayedFloat` (`lib/dashboard/merge.ts:143`) has exactly two
   branches, the Sheet's RESEARCH tab and its TODAY tab, and the type says so:
