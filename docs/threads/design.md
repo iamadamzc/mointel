@@ -238,9 +238,33 @@ gated on `evidenceFingerprint` changing (`:277`). The machinery to distinguish a
 re-read from a real change already exists in the same function and structure
 does not use it.
 
-So `STRUCTURE_CHANGED` fires on model variance **today**, and has been doing so
-into every stored checkpoint. Item 12 would not introduce the problem; it would
-put an existing one on screen and make a trader watch it.
+**Corrected 2026-08-23 by measurement — the claim above was overstated.** Design
+wrote that `STRUCTURE_CHANGED` "fires on model variance today, and has been doing
+so into every stored checkpoint." R&D then measured **1,248 consecutive
+checkpoint pairs**: **0** structure moves across 1,192 same-version pairs, **29**
+across 56 version changes. Every structure move in the stored record coincides
+with a new analysis version and none occurs without one — and catalyst moved on
+the identical 29, which (catalyst being stable on fixed evidence) says those are
+real evidence change rather than noise.
+
+So **the archive is not contaminated**. The missing gate is real; the exposure
+Design inferred from it was not. A re-read that produces no new analysis version
+never writes a new value, so variance had no route into the record.
+
+**The gate is still required, for a narrower reason.** A new analysis version
+does *not* imply new evidence — escalation re-adjudicates a disputed field over
+the *same* sources, which is precisely where Research's 1-in-3 instability lives.
+The stored zero holds because the pipeline is designed not to re-analyse on an
+unchanged fingerprint, not because version change and evidence change are the
+same thing.
+
+**Rule, restated:** gate on the **evidence fingerprint**, not the version id.
+R&D noted version id is a cheaper proxy that currently coincides, but the
+fingerprint is already in hand at `assessment.ts:277`, so there is no saving to
+buy with a proxy. And when a reading changes with no evidence change, the rail
+must not word it as a change *about the stock* — what changed is the desk's
+read, not the company. Item 12 may surface it, worded as a re-read, or stay
+silent; it may never say "structure changed".
 
 **Design rule for item 12:** a classification change earns a rail line **only
 when the evidence fingerprint also changed**. Otherwise it is a re-read and the
@@ -249,15 +273,38 @@ volume, halt — need no such gate, and catalyst is measured stable. This settle
 Integration's "which fields earn a place" before the rail is designed rather
 than after.
 
-**Handed over, not fixed here:** the ungated `STRUCTURE_CHANGED` writes into
-`desk_assessments`, which is R&D's archive substrate. Stored checkpoints may
-already carry structure changes that are variance rather than events. That is a
-data-integrity question about recorded history, not a display question — raised
-with R&D and Research.
+**Archive contamination: raised, measured, and closed.** Design handed this to
+R&D as a data-integrity question. R&D's 1,248-pair measurement answers it — the
+stored record is clean. Nothing further is owed.
 
-**Not verified:** whether `CYCLE_CHANGED` (`:273`, gated identically to
-structure) has the same instability. Unmeasured, and worth measuring before the
-rail ships.
+**`CYCLE_CHANGED` (`:273`) remains unmeasured**, and Integration notes it sits
+between three threads, which is where things go missing. Design cannot measure
+it — that needs re-running the interpreter over identical evidence, which is
+Research's machinery. Design can refuse to ship it: the fingerprint gate above
+is agnostic about *which* classification, so the rail is safe by construction
+whether or not anyone measures cycle. **The measurement question stays open and
+unowned; the rail is not exposed to it.**
+
+### Two numbers about this field, and only one is a noise figure
+
+Recorded because two measurements of `structureClassification` arrived an hour
+apart from different threads, and they are not comparable.
+
+| Source | Figure | What it measures |
+| --- | --- | --- |
+| Research | **2 of 6** | Instability on **byte-identical** evidence. **This is the noise figure.** |
+| R&D | 29 of 56 | Structure moves across **version changes**, dominated by real evidence change (catalyst moved on the same 29) |
+
+**R&D's 52% is not a competing estimate of noise and must never be quoted as
+one.** R&D said so explicitly. Any design rationale citing an instability rate
+cites 2 of 6.
+
+**Base rate, which is what makes the noise figure matter.** Structure takes three
+values across 1,459 non-null rows: `CAUTION` 871, `UNKNOWN` 365, `DIRTY_FLOAT`
+223. The mode is 60% of the mass. Against a three-value field with that little
+resolution, a 1-in-3 flip rate is **large**, not marginal — which is the
+quantitative case for the rule already adopted above: **where a deterministic
+fact and a model verdict say the same thing, the row shows the fact.**
 
 ## Next session — item 16a, and only 16a
 
