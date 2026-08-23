@@ -184,6 +184,44 @@ preflight bootstrap that would have blocked every future deploy, and an enum
 leak that only real dossiers could reveal. Both branches of the bootstrap fix
 have now been exercised, not just the fallback.
 
+## Gate the sha, not the tree
+
+**Six threads commit to this repo. The working tree is not yours and `HEAD` moves
+while you measure.** On 2026-08-23 a gate was reported green and `HEAD` had moved
+**twice** before the ship decision — the second move brought in a surface switch
+that was uncommitted when the gate started. A green result on a tree you do not
+control proves nothing about the sha you would ship, and a red one sends you
+hunting a defect in somebody else's half-finished work.
+
+**The method:**
+
+```bash
+S=<scratchpad>/gate-$(git rev-parse --short HEAD)
+git worktree add --detach "$S" HEAD          # pinned, immune to the main tree
+cmd //c mklink //J "$(cygpath -w "$S")\\node_modules" "$(cygpath -w /a/mointel)\\node_modules"
+cd "$S" && npm test && npm run lint && npm run typecheck
+```
+
+Then **remove the junction with `cmd //c rmdir` BEFORE `git worktree remove`** —
+a recursive delete would follow it and take the real `node_modules` with it.
+Verify the package count after.
+
+**Two things it does not do, both found by doing it:**
+
+- **`npm run typecheck` fails on a fresh worktree** with `Cannot find name
+  'LayoutProps'` until a build has generated `.next/types` — `tsconfig.json`
+  includes `.next/types/**/*.ts`. That is an artifact, not a defect. Build first,
+  or read that specific error as noise.
+- **`npm run build` cannot use the junction.** Turbopack refuses it outright:
+  *"Symlink [project]/node_modules is invalid, it points out of the filesystem
+  root"*. The remaining gap in this method; closing it needs a real `npm ci` in
+  the worktree.
+
+**The cheap substitute for the build**, when the sha is close to one already
+built: `git diff --stat <last-built-sha>..<target> -- . ':!docs' ':!tests'`. If
+that is empty, the build result carries. It carried on 2026-08-23 — two
+docs-only commits.
+
 ## Read this before the next deploy: one expected failure, and its observable
 
 **The deploy that ships `97f198d` will SIGKILL the research worker one last
