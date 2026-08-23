@@ -155,8 +155,18 @@ As of the last session, **2026-08-23**:
   is the Sheet's.** Float under 10M is one of the five pillars, and
   `displayedFloatTurnover` and part of `risk.ts` hang off the same number. The
   migration decision of 2026-08-23 was taken before anyone knew this. It is not
-  a reason to reverse it — it is a **precondition** on sequencing, and Research
-  is scoping a replacement from SEC filings already collected.
+  a reason to reverse it — it is a **precondition** on sequencing.
+  **The replacement is part-built and deliberately paused.** Research shipped
+  the reported share count into the bundle and a `supplyBound` that settles the
+  supply question without a float at all (`55f3e20`, live in `c73eb9d`). The
+  actual derived float — Section 16 and 13D holdings — is **unstarted by
+  choice**: the bound may answer the trading question often enough that an
+  estimated float is not worth its error bars, and the affiliate-versus-passive
+  question is unsettled (13G filers are passive institutions and their shares
+  are float). So the Sheet cannot be removed yet, and nobody is currently
+  working toward removing it. That is a reasonable call, not a stall — but it
+  is a pause, and a reader of this line was previously told scoping was under
+  way.
 - Credentials live in `A:\AWS_creds\` — **outside the repo, and they stay there.**
   Never print, log, commit or move a credential value.
 - Project memory is at `~/.claude/projects/A--mointel/memory/` — seven files:
