@@ -50,6 +50,12 @@ transport. He is not one. When a thread sends something for another thread:
 relay it promptly, add the context the receiver is missing, and put anything
 durable in a charter rather than leaving it in two transcripts.
 
+**The bus produces findings, not just faster delivery.** Ops found the SIGKILL
+because a relayed message sent it to read a log it had no other reason to open.
+That is worth knowing when weighing whether a relay is worth the hop: a direct
+report answers the question asked, while a relay carrying context from a third
+thread sometimes sends someone somewhere they were not going.
+
 **Relaying is not repeating.** A bare forward is worth little — the value is in
 what the receiving thread does not know: that the number it is about to act on
 was retracted, that the file it is being handed is owned by nobody, that the
@@ -312,6 +318,23 @@ admitted every legacy row in `hasUsableSource`, because an absent key
 deserialises to `undefined` rather than `null`. Both are a guard enumerating
 what to refuse, against a producer free to invent a new thing to return.
 
+**A third costume, and it is not a data guard at all.** `worker/research.ts:193`
+installs `process.on('SIGTERM', () => clearInterval(heartbeat))` and then loops
+forever. **Installing a SIGTERM listener overrides Node's default action, which
+is to terminate** — so the handler added to tidy up is exactly what removed the
+exit. The research worker has been **SIGKILLed on every deploy today**, three
+for three, thirty seconds of `stop-sigterm` timeout each. `worker/alpaca.ts`
+handles SIGTERM and exits. `worker/desk-assessments.ts` stops cleanly **because
+nobody improved it.**
+
+So: **a partial handler is worse than none.** Same rule — it enumerated one
+thing to do on the way out and inherited responsibility for all of them. The
+cost is not the thirty seconds: a SIGKILL mid-job abandons an in-flight model
+call with tokens spent and nothing recorded, and can leave a claimed row with no
+process behind it. **That is a candidate mechanism for the ten QUEUED rows the
+health endpoint does not see**, open since this morning and connected to nothing
+until Ops read a log.
+
 This sits beside the two rules below rather than replacing them. "A check that
 cannot fail isn't a check" is about whether an observation can come out badly;
 "check the field that carries the answer" is about reading the right one.
@@ -342,6 +365,13 @@ opposite case exists. It is: **name the field that carries the answer, and
 confirm it can distinguish the failure you are testing for.** A status code
 cannot tell a live capability from a revoked one when the route returns 200 for
 both. A token counter can tell a real run from a fabricated one, and did.
+
+**And a fourth instance, from Ops against its own record.** After each of three
+deploys it reported *"all four services active"*. True, and the wrong check: it
+verified **state after starting** and never **the manner of stopping**. The
+project memory says in as many words that clean-shutdown claims must be tested,
+because one such claim was already false once and cost three orphaned workers.
+The evidence sat in `journalctl` all evening.
 
 The practical form, since this thread relays other threads' verifications:
 **when a thread reports a check, ask what it read.** "Verified" is not a
