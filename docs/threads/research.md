@@ -1,4 +1,4 @@
-# Thread: Research & Model Cost
+# Thread: Research Pipeline
 
 **Owns what the desk knows and what it pays to know it.** Evidence collection,
 source resolution, the interpreter, dossier quality, and the OpenAI bill.
@@ -21,10 +21,6 @@ Ops kept absorbing these. The fix is always in `lib/research/`.
 
 ## Scope
 
-- **The market archive** — [../DATA-ARCHIVE.md](../DATA-ARCHIVE.md), agreed
-  2026-08-23 and not yet built. Calls, outcomes, and the longitudinal record
-  that answers why catalyst-driven names stopped leading. This is now the
-  largest piece of work in this thread.
 - `lib/research/` — queue, retry policy, provider errors, interpreter
 - Source resolution and catalyst collection; the resolver-first path and the
   urgent first-qualification path for a newly qualifying Top-12 name
@@ -39,6 +35,11 @@ Background on how the pipeline was built and why:
 
 - Deploying → [ops.md](ops.md)
 - How dossiers are *presented* → [design.md](design.md)
+- **The market archive and the market-structure question** →
+  [rnd.md](rnd.md). Split out 2026-08-23: this thread generates incidents, and a
+  thread owning both an incident stream and an open research question will only
+  ever work on the incidents. This thread's job is that the pipeline produces
+  honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
 ## State as of 2026-08-21
 

@@ -172,7 +172,7 @@ archive meant to last. History must not live where a mode switch can reach it.
 
 ## Related
 
-- [threads/research.md](threads/research.md) — the thread that owns this
+- [threads/rnd.md](threads/rnd.md) — the thread that owns this, and the question it serves
 - [threads/coaching.md](threads/coaching.md) — fills, adherence, bucket 1
 - `A:\trade_research\momentum\viscosity` — the tape research this feeds. Its
   Databento archive is frozen and non-extendable, which is why the desk's live

@@ -12,10 +12,11 @@ then paste that charter's opening message.
 | --- | --- | --- |
 | **Ops** | The live desk, AWS, deploys, incidents | [ops.md](ops.md) |
 | **Design** | The trader-facing UI, the audit remediation | [design.md](design.md) |
-| **Research** | The interpreter, evidence collection, model spend, the market archive | [research.md](research.md) |
+| **Research Pipeline** | The interpreter, evidence collection, model spend | [research.md](research.md) |
+| **R&D** | The market-structure question, the archive, the tape research | [rnd.md](rnd.md) |
 | **Coaching** | Daily fills, execution against the playbook | [coaching.md](coaching.md) |
 
-## Why four
+## Why five
 
 Ops and Design are obviously different jobs. Research is split out because it is
 what kept *interrupting* Ops: the OpenAI balance emptying, the 403 runaway jobs,
@@ -23,10 +24,19 @@ the retry policy. Those read as production incidents, but the fix is always in
 `lib/research/`, and the decision is always about cost. It deserves its own
 thread with its own budget in view.
 
-Coaching was added 2026-08-23. It is the only thread about the trader rather
+**R&D was split from the Research Pipeline on 2026-08-23**, and the reason is the
+same one that split Research from Ops. `lib/research/` is plumbing that generates
+incidents — empty balances, runaway jobs, retry policy. The market-structure
+question is open-ended research. A thread holding both will always spend its
+time on the incidents, because incidents have deadlines and questions do not.
+The pipeline's job is honest catalyst grades at a defensible cost; what those
+grades mean is R&D. R&D also owns the tape research in a different repo
+entirely.
+
+Coaching was added the same day. It is the only thread about the trader rather
 than the market, it runs daily rather than by project, and it is the one
-carrying personal financial records — which need handling the other three never
-think about. It shares exactly one thing with Research: tier C of the archive.
+carrying personal financial records — which need handling the others never think
+about. It shares exactly one thing with R&D: tier C of the archive.
 
 ## The rule that keeps them separate
 
