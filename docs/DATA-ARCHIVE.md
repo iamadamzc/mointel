@@ -1,7 +1,10 @@
 # The market archive
 
-**Status: specification, not yet built.** Agreed 2026-08-23. The thresholds and
-fields below are settled; the code is not written.
+**Status: step 1 built 2026-08-23; steps 2-4 still specification.** The
+thresholds and fields below are settled. Outcome capture and the coverage
+rollup exist in `lib/archive/` — see
+[rnd/2026-08-23-outcome-capture.md](rnd/2026-08-23-outcome-capture.md), which
+also records four things this document got wrong.
 
 The desk records what it believed. It does not record what happened next. This
 document specifies the second half — a longitudinal record of calls and
@@ -161,8 +164,14 @@ archive meant to last. History must not live where a mode switch can reach it.
 ## Sequence
 
 1. **Outcome capture, with a backfill** over the assessments already recorded.
-   Cheapest first step, and `daily_bars` is never pruned and already holds 100
-   trading dates — so a useful history exists the day this ships.
+   **Built 2026-08-23** — `lib/archive/`, `npm run archive:backfill`. The
+   original reasoning here was wrong and is left in place as a record: it said
+   `daily_bars` is never pruned and holds 100 trading dates, so a useful history
+   would exist the day this shipped. `daily_bars` is a research-cycle artifact,
+   split-adjusted, covering only symbols that got a cycle analysis, and it
+   missed 43 of the first 100 assessed symbol-days. The backfill fetches raw
+   minute bars instead. See
+   [rnd/2026-08-23-outcome-capture.md](rnd/2026-08-23-outcome-capture.md).
 2. **Nightly archival extract** for tier B and C membership. The viscosity work
    shows the scale is practical: 442 symbol-days, 92.9M trades and 64.1M quotes,
    2.036 GiB, ~60 minutes at 5 workers, zero retries.

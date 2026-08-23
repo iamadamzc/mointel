@@ -26,7 +26,9 @@
     "research:collect": "tsx --conditions=react-server worker/research-collect.ts",
     "research:catalyst": "tsx --conditions=react-server worker/research-catalyst.ts",
     "research:interpret": "tsx --conditions=react-server worker/research-interpret.ts",
-    "research:diagnose": "tsx --conditions=react-server worker/research-diagnose.ts"
+    "research:diagnose": "tsx --conditions=react-server worker/research-diagnose.ts",
+    "archive:backfill": "tsx worker/archive-backfill.ts",
+    "archive:coverage": "tsx worker/archive-backfill.ts --coverage-only"
   },
   "dependencies": {
     "better-sqlite3": "^11.10.0",

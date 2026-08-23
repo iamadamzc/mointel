@@ -36,6 +36,7 @@ questions is a thread that has stopped working.
 | Q2 | What share of qualifying movers ever produce a tradeable pullback at all? | 2026-08-23 | proposed |
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | proposed |
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | dormant — see closed lines below |
+| Q5 | When does a board name's move happen, relative to when the desk puts it on the board? | 2026-08-23 | proposed — **answerable today**, see the findings note |
 
 **Closed, and not to be reopened without new evidence:**
 
@@ -112,19 +113,34 @@ analysis to run, not a caveat to append.
 
 ## State as of 2026-08-23
 
-**Nothing built.** The archive is specified and agreed; no code exists.
+**Step 1 is built and has run.** Outcome capture plus the coverage rollup:
+`lib/archive/`, `worker/archive-backfill.ts`, `npm run archive:backfill` and
+`npm run archive:coverage`. Findings, defects and limits are in
+[../rnd/2026-08-23-outcome-capture.md](../rnd/2026-08-23-outcome-capture.md).
+Read that before touching the archive.
 
-Useful on day one:
+The instrument exists; the data does not yet. It has only ever run against the
+stale local store, which ends 2026-08-18. **Q1 turns on 19, 20 and 21 August,
+and those dates live only on production.**
+
+What was already there and turned out to be enough:
 
 - `desk_assessments` and `desk_assessment_tickers` are **append-only**, with 40+
   fields of frozen per-ticker state at every checkpoint and a deterministic diff
   against the previous one. The record of what the desk believed — the half
   nobody could reconstruct later.
-- `daily_bars` is **never pruned** and already holds ~100 trading dates.
-  Outcomes can be backfilled over every assessment already recorded.
 - The catalyst grade is stored per ticker per checkpoint with provenance, and
   `UNKNOWN` is an honest verdict rather than a gap. That is Q1's independent
-  variable, already labelled.
+  variable, already labelled. **Coverage needed no new capture** — the desk
+  already recorded, per ticker per checkpoint, whether a look had happened.
+
+What turned out not to be there:
+
+- **`daily_bars` cannot serve the backfill.** It is a research-cycle artifact —
+  populated only for symbols that got a cycle analysis, and split-adjusted. 43
+  of 100 assessed symbol-days have no row in it. The backfill fetches raw
+  minute bars instead, which is strictly better: it also gives `time_of_high`,
+  the premarket high, and the windowed gains.
 
 ## Working rules
 
