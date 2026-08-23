@@ -189,9 +189,31 @@ async function main(): Promise<void> {
   }, POLL_MS);
   heartbeat.unref?.();
 
-  const stopHeartbeat = () => clearInterval(heartbeat);
-  process.on('SIGINT', stopHeartbeat);
-  process.on('SIGTERM', stopHeartbeat);
+  /*
+   * Installing a signal listener REPLACES Node's default action, which is to
+   * terminate. So a handler added only to tidy up is what removes the exit.
+   *
+   * This worker was SIGKILLed on every deploy today -- three for three, thirty
+   * seconds of systemd waiting each time, then "State 'stop-sigterm' timed out.
+   * Killing." mointel-market exits cleanly because its handler calls exit();
+   * mointel-assess exits cleanly because it installs no handler at all and
+   * inherits the default. This one did the one thing that is worse than either:
+   * it enumerated a single task for the way out and thereby took ownership of
+   * all of them.
+   *
+   * Same shape as a denylist. Naming part of what must happen leaves the rest
+   * unowned, and the gap is invisible until something falls through it.
+   *
+   * A SIGKILL mid-job also abandons an in-flight model call -- tokens spent,
+   * nothing recorded -- which is its own reason not to leave this.
+   */
+  const shutdown = (signal: string) => {
+    log(`[research] ${signal} received, shutting down`);
+    clearInterval(heartbeat);
+    process.exit(0);
+  };
+  process.on('SIGINT', () => shutdown('SIGINT'));
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
 
   log(`[research] worker started, polling every ${POLL_MS}ms\n`);
 
