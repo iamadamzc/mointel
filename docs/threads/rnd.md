@@ -212,6 +212,38 @@ Research killed it against the eyeball impression rather than with it.
 resolve and the 27/10/19 split never arises. That arithmetic stands as a record
 of what a per-ticker output would have cost, not as a live constraint.
 
+**CYCLE BECOMES ARITHMETIC, AND THE RECOMPUTE REACHES BACKWARDS.** *Routed by
+Integration 2026-08-23.* `lib/market/cycle.ts` computes the classification from
+daily bars and the model's version is being deleted — the trader's call, on 75%
+`UNKNOWN` in production, 46% irreproducible, 7.2% flipping frontside against
+backside, and the arithmetic winning 8-0 where both committed.
+
+This archive is **not exposed**: nothing in `lib/archive/` reads `cycle`. The
+boundary lands in `desk_assessment_tickers`, where pre-change values are the
+model's and post-change values are deterministic under one name — a trap for any
+future analysis reading cycle from the assessment record.
+
+**Feasibility verified here, since it was flagged as unknown.** `resolveCycle`
+takes only `{tradingDate, high, low, close, volume}` oldest first. Run against
+real bars truncated at each as-of date it is genuinely point-in-time, not
+latest-state — PFSA reads `DAY_ONE` on 08-17 and `BACKSIDE` by 08-21, having run
+624% on the 18th; MYSZ `FRONTSIDE` then `PULLBACK`. The backfill already fetches
+the raw daily bars this needs; only the lookback span would widen.
+
+**Unlike every other definitional change tonight, this one can be applied
+uniformly backwards**, so the archive would carry one definition from
+2026-08-17 and the boundary would not exist in anything derived here. It would
+also be the archive's **first reproducible classification** — catalyst is 45%
+not-unanimous, structure 55%, cycle 46%.
+
+**Where it earns its place: Q5.** "When does a board name's move happen relative
+to board entry" restated is *what cycle phase is a name in when the board
+surfaces it*, and `first_board_entry_at` is already stored. **Not built** — Q1 is
+active and does not need it. Recorded as ready.
+
+**Structure's freeze stands and hardens**: 45% unanimous, mean agreement 84%,
+least reproducible of the three, and *not* becoming arithmetic.
+
 **THE FULL REPLAY LANDED AND Q1's FIRST HALF HAS AN ANSWER.**
 `data/replay-full.json`, 236 versions x **five draws**, prior-free, as-of
 filtered. 9.9M in (81% cached) / 2.79M out, checked. **All 185 of the archive's

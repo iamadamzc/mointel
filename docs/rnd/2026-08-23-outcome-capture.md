@@ -818,6 +818,70 @@ archive is unaffected, but that field is trader-facing and the distinction is no
 cosmetic. It reverses a small-sample null Research gave Integration earlier, the
 second such reversal tonight.
 
+#### Cycle becomes arithmetic, and unlike every other change tonight it reaches backwards
+
+*Routed by Integration 2026-08-23.* `lib/market/cycle.ts` computes the cycle
+classification from daily bars, and the model's version is being deleted rather
+than kept alongside — the trader's call, on 75% `UNKNOWN` in production, 46%
+irreproducible across five draws, 7.2% of versions flipping frontside against
+backside, and the arithmetic winning 8-0 with one unclear where both committed.
+
+**This archive is not exposed today**, because nothing in `lib/archive/` reads
+`cycle` — the field was frozen precisely because it could not be trusted. The
+definitional boundary lands in `desk_assessment_tickers`, where values before
+the change are the model's and values after are deterministic, wearing one name.
+Any future analysis reading cycle from the assessment record crosses it blind.
+
+**Feasibility, which Integration flagged as unverified and is now verified.**
+`resolveCycle(bars)` takes only `{tradingDate, high, low, close, volume}` oldest
+first — nothing else. Run against real fetched bars, truncating the series at
+each as-of date:
+
+```
+as of 2026-08-17                    as of 2026-08-21
+  PFSA   DAY_ONE                      PFSA   BACKSIDE
+  SGLY   NO_CYCLE                     SGLY   NO_CYCLE
+  RCON   BACKSIDE                     RCON   SHADOW
+  MYSZ   FRONTSIDE                    MYSZ   PULLBACK
+  TNON   SHADOW                       TNON   BACKSIDE
+  WFF    BACKSIDE                     WFF    BACKSIDE
+```
+
+It is genuinely point-in-time rather than latest-state: the same symbol resolves
+differently at the two dates, which is the property a per-symbol-day column
+needs. PFSA reads `DAY_ONE` on the 17th and `BACKSIDE` by the 21st, having run
+624% on the 18th.
+
+The inputs are already in hand. The backfill fetches raw daily bars over a
+62-calendar-day lookback (~42 sessions) for the split work, and `dailyRvol` needs
+20. The probe used a wider window (73 sessions) and a wider one is preferable —
+cycle-start detection searches for the *most recent* qualifying day and wants
+runway — but nothing new has to be fetched in kind, only in span.
+
+**Why this is worth doing and the other definitional changes were not.** Every
+other one tonight — the share count entering the bundle, the prior, the model's
+own irreproducibility — leaves a boundary that can only be caveated. This one
+can be **applied uniformly backwards**, so the archive would carry a single
+definition from 2026-08-17 onward and the boundary would simply not exist in
+anything derived here.
+
+It would also be the archive's **first reproducible classification**. Catalyst is
+45% not-unanimous, structure 55%, cycle 46% — every model-derived field is close
+to a coin flip on a meaningful minority of rows. A deterministic cycle is not.
+
+**Where it would earn its place: Q5.** "When does a board name's move happen
+relative to when the desk puts it on the board" is, restated, *what cycle phase
+is a name in when the board surfaces it*. `first_board_entry_at` is already
+stored; a deterministic phase at that instant answers Q5 directly and without a
+model in the loop.
+
+**Not built.** Q1 is the active question and does not need it, and the register
+caps active questions at two. Recorded as ready rather than done.
+
+**Structure's freeze stands and hardens.** 45% unanimous, mean agreement 84%,
+the least reproducible of the three, and it is *not* becoming arithmetic — only
+cycle is. Nothing in `lib/archive/` will read it.
+
 #### Join arithmetic, which the retraction does not change
 
 *From Integration, and corroborated here.* A replay emits one grade per
