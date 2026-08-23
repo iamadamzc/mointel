@@ -370,6 +370,35 @@ deploys. And step 3 must follow step 2 **deployed and verified**, not merely
 merged — delete the fields while the switch still has a defect and there is no
 fallback to read. Still one schema change, just not adjacent to the switch.
 
+**Scope corrected by Design 2026-08-23, verified by grep rather than inferred.**
+Four surfaces were missing from step 2, all Design's under the split above:
+`components/DiscoveryBoard.tsx`, `lib/dashboard/view.ts`,
+`components/MarketSummary.tsx`, `components/FilterBar.tsx`.
+
+`DiscoveryBoard.tsx` is the one that changes the size of the work. It renders
+the Cycle badge on the primary board and reads `conclusions.cycle.tone === 'neg'`
+at `:405` to set `backside`, **which drives colour precedence for the entire
+row**. It is the audit's §6 eight-column board, and the only cycle surface a
+trader sees during 07:00-10:00.
+
+**And step 2 contains a design decision, not just a switch.** `CycleFilter` is
+`'ALL' | 'FRESH' | 'WARNING' | 'BACKSIDE'` (`view.ts:10`) — the old model's
+classes. The arithmetic phases are six, and **only `BACKSIDE` survives by name;
+`FRESH` and `WARNING` have no arithmetic counterpart at all.** Six phases do not
+map onto three buckets, so the filters cannot be relabelled and someone must
+decide what a trader filters cycle *by*. That is Design's to make and Design
+flagged it so a build session does not discover it mid-flight and guess.
+
+**Ordering call (Integration): make it now, inside the migration — do not defer
+it to audit §9 item 13.** Design noted the collision with item 13's
+workflow-filters rewrite and that it is better done once than twice, which is
+right about the *design* and wrong about the *timing*: step 3 deletes the model
+fields, so a decision is forced before then regardless, and item 13 is unstarted
+Phase 2 work. Deferring means shipping a filter referencing classes that no
+longer exist. **Make it minimal and reversible rather than a full taxonomy, and
+let item 13 inherit it** — item 13 re-cuts every filter anyway, so cycle being
+already correct costs it nothing.
+
 **Working-tree note rather than a blocker:** `lib/archive/` is modified in the
 tree. It is disjoint from this work, but a gate run may go red in
 `tests/archive/` on changes that are not Research's. Stage by explicit path and

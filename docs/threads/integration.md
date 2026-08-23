@@ -259,9 +259,38 @@ applied it against its own work — refusing to count a label verified because a
 of that button could have come out badly. **"A check that cannot fail isn't a
 check."**
 
-For this thread: the rules in this document are the same kind of object. When
-writing one, ask what two situations it might be collapsing, and say which way
-it should fail when they are indistinguishable.
+**Ops's refinement, which turns a habit into a question with an answer.** All of
+these share something past the event-for-condition swap: **the substituted name
+was correct at the moment it was written.** Twelve hours was a fine number at
+15:56. Revoke-on-report was fine while there was one sitting.
+Monday-after-the-close is fine if bars flow. **The name only diverges from the
+condition later** — which is why none looked wrong when written, and why review
+does not catch them: at review time they are still true.
+
+So the prompt is not *"did I name a condition or an event"*, which is a habit
+that will lapse. It is:
+
+> **When do these two come apart, and what happens then?**
+
+That is asked once and has an answer, and the answer belongs beside the rule.
+
+**It applies to plans, and a plan is worse than a test** — a test that cannot
+fail at least runs and reports green, while a plan that cannot fail waits to be
+executed by someone who was not there when it was written. Ops checked its own
+charter and found two, both **pending rather than history** (`b6125a2`):
+
+- *"Restart the market worker Monday, after the close."* The condition is *once
+  bars have flowed and no session is live*. **If bars do not flow, "after the
+  close" still arrives** — and the rule would restart away the only live
+  process carrying the failure, at the moment it is the evidence.
+- *"Sample the WAL Monday premarket."* What makes it mean anything is
+  contention between writers and dashboard polling, not the hour. On a thin
+  premarket a flat WAL says what Saturday said: nothing. Now stated as sustained
+  write load with the write rate recorded beside the size, **so a sample that
+  proves nothing is recognisable as one.**
+
+For this thread: most of the rules in this document were written today, and each
+is owed that question.
 
 ## Check the field that carries the answer
 

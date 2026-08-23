@@ -160,9 +160,11 @@ strips the reasoning down to whatever fits in his relay.
 - **Send it to Integration and say who it is for.** It relays, adds whatever
   context the receiving thread is missing, and records anything durable in the
   charters rather than leaving it in two transcripts.
-- **To reach Integration, reply to any message it has sent you** — copy the
-  `from=` attribute of the cross-session message as your `to`. That address
-  works even when the name does not resolve in `ListAgents`.
+- **To reach Integration, send to the NAME `Integration` from `ListAgents`.**
+  *Corrected 2026-08-23 after Design tried the instruction below and it failed.*
+  It appears there as `Integration [0338b5]`. **Do not send to the `from=` id
+  on a cross-session message — that is unreachable**, which is the opposite of
+  what this document said for its first hour.
 - **This is for handovers, findings and corrections — not for decisions.**
   Anything needing the trader's judgement still goes to him, at the end, under
   `## What I need from you`. Integration relays; it does not decide, and routing
