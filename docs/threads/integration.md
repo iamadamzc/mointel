@@ -228,6 +228,41 @@ when they try.
 prompt to check the units, not a confirmation.** 50% against 52%, on six names,
 was too good and that was the signal.
 
+## A rule that cannot tell two cases apart
+
+**Named by Ops on 2026-08-23, after it happened three times in one evening.**
+The section below is about a *check* reading the wrong field. This is the same
+failure one level up, in the **rule** rather than the measurement, and it is
+harder to see because the rule reads perfectly sensibly:
+
+- **"Issue long, revoke on report of done."** Design reported done *for
+  tonight*. The rule could not tell that from *done*, and following it would
+  have destroyed the premarket verification the token was issued for.
+- **"Twelve hours"** for a review session. A sensible number that did not know
+  `PREMARKET_START_MIN` existed, and expired four minutes before the window it
+  was issued for.
+- **"Check the link returns 200."** A dead link returns 200 too.
+
+Each is defensible written down and each collapses two cases the writer never
+had side by side. **The tell is that the rule names an event — "done",
+"twelve hours", "200" — rather than the condition the event was standing in
+for.** Ops's correction shows the repair: *revoke when the work the session was
+issued for is finished, not when somebody reports finishing a sitting of it —
+and if the two ever look the same, the session stays.* The rule now names the
+condition and states which way to fail.
+
+**The constructive form, which is Ops's too: prove the check can fail.** It
+mutation-tested the releaseBootstrap fix by reverting the comparison to confirm
+two tests went red. Design reached the same principle from the other side and
+applied it against its own work — refusing to count a label verified because at
+`CLOSED` phase the fixed and unfixed code render identically, so no observation
+of that button could have come out badly. **"A check that cannot fail isn't a
+check."**
+
+For this thread: the rules in this document are the same kind of object. When
+writing one, ask what two situations it might be collapsing, and say which way
+it should fail when they are indistinguishable.
+
 ## Check the field that carries the answer
 
 **Added 2026-08-23 after three instances, two of which nearly became reports.**
