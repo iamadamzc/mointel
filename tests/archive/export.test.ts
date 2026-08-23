@@ -10,7 +10,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Database from 'better-sqlite3';
 
@@ -23,6 +23,7 @@ import {
 } from '@/lib/market/store/assessmentRepo';
 import { openDatabase } from '@/lib/market/store/db';
 import { exportAssessments } from '@/lib/archive/export';
+import { runExport } from '@/worker/archive-export';
 
 const directories: string[] = [];
 
@@ -248,5 +249,153 @@ describe('exportAssessments', () => {
         .run(),
     ).toThrow(/UNIQUE/);
     copy.close();
+  });
+});
+
+describe('runExport --dry-run', () => {
+  /*
+   * The defect these exist for, in full.
+   *
+   * The first version ran the real export into --out and then called
+   * fs.rmSync(path.dirname(destination), { recursive: true, force: true }).
+   * Two failures in one line: the file was genuinely written while the tool
+   * printed "nothing written", and the cleanup removed the CONTAINING
+   * DIRECTORY of the path the operator typed. On production that is
+   * `rm -rf /var/lib/mointel` -- the store, its WAL and six backups -- run as
+   * the user that owns them. It failed only because /tmp has the sticky bit.
+   *
+   * A dry run is now a read, so there is no destination and nothing to clean
+   * up. These tests assert the observable consequences rather than the shape,
+   * because the next rewrite has to keep the guarantee, not the implementation.
+   */
+  let logs: string[] = [];
+  let logSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    logs = [];
+    logSpy = vi
+      .spyOn(console, 'log')
+      .mockImplementation((...args: unknown[]) => void logs.push(args.join(' ')));
+  });
+
+  afterEach(() => logSpy.mockRestore());
+
+  function dryRunFixture() {
+    const dir = temporaryDir();
+    const source = path.join(dir, 'market.db');
+    seedMarketStore(source);
+
+    // Stand-ins for everything that lives beside the store on the box: the
+    // WAL, the backups, the store itself.
+    const outDir = path.join(dir, 'lib-mointel');
+    fs.mkdirSync(outDir);
+    fs.writeFileSync(path.join(outDir, 'market.db'), 'the live store');
+    fs.mkdirSync(path.join(outDir, 'backups'));
+    fs.writeFileSync(path.join(outDir, 'backups', 'nightly.db'), 'a backup');
+
+    return { dir, source, outDir, out: path.join(outDir, 'assessments.db') };
+  }
+
+  it('does not delete the directory containing --out', () => {
+    const { source, outDir, out } = dryRunFixture();
+
+    const code = runExport(['--market-db', source, '--out', out, '--dry-run']);
+
+    expect(code).toBe(0);
+    expect(fs.existsSync(outDir)).toBe(true);
+    expect(fs.readFileSync(path.join(outDir, 'market.db'), 'utf8')).toBe('the live store');
+    expect(fs.existsSync(path.join(outDir, 'backups', 'nightly.db'))).toBe(true);
+  });
+
+  it('writes nothing, so "nothing written" is true', () => {
+    const { source, out } = dryRunFixture();
+
+    runExport(['--market-db', source, '--out', out, '--dry-run']);
+
+    expect(fs.existsSync(out)).toBe(false);
+    expect(logs.join('\n')).toContain('nothing written');
+  });
+
+  it('still reports the counts, which is the whole point of the dry run', () => {
+    const { source, out } = dryRunFixture();
+
+    runExport(['--market-db', source, '--out', out, '--dry-run']);
+
+    const output = logs.join('\n');
+    expect(output).toContain('would copy 3 assessments');
+    expect(output).toContain('2026-08-19');
+  });
+
+  it('honours date bounds without writing', () => {
+    const { source, out } = dryRunFixture();
+
+    runExport(['--market-db', source, '--out', out, '--dry-run', '--from', '2026-08-19']);
+
+    expect(fs.existsSync(out)).toBe(false);
+    expect(logs.join('\n')).toContain('would copy 1 assessments');
+  });
+
+  it('needs no --out at all', () => {
+    const { source } = dryRunFixture();
+
+    expect(runExport(['--market-db', source, '--dry-run'])).toBe(0);
+  });
+});
+
+describe('runExport', () => {
+  let logSpy: ReturnType<typeof vi.spyOn>;
+  let errorSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    logSpy.mockRestore();
+    errorSpy.mockRestore();
+  });
+
+  it('writes the extract on a real run', () => {
+    const dir = temporaryDir();
+    const source = path.join(dir, 'market.db');
+    seedMarketStore(source);
+    const out = path.join(dir, 'assessments.db');
+
+    expect(runExport(['--market-db', source, '--out', out])).toBe(0);
+    expect(fs.existsSync(out)).toBe(true);
+  });
+
+  it('refuses an existing destination without --force', () => {
+    const dir = temporaryDir();
+    const source = path.join(dir, 'market.db');
+    seedMarketStore(source);
+    const out = path.join(dir, 'assessments.db');
+    fs.writeFileSync(out, 'something already here');
+
+    expect(runExport(['--market-db', source, '--out', out])).toBe(1);
+    expect(fs.readFileSync(out, 'utf8')).toBe('something already here');
+  });
+
+  it('refuses a directory as --out even with --force', () => {
+    // --force means "replace the extract I named", never "clear the place I
+    // put it". A directory is not an extract.
+    const dir = temporaryDir();
+    const source = path.join(dir, 'market.db');
+    seedMarketStore(source);
+    const out = path.join(dir, 'a-directory');
+    fs.mkdirSync(out);
+    fs.writeFileSync(path.join(out, 'precious.db'), 'do not delete me');
+
+    expect(runExport(['--market-db', source, '--out', out, '--force'])).toBe(1);
+    expect(fs.readFileSync(path.join(out, 'precious.db'), 'utf8')).toBe('do not delete me');
+  });
+
+  it('requires --out on a real run', () => {
+    const dir = temporaryDir();
+    const source = path.join(dir, 'market.db');
+    seedMarketStore(source);
+
+    expect(runExport(['--market-db', source])).toBe(1);
   });
 });

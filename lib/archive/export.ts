@@ -32,11 +32,98 @@ import Database from 'better-sqlite3';
  */
 const TABLES = ['desk_assessments', 'desk_assessment_tickers'] as const;
 
+export interface DateCount {
+  tradingDate: string;
+  assessments: number;
+  tickerRows: number;
+}
+
+export interface AssessmentCounts {
+  counts: Record<string, number>;
+  byDate: DateCount[];
+}
+
 export interface ExportResult {
   destination: string;
   bytes: number;
   counts: Record<string, number>;
-  byDate: { tradingDate: string; assessments: number; tickerRows: number }[];
+  byDate: DateCount[];
+}
+
+/**
+ * Bounds expressed against whichever alias names the parent's trading date.
+ *
+ * `desk_assessment_tickers` has no trading date of its own; it is bounded
+ * through its parent, which is also what keeps the foreign key satisfiable in
+ * a copy.
+ */
+function dateClause(column: string, from?: string | null, to?: string | null): string {
+  const bounds: string[] = [];
+  if (from) bounds.push(`${column} >= ?`);
+  if (to) bounds.push(`${column} <= ?`);
+  return bounds.length > 0 ? ` WHERE ${bounds.join(' AND ')}` : '';
+}
+
+function dateParams(from?: string | null, to?: string | null): string[] {
+  const params: string[] = [];
+  if (from) params.push(from);
+  if (to) params.push(to);
+  return params;
+}
+
+function summarise(
+  db: Database.Database,
+  from?: string | null,
+  to?: string | null,
+): AssessmentCounts {
+  const params = dateParams(from, to);
+
+  const byDate = db
+    .prepare(
+      `SELECT a.trading_date AS tradingDate,
+              COUNT(DISTINCT a.id) AS assessments,
+              COUNT(t.ticker)      AS tickerRows
+         FROM desk_assessments a
+         LEFT JOIN desk_assessment_tickers t ON t.assessment_id = a.id
+         ${dateClause('a.trading_date', from, to)}
+        GROUP BY a.trading_date
+        ORDER BY a.trading_date`,
+    )
+    .all(...params) as DateCount[];
+
+  return {
+    counts: {
+      desk_assessments: byDate.reduce((n, row) => n + row.assessments, 0),
+      desk_assessment_tickers: byDate.reduce((n, row) => n + row.tickerRows, 0),
+    },
+    byDate,
+  };
+}
+
+/**
+ * What an export WOULD contain, without producing it.
+ *
+ * A dry run is a read. The first version of this ran the real export into a
+ * temporary path and deleted it afterwards, which was wrong twice over: the
+ * file was genuinely written while the tool reported "nothing written", and the
+ * cleanup removed the CONTAINING DIRECTORY of `--out` rather than the file. On
+ * the production box that was `rm -rf /var/lib/mointel` — the store, its WAL
+ * and every backup. It failed only because `/tmp` carries the sticky bit.
+ *
+ * There is no destination here and nothing to clean up, which is the point:
+ * the shape that had the bug cannot be expressed.
+ */
+export function countAssessments(options: {
+  source: string;
+  from?: string | null;
+  to?: string | null;
+}): AssessmentCounts {
+  const db = new Database(options.source, { readonly: true, fileMustExist: true });
+  try {
+    return summarise(db, options.from, options.to);
+  } finally {
+    db.close();
+  }
 }
 
 /**
@@ -56,18 +143,8 @@ export function exportAssessments(options: {
   fs.mkdirSync(path.dirname(path.resolve(options.destination)), { recursive: true });
   const to = new Database(options.destination);
 
-  // The same bounds expressed against each table's own alias for the parent.
-  // The child has no trading_date of its own; it is bounded through its parent,
-  // which is also what keeps the foreign key satisfiable in the copy.
-  const clauses = (column: string): string => {
-    const bounds: string[] = [];
-    if (options.from) bounds.push(`${column} >= ?`);
-    if (options.to) bounds.push(`${column} <= ?`);
-    return bounds.length > 0 ? ` WHERE ${bounds.join(' AND ')}` : '';
-  };
-  const params: string[] = [];
-  if (options.from) params.push(options.from);
-  if (options.to) params.push(options.to);
+  const clauses = (column: string): string => dateClause(column, options.from, options.to);
+  const params = dateParams(options.from, options.to);
 
   const counts: Record<string, number> = {};
 
@@ -112,17 +189,7 @@ export function exportAssessments(options: {
       .all(...TABLES) as { sql: string }[];
     for (const index of indexes) to.exec(index.sql);
 
-    const byDate = to
-      .prepare(
-        `SELECT a.trading_date AS tradingDate,
-                COUNT(DISTINCT a.id) AS assessments,
-                COUNT(t.ticker)      AS tickerRows
-           FROM desk_assessments a
-           LEFT JOIN desk_assessment_tickers t ON t.assessment_id = a.id
-          GROUP BY a.trading_date
-          ORDER BY a.trading_date`,
-      )
-      .all() as ExportResult['byDate'];
+    const { byDate } = summarise(to);
 
     to.close();
     return {
