@@ -422,7 +422,11 @@ Only questions the interface, repository and existing requirements genuinely can
    >
    > The prompt is careful where it discusses the prior — presented as an opinion, explicitly denied the status of evidence, and adjudication re-decides from sources rather than voting. **But Research corrected Design's trace and the exposure is wider than the mitigation.** `buildInput` serialises the entire bundle (`openaiInterpreter.ts:107`), so `priorHumanAnalysis` sits in the context of *every* call for any ticker carrying a `TODAY` row — not only the two places the prompt names it. The careful instruction covers the discussion; it does not cover the context.
    >
-   > Either way the conclusion for Design is the same and it is unchanged: `AUTO` has seen `SHEET` before concluding, so the two are **not independent opinions**. Whether it changes the output needs a run, and that is Research's.
+   > Either way the conclusion for Design is the same and it is unchanged: `AUTO` has seen `SHEET` before concluding, so the two are **not independent opinions**.
+   >
+   > **The run happened, and it settled less than it appeared to.** Research measured the prior's effect and the result was **retracted** the same day (`research.md` item 10, `ca1c90c`): at four runs per arm, 0 of 6 tickers are stable-in-both-arms-but-different, and the two originally reported as moved are the two that vary *within the control set anyway*. **Do not read that as clean.** A null at n=6 on a field now known to be 2‑of‑6 unstable on identical evidence is a weak instrument. **Exposure confirmed, effect UNMEASURED** — and unmeasured is not the same as absent.
+   >
+   > **What Design's decisions rest on is the mechanism, not the measurement.** `AUTO` sees `SHEET`'s answer on every call — a code fact, unaffected by any retraction. §9 item 15's direction (conflict never promoted to a first‑class alarm, because an alarm implies a tally of independent votes) stands on that alone. Nothing in this audit should be rewritten on the strength of the withdrawn figure, in either direction.
    >
    > **Consequence for Phase 2, stated once:** no design may present Sheet‑vs‑Auto conflict as a meaningful disagreement until Research reports. See §9 item 15, which is now **deferred rather than reduced**.
    >

@@ -192,29 +192,44 @@ a presentation question, not a new signal.
 
 Routed 2026-08-23. Measured by Research, verified in code here.
 
-**1. The two graders are not independent — measured.** Removing the Sheet's
-prior changed the catalyst grade on **2 of 6** names against a control variance
-of **0 of 6**. This closes the open half of `research.md` item 7: `AUTO` does not
-merely see `SHEET`, it is moved by it.
+**1. RETRACTED 2026-08-23 — the prior was never shown to move the grade.** This
+section previously read: *"the two graders are not independent — measured.
+Removing the Sheet's prior changed the catalyst grade on 2 of 6 names against a
+control variance of 0 of 6."* **Withdrawn.** At four runs per arm, **0 of 6**
+tickers are stable-in-both-arms-but-different; the two reported as moved are the
+two that vary *within the control set anyway*. The original came from single
+runs and could not separate the prior's effect from the model's own variance.
+Retraction record: `research.md` item 10, `ca1c90c`.
 
-**The consequence is an asymmetry, and it runs opposite to how the UI reads
-today.** Under anchoring, *agreement* is the expected outcome and therefore
-carries little information — while *disagreement in spite of anchoring* is still
-informative, arguably more so than independent disagreement would be. Today
-`intelligence.ts:166` renders agreement as "both present and not in material
-disagreement", which a trader reads as corroboration. **It is not corroboration;
-it is the null result.** Any wording that implies two sources vouching for each
-other is now false.
+**Do not over-correct — the exposure is confirmed, only the effect is not.**
+`sheetPrior` reaches the interpreter on **every** call: `bundle.ts:426` →
+`buildInput` at `:102` → `JSON.stringify(bundle)` at `:107`, on the main path at
+`:188`. Design verified that path independently earlier the same day. A null at
+n=6 on a field now known to be **2 of 6 unstable on identical evidence** is a
+weak instrument — it says the earlier positive was indistinguishable from noise,
+not that the prior is inert. **The honest state is UNMEASURED, not CLEAN.**
 
-**Item 15 moves from deferred to decided-in-direction:** the *reduction* half
-proceeds (strip the duplicate `CONFLICT` marks and both `SOURCES DISAGREE` chips
-— F-16's nine renderings), and conflict is **never promoted to a first-class
-alarm**, because an alarm implies a tally of independent votes and there is no
-tally. Still not built in Phase 2.
+**The asymmetry claim goes with it.** Design wrote that agreement is "the null
+result" and that any wording implying two sources vouching for each other "is now
+false". **That over-claimed.** It rested on a demonstrated effect that no longer
+exists. `intelligence.ts:166` rendering agreement as corroboration is **not
+established as false — it is unverified**, which is a weaker and different
+statement. It should not be rewritten *because agreement is uninformative*; that
+was never shown.
 
-**2. `structureClassification` is unstable — a third of it moves on identical
-evidence.** Two control runs over byte-identical evidence disagreed on **2 of 6**
-names. Catalyst was stable at 0 of 6, so this is specific to structure.
+**Item 15's direction survives, on the mechanism rather than the measurement.**
+The *reduction* half proceeds (strip the duplicate `CONFLICT` marks and both
+`SOURCES DISAGREE` chips — F-16's nine renderings), and conflict is **never
+promoted to a first-class alarm** — because an alarm implies a tally of
+independent votes, and `AUTO` still sees `SHEET`'s answer on every call. That is
+a code fact and it does not depend on the retracted figure. Still not built in
+Phase 2.
+
+**2. `structureClassification` is unstable — half of it moves on identical
+evidence.** Four runs over byte-identical evidence disagree on **3 of 6** names
+(revised from 2 of 6, which came off two runs). **Catalyst is not the stable
+counter-example it was reported to be** — it is **2 of 6** unstable on the same
+four-run data, revised from 0 of 6. Structure is worse, not uniquely afflicted.
 
 **It is not a property of the stock; it is one reading of it**, and the product
 has no representation for that today. It sits in the Desk Read strip
@@ -269,21 +284,41 @@ silent; it may never say "structure changed".
 **Design rule for item 12:** a classification change earns a rail line **only
 when the evidence fingerprint also changed**. Otherwise it is a re-read and the
 rail stays silent. Deterministic market fields — rank, RVOL, price, float,
-volume, halt — need no such gate, and catalyst is measured stable. This settles
-Integration's "which fields earn a place" before the rail is designed rather
-than after.
+volume, halt — need no such gate.
+
+**The catalyst carve-out is withdrawn.** This rule previously exempted catalyst
+"because catalyst is measured stable". Catalyst is **2 of 6 unstable** on the
+four-run data. **The gate now applies uniformly to every classification —
+catalyst, structure, cycle — with no exemptions**, which is simpler than the
+version it replaces and does not depend on any field's measured stability. That
+is the point: a rule that has to be re-checked every time a stability figure is
+revised is not a rule. This settles Integration's "which fields earn a place"
+by the nature of the field rather than by its current noise estimate.
 
 **Archive contamination: raised, measured, and closed.** Design handed this to
 R&D as a data-integrity question. R&D's 1,248-pair measurement answers it — the
 stored record is clean. Nothing further is owed.
 
-**`CYCLE_CHANGED` (`:273`) remains unmeasured**, and Integration notes it sits
-between three threads, which is where things go missing. Design cannot measure
-it — that needs re-running the interpreter over identical evidence, which is
-Research's machinery. Design can refuse to ship it: the fingerprint gate above
-is agnostic about *which* classification, so the rail is safe by construction
-whether or not anyone measures cycle. **The measurement question stays open and
-unowned; the rail is not exposed to it.**
+**`CYCLE_CHANGED` (`:273`) is now measured, and the shape of it matters more than
+the rate.** `cycleClassification` is **2 of 6** unstable — the same order as
+structure. But **both flips are classified-to-`UNKNOWN`**, not direction flips:
+OLOX `YELLOW_FRONTSIDE_WARNING` → `UNKNOWN`, CDTG `RED_BACKSIDE` → `UNKNOWN`.
+
+**Nothing reads as "the stock turned."** What a trader would see is a badge
+appearing and disappearing — the desk ceasing to be sure, not the market
+reversing. That is a materially less dangerous failure than a frontside/backside
+flip would be, and it argues for a specific treatment: **losing a cycle
+classification should render as the desk losing confidence, never as a cycle
+change.** The product already distinguishes `NOT YET ANALYZED` from `UNKNOWN`;
+this needs the same care between *unknown* and *changed*.
+
+**The null on direction flips is not reassurance, and Research said so first.**
+Cycle is `UNKNOWN` in **243 of 325** stored dossiers (75%), and only **4 of 24**
+observations in the sample were classified at all. So no direction flip occurred
+*and* that is not evidence they do not happen — there was barely any classified
+mass in which one could have appeared.
+
+The fingerprint gate above already covers cycle without relying on any of this.
 
 ### Two numbers about this field, and only one is a noise figure
 
@@ -292,12 +327,21 @@ apart from different threads, and they are not comparable.
 
 | Source | Figure | What it measures |
 | --- | --- | --- |
-| Research | **2 of 6** | Instability on **byte-identical** evidence. **This is the noise figure.** |
-| R&D | 29 of 56 | Structure moves across **version changes**, dominated by real evidence change (catalyst moved on the same 29) |
+| Research | **3 of 6** | Instability on **byte-identical** evidence, four runs per arm. **This is the noise figure.** *(Revised up from 2 of 6, which came off two runs.)* |
+| R&D | 29 of 56 | Structure moves across **version changes** in the stored record |
 
 **R&D's 52% is not a competing estimate of noise and must never be quoted as
 one.** R&D said so explicitly. Any design rationale citing an instability rate
-cites 2 of 6.
+cites **3 of 6**.
+
+**R&D's supporting inference is weaker than when it was written**, and that is
+worth carrying rather than dropping. The argument that the 29 are dominated by
+*real* evidence change rested on catalyst having moved on the same 29 while
+catalyst was stable on fixed evidence. Catalyst is now 2 of 6 unstable, so
+"catalyst also moved" is no longer strong evidence that the evidence itself
+changed. **The archive-clean conclusion is unaffected** — it rests on the zero
+row (0 structure moves across 1,192 same-version pairs), which stands on its own
+and needs no assumption about catalyst.
 
 **Base rate, which is what makes the noise figure matter.** Structure takes three
 values across 1,459 non-null rows: `CAUTION` 871, `UNKNOWN` 365, `DIRTY_FLOAT`
