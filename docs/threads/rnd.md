@@ -809,8 +809,26 @@ What turned out not to be there:
 - **Sub-streams are directories, not threads.** A question big enough to need its
   own phases gets a folder and a spec, the way viscosity did. It does not get its
   own chat — that rebuilds the sprawl these threads exist to prevent.
-- Build the minimum instrumentation the active question needs. The archive spec
-  is a destination, not a prerequisite.
+- Build the minimum instrumentation the active question needs — **for anything
+  re-fetchable.** The archive spec is a destination, not a prerequisite. *Amended
+  2026-08-24, after Integration flagged that this was written when the cost of
+  waiting was deferred work, and the desk's constraint is now "can this interrupt
+  capture".* For anything **observable only once**, capture early and wide: the
+  cost of waiting there is data that never exists. The test is not *will a
+  question need this* but **can this be obtained later at any price**.
+
+  Irreversibility is not uniform, and the spec already said so — *"the tiers
+  decide what is pre-fetched, not what is possible; a wrong threshold costs an
+  extract, not an answer."* Five days of outcomes were reconstructed from a cold
+  fetch and the tier A count was answered from nothing, both after the fact. So
+  **tier A is not urgent** — daily bars are re-fetchable indefinitely and
+  building it early buys deferred work, not data.
+
+  **What is urgent is smaller and unnamed: there is no dated record of which
+  symbols were tradable.** `universe` is one row per symbol overwritten in place,
+  so *"was this tradable on 2026-08-19"* is already unanswerable and each
+  delisting makes the cross-section retroactively incomplete. ~13k rows a day of
+  symbol, date, status, tradability. Handed over, not built.
 
 ## Opening message for a new chat
 

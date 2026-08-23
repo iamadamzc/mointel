@@ -1113,6 +1113,66 @@ noise floor, and the population is still the desk's board.
 **Not requested.** Recorded as available and unbudgeted, because the verdict
 stands on its own and this is a strengthening rather than a dependency.
 
+#### The minimum-instrumentation rule, re-examined against a changed trade
+
+*Integration, 2026-08-23, flagging that a working rule of this thread may have
+been written under an assumption that has since changed. It was, and the rule
+survives with a narrow amendment.*
+
+The rule: **build the minimum instrumentation the active question needs; the
+archive spec is a destination, not a prerequisite.** It was written when the cost
+of waiting was deferred work. The desk's operating constraint is now *can this
+interrupt capture*, on the grounds — this thread's own — that the record grows
+only in real time and no run buys a day before 2026-08-17. If waiting costs data
+that never exists, that is a different trade.
+
+**The challenge is right about the trade and wrong about the conclusion, because
+irreversibility is not uniform.** The archive spec says so in its own words and
+this thread had stopped reading it: *"Alpaca serves historical bars, trades and
+quotes on the existing subscription. So the tiers decide what is pre-fetched,
+not what is possible. A wrong threshold costs an extract, not an answer."*
+
+Today demonstrated it twice, both times by accident:
+
+- **Five days of outcomes were reconstructed from a cold fetch.** `symbol_outcomes`
+  did not exist on 2026-08-17 and every row of it was recovered afterwards. That
+  data was never at risk.
+- **The tier A count was answered from nothing.** 5,827 symbols over 60 sessions,
+  fetched in minutes, to establish that the spec's ~900/day was really ~2,830.
+  Nothing had to have been captured.
+
+So the amended rule:
+
+> Build the minimum instrumentation the active question needs — **for anything
+> re-fetchable.** For anything observable only once, capture early and wide,
+> because the cost of waiting is not deferred work but data that never exists.
+> The test is not *will a question need this* but **can this be obtained later
+> at any price.**
+
+##### What that makes urgent, and it is not tier A
+
+**Tier A is not urgent.** It is one daily row per price-eligible name, which is
+daily bars, which are re-fetchable indefinitely. Building it early buys deferred
+work rather than data. The 2,830/day figure makes it *larger* than anyone
+thought, not more urgent — and the sub-$2 crossers make the eventual capture
+more valuable without making it more perishable.
+
+**What is urgent is much smaller, and nobody has named it: there is no dated
+record of which symbols were tradable.** `universe` holds one row per symbol,
+overwritten in place — 13,089 rows, two distinct `updated_at` stamps in the
+whole table, every row currently reading `active`. So *"was this symbol tradable
+on 2026-08-19"* is **already unanswerable**, and every delisting makes the
+cross-section retroactively incomplete in a way no fetch repairs. The spec flags
+delistings as time-critical and nothing captures them.
+
+That is the one item where the changed trade actually bites, and it costs
+almost nothing: ~13k rows a day of symbol, date, status and tradability. A few
+hundred kilobytes a year against a tier A that is 710k rows and can wait.
+
+**Handed over rather than built**, and not tonight. It belongs with whoever owns
+the universe refresh, and the sizing above is offered so the decision is not
+taken on the assumption that "capture more" means tier A.
+
 #### The 65-field audit: what this thread will annotate for
 
 Research produces the inventory, Design annotates what must survive on screen,
