@@ -104,24 +104,37 @@ describe('sessionsSinceSplit', () => {
   ];
 
   it('reports zero on the session the split took effect', () => {
-    expect(sessionsSinceSplit(series, '2026-08-10')).toBe(0);
+    expect(sessionsSinceSplit(series, '2026-08-10').sessionsAgo).toBe(0);
   });
 
   it('counts sessions, not calendar days, across a weekend', () => {
     // 2026-08-13 is four sessions after 2026-08-10 but ten calendar days after
     // the last pre-split session.
-    expect(sessionsSinceSplit(series, '2026-08-13')).toBe(3);
-    expect(sessionsSinceSplit(series, '2026-08-11')).toBe(1);
+    expect(sessionsSinceSplit(series, '2026-08-13').sessionsAgo).toBe(3);
+    expect(sessionsSinceSplit(series, '2026-08-11').sessionsAgo).toBe(1);
   });
 
   it('is null before the split, because it has not happened yet', () => {
-    expect(sessionsSinceSplit(series, '2026-08-06')).toBeNull();
+    expect(sessionsSinceSplit(series, '2026-08-06').sessionsAgo).toBeNull();
   });
 
-  it('falls out of the window rather than reaching back forever', () => {
-    // A null must be read as "none in the window", never as "never split".
-    expect(sessionsSinceSplit(series, '2026-08-13', 2)).toBeNull();
-    expect(sessionsSinceSplit(series, '2026-08-13', 3)).toBe(3);
+  it('searches the whole series and records how far it looked', () => {
+    /*
+     * The capture-time cap is gone and CDTG is why. Its split sat 57 sessions
+     * back, split_sessions_ago read null under a 30-session cap, and a reader
+     * took the null for "no split" and reported a hypothesis refuted. A stored
+     * value that encodes a threshold cannot distinguish "did not happen" from
+     * "outside the window I looked in", so the distance is unbounded and the
+     * window travels beside it.
+     */
+    const far = sessionsSinceSplit(series, '2026-08-13');
+    expect(far.sessionsAgo).toBe(3);
+    expect(far.windowSessions).toBe(8);
+
+    const beforeTheSplit = sessionsSinceSplit(series, '2026-08-06');
+    expect(beforeTheSplit.sessionsAgo).toBeNull();
+    // The null is only readable because this says what it means.
+    expect(beforeTheSplit.windowSessions).toBe(3);
   });
 
   it('finds the most recent split when a name has split twice', () => {
@@ -139,13 +152,13 @@ describe('sessionsSinceSplit', () => {
       { date: '2026-08-07', raw: 16.5, adjusted: 16.5 },
     ];
 
-    expect(sessionsSinceSplit(twice, '2026-08-07')).toBe(0);
+    expect(sessionsSinceSplit(twice, '2026-08-07').sessionsAgo).toBe(0);
     // The 1:20 is three sessions back from 08-06; the 1:10 has not happened yet.
-    expect(sessionsSinceSplit(twice, '2026-08-06')).toBe(2);
+    expect(sessionsSinceSplit(twice, '2026-08-06').sessionsAgo).toBe(2);
   });
 
   it('is null for a date the series does not contain', () => {
-    expect(sessionsSinceSplit(series, '2026-08-20')).toBeNull();
+    expect(sessionsSinceSplit(series, '2026-08-20').sessionsAgo).toBeNull();
   });
 
   it('agrees with resolveBaseline on the session the split landed', () => {
@@ -158,13 +171,14 @@ describe('sessionsSinceSplit', () => {
      */
     for (let i = 1; i < series.length; i += 1) {
       const restated = resolveBaseline(series[i - 1], series[i]).splitDetected;
-      expect(restated).toBe(sessionsSinceSplit(series, series[i].date) === 0);
+      expect(restated).toBe(sessionsSinceSplit(series, series[i].date).sessionsAgo === 0);
     }
   });
 
-  it('defaults to a window wide enough for the pattern being looked for', () => {
+  it('keeps the read-time filter wide enough for the pattern it tests', () => {
     // Hypothesis 3 is not "split and run the same day" — it is a split, then a
-    // run once the float is clean. A one-session window could not see it.
+    // run once the float is clean. This constant no longer bounds capture; it
+    // is what an analysis filters by after the fact.
     expect(SPLIT_LOOKBACK_SESSIONS).toBeGreaterThanOrEqual(20);
   });
 });

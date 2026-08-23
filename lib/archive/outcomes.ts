@@ -65,10 +65,12 @@ export interface SymbolOutcome {
   /** The as-seen prior close, kept even when the adjusted one is the baseline. */
   rawPriorClose: number | null;
   /**
-   * Sessions between the most recent split and this date, within the lookback
-   * window. Null means none found IN THE WINDOW, never "never split".
+   * Sessions between the most recent split and this date. Null means none found
+   * in `splitLookbackSessions` sessions — never "never split".
    */
   splitSessionsAgo: number | null;
+  /** How many sessions were searched. Without it a null is unreadable. */
+  splitLookbackSessions: number | null;
   sessionHigh: number | null;
   sessionLow: number | null;
   timeOfHigh: string | null;
@@ -130,6 +132,7 @@ export interface DeriveOutcomeInput {
   closeMinutes?: number;
   rawPriorClose?: number | null;
   splitSessionsAgo?: number | null;
+  splitLookbackSessions?: number | null;
   /** Cycle as of this date, resolved by the caller from split-adjusted bars. */
   cycle?: ResolvedCycle | null;
   adjustmentBasis?: string;
@@ -168,6 +171,7 @@ export function deriveOutcome(input: DeriveOutcomeInput): SymbolOutcome {
     referenceBasis: input.referenceBasis ?? null,
     rawPriorClose: input.rawPriorClose ?? null,
     splitSessionsAgo: input.splitSessionsAgo ?? null,
+    splitLookbackSessions: input.splitLookbackSessions ?? null,
     sessionHigh: null,
     sessionLow: null,
     timeOfHigh: null,

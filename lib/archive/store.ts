@@ -25,7 +25,7 @@ import Database from 'better-sqlite3';
 
 export type ArchiveDatabase = Database.Database;
 
-export const ARCHIVE_SCHEMA_VERSION = 4;
+export const ARCHIVE_SCHEMA_VERSION = 5;
 
 export const DEFAULT_ARCHIVE_PATH = path.join(process.cwd(), 'data', 'archive.db');
 
@@ -55,14 +55,22 @@ CREATE TABLE IF NOT EXISTS symbol_outcomes (
   -- Without this, RCON on 2026-08-18 reads as a 29,811% gain.
   -- The as-seen prior close, kept when reference_basis says it was restated.
   raw_prior_close    REAL,
-  -- Sessions between the most recent split and this date, within the lookback
-  -- window in lib/archive/splits.ts. Zero means the split took effect ON this
-  -- date, which is exactly when the baseline needed restating — so there is no
-  -- separate boolean for that; reference_basis records the restatement and this
-  -- records the event. Null means none found IN THE WINDOW, never "this name
-  -- has never split". Q1's third hypothesis is that the catalyst moved to the
-  -- filing cabinet; this makes the free half of it queryable.
+  -- Sessions between the most recent split and this date, searched over the
+  -- WHOLE fetched series rather than a fixed window. Zero means the split took
+  -- effect ON this date, which is exactly when the baseline needed restating —
+  -- so there is no separate boolean; reference_basis records the restatement
+  -- and this records the event.
+  --
+  -- Null means none found in split_lookback_sessions sessions, and that column
+  -- is what makes the null readable. This used to be capped at 30, and CDTG is
+  -- the case that killed the cap: the field read null, the answer was 57
+  -- sessions, and a reader took the null for "no split" and reported a
+  -- hypothesis refuted. A stored value that encodes a threshold cannot
+  -- distinguish "did not happen" from "outside the window I looked in". Same
+  -- family as float_basis — a value whose meaning depends on a parameter has to
+  -- travel with the parameter.
   split_sessions_ago INTEGER,
+  split_lookback_sessions INTEGER,
 
   -- Full product session, 04:00-20:00 ET.
   session_high       REAL,
@@ -311,6 +319,9 @@ function migrate(db: ArchiveDatabase, fromVersion: number): void {
   };
 
   db.transaction(() => {
+    if (fromVersion < 5) {
+      addColumn('symbol_outcomes', 'split_lookback_sessions', 'INTEGER');
+    }
     if (fromVersion < 4) {
       addColumn('symbol_outcomes', 'cycle_phase', 'TEXT');
       addColumn('symbol_outcomes', 'cycle_start_date', 'TEXT');

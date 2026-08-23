@@ -20,7 +20,7 @@ export function upsertOutcomes(
 
   const statement = db.prepare(
     `INSERT INTO symbol_outcomes
-       (symbol, trading_date, reference_close, reference_basis, raw_prior_close, split_sessions_ago,
+       (symbol, trading_date, reference_close, reference_basis, raw_prior_close, split_sessions_ago, split_lookback_sessions,
         session_high, session_low, time_of_high, max_gain_pct, time_of_max_gain,
         volume, dollar_volume, premarket_high, premarket_high_at,
         rth_open, rth_high, rth_low, rth_close, official_close, official_volume,
@@ -30,7 +30,7 @@ export function upsertOutcomes(
         cycle_advance_pct, cycle_retracement_pct,
         minute_bar_count, adjustment_basis, source, as_of, run_id)
      VALUES
-       (@symbol, @tradingDate, @referenceClose, @referenceBasis, @rawPriorClose, @splitSessionsAgo,
+       (@symbol, @tradingDate, @referenceClose, @referenceBasis, @rawPriorClose, @splitSessionsAgo, @splitLookbackSessions,
         @sessionHigh, @sessionLow, @timeOfHigh, @maxGainPct, @timeOfMaxGain,
         @volume, @dollarVolume, @premarketHigh, @premarketHighAt,
         @rthOpen, @rthHigh, @rthLow, @rthClose, @officialClose, @officialVolume,
@@ -44,6 +44,7 @@ export function upsertOutcomes(
        reference_basis = excluded.reference_basis,
        raw_prior_close = excluded.raw_prior_close,
        split_sessions_ago = excluded.split_sessions_ago,
+       split_lookback_sessions = excluded.split_lookback_sessions,
        session_high = excluded.session_high,
        session_low = excluded.session_low,
        time_of_high = excluded.time_of_high,

@@ -83,11 +83,19 @@ export interface DailyClosePair {
 }
 
 /**
- * How far back a split is still considered relevant to a run.
+ * The window hypothesis 3 is tested on — a READ-TIME filter, not a capture cap.
  *
- * The pattern hypothesis 3 describes is not "split and run the same day" — it
- * is a split, then a run days or weeks later once the float is clean. Thirty
- * sessions is roughly six weeks and is a starting window, not a finding.
+ * The pattern that hypothesis describes is not "split and run the same day" but
+ * a split, then a run days or weeks later once the float is clean. Thirty
+ * sessions is roughly six weeks.
+ *
+ * It used to bound what got stored, and CDTG is the case that shows why that
+ * was wrong: `split_sessions_ago` read null and the answer was 57 sessions, and
+ * a reader took the null for "no split" and reported a hypothesis refuted.
+ * **A stored value that encodes a threshold cannot distinguish "did not happen"
+ * from "outside the window I looked in".** The distance is now stored unbounded
+ * with the window searched beside it, and this constant is what an analysis
+ * filters by afterwards.
  */
 export const SPLIT_LOOKBACK_SESSIONS = 30;
 
@@ -149,33 +157,47 @@ export function resolveBaseline(
   };
 }
 
+export interface SplitDistance {
+  /**
+   * Sessions between the most recent split and `tradingDate`, or null when
+   * none was found in the window searched. Zero means the split took effect ON
+   * this date, which is the condition `resolveBaseline` reports as
+   * `splitDetected`.
+   */
+  sessionsAgo: number | null;
+  /**
+   * How many sessions were actually searched. **This is what makes a null
+   * readable.** Without it, null means "no split" to every reader who does not
+   * go and check the constant — which is what happened with CDTG.
+   */
+  windowSessions: number;
+}
+
 /**
- * Sessions between the most recent split and `tradingDate`, or null if none
- * took effect within the lookback window.
+ * Distance to the most recent split, and how far back the search went.
  *
- * Zero means the split took effect ON this trading date — the basis changed
- * between the previous session and this one, which is exactly the condition
- * `resolveBaseline` reports as `splitDetected`. Null means none found within
- * the window; it never means "checked and there has never been one".
+ * Unbounded over whatever series it is given, deliberately: the caller decides
+ * how much history to fetch and the answer records what that bought. An
+ * analysis wanting the six-to-thirty-session pattern filters on the returned
+ * distance rather than asking for a capped search, so the same stored fact
+ * serves any threshold and a retuned one costs nothing.
  *
  * `series` must be one symbol's sessions in ascending date order.
  */
 export function sessionsSinceSplit(
   series: readonly DailyClosePair[],
   tradingDate: string,
-  lookbackSessions: number = SPLIT_LOOKBACK_SESSIONS,
-): number | null {
+): SplitDistance {
   const index = series.findIndex((pair) => pair.date === tradingDate);
-  if (index <= 0) return null;
+  if (index <= 0) return { sessionsAgo: null, windowSessions: Math.max(0, index) };
 
-  const earliest = Math.max(1, index - lookbackSessions);
   // Walk backwards so the FIRST boundary found is the most recent one.
-  for (let i = index; i >= earliest; i -= 1) {
+  for (let i = index; i >= 1; i -= 1) {
     const here = ratio(series[i]);
     const before = ratio(series[i - 1]);
     if (here === null || before === null) continue;
-    if (differs(here, before)) return index - i;
+    if (differs(here, before)) return { sessionsAgo: index - i, windowSessions: index };
   }
 
-  return null;
+  return { sessionsAgo: null, windowSessions: index };
 }

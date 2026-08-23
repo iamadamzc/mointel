@@ -88,9 +88,20 @@ const SPLIT_LOOKBACK_CALENDAR_DAYS = Math.ceil(SPLIT_LOOKBACK_SESSIONS * 1.6) + 
  * It costs daily bars only, which are already being fetched in the same call.
  */
 const CYCLE_LOOKBACK_CALENDAR_DAYS = 120;
+
+/**
+ * Calendar days of daily history fetched so a split search means something.
+ *
+ * Two years. CDTG's split sat 57 sessions back and was missed by a 30-session
+ * cap; the cap is gone, but a search is still only as good as the series it is
+ * given, and `split_lookback_sessions` now records exactly how good that was.
+ * Daily bars for a few hundred board symbols are cheap at any span.
+ */
+const SPLIT_HISTORY_CALENDAR_DAYS = 730;
 const DAILY_LOOKBACK_CALENDAR_DAYS = Math.max(
   SPLIT_LOOKBACK_CALENDAR_DAYS,
   CYCLE_LOOKBACK_CALENDAR_DAYS,
+  SPLIT_HISTORY_CALENDAR_DAYS,
 );
 
 interface Options {
@@ -411,7 +422,9 @@ async function main(): Promise<void> {
         dailyBar: dailyByKey.get(`${date} ${symbol}`) ?? null,
         cycle: cycleAsOf(cycleSeries.get(symbol) ?? [], date),
         rawPriorClose: rawPriorCloses.get(`${date} ${symbol}`) ?? null,
-        splitSessionsAgo: sessionsSinceSplit(pairsBySymbol.get(symbol) ?? [], date),
+        splitSessionsAgo: sessionsSinceSplit(pairsBySymbol.get(symbol) ?? [], date).sessionsAgo,
+        splitLookbackSessions: sessionsSinceSplit(pairsBySymbol.get(symbol) ?? [], date)
+          .windowSessions,
         asOf,
       });
       if (outcome.minuteBarCount === 0) empty += 1;

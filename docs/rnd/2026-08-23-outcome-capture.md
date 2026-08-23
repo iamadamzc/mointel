@@ -1243,7 +1243,46 @@ belongs wherever float is displayed, not in a store. The archive would only
 matter if the *rate* became a question worth tracking over time, and that is a
 reason to capture float later rather than a reason to capture it now.
 
-##### A design change this prompts, not yet made
+##### Done: the threshold is out of the stored value, and it changed the baseline
+
+*Approved by the trader via Integration, 2026-08-24.* `split_sessions_ago` now
+searches the whole fetched series, and `split_lookback_sessions` records how far
+that went. Null means "none found in N sessions" with N in the row. The daily
+history fetched for board symbols widened to two years, so the window averages
+**408 sessions** and runs 3 to 503.
+
+**Hypothesis 3 is preserved exactly**, which was the condition: 17 symbols in the
+6-30 bucket, 12 of which ran 50%+, 70.6%. Identical, because 6-30 is now a
+read-time filter over the same fact.
+
+**And the wider window found something the cap was hiding.** The old baseline —
+"no split within 30 sessions", 223 symbols at 27.8% — was a blend of two
+populations:
+
+| | symbols | ever ran 50%+ |
+| --- | --- | --- |
+| no split found at all (up to ~500 sessions) | 150 | **20.7%** |
+| split 0-5 sessions ago | 12 | 25.0% |
+| **split 6-30 sessions ago** | 17 | **70.6%** |
+| split 31+ sessions ago | 73 | **42.5%** |
+
+92 symbol-days that read null before now carry a distance. The true never-split
+baseline is **20.7%, not 27.8%** — the old figure was inflated by 73 symbols that
+had split earlier and run at more than twice the never-split rate.
+
+That makes the shape richer and more credible than the binary it replaced. A
+split at *any* distance roughly doubles the rate (42.5% against 20.7%); the 6-30
+window is a peak on top of that; and a split in the last five sessions is
+indistinguishable from never having split. The gradient is what a real mechanism
+looks like — the float takes time to clean up, and a name that split this week
+has not had it yet.
+
+Still 17 symbols at the peak, still one week, still the desk's board. Nothing
+here is a verdict. But the finding survived a change to the variable it rests
+on, which is the first time tonight a result has been re-derived on a different
+footing and come back the same.
+
+##### The design change that produced it
 
 `split_sessions_ago` bakes a 30-session threshold into a stored value, and CDTG
 is the case that shows why that is wrong — the field said null and the answer was
