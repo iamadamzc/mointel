@@ -203,7 +203,16 @@ should not be shipped in the same window as the incident that prompted it.
 
 **2. The WAL is a 507 MB high-water mark that nothing truncates.** Measured, not
 guessed — see the section below. Not urgent; disk is 13% used. Next step is
-agreed: sample it Monday premarket and decide then.
+agreed: sample it **under sustained concurrent write load with the dashboard
+polling** — which Monday's premarket is expected to supply, but the load is the
+condition and the clock is not.
+
+*Restated 2026-08-23. "Sample it Monday premarket" names an event; the thing
+that makes the sample mean anything is contention between the writers and the
+readers. On a thin premarket a flat WAL says exactly what Saturday's closed
+market said, which is nothing — a check that cannot fail. So record the write
+rate alongside the size: if writes are not landing steadily and the dashboard is
+not being polled, the sample has not been taken yet, whatever the clock says.*
 
 **3. Nothing surfaces the age of the calendar cache.** The failure modes in
 §"When the Alpaca calendar fetch fails" are all silent, and the one number that
@@ -840,8 +849,18 @@ Once bars flow, the proof the drift was protecting is spent, and a restart onto
 `current` would end it outright rather than leaving a pin that has to be
 remembered. Integration flagged the option without recommending timing. The call:
 
-**Restart it Monday, but not in the premarket window — after the close, or in
-the 22:00–04:00 `NEXT_DAY_PREP` window.**
+**Restart it once bars have actually flowed and no session is live** — which on
+a normal Monday means after the close, or in the 22:00–04:00 `NEXT_DAY_PREP`
+window.
+
+*Restated as a condition 2026-08-23, because the original said "restart it
+Monday, after the close" and that is an event standing in for a requirement.
+The two come apart in exactly the case that matters: **if bars do not flow
+Monday, "after the close" still arrives** — and the rule as written would have
+restarted away the only live process carrying the failure, at the moment it was
+the evidence. The condition is what earns the restart, and the clock is only
+where the condition is usually met. If premarket produces no bars, the worker
+stays up and the drift stays with it.*
 
 Why not at the open: 07:00–10:00 ET is where this desk's profit is, and a
 restart drops the stream and replays a startup backfill — 13,115 equities and
