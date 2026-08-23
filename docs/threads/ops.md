@@ -394,6 +394,52 @@ throws at the point of use rather than at the read. Research flagged this as
 display logic and that is right; noting the mechanism because "it parses fine"
 is exactly how it will look while being broken.
 
+**8. Design's `44c10cd` is verified and waiting on a word. Not deployed.**
+*Handed over 2026-08-23; the trader was asked and had not answered when this was
+written. Production remains `28c7f12`.*
+
+Sortable Discovery columns — Rank, RVOL, Move, Price, Float — asked for by the
+trader for Monday's open. Gate re-run here, not taken on report: **1238 tests /
+80 files**, lint, typecheck, build, all green at `44c10cd`. Tree clean.
+
+The findings below are the reason this is worth reading before re-deciding, and
+they are what a fresh session would otherwise spend an hour re-deriving.
+
+**It is 66 commits, not one.** The handoff is accurate about `44c10cd`; a deploy
+ships a tree. Live-behaviour changes beyond the UI are the `sheetPrior` cache
+(fewer Google calls per research cycle), the supply-bound banding and prompt
+variant switch (**both default off**), and arm labelling in `researchRepo`.
+Design said plainly that its own work is unverified on the live desk; nobody said
+the same of Research's, and it rides along on the same release.
+
+**Research's cycle work ships inert, so its "not ready for a window" does not
+block this.** Checked rather than assumed: `AUTOMATIC_DOSSIER_SCHEMA_VERSION` and
+`INTERPRETER_PROMPT_VERSION` are both still `1`, identical to production — the
+cutover has not landed, only the machinery. `lib/market/cycle.ts` is imported by
+nothing outside tests, and the five units run `alpaca.ts`, `research.ts`,
+`desk-assessments.ts`, `migrate.ts` and `next start` — none of them
+`research-replay.ts`. `package-lock.json` is untouched, so `npm ci` is
+unaffected. No migration; rollback is a plain revert.
+
+**The premarket confound is narrower than it was described.** The worry is that a
+deploy tonight gives Monday's open two candidate causes instead of one, since the
+market worker has not seen a bar since the 01:27 Saturday restart. But the worker
+is not restarted by a deploy and stays on `fd9556f` regardless, **and the
+ingestion path is byte-identical to production** — `engine.ts`, `alpaca/`,
+`worker/alpaca.ts`, `worker/runtime.ts`, `session.ts`, `rvol.ts`, `board.ts` all
+unchanged. Bar flow at 04:00 cannot be caused by this release. Only the board's
+*rendering* can be, which is where a sort defect would show anyway — and the
+discriminator is free: **`messageAgeSeconds` moving off `null` means the feed is
+fine and anything odd is UI.**
+
+**If it ships, look at the real board.** Design asked for this specifically, and
+the reason is on this thread's record: the Phase 1 enum leak was a defect only
+real dossiers could reveal, and it went through a green gate. A gate that passes
+is not a desk that works.
+
+Also: this is the deploy where keep-3 would drop `fd9556f`. The
+`market-worker-release` pin holds it, which is what it was placed for.
+
 ## Monday 2026-08-24 — the plan, and the one judgement call in it
 
 **Monday now reduces to one item that truly needs the open, plus the feed you
