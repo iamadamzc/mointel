@@ -96,6 +96,26 @@ Only Ops deploys. Design and Research produce commits; Ops puts them on the
 server. This is deliberate — the deploy gate has checkpoint windows and pin
 rules that a thread focused on a component will not have in mind.
 
+**And the thread that produced the change verifies it on the live desk once it
+lands.** *Added 2026-08-23, after the trader asked why Design would not be
+looking at its own work.* The honest answer was that Design **could not** — a
+change cannot be checked on production before it is on production — and that
+nothing in this document sent it back afterwards. Its work ended at the
+handoff.
+
+That is a gap, not a rule. **Ops confirms the deploy; the author confirms the
+behaviour.** They are different claims and Ops cannot make the second one: it
+knows the release is live and the services are up, not whether the column sorts
+the way the trader asked. So a deploy is not finished when `current` switches.
+It is finished when the thread that wrote the change has looked at the real
+board.
+
+This is the gap the Phase 1 enum leak went through. It was reported fixed on
+local fixtures that could not have tested it, and production found it. Every
+charter already says *verify on the live desk*; none of them said **when**, and
+the only moment it is possible is after a deploy nobody was asked to report
+back from.
+
 ## What the trader has to do goes last
 
 **Every reply ends with a section headed `## What I need from you`, and nothing
