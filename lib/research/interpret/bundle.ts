@@ -100,6 +100,32 @@ export interface SheetPriorAnalysis {
   notes: string | null;
 }
 
+/**
+ * A share count the issuer reported, parsed deterministically from company
+ * facts.
+ *
+ * Carried as a number because the model was never shown one. `companyFacts`
+ * puts the value in the source's `metadata`; `toBundleSource` forwards title,
+ * excerpt and concepts but not metadata; and the excerpt on these records is
+ * empty. So the bundle contained a source titled "Reported shares outstanding"
+ * with no number in it, while `coverage.hasSharesOutstanding` reported true.
+ * The count reached the dossier on 27 of 94 analyses despite company facts
+ * existing for 62 of 77 issuers.
+ *
+ * The note travels with the value for the same reason it is stored on the
+ * source: this is the number most likely to be mistaken for a float.
+ */
+export interface ReportedShareCount {
+  shares: number;
+  /** Period end the count refers to, not the date it was filed. */
+  asOf: string;
+  /** XBRL concept, e.g. dei:EntityCommonStockSharesOutstanding. */
+  concept: string | null;
+  /** The bundle source that reported it, so a conclusion can cite it. */
+  sourceId: number;
+  note: 'shares outstanding is not float';
+}
+
 export interface CoverageSummary {
   secSourceCount: number;
   catalystSourceCount: number;
@@ -142,6 +168,15 @@ export interface ResearchEvidenceBundle {
   dailyHistory: DailyHistorySummary;
   sources: BundleSource[];
   coverage: CoverageSummary;
+  /**
+   * The issuer's own reported share count, when one was collected.
+   *
+   * Deliberately a sibling of `coverage.hasSharesOutstanding` rather than a
+   * replacement: the flag says a source exists, this says what it said. Never
+   * a float — `structure.displayedFloat` stays null unless a source states a
+   * float, and SHARES_OUTSTANDING_IS_NOT_FLOAT rejects reusing this as one.
+   */
+  reportedSharesOutstanding: ReportedShareCount | null;
   /** Present only when the desk already has human research on this name. */
   priorHumanAnalysis: SheetPriorAnalysis | null;
 }
@@ -176,6 +211,48 @@ function toBundleSource(source: ResearchSource): BundleSource {
     excerpt: truncate(source.excerpt),
     concepts: conceptsOf(source),
   };
+}
+
+/**
+ * The newest reported share count among the sources the model may cite.
+ *
+ * Restricted to citable sources on purpose. A number the model cannot attribute
+ * is a number it can only assert, and STRUCTURE_REQUIRES_SOURCE rejects an
+ * uncited structural claim — so surfacing an uncitable count would invite the
+ * rejection rather than prevent it. Only one issuer of seventy-seven currently
+ * has enough sources to reach MAX_SOURCES at all, so this costs almost nothing
+ * in practice and fails in the safe direction when it does.
+ *
+ * Newest by period end, not by filing date: two filings can report the same
+ * cover-page count, and the question is which period the count describes.
+ */
+function readReportedShares(
+  citableIdSet: ReadonlySet<number>,
+  sources: readonly ResearchSource[],
+): ReportedShareCount | null {
+  let best: ReportedShareCount | null = null;
+
+  for (const source of sources) {
+    if (source.sourceType !== 'SEC_COMPANY_FACTS') continue;
+    if (!citableIdSet.has(source.id)) continue;
+
+    const shares = source.metadata.sharesOutstanding;
+    const asOf = source.metadata.asOf;
+    if (typeof shares !== 'number' || !Number.isFinite(shares) || shares <= 0) continue;
+    if (typeof asOf !== 'string' || asOf === '') continue;
+    if (best !== null && best.asOf >= asOf) continue;
+
+    const concept = source.metadata.concept;
+    best = {
+      shares,
+      asOf,
+      concept: typeof concept === 'string' && concept !== '' ? concept : null,
+      sourceId: source.id,
+      note: 'shares outstanding is not float',
+    };
+  }
+
+  return best;
 }
 
 const CATALYST_TYPES = new Set([
@@ -423,6 +500,10 @@ export function buildEvidenceBundle(
       incomplete: gaps.length > 0,
       gaps,
     },
+    reportedSharesOutstanding: readReportedShares(
+      new Set(sources.map((source) => source.id)),
+      all,
+    ),
     priorHumanAnalysis: options.priorHumanAnalysis ?? null,
   };
 }

@@ -139,6 +139,7 @@ function bundle(overrides: Partial<ResearchEvidenceBundle> = {}): ResearchEviden
       hasRegistrationEvidence: true, hasSharesOutstanding: true,
       incomplete: false, gaps: [],
     },
+    reportedSharesOutstanding: null,
     priorHumanAnalysis: null,
     ...overrides,
   };
@@ -1062,5 +1063,250 @@ describe('sheet and automatic merge', () => {
     });
     const structure = result.comparisons.find((c) => c.field === 'structure')!;
     expect(structure.agreement).toBe('AUTO_ONLY');
+  });
+});
+
+/**
+ * The share count the model was never shown.
+ *
+ * `extractSharesOutstanding` parsed the count correctly and stored it in the
+ * source's metadata. `toBundleSource` forwards title, excerpt and concepts —
+ * not metadata — and the excerpt on a company-facts record is empty. So the
+ * bundle carried a source titled "Reported shares outstanding" containing no
+ * number, while `coverage.hasSharesOutstanding` reported true. The count
+ * reached the dossier on 27 of 94 analyses despite company facts existing for
+ * 62 of 77 issuers.
+ */
+describe('reported shares outstanding', () => {
+  function acme(db: ReturnType<typeof temporaryDb>) {
+    upsertIssuer(db, {
+      ticker: 'ACME', companyName: 'Acme Inc.', cik: '0000000123', exchange: 'NASDAQ',
+      country: 'CA', foreignIssuer: false, cikConfidence: 'HIGH',
+      mappingSource: 'test', irUrl: null, lastVerifiedAt: null,
+    });
+  }
+
+  function factsSource(overrides: Record<string, unknown> = {}) {
+    return {
+      ticker: 'ACME',
+      sourceType: 'SEC_COMPANY_FACTS' as const,
+      title: 'Reported shares outstanding (dei:EntityCommonStockSharesOutstanding)',
+      url: 'https://data.sec.gov/api/xbrl/companyfacts/CIK0000000123.json',
+      publishedAt: '2026-08-11T00:00:00Z',
+      fetchedAt: '2026-08-17T12:00:00Z',
+      accession: null,
+      secForm: null,
+      authority: 'SEC' as const,
+      contentHash: 'cf1',
+      documentFingerprint: 'cf1',
+      excerpt: null,
+      metadata: {
+        sharesOutstanding: 1_695_120,
+        asOf: '2026-08-11',
+        concept: 'dei:EntityCommonStockSharesOutstanding',
+        note: 'shares outstanding is not float',
+      },
+      active: true,
+      ...overrides,
+    };
+  }
+
+  it('surfaces the parsed count as a number the model can read and cite', () => {
+    const db = temporaryDb();
+    acme(db);
+    insertResearchSources(db, [factsSource()]);
+
+    const built = buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE });
+
+    expect(built.reportedSharesOutstanding?.shares).toBe(1_695_120);
+    expect(built.reportedSharesOutstanding?.asOf).toBe('2026-08-11');
+    expect(built.reportedSharesOutstanding?.note).toBe('shares outstanding is not float');
+
+    // The whole point: the number is in what the interpreter is sent.
+    expect(JSON.stringify(built)).toContain('1695120');
+
+    // And it is attributable, so a conclusion resting on it survives
+    // STRUCTURE_REQUIRES_SOURCE.
+    const citable = new Set(built.sources.map((source) => source.id));
+    expect(citable.has(built.reportedSharesOutstanding!.sourceId)).toBe(true);
+  });
+
+  it('prefers the newest period end, not the newest filing', () => {
+    const db = temporaryDb();
+    acme(db);
+    insertResearchSources(db, [
+      factsSource({
+        contentHash: 'old', documentFingerprint: 'old',
+        url: 'https://data.sec.gov/api/xbrl/companyfacts/old.json',
+        metadata: { sharesOutstanding: 900_000, asOf: '2026-03-31', concept: 'dei:X' },
+      }),
+      factsSource(),
+    ]);
+
+    const built = buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE });
+    expect(built.reportedSharesOutstanding?.shares).toBe(1_695_120);
+  });
+
+  it('stays null when no count was collected, and never becomes zero', () => {
+    const db = temporaryDb();
+    acme(db);
+    insertResearchSources(db, [
+      factsSource({ metadata: { sharesOutstanding: 0, asOf: '2026-08-11' } }),
+    ]);
+
+    const built = buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE });
+    expect(built.reportedSharesOutstanding).toBeNull();
+  });
+});
+
+/**
+ * The bound, as a contract.
+ *
+ * The desk has no float source — every float on the board comes from the
+ * spreadsheet — so the pipeline cannot state a supply-to-float ratio. It can
+ * state a floor under one, because float can never exceed shares outstanding.
+ *
+ * The guarantee these pin: the numerator must UNDER-count. If anything weaker
+ * than established, share-denominated supply reaches it, the result stops being
+ * a bound and becomes an over-statement — which on this desk means calling a
+ * name dirty that is not.
+ */
+describe('supply bound', () => {
+  const reported = {
+    shares: 10_000_000,
+    asOf: '2026-08-11',
+    concept: 'dei:EntityCommonStockSharesOutstanding',
+    sourceId: 1,
+    note: 'shares outstanding is not float' as const,
+  };
+
+  it('divides established supply by the share count', () => {
+    const result = validateDossier(
+      dossier({
+        structure: {
+          ...dossier().structure,
+          supplyLedger: [supply({ type: 'RECENT_OFFERING', amountShares: 2_500_000, status: 'KNOWN_ACTIVE' })],
+        },
+      }),
+      bundle({ reportedSharesOutstanding: reported }),
+    );
+
+    const bound = result.dossier.structure.supplyBound!;
+    expect(bound.ratioLowerBound).toBeCloseTo(0.25);
+    expect(bound.exceedsSharesOutstanding).toBe(false);
+    expect(bound.blocksCounted).toBe(1);
+  });
+
+  it('settles the question when supply reaches the whole share count', () => {
+    const result = validateDossier(
+      dossier({
+        structure: {
+          ...dossier().structure,
+          supplyLedger: [
+            supply({ type: 'EQUITY_PURCHASE_AGREEMENT', amountShares: 8_000_000, status: 'KNOWN_ACTIVE' }),
+            supply({ type: 'ATM', amountShares: 4_000_000, status: 'KNOWN_ACTIVE' }),
+          ],
+        },
+      }),
+      bundle({ reportedSharesOutstanding: reported }),
+    );
+
+    const bound = result.dossier.structure.supplyBound!;
+    // 12M established against 10M shares: supply exceeds every share in
+    // existence, so it exceeds the float whatever the float turns out to be.
+    expect(bound.exceedsSharesOutstanding).toBe(true);
+    expect(bound.ratioLowerBound).toBeGreaterThan(1);
+  });
+
+  it('counts only KNOWN_ACTIVE supply, so the floor stays a floor', () => {
+    const result = validateDossier(
+      dossier({
+        structure: {
+          ...dossier().structure,
+          supplyLedger: [
+            supply({ type: 'RECENT_OFFERING', amountShares: 1_000_000, status: 'KNOWN_ACTIVE' }),
+            supply({ type: 'WARRANTS', amountShares: 5_000_000, status: 'POSSIBLY_ACTIVE' }),
+            supply({ type: 'CONVERTIBLES', amountShares: 9_000_000, status: 'NOT_YET_ACTIVE' }),
+          ],
+        },
+      }),
+      bundle({ reportedSharesOutstanding: reported }),
+    );
+
+    const bound = result.dossier.structure.supplyBound!;
+    expect(bound.activeSupplyShares).toBe(1_000_000);
+    expect(bound.blocksCounted).toBe(1);
+  });
+
+  it('never converts dollar capacity into shares, and says it could not see it', () => {
+    const result = validateDossier(
+      dossier({
+        structure: {
+          ...dossier().structure,
+          supplyLedger: [
+            supply({ type: 'RECENT_OFFERING', amountShares: 1_000_000, status: 'KNOWN_ACTIVE' }),
+            supply({ type: 'ATM', amountShares: null, dollarCapacity: 30_000_000, status: 'KNOWN_ACTIVE' }),
+          ],
+        },
+      }),
+      bundle({ reportedSharesOutstanding: reported }),
+    );
+
+    const bound = result.dossier.structure.supplyBound!;
+    expect(bound.activeSupplyShares).toBe(1_000_000);
+    expect(bound.blocksWithoutShareCount).toBe(1);
+  });
+
+  it('states no bound when collection established no share count', () => {
+    const result = validateDossier(
+      dossier({
+        structure: {
+          ...dossier().structure,
+          supplyLedger: [supply({ type: 'ATM', amountShares: 2_000_000, status: 'KNOWN_ACTIVE' })],
+        },
+      }),
+      bundle({ reportedSharesOutstanding: null }),
+    );
+
+    expect(result.dossier.structure.supplyBound).toBeNull();
+  });
+
+  it('ignores the model\u2019s own share count as a denominator', () => {
+    // A hallucinated low count would inflate the ratio and break the guarantee,
+    // so only the deterministically parsed figure is ever used.
+    const result = validateDossier(
+      dossier({
+        structure: {
+          ...dossier().structure,
+          sharesOutstanding: 100_000,
+          supplyLedger: [supply({ type: 'ATM', amountShares: 2_000_000, status: 'KNOWN_ACTIVE' })],
+        },
+      }),
+      bundle({ reportedSharesOutstanding: null }),
+    );
+
+    expect(result.dossier.structure.supplyBound).toBeNull();
+  });
+
+  it('rests on the corrected ledger, so a downgraded block leaves the numerator', () => {
+    // REGISTRATION_IS_NOT_SELLING moves a registered resale claimed KNOWN_ACTIVE
+    // down to POSSIBLY_ACTIVE when the evidence shows registration rather than
+    // sales. The bound is computed after that, so the block cannot inflate it.
+    const result = validateDossier(
+      dossier({
+        structure: {
+          ...dossier().structure,
+          supplyLedger: [
+            supply({ type: 'RECENT_OFFERING', amountShares: 1_000_000, status: 'KNOWN_ACTIVE' }),
+            supply({ type: 'REGISTERED_RESALE', amountShares: 20_000_000, status: 'KNOWN_ACTIVE' }),
+          ],
+        },
+      }),
+      bundle({ reportedSharesOutstanding: reported }),
+    );
+
+    expect(result.violations.map((v) => v.rule)).toContain('REGISTRATION_IS_NOT_SELLING');
+    expect(result.dossier.structure.supplyBound!.activeSupplyShares).toBe(1_000_000);
+    expect(result.dossier.structure.supplyBound!.exceedsSharesOutstanding).toBe(false);
   });
 });

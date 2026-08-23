@@ -17,6 +17,7 @@ import type {
   ResearchDossier,
   StructureClassification,
   SupplyBlock,
+  SupplyBound,
 } from '../types';
 
 export type ViolationSeverity = 'REJECT' | 'DOWNGRADE';
@@ -154,6 +155,60 @@ function validateSupplyBlock(
  * fixed in place because the safe value is always knowable (null, UNKNOWN, a
  * lower confidence), while REJECT problems need the model to try again.
  */
+/**
+ * Divides established live supply by the reported share count.
+ *
+ * See `SupplyBound` for why the result is a lower bound and why that is worth
+ * more here than an estimated float would be.
+ *
+ * The denominator is the deterministically parsed count from the bundle, never
+ * `structure.sharesOutstanding`. The model's figure is a claim, and a claim
+ * that came in too low would inflate the ratio and turn a bound into an
+ * over-statement — the one failure this must not have. If collection did not
+ * establish a share count, there is no bound to state.
+ */
+function computeSupplyBound(
+  ledger: readonly SupplyBlock[],
+  bundle: ResearchEvidenceBundle,
+): SupplyBound | null {
+  const reported = bundle.reportedSharesOutstanding;
+  if (reported === null || reported.shares <= 0) return null;
+
+  const active = ledger.filter((block) => block.status === 'KNOWN_ACTIVE');
+  let activeSupplyShares = 0;
+  let blocksCounted = 0;
+  let blocksWithoutShareCount = 0;
+
+  for (const block of active) {
+    const shares = block.amountShares;
+    if (typeof shares === 'number' && Number.isFinite(shares) && shares > 0) {
+      activeSupplyShares += shares;
+      blocksCounted += 1;
+    } else {
+      // A dollar-only block is capacity, not shares, and converting it is the
+      // DOLLAR_SHELF_IS_NOT_SHARES mistake. Counted here only so the bound can
+      // say how much it could not see.
+      blocksWithoutShareCount += 1;
+    }
+  }
+
+  if (blocksCounted === 0) return null;
+
+  const ratioLowerBound = activeSupplyShares / reported.shares;
+
+  return {
+    activeSupplyShares,
+    sharesOutstanding: reported.shares,
+    ratioLowerBound,
+    exceedsSharesOutstanding: activeSupplyShares >= reported.shares,
+    blocksCounted,
+    blocksWithoutShareCount,
+    note:
+      'lower bound: float cannot exceed shares outstanding, and only established ' +
+      'share-denominated supply is counted, so the true ratio is at least this',
+  };
+}
+
 export function validateDossier(
   dossier: ResearchDossier,
   bundle: ResearchEvidenceBundle,
@@ -368,6 +423,14 @@ export function validateDossier(
     );
     structure.displayedFloat = null;
   }
+
+  /*
+   * Computed last in this section, over the ledger the checks above have
+   * already corrected, so a rejected or downgraded block cannot reach the
+   * numerator. Derived, so no violation is raised either way: a bound is an
+   * observation about the evidence, not a fault in the output.
+   */
+  structure.supplyBound = computeSupplyBound(structure.supplyLedger, bundle);
 
   /* ---------------------------------------------------------------- cycle */
 

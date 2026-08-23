@@ -353,6 +353,44 @@ export interface SupplyBlock {
   confidence: Confidence;
 }
 
+/**
+ * A deterministic floor under the supply-to-float ratio.
+ *
+ * Derived after interpretation, never produced by the model, and deliberately
+ * not a float estimate. The desk has no float source at all — every float on
+ * the board comes from the spreadsheet — so the honest move is a bound rather
+ * than a number.
+ *
+ * The arithmetic: float can never exceed shares outstanding, so dividing
+ * established live supply by the share count can only UNDERSTATE the true
+ * supply-to-float ratio. That makes the result a lower bound, and a lower bound
+ * at or above 1.0 settles the question without a float ever being known —
+ * supply equals or exceeds every share in existence, so it necessarily equals
+ * or exceeds the float.
+ *
+ * The numerator counts only KNOWN_ACTIVE blocks carrying a real share count.
+ * Anything weaker would break the guarantee: to stay a lower bound the
+ * numerator must under-count, so possible-but-unproven supply, warrants that
+ * may never be exercised, and dollar shelf capacity are all excluded. A bound
+ * below 1.0 therefore means "not proven from established supply alone", never
+ * "clean".
+ */
+export interface SupplyBound {
+  /** Sum of amountShares across KNOWN_ACTIVE blocks that state a share count. */
+  activeSupplyShares: number;
+  /** Denominator, and an upper bound on the float. */
+  sharesOutstanding: number;
+  /** activeSupplyShares / sharesOutstanding. A LOWER bound on supply-to-float. */
+  ratioLowerBound: number;
+  /** True when established supply alone equals or exceeds the entire share count. */
+  exceedsSharesOutstanding: boolean;
+  /** How many ledger blocks the numerator rests on. */
+  blocksCounted: number;
+  /** Blocks excluded for having no share count, so a thin bound reads as thin. */
+  blocksWithoutShareCount: number;
+  note: string;
+}
+
 /* ----------------------------------------------------------- classifications */
 
 export type Confidence = 'HIGH' | 'MEDIUM' | 'LOW' | 'UNKNOWN';
@@ -437,6 +475,12 @@ export interface StructureFindings {
   floatConfidence: Confidence;
   structureClassification: StructureClassification;
   supplyLedger: SupplyBlock[];
+  /**
+   * Derived by `validateDossier`, not by the model — which is why it is
+   * optional here and absent from AUTOMATIC_DOSSIER_SCHEMA. Null when the
+   * share count or an established share-denominated supply block is missing.
+   */
+  supplyBound?: SupplyBound | null;
   structuralWarnings: string[];
   reverseSplitHistory: string[];
   knownRegistrationStatus: string | null;
