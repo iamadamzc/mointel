@@ -140,3 +140,103 @@ describe('resolveCycle', () => {
     expect(CYCLE_START_RVOL).toBe(5);
   });
 });
+
+/**
+ * What ends a cycle, and what a cycle is measured against.
+ *
+ * Both corrections came from the trader. The first is that "gave back half"
+ * means half of the MOVE, not half of the high — a distinction that decides
+ * whether the rule fires at all on ordinary movers. The second is that a name
+ * which ran a month ago and has gone quiet is not on the backside of anything.
+ */
+describe('retracement and reset', () => {
+  it('measures the move, not the distance below the high', () => {
+    // Based at 1.00, ran to 1.20, now 1.09: just past half the move.
+    const bars: CycleBar[] = [
+      ...base(22, 1.0),
+      bar('2026-07-01', 1.2, 1.2, 30_000_000),
+      bar('2026-07-02', 1.09, 1.19, 9_000_000),
+    ];
+    const result = arc(resolveCycle(bars));
+
+    expect(result.retracementPct).toBeGreaterThan(0.5);
+    expect(result.phase).toBe('BACKSIDE');
+    // The old rule compared 9% below the high against a 50% threshold and would
+    // have called this a healthy pullback. It only ever fired on huge movers.
+    expect(result.givebackPct).toBeLessThan(0.15);
+  });
+
+  it('calls a same-session collapse BACKSIDE on day one', () => {
+    // AIXC: 0.7102 -> 3.14 intraday, closed 1.32. 75% of the move surrendered
+    // while the cycle high is still that same session.
+    const bars: CycleBar[] = [
+      ...base(22, 0.7102, 400_000),
+      bar('2026-08-18', 1.32, 3.14, 60_000_000),
+    ];
+    const result = arc(resolveCycle(bars));
+    expect(result.sessionsSinceHigh).toBe(0);
+    expect(Math.round(result.retracementPct * 100)).toBe(75);
+    expect(result.phase).toBe('BACKSIDE');
+  });
+
+  it('moves to SHADOW when volume returns to normal', () => {
+    const ran: CycleBar[] = [
+      ...base(22, 1.3),
+      bar('2026-07-01', 3.0, 3.4, 40_000_000),
+      bar('2026-07-02', 1.6, 2.4, 12_000_000),
+    ];
+    expect(arc(resolveCycle(ran)).phase).toBe('BACKSIDE');
+
+    // Same broken move, but nobody is trading it any more.
+    const quiet: CycleBar[] = [
+      ...ran,
+      bar('2026-07-06', 1.5, 1.6, 900_000),
+      bar('2026-07-07', 1.5, 1.6, 800_000),
+      bar('2026-07-08', 1.5, 1.6, 700_000),
+    ];
+    const result = arc(resolveCycle(quiet));
+    expect(result.phase).toBe('SHADOW');
+    // The high still matters; that is the point of keeping the cycle at all.
+    expect(result.cycleHigh).toBe(3.4);
+  });
+
+  it('does not call a two-day-old move quiet', () => {
+    // A cycle cannot have gone quiet for three sessions when it is two old.
+    const bars: CycleBar[] = [
+      ...base(22, 1.3),
+      bar('2026-07-01', 3.0, 3.4, 40_000_000),
+      bar('2026-07-02', 1.5, 2.4, 500_000),
+    ];
+    expect(arc(resolveCycle(bars)).phase).toBe('BACKSIDE');
+  });
+
+  it('lets a fresh qualifying day start a new cycle out of the shadow', () => {
+    const bars: CycleBar[] = [
+      ...base(22, 1.3),
+      bar('2026-07-01', 3.0, 3.4, 40_000_000),
+      bar('2026-07-02', 1.6, 2.4, 12_000_000),
+      ...Array.from({ length: 10 }, (_, i) => bar(`2026-07-${10 + i}`, 1.5, 1.6, 700_000)),
+    ];
+    expect(arc(resolveCycle(bars)).phase).toBe('SHADOW');
+
+    const reignited = [...bars, bar('2026-07-27', 2.4, 2.6, 30_000_000)];
+    const result = arc(resolveCycle(reignited));
+    expect(result.phase).toBe('DAY_ONE');
+    expect(result.startDate).toBe('2026-07-27');
+    // The July high is behind us and must not be this cycle's high.
+    expect(result.cycleHigh).toBe(2.6);
+  });
+});
+
+describe('threshold edges', () => {
+  it('accepts a move of exactly 20%, which binary floating point calls 19.999%', () => {
+    // (1.2 - 1.0) / 1.0 === 0.19999999999999996
+    const bars = [...base(22, 1.0), bar('2026-07-01', 1.2, 1.2, 30_000_000)];
+    expect(isCycleStart(bars, bars.length - 1)).toBe(true);
+  });
+
+  it('still rejects a move just under the rule', () => {
+    const bars = [...base(22, 1.0), bar('2026-07-01', 1.19, 1.2, 30_000_000)];
+    expect(isCycleStart(bars, bars.length - 1)).toBe(false);
+  });
+});

@@ -26,6 +26,28 @@ export const CYCLE_START_RVOL = 5;
 /** Sessions of prior volume the relative-volume baseline is taken from. */
 export const RVOL_BASELINE_SESSIONS = 20;
 
+/**
+ * Fraction of the MOVE given back before it reads as broken.
+ *
+ * Of the move, not below the high, and the difference is not cosmetic. A stock
+ * that based at 1.00 and ran to 1.20 has given back half its move at 1.10;
+ * measuring 50% below the HIGH would put the threshold at 0.60, far under where
+ * it started, so a rule written that way fires only on enormous movers and
+ * silently never fires on ordinary ones.
+ */
+export const BACKSIDE_RETRACEMENT = 0.5;
+
+/**
+ * Relative volume at or below which a name is no longer in play, and the
+ * consecutive sessions of it that end a cycle.
+ *
+ * 2x is the desk's own eligibility floor. Volume returning to normal is what
+ * resets the dial: a move is over when nobody is trading it any more, not when
+ * some number of days have passed.
+ */
+export const SHADOW_RVOL = 2;
+export const SHADOW_SESSIONS = 3;
+
 export interface CycleBar {
   tradingDate: string;
   high: number | null;
@@ -39,10 +61,21 @@ export type CyclePhase =
   | 'DAY_ONE'
   /** Still making the cycle high, more than one session in. */
   | 'FRONTSIDE'
-  /** Off the high, but the high is recent and the move is not broken. */
+  /** Off the high, but less than half the move given back. */
   | 'PULLBACK'
-  /** Past the peak by days, or most of the move given back. */
+  /** Half the move or more given back, while the name is still in play. */
   | 'BACKSIDE'
+  /**
+   * The move is over — volume has returned to normal — but its high is still
+   * overhead.
+   *
+   * A name that ran a month ago and has since gone quiet is not on the backside
+   * of anything; nothing is actively unwinding. Calling it BACKSIDE forever
+   * overstates what is happening and buries the thing that does still matter,
+   * which is that the old high is resistance. A fresh catalyst starts a new
+   * cycle from here on its own, because a qualifying start day supersedes.
+   */
+  | 'SHADOW'
   /** No qualifying start day in the window. An absence, not a judgement. */
   | 'NO_CYCLE';
 
@@ -59,8 +92,15 @@ export interface CycleArc {
   sessionsSinceHigh: number;
   /** Sessions from the start day to the latest bar, inclusive. */
   sessionsInCycle: number;
-  /** (cycleHigh - latestClose) / cycleHigh. */
+  /** (cycleHigh - latestClose) / cycleHigh. How far below the high. */
   givebackPct: number;
+  /**
+   * Fraction of the move surrendered: 0 at the high, 1 back at the base, above
+   * 1 below where it started. This, not givebackPct, decides the phase.
+   */
+  retracementPct: number;
+  /** Relative volume over the most recent sessions, newest first. */
+  recentRvol: Array<number | null>;
   /** Move from the base close to the cycle high. */
   advancePct: number;
   latestDate: string;
@@ -102,24 +142,36 @@ export function closeChangePct(bars: readonly CycleBar[], index: number): number
   return (close - prior) / prior;
 }
 
+/**
+ * Tolerance on the threshold comparisons.
+ *
+ * A move from 1.00 to 1.20 is twenty percent, and in binary floating point it
+ * is 0.19999999999999996, so a bare `>=` rejects the exact case the rule is
+ * written around. The epsilon is far below any real price move and exists only
+ * to stop representation error deciding a threshold.
+ */
+const THRESHOLD_EPSILON = 1e-9;
+
 /** True when this session begins a move by the desk's rule. */
 export function isCycleStart(bars: readonly CycleBar[], index: number): boolean {
   if (index < 1) return false;
   const move = closeChangePct(bars, index);
   const rvol = dailyRvol(bars, index);
   if (move === null || rvol === null) return false;
-  return move >= CYCLE_START_MOVE_PCT && rvol >= CYCLE_START_RVOL;
+  return (
+    move >= CYCLE_START_MOVE_PCT - THRESHOLD_EPSILON &&
+    rvol >= CYCLE_START_RVOL - THRESHOLD_EPSILON
+  );
 }
 
 export interface CycleOptions {
-  /** Giveback at or beyond which the move reads as broken. */
-  backsideGivebackPct?: number;
-  /** Sessions past the high at or beyond which the move reads as broken. */
-  backsideSessionsSinceHigh?: number;
+  /** Fraction of the move given back before it reads as broken. */
+  backsideRetracement?: number;
+  /** Relative volume at or below which the name is out of play. */
+  shadowRvol?: number;
+  /** Consecutive quiet sessions that end a cycle. */
+  shadowSessions?: number;
 }
-
-const DEFAULT_BACKSIDE_GIVEBACK = 0.5;
-const DEFAULT_BACKSIDE_SESSIONS = 3;
 
 export type CycleResult = CycleArc | { phase: 'NO_CYCLE' };
 
@@ -165,18 +217,50 @@ export function resolveCycle(
   const sessionsSinceHigh = bars.length - 1 - cycleHighIndex;
   const sessionsInCycle = bars.length - startIndex;
   const givebackPct = (cycleHigh - latest.close) / cycleHigh;
-  const advancePct = baseClose > 0 ? (cycleHigh - baseClose) / baseClose : 0;
+  const advance = cycleHigh - baseClose;
+  /*
+   * Guarded because a cycle can start and close below its own base, leaving no
+   * move to retrace. Treated as fully surrendered, which is what it is.
+   */
+  const retracementPct = advance > 0 ? (cycleHigh - latest.close) / advance : 1;
+  const advancePct = baseClose > 0 ? advance / baseClose : 0;
 
-  const backsideGiveback = options.backsideGivebackPct ?? DEFAULT_BACKSIDE_GIVEBACK;
-  const backsideSessions = options.backsideSessionsSinceHigh ?? DEFAULT_BACKSIDE_SESSIONS;
+  const backsideRetracement = options.backsideRetracement ?? BACKSIDE_RETRACEMENT;
+  const shadowRvol = options.shadowRvol ?? SHADOW_RVOL;
+  const shadowSessions = options.shadowSessions ?? SHADOW_SESSIONS;
+
+  const recentRvol: Array<number | null> = [];
+  for (let i = bars.length - 1; i >= 0 && recentRvol.length < shadowSessions; i -= 1) {
+    recentRvol.push(dailyRvol(bars, i));
+  }
+
+  /*
+   * The cycle is over when nobody is trading it any more.
+   *
+   * Requires a full window of quiet sessions AND that they all sit inside the
+   * cycle — a move two days old cannot have gone quiet for three. A single
+   * missing volume reading does not end a cycle either, since an absent bar is
+   * not evidence of calm.
+   */
+  const wentQuiet =
+    recentRvol.length === shadowSessions &&
+    sessionsInCycle > shadowSessions &&
+    recentRvol.every((rvol) => rvol !== null && rvol <= shadowRvol);
 
   let phase: CyclePhase;
-  if (givebackPct >= backsideGiveback || sessionsSinceHigh >= backsideSessions) {
+  if (wentQuiet) {
     /*
-     * Checked first, deliberately. A green session deep on the backside is a
-     * bounce inside a broken move, and reading it as strength is the trap the
-     * multi-day framing exists to avoid: STAK closed +11% on 29 July while 80%
-     * below a cycle high set five sessions earlier.
+     * Checked before BACKSIDE. A name that ran a month ago and has since gone
+     * quiet is not on the backside of anything; nothing is unwinding. Leaving
+     * it BACKSIDE forever overstates the present and buries what still matters,
+     * which is the old high sitting overhead.
+     */
+    phase = 'SHADOW';
+  } else if (retracementPct >= backsideRetracement) {
+    /*
+     * Before the at-the-high tests, so a same-session collapse is caught: AIXC
+     * ran from 0.7102 to 3.14 and closed 1.32 on its start day, surrendering
+     * 75% of its move while the high was still that same session.
      */
     phase = 'BACKSIDE';
   } else if (sessionsSinceHigh === 0) {
@@ -194,6 +278,8 @@ export function resolveCycle(
     sessionsSinceHigh,
     sessionsInCycle,
     givebackPct,
+    retracementPct,
+    recentRvol,
     advancePct,
     latestDate: latest.tradingDate,
     latestClose: latest.close,
