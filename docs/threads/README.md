@@ -138,6 +138,12 @@ As of the last session, **2026-08-23**:
 - Production is **`fd9556f`**, schema **v21**, on Lightsail `98.85.49.227`
   behind CloudFront `https://dwwep02jje2ag.cloudfront.net/`, Basic Auth with two
   logins.
+- **The Google Sheet is written by a ChatGPT scheduled task, not by the
+  trader.** He has never reviewed anything in it and does not put anything
+  into it. The desk reads it read-only and nothing in this repo writes it, so
+  it is an input produced outside the system that no charter owned until
+  2026-08-23. The product currently labels its output *human review*. Open in
+  [research.md](research.md) item 5 and audit §11 item 1.
 - Credentials live in `A:\AWS_creds\` — **outside the repo, and they stay there.**
   Never print, log, commit or move a credential value.
 - Project memory is at `~/.claude/projects/A--mointel/memory/` — seven files:

@@ -104,6 +104,45 @@ could take difficult or conflicting dossiers and `Luna` could do low-cost change
 detection. Nothing routes to them today, and cheap change detection is the
 obvious lever on a 6M-token day.
 
+**5. The Sheet is written by a ChatGPT scheduled task, and the desk calls it a
+human review.** *Handed over by Integration 2026-08-23, after the trader said
+he has never reviewed anything in the Sheet and does not put anything into it.
+The label question is Design's; the merge semantics are this thread's.*
+
+Verified in the code, not inferred: the desk's access is
+`spreadsheets.readonly` and `drive.metadata.readonly`
+(`lib/data/providers/googleSheets.ts:22`), and **nothing in `lib/`, `worker/`
+or `app/` writes to the Sheet**. So the input is produced entirely outside this
+system, by an automation no charter mentions and no thread owns.
+
+That makes `SHEET` provenance not hollow but **mislabelled**.
+`lib/dashboard/language.ts:23` renders `SHEET_ONLY` as *"only the human review
+reached a conclusion"*, and `lib/dashboard/intelligence.ts:171` as
+*"Human-reviewed research only"*. Both describe another model's output. This
+thread's first working rule is that facts come from deterministic parsing and
+the model only interprets, with `UNKNOWN` preferred to a fabricated
+classification. A surface that reports one model's output as human review is
+the same defect wearing a label.
+
+**The question that decides how far it reaches, and it is not answered here.**
+`lib/research/merge/sheetAuto.ts:361` only *compares* the Sheet's catalyst
+bucket against the automatic grade — that is conflict detection and it changes
+nothing. But `lib/research/merge/sheetPrior.ts:57` reads
+`catalystGrade: ticker.catalyst.gradeRaw`, and the file is named for a prior.
+**If that prior reaches the interpreter's context, the automatic catalyst grade
+is influenced by the ChatGPT task's output rather than independent of it.** Read
+`sheetPrior` and settle it plainly, because two other threads are downstream:
+R&D's Q1 treats the stored catalyst grade as its independent variable, and the
+conflict apparatus Design is deciding whether to delete rests on the two being
+independent.
+
+Not established, and not to be assumed either way: whether the task is still
+running. `lib/data/providers/googleSheets.ts:112` already fetches the Sheet's
+Drive `modifiedTime`, so that is readable off the live desk without new code.
+Ops revoked a `chatgpt-mcp-7d` review session on 2026-08-23 that had been
+unused since 19 August — a different path, almost certainly unrelated to a
+Sheet writer, and named here only so nobody links them by coincidence later.
+
 **4. `RESEARCH_RESOLVER_SEARCH_CONTEXT` stays at its current default.** Low-context
 resolver searches were explicitly not enabled. Do not turn them on without
 asking.
