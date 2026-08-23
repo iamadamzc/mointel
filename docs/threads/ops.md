@@ -34,11 +34,29 @@ convention holds. `lib/review/` is the exception because it is operational
 machinery that happens to be written in TypeScript, not product. If it starts
 growing product surface, revisit it.
 
-**The open defect, from Ops:** a revoked, expired or invalid capability returns
-**200 with an error page** rather than 401 or 404. Not a bypass — the bodies
-prove the desk is withheld. But any automated check testing a review link by
-status code gets a **false pass**, which is the mistake Ops made and nearly
-reported, and a monitor would never notice a dead link.
+**~~The open defect.~~ Investigated by Ops and closed: every available fix is
+worse than the defect, and I had overstated it.** What I recorded — that a
+monitor would never notice a dead link, and that any status-code check gets a
+false pass — is true only of the **page**. The review **API** is already
+correct: `api/dashboard`, `api/market` and `api/diagnostics` all return **403**
+for revoked and for garbage, 200 only for valid, with no data in the body. Both
+consequences dissolve.
+
+**So the operating rule, which is the useful output: to test a review link,
+request its API, never the page.** A monitor polls the API and sees a dead link
+immediately.
+
+Why the page is left alone, recorded because the reasoning is not obvious and
+someone will propose the same fix again. `notFound()` would have been a **no-op**
+— `not-found.js` in Next 16.3.1 returns 200 for **streamed** responses, and this
+one is streamed by design (`Transfer-Encoding: chunked`, which is why nginx sets
+`proxy_buffering off`), so it would swap an informative refusal for Next's
+default 404 UI and leave the status at 200. `unauthorized()` is semantically
+right and **experimental**: it needs `experimental.authInterrupts` on globally,
+and enabling an experimental Next flag across a production trading desk to fix
+one status code is not a trade worth making. Validating in `proxy.ts` is already
+refused there for a reason that still holds — it runs before the runtime the
+data layer needs and cannot reach SQLite.
 
 ## Not this thread
 

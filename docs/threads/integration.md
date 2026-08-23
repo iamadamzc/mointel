@@ -236,6 +236,14 @@ The practical form, since this thread relays other threads' verifications:
 finding; "fetched the asset URLs out of the page's own HTML with no
 credentials and got 200" is.
 
+**And the same question applies to what this thread writes down.** I recorded
+the review-status defect as "a monitor would never notice a dead link". Ops
+investigated and that is true only of the **page** — the review API returns 403
+for revoked and garbage alike, so a monitor polling the API sees it instantly.
+I had generalised from the one surface Ops happened to test to the whole
+capability, which is the same error as reading the wrong field, committed one
+level up.
+
 ## A retraction only reaches the sentence it edits
 
 **Added 2026-08-23, found by R&D in its own documents.** It retracted a claim,
