@@ -188,6 +188,77 @@ with a truthful live read the trader already has beside him. Still open and
 separate: whether the `Risk` chip should carry the supply ledger's magnitude —
 a presentation question, not a new signal.
 
+## Research's independence result — three design consequences
+
+Routed 2026-08-23. Measured by Research, verified in code here.
+
+**1. The two graders are not independent — measured.** Removing the Sheet's
+prior changed the catalyst grade on **2 of 6** names against a control variance
+of **0 of 6**. This closes the open half of `research.md` item 7: `AUTO` does not
+merely see `SHEET`, it is moved by it.
+
+**The consequence is an asymmetry, and it runs opposite to how the UI reads
+today.** Under anchoring, *agreement* is the expected outcome and therefore
+carries little information — while *disagreement in spite of anchoring* is still
+informative, arguably more so than independent disagreement would be. Today
+`intelligence.ts:166` renders agreement as "both present and not in material
+disagreement", which a trader reads as corroboration. **It is not corroboration;
+it is the null result.** Any wording that implies two sources vouching for each
+other is now false.
+
+**Item 15 moves from deferred to decided-in-direction:** the *reduction* half
+proceeds (strip the duplicate `CONFLICT` marks and both `SOURCES DISAGREE` chips
+— F-16's nine renderings), and conflict is **never promoted to a first-class
+alarm**, because an alarm implies a tally of independent votes and there is no
+tally. Still not built in Phase 2.
+
+**2. `structureClassification` is unstable — a third of it moves on identical
+evidence.** Two control runs over byte-identical evidence disagreed on **2 of 6**
+names. Catalyst was stable at 0 of 6, so this is specific to structure.
+
+**It is not a property of the stock; it is one reading of it**, and the product
+has no representation for that today. It sits in the Desk Read strip
+(`deskRead.ts:370`), both `DIRTY_FLOAT` and `STRUCTURE_CAUTION` branches of the
+risk chip (`risk.ts:146,187`), and the completeness check
+(`intelligence.ts:79`) — all of which state it flatly.
+
+**This retroactively justifies the risk-chip decision made the same day.**
+`8M FREE TO SELL` is a share count read out of filings; `DIRTY FLOAT` is a model
+verdict that moves one time in three on the same inputs. The row now leads with
+the deterministic fact and relegates the unstable verdict. That was chosen for
+legibility before this result existed; it is now also the correctness choice.
+**General rule for Phase 2: where a deterministic fact and a model verdict say
+the same thing, the row shows the fact.**
+
+**3. The Changes rail must carry only attributable change — and the defect is
+live, not hypothetical.** `lib/desk/assessment.ts:269` pushes `STRUCTURE_CHANGED`
+on a bare `previous.structure !== current.structure`, with **no evidence gate**,
+and writes a note `structure X → Y`. Twelve lines below, `NEW_EVIDENCE` **is**
+gated on `evidenceFingerprint` changing (`:277`). The machinery to distinguish a
+re-read from a real change already exists in the same function and structure
+does not use it.
+
+So `STRUCTURE_CHANGED` fires on model variance **today**, and has been doing so
+into every stored checkpoint. Item 12 would not introduce the problem; it would
+put an existing one on screen and make a trader watch it.
+
+**Design rule for item 12:** a classification change earns a rail line **only
+when the evidence fingerprint also changed**. Otherwise it is a re-read and the
+rail stays silent. Deterministic market fields — rank, RVOL, price, float,
+volume, halt — need no such gate, and catalyst is measured stable. This settles
+Integration's "which fields earn a place" before the rail is designed rather
+than after.
+
+**Handed over, not fixed here:** the ungated `STRUCTURE_CHANGED` writes into
+`desk_assessments`, which is R&D's archive substrate. Stored checkpoints may
+already carry structure changes that are variance rather than events. That is a
+data-integrity question about recorded history, not a display question — raised
+with R&D and Research.
+
+**Not verified:** whether `CYCLE_CHANGED` (`:273`, gated identically to
+structure) has the same instability. Unmeasured, and worth measuring before the
+rail ships.
+
 ## Next session — item 16a, and only 16a
 
 Chosen by the owner 2026-08-23. Scope is fixed by the table above: replace the
@@ -287,10 +358,10 @@ differs on two of them**, and the difference matters more than the sizing.
 
 | §9 | Effect of the migration answer | Status |
 | --- | --- | --- |
-| 12 | None — the Changes rail has nothing to do with the Sheet | **Ready**, still L |
+| 12 | **Constrained** — only evidence-gated changes earn a rail line | **Ready**, still L |
 | 13 | Clarified, not shrunk | **Ready**, still M |
 | 14 | Cycle merge shrinks; build the Sheet half as a removable slice | **Ready**, still L |
-| 15 | **Deferred, not reduced** | **Blocked on Research** |
+| 15 | **Reduction only** — independence disproven, never promote conflict | **Direction decided**, not built in Phase 2 |
 | 16 | **Grows, and splits** — 16a is the false labels above | **16a ready now**, 16b M |
 | 17 | **Grows** — a derived float gives it a second number to reconcile | **Ready**, M |
 | 18 | None — pure visual system | **Ready**, M |
@@ -347,9 +418,35 @@ SC 13D/13G and Forms 3/4 — and Research is scoping it.
    reason" shape still holds; the qualifier becomes meaningful.
 2. **The `Risk` chip must not assume a float number exists.** Its design has to
    degrade honestly when float is null, and `FLOAT UNKNOWN` on every row must be
-   distinguishable from `FLOAT UNKNOWN` on one. This also constrains the open
-   presentation question above — whether the chip carries the supply ledger's
-   magnitude — because supply overhang is knowable when float is not.
+   distinguishable from `FLOAT UNKNOWN` on one. Supply overhang is knowable when
+   float is not, which is part of why the chip now leads with magnitude.
+
+**The chip's wording is settled, and settling it found a defect in the number.**
+Full reasoning sits beside audit §11 item 3; the short form:
+
+| Ledger status | Chip | Counted |
+| --- | --- | --- |
+| `POSSIBLY_ACTIVE` | `8M FREE TO SELL` | yes |
+| `KNOWN_ACTIVE` | `8M SELLING` | yes — earned only here |
+| `NOT_YET_ACTIVE` | **no chip** | **no** |
+| `UNKNOWN` | `8M SUPPLY ?` | yes |
+
+`NOT_YET_ACTIVE` is excluded because it cannot reach the tape inside a
+seconds-long hold, so under the one-saturated-element rule it would crowd out a
+risk that can. It stays in the drawer's Structure tab; the moment it *stops*
+being locked, that transition is a Changes rail event (item 12). The event is
+the signal, not the state.
+
+**Defect, owned here by the owner's decision:** `knownSupplyShares`
+(`lib/dashboard/risk.ts:78`) sums every block with a share count and applies
+**no status filter**, so a name with 30 M locked and 8 M free renders `38M` and
+calls all of it overhead. **The magnitude on screen today is inflated**, under
+the existing `SUPPLY OVERHEAD` label as much as any new one. Correctness bug in
+the number, not the label — kept inside item 17 so the filter and the wording
+are fixed together rather than by two threads touching one number.
+
+**Not verified:** whether any live name carries `NOT_YET_ACTIVE` blocks, so the
+practical size of the inflation is unknown. Needs the live desk.
 
 **Unblocked and startable now:** 16a, then 12, 18, 19 — none touch the Sheet.
 

@@ -444,9 +444,26 @@ Only questions the interface, repository and existing requirements genuinely can
    >
    > What this desk can honestly contribute is the other half, and it already holds it: the supply ledger says **where a dam may exist and how big**, which the tape cannot tell him.
    >
-   > **Settled 2026‑08‑23: the §6 `Risk` chip carries the supply magnitude, not the ratio.** The cell reads **`38M CAN SELL`** rather than `DIRTY FLOAT 10.9×`. Same data, same column, same width — but it names the quantity of stock that can arrive, which is what a position gets sized against, instead of a ratio whose meaning has to be reconstructed. This is a presentation change within F‑05's structured‑chip recommendation, not a new signal, and it is **item 17's territory — not part of item 16a**.
+   > **Settled 2026‑08‑23: the §6 `Risk` chip carries the supply magnitude, not the ratio** — the quantity of stock that can arrive, which is what a position is sized against, instead of a ratio whose meaning has to be reconstructed. Presentation within F‑05's structured‑chip recommendation, not a new signal. **Item 17's territory, not item 16a's.**
    >
-   > **Two constraints on it, from the float finding above.** The chip must not assume a float number exists: when float is null every row falls to `FLOAT UNKNOWN` (`risk.ts:172`), and `FLOAT UNKNOWN` on every row must be distinguishable from `FLOAT UNKNOWN` on one. And the supply figure must never be restated as *selling* — the product's existing discipline is that registered resale capacity is capacity, not flow. `CAN SELL` is chosen deliberately over `SELLING` for that reason.
+   > **The wording is state‑dependent, and settling it exposed a defect in the number itself.** A first draft of this answer read `38M CAN SELL` for all supply. That is wrong, because the ledger already distinguishes three different facts (`SupplyBlockStatus`) and one verb cannot be honest across them. The guardrail at `lib/research/interpret/guardrails.ts:134` states the principle the chip must inherit: *"Registered resale and an effective registration establish the ability to sell, not that selling occurred."*
+   >
+   > | Ledger status | Chip | Counted in the magnitude? |
+   > | --- | --- | --- |
+   > | `POSSIBLY_ACTIVE` | `8M FREE TO SELL` | yes |
+   > | `KNOWN_ACTIVE` | `8M SELLING` | yes — the word is earned here, and only here |
+   > | `NOT_YET_ACTIVE` | **no chip** | **no** |
+   > | `UNKNOWN` | `8M SUPPLY ?` | yes |
+   >
+   > `SELLING` is used only for `KNOWN_ACTIVE` because the guardrail forcibly downgrades any block claiming it without evidence of actual sales. Everywhere else the language stays capacity, never flow — the discipline §1 calls part of the product's moat.
+   >
+   > **`NOT_YET_ACTIVE` is excluded because it cannot matter to this trader.** Holds are seconds to a couple of minutes; supply still locked, not yet effective, or not yet exercisable cannot reach the tape inside that window, so it cannot be what kills the trade. Under §7's one‑saturated‑element rule a chip for locked supply actively crowds out a risk that *can* hurt him in the next ninety seconds. It stays in the drawer's Structure tab, where it costs no row space — and the moment it **stops** being locked, that transition is genuine news and belongs in the Changes rail (§9 item 12). **The event is the signal; the standing state is not.**
+   >
+   > **Defect found while settling this, and owned by Design as part of item 17.** `knownSupplyShares` (`lib/dashboard/risk.ts:78`) sums *every* block carrying a share count, with **no status filter**. A name with 30 M locked and 8 M free renders `38M` and presents all of it as overhead when only 8 M can arrive. **The magnitude on screen today is inflated**, under the current `SUPPLY OVERHEAD` wording as much as under any new one. It is a correctness bug in the number rather than the label, kept with item 17 by the desk owner's decision so the filter and the wording are fixed together rather than by two threads touching one number.
+   >
+   > **Not verified:** whether any live name currently carries `NOT_YET_ACTIVE` blocks, so the practical size of the inflation is unmeasured. That needs the live desk.
+   >
+   > **One constraint carried from the float finding above:** the chip must not assume a float number exists. When float is null every row falls to `FLOAT UNKNOWN` (`risk.ts:172`), and `FLOAT UNKNOWN` on every row must be distinguishable from `FLOAT UNKNOWN` on one.
 
 4. **What is the real target resolution?** The tables are authored for ≈1,900 px; the owner's browser is 1,022 px. The §6 column set assumes 1,022 px is the floor and wider is a bonus. If the production setup is a 1,920 px monitor with this desk on a dedicated panel, the column budget can grow by roughly four columns.
 
