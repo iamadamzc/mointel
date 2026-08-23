@@ -13,7 +13,7 @@ then paste that charter's opening message.
 | **Ops** | The live desk, AWS, deploys, incidents | [ops.md](ops.md) |
 | **Design** | The trader-facing UI, the audit remediation | [design.md](design.md) |
 | **Research Pipeline** | The interpreter, evidence collection, model spend | [research.md](research.md) |
-| **R&D** | The market-structure question, the archive, the tape research | [rnd.md](rnd.md) |
+| **R&D** | Standing analysis capability — the question register, the archive, the tape research | [rnd.md](rnd.md) |
 | **Coaching** | Daily fills, execution against the playbook | [coaching.md](coaching.md) |
 
 ## Why five
@@ -32,6 +32,14 @@ time on the incidents, because incidents have deadlines and questions do not.
 The pipeline's job is honest catalyst grades at a defensible cost; what those
 grades mean is R&D. R&D also owns the tape research in a different repo
 entirely.
+
+R&D is deliberately a **standing capability rather than a project**. The desk
+should always be learning something and the subject will change; today's
+catalyst question is one entry in a register, not the thread's purpose. New
+questions can be posed, spawned by a closed one, or surfaced by the standing
+sweep. A question large enough to need phases gets a **directory and a spec**,
+never its own chat — sub-threads per discovery is how five threads becomes
+fifteen and nothing is legible again.
 
 Coaching was added the same day. It is the only thread about the trader rather
 than the market, it runs daily rather than by project, and it is the one
