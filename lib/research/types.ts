@@ -11,6 +11,7 @@
  * default to a high value.
  */
 
+import type { CycleHistory } from '../market/cycle';
 import type { TimePrecision } from './time';
 
 /* --------------------------------------------------------------- job states */
@@ -547,6 +548,19 @@ export interface ResearchDossier {
   catalyst: CatalystFindings;
   structure: StructureFindings;
   cycle: CycleFindings;
+  /**
+   * Cycle position computed from daily bars, not judged from the bundle.
+   *
+   * Optional and derived, like `structure.supplyBound` — the model does not
+   * produce it and it is absent from AUTOMATIC_DOSSIER_SCHEMA. It runs
+   * alongside `cycle` deliberately: the model's version is being retired, and
+   * carrying both until every surface has switched is what makes that a
+   * migration rather than an outage.
+   *
+   * `cycle` is 75% UNKNOWN in production and returned a different answer across
+   * five identical draws 46% of the time. This does not.
+   */
+  computedCycle?: CycleHistory | null;
 }
 
 /* --------------------------------------------------------------- provenance */

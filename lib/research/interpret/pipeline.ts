@@ -17,6 +17,8 @@ import {
   recordModelUsage,
 } from '../../market/store/researchRepo';
 import { computeEvidenceFingerprint } from '../fingerprint';
+import { resolveCycleHistory } from '../../market/cycle';
+import { readDailyBars } from '../history';
 import type { ResearchDossier } from '../types';
 import { buildEvidenceBundle, type ResearchEvidenceBundle, type SheetPriorAnalysis } from './bundle';
 import { describeViolations, validateDossier, type Violation } from './guardrails';
@@ -349,6 +351,18 @@ export async function interpretTicker(
       ...accepted.structure.supplyLedger.flatMap((block) => block.evidenceSourceIds),
     ]),
   ];
+
+  /*
+   * Cycle position, computed rather than taken from the model.
+   *
+   * Attached after validation because it is derived, and bounded by `asOf` for
+   * the same reason the evidence is: a replay that resolved the cycle against
+   * today's bars would know how the move turned out.
+   */
+  const cycleBars = readDailyBars(db, ticker).filter(
+    (bar) => !options.asOf || bar.tradingDate <= options.asOf.slice(0, 10),
+  );
+  accepted.computedCycle = cycleBars.length > 1 ? resolveCycleHistory(cycleBars) : null;
 
   const version = saveAnalysisVersion(db, {
     ticker,

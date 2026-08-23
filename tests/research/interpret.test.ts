@@ -12,7 +12,7 @@ import {
 } from '@/lib/market/store/researchRepo';
 import { buildEvidenceBundle, summariseHistory, type ResearchEvidenceBundle } from '@/lib/research/interpret/bundle';
 import { validateDossier } from '@/lib/research/interpret/guardrails';
-import { EMPTY_HISTORY_SUMMARY } from '@/lib/research/history';
+import { EMPTY_HISTORY_SUMMARY, upsertDailyBars } from '@/lib/research/history';
 import { shouldEscalate } from '@/lib/research/interpret/escalation';
 import { interpretTicker } from '@/lib/research/interpret/pipeline';
 import { OpenAiInterpreter, SYSTEM_PROMPT, SYSTEM_PROMPT_A, SYSTEM_PROMPT_B, systemPromptFor } from '@/lib/research/interpret/openaiInterpreter';
@@ -1448,5 +1448,105 @@ describe('prompt variants', () => {
     const env = { SEC_USER_AGENT: 'x', RESEARCH_PROMPT_VARIANT: 'b', RESEARCH_OMIT_SHEET_PRIOR: '1' } as unknown as NodeJS.ProcessEnv;
     expect(readResearchConfig(env).model.promptVariant).toBe('B');
     expect(readResearchConfig(env).model.omitSheetPrior).toBe(true);
+  });
+});
+
+/**
+ * The computed cycle reaching the stored dossier.
+ *
+ * Wired additively: the model's `cycle` block is untouched and both travel
+ * together until every surface has switched. Tested with a scripted interpreter
+ * rather than a live one, which is why it survived the OpenAI balance going
+ * empty mid-session.
+ */
+describe('computed cycle on the dossier', () => {
+  function seedBars(db: ReturnType<typeof temporaryDb>, symbol = 'ACME') {
+    const bars = [];
+    for (let i = 0; i < 24; i += 1) {
+      bars.push({
+        symbol,
+        tradingDate: `2026-06-${String(i + 1).padStart(2, '0')}`,
+        open: 1.3, high: 1.32, low: 1.28, close: 1.3, volume: 1_000_000,
+        tradeCount: null, vwap: null, adjustment: 'split', source: 'test',
+        fetchedAt: '2026-08-17T12:00:00Z',
+      });
+    }
+    // 20%+ on well over 5x volume: a start day by the desk's rule.
+    bars.push({
+      symbol, tradingDate: '2026-07-01', open: 1.3, high: 3.4, low: 1.3, close: 3.0,
+      volume: 40_000_000, tradeCount: null, vwap: null, adjustment: 'split',
+      source: 'test', fetchedAt: '2026-08-17T12:00:00Z',
+    });
+    upsertDailyBars(db, bars);
+  }
+
+  it('attaches a computed cycle the model never produced', async () => {
+    const db = temporaryDb();
+    const ids = seed(db);
+    seedBars(db);
+    const good = dossier();
+    good.catalyst.evidenceSourceIds = [ids[0]];
+    good.structure.evidenceSourceIds = [ids[0]];
+    good.cycle.evidenceSourceIds = [ids[0]];
+
+    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+      ticker: 'ACME', tradingDate: DATE,
+    });
+
+    const computed = report.dossier?.computedCycle;
+    expect(computed).toBeTruthy();
+    expect(computed!.current.phase).toBe('DAY_ONE');
+    // The number the model established in 12% of dossiers, present here.
+    expect((computed!.current as { cycleHigh: number }).cycleHigh).toBe(3.4);
+    // And the model's own block is untouched, because this is additive.
+    expect(report.dossier?.cycle.cycleClassification).toBe(good.cycle.cycleClassification);
+  });
+
+  it('is null rather than guessed when there are no bars', async () => {
+    const db = temporaryDb();
+    const ids = seed(db);
+    const good = dossier();
+    good.catalyst.evidenceSourceIds = [ids[0]];
+    good.structure.evidenceSourceIds = [ids[0]];
+    good.cycle.evidenceSourceIds = [ids[0]];
+
+    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+      ticker: 'ACME', tradingDate: DATE,
+    });
+    expect(report.dossier?.computedCycle ?? null).toBeNull();
+  });
+
+  it('respects asOf, so a replay cannot see how the move turned out', async () => {
+    const db = temporaryDb();
+    const ids = seed(db);
+    seedBars(db);
+    // A second run, after the sources were collected on 17 August.
+    upsertDailyBars(db, [{
+      symbol: 'ACME', tradingDate: '2026-08-20', open: 1.3, high: 9.0, low: 1.3,
+      close: 8.0, volume: 80_000_000, tradeCount: null, vwap: null,
+      adjustment: 'split', source: 'test', fetchedAt: '2026-08-20T12:00:00Z',
+    }]);
+    const good = dossier();
+    good.catalyst.evidenceSourceIds = [ids[0]];
+    good.structure.evidenceSourceIds = [ids[0]];
+    good.cycle.evidenceSourceIds = [ids[0]];
+
+    const withHindsight = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+      ticker: 'ACME', tradingDate: DATE, force: true,
+    });
+    expect((withHindsight.dossier?.computedCycle?.current as { cycleHigh: number }).cycleHigh)
+      .toBe(9.0);
+
+    // Cut off after the sources were fetched but before the August run. The
+    // cutoff applies to sources too, so it has to sit after 17 August or the
+    // interpretation fails for want of citable evidence rather than for want
+    // of bars.
+    const asOf = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+      ticker: 'ACME', tradingDate: DATE, asOf: '2026-08-18T00:00:00Z', force: true,
+    });
+    const computed = asOf.dossier?.computedCycle;
+    expect(computed?.current.phase).toBe('DAY_ONE');
+    // July's high, not August's. The later run is invisible.
+    expect((computed?.current as { cycleHigh: number }).cycleHigh).toBe(3.4);
   });
 });

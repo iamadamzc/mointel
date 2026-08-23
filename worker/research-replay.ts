@@ -231,9 +231,29 @@ async function main(): Promise<void> {
           asOf: version.generated_at,
           force: true,
         });
-        if (report.outcome === 'UNAVAILABLE' || report.outcome === 'REUSED_UNCHANGED') {
+        /*
+         * An ALLOWLIST, after a denylist let the same fabrication through a
+         * third door.
+         *
+         * interpretTicker attaches the previously accepted dossier on
+         * UNAVAILABLE, on REUSED_UNCHANGED, and on FAILED — three separate
+         * kindnesses that are all correct for a live desk and all poison here.
+         * I guarded the first two and a failing model call walked straight
+         * through the third, reporting a stored dossier as a re-derivation with
+         * tokens in=0 as the only tell. Naming the bad outcomes cannot work when
+         * the caller keeps finding new ones; name the good ones.
+         */
+        if (report.outcome !== 'ACCEPTED' && report.outcome !== 'PARTIAL') {
           throw new Error(
-            `${version.ticker} v${version.id} returned ${report.outcome}: that dossier was not re-derived`,
+            `${version.ticker} v${version.id} returned ${report.outcome}` +
+              `${report.error ? `: ${report.error}` : ''} — that dossier was not re-derived`,
+          );
+        }
+        // Belt and braces: an accepted interpretation that spent nothing did
+        // not happen, whatever the outcome says.
+        if ((report.metrics.inputTokens ?? 0) === 0) {
+          throw new Error(
+            `${version.ticker} v${version.id} reported ${report.outcome} having spent no tokens`,
           );
         }
         sourcesVisible = report.sourceCount;
