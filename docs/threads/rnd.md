@@ -32,7 +32,7 @@ questions is a thread that has stopped working.
 
 | # | Question | Opened | Status |
 | --- | --- | --- | --- |
-| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — no verdict on the catalyst grade until `research.md` item 5 settles its provenance |
+| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — the stored catalyst grade is contaminated by the Sheet; needs a prior-free re-derivation before any verdict |
 | Q2 | What share of qualifying movers ever produce a tradeable pullback at all? | 2026-08-23 | proposed |
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | proposed |
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | dormant — see closed lines below |
@@ -139,29 +139,50 @@ exhaustion on 19, 20 and 21 August, resolver rework throughout. Reduced catalyst
 *detection* is indistinguishable from absent catalysts. This is the first
 analysis to run, not a caveat to append.
 
-**The independent variable's provenance is unsettled, and it gates the
-verdict.** *Raised by Integration 2026-08-23.* The trader has never written to
-or reviewed the Google Sheet the desk reads; he believes a **ChatGPT scheduled
-task** does. `lib/research/merge/sheetPrior.ts` reads `catalystGrade` off that
-Sheet, and if the prior reaches the interpreter's context then the automatic
-grade is influenced by that task rather than independent of it — making "did the
-desk see a catalyst" and "did another model say there was one" partly the same
-measurement.
+**ANSWERED 2026-08-23: the stored catalyst grade is not independent of the
+Sheet.** *Research, replayed against a production snapshot with byte-identical
+evidence across arms.* Removing the Sheet's prior from the interpreter's context
+changed **2 of 6** catalyst grades against a control variance of **0 of 6**. The
+effect is real; the mechanism is not asserted at that n, and 2 of 6 is a
+direction rather than a rate — the prior exists only for TODAY-tab tickers and
+TODAY currently holds 9 rows, 3 without evidence, so six names is the entire
+measurable population rather than a chosen sample.
 
-**This thread has not investigated it and will not**; `lib/research/` is the
-Research Pipeline's and it is `research.md` Open item 5. Two facts the archive
-can supply on its own: across all 1850 ticker rows `intelligence_source` is only
-ever `AUTO` or `NONE` — no Sheet-derived grade was ever stored — and
-`RESEARCH_CONFLICT`, the status that flags Sheet/AUTO disagreement, appears zero
-times. Neither settles it. The first rules out copying, not influence; the
-second is ambiguous between "the comparison never ran" and "they never
-disagreed", and under contamination agreement is what you would expect anyway.
+**Also from the control, and it lands here: `structureClassification` moved 2 of
+6 on identical input.** A third of it is not reproducible. Nothing in this
+thread has used the stored `structure` field and nothing will until that is
+understood.
 
-**No Q1 verdict resting on the catalyst grade until that lands — including a
-null.** "Movers do not carry catalysts" and "the other model did not find one
-either" would be indistinguishable, which is the failure mode this thread is
-most exposed to. Work that does not touch the grade continues: the split test,
-Q5, coverage, outcomes.
+**The surface is bounded to the TODAY tab.** The RESEARCH tab's 205 rows never
+reach the interpreter — `loadSheetPriors` indexes `state.tickers`, built from
+TODAY alone. The Sheet reaches the board, not the corpus.
+
+**Restricting Q1 to clean ticker-days is the wrong route, and this archive's own
+numbers say so.** It is not executable from here — TODAY membership per date is
+not in the extract — and it would not be neutral if it were. TODAY held 42-56
+rows on 17-21 August against 27-53 graded board symbols per day, so little may
+survive it. And the filter is biased in the worst direction: TODAY is the
+Sheet's $2-$10 momentum watchlist, and **82% of the 77 distinct names that ran
+50%+ sit inside that band against 63% of all 252 board symbols**. Movers are
+likelier to have carried a prior, so a clean subsample is depleted of exactly
+the population Q1 is about.
+
+**The recommendation is a prior-free re-derivation over 2026-08-17 to 08-21**,
+replaying stored evidence rather than re-collecting — a grade formed from
+today's news about a name that ran on the 19th is worthless. That is a run with
+a cost and the decision is the trader's, not this thread's.
+
+**Everything not resting on the grade is unaffected**: the split test, Q5,
+coverage, outcomes. What is suspended is Pillar 4's catalyst rate and the
+catalyst-definition resolution, both of which read the same variable — and they
+are now known to be contaminated rather than merely at risk.
+
+**Consequence for the second ledger.** Its grades remain independently produced,
+since nothing here writes to the Sheet. But ours have now been shown to see the
+Sheet's answer on TODAY names, so *comparing the two is circular on exactly the
+names most likely to matter*. The earlier fallback is the live path: use the
+Sheet's grade as the independent variable, or re-derive ours prior-free. Never a
+comparison between them.
 
 **A second outcome ledger exists over the same window**, and it changes what Q1
 can do. *Reported by Integration 2026-08-23; not read by this thread.* The Sheet
@@ -414,6 +435,11 @@ four things belong in the register.
    And **the desk and the second ledger are not independent on float either** —
    same field, same workbook — so only the catalyst labels were ever candidates
    for independence.
+
+   **Decided 2026-08-23, by the desk owner:** no Sheet-read float goes into the
+   archive. The constraint lifts only if a *derived* float appears. Pillar 5
+   stays not independently measurable until then, and the second-ledger overlap
+   stays capped at the 159 symbols price alone can identify.
 
 Q5 stays proposed and behind Q1. The five-day cut moved it slightly: 16 of 95
 movers peak inside 09:30-11:00 and 61 of 95 peak outside regular hours.

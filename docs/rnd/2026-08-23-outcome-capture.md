@@ -13,9 +13,9 @@ was built around turns out not to bite the way anyone expected.
 Sections written before the extract arrived have been left in place and marked,
 rather than rewritten to look prescient.
 
-> **The catalyst grade's provenance is unsettled as of 2026-08-23 and every
-> finding resting on it is suspended.** See *Provenance of the independent
-> variable*. The split-timing result and everything derived from market data are
+> **ANSWERED 2026-08-23: the stored catalyst grade is NOT independent of the
+> Sheet.** Every finding resting on it stays suspended, and the fix is now a
+> choice rather than a wait. See *Provenance — answered, and it is contamination*. The split-timing result and everything derived from market data are
 > unaffected.
 >
 > **The register entry for this is not yet in [rnd.md](../threads/rnd.md)** —
@@ -455,10 +455,100 @@ The inference it actually supports is narrow and still holds: a missed look and
 an honest `UNKNOWN` are distinguishable. It was never an independence check, and
 if the Sheet can influence either field it would not become one.
 
+### Provenance — answered, and it is contamination
+
+*Research, 2026-08-23, replayed against a production snapshot with no
+re-collection so every arm saw byte-identical evidence.*
+
+Removing the Sheet's prior from the interpreter's context changed **2 of 6**
+catalyst grades. The control — the same configuration run twice — moved **0 of
+6**. So the effect is real and it is not run-to-run noise.
+
+The control is what makes that readable, and it carries a second finding this
+archive has to act on: **`structureClassification` moved 2 of 6 on identical
+input.** A third of it is not reproducible. Nothing here has ever used the
+stored `structure` field and nothing will until that is understood; it is
+recorded so a later pass does not pick it up assuming it is stable.
+
+Research is explicit that 2 of 6 is a direction and not a rate, that only one of
+the two moves is directionally consistent with anchoring, and that six names is
+not a chosen sample but the entire measurable population — the prior exists only
+for TODAY-tab tickers, TODAY holds 9 rows, and 3 have no collected evidence.
+Widening by adding priorless tickers would make both arms byte-identical and
+drag the rate toward a false null. No mechanism is asserted at this n and none is
+assumed here.
+
+**The contamination surface is bounded, and that is the useful part.** The
+RESEARCH tab's 205 rows never reach the interpreter at all — `loadSheetPriors`
+indexes `state.tickers`, which `normalizeSheetRows` builds from TODAY alone. So
+the Sheet reaches the board, not the corpus.
+
+#### Why "restrict to clean ticker-days" is the wrong option here
+
+Research offers two routes and says neither is theirs to choose: restrict Q1 to
+ticker-days with no TODAY row, or re-derive the grades prior-free. The first is
+free and the second costs a run. **This archive's numbers argue against the free
+one**, on two grounds.
+
+**It is not executable from here.** TODAY-tab membership per date is not in the
+extract. The archive records `intelligence_source` as `AUTO` or `NONE` and
+nothing that distinguishes a ticker that carried a prior from one that did not.
+The Sheet's dated tabs for 17-21 August might supply it; that is another read of
+a surface this thread does not touch.
+
+**And it would not be a neutral filter.** TODAY held **42-56 rows** on 17-21
+August. Graded board symbols per day here were 27, 49, 31, 51, 53. The
+contaminated set is the same order of magnitude as the whole graded population,
+so on a day like 08-20 — 51 graded symbols against a TODAY tab of up to 56 —
+very little may survive the filter.
+
+Worse, what it removes is not random. TODAY is the Sheet's own momentum
+watchlist, $2-$10 with float under 20M, and this archive can measure how that
+band lands on its own population:
+
+| | share inside $2-$10 |
+| --- | --- |
+| all 252 board symbols | 63% (159) |
+| the 77 distinct names that ran 50%+ | **82% (63)** |
+
+**Movers are markedly likelier than the board average to sit in the Sheet's
+universe**, so they are likelier to have carried a prior. Restricting to clean
+ticker-days therefore strips out the population Q1 is about, preferentially. A
+clean-but-depleted sample that under-represents movers would answer a different
+question and look like it had answered this one.
+
+That is the argument for re-deriving. Two conditions on such a run if it
+happens: it must **replay stored evidence rather than re-collect**, exactly as
+the experiment above did — a grade formed from today's news about a name that
+ran on 19 August is worthless — and it should cover **2026-08-17 to 08-21**, the
+window this archive holds.
+
+#### What this changes, and what it does not
+
+| Result | Status |
+| --- | --- |
+| Split timing, hypothesis 3 | **unaffected** — daily and minute bars, board membership, never a dossier |
+| Where the day's high falls (Q5) | **unaffected** |
+| Coverage classification | **unaffected** — whether an analysis existed, not what shaped it |
+| Grade freshness on 19-21 August | stands as a fact about currency |
+| Pillar 4 catalyst rate | **suspended, and now known to be contaminated rather than merely at risk** |
+| The catalyst-definition resolution below | **suspended with it** — same variable |
+
+One consequence for the second ledger. Its grades are still independently
+produced — nothing here writes to the Sheet — but our grades are now known to
+have seen the Sheet's answer on TODAY names. So *comparing ours against theirs
+is circular on exactly the names most likely to matter*. The fallback recorded
+earlier is now the live path rather than a contingency: use the Sheet's own
+grade as the independent variable, or re-derive ours prior-free. Not both, and
+never a comparison between the two.
+
 ### Q1's premise against the pipeline's own numbers — the gap is definitional
 
 *Handed over by Research via Integration, 2026-08-23. Resolved here, because it
 is a question about populations and this archive holds both of them.*
+
+*Re-sent by Research 2026-08-23 alongside the independence result; already
+resolved here and recorded so it does not circulate a third time.*
 
 Research reported that across 94 stored dossiers the pipeline's outright
 no-catalyst verdict is **10%**, not the 50%+ Q1's premise implies:
