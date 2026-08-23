@@ -18,10 +18,19 @@
  *   2. REPEATS. Catalyst grade is not reproducible: over four identical runs on
  *      byte-identical evidence, 2 of 6 tickers returned more than one grade. A
  *      single re-derived grade is therefore a draw, not a measurement, and a
- *      third of them would be a coin flip that nothing in the output marks. Two
- *      runs separate the trustworthy from the untrustworthy; that is the useful
- *      distinction, and it is deliberately not the same as resolving the
- *      untrustworthy ones, which a mode of three draws only appears to do.
+ *      third of them would be a coin flip that nothing in the output marks.
+ *
+ *      Repeats REMOVE THE MOST UNSTABLE; they do not certify the rest. Agreement
+ *      is not stability: for a ticker whose true split is 75/25 two draws agree
+ *      62% of the time, at 60/40 it is 52%, at 90/10 it is 82%. Three draws cut
+ *      those to 44%, 28% and 73%. So the passing set still contains moderately
+ *      unstable names at every draw count anyone would pay for, and the honest
+ *      claim is a filter rather than a guarantee.
+ *
+ *      Draws stop the moment two disagree, because instability is established at
+ *      that point and further draws buy nothing. Every marginal draw is
+ *      therefore spent only where it is still informative — confirming an
+ *      agreement, never re-confirming a disagreement.
  *
  *   3. NEVER PRODUCTION. Point MARKET_DB_PATH at a copy. interpretTicker calls
  *      saveAnalysisVersion, so a replay writes dossiers, and on the live store
@@ -29,7 +38,7 @@
  *
  * Usage:
  *   MARKET_DB_PATH=data/replay.db npm run research:replay -- \
- *     --from=2026-08-17 --to=2026-08-22 --repeats=2 --out=replay.json AAA BBB
+ *     --from=2026-08-17 --to=2026-08-22 --max-draws=3 --out=replay.json AAA BBB
  */
 
 import fs from 'node:fs';
@@ -69,16 +78,16 @@ function parseArgs(argv: string[]) {
   const tickers: string[] = [];
   let from = '2026-08-17';
   let to = '2026-08-22';
-  let repeats = 2;
+  let maxDraws = 2;
   let out = 'replay-result.json';
   for (const arg of argv) {
     if (arg.startsWith('--from=')) from = arg.split('=')[1] ?? from;
     else if (arg.startsWith('--to=')) to = arg.split('=')[1] ?? to;
-    else if (arg.startsWith('--repeats=')) repeats = Number(arg.split('=')[1]) || repeats;
+    else if (arg.startsWith('--max-draws=')) maxDraws = Number(arg.split('=')[1]) || maxDraws;
     else if (arg.startsWith('--out=')) out = arg.split('=')[1] ?? out;
     else if (!arg.startsWith('--')) tickers.push(arg.toUpperCase());
   }
-  return { tickers, from, to, repeats, out };
+  return { tickers, from, to, maxDraws, out };
 }
 
 async function main(): Promise<void> {
@@ -109,7 +118,7 @@ async function main(): Promise<void> {
 
   console.log(
     `[replay] ${versions.length} stored version(s) across ${args.tickers.length} ticker(s), ` +
-      `${args.repeats} repeat(s) = ${versions.length * args.repeats} interpretations\n`,
+      `up to ${args.maxDraws} draw(s) each; a disagreement stops that version early`,
   );
 
   const rows: ReplayRow[] = [];
@@ -121,7 +130,10 @@ async function main(): Promise<void> {
     const grades: string[] = [];
     let sourcesVisible = 0;
 
-    for (let run = 0; run < args.repeats; run += 1) {
+    for (let run = 0; run < args.maxDraws; run += 1) {
+      // Established unstable: a third draw cannot change the verdict.
+      if (new Set(grades).size > 1) break;
+
       const report = await interpretTicker(db, interpreter, null, {
         ticker: version.ticker,
         tradingDate: version.generated_at.slice(0, 10),
