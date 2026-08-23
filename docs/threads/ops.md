@@ -186,6 +186,45 @@ have now been exercised, not just the fallback.
 
 ## Open items
 
+**0c. Health measures that the worker is alive, not that it is working — so a
+hung worker reports healthy.** *Offered by Integration 2026-08-23 and not
+assigned; taking it, because it is monitoring and incident diagnosis. Not built.*
+
+The research worker's heartbeat is an independent `setInterval` (`unref`'d),
+separate from its `for (;;)` loop. If the loop blocks — on an unbounded fetch, as
+Research is now fixing — the interval keeps firing, `heartbeatAgeSeconds` stays
+near zero, and `/api/health` reports `IDLE, running: true`. **Process up, health
+green, nothing being done.** That is what happened on 2026-08-22: eight jobs
+queued at 02:00:06, then nothing at all for 23 hours, and no watcher noticed.
+
+`research_health` is `CREATE TABLE … CHECK (id = 1)` — **one row, overwritten**.
+There is no history, which is why three threads spent an evening reconstructing a
+stall from job timestamps. The table is Research's; the absence is what made the
+diagnosis expensive.
+
+**This is the same failure this thread has been naming all evening, one level up:
+a check that cannot fail.** A heartbeat proves the process exists. Nothing was
+asserting that it progresses.
+
+**The proposal, and it needs no new table and no history.** `/api/health` already
+carries `queuedJobs`, `activeCount` and `lastCompletedAt` — the inputs are
+present, only the projection is wrong. The rule comes from a number this thread
+measured today: **claiming is immediate, 0–2 minutes across every recap job that
+ever started.** So:
+
+> `queuedJobs > 0` with `activeCount == 0` and nothing claimed for more than a
+> few poll intervals is **not `IDLE`. It is `STALLED`.**
+
+An unclaimed queue is definitionally wrong, because claiming does not wait. That
+rule would have fired at 02:02 on 2026-08-22 instead of 23 hours later, and it
+distinguishes the two states the current projection conflates: *nothing to do*
+and *unable to do it*.
+
+Worth stating what it does **not** do: it says nothing while the queue is empty,
+so a worker hung with no work pending still looks idle. That is the honest limit
+of a queue-derived signal, and the alternative — progress history — is Research's
+table to change.
+
 **0b. The 22:00 recap is not silently dropping its work every day — measured.**
 *2026-08-23, read-only against the local production snapshot. The checkpoint is
 this thread's scope; the queue is Research's. Sized, not fixed.*
