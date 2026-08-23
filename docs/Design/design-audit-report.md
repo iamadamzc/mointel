@@ -425,6 +425,8 @@ Only questions the interface, repository and existing requirements genuinely can
    > Either way the conclusion for Design is the same and it is unchanged: `AUTO` has seen `SHEET` before concluding, so the two are **not independent opinions**. Whether it changes the output needs a run, and that is Research's.
    >
    > **Consequence for Phase 2, stated once:** no design may present Sheet‑vs‑Auto conflict as a meaningful disagreement until Research reports. See §9 item 15, which is now **deferred rather than reduced**.
+   >
+   > **Sequencing constraint, added 2026‑08‑23 (`4b06764`): nothing that removes the Sheet ships before a float source replaces it.** Every float on the desk is Sheet‑derived — `resolveDisplayedFloat` (`lib/dashboard/merge.ts:143`) has two branches, the `RESEARCH` tab then the `TODAY` tab, and `displayedFloatSource` enumerates nothing else. Retiring the Sheet without a replacement resolves every float to `null`, which `risk.ts:172` renders as the `FLOAT UNKNOWN` chip — a legitimate state, so **nothing breaks and nothing alerts**. §6's `Risk` column, whose entire job is making rejection cheap, would read `FLOAT UNKNOWN` on every row indefinitely and appear to be working. Float under 10 M is one of the five pillars. **Do not design as though float simply disappears with the Sheet**; design against the derived replacement arriving (SEC‑derived: shares outstanding less affiliate and restricted holdings from SC 13D/13G and Forms 3/4), which turns F‑19 into two numbers worth reconciling rather than one number and one absence.
 
 2. **Should `Confirmation` be built or removed?** It is a free‑text Sheet column, empty on every current row, and the audit brief treats "Live Confirmation" as a core concept. Either it becomes a real derived signal with a definition, or the column and the concept should both go.
 
@@ -432,19 +434,51 @@ Only questions the interface, repository and existing requirements genuinely can
 
 3. **Which of the briefed‑but‑unbuilt concepts are actually wanted?** Chop Risk, Flush Risk, Overhang Absorption and Effective Float Turnover were deliberately not built. The current surfaces (`Float Turn` = *displayed* float turnover; `flushFromHighPct` = a sheet‑reported number) are honest partial substitutes. Building any of them changes the row design, so the answer is needed before §6's column set is finalised.
 
+   > **Answered 2026‑08‑23 (desk owner): "None yet. This needs to go to the viscosity study."**
+   >
+   > **Settled for Phase 2: none of the four gets a column.** §6's column set is therefore final at eight, and no row‑design work waits on this question. That was the only thing Design needed.
+   >
+   > **They are not rejected — they are re‑routed.** Chop Risk, Flush Risk and Effective Float Turnover are measurement questions before they are display questions: each needs a definition that survives contact with the tape before any of them can honestly occupy a column. That is the momentum‑viscosity programme's subject, not Design's. Handed to R&D; see [../threads/rnd.md](../threads/rnd.md).
+   >
+   > **Overhang Absorption is different and does not go with them.** The booklet's absorption is a **live Level 2 / Time & Sales read at second granularity** — a hidden order at one price level whose size ticks down (100K → 75K → 50K → 0) versus one that reloads — and the trader uses it as a **gate**, not a trigger: stay out while a large presence sits unconsumed. This desk's grain is a 4 s poll over filings and session aggregates, and Level 2 / T&S are architectural non‑goals. A desk‑computed "Absorption" would be a slower copy of something already on the adjacent screen, competing with a truthful live read at the one moment it matters. **It should not be built here at any phase**, and that is a stronger statement than "not yet".
+   >
+   > What this desk can honestly contribute is the other half, and it already holds it: the supply ledger says **where a dam may exist and how big**, which the tape cannot tell him.
+   >
+   > **Settled 2026‑08‑23: the §6 `Risk` chip carries the supply magnitude, not the ratio.** The cell reads **`38M CAN SELL`** rather than `DIRTY FLOAT 10.9×`. Same data, same column, same width — but it names the quantity of stock that can arrive, which is what a position gets sized against, instead of a ratio whose meaning has to be reconstructed. This is a presentation change within F‑05's structured‑chip recommendation, not a new signal, and it is **item 17's territory — not part of item 16a**.
+   >
+   > **Two constraints on it, from the float finding above.** The chip must not assume a float number exists: when float is null every row falls to `FLOAT UNKNOWN` (`risk.ts:172`), and `FLOAT UNKNOWN` on every row must be distinguishable from `FLOAT UNKNOWN` on one. And the supply figure must never be restated as *selling* — the product's existing discipline is that registered resale capacity is capacity, not flow. `CAN SELL` is chosen deliberately over `SELLING` for that reason.
+
 4. **What is the real target resolution?** The tables are authored for ≈1,900 px; the owner's browser is 1,022 px. The §6 column set assumes 1,022 px is the floor and wider is a bonus. If the production setup is a 1,920 px monitor with this desk on a dedicated panel, the column budget can grow by roughly four columns.
 
    > **Answered 2026‑08‑23 (desk owner):** *"It does not share with charts. There was no intention behind the size. Let it be what it should be."*
    >
    > **The premise of the measurement was wrong.** This audit and §10 both record 1,022 × 551 as "the real viewport on the owner's machine" and treat it as a deliberate constraint. It was not. Nothing shares the screen; the window size was accidental. At `devicePixelRatio` 2.82 the panel is ≈2,880 physical px wide, so the desk is on a large display being rendered at high effective scale in a window that was simply never sized.
    >
-   > **Design's call, 2026‑08‑23:** the §6 **eight‑column core stands and remains the set that must fit at 1,022 px.** Extra width buys **rows first, optional columns second**. Rationale: the viewport already changed once without intent, so a column set that is mandatory only above some width will break again. Designing the core to the narrow floor and treating width as gain is strictly more robust and costs nothing. Candidate optional columns, in order, if width is confirmed: `Halt`, `Spread`, `Float Turn`, `Δ since checkpoint`.
+   > **Superseded the same day, and by a bigger answer than the question.** Asked for the measurement, the desk owner answered: *"Do whatever is standard — this will be a product."*
    >
-   > **The height is now the urgent number, not the width.** 551 px was the accident that mattered: it is why fixed chrome consumed 36% of the viewport and only ~4 rows were visible. A maximised window converts the ≤68 px fixed‑chrome target (§7) directly into rows, so that target gains value rather than losing it.
+   > **That retires the measurement entirely.** No number off one machine is the target, because the desk is no longer being built for one machine. The audit's method — measure the owner's viewport, write acceptance against it — was correct for a personal tool and is wrong for a product. **Do not chase the maximised figure; it would answer a question that no longer applies.**
    >
-   > **Outstanding, one measurement:** the maximised CSS viewport on the owner's machine (`innerWidth × innerHeight @ devicePixelRatio`). It does not change the core column set — only how many optional columns are worth planning, and what §10 should be measured at.
+   > **Design's call, 2026‑08‑23 — standard desktop breakpoints:**
    >
-   > **§10 needs restating.** Its preamble pins acceptance to "the viewport he actually uses (1,022 × 551 CSS px)". That premise is now known to be accidental and the figure must be replaced once the measurement above is taken. Until then §10's targets stand as written — they are a floor, and a floor is still correct.
+   > | Band | Width | Commitment |
+   > | --- | --- | --- |
+   > | Floor | **1,024 px** | Every always‑visible column readable, zero horizontal scroll. The §6 eight‑column core is sized to this and does not grow below it. |
+   > | Baseline | **1,280–1,440 px** | The design target. Layout is authored here; this is what screenshots and review use. |
+   > | Wide | **1,920 px +** | Optional columns appear, in order: `Halt`, `Spread`, `Float Turn`, `Δ since checkpoint`. Rows gain before columns do. |
+   >
+   > The eight‑column core still has to survive the floor — a set that is mandatory only above some width breaks the moment a window is resized, and this one already moved once without intent. Width buys **rows first, optional columns second**, at every band.
+   >
+   > **Below 1,024 px is out of scope and should be stated rather than degraded into.** This is a dense professional table on a desktop; a phone layout is a different product decision and nobody has asked for one.
+   >
+   > **§10 must be restated, not merely re‑numbered.** Its preamble pins acceptance to "the viewport he actually uses (1,022 × 551 CSS px)" and to "the desk owner, no training" — both premises are personal‑tool premises. Acceptance is now measured at the **1,280 px baseline** and re‑checked at the 1,024 px floor. The existing targets survive the move: they were written against the harder number, so they hold at the easier one.
+   >
+   > **What "a product" changes beyond width.** Several §9 Phase 3 items were filed as enhancements on the assumption of a single expert user who could be trained around a rough edge. That assumption is gone: **item 24 (density toggle)** stops being a convenience and becomes how one layout serves several machines, and the §10 accessibility criteria stop being good practice and become obligations owed to users who are not the author. Neither is a Phase 2 change; both are recorded here so the next planner does not re‑derive them.
+   >
+   > **Retracted the same day.** An earlier version of this answer said "a product" unsettles the README's *Who this is for* — that every threshold serves one trading style — and raised it with Integration as a cross‑thread question. **The desk owner ruled it does not, and the flag is withdrawn.** In his words: the product is *"designed for momentum style traders only at this point. My style. It's a niche, which is where this will start."*
+   >
+   > **So the premise holds and hardens.** Every threshold, ranking and label still serves Ross Cameron–style small‑cap momentum, and a design decision that would make sense for a general trading audience but not for this style is still wrong. Widening the *audience* within the niche is not widening the *style*.
+   >
+   > **What does change is narrow and worth stating exactly:** the reader is no longer the author. §10's "measured with the desk owner, no training" is not an acceptance test a product can keep — the next momentum trader shares the style but not the vocabulary, the muscle memory, or the knowledge of which number came from where. Terminology stays trader‑facing in *this* style's language; it stops being safe to assume one particular trader's shorthand.
 
 5. **Should the desk ever rank by anything other than Daily RVOL / AH Participation?** Sorting exists on the watchlist but Discovery's order is fixed. Allowing a trader to re‑rank Discovery (by float, by catalyst freshness, by rank move) is cheap to build but is a real product decision — the current fixed ranking is a deliberate opinion, and the caption defends it.
 

@@ -81,9 +81,9 @@ in audit §11** — that is the authoritative copy; this is the index.
 | --- | --- | --- |
 | 1 | Is the Google Sheet permanent or a migration artefact? | **Settled — migration artefact.** Question was mis-premised |
 | 2 | Should `Confirmation` be built or removed? | **Settled** — collapses into 1; not built |
-| 3 | Which briefed-but-unbuilt concepts are wanted? | **Open** — needs a "I'd use this to decide X" |
-| 4 | What is the real target resolution? | **Settled in direction**, one measurement outstanding |
-| 5 | Should Discovery be re-rankable? | **Open** — Design proposes deferring past item 13 |
+| 3 | Which briefed-but-unbuilt concepts are wanted? | **Settled — none in Phase 2.** Three routed to R&D Q7; Absorption declined outright |
+| 4 | What is the real target resolution? | **Settled — standard breakpoints.** "This will be a product" |
+| 5 | Should Discovery be re-rankable? | **Settled — deferred** past item 13, owner concurred |
 | 6 | Does the 09:25 assessment get a validated score? | **Handed to R&D** as register Q6 |
 
 **Item 1 — settled: the Sheet is a MIGRATION ARTEFACT.** The trader's intent is
@@ -116,15 +116,43 @@ empirical and Research's.
 **Standing constraint until Research reports:** no design may present
 Sheet-vs-Auto conflict as a meaningful disagreement.
 
-**Item 4 — the audit's premise was wrong.** 1,022 × 551 px was recorded as "the
-viewport actually used" and treated as a deliberate constraint. Nothing shares
-that screen and the window size was accidental. Design's call: the §6
-**eight-column core stands and must still fit at 1,022 px**; extra width buys
-rows first, optional columns second, because the viewport already changed once
-without intent. The **height** was the accident that mattered — it is why fixed
-chrome ate 36% of the screen — so the ≤68 px chrome target gains value.
-Outstanding: the maximised viewport measurement, which §10 must then be restated
-against.
+**Item 4 — settled, and the answer retired the question.** Asked for the
+maximised viewport measurement, the owner answered: *"Do whatever is standard —
+this will be a product."*
+
+**No number off one machine is the target any more.** The audit's method —
+measure the owner's window, write acceptance against it — was right for a
+personal tool and is wrong for a product. Do not chase the measurement.
+
+**Standard desktop breakpoints:** floor **1,024 px** (eight-column core
+readable, zero horizontal scroll), baseline **1,280–1,440 px** (the design
+target; where layout is authored and reviewed), wide **1,920 px +** (optional
+columns `Halt`, `Spread`, `Float Turn`, `Δ since checkpoint`). Width buys rows
+before columns at every band. Below 1,024 px is **out of scope** and should be
+stated rather than degraded into — a phone layout is a different product
+decision nobody has asked for.
+
+**§10 is restated, not re-numbered.** Acceptance moves to the 1,280 px baseline,
+re-checked at the 1,024 px floor. Its existing targets survive the move — they
+were written against a harder number, so they hold at an easier one. Its second
+premise also fails: "measured with the desk owner, no training" is a
+personal-tool acceptance test.
+
+**"A product" does NOT unsettle the one-trading-style premise.** Design raised
+that as a cross-thread question and **the owner ruled against it the same day** —
+*"designed for momentum style traders only at this point. My style. It's a
+niche, which is where this will start."* The flag to Integration is withdrawn;
+the README's *Who this is for* stands unchanged. Widening the audience inside
+the niche is not widening the style, and a decision that suits a general trading
+audience but not this one is still wrong.
+
+**What does change is narrower.** The reader is no longer the author. Item 24
+(density toggle) stops being a convenience and becomes how one layout serves
+several machines; §10's accessibility criteria become obligations owed to people
+who are not the author; and §10's "measured with the desk owner, no training" is
+not an acceptance test a product can keep. Terminology stays in this style's
+language — it stops being safe to assume one trader's personal shorthand.
+Neither item is Phase 2 work.
 
 **Item 3 — still open, and Absorption looks self-answering.** The booklet's
 absorption is a live Level 2 / Time & Sales read at second granularity, used as
@@ -145,7 +173,39 @@ written default on these sits in a stale paragraph.
 Discovery caption is a defended opinion and re-rank by float or freshness
 quietly turns it into a preference. Most of the use case is item 13's workflow
 filters (`fresh catalyst only`, `float < N`, `changed since checkpoint`).
-Proposal: revisit after item 13 ships. Owner has not ruled.
+Proposal: revisit after item 13 ships. **Owner concurred 2026-08-23 — settled,
+deferred.**
+
+**Item 3 — settled: none of the four in Phase 2.** The §6 column set is
+therefore **final at eight** and no row design waits on this. Chop Risk, Flush
+Risk and Effective Float Turnover were routed by the owner to the viscosity
+programme — *"none yet, this needs to go to the viscosity study"* — and are now
+[rnd.md](rnd.md) register Q7. **Overhang Absorption was deliberately not routed
+with them**: Design's position is that it should not be built in this product at
+any phase, because the booklet's absorption is a live Level 2 / T&S read at
+second granularity used as a gate, and a desk-computed version would compete
+with a truthful live read the trader already has beside him. Still open and
+separate: whether the `Risk` chip should carry the supply ledger's magnitude —
+a presentation question, not a new signal.
+
+## Next session — item 16a, and only 16a
+
+Chosen by the owner 2026-08-23. Scope is fixed by the table above: replace the
+five false "human review" strings and swap the now-empty `automatic` contrast
+for **desk research / outside research** across the ~20 rendered sites. Enum
+identifiers do not change. Nothing else ships in the same commit.
+
+Three conditions carried in from this session:
+
+1. **Verify the rendered result on the live desk before reporting it done.** The
+   string list was read from source. The one Phase 1 defect that reached
+   production was invisible to local fixtures, and this change is nothing but
+   strings.
+2. **Do not touch item 15.** Deferred pending Research, not reduced.
+3. **Two code-level falsehoods are flagged, not fixed** — `sheetTable.ts:165`
+   and `openaiInterpreter.ts:150`. Neither is trader-facing, so neither belongs
+   in 16a. They want a separate commit and `openaiInterpreter.ts` is arguably
+   Research's file, not Design's.
 
 ## The immediate piece — five false labels
 
@@ -232,7 +292,7 @@ differs on two of them**, and the difference matters more than the sizing.
 | 14 | Cycle merge shrinks; build the Sheet half as a removable slice | **Ready**, still L |
 | 15 | **Deferred, not reduced** | **Blocked on Research** |
 | 16 | **Grows, and splits** — 16a is the false labels above | **16a ready now**, 16b M |
-| 17 | Eventual scope shrinks; **priority rises** | **Ready**, M |
+| 17 | **Grows** — a derived float gives it a second number to reconcile | **Ready**, M |
 | 18 | None — pure visual system | **Ready**, M |
 | 19 | None in the work; the name "Researched names" stays right | **Ready**, M |
 
@@ -251,12 +311,45 @@ labels and the SHEET/AUTO vocabulary rewrite on top of the remaining enums and
 ET timestamps. Split it: **16a** the false labels, unconditional and small;
 **16b** the rest, as planned.
 
-**Item 17 gets more urgent, not less.** F-19's contradiction — watchlist shows
-`Float 0.70M split-adjusted displayed`, drawer shows `FLOAT Unknown` — will
-resolve itself at migration, but until then the trader is reading a float number
-authored by a ChatGPT task with no filing link while this desk's own pipeline
-says it cannot verify one. The unified presentation must carry *not desk-verified*
-as its qualifier. That is closer to a correctness fix than a layout change.
+**Item 17 gets more urgent, not less** — and an earlier line in this file said
+the contradiction "may resolve itself entirely at migration." **That was wrong
+and is retracted.** It resolves itself only if float survives the migration, and
+today it would not.
+
+**Every float on the desk is the Sheet's.** `resolveDisplayedFloat`
+(`lib/dashboard/merge.ts:143`) has exactly two branches — the Sheet's `RESEARCH`
+tab, then its `TODAY` tab — and the type enumerates nothing else:
+`displayedFloatSource: 'RESEARCH' | 'TODAY' | null` (`merge.ts:87`). No third
+source exists in the tree. Raised by Research, verified by Integration in
+`4b06764`, re-verified here.
+
+**The failure is silent, and it lands on Design's own component.** Retire the
+Sheet with no replacement and every float resolves `null` — which
+`lib/dashboard/risk.ts:172` reads as `floatUnknown` and renders as the
+`FLOAT UNKNOWN` risk chip. That is a legitimate state, not an error, so nothing
+breaks and nothing alerts. **The §6 `Risk` chip — column 6, the cell whose whole
+purpose is making rejection cheap — would render `FLOAT UNKNOWN` on every row,
+for ever, and look like it was working.** Float under 10 M is one of the five
+pillars; it would leave the product without a single log line.
+
+**Sequencing, not re-planning.** This does not reverse the migration decision.
+Nothing that removes the Sheet ships before a float source replaces it. The
+owner has approved the direction — float derived from SEC filings already
+collected, shares outstanding less affiliate and restricted holdings from
+SC 13D/13G and Forms 3/4 — and Research is scoping it.
+
+**Two design consequences, both binding:**
+
+1. **Design against the derived float arriving, not against today's.** A derived
+   float turns F-19 from *one number and one absence* into **two numbers worth
+   reconciling** — Sheet-displayed versus desk-derived — which is a better
+   version of item 17, not a smaller one. The "one number, one qualifier, one
+   reason" shape still holds; the qualifier becomes meaningful.
+2. **The `Risk` chip must not assume a float number exists.** Its design has to
+   degrade honestly when float is null, and `FLOAT UNKNOWN` on every row must be
+   distinguishable from `FLOAT UNKNOWN` on one. This also constrains the open
+   presentation question above — whether the chip carries the supply ledger's
+   magnitude — because supply overhang is knowable when float is not.
 
 **Unblocked and startable now:** 16a, then 12, 18, 19 — none touch the Sheet.
 
