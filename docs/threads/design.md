@@ -822,6 +822,13 @@ practical size of the inflation is unknown. Needs the live desk.
   **Ops confirms the deploy; Design confirms the behaviour.** A change is not
   finished at the handoff. It is finished when this thread has looked at the real
   board.
+- **Check a review link by content, never by status code.** A revoked, expired
+  or invalid token returns **200 with an error page**, not 401 or 404 — found by
+  Ops, recorded 2026-08-23. A valid session is ~535 KB with `RVOL` present; a
+  dead one is ~9.5 KB with zero occurrences. So a link that dies mid-verification
+  gives no signal in the status, and a "page loaded" check would pass against a
+  desk that is correctly withholding everything. Verify the payload is the desk
+  before trusting anything read from it. `lib/review/` is Ops's.
 - **Design cannot authenticate to the live desk, and that is a standing limit on
   the rule above.** The desk is behind Basic Auth and returns `401`; entering a
   password into a field is not something this thread does, on any
