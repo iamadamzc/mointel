@@ -207,6 +207,35 @@ when they try.
 prompt to check the units, not a confirmation.** 50% against 52%, on six names,
 was too good and that was the signal.
 
+## Check the field that carries the answer
+
+**Added 2026-08-23 after three instances, two of which nearly became reports.**
+A check reads some observable. If that observable can be right while the thing
+itself is wrong, the check is decorative — and it is decorative in the
+reassuring direction.
+
+- `research-replay` reported 123 stable versions having made **no model calls
+  at all**. The output was clean and internally consistent. Its only tell was
+  `tokens in=0 out=0` — a counter added for **cost**, not correctness.
+- Ops tested a revoked review token **by status code**, got 200, and read it as
+  broken revocation. It was not: a garbage token also returns 200. The **bodies**
+  settled it — revoked 9,584 bytes with zero RVOL occurrences against a valid
+  535,437 with four. Ops caught this before reporting it as an incident.
+- The release-bootstrap flake ran the other way. **Capturing the status instead
+  of the assertion text** is what cracked it, because 141 is 128+13 and the
+  message said nothing.
+
+**So the rule is not "trust bodies over statuses".** The flake proves the
+opposite case exists. It is: **name the field that carries the answer, and
+confirm it can distinguish the failure you are testing for.** A status code
+cannot tell a live capability from a revoked one when the route returns 200 for
+both. A token counter can tell a real run from a fabricated one, and did.
+
+The practical form, since this thread relays other threads' verifications:
+**when a thread reports a check, ask what it read.** "Verified" is not a
+finding; "fetched the asset URLs out of the page's own HTML with no
+credentials and got 200" is.
+
 ## A retraction only reaches the sentence it edits
 
 **Added 2026-08-23, found by R&D in its own documents.** It retracted a claim,

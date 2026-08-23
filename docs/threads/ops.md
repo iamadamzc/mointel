@@ -14,6 +14,32 @@ Last worked: **2026-08-23**.
 - Production SQLite: migrations, backups, consistency
 - Incident diagnosis on live evidence
 
+## `lib/review/` belongs here, and nothing said so until now
+
+**Recorded 2026-08-23, after Ops asked whether a review-route fix was Design's
+or its own.** The honest answer was that **no charter owned the module at all**
+— `lib/review/access.ts`, `tokens.ts`, `diagnostics.ts` and `app/review/[token]/`
+appear in no thread's scope.
+
+It belongs here. Ops creates review sessions, revokes them, documents them in
+[../AWS_DEPLOYMENT.md](../AWS_DEPLOYMENT.md), and owns Basic Auth and the auth
+model the review token sits beside. Design's scope is the Discovery board, the
+watchlist, the drawer and the visual system; a capability token's HTTP status is
+none of those. **That the code is app-layer is where it lives, not who owns the
+concern** — and Ops drew that distinction itself while asking the question.
+
+Naming the tension rather than letting it become precedent: this thread
+otherwise takes handoffs and deploys rather than writing application code. That
+convention holds. `lib/review/` is the exception because it is operational
+machinery that happens to be written in TypeScript, not product. If it starts
+growing product surface, revisit it.
+
+**The open defect, from Ops:** a revoked, expired or invalid capability returns
+**200 with an error page** rather than 401 or 404. Not a bypass — the bodies
+prove the desk is withheld. But any automated check testing a review link by
+status code gets a **false pass**, which is the mistake Ops made and nearly
+reported, and a monitor would never notice a dead link.
+
 ## Not this thread
 
 - UI components and anything in the audit's remediation plan → [design.md](design.md)
