@@ -276,27 +276,30 @@ over.
 
 ---
 
-## Recommended first answerable question
-
-Not Q1 — Q1 needs the missing week and, for the interesting version of it, a
-cross-section. Not Q2 or Q3, which need instrumentation that does not exist.
+## The question the data volunteered
 
 **Proposed Q5: when does a board name's move actually happen, relative to when
 the desk puts it on the board?**
 
-It is answerable *today* on the instrument just built, needs no new capture and
-no spend, and it uses both halves of what the archive now holds:
-`first_board_entry_at` and `best_rank` from the desk side, `time_of_high`,
-`premarket_high_at` and the windowed gains from the market side. It bears
-directly on the trader's own results rather than on market structure in the
-abstract, and unlike Q1 it does not depend on the research pipeline having been
-up. It is also the question the data volunteered rather than one that was posed,
-which is what the standing sweep is supposed to produce.
+It uses both halves of what the archive now holds — `first_board_entry_at` and
+`best_rank` from the desk side, `time_of_high`, `premarket_high_at` and the
+windowed gains from the market side. It bears directly on the trader's own
+results rather than on market structure in the abstract, and unlike Q1 it does
+not depend on the research pipeline having been up. It was surfaced by the data
+rather than posed, which is what the standing sweep is meant to produce.
 
-If the answer is that the board reliably surfaces names after their high, that
-is a finding about the product, and it reframes Q1: the interesting question
-stops being *why do movers have no catalyst* and becomes *why is the desk
-selecting for names whose move is finished*.
+If the board reliably surfaces names after their high, that is a finding about
+the product, and it reframes Q1: the interesting question stops being *why do
+movers have no catalyst* and becomes *why is the desk selecting for names whose
+move is finished*.
+
+**It is not the first thing to run, and this section originally said it was.**
+The claim was that Q5 is answerable today on two dates while Q1 waits for
+production. That was overstated in both directions: on two dates Q5 is a
+curiosity rather than a finding, so it wants the same production dates Q1 does;
+and Q1 is the *active* question, capped at two, while Q5 would need opening.
+Retracted the same day, and the register in [rnd.md](../threads/rnd.md) records
+Q5 as behind Q1. See *Ordering once the dates land* below.
 
 ---
 
@@ -312,50 +315,88 @@ decision.
    reduces the loss; it does not prevent it.
 2. **The backfill has only ever run against the stale local store.** To cover
    the dates Q1 needs, Ops has to produce an extract from production. See
-   *Getting the production dates* below — the command exists and needs no
-   deploy.
+   *Getting the production dates* below. The command exists, but it is not on
+   the server — **how it gets there is Ops's decision**, now
+   [ops.md](../threads/ops.md) Open item 5 with the routes written out.
 3. The desk's recorded closing price disagrees with the official close on a
    third of names. Some of that is the closing auction, which is expected; the
    size of the residual has not been checked and may be a real capture defect.
 
 ## Getting the production dates
 
-Agreed 2026-08-23: a **two-table extract**, not a full snapshot and not a run on
-the server.
+Agreed 2026-08-23: a **two-table extract**, not a full snapshot and not a run of
+the backfill on the server.
 
 The backfill reads exactly two tables and fetches everything else from Alpaca,
 so that is all that has to leave the box:
 
-| | payload | code on production |
+| Route | Payload off the box | Already on the server? |
 | --- | --- | --- |
-| Ops runs the backfill there | store + archive back | **yes — a deploy** |
-| Full `VACUUM INTO` snapshot | ~250-450 MB | no |
-| **Two-table extract** | **~1-3 MB** | no |
+| Run the backfill there | the extract, then the archive back | **no** — needs `8170f58` deployed |
+| Full `VACUUM INTO` snapshot | ~250-450 MB | yes — `snapshot-db.mjs` ships with the release |
+| **Two-table extract, `archive:export`** | **~1-3 MB** | **no** — landed in `8170f58`; production runs `fd9556f` |
+| Two-table read hand-rolled in `sqlite3` | ~1-3 MB | yes — nothing to install |
 
-`npm run archive:export` produces it. It opens the source **read-only**, makes
-no network calls, touches no credentials, and what it writes contains no prices,
-no research text and nothing about the trader —
-`tests/archive/export.test.ts` asserts the table list rather than trusting it.
-It prints a count per trading date, so the same command answers *did the desk
-actually record checkpoints on 19, 20 and 21 August* — which is worth knowing
-before anything is copied, because those are the days the pipeline was failing
-and the assessments may simply not be there.
+**Corrected by Integration, 2026-08-23.** This table previously recorded "code
+on production: no" for the extract route and the *Handed to Ops* section said it
+"needs no deploy". Both were wrong, and wrong in the direction that matters — a
+thread reading either would have taken the route believing nothing had to reach
+the server. `worker/archive-export.ts` says *Usage, on the server* in its own
+header and takes `--market-db /var/lib/mointel/market.db`, a path that exists
+only on the box.
 
-```
-npm run archive:export -- --market-db /var/lib/mointel/market.db                           --out /tmp/assessments.db --dry-run     # counts only
-npm run archive:export -- --market-db /var/lib/mointel/market.db                           --out /tmp/assessments.db
+Nothing about the recommendation changes. Two tables and ~1-3 MB against a
+250 MB+ snapshot carrying every price and every research dossier is still the
+right trade. What was false was only the claim that it costs nothing to get
+there. **The choice of route is a deploy decision and belongs to Ops** —
+[ops.md](../threads/ops.md) Open item 5.
+
+`npm run archive:export` opens the source **read-only**, makes no network calls,
+touches no credentials, and what it writes contains no prices, no research text
+and nothing about the trader — `tests/archive/export.test.ts` asserts the table
+list rather than trusting it. It also prints a count per trading date.
+
+```bash
+npm run archive:export -- --market-db /var/lib/mointel/market.db --out /tmp/assessments.db --dry-run
+npm run archive:export -- --market-db /var/lib/mointel/market.db --out /tmp/assessments.db
 ```
 
 Then, here:
 
-```
+```bash
 npm run archive:backfill -- --market-db <the extract>
 ```
 
 Verified end to end on the local store: a 596 KB extract drives the backfill to
 byte-identical output. The remaining risk is that it is a point-in-time copy, so
-it wants re-running as sessions accumulate — which is what the `--from` / `--to`
-bounds are for.
+it wants re-running as sessions accumulate — which is what `--from` / `--to`
+are for.
+
+### The go/no-go comes first, and none of the above may be needed
+
+**Did the desk record checkpoints on 19, 20 and 21 August at all?** Those are
+the days the research pipeline was failing, and the rows may simply not exist.
+Ops is answering it now by hand-rolling the same two-table read in `sqlite3`,
+which needs nothing on the box — the fourth route in the table, and the reason
+the deploy question can wait.
+
+**If that comes back zero, the extract question is moot and Q1 needs rethinking
+rather than more instrumentation.** Worth being plain about what that would
+mean, because the instinct will be to build something:
+
+- Q1 as posed cannot be answered for the week it is about. Coverage cannot be
+  held constant over dates with no coverage record, and no amount of capture
+  built today reaches backwards.
+- It is not a null result either. "The desk was down" says nothing about whether
+  movers carry catalysts; it is an absence of evidence, and recording it as a
+  verdict would be the exact failure the *report the null* rule is meant to
+  prevent.
+- The live options would be to re-scope Q1 onto the dates the desk did record
+  and accept a smaller, later window; or to reframe it as a forward question and
+  answer it from here on, which makes the capture already built the whole
+  contribution and pushes the answer out by weeks.
+- Either way the register should reflect it. A Q1 that cannot be worked is debt,
+  and the charter's rule is that a question is active or closed.
 
 **Ordering once the dates land.** The split test goes first, ahead of Q5. It
 serves Q1, which is active and capped at two; Q5 would need opening, and on two
