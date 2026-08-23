@@ -234,6 +234,42 @@ when they try.
 prompt to check the units, not a confirmation.** 50% against 52%, on six names,
 was too good and that was the signal.
 
+## The slice you measured is not the population you are claiming about
+
+**Named by Ops on 2026-08-23 after the fourth instance, and the first to reach
+another thread's document.** Distinct from the section below: that one is about
+a rule whose terms diverge over *time*. This is about a claim generalised from
+the *sample that happened to be in front of you*.
+
+- **Ops:** *"claiming is immediate, nought to two minutes"* — measured on **recap
+  jobs alone**. Across all 954 jobs that ever started: p50 8s, p90 266s, p99
+  1253s, max 2576s. 276 over a minute, 82 over five. At `POLL_MS` 5000, "a few
+  poll intervals" **would have fired on 29% of normal work.**
+- **Integration:** the routing instruction — correct for my own outbound sends,
+  shipped as true of all sends, and wrong for every thread receiving it.
+- **Integration:** *"a monitor would never notice a dead review link"* — true of
+  the page Ops had tested, false of the API, and I claimed it of the capability.
+- **Integration:** *"one bad line, not a pattern"* — I searched `worker/` for
+  recursive deletes, found one, and concluded about a class I had not searched.
+
+**The tell is that the measurement was real.** Every one of these was a true
+number from a genuine check — which is why none felt like a guess, and why
+review does not catch them. The question is never *did I measure it* but
+**what was I measuring, and is that the thing I am about to say?**
+
+**And Ops's repair is better than the withdrawal.** The stall rule survives, but
+the load-bearing part turned out to be the **conjunct, not the timer**: a
+legitimately slow worker has `activeCount > 0`, which `activeCount == 0` already
+excludes. So the timer goes in minutes and generously and the conjunct does the
+discriminating. A bad justification does not always mean a bad rule — but you
+only find that out by re-deriving it rather than defending it.
+
+**What Ops refused to claim is the other half.** `activeCount` has no history —
+*that absence is the whole problem* — so the false-positive rate of the
+**conjunction** is unmeasured; only the timer alone was ever tested. So it
+**ships in shadow and is compared before it pages anyone.** That is the general
+answer whenever a detector's error rate cannot be measured before deployment.
+
 ## A rule that cannot tell two cases apart
 
 **Named by Ops on 2026-08-23, after it happened three times in one evening.**
