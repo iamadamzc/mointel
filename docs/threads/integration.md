@@ -486,6 +486,36 @@ the contradiction reads as two findings rather than one error.
 This thread has issued several retractions today and should assume it has the
 same debt outstanding.
 
+## Why none of us found our own
+
+**Ops's observation at the end of 2026-08-23, and it is the best argument for
+this thread existing that anyone has made.** Every defect found that day was a
+check that could not fail, and they surfaced in a fixed order — the test
+fixture, then the guard, then the plans, then the monitoring. **Each was found
+by the thread that owned the layer above it, never by the layer itself.** The
+heartbeat could not have flagged itself as insufficient; it took a stall nobody
+could explain.
+
+**Checked before recording, because the strong version is not quite right.**
+Threads did correct themselves, repeatedly and without being told to: Design
+found its own hover-only label, Research killed its own trading-date mechanism
+and its own denylist, Ops disproved its own SIGKILL guess and filed its own
+wrong check against itself. What none of them did was **find** it unprompted.
+In every case the prompt came from outside the layer — a rule that sent Design
+back to the live desk, a relayed message that sent Ops to a log, a hypothesis
+that sent Research to the rows.
+
+So the accurate form is: **the correction is reliably the owner's; the noticing
+reliably is not.** That is a stronger claim than Ops's, not a weaker one — it
+says the failure is structural rather than a matter of care, because these are
+four careful threads and every one of them needed an outside prompt.
+
+**And it says what this thread is for.** Not review — it is worse at each
+layer's work than the thread that owns it, and every substantive correction
+today came from an owner. What it does is carry a thing from one layer to
+another, which is the only motion that reliably produces noticing. More
+discipline inside any one thread would not have found these.
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin
