@@ -331,9 +331,33 @@ So: **a partial handler is worse than none.** Same rule — it enumerated one
 thing to do on the way out and inherited responsibility for all of them. The
 cost is not the thirty seconds: a SIGKILL mid-job abandons an in-flight model
 call with tokens spent and nothing recorded, and can leave a claimed row with no
-process behind it. **That is a candidate mechanism for the ten QUEUED rows the
-health endpoint does not see**, open since this morning and connected to nothing
-until Ops read a log.
+process behind it. Fixed by Research at `97f198d`, one line, mirroring
+`alpaca.ts`.
+
+**~~That is a candidate mechanism for the ten QUEUED rows.~~ It is not, and I
+recorded a hypothesis as though it were a lead.** Research checked it against
+the rows rather than accepting it: **all ten carry `started_at` NULL and
+`retry_count` 0**, so none was ever claimed — and an orphan of a killed worker
+would have been, because `requeueJobForRetry` runs on rows that were mid-flight.
+A kill cannot produce a row that was never started.
+
+**The real cause is in the timestamps.** They are queued at 02:00 UTC — 22:00
+ET, the `NEXT_DAY_RECAP` checkpoint, which queues research for the session that
+has just ended. But the worker takes its trading date from `MAX(trading_date)`
+in `ticker_session`, and by 22:00 the next session's rows are already seeded.
+**So a job queued for a finished date is never claimed by anything, ever**, and
+they accumulate two and eight at a time.
+
+That is Ops's own first hypothesis from this morning — *"abandoned rows from an
+earlier trading date that nothing will ever pick up"* — confirmed rather than
+guessed. Which it is matters, because the two hypotheses wanted **opposite
+fixes**: these want expiring or claiming deliberately, not counting as backlog.
+
+**The lesson is not "do not hypothesise".** Ops's guess is what sent Research to
+the rows, and the rows produced the answer. What I did wrong is narrower: I
+wrote a hypothesis into a charter in the voice of a finding, one line after
+recording that a retraction only reaches the sentence it edits. *Candidate
+mechanism* and *mechanism* read identically to whoever finds this next week.
 
 This sits beside the two rules below rather than replacing them. "A check that
 cannot fail isn't a check" is about whether an observation can come out badly;
