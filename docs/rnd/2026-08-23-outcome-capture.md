@@ -1173,6 +1173,90 @@ hundred kilobytes a year against a tier A that is 710k rows and can wait.
 the universe refresh, and the sizing above is offered so the decision is not
 taken on the assumption that "capture more" means tier A.
 
+#### Float against shares outstanding: the split explains at most half of it
+
+*Two questions from Integration, 2026-08-24, after the trader pulled 18 floats
+and shares-outstanding from Scanz by hand. Four rows have float exceeding shares
+outstanding, which is arithmetically impossible, and two are on incompatible
+units.*
+
+##### 1. CDTG did split — outside the lookback, exactly as suspected
+
+Integration read `split_sessions_ago = NULL` as "no split" and retracted its own
+hypothesis on that basis. The retraction was right to make: **null means no split
+within 30 sessions, which is the detector's window, not the world.** Checked over
+two years of daily bars:
+
+| Symbol | splits found in ~515 sessions | float vs SO |
+| --- | --- | --- |
+| CDTG | **2026-06-01 ×25** (~57 sessions back) | 511% |
+| TNON | 2024-09-06 ×8, **2026-08-10 ×35** (~8 back) | 187% |
+| SGLY | 2026-07-27 ×14 (~18 back) | 100.0002% — one share |
+| AEIS | **none in two years** | 104% |
+| PFSA | 2026-02-09 ×75, 2026-07-07 ×25, **2026-08-17 ×4** | *consistent* |
+| FENG | none in two years | unit mismatch |
+| HUIZ | 2024-12-09 ×5 | unit mismatch |
+
+**So the hypothesis is rescued for CDTG and does not generalise.** Splits are
+associated with the failure but are neither necessary nor sufficient:
+
+- **AEIS has no split in two years** and is still 104%. No split explanation.
+- **SGLY differs by exactly one share.** That is a rounding artefact, not a
+  reprocessing boundary.
+- **PFSA split four sessions before the pull and is internally consistent.** A
+  fresh split does not reliably break it.
+- And even where a split exists the magnitudes do not reconcile: CDTG's ratio is
+  5.11 against a ×25 split, TNON's 1.87 against ×35. The *direction* fits — SO
+  looks reprocessed, float does not — but a single split does not account for
+  the size of the gap.
+
+**Which strengthens the product idea rather than weakening it, and sharpens what
+the signal should be.** The direct arithmetic test `float > SO` fires on all four
+regardless of cause. A split flag catches two. **Do the check; do not try to
+predict it.** A confidence signal built on "was there a recent split" would have
+cleared AEIS and SGLY and flagged PFSA — wrong on three of five.
+
+##### 2. ADRs are 11% of the board, so the unit check is not an edge case
+
+The desk already classifies them: `ADR_ADS`, 291 symbols, all discovery-eligible.
+On this archive's 252 board symbols over 17-21 August, **27 are ADRs — 11%**,
+one name in nine:
+
+`ADXN AHG AMBR BDRX ENRD EVAX FENG FRSX HCM HSAI HUIZ ICG IQMX JFU KRKR LU MNSO
+MOGU PCLA RERE SCNI SOHU STG STKH TKLF XTLB ZKH`
+
+Both of the unit-mismatch cases — FENG and HUIZ — are on that list. A float/SO
+ratio under ~2% as a unit-mismatch test would therefore be checking a real and
+recurring population, not a curiosity.
+
+##### 3. What this thread cannot measure, and agrees it cannot
+
+The rate at which `float > SO` fires across a large sample. **The archive does
+not capture float**, by the trader's standing decision that no Sheet-read float
+enters it, and that is unchanged by this. Integration is right that the number
+needs more manual pulls.
+
+One thing that is reachable and worth saying: **the consistency check needs no
+archive change at all.** It is arithmetic between two numbers at the moment both
+are in hand — `float > SO` refuses, `float/SO < 2%` suspects a unit mismatch. It
+belongs wherever float is displayed, not in a store. The archive would only
+matter if the *rate* became a question worth tracking over time, and that is a
+reason to capture float later rather than a reason to capture it now.
+
+##### A design change this prompts, not yet made
+
+`split_sessions_ago` bakes a 30-session threshold into a stored value, and CDTG
+is the case that shows why that is wrong — the field said null and the answer was
+57. Per the spec's own rule, **store facts, never scores**: the stored value
+should be the distance to the most recent split within the *fetched* window,
+with the window length recorded beside it, so null means "none in N sessions"
+with N known.
+
+Hypothesis 3's finding is unaffected — it filters 6-30 sessions, which is a
+read-time filter over the same fact — so this is a pure improvement rather than
+a redefinition. Not built; it changes a column a live finding reads from and is
+worth doing deliberately.
+
 #### The 65-field audit: what this thread will annotate for
 
 Research produces the inventory, Design annotates what must survive on screen,
