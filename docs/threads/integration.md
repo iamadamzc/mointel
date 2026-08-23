@@ -373,11 +373,44 @@ carried two analyses that same day. n=2 — evidence, not proof. It puts the siz
 nearer *ten stale rows* than *a checkpoint silently dropping its work*, which
 were the two sizes in question.
 
-**Open, and narrower than either dead hypothesis: why did one recap claim ten of
-ten and another nought of eight?** The nought-of-eight is Friday's, at the end of
-the week the pipeline spent failing on an empty balance. **Ops named that as a
-candidate and explicitly did not assert it.** Checking worker health at 02:00 UTC
-on 2026-08-22 is cheap and either confirms or kills it.
+**Dead — "the trading date rolls before they can be claimed".** Killed by
+Research, its own. The jobs sat claimable for **23 hours**: queued
+2026-08-22T02:00:06 for trading date 08-21, and the next date first appears
+2026-08-23T01:27:38. An 18-hour window on the 18th left 2 of 8 stranded anyway.
+There is no race. **Three mechanisms proposed today, three disproved, each by
+someone other than the one who most wanted it to be true — and the third by its
+own author.**
+
+**Established — the worker did not lose a race, it stopped.** It *queued* those
+eight at 02:00:06, so it was alive at that instant. In the ninety minutes
+around it: 0 started, 0 completed, 0 failed. Its last analysis was three and a
+half hours earlier, and it stayed silent 23 hours until a restart.
+
+**Established — and this kills the empty-balance candidate.** On the 18th: 10
+started, 10 completed, **4 failed on HTTP 429**. A failing worker still claims,
+because claiming precedes the model call. So a dry balance cannot produce
+nought-of-eight.
+
+**A certain defect, whatever caused this.** Two network calls in the worker loop
+have **no timeout at all** — `lib/data/providers/googleSheets.ts` (no timeout,
+no `AbortSignal`) and `lib/research/sec/client.ts`. `openaiInterpreter` at 300s
+is the only bounded one. **`loadSheetPriors()` runs at the top of every pass,
+before `claimQueuedJobs`** — so an unbounded fetch there hangs the loop with no
+error and no heartbeat failure: the process stays up, health keeps its last
+state, and nothing is claimed. That is the observed signature exactly. Research
+**does not assert it as the cause** and is right not to.
+
+**The observability gap that cost three threads an evening.** The heartbeat is
+an independent `setInterval` and survives a blocked loop, so it is **not
+diagnostic**. And `research_health` is a **single overwritten row with no
+history** — there is no way to ask what the worker was doing at a past instant.
+That absence is why every hypothesis tonight was reasoned from job timestamps,
+and why three of them could be argued at all.
+
+**Open: why did one recap claim ten of ten and another nought of eight?** Narrowed to: **why did the worker stop?** The
+empty-balance candidate is dead. The unbounded fetch is the standing candidate
+and is unfalsifiable from what is stored, because nothing recorded what the
+worker was doing.
 
 This sits beside the two rules below rather than replacing them. "A check that
 cannot fail isn't a check" is about whether an observation can come out badly;
