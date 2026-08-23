@@ -717,6 +717,26 @@ unchanged. Bar flow at 04:00 cannot be caused by this release. Only the board's
 discriminator is free: **`messageAgeSeconds` moving off `null` means the feed is
 fine and anything odd is UI.**
 
+> **Correction, 2026-08-23 — the conclusion holds, the measurement did not
+> support it.** That list is hand-picked, and it **omits `lib/market/config.ts`,
+> which `worker/alpaca.ts:11` imports and calls at line 17**. So "the ingestion
+> path is byte-identical" was asserted from a curated set that left out a file
+> the market worker loads. Found by applying Integration's own tell — *the
+> question is not whether it was measured but what was measured, and whether that
+> is the thing about to be said* — to this thread's most load-bearing claim.
+>
+> The conclusion survives on two independent grounds, neither of which was the
+> one given: the `config.ts` change is **purely additive**, zero removed lines
+> and a new unreferenced export; and the worker does not restart, so it runs
+> `fd9556f` whatever the release contains. The claim that actually carries Monday
+> was measured properly — `git diff 80437c3 fd9556f -- lib/market worker/` is
+> **empty at directory scope**, not over a list.
+>
+> **The rule: for "nothing changed" claims, diff at directory scope, never a
+> curated list.** A curated list encodes the very assumption under test — that
+> you already know what is in the path. It cannot fail in the one way that
+> matters, which is the same defect as every other instance today.
+
 **If it ships, look at the real board.** Design asked for this specifically, and
 the reason is on this thread's record: the Phase 1 enum leak was a defect only
 real dossiers could reveal, and it went through a green gate. A gate that passes
