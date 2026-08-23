@@ -394,9 +394,34 @@ throws at the point of use rather than at the read. Research flagged this as
 display logic and that is right; noting the mechanism because "it parses fine"
 is exactly how it will look while being broken.
 
-**8. Design's `44c10cd` is verified and waiting on a word. Not deployed.**
-*Handed over 2026-08-23; the trader was asked and had not answered when this was
-written. Production remains `28c7f12`.*
+**8. ~~Design's `44c10cd` is verified and waiting on a word.~~ DEPLOYED
+2026-08-23, live and UNVERIFIED.**
+
+`f383ddd` — `44c10cd` plus two docs-only commits; `git diff 44c10cd..HEAD`
+outside `docs/` is empty, so the gate result below stands unchanged. Live
+19:38:55 UTC. Eight commits pushed first. No migration. All four services
+active. Health `ok`. Reachable through CloudFront — `/` and `/api/dashboard`
+both 200 authenticated, 401 without.
+
+SIP untouched again: `mointel-market` still pid 129202, `NRestarts=0`, start
+still Sun 01:27:36 UTC, no journal entries in the deploy window. **The pin
+finally paid**: `[prune] keep fd9556f (pinned)` — this was the deploy where
+keep-3 would have dropped the directory the live worker is running from, which
+is precisely why it was placed on 2026-08-23 before the `775c5a9` deploy.
+
+**Live is not verified, and under `abf38e1` this deploy is not finished.** Ops
+confirms the release is up; the author confirms the behaviour. Whether Rank,
+RVOL, Move, Price and Float sort the way the trader asked is Design's claim and
+Ops does not make it. Handed to Design through Integration, since Design has no
+directly addressable session.
+
+Two things passed on with it. The market is closed and `messageAgeSeconds` is
+`null`, so the board shows Friday's state — a sort can be checked against that,
+live movement cannot and waits for 04:00 ET. And if anything looks wrong at the
+open, the discriminator costs nothing: `messageAgeSeconds` off `null` means the
+feed is fine and the fault is UI.
+
+*Original assessment, kept because the reasoning is what a future window needs:*
 
 Sortable Discovery columns — Rank, RVOL, Move, Price, Float — asked for by the
 trader for Monday's open. Gate re-run here, not taken on report: **1238 tests /
