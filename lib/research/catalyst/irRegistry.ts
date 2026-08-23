@@ -82,8 +82,18 @@ export function hasUsableSource(registry: CompanySourceRegistry): boolean {
    * question "does this page list releases" has an answer, and it comes from
    * fetching the page — so a row that never recorded one gets re-resolved
    * rather than believed.
+   *
+   * An allowlist rather than `!== null`, because that test did the opposite of
+   * this paragraph. Rows persisted before the field existed carry no key at
+   * all, so the value deserialises to `undefined`, and `undefined !== null` is
+   * true — every legacy row was believed, which is precisely the set the
+   * paragraph says must be re-resolved. All four resolved issuers in production
+   * were affected, and their stored "index" URLs are single articles:
+   * `.../press-releases/detail/303/super-league-reports-second-quarter-2026-...`
+   * is one release, not a list of them, so the deterministic IR poll refetched
+   * a frozen page and could never see anything new.
    */
-  return registry.sourceShape !== null;
+  return registry.sourceShape === 'FEED' || registry.sourceShape === 'INDEX';
 }
 
 /**

@@ -449,3 +449,43 @@ describe('legacy rows whose shape was never recorded', () => {
     ).toBe(true);
   });
 });
+
+/**
+ * The legacy-row hole.
+ *
+ * `hasUsableSource` documented that a row which never recorded a shape must be
+ * re-resolved rather than believed, and then tested `sourceShape !== null`.
+ * Rows written before the field existed carry no key at all, so the value
+ * deserialises to `undefined` — and `undefined !== null` is true, so exactly the
+ * rows the comment named were the ones believed.
+ *
+ * It was not hypothetical. All four resolved issuers in production carried no
+ * shape, and their stored "index" URLs are single articles.
+ */
+describe('unrecorded shape', () => {
+  it('refuses a legacy row whose shape key was never written', () => {
+    const legacy = {
+      ...EMPTY_COMPANY_SOURCES,
+      newsroomUrl: 'https://ir.superleague.com/news-events/press-releases/detail/303/super-league-reports-second-quarter-2026-financial-results',
+      pressReleaseIndexUrl: 'https://ir.superleague.com/news-events/press-releases/detail/303/super-league-reports-second-quarter-2026-financial-results',
+      confidence: 'HIGH' as const,
+    };
+    // The shape of a row read back from JSON that predates the field.
+    delete (legacy as { sourceShape?: unknown }).sourceShape;
+
+    expect(hasUsableSource(legacy)).toBe(false);
+  });
+
+  it('still accepts a verified index or feed', () => {
+    expect(
+      hasUsableSource({
+        ...EMPTY_COMPANY_SOURCES,
+        pressReleaseIndexUrl: 'https://example.com/news',
+        sourceShape: 'INDEX',
+      }),
+    ).toBe(true);
+    expect(
+      hasUsableSource({ ...EMPTY_COMPANY_SOURCES, feedUrl: 'https://example.com/rss' }),
+    ).toBe(true);
+  });
+});
