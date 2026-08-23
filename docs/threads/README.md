@@ -15,6 +15,7 @@ then paste that charter's opening message.
 | **Research Pipeline** | The interpreter, evidence collection, model spend | [research.md](research.md) |
 | **R&D** | Standing analysis capability — the question register, the archive, the tape research | [rnd.md](rnd.md) |
 | **Coaching** | Daily fills, execution against the playbook | [coaching.md](coaching.md) |
+| **Integration** | The charters, the seams, cross-thread decisions | [integration.md](integration.md) |
 
 ## Why five
 
@@ -45,6 +46,27 @@ Coaching was added the same day. It is the only thread about the trader rather
 than the market, it runs daily rather than by project, and it is the one
 carrying personal financial records — which need handling the others never think
 about. It shares exactly one thing with R&D: tier C of the archive.
+
+Integration was added 2026-08-23 and does **no product work**. It exists because
+three problems in two days belonged to no thread: a working-tree collision, a
+false safety claim sitting in a charter, and a hazard spanning a systemd unit
+and a prune script. Splitting work created a gap between the pieces, and that
+gap needed an owner.
+
+## Sharing one working tree
+
+Every thread works in `A:\mointel`. Rules, in order of how much they matter:
+
+1. **Never `git add -A` or `git add .`** Stage by explicit path. This one rule
+   would have prevented every incident so far.
+2. **One thread holds uncommitted code at a time.** Commit or stash before
+   handing back. Concurrent docs edits are fine.
+3. **Deploys are safe regardless** — `push-release.sh` ships a committed sha via
+   `git archive`, so uncommitted work cannot reach production. The risk is to
+   *gates*: `npm test` against a half-edited `package.json`.
+4. **A worktree when two threads must genuinely build at once.** Robust, but it
+   needs its own `node_modules`. Reach for it when rule 2 becomes the
+   bottleneck.
 
 ## The rule that keeps them separate
 
