@@ -32,7 +32,7 @@ questions is a thread that has stopped working.
 
 | # | Question | Opened | Status |
 | --- | --- | --- | --- |
-| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — the catalyst grade is ~1/3 irreproducible run to run, which biases any answer toward Q1's own hypothesis; no verdict until that is handled |
+| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE — first half measured 2026-08-23**, Pillar 4's asserted relationship excluded on the board population; second half needs tier A and cannot close |
 | Q2 | What share of qualifying movers ever produce a tradeable pullback at all? | 2026-08-23 | proposed |
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | proposed |
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | dormant — see closed lines below |
@@ -211,6 +211,55 @@ Research killed it against the eyeball impression rather than with it.
 `storedVersionId`, which maps to this archive's `analysis_version_id`, so all 56
 resolve and the 27/10/19 split never arises. That arithmetic stands as a record
 of what a per-ticker output would have cost, not as a live constraint.
+
+**THE FULL REPLAY LANDED AND Q1's FIRST HALF HAS AN ANSWER.**
+`data/replay-full.json`, 236 versions x **five draws**, prior-free, as-of
+filtered. 9.9M in (81% cached) / 2.79M out, checked. **All 185 of the archive's
+grade-backing versions are covered — 100%**, so the population problem is gone:
+211 symbol-days, **40% movers against 74%** in the TODAY-tab replay and 31% in
+the whole archive. The residual enrichment is coverage, not selection — research
+reaches movers, which this thread measured days ago.
+
+Five draws with an agreement fraction replaced refuse-to-emit, and Research was
+right to withdraw its own design: the objection was to an *unlabelled* mode, and
+a mode carrying "3 of 5" is not one. **This thread's two-draw projection held** —
+46-61% predicted irreproducible, 45% measured not-unanimous, with 53 versions at
+exactly 3 of 5 confirming the flips are nearer 50/50 than 75/25.
+
+**THE RESULT.** Share carrying `STRONG` or `LEGITIMATE_POSITIVE`, 211
+symbol-days: **movers 16.7% (n=84), non-movers 13.4% (n=127)**, difference
++3.3pt, z = 0.66, p = 0.51. Mean modal agreement 85%, so misclassification ~15%
+and attenuation ~0.70.
+
+**Recorded as a bounded negative, not a null.** Attenuation biases toward zero so
+this cannot support "no relationship" — but it supports a ceiling. Observed 95%
+CI -6.6 to +13.2pt; corrected, **-9.5 to +18.9pt**. A true 20-point difference
+would have shown as 14pt and been caught. **The largest true difference
+consistent with the data is about 19 points, and Pillar 4's "non-negotiable"
+implies far more than that. That relationship is excluded at this population and
+window.** A weak one is not, and nothing here says catalysts are irrelevant.
+
+The absolute figure needs no control group and carries more: **83% of 50%+
+movers carried no legitimate-positive-or-stronger catalyst**, prior-free,
+as-of-correct, five-draw modal. That is the trader's original observation,
+measured.
+
+The share-count confound does not reach this — it bites on stored-versus-replay
+deltas, and the variable here is the replay grade against the tape.
+
+**WHAT STOPS Q1 CLOSING.** The population is the desk's board, top 25 by RVOL out
+of ~900 eligible, so a name that ran and never reached the board is invisible —
+tier A, which does not exist. Five trading days. Graded symbol-days only, 211 of
+306, and the excluded 95 skew non-mover. And **Q1's second half is untouched**:
+"why are catalyst-driven names passed over" needs that same cross-section. First
+half measured with a bound; second half unanswerable on this instrument.
+
+**BY-PRODUCT, handed on rather than used.** Cycle instability includes 28
+versions flipping between two directions, 17 of them `RED_BACKSIDE` against
+`YELLOW_FRONTSIDE_WARNING` — frontside versus backside on identical evidence.
+Nothing here reads `cycle`, but the field is trader-facing and that distinction
+is not cosmetic. It reverses a small-sample null of Research's, the second such
+reversal in one evening.
 
 **THE PER-VERSION ARTIFACT LANDED, AND Q1's BLOCKER MOVED.**
 `data/replay-perversion.json`, 123 versions, joining on `storedVersionId` →

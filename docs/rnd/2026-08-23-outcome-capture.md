@@ -719,6 +719,105 @@ A third draw buys precision on a sample that cannot answer the question. The
 remaining 124 versions buy a sample that can, at a measurement quality already
 known and quantified.
 
+#### The full replay: 100% coverage, and Q1's first half has an answer
+
+`data/replay-full.json` — 236 versions, **five draws each**, prior-free, as-of
+filtered, joining on `storedVersionId`. Tokens 9,905,680 in (81% cached) /
+2,792,169 out; checked. The budget constraint was lifted and the design changed
+with it.
+
+**Every one of the archive's 185 grade-backing versions is covered — 100%.** The
+population problem is gone:
+
+| Population | symbol-days | ran 50%+ |
+| --- | --- | --- |
+| previous TODAY-tab replay | 62 | 74% |
+| **full replay, joined** | **211** | **40%** |
+| whole archive | 306 | 31% |
+
+40% against a 31% baseline is mild residual enrichment, and it is a property of
+*coverage* rather than of the replay: research reaches movers, so graded
+symbol-days skew that way. That was measured here days ago and it is the right
+population to work on, not a selection artefact.
+
+**Five draws with an agreement fraction replaces refuse-to-emit**, and Research
+was right to withdraw its own design — its objection was to an *unlabelled*
+mode, and a mode carrying "3 of 5" is not that. It lets the association be run
+weighted and unweighted, which on a thin control group is worth more than a
+clean subset.
+
+**The two-draw projection held.** This note worked the 23% refusal rate back to
+46-61% of stored grades irreproducible. Measured directly on five draws:
+catalyst **45% not unanimous**, cycle 46%, structure 55%. The inference from a
+weak filter to a true rate was sound, and 45% sitting at the bottom of the range
+says the flip distribution is nearer 50/50 than 75/25 — which the shape confirms,
+with 53 versions at exactly 3 of 5.
+
+##### The contrast
+
+Share carrying `STRONG` or `LEGITIMATE_POSITIVE`, over 211 symbol-days:
+
+| Measure | movers (n=84) | non-movers (n=127) | difference |
+| --- | --- | --- | --- |
+| prior-free modal, unweighted | **16.7%** | 13.4% | +3.3pt |
+| prior-free modal, agreement-weighted | 17% | 13% | +4pt |
+| unanimous rows only (n=113) | 20% | 13% | +7pt |
+
+z = 0.66, p = 0.51. **No detectable relationship.** Mean modal agreement on
+these rows is 85%, so misclassification is about 15% and the attenuation factor
+about 0.70.
+
+**This is a bounded negative, not a null, and the distinction is the whole
+point.** Attenuation biases toward zero, so this instrument cannot support "no
+relationship". What it *can* support is a ceiling:
+
+- 95% CI on the observed difference: **-6.6pt to +13.2pt**
+- corrected for 15% misclassification: **-9.5pt to +18.9pt**
+- a true 20-point difference would have shown as 14pt and been detected; 30
+  points would have shown as 21pt
+
+> **The largest true difference consistent with this data is about 19 points.**
+
+Pillar 4 calls a breaking-news catalyst *non-negotiable*. A non-negotiable
+selection criterion implies a difference far larger than 19 points — most movers
+carrying one and most non-movers not. **That relationship is excluded at this
+population and window.** A weak relationship is not excluded, and nothing here
+says catalysts are irrelevant.
+
+The absolute figure carries more than the contrast does, because it needs no
+comparison group: **83% of 50%+ movers carried no legitimate-positive-or-stronger
+catalyst**, on a prior-free, as-of-correct, five-draw modal measurement. That is
+a direct reading of the trader's original observation and it is consistent with
+it.
+
+**The share-count confound does not reach this.** It bites on stored-versus-replay
+deltas, and nothing above compares to stored — the variable is the replay grade
+and the outcome is the tape.
+
+##### What still stops Q1 closing
+
+- **The population is the desk's board**, the top 25 by RVOL out of ~900
+  price-eligible names. A name that ran 50%+ and never reached the board is
+  invisible. That is tier A and it does not exist.
+- **Five trading days**, 2026-08-17 to 08-21.
+- **Graded symbol-days only** — 211 of 306. The 95 excluded are mostly `NO_LOOK`,
+  which skews non-mover, so the control group is thinner than the board is.
+- **Q1's second half is untouched.** "Why are catalyst-driven names passed
+  over?" needs the cross-section the first bullet describes.
+
+So the first half of Q1 has a measured answer with a stated bound, and the
+second half is unanswerable on this instrument. That is a partial verdict, not a
+closure.
+
+##### By-product, handed on rather than used
+
+Cycle instability includes **28 versions that flip between two directions, 17 of
+them `RED_BACKSIDE` against `YELLOW_FRONTSIDE_WARNING`** — frontside versus
+backside on identical evidence. Nothing in `lib/archive/` reads `cycle`, so this
+archive is unaffected, but that field is trader-facing and the distinction is not
+cosmetic. It reverses a small-sample null Research gave Integration earlier, the
+second such reversal tonight.
+
 #### Join arithmetic, which the retraction does not change
 
 *From Integration, and corroborated here.* A replay emits one grade per
