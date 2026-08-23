@@ -630,6 +630,66 @@ adjacent correctness bug — `hasUsableSource` believed every legacy row because
 `undefined !== null` — which had frozen all four "resolved" issuers on single
 article pages that can never list a new release.
 
+**12. The replay harness fabricated a result, and only a cost counter caught
+it.** *2026-08-23. Recorded because the near-miss is more instructive than the
+fix.*
+
+`research-replay`'s first run reported **"123 version(s): 123 stable, 0 unstable,
+43 differ from the stored grade"** and made no model calls at all. Clean,
+internally consistent, and entirely invented. Its only tell was `tokens in=0
+out=0` on the last line — a counter added for cost reasons, not correctness.
+
+Two omissions compounded. A standalone worker does not get `.env.local`; that is
+what `worker/env.ts` exists for and every other worker entry point imports it
+first. Without `OPENAI_API_KEY` the interpreter fell back to `Noop`. Then
+`interpretTicker` did the right thing for the wrong caller: with no interpreter
+it returns the previously accepted dossier, because a desk is better served by
+yesterday's verified analysis than by nothing. For a replay that is poison —
+every version came back carrying `readCurrentAnalysis`'s dossier, the ticker's
+**latest** analysis rather than the version being replayed, so multi-version
+tickers compared their newest grade against each older one and manufactured 43
+plausible changes from nothing.
+
+Guarded in `ba7bc02`: load the env, **throw** rather than build a `Noop`, and
+throw per version on `UNAVAILABLE` or `REUSED_UNCHANGED`. A replay that cannot
+call a model has no answer and must say so.
+
+**The general rule, which is why this is an item and not a commit note: a
+degradation that is correct for the live desk can be a fabrication for an
+analysis tool.** Every graceful fallback in `lib/research/` is worth re-reading
+with that distinction in mind. Check the token line on any replay output before
+believing it.
+
+**13. Two numbers were wrong in ways their own plausibility hid.** *Both
+corrected the same day; kept as a pair because the failure mode is identical.*
+
+*The independence result.* I reported **"the prior moves the catalyst grade, 2 of
+6 against a control variance of 0 of 6"** and it was retracted within the hour.
+The 0-of-6 came from two control runs that happened to agree. With four runs per
+arm, **0 of 6** tickers are stable-in-both-arms-but-different — and the two names
+I had reported as moved are exactly the two that vary within the control set
+anyway. Noise measured against too small an estimate of noise.
+
+R&D's framing is the part worth keeping: contamination is a **bias**, which has
+a direction and can be subtracted; what is actually there is **noise**, and
+measurement error in an independent variable attenuates any association toward
+zero — which is Q1's own hypothesis. A noisy catalyst measure produces a null
+that looks like a finding.
+
+*The unit error.* I reported "2 of 6" and "3 of 6" without saying what they
+counted — the fraction of **tickers** returning more than one value across
+**four** draws. R&D subtracted them from a **pairwise** churn rate. Computed
+pairwise over all 36 pairs: catalyst **17%**, structure **25%**, cycle **17%**.
+Structure against 52% churn is therefore ~27% real change, not the ~4% that
+produced "structure transitions carry essentially no information" — a claim
+struck rather than softened.
+
+**Both errors survived because they looked right.** The 50%-versus-52% identity
+made the structure conclusion feel robust; it was the coincidence that should
+have prompted the check. **Label which measurement a number is in the same
+sentence as the number**, and treat two independently derived figures landing
+close as a prompt to verify they are the same quantity.
+
 ## Working rules
 
 - **Facts come from deterministic parsing; the model only interprets.** Never
