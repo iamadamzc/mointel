@@ -465,6 +465,56 @@ is not a desk that works.
 Also: this is the deploy where keep-3 would drop `fd9556f`. The
 `market-worker-release` pin holds it, which is what it was placed for.
 
+**9. A review session can display the desk and cannot exercise it.** *Found by
+Design 2026-08-23; the transport is this thread's. Unresolved — the trader was
+asked and had not answered. No auth boundary has been moved.*
+
+Every `/_next/static/*` request returns **401** in a review session. Confirmed
+against production rather than relayed: a chunk pulled from the authenticated
+HTML returns **200 with Basic Auth and 401 without**. `location /review/` sets
+`auth_basic off`, but Next.js serves assets from `/_next/static/*`, which falls
+under `location /` and inherits the server-level `auth_basic` at
+`nginx-locations.conf:14-15`. `/review/`, `/mcp/` and `/.well-known/` turn auth
+off; `/api/` and `/` do not.
+
+The consequence is larger than one blocked verification. No JavaScript means the
+page never hydrates, so **no click does anything** — Design clicked Float and got
+nothing, then clicked Top 25, which shipped in Phase 1 and is unrelated to that
+deploy, and got nothing either. No CSS means it renders unstyled. A review link
+is a way to *read* the desk, not to operate it, and
+[../AWS_DEPLOYMENT.md](../AWS_DEPLOYMENT.md) presented it as the answer for
+automated browsing. That claim is now corrected in place; the defect is not.
+
+**What the security question turns on, checked rather than assumed.** The
+compiled client bundle carries **no secrets**: the project defines **zero**
+`NEXT_PUBLIC_` variables, so Next has inlined no environment value into it, and a
+scan of all 9 chunks (716K) found nothing matching credential, private-key,
+service-account, Alpaca, OpenAI, CloudFront or instance-IP patterns. What it does
+carry is compiled UI logic and labels.
+
+**One thing that bounds the exposure and had not been said:** chunk filenames are
+**content-hashed**, so they are only discoverable from HTML that is itself behind
+Basic Auth or behind a review token. Opening `/_next/static/` would not hand the
+bundle to a scanner that knows only the hostname — it needs a filename first. The
+real delta is that someone who once held a review link keeps the ability to fetch
+those specific URLs after the token expires, until the next deploy rotates the
+hashes.
+
+The three shapes, with the recommendation:
+
+1. **`location ^~ /_next/static/ { auth_basic off; }`** — one block, and the
+   recommendation. `/api/`, `/`, and every other `/_next/` path keep Basic Auth,
+   so no data path opens. Ships with any deploy.
+2. **Rewrite assets under `/review/`** via `proxy.ts` HTML rewriting, so the
+   token remains the only credential and nothing new is served unauthenticated.
+   Principled, preserves the design note exactly, and is real work in the
+   transport layer.
+3. **Change nothing and keep the doc correction.** Zero risk; does not meet the
+   stated requirement that Design can reach the site.
+
+Option 1 is a change to the auth model and therefore **not this thread's to make
+unilaterally**, which is why it is recorded here rather than applied.
+
 ## Monday 2026-08-24 — the plan, and the one judgement call in it
 
 **Monday now reduces to one item that truly needs the open, plus the feed you

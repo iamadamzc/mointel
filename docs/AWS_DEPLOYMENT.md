@@ -182,6 +182,25 @@ to anybody else: an HTTP auth challenge cannot be completed by an automated
 browsing tool, and handing out the permanent password to solve a temporary
 problem trades a day's convenience for an indefinite exposure.
 
+> **A review session can display the desk and cannot exercise it.** Found
+> 2026-08-23 by Design, trying to click a column header, and confirmed against
+> production. Every `/_next/static/*` request returns **401** in a review
+> session: `location /review/` sets `auth_basic off`, but Next.js serves its
+> assets from `/_next/static/*`, which falls under `location /` and inherits the
+> server-level `auth_basic` in `nginx-locations.conf:14-15`. The HTML arrives and
+> nothing else does — no JavaScript, so the page never hydrates and no click does
+> anything; no CSS, so it renders unstyled.
+>
+> This section is otherwise accurate, and the reasoning above is still why review
+> sessions exist. But the promise immediately below — that this is the way to
+> show the desk to an automated browsing tool — **is not currently met**, and it
+> is the kind of defect only clicking something reveals. Nothing that reads
+> server-rendered HTML would notice.
+>
+> The fix is a transport decision recorded in [threads/ops.md](threads/ops.md)
+> Open item 9, unresolved at the time of writing. Until it lands, treat a review
+> link as a way to *read* the desk, not to operate it.
+
 So there is a second way in, and only one:
 
 ```
