@@ -212,6 +212,42 @@ Research killed it against the eyeball impression rather than with it.
 resolve and the 27/10/19 split never arises. That arithmetic stands as a record
 of what a per-ticker output would have cost, not as a live constraint.
 
+**THE PER-VERSION ARTIFACT LANDED, AND Q1's BLOCKER MOVED.**
+`data/replay-perversion.json`, 123 versions, joining on `storedVersionId` →
+`analysis_version_id`. Tokens 2.62M in / 731k out, checked. Verified rather than
+taken: 95 stable, 28 refused, refusals correctly null.
+
+*The 24 stable-but-differing rows are not a prior effect* — Research caught this
+itself. `55f3e20` added the share count to the evidence bundle after the stored
+analyses ran, so `sharesOutstanding` is populated on 38% of stored analyses
+against 88% of replay ones. **Register consequence: every catalyst grade in this
+archive was produced by a pipeline blind to the share count in 62% of cases**,
+and any comparison against pre-2026-08-23 grades carries that.
+
+*The 23% refusal rate is a floor.* Refusal fires only when two draws disagree,
+so it misses every unstable version whose draws agreed by luck. That implies
+**46-61% of stored grades are irreproducible**, and **29-49% of the 95 that
+passed are unstable ones that got lucky**. A third draw takes 95 to ~81 and cuts
+the hiding fraction to 17-40%.
+
+*The join runs and the population cannot answer Q1.* 62 symbol-days over 43
+symbols join to a stable grade — and **74% of them ran 50%+, against 31% in the
+archive**. Predictable in hindsight: the 56 tickers were selected on TODAY-tab
+membership, and this thread established that TODAY membership correlates with
+running. The control group is 16 names. Run anyway, the contrast gives 28% of
+movers with a real catalyst against 31% of non-movers — nothing, on sixteen
+controls, from a 29-49% coin-flip variable. **That null is not a finding and is
+not recorded as one.**
+
+**So the blocker is population, not noise, and more draws cannot fix it.** The
+archive has 185 distinct versions backing its grades; the replay covered 61, and
+124 remain. At ~27k tokens per version for two draws that is **~3.4M tokens**,
+about 1.3x what has been spent. It is the better buy than a third draw, because
+**noise can hide a signal but cannot manufacture one** — on a representative
+population a relationship surviving 29-49% misclassification is real and
+understated, while on an unrepresentative one no result is reachable however
+clean the measurement.
+
 **Confirmed by Research: the in-flight run is single-draw** — one interpretation
 per ticker, so it produces exactly the single draws from an irreproducible
 distribution that make a bad variable. It arrives labelled. **Use it for

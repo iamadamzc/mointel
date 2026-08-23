@@ -627,6 +627,98 @@ Early sign, explicitly not a result: HUIZ v224 came back
 `UNKNOWN | LEGITIMATE_POSITIVE` and was refused; XOS v41 likewise. The refusal
 semantics are firing on real cases rather than sitting unused.
 
+#### The per-version artifact landed, and the blocker moved from noise to population
+
+`data/replay-perversion.json`, 123 versions, joining on `storedVersionId` →
+`analysis_version_id`. Tokens 2,621,848 in / 730,977 out — checked, per the
+convention agreed after the fabricated-result incident. Verified here rather
+than taken: 95 stable (77%), 28 refused (23%), 24 stable-but-differing, and
+every refused row correctly carries a null grade.
+
+**The 24 differing are not a prior effect**, and Research caught this itself
+before reporting it. `55f3e20` put the parsed share count into the evidence
+bundle; stored analyses ran before it and the replay after. `sharesOutstanding`
+is populated on **38%** of stored analyses against **88%** of replay ones. A
+stored-versus-replay difference therefore mixes the prior, single-draw noise on
+the stored side, as-of imperfection, and a genuine code change — a comparison
+against a baseline produced by different software.
+
+That generalises past this run and belongs in the register: **every catalyst
+grade in this archive was produced by a pipeline that could not see a share
+count in 62% of cases.** Any comparison against grades stored before 2026-08-23
+carries it.
+
+**The 23% refusal rate is a floor, not an estimate**, and this is the archive's
+contribution to reading it. Refusal fires when two draws disagree, so it misses
+every unstable version whose two draws happened to agree:
+
+| true flip split | P(2 draws disagree) | implied unstable share | unstable hiding in the 95 |
+| --- | --- | --- | --- |
+| 50/50 | 50% | 46% | 28 of 95 (**29%**) |
+| 60/40 | 48% | 47% | 30 of 95 (32%) |
+| 75/25 | 38% | 61% | 47 of 95 (**49%**) |
+
+So roughly **half of all stored catalyst grades are irreproducible**, and between
+a third and a half of the 95 that passed are unstable versions that agreed by
+luck. The 95 are not a clean set; they are a set that passed a weak filter. A
+third draw would take 95 down to about 81 and cut the hiding fraction to 17-40%
+— an improvement, and a smaller one than it sounds.
+
+#### The join runs. The population it lands on cannot answer Q1.
+
+62 symbol-days over 43 distinct symbols join to a stable prior-free grade. And
+then the reason none of it helps:
+
+| Population | symbol-days | ran 50%+ |
+| --- | --- | --- |
+| joined replay set | 62 | 46 (**74%**) |
+| all graded symbol-days | 211 | 84 (40%) |
+| full archive | 306 | 95 (31%) |
+
+**The replay population is 74% movers against 31% in the archive.** That is not
+a coincidence and it was predictable: the 56 tickers were selected on TODAY-tab
+membership, and this note established days ago that TODAY membership correlates
+with running — 82% of movers sit in the Sheet's price band against 63% of the
+board. Selecting on it selects for movers.
+
+The consequence is that **the control group barely exists**: 16 non-movers
+against 46 movers. Running the contrast anyway gives 28% of movers carrying a
+real catalyst against 31% of non-movers — a difference of nothing, on a
+comparison cell of sixteen, from a variable that is 29-49% coin-flip.
+
+**That null is not reported as a finding and will not be.** It is exactly the
+artefact this note has been guarding against since the noise problem surfaced:
+attenuation plus an absent control group produces "no relationship" whatever the
+truth.
+
+**So the blocker has moved.** It is no longer measurement noise — it is that the
+prior-free grades exist only for a population selected on the outcome. No number
+of additional draws fixes that, because more draws on a 74%-mover sample still
+leave a 74%-mover sample.
+
+#### What would fix it, with the arithmetic
+
+The archive has **185 distinct analysis versions** backing its catalyst grades.
+The replay covered **61** of them; 124 remain. (A further 62 replay rows do not
+back any board-day grade here at all, which is why 123 replayed versions yield
+only 61 usable ones.)
+
+At the observed **~27k tokens per version for two draws**, covering the
+remaining 124 is **~3.4M tokens** — about 1.3x what has already been spent.
+
+That is the run that makes Q1 answerable, and it is a better buy than a third
+draw on the existing set, for one reason:
+
+> **Noise can hide a signal. It cannot manufacture one.** On a representative
+> population, a relationship that survives 29-49% misclassification is real and
+> stronger than it appears — attenuation only ever biases toward zero. On an
+> unrepresentative one, no result is reachable in either direction, however
+> clean the measurement.
+
+A third draw buys precision on a sample that cannot answer the question. The
+remaining 124 versions buy a sample that can, at a measurement quality already
+known and quantified.
+
 #### Join arithmetic, which the retraction does not change
 
 *From Integration, and corroborated here.* A replay emits one grade per
