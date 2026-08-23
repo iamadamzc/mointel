@@ -145,6 +145,56 @@ is also how re-run-until-green becomes the habit. If Monday's open produces an
 incident that needs a deploy, this test is between the desk and the fix, and the
 person deciding will be doing it under pressure.
 
+**FIXED 2026-08-23, before Monday's open. It was SIGPIPE, and it was in the
+test's own `ssh` stub — not in `push-release.sh`.**
+
+The thing that cracked it was capturing the *status* rather than the assertion
+text. The failing run reported `expected 141 to be +0`. **141 is 128 + 13 —
+SIGPIPE**, which is a mechanism, not a mystery.
+
+`push-release.sh:79` ships the tree with
+`git archive --format=tar "$SHA" | ssh … "sudo tar -x …"`. The stub `ssh` matched
+that remote command with the catch-all `*) exit 0 ;;` and **never read stdin**.
+Normally `printf 'TARBYTES'` — eight bytes — lands in the pipe buffer before the
+stub exits and `git` finishes happily. Under full-suite parallel load the stub
+sometimes wins the race: the read end is gone before the write, `git archive`
+takes SIGPIPE, `set -o pipefail` propagates 141, and `set -e` kills the script.
+That pipeline is the one with no `||` guard, so nothing catches it.
+
+**This explains both failure shapes and retires the "two assertions" puzzle.**
+They are one bug. The first test asserts `status` before anything else, so it
+reports `141`. The second test asserted no status at all, so the dead script
+merely never printed `is live on` and the *output* assertion failed instead.
+Same cause, different symptom, depending only on which assertion each test
+happened to reach first.
+
+The stub's `bash -s` branch already drained stdin, with a comment saying
+*"consume it so the pipe closes"*. The author knew about exactly this hazard and
+covered one of the two pipelines.
+
+**The fix is one line in the fixture — no assertion was loosened.** The
+catch-all now drains stdin, which is what real `ssh` does; the stub was the
+unfaithful part. `push-release.sh` needs no change and got none: real `ssh`
+reads stdin, and if it ever died mid-transfer, aborting the deploy on 141 is the
+behaviour you want.
+
+One assertion was **tightened**: the second test now checks `status` before
+`output`, so if this pipeline ever dies again the suite says `141` instead of
+`expected output to contain "is live on"`.
+
+Evidence, because 12 clean runs after a ~1-in-6 failure rate is only about 11%
+unlikely by chance and proves little on its own:
+
+- Before: reproduced in **1 of 6** full-suite runs, plus the gate failure, plus
+  the morning sighting, plus Research's.
+- After: **12 of 12** full-suite runs clean.
+- Deterministic proof, which is the part that actually settles it — forcing the
+  race with a `sleep 0.3` before `printf` in the `git archive` stub: the old
+  non-draining stub exits **141 every time**; the fixed stub exits **0, five for
+  five**, under the identical forced race.
+
+Gate green at the fix: 1173 tests, lint, typecheck, build.
+
 **5. The deploy gate cannot see the layer the `rm -rf` was in.** *Opened by
 Integration 2026-08-23, from the export defect. Ops owns the gate, so it lands
 here rather than with the file's author.*
@@ -166,6 +216,49 @@ it sat in the one place the gate does not look, and the next one will too.
 
 Not a proposal to test all seventeen. The narrow question is whether any CLI that
 resolves a production path and can delete should be reachable by the gate at all.
+
+## Monday 2026-08-24 — the plan, and the one judgement call in it
+
+Three open items all want the same window and can be done in one sitting at the
+04:00 ET premarket open. In this order, because the first is time-critical and
+the others are not:
+
+1. **Watch the market worker take its first bars.** It has connected,
+   authenticated and subscribed since the 01:27:36 UTC restart, but has never
+   seen data flow. `messageAgeSeconds` moving off `null` is the proof. This is
+   the only item that must happen at the open.
+2. **Sample the WAL for two minutes under real write load** (item 2). Flat size
+   with an advancing mtime means checkpoints keep up and 507 MB is just a
+   high-water mark; growth means checkpoint starvation. Saturday's sample was
+   taken on a closed market and could not distinguish them.
+3. **Read the calendar cache age** (item 3) — `meta.calendar_fetched_at` and
+   whether the cached span still covers the date.
+
+**The judgement call: when to end the market worker's release drift.**
+
+Once bars flow, the proof the drift was protecting is spent, and a restart onto
+`current` would end it outright rather than leaving a pin that has to be
+remembered. Integration flagged the option without recommending timing. The call:
+
+**Restart it Monday, but not in the premarket window — after the close, or in
+the 22:00–04:00 `NEXT_DAY_PREP` window.**
+
+Why not at the open: 07:00–10:00 ET is where this desk's profit is, and a
+restart drops the stream and replays a startup backfill — 13,115 equities and
+8,653 snapshots. That took three seconds on a closed Saturday and premarket is
+not a closed Saturday. Spending any part of the best hours to tidy bookkeeping
+is a bad trade, and the drift is harmless while it exists: its only hazard is at
+prune time, and the pin already removes that.
+
+Why not leave it indefinitely either: the pin is a promise somebody has to
+remember, and item 1's whole lesson is that unreported state is the problem. A
+worker on `current` needs no promise.
+
+**Ordering rule while both are true: do not unpin `fd9556f` until the worker is
+actually on `current`.** The next deploy is where keep-3 would drop it, so if
+Monday brings an incident deploy before the restart, the pin is the only thing
+holding the running worker's directory — and unpinning first would recreate this
+morning's incident exactly, with the luck removed.
 
 ## Closed
 

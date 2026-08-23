@@ -52,6 +52,13 @@ case "\$remote" in
     exit ${options.preflightExit}
     ;;
   *)
+    # Real ssh reads stdin, and one of these calls is the receiving end of
+    # \`git archive | ssh ... tar -x\`. A stub that exits without draining wins
+    # the race under load: the pipe closes before git writes, git takes
+    # SIGPIPE, and \`set -o pipefail\` hands push-release.sh a 141 that \`set -e\`
+    # turns into a dead script — with no \`||\` on that pipeline to catch it.
+    # That was the flake, and it was in the stub, not in the script.
+    cat > /dev/null 2>&1 || true
     exit 0
     ;;
 esac
@@ -131,6 +138,9 @@ describe('release bootstrap', () => {
 
     const result = run();
 
+    // Asserted before the output: when the transfer pipeline dies, this is a
+    // signal number and saying so beats "expected output to contain ...".
+    expect(result.status).toBe(0);
     expect(result.output).toContain('is live on');
     expect(transcript()).toContain('GIT archive');
   });
