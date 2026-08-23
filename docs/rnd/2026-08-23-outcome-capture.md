@@ -530,26 +530,24 @@ which is the right way to ship it.
 
 #### What this archive can add: how much grade churn is information
 
-The production record puts bounds on it. Across 1248 consecutive checkpoint
-pairs, catalyst moved **29 times in 56 re-analyses — 52%** — and never once in
-1192 same-version pairs.
+Across 1248 consecutive checkpoint pairs, catalyst moved **29 times in 56
+re-analyses — 52%** — and never once in 1192 same-version pairs.
 
-Set that against a re-run instability of 2 of 6 on identical evidence. Treating
-noise and real change as independent, a 33% floor under a 52% observed rate
-leaves a real-change rate around 28%. **Noise and signal are comparable and
-neither dominates** — the churn is roughly half the interpreter disagreeing with
-itself and half the evidence having moved.
+Against the churn-comparable noise floor of 17%, the implied real-change rate is
+35% by subtraction or 42% under independent composition. **Real change is the
+larger component**, though not overwhelmingly, and the same holds for structure
+at a 25% floor.
 
-An earlier version of this section said most of it was noise, and an earlier
-section still said most of it was signal. Both overclaimed; the honest answer is
-that they are the same order and this data cannot separate them further.
+An earlier version of this section put the floor at 33% and concluded the
+opposite. That figure counted *tickers unstable across four draws* rather than
+*pairs of draws that disagree*, which is not comparable to a churn rate between
+two observations. Corrected above.
 
-The arithmetic is illustrative rather than an estimate. The floor comes from six
-names — a 2-of-6 rate carries a 95% interval from roughly 4% to 78% — the
-independence assumption is an assumption, and the production comparison cannot
-hold evidence constant, which is the whole reason the indirect route is needed.
-What survives all of that is the ordering: the noise floor is large enough that
-grade transitions cannot be read as events without saying so.
+The arithmetic remains illustrative: six names, an assumption of independence,
+and a production comparison that cannot hold evidence constant. What survives is
+that the floor is high enough that grade transitions cannot be read as events
+without saying so — smaller than this note claimed at one point, larger than it
+claimed at another.
 
 #### Join arithmetic, which the retraction does not change
 
@@ -620,49 +618,70 @@ verification that licenses saying so, since structure never moves while the
 version holds. If structure is ever added here, the ageing mechanism built for
 the catalyst grade covers it with no new capture. Nothing to build today.
 
-**Should these rates be re-measured at this archive's sample sizes?** No, and
-the reasoning below replaces an earlier argument of mine that rested on a
-premise Research has since withdrawn.
+**Should these rates be re-measured at this archive's sample sizes?** No — and
+this section has now been wrong twice, in three different ways, so the working
+is shown rather than the answer.
 
-*What I argued, and why it is dead.* I said the 52% could not be a noise
-estimate because catalyst moved on the identical 29 re-analyses while being
-"known stable at 0 of 6" on fixed evidence. That 0 of 6 came from two control
-runs. At four runs per arm the revised figures — all from the same data and
-therefore comparable — are **cycle 2 of 6, catalyst 2 of 6, structure 3 of 6**.
-Nothing is known stable. The supporting step is gone.
+*First error, mine.* I argued the 52% could not be a noise estimate because
+catalyst was "known stable at 0 of 6" on fixed evidence. That came from two
+control runs and was withdrawn.
 
-*What the numbers actually support.* Take the observed 52% against each field's
-own noise floor, treating noise and real change as independent:
+*Second error, mine.* Having retracted that, I wrote in a different section that
+most of the 52% was therefore noise — leaving both claims live in the same
+document thirty lines apart.
 
-| Field | noise floor | observed churn on re-analysis | implied real-change rate |
-| --- | --- | --- | --- |
-| catalyst | 2 of 6 (33%) | 52% | ~28% |
-| structure | 3 of 6 (50%) | 52% | **~4%** |
+*Third error, and the one that produced the strongest claim of the day.* I read
+Research's "2 of 6" and "3 of 6" as churn rates. **They are not.** They are the
+share of *tickers* returning more than one distinct value across *four* draws. A
+ticker splitting 3-1 counts as fully unstable in that unit while disagreeing on
+only half its pairs. The churn-comparable figure is pairwise — every pair of
+draws, 36 per field:
 
-For catalyst the two are comparable and **neither dominates** — which means both
-of my previous statements were wrong, in opposite directions. For structure the
-noise floor essentially *is* the observed churn: there is no room left for
-signal, and that conclusion is robust to the exact numbers because 50% and 52%
-are the same to any precision this data supports.
+| Field | any-instability across 4 draws | **pairwise floor** |
+| --- | --- | --- |
+| catalystGrade | 2 of 6 (33%) | **6 of 36 (17%)** |
+| structureClassification | 3 of 6 (50%) | **9 of 36 (25%)** |
+| cycleClassification | 2 of 6 (33%) | **6 of 36 (17%)** |
 
-The arithmetic is illustrative and not an estimate. The floors come from six
-names — a 2-of-6 rate has a 95% interval running from roughly 4% to 78% — the
-independence assumption is an assumption, and the production comparison cannot
-hold evidence constant, which is the whole reason this indirect route is needed
-at all.
+Only the right-hand column is subtractable from a churn rate measured between
+two observations, which is what the 52% is.
 
-*What still stands, untouched.* The zero row: **0 moves across 1192 same-version
-pairs**, on every field. That is a structural fact about the archive rather than
-an inference from anyone's control runs, and it was never resting on the
-withdrawn premise. It establishes that nothing is spuriously rewritten within a
-version — which is the archive's integrity claim — and it is what licenses
-saying `analysis_version_id` already covers structure. It does not, and never
-did, say anything about whether cross-version changes are signal or noise.
+**Struck: "structure transitions carry essentially no information."** It rested
+on a 50% floor sitting flush against 52% observed. The comparable floor is 25%,
+half that, and the claim does not survive the correction. It is removed rather
+than softened, because it was built on a unit error and there is nothing left of
+it.
 
-**So 52% is still not a competing estimate, but for a different reason than I
-gave.** It is a mixture that observational data cannot separate, not a
-demonstration that it is mostly signal. Separating them needs evidence held
-constant, which is Research's replay instrument.
+Redone against the pairwise floors, showing both compositions since neither is
+obviously right:
+
+| Field | observed churn | pairwise floor | subtraction | independent composition |
+| --- | --- | --- | --- | --- |
+| catalyst | 52% | 17% | 35% | 42% |
+| structure | 52% | 25% | 27% | 36% |
+
+So **both fields carry substantial real signal** on re-analysis, and structure is
+not the empty one. That is the opposite of what this section said an hour ago.
+
+*The lesson worth keeping, which is Research's and not mine.* I treated 50%
+against 52% as making the conclusion **robust**. Two independently derived
+numbers landing that close is the moment to check whether they are the same
+quantity, not the moment to declare a result. The coincidence was the evidence
+of the error, and I read it as corroboration.
+
+*What is still soft in both directions.* Six names. Subtraction is not the right
+composition and independence is an assumption. The production comparison cannot
+hold evidence constant, which is why the indirect route exists at all. These are
+order-of-magnitude figures, and the direction of the correction is firmer than
+any magnitude in it.
+
+*What stands untouched, and it is the only thing here that does.* The zero row:
+**0 moves across 1192 same-version pairs**, every field. A structural fact about
+the archive rather than an inference from anyone's controls. It establishes that
+nothing is spuriously rewritten within a version, and it licenses saying
+`analysis_version_id` already covers structure. It says nothing about whether
+cross-version changes are signal or noise — that was the overreach in the first
+place.
 
 One thing the extract does add, unprompted and relevant to whether the field is
 worth stabilising: `structure` takes **three values** across 1459 non-null rows —

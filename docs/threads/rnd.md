@@ -171,8 +171,31 @@ irreproducibility as the stored grade it replaces. Research reached this
 independently and is flagging the cost of doing it properly — repeats per
 version and a modal grade, roughly 3x — rather than shipping single-run numbers
 that would read as authoritative. The executing run will arrive labelled
-one-shot with per-ticker instability marked. **The decision on the 3x is the
-trader's and the premise has changed since he authorised the original.**
+one-shot with per-ticker instability marked. **The decision is the trader's and
+the premise has changed since he authorised the original.**
+
+**Confirmed by Research: the in-flight run is single-draw** — one interpretation
+per ticker, so it produces exactly the single draws from an irreproducible
+distribution that make a bad variable. It arrives labelled. **Use it for
+instability marks only; never as Q1's independent variable.**
+
+**The upgrade is not a modal grade, and that is the better design.**
+`research-replay` takes repeated draws and *refuses to emit a grade when they
+disagree* — `priorFreeCatalystGrade` comes back null rather than a mode, because
+the mode of three draws on a two-way flip is a coin toss wearing a
+measurement's clothes. An explicit gap is worth more than a number that cannot
+be told apart from a solid one, and this archive already has the vocabulary for
+gaps: it becomes a coverage class alongside `NO_LOOK` and `UNKNOWN_HONEST`,
+meaning *looked twice, disagreed*.
+
+**One caution on what two runs buy, which is less than "separates trustworthy
+from untrustworthy".** Agreement between two draws does not establish stability.
+A ticker whose true split is 75/25 returns two matching draws 62% of the time; at
+60/40 it is 52%, and at 90/10 it is 82%. So a two-run filter removes the worst
+offenders and passes the majority of moderately unstable ones into the
+"trustworthy" set. Three runs cut that to 44%, 28% and 73% respectively. Two
+runs are a real improvement on one and not a clean separation — worth knowing
+before the spend is judged against what it delivers.
 
 **What this archive adds.** Catalyst moved in 29 of 56 re-analyses (52%) and
 never in 1192 same-version pairs. Against a 33% noise floor, and treating noise
@@ -208,17 +231,24 @@ changed" means "the name was re-analysed", and an unknown fraction of those are
 re-generation. **The ageing mechanism already covers it**: `analysis_version_id`
 is per row and backs the whole dossier, and that zero row is what licenses
 saying so, so nothing new needs capturing if structure is ever archived. And
-**this archive cannot re-measure those rates.** An earlier version of this
-argued the 52% was dominated by real evidence change because catalyst was
-"known stable at 0 of 6"; that came from two control runs and is withdrawn. The
-four-run figures are **cycle 2 of 6, catalyst 2 of 6, structure 3 of 6** —
-nothing is known stable. Against those floors the observed 52% implies a real-
-change rate near 28% for catalyst, where neither noise nor signal dominates, and
-near 4% for structure, where the noise floor essentially *is* the observed churn
-and no room is left for signal. That last one is robust to the exact numbers,
-since 50% and 52% are the same to any precision six names support. 52% remains
-not a competing estimate — but because it is an inseparable mixture, not because
-it is mostly signal. **The zero row is what stands untouched**: it is a
+**this archive cannot re-measure those rates.** This paragraph has been wrong
+twice; the findings note carries the full working. Briefly: an earlier version
+leaned on catalyst being "known stable at 0 of 6", which was withdrawn; a later
+one read Research's `2 of 6` and `3 of 6` as churn rates, which they are not —
+they count *tickers unstable across four draws*, not *pairs of draws that
+disagree*. The churn-comparable pairwise floors are **catalyst 17%, structure
+25%, cycle 17%**.
+
+**Struck, not softened: "structure transitions carry essentially no
+information."** It rested on a 50% floor sitting flush against 52% observed; the
+comparable floor is half that and nothing of the claim survives. Against the
+right floors the observed 52% implies real change of 35-42% for catalyst and
+27-36% for structure, so **both fields carry substantial real signal** — the
+opposite of what this said.
+
+The lesson is Research's: two independently derived numbers landing as close as
+50% and 52% is the moment to check whether they are the same quantity, not the
+moment to call a result robust. **The zero row is what stands untouched** — a
 structural fact about the archive, not an inference from anyone's controls.
 
 Worth having in front of whoever decides the field's future: `structure` takes
