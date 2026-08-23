@@ -465,9 +465,41 @@ is not a desk that works.
 Also: this is the deploy where keep-3 would drop `fd9556f`. The
 `market-worker-release` pin holds it, which is what it was placed for.
 
-**9. A review session can display the desk and cannot exercise it.** *Found by
-Design 2026-08-23; the transport is this thread's. Unresolved — the trader was
-asked and had not answered. No auth boundary has been moved.*
+**9. ~~A review session can display the desk and cannot exercise it.~~ FIXED and
+live 2026-08-23**, on the trader's word ("open static"). `c36b840`.
+
+`location ^~ /_next/static/ { auth_basic off; }` — the smallest of the three
+shapes below. **Applied by config reload, not a release deploy**, which is the
+part worth reusing: `deploy.sh` installs the nginx file from the release, but
+the same file can be installed and reloaded on its own — graceful, seconds, zero
+service restarts, nothing near the market worker. Production stayed on
+`f383ddd` throughout. Syntax was validated against a scratch config on the
+server (`nginx -t -c`) before the live one was touched, and the apply carried an
+automatic restore if `nginx -t` failed.
+
+Verified end to end rather than by assertion: a real review session was created,
+the asset URLs were pulled out of **that page's own HTML**, and fetched with no
+credentials at all — all 200. Previously 401, which is why nothing responded to
+a click.
+
+Blast radius, tested unauthenticated: `/_next/static/*.js` and `*.css` **200**;
+`/` **401**, `/api/dashboard` **401**, `/api/market` **401**, `/_next/image`
+**401**, `/_next/data` **401**. Only content-hashed build assets opened. Every
+byte of desk state stays behind Basic Auth.
+
+**This answers the batching question by dissolving it.** Two mechanisms, not two
+windows: a transport change reloads, a code change deploys, and neither has to
+wait for the other. Design's Move commit gets its own deploy on its own merits.
+
+**The size of what this was hiding.** It was never one control on one feature.
+**No interactive element has been exercisable through a review link since
+Phase 1** — Design clicked Top 25, which shipped then and is unrelated to any
+recent deploy, and got nothing. It went unnoticed because review sessions were
+used to *read* the desk and nobody had clicked. That is the real lesson and it
+belongs with item 5's: a path nothing exercises is a path nothing checks.
+
+*The original assessment is kept below, because the reasoning is what a future
+auth decision needs.*
 
 Every `/_next/static/*` request returns **401** in a review session. Confirmed
 against production rather than relayed: a chunk pulled from the authenticated

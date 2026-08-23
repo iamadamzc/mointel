@@ -197,9 +197,18 @@ problem trades a day's convenience for an indefinite exposure.
 > is the kind of defect only clicking something reveals. Nothing that reads
 > server-rendered HTML would notice.
 >
-> The fix is a transport decision recorded in [threads/ops.md](threads/ops.md)
-> Open item 9, unresolved at the time of writing. Until it lands, treat a review
-> link as a way to *read* the desk, not to operate it.
+> **Fixed the same day, in `c36b840`:** `location ^~ /_next/static/ { auth_basic
+> off; }`. Build assets — and only those — are served without Basic Auth;
+> `/`, `/api/`, `/_next/image` and `/_next/data` all still require it, so no
+> desk state opened. The bundle was checked first and carries no secrets: the
+> project defines zero `NEXT_PUBLIC_*` variables and the chunks scan clean of
+> credential and infrastructure patterns. Reasoning and blast radius in
+> [threads/ops.md](threads/ops.md) Open item 9.
+>
+> **Applied by config reload, not a deploy.** `deploy.sh` installs this file
+> from the release, but it can also be installed and reloaded on its own —
+> graceful, no service restarts, and it does not touch the market worker. That
+> is the right mechanism for any transport-only change here.
 
 So there is a second way in, and only one:
 
