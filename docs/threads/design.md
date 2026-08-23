@@ -278,10 +278,32 @@ since, and nobody knew because nobody had clicked it. `AWS_DEPLOYMENT.md:180`
 presents review sessions as the answer for automated browsing; they can display
 the desk but cannot exercise it.
 
-**Still unverified, and waiting on both the asset fix and 04:00 premarket:** the
-unknown count against real null floats, Top N applied after the sort, and the
-`Gap` form of the label. Discovery was `0 eligible · 0 tracked` on a closed
-Sunday, so there were no rows to sort regardless.
+**Second look, after Ops fixed the asset 401 in `c36b840`.** Assets return 200
+with the right MIME type and **the page hydrates** — `Top 12/25/50`, dead in
+every review session since Phase 1, responds. *(A first re-check said it was
+still inert; that was a stale browser cache holding the failed script loads, not
+a failed fix. Corrected here so the false alarm does not outlive it.)*
+
+**Verified interactively, on the live desk:**
+
+| | |
+| --- | --- |
+| Control renders, five keys, correct order | ✅ |
+| `Rank` default, `aria-pressed=true`, ascending | ✅ |
+| Clicking `Float` → pressed flips, `▼` descending default for non-rank keys | ✅ |
+| `sorted by float` override marker appears | ✅ |
+| Clicking `Rank` → returns ascending, marker disappears | ✅ |
+
+**Still unverified, and all four need a populated board:** actual row reordering,
+the unknown count against real null floats, Top N applied after the sort, and
+the `Gap` label — which additionally needs `aa98b70` deployed, since production
+is still `f383ddd`. Discovery reads *"populates from 04:00 ET on 2026-08-24"*, so
+there is nothing to sort until premarket.
+
+**One scheduling trap, Ops's to fix:** the review token issued for this look
+expires **03:56 ET Monday**, four minutes before `PREMARKET_START_MIN` opens the
+session at 04:00. A twelve-hour session issued Sunday afternoon lands there by
+arithmetic. Monday's verification needs a token issued after premarket begins.
 
 **Item 3 — settled: none of the four in Phase 2.** The §6 column set is
 therefore **final at eight** and no row design waits on this. Chop Risk, Flush
