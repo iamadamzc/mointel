@@ -23,8 +23,10 @@ for design documents.
 - §9 items 12–26 (Phase 2 structural, Phase 3 enhancements)
 - Component work in `components/` and `app/`
 - The visual system in §8: colour precedence, type scale, contrast, density
-- Meeting §10's acceptance criteria — measured at **1,022 × 551 CSS px**, the
-  viewport actually used
+- Meeting §10's acceptance criteria — measured at the **1,280 px baseline** and
+  re-checked at the **1,024 px floor**. *(This line read "1,022 × 551 CSS px, the
+  viewport actually used" until 2026-08-23. That viewport was accidental, not
+  chosen, and §11 item 4 retired it — see the breakpoint table below.)*
 
 ## Not this thread
 
@@ -949,6 +951,20 @@ practical size of the inflation is unknown. Needs the live desk.
   **Ops confirms the deploy; Design confirms the behaviour.** A change is not
   finished at the handoff. It is finished when this thread has looked at the real
   board.
+- **The deploy window does not constrain this thread's work.** Reframed by the
+  owner 2026-08-23 (`233c11f`): the desk is *a product being built, not a tool
+  being depended on*, and a board broken during RTH costs him a board, not a
+  trade. **But the constraint that replaced it is stronger, not weaker** — *"a
+  premarket the desk fails to capture is permanently gone"*, because the record
+  grows only in real time. The question before a deploy is **"can this interrupt
+  capture?"**, and for everything in `components/` and `lib/dashboard/` the
+  answer is no. **Do not read this as "market hours are free"** — it is narrower
+  than that and the README says so explicitly. Research's schema deletion after
+  the cycle cutover touches the store and keeps the old care.
+- **Live verification is any trading morning, not one window.** Discovery
+  populates from 04:00 every session, and 10:30 on any weekday gives more names
+  than premarket does, with no token expiring underneath the work. Planning
+  around a single premarket slot was a self-imposed constraint.
 - **A check that cannot fail is not a check.** Before reporting anything
   verified, ask what result would have proved it *broken*. If the answer is
   "none available right now", the observation confirms nothing — say so instead
