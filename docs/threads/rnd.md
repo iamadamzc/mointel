@@ -212,10 +212,21 @@ is where the `rm -rf` lives. The library being proven is what justified this
 route; that argument still holds and is not what failed.
 
 The real (non-`--dry-run`) path does not call `rmSync` on anything and is safe;
-that is the one Ops used. **Ops will not run `--dry-run` against production
-again until this is fixed.**
+that is the one Ops used.
 
-The tool as it stands
+**Fixed in `85bd8e9`.** A dry run is now a read: `countAssessments` queries the
+source read-only and returns the per-date counts, so there is no destination,
+nothing to clean up, and `--out` is ignored on that branch rather than honoured.
+There is no recursive delete anywhere in the tool; the one remaining deletion is
+an `unlinkSync` of the exact file `--force` names, behind an `isDirectory`
+guard. The root cause was the shape — "do the real thing, then clean up" needs a
+destructive step to exist and puts an operator's path inside it — so the shape
+is gone rather than the line patched. `runExport` was extracted from `main` and
+the module-level invocation guarded so the CLI is testable at all; the
+regression test was checked by reinstating the original line and confirming it
+fails. Ops can run `--dry-run` again.
+
+The tool otherwise
 opens the store read-only and produces ~1-3 MB rather than a 250 MB+ snapshot
 — the backfill reads two tables and fetches the rest from Alpaca. The same
 command reports checkpoints per trading date, which also answers whether the
@@ -233,10 +244,39 @@ argument is untouched and the route is still the right one; what was wrong is
 only the claim that nothing has to reach the server. **How it gets there is
 Ops's call, not this thread's** — see [ops.md](ops.md) Open item 5.
 
-**Ordering once those dates land**: the split test first, because it serves Q1,
-which is active. `split_sessions_ago` makes the reverse-split half of Q1's third
-hypothesis a query — 21 of 100 symbol-days had a split within 30 sessions, where
-a same-day-only check saw 2. Q5 stays proposed until Q1 has a verdict.
+**First results, 2026-08-23.** The backfill has run over the extract — 306
+symbol-days, every one with minute bars. Full write-up in
+[../rnd/2026-08-23-outcome-capture.md](../rnd/2026-08-23-outcome-capture.md);
+three things belong in the register.
+
+1. **The outage cost coverage, not currency.** Every grade on 19-21 August is
+   fresh. The oldest carried grade in the whole window is three sessions, and
+   158 of 176 datable grades were produced on the day they were served.
+   19 August lost *reach* — 53% usable against 70-78% elsewhere, 17 names never
+   looked at, and the week's only 10 `IN_FLIGHT` rows — but not *currency*.
+   19 and 20 August have no censored grades at all. **The admissible rows on
+   those days are evidence about the market**, and the caveat this thread was
+   built around does not bite the way it assumed.
+2. **Pillar 4, coverage held constant: 20% of 50%+ movers carried a
+   legitimate-positive or stronger catalyst**, against 13% of the names that did
+   not run. Two `STRONG` grades in the entire week, and 27% of movers were
+   looked at and came back honestly `UNKNOWN`. Consistent with Pillar 4 having
+   stopped binding; it does not say which of the four hypotheses explains it.
+3. **Hypothesis 3 has its first evidence, and the timing is the point.** Of the
+   252 board names that week, those with a reverse split **6-30 sessions ago**
+   ran 50%+ at **70.6%** (12 of 17), against **27.8%** with no split (62 of
+   223) — while a split in the *last five sessions* is indistinguishable from
+   none at all (25%, 3 of 12). That is the shape hypothesis 3 predicts, and the
+   bucket boundary was committed at `8170f58` before the extract existed.
+
+   Seventeen symbols, one week, and the population is the desk's board rather
+   than the market — a post-split name has a small float and mechanically high
+   RVOL, so it is likelier to be on the board at all. **The next step is more
+   weeks at the same boundary, not a finer boundary on this week.** Retuning it
+   now would turn a prediction into a fit.
+
+Q5 stays proposed and behind Q1. The five-day cut moved it slightly: 16 of 95
+movers peak inside 09:30-11:00 and 61 of 95 peak outside regular hours.
 
 What was already there and turned out to be enough:
 
@@ -248,6 +288,8 @@ What was already there and turned out to be enough:
   `UNKNOWN` is an honest verdict rather than a gap. That is Q1's independent
   variable, already labelled. **Coverage needed no new capture** — the desk
   already recorded, per ticker per checkpoint, whether a look had happened.
+  `analysis_version_id`, on the same rows, turned out to carry grade freshness
+  too.
 
 What turned out not to be there:
 

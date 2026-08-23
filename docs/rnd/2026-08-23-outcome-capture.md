@@ -4,8 +4,14 @@
 [../DATA-ARCHIVE.md](../DATA-ARCHIVE.md) — outcome capture with a backfill — and
 the coverage measurement that has to precede any conclusion about catalysts.
 
-Nothing here closes Q1. It builds the instrument and reports what the instrument
-says about two trading dates, which is not enough dates to conclude anything.
+**The production extract landed the same day and the backfill has run over it:
+306 symbol-days across 2026-08-17 to 08-21, every one with bars.** Nothing here
+closes Q1. One week is not a verdict. But there is a first piece of real
+evidence for one of its four hypotheses, and the outage caveat the whole thing
+was built around turns out not to bite the way anyone expected.
+
+Sections written before the extract arrived have been left in place and marked,
+rather than rewritten to look prescient.
 
 ---
 
@@ -300,52 +306,154 @@ column a store predates, so the same code works against either.
 
 ---
 
-## What the instrument says so far
+## What the instrument says, on the real five days
 
-**Two trading dates. 100 symbol-days. This is not an answer to anything.** It is
-reported because a thread that only reports discoveries will eventually
-manufacture one, and because the shape is worth having on record before more
-data arrives to confirm or kill it.
+306 symbol-days, 2026-08-17 to 08-21, from the production extract. All 306 have
+minute bars. Two dates of this were reported in an earlier draft on 100
+symbol-days; those numbers are superseded by what follows.
 
-Catalyst grade among symbol-days with admissible coverage:
+### Coverage, held constant
 
-| Grade | moved 50%+ (n=30) | did not (n=36) |
+```
+  date         chkpts  late  syms  graded  unk-ok  failed  inflt  nolook   usable
+  2026-08-17        2     1    38      19       8       0      0      11      71%
+  2026-08-18       19     0    70      42       7      10      0      11      70%
+  2026-08-19       16     2    58      21      10       0     10      17      53%
+  2026-08-20       18     0    65      40      11       0      0      14      78%
+  2026-08-21       19     0    75      35      18      10      0      12      71%
+```
+
+**19 August is the visible cost of the outage** and the only day that stands
+out: 53% usable against 70-78% elsewhere, 17 names never looked at, and the only
+`IN_FLIGHT` rows in the week — 10 jobs queued or running that never landed.
+08-17 is the two-checkpoint evening the engine shipped, not a gap.
+
+**Coverage is still not missing at random, and more strongly than before:**
+
+| | symbol-days | admissible | never looked at |
+| --- | --- | --- | --- |
+| ran 50%+ | 95 | 84 | **5** |
+| ran 20-50% | 74 | 54 | 10 |
+| under 20% | 137 | 73 | **50** |
+
+The pipeline's misses concentrate almost entirely in names that went nowhere.
+For Q1 that is a favourable bias — the movers are the population research
+actually reaches — and it remains a reason never to treat `NO_LOOK` as a random
+sample.
+
+### The grades on 19-21 August were fresh. The reach was what failed.
+
+This is the question Ops handed over, and the answer is not what the framing
+assumed.
+
+| Date | graded, age known | fresh (age 0) | carried | oldest carried |
+| --- | --- | --- | --- | --- |
+| 2026-08-18 | 42 | 42 | 0 | — |
+| 2026-08-19 | 31 | 28 | 3 | 1 session |
+| 2026-08-20 | 51 | 45 | 6 | 2 sessions |
+| 2026-08-21 | 52 | 43 | 9 | 3 sessions |
+
+Nothing is stale. The oldest carried grade in the entire window is three
+sessions, and 158 of 176 datable grades were produced on the day they were
+served. **The outage cost coverage, not currency** — research reached fewer
+names on 19 August, but the analyses it did produce were new ones.
+
+That is a better position than the charter, the archive spec or this note
+assumed, and it means the `GRADED` and `UNKNOWN_HONEST` rows on 19-21 August are
+usable evidence about the market rather than about a billing incident. The names
+research never reached are already excluded by the coverage classification.
+
+Thirty-five rows are censored: 27 on 08-17 and 7 on 08-18, carrying versions
+already in use on the window's first date, plus one on 08-21. **19 and 20 August
+have none at all**, so the days Q1 turns on are measured rather than bounded.
+Cutting the extract at 19 August would have censored roughly three quarters of
+it and made none of the above visible.
+
+### Pillar 4, with coverage held constant
+
+Catalyst grade among symbol-days whose coverage is admissible and whose outcome
+is known:
+
+| Grade | ran 50%+ (n=84) | did not (n=127) |
 | --- | --- | --- |
-| STRONG | 0 | 2 |
-| LEGITIMATE_POSITIVE | 6 | 7 |
-| MODERATE_MIXED_SECONDARY | 9 | 12 |
-| WEAK_NEGATIVE_DILUTIVE | 8 | 4 |
-| NONE | 2 | 4 |
-| UNKNOWN (honest) | 5 | 7 |
+| STRONG | 2 | 1 |
+| LEGITIMATE_POSITIVE | 15 | 16 |
+| MODERATE_MIXED_SECONDARY | 29 | 61 |
+| WEAK_NEGATIVE_DILUTIVE | 11 | 10 |
+| NONE | 4 | 8 |
+| UNKNOWN (honest) | 23 | 31 |
 
-Two observations, both provisional:
+**20% of 50%+ movers carried a legitimate-positive or stronger catalyst.**
+Against 13% of the names that did not run — a real difference in the expected
+direction, and nowhere near what Pillar 4 describes as non-negotiable. Two
+`STRONG` grades in the entire week. The largest single group among movers is
+`MODERATE_MIXED_SECONDARY`, and the second largest is an honest `UNKNOWN`:
+27% of the names that ran 50%+ were looked at by research, which could not
+determine a catalyst.
 
-- **No `STRONG` catalyst appears among the movers at all**, and legitimate
-  positives are 20% of them. Directionally consistent with the Pillar 4 concern.
-- **The grade distribution barely differs between movers and non-movers.** If
-  that survives more data it is the sharper finding, because it says the
-  catalyst grade is not separating the two populations — which is a different
-  claim from "movers have no catalysts" and points at the first hypothesis in
-  the charter, that catalyst was always a proxy for attention.
+This is consistent with Pillar 4 having stopped binding. It does not yet say
+which of the four hypotheses explains it.
 
-### The thing that jumped out, which nobody asked about
+### Hypothesis 3 has its first real evidence, and the timing is the point
 
-Where the day's high actually occurred, for the 34 symbol-days that moved 50%+:
+Q1's third hypothesis: the catalyst moved from the news wire to the filing
+cabinet — reverse splits, offering completions, S-1 effectiveness. Supply
+events, not news events. `split_sessions_ago` tests the free part of it.
+
+Per distinct symbol, over the 252 names on the board that week:
+
+| | symbols | ever ran 50%+ | rate |
+| --- | --- | --- | --- |
+| no split within 30 sessions | 223 | 62 | 27.8% |
+| split **0-5** sessions ago | 12 | 3 | 25.0% |
+| split **6-30** sessions ago | **17** | **12** | **70.6%** |
+
+A reverse split in the recent past more than doubles the rate at which a board
+name produces a 50% move — **but only once it has aged.** A split in the last
+five sessions is indistinguishable from no split at all.
+
+That is the shape hypothesis 3 predicts, and it was predicted before the data
+arrived rather than found in it. The bucket boundary is the one written into
+this note when the lookback was widened, on the reasoning that the pattern is
+*a split, then a run once the float is clean* — not split-and-run-the-same-day.
+Committed at `8170f58`, before the extract existed.
+
+**What would have to be true for this to be wrong**, in the order I would attack
+it:
+
+- **The population is the desk's board, not the market.** A post-split name has
+  a small float and mechanically high RVOL, so it is more likely to be on the
+  board at all. The comparison above is within the board, which controls for
+  that partially, not fully.
+- **Seventeen symbols.** The effect is large and the sample is not. Twelve of
+  seventeen is four names away from unremarkable.
+- **One week, one regime.** Five trading days in August 2026.
+- **A reverse split is a third of hypothesis 3 at most.** Offering completions
+  and S-1 effectiveness are not captured and would need the SEC evidence in
+  `research_sources`.
+- **The 6-30 boundary is a hypothesis, not a fit.** It should be re-run on new
+  weeks without being retuned, or it stops being a prediction.
+
+The right next step is more weeks at the same boundary, not a finer boundary on
+this week.
+
+### Where the day's high falls, on five days
+
+Of the 95 symbol-days that ran 50%+ — updating the two-day cut that first raised
+this:
 
 | Window (ET) | movers peaking there |
 | --- | --- |
-| premarket, before 09:30 | **16** |
-| 09:30-10:00 | 2 |
-| 10:00-11:00 | 2 |
-| 11:00-16:00 | 6 |
-| after hours | 8 |
+| premarket, before 09:30 | **44** |
+| 09:30-10:00 | 7 |
+| 10:00-11:00 | 9 |
+| 11:00-16:00 | 18 |
+| after hours | 17 |
 
-Twenty-four of thirty-four peak outside regular trading hours, and **four** peak
-inside the 09:30-11:00 window where the playbook says the profit is. If that
-holds, the board is largely showing this trader names whose move is already
-over.
-
----
+Sixteen of ninety-five peak inside the 09:30-11:00 window the playbook lives in,
+and 61 of 95 peak outside regular hours entirely. The two-day cut suggested four
+of thirty-four; five days puts it at 17% rather than 12%, so the shape held and
+softened slightly. This is Q5 and it stays behind Q1.
 
 ## Limits, stated plainly
 

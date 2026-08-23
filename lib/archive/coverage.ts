@@ -439,42 +439,59 @@ export function rollUpDeskDays(rows: readonly CheckpointRow[]): SymbolDeskDay[] 
  * evidence as one produced that morning, and `intelligence_status` cannot tell
  * the two apart. `analysis_version_id` can.
  *
- * Age is counted in sessions PRESENT IN THE DATA for that symbol, not calendar
- * days, so a weekend does not inflate it and a symbol absent from the board for
- * a day is not credited with a session it was never assessed in.
+ * Age is counted in TRADING SESSIONS PRESENT IN THE DATA, not calendar days, so
+ * a weekend does not inflate it.
  *
- * `gradeAgeCensored` is the honest part. If the backing analysis was already in
- * use on the first date available for a symbol, its real age is unknown and the
- * number is a lower bound. An extract that begins inside the outage censors
- * every grade in it, which would make a stalled pipeline look fresh.
+ * Version ids are global and monotonic, so the first sighting of a version
+ * anywhere dates it — including for a name that was on the board for only one
+ * day, which is most of them. Dating it per symbol instead censored roughly
+ * three quarters of the rows for no reason.
+ *
+ * `gradeAgeCensored` is the honest part. A version already in use on the FIRST
+ * date in the window could be any age, so its number is a lower bound. An
+ * extract that begins inside the outage censors everything in it and would make
+ * a stalled pipeline look fresh — which is why the window is not cut at
+ * 19 August.
  */
 export function ageCatalystGrades(days: readonly SymbolDeskDay[]): SymbolDeskDay[] {
-  const bySymbol = new Map<string, SymbolDeskDay[]>();
+  const dates = [...new Set(days.map((day) => day.tradingDate))].sort();
+  const dateIndex = new Map(dates.map((date, index) => [date, index] as const));
+
+  /*
+   * When each analysis version was first seen ANYWHERE, not per symbol.
+   *
+   * The per-symbol version of this censored far too much: a name on the board
+   * for a single day always carried a version "first seen" on its own first
+   * day, so nothing about it was knowable. But an analysis id is global and
+   * monotonic. If version 46 shows up for one symbol on 08-17, then version 46
+   * on a different symbol on 08-21 is four sessions old, whether or not that
+   * second symbol was on the board before.
+   */
+  const versionFirstDate = new Map<number, string>();
   for (const day of days) {
-    const list = bySymbol.get(day.symbol) ?? [];
-    list.push(day);
-    bySymbol.set(day.symbol, list);
+    const version = day.gradeAnalysisVersionId;
+    if (version === null) continue;
+    const seen = versionFirstDate.get(version);
+    if (seen === undefined || day.tradingDate < seen) {
+      versionFirstDate.set(version, day.tradingDate);
+    }
   }
 
-  for (const list of bySymbol.values()) {
-    list.sort((a, b) => a.tradingDate.localeCompare(b.tradingDate));
-    // The index of the first session each analysis version was seen in.
-    const firstSeen = new Map<number, number>();
+  for (const day of days) {
+    const version = day.gradeAnalysisVersionId;
+    if (version === null) {
+      day.gradeAgeSessions = null;
+      day.gradeAgeCensored = 0;
+      continue;
+    }
 
-    list.forEach((day, index) => {
-      const version = day.gradeAnalysisVersionId;
-      if (version === null) {
-        day.gradeAgeSessions = null;
-        day.gradeAgeCensored = 0;
-        return;
-      }
-      if (!firstSeen.has(version)) firstSeen.set(version, index);
-      const origin = firstSeen.get(version) as number;
-      day.gradeAgeSessions = index - origin;
-      // Already in use in the earliest session on record for this symbol, so
-      // how much older it is cannot be known from this window.
-      day.gradeAgeCensored = origin === 0 ? 1 : 0;
-    });
+    const origin = versionFirstDate.get(version) as string;
+    day.gradeAgeSessions =
+      (dateIndex.get(day.tradingDate) as number) - (dateIndex.get(origin) as number);
+    // Only the first date in the whole window is genuinely unknowable: a
+    // version already in use then could be any age. Every later date is a
+    // measurement.
+    day.gradeAgeCensored = origin === dates[0] ? 1 : 0;
   }
 
   return [...days];

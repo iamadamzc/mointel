@@ -420,3 +420,86 @@ describe('coverageByDay cadence and freshness', () => {
     expect(report.medianGradeAge).toBeNull();
   });
 });
+
+describe('ageCatalystGrades dates a version globally', () => {
+  function graded(ticker: string, date: string, version: number): CheckpointRow {
+    return row({
+      ticker,
+      tradingDate: date,
+      scheduledFor: `${date}T14:00:00.000Z`,
+      catalyst: 'LEGITIMATE_POSITIVE',
+      intelligenceStatus: 'INTELLIGENCE_AVAILABLE',
+      analysisVersionId: version,
+    });
+  }
+
+  it('ages a one-day name from when its analysis was seen elsewhere', () => {
+    /*
+     * The case that made the per-symbol version of this useless. Most names are
+     * on the board for a single day, so dating a version by that symbol's own
+     * history censored nearly everything. Version ids are global: if 46 was in
+     * use on the 18th, then 46 on a different name on the 21st is three
+     * sessions old, and that is exactly the stale grade Q1 must not attribute
+     * an outcome to.
+     */
+    const days = ageCatalystGrades(
+      rollUpDeskDays([
+        graded('AAA', '2026-08-17', 10),
+        graded('BBB', '2026-08-18', 46),
+        graded('CCC', '2026-08-19', 90),
+        graded('DDD', '2026-08-20', 91),
+        // On the board for one day only, carrying an analysis that demonstrably
+        // existed on the 18th because another name was using it then.
+        graded('ONEDAY', '2026-08-21', 46),
+      ]),
+    );
+
+    const oneDay = days.find((day) => day.symbol === 'ONEDAY');
+    expect(oneDay?.gradeAgeSessions).toBe(3);
+    // Version 46 first appeared inside the window, not on its first date, so
+    // three sessions is a measurement rather than a bound.
+    expect(oneDay?.gradeAgeCensored).toBe(0);
+  });
+
+  it('still bounds a one-day name whose version predates the window', () => {
+    const days = ageCatalystGrades(
+      rollUpDeskDays([
+        graded('AAA', '2026-08-17', 10),
+        graded('ONEDAY', '2026-08-21', 10),
+      ]),
+    );
+
+    const oneDay = days.find((day) => day.symbol === 'ONEDAY');
+    // Version 10 was already in use on the first date on record, so it could be
+    // far older than this. Reported, and flagged as a floor.
+    expect(oneDay?.gradeAgeSessions).toBe(1);
+    expect(oneDay?.gradeAgeCensored).toBe(1);
+  });
+
+  it('censors only the first date in the window, not each symbol first sighting', () => {
+    const days = ageCatalystGrades(
+      rollUpDeskDays([
+        graded('AAA', '2026-08-17', 10),
+        graded('BBB', '2026-08-19', 20),
+      ]),
+    );
+
+    // AAA's version could be any age; BBB's was demonstrably new on the 19th.
+    expect(days.find((day) => day.symbol === 'AAA')?.gradeAgeCensored).toBe(1);
+    expect(days.find((day) => day.symbol === 'BBB')?.gradeAgeCensored).toBe(0);
+    expect(days.find((day) => day.symbol === 'BBB')?.gradeAgeSessions).toBe(0);
+  });
+
+  it('counts sessions in the window, so a weekend does not age a grade', () => {
+    const days = ageCatalystGrades(
+      rollUpDeskDays([
+        graded('AAA', '2026-08-20', 5),
+        graded('AAA', '2026-08-21', 5),
+        // Monday. Three calendar days later, one session.
+        graded('AAA', '2026-08-24', 5),
+      ]),
+    );
+
+    expect(days.map((day) => day.gradeAgeSessions)).toEqual([0, 1, 2]);
+  });
+});
