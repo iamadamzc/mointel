@@ -151,22 +151,39 @@ not from the code, and it says so. Treat its Sheet numbers as evidence and its
 claims about our pipeline as hearsay to check. It also calls the Sheet's output
 *human conclusions* throughout, so the mislabel is not confined to our side.
 
-**The timing collision, which is concrete and checkable.** Three of those four
-task times are exactly this desk's checkpoints, and that is not coincidence:
-`lib/desk/schedule.ts:4` says the checkpoints *"are the reassessment times the
-trader already worked to in the spreadsheet"*. But the report's observed run
-times for 21 August were 22:11, 06:23, 09:41 and 16:33 — **11 to 18 minutes
-late**. A checkpoint firing at its nominal minute therefore reads the Sheet
-before that stage has been written. The 06:10 case is the sharp one: the 22:00
-task clears the morning columns `T:AA` and the 06:10 task refills them at 06:23,
-so `STRUCTURAL_REFRESH` at 06:10 sees them blank by construction. **Not
-verified**: whether the merge reads the Sheet at checkpoint time at all, and
-what `sheetStale` does with it. That is this thread's to establish, and it may
-be the real explanation for `AUTO_NEWER`.
+**~~The timing collision.~~ Wrong, and retracted by Integration 2026-08-23.**
+The claim was that because three of the four task times are this desk's
+checkpoints and the tasks run 11-18 minutes late, a checkpoint reads a Sheet
+stage before it has been written — `STRUCTURAL_REFRESH` at 06:10 seeing `T:AA`
+blank. It is left here rather than deleted because it was written as *concrete
+and checkable*, and it was checked, and it was false. Three separate reasons,
+any one of which sinks it:
 
-Still not assumed: whether every task still runs.
-`lib/data/providers/googleSheets.ts:112` already fetches the Sheet's Drive
-`modifiedTime`, so freshness is readable off the live desk without new code.
+- **No checkpoint reads the Sheet.** `lib/desk/` mentions the spreadsheet once,
+  in the historical comment at `schedule.ts:5`. Assessments are built from the
+  market store.
+- **The merge is not on the checkpoint clock.** The Sheet reaches it only
+  through the research worker's poll loop — `loadSheetPriors()` at
+  `worker/research.ts:213`, `POLL_MS` default 5000 — decoupled from the
+  schedule entirely.
+- **The overnight clear misses the fields that matter.** `T:AA` is the
+  premarket block; Catalyst Grade is column J, Structure Flags P, Cycle D. The
+  three fields the comparison uses survive it. What degrades falls back
+  gracefully to the RTH values (`lib/data/rows.ts:264`), thinner rather than
+  blank.
+
+The checkpoint-time inheritance is still real and still worth knowing; it just
+has no data consequence. What *was* found in that area is `sheetStale` — see
+item 7.
+
+**~~Freshness is readable off the live desk without new code.~~ Also false,
+also Integration's, corrected 2026-08-23.** `fetchSourceUpdatedAt`
+(`lib/data/providers/googleSheets.ts:112`) does call the Drive API — and it
+**403s with `SERVICE_DISABLED`**, because the Drive API was never enabled on
+the Google Cloud project. The failure is caught and returns null, so
+`meta.sourceUpdatedAt` is **always null** and nothing surfaces it. We cannot
+currently see when the Sheet was last written. Enabling it is a console action
+and has gone to [ops.md](ops.md), not here: it is not a code change.
 Ops revoked a `chatgpt-mcp-7d` review session on 2026-08-23 that had been
 unused since 19 August — a different path, almost certainly unrelated to a
 Sheet writer, and named here only so nobody links them by coincidence later.
@@ -207,8 +224,19 @@ conflict apparatus. The code path is confirmed:
 `prior?.analysis` (from `lib/research/merge/sheetPrior.ts`) as
 `priorHumanAnalysis` → `lib/research/interpret/pipeline.ts:198` →
 `lib/research/interpret/bundle.ts:93`, where it is labelled
-`HUMAN_REVIEWED_PRIOR_ANALYSIS` → into the prompt at
-`lib/research/interpret/openaiInterpreter.ts:95` and `:146`.
+`HUMAN_REVIEWED_PRIOR_ANALYSIS` → into the prompt.
+
+**Those two prompt sites understate the reach — corrected 2026-08-23, raised by
+Research and verified from source here.** `openaiInterpreter.ts:95` is the
+system prompt and `:146` is inside `buildAdjudicationInput` (`:142`), which
+runs only on escalation. Citing those two makes it read as though the prior
+reaches the model only on disputed fields. It does not. `priorHumanAnalysis` is
+a **field on the bundle** (`bundle.ts:426`), and `buildInput` (`:102`)
+serialises the whole bundle with `JSON.stringify(bundle)` at `:107` — the main
+interpret path, called at `:188`. **The prior is in the context window of every
+`Terra` call for any ticker carrying a TODAY row**, not just adjudications. The
+contaminated surface, and this item's open question, are correspondingly
+larger.
 
 **The design is careful and that must be said**: the prior is presented as an
 opinion and explicitly denied the status of evidence ("Do not adopt its
@@ -217,9 +245,22 @@ re-decides from sources rather than voting between two opinions.
 
 **Two things remain true anyway.** First, `AUTO` has seen `SHEET`'s conclusion
 before reaching its own, so whatever the UI shows, the two are not independent
-opinions. Second, the prompt's own justification is now false: `:148` instructs
+opinions. Second, the prompt's own justification is now false: `:150` instructs
 the model not to adopt the prior *"because a person wrote it"*. No person wrote
 it.
+
+**Two things measured since, from stored metadata in the local `market.db`, and
+both change the weight of what was routed elsewhere:**
+
+- **`AUTO_NEWER` has never fired.** Zero occurrences across 94 stored analyses
+  carrying `sheetProvenance`. `SHEET_NEWER` appears 7 times. So the dead branch
+  is dead by measurement rather than by reasoning, and the default fall-through
+  is the one reaching the trader.
+- **Half of all escalations are caused by the Sheet.** 14 escalations, 7 of them
+  `SHEET_AUTO_CONFLICT` — more than any other single reason. Disagreeing with
+  the ChatGPT tasks is the **largest driver of expensive-model spend on this
+  desk**. This thread's charter makes cost a completion criterion, and that
+  number was not previously known.
 
 What Design cannot answer and this thread can: **does the prior actually change
 the output?** That needs a run, not a read. Until it is answered, Design has
