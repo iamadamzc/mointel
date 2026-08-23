@@ -326,6 +326,29 @@ would watch anyway.**
    off `null` is the proof. Worth eyes regardless, but see below: the residual
    uncertainty here is far smaller than it looked.
 
+### The commands, so this does not depend on a session being open
+
+Both are read-only and neither needs anything staged in advance. Paste and read.
+
+**The WAL sample.** Seven readings over ~2 minutes, plus the main store's mtime:
+
+```bash
+ssh -i /a/AWS_creds/mointel-prod-key.pem ubuntu@98.85.49.227 'for i in 1 2 3 4 5 6 7; do sudo stat -c "wal %y size=%s" /var/lib/mointel/market.db-wal; sleep 20; done; sudo stat -c "db  %y" /var/lib/mointel/market.db'
+```
+
+Reading it: **size flat while both mtimes advance** means writes are landing,
+checkpoints are draining them, the WAL is being reused in place and the 507 MB
+is a high-water mark — the Saturday result, now confirmed under load. **Size
+climbing** means checkpoints cannot complete against premarket readers, which is
+starvation and makes `journal_size_limit` the fix rather than a tidy-up.
+
+**The feed.** `messageAgeSeconds` off `null` is the proof the worker restarted at
+01:27:36 UTC on 2026-08-23 is delivering:
+
+```bash
+ssh -i /a/AWS_creds/mointel-prod-key.pem ubuntu@98.85.49.227 'curl -fsS http://127.0.0.1/api/health'
+```
+
 **Done early, 2026-08-23 08:32 UTC — the calendar cache did not need Monday.**
 It is a read against production `meta`. `calendar_fetched_at` was minutes old,
 the cache spans to 2026-09-04, and it **covers Monday 2026-08-24**. No early
