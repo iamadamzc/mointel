@@ -220,6 +220,31 @@ Research killed it against the eyeball impression rather than with it.
 resolve and the 27/10/19 split never arises. That arithmetic stands as a record
 of what a per-ticker output would have cost, not as a live constraint.
 
+**BUILT 2026-08-23: a deterministic cycle on every archive row.**
+`lib/archive/cycles.ts`, `cycle_phase` plus five arc columns, schema v4 with a
+migration. Point-in-time — the series is truncated at each date, and a test
+asserts that resolving 07-02 from a series containing 07-03 matches resolving it
+from one that ends there, without which a backfill writes today's view onto
+history. Split-adjusted deliberately, the one column here that is not as-seen,
+because an arc spanning a split puts its start and its high on different bases.
+Null means could-not-say, not `NO_CYCLE`.
+
+Distribution over 306 symbol-days: `NO_CYCLE` 149, `BACKSIDE` 97, `DAY_ONE` 36,
+`FRONTSIDE` 9, `PULLBACK` 6, `SHADOW` 1, null 8.
+
+**The phase-to-outcome contrast is CIRCULAR and is not a finding.**
+`isCycleStart` requires +20% on 5x RVOL, so `DAY_ONE` means the name moved that
+day by definition. Nothing about cycle predicting outcomes should be quoted from
+this archive.
+
+**What is not circular is the Q5 content: 97 of 306 board symbol-days — 32% —
+are `BACKSIDE`**, already past the cycle high with over half the move given
+back, at the moment the desk surfaces them. That agrees with the independent
+clock-time finding: 44 of 95 movers peaked before 09:30 and only 16 inside
+09:30-11:00. Two instruments, same direction — **the board surfaces a large
+share of names after the move that qualified them.** Not a verdict; Q5 is behind
+Q1 and this is the variable it would be answered with.
+
 **CYCLE BECOMES ARITHMETIC, AND THE RECOMPUTE REACHES BACKWARDS.** *Routed by
 Integration 2026-08-23.* `lib/market/cycle.ts` computes the classification from
 daily bars and the model's version is being deleted — the trader's call, on 75%

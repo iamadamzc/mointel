@@ -53,6 +53,8 @@ import {
   rollUpDeskDays,
 } from '../lib/archive/coverage';
 import { deriveFollowThrough, deriveOutcome, type SymbolOutcome } from '../lib/archive/outcomes';
+import { cycleAsOf } from '../lib/archive/cycles';
+import type { CycleBar } from '../lib/market/cycle';
 import {
   auditSplitFetch,
   resolveBaseline,
@@ -76,6 +78,20 @@ import {
  * sessions, plus slack for holidays.
  */
 const SPLIT_LOOKBACK_CALENDAR_DAYS = Math.ceil(SPLIT_LOOKBACK_SESSIONS * 1.6) + 14;
+
+/**
+ * Calendar days of daily history fetched for the cycle.
+ *
+ * Wider than the split lookback because cycle-start detection searches
+ * backwards for the most recent qualifying session and wants runway past
+ * `dailyRvol`'s 20-session baseline. 120 calendar days is roughly 82 sessions.
+ * It costs daily bars only, which are already being fetched in the same call.
+ */
+const CYCLE_LOOKBACK_CALENDAR_DAYS = 120;
+const DAILY_LOOKBACK_CALENDAR_DAYS = Math.max(
+  SPLIT_LOOKBACK_CALENDAR_DAYS,
+  CYCLE_LOOKBACK_CALENDAR_DAYS,
+);
 
 interface Options {
   from: string | null;
@@ -226,7 +242,7 @@ async function main(): Promise<void> {
   // couple of months is a rounding error against the minute fetch.
   const dailyWindow = {
     timeframe: '1Day',
-    start: sessionStartUtc(addDays(dates[0], -SPLIT_LOOKBACK_CALENDAR_DAYS)).toISOString(),
+    start: sessionStartUtc(addDays(dates[0], -DAILY_LOOKBACK_CALENDAR_DAYS)).toISOString(),
     end: sessionEndUtc(dates[dates.length - 1]).toISOString(),
   } as const;
   const daily = await client.getBars(allSymbols, { ...dailyWindow, adjustment: 'raw' });
@@ -235,10 +251,19 @@ async function main(): Promise<void> {
   const dailyAdjusted = await client.getBars(allSymbols, { ...dailyWindow, adjustment: 'split' });
 
   const adjustedByKey = new Map<string, number>();
+  // The full adjusted series, kept for the cycle. Split-adjusted on purpose:
+  // an arc spanning a split would put its start and its high on different
+  // share bases. See lib/archive/cycles.ts.
+  const cycleSeries = new Map<string, CycleBar[]>();
   for (const [symbol, series] of dailyAdjusted) {
+    const bars: CycleBar[] = [];
     for (const bar of series) {
-      adjustedByKey.set(`${etDateString(new Date(bar.t))} ${symbol}`, bar.c);
+      const date = etDateString(new Date(bar.t));
+      adjustedByKey.set(`${date} ${symbol}`, bar.c);
+      bars.push({ tradingDate: date, high: bar.h, low: bar.l, close: bar.c, volume: bar.v });
     }
+    bars.sort((a, b) => a.tradingDate.localeCompare(b.tradingDate));
+    cycleSeries.set(symbol, bars);
   }
 
   // One paired series per symbol, ascending. Both the baseline resolution and
@@ -384,6 +409,7 @@ async function main(): Promise<void> {
         referenceBasis: desk?.referenceBasis ?? null,
         closeMinutes,
         dailyBar: dailyByKey.get(`${date} ${symbol}`) ?? null,
+        cycle: cycleAsOf(cycleSeries.get(symbol) ?? [], date),
         rawPriorClose: rawPriorCloses.get(`${date} ${symbol}`) ?? null,
         splitSessionsAgo: sessionsSinceSplit(pairsBySymbol.get(symbol) ?? [], date),
         asOf,

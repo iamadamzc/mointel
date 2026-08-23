@@ -28,6 +28,23 @@ import {
   etMinutesOfDay,
 } from '../market/session';
 
+/**
+ * The cycle fields this archive keeps, flattened from `CycleArc`.
+ *
+ * A subset deliberately: `recentRvol` is an array and `baseClose`/`cycleHigh`
+ * are on the adjusted basis, so storing them beside as-seen prices in the same
+ * row would invite exactly the basis confusion this archive keeps catching.
+ * What is kept is the shape — where in the move this session sits.
+ */
+export interface ResolvedCycle {
+  phase: string;
+  startDate: string | null;
+  sessionsInCycle: number | null;
+  sessionsSinceHigh: number | null;
+  advancePct: number | null;
+  retracementPct: number | null;
+}
+
 /** The shape Alpaca returns for a bar; re-declared so this module stays pure. */
 export interface RawMinuteBar {
   t: string;
@@ -84,6 +101,16 @@ export interface SymbolOutcome {
   haltCount: number | null;
   /** Null means NOT CAPTURED, as above. */
   luldEventCount: number | null;
+  /**
+   * Deterministic cycle phase as of this trading date, from daily bars.
+   * Null when no daily series was available to compute it.
+   */
+  cyclePhase: string | null;
+  cycleStartDate: string | null;
+  cycleSessionsIn: number | null;
+  cycleSessionsSinceHigh: number | null;
+  cycleAdvancePct: number | null;
+  cycleRetracementPct: number | null;
   minuteBarCount: number;
   adjustmentBasis: string;
   source: string;
@@ -103,6 +130,8 @@ export interface DeriveOutcomeInput {
   closeMinutes?: number;
   rawPriorClose?: number | null;
   splitSessionsAgo?: number | null;
+  /** Cycle as of this date, resolved by the caller from split-adjusted bars. */
+  cycle?: ResolvedCycle | null;
   adjustmentBasis?: string;
   source?: string;
   asOf?: string;
@@ -161,6 +190,12 @@ export function deriveOutcome(input: DeriveOutcomeInput): SymbolOutcome {
     nextHigh: null,
     haltCount: null,
     luldEventCount: null,
+    cyclePhase: input.cycle?.phase ?? null,
+    cycleStartDate: input.cycle?.startDate ?? null,
+    cycleSessionsIn: input.cycle?.sessionsInCycle ?? null,
+    cycleSessionsSinceHigh: input.cycle?.sessionsSinceHigh ?? null,
+    cycleAdvancePct: input.cycle?.advancePct ?? null,
+    cycleRetracementPct: input.cycle?.retracementPct ?? null,
     minuteBarCount: inSession.length,
     adjustmentBasis: input.adjustmentBasis ?? 'raw',
     source: input.source ?? 'alpaca-minute-bar',

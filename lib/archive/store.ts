@@ -25,7 +25,7 @@ import Database from 'better-sqlite3';
 
 export type ArchiveDatabase = Database.Database;
 
-export const ARCHIVE_SCHEMA_VERSION = 3;
+export const ARCHIVE_SCHEMA_VERSION = 4;
 
 export const DEFAULT_ARCHIVE_PATH = path.join(process.cwd(), 'data', 'archive.db');
 
@@ -107,6 +107,25 @@ CREATE TABLE IF NOT EXISTS symbol_outcomes (
   -- a migration. A null here means "not captured", never "none happened".
   halt_count         INTEGER,
   luld_event_count   INTEGER,
+
+  -- THE CYCLE, COMPUTED NOT ASKED. Deterministic from daily bars via
+  -- lib/market/cycle.ts, so unlike the model's version it is reproducible and
+  -- can be applied uniformly backwards over the whole archive. The model's
+  -- cycle was 46% irreproducible across five draws on identical evidence and is
+  -- being deleted; nothing here ever read it.
+  --
+  -- Computed on SPLIT-ADJUSTED closes, deliberately, and this is the one place
+  -- in this table that is not as-seen. A cycle arc spans dozens of sessions, so
+  -- a reverse split inside the window puts its start and its high on different
+  -- share bases and the advance becomes fiction. Outcomes above are raw because
+  -- they are compared against the desk's as-seen record; the cycle is a shape
+  -- over time and needs one basis throughout.
+  cycle_phase        TEXT,
+  cycle_start_date   TEXT,
+  cycle_sessions_in  INTEGER,
+  cycle_sessions_since_high INTEGER,
+  cycle_advance_pct  REAL,
+  cycle_retracement_pct REAL,
 
   minute_bar_count   INTEGER NOT NULL DEFAULT 0,
   -- 'raw' for as-seen. Anything else means the row is adjusted and cannot be
@@ -292,6 +311,14 @@ function migrate(db: ArchiveDatabase, fromVersion: number): void {
   };
 
   db.transaction(() => {
+    if (fromVersion < 4) {
+      addColumn('symbol_outcomes', 'cycle_phase', 'TEXT');
+      addColumn('symbol_outcomes', 'cycle_start_date', 'TEXT');
+      addColumn('symbol_outcomes', 'cycle_sessions_in', 'INTEGER');
+      addColumn('symbol_outcomes', 'cycle_sessions_since_high', 'INTEGER');
+      addColumn('symbol_outcomes', 'cycle_advance_pct', 'REAL');
+      addColumn('symbol_outcomes', 'cycle_retracement_pct', 'REAL');
+    }
     if (fromVersion < 3) {
       addColumn('symbol_desk_day', 'checkpoints_late', 'INTEGER NOT NULL DEFAULT 0');
       addColumn('symbol_desk_day', 'grade_analysis_version_id', 'INTEGER');

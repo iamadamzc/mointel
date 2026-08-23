@@ -969,6 +969,65 @@ later analysis tell them apart.
 Close-based membership is otherwise a good proxy — names *touching* $1-$20
 number 2,858-2,886 against 2,824-2,841 closing there, so about 40 a day differ.
 
+#### Built: a deterministic cycle, and one number from it that is not circular
+
+`lib/archive/cycles.ts`, `cycle_phase` and five arc columns on
+`symbol_outcomes`, archive schema v4 with a migration. Authorised 2026-08-23.
+
+**Point-in-time, not latest-state.** The series is truncated at each trading
+date before resolving, so a row carries what was true then. The test that
+matters asserts resolving 07-02 from a series containing 07-03 gives the same
+answer as resolving it from a series that ends at 07-02 — without that, a
+backfill over past dates silently writes today's view onto every historical row.
+
+**Split-adjusted, deliberately, and it is the one column here that is not
+as-seen.** A cycle arc spans dozens of sessions; a reverse split inside the
+window leaves the start and the high on different share bases and the advance
+becomes fiction — the same error that made RCON read as +29,811%. Outcomes stay
+raw because they are compared against the desk's as-seen record. A cycle is a
+shape over time and needs one basis throughout.
+
+**Null means could-not-say, not no-cycle.** Fewer than 21 sessions of history,
+or a date the symbol did not trade, returns null rather than `NO_CYCLE`. Eight
+rows are null. A measured absence and an unmeasurable one are different things
+and the distinction has been earned the hard way tonight.
+
+The distribution over 306 symbol-days:
+
+| Phase | rows | ran 50%+ | mean max gain |
+| --- | --- | --- | --- |
+| NO_CYCLE | 149 | 19 (13%) | 21% |
+| BACKSIDE | 97 | 45 (46%) | 75% |
+| DAY_ONE | 36 | 24 (67%) | 110% |
+| FRONTSIDE | 9 | 3 | 34% |
+| PULLBACK | 6 | 0 | 23% |
+| SHADOW | 1 | 0 | 3% |
+| (null) | 8 | 4 | 177% |
+
+**The phase-to-outcome contrast is circular and is not a finding.**
+`isCycleStart` requires `CYCLE_START_MOVE_PCT` 0.2 and `CYCLE_START_RVOL` 5, so
+`DAY_ONE` *means* the name moved 20%+ on 5x volume that session. Of course
+DAY_ONE names ran — the definition says they did. `BACKSIDE` and the rest are
+less directly tautological, since they describe position relative to a *past*
+start, but they still imply a qualifying start happened recently. Nothing above
+should be read as the cycle predicting anything.
+
+**What is not circular, and is the Q5 content:** *what phase is a name in when
+the board surfaces it?* That is descriptive rather than a contrast, and the
+answer is stark. **97 of 306 board symbol-days — 32% — are `BACKSIDE`**: already
+past the cycle high, more than half the move given back, at the moment the desk
+is showing the name. Another 149 are `NO_CYCLE`, where no qualifying move
+happened in the window at all.
+
+That agrees with the independent finding from the tape earlier in this note —
+44 of 95 movers peaked before 09:30, and only 16 of 95 peaked inside
+09:30-11:00. Two different instruments, one measuring position in the cycle and
+one measuring clock time, pointing at the same thing: **the board surfaces a
+large share of names after the move that qualified them.**
+
+Neither is a verdict. Q5 is proposed and behind Q1, and this is the variable it
+would be answered with rather than the answer.
+
 #### Join arithmetic, which the retraction does not change
 
 *From Integration, and corroborated here.* A replay emits one grade per

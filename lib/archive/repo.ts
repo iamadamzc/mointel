@@ -26,6 +26,8 @@ export function upsertOutcomes(
         rth_open, rth_high, rth_low, rth_close, official_close, official_volume,
         gain_open_30_pct, gain_to_1100_pct, gain_to_close_pct,
         next_open, next_high, halt_count, luld_event_count,
+        cycle_phase, cycle_start_date, cycle_sessions_in, cycle_sessions_since_high,
+        cycle_advance_pct, cycle_retracement_pct,
         minute_bar_count, adjustment_basis, source, as_of, run_id)
      VALUES
        (@symbol, @tradingDate, @referenceClose, @referenceBasis, @rawPriorClose, @splitSessionsAgo,
@@ -34,6 +36,8 @@ export function upsertOutcomes(
         @rthOpen, @rthHigh, @rthLow, @rthClose, @officialClose, @officialVolume,
         @gainOpen30Pct, @gainTo1100Pct, @gainToClosePct,
         @nextOpen, @nextHigh, @haltCount, @luldEventCount,
+        @cyclePhase, @cycleStartDate, @cycleSessionsIn, @cycleSessionsSinceHigh,
+        @cycleAdvancePct, @cycleRetracementPct,
         @minuteBarCount, @adjustmentBasis, @source, @asOf, @runId)
      ON CONFLICT(symbol, trading_date) DO UPDATE SET
        reference_close = excluded.reference_close,
@@ -64,6 +68,12 @@ export function upsertOutcomes(
        next_high = COALESCE(excluded.next_high, symbol_outcomes.next_high),
        halt_count = COALESCE(excluded.halt_count, symbol_outcomes.halt_count),
        luld_event_count = COALESCE(excluded.luld_event_count, symbol_outcomes.luld_event_count),
+       cycle_phase = excluded.cycle_phase,
+       cycle_start_date = excluded.cycle_start_date,
+       cycle_sessions_in = excluded.cycle_sessions_in,
+       cycle_sessions_since_high = excluded.cycle_sessions_since_high,
+       cycle_advance_pct = excluded.cycle_advance_pct,
+       cycle_retracement_pct = excluded.cycle_retracement_pct,
        minute_bar_count = excluded.minute_bar_count,
        adjustment_basis = excluded.adjustment_basis,
        source = excluded.source,
