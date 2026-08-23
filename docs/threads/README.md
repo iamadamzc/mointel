@@ -56,6 +56,37 @@ Do not restate these in a thread doc; link to them.
 Historical task prompts live in [`prompts/`](../../prompts). They are a record of
 what was asked, not current instructions. Several are superseded.
 
+## Who this is for
+
+Every threshold, ranking and label in this product serves one trading style, and
+a thread that does not know it will make decisions that look reasonable and are
+wrong. The full playbook is
+`A:\extract_daytrade\Manual\DAY_TRADING_INSTRUCTION_BOOKLET.md` — Ross Cameron
+style small-cap momentum. Read it before designing anything user-facing or
+choosing what to measure.
+
+The short version, and where live practice differs from the booklet the live
+practice governs:
+
+- **Small caps, $1-$20, RVOL 2-5+.** The desk is already configured to these
+  numbers, not the booklet's $2-$20 and 5x.
+- **Hold time is seconds, at most 1-2 minutes.** Risk $0.15-$0.25 per share.
+  A one-minute candle is wider than the whole trade — remember this before
+  proposing any measurement at minute grain.
+- **07:00-10:00 ET is where the profit is**; after 11:00 is avoided. Exceptions:
+  dip trades, and RTH when there is a strong mover.
+- **Entry** is a micro pullback on rising volume, plus flat top, ABCD and VWAP
+  reclaim. **Absorption is a gate, not a trigger** — stay out while a large
+  presence sits unconsumed on the tape.
+- **Exit** is weakness: volume fading on 10-second candles, price reversing, or
+  satisfaction with the gain.
+- **The five pillars** — up 10%+, $2-$20, 5x RVOL, breaking news catalyst, float
+  under 10M — are the selection rule the product encodes. **Pillar 4 is
+  currently breaking**, and understanding why is what
+  [../DATA-ARCHIVE.md](../DATA-ARCHIVE.md) exists for.
+
+Terminology is trader-facing. Labels describing engine internals get rejected.
+
 ## Facts every thread starts from
 
 As of the last session, **2026-08-21**:
