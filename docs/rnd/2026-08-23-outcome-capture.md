@@ -935,11 +935,39 @@ derived `passed_gate` flag.** Gate-passers are then one `WHERE` clause away,
 retuning the gate costs nothing, and Q3 keeps the control group that is the only
 reason tier A exists.
 
-**One question left open rather than decided here.** $1-$20 or $2-$20 as the
-capture band: 2,839 against 2,423, so 400 rows a day. The desk is configured
-$1-$20 and the booklet says $2-$20. This note keeps $1-$20, on the spec's own
-reasoning that a $1.40 name running into the tradeable band is among the most
-interesting shapes here and excluding it at capture time cannot be undone.
+##### $1-$20 confirmed, and the sub-$2 population is not a rounding decision
+
+Settled by the trader 2026-08-23, with the reason: sub-$2 names *"are generally
+rising penny stocks that trade differently, but sometimes they move into this
+universe and behave."* Two distinct populations, and the interesting event is
+the **crossing** rather than the price level.
+
+Measured, using prior close under $2 as "started the session as a penny name":
+
+| Date | started sub-$2 | crossed to $2+ intraday | crossers with RVOL >= 5 | crossers +25% |
+| --- | --- | --- | --- | --- |
+| 2026-08-18 | 831 | 20 | 5 | 5 |
+| 2026-08-19 | 831 | 32 | 7 | 11 |
+| 2026-08-20 | 817 | 14 | 4 | 5 |
+| 2026-08-21 | 821 | 27 | 8 | 11 |
+
+**14-32 names cross into the band on a given day, and 5-11 of them clear the
++25% part of the gate.** Set against a full gate of 9-20 names a day, the
+crossers are not a fringe: a meaningful share of each day's qualifying moves
+starts below $2. Capturing from $1 rather than $2 roughly doubles the candidate
+pool rather than adding a margin.
+
+**The design consequence, and it is the reason this was worth measuring.** A
+tier A row carrying only the close would classify a name that ran $1.80 → $3.20
+→ $1.95 as a sub-$2 name and lose it — which is precisely the "moves into this
+universe and behaves" case. **Tier A must store session high and low, not just
+the close**, so the $2 crossing is derivable. That also makes the two
+populations separable at read time: *started sub-$2*, *crossed*, and *was in
+band throughout* are three different things and only the raw extremes let a
+later analysis tell them apart.
+
+Close-based membership is otherwise a good proxy — names *touching* $1-$20
+number 2,858-2,886 against 2,824-2,841 closing there, so about 40 a day differ.
 
 #### Join arithmetic, which the retraction does not change
 

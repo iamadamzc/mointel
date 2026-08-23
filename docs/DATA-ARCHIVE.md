@@ -86,6 +86,15 @@ tier A exists to be the control group, and a gate-filtered tier A cannot answer
 the question it is for. The gate's components are stored as columns so it can be
 applied, and retuned, at read time.
 
+**The band stays $1-$20 and the row must carry session high and low, not just
+the close.** Sub-$2 names are a different population — rising penny stocks that
+trade differently — but some cross into the tradeable band intraday and then
+behave like it, and that crossing is the interesting event. Measured over
+2026-08-18 to 08-21: ~825 names a day start the session under $2 and **14-32 of
+them cross to $2+ intraday, 5-11 of those clearing the +25% gate** — against a
+full gate of only 9-20 names a day. A close-only row would classify a name that
+ran $1.80 to $3.20 and back to $1.95 as a penny stock and lose it.
+
 Tier B is deliberately a **union**. A 20% move on weak volume is a mover without
 participation; an RVOL 4 name that went nowhere is participation without a move.
 Both break the pairing the playbook assumes, and that pairing is exactly what
