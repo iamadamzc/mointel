@@ -94,8 +94,8 @@ The route is right and the payload argument is sound.
 
 The problem is how the tool reaches the server. `npm run archive:export` landed
 in `8170f58`; production runs `fd9556f`, **six commits back** (`git rev-list
---count fd9556f..8170f58`; HEAD is nine). R&D's charter and
-findings note both said it "needs no deploy" and the note's table records "code
+--count fd9556f..8170f58` — ask the command, not this line). R&D's charter
+and findings note both said it "needs no deploy" and the note's table records "code
 on production: no" — but `worker/archive-export.ts` says *Usage, on the server*
 in its own header and takes `--market-db /var/lib/mointel/market.db`, a path
 that exists only on the box. The code has to be there. R&D's charter is
@@ -134,6 +134,25 @@ Two findings went to R&D rather than being chased here: 19 August holds 16 of
 the schedule's 19 checkpoints, and the intelligence columns inside the rows may
 be degraded on exactly the days research was failing. Both are in
 [rnd.md](rnd.md).
+
+**When you cut the extract, do not start it at 19 August.** *Moved here by
+Integration 2026-08-23 — R&D established it and wrote it in its own charter,
+but this thread is the one that runs the command, and the paragraph above
+points at exactly the wrong window.*
+
+R&D can now age each grade: `analysis_version_id` is on every ticker row, so
+`ageCatalystGrades` says how many sessions old the analysis behind a grade is.
+Zero means produced that day; three means research has not revisited the name
+in three sessions while `intelligence_status` still reads `AVAILABLE`. That is
+the difference between a grade and evidence about the day it is attached to.
+
+Ages are measured from the first version seen *inside the window*, so a window
+starting on 19 August censors every grade in it — the first day reads as
+freshly graded and the rest as barely aged, which is precisely how a stalled
+pipeline disguises itself. **Take all five dates on record, and further back
+if production holds more.** It costs nothing: a few MB either way, and the
+`--from` / `--to` bounds are what would do the damage. Leaving them off is the
+safe default.
 
 **6. The next deploy carries `lib/archive/` to production whether or not anyone
 intends it.** *Noted by Integration 2026-08-23; a note for the deploy summary,
