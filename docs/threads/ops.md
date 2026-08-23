@@ -225,7 +225,32 @@ and runs as the `mointel` user.
 
 One reassurance from checking rather than assuming: that `rmSync` is the **only**
 recursive delete anywhere in `worker/`. This is one bad line, not a pattern — but
-it sat in the one place the gate does not look, and the next one will too.
+
+**~~One bad line, not a pattern.~~ It is a pattern. Corrected by Integration
+2026-08-23, same day it was written.** Item 3a is the second instance and the
+shape is identical: a `worker/` CLI that nothing in the 1173-test suite
+exercises, carrying a written promise about production safety that is false on
+the production box. `archive-export.ts` said `--dry-run` and deleted a
+directory. `test-stream.ts` says synthetic prints *"can never contaminate real
+market state"* and writes them to the live store on the only machine where that
+sentence matters. Neither is a typo; both are a guarantee documented in the file
+and contradicted by the file.
+
+Two in one day, found by two different threads, neither by a test. The narrow
+question below stands and is now better evidenced: it is not about deleting.
+**Any `worker/` CLI that resolves a production path should be reachable by the
+gate, and its documented safety property should be the thing the test asserts.**
+Both of these were caught by a person reading code shortly before running it,
+which is not a control.
+
+A note against my own record, since this thread asks other threads to keep one:
+**I proposed running `market:test` on that box.** Ops answered it with a diff
+instead of a connection and found 3a in the process. Had it taken the suggestion
+at face value, FAKEPACA prints would have gone into the 837 MB live store. The
+suggestion was mine; the discipline that caught it was not.
+
+The original line, kept because the reasoning was sound and the conclusion was
+wrong: it sat in the one place the gate does not look, and the next one will too.
 
 Not a proposal to test all seventeen. The narrow question is whether any CLI that
 resolves a production path and can delete should be reachable by the gate at all.
