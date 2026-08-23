@@ -187,6 +187,7 @@ Do not restate these in a thread doc; link to them.
 | The research build plan and its phase gates | [../RESEARCH-MILESTONE-PLAN.md](../RESEARCH-MILESTONE-PLAN.md) |
 | The UI/UX audit — the design authority | [../Design/design-audit-report.md](../Design/design-audit-report.md) |
 | The market archive — calls, outcomes, and what gets kept | [../DATA-ARCHIVE.md](../DATA-ARCHIVE.md) |
+| The Sheet coverage audit — 65 fields, their sources, and what replaces each | [../sheet-coverage.md](../sheet-coverage.md) |
 | The trading strategy every threshold derives from | `A:\extract_daytrade\Manual\DAY_TRADING_INSTRUCTION_BOOKLET.md` |
 
 Historical task prompts live in [`prompts/`](../../prompts). They are a record of

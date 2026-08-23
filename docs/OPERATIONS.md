@@ -50,9 +50,31 @@ are deliberately not combined.
 | Light | Green means |
 | --- | --- |
 | `MARKET: ALPACA SIP — LIVE` | socket connected **and** data arriving |
-| `RESEARCH: IDLE / WORKING (n)` | the automatic research engine is running |
+| `RESEARCH: IDLE / WORKING (n)` | the process is up and its heartbeat is fresh — **not that work is happening**, see below |
 | `ASSESSMENTS: SCHEDULED / RUNNING` | the checkpoint scheduler is alive |
 | `RESEARCH: GOOGLE SHEET — CURRENT` | the sheet loaded |
+
+**`RESEARCH: IDLE` does not mean the engine is working, and on 2026-08-22 it was
+green for 23 hours while the worker did nothing at all.** *Corrected 2026-08-23
+by Integration, after Ops and Research established the mechanism between them.*
+
+The heartbeat is an independent `setInterval`. **It survives a blocked loop** —
+so a worker hung on an unbounded fetch keeps its heartbeat fresh, keeps its
+process up, and reports `IDLE`. And `IDLE` itself conflates two states: *nothing
+to do*, and *unable to do it*. On 22 August the worker queued eight jobs at
+02:00:06 and then started nothing, completed nothing and failed nothing for 23
+hours until a restart. Nothing on this page would have told you.
+
+**The check that would have caught it, and it needs no new data:** queued jobs
+above zero, active count zero, and nothing claimed for more than a few poll
+intervals is **not idle — it is stalled.** Claiming is immediate; measured at
+nought to two minutes across every recap job that ever started. An unclaimed
+queue is definitionally wrong when claiming does not wait. Ops has proposed
+reporting this on `/api/health` and it is not built — see `threads/ops.md`.
+
+**Its limit, so this page does not create the next false reassurance:** it says
+nothing while the queue is empty. A worker hung during a quiet period still
+looks idle.
 
 The research light is the one that used to be missing. A current Google Sheet
 says nothing about whether the research engine is running, and reading it as

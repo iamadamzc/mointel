@@ -696,6 +696,11 @@ today — marked deliberately irrelevant.** That fourth is the annotation no oth
 thread will make: *a field no surface renders can still be the only witness to a
 question nobody has asked yet.*
 
+**It lives at [`../sheet-coverage.md`](../sheet-coverage.md).** *Integration's
+call, made because the item did not name a home and a cold session would have
+had to ask.* Not inside a charter: 65 rows with four annotation columns would
+swamp one, and charters have to stay readable to be read.
+
 **One table, not three.** *Integration's call.* Research produces both
 inventories; Design annotates which of the 65 must survive on screen; R&D
 annotates which it needs for the archive. **The table stays in one place and
