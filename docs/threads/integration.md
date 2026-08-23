@@ -257,7 +257,13 @@ number from a genuine check — which is why none felt like a guess, and why
 review does not catch them. The question is never *did I measure it* but
 **what was I measuring, and is that the thing I am about to say?**
 
-**And Ops's repair is better than the withdrawal.** The stall rule survives, but
+**Put this first if the section is ever read as a checklist.** *Ops's ordering,
+and it is right.* The instinct on being caught is to **withdraw the whole
+claim** — which is cheap, looks rigorous, and throws away a correct detector
+along with its wrong reasoning. **Re-deriving is more work and is the only way
+to find out which half was wrong.**
+
+**Ops's repair is the worked example.** The stall rule survives, but
 the load-bearing part turned out to be the **conjunct, not the timer**: a
 legitimately slow worker has `activeCount > 0`, which `activeCount == 0` already
 excludes. So the timer goes in minutes and generously and the conjunct does the
@@ -267,8 +273,40 @@ only find that out by re-deriving it rather than defending it.
 **What Ops refused to claim is the other half.** `activeCount` has no history —
 *that absence is the whole problem* — so the false-positive rate of the
 **conjunction** is unmeasured; only the timer alone was ever tested. So it
-**ships in shadow and is compared before it pages anyone.** That is the general
-answer whenever a detector's error rate cannot be measured before deployment.
+**ships in shadow and is compared before it pages anyone.**
+
+**Broader than I first wrote it, per Ops.** Shadow-first is not only for
+detectors whose error rate cannot be established beforehand. It is for **any
+check whose false-positive cost is paid by a human under pressure.** The flaky
+`releaseBootstrap` test had a perfectly measurable failure rate and still should
+not have been trusted mid-incident — because **the cost is not the wrong answer,
+it is the operator learning to re-run until green.** That cost is behavioural
+and it is paid once and kept.
+
+### For "nothing changed", diff at directory scope — never a curated list
+
+**Fifth instance, and Ops found it by turning the tell above on this desk's most
+load-bearing claim rather than agreeing with it.** *"The ingestion path is
+byte-identical to production"* — the sentence that retired the two-candidate-
+causes risk before Monday — was measured over a **hand-picked file list**. The
+list omitted `lib/market/config.ts`, which `worker/alpaca.ts` imports at line 11
+and calls at line 17. **A file the market worker loads sat outside a measurement
+behind a claim about what the market worker runs.**
+
+**A curated list encodes the assumption under test** — that you already know
+what is in the path — so it cannot fail in the one way that matters. Diff the
+directory.
+
+The conclusion survived, on two grounds neither of which was the one given: the
+`config.ts` change is purely additive, zero removed lines and a new unreferenced
+export; and the worker does not restart, so it runs `fd9556f` whatever ships.
+And the claim Monday actually rests on **was** measured properly — `git diff
+80437c3 fd9556f` over `lib/market` and `worker/` is empty **at directory
+scope**.
+
+It fits the tell exactly: the diff was true, the files were right, the output
+was genuinely empty. **What was measured was "these eight paths did not
+change". What was said was "the ingestion path did not change".**
 
 ## A rule that cannot tell two cases apart
 
