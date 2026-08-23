@@ -299,6 +299,21 @@ the Google Cloud project. The failure is caught and returns null, so
 `meta.sourceUpdatedAt` is **always null** and nothing surfaces it. We cannot
 currently see when the Sheet was last written. Enabling it is a console action
 and has gone to [ops.md](ops.md), not here: it is not a code change.
+
+**It was downgraded on 2026-08-23, and the downgrade is about the fix rather
+than about the finding.** Ops checked the code and reported it a handled,
+non-retrying condition — `googleSheets.ts:108` sets
+`driveModifiedTimeAvailable = false` after the first failure so it stops
+asking. That is correct, and it is correct **since `652d1a7`**. Before that
+commit `loadSheetPriors` constructed a fresh provider every worker cycle, so
+the flag reset to `true` on every call and the 403 **was** being retried
+roughly 700 times an hour.
+
+Recorded this way deliberately, at Research's request: **fixed**, not *never
+happened*. The provider hoist is what made it harmless, and a later reader
+should not take the downgrade as evidence the original finding was wrong. What
+remains is only the missing timestamp — genuinely low value, one console
+toggle, not worth a special trip.
 Ops revoked a `chatgpt-mcp-7d` review session on 2026-08-23 that had been
 unused since 19 August — a different path, almost certainly unrelated to a
 Sheet writer, and named here only so nobody links them by coincidence later.
