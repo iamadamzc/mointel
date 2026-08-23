@@ -93,7 +93,8 @@ no research text, nothing about the trader — rather than a 250 MB+ snapshot.
 The route is right and the payload argument is sound.
 
 The problem is how the tool reaches the server. `npm run archive:export` landed
-in `8170f58`; production runs `fd9556f`, four commits back. R&D's charter and
+in `8170f58`; production runs `fd9556f`, **six commits back** (`git rev-list
+--count fd9556f..8170f58`; HEAD is nine). R&D's charter and
 findings note both said it "needs no deploy" and the note's table records "code
 on production: no" — but `worker/archive-export.ts` says *Usage, on the server*
 in its own header and takes `--market-db /var/lib/mointel/market.db`, a path
@@ -147,6 +148,18 @@ reason to hold a deploy. It is worth knowing because R&D declined the
 run-it-on-the-server route partly on the grounds that it would put code on
 production, and the ordinary release does that anyway. If that is unwanted,
 `export-ignore` is the lever.
+
+Verified 2026-08-23, because "inert" is a claim about the deploy path and the
+deploy path is this thread's: the `package.json` change between `fd9556f` and
+HEAD is **three script entries and nothing else**, and `package-lock.json` is
+untouched. So `npm ci` and `npm run build` on the server are unaffected — the
+one way inert code could still break a release. Confirmed, not assumed.
+
+**Unpushed, which matters more than the payload.** Six commits including
+`8170f58` exist only on the development machine; `origin/main` does not have
+them. `push-release.sh` ships a sha via `git archive` from the local repo, so a
+deploy would *succeed* and put code on production that exists in no remote. If
+route 1 is chosen, push first.
 
 ## Closed
 
