@@ -105,6 +105,19 @@ would distinguish healthy from about-to-be-wrong — `meta.calendar_fetched_at`,
 plus whether the cached span still covers today — is not on `/api/health` or in
 `mointel-status`. A candidate, not a decision.
 
+*State read directly 2026-08-23 08:32 UTC and healthy — fetched minutes earlier,
+spans to 2026-09-04, covers Monday. The gap is that reading it took an ad-hoc
+SQL query against production, which is the whole point of the item.*
+
+**3a. `worker/test-stream.ts` writes to the production store when run on the
+server.** Its guard is `process.env.MARKET_DB_PATH ? baseConfig.dbPath :
+data/market-test.db` — the safe branch is the one where the variable is *unset*,
+and `/etc/mointel/mointel.env` sets it. So the file's own promise that synthetic
+prints "can never contaminate real market state" is exactly inverted on the only
+machine where contamination would matter. Nobody has run it there; found by
+reading. The fix is to make the test store explicit rather than conditional, or
+to refuse to start when the resolved path is the live store.
+
 **4. The release-bootstrap test is flaky, and it has now gone red on a real
 deploy decision.** `tests/desk/releaseBootstrap.test.ts` fails intermittently
 under the full parallel suite and passes in isolation and on a clean re-run.
@@ -219,20 +232,77 @@ resolves a production path and can delete should be reachable by the gate at all
 
 ## Monday 2026-08-24 — the plan, and the one judgement call in it
 
-Three open items all want the same window and can be done in one sitting at the
-04:00 ET premarket open. In this order, because the first is time-critical and
-the others are not:
+**Monday now reduces to one item that truly needs the open, plus the feed you
+would watch anyway.**
 
-1. **Watch the market worker take its first bars.** It has connected,
-   authenticated and subscribed since the 01:27:36 UTC restart, but has never
-   seen data flow. `messageAgeSeconds` moving off `null` is the proof. This is
-   the only item that must happen at the open.
-2. **Sample the WAL for two minutes under real write load** (item 2). Flat size
-   with an advancing mtime means checkpoints keep up and 507 MB is just a
-   high-water mark; growth means checkpoint starvation. Saturday's sample was
-   taken on a closed market and could not distinguish them.
-3. **Read the calendar cache age** (item 3) — `meta.calendar_fetched_at` and
-   whether the cached span still covers the date.
+1. **Sample the WAL for two minutes under real write load** (item 2). This is
+   the only thing that genuinely requires the open: nothing synthetic
+   reproduces premarket reader/writer pressure against an 837 MB store, and
+   whether checkpoints keep up under exactly that pressure is the whole
+   question. Flat size with an advancing mtime means reuse and the 507 MB is a
+   high-water mark; growth means starvation. Do not let a quiet-market sample
+   stand in for it — Saturday's could not tell the two apart.
+2. **Watch the market worker take its first bars.** `messageAgeSeconds` moving
+   off `null` is the proof. Worth eyes regardless, but see below: the residual
+   uncertainty here is far smaller than it looked.
+
+**Done early, 2026-08-23 08:32 UTC — the calendar cache did not need Monday.**
+It is a read against production `meta`. `calendar_fetched_at` was minutes old,
+the cache spans to 2026-09-04, and it **covers Monday 2026-08-24**. No early
+closes in the cached span. Item 3 stays open as an *observability* gap — nothing
+surfaces this number without someone going and asking — but the current state is
+verified healthy, so it is not a Monday task.
+
+### Why the bar path is better proven than "unproven" suggested
+
+Asked whether `npm run market:test` should be run against Alpaca's synthetic
+FAKEPACA stream to prove the pipeline before Monday. **No — and it turns out not
+to be needed**, because the same evidence is available for free:
+
+```
+git diff 80437c3 fd9556f -- lib/market worker/alpaca.ts worker/runtime.ts
+```
+
+is **empty**. The bar path — socket, parse, engine ingestion, store write — is
+byte-identical between `80437c3`, which was ingesting real SIP bars through
+Friday's close (its `messageAgeSeconds` of 90,164 is that proof), and `fd9556f`,
+which the current worker runs. Everything between those two releases is charters,
+a launcher script and the research retry exemption.
+
+So the code path is not unproven; it was carrying real bars on Friday. What is
+unproven is narrower: whether *this process instance's* subscription delivers.
+That is exactly what Monday shows and exactly what a synthetic stream cannot
+substitute for, since FAKEPACA would exercise the same already-proven code over
+a different socket.
+
+### Why `market:test` is a no against this account anyway
+
+Two reasons, one of which is not a judgement call:
+
+**The "separate test database" guard inverts on the server.**
+`worker/test-stream.ts` sets `dbPath: process.env.MARKET_DB_PATH ?
+baseConfig.dbPath : data/market-test.db`. The protection holds only when that
+variable is **absent**. `/etc/mointel/mointel.env` sets
+`MARKET_DB_PATH=/var/lib/mointel/market.db`, so anything run on the box with the
+service environment writes synthetic FAKEPACA prints **into the production
+store**. The header's promise that synthetic prints can never contaminate real
+market state is true locally and false exactly where it matters.
+
+**The connection budget is unresolved, and that is the answer.** `streamTest`
+and `streamSip` are the same host — `wss://stream.data.alpaca.markets`, differing
+only in path — and `findAlpacaCredentials()` resolves one account key pair;
+there are no separate test credentials in `.env.example` or anywhere else.
+Whether Alpaca counts `/v2/test` against the account's single data-stream
+connection is not something this thread can establish from here, and the way to
+find out empirically is to risk the connection. *Probably not* is the standard
+that has cost this desk the most: a second connection does not error, it
+silently displaces the live one. Not worth it to re-prove code that Friday
+already proved.
+
+If it is ever run, it belongs on the local machine with `MARKET_DB_PATH` unset
+and production not holding a SIP connection — and `npm run market:sim` belongs
+nowhere near that box at all, since claiming the store for `SIMULATOR` mode
+clears live session state first.
 
 **The judgement call: when to end the market worker's release drift.**
 
