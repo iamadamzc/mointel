@@ -92,6 +92,24 @@ over** rather than doing it. Add it to the other charter's *Open items*, say so,
 and stop. The exception is a live production emergency, which Ops always owns
 outright.
 
+**Every thread commits and pushes its own work, without asking.** *Recorded
+2026-08-24 by Integration under the order-and-process delegation, after nine
+commits sat unpushed because the only thread that had been pushing went idle.*
+
+Two habits had formed that no rule ever required:
+
+- **Asking permission to commit.** Nothing in these rules says to. The rule that
+  matters is *stage by explicit path* — not *ask first*. A thread that has
+  finished a piece of work commits it.
+- **Treating push as Ops's.** *"Only Ops deploys"* is below and it is right.
+  **Push is not deploy.** Pushing is a backup to a remote; it changes nothing on
+  the server and needs no window. Any thread pushes.
+
+The one real constraint is the other way round and it belongs to the deploy:
+**a deploy must follow a push**, because `push-release.sh` archives out of the
+local repo and would otherwise put code on production that exists in no remote.
+That is Ops's check at deploy time, not a reason to centralise pushing.
+
 Only Ops deploys. Design and Research produce commits; Ops puts them on the
 server. This is deliberate — the deploy gate has checkpoint windows and pin
 rules that a thread focused on a component will not have in mind.
