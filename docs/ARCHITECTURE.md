@@ -202,6 +202,38 @@ one payload, something downstream will combine them.
 
 ---
 
-## 4. Deliberate non-goals in this milestone
+## 4. Deliberate non-goals
 
-OpenAI analysis, automated SEC research, IR/newswire scraping, Dirty Float reclassification, overhang absorption conclusions, Effective Float Turnover, automated Chop/Flush Risk, buy/sell signals, order execution, broker integration, Level 2, Time & Sales UI, customer accounts and billing are all out of scope. Alpaca is used strictly as a market-data source, and the Google Sheet remains strictly read-only.
+This section was written for an early milestone and said "in this milestone"
+without naming one. Three of its entries have since shipped, so it is split
+here rather than left as a single sentence that is part true. **Corrected
+2026-08-23**, handed over by Design after the UI audit found production doing
+things this paragraph called out of scope.
+
+**Shipped. No longer non-goals, and this list is the evidence:**
+
+- **OpenAI analysis** — `lib/research/interpret/`. Live in production.
+- **Automated SEC research** — `lib/research/sec/`. The 2026-08-21 UI audit
+  observed EDGAR links and accession numbers on real dossiers.
+- **IR and newswire resolution** — `lib/research/catalyst/irRegistry.ts`,
+  `companySourceContract.ts`, `feeds.ts`, `domainPolicy.ts`. Design flagged the
+  first two; this one was found while checking and is equally shipped.
+
+**Not built, and genuinely open — do not read this as a decision.** Dirty Float
+reclassification, overhang absorption conclusions, Effective Float Turnover and
+automated Chop/Flush Risk. These are **audit §11 item 3**, an open product
+question awaiting the trader's answer. The old paragraph was the only written
+answer to it, and that written default of "no" may well still be right — but it
+sat inside a sentence proven stale in part, so it could not be cited on its own.
+It is not answered here. See [Design/design-audit-report.md](Design/design-audit-report.md) §11.
+
+**Standing non-goals. Still true, and not milestone-scoped:** buy/sell signals,
+order execution, broker integration, Level 2, Time & Sales UI, customer accounts
+and billing. Alpaca is used strictly as a market-data source.
+
+**The Google Sheet is read-only, and that is verified rather than asserted:** the
+credentials carry `spreadsheets.readonly` and `drive.metadata.readonly`
+(`lib/data/providers/googleSheets.ts:22`), and nothing in `lib/`, `worker/` or
+`app/` writes back. What the Sheet *is* — four ChatGPT scheduled tasks, not a
+human review — and the decision to treat it as a migration artefact are recorded
+in [threads/research.md](threads/research.md) item 5, not here.
