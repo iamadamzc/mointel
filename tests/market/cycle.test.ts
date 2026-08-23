@@ -215,7 +215,7 @@ describe('retracement and reset', () => {
       ...base(22, 1.3),
       bar('2026-07-01', 3.0, 3.4, 40_000_000),
       bar('2026-07-02', 1.6, 2.4, 12_000_000),
-      ...Array.from({ length: 10 }, (_, i) => bar(`2026-07-${10 + i}`, 1.5, 1.6, 700_000)),
+      ...Array.from({ length: 4 }, (_, i) => bar(`2026-07-${10 + i}`, 1.5, 1.6, 700_000)),
     ];
     expect(arc(resolveCycle(bars)).phase).toBe('SHADOW');
 
@@ -238,5 +238,47 @@ describe('threshold edges', () => {
   it('still rejects a move just under the rule', () => {
     const bars = [...base(22, 1.0), bar('2026-07-01', 1.19, 1.2, 30_000_000)];
     expect(isCycleStart(bars, bars.length - 1)).toBe(false);
+  });
+});
+
+describe('shadow lifetime', () => {
+  function ranThenQuiet(quietSessions: number): CycleBar[] {
+    const bars: CycleBar[] = [
+      ...base(22, 1.3),
+      bar('2026-07-01', 3.0, 3.4, 40_000_000),
+      bar('2026-07-02', 1.6, 2.4, 12_000_000),
+    ];
+    for (let i = 0; i < quietSessions; i += 1) {
+      bars.push(bar(`q${i}`, 1.5, 1.6, 700_000));
+    }
+    return bars;
+  }
+
+  it('keeps the shadow while the old move still predicts the next one', () => {
+    // Inside ten sessions of the high, re-ignition runs well above baseline.
+    expect(arc(resolveCycle(ranThenQuiet(5))).phase).toBe('SHADOW');
+  });
+
+  it('expires the cycle once the shadow stops carrying information', () => {
+    // Past ten sessions the rate is back to baseline; a stale arc would invite
+    // a giveback measured against a high that no longer matters.
+    expect(resolveCycle(ranThenQuiet(15)).phase).toBe('NO_CYCLE');
+  });
+
+  it('does not expire a cycle that is still being traded', () => {
+    const bars = [...ranThenQuiet(0)];
+    for (let i = 0; i < 6; i += 1) bars.push(bar(`h${i}`, 1.5, 1.6, 9_000_000));
+    // Still heavily traded, so it never enters the shadow to expire from.
+    expect(arc(resolveCycle(bars)).phase).toBe('BACKSIDE');
+  });
+
+  it('treats sustained volume as the new normal', () => {
+    // Relative volume is relative. A name that trades nine million shares every
+    // session for a month is not unusually active any more, it has re-based —
+    // and the cycle ends, because nothing is elevated. Worth pinning because it
+    // is easy to read as a bug: the volume never fell.
+    const bars = [...ranThenQuiet(0)];
+    for (let i = 0; i < 25; i += 1) bars.push(bar(`h${i}`, 1.5, 1.6, 9_000_000));
+    expect(resolveCycle(bars).phase).toBe('NO_CYCLE');
   });
 });

@@ -48,6 +48,30 @@ export const BACKSIDE_RETRACEMENT = 0.5;
 export const SHADOW_RVOL = 2;
 export const SHADOW_SESSIONS = 3;
 
+/**
+ * Sessions past the cycle high after which the shadow stops meaning anything.
+ *
+ * Measured rather than chosen. Across 24,114 symbol-sessions of production
+ * daily bars, the chance a NEW cycle begins on a given session, by distance
+ * from the previous cycle high:
+ *
+ *   1-5 sessions    9.60%     7.3x baseline
+ *   6-10            3.34%     2.6x
+ *   11-20           1.48%     1.1x
+ *   21-40           1.76%     1.3x
+ *   baseline        1.31%
+ *
+ * A name that has just run is seven times likelier to run again inside a week,
+ * and that is gone by roughly ten sessions. Past this the arc is stale, so the
+ * cycle expires rather than lingering. An old high that still matters as
+ * resistance is a different quantity and belongs in historicalResistance.
+ *
+ * Caveat carried deliberately: this measures RE-IGNITION, not whether the old
+ * high caps price, and the population is names the desk researched, so the
+ * baseline is among movers rather than among all stocks.
+ */
+export const SHADOW_LIFETIME_SESSIONS = 10;
+
 export interface CycleBar {
   tradingDate: string;
   high: number | null;
@@ -171,6 +195,8 @@ export interface CycleOptions {
   shadowRvol?: number;
   /** Consecutive quiet sessions that end a cycle. */
   shadowSessions?: number;
+  /** Sessions past the high after which the cycle expires entirely. */
+  shadowLifetimeSessions?: number;
 }
 
 export type CycleResult = CycleArc | { phase: 'NO_CYCLE' };
@@ -228,6 +254,7 @@ export function resolveCycle(
   const backsideRetracement = options.backsideRetracement ?? BACKSIDE_RETRACEMENT;
   const shadowRvol = options.shadowRvol ?? SHADOW_RVOL;
   const shadowSessions = options.shadowSessions ?? SHADOW_SESSIONS;
+  const shadowLifetime = options.shadowLifetimeSessions ?? SHADOW_LIFETIME_SESSIONS;
 
   const recentRvol: Array<number | null> = [];
   for (let i = bars.length - 1; i >= 0 && recentRvol.length < shadowSessions; i -= 1) {
@@ -246,6 +273,12 @@ export function resolveCycle(
     recentRvol.length === shadowSessions &&
     sessionsInCycle > shadowSessions &&
     recentRvol.every((rvol) => rvol !== null && rvol <= shadowRvol);
+
+  /*
+   * A stale arc is worse than no arc: it invites a giveback measured against a
+   * high that stopped mattering weeks ago.
+   */
+  if (wentQuiet && sessionsSinceHigh > shadowLifetime) return { phase: 'NO_CYCLE' };
 
   let phase: CyclePhase;
   if (wentQuiet) {
