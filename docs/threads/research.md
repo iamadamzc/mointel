@@ -73,23 +73,38 @@ manual release.
 tags these correctly. Excluding billing-class failures from the attempt count
 makes a top-up self-healing.
 
-**Done 2026-08-23 in `2433470`** — committed, not yet deployed. Billing failures
-back off and record but never become terminal, so a top-up heals the board on
-its own; backoff is capped at fifteen minutes so an exempt failure cannot
-schedule a name past the close. Hand to Ops for the next deploy.
+**Done 2026-08-23 in `2433470`, and now deployed.** Ops shipped it as part of
+`fd9556f` on 2026-08-23; the research worker restarted onto it, so the exemption
+is live in production. Billing failures back off and record but never become
+terminal, so a top-up heals the board on its own; backoff is capped at fifteen
+minutes so an exempt failure cannot schedule a name past the close.
 
 Worth doing next, and deliberately not built here: **the cooldown is per-ticker
 when the fact is global.** "The account is empty" is one truth, and twenty-one
 tickers each discovering it separately is twenty-one probes for one answer. A
 single global gate would be strictly better.
 
-**2. Interpreter tiering was designed but never exercised.** `Terra` is the
+**2. Ten QUEUED jobs the health endpoint does not see.** *Handed over from Ops,
+2026-08-23 — found while verifying a deploy, not investigated here.*
+
+`research_jobs` on production holds `QUEUED` 10, `COMPLETE` 120, `PARTIAL` 619,
+`FAILED` 215, while `/api/health` reports `research.queuedJobs: 0` and
+`state: IDLE`. Either those ten are abandoned rows from an earlier trading date
+that nothing will ever pick up, or the health count is scoped in a way that
+hides real backlog. Both are worth knowing, and they want opposite fixes.
+
+Related and probably the same scoping question: `research.lastCompletedAt` read
+`2026-08-21T22:25:11.901Z` before the worker restarted and `null` after, while
+`max(completed_at)` in the store still returns that same timestamp. No job ran in
+between. Ops did not dig further — it is display logic over this thread's data.
+
+**3. Interpreter tiering was designed but never exercised.** `Terra` is the
 default full research model. The abstraction was deliberately preserved so `Sol`
 could take difficult or conflicting dossiers and `Luna` could do low-cost change
 detection. Nothing routes to them today, and cheap change detection is the
 obvious lever on a 6M-token day.
 
-**3. `RESEARCH_RESOLVER_SEARCH_CONTEXT` stays at its current default.** Low-context
+**4. `RESEARCH_RESOLVER_SEARCH_CONTEXT` stays at its current default.** Low-context
 resolver searches were explicitly not enabled. Do not turn them on without
 asking.
 

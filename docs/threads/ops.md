@@ -35,10 +35,16 @@ that the SIP connection was never touched: `mointel-market` `NRestarts=0`,
 entries at all in the deploy window. Web, research and assessments restarted at
 01:12:50–51 UTC onto the new release.
 
-**Only one rollback pin actually exists** — `rollback-baseline` = `372f5eb`
-(schema v18). An earlier version of this charter claimed `80437c3` was pinned
-too. It is not; `pins.sh list` on the server shows the one entry. That matters,
-see Open item 2.
+The market worker was restarted separately at 01:27:36 UTC to clear a release
+drift — see Closed. Every process on the store is now on `fd9556f`.
+
+**One rollback pin exists: `rollback-baseline` = `372f5eb` (schema v18).** This
+charter previously said "rollback pins retained: `80437c3` and the `372f5eb`
+baseline". That was wrong — `80437c3` was never pinned. The line came from a
+deploy transcript, where `[prune] retained …` lists every release still on disk,
+most of which are held by the keep-3 count and not by a pin at all. **`pins.sh
+list` is the authority on what is pinned; a deploy transcript is not.** Retained
+and pinned are different words on that output and only one of them is a promise.
 
 The 2026-08-21 deploy notes, kept because both are now proven in production: the
 preflight bootstrap that would have blocked every future deploy, and an enum
@@ -47,27 +53,24 @@ have now been exercised, not just the fallback.
 
 ## Open items
 
-**1. The market worker is running code from a release, and the next deploy will
-delete it.** `mointel-market` has not been restarted since Fri 2026-08-21 12:45
-UTC, which is correct — `RESTART_MARKET=no` is what protects the SIP connection.
-The consequence is that its cwd is the *resolved* path
-`/opt/mointel/releases/80437c3…`, not the `current` symlink, and it has now
-survived two deploys there. `prune.sh` protects only the **active** release and
-**pinned** shas, ordered by directory mtime, keeping 3. After the next deploy the
-newest three are that sha, `fd9556f` and `32e47c9`; `80437c3` is neither active
-nor pinned, so it gets `rm -rf`'d **out from under the running worker**. Already
-open files survive by inode, but Node resolves lazily — the first module the
-worker has not yet imported, on a reconnect or an error path, fails with ENOENT
-during exactly the incident it would be handling.
+**1. Nothing reports release drift, which is why this was invisible.** The
+`RESTART_MARKET=no` design is right and stays, but its consequence — a service
+running older code than `current` points at — has no reporting anywhere. It
+surfaced only because someone went looking at `/proc/<pid>/cwd` for an unrelated
+reason.
 
-Three ways out, cheapest first: pin `80437c3` before the next deploy; or restart
-the market worker in a closed window so it re-resolves onto `current`; or teach
-`prune.sh` to refuse a release that is some running process's cwd, which is the
-only one that fixes it permanently. Nothing to do before Monday — the hazard
-arrives with the next deploy, not with time.
+**The call: report it, do not gate on it, and put it in `status.sh`.** A deploy
+must not fail because the market worker is deliberately still on the old
+release — that is the feature. But `mointel-status` should print each running
+service's resolved cwd against the active release and say plainly which ones
+have drifted, so it is visible every time anyone looks rather than only when
+someone thinks to check. The deploy summary should echo the same line, since a
+deploy is exactly the moment drift is created. Not built; a deploy-path change
+should not be shipped in the same window as the incident that prompted it.
 
 **2. The WAL is a 507 MB high-water mark that nothing truncates.** Measured, not
-guessed — see the section below. Not urgent; disk is 13% used.
+guessed — see the section below. Not urgent; disk is 13% used. Next step is
+agreed: sample it Monday premarket and decide then.
 
 **3. Nothing surfaces the age of the calendar cache.** The failure modes in
 §"When the Alpaca calendar fetch fails" are all silent, and the one number that
@@ -82,6 +85,37 @@ and with changes applied. Unexplained. A flaky test in the deploy path is worth
 chasing before it has to be trusted during an incident.
 
 ## Closed
+
+**~~The market worker is running a release the next deploy will delete.~~**
+Fixed at the root 2026-08-23, in the closed-market window, rather than lived
+with. The unit says `WorkingDirectory=/opt/mointel/current`, which is correct —
+but Linux resolves a symlink at process start, so the worker's cwd had been the
+`80437c3` release directory since Fri 2026-08-21 12:45 UTC and had survived two
+deploys. It was therefore running `80437c3`'s code while every other service was
+on `fd9556f`: drift nobody chose.
+
+Order of work, deliberately: pin `80437c3` first as insurance, then restart, then
+unpin.
+
+`systemctl restart mointel-market` at 01:27:36 UTC. Old process took SIGTERM and
+logged `shutting down`; systemd reported `Deactivated successfully`; **no orphan
+survived** — nothing on the box referenced `80437c3` afterwards, which matters
+because an orphaned worker is what silently steals the one permitted SIP
+connection. The new worker came up on `/opt/mointel/releases/fd9556f…` and
+reached `connected` → `authenticated SIP` → `whole-market bars subscribed` three
+seconds after start, having reloaded 13,115 equities, 13,113 baselines and the
+session backfill on the way. Health `ok: true`, `connection: STREAMING`,
+heartbeat 0s. All three processes holding the store now resolve to `fd9556f`.
+
+`80437c3` was then unpinned — nothing needs it now, `32e47c9` is the immediate
+rollback target and is retained by count, and leaving a pin behind would quietly
+disable retention for a release with no remaining role. `prune.sh --dry-run`
+confirms 0 removals today; `80437c3` becomes a candidate on the next deploy,
+which is now the correct outcome.
+
+**What is still unproven:** the market was closed, so this shows the stream
+connects, authenticates and subscribes — not that bars flow. Monday's premarket
+is the proof.
 
 **~~Two commits are waiting to be deployed.~~** Shipped 2026-08-23 as part of
 `fd9556f`, which carried eight commits: `2433470` (the billing-class retry
