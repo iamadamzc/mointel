@@ -300,10 +300,29 @@ the `Gap` label — which additionally needs `aa98b70` deployed, since productio
 is still `f383ddd`. Discovery reads *"populates from 04:00 ET on 2026-08-24"*, so
 there is nothing to sort until premarket.
 
-**One scheduling trap, Ops's to fix:** the review token issued for this look
-expires **03:56 ET Monday**, four minutes before `PREMARKET_START_MIN` opens the
-session at 04:00. A twelve-hour session issued Sunday afternoon lands there by
-arithmetic. Monday's verification needs a token issued after premarket begins.
+**A scheduling trap, since resolved.** The token first issued for this look
+expired **03:56 ET Monday**, four minutes before `PREMARKET_START_MIN` opens the
+session at 04:00 — a twelve-hour session issued Sunday afternoon lands there by
+arithmetic. Ops reissued as session 13, running to 11:59 ET Monday and sized
+against `PREMARKET_START_MIN` rather than eyeballed. **Resolved; recorded because
+the failure mode is a class, not an incident.**
+
+### Third look — `aa98b70` deployed as `5ee47d8`, 16:17 ET Sunday
+
+**The new build is live, confirmed by content rather than by report:** the `Move`
+button's tooltip reads *"Change from the most recent session close"*, a string
+that exists only in `aa98b70`. Session phase `CLOSED`, so the button reads
+`Move`.
+
+**This does NOT verify the label fix, and the reason is worth stating.** At
+`CLOSED` the new code's default branch renders `Move` — which is exactly what
+the old hover-only code rendered too. **The two are indistinguishable at this
+session phase.** Confirming the deploy landed is not confirming the behaviour
+changed; the only phase that proves the visible text moves with the session is
+one where it differs, and the first is premarket's `Gap` at 04:00.
+
+A check that cannot fail is not a check. Recorded so nobody reads "looked at it
+after the deploy" as "verified".
 
 **Item 3 — settled: none of the four in Phase 2.** The §6 column set is
 therefore **final at eight** and no row design waits on this. Chop Risk, Flush
