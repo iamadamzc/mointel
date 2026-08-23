@@ -111,6 +111,31 @@ cannot be cited on its own. Design has flagged this rather than editing a shared
 document; the fix is either to date-scope the section to the milestone it
 described or to split the still-true entries out of it.
 
+## `git status` does not say who
+
+**Added 2026-08-23 after this thread got it wrong twice.** I reported
+`docs/threads/rnd.md` as "held by R&D since 04:45" on two separate occasions.
+It was not R&D's work. The uncommitted content was **Design's Q6/Q7 handover**,
+written into R&D's charter exactly as the handoff rule requires, and R&D
+committed it as Design's in `11f7632`. R&D nearly went looking for work it had
+already done.
+
+The inference was: `rnd.md` is modified, `rnd.md` is R&D's charter, therefore
+R&D is holding it. **Every step is true except the conclusion.** `git status`
+reports that a path changed. It does not report which session changed it, and
+no local git command does.
+
+This is not a stray mistake, it is **created by our own handoff rule**. "A
+thread that finds work belonging to another writes it into that charter's Open
+items" means charters are routinely edited by threads that do not own them. So
+a modified charter is *weak* evidence about its owner and often points at
+someone else entirely.
+
+What to do instead, in order of cost: **ask the thread**, which is one message
+and always correct; read the content of the diff, since a handover reads
+nothing like an owner's own work; or say "`rnd.md` is modified" and stop,
+rather than naming a holder. Never report a holder from `git status` alone.
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin

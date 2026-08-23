@@ -212,6 +212,15 @@ As of the last session, **2026-08-23**:
   working toward removing it. That is a reasonable call, not a stall — but it
   is a pause, and a reader of this line was previously told scoping was under
   way.
+- **The assessment record begins 2026-08-17T20:00Z and cannot be extended
+  backwards.** That is the evening the assessment engine shipped and the first
+  checkpoint the desk ever wrote. *Established by R&D 2026-08-23, after it
+  recommended a wider extract and the trader authorised one that cannot exist:*
+  the delivered extract was already cut unbounded, so a wider range returns the
+  same five days. **Do not spend a cycle fetching more history; there is none.**
+  Every question resting on `desk_assessments` is bounded below by that date
+  and grows only in real time. The archive can be re-derived, re-measured and
+  re-joined at will — no run buys a day of it.
 - Credentials live in `A:\AWS_creds\` — **outside the repo, and they stay there.**
   Never print, log, commit or move a credential value.
 - Project memory is at `~/.claude/projects/A--mointel/memory/` — seven files:
