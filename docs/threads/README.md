@@ -285,6 +285,45 @@ protecting nothing.**
 And the stated priority is **developing the product**. Operational caution that
 does not protect capture should not be the thing slowing that down.
 
+### What "capture is the constraint" does and does not license
+
+**Amended by R&D the same day, before anyone acted on the broader version.**
+Irreversibility is **not uniform**, and the archive spec already said so: *the
+tiers decide what is pre-fetched, not what is possible; a wrong threshold costs
+an extract, not an answer.* Twice today that was demonstrated by accident — five
+days of outcomes were reconstructed from a cold fetch after the fact, and the
+tier A cross-section was answered from nothing in minutes, 5,827 symbols over 60
+sessions.
+
+So the rule is amended rather than dropped:
+
+> **Minimum instrumentation for anything re-fetchable. For anything observable
+> only once, capture early and wide.** The test is not *will a question need
+> this* but **can this be obtained later at any price.**
+
+**Tier A is not the urgent thing, and reading it as such would be expensive.**
+It is one daily row per price-eligible name — daily bars, re-fetchable
+indefinitely. Building it early buys deferred work, not data. The corrected
+2,830/day figure makes it *larger* than anyone thought, not more perishable.
+**710k rows a year of something that was never at risk.**
+
+**The urgent thing is smaller and nobody had named it: there is no dated record
+of which symbols were tradable.** `universe` holds one row per symbol,
+**overwritten in place** — 13,089 rows carrying **two distinct `updated_at`
+stamps in the entire table**, every row currently reading active. So *"was this
+symbol tradable on 2026-08-19"* is **already unanswerable**, and every delisting
+makes the cross-section retroactively incomplete in a way **no fetch repairs**.
+The spec flags delistings as time-critical and nothing captures them.
+
+Cost: roughly 13k rows a day of symbol, date, status, tradability — **a few
+hundred kilobytes a year**, against a tier A that can wait indefinitely.
+
+**And it sharpens why `claimStoreForMode` is the worst thing on the desk.** Not
+that it deletes data — that **it deletes the only genuinely irreplaceable
+category, what the desk believed at an instant, while leaving untouched
+everything that could be re-fetched. It destroys precisely the wrong half.**
+The archive is out of its reach; `desk_assessment_tickers` is not.
+
 ## Facts every thread starts from
 
 As of the last session, **2026-08-23**:

@@ -40,6 +40,27 @@ issues that live *between* threads have no owner. The evidence, all real:
 - Assigning work. Threads are not managed; they own their areas and hand off
   explicitly. This thread maintains the structure that makes handoff possible.
 
+## `lib/market/` has no owner, and it is the second found this way
+
+**Found 2026-08-24 while routing R&D's universe-capture handover.** No charter
+claims it. Research's scope is `lib/research/`; Design's is `components/` and
+`app/`; R&D's is `lib/archive/`; Ops owns *running* the desk, not the code.
+**`lib/market/` — the demand engine, the store, session, rvol, board, cycle — is
+unclaimed, and it is the heart of the product.**
+
+That is the second module found unowned by the same route: `lib/review/` was the
+first, surfaced when Ops asked whether a fix in it was Design's or its own. Both
+times the gap was invisible until a specific piece of work needed a home. **A
+module nobody claims is not noticed by anyone reading the charters — only by
+someone holding a task and asking who takes it.**
+
+Routed the immediate work rather than the module: the universe capture goes to
+Research, on the same basis as `lib/review/` went to Ops — it is the only thread
+already writing there, having added `lib/market/cycle.ts`. **The module itself
+is deliberately left to the trader.** `lib/review/` was operational machinery and
+small; `lib/market/` decides who does most future work on this desk, and that is
+larger than a routing call.
+
 ## Relaying between threads
 
 **This thread is the message bus, as of 2026-08-23.** The shared README carries
