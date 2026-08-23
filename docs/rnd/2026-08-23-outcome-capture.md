@@ -1061,12 +1061,13 @@ ledger.* The narrow question: is anything still needed from what Task 4
    symbol-days, and 2026-08-17 to 08-21 is already in the corpus. More rows add
    nothing to a one-time validation, and validating a ledger that is being
    retired is not worth doing at all.
-4. **Task 4 is not the second grader.** The catalyst labelling that mattered to
-   Q1 is the **RESEARCH** tab. Task 4 writes ACTUAL SESSION LEADERS, PREDICTION
-   SCORECARD, OUTCOMES and PATTERNS — RESEARCH is not in that list, so it is
-   another task's output. *This thread's reading, explicitly not verified,
-   because the Sheet has not been read here.* If RESEARCH turns out to be Task
-   4's, the answer changes.
+4. **Task 4 is not the second grader — confirmed.** The catalyst labelling that
+   mattered to Q1 is the **RESEARCH** tab, and Integration verified against the
+   report that it is written by **tasks 1 and 2 only**. Task 4 writes ACTUAL
+   SESSION LEADERS, PREDICTION SCORECARD, OUTCOMES and PATTERNS. One word was
+   doing two jobs: the second *ledger* of outcomes is Task 4's and is strictly
+   worse than tape-derived; the second *grader* of catalysts is RESEARCH and is
+   untouched.
 
 **One condition, and it is the only thing worth insisting on.** The historical
 corpus must not be deleted with the task. The dated tabs for nine, 11-14 and
@@ -1081,6 +1082,36 @@ forecasts. Grading the *desk's* calls against tape-derived outcomes is a
 different and more useful thing, and this archive already holds both halves —
 `symbol_desk_day` for what the desk believed, `symbol_outcomes` for what
 happened. That is a query, not a scheduled task.
+
+##### The consequence nobody was looking for: the verdict has a corroboration path
+
+Tasks 1 and 2 are staying, because they are the desk's only float source and
+stopping them would retire pillar 5. So **the 204-row RESEARCH catalyst
+labelling keeps accumulating** — the second grader was never at risk and it is
+still growing.
+
+That matters more than it first looks. `PILLAR_4_STRONG_FORM_EXCLUDED` rests on
+prior-free replay grades: one instrument, ~15% misclassification, one window.
+Its stated overturn conditions include a catalyst measurement materially better
+than that one. **An independent second grader over the same window is the
+cheapest available check on it**, and it requires no new spend at all:
+
+- the RESEARCH tab covers 11-21 August; this archive covers 17-21, so the
+  overlap already exists
+- those grades are produced by a different model from different sources against
+  a different universe
+- and they are genuinely independent of the replay grades, because the replay
+  arm is prior-free by construction — whatever `sheetPrior` does or does not do
+  to the *stored* grades cannot reach it
+
+What it needs is one hand-off: ticker, date and catalyst grade from RESEARCH for
+17-21 August. Not read here, for the same reason as before. Agreement would
+harden the verdict; disagreement would localise the problem to one grader.
+Neither should be quoted as a rate — this archive's side still carries its own
+noise floor, and the population is still the desk's board.
+
+**Not requested.** Recorded as available and unbudgeted, because the verdict
+stands on its own and this is a strengthening rather than a dependency.
 
 #### The 65-field audit: what this thread will annotate for
 
@@ -1113,8 +1144,8 @@ archive ever captures float — and the trader's standing decision is that no
 Sheet-read float enters it — then the two are **different definitions sharing a
 name, and the boundary between them is a date.**
 
-The rule this archive arrived at the hard way, stated once so the next field
-does not have to learn it again: **any value with more than one possible
+**Generalised into `integration.md` on 2026-08-23**, so it applies to every
+field rather than to float. The rule this archive arrived at the hard way: **any value with more than one possible
 definition is stored with its basis in an adjacent column, and a change of
 definition is a change of value in that column, never a silent change of meaning
 in the same one.** `reference_basis`, `adjustment_basis` and `split_detected` all
