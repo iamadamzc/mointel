@@ -99,6 +99,14 @@ export interface InterpretOptions {
   /** Recorded on the stored analysis so replay arms are self-labelling. */
   promptVariant?: 'A' | 'B';
   /**
+   * Reconstruct the evidence as it stood at this instant. Replay only.
+   *
+   * Applied to the fingerprint as well as the bundle: a fingerprint over every
+   * stored source would describe evidence the replayed analysis never saw, and
+   * the reuse check in front of it would then compare against the wrong thing.
+   */
+  asOf?: string | null;
+  /**
    * Normalised human conclusions for deterministic comparison. Supplying this
    * is what makes the SHEET_AUTO_CONFLICT criterion reachable at all.
    */
@@ -152,7 +160,7 @@ export async function interpretTicker(
     }
   };
 
-  const sources = readSources(db, ticker);
+  const sources = readSources(db, ticker, { asOf: options.asOf ?? null });
   const fingerprint = computeEvidenceFingerprint(sources);
   const existing = readCurrentAnalysis(db, ticker);
   const fingerprintChanged = existing?.evidenceFingerprint !== fingerprint;
@@ -198,6 +206,7 @@ export async function interpretTicker(
     ticker,
     tradingDate: options.tradingDate,
     priorHumanAnalysis: options.priorHumanAnalysis ?? null,
+    asOf: options.asOf ?? null,
   });
   base.coverageIncomplete = bundle.coverage.incomplete;
 

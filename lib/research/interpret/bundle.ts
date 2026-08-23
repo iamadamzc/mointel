@@ -374,6 +374,11 @@ export interface BuildBundleOptions {
   tradingDate: string;
   priorHumanAnalysis?: SheetPriorAnalysis | null;
   cycleHistoryTradingDays?: number;
+  /**
+   * Reconstruct the bundle as it stood at this instant, by collection time.
+   * Replay only — unset is the live path and sees every stored source.
+   */
+  asOf?: string | null;
 }
 
 export function buildEvidenceBundle(
@@ -382,7 +387,7 @@ export function buildEvidenceBundle(
 ): ResearchEvidenceBundle {
   const ticker = options.ticker.trim().toUpperCase();
   const issuer = readIssuer(db, ticker);
-  const all = readSources(db, ticker);
+  const all = readSources(db, ticker, { asOf: options.asOf ?? null });
 
   // Highest authority first, then most recent, then cap. A bundle that spends
   // its budget on secondary mirrors has crowded out the filings.

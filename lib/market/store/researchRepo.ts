@@ -611,16 +611,38 @@ export function readRecycledContent(db: MarketDatabase, ticker: string): Recycle
   }));
 }
 
+/**
+ * @param options.asOf Only sources the desk had already COLLECTED by this
+ *   instant, compared against `fetched_at` rather than `published_at`.
+ *
+ *   That distinction is the point. `published_at` says when the world learned
+ *   something; `fetched_at` says when this desk did, and a replay that wants to
+ *   reproduce a past analysis needs the second. A filing published on the 18th
+ *   but collected on the 22nd was not available to an analysis that ran on the
+ *   19th, and including it would hand the replay hindsight the original never
+ *   had.
+ *
+ *   Unset means every stored source, which is correct for live interpretation
+ *   and wrong for a replay.
+ */
 export function readSources(
   db: MarketDatabase,
   ticker: string,
-  options: { activeOnly?: boolean } = {},
+  options: { activeOnly?: boolean; asOf?: string | null } = {},
 ): ResearchSource[] {
   if (!researchTablesPresent(db)) return [];
-  const sql = options.activeOnly
-    ? 'SELECT * FROM research_sources WHERE ticker = ? AND active = 1 ORDER BY authority ASC, published_at DESC'
-    : 'SELECT * FROM research_sources WHERE ticker = ? ORDER BY authority ASC, published_at DESC';
-  const rows = db.prepare(sql).all(ticker) as SourceRow[];
+  const clauses = ['ticker = ?'];
+  const params: unknown[] = [ticker];
+  if (options.activeOnly) clauses.push('active = 1');
+  if (options.asOf) {
+    clauses.push('fetched_at <= ?');
+    params.push(options.asOf);
+  }
+  const rows = db
+    .prepare(
+      `SELECT * FROM research_sources WHERE ${clauses.join(' AND ')} ORDER BY authority ASC, published_at DESC`,
+    )
+    .all(...params) as SourceRow[];
   return rows.map(toSource);
 }
 
