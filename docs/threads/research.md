@@ -696,10 +696,63 @@ today — marked deliberately irrelevant.** That fourth is the annotation no oth
 thread will make: *a field no surface renders can still be the only witness to a
 question nobody has asked yet.*
 
-**It lives at [`../sheet-coverage.md`](../sheet-coverage.md).** *Integration's
+**It lives at [`../sheet-coverage-audit.md`](../sheet-coverage-audit.md).** *Integration's
 call, made because the item did not name a home and a cold session would have
 had to ask.* Not inside a charter: 65 rows with four annotation columns would
 swamp one, and charters have to stay readable to be read.
+
+**DONE, both halves, `a02262e`.** *Research, 2026-08-24.* Outputs: **39 of 64
+already produced**, 10 producible from inputs the desk holds, **15 needing
+capability it does not have** — and the 15 are less varied than the count
+suggests. **Float and everything downstream is one problem wearing five names**
+(TODAY col I; RESEARCH 9, 10, 11, 36). The rest is prose plus the A/B/C priority
+grade, which is a judgement rather than a measurement.
+
+**Nine fields moved from NEW WORK to PRODUCED during this session's own cycle
+work.** Taken yesterday the inventory would have been materially wrong — so it is
+re-run after any capability lands, not treated as settled.
+
+*Count corrected: 64, not 65 — 27 on TODAY plus 37 on RESEARCH. If the missing
+one is a column the parser does not read, that is its own answer and wants
+confirming against the tab rather than the code.*
+
+### The input half changed the Phase C decision, and it was made without this
+
+**642 of 935 URL citations — 69% — sit on domains this desk has never collected
+from. And nothing the tasks use is blocked:** `domainPolicy` refuses exactly one
+class, the RFC 2606 placeholders.
+
+| Domain | Cites | Policy | Desk has |
+| --- | ---: | --- | ---: |
+| `stockanalysis.com` | 505 | unclassified | **0** |
+| `marketwatch.com` | 24 | unclassified | 0 |
+| `tradingview.com` | 24 | unclassified | 0 |
+| `finance.yahoo.com` | 14 | MIRROR (demoted, not refused) | 0 |
+
+**So the answer to gap-or-drop is GAP, almost throughout, and it is DISCOVERY
+rather than POLICY.** `stockanalysis.com` is the largest source in the workbook
+and the origin of every float on the board; the policy would store it and the
+desk simply never looks. That reframes the SEC-only bundle finding — 1,408 of
+1,437 sources are SEC not because aggregators are refused but **because nothing
+reaches them.** Same root as the resolver finding a usable newsroom for 4
+issuers of 74.
+
+**The consequence for Phase C, and it is the trader's:** the vendor route to a
+float is **available and unblocked today**. He chose deriving from filings when
+the alternative on the table was *"scrape stockanalysis.com"*, and at that point
+**nobody had established that the desk's own policy would accept it.**
+
+*Integration's read, added because the two are not alternatives:* the vendor
+float **reproduces the Sheet's number**, so it retires the Sheet's float
+dependency without changing what the desk shows — that is a **migration**
+answer. The derived float is a **product** answer: a better number with
+different provenance. Under R&D's `float_basis` rule both can exist. **So the
+real question is sequencing, not choosing** — and the vendor route is what would
+let tasks 1 and 2 stop soonest.
+
+*Limit Research stated rather than let stand: it inventoried what the tasks
+CITE, not what they READ. A task may consult a source it never links, so the
+input half is a floor on their source use, not a census.*
 
 **One table, not three.** *Integration's call.* Research produces both
 inventories; Design annotates which of the 65 must survive on screen; R&D
