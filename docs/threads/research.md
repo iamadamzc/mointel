@@ -59,6 +59,53 @@ if it happens again.
 
 ## Open items
 
+**0. The three-arm prompt run: the data is here, and the symbol list needs
+cutting to six.** *Delivered by Ops 2026-08-23.*
+
+A consistent snapshot of the production store is at
+**`data/market-prod-2026-08-23.db`** — `VACUUM INTO`, so it includes what was
+sitting in the WAL, 106 MB, `integrity_check` ok, schema v21, 4,882
+`research_sources` across 258 tickers and 325 analysis versions. Point
+`MARKET_DB_PATH` at it explicitly. It is deliberately **not** named
+`data/market.db`, so nothing picks it up as a live store by default, and
+`/data/` and `*.db` are both gitignored.
+
+Run it locally. Nothing was deployed and `1df1d75` does not need to be: the arms
+run against this file, which is the whole point of the copy.
+
+**Three of the nine names have no stored evidence in production either** —
+checked before handing it over, and it is not a casing artifact (no `LIKE` match
+and no analysis versions either):
+
+| | OLOX | PMI | DXST | CDTG | BTCS | BTOG | PLAG | CYPH | GAUZ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| sources | 33 | 22 | 23 | 23 | 22 | 18 | **0** | **0** | **0** |
+
+So the run is **six names × three arms = 18 interpretations**, not 27, and the
+stated floor of "nine names at minimum" cannot be met from stored sources. It
+must not be met by collecting, either — that would void the comparison by the
+design's own rule. Either accept six, or extend to other names on the 2026-08-21
+board that *do* have sources, chosen before looking at results rather than after.
+
+Worth someone's attention separately, and not chased by Ops: `CYPH` was ranked
+**37 by RVOL and 14 on the after-hours board on 2026-08-21** while carrying zero
+evidence rows. A name that reaches the board with nothing collected against it is
+either a collection gap or a qualification gap, and it bears directly on Q1's
+"the desk stopped being able to see catalysts" branch.
+
+Two corrections to the run brief, both from reading the code:
+
+- **It writes.** `interpretTicker` calls `saveAnalysisVersion`
+  (`lib/research/interpret/pipeline.ts:342`), so each arm persists a new analysis
+  version. Against a local copy that is fine and intended; it is the reason this
+  was never going to run against production, where 18–27 dossiers from a variant
+  the code labels *UNDER TEST, NOT ADOPTED* would have reached Monday's board.
+- **"No rate-limit exposure" holds for SEC and newswire but not for Alpaca.**
+  `worker/research-interpret.ts:140` calls `ensureDailyHistory` per symbol, which
+  reaches `rest.getBars()` (`lib/research/historyFetch.ts:49`). It short-circuits
+  on `already current`, so it may mostly no-op — but on the server it would have
+  been drawing on the live desk's REST budget.
+
 **1. Billing-class failures should not consume the retry budget.** This is the
 one concrete piece of unfinished code in the project.
 

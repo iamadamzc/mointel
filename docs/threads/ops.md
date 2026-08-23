@@ -332,6 +332,48 @@ morning's incident exactly, with the luck removed.
 
 ## Closed
 
+**~~Research's three-arm prompt run needs production data.~~** Answered
+2026-08-23 by handing over a copy rather than running anything on the box, which
+is the option Research itself offered. **Nothing deployed, nothing run, nothing
+written to production.**
+
+The request arrived framed as "a run request, not a deploy request". Reading the
+code said otherwise on two points, and both are the reason for the route:
+
+- `interpretTicker` calls `saveAnalysisVersion`
+  (`lib/research/interpret/pipeline.ts:342`). On the server that is 18–27 dossiers
+  written into the live store from a prompt variant the source labels *UNDER
+  TEST, NOT ADOPTED* — and Monday's board would have shown them as ordinary
+  analysis.
+- "No SEC or newswire traffic, so no rate-limit exposure" is true of those two
+  paths and not of Alpaca. `worker/research-interpret.ts:140` calls
+  `ensureDailyHistory` per symbol, which reaches `rest.getBars()`. Guarded by an
+  `already current` short-circuit, so probably a no-op — but it draws on the same
+  REST budget that threw `rate limited` and a calendar `503` on Friday.
+
+What checked out: `1df1d75` sits on `55f3e20`, and both switches really do
+default off — `promptVariant` is `'A'` unless the env is exactly `B`,
+`omitSheetPrior` false unless exactly `1`. The claim that deploying it changes no
+production behaviour is correct. It simply became unnecessary, because the arms
+run against the copy.
+
+**`deploy/aws/snapshot-db.mjs` is the right tool and worth remembering why.** It
+is `VACUUM INTO` from a single read transaction: read-only against a live desk,
+and it captures what is sitting in the WAL. A file copy of `market.db` opens
+cleanly, passes `integrity_check` and is quietly missing whatever the 507 MB WAL
+was holding — which on this store is not a rounding error. It also compacts:
+837 MB became **106 MB** in one second.
+
+Delivered to `data/market-prod-2026-08-23.db`, verified after transfer
+(integrity ok, schema v21, 4,882 sources, 325 analysis versions), server copies
+removed. Named deliberately unlike `data/market.db` so no local tool adopts it as
+a live store by default.
+
+One finding handed back rather than discovered mid-run: **three of the nine
+requested names have zero evidence rows in production** — `PLAG`, `CYPH`, `GAUZ`,
+with no `LIKE` match and no analysis versions either. The run is 18
+interpretations, not 27. Detail in [research.md](research.md) item 0.
+
 **~~R&D needs an assessment extract off production, and the tool is not on the
 box.~~** Done 2026-08-23. Deployed `775c5a9` (gate green, 1150 tests, no
 migration), cut the extract unbounded, delivered `data/assessments.db` — 75
