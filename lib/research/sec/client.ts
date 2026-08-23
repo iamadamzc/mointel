@@ -50,7 +50,25 @@ export interface SecClientOptions {
   fetchImpl?: typeof fetch;
   sleep?: (ms: number) => Promise<void>;
   now?: () => number;
+  /** Per-request ceiling. See REQUEST_TIMEOUT_MS. */
+  timeoutMs?: number;
 }
+
+/**
+ * Ceiling on a single SEC request.
+ *
+ * An unbounded fetch inside the research worker's poll loop is a hang with no
+ * error, no crash and no failed heartbeat -- the process stays up, health keeps
+ * its last state, and nothing is claimed. The worker went silent for 23 hours
+ * on 2026-08-22 with exactly that signature. Whether an unbounded fetch caused
+ * that specific silence is not established, but a network call in a loop with
+ * no ceiling is a defect on its own terms.
+ *
+ * Generous rather than tight: the retry path already handles a slow SEC, and a
+ * timeout short enough to fire on ordinary latency would turn a working
+ * dependency into a failing one.
+ */
+export const REQUEST_TIMEOUT_MS = 30_000;
 
 const defaultSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -135,6 +153,9 @@ export class SecClient {
             'User-Agent': this.options.config.userAgent as string,
             'Accept-Encoding': 'gzip, deflate',
           },
+          // A timeout is a failed attempt, not a hang: it lands in the catch
+          // below and takes the existing backoff like any other error.
+          signal: AbortSignal.timeout(this.options.timeoutMs ?? REQUEST_TIMEOUT_MS),
         });
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));

@@ -10,11 +10,15 @@ import { loadSheetPriors, resetSheetPriorCache } from '@/lib/research/merge/shee
  * always 403s, to re-read a spreadsheet written four times a day.
  */
 const load = vi.fn();
+const constructedWith: Array<{ timeoutMs?: number } | undefined> = [];
 
 vi.mock('@/lib/data/providers/googleSheets', () => ({
   readCredentialsFromEnv: () => ({ sheetId: 's', clientEmail: 'e', privateKey: 'k' }),
   GoogleSheetsProvider: class {
     load = load;
+    constructor(_credentials: unknown, options?: { timeoutMs?: number }) {
+      constructedWith.push(options);
+    }
   },
 }));
 
@@ -81,5 +85,22 @@ describe('sheet prior cache', () => {
     for (let i = 0; i < 12; i += 1) await loadSheetPriors(t0 + i * 5_000);
 
     expect(load).toHaveBeenCalledTimes(1);
+  });
+});
+
+/**
+ * The worker's read is bounded; the dashboard's is not.
+ *
+ * loadSheetPriors runs at the top of every poll, before any job is claimed, so
+ * an unbounded fetch there is a hang with no error, no crash and no failed
+ * heartbeat. The dashboard has the opposite need — a slow response should still
+ * arrive rather than blank the board — so the ceiling is opt-in and the shared
+ * default is unchanged.
+ */
+describe('sheet read ceiling', () => {
+  it('constructs the worker provider with a timeout', async () => {
+    load.mockResolvedValue(state([ticker('ACME')]));
+    await loadSheetPriors(2_000_000);
+    expect(constructedWith.at(-1)?.timeoutMs).toBeGreaterThan(0);
   });
 });

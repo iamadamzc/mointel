@@ -102,6 +102,9 @@ export interface SheetPriorLoad {
  */
 const SHEET_PRIOR_TTL_MS = 60_000;
 
+/** Ceiling on a sheet read from the worker. Comfortably above a normal read. */
+const SHEET_TIMEOUT_MS = 20_000;
+
 let cachedProvider: InstanceType<
   typeof import('../../data/providers/googleSheets').GoogleSheetsProvider
 > | null = null;
@@ -131,7 +134,12 @@ export async function loadSheetPriors(now: number = Date.now()): Promise<SheetPr
 
     // Reused so the provider's JWT, spreadsheet title and Drive-availability
     // caches survive between reads instead of being rebuilt every cycle.
-    cachedProvider ??= new GoogleSheetsProvider(credentials);
+    /*
+     * The worker asks for a ceiling; the dashboard does not. This call sits at
+     * the top of every poll, before any job is claimed, so an unbounded fetch
+     * here stops the loop without failing anything.
+     */
+    cachedProvider ??= new GoogleSheetsProvider(credentials, { timeoutMs: SHEET_TIMEOUT_MS });
     const state = await cachedProvider.load();
     const observedAt = state.meta.fetchedAt ?? null;
 

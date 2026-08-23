@@ -25,6 +25,24 @@ const DRIVE_METADATA_SCOPE = 'https://www.googleapis.com/auth/drive.metadata.rea
 export const TODAY_RANGE = 'TODAY!A1:AA';
 export const RESEARCH_RANGE = 'RESEARCH!A1:AK';
 
+/**
+ * Optional ceiling on a Sheets or Drive request.
+ *
+ * OPTIONAL, and unset by default, deliberately. This provider serves two
+ * callers with opposite needs: the Next.js dashboard, where a slow response
+ * should still arrive and blanking the board would be worse than waiting, and
+ * the research worker, where `loadSheetPriors` runs at the top of every poll
+ * before any job is claimed — so an unbounded fetch there is a silent hang with
+ * no error, no crash, and no failed heartbeat.
+ *
+ * The worker passes one; the dashboard does not, and its behaviour is unchanged
+ * by this. Whether the DASHBOARD wants a timeout is a separate question about a
+ * different surface, and not one to settle by changing a default underneath it.
+ */
+export interface GoogleSheetsOptions {
+  timeoutMs?: number;
+}
+
 export interface GoogleSheetsCredentials {
   sheetId: string;
   clientEmail: string;
@@ -77,8 +95,16 @@ export class GoogleSheetsProvider implements DashboardDataProvider {
   /** Drive API is optional; once it fails we stop asking on every refresh. */
   private driveModifiedTimeAvailable = true;
 
-  constructor(credentials: GoogleSheetsCredentials) {
+  private readonly timeoutMs: number | null;
+
+  constructor(credentials: GoogleSheetsCredentials, options: GoogleSheetsOptions = {}) {
     this.credentials = credentials;
+    this.timeoutMs = options.timeoutMs ?? null;
+  }
+
+  /** Request options carrying the ceiling, when one was asked for. */
+  private timed<T extends { url: string }>(request: T): T & { timeout?: number } {
+    return this.timeoutMs === null ? request : { ...request, timeout: this.timeoutMs };
   }
 
   private getClient(): JWT {
@@ -95,9 +121,11 @@ export class GoogleSheetsProvider implements DashboardDataProvider {
   private async fetchTitle(): Promise<string | null> {
     if (this.cachedTitle) return this.cachedTitle;
     try {
-      const response = await this.getClient().request<SpreadsheetMetaResponse>({
-        url: `https://sheets.googleapis.com/v4/spreadsheets/${this.credentials.sheetId}?fields=properties.title`,
-      });
+      const response = await this.getClient().request<SpreadsheetMetaResponse>(
+        this.timed({
+          url: `https://sheets.googleapis.com/v4/spreadsheets/${this.credentials.sheetId}?fields=properties.title`,
+        }),
+      );
       this.cachedTitle = response.data.properties?.title ?? null;
     } catch {
       this.cachedTitle = null;
@@ -109,9 +137,11 @@ export class GoogleSheetsProvider implements DashboardDataProvider {
   private async fetchSourceUpdatedAt(): Promise<string | null> {
     if (!this.driveModifiedTimeAvailable) return null;
     try {
-      const response = await this.getClient().request<{ modifiedTime?: string }>({
-        url: `https://www.googleapis.com/drive/v3/files/${this.credentials.sheetId}?fields=modifiedTime`,
-      });
+      const response = await this.getClient().request<{ modifiedTime?: string }>(
+        this.timed({
+          url: `https://www.googleapis.com/drive/v3/files/${this.credentials.sheetId}?fields=modifiedTime`,
+        }),
+      );
       return response.data.modifiedTime ?? null;
     } catch {
       this.driveModifiedTimeAvailable = false;
@@ -126,7 +156,7 @@ export class GoogleSheetsProvider implements DashboardDataProvider {
       `&ranges=${encodeURIComponent(RESEARCH_RANGE)}` +
       `&valueRenderOption=FORMATTED_VALUE&majorDimension=ROWS`;
 
-    const response = await this.getClient().request<BatchGetResponse>({ url });
+    const response = await this.getClient().request<BatchGetResponse>(this.timed({ url }));
     const ranges = response.data.valueRanges ?? [];
 
     const todayValues = ranges[0]?.values ?? [];
