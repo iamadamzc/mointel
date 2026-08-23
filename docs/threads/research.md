@@ -153,6 +153,47 @@ This is written down here because it will not hold on its own. Nothing in the
 code enforces it, no test covers it, and the snapshot's filename is the only
 thing standing between a valid result and a plausible invalid one.
 
+**11. Is `CYCLE_CHANGED` stable, or is it structure again?** *Found by Design
+2026-08-23, assigned here by the trader. It sat unowned between three threads
+for several hours, which is the only reason it needed routing.*
+
+Design found that `CYCLE_CHANGED` is gated **identically** to
+`STRUCTURE_CHANGED` in the desk's diff, and that nobody has ever measured
+whether the cycle classification is reproducible. Structure turned out to move
+**2 of 6 on byte-identical evidence**. Cycle has had the same scrutiny applied to
+it as structure had before this morning: none.
+
+**Try to answer this for free before spending anything.** The control arm already
+run on 2026-08-23 produced two complete passes over identical evidence — that is
+exactly the design this question needs, and if those dossiers were stored whole,
+the cycle field is already sitting in them. Read it out before proposing a run.
+Structure's answer came from that same data as a by-product.
+
+Two things to carry over from how structure was answered, both of which stopped
+that result being misread:
+
+- **Report the base rate beside the flip rate.** Structure takes three values
+  across 1,459 rows with the mode at 60% of the mass, and that is what makes
+  1-in-3 large rather than small. A flip rate without the field's resolution
+  cannot be judged.
+- **Noise on identical input and movement in the stored record are different
+  measurements.** R&D's 1,248 stored pairs and this thread's 6 fixed-evidence
+  pairs answered different questions about structure and were nearly quoted
+  against each other. If cycle gets both, label which is which in the same
+  sentence as the number.
+
+**Why it may matter more than structure did.** Structure is a risk qualifier the
+desk now relegates behind a deterministic share count. **Cycle is not a
+qualifier — it is close to the trade decision.** Frontside versus backside is one
+of the things the playbook actually acts on, and a trader who sees a name move
+from `FRESH / FRONTSIDE` to `BACKSIDE` between checkpoints will read it as the
+stock having turned. If a third of that is re-reading, it is being read as a
+market event and it is not one. Design's rule already covers the display half:
+where a reading changes with no evidence change, the rail must not word it as a
+change about the stock.
+
+Nothing is blocked on this and it should not interrupt item 10.
+
 **1. Billing-class failures should not consume the retry budget.** This is the
 one concrete piece of unfinished code in the project.
 
