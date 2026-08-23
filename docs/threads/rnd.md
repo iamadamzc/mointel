@@ -123,7 +123,36 @@ The instrument exists; the data does not yet. It has only ever run against the
 stale local store, which ends 2026-08-18. **Q1 turns on 19, 20 and 21 August,
 and those dates live only on production.**
 
-**Waiting on Ops: one `npm run archive:export` from the production store.** It
+**The dates exist. Ops confirmed it 2026-08-23**, read-only, before anything
+was copied: 2026-08-19 has 16 assessments and 400 ticker rows, 08-20 has 19 and
+450, 08-21 has 19 and 475. 75 assessments over five dates, 25 tickers each,
+`COMPLETE` 74 and `MISSED_SUPERSEDED` 1. Full numbers in [ops.md](ops.md) Open
+item 5.
+
+**Why the failing week did not cost checkpoints — and it matters to Q1's
+premise.** The assessment scheduler makes zero model calls (`model_calls` is 0
+on all 75 rows), so an exhausted OpenAI balance cannot stop it. Assessment
+coverage and research coverage are independent. *What the desk looked at* is
+intact for the whole window; only *what it managed to learn* was degraded.
+That is the distinction Q1 turns on, and it is now known rather than assumed.
+
+**Two things Ops handed over, both unexamined here:**
+
+1. **19 August is thin, and not for a reason status records.** The full
+   schedule is 19 checkpoints a day. 08-18, 08-20 and 08-21 each have all 19;
+   **08-19 has 16, with three absent rather than marked missed**, and 2 of the
+   16 flagged `generated_late`. Any analysis assuming an even cadence across
+   the three days will not get one.
+2. **The rows exist; what is inside them on 19-21 August may not be sound.**
+   `intelligence_status`, `catalyst` and `structure` were being written during
+   the days research was failing. The snapshots are real — whether those
+   columns are degraded or stale is a different question, and it is Q1's
+   independent variable. Ops did not query it: it is this thread's call on its
+   own extract. Worth settling before any outcome is attributed to a catalyst
+   grade from that window.
+
+**Still waiting on Ops: the extract itself, one `npm run archive:export` from
+the production store.** It
 opens the store read-only and produces ~1-3 MB rather than a 250 MB+ snapshot
 — the backfill reads two tables and fetches the rest from Alpaca. The same
 command reports checkpoints per trading date, which also answers whether the

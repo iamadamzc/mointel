@@ -106,10 +106,33 @@ corrected; the choice of route is left here, where it belongs:
 - do not run it there at all: hand-roll the two-table read with `sqlite3`, which
   needs nothing on the box and is what answers the go/no-go count today.
 
-The go/no-go count comes first either way: **did the desk record checkpoints on
-19-21 August at all?** Those are the days the pipeline was failing and the rows
-may not exist, in which case none of the above is needed. A zero is the useful
-answer.
+**The go/no-go is answered, and it is go.** Read-only on 2026-08-23 at 21:40 ET,
+schema read from the live table definitions rather than assumed:
+
+| trading_date | assessments | ticker rows |
+| --- | --- | --- |
+| 2026-08-17 | 2 | 50 |
+| 2026-08-18 | 19 | 475 |
+| **2026-08-19** | **16** | **400** |
+| **2026-08-20** | **19** | **450** |
+| **2026-08-21** | **19** | **475** |
+| 2026-08-22 | — | — |
+
+75 assessments over 5 dates, exactly 25 ticker rows each. `COMPLETE` 74,
+`MISSED_SUPERSEDED` 1. The 08-22 blank is a Saturday and the 08-17 pair is the
+evening the engine shipped — neither is a gap. `desk_assessment_tickers` has no
+status and no date of its own; it joins by `assessment_id`.
+
+**The empty-balance days cost no checkpoints, and the reason is structural:**
+the assessment scheduler makes zero model calls — `model_calls` is 0 on all 75
+rows, as designed — so an exhausted OpenAI balance cannot stop it. That is why
+19-21 August look normal, and it is worth remembering the next time a research
+outage raises a fear about assessment history.
+
+Two findings went to R&D rather than being chased here: 19 August holds 16 of
+the schedule's 19 checkpoints, and the intelligence columns inside the rows may
+be degraded on exactly the days research was failing. Both are in
+[rnd.md](rnd.md).
 
 **6. The next deploy carries `lib/archive/` to production whether or not anyone
 intends it.** *Noted by Integration 2026-08-23; a note for the deploy summary,
