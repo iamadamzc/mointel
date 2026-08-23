@@ -420,6 +420,47 @@ disagreement tells you *one of them is wrong*. **`float > SO` tells you which
 number to refuse**, from one source, for free, with no second licence and no
 adjudication.
 
+### Measured on 58 names, verified by R&D from the raw figures
+
+**`float > SO` fires on 8 or 9 of 46 non-ADR names.** The ambiguity is a
+judgement, not a count, and it belongs in the working rather than absorbed into
+it: **SGLY exceeds shares outstanding by exactly one share.** Call that rounding
+and it is 8 (17%); count it and it is 9 (20%). Both R&D and Integration excluded
+it independently, which is a reason to state it rather than to trust it.
+
+**The ADR ratio test fires on 8 of 11, or 10 of 13** depending on the
+denominator — `ENRDW` has no shares outstanding so its ratio is uncomputable,
+and whether the first pull's FENG and HUIZ join the sample changes the base.
+*Integration reported 8 of 12; that denominator was wrong.*
+
+**It correlates with nothing, and that is the finding that decides the design.**
+
+| | n | ran 50%+ | had a split | ADR |
+| --- | ---: | ---: | ---: | ---: |
+| flagged | 9 | 78% | 100% | 1 |
+| clean, same pull | 25 | 64% | 52% | 0 |
+| whole archive | 252 | 31% | — | — |
+
+78 against 64 on nine names is nothing, and both sit far above the 31% baseline
+only because both were drawn from names already being watched — **the
+within-pull comparison is the only valid one and it shows no effect.** No price
+effect either: flagged spans $0.86–$13.18 against clean $0.97–$11.59.
+**There is no cheaper predictor hiding, so the arithmetic check has to be the
+test.**
+
+**And splits do not discriminate — for the opposite reason to the one first
+given.** R&D's earlier "neither necessary nor sufficient" was measured against
+the 30-session cap it removed hours later, and it corrected itself: **all nine
+flagged names have a split**, at 0, 6, 15, 18, 54, 60, 94, 262 and 271 sessions.
+But so do **13 of 25 clean names.** Over a 400-session window a split is common
+rather than rare, so it separates nothing. AEIS remains the counterexample with
+none in two years. Same conclusion, sounder reason.
+
+**One name argues against the 2% test: `SIMA` at 1.802%, classified
+`COMMON_EQUITY`, on no list.** Either a second misclassification like YJ or a
+genuine false positive on an ordinary share. It is the first evidence about the
+test's **specificity** and it points the wrong way.
+
 **Buildable with data the desk already holds, but not yet co-located.**
 `sharesOutstanding` and `sharesOutstandingDate` are on the research dossier
 (`lib/research/types.ts:490`) for 62 of 77 issuers since `55f3e20`; float
