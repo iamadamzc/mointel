@@ -186,6 +186,50 @@ have now been exercised, not just the fallback.
 
 ## Open items
 
+**0. The research worker is SIGKILLed on every deploy, and has been all day.**
+*Found 2026-08-23 on live evidence, while discounting an unrelated report. The
+file is Research's; the consequence is this thread's. Not fixed — handed over.*
+
+Three deploys today, three identical sequences: `Stopping…` → 30s →
+`State 'stop-sigterm' timed out. Killing.` → `SIGKILL` → `Failed with result
+'timeout'`. At 08:04, 19:38 and 20:16. `mointel-market` and `mointel-assess`
+each recorded **zero** such failures in the same period.
+
+**The cause is a handler that does not exit, and it is worse than no handler.**
+
+| worker | SIGTERM handling | stop result |
+| --- | --- | --- |
+| `worker/alpaca.ts:143` | `shutdown()` → `stream.stop()` → `runtime.shutdown()` → `process.exit(0)` | clean |
+| `worker/desk-assessments.ts` | **no `process.on` at all** | clean |
+| `worker/research.ts:193` | `stopHeartbeat = () => clearInterval(heartbeat)`, then `for (;;)` | **SIGKILL** |
+
+Node's default action for `SIGTERM` is to terminate. **Installing a listener
+overrides that default.** So `research.ts`, in adding a handler meant to tidy up,
+silently disabled the only thing that made the process exit — and then loops
+forever. `desk-assessments.ts` stops cleanly *because nobody improved it*.
+
+The fix is to mirror `alpaca.ts`: clear the heartbeat, then exit.
+
+**Why it matters here, beyond 30 seconds per deploy.** A `SIGKILL` mid-job
+abandons an in-flight model call — tokens spent, nothing recorded — and can
+leave a claimed row with no process behind it. That is the same shape as the
+assessment that *"claimed its slot and then sat stuck at RUNNING"*, and it is a
+candidate mechanism for the **10 QUEUED rows** already handed to Research in
+[research.md](research.md) item 2. Nobody has connected those two; they may not
+be connected, but a worker hard-killed three times today is the first place to
+look.
+
+**Against this thread's own record:** after each of those deploys, Ops reported
+*"all four services active"* — true, and it checked the wrong thing. It verified
+the state after starting, never the manner of stopping. The project memory says
+in as many words that claims like *"the processes shut down cleanly"* must be
+tested, because one such claim was already false once. It was not tested. The
+evidence was in `journalctl` the whole evening and surfaced only because an
+unrelated message sent this thread to read the research log.
+
+Not urgent: no deploy is queued, and the exposure is a deploy landing while jobs
+are in flight — which the checkpoint rules already discourage during premarket.
+
 **1. Nothing reports release drift, which is why this was invisible.** The
 `RESTART_MARKET=no` design is right and stays, but its consequence — a service
 running older code than `current` points at — has no reporting anywhere. It

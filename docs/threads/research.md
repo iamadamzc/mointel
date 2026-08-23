@@ -404,6 +404,29 @@ tree. It is disjoint from this work, but a gate run may go red in
 `tests/archive/` on changes that are not Research's. Stage by explicit path and
 do not chase a failure there.
 
+**0a. `worker/research.ts` never exits on SIGTERM, so every deploy SIGKILLs it.**
+*Handed over from Ops 2026-08-23, found on live evidence. One line to fix.*
+
+`worker/research.ts:193` registers `process.on('SIGTERM', stopHeartbeat)` where
+`stopHeartbeat = () => clearInterval(heartbeat)` — it clears the timer and then
+falls back into `for (;;)`. It never exits, so systemd waits out its 30s stop
+timeout and sends `SIGKILL`. That happened on all three of today's deploys —
+08:04, 19:38, 20:16 — while `mointel-market` and `mointel-assess` recorded zero
+such failures.
+
+**The handler is worse than no handler.** Node's default `SIGTERM` action is to
+terminate; installing a listener overrides it. `worker/desk-assessments.ts` has
+no signal handler at all and stops cleanly for exactly that reason. The intended
+tidy-up is what disabled the exit.
+
+Fix: mirror `worker/alpaca.ts:143` — cleanup, then `process.exit(0)`.
+
+**Why it is worth more than 30 seconds a deploy.** A `SIGKILL` mid-job abandons
+an in-flight model call — tokens spent, nothing recorded — and can leave a
+claimed row with no process behind it. That makes it a candidate mechanism for
+item 2 below, the ten `QUEUED` rows the health endpoint does not see. Possibly
+unrelated; worth eliminating first, since it is one line.
+
 **1. Billing-class failures should not consume the retry budget.** This is the
 one concrete piece of unfinished code in the project.
 
