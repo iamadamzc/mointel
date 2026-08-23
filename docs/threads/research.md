@@ -652,6 +652,32 @@ its error bars. That was sound when nothing depended on it. It is now the
 critical path to retiring the Sheet, which is a consideration the pause did not
 weigh.
 
+**Corrected before the decision went out, by R&D.** I framed stopping task 4 as
+giving up the second grader. It is not. **`RESEARCH` is written by tasks 1 and
+2 only** — verified in the report: task 1 *"appends/updates detailed RESEARCH"*,
+task 2 *"updates RESEARCH"*, and task 4's outputs are the dated-tab scorecard,
+`OUTCOMES` and `PATTERNS`. So the catalyst labelling R&D wanted for Q1 — 204
+rows over 146 tickers with source URL and timestamp — **survives**, because
+tasks 1 and 2 are staying for the float.
+
+Two different things were being conflated under "second": the second *ledger*
+of outcomes is task 4's, and it is strictly worse than tape-derived. The second
+*grader* of catalysts is `RESEARCH`, and it is untouched.
+
+**Explicit condition on stopping, from R&D: do not delete the corpus with the
+task.** *Stopped* and *cleaned up* are two decisions and only one has been
+taken. The dated tabs hold the stage calls **as made** at 22:00, 06:10 and
+09:25, and a forecast recorded before its outcome is the category the archive
+spec calls irreplaceable — nothing re-creates what somebody believed at the
+time.
+
+**R&D's annotation criteria, stated up front so the inventory can be shaped for
+them:** is the field irreplaceable if not captured live; is it re-fetchable
+later; does it have more than one possible definition; and **is it displayed
+today — marked deliberately irrelevant.** That fourth is the annotation no other
+thread will make: *a field no surface renders can still be the only witness to a
+question nobody has asked yet.*
+
 **One table, not three.** *Integration's call.* Research produces both
 inventories; Design annotates which of the 65 must survive on screen; R&D
 annotates which it needs for the archive. **The table stays in one place and

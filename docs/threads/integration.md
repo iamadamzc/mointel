@@ -516,6 +516,26 @@ today came from an owner. What it does is carry a thing from one layer to
 another, which is the only motion that reliably produces noticing. More
 discipline inside any one thread would not have found these.
 
+## A value with two possible definitions is stored with its basis
+
+**R&D, 2026-08-23, written as a general rule rather than a caveat about float.**
+Any value that can be computed more than one way is stored **with its basis in
+an adjacent column**. A change of definition then becomes a change of *value in
+that column*, rather than a silent change of *meaning in the same one*.
+
+`reference_basis`, `adjustment_basis` and `split_detected` all exist because
+this was learned late and expensively — the reference close that flipped at the
+bell would have measured a faded runner against the price it faded to, and every
+number would have looked plausible. **Float should arrive with `float_basis`
+from the first row, not the hundredth.**
+
+It is the constructive form of a problem this thread keeps finding by accident:
+the Sheet's float is vendor-displayed, the derived one is filing-computed, and
+*float* names both. Same shape as the model cycle becoming arithmetic, and as
+the two instability figures that were nearly quoted against each other. **When
+two threads can each be right about the same word, the word needs a companion
+column, not a footnote.**
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin
