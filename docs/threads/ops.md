@@ -133,6 +133,18 @@ preflight bootstrap works, and it went red inside the gate for a deploy. A gate
 that cries wolf gets overridden during an incident, which is exactly when the
 bootstrap it covers has to be right. Do not "fix" it by loosening the assertion.
 
+**Assigned to this thread by the trader, 2026-08-23, and it is the item to do
+before Monday's open.** Until now this was three well-documented sightings that
+nobody had been asked to fix — Ops flagged it and did not claim it, Research
+reproduced it and explicitly did not claim it. It sat between two threads, which
+is the only reason it needed Integration to route it at all.
+
+The reason for the timing rather than the reason for the work: it has now been
+shipped through **twice** on a re-run. That is the correct call each time and it
+is also how re-run-until-green becomes the habit. If Monday's open produces an
+incident that needs a deploy, this test is between the desk and the fix, and the
+person deciding will be doing it under pressure.
+
 **5. The deploy gate cannot see the layer the `rm -rf` was in.** *Opened by
 Integration 2026-08-23, from the export defect. Ops owns the gate, so it lands
 here rather than with the file's author.*
