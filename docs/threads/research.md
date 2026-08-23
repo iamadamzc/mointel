@@ -187,10 +187,22 @@ moved on the identical 29 pairs and catalyst was stable. That premise is weaker
 than when it was written. R&D has been told directly.
 
 **Where the retracted claim was copied**, so nobody has to rediscover it:
-`design.md` (the two-graders finding and the comparison table), the audit at
-`design-audit-report.md` §11, `rnd.md` (the Q1 register row and the ANSWERED
-block), and `docs/rnd/2026-08-23-outcome-capture.md`. Each thread owns its own
-correction; this list exists so the enumeration is not repeated four times.
+`design.md` (the two-graders finding and the comparison table), `rnd.md` (the
+Q1 register row and the ANSWERED block), and
+`docs/rnd/2026-08-23-outcome-capture.md`. Each thread owns its own correction;
+this list exists so the enumeration is not repeated three times.
+
+**Corrected: `design-audit-report.md` §11 was NOT one of them, and I named it as
+the most important site.** Design checked rather than accepting the trace. That
+line predates the finding and states the cautious version — *"whether it
+changes the output needs a run"* — so **the design authority was never
+contaminated**. An enumeration exists to stop people re-doing the search, which
+makes a wrong entry in it worse than no entry: it sends someone to edit a
+document that was right.
+
+Design amended it anyway, for the opposite reason and a good one: it implied
+the question was open pending a run, when the run has since happened and was
+inconclusive. Left as it stood, someone would have re-commissioned it.
 
 **Does the re-derivation still make sense?** Yes, and its justification changes
 rather than disappears. It no longer *removes a demonstrated contamination*; it

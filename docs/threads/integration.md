@@ -136,6 +136,41 @@ and always correct; read the content of the diff, since a handover reads
 nothing like an owner's own work; or say "`rnd.md` is modified" and stop,
 rather than naming a holder. Never report a holder from `git status` alone.
 
+**I wrote that rule and then broke it again within the hour.** R&D has now
+reported this three times. The third was after this section existed — I told it
+"you are holding both" while looking at a `git status` line, which is the exact
+sentence this section forbids. A rule the author does not follow is worse than
+no rule, because it looks like the problem is handled.
+
+So the rule is now absolute rather than conditional: **this thread does not
+report who holds a file. Ever.** Not "appears to be holding", not "modified
+since 04:45". If a thread needs to know a path is dirty, name the path. If
+ownership actually matters, ask. Three round trips have been spent on this and
+every one was avoidable by deleting four words from a sentence.
+
+## A retraction only reaches the sentence it edits
+
+**Added 2026-08-23, found by R&D in its own documents.** It retracted a claim,
+edited the section that named it — and left the opposite conclusion standing
+thirty lines away in the same two files. Both live, both its own: one saying a
+churn figure *"proves the production figure is dominated by genuine evidence
+change rather than instability"*, the other saying *"most of that churn is the
+model disagreeing with itself"*. The second was written **while retracting the
+premise of the first**.
+
+This is not carelessness, it is the default outcome. A retraction is drafted by
+searching for the claim, and searching finds the claim — not the paragraphs
+that quietly assumed it three sections later, which use none of the same words.
+
+**So a retraction is not done when the claim is struck. It is done when every
+inference that rested on it has been re-read.** Search for the conclusion as
+well as the claim: what did this let us say? Who else was told? A retraction
+that only edits its own sentence leaves a document that contradicts itself, and
+the contradiction reads as two findings rather than one error.
+
+This thread has issued several retractions today and should assume it has the
+same debt outstanding.
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin
