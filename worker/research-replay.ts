@@ -43,10 +43,10 @@
 
 import fs from 'node:fs';
 
+import { loadWorkerEnv } from './env';
 import { openDatabase } from '../lib/market/store/db';
 import { readResearchConfig } from '../lib/research/config';
 import { OpenAiInterpreter } from '../lib/research/interpret/openaiInterpreter';
-import { NoopInterpreter } from '../lib/research/interpret/interpreter';
 import { interpretTicker } from '../lib/research/interpret/pipeline';
 
 interface StoredVersion {
@@ -91,6 +91,11 @@ function parseArgs(argv: string[]) {
 }
 
 async function main(): Promise<void> {
+  // A standalone worker does not get .env.local for free. Omitting this is what
+  // made the first run of this script produce a complete, plausible, and
+  // entirely fabricated result -- see the interpreter guard below.
+  loadWorkerEnv();
+
   const args = parseArgs(process.argv.slice(2));
   const dbPath = process.env.MARKET_DB_PATH ?? 'data/market.db';
   if (dbPath.endsWith('data/market.db')) {
@@ -99,9 +104,23 @@ async function main(): Promise<void> {
 
   const config = readResearchConfig();
   const db = openDatabase(dbPath);
-  const interpreter = config.model.apiKey
-    ? new OpenAiInterpreter({ config: config.model, timeoutMs: 300_000 })
-    : new NoopInterpreter();
+  /*
+   * Refuse to run without an interpreter, rather than degrading.
+   *
+   * interpretTicker is right to return the previously accepted dossier when no
+   * interpreter is configured -- a desk is better served by yesterday's verified
+   * analysis than by nothing. For a REPLAY that same kindness is poison: every
+   * version came back carrying readCurrentAnalysis's dossier, which is the
+   * ticker's LATEST stored analysis rather than the version being replayed. The
+   * output read "123 stable, 0 unstable, 43 differ from stored" -- a clean,
+   * plausible, entirely fabricated result whose only tell was tokens in=0.
+   *
+   * A replay that cannot call a model has no answer, and must say so.
+   */
+  if (!config.model.apiKey) {
+    throw new Error('no OPENAI_API_KEY: a replay with no interpreter would report stored dossiers as re-derived');
+  }
+  const interpreter = new OpenAiInterpreter({ config: config.model, timeoutMs: 300_000 });
 
   /*
    * Snapshotted before anything runs. Each replay appends its own version, so
@@ -142,6 +161,11 @@ async function main(): Promise<void> {
         asOf: version.generated_at,
         force: true,
       });
+      if (report.outcome === 'UNAVAILABLE' || report.outcome === 'REUSED_UNCHANGED') {
+        throw new Error(
+          `${version.ticker} v${version.id} returned ${report.outcome}: that dossier was not re-derived`,
+        );
+      }
       sourcesVisible = report.sourceCount;
       inputTokens += report.metrics.inputTokens;
       outputTokens += report.metrics.outputTokens;
