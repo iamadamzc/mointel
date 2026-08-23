@@ -331,3 +331,127 @@ export function resolveCycle(
     latestClose: latest.close,
   };
 }
+
+/**
+ * Advance at which a past move counts as exceptional rather than ordinary.
+ *
+ * Measured over 319 cycles detected in production daily bars. Every one of them
+ * already cleared 20% on 5x volume, so "runner" is the whole population and the
+ * question is only where the tail begins:
+ *
+ *   median   71%      75th  121%
+ *   90th    229%      95th  342%      max 1036%
+ *
+ * A triple puts a move in the top 12%, and sits just under the 90th percentile
+ * rather than on a cliff — the distribution has no natural break, so this is a
+ * percentile choice and should be read as one. `largestPriorAdvancePct` is
+ * reported alongside so a surface never has to depend on the cut.
+ */
+export const SUPERRUNNER_ADVANCE = 2.0;
+
+export type FormerRunnerStatus = 'NONE' | 'FORMER_RUNNER' | 'FORMER_SUPERRUNNER';
+
+export interface PriorCycle {
+  startDate: string;
+  highDate: string;
+  cycleHigh: number;
+  /** Base close to cycle high. */
+  advancePct: number;
+  /** Sessions from that cycle's high to the latest bar. */
+  sessionsAgo: number;
+}
+
+export interface CycleHistory {
+  current: CycleResult;
+  /** Completed cycles before the current one, most recent first. */
+  priorCycles: PriorCycle[];
+  formerRunnerStatus: FormerRunnerStatus;
+  /** Largest prior advance, so a consumer can band it differently. */
+  largestPriorAdvancePct: number | null;
+}
+
+/** Indices of every session that begins a move, oldest first. */
+export function findCycleStarts(bars: readonly CycleBar[]): number[] {
+  const starts: number[] = [];
+  for (let i = 1; i < bars.length; i += 1) if (isCycleStart(bars, i)) starts.push(i);
+  return starts;
+}
+
+/**
+ * The current cycle plus every completed one behind it.
+ *
+ * Replaces `formerRunnerStatus` and `recentMajorRuns`, which the interpreter was
+ * also being asked to judge from an evidence bundle that does not contain price
+ * history. A prior run is a fact about bars; the same detector that finds the
+ * current cycle finds the earlier ones for free.
+ */
+export function resolveCycleHistory(
+  bars: readonly CycleBar[],
+  options: CycleOptions = {},
+): CycleHistory {
+  const current = resolveCycle(bars, options);
+  const starts = findCycleStarts(bars);
+
+  /*
+   * A cycle's high is bounded by the NEXT start, not by the end of the series.
+   * Without that bound an early cycle would absorb every later run's high and
+   * report one enormous advance instead of several real ones.
+   */
+  const priorCycles: PriorCycle[] = [];
+  for (let k = 0; k < starts.length; k += 1) {
+    const from = starts[k];
+    const to = (k + 1 < starts.length ? starts[k + 1] : bars.length) - 1;
+    // The last cycle is the current one and is reported by resolveCycle.
+    if (k === starts.length - 1) break;
+
+    const baseClose = bars[from - 1]?.close;
+    if (typeof baseClose !== 'number' || baseClose <= 0) continue;
+
+    let high = -Infinity;
+    let highIndex = from;
+    for (let i = from; i <= to; i += 1) {
+      const value = bars[i].high;
+      if (typeof value === 'number' && Number.isFinite(value) && value > high) {
+        high = value;
+        highIndex = i;
+      }
+    }
+    if (!Number.isFinite(high)) continue;
+
+    priorCycles.push({
+      startDate: bars[from].tradingDate,
+      highDate: bars[highIndex].tradingDate,
+      cycleHigh: high,
+      advancePct: (high - baseClose) / baseClose,
+      sessionsAgo: bars.length - 1 - highIndex,
+    });
+  }
+  priorCycles.reverse();
+
+  /*
+   * A run that is over counts, even when it is the CURRENT cycle.
+   *
+   * Restricting this to completed cycles read MYSZ as NONE while it sat deep on
+   * the backside of a move it had just made — its only run was the live cycle,
+   * so there were no "prior" ones. Whether a stock has had a big move behind it
+   * does not depend on the bookkeeping boundary. A cycle still going up is
+   * excluded, because that is a present move, not a past one.
+   */
+  const advances = priorCycles.map((cycle) => cycle.advancePct);
+  if (current.phase === 'BACKSIDE' || current.phase === 'SHADOW') {
+    advances.push((current as CycleArc).advancePct);
+  }
+
+  const largest = advances.reduce<number | null>(
+    (best, advance) => (best === null || advance > best ? advance : best),
+    null,
+  );
+
+  let formerRunnerStatus: FormerRunnerStatus = 'NONE';
+  if (largest !== null) {
+    formerRunnerStatus =
+      largest >= SUPERRUNNER_ADVANCE ? 'FORMER_SUPERRUNNER' : 'FORMER_RUNNER';
+  }
+
+  return { current, priorCycles, formerRunnerStatus, largestPriorAdvancePct: largest };
+}

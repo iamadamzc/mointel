@@ -6,6 +6,7 @@ import {
   dailyRvol,
   isCycleStart,
   resolveCycle,
+  resolveCycleHistory,
   type CycleArc,
   type CycleBar,
 } from '@/lib/market/cycle';
@@ -280,5 +281,79 @@ describe('shadow lifetime', () => {
     const bars = [...ranThenQuiet(0)];
     for (let i = 0; i < 25; i += 1) bars.push(bar(`h${i}`, 1.5, 1.6, 9_000_000));
     expect(resolveCycle(bars).phase).toBe('NO_CYCLE');
+  });
+});
+
+/**
+ * Prior runs, from the same detector.
+ *
+ * The interpreter was also asked for formerRunnerStatus and recentMajorRuns
+ * from an evidence bundle containing no price history. It returned a different
+ * answer across five identical draws for 43% of versions, almost all of them
+ * flipping between a classification and UNKNOWN. A prior run is a fact about
+ * bars.
+ */
+describe('cycle history', () => {
+  function twoRuns(): CycleBar[] {
+    return [
+      ...base(22, 1.0),
+      bar('2026-06-25', 4.0, 4.2, 40_000_000), // +300%
+      ...Array.from({ length: 14 }, (_, i) => bar(`g${i}`, 1.1, 1.2, 800_000)),
+      bar('2026-08-10', 1.6, 1.7, 25_000_000), // +45%
+      bar('2026-08-11', 1.62, 1.68, 6_000_000),
+    ];
+  }
+
+  it('bounds each cycle high by the next start, not by the end of the series', () => {
+    const history = resolveCycleHistory(twoRuns());
+    expect(history.priorCycles).toHaveLength(1);
+    // Without the bound the June cycle would swallow August's bars and report
+    // one huge advance instead of two real ones.
+    expect(history.priorCycles[0].cycleHigh).toBe(4.2);
+    expect(Math.round(history.priorCycles[0].advancePct * 100)).toBe(320);
+  });
+
+  it('calls a past triple a superrunner and a smaller run a runner', () => {
+    expect(resolveCycleHistory(twoRuns()).formerRunnerStatus).toBe('FORMER_SUPERRUNNER');
+
+    const modest: CycleBar[] = [
+      ...base(22, 1.0),
+      bar('2026-06-25', 1.5, 1.6, 40_000_000), // +60%
+      ...Array.from({ length: 14 }, (_, i) => bar(`g${i}`, 1.1, 1.2, 800_000)),
+      bar('2026-08-10', 1.6, 1.7, 25_000_000),
+    ];
+    expect(resolveCycleHistory(modest).formerRunnerStatus).toBe('FORMER_RUNNER');
+  });
+
+  it('counts a run that is over even when it is the current cycle', () => {
+    // MYSZ read NONE while sitting deep on the backside of a move it had just
+    // made: its only run WAS the live cycle, so there were no prior ones.
+    const broken: CycleBar[] = [
+      ...base(22, 1.0),
+      bar('2026-08-10', 4.0, 4.5, 40_000_000),
+      bar('2026-08-11', 1.2, 2.0, 12_000_000),
+    ];
+    const history = resolveCycleHistory(broken);
+    expect(history.current.phase).toBe('BACKSIDE');
+    expect(history.priorCycles).toHaveLength(0);
+    expect(history.formerRunnerStatus).toBe('FORMER_SUPERRUNNER');
+  });
+
+  it('does not count a move that is still going up', () => {
+    const live: CycleBar[] = [...base(22, 1.0), bar('2026-08-10', 4.0, 4.5, 40_000_000)];
+    const history = resolveCycleHistory(live);
+    expect(history.current.phase).toBe('DAY_ONE');
+    // A present move is not a past one.
+    expect(history.formerRunnerStatus).toBe('NONE');
+  });
+
+  it('reports the largest advance so a surface need not accept the cut', () => {
+    const history = resolveCycleHistory(twoRuns());
+    expect(history.largestPriorAdvancePct).toBeCloseTo(3.2, 1);
+  });
+
+  it('says NONE when there is no history rather than guessing', () => {
+    expect(resolveCycleHistory(base(40)).formerRunnerStatus).toBe('NONE');
+    expect(resolveCycleHistory(base(40)).priorCycles).toEqual([]);
   });
 });
