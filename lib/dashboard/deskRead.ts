@@ -28,17 +28,28 @@ import {
 } from '@/lib/data/priceLevels';
 import type { FieldComparison } from '@/lib/research/merge/sheetAuto';
 import type { StructureClassification, SupplyBlock } from '@/lib/research/types';
-import {
-  CATALYST_GRADE_LABEL,
-  CYCLE_LABEL,
-  STRUCTURE_LABEL,
-} from '@/lib/research/view';
+import { CATALYST_GRADE_LABEL, STRUCTURE_LABEL } from '@/lib/research/view';
+
+import { resolveComputedCycle } from './cycle';
 
 /** Mirrors the badge tones the components already use. */
 export type ReadTone = 'pos' | 'warn' | 'neg' | 'accent' | 'neutral' | 'dim';
 
-/** Which side of the desk a displayed conclusion came from. */
-export type ConclusionProvenance = 'SHEET' | 'AUTO' | 'SHEET_AUTO' | 'CONFLICT' | 'NONE';
+/**
+ * Where a displayed conclusion came from.
+ *
+ * `COMPUTED` sits outside the Sheet/Auto axis rather than being a third value
+ * on it. A conclusion derived from bars has no counterparty to agree or
+ * disagree with, so it can never be `SHEET_AUTO` or `CONFLICT`, and a surface
+ * rendering it as either would be inventing a second opinion.
+ */
+export type ConclusionProvenance =
+  | 'SHEET'
+  | 'AUTO'
+  | 'SHEET_AUTO'
+  | 'CONFLICT'
+  | 'COMPUTED'
+  | 'NONE';
 
 export interface DeskConclusion {
   label: string;
@@ -172,32 +183,6 @@ function structureLabelTone(state: StructureClassification): ReadTone {
       return 'pos';
     default:
       return 'warn';
-  }
-}
-
-function sheetCycleTone(state: string): ReadTone {
-  switch (state) {
-    case 'FRESH_FRONTSIDE':
-      return 'pos';
-    case 'FRONTSIDE_WARNING':
-      return 'warn';
-    case 'BACKSIDE':
-      return 'neg';
-    default:
-      return 'dim';
-  }
-}
-
-function autoCycleTone(cycle: string): ReadTone {
-  switch (cycle) {
-    case 'GREEN_FRESH_FRONTSIDE':
-      return 'pos';
-    case 'YELLOW_FRONTSIDE_WARNING':
-      return 'warn';
-    case 'RED_BACKSIDE':
-      return 'neg';
-    default:
-      return 'dim';
   }
 }
 
@@ -527,22 +512,26 @@ export function resolveConclusions(row: DeskRow): DeskConclusions {
       ? row.intelligenceState.label
       : null;
 
-  const cycle = resolveConclusion({
-    field: 'cycle',
-    analysed,
-    inFlightLabel,
-    sheetLabel: sheet && sheet.cycle.state !== 'UNCLASSIFIED' ? sheet.cycle.display : null,
-    sheetTone: sheetCycleTone(sheet?.cycle.state ?? ''),
-    sheetTitle: sheet?.cycle.raw ?? null,
-    autoLabel:
-      dossier && dossier.cycle.cycleClassification !== 'UNKNOWN'
-        ? CYCLE_LABEL[dossier.cycle.cycleClassification]
-        : null,
-    autoTone: autoCycleTone(dossier?.cycle.cycleClassification ?? ''),
-    autoTitle: dossier?.cycle.reasoning ?? null,
-    comparison: byField.get('cycle'),
-    conflicted: conflicted.has('cycle'),
-  });
+  /*
+   * Cycle is arithmetic, and leaves the Sheet/Auto merge entirely.
+   *
+   * Computed from daily bars in lib/market/cycle.ts, so there is no second
+   * reading to reconcile: no provenance axis, no comparison row, no conflict.
+   * The model's classification it replaces measured 46% irreproducible across
+   * five draws on identical evidence, and lost 8-0 to the arithmetic wherever
+   * both committed.
+   *
+   * With no computed cycle the field reads unresolved. It does NOT fall back to
+   * the model's classification: that field is being deleted, and reading it
+   * here would keep it alive past its own removal.
+   */
+  const cycle: DeskConclusion = resolveComputedCycle(dossier?.computedCycle) ?? {
+    label: inFlightLabel ?? (analysed ? UNRESOLVED_LABEL.cycle : NOT_ANALYZED.label),
+    tone: 'dim',
+    provenance: 'NONE',
+    title: analysed && !inFlightLabel ? UNRESOLVED_DETAIL.cycle : null,
+    otherLabel: null,
+  };
 
   const catalyst = resolveConclusion({
     field: 'catalyst',

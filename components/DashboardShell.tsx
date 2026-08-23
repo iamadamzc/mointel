@@ -8,6 +8,7 @@ import { DeskEventFeed } from '@/components/DeskEventFeed';
 import { DiscoveryBoard } from '@/components/DiscoveryBoard';
 import { FilterBar } from '@/components/FilterBar';
 import { MarketSummary } from '@/components/MarketSummary';
+import { countCyclePhases, cyclePhaseOf } from '@/lib/dashboard/cycle';
 import { MomentumTable } from '@/components/MomentumTable';
 import { FocusStrip } from '@/components/FocusStrip';
 import { TickerDrawer } from '@/components/TickerDrawer';
@@ -199,7 +200,23 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
     [merged],
   );
 
-  const filtered = useMemo(() => applyFilters(tickers, filters), [tickers, filters]);
+  /*
+   * The cycle a row is actually in, resolved from the computed history.
+   *
+   * Passed to the filter for the same reason `telemetry` is passed to the sort:
+   * a MomentumTicker carries the Sheet's cycle, and filtering by a value the
+   * board is not displaying is the same small lie as ordering by one.
+   */
+  const cyclePhase = useCallback(
+    (ticker: string) => cyclePhaseOf(merged.rows.get(ticker)),
+    [merged],
+  );
+  const cycleCounts = useMemo(() => countCyclePhases(merged.rows.values()), [merged]);
+
+  const filtered = useMemo(
+    () => applyFilters(tickers, filters, cyclePhase),
+    [tickers, filters, cyclePhase],
+  );
   const sorted = useMemo(
     () => sortTickers(filtered, sort, telemetry),
     [filtered, sort, telemetry],
@@ -275,6 +292,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
       {/* Counts and filters are one control surface, so they are one line. */}
       <MarketSummary
         summary={summary}
+        cycleCounts={cycleCounts}
         visibleCount={filtered.length}
         filtered={isFilterActive(filters)}
         filters={filters}

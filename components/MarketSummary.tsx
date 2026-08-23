@@ -1,10 +1,13 @@
 'use client';
 
 import type { MarketSummary as MarketSummaryData } from '@/lib/data/types';
+import type { CyclePhase } from '@/lib/market/cycle';
 import type { CycleFilter, FilterState, StructureFilter } from '@/lib/dashboard/view';
 
 interface MarketSummaryProps {
   summary: MarketSummaryData;
+  /** Rows in each computed cycle phase. Same source as the cycle filter. */
+  cycleCounts: Record<CyclePhase, number>;
   /** Number of names currently visible after filtering. */
   visibleCount: number;
   filtered: boolean;
@@ -37,6 +40,7 @@ interface Segment {
  */
 export function MarketSummary({
   summary,
+  cycleCounts,
   visibleCount,
   filtered,
   filters,
@@ -51,33 +55,42 @@ export function MarketSummary({
       tone: 'text-ink',
       hint: 'Researched names the desk is carrying today',
     },
+    /*
+     * Cycle counts come from `cycleCounts`, not from `summary`.
+     *
+     * The summary's freshFrontside / frontsideWarning / backside are counts of
+     * the Sheet's cycle string (lib/data/rows.ts:428). The filter these
+     * segments apply is now the computed phase. A sheet-derived count on a
+     * phase-derived filter shows "fresh · 4" and returns zero rows, so both
+     * sides read one source.
+     */
     {
-      key: 'fresh',
-      label: 'fresh',
-      value: summary.freshFrontside,
+      key: 'day-one',
+      label: 'day 1',
+      value: cycleCounts.DAY_ONE,
       tone: 'text-pos',
-      hint: 'Cycle reads FRESH / FRONTSIDE',
-      apply: (current) => ({ ...current, cycle: toggle(current.cycle, 'FRESH') as CycleFilter }),
-      active: (current) => current.cycle === 'FRESH',
+      hint: 'The move began today',
+      apply: (current) => ({ ...current, cycle: toggle(current.cycle, 'DAY_1') as CycleFilter }),
+      active: (current) => current.cycle === 'DAY_1',
     },
     {
-      key: 'warning',
-      label: 'warning',
-      value: summary.frontsideWarning,
-      tone: 'text-warn',
-      hint: 'Cycle reads FRONTSIDE — WARNING',
+      key: 'frontside',
+      label: 'frontside',
+      value: cycleCounts.FRONTSIDE,
+      tone: 'text-pos',
+      hint: 'Still making the cycle high',
       apply: (current) => ({
         ...current,
-        cycle: toggle(current.cycle, 'WARNING') as CycleFilter,
+        cycle: toggle(current.cycle, 'FRONTSIDE') as CycleFilter,
       }),
-      active: (current) => current.cycle === 'WARNING',
+      active: (current) => current.cycle === 'FRONTSIDE',
     },
     {
       key: 'backside',
       label: 'backside',
-      value: summary.backside,
+      value: cycleCounts.BACKSIDE,
       tone: 'text-neg',
-      hint: 'Cycle reads BACKSIDE',
+      hint: 'Half the move or more given back, still in play',
       apply: (current) => ({
         ...current,
         cycle: toggle(current.cycle, 'BACKSIDE') as CycleFilter,

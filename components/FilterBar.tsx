@@ -110,9 +110,18 @@ export function FilterBar({ filters, onChange, onReset, isActive }: FilterBarPro
         onSelect={(cycle) => onChange({ ...filters, cycle })}
         options={[
           { value: 'ALL', label: 'All' },
-          { value: 'FRESH', label: 'Fresh', title: 'Fresh / Frontside' },
-          { value: 'WARNING', label: 'Warning', title: 'Frontside — Warning' },
-          { value: 'BACKSIDE', label: 'Backside' },
+          { value: 'DAY_1', label: 'Day 1', title: 'The move began today' },
+          { value: 'FRONTSIDE', label: 'Frontside', title: 'Still making the cycle high' },
+          {
+            value: 'OFF_HIGH',
+            label: 'Off high',
+            title: 'Off the high, less than half the move given back',
+          },
+          {
+            value: 'BACKSIDE',
+            label: 'Backside',
+            title: 'Half the move or more given back, still in play',
+          },
         ]}
       />
 

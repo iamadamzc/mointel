@@ -4,10 +4,39 @@
  */
 
 import type { DeskRow } from '@/lib/dashboard/merge';
+import type { CyclePhase } from '@/lib/market/cycle';
 import type { MomentumTicker, PriorityBucket } from '@/lib/data/types';
 
 export type PriorityFilter = 'ALL' | 'A' | 'B' | 'C';
-export type CycleFilter = 'ALL' | 'FRESH' | 'WARNING' | 'BACKSIDE';
+/*
+ * Cycle filters name phases that exist.
+ *
+ * The previous set was ALL | FRESH | WARNING | BACKSIDE — the classes of a model
+ * classification that has been replaced by arithmetic. Only BACKSIDE survived by
+ * name. FRESH became DAY_1, and WARNING was dropped rather than mapped:
+ * YELLOW_FRONTSIDE_WARNING meant "frontside, but with concerns", which is a
+ * model opinion and not a geometry. Arithmetic has no opinions, so there was
+ * nothing for it to become, and inventing a threshold to keep the chip would
+ * manufacture a judgement the new source does not make.
+ */
+export type CycleFilter = 'ALL' | 'DAY_1' | 'FRONTSIDE' | 'OFF_HIGH' | 'BACKSIDE';
+
+/** The computed phase each filter selects. */
+const CYCLE_FILTER_PHASE: Record<Exclude<CycleFilter, 'ALL'>, CyclePhase> = {
+  DAY_1: 'DAY_ONE',
+  FRONTSIDE: 'FRONTSIDE',
+  OFF_HIGH: 'PULLBACK',
+  BACKSIDE: 'BACKSIDE',
+};
+
+/**
+ * Resolves a ticker's computed cycle phase, or null when none exists.
+ *
+ * Passed in rather than read off `MomentumTicker`, which carries only the
+ * Sheet's cycle — the same reason `sortTickers` takes a telemetry lookup: the
+ * sheet row does not know the numbers the board is actually showing.
+ */
+export type CyclePhaseLookup = (ticker: string) => CyclePhase | null;
 export type StructureFilter = 'ALL' | 'DIRTY' | 'UNKNOWN' | 'OTHER';
 export type CatalystFilter = 'ALL' | 'A' | 'B' | 'C';
 
@@ -56,7 +85,11 @@ export function isFilterActive(filters: FilterState): boolean {
   );
 }
 
-export function applyFilters(tickers: MomentumTicker[], filters: FilterState): MomentumTicker[] {
+export function applyFilters(
+  tickers: MomentumTicker[],
+  filters: FilterState,
+  cyclePhase?: CyclePhaseLookup,
+): MomentumTicker[] {
   const search = filters.search.trim().toUpperCase();
 
   return tickers.filter((ticker) => {
@@ -65,13 +98,11 @@ export function applyFilters(tickers: MomentumTicker[], filters: FilterState): M
     if (filters.priority !== 'ALL' && ticker.priority.bucket !== filters.priority) return false;
 
     if (filters.cycle !== 'ALL') {
-      const wanted =
-        filters.cycle === 'FRESH'
-          ? 'FRESH_FRONTSIDE'
-          : filters.cycle === 'WARNING'
-            ? 'FRONTSIDE_WARNING'
-            : 'BACKSIDE';
-      if (ticker.cycle.state !== wanted) return false;
+      // A name whose cycle has not been computed is not "not matching" — it is
+      // unknown. Excluding it is still right, because the filter asks for a
+      // phase and this row cannot be said to be in one.
+      const phase = cyclePhase?.(ticker.ticker) ?? null;
+      if (phase !== CYCLE_FILTER_PHASE[filters.cycle]) return false;
     }
 
     if (filters.structure !== 'ALL') {

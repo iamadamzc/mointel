@@ -22,11 +22,20 @@ import type {
 } from '@/lib/dashboard/deskRead';
 import { formatCount, formatMultiple, formatPrice, formatSignedPercent } from '@/lib/format';
 
+/*
+ * `COMPUTED` reads "price history" rather than "computed".
+ *
+ * The mark tells the trader where a conclusion came from, and "computed"
+ * describes the pipeline rather than the stock — the class of label this
+ * product rejects. Price history is what it was actually derived from, and it
+ * is the one source on this list a trader can check himself.
+ */
 const PROVENANCE_MARK: Record<DeskConclusion['provenance'], string> = {
   SHEET: 'sheet',
   AUTO: 'auto',
   SHEET_AUTO: 'sheet + auto',
   CONFLICT: 'conflict',
+  COMPUTED: 'price history',
   NONE: '',
 };
 
@@ -98,6 +107,7 @@ const NARRATIVE_SOURCE: Record<DeskNarrative['provenance'], string> = {
   AUTO: 'automatic',
   SHEET_AUTO: 'sheet + auto',
   CONFLICT: 'sheet vs auto',
+  COMPUTED: 'price history',
   NONE: '',
 };
 

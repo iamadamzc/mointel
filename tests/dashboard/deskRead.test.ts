@@ -213,10 +213,14 @@ describe('Desk Read construction', () => {
     expect(read.telemetry.source).toBe('ALPACA');
     expect(read.telemetry.rvolRank).toBe(88);
 
-    // Cycle and catalyst come from the sheet; the sheet states no structure, so
-    // the automatic conclusion fills that slot rather than leaving it blank.
-    expect(read.cycle.label).toContain('FRESH');
-    expect(read.cycle.provenance).toBe('SHEET_AUTO');
+    // Catalyst comes from the sheet; the sheet states no structure, so the
+    // automatic conclusion fills that slot rather than leaving it blank.
+    //
+    // Cycle is no longer among them: it is computed from bars and leaves the
+    // Sheet/Auto axis entirely. With no computed history on this fixture it
+    // reads unresolved rather than falling back to either side.
+    expect(read.cycle.label).toBe('CYCLE NOT ESTABLISHED');
+    expect(read.cycle.provenance).toBe('NONE');
     expect(read.catalyst.label).toContain('A');
     expect(read.structure.label).toBe('CAUTION');
     expect(read.structure.provenance).toBe('AUTO');
@@ -226,8 +230,7 @@ describe('Desk Read construction', () => {
     const row = buildDeskRow('FIEE', null, null, demand(), intelligence());
     const read = buildDeskRead(row);
 
-    expect(read.cycle.provenance).toBe('AUTO');
-    expect(read.cycle.label).toBe('GREEN — FRESH / FRONTSIDE');
+    expect(read.catalyst.provenance).toBe('AUTO');
     expect(read.structure.label).toBe('CAUTION');
   });
 
@@ -466,7 +469,7 @@ describe('Sheet / AUTO display state', () => {
 
     expect(row.provenance).toBe('SHEET_AUTO_AGREE');
     expect(row.comparison?.conflict).toBe(false);
-    expect(buildDeskRead(row).cycle.provenance).toBe('SHEET_AUTO');
+    expect(buildDeskRead(row).catalyst.provenance).toBe('SHEET_AUTO');
   });
 
   it('reports a conflict with both sides intact', () => {
@@ -492,14 +495,14 @@ describe('Sheet / AUTO display state', () => {
 
     expect(row.provenance).toBe('AUTO');
     expect(row.comparison?.comparisons ?? []).toHaveLength(0);
-    expect(buildDeskRead(row).cycle.provenance).toBe('AUTO');
+    expect(buildDeskRead(row).catalyst.provenance).toBe('AUTO');
   });
 
   it('reports SHEET when only the human review exists', () => {
     const row = buildDeskRow('FIEE', sheet(), null, demand());
 
     expect(row.provenance).toBe('SHEET');
-    expect(buildDeskRead(row).cycle.provenance).toBe('SHEET');
+    expect(buildDeskRead(row).catalyst.provenance).toBe('SHEET');
   });
 
   it('does not turn incomplete automatic coverage into a disagreement', () => {
@@ -540,5 +543,32 @@ describe('structural summary', () => {
 
   it('is absent when no automatic structural work exists', () => {
     expect(buildStructureSummary(buildDeskRow('FIEE', sheet(), null, demand()))).toBeNull();
+  });
+});
+
+/*
+ * Cycle left the Sheet/Auto apparatus when it became arithmetic.
+ *
+ * These guard the removal rather than the replacement: the failure they catch
+ * is someone re-attaching cycle to the provenance merge, which would put a
+ * conflict badge on a number that has no counterparty to conflict with.
+ */
+describe('cycle is outside the Sheet/Auto axis', () => {
+  it('never reports a Sheet, Auto or Conflict provenance for cycle', () => {
+    for (const row of [
+      buildDeskRow('FIEE', sheet(), null, demand(), intelligence()),
+      buildDeskRow('FIEE', null, null, demand(), intelligence()),
+      buildDeskRow('FIEE', sheet(), null, demand()),
+      buildDeskRow('FIEE', sheet({ cycle: '🔴 BACKSIDE' }), null, demand(), intelligence()),
+    ]) {
+      expect(['COMPUTED', 'NONE']).toContain(buildDeskRead(row).cycle.provenance);
+      expect(buildDeskRead(row).cycle.otherLabel).toBeNull();
+    }
+  });
+
+  it('does not fall back to the model cycle it replaces', () => {
+    const read = buildDeskRead(buildDeskRow('FIEE', null, null, demand(), intelligence()));
+    expect(read.cycle.label).not.toContain('FRESH');
+    expect(read.cycle.label).not.toContain('FRONTSIDE');
   });
 });
