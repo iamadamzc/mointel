@@ -150,8 +150,29 @@ measurable population rather than a chosen sample.
 
 **Also from the control, and it lands here: `structureClassification` moved 2 of
 6 on identical input.** A third of it is not reproducible. Nothing in this
-thread has used the stored `structure` field and nothing will until that is
-understood.
+thread uses the stored `structure` field — `symbol_desk_day` has no structure
+column — so no finding here needs a caveat; the exposure is the desk's
+deterministic diff at `lib/desk/assessment.ts:269`, which turns every change
+into a trader-facing event, and that is Design's surface.
+
+Three things the extract settles about it. **Every structure change coincides
+with a new analysis version and none occurs without one** — 0 moves across 1192
+same-version checkpoint pairs, 29 across 56 version changes — so "structure
+changed" means "the name was re-analysed", and an unknown fraction of those are
+re-generation. **The ageing mechanism already covers it**: `analysis_version_id`
+is per row and backs the whole dossier, and that zero row is what licenses
+saying so, so nothing new needs capturing if structure is ever archived. And
+**this archive cannot re-measure the 2-of-6 rate** — over the same 56
+re-analyses structure and catalyst each moved 29 times, and catalyst is known
+stable at 0 of 6 on fixed evidence, which proves the production figure is
+dominated by genuine evidence change rather than instability. 52% is not a
+competing estimate and must not be quoted as one. Separating the two needs
+evidence held constant, which is Research's replay instrument.
+
+Worth having in front of whoever decides the field's future: `structure` takes
+**three values** over 1459 non-null rows — `CAUTION` 871, `UNKNOWN` 365,
+`DIRTY_FLOAT` 223 — so the mode is 60% of the mass and a 2-in-6 flip rate is
+large against that resolution.
 
 **The surface is bounded to the TODAY tab.** The RESEARCH tab's 205 rows never
 reach the interpreter — `loadSheetPriors` indexes `state.tickers`, built from

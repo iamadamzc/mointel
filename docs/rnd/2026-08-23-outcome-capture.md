@@ -542,6 +542,71 @@ earlier is now the live path rather than a contingency: use the Sheet's own
 grade as the independent variable, or re-derive ours prior-free. Not both, and
 never a comparison between the two.
 
+### structureClassification: what the archive can and cannot say about it
+
+*Routed here by Integration 2026-08-23 as the measurement half of a finding it
+gave Design. Three questions were put; the first two are answerable from the
+production extract and the third is not.*
+
+Research's control found `structureClassification` moving **2 of 6** on
+byte-identical evidence while catalyst held at 0 of 6.
+
+**Does anything here read it across checkpoints?** The desk does:
+[`lib/desk/assessment.ts:269`](../../lib/desk/assessment.ts:269) puts
+`structure X → Y` into the deterministic diff, so every change becomes a
+recorded event in `changed_fields` and `change_summary`. **This archive does
+not** — `symbol_desk_day` has no structure column and nothing in `lib/archive/`
+reads the field. So nothing built here needs a caveat; the exposure is the
+desk's change summaries, which is Design's surface and already routed there.
+
+The measurement half, stated precisely: **every structure change in the record
+coincides with a new analysis version, and none occurs without one.** Over 1850
+ticker rows and 1248 consecutive checkpoint pairs:
+
+| Transition | pairs | structure moved | catalyst moved |
+| --- | --- | --- | --- |
+| analysis version unchanged | 1192 | **0** | **0** |
+| analysis version changed | 56 | 29 | 29 |
+
+So "structure changed between checkpoints" is exactly "the name was re-analysed",
+and given Research's control an unknown fraction of those 29 are re-generation
+rather than anything the market did. That is the caveat any such count needs.
+
+The zero row is worth stating on its own: **within a stable analysis version
+nothing moves**, on either field, across 1192 pairs. The archive's frozen-state
+design does what it claims and Research's finding does not reach it.
+
+**Should the archive record which version produced a structure reading?** It
+effectively already does. `analysis_version_id` is stored per ticker row and
+backs the whole dossier, structure included — and the table above is the
+verification that licenses saying so, since structure never moves while the
+version holds. If structure is ever added here, the ageing mechanism built for
+the catalyst grade covers it with no new capture. Nothing to build today.
+
+**Should the 2-of-6 rate be re-measured at this archive's sample sizes?** No,
+and the production numbers are the reason rather than an excuse. Over the same
+56 re-analyses, structure and catalyst each moved 29 times — identical rates,
+with 13 moving independently of the other in each direction. Under Research's
+controlled design catalyst was stable at 0 of 6. A field known to be stable on
+fixed evidence moving 52% of the time here is proof that **this measurement is
+dominated by genuine evidence change**, not by instability: a version change
+means new evidence was collected, so both fields have a legitimate reason to
+move and the design cannot separate the two.
+
+**So 52% is not a competing estimate of anything and must not be quoted as one.**
+Separating noise from real change needs evidence held constant, which is
+Research's replay instrument and costs a run. Observational data cannot
+substitute for it at any n.
+
+One thing the extract does add, unprompted and relevant to whether the field is
+worth stabilising: `structure` takes **three values** across 1459 non-null rows —
+`CAUTION` 871, `UNKNOWN` 365, `DIRTY_FLOAT` 223 — with one of them accounting for
+60%. A three-level field where the mode is most of the mass carries little
+information before any instability is considered, and a 2-in-6 flip rate is
+large against that resolution. Whether it is worth stabilising or worth dropping
+is Design's and Research's call, not this thread's, but the base rates belong in
+front of it.
+
 ### Q1's premise against the pipeline's own numbers — the gap is definitional
 
 *Handed over by Research via Integration, 2026-08-23. Resolved here, because it
