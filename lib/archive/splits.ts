@@ -22,6 +22,59 @@
  * could never work: a 1:100 reverse split and a 100x rally are the same number.
  */
 
+/**
+ * Whether the two daily fetches actually differ anywhere, and where they do not.
+ *
+ * Split detection works by comparing the same series fetched `raw` and `split`.
+ * If the adjusted fetch ever returns nothing, returns raw, or silently drops
+ * symbols, every comparison agrees and the run reports **no splits** — a clean,
+ * plausible null that looks exactly like a window with no corporate actions.
+ * Hypothesis 3 would come back empty and nothing would say why.
+ *
+ * Research hit the same class of failure tonight: a replay harness with no API
+ * key returned each ticker's latest stored dossier for every version and
+ * produced a complete, plausible, entirely fabricated result whose only tell was
+ * a zero token count. This is the archive's version of that tell.
+ *
+ * So the counts are reported on every run, including when they are zero. A zero
+ * that is stated is a finding about the market; a zero that is silent is
+ * indistinguishable from a broken fetch.
+ */
+export interface SplitFetchAudit {
+  /** Symbol-dates present in the raw series. */
+  rawPoints: number;
+  /** Of those, how many had a matching adjusted close to compare against. */
+  comparable: number;
+  /** Of the comparable ones, how many actually differ — i.e. carry a split. */
+  differing: number;
+  /** Symbols that returned raw bars but no adjusted bars at all. */
+  symbolsMissingAdjusted: string[];
+}
+
+export function auditSplitFetch(
+  seriesBySymbol: ReadonlyMap<string, readonly DailyClosePair[]>,
+): SplitFetchAudit {
+  let rawPoints = 0;
+  let comparable = 0;
+  let differing = 0;
+  const symbolsMissingAdjusted: string[] = [];
+
+  for (const [symbol, series] of seriesBySymbol) {
+    let sawAdjusted = false;
+    for (const pair of series) {
+      rawPoints += 1;
+      const factor = ratio(pair);
+      if (factor === null) continue;
+      sawAdjusted = true;
+      comparable += 1;
+      if (differs(factor, 1)) differing += 1;
+    }
+    if (series.length > 0 && !sawAdjusted) symbolsMissingAdjusted.push(symbol);
+  }
+
+  return { rawPoints, comparable, differing, symbolsMissingAdjusted };
+}
+
 /** One session's close, fetched both ways. `adjusted` is null if unavailable. */
 export interface DailyClosePair {
   date: string;

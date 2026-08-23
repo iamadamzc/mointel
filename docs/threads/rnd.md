@@ -174,6 +174,44 @@ that would read as authoritative. The executing run will arrive labelled
 one-shot with per-ticker instability marked. **The decision is the trader's and
 the premise has changed since he authorised the original.**
 
+**A plausible fabricated result, and the guard it prompted here.** *Research,
+2026-08-23.* A replay harness ran with no API key; `interpretTicker` returned
+each ticker's latest stored dossier for every version and the harness produced a
+complete, internally consistent, entirely fabricated result — "123 stable, 0
+unstable, 43 differ from stored" — whose only tell was a zero token count. It
+would have reached this thread as a finding.
+
+**The archive had the same shape.** Split detection compares one daily series
+fetched `raw` and `split`; if the adjusted fetch returned nothing, returned raw,
+or dropped symbols, every comparison agrees and the run reports **no splits** —
+a plausible null indistinguishable from a window with no corporate actions, and
+hypothesis 3 comes back empty with nothing to say why. The only reason it was
+not silent tonight is that two splits happened to fire. `auditSplitFetch` now
+reports on every run including when the answer is zero, names symbols that
+returned raw bars but no adjusted ones, and throws when nothing at all is
+comparable, because that is a fetch that never happened rather than a market
+fact. Live figure: **11,264 of 11,264 symbol-dates comparable, 999 differing** —
+8.9% of the lookback sits on a pre-split basis, so reverse splits are as endemic
+as the spec claimed.
+
+**The one-shot pass landed: 25 of 56 prior-free grades differ from stored, 45%.
+Not a prior effect and not to be quoted as one.** Three live confounds, none
+separable: the removed prior, ~17% pairwise noise, and — largest — evidence,
+since the pass predates as-of filtering and bundled every source each ticker
+ever had against a stored grade that saw only what existed at its own
+`generated_at`. Held as instability marks only.
+
+**The anchoring-inflation hypothesis is dead.** The list reads as though the
+prior inflates grades — `LEGITIMATE_POSITIVE → MODERATE_MIXED_SECONDARY` recurs
+— but counted both ways it is 10 less positive, 7 more positive, 8 not
+orderable. On 17 orderable changes that is what a coin does a third of the time.
+Research killed it against the eyeball impression rather than with it.
+
+**The per-version replay makes the join arithmetic obsolete.** It joins on
+`storedVersionId`, which maps to this archive's `analysis_version_id`, so all 56
+resolve and the 27/10/19 split never arises. That arithmetic stands as a record
+of what a per-ticker output would have cost, not as a live constraint.
+
 **Confirmed by Research: the in-flight run is single-draw** — one interpretation
 per ticker, so it produces exactly the single draws from an irreproducible
 distribution that make a bad variable. It arrives labelled. **Use it for

@@ -54,6 +54,7 @@ import {
 } from '../lib/archive/coverage';
 import { deriveFollowThrough, deriveOutcome, type SymbolOutcome } from '../lib/archive/outcomes';
 import {
+  auditSplitFetch,
   resolveBaseline,
   sessionsSinceSplit,
   SPLIT_LOOKBACK_SESSIONS,
@@ -258,6 +259,37 @@ async function main(): Promise<void> {
     pairsBySymbol.set(symbol, pairs);
   }
 
+  /*
+   * Say out loud whether the two fetches actually differ anywhere.
+   *
+   * Split detection compares the same series fetched raw and split-adjusted. If
+   * the adjusted fetch returns nothing, returns raw, or drops symbols, every
+   * comparison agrees and the run reports NO SPLITS — a plausible null
+   * indistinguishable from a window with no corporate actions, and hypothesis 3
+   * comes back empty with nothing to say why. Reported on every run including
+   * when it is zero, because a silent zero is the failure and a stated zero is
+   * a fact about the market.
+   */
+  const audit = auditSplitFetch(pairsBySymbol);
+  console.log(
+    `[archive] split basis: ${audit.comparable} of ${audit.rawPoints} symbol-dates ` +
+      `comparable on both bases, ${audit.differing} differing`,
+  );
+  if (audit.symbolsMissingAdjusted.length > 0) {
+    console.log(
+      `[archive] WARNING: ${audit.symbolsMissingAdjusted.length} symbols returned raw bars ` +
+        'but no split-adjusted bars; their splits cannot be detected — ' +
+        audit.symbolsMissingAdjusted.slice(0, 10).join(', '),
+    );
+  }
+  if (audit.comparable === 0 && audit.rawPoints > 0) {
+    // Not a market fact. The adjusted fetch produced nothing usable at all.
+    throw new Error(
+      `split-adjusted daily fetch returned no comparable closes for any of ${allSymbols.length} ` +
+        'symbols; refusing to report a split-free window that was never measured',
+    );
+  }
+
   // Only for rows whose baseline was recovered from the tape: the as-seen close
   // that reference_basis says was restated. Rows using the desk's own reference
   // need no such record, because the desk saw that session's basis directly.
@@ -380,7 +412,9 @@ async function main(): Promise<void> {
     symbolDays: outcomes.length,
     rowsWritten: outcomes.length,
     rowsEmpty: empty,
-    notes: `raw minute bars; ${filled} follow-through rows filled`,
+    notes:
+      `raw minute bars; ${filled} follow-through rows filled; ` +
+      `split basis ${audit.differing}/${audit.comparable} symbol-dates differing`,
   });
 
   console.log(

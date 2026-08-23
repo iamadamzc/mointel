@@ -549,6 +549,84 @@ that the floor is high enough that grade transitions cannot be read as events
 without saying so — smaller than this note claimed at one point, larger than it
 claimed at another.
 
+#### A plausible fabricated result, and the guard it prompted here
+
+*Research, 2026-08-23.* A per-version replay harness ran with no API key.
+`interpretTicker` returned each ticker's **latest stored dossier** for every
+version, and the harness produced a complete, internally consistent, entirely
+fabricated result — "123 stable, 0 unstable, 43 differ from stored". Its only
+tell was a token count of zero. It would have arrived here as a finding. The
+replay now throws rather than degrading.
+
+**The archive had the same shape and now has a tell.** Split detection compares
+one daily series fetched `raw` and fetched `split`. If the adjusted fetch ever
+returned nothing, returned raw, or dropped symbols, every comparison would agree
+and the run would report **no splits** — a clean, plausible null,
+indistinguishable from a window with no corporate actions. Hypothesis 3 would
+come back empty and nothing would say why. The only reason it was not silent
+tonight is that two splits happened to fire.
+
+`auditSplitFetch` now reports on every run, including when the answer is zero:
+
+```
+[archive] split basis: 11264 of 11264 symbol-dates comparable on both bases, 999 differing
+```
+
+A stated zero in the `differing` column is a fact about the market. A silent
+zero was indistinguishable from a broken fetch. The run also names any symbol
+that returned raw bars but no adjusted ones, and **throws** if nothing at all is
+comparable — that case is not a market fact, it is a fetch that never happened.
+`tests/archive/splits.test.ts` asserts the two cases produce the same
+`differing` and different `comparable`, which is the whole point.
+
+The 999 is worth keeping on its own: **8.9% of symbol-dates in the lookback sit
+on a pre-split basis relative to today.** Reverse splits are as endemic as the
+spec claimed.
+
+#### The one-shot pass: a coverage marker, not a variable
+
+25 of 56 prior-free grades differ from the latest in-window stored grade — 45%.
+**This is not a prior effect and must not be quoted as one.** Research names
+three live confounds and can separate none of them:
+
+1. the prior, removed — the thing of interest
+2. run-to-run noise, ~17% pairwise on its own
+3. **evidence** — the pass had no as-of filter, so it bundled every source each
+   ticker has ever had, while the stored grade saw only what was collected by
+   its own `generated_at`
+
+The third is the largest and is why 45% exceeds everything else measured. It
+exists because as-of filtering landed after this pass started.
+
+**The anchoring-inflation hypothesis is dead**, and Research killed it against
+the eyeball impression rather than with it. Scanning the list,
+`LEGITIMATE_POSITIVE → MODERATE_MIXED_SECONDARY` recurs and reads like the prior
+inflating grades. Counted both ways: **10 less positive, 7 more positive, 8
+involving `UNKNOWN` and not orderable.** On 17 orderable changes, 10-7 is what a
+coin produces about a third of the time. Nothing there.
+
+Recorded in this archive as instability marks only. `data/rederive-run.db`,
+rows `id>325`, `sheetPriorOmitted=true`, 608,625 input / 166,941 output tokens.
+
+#### The per-version replay dissolves the join problem
+
+The artifact to wait for: 123 stored versions, up to 2 draws each, as-of filtered
+on `fetched_at`, refusing a grade when the draws disagree. It controls confound 3
+outright — each version is replayed against exactly what the desk had collected
+when it ran — and partially controls confound 2 through the refusal.
+
+**It also makes the join arithmetic below obsolete.** That section works out
+which tickers can take a single per-ticker correction: 27 with one version, 10
+more whose grade never moved, 19 ambiguous. A per-version replay joins on
+`storedVersionId`, which maps directly to this archive's `analysis_version_id`,
+so **every one of the 56 resolves** and the ambiguity never arises. The
+arithmetic is left below as a record of what a per-ticker output would have
+cost, not as a live constraint.
+
+Early sign, explicitly not a result: HUIZ v224 came back
+`UNKNOWN | LEGITIMATE_POSITIVE` and was refused; XOS v41 likewise. The refusal
+semantics are firing on real cases rather than sitting unused.
+
 #### Join arithmetic, which the retraction does not change
 
 *From Integration, and corroborated here.* A replay emits one grade per

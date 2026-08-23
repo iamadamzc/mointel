@@ -11,6 +11,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  auditSplitFetch,
   resolveBaseline,
   sessionsSinceSplit,
   SPLIT_LOOKBACK_SESSIONS,
@@ -165,5 +166,82 @@ describe('sessionsSinceSplit', () => {
     // Hypothesis 3 is not "split and run the same day" — it is a split, then a
     // run once the float is clean. A one-session window could not see it.
     expect(SPLIT_LOOKBACK_SESSIONS).toBeGreaterThanOrEqual(20);
+  });
+});
+
+describe('auditSplitFetch', () => {
+  /*
+   * The tell. Split detection compares one series fetched two ways, so if the
+   * adjusted fetch returns nothing, returns raw, or drops symbols, every
+   * comparison agrees and the run reports no splits — a plausible null
+   * indistinguishable from a window with no corporate actions.
+   *
+   * Research hit this class of failure on the same evening: a replay harness
+   * with no API key returned each ticker's latest stored dossier for every
+   * version and produced a complete, plausible, fabricated result whose only
+   * tell was a zero token count. These assertions are the archive's tell.
+   */
+  function series(...pairs: DailyClosePair[]): Map<string, DailyClosePair[]> {
+    return new Map([['AAA', pairs]]);
+  }
+
+  it('counts comparable points and the ones that differ', () => {
+    const audit = auditSplitFetch(
+      series(preSplit('2026-08-17', 0.2, 20), level('2026-08-18', 4.1), level('2026-08-19', 4.4)),
+    );
+
+    expect(audit.rawPoints).toBe(3);
+    expect(audit.comparable).toBe(3);
+    expect(audit.differing).toBe(1);
+    expect(audit.symbolsMissingAdjusted).toEqual([]);
+  });
+
+  it('reports zero comparable when the adjusted fetch returned nothing', () => {
+    // The failure mode. Without this the run reports "no splits" and means
+    // "never looked".
+    const audit = auditSplitFetch(
+      series(
+        { date: '2026-08-17', raw: 2, adjusted: null },
+        { date: '2026-08-18', raw: 2.2, adjusted: null },
+      ),
+    );
+
+    expect(audit.rawPoints).toBe(2);
+    expect(audit.comparable).toBe(0);
+    expect(audit.differing).toBe(0);
+    expect(audit.symbolsMissingAdjusted).toEqual(['AAA']);
+  });
+
+  it('distinguishes a real split-free window from a broken fetch', () => {
+    // Both report differing = 0. Only comparable tells them apart, which is
+    // the entire reason it is reported rather than inferred.
+    const genuinelyNoSplits = auditSplitFetch(
+      series(level('2026-08-17', 3), level('2026-08-18', 3.1)),
+    );
+    const brokenFetch = auditSplitFetch(
+      series(
+        { date: '2026-08-17', raw: 3, adjusted: null },
+        { date: '2026-08-18', raw: 3.1, adjusted: null },
+      ),
+    );
+
+    expect(genuinelyNoSplits.differing).toBe(0);
+    expect(brokenFetch.differing).toBe(0);
+    expect(genuinelyNoSplits.comparable).toBe(2);
+    expect(brokenFetch.comparable).toBe(0);
+  });
+
+  it('names only the symbols that returned no adjusted bars at all', () => {
+    const audit = auditSplitFetch(
+      new Map([
+        ['GOOD', [level('2026-08-17', 3)]],
+        ['BLIND', [{ date: '2026-08-17', raw: 3, adjusted: null }]],
+        ['EMPTY', []],
+      ]),
+    );
+
+    // EMPTY returned no raw bars either, so nothing was lost by the adjusted
+    // fetch and flagging it would be noise.
+    expect(audit.symbolsMissingAdjusted).toEqual(['BLIND']);
   });
 });
