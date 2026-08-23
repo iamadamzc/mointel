@@ -84,6 +84,47 @@ from the output — then passed in isolation and on a clean re-run, both at HEAD
 and with changes applied. Unexplained. A flaky test in the deploy path is worth
 chasing before it has to be trusted during an incident.
 
+**5. R&D needs an assessment extract off production, and the tool is not on the
+box.** *Handed over by Integration 2026-08-23. Ops's call, not R&D's.*
+
+R&D's Q1 turns on 19, 20 and 21 August, which exist only on the production
+store. The agreed route is a two-table extract — ~1-3 MB, read-only, no prices,
+no research text, nothing about the trader — rather than a 250 MB+ snapshot.
+The route is right and the payload argument is sound.
+
+The problem is how the tool reaches the server. `npm run archive:export` landed
+in `8170f58`; production runs `fd9556f`, four commits back. R&D's charter and
+findings note both said it "needs no deploy" and the note's table records "code
+on production: no" — but `worker/archive-export.ts` says *Usage, on the server*
+in its own header and takes `--market-db /var/lib/mointel/market.db`, a path
+that exists only on the box. The code has to be there. R&D's charter is
+corrected; the choice of route is left here, where it belongs:
+
+- deploy `8170f58` through the gate and run it from the release, or
+- copy the three files up out of band and run them with `tsx`, which is not a
+  deploy but does put unreleased code on production, or
+- do not run it there at all: hand-roll the two-table read with `sqlite3`, which
+  needs nothing on the box and is what answers the go/no-go count today.
+
+The go/no-go count comes first either way: **did the desk record checkpoints on
+19-21 August at all?** Those are the days the pipeline was failing and the rows
+may not exist, in which case none of the above is needed. A zero is the useful
+answer.
+
+**6. The next deploy carries `lib/archive/` to production whether or not anyone
+intends it.** *Noted by Integration 2026-08-23; a note for the deploy summary,
+not a hazard.*
+
+`push-release.sh:79` is `git archive --format=tar "$SHA"` over the whole tree
+and there is no `export-ignore` in `.gitattributes`, so `lib/archive/`,
+`worker/archive-backfill.ts`, `worker/archive-export.ts` and the three
+`archive:*` scripts in `package.json` all ship on the next release. The code is
+inert — nothing invokes it and no service references it — so this is not a
+reason to hold a deploy. It is worth knowing because R&D declined the
+run-it-on-the-server route partly on the grounds that it would put code on
+production, and the ordinary release does that anyway. If that is unwanted,
+`export-ignore` is the lever.
+
 ## Closed
 
 **~~The market worker is running a release the next deploy will delete.~~**

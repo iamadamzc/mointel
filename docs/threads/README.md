@@ -140,9 +140,13 @@ As of the last session, **2026-08-23**:
   logins.
 - Credentials live in `A:\AWS_creds\` — **outside the repo, and they stay there.**
   Never print, log, commit or move a credential value.
-- Project memory is at `~/.claude/projects/A--mointel/memory/` — desk state,
-  operations traps, deployment, and working style. It loads automatically only
-  when the session's working directory is `A:\mointel`.
+- Project memory is at `~/.claude/projects/A--mointel/memory/` — seven files:
+  desk state, operations traps, deployment, how the trader works, how he
+  *trades*, the catalyst structure break, and the viscosity research. The last
+  three moved in on 2026-08-23 from a project keyed to `A:\`, where no thread
+  could see them. `MEMORY.md` is the index. It all loads automatically only
+  when the session's working directory is `A:\mointel` — which is why a chat
+  opened at `A:\` is working blind.
 
 ## Housekeeping
 

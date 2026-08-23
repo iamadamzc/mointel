@@ -36,7 +36,7 @@ questions is a thread that has stopped working.
 | Q2 | What share of qualifying movers ever produce a tradeable pullback at all? | 2026-08-23 | proposed |
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | proposed |
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | dormant — see closed lines below |
-| Q5 | When does a board name's move happen, relative to when the desk puts it on the board? | 2026-08-23 | proposed — **answerable today**, see the findings note |
+| Q5 | When does a board name's move happen, relative to when the desk puts it on the board? | 2026-08-23 | proposed — behind Q1, see the ordering note |
 
 **Closed, and not to be reopened without new evidence:**
 
@@ -124,11 +124,22 @@ stale local store, which ends 2026-08-18. **Q1 turns on 19, 20 and 21 August,
 and those dates live only on production.**
 
 **Waiting on Ops: one `npm run archive:export` from the production store.** It
-opens the store read-only, needs no deploy, and produces ~1-3 MB rather than a
-250 MB+ snapshot — the backfill reads two tables and fetches the rest from
-Alpaca. The same command reports checkpoints per trading date, which also
-answers whether the desk recorded anything on the three days in question. Full
-procedure in the findings note.
+opens the store read-only and produces ~1-3 MB rather than a 250 MB+ snapshot
+— the backfill reads two tables and fetches the rest from Alpaca. The same
+command reports checkpoints per trading date, which also answers whether the
+desk recorded anything on the three days in question. Full procedure in the
+findings note.
+
+**It does need the code on the box, though — corrected by Integration
+2026-08-23.** This charter and the findings note both said "needs no deploy",
+and the findings note's comparison table records "code on production: no" for
+this route. That is wrong. `worker/archive-export.ts` says *Usage, on the
+server* in its own header and takes `--market-db /var/lib/mointel/market.db`,
+a path that only exists on the box — so the tool has to run there, and it
+landed in `8170f58`, four commits ahead of what production runs. The payload
+argument is untouched and the route is still the right one; what was wrong is
+only the claim that nothing has to reach the server. **How it gets there is
+Ops's call, not this thread's** — see [ops.md](ops.md) Open item 5.
 
 **Ordering once those dates land**: the split test first, because it serves Q1,
 which is active. `split_sessions_ago` makes the reverse-split half of Q1's third
