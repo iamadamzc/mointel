@@ -269,6 +269,23 @@ sudo -u mointel env -C /opt/mointel/current \
   npm run review:create -- --hours 24 --label chatgpt
 ```
 
+### Testing whether a review link is live
+
+**Ask its API, not its HTML.** The page returns **200 even when the token is
+revoked, expired or never existed** — it renders an explicit refusal in the body,
+but the status does not say so. The API is correct:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' "https://dwwep02jje2ag.cloudfront.net/review/<token>/api/dashboard"
+# 200 = live    403 = revoked, expired or invalid
+```
+
+Verified 2026-08-23: revoked and garbage tokens both return 403 from every review
+API route, with no data in the body; the HTML page returns 200 for all three
+states. A status check against the page is a **false pass** — this cost one
+false alarm already. Why the page is not fixed, and why the obvious fix would
+have been a no-op, is in [threads/ops.md](threads/ops.md) Open item 10.
+
 `review:list` shows label, created, expires, status and last use. It never
 prints a token or a hash — there is nothing stored that could be shown.
 

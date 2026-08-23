@@ -491,10 +491,54 @@ is not a desk that works.
 Also: this is the deploy where keep-3 would drop `fd9556f`. The
 `market-worker-release` pin holds it, which is what it was placed for.
 
-**10. A dead review link returns HTTP 200, so status code cannot test one.**
-*Found 2026-08-23 while verifying a revocation. Not a bypass. Recorded, not
-claimed — the fix is in the review route, which is app-layer rather than
-transport.*
+**10. ~~A dead review link returns HTTP 200.~~ INVESTIGATED AND DELIBERATELY NOT
+FIXED, 2026-08-23.** *Assigned to this thread; the result of doing it is that
+every available fix is worse than the defect. Two corrections to my own
+report below.*
+
+**Correction 1: the defect is narrower than I recorded.** I checked the HTML page
+and stopped there. The **review API already returns the right status** —
+`/review/<token>/api/dashboard`, `/api/market` and `/api/diagnostics` all return
+**403** for a revoked token and **403** for a garbage one, 200 only for a valid
+one, with a clean body (`{"error":"This review session has been revoked."}`) and
+no data. Only the **HTML page** returns 200.
+
+That dissolves both consequences I listed. An automated check does not have to
+get a false pass, and a monitor *can* see a dead link — by asking the API, which
+is the thing a monitor should poll anyway. **To test whether a review link is
+live, request its API and expect 403 or 200. Never test the HTML page's status.**
+
+**Correction 2: the obvious fix would not have worked, and I would have shipped
+a no-op.** `not-found.js` in this Next (16.3.1) returns **"`200` for streamed
+responses, and `404` for non-streamed"**. The refusal response *is* streamed —
+`Transfer-Encoding: chunked`, confirmed against production — and the streaming is
+deliberate, which is why `nginx-locations.conf` sets `proxy_buffering off`. So
+`notFound()` would have changed the rendered UI and not the status.
+
+The three routes, and why each is refused:
+
+- **`notFound()`** — likely still 200 here, per the above. It would also replace
+  an informative refusal (*expired* vs *revoked* vs *invalid*) with Next's
+  default 404 UI, since the app has no `not-found.tsx` anywhere. Worse UX, no
+  status change.
+- **`unauthorized()`** — semantically the right answer, and it is **experimental**:
+  it requires enabling `experimental.authInterrupts` globally in
+  `next.config.ts`. Turning on an experimental Next flag across a production
+  trading desk to correct one status code is not a trade this thread will make,
+  and it is subject to the same streaming caveat.
+- **Validating in `proxy.ts`** — already rejected in that file, with a reason
+  that still holds: proxy runs before the Node runtime the data layer needs, so
+  it cannot reach SQLite, and *"an authorization check that has to guess is worse
+  than one made where the store actually is"*.
+
+**So the code is left alone.** The security posture is correct and proven twice
+over — the desk is withheld, revocation works, the API refuses. What remains is a
+cosmetic status on a page whose body is already explicit, and the check that
+matters is documented above and in
+[../AWS_DEPLOYMENT.md](../AWS_DEPLOYMENT.md). Revisit if `authInterrupts` ever
+becomes stable, when it costs nothing.
+
+*Original report, kept because the sizing rule below came out of it:*
 
 A revoked, expired or invalid token returns **200 with an error page** instead of
 401 or 404. My first read of this was that revocation was broken; it is not, and
