@@ -841,6 +841,24 @@ practical size of the inflation is unknown. Needs the live desk.
   **Ops confirms the deploy; Design confirms the behaviour.** A change is not
   finished at the handoff. It is finished when this thread has looked at the real
   board.
+- **A check that cannot fail is not a check.** Before reporting anything
+  verified, ask what result would have proved it *broken*. If the answer is
+  "none available right now", the observation confirms nothing — say so instead
+  of reporting a pass. Three instances surfaced on 2026-08-23 alone: a review
+  link answering `200` while dead, a replay reporting stable versions having made
+  no model calls, and this thread looking at the `Move` button at `CLOSED` phase,
+  where the fixed and unfixed code render identically. Confirming a build is on
+  the box is not confirming its behaviour changed.
+- **Thread-to-thread traffic goes through Integration, not the trader.** Set at
+  his instruction 2026-08-23 (`159baab`), after he was asked three times in one
+  evening to carry a message between two threads. **Reply to any cross-session
+  message Integration sends: copy its `from=` attribute and use it as `to`.**
+  That address resolves even though Integration does not appear in `ListAgents`,
+  which is why no route existed before. The id is per-session, so take it from
+  the latest message rather than from anything written down. Integration relays
+  with context the receiver lacks — but **relaying is not deciding**: anything
+  needing the trader's judgement still goes to him under *What I need from you*,
+  directly, with no hop in between.
 - **Check a review link by content, never by status code.** A revoked, expired
   or invalid token returns **200 with an error page**, not 401 or 404 — found by
   Ops, recorded 2026-08-23. A valid session is ~535 KB with `RVOL` present; a
