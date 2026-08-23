@@ -292,6 +292,33 @@ charter and found two, both **pending rather than history** (`b6125a2`):
 For this thread: most of the rules in this document were written today, and each
 is owed that question.
 
+## Name the outcomes you accept, never the ones you reject
+
+**Research, 2026-08-23, after the same fabrication happened twice.** Its replay
+guard was a **denylist**. `interpretTicker` attaches the last accepted dossier
+on `UNAVAILABLE`, on `REUSED_UNCHANGED`, **and on `FAILED`** — three separate
+kindnesses, each correct for a live desk. Research guarded two after the first
+fabricated result. The failing model call walked through the third and reported
+a stored dossier as a re-derivation, with `tokens in=0` again the only tell.
+
+It is now an allowlist: `ACCEPTED` or `PARTIAL`, everything else throws with the
+provider error attached, plus a check that an interpretation which spent no
+tokens did not happen. **The allowlist caught an empty OpenAI balance on its
+first run instead of inventing a dossier.**
+
+**A denylist has to be complete, and only the callee knows whether it is.** The
+same bug in a different costume appeared earlier the same day: `!== null`
+admitted every legacy row in `hasUsableSource`, because an absent key
+deserialises to `undefined` rather than `null`. Both are a guard enumerating
+what to refuse, against a producer free to invent a new thing to return.
+
+This sits beside the two rules below rather than replacing them. "A check that
+cannot fail isn't a check" is about whether an observation can come out badly;
+"check the field that carries the answer" is about reading the right one.
+**This one is about the shape of the guard**, and it is the only one of the
+three that is mechanical: an allowlist fails closed against futures nobody has
+thought of, and a denylist cannot.
+
 ## Check the field that carries the answer
 
 **Added 2026-08-23 after three instances, two of which nearly became reports.**
