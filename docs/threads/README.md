@@ -12,15 +12,21 @@ then paste that charter's opening message.
 | --- | --- | --- |
 | **Ops** | The live desk, AWS, deploys, incidents | [ops.md](ops.md) |
 | **Design** | The trader-facing UI, the audit remediation | [design.md](design.md) |
-| **Research** | The interpreter, evidence collection, model spend | [research.md](research.md) |
+| **Research** | The interpreter, evidence collection, model spend, the market archive | [research.md](research.md) |
+| **Coaching** | Daily fills, execution against the playbook | [coaching.md](coaching.md) |
 
-## Why three and not two
+## Why four
 
 Ops and Design are obviously different jobs. Research is split out because it is
 what kept *interrupting* Ops: the OpenAI balance emptying, the 403 runaway jobs,
 the retry policy. Those read as production incidents, but the fix is always in
 `lib/research/`, and the decision is always about cost. It deserves its own
 thread with its own budget in view.
+
+Coaching was added 2026-08-23. It is the only thread about the trader rather
+than the market, it runs daily rather than by project, and it is the one
+carrying personal financial records — which need handling the other three never
+think about. It shares exactly one thing with Research: tier C of the archive.
 
 ## The rule that keeps them separate
 
@@ -44,6 +50,8 @@ Do not restate these in a thread doc; link to them.
 | The server, logins, deploys, rollback, backups | [../AWS_DEPLOYMENT.md](../AWS_DEPLOYMENT.md) |
 | The research build plan and its phase gates | [../RESEARCH-MILESTONE-PLAN.md](../RESEARCH-MILESTONE-PLAN.md) |
 | The UI/UX audit — the design authority | [../Design/design-audit-report.md](../Design/design-audit-report.md) |
+| The market archive — calls, outcomes, and what gets kept | [../DATA-ARCHIVE.md](../DATA-ARCHIVE.md) |
+| The trading strategy every threshold derives from | `A:\extract_daytrade\Manual\DAY_TRADING_INSTRUCTION_BOOKLET.md` |
 
 Historical task prompts live in [`prompts/`](../../prompts). They are a record of
 what was asked, not current instructions. Several are superseded.

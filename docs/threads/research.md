@@ -21,6 +21,10 @@ Ops kept absorbing these. The fix is always in `lib/research/`.
 
 ## Scope
 
+- **The market archive** — [../DATA-ARCHIVE.md](../DATA-ARCHIVE.md), agreed
+  2026-08-23 and not yet built. Calls, outcomes, and the longitudinal record
+  that answers why catalyst-driven names stopped leading. This is now the
+  largest piece of work in this thread.
 - `lib/research/` — queue, retry policy, provider errors, interpreter
 - Source resolution and catalyst collection; the resolver-first path and the
   urgent first-qualification path for a newly qualifying Top-12 name
