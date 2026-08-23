@@ -186,6 +186,47 @@ have now been exercised, not just the fallback.
 
 ## Open items
 
+**0b. The 22:00 recap is not silently dropping its work every day — measured.**
+*2026-08-23, read-only against the local production snapshot. The checkpoint is
+this thread's scope; the queue is Research's. Sized, not fixed.*
+
+Two hypotheses were live and both are now answered from rows rather than
+reasoning. My own SIGKILL guess was wrong — Research disproved it correctly, a
+row with `started_at` NULL and `retry_count` 0 was never claimed and so cannot be
+a kill orphan. But the replacement worry, that *"a job queued for a finished date
+is never claimed by anything, ever"* and therefore the recap's work is dropped
+daily, **is also wrong**, and by a wider margin:
+
+| recap (02:00 UTC = 22:00 ET) | queued | started | stranded |
+| --- | --- | --- | --- |
+| for 2026-08-17 | 8 | **6** | 2 |
+| for 2026-08-18 | 10 | **10** | 0 |
+| for 2026-08-21 | 8 | 0 | 8 |
+
+Sixteen of twenty-six recap-queued jobs ran. One recap ran **10 of 10**. So the
+mechanism cannot be that these are structurally unclaimable.
+
+Two further facts change what to do next:
+
+- **Claiming is immediate — every recap job that started did so within 0–2
+  minutes of being queued.** So the stranded rows were passed over *at the time*.
+  **They will not clear on Monday**, and waiting to see is not a plan. That is
+  worth stating because "queued for a finished date" invites exactly that wait.
+- Stranding is confined to this checkpoint: **0 of 938 jobs queued at any other
+  hour** was ever left unstarted.
+
+**On whether it matters:** the only historically checkable pair, `CRGO` and
+`MYSZ` from 08-17, each already carried **two analyses that same day**, the last
+at 14:29 and 21:42 ET. For those two the dropped recap re-check cost a refresh,
+not coverage. That is n=2 and evidence rather than proof, but it points the same
+way as the guess that the next morning covers the same names.
+
+**What is actually unexplained** is narrower than either hypothesis: why one
+recap claimed 10 of 10 and another claimed 0 of 8. The 0-of-8 is Friday's, at the
+end of the week the research pipeline spent failing on an empty balance — a
+candidate, deliberately not asserted, and cheap for Research to check against
+worker health at 02:00 UTC on 2026-08-22.
+
 **0. The research worker is SIGKILLed on every deploy, and has been all day.**
 *Found 2026-08-23 on live evidence, while discounting an unrelated report. The
 file is Research's; the consequence is this thread's. Not fixed — handed over.*
