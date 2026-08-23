@@ -89,11 +89,33 @@ would distinguish healthy from about-to-be-wrong — `meta.calendar_fetched_at`,
 plus whether the cached span still covers today — is not on `/api/health` or in
 `mointel-status`. A candidate, not a decision.
 
-**4. The release-bootstrap test is flaky.** `tests/desk/releaseBootstrap.test.ts`
-failed once under the full parallel suite on 2026-08-23 — `is live on` absent
-from the output — then passed in isolation and on a clean re-run, both at HEAD
-and with changes applied. Unexplained. A flaky test in the deploy path is worth
-chasing before it has to be trusted during an incident.
+**4. The release-bootstrap test is flaky, and it has now gone red on a real
+deploy decision.** `tests/desk/releaseBootstrap.test.ts` fails intermittently
+under the full parallel suite and passes in isolation and on a clean re-run.
+
+Three independent sightings on 2026-08-23, which is what moves this from odd to
+worth owning:
+
+- Ops, early: `is live on` absent from the output. Passed alone and on re-run.
+- Research, independently: reproduced it on `main` **with their changes
+  stashed**, so it predates that work. They saw two failures in one run and one
+  in another.
+- Ops, on the `55f3e20` handoff gate: **1172/1173, one failure** — this time a
+  *different* assertion, `carries no preflight` at line 121. Passed alone
+  (5/5, 2.5s) and the full suite passed 1173/1173 immediately after.
+
+**Two different assertions in the same file failing under load is the tell.**
+That is not one bad expectation; it points at the fixture. The test spawns a
+real subprocess with a stubbed `PATH` and `cwd: process.cwd()`
+(`releaseBootstrap.test.ts:87-89`) while sandboxing into `mkdtemp`. A real
+`spawn` plus PATH-stub resolution plus a shared cwd, under full-suite
+parallelism on Windows, is the timing-sensitive part and the first place to
+look. Not investigated further — deliberately not chased tonight.
+
+**Why it matters more than an ordinary flake:** this is the test that proves the
+preflight bootstrap works, and it went red inside the gate for a deploy. A gate
+that cries wolf gets overridden during an incident, which is exactly when the
+bootstrap it covers has to be right. Do not "fix" it by loosening the assertion.
 
 **5. The deploy gate cannot see the layer the `rm -rf` was in.** *Opened by
 Integration 2026-08-23, from the export defect. Ops owns the gate, so it lands
