@@ -11,6 +11,7 @@
  *   npm run research:interpret -- SLE CRGO
  *   npm run research:interpret -- --twice      prove unchanged evidence is free
  *   npm run research:interpret -- --limit=8
+ *   npm run research:interpret -- --date=2026-08-21 --force OLOX PMI
  */
 
 import { loadWorkerEnv } from './env';
@@ -30,14 +31,16 @@ function parseArgs(argv: string[]) {
   let twice = false;
   let limit = 6;
   let force = false;
+  let date: string | null = null;
 
   for (const arg of argv) {
     if (arg === '--twice') twice = true;
     else if (arg === '--force') force = true;
     else if (arg.startsWith('--limit=')) limit = Number(arg.split('=')[1]) || limit;
+    else if (arg.startsWith('--date=')) date = arg.split('=')[1] ?? null;
     else if (!arg.startsWith('--')) tickers.push(arg.toUpperCase());
   }
-  return { tickers, twice, limit, force };
+  return { tickers, twice, limit, force, date };
 }
 
 function pad(value: unknown, width: number): string {
@@ -85,7 +88,8 @@ function printReport(report: InterpretationReport): void {
 }
 
 async function main(): Promise<void> {
-  const { tickers, twice, limit, force } = parseArgs(process.argv.slice(2));
+  const args = parseArgs(process.argv.slice(2));
+  const { tickers, twice, limit, force } = args;
   const config = readResearchConfig();
   const model = modelAvailability(config.model);
   console.log(`[model] ${model.detail}`);
@@ -95,9 +99,17 @@ async function main(): Promise<void> {
       console.log(`[store] schema v${info.fromVersion}→v${info.toVersion}, backup ${info.path}`),
   });
 
-  const tradingDate = (
-    db.prepare('SELECT MAX(trading_date) AS d FROM ticker_session').get() as { d: string }
-  ).d;
+  /*
+   * The session to interpret against, latest by default.
+   *
+   * Pinnable because a replay needs it. The latest row is whatever the desk
+   * last seeded, which on a Sunday is Monday's pre-seeded session carrying no
+   * demand at all -- so an unpinned replay of Friday's board would hand every
+   * arm a null demand summary and quietly stop being a replay of Friday.
+   */
+  const tradingDate =
+    args.date ??
+    (db.prepare('SELECT MAX(trading_date) AS d FROM ticker_session').get() as { d: string }).d;
 
   // Only names that already have collected evidence can be interpreted.
   const symbols =
