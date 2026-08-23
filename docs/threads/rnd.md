@@ -193,6 +193,15 @@ replaying stored evidence rather than re-collecting — a grade formed from
 today's news about a name that ran on the 19th is worthless. That is a run with
 a cost and the decision is the trader's, not this thread's.
 
+**It is the same run the Research thread already scoped, not an additional
+one.** *Reconciled by Integration 2026-08-23 — the two charters briefly read as
+two separate asks for model spend.* One arm rather than three, 58 tickers,
+0.65M input and 0.23M output, and **one approval**. The mechanism, the cost and
+a look-ahead condition that invalidates the result if the run is not pinned to
+`data/market-prod-2026-08-23.db` all live in
+[research.md](research.md) item 10, which carries the run. Do not restate them
+here; this thread carries why Q1 needs it, not how it is executed.
+
 **Everything not resting on the grade is unaffected**: the split test, Q5,
 coverage, outcomes. What is suspended is Pillar 4's catalyst rate and the
 catalyst-definition resolution, both of which read the same variable — and they

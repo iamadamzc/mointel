@@ -106,6 +106,53 @@ Two corrections to the run brief, both from reading the code:
   on `already current`, so it may mostly no-op — but on the server it would have
   been drawing on the live desk's REST budget.
 
+**10. The prior-free re-derivation. One run, not two — and it must be pinned to
+the snapshot.** *Reconciled by Integration 2026-08-23, after R&D and this thread
+recorded what read as two separate runs. **This charter carries the run**;
+[rnd.md](rnd.md) carries why Q1 needs it.*
+
+R&D's recommended prior-free re-derivation over 2026-08-17 to 08-21 **is** the
+pass this thread scoped. Same window, same mechanism, same purpose. It was never
+a fifth thing, and the trader is approving **one** cost, not two.
+
+Three corrections that came with the reconciliation, all narrowing it:
+
+- **One arm, not three.** `T` is dead — variant B is rejected. And R&D needs no
+  control: it wants uncontaminated grades to *use as a variable*, not a
+  comparison. The pass is the prior-free arm alone.
+- **58 tickers, measured rather than estimated.** Only names that sat on a TODAY
+  snapshot during the window could have carried a prior; the rest are clean by
+  construction and re-deriving them buys nothing. The union of the five archived
+  daily tabs is 71, of which 58 have collected evidence in the snapshot.
+- **Cost: 0.65M input, 0.23M output**, at the 11.2k/3.9k per interpretation
+  measured on 2026-08-23. Model spend only.
+
+**The free alternative is withdrawn and should not be revived.** Restricting Q1
+to ticker-days with no TODAY row costs nothing and is selection on the dependent
+variable: TODAY is the Sheet's own $2-$10 watchlist, and 82% of the names that
+ran 50%+ sit inside that band. The clean subsample is depleted of exactly the
+population Q1 is about. This thread offered it; R&D's objection killed it and
+was right.
+
+### The condition that binds, and is not a property of the code
+
+**Pin the run to `data/market-prod-2026-08-23.db`.** `readSources` does not
+filter by date — `activeOnly` is its only option — so a replay bundles *every*
+source a ticker has, including sources collected **after** the session being
+replayed. Run against a freshly taken database next week, the re-derived grades
+would carry look-ahead, and **Q1 would be invalid in a way nobody would see**:
+the grades would look ordinary and would have been formed from news that had not
+happened yet.
+
+It is safe today **by accident of timing, not by design** — exactly one source,
+across one ticker, in that snapshot was published after 21 August. If this run
+slips and someone re-takes the snapshot, either re-check that count or add
+as-of source filtering first.
+
+This is written down here because it will not hold on its own. Nothing in the
+code enforces it, no test covers it, and the snapshot's filename is the only
+thing standing between a valid result and a plausible invalid one.
+
 **1. Billing-class failures should not consume the retry budget.** This is the
 one concrete piece of unfinished code in the project.
 
