@@ -188,10 +188,25 @@ Sheet's $2-$10 momentum watchlist, and **82% of the 77 distinct names that ran
 likelier to have carried a prior, so a clean subsample is depleted of exactly
 the population Q1 is about.
 
-**The recommendation is a prior-free re-derivation over 2026-08-17 to 08-21**,
-replaying stored evidence rather than re-collecting — a grade formed from
-today's news about a name that ran on the 19th is worthless. That is a run with
-a cost and the decision is the trader's, not this thread's.
+**AUTHORISED by the trader 2026-08-23: a prior-free re-derivation over
+2026-08-17 to 08-21.** Four conditions, all of them load-bearing:
+
+1. **Replay stored evidence; do not re-collect.** A grade formed from today's
+   news about a name that ran on the 19th is worthless. This is what Research's
+   independence experiment already did.
+2. **Do not write into the production store.** `interpretTicker` calls
+   `saveAnalysisVersion`, and Ops already refused the experiment arms on
+   production for exactly this reason — dossiers labelled UNDER TEST would show
+   on Monday's board as ordinary analysis. A separate labelled store, as
+   `data/replay-run.db` was.
+3. **Self-label the arm**, so a later reader cannot mistake a prior-free grade
+   for the stored one.
+4. **Emit a grade joinable to this archive** on ticker and trading date, or on
+   `analysis_version_id`. This side is 252 board symbols and 211 graded
+   symbol-days over the window; Research counted 231 tickers with stored
+   analyses.
+
+Only then does Q1 have a usable independent variable.
 
 **It is the same run the Research thread already scoped, not an additional
 one.** *Reconciled by Integration 2026-08-23 — the two charters briefly read as
@@ -453,6 +468,19 @@ four things belong in the register.
    RVOL, so it is likelier to be on the board at all. **The next step is more
    weeks at the same boundary, not a finer boundary on this week.** Retuning it
    now would turn a prediction into a fit.
+
+   **Correction, 2026-08-23: those weeks cannot be fetched, only waited for.**
+   This thread recommended a wider extract and that recommendation was wrong.
+   The extract already delivered was cut *unbounded* — no `--from`, no `--to` —
+   and returned 2026-08-17 to 08-21, because the first checkpoint the desk ever
+   wrote is `2026-08-17T20:00Z`, the evening the assessment engine shipped.
+   There is no history behind it and a wider range returns the same five days.
+   The split test widens forward or not at all. **Authorised by the trader on
+   the mistaken premise that it was a one-off fetch; re-scoped here to what it
+   actually is** — a recurring extract as sessions accumulate, and a re-run of
+   the split test when the 6-30 session bucket holds enough names to be worth
+   testing. At 17 symbols from one week, that is roughly three or four more
+   weeks.
 
 4. **Every float on the desk comes from the Sheet.** `resolveDisplayedFloat`
    has two branches, RESEARCH tab and TODAY tab, and the type enumerates nothing
