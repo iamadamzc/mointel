@@ -242,6 +242,49 @@ practice governs:
 
 Terminology is trader-facing. Labels describing engine internals get rejected.
 
+## The trading window is not the constraint. Capture is.
+
+**Stated by the trader, 2026-08-23, and it changes how several threads have
+been reasoning.** The desk is **a product being built, not a tool being depended
+on**. He can trade without it. So *for the sake of his use of the tool*,
+proximity to the trading window does not constrain anything — a deploy that
+breaks the board during RTH costs him a board, not a trade.
+
+**Do not read that as "market hours are free".** The window still constrains
+deploys, for a different and stronger reason that several threads have been
+half-stating all day: **the record grows only in real time and cannot be
+extended backwards.**
+
+`desk_assessments` begins 2026-08-17T20:00Z and no run buys a day of it. Minute
+bars have a three-day live retention. **A premarket the desk fails to capture is
+permanently gone**, and the archive is the thing the product is actually for.
+
+So the question before a deploy is no longer *"is he trading?"* It is:
+
+> **Can this interrupt capture?**
+
+Which keeps every existing safeguard and drops none of them, because each was
+already about capture rather than about trading:
+
+- **The one SIP connection.** Stealing it does not cost a trade, it costs a hole
+  in the record.
+- **`RESTART_MARKET=no`, the release pin, and the drift it creates.** All of it
+  protects a running worker's continuity of capture.
+- **Checkpoint proximity and the preflight refusal.** An assessment is
+  append-only and irreplaceable; a deploy landing mid-checkpoint loses one.
+- **`claimStoreForMode` deleting assessment history.** Straightforwardly the
+  worst thing on the desk, and unrelated to when anyone trades.
+
+**What it does change:** a UI deploy, a docs change, a research-pipeline fix or
+anything that does not touch the market worker, the store or a checkpoint can
+ship whenever it is ready — including during RTH. Verification on the live desk
+gets easier for the same reason: Design can look at a populated board at 10:30
+on a Tuesday. **Waiting for a closed market to ship a component change was
+protecting nothing.**
+
+And the stated priority is **developing the product**. Operational caution that
+does not protect capture should not be the thing slowing that down.
+
 ## Facts every thread starts from
 
 As of the last session, **2026-08-23**:
