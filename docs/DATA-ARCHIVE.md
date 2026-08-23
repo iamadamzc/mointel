@@ -72,9 +72,19 @@ moment of a decision. That was never tested and is not covered by the null.
 
 | | Contents | Membership | Rough volume |
 | --- | --- | --- | --- |
-| **A — cross-section** | one daily row per symbol | every price-eligible name (`DISCOVERY_PRICE_MIN`-`MAX`, currently $1-$20) | ~900/day, ~225k rows/yr |
+| **A — cross-section** | one daily row per symbol | every price-eligible name (`DISCOVERY_PRICE_MIN`-`MAX`, currently $1-$20) | **~2,830/day, ~710k rows/yr** |
 | **B — movers** | minute bars, full session 04:00-20:00 ET | up **20%+** *or* RVOL **>= 2** | ~100-200/day, ~25M rows/yr |
 | **C — candidates** | every trade print, plus bid/ask snapshots at 1-second boundaries | up **40%+** *and* RVOL **> 5** *and* traded at **$2+** at any point — plus anything pinned or on the focus list | a handful/day, ~5-15 GB/yr |
+
+**The tier A figure was corrected on 2026-08-23**, measured against the tape
+rather than estimated: ~2,830 names close in $1-$20 on a typical session, not
+~900. Feasibility is unchanged — one narrow row per symbol-day is a few hundred
+MB a year — but work sized from the old number was sized from a third of the
+real one. The full five-pillar gate ($2-$20, 5x RVOL, +25% on the session high)
+selects **9-20 names a day**, and it is deliberately **not** a capture filter:
+tier A exists to be the control group, and a gate-filtered tier A cannot answer
+the question it is for. The gate's components are stored as columns so it can be
+applied, and retuned, at read time.
 
 Tier B is deliberately a **union**. A 20% move on weak volume is a mover without
 participation; an RVOL 4 name that went nowhere is participation without a move.

@@ -32,7 +32,7 @@ questions is a thread that has stopped working.
 
 | # | Question | Opened | Status |
 | --- | --- | --- | --- |
-| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE — first half measured 2026-08-23**, Pillar 4's asserted relationship excluded on the board population; second half needs tier A and cannot close |
+| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — first half has a verdict (`PILLAR_4_STRONG_FORM_EXCLUDED`, below); second half is blocked on tier A |
 | Q2 | What share of qualifying movers ever produce a tradeable pullback at all? | 2026-08-23 | proposed |
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | proposed |
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | dormant — see closed lines below |
@@ -81,8 +81,16 @@ the kind of thing this register exists for. Design acts on whatever comes back.
 
 | Line | Verdict | Closed |
 | --- | --- | --- |
+| Q1, first half — do 50%+ movers carry catalysts? | `PILLAR_4_STRONG_FORM_EXCLUDED` — **83% of 50%+ movers carried no legitimate-positive-or-stronger catalyst**, prior-free, as-of-correct, five-draw modal, over 211 graded symbol-days on the desk's board. Movers 16.7% against non-movers 13.4%, p=0.51; corrected for 15% misclassification the largest true difference consistent with the data is **+19 points**. Pillar 4 calls a breaking-news catalyst *non-negotiable*, which implies far more than that, so **the strong form is excluded**. A weak relationship is not excluded and nothing here says catalysts are irrelevant. | 2026-08-23 |
 | Sub-minute execution arrival | `NO_SUBMINUTE_INCREMENTAL_SIGNAL` — 2–20s execution count and arrival timing add nothing over the completed-minute baseline. The density gate that makes the price path measurable makes a 2s window a rescaling of the minute. | 2026-08-21 |
 | Minute trade count | `WITHIN_DAY_TRADE_COUNT_SIGNAL_CONFIRMED` — raw completed-minute trade count predicts a *less* clean next 30–60s. More executions is worse. The programme's only usable artifact. | 2026-08-21 |
+
+**What would overturn `PILLAR_4_STRONG_FORM_EXCLUDED`:** a tier A cross-section
+showing that movers *outside* the desk's board carry catalysts at a materially
+higher rate — the verdict is conditioned on the top-25 RVOL population and says
+nothing about the market. A longer window; five sessions is five sessions. Or a
+catalyst measurement whose misclassification is materially below 15%, which
+would tighten the +19-point ceiling rather than move the point estimate.
 
 The sub-minute null closed a *predictive* line only. Sub-minute data is still
 required for **measurement** — resolving a trade whose stop is $0.15 — and that

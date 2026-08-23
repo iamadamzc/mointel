@@ -882,6 +882,65 @@ caps active questions at two. Recorded as ready rather than done.
 the least reproducible of the three, and it is *not* becoming arithmetic — only
 cycle is. Nothing in `lib/archive/` will read it.
 
+#### Tier A reconfirmed: the spec's ~900/day is wrong, and the gate must not filter it
+
+*Asked for by the trader 2026-08-23, who gave the gate as $2-$20, 5x RVOL, +25%.
+Measured against the tape rather than taken from the spec.*
+
+Of 5,827 classification-eligible tradable symbols, close-based, using the desk's
+own `dailyRvol` (20-session median) and both readings of "+25%":
+
+| Date | close $1-$20 | gate, +25% on the close | gate, +25% on the session high |
+| --- | --- | --- | --- |
+| 2026-08-18 | 2,826 | 8 | 18 |
+| 2026-08-19 | 2,824 | 10 | 14 |
+| 2026-08-20 | 2,841 | 4 | 9 |
+| 2026-08-21 | 2,839 | 9 | 20 |
+
+**The cross-section is ~2,830/day, not ~900.** The spec is wrong by 3.1x, and
+its ~225k rows/yr becomes **~710k**. That changes nothing about feasibility — one
+narrow row per symbol-day is a few hundred MB a year in Postgres — but the
+number should not stay wrong in a document people size work from.
+
+**The gate is 9-20 names a day.** The desk measures percent change against the
+session high, which is what `max_gain_pct` is here, so the right-hand column is
+the relevant one.
+
+##### The gate belongs in a column, not in the filter
+
+Tier A's stated job in the spec is *"What separates a mover from a non-mover? —
+daily statistics across the full eligible cross-section."* Filtering capture to
+$2-$20 + 5x + 25% would mean **every row in tier A is already a mover**, and:
+
+- **Q3 becomes unanswerable by construction.** There is no non-mover to compare
+  against. That is the exact failure this thread spent today diagnosing in the
+  TODAY-tab replay, where selecting on a mover-correlated property left sixteen
+  controls and a contrast worth nothing.
+- **Q1's second half goes with it.** "Why are catalyst-driven names passed over"
+  is a question about names that did **not** pass the gate. Filtering by the gate
+  deletes the population the question is about.
+- **It breaks the spec's own rule.** *"Store facts, never scores. Tiers,
+  thresholds and 'was this a good call' are views computed at read time, so a
+  retuned threshold re-scores the history instead of losing it."* A capture-time
+  gate is a threshold baked into history, and the one thing certain about these
+  thresholds is that they get retuned — the desk already runs $1-$20 and RVOL
+  2-5 against the booklet's $2-$20 and 5x.
+
+And there is no cost argument for filtering: 710k narrow rows a year is not a
+storage problem, and the gate would save 99.5% of a number that was never large.
+
+**So: capture the full $1-$20 cross-section, and store the gate's components** —
+price, RVOL, percent change on both the close and the session high — **plus a
+derived `passed_gate` flag.** Gate-passers are then one `WHERE` clause away,
+retuning the gate costs nothing, and Q3 keeps the control group that is the only
+reason tier A exists.
+
+**One question left open rather than decided here.** $1-$20 or $2-$20 as the
+capture band: 2,839 against 2,423, so 400 rows a day. The desk is configured
+$1-$20 and the booklet says $2-$20. This note keeps $1-$20, on the spec's own
+reasoning that a $1.40 name running into the tradeable band is among the most
+interesting shapes here and excluding it at capture time cannot be undone.
+
 #### Join arithmetic, which the retraction does not change
 
 *From Integration, and corroborated here.* A replay emits one grade per
