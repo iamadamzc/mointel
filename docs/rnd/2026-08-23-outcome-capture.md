@@ -13,10 +13,16 @@ was built around turns out not to bite the way anyone expected.
 Sections written before the extract arrived have been left in place and marked,
 rather than rewritten to look prescient.
 
-> **The catalyst grade's provenance is unsettled as of 2026-08-23 and one
-> finding below is suspended because of it.** See *Provenance of the independent
+> **The catalyst grade's provenance is unsettled as of 2026-08-23 and every
+> finding resting on it is suspended.** See *Provenance of the independent
 > variable*. The split-timing result and everything derived from market data are
 > unaffected.
+>
+> **The register entry for this is not yet in [rnd.md](../threads/rnd.md)** —
+> that file was modified in the working tree by Design when this was written, and
+> a thread does not edit another's open file. To be carried over when the tree is
+> clear: the catalyst-rate resolution below, the float finding, and the second
+> ledger's overlap.
 
 ---
 
@@ -448,6 +454,117 @@ single pipeline being internally consistent — no analysis, therefore no grade.
 The inference it actually supports is narrow and still holds: a missed look and
 an honest `UNKNOWN` are distinguishable. It was never an independence check, and
 if the Sheet can influence either field it would not become one.
+
+### Q1's premise against the pipeline's own numbers — the gap is definitional
+
+*Handed over by Research via Integration, 2026-08-23. Resolved here, because it
+is a question about populations and this archive holds both of them.*
+
+Research reported that across 94 stored dossiers the pipeline's outright
+no-catalyst verdict is **10%**, not the 50%+ Q1's premise implies:
+`MODERATE_MIXED_SECONDARY` 31%, `UNKNOWN` 26%, `LEGITIMATE_POSITIVE` 18%,
+`WEAK_NEGATIVE_DILUTIVE` 14%, `NONE` 7%, `STRONG` 4%. Its proposed resolution
+was that the trader observes names that **ran** while the pipeline observes
+names that were **researched**, and those are different sets.
+
+**That resolution does not survive this archive, and something simpler does.**
+
+Grade distribution over 211 researched symbol-days with admissible coverage,
+split by whether the name actually ran:
+
+| Grade | ran 50%+ (n=84) | did not (n=127) | all (n=211) |
+| --- | --- | --- | --- |
+| STRONG | 2 | 1 | 3 (1.4%) |
+| LEGITIMATE_POSITIVE | 15 | 16 | 31 (14.7%) |
+| MODERATE_MIXED_SECONDARY | 29 | 61 | 90 (42.7%) |
+| WEAK_NEGATIVE_DILUTIVE | 11 | 10 | 21 (10.0%) |
+| NONE | 4 | 8 | 12 (5.7%) |
+| UNKNOWN (honest) | 23 | 31 | 54 (25.6%) |
+
+Two things fall out.
+
+**The population split explains almost nothing.** Restricting to names that ran
+barely moves the distribution — a legitimate-positive-or-stronger grade appears
+on 20% of movers against 13% of non-movers. Movers are *slightly more* likely to
+carry a catalyst, not less. Whatever separates the trader's observation from the
+pipeline's number, it is not researched-versus-ran, at least not within the
+desk's board.
+
+**The gap is a definition.** These are the same measurement read against two
+different bars:
+
+| Reading | Among the 84 movers |
+| --- | --- |
+| "searched and found nothing at all" — the pipeline's `NONE` | 4 (**4.8%**) |
+| no *legitimate positive or stronger* catalyst | 67 (**80%**) |
+
+The pipeline's 10% is `NONE_FOUND`: a search that returned nothing. The trader's
+"no catalyst" is Pillar 4's bar — a **breaking news** catalyst. Everything in the
+middle, `MODERATE_MIXED_SECONDARY` and `WEAK_NEGATIVE_DILUTIVE` and an honest
+`UNKNOWN`, is 63 of the 84 movers, and the pipeline counts those as *having* a
+catalyst while a momentum trader looking for breaking news would not. Read on the
+trader's bar, **80% of 50%+ movers carried no real positive catalyst** — which is
+in the neighbourhood of the premise rather than contradicting it.
+
+So the two are not in conflict and neither is wrong. They answer different
+questions, and this archive's own distribution reproduces the pipeline's closely
+enough (`UNKNOWN` 25.6% against 26%, `NONE` 5.7% against 7%) to say so with some
+confidence despite different windows and units — symbol-days here, dossiers
+there.
+
+**What this does not settle.**
+
+- **It rests entirely on the catalyst grade, so it is suspended with everything
+  else** pending `sheetPrior`. If the grade carries the Sheet's prior then the
+  80% is partly a second model's opinion of what counts as a catalyst.
+- **The genuine population gap is still untested and is not the one Research
+  named.** The trader observes movers *in the market*; this archive observes
+  movers *on the board*, which is the top 25 by RVOL out of roughly 900
+  price-eligible names. A name that ran 50%+ and never reached the board is
+  invisible here. That is the tier A cross-section, it does not exist, and it
+  remains the reason Q3 is unanswerable.
+- Research's caveats are carried: its figures are the local `market.db`,
+  dossiers from 08-17 and 08-18 only, file last written 20 August, against
+  production's `COMPLETE` 120 / `PARTIAL` 619. Indicative, not settled. The
+  comparison above is against this archive's five production days, which is why
+  the two agree in shape but not in exact proportion.
+
+**Not commissioned.** Research has this folded into a five-day pass already
+scoped alongside the independence re-run and the outcome eval — three questions,
+one set of tokens, costed and with the trader. Nothing here asks for a separate
+run and none is needed: the resolution above used data already on disk.
+
+**Two claims Research withdrew, recorded so they are not inherited from a later
+summary.** That 65% of dossiers built on SEC-only bundles indicated
+under-detection — withdrawn; discovery runs on its own interval regardless of
+what SEC returns and records its misses, with 74 of 77 issuers carrying a
+`lastDiscoveryAt` and a fingerprint on a null result, so an SEC-only bundle is a
+measured negative rather than a blind spot. And that `sourceShape` was undefined
+across the registry — withdrawn; the field does not exist in that schema and its
+absence was read as breakage.
+
+### Float is Sheet-derived, which reaches this archive
+
+`resolveDisplayedFloat` (`lib/dashboard/merge.ts:143`) has exactly two branches,
+the RESEARCH tab and the TODAY tab, and the type enumerates nothing else.
+**Every float on the desk comes from the Sheet.** Recorded by Integration in
+`4b06764`.
+
+Three consequences for this thread, none of them acted on yet:
+
+1. **Pillar 5 is not independently measurable today.** Float under 10M is one of
+   the five pillars and this archive does not capture it. The only available
+   source is the one whose provenance is already the open question.
+2. **It would not lift the overlap constraint cleanly.** Sizing the shared
+   population against the second ledger stalled on float, and taking float from
+   the Sheet to do it would mean filtering the Sheet's universe by the Sheet's
+   own numbers — which is not a filter, it is agreement by construction. A
+   *derived* float would lift the constraint; a Sheet-read one would not.
+3. **The desk and the second ledger are not independent on float either.** Their
+   float and this desk's float are the same field from the same workbook, so a
+   float comparison between the two records nothing. Only the catalyst labels
+   were ever candidates for independence, and only if `sheetPrior` comes back
+   clean.
 
 ### A second outcome ledger exists over the same window
 
