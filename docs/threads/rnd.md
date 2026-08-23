@@ -32,7 +32,7 @@ questions is a thread that has stopped working.
 
 | # | Question | Opened | Status |
 | --- | --- | --- | --- |
-| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** |
+| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — no verdict on the catalyst grade until `research.md` item 5 settles its provenance |
 | Q2 | What share of qualifying movers ever produce a tradeable pullback at all? | 2026-08-23 | proposed |
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | proposed |
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | dormant — see closed lines below |
@@ -99,6 +99,30 @@ examination are the weeks the research pipeline kept failing — balance
 exhaustion on 19, 20 and 21 August, resolver rework throughout. Reduced catalyst
 *detection* is indistinguishable from absent catalysts. This is the first
 analysis to run, not a caveat to append.
+
+**The independent variable's provenance is unsettled, and it gates the
+verdict.** *Raised by Integration 2026-08-23.* The trader has never written to
+or reviewed the Google Sheet the desk reads; he believes a **ChatGPT scheduled
+task** does. `lib/research/merge/sheetPrior.ts` reads `catalystGrade` off that
+Sheet, and if the prior reaches the interpreter's context then the automatic
+grade is influenced by that task rather than independent of it — making "did the
+desk see a catalyst" and "did another model say there was one" partly the same
+measurement.
+
+**This thread has not investigated it and will not**; `lib/research/` is the
+Research Pipeline's and it is `research.md` Open item 5. Two facts the archive
+can supply on its own: across all 1850 ticker rows `intelligence_source` is only
+ever `AUTO` or `NONE` — no Sheet-derived grade was ever stored — and
+`RESEARCH_CONFLICT`, the status that flags Sheet/AUTO disagreement, appears zero
+times. Neither settles it. The first rules out copying, not influence; the
+second is ambiguous between "the comparison never ran" and "they never
+disagreed", and under contamination agreement is what you would expect anyway.
+
+**No Q1 verdict resting on the catalyst grade until that lands — including a
+null.** "Movers do not carry catalysts" and "the other model did not find one
+either" would be indistinguishable, which is the failure mode this thread is
+most exposed to. Work that does not touch the grade continues: the split test,
+Q5, coverage, outcomes.
 
 **Four hypotheses, none tested**, recorded so they are not silently reinvented:
 
@@ -254,14 +278,19 @@ three things belong in the register.
    158 of 176 datable grades were produced on the day they were served.
    19 August lost *reach* — 53% usable against 70-78% elsewhere, 17 names never
    looked at, and the week's only 10 `IN_FLIGHT` rows — but not *currency*.
-   19 and 20 August have no censored grades at all. **The admissible rows on
-   those days are evidence about the market**, and the caveat this thread was
+   19 and 20 August have no censored grades at all. The caveat this thread was
    built around does not bite the way it assumed.
-2. **Pillar 4, coverage held constant: 20% of 50%+ movers carried a
-   legitimate-positive or stronger catalyst**, against 13% of the names that did
-   not run. Two `STRONG` grades in the entire week, and 27% of movers were
-   looked at and came back honestly `UNKNOWN`. Consistent with Pillar 4 having
-   stopped binding; it does not say which of the four hypotheses explains it.
+
+   *The pipeline produced new analyses on those days* stands. *Therefore those
+   grades are independent evidence about the market* is the inference now
+   waiting on the provenance question — a freshly produced analysis that read a
+   Sheet prior is fresh and non-independent at once.
+2. **Pillar 4, coverage held constant — recorded, not concluded.** 20% of 50%+
+   movers carried a legitimate-positive or stronger catalyst, against 13% of the
+   names that did not run. Two `STRONG` grades in the entire week, and 27% of
+   movers were looked at and came back honestly `UNKNOWN`. **Suspended pending
+   the provenance question above** — this is the one result that rests entirely
+   on the catalyst grade.
 3. **Hypothesis 3 has its first evidence, and the timing is the point.** Of the
    252 board names that week, those with a reverse split **6-30 sessions ago**
    ran 50%+ at **70.6%** (12 of 17), against **27.8%** with no split (62 of
@@ -284,12 +313,13 @@ What was already there and turned out to be enough:
   fields of frozen per-ticker state at every checkpoint and a deterministic diff
   against the previous one. The record of what the desk believed — the half
   nobody could reconstruct later.
-- The catalyst grade is stored per ticker per checkpoint with provenance, and
-  `UNKNOWN` is an honest verdict rather than a gap. That is Q1's independent
-  variable, already labelled. **Coverage needed no new capture** — the desk
-  already recorded, per ticker per checkpoint, whether a look had happened.
+- The catalyst grade is stored per ticker per checkpoint, and `UNKNOWN` is an
+  honest verdict rather than a gap. **Coverage needed no new capture** — the
+  desk already recorded, per ticker per checkpoint, whether a look had happened.
   `analysis_version_id`, on the same rows, turned out to carry grade freshness
-  too.
+  too. The word *provenance* used to appear in this bullet and has been removed:
+  the row records which pipeline stored the grade, not where the grade's content
+  came from, and conflating those is what the question above is about.
 
 What turned out not to be there:
 

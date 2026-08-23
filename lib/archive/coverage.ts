@@ -9,10 +9,18 @@
  *
  * The good news is that the desk already recorded what is needed. Every
  * `desk_assessment_tickers` row carries `intelligence_status` alongside the
- * catalyst grade, and the two agree exactly: `catalyst` is null precisely when
+ * catalyst grade, and the two are consistent: `catalyst` is null precisely when
  * the status says no analysis existed. So a missed look and an honest UNKNOWN
  * are already distinguishable per ticker per checkpoint. Nothing new has to be
  * captured to hold coverage constant — it only has to be read.
+ *
+ * That consistency is one pipeline agreeing with itself, not two sources
+ * corroborating, and it says nothing about where a grade's CONTENT came from.
+ * As of 2026-08-23 that provenance is an open question: the Google Sheet the
+ * desk reads is written by an automation outside this system, and whether its
+ * prior reaches the interpreter is research.md Open item 5. What this module
+ * classifies — whether a look happened — is unaffected either way, because it
+ * is about pipeline state rather than about what a grade says.
  *
  * What that leaves open, and what the second half of this module measures: the
  * assessment scheduler makes ZERO model calls, so an exhausted research budget

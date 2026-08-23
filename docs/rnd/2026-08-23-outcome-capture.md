@@ -13,6 +13,11 @@ was built around turns out not to bite the way anyone expected.
 Sections written before the extract arrived have been left in place and marked,
 rather than rewritten to look prescient.
 
+> **The catalyst grade's provenance is unsettled as of 2026-08-23 and one
+> finding below is suspended because of it.** See *Provenance of the independent
+> variable*. The split-timing result and everything derived from market data are
+> unaffected.
+
 ---
 
 ## What was built
@@ -174,9 +179,14 @@ a restatement happened; this column records the event.
 This is the measurement the charter demands before any catalyst conclusion, and
 the good news is that **nothing new had to be captured**. Every
 `desk_assessment_tickers` row already carries `intelligence_status` beside the
-grade, and the two agree exactly: `catalyst` is null precisely when the status
+grade, and the two are consistent: `catalyst` is null precisely when the status
 says no analysis existed. A missed look and an honest `UNKNOWN` were already
 distinguishable, per ticker per checkpoint. They only had to be read.
+
+That consistency is one pipeline agreeing with itself — no analysis, therefore
+no grade — not two sources corroborating. It supports exactly the narrow
+inference above and nothing about where the grade's content came from. See
+*Provenance of the independent variable*.
 
 Each symbol-day gets one verdict:
 
@@ -369,6 +379,76 @@ have none at all**, so the days Q1 turns on are measured rather than bounded.
 Cutting the extract at 19 August would have censored roughly three quarters of
 it and made none of the above visible.
 
+### Provenance of the independent variable — unsettled
+
+*Raised by Integration 2026-08-23, from the trader. Recorded here because this
+thread's rule is to say what was not verified, and because it decides whether
+one of the findings below means anything.*
+
+The trader has never reviewed or written to the Google Sheet the desk reads. He
+believes a **ChatGPT scheduled task** writes it. The desk's own access is
+read-only, and nothing in `lib/`, `worker/` or `app/` writes to it — so the
+Sheet is an input produced outside this system by an automation no charter owned
+until tonight.
+
+The question that reaches Q1: `lib/research/merge/sheetPrior.ts` reads
+`catalystGrade` off the Sheet, and the file is named for a prior. **If that
+prior reaches the interpreter's context, the automatic grade is influenced by
+the ChatGPT task rather than independent of it** — and "did the desk see a
+catalyst" and "did another model say there was one" become partly the same
+measurement.
+
+**This thread has not investigated it and will not.** `lib/research/` belongs to
+the Research Pipeline thread; it is filed as `research.md` Open item 5.
+
+What can be said from the archive alone, which is this thread's own data:
+
+- **No Sheet-derived grade was ever stored.** Across all 1850 ticker rows in the
+  window, `intelligence_source` is `AUTO` (1459 rows) or `NONE` (391). Never
+  `SHEET` or `SHEET_AUTO`. Every graded row carries the automatic grade, which
+  matches `desk-assessments.ts` taking `dossier.catalyst.catalystGrade`.
+- **The conflict detector never fired.** `RESEARCH_CONFLICT` — the status that
+  exists to flag Sheet/AUTO disagreement — appears **zero times**. That has two
+  readings and the archive cannot separate them: either the comparison did not
+  run in this window, or it ran and the two never disagreed. The second would be
+  the more interesting, because if the Sheet's answer is in the interpreter's
+  context then agreement is what contamination looks like, not corroboration.
+
+Neither observation settles the question. Storing the automatic grade rules out
+the Sheet grade being copied in; it says nothing about whether the model saw the
+Sheet's answer before producing its own.
+
+**What is suspended, and what is not.** The dependency runs through the catalyst
+grade and nothing else:
+
+| Result | Rests on | Status |
+| --- | --- | --- |
+| Split timing, hypothesis 3 | raw daily bars, minute bars, board membership | **unaffected** |
+| Where the day's high falls (Q5) | minute bars, board entry times | **unaffected** |
+| Coverage classification | whether an analysis existed | **unaffected** — it is about pipeline state, not about what a grade says |
+| Grade freshness on 19-21 August | `analysis_version_id` | **stands as stated**; the inference below does not |
+| Pillar 4 catalyst rate | the catalyst grade itself | **suspended** |
+
+The freshness result needs the sharpest line drawn through it. *The pipeline
+produced new analyses on 19-21 August* is a fact about currency and survives
+intact. *Therefore those grades are independent evidence about the market* is
+the inference at risk, because a freshly produced analysis that read a Sheet
+prior is fresh and non-independent at the same time.
+
+**No Q1 verdict will be published on the catalyst grade until Research settles
+`sheetPrior`.** A verdict either way would be circular if the prior is in
+context — including a null, which is the failure mode this thread is most
+exposed to, since "movers do not carry catalysts" and "the other model did not
+find one either" would be indistinguishable.
+
+One correction to this note while the subject is open. It said earlier that
+`intelligence_status` and the grade "agree exactly", and that phrasing invites
+being read as two sources corroborating each other. It is not that. It is a
+single pipeline being internally consistent — no analysis, therefore no grade.
+The inference it actually supports is narrow and still holds: a missed look and
+an honest `UNKNOWN` are distinguishable. It was never an independence check, and
+if the Sheet can influence either field it would not become one.
+
 ### Pillar 4, with coverage held constant
 
 Catalyst grade among symbol-days whose coverage is admissible and whose outcome
@@ -383,6 +463,10 @@ is known:
 | NONE | 4 | 8 |
 | UNKNOWN (honest) | 23 | 31 |
 
+**Suspended pending `sheetPrior` — see above.** The numbers are recorded because
+they are what the archive says; whether they measure the market or partly
+measure a ChatGPT scheduled task is the open question.
+
 **20% of 50%+ movers carried a legitimate-positive or stronger catalyst.**
 Against 13% of the names that did not run — a real difference in the expected
 direction, and nowhere near what Pillar 4 describes as non-negotiable. Two
@@ -392,7 +476,8 @@ direction, and nowhere near what Pillar 4 describes as non-negotiable. Two
 determine a catalyst.
 
 This is consistent with Pillar 4 having stopped binding. It does not yet say
-which of the four hypotheses explains it.
+which of the four hypotheses explains it — and it is not evidence of anything
+until the grade's provenance is settled.
 
 ### Hypothesis 3 has its first real evidence, and the timing is the point
 
