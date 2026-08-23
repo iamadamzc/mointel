@@ -115,23 +115,40 @@ export const TEST_STREAM_SYMBOL = 'FAKEPACA';
  * reading, and it is not left to be found the other way.
  *
  * The opt-in is now a dedicated variable that no service sets, and pointing it
- * at the live store is refused rather than honoured.
+ * at the live store is refused rather than honoured. Both halves are load
+ * bearing and they are not alternatives: a dedicated variable alone still
+ * **fails open** when someone passes the wrong path, while the refusal
+ * **fails closed**. Every incident this desk has had was a safe-looking default
+ * quietly doing something else, so the refusal is the part that must hold.
+ *
+ * The comparison is case-insensitive on Windows because the filesystem is:
+ * `data/Market.db` is a different string and the same file, and a guarantee
+ * that a different capitalisation can walk through is not a guarantee. On the
+ * Linux server case matters and is respected.
  */
 export function resolveTestStorePath(options: {
   /** Deliberately not `NodeJS.ProcessEnv`: the caller supplies only what it sets. */
   env?: Record<string, string | undefined>;
   liveDbPath: string;
   cwd?: string;
+  /** Defaults to the running platform; a parameter so the property can be tested both ways. */
+  caseInsensitiveFs?: boolean;
 }): { path: string } | { error: string } {
   const env = options.env ?? process.env;
   const cwd = options.cwd ?? process.cwd();
+  const caseInsensitive = options.caseInsensitiveFs ?? process.platform === 'win32';
 
   const requested = env.MARKET_TEST_DB_PATH?.trim();
   const resolved = requested
     ? path.resolve(cwd, requested)
     : path.resolve(cwd, 'data', 'market-test.db');
 
-  if (path.resolve(resolved) === path.resolve(options.liveDbPath)) {
+  const comparable = (value: string): string => {
+    const absolute = path.resolve(value);
+    return caseInsensitive ? absolute.toLowerCase() : absolute;
+  };
+
+  if (comparable(resolved) === comparable(options.liveDbPath)) {
     return {
       error:
         `refusing to run against the live store (${resolved}). ` +

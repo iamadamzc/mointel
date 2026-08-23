@@ -66,4 +66,70 @@ describe('resolveTestStorePath', () => {
 
     expect(result).toHaveProperty('error');
   });
+
+  it('refuses a case variant on a case-insensitive filesystem', () => {
+    // Windows: a different string, the same file. Enumerated cases would not
+    // have caught this; the property did.
+    const result = resolveTestStorePath({
+      env: { MARKET_TEST_DB_PATH: '/var/lib/mointel/MARKET.DB' },
+      liveDbPath: LIVE,
+      cwd: CWD,
+      caseInsensitiveFs: true,
+    });
+
+    expect(result).toHaveProperty('error');
+  });
+
+  it('allows the same case variant where case genuinely distinguishes files', () => {
+    const result = resolveTestStorePath({
+      env: { MARKET_TEST_DB_PATH: '/var/lib/mointel/MARKET.DB' },
+      liveDbPath: LIVE,
+      cwd: CWD,
+      caseInsensitiveFs: false,
+    });
+
+    expect(result).toEqual({ path: path.resolve('/var/lib/mointel/MARKET.DB') });
+  });
+
+  /**
+   * The property, not a case list.
+   *
+   * The header of `worker/test-stream.ts` promises that synthetic prints cannot
+   * reach real market state. That promise was already written down when it was
+   * false — so the guarantee itself is what gets asserted, over every way anyone
+   * has thought to spell the live store. A new spelling belongs in this list.
+   */
+  it('never resolves onto the live store, however the path is spelled', () => {
+    const spellings = [
+      LIVE,
+      `${LIVE}`,
+      './market.db',
+      '../mointel/market.db',
+      '../../var/lib/mointel/market.db',
+      '/var/lib/mointel/./market.db',
+      '/var/lib/mointel/nested/../market.db',
+      '/var/lib/mointel/MARKET.DB',
+      '  /var/lib/mointel/market.db  ',
+    ];
+
+    for (const caseInsensitiveFs of [true, false]) {
+      for (const spelling of spellings) {
+        const result = resolveTestStorePath({
+          env: { MARKET_TEST_DB_PATH: spelling },
+          liveDbPath: LIVE,
+          cwd: '/var/lib/mointel',
+          caseInsensitiveFs,
+        });
+
+        if ('path' in result) {
+          const sameFile = caseInsensitiveFs
+            ? result.path.toLowerCase() === path.resolve(LIVE).toLowerCase()
+            : result.path === path.resolve(LIVE);
+          expect(sameFile, `"${spelling}" (caseInsensitive=${caseInsensitiveFs}) reached the live store`).toBe(
+            false,
+          );
+        }
+      }
+    }
+  });
 });

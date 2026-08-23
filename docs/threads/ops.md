@@ -130,13 +130,38 @@ outright, and resolving onto the live store is **refused** rather than honoured.
 Both halves matter — ignoring the ambient variable fixes the reported bug, and
 the refusal covers the next way in.
 
-`tests/market/testStorePath.test.ts` pins all of it, including the regression
-case (`MARKET_DB_PATH` set to the live store now yields the *test* store) and a
-relative path that resolves onto the live store. **This is also the first crack
-at item 5**: the resolution logic was moved out of the untested CLI into a pure
-function the gate can see, which is the shape the rest of `worker/` needs.
+**Both fixes were taken, and they are not alternatives.** The dedicated variable
+fixes the reported bug; the refusal is what makes it **fail closed**. An explicit
+store on its own still fails open the moment someone passes the wrong path, and
+every incident on this desk has been a safe-looking default quietly doing
+something else. Confirming the choice, since it was asked: the refusal is in.
 
-Gate green: 1197 tests / 78 files, lint, typecheck, build. Not deployed — no
+**Asserting the property found a second hole that the case list had missed.**
+Item 5's second half says the documented guarantee is the thing to assert, and
+following that literally rather than enumerating cases paid immediately: the
+refusal compared resolved paths as **strings**, so on Windows
+`data/Market.db` — a different string, the same file — walked straight through.
+Correct on the Linux server, where case genuinely distinguishes files; wrong
+locally, where `data/market.db` is somebody's live store. The comparison is now
+case-insensitive on Windows and unchanged on Linux, with the platform passed in
+as a parameter so both behaviours are tested rather than inherited.
+
+`tests/market/testStorePath.test.ts` pins the guarantee, not a list: one test
+asserts that **no spelling of the live store is ever returned** — absolute,
+relative, `.` and `..` forms, whitespace-padded, case-varied — across both
+filesystem behaviours. New spellings belong in that list. The enumerated cases
+remain alongside it, including the original regression (`MARKET_DB_PATH` set to
+the live store now yields the *test* store).
+
+**Mutation-checked, because a test that cannot fail proves nothing.** Reverting
+the case comparison to plain string equality turns 2 of the 8 red; restoring it
+turns them green. The property test earns its place.
+
+**This is also the first crack at item 5**: the resolution logic moved out of the
+untested CLI into a pure function the gate can see, which is the shape the other
+sixteen entry points need.
+
+Gate green: 1200 tests / 78 files, lint, typecheck, build. Not deployed — no
 service runs this file, so it ships with whatever goes next.
 
 **Assigned to this thread by the trader, 2026-08-23**, alongside the flake, on
