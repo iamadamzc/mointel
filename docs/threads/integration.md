@@ -493,6 +493,32 @@ cannot fail isn't a check" is about whether an observation can come out badly;
 three that is mechanical: an allowlist fails closed against futures nobody has
 thought of, and a denylist cannot.
 
+## A deploy changes what will run, not what is running
+
+**Twice in one day, in two layers, and the second was caught before it cost an
+investigation.**
+
+- **The release drift.** `mointel-market` had `WorkingDirectory=/opt/mointel/current`,
+  which is correct — but Linux resolves the symlink at **process start**, so the
+  worker's cwd had been a specific release directory since Friday and had
+  survived two deploys. It was running `80437c3`'s code while everything else
+  was on `fd9556f`.
+- **The SIGTERM handler.** `97f198d` makes the research worker exit on SIGTERM
+  instead of ignoring it. But the process being stopped by that deploy was
+  started from the *old* code and holds the *old* handler in memory. **So the
+  deploy that ships the fix will SIGKILL one last time**, identically to the
+  three before it.
+
+Research predicted the second **before the deploy**, unprompted, because a
+fourth identical failure would have read as the fix failing and cost Ops an
+investigation.
+
+**The general form: a fix concerning startup or shutdown cannot be demonstrated
+by the process that carries it in.** The process that must show the fix works is
+by definition not the one shipping it. So the test is always the run *after* —
+and if a rollout is judged on the deploy that installs it, it will be judged on
+the last instance of the old behaviour.
+
 ## Check the field that carries the answer
 
 **Added 2026-08-23 after three instances, two of which nearly became reports.**
