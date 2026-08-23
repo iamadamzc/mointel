@@ -310,6 +310,69 @@ wrong: it sat in the one place the gate does not look, and the next one will too
 Not a proposal to test all seventeen. The narrow question is whether any CLI that
 resolves a production path and can delete should be reachable by the gate at all.
 
+**6. Minute bars do not survive a weekend, which is stronger than "3 days'
+retention".** Production holds **zero** `minute_bars` rows — confirmed in the
+2026-08-23 snapshot. Research noticed the zero; the reason is worth having
+written down, because it is not the one the number suggests.
+
+`pruneRetention` (`worker/runtime.ts:1540`) builds its keep-set with
+`addDays(cursor, -1)` — **calendar days, not trading days**, despite
+`lib/market/store/db.ts:8` describing it as "pruned to `minuteBarRetentionDays`
+trading dates". With the trading date rolled to Monday 2026-08-24, the keep-set
+is Monday, Sunday and Saturday. **Friday's bars fall outside it and are deleted**
+— and Friday was the last session. The same happens after every weekend, and
+worse after a three-day holiday weekend.
+
+So the limit is not "you get three days of minute bars". It is: **minute bars
+never survive to the next session.** Anything that assumes Friday's minute data
+is available on Monday morning is designing against something that has already
+been deleted.
+
+This matters beyond storage. The playbook's exit trigger is volume fading on
+**10-second** candles, which is finer than this table anyway — so that will
+always be a live signal, as Research said. The correction is that even the
+*minute* grain is not available retrospectively, so no backtest of an exit rule
+can be run against production history as it stands.
+
+Not fixed, and deliberately not fixed tonight: changing retention is a storage
+and behaviour decision, not a defect. Options are to count trading dates rather
+than calendar days (the documented behaviour, and probably what was meant), or
+to raise `MARKET_MINUTE_BAR_RETENTION_DAYS` past the longest weekend. Either
+costs disk on an 837 MB store that already carries a 507 MB WAL, which is why it
+is a decision rather than a patch. The doc comment should be corrected either
+way — it currently describes behaviour the code does not have.
+
+**7. The cycle change is a dossier-schema change, not a SQLite one — and the
+difference decides how its deploy is run.** *Flagged early by Research
+2026-08-23; no window requested yet.*
+
+Research is replacing the interpreter's cycle judgement with arithmetic over
+daily bars and described it as "a SCHEMA CHANGE". Checked now rather than in the
+handoff, because the two meanings want opposite preparation:
+
+- `AUTOMATIC_DOSSIER_SCHEMA_VERSION` and `INTERPRETER_PROMPT_VERSION` live in
+  `lib/research/interpret/schema.ts` and are both `1`. They version the **dossier
+  JSON contract**.
+- The store's `SCHEMA_VERSION` is `21` in `lib/market/store/db.ts` and is a
+  different thing entirely.
+- A dossier is persisted as `JSON.stringify(analysis.dossier)` into a **`dossier`
+  TEXT column** (`lib/market/store/researchRepo.ts:796`).
+
+So this changes what sits *inside* an existing column. **No column is added, no
+`ADDED_COLUMNS` entry is needed, no `SCHEMA_VERSION` bump, no migration, no
+pre-deploy backup, and rollback stays a plain revert.** That is a materially
+easier deploy than a store-schema change, where an older build refuses a newer
+`user_version` and rolling back needs the matching backup
+([../AWS_DEPLOYMENT.md](../AWS_DEPLOYMENT.md) §rollback).
+
+The one real consequence to carry into the handoff: `readAnalysis` does
+`JSON.parse(row.dossier) as ResearchDossier` — a type **assertion**, with no
+runtime validation. Old rows will parse cleanly and simply lack the removed
+fields, so anything dereferencing `cycleClassification` on a pre-change version
+throws at the point of use rather than at the read. Research flagged this as
+display logic and that is right; noting the mechanism because "it parses fine"
+is exactly how it will look while being broken.
+
 ## Monday 2026-08-24 — the plan, and the one judgement call in it
 
 **Monday now reduces to one item that truly needs the open, plus the feed you
