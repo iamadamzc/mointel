@@ -153,6 +153,50 @@ This is written down here because it will not hold on its own. Nothing in the
 code enforces it, no test covers it, and the snapshot's filename is the only
 thing standing between a valid result and a plausible invalid one.
 
+### RETRACTED 2026-08-23: the prior was never shown to move the grade
+
+*Retracted by Research; enumerated here by Integration, because the claim stood
+for several hours and was copied into four documents across three threads while
+it stood.*
+
+**What is withdrawn:** "removing the Sheet's prior changed the catalyst grade on
+2 of 6 names against a control variance of 0 of 6". At **four runs per arm**,
+**0 of 6** tickers are stable-in-both-arms-but-different. The two reported as
+moved are the two that vary *within the control set anyway*. The original figure
+came from single runs and could not separate the prior's effect from the model's
+own variance.
+
+**What survives, and it is not small.** `sheetPrior` **does** reach the
+interpreter on every call — that is a code fact, traced through `bundle.ts:426`
+to `buildInput` at `:102` and `JSON.stringify(bundle)` at `:107`, on the main
+path called at `:188`. **The exposure is confirmed. The effect is not
+demonstrated.** Those are different statements and the second does not erase the
+first.
+
+**Do not over-correct to "there is no problem".** A null at n=6, on a field now
+known to be 2-of-6 unstable on identical evidence, is a weak instrument. It says
+the earlier positive was indistinguishable from noise; it does not say the prior
+is inert. The honest state is **unmeasured**, not **clean**.
+
+**A second revision travels with it and has its own consequences.**
+`catalystGrade` was reported **stable at 0 of 6** on fixed evidence, off two
+runs. Four runs make it **2 of 6 unstable**. Any argument resting on catalyst
+being the stable field needs re-examining — including R&D's reasoning that its
+52% stored-record figure is dominated by real evidence change *because* catalyst
+moved on the identical 29 pairs and catalyst was stable. That premise is weaker
+than when it was written. R&D has been told directly.
+
+**Where the retracted claim was copied**, so nobody has to rediscover it:
+`design.md` (the two-graders finding and the comparison table), the audit at
+`design-audit-report.md` §11, `rnd.md` (the Q1 register row and the ANSWERED
+block), and `docs/rnd/2026-08-23-outcome-capture.md`. Each thread owns its own
+correction; this list exists so the enumeration is not repeated four times.
+
+**Does the re-derivation still make sense?** Yes, and its justification changes
+rather than disappears. It no longer *removes a demonstrated contamination*; it
+*produces grades whose provenance is not in question*, which is what R&D needs
+either way. What weakens is the urgency, not the value.
+
 **11. Is `CYCLE_CHANGED` stable, or is it structure again?** *Found by Design
 2026-08-23, assigned here by the trader. It sat unowned between three threads
 for several hours, which is the only reason it needed routing.*
@@ -182,17 +226,45 @@ that result being misread:
   against each other. If cycle gets both, label which is which in the same
   sentence as the number.
 
-**Why it may matter more than structure did.** Structure is a risk qualifier the
-desk now relegates behind a deterministic share count. **Cycle is not a
-qualifier — it is close to the trade decision.** Frontside versus backside is one
-of the things the playbook actually acts on, and a trader who sees a name move
-from `FRESH / FRONTSIDE` to `BACKSIDE` between checkpoints will read it as the
-stock having turned. If a third of that is re-reading, it is being read as a
-market event and it is not one. Design's rule already covers the display half:
-where a reading changes with no evidence change, the rail must not word it as a
-change about the stock.
+**ANSWERED 2026-08-23, and it cost nothing** — the control dossiers were stored
+whole, so `cycleClassification` was already in them. Across **4 identical
+control runs over byte-identical evidence, 6 tickers**, all three fields from
+the same data and therefore comparable:
 
-Nothing is blocked on this and it should not interrupt item 10.
+| Field | Unstable |
+| --- | --- |
+| `cycleClassification` | 2 of 6 |
+| `structureClassification` | 3 of 6 |
+| `catalystGrade` | 2 of 6 |
+
+Cycle is the same order as structure. It has been running with no more
+reliability than the field the desk has already acted on.
+
+**~~A trader will read it as the stock having turned.~~ My framing above was
+wrong and Design must not be given the stronger version.** Both cycle flips are
+**classified-to-`UNKNOWN`**, not direction flips — OLOX
+`YELLOW_FRONTSIDE_WARNING`↔`UNKNOWN`, CDTG `RED_BACKSIDE`↔`UNKNOWN`. Nothing in
+this sample reads as a reversal. What a trader would see is a **badge appearing
+and disappearing** — the desk ceasing to be sure, not the market turning. Still
+noise presented as change, and materially milder than what I wrote.
+
+**And the base rate limits how much the null can carry.** Across 325 stored
+production dossiers, `cycleClassification` is `UNKNOWN` **243 times — 75%**;
+`YELLOW_FRONTSIDE_WARNING` 56, `GREEN_FRESH_FRONTSIDE` 15, `RED_BACKSIDE` 11.
+Only a quarter of dossiers carry any direction at all, and just 4 of 24
+observations in the sample were classified. **So: no direction flip occurred,
+and that is not evidence that they do not happen.** Research stated the limit
+rather than letting the null read as reassurance, which is the right call and
+the reason this answer is trustworthy.
+
+Settling the direction-flip question would need a targeted run on the 25% whose
+cycle is classified. That is spend, it is not urgent, and it sits with the
+trader alongside the other open cost decisions.
+
+**The finding that travels furthest is not about cycle.** `catalystGrade` is
+**2 of 6 unstable on byte-identical evidence**. It was reported stable at 0 of 6
+off two runs; four runs say otherwise. Anything resting on "catalyst is stable
+on fixed evidence" needs revisiting — see the retraction note in item 10.
 
 **1. Billing-class failures should not consume the retry budget.** This is the
 one concrete piece of unfinished code in the project.
