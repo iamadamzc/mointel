@@ -109,14 +109,35 @@ plus whether the cached span still covers today — is not on `/api/health` or i
 spans to 2026-09-04, covers Monday. The gap is that reading it took an ad-hoc
 SQL query against production, which is the whole point of the item.*
 
-**3a. `worker/test-stream.ts` writes to the production store when run on the
-server.** Its guard is `process.env.MARKET_DB_PATH ? baseConfig.dbPath :
-data/market-test.db` — the safe branch is the one where the variable is *unset*,
-and `/etc/mointel/mointel.env` sets it. So the file's own promise that synthetic
-prints "can never contaminate real market state" is exactly inverted on the only
-machine where contamination would matter. Nobody has run it there; found by
-reading. The fix is to make the test store explicit rather than conditional, or
-to refuse to start when the resolved path is the live store.
+**3a. ~~`worker/test-stream.ts` writes to the production store when run on the
+server.~~ Claimed and fixed 2026-08-23.**
+
+Its guard was `process.env.MARKET_DB_PATH ? baseConfig.dbPath :
+data/market-test.db` — the safe branch was the one where the variable is
+*unset*, and `/etc/mointel/mointel.env` sets it for every unit. The file's
+promise that synthetic prints "can never contaminate real market state" was
+exactly inverted on the only machine where contamination would matter. Nobody
+ran it there; found by reading.
+
+**Taken by this thread rather than left recorded**, which is the condition item
+4 sat in until it was assigned. It is a `worker/` CLI resolving a production
+path, so it is item 5's class exactly, and it is Ops' by scope — the market
+worker and production SQLite both live here.
+
+The fix is `resolveTestStorePath` in `lib/market/config.ts`: the opt-in is now
+**`MARKET_TEST_DB_PATH`**, which no service sets, `MARKET_DB_PATH` is ignored
+outright, and resolving onto the live store is **refused** rather than honoured.
+Both halves matter — ignoring the ambient variable fixes the reported bug, and
+the refusal covers the next way in.
+
+`tests/market/testStorePath.test.ts` pins all of it, including the regression
+case (`MARKET_DB_PATH` set to the live store now yields the *test* store) and a
+relative path that resolves onto the live store. **This is also the first crack
+at item 5**: the resolution logic was moved out of the untested CLI into a pure
+function the gate can see, which is the shape the rest of `worker/` needs.
+
+Gate green: 1197 tests / 78 files, lint, typecheck, build. Not deployed — no
+service runs this file, so it ships with whatever goes next.
 
 **Assigned to this thread by the trader, 2026-08-23**, alongside the flake, on
 the grounds that both are `worker/` CLI defects and the fixture work is already

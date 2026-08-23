@@ -6,16 +6,22 @@
  * whole pipeline — connection, authentication, subscription, parsing, engine
  * ingestion and a state-store write — when SIP is closed.
  *
- * It writes to a SEPARATE test database (data/market-test.db) by default, so
- * synthetic prints can never contaminate real market state.
+ * It writes to a SEPARATE test database, `data/market-test.db`, and REFUSES to
+ * start if the store it resolves is the live one — so synthetic prints cannot
+ * contaminate real market state. To point it elsewhere, set
+ * `MARKET_TEST_DB_PATH`; it deliberately ignores `MARKET_DB_PATH`, which is
+ * ambient service configuration on the server rather than an operator's intent.
  */
 
 import { loadWorkerEnv } from './env';
 loadWorkerEnv();
 
-import path from 'node:path';
-
-import { ALPACA_ENDPOINTS, loadMarketConfig, TEST_STREAM_SYMBOL } from '../lib/market/config';
+import {
+  ALPACA_ENDPOINTS,
+  loadMarketConfig,
+  resolveTestStorePath,
+  TEST_STREAM_SYMBOL,
+} from '../lib/market/config';
 import { findAlpacaCredentials, maskKeyId } from '../lib/market/credentials';
 import { AlpacaStream } from '../lib/market/alpaca/stream';
 import { readDemandStates } from '../lib/market/store/repo';
@@ -25,15 +31,18 @@ const RUN_SECONDS = Number(process.env.MARKET_TEST_SECONDS ?? 20);
 
 async function main(): Promise<void> {
   const baseConfig = loadMarketConfig();
-  const config = {
-    ...baseConfig,
-    // Never the live store unless the operator explicitly points at it.
-    dbPath: process.env.MARKET_DB_PATH
-      ? baseConfig.dbPath
-      : path.resolve(process.cwd(), 'data', 'market-test.db'),
-  };
-
   const logger = createLogger(true);
+
+  // Never the live store. The opt-in is MARKET_TEST_DB_PATH, which no service
+  // sets — MARKET_DB_PATH is ambient on the server and inheriting it pointed
+  // this diagnostic at production. See resolveTestStorePath.
+  const store = resolveTestStorePath({ liveDbPath: baseConfig.dbPath });
+  if ('error' in store) {
+    logger.error(`[test] ${store.error}`);
+    process.exit(1);
+  }
+
+  const config = { ...baseConfig, dbPath: store.path };
   const lookup = findAlpacaCredentials();
 
   if (!lookup.credentials) {

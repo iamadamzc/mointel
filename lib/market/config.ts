@@ -100,3 +100,44 @@ export const ALPACA_ENDPOINTS = {
 
 /** The symbol Alpaca's official test stream publishes. */
 export const TEST_STREAM_SYMBOL = 'FAKEPACA';
+
+/**
+ * Which store `npm run market:test` is allowed to write synthetic prints into.
+ *
+ * It used to read: use `MARKET_DB_PATH` if set, otherwise `data/market-test.db`
+ * — on the reasoning that setting the variable was an explicit act by the
+ * operator. On a developer machine it is. On the server it is *ambient service
+ * configuration*: `/etc/mointel/mointel.env` sets
+ * `MARKET_DB_PATH=/var/lib/mointel/market.db` for every unit. So the guard
+ * inverted precisely where contamination would matter, and the file's promise
+ * that synthetic prints "can never contaminate real market state" was false on
+ * the only machine where it counted. Nobody ran it there; it was found by
+ * reading, and it is not left to be found the other way.
+ *
+ * The opt-in is now a dedicated variable that no service sets, and pointing it
+ * at the live store is refused rather than honoured.
+ */
+export function resolveTestStorePath(options: {
+  /** Deliberately not `NodeJS.ProcessEnv`: the caller supplies only what it sets. */
+  env?: Record<string, string | undefined>;
+  liveDbPath: string;
+  cwd?: string;
+}): { path: string } | { error: string } {
+  const env = options.env ?? process.env;
+  const cwd = options.cwd ?? process.cwd();
+
+  const requested = env.MARKET_TEST_DB_PATH?.trim();
+  const resolved = requested
+    ? path.resolve(cwd, requested)
+    : path.resolve(cwd, 'data', 'market-test.db');
+
+  if (path.resolve(resolved) === path.resolve(options.liveDbPath)) {
+    return {
+      error:
+        `refusing to run against the live store (${resolved}). ` +
+        'This writes synthetic FAKEPACA prints; point MARKET_TEST_DB_PATH somewhere else.',
+    };
+  }
+
+  return { path: resolved };
+}
