@@ -175,6 +175,39 @@ waiting to be noticed is indistinguishable from a handover nobody made — and
 three of the defects found today were found because someone was told something
 promptly, not because anyone went looking.
 
+## Who owns `lib/market/`
+
+**Assigned by Integration 2026-08-24 at the trader's instruction, after it came
+up three times in one day as the module no charter claimed.** It is the heart of
+the desk — the demand engine, session, rvol, board, cycle, securities — and it
+was unowned because it predates the threads.
+
+**It splits, and the boundary is a test rather than a list:**
+
+> **Does it define, migrate or version a table? Ops. Does it compute? Research.**
+
+- **`lib/market/store/` → Ops.** `SCHEMA_VERSION`, `ADDED_COLUMNS`, migrations,
+  backups. Ops already owns every operational consequence of that code and its
+  charter already documents the trap — *editing a `CREATE TABLE` migrates
+  nothing*. **A schema change owned by a thread that does not deploy is how you
+  get a migration that fails on the box.**
+- **The rest of `lib/market/` → Research.** Engine, session, rvol, board,
+  securities, cycle, config. Research is already the only thread writing there
+  (`lib/market/cycle.ts`) and already owns the adjacent `lib/data/` providers.
+  Everything in it is upstream of what Research consumes.
+
+**The risk, named rather than discovered:** Research now owns `lib/research/`,
+`lib/data/` and most of `lib/market/`. That is a lot for one thread, and it is
+the reason to revisit this rather than a reason to have split it differently —
+ownership that does not match who writes the code is worse. If Research becomes
+the bottleneck, that is the signal to split again, and the seam is already
+visible: `securities.ts` and `board.ts` are closer to product than to pipeline.
+
+**And this is the second module assigned this way.** `lib/review/` went to Ops
+on the same reasoning. Both were invisible until a task needed a home — which
+means the charters describe *work* well and *code* poorly, and a third will
+surface the same way.
+
 ## Shared state, single source of truth
 
 Do not restate these in a thread doc; link to them.
