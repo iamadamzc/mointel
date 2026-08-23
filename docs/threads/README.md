@@ -79,6 +79,34 @@ Only Ops deploys. Design and Research produce commits; Ops puts them on the
 server. This is deliberate — the deploy gate has checkpoint windows and pin
 rules that a thread focused on a component will not have in mind.
 
+## What the trader has to do goes last
+
+**Every reply ends with a section headed `## What I need from you`, and nothing
+comes after it.** Asked for on 2026-08-23, and the reason is concrete: on a busy
+night the decisions that only he can make were arriving buried inside long
+reports, and a request he does not see is a thread that quietly stalls.
+
+This is not a formatting preference. It is the interface between six threads and
+one person, and it is the narrowest part of the whole arrangement.
+
+Four rules, and the last two are what make it worth having:
+
+1. **Last, always.** No summary, no next-steps, no sign-off after it. If it is
+   not the final thing on screen it has failed at the one job it has.
+2. **Only things that actually need him.** A decision, an approval, an answer
+   only he holds, a piece of information not in the repo. Status is not a
+   request. Progress is not a request. If it belongs in the body, leave it there.
+3. **Say when there is nothing.** "Nothing needed from you" is a real and useful
+   answer, and writing it is what makes the section trustworthy — he can only
+   rely on its absence meaning *nothing*, rather than *forgot*.
+4. **Each item must be answerable in a sentence.** Give the options, or a
+   recommendation to accept or reject. "Thoughts?" is not a request, it is
+   homework. If a question needs three paragraphs of setup, the setup goes in
+   the body and the question goes here.
+
+Integration is bound by this like every other thread, and wrote it having broken
+it repeatedly first.
+
 ## Shared state, single source of truth
 
 Do not restate these in a thread doc; link to them.
