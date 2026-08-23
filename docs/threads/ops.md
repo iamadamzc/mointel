@@ -212,13 +212,34 @@ present, only the projection is wrong. The rule comes from a number this thread
 measured today: **claiming is immediate, 0–2 minutes across every recap job that
 ever started.** So:
 
-> `queuedJobs > 0` with `activeCount == 0` and nothing claimed for more than a
-> few poll intervals is **not `IDLE`. It is `STALLED`.**
+> `queuedJobs > 0` with `activeCount == 0`, and nothing claimed for long enough
+> not to trip on ordinary backlog, is **not `IDLE`. It is `STALLED`.**
 
-An unclaimed queue is definitionally wrong, because claiming does not wait. That
-rule would have fired at 02:02 on 2026-08-22 instead of 23 hours later, and it
-distinguishes the two states the current projection conflates: *nothing to do*
+It would have fired within minutes on 2026-08-22 instead of 23 hours later, and
+it distinguishes the two states the current projection conflates: *nothing to do*
 and *unable to do it*.
+
+**Correcting my own justification, which was over-generalised.** I first wrote
+"claiming is immediate, 0–2 minutes" and gave that figure to Integration, who
+put it in `OPERATIONS.md` in good faith. It came from the **recap jobs alone** —
+a small, unrepresentative slice. Across all **954** jobs that ever started, claim
+latency is **p50 8s, p90 266s, p99 1253s, max 2576s**, with 276 over a minute and
+82 over five. A threshold of "a few poll intervals" (`POLL_MS` is 5000) would
+have fired on **29% of normal work** — a stall detector that cries wolf, which is
+the flaky-gate failure in a new costume.
+
+**The rule survives because the load-bearing part is the conjunct, not the
+timer.** That latency tail is queue depth: a worker legitimately busy has
+`activeCount > 0`, which is precisely the case `activeCount == 0` excludes. So
+set the timer in minutes and generously, and let `active == 0` discriminate.
+
+**What I cannot prove and will not claim:** `activeCount` has no history — that
+absence is the whole problem — so the false-positive rate of the *conjunction*
+is unmeasured, and only the timer alone was tested. Ship it in shadow and
+compare before anyone lets it page a human.
+
+*This is the fourth over-generalisation from a convenient slice in one evening,
+and the first one of mine that reached another thread's document.*
 
 Worth stating what it does **not** do: it says nothing while the queue is empty,
 so a worker hung with no work pending still looks idle. That is the honest limit

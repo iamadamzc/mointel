@@ -66,11 +66,19 @@ to do*, and *unable to do it*. On 22 August the worker queued eight jobs at
 hours until a restart. Nothing on this page would have told you.
 
 **The check that would have caught it, and it needs no new data:** queued jobs
-above zero, active count zero, and nothing claimed for more than a few poll
-intervals is **not idle — it is stalled.** Claiming is immediate; measured at
-nought to two minutes across every recap job that ever started. An unclaimed
-queue is definitionally wrong when claiming does not wait. Ops has proposed
-reporting this on `/api/health` and it is not built — see `threads/ops.md`.
+above zero **and active count zero** — with nothing claimed for a period long
+enough not to trip on ordinary backlog — is **not idle, it is stalled.** Ops has
+proposed reporting this on `/api/health` and it is not built; see
+`threads/ops.md`.
+
+**The conjunct that does the work is `active == 0`, not the timer.** An earlier
+version of this paragraph justified it with "claiming is immediate, nought to two
+minutes". That figure came from the recap jobs alone and does not generalise:
+across all 954 jobs that ever started, claim latency runs **p50 8s, p90 266s, p99
+1253s, max 2576s**, with 276 over a minute. A threshold of a few poll intervals
+would have fired on **29% of normal work**. The long tail is queue depth — a busy
+worker with `active > 0` — which is exactly the case `active == 0` excludes. So
+set the timer in minutes, generously, and let the conjunct discriminate.
 
 **Its limit, so this page does not create the next false reassurance:** it says
 nothing while the queue is empty. A worker hung during a quiet period still
@@ -299,4 +307,9 @@ Set in `.env.local`. All optional; defaults in `lib/market/config.ts` and
   only refreshed on flush.
 - **The Desktop shortcut lives in OneDrive** (`C:\Users\adshu\OneDrive\Desktop`)
   and therefore syncs to other machines, where it will not work because it
-  points at `A:\mointel`.
+  points at `A:\mointel`. Since `63e0773` a synced copy is a **broken link, not
+  a split-brain risk**: `start-desk.ps1` opens production in the browser by
+  default and needs an explicit `-Local` to start a desk that would take the SIP
+  connection. Worth stating because the earlier hazard is still remembered —
+  the project memory described this shortcut as a live trap until it was
+  corrected on 2026-08-23.
