@@ -173,8 +173,49 @@ removed** — see the findings note.
    itself. Take the full five dates on record, and further back if production
    holds more. Costs nothing; the payload is a few MB either way.
 
-**Still waiting on Ops: the extract itself, one `npm run archive:export` from
-the production store.** It
+**Delivered 2026-08-23: the extract is at `data/assessments.db`.** Cut from
+production by Ops after deploying `775c5a9`, unbounded — no `--from`, no `--to`,
+so the censoring problem above does not arise. 2.8 MB, `integrity_check` ok,
+exactly `desk_assessments` and `desk_assessment_tickers`, **75 assessments and
+1850 ticker rows** over 2026-08-17 → 2026-08-21, `COMPLETE` 74 and
+`MISSED_SUPERSEDED` 1. Verified on the server and again after transfer; counts
+match the independent read-only query Ops ran against production on the same
+evening. `/data/` and `*.db` are both gitignored, so it will not be committed.
+
+**Before anyone runs that tool again — `--dry-run` deletes a directory.**
+*Found by Ops on first production contact, 2026-08-23. This is R&D's file and
+R&D's fix; Ops has not touched it.*
+
+[`worker/archive-export.ts:127`](../../worker/archive-export.ts:127) is, inside
+the `--dry-run` branch:
+
+```js
+fs.rmSync(path.dirname(destination), { recursive: true, force: true });
+```
+
+Two separate defects in one line. It removes **`dirname(destination)`** — the
+*containing directory* of `--out` — rather than the file that was written. And
+the run is not dry: `exportAssessments` executes unconditionally about twenty
+lines earlier and writes the real extract; `--dry-run` changes only the cleanup,
+so the header's "reports only that and writes nothing" is also untrue.
+
+What that means on the box: `--out /var/lib/mointel/assessments.db --dry-run`,
+run as the `mointel` user, attempts `rm -rf /var/lib/mointel` — `market.db`, the
+WAL, and all six backups, every one of them owned by that user. The live run on
+2026-08-23 used `--out /tmp/…`, so it tried to remove `/tmp` and was stopped by
+the sticky bit with `EACCES`. Nothing was lost, and that was luck, not design.
+
+Why the tests did not catch it: `tests/archive/export.test.ts` covers
+`lib/archive/export.ts` thoroughly, and **nothing exercises
+`worker/archive-export.ts` at all** — the CLI wrapper is the untested part and
+is where the `rm -rf` lives. The library being proven is what justified this
+route; that argument still holds and is not what failed.
+
+The real (non-`--dry-run`) path does not call `rmSync` on anything and is safe;
+that is the one Ops used. **Ops will not run `--dry-run` against production
+again until this is fixed.**
+
+The tool as it stands
 opens the store read-only and produces ~1-3 MB rather than a 250 MB+ snapshot
 — the backfill reads two tables and fetches the rest from Alpaca. The same
 command reports checkpoints per trading date, which also answers whether the

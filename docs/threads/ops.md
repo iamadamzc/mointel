@@ -24,21 +24,32 @@ handoff, run the gate, deploy — do not review their design decisions.
 
 ## State as of 2026-08-23
 
-Production is **`fd9556f`**, schema **v21**, deployed 21:12 ET Saturday into the
-closed-market window. Gate green at that sha before shipping: 1091 tests, lint,
-typecheck, build. Market IDLE (closed, weekend), connection STREAMING. Research
-IDLE. Assessments idle, next `STRUCTURAL_REFRESH` Monday 06:10 ET.
+Production is **`775c5a9`**, schema **v21**, deployed 22:37 ET Saturday into the
+closed-market window — the second deploy of the evening, carrying R&D's archive
+tooling so the assessment extract could be cut from the release. Gate green at
+that sha: **1150 tests / 76 files**, lint, typecheck, build. No migration, as
+expected: `SCHEMA_VERSION` is 21 on both sides and migrate wrote 0 backups.
+Market IDLE, connection STREAMING. Research IDLE. Assessments idle, next
+`STRUCTURAL_REFRESH` Monday 06:10 ET.
 
-The deploy ran with `RESTART_MARKET` at its default of `no`. Verified afterwards
-that the SIP connection was never touched: `mointel-market` `NRestarts=0`,
-`ExecMainStartTimestamp` still Fri 2026-08-21 12:45:06 UTC, and no journal
-entries at all in the deploy window. Web, research and assessments restarted at
-01:12:50–51 UTC onto the new release.
+Both deploys ran with `RESTART_MARKET` at its default of `no`, and the SIP
+connection was never touched by either — `mointel-market` `NRestarts=0` across
+both, no journal entries in either deploy window.
 
-The market worker was restarted separately at 01:27:36 UTC to clear a release
-drift — see Closed. Every process on the store is now on `fd9556f`.
+**The market worker deliberately runs an older release than `current`, and that
+is the design.** It was restarted once, at 01:27:36 UTC, to clear drift it had
+accumulated silently; it has stayed on `fd9556f` through the `775c5a9` deploy
+because restarting it again would spend Monday's premarket — the first open it
+faces since that restart — proving nothing. Do not tidy this away.
 
-**One rollback pin exists: `rollback-baseline` = `372f5eb` (schema v18).** This
+**`fd9556f` is therefore pinned.** Keep-3 retention would have covered it for
+two more deploys, but "retention will probably cover it" is exactly the
+reasoning that was wrong about `80437c3`. The pin comes off when the worker next
+moves. It earned itself immediately: the `775c5a9` deploy's prune removed
+`80437c3` — the very directory the worker was running from this morning.
+
+**Two rollback pins now exist**: `market-worker-release` = `fd9556f` and
+`rollback-baseline` = `372f5eb` (schema v18). This
 charter previously said "rollback pins retained: `80437c3` and the `372f5eb`
 baseline". That was wrong — `80437c3` was never pinned. The line came from a
 deploy transcript, where `[prune] retained …` lists every release still on disk,
@@ -181,6 +192,32 @@ pipeline disguises itself. **Take all five dates on record, and further back
 if production holds more.** It costs nothing: a few MB either way, and the
 `--from` / `--to` bounds are what would do the damage. Leaving them off is the
 safe default.
+
+**Done 2026-08-23. `775c5a9` deployed, extract cut, extract delivered.** Run
+unbounded — no `--from`, no `--to`. It reported 75 assessments and 1850 ticker
+rows over 2026-08-17 → 2026-08-21, matching the independent read-only query
+above row for row. 2.8 MB, `integrity_check` ok, exactly the two tables. It
+landed at `data/assessments.db`, which `/data/` and `*.db` both keep out of git,
+and the staging copies on the server were removed. `market.db` was untouched:
+`lib/archive/export.ts:55` opens the source `{ readonly: true }`, and the
+store's mtime predates the export.
+
+**One defect found, on first production contact, and it is a bad one.**
+`worker/archive-export.ts:127` — inside the `--dry-run` branch —
+`fs.rmSync(path.dirname(destination), { recursive: true, force: true })`. It
+deletes the *containing directory* of `--out`, not the file, and the run is not
+dry: the extract is built unconditionally before that line. `--out
+/var/lib/mointel/assessments.db --dry-run` as the `mointel` user would attempt
+`rm -rf /var/lib/mointel` — the store, the WAL and all six backups. This run
+used `/tmp`, so the sticky bit returned `EACCES` and nothing was lost; that was
+luck. The non-`--dry-run` path never calls `rmSync` and is what was used for
+the real cut.
+
+It is R&D's file and has been handed to them in [rnd.md](rnd.md), not fixed
+here. **Ops does not run `archive:export --dry-run` against production until it
+is fixed.** Worth noting for this thread's own tooling instincts:
+`tests/archive/export.test.ts` covers the library well and nothing at all
+exercises the CLI wrapper — the untested file is the one holding the `rm -rf`.
 
 **6. The next deploy carries `lib/archive/` to production whether or not anyone
 intends it.** *Noted by Integration 2026-08-23; a note for the deploy summary,
