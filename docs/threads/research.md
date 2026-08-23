@@ -176,6 +176,27 @@ The checkpoint-time inheritance is still real and still worth knowing; it just
 has no data consequence. What *was* found in that area is `sheetStale` — see
 item 7.
 
+**The migration has a hard dependency nobody had written down: float.**
+*Raised by Research 2026-08-23, verified here.* `resolveDisplayedFloat`
+(`lib/dashboard/merge.ts:143`) has exactly two branches — the Sheet's RESEARCH
+tab, then its TODAY tab — and the type enumerates nothing else:
+`displayedFloatSource: 'RESEARCH' | 'TODAY' | null` (`merge.ts:87`). There is no
+third source in the tree.
+
+So **every float on the desk is the Sheet's**, and float under 10M is one of the
+five pillars the product exists to encode. `displayedFloatTurnover`
+(`merge.ts:217`) and a branch of `risk.ts:174` hang off the same number. Retire
+the Sheet without replacing it and pillar 5 leaves the product silently — every
+float resolves null, which the code treats as a legitimate unknown rather than
+an error.
+
+This does not reverse the migration decision; it sequences it. **Nothing that
+removes the Sheet ships before a float source replaces it.** The trader has
+approved the direction for that replacement — derive float from SEC filings
+already collected, shares outstanding less affiliate and restricted holdings
+from SC 13D/13G and Forms 3/4 — and this thread is scoping it before writing
+code. The surface that consumes it is Design's; the derivation is this thread's.
+
 **~~Freshness is readable off the live desk without new code.~~ Also false,
 also Integration's, corrected 2026-08-23.** `fetchSourceUpdatedAt`
 (`lib/data/providers/googleSheets.ts:112`) does call the Drive API — and it

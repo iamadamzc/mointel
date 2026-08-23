@@ -148,6 +148,15 @@ As of the last session, **2026-08-23**:
   part that is false. Three of those four times are this desk's own
   checkpoints, inherited from the same workflow. Open in
   [research.md](research.md) item 5 and audit §11 item 1.
+- **Retiring the Sheet takes pillar 5 with it unless float is replaced first.**
+  `resolveDisplayedFloat` (`lib/dashboard/merge.ts:143`) has exactly two
+  branches, the Sheet's RESEARCH tab and its TODAY tab, and the type says so:
+  `displayedFloatSource: 'RESEARCH' | 'TODAY' | null`. **Every float on the desk
+  is the Sheet's.** Float under 10M is one of the five pillars, and
+  `displayedFloatTurnover` and part of `risk.ts` hang off the same number. The
+  migration decision of 2026-08-23 was taken before anyone knew this. It is not
+  a reason to reverse it — it is a **precondition** on sequencing, and Research
+  is scoping a replacement from SEC filings already collected.
 - Credentials live in `A:\AWS_creds\` — **outside the repo, and they stay there.**
   Never print, log, commit or move a credential value.
 - Project memory is at `~/.claude/projects/A--mointel/memory/` — seven files:
