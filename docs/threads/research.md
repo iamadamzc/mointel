@@ -175,6 +175,57 @@ Sheet writer, and named here only so nobody links them by coincidence later.
 resolver searches were explicitly not enabled. Do not turn them on without
 asking.
 
+**6. Which of the 65 Sheet fields does the app have to absorb?** *Handed over from
+Design, 2026-08-23.* Audit §11 item 1 is settled: **the Sheet is a migration
+artefact and the trader's intent is for the application to absorb the four-task
+workflow.** Design will not build a review workflow. But Design cannot say how
+long "eventually" is, because the answer is about what the interpreter produces.
+
+*Corrected the same day.* An earlier version of this item asked which fields are
+"irreducibly human". **That framing was wrong and is retracted** — no human
+writes any of it. `Analyst Notes`, `Warning Shot`, `Confirmation` and the rest
+are task-authored, not human judgement, so the inventory is not
+human-versus-machine. It is: **for each of the 65 fields, does this desk's
+pipeline already produce it, could it, or would absorbing it mean building
+something new?**
+
+The measured shape: `lib/data/rows.ts` reads two tables and 65 fields — 28
+columns on `TODAY!A:AA`, 37 on `RESEARCH!A:AK`. That inventory is the retirement
+plan for the Sheet, and nothing after Phase 2 can be scheduled without it. Not
+urgent — Design's Phase 2 proceeds without it — but it gates the phase after.
+
+Distinct from item 5, which is about the input's reliability today.
+
+**7. `sheetPrior` does reach the interpreter — the two reads are not
+independent.** *Established in code by Design, 2026-08-23, and handed over
+because the empirical half is this thread's.*
+
+This is one of the two findings Integration named as gating the removal of the
+conflict apparatus. The code path is confirmed:
+
+`worker/research.ts:375` and `worker/research-interpret.ts:147` pass
+`prior?.analysis` (from `lib/research/merge/sheetPrior.ts`) as
+`priorHumanAnalysis` → `lib/research/interpret/pipeline.ts:198` →
+`lib/research/interpret/bundle.ts:93`, where it is labelled
+`HUMAN_REVIEWED_PRIOR_ANALYSIS` → into the prompt at
+`lib/research/interpret/openaiInterpreter.ts:95` and `:146`.
+
+**The design is careful and that must be said**: the prior is presented as an
+opinion and explicitly denied the status of evidence ("Do not adopt its
+conclusions without support in the collected sources"), and adjudication
+re-decides from sources rather than voting between two opinions.
+
+**Two things remain true anyway.** First, `AUTO` has seen `SHEET`'s conclusion
+before reaching its own, so whatever the UI shows, the two are not independent
+opinions. Second, the prompt's own justification is now false: `:148` instructs
+the model not to adopt the prior *"because a person wrote it"*. No person wrote
+it.
+
+What Design cannot answer and this thread can: **does the prior actually change
+the output?** That needs a run, not a read. Until it is answered, Design has
+deferred §9 item 15 (single conflict signal) rather than reducing it — promoting
+a conflict signal that may be an artefact would be worse than the buried one.
+
 ## Working rules
 
 - **Facts come from deterministic parsing; the model only interprets.** Never
