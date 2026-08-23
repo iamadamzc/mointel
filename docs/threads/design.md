@@ -636,6 +636,37 @@ wanted and could not have. It also further vindicates the standing rule: the
 badge is now arithmetic *and* the number beside it is arithmetic, so cycle stops
 being a verdict at all.
 
+## Incoming — the cycle migration switch
+
+Scoped by Integration 2026-08-23 (`research.md` item 13, `bce1a8b`). Nothing is
+due until Research wires the computed cycle into the pipeline.
+
+**Design's files:** `components/AutomaticIntelligence.tsx`, `TickerDrawer.tsx`,
+`lib/dashboard/deskRead.ts`, `intelligence.ts`, `merge.ts` — **plus four the
+handover missed**, established here by grep and sent back:
+
+- **`components/DiscoveryBoard.tsx`** — the largest omission. It renders the
+  Cycle badge on the primary board (`:499`) and reads `conclusions.cycle.tone`
+  at `:405` to set `backside`, which drives the one-saturated-element colour
+  precedence for the whole row. The most visible cycle surface in the product,
+  and the only one seen during 07:00–10:00.
+- **`lib/dashboard/view.ts`**, **`components/MarketSummary.tsx`**,
+  **`components/FilterBar.tsx`** — the cycle filter and its three segments.
+
+**A design decision is hiding inside what was scoped as a switch.** `CycleFilter`
+is `'ALL' | 'FRESH' | 'WARNING' | 'BACKSIDE'` (`view.ts:10`) — the *old* model's
+classes. The arithmetic phases are six, and **only `BACKSIDE` survives by name**;
+`FRESH` and `WARNING` have no arithmetic counterpart at all. So the filters
+cannot be relabelled — what a trader filters cycle *by* has to be decided. That
+collides with §9 item 13's workflow-filter rewrite, which was going to re-cut
+this same set. **Do it once.**
+
+**Not Design's, and correctly so:** `lib/data/cycleLevels.ts` and
+`lib/research/merge/sheetAuto.ts` are Research's. Sitting inside the apparatus
+Design is deciding about is not the same as owning it. **The schema deletion
+comes after this switch is deployed *and verified*, not merged** — deleting the
+fields while the switch still has a defect leaves nothing to fall back to.
+
 ## Next session — item 16a, and only 16a
 
 Chosen by the owner 2026-08-23. Scope is fixed by the table above: replace the
@@ -851,14 +882,15 @@ practical size of the inflation is unknown. Needs the live desk.
   the box is not confirming its behaviour changed.
 - **Thread-to-thread traffic goes through Integration, not the trader.** Set at
   his instruction 2026-08-23 (`159baab`), after he was asked three times in one
-  evening to carry a message between two threads. **Reply to any cross-session
-  message Integration sends: copy its `from=` attribute and use it as `to`.**
-  That address resolves even though Integration does not appear in `ListAgents`,
-  which is why no route existed before. The id is per-session, so take it from
-  the latest message rather than from anything written down. Integration relays
-  with context the receiver lacks — but **relaying is not deciding**: anything
-  needing the trader's judgement still goes to him under *What I need from you*,
-  directly, with no hop in between.
+  evening to carry a message between two threads. **Address it by name —
+  `SendMessage` to `Integration`.** The threads appear in `ListAgents` as
+  `R&D`, `Ops`, `Integration` and `mointel-05`. *(Integration's own instruction
+  said to reply to the `from=` id because it "does not appear in ListAgents".
+  Both halves are wrong: it does appear, and the `from=` id fails as
+  unreachable. Verified 2026-08-23.)* Integration relays with context the
+  receiver lacks — but **relaying is not deciding**: anything needing the
+  trader's judgement goes to him under *What I need from you*, directly, with no
+  hop in between.
 - **Check a review link by content, never by status code.** A revoked, expired
   or invalid token returns **200 with an error page**, not 401 or 404 — found by
   Ops, recorded 2026-08-23. A valid session is ~535 KB with `RVOL` present; a
