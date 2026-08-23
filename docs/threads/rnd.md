@@ -37,6 +37,19 @@ questions is a thread that has stopped working.
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | proposed |
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | dormant — see closed lines below |
 | Q5 | When does a board name's move happen, relative to when the desk puts it on the board? | 2026-08-23 | proposed — behind Q1, see the ordering note |
+| Q6 | Can the 09:25 pre-open assessment be scored against outcomes? | 2026-08-23 | proposed — *handed over from Design*, see below |
+
+**Q6 came from Design, 2026-08-23**, and is recorded here because validating a
+score is this thread's register and not a design decision. Audit §11 item 6 asks
+whether the 09:25 pre-open assessment "ever gets a validated score". It is
+captured, flagged `EXPERIMENTAL`, and the UI says so.
+
+Design does not need the answer to proceed, and has already acted on the
+conditional: **if it stays `EXPERIMENTAL` indefinitely it should not occupy a
+slot in the trader-facing checkpoint selector**, and audit F-26 already hides
+that selector until it has options. So this is not blocking anything — it is a
+question about whether a pre-open read has predictive content at all, which is
+the kind of thing this register exists for. Design acts on whatever comes back.
 
 **Closed, and not to be reopened without new evidence:**
 

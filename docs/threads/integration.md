@@ -71,6 +71,29 @@ concurrent building is rare.
    robust answer and it is not free: a worktree needs its own `node_modules`.
    Reach for it when rule 2 becomes the bottleneck, not before.
 
+## Open items
+
+**1. `docs/ARCHITECTURE.md` §4 is stale, and part of it is still being cited as
+authority.** *Handed over from Design, 2026-08-23.*
+
+[`../ARCHITECTURE.md:207`](../ARCHITECTURE.md:207), under "Deliberate non-goals
+in this milestone", lists as out of scope: *OpenAI analysis, automated SEC
+research, IR/newswire scraping, Dirty Float reclassification, overhang
+absorption conclusions, Effective Float Turnover, automated Chop/Flush Risk,*
+and more.
+
+The first two are **shipped**. The 2026-08-21 UI audit observed OpenAI-backed
+interpretation and automated SEC research running live in production — EDGAR
+links, accession numbers, the `STRUCTURAL INTELLIGENCE — AUTOMATIC` card.
+
+Why it matters beyond tidiness: the same sentence carries the only written
+answer to audit §11 item 3 — whether Chop Risk, Flush Risk, Overhang Absorption
+and Effective Float Turnover are wanted. That written default is "no", and it may
+well still be right, but it now sits in a paragraph proven stale in part, so it
+cannot be cited on its own. Design has flagged this rather than editing a shared
+document; the fix is either to date-scope the section to the milestone it
+described or to split the still-true entries out of it.
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin

@@ -405,11 +405,46 @@ Only questions the interface, repository and existing requirements genuinely can
 
 1. **Is the Google Sheet a permanent input or a migration artefact?** The Sheet/Auto duality is the single largest source of visual complexity in the product (the conflict apparatus, the two `Momentum Cycle` sections, the `SHEET RESEARCH (VERBATIM)` block, the `Confirmation` column). If human review is permanent, that machinery should be designed properly as a first‑class *review* workflow. If the Sheet is on its way out, most of it should be simplified now rather than polished.
 
+   > **Answered 2026‑08‑23 (desk owner): the Sheet is a MIGRATION ARTEFACT.** His intent is for the application to absorb that workflow. Arrived at via his own question — whether the more critical thing now is to mimic the four scheduled tasks inside the app — which is item 1 answered.
+   >
+   > **The question this audit asked was built on a false premise, and the premise has to be retracted before the answer makes sense.** §11 item 1 asks whether *"human review"* is permanent. **No human has ever reviewed anything in the Sheet.** The desk owner does not write to it and never has. The Sheet is written by **four scheduled ChatGPT tasks on weekdays — 22:00, 06:10, 09:25 and 16:15 ET** — over a substantial corpus (204 research rows, 96 archive rows, 148 graded‑outcome rows, nine dated tabs, a rules tab, a patterns tab) with its own forecast‑versus‑outcome ledger. It is neither a fossil nor a ceremony. Established by the Integration thread, 2026‑08‑23, commits `3263615` and `7f892e7`; recorded in the README shared facts and `research.md` item 5.
+   >
+   > **So what the conflict apparatus actually adjudicates is two automated research pipelines** — this desk's, and a four‑task ChatGPT workflow with a different universe ($2–$10, float under 20 M, versus this desk's $1–$20 RVOL ranking) and a different discovery method. Not a human against a machine.
+   >
+   > **Settled for Design.** Do not build a first‑class review workflow. Nothing is built that assumes the Sheet is a permanent input; nothing is polished that exists only because a spreadsheet is the source.
+   >
+   > **Explicitly NOT settled: when the apparatus comes out.** Migration artefact means the Sheet goes eventually, not that the conflict machinery is deletable now. Two Research findings gate it, and **neither belongs to Design**:
+   >
+   > - whether `sheetPrior` feeds this desk's interpreter — if the automatic grade is influenced by the ChatGPT tasks, `SHEET` and `AUTO` are not two opinions;
+   > - whether the conflict display is partly a **timing artefact** — three of the four task times are this desk's checkpoint times, and the tasks were observed running 11–18 minutes late on 2026‑08‑21, so a checkpoint may read a stage not yet written.
+   >
+   > **Design has since established the first of those two in code and handed the evidence to Research** (see [../threads/research.md](../threads/research.md) item 7, committed `7b2553e`): the Sheet's conclusion *is* passed into this desk's interpreter, labelled to the model as `HUMAN_REVIEWED_PRIOR_ANALYSIS`.
+   >
+   > The prompt is careful where it discusses the prior — presented as an opinion, explicitly denied the status of evidence, and adjudication re-decides from sources rather than voting. **But Research corrected Design's trace and the exposure is wider than the mitigation.** `buildInput` serialises the entire bundle (`openaiInterpreter.ts:107`), so `priorHumanAnalysis` sits in the context of *every* call for any ticker carrying a `TODAY` row — not only the two places the prompt names it. The careful instruction covers the discussion; it does not cover the context.
+   >
+   > Either way the conclusion for Design is the same and it is unchanged: `AUTO` has seen `SHEET` before concluding, so the two are **not independent opinions**. Whether it changes the output needs a run, and that is Research's.
+   >
+   > **Consequence for Phase 2, stated once:** no design may present Sheet‑vs‑Auto conflict as a meaningful disagreement until Research reports. See §9 item 15, which is now **deferred rather than reduced**.
+
 2. **Should `Confirmation` be built or removed?** It is a free‑text Sheet column, empty on every current row, and the audit brief treats "Live Confirmation" as a core concept. Either it becomes a real derived signal with a definition, or the column and the concept should both go.
+
+   > **Answered 2026‑08‑23 — collapses into item 1, and this question was also mis‑premised.** `Confirmation` is not a place a human confirms anything: it is **task‑authored free text**, empty on every row audited. The Sheet is a migration artefact and no review workflow is being built, so `Confirmation` is **not built and not becoming a derived signal**. F‑28 stands — remove it from the table; render it in the drawer only when non‑empty. The audit brief's "Live Confirmation" concept has no implementation and is not being given one.
 
 3. **Which of the briefed‑but‑unbuilt concepts are actually wanted?** Chop Risk, Flush Risk, Overhang Absorption and Effective Float Turnover were deliberately not built. The current surfaces (`Float Turn` = *displayed* float turnover; `flushFromHighPct` = a sheet‑reported number) are honest partial substitutes. Building any of them changes the row design, so the answer is needed before §6's column set is finalised.
 
 4. **What is the real target resolution?** The tables are authored for ≈1,900 px; the owner's browser is 1,022 px. The §6 column set assumes 1,022 px is the floor and wider is a bonus. If the production setup is a 1,920 px monitor with this desk on a dedicated panel, the column budget can grow by roughly four columns.
+
+   > **Answered 2026‑08‑23 (desk owner):** *"It does not share with charts. There was no intention behind the size. Let it be what it should be."*
+   >
+   > **The premise of the measurement was wrong.** This audit and §10 both record 1,022 × 551 as "the real viewport on the owner's machine" and treat it as a deliberate constraint. It was not. Nothing shares the screen; the window size was accidental. At `devicePixelRatio` 2.82 the panel is ≈2,880 physical px wide, so the desk is on a large display being rendered at high effective scale in a window that was simply never sized.
+   >
+   > **Design's call, 2026‑08‑23:** the §6 **eight‑column core stands and remains the set that must fit at 1,022 px.** Extra width buys **rows first, optional columns second**. Rationale: the viewport already changed once without intent, so a column set that is mandatory only above some width will break again. Designing the core to the narrow floor and treating width as gain is strictly more robust and costs nothing. Candidate optional columns, in order, if width is confirmed: `Halt`, `Spread`, `Float Turn`, `Δ since checkpoint`.
+   >
+   > **The height is now the urgent number, not the width.** 551 px was the accident that mattered: it is why fixed chrome consumed 36% of the viewport and only ~4 rows were visible. A maximised window converts the ≤68 px fixed‑chrome target (§7) directly into rows, so that target gains value rather than losing it.
+   >
+   > **Outstanding, one measurement:** the maximised CSS viewport on the owner's machine (`innerWidth × innerHeight @ devicePixelRatio`). It does not change the core column set — only how many optional columns are worth planning, and what §10 should be measured at.
+   >
+   > **§10 needs restating.** Its preamble pins acceptance to "the viewport he actually uses (1,022 × 551 CSS px)". That premise is now known to be accidental and the figure must be replaced once the measurement above is taken. Until then §10's targets stand as written — they are a floor, and a floor is still correct.
 
 5. **Should the desk ever rank by anything other than Daily RVOL / AH Participation?** Sorting exists on the watchlist but Discovery's order is fixed. Allowing a trader to re‑rank Discovery (by float, by catalyst freshness, by rank move) is cheap to build but is a real product decision — the current fixed ranking is a deliberate opinion, and the caption defends it.
 
