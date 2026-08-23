@@ -270,8 +270,50 @@ units, not a reason to trust the result.
 Cycle is the same order as structure. It has been running with no more
 reliability than the field the desk has already acted on.
 
-**~~A trader will read it as the stock having turned.~~ My framing above was
-wrong and Design must not be given the stronger version.** Both cycle flips are
+**REINSTATED 2026-08-23 on 236 versions. Direction flips happen, and my
+original framing was right.** *This is the second reversal of this item and it
+reverses my own retraction. The struck text below stood for under an hour.*
+
+Measured across **5 draws per stored analysis on byte-identical as-of evidence,
+236 archive-backing versions**, prior-free, single model — **not** a production
+checkpoint-pair rate:
+
+- **46% of cycle classifications are not reproducible.** Unanimous 5/5 on 127
+  (54%), 4/5 on 65, 3/5 on 36, 2/5 on 8.
+- Of the **109 that vary**, 81 vary only between a class and `UNKNOWN` — but
+  **28 vary between two directions**: 17 `RED_BACKSIDE`↔
+  `YELLOW_FRONTSIDE_WARNING`, 11 `GREEN_FRESH_FRONTSIDE`↔
+  `YELLOW_FRONTSIDE_WARNING`, and **0** `GREEN`↔`RED`.
+
+**The 17 are the ones that matter: 7.2% of versions.** Frontside against
+backside is the distinction the playbook acts on, and on identical evidence the
+same model returns one or the other depending on the draw. What survives of the
+softening is only that the instability is **one step on the scale, not end to
+end** — nothing goes `GREEN` straight to `RED`.
+
+Base rate beside it: cycle is `UNKNOWN` on 75% of 325 stored dossiers, so 7.2%
+is measured against a field that is usually silent. **Among versions that do
+commit to a direction, the flip rate is correspondingly higher.**
+
+Structure from the same run, since the desk has acted on it: **45% unanimous,
+mean agreement 84% — the least reproducible of the three.**
+
+**What I got wrong, and it is not the sample.** Research's six-name result came
+with an explicit caveat: *"I can say none occurred, I cannot say they do not
+happen."* I recorded that caveat **and struck my framing anyway**. An
+underpowered null means a claim is **unresolved**, not **refuted**, and the
+difference is exactly the width of this reversal. The correct action was to
+mark the framing unproven and leave it standing, not to strike it and tell
+Design the milder version as settled.
+
+It is the mirror of the retraction problem in [integration.md](integration.md):
+there, a retraction reached too little; here, it reached too far. Both come from
+treating one measurement as the last word on a claim.
+
+The struck text, kept so the reversal is legible:
+
+**~~A trader will read it as the stock having turned. My framing above was
+wrong and Design must not be given the stronger version.~~** Both cycle flips are
 **classified-to-`UNKNOWN`**, not direction flips — OLOX
 `YELLOW_FRONTSIDE_WARNING`↔`UNKNOWN`, CDTG `RED_BACKSIDE`↔`UNKNOWN`. Nothing in
 this sample reads as a reversal. What a trader would see is a **badge appearing
