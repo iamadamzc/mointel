@@ -80,14 +80,16 @@ function parseArgs(argv: string[]) {
   let to = '2026-08-22';
   let maxDraws = 2;
   let out = 'replay-result.json';
+  let concurrency = 4;
   for (const arg of argv) {
     if (arg.startsWith('--from=')) from = arg.split('=')[1] ?? from;
     else if (arg.startsWith('--to=')) to = arg.split('=')[1] ?? to;
     else if (arg.startsWith('--max-draws=')) maxDraws = Number(arg.split('=')[1]) || maxDraws;
     else if (arg.startsWith('--out=')) out = arg.split('=')[1] ?? out;
+    else if (arg.startsWith('--concurrency=')) concurrency = Number(arg.split('=')[1]) || concurrency;
     else if (!arg.startsWith('--')) tickers.push(arg.toUpperCase());
   }
-  return { tickers, from, to, maxDraws, out };
+  return { tickers, from, to, maxDraws, out, concurrency };
 }
 
 async function main(): Promise<void> {
@@ -144,54 +146,77 @@ async function main(): Promise<void> {
   let inputTokens = 0;
   let outputTokens = 0;
 
-  for (const version of versions) {
-    const storedGrade = String(JSON.parse(version.dossier).catalyst?.catalystGrade ?? 'UNKNOWN');
-    const grades: string[] = [];
-    let sourcesVisible = 0;
+  /*
+   * Versions are replayed concurrently.
+   *
+   * Written as a straight sequential loop first, on the reasoning that a
+   * replay's correctness matters more than its speed. That reasoning did not
+   * survive contact with a real run: 123 versions at two draws is 246
+   * interpretations at roughly 25 seconds each, which is ten minutes of work
+   * spread over an hour and a half. Nothing about it needed to be sequential —
+   * each version reads its own as-of slice and appends its own row, and the
+   * production research worker has run concurrently all along.
+   */
+  const queue = [...versions];
+  const worker = async (): Promise<void> => {
+    for (;;) {
+      const version = queue.shift();
+      if (!version) return;
+      const storedGrade = String(JSON.parse(version.dossier).catalyst?.catalystGrade ?? 'UNKNOWN');
+      const grades: string[] = [];
+      let sourcesVisible = 0;
 
-    for (let run = 0; run < args.maxDraws; run += 1) {
-      // Established unstable: a third draw cannot change the verdict.
-      if (new Set(grades).size > 1) break;
+      for (let run = 0; run < args.maxDraws; run += 1) {
+        // Established unstable: a third draw cannot change the verdict.
+        if (new Set(grades).size > 1) break;
 
-      const report = await interpretTicker(db, interpreter, null, {
-        ticker: version.ticker,
-        tradingDate: version.generated_at.slice(0, 10),
-        // The whole point: prior-free, and blind to anything collected later.
-        priorHumanAnalysis: null,
-        asOf: version.generated_at,
-        force: true,
-      });
-      if (report.outcome === 'UNAVAILABLE' || report.outcome === 'REUSED_UNCHANGED') {
-        throw new Error(
-          `${version.ticker} v${version.id} returned ${report.outcome}: that dossier was not re-derived`,
-        );
+        const report = await interpretTicker(db, interpreter, null, {
+          ticker: version.ticker,
+          tradingDate: version.generated_at.slice(0, 10),
+          // The whole point: prior-free, and blind to anything collected later.
+          priorHumanAnalysis: null,
+          asOf: version.generated_at,
+          force: true,
+        });
+        if (report.outcome === 'UNAVAILABLE' || report.outcome === 'REUSED_UNCHANGED') {
+          throw new Error(
+            `${version.ticker} v${version.id} returned ${report.outcome}: that dossier was not re-derived`,
+          );
+        }
+        sourcesVisible = report.sourceCount;
+        inputTokens += report.metrics.inputTokens;
+        outputTokens += report.metrics.outputTokens;
+        grades.push(String(report.dossier?.catalyst?.catalystGrade ?? 'FAILED'));
       }
-      sourcesVisible = report.sourceCount;
-      inputTokens += report.metrics.inputTokens;
-      outputTokens += report.metrics.outputTokens;
-      grades.push(String(report.dossier?.catalyst?.catalystGrade ?? 'FAILED'));
+
+      const stable = new Set(grades).size === 1;
+      rows.push({
+        ticker: version.ticker,
+        storedVersionId: version.id,
+        storedGeneratedAt: version.generated_at,
+        storedCatalystGrade: storedGrade,
+        asOf: version.generated_at,
+        sourcesVisible,
+        priorFreeGrades: grades,
+        stable,
+        priorFreeCatalystGrade: stable ? grades[0] : null,
+        changedFromStored: stable ? grades[0] !== storedGrade : null,
+      });
+
+      console.log(
+        `  ${version.ticker.padEnd(6)} v${String(version.id).padEnd(5)} ` +
+          `stored=${storedGrade.padEnd(26)} priorFree=${grades.join('|')}` +
+          `${stable ? '' : '   UNSTABLE'}`,
+      );
     }
+  };
 
-    const stable = new Set(grades).size === 1;
-    rows.push({
-      ticker: version.ticker,
-      storedVersionId: version.id,
-      storedGeneratedAt: version.generated_at,
-      storedCatalystGrade: storedGrade,
-      asOf: version.generated_at,
-      sourcesVisible,
-      priorFreeGrades: grades,
-      stable,
-      priorFreeCatalystGrade: stable ? grades[0] : null,
-      changedFromStored: stable ? grades[0] !== storedGrade : null,
-    });
+  await Promise.all(
+    Array.from({ length: Math.max(1, Math.min(args.concurrency, versions.length)) }, () => worker()),
+  );
 
-    console.log(
-      `  ${version.ticker.padEnd(6)} v${String(version.id).padEnd(5)} ` +
-        `stored=${storedGrade.padEnd(26)} priorFree=${grades.join('|')}` +
-        `${stable ? '' : '   UNSTABLE'}`,
-    );
-  }
+  // Deterministic output regardless of completion order.
+  rows.sort((a, b) => a.storedVersionId - b.storedVersionId);
 
   const stable = rows.filter((row) => row.stable);
   const changed = stable.filter((row) => row.changedFromStored);
