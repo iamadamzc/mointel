@@ -636,6 +636,48 @@ wanted and could not have. It also further vindicates the standing rule: the
 badge is now arithmetic *and* the number beside it is arithmetic, so cycle stops
 being a verdict at all.
 
+## Incoming — the 65-field survival audit, and what it does to item 17
+
+The owner is retiring the ChatGPT tasks (`9437928`). Tasks 3 and 4 stop; **tasks
+1 and 2 cannot, because task 1 is the sole writer of `TODAY!A:S` where float is
+column I** — the workflow being retired is what keeps pillar 5 on the board. So
+Phase C, the SEC-derived float, is the critical path.
+
+**Design annotates which of the 65 fields must survive on screen.** Research
+produces the inventory, R&D annotates what the archive needs, and this thread is
+the only one that can say what a trader would miss. **The failure mode is not a
+field nobody wanted being dropped — it is one dropped for looking machine-ish in
+an inventory when it was answering a question on the board.** Annotations go
+through Integration, not into `research.md`: one table, three annotators.
+
+**Method when it arrives:** annotate against §2's workflow phases — Sweep,
+Triage, Investigate, Verify, Monitor, Prepare. A field survives if it answers a
+question in one of them. "Looks useful" is not a phase.
+
+### Item 17 changes shape, and the usual framing is wrong
+
+Phase C's float **will not match** the Sheet's, and the reason matters: the
+Sheet's is a **vendor-displayed** number (StockAnalysis 157 times against SEC 10
+across the workbook); Phase C's is **filing-computed**. Two different definitions
+of the same word, not a correction of one by the other.
+
+Item 17 was *"one number, one qualifier, one reason"*. **That shape may be wrong
+once both exist**, and not because the qualifier is hard to word:
+
+**The vendor float is not merely the worse-provenanced number — it is the one
+other market participants are looking at.** It is what the screeners show. A name
+that screens at 0.70 M draws the crowd whether or not 0.70 M is tradeable, and
+for a momentum trader *what everyone else believes the float is* has value
+independent of what it is. Pillar 5 selects on the screened number; the risk of
+being wrong lives in the filing-computed one.
+
+So the two may **both** belong on screen, labelled by **what each is** rather
+than by which is trusted — which is a different design from picking a winner and
+qualifying it. Deciding that needs Phase C to exist. Recorded now so item 17 is
+not built against today's one-number-and-one-absence and then rebuilt.
+
+F-19's contradiction is the same disagreement already visible in miniature.
+
 ## Incoming — the cycle migration switch
 
 Scoped by Integration 2026-08-23 (`research.md` item 13, `bce1a8b`). Nothing is
