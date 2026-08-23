@@ -136,9 +136,37 @@ R&D's Q1 treats the stored catalyst grade as its independent variable, and the
 conflict apparatus Design is deciding whether to delete rests on the two being
 independent.
 
-Not established, and not to be assumed either way: whether the task is still
-running. `lib/data/providers/googleSheets.ts:112` already fetches the Sheet's
-Drive `modifiedTime`, so that is readable off the live desk without new code.
+**Established 2026-08-23: it is not one task, it is four, and they are live.**
+The trader produced a report from the ChatGPT side listing four weekday tasks
+writing the workbook at **22:00, 06:10, 09:25 and 16:15 ET**, and describing a
+substantial corpus — 204 `RESEARCH` rows, 96 `ARCHIVE`, 148 graded `OUTCOMES`,
+nine dated tabs. **The Sheet is not a fossil and it is not empty.** What is
+false is only the word *human*.
+
+**Read that report's own §13 before using any of it.** It was written with no
+access to this repository and with the MomoIntel connection expired — the
+`chatgpt-mcp-7d` session Ops revoked. It is **first-hand on the Sheet and
+second-hand on this application**; its architecture section comes from readouts,
+not from the code, and it says so. Treat its Sheet numbers as evidence and its
+claims about our pipeline as hearsay to check. It also calls the Sheet's output
+*human conclusions* throughout, so the mislabel is not confined to our side.
+
+**The timing collision, which is concrete and checkable.** Three of those four
+task times are exactly this desk's checkpoints, and that is not coincidence:
+`lib/desk/schedule.ts:4` says the checkpoints *"are the reassessment times the
+trader already worked to in the spreadsheet"*. But the report's observed run
+times for 21 August were 22:11, 06:23, 09:41 and 16:33 — **11 to 18 minutes
+late**. A checkpoint firing at its nominal minute therefore reads the Sheet
+before that stage has been written. The 06:10 case is the sharp one: the 22:00
+task clears the morning columns `T:AA` and the 06:10 task refills them at 06:23,
+so `STRUCTURAL_REFRESH` at 06:10 sees them blank by construction. **Not
+verified**: whether the merge reads the Sheet at checkpoint time at all, and
+what `sheetStale` does with it. That is this thread's to establish, and it may
+be the real explanation for `AUTO_NEWER`.
+
+Still not assumed: whether every task still runs.
+`lib/data/providers/googleSheets.ts:112` already fetches the Sheet's Drive
+`modifiedTime`, so freshness is readable off the live desk without new code.
 Ops revoked a `chatgpt-mcp-7d` review session on 2026-08-23 that had been
 unused since 19 August — a different path, almost certainly unrelated to a
 Sheet writer, and named here only so nobody links them by coincidence later.
