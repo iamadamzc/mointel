@@ -652,6 +652,24 @@ its error bars. That was sound when nothing depended on it. It is now the
 critical path to retiring the Sheet, which is a consideration the pause did not
 weigh.
 
+**TASK 3 IS SETTLED: NOTHING READS IT.** *Research, 2026-08-23, two independent
+reasons rather than one.* `load()` requests exactly two ranges — `TODAY!A1:AA`
+and `RESEARCH!A1:AK` — so **no dated tab is ever in a request** and nothing
+written to one can reach the desk by any path. And the 09:25 block is bounded
+out of TODAY: `sheetTable.ts` names this exact case in its own comment, that the
+tab carries two legitimate tables with a `TICKER` header sharing four column
+names. The watchlist is identified strictly by Ticker, Priority, Country of
+Origin, Float, Structure Flags; the 09:25 table shares only the loose four, so
+it fails the identity test and satisfies `isBoundaryRow` — **terminating** the
+watchlist read rather than joining it. That is the `OBSERVED PM` fix doing the
+job it was built for.
+
+**And it fails closed, which is worth having in the record.** `locateTable`
+returns null on zero *or more than one* identity match, and the provider throws
+on null so the caller keeps its last good read. If stopping task 3 ever changed
+the tab's shape in a way that confused the parser, the failure is a refusal to
+read, not a bad read.
+
 **Corrected before the decision went out, by R&D.** I framed stopping task 4 as
 giving up the second grader. It is not. **`RESEARCH` is written by tasks 1 and
 2 only** — verified in the report: task 1 *"appends/updates detailed RESEARCH"*,
