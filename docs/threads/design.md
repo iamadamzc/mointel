@@ -173,8 +173,76 @@ written default on these sits in a stale paragraph.
 Discovery caption is a defended opinion and re-rank by float or freshness
 quietly turns it into a preference. Most of the use case is item 13's workflow
 filters (`fresh catalyst only`, `float < N`, `changed since checkpoint`).
-Proposal: revisit after item 13 ships. **Owner concurred 2026-08-23 — settled,
-deferred.**
+Proposal: revisit after item 13 ships. Owner concurred 2026-08-23.
+
+**REVERSED the same day — the owner wants it, for Monday's open.** He asked for
+sortable columns on RVOL, price change, price and float. Design's deferral comes
+off the plan rather than being argued; it was a proposal and he ruled against it.
+
+**It is far smaller than the audit implied.** `SortKey` (`lib/dashboard/view.ts:30`)
+is already `priority | ticker | price | changePct | volume | float`, with working
+comparators, a `SortState`, and header controls in `MomentumTable.tsx`.
+`DiscoveryBoard.tsx` has **no** sort references at all. So the work is wiring an
+existing mechanism to a second surface and adding one key — not building sorting.
+
+**Null placement is the real design decision, and the current default is the
+wrong answer.** `compareNumeric` (`view.ts:98`) returns `1` for null in *both*
+directions, so unknowns always sink. Float is `number | null` and goes null
+whenever the Sheet says `UNKNOWN` or `DIRTY FLOAT` — a material share of rows.
+A trader sorting float ascending to find the tightest names would see a clean top
+of list that is actually *"the ones we know about"*, with nothing saying so.
+
+**Chosen: nulls stay last, and the absence becomes visible in the sort control.**
+When a sort is active on a nullable column the header carries the count —
+`Float ▲ · 6 unknown`. Keeping nulls last preserves a predictable, stable order;
+the count removes the false clean top. This is the same move §7 already makes for
+the researched-names header (`6 researched · 2 not in Discovery`) — the product
+already has a precedent for telling the trader what he is *not* seeing, and this
+reuses it rather than inventing a treatment.
+
+**RVOL is already the board's order**, so an RVOL sort is a direction toggle
+rather than a re-rank — except when the board is ranked on AH participation
+instead, where it is a genuine re-rank. Worth saying in the UI rather than
+shipping a control that looks inert.
+
+**`changePct` was ambiguous at premarket** — AH %, PM % and change against prior
+close are three different numbers at 04:00 ET. **Answered by the owner: prior
+close, including after hours.** That is already what the field does:
+`MarketTelemetry.percentChange` is session-aware by construction
+(`lib/market/types.ts:310`) — measured against the prior session's close during
+premarket and RTH, against the current day's close once the bell has gone. So
+nothing needed computing. What needed doing was **labelling**, because one field
+means three things across a session and a fixed header would be wrong twice a
+day.
+
+### The principle behind it, stated by the owner: *the app changes with the market time*
+
+This is now a design rule, not a one-column answer. The desk already honours it
+in places — Discovery re-ranks on after-hours participation and says so, VWAP is
+session-scoped and refuses to carry the premarket average into RTH. **Any field
+whose meaning moves with the session must carry a label that moves with it.**
+Re-deriving such a field per surface is the failure mode: it produces a second
+number under the same name.
+
+### Built 2026-08-23, gated, handed to Ops
+
+| Decision | Choice | Why |
+| --- | --- | --- |
+| Where sorting lives | One control in the board header, not column headers | Float has no Discovery column; two mechanisms would be worse than one |
+| Sort vs. Top N order | **Sort the tracked set, then take Top N** | "Top 25 by float" should be the 25 tightest on the board, not the tightest of the 25 busiest |
+| Nulls | **Last in both directions**, with a live `n unknown` count beside the control | A name with no float is not the smallest float. The count is what stops a false clean top |
+| Ties | Board rank, then ticker | A total order, so rows do not shuffle between 4-second polls |
+| Float column | Appears **only while float sort is active** | A sort whose column is off-screen hides why the order is what it is; a permanent column spends width the eight-field board does not have |
+| Override visibility | `sorted by float` marker in the header while active | Discovery's order is owned by the session (`DiscoveryState.board`: *"a function of the session, not a user preference"*). A user sort is an override and has to look like one; `Rank` returns it |
+| `Move` label | `Move vs prior close` / `Move today` / `Move since close` | The session-time principle above |
+
+`lib/dashboard/view.ts` gained `DiscoverySortKey`, `sortDiscoveryRows`,
+`discoveryValueFor`, `discoveryMissingCount`. `components/DiscoveryBoard.tsx`
+carries the control. Seven tests in `tests/dashboard/discoverySort.test.ts`,
+covering both null directions, tie stability and non-mutation.
+
+**Gate: 1,238 tests pass, typecheck, lint and build clean.** **Not verified on
+the live desk** — the standing rule for this thread, and the deploy is Ops's.
 
 **Item 3 — settled: none of the four in Phase 2.** The §6 column set is
 therefore **final at eight** and no row design waits on this. Chop Risk, Flush

@@ -17,12 +17,50 @@ import type { DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
-import { retentionNote } from '@/lib/dashboard/view';
+import {
+  DISCOVERY_DEFAULT_SORT,
+  discoveryMissingCount,
+  retentionNote,
+  sortDiscoveryRows,
+  type DiscoverySortKey,
+  type DiscoverySortState,
+} from '@/lib/dashboard/view';
 import type { DiscoveryState } from '@/lib/market/types';
 import { formatCount, formatMultiple, formatRankChange } from '@/lib/format';
 
 const VIEW_SIZES = [12, 25, 50] as const;
 type ViewSize = (typeof VIEW_SIZES)[number];
+
+/**
+ * The sortable keys, in the order a trader reaches for them.
+ *
+ * `Move` is the session's own percent change — measured against the prior
+ * session's close during premarket and RTH, and against today's close after
+ * the bell. One field, and its label changes with the session rather than its
+ * meaning changing silently underneath a fixed one.
+ */
+const SORT_KEYS: ReadonlyArray<{ key: DiscoverySortKey; label: string; title: string }> = [
+  { key: 'rank', label: 'Rank', title: "The board's own ranking for this session" },
+  { key: 'rvol', label: 'RVOL', title: 'Relative volume' },
+  { key: 'changePct', label: 'Move', title: 'Percent change for the current session phase' },
+  { key: 'price', label: 'Price', title: 'Last price' },
+  { key: 'float', label: 'Float', title: 'Displayed float. Not known for every name.' },
+];
+
+/** Premarket and RTH measure from the prior close; after the bell, from today's. */
+function moveLabel(phase: DiscoveryState['sessionPhase']): string {
+  switch (phase) {
+    case 'PREMARKET':
+      return 'Move vs prior close';
+    case 'RTH':
+      return 'Move today';
+    case 'AFTER_HOURS':
+    case 'POST_MARKET':
+      return 'Move since close';
+    default:
+      return 'Move';
+  }
+}
 
 interface DiscoveryBoardProps {
   discovery: DiscoveryState;
@@ -59,7 +97,31 @@ export function DiscoveryBoard({
   changedTickers,
 }: DiscoveryBoardProps) {
   const [size, setSize] = useState<ViewSize>(12);
-  const visible = rows.slice(0, size);
+  const [sort, setSort] = useState<DiscoverySortState>(DISCOVERY_DEFAULT_SORT);
+
+  /*
+   * Sort the whole tracked set, then take the top N.
+   *
+   * The other order — rank first, then sort those twelve — answers a question
+   * nobody asked: "of the twelve busiest, which is priciest". Sorting first
+   * means Top 25 by float really is the twenty-five tightest floats on the
+   * board, which is what the control appears to promise.
+   */
+  const sorted = sortDiscoveryRows(rows, sort);
+  const visible = sorted.slice(0, size);
+  const sortActive = sort.key !== DISCOVERY_DEFAULT_SORT.key;
+  const missing = discoveryMissingCount(rows, sort.key);
+  const showFloat = sort.key === 'float';
+
+  function changeSort(key: DiscoverySortKey) {
+    setSort((current) =>
+      current.key === key
+        ? { key, direction: current.direction === 'asc' ? 'desc' : 'asc' }
+        : // Rank reads best ascending — #1 first. Everything else a trader
+          // sorts by, they want the largest of first.
+          { key, direction: key === 'rank' ? 'asc' : 'desc' },
+    );
+  }
 
   /*
    * The board changes with the session, and says so.
@@ -92,11 +154,63 @@ export function DiscoveryBoard({
           </span>
         ) : null}
 
+        {sortActive ? (
+          <span
+            className="text-[10px] font-semibold tracking-wide text-accent uppercase"
+            title={`The board's own order for this session is ${discovery.rankingLabel}. You are overriding it. Choose Rank to return.`}
+          >
+            sorted by {SORT_KEYS.find((entry) => entry.key === sort.key)?.label.toLowerCase()}
+          </span>
+        ) : null}
+
         <div className="ml-auto flex items-center gap-3">
           <span className="num text-[11px] text-ink-3">
             {discovery.eligibleCount.toLocaleString()} eligible ·{' '}
             {discovery.trackedCount.toLocaleString()} tracked
           </span>
+
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] text-ink-3">Sort</span>
+            <div className="flex overflow-hidden rounded-sm border border-line-2">
+              {SORT_KEYS.map((entry) => {
+                const active = entry.key === sort.key;
+                return (
+                  <button
+                    key={entry.key}
+                    type="button"
+                    aria-pressed={active}
+                    title={
+                      entry.key === 'changePct' ? moveLabel(discovery.sessionPhase) : entry.title
+                    }
+                    onClick={() => changeSort(entry.key)}
+                    className={`min-h-[24px] border-r border-line-2 px-2 py-1 text-[11px] font-semibold tracking-wide uppercase transition-colors last:border-r-0 ${
+                      active
+                        ? 'bg-accent/15 text-accent'
+                        : 'bg-panel-2 text-ink-3 hover:bg-panel-3 hover:text-ink-2'
+                    }`}
+                  >
+                    {entry.label}
+                    {active ? (
+                      <span aria-hidden className="ml-1">
+                        {sort.direction === 'asc' ? '▲' : '▼'}
+                      </span>
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
+            {missing > 0 ? (
+              // The count is what stops a sort over a partly-absent column from
+              // showing a clean top of list that is really "the ones we know
+              // about". Absence is stated, never implied by position.
+              <span
+                className="num text-[11px] text-warn"
+                title={`${missing} of ${rows.length} rows have no value for this sort and are listed last, in both directions.`}
+              >
+                {missing} unknown
+              </span>
+            ) : null}
+          </div>
           <div className="flex overflow-hidden rounded-sm border border-line-2">
             {VIEW_SIZES.map((option) => (
               <button
@@ -151,6 +265,11 @@ export function DiscoveryBoard({
               <Th className="w-[68px]" align="right">
                 RVOL
               </Th>
+              {showFloat ? (
+                <Th className="w-[84px]" align="right">
+                  Float
+                </Th>
+              ) : null}
               <Th>Why</Th>
               <Th>Risk</Th>
               <Th className="w-[152px]">Cycle</Th>
@@ -169,6 +288,7 @@ export function DiscoveryBoard({
                 priceMin={discovery.priceMin}
                 priceMax={discovery.priceMax}
                 afterHours={afterHours}
+                showFloat={showFloat}
               />
             ))}
           </tbody>
@@ -228,6 +348,7 @@ function DiscoveryRow({
   priceMin,
   priceMax,
   afterHours,
+  showFloat,
 }: {
   row: DeskRow;
   selected: boolean;
@@ -238,6 +359,7 @@ function DiscoveryRow({
   priceMin: number;
   priceMax: number;
   afterHours: boolean;
+  showFloat: boolean;
 }) {
   const demand = row.demand;
   // One projection for every surface: whatever the Focus strip shows for this
@@ -328,6 +450,22 @@ function DiscoveryRow({
       <td className="px-2 py-1 text-right align-middle">
         <RvolCell telemetry={t} />
       </td>
+
+      {showFloat ? (
+        // Present only while the board is sorted by float. A sort whose column
+        // is not on screen leaves the trader unable to see why the order is
+        // what it is; a permanent column would spend width the eight-field
+        // board does not have.
+        <td className="num px-2 py-1 text-right align-middle">
+          {row.displayedFloat === null ? (
+            <span className="text-[11px] text-warn" title="No float on file for this name.">
+              unknown
+            </span>
+          ) : (
+            <span className="text-[12px] text-ink">{formatCount(row.displayedFloat)}</span>
+          )}
+        </td>
+      ) : null}
 
       <td className="px-2 py-1 align-middle">
         <WhyCell why={why} />

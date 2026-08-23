@@ -239,3 +239,92 @@ export function retentionNote(options: {
   if (price < priceMin) return `retained < $${priceMin}`;
   return null;
 }
+
+/* ------------------------------------------------------------------------- *
+ * Discovery sorting
+ *
+ * Discovery's order is owned by the session, not by the user: after the closing
+ * bell the board re-ranks on after-hours participation because "what was busy
+ * today" is not the question anyone is asking at 16:30. A user sort therefore
+ * has to behave like an override rather than a preference — it is explicit, it
+ * is visible while active, and `rank` returns the board to the session's own
+ * ordering.
+ * ------------------------------------------------------------------------- */
+
+export type DiscoverySortKey = 'rank' | 'rvol' | 'changePct' | 'price' | 'float';
+
+export interface DiscoverySortState {
+  key: DiscoverySortKey;
+  direction: SortDirection;
+}
+
+/** The session's own ranking. Not a sort the user picked. */
+export const DISCOVERY_DEFAULT_SORT: DiscoverySortState = { key: 'rank', direction: 'asc' };
+
+/**
+ * The value a Discovery sort key reads, or null when the row has none.
+ *
+ * `percentChange` is deliberately not resolved per session here. The field is
+ * already session-aware by construction — measured against the prior session's
+ * close during premarket and RTH, and against the current day's close once the
+ * regular session has ended (see `MarketTelemetry.percentChange`). Re-deriving
+ * it would produce a second, different number under the same name.
+ */
+export function discoveryValueFor(row: DeskRow, key: DiscoverySortKey): number | null {
+  switch (key) {
+    case 'rank':
+      return row.telemetry.rvolRank;
+    case 'rvol':
+      return row.telemetry.rvol;
+    case 'changePct':
+      return row.telemetry.percentChange;
+    case 'price':
+      return row.telemetry.price;
+    case 'float':
+      // Research, not market state. Null whenever the source says UNKNOWN or
+      // DIRTY FLOAT, which is a material share of rows.
+      return row.displayedFloat;
+    default:
+      return null;
+  }
+}
+
+/**
+ * Rows a sort cannot place, because the value is absent.
+ *
+ * Surfaced next to the active sort rather than left implicit. Sorting float
+ * ascending to find the tightest names otherwise shows a clean top of list that
+ * is really "the ones we know about", and nothing on screen says so.
+ */
+export function discoveryMissingCount(rows: DeskRow[], key: DiscoverySortKey): number {
+  if (key === 'rank') return 0;
+  return rows.reduce((count, row) => (discoveryValueFor(row, key) === null ? count + 1 : count), 0);
+}
+
+/**
+ * Sorts a Discovery board.
+ *
+ * Rows with no value always sort last, in both directions — a name whose float
+ * is unknown is not "the smallest float", and flipping direction must not
+ * promote absence to the top of the list. `discoveryMissingCount` is what makes
+ * that honest on screen.
+ */
+export function sortDiscoveryRows(rows: DeskRow[], sort: DiscoverySortState): DeskRow[] {
+  const sorted = [...rows];
+
+  sorted.sort((a, b) => {
+    const primary = compareNumeric(
+      discoveryValueFor(a, sort.key),
+      discoveryValueFor(b, sort.key),
+      sort.direction,
+    );
+    if (primary !== 0) return primary;
+    // Ties fall back to the board's own ranking, then to the ticker, so the
+    // order is total and does not shuffle between polls.
+    const byRank = compareNumeric(a.telemetry.rvolRank, b.telemetry.rvolRank, 'asc');
+    if (byRank !== 0) return byRank;
+    return a.ticker.localeCompare(b.ticker);
+  });
+
+  return sorted;
+}
