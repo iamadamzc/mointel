@@ -243,11 +243,29 @@ whole, so `cycleClassification` was already in them. Across **4 identical
 control runs over byte-identical evidence, 6 tickers**, all three fields from
 the same data and therefore comparable:
 
-| Field | Unstable |
-| --- | --- |
-| `cycleClassification` | 2 of 6 |
-| `structureClassification` | 3 of 6 |
-| `catalystGrade` | 2 of 6 |
+**Two units, and they are not interchangeable — labelled after conflating them
+cost a conclusion.** *Per-ticker* is the fraction of tickers returning more
+than one value across four draws. *Pairwise* is computed over all 36 pairs from
+the same runs, and **pairwise is the only one comparable to a churn rate
+measured between two observations.**
+
+| Field | Per-ticker (of 6, across 4 draws) | Pairwise (of 36 pairs) |
+| --- | --- | --- |
+| `cycleClassification` | 2 of 6 | **17%** |
+| `structureClassification` | 3 of 6 | **25%** |
+| `catalystGrade` | 2 of 6 | **17%** |
+
+**~~Structure transitions in the record carry essentially no information.~~
+Struck, not softened.** That conclusion came from setting structure's 52%
+stored churn against a "50% floor" — but 3-of-6 per-ticker is not 50% pairwise,
+it is **25%**. Against a 25% floor the implied real-change rate is nearer
+**27%**, not the ~4% that produced the claim. The catalyst version moves too:
+17% floor rather than 33%.
+
+**And the thing that made it look robust was the tell.** It was believed
+*because* 50% and 52% were nearly identical — an agreement so exact that six
+names cannot support it. A coincidence that good is a reason to check the
+units, not a reason to trust the result.
 
 Cycle is the same order as structure. It has been running with no more
 reliability than the field the desk has already acted on.

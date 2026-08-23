@@ -148,6 +148,37 @@ since 04:45". If a thread needs to know a path is dirty, name the path. If
 ownership actually matters, ask. Three round trips have been spent on this and
 every one was avoidable by deleting four words from a sentence.
 
+## Numbers from two threads need a unit, not a caveat
+
+**Added 2026-08-23, after the strongest claim either analysis thread made today
+was produced by combining two figures that were not the same unit.**
+
+Research measured field instability as *tickers returning more than one value
+across four draws* — 3 of 6 for structure. R&D held a *pairwise churn rate*
+between consecutive stored observations — 52%. Read "3 of 6" as 50% and the
+two look directly comparable, the floor nearly equals the churn, and the
+conclusion writes itself: structure transitions carry essentially no
+information. Computed pairwise the floor is 25%, and the claim evaporates.
+
+**This thread relayed that claim onward before it was checked**, which is how a
+unit error becomes three threads' problem.
+
+Earlier the same day, the *same two threads' numbers* were nearly quoted
+against each other and the fix applied was a caveat — "these answer different
+questions, do not treat as competing estimates". **That caveat was true and it
+did not work**, because it warned against comparison while leaving both numbers
+bare, and the next person did arithmetic on them instead.
+
+So: **a number crossing a thread boundary carries its unit in the same sentence
+as the number** — denominator, and what one observation is. "3 of 6 tickers,
+across four draws" cannot be silently read as 50% of anything. A caveat tells
+someone not to combine two figures; a unit makes the wrong combination visible
+when they try.
+
+**And an exact agreement between two independently derived numbers is a
+prompt to check the units, not a confirmation.** 50% against 52%, on six names,
+was too good and that was the signal.
+
 ## A retraction only reaches the sentence it edits
 
 **Added 2026-08-23, found by R&D in its own documents.** It retracted a claim,
