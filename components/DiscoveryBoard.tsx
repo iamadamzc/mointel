@@ -34,31 +34,43 @@ type ViewSize = (typeof VIEW_SIZES)[number];
 /**
  * The sortable keys, in the order a trader reaches for them.
  *
- * `Move` is the session's own percent change — measured against the prior
- * session's close during premarket and RTH, and against today's close after
- * the bell. One field, and its label changes with the session rather than its
- * meaning changing silently underneath a fixed one.
+ * `changePct` carries no fixed label here: it is resolved per session by
+ * `moveLabel` below.
  */
 const SORT_KEYS: ReadonlyArray<{ key: DiscoverySortKey; label: string; title: string }> = [
   { key: 'rank', label: 'Rank', title: "The board's own ranking for this session" },
   { key: 'rvol', label: 'RVOL', title: 'Relative volume' },
-  { key: 'changePct', label: 'Move', title: 'Percent change for the current session phase' },
+  { key: 'changePct', label: 'Move', title: '' },
   { key: 'price', label: 'Price', title: 'Last price' },
   { key: 'float', label: 'Float', title: 'Displayed float. Not known for every name.' },
 ];
 
-/** Premarket and RTH measure from the prior close; after the bell, from today's. */
-function moveLabel(phase: DiscoveryState['sessionPhase']): string {
+/**
+ * What the percent change is measured from, right now.
+ *
+ * One field means three things across a day — the prior session's close through
+ * premarket and RTH, today's close after the bell — so a fixed label is wrong
+ * twice a day. The word is **visible on the control**, not in a tooltip: an
+ * earlier version of this put the session wording in a `title` and nowhere
+ * else, which made the one thing the trader asked for by name reachable only by
+ * hover. The audit's §10 rules that out, and it was live for one deploy.
+ *
+ * Short on purpose. This sits in a five-button row that has to survive the
+ * 1,024 px floor, and "Move vs prior close" on a button does not. `Gap` is the
+ * desk's own vocabulary for the prior-close-to-premarket move, and it is what a
+ * momentum trader calls it.
+ */
+function moveLabel(phase: DiscoveryState['sessionPhase']): { label: string; title: string } {
   switch (phase) {
     case 'PREMARKET':
-      return 'Move vs prior close';
+      return { label: 'Gap', title: 'Change from the prior session close, including after hours' };
     case 'RTH':
-      return 'Move today';
+      return { label: 'Move', title: "Change from the prior session's close" };
     case 'AFTER_HOURS':
     case 'POST_MARKET':
-      return 'Move since close';
+      return { label: 'AH move', title: "Change from today's regular-session close" };
     default:
-      return 'Move';
+      return { label: 'Move', title: 'Change from the most recent session close' };
   }
 }
 
@@ -112,6 +124,13 @@ export function DiscoveryBoard({
   const sortActive = sort.key !== DISCOVERY_DEFAULT_SORT.key;
   const missing = discoveryMissingCount(rows, sort.key);
   const showFloat = sort.key === 'float';
+  // Resolved once: the button, the active marker and the tooltip must never
+  // disagree about what the percent change is measured from.
+  const move = moveLabel(discovery.sessionPhase);
+  const activeLabel =
+    sort.key === 'changePct'
+      ? move.label
+      : (SORT_KEYS.find((entry) => entry.key === sort.key)?.label ?? 'rank');
 
   function changeSort(key: DiscoverySortKey) {
     setSort((current) =>
@@ -159,7 +178,7 @@ export function DiscoveryBoard({
             className="text-[10px] font-semibold tracking-wide text-accent uppercase"
             title={`The board's own order for this session is ${discovery.rankingLabel}. You are overriding it. Choose Rank to return.`}
           >
-            sorted by {SORT_KEYS.find((entry) => entry.key === sort.key)?.label.toLowerCase()}
+            sorted by {activeLabel.toLowerCase()}
           </span>
         ) : null}
 
@@ -174,14 +193,13 @@ export function DiscoveryBoard({
             <div className="flex overflow-hidden rounded-sm border border-line-2">
               {SORT_KEYS.map((entry) => {
                 const active = entry.key === sort.key;
+                const resolved = entry.key === 'changePct' ? move : entry;
                 return (
                   <button
                     key={entry.key}
                     type="button"
                     aria-pressed={active}
-                    title={
-                      entry.key === 'changePct' ? moveLabel(discovery.sessionPhase) : entry.title
-                    }
+                    title={resolved.title}
                     onClick={() => changeSort(entry.key)}
                     className={`min-h-[24px] border-r border-line-2 px-2 py-1 text-[11px] font-semibold tracking-wide uppercase transition-colors last:border-r-0 ${
                       active
@@ -189,7 +207,7 @@ export function DiscoveryBoard({
                         : 'bg-panel-2 text-ink-3 hover:bg-panel-3 hover:text-ink-2'
                     }`}
                   >
-                    {entry.label}
+                    {resolved.label}
                     {active ? (
                       <span aria-hidden className="ml-1">
                         {sort.direction === 'asc' ? '▲' : '▼'}

@@ -125,3 +125,29 @@ describe('discovery sort', () => {
     ]);
   });
 });
+
+/*
+ * The Move label.
+ *
+ * Shipped once with the session wording in a `title` attribute and nowhere
+ * else, which made it reachable only by hover — the audit's §10 rules that out,
+ * and it reached production. These assert the visible text differs by session,
+ * which is the property a tooltip-only implementation cannot satisfy.
+ */
+describe('move label', () => {
+  it('names what the change is measured from, per session, in visible text', async () => {
+    const source = await import('node:fs').then((fs) =>
+      fs.promises.readFile('components/DiscoveryBoard.tsx', 'utf8'),
+    );
+
+    // Visible button text, not a title: the label lives on the returned object
+    // and is rendered as {resolved.label}.
+    expect(source).toContain('{resolved.label}');
+    expect(source).toMatch(/case 'PREMARKET':\s*\n\s*return \{ label: 'Gap'/);
+    expect(source).toMatch(/case 'RTH':\s*\n\s*return \{ label: 'Move'/);
+    expect(source).toContain("label: 'AH move'");
+
+    // The old defect: a single-string moveLabel consumed only by `title=`.
+    expect(source).not.toMatch(/title=\{\s*entry\.key === 'changePct' \? moveLabel/);
+  });
+});

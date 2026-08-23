@@ -241,8 +241,47 @@ number under the same name.
 carries the control. Seven tests in `tests/dashboard/discoverySort.test.ts`,
 covering both null directions, tie stability and non-mutation.
 
-**Gate: 1,238 tests pass, typecheck, lint and build clean.** **Not verified on
-the live desk** — the standing rule for this thread, and the deploy is Ops's.
+**Gate: 1,238 tests pass, typecheck, lint and build clean.** Deployed by Ops in
+`f383ddd`, 15:38 ET Sunday.
+
+### Verified on the live desk — and it found a defect the gate did not
+
+First use of the post-deploy verification rule (`README.md`, `abf38e1`). What it
+caught had passed a green gate, 1,238 tests and a source review.
+
+**The `Move` label was hover-only.** The session wording lived in a `title`
+attribute and the visible button always read `Move`. That is content reachable
+*only* by hover, which **§10 rules out**, and it was the one thing the owner
+asked for by name. Design's own commit message described it as a visible label.
+Live for one deploy; fixed the same evening.
+
+**The fix is not a moved string.** The wording became a tooltip in the first
+place because of width — the control is five buttons that must survive the
+1,024 px floor, and `Move vs prior close` on a button does not. So the visible
+labels are short and trader-native: **`Gap`** (premarket — the desk's own word
+for the prior-close-to-premarket move), **`Move`** (RTH), **`AH move`** (after
+the bell). The sentence stays in the tooltip as a supplement, never as the only
+route. A regression test asserts the visible text differs by session, which a
+tooltip-only implementation cannot satisfy.
+
+**What could not be verified, and why it was not market hours.** The review
+transport serves **no JavaScript**: every `/_next/static/*` chunk returns `401`,
+because Basic Auth is applied at the server level and only `/review/`, `/mcp/`
+and `/.well-known/` turn it off. The page renders server-side HTML and never
+hydrates, so **every control on it is inert** and the CSS 401s too. Confirmed by
+clicking with real mouse events, not inferred. Handed to Ops.
+
+**Two consequences worth keeping separate.** Design cannot verify *interactive*
+behaviour through a review session at all — only that markup renders. And
+`Top 12/25/50`, which shipped in Phase 1, has been dead in every review session
+since, and nobody knew because nobody had clicked it. `AWS_DEPLOYMENT.md:180`
+presents review sessions as the answer for automated browsing; they can display
+the desk but cannot exercise it.
+
+**Still unverified, and waiting on both the asset fix and 04:00 premarket:** the
+unknown count against real null floats, Top N applied after the sort, and the
+`Gap` form of the label. Discovery was `0 eligible · 0 tracked` on a closed
+Sunday, so there were no rows to sort regardless.
 
 **Item 3 — settled: none of the four in Phase 2.** The §6 column set is
 therefore **final at eight** and no row design waits on this. Chop Risk, Flush
@@ -754,6 +793,20 @@ practical size of the inflation is unknown. Needs the live desk.
   stock, not the pipeline.
 - **Verify on the live desk**, not fixtures. The one Phase 1 defect that reached
   production was invisible to local fixtures.
+- **And verify it *after* the deploy, not only before.** Added 2026-08-23 with
+  the shared rule in `README.md` (`abf38e1`), after the trader asked why Design
+  would not be looking at its own work. It could not — a change cannot be checked
+  on production before it is on production — and nothing sent it back afterwards.
+  **Ops confirms the deploy; Design confirms the behaviour.** A change is not
+  finished at the handoff. It is finished when this thread has looked at the real
+  board.
+- **Design cannot authenticate to the live desk, and that is a standing limit on
+  the rule above.** The desk is behind Basic Auth and returns `401`; entering a
+  password into a field is not something this thread does, on any
+  infrastructure, with any authorization. **So live verification needs the owner
+  to authenticate the browser first**, after which Design can drive and report.
+  Recorded here because the rule was written without it and would otherwise look
+  like a lapse the first time it is not met.
 - **Commit each approved piece separately** and report the hash.
 - Gate before every commit: `npm test`, `npm run lint`, `npm run typecheck`,
   `npm run build`.
