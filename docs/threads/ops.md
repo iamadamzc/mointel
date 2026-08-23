@@ -465,6 +465,46 @@ is not a desk that works.
 Also: this is the deploy where keep-3 would drop `fd9556f`. The
 `market-worker-release` pin holds it, which is what it was placed for.
 
+**10. A dead review link returns HTTP 200, so status code cannot test one.**
+*Found 2026-08-23 while verifying a revocation. Not a bypass. Recorded, not
+claimed — the fix is in the review route, which is app-layer rather than
+transport.*
+
+A revoked, expired or invalid token returns **200 with an error page** instead of
+401 or 404. My first read of this was that revocation was broken; it is not, and
+the bodies settle it beyond argument:
+
+| token | bytes | `RVOL` occurrences |
+| --- | --- | --- |
+| revoked | 9,584 | 0 |
+| garbage | 9,490 | 0 |
+| valid | 535,437 | 4 |
+
+The desk is correctly withheld and revocation behaves exactly as
+[../AWS_DEPLOYMENT.md](../AWS_DEPLOYMENT.md) documents. But two practical
+consequences follow from the status alone. **Any automated check that tests a
+review link by status code gets a false pass** — which is the mistake this thread
+made and nearly reported as an incident. And a monitor would never see a dead
+link. To test a review session, compare the body, not the code.
+
+**Sizing a review session — the rule, after getting it wrong.** A 12-hour token
+issued at 15:56 ET expires at 03:56 ET, which is **four minutes before**
+`PREMARKET_START_MIN = 4 * 60` (`lib/market/session.ts:27`) — the exact window it
+was issued to cover. Caught by Integration; the arithmetic was this thread's to
+do when it picked the number.
+
+**Size the expiry against the constant the work depends on, not against a round
+number, and check it rather than eyeball it.** Then: *expiry is the backstop,
+revocation is the control.* Revocation is checked per request with no TTL to wait
+out, so a generous expiry costs nothing while a tight one that dies
+mid-verification costs a re-issue and a confused reviewer. Issue long, revoke on
+report of done.
+
+One thing that is **not** a trade-off, because it was framed as one: session
+lifetime and the chunk-URL residue below are independent. The residue is a
+property of the assets being unauthenticated, not of how long a token lives. A
+shorter token buys nothing against it.
+
 **9. ~~A review session can display the desk and cannot exercise it.~~ FIXED and
 live 2026-08-23**, on the trader's word ("open static"). `c36b840`.
 
@@ -1049,6 +1089,13 @@ project memory. The three that have actually bitten:
 
 - **One SIP connection.** Never start `npm run market:alpaca` by hand while the
   desk is up. Never leave orphaned workers.
+
+- **Output shown once is a category, not an incident.** `review:create` prints
+  the token exactly once and cannot recover it; piping it through `tail -8` cut
+  the URL off and cost a wasted session. Capture such output whole to a file,
+  then grep the file — never through `head` or `tail`. The same shape bit twice
+  in one night: `$?` after a pipeline is the exit status of `tail`, not of the
+  command, so a failing `typecheck` reported green. Use `PIPESTATUS`.
 - **Never launch desk processes from inside a chat session for the user to
   keep.** They die when the session ends. Test with them, then hand the desk
   back by telling the operator to launch it themselves.
