@@ -40,6 +40,27 @@ issues that live *between* threads have no owner. The evidence, all real:
 - Assigning work. Threads are not managed; they own their areas and hand off
   explicitly. This thread maintains the structure that makes handoff possible.
 
+## Relaying between threads
+
+**This thread is the message bus, as of 2026-08-23.** The shared README carries
+the rule; the obligation it creates is here.
+
+Threads cannot all address each other and the trader was being used as the
+transport. He is not one. When a thread sends something for another thread:
+relay it promptly, add the context the receiver is missing, and put anything
+durable in a charter rather than leaving it in two transcripts.
+
+**Relaying is not repeating.** A bare forward is worth little — the value is in
+what the receiving thread does not know: that the number it is about to act on
+was retracted, that the file it is being handed is owned by nobody, that the
+token it was given expires four minutes before it needs it. If a relay adds
+nothing, say so and forward it anyway; if it needs a correction, correct it in
+the relay rather than after.
+
+**And relaying is not deciding.** A thread routing a decision through here is a
+thread adding a hop between itself and the trader. Push those back to
+`## What I need from you` where he will see them.
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search

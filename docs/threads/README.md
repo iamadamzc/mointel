@@ -144,6 +144,35 @@ Four rules, and the last two are what make it worth having:
 Integration is bound by this like every other thread, and wrote it having broken
 it repeatedly first.
 
+## Thread-to-thread traffic goes through Integration, not through the trader
+
+**Added 2026-08-23, at the trader's instruction, after he was asked three times
+in one evening to carry a message between two threads.**
+
+Not every thread can address every other. Design cannot reach Ops or Research;
+Research could not see Design. So a thread with something to hand over writes
+*"tell Ops..."* in its report and the trader becomes the transport — which costs
+him a round trip, delays the handover by however long he takes to read it, and
+strips the reasoning down to whatever fits in his relay.
+
+**Integration can reach all of them.** So:
+
+- **Send it to Integration and say who it is for.** It relays, adds whatever
+  context the receiving thread is missing, and records anything durable in the
+  charters rather than leaving it in two transcripts.
+- **To reach Integration, reply to any message it has sent you** — copy the
+  `from=` attribute of the cross-session message as your `to`. That address
+  works even when the name does not resolve in `ListAgents`.
+- **This is for handovers, findings and corrections — not for decisions.**
+  Anything needing the trader's judgement still goes to him, at the end, under
+  `## What I need from you`. Integration relays; it does not decide, and routing
+  a decision through it only adds a hop.
+
+The failure this prevents is not inconvenience. A handover sitting in a report
+waiting to be noticed is indistinguishable from a handover nobody made — and
+three of the defects found today were found because someone was told something
+promptly, not because anyone went looking.
+
 ## Shared state, single source of truth
 
 Do not restate these in a thread doc; link to them.
