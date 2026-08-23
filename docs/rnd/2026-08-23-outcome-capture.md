@@ -832,6 +832,17 @@ definitional boundary lands in `desk_assessment_tickers`, where values before
 the change are the model's and values after are deterministic, wearing one name.
 Any future analysis reading cycle from the assessment record crosses it blind.
 
+> **Settled, and the archive comes out immune.** The migration order is
+> `research.md` item 13: the computed cycle is wired in additively first,
+> Design switches its surfaces, and the five model fields are deleted **last** —
+> after Design's switch is *deployed and verified* rather than merely merged.
+> Meanwhile this archive resolves its own cycle from Alpaca daily bars via
+> `lib/archive/cycles.ts` and never reads `desk_assessment_tickers.cycle`, so
+> none of that sequence touches it. Two consequences worth having: the boundary
+> cannot appear in anything derived here, and once the model fields are gone
+> **this archive is the only point-in-time cycle for dates before the pipeline's
+> computed version existed.**
+
 **Feasibility, which Integration flagged as unverified and is now verified.**
 `resolveCycle(bars)` takes only `{tradingDate, high, low, close, volume}` oldest
 first — nothing else. Run against real fetched bars, truncating the series at
