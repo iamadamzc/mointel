@@ -95,8 +95,38 @@ from the output — then passed in isolation and on a clean re-run, both at HEAD
 and with changes applied. Unexplained. A flaky test in the deploy path is worth
 chasing before it has to be trusted during an incident.
 
-**5. R&D needs an assessment extract off production, and the tool is not on the
-box.** *Handed over by Integration 2026-08-23. Ops's call, not R&D's.*
+**5. The deploy gate cannot see the layer the `rm -rf` was in.** *Opened by
+Integration 2026-08-23, from the export defect. Ops owns the gate, so it lands
+here rather than with the file's author.*
+
+`worker/archive-export.ts:127` removes `dirname(--out)` recursively inside a
+`--dry-run` branch that is not dry. Pointed at `/var/lib/mointel` it would have
+taken the store, the WAL and six backups; `/tmp`'s sticky bit is the only reason
+it was a stack trace. R&D owns the fix and has it.
+
+What belongs to this thread is why four green gates did not catch it. `worker/`
+holds **17 entry points and two test files reference it at all** — the 1150-test
+suite covers `lib/` thoroughly and the CLI wrappers essentially not. That is the
+layer that takes `--flags` from a human, resolves paths on the production box
+and runs as the `mointel` user.
+
+One reassurance from checking rather than assuming: that `rmSync` is the **only**
+recursive delete anywhere in `worker/`. This is one bad line, not a pattern — but
+it sat in the one place the gate does not look, and the next one will too.
+
+Not a proposal to test all seventeen. The narrow question is whether any CLI that
+resolves a production path and can delete should be reachable by the gate at all.
+
+## Closed
+
+**~~R&D needs an assessment extract off production, and the tool is not on the
+box.~~** Done 2026-08-23. Deployed `775c5a9` (gate green, 1150 tests, no
+migration), cut the extract unbounded, delivered `data/assessments.db` — 75
+assessments, 1850 ticker rows, 2026-08-17 to 2026-08-21, 2.8 MB, two tables,
+integrity ok. `fd9556f` pinned while the market worker lives in it, and the pin
+earned itself the same hour: prune removed `80437c3`, the directory the worker
+ran from this morning. The record below is kept in full because the reasoning is
+the reusable part.
 
 R&D's Q1 turns on 19, 20 and 21 August, which exist only on the production
 store. The agreed route is a two-table extract — ~1-3 MB, read-only, no prices,
@@ -219,9 +249,10 @@ is fixed.** Worth noting for this thread's own tooling instincts:
 `tests/archive/export.test.ts` covers the library well and nothing at all
 exercises the CLI wrapper — the untested file is the one holding the `rm -rf`.
 
-**6. The next deploy carries `lib/archive/` to production whether or not anyone
-intends it.** *Noted by Integration 2026-08-23; a note for the deploy summary,
-not a hazard.*
+**~~The next deploy carries `lib/archive/` to production whether or not anyone
+intends it.~~** Resolved 2026-08-23 by making it deliberate: `775c5a9` shipped
+that code through the gate in a closed window, which is what this item argued
+for. It is also the item that decided the route in the one above.
 
 `push-release.sh:79` is `git archive --format=tar "$SHA"` over the whole tree
 and there is no `export-ignore` in `.gitattributes`, so `lib/archive/`,
@@ -244,8 +275,6 @@ one way inert code could still break a release. Confirmed, not assumed.
 them. `push-release.sh` ships a sha via `git archive` from the local repo, so a
 deploy would *succeed* and put code on production that exists in no remote. If
 route 1 is chosen, push first.
-
-## Closed
 
 **~~The market worker is running a release the next deploy will delete.~~**
 Fixed at the root 2026-08-23, in the closed-market window, rather than lived
