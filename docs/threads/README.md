@@ -17,7 +17,7 @@ then paste that charter's opening message.
 | **Coaching** | Daily fills, execution against the playbook | [coaching.md](coaching.md) |
 | **Integration** | The charters, the seams, cross-thread decisions | [integration.md](integration.md) |
 
-## Why five
+## Why six
 
 Ops and Design are obviously different jobs. Research is split out because it is
 what kept *interrupting* Ops: the OpenAI balance emptying, the 403 runaway jobs,
@@ -39,8 +39,8 @@ should always be learning something and the subject will change; today's
 catalyst question is one entry in a register, not the thread's purpose. New
 questions can be posed, spawned by a closed one, or surfaced by the standing
 sweep. A question large enough to need phases gets a **directory and a spec**,
-never its own chat — sub-threads per discovery is how five threads becomes
-fifteen and nothing is legible again.
+never its own chat — sub-threads per discovery is how this list doubles and
+nothing is legible again.
 
 Coaching was added the same day. It is the only thread about the trader rather
 than the market, it runs daily rather than by project, and it is the one
@@ -129,7 +129,7 @@ Terminology is trader-facing. Labels describing engine internals get rejected.
 
 ## Facts every thread starts from
 
-As of the last session, **2026-08-21**:
+As of the last session, **2026-08-23**:
 
 - **`main` is the trunk and the only branch.** The long-lived
   `session-aware-discovery` branch was fast-forwarded into it on 2026-08-23 and

@@ -14,7 +14,10 @@ Opened 2026-08-23. Nothing built yet.
 
 ## Not this thread
 
-- Market structure, catalysts, the archive itself — [research.md](research.md)
+- Market structure, the archive itself, and what a catalyst grade *means* —
+  [rnd.md](rnd.md). The archive moved there when R&D was split out on
+  2026-08-23.
+- The catalyst pipeline and what it costs to run — [research.md](research.md)
 - Anything that ships to the server — [ops.md](ops.md)
 
 ## The boundary, and it matters
