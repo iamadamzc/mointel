@@ -184,6 +184,44 @@ preflight bootstrap that would have blocked every future deploy, and an enum
 leak that only real dossiers could reveal. Both branches of the bootstrap fix
 have now been exercised, not just the fallback.
 
+## Read this before the next deploy: one expected failure, and its observable
+
+**The deploy that ships `97f198d` will SIGKILL the research worker one last
+time, and that is not the fix failing.** Predicted by Research before the fact
+rather than discovered after; verified here rather than accepted — `git
+merge-base --is-ancestor 97f198d 5ee47d8` returns false, so the process running
+now was started from a release without the fix and **holds the old SIGTERM
+handler in memory**. A fix to shutdown behaviour cannot apply to the shutdown of
+the process that predates it.
+
+So expect `State 'stop-sigterm' timed out. Killing.` on that deploy. **The test
+is the deploy after it**, and a fourth identical line would otherwise have read
+as a fourth identical failure and cost someone an investigation.
+
+**The observable is the stop duration in the journal, not "four services active"
+afterwards.** Under a second means the handler ran; thirty seconds means it did
+not. That distinction is this thread's own lesson from earlier today — state
+after starting cannot observe the manner of stopping, which is exactly how three
+SIGKILLs went unnoticed while every deploy report said all four services were up.
+
+**The general form, and it is the same fact twice in two layers:**
+
+> **A deploy changes what *will* run, not what *is* running.**
+
+The release drift fixed at 01:27 was a cwd resolved at process start that
+survived two deploys. This is a signal handler resolved at process start that
+survives the deploy replacing it. Whenever a fix concerns startup or shutdown,
+**the process that must demonstrate the fix is by definition not the one
+carrying it.**
+
+One capture-adjacent note, checked at the construction site rather than assumed:
+`102a1fc` touches `lib/data/providers/googleSheets.ts`, which the Next app
+imports at `lib/data/index.ts:16`, so the web app restarts too. That is a
+dashboard blip, not a capture interruption — and `lib/data/index.ts:60`
+constructs the provider with **no options**, so the dashboard keeps
+`timeoutMs ?? null` and its behaviour is unchanged. The ceiling is opt-in and
+only the worker opts in.
+
 ## Open items
 
 **0c. Health measures that the worker is alive, not that it is working — so a
