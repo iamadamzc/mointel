@@ -1039,6 +1039,88 @@ large share of names after the move that qualified them.**
 Neither is a verdict. Q5 is proposed and behind Q1, and this is the variable it
 would be answered with rather than the answer.
 
+#### Task 4 can stop. This thread needs nothing it produces.
+
+*Asked by Integration 2026-08-23, as the only thread that used the second
+ledger.* The narrow question: is anything still needed from what Task 4
+**produces**, as opposed to what it has already **written**?
+
+**Nothing.** Four reasons, in the order they settle it:
+
+1. **This thread never read it.** The Sheet was deliberately not touched — that
+   surface belonged to another thread while `sheetPrior` was open. The overlap
+   was sized from reported counts and from this archive's own price bands, not
+   from the ledger's contents.
+2. **Its outcomes are strictly worse than this archive's, and that was
+   established here.** Self-graded by the process that made the forecasts, 85.8%
+   backfilled, 68 of 204 floats still `Unknown`, duplicate date/ticker rows.
+   The outcomes here are tape-derived from raw minute bars.
+3. **The one check that wanted it can already run.** The calibration proposed
+   earlier — its peak gain %, peak window and prior RTH close against
+   `max_gain_pct`, `time_of_high` and `reference_close` — needs *overlapping*
+   symbol-days, and 2026-08-17 to 08-21 is already in the corpus. More rows add
+   nothing to a one-time validation, and validating a ledger that is being
+   retired is not worth doing at all.
+4. **Task 4 is not the second grader.** The catalyst labelling that mattered to
+   Q1 is the **RESEARCH** tab. Task 4 writes ACTUAL SESSION LEADERS, PREDICTION
+   SCORECARD, OUTCOMES and PATTERNS — RESEARCH is not in that list, so it is
+   another task's output. *This thread's reading, explicitly not verified,
+   because the Sheet has not been read here.* If RESEARCH turns out to be Task
+   4's, the answer changes.
+
+**One condition, and it is the only thing worth insisting on.** The historical
+corpus must not be deleted with the task. The dated tabs for nine, 11-14 and
+17-21 August hold the stage calls **as made**, at 22:00, 06:10 and 09:25 — and a
+forecast recorded before its outcome is the one category the archive spec calls
+irreplaceable, because nothing re-creates what somebody believed at the time.
+Stopping the task adds no rows; deleting the workbook destroys a record no
+re-run reproduces.
+
+**And the capability is better rebuilt than preserved.** Task 4 grades its own
+forecasts. Grading the *desk's* calls against tape-derived outcomes is a
+different and more useful thing, and this archive already holds both halves —
+`symbol_desk_day` for what the desk believed, `symbol_outcomes` for what
+happened. That is a query, not a scheduled task.
+
+#### The 65-field audit: what this thread will annotate for
+
+Research produces the inventory, Design annotates what must survive on screen,
+this thread annotates what the archive needs — and stays out of `research.md`,
+sending annotations through Integration so the audit lives in one table.
+
+The criteria, stated ahead of the inventory so it can be shaped for them. They
+are the archive spec's own irreplaceability test, sharpened by what today cost:
+
+- **Is it irreplaceable if not captured live?** Derived desk state — RVOL at
+  that instant, board rank, what else was competing — is not re-fetchable at any
+  price. Keep unconditionally.
+- **Is it re-fetchable later?** Prices, bars, filings. Do not capture; fetch on
+  demand. `daily_bars` was kept for months and still could not serve the
+  backfill.
+- **Does it have more than one possible definition?** Then it needs its **basis
+  stored beside it**, not described in a comment. Every expensive error today was
+  this: `reference_close` flipping at the bell, `rth_close` versus the auction, a
+  catalyst grade served from a three-session-old analysis, a cycle about to mean
+  two different things either side of a date.
+- **Is it displayed today?** Irrelevant — and this is the annotation no other
+  thread will make. A field no surface renders can still be the only witness to
+  a question nobody has asked yet.
+
+#### Phase C: a derived float is a different word
+
+A filing-derived float will not equal the Sheet's vendor-displayed one. If the
+archive ever captures float — and the trader's standing decision is that no
+Sheet-read float enters it — then the two are **different definitions sharing a
+name, and the boundary between them is a date.**
+
+The rule this archive arrived at the hard way, stated once so the next field
+does not have to learn it again: **any value with more than one possible
+definition is stored with its basis in an adjacent column, and a change of
+definition is a change of value in that column, never a silent change of meaning
+in the same one.** `reference_basis`, `adjustment_basis` and `split_detected` all
+exist because that was learned late. Float should arrive with `float_basis` from
+the first row rather than the hundredth.
+
 #### Join arithmetic, which the retraction does not change
 
 *From Integration, and corroborated here.* A replay emits one grade per
