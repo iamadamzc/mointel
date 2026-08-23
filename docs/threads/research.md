@@ -768,7 +768,7 @@ analysis tool.** Every graceful fallback in `lib/research/` is worth re-reading
 with that distinction in mind. Check the token line on any replay output before
 believing it.
 
-**13. Two numbers were wrong in ways their own plausibility hid.** *Both
+**14. Two numbers were wrong in ways their own plausibility hid.** *Both
 corrected the same day; kept as a pair because the failure mode is identical.*
 
 *The independence result.* I reported **"the prior moves the catalyst grade, 2 of
@@ -797,6 +797,46 @@ made the structure conclusion feel robust; it was the coincidence that should
 have prompted the check. **Label which measurement a number is in the same
 sentence as the number**, and treat two independently derived figures landing
 close as a prompt to verify they are the same quantity.
+
+**15. The cycle is arithmetic now, and the model never had the number its label
+needed.** *Built 2026-08-23 on the trader's instruction that this be
+quantitative, not an AI call.*
+
+`lib/market/cycle.ts` resolves cycle position from daily bars. Pure function, no
+I/O, no model, no token cost. Why it exists, in measurements rather than
+opinion:
+
+- `currentCycleHigh` was established in **40 of 325** dossiers. The label was
+  produced anyway, without the number it rests on.
+- Re-running 236 stored analyses five times each on identical evidence returned
+  a different `cycleClassification` **46%** of the time, and **17 versions
+  flipped between backside and frontside** — the call the playbook acts on.
+- `formerRunnerStatus` disagreed with itself on **43%** of versions.
+- On every disagreement where both committed, the arithmetic is the better
+  call: **8 to 0, one unclear.** `MYSZ` read `YELLOW_FRONTSIDE_WARNING` at 177%
+  retraced, 54 sessions past its high.
+
+**Every constant is the trader's rule, the desk's existing floor, or measured.**
+Start day is 20% on 5× RVOL (his). Backside is half the *move* given back (his —
+and it corrected a real bug: I had measured distance below the *high*, which on
+a 20% mover puts the threshold below the base and never fires). `SHADOW_RVOL` is
+the desk's own 2× eligibility floor. `SHADOW_SESSIONS = 3` and
+`SHADOW_LIFETIME_SESSIONS = 10` are measured against production bars — a name
+that just ran is 7× likelier to run again within a week, gone by ten sessions.
+Only `SUPERRUNNER_ADVANCE = 200%` is a percentile choice, and
+`largestPriorAdvancePct` ships beside it so no surface must accept it.
+
+**SHADOW is the trader's idea and the one nobody would have derived.** A name
+that ran a month ago and went quiet is not on the backside of anything — nothing
+is unwinding — but its high is still overhead. Volume returning to normal is what
+ends a cycle; sessions decide when the memory stops being useful. They are not
+alternatives.
+
+Wired additively in `91c9af1` as `dossier.computedCycle`, beside the model's
+block. Migration order and ownership are item 13. **Step 3 — deleting the five
+model fields — must follow Design's switch being deployed AND verified, and
+Design's scope grew, so plan it as a separate later piece rather than something
+queued behind the switch.**
 
 ## Working rules
 
