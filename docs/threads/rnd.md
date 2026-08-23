@@ -124,6 +124,45 @@ either" would be indistinguishable, which is the failure mode this thread is
 most exposed to. Work that does not touch the grade continues: the split test,
 Q5, coverage, outcomes.
 
+**A second outcome ledger exists over the same window**, and it changes what Q1
+can do. *Reported by Integration 2026-08-23; not read by this thread.* The Sheet
+is written by four weekday ChatGPT tasks and holds 11-21 August — 148 outcome
+rows over 115 tickers, 204 research rows over 146 with catalyst grade, source
+URL, float and split history, graded 35 A / 46 B / 123 C. Q1 asks whether movers
+stopped carrying catalysts or whether the desk stopped seeing them, and a second
+grader over the same period is what separates those.
+
+**The contamination is one-directional and that is what makes it useful either
+way.** Nothing here writes to the Sheet, so the Sheet's grades cannot have been
+influenced by this desk whatever `sheetPrior` does. If the prior does not reach
+the interpreter, the two are independent graders and the comparison is the
+instrument Q1 wanted. If it does, the *comparison* is circular but the Sheet's
+grade is still independently produced and can serve as Q1's independent variable
+**instead of** ours over the overlap. What collapses in the bad case is the
+comparison, not the second labelling.
+
+**It is not ground truth and never supplies an outcome.** Self-graded by the
+process that made the forecasts, 85.8% backfilled, 68 of 204 floats still
+Unknown, duplicate date/ticker rows. This archive's Alpaca-derived outcomes are
+the honest measurement; take catalyst labels from that side and nothing else.
+
+**Overlap, sized from this side.** Their universe is $2-$10 with float under
+20M against this desk's $1-$20 on RVOL. Of 252 board symbols over 17-21 August,
+159 traded inside $2-$10 at some point — a ceiling before their float filter,
+which this archive cannot apply. **63 of the 77 distinct names that ran 50%+ are
+in their band**, so the overlap on the population Q1 is about may be usable even
+if the whole intersection is thin. Sizing it properly needs one thing: the
+ticker-by-date list for 17-21 August. **This thread has not read the Sheet and
+will not** — that surface is `research.md` Open item 5 and a list is cheap to
+hand over.
+
+**First move once anything lands, and it needs no answer from Research:**
+compare their peak gain %, peak window and prior RTH close against this
+archive's `max_gain_pct`, `time_of_high` and `reference_close` on shared
+symbol-days. It calibrates their ledger against the tape without touching a
+catalyst grade. Their "prior RTH close" is the exact field this thread found the
+desk flipping at the bell, so a mismatch there is the first thing to look at.
+
 **Four hypotheses, none tested**, recorded so they are not silently reinvented:
 
 - Catalyst was always a proxy for *attention*; something else now supplies

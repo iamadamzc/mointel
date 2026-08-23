@@ -449,6 +449,95 @@ The inference it actually supports is narrow and still holds: a missed look and
 an honest `UNKNOWN` are distinguishable. It was never an independence check, and
 if the Sheet can influence either field it would not become one.
 
+### A second outcome ledger exists over the same window
+
+*Reported by Integration 2026-08-23, from the ChatGPT side. Not read by this
+thread — see "what would be needed" below.*
+
+The Google Sheet is written by four weekday ChatGPT tasks (22:00, 06:10, 09:25,
+16:15 ET) and holds a parallel record of 11-21 August: an OUTCOMES tab of 148
+rows over 115 tickers with peak price, peak gain %, peak window, giveback and
+self-assigned grades; a RESEARCH tab of 204 rows over 146 tickers with catalyst
+grade plus source URL and timestamp, float with vintage, split history and
+filings; dated tabs; and a patterns layer. Catalyst grades across the 204:
+35 A, 46 B, 123 C.
+
+**Why it matters to Q1.** Q1 asks whether movers stopped carrying catalysts or
+whether the desk stopped seeing them. Those two worlds are separated by a second
+grader over the same period, and until now there was not one.
+
+**The asymmetry that decides what it is worth**, and it is worth stating because
+it is not symmetric at all. Contamination can only flow one way. Nothing in
+`lib/`, `worker/` or `app/` writes to the Sheet and the desk's access is
+read-only, so **the Sheet's grades cannot have been influenced by this desk**,
+whatever `sheetPrior` turns out to do. The unresolved risk runs the other
+direction only. That yields two cases:
+
+- **If `sheetPrior` does not reach the interpreter.** Two independent graders
+  over one period. Agreement is corroboration and disagreement localises the
+  problem to one side. This is the good case and it is the one Q1 wants.
+- **If it does.** Our grade is partly the Sheet's, so *comparing the two is
+  circular* — but the Sheet's own grade is still independently produced. It can
+  then be used as Q1's independent variable **instead of** ours for names in the
+  overlap, rather than as a check on ours.
+
+So the ledger has a use either way. What collapses in the bad case is the
+comparison, not the second labelling. That is a better position than it first
+looks, and it is the reason to size the overlap now rather than after Research
+answers.
+
+**It is not ground truth and must not be used for outcomes.** Its outcomes are
+self-graded by the same process that produced the forecasts, its float and
+catalyst fields are 85.8% backfilled by a retrofit, 68 of 204 float values still
+carry Unknown language, and it contains duplicate date/ticker rows with no stage
+key. The Alpaca-derived outcomes in this archive are the honest measurement.
+Take catalyst *labels* from that side; never outcomes.
+
+**Overlap, sized from this side only.** The universes differ — theirs is $2-$10
+with float under 20M, this desk's is $1-$20 ranked on RVOL — so the shared
+population is a fraction of both. Their dated tabs cover nine, 11-14 and 17-21
+August; this archive covers 17-21, so every date here is inside their window.
+
+| | symbols |
+| --- | --- |
+| on the board, 17-21 August | 252 |
+| of those, traded inside $2-$10 at any point | **159** |
+| of those, opened RTH inside $2-$10 | 133 |
+| distinct symbols that ran 50%+ | 77 |
+| of those, inside $2-$10 | **63** |
+
+159 is a ceiling from this side before their float filter, which will cut it
+further and which this archive cannot apply — float is not captured. The number
+that matters is the last one: **63 of the 77 distinct names that ran 50%+ are in
+their price band**, so the overlap on the population Q1 is actually about may be
+usable even if the overall intersection is thin.
+
+**A check worth running first, because it needs no answer from Research.** Their
+OUTCOMES tab carries peak gain %, peak window and prior RTH close — the same
+quantities this archive derives from raw minute bars. Comparing them on shared
+symbol-days calibrates their ledger against the tape, and it touches the
+catalyst grade not at all. If their peak-gain figures track `max_gain_pct`, their
+catalyst labels get more credible by association. If they do not, that is a
+finding about the whole ledger before any of its labels are used. It also
+re-uses the reference-basis discipline this archive already had to build: their
+"prior RTH close" is exactly the field this note found the desk flipping at the
+bell, and a mismatch there would be the first thing to check.
+
+**What would be needed, and what this thread will not do.** Sizing the overlap
+properly needs one thing: the ticker-by-date list from OUTCOMES and RESEARCH for
+17-21 August. **This thread has not read the Sheet and will not.** The Sheet
+client and its credentials sit on another thread's integration surface, that
+surface is the live question in `research.md` Open item 5, and a ticker list is
+cheap to hand over. Reading it here would tangle who touched what at exactly the
+wrong moment.
+
+**On the source report itself.** Its §13 records that it was written without
+access to this repository and with the connection expired, so it is first-hand
+on the Sheet and second-hand on this application. Nothing in it about this
+system's architecture has been verified here and none of it has been acted on.
+The two claims that reach this note — the tab contents and the grade counts —
+are about the Sheet, which is the half it is first-hand on.
+
 ### Pillar 4, with coverage held constant
 
 Catalyst grade among symbol-days whose coverage is admissible and whose outcome
