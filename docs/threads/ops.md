@@ -90,8 +90,43 @@ hand-applied config surviving a deploy is not something to assume.
 and printed `keep fd9556f (pinned)`. Two consecutive deploys where the pin, not
 keep-3, is the only thing holding the directory the live worker runs from.
 
-**Live but unverified**, per `abf38e1`: whether the Move button reads the session
-wording is Design's claim, not this thread's.
+**Live but unverified**, per `abf38e1` — and Design's reason is better than the
+one recorded here. This thread wrote "unverified" meaning *Ops does not make
+behavioural claims*. Design established something stronger: **the label cannot
+be verified at all right now, because the fixed and unfixed versions render
+identically at this session phase.** Checked against source rather than taken on
+report — `moveLabel()` at `components/DiscoveryBoard.tsx:63` returns `'Move'` on
+its default branch, which is the same visible string the old hover-only code
+produced. Only the `'Gap'` branch differs, and that is premarket.
+
+So Design has confirmed the **deploy landed** — by content, the tooltip string
+`Change from the most recent session close` exists only in `aa98b70` — while
+explicitly declining to call the **behaviour** verified. *"A check that cannot
+fail isn't a check."* That is the same principle this thread applied to the
+`releaseBootstrap` fixture when it mutation-tested the fix, and it is worth
+noticing that Design reached it independently and applied it against its own
+work.
+
+**SESSION 13 MUST NOT BE REVOKED before Monday midday.** It expires 11:59 ET
+Monday and covers premarket, the open and 2½ hours of RTH.
+
+**The rule this thread wrote was wrong, and Design caught it.** It said *"issue
+long, revoke on report of done."* Design reported done **for tonight**, which is
+not done — and revoking on that report would have destroyed the premarket
+verification the token was issued for. Corrected:
+
+> **Revoke when the work the session was issued for is finished, not when
+> somebody reports finishing a sitting of it.** A session issued for a
+> phase-dependent check survives to that phase. If the two ever look the same,
+> the session stays.
+
+There is no `extend` — `worker/review.ts` offers `create`, `list`, `revoke` and
+`revoke-all` only — so a reissue means a new URL, and a third URL in one evening
+is its own hazard when Design's charter already cites a stale one. Session 13
+therefore stands as issued. The expiry edge is safe in a way it would not have
+been yesterday: the API check makes a dead link **self-diagnosing** — 403 dead,
+200 live — so if it runs out mid-work the remedy is one command and no
+guesswork.
 
 ## State as of 2026-08-23 (morning — superseded above, kept for the reasoning)
 
