@@ -304,21 +304,76 @@ the rate.** `cycleClassification` is **2 of 6** unstable — the same order as
 structure. But **both flips are classified-to-`UNKNOWN`**, not direction flips:
 OLOX `YELLOW_FRONTSIDE_WARNING` → `UNKNOWN`, CDTG `RED_BACKSIDE` → `UNKNOWN`.
 
-**Nothing reads as "the stock turned."** What a trader would see is a badge
-appearing and disappearing — the desk ceasing to be sure, not the market
-reversing. That is a materially less dangerous failure than a frontside/backside
-flip would be, and it argues for a specific treatment: **losing a cycle
-classification should render as the desk losing confidence, never as a cycle
-change.** The product already distinguishes `NOT YET ANALYZED` from `UNKNOWN`;
+**REVERSED 2026-08-23 by a properly powered measurement — the paragraph that
+stood here was wrong, and wrong in the safe-sounding direction.** It read:
+*"Nothing reads as 'the stock turned' … a materially less dangerous failure than
+a frontside/backside flip would be."* **Direction flips do happen.** The six-name
+null was underpowered, and an underpowered null leaves a claim unresolved rather
+than refuted. Source `b4078d1`.
+
+**236 archive-backing versions, 5 draws each, byte-identical as-of evidence,
+prior-free:**
+
+| | |
+| --- | --- |
+| Unanimous 5/5 | **127 of 236** — so **46% of cycle classifications are not reproducible** |
+| Of the 109 that vary — class ↔ `UNKNOWN` | 81 |
+| Of the 109 that vary — **direction ↔ direction** | **28** |
+| `RED_BACKSIDE` vs `YELLOW_FRONTSIDE_WARNING` | **17 — 7.2% of all versions** |
+| `GREEN_FRESH_FRONTSIDE` vs `YELLOW_FRONTSIDE_WARNING` | 11 |
+| `GREEN_FRESH_FRONTSIDE` vs `RED_BACKSIDE` | **0** |
+
+**Read this as a resampling rate, not a production rate.** It is not a
+checkpoint-pair figure and must not be quoted as "what a trader sees between
+checkpoints" — that depends on how often re-analysis actually runs.
+
+**The 17 are the ones that matter.** Frontside against backside is the
+distinction the playbook acts on. On identical evidence the same model returns
+one or the other depending on the draw, so **a name really can read as having
+turned when nothing about it has.** Measured against a field that is `UNKNOWN` on
+75% of 325 stored dossiers — so among versions that *do* commit to a direction,
+the rate is correspondingly higher than 7.2%.
+
+**One part of the softening survives and it is load-bearing: the instability is
+one step on the scale, never end to end.** Nothing goes `GREEN_FRESH_FRONTSIDE`
+straight to `RED_BACKSIDE`. The scale is ordinal and the model resolves it to
+±1 step, which means **displaying a single point on it asserts more precision
+than exists.**
+
+### The two failures need different answers, and only one is Design's
+
+**The 81 (class ↔ `UNKNOWN`) — solved, and the earlier treatment stands.**
+Losing a cycle classification renders as **the desk losing confidence, never as a
+cycle change.** The product already separates `NOT YET ANALYZED` from `UNKNOWN`;
 this needs the same care between *unknown* and *changed*.
 
-**The null on direction flips is not reassurance, and Research said so first.**
-Cycle is `UNKNOWN` in **243 of 325** stored dossiers (75%), and only **4 of 24**
-observations in the sample were classified at all. So no direction flip occurred
-*and* that is not evidence they do not happen — there was barely any classified
-mass in which one could have appeared.
+**The 28 (direction ↔ direction) — not solvable in the UI, and Design should say
+so rather than invent a plaster.** The failure is a *confident wrong direction*.
+No display treatment distinguishes a real turn from a resampling artefact,
+because the artefact is indistinguishable by construction. The fingerprint gate
+helps but is not sufficient: it suppresses a flip with no evidence change, and
+says nothing about a re-analysis that both saw new evidence *and* flipped on the
+draw.
 
-The fingerprint gate above already covers cycle without relying on any of this.
+**Design's requirement, handed to Research: the desk should not display a
+direction the model cannot reproduce.** The mechanism is theirs — repeat draws
+and commit only on agreement, degrading to `UNKNOWN` otherwise — and so is the
+cost, since it multiplies calls on a thread that already fights its token
+budget. Design states the requirement and does not choose the sampling policy.
+
+**Until then, the row leads with arithmetic.** Position against the recent cycle
+high is deterministic — `lib/data/cycleLevels.ts` already computes a giveback
+only from an affirmatively current-cycle high — while the cycle badge is a
+verdict that is 46% irreproducible. **This is the fourth independent application
+of the same rule: where a deterministic fact and a model verdict say the same
+thing, the row shows the fact.**
+
+**And structure is worse than cycle, not better.** The same run puts
+`structureClassification` at **45% unanimous, 84% mean agreement — the least
+reproducible of the three fields the desk displays.** Every argument above
+applies to it at least as strongly.
+
+The fingerprint gate covers the rail for all three fields regardless.
 
 ### Two numbers about this field, and only one is a noise figure
 
@@ -327,12 +382,18 @@ apart from different threads, and they are not comparable.
 
 | Source | Figure | What it measures |
 | --- | --- | --- |
-| Research | **3 of 6** | Instability on **byte-identical** evidence, four runs per arm. **This is the noise figure.** *(Revised up from 2 of 6, which came off two runs.)* |
+| Research — **236 versions, 5 draws** | **45% unanimous, 84% mean agreement** | Reproducibility on **byte-identical** evidence. **This is the noise figure to cite.** |
+| Research — 6 names, 4 runs | 3 of 6 | Same thing, underpowered. Superseded by the row above; itself a revision of an earlier 2 of 6 off two runs. |
 | R&D | 29 of 56 | Structure moves across **version changes** in the stored record |
 
-**R&D's 52% is not a competing estimate of noise and must never be quoted as
-one.** R&D said so explicitly. Any design rationale citing an instability rate
-cites **3 of 6**.
+**Three figures, one field, three instruments.** Cite the 236-version row. The
+six-name figure moved twice in a day (2 → 3 of 6) purely by adding runs, which is
+what an underpowered instrument does. **R&D's 52% is not a competing estimate of
+noise and must never be quoted as one** — R&D said so explicitly.
+
+**None of the three is a production rate.** All measure resampling or stored
+version-to-version movement. What a trader actually sees between two checkpoints
+depends on how often re-analysis runs, and nobody has measured that.
 
 **R&D's supporting inference is weaker than when it was written**, and that is
 worth carrying rather than dropping. The argument that the 29 are dominated by
@@ -349,6 +410,83 @@ values across 1,459 non-null rows: `CAUTION` 871, `UNKNOWN` 365, `DIRTY_FLOAT`
 resolution, a 1-in-3 flip rate is **large**, not marginal — which is the
 quantitative case for the rule already adopted above: **where a deterministic
 fact and a model verdict say the same thing, the row shows the fact.**
+
+## Cycle becomes arithmetic — and needs six trader-facing words
+
+The desk owner's call, routed 2026-08-23: `lib/market/cycle.ts` computes the
+cycle from daily bars and the model's version is **deleted**, not kept alongside.
+The evidence is the reproducibility run — 75% `UNKNOWN` in production, 46%
+irreproducible across five draws, and on every disagreement where both committed
+the arithmetic won **8–0 with 1 unclear**. MYSZ was labelled
+`YELLOW_FRONTSIDE_WARNING` while it had retraced 177% and sat 54 sessions past
+its high.
+
+The six `CyclePhase` values are engine names. This is exactly the class the first
+working rule rejects — `LATCH` was removed for being pipeline vocabulary — so
+each needs a word in the language of the stock.
+
+| Engine | What it means | **Proposed** | Why |
+| --- | --- | --- | --- |
+| `DAY_ONE` | Start day is today | **`DAY 1`** | Already trader-native. Carries more than "moving now": day one means no overhead from a prior run — the setup he wants. |
+| `FRONTSIDE` | Still making the cycle high, >1 session in | **`FRONTSIDE`** | Genuine trader vocabulary, not engine vocabulary. The old defect was `YELLOW_FRONTSIDE_WARNING` — colour and verdict baked into an enum — not the word. |
+| `PULLBACK` | Off the high, <half the move given back | **`OFF HIGH`** | **Must be renamed. See below.** |
+| `BACKSIDE` | Half the move or more given back, still in play | **`BACKSIDE`** | Trader vocabulary and the state he acts on. Keep. |
+| `SHADOW` | Move over, volume normal, old high overhead | **`PRIOR RUN`** | See below. |
+| `NO_CYCLE` | No qualifying start day | **`NO RUN`** | An absence, not a judgement. Must not read as a verdict, and must stay distinct from `NOT YET ANALYZED` and `UNKNOWN`. |
+
+**`PULLBACK` is not a naming preference — it is a collision, and a dangerous
+one.** In this trader's playbook *pullback* means the micro pullback on rising
+volume that is his **entry trigger**. As a cycle phase it means a multi-session
+position in the arc. Same word, two meanings, one of which says *buy* and the
+other says *context*. That is worse than jargon: jargon is opaque, this is
+confidently misread. **`OFF HIGH`** is factual, pairs with the retracement figure
+beside it, and cannot be mistaken for a signal.
+
+**`SHADOW` is the hardest and the proposal is the least certain.** The state
+carries two facts — the name is not in play *and* its old high is still
+resistance — and a badge can only say one. `SHADOW` is evocative but coined; no
+trader would read it cold. **`PRIOR RUN`** is chosen because it is already this
+desk's vocabulary (the Sheet's `Prior Runner` column), it puts the move in the
+past, and "run" implies the high that is still overhead. It leads with the
+trade-relevant half; the arithmetic beside it — sessions since high, advance —
+supplies the rest. The alternative put to the owner was `FADED`, which says the
+volume half better and the resistance half worse. **He chose `PRIOR RUN`,
+2026-08-23 — settled.** All six words are now decided; none is a proposal.
+
+### Three consequences, and the first is a simplification
+
+**1. The fingerprint gate drops cycle — and the carve-out is earned this time.**
+Same bars, same answer, with a test asserting 25 runs return one result. There is
+no model re-read to suppress, so `CYCLE_CHANGED` on the board will mean **the
+tape changed** — a property it never had. The gate still applies to catalyst and
+structure, and structure is now the worst of the three at 45% unanimous / 84%
+mean agreement. **This is the distinction Design drew earlier and it holds:** the
+withdrawn catalyst carve-out was bought with a stability number that then moved;
+this one is bought with determinism, which cannot.
+
+**2. Any giveback shown must be retracement of the MOVE, never distance below the
+high.** `CycleArc` carries both, and they diverge badly at ordinary prices: a
+name based at $1.00 that ran to $1.20 has given back half its **move** at $1.10,
+while half-below-the-high is $0.60. `givebackPct` at $1.10 reads **8%** while
+`retracementPct` reads **50%**. **The below-high number reads reassuringly small
+on exactly the names that have broken**, so it must not be the one on screen.
+`retracementPct` is also what decides the phase, so showing it keeps the number
+and the badge consistent.
+
+Note the current surface has the wrong one: `flushFromHighPct` (`rows.ts:296`,
+`:361`) is a *from-high* measure and it is **Sheet-sourced**, so it retires with
+the Sheet. The arithmetic replaces it with the correct measure rather than
+merely a derived one.
+
+**3. New material for the row, none of which existed before.** `CycleArc` gives
+`startDate`, `cycleHigh` + `cycleHighDate`, `sessionsSinceHigh`,
+`retracementPct`, `advancePct`, `recentRvol`. The model established a
+`currentCycleHigh` on **40 of 325** dossiers; this has one whenever a cycle
+exists at all. So a row can show **why** a name is backside rather than only
+that it is — `BACKSIDE · −62% of move · 9 sessions` — which is what §9 item 12
+wanted and could not have. It also further vindicates the standing rule: the
+badge is now arithmetic *and* the number beside it is arithmetic, so cycle stops
+being a verdict at all.
 
 ## Next session — item 16a, and only 16a
 
