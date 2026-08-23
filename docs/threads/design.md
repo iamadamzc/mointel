@@ -656,10 +656,45 @@ handover missed**, established here by grep and sent back:
 **A design decision is hiding inside what was scoped as a switch.** `CycleFilter`
 is `'ALL' | 'FRESH' | 'WARNING' | 'BACKSIDE'` (`view.ts:10`) — the *old* model's
 classes. The arithmetic phases are six, and **only `BACKSIDE` survives by name**;
-`FRESH` and `WARNING` have no arithmetic counterpart at all. So the filters
-cannot be relabelled — what a trader filters cycle *by* has to be decided. That
-collides with §9 item 13's workflow-filter rewrite, which was going to re-cut
-this same set. **Do it once.**
+`FRESH` and `WARNING` have no arithmetic counterpart at all.
+
+### `CycleFilter` — decided 2026-08-23, minimal and reversible
+
+Integration's ordering call: decide now rather than defer to §9 item 13.
+
+| | Filter | Phase |
+| --- | --- | --- |
+| | `ALL` | — |
+| ← was `FRESH` | **`DAY 1`** | `DAY_ONE` |
+| new | **`FRONTSIDE`** | `FRONTSIDE` |
+| ← was `BACKSIDE` | **`BACKSIDE`** | `BACKSIDE` |
+| ← was `WARNING` | **dropped** | *(none)* |
+
+Four values replacing four, each mapping to exactly **one** phase. No bucketing,
+no new controls, no new capability — the shape of the existing filter, pointed at
+things that exist.
+
+**`WARNING` is dropped, and that is a finding rather than a mapping failure.**
+`YELLOW_FRONTSIDE_WARNING` meant *frontside, but with concerns* — a **model
+opinion**, not a geometry. Arithmetic has no opinions, so there is nothing for it
+to become. It should not be faked into a threshold to preserve a chip. This is
+the same field that measured 46% irreproducible across five draws, and `WARNING`
+was where much of that lived: the flips were one step on the scale, and this is
+the step they flipped across.
+
+**`OFF HIGH`, `PRIOR RUN` and `NO RUN` get no chip and stay reachable under
+`ALL`** — matching how the current filter already treats everything outside its
+three buckets. `OFF HIGH` is the one with a case for promotion, since a dip trade
+is a named exception in the playbook. Not added unasked; flagged to the owner.
+
+**`largestPriorAdvancePct` hands Design a threshold it used to inherit.** The
+surface can now set what counts as a former superrunner rather than taking
+Research's 200% cut. **Keeping 200% for the switch** — changing a threshold and a
+data source in one commit means a later disagreement has two candidate causes.
+
+This still collides with §9 item 13's workflow-filter rewrite, which will re-cut
+this set. Decided minimally *because* of that: a small, reversible mapping is
+cheap to throw away, and a redesign done twice is not.
 
 **Not Design's, and correctly so:** `lib/data/cycleLevels.ts` and
 `lib/research/merge/sheetAuto.ts` are Research's. Sitting inside the apparatus
