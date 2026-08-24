@@ -796,6 +796,70 @@ re-collapse that into a boolean by picking a number — the row shows how many
 sessions behind, and the trader decides. **Two sessions behind on a name he is
 about to size is his call, not a constant in this file.**
 
+### `VERIFIED BLUE SKY` — the word qualifies the ceiling, never the sky
+
+**Reported by the desk owner mid-session, 2026-08-24:** BTCT at $1.71 rendering
+`IN VERIFIED BLUE SKY — PRIOR CEILING $1.48`. *"This is not bluesky territory.
+This is a major error."* He is right.
+
+**In `lib/market/blueSky.ts`, `verified` means the CEILING is a real traded
+level** — it cleared `MIN_SESSIONS`, it is not a bad print, it is not an isolated
+spike (`:148–175`). Every guard is about whether $1.48 was genuinely traded.
+**None says anything about whether the sky above is clear.** The headline at
+`:228` attaches the word to the blue‑sky claim, so a word that honestly qualifies
+the ceiling is read as qualifying the absence of overhead supply.
+
+**Why it is a real error and not pedantry.** Blue sky is a claim about *trapped
+holders* — nobody overhead who bought higher and wants out at breakeven. It is
+the reason the state matters to this trader at all.
+
+**The 90-session cap makes it unfixable by correct operation.**
+`DEFAULT_CYCLE_HISTORY_TRADING_DAYS = 90` (`lib/research/history.ts:18`, read at
+`readModel.ts:305`). **That is a configuration cap for every symbol, not BTCT's
+data edge.** Research's sharpening, kept verbatim: *this is not a case where the
+instrument failed to see higher prices — the instrument cannot see past 90
+sessions by design, so `VERIFIED` is asserting something no amount of correct
+operation could ever establish.*
+
+**Design's item 3 is withdrawn.** It proposed separating *window-bounded* from
+*data-bounded* — whether the lookback reached the earliest retained row. Under a
+90-session cap **essentially every symbol older than 90 sessions is
+data-bounded**, so that split separates new listings from everything else rather
+than deep history from shallow. It buys almost nothing.
+
+**So the fix is two things, and the first is the only one that changes his
+screen:**
+
+1. **Drop `VERIFIED` from the headline.** One string.
+2. **Put the window in the headline, not only the caveat** —
+   `ABOVE $1.48 · HIGHEST IN 90 HELD SESSIONS`. With item 3 gone this is the real
+   fix rather than a stopgap, because the honest sentence is the same for nearly
+   the whole board.
+
+**And the reverse-split point makes it worse than marginal.** Retained history is
+already split-adjusted, and a small cap's likely history is a *reverse* split,
+which **raises** old prices. If pre-window history exists the true ceiling is
+probably far above $1.71 — the claim may be inverted rather than slightly wrong.
+
+### A partial bar's HIGH is legitimate for a ceiling, though its close is not
+
+Research flagged this as a different call from the one it made for cycles and
+declined to make it unilaterally. **Design's answer: include it.**
+
+**The two cases are asymmetric and the asymmetry decides it.** For a cycle, a
+partial bar distorts `retracementPct`, `advancePct` and `sessionsSinceHigh` — a
+running high and a part-day volume make the phase wrong in an **unpredictable
+direction**, which is why hiding them was right. For a ceiling the question is
+only *has this price traded*, and **a high can only rise during a session, never
+fall.** So a partial high is a **lower bound** on the true high, and including it
+is conservative in the safe direction: a higher ceiling makes blue sky fire
+**less** often.
+
+**Excluding it is anti-conservative and it is exactly the BTCT case** — the
+$1.57 high on 2026-08-20 was hidden as partial, dropping the displayed ceiling to
+$1.48. A hidden partial high understates a ceiling, and an understated ceiling is
+the direction that manufactures a false blue sky.
+
 ### `stalledJobs`: the count is not trader-facing, but it exposes a row that IS
 
 Research landed `stalledJobs` (`a3464d8`) — non-terminal jobs from a trading date
