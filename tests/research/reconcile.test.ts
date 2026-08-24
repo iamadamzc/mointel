@@ -206,6 +206,7 @@ function health(overrides: Partial<ResearchHealth> = {}): ResearchHealth {
   return {
     state: 'IDLE',
     queuedJobs: 0,
+    stalledJobs: 0,
     activeJobs: [],
     lastCompletedTicker: null,
     lastCompletedAt: null,
@@ -448,5 +449,64 @@ describe('retry safety', () => {
     completeJob(db, claimed.id, { status: 'PARTIAL', completedAt: new Date().toISOString() });
 
     expect(reconcileWith(db, NEW_EVIDENCE)[0].queued).toBe(true);
+  });
+});
+
+/**
+ * The count that answers "is anything stuck", separately from "is anything
+ * pending today".
+ *
+ * `queuedJobs` is scoped to the current trading date, which is right for the
+ * board and is why an aged backlog goes invisible exactly when it has aged. Ten
+ * rows sat QUEUED from 2026-08-21 and 2026-08-17 while the field read 0 -- and
+ * that 0 was used to confirm the desk was idle before a deploy. It was right by
+ * luck, not by construction.
+ */
+describe('stalled jobs are counted apart from queued ones', () => {
+  const view = (h: Partial<ResearchHealth>) =>
+    projectResearchHealth({ health: health(h), now: NOW });
+
+  it('carries a stalled count through to the view', () => {
+    expect(view({ stalledJobs: 10 }).stalledJobs).toBe(10);
+  });
+
+  it('does not let a stalled backlog read as queued work', () => {
+    // The two must stay separable: the board asks what is pending TODAY and a
+    // deploy gate asks whether anything is stuck. Folding them would break the
+    // board's answer in order to fix the gate's.
+    const v = view({ queuedJobs: 0, stalledJobs: 10 });
+
+    expect(v.queuedJobs).toBe(0);
+    expect(v.stalledJobs).toBe(10);
+  });
+
+  it('still reports it when the heartbeat is stale', () => {
+    /*
+     * The case that matters most, and the one I first asserted backwards. A
+     * dead worker returns the OFFLINE shape -- whose literal hardcodes
+     * stalledJobs: 0 -- but the stale branch overrides it from the record. It
+     * has to: a worker that died holding ten stuck jobs is precisely when
+     * somebody needs the number, and reading the OFFLINE literal there would
+     * report "nothing stuck" about a process that stopped.
+     */
+    const stale = projectResearchHealth({
+      health: health({ stalledJobs: 10 }),
+      now: NOW + 10 * 60_000,
+    });
+
+    expect(stale.state).toBe('OFFLINE');
+    expect(stale.stalledJobs).toBe(10);
+  });
+
+  it('defaults to zero for a record written before the field existed', () => {
+    /*
+     * research_health is a single stored JSON payload, so a worker not yet
+     * redeployed keeps publishing the old shape. Undefined would make a gate
+     * read NaN, which is worse than reading the pre-existing blind spot.
+     */
+    const legacy = health({});
+    delete (legacy as { stalledJobs?: number }).stalledJobs;
+
+    expect(projectResearchHealth({ health: legacy, now: NOW }).stalledJobs).toBe(0);
   });
 });

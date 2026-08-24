@@ -155,9 +155,29 @@ async function main(): Promise<void> {
       (db.prepare('SELECT MAX(trading_date) AS d FROM ticker_session').get() as { d: string | null })
         .d ?? '';
     const jobs = readJobsForDate(db, tradingDate);
+    /*
+     * Work from any other date that nothing will ever pick up.
+     *
+     * Counted separately rather than folded into `queuedJobs`, which answers
+     * the board's question -- what is pending TODAY -- and must keep answering
+     * it. This answers the other one, and it exists because the two were
+     * indistinguishable: ten rows sat QUEUED from earlier sessions while
+     * `queuedJobs` read 0, and that 0 was used to confirm the desk was idle
+     * before a deploy. It happened to be right.
+     */
+    const stalled = (
+      db
+        .prepare(
+          `SELECT COUNT(*) AS n FROM research_jobs
+             WHERE trading_date <> ?
+               AND status IN ('QUEUED', 'COLLECTING', 'SOURCES_READY', 'ANALYZING')`,
+        )
+        .get(tradingDate) as { n: number }
+    ).n;
     writeResearchHealth(db, {
       state: currentState,
       queuedJobs: jobs.filter((job) => job.status === 'QUEUED').length,
+      stalledJobs: stalled,
       activeJobs: currentActive,
       lastCompletedTicker,
       lastCompletedAt,

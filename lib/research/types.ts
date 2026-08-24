@@ -630,7 +630,31 @@ export type ResearchHealthState = 'OFFLINE' | 'IDLE' | 'WORKING' | 'DEGRADED' | 
 
 export interface ResearchHealth {
   state: ResearchHealthState;
+  /**
+   * Queued work for the CURRENT trading date. Scoped, deliberately, because
+   * that is the question the board asks.
+   *
+   * It is also why an aged backlog is invisible exactly when it has aged: the
+   * worker counts `readJobsForDate(db, MAX(trading_date))`, so a job stuck since
+   * a previous session stops being counted the moment the date rolls. Ten such
+   * rows sat QUEUED on 2026-08-21 and 2026-08-17 while this field read 0 -- and
+   * the field was being used to confirm the desk was idle before a deploy.
+   *
+   * Pair it with `stalledJobs` below rather than widening it. Two questions,
+   * two numbers.
+   */
   queuedJobs: number;
+  /**
+   * Non-terminal jobs from any OTHER trading date: queued, or claimed and never
+   * finished.
+   *
+   * Nothing will pick these up. Boot recovery requeues orphans, but it is
+   * scoped the same way -- `readOrphanedJobs(db, bootDate)` -- so a row claimed
+   * before a date roll is stranded permanently and silently. Zero such rows
+   * exist today, which makes this a hazard rather than a defect, and the whole
+   * point of the field is that the difference stays visible.
+   */
+  stalledJobs: number;
   activeJobs: string[];
   lastCompletedTicker: string | null;
   lastCompletedAt: string | null;

@@ -21,6 +21,17 @@ export interface ResearchHealthView {
   detail: string;
   tone: 'pos' | 'warn' | 'neg' | 'accent' | 'dim';
   queuedJobs: number;
+  /**
+   * Non-terminal jobs from any other trading date. Nothing will pick these up.
+   *
+   * OPTIONAL on the view while it is required on the stored `ResearchHealth`,
+   * and the asymmetry is the ownership line rather than laziness. The record
+   * must always carry the number or it cannot be trusted as a deploy gate; the
+   * VIEW is Design's, and whether a stalled count belongs on a surface -- and
+   * under what words -- is Design's to decide. This makes it available without
+   * conscripting a component into rendering it.
+   */
+  stalledJobs?: number;
   activeJobs: string[];
   activeCount: number;
   lastCompletedTicker: string | null;
@@ -39,6 +50,7 @@ const OFFLINE: ResearchHealthView = {
   detail: 'The automatic research worker is not running. Start the desk with npm run desk.',
   tone: 'neg',
   queuedJobs: 0,
+  stalledJobs: 0,
   activeJobs: [],
   activeCount: 0,
   lastCompletedTicker: null,
@@ -68,6 +80,7 @@ export function projectResearchHealth(options: {
         ? 'The research worker has no readable heartbeat.'
         : `No research heartbeat for ${ageSeconds}s. The worker is not running.`,
       queuedJobs: health.queuedJobs,
+      stalledJobs: health.stalledJobs ?? 0,
       lastCompletedTicker: health.lastCompletedTicker,
       lastCompletedAt: health.lastCompletedAt,
       heartbeatAgeSeconds: ageSeconds,
@@ -77,6 +90,7 @@ export function projectResearchHealth(options: {
   const activeJobs = health.activeJobs ?? [];
   const base = {
     queuedJobs: health.queuedJobs,
+    stalledJobs: health.stalledJobs ?? 0,
     activeJobs,
     activeCount: activeJobs.length,
     lastCompletedTicker: health.lastCompletedTicker,
