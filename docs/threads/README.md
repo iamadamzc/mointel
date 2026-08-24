@@ -1006,6 +1006,46 @@ practice governs:
 
   Research kept the wrong text and why it was wrong rather than overwriting it,
   for that reason.
+
+  **AND IT HAD ALREADY RECURRED — MEASURED BY R&D IN THE ARCHIVE'S OWN COLUMNS,
+  `d8e9c60`.** Every derived gain field starts at or after the minute he stops
+  trading: `gain_open_30_pct` (09:30–10:00) **begins the minute his session ends**;
+  `gain_to_1100_pct` and `gain_to_close_pct` are entirely after it.
+
+  **Where the max gain actually lands, all 95 movers:**
+
+  | window | movers peaking there | |
+  | --- | ---: | ---: |
+  | 04:00–06:59 | 26 | **27.4%** — largest single bucket |
+  | 07:00–09:29 | 18 | 18.9% — his profit window |
+  | **09:30–09:59** | **7** | **7.4%** — the window the column is NAMED for |
+  | 10:00–10:59 | 9 | 9.5% |
+  | 11:00–15:59 | 18 | 18.9% |
+  | 16:00–20:00 | 17 | 17.9% |
+
+  **46.3% of movers peak inside his working session; 7.4% peak in the opening-gain
+  window.** *"The opening 30 minutes"* reads as the money window to anyone opening
+  the schema. **On this desk it is the worst half hour of the six** — and the
+  assumption is in the field name, which is why nobody questioned it.
+
+  **Nothing is lost, and not by luck.** `max_gain_pct`, `time_of_max_gain` and
+  `premarket_high` are full-session 04:00–20:00 and correct — **the defect is in
+  the derived windows, not the capture**, and minute bars are re-fetchable. It
+  lands on the reassuring side of the re-fetchable / observable-once split: **the
+  wrong question was asked of what was kept, rather than the right thing not being
+  kept.**
+
+  **The fix, when the desk is quiet: ADD gain-to-07:00 and gain-to-09:30. Do not
+  delete Cameron's windows** — a booklet-window number stays the right comparison
+  when the question is *how does his session differ from the taught one*.
+
+  > **Check against him, not against the playbook. A number's pedigree is not its
+  > basis.**
+
+  **A wider pass is registered and deliberately not started:** Pillar 4's window,
+  the hold-time grain, the RVOL and price bands all descend from the same
+  playbook. **None is known to be wrong. None has been checked against the
+  practitioner — and the one that was checked turned out to be the booklet's.**
 - **Entry** is a micro pullback on rising volume, plus flat top, ABCD and VWAP
   reclaim. **Absorption is a gate, not a trigger** — stay out while a large
   presence sits unconsumed on the tape.
