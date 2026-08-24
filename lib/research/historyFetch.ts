@@ -8,8 +8,52 @@
 
 import { AlpacaRestClient } from '../market/alpaca/rest';
 import { findAlpacaCredentials } from '../market/credentials';
+import { etDateString, sessionEndUtc } from '../market/session';
 import type { MarketDatabase } from '../market/store/db';
 import { latestDailyBarDate, upsertDailyBars } from './history';
+
+/** Calendar days to walk back before giving up on finding a settled session. */
+const SETTLED_SEARCH_DAYS = 10;
+
+/**
+ * The newest session whose daily bar can be trusted to be final.
+ *
+ * ONE concept doing two jobs, because they are the same question asked twice:
+ * which bar may be STORED, and whether the cache is already CURRENT.
+ *
+ * A `1Day` bar for a session in progress is a running high and a partial
+ * volume. Stored, it is indistinguishable from a finished session — and worse,
+ * it was self-locking: `ensureDailyHistory` skipped when the newest stored bar
+ * equalled today, so a partial bar made every later call answer "already
+ * current" and nothing refetched it for the rest of the day. One re-analysis
+ * mid-session poisoned that symbol's history until the date rolled.
+ *
+ * `resolveCycle` reads such a bar as a completed session: relative volume
+ * understated, a cycle start possibly missed, a retracement measured against a
+ * high still forming.
+ *
+ * Named as what is ACCEPTED rather than what is refused. A denylist of bad bars
+ * has to enumerate every way a bar can be unfinished; this states the one
+ * condition under which it is done.
+ *
+ * The boundary is the full session end at 20:00 ET, not the 16:00 close,
+ * because whether Alpaca folds extended-hours trades into a daily bar is not
+ * established. Waiting the extra four hours costs nothing a daily-grain measure
+ * can perceive; guessing wrong stores a bar that is still moving.
+ *
+ * Weekends are skipped arithmetically. A market holiday is not, so on those days
+ * this points at a session that never traded, no stored bar ever matches it, and
+ * the effect is a redundant fetch — the harmless direction.
+ */
+export function lastSettledTradingDate(now: Date = new Date()): string {
+  for (let back = 0; back < SETTLED_SEARCH_DAYS; back += 1) {
+    const candidate = etDateString(new Date(now.getTime() - back * 86_400_000));
+    const weekday = new Date(`${candidate}T12:00:00Z`).getUTCDay();
+    if (weekday === 0 || weekday === 6) continue;
+    if (now.getTime() >= sessionEndUtc(candidate).getTime()) return candidate;
+  }
+  return etDateString(now);
+}
 
 export interface DailyHistoryResult {
   fetched: boolean;
@@ -20,17 +64,25 @@ export interface DailyHistoryResult {
 /**
  * Ensures split-adjusted daily bars are cached for one symbol.
  *
- * Skips entirely when today's bar is already stored. Failure is reported rather
- * than thrown: cycle context is enrichment, and losing it must not fail a job
- * whose SEC and catalyst evidence collected fine.
+ * Skips when the newest SETTLED session is already stored, and stores nothing
+ * newer than that. See `lastSettledTradingDate`.
+ *
+ * Failure is reported rather than thrown: cycle context is enrichment, and
+ * losing it must not fail a job whose SEC and catalyst evidence collected fine.
  */
 export async function ensureDailyHistory(
   db: MarketDatabase,
   symbol: string,
   tradingDays: number,
+  now: Date = new Date(),
 ): Promise<DailyHistoryResult> {
-  const today = new Date().toISOString().slice(0, 10);
-  if (latestDailyBarDate(db, symbol) === today) {
+  /*
+   * Compared in ET. The previous test used a UTC date, which rolls at 20:00 ET
+   * and so disagreed with the trading day for four hours every evening.
+   */
+  const settled = lastSettledTradingDate(now);
+  const stored = latestDailyBarDate(db, symbol);
+  if (stored !== null && stored >= settled) {
     return { fetched: false, sessions: 0, detail: 'already current' };
   }
 
@@ -68,11 +120,17 @@ export async function ensureDailyHistory(
       fetchedAt: new Date().toISOString(),
     }));
 
-    upsertDailyBars(db, rows);
+    // The guard that matters: an unfinished session never reaches the store.
+    const settledRows = rows.filter((row) => row.tradingDate <= settled);
+    const withheld = rows.length - settledRows.length;
+
+    upsertDailyBars(db, settledRows);
     return {
       fetched: true,
-      sessions: rows.length,
-      detail: `${rows.length} split-adjusted session(s)`,
+      sessions: settledRows.length,
+      detail:
+        `${settledRows.length} split-adjusted session(s)` +
+        (withheld > 0 ? `, ${withheld} unsettled withheld` : ''),
     };
   } catch (error) {
     return {
