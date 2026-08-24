@@ -767,6 +767,61 @@ z = 0.66, p = 0.51. **No detectable relationship.** Mean modal agreement on
 these rows is 85%, so misclassification is about 15% and the attenuation factor
 about 0.70.
 
+
+##### Definition-robustness, added 2026-08-24
+
+Prompted by Research finding that **133 symbols carry a stale grade tail** and
+that the stranded jobs are eight, not three — names nothing will ever re-analyse.
+The question that raises for Q1 is whether grade staleness is **differential**:
+attenuation only biases toward zero when the measurement error is unrelated to
+the outcome. If stale grades cluster among movers, the ceiling above is not a
+ceiling.
+
+**It does not, and the check is cheap enough that it should have been run at the
+time.** Among admissible symbol-days, uncensored mean grade age is **0.15
+sessions for movers against 0.11 for non-movers.** No differential worth the
+name, so the non-differential assumption behind the +19-point ceiling holds.
+
+**What *is* strongly differential is whether a name was analysed at all** — mover
+rate 41.6% among symbol-days carrying an analysis version against 11.6% among
+those carrying none. That is selection into the pipeline, not misclassification,
+and **the coverage classification already excluded it**: all 11 movers with no
+version are `FAILED` (6) or `NO_LOOK` (5), inadmissible by construction. The
+instrument did the job it was built for, which is worth recording because it was
+built before there was a finding to test it against.
+
+**And the contrast survives every definition of "carried a catalyst" the archive
+can express**, over the same 211 admissible symbol-days:
+
+| instrument | movers | non-movers | difference | Fisher 2-sided |
+| --- | --- | --- | ---: | ---: |
+| **prior-free five-draw modal** *(the published figure)* | 16.7% (14/84) | 13.4% (17/127) | +3.3pp | 0.51 |
+| stored `catalyst_first` | 10.7% (9/84) | 10.2% (13/127) | +0.5pp | 1.000 |
+| stored `catalyst_last` | 17.9% (15/84) | 13.4% (17/127) | +4.5pp | 0.434 |
+| stored `catalyst_best` | 20.2% (17/84) | 13.4% (17/127) | +6.9pp | 0.251 |
+
+**Not one is significant and the widest gap is 6.9 points**, against a Pillar 4
+reading that implies a near-total one. The verdict does not turn on which
+definition of *carried a catalyst* a reader picks, and that is a stronger claim
+than the single-instrument version it replaces. A bounded negative needs exactly
+this, because the obvious way to attack one is to say the measure was wrong.
+
+**The spread is itself the sensitivity band**: +0.5pp to +6.9pp depending on
+whether you take the first grade of the day, the last, the most generous, or a
+prior-free re-derivation. Quote the band, not one row.
+
+**A near-miss worth recording, because it was mine.** Setting out to check the
+staleness question I computed the stored-column rates first, saw 17.9% where I
+expected 16.7%, and briefly concluded my own published figure did not reproduce.
+It does — exactly, 14/84 and 17/127 from `data/replay-full.json`, and the
+findings log named the basis all along. **I had compared a number against a
+different instrument and read the disagreement as an error.** The register's
+summary line did not carry the basis even though the findings log did, which is
+what let me do it; it does now. **A figure whose basis lives only in the document
+that derived it will be re-derived wrongly by someone reading the summary** —
+including by the person who wrote both.
+
+
 **This is a bounded negative, not a null, and the distinction is the whole
 point.** Attenuation biases toward zero, so this instrument cannot support "no
 relationship". What it *can* support is a ceiling:

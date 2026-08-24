@@ -215,7 +215,7 @@ the kind of thing this register exists for. Design acts on whatever comes back.
 
 | Line | Verdict | Closed |
 | --- | --- | --- |
-| Q1, first half — do 50%+ movers carry catalysts? | `PILLAR_4_STRONG_FORM_EXCLUDED` — **83% of 50%+ movers carried no legitimate-positive-or-stronger catalyst**, prior-free, as-of-correct, five-draw modal, over 211 graded symbol-days on the desk's board. Movers 16.7% against non-movers 13.4%, p=0.51; corrected for 15% misclassification the largest true difference consistent with the data is **+19 points**. Pillar 4 calls a breaking-news catalyst *non-negotiable*, which implies far more than that, so **the strong form is excluded**. A weak relationship is not excluded and nothing here says catalysts are irrelevant. | 2026-08-23 |
+| Q1, first half — do 50%+ movers carry catalysts? | `PILLAR_4_STRONG_FORM_EXCLUDED` — **83% of 50%+ movers carried no legitimate-positive-or-stronger catalyst**, prior-free, as-of-correct, five-draw modal, over 211 graded symbol-days on the desk's board. Movers 16.7% against non-movers 13.4% **on a prior-free five-draw modal** (the basis matters — the stored columns give +0.5pp, +4.5pp and +6.9pp, and none of the four is significant), p=0.51; corrected for 15% misclassification the largest true difference consistent with the data is **+19 points**. **Definition-robust:** the contrast survives every definition of *carried a catalyst* the archive can express, and grade staleness is not differential by mover status, so the attenuation assumption behind the ceiling holds. Pillar 4 calls a breaking-news catalyst *non-negotiable*, which implies far more than that, so **the strong form is excluded**. A weak relationship is not excluded and nothing here says catalysts are irrelevant. | 2026-08-23 |
 | Sub-minute execution arrival | `NO_SUBMINUTE_INCREMENTAL_SIGNAL` — 2–20s execution count and arrival timing add nothing over the completed-minute baseline. The density gate that makes the price path measurable makes a 2s window a rescaling of the minute. | 2026-08-21 |
 | Minute trade count | `WITHIN_DAY_TRADE_COUNT_SIGNAL_CONFIRMED` — raw completed-minute trade count predicts a *less* clean next 30–60s. More executions is worse. The programme's only usable artifact. | 2026-08-21 |
 
@@ -442,9 +442,13 @@ a mode carrying "3 of 5" is not one. **This thread's two-draw projection held** 
 46-61% predicted irreproducible, 45% measured not-unanimous, with 53 versions at
 exactly 3 of 5 confirming the flips are nearer 50/50 than 75/25.
 
-**THE RESULT.** Share carrying `STRONG` or `LEGITIMATE_POSITIVE`, 211
-symbol-days: **movers 16.7% (n=84), non-movers 13.4% (n=127)**, difference
-+3.3pt, z = 0.66, p = 0.51. Mean modal agreement 85%, so misclassification ~15%
+**THE RESULT.** Share carrying `STRONG` or `LEGITIMATE_POSITIVE` **on a
+prior-free five-draw modal** — the basis, and it is not the stored column — over
+211 symbol-days: **movers 16.7% (n=84), non-movers 13.4% (n=127)**, difference
++3.3pt, z = 0.66, p = 0.51. Reproducible from `data/replay-full.json`.
+**Re-run 2026-08-24 against all four definitions the archive can express**
+(modal, `catalyst_first`, `catalyst_last`, `catalyst_best`): differences +3.3,
++0.5, +4.5 and +6.9pp, **not one significant.** Quote the band, not one row. Mean modal agreement 85%, so misclassification ~15%
 and attenuation ~0.70.
 
 **Recorded as a bounded negative, not a null.** Attenuation biases toward zero so
