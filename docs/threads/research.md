@@ -532,6 +532,56 @@ Related and probably the same scoping question: `research.lastCompletedAt` read
 `max(completed_at)` in the store still returns that same timestamp. No job ran in
 between. Ops did not dig further — it is display logic over this thread's data.
 
+### Re-priced 2026-08-24: the consequence is on the board, not in a table
+
+*Chain found by Integration, closed by Ops, verified here against the production
+snapshot. I had this item filed as low priority on the wrong reasoning.*
+
+**What I wrote was "ten stale rows nothing will pick up", priced as a refresh
+rather than as coverage — on the CRGO/MYSZ pair, n=2.** That framing said the
+consequence was invisible. It is not:
+
+    Friday 22:00 ET recap queues 8 jobs  →  none ever claimed (started_at NULL)
+    → never re-analysed → ensureDailyHistory never ran → the partial Friday bar
+    never healed → readDailyBars now HIDES it → the series ends Thursday
+    → a cycle computed one session stale, on today's board
+
+Verified: all ten are `QUEUED` with `started_at` null — eight queued
+`2026-08-22T02:00:06Z` on `INTERVAL_RECHECK`, plus CRGO and MYSZ from the 18th.
+**Eight of the ten carry a stale tail.** `ADXN`, `LSTA` and `ZKH` each hold 101
+bars, 100 finished, newest finished `2026-08-20` against a tape at `2026-08-21`,
+and all three were on the board.
+
+**It is not a short-series problem, and that is the part worth keeping.**
+`resolveCycle` needs two bars and these have a hundred. The phase is computed on
+*complete data that is one day old*. Short series is the plausible guess, it
+would have looked right, and Design explicitly declined to guess — which is the
+only reason the real cause was found two nights upstream in a queue nobody had
+connected to the cycle column.
+
+**My own fix is what made it visible**, and that is not an argument against the
+fix. Before `ecb7a74` these symbols computed a cycle on a partial bar — a running
+high and a part-day volume — which is worse. Hiding it was right. What the fix
+did was move the silence from the data to the timestamp, and `163ef90` closes
+that with `asOfTradingDate` on `CycleHistory`.
+
+**Not an incident**: it self-corrects the moment each name is re-analysed for
+any other reason, and all three were on the board, so likely the same morning.
+**But the blast radius was mis-stated**, and the reason is worth more than the
+correction: *n=2 was two rows from a date nothing else touched, so the sample
+could not contain the consequence.* The pair generalised to ten, and the ten did
+not behave like the pair.
+
+**Still open**, and unchanged by any of this: why the jobs are never claimed, and
+why `/api/health` reports `queuedJobs: 0` against ten of them.
+
+**One thing recorded as unresolved rather than assumed.** Design observed `NO RUN`
+×3 on a 12-row board; Ops analysed 14 `NO_CYCLE` across 28 intelligence entries
+and found 11 genuine, 3 stale. **Whether Design's three are the stale three or
+three of the eleven is unknown** — different populations, and a 3 meeting a 3 is
+exactly the coincidence that reads as confirmation. Nobody has asked the narrower
+question and nothing operational turns on it.
+
 **3. Interpreter tiering was designed but never exercised.** `Terra` is the
 default full research model. The abstraction was deliberately preserved so `Sol`
 could take difficult or conflicting dossiers and `Luna` could do low-cost change
