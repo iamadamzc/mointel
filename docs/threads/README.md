@@ -944,8 +944,23 @@ practice governs:
 - **Hold time is seconds, at most 1-2 minutes.** Risk $0.15-$0.25 per share.
   A one-minute candle is wider than the whole trade — remember this before
   proposing any measurement at minute grain.
-- **07:00-10:00 ET is where the profit is**; after 11:00 is avoided. Exceptions:
-  dip trades, and RTH when there is a strong mover.
+- **HE TRADES PREMARKET. HE DOES NOT TRADE RTH.** *Stated directly 2026-08-24,
+  correcting how this thread had been reasoning all night.* The working session is
+  **04:00–09:30 ET**, with the profit concentrated **07:00–09:30**; after 11:00 is
+  avoided. RTH is the exception — a dip trade or a genuinely strong mover — **not
+  the default and not the reference point.**
+
+  **What this changes for every thread: "before the open" is NOT a safety
+  margin — it is his session.** Integration spent a night quoting *"RTH is four
+  and a half hours out"* as runway to threads that had none, on a morning when he
+  was already at the desk. **The premarket checkpoints — 06:25, 06:45, 07:00 —
+  are not preparation for the trading window. They are inside it.**
+
+  **The capture rule is unchanged and still governs**: he can trade without the
+  tool, so a broken board during his session costs him a board rather than a
+  trade. **But do not compute a window from the opening bell.** If a thread wants
+  to know whether it is working in front of him, the answer at 04:00–10:00 ET is
+  yes.
 - **Entry** is a micro pullback on rising volume, plus flat top, ABCD and VWAP
   reclaim. **Absorption is a gate, not a trigger** — stay out while a large
   presence sits unconsumed on the tape.
