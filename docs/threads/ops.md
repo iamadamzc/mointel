@@ -1136,6 +1136,45 @@ the reason to see this before the diff rather than in it: **it would arrive
 inside a commit whose subject is about deleting a research field, and nothing
 about that subject line says capture.**
 
+## The `search_context_size` experiment: the window, and why it is not a deploy
+
+Approved by the trader. Alternate `RESEARCH_DISCOVERY_SEARCH_CONTEXT` between
+`low` and unset across 4–6 trading days, zero marginal token cost, outcome
+measured on citation rate. Discovery is **56% of the desk's input tokens**, so
+this is the largest cost lever identified.
+
+**The flag is read once**, at `worker/research.ts:91` in `main()`, before the
+loop — verified, and `readResearchConfig` appears nowhere else. **So every flip
+needs a `systemctl restart mointel-research`.**
+
+**The window, which is this thread's call: 22:15 ET, ~15 minutes after the
+recap.** Clear of the checkpoint guard in both directions, and 8 hours before
+`STRUCTURAL_REFRESH` at 06:10 ET — the longest quiet stretch the schedule has.
+Setting it the previous evening covers the whole next trading day, because the
+value is read at process start.
+
+**Never at the start of a trading day.** Premarket puts checkpoints minutes
+apart, which is the window already identified as the worse one for any restart.
+
+**It is materially safer than a deploy, and should not be priced as one.** The
+`BUSY_SNAPSHOT` race needs several services opening the store at once, which
+happens only in a deploy's start burst. A single `systemctl restart
+mointel-research` produces no burst.
+
+**One correction to the protocol, which nobody raised:** a mid-day *deploy* is
+harmless to the experiment. Research restarts and re-reads the env file — but
+re-reads the **same value**, so it re-applies rather than changes. The only
+confound is editing the env file mid-day, which the protocol already forbids.
+
+**Record beside every flip:** the date, which setting was live, and **`NRestarts`
+after the restart**. Without the third, a crashed-and-recovered worker on an
+experiment day is indistinguishable from a clean one — and `is-active` cannot
+tell them apart, which this thread established the expensive way.
+
+**Not started.** The delegation the trader gave covers *deployment* instructions;
+this is a production config change with a multi-day protocol, which is adjacent
+but not the same thing. Put to him rather than stretched.
+
 ## Open items
 
 **0c. Health measures that the worker is alive, not that it is working — so a
