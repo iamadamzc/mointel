@@ -984,6 +984,12 @@ writer does not.
   (`lib/research/types.ts:550`) is **not optional**, so nothing at that call site
   warns once the field is gone at runtime.
 
+  **And it throws EARLIER than first traced.** That writer reads `dossier.cycle`
+  at **four** sites, not one — `:239 currentCycleHigh`, `:240
+  historicalResistance`, `:275 cycleClassification`, `:308 cycleWarnings` — so
+  `:239` fires first and the throw lands before the site Design originally
+  named. Established by Research, verified here. The find was **understated**.
+
   **That makes it a capture failure, not an empty column.** The throw is inside
   `captureAssessment` (`worker/desk-assessments.ts:171`), called at `:588` —
   **before** `insertAssessmentTickers` at `:595`. So the checkpoint's ticker
@@ -1000,10 +1006,32 @@ Research's, in the same commit as the deletion, never after**. If the two ever
 land apart, writer first. Design owns the rendering half; it belongs with item
 12, which rebuilds this surface anyway.
 
-**The general rule this produced**, now in the README: *a field deletion is owned
-by whoever deletes it, across every module that reads it — a deletion plan is a
-list of **readers**, not writers.* This one was found by the thread that owns
-none of the three files involved.
+**The general rule this produced**, now in the README: *a deletion plan is a list
+of **readers** — and so is a rename, and a type change.* This one was found by
+the thread that owns none of the three files involved.
+
+### The Sheet and the dossier use the same field names, and Design renders both
+
+Worth naming because this thread is the most exposed to it. `StructuralResearch`
+(the Sheet's row) carries `cycleClassificationRaw`, `cycleState`,
+`cycleReasoning` and `recentMajorRuns` — **Sheet fields with dossier-shaped
+names**, within a few lines of each other.
+
+**So a grep by field name cannot tell the two vocabularies apart.** Every one of
+the false positives in Research's `dossier.cycle` reader inventory was this one
+collision rather than several near-misses. `TickerDrawer.tsx:708` reads
+`research?.recentMajorRuns ?? ''` — the *Sheet's* `string` (`lib/data/types.ts:183`),
+not the dossier's `string[]` (`lib/research/types.ts:535`). Confirmed for
+Research 2026-08-24.
+
+**The shape of the fallback identifies the source** where a type lookup is
+inconvenient: `?? ''` cannot be defaulting a `string[]`.
+
+**This is the trap that caught Design's own cutover**, from the other direction.
+The scope list was checked with a grep for `cycleClassification` and
+`conclusions.cycle`, which missed three surfaces that said `ticker.cycle.display`
+— searching for the dossier's names and missing the Sheet's. **Any inventory over
+these fields must be typed, not grepped.**
 
 ### Falsifiable at CLOSED
 
