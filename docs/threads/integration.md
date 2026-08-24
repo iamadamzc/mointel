@@ -599,6 +599,47 @@ by definition not the one shipping it. So the test is always the run *after* —
 and if a rollout is judged on the deploy that installs it, it will be judged on
 the last instance of the old behaviour.
 
+## The one check that CAN fail, and it was found by accident
+
+**Ops, 2026-08-24, as a side effect of a caveat about a display column.** Every
+other entry in this document is a check that could not fail. This is the
+inverse, and it is the only one.
+
+Design's cycle cutover deliberately does not fall back to the model's field, so
+every dossier predating `computedCycle` reads `CYCLE NOT ESTABLISHED`. Ops
+measured it rather than accepting the adjective **"noticeably fewer"**:
+
+> **231 current dossiers. 0 carry `computedCycle`. All 231 will read NOT
+> ESTABLISHED.** Not some — the column is empty at 04:00, and anyone not told
+> will read it as the cutover having broken the column.
+
+**That same count is a progress meter, and it needs no new code:**
+
+```sql
+select count(*) from research_dossiers d
+  join research_analysis_versions v on v.id = d.current_version_id
+ where json_extract(v.dossier, '$.computedCycle') is not null;
+```
+
+It runs 0 → 231 as research re-analyses. **A heartbeat proves a process exists;
+this proves it is doing work** — which is exactly what `/api/health` cannot
+express and what the STALLED proposal was going to build.
+
+So on Monday **one query answers three separate questions**:
+
+- **Rising** — research is working, `2433470`'s billing exemption healed the
+  board unaided on its first real production test, and the cutover is clearing
+  as designed.
+- **Flat at 0 with a non-empty queue** — the STALLED condition **observed rather
+  than theorised**, and evidence that tonight's unbounded-fetch ceilings did not
+  cover the hang.
+
+**The lesson is not "look harder".** Nobody could have looked for this: the
+observable did not exist until a display change created it, in a place no one
+was watching. What made it visible was measuring a caveat instead of repeating
+it — *"noticeably fewer" and "none at all" are different mornings.* **An
+adjective is where a falsifiable number goes to hide.**
+
 ## Check the field that carries the answer
 
 **Added 2026-08-23 after three instances, two of which nearly became reports.**
