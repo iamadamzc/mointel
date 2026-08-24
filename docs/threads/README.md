@@ -754,6 +754,51 @@ Do not restate these in a thread doc; link to them.
 Historical task prompts live in [`prompts/`](../../prompts). They are a record of
 what was asked, not current instructions. Several are superseded.
 
+## An intelligence platform, not a signal platform
+
+**Stated by the trader, 2026-08-24, and it settles a class of design argument that
+has come up in three threads this week.**
+
+> **We are an intelligence platform, not a signal platform — so give the user as
+> much of the story as we can that is useful.**
+
+**The distinction is what the product owes the reader.** A signal platform reduces
+everything to a call: a grade, a rank, a yes. **An intelligence platform hands over
+the reasoning, the provenance, and the shape of what is not known** — and trusts
+the trader to do the reducing, because he is the one carrying the risk.
+
+**Read it as licence rather than as caution.** Several decisions on this desk were
+taken defensively — show nothing rather than something imperfect — and this
+reverses the default. **The bar is *useful*, not *certain*.**
+
+- **`CANNOT_VERIFY` is a product feature, not a failure to answer.** So is
+  `CYCLE NOT ESTABLISHED`, and so is `"51 unknown"` announcing that a whole column
+  is empty. Each tells the trader something true he would otherwise have to
+  discover himself.
+- **A refused float must render as a finding, never as an absence** — already
+  Design's rule, and this is the principle underneath it.
+- **A bounded proxy with its basis stated beats a blank.** *"Supply bounded at X,
+  from filed shares as of DATE"* is story; a blank float cell is not. **The
+  decision to ship a bound rather than an estimated float is not a shortfall
+  against this principle — it is an expression of it**, provided the bound arrives
+  with its basis and its as-of visible.
+- **Every value with two possible definitions travels with its companion column.**
+  `float_basis`, `reference_basis`, `adjustment_basis`, `latestDate` on a cycle.
+  Those exist so the reader can see which question was answered.
+- **Conflicts get shown, not resolved silently.** Where the Sheet and the automatic
+  path disagree, the disagreement is information.
+
+**What it argues against**, and this is the part that changes work rather than
+describing it: **collapsing a computation to a label and discarding the working;
+suppressing a value because it is uncertain rather than labelling the
+uncertainty; and "we'll show it once it's reliable", which withholds the story
+until it has stopped being one.**
+
+**The limit is the word *useful*.** This is not a licence to render every
+intermediate on the page. Terminology stays trader-facing, engine internals stay
+out, and a field nobody will ever ask about is still not worth showing — the
+judgement is what the trader would want to know if he were doing this by hand.
+
 ## Who this is for
 
 Every threshold, ranking and label in this product serves one trading style, and
