@@ -794,10 +794,45 @@ suppressing a value because it is uncertain rather than labelling the
 uncertainty; and "we'll show it once it's reliable", which withholds the story
 until it has stopped being one.**
 
-**The limit is the word *useful*.** This is not a licence to render every
-intermediate on the page. Terminology stays trader-facing, engine internals stay
-out, and a field nobody will ever ask about is still not worth showing — the
-judgement is what the trader would want to know if he were doing this by hand.
+**The limit is the word *useful*, and R&D put it better than the principle
+itself:**
+
+> **Story no one needs is not intelligence, it is volume — and volume is how a
+> genuine signal gets buried. An intelligence platform that ships everything is a
+> signal platform with worse ergonomics.**
+
+So: terminology stays trader-facing, engine internals stay out, and a field nobody
+will ever ask about is still not worth showing. **The judgement is what the trader
+would want to know if he were doing this by hand.**
+
+### Fix the tie-break before the numbers arrive
+
+**R&D, applying the framing to Q8 before designing the evaluation rather than
+after.** Citation rate was already the outcome variable, chosen defensively —
+quality needs a grader and this desk's grader is 45% irreproducible. **Under this
+principle it is also the RIGHT instrument: the desk's job is to say *why* a name
+was surfaced, and a citation is the trace of that.** Which makes the decision rule:
+
+> **A model that grades identically but cites less is a WORSE outcome, not a
+> cheaper equal one.**
+
+**Written down in advance, and that is the whole point.** Without it fixed
+beforehand, the honest reading of *same grades, fewer citations, lower bill* is
+**"no quality difference, take the saving"** — when it is a quality difference that
+does not show up in the grade.
+
+> **A tie-break chosen once the numbers are looking back at you is not a
+> tie-break. It is a rationalisation with a date on it.**
+
+**It generalises past Q8: any comparison whose decision rule is not fixed before
+the data lands will have its rule fitted to the data.** The habit is cheap —
+write the rule, and what would change your mind, into the register at scoping time.
+
+**And the same move already exists in this desk's storage rules and nobody had
+connected them.** `split_sessions_ago` stored **with its window beside it** is
+`float_basis` in a different costume: **a null that says how far the search went is
+story; a null that does not is a signal.** `CDTG` is what a bare one cost — a
+reader took the null for *no split*, and the answer was 57 sessions.
 
 ## Who this is for
 
