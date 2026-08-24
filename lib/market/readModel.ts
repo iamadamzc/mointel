@@ -11,6 +11,8 @@ import 'server-only';
 import { loadMarketConfig } from './config';
 import { projectMarketHealth } from './health';
 import { resolveActiveBoard } from './board';
+import { resolveCycleHistory } from './cycle';
+import type { ResearchAnalysisVersion } from '../research/types';
 import { afterHoursStartUtc, isEarlyClose, isMarketDataExpected } from './session';
 import {
   assessmentTablesPresent,
@@ -611,6 +613,27 @@ function healthView(
  * and may meet a store written before the research tables existed, and a page
  * render must not depend on the research worker ever having run.
  */
+/**
+ * Attaches a freshly computed cycle to a dossier for live display.
+ *
+ * Returns the analysis unchanged when there is no dossier or no usable bar
+ * history, so an absent cycle stays absent rather than becoming a guess.
+ */
+export function overlayLiveCycle(
+  db: MarketDatabase,
+  analysis: ResearchAnalysisVersion | null,
+): ResearchAnalysisVersion | null {
+  if (!analysis?.dossier) return analysis;
+
+  const bars = readDailyBars(db, analysis.dossier.ticker);
+  if (bars.length < 2) return analysis;
+
+  return {
+    ...analysis,
+    dossier: { ...analysis.dossier, computedCycle: resolveCycleHistory(bars) },
+  };
+}
+
 function readIntelligence(
   db: MarketDatabase,
   tradingDate: string,
@@ -622,7 +645,31 @@ function readIntelligence(
   const analyses = readCurrentAnalyses(db, tickers);
 
   for (const ticker of tickers) {
-    const analysis = analyses.get(ticker) ?? null;
+    const stored = analyses.get(ticker) ?? null;
+    /*
+     * The cycle is recomputed for the LIVE board, and the stored one is left
+     * alone.
+     *
+     * A cycle position moves with price every session; filings do not. Storing
+     * it on a dossier put a price-derived value behind an evidence-change gate,
+     * so a name whose filings had not moved kept the cycle it had when they
+     * last did -- STAK carrying DAY_ONE from 24 July for the rest of that week
+     * -- and a name analysed before the field existed never got one at all.
+     *
+     * Overlaid rather than replacing the stored value, because the two answer
+     * different questions. The stored one is `asOf`-bounded at
+     * pipeline.ts:363, which is what lets a replay or an archived assessment
+     * resolve a cycle against the bars that existed AT THAT TIME. Computing at
+     * read time with no bound would hand a historical reader today's bars and
+     * let it know how the move turned out -- the same look-ahead the replay
+     * harness was built to refuse. So the live path overlays; nothing else is
+     * touched.
+     *
+     * Reads only. `readDailyBars` is a synchronous query over bars already
+     * stored; fetching stays in the worker, for the names actually being
+     * analysed.
+     */
+    const analysis = overlayLiveCycle(db, stored);
     const job = readLatestJobForTicker(db, ticker, tradingDate);
     if (!analysis && !job) continue;
 
