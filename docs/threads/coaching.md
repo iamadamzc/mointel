@@ -81,8 +81,27 @@ the booklet, the live practice governs:
   or simple satisfaction with the gain. The last is discretionary and cannot be
   reconstructed — measure the excursion available and let the trader judge the
   exit rather than pretending to model it.
-- **07:00-10:00 ET is where the profit is**; after 11:00 is to be avoided.
-  Exceptions: dip trades, and RTH when there is a strong mover.
+- **HE TRADES PREMARKET. HE DOES NOT TRADE RTH.** *Corrected 2026-08-24 by his
+  own statement; this charter carried the booklet's window until then.* **Session
+  is 04:00-09:30 ET, profit concentrated 07:00-09:30.** RTH is the exception — a
+  dip trade or a genuinely strong mover — not the default.
+
+  **This matters more here than anywhere else on the desk**, because two of the
+  adherence checks above are keyed to the clock. *"Money made before 10:00 given
+  back after 11:00"* is the **booklet's** shape and measures him against
+  Cameron's session, not his. **The equivalent question for this trader is
+  whether the 07:00-09:30 window is where the money is made and what happens to
+  it after 09:30.** Rewrite the check before running it.
+
+  **And R&D measured the market side on 2026-08-24: of 95 movers, 27.4% peak
+  04:00-06:59, 18.9% in 07:00-09:29, and only 7.4% in 09:30-09:59.** The largest
+  single bucket is *before* the stated profit window opens.
+
+  **Assume every other threshold in this file may be the booklet's rather than
+  his, and check before measuring.** Hold time, risk per share, the price and
+  RVOL bands are all inherited from the same source. **None is known to be wrong;
+  none has been checked against him — and the one that was checked turned out to
+  be Cameron's.**
 
 ## Opening message for a new chat
 
