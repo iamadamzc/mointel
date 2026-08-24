@@ -1045,10 +1045,41 @@ Sheet *column indices* (`RESEARCH` 18 and 20). `lib/data/priceLevels.ts:547` and
 `lib/data/cycleLevels.ts:177` read `StructuralResearch` — the Sheet's row, not the
 dossier. A grep on field name alone reports all three as blockers.
 
+**`components/TickerDrawer.tsx` is the FOURTH false positive**, resolved by
+Integration and confirmed here. It types the prop `research: StructuralResearch |
+undefined` (`:35`) — the Sheet's row — and `:708` reads `research?.recentMajorRuns
+?? ''`. Ten of ten sites are now classified: six real, four false.
+
+**Design's tell, which beats a type lookup: read the FALLBACK.** `?? ''` is a
+string default. `StructuralResearch.recentMajorRuns` is a `string`
+(`lib/data/types.ts:183`); the dossier's is a `string[]`
+(`lib/research/types.ts:535`). A string default on the dossier's field would have
+to be `?? []` and then joined. **The shape of the fallback identifies the source,
+and unlike a type lookup it survives a grep** — it is visible on the matched line
+itself.
+
+**All four false positives are ONE collision, not four near-misses.**
+`StructuralResearch` carries `cycleClassificationRaw`, `cycleState`,
+`cycleReasoning` and `recentMajorRuns` within four lines of each other — the
+Sheet has a full cycle vocabulary using the dossier's words. No grep on a field
+name can separate them.
+
+**And it cuts both ways.** Design's own cutover grepped for `cycleClassification`
+and `conclusions.cycle` and missed three surfaces saying `ticker.cycle.display`.
+It searched the dossier's names and missed the Sheet's; this inventory searched
+by name and nearly reported the Sheet's as the dossier's. **Same collision,
+opposite direction, both directions cost something.**
+
+This is the desk's existing rule from the float work — *when two threads can each
+be right about the same word, the word needs a companion column rather than a
+footnote* — reaching a second pair. Here it cost search time instead of a wrong
+number, which is the cheap version.
+
 **The rule this produced, and it is general:** a field deletion is owned by
 whoever deletes it, across every module that reads it, and **a deletion plan is a
 list of readers rather than a list of writers.** This one was found by a thread
-that owns none of the three files involved.
+that owns none of the three files involved. **Build it by TYPE or by CALL SITE,
+never by name.**
 
 **14. Two numbers were wrong in ways their own plausibility hid.** *Both
 corrected the same day; kept as a pair because the failure mode is identical.*
@@ -1270,6 +1301,41 @@ as an observable that cannot distinguish a thing from its failure, one level dow
 > top-up does not self-heal and the board needs a manual release. It has bitten
 > twice. Start there: show me the change you would make and what it costs to
 > test, but do not write it until I agree on the approach.
+
+### Correction: the as-of hazard had no victim, and the archive is why
+
+I told Integration the overlay mattered because **R&D's Q1 apparatus would have
+been the first reader of a stored cycle and would have got today's bars
+silently**. That is **wrong**, and it was wrong in the safe direction. Verified
+here rather than taken on the relay:
+
+`lib/archive/cycles.ts:26` imports `resolveCycle` directly and computes from
+bars. `cycleAsOf(series, tradingDate)` bounds itself — `series.filter(bar =>
+bar.tradingDate <= tradingDate)` at `:51`, then `:53` requires the last bar to
+BE the requested date, so a gap returns null rather than a stale shape. **The
+archive never reads `computedCycle` off a stored version.** It is not a reader,
+so it could not have been the first one.
+
+Confirmed independently: `computedCycle` has exactly two reads —
+`lib/dashboard/cycle.ts:131` and `lib/dashboard/deskRead.ts:528` — and two
+writes, `lib/market/readModel.ts:633` and `lib/research/interpret/pipeline.ts:365`.
+
+**This makes the claim stronger, not weaker, and changes why the overlay is
+right.** Not that it saved R&D from a silent look-ahead — nothing was exposed.
+The as-of hazard was real as a *general property*: any read-time computation
+replacing a stored value breaks the boundary for any historical reader. It had
+**no current victim**. The overlay keeps the boundary intact for the first reader
+that ever wants one, and `lib/archive/` is the worked example of what that reader
+looks like — it already satisfies the constraint by computing from bounded bars
+rather than trusting a stored field.
+
+Ops's phrasing, worth keeping verbatim: **"that looked like a problem and is the
+opposite."**
+
+The general form: *naming a specific victim makes a hazard concrete, and a
+concrete claim is checkable — which is how this got caught.* Had I written
+"prospective, no reader today" the sentence would have been true and nobody
+would have found that the strongest evidence for it was a module I had not read.
 
 ---
 
