@@ -120,6 +120,47 @@ without him.
 **And shorter.** Volume is part of the same fault: a decision buried in a status
 report costs him the reading as well as the deciding.
 
+## Reading a thread means reading what it SAID, not what it committed
+
+**The trader's correction, 2026-08-24, after this failed repeatedly in one
+night.** I checked which sessions were running, read the commit log, and called
+that checking the threads. **Commits do not carry questions.**
+
+What it cost, all in one evening:
+
+- Research asked *"Ship the research release, or hold?"* and I walked past it
+  twice. **The trader had to point at it.**
+- Design's two questions reached me only because he told Design to come to me.
+- Ops's deploy question sat unanswered while I reported *"nothing needed from
+  you"*.
+- I relayed *"noticeably fewer cycle labels"* when the number was **231 of
+  231** — an adjective passed on unmeasured, and the difference between an
+  expected state and an incident.
+
+**The irony is exact.** I required every thread to end with `## What I need
+from you` so his attention would not be spent hunting decisions in prose — and
+then did not read that section. The convention protected him from them and made
+**this thread** the place asks went to die.
+
+**So, on every check, without exception:**
+
+1. **Read the last message of every thread**, not the commit log. The log tells
+   you what a thread finished. Only the message tells you what it is waiting
+   for.
+2. **Read its `## What I need from you` first.** It exists because I asked for
+   it. Skipping it is worse than never having required it.
+3. **Read what it said AND what it committed.** They diverge — Design's
+   `fecbba6` carried a phrase my own correction had already retracted, and only
+   the commit showed it.
+4. **Every ask gets one of three outcomes, none of them silence:** answered here
+   under the delegation, escalated to him, or declined with the reason said back
+   to the thread.
+5. **Never report "nothing needed from you" without having read all four asks.**
+   That sentence is a claim about four threads and I have made it while one was
+   waiting.
+6. **Relay numbers, not adjectives.** If a thread hands over a qualitative
+   claim, ask what it is quantitatively before passing it on.
+
 ## Relaying between threads
 
 **This thread is the message bus, as of 2026-08-23.** The shared README carries
