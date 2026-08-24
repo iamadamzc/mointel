@@ -691,9 +691,43 @@ before.
 
 **The generalisable move is that unification is a claim about consumers, not about
 code.** *"All four now inherit one definition"* sounds like tidiness and is an
-assertion that four consumers want the same thing. **`bundle.ts:478` and
-`pipeline.ts:362` are the other two callers and neither has been checked against
-the rate-versus-bound test.**
+assertion that four consumers want the same thing.
+
+**BOTH REMAINING CALLERS WERE THEN CHECKED, AND THE ANSWER IS WORSE THAN A THIRD
+AFFECTED CALLER.**
+
+- `pipeline.ts:362` — **clean.** A phase; the filter is correct.
+- `readModel.ts:628` (overlay) — a phase; correct.
+- `readModel.ts:305` (blue sky) — a **bound**; wrong.
+- **`bundle.ts:478` — BOTH, and unresolvable at the call site.**
+
+**The test does not partition by caller. It partitions INSIDE
+`summariseDailyHistory`, over one bar set:**
+
+| | wants the partial bar? |
+| --- | --- |
+| `windowHigh`, `windowLow`, `historicalResistance` — **bounds**, off `high`/`low` | **yes** |
+| `largestDrawdownPct`, runs and their `gainPct`, `runsOver20/50/100Pct`, `runnerCandidate` — **rates**, off `close` | **no** |
+
+**So neither filtered nor unfiltered is right for that function, and anyone
+"fixing" it by flipping a flag at the call site repairs one half and breaks the
+other.**
+
+> **The boundary can fall INSIDE a function. The rule is about the QUANTITY, not
+> the caller.**
+
+**AND IT REACHES THE APPEND-ONLY RECORD, WHICH BLUE SKY DOES NOT.**
+`summariseDailyHistory` feeds the **evidence bundle**, so an understated bound goes
+to the interpreter and is written into a dossier that persists. **Blue sky is wrong
+on a screen and can be recomputed; this is wrong in the record.**
+
+**A compounding effect nobody predicted.** `historicalResistance` is computed over
+`usable.slice(0, -1)` — deliberately dropping the last session, because resistance
+means levels established *before* now. Correct on its own. **But when the filter
+has already removed the partial bar, the slice drops the one behind it too — so
+`historicalResistance` loses TWO sessions, not one.** On BTCT: 08-20 hidden and
+08-19 sliced, and 08-19 held a 1.32 high. **A correct guard and a correct filter,
+composing into a wrong number.**
 
 ## A constant dressed as a measurement
 
