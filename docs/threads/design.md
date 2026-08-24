@@ -939,6 +939,44 @@ so `DAY 1`, `FRONTSIDE`, `OFF HIGH` and `PRIOR RUN` are unobserved — not faile
 The label map is exercised and reachable; four of its entries have never been
 seen on a screen.
 
+### The mechanism was wrong; the observation stands. Both reconcile on one parameter.
+
+Ops could not reproduce the pass and traced `market.intelligence` to a rank gate:
+`readDemandStates` selects `WHERE trading_date = ? AND rvol_rank IS NOT NULL`
+(`repo.ts:583`), which returns nothing on 2026-08-24, so `readIntelligence`
+returns `{}`. **That trace is correct.** Design's stated mechanism — *"the nine
+rows do not depend on a rank at all"* — **was wrong.**
+
+**The reconciling fact is a query parameter neither thread had named.** The page
+does not call the bare endpoint. It calls:
+
+    /review/<token>/api/market?symbols=OLOX,PMI,DXST,CYPH,PLAG,BTOG,GAUZ,CDTG,BTCS
+
+Measured on the live desk, same instant, same token:
+
+| Call | intelligence entries | with `computedCycle` | demand states |
+| --- | --- | --- | --- |
+| `/api/market` **no `symbols`** | **0** | 0 | 0 |
+| `/api/market?symbols=…` | **6** | **6** | 9 |
+
+**Both readings were true of what each measured.** The bare endpoint is
+rank-gated exactly as Ops traced; the page supplies its watchlist symbols
+explicitly and bypasses the gate. Ops read server-rendered HTML, which is
+produced before that fetch — hence `CYCLE NOT ESTABLISHED` ×9 there — while the
+hydrated page shows 6 populated and 3 not, which is precisely what renders:
+3 `BACKSIDE`, 3 `NO RUN`, 3 `CYCLE NOT ESTABLISHED`.
+
+**So the rule Design gave Integration was incomplete and is corrected here.** Not
+*"which endpoint feeds a surface"* but **"which endpoint, and with which
+parameters"**. An endpoint's behaviour on a bare call is not its behaviour in the
+app, and checking it bare gives a confident wrong answer — the same class of
+error as reading `/api/dashboard` for a dossier field.
+
+**One loose thread, not Design's and not explained here:** Ops counted
+`given back` ×3 in server-rendered HTML that also had `NO RUN` ×0. If the cycle
+column were wholly unpopulated server-side, three retracement phrases should not
+appear either. Worth someone pulling.
+
 **A better test would not exist later.** These arrived on a nine-row table at
 `CLOSED`, not on a populated board — the assumption that a phase-dependent
 surface needs the phase to be *busy* was wrong here, because the researched table
