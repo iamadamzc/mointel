@@ -264,6 +264,43 @@ deadlock, with Ops no longer asking and Integration not yet instructing. **When 
 protocol changes, both sides adopt it at different moments, and the gap between is
 a stall nobody is responsible for.** Name who is waiting on whom, out loud.
 
+## What gates a surface is which endpoint feeds it, not whether the market is open
+
+**Design, 2026-08-24, after Integration relayed a true measurement onto the wrong
+surface and told it two checks were impossible. Both then passed.**
+
+Ops measured Discovery exactly: 8,653 `ticker_session` rows seeded for the new
+date, **0 with `rvol_rank`**, `/api/market` returning `discovery.rows: 0`.
+Integration concluded the phase names and the retracement figure could not be
+checked, *"because both need rows on the board"*.
+
+**The researched table does not depend on a rank.** Its rows come from
+`market.intelligence` (`lib/dashboard/merge.ts:319`), a different source from the
+Sheet's `dashboard.research` at `:317`. The overlay reaches them, the market being
+shut is irrelevant, and both checks passed on the spot.
+
+- **Retracement passed decisively.** OLOX read *"143.7% of the move given back"* —
+  and a distance-below-the-high figure is **mathematically capped at 100%**. The
+  observation is impossible under the wrong definition, which is the strongest
+  form a check can take.
+- **The phase names passed narrowly.** `NO RUN` is the decisive string; `BACKSIDE`
+  alone would have been ambiguous because the old path emitted it too. Four of the
+  six names remain **unobserved, not failed** — only two phases occur in this data.
+
+**The failure is assuming phase-dependent means tape-dependent.** It is the same
+error as the endpoint trap next to it — `/api/dashboard` carries the *Sheet's*
+cycle and no `intelligence` key at all, so checking it would have produced a
+confident **false failure** the same night. Three threads met a variant of this in
+one day.
+
+**So before declaring a surface unobservable, trace what feeds it.** A measurement
+of one data path says nothing about a surface fed by another, however plausibly
+the two are related — and *"it cannot be checked yet"* is a claim that costs a
+verification window if it is wrong. **Integration made this call twice in one
+night, in opposite directions**, first listing these two as checkable before
+premarket when they were not, then as uncheckable when they were. Both times the
+missing step was the same: nobody traced the feed.
+
 ## An aggregate that falls is not proof the thing you fixed is working
 
 **Research, 2026-08-24, catching a check before it ran rather than after.**
