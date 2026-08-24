@@ -749,6 +749,53 @@ claim than a corrected figure, and it should not be buried in a qualifier.
    must not assume a float number exists; now it must also not treat a refused
    one as zero, missing, or tight.
 
+### A stale cycle: measured against the last COMPLETED session, not today
+
+`CycleHistory.asOfTradingDate` (Research, `163ef90`) says which session a cycle
+was resolved through. `ecb7a74` made `readDailyBars` hide unfinished bars — right
+call, since a running high and a part-day volume are worse than being one session
+behind — but it moved the silence from the data to the timestamp: a cycle through
+Friday and one through Thursday were the same object at every consumer.
+**133 symbols carry a stale tail**, and the eight stranded recap jobs among them
+will never self-heal because nothing will re-analyse them.
+
+Research deliberately shipped a **date, not a flag**, and left the trader-facing
+string to Design. Here it is.
+
+**The trap first, because it is subtler than the one Ops already found.**
+`latestDate` reads clean on stale names, so anything keyed on *"latestDate equals
+the current trading date"* passes them — Ops established that. **But keying on
+`asOfTradingDate == today` is wrong too, and wrong in the opposite direction.**
+At premarket every cycle is as-of the previous session, because today's bar does
+not exist yet. That test would mark **the entire board** stale every morning,
+which is the `warning`-on-every-row failure in a new costume.
+
+**The reference is the most recent COMPLETED session.** As-of Friday at Monday
+premarket is *current*. As-of Thursday is *stale*. The unit is **sessions**,
+because the input is daily bars — not hours, and not the `live · 12m · 3h` scale,
+which measures tape and would be a category error here.
+
+| Condition | Row reads |
+| --- | --- |
+| as-of = last completed session | `BACKSIDE` — **no qualifier at all** |
+| older | `BACKSIDE · thru Thu` |
+| no cycle resolved | existing `CYCLE NOT ESTABLISHED` |
+
+**Silent when current, explicit when not** — the same shape as the `stale` price
+chip and the `n unknown` count, and it keeps the one-saturated-element budget
+intact on the ordinary row.
+
+**The as-of belongs in the tooltip on EVERY row, current or not.** That is the
+intelligence-platform position: the qualifier fires only when it matters, but the
+story is always available. It costs nothing and answers *"which question did you
+answer?"* without the trader having to suspect anything first.
+
+**Not proposed: a staleness threshold.** Research's reason for shipping a date
+was that tolerance differs at 07:00 and 16:00. Design should not immediately
+re-collapse that into a boolean by picking a number — the row shows how many
+sessions behind, and the trader decides. **Two sessions behind on a name he is
+about to size is his call, not a constant in this file.**
+
 ### Phase C ships a BOUND, not a float — and a bound must never read as one
 
 The owner's framing, `8c2d2d5`: *"we are an intelligence platform, not a signal
