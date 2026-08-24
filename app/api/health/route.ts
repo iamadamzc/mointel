@@ -83,6 +83,19 @@ export async function GET() {
         state: snapshot.researchHealth.state,
         running: snapshot.researchHealth.running,
         queuedJobs: snapshot.researchHealth.queuedJobs,
+        /*
+         * Work stuck from an EARLIER trading date, which `queuedJobs` cannot
+         * see: it counts today only, so a backlog stops being counted the
+         * moment it has aged enough to matter. Ten such rows sat QUEUED while
+         * this endpoint reported zero, and that zero was read as confirmation
+         * the desk was idle before a deploy.
+         *
+         * The fields above are a hand-maintained allowlist, which is why the
+         * value reached the store and the view and stopped here. Listed
+         * explicitly rather than spreading the whole view, because some of it
+         * is deliberately not published.
+         */
+        stalledJobs: snapshot.researchHealth.stalledJobs ?? 0,
         activeCount: snapshot.researchHealth.activeCount,
         heartbeatAgeSeconds: snapshot.researchHealth.heartbeatAgeSeconds,
         lastCompletedAt: snapshot.researchHealth.lastCompletedAt,
