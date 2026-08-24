@@ -274,10 +274,28 @@ date, **0 with `rvol_rank`**, `/api/market` returning `discovery.rows: 0`.
 Integration concluded the phase names and the retracement figure could not be
 checked, *"because both need rows on the board"*.
 
-**The researched table does not depend on a rank.** Its rows come from
-`market.intelligence` (`lib/dashboard/merge.ts:319`), a different source from the
-Sheet's `dashboard.research` at `:317`. The overlay reaches them, the market being
-shut is irrelevant, and both checks passed on the spot.
+**~~The researched table does not depend on a rank.~~ RETRACTED WITHIN THE HOUR —
+it does, one hop further back than either thread looked.** Its rows come from
+`market.intelligence` (`lib/dashboard/merge.ts:319`), which is a different source
+from the Sheet's `dashboard.research` at `:317` — that half is true. But the
+projection is built by `readIntelligence`, which returns `{}` when its ticker list
+is empty (`readModel.ts:637`); the list is `states.map(s => s.ticker)` (`:465`);
+and `readDemandStates` selects `WHERE trading_date = ? AND rvol_rank IS NOT NULL`
+(`lib/market/store/repo.ts:583`). **Rank is the gate.** Ops's original claim was
+mechanically right and this thread published the correction to it as a rule.
+
+**What is NOT retracted: the observations below happened.** `NO RUN` and
+`143.7% of the move given back` cannot be produced by the old code or by an empty
+projection, so they were seen. Ops then could not reproduce any of it an hour
+later — `CYCLE NOT ESTABLISHED` ×9, `NO RUN` ×0 — so the open question is **which
+moment**, not whether. Unresolved at the time of writing.
+
+**The rule below still stands, and this is now an argument for it rather than an
+example of it.** Three threads reasoned about what gated that surface; **none
+traced the feed to the query.** Design stopped at *"it comes from intelligence"*,
+Integration accepted it, and Ops — who had the right answer — accepted the
+correction to it. The lesson is not *"rank was the gate"*; it is that **a feed has
+to be followed to the SELECT, and stopping one hop early is what everybody did.**
 
 - **Retracement passed decisively.** OLOX read *"143.7% of the move given back"* —
   and a distance-below-the-high figure is **mathematically capped at 100%**. The
