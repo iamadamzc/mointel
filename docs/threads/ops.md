@@ -1175,7 +1175,62 @@ tell them apart, which this thread established the expensive way.
 this is a production config change with a multi-day protocol, which is adjacent
 but not the same thing. Put to him rather than stretched.
 
-## State: production is `567557b`, deployed 2026-08-24 08:41 UTC
+## State: production is `260a8ae`, deployed 2026-08-24 23:16 UTC
+
+Gated at that sha with a fresh `npm ci`: **1351 tests**, lint, build, typecheck.
+Carries `stalledJobs` onto the health allowlist and the Coaching fills pipeline.
+Capture surface zero; `package-lock.json` untouched (the `package.json` delta is
+two script entries).
+
+**`stalledJobs: 10` is now on `/api/health`** — the expected reading, matching
+what was measured in the store this morning, and the last hop is closed.
+
+**Seventh clean stop** for research, 23:16:00 → 23:16:00. `NRestarts` 0 on all
+four.
+
+### Three checks on a new category of data, and one is stronger than the rule
+
+`lib/coaching/fills/` handles personal financial records, so the charter rule —
+fills go in the database or a gitignored directory, never the repo — got a
+one-time check rather than a routine one:
+
+- **`DEFAULT_FILLS_PATH` is `~/.mointel-fills/fills.db`** — the user's home
+  directory, **outside the working tree entirely**, not merely a gitignored
+  subdirectory. `git ls-files` matching *fill* returns source only; `data/` is
+  untracked. **`git archive` cannot carry a fills file.**
+- **Neither new worker gets a systemd unit** — `grep` over `deploy/` is empty, so
+  they are CLI-only and no unit changed during a deploy.
+- **`package.json` is scripts-only** and the lockfile is untouched, so `npm ci`
+  on the server is unaffected.
+
+### A deploy restarts every runtime service, whatever the payload touched
+
+Expected here that research would *not* restart, since `worker/research.ts` was
+unchanged. **It restarted anyway.** `deploy.sh` stops and starts all runtime
+units regardless of whose files moved. **The payload's file list does not predict
+which services cycle** — worth having, because "this deploy does not touch
+research" is a natural and wrong way to reason about restart risk.
+
+### `mointel-web` has failed on every stop, 46 times, and I never looked
+
+| service | `Failed with result` in the journal |
+| --- | --- |
+| **web** | **46** — every stop, never once `Deactivated successfully` |
+| research | 44 — the old SIGTERM ignores; recent stops clean since `97f198d` |
+| assess | 4 — the `BUSY_SNAPSHOT` crashes |
+
+Web exits non-zero on `SIGTERM` and always has. It recovers — `NRestarts` 0, the
+dashboard returns 200 — so nothing is broken. **What is broken is the signal:
+every deploy writes `Failed with result` into web's journal, so a real web stop
+failure is indistinguishable from routine noise.** That is the flaky-gate problem
+relocated to the journal.
+
+**It is the same family as the research SIGTERM defect, unfixed for web** — and I
+missed it for the same reason each time: I built an observable for the service
+where the last bug was, and checked only that one. Six deploys of watching
+research's stop, and web's had been red in every one of them.
+
+## ~~State: production is `567557b`, deployed 2026-08-24 08:41 UTC~~ (superseded)
 
 Gated at that sha: **1318 tests**, lint, build, typecheck. Carries Design's
 segment-count fix — `cycleCounts` counted `merged.rows` while `applyFilters` runs
