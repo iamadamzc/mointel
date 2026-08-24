@@ -640,7 +640,44 @@ by definition not the one shipping it. So the test is always the run *after* —
 and if a rollout is judged on the deploy that installs it, it will be judged on
 the last instance of the old behaviour.
 
-## The one check that CAN fail, and it was found by accident
+## ~~The one check that CAN fail~~ — it would have failed for the wrong reason
+
+**Written as a triumph at `f498926`, retracted within the hour.** I recorded the
+`computedCycle` count as the inverse of everything else in this document — the
+one check that *could* fail, found by accident. Research then found the defect
+underneath it and Ops verified it at the lines: `computedCycle` is assigned at
+`pipeline.ts:365`, **after the model call**, and the reuse path returns at line
+190 — *"Unchanged evidence: reuse. No bundle is even built."* A name whose
+fingerprint has not changed **never gains the field at all.**
+
+**So flat at zero is not the stalled condition. It is the expected reading of a
+working system.** Ops would have arrived at 04:00, run one query, seen zero, and
+concluded the worker was hung — **with every other signal agreeing**: research
+`IDLE`, queue non-empty, heartbeat fresh. A false positive with full
+corroboration, at the worst hour.
+
+**Ops's correction is the durable part and it is sharper than my original:**
+
+> **A check that can fail is not automatically better than one that cannot. It
+> has to fail for the right reason.**
+
+That is worse than the failures collected below, not better. Those were checks
+that stayed silent. This one would have spoken, confidently, wrongly, and been
+believed.
+
+**And the error that produced it is the same one this document keeps recording.**
+Ops measured that 231 of 231 dossiers lacked the field — true. Then it asserted
+*why*: that they would gain it as research worked. **The count was measured; the
+mechanism was assumed** — written in the sentence immediately after it quoted
+that same tell approvingly. I then built a report to the trader on top of it
+without asking what populated the field either.
+
+**What survives**: a heartbeat proves a process exists, a count of produced work
+proves it is doing something, and `/api/health` expresses only the first. That
+gap is real. `computedCycle` was the wrong carrier — set on one branch of one
+path, and now backfilled besides.
+
+## The check that was found by accident
 
 **Ops, 2026-08-24, as a side effect of a caveat about a display column.** Every
 other entry in this document is a check that could not fail. This is the
