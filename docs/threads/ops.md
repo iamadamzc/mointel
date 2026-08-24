@@ -2157,9 +2157,16 @@ the evidence. The condition is what earns the restart, and the clock is only
 where the condition is usually met. If premarket produces no bars, the worker
 stays up and the drift stays with it.*
 
-Why not at the open: 07:00–10:00 ET is where this desk's profit is, and a
-restart drops the stream and replays a startup backfill — 13,115 equities and
-8,653 snapshots. That took three seconds on a closed Saturday and premarket is
+Why not at the open: **his working session is 04:00–09:30 ET**, with profit
+concentrated from 07:00 — *corrected 2026-08-24; he trades premarket and treats
+RTH as the exception.* So the window to avoid starts at **04:00**, not at 07:00
+and certainly not at the RTH open. A restart drops the stream and replays a
+startup backfill — 13,115 equities and 8,653 snapshots.
+
+**"Before the open" is not a safety margin on this desk.** Deploying at 07:00 is
+deploying into the hours he actually trades. The honest sentence is *"this
+cannot interrupt capture, and he may see the board flicker"* — never *"the
+market is not open yet"*. That took three seconds on a closed Saturday and premarket is
 not a closed Saturday. Spending any part of the best hours to tidy bookkeeping
 is a bad trade, and the drift is harmless while it exists: its only hazard is at
 prune time, and the pin already removes that.
