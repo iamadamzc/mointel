@@ -224,6 +224,53 @@ Worth saying before the session is spent on it rather than after.
 (`deskRead.ts:528`), not that endpoint. Checking the wrong one would produce a
 confident wrong answer in either direction.*
 
+## The assessment worker dies on ~1 deploy in 3, and I reported those deploys clean
+
+**`SqliteError: database is locked`, `SQLITE_BUSY_SNAPSHOT`**, thrown at
+`migrate()` (`db.ts:734`) **inside** `withMigrationLock` → `openDatabase` →
+`desk-assessments.ts:380`. The worker exits `status=1/FAILURE` on startup and
+systemd restarts it ~10 s later. **It has happened three times.**
+
+**The documented fix does not fully cover this.** Project memory records the
+migration race as *fixed* by a one-shot `mointel-migrate` unit plus a
+cross-process lock. The lock is in the stack and is working — it serialises
+migrations. But `SQLITE_BUSY_SNAPSHOT` is a *snapshot* conflict, not a lock
+conflict: it fires when a connection's deferred transaction tries to upgrade to a
+write after another connection has written. Web and research restart alongside
+`assess` and reopen the store; the migrating connection loses its snapshot. **A
+lock that serialises writers does not prevent a reader from invalidating one.**
+
+**Why it matters beyond a 10-second self-heal:** the recovery is only a recovery
+because nothing was due. Had it landed on a checkpoint, the assessment would have
+been missed, and **the append-only record only grows in real time.** Tonight it
+crashed at 01:55:05 and `NEXT_DAY_RECAP` was due at **02:00** — a five-minute
+margin, unplanned.
+
+**Against my own record, and it is the fourth instance of the same error.** After
+that deploy I reported *"all four services active."* True, and the wrong check
+again: one of the four had crashed and been restarted inside the window I was
+describing. I wrote *"state after starting cannot observe the manner of
+stopping"* into this charter tonight and then checked state after starting.
+
+**Not fixed, deliberately.** It is in `lib/market/store/db.ts`, which is this
+thread's, but a change to the migration path hours before an open is the wrong
+trade for a fault that self-heals. The candidate is to make the migrating
+connection take an immediate write transaction, or to have the runtime units
+wait on `mointel-migrate` completing rather than opening concurrently. **Check
+`NRestarts` after every deploy from now on** — that is the field that carries the
+answer, and `is-active` does not.
+
+## The preflight earned its keep tonight
+
+`0778533` was **refused**: `NEXT_DAY_RECAP is 0m away, inside the 5m protected
+window`. Nothing shipped. **Not overridden** — deploying through the recap would
+have restarted the assessment worker mid-checkpoint, which is the exact capture
+risk, and the crash above shows that restart is not always clean.
+
+The checkpoint then ran: **id 76, `2026-08-21 NEXT_DAY_RECAP`, `COMPLETE`,
+scheduled 02:00, started 02:00, 25 tickers.** First observation of the preflight
+protecting a real capture event rather than being reasoned about.
+
 ## State: production is `1d1d56b`, deployed 2026-08-24 01:55 UTC
 
 Gated at that sha in the isolated rig — **1288 tests, 0 lint errors, build,
