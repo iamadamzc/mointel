@@ -184,7 +184,44 @@ preflight bootstrap that would have blocked every future deploy, and an enum
 leak that only real dossiers could reveal. Both branches of the bootstrap fix
 have now been exercised, not just the fallback.
 
-## State: production is `161f15f`, deployed 2026-08-24 00:16 UTC
+## State: production is `c48e199`, deployed 2026-08-24 01:30 UTC
+
+Gated at that exact sha in the isolated rig — **1273 tests, lint, build,
+typecheck** — and deployed by explicit sha. Carries Design's cycle-vocabulary
+re-cut (`a5a3a98`), Research's partial-bar guard, and the healing that repairs
+what the guard inherits.
+
+**The SIGTERM prediction held, and it was falsifiable.** `Stopping…` at 01:30:27,
+`Deactivated successfully` at **01:30:27 — under a second**, against 31 seconds
+and a `SIGKILL` on the previous deploy. `97f198d` is verified in production, on
+the deploy after the one that shipped it, exactly as predicted. The observable
+was the **stop duration in the journal**, not the service state afterwards.
+
+**Capture untouched, seventh deploy running.** `mointel-market` pid 129202,
+`NRestarts=0`, start still 2026-08-23 01:27:36 UTC, no journal entries in the
+window. Still on `fd9556f`, held by the pin — prune removed `f383ddd`.
+
+**The healing is deployed but not yet exercised.** The 133 poisoned rows are
+still present, which is correct: `ensureDailyHistory` heals on contact, and
+nothing has contacted them because research is idle on a closed market. **They
+repair on Monday's first re-analysis of each symbol** — including the 42 Friday
+rows that are every symbol whose latest bar is Friday. Re-run the `fetched_at`
+query after premarket to watch it fall.
+
+## Deploy authority
+
+**The trader delegated deploy instructions to Integration on 2026-08-24.** His
+words: *"deploy — and you can accept deployment instructions from Integration."*
+
+So a deploy relayed by Integration is now actionable without returning to him.
+What has **not** changed: the gate still runs at the sha that ships, capture is
+still verified at directory scope before shipping, and anything outside a deploy
+— spend, auth-model changes, destructive actions — still goes to him. The rule
+that a relay cannot answer a question already put to him held for a full night
+and cost one word each time; this replaces it for deploys only, by his decision
+rather than by inference.
+
+## ~~State: production is `161f15f`, deployed 2026-08-24 00:16 UTC~~ (superseded)
 
 Deployed by explicit sha, not `HEAD` — the first release under that rule. Gated
 in an isolated worktree at that exact sha with real dependencies: **1261 tests,
