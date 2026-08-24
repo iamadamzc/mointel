@@ -225,8 +225,28 @@ that threw `rate limited` and a calendar `503` on Friday. Measured:
 | --- | --- | --- |
 | 231 | **230** | **1** |
 
-So it short-circuits on *already current* for all but one. That is the same
-concern raised against the three-arm run, and here the number retires it.
+~~So it short-circuits on *already current* for all but one.~~
+
+**WRONG, corrected 2026-08-24 — and it is the same error a third time.** The
+short-circuit is `latestDailyBarDate(db, symbol) === today`
+(`lib/research/historyFetch.ts:33`) — **today's date**, not *has bars at all*. No
+symbol holds a bar dated today, so **all 231 fetch**, not one. I measured
+*presence* and asserted *currency*.
+
+And the refresh is not a side effect, it is load-bearing. Only **42 of 256**
+symbols hold Friday's bar:
+
+| latest bar | symbols |
+| --- | --- |
+| 2026-08-21 (Fri) | 42 |
+| 2026-08-20 | 80 |
+| 2026-08-19 | 55 |
+| 2026-08-18 | 63 |
+| 2026-08-17 | 16 |
+
+So three quarters of the set would compute a cycle against Wednesday's data or
+older. **Anything that skips `ensureDailyHistory` computes cycles on stale
+bars, silently.**
 
 **Disk: not a risk.** 67 G free, WAL at its existing high-water.
 
