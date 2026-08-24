@@ -473,6 +473,17 @@ entering another thread's register as a defect. **The rule is not "grep harder."
 It is that a negative search result crosses a thread boundary as a QUESTION, never
 as a finding**, because only the owner knows where the consumers live.
 
+**And the constructive form, R&D's, which makes it a habit rather than a caution:
+AN EMPTY RESULT IS ONLY INTERPRETABLE WITH ITS SEARCH SCOPE ATTACHED.** *"Searched
+`lib/`, 0 hits"* is a different claim from *"0 hits"*, and only the first can be
+checked by someone who knows better. R&D already does this in code for the same
+reason: `auditSplitFetch` prints *"11,264 of 11,264 comparable"* so a zero reads as
+a market fact rather than a broken fetch, and `split_lookback_sessions` makes a
+null mean *"none in N"* with N in the row.
+
+**Three instances, three threads, one shape:** a null lookback read as an absence,
+a silent adjusted-fetch, an empty grep. **Report the scope beside the result.**
+
 **And the same undercount hid a second fact in the same search:** the resolver
 depends on hosted web search too — its provider class sits in the *same file* as
 discovery's — so **84% of the desk's input tokens are search-dependent, not 56%.**
