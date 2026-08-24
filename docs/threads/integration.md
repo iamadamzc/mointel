@@ -190,9 +190,14 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-*Written 2026-08-24 ~01:00 UTC because this thread's context was at 96% and a
+*Written 2026-08-24 ~00:40 UTC because this thread's context was at 96% and a
 compaction loses what is not on disk. Everything below expires. **If you are
 reading this after 2026-08-24, verify every line before acting on it.***
+
+**Re-verified 2026-08-24 00:55 UTC by the successor session, line by line.** All
+four session ids below are correct and all four threads answer to the titles
+given. What had already changed in the fifteen minutes since it was written is
+marked inline — which is the argument for the section, not against it.*
 
 **Reaching the threads.** Send to the NAME from `ListAgents`, or by session id
 via `mcp__ccd_session_mgmt__send_message`. Ids are stable, names are not:
@@ -228,7 +233,8 @@ first hours, which asserted an authority the charter explicitly denies — threa
 defer to a manager. The title is what peers see; treat it as part of the
 charter.*
 
-**IN FLIGHT, WITH A HARD DEADLINE.** Ops is to run a forced
+**NOT IN FLIGHT — BLOCKED ON THE TRADER, WITH A HARD DEADLINE.** *Corrected
+00:55 UTC: this section said "in flight" and it has not started.* Ops is to run a forced
 `research:interpret` backfill over 231 dossiers to populate `computedCycle`,
 **before 08:00 UTC 2026-08-24**. After that a partial Monday daily bar gets
 stored dated today, `latestDailyBarDate` then equals today, and
@@ -237,6 +243,31 @@ no corrective pass reaches it.** Cost ~2.6M in / 0.9M out plus 231 Alpaca REST
 calls on the market worker's budget. Ops executes, Ops takes both WAL readings
 (baseline 531,574,792). **Research cannot run it — no production access.**
 
+**AND THE BACKFILL DOES NOT INOCULATE AGAINST THE PARTIAL-BAR LOCK-IN.**
+*Research, 00:58 UTC; verified here at the lines rather than relayed.*
+`ensureDailyHistory` (`lib/research/historyFetch.ts:32`) short-circuits on exact
+string equality between `latestDailyBarDate` and `new Date().toISOString()
+.slice(0,10)` — a **UTC** date. A run tonight stores bars dated **2026-08-21**,
+the last trading day; UTC today is **2026-08-24**. Not equal, so Monday's live
+re-analyses refetch exactly as they would have without it. **The backfill
+neither causes the lock-in nor prevents it — all three scope options carry
+identical exposure.** It would be natural to assume otherwise, and Ops's own
+option 3 was framed as *"arguably the safer-looking board"*; that half does not
+hold and Ops was told before the trader answered. What survives of Ops's
+argument is a different axis and is untouched: backfilled-correct and
+Monday-possibly-wrong cycles are indistinguishable on the board, which is about
+running versus not running rather than about 148 versus 231.
+
+**It is blocked on one question and one only: scope.** Ops has gated everything
+and put the choice to the trader directly — 148 tickers (~1.7M in / 0.6M out,
+148 Alpaca calls) against all 231 (~2.6M / 0.9M, 231 calls) — because he
+approved it before the token number existed. Ops's words: *"Everything is ready;
+one word and I start."* **Nobody is waiting on anybody else.** Research had
+raised a possible deadlock — Ops signalling it for the second WAL reading — and
+Ops killed it outright: *"No deadlock from me. I'll run it and take both WAL
+readings around my own run."* Relayed to Research 00:53 UTC so it is not
+holding.
+
 **Monday 04:00 ET, two instruments, both Ops's, both need nobody present:** the
 WAL sample under real write pressure, and `messageAgeSeconds` coming off null
 for the market worker's first open since its 01:27 restart on the 23rd. The
@@ -244,11 +275,85 @@ for the market worker's first open since its 01:27 restart on the 23rd. The
 research works or not.
 
 **Decided, not started:** the float build (`research.md` item 14) in a fresh
-Research session; the read-time cycle move plus the partial-bar lock (item 16);
-Design's four verification checks on review session 13, valid to 11:59 ET.
+Research session.
 
-**Production is `161f15f`.** The market worker still runs `fd9556f`, held by the
-`market-worker-release` pin across six deploys.
+**~~The read-time cycle move plus the partial-bar lock (item 16).~~ ESCALATED BY
+OPS, AND THE ESCALATION IS AGAINST ME.** *`2830ca3`, 00:36 UTC.* I recorded it
+here as **not urgent before Monday**. Ops's judgement is that **it is Monday**,
+and the reason is exposure rather than code: `computedCycle` shipped in
+`161f15f`, so from Monday's open every re-analysis of a moving name runs
+`ensureDailyHistory` and none holds a bar dated today, so every one fetches. It
+was latent only while nothing re-analysed mid-session with a cycle depending on
+the bars, and tonight's deploy ended that. **What decides the size is
+unverified and untestable tonight** — whether Alpaca returns a partial `1Day`
+bar during premarket; the market is closed, so a call now proves nothing about
+08:00 UTC. Ops's framing of the cost is the part to carry: a blank column says
+nothing, **a cycle computed on a partial bar reads as a real answer** and is
+indistinguishable on the board from a correct one.
+
+**It landed in `ops.md` only.** `research.md` item 16 carries the mechanism and
+not the escalation, so a Research session opening item 16 would still read it as
+next-session work. Relayed to Research 00:53 UTC. **A charter can be corrected
+in the wrong document** — this thread's own version of the retraction failure,
+and the third instance of it recorded here.
+
+**Design's four verification checks: 2 of 4 done, and the other two are gated on
+a deploy rather than on the clock.** *Design's table in `design.md`, 00:27 UTC,
+is the authority; this is a pointer, not a copy.* PASSED live: the filter chips
+reading `All · Day 1 · Frontside · Off high · Backside`, and summary segments
+carrying no `warning`. FAILS TODAY: the researched table still shows
+`FRONTSIDE — WARNING` on six of nine rows. UNAVAILABLE until `a5a3a98` lands:
+a row **with** a sheet cycle rendering `CYCLE NOT ESTABLISHED`.
+
+**The instrument expires: review session 13 is valid to 11:59 ET.** Carried
+forward deliberately — I dropped this line in a first rewrite of this section
+and put it back, because a review-session expiry is the exact thing this charter
+records going missing (*"twelve hours"*, which expired four minutes before the
+window it was issued for). At 20:58 ET Sunday that is ~15 hours out and not
+tight, but it is the clock the last two checks run against, and it is Ops's
+deploy that decides whether they run inside it.
+
+**Two of those four were mine to have got wrong, in the direction that produces
+a false pass.** I listed *the six phase names rendering* and *the retracement
+figure being of the MOVE* as checkable before premarket. **Neither is.** Both
+need a dossier carrying a computed cycle and there are zero, so nothing renders
+at `CLOSED` or at 04:00 until re-analysis has run — **gated on the 0→231
+counter, not on the clock.** Design caught it. And its opposite correction is
+equally mine: I wrote that an empty cycle column is not falsifiable because it
+looks identical to a broken one. True in general, **false on a row that has a
+sheet cycle**, where `CYCLE NOT ESTABLISHED` is a string only the new path can
+produce. The distinguishing case is narrow and it exists.
+
+**Production is `161f15f` per `ops.md:187`, stamped 2026-08-24 00:16 UTC — Ops's
+record, not this thread's observation.** This thread has no box access and does
+not verify it; Ops confirms the running release at gate time.
+
+**`a5a3a98` is committed, pushed and NOT deployed**, and it is what the two
+remaining checks wait on. Design asked for it at 00:27 UTC and cannot reach Ops;
+relayed 00:52 UTC. Verified here at directory scope over the whole tree rather
+than a file list: `git diff --name-only a5a3a98 4af4202` returns four paths and
+**all four are `docs/threads/*.md` — there is no code between it and HEAD.** So
+naming HEAD would have been executable this time, and the sha is named anyway
+because this thread holds doc edits and moves HEAD. Non-docs content of
+`161f15f..a5a3a98`: `components/MomentumTable.tsx`, `components/StatusBadge.tsx`,
+`components/TickerDrawer.tsx`, `tests/dashboard/cycle.test.ts` — no `worker/`,
+no `lib/market/`, no store, so under the README's capture test it needs no
+window.
+
+**Sequencing called under the delegation, not referred:** the deploy goes
+**before** the backfill starts, unless Ops confirms the backfill is a process its
+deploy does not restart. `ops.md` records the research worker SIGKILLed on every
+deploy today, three for three, and a SIGKILL mid-job abandons an in-flight model
+call with tokens spent and nothing recorded. A 231-dossier run on a hard
+deadline with no second attempt is the worst thing to hold in flight during a
+restart.
+
+**Everything is pushed as of 00:44 UTC**: `HEAD` = `origin/main` = `4af4202`,
+`git log origin/main..HEAD` empty. The nine-unpushed-commits condition that
+produced the *every thread pushes its own work* rule is not present.
+
+**The market worker still runs `fd9556f`**, held by the `market-worker-release`
+pin across six deploys.
 
 ## Reading other threads
 
