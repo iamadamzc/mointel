@@ -248,14 +248,43 @@ would fix Friday and poison Monday, locking for the day and recurring daily; wit
 it, Friday stays stale one extra day and nothing new is poisoned. The guard is
 clearly right. The gap is worth knowing rather than meeting.
 
-### The improvement the guard is one column away from
+### ~~The improvement the guard is one column away from~~ — already built, fifteen seconds before I wrote it
 
-`fetched_at` is already stored, and it distinguishes what a date comparison
-cannot: **a stored bar is trustworthy only if it was fetched after its own
-session ended.** The guard currently asks *"is the stored date recent enough"*;
-asking *"was the stored bar finished when it was written"* would make it
-self-correcting instead of merely preventive — and would have refetched these 133
-on first contact. Research's file and Research's call; the data is already there.
+I proposed using `fetched_at` to make the guard self-correcting. **Research had
+committed exactly that fifteen seconds earlier** (`e9e0a9e` at 03:16:44, this
+thread's `c48e199` at 03:16:59), having reached it from the other end — that a
+partial *Monday* bar survives all of Tuesday under `stored >= settled`.
+
+Verified at the lines rather than accepted. `latestDailyBar` now returns the
+write time as well as the date, and the skip requires **both**:
+
+```js
+stored.tradingDate >= settled &&
+Date.parse(stored.fetchedAt) >= sessionEndUtc(stored.tradingDate).getTime()
+```
+
+A bar written before its own session ended fails the second condition **whatever
+date it carries**, so it is refetched and `upsertDailyBars` overwrites it on
+conflict.
+
+**So three things I wrote one section above are no longer true**, and they were
+true of `952f9e1`:
+
+- ~~the guard makes the remaining contamination quieter rather than louder~~
+- ~~Friday stays stale one extra day~~
+- ~~my `latestDate` discriminator does not catch it~~ — the *case* is gone
+
+**What survives, and it is the load-bearing half:** this thread is the only one
+that established the defect **actually fired**, and its shape — 133 rows across
+133 symbols, with the 42 Friday rows being exactly the 42 symbols whose latest
+bar is Friday. That makes the healing path not a nicety but **load-bearing on
+Monday**: without it, every symbol carrying a Friday bar would have computed its
+cycle from a partial one.
+
+**And the limit of my discriminator stays written down even though this fix
+removes the case that exposed it:** `latestDate` flags a partial bar dated
+*today*. It reads clean on a partial bar dated *earlier*. That is a property of
+the test, not of the bug it happened to miss.
 
 **Recommendation reversed a third time, to NOT running it.** He asked why call
 Alpaca for 231 when only the tickers that reach the app matter. Verified here:
