@@ -209,6 +209,56 @@ this time and printed `keep fd9556f (pinned)`.
 
 No migration: schema 21 both sides, migrate wrote 0 backups.
 
+## Monday 04:00: what an empty cycle column means, and the number to expect
+
+**Every name with a dossier will read `CYCLE NOT ESTABLISHED` when the board
+populates. That is expected and it is not a regression.** `34c720f` shipped
+inside `161f15f` and deliberately does **not** fall back to the model's cycle —
+falling back would keep alive the field Research is about to delete. So a dossier
+written before `computedCycle` existed has no cycle to show.
+
+**Measured rather than described, because "noticeably fewer" and "none" are
+different mornings.** Read-only against production after the deploy:
+
+| current dossiers | with `computedCycle` | will read NOT ESTABLISHED |
+| --- | --- | --- |
+| 231 | **0** | **231** |
+
+Not some. All of them. A board with an entirely empty cycle column at 04:00 is
+the *correct* state, and anyone who has not been told will read it as the cutover
+having broken the column.
+
+**One correction to how this reached here:** it was attributed to the empty
+OpenAI balance. The balance was topped up hours ago. Nothing is re-analysing
+because the market is closed — so this begins clearing on its own once the board
+populates and jobs enqueue.
+
+### It is also the progress meter this thread was missing
+
+The count of dossiers carrying `computedCycle` goes **0 → N as research
+re-analyses**, and it is queryable with no new code:
+
+```sql
+select count(*) from research_dossiers d
+  join research_analysis_versions v on v.id = d.current_version_id
+ where json_extract(v.dossier, '$.computedCycle') is not null;
+```
+
+That is a **direct measure of research progress**, which is exactly what
+`/api/health` cannot currently express — a heartbeat proves the process exists,
+this proves it is doing work. So Monday morning it answers three open questions
+at once:
+
+- **it rises** → research is working, the billing-class retry exemption
+  (`2433470`) healed the board unaided on its first real test, and the cutover is
+  clearing as designed
+- **it stays at 0 while the queue is non-empty** → that is the STALLED condition
+  from Open item 0c, observed rather than theorised, and the unbounded-fetch
+  ceilings shipped tonight did not cover it
+
+Sample it alongside the WAL. It costs one query and it is the closest thing to a
+falsifiable prediction this thread has for Monday.
+
 ## Gate the sha, not the tree
 
 **Six threads commit to this repo. The working tree is not yours and `HEAD` moves
