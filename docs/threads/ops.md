@@ -1205,6 +1205,43 @@ healing were half-working. Conditioning on the trigger is what makes zero mean
 something, and that form exists only because Research caught the aggregate before
 it ran and Integration caught the fetch-failure ambiguity after.
 
+### The stranded recap jobs have a visible consequence, two nights later
+
+Design asked whether the live board's `NO RUN` names are genuine or the
+short-series shape — the two render identically, and only a per-name bar count
+separates them. Answered, and it closed a loop.
+
+**The live `resolveCycle` needs only `bars.length >= 2` (`cycle.ts:228`), so none
+of the 14 `NO_CYCLE` names is short** — they hold 95–102 bars each.
+
+| group | count | profile |
+| --- | --- | --- |
+| genuine `NO_CYCLE` | **11** | every bar finished, latest `2026-08-21` |
+| **computed one session stale** | **3** | `ADXN`, `LSTA`, `ZKH` — 101 total, **100 finished**, latest finished `2026-08-20` |
+
+Those three have a partial Friday bar that `readDailyBars` hides, so their cycle
+resolves through **Thursday**.
+
+**And all three are in the eight stranded recap jobs** — queued 02:00 UTC
+2026-08-22 by Friday's 22:00 recap, `started_at` NULL, never claimed. The chain:
+
+> recap queues 8 → none claimed → never re-analysed → `ensureDailyHistory` never
+> ran → partial Friday bar never healed → `readDailyBars` hides it → **cycle
+> computed one session stale, today, on the board**
+
+**This changes what the stranded jobs are worth.** I recorded them as *"ten stale
+rows nothing will pick up"* and Research reasonably left them there. They are not
+inert: three are visibly on today's board carrying a cycle computed on Thursday's
+data. It self-corrects the moment each name is re-analysed for any other reason —
+and all three are on today's board, so probably today — but the *finding* is that
+stranded recap jobs have a downstream consequence nobody established when they
+were found.
+
+**Worth recording how this was answerable at all:** Design said plainly it could
+not get the bar counts and did not guess. A guess of "short series" would have
+looked right and been wrong — the series are 100 bars, and the cause was two
+nights upstream in a queue nobody had connected to the cycle column.
+
 ### The overlay confirmed against a ranked board, for the first time
 
 Every previous observation went through `?symbols=`, which bypasses the rank
