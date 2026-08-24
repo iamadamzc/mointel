@@ -100,7 +100,7 @@ tasks write, its history is already gone.
 | 9 | **Float** | NEW WORK | **LIVE** | ✓ | as TODAY I — and a filing-derived float is a different word, boundary is a date |
 | 10 | Float Source Date | NEW WORK | **LIVE** | | the vintage of a live-captured value is part of the value |
 | 11 | Float Source URL | NEW WORK | **LIVE** | | which source was used *then*, not which exists now |
-| 12 | Shares Outstanding | PRODUCED | — | ✓ | SEC fact, re-fetchable with an as-of; cover-page vs company-facts differ |
+| 12 | Shares Outstanding | PRODUCED | — | ✓ | **confirmed by Research 2026-08-24**: `dei:EntityCommonStockSharesOutstanding` is a **cover-page figure and is NOT retroactively split-adjusted**, so a filed count on a reverse-split name is pre-split and overstates. Re-fetchable, but only usable with its `asOf` beside it |
 | 13 | Catalyst Details | PRODUCED | **LIVE** | | as TODAY K |
 | 14 | Catalyst Timestamp | PRODUCED | — | ✓ | as TODAY L |
 | 15 | Catalyst Grade | PRODUCED | **LIVE** | ✓ | as TODAY J |

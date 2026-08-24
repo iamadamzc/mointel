@@ -1497,6 +1497,59 @@ arriving at applies: **two threads' numbers need a unit, not a caveat.** The
 shape, 130 to 180 watched names with a one-day hole, is what any question of
 mine would use, and no question of mine currently has one.
 
+#### The filed share count is pre-split, and it makes the defect look smaller
+
+*Research, 2026-08-24, from Phase C: `dei:EntityCommonStockSharesOutstanding` is
+a **cover-page figure and is not retroactively split-adjusted.** It found this
+asking why the model's `sharesOutstanding` disagreed with the filed count on 58
+of 125 dossiers, expecting the model to be wrong — and in five of the six worst
+cases the model is right and the filing is pre-reverse-split. EBON's count is
+`asOf` 2019-12-31 against a 1-for-30 in Nov 2022.*
+
+**The `float > SO` finding is unaffected**, because those figures came from a
+Scanz panel — same source, same instant, no filing involved.
+
+**But the direction matters and it runs the helpful way, which is the dangerous
+way.** A stale filed count on a reverse-split name is the *pre-split* number, so
+it **overstates** shares outstanding. An overstated denominator makes `float/SO`
+**smaller**, so `float > SO` fires **less often**.
+
+> **Recomputing that test against SEC-filed shares would understate the defect
+> rate**, and it would do so worst in exactly the population where it matters:
+> all nine flagged names in this archive have a split, at 0 to 271 sessions.
+
+That is a correction to a claim in the shared README, which currently calls a
+filed denominator **stronger, because it is filed rather than derived.** On this
+universe it is not stronger — it is stale by construction on precisely the names
+the test is about. Filed and current are different properties and the reverse
+split is where they separate.
+
+**And the asymmetry argument was refutable from data already in this archive.**
+Research's module had gated only `float > shares` on staleness, reasoning that an
+old count understates today's shares so staleness could hide a mismatch but
+never manufacture one — an argument that assumed dilution and forgot reverse
+splits. This archive had already measured how ordinary they are: **34,451 of
+102,731 symbol-dates over a 730-session window sit on a pre-split basis, 33.5%.**
+Not an edge case; a third of the record.
+
+Research's own naming of the failure is the durable part and it is better than
+the fix: *"the elaborate justification was the defect — a plain 'gate both'
+would have been correct and would not have needed a paragraph. I wrote the
+paragraph because the asymmetry felt like an insight."* The replacement rule
+belongs beside this thread's basis rule: **a denominator that may be wrong in an
+unknown direction cannot support any arithmetic about it.**
+
+Worth adding what it deliberately did *not* do: it did not split-adjust.
+`reverseSplitHistory` is model-extracted prose, and dividing a share count by a
+number parsed out of a sentence is a worse failure than declining to answer.
+
+**On the storage decision**, `dossier.filedShares` sits *beside*
+`structure.sharesOutstanding` rather than replacing it, because the disagreement
+proves they are different quantities and neither is trustworthy alone — which is
+this thread's basis rule arrived at from the other side. And no verdict is
+stored, with a test asserting the absence: baking a live external value into an
+append-only record is the error, not the omission.
+
 #### The 65-field audit: what this thread will annotate for
 
 Research produces the inventory, Design annotates what must survive on screen,
