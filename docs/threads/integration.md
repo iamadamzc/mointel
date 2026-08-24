@@ -204,8 +204,29 @@ via `mcp__ccd_session_mgmt__send_message`. Ids are stable, names are not:
 | Design | `local_c6befb28-5c0b-4f3b-b10d-5fefcd46fd58` |
 | R&D | `local_61f36ca0-906c-4624-947a-c3c5603257ad` |
 
-This thread appears to others as **`Integration [0338b5]`** — they send to the
-name, not to a `from=` id.
+**Naming, and it is load-bearing rather than cosmetic.** The other threads
+address this one **by the session title**, which appears in their `ListAgents`.
+Design established that the title works and that the `from=` id on a
+cross-session message does **not**. So:
+
+- **A new Integration session must be titled `Integration`.** Until it is, it
+  appears as `mointel-NN` and **no thread can reach it** — they are all holding
+  `Integration` as the address. An untitled session is a bus nobody can board.
+- **The bracketed ref is per-session and changes.** The previous session was
+  `Integration [0338b5]`; that ref dies with it. Threads should send to the bare
+  name and only append a ref if `ListAgents` shows two rows sharing it.
+- **Two live Integration sessions is the failure case.** Identical names make
+  sends ambiguous, and a message can land in the dead one. **End or rename the
+  outgoing session before or immediately after the new one is titled.**
+- **A new session's first action is to announce its address** to Ops, Research,
+  Design and R&D — one line each. They will not discover it, and a thread
+  holding a handover for an unreachable bus goes to the trader instead, which
+  is the thing this role exists to stop.
+
+*Earlier precedent: this thread appeared to peers as "Project Manager" for its
+first hours, which asserted an authority the charter explicitly denies — threads
+defer to a manager. The title is what peers see; treat it as part of the
+charter.*
 
 **IN FLIGHT, WITH A HARD DEADLINE.** Ops is to run a forced
 `research:interpret` backfill over 231 dossiers to populate `computedCycle`,
