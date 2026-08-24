@@ -875,6 +875,49 @@ Do not restate these in a thread doc; link to them.
 Historical task prompts live in [`prompts/`](../../prompts). They are a record of
 what was asked, not current instructions. Several are superseded.
 
+## If Alpaca can serve it, do not serve it from the store
+
+**Stated by the trader, 2026-08-24, after the board asserted blue sky from a
+90-session local cache.** His words: *"we have a paid for connection to accurate
+market data with alpaca"*, and *"alpaca has a websocket capability... we should
+not be pulling from store for anything alpaca provides."*
+
+**The principle is right and the desk half-agrees with it already. Three sources,
+three different jobs — and the failure is using one to answer another's
+question:**
+
+- **The socket answers *what is happening now*.** `lib/market/alpaca/stream.ts` —
+  **exactly one long-lived WebSocket per worker process**, wildcard `bars`,
+  `updatedBars` and `statuses` for whole-market discovery, plus a high-resolution
+  interest set of trades/quotes/lulds applied as **subscribe/unsubscribe diffs on
+  the open socket.** Adding a data point is already cheap and already supported;
+  this is the architecture he is describing, and it exists.
+- **REST answers *what has ever happened*.** A socket gives you now, never the
+  past. **A blue-sky ceiling, a split history, a 90-day high are questions about
+  the past** — so the fix for those is a deeper `ensureDailyHistory` range, not a
+  subscription. Conflating the two builds the wrong thing.
+- **The store is for what Alpaca CANNOT reproduce: the desk's own derived state at
+  an instant** — RVOL as it stood, board rank as it stood, what the desk believed
+  at a checkpoint, and every dossier. **That is the whole of R&D's
+  re-fetchable / observable-once split, stated from the other side.**
+
+> **Live facts from the socket. Historical facts from REST. Only judgements and
+> derived state from the store.**
+
+**The defect that produced this was a category error, not a missing feed.** A
+ceiling — a historical fact, re-fetchable indefinitely — was being answered from a
+cache **sized for cycle classification**, and every thread including Integration
+argued about how to *describe* the 90-session limit honestly rather than asking why
+a long-horizon claim was reading a short-horizon cache.
+
+**THE ONE HARD CONSTRAINT, and it is already this desk's most protected rule:
+there is ONE SIP connection.** The stream's own comment: *"exactly one of these
+exists per worker process... the browser never opens a socket of its own."* **New
+data points are added as diffs on the existing socket. A second connection steals
+the first and costs a hole in the record** — which is why `RESTART_MARKET=no` and
+the release pin exist. **"Put a feed on any data point we need" is correct and
+means subscribing more channels on the one socket, never opening another.**
+
 ## An intelligence platform, not a signal platform
 
 **Stated by the trader, 2026-08-24, and it settles a class of design argument that
