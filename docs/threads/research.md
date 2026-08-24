@@ -1498,7 +1498,31 @@ essentially the entire price. `f46cfaa` wires `searchContextSize` into discovery
 quality against roughly half the desk's model bill, and the audit's finding that
 642 of 935 Sheet citations sit on never-collected domains says coverage is
 already the weak side. That is a measurement, not a preference, and the honest
-form is a replay with the ledger's `tool_config` distinguishing the arms.
+form is a live A/B with the ledger's `tool_config` distinguishing the arms.
+
+**NOT a replay, and the word has now been wrong in both directions.** *Corrected
+2026-08-24 after Integration caught me reintroducing it.*
+
+`worker/research-replay.ts` replays **interpretation** from stored evidence.
+`search_context_size` governs the **hosted web search inside discovery**, and a
+web search cannot be replayed from stored evidence — it needs live calls. So
+**design A is alternation on the live desk**, not a harness run.
+
+That distinction decides which caveats attach, and they are opposite:
+
+| | `research-replay.ts` | design A, live alternation |
+| --- | --- | --- |
+| makes new web-search calls | no | **yes — that is the point** |
+| marginal token cost | interpretation only | **zero; the desk makes these calls anyway** |
+| `ensureDailyHistory` runs first | **no, and correctly so** | yes, as production always does |
+| bounds in the bundle | **understated where partials exist** | finished, like any live pass |
+| the 08-20 `ticker_session` hole | must exclude it | not in the window |
+
+**So neither the bound caveat nor the 08-20 exclusion applies to design A**, and
+both apply to anything built on the harness. I stated the opposite once in each
+direction on 2026-08-24; the reason it was easy is that "replay" reads as *any
+controlled re-run*, and this desk has two kinds. **Name the harness, not the
+word.**
 
 **The outcome variable is CITATION RATE, not catalyst quality** — R&D's call and
 it settles a problem I had not solved. Quality needs a grader, and this desk's
@@ -1575,8 +1599,8 @@ turned out to be asked **four** times, and three callers never got the answer.
 
 ---
 
-**19. `ticker_session` has a hole on 2026-08-20, and it bounds any replay over
-that window.** *Observed 2026-08-24 while checking a claim of my own that turned
+**19. `ticker_session` has a hole on 2026-08-20, and it bounds any
+`research-replay.ts` run over that window.** *Observed 2026-08-24 while checking a claim of my own that turned
 out to be wrong. Not Research's table — routed to Integration. Recorded here
 because it constrains this thread's own replays.*
 
