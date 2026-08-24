@@ -233,31 +233,50 @@ OpenAI balance. The balance was topped up hours ago. Nothing is re-analysing
 because the market is closed — so this begins clearing on its own once the board
 populates and jobs enqueue.
 
-### It is also the progress meter this thread was missing
+### ~~It is also the progress meter this thread was missing~~ — WITHDRAWN, and it was a false positive waiting to happen
 
-The count of dossiers carrying `computedCycle` goes **0 → N as research
-re-analyses**, and it is queryable with no new code:
+**Do not use the `computedCycle` count as a progress meter.** I proposed it an
+hour after the deploy and Research found the defect that invalidates it before
+Monday, which is the only reason it is being withdrawn on paper rather than
+during an incident.
 
-```sql
-select count(*) from research_dossiers d
-  join research_analysis_versions v on v.id = d.current_version_id
- where json_extract(v.dossier, '$.computedCycle') is not null;
-```
+`computedCycle` is set at `lib/research/interpret/pipeline.ts:365` — **after the
+model call.** The reuse path returns at line 190 (*"Unchanged evidence: reuse. No
+bundle is even built."*). Verified here, not accepted. **So a name whose evidence
+fingerprint has not changed never gains a computed cycle at all.**
 
-That is a **direct measure of research progress**, which is exactly what
-`/api/health` cannot currently express — a heartbeat proves the process exists,
-this proves it is doing work. So Monday morning it answers three open questions
-at once:
+The count therefore does **not** run 0 → 231 as research works. It rises only for
+names whose *evidence* changed, which is a small subset. Which means:
 
-- **it rises** → research is working, the billing-class retry exemption
-  (`2433470`) healed the board unaided on its first real test, and the cutover is
-  clearing as designed
-- **it stays at 0 while the queue is non-empty** → that is the STALLED condition
-  from Open item 0c, observed rather than theorised, and the unbounded-fetch
-  ceilings shipped tonight did not cover it
+> **Flat at 0 with a non-empty queue is the expected reading of a WORKING
+> system**, not the STALLED condition.
 
-Sample it alongside the WAL. It costs one query and it is the closest thing to a
-falsifiable prediction this thread has for Monday.
+That is the exact false positive that costs an incident, because every other
+signal at 04:00 would have been consistent with it. I would have read a healthy
+desk as a stalled worker and gone looking.
+
+**My error, and it is the same family as all the others.** I measured that 231 of
+231 dossiers lacked the field — true — and then asserted *why*: that they would
+gain it on re-analysis. **The count was measured; the mechanism was assumed.**
+What was measured is "231 dossiers have no `computedCycle`". What I said was "it
+will rise as research works". Different sentences, one checked.
+
+**Monday is two instruments, not three:** the WAL sample under real write
+pressure, and `messageAgeSeconds` coming off `null`. Both unaffected.
+
+**The blank cycle column is still expected — but indefinitely, not until Monday's
+re-analysis.** That correction matters more than the meter did.
+
+*The deeper defect is Research's and is worth knowing here because the fix lands
+in this thread's module: a **price-derived** quantity was gated behind an
+**evidence-change** check. A stock's cycle moves with price every session; its
+filings do not. So even names that do re-analyse freeze their cycle at whatever
+it was when the last filing landed. The structural answer is to compute it at
+**read** time — a pure function over daily bars that should never have been
+frozen into an append-only store — which touches
+`lib/market/store/researchRepo.ts`. Scheduled next session, structural, no
+mitigation pass; a forced re-analysis would spend tokens on a cosmetic column for
+one morning and would not touch the staleness.*
 
 ## Gate the sha, not the tree
 
