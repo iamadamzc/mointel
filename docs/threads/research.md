@@ -1001,6 +1001,55 @@ analysis tool.** Every graceful fallback in `lib/research/` is worth re-reading
 with that distinction in mind. Check the token line on any replay output before
 believing it.
 
+### The deletion plan is a list of READERS
+
+*Design found `worker/desk-assessments.ts:275` on 2026-08-24; it was named nowhere
+in this plan. Enumerated properly here so step 3 is not a search.*
+
+**`dossier?.cycle.X` guards only `dossier`.** With `cycle` deleted and `dossier`
+present, `.X` is a TypeError, not a null — and `cycle: CycleFindings`
+(types.ts:550) is **not optional**, so the compiler will not warn at the call
+site. `?? null` never runs.
+
+**`worker/desk-assessments.ts` has FOUR such sites, not one**, and `:239` fires
+before `:275`:
+
+| line | reads |
+| --- | --- |
+| 239 | `cycle.currentCycleHigh` |
+| 240 | `cycle.historicalResistance` |
+| 275 | `cycle.cycleClassification` |
+| 308 | `cycle.cycleWarnings` |
+
+The throw is inside `captureAssessment` **before** `insertAssessmentTickers`, so
+the checkpoint's ticker rows are never written. It would fire for every ticker
+carrying a dossier at every checkpoint. **`desk_assessments` is append-only and
+begins 2026-08-17 — a deletion that turns every checkpoint into a recorded error
+destroys the one category no run can buy back.** The writer must store the
+computed phase **in the same commit as the deletion**, never after.
+
+**Genuine dossier readers, by owner:**
+
+| Owner | Site |
+| --- | --- |
+| Research | `worker/desk-assessments.ts` :239 :240 :275 :308 |
+| Research | `lib/research/merge/sheetAuto.ts` :381 :384 — the cycle conflict comparison |
+| Research | `lib/research/interpret/guardrails.ts` — the FIEE checks; they go with the fields |
+| Research | `lib/research/interpret/pipeline.ts:404`, `worker/research-interpret.ts` — log lines |
+| Design | `lib/dashboard/intelligence.ts:80` |
+| Design | `components/AutomaticIntelligence.tsx` — giveback, formerRunner, majorRuns, warnings, resistance |
+| Design | `components/TickerDrawer.tsx` — `recentMajorRuns`; **unverified** whether sheet or dossier |
+
+**Not affected, and they look like they are.** `lib/data/rows.ts:178,180` are
+Sheet *column indices* (`RESEARCH` 18 and 20). `lib/data/priceLevels.ts:547` and
+`lib/data/cycleLevels.ts:177` read `StructuralResearch` — the Sheet's row, not the
+dossier. A grep on field name alone reports all three as blockers.
+
+**The rule this produced, and it is general:** a field deletion is owned by
+whoever deletes it, across every module that reads it, and **a deletion plan is a
+list of readers rather than a list of writers.** This one was found by a thread
+that owns none of the three files involved.
+
 **14. Two numbers were wrong in ways their own plausibility hid.** *Both
 corrected the same day; kept as a pair because the failure mode is identical.*
 
