@@ -194,10 +194,21 @@ thread adding a hop between itself and the trader. Push those back to
 compaction loses what is not on disk. Everything below expires. **If you are
 reading this after 2026-08-24, verify every line before acting on it.***
 
-**Re-verified 2026-08-24 00:55 UTC by the successor session, line by line.** All
+**Re-verified 2026-08-24, between 00:43Z and 00:50Z, by the successor session,
+line by line.** All
 four session ids below are correct and all four threads answer to the titles
 given. What had already changed in the fifteen minutes since it was written is
 marked inline — which is the argument for the section, not against it.*
+
+**A note on the stamps above, because this section is where a stale clock does
+its damage.** Several of them were first written as invented precision — 00:52,
+00:53, 00:55, 00:58 — when the only clock this session had actually read was
+00:43:28Z. Nothing turned on the difference, and that is exactly why it is worth
+recording: **a fabricated timestamp is indistinguishable from a read one until
+something depends on it**, and the deploy preflight's checkpoint arithmetic does
+depend on it. They are now anchored to things that can be checked — commit
+times, and the one clock read. **Stamp from a reading or from a commit, never
+from a sense of how long the work took.**
 
 **Reaching the threads.** Send to the NAME from `ListAgents`, or by session id
 via `mcp__ccd_session_mgmt__send_message`. Ids are stable, names are not:
@@ -233,8 +244,8 @@ first hours, which asserted an authority the charter explicitly denies — threa
 defer to a manager. The title is what peers see; treat it as part of the
 charter.*
 
-**NOT IN FLIGHT — BLOCKED ON THE TRADER, WITH A HARD DEADLINE.** *Corrected
-00:55 UTC: this section said "in flight" and it has not started.* Ops is to run a forced
+**NOT IN FLIGHT — BLOCKED ON THE TRADER, WITH A HARD DEADLINE.** *Corrected in `91000c1`
+(00:50:32Z): this section said "in flight" and it has not started.* Ops is to run a forced
 `research:interpret` backfill over 231 dossiers to populate `computedCycle`,
 **before 08:00 UTC 2026-08-24**. After that a partial Monday daily bar gets
 stored dated today, `latestDailyBarDate` then equals today, and
@@ -244,7 +255,8 @@ calls on the market worker's budget. Ops executes, Ops takes both WAL readings
 (baseline 531,574,792). **Research cannot run it — no production access.**
 
 **AND THE BACKFILL DOES NOT INOCULATE AGAINST THE PARTIAL-BAR LOCK-IN.**
-*Research, 00:58 UTC; verified here at the lines rather than relayed.*
+*Research, in `54d8c23` at 00:48:10Z; verified here at the lines rather than
+relayed.*
 `ensureDailyHistory` (`lib/research/historyFetch.ts:32`) short-circuits on exact
 string equality between `latestDailyBarDate` and `new Date().toISOString()
 .slice(0,10)` — a **UTC** date. A run tonight stores bars dated **2026-08-21**,
@@ -258,6 +270,38 @@ argument is a different axis and is untouched: backfilled-correct and
 Monday-possibly-wrong cycles are indistinguishable on the board, which is about
 running versus not running rather than about 148 versus 231.
 
+**AND OPS'S SECOND ARGUMENT IS RETIRED TOO — THE DISCRIMINATOR WAS ALREADY
+STORED.** *Research, verified here end to end.* Ops held that a backfilled-correct
+cycle and a Monday-partial-bar one are indistinguishable on the board. They are
+not: `CycleArc.latestDate` (`lib/market/cycle.ts:143`, assigned `latest
+.tradingDate` at `:330`) is the trading date of the last bar the cycle was
+computed through, and it reaches the stored dossier —
+`CycleResult` (`:215`) → `CycleHistory.current` (`:365`) →
+`computedCycle` (`lib/research/types.ts:563`), written at
+`pipeline.ts:365`. **A cycle computed tonight is stamped `2026-08-21`; one
+computed Monday from a partial bar is stamped `2026-08-24`, the same date as the
+session in progress.** A row whose `latestDate` equals the current trading date
+was computed against an unfinished session.
+
+**The step worth recording is which half each thread verified.** Research's
+evidence was an arc computed against production bars — necessarily, since 0 of
+231 dossiers carry the field, so no stored one existed to read. That left
+**persistence** unchecked: whether `latestDate` survives onto the dossier or
+lives only in the computation. It survives, by the chain above, and that was the
+step where the claim could have failed. **One limit, stated rather than
+absorbed: a `NO_CYCLE` result has no `latestDate`, so this is every row with an
+arc, not every row.**
+
+**So both arguments Ops offered for "don't run it" are retired** — the safety
+half by the inoculation finding, indistinguishability by this — and what remains
+behind that option is token cost alone. What remains between 148 and 231 is
+coverage against contention, which is Ops's and which nothing tonight touched.
+**Research's general form is the durable part: before concluding two states are
+indistinguishable, check whether the data already separates them.** The
+discriminator existed, was not built for this, and nobody had looked for it. It
+is the fourth observable-versus-failure problem the desk hit in a day and the
+first where the answer was already in the store.
+
 **It is blocked on one question and one only: scope.** Ops has gated everything
 and put the choice to the trader directly — 148 tickers (~1.7M in / 0.6M out,
 148 Alpaca calls) against all 231 (~2.6M / 0.9M, 231 calls) — because he
@@ -265,7 +309,7 @@ approved it before the token number existed. Ops's words: *"Everything is ready;
 one word and I start."* **Nobody is waiting on anybody else.** Research had
 raised a possible deadlock — Ops signalling it for the second WAL reading — and
 Ops killed it outright: *"No deadlock from me. I'll run it and take both WAL
-readings around my own run."* Relayed to Research 00:53 UTC so it is not
+readings around my own run."* Relayed to Research in the same window so it is not
 holding.
 
 **Monday 04:00 ET, two instruments, both Ops's, both need nobody present:** the
@@ -278,7 +322,7 @@ research works or not.
 Research session.
 
 **~~The read-time cycle move plus the partial-bar lock (item 16).~~ ESCALATED BY
-OPS, AND THE ESCALATION IS AGAINST ME.** *`2830ca3`, 00:36 UTC.* I recorded it
+OPS, AND THE ESCALATION IS AGAINST ME.** *`2830ca3`, committed 00:36:14Z.* I recorded it
 here as **not urgent before Monday**. Ops's judgement is that **it is Monday**,
 and the reason is exposure rather than code: `computedCycle` shipped in
 `161f15f`, so from Monday's open every re-analysis of a moving name runs
@@ -293,12 +337,12 @@ indistinguishable on the board from a correct one.
 
 **It landed in `ops.md` only.** `research.md` item 16 carries the mechanism and
 not the escalation, so a Research session opening item 16 would still read it as
-next-session work. Relayed to Research 00:53 UTC. **A charter can be corrected
+next-session work. Relayed to Research in the same window. **A charter can be corrected
 in the wrong document** — this thread's own version of the retraction failure,
 and the third instance of it recorded here.
 
 **Design's four verification checks: 2 of 4 done, and the other two are gated on
-a deploy rather than on the clock.** *Design's table in `design.md`, 00:27 UTC,
+a deploy rather than on the clock.** *Design's table in `design.md`, last written 00:27:59Z,
 is the authority; this is a pointer, not a copy.* PASSED live: the filter chips
 reading `All · Day 1 · Frontside · Off high · Backside`, and summary segments
 carrying no `warning`. FAILS TODAY: the researched table still shows
@@ -329,8 +373,8 @@ record, not this thread's observation.** This thread has no box access and does
 not verify it; Ops confirms the running release at gate time.
 
 **`a5a3a98` is committed, pushed and NOT deployed**, and it is what the two
-remaining checks wait on. Design asked for it at 00:27 UTC and cannot reach Ops;
-relayed 00:52 UTC. Verified here at directory scope over the whole tree rather
+remaining checks wait on. Design asked for it in its last message (00:27:59Z) and cannot
+reach Ops; relayed in this session's opening window. Verified here at directory scope over the whole tree rather
 than a file list: `git diff --name-only a5a3a98 4af4202` returns four paths and
 **all four are `docs/threads/*.md` — there is no code between it and HEAD.** So
 naming HEAD would have been executable this time, and the sha is named anyway
@@ -348,7 +392,7 @@ call with tokens spent and nothing recorded. A 231-dossier run on a hard
 deadline with no second attempt is the worst thing to hold in flight during a
 restart.
 
-**Everything is pushed as of 00:44 UTC**: `HEAD` = `origin/main` = `4af4202`,
+**Everything was pushed as of 00:43:28Z**: `HEAD` = `origin/main` = `4af4202`,
 `git log origin/main..HEAD` empty. The nine-unpushed-commits condition that
 produced the *every thread pushes its own work* rule is not present.
 
