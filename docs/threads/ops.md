@@ -214,8 +214,16 @@ Verify the package count after.
   or read that specific error as noise.
 - **`npm run build` cannot use the junction.** Turbopack refuses it outright:
   *"Symlink [project]/node_modules is invalid, it points out of the filesystem
-  root"*. The remaining gap in this method; closing it needs a real `npm ci` in
-  the worktree.
+  root"*. **Closed 2026-08-24 by `npm ci --prefer-offline` in the worktree** —
+  exit 0, 370 packages, no native rebuild trouble, and the full four-gate run
+  then passes including the build. Use the junction for a fast tests-only check;
+  use `npm ci` when the build has to be gated too.
+
+**The rig is reusable, which matters when `HEAD` moves every few minutes.** Once
+a worktree has real `node_modules`, re-point it with `git -C "$S" checkout
+<sha>` and re-gate without reinstalling. `HEAD` moved three times during one
+gating session on 2026-08-24; a rig that survives that is the difference between
+gating a sha and chasing one.
 
 **The cheap substitute for the build**, when the sha is close to one already
 built: `git diff --stat <last-built-sha>..<target> -- . ':!docs' ':!tests'`. If
