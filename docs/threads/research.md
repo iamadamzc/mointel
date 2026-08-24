@@ -1509,3 +1509,57 @@ window. **It must either exclude 08-20 or state that it did not.**
 for a date that has been seeded but has not traded. Recorded because I asserted
 the opposite to another thread without checking, and the file that disproved it
 had been open in front of me all evening.
+
+---
+
+**20. The three facts the model question needs, and the input-only view is
+misleading in a specific way.** *Asked by R&D through Integration 2026-08-24.
+Answered from `model_usage`, 2026-08-19..21.*
+
+| stage | calls | input | cached | output | out/in |
+| --- | --- | --- | --- | --- | --- |
+| DISCOVERY | 216 | 7,862,324 | 8.5% | 184,774 | 0.024 |
+| RESOLVER | 181 | 3,853,202 | 14.1% | 144,436 | 0.037 |
+| INTERPRETATION | 312 | 2,024,072 | 12.9% | 547,171 | **0.27** |
+| ESCALATION | 14 | 172,298 | 4.2% | 51,243 | 0.30 |
+| RECOVERY | 5 | 74,385 | 12.1% | 3,136 | 0.042 |
+
+**R&D was right that input-only can be wrong by a wide margin, and here it
+reorders the stages.** Weighting output at 5× input:
+
+| | input only | input + 5×output |
+| --- | --- | --- |
+| DISCOVERY | 56% | 47% |
+| RESOLVER | 28% | **25%** |
+| INTERPRETATION | 14% | **26%** |
+
+**Interpretation overtakes the resolver.** The input-only view understates it by
+nearly a factor of two, because interpretation is the only stage that *writes* —
+0.27 output per input against discovery's 0.024, an 11× difference in shape.
+
+**Caching cannot swamp the comparison, and the reason matters more than the
+number.** R&D's concern was that a stable prefix priced at ~0.1× would dominate
+any per-token difference between providers. Measured: **8.5% on discovery, 10.6%
+overall, and the largest cached prefix on any discovery call is 4,951 tokens
+against a 36,399-token average.** The authored prompt is ~254 tokens, so the
+cacheable part is the tool and schema preamble and nothing else. **The 36,400
+tokens are retrieved page content, unique to each call and inherently
+uncacheable** — there is no stable prefix to cache, and a provider swap cannot be
+credited or blamed for one.
+
+So the instrument does not swamp the effect here. It is still the right question
+to have asked; the answer is just that this particular confound is absent.
+
+**The resolver DOES depend on provider-hosted web search.** `worker/research.ts:114`
+injects `OpenAiCompanySourceResolver`, which sends `tools: [{ type: 'web_search' }]`
+— same file as the discovery provider, which is why one grep of `lib/research/`
+finds a single file and undercounts the dependency. **So the resolver's share
+joins discovery's category: 84% of input, or 72% output-weighted, is
+search-dependent.**
+
+**And `RESEARCH_RESOLVER_SEARCH_CONTEXT` is NOT a dead knob.** Both it and
+`RESEARCH_DISCOVERY_SEARCH_CONTEXT` are consumed at `worker/research.ts:120` and
+`:110`. The grep that suggested otherwise covered `lib/`; the consumer is in
+`worker/`. *Worth keeping as a near-miss: the evidence for "this configuration
+does nothing" and the evidence for "I did not search where it is used" look
+identical from inside the search.*
