@@ -527,6 +527,18 @@ and three threads to connect instead.
 inert: nothing about `queuedJobs: 0` invited a check. A false number would have
 been investigated within the hour.**
 
+> **A correct number answering the wrong question survives every review a wrong one
+> would not.**
+
+**And it reframes what was built.** `stalledJobs` was added thinking the fix was a
+missing counter. **The fix was asking the other question** — and the reason to keep
+`queuedJobs` narrow is not tidiness but that **the narrow number was never the
+defect.** *(See "a constant dressed as a measurement" — same failure at a
+different distance.)*
+
+*Operational caveat until it ships: `stalledJobs` reports nothing before the next
+deploy, so a `0` read now is the old shape rather than a measurement.*
+
 **And the same undercount hid a second fact in the same search:** the resolver
 depends on hosted web search too — its provider class sits in the *same file* as
 discovery's — so **84% of the desk's input tokens are search-dependent, not 56%.**
@@ -674,7 +686,20 @@ populated for both stages. A missing column is obvious; **a column that is alway
 present and always the same is invisible**, and it reads as evidence.
 
 So, beside *a check that cannot fail isn't a check*: **an observable that cannot
-VARY isn't a measurement.** For any field recorded to distinguish cases, ask what
+VARY isn't a measurement.**
+
+**And it has a sibling one step further out — `queuedJobs: 0`, correct and scoped
+to today while ten jobs sat queued.** Research's own framing of the pair, and it
+is the reason to read them together:
+
+> **A constant dressed as a measurement never varies. A correctly-scoped number
+> never lies. Neither can be caught by checking whether the value is RIGHT,
+> because in both cases it is.**
+
+**That is what makes this family survive review.** Every other defect in this
+document is found by asking *is this true* — these two answer yes. **The question
+that catches them is *what would have to change for this number to move*, and
+*which question is it answering*.** For any field recorded to distinguish cases, ask what
 its distinct values are across the whole table. One is a defect. And a test that
 asserts a constant confirms the constant, not the behaviour.
 
