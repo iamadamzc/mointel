@@ -182,3 +182,38 @@ describe('no surface renders the Sheet cycle directly', () => {
     expect(source).not.toContain('export function cycleTone');
   });
 });
+
+/*
+ * A count and the filter it labels must read one population.
+ *
+ * The summary's cycle segments counted every merged row — Discovery and the
+ * researched watchlist together — while applyFilters runs only over the
+ * sheet-derived watchlist. On a live premarket board that read "10 backside"
+ * and returned four rows; the other six were Discovery names the filter never
+ * touches. Found by clicking the segment on production, not by any test.
+ *
+ * This is the same defect the segments were moved off summary.freshFrontside to
+ * avoid, reintroduced by the change that fixed it.
+ */
+describe('cycle segment counts match what the filter returns', () => {
+  it('counts only rows the filter can act on', () => {
+    const watchlist = [row(history(arc({ phase: 'BACKSIDE' }))), row(history(arc({ phase: 'BACKSIDE' })))];
+    const discoveryOnly = [
+      row(history(arc({ phase: 'BACKSIDE' }))),
+      row(history(arc({ phase: 'BACKSIDE' }))),
+      row(history(arc({ phase: 'BACKSIDE' }))),
+    ];
+
+    // The count must be over the watchlist alone, never the union.
+    expect(countCyclePhases(watchlist).BACKSIDE).toBe(2);
+    expect(countCyclePhases([...watchlist, ...discoveryOnly]).BACKSIDE).toBe(5);
+  });
+
+  it('is not fed the whole merged map by the shell', async () => {
+    const { promises: fs } = await import('node:fs');
+    const source = await fs.readFile('components/DashboardShell.tsx', 'utf8');
+    // merged.rows is the union; the filter's population is `tickers`.
+    expect(source).not.toContain('countCyclePhases(merged.rows.values())');
+    expect(source).toMatch(/countCyclePhases\(\s*\n?\s*tickers\.map/);
+  });
+});

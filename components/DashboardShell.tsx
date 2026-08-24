@@ -211,7 +211,27 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
     (ticker: string) => cyclePhaseOf(merged.rows.get(ticker)),
     [merged],
   );
-  const cycleCounts = useMemo(() => countCyclePhases(merged.rows.values()), [merged]);
+  /*
+   * Counted over the SAME population the filter acts on.
+   *
+   * This counted `merged.rows` — every merged row, Discovery and watchlist
+   * together — while `applyFilters` runs only over the sheet-derived watchlist.
+   * On a live premarket board that read "10 backside" and returned four rows:
+   * six of the ten were Discovery names the filter never touches.
+   *
+   * That is the exact failure the cycle segments were moved off
+   * `summary.freshFrontside` to avoid — a count from one population labelling a
+   * filter over another — reintroduced in a different costume by the change
+   * that fixed it. A count and the filter it describes read one source or they
+   * disagree in front of the trader.
+   */
+  const cycleCounts = useMemo(
+    () =>
+      countCyclePhases(
+        tickers.map((ticker) => merged.rows.get(ticker.ticker)).filter((row) => row !== undefined),
+      ),
+    [tickers, merged],
+  );
 
   const filtered = useMemo(
     () => applyFilters(tickers, filters, cyclePhase),
