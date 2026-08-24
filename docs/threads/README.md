@@ -708,6 +708,34 @@ asserts a constant confirms the constant, not the behaviour.
 `select distinct` before it is trusted — including the ones this desk added
 tonight.
 
+## State the reason, not the conclusion, when it constrains what you do
+
+**Research, 2026-08-24, diagnosing why a wrong premise survived a night.**
+
+Two threads stopped work saying *"the market is open"* / *"about to open"*.
+Integration checked the clock, found both wrong, and corrected them — **which
+loosened a constraint both threads had been right to apply.** They were staying off
+the running desk because **he might be at it**, which was true. Nobody said so.
+
+> **A conclusion with no reasoning cannot be corrected, only overturned.**
+
+Had either written *"staying off the desk because he may be working"*, the
+disagreement would have been visible and the real question — *when does he
+actually trade?* — would have been asked hours earlier. **Instead the stated
+reason was checkable and got checked, while the unstated one survived
+untouched and invisible.**
+
+**Third instance of this shape in one night, and each time the checkable version
+is what produced the finding:** naming a specific victim made an as-of hazard
+checkable where *"prospective, no reader today"* would have been true and taught
+nobody; *"the float sort will start working"* was checkable where vague praise for
+the same work would have sailed through; and here, the reason given was corrected
+while the reason held was not.
+
+**So when a fact constrains what you do — a window, a lock, a dependency — say the
+fact, not the decision.** *"Not deploying: research is WORKING"* can be checked
+and corrected. *"Not deploying yet"* cannot.
+
 ## Ping Integration when you finish, without being asked
 
 **Added 2026-08-24 at the trader's instruction, and the instruction was
@@ -961,6 +989,23 @@ practice governs:
   trade. **But do not compute a window from the opening bell.** If a thread wants
   to know whether it is working in front of him, the answer at 04:00–10:00 ET is
   yes.
+
+  **THE DEEPER VERSION, found by Research in its own durable notes.** They said
+  *"9:30–10:00 is the core"* — **which is the BOOKLET's core, Cameron's, not
+  Adam's.** And the same notes carry the rule *where the booklet and Adam differ,
+  believe Adam.* **A rule written for exactly this error, with the error already
+  sitting under it.**
+
+  The practical effect was that **every time-window decision pointed at the
+  opening bell, which is roughly when his session ENDS.**
+
+  > **A taught method quietly stands in for the practitioner's, and it will recur
+  > on other facts in the same file.** The booklet is the reference; he is the
+  > authority. Where a note restates the booklet, check whether it was ever
+  > checked against him.
+
+  Research kept the wrong text and why it was wrong rather than overwriting it,
+  for that reason.
 - **Entry** is a micro pullback on rising volume, plus flat top, ABCD and VWAP
   reclaim. **Absorption is a gate, not a trigger** — stay out while a large
   presence sits unconsumed on the tape.
