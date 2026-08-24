@@ -309,7 +309,27 @@ async function main(): Promise<void> {
             job.ticker,
             config.cycleHistory.tradingDays,
           );
-          if (history.fetched) log(`[history] ${job.ticker} ${history.detail}`);
+          /*
+           * Logged whatever the outcome, because the outcomes that matter are
+           * the quiet ones.
+           *
+           * `ensureDailyHistory` REPORTS failure rather than throwing -- cycle
+           * context is enrichment and losing it must not fail a job whose SEC
+           * and catalyst evidence collected fine. Gated on `fetched`, that
+           * design became invisible: a healed symbol logged, while a failed
+           * Alpaca fetch and an already-current skip were both silent. So a
+           * symbol still holding a partial bar meant either the healing branch
+           * did not fire or the fetch failed, and the log could not say which.
+           *
+           * `detail` already separates all four outcomes -- 'already current',
+           * 'no Alpaca credentials', the session count, and the error. Only
+           * this line was discarding them.
+           *
+           * `worker/research-interpret.ts:153` logged it unconditionally all
+           * along. Same call, two workers, and the quiet one was the one
+           * running in production.
+           */
+          log(`[history] ${job.ticker} ${history.detail}`);
 
           // ----- collection
           log(`[research] ${job.ticker} collecting sources`);
