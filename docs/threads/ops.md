@@ -672,6 +672,44 @@ constructs the provider with **no options**, so the dashboard keeps
 `timeoutMs ?? null` and its behaviour is unchanged. The ceiling is opt-in and
 only the worker opts in.
 
+## Before the cycle deletion ships: it throws inside the assessment worker
+
+*Found by Design, routed by Integration, traced here because it is this thread's
+worker and this thread's capture record. **Not in `c48e199`** — this is about a
+commit that has not been written yet.*
+
+`worker/desk-assessments.ts:274` writes the checkpoint cycle as
+`dossier?.cycle.cycleClassification ?? null`. The optional chain guards
+**`dossier`, not `cycle`**. With `dossier` present and `cycle` deleted,
+`.cycleClassification` is a `TypeError` and the `?? null` never runs. Nothing
+warns at the call site, because `cycle: CycleFindings` is non-optional at
+`types.ts:550` — the type says it cannot be absent, so the compiler agrees.
+
+**The question Integration left open was whether the process survives. It does.**
+Traced: the throw is inside `captureAssessment` (`:171`), before
+`insertAssessmentTickers` (`:595`). `runAssessment`'s guard (`:545`) marks the
+row `FAILED` with `tickerCount: 0` and **rethrows** (`:569`). That propagates to
+`main()`, whose loop is `for (;;) { try { … } catch }` with the catch at `:486`
+— it logs `[assess] cycle failed`, writes health `state: 'ERROR'`, and
+**continues to the next iteration.**
+
+So: **you lose checkpoints, not the worker.** The distinction matters because the
+remedies differ — a dead worker needs a restart, a failing one needs the fix and
+keeps burning checkpoints until it lands.
+
+**Two things make this louder than the research stall was**, which is the useful
+comparison: the assessment row is written `FAILED` with the error in `notes`, and
+`assessments.state` goes to `ERROR` on `/api/health`. Unlike a hung research
+worker behind a fresh heartbeat, **this one announces itself.**
+
+**But the damage is permanent while it lasts.** It fires for every ticker
+carrying a dossier, at every checkpoint, so every checkpoint in that window
+records `FAILED` with no ticker rows. The append-only record only grows in real
+time — a checkpoint not captured is gone, and no later fix recovers it. That is
+the reason to see this before the diff rather than in it: **it would arrive
+inside a commit whose subject is about deleting a research field, and nothing
+about that subject line says capture.**
+
 ## Open items
 
 **0c. Health measures that the worker is alive, not that it is working — so a
