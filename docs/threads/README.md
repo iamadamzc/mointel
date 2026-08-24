@@ -909,8 +909,41 @@ test's **specificity** and it points the wrong way.
 (`lib/research/types.ts:490`) for 62 of 77 issuers since `55f3e20`; float
 resolves in `lib/dashboard/merge.ts`; the ADR class sits in `lib/market/`. Three
 modules, and **`lib/market/` is the one no charter owns.** Plumbing rather than
-new data — and against SEC-filed shares outstanding the test is *stronger* than
-Scanz's own, because the denominator is filed rather than derived.
+new data — and ~~against SEC-filed shares outstanding the test is *stronger* than
+Scanz's own, because the denominator is filed rather than derived.~~
+
+**RETRACTED 2026-08-24. On this universe a filed denominator is NOT stronger — it
+is stale by construction on precisely the names the test concerns.**
+`dei:EntityCommonStockSharesOutstanding` is a **cover-page** figure and is **not
+retroactively split-adjusted** (Research, found while wiring Phase C storage: on
+five of the six worst disagreements the model was right and the filing was
+pre-reverse-split — EBON, ZOOZ, ICCM).
+
+**And the hazard runs the HELPFUL way, which is the dangerous one.** A stale filed
+count on a reverse-split name is the **pre**-split number, so it **overstates**
+shares; an overstated denominator makes float/SO **smaller**; so `float > SO`
+fires **less often**. **Recomputing the test against filed shares would understate
+the defect rate, and worst in exactly the population that matters** — all nine
+flagged names carry a split, at 0 to 271 sessions. **It would come back with fewer
+hits and read as reassurance.**
+
+**R&D's measured figures are unaffected**: the Scanz panel was one source at one
+instant with no filing involved. **Filed and current are different properties, and
+the reverse split is where they separate.**
+
+**How ordinary this is, already measured and on this desk before the reasoning
+needed it: 34,451 of 102,731 symbol-dates over a 730-session window sit on a
+pre-split basis — 33.5%, a third of the record.** Research's justification for
+gating only one direction assumed dilution and forgot reverse splits, and the
+measurement that would have stopped it already existed in the archive. **The fix
+is "gate both"; the habit is: check whether you have already measured the thing
+you are assuming away.**
+
+**The standing rule, filed beside R&D's basis rule: a denominator that may be
+wrong in an unknown DIRECTION cannot support any arithmetic about it.** And do not
+repair it by split-adjusting from `reverseSplitHistory` — that is model-extracted
+prose, and **dividing a share count by a number parsed out of a sentence is a
+worse failure than declining to answer.**
 
 ## 2026-08-20 is half a day of `ticker_session`, in the middle of the only window
 
