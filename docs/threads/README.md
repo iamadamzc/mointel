@@ -162,6 +162,63 @@ Four rules, and the last two are what make it worth having:
 Integration is bound by this like every other thread, and wrote it having broken
 it repeatedly first.
 
+## Ping Integration when you finish, without being asked
+
+**Added 2026-08-24 at the trader's instruction, and the instruction was
+*"make sure they ping you when they are done so I don't have to prompt you."***
+
+The gap is precise. A thread finishes a piece of work, writes it up, and goes
+idle. Integration does not wake on a commit — it wakes on a message. So the only
+thing that made it go and look was **the trader asking it to**, which puts him
+back in the transport role that the section below exists to remove. He was doing
+it several times an hour.
+
+So, on finishing any piece of work:
+
+- **Send Integration one line.** *"Done, sha `X`, next is `Y`."* That is enough.
+  If something is blocked or handed over, say so in the same line.
+- **Do not wait to be asked, and do not wait until you have something polished.**
+  The ping is a wake signal, not a report. The report is your charter and your
+  commit message.
+- **Ping on finishing, not on starting.** A thread mid-execution finishes without
+  anyone; the rule that Integration must not put work-in-motion in front of the
+  trader has the same root.
+- **A commit is not a ping.** Commits do not carry questions and nothing watches
+  the log. This is the same failure the Integration charter records under *read
+  what a thread SAID, not what it committed*, seen from the sending end.
+
+**Integration's side of the bargain:** every ping gets one of three outcomes —
+answered, relayed onward with the context the receiver is missing, or declined
+with the reason said back. Never silence.
+
+## Absence of detection is not detection of absence
+
+**Promoted to top level 2026-08-24 at R&D's request, after three instances in one
+day by two threads.** It had been written down inside the float working, where a
+reader of any other section never reaches it.
+
+A measurement that finds nothing has two readings — *it is not there*, and *my
+instrument does not reach it* — and the second is invisible from inside the
+result, because the output looks identical.
+
+- Integration read a null lookback as an absence.
+- R&D concluded splits *"explain at most half"*.
+- Both were produced by the same **30-session cap**, which bounded what could be
+  detected at all. Removing it reversed the finding: all nine flagged names had a
+  split, and so did 13 of 25 clean ones.
+
+**The instance that earns it a section is the third, and it is R&D's own
+framing: it wrote the correction, then made the same mistake within hours,
+because the cap was its own field and it trusted it.** A rule broken by its
+author inside a day is evidence that the failure is structural rather than a
+matter of care — the same conclusion this desk reached about why no thread finds
+its own defects, arrived at from the other side.
+
+So: **before reporting an absence, name what would have had to be true for the
+instrument to see it**, and check that separately. A window, a cap, a filter, a
+join that drops rows — each turns *not found* into *not looked at*, and neither
+is distinguishable from the other in the output.
+
 ## Thread-to-thread traffic goes through Integration, not through the trader
 
 **Added 2026-08-23, at the trader's instruction, after he was asked three times
