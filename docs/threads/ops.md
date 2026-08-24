@@ -1175,6 +1175,53 @@ tell them apart, which this thread established the expensive way.
 this is a production config change with a multi-day protocol, which is adjacent
 but not the same thing. Put to him rather than stretched.
 
+## Monday 2026-08-24 premarket: all five readings taken, all clean
+
+Taken 04:25–04:30 ET with the board populated, bars at 1 s, 850 ranked names.
+
+| # | reading | result |
+| --- | --- | --- |
+| 1 | **WAL under real write pressure** | **531,574,792 — byte-identical across nine samples**, db mtime advancing, ranked climbing 846→850 |
+| 2 | **`messageAgeSeconds`** | **1**, `state: LIVE`, `PREMARKET` |
+| 3 | **per-symbol healing on the 42** | **middle column 0**; 21 re-analysed, pool 42→37 |
+| 4 | **bar count vs Saturday** | **0 dropped** — 265 compared, 248 unchanged, 8 grew, 9 new |
+| 5 | **`NRestarts`** | web 0, market 0, research 1, assess 0 — no unit failed |
+
+**Open item 2 is closed on evidence.** Saturday's flat WAL proved nothing because
+the load was absent — that was written into this charter as the condition, and
+the condition is now met: nine samples flat under live contention while the main
+store is continuously written. Checkpoints keep up. **507 MB is a high-water
+mark, not a leak**, and `journal_size_limit` is a tidy-up rather than a fix.
+
+**The market worker is proven.** 31 hours and ten deploys after the 01:27:36
+restart that cleared the release drift, with `RESTART_MARKET=no` and the
+`fd9556f` pin holding throughout, bars are flowing. The closed-market checks
+could only show it connects, authenticates and subscribes; this is the first
+evidence it works.
+
+**The healing works, and the check earned its construction.** The aggregate would
+have shown 42→37 and read as success — and would have read the same way if
+healing were half-working. Conditioning on the trigger is what makes zero mean
+something, and that form exists only because Research caught the aggregate before
+it ran and Integration caught the fetch-failure ambiguity after.
+
+### The overlay confirmed against a ranked board, for the first time
+
+Every previous observation went through `?symbols=`, which bypasses the rank
+gate. Bare `/api/market`, authenticated: **28 intelligence entries, 26 carrying
+`computedCycle`** — `BACKSIDE` 8, `NO_CYCLE` 13, `FRONTSIDE` 3, `DAY_ONE` 1,
+`SHADOW` 1.
+
+**Three of the four phases Design recorded as *unobserved, not failed* are now on
+a real board** — `DAY_ONE`, `FRONTSIDE`, `SHADOW`. Its check was correctly stated
+as narrow, and the narrowness was retired by the market rather than by argument.
+
+**One honest limit:** premarket load is real but is not RTH load. The recorded
+condition was sustained concurrent writes with the dashboard polling, which is
+met. The strongest version of the WAL answer would be the same sample during
+RTH; I do not think it is needed, since the question was whether checkpoints keep
+up under contention and they demonstrably do.
+
 ## Open items
 
 **0c. Health measures that the worker is alive, not that it is working — so a
