@@ -238,6 +238,32 @@ produces a second finding. That belongs beside the rule that a retraction must
 reach every inference resting on it — same family, and the same cost when it is
 skipped.
 
+## Integration can instruct deploys; only Ops performs them
+
+**Added 2026-08-24. The trader delegated deploy instructions to Integration and
+confirmed it to Integration directly rather than only through Ops.**
+
+*Only Ops deploys* below is unchanged — Ops gates, Ops ships, Ops verifies capture.
+What changed is who may say **when**. Integration can now issue a deploy
+instruction naming a sha, and Ops acts on it without a round trip to the trader.
+
+Three things this does not change:
+
+- **The gate runs at the sha that ships**, and an instruction names a sha rather
+  than a ref. If the sha has moved, it is a new instruction and a new gate.
+- **Capture is verified at directory scope** before shipping.
+- **Spend, auth-model changes and destructive actions still go to the trader.**
+  This is deploys only.
+
+**And the way it was adopted is the part worth copying.** Ops relayed the
+delegation accurately and Integration still declined to use it until the trader
+said it in Integration's own thread — because a relay that *grants* authority is
+the same object as a relay that *withholds* it, and this desk's rule about the
+second has to survive the first. The twenty-minute gap produced a genuine
+deadlock, with Ops no longer asking and Integration not yet instructing. **When a
+protocol changes, both sides adopt it at different moments, and the gap between is
+a stall nobody is responsible for.** Name who is waiting on whom, out loud.
+
 ## Ping Integration when you finish, without being asked
 
 **Added 2026-08-24 at the trader's instruction, and the instruction was

@@ -567,6 +567,45 @@ produced the *every thread pushes its own work* rule is not present.
 **The market worker still runs `fd9556f`**, held by the `market-worker-release`
 pin across six deploys.
 
+## The third delegation: deploy instructions, confirmed directly
+
+**Granted 2026-08-24 by the trader. Ops reported it first — *"deploy — and you can
+accept deployment instructions from Integration"* — and this thread refused to use
+it until he said it here himself. He did: one word, "confirmed."**
+
+**Refusing the relay was the point, and it is the same rule that ran all night in
+the other direction.** *A relayed delegation does not answer a question put to him
+directly* held four times, at a cost of one word each. The first time that
+principle would have worked in this thread's **favour** — a relay handing it more
+authority rather than less — is the worst possible moment to stop applying it.
+Ops's relay was accurate; that was never in doubt. What was in doubt is whether an
+accurate relay is the same thing as his decision, and the whole charter says it is
+not.
+
+**And it created a deadlock in the twenty minutes between.** Ops had stopped
+taking deploys to him; this thread had not started issuing them. `a259e8c` sat
+gated and green with nobody able to say ship. **Exactly the shape of the WAL
+signal deadlock Research and Ops nearly had earlier the same night** — two parties
+each correctly waiting for the other, from a change of protocol neither had
+finished adopting. Broken the same way: say out loud who is waiting on whom, and
+put the question to the one person who can end it.
+
+**The boundary, stated by Ops rather than negotiated, and this thread holds it
+whether or not it is being watched:**
+
+- The gate runs at **the sha that ships**. A deploy instruction names a sha, never
+  a ref, and never HEAD.
+- **Capture is verified at directory scope** before shipping — not against a file
+  list, which encodes the assumption under test.
+- **Spend, auth-model changes and destructive actions still go to him.** The
+  delegation is deploys only.
+
+**What it does not license: composing a deploy.** Ops shipped `c48e199` while this
+thread was asking it to re-gate at `a259e8c`, and the messages crossed. That was
+correct of Ops — it shipped the sha it was approved for, and shipping a drifted
+sha is the error the gate exists to prevent. **A deploy instruction is a sha and
+a moment; if either has moved, it is a new instruction and a new gate.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
