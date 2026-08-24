@@ -888,8 +888,39 @@ both directions.
 predate `computedCycle`" without asking how many. That is all of them, and
 "some" and "all" are different mornings.*
 
-**Updated again 2026-08-24 after `a259e8c` — check 4 is SUPERSEDED, not
-time-boxed.** Research's read-time fix landed as an **overlay**: the stored
+### RUN 2026-08-24 on `c48e199` — checks 3 and 4 both PASSED
+
+Ops shipped `c48e199` (Design's re-cut plus Research's guard and healing) and
+**not** `a259e8c`, so the overlay is unshipped and check 4's window was open
+after all. The retirement below was reasoned on both commits shipping together;
+they did not. Integration held the overlay deploy until this ran, which was the
+right call — a weak test that is free now and permanently gone later is worth one
+look.
+
+| | Result |
+| --- | --- |
+| **Check 3** — researched table shows no `FRONTSIDE — WARNING` | **PASSED.** Neither that string nor `FRESH / FRONTSIDE` appears anywhere on the page. |
+| **Check 4** — a row **with** a sheet cycle rendering `CYCLE NOT ESTABLISHED` | **PASSED**, on all 9 rows. |
+
+**Why check 4 is airtight rather than inferred.** The same nine rows were
+observed earlier in the same session, before the deploy, rendering
+`FRONTSIDE — WARNING` ×6 and `BACKSIDE` ×3. They now render
+`CYCLE NOT ESTABLISHED` ×9, with the tooltip *"Analysis ran but did not
+establish a cycle boundary for this name"* — `UNRESOLVED_DETAIL.cycle`, reachable
+only through the new path. **The old path rendered the sheet label whenever one
+existed**, so it could not produce this on these rows. Before-and-after on
+identical rows, not a snapshot compared against an expectation.
+
+**Not claimed — the phase names.** `DAY 1` and `OFF HIGH` do appear on the page,
+but they are the **filter chips**, already passed separately, not rendered cycle
+badges. No row carries a phase label, because no dossier carries a computed
+cycle. The phase-name and retracement tests still wait for `a259e8c`.
+
+**Running total: 4 of 4 available checks passed; two stronger tests pending a
+deploy.**
+
+**Superseded, kept because its premise was right — check 4 would have been
+retired had both commits shipped together.** Research's read-time fix landed as an **overlay**: the stored
 dossier is untouched, so replays and archived assessments keep their `asOf`
 boundary while the live board gets a fresh cycle. Every name with two or more
 stored daily bars now gets a computed cycle on the next render.
