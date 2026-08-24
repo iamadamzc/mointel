@@ -132,7 +132,11 @@ describe('resolveBlueSky', () => {
   it('reports blue sky only once price has crossed a verified ceiling', () => {
     const state = resolveBlueSky(verified(), 10.4);
     expect(state.status).toBe('IN_BLUE_SKY');
-    expect(state.label).toBe('IN VERIFIED BLUE SKY — PRIOR CEILING $10.00');
+    // Never "VERIFIED": the threshold's `verified` flag means the CEILING is a
+    // real traded level, not that the sky above is clear — and with a
+    // 90-session retention cap no correct run could establish the second.
+    expect(state.label).toBe('ABOVE PRIOR CEILING $10.00');
+    expect(state.label).not.toContain('VERIFIED');
     expect(state.distancePct).toBeCloseTo(4, 6);
   });
 

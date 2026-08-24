@@ -237,7 +237,22 @@ export function resolveBlueSky(
   if (usablePrice > ceiling) {
     return {
       status: 'IN_BLUE_SKY',
-      label: `IN VERIFIED BLUE SKY — PRIOR CEILING ${money(ceiling)}`,
+      /*
+       * Not "VERIFIED BLUE SKY".
+       *
+       * `verified` on the threshold means the CEILING is a real traded level:
+       * it cleared MIN_SESSIONS, it is not a bad print, it is not an isolated
+       * spike. None of those guards say anything about whether the sky above is
+       * clear. Attaching the word to the blue-sky claim read as a guarantee of
+       * no overhead supply, which is what the state means to a momentum trader.
+       *
+       * And no correct operation could ever establish it: the desk retains at
+       * most DEFAULT_CYCLE_HISTORY_TRADING_DAYS (90) sessions for every symbol,
+       * so a ceiling is bounded by configuration rather than by the stock's
+       * history. Reported on the live board by the desk owner, 2026-08-24, on
+       * BTCT at $1.71 against a $1.48 ceiling.
+       */
+      label: `ABOVE PRIOR CEILING ${money(ceiling)}`,
       threshold,
       distancePct,
     };
