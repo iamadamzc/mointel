@@ -224,6 +224,50 @@ Worth saying before the session is spent on it rather than after.
 (`deskRead.ts:528`), not that endpoint. Checking the wrong one would produce a
 confident wrong answer in either direction.*
 
+### UNRESOLVED before Monday: the overlay's effect is not visible on the live board
+
+**Design reported six of six checks passing at `7245320`. This thread cannot
+reproduce it, and the numbers should be reconciled before the open rather than
+during it.** Not an assertion that Design is wrong — it observed a rendered page
+and may have caught a state that has since changed.
+
+Measured 2026-08-24 ~01:5x UTC:
+
+| surface | reading |
+| --- | --- |
+| review page, server-rendered HTML | `CYCLE NOT ESTABLISHED` ×**9**, `NO RUN` ×**0**, `143.7` ×**0** |
+| `/api/market` via review token | `intelligence` entries: **0** |
+| `/api/market` authenticated | `intelligence` entries: **0** |
+
+Design reported `BACKSIDE` ×3, `NO RUN` ×3, `CYCLE NOT ESTABLISHED` ×3, with
+OLOX at 143.7%. **Those cannot both describe the same moment.**
+
+Three readings would reconcile it and this thread does not hold enough of the
+read path to choose: Design observed before something cleared; the researched
+table sources intelligence somewhere neither endpoint sees; or the nine rows
+counted are not the same nine.
+
+**Why it outranks the process error below:** if the overlay is not reaching the
+researched table, "six of six" describes a state the board is not in, and
+Monday's open is the discovery. If it *is* reaching it and the state simply
+changed, then an intelligence projection that empties on its own is worth
+understanding before premarket rather than during it — a plausible cause is
+scoping to the trading date, which rolled to 2026-08-24 with no analyses today.
+
+### My own error, and it was mine before it was the relay's
+
+Integration took the blame for claiming a Discovery measurement about the
+researched table. **It was mine first.** My words: *"neither can the two tests
+that replaced Design's retired check 4 — the six phase names and the retracement
+figure both need rows on the board."* I measured `discovery.rows: 0` and claimed
+it of a surface fed by `market.intelligence` (`lib/dashboard/merge.ts:319`), a
+different source from `dashboard?.research` at `:317`.
+
+**And the sharper version:** `/api/market` returns `intelligence` **as a
+top-level key beside `discovery`**. I read `discovery.rows`, found zero, and
+never looked at the key next to it. The data that would have corrected me was in
+the object I had already fetched.
+
 ### The healing check: per-symbol, because the aggregate cannot fail usefully
 
 **The falling `fetched_at` count is withdrawn as the observable.** Research
