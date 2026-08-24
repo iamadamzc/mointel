@@ -142,3 +142,43 @@ describe('phase counting', () => {
     expect(cyclePhaseOf({} as DeskRow)).toBeNull();
   });
 });
+
+/*
+ * Every cycle surface reads the resolved conclusion.
+ *
+ * The cutover switched `resolveConclusions` and the surfaces that call it, and
+ * three that read the Sheet's `ticker.cycle` directly survived it — the
+ * researched table's cycle cell, its backside colour precedence, and the
+ * drawer's header badge. They kept rendering FRONTSIDE — WARNING on the live
+ * desk while the filter above them offered DAY 1 and OFF HIGH.
+ *
+ * This asserts against source because the failure is structural: a component
+ * reaching past the shared projection to the sheet row. Caught by looking at
+ * production, not by the 1,261 tests that were green at the time.
+ */
+describe('no surface renders the Sheet cycle directly', () => {
+  it('has no component reading ticker.cycle for display', async () => {
+    const { promises: fs } = await import('node:fs');
+    const files = [
+      'components/MomentumTable.tsx',
+      'components/TickerDrawer.tsx',
+      'components/DiscoveryBoard.tsx',
+    ];
+
+    for (const file of files) {
+      const source = await fs.readFile(file, 'utf8');
+      // `ticker.cycle.display` / `.state` are the Sheet's classification
+      // presented AS the desk's cycle. A labelled source field — the drawer's
+      // "Cycle (sheet)" — is a different thing and stays.
+      expect(source, `${file} renders the sheet cycle`).not.toMatch(
+        /ticker\.cycle\.(display|state)/,
+      );
+    }
+  });
+
+  it('no longer exports a tone map for the Sheet cycle states', async () => {
+    const { promises: fs } = await import('node:fs');
+    const source = await fs.readFile('components/StatusBadge.tsx', 'utf8');
+    expect(source).not.toContain('export function cycleTone');
+  });
+});

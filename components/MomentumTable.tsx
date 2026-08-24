@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { PriorityBadge, StatusBadge, cycleTone } from '@/components/StatusBadge';
+import { PriorityBadge, StatusBadge, type Tone } from '@/components/StatusBadge';
 import {
   ChangeMarker,
   HaltBadge,
@@ -14,6 +14,7 @@ import {
 } from '@/components/DecisionCells';
 import { rowKeyboardProps } from '@/components/tableKeyboard';
 import { buildDeskRow, type DeskRow } from '@/lib/dashboard/merge';
+import { resolveConclusions } from '@/lib/dashboard/deskRead';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
 import type { SortKey, SortState } from '@/lib/dashboard/view';
@@ -202,8 +203,18 @@ function TableRow({
   const risk = resolveRisk(row);
   const why = resolveWhy(row);
 
+  /*
+   * The cycle comes from the same resolved conclusion every other surface uses.
+   *
+   * This cell read `ticker.cycle` — the Sheet's classification — straight off
+   * the sheet row, which is why it kept rendering FRONTSIDE — WARNING after the
+   * cutover moved every other surface onto the computed phase. A table showing
+   * one vocabulary while the filter above it shows another is worse than either.
+   */
+  const conclusions = resolveConclusions(row);
+
   const halted = t.haltState === 'HALTED' || t.haltState === 'RESUMING';
-  const backside = ticker.cycle.state === 'BACKSIDE';
+  const backside = conclusions.cycle.tone === 'neg';
 
   return (
     <tr
@@ -268,9 +279,9 @@ function TableRow({
       <td className="px-2 py-1 align-middle">
         <span className="flex flex-col items-start gap-0.5">
           <StatusBadge
-            label={ticker.cycle.display}
-            tone={cycleTone(ticker.cycle.state)}
-            title={ticker.cycle.raw}
+            label={conclusions.cycle.label}
+            tone={conclusions.cycle.tone as Tone}
+            title={conclusions.cycle.title ?? conclusions.cycle.label}
             className="max-w-full"
           />
           <HaltBadge state={t.haltState} raw={t.haltRaw} />

@@ -1,6 +1,5 @@
 import type {
   CatalystGradeBucket,
-  CycleState,
   PriorityBucket,
   SessionKind,
   StructureState,
@@ -36,18 +35,6 @@ export function StatusBadge({ label, tone = 'neutral', title, className = '' }: 
   );
 }
 
-export function cycleTone(state: CycleState): Tone {
-  switch (state) {
-    case 'FRESH_FRONTSIDE':
-      return 'pos';
-    case 'FRONTSIDE_WARNING':
-      return 'warn';
-    case 'BACKSIDE':
-      return 'neg';
-    default:
-      return 'dim';
-  }
-}
 
 export function priorityTone(bucket: PriorityBucket): Tone {
   switch (bucket) {

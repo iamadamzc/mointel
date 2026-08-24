@@ -8,7 +8,6 @@ import {
   StructureBadge,
   catalystTone,
   changeTone,
-  cycleTone,
   sessionTone,
   structureTone,
   type Tone,
@@ -18,7 +17,7 @@ import { AutomaticIntelligence } from '@/components/AutomaticIntelligence';
 import { DeskReadPanel } from '@/components/DeskRead';
 import { FocusToggle } from '@/components/FocusToggle';
 import { LevelLadder } from '@/components/LevelLadder';
-import { buildDeskRead, buildStructureSummary } from '@/lib/dashboard/deskRead';
+import { buildDeskRead, buildStructureSummary, resolveConclusions } from '@/lib/dashboard/deskRead';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { CycleLevels } from '@/lib/data/cycleLevels';
 import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
@@ -266,6 +265,7 @@ function DrawerHeader({
   const ticker = row.research;
   // The same projection the board used to pick this row's price.
   const t = row.telemetry;
+  const conclusions = resolveConclusions(row);
 
   return (
     <div className="border-b border-line-2 bg-panel-2 px-5 py-3">
@@ -293,10 +293,14 @@ function DrawerHeader({
                   raw={ticker.priority.raw}
                   isRevised={ticker.priority.isRevised}
                 />
+                {/* The same resolved cycle the board and the Desk Read show.
+                    This badge read the Sheet's classification directly, so it
+                    survived the cutover onto the computed phase and would have
+                    contradicted the panel a few lines below it. */}
                 <StatusBadge
-                  label={ticker.cycle.display}
-                  tone={cycleTone(ticker.cycle.state)}
-                  title={ticker.cycle.raw}
+                  label={conclusions.cycle.label}
+                  tone={conclusions.cycle.tone as Tone}
+                  title={conclusions.cycle.title ?? conclusions.cycle.label}
                 />
               </>
             ) : null}
@@ -525,7 +529,10 @@ function Overview({
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 md:grid-cols-4">
         <Field label="Current Priority" value={ticker.priority.raw} />
         <Field label="Original Priority" value={ticker.priority.originalRaw} />
-        <Field label="Cycle" value={ticker.cycle.raw} />
+        {/* Named as the Sheet's, because it is. The desk's own cycle is
+            arithmetic now and shows in the header badge above; an unqualified
+            "Cycle" here would contradict it in the same drawer. */}
+        <Field label="Cycle (sheet)" value={ticker.cycle.raw} />
         <Field label="Country" value={ticker.country || research?.country || ''} />
         <Field label={`Price (${ticker.price.session})`} value={ticker.price.display} numeric />
         <Field label={`Change (${ticker.changePct.session})`} value={ticker.changePct.display} numeric />
