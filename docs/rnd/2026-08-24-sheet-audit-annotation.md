@@ -29,8 +29,9 @@ The pattern is clean, and it does not follow the verdict column:
 - **A citation is live even when its target is not.** Which source the desk used
   is an act, not a fact about the world. The URL survives; the choice does not.
 
-**26 of 64 fields are live.** The three places where liveness and verdict come
-apart are where the risk actually sits:
+**27 of 64 fields are live** — 26 as first published, plus `Q` after the source
+report corrected it, and two more possible. The three places where liveness and
+verdict come apart are where the risk actually sits:
 
 | Field | Verdict | live? | why it matters |
 | --- | --- | --- | --- |
@@ -72,7 +73,7 @@ tasks write, its history is already gone.
 | N | Flush From High % | PRODUCED | — | ✓ | retracement of the move vs giveback below the high — two different numbers |
 | O | Prior Runner | PRODUCED | — | ✓ | threshold-dependent; store the threshold |
 | P | Structure Flags | PRODUCED | **LIVE** | | `structureClassification` is 55% not-unanimous |
-| Q | Key Levels | PRODUCIBLE | — | ✓ | |
+| Q | Key Levels | PRODUCIBLE | **LIVE** | ✓ | **corrected** — the Sheet's is an AI synthesis (§5, §6.1), not computed levels; see below |
 | R | Warning Shot | PRODUCIBLE | **LIVE** | | prose synthesis; a judgement |
 | S | Notes | NEW WORK | **LIVE** | | free prose |
 | T | PM Price | PRODUCED | — | | |
@@ -111,8 +112,8 @@ tasks write, its history is already gone.
 | 21 | Recent Major Runs | PRODUCED | — | ✓ | threshold-dependent |
 | 22 | Historical Runner Notes | PRODUCIBLE | **LIVE** | | prose over a produced status |
 | 23 | Split History | PRODUCIBLE | — | ✓ | recoverable from raw vs split-adjusted bars — verified over 515 sessions |
-| 24 | Daily Resistance | PRODUCIBLE | — | ✓ | |
-| 25 | Daily Support | PRODUCIBLE | — | ✓ | |
+| 24 | Daily Resistance | PRODUCIBLE | **LIVE?** | ✓ | probably AI-derived as the input to Q; §5 names "key levels" but not these individually |
+| 25 | Daily Support | PRODUCIBLE | **LIVE?** | ✓ | as 24 |
 | 26 | 8-K / 6-K | PRODUCED | — | | SEC |
 | 27 | Registration / Prospectus | PRODUCED | — | | SEC |
 | 28 | Offerings / ATM / PIPE | PRODUCED | — | ✓ | from filings |
@@ -130,13 +131,82 @@ tasks write, its history is already gone.
 
 | | TODAY | RESEARCH | total |
 | --- | ---: | ---: | ---: |
-| live | 11 | 15 | **26** of 64 |
+| live | 12 | 15 | **27** of 64 (+2 possible: RESEARCH 24, 25) |
 | defs | 12 | 17 | **29** of 64 |
 
 `defs` largely agrees with the audit's own pre-marking. Where this thread added
 one it is because the field has already bitten here: `RTH Close` differs from
 the auction close on 11% of rows in this archive, and `Flush From High %` is two
 different numbers — retracement of the move against giveback below the high.
+
+## Checked against the source report, and it corrected me
+
+*`docs/sheet-data-report-2026-08-22.md`, committed 2026-08-24. First outside
+account of the workbook. Read against this annotation rather than taken from a
+relay, because its §5 arrives at the same distinction independently and a
+disagreement between two independent classifications is a finding.*
+
+### One correction to my own column, and it is the error I keep making
+
+§5 lists **key levels** under *Analyst/AI-derived*, and §6.1 confirms `Q` is
+*"relevant support, resistance, current-cycle high, and split-aware historical
+levels in one concise cell"* — a synthesis, not a computation.
+
+**`Q` is LIVE and I marked it not-live.** The mistake is the same one this thread
+has caught twice elsewhere: I annotated what the field would *become* — the
+desk's `priceLevels` replacement, which is computed — rather than what the Sheet
+actually holds. `live?` is a question about the existing history, and the
+existing history is a model's synthesis.
+
+`24` and `25` are probably the same and are marked `LIVE?` rather than moved:
+§6.4 calls them *"detailed daily levels underlying the concise TODAY ladder"*, so
+they are Q's inputs, but §5 names only "key levels" and does not list them
+individually. **Flagged rather than guessed** — Research or whoever owns the
+Sheet can settle it in one look.
+
+That takes the count from 26 to **27 live, possibly 29**.
+
+### Three places the two classifications disagree, and all three are float
+
+§5's split — direct observation / filing fact / deterministically calculated /
+reconciliation / analyst-derived — is the same instinct as `live?`, and on most
+fields the two agree exactly. Where they part, they part on the same field:
+
+1. **Float sits under *Filing/reference fact*, alongside SEC forms and split
+   history.** That grouping implies it is re-derivable from a filing. **The
+   vendor-displayed float is not a filing fact** — the report's own §4.3 shows
+   `stockanalysis.com` at 505 citations, a vendor, and vendors keep no history.
+   This is exactly the Phase C problem: a filing-derived float will not equal
+   this number, and the taxonomy that files them together is what makes the
+   difference easy to miss.
+2. **`Overhang / Float` sits under *Deterministically calculated before
+   write*.** It is — from an input that is live. **Their taxonomy classifies by
+   how a value was produced; `live?` has to propagate through the calculation**,
+   because a deterministic function of an unrecoverable input is unrecoverable.
+   Field 36 is marked live here for that reason.
+3. **`Float Quality`** is the same shape as 2.
+
+So the two classifications agree on everything except the one field the desk is
+actively arguing about, and they disagree because one asks *what kind of thing
+is this* and the other asks *can I get it back*. Neither is wrong; only one of
+them answers the retirement question.
+
+### The 65th field: the report says 64, and the real gap is 16 columns
+
+Counting §6.4 directly — identity 8, float 4, catalyst 4, cycle and runner 7,
+levels 2, filing and supply 6, conclusions 3, dirty-float retrofit 3 — gives
+**exactly 37**, matching `A:AK`. §6.1 is `A:S` = 19 and §6.2 is `T:AA` = 8,
+giving **27** for TODAY. **27 + 37 = 64.** An independent source confirms
+`rows.ts`; the 65 is a miscount and there is no missing field.
+
+**But §6.3 is a separate 16-column 9:25 section that is not part of `A:AA` at
+all** — decision, PM snapshot, opening thesis, must-hold, invalidation,
+spread/liquidity, supply risk, opening plan. It is outside the 64, it is written
+by a **paused** task, and it is almost entirely analyst-derived, which makes it
+live by every criterion here.
+
+So the audit's scope gap is not one field. It is a 16-column surface plus the
+dated tabs, and both stopped on 2026-08-23.
 
 ## Are any of the ten written only by a paused task?
 
