@@ -921,10 +921,39 @@ this thread reads, and nothing else:
 by any surface yet**. If the read-time path populates the five rows above with
 the same shapes, nothing here changes. If it differs, this table is the diff.
 
-**One question for whoever builds it, not a claim:** a value computed at read
-time is not stored, so it is worth confirming what `desk_assessments` archives
-for cycle at a checkpoint. Item 12's Changes rail compares stored checkpoints,
-and a field that exists only at read time has nothing to compare.
+**That question had an answer, and it was pointed at the wrong layer.** The
+Changes rail is safe: `cycle_fingerprint` is a bucketed hash of **live tape** —
+price against session high and low, halt state, rank, participation, supportLost
+(`lib/desk/assessment.ts:68`) — and never touched `computedCycle`. The same
+sentence is true one layer down, where it matters more: `computedCycle` is
+deliberately **as-of bounded** (`pipeline.ts:362`), and Research's own comment
+says why — *"a replay that resolved the cycle against today's bars would know how
+the move turned out."* A read-time computation has no `asOf`. The stored field is
+currently the only thing holding that boundary. Relayed to Research mid-build.
+
+### The snapshot board renders a different cycle, and my cutover did not touch it
+
+Established here 2026-08-24, and it belongs to Design's surface even though the
+writer does not.
+
+`AssessmentHistory.tsx:218` renders `row.cycle` — a **stored** string, written by
+`worker/desk-assessments.ts:275` as `dossier?.cycle.cycleClassification`. That is
+**the model's classification, not `computedCycle`**. So:
+
+- **It did not switch with the cutover**, because it is a stored value written by
+  a worker rather than a display resolution. The live board now says `DAY 1` and
+  `BACKSIDE` while a checkpoint snapshot says whatever the model said. **Two
+  vocabularies in one product**, on two surfaces a trader moves between.
+- **It is rendered raw** — `{row.cycle ?? '—'}`, no label map — so it prints the
+  enum. That is the same class as F-08's `changedFields.join(', ')` two lines
+  above it, and the same class Phase 1 removed everywhere else.
+- **When Research deletes `dossier.cycle`, that writer goes null** and the column
+  empties for every future checkpoint. It is named nowhere in the deletion plan.
+
+**Not fixed here.** `worker/` is not Design's, and the fix is a pair — the writer
+must store the computed phase, and the renderer must map it. Handed over. Design
+owns the rendering half and it should land with item 12, which rebuilds this
+surface anyway.
 
 ### Falsifiable at CLOSED
 
