@@ -947,13 +947,34 @@ writer does not.
 - **It is rendered raw** — `{row.cycle ?? '—'}`, no label map — so it prints the
   enum. That is the same class as F-08's `changedFields.join(', ')` two lines
   above it, and the same class Phase 1 removed everywhere else.
-- **When Research deletes `dossier.cycle`, that writer goes null** and the column
-  empties for every future checkpoint. It is named nowhere in the deletion plan.
+- **When Research deletes `dossier.cycle`, that writer THROWS — it does not go
+  null.** *Design first wrote "goes null"; corrected by Integration 2026-08-24
+  and verified here.* `dossier?.cycle.cycleClassification ?? null` guards **only
+  `dossier`**: with the dossier present and `cycle` deleted, `.cycleClassification`
+  is a TypeError and the `?? null` never runs. `cycle: CycleFindings`
+  (`lib/research/types.ts:550`) is **not optional**, so nothing at that call site
+  warns once the field is gone at runtime.
 
-**Not fixed here.** `worker/` is not Design's, and the fix is a pair — the writer
-must store the computed phase, and the renderer must map it. Handed over. Design
-owns the rendering half and it should land with item 12, which rebuilds this
-surface anyway.
+  **That makes it a capture failure, not an empty column.** The throw is inside
+  `captureAssessment` (`worker/desk-assessments.ts:171`), called at `:588` —
+  **before** `insertAssessmentTickers` at `:595`. So the checkpoint's ticker
+  records are never written, for every ticker carrying a dossier, at every
+  checkpoint. `desk_assessments` is append-only, begins 2026-08-17T20:00Z, and
+  **no run buys back a day of it**. *Not traced above `:546`; whether the process
+  survives the rethrow is not claimed by anyone yet.*
+
+  It is named nowhere in the deletion plan.
+
+**Not fixed here.** `worker/` is not Design's. The fix is a pair — the writer
+stores the computed phase, the renderer maps it — and **the writer half is
+Research's, in the same commit as the deletion, never after**. If the two ever
+land apart, writer first. Design owns the rendering half; it belongs with item
+12, which rebuilds this surface anyway.
+
+**The general rule this produced**, now in the README: *a field deletion is owned
+by whoever deletes it, across every module that reads it — a deletion plan is a
+list of **readers**, not writers.* This one was found by the thread that owns
+none of the three files involved.
 
 ### Falsifiable at CLOSED
 
