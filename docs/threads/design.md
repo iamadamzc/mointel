@@ -988,6 +988,29 @@ a contradiction to explain.
 surface needs the phase to be *busy* was wrong here, because the researched table
 is fed by research rather than by the tape.
 
+### PREMARKET 2026-08-24 — every remaining check run, all passed
+
+Board populated: 867 eligible, 12/50 rows, phase `Premarket`.
+
+| Check | Result |
+| --- | --- |
+| **`Gap` label** — needs `PREMARKET` specifically | **PASSED.** Button reads `Gap`, title *"Change from the prior session close, including after hours"*. The old code had that word only in a `title` and could never render it as visible text, so this is the string that separates the paths — seen in the only hour it exists. |
+| **Row reordering** | **PASSED.** Rank order `OSPR, OLOX, TMCR, PMI, SDEV`; price order `OSPR 19.74, SDOT 16.08, BBCQ 10.63, SSEA 10.50, NBRG 10.05`. |
+| **Top N applied after the sort** | **PASSED, decisively.** With price sort active, `Top 12` returns the twelve highest-priced names **on the whole board** — 19.74 down to 6.70 — including SDOT, BBCQ, SSEA, NBRG, SUPX, HVII, JLHL and ELAB, **none of which were in the rank-based top 12.** Slice-then-sort could not produce that set. |
+| **Unknown count against real null floats** | **PASSED** as a mechanism: Float column appears only while float sort is active, `sorted by float` marker shows, readout reads `51 unknown`. |
+| **Phase names** | **five of six.** `BACKSIDE` 8, `NO RUN` 14, `FRONTSIDE` 3, **`DAY 1`** (USDE), **`PRIOR RUN`** (NCTY) at Top 50. `OFF HIGH` still unobserved — data-dependent, not code-dependent. |
+
+**The float sort works and has nothing to sort.** `51 unknown` out of a 51-row
+board population: **every ranked name has a null float.** Float is Sheet-sourced,
+and Discovery names are mostly not on the Sheet. So the control is honest — it
+says so loudly, which is what the count was built for — and **useless until the
+SEC-derived float lands.** This is the case §9 item 17 was already recorded
+against; it is now observed rather than predicted.
+
+**`NO RUN` is genuine, not short-series.** Ops compared per-symbol bar counts
+against Saturday: 265 symbols, 248 unchanged, 8 grew, 9 new, **zero dropped**.
+The finished-bar filter shortened nothing.
+
 **Running total: 6 of 6 available checks passed.** Outstanding and genuinely
 gated on a populated board: the four sort checks, and the `Gap` label, which
 needs `PREMARKET` specifically.
