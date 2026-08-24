@@ -84,19 +84,65 @@ confident wrong number this thread spent a week learning to distrust:
 | Claude Sonnet 5 | $3.00 ($2.00 intro to 2026-08-31) | $15.00 ($10.00 intro) |
 | Claude Haiku 4.5 | $1.00 | $5.00 |
 
-**TWO THINGS THAT MUST BE SETTLED BEFORE ANY COMPARISON IS QUOTED, and neither
-is a model question.**
+**ALL THREE ASKS ANSWERED 2026-08-24, and two of them reorder this scope.**
+Research ran them before Phase C rather than after, on the grounds that
+designing an evaluation on an input-only view would have been the wasteful
+order. It was right.
 
-1. **Output tokens were never measured.** Every figure above is *input*. Output
-   is priced at 5× input on every Anthropic model, so an input-only comparison
-   can be wrong by a wide margin in either direction. **This is the first ask of
-   Research** and it is cheap — the same query that produced the input split.
-2. **Prompt caching is a bigger lever than the provider, and it confounds the
-   comparison.** Discovery averages 36,400 input tokens per call over 216 calls.
-   If those calls share a stable prefix, Anthropic cache reads price at ~0.1×,
-   which would dominate any per-token difference between providers. **A cost
-   comparison that does not hold caching constant measures the caching, not the
-   model.** Whether the current GPT path caches at all is a Research fact.
+**Interpretation overtakes the resolver once output is counted.** Verified here
+from the raw figures rather than adopted:
+
+| Stage | out/in | input-only share | **weighted at 5× output** |
+| --- | ---: | ---: | ---: |
+| DISCOVERY | 0.024 | 56.5% | **47.4%** |
+| INTERPRETATION | **0.270** | 14.5% | **25.7%** |
+| RESOLVER | 0.037 | 27.7% | **24.7%** |
+| ESCALATION | 0.297 | 1.2% | 2.3% |
+
+Research carried its own correction with the numbers: *"my 84% finding / 14%
+reading framing is true of input and misleading as a cost statement."*
+Interpretation is understated by nearly two on the input view **because it is the
+only stage that writes** — an 11× difference in output-per-input against
+discovery.
+
+*One precision this thread adds: the 5× is **Anthropic's** price ratio, so the
+right-hand column is the shape of an Anthropic bill, not of the current one. It
+is the correct weighting for deciding where an Anthropic swap pays; describing
+today's spend needs the incumbent's own output multiple, which nobody has.*
+
+**The resolver depends on hosted search too, so the search-dependent share is
+84% of input and 72% weighted — not 56%.** `OpenAiCompanySourceResolver` sends
+`tools: [{type:'web_search'}]` and lives in the same file as the discovery
+provider. The feasibility answer is unchanged — Anthropic's `web_search_20260209`
+covers both — but far more of the bill rests on it than the first cut suggested.
+
+**The caching confound is absent, and it was checked rather than assumed.**
+8.5% cached on discovery, 10.6% overall, and the largest cached prefix on any
+discovery call is **4,951 tokens against a 36,399 average**. The authored prompt
+is ~254 tokens, so the cacheable part is the tool and schema preamble and
+nothing else. **The 36,400 tokens are retrieved page content — unique per call
+and inherently uncacheable.** There is no stable 36k prefix for any provider to
+be credited or blamed for. The concern was correct in form and simply does not
+apply here, which is worth more than having assumed it either way.
+
+**So it is two comparisons, not one, and they are genuinely different
+questions** — Research's framing and it sharpens the mixed-provider point rather
+than complicating it:
+
+- **Discovery and the resolver compete on RETRIEVAL VOLUME**, not token price,
+  because the cost is irreducibly uncached page content. How much each
+  provider's search pulls in *is* the cost. Worth noting that
+  `web_search_20260209` exposes **`max_uses`**, which makes retrieval volume a
+  directly controllable lever rather than a property of the provider — that may
+  matter more than the per-token rate.
+- **Interpretation is our own bundle in, the product out.** A conventional
+  model comparison, and the only stage where output dominates.
+
+**One thing still open, and it is smaller than it was.**
+
+The incumbent's output multiple. Every Anthropic figure here is weighted at 5×;
+the current provider's ratio is unknown, and without it the *saving* cannot be
+quoted even though the *shape* now can.
 
 **The outcome variable is citation rate, not catalyst quality**, for the reason
 that already settled `search_context_size`: quality needs a grader, this desk's
@@ -111,10 +157,8 @@ compromise.** `openaiInterpreter` already has a tier system with an escalation
 model that the README records as *designed but never exercised*; if a second
 provider enters anywhere, that is the seam it enters through.
 
-**What this thread needs from Research**, via Integration: output tokens per
-stage for the same window; whether the resolver depends on hosted search
-(`RESEARCH_RESOLVER_SEARCH_CONTEXT` suggests it does); and whether any prompt
-caching is in force on the current path.
+**Nothing further needed from Research**, which is not picking up Q8 and answers
+facts through Integration only.
 
 **Q7 was routed here by the desk owner on 2026-08-23**, in those words: *"None
 yet. This needs to go to the viscosity study."* Audit §11 item 3 asked which of
