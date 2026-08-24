@@ -681,10 +681,34 @@ override.**
 
 ### The guard is now load-bearing for a reason nobody designed
 
-**Ops, same night.** The assessment worker **dies on startup on roughly one deploy
-in three** — `SQLITE_BUSY_SNAPSHOT` at `migrate()` inside `withMigrationLock`,
-`desk-assessments.ts:380`, exit 1, systemd restarting ten seconds later, three
-occurrences in the journal. **The documented fix does not cover it:** the
+**Ops, same night, and corrected by Ops within the hour.** ~~The assessment worker
+dies on startup on roughly one deploy in three.~~ **It is not one worker with a
+fault — it is WHICHEVER WORKER LOSES THE MIGRATION SNAPSHOT RACE on startup, and
+which one varies per deploy.** `SQLITE_BUSY_SNAPSHOT` at `migrate()` inside
+`withMigrationLock`; seen from `desk-assessments.ts:380` and from
+`research.ts:98`; exit 1, systemd restarting ten seconds later. **Four occurrences
+across two workers.** The consequence is unchanged and is why the distinction
+matters: **whichever one it lands on, hitting `assess` near a checkpoint is a
+permanent hole.**
+
+**Two things Ops got right that I would have got wrong.** It shipped **tonight
+rather than Monday premarket**, on the reasoning that a crash costs nothing with
+the recap done and `STRUCTURAL_REFRESH` eight hours out, while **at premarket the
+checkpoints are minutes apart and the same crash is a permanent hole** — premarket
+was the worse window, not the safer one, and I had offered it as the cautious
+option.
+
+**And the observable that caught it was not the one it built.** It had built a
+stop-duration check, because the *last* bug was in shutdown; **this bug was one
+step further along the same lifecycle.** The stop was clean — fourth in a row.
+`NRestarts` caught it, on the first deploy where Ops checked it, having written
+that intention one message earlier. **`is-active` reports "active" for a service
+that crashed and came back, and neither it nor the deploy's health wait can tell
+the difference.**
+
+**Candidates, Ops's, not started:** an `IMMEDIATE` transaction for the migrating
+connection, or ordering the runtime units *after* `mointel-migrate` rather than
+opening concurrently. **The documented fix does not cover it:** the
 cross-process lock serialises *writers*, and `BUSY_SNAPSHOT` is a *snapshot*
 conflict — web and research reopen the store alongside, and the migrating
 connection loses its snapshot. **A lock that serialises writers does not stop a
@@ -696,7 +720,9 @@ in real time.
 
 **So the 5-minute preflight window, written for mid-checkpoint interruption, also
 happens to cover a 10-second crash-and-restart its author never had in view — a
-30× margin by luck.** That is the inverse of this document's usual finding, where
+30× margin by luck.** *And the guard measures distance in BOTH directions: it
+refused Ops at "3m away" from a checkpoint that had already completed, which is
+right, because a checkpoint may still be writing.* That is the inverse of this document's usual finding, where
 a rule names an event that later diverges from its condition. **Record it as luck
 anyway:** the margin holds only while the restart is a single clean one, and a
 restart loop or a systemd rate limit spends five minutes quickly.
