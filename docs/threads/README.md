@@ -444,6 +444,40 @@ deliberately, and is the one most worth another layer checking.** Ops's own repa
 is the model: it wrote *check `NRestarts` after every deploy*, checked on the very
 next one, and caught a worker that `is-active` reported as healthy.
 
+## "This config does nothing" and "I searched the wrong directory" look identical
+
+**Named by Research, 2026-08-24, after Integration nearly filed the second as the
+first.**
+
+Integration grepped `lib/` for consumers of `RESEARCH_RESOLVER_SEARCH_CONTEXT`,
+found it declared and populated but never read, and reported it as **possibly a
+knob that does nothing** — the same species as the `toolConfig` constant found
+hours earlier. **It is live.** Both search-context values are consumed at
+`worker/research.ts:110` and `:120`. **The grep covered `lib/`; the consumers are
+in `worker/`.**
+
+> **The evidence for *"this configuration does nothing"* and the evidence for
+> *"I did not search where it is used"* are indistinguishable from inside the
+> search — and the first one reads as a FINDING.**
+
+**It is the exact inverse of the `toolConfig` catch**, where a live-looking field
+was dead. Same directory, same night, opposite errors — which is what makes the
+pair worth keeping together. **An empty result is not evidence of absence; it is
+evidence about where you looked**, and that is *absence of detection is not
+detection of absence* wearing a search-path costume.
+
+**What kept it cheap was the handling, not the care.** It was grepped rather than
+reasoned about, reported explicitly as *an observation, not an assertion*, and put
+to the thread that holds the injection — so it cost two minutes instead of
+entering another thread's register as a defect. **The rule is not "grep harder."
+It is that a negative search result crosses a thread boundary as a QUESTION, never
+as a finding**, because only the owner knows where the consumers live.
+
+**And the same undercount hid a second fact in the same search:** the resolver
+depends on hosted web search too — its provider class sits in the *same file* as
+discovery's — so **84% of the desk's input tokens are search-dependent, not 56%.**
+One grep, one directory, two wrong conclusions.
+
 ## A constant dressed as a measurement
 
 **Research, 2026-08-24, found in its own ledger.** The hardest version of *a check
