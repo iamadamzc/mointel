@@ -515,6 +515,34 @@ not of the last step that produced the value.** A computed field inherits the
 worst recoverability of its inputs, and a taxonomy built on provenance will file
 it under the step you can see.
 
+## I measured the component and reported it as the system
+
+**Research, 2026-08-24, against its own work — the fifth instance of this family in
+one day.**
+
+It measured three classification regexes **directly against the universe** and
+reported **722 of 723** to itself with confidence. **The measurement was blind to
+RULE ORDER.** `IQM ... Warrants to purchase American Depositary Shares` matched the
+**ADR** rule first and classified `ADR_ADS`, so the warrant designation never got a
+hearing — **and the harness happily reported the warrant pattern as matching,
+because a rule that never runs still matches when you test it on its own.**
+
+> **The observation was real. It was not an observation of the thing being
+> claimed.**
+
+Same family as a ledger recording price without configuration, a heartbeat that
+survives a blocked loop, and a log that fires only on success. **The fix is
+identical every time: assert the output a caller would actually see.** Its test
+asserted the *classification* rather than the pattern, which is the only reason
+this surfaced; the 722 was then re-measured through `classifySecurity` and is
+**earned rather than assumed.**
+
+**And the repair generalises past tests.** The ADR rule now sits *after* the
+derivative rules, and `RLX`/`WDH`/`AMX` are asserted **positively** as `ADR_ADS`
+rather than merely not-`RIGHT` — **so a future reorder cannot demote them
+silently.** A negative assertion passes for the wrong reason as easily as the
+right one.
+
 ## A constant dressed as a measurement
 
 **Research, 2026-08-24, found in its own ledger.** The hardest version of *a check
@@ -1059,7 +1087,29 @@ As of the last session, **2026-08-23**:
   constraints, both Research's own: **do not loosen to a word-match** — measured, it
   hits 24 ordinary LP units and trusts (PAA, ARLP, UNG) whose float is real — and
   **one definition, in `securities.ts`**, never a second derivative rule in
-  `float.ts`. **It is a definition change to what counts as eligible — but MEASURED, not
+  `float.ts`. **SHIPPED `b467154`. FOUR NUMBERS ARE IN CIRCULATION FOR THIS ONE CHANGE AND THEY
+  ARE FOUR DIFFERENT POPULATIONS** — quote none of them without its denominator:
+  **13** universe rows change class; **11** universe rows leave board eligibility;
+  **2** symbols actually RANKING become ineligible, over the last full session's
+  2,821 ranked; **0** of the archive's 252 board symbols are affected. **The
+  trader approved an estimate of eleven and the real board impact is two.**
+
+  **The two are `BCTXL`** (BriaCell Therapeutics Corp. Warrant expiring 2031) **and
+  `IQMXW`** (IQM Quantum Computers Oyj Warrants to purchase American Depositary
+  Shares), both ranking on the live board. **`BCTXL` ends in `L`, so no
+  fifth-letter convention would ever have found it** — the name rule is doing work
+  the symbol convention cannot, and that single instance is the justification for
+  the change.
+
+  **The three rules are relaxed differently on purpose:** *warrant* unanchored, no
+  ordinary equity carries the word; *unit* still anchored to punctuation or a date,
+  because `Common Units representing Limited Partner Interests` and `Corporate
+  Units` are ordinary equity; *rights* requiring the **plural**, because the
+  singular before *"to"* flagged `RLX`, `WDH` and `AMX` on *"the right to receive
+  one Class A ordinary share"* — three ADRs, caught before shipping, and only
+  because the candidate was measured rather than reasoned about.
+
+  **It is a definition change to what counts as eligible — MEASURED, not
   assumed: R&D ran both versions over all 13,089 universe rows.** 13 rows change
   class, **11 leave board eligibility** — `BLUWW BLUWU SPEGR LUCYW ORIQW BCTXZ
   BCTXL HAVAR HUBCW OXBRW OGGWZ` — and **of the archive's 252 board symbols, ZERO
