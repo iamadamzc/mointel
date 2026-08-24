@@ -209,7 +209,53 @@ this time and printed `keep fd9556f (pinned)`.
 
 No migration: schema 21 both sides, migrate wrote 0 backups.
 
-## The trader's challenge holds: the backfill is a 2.6M-token toll for one arithmetic line
+## The store is already poisoned: 133 partial bars, and 42 of them are Friday's
+
+Nobody had checked whether the defect had already written bad rows — item 16 said
+only that it "has not bitten", which is a claim about consequence. The column to
+answer it already existed: `daily_bars.fetched_at` (`db.ts:390`). A row whose
+`trading_date` equals the ET date of its own `fetched_at`, fetched before 20:00
+ET, was stored mid-session. Read-only against production, 2026-08-24:
+
+| trading_date | rows stored mid-session | earliest ET | latest ET |
+| --- | --- | --- | --- |
+| 2026-08-17 | 13 | 10:18 | 17:01 |
+| 2026-08-19 | 31 | 10:00 | 18:17 |
+| 2026-08-20 | 47 | 10:00 | 18:04 |
+| **2026-08-21** | **42** | 09:35 | 18:24 |
+
+**133 rows, 133 symbols. And the 42 on Friday are exactly the 42 symbols whose
+latest bar is Friday — so every symbol holding a Friday bar holds a partial
+one.**
+
+### The guard is preventive, and that leaves a gap on Monday
+
+Traced through `952f9e1` rather than assumed. At Monday premarket
+`lastSettledTradingDate` walks back — Monday's session has not ended, Sunday and
+Saturday are skipped as weekends — and returns **2026-08-21**. For those 42
+symbols `stored` is also `2026-08-21`, so `stored >= settled` is **true** and
+`ensureDailyHistory` **does not refetch**. Their partial Friday bar stands all
+Monday, and any cycle computed for them uses it. It self-heals Tuesday, when
+`settled` moves past 2026-08-21.
+
+**And my own `latestDate` discriminator does not catch this.** That test flags a
+row whose `latestDate` equals the *current* trading date. Here `latestDate` is
+`2026-08-21` — a prior date — so it reads as clean. The guard makes the remaining
+contamination **quieter**, not louder.
+
+This is not an argument against shipping it. Without the guard, Monday's refetch
+would fix Friday and poison Monday, locking for the day and recurring daily; with
+it, Friday stays stale one extra day and nothing new is poisoned. The guard is
+clearly right. The gap is worth knowing rather than meeting.
+
+### The improvement the guard is one column away from
+
+`fetched_at` is already stored, and it distinguishes what a date comparison
+cannot: **a stored bar is trustworthy only if it was fetched after its own
+session ended.** The guard currently asks *"is the stored date recent enough"*;
+asking *"was the stored bar finished when it was written"* would make it
+self-correcting instead of merely preventive — and would have refetched these 133
+on first contact. Research's file and Research's call; the data is already there.
 
 **Recommendation reversed a third time, to NOT running it.** He asked why call
 Alpaca for 231 when only the tickers that reach the app matter. Verified here:
