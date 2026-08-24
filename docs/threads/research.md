@@ -1744,6 +1744,65 @@ the walk falsely, stopping at a pre-split artifact and reporting it as the
 ceiling — **which was the sharpest objection, and it disappears with the
 mechanism.**
 
-*Unverified, and it is the one assumption in this: that Alpaca serves ten years
+*Was unverified. Probed and confirmed below. It is the one assumption in this: that Alpaca serves ten years
 of daily bars on this account's plan. Everything above is measured; that is not,
-and it wants one probe before anyone builds.*
+and it wanted one probe before anyone built.*
+
+### Probe result, 2026-08-24 19:xx ET — and it changes the design
+
+**The plan is not the limit.** `AAPL` returned **2,513 rows, the full ten years**,
+in 701ms. `BTCT` returned 1,608 (6.4y) and `NTWO` 414 (1.7y) — **those are their
+listing histories, not a cap**, which is exactly what the control was for. The
+one unverified assumption in item 21 holds.
+
+**But depth alone produces a number nobody can use.** `BTCT`, split-adjusted:
+
+| lookback | ceiling |
+| --- | --- |
+| the desk today, 90 sessions | **$1.80** — reads as blue sky |
+| all history, 1,607 sessions | **$14,249.94** on 2020-03-31 |
+
+That 2020 bar **traded four shares** and is arithmetically correct: BTCT is a
+serial reverse-splitter, so adjusted history is an exponential decay — 14,249 →
+1,164 → 160 → 3.80 → 4.91 → 5.55 → 1.70 by year.
+
+**A liquidity floor does not rescue it.** Dollar volume is the split-invariant
+measure (a reverse split multiplies price by N and divides volume by N, so
+`close × volume` is unchanged), and even at a **$25M** floor the ceiling is
+**$2,561.94**. Those sessions genuinely traded. The prices are real and
+economically irrelevant, because the shares that traded at them were consolidated
+out of existence.
+
+### Split dates are recoverable exactly, from price data alone
+
+Fetch the same window twice, `adjustment: 'raw'` and `adjustment: 'split'`. The
+ratio `split ÷ raw` is the cumulative factor still to apply from that date, and
+it **steps at each split**. `BTCT`:
+
+    2022-05-06   factor 600 -> 20    1-for-30
+    2023-08-24   factor  20 -> 1     1-for-20
+    cumulative today: 1.0000, and 30 x 20 = 600 checks out
+
+**No model, no prose, no corporate-actions endpoint.** This is the deterministic
+version of the thing `float.ts` refuses to do from `reverseSplitHistory`.
+
+### So the lookback boundary is the most recent reverse split
+
+| BTCT, current high $2.75 | ceiling |
+| --- | --- |
+| desk today, 90 sessions | $1.80 — **blue sky, wrongly** |
+| **since the 2023-08-24 split, 751 sessions** | **$26.58 on 2024-11-13** |
+| since the 2022 split | $48.80 |
+| all history | $14,249.94 |
+
+**$26.58 is the answer.** Two years of post-consolidation history, shares that
+still exist in that form, and **ten times the current price** — so the trader's
+*"this is not bluesky territory"* was right, and by an order of magnitude.
+
+**Three things this closes at once.** The lookback never spans a split, so the
+mixed-basis hazard largely evaporates; the cumulative factor is the **basis
+stamp** the `adjustment` literal was supposed to be; and `filedShares` can now be
+split-adjusted deterministically, which is the `EBON`/`ZOOZ`/`ICCM` problem.
+
+**Cost impact: two calls per deep check instead of one.** At 0.4 checks a
+morning that is still nothing.
