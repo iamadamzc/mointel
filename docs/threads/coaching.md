@@ -42,13 +42,15 @@ the fills**. They do not need to be self-reported:
 | Moving stops | realised loss per share above the stated $0.15-$0.25 maximum |
 | Revenge trading | short gap after a loss, with size going *up* |
 | Three strikes ignored | a 4th or later trade after three reds |
-| Overtrading | trade count against the trader's own baseline; trades after 11:00 |
+| Overtrading | trade count against the trader's own baseline |
 | FOMO entry | entry price against how far the move had already extended — needs the archive |
 | Size drift | position size against the risk the setup justified |
 
 Two findings are usually available before any market research pays off, and are
-worth checking first: **whether the losers are bigger than the rule allows**, and
-**whether money made before 10:00 is given back after 11:00**.
+worth checking first, because both are answerable from the fills alone and both
+are his own rules rather than the booklet's: **whether the losers are bigger
+than the rule allows**, and **whether hold time is the seconds-to-1-2-minutes he
+states**. Neither needs the clock.
 
 ## What the archive adds
 
@@ -81,21 +83,26 @@ the booklet, the live practice governs:
   or simple satisfaction with the gain. The last is discretionary and cannot be
   reconstructed — measure the excursion available and let the trader judge the
   exit rather than pretending to model it.
-- **HE TRADES PREMARKET. HE DOES NOT TRADE RTH.** *Corrected 2026-08-24 by his
-  own statement; this charter carried the booklet's window until then.* **Session
-  is 04:00-09:30 ET, profit concentrated 07:00-09:30.** RTH is the exception — a
-  dip trade or a genuinely strong mover — not the default.
+- **The setup is the requirement; the session is not.** *Corrected twice: on
+  2026-08-24 this charter carried the booklet's RTH window, and the correction
+  overshot into "he does not trade RTH." Both were rules about the clock.* He
+  trades premarket, regular hours and after hours. **The setups are the same in
+  all three** — the entry, the absorption gate and the exit rule above do not
+  change with the session. A trade is graded on whether the setup was there,
+  never on when it was taken.
 
-  **This matters more here than anywhere else on the desk**, because two of the
-  adherence checks above are keyed to the clock. *"Money made before 10:00 given
-  back after 11:00"* is the **booklet's** shape and measures him against
-  Cameron's session, not his. **The equivalent question for this trader is
-  whether the 07:00-09:30 window is where the money is made and what happens to
-  it after 09:30.** Rewrite the check before running it.
+  **So no adherence check may be keyed to the clock.** *"Money made before 10:00
+  given back after 11:00"* is the booklet's shape and grades him against
+  Cameron's session; *"is 07:00-09:30 where the money is made"* is the same
+  mistake with his numbers substituted. Neither is a rule he holds. Time of day
+  is a **reporting dimension** — a pattern to surface once the fills are in,
+  alongside price, float and setup type — and it becomes a rule only if the
+  record shows one and he adopts it.
 
-  **And R&D measured the market side on 2026-08-24: of 95 movers, 27.4% peak
-  04:00-06:59, 18.9% in 07:00-09:29, and only 7.4% in 09:30-09:59.** The largest
-  single bucket is *before* the stated profit window opens.
+  **The distribution is still worth knowing.** R&D measured the market side on
+  2026-08-24: of 95 movers, 27.4% peak 04:00-06:59, 18.9% in 07:00-09:29, and
+  only 7.4% in 09:30-09:59. That is where the opportunities are, not where his
+  trades have to be.
 
   **Assume every other threshold in this file may be the booklet's rather than
   his, and check before measuring.** Hold time, risk per share, the price and
