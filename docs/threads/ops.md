@@ -224,6 +224,59 @@ Worth saying before the session is spent on it rather than after.
 (`deskRead.ts:528`), not that endpoint. Checking the wrong one would produce a
 confident wrong answer in either direction.*
 
+### The healing check: per-symbol, because the aggregate cannot fail usefully
+
+**The falling `fetched_at` count is withdrawn as the observable.** Research
+caught it before it was run rather than after, which is the first time tonight
+that happened. A *partial* fall is exactly what a working system produces on a
+normal Monday — healing fires only on re-analysis, and only some symbols get
+re-analysed — so the aggregate cannot separate **working** from **half-working**,
+and either would have been read as success.
+
+The unambiguous form conditions on the trigger. Written here rather than
+requested, since this thread has the box and the schema:
+
+```sql
+with partial as (
+  select symbol from daily_bars
+  where trading_date = '2026-08-21'
+    and date(datetime(fetched_at,'-4 hours')) = '2026-08-21'
+    and time(datetime(fetched_at,'-4 hours')) < '20:00'
+),
+touched as (
+  select distinct ticker from research_jobs
+  where started_at is not null and date(started_at) = date('now')
+)
+select (select count(*) from partial) as friday_partial_now,
+       (select count(*) from partial p join touched t on t.ticker = p.symbol)
+         as partial_and_reanalysed_today,
+       (select count(*) from touched) as reanalysed_today_total;
+```
+
+**Read it on the middle column.** A symbol re-analysed today should no longer
+hold a partial Friday row, so `partial_and_reanalysed_today` must be **0**.
+Anything above zero is unambiguous evidence the healing branch did not fire —
+it cannot be explained by "only some names were re-analysed", which is what
+sank the aggregate.
+
+Baseline, validated tonight: **42 / 0 / 0** — 42 still partial, nothing
+re-analysed yet, which is the correct closed-market reading.
+
+### Two definitions of a usable daily bar, and the read path has none
+
+Sharpening my own observation with Integration's cause. `ensureDailyHistory` now
+carries an explicit test for a trustworthy bar — `fetchedAt >=
+sessionEndUtc(tradingDate)`. **`overlayLiveCycle` carries none:** it takes
+`readDailyBars(db, ticker)` and computes, with no finished check at all.
+Confirmed at the live code. Two definitions written four commits apart the same
+night, one in the write path and none in the read path.
+
+**The dated consequence, to expect rather than to fix:** board render and
+re-analysis are independent, so from Monday's open those 42 names render a cycle
+computed from an **unfinished Friday session** until each is re-analysed and
+healed. Wrong, and with no tell — `latestDate` reads `2026-08-21`, a prior date,
+so my own discriminator passes it. Research owns the fix.
+
 ### The 133 are unchanged, and that is a separate fact
 
 Still 133. The overlay computes from **whatever bars are stored, including
