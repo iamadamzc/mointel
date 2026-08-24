@@ -1073,8 +1073,37 @@ As of the last session, **2026-08-23**:
   `Close & Learn`.** The other two stages keep accumulating, so the tabs are now
   half a record.
 
-  **A forecast recorded before its outcome is the archive spec's definition of
-  irreplaceable, and half of that record stopped three days ago.**
+  ~~**A forecast recorded before its outcome is the archive spec's definition of
+  irreplaceable, and half of that record stopped three days ago.**~~ **CORRECTED
+  DOWNWARD by R&D within the hour: "irreplaceable" was too strong. These are not
+  capture questions, they are SECOND-OPINION questions** — and the second opinion
+  that stopped is the one this archive supersedes.
+
+  - **Close & Learn's rule is already in the archive as a SELECT, not a
+    re-derivation.** *Max gain from prior RTH close between premarket and 16:00* is
+    `max(premarket_high, rth_high) / reference_close`, and all three columns sit on
+    243 rows today. **But `max_gain_pct` is the wrong column for it** — it runs the
+    full 04:00–20:00 session, and **17 of 95 movers peaked after 16:00**, so it
+    overstates leader gain on 18% of exactly the names the rule concerns. Dropping
+    premarket instead is worse: **47 of 95 had a premarket high above their RTH
+    high.** *"We already compute that"* and *"we already compute that correctly"*
+    are different sentences.
+  - **The desk already runs its own 09:25 checkpoint** at the same minute
+    (`OPEN_SPIKE_MIN`, `lib/desk/schedule.ts:79`), append-only, and it never
+    stopped.
+  - **The CATALYST second opinion is on `RESEARCH`, written by the two tasks still
+    running** — untouched, and it is the comparison Q1's verdict could use. What
+    the paused pair gave was a second opinion on **outcomes and decision quality**,
+    self-graded, against outcomes this archive measures from the tape and measures
+    better.
+  - **The 09:25 judgement section is Q7, not a missing feature.** Resuming a task
+    for a model's opinion would put an unvalidated label in front of the trader
+    ahead of the measurement that would say whether it means anything — and the
+    desk's judgement fields are already 45% and 55% not-unanimous.
+  - **`PATTERNS` is worth a READ, not a resume.** Self-graded over self-produced
+    outcomes, so the evidence compounds its own weakness — but P1–P6 is **a list of
+    what a process watching this market for weeks thought worth tracking**, which
+    is candidate questions to harvest rather than a learning layer to preserve.
 
   **And the scope gap is bigger than the dated tabs: `§6.3` of the Sheet report
   describes a separate SIXTEEN-COLUMN 09:25 section sitting outside `A:AA`
