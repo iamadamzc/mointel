@@ -138,6 +138,58 @@ one it is because the field has already bitten here: `RTH Close` differs from
 the auction close on 11% of rows in this archive, and `Flush From High %` is two
 different numbers — retracement of the move against giveback below the high.
 
+## Are any of the ten written only by a paused task?
+
+*Asked by Integration 2026-08-24, before recording the finding as settled: if a
+live field's only writer is already paused, its history stopped accumulating on
+2026-08-23 and "deciding late and deciding no are the same thing" has already
+resolved to **no** — a post-mortem rather than a decision.*
+
+**No. All ten are written by tasks that are still running.**
+
+| Range | Columns | Writer | State |
+| --- | --- | --- | --- |
+| `TODAY!A:S` | 1–19 | 22:00 After-Hours Recap | running |
+| `TODAY!T:AA` | 20–27 | 06:10 Premarket Confirmation | running |
+| `RESEARCH!A:AK` | all | tasks 1 and 2 — 22:00 and 06:10 | running |
+
+The ten map as `J`=10, `K`=11, `P`=16 into `A:S`, and **`W`=23 into `T:AA`** —
+which is the 06:10 Premarket task, still running. That also reads correctly on
+its face: `W` is *PM Catalyst/Update*, a premarket field written by the
+premarket task. The six RESEARCH fields are covered by the earlier confirmation
+that RESEARCH is written by tasks 1 and 2 only.
+
+So the finding stands as a decision rather than a post-mortem, and the sentence
+survives unchanged.
+
+### But something has already resolved to "no", and the audit does not cover it
+
+The two paused tasks — 09:25 Opening Spike and 16:15 Close & Learn — write
+neither `TODAY` nor `RESEARCH`. They write the **dated tabs**, which hold the
+stage calls *as made* at 22:00, 06:10 and **09:25**, alongside what actually
+happened.
+
+Both of those paused components are on the dated tabs:
+
+- **the 09:25 stage call** stopped on 2026-08-23
+- **the outcome column beside it** stopped with Close & Learn
+
+So the dated tabs have lost two of their four parts and continue to accumulate
+the other two. **A forecast recorded before its outcome is the category the
+archive spec calls irreplaceable**, and half of that record stopped three days
+ago.
+
+**This is outside the 64.** The inventory covers `TODAY!A:AA` and
+`RESEARCH!A:AK`; the dated tabs are neither, so no annotation of mine reaches
+them and no `live?` mark protects them. That is a gap in the audit's *scope*
+rather than in its verdicts — worth saying plainly, because a 64-field audit
+signed off as complete is exactly the artefact someone later reads as covering
+everything the Sheet holds.
+
+Nothing here argues against the pauses. It argues that the retirement question
+and the pause question have different boundaries, and only one of them has been
+mapped.
+
 ## What this does not say
 
 It says nothing about whether a field should be kept. A live field that nobody
