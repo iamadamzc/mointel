@@ -184,7 +184,56 @@ preflight bootstrap that would have blocked every future deploy, and an enum
 leak that only real dossiers could reveal. Both branches of the bootstrap fix
 have now been exercised, not just the fallback.
 
-## State: production is `c48e199`, deployed 2026-08-24 01:30 UTC
+## State: production is `a259e8c`, deployed 2026-08-24 01:37 UTC
+
+Gated at that sha in the isolated rig — **1278 tests, lint, build, typecheck** —
+and shipped by explicit sha on Integration's instruction, under the trader's
+delegation. Adds the read-time cycle overlay: two non-docs files against
+`c48e199`, `lib/market/readModel.ts` and its test. Capture verified at directory
+scope: **zero** changes under `worker/` or `lib/market/store/`, schema 21.
+
+**The SIGTERM fix is confirmed, not merely consistent with one run.** Second
+clean stop: `Stopping…` 01:37:06, `Deactivated successfully` **01:37:06 — under
+a second**, matching `c48e199`. Two for two, against 31 seconds and a `SIGKILL`
+before the fix.
+
+**Capture untouched, eighth deploy running.** `mointel-market` pid 129202,
+`NRestarts=0`, no journal entries in the window. Still on `fd9556f`, pinned.
+
+### The overlay is live and its effect is NOT observable until premarket
+
+`overlayLiveCycle` is on the box. But the Discovery board is **empty**, so there
+is nothing to overlay:
+
+| trading_date | `ticker_session` rows | with `rvol_rank` |
+| --- | --- | --- |
+| 2026-08-21 | 8,688 | 2,821 |
+| **2026-08-24** | **8,653** | **0** |
+
+The rows are seeded for the new trading date but nothing has traded, so no name
+has an RVOL rank and `/api/market` returns `discovery.rows: 0`.
+
+**So "the cycle column is now populated" cannot be checked tonight, and neither
+can the two tests that replaced Design's retired check 4** — the six phase names
+and the retracement figure both need rows on the board. This is the same shape as
+the Move label: a phase-dependent surface that cannot be falsified at `CLOSED`.
+Worth saying before the session is spent on it rather than after.
+
+*Also note `/api/dashboard` is the Sheet-merged view and carries no
+`intelligence` key at all — the overlay feeds the desk read
+(`deskRead.ts:528`), not that endpoint. Checking the wrong one would produce a
+confident wrong answer in either direction.*
+
+### The 133 are unchanged, and that is a separate fact
+
+Still 133. The overlay computes from **whatever bars are stored, including
+partial ones**, so a populated cycle column is *not* evidence the poisoned rows
+are repaired. They heal only on research contact, at Monday's first re-analysis.
+**The `fetched_at` count is still the only thing that answers that**, and for the
+42 Friday-partial symbols the overlay will compute from a partial bar whose
+`latestDate` is a prior date — which my own discriminator does not flag.
+
+## ~~State: production is `c48e199`, deployed 2026-08-24 01:30 UTC~~ (superseded)
 
 Gated at that exact sha in the isolated rig — **1273 tests, lint, build,
 typecheck** — and deployed by explicit sha. Carries Design's cycle-vocabulary
