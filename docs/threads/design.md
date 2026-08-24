@@ -796,6 +796,54 @@ re-collapse that into a boolean by picking a number — the row shows how many
 sessions behind, and the trader decides. **Two sessions behind on a name he is
 about to size is his call, not a constant in this file.**
 
+### `stalledJobs`: the count is not trader-facing, but it exposes a row that IS
+
+Research landed `stalledJobs` (`a3464d8`) — non-terminal jobs from a trading date
+other than today — as a **second** number beside `queuedJobs`, and left the view
+to Design. `queuedJobs` was reporting `0` against ten stuck jobs and was not
+false: `publishHealth` counts `MAX(trading_date)`, and the ten are dated 08-21
+and 08-17, so they stopped being counted when the date rolled. **An aged backlog
+goes invisible exactly when it has aged.**
+
+**Design's answer, in two halves.**
+
+**The count belongs on diagnostics, not on the board.** This is the F-27 shape
+exactly — `hi-res 6`, `q 0 · a 0`, `msg Ns` were moved off the header because
+operator counters are noise in a trader's product. *"Ten jobs stalled"* is
+something he can do nothing about, and a number he cannot act on is volume rather
+than intelligence. The framing licenses **story that is useful**, and the word
+*useful* is the limit.
+
+**But its CONSEQUENCE is trader-facing, and it is currently rendered as a lie.**
+`resolveDisplayStatus` (`lib/research/view.ts:116`) maps `job.status === 'QUEUED'`
+to `ANALYSIS_PENDING` — **with no trading-date check.** So a job stuck QUEUED
+since Friday renders `ANALYSIS PENDING`, indistinguishable from one queued thirty
+seconds ago.
+
+**That is wrong by tense.** *Pending* means coming. A job from Friday that
+nothing will re-run is not coming, and the trader reading `ANALYSIS PENDING` at
+07:00 waits for a dossier that will never arrive — on a name he might otherwise
+have dismissed or researched himself. **He cannot act on the count; he can very
+much act on knowing this row is not going to improve.**
+
+It is the five-states-of-knowing failure again, in the in-flight family:
+**"looked, in flight" collapsed with "will never arrive."** A ninth display
+status, or a qualifier on the existing one — `ANALYSIS STALLED`, or
+`PENDING SINCE FRI` — separates them. Wording not settled; the distinction is.
+
+**What it needs, and this is a handover rather than a claim:** the row-level fix
+requires the job's **trading date** to be reachable where `resolveDisplayStatus`
+runs. `stalledJobs` is an aggregate and cannot answer *which* rows. Whether that
+date is already on the job view is Research's to say.
+
+**One behaviour that supports putting it on the row rather than only in a
+health light:** when the heartbeat is stale the projection **overrides**
+`stalledJobs` rather than reading the `OFFLINE` literal's zero — Research
+asserted the opposite, its test failed, and the code was right. A worker that
+died holding ten stuck jobs is exactly when the fact matters. **The field is live
+in the state a surface would most want to suppress it**, and so should the row
+label be.
+
 ### Corrected 2026-08-24: coverage is 7%, and the right name is the true one
 
 Two corrections from Research, before either reached a surface.
