@@ -1254,6 +1254,50 @@ is whether the same cause is still live and could eat Monday. The first read-onl
 check is whether `desk_assessments` and `daily_bars` show a matching hole on 08-20
 — one table or a degraded window are different problems.
 
+## This host is UTC+2. Every tool timestamp is SIX HOURS ahead of New York
+
+**Found 2026-08-24 after two threads independently reported the market as open or
+about to open when it was 04:45 ET.**
+
+`date` on this machine returns **Central European Summer Time**. So a vitest
+header reading `10:36`, a shell timestamp reading `10:47`, a commit time reading
+`10:49` — **all CEST, all six hours ahead of the trading day this desk exists
+for.** `10:45` feels like mid-morning. **It is 04:45 ET, five hours before the
+open.**
+
+**The failure is not arithmetic, it is that the number needs no conversion to look
+plausible.** A wrong timezone produces a time that is *reasonable*, so nothing
+prompts a check — which is why it survived a whole night and produced two threads
+standing down from work they had five hours to do.
+
+**So: never infer the trading day from shell or test output.** Read it explicitly:
+
+    date -u                                  # UTC, unambiguous
+    node -e "console.log(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}))"
+
+**And stamp what you read**, per the rule this document already carries — *"as of
+04:45 ET"* costs three words and cannot mislead.
+
+**THE CODEBASE IS CLEAN AND THIS WAS CHECKED, NOT ASSUMED.** Research grepped
+`lib/` and `worker/` for host-local date methods excluding `getUTC*`: **two hits,
+both `date.setMonth(date.getMonth() - months)` in SEC lookback windows**, where a
+few hours at a month boundary is immaterial in a months-long window. **Everything
+else goes through `etDateString` and `sessionEndUtc`, which take the zone
+explicitly.** Production runs elsewhere, so a host-zone dependence would behave
+differently in the two places and bite in only one — worth having asked.
+
+**The hazard is entirely in reading tool output, and it will recur every session on
+this machine.**
+
+**One discipline point from the same exchange: two threads made the same mistake
+and NOT necessarily for the same reason.** One inferred the day from its own shell;
+the other aged a relayed phrase and reported the aged version as observed.
+**Matching symptoms are not a shared cause, and assuming they are is how one fix
+gets written for two problems.**
+
+**The sentence that catches it either way: `PREMARKET` means premarket CAPTURE is
+live, not that trading is.**
+
 ## Facts every thread starts from
 
 As of the last session, **2026-08-23**:
