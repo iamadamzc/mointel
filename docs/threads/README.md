@@ -736,10 +736,31 @@ refuses everywhere else.** And `NewDailyBar` **omits** it: a writer carries
 `fetchedAt` and completeness is derived on the way out, **so a writer cannot assert
 completeness and disagree with the reader.**
 
-**AND IT REACHES THE APPEND-ONLY RECORD, WHICH BLUE SKY DOES NOT.**
-`summariseDailyHistory` feeds the **evidence bundle**, so an understated bound goes
-to the interpreter and is written into a dossier that persists. **Blue sky is wrong
-on a screen and can be recomputed; this is wrong in the record.**
+**AND IT REACHES TWO APPEND-ONLY STORES, THE SECOND DOWNSTREAM OF THE FIRST.**
+`summariseDailyHistory` feeds the **evidence bundle**, so an understated bound
+reaches the interpreter and is written into a dossier. **The bound persists on four
+analyses in five** — `cycle.historicalResistance` is filled on **264 of 325** stored
+dossiers, 81%; it is not a field the model usually leaves null.
+
+**Then `worker/desk-assessments.ts:238-243` builds `candidatesAbove` from
+`session_high`, `currentCycleHigh` and `historicalResistance`, and takes
+`resistance = MIN` of those above price.** So an understated resistance that is
+**still above price wins the min**, and the checkpoint records a level **below the
+true one** — into `desk_assessment_tickers`, append-only, beginning 2026-08-17.
+
+> **A re-analysis repairs the dossier. It does NOT repair a checkpoint already
+> written.**
+
+**Direction, so it is not over-read:** an understated resistance is **too LOW** — a
+nearer ceiling than the tape supports. **Conservative for an entry, wrong for
+holding through a level.** Not a false blue sky.
+
+**And the exposure is bounded three ways, not one:** re-analysed since the filter
+shipped, **and** holding a partial tail bar, **and** the bound actually moving —
+only 10 of 256 symbols have a ceiling that moves at all, so the third filter may
+cut hard.
+
+**Blue sky is wrong on a screen and can be recomputed. This cannot.**
 
 **A compounding effect nobody predicted.** `historicalResistance` is computed over
 `usable.slice(0, -1)` — deliberately dropping the last session, because resistance
