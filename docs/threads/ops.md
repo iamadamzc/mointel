@@ -209,7 +209,47 @@ this time and printed `keep fd9556f (pinned)`.
 
 No migration: schema 21 both sides, migrate wrote 0 backups.
 
-## The backfill scope: 148 is the worst of the three
+## The trader's challenge holds: the backfill is a 2.6M-token toll for one arithmetic line
+
+**Recommendation reversed a third time, to NOT running it.** He asked why call
+Alpaca for 231 when only the tickers that reach the app matter. Verified here:
+
+- **`resolveCycleHistory` has exactly one call site outside its own module** —
+  `lib/research/interpret/pipeline.ts:365` — and it sits *inside* the
+  accepted-analysis path, after the model call. **There is no model-free way to
+  write `computedCycle` today.** So ~2.6M input tokens buy a full model
+  interpretation per symbol purely to reach one arithmetic assignment. The cycle
+  itself is a pure function over daily bars and costs nothing.
+- **The value decays.** `pipeline.ts:194` returns `existing.dossier` on the reuse
+  path, so a backfilled cycle refreshes only when the *evidence* fingerprint
+  moves — filings, not price. A cycle written tonight from Friday's bars sits on
+  the board until a filing lands, while the price it describes moves daily.
+
+So the spend buys a value the model does not produce, which then freezes. And
+`latestDate` discriminates a stale one just as well as a partial-bar one — a row
+stamped `2026-08-21` on Wednesday is visibly stale.
+
+### The constraint on the read-time fix, which is this thread's to state
+
+Read-time computation is right and it is in **`lib/market/store/researchRepo.ts`,
+this thread's module since the 2026-08-24 split**. One thing must not be lost
+between "compute at read time" and building it:
+
+> **Compute at read time. Do NOT fetch at read time.**
+
+`daily_bars` is already in the store, and the cycle is a pure function over it —
+so the read path can compute freely. But *fetching* bars on a read would put
+network I/O in a path the dashboard polls **once a second**
+(`deploy/aws/nginx-locations.conf` documents the keepalive pool for exactly that
+rate). At 1 Hz against Alpaca that is a rate-limit incident, on the budget the
+market worker shares.
+
+Keeping `daily_bars` current is a **worker** responsibility, not a read-path one.
+That separation is the whole reason the read path is cheap enough to be the right
+answer. Worth stating now because "bars would be fetched for names actually read"
+is a natural way to describe it and a dangerous way to build it.
+
+## The backfill scope: ~~148 is the worst of the three~~ (superseded above)
 
 **Correction to my own option first.** I offered "don't run it" partly as *the
 safer board*. That half was wrong. The backfill stores bars whose max is
