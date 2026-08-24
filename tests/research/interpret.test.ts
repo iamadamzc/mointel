@@ -48,6 +48,7 @@ const MODEL_CONFIG = {
   escalationModel: 'sol-model',
   changeDetectModel: 'luna-model',
       resolverSearchContext: null,
+      discoverySearchContext: null,
   promptVariant: 'A' as const,
   omitSheetPrior: false,
 };

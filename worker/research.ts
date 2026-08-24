@@ -103,7 +103,12 @@ async function main(): Promise<void> {
   const secClient = new SecClient({ config: config.sec });
   const tickerMap = new TickerMapCache(secClient);
   const discovery = config.model.apiKey
-    ? new OpenAiDiscoveryProvider({ config: config.model })
+    ? new OpenAiDiscoveryProvider({
+        config: config.model,
+        // The larger of the two search bills, and until now the only one with
+        // no dial reaching it. Null leaves the provider default unchanged.
+        searchContextSize: config.model.discoverySearchContext ?? undefined,
+      })
     : new NoopDiscoveryProvider();
   // Same transport and tier as discovery, different question entirely.
   const companySourceResolver = config.model.apiKey

@@ -77,6 +77,25 @@ export interface ModelConfig {
    * itself, so the model's reading of it is not what the decision rests on.
    */
   resolverSearchContext: 'low' | 'medium' | 'high' | null;
+  /**
+   * The same, for general discovery -- which is the larger bill by far.
+   *
+   * Measured over 2026-08-19..21: discovery spent 7,862,324 input tokens
+   * against the resolver's 3,853,202. Together they are 84% of all input spend
+   * and interpretation is 14%, so the desk pays mostly to FIND evidence rather
+   * than to read it. The dial existed and reached only the cheaper of the two.
+   *
+   * Separate from `resolverSearchContext` rather than one shared value, because
+   * the two stages have opposite tolerances. The resolver names a URL the
+   * application then fetches and classifies itself, so a thin read costs it
+   * little. Discovery's returned metadata IS the evidence -- nothing re-reads
+   * the page, and `excerpt` is stored null by design -- so a thin read there
+   * degrades what the interpreter later sees. One value would have forced the
+   * cheap answer on the stage that can least afford it.
+   *
+   * Defaults to the provider default: unset, this changes nothing.
+   */
+  discoverySearchContext: 'low' | 'medium' | 'high' | null;
 }
 
 export interface CatalystConfig {
@@ -158,6 +177,7 @@ export function readResearchConfig(env: NodeJS.ProcessEnv = process.env): Resear
       escalationModel: env.OPENAI_ESCALATION_MODEL?.trim() || researchModel,
       changeDetectModel: env.OPENAI_CHANGE_DETECT_MODEL?.trim() || researchModel,
       resolverSearchContext: searchContext(env.RESEARCH_RESOLVER_SEARCH_CONTEXT),
+      discoverySearchContext: searchContext(env.RESEARCH_DISCOVERY_SEARCH_CONTEXT),
       promptVariant: env.RESEARCH_PROMPT_VARIANT?.trim().toUpperCase() === 'B' ? 'B' : 'A',
       omitSheetPrior: env.RESEARCH_OMIT_SHEET_PRIOR?.trim() === '1',
     },

@@ -109,19 +109,30 @@ export class OpenAiDiscoveryProvider implements CatalystSourceDiscoveryProvider 
   readonly name = 'openai-web-search';
   private readonly fetchImpl: typeof fetch;
   private readonly model: string;
+  private readonly searchContextSize: SearchContextSize | null;
 
   constructor(private readonly options: OpenAiDiscoveryOptions) {
     this.fetchImpl = options.fetchImpl ?? fetch;
     this.model = options.model ?? options.config.changeDetectModel;
+    this.searchContextSize = options.searchContextSize ?? null;
   }
 
   get available(): boolean {
     return this.options.config.apiKey !== null;
   }
 
-  /** What this provider was configured to buy, for the token ledger. */
+  /**
+   * What this provider was configured to buy, for the token ledger.
+   *
+   * Read the size rather than the literal 'default'. Hardcoded, this column
+   * reported the same string whatever the provider was sent, so the one field
+   * that exists to tell two configurations apart could not have distinguished
+   * them -- a check that cannot fail is not a check. The resolver's equivalent
+   * was already dynamic, which is why the discrepancy went unseen: the ledger
+   * looked populated for both stages.
+   */
   get toolConfig(): string {
-    return `web_search:default;domains:v${DOMAIN_POLICY_VERSION}`;
+    return `web_search:${this.searchContextSize ?? 'default'};domains:v${DOMAIN_POLICY_VERSION}`;
   }
 
   async discover(request: DiscoveryRequest): Promise<DiscoveryResult> {
@@ -146,6 +157,11 @@ export class OpenAiDiscoveryProvider implements CatalystSourceDiscoveryProvider 
           // Derived from the deterministic rejection rule, never hand-listed.
           // An empty policy sends no filter at all rather than an empty one.
           ...(blocked.length > 0 ? { filters: { blocked_domains: blocked } } : {}),
+          // Unset sends no key, leaving the provider's own default, so this
+          // is inert until someone chooses a value deliberately.
+          ...(this.searchContextSize
+            ? { search_context_size: this.searchContextSize }
+            : {}),
         },
       ],
       text: {

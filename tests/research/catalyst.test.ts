@@ -437,7 +437,8 @@ describe('web discovery provider', () => {
         researchModel: 'r',
         escalationModel: 'e',
         changeDetectModel: 'c',
-      resolverSearchContext: null, promptVariant: 'A' as const, omitSheetPrior: false,
+      resolverSearchContext: null,
+      discoverySearchContext: null, promptVariant: 'A' as const, omitSheetPrior: false,
       },
       fetchImpl: async () => {
         throw new Error('must not be called');
@@ -458,7 +459,8 @@ describe('web discovery provider', () => {
         researchModel: 'expensive-research-model',
         escalationModel: 'escalation',
         changeDetectModel: 'cheap-detect-model',
-      resolverSearchContext: null, promptVariant: 'A' as const, omitSheetPrior: false,
+      resolverSearchContext: null,
+      discoverySearchContext: null, promptVariant: 'A' as const, omitSheetPrior: false,
       },
       fetchImpl: async (_url, init) => {
         seenModel = JSON.parse(String(init?.body)).model;
@@ -484,7 +486,8 @@ describe('web discovery provider', () => {
         researchModel: 'r',
         escalationModel: 'e',
         changeDetectModel: 'c',
-      resolverSearchContext: null, promptVariant: 'A' as const, omitSheetPrior: false,
+      resolverSearchContext: null,
+      discoverySearchContext: null, promptVariant: 'A' as const, omitSheetPrior: false,
       },
       fetchImpl: async (_url, init) => {
         prompt = JSON.parse(String(init?.body)).input;
@@ -506,7 +509,8 @@ describe('web discovery provider', () => {
 
   it('survives a provider error without losing collection', async () => {
     const provider = new OpenAiDiscoveryProvider({
-      config: { apiKey: 'k', researchModel: 'r', escalationModel: 'e', changeDetectModel: 'c', resolverSearchContext: null, promptVariant: 'A' as const, omitSheetPrior: false },
+      config: { apiKey: 'k', researchModel: 'r', escalationModel: 'e', changeDetectModel: 'c', resolverSearchContext: null,
+      discoverySearchContext: null, promptVariant: 'A' as const, omitSheetPrior: false },
       fetchImpl: async () => new Response('nope', { status: 500 }),
     });
     const result = await provider.discover(request);
@@ -521,7 +525,8 @@ describe('web discovery provider', () => {
         researchModel: 'r',
         escalationModel: 'e',
         changeDetectModel: 'c',
-      resolverSearchContext: null, promptVariant: 'A' as const, omitSheetPrior: false,
+      resolverSearchContext: null,
+      discoverySearchContext: null, promptVariant: 'A' as const, omitSheetPrior: false,
       },
       fetchImpl: async () => new Response('err', { status: 401 }),
     });

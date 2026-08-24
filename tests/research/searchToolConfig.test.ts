@@ -26,6 +26,7 @@ const MODEL: ModelConfig = {
   escalationModel: 'e',
   changeDetectModel: 'c',
   resolverSearchContext: null,
+  discoverySearchContext: null,
   promptVariant: 'A' as const,
   omitSheetPrior: false,
 };
@@ -127,6 +128,75 @@ describe('the discovery search filter', () => {
     });
 
     expect(result.toolConfig).toBe(`web_search:default;domains:v${DOMAIN_POLICY_VERSION}`);
+  });
+});
+
+/**
+ * The dial the larger bill did not have.
+ *
+ * Discovery spent 7,862,324 input tokens over 2026-08-19..21 against the
+ * resolver's 3,853,202, and only the resolver could be configured. Worse, its
+ * ledger column was the literal 'default' whatever it was sent — so the field
+ * that exists to tell two configurations apart reported the same string for
+ * both, and the test above passed against a constant.
+ *
+ * These assert the pair together: what leaves in the request, and what the
+ * ledger says left. Either alone can pass while the other is wrong, which is
+ * how the hardcoded getter survived a file whose own header says a ledger
+ * without the configuration cannot tell a saving from a coverage loss.
+ */
+describe('the discovery search context', () => {
+  const discover = (d: OpenAiDiscoveryProvider) =>
+    d.discover({ ticker: 'ACME', companyName: null, since: '2026-08-13', knownUrls: [] });
+
+  it('is sent when configured, alongside the domain filter rather than instead of it', async () => {
+    const { fetchImpl, seen } = capturing({ sources: [] });
+    const discovery = new OpenAiDiscoveryProvider({
+      config: MODEL,
+      fetchImpl,
+      searchContextSize: 'low',
+    });
+
+    await discover(discovery);
+
+    const entry = tool(seen[0].body);
+    expect(entry.search_context_size).toBe('low');
+    // The two live on the same tool object; adding one must not drop the other.
+    if (blockedSearchDomains().length > 0) expect(entry.filters).toBeDefined();
+  });
+
+  it('is absent when not configured, leaving the provider default', async () => {
+    const { fetchImpl, seen } = capturing({ sources: [] });
+
+    await discover(new OpenAiDiscoveryProvider({ config: MODEL, fetchImpl }));
+
+    expect(tool(seen[0].body)).not.toHaveProperty('search_context_size');
+  });
+
+  it('reports what it was configured to buy, and the report can differ', async () => {
+    const { fetchImpl } = capturing({ sources: [] });
+    const low = new OpenAiDiscoveryProvider({ config: MODEL, fetchImpl, searchContextSize: 'low' });
+    const high = new OpenAiDiscoveryProvider({ config: MODEL, fetchImpl, searchContextSize: 'high' });
+    const unset = new OpenAiDiscoveryProvider({ config: MODEL, fetchImpl });
+
+    expect(low.toolConfig).toBe(`web_search:low;domains:v${DOMAIN_POLICY_VERSION}`);
+    expect(high.toolConfig).toBe(`web_search:high;domains:v${DOMAIN_POLICY_VERSION}`);
+    expect(unset.toolConfig).toBe(`web_search:default;domains:v${DOMAIN_POLICY_VERSION}`);
+    // The point of the whole field: three configurations, three strings.
+    expect(new Set([low.toolConfig, high.toolConfig, unset.toolConfig]).size).toBe(3);
+  });
+
+  it('travels on the result, so the collector records the call it actually made', async () => {
+    const { fetchImpl } = capturing({ sources: [] });
+    const discovery = new OpenAiDiscoveryProvider({
+      config: MODEL,
+      fetchImpl,
+      searchContextSize: 'high',
+    });
+
+    const result = await discover(discovery);
+
+    expect(result.toolConfig).toBe(`web_search:high;domains:v${DOMAIN_POLICY_VERSION}`);
   });
 
   it('never sends an empty filter object', async () => {
