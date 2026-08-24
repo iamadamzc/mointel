@@ -1059,8 +1059,27 @@ As of the last session, **2026-08-23**:
   constraints, both Research's own: **do not loosen to a word-match** — measured, it
   hits 24 ordinary LP units and trusts (PAA, ARLP, UNG) whose float is real — and
   **one definition, in `securities.ts`**, never a second derivative rule in
-  `float.ts`. **It is a definition change to what counts as eligible, applied
-  going forward, so any board-scoped series crosses a discontinuity at this date.**
+  `float.ts`. **It is a definition change to what counts as eligible — but MEASURED, not
+  assumed: R&D ran both versions over all 13,089 universe rows.** 13 rows change
+  class, **11 leave board eligibility** — `BLUWW BLUWU SPEGR LUCYW ORIQW BCTXZ
+  BCTXL HAVAR HUBCW OXBRW OGGWZ` — and **of the archive's 252 board symbols, ZERO
+  are affected.** No `symbol_outcomes` row and no `symbol_desk_day` row moves.
+  **The discontinuity is real and sits entirely in the future**; nothing already
+  recorded shifts. *Integration's line implied an existing series might step, and
+  it does not.*
+
+  **R&D logged it anyway, as a standing dated log rather than a one-off** — date,
+  size, and whether it touches anything already measured, recorded when a
+  definitional change lands. **11 of ~13,000 is ignorable in a rate; the next one
+  may not be, and a definitional step found months later reads as a finding.**
+
+  **The false-positive side was checked and was already handled.** R&D went looking
+  for whether a widened rule eats the MLP complex — *"Common Units representing
+  Limited Partner Interests"* is ordinary equity and `ET` sits inside the trader's
+  $2–$20 band. Research had already measured it: a bare word-match flags **24 real
+  MLPs and trusts** (PAA, ARLP, ET, DMLP, KRP), which is why the **unit** rule
+  stayed anchored while **warrant** went unanchored and **rights** was relaxed.
+  Three rules, three different anchors, one measurement behind each.
 
 - **Two of the four ChatGPT tasks are PAUSED as of 2026-08-23.** `9:25 Opening
   Spike Assessment` and `Close & Learn Momentum` — both **paused, not deleted**,
