@@ -39,6 +39,82 @@ questions is a thread that has stopped working.
 | Q5 | When does a board name's move happen, relative to when the desk puts it on the board? | 2026-08-23 | proposed — behind Q1, see the ordering note |
 | Q6 | Can the 09:25 pre-open assessment be scored against outcomes? | 2026-08-23 | proposed — *handed over from Design*, see below |
 | Q7 | Can Chop Risk, Flush Risk or Effective Float Turnover be defined well enough to act on? | 2026-08-23 | proposed — *routed here by the desk owner*, see below |
+| Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | proposed — *from the trader*, scoped below; **the feasibility blocker is answered** |
+
+**Q8 came from the trader on 2026-08-24**, in his words: *"we are using gpt,
+which models for what calls, would anthropic models be better and/or less
+expensive."* This thread owns the question, the evaluation design and the
+outcome variable; **Research owns the pipeline facts and any implementation.**
+
+**It is three questions, not one, because the bill is not where anyone pictures
+it.** Measured by Research over 2026-08-19..21:
+
+| Stage | calls | input tokens | share |
+| --- | ---: | ---: | ---: |
+| DISCOVERY | 216 | 7,862,324 | **56%** |
+| RESOLVER | 181 | 3,853,202 | 28% |
+| INTERPRETATION | 312 | 2,024,072 | 14% |
+
+84% of the bill is *finding* evidence and 14% is *reading* it, so the
+interpretation call everybody pictures is the smallest prize.
+
+**THE FEASIBILITY BLOCKER IS ANSWERED, AND IT REVERSES THE FRAMING.** Discovery
+is a model call plus a **provider-hosted web search**, which raised the
+possibility that the answer for 56% of the bill is *cannot swap* rather than
+*costs more or less*. It is not: **Anthropic has a first-party server-side web
+search tool** — `web_search_20260209` (`web_search`), running on Anthropic's
+infrastructure with `max_uses`, `allowed_domains`/`blocked_domains` and
+`user_location`, plus `web_fetch_20260209` alongside it. So discovery is
+swappable in principle and no stage is ruled out on capability.
+*Source: bundled `claude-api` skill reference, cached 2026-06-24. Two integration
+notes that matter: the `_20260209` variants need Opus 4.6+ or Sonnet 4.6+, and
+server-tool errors return **HTTP 200 with an error object rather than raising** —
+a swap that treats them as exceptions will silently see zero failures.*
+
+Interpretation's requirement is also met: structured output via
+`output_config: {format: ...}` and `strict: true` on tool definitions.
+
+**Published Anthropic pricing**, per 1M tokens, first-party API, same source and
+date — quoted rather than recalled, because a stale price is exactly the
+confident wrong number this thread spent a week learning to distrust:
+
+| Model | Input | Output |
+| --- | ---: | ---: |
+| Claude Opus 5 | $5.00 | $25.00 |
+| Claude Sonnet 5 | $3.00 ($2.00 intro to 2026-08-31) | $15.00 ($10.00 intro) |
+| Claude Haiku 4.5 | $1.00 | $5.00 |
+
+**TWO THINGS THAT MUST BE SETTLED BEFORE ANY COMPARISON IS QUOTED, and neither
+is a model question.**
+
+1. **Output tokens were never measured.** Every figure above is *input*. Output
+   is priced at 5× input on every Anthropic model, so an input-only comparison
+   can be wrong by a wide margin in either direction. **This is the first ask of
+   Research** and it is cheap — the same query that produced the input split.
+2. **Prompt caching is a bigger lever than the provider, and it confounds the
+   comparison.** Discovery averages 36,400 input tokens per call over 216 calls.
+   If those calls share a stable prefix, Anthropic cache reads price at ~0.1×,
+   which would dominate any per-token difference between providers. **A cost
+   comparison that does not hold caching constant measures the caching, not the
+   model.** Whether the current GPT path caches at all is a Research fact.
+
+**The outcome variable is citation rate, not catalyst quality**, for the reason
+that already settled `search_context_size`: quality needs a grader, this desk's
+grader is 45% irreproducible, so a quality comparison measures the grader.
+Citation is countable and exact and already discriminates at 55-against-37.
+
+**The design is alternation on the live desk**, not a paired A/B — zero marginal
+tokens, and the confound is period, which alternating removes.
+
+**Mixed providers per stage is on the table from the start rather than as a
+compromise.** `openaiInterpreter` already has a tier system with an escalation
+model that the README records as *designed but never exercised*; if a second
+provider enters anywhere, that is the seam it enters through.
+
+**What this thread needs from Research**, via Integration: output tokens per
+stage for the same window; whether the resolver depends on hosted search
+(`RESEARCH_RESOLVER_SEARCH_CONTEXT` suggests it does); and whether any prompt
+caching is in force on the current path.
 
 **Q7 was routed here by the desk owner on 2026-08-23**, in those words: *"None
 yet. This needs to go to the viscosity study."* Audit §11 item 3 asked which of
