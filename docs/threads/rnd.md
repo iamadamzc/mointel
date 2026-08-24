@@ -944,39 +944,91 @@ The rule: **record the date, the size, and whether it touches anything already
 measured, at the moment the change lands.** Reconstructing it from a series that
 looks odd months later costs far more and often fails.
 
-### 2026-08-24 — derivative classifier widened (11 names leave eligibility)
+### 2026-08-24 — derivative classifier widened, `b467154`
 
-`lib/market/securities.ts` — the warrant/right/unit name rules were anchored at
-end-of-string or a comma, which missed names carrying a suffix. Research
-unanchored the warrant rule and relaxed the rights rule, leaving the unit rule
-anchored. Applied going forward; universe rows re-classify on the next worker
-start when `CLASSIFIER_VERSION` differs.
+`lib/market/securities.ts`. **Two distinct changes shipped together**, and the
+second is the one that moves the numbers:
 
-**Effect, measured rather than accepted** — both classifier versions run over
-all 13,089 universe rows: 13 rows change class, **11 leave board eligibility**.
+1. **The warrant/right/unit name rules were relaxed.** They were anchored at
+   end-of-string or a comma, which missed names carrying a suffix. Warrant is
+   now unanchored, rights requires the plural before prose, unit stays anchored.
+2. **The ADR rule was moved to run AFTER the derivative rules.** It used to run
+   first, so `IQM ... Warrants to purchase American Depositary Shares` classified
+   `ADR_ADS` and the warrant designation never got a hearing.
+
+Applied going forward; universe rows re-classify on the next worker start when
+`CLASSIFIER_VERSION` differs.
+
+**Four numbers are in circulation for this change and they are four different
+populations.** All four are correct answers to different questions, and a reader
+who picks one at random will be wrong about the others:
+
+| number | population |
+| ---: | --- |
+| **15** | universe rows that change CLASS — of 13,089 |
+| **13** | universe rows that LEAVE board eligibility |
+| **2** | symbols actually RANKING that become ineligible — Research, over the last full session's 2,821 ranked |
+| **0** | archive board symbols affected — of 252 |
+
+The thirteen:
 
     BLUWW BLUWU SPEGR LUCYW ORIQW BCTXZ BCTXL HAVAR HUBCW OXBRW OGGWZ
+    IQMXW ADSEW   <- these two only because of the reorder
 
 **Of the archive's 252 board symbols, zero are affected.** No `symbol_outcomes`
-row and no `symbol_desk_day` row moves, so **nothing already recorded shifts and
-no existing series has a step in it.** The discontinuity is real but it sits
-entirely in the future: a name that would have been eligible tomorrow is not.
+row and no `symbol_desk_day` row moves. **Nothing already recorded shifts and no
+existing series has a step in it** — the discontinuity is real but sits entirely
+in the future. That is the number this register exists to establish, and it is
+the one number the reorder did not change.
 
-Small enough to ignore in a rate — 11 of ~13,000 universe rows, and none of them
-would clear the trader's $2–$20 / 5x RVOL / +25% gate as a going concern anyway.
-Recorded because *the next one might not be*, and because the cost of the line
-is a minute now against an unexplainable series later.
+**`BCTXL` is the instance that justifies the whole change.** It ends in `L`, so
+no fifth-letter W/U/R convention would ever have found it, and it was ranking as
+an ordinary name. The name rule does work the symbol convention cannot.
 
-**Why the unit rule stayed anchored, which is the part worth keeping.** "Unit"
-has an ordinary-equity sense the other two lack — "Common Units representing
-Limited Partner Interests". A bare word-match flags 24 short symbols that are
-real MLPs and trusts: PAA, ARLP, ET, DMLP, KRP. Those trade normally, their
-float is real, and ET sits inside the gate's price band. Research measured that
-false-positive class before widening and stopped short of it. **Precise and
-incomplete is the right failure direction for a rule that removes names from
-eligibility** — the same asymmetry as declining to divide by a share count that
-may be wrong in an unknown direction.
+**Why the unit rule stayed anchored.** "Unit" has an ordinary-equity sense the
+other two lack — "Common Units representing Limited Partner Interests". A bare
+word-match flags 24 short symbols that are real MLPs and trusts: PAA, ARLP, ET,
+DMLP, KRP. Those trade normally, their float is real, and ET sits inside the
+trader's price band. Research measured that false-positive class before widening
+and stopped short of it. **Precise and incomplete is the right failure direction
+for a rule that removes names from eligibility** — the same asymmetry as
+declining to divide by a share count that may be wrong in an unknown direction.
 
+#### The measurement error under this entry, which was mine
+
+**I first logged 13 and 11 here. Both were wrong, and they were wrong in a way
+that reads as right: 13 was the shipped `changed class` figure attached to the
+wrong population.**
+
+I measured a mid-edit working tree and reported it as the change. The reorder
+was not in the file when I read it, so IQMXW and ADSEW classified `ADR_ADS` in
+both versions of my diff and never appeared. My run was correct about the file
+in front of me and silent about the file that shipped.
+
+Research made the same-shaped error on the same change from the other side: it
+measured the three regexes **directly**, reported 722 of 723, and could not see
+the ordering bug, **because a rule that never runs still matches when you test
+it on its own.** Its words: *I measured the component and reported it as the
+system.* Its test asserted the classification rather than the pattern, which is
+the only reason it surfaced at all.
+
+Two threads, one change, the same mistake in two costumes — and the version I
+made is the more dangerous one, because a working tree looks like the system in
+a way an isolated regex does not.
+
+**The rule this adds: measure a commit, not a checkout.** A working tree is a
+draft with no name. If a number is going into a log that outlives the session,
+it must be reproducible from a ref — `git show <sha>:<path>` — or it is a
+snapshot of something that never existed. The general form is the one already
+on this desk: **assert the output a caller would actually see.**
+
+**One name worth a second look, offered rather than asserted.** `ADSEW`
+(ADS-TEC ENERGY PLC Warrant) is the same ADR-to-warrant case as `IQMXW` and only
+moves because of the reorder. It appears in this store's `ticker_session` on the
+last local session, as do `BCTXL`, `IQMXW` and `BLUWU` — four, not two. That is
+a **third population** (locally tracked through 2026-08-18) and not comparable
+with a production ranked set, so it refutes nothing. It is only a reason to
+check `ADSEW` against the ranked set before the two is treated as final.
 
 ## Working rules
 
