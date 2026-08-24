@@ -1071,6 +1071,49 @@ model fields — must follow Design's switch being deployed AND verified, and
 Design's scope grew, so plan it as a separate later piece rather than something
 queued behind the switch.**
 
+**16. `computedCycle` is gated behind an evidence check and should not be.**
+*Shipped live in `161f15f` on 2026-08-24, found immediately after. Structural fix
+deferred to a fresh session by Integration; no mitigation pass.*
+
+`interpretTicker` returns on the reuse path at pipeline.ts:183 when the evidence
+fingerprint is unchanged. `computedCycle` is assigned at :365, after the model
+call. So:
+
+- a name whose filings have not moved **never gains a cycle at all** — it reads
+  CYCLE NOT ESTABLISHED indefinitely, not until re-analysis
+- and for names that do re-analyse, the stored cycle **freezes at the last
+  filing**. `STAK` would carry `DAY_ONE` from 24 July for the rest of that week.
+
+**The defect is the gate, not the ordering.** A cycle position is derived from
+price and moves every session; filings do not. Putting a price-derived value
+behind an evidence-change check is wrong on its own terms, and I did it by wiring
+it where the model's cycle used to live without asking whether that was the right
+home for something computed from bars.
+
+**The fix is to compute it at READ time, not to move the assignment.** It is a
+pure function over daily bars — cheap, always current, and it should never have
+been frozen into an append-only store. Design's surfaces keep reading
+`dossier.computedCycle` unchanged provided the read path populates it.
+
+Two boundaries the next session has to respect rather than discover: the read
+path is `lib/market/store/researchRepo.ts`, which became **Ops's** in the
+2026-08-24 split, and **Design** cut over to the field hours before this was
+found.
+
+**The consequence nobody had seen, and the reason this is an item rather than a
+commit note.** Ops built a Monday instrument on this field — counting dossiers
+carrying a `computedCycle`, 0 to 231, as a research progress meter, on the sound
+reasoning that a heartbeat proves a process exists while this proves it is doing
+work. With the defect, **flat at 0 is the expected reading of a healthy system**,
+so its stalled condition would have been a false positive at 04:00 with every
+other signal corroborating it. Retired before it ran.
+
+That is the third observable in one day that could not distinguish the thing from
+its failure, after the replay reporting 123 stable versions having made no model
+calls, and a check that passed because the fixed and unfixed code render
+identically at CLOSED phase. **Ask what makes a field appear before treating its
+absence as signal.**
+
 ## Working rules
 
 - **Facts come from deterministic parsing; the model only interprets.** Never
