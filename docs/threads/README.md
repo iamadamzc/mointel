@@ -484,6 +484,35 @@ null mean *"none in N"* with N in the row.
 **Three instances, three threads, one shape:** a null lookback read as an absence,
 a silent adjusted-fetch, an empty grep. **Report the scope beside the result.**
 
+### And a correct-but-narrow number is worse than a false one
+
+**Research, 2026-08-24, resolving why `/api/health` reported `queuedJobs: 0`
+against ten queued jobs.** It is **not false.** `publishHealth` counts
+`readJobsForDate(db, MAX(trading_date))`, and the ten are dated 2026-08-21 and
+2026-08-17 — **so once the date rolled they stopped being counted.**
+
+> **An aged backlog goes invisible exactly when it has aged. And that is worse
+> than false in one specific way: a false number invites a check; a
+> correct-but-narrow one does not.**
+
+**Nothing about `queuedJobs: 0` looks wrong**, which is why it sat for days while
+three threads reasoned around it. **The scope was the whole defect and the scope
+was not on the number.**
+
+**The same scoping hid a second, larger hazard, found only because the first was
+asked about.** `readOrphanedJobs(db, bootDate)` requeues a row claimed and
+abandoned mid-job — **but `bootDate` is the same `MAX(trading_date)`.** So a
+claimed row **is** recovered on the next boot **unless the trading date rolled
+first**, in which case it is stranded **permanently and silently** in `COLLECTING`
+or `ANALYZING`. Zero such rows exist today across all dates, so it is a hazard
+rather than a defect — **and it is the case the 30 seconds systemd used to give
+before SIGKILL was quietly covering.**
+
+**The repair is a second number, not a wider one.** `stalledJobs` counts
+non-terminal jobs from any *other* trading date. **`queuedJobs` answers the
+board's question and must keep answering it — two questions, two numbers**, rather
+than one number widened until it answers neither well.
+
 **And the same undercount hid a second fact in the same search:** the resolver
 depends on hosted web search too — its provider class sits in the *same file* as
 discovery's — so **84% of the desk's input tokens are search-dependent, not 56%.**
