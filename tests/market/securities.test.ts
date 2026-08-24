@@ -202,3 +202,92 @@ describe('classification summary', () => {
     expect(summary.excluded).toBe(3);
   });
 });
+
+/**
+ * Designations that are not the last thing in the name.
+ *
+ * The three derivative rules anchored at end-of-string or a comma, which is
+ * right for most listings and silently misses any name carrying a suffix.
+ * Measured over the 723 five-letter W/U/R symbols in `universe` -- the
+ * exchange's fifth-letter convention for derivatives -- the anchored rules
+ * caught 713.
+ *
+ * These matter beyond classification: `isDiscoveryEligibleClass` reads the same
+ * value, so a missed warrant is a warrant on a momentum board. The trader was
+ * told and approved the change before it was made.
+ */
+describe('a derivative designation followed by something else', () => {
+  const classOf = (symbol: string, name: string) =>
+    classifySecurity({ symbol, name }).classification;
+
+  it('catches a trailing full stop', () => {
+    expect(classOf('BLUWW', 'Blue Water Acquisition Corp. III Warrant.')).toBe('WARRANT');
+    expect(classOf('BLUWU', 'Blue Water Acquisition Corp. III Unit.')).toBe('UNIT');
+    expect(classOf('SPEGR', 'Silver Pegasus Acquisition Corp Rights.')).toBe('RIGHT');
+  });
+
+  it('catches a trailing expiry date', () => {
+    expect(classOf('LUCYW', 'Innovative Eyewear, Inc. Series A Warrants 8/16/27')).toBe('WARRANT');
+  });
+
+  it('catches trailing prose', () => {
+    expect(
+      classOf('IQMXW', 'IQM Quantum Computers Oyj Warrants to purchase American Depositary Shares'),
+    ).toBe('WARRANT');
+    expect(
+      classOf(
+        'HAVAR',
+        'Harvard Ave Acquisition Corporation Rights that convert on a 1/10th of 1 basis to Class A ordinary Shares',
+      ),
+    ).toBe('RIGHT');
+  });
+
+  it('catches a warrant whose symbol breaks the suffix convention', () => {
+    /*
+     * BCTXL ends in L, so no fifth-letter rule would find it -- and it was
+     * RANKED on the momentum board on 2026-08-21, the only ranked name of 2,821
+     * this change removes. The concrete thing the fix is for.
+     */
+    expect(classOf('BCTXL', 'BriaCell Therapeutics Corp. Warrant expiring 2031')).toBe('WARRANT');
+  });
+});
+
+/**
+ * What the relaxation must NOT reach.
+ *
+ * A bare word-match was measured and rejected: it flags 24 short symbols that
+ * are ordinary LP common units and trusts, which trade normally and whose float
+ * is real. These pin the boundary, because the safe version of this rule and
+ * the unsafe version differ by very little text.
+ */
+describe('names that merely mention a designation', () => {
+  const classOf = (symbol: string, name: string) =>
+    classifySecurity({ symbol, name }).classification;
+
+  it('leaves LP common units as ordinary equity', () => {
+    expect(
+      classOf('PAA', 'Plains All American Pipeline, L.P. Common Units representing Limited Partner Interests'),
+    ).not.toBe('UNIT');
+    expect(
+      classOf('ARLP', 'Alliance Resource Partners, L.P. Common Units representing Limited Partners Interests'),
+    ).not.toBe('UNIT');
+  });
+
+  it('leaves an ADS describing "the right to receive" alone', () => {
+    /*
+     * The regression the rights rule is split to avoid. An earlier candidate
+     * allowed the SINGULAR "right" before "to", which flagged RLX, WDH and AMX
+     * -- three ADRs -- as rights securities. A rights security is plural, or is
+     * "subscription rights".
+     */
+    for (const [symbol, name] of [
+      ['RLX', 'RLX Technology Inc. American Depositary Shares, each representing the right to receive one (1) Class A ordinary share'],
+      ['WDH', 'Waterdrop Inc. American Depositary Shares (each representing the right to receive 10 Class A ordinary shares)'],
+      ['AMX', 'America Movil S.A.B de C.V American Depositary Shares (each representing the right to receive 20 shares)'],
+    ] as const) {
+      // Asserted positively, because moving the ADR rule AFTER the derivative
+      // rules could have demoted these instead of merely not promoting them.
+      expect(classOf(symbol, name)).toBe('ADR_ADS');
+    }
+  });
+});

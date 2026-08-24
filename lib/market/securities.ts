@@ -148,29 +148,83 @@ const NAME_RULES: NameRule[] = [
     confidence: 'HIGH',
     reason: 'issuer name identifies a fund',
   },
+  /*
+   * The three derivative designations, and why each is anchored differently.
+   *
+   * All three were anchored at end-of-string or a comma, which is right for
+   * most listings and misses the ones carrying a suffix. Measured over 723
+   * five-letter W/U/R symbols -- the exchange's fifth-letter convention for
+   * derivatives -- the anchored rules caught 713 and missed 10, every miss a
+   * name where the designation simply is not last:
+   *
+   *   BLUWW  "Blue Water Acquisition Corp. III Warrant."
+   *   LUCYW  "Innovative Eyewear, Inc. Series A Warrants 8/16/27"
+   *   IQMXW  "IQM Quantum Computers Oyj Warrants to purchase American Depositary Shares"
+   *   HAVAR  "Harvard Ave Acquisition Corporation Rights that convert on a 1/10th of 1 basis..."
+   *
+   * The relaxations below catch 722 of 723 and flag exactly the same nine
+   * short-symbol names the anchored rules already flagged: +9 true positives at
+   * +0 false positives. The one remaining miss, PSNYW "Class C-1 ADS (ADW)",
+   * carries no designation word at all and no name rule can reach it.
+   *
+   * NOT loosened to a bare word-match, which was measured and is unsafe: it
+   * flags 24 short symbols that are ordinary LP common units and trusts -- PAA,
+   * ARLP, UNG -- which trade normally and whose float is real. Precise and
+   * incomplete is the right failure direction for a rule that removes names
+   * from board eligibility.
+   */
+  {
+    // Unanchored: no ordinary equity name carries "warrant" as a word.
+    pattern: /\bwarrants?\b/i,
+    classification: 'WARRANT',
+    confidence: 'HIGH',
+    reason: 'issuer name carries a warrant designation',
+  },
+  {
+    /*
+     * PLURAL when prose follows, because "American Depositary Shares, each
+     * representing the right to receive one Class A ordinary share" is an ADS
+     * description rather than a rights security. Allowing the singular before
+     * "to" flagged RLX, WDH and AMX -- three ADRs -- which is the regression
+     * this split exists to prevent.
+     */
+    pattern:
+      /\brights\b(?=\s*$|[,(.]|\s+(?:to|that|which|\d))|\bsubscription rights?\b|\bright\b(?=\s*$|[,(])/i,
+    classification: 'RIGHT',
+    confidence: 'MEDIUM',
+    reason: 'issuer name carries a rights designation',
+  },
+  {
+    /*
+     * Still anchored, and deliberately the strictest of the three. "Unit" has
+     * an ordinary-equity sense the other two lack: "Common Units representing
+     * Limited Partner Interests", "Corporate Units", "Trust Unit". Only
+     * punctuation or a trailing date may follow it.
+     */
+    pattern: /\bunits?\b(?=\s*$|[,(.]|\s+\d)/i,
+    classification: 'UNIT',
+    confidence: 'MEDIUM',
+    reason: 'issuer name carries a unit designation',
+  },
+  /*
+   * AFTER the derivative rules, not before, and the order is load-bearing.
+   *
+   * "IQM Quantum Computers Oyj Warrants to purchase American Depositary Shares"
+   * matched this rule first and classified ADR_ADS, so the warrant designation
+   * never got a hearing. The instrument is a warrant; what it is a warrant OVER
+   * is a detail. Anything genuinely an ADR carries no derivative designation
+   * and is unaffected.
+   *
+   * Found because a test asserted the CLASSIFICATION rather than the pattern.
+   * The measurement justifying the relaxation above ran the regexes directly
+   * and reported 722 of 723 -- it could not see this, because a rule that never
+   * runs still matches when you test it on its own.
+   */
   {
     pattern: /\b(american depositary|depositary (share|receipt)|\badr\b|\bads\b)/i,
     classification: 'ADR_ADS',
     confidence: 'HIGH',
     reason: 'issuer name identifies an ADR/ADS',
-  },
-  {
-    pattern: /\bwarrants?\b(?=\s*$|[,(])/i,
-    classification: 'WARRANT',
-    confidence: 'HIGH',
-    reason: 'issuer name ends with a warrant designation',
-  },
-  {
-    pattern: /\brights?\b(?=\s*$|[,(])|\bsubscription rights?\b/i,
-    classification: 'RIGHT',
-    confidence: 'MEDIUM',
-    reason: 'issuer name ends with a rights designation',
-  },
-  {
-    pattern: /\bunits?\b(?=\s*$|[,(])/i,
-    classification: 'UNIT',
-    confidence: 'MEDIUM',
-    reason: 'issuer name ends with a unit designation',
   },
   {
     pattern: /\bfund\b/i,
