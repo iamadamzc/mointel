@@ -188,6 +188,47 @@ the relay rather than after.
 thread adding a hop between itself and the trader. Push those back to
 `## What I need from you` where he will see them.
 
+## LIVE STATE — rewrite or delete this section, never let it go stale
+
+*Written 2026-08-24 ~01:00 UTC because this thread's context was at 96% and a
+compaction loses what is not on disk. Everything below expires. **If you are
+reading this after 2026-08-24, verify every line before acting on it.***
+
+**Reaching the threads.** Send to the NAME from `ListAgents`, or by session id
+via `mcp__ccd_session_mgmt__send_message`. Ids are stable, names are not:
+
+| Thread | Session id |
+| --- | --- |
+| Ops | `local_c4fc69df-3427-45d9-97d1-3935510ac8bb` |
+| Research | `local_2163766c-fea1-4d95-b86b-c78930fd4771` |
+| Design | `local_c6befb28-5c0b-4f3b-b10d-5fefcd46fd58` |
+| R&D | `local_61f36ca0-906c-4624-947a-c3c5603257ad` |
+
+This thread appears to others as **`Integration [0338b5]`** — they send to the
+name, not to a `from=` id.
+
+**IN FLIGHT, WITH A HARD DEADLINE.** Ops is to run a forced
+`research:interpret` backfill over 231 dossiers to populate `computedCycle`,
+**before 08:00 UTC 2026-08-24**. After that a partial Monday daily bar gets
+stored dated today, `latestDailyBarDate` then equals today, and
+`ensureDailyHistory` short-circuits forever — **the partial bar is locked in and
+no corrective pass reaches it.** Cost ~2.6M in / 0.9M out plus 231 Alpaca REST
+calls on the market worker's budget. Ops executes, Ops takes both WAL readings
+(baseline 531,574,792). **Research cannot run it — no production access.**
+
+**Monday 04:00 ET, two instruments, both Ops's, both need nobody present:** the
+WAL sample under real write pressure, and `messageAgeSeconds` coming off null
+for the market worker's first open since its 01:27 restart on the 23rd. The
+`computedCycle` progress meter is **retired** — it reads the same whether
+research works or not.
+
+**Decided, not started:** the float build (`research.md` item 14) in a fresh
+Research session; the read-time cycle move plus the partial-bar lock (item 16);
+Design's four verification checks on review session 13, valid to 11:59 ET.
+
+**Production is `161f15f`.** The market worker still runs `fd9556f`, held by the
+`market-worker-release` pin across six deploys.
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
