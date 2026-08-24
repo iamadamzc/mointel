@@ -209,6 +209,46 @@ this time and printed `keep fd9556f (pinned)`.
 
 No migration: schema 21 both sides, migrate wrote 0 backups.
 
+## Tonight's deploy made a latent bar hazard live, and Monday is inside it
+
+**Raised to escalate Integration's "not urgent before Monday". I think it is
+Monday.** Recorded so the judgement is visible rather than assumed either way.
+
+The mechanism is confirmed at the lines. `latestDailyBarDate` is
+`MAX(trading_date)` (`lib/research/history.ts:103`); the guard compares it to
+`new Date().toISOString().slice(0,10)`, a **UTC** date
+(`lib/research/historyFetch.ts:32`). So if a partial current-day bar is ever
+stored, `MAX` equals today, **every later call answers "already current"**, and
+the day is poisoned until the **UTC** date rolls — 20:00 ET, not a session
+boundary. A corrective pass cannot reach it.
+
+**Why tonight changed it.** This was latent while nothing re-analysed mid-session
+with a cycle depending on the bars. `computedCycle` shipped in `161f15f` a few
+hours ago. From Monday's open, research re-analyses moving names, each call runs
+`ensureDailyHistory`, and no symbol holds a bar dated today — so it fetches.
+
+**What is NOT verified, and it decides the size:** whether Alpaca returns a
+partial `1Day` bar during premarket. It cannot be tested now — the market is
+closed, so a call tonight proves nothing about 08:00 UTC. If it does, **the first
+re-analysis after bars begin forming poisons the whole day**, for exactly the
+names the desk cares about, since those are the ones being re-analysed.
+
+**Why that is worse than the blank column the backfill is meant to fix.** A blank
+reads `CYCLE NOT ESTABLISHED` — it says nothing. A cycle computed against a
+partial bar reads as a real answer: retracement measured against a high still
+forming, relative volume understated, a cycle start possibly missed. **A
+plausible wrong number on the trader-facing board is the failure this desk is
+least able to absorb.**
+
+And the two cannot be told apart on the board: backfilled names would carry
+correct cycles computed tonight on complete bars, Monday's re-analysed names
+might carry wrong ones, and nothing distinguishes them.
+
+**This does not argue against the backfill** — its values are correct, computed
+before 08:00 UTC on complete bars. It argues that the read-time fix may deserve
+to be Monday's first job rather than next session's, and that someone should
+check what Alpaca actually returns at 08:00 before trusting a fresh cycle value.
+
 ## The cycle backfill: checked for capture risk, and it is a free WAL experiment
 
 A forced re-analysis over the dossier set runs tonight to populate
