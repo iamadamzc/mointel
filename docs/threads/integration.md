@@ -700,6 +700,14 @@ not change enough.
 - **Detail is available on request.** Withholding it is not hiding it; the repo
   and the charters hold everything, and he can ask.
 - **`## What I need from you` stays last, and stays as short as the rest.**
+- **HEADLINES, NOT EXPLANATIONS.** *Third and sharpest ask, 2026-08-24: "you're
+  being too wordy... we need to preserve context better. give me headlines not
+  explanations."* One line per fact. No reasoning unless he asks. **No quoting
+  threads at all** — not their words, not their framing, not their self-criticism.
+  He wants the state of the desk, not the conversation that produced it.
+- **Context is a shared budget.** Every paragraph he did not need is context a
+  later turn cannot use. Verbosity is not just a reading cost now; it shortens the
+  session.
 
 The failure this fixes is not politeness. **A long report costs him the reading as
 well as the deciding**, and the decisions he actually has to make get buried in
