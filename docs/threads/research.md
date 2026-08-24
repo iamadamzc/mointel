@@ -1686,3 +1686,64 @@ search-dependent.**
 `worker/`. *Worth keeping as a near-miss: the evidence for "this configuration
 does nothing" and the evidence for "I did not search where it is used" look
 identical from inside the search.*
+
+---
+
+**21. Deep history: the cost, measured. His trigger makes the safe design the
+cheap one.** *Scoped by the trader 2026-08-24; costed here, not designed.*
+
+**THE TRIGGER RATE IS 3%, AND THAT IS THE WHOLE ANSWER.** Under top-10-by-RVOL,
+across 2026-08-14..21:
+
+| | |
+| --- | --- |
+| new names entering the top 10 per session | **9.5 of 10** — near-total turnover, so a cache amortises nothing |
+| of 60 top-10 slots, above their stored 90-session ceiling | **2** (`NTWO`, `BTCT`) |
+| deep fetches actually needed per morning | **~0.4** |
+
+**97% of the time the desk already holds a bar that disproves blue sky, so no
+deep fetch happens at all.** The two that trigger are `NTWO` at 11.80 over 10.74
+and `BTCT` at 1.77 over 1.48 — and `BTCT` is the name he reported, so the trigger
+fires on exactly the case that prompted it.
+
+**COST PER FETCH IS ONE CALL.** `AlpacaRestClient.getBars` already paginates —
+`do { … } while (pageToken)` at `rest.ts:202` with `limit: 10000` — so ten years
+of daily bars, ~2,520 rows, returns inside one page. No new infrastructure and no
+paging to write.
+
+**STORAGE IS NOISE.** Measured through `dbstat`: `daily_bars` is 3,006,464 bytes
+over 24,429 rows = **123.1 B/row**. Ten years is ~310 KB per symbol. At 0.4
+fetches a morning that is roughly **31 MB a year**. Even deep-fetching every new
+top-10 name daily lands near 465 MB.
+
+### The split-basis problem costs nothing, if the windows are not decoupled
+
+**35% of researched tickers carry a `reverseSplitHistory` entry** (80 of 231),
+and R&D measured 33.5% of symbol-dates on a pre-split basis. A walk back through
+years on a small cap meets a split about a third of the time.
+
+The desk is safe today only because **the fetch window and the retention window
+are the same ninety sessions**, so every fetch rewrites the whole stored range
+and a split self-corrects. `adjustment` is a literal, so the guard that should
+catch a mixed basis cannot fire.
+
+**So do not decouple them. Refetch the full depth on every deep check.** That
+keeps the coincidence that protects the desk today and makes it deliberate, and
+it is affordable *only* because the trigger rate is 3%. **His scoping is what
+makes the correct approach the cheap one.**
+
+### The early exit is unnecessary, and it was the dangerous part
+
+His exit condition is sound — the first prior bar above price ends the question.
+But it exists to avoid a cost that does not exist here: **one call returns the
+whole history, so every bar is in hand and the ceiling falls out for free.**
+
+That dissolves two costs Integration raised. The early exit yields a boolean
+where the ladder needs a level — moot, we have every bar. And splits terminate
+the walk falsely, stopping at a pre-split artifact and reporting it as the
+ceiling — **which was the sharpest objection, and it disappears with the
+mechanism.**
+
+*Unverified, and it is the one assumption in this: that Alpaca serves ten years
+of daily bars on this account's plan. Everything above is measured; that is not,
+and it wants one probe before anyone builds.*
