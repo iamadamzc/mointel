@@ -297,14 +297,47 @@ select (select count(*) from partial) as friday_partial_now,
        (select count(*) from touched) as reanalysed_today_total;
 ```
 
-**Read it on the middle column.** A symbol re-analysed today should no longer
-hold a partial Friday row, so `partial_and_reanalysed_today` must be **0**.
-Anything above zero is unambiguous evidence the healing branch did not fire —
-it cannot be explained by "only some names were re-analysed", which is what
-sank the aggregate.
+**~~Anything above zero is unambiguous evidence the healing branch did not
+fire.~~** It is not. Integration caught the same failure the aggregate had, one
+level down: `ensureDailyHistory` **reports failure rather than throwing** — its
+own comment says cycle context is enrichment and must not fail a job whose
+evidence collected fine. So a symbol can be claimed, reach the call, have the
+**Alpaca fetch fail**, and still hold its partial row. A non-zero middle column
+had two readings.
 
-Baseline, validated tonight: **42 / 0 / 0** — 42 still partial, nothing
-re-analysed yet, which is the correct closed-market reading.
+**And the log cannot separate them**, because `worker/research.ts:308` is
+`if (history.fetched) log(...)` — conditional. A healed symbol logs; a
+fetch-failed one and an already-current one are both silent. (`research-interpret.ts:153`
+logs the same call **unconditionally** — same call, two workers, and the one
+running in production is the quiet one.)
+
+**The data separates them without the log.** `upsertDailyBars` stamps
+`fetchedAt` on every row it writes, so a successful fetch leaves today's
+timestamp behind whether or not the Friday row healed:
+
+```sql
+fetched_today as (
+  select distinct symbol from daily_bars
+  where date(datetime(fetched_at,'-4 hours')) = date('now','-4 hours')
+)
+-- then split the middle column:
+--   partial ∩ touched ∩ fetched_today      -> fetch SUCCEEDED
+--   partial ∩ touched, not in fetched_today -> NO fetch
+```
+
+**How to read it Monday:**
+
+| reading | meaning |
+| --- | --- |
+| middle column **0** | healing works — done |
+| **>0**, `fetch_SUCCEEDED` | rows were stored today and the Friday partial survived → **the healing branch did not fire.** The finding. |
+| **>0**, `NO_fetch` | nothing stored → **the fetch failed.** A different problem, and not evidence about the guard. |
+
+The skip cannot explain the third case for these 42: their Friday row fails
+`isFinished` (`history.ts:78`), so the guard will not short-circuit them.
+
+Baseline, validated tonight: **42 / 0 / 0 / 0** — the correct closed-market
+reading.
 
 ### Two definitions of a usable daily bar, and the read path has none
 
