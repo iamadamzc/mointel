@@ -210,6 +210,48 @@ depend on it. They are now anchored to things that can be checked — commit
 times, and the one clock read. **Stamp from a reading or from a commit, never
 from a sense of how long the work took.**
 
+**MONDAY PREMARKET RESULTS, 2026-08-24 08:2x–08:3xZ (04:2x ET). The readings this
+whole night was built for. Read this block first.**
+
+- **THE MARKET WORKER IS PROVEN.** `messageAgeSeconds: 1`, off null, bars flowing,
+  `sessionPhase: PREMARKET`, `Market: Alpaca SIP — LIVE`. **Unproven for 31 hours
+  across ten deploys** — the closed-market checks only ever showed the stream
+  connects, authenticates and subscribes. `RESTART_MARKET=no` and the `fd9556f`
+  pin held throughout and the thing they protect works.
+- **THE WAL IS A HIGH-WATER MARK, NOT A LEAK. Ops open item 2 closed on evidence.**
+  Nine samples over ~3 minutes under live load: `wal=531,574,792`
+  **byte-identical across all nine and identical to Saturday's baseline**, while
+  `db mtime` advanced continuously and `ranked` climbed 846 → 848 → 850.
+  **Saturday's flat number proved nothing because the contention was absent; this
+  one means something because it is present.** `journal_size_limit` is a tidy-up
+  rather than a fix.
+- **THE HEALING WORKS AND THE MIDDLE COLUMN IS ZERO.** `friday_partial_now` 42 →
+  **37**; **`STILL_partial_after_reanalysis` = 0**, with both failure branches
+  unfired (`fetch_SUCCEEDED` 0, `NO_fetch` 0); 21 symbols re-analysed, five of them
+  in the pool, all five healed. **The aggregate would have read 42 → 37 as success
+  and would have read the same if healing were half-working** — zero means
+  something only because the per-symbol form conditioned on the trigger exists, and
+  that exists because Research killed the aggregate before it ran and Integration
+  caught the fetch-failure ambiguity after.
+- **NO UNIT FAILED.** web 0, market 0, research 1 (last night's `0778533` crash),
+  assess 0. **First reading of that counter with no deploy in the window**, so it
+  is the control the earlier ones lacked. The 50-second cliff did not materialise.
+- **`Gap` PASSED — the check that exists for one hour a day.** The old code carried
+  the word only in a `title` attribute and **could never render it as visible
+  text.**
+- **THE OVERLAY IS CONFIRMED IN PRODUCTION ON A BARE BOARD, first time.** 12
+  Discovery rows, 841 eligible of 8,653 tracked, cycle column populated with **no
+  `?symbols=` anywhere** — every prior observation went through the parameter that
+  bypasses the rank gate. Column: `BACKSIDE` ×6, `NO RUN` ×3, `FRONTSIDE` ×1,
+  `CYCLE NOT ESTABLISHED` ×1, `ANALYSIS PENDING` ×1. **`FRONTSIDE` newly observed —
+  four of six phase names now seen; `OFF HIGH` and `PRIOR RUN` remain UNOBSERVED,
+  not failed.** `BCTXL` and `IQMXW` absent, correct.
+- **OPEN:** whether the summary segments' counts (`frontside 10`, `backside 7`)
+  return the rows they advertise when clicked — the failure `MarketSummary.tsx:58`
+  was written to prevent, in a new costume. And whether `NO RUN` ×3 is genuine or
+  the short-series shape; those render identically and only per-name bar counts
+  separate them.
+
 **STATE AT 01:45Z, 2026-08-24 — read this block first; everything below it is
 older.**
 
