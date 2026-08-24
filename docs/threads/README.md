@@ -264,6 +264,32 @@ deadlock, with Ops no longer asking and Integration not yet instructing. **When 
 protocol changes, both sides adopt it at different moments, and the gap between is
 a stall nobody is responsible for.** Name who is waiting on whom, out loud.
 
+## A constant dressed as a measurement
+
+**Research, 2026-08-24, found in its own ledger.** The hardest version of *a check
+that cannot fail*, because the column is never empty.
+
+Discovery's `toolConfig` getter returned the hardcoded literal
+`'web_search:default'`. **The ledger column whose entire purpose is telling two
+configurations apart returned the same string for every call ever made** — and the
+test asserted that constant and passed. The file's own header says a ledger
+recording price without configuration cannot tell a saving from a coverage loss.
+It was describing its own defect.
+
+**Nobody looked because the resolver's getter was dynamic**, so the ledger appeared
+populated for both stages. A missing column is obvious; **a column that is always
+present and always the same is invisible**, and it reads as evidence.
+
+So, beside *a check that cannot fail isn't a check*: **an observable that cannot
+VARY isn't a measurement.** For any field recorded to distinguish cases, ask what
+its distinct values are across the whole table. One is a defect. And a test that
+asserts a constant confirms the constant, not the behaviour.
+
+**It generalises past ledgers**, which is why it is here rather than in
+`research.md`: any column, label or flag added to tell states apart is worth one
+`select distinct` before it is trusted — including the ones this desk added
+tonight.
+
 ## Ping Integration when you finish, without being asked
 
 **Added 2026-08-24 at the trader's instruction, and the instruction was
