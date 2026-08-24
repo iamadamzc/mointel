@@ -382,8 +382,15 @@ shares outstanding taken from the same panel at the same instant.** Every float
 anywhere is somebody's computation — there is no `float` field in any SEC
 filing. Vendors derive it and disagree.
 
-**Four of eighteen are arithmetically impossible.** Float is a subset of shares
-outstanding, and Scanz's own documentation says so: *"Float is similar to
+**Four of eighteen have float exceeding shares outstanding — which proves the
+pair is inconsistent, not that the company is impossible.** *Framing corrected
+2026-08-24: Integration called this "arithmetically impossible" throughout, and
+that overstates it.* From the **same source at the same instant** it proves the
+vendor contradicts itself and one of its two numbers is wrong. **Across sources
+with different as-of dates it proves nothing without the dates** — a company
+that has issued shares since its last filing legitimately exceeds the filed
+count. Float is a subset of shares outstanding, and Scanz's own documentation
+says so: *"Float is similar to
 outstanding shares, except it only counts shares that are currently available
 for investors to trade."*
 

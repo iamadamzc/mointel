@@ -236,7 +236,27 @@ vendor.
 Ships with, non-negotiably:
 
 - **`float_basis` from the first row**, per R&D's rule. Never retrofitted.
-- **`float > shares_outstanding` → refuse.** Fires on 8 or 9 of 46 measured.
+- **`float > shares_outstanding` → refuse — BUT ONLY WHEN THE DENOMINATOR IS
+  CURRENT.** *Qualifier added by Research 2026-08-24 before the build, and
+  accepted by Integration under the delegation. Without it the rule inverts the
+  signal.* The filed share count is old for much of the universe — measured
+  across 209 issuers: **39% over 180 days, median 82 days**, oldest STG at 3,065
+  days. A company that has issued shares since its last filing **legitimately**
+  has a float exceeding the filed count.
+
+  **And the error runs the wrong way: the rule fires hardest on the names that
+  dilute hardest**, because those are the ones whose count has grown since
+  filing. The desk would go blind on pillar 5 precisely where supply risk is
+  highest — an inverse correlation with what the field is for.
+
+  So: **carry the denominator's age, and on a stale one report *cannot verify*
+  rather than refusing.** Same honest answer the design is built around. And
+  `shares_outstanding_as_of` ships beside the count per R&D's basis rule — a
+  count without its date is a different quantity from a count with one.
+
+  **`YJ` is the single best test case**: oldest-five staleness at 2,790 days
+  *and* the ADR the classification records as ordinary. It fails on both axes at
+  once.
 - **Ratio under ~2% → refuse as a probable unit mismatch.** Cannot be gated on
   `ADR_ADS`: YJ is an ADR the classification records as ordinary, so the test
   stands on the ratio alone.
