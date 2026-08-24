@@ -513,6 +513,20 @@ non-terminal jobs from any *other* trading date. **`queuedJobs` answers the
 board's question and must keep answering it — two questions, two numbers**, rather
 than one number widened until it answers neither well.
 
+**And the field has a concrete justification rather than a tidiness one, established
+by Ops the same morning.** Three of those ten stranded jobs — `ADXN`, `LSTA`, `ZKH`
+— turned out to be **on the live board carrying a cycle computed a session stale**,
+because never-claimed means never-re-analysed means their partial Friday bar never
+healed. **`stalledJobs` would have surfaced that on day one.** It took two nights
+and three threads to connect instead.
+
+> **It is not a counter for neatness. It is the field that would have made a
+> two-night causal chain a one-query answer.**
+
+**That is also the answer to why those ten sat unexamined while being called
+inert: nothing about `queuedJobs: 0` invited a check. A false number would have
+been investigated within the hour.**
+
 **And the same undercount hid a second fact in the same search:** the resolver
 depends on hosted web search too — its provider class sits in the *same file* as
 discovery's — so **84% of the desk's input tokens are search-dependent, not 56%.**
@@ -1264,6 +1278,10 @@ header reading `10:36`, a shell timestamp reading `10:47`, a commit time reading
 `10:49` — **all CEST, all six hours ahead of the trading day this desk exists
 for.** `10:45` feels like mid-morning. **It is 04:45 ET, five hours before the
 open.**
+
+**Ops's version, and it is why this is worse than a stale clock rather than merely
+bigger: a four-hour-stale reading at least looks odd against the surrounding
+conversation. `10:45` does not look like anything.**
 
 **The failure is not arithmetic, it is that the number needs no conversion to look
 plausible.** A wrong timezone produces a time that is *reasonable*, so nothing
