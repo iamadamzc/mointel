@@ -3,7 +3,7 @@
 **Owns the trader's own execution.** Daily fills, adherence to the playbook, and
 the gap between the system as written and the system as traded.
 
-Opened 2026-08-23. Nothing built yet.
+Opened 2026-08-23. The fill pipeline was built 2026-08-24.
 
 ## Scope
 
@@ -60,11 +60,54 @@ or the ones that happened to be on screen? That is bucket 2, the
 missed-opportunity set, and no journal can answer it — it is about names that
 were never seen.
 
+## What is built
+
+As of 2026-08-24, the whole loop runs:
+
+```bash
+npm run fills:import -- "<webull-export.csv>"   # parse, store, rebuild round trips
+npm run fills:report                            # adherence checks for the latest date
+```
+
+- `lib/coaching/fills/` — the Webull parser, the store, flat-to-flat FIFO
+  round-trip reconstruction, the thresholds, and the checks.
+- `worker/fills-import.ts`, `worker/fills-report.ts` — the two commands.
+- The database is `~/.mointel-fills/fills.db`, outside the repo. See *Handling*.
+
+Three properties are worth knowing before trusting a number out of it:
+
+- **Round trips are derived, never authoritative.** They are rebuilt from fills
+  on every import, so a correction to the reconstruction re-runs the history
+  instead of losing it. Fills themselves are only ever inserted.
+- **Import is idempotent**, so the workflow is *export everything, import it,
+  ignore the overlap* — there is nothing to track between runs. Only orders from
+  2026-08-24 forward are taken, by the trader's instruction; `--all` overrides
+  it and is a decision, not a convenience.
+- **A trip's entry and exit are VWAPs.** Scaling in and out folds into one
+  flat-to-flat trip, so a scaled-out trip can hide a worse individual exit
+  inside an acceptable average. Every check reading loss-per-share inherits
+  that. Commissions and regulatory fees are in no number.
+
+`rules.ts` marks every threshold `stated` or `booklet`, and the report prints
+the booklet-derived ones at the foot of each run. That footer is the standing
+reminder below, made hard to walk past.
+
 ## Handling
 
 **Fills never go in the repo.** They are personal financial records and get the
 same treatment as credentials: the database or a gitignored directory alongside,
 never in git. Easy to get wrong once and permanent when you do.
+
+`openFillsStore` enforces this rather than trusting it: a database path inside
+the working tree is refused, and so is one inside a OneDrive-synced folder. The
+second matters on this machine — the profile's Desktop is redirected into
+OneDrive, so a plausible-looking path there would upload the fills to a cloud
+account. Exports in `Downloads` are not synced today; moving them to the Desktop
+would change that.
+
+**And results are records too.** A realised P&L, a per-symbol total or a loss
+figure is as personal as the fill it came from. It belongs in the report output
+or the chat, never in a committed document — this charter included.
 
 ## The trader's actual rules
 
@@ -125,6 +168,6 @@ the booklet, the live practice governs:
 > Fills are personal financial records: they go in the database or a gitignored
 > directory, never in the repo.
 >
-> Nothing is built yet. Start by telling me what the fill export needs to
-> contain for the adherence checks in the charter to work, and what you can
-> measure on day one before the market archive exists.
+> The pipeline is built. `npm run fills:import -- <export.csv>` then
+> `npm run fills:report`. Start by reading the charter's *What is built*
+> section, then ask me for today's Webull export.
