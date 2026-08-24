@@ -1156,6 +1156,44 @@ bars dated 2026-08-21, which is not today — so the guard does not short-circui
 and Monday's live re-analyses refetch exactly as they would have. The backfill
 populates the column; it does nothing about the lock-in.
 
+**Fixed 2026-08-24 in `952f9e1` and `e9e0a9e`. It was not preventive — the store
+was already poisoned.** Ops checked read-only and I reproduced it from the
+snapshot: **133 rows written mid-session**, and **42 of them are Friday's, being
+every single symbol whose latest bar is Friday.** Not a latent defect after all;
+one that had already fired 133 times.
+
+**The first commit made it worse before it made it better, and the reason is
+worth keeping.** Moving the cache test from `stored === today` to
+`stored >= settled` protects a pre-existing partial: such a row is dated today,
+so a date-only test skips it and keeps skipping while `settled` catches up.
+Traced through an actual week, a partial Monday bar survives Monday evening,
+Tuesday premarket and all of Tuesday's session — the exact window where it does
+harm — where the `=== today` test it replaced would have refetched it Tuesday
+morning.
+
+**The date cannot answer the question.** A row dated today and written at noon is
+a session in progress; the same row written after the session ended is complete.
+Only `fetched_at` separates them, and it was already on the row. The cache test
+now skips a bar only when it is **both** recent enough **and** finished — written
+at or after its own session end — so a partial fails whatever date it carries and
+`ON CONFLICT DO UPDATE` overwrites it. **The guard heals what it inherits rather
+than only preventing more.**
+
+**A limit on the `latestDate` discriminator, which is Ops's and should not be
+rediscovered.** `CycleArc.latestDate` flags a cycle computed from a bar dated the
+*current* trading date — an unfinished session, computed today. It says nothing
+about a cycle computed from a bar that was unfinished **when it was captured**: a
+partial Friday bar carries a prior date and reads clean. `e9e0a9e` removes the
+case, but the stamp never covered it.
+
+**And a new member of the family, from my own tests.** Four of the six guard
+tests failed on the first run and the bug was in the *test*: the ET-to-UTC helper
+formatted the hour as a string, so 22:00 ET became `"26:00"` and produced an
+Invalid Date. It failed as a **wrong answer** rather than as a broken test. **A
+test helper that cannot express the boundary it is testing** is the same defect
+as an observable that cannot distinguish a thing from its failure, one level down
+— and it is the level nobody reviews.
+
 
 ## Working rules
 
