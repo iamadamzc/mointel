@@ -39,6 +39,7 @@ function window(options: {
       close,
       volume: 1_000_000,
       sessionComplete: true,
+      splitFactor: null,
     });
   }
   // Dates must be unique and ordered; rebuild them as a clean ascending run.
@@ -114,6 +115,7 @@ describe('resolveBlueSkyThreshold', () => {
       close: 24,
       volume: 9_000_000,
       sessionComplete: true,
+      splitFactor: null,
     });
 
     const threshold = resolveBlueSkyThreshold(bars, {
@@ -186,7 +188,7 @@ describe('resolveBlueSky', () => {
 describe('ceilingSessionComplete', () => {
   const finished = (tradingDate: string, high: number, close: number) => ({
     tradingDate, open: close, high, low: close * 0.9, close,
-    volume: 1_000_000, sessionComplete: true,
+    volume: 1_000_000, sessionComplete: true, splitFactor: null,
   });
 
   it('is false when the ceiling came from an unfinished session', () => {
@@ -194,7 +196,7 @@ describe('ceilingSessionComplete', () => {
       finished('2026-06-09', 1.48, 1.4),
       finished('2026-08-19', 1.32, 0.84),
       { tradingDate: '2026-08-20', open: 1.0, high: 1.57, low: 0.9, close: 1.25,
-        volume: 62_000_000, sessionComplete: false },
+        volume: 62_000_000, sessionComplete: false, splitFactor: null },
     ];
 
     const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });

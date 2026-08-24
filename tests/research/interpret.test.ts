@@ -1468,7 +1468,7 @@ describe('computed cycle on the dossier', () => {
         symbol,
         tradingDate: `2026-06-${String(i + 1).padStart(2, '0')}`,
         open: 1.3, high: 1.32, low: 1.28, close: 1.3, volume: 1_000_000,
-        tradeCount: null, vwap: null, adjustment: 'split', source: 'test',
+        tradeCount: null, vwap: null, adjustment: 'split', splitFactor: null, source: 'test',
         fetchedAt: '2026-08-17T12:00:00Z',
       });
     }
@@ -1476,7 +1476,7 @@ describe('computed cycle on the dossier', () => {
     bars.push({
       symbol, tradingDate: '2026-07-01', open: 1.3, high: 3.4, low: 1.3, close: 3.0,
       volume: 40_000_000, tradeCount: null, vwap: null, adjustment: 'split',
-      source: 'test', fetchedAt: '2026-08-17T12:00:00Z',
+      splitFactor: null, source: 'test', fetchedAt: '2026-08-17T12:00:00Z',
     });
     upsertDailyBars(db, bars);
   }
@@ -1531,7 +1531,8 @@ describe('computed cycle on the dossier', () => {
     upsertDailyBars(db, [{
       symbol: 'ACME', tradingDate: '2026-08-20', open: 1.3, high: 9.0, low: 1.3,
       close: 8.0, volume: 80_000_000, tradeCount: null, vwap: null,
-      adjustment: 'split', source: 'test', fetchedAt: '2026-08-21T00:30:00Z',
+      adjustment: 'split',
+      splitFactor: null, source: 'test', fetchedAt: '2026-08-21T00:30:00Z',
     }]);
     const good = dossier();
     good.catalyst.evidenceSourceIds = [ids[0]];

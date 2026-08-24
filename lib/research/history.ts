@@ -25,6 +25,12 @@ export interface DailyBar {
   close: number | null;
   volume: number | null;
   /**
+   * Cumulative split factor still to apply from this session forward. Null on a
+   * bar stored without a raw comparison, which is every bar the shallow path
+   * writes -- so null means "not established", never "1".
+   */
+  splitFactor: number | null;
+  /**
    * Whether this bar covers a session that had already ended when it was
    * fetched. Always populated, never inferred from absence.
    *
@@ -57,15 +63,21 @@ export function upsertDailyBars(db: MarketDatabase, bars: readonly NewDailyBar[]
   const statement = db.prepare(
     `INSERT INTO daily_bars
        (symbol, trading_date, open, high, low, close, volume, trade_count, vwap,
-        adjustment, source, fetched_at)
+        adjustment, split_factor, source, fetched_at)
      VALUES
        (@symbol, @tradingDate, @open, @high, @low, @close, @volume, @tradeCount, @vwap,
-        @adjustment, @source, @fetchedAt)
+        @adjustment, @splitFactor, @source, @fetchedAt)
      ON CONFLICT(symbol, trading_date) DO UPDATE SET
        open = excluded.open, high = excluded.high, low = excluded.low,
        close = excluded.close, volume = excluded.volume,
        trade_count = excluded.trade_count, vwap = excluded.vwap,
        adjustment = excluded.adjustment, source = excluded.source,
+       /*
+        * COALESCE, not overwrite. The shallow path writes null, and a deep pass
+        * that established the factor must not have it erased by the next
+        * ordinary refresh -- which runs far more often than a deep one.
+        */
+       split_factor = COALESCE(excluded.split_factor, daily_bars.split_factor),
        fetched_at = excluded.fetched_at`,
   );
 
@@ -138,7 +150,7 @@ export function readDailyBars(
 ): DailyBar[] {
   const query = db.prepare(
     `SELECT trading_date AS tradingDate, open, high, low, close, volume,
-            fetched_at AS fetchedAt
+            fetched_at AS fetchedAt, split_factor AS splitFactor
        FROM daily_bars WHERE symbol = ?
       ORDER BY trading_date DESC LIMIT ?`,
   );

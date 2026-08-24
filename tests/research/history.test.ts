@@ -15,6 +15,7 @@ function series(closes: Array<[string, number]>): DailyBar[] {
     close,
     volume: 1_000_000,
     sessionComplete: true,
+    splitFactor: null,
   }));
 }
 

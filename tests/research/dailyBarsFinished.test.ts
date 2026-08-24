@@ -32,6 +32,7 @@ function bar(over: Partial<NewDailyBar> & { tradingDate: string; fetchedAt: stri
     tradeCount: 10,
     vwap: 1.5,
     adjustment: 'split',
+    splitFactor: null,
     source: 'test',
     ...over,
   };

@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 21;
+export const SCHEMA_VERSION = 22;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -386,6 +386,13 @@ CREATE TABLE IF NOT EXISTS daily_bars (
   -- Split adjustment is recorded so a later change of basis is detectable
   -- rather than silently mixing adjusted and unadjusted prices.
   adjustment   TEXT NOT NULL DEFAULT 'split',
+  -- The cumulative split factor still to be applied from this session forward,
+  -- derived from raw against adjusted closes. THIS is the basis stamp the
+  -- column above was documented to provide and cannot, being written as the
+  -- literal 'split' on every row. 1 means the session is on today's basis;
+  -- 600 on a BTCT bar from 2020 means two consolidations stand between that
+  -- price and this one. Null on a bar written without a raw comparison.
+  split_factor REAL,
   source       TEXT NOT NULL,
   fetched_at   TEXT NOT NULL,
   PRIMARY KEY (symbol, trading_date)
@@ -593,6 +600,7 @@ CREATE TABLE IF NOT EXISTS review_tokens (
  * RVOL baselines in them are expensive to recompute.
  */
 const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }> = [
+  { table: 'daily_bars', column: 'split_factor', definition: 'REAL' },
   { table: 'research_jobs', column: 'trigger', definition: 'TEXT' },
   { table: 'research_jobs', column: 'collector_report', definition: 'TEXT' },
   { table: 'ticker_session', column: 'reference_rth_close', definition: 'REAL' },

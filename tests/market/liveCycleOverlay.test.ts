@@ -30,13 +30,13 @@ function seedRun(db: ReturnType<typeof temporaryDb>, symbol = 'ACME') {
     symbol,
     tradingDate: `2026-06-${String(i + 1).padStart(2, '0')}`,
     open: 1.3, high: 1.32, low: 1.28, close: 1.3, volume: 1_000_000,
-    tradeCount: null, vwap: null, adjustment: 'split', source: 'test',
-    fetchedAt: '2026-07-01T00:00:00Z',
+    tradeCount: null, vwap: null, adjustment: 'split', splitFactor: null,
+    source: 'test', fetchedAt: '2026-07-01T00:00:00Z',
   }));
   bars.push({
     symbol, tradingDate: '2026-07-01', open: 1.3, high: 3.4, low: 1.3, close: 3.0,
     volume: 40_000_000, tradeCount: null, vwap: null, adjustment: 'split',
-    source: 'test', fetchedAt: '2026-07-02T00:00:00Z',
+    splitFactor: null, source: 'test', fetchedAt: '2026-07-02T00:00:00Z',
   });
   upsertDailyBars(db, bars);
 }

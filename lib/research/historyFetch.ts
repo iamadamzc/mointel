@@ -7,6 +7,7 @@
  */
 
 import { AlpacaRestClient } from '../market/alpaca/rest';
+import { deriveSplitFactors, splitFactorAt, type SplitEvent } from '../market/splits';
 import { findAlpacaCredentials } from '../market/credentials';
 import { etDateString, sessionEndUtc } from '../market/session';
 import type { MarketDatabase } from '../market/store/db';
@@ -137,6 +138,9 @@ export async function ensureDailyHistory(
       tradeCount: bar.n ?? null,
       vwap: bar.vw ?? null,
       adjustment: 'split',
+      // Null, explicitly: the shallow path fetches one adjustment, so it has no
+      // raw series to derive a factor against. Null reads as "not established".
+      splitFactor: null,
       source: 'alpaca-daily-bar',
       fetchedAt: new Date().toISOString(),
     }));
@@ -158,6 +162,115 @@ export async function ensureDailyHistory(
       fetched: false,
       sessions: 0,
       detail: error instanceof Error ? error.message.slice(0, 120) : 'fetch failed',
+    };
+  }
+}
+
+
+/**
+ * How far back a deep pass reaches.
+ *
+ * "As deep as you can go" is the trader's instruction, taken literally after he
+ * was shown what it produces: BTCT's all-history ceiling is $14,249.94 on a
+ * session that traded four shares. Probed 2026-08-24 — AAPL returns the full
+ * ten years, 2,513 rows in 701ms, so the plan is not the limit and a symbol that
+ * returns less is simply younger.
+ */
+const DEEP_HISTORY_YEARS = 10;
+
+export interface DeepHistoryResult extends DailyHistoryResult {
+  /** Oldest session actually returned. Null when nothing was. */
+  from: string | null;
+  splitEvents: SplitEvent[];
+}
+
+/**
+ * Fetches a symbol's full available history and the basis it sits on.
+ *
+ * TWO requests, one per adjustment, and the second is what earns its keep: the
+ * ratio between raw and adjusted closes is the cumulative split factor, so a
+ * deep ceiling arrives with the thing that makes it readable rather than absurd.
+ *
+ * REFETCHES EVERYTHING, deliberately. Alpaca adjusts as of fetch time, so a
+ * whole-window pull is internally consistent by construction. The desk is safe
+ * today only because its fetch window and its retention window happen to be the
+ * same ninety sessions, and an incremental deep fetch is precisely what would
+ * pull those apart — leaving old rows on a pre-split basis and new ones on the
+ * current one, both labelled 'split'. Keeping them coupled costs a full refetch
+ * per deep pass, which is affordable only because the trigger fires on about
+ * 3% of top-10 slots.
+ *
+ * Failure is reported rather than thrown, as the shallow path does and for the
+ * same reason.
+ */
+export async function ensureDeepHistory(
+  db: MarketDatabase,
+  symbol: string,
+  now: Date = new Date(),
+): Promise<DeepHistoryResult> {
+  const empty = { fetched: false, sessions: 0, from: null, splitEvents: [] };
+  const lookup = findAlpacaCredentials();
+  if (!lookup.credentials) return { ...empty, detail: 'no Alpaca credentials' };
+
+  const settled = lastSettledTradingDate(now);
+  const start = new Date(now.getTime() - DEEP_HISTORY_YEARS * 365.25 * 86_400_000)
+    .toISOString()
+    .slice(0, 10);
+
+  try {
+    const rest = new AlpacaRestClient(lookup.credentials);
+    const pull = async (adjustment: 'split' | 'raw') =>
+      (await rest.getBars([symbol], { timeframe: '1Day', start, adjustment })).get(symbol) ?? [];
+
+    const [adjustedBars, rawBars] = [await pull('split'), await pull('raw')];
+    if (adjustedBars.length === 0) return { ...empty, detail: 'no bars returned' };
+
+    const closesOf = (bars: typeof adjustedBars) => {
+      const map = new Map<string, number>();
+      for (const bar of bars) {
+        if (typeof bar.c === 'number') map.set(String(bar.t).slice(0, 10), bar.c);
+      }
+      return map;
+    };
+    const { factors, events } = deriveSplitFactors(closesOf(adjustedBars), closesOf(rawBars));
+
+    const rows = adjustedBars
+      .map((bar) => {
+        const tradingDate = String(bar.t).slice(0, 10);
+        return {
+          symbol,
+          tradingDate,
+          open: bar.o ?? null,
+          high: bar.h ?? null,
+          low: bar.l ?? null,
+          close: bar.c ?? null,
+          volume: bar.v ?? null,
+          tradeCount: bar.n ?? null,
+          vwap: bar.vw ?? null,
+          adjustment: 'split',
+          splitFactor: splitFactorAt(factors, tradingDate),
+          source: 'alpaca-daily-deep',
+          fetchedAt: now.toISOString(),
+        };
+      })
+      // The same guard the shallow path applies: an unfinished session never
+      // reaches the store, whatever depth asked for it.
+      .filter((row) => row.tradingDate <= settled);
+
+    if (rows.length === 0) return { ...empty, detail: 'no settled sessions in range' };
+    upsertDailyBars(db, rows);
+
+    return {
+      fetched: true,
+      sessions: rows.length,
+      from: rows[0]!.tradingDate,
+      splitEvents: events,
+      detail: `${rows.length} session(s) from ${rows[0]!.tradingDate}, ${events.length} split event(s)`,
+    };
+  } catch (error) {
+    return {
+      ...empty,
+      detail: error instanceof Error ? error.message.slice(0, 120) : 'deep fetch failed',
     };
   }
 }
