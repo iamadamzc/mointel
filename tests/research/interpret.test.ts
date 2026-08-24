@@ -1522,10 +1522,16 @@ describe('computed cycle on the dossier', () => {
     const ids = seed(db);
     seedBars(db);
     // A second run, after the sources were collected on 17 August.
+    //
+    // Stamped after 20:00 ET on its own trading date. At 12:00Z -- 08:00 ET,
+    // mid-session -- `readDailyBars` now refuses it as unfinished and the bar
+    // never reaches the cycle, so this read as a passing asOf bound while
+    // actually testing nothing. The two guards are independent and this test
+    // is about the second one.
     upsertDailyBars(db, [{
       symbol: 'ACME', tradingDate: '2026-08-20', open: 1.3, high: 9.0, low: 1.3,
       close: 8.0, volume: 80_000_000, tradeCount: null, vwap: null,
-      adjustment: 'split', source: 'test', fetchedAt: '2026-08-20T12:00:00Z',
+      adjustment: 'split', source: 'test', fetchedAt: '2026-08-21T00:30:00Z',
     }]);
     const good = dossier();
     good.catalyst.evidenceSourceIds = [ids[0]];

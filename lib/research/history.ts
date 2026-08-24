@@ -11,6 +11,7 @@
  * have to re-derive facts we can compute exactly.
  */
 
+import { sessionEndUtc } from '../market/session';
 import type { MarketDatabase } from '../market/store/db';
 
 /** How much daily history is retained and summarised. Configurable. */
@@ -59,20 +60,84 @@ export function upsertDailyBars(db: MarketDatabase, bars: readonly NewDailyBar[]
   return bars.length;
 }
 
+/**
+ * Whether a stored bar covers a session that had already ended when it was
+ * fetched.
+ *
+ * The same test `ensureDailyHistory` applies before storing, applied again on
+ * the way out. A `1Day` bar for a session in progress is a running high and a
+ * partial volume, and the date alone cannot tell the two apart: a row dated
+ * today and written at noon is unfinished; the same row written after 20:00 ET
+ * is complete.
+ *
+ * The write path refuses these now, so nothing NEW can arrive unfinished. This
+ * exists for the ones already stored — 133 rows in production on 2026-08-23 —
+ * which heal only when something refetches that symbol. Until then every reader
+ * computes from them.
+ */
+function isFinished(row: { tradingDate: string; fetchedAt: string }): boolean {
+  // `fetched_at` is NOT NULL in the schema and holds no nulls in production, so
+  // the guard here is against an UNPARSEABLE stamp rather than a missing one --
+  // the column is TEXT and nothing constrains its shape. NaN fails the
+  // comparison silently either way; refusing it explicitly keeps a bar we
+  // cannot date out of a series we are about to reason over.
+  const fetched = Date.parse(row.fetchedAt);
+  return Number.isFinite(fetched) && fetched >= sessionEndUtc(row.tradingDate).getTime();
+}
+
+/**
+ * A symbol's finished daily bars, oldest first.
+ *
+ * ONE definition of a usable bar, because there turned out to be three callers
+ * asking the same question and only the writer got an answer. `ensureDailyHistory`
+ * had an explicit test for `finished`; `overlayLiveCycle` and the evidence
+ * bundle had none and computed from whatever was stored. Two definitions of a
+ * trustworthy bar, written four commits apart on the same night, by me.
+ *
+ * The dated consequence was Ops's: 42 symbols held a partial FRIDAY bar, and a
+ * partial bar for an ENDED session is not merely stale — it is understated
+ * volume and a high that never finished forming, read as a completed session.
+ * A latest-date discriminator cannot catch it, because the date is honest and
+ * only the contents are not.
+ *
+ * Filtering is safe here specifically because an unfinished bar is always the
+ * TAIL of its series: a bar can only be written unfinished on the day it is
+ * newest, and any later fetch that reaches it heals it. Verified rather than
+ * assumed — all 133 in production and all 49 locally are their symbol's latest
+ * bar, none mid-series. So this truncates and never punches a hole, which
+ * matters because `dailyRvol` reads a 20-session baseline and a gap in the
+ * middle would move the answer silently.
+ */
 export function readDailyBars(
   db: MarketDatabase,
   symbol: string,
   limit = DEFAULT_CYCLE_HISTORY_TRADING_DAYS,
 ): DailyBar[] {
-  const rows = db
-    .prepare(
-      `SELECT trading_date AS tradingDate, open, high, low, close, volume
-         FROM daily_bars WHERE symbol = ?
-        ORDER BY trading_date DESC LIMIT ?`,
-    )
-    .all(symbol, limit) as DailyBar[];
+  const query = db.prepare(
+    `SELECT trading_date AS tradingDate, open, high, low, close, volume,
+            fetched_at AS fetchedAt
+       FROM daily_bars WHERE symbol = ?
+      ORDER BY trading_date DESC LIMIT ?`,
+  );
+  type Row = DailyBar & { fetchedAt: string };
+
+  let rows = (query.all(symbol, limit) as Row[]).filter(isFinished);
+
+  /*
+   * Ask again when the filter cost us rows, so the caller gets the window it
+   * asked for rather than a quietly short one. Cheap: the second query only
+   * happens for a symbol that actually holds an unfinished bar, and a shortfall
+   * of N means at most N more rows exist behind the original limit.
+   */
+  const dropped = limit - rows.length;
+  if (dropped > 0) {
+    rows = (query.all(symbol, limit + dropped) as Row[]).filter(isFinished).slice(0, limit);
+  }
+
   // Oldest first, which is how the summariser walks them.
-  return rows.reverse();
+  return rows
+    .map(({ fetchedAt: _fetchedAt, ...bar }) => bar)
+    .reverse();
 }
 
 /**
