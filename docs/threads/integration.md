@@ -723,9 +723,20 @@ happens to cover a 10-second crash-and-restart its author never had in view — 
 30× margin by luck.** *And the guard measures distance in BOTH directions: it
 refused Ops at "3m away" from a checkpoint that had already completed, which is
 right, because a checkpoint may still be writing.* That is the inverse of this document's usual finding, where
-a rule names an event that later diverges from its condition. **Record it as luck
-anyway:** the margin holds only while the restart is a single clean one, and a
-restart loop or a systemd rate limit spends five minutes quickly.
+a rule names an event that later diverges from its condition. **Ops then measured the thing I called luck, and it is a CLIFF rather than a
+slope.** All four units run `Restart=always`, `StartLimitBurst=5`,
+`StartLimitInterval=5min`, `RestartSec=10s` (market 15s). **Five crashes exhausts
+the budget and systemd stops restarting — the unit stays failed until a human
+looks. At ten seconds apart that is about FIFTY SECONDS, not five minutes.**
+
+So the fault **self-heals only while it is intermittent.** If the snapshot race
+recurred on each restart — plausible precisely when several services are cycling
+together, which is the condition that causes it — the worker exits the loop
+**dead**, and every checkpoint after that is missed until someone looks. **That is
+the version with a permanent cost, and it is one systemd property away from
+today's behaviour.** Nowhere near it now: `NRestarts` is 0 or 1 on every unit.
+
+**A margin worth calling luck is worth knowing the size of, and it is 50 seconds.**
 
 **Not fixed tonight, and that is Ops's call and the right one** — a migration-path
 change hours before an open, for a fault that recovers, is the wrong trade.

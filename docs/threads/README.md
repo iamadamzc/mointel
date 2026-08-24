@@ -382,6 +382,32 @@ It sits beside *check the field that carries the answer*: that one is about
 reading the wrong field, this one is about reading the right field at the wrong
 **grain**.
 
+## The rule you just wrote is the one you are least likely to apply
+
+**Ops, 2026-08-24, explaining a day in which three separate authors broke their own
+rules.**
+
+- Integration wrote *"never report who holds a file from `git status`"* and did it
+  again inside the hour.
+- R&D wrote *"absence of detection is not detection of absence"* and then read its
+  own 30-session cap as an absence.
+- Ops wrote *"state after starting cannot observe the manner of stopping"* and then
+  reported *"all four services active"* after a deploy where one had crashed and
+  restarted inside the window it was describing.
+
+**All three were broken within HOURS of being written, by the author, and each was
+caught by someone at a different layer.**
+
+> **A rule you have just written is the one you are least likely to apply, because
+> writing it feels like having done it.**
+
+**The consequence is about ordering, not effort.** A new rule is at its weakest
+immediately after it is recorded — the opposite of the intuition that it is
+freshest then. So **the first application of a new rule is worth doing
+deliberately, and is the one most worth another layer checking.** Ops's own repair
+is the model: it wrote *check `NRestarts` after every deploy*, checked on the very
+next one, and caught a worker that `is-active` reported as healthy.
+
 ## A constant dressed as a measurement
 
 **Research, 2026-08-24, found in its own ledger.** The hardest version of *a check
