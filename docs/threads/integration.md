@@ -714,6 +714,42 @@ cannot be cited on its own. Design has flagged this rather than editing a shared
 document; the fix is either to date-scope the section to the milestone it
 described or to split the still-true entries out of it.
 
+## A queued-message receipt is a reading of the recipient, not a delivery note
+
+**The trader's correction, 2026-08-24, two words: "ops is not idle."** I had
+closed a report with *"all four threads are idle"*. Ops was mid-turn, and **the
+evidence was in my own tool results, twice.**
+
+`SendMessage` had answered both of my last sends with *"Message queued for session
+… it will be processed after the in-flight turn finishes."* **That sentence is a
+live-state reading of the recipient.** I read it as a delivery receipt — did the
+message go? yes — and discarded the half that said the receiver was busy. Then I
+described that receiver as idle, in the same reply.
+
+**This is worse than the stale-clock instances above it**, and differently shaped.
+Those were readings that were true when taken and aged. This one **was never
+taken**: the fact arrived unasked, in the return value of an action I had chosen
+to perform, and I did not treat it as an observation at all because I was not
+looking for one. **A tool result answers the question you asked and often one you
+did not.**
+
+Two practices out of it:
+
+- **`isRunning` is a claim about now and costs one call.** Never assert a thread's
+  state from the last thing it said. `list_sessions` at the moment of reporting,
+  or do not report it. *"Nothing outstanding from Design as of 01:59Z"* is
+  cheap and cannot mislead; *"all four are idle"* is a claim about four
+  processes.
+- **Read the whole tool result, including the part that is not the answer.**
+  "Sent" and "queued behind an in-flight turn" are different outcomes, and the
+  difference is the exact fact I then got wrong.
+
+**And a queued send is itself a small hazard worth knowing:** a message that lands
+mid-turn arrives after the recipient has already acted, which is how three
+crossed-message pairs happened tonight — the deploy that crossed a re-gate
+request, the deadlock retraction that crossed its own escalation, and Design's
+check-4 correction crossing mine.
+
 ## Observations go stale; this thread reports them anyway
 
 **Added 2026-08-23 after the third instance, which finally named the shared
