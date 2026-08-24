@@ -515,6 +515,36 @@ not of the last step that produced the value.** A computed field inherits the
 worst recoverability of its inputs, and a taxonomy built on provenance will file
 it under the step you can see.
 
+## Measure a commit, not a checkout
+
+**R&D, 2026-08-24, correcting its own entry within the hour — and it is the worse
+half of a pair.**
+
+It logged **13 changing class and 11 leaving eligibility** for the classifier fix.
+The shipped commit does **15 and 13**. The gap is that `b467154` carries **two**
+changes — the pattern relaxations *and* the ADR rule moving to run after the
+derivative rules — and **R&D diffed a mid-edit working tree that held only the
+first.** `IQMXW` classified `ADR_ADS` on both sides of its comparison and never
+appeared.
+
+> **Any number entering a log that outlives the session must be reproducible from
+> a ref, or it is a snapshot of something that never existed.**
+
+**How the error hid is why this is a section.** R&D's **13** and the shipped **13**
+are the same number attached to different populations — its *changed class*, the
+real one *leaves eligibility*. **A reader reconciling the table would have found 13
+twice and concluded it was consistent.** A wrong number that collides with a right
+one is worse than a wrong number alone.
+
+**It pairs with the section above and is the harsher instance.** Research measured
+regexes in isolation; R&D measured a checkout. **A working tree looks like the
+system in a way an isolated regex does not** — so the tell is weaker, not stronger.
+**Two threads failed the same way inside one hour**, which is a better argument for
+asserting caller-visible output than either instance alone.
+
+*The check that settled it: query the production snapshot for which of the thirteen
+actually carried a rank. Two did.*
+
 ## I measured the component and reported it as the system
 
 **Research, 2026-08-24, against its own work — the fifth instance of this family in
@@ -1087,12 +1117,17 @@ As of the last session, **2026-08-23**:
   constraints, both Research's own: **do not loosen to a word-match** — measured, it
   hits 24 ordinary LP units and trusts (PAA, ARLP, UNG) whose float is real — and
   **one definition, in `securities.ts`**, never a second derivative rule in
-  `float.ts`. **SHIPPED `b467154`. FOUR NUMBERS ARE IN CIRCULATION FOR THIS ONE CHANGE AND THEY
-  ARE FOUR DIFFERENT POPULATIONS** — quote none of them without its denominator:
-  **13** universe rows change class; **11** universe rows leave board eligibility;
-  **2** symbols actually RANKING become ineligible, over the last full session's
-  2,821 ranked; **0** of the archive's 252 board symbols are affected. **The
-  trader approved an estimate of eleven and the real board impact is two.**
+  `float.ts`. **SHIPPED `b467154`. FOUR NUMBERS DESCRIBE THIS ONE CHANGE AND THEY ARE FOUR
+  DIFFERENT POPULATIONS** — quote none without its denominator: **15** universe
+  rows change class; **13** leave board eligibility (`BLUWW BLUWU SPEGR LUCYW
+  ORIQW BCTXZ BCTXL HAVAR HUBCW OXBRW OGGWZ IQMXW ADSEW`); **2** symbols actually
+  RANKING become ineligible, of 2,821 ranked on 2026-08-21; **0** of the archive's
+  252 board symbols are affected. **The trader approved an estimate of eleven and
+  the real board impact is two.**
+
+  *The 15/13 corrects an earlier 13/11 — see "measure a commit, not a checkout"
+  below. Verified against the production snapshot: of all thirteen, only `BCTXL`
+  (`rvol_rank` **43**) and `IQMXW` (117) ranked on 2026-08-21; `ADSEW` did not.*
 
   **The two are `BCTXL`** (BriaCell Therapeutics Corp. Warrant expiring 2031) **and
   `IQMXW`** (IQM Quantum Computers Oyj Warrants to purchase American Depositary
