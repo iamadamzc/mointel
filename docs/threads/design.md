@@ -796,6 +796,57 @@ re-collapse that into a boolean by picking a number — the row shows how many
 sessions behind, and the trader decides. **Two sessions behind on a name he is
 about to size is his call, not a constant in this file.**
 
+### Corrected 2026-08-24: coverage is 7%, and the right name is the true one
+
+Two corrections from Research, before either reached a surface.
+
+**`filedShares` cannot make the float sort meaningful — it is not that
+quantity.** It is shares outstanding. *"The float sort starts working"* is not
+what Phase C delivers, and this file implied it did.
+
+**Coverage tracks RANK, steeply, because `SEC_COMPANY_FACTS` is collected per
+researched ticker rather than per ranked name:**
+
+| Population | With a filed count |
+| --- | --- |
+| Top 12 | **10 of 12** |
+| Top 50 | 28 of 50 |
+| Top 200 | 53 of 200 |
+| all ranked | **201 of 2,821 — 7%** |
+
+**So: do NOT build a supply-bound sort on Discovery.** A 7%-populated sort column
+is *worse* than the float sort it would replace. The float sort has 0% coverage,
+which the `51 unknown` readout makes obvious at a glance. A 7% column **looks
+like it works** — it returns 201 correctly ordered names with 2,620 silently
+beneath them — and the count would read `2,620 unknown` beside a top that still
+looks authoritative. **Coverage that is high where he looks and near-zero
+overall is the most dangerous shape a sort can have**, because the Top 12 he
+checks it against is 10 of 12.
+
+**As a field on rows where it exists, yes. As an ordering over the board, no.**
+
+**And the naming question answers itself: call it `Shares out`.** An earlier
+entry here proposed `≤ 915M` to stop a bound reading as a float. Better: **use
+the quantity's real name.** Every screener shows shares outstanding beside float
+and no momentum trader confuses the two — the confusion only arises from coining
+a term like *"supply bound"* that has to be learned. This is the charter rule
+doing its job: say it in the language of the stock. The **bound relationship**
+belongs in the risk chip if anywhere (*float is at most this*), not in the column
+heading.
+
+**Staleness is a constraint, not a preference.** Of the 28 at Top 50, **16 carry
+a count inside 45 days and 12 carry a dated one**. Under the owner's framing the
+dated twelve are not failures — *"filed as of 2024-12-31"* is story he can
+discount himself. **The failure would be rendering those twelve
+indistinguishably from the sixteen**, which is the signal-shaped version, and it
+is why the as-of ships **beside** the number rather than behind it.
+
+**Research's reading of the framing, carried verbatim because it is the sharpest
+anyone has given:** *"as much of the story as is useful" cuts both ways — it
+argues against suppressing a dated bound, and equally against **dressing a supply
+bound as a float because the column is empty and something would look better
+there than nothing.***
+
 ### Phase C ships a BOUND, not a float — and a bound must never read as one
 
 The owner's framing, `8c2d2d5`: *"we are an intelligence platform, not a signal
