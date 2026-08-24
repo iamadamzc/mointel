@@ -656,6 +656,58 @@ through Integration, not into `research.md`: one table, three annotators.
 Triage, Investigate, Verify, Monitor, Prepare. A field survives if it answers a
 question in one of them. "Looks useful" is not a phase.
 
+### What a refused float looks like on a row
+
+Research is deriving float from filings and will emit **three states, not one
+number**: a value; a **refusal with a reason** (impossible, unit mismatch,
+derivative inheriting its underlying); and genuinely absent. `research.md` item
+14, `161f15f`.
+
+**The scale of the problem is the part that reframes it.** Across 58 hand-pulled
+names, **float exceeds shares outstanding on one name in six** — arithmetically
+impossible, since float is a subset. On ADRs a unit-mismatch test fires on 8 of
+11. STKH reported a float of **3.86 billion against 915 million shares out**. So
+the number on the board today is not imprecise on those names; it is impossible.
+F-19's contradiction is a symptom of that, not a presentation inconsistency.
+
+**A refusal is a finding, and must not render as an absence.** *"We looked and
+this number is wrong"* and *"we do not have it"* are different statements and
+only the first is intelligence. This is the third instance of a distinction the
+product already makes twice — `NOT YET ANALYZED` against `UNKNOWN`, and *unknown*
+against *changed* for cycle — and the most consequential, because float is a
+pillar.
+
+| State | Row reads | Means |
+| --- | --- | --- |
+| value | the figure, and the supply chip beside it | a float the desk stands behind |
+| **refused** | **`FLOAT WRONG`** + reason on hover and in the drawer | the published number fails arithmetic |
+| absent | `FLOAT UNKNOWN` *(existing)* | no float on file |
+
+**`FLOAT WRONG` over the alternatives, for one reason each.** Not `BAD FLOAT` —
+it would be read as `DIRTY FLOAT`, a real and different concept this product
+already carries, and a collision between "dilution overhang" and "the number is
+untrue" is the worst possible confusion in this field. Not `FLOAT REJECTED` —
+that describes what the pipeline did, not what is true of the stock. *Wrong* is
+what a trader would say, and the reason line carries the arithmetic:
+`reported 3.86B against 915M shares out`.
+
+**Why this is worth more than the number would have been.** The vendor float is
+the one every screener shows — so when it is impossible, *the crowd's read of
+that name is built on a number that cannot be true*. A low-float thesis on such a
+name is unfounded, and the desk is the only place saying so. That is a stronger
+claim than a corrected figure, and it should not be buried in a qualifier.
+
+**Two consequences in code already written.**
+
+1. **The sort's `n unknown` count becomes ambiguous.** `discoveryMissingCount`
+   (`view.ts`) counts nulls, and under three states a refusal and an absence
+   would collapse into one number. That reintroduces the exact failure the count
+   exists to prevent — absence implied rather than stated. It needs to separate
+   them, or say the weaker thing honestly.
+2. **The `Risk` chip must not let a refusal read as a small float.** It already
+   must not assume a float number exists; now it must also not treat a refused
+   one as zero, missing, or tight.
+
 ### Item 17 changes shape, and the usual framing is wrong
 
 Phase C's float **will not match** the Sheet's, and the reason matters: the
@@ -677,6 +729,13 @@ So the two may **both** belong on screen, labelled by **what each is** rather
 than by which is trusted — which is a different design from picking a winner and
 qualifying it. Deciding that needs Phase C to exist. Recorded now so item 17 is
 not built against today's one-number-and-one-absence and then rebuilt.
+
+**And item 17's stated shape breaks outright on a refused float.** *"One number,
+one qualifier, one reason"* presumes a number. On one name in six there is none
+to present — there is a state and a reason, and the reason is the intelligence.
+Item 17 needs a **fourth shape** for that case rather than an awkward qualifier
+on an absent figure. It was written before any of this was known and is the item
+this changes most.
 
 F-19's contradiction is the same disagreement already visible in miniature.
 
