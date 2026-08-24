@@ -1094,9 +1094,35 @@ says so loudly, which is what the count was built for — and **useless until th
 SEC-derived float lands.** This is the case §9 item 17 was already recorded
 against; it is now observed rather than predicted.
 
-**`NO RUN` is genuine, not short-series.** Ops compared per-symbol bar counts
-against Saturday: 265 symbols, 248 unchanged, 8 grew, 9 new, **zero dropped**.
-The finished-bar filter shortened nothing.
+**`NO RUN` — corrected 2026-08-24. It is ELEVEN genuine and THREE stale**, and
+the three are the interesting half. Design first recorded this as *"genuine, not
+short-series"*, which was Integration's summary and true only of the majority.
+
+- **11 of 14 genuine** — every bar finished, `latest_finished` 2026-08-21,
+  complete series through Friday, no qualifying cycle start.
+- **3 of 14 one session stale** — **ADXN, LSTA, ZKH**: 101 bars, 100 finished,
+  `latest_finished` 2026-08-20 while `latest_any` is 2026-08-21. Their Friday bar
+  is partial and hidden, so **the cycle resolves through Thursday**. Not a
+  short-series artefact — 100 bars is far past any minimum — but **a phase
+  computed on data one day old**, which may not still be `NO_CYCLE` once Friday
+  lands.
+
+**Those three are the live examples for the `asOfTradingDate` surface above.**
+They are exactly the rows that would carry a Thursday as-of while rendering
+identically to a Friday one.
+
+**Unresolved, and recorded so nobody later cites it as agreement:** Ops's
+three-of-fourteen is over **28 intelligence entries**; Design's `NO RUN` ×3 was
+over a **12-row Discovery board**. **Whether they are the same three is unknown.**
+A 3 meeting a 3 reads as confirmation without being it.
+
+### Segment fix VERIFIED on the live desk
+
+`d375c28` shipped inside `567557b`. Checked on the live board rather than
+reported: segments now read `0 day 1 · 1 frontside · 4 backside` — down from
+`1 · 3 · 10` — and **clicking `4 backside` returns exactly 4 rows, all
+`BACKSIDE`.** Count and filter now read one population, confirmed by the click
+that found the defect rather than by the count alone.
 
 **Running total: 6 of 6 available checks passed.** Outstanding and genuinely
 gated on a populated board: the four sort checks, and the `Gap` label, which
