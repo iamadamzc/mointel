@@ -368,6 +368,24 @@ export interface CycleHistory {
   formerRunnerStatus: FormerRunnerStatus;
   /** Largest prior advance, so a consumer can band it differently. */
   largestPriorAdvancePct: number | null;
+  /**
+   * The newest session this was computed from. Null only for an empty series.
+   *
+   * Every other field describes a shape; this one says WHEN. Without it a cycle
+   * resolved to Thursday is indistinguishable from one resolved to Friday, and
+   * that stopped being hypothetical the moment `readDailyBars` began hiding
+   * unfinished bars: a symbol whose Friday bar is partial silently reports a
+   * Thursday phase. On 2026-08-24, ADXN, LSTA and ZKH were on the board in
+   * exactly that state — 101 bars each, 100 finished, latest finished
+   * 2026-08-20 while the tape had 2026-08-21.
+   *
+   * Hiding the partial bar is still right; computing on a running high and a
+   * part-day volume is worse than being one session behind. What was missing is
+   * that nothing downstream could TELL. This is the tell, and it is a date
+   * rather than a flag so a consumer can decide for itself what counts as
+   * stale — the desk's staleness question is different at 07:00 than at 16:00.
+   */
+  asOfTradingDate: string | null;
 }
 
 /** Indices of every session that begins a move, oldest first. */
@@ -453,5 +471,11 @@ export function resolveCycleHistory(
       largest >= SUPERRUNNER_ADVANCE ? 'FORMER_SUPERRUNNER' : 'FORMER_RUNNER';
   }
 
-  return { current, priorCycles, formerRunnerStatus, largestPriorAdvancePct: largest };
+  return {
+    current,
+    priorCycles,
+    formerRunnerStatus,
+    largestPriorAdvancePct: largest,
+    asOfTradingDate: bars.length > 0 ? bars[bars.length - 1].tradingDate : null,
+  };
 }

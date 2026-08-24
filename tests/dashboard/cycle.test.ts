@@ -31,7 +31,13 @@ function arc(overrides: Partial<CycleArc> = {}): CycleArc {
 }
 
 function history(current: CycleHistory['current']): CycleHistory {
-  return { current, priorCycles: [], formerRunnerStatus: 'NONE', largestPriorAdvancePct: null };
+  return {
+    current,
+    priorCycles: [],
+    formerRunnerStatus: 'NONE',
+    largestPriorAdvancePct: null,
+    asOfTradingDate: '2026-08-21',
+  };
 }
 
 const row = (h: CycleHistory | null): DeskRow =>

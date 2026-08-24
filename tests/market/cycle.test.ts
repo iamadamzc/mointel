@@ -357,3 +357,55 @@ describe('cycle history', () => {
     expect(resolveCycleHistory(base(40)).priorCycles).toEqual([]);
   });
 });
+
+/**
+ * When the cycle was computed, which is the field that makes the rest readable.
+ *
+ * `readDailyBars` hides a bar written before its own session ended, which is
+ * right -- a running high and a part-day volume are worse than being one
+ * session behind. But until this field existed, nothing downstream could tell
+ * the difference between a cycle resolved to Friday and one resolved to
+ * Thursday, and the two look identical on a board.
+ *
+ * It stopped being hypothetical on 2026-08-24. Eight jobs queued at Friday
+ * 22:00 ET were never claimed, so those symbols were never re-analysed,
+ * `ensureDailyHistory` never ran for them, their partial Friday bar never
+ * healed, and the filter hid it. ADXN, LSTA and ZKH each held 101 bars, 100
+ * finished, newest finished 2026-08-20 while the tape had 2026-08-21 -- and all
+ * three were on the trader's board carrying a Thursday phase.
+ */
+describe('the as-of date on a cycle', () => {
+  const bar = (tradingDate: string, close: number, volume = 1_000_000) => ({
+    tradingDate, open: close, high: close, low: close, close, volume,
+  });
+
+  it('reports the newest session it actually used', () => {
+    const bars = [bar('2026-08-19', 1), bar('2026-08-20', 1.02), bar('2026-08-21', 1.03)];
+
+    expect(resolveCycleHistory(bars).asOfTradingDate).toBe('2026-08-21');
+  });
+
+  it('is a session behind when the newest bar was withheld', () => {
+    /*
+     * The ADXN/LSTA/ZKH shape. The caller passes what readDailyBars gave it,
+     * which excludes the unfinished Friday bar -- so the phase is computed on
+     * complete data that is one day old, and this is the only field that says
+     * so. It is a DATE rather than a stale flag because the desk's tolerance
+     * differs by hour: one session behind at 07:00 premarket is not the same
+     * statement as one session behind at 16:00.
+     */
+    const withFriday = [bar('2026-08-19', 1), bar('2026-08-20', 1.02), bar('2026-08-21', 1.03)];
+    const withoutFriday = withFriday.slice(0, 2);
+
+    expect(resolveCycleHistory(withoutFriday).asOfTradingDate).toBe('2026-08-20');
+    // And the rest of the shape gives no hint on its own -- same phase, same
+    // former-runner status, different day. That is the whole problem.
+    expect(resolveCycleHistory(withoutFriday).current.phase).toBe(
+      resolveCycleHistory(withFriday).current.phase,
+    );
+  });
+
+  it('is null rather than invented on an empty series', () => {
+    expect(resolveCycleHistory([]).asOfTradingDate).toBeNull();
+  });
+});
