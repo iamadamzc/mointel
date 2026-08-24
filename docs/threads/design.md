@@ -664,11 +664,20 @@ derivative inheriting its underlying); and genuinely absent. `research.md` item
 14, `161f15f`.
 
 **The scale of the problem is the part that reframes it.** Across 58 hand-pulled
-names, **float exceeds shares outstanding on one name in six** — arithmetically
-impossible, since float is a subset. On ADRs a unit-mismatch test fires on 8 of
-11. STKH reported a float of **3.86 billion against 915 million shares out**. So
-the number on the board today is not imprecise on those names; it is impossible.
-F-19's contradiction is a symptom of that, not a presentation inconsistency.
+names, **float exceeds shares outstanding on one name in six**. On ADRs a
+unit-mismatch test fires on 8 of 11. STKH reported a float of **3.86 billion
+against 915 million shares out**. F-19's contradiction is a symptom of that, not
+a presentation inconsistency.
+
+> **Corrected 2026-08-24 (`9b1b16b`).** An earlier version of this section called
+> that *"arithmetically impossible"*, taking the phrase from Integration, which
+> has since withdrawn it. It overstates. **Same source, same instant** — which is
+> what the Scanz pull measured — proves the **vendor contradicts itself** and one
+> of its two numbers is wrong; that finding stands. **Across sources with
+> different as-of dates** it proves nothing without the dates, because a company
+> that has issued shares since its last filing legitimately exceeds the filed
+> count. So: **inconsistent, and sometimes merely unverifiable** — not impossible
+> as a fact about the company.
 
 **A refusal is a finding, and must not render as an absence.** *"We looked and
 this number is wrong"* and *"we do not have it"* are different statements and
@@ -677,11 +686,43 @@ product already makes twice — `NOT YET ANALYZED` against `UNKNOWN`, and *unkno
 against *changed* for cycle — and the most consequential, because float is a
 pillar.
 
+**The refusal side then splits, and there are four states rather than three.**
+Research measured the filed share count across 209 issuers: **39% are over 180
+days old, median 82, oldest 3,065.** So the check cannot refuse on a stale
+denominator — it has to say it cannot tell.
+
 | State | Row reads | Means |
 | --- | --- | --- |
-| value | the figure, and the supply chip beside it | a float the desk stands behind |
-| **refused** | **`FLOAT WRONG`** + reason on hover and in the drawer | the published number fails arithmetic |
+| value, verified | the figure | a float the desk stands behind |
+| **value, unverifiable** | **the figure + `filed 82d ago`** | the number may be right; the count to check it against is too old |
+| **contradicted** | **`FLOAT WRONG`**, figure suppressed to the drawer | the source disagrees with itself at one instant |
 | absent | `FLOAT UNKNOWN` *(existing)* | no float on file |
+
+**"Cannot tell" keeps the number and qualifies it with the age of the
+denominator, rather than becoming a fourth state word.** Two reasons. `FLOAT
+UNVERIFIED` beside `FLOAT UNKNOWN` is two long words differing in their second
+half, at 11 px, in a 150 px cell — scannable in a spec, not down a column. And
+the freshness scale in §8 already exists for exactly this: every other stale
+thing on the desk carries an age, so this one should too instead of inventing a
+parallel vocabulary.
+
+**Why `WRONG` suppresses the figure and `unverifiable` does not.** A contradicted
+number is demonstrably not usable, so showing it invites use. An unverified one
+may well be correct — withholding it would hide a fact the desk has, and the
+trader can weigh a number whose provenance is dated.
+
+**The direction of the staleness is why this distinction is not cosmetic.** A
+filed count goes stale fastest on the names that have issued the most shares
+since filing — **so "cannot verify" fires hardest on the names that dilute
+hardest.** Render that as `FLOAT WRONG` and the highest-supply-risk names get
+flagged as defective data and disappear. The age qualifier does real work here: a
+long-stale denominator sitting next to a supply overhang is exactly the pairing
+worth seeing.
+
+**It must not be read the other way either.** "Cannot verify" is not evidence of
+dilution, and the design must not imply it is — that would convert an absence
+into a claim, which is the same discipline that keeps registered resale capacity
+from being restated as selling.
 
 **`FLOAT WRONG` over the alternatives, for one reason each.** Not `BAD FLOAT` —
 it would be read as `DIRTY FLOAT`, a real and different concept this product
@@ -707,6 +748,34 @@ claim than a corrected figure, and it should not be buried in a qualifier.
 2. **The `Risk` chip must not let a refusal read as a small float.** It already
    must not assume a float number exists; now it must also not treat a refused
    one as zero, missing, or tight.
+
+### The pattern underneath, for §8: the desk's five states of knowing
+
+This is now the **fourth** time the same distinction has had to be drawn, each
+time separately: `NOT YET ANALYZED` against `UNKNOWN`; *unknown* against
+*changed* for cycle; *wrong* against *absent* for float; and now *cannot tell*
+against both. Solving it a fifth time in isolation would be the mistake.
+
+**Every field that can be absent sits in one of five states, and no two may
+collapse:**
+
+| | The desk's position | Float, as an example |
+| --- | --- | --- |
+| 1 | **Not looked yet** | `NOT YET ANALYZED` *(whole ticker)* |
+| 2 | **Looked, found nothing** | `FLOAT UNKNOWN` |
+| 3 | **Looked, cannot judge** | the figure + `filed 82d ago` |
+| 4 | **Looked, it is wrong** | `FLOAT WRONG` |
+| 5 | **Have it** | the figure |
+
+States 3 and 4 are the ones a product usually loses — collapsed into 2, because
+"we have no good number" feels like one condition. It is three, and the
+difference between them is most of what this desk is for. **State 4 is the
+strongest claim on the list**, not the weakest: it says the number every screener
+is showing cannot be relied on.
+
+Belongs in audit §8 beside the badge shapes, since it is a rule about the visual
+system rather than about float. Proposed here; not written into the audit until
+the float build confirms the vocabulary survives contact.
 
 ### Item 17 changes shape, and the usual framing is wrong
 
