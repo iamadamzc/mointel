@@ -603,8 +603,26 @@ correction: *n=2 was two rows from a date nothing else touched, so the sample
 could not contain the consequence.* The pair generalised to ten, and the ten did
 not behave like the pair.
 
-**Still open**, and unchanged by any of this: why the jobs are never claimed, and
-why `/api/health` reports `queuedJobs: 0` against ten of them.
+**The health half is answered and shipped** — `a3464d8`, live on Ops's next
+deploy. `publishHealth` counts `readJobsForDate(db, MAX(trading_date))`, so the
+ten stopped being counted the moment the date rolled. **The number was never
+wrong. It was answering a different question well**, and `stalledJobs` asks the
+other one rather than blurring this one.
+
+*The same scoping is in boot recovery — `readOrphanedJobs(db, bootDate)` — so a
+row claimed and abandoned mid-job is requeued on the next boot ONLY if the
+trading date has not rolled. Across a roll it is stranded permanently and
+silently. Zero such rows exist today, which is why this is counted rather than
+fixed.*
+
+**The reason those ten sat unexamined for days is the part worth keeping, and it
+is Ops's:** `queuedJobs: 0` was CORRECT, so nothing about it invited a check. **A
+false number would have been investigated within the hour.** A correct number
+answering the wrong question is the more expensive failure, because it survives
+every review that a wrong one would not.
+
+**Still open**, and the only part of this item that is: **why the jobs are never
+claimed.** Everything else recorded here is downstream of that.
 
 **One thing recorded as unresolved rather than assumed.** Design observed `NO RUN`
 ×3 on a 12-row board; Ops analysed 14 `NO_CYCLE` across 28 intelligence entries
