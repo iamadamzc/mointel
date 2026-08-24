@@ -319,6 +319,43 @@ that happens once `settled` has moved past its date. The change from `===` to
 Research to record in item 16 in its own words, because the next reader of `>=`
 will ask the same question and should not have to re-derive it.
 
+**THE STORE WAS ALREADY POISONED, AND THE DEPLOY TARGET MOVED TWICE.** *Both
+within two minutes, 01:16–01:17Z.* Ops ran the read-only `fetched_at` check this
+thread routed to it and found **133 rows across 133 symbols** written mid-session
+— `trading_date` equal to the ET date of their own `fetched_at`, fetched before
+20:00 ET. The load-bearing part is not the total: **42 are Friday's, and those 42
+are exactly the 42 symbols whose latest bar IS Friday. Every symbol holding a
+Friday bar holds a partial one.** `c48e199`.
+
+**Ops traced `952f9e1` through Monday and found it protects the rows it exists to
+remove.** At Monday premarket `lastSettledTradingDate` returns `2026-08-21`,
+those symbols hold `stored = 2026-08-21`, `stored >= settled` is true, nothing
+refetches — **the partial Friday bar stands all Monday and any cycle computed
+from it uses it.** Research found the same defect from the other end, tracing a
+partial *Monday* bar surviving all of Tuesday's premarket and session.
+
+**Both threads produced the same repair fifteen seconds apart and neither could
+see the other.** Research's `e9e0a9e` at 03:16:44 local; Ops's `c48e199` at
+03:16:59, which names `fetched_at` as *"the improvement it is one column away
+from"* and says it *"would have refetched these 133 on first contact"* — of a fix
+already committed. The skip condition is now both conjuncts:
+`stored.tradingDate >= settled && Date.parse(stored.fetchedAt) >=
+sessionEndUtc(stored.tradingDate)`. A bar written before its own session ended
+fails the second whatever date it carries, is refetched, and is overwritten on
+conflict.
+
+**Ops's `latestDate` discriminator does not catch these, and that limit outlives
+the fix.** It flags a row whose `latestDate` equals the current trading date; a
+partial *Friday* bar carries a prior date and reads clean. So the stamp separates
+a cycle computed today from an unfinished session, and says nothing about one
+computed from a bar that was unfinished when captured.
+
+**DEPLOY TARGET AT 01:17:47Z IS `c48e199`.** Non-docs content of
+`a5a3a98..c48e199` at directory scope over the whole tree: `lib/research/
+history.ts`, `lib/research/historyFetch.ts`, `tests/research/historyFetch.test
+.ts`. **HEAD moved four times in twenty minutes tonight**, so this is stamped
+rather than stated.
+
 **Routed under the delegation, both pieces of item 16 to Research, in this order
 and the order inverts the obvious one:** the guard FIRST because it has the
 clock and fails closed whether or not Alpaca returns a partial `1Day` bar in
@@ -1166,6 +1203,51 @@ a decision anyone would have questioned, including the person who wrote it.
 A retraction only reaches the sentence it edits; **a deferral only reaches the
 document it is written in.** Both are failures of a decision to travel to the
 place where its consequence lands.
+
+## "Eventually" is not a unit, and a mechanism check is not a timeline check
+
+**Added 2026-08-24. This thread reviewed Research's partial-bar guard, found the
+right column, and drew the comfortable conclusion from it.**
+
+The guard changed a cache test from `stored === today` to `stored >= settled`. I
+asked whether that stranded a bar already stored partial, traced the mechanism to
+`upsertDailyBars` being `ON CONFLICT(symbol, trading_date) DO UPDATE`, and
+concluded: **healing delayed by about a day, not removed — a size question rather
+than an incident.** I told two threads the question was closed.
+
+**The mechanism was right and the timeline was never walked.** Research walked it:
+
+| | settled | stored | |
+| --- | --- | --- | --- |
+| Mon midday | 2026-08-21 | 2026-08-24 | skip |
+| Mon evening | 2026-08-24 | 2026-08-24 | skip |
+| Tue premarket | 2026-08-24 | 2026-08-24 | **skip** |
+| Tue midday | 2026-08-24 | 2026-08-24 | **skip** |
+| Tue evening | 2026-08-25 | 2026-08-24 | refetch |
+
+A partial bar survives **the entire next premarket and session** — the exact
+window where it does harm — and the `=== today` test it replaced would have
+refetched it on Tuesday morning. **The guard was preventive at the price of
+protecting the rows it exists to remove**, and Ops independently found the same
+thing pointed at Friday, with 133 real rows behind it.
+
+**"It heals eventually" is not an answer. Healing that completes outside the
+window it protects is not healing.** The question a mechanism check cannot
+answer, and which has to be asked separately, is: **relative to the window that
+matters, when?** Walk it against a real calendar — a Monday and a Tuesday, with
+hours — rather than reasoning about the operator.
+
+**This is worse than missing it.** A gap left open gets found by the next person
+to look. A gap examined and pronounced closed does not — I had the right column
+in hand, and used it to end the enquiry instead of to start it. Two threads acted
+on that sentence.
+
+**And the relay still worked, which is the honest part of the record.** Routing
+the `fetched_at` check to Ops produced the 133; the too-generous review sent
+Research back to re-derive and it found the real defect. **Two correct results
+came out of one wrong conclusion**, because the conclusion moved between layers
+and got tested. That is the argument for this seat and not an excuse for the
+sentence.
 
 ## Working rules
 
