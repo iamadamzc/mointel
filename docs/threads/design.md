@@ -1007,7 +1007,7 @@ handover missed**, established here by grep and sent back:
   Cycle badge on the primary board (`:499`) and reads `conclusions.cycle.tone`
   at `:405` to set `backside`, which drives the one-saturated-element colour
   precedence for the whole row. The most visible cycle surface in the product,
-  and the only one seen during 07:00–10:00.
+  and the only one on screen during his trading session.
 - **`lib/dashboard/view.ts`**, **`components/MarketSummary.tsx`**,
   **`components/FilterBar.tsx`** — the cycle filter and its three segments.
 
@@ -1636,6 +1636,19 @@ practical size of the inflation is unknown. Needs the live desk.
   tooltips. Same trap, different string, one hour apart. **A rule its own
   endorser breaks within the hour is structural, not careless** — which is the
   same conclusion this desk reached about why no thread finds its own defects.
+- **He trades PREMARKET, 04:00–09:30 ET, profit concentrated from 07:00. He does
+  not trade RTH** — that is the exception, a dip trade or a genuinely strong
+  mover. **So "before the open" is not a safety margin; the opening bell is
+  roughly when his session ENDS.** Looking at the live board between 04:00 and
+  10:00 ET means working in front of him. *(This file said "the only one seen
+  during 07:00–10:00" — the README's window, wrong at both ends. Corrected
+  2026-08-24.)*
+- **Where the booklet and Adam differ, believe Adam — and check this file for
+  places it restates the booklet.** Research found its own notes saying
+  *"9:30–10:00 is the core"*, which is Cameron's core rather than his, sitting
+  directly beneath the rule written to prevent exactly that. **A restated
+  playbook fact is the failure mode; a linked one is not.** Design carried one
+  instance, now fixed. The audit carries none — checked, not assumed.
 - **This host is UTC+2 — every tool timestamp is SIX HOURS ahead of New York.**
   A vitest header reading `10:36`, a shell `date`, a commit time: all CEST.
   Verified 2026-08-24: local `10:51`, UTC `08:51`, **ET `04:51`**. Read it
