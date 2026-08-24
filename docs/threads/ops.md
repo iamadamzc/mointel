@@ -209,6 +209,41 @@ this time and printed `keep fd9556f (pinned)`.
 
 No migration: schema 21 both sides, migrate wrote 0 backups.
 
+## The backfill scope: 148 is the worst of the three
+
+**Correction to my own option first.** I offered "don't run it" partly as *the
+safer board*. That half was wrong. The backfill stores bars whose max is
+**2026-08-21** — there are no weekend daily bars — and UTC today is
+**2026-08-24**, so `latestDailyBarDate === today` is false and Monday's live
+re-analyses refetch exactly as they would have. **The backfill neither causes nor
+prevents the partial-bar lock-in.** All three options carry identical exposure.
+
+**What survives is a legibility argument, and it is not the one I gave.** On
+Monday, any name re-analysed live gets a cycle computed on possibly-partial bars.
+So:
+
+- **Without a backfill**, a cycle value on the board means *"re-analysed today"*,
+  which also means *"possibly partial-bar contaminated"*. A blank means *"not
+  computed"*. The two are distinguishable.
+- **With a backfill**, correct values from tonight and possibly-wrong values from
+  Monday look identical. That signal is destroyed.
+
+**And Research's argument for 231 is the same shape pointed the other way:** a
+*partially* populated column is worse than either extreme, because a trader
+seeing a cycle on some rows and not others infers something about the rows
+without one — and the truth would be *"that name was not on a list drawn up at
+one in the morning"*.
+
+**Both arguments agree that 148 is the worst option.** Research's says partial
+population invites a false inference; mine says any population destroys a true
+one. The scope choice is therefore **231 or none**, and the middle is ruled out
+by both threads reasoning independently from opposite directions.
+
+*Cost of that: 231 puts ~2.6M in / 0.9M out through the model, 231 Alpaca REST
+calls, and more store writes through a fourth concurrent writer at
+`busy_timeout` 5000 ms. The contention judgement is this thread's; the spend is
+the trader's.*
+
 ## Tonight's deploy made a latent bar hazard live, and Monday is inside it
 
 **Raised to escalate Integration's "not urgent before Monday". I think it is
