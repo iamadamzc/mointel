@@ -881,13 +881,50 @@ at all of them and learning nothing from most. Working it out changed the plan i
 both directions.
 
 **The measurement that reframes it:** of **231 current dossiers, 0 carry
-`computedCycle`** (Ops, against production). So the cycle column will read
-`CYCLE NOT ESTABLISHED` on **every row**, not on some. It clears as re-analysis
-runs; the balance is topped up and Monday's board populating starts it.
+`computedCycle`** (Ops, against production). So the cycle column reads
+`CYCLE NOT ESTABLISHED` on **every row**, not on some.
 
 *Design's share of that error: the caveat handed over said "names whose dossiers
 predate `computedCycle`" without asking how many. That is all of them, and
 "some" and "all" are different mornings.*
+
+**Updated 2026-08-24: the backfill is cancelled.** The owner chose Research's
+read-time fix — *"fix the path"* — over re-analysing 231 dossiers. **So the
+0 → 231 counter is not going to run and the column does not fill overnight.** Two
+consequences, and they pull in opposite directions:
+
+- **Check 4 gets stronger, not weaker.** It never needed a populated
+  `computedCycle` — it needs the *opposite*, a row with a sheet cycle and no
+  computed one. That condition is now indefinite rather than expiring at Monday's
+  re-analysis, so the check stays available for as long as it takes to run.
+- **The two non-falsifiable ones stay non-falsifiable for longer**, and are now
+  gated on the read-time fix landing rather than on a counter climbing. When it
+  does land they should become checkable on **every row at once** rather than
+  trickling, which is a better verification than the backfill would have given.
+
+### Research claims Design's surfaces need no change — here is what to check it against
+
+Research's item 16 states: *"Design's surfaces keep reading
+`dossier.computedCycle` unchanged provided the read path populates it."*
+**Probably true, and worth making checkable rather than trusted.** Every field
+this thread reads, and nothing else:
+
+| Path | Used for |
+| --- | --- |
+| `computedCycle.current.phase` | the badge label, its tone, the filter, the counts |
+| `.current.advancePct`, `.current.baseClose` | `up 20.0% from 1.00` |
+| `.current.cycleHigh`, `.current.cycleHighDate` | `high 1.20 on 2026-08-12` |
+| `.current.retracementPct` | the giveback — **of the move, never below the high** |
+| `.current.sessionsSinceHigh` | `9 sessions since the high` |
+
+`priorCycles`, `formerRunnerStatus` and `largestPriorAdvancePct` are **not read
+by any surface yet**. If the read-time path populates the five rows above with
+the same shapes, nothing here changes. If it differs, this table is the diff.
+
+**One question for whoever builds it, not a claim:** a value computed at read
+time is not stored, so it is worth confirming what `desk_assessments` archives
+for cycle at a checkpoint. Item 12's Changes rail compares stored checkpoints,
+and a field that exists only at read time has nothing to compare.
 
 ### Falsifiable at CLOSED
 
