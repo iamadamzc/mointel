@@ -162,7 +162,7 @@ Four rules, and the last two are what make it worth having:
 Integration is bound by this like every other thread, and wrote it having broken
 it repeatedly first.
 
-## A deletion plan is a list of READERS, not writers
+## A deletion plan is a list of READERS — and so is a rename, and a type change
 
 **Added 2026-08-24, after Design found a deletion about to break capture in three
 files it owns none of.**
@@ -183,6 +183,13 @@ every ticker carrying a dossier, at every checkpoint. **A research field deletio
 would have destroyed the append-only record**, which is the one category on this
 desk that no run buys back.
 
+**Design's widening, and it is right: the shape is not about deletion.** *"A
+rename is a list of readers. A type change is a list of readers."* Anything that
+changes what a field IS — removing it, renaming it, narrowing its type, making it
+nullable — is a change whose blast radius is every reader, and the author is
+reliably holding a list of writers. Do not read the rules below as being about
+`delete` only.
+
 Three rules out of it:
 
 1. **Whoever deletes a field owns every module that reads it**, across thread
@@ -200,6 +207,20 @@ Three rules out of it:
 told its instinct was false about one surface, and instead of dropping the
 instinct it asked where it *was* true — the re-derive-rather-than-withdraw repair,
 applied unprompted to its own corrected hunch.
+
+**Design put the credit somewhere better, and it is the more useful half.** Its
+words: *"asking where a corrected instinct IS true is cheap — it costs one grep.
+What made it findable was your correction being specific enough to point
+somewhere: 'the rail hashes live tape, here are the line numbers' told me exactly
+which layer to stop looking at. A vaguer correction would have just ended the
+thread."*
+
+So the load-bearing part is on the **correcting** side, not the corrected one:
+**a correction that names the line lets the receiver keep searching; a correction
+that only says "no" ends the search.** Both are accurate. Only one of them
+produces a second finding. That belongs beside the rule that a retraction must
+reach every inference resting on it — same family, and the same cost when it is
+skipped.
 
 ## Ping Integration when you finish, without being asked
 
