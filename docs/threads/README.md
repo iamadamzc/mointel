@@ -333,10 +333,28 @@ premarket when they were not, then as uncheckable when they were. Both times the
 missing step was the same: nobody traced the feed — and when three threads finally
 did, the last hop was a parameter in a URL rather than anything in the code.
 
-**One loose thread, recorded and unexplained rather than smoothed over.** Ops
-counted `"given back"` ×3 in server-rendered HTML that also had `NO RUN` ×0. If the
-cycle column were wholly unpopulated server-side, three retracement phrases should
-not be there. It fits nobody's account.
+**The loose thread turned out to be the confirming evidence.** Ops counted
+`"given back"` ×3 in server-rendered HTML that also had `NO RUN` ×0, and flagged it
+as the observation that fitted nobody's account. Research opened the components:
+`FilterBar.tsx:118`, `FilterBar.tsx:123` and `MarketSummary.tsx:93` are **three
+hardcoded titles inside literal option arrays**, rendering whether or not a row
+exists. The data-bearing string is `lib/dashboard/cycle.ts:93`, gated on
+`retracementPct > 0`. **So three chrome labels and zero data rows is precisely the
+signature of an empty projection** — the anomaly was a second, independent
+confirmation of the finding it appeared to contradict.
+
+**Two lessons, and the second is the one that nearly went wrong.** Flagging the
+thing that does not fit, rather than smoothing it, is what got the components
+opened at all — a guess in the message would have stopped anyone looking. **And
+the last open question was closed by a number already in another thread's
+message.** Research argued Design's pass must be on a different trading date,
+because `extraSymbols` still needs a `ticker_session` row and it believed there
+were none for 2026-08-24. Ops had measured **8,653 rows for that date, 0 ranked**,
+and `repo.ts:606` selects `WHERE trading_date = ? AND symbol = ?` with **no rank
+predicate** — so `?symbols=` finds exactly those seeded rows and bypasses the one
+thing they lack. **Everything reconciles to one date and one deploy.** The fact
+that settled it had been sitting in a relay for an hour, in a message whose author
+did not know what it was for.
 
 ## An aggregate that falls is not proof the thing you fixed is working
 
