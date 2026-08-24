@@ -275,6 +275,37 @@ which is the dangerous direction.
 Design renders it afterwards, including what a **refused** float looks like on a
 row. That is a real design question and it is not this thread's.
 
+### What Phase C would actually populate on the board, measured 2026-08-24
+
+*Prompted by Design's Top-50 readout — "51 unknown" against a 51-row board.
+Measured before the claim that Phase C fixes it hardens into a scoping decision.*
+
+`filedShares` populates exactly where **research has run**, because
+`SEC_COMPANY_FACTS` is collected per researched ticker and not per ranked symbol.
+So coverage tracks rank steeply. Against ranked names on 2026-08-21:
+
+| | current count (≤45d) | dated count | nothing |
+| --- | --- | --- | --- |
+| **Top 12** | 5 | 5 | 2 |
+| **Top 50** | 16 | 12 | 22 |
+| Top 200 | — | — | 147 have no count at all |
+| all 2,821 ranked | — | — | only 201 have one |
+
+**So at Top 50 this turns "51 unknown" into roughly 28 populated and 22 still
+blank — not a filled column.** At Top 12, which is nearer the 7–10am working
+set, 10 of 12 carry a count. Board-wide it is 7%.
+
+**The 12 dated ones are not failures under the platform's own framing.** *"Supply
+bounded at X, filed as of 2024-12-31"* is story; the date does the honest work
+and the reader can discount it. What must not happen is those 12 being rendered
+indistinguishably from the 16 current ones — that would be the signal-shaped
+version of this, and it is why `asOf` ships beside the count rather than behind
+it.
+
+**And it is a supply bound, not a float.** It cannot make a *float* sort
+meaningful, because it is not the quantity that sort is over. Whether a supply
+bound deserves its own control is Design's and the trader's.
+
 **11. Is `CYCLE_CHANGED` stable, or is it structure again?** *Found by Design
 2026-08-23, assigned here by the trader. It sat unowned between three threads
 for several hours, which is the only reason it needed routing.*
