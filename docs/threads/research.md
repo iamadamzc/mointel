@@ -1380,9 +1380,15 @@ Paid sources are cited *more* often than free ones. Nor do repeat calls decay:
 productive rate by ordinal runs 22%, 15%, 22%, 33%, 25%. **Capping repeats would
 cut cited evidence roughly in proportion to spend.** The obvious fix is wrong.
 
-*Limit, stated: 36 of the 112 sources could not be matched to a call within the
-5-minute window, so the per-ordinal table rests on 76. The citation table above
-does not depend on that attribution and is exact.*
+*Limit, stated: **the attribution window is 5 minutes.** 36 of the 112 sources
+did not match a call inside it, so the per-ordinal table rests on 76. The
+citation table above does not depend on that attribution and is exact.*
+
+*R&D's note, and it is right: this is the same shape as its own 30-session cap —
+a source taking six minutes reads as unattributed exactly as a split 57 sessions
+back reads as no split. **36 unattributed is a fact about a threshold, not about
+the pipeline**, and the window belongs beside the number so nobody later reads
+"outside what I looked at" as "did not happen."*
 
 **So the lever is not frequency, it is depth.** A discovery prompt is ~254
 tokens and a discovery call bills ~43,000; the retrieved page content is
@@ -1394,6 +1400,13 @@ quality against roughly half the desk's model bill, and the audit's finding that
 642 of 935 Sheet citations sit on never-collected domains says coverage is
 already the weak side. That is a measurement, not a preference, and the honest
 form is a replay with the ledger's `tool_config` distinguishing the arms.
+
+**The outcome variable is CITATION RATE, not catalyst quality** — R&D's call and
+it settles a problem I had not solved. Quality needs a grader, and this desk's
+grader is 45% irreproducible, so a quality comparison would measure the grader.
+Citation is countable and exact, and the 55%-against-37% above shows it already
+discriminates between two collection paths. **Low against medium on cited-source
+rate decides it with no model judging a model.**
 
 **Which it could not have done until `f46cfaa`.** Discovery's `toolConfig` was
 the hardcoded literal `web_search:default` — the column that exists to tell two
