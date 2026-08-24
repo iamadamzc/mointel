@@ -916,8 +916,37 @@ but they are the **filter chips**, already passed separately, not rendered cycle
 badges. No row carries a phase label, because no dossier carries a computed
 cycle. The phase-name and retracement tests still wait for `a259e8c`.
 
-**Running total: 4 of 4 available checks passed; two stronger tests pending a
-deploy.**
+### RUN 2026-08-24 on `a259e8c` — the two stronger tests PASSED tonight
+
+Integration relayed that these could not be checked until a populated board,
+because Discovery holds 0 rows with an RVOL rank. **That is true of Discovery and
+false of the researched table**, whose nine rows come from `market.intelligence`
+and do not depend on a rank. They ran.
+
+**Retracement is of the MOVE — PASSED, and decisively.** OLOX's cycle tooltip
+reads *"up 1.3% from 4.92 · high 11.40 on 2026-06-02 · **143.7% of the move given
+back**"*. A distance-below-the-high figure is **mathematically capped at 100%**;
+only retracement-of-the-move can exceed it. So the number proves the definition
+rather than merely being consistent with it. CDTG reads 104.1%, DXST 61.7%.
+
+**Phase names render — PASSED, with the claim stated narrowly.** Observed:
+`BACKSIDE` ×3, `NO RUN` ×3, `CYCLE NOT ESTABLISHED` ×3. **`NO RUN` is decisive**
+— it is a string the old code cannot produce anywhere. `BACKSIDE` alone would
+have been ambiguous, since the old path emitted it too.
+
+**Not claimed: that all six names render.** Only two phases occur in this data,
+so `DAY 1`, `FRONTSIDE`, `OFF HIGH` and `PRIOR RUN` are unobserved — not failed.
+The label map is exercised and reachable; four of its entries have never been
+seen on a screen.
+
+**A better test would not exist later.** These arrived on a nine-row table at
+`CLOSED`, not on a populated board — the assumption that a phase-dependent
+surface needs the phase to be *busy* was wrong here, because the researched table
+is fed by research rather than by the tape.
+
+**Running total: 6 of 6 available checks passed.** Outstanding and genuinely
+gated on a populated board: the four sort checks, and the `Gap` label, which
+needs `PREMARKET` specifically.
 
 **Superseded, kept because its premise was right — check 4 would have been
 retired had both commits shipped together.** Research's read-time fix landed as an **overlay**: the stored
