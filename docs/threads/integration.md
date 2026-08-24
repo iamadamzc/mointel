@@ -210,8 +210,45 @@ depend on it. They are now anchored to things that can be checked — commit
 times, and the one clock read. **Stamp from a reading or from a commit, never
 from a sense of how long the work took.**
 
-**STATE AT 01:33Z, 2026-08-24 — read this block first; everything below it is
+**STATE AT 01:45Z, 2026-08-24 — read this block first; everything below it is
 older.**
+
+- **Production is `a259e8c`**, live 01:37 UTC, gated at that exact sha (1278
+  tests, lint, build, typecheck), capture verified at directory scope. `c48e199`
+  shipped before it at 01:30:37. **Two deploys, two sub-second stops** — 01:30:27
+  to 01:30:27 and 01:37:06 to 01:37:06, against 31 seconds and a hard kill
+  before the fix. `97f198d` confirmed rather than consistent-with-one-run.
+- **The market worker is untouched across both** — pid 129202, `NRestarts=0`,
+  still on `fd9556f` behind its pin. Eight deploys now.
+- **The overlay's effect cannot be seen tonight and that is not a failure.** The
+  Discovery board is empty: 8,653 `ticker_session` rows seeded for 2026-08-24,
+  **0 with `rvol_rank`**, against 2,821 on the 21st. Nothing has traded, so
+  `/api/market` returns `discovery.rows: 0` and there is nothing for the overlay
+  to act on. The six phase names and the retracement figure are **gated on a
+  populated board**, not on the deploy.
+- **`/api/dashboard` is the Sheet-merged view and carries no `intelligence` key.**
+  Its `cycle` is the Sheet's — the overlay feeds the desk read at
+  `deskRead.ts:528`. Checking the wrong endpoint gives a confident wrong answer
+  **in either direction**. Third instance today of the Sheet's cycle vocabulary
+  sitting where the dossier's is expected.
+- **OPEN, ROUTED TO RESEARCH, AND IT HAS A MONDAY DATE: the guard and the overlay
+  disagree about what a trustworthy bar is.** `ensureDailyHistory` refuses a bar
+  whose `fetchedAt` precedes its own session end; **`overlayLiveCycle` applies no
+  such test** — verified at the live code, it takes `readDailyBars(...)` and
+  computes. So the 42 symbols holding a partial Friday bar render a cycle from an
+  unfinished session from Monday's open until each is re-analysed and healed,
+  **because board render and re-analysis are independent.** Ops's `latestDate`
+  discriminator does not flag them: a partial *Friday* bar carries a prior date
+  and reads clean. **Two definitions of a usable daily bar, one in the write path
+  and none in the read path, four commits apart on the same night.**
+- **Monday has four readings, all Ops's:** the WAL under real write pressure,
+  `messageAgeSeconds` off null, the **per-symbol** healing check on the 42, and
+  the stop time on whatever ships next.
+- **Deploy delegation is live and confirmed by the trader directly.** Next
+  instruction is a new gate: six non-docs files above `a259e8c`, including
+  `worker/research.ts`.
+
+
 
 - **Both item 16 defects are CLOSED.** Guard at `e9e0a9e`, healing folded in;
   read-time cycle at `a259e8c`. The backfill was cancelled and is not coming

@@ -264,6 +264,32 @@ deadlock, with Ops no longer asking and Integration not yet instructing. **When 
 protocol changes, both sides adopt it at different moments, and the gap between is
 a stall nobody is responsible for.** Name who is waiting on whom, out loud.
 
+## An aggregate that falls is not proof the thing you fixed is working
+
+**Research, 2026-08-24, catching a check before it ran rather than after.**
+
+The healing for 133 partial bars had an agreed observable: **the `fetched_at`
+count falls after Monday premarket.** Both Ops and Integration wrote it down as
+the test that could fail usefully.
+
+**It cannot.** A *partial* fall is what you see if the healing works and only some
+symbols were re-analysed — which on a normal morning is the **expected** shape.
+So the aggregate cannot separate *working* from *half-working*, and any fall at
+all would have been read as success. **The unambiguous test is per-symbol:** take
+the 42 rows known to be bad, and check that any symbol re-analysed since no
+longer holds one.
+
+**The general form: an aggregate moving in the right direction is consistent with
+both the fix working and the fix half-working, whenever the population is also
+changing for an unrelated reason.** Ask what else moves that number. If the answer
+is *"normal operation"*, the aggregate is not the check — **the identified rows
+are.** You almost always know which rows they are, because identifying them is
+what produced the fix.
+
+It sits beside *check the field that carries the answer*: that one is about
+reading the wrong field, this one is about reading the right field at the wrong
+**grain**.
+
 ## A constant dressed as a measurement
 
 **Research, 2026-08-24, found in its own ledger.** The hardest version of *a check
