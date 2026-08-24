@@ -1473,3 +1473,39 @@ vary — it passes, and it is not evidence.*
 **The framing, which is Integration's borrowed back from my own guard:** one
 concept doing both jobs, because they are the same question asked twice. It
 turned out to be asked **four** times, and three callers never got the answer.
+
+---
+
+**19. `ticker_session` has a hole on 2026-08-20, and it bounds any replay over
+that window.** *Observed 2026-08-24 while checking a claim of my own that turned
+out to be wrong. Not Research's table — routed to Integration. Recorded here
+because it constrains this thread's own replays.*
+
+| trading_date | rows | ranked | % ranked |
+| --- | --- | --- | --- |
+| 2026-08-17 | 8,613 | 2,821 | 32.8 |
+| 2026-08-18 | 8,625 | 2,736 | 31.7 |
+| 2026-08-19 | 8,653 | 2,797 | 32.3 |
+| **2026-08-20** | **4,165** | 2,787 | **66.9** |
+| 2026-08-21 | 8,688 | 2,821 | 32.5 |
+| 2026-08-24 | 8,653 | 0 | 0 |
+
+**4,452 symbols present on both 08-19 and 08-21 have no 08-20 row at all.** The
+*ranked* count is normal — 2,787 against ~2,800 — so ranking ran fine over what
+was there and the shortfall is the unranked tail. **178 of the missing were
+ranked on an adjacent day**, so a small number of names the desk was actually
+watching have a one-day hole.
+
+**Why it matters here rather than only to capture:** any per-symbol series across
+17–21 August has a gap in the middle on the 20th, and this thread has now been
+caught once by exactly that shape — a gap mid-series moves a windowed measure
+with no tell. The `search_context_size` replay in item 17 would run over this
+window. **It must either exclude 08-20 or state that it did not.**
+
+*Cause not established and not chased. `ticker_session` capture is Ops's, and
+`mointel-market` must not be interrupted.*
+
+**Also: 2026-08-24 carries 8,653 rows with 0 ranked**, which is the normal shape
+for a date that has been seeded but has not traded. Recorded because I asserted
+the opposite to another thread without checking, and the file that disproved it
+had been open in front of me all evening.
