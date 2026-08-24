@@ -224,7 +224,51 @@ Worth saying before the session is spent on it rather than after.
 (`deskRead.ts:528`), not that endpoint. Checking the wrong one would produce a
 confident wrong answer in either direction.*
 
-## The assessment worker dies on ~1 deploy in 3, and I reported those deploys clean
+## A worker dies on startup on most deploys — whichever loses the migration race
+
+**Corrected 2026-08-24 after the tenth deploy.** I first wrote this as *"the
+assessment worker dies on ~1 deploy in 3."* Wrong on both counts. On `0778533`
+it was **`mointel-research`** that died — same error, same stack, different
+service — while `assess` came up clean. Four occurrences now across the two.
+
+> It is not one worker with a fault. It is **whichever worker loses the
+> migration snapshot race on startup**, and which one that is varies per deploy.
+
+`SqliteError: database is locked`, `SQLITE_BUSY_SNAPSHOT`, at `migrate()`
+(`db.ts:734`) **inside** `withMigrationLock` → `openDatabase` — from
+`desk-assessments.ts:380` on one deploy and `research.ts:98` on the next. Exits
+`1/FAILURE`, systemd restarts ~10 s later.
+
+**The documented fix does not cover this.** The cross-process lock is in the
+stack and works — it serialises migrations. But `SQLITE_BUSY_SNAPSHOT` is a
+*snapshot* conflict: it fires when a deferred transaction upgrades to a write
+after another connection has written. Three services restart together and reopen
+the store; one loses its snapshot. **A lock that serialises writers does not stop
+a reader invalidating one.**
+
+### The observable that caught it was not the one I built
+
+**The stop was clean on that deploy — fourth in a row.** The failure was on
+**start**. I had built a stop-duration observable because that is where the last
+bug was, and the next bug was one step further along the same lifecycle.
+
+`NRestarts` caught it, on the first deploy where I checked it, having written
+that intention one message earlier. **`is-active` says "active" for a service
+that crashed and came back; `NRestarts` is the field that carries the answer** —
+and neither `systemctl is-active` nor the deploy's own health wait can see it.
+
+**Why it still matters:** the recovery is only a recovery because nothing was
+due. On `1d1d56b` it crashed at 01:55:05 with `NEXT_DAY_RECAP` due at **02:00** —
+five minutes, unplanned. Hitting `assess` near a checkpoint is a permanent hole,
+because the record only grows in real time.
+
+**Not fixed, deliberately.** It is in `lib/market/store/db.ts`, this thread's
+module, but a migration-path change hours before an open is the wrong trade for a
+fault that self-heals. Candidates: have the migrating connection take an
+`IMMEDIATE` transaction, or make the runtime units order after
+`mointel-migrate` rather than opening concurrently with each other.
+
+## ~~The assessment worker dies on ~1 deploy in 3~~ (superseded above)
 
 **`SqliteError: database is locked`, `SQLITE_BUSY_SNAPSHOT`**, thrown at
 `migrate()` (`db.ts:734`) **inside** `withMigrationLock` → `openDatabase` →
