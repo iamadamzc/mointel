@@ -1581,6 +1581,47 @@ came out of one wrong conclusion**, because the conclusion moved between layers
 and got tested. That is the argument for this seat and not an excuse for the
 sentence.
 
+## A correction relayed is not a correction landed, and that is THIS thread's job
+
+**Twice on 2026-08-24 a thread corrected itself to Integration and the artefact
+stayed wrong.** Research's item 2 kept listing a question it had already answered
+and shipped; item 17 kept the sentence *"the honest form is a replay"* after
+Research had told this thread that the work is **not** a replay. **Both corrections
+existed only in a relay.**
+
+**That is the failure this thread exists to prevent, and it caught neither.** The
+charter's own words: *when a charter or spec is found to be wrong, this thread
+makes sure the fix lands in the document and not only in a chat.* **Receiving a
+correction and relaying it onward is not landing it.**
+
+> **On every correction received: ask WHICH DOCUMENT IS NOW WRONG, and say so back
+> to the thread. The relay is where a thing is noticed; the artefact is where it
+> has to end up.**
+
+**The cost is not hypothetical.** Item 17 will be built by someone who was not in
+the exchange, and **they will read the item, not the relay.** Research's own
+summary: *the relay is where I notice things and the doc is where they have to
+land, and I have been treating the first as if it were the second.* **So has this
+thread — and it is the one that wrote the rule.**
+
+### Name the harness, not the word
+
+**The collision underneath it.** *"Replay"* reads as **any controlled re-run**, and
+this desk has two kinds that differ in the one property that matters:
+
+| | `research-replay.ts` | design A, live alternation |
+| --- | --- | --- |
+| makes new search calls | no | **yes — that is the point** |
+| marginal token cost | interpretation only | **zero** |
+| `ensureDailyHistory` first | **no, and correctly so** | yes |
+| bounds in the bundle | understated with partials | finished |
+| the 08-20 hole | **must exclude** | not in the window |
+
+**The caveats are not merely different, they are opposite.** So: **name the harness
+— `research-replay.ts`, or live alternation — never "a replay".** Same family as
+two artefacts answering to *"Research's inventory"*: **when one word covers two
+things with opposite properties, the word is the defect.**
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin
