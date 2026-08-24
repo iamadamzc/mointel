@@ -669,6 +669,32 @@ exactly where numbers go without their companions.
 **The tell that it is worth the words: the author of both documents made the error
 against himself, in under an hour, on the desk's most-quoted figure.**
 
+## Counting the callers is not asking each what it needs
+
+**Research, against itself, 2026-08-24 — the same function, twice in two days.**
+
+It made `readDailyBars` hide unfinished bars so **all four callers would inherit
+one definition**, having counted the callers and reasoned about **one** of their
+failure modes. Integration endorsed it. **For a cycle, hiding a partial bar is
+right — a part-day distorts a rate in an unknown direction. For a CEILING it is
+actively harmful: a high can only RISE within a session, so a partial high is a
+LOWER BOUND, and hiding it UNDERSTATES the ceiling — the direction that
+manufactures a false blue sky.**
+
+> **A rate over a part-day is wrong in an unknown direction. A bound from a
+> part-day is wrong in a known and safe one. Filter for rates and phases; never
+> for bounds.**
+
+**Its own summary: *counting the callers is not the same as asking each what it
+needs*** — and it had already made that mistake once on the same function the day
+before.
+
+**The generalisable move is that unification is a claim about consumers, not about
+code.** *"All four now inherit one definition"* sounds like tidiness and is an
+assertion that four consumers want the same thing. **`bundle.ts:478` and
+`pipeline.ts:362` are the other two callers and neither has been checked against
+the rate-versus-bound test.**
+
 ## A constant dressed as a measurement
 
 **Research, 2026-08-24, found in its own ledger.** The hardest version of *a check
@@ -909,6 +935,47 @@ ceiling — a historical fact, re-fetchable indefinitely — was being answered 
 cache **sized for cycle classification**, and every thread including Integration
 argued about how to *describe* the 90-session limit honestly rather than asking why
 a long-horizon claim was reading a short-horizon cache.
+
+**AND THERE IS A LANDMINE UNDER THE DEEP-HISTORY VERSION. `adjustment` IS A
+LITERAL AND ITS GUARD IS DEAD CODE.** *Research, found while scoping this.*
+`historyFetch.ts:126` and `:139` write `adjustment: 'split'` as a **constant** —
+it records the mode **requested**, never the basis the prices are on. **All 24,429
+rows across 256 symbols say `'split'`; zero disagree.** So `dailyBarAdjustment`
+always returns `'split'`, and blueSky's first guard — *if the retained history is
+not split-adjusted, refuse* — **can never fire.** Same defect as the `toolConfig`
+constant: a field that exists to distinguish two states, shipped as one value.
+
+**Why it is safe today, and why that safety is a coincidence.** Alpaca adjusts as
+of **fetch time**, and `start` is computed from `Date.now()` (`:118`), so **every
+fetch rewrites the entire retained window** — the fetch window and the retention
+window are the same ~90 sessions. A split therefore self-corrects on the next
+fetch and the dead guard costs nothing.
+
+> **Deep history breaks exactly that coupling. Store five years, fetch only the
+> trailing window, and old rows keep a PRE-SPLIT basis forever while new ones
+> carry the current one — both labelled `'split'`. Blue sky then compares prices
+> across two bases, and the guard designed for precisely that cannot report it.**
+
+**Re-fetching five years on every pass is correct and is a different cost
+conversation.** The point to carry: **the current design is accidentally safe
+because two windows happen to be equal, and this change is what pulls them
+apart.**
+
+**Three more scoping facts, none of them blocking:**
+
+- **There are TWO NINETIES, not one** — the fetch range (`historyFetch.ts:118`)
+  and the read limit (`readModel.ts:306`, passing
+  `DEFAULT_CYCLE_HISTORY_TRADING_DAYS` explicitly). **Deepening storage alone
+  changes nothing; blue sky still reads 90 rows.** Both must move, and moving the
+  second is where `readDailyBars` starts meaning two things again.
+- **Nothing prunes `daily_bars`.** `pruneMinuteBars` exists; there is no delete on
+  daily bars anywhere. **Deep rows persist once written**, so retention is not the
+  obstacle.
+- **The board population is not stable, so a cache amortises little.** Top 50
+  turns over almost completely daily — **38 to 45 new names per session out of
+  50**, 257 distinct symbols across six sessions with only 152 holding any
+  `daily_bars` today. **Steady state is roughly forty deep fetches every morning,
+  arriving inside his 04:00–09:30 window.**
 
 **THE ONE HARD CONSTRAINT, and it is already this desk's most protected rule:
 there is ONE SIP connection.** The stream's own comment: *"exactly one of these
