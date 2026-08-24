@@ -951,6 +951,44 @@ As of the last session, **2026-08-23**:
   accumulating from that session. The 148 graded rows and nine dated tabs remain
   and are still readable — they are simply now a **closed corpus** rather than a
   growing one. Anything wanting more of that data has to be built here.
+- **Ten fields the retirement plan reads as SAFE are not: retiring the Sheet and
+  losing their history are the same decision.** *R&D, 2026-08-24,
+  `docs/rnd/2026-08-24-sheet-audit-annotation.md`, all 64 fields annotated.* The
+  audit's verdict column answers **whether the desk could rebuild the
+  CAPABILITY**; the new `live?` column answers **whether it could rebuild the
+  HISTORY**. They are different questions and **a field can be fully PRODUCED and
+  still have every past value lost forever.**
+
+  **26 of 64 are live, and the pattern does not follow the verdict column at
+  all:** bars and filings are *not* live because re-fetchable — which is why five
+  days of outcomes were rebuilt from a cold fetch; **model judgements are live**,
+  not because they cannot be re-run but because a re-run gives *a* grade rather
+  than *the* grade (catalyst 45% not-unanimous, structure 55%); vendor snapshots
+  are live because **vendors keep no history**, float worst of all; and citations
+  are live even when the target is not, because **which source the desk used is an
+  act, not a fact about the world.**
+
+  **The ten that matter are `J, K, P, W` on TODAY and `13, 15, 16, 31, 32, 37` on
+  RESEARCH** — PRODUCED *and* live. Retiring the Sheet stops new rows; for these
+  the old rows cannot be regenerated from anything.
+
+  **Three fields break the pattern and that is where the risk sits:** Catalyst
+  Grade *reads* safe and is not; **Cycle Classification was live and stopped being
+  so at `97b4caa`**, making it the only classification whose history can now be
+  rebuilt — a consequence the cycle-becomes-arithmetic work bought without anyone
+  intending it; and **Float is the worst pair, cannot produce and cannot
+  recover.**
+
+  **`live?` is NOT a keep-list, and R&D was explicit about this.** It establishes
+  the **order** of the decision, not the answer: for the 26, deciding late and
+  deciding no are the same thing; for the other 38 they are not. A live field
+  nobody will ever ask about is still not worth capturing, and that judgement
+  needs the question rather than this column.
+
+  **Open:** whether any of the ten is written *only* by one of the two ChatGPT
+  tasks paused on 2026-08-23. If so, that field's history stopped accumulating on
+  08-21 and the decision has already resolved itself. With R&D.
+
 - **Retiring the Sheet takes pillar 5 with it unless float is replaced first.**
   `resolveDisplayedFloat` (`lib/dashboard/merge.ts:143`) has exactly two
   branches, the Sheet's RESEARCH tab and its TODAY tab, and the type says so:
