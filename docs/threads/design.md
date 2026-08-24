@@ -874,6 +874,57 @@ Design is deciding about is not the same as owning it. **The schema deletion
 comes after this switch is deployed *and verified*, not merged** — deleting the
 fields while the switch still has a defect leaves nothing to fall back to.
 
+## What can actually be falsified before premarket
+
+Ops asked which cycle surfaces can fail a test at `CLOSED`, rather than looking
+at all of them and learning nothing from most. Working it out changed the plan in
+both directions.
+
+**The measurement that reframes it:** of **231 current dossiers, 0 carry
+`computedCycle`** (Ops, against production). So the cycle column will read
+`CYCLE NOT ESTABLISHED` on **every row**, not on some. It clears as re-analysis
+runs; the balance is topped up and Monday's board populating starts it.
+
+*Design's share of that error: the caveat handed over said "names whose dossiers
+predate `computedCycle`" without asking how many. That is all of them, and
+"some" and "all" are different mornings.*
+
+### Falsifiable at CLOSED
+
+| Test | Why it can fail | Status |
+| --- | --- | --- |
+| Filter chips read `All · Day 1 · Frontside · Off high · Backside` | `Fresh` and `Warning` cannot be produced by the new code at all | **PASSED** 2026-08-24, live |
+| Summary segments carry no `warning` | same | **PASSED** |
+| Researched table shows no `FRONTSIDE — WARNING` | same | **FAILS today** — `a5a3a98` not yet deployed |
+| A row **with** a sheet cycle showing `CYCLE NOT ESTABLISHED` | **the old path cannot produce this**: with a sheet cycle present it rendered the sheet label. Only the new path reaches unresolved here | available the moment `a5a3a98` lands |
+
+**That last row corrects Integration's reading.** An empty cycle column is not
+falsifiable *in general* — it looks identical to a broken one. But on a row that
+*has* a Sheet cycle, `CYCLE NOT ESTABLISHED` is a string only the new code can
+put there. The distinguishing case exists; it is narrower than "the column is
+empty".
+
+### NOT falsifiable until dossiers carry `computedCycle`
+
+Integration listed *"the six phase names rendering"* and *"the retracement figure
+being of the MOVE"* as checkable before premarket. **Neither is.** Both require a
+dossier with a computed cycle, and there are none — so no phase label and no
+retracement detail can render at all, at `CLOSED` or at 04:00, until re-analysis
+has run. They are gated on the 0 → 231 counter, not on the clock.
+
+**Nor is the cycle tone**, for the same reason, plus the `Move`-label problem:
+`BACKSIDE` renders `neg` under both old and new code.
+
+### The sort checks, restated
+
+Row reordering, the unknown count against real null floats, and Top N after the
+sort all need a populated Discovery board — 04:00 at the earliest, and more
+comfortably 10:30 on any trading morning. The `Gap` label needs `PREMARKET`
+specifically and cannot be seen at any other hour.
+
+**Nothing on this page counts as verified until it is on the falsifiable list and
+marked passed.**
+
 ## Next session — item 16a, and only 16a
 
 Chosen by the owner 2026-08-23. Scope is fixed by the table above: replace the
