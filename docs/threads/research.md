@@ -1270,3 +1270,77 @@ as an observable that cannot distinguish a thing from its failure, one level dow
 > top-up does not self-heal and the board needs a manual release. It has bitten
 > twice. Start there: show me the change you would make and what it costs to
 > test, but do not write it until I agree on the approach.
+
+---
+
+**17. The resolver re-ask leak does not exist. The bill is somewhere else.**
+
+I filed "resolver re-asks cost money for issuers that never resolve" as an open
+item on inference from the 4-of-74 resolution rate. Measured against the
+production snapshot for 2026-08-19..21, it is **wrong**:
+
+| RESOLVER calls for one ticker | tickers |
+| --- | --- |
+| 1 | 169 |
+| 2 | 6 |
+
+169 of 175 tickers were asked exactly once. The six repeats each fall on two
+different days — precisely what a 24-hour negative cooldown permits. The cooldown
+in `irRegistry.ts` works. **There is no re-ask leak, and I should have measured
+before filing rather than after.**
+
+**What the spend actually is:**
+
+| stage | calls | input tokens | share |
+| --- | --- | --- | --- |
+| DISCOVERY | 216 | 7,862,324 | 56% |
+| RESOLVER | 181 | 3,853,202 | 28% |
+| INTERPRETATION | 312 | 2,024,072 | 14% |
+| ESCALATION + RECOVERY | 19 | 246,683 | 2% |
+
+**The desk spends 84% of its input tokens finding evidence and 14% reading it.**
+
+**And discovery is not waste, which was my second wrong guess.** Attributing by
+`metadata.discoveredBy` — an exact marker, not a time window — discovery bought
+112 sources across 50 tickers. Against every `source_ids` array in
+`research_analysis_versions`:
+
+| path | sources | ever cited | |
+| --- | --- | --- | --- |
+| deterministic (free) | 4,770 | 1,772 | 37% |
+| DISCOVERY (paid) | 112 | 62 | **55%** |
+
+Paid sources are cited *more* often than free ones. Nor do repeat calls decay:
+productive rate by ordinal runs 22%, 15%, 22%, 33%, 25%. **Capping repeats would
+cut cited evidence roughly in proportion to spend.** The obvious fix is wrong.
+
+*Limit, stated: 36 of the 112 sources could not be matched to a call within the
+5-minute window, so the per-ordinal table rests on 76. The citation table above
+does not depend on that attribution and is exact.*
+
+**So the lever is not frequency, it is depth.** A discovery prompt is ~254
+tokens and a discovery call bills ~43,000; the retrieved page content is
+essentially the entire price. `f46cfaa` wires `searchContextSize` into discovery
+— it reached only the resolver — and leaves it unset, so nothing changes yet.
+
+**What I am NOT doing: picking a value.** `low` vs `medium` trades catalyst
+quality against roughly half the desk's model bill, and the audit's finding that
+642 of 935 Sheet citations sit on never-collected domains says coverage is
+already the weak side. That is a measurement, not a preference, and the honest
+form is a replay with the ledger's `tool_config` distinguishing the arms.
+
+**Which it could not have done until `f46cfaa`.** Discovery's `toolConfig` was
+the hardcoded literal `web_search:default` — the column that exists to tell two
+configurations apart returned one string for every call ever made. The resolver's
+was dynamic, so the ledger looked populated for both. **The existing test
+asserted the constant and passed**, in a file whose header says a ledger without
+the configuration cannot tell a saving from a coverage loss. Another observable
+that could not distinguish a thing from its failure.
+
+**One asymmetry I looked at and am leaving alone.** An unresolved ticker
+rechecks every 10 minutes, a resolved one every 30 — the desk pays three times
+as often for the names it knows least, and nearly everything is unresolved.
+That reads like a defect and the yield data says it is not: repeats stay
+productive. `collector.ts` already defends it in a comment, on XOS, whose Air
+Force release arrived on an interval pass months after the resolver gave up.
+Recorded so the next person does not re-derive it as a saving.
