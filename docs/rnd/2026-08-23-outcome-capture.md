@@ -768,6 +768,64 @@ these rows is 85%, so misclassification is about 15% and the attenuation factor
 about 0.70.
 
 
+
+#### The windowed gain columns are anchored to the wrong session — measured 2026-08-24
+
+**Not fixed, deliberately: he is trading as this is written. Recorded so the
+number exists before anyone uses these columns.**
+
+Research found the general form in its own durable notes — *"9:30–10:00 is the
+core"* — and caught that this is **the booklet's core, Cameron's, not Adam's**,
+under a rule in the same file saying *where the booklet and Adam differ, believe
+Adam*. **He trades 04:00–09:30 and profit concentrates from 07:00. RTH is the
+exception.** The general shape: *a taught method quietly stands in for the
+practitioner's, and it recurs on other facts in the same file.*
+
+**This archive has the same error one level down, in three column definitions:**
+
+| column | window it measures | relation to his session |
+| --- | --- | --- |
+| `gain_open_30_pct` | 09:30–10:00 | **begins the minute his session ends** |
+| `gain_to_1100_pct` | to 11:00 | entirely after |
+| `gain_to_close_pct` | to 16:00 | entirely after |
+
+**Where the max gain actually lands, all 95 movers:**
+
+    04:00-06:59  his session, early        26   27.4%   <- largest single bucket
+    07:00-09:29  HIS PROFIT WINDOW         18   18.9%
+    09:30-09:59  gain_open_30_pct window    7    7.4%   <- the column named for it
+    10:00-10:59                             9    9.5%
+    11:00-15:59                            18   18.9%
+    16:00-20:00  after hours               17   17.9%
+
+**46.3% of movers peak inside his working session, and 7.4% peak in the window
+the opening-gain column measures.** Every derived gain field this archive has
+starts at or after the minute he stops trading.
+
+**`gain_open_30_pct` is the sharpest instance, because the assumption is in the
+name.** "The opening 30 minutes" reads as *the money window* to anyone who opens
+the schema, and on this desk it is the seventh-best half hour of six.
+
+**What is NOT wrong, and it matters.** `max_gain_pct`, `time_of_max_gain`,
+`premarket_high` and `premarket_high_at` are all full-session 04:00–20:00 and
+correct — which is how the table above could be computed at all. **The defect is
+in the derived windows, not the capture**, and the minute bars behind them are
+re-fetchable. This lands on the reassuring side of this thread's own
+re-fetchable / observable-once distinction: **nothing was lost, the wrong
+question was asked of what was kept.**
+
+**The fix, when the desk is quiet:** gain-to-07:00 and gain-to-09:30 as windowed
+columns, keeping the existing three rather than replacing them — a booklet-window
+number is still the right comparison when the question is *how does his session
+differ from the taught one*. **Add his window; do not delete Cameron's.**
+
+**The wider pass this implies, and it is not a small one.** Every threshold in
+the register descends from the same playbook: **Pillar 4's window, the hold-time
+grain, the RVOL and price bands.** Any of them may be the booklet's number rather
+than his, and each needs checking against him rather than against the source.
+Queued, not started.
+
+
 ##### Definition-robustness, added 2026-08-24
 
 Prompted by Research finding that **133 symbols carry a stale grade tail** and

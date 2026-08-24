@@ -951,6 +951,35 @@ What turned out not to be there:
   minute bars instead, which is strictly better: it also gives `time_of_high`,
   the premarket high, and the windowed gains.
 
+## Inherited constants — the booklet's numbers or his?
+
+**Queued 2026-08-24, not started. He is trading; this is a register note.**
+
+Research caught its own durable notes saying *"9:30–10:00 is the core"* — the
+**booklet's** core, Cameron's, not Adam's — under a rule in the same file reading
+*where the booklet and Adam differ, believe Adam*. **He trades 04:00–09:30 with
+profit concentrated from 07:00; RTH is the exception, not the default.**
+
+> **A taught method quietly stands in for the practitioner's, and it recurs on
+> other facts in the same file.**
+
+**This archive already has one confirmed instance**, measured and written up in
+[../rnd/2026-08-23-outcome-capture.md](../rnd/2026-08-23-outcome-capture.md):
+all three windowed gain columns — `gain_open_30_pct`, `gain_to_1100_pct`,
+`gain_to_close_pct` — **begin at or after the minute his session ends.**
+46.3% of movers peak inside his working session; **7.4% peak in the window the
+opening-gain column is named for.** The capture is fine and full-session; the
+derived windows ask the booklet's question.
+
+**So every threshold in this register is now suspect until checked against him
+rather than against the source** — Pillar 4's window, the hold-time grain, the
+RVOL and price bands. Not one of them is known to be wrong. The point is that
+**none of them has been checked against the practitioner**, and the one that has
+been turned out to be the booklet's.
+
+**Check against him, not against the playbook. A number's pedigree is not its
+basis.**
+
 ## Definition changes that cut the record
 
 A dated log of changes to *what counts as an eligible name*, kept because the
