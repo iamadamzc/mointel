@@ -260,6 +260,72 @@ Nothing here argues against the pauses. It argues that the retirement question
 and the pause question have different boundaries, and only one of them has been
 mapped.
 
+## Can the paused tasks be rebuilt? Mostly — and the loss is on the wrong variable
+
+*Integration asked for a read before settling an answer for the trader, having
+verified that the desk already runs its own 09:25 checkpoint and that
+`deriveOutcome` covers most of what Close & Learn computes.*
+
+**The framing correction is right and I would make it downward.** These are not
+capture questions. But two precisions first, one of which matters.
+
+**Close & Learn's leader rule is computable from stored columns today — not
+re-derivable, already there.** Its rule is *maximum gain from the prior RTH
+close between premarket and 4:00 PM*. That is
+`max(premarket_high, rth_high) / reference_close`, and all three columns are in
+`symbol_outcomes` on 243 rows. It is a `SELECT`, not a fetch.
+
+**But `max_gain_pct` is the wrong column for it, and by more than a rounding.**
+`max_gain_pct` runs the full 04:00–20:00 session. **17 of 95 movers peaked after
+16:00 ET**, so using it would overstate the leader gain on 18% of the names the
+rule is about — and **47 of 95 had their premarket high above their RTH high**,
+so dropping premarket would be worse still. The rebuild is exact only if the
+window is rebuilt with it.
+
+### The three items
+
+**1. The tasks' own judgement — build nothing, and do not rent it either.**
+Spike/chop/flush framing is not a missing feature; it is **Q7**, already in this
+register as a measurement question routed here by the desk owner. Resuming a
+task to obtain a model's opinion on it would put an unvalidated label in front
+of the trader ahead of the measurement that would tell anyone whether the label
+means anything. The desk's existing judgement fields are already 45% and 55%
+not-unanimous; another is not what it needs.
+
+*One exception, and it is cheap.* **"Grades decision usefulness"** is
+outcome-grading, and grading the desk's own calls against tape-derived outcomes
+is a query over `symbol_desk_day` and `symbol_outcomes` — no task, no model.
+Already noted when Task 4 was retired; it stands.
+
+**2. The second grader — the loss is real and it is on the wrong variable.**
+This is the item that would be mine to want, and the honest answer is that the
+grader worth having was never lost.
+
+- The catalyst second opinion lives on **`RESEARCH`, written by the two tasks
+  still running.** That is the comparison Q1's verdict could actually use, and
+  it is unaffected.
+- What the paused pair provided was a second opinion on **outcomes and decision
+  quality** — graded by the same process that made the forecasts, against
+  outcomes this archive already measures from the tape and measures better.
+
+So: a genuine independent grader is valuable to this thread, and the one that
+stopped is the one whose measurements this archive supersedes.
+
+**3. `PATTERNS` — do not resume it, but read it once before it goes stale.**
+Seven maintained rows of aggregate learning, self-graded over self-produced
+outcomes, so the *evidence* behind them compounds the weakness above. But the
+**hypotheses** are cheap and this thread is short of them: P1–P6 is a list of
+things a process watching this market for weeks thought were worth tracking.
+**It is not a learning layer to preserve; it is a list of candidate questions to
+harvest** — which is exactly what the standing sweep in this charter is supposed
+to produce and has not yet been built to. P6, the Dirty Float series, is the one
+with live content, and that subject has already moved to the desk.
+
+### The read, in one line
+
+**Not a capture question, a second-opinion question — and of the three second
+opinions, the one worth having is still running.** Correcting downward is right.
+
 ## What this does not say
 
 It says nothing about whether a field should be kept. A live field that nobody
