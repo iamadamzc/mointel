@@ -672,6 +672,11 @@ against himself, in under an hour, on the desk's most-quoted figure.**
 ## Counting the callers is not asking each what it needs
 
 **Research, against itself, 2026-08-24 — the same function, twice in two days.**
+*Recorded as ONE failure at its own insistence. Integration read a count as an
+analysis and relayed it onward in those words; Research produced the count and
+chose which check to run against it, and asked that the section carry its name
+alone "because the check that could not fail was the one I picked." Both halves
+are here; the split is not.*
 
 It made `readDailyBars` hide unfinished bars so **all four callers would inherit
 one definition**, having counted the callers and reasoned about **one** of their
@@ -715,6 +720,21 @@ other.**
 
 > **The boundary can fall INSIDE a function. The rule is about the QUANTITY, not
 > the caller.**
+
+**The repair shape, and it is the answer to "does this make the function mean two
+things":** `readDailyBars` now takes an explicit **`'EXCLUDE' | 'INCLUDE'`** rather
+than a boolean, so **the caller DECLARES which category it is in at the call
+site.** One definition of *finished*, shared by both paths — **what changed is that
+the choice is visible instead of assumed.** The function means one thing and takes
+an argument, rather than meaning two things silently. Blue sky is the only
+`INCLUDE`.
+
+**Two supporting choices worth copying.** Every returned bar carries
+`sessionComplete` on **both** paths, not only the including one — **an absent flag
+would have to be read as "probably fine", which is the default this codebase
+refuses everywhere else.** And `NewDailyBar` **omits** it: a writer carries
+`fetchedAt` and completeness is derived on the way out, **so a writer cannot assert
+completeness and disagree with the reader.**
 
 **AND IT REACHES THE APPEND-ONLY RECORD, WHICH BLUE SKY DOES NOT.**
 `summariseDailyHistory` feeds the **evidence bundle**, so an understated bound goes
