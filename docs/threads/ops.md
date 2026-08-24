@@ -184,6 +184,31 @@ preflight bootstrap that would have blocked every future deploy, and an enum
 leak that only real dossiers could reveal. Both branches of the bootstrap fix
 have now been exercised, not just the fallback.
 
+## State: production is `161f15f`, deployed 2026-08-24 00:16 UTC
+
+Deployed by explicit sha, not `HEAD` — the first release under that rule. Gated
+in an isolated worktree at that exact sha with real dependencies: **1261 tests,
+lint, typecheck and build**. Trader named the sha himself.
+
+Carries `102a1fc` (ceilings on the two unbounded fetches — **verified live on the
+box**: `SHEET_TIMEOUT_MS` present, `REQUEST_TIMEOUT_MS = 30_000`) and `97f198d`
+(the SIGTERM fix), plus Design's cycle cutover, which is additive — both cycle
+values coexist and nothing on the board depends on the new one yet.
+
+**The predicted SIGKILL happened, on schedule, and is the last one.** Research
+stopped 00:16:07 → killed 00:16:38: **31 seconds**, `stop-sigterm` timed out,
+`Failed with result 'timeout'`. Exactly as Research predicted before the fact —
+the running process held the old handler. `process.on('SIGTERM', () =>
+shutdown('SIGTERM'))` is now in the deployed tree **and in the running process**,
+so **the next deploy is the test**: under a second means the handler ran.
+
+**Capture untouched, sixth deploy running.** `mointel-market` pid 129202,
+`NRestarts=0`, start still 2026-08-23 01:27:36 UTC, no journal entries in the
+deploy window. Still on `fd9556f`, held by the pin — prune removed `28c7f12`
+this time and printed `keep fd9556f (pinned)`.
+
+No migration: schema 21 both sides, migrate wrote 0 backups.
+
 ## Gate the sha, not the tree
 
 **Six threads commit to this repo. The working tree is not yours and `HEAD` moves
