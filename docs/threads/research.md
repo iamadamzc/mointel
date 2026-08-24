@@ -209,6 +209,52 @@ rather than disappears. It no longer *removes a demonstrated contamination*; it
 *produces grades whose provenance is not in question*, which is what R&D needs
 either way. What weakens is the urgency, not the value.
 
+**14. Float: derived from filings, shipping with its own confidence signal. One
+piece of work, not two.** *Decided by Integration 2026-08-24 under the
+order-and-process delegation, with the route reversed from what Integration
+recommended earlier.*
+
+**The reversal, and the evidence that caused it.** I recommended the vendor
+route first, on the grounds that it *reproduces the number already on the
+board, so nothing changes*. **58 hand-pulled names then showed that number is
+arithmetically impossible on one name in six**, and on ADRs the unit test fires
+on 8 of 11. "Reproduces what is on the board" turned out to mean "reproduces
+something demonstrably broken", and no vendor publishes its rules, so there is
+no reading under which StockAnalysis is safer than Scanz.
+
+So: **derive from filings, as the trader originally chose.** Not because the
+data is better — that is unproven — but because **it is the only route where
+the rules are visible and a failure is detectable.**
+
+**And it is one project, not a float followed by a check.** Deriving from
+filings puts shares outstanding in hand at the moment float is computed, so the
+consistency test is free rather than plumbed. More important, **the signal is
+what makes the derived number honest**: it lets the desk say *I cannot compute
+this one* instead of guessing, which is the whole difference between this and a
+vendor.
+
+Ships with, non-negotiably:
+
+- **`float_basis` from the first row**, per R&D's rule. Never retrofitted.
+- **`float > shares_outstanding` → refuse.** Fires on 8 or 9 of 46 measured.
+- **Ratio under ~2% → refuse as a probable unit mismatch.** Cannot be gated on
+  `ADR_ADS`: YJ is an ADR the classification records as ordinary, so the test
+  stands on the ratio alone.
+- **A derivative must not inherit its underlying's float.** `ENRDW` carried
+  ENRD's verbatim, and warrants are exactly what a low-float runner's structure
+  contains.
+- **No split component.** Splits do not discriminate — all 9 flagged names have
+  one and so do 13 of 25 clean ones. A split term would be the part that
+  misleads.
+
+**Open and unsettled inside it**, flagged by R&D and not to be quietly resolved:
+13G filers are passive institutions whose shares belong in the float. Subtract
+them and float is understated across the board — a false positive on pillar 5,
+which is the dangerous direction.
+
+Design renders it afterwards, including what a **refused** float looks like on a
+row. That is a real design question and it is not this thread's.
+
 **11. Is `CYCLE_CHANGED` stable, or is it structure again?** *Found by Design
 2026-08-23, assigned here by the trader. It sat unowned between three threads
 for several hours, which is the only reason it needed routing.*
