@@ -246,6 +246,35 @@ after another connection has written. Three services restart together and reopen
 the store; one loses its snapshot. **A lock that serialises writers does not stop
 a reader invalidating one.**
 
+### The self-healing has a hard floor: five crashes and systemd stops
+
+Integration observed that the preflight's 5-minute guard happens to cover this
+fault's ~10-second unavailability — a 30× margin by luck rather than design —
+and that a restart loop would spend it fast. **Measured, and it is a cliff rather
+than a slope:**
+
+| unit | `Restart` | `RestartSec` | `StartLimitBurst` | `StartLimitInterval` |
+| --- | --- | --- | --- | --- |
+| `mointel-assess` | always | 10 s | **5** | 5 min |
+| `mointel-research` | always | 10 s | **5** | 5 min |
+| `mointel-web` | always | 10 s | **5** | 5 min |
+| `mointel-market` | always | 15 s | **5** | 5 min |
+
+**Five crashes inside five minutes and systemd gives up.** The unit stays
+`failed` and is not restarted again. At 10 s apart that is **~50 seconds** of
+looping to exhaust the budget.
+
+So the fault is self-healing only while it is *intermittent*. If the snapshot
+race were to recur on each restart — which is plausible precisely when several
+services are cycling together, the condition that causes it — the worker exits
+the loop **dead**, and every subsequent checkpoint is missed until a human looks.
+That is the version with a permanent cost, and it is one systemd property away
+from today's behaviour.
+
+Current state is nowhere near it: `NRestarts` is 0 or 1 on every unit. Recorded
+because the margin Integration called luck has a floor, and the floor is 50
+seconds rather than 5 minutes.
+
 ### The observable that caught it was not the one I built
 
 **The stop was clean on that deploy — fourth in a row.** The failure was on
