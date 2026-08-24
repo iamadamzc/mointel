@@ -756,9 +756,23 @@ nearer ceiling than the tape supports. **Conservative for an entry, wrong for
 holding through a level.** Not a false blue sky.
 
 **And the exposure is bounded three ways, not one:** re-analysed since the filter
-shipped, **and** holding a partial tail bar, **and** the bound actually moving —
-only 10 of 256 symbols have a ceiling that moves at all, so the third filter may
-cut hard.
+shipped, **and** holding a partial tail bar, **and** the bound actually moving.
+
+**BUT THE TWO EFFECTS SELECT DIFFERENT SYMBOLS, and a measurement of one reads as
+a measurement of both.** The **ceiling** effect is about the **newest** bar — 10 of
+256 symbols. The **resistance** effect is about **the one behind it**, because
+`historicalResistance` runs over `slice(0,-1)` — **five of 256, and a different
+five**: `JATT` 14.50→13.80, `JANX` 17.72→16.99, `CATO` 3.78→3.73, `GNE`
+15.23→15.07, `ALZN` 1.60→1.59.
+
+**Research's first query compared max-high-all against max-high-finished, which
+captures `windowHigh` and `windowLow` and is BLIND to the two-session loss.** It
+caught that in its own query before it was run — *"Ops running what I sent would
+have measured two of the three quantities and reported a complete answer."*
+**Integration had already relayed the ten as the bound on both.**
+
+> **A query that measures two of three quantities does not return a partial
+> answer. It returns a whole one, about a smaller thing.**
 
 **Blue sky is wrong on a screen and can be recomputed. This cannot.**
 
