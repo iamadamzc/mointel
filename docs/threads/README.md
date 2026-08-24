@@ -190,6 +190,22 @@ nullable — is a change whose blast radius is every reader, and the author is
 reliably holding a list of writers. Do not read the rules below as being about
 `delete` only.
 
+**Record the false positives, do not silently drop them.** *Research's rule, from
+building the `dossier.cycle` inventory.* Ten candidate sites, four real, and it
+kept the six that were not in the plan with the reason each was cleared. Its
+argument beats tidiness: **a plan that cries wolf on three of ten sites gets
+skimmed, and then the real ones go with it.** A cleared site also stays cleared —
+the next reader does not re-investigate it.
+
+**And expect the false positives to share one cause.** All four here were the
+same collision: the Sheet's row carries `cycleClassificationRaw`, `cycleState`,
+`cycleReasoning` and `recentMajorRuns` — **dossier-shaped names on a different
+type** — so `TickerDrawer.tsx` reading `research?.recentMajorRuns` is reading a
+`string` off `StructuralResearch`, not the dossier's `string[]`. **Inventory by
+type or by call site, never by field name.** This is the float problem in a
+second costume: when two threads can each be right about the same word, a grep
+cannot tell them apart.
+
 Three rules out of it:
 
 1. **Whoever deletes a field owns every module that reads it**, across thread

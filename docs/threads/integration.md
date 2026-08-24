@@ -210,6 +210,42 @@ depend on it. They are now anchored to things that can be checked — commit
 times, and the one clock read. **Stamp from a reading or from a commit, never
 from a sense of how long the work took.**
 
+**STATE AT 01:33Z, 2026-08-24 — read this block first; everything below it is
+older.**
+
+- **Both item 16 defects are CLOSED.** Guard at `e9e0a9e`, healing folded in;
+  read-time cycle at `a259e8c`. The backfill was cancelled and is not coming
+  back.
+- **The read-time fix landed as an OVERLAY, not a move**, and that is Design's
+  doing. `overlayLiveCycle` spreads into a new object and leaves the stored
+  dossier untouched, so the `asOf` boundary at `pipeline.ts:363` still governs
+  replays and archived assessments while the live board tracks the tape. A test
+  asserts the non-mutation directly. **No fetch enters the read path.**
+- **Deploy target is `a259e8c`**, not the `c48e199` Ops originally gated — Ops is
+  re-gating in its pinned rig while it waits. Non-docs content of
+  `a5a3a98..a259e8c`: `lib/market/readModel.ts`, `lib/research/history.ts`,
+  `lib/research/historyFetch.ts`, and two test files. **Still unshipped;
+  production remains `161f15f`.**
+- **The deploy is with the trader and is the only thing blocked on him.**
+- **`dossier.cycle`'s deletion is now a reader inventory, not a plan.** Four real
+  sites in `worker/desk-assessments.ts` — `:239`, `:240`, `:275`, `:308`, and
+  `:239` fires first — plus four false positives, all of them the same
+  Sheet-versus-dossier name collision. Writer made safe in the same commit as the
+  deletion, never after.
+- **Design's verification plan changed shape and check 4 is retired.** Its own
+  correction, and it is right: if both commits ship together, check 4 *cannot be
+  run at all* — it needs a row with a sheet cycle AND no computed one, and the
+  overlay removes the second half everywhere there are two or more stored bars.
+  **That is a gain.** Check 4 was a weak positive — the absence of the old answer,
+  never the presence of the new one. It is replaced by the six phase names and
+  the retracement figure, which I had called not-falsifiable an hour earlier and
+  which are **strictly stronger**: `DAY 1`, `OFF HIGH` and `PRIOR RUN` are strings
+  the old code cannot produce on any row under any data, and they arrive on every
+  row at once instead of trickling. The sitting to plan is: deploy, then check 3
+  and the phase names together.
+- **The ping rule is live and working.** Four unprompted pings in the first twenty
+  minutes, and three of them carried findings rather than status.
+
 **Reaching the threads.** Send to the NAME from `ListAgents`, or by session id
 via `mcp__ccd_session_mgmt__send_message`. Ids are stable, names are not:
 
