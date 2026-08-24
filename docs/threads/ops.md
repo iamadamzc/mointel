@@ -310,7 +310,10 @@ Read-time computation is right and it is in **`lib/market/store/researchRepo.ts`
 this thread's module since the 2026-08-24 split**. One thing must not be lost
 between "compute at read time" and building it:
 
-> **Compute at read time. Do NOT fetch at read time.**
+**Two constraints, both to be held at review. Neither is Research's to remember
+for me.**
+
+> **1. Compute at read time. Do NOT fetch at read time.**
 
 `daily_bars` is already in the store, and the cycle is a pure function over it —
 so the read path can compute freely. But *fetching* bars on a read would put
@@ -323,6 +326,27 @@ Keeping `daily_bars` current is a **worker** responsibility, not a read-path one
 That separation is the whole reason the read path is cheap enough to be the right
 answer. Worth stating now because "bars would be fetched for names actually read"
 is a natural way to describe it and a dangerous way to build it.
+
+> **2. A read-time cycle must carry an as-of, or historical reads gain
+> look-ahead.**
+
+`pipeline.ts:362` bounds the bars it computes from — `bar.tradingDate <=
+options.asOf` — and says why: *"a replay that resolved the cycle against today's
+bars would know how the move turned out."* **A read-time computation has no
+`asOf` by default**, and that is correct for the live board, which should resolve
+as of now.
+
+It is wrong for anything reading the past. `desk_assessment_tickers` stores
+`analysis_version_id`, so a historical assessment read through a read-time cycle
+would show a cycle computed from **today's** bars — the assessment would appear
+to have known how the move turned out. That is the same look-ahead R&D already
+guards against in the replay path, arriving through a different door.
+
+So the rule is not "bound it" or "don't" — it is **bound it to what is being
+read**: as-of now for the live board, as-of the assessment's own date for a
+stored one. Raised by Integration from Design's question about what
+`desk_assessments` archives; the Changes rail itself is clear, since
+`cycle_fingerprint` is a bucketed live-tape hash and not `computedCycle`.
 
 ## The backfill scope: ~~148 is the worst of the three~~ (superseded above)
 
