@@ -61,6 +61,36 @@ is deliberately left to the trader.** `lib/review/` was operational machinery an
 small; `lib/market/` decides who does most future work on this desk, and that is
 larger than a routing call.
 
+## A relayed delegation does not answer a question put to him directly
+
+**Ops's rule, held all night including twice when the relay turned out to be
+right, and it is correct.** It put the deploy to the trader directly. A general
+"make the call on the rest" arriving through this thread **cannot answer a
+prompt Ops made to him** — it costs one word, and it is the difference between
+his decision and my inference about his decision.
+
+**Order-and-process being delegated does not extend to a production action a
+thread has already put to him.** That boundary is not doubt about the relay; it
+is the same principle as everything else recorded here — do not let an inference
+stand in for the thing itself, especially when the thing itself is cheap.
+
+**And I told it to "deploy HEAD", which was not executable.** Ops had gated
+`a02262e`; HEAD by then carried `34c720f`, a surface switch it had not gated and
+which had not been handed to it. Shipping that would have broken its own rule —
+**all four gates green at the sha that ships** — which exists because a gate on
+a different tree is not a gate.
+
+**Third time today I named a moving reference as though it were fixed.** HEAD,
+a clock, a `git status`. A ref is a question, not an answer: **name the sha.**
+
+**And gate staleness is worse than I framed it.** I called it a race to avoid by
+gating a clean tree; Ops measured that **HEAD moved three times during a single
+gating session** — `f7b8ef5`, then `a02262e` already stale, then `161f15f` while
+`npm ci` was running. On this repo **any gate that is not pinned is stale before
+it finishes**, so a clean tree only moves the race. A reusable worktree pinned
+at a sha is the only version that works, and once it holds real `node_modules`
+it re-points with `git checkout` and re-gates without reinstalling.
+
 ## Do not ask the trader to arbitrate work that is in motion
 
 **Corrected by him twice within twenty minutes on 2026-08-24, and the second
