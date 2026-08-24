@@ -517,8 +517,10 @@ it under the step you can see.
 
 ## Measure a commit, not a checkout
 
-**R&D, 2026-08-24, correcting its own entry within the hour — and it is the worse
-half of a pair.**
+**Reached independently by two threads within one hour on 2026-08-24, from the same
+failure. Deliberately unattributed** — a name on it invites the next reader to weigh
+*who said it* instead of *what it costs to ignore*, and two independent derivations
+in one evening is what makes it a desk rule rather than anyone's lesson.
 
 It logged **13 changing class and 11 leaving eligibility** for the classifier fix.
 The shipped commit does **15 and 13**. The gap is that `b467154` carries **two**
@@ -543,7 +545,21 @@ system in a way an isolated regex does not** — so the tell is weaker, not stro
 asserting caller-visible output than either instance alone.
 
 *The check that settled it: query the production snapshot for which of the thirteen
-actually carried a rank. Two did.*
+actually carried a rank. Two did — `BCTXL` at 43 and `IQMXW` at 117.*
+
+**And a corollary, from the same author correcting the same entry again.** The
+dated log recorded **zero** archive board symbols affected, and that zero held — but
+**it held because this board is 252 momentum names from August 2026 and none of
+them are derivatives, not because the log was well constructed.** A change touching
+share classes, ADR treatment or the price band would have moved it, and the log
+would have caught that **because it was written, not because it was written well.**
+
+> **Record the check; do not credit the record with the answer.**
+
+**A log that takes credit for a result it did not earn is how the next reader stops
+running the check.** It is this same failure one level up: measuring a checkout and
+calling it the system, measuring a regex and calling it the system, **crediting a
+record and calling it the measurement.**
 
 ## I measured the component and reported it as the system
 
