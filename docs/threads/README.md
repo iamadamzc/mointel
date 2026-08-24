@@ -806,10 +806,41 @@ quoting it.**
 desk's only five-day window, which is the shape that moves a windowed measure with
 no tell. Anything reading a per-symbol series across 17–21 August meets it:
 Research's item 17 replay has already been amended to exclude 08-20 or say it did
-not, and **the Pillar 4 result below is stated on exactly this window** — the
-question of whether its classification touches `ticker_session` is open with R&D,
-and the answer belongs beside the number either way. *Checked and unaffected* is
-worth as much as a correction.
+not.
+
+**The Pillar 4 result below is stated on exactly this window, and it is CHECKED
+AND UNAFFECTED** — R&D, on three paths rather than one, and the third is the one
+that matters:
+
+1. `ticker_session` is not in the extract at all; `assessments.db` holds only
+   `desk_assessments` and `desk_assessment_tickers`.
+2. Nothing in `lib/archive/` reads it — the sole occurrence in that thread's
+   codebase is a comment about what `claimStoreForMode` deletes.
+3. **The board on 08-20 is complete**: 18 assessments × 25 tickers = 450 rows,
+   ranks 1–25 exactly as every other day, 65 distinct symbols. 08-20 also had the
+   week's **best** coverage — 78% usable, 45 of 51 grades produced that day.
+
+**The first two only rule out a direct read; the third answers the question that
+could actually have bitten** — whether the hole thinned the board's candidate
+pool. It did not, and the reason is the shape of the loss: the shortfall is the
+**unranked tail**, ranking produced its full top-25, and only ranked names ever
+reach a board snapshot.
+
+**And the hole landed in the cheap half, which is the first real test of this
+desk's capture rule.** *R&D's observation, and it is the useful one.* What
+`ticker_session` holds that daily bars cannot reproduce is **live derived state** —
+RVOL at that instant, board rank. For the unranked tail, rank is null by
+definition and RVOL re-derives from the same bars, so **the irreplaceable
+component of those 4,452 rows is close to nothing.** Had 08-20 lost its *ranked*
+rows or its assessments, nothing would buy them back and the window would carry a
+permanent bite. It lost the half Alpaca still holds. **Minimum instrumentation for
+anything re-fetchable; capture early and wide for anything observable once** — the
+rule held, and this is the first time it has been tested by an actual loss.
+
+**What the gap does reach is tier A.** The unranked tail is precisely the
+population tier A exists for — 4,452 symbols in a day *is* the cross-section, and
+it is invisible to everything built so far because everything built so far is
+board-scoped.
 
 **Cause unknown, and it is Ops's.** `ticker_session` is the market worker's and
 that worker must not be interrupted for it. **Not urgent: the rows are already
