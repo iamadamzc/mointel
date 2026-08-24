@@ -643,6 +643,67 @@ correct of Ops — it shipped the sha it was approved for, and shipping a drifte
 sha is the error the gate exists to prevent. **A deploy instruction is a sha and
 a moment; if either has moved, it is a new instruction and a new gate.**
 
+## Report short. He asks for detail when he wants it
+
+**The trader, 2026-08-24: *"make your messages smaller. if i want more context and
+details i'll ask. only surface essentials. i dont need team messages pasted. just
+very brief summary details."*** This is the second time volume has been raised —
+the earlier note is under *do not ask him to arbitrate work in motion*, and it did
+not change enough.
+
+- **Never paste another thread's message.** He does not need the relay, only what
+  it changed.
+- **Summarise the outcome, not the working.** Shas, numbers, and what is now true.
+  The reasoning is in the charters if he wants it.
+- **Detail is available on request.** Withholding it is not hiding it; the repo
+  and the charters hold everything, and he can ask.
+- **`## What I need from you` stays last, and stays as short as the rest.**
+
+The failure this fixes is not politeness. **A long report costs him the reading as
+well as the deciding**, and the decisions he actually has to make get buried in
+material he did not ask for.
+
+## A deploy instruction is a request; preflight is the authority
+
+**Added 2026-08-24 after this thread's first use of the deploy delegation.** I
+named `0778533` at 01:57:44Z with `NEXT_DAY_RECAP` due at **02:00**, having never
+looked at the checkpoint schedule. **Preflight refused it and caught what I should
+have.** Ops did not override, correctly.
+
+**This thread does not compute checkpoint windows.** The schedule is dense — three
+premarket scans, open spike, RTH intervals every thirty minutes, close, recap — so
+any arithmetic would either block half the day or be done off a clock this charter
+has already recorded going four hours stale while planning a deploy window.
+
+So: **instructions are requests, preflight decides, and a refusal is a fact to
+record rather than a decision to revisit. This thread never asks for an
+override.**
+
+### The guard is now load-bearing for a reason nobody designed
+
+**Ops, same night.** The assessment worker **dies on startup on roughly one deploy
+in three** — `SQLITE_BUSY_SNAPSHOT` at `migrate()` inside `withMigrationLock`,
+`desk-assessments.ts:380`, exit 1, systemd restarting ten seconds later, three
+occurrences in the journal. **The documented fix does not cover it:** the
+cross-process lock serialises *writers*, and `BUSY_SNAPSHOT` is a *snapshot*
+conflict — web and research reopen the store alongside, and the migrating
+connection loses its snapshot. **A lock that serialises writers does not stop a
+reader invalidating one.**
+
+Tonight it crashed at 01:55:05 with a recap due at 02:00. **Five minutes,
+unplanned, and on a checkpoint that is a permanent hole** — the record only grows
+in real time.
+
+**So the 5-minute preflight window, written for mid-checkpoint interruption, also
+happens to cover a 10-second crash-and-restart its author never had in view — a
+30× margin by luck.** That is the inverse of this document's usual finding, where
+a rule names an event that later diverges from its condition. **Record it as luck
+anyway:** the margin holds only while the restart is a single clean one, and a
+restart loop or a systemd rate limit spends five minutes quickly.
+
+**Not fixed tonight, and that is Ops's call and the right one** — a migration-path
+change hours before an open, for a fault that recovers, is the wrong trade.
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
