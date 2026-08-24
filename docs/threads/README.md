@@ -1036,6 +1036,32 @@ As of the last session, **2026-08-23**:
   part that is false. Three of those four times are this desk's own
   checkpoints, inherited from the same workflow. Open in
   [research.md](research.md) item 5 and audit §11 item 1.
+- **DECIDED 2026-08-24: the two paused tasks STAY PAUSED.** *Trader's call, on
+  R&D's read.* The loss is a **second opinion**, not a capture gap: the desk runs
+  its own 09:25 checkpoint at the same minute, Close & Learn's leader rule is a
+  SELECT over columns already stored, and the catalyst second opinion sits on
+  `RESEARCH`, written by the two tasks still running. What stopped was a
+  second opinion on **outcomes and decision quality**, self-graded, against
+  outcomes this archive measures from the tape and measures better.
+  **One action approved and outstanding: a single read of `PATTERNS` to harvest
+  P1–P6 as candidate questions** — not to preserve it as a learning layer, and
+  harvesting the questions rather than the verdicts, since the evidence beneath
+  them is self-graded over self-produced outcomes. No clock: the task is paused, so
+  `PATTERNS` is frozen rather than decaying, and *do not delete the corpus* already
+  stands.
+
+- **DECIDED 2026-08-24: the derivative classifier is fixed and 11 symbols leave
+  board eligibility.** *Trader's call, told explicitly what it changes.*
+  `lib/market/securities.ts` anchors its name rule at end-of-string, so it refuses
+  719 of 732 W/U/R symbols and misses 11 where the designation is not last —
+  `BLUWW`, `LUCYW`, `IQMXW`, `HAVAR`. `isDiscoveryEligibleClass` reads the same
+  classification, so **fixing it removes those names from the board.** Two
+  constraints, both Research's own: **do not loosen to a word-match** — measured, it
+  hits 24 ordinary LP units and trusts (PAA, ARLP, UNG) whose float is real — and
+  **one definition, in `securities.ts`**, never a second derivative rule in
+  `float.ts`. **It is a definition change to what counts as eligible, applied
+  going forward, so any board-scoped series crosses a discontinuity at this date.**
+
 - **Two of the four ChatGPT tasks are PAUSED as of 2026-08-23.** `9:25 Opening
   Spike Assessment` and `Close & Learn Momentum` — both **paused, not deleted**,
   last run Friday 2026-08-21, reversible in one click. Nothing on the desk reads
