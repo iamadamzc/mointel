@@ -888,7 +888,36 @@ both directions.
 predate `computedCycle`" without asking how many. That is all of them, and
 "some" and "all" are different mornings.*
 
-**Updated 2026-08-24: the backfill is cancelled.** The owner chose Research's
+**Updated again 2026-08-24 after `a259e8c` — check 4 is SUPERSEDED, not
+time-boxed.** Research's read-time fix landed as an **overlay**: the stored
+dossier is untouched, so replays and archived assessments keep their `asOf`
+boundary while the live board gets a fresh cycle. Every name with two or more
+stored daily bars now gets a computed cycle on the next render.
+
+Integration read that as *"check 4's window closes, so run it in the same sitting
+as check 3."* **Closer to: if both commits ship in one deploy, check 4 cannot be
+run at all** — the condition it needs is a row with a sheet cycle **and no**
+computed one, and the overlay removes the second half everywhere it can. There is
+no window to be quick about.
+
+**That is a gain, not a loss, and the table should say so.** Check 4 was always a
+weak positive: `CYCLE NOT ESTABLISHED` only distinguishes the paths on rows that
+*have* a sheet cycle, and proves nothing about whether the new vocabulary
+renders. The overlay replaces it with the two tests previously listed as
+non-falsifiable — **the six phase names and the retracement figure** — and those
+are strictly stronger: `DAY 1`, `OFF HIGH` and `PRIOR RUN` are strings the old
+code cannot produce **anywhere**, on any row, under any data. They also arrive on
+every row at once rather than trickling.
+
+**So the sitting to plan for is: deploy, then check 3 and the phase names
+together.** Check 4 is retired unless `a5a3a98` somehow ships without `a259e8c`.
+
+**And the contract held on all seven fields** — `phase`, `advancePct`,
+`baseClose`, `cycleHigh`, `cycleHighDate`, `retracementPct`, `sessionsSinceHigh`
+are all present on the overlaid shape, so nothing in `components/` changes. The
+three fields no surface reads are carried rather than dropped.
+
+**Superseded, for the record: the backfill is cancelled.** The owner chose Research's
 read-time fix — *"fix the path"* — over re-analysing 231 dossiers. **So the
 0 → 231 counter is not going to run and the column does not fill overnight.** Two
 consequences, and they pull in opposite directions:
