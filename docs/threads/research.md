@@ -1410,3 +1410,53 @@ That reads like a defect and the yield data says it is not: repeats stay
 productive. `collector.ts` already defends it in a comment, on XOS, whose Air
 Force release arrived on an interval pass months after the resolver gave up.
 Recorded so the next person does not re-derive it as a saving.
+
+---
+
+**18. Two definitions of a finished bar, and only the writer had one.** *Closed
+at `ecb7a74`. Found by Integration, from Ops's post-deploy note beside my own
+overlay — a seam between two of my commits four apart on the same night.*
+
+`ensureDailyHistory` refuses to STORE a bar written before its own session
+ended. `overlayLiveCycle`, the evidence bundle and the interpretation pipeline
+all computed from **whatever was stored**. One definition in the write path,
+none in the read path.
+
+**The failure is not staleness.** 42 symbols hold a partial *Friday* bar. From
+Monday's open the board renders before those symbols are re-analysed — board
+render and re-analysis are independent — and a partial bar for an **ended**
+session is understated volume and a high that never finished forming, read as a
+completed session. **The date is honest and only the contents are not**, so a
+latest-date discriminator cannot see it.
+
+**Fixed in `readDailyBars`, not in the overlay.** Fixing the overlay would have
+left the bundle and the pipeline on the old behaviour — two definitions becoming
+four. All four callers now inherit one.
+
+**Measured before choosing, because the obvious fix had a way to be wrong.**
+Filtering is only safe if unfinished bars sit at the tail; a gap mid-series
+moves `dailyRvol`'s 20-session baseline with no tell. All 133 partials in
+production and all 49 locally are their symbol's latest bar, one per symbol,
+**none mid-series** — and that is structural rather than lucky, since a bar can
+only be written unfinished on the day it is newest and any later fetch heals it.
+So this truncates and cannot punch a hole. It also re-queries when the filter
+drops rows, so a caller asking for 20 sessions does not silently get 19.
+
+**Two things the tests said that I did not expect to hear.**
+
+The null-`fetched_at` branch **could not be written as a test**: the column is
+`NOT NULL` and holds no nulls in either database. An untestable branch is a
+branch guarding a condition that cannot arise, so it went. The *reachable*
+failure is an unparseable stamp — the column is `TEXT` and nothing constrains
+its shape — and that is tested instead.
+
+And **an existing fixture was itself a partial bar**, stamped `12:00Z` on its own
+trading date, which is 08:00 ET. The as-of test using it passed while proving
+nothing, because the bar it asserted was invisible had been invisible for the
+wrong reason. Restamped after session end. *A fixture that accidentally
+satisfies the thing under test is the same species as an observable that cannot
+vary — it passes, and it is not evidence.*
+
+**The framing, which is Integration's borrowed back from my own guard:** one
+concept doing both jobs, because they are the same question asked twice. It
+turned out to be asked **four** times, and three callers never got the answer.
