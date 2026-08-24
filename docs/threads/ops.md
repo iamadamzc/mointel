@@ -224,7 +224,60 @@ Worth saying before the session is spent on it rather than after.
 (`deskRead.ts:528`), not that endpoint. Checking the wrong one would produce a
 confident wrong answer in either direction.*
 
-### UNRESOLVED before Monday: the overlay's effect is not visible on the live board
+## State: production is `1d1d56b`, deployed 2026-08-24 01:55 UTC
+
+Gated at that sha in the isolated rig — **1288 tests, 0 lint errors, build,
+typecheck** — and shipped by explicit sha on Integration's instruction. Carries
+the finished-bar filter in `readDailyBars`, so all four readers inherit **one**
+definition of a finished bar rather than the overlay getting a second one.
+
+Capture verified at directory scope before shipping: **zero** changes under
+`lib/market`, `worker/alpaca.ts`, `worker/runtime.ts` or
+`worker/desk-assessments.ts`; schema 21.
+
+**Third sub-second stop: 01:54:48 → 01:54:48.** Three for three. `97f198d` is
+confirmed rather than repeated. `RESEARCH_DISCOVERY_SEARCH_CONTEXT` verified
+still absent from `/etc/mointel/mointel.env`. Market worker pid 129202,
+`NRestarts=0`, no journal entries — capture untouched, ninth deploy.
+
+**One lint warning, checked rather than passed:** `history.ts:139`
+`'_fetchedAt' is defined but never used`. Benign — it is a destructure-to-omit,
+`.map(({ fetchedAt: _fetchedAt, ...bar }) => bar)`, stripping the field so
+callers get a clean `CycleBar`. Worth opening only because it sat in the file
+whose entire purpose was this fix. `isFinished` uses `fetchedAt` correctly and
+guards an unparseable stamp explicitly rather than leaning on a silent `NaN`.
+
+## ~~UNRESOLVED~~ RESOLVED: both readings were true of what each measured
+
+**The reconciling fact is a query parameter.** The review page does not call the
+bare endpoint — it calls `/api/market?symbols=…` with its watchlist, and
+`extraSymbols` bypasses the `rvol_rank IS NOT NULL` gate in `readDemandStates`.
+Bare: 0 intelligence entries. With `?symbols=`: 6 entries, all carrying
+`computedCycle`. Six populated and three not renders exactly as Design reported.
+
+**And my nine were the pre-hydration state** — I read server-rendered HTML,
+produced before that fetch. Both measurements were correct about different
+things, which is the shape this thread named against itself twice tonight and
+then walked into a third time.
+
+**Design's corrected rule supersedes the earlier one:** not *"which endpoint
+feeds a surface"* but **"which endpoint, and with which parameters."** An
+endpoint's behaviour on a bare call is not its behaviour in the app.
+
+### The loose thread closed: `"given back"` ×3 was the filter chips
+
+I flagged three retracement phrases in HTML that had zero phase labels, as
+evidence something was populated server-side. It was not. All three are **filter
+chip tooltips** — `<button role="radio" title="Off the high, less than half the
+move given back">`. Static control labels, not row data.
+
+**That is the trap Design refused an hour earlier**, when it declined to count
+`DAY 1` and `OFF HIGH` because they were chips rather than badges. Same trap,
+different string, and I walked into it while checking someone else's work. A
+string count over a page conflates controls with data; only a count over *rows*
+means anything.
+
+### ~~UNRESOLVED before Monday: the overlay's effect is not visible on the live board~~
 
 **Design reported six of six checks passing at `7245320`. This thread cannot
 reproduce it, and the numbers should be reconciled before the open rather than
