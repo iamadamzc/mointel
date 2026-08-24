@@ -291,11 +291,48 @@ due. On `1d1d56b` it crashed at 01:55:05 with `NEXT_DAY_RECAP` due at **02:00** 
 five minutes, unplanned. Hitting `assess` near a checkpoint is a permanent hole,
 because the record only grows in real time.
 
-**Not fixed, deliberately.** It is in `lib/market/store/db.ts`, this thread's
-module, but a migration-path change hours before an open is the wrong trade for a
-fault that self-heals. Candidates: have the migrating connection take an
-`IMMEDIATE` transaction, or make the runtime units order after
-`mointel-migrate` rather than opening concurrently with each other.
+### The cause, precisely — and it is smaller than "a migration path"
+
+**The upgrade transaction runs on every open, whether or not anything needs
+migrating.** `openDatabase` reads `fromVersion` but uses it *only* to decide
+whether to take a backup; `db.exec(SCHEMA)`, `migrate(db)` and the
+`user_version` write then execute inside `db.transaction(...)` unconditionally
+(`db.ts:938-945`). **So every worker startup takes a write transaction on the
+store.** Three starting together, one loses its snapshot.
+
+**`After=mointel-migrate` is already in place** on all three runtime units —
+checked, not assumed — so ordering after the one-shot does not help. The race is
+between the runtime units *with each other*, which that ordering does not
+constrain.
+
+**The better candidate, for a session that is not hours before an open:** return
+early inside the lock when `fromVersion === SCHEMA_VERSION`, so an already-current
+store is opened without a write transaction at all. Smaller than either option
+previously listed. It has one real consequence to think through rather than
+wave at: today a table or column added *without* a `SCHEMA_VERSION` bump is
+silently created by `CREATE TABLE IF NOT EXISTS` on the next open. With an early
+return it would not be — which makes the trap this charter already documents fail
+loudly instead of quietly, and is probably an improvement, but it is a behaviour
+change and not a no-op.
+
+### Re-stating the decision, because the risk moved after it was made
+
+**The call holds — and not for the reason I first gave.** I judged it as "the
+wrong trade for a fault that self-heals", and I have since measured that it
+self-heals *only while intermittent*. That reasoning no longer carries it.
+
+**What carries it is that the trigger is transient and the restart is not
+concurrent with it.** The race needs several services opening the store at once,
+which happens only in the deploy's start burst. The 10-second restart fires
+*after* that burst, when the others are up and idle — which is why every one of
+the four occurrences has been a single crash with `NRestarts` 0 or 1, and never a
+loop. **The 50-second cliff is real but requires a persistent cause, and this
+cause is self-limiting by construction.**
+
+The size of the fix is not the deciding factor either way. A one-line change to
+the path that decides *whether a migration runs* is exactly the kind of change
+that "it's only one line" has been wrong about before, and the store is the one
+place where being wrong is unrecoverable.
 
 ## ~~The assessment worker dies on ~1 deploy in 3~~ (superseded above)
 
