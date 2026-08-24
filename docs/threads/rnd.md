@@ -234,6 +234,23 @@ Anything that moves materially against its baseline becomes a **candidate
 question** in the register. The sweep does not conclude — it notices. Concluding
 is a question's job, and questions get hypotheses and verdicts.
 
+**Queued, no clock — harvest `PATTERNS` before the sweep is built.** Approved by
+the trader 2026-08-24. The paused Close & Learn task accumulated a `PATTERNS`
+tab, P1–P6: what a process watching this market for weeks thought worth
+tracking. That is precisely what the sweep above is meant to produce and never
+has, so it is worth reading once as a **list of candidate questions to harvest,
+not a learning layer to preserve.** The task is paused, so `PATTERNS` is frozen
+rather than decaying and there is no deadline; the only thing that would
+threaten it is deletion, and *do not delete the corpus* is already a standing
+condition.
+
+**Harvest the questions, not the verdicts.** The hypotheses in that tab are
+cheap *because* the evidence under them is weak — self-graded over self-produced
+outcomes, which is the same circularity that made this thread refuse to score.
+A P1–P6 row will read as a finding to whoever opens the tab next. It is a prior
+worth testing, never a result worth citing.
+
+
 ## Scope
 
 - [../DATA-ARCHIVE.md](../DATA-ARCHIVE.md) — the capture specification.
@@ -915,6 +932,51 @@ What turned out not to be there:
   of 100 assessed symbol-days have no row in it. The backfill fetches raw
   minute bars instead, which is strictly better: it also gives `time_of_high`,
   the premarket high, and the windowed gains.
+
+## Definition changes that cut the record
+
+A dated log of changes to *what counts as an eligible name*, kept because the
+damage they do is invisible later. The archive's cross-sections are board-scoped,
+so a change to board membership puts a discontinuity in every series that spans
+it — and a series with a definitional step in it looks like a finding.
+
+The rule: **record the date, the size, and whether it touches anything already
+measured, at the moment the change lands.** Reconstructing it from a series that
+looks odd months later costs far more and often fails.
+
+### 2026-08-24 — derivative classifier widened (11 names leave eligibility)
+
+`lib/market/securities.ts` — the warrant/right/unit name rules were anchored at
+end-of-string or a comma, which missed names carrying a suffix. Research
+unanchored the warrant rule and relaxed the rights rule, leaving the unit rule
+anchored. Applied going forward; universe rows re-classify on the next worker
+start when `CLASSIFIER_VERSION` differs.
+
+**Effect, measured rather than accepted** — both classifier versions run over
+all 13,089 universe rows: 13 rows change class, **11 leave board eligibility**.
+
+    BLUWW BLUWU SPEGR LUCYW ORIQW BCTXZ BCTXL HAVAR HUBCW OXBRW OGGWZ
+
+**Of the archive's 252 board symbols, zero are affected.** No `symbol_outcomes`
+row and no `symbol_desk_day` row moves, so **nothing already recorded shifts and
+no existing series has a step in it.** The discontinuity is real but it sits
+entirely in the future: a name that would have been eligible tomorrow is not.
+
+Small enough to ignore in a rate — 11 of ~13,000 universe rows, and none of them
+would clear the trader's $2–$20 / 5x RVOL / +25% gate as a going concern anyway.
+Recorded because *the next one might not be*, and because the cost of the line
+is a minute now against an unexplainable series later.
+
+**Why the unit rule stayed anchored, which is the part worth keeping.** "Unit"
+has an ordinary-equity sense the other two lack — "Common Units representing
+Limited Partner Interests". A bare word-match flags 24 short symbols that are
+real MLPs and trusts: PAA, ARLP, ET, DMLP, KRP. Those trade normally, their
+float is real, and ET sits inside the gate's price band. Research measured that
+false-positive class before widening and stopped short of it. **Precise and
+incomplete is the right failure direction for a rule that removes names from
+eligibility** — the same asymmetry as declining to divide by a share count that
+may be wrong in an unknown direction.
+
 
 ## Working rules
 
