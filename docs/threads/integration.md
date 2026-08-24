@@ -244,6 +244,59 @@ first hours, which asserted an authority the charter explicitly denies — threa
 defer to a manager. The title is what peers see; treat it as part of the
 charter.*
 
+**CANCELLED BY THE TRADER, 2026-08-24. His words: "fix the path".** *Everything
+below this line about the backfill is history; it never ran. The section is kept
+rather than deleted because the reasoning that killed it is the useful part.*
+
+**He killed it by challenging the premise, which nobody else had.** His question
+was why Alpaca should be called for 231 names when only the ones reaching the app
+matter. Checking it made the case against the run stronger than he put it:
+
+- **`resolveCycleHistory` has exactly one call site outside its own module** —
+  `pipeline.ts:365`, inside the accepted-analysis path, after the model call.
+  There is no model-free way to write `computedCycle`. So the backfill had to
+  force a full model re-interpretation per symbol, and **the ~2.6M input tokens
+  were the toll for reaching an arithmetic assignment**, not the cost of the
+  cycle. The cycle is a pure function over daily bars and costs nothing.
+- **The values would have decayed.** `pipeline.ts:194` returns the existing
+  dossier on the reuse path, so a stored cycle refreshes only when the EVIDENCE
+  fingerprint moves — filings, not price. `research.md` item 16 already said it:
+  *"the stored cycle freezes at the last filing. STAK would carry DAY_ONE from 24
+  July for the rest of that week."* A column correct on Monday morning, drifting
+  silently from the open.
+- **Research's item 16 fix removes the need for a backfill of any size.** Compute
+  at read time. And the read path is **synchronous** — `readDailyBars`
+  (`history.ts:62`) and `readCurrentAnalyses` (`readModel.ts:622`) are sync
+  better-sqlite3 calls — so a read-time cycle costs one arithmetic pass over
+  stored bars and **makes no Alpaca call at all.** Fetching stays in the worker,
+  for the names being analysed, which is exactly what he described.
+
+**THE DEADLINE MOVED; IT DID NOT DIE, and "backfill cancelled" reads like
+"clock gone".** The backfill's own 08:00Z deadline is void. **The live-path
+partial-bar exposure Ops escalated at `2830ca3` is untouched and still begins at
+Monday's open.** Nothing about this decision reduces it. So the item carrying the
+clock is now the **partial-bar guard**, not the read-time move.
+
+**Routed under the delegation, both pieces of item 16 to Research, in this order
+and the order inverts the obvious one:** the guard FIRST because it has the
+clock and fails closed whether or not Alpaca returns a partial `1Day` bar in
+premarket; the read-time cycle SECOND because it has no deadline and its absence
+is a blank column, which is honest.
+
+**The ownership call, and item 16 slightly overstates the seam.** It records the
+read path as having *"became Ops's in the 2026-08-24 split"*. True of
+`lib/market/store/researchRepo.ts` — but its caller is `readModel.ts:622`, and
+`lib/market/readModel.ts` is not in `store/`, so it is **Research's** under the
+same split. Either way the work is Research's on the split's own test — *does it
+define, migrate or version a table? Ops. Does it compute? Research.* It computes,
+and there is no schema change, so the schema-fails-on-the-box risk that earned
+Ops `store/` does not arise. **Ops reviews and deploys; Ops was told and offered
+the call back.**
+
+---
+
+**HISTORICAL FROM HERE — the backfill as it stood before it was cancelled.**
+
 **NOT IN FLIGHT — BLOCKED ON THE TRADER, WITH A HARD DEADLINE.** *Corrected in `91000c1`
 (00:50:32Z): this section said "in flight" and it has not started.* Ops is to run a forced
 `research:interpret` backfill over 231 dossiers to populate `computedCycle`,
@@ -1045,6 +1098,32 @@ the Sheet's float is vendor-displayed, the derived one is filing-computed, and
 the two instability figures that were nearly quoted against each other. **When
 two threads can each be right about the same word, the word needs a companion
 column, not a footnote.**
+
+## A deferral in one document becomes a workaround in another
+
+**Found 2026-08-24, and by the trader rather than by any thread.** Research's
+item 16 recorded a cheap structural fix — compute the cycle at read time — and
+this thread deferred it to *"a fresh session, no mitigation pass"*. Ops then
+built a **2.6M-token forced re-interpretation of 231 dossiers** as the mitigation
+for the blank column that deferral produced. Both documents were correct. **The
+deferral is in `research.md`, the workaround is in `ops.md`, and nobody put the
+two sentences side by side until he asked why we were doing it at all.**
+
+The tell is that neither thread could see it. Research had no reason to re-open a
+decision this thread had taken; Ops had no reason to question a task it had been
+handed and had gated properly. **The cost of a deferral is paid in a different
+charter from the one it is recorded in**, and this thread writes the deferrals.
+
+So: **when this thread defers a fix, it owns the price of the deferral too.**
+Name what will be done instead, in the same sentence, and compare the two. *"Item
+16 deferred to a fresh session"* was a decision about one item; *"item 16
+deferred, and the interim costs 2.6M tokens for a field that is arithmetic"* is
+a decision anyone would have questioned, including the person who wrote it.
+
+**It belongs beside the retraction rule and it is the same shape one level up.**
+A retraction only reaches the sentence it edits; **a deferral only reaches the
+document it is written in.** Both are failures of a decision to travel to the
+place where its consequence lands.
 
 ## Working rules
 
