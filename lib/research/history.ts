@@ -24,9 +24,25 @@ export interface DailyBar {
   low: number | null;
   close: number | null;
   volume: number | null;
+  /**
+   * Whether this bar covers a session that had already ended when it was
+   * fetched. Always populated, never inferred from absence.
+   *
+   * A consumer that computes a RATE must not use an incomplete bar: a part-day
+   * close and a part-day volume are wrong in an unknown direction. A consumer
+   * that computes a BOUND may: a high only rises within a session, so an
+   * incomplete high is a LOWER bound on the true one, and using it errs toward
+   * a higher ceiling rather than a lower one.
+   */
+  sessionComplete: boolean;
 }
 
-export interface NewDailyBar extends DailyBar {
+/*
+ * A bar being WRITTEN carries `fetchedAt` and not `sessionComplete`: the
+ * completeness is derived from the stamp on the way out, so a writer cannot
+ * assert it independently and disagree with the reader.
+ */
+export interface NewDailyBar extends Omit<DailyBar, 'sessionComplete'> {
   symbol: string;
   tradeCount: number | null;
   vwap: number | null;
@@ -108,10 +124,17 @@ function isFinished(row: { tradingDate: string; fetchedAt: string }): boolean {
  * matters because `dailyRvol` reads a 20-session baseline and a gap in the
  * middle would move the answer silently.
  */
+export type UnfinishedBars =
+  /** A rate or a phase. A part-day close or volume is wrong unpredictably. */
+  | 'EXCLUDE'
+  /** A bound. A part-day high is a lower bound, so including it errs safe. */
+  | 'INCLUDE';
+
 export function readDailyBars(
   db: MarketDatabase,
   symbol: string,
   limit = DEFAULT_CYCLE_HISTORY_TRADING_DAYS,
+  unfinished: UnfinishedBars = 'EXCLUDE',
 ): DailyBar[] {
   const query = db.prepare(
     `SELECT trading_date AS tradingDate, open, high, low, close, volume,
@@ -119,7 +142,15 @@ export function readDailyBars(
        FROM daily_bars WHERE symbol = ?
       ORDER BY trading_date DESC LIMIT ?`,
   );
-  type Row = DailyBar & { fetchedAt: string };
+  type Row = Omit<DailyBar, 'sessionComplete'> & { fetchedAt: string };
+  const stamp = (row: Row): DailyBar => {
+    const { fetchedAt: _fetchedAt, ...bar } = row;
+    return { ...bar, sessionComplete: isFinished(row) };
+  };
+
+  if (unfinished === 'INCLUDE') {
+    return (query.all(symbol, limit) as Row[]).map(stamp).reverse();
+  }
 
   let rows = (query.all(symbol, limit) as Row[]).filter(isFinished);
 
@@ -135,9 +166,7 @@ export function readDailyBars(
   }
 
   // Oldest first, which is how the summariser walks them.
-  return rows
-    .map(({ fetchedAt: _fetchedAt, ...bar }) => bar)
-    .reverse();
+  return rows.map(stamp).reverse();
 }
 
 /**

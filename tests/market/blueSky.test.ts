@@ -38,6 +38,7 @@ function window(options: {
       low: close * 0.9,
       close,
       volume: 1_000_000,
+      sessionComplete: true,
     });
   }
   // Dates must be unique and ordered; rebuild them as a clean ascending run.
@@ -112,6 +113,7 @@ describe('resolveBlueSkyThreshold', () => {
       low: 19,
       close: 24,
       volume: 9_000_000,
+      sessionComplete: true,
     });
 
     const threshold = resolveBlueSkyThreshold(bars, {
@@ -166,5 +168,50 @@ describe('resolveBlueSky', () => {
     const state = resolveBlueSky(verified(), null);
     expect(state.status).toBe('BLUE_SKY_ABOVE');
     expect(state.distancePct).toBeNull();
+  });
+});
+
+/**
+ * A ceiling set by a session still in progress.
+ *
+ * The high is a real traded price, so the ceiling stands. But the session may
+ * print higher, which makes the level a FLOOR under the true ceiling rather
+ * than the ceiling itself — and the difference is carried as data so a surface
+ * can say so without this module inventing trader-facing words for it.
+ */
+describe('ceilingSessionComplete', () => {
+  const finished = (tradingDate: string, high: number, close: number) => ({
+    tradingDate, open: close, high, low: close * 0.9, close,
+    volume: 1_000_000, sessionComplete: true,
+  });
+
+  it('is false when the ceiling came from an unfinished session', () => {
+    const bars = [
+      finished('2026-06-09', 1.48, 1.4),
+      finished('2026-08-19', 1.32, 0.84),
+      { tradingDate: '2026-08-20', open: 1.0, high: 1.57, low: 0.9, close: 1.25,
+        volume: 62_000_000, sessionComplete: false },
+    ];
+
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });
+
+    expect(t.price).toBe(1.57);
+    expect(t.ceilingSessionComplete).toBe(false);
+  });
+
+  it('is true when it did not', () => {
+    const bars = [finished('2026-06-09', 1.48, 1.4), finished('2026-08-19', 1.32, 0.84)];
+
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });
+
+    expect(t.price).toBe(1.48);
+    expect(t.ceilingSessionComplete).toBe(true);
+  });
+
+  it('is null when there is no ceiling at all', () => {
+    const t = resolveBlueSkyThreshold([], { tradingDate: '2026-08-24', adjustment: 'split' });
+
+    expect(t.price).toBeNull();
+    expect(t.ceilingSessionComplete).toBeNull();
   });
 });

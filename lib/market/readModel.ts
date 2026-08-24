@@ -302,7 +302,17 @@ function blueSkyThreshold(
 
   let threshold: BlueSkyThreshold;
   try {
-    const bars = readDailyBars(db, symbol, DEFAULT_CYCLE_HISTORY_TRADING_DAYS);
+    /*
+     * INCLUDE, unlike every other caller, because this computes a BOUND.
+     *
+     * A high only rises within a session, so an unfinished bar's high is a
+     * LOWER bound on the true one -- and an understated ceiling is the
+     * direction that manufactures a false blue sky. BTCT on 2026-08-20 held a
+     * 1.57 high fetched at 10:01 ET; hidden as unfinished, the ceiling fell to
+     * 1.48 from June and the board told the trader he was in blue sky against
+     * a level the same store already contradicted.
+     */
+    const bars = readDailyBars(db, symbol, DEFAULT_CYCLE_HISTORY_TRADING_DAYS, 'INCLUDE');
     threshold = resolveBlueSkyThreshold(bars, {
       tradingDate,
       adjustment: dailyBarAdjustment(db, symbol),

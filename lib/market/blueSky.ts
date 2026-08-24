@@ -73,6 +73,16 @@ export interface BlueSkyThreshold {
   adjustment: string | null;
   /** Plain-language reason the level could not be verified. Null when it was. */
   unverifiedReason: string | null;
+  /**
+   * Whether the session that set the ceiling had ended when its bar was
+   * fetched. Null when there is no ceiling.
+   *
+   * Data rather than a label. The ceiling is trustworthy either way -- a
+   * part-day high is a real traded price -- but the session may still print
+   * higher, so the level is a floor under the true one. What a surface does
+   * with that is Design's.
+   */
+  ceilingSessionComplete: boolean | null;
 }
 
 export interface BlueSkyState {
@@ -86,6 +96,7 @@ export interface BlueSkyState {
 
 export const UNAVAILABLE_THRESHOLD: BlueSkyThreshold = {
   verified: false,
+  ceilingSessionComplete: null,
   price: null,
   date: null,
   sessionsObserved: 0,
@@ -132,6 +143,7 @@ export function resolveBlueSkyThreshold(
 
   const price = ceiling.high as number;
   const base: BlueSkyThreshold = {
+    ceilingSessionComplete: ceiling.sessionComplete,
     verified: false,
     price,
     date: ceiling.tradingDate,

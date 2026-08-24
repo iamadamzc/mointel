@@ -157,3 +157,75 @@ describe('readDailyBars', () => {
     expect(readDailyBars(store, 'ACME')[0]).not.toHaveProperty('fetchedAt');
   });
 });
+
+/**
+ * The same bar set, two opposite requirements.
+ *
+ * `EXCLUDE` was the only behaviour, and it was chosen for the cycle -- where a
+ * part-day close and a part-day volume make a rate wrong in an unknown
+ * direction. Blue sky is a BOUND, and there the same filter is actively
+ * harmful: a high only rises within a session, so hiding an unfinished bar
+ * UNDERSTATES the ceiling, and an understated ceiling is the direction that
+ * manufactures a false blue sky.
+ *
+ * BTCT, 2026-08-24, on the trader's board: the 08-20 bar held a 1.57 high and
+ * was fetched at 10:01 ET, mid-session. Hidden, the ceiling fell to 1.48 from
+ * June, and the ladder reported "IN VERIFIED BLUE SKY - PRIOR CEILING $1.48"
+ * against a level the same store already contradicted.
+ */
+describe('choosing what an unfinished bar means', () => {
+  const btct = () => {
+    const store = db();
+    upsertDailyBars(store, [
+      bar({ tradingDate: '2026-06-09', high: 1.48, close: 1.4, fetchedAt: sessionEnd('2026-06-09') }),
+      bar({ tradingDate: '2026-08-19', high: 1.32, close: 0.84, fetchedAt: sessionEnd('2026-08-19') }),
+      // Fetched 10:01 ET on its own trading date: a running high, not a final one.
+      bar({ tradingDate: '2026-08-20', high: 1.57, close: 1.25, fetchedAt: midSession('2026-08-20') }),
+    ]);
+    return store;
+  };
+
+  it('hides the running high by default, which is what broke the ceiling', () => {
+    const highs = readDailyBars(btct(), 'ACME').map((b) => b.high);
+
+    expect(highs).toEqual([1.48, 1.32]);
+    expect(Math.max(...(highs as number[]))).toBe(1.48);
+  });
+
+  it('includes it for a bound, restoring the real ceiling', () => {
+    const bars = readDailyBars(btct(), 'ACME', 90, 'INCLUDE');
+
+    expect(bars.map((b) => b.high)).toEqual([1.48, 1.32, 1.57]);
+    expect(Math.max(...(bars.map((b) => b.high) as number[]))).toBe(1.57);
+  });
+
+  it('marks which sessions had finished, so a consumer is never guessing', () => {
+    const bars = readDailyBars(btct(), 'ACME', 90, 'INCLUDE');
+
+    expect(bars.map((b) => b.sessionComplete)).toEqual([true, true, false]);
+  });
+
+  it('reports every bar complete when they are excluded, rather than leaving it unset', () => {
+    // An absent flag would have to be read as "probably fine", which is the
+    // default this codebase refuses everywhere else.
+    const bars = readDailyBars(btct(), 'ACME');
+
+    expect(bars.every((b) => b.sessionComplete)).toBe(true);
+  });
+
+  it('still fills the requested window under EXCLUDE, and does not under INCLUDE', () => {
+    /*
+     * INCLUDE takes the limit literally because nothing was dropped; EXCLUDE
+     * re-queries to make up the shortfall. Pinned because the two paths return
+     * different counts for the same limit and that is intentional.
+     */
+    const store = btct();
+
+    expect(readDailyBars(store, 'ACME', 2)).toHaveLength(2);
+    expect(readDailyBars(store, 'ACME', 2, 'INCLUDE')).toHaveLength(2);
+    expect(readDailyBars(store, 'ACME', 2, 'INCLUDE').map((b) => b.tradingDate)).toEqual([
+      '2026-08-19',
+      '2026-08-20',
+    ]);
+  });
+});
