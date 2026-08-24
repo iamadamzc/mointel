@@ -749,6 +749,46 @@ claim than a corrected figure, and it should not be buried in a qualifier.
    must not assume a float number exists; now it must also not treat a refused
    one as zero, missing, or tight.
 
+### Phase C ships a BOUND, not a float — and a bound must never read as one
+
+The owner's framing, `8c2d2d5`: *"we are an intelligence platform, not a signal
+platform — so give the user as much of the story as we can that is useful."* The
+bar is **useful, not certain**, which reverses the defensive default several
+decisions below were taken under.
+
+**It changes the float answer.** Phase C ships **shares outstanding**, not float:
+a bounded proxy with `float_basis`, an as-of, a staleness gate, and
+`CANNOT_VERIFY` where the denominator cannot be trusted. Under this framing the
+question is no longer *whether* to show it — *"supply bounded at X, from filed
+shares as of DATE"* is story, and an empty column is not.
+
+**So the design question is how to render a bound so it cannot be misread as a
+float.** Shares outstanding is always ≥ float, so a bare figure in the float slot
+is the worst possible outcome: a trader scanning for a tight float sees a large
+number and rejects a name whose actual float may be small. **The operator carries
+the meaning:**
+
+    ≤ 915M · filed 2026-05-12
+
+`≤` is one character, cannot be read as an exact figure, and says the true value
+is somewhere below. **A bound never occupies the float slot unqualified.**
+
+**And a bound refines the five-state ladder below — it is a sixth position.** It
+is strictly more than *"looked, cannot judge"* and strictly less than *"have
+it"*: the desk cannot give the number but can say what it is under. That is the
+intelligence-platform position in one cell, and it is the state the old design
+had no room for, because it only asked whether a value was known.
+
+**What the framing argues against**, and these are the failure modes to check a
+float design against: collapsing a computation to a label and discarding the
+working; suppressing a value because it is uncertain instead of **labelling the
+uncertainty**; and *"we will show it once it is reliable"*, which withholds the
+story until it has stopped being one.
+
+**The limit is the word *useful*.** Terminology stays trader-facing, engine
+internals stay rejected, and a field nobody would ask about is still not worth
+showing. The test is what he would want if he were doing this by hand.
+
 ### The pattern underneath, for §8: the desk's five states of knowing
 
 This is now the **fourth** time the same distinction has had to be drawn, each
