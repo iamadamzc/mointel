@@ -972,10 +972,16 @@ parameters"**. An endpoint's behaviour on a bare call is not its behaviour in th
 app, and checking it bare gives a confident wrong answer — the same class of
 error as reading `/api/dashboard` for a dossier field.
 
-**One loose thread, not Design's and not explained here:** Ops counted
-`given back` ×3 in server-rendered HTML that also had `NO RUN` ×0. If the cycle
-column were wholly unpopulated server-side, three retracement phrases should not
-appear either. Worth someone pulling.
+**The loose thread is closed, and it closed as CONFIRMATION of the finding it
+appeared to contradict.** Ops counted `given back` ×3 in server-rendered HTML
+with `NO RUN` ×0. Those three are **static control labels**, verified here:
+`FilterBar.tsx:118` and `:123` are filter-chip `title`s, `MarketSummary.tsx:93`
+is a segment hint — all three written by this thread. The only data-bearing
+instance is `lib/dashboard/cycle.ts:93`, gated on `retracementPct > 0`.
+
+So server-rendered HTML with zero populated cycle data is **exactly** nine
+`CYCLE NOT ESTABLISHED`, zero `NO RUN`, and three chrome labels. There was never
+a contradiction to explain.
 
 **A better test would not exist later.** These arrived on a nine-row table at
 `CLOSED`, not on a populated board — the assumption that a phase-dependent
@@ -1386,6 +1392,15 @@ practical size of the inflation is unknown. Needs the live desk.
   populates from 04:00 every session, and 10:30 on any weekday gives more names
   than premarket does, with no token expiring underneath the work. Planning
   around a single premarket slot was a self-imposed constraint.
+- **A string count over a page conflates controls with data — only a count over
+  rows means anything.** Established 2026-08-24, and the evidence for it is that
+  Ops broke it *while checking this thread's work*, an hour after reading and
+  endorsing the refusal that stated it. Design declined to count `DAY 1` and
+  `OFF HIGH` as a phase-name pass because they were **filter chips, not badges**;
+  Ops then counted `given back` ×3 as an anomaly when all three were chip
+  tooltips. Same trap, different string, one hour apart. **A rule its own
+  endorser breaks within the hour is structural, not careless** — which is the
+  same conclusion this desk reached about why no thread finds its own defects.
 - **A check that cannot fail is not a check.** Before reporting anything
   verified, ask what result would have proved it *broken*. If the answer is
   "none available right now", the observation confirms nothing — say so instead
