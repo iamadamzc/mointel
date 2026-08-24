@@ -277,6 +277,48 @@ partial-bar exposure Ops escalated at `2830ca3` is untouched and still begins at
 Monday's open.** Nothing about this decision reduces it. So the item carrying the
 clock is now the **partial-bar guard**, not the read-time move.
 
+**THE GUARD IS DONE: `952f9e1`, committed and pushed 01:11Z.** `lastSettled
+TradingDate` is one concept doing both jobs — which bar may be STORED and whether
+the cache is CURRENT — because they are the same question asked twice. The cache
+test moves from `stored === today` (a **UTC** date) to `stored >= settled` (ET),
+and the store write filters `rows.filter(r => r.tradingDate <= settled)`. The
+boundary is the **20:00 ET session end, not the 16:00 close**, chosen against the
+unverifiable: nobody can establish tonight whether Alpaca folds extended-hours
+trades into a `1Day` bar, and four extra hours cost a daily-grain measure nothing
+while guessing wrong stores a bar that is still moving. Named as what is
+ACCEPTED, per the allowlist rule. Holidays deliberately unhandled and failing in
+the redundant-fetch direction.
+
+**Deploy target is `952f9e1`, and it carries both.** Sequencing called here:
+one deploy, not two. Outside `docs/`, `a5a3a98..952f9e1` is exactly the guard's
+two files, checked at directory scope. Design's checks have their own clock —
+review session 13 expires 11:59 ET — and two gates for two wanted changes buys
+nothing. Ops was told and offered the reversal.
+
+**MY OWN CLAIM WENT STALE INSIDE THIRTY MINUTES, and it is the section above
+this one working exactly as written.** I told Ops and Design that there was *no
+code between `a5a3a98` and HEAD, only charter files.* True when measured, false
+by `952f9e1`. It was a directory-scope diff, correctly done, against a HEAD that
+then moved — **the measurement was right and the tense was wrong**, which is the
+whole of *Observations go stale*. Corrected to Ops in the same message that
+asked it to deploy, before it could gate on the old sentence.
+
+**Open, and it is Ops's because it needs the box: is the store ALREADY poisoned?**
+The guard is **preventive, not corrective**. Item 16 says the live path always had
+this defect and only that it *"has not bitten"* — a claim about consequence, not
+about whether partial bars are already sitting in `daily_bars`. It is checkable
+and the column exists: `fetched_at` (`db.ts:390`). A row whose `trading_date`
+equals the ET date of its own `fetched_at`, with `fetched_at` before 20:00 ET
+that day, was written mid-session.
+
+**Checked before raising it, and it is a size question rather than an incident.**
+`upsertDailyBars` is `ON CONFLICT(symbol, trading_date) DO UPDATE`
+(`history.ts:47`), so a pre-existing partial row is overwritten by the next fetch
+that happens once `settled` has moved past its date. The change from `===` to
+`>=` **delays that healing by about a day; it does not remove it.** Handed to
+Research to record in item 16 in its own words, because the next reader of `>=`
+will ask the same question and should not have to re-derive it.
+
 **Routed under the delegation, both pieces of item 16 to Research, in this order
 and the order inverts the obvious one:** the guard FIRST because it has the
 clock and fails closed whether or not Alpaca returns a partial `1Day` bar in
