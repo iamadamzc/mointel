@@ -1636,6 +1636,16 @@ practical size of the inflation is unknown. Needs the live desk.
   tooltips. Same trap, different string, one hour apart. **A rule its own
   endorser breaks within the hour is structural, not careless** — which is the
   same conclusion this desk reached about why no thread finds its own defects.
+- **This host is UTC+2 — every tool timestamp is SIX HOURS ahead of New York.**
+  A vitest header reading `10:36`, a shell `date`, a commit time: all CEST.
+  Verified 2026-08-24: local `10:51`, UTC `08:51`, **ET `04:51`**. Read it
+  explicitly rather than inferring it —
+  `node -e "console.log(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}))"`.
+  **It survived a whole night because a wrong timezone produces a *plausible*
+  time**, so nothing prompts a check — the same shape as a correct-but-narrow
+  number. Two threads called the market open at 04:45. **And `PREMARKET` means
+  premarket *capture* is live, not that trading is.** The codebase is clean; the
+  hazard is entirely in reading tool output.
 - **A check that cannot fail is not a check.** Before reporting anything
   verified, ask what result would have proved it *broken*. If the answer is
   "none available right now", the observation confirms nothing — say so instead
