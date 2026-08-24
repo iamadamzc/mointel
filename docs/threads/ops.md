@@ -218,15 +218,36 @@ safer board*. That half was wrong. The backfill stores bars whose max is
 re-analyses refetch exactly as they would have. **The backfill neither causes nor
 prevents the partial-bar lock-in.** All three options carry identical exposure.
 
-**What survives is a legibility argument, and it is not the one I gave.** On
-Monday, any name re-analysed live gets a cycle computed on possibly-partial bars.
-So:
+**~~What survives is a legibility argument~~ — also retired, and this one was
+worse.** I argued that backfilled-correct and Monday-possibly-wrong cycles are
+*indistinguishable*. They are not, and **the discriminator was already stored**.
 
-- **Without a backfill**, a cycle value on the board means *"re-analysed today"*,
-  which also means *"possibly partial-bar contaminated"*. A blank means *"not
-  computed"*. The two are distinguishable.
-- **With a backfill**, correct values from tonight and possibly-wrong values from
-  Monday look identical. That signal is destroyed.
+Verified at the lines rather than accepted: `CycleArc.latestDate`
+(`lib/market/cycle.ts:143`) is assigned `latest.tradingDate` (`cycle.ts:330`),
+carried through `CycleResult` → `CycleHistory.current` (`cycle.ts:215`, `365`) →
+`computedCycle`, and the dossier is `JSON.stringify`d wholesale, so it persists.
+So every dossier records **the trading date of the last bar its cycle was
+computed through**. Tonight's are stamped `2026-08-21`; one computed Monday
+against a partial bar is stamped `2026-08-24`.
+
+**Its limit, which matters and should not be dropped:** `NO_CYCLE` carries no
+`latestDate`, so this is *every row with an arc*, not every row. Sufficient here
+— a row with no cycle cannot show a wrong one.
+
+**Stated precisely, because overclaiming it is how I got here:** *during* a
+session, a row whose `latestDate` equals the current trading date was computed
+against an unfinished bar. After the close it is not suspect — the UTC date rolls
+at 20:00 ET, so a late-evening computation legitimately carries that day.
+
+**How I was wrong is worse than the earlier instances.** Those measured one thing
+and asserted another. This asserted a **negative — "nothing tells them apart" —
+without looking for anything at all.** Research's framing is the one to keep:
+*before concluding two states are indistinguishable, check whether the data
+already separates them.*
+
+**So both arguments behind "don't run it" are gone.** The safety half died with
+the inoculation finding, this half with the discriminator. What remains behind
+not running it is **token cost, and nothing else**.
 
 **And Research's argument for 231 is the same shape pointed the other way:** a
 *partially* populated column is worse than either extreme, because a trader
@@ -234,10 +255,16 @@ seeing a cycle on some rows and not others infers something about the rows
 without one — and the truth would be *"that name was not on a list drawn up at
 one in the morning"*.
 
-**Both arguments agree that 148 is the worst option.** Research's says partial
-population invites a false inference; mine says any population destroys a true
-one. The scope choice is therefore **231 or none**, and the middle is ruled out
-by both threads reasoning independently from opposite directions.
+**Where that leaves the scope, after both of my arguments were retired.**
+Research's argument stands untouched: a *partially* populated column invites a
+trader to infer something from the blanks, when the truth is that the name was
+not on a list drawn up at one in the morning. Nothing has contradicted it.
+
+**So the recommendation is 231**, and the only remaining question is contention,
+which is this thread's: 231 Alpaca REST calls against a budget nothing else is
+using — the worker's calendar refreshed 00:34 UTC and nothing is due until
+~20:34 — plus store writes through a fourth concurrent writer at `busy_timeout`
+5000 ms. Acceptable, on a closed market, run alone after the deploy.
 
 *Cost of that: 231 puts ~2.6M in / 0.9M out through the model, 231 Alpaca REST
 calls, and more store writes through a fourth concurrent writer at
