@@ -589,6 +589,31 @@ rather than merely not-`RIGHT` — **so a future reorder cannot demote them
 silently.** A negative assertion passes for the wrong reason as easily as the
 right one.
 
+## A summary line must carry its basis, or it will be re-derived wrongly
+
+**R&D, 2026-08-24, against its own headline number — and it is the basis rule
+turned on a finding rather than a column.**
+
+Re-checking Pillar 4, it computed the stored-catalyst columns first, saw **17.9%**
+where it expected **16.7%**, and briefly concluded **its own published figure did
+not reproduce.** It does, exactly. **It had compared a number against a DIFFERENT
+INSTRUMENT and read the disagreement as an error.**
+
+**The findings log named the basis. The register's summary line did not** — which
+is what made the mistake available.
+
+> **A figure whose basis lives only in the document that derived it will be
+> re-derived wrongly by someone reading the summary — including by the person who
+> wrote both.**
+
+**This is `float_basis`, `reference_basis` and `split_sessions_ago`-with-its-window
+applied one level up:** not to a stored value, but to **a conclusion**. The
+companion travels with the number wherever the number goes, and a summary is
+exactly where numbers go without their companions.
+
+**The tell that it is worth the words: the author of both documents made the error
+against himself, in under an hour, on the desk's most-quoted figure.**
+
 ## A constant dressed as a measurement
 
 **Research, 2026-08-24, found in its own ledger.** The hardest version of *a check
@@ -878,7 +903,38 @@ practice governs:
   Two limits that travel with it and must not be dropped when it is quoted:
   the window is 2026-08-17 to 08-21 and **cannot be extended backwards**, and
   every stored grade this rests on was produced by a pipeline blind to the
-  share count in 62% of cases. [../DATA-ARCHIVE.md](../DATA-ARCHIVE.md) and
+  share count in 62% of cases.
+
+  **STRESS-TESTED 2026-08-24 AND IT HOLDS HARDER THAN PUBLISHED.** *R&D,
+  `52b1d3f`, prompted by the stale-tail finding.*
+
+  **The attenuation argument survived a real threat.** Measurement error only
+  biases toward zero when it is **non-differential** — if stale grades clustered
+  among movers, the +18.9 ceiling would stop being a ceiling. Measured:
+  **uncensored mean grade age 0.15 sessions for movers against 0.11 for
+  non-movers. No differential.**
+
+  **What IS strongly differential is whether a name was analysed at all** — 41.6%
+  mover rate among symbol-days carrying an analysis version against 11.6% among
+  those carrying none. **That is selection into the pipeline rather than
+  misclassification, and the coverage classification had already excluded it:**
+  all 11 movers with no version are `FAILED` or `NO_LOOK`. The instrument caught a
+  finding that did not exist when it was built.
+
+  **And the verdict does not turn on which definition of "carried a catalyst" a
+  reader picks** — re-run over every definition the archive can express, same 211
+  admissible symbol-days:
+
+  | definition | difference | p |
+  | --- | ---: | ---: |
+  | prior-free five-draw modal *(published)* | +3.3pp | 0.51 |
+  | stored `catalyst_first` | +0.5pp | 1.000 |
+  | stored `catalyst_last` | +4.5pp | 0.434 |
+  | stored `catalyst_best` | +6.9pp | 0.251 |
+
+  **None significant; widest gap 6.9 points against a Pillar 4 reading that implies
+  a near-total one.** That is a stronger claim than the single-instrument version,
+  and it is exactly the attack a bounded negative invites. [../DATA-ARCHIVE.md](../DATA-ARCHIVE.md) and
   the R&D register carry the working.
 
 Terminology is trader-facing. Labels describing engine internals get rejected.
