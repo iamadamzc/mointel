@@ -478,6 +478,32 @@ depends on hosted web search too — its provider class sits in the *same file* 
 discovery's — so **84% of the desk's input tokens are search-dependent, not 56%.**
 One grep, one directory, two wrong conclusions.
 
+## `live?` propagates through a calculation; a taxonomy of origins does not
+
+**R&D, 2026-08-24, reconciling its own annotation against an independently written
+Sheet report.** The two classifications agreed on everything **except float**, and
+the disagreement is structural rather than an error by either.
+
+The report files **Float** under *filing/reference fact*, beside SEC forms and
+split history — which implies it is re-derivable from a filing. **It is not:** the
+same report's own source table shows `stockanalysis.com` at **505 citations**. And
+it files *Overhang/Float* and *Float Quality* under *deterministically calculated*,
+which they are — **from an input that is live.**
+
+> **Their taxonomy classifies by HOW a value was produced. `live?` has to
+> PROPAGATE THROUGH the calculation, because a deterministic function of an
+> unrecoverable input is unrecoverable.**
+
+**Two independent classifications agreeing on everything except the one field the
+desk is actively arguing about** — and disagreeing because one asks *what kind of
+thing is this* and the other asks *can it be got back*. Both questions are
+reasonable; only the second decides what is lost when a source is retired.
+
+**The practical form: recoverability is a property of the whole dependency chain,
+not of the last step that produced the value.** A computed field inherits the
+worst recoverability of its inputs, and a taxonomy built on provenance will file
+it under the step you can see.
+
 ## A constant dressed as a measurement
 
 **Research, 2026-08-24, found in its own ledger.** The hardest version of *a check
@@ -993,8 +1019,12 @@ As of the last session, **2026-08-23**:
   HISTORY**. They are different questions and **a field can be fully PRODUCED and
   still have every past value lost forever.**
 
-  **26 of 64 are live, and the pattern does not follow the verdict column at
-  all:** bars and filings are *not* live because re-fetchable — which is why five
+  **27 of 64 are live, possibly 29** — *corrected by R&D against the Sheet report:
+  `Q` is a synthesis in one cell and is LIVE; it had been marked not-live because
+  the annotation described what the field would BECOME (the desk's computed
+  `priceLevels` replacement) rather than what the Sheet actually holds. `live?`
+  asks about the existing history.* **The pattern does not follow the verdict
+  column at all:** bars and filings are *not* live because re-fetchable — which is why five
   days of outcomes were rebuilt from a cold fetch; **model judgements are live**,
   not because they cannot be re-run but because a re-run gives *a* grade rather
   than *the* grade (catalyst 45% not-unanimous, structure 55%); vendor snapshots
@@ -1034,6 +1064,12 @@ As of the last session, **2026-08-23**:
 
   **A forecast recorded before its outcome is the archive spec's definition of
   irreplaceable, and half of that record stopped three days ago.**
+
+  **And the scope gap is bigger than the dated tabs: `§6.3` of the Sheet report
+  describes a separate SIXTEEN-COLUMN 09:25 section sitting outside `A:AA`
+  entirely** — decision, opening thesis, invalidation, spread/liquidity, supply
+  risk, opening plan. **Almost entirely analyst-derived, so live by every
+  criterion, written by a paused task, and covered by no annotation.**
 
   **The audit cannot catch this: its scope is `TODAY!A:AA` and `RESEARCH!A:AK`, and
   the dated tabs are neither.** No annotation touches them and no `live?` mark
