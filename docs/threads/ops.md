@@ -209,6 +209,55 @@ this time and printed `keep fd9556f (pinned)`.
 
 No migration: schema 21 both sides, migrate wrote 0 backups.
 
+## The cycle backfill: checked for capture risk, and it is a free WAL experiment
+
+A forced re-analysis over the dossier set runs tonight to populate
+`computedCycle`. It writes to the production store, hours before premarket, so it
+was checked here rather than accepted as "dossiers only" — which is a claim about
+*tables* and not about the things that actually bite.
+
+**Alpaca REST: not a risk, and this was the live one.** A forced interpret calls
+`ensureDailyHistory` per symbol (`worker/research-interpret.ts:152`), which
+reaches `rest.getBars()` on the same budget the market worker uses — the budget
+that threw `rate limited` and a calendar `503` on Friday. Measured:
+
+| dossier tickers | already have daily bars | would fetch from Alpaca |
+| --- | --- | --- |
+| 231 | **230** | **1** |
+
+So it short-circuits on *already current* for all but one. That is the same
+concern raised against the three-arm run, and here the number retires it.
+
+**Disk: not a risk.** 67 G free, WAL at its existing high-water.
+
+**Worth knowing:** the store gains a fourth concurrent writer for the duration.
+`busy_timeout` is 5000 ms and `openDatabase` holds a cross-process lock, and
+`database is locked` was a real incident with three writers — so this is small
+but not zero, and it is the reason nothing may go near `mointel-market` or
+`mointel-assess` while it runs.
+
+### The free part
+
+**It is a write-burst load test for Open item 2, and it costs nothing.** The WAL
+question is whether checkpoints keep up under load; a 231-analysis burst is load,
+with the dashboard idle. That is not the same as premarket *reader* contention
+and does not replace Monday's sample — but it isolates the write half, which
+Monday's sample cannot.
+
+**Baseline taken before it runs: WAL exactly `531,574,792` bytes**, unchanged
+from 2026-08-23. Read it again after:
+
+- **unchanged** → checkpoints absorbed a 231-write burst without the file
+  growing, which is the strongest evidence yet that 507 MB is a high-water mark
+  and not a leak
+- **grown** → checkpointing falls behind under write load *alone*, before readers
+  are even involved, and Monday's premarket reading is likely to be worse
+
+Either result is worth more than the column it was run for. **Note also that a
+grown high-water changes the 507 MB baseline recorded elsewhere in this
+charter** — Monday's sample is about flat-versus-growing, not the absolute
+number, but the number in the record will be stale.
+
 ## Monday 04:00: what an empty cycle column means, and the number to expect
 
 **Every name with a dossier will read `CYCLE NOT ESTABLISHED` when the board
