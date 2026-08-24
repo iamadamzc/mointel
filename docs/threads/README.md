@@ -384,8 +384,10 @@ reading the wrong field, this one is about reading the right field at the wrong
 
 ## The rule you just wrote is the one you are least likely to apply
 
-**Ops, 2026-08-24, explaining a day in which three separate authors broke their own
-rules.**
+**Integration's observation of a day in which three separate authors broke their
+own rules; Ops's compression of it.** *Attribution corrected at Ops's insistence —
+it declined the credit on the grounds that the hard part was noticing the three
+were one shape.*
 
 - Integration wrote *"never report who holds a file from `git status`"* and did it
   again inside the hour.

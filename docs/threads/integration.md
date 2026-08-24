@@ -738,8 +738,44 @@ today's behaviour.** Nowhere near it now: `NRestarts` is 0 or 1 on every unit.
 
 **A margin worth calling luck is worth knowing the size of, and it is 50 seconds.**
 
-**Not fixed tonight, and that is Ops's call and the right one** — a migration-path
-change hours before an open, for a fault that recovers, is the wrong trade.
+**Not fixed tonight. The call holds and the reasoning that carried it does NOT.**
+*Re-stated by Ops on request, because the risk profile moved after the judgement
+was made.* Its original sentence — *the wrong trade for a fault that self-heals* —
+**died with its own 50-second measurement.**
+
+**What carries it is that the trigger is transient and the restart is not
+concurrent with it.** The race needs several services opening the store at once,
+which happens only in the deploy's **start burst**; the ten-second restart fires
+*after* that burst, when the others are up and idle. **That is why all four
+occurrences were a single crash and never a loop — mechanism, not luck.** The
+50-second cliff is real and requires a **persistent** cause; this one is
+self-limiting by construction.
+
+**My "cheap fix" was already in place and does not help.** All three runtime units
+already declare `After=mointel-migrate.service`. **The race is between the runtime
+units with EACH OTHER**, which that ordering does not constrain. Worth knowing
+before someone reaches for it as the obvious move — I did.
+
+**And the cause is sharper than "a migration path".** The upgrade transaction runs
+on **every open regardless of version**: `fromVersion` is read but used only to
+decide whether to take a backup, while `db.exec(SCHEMA)`, `migrate()` and the
+`user_version` write execute inside `db.transaction()` **unconditionally** at
+`db.ts:938-945`. So every worker startup takes a write transaction on the store;
+three at once, one loses its snapshot.
+
+**The better candidate: an early return inside the lock when
+`fromVersion === SCHEMA_VERSION`** — an already-current store then opens with no
+write transaction at all. **One real consequence, not to be waved at:** today a
+table or column added *without* a `SCHEMA_VERSION` bump is silently created by
+`CREATE TABLE IF NOT EXISTS` on the next open, and with an early return it would
+not be. That makes a trap this desk already documents fail **loudly** instead of
+quietly — probably an improvement, but a behaviour change rather than a no-op.
+
+**Ops's own guard on the decision, recorded because it is the right instinct:**
+*the size is not the deciding factor.* A one-line change to the path that decides
+whether a migration runs is exactly what *"it is only one line"* has been wrong
+about before, **and the store is the one place where being wrong is
+unrecoverable.**
 
 ## Reading other threads
 
