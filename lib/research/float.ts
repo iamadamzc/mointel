@@ -74,6 +74,10 @@ export const FILED_SHARES_CURRENT_DAYS = 45;
  * applied on one side only. Item 14 fixes it at ~2% and explicitly refuses to
  * gate it on `ADR_ADS`, because YJ is an ADR the classification records as
  * ordinary. The test stands on the ratio alone.
+ *
+ * It IS gated on the denominator's freshness, though — see `assessFloat`. An
+ * unadjusted pre-reverse-split count produces this signature from a perfectly
+ * good float.
  */
 export const UNIT_MISMATCH_RATIO = 0.02;
 
@@ -179,15 +183,31 @@ function ageInDays(asOf: string, now: Date): number | null {
  * the two-definitions seam that cost this desk a day. The gap belongs to
  * `lib/market/securities.ts` and is reported there.
  *
- * The two arithmetic tests then behave differently under a stale denominator,
- * and that is why only one of them is gated on age:
+ * **NO arithmetic verdict survives a stale denominator, in either direction.**
  *
- * - An old count is an UNDERSTATEMENT of today's shares. So `float > shares`
- *   fires MORE as the count ages, and on a stale one it is evidence of dilution
- *   rather than of a broken float. Gated.
- * - The same understatement makes the ratio LARGER, never smaller. Staleness can
- *   therefore hide a unit mismatch but can never manufacture one, so the ratio
- *   test is valid at any age. Not gated.
+ * An earlier version of this gated only `float > shares`, on the argument that
+ * an old count UNDERSTATES today's shares, so staleness could hide a unit
+ * mismatch but never manufacture one. **That argument assumed dilution and
+ * forgot reverse splits**, which run the other way and are ordinary on this
+ * desk's universe. `dei:EntityCommonStockSharesOutstanding` is a cover-page
+ * figure and is NOT retroactively adjusted, so a pre-split count OVERSTATES
+ * today's shares by the split ratio:
+ *
+ * - `EBON` — 1-for-30 in Nov 2022, count `asOf` 2019-12-31. Filed 111,771,000;
+ *   111,771,000 / 30 = 3,725,700.
+ * - `ZOOZ` — 1-for-20 effective 2026-06-01, count `asOf` 2025-12-31. Filed
+ *   161,995,282; / 20 = 8,099,764.
+ *
+ * A genuine post-split float against either would read as a 20-30x UNIT
+ * MISMATCH — the exact verdict the old comment claimed was unmanufacturable.
+ * So both tests are now gated on the same freshness, and the rule is the simple
+ * one: a denominator that may be wrong in an unknown direction cannot support
+ * any arithmetic about it.
+ *
+ * Not corrected by split-adjusting instead, deliberately. `reverseSplitHistory`
+ * is model-extracted prose ("One-for-thirty reverse stock split ..."), and
+ * dividing a share count by a number parsed out of a sentence is a worse
+ * failure than declining to answer.
  */
 export function assessFloat(claim: FloatClaim): FloatAssessment {
   const security = classifySecurity({ symbol: claim.ticker, name: claim.issuerName });
@@ -253,6 +273,26 @@ export function assessFloat(claim: FloatClaim): FloatAssessment {
 
   const ratio = claim.claimedFloat / claim.filed.shares;
 
+  /*
+   * One gate for both tests, checked before either.
+   *
+   * A stale count can be too LOW (shares issued since) or too HIGH (a reverse
+   * split the cover page predates), and nothing here can tell which. Both
+   * arithmetic verdicts would name the float as the broken side when the
+   * denominator is the one that moved.
+   */
+  if (!current) {
+    return {
+      verdict: 'CANNOT_VERIFY',
+      denominatorAgeDays: age,
+      ratio,
+      detail:
+        age === null
+          ? 'filed share count carries an unusable date'
+          : `filed count is ${age} days old; issuance or a reverse split since would move it in either direction`,
+    };
+  }
+
   if (ratio < UNIT_MISMATCH_RATIO) {
     return {
       verdict: 'UNIT_MISMATCH',
@@ -263,17 +303,6 @@ export function assessFloat(claim: FloatClaim): FloatAssessment {
   }
 
   if (ratio > 1) {
-    if (!current) {
-      return {
-        verdict: 'CANNOT_VERIFY',
-        denominatorAgeDays: age,
-        ratio,
-        detail:
-          age === null
-            ? 'filed share count carries an unusable date'
-            : `float exceeds filed shares, but the count is ${age} days old and the issuer may have issued since`,
-      };
-    }
     return {
       verdict: 'IMPOSSIBLE',
       denominatorAgeDays: age,

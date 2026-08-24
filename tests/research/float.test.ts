@@ -113,19 +113,29 @@ describe('the unit test, which is not gated on age', () => {
     expect(result.ratio).toBeCloseTo(0.01);
   });
 
-  it('fires on a stale denominator too, unlike the impossibility test', () => {
+  it('does NOT fire on a stale denominator, because a reverse split looks the same', () => {
     /*
-     * Deliberately asymmetric with the rule above, and the asymmetry is the
-     * point. An old count UNDERSTATES today's shares, which makes the ratio
-     * LARGER. Staleness can therefore hide a unit mismatch but can never
-     * manufacture one, so gating this on age would only lose true positives.
+     * This test asserted the opposite until ZOOZ was measured.
+     *
+     * The old reasoning was that an old count understates today's shares, so
+     * staleness could hide a unit mismatch but never manufacture one. That
+     * assumed dilution. A reverse split runs the other way, and
+     * dei:EntityCommonStockSharesOutstanding is a cover-page figure that is not
+     * retroactively adjusted -- so a pre-split count OVERSTATES shares by the
+     * split ratio and a perfectly good float reads as a 20x unit error.
+     *
+     * ZOOZ's real numbers: 1-for-20 effective 2026-06-01, count asOf
+     * 2025-12-31, filed 161,995,282. The true post-split count is 8,099,764.
      */
     const result = assessFloat({
-      ...claim({ claimedFloat: 100_000 }),
-      filed: filed({ asOf: agedDays(2_790) }),
+      ...claim({ ticker: 'ZOOZ', issuerName: 'ZOOZ Power Ltd. Ordinary Shares' }),
+      claimedFloat: 3_000_000,
+      filed: filed({ shares: 161_995_282, asOf: agedDays(233) }),
     });
 
-    expect(result.verdict).toBe('UNIT_MISMATCH');
+    expect(result.ratio).toBeLessThan(UNIT_MISMATCH_RATIO);
+    expect(result.verdict).toBe('CANNOT_VERIFY');
+    expect(result.detail).toContain('reverse split');
   });
 
   it('lets a genuinely small float through just above the threshold', () => {
@@ -136,11 +146,17 @@ describe('the unit test, which is not gated on age', () => {
 });
 
 describe('YJ, which fails on both axes at once', () => {
-  it('is refused on the ratio alone, without being gated on ADR_ADS', () => {
+  it('is unverifiable on the stale denominator, not refused on the ratio', () => {
     /*
-     * Item 14's designated worst case: oldest-five staleness AND an ADR the
-     * classification records as ordinary. Gating the unit test on ADR_ADS
-     * would have missed it, so the test stands on the ratio.
+     * Item 14 calls YJ the best test case because it fails on BOTH axes:
+     * oldest-five staleness AND an ADR the classification records as ordinary.
+     * Which means the axes have to be resolved in order, and staleness comes
+     * first -- at 2,790 days nothing about that denominator supports arithmetic
+     * in either direction.
+     *
+     * So YJ does not demonstrate the unit test. It demonstrates that the unit
+     * test never gets to run on a name this stale, and reporting UNIT_MISMATCH
+     * here would be a confident answer resting on a number from 2018.
      */
     const result = assessFloat({
       ...claim({ ticker: 'YJ', issuerName: 'Yunji Inc American Depositary Shares' }),
@@ -148,8 +164,20 @@ describe('YJ, which fails on both axes at once', () => {
       filed: filed({ shares: 21_000_000, asOf: agedDays(2_790) }),
     });
 
-    expect(result.verdict).toBe('UNIT_MISMATCH');
+    expect(result.verdict).toBe('CANNOT_VERIFY');
     expect(result.denominatorAgeDays).toBe(2_790);
+  });
+
+  it('still refuses YJ on the ratio when the count is current', () => {
+    // The unit test itself is intact and is NOT gated on ADR_ADS -- YJ is an
+    // ADR the classification records as ordinary, so it stands on the ratio.
+    const result = assessFloat({
+      ...claim({ ticker: 'YJ', issuerName: 'Yunji Inc American Depositary Shares' }),
+      claimedFloat: 60_000,
+      filed: filed({ shares: 21_000_000, asOf: agedDays(10) }),
+    });
+
+    expect(result.verdict).toBe('UNIT_MISMATCH');
   });
 });
 
