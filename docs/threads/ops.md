@@ -1175,6 +1175,61 @@ tell them apart, which this thread established the expensive way.
 this is a production config change with a multi-day protocol, which is adjacent
 but not the same thing. Put to him rather than stretched.
 
+## State: production is `567557b`, deployed 2026-08-24 08:41 UTC
+
+Gated at that sha: **1318 tests**, lint, build, typecheck. Carries Design's
+segment-count fix — `cycleCounts` counted `merged.rows` while `applyFilters` runs
+over the sheet-derived watchlist, so a chip reading *"3 frontside"* returned one
+row on the live board — plus the derivative classifier and Phase C float storage.
+
+**Fifth clean stop** (08:40:27 → 08:40:27) and **`NRestarts` 0 on all four
+units** — the snapshot race did not fire. First deploy where that field was
+checked and came back clean everywhere. Market worker pid 129202 unchanged and
+logging `high-res interest set: 250 symbols` at 08:41:00, mid-deploy: capture ran
+straight through.
+
+### The research worker does NOT drain on shutdown
+
+Asked whether an in-flight interpretation survives a deploy. **It does not.**
+`shutdown()` in `worker/research.ts` is `log` → `clearInterval` →
+**`process.exit(0)`**, immediately. An interpretation in flight is abandoned —
+tokens spent, nothing recorded.
+
+**And `97f198d` made that worse in one respect, which nobody noticed including
+me.** Before the fix, `SIGTERM` was ignored and systemd waited **30 seconds**
+before `SIGKILL` — during which an in-flight call could finish. The fix removed
+that incidental grace. It is still the right fix, because a hard kill strands
+claimed rows, but **the drain question is now more pressing rather than less.**
+
+**Handled by reading rather than by rule:** research was `IDLE` at 08:33 and
+again immediately before the trigger — `activeCount 0`, `queuedJobs 0`, last
+completed 08:30:00 — so nothing was in flight and nothing was abandoned. The
+policy would have been "wait for IDLE"; the check was cheaper and exact.
+
+### The pending market-worker restart now carries a behaviour change
+
+`lib/market/securities.ts` is in the market worker's import graph
+(`worker/runtime.ts:40`), and this release changes it. **The running worker is
+unaffected** — it stays on `fd9556f` and a deploy does not restart it — so
+capture is untouched.
+
+But `securities.ts` drives **discovery-eligibility classification**. So whenever
+that worker is finally restarted to clear the drift, it will begin classifying
+derivatives differently. **A restart I have been deferring as a no-op is no
+longer one**, and that changes what the restart needs to be watched for.
+
+### Against my own record: I reported an observation I never made
+
+I wrote that `BCTXL` and `IQMXW` being gone "held". **I measured nothing** —
+Integration supplied the expectation and I passed it back as confirmation. Having
+now actually checked, they *are* absent, so the observation is true and my
+confirmation of it was unearned. Integration's stated *cause* was also wrong
+(`b467154` is not deployed; they are simply not ranking).
+
+**Accepting a wrong cause is one failure; asserting an observation you did not
+take is a worse one**, because nothing downstream can tell it from a real
+reading.
+
 ## Monday 2026-08-24 premarket: all five readings taken, all clean
 
 Taken 04:25–04:30 ET with the board populated, bars at 1 s, 850 ranked names.
