@@ -1557,3 +1557,117 @@ describe('computed cycle on the dossier', () => {
     expect((computed?.current as { cycleHigh: number }).cycleHigh).toBe(3.4);
   });
 });
+
+
+/**
+ * The filed share count, stored deterministically beside the model's reading.
+ *
+ * Both are kept because they are different quantities. Over 325 production
+ * dossiers the model filled `structure.sharesOutstanding` on 125, left it null
+ * on 156 where company facts existed, and disagreed with the filing on 58 of
+ * the 125 — and on the largest disagreements the MODEL is right, because the
+ * filing is a pre-reverse-split cover page. Neither field is the trustworthy
+ * one; that is the point of storing both.
+ */
+describe('filed shares on the dossier', () => {
+  function seedFacts(db: ReturnType<typeof temporaryDb>, metadata: Record<string, unknown>) {
+    return insertResearchSources(db, [
+      {
+        ticker: 'ACME', sourceType: 'SEC_COMPANY_FACTS', title: 'Reported shares outstanding',
+        url: 'https://data.sec.gov/api/xbrl/companyfacts/CIK0000000999.json',
+        publishedAt: '2026-08-10T00:00:00Z', fetchedAt: '2026-08-17T12:00:00Z',
+        accession: null, secForm: '10-Q', authority: 'SEC',
+        contentHash: 'facts', documentFingerprint: 'dfacts', excerpt: null,
+        metadata, active: true,
+      },
+    ]);
+  }
+
+  it('stores the parsed count with its basis and its date', async () => {
+    const db = temporaryDb();
+    const ids = seed(db);
+    seedFacts(db, {
+      sharesOutstanding: 12_345_678,
+      asOf: '2026-08-11',
+      concept: 'dei:EntityCommonStockSharesOutstanding',
+    });
+    const good = dossier();
+    good.catalyst.evidenceSourceIds = [ids[0]];
+    good.structure.evidenceSourceIds = [ids[0]];
+    good.cycle.evidenceSourceIds = [ids[0]];
+
+    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+      ticker: 'ACME', tradingDate: DATE,
+    });
+
+    const filed = report.dossier?.filedShares;
+    expect(filed?.shares).toBe(12_345_678);
+    expect(filed?.asOf).toBe('2026-08-11');
+    // The basis is on the first row ever written, never retrofitted.
+    expect(filed?.basis).toBe('FILED_SHARES_OUTSTANDING');
+    // And it is citable, which is the whole difference from a transcription.
+    expect(typeof filed?.sourceId).toBe('number');
+  });
+
+  it('is unmoved by what the model says about the same number', async () => {
+    /*
+     * The failure this prevents. 58 of 125 production dossiers carry a model
+     * figure that disagrees with the filing, and a reader with only one field
+     * cannot tell which they are holding.
+     */
+    const db = temporaryDb();
+    const ids = seed(db);
+    seedFacts(db, { sharesOutstanding: 12_345_678, asOf: '2026-08-11', concept: null });
+    const good = dossier();
+    good.catalyst.evidenceSourceIds = [ids[0]];
+    good.structure.evidenceSourceIds = [ids[0]];
+    good.cycle.evidenceSourceIds = [ids[0]];
+    good.structure.sharesOutstanding = 999;
+
+    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+      ticker: 'ACME', tradingDate: DATE,
+    });
+
+    expect(report.dossier?.structure.sharesOutstanding).toBe(999);
+    expect(report.dossier?.filedShares?.shares).toBe(12_345_678);
+  });
+
+  it('is null rather than guessed when no company facts were collected', async () => {
+    const db = temporaryDb();
+    const ids = seed(db);
+    const good = dossier();
+    good.catalyst.evidenceSourceIds = [ids[0]];
+    good.structure.evidenceSourceIds = [ids[0]];
+    good.cycle.evidenceSourceIds = [ids[0]];
+
+    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+      ticker: 'ACME', tradingDate: DATE,
+    });
+
+    // The seed's company-facts row carries an empty metadata object, which is
+    // the shape a collection that found no figure leaves behind.
+    expect(report.dossier?.filedShares ?? null).toBeNull();
+  });
+
+  it('stores no verdict, because the float it would judge is not evidence', async () => {
+    /*
+     * Deliberate, and the same rule as the cycle overlay. The desk's only float
+     * source is the Sheet, read live at the merge layer. A verdict computed
+     * here would bake a transient external value into an append-only record and
+     * a replay would read today's Sheet as though it were that day's.
+     */
+    const db = temporaryDb();
+    const ids = seed(db);
+    seedFacts(db, { sharesOutstanding: 12_345_678, asOf: '2026-08-11', concept: null });
+    const good = dossier();
+    good.catalyst.evidenceSourceIds = [ids[0]];
+    good.structure.evidenceSourceIds = [ids[0]];
+    good.cycle.evidenceSourceIds = [ids[0]];
+
+    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+      ticker: 'ACME', tradingDate: DATE,
+    });
+
+    expect(report.dossier).not.toHaveProperty('floatAssessment');
+  });
+});

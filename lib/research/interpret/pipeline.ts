@@ -364,6 +364,32 @@ export async function interpretTicker(
   );
   accepted.computedCycle = cycleBars.length > 1 ? resolveCycleHistory(cycleBars) : null;
 
+  /*
+   * The filed share count, stored deterministically rather than transcribed.
+   *
+   * Already in the bundle and already shown to the model since `55f3e20`; what
+   * was missing is a place for the PARSED value to live, so a reader does not
+   * have to trust the model to have copied a number correctly. It did so on 38%
+   * of dossiers.
+   *
+   * Stored, not assessed. The verdict in `lib/research/float.ts` needs a
+   * CLAIMED float, and the desk's only float source is the Sheet, which is a
+   * live external value read at the merge layer. Computing a verdict here would
+   * bake a transient into an append-only record -- the same error as resolving
+   * the cycle against today's bars, which `overlayLiveCycle` exists to avoid.
+   * Evidence is stored; live comparisons are made at read time.
+   */
+  const reported = bundle.reportedSharesOutstanding;
+  accepted.filedShares = reported
+    ? {
+        shares: reported.shares,
+        asOf: reported.asOf,
+        concept: reported.concept,
+        sourceId: reported.sourceId,
+        basis: 'FILED_SHARES_OUTSTANDING',
+      }
+    : null;
+
   const version = saveAnalysisVersion(db, {
     ticker,
     generatedAt,
