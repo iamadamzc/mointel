@@ -382,6 +382,40 @@ It sits beside *check the field that carries the answer*: that one is about
 reading the wrong field, this one is about reading the right field at the wrong
 **grain**.
 
+## When two artefacts answer to the same phrase, the phrase is the defect
+
+**Third instance in one day, 2026-08-24, and this one cost a thread idle time.**
+
+R&D sat idle reporting its only queued item *"waits on Research's inventory"*. It
+was not waiting on anything: **Research has two artefacts that phrase describes** —
+the item 13 **reader** inventory (dossier fields, for a deletion) and the 65-field
+**Sheet coverage** inventory (`docs/sheet-coverage-audit.md`, for a retirement).
+Unrelated work, days apart, near-identical names. R&D's dependency was the second
+and it had been delivered.
+
+**Neither Research nor Integration spotted it.** R&D was unblocked only because
+Integration asked *which inventory* rather than assuming — and it asked only
+because it could not tell either.
+
+The other two instances the same day:
+
+- **The Sheet carries dossier-shaped field names** — `cycleClassificationRaw`,
+  `cycleState`, `recentMajorRuns` — which produced **four false positives** in
+  Research's deletion inventory and a confident false failure waiting on
+  `/api/dashboard`.
+- **"Float"** names both a vendor-displayed number and a filing-computed one,
+  which is why `float_basis` exists.
+
+**So the rule is not "be careful": it is that a name collision is a defect in the
+name, and the fix belongs at the source.** Rename the second artefact when you
+create it. And the standing repair, from R&D's rule about values with two possible
+definitions: **when two threads can each be right about the same word, the word
+needs a companion column — or a different name — not a footnote.**
+
+**The tell is that everybody involved was being careful.** Research knew both
+inventories, R&D knew its dependency, Integration read both charters. Care does
+not disambiguate a phrase; only the phrase does.
+
 ## The rule you just wrote is the one you are least likely to apply
 
 **Integration's observation of a day in which three separate authors broke their
