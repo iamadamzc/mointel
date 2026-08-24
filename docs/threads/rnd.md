@@ -149,6 +149,20 @@ that already settled `search_context_size`: quality needs a grader, this desk's
 grader is 45% irreproducible, so a quality comparison measures the grader.
 Citation is countable and exact and already discriminates at 55-against-37.
 
+**And it is the right instrument, not merely the measurable one** — which is a
+tie-break rule and has to be fixed before the evaluation is designed, not chosen
+afterwards when a result is looking back at me. The desk's job is to say **why a
+name was surfaced**, and a citation is the trace of that. So:
+
+> **A model that grades identically but cites less is a WORSE outcome, not a
+> cheaper equal one.** Citations are not a cost of the answer; on this desk they
+> are part of the answer.
+
+Without that written down, the honest reading of *same grades, fewer citations,
+lower bill* is "no quality difference, take the saving". Under the desk's own
+framing — an intelligence platform rather than a signal platform — it is a
+quality difference that happens not to show up in the grade.
+
 **The design is alternation on the live desk**, not a paired A/B — zero marginal
 tokens, and the confound is period, which alternating removes.
 
@@ -1042,6 +1056,37 @@ ends in `L`, so no fifth-letter W/U/R convention would ever have reached it.
 One name at rank 43 is the entire justification for a name-based rule.
 
 ## Working rules
+
+**The framing these sit under, from the trader, 2026-08-24** — recorded at
+`8c2d2d5` and charter-level:
+
+> **We are an intelligence platform, not a signal platform — so give the user as
+> much of the story as we can that is useful.**
+
+A signal platform reduces everything to a call. An intelligence platform hands
+over the reasoning, the provenance, and **the shape of what is not known.**
+
+Several rules below were already this principle without naming it, which is the
+reason to write it down once rather than restate it each time. **The basis
+columns** — `reference_basis`, `adjustment_basis`, `split_lookback_sessions`,
+`float_basis` — exist so a reader can see *which question was answered*, not
+just the number. **`split_sessions_ago` stored unbounded with its window beside
+it** is the same move: a null that says how far the search went is story; a null
+that does not is a signal, and CDTG is what a bare one cost. **Pillar 4's
+verdict** is the model instance — not *"catalysts do not matter"* but a ceiling
+with its interval, its window and its instrument's limits attached, and those
+two limits must travel with it every time it is quoted.
+
+What it argues against, and this is the part that changes work:
+
+- collapsing a computation to a label and discarding the working
+- **suppressing a value because it is uncertain, rather than labelling the
+  uncertainty** — the uncertainty is frequently the finding
+- *"we'll show it once it's reliable"*
+
+**The limit is *useful*, and it is a real limit.** A live field nobody will ever
+ask about is still not worth capturing. Story that no one needs is not
+intelligence, it is volume — and volume is how a genuine signal gets buried.
 
 - **Close questions.** A question that is neither active nor closed is debt. The
   verdict format that worked in viscosity — a single stated verdict plus what
