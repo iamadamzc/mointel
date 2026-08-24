@@ -1133,9 +1133,28 @@ computation, a wrong session**.
 session boundary, which is its own small wrongness inside the same three lines.
 
 **This is not specific to any backfill.** The live path has it: any interpretation
-running during market hours can pin a partial bar. It has not bitten yet only
-because nothing re-analysed mid-session while a cycle depended on the bars. It
-should be fixed alongside the read-time move, not after it.
+running during market hours can pin a partial bar.
+
+**Ops escalated this to Monday-urgent and it is not next-session work.** Recorded
+at `2830ca3` in [ops.md](ops.md); repeated here because a defect written up in one
+charter and escalated in another is how a thread ends up the last on the desk
+still reading its own item as deferred.
+
+The reason is exposure, not code. `computedCycle` shipped in `161f15f`, so from
+Monday's open every re-analysis of a moving name calls `ensureDailyHistory`, and
+**no symbol holds a bar dated today, so every one fetches.** It was latent only
+while nothing re-analysed mid-session with a cycle depending on the bars, and that
+stopped being true the moment the cycle shipped.
+
+**What decides the size is unverified and cannot be tested tonight:** whether
+Alpaca returns a partial `1Day` bar during premarket. The market is closed, so a
+call now proves nothing about 08:00 UTC. Ops explicitly declines to claim it
+either way and so do I.
+
+**A backfill does not inoculate against this.** Run before 08:00 UTC it stores
+bars dated 2026-08-21, which is not today — so the guard does not short-circuit
+and Monday's live re-analyses refetch exactly as they would have. The backfill
+populates the column; it does nothing about the lock-in.
 
 
 ## Working rules
