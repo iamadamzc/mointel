@@ -74,3 +74,48 @@ describe('lastSettledTradingDate', () => {
     expect([...day].sort()).toEqual(day);
   });
 });
+
+/**
+ * Whether a stored bar counts as finished.
+ *
+ * The date alone cannot say. A row dated today and written at noon is a session
+ * in progress; the same row written after the session ended is complete. This
+ * is the half that HEALS rather than prevents — without it the guard would keep
+ * a partial bar it inherited for longer than the code it replaced did.
+ */
+describe('the cache test', () => {
+  const sessionEnd = (date: string) => et(date, 20).toISOString();
+
+  function finished(stored: { tradingDate: string; fetchedAt: string }, now: Date): boolean {
+    const settled = lastSettledTradingDate(now);
+    return (
+      stored.tradingDate >= settled &&
+      Date.parse(stored.fetchedAt) >= et(stored.tradingDate, 20).getTime()
+    );
+  }
+
+  it('skips a bar written after its own session ended', () => {
+    const stored = { tradingDate: '2026-08-21', fetchedAt: sessionEnd('2026-08-21') };
+    expect(finished(stored, et('2026-08-24', 6))).toBe(true);
+  });
+
+  it('refetches a bar dated today but written mid-session', () => {
+    // The shape a pre-existing partial has: today's date, captured at noon.
+    const partial = { tradingDate: '2026-08-24', fetchedAt: et('2026-08-24', 12).toISOString() };
+    expect(finished(partial, et('2026-08-24', 13))).toBe(false);
+    // And it does not survive into the next session, which a date-only test
+    // would have allowed all through Tuesday.
+    expect(finished(partial, et('2026-08-25', 6))).toBe(false);
+    expect(finished(partial, et('2026-08-25', 12))).toBe(false);
+  });
+
+  it('stops refetching once the same bar has been rewritten complete', () => {
+    const healed = { tradingDate: '2026-08-24', fetchedAt: et('2026-08-24', 20, 5).toISOString() };
+    expect(finished(healed, et('2026-08-25', 6))).toBe(true);
+  });
+
+  it('refetches when the stored bar predates the newest settled session', () => {
+    const stale = { tradingDate: '2026-08-20', fetchedAt: sessionEnd('2026-08-20') };
+    expect(finished(stale, et('2026-08-24', 6))).toBe(false);
+  });
+});

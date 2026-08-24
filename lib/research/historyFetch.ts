@@ -10,7 +10,7 @@ import { AlpacaRestClient } from '../market/alpaca/rest';
 import { findAlpacaCredentials } from '../market/credentials';
 import { etDateString, sessionEndUtc } from '../market/session';
 import type { MarketDatabase } from '../market/store/db';
-import { latestDailyBarDate, upsertDailyBars } from './history';
+import { latestDailyBar, upsertDailyBars } from './history';
 
 /** Calendar days to walk back before giving up on finding a settled session. */
 const SETTLED_SEARCH_DAYS = 10;
@@ -81,8 +81,29 @@ export async function ensureDailyHistory(
    * and so disagreed with the trading day for four hours every evening.
    */
   const settled = lastSettledTradingDate(now);
-  const stored = latestDailyBarDate(db, symbol);
-  if (stored !== null && stored >= settled) {
+  const stored = latestDailyBar(db, symbol);
+
+  /*
+   * Skip only on a bar that is both RECENT ENOUGH and FINISHED.
+   *
+   * Comparing dates alone was not enough, and the gap ran the wrong way. A
+   * partial bar written before this guard existed is dated today, so a
+   * date-only test skips it — and keeps skipping while `settled` catches up,
+   * which means a partial Monday bar would survive all of Tuesday's premarket
+   * and session, the exact window where it does harm. The previous `=== today`
+   * test at least refetched it the next calendar day.
+   *
+   * `fetched_at` settles it: a bar written before its own session ended was
+   * still moving when it was captured, whatever date it carries. Such a row is
+   * refetched and `upsertDailyBars` overwrites it on conflict, so the guard
+   * heals what it inherits rather than only preventing more.
+   */
+  const finished =
+    stored !== null &&
+    stored.tradingDate >= settled &&
+    Date.parse(stored.fetchedAt) >= sessionEndUtc(stored.tradingDate).getTime();
+
+  if (finished) {
     return { fetched: false, sessions: 0, detail: 'already current' };
   }
 

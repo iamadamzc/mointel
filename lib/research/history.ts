@@ -105,6 +105,27 @@ export function latestDailyBarDate(db: MarketDatabase, symbol: string): string |
   return row.d;
 }
 
+/**
+ * The newest stored bar with the time it was WRITTEN, not only its date.
+ *
+ * The date alone cannot say whether a bar is finished. A row dated today and
+ * fetched at noon is a session in progress; the same row fetched after the
+ * session ended is complete. Only `fetched_at` separates them, and without it a
+ * cache test can only ask which session a bar claims to describe.
+ */
+export function latestDailyBar(
+  db: MarketDatabase,
+  symbol: string,
+): { tradingDate: string; fetchedAt: string } | null {
+  const row = db
+    .prepare(
+      `SELECT trading_date AS tradingDate, fetched_at AS fetchedAt
+         FROM daily_bars WHERE symbol = ? ORDER BY trading_date DESC LIMIT 1`,
+    )
+    .get(symbol) as { tradingDate: string; fetchedAt: string } | undefined;
+  return row ?? null;
+}
+
 /* ---------------------------------------------------------------- summary */
 
 export interface PriceRun {
