@@ -283,6 +283,12 @@ function buildAssessmentPanel(
  * cost for no freshness, so the threshold is cached and only the placement of
  * the current price against it is recomputed.
  */
+/**
+ * Enough to exceed any stored history. A deep pass reaches ten years, ~2,520
+ * sessions; this is not a retention decision and must not be read as one.
+ */
+const ALL_STORED_SESSIONS = 100_000;
+
 const BLUE_SKY_TTL_MS = 10 * 60_000;
 const BLUE_SKY_CACHE_LIMIT = 600;
 const blueSkyCache = new Map<string, { at: number; threshold: BlueSkyThreshold }>();
@@ -312,7 +318,19 @@ function blueSkyThreshold(
      * 1.48 from June and the board told the trader he was in blue sky against
      * a level the same store already contradicted.
      */
-    const bars = readDailyBars(db, symbol, DEFAULT_CYCLE_HISTORY_TRADING_DAYS, 'INCLUDE');
+    /*
+     * ALL stored depth, not ninety sessions.
+     *
+     * The 90 is a CYCLE parameter -- how much history a phase needs -- and blue
+     * sky inherited it by sharing the reader. A ceiling answers "has this price
+     * ever been exceeded", and ninety sessions cannot answer "ever" for anything:
+     * BTCT read as blue sky at $1.71 against an $1.80 ninety-session ceiling
+     * while the same symbol had traded at $26.58 two years earlier, post-split.
+     *
+     * The limit is a bound on a query rather than a policy, so it is set past any
+     * plausible history instead of to a number that would mean something.
+     */
+    const bars = readDailyBars(db, symbol, ALL_STORED_SESSIONS, 'INCLUDE');
     threshold = resolveBlueSkyThreshold(bars, {
       tradingDate,
       adjustment: dailyBarAdjustment(db, symbol),

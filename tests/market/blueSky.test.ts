@@ -221,3 +221,148 @@ describe('ceilingSessionComplete', () => {
     expect(t.ceilingSessionComplete).toBeNull();
   });
 });
+
+/**
+ * The basis a ceiling sits on, carried beside it.
+ *
+ * The trader chose "as deep as you can go" after being shown what it produces:
+ * BTCT's all-history ceiling is $14,249.94 on a session that traded four
+ * shares, because two consolidations stand between that price and today. The
+ * number is arithmetically correct and describes shares that no longer exist in
+ * that form.
+ *
+ * So depth alone is not the deliverable. Depth WITH its basis is.
+ */
+describe('ceilingSplitFactor and ceilingComparable', () => {
+  const bar = (
+    tradingDate: string,
+    high: number,
+    close: number,
+    splitFactor: number | null,
+  ) => ({
+    tradingDate, open: close, high, low: close * 0.9, close,
+    volume: 1_000_000, sessionComplete: true, splitFactor,
+  });
+
+  it('reports a ceiling on today\u2019s basis as comparable', () => {
+    const bars = [bar('2026-06-09', 1.48, 1.4, 1), bar('2026-08-19', 1.32, 0.84, 1)];
+
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });
+
+    expect(t.price).toBe(1.48);
+    expect(t.ceilingSplitFactor).toBe(1);
+    expect(t.ceilingComparable).toBe(true);
+  });
+
+  it('reports BTCT\u2019s deep ceiling as NOT comparable, with the factor', () => {
+    // The real shape: the 2020 bar carries a cumulative factor of 600, so the
+    // ceiling and the current price are not on the same basis at all.
+    const bars = [
+      bar('2020-03-31', 14_249.94, 14_034, 600),
+      bar('2024-11-13', 26.58, 22, 1),
+      bar('2026-08-19', 1.32, 0.84, 1),
+    ];
+
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });
+
+    expect(t.price).toBe(14_249.94);
+    expect(t.ceilingSplitFactor).toBe(600);
+    expect(t.ceilingComparable).toBe(false);
+  });
+
+  it('is null rather than true when no factor was established', () => {
+    /*
+     * The distinction the whole design turns on. A bar written by the shallow
+     * path has no raw series behind it, so its basis is UNKNOWN -- and reading
+     * that as "comparable" would assert the one thing nobody checked.
+     */
+    const bars = [bar('2026-06-09', 1.48, 1.4, null), bar('2026-08-19', 1.32, 0.84, null)];
+
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });
+
+    expect(t.ceilingSplitFactor).toBeNull();
+    expect(t.ceilingComparable).toBeNull();
+  });
+
+  it('carries the window it actually looked over, which is what depth means', () => {
+    // Design renders depth in text; it can only do that from real numbers, so
+    // these have to describe the fetch rather than a configured intent.
+    const bars = [bar('2020-03-31', 14_249.94, 14_034, 600), bar('2026-08-19', 1.32, 0.84, 1)];
+
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });
+
+    expect(t.windowFrom).toBe('2020-03-31');
+    expect(t.sessionsObserved).toBe(2);
+  });
+});
+
+/**
+ * The number a reader can act on, beside the one the trader asked for.
+ *
+ * He chose "as deep as you can go" knowing it yields $14,249.94 on BTCT. That
+ * is the deep ceiling and it is correct. The comparable ceiling is the highest
+ * prior high on today's basis — $26.58 on 2024-11-13 — and on BTCT the verdict
+ * is the same either way, since $26.58 is still ten times the price. Both are
+ * supplied because which one renders is Design's call and it cannot be a call
+ * unless both exist.
+ */
+describe('comparableCeiling', () => {
+  const bar = (
+    tradingDate: string,
+    high: number,
+    splitFactor: number | null,
+  ) => ({
+    tradingDate, open: high * 0.9, high, low: high * 0.8, close: high * 0.95,
+    volume: 1_000_000, sessionComplete: true, splitFactor,
+  });
+
+  it("separates BTCT's deep ceiling from the one on today's basis", () => {
+    const bars = [
+      bar('2020-03-31', 14_249.94, 600),
+      bar('2022-06-01', 48.8, 20),
+      bar('2024-11-13', 26.58, 1),
+      bar('2026-08-19', 1.32, 1),
+    ];
+
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });
+
+    expect(t.price).toBe(14_249.94);
+    expect(t.comparableCeiling).toBe(26.58);
+    expect(t.comparableCeilingDate).toBe('2024-11-13');
+  });
+
+  it('agrees with the deep ceiling when nothing ever split', () => {
+    const bars = [bar('2026-06-09', 12.14, 1), bar('2026-08-19', 9, 1)];
+
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });
+
+    expect(t.comparableCeiling).toBe(t.price);
+  });
+
+  it('does NOT count a bar whose basis was never established', () => {
+    /*
+     * The claim being made is comparability, so it cannot rest on an
+     * assumption. A shallow-written bar has no raw series behind it and a null
+     * factor means "not established" -- treating that as 1 would assert exactly
+     * the thing nobody checked.
+     */
+    const bars = [bar('2026-06-09', 12.14, null), bar('2026-08-19', 9, null)];
+
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });
+
+    expect(t.price).toBe(12.14);
+    expect(t.comparableCeiling).toBeNull();
+    expect(t.comparableCeilingDate).toBeNull();
+  });
+
+  it('is null when every comparable session is the current one', () => {
+    // Prior sessions only, same as the deep ceiling: today's own high is the
+    // move being assessed rather than a level over it.
+    const bars = [bar('2026-08-24', 5, 1)];
+
+    expect(
+      resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' })
+        .comparableCeiling,
+    ).toBeNull();
+  });
+});

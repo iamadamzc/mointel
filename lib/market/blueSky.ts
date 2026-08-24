@@ -83,6 +83,44 @@ export interface BlueSkyThreshold {
    * with that is Design's.
    */
   ceilingSessionComplete: boolean | null;
+  /**
+   * Cumulative split factor on the ceiling's own session. Null when the bar was
+   * stored without a raw comparison, or when there is no ceiling.
+   *
+   * 1 means the ceiling is on today's basis and comparable with the current
+   * price directly. Anything else means a consolidation stands between them:
+   * BTCT's all-history ceiling is $14,249.94 with a factor of 600, which is
+   * arithmetically correct and describes shares that no longer exist in that
+   * form. The number is not wrong; it is unreadable without this beside it.
+   *
+   * DATA, not a verdict. Whether a surface shows the deep ceiling, a
+   * post-consolidation one, or both is Design's call.
+   */
+  ceilingSplitFactor: number | null;
+  /**
+   * Whether the ceiling and the current price sit on the SAME split basis.
+   *
+   * The one boolean a surface needs in order not to compare two numbers that
+   * are not comparable. False when a factor is known and is not 1; null when no
+   * factor was established, which is not the same as "yes".
+   */
+  ceilingComparable: boolean | null;
+  /**
+   * The highest prior high among sessions on TODAY'S basis, and its date.
+   *
+   * Supplied beside the deep ceiling rather than instead of it, because the
+   * trader chose full depth and Design chooses what renders. BTCT is the case:
+   * the deep ceiling is $14,249.94 behind two consolidations, and this is
+   * $26.58 on 2024-11-13 -- still ten times the current price, so the verdict
+   * is the same, but it is a number a reader can act on.
+   *
+   * Null when no session carries an established factor of 1, which includes
+   * every symbol the deep pass has not reached. A bar whose factor is unknown
+   * is NOT counted: comparability is the claim being made, so it cannot rest on
+   * an assumption.
+   */
+  comparableCeiling: number | null;
+  comparableCeilingDate: string | null;
 }
 
 export interface BlueSkyState {
@@ -97,6 +135,10 @@ export interface BlueSkyState {
 export const UNAVAILABLE_THRESHOLD: BlueSkyThreshold = {
   verified: false,
   ceilingSessionComplete: null,
+  ceilingSplitFactor: null,
+  ceilingComparable: null,
+  comparableCeiling: null,
+  comparableCeilingDate: null,
   price: null,
   date: null,
   sessionsObserved: 0,
@@ -141,9 +183,20 @@ export function resolveBlueSkyThreshold(
     if ((bar.high as number) > (ceiling.high as number)) ceiling = bar;
   }
 
+  // The same walk, restricted to sessions provably on today's basis.
+  let comparable: DailyBar | null = null;
+  for (const bar of prior) {
+    if (bar.splitFactor !== 1) continue;
+    if (comparable === null || (bar.high as number) > (comparable.high as number)) comparable = bar;
+  }
+
   const price = ceiling.high as number;
   const base: BlueSkyThreshold = {
     ceilingSessionComplete: ceiling.sessionComplete,
+    ceilingSplitFactor: ceiling.splitFactor,
+    comparableCeiling: (comparable?.high as number | undefined) ?? null,
+    comparableCeilingDate: comparable?.tradingDate ?? null,
+    ceilingComparable: ceiling.splitFactor === null ? null : ceiling.splitFactor === 1,
     verified: false,
     price,
     date: ceiling.tradingDate,
