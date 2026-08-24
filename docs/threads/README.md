@@ -779,6 +779,45 @@ modules, and **`lib/market/` is the one no charter owns.** Plumbing rather than
 new data — and against SEC-filed shares outstanding the test is *stronger* than
 Scanz's own, because the denominator is filed rather than derived.
 
+## 2026-08-20 is half a day of `ticker_session`, in the middle of the only window
+
+**Found 2026-08-24 by Research while verifying something else, reproduced
+independently by Integration against the production snapshot.** Rows per trading
+date:
+
+| trading_date | rows | ranked |
+| --- | ---: | ---: |
+| 2026-08-17 | 8,613 | 2,821 |
+| 2026-08-18 | 8,625 | 2,736 |
+| 2026-08-19 | 8,653 | 2,797 |
+| **2026-08-20** | **4,165** | 2,787 |
+| 2026-08-21 | 8,688 | 2,821 |
+| 2026-08-24 | 8,653 | 0 *(seeded, unranked — expected pre-session)* |
+
+**4,452 symbols present on both 08-19 and 08-21 have no 08-20 row.** Ranking ran
+normally over what was there — 2,787 is in line with every other day — so **the
+missing part is the unranked tail, not a ranking failure.** Of those, roughly
+**130–180 carried a rank on an adjacent day**: Integration counts 133 on a stated
+definition (present both 19 and 21, absent 20, ranked on either), Research reported
+178 without stating its denominator. **Pin the figure to the question before
+quoting it.**
+
+**Why it matters more than one missing day.** It is a gap in the **middle** of the
+desk's only five-day window, which is the shape that moves a windowed measure with
+no tell. Anything reading a per-symbol series across 17–21 August meets it:
+Research's item 17 replay has already been amended to exclude 08-20 or say it did
+not, and **the Pillar 4 result below is stated on exactly this window** — the
+question of whether its classification touches `ticker_session` is open with R&D,
+and the answer belongs beside the number either way. *Checked and unaffected* is
+worth as much as a correction.
+
+**Cause unknown, and it is Ops's.** `ticker_session` is the market worker's and
+that worker must not be interrupted for it. **Not urgent: the rows are already
+lost and no run buys them back.** The only version of this that deserves an hour
+is whether the same cause is still live and could eat Monday. The first read-only
+check is whether `desk_assessments` and `daily_bars` show a matching hole on 08-20
+— one table or a degraded window are different problems.
+
 ## Facts every thread starts from
 
 As of the last session, **2026-08-23**:
