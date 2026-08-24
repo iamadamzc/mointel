@@ -1369,6 +1369,77 @@ AEIS is still the counterexample with none in two years. So a confidence signal
 built on "was there a recent split" remains the wrong design, and the arithmetic
 check remains the right one. Same answer, sounder reason.
 
+#### The model bill has a denominator, and it reads onto the coverage classes
+
+*Research, via Integration, 2026-08-24. Measured against the production snapshot
+rather than estimated. Recorded here because it is the first cost figure on this
+desk with a denominator, and because it changes what one of this archive's own
+columns means.*
+
+| Stage | calls | input tokens | share |
+| --- | ---: | ---: | ---: |
+| DISCOVERY | 216 | 7,862,324 | **56%** |
+| RESOLVER | 181 | 3,853,202 | 28% |
+| INTERPRETATION | 312 | 2,024,072 | 14% |
+
+**84% of input tokens go on finding evidence and 14% on reading it.** Anything
+reasoning about cost per dossier should start there rather than at the
+interpretation call, which is the one everybody pictures.
+
+**And the obvious inference reverses.** Discovery looks like waste at 56%, but
+attributing sources by `metadata.discoveredBy` rather than by a time window,
+**discovery-bought sources are cited by a dossier 55% of the time against 37%
+for the free deterministic ones** — paid sources are used *more*. The productive
+rate does not decay across repeats either (22, 15, 22, 33, 25% by ordinal), so
+capping repeat discovery would cut cited evidence roughly in proportion to
+spend.
+
+Two footings in one finding and only one is soft: 36 of 112 sources did not
+match a call inside the 5-minute window, so the ordinal table rests on **76**.
+The 55-against-37 citation figure does not depend on that attribution and is
+exact. Research carried the limit itself rather than being asked for it.
+
+##### What it changes here: `NO_LOOK` is free and `IN_FLIGHT` is not
+
+This archive's coverage classes were built to separate evidence about the market
+from evidence about the pipeline. They turn out to carry a cost reading nobody
+has used, and the stage split is what makes it visible.
+
+Discovery and the resolver run **before** the interpretation that produces a
+grade, and they are 84% of the bill. So:
+
+- **`NO_LOOK` cost nothing.** Nothing was attempted; no stage ran.
+- **`IN_FLIGHT` and `FAILED` may have cost almost everything.** A job that
+  queued, discovered, resolved and then died before interpretation spent the
+  expensive 84% and produced no grade at all.
+
+19 August had **10 `IN_FLIGHT` and 17 `NO_LOOK`**. Read as coverage those are 27
+names lost. Read as cost they are completely different: 17 that were never
+started, and 10 that were paid for and produced nothing. **The outage's cost was
+not only lost coverage — part of it was spend that bought no grade**, and the
+coverage column already distinguishes the two without anyone having asked it to.
+
+Not quantified: per-ticker token attribution is not in the extract, so how much
+those 10 actually cost is unknown. The classes make the question askable, not
+answered.
+
+##### Two methodological notes worth keeping
+
+**"Filed, then measured."** Research filed a cost-leak item on inference,
+measured, and retired its own item — 169 of 175 tickers took exactly one
+resolver call and the six repeats each span two days, which is what the 24h
+cooldown permits. Its own words on the mistake: the ordering. That is the
+cheapest rule of the day and it costs nothing to adopt — **measure before
+filing, not after.**
+
+**The 5-minute attribution window is the same shape as the 30-session cap.** A
+source that took six minutes reads as unattributed, exactly as a split 57
+sessions back read as no split. Research carried the limit explicitly and the
+finding is honest, so this is not a criticism of it — but the fix is the one
+already applied here: **record the window beside the number** so a later reader
+cannot mistake "outside what I looked at" for "did not happen". Thirty-six
+unattributed sources is a fact about a threshold, not about the pipeline.
+
 #### The 65-field audit: what this thread will annotate for
 
 Research produces the inventory, Design annotates what must survive on screen,
