@@ -1440,6 +1440,63 @@ already applied here: **record the window beside the number** so a later reader
 cannot mistake "outside what I looked at" for "did not happen". Thirty-six
 unattributed sources is a fact about a threshold, not about the pipeline.
 
+#### The 08-20 capture hole does not reach Pillar 4 — checked, not assumed
+
+*Reported by Integration 2026-08-24: `ticker_session` holds 4,165 rows on
+2026-08-20 against ~8,600 on every neighbouring day, and 4,452 symbols present
+on both 08-19 and 08-21 have no 08-20 row. The gap sits in the middle of this
+archive's window, which is the shape that silently moves a windowed measure.*
+
+**Pillar 4 is unaffected, on three independent checks.**
+
+1. **`ticker_session` is not in the extract.** `data/assessments.db` contains
+   `desk_assessments` and `desk_assessment_tickers` and nothing else. There is no
+   path by which a missing session row reaches this archive.
+2. **Nothing in `lib/archive/` reads it.** The only occurrence in the whole
+   thread's code is a comment in `store.ts` about what `claimStoreForMode`
+   deletes.
+3. **The board on 08-20 is complete.** 18 assessments × 25 tickers = 450 rows,
+   ranks running 1 to 25 exactly as on every other day, 65 distinct symbols.
+
+The third is the one that matters, because the first two only answer the direct
+question. The indirect one — *did the hole change what reached the assessments?*
+— turns on whether the board's candidate pool was thinned. It was not:
+**the shortfall is the unranked tail**, ranking produced its full top-25, and
+only ranked names ever reach a board snapshot. Coverage on 08-20 was in fact the
+week's best at 78% usable, with 45 of 51 grades produced that day.
+
+So the answer for the README is *checked, unaffected*, and the three checks are
+the reason rather than the assertion.
+
+##### What it does reach, and does not
+
+**The unranked tail is exactly the population tier A is for.** 4,452 symbols on
+one day is the cross-section, not the board — invisible to everything built so
+far precisely because everything built so far is board-scoped.
+
+But **tier A is not damaged by it**, and the reason follows from the amended
+rule rather than from luck: tier A is one daily row per price-eligible name,
+derived from **daily bars, which are re-fetchable indefinitely.** What `ticker_session`
+holds that bars cannot reproduce is the desk's *live derived state* — RVOL as
+computed at that instant, board rank — and for the unranked tail rank is null by
+definition and RVOL is re-derivable from the same bars. The irreplaceable
+component of those 4,452 rows is close to nothing.
+
+That is the re-fetchable-versus-observable-once distinction doing useful work on
+its first real test: **the hole is in the cheap half.** Had the same day lost its
+*ranked* rows, or its assessments, the answer would be the opposite and nothing
+would buy them back.
+
+##### On the 133-against-178 disagreement
+
+Not resolved here and it does not need to be, because nothing in this archive
+depends on either figure. Integration's instinct is right that the gap is
+definitional — its own is *symbols present on both 08-19 and 08-21, absent on
+08-20, carrying a rank on either* — and the general rule this desk keeps
+arriving at applies: **two threads' numbers need a unit, not a caveat.** The
+shape, 130 to 180 watched names with a one-day hole, is what any question of
+mine would use, and no question of mine currently has one.
+
 #### The 65-field audit: what this thread will annotate for
 
 Research produces the inventory, Design annotates what must survive on screen,
