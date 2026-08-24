@@ -985,9 +985,33 @@ As of the last session, **2026-08-23**:
   nobody will ever ask about is still not worth capturing, and that judgement
   needs the question rather than this column.
 
-  **Open:** whether any of the ten is written *only* by one of the two ChatGPT
-  tasks paused on 2026-08-23. If so, that field's history stopped accumulating on
-  08-21 and the decision has already resolved itself. With R&D.
+  **Answered: no.** All ten are written by the two tasks still running — `TODAY!A:S`
+  (cols 1-19) by the 22:00 recap, `TODAY!T:AA` (cols 20-27) by the 06:10
+  confirmation, and `RESEARCH` by both. So the finding stands as a **decision**
+  rather than a post-mortem.
+
+- **But the DATED TABS have lost two of their four parts, and that is outside the
+  audit's scope.** *R&D, `f6412f9`, found while answering the above.* The paused
+  pair writes neither `TODAY` nor `RESEARCH` — **they write the dated tabs**, which
+  hold each stage call as it was made alongside what actually happened. **The 09:25
+  stage call stopped 2026-08-23, and the outcome column beside it stopped with
+  `Close & Learn`.** The other two stages keep accumulating, so the tabs are now
+  half a record.
+
+  **A forecast recorded before its outcome is the archive spec's definition of
+  irreplaceable, and half of that record stopped three days ago.**
+
+  **The audit cannot catch this: its scope is `TODAY!A:AA` and `RESEARCH!A:AK`, and
+  the dated tabs are neither.** No annotation touches them and no `live?` mark
+  protects them. **That is a gap in the audit's SCOPE, not in its verdicts** — and
+  it is worth stating loudly, because *a 64-field audit signed off as complete is
+  exactly the artefact someone later reads as covering everything the Sheet
+  holds.*
+
+  R&D's own note: it made *"do not delete the corpus"* a condition when task 4 was
+  retired, and what it missed then is that **pausing also stops the 09:25 call.**
+  The retirement question and the pause question have different boundaries and only
+  one of them was ever mapped.
 
 - **Retiring the Sheet takes pillar 5 with it unless float is replaced first.**
   `resolveDisplayedFloat` (`lib/dashboard/merge.ts:143`) has exactly two
