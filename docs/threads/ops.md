@@ -1392,12 +1392,27 @@ references no branch.
 
 ## Before you deploy
 
-The gate, all four green: `npm test`, `npm run lint`, `npm run typecheck`,
-`npm run build`.
+The gate, all four green **at the sha that ships** — `npm test`, `npm run lint`,
+`npm run typecheck`, `npm run build` — pinned per §"Gate the sha, not the tree".
+
+**Name the sha. Do not deploy `HEAD`.**
 
 ```bash
-deploy/aws/push-release.sh 98.85.49.227 /a/AWS_creds/mointel-prod-key.pem HEAD
+deploy/aws/push-release.sh 98.85.49.227 /a/AWS_creds/mointel-prod-key.pem <gated-sha>
 ```
+
+*Every deploy on 2026-08-23 passed `HEAD`, and this thread wrote the rule that
+caught it in someone else's message before noticing it in its own command.
+`HEAD` is a question — it resolves at the instant the script runs, which is after
+the gate, after the verification, and after the decision. On that day it moved
+three times inside one gating session and twice more between a recommendation
+and a reply. It never bit, because the tree was checked each time; the exposure
+was structural and unmanaged.*
+
+**A deploy must also follow a push** — `push-release.sh` archives out of the
+local repo, so an unpushed sha reaches production while existing in no remote.
+Threads push their own work as of `f7b8ef5`; the check at deploy time is this
+thread's.
 
 Preflight refuses to deploy within 5 minutes of a scheduled checkpoint and
 prints the reason. Read [../OPERATIONS.md](../OPERATIONS.md) §"Deploying near a
