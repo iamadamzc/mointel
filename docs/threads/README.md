@@ -162,6 +162,45 @@ Four rules, and the last two are what make it worth having:
 Integration is bound by this like every other thread, and wrote it having broken
 it repeatedly first.
 
+## A deletion plan is a list of READERS, not writers
+
+**Added 2026-08-24, after Design found a deletion about to break capture in three
+files it owns none of.**
+
+`dossier.cycle` is scheduled for removal. The plan named the writers. It did not
+name `worker/desk-assessments.ts:275`, which reads the field to write the
+checkpoint's cycle column, or `components/AssessmentHistory.tsx:218`, which
+renders it raw.
+
+**The failure would not have been the empty column anyone expected.** The line is
+`dossier?.cycle.cycleClassification ?? null` — and the optional chain guards only
+`dossier`. With `dossier` present and `cycle` deleted, `.cycleClassification` is
+a **TypeError**; `?? null` never runs. `cycle: CycleFindings` is not optional
+(`lib/research/types.ts:550`), so nothing warns at the call site once the field is
+absent at runtime. The throw lands inside `captureAssessment` **before**
+`insertAssessmentTickers`, so the checkpoint's ticker rows are never written — for
+every ticker carrying a dossier, at every checkpoint. **A research field deletion
+would have destroyed the append-only record**, which is the one category on this
+desk that no run buys back.
+
+Three rules out of it:
+
+1. **Whoever deletes a field owns every module that reads it**, across thread
+   boundaries. Not "notifies" — owns, and the fix ships in the same commit as the
+   deletion. If it must split, the reader is made safe FIRST.
+2. **Enumerate readers by search, not by memory.** The plan was written by the
+   people who knew the field best, and it is precisely that knowledge which makes
+   a curated list feel complete. Same failure as diffing a hand-picked file list
+   instead of a directory.
+3. **`?.` on the parent is not a guard on the child.** `a?.b.c` protects against a
+   missing `a` and crashes on a missing `b`, which reads as safe and is the exact
+   shape you get when deleting `b`.
+
+**And note who found it.** Design owns none of the three files. It had just been
+told its instinct was false about one surface, and instead of dropping the
+instinct it asked where it *was* true — the re-derive-rather-than-withdraw repair,
+applied unprompted to its own corrected hunch.
+
 ## Ping Integration when you finish, without being asked
 
 **Added 2026-08-24 at the trader's instruction, and the instruction was
