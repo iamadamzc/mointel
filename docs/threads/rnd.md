@@ -967,7 +967,7 @@ who picks one at random will be wrong about the others:
 | ---: | --- |
 | **15** | universe rows that change CLASS — of 13,089 |
 | **13** | universe rows that LEAVE board eligibility |
-| **2** | symbols actually RANKING that become ineligible — Research, over the last full session's 2,821 ranked |
+| **2** | symbols actually RANKING that become ineligible — `BCTXL` rank 43, `IQMXW` rank 117, of 2,821 on 2026-08-21 |
 | **0** | archive board symbols affected — of 252 |
 
 The thirteen:
@@ -981,9 +981,15 @@ existing series has a step in it** — the discontinuity is real but sits entire
 in the future. That is the number this register exists to establish, and it is
 the one number the reorder did not change.
 
-**`BCTXL` is the instance that justifies the whole change.** It ends in `L`, so
-no fifth-letter W/U/R convention would ever have found it, and it was ranking as
-an ordinary name. The name rule does work the symbol convention cannot.
+**That last part is luck, and should not be read as evidence the log is robust.**
+The zero held because this board is 252 momentum names from August 2026 and none
+of them are derivatives — not because the entry was well constructed. A change
+touching share classes, ADR treatment or the price band would have moved it, and
+the log would have caught that only because it was written, not because it was
+written well. **Record the check; do not credit the record with the answer.**
+
+**`BCTXL` is the instance that justifies the whole change** — see the closing
+note below for its rank.
 
 **Why the unit rule stayed anchored.** "Unit" has an ordinary-equity sense the
 other two lack — "Common Units representing Limited Partner Interests". A bare
@@ -1022,13 +1028,18 @@ it must be reproducible from a ref — `git show <sha>:<path>` — or it is a
 snapshot of something that never existed. The general form is the one already
 on this desk: **assert the output a caller would actually see.**
 
-**One name worth a second look, offered rather than asserted.** `ADSEW`
-(ADS-TEC ENERGY PLC Warrant) is the same ADR-to-warrant case as `IQMXW` and only
-moves because of the reorder. It appears in this store's `ticker_session` on the
-last local session, as do `BCTXL`, `IQMXW` and `BLUWU` — four, not two. That is
-a **third population** (locally tracked through 2026-08-18) and not comparable
-with a production ranked set, so it refutes nothing. It is only a reason to
-check `ADSEW` against the ranked set before the two is treated as final.
+**`ADSEW` checked and closed, 2026-08-24.** It is genuinely in the thirteen and
+genuinely was not on the board. Ops queried the production snapshot for the last
+full session, 2026-08-21, over all thirteen names: **`BCTXL` at `rvol_rank` 43
+and `IQMXW` at 117 were the only two ranking, of 2,821.** Research's two and its
+denominator both reproduce exactly, so its run did not predate the reorder — or
+the reorder made no difference to the ranked set. The four I saw locally were a
+tracked-universe artifact, as suspected, and refuted nothing. **The two is
+final.**
+
+**`BCTXL` ranked 43rd**, which is not marginal — well inside the board — and it
+ends in `L`, so no fifth-letter W/U/R convention would ever have reached it.
+One name at rank 43 is the entire justification for a name-based rule.
 
 ## Working rules
 
