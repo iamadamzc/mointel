@@ -1114,6 +1114,30 @@ calls, and a check that passed because the fixed and unfixed code render
 identically at CLOSED phase. **Ask what makes a field appear before treating its
 absence as signal.**
 
+**A second defect found while checking the backfill, and it is worse than the
+first because it does not self-heal.** `ensureDailyHistory` short-circuits when
+`latestDailyBarDate(symbol) === today` (historyFetch.ts:32). A daily-bar fetch
+during a live session can return a **partial bar for that session** — running
+high, partial volume — which is then stored dated today. From that moment
+`MAX(trading_date) === today`, so every later call returns *"already current"* and
+**the partial bar is locked in for the rest of the day.** A corrective pass cannot
+fix it; nothing refetches.
+
+`resolveCycle` then treats an in-progress session as a completed one: relative
+volume understated, a cycle start possibly missed, retracement measured against a
+high that has not finished forming. So a single re-analysis during a session
+poisons that symbol's daily history until the date rolls — **not one wrong
+computation, a wrong session**.
+
+`today` is computed in UTC, so the lock releases at 20:00 ET rather than at the
+session boundary, which is its own small wrongness inside the same three lines.
+
+**This is not specific to any backfill.** The live path has it: any interpretation
+running during market hours can pin a partial bar. It has not bitten yet only
+because nothing re-analysed mid-session while a cycle depended on the bars. It
+should be fixed alongside the read-time move, not after it.
+
+
 ## Working rules
 
 - **Facts come from deterministic parsing; the model only interprets.** Never
