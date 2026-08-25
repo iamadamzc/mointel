@@ -59,6 +59,50 @@ if it happens again.
 
 ## Open items
 
+**00. A live catalyst miss on RCON this morning: RESOLVER found no durable
+company source and added nothing, so a wire release produced no re-analysis.**
+*Handed over by Ops 2026-08-25, traced not guessed. Read-only evidence below.*
+
+RCON sat on his board at rank **7**, **+24.04%**, reading `CATALYST UNKNOWN`
+while a PR Newswire release had gone out at **08:00 ET**.
+
+The pipeline fired correctly and came back empty. Job id **1224**, discovered
+`2026-08-25T12:04:05Z` = **08:04 ET** — four minutes after the wire — trigger
+`ENTERED_TOP_N`, completed 29 seconds later as `PARTIAL`. Its collector report:
+
+```
+{"discoveryMode":"RESOLVER","companySourceDetail":"no durable company source located",
+ "companySourceUrl":null,"companySourceShape":null,"modelCalls":1,"sourcesAdded":0,
+ "fingerprintChanged":false,"state":"COVERAGE_INCOMPLETE"}
+```
+
+`sourcesAdded: 0` → `fingerprintChanged: false` → no new
+`research_analysis_versions` row → `research_dossiers` still points at
+`2026-08-19T11:58:05Z`, `analysis_version` 1, `gpt-5.6-terra`. Six days old.
+That is the whole chain, and the board reading is the last link in it.
+
+**It is not the stranding defect.** `rcon_stranded = 0`. That was the standing
+hypothesis when this came to Ops and it is wrong for this ticker.
+
+**Scope — a class, but a narrow one.** Today: 55 `PARTIAL`, 14 `COMPLETE`, none
+queued or stalled. **Of the 55 PARTIAL, 45 produced a fresh analysis today.**
+RCON is one of the **10 that did not**. So `PARTIAL` is normal and usually still
+yields analysis; the failure is narrower than "PARTIAL is broken", and the 10
+are the population worth looking at.
+
+**The first question.** RCON's job today ran `discoveryMode: RESOLVER`; its
+08-20 job ran `DISCOVERY`. RESOLVER appears to depend on locating a durable
+company source, and when it cannot it adds zero sources and stops at one model
+call. A release distributed by a paid wire should not be reachable only through
+an issuer newsroom URL. Whether RESOLVER should fall back to DISCOVERY on
+`no durable company source located`, or whether wire coverage belongs on a path
+that does not depend on issuer resolution at all, is Research's design call —
+Ops is not going to specify it from outside.
+
+**What Ops did not do:** no re-queue, no forced reanalysis. That is a live-data
+action inside his trading window and it belongs to this thread, not to Ops.
+
+
 **0. The three-arm prompt run: the data is here, and the symbol list needs
 cutting to six.** *Delivered by Ops 2026-08-23.*
 
