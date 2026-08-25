@@ -396,6 +396,15 @@ clock-time finding: 44 of 95 movers peaked before 09:30 and only 16 inside
 share of names after the move that qualified them.** Not a verdict; Q5 is behind
 Q1 and this is the variable it would be answered with.
 
+**The 2026-08-25 correction STRENGTHENS this one**, which is worth recording
+because a retraction is assumed to cost something. While the register wrongly
+held that he traded only 04:00–09:30, late surfacing had an escape: a name
+peaking at 06:00 and surfaced at 10:00 could be dismissed as outside his hours
+anyway. **He trades premarket, RTH and after hours, so there is no such escape.**
+A name surfaced after its move is a missed opportunity at any hour, and the
+board's lateness is a defect across the whole day rather than a scheduling
+artifact. **The wrong belief was hiding a real problem behind a false excuse.**
+
 **CYCLE BECOMES ARITHMETIC, AND THE RECOMPUTE REACHES BACKWARDS.** *Routed by
 Integration 2026-08-23.* `lib/market/cycle.ts` computes the classification from
 daily bars and the model's version is being deleted — the trader's call, on 75%
@@ -957,8 +966,20 @@ What turned out not to be there:
 
 Research caught its own durable notes saying *"9:30–10:00 is the core"* — the
 **booklet's** core, Cameron's, not Adam's — under a rule in the same file reading
-*where the booklet and Adam differ, believe Adam*. **He trades 04:00–09:30 with
-profit concentrated from 07:00; RTH is the exception, not the default.**
+*where the booklet and Adam differ, believe Adam*.
+
+**A first attempt at this was wrong, and how it was wrong is the lesson.** The
+register briefly recorded *he trades 04:00–09:30, RTH is the exception.* **He
+corrected it himself** (`0595b2c`): *"i do sometimes trade RH and AH. but the
+core of the strategy is the same in terms of setups."* **He trades premarket,
+RTH and after hours. The setup is the requirement; the session is not — so no
+rule, check or threshold here may be keyed to the session.**
+
+**And substituting his window for the booklet's was the same mistake with
+different numbers.** Both were rules about the clock, and **the clock was never
+the rule.** *Noticing that a constant is inherited does not license replacing it
+with a better constant of the same kind* — the question is whether the quantity
+belongs in the rule at all.
 
 > **A taught method quietly stands in for the practitioner's, and it recurs on
 > other facts in the same file.**
@@ -966,10 +987,12 @@ profit concentrated from 07:00; RTH is the exception, not the default.**
 **This archive already has one confirmed instance**, measured and written up in
 [../rnd/2026-08-23-outcome-capture.md](../rnd/2026-08-23-outcome-capture.md):
 all three windowed gain columns — `gain_open_30_pct`, `gain_to_1100_pct`,
-`gain_to_close_pct` — **begin at or after the minute his session ends.**
-46.3% of movers peak inside his working session; **7.4% peak in the window the
-opening-gain column is named for.** The capture is fine and full-session; the
-derived windows ask the booklet's question.
+`gain_to_close_pct` — **all begin at or after 09:30.** 46.3% of movers peak
+before that; **7.4% peak in the window the opening-gain column is named for.**
+The capture is fine and full-session; the derived windows ask the booklet's
+question and leave three quarters of the peaks uncovered. **The figures are an
+opportunity distribution, not a trading window** — they say where the moves are,
+not where his trades must be.
 
 **So every threshold in this register is now suspect until checked against him
 rather than against the source** — Pillar 4's window, the hold-time grain, the

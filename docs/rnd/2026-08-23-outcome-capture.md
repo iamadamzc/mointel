@@ -844,30 +844,48 @@ number exists before anyone uses these columns.**
 Research found the general form in its own durable notes — *"9:30–10:00 is the
 core"* — and caught that this is **the booklet's core, Cameron's, not Adam's**,
 under a rule in the same file saying *where the booklet and Adam differ, believe
-Adam*. **He trades 04:00–09:30 and profit concentrates from 07:00. RTH is the
-exception.** The general shape: *a taught method quietly stands in for the
+Adam*. The general shape: *a taught method quietly stands in for the
 practitioner's, and it recurs on other facts in the same file.*
+
+**RETRACTED 2026-08-25, and the retraction is the more useful half.** This
+section originally read *he trades 04:00–09:30, profit concentrates from 07:00,
+RTH is the exception.* **He corrected it himself** (`0595b2c`): *"we can change
+that. i do sometimes trade RH and AH. but the core of the strategy is the same
+in terms of setups."* **He trades premarket, RTH and after hours. The setup is
+the requirement; the session is not.**
+
+**The sharper error, which Coaching caught: replacing the booklet's window with
+his was the same mistake with different numbers.** Both were rules about the
+clock, and **the clock was never the rule.** Spotting that a constant is
+inherited does not license substituting a better constant of the same kind. The
+measurements below are unaffected; **what they license is narrower than what
+this section first claimed.**
 
 **This archive has the same error one level down, in three column definitions:**
 
-| column | window it measures | relation to his session |
+| column | window it measures | relation to the taught window |
 | --- | --- | --- |
-| `gain_open_30_pct` | 09:30–10:00 | **begins the minute his session ends** |
+| `gain_open_30_pct` | 09:30–10:00 | Cameron's core, and only 7.4% of peaks |
 | `gain_to_1100_pct` | to 11:00 | entirely after |
 | `gain_to_close_pct` | to 16:00 | entirely after |
 
 **Where the max gain actually lands, all 95 movers:**
 
-    04:00-06:59  his session, early        26   27.4%   <- largest single bucket
-    07:00-09:29  HIS PROFIT WINDOW         18   18.9%
+    04:00-06:59  early premarket           26   27.4%   <- largest single bucket
+    07:00-09:29  late premarket            18   18.9%
     09:30-09:59  gain_open_30_pct window    7    7.4%   <- the column named for it
     10:00-10:59                             9    9.5%
     11:00-15:59                            18   18.9%
     16:00-20:00  after hours               17   17.9%
 
-**46.3% of movers peak inside his working session, and 7.4% peak in the window
-the opening-gain column measures.** Every derived gain field this archive has
-starts at or after the minute he stops trading.
+**46.3% of movers peak before 09:30, and 7.4% peak in the window the
+opening-gain column measures.** Every derived gain field this archive has starts
+at or after 09:30, so **three quarters of where the moves actually top out has no
+windowed column at all.**
+
+**Read as opportunity distribution, not as a trading window.** These figures say
+where the moves are; they say nothing about where his trades have to be, and the
+first version of this section wrongly used them for the second.
 
 **`gain_open_30_pct` is the sharpest instance, because the assumption is in the
 name.** "The opening 30 minutes" reads as *the money window* to anyone who opens
@@ -883,8 +901,11 @@ question was asked of what was kept.**
 
 **The fix, when the desk is quiet:** gain-to-07:00 and gain-to-09:30 as windowed
 columns, keeping the existing three rather than replacing them — a booklet-window
-number is still the right comparison when the question is *how does his session
-differ from the taught one*. **Add his window; do not delete Cameron's.**
+number is still the right comparison when the question is *how does the taught
+window differ from where the moves are*. **Add the dimensions; delete nothing.**
+And name them for the clock times they cover, not for whose window they are —
+`gain_to_0700_pct`, not `gain_his_window_pct`. **A column named after a person's
+habits inherits those habits when the habits change.**
 
 **The wider pass this implies, and it is not a small one.** Every threshold in
 the register descends from the same playbook: **Pillar 4's window, the hold-time
