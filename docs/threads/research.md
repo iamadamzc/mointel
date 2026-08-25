@@ -1962,3 +1962,72 @@ riding inside a deadline change is how the deadline gets missed.
 
 *Stated in the test file too, so five green tests are not read as covering the
 worker.*
+
+---
+
+**25. Newswire poll: the scoping. A deterministic path to RCON's release does
+not exist on public endpoints.** *Asked by Integration 2026-08-25 after the
+trader chose the poll over the resolver fallback. Probed read-only; nothing
+built.*
+
+### What each wire actually offers
+
+| wire | per-ticker or per-company feed? |
+| --- | --- |
+| **GlobeNewswire** | **YES** — `/RssFeed/keyword/{term}`, valid RSS, robots-permitted. 20 items on a busy term, 0 for `RCON`. |
+| **PR Newswire** | **NO.** `llms.txt` names only chronological and topical streams. Per-company pages are HTML behind a name→slug lookup. |
+| Business Wire | RSS requires an opaque per-feed token. |
+| Newsfile, Accesswire | no public feed at the documented paths (404). |
+
+**RCON's release was on PR Newswire** — the one wire with no per-company feed. So
+the case that prompted this is the case the clean mechanism does not cover.
+
+**The chronological PRN feed is polleable but carries no ticker.** 20 items
+spanning **7 minutes**, so a poll must beat that or items are silently missed
+(~4,100 releases a day). Matching would be **company name against title**, with
+nothing to disambiguate — Q3's collision problem with no ticker to resolve it.
+
+### The aggregator looked like the answer and is rate-limited
+
+`stocktitan.net/news/{TICKER}/` is ticker-keyed, covers every wire in one
+request, is permitted by robots (`/news/` allowed, `/search` disallowed), and
+carries `datetime="2026-08-25T12:00:00.000Z"` — **RCON's release, exact to the
+second**. It satisfies every requirement including the mandatory timestamp.
+
+**It returned HTTP 429 after two requests.** A per-ticker poll of even the top 12
+is a 12-request burst. **Not viable without an agreement or an API**, and I
+stopped probing rather than characterise someone's rate limit by exhausting it.
+
+*So coverage — Q5, how many of the 177 have a wire presence — is UNMEASURED. The
+sample returned 2 of 12 and that is a throttle artefact, not a finding.*
+
+### Trigger cost, which the mechanism decides rather than the other way round
+
+| trigger | population per session |
+| --- | --- |
+| `qualified` | **~2,800** |
+| top 50 | 50 |
+| top 12 | 12 |
+
+Per-ticker polling on `qualified` is ~200,000 requests a day and is out on
+volume alone. Firehose polling is **population-independent** — one request per
+interval regardless — so the earlier trigger is free under a firehose and
+impossible under a per-ticker poll. **The mechanism decides the trigger; costing
+them separately was the wrong shape and that is my correction to make, not
+Integration's.**
+
+### What this means
+
+**A deterministic, public, ticker-keyed newswire poll covering RCON's case does
+not exist.** The options that do:
+
+- **GlobeNewswire keyword RSS only** — clean, cheap, deterministic, and misses
+  PR Newswire, which is where today's release was.
+- **PRN chronological firehose plus name matching** — covers PRN, population-free,
+  and matches on title text with no ticker.
+- **A commercial wire feed** (Cision/PRN and GlobeNewswire both sell one) — the
+  only route that is both deterministic and ticker-keyed. **Not free, and that
+  is a decision rather than an engineering task.**
+
+**The constraint holds under all three:** a polled item is EVIDENCE and never a
+`companySource`. None of these touches `classifyCollectionPoint`.
