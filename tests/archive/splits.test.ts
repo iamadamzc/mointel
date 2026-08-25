@@ -259,3 +259,91 @@ describe('auditSplitFetch', () => {
     expect(audit.symbolsMissingAdjusted).toEqual(['BLIND']);
   });
 });
+
+describe('the split factor', () => {
+  /*
+   * These pin the MAGNITUDE, which was computed and discarded until 2026-08-25.
+   * The distance answers when a split happened; only the factor can correct a
+   * share count filed on the other side of it, which is what turns "this
+   * denominator is wrong in an unknown direction" into a number.
+   */
+
+  it('reports the factor the baseline was restated by', () => {
+    // RCON again: 1-for-200, so the factor is 200 and the restated close is
+    // 0.0224 x 200. The two must agree or one of them is lying.
+    const resolved = resolveBaseline(preSplit('2026-08-17', 0.0224, 200), level('2026-08-18', 3.34));
+
+    expect(resolved.splitFactor).toBeCloseTo(200, 6);
+    expect(resolved.referenceClose).toBeCloseTo(0.0224 * (resolved.splitFactor as number), 9);
+  });
+
+  it('is null when nothing was restated, never 1', () => {
+    // A 1 here would read as "a 1-for-1 split happened", which is not a thing.
+    // Null means no split; the distinction matters to anything dividing by it.
+    const resolved = resolveBaseline(level('2026-08-17', 4.49), level('2026-08-18', 3.5));
+
+    expect(resolved.splitDetected).toBe(false);
+    expect(resolved.splitFactor).toBeNull();
+  });
+
+  it('reports above 1 for a reverse split and below 1 for a forward one', () => {
+    /*
+     * THE DIRECTION IS THE WHOLE POINT AND AN INVERTED RATIO IS SILENTLY
+     * PLAUSIBLE. 20 and 0.05 are both "a 1-for-20", and a denominator corrected
+     * the wrong way is wrong by 400x while still looking like a share count.
+     * This universe is dominated by reverse splits, so the reverse case is the
+     * one that must not flip.
+     */
+    const reverse = sessionsSinceSplit(
+      [preSplit('2026-08-14', 0.5, 20), level('2026-08-17', 10), level('2026-08-18', 11)],
+      '2026-08-18',
+    );
+    expect(reverse.sessionsAgo).toBe(1);
+    expect(reverse.factor).toBeCloseTo(20, 6);
+
+    // A 2-for-1 forward: history restates DOWN, so the factor is below 1.
+    const forward = sessionsSinceSplit(
+      [preSplit('2026-08-14', 100, 0.5), level('2026-08-17', 50), level('2026-08-18', 52)],
+      '2026-08-18',
+    );
+    expect(forward.sessionsAgo).toBe(1);
+    expect(forward.factor).toBeCloseTo(0.5, 6);
+  });
+
+  it('is null exactly when the distance is null', () => {
+    // The two travel together or a reader cannot tell "no split found" from
+    // "split found, magnitude lost" -- which is precisely the state every row
+    // written before schema v6 is in.
+    const none = sessionsSinceSplit([level('2026-08-17', 4), level('2026-08-18', 5)], '2026-08-18');
+    expect(none.sessionsAgo).toBeNull();
+    expect(none.factor).toBeNull();
+
+    const absent = sessionsSinceSplit([level('2026-08-17', 4)], '2026-08-19');
+    expect(absent.sessionsAgo).toBeNull();
+    expect(absent.factor).toBeNull();
+  });
+
+  it('recovers each split separately when a name has consolidated twice', () => {
+    /*
+     * BTCT's shape: 1-for-30, then 1-for-20 later. The cumulative factor on the
+     * oldest session is 600, but the MOST RECENT split is the 20 -- and a
+     * reader correcting a share count filed between the two needs 20, not 600.
+     * Reporting the cumulative factor here would be wrong by 30x on exactly the
+     * names this field exists for.
+     */
+    const series = [
+      preSplit('2026-08-10', 0.01, 600), // before both
+      preSplit('2026-08-11', 0.30, 20), // after the 30, before the 20
+      level('2026-08-12', 6),
+      level('2026-08-13', 7),
+    ];
+
+    const recent = sessionsSinceSplit(series, '2026-08-13');
+    expect(recent.sessionsAgo).toBe(1);
+    expect(recent.factor).toBeCloseTo(20, 6);
+
+    // And the earlier one is still reachable by resolving against its own pair.
+    const earlier = resolveBaseline(series[0], series[1]);
+    expect(earlier.splitFactor).toBeCloseTo(30, 6);
+  });
+});

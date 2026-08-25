@@ -25,7 +25,7 @@ import Database from 'better-sqlite3';
 
 export type ArchiveDatabase = Database.Database;
 
-export const ARCHIVE_SCHEMA_VERSION = 5;
+export const ARCHIVE_SCHEMA_VERSION = 6;
 
 export const DEFAULT_ARCHIVE_PATH = path.join(process.cwd(), 'data', 'archive.db');
 
@@ -70,6 +70,13 @@ CREATE TABLE IF NOT EXISTS symbol_outcomes (
   -- family as float_basis — a value whose meaning depends on a parameter has to
   -- travel with the parameter.
   split_sessions_ago INTEGER,
+  -- How large that split was: 20 for a 1-for-20 reverse, 0.5 for a 2-for-1
+  -- forward. Null exactly when split_sessions_ago is null -- EXCEPT on rows
+  -- written before schema v6, which have it null regardless because the value
+  -- was computed and discarded rather than stored. Those rows are identifiable
+  -- by split_sessions_ago being non-null while this is null, and the only cure
+  -- is a re-run; nothing can reconstruct it from what was kept.
+  split_factor REAL,
   split_lookback_sessions INTEGER,
 
   -- Full product session, 04:00-20:00 ET.
@@ -319,6 +326,9 @@ function migrate(db: ArchiveDatabase, fromVersion: number): void {
   };
 
   db.transaction(() => {
+    if (fromVersion < 6) {
+      addColumn('symbol_outcomes', 'split_factor', 'REAL');
+    }
     if (fromVersion < 5) {
       addColumn('symbol_outcomes', 'split_lookback_sessions', 'INTEGER');
     }

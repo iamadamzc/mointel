@@ -119,6 +119,11 @@ export interface BaselineResolution {
   splitDetected: boolean;
   /** The as-seen prior close, kept whether or not it was restated. */
   rawPriorClose: number;
+  /**
+   * The factor the baseline was restated BY, null when it was not restated.
+   * Same convention as `SplitDistance.factor`: above 1 is a reverse split.
+   */
+  splitFactor: number | null;
 }
 
 /**
@@ -145,19 +150,46 @@ export function resolveBaseline(
   // Without both factors there is nothing to compare, so the as-seen close
   // stands. Guessing a restatement is worse than reporting the raw basis.
   if (priorRatio === null || targetRatio === null || !differs(priorRatio, targetRatio)) {
-    return { referenceClose: prior.raw, splitDetected: false, rawPriorClose: prior.raw };
+    return {
+      referenceClose: prior.raw,
+      splitDetected: false,
+      rawPriorClose: prior.raw,
+      splitFactor: null,
+    };
   }
 
   // Restate by exactly the factor between the two sessions, not all the way to
   // today: raw x (priorRatio / targetRatio).
+  const splitFactor = priorRatio / targetRatio;
   return {
-    referenceClose: prior.raw * (priorRatio / targetRatio),
+    referenceClose: prior.raw * splitFactor,
     splitDetected: true,
     rawPriorClose: prior.raw,
+    // Kept rather than discarded. This quotient IS the split ratio, and until
+    // 2026-08-25 it was computed here, used once, and dropped.
+    splitFactor,
   };
 }
 
 export interface SplitDistance {
+  /**
+   * The magnitude of that split: 20 for a 1-for-20 reverse, 0.5 for a 2-for-1
+   * forward. Null exactly when `sessionsAgo` is null.
+   *
+   * **This used to be computed and thrown away**, which is a different failure
+   * from the one the basis rule was written for. That rule covers a value with
+   * more than one possible definition; this was an event recorded with its
+   * QUANTITY discarded — the *when* kept, the *how much* dropped at a return
+   * statement, when the two cost the same to store.
+   *
+   * It is the difference between knowing a denominator is wrong and knowing by
+   * how much. A share count filed before a 1-for-20 overstates by exactly 20x,
+   * and this thread's standing refusal — *a denominator wrong in an unknown
+   * direction cannot support arithmetic about it* — was right about UNKNOWN
+   * rather than about wrong. Storing this does not overturn the refusal; it
+   * removes the condition the refusal was about.
+   */
+  factor: number | null;
   /**
    * Sessions between the most recent split and `tradingDate`, or null when
    * none was found in the window searched. Zero means the split took effect ON
@@ -189,15 +221,22 @@ export function sessionsSinceSplit(
   tradingDate: string,
 ): SplitDistance {
   const index = series.findIndex((pair) => pair.date === tradingDate);
-  if (index <= 0) return { sessionsAgo: null, windowSessions: Math.max(0, index) };
+  if (index <= 0) {
+    return { sessionsAgo: null, factor: null, windowSessions: Math.max(0, index) };
+  }
 
   // Walk backwards so the FIRST boundary found is the most recent one.
   for (let i = index; i >= 1; i -= 1) {
     const here = ratio(series[i]);
     const before = ratio(series[i - 1]);
     if (here === null || before === null) continue;
-    if (differs(here, before)) return { sessionsAgo: index - i, windowSessions: index };
+    // before / here, not the reverse: the earlier session sits on the older,
+    // larger cumulative factor, so a reverse split gives a number above 1 and a
+    // forward split one below it.
+    if (differs(here, before)) {
+      return { sessionsAgo: index - i, factor: before / here, windowSessions: index };
+    }
   }
 
-  return { sessionsAgo: null, windowSessions: index };
+  return { sessionsAgo: null, factor: null, windowSessions: index };
 }

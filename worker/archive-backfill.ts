@@ -412,6 +412,9 @@ async function main(): Promise<void> {
     let withBars = 0;
     for (const symbol of symbols) {
       const desk = deskByKey.get(`${date} ${symbol}`);
+      // Once, not once per field it feeds: distance, magnitude and the window
+      // searched are three answers from one walk back through the series.
+      const split = sessionsSinceSplit(pairsBySymbol.get(symbol) ?? [], date);
       const outcome = deriveOutcome({
         symbol,
         tradingDate: date,
@@ -422,9 +425,9 @@ async function main(): Promise<void> {
         dailyBar: dailyByKey.get(`${date} ${symbol}`) ?? null,
         cycle: cycleAsOf(cycleSeries.get(symbol) ?? [], date),
         rawPriorClose: rawPriorCloses.get(`${date} ${symbol}`) ?? null,
-        splitSessionsAgo: sessionsSinceSplit(pairsBySymbol.get(symbol) ?? [], date).sessionsAgo,
-        splitLookbackSessions: sessionsSinceSplit(pairsBySymbol.get(symbol) ?? [], date)
-          .windowSessions,
+        splitSessionsAgo: split.sessionsAgo,
+        splitFactor: split.factor,
+        splitLookbackSessions: split.windowSessions,
         asOf,
       });
       if (outcome.minuteBarCount === 0) empty += 1;
