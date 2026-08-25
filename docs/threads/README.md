@@ -422,6 +422,55 @@ global across the desk in a way a module is not.
 > **Before authorising a new field, grep the name across every module — not the
 > one that owns it.**
 
+**RESOLVED `ffd19c8`: R&D's column became `split_event_ratio`.** `lib/market/
+splits.ts` already held **both** quantities — `factors` (cumulative) and
+`SplitEvent.ratio`, documented as *"Old cumulative factor ÷ new. 30 means a
+1-for-30 reverse split"*. **Research already had the right name for R&D's
+quantity.** Theirs was shipped and populated; R&D's was three commits old and
+empty, so it moved.
+
+**And the collision was worse than a synonym clash, in a way worth generalising:**
+
+> **`1` is the ORDINARY value in the cumulative column and an IMPOSSIBLE one in
+> the event column** — a ratio within tolerance of 1 is never recorded as a split.
+> **Both columns look healthy in isolation; the failure only appears in an
+> analysis nobody has written yet.**
+
+**The basis question has a non-obvious answer that is worth keeping**, because the
+reflex after `float_basis` is to bolt a basis onto every number: **the cumulative
+factor NEEDS a basis and already has one** (`daily_bars.fetched_at`, since *still
+to apply* is relative to fetch time); **an event ratio is a property of the event
+and needs none.** Both already satisfy the rule. **Adding a basis column to the
+second would create a field with nothing to put in it.**
+
+**And R&D's correction of Integration's self-reproach is the part that changes
+practice.** The authorisation was a **scope** question — *is this yours to start* —
+and it was right. **A name collision is not a scope question and the check
+Integration reproached itself for skipping would not have caught it.** What caught
+it was **Research volunteering its own schema unprompted.**
+
+> **Cross-module collisions are found by threads publishing what they hold, not by
+> the authoriser checking harder.** No amount of care at the routing layer
+> substitutes for it.
+
+**It cost nothing only because nothing was populated** — the archive was still v5
+with no backfill run. **Timing, not foresight**: populated first, this would have
+been a data migration across two stores.
+
+### OPEN: two split detectors, different thresholds
+
+**Flagged by R&D rather than silently reconciled.** Research requires a split to
+hold for **`CONFIRM_SESSIONS = 3`** before believing it. R&D detects on a **single
+boundary crossing at 0.5% tolerance, no confirmation.** Research's reasoning
+applies to R&D's code too — **a fabricated basis change makes two comparable
+prices look incomparable, which is worse than missing a real split.**
+
+**Unresolved, and named as the next collision if nobody writes it down.** R&D has
+asked Research for a counterexample rather than matching the threshold on
+authority.
+
+
+
 **So the rule is not "be careful": it is that a name collision is a defect in the
 name, and the fix belongs at the source.** Rename the second artefact when you
 create it. And the standing repair, from R&D's rule about values with two possible
