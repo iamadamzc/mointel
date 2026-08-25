@@ -1268,7 +1268,65 @@ session id in the message body and it was **wrong** — the directory gives
 failed for the wrong reason and I would have reported *"unprompted does not
 work"* — the correct answer to a question nobody asked.
 
-## State: production is `260a8ae`, deployed 2026-08-24 23:16 UTC
+## State: production is `1baf92c`, schema **v22**, deployed 2026-08-25 05:58 UTC
+
+**The first schema change in thirteen deploys.** Gated at that sha with a fresh
+`npm ci`: **1395 tests**, lint, build, typecheck. Capture surface zero, lockfile
+untouched. Shipped at 01:51 ET with **2h09m to premarket** and the next
+checkpoint 4h19m out — the margin was the point.
+
+**The line that mattered read correctly:**
+
+```
+[migrate] schema upgrade v21 → v22
+[migrate] backup: /var/lib/mointel/backups/market-v21-2026-08-25T05-57-57-609Z.db
+[migrate] backup integrity: ok
+[migrate] schema v22, quick_check ok, 1 backup(s) written
+```
+
+**`1 backup(s) written`**, not the `0` it had read twelve deploys running. The
+v21 rollback path exists.
+
+**And a v21 backup was taken before the deploy as well**, by this thread —
+`snapshot-db.mjs`, 316.8 MB, `integrity: ok`, schema 21. Backups are this
+thread's scope and the rollback path should not depend solely on the migration
+doing its job. There are now two v21 restore points; the belt was not needed and
+was still correct to wear.
+
+**No health mismatch appeared**, as predicted: `schemaVersion 22`,
+`expectedSchemaVersion 22`. Migration completes before anything serves health.
+
+Verified after: `split_factor` present in `daily_bars`, `user_version` **22**,
+**eighth clean stop** (05:57:56), `NRestarts` **0** on all four, and the market
+worker **pid 129202, still started 2026-08-23 01:27:36 UTC — untouched across
+thirteen deploys.**
+
+**Pin refreshed.** `market-worker-release` recorded `backup=none` because no v21
+backup existed when it was placed. With the store now at v22, a rollback to that
+v21 build needs the paired backup — so it was re-pinned and now carries
+`backup=…market-v21-…`. `pins.sh check`: all satisfiable.
+
+### The recap stranding is not historical — it recurred last night
+
+`stalledJobs` read **16**, up from 10, on its first full day of reporting:
+
+| recap | jobs stranded | reason |
+| --- | --- | --- |
+| 2026-08-17 | 2 | `cycle context changed at 22:00` |
+| 2026-08-21 | 8 | same |
+| **2026-08-24** | **6** | same |
+
+**Three recaps, three strandings.** I recorded these on Saturday as ten stale rows
+nothing would pick up, and yesterday established they have a visible board
+consequence — `ADXN`, `LSTA`, `ZKH` carrying cycles computed a session stale.
+**Six more names joined that set overnight**, for trading date 2026-08-24, and
+they will behave the same way on today's board.
+
+**The field Research added is doing exactly what it was built for**, and it did
+it within a day: a number that was correct-but-scoped-to-today became a
+measurement, and the measurement moved.
+
+## ~~State: production is `260a8ae`, deployed 2026-08-24 23:16 UTC~~ (superseded)
 
 Gated at that sha with a fresh `npm ci`: **1351 tests**, lint, build, typecheck.
 Carries `stalledJobs` onto the health allowlist and the Coaching fills pipeline.
