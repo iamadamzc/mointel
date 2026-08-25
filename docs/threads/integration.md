@@ -1694,6 +1694,52 @@ someone happening to look** — `ce145b8` sat ten hours, this ran three. **Both 
 time-based decisions with no mechanism behind them.** No thread here can wake
 itself; a schedule that depends on attention is not a schedule.
 
+## A failed deploy is not an unlanded deploy
+
+**2026-08-25. This thread instructed the same sha twice, the second time for work
+that was already live.**
+
+The 02:20 deploy caused a 3h22m outage — `push-release.sh` stalled **after**
+stopping the runtime units and **before** starting them. **The payload landed
+correctly; only the restart was left undone.** But the outage made the whole deploy
+read as failed, so `2906a59` stayed on this thread's pending list. Ops resolved it
+to `bc78d49` and shipped that; **`bc78d49` is `2906a59` plus one docs commit.**
+
+**Deploying it again would have been a BACKWARDS step** — dropping a docs commit
+and restarting three services to change **zero lines of code**, during his trading
+window.
+
+> **An incident during a deploy says nothing about whether the payload landed.
+> Those are separate facts and only one of them is visible in the incident.**
+
+**Check the sha against production before instructing anything.** `git merge-base
+--is-ancestor <sha> <live>` is one command and it is the check this thread skipped
+twice.
+
+**The good half: the experiment was already armed.** `bc78d49` has been live since
+09:42Z, so tonight's recap is the clean `stalledJobs` reading with nothing needing
+to ship.
+
+## I set the deadline and the conditions; Ops prices the minute
+
+**Ops's correction, and it is the durable form of the override above.**
+
+Overriding its 17:00 recommendation was right — *a turn you have now is worth more
+than a better window you may not reach*, and its own recommendation depended on
+someone arriving at 17:00. **But the cost estimate attached to it was wrong.** This
+thread priced the earlier window at *"at most one skipped `RTH_INTERVAL`"*, which
+was true **after 10:00 ET**. Ops's next turn was **08:2x ET — inside his trading
+window, with RCON on his board at rank 7, +24%.** The cost there is **his board
+going dark mid-trade**, not a skipped assessment.
+
+> **Send the deadline and the conditions. Do not send the minute, and do not price
+> it.** The thread holding the checkpoint schedule and the live board state is the
+> only one that can.
+
+**And it worked the first time this thread did it that way** — `"deploy before
+20:00 ET, watched, research idle, abort on a stall"` produced a correct abort.
+**The second attempt added a minute and got the pricing wrong.**
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin
