@@ -769,6 +769,73 @@ about 0.70.
 
 
 
+
+#### The split factor is computed and thrown away — 2026-08-24
+
+Research demonstrated that split dates and ratios are recoverable **exactly**
+from price data alone: fetch a window raw and split-adjusted, and the quotient
+is the cumulative factor, which **steps at each split**. BTCT resolves to
+1-for-30 on 2022-05-06 and 1-for-20 on 2023-08-24, and 30 x 20 reconciles to the
+cumulative factor exactly. No model, no prose, no corporate-actions endpoint.
+
+**That is the mechanism `lib/archive/splits.ts` already runs on.** The news is
+not the method — it is what Research did with it, and the gap it exposes here.
+
+**This archive records WHEN a split happened and discards BY HOW MUCH.**
+`resolveBaseline` computes the exact factor inline —
+
+    prior.raw * (priorRatio / targetRatio)
+
+— and that quotient **is** the split ratio. It is used to restate one close and
+then dropped at the return statement. `split_sessions_ago` stores the distance;
+nothing stores the magnitude.
+
+**That is this thread's own basis rule broken from a direction it did not
+anticipate.** The rule says a value with more than one possible definition ships
+with its basis. Here the failure is different and worse: **an event was recorded
+and its quantity discarded** — the *when* kept, the *how much* thrown away, when
+the two cost the same to store and the second is the one arithmetic needs.
+
+**And it is exactly what the `float > SO` denominator problem was missing.** The
+standing position is *a denominator that may be wrong in an unknown direction
+cannot support any arithmetic about it.* A stored per-name split factor makes the
+direction **known**: a filed share count predating a 1-for-20 is wrong by exactly
+20x, recoverable without touching the filing. The refusal was right, and it was
+right about *unknown*, not about *wrong* — so this dissolves the blocker rather
+than overturning the reasoning.
+
+**Queued: `split_factor` beside `split_sessions_ago`.** Near-free, since the
+value is already computed. Not started; the desk is live.
+
+#### BTCT vindicates the readable null, on the worst possible name
+
+BTCT is in this archive at 2026-08-19 with **`split_sessions_ago` = null and
+`split_lookback_sessions` = 501.** Research's BTCT splits are 2022-05-06 and
+2023-08-24 — **both beyond 501 sessions.** So the null is correct: *no split in
+the window searched*, and the true most recent one sits roughly 750 sessions back.
+
+**Without the window column a reader takes that null for "never split" — and
+BTCT is a serial reverse-splitter, the single most dangerous name in this
+universe to record as clean.** This is the CDTG lesson paying off on the exact
+name Research chose as its example, which is a better test than one I could have
+picked for myself.
+
+#### Depth poisoning does not reach the cycle fields, and not by luck
+
+Research's second finding: BTCT's all-history split-adjusted ceiling is
+**$14,249.94, on a bar that traded four shares** — arithmetically correct,
+economically meaningless, and a $25M dollar-volume floor only brings it to
+$2,561.94 against an honest post-consolidation $26.58.
+
+**Checked here: `cycle_advance_pct` tops out at 34.2%, with zero of 220 rows
+above 1000%.** The reason is structural rather than fortunate — the cycle window
+is bounded by a *resolved cycle start*, 21 sessions minimum and typically far
+less than a year, so it never reaches back into pre-consolidation history. **A
+measure anchored to a found event cannot be poisoned by depth it never reads.**
+Any future all-history depth measure on this archive would need the post-
+consolidation guard; the existing ones do not.
+
+
 #### The windowed gain columns are anchored to the wrong session — measured 2026-08-24
 
 **Not fixed, deliberately: he is trading as this is written. Recorded so the
