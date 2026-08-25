@@ -406,6 +406,22 @@ The other two instances the same day:
 - **"Float"** names both a vendor-displayed number and a filing-computed one,
   which is why `float_basis` exists.
 
+**Fourth instance, three days, and this one was AUTHORISED BY INTEGRATION.**
+Research's deep-history work stores **`split_factor`** on `daily_bars` — the
+**cumulative** factor from raw closes against split-adjusted closes, where **1
+means "already on today's basis"**. Integration then authorised R&D to add
+**`split_factor`** to the archive, where it derives from `resolveBaseline` and
+reads as **the ratio of the split EVENT**. **Two quantities, one name, two tables,
+one desk** — caught by Research unprompted before either shipped.
+
+**The authorisation was wrong for a specific reason worth copying: it was granted
+on the basis that the column was "in your own module".** Module ownership settles
+*who builds it*. **It does not settle whether the NAME is free**, and a name is
+global across the desk in a way a module is not.
+
+> **Before authorising a new field, grep the name across every module — not the
+> one that owns it.**
+
 **So the rule is not "be careful": it is that a name collision is a defect in the
 name, and the fix belongs at the source.** Rename the second artefact when you
 create it. And the standing repair, from R&D's rule about values with two possible
