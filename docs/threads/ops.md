@@ -2807,6 +2807,44 @@ references no branch.
 
 ## Before you deploy
 
+### First check the sha is actually ahead of production — twice now it was not
+
+Before gating, before anything: **prove the candidate is a descendant of what is
+live.** A handed-over sha can be one that already shipped, and a deploy of an
+ancestor is a silent rollback.
+
+```bash
+git merge-base --is-ancestor <candidate> <production> && echo "ALREADY LIVE - do not deploy"
+git log --oneline <production>..<candidate>   # empty = nothing to ship
+git diff --stat <production> <candidate>      # deletions = going backwards
+```
+
+On 2026-08-25 Integration sent `2906a59` twice as a pending deploy. The first
+time it resolved to `bc78d49` and shipped correctly. The second time it was
+still named as pending — but `bc78d49` **is** `2906a59` plus one docs commit, so
+deploying it would have dropped that commit, restarted three services and taken
+the board down inside his 7–10am trading window **to change zero lines of code**.
+
+The cause is worth knowing because it will recur: **a deploy whose payload
+landed but whose services never started looks exactly like a deploy that
+failed.** The outage made a successful payload look pending. Anyone tracking
+that deploy from outside will re-send it.
+
+**So confirm live code, not just the symlink** — the running processes can be on
+a different release than `current`:
+
+```bash
+grep -n "<the fix>" /opt/mointel/current/<file>
+for u in research assess; do pid=$(systemctl show mointel-$u -p MainPID --value);
+  sudo readlink /proc/$pid/cwd | xargs basename; done
+```
+
+A grep of the release directory proves what would run on restart. The `cwd` of
+each live process proves what **is** running now. They differ whenever a deploy
+left a service unrestarted, which is the normal case for `mointel-market` and
+the abnormal case for everything else.
+
+
 The gate, all four green **at the sha that ships** — `npm test`, `npm run lint`,
 `npm run typecheck`, `npm run build` — pinned per §"Gate the sha, not the tree".
 
