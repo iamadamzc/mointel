@@ -1622,6 +1622,36 @@ this desk has two kinds that differ in the one property that matters:
 two artefacts answering to *"Research's inventory"*: **when one word covers two
 things with opposite properties, the word is the defect.**
 
+## Never pre-authorise a red signal
+
+**Ops, 2026-08-25, inverting an instruction this thread had relayed.** Research
+flagged that `/api/health` could legitimately read a schema `user_version`
+mismatch between a deploy landing and the worker restarting, and Integration asked
+Ops to **decide in advance what that mismatch meant**.
+
+**The window does not exist.** `deploy.sh` stops the runtime units, migrates, then
+starts; systemd has web, research and assess each `After=` **and** `Requires=
+mointel-migrate.service`. **During migration the web process is DOWN — health does
+not answer at all, rather than answering wrongly.**
+
+> **A mismatch on `/api/health` should never appear, so if it does it is a genuine
+> fault. Being told to expect a red signal is exactly how a real one gets waved
+> through.**
+
+**This desk produced two examples of that failure the same day**: the flaky
+`releaseBootstrap` test, whose cost was named as *the operator learning to re-run
+until green*; and this thread telling the trader a label would be gone from his
+board while it was still on it.
+
+**The general rule, and it is stronger than "check first":** *"expect X during the
+window"* is a claim about a window, **and if the window is imaginary the sentence
+converts a detector into a blind spot.** Before pre-authorising any expected
+anomaly, **establish that the state can actually occur** — and if it can, prefer
+suppressing the signal at its source over teaching a human to ignore it.
+
+**The safe direction is the opposite one: say a signal should never fire, and be
+wrong.** That costs one investigation. The other way costs the next real fault.
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin
