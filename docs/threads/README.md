@@ -849,6 +849,48 @@ has already removed the partial bar, the slice drops the one behind it too — s
 08-19 sliced, and 08-19 held a 1.32 high. **A correct guard and a correct filter,
 composing into a wrong number.**
 
+## A change's blast radius includes the instrument watching it
+
+**Research, 2026-08-25, caught before shipping — the first of this family found in
+advance rather than after.**
+
+The stranded-jobs fix moves the recap's enqueue to the **target** session. But
+`stalledJobs` counts `trading_date <> ?` — **and a job legitimately queued for
+tomorrow satisfies that.**
+
+> **The field added to make this population visible would have started counting
+> the FIX as the disease** — every night from 22:00 until the roll, in a shape
+> identical to the bug persisting.
+
+**One character (`<` for `<>`), and it must land in the same commit.** Otherwise
+the first night's reading is wrong in the most convincing possible way: it would
+survive review, match the prior night's shape, and **argue against the change that
+caused it.**
+
+**A metric that reports a successful fix as a continuing fault is worse than no
+metric.**
+
+**How it was found is the transferable part.** Integration asked Research to check
+whether any **reader** depended on a queued job's `trading_date`. It went looking
+at other threads' readers **and found its own instrument.**
+
+> **Nobody checks the instruments watching a change, because they are not the
+> thing being changed.** Add them to the reader list explicitly.
+
+**Third instance for the same thread in one week** — the `adjustment` literal, the
+health allowlist, this — **each a field correct in isolation and wrong beside a
+change nobody had made yet.**
+
+### And the counterfactual that made the fix verifiable
+
+`nextTradingDate` reads the **cached market calendar**, not tomorrow-arithmetic, so
+holidays and weekends skip by construction. **Had it been arithmetic, a Friday
+recap targeting Saturday would strand every job exactly as today does — and the
+fix would have looked correct while changing nothing.**
+
+**Establishing that a fix CAN work is separate from establishing that it does**,
+and it is the cheaper half to skip.
+
 ## A constant dressed as a measurement
 
 **Research, 2026-08-24, found in its own ledger.** The hardest version of *a check
