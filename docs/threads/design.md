@@ -796,6 +796,43 @@ re-collapse that into a boolean by picking a number — the row shows how many
 sessions behind, and the trader decides. **Two sessions behind on a name he is
 about to size is his call, not a constant in this file.**
 
+### Full-depth blue sky: render the post-consolidation ceiling, put depth in text
+
+The owner chose full-depth lookback — *"as deep as you can go"* — and Research's
+probe found raw depth alone is unusable on serial reverse-splitters. **BTCT's
+all-history split-adjusted ceiling is $14,249.94, on a bar that traded four
+shares.** The honest post-consolidation ceiling is **$26.58**, about ten times
+the current price, against the **$1.80** the 90-session window showed.
+
+**Never render the raw all-history figure as the ceiling.** `$14,249.94` on a
+$1.71 stock reads as a broken product, and it would cost the whole ladder its
+credibility the way `VERIFIED BLUE SKY` cost this one — same week, same surface.
+**A number that is arithmetically correct and obviously absurd is worse than no
+number**, because the reader cannot tell which of the two it is.
+
+**Four shares is not a ceiling in the only sense that matters.** A ceiling
+matters because *trapped holders* sit above it. Four shares means nobody is
+trapped there. `blueSky.ts` already rejects this class for the 90-session window
+— bad print, isolated spike (`:164`, `:175`) — and **a full-depth ceiling needs
+the same guards, plus a volume floor**, or depth simply buys deeper artefacts.
+
+**Render: `ABOVE PRIOR CEILING $26.58` — the post-consolidation number.** It is
+the deepest figure that survives the guards, and it is decision-relevant in a way
+neither neighbour is: `$1.80` implies he is near the top of the range, and
+`$14,249.94` implies nothing at all. **Ten times overhead is a different trade
+from clear sky, and only the middle number says so.**
+
+**Depth goes in the text beside it, per his instruction — and the split factor is
+the story, not a footnote.** *"Highest across N sessions since 2019 · after
+1-for-50 of consolidation"* explains **why** the deep number is meaningless: the
+holders it would have trapped were diluted out of existence. That is exactly the
+`float_basis` and `asOfTradingDate` move — the number, its basis, and the fact
+that discounts it, in text.
+
+**Both numbers, then — but not as equals.** One is the ceiling; the other is
+context for why the ceiling is where it is. Rendering them side by side as two
+ceilings would repeat the mistake this section opens with.
+
 ### `VERIFIED BLUE SKY` — the word qualifies the ceiling, never the sky
 
 **Reported by the desk owner mid-session, 2026-08-24:** BTCT at $1.71 rendering
@@ -1733,15 +1770,29 @@ practical size of the inflation is unknown. Needs the live desk.
   the box is not confirming its behaviour changed.
 - **Thread-to-thread traffic goes through Integration, not the trader.** Set at
   his instruction 2026-08-23 (`159baab`), after he was asked three times in one
-  evening to carry a message between two threads. **Address it by name —
-  `SendMessage` to `Integration`.** The threads appear in `ListAgents` as
-  `R&D`, `Ops`, `Integration` and `mointel-05`. *(Integration's own instruction
-  said to reply to the `from=` id because it "does not appear in ListAgents".
-  Both halves are wrong: it does appear, and the `from=` id fails as
-  unreachable. Verified 2026-08-23.)* Integration relays with context the
-  receiver lacks — but **relaying is not deciding**: anything needing the
-  trader's judgement goes to him under *What I need from you*, directly, with no
-  hop in between.
+  evening to carry a message between two threads.
+
+  **Look the address up every time; never cache it.** `list_sessions` is the
+  directory — it returns real titles (`Integration`, `Research`, `Ops`, `R&D`,
+  `Coaching`) with their `sessionId` and `cwd`. Send with `send_message` using
+  that `session_id`.
+
+  **Three routes that do NOT work**, each recorded because this file asserted one
+  of them: `ListAgents` names are opaque handles (`mointel-8c`, `claude-1a`) that
+  map to no thread; `SendMessage` to a bare name works only while a session
+  happens to surface in `ListAgents`, then fails *"No agent named … is
+  reachable"*; and copying a received message's `from` attribute as the `to`
+  fails on this machine despite the tool's own docs.
+
+  **This file previously said to address it by name and listed the `ListAgents`
+  entries. That was verified true on 2026-08-23 and had drifted by 2026-08-24** —
+  which is the reason for the lookup rule rather than an argument against
+  verifying. A checked fact about a moving thing has a shelf life, and this one's
+  was under a day.
+
+  Integration relays with context the receiver lacks — but **relaying is not
+  deciding**: anything needing the trader's judgement goes to him under *What I
+  need from you*, directly, with no hop in between.
 - **Check a review link by content, never by status code.** A revoked, expired
   or invalid token returns **200 with an error page**, not 401 or 404 — found by
   Ops, recorded 2026-08-23. A valid session is ~535 KB with `RVOL` present; a
