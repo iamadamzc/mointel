@@ -1175,6 +1175,40 @@ tell them apart, which this thread established the expensive way.
 this is a production config change with a multi-day protocol, which is adjacent
 but not the same thing. Put to him rather than stretched.
 
+## Reaching another thread: use `list_sessions`, not `ListAgents`
+
+Tested 2026-08-25 because Integration became unreachable and the charter's
+instruction turned out to be wrong. **Results, mechanism first:**
+
+| attempt | tool + address | result |
+| --- | --- | --- |
+| reply path | `SendMessage`, `to:` the `from` attribute of an incoming message | **FAILS** — *no agent named … is reachable* |
+| by session id | `SendMessage`, `to:` a raw `local_…` id | **FAILS** |
+| by name | `SendMessage`, `to: "Integration"` | worked all night, **then stopped** when the name left `ListAgents` |
+| **unprompted, by id** | **`mcp__ccd_session_mgmt__send_message`** with `session_id` | **WORKS** |
+
+**`SendMessage`'s own documentation is wrong here** — it says to copy the `from`
+attribute as the `to`. That path does not resolve on this machine. What actually
+worked all night was *name* matching against `ListAgents`, which is not a reply
+channel at all; it quietly stopped resolving when the peer's row changed.
+
+**The directory with the titles is
+`mcp__ccd_session_mgmt__list_sessions`.** It returns `sessionId`, `title`, `cwd`
+and `lastActivityAt` — Integration, Research, Coaching, Design, R&D, all under
+`A:\mointel`. **`ListAgents` shows only opaque handles** (`mointel-8c`,
+`claude-1a`, …) that map to nothing.
+
+> **To reach a thread: `list_sessions` for the id, then
+> `session_mgmt send_message`. Unprompted sends work.** The rule that threads
+> ping Integration on finishing is viable; it just needs this pair.
+
+**One trap found by testing rather than reasoning:** Integration supplied its own
+session id in the message body and it was **wrong** — the directory gives
+`local_15e66a31-…`, matching the `from` on its own messages, not the
+`local_f33dbb08-…` it quoted. Had I trusted the supplied id, the test would have
+failed for the wrong reason and I would have reported *"unprompted does not
+work"* — the correct answer to a question nobody asked.
+
 ## State: production is `260a8ae`, deployed 2026-08-24 23:16 UTC
 
 Gated at that sha with a fresh `npm ci`: **1351 tests**, lint, build, typecheck.
