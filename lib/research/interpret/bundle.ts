@@ -474,8 +474,25 @@ export function buildEvidenceBundle(
     )
     .all(ticker) as DailyBar[];
 
+  /*
+   * INCLUDE, because `summariseDailyHistory` returns both bounds and rates and
+   * splits them itself.
+   *
+   * EXCLUDE was silently wrong here in a way the call site could not fix.
+   * `windowHigh`, `windowLow` and `historicalResistance` are bounds and were
+   * being understated -- and `historicalResistance` compounded it, since it
+   * already drops the last session and the filter had removed one before it,
+   * so it lost TWO. Those figures reach the model and are copied into
+   * `cycle.historicalResistance` on 81% of dossiers, which is an append-only
+   * record rather than a screen.
+   */
   const dailyHistory = summariseDailyHistory(
-    readDailyBars(db, ticker, options.cycleHistoryTradingDays ?? DEFAULT_CYCLE_HISTORY_TRADING_DAYS),
+    readDailyBars(
+      db,
+      ticker,
+      options.cycleHistoryTradingDays ?? DEFAULT_CYCLE_HISTORY_TRADING_DAYS,
+      'INCLUDE',
+    ),
   );
 
   return {

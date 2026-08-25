@@ -151,3 +151,88 @@ describe('daily history summary', () => {
     expect(JSON.stringify(summary)).not.toContain('"open"');
   });
 });
+
+/**
+ * Bounds and rates over the same bars, split inside the function.
+ *
+ * The call site cannot fix this by choosing a filter, which is the whole
+ * finding: `summariseDailyHistory` returns both kinds, so whichever the caller
+ * picks is wrong for half of what comes back.
+ *
+ * It ran with EXCLUDE for a day, understating three bounds that reach the model
+ * and are copied into `cycle.historicalResistance` on 81% of dossiers — an
+ * append-only record rather than a screen.
+ */
+describe('an unfinished last session', () => {
+  /** Finished sessions, then one still trading with a higher high. */
+  const bars: DailyBar[] = [
+    ...series([
+      ['2026-08-17', 10],
+      ['2026-08-18', 12],
+      ['2026-08-19', 6],
+    ]),
+    {
+      tradingDate: '2026-08-20',
+      open: 6, high: 20, low: 5, close: 7,
+      volume: 100, sessionComplete: false, splitFactor: null,
+    },
+  ];
+
+  it('includes its high in the window bound', () => {
+    // A high only rises within a session, so an unfinished one is a LOWER bound
+    // on the true high. Excluding it understates the ceiling, which is the
+    // direction that manufactures a false blue sky.
+    expect(summariseDailyHistory(bars).windowHigh).toBe(20);
+  });
+
+  it('includes its low in the window bound too', () => {
+    expect(summariseDailyHistory(bars).windowLow).toBe(5);
+  });
+
+  it('drops exactly ONE session from historical resistance, not two', () => {
+    /*
+     * The compounding bug. `historicalResistance` already excludes the current
+     * session — resistance means levels established BEFORE now. When a filter
+     * had already removed the unfinished bar, the slice dropped the one behind
+     * it as well, so BTCT lost both 08-20 and 08-19 and 08-19 held a 1.32 high.
+     *
+     * 12 here is the 08-18 high; getting 10 would mean 08-19 was dropped too.
+     */
+    expect(summariseDailyHistory(bars).historicalResistance).toBe(12);
+  });
+
+  it('keeps its part-day close out of the drawdown', () => {
+    /*
+     * A RATE. The peak close is 12 and the deepest finished close is 6, so the
+     * drawdown is 50%. The unfinished close of 7 cannot deepen it and must not
+     * be allowed to, because a part-day close sits anywhere in the day's range.
+     */
+    expect(summariseDailyHistory(bars).largestDrawdownPct).toBe(50);
+  });
+
+  it('tells the model that the last session is still trading', () => {
+    // Suppressing the bar would understate the bounds; suppressing the FACT
+    // would leave the model comparing figures built from different sets
+    // without knowing it.
+    const notes = summariseDailyHistory(bars).notes.join(' | ');
+
+    expect(notes).toContain('2026-08-20 is still trading');
+  });
+
+  it('changes nothing when every session is finished', () => {
+    /*
+     * The control. Without it these tests could pass against an implementation
+     * that always used one set, and the whole point is that it uses two.
+     */
+    const finished = series([
+      ['2026-08-17', 10],
+      ['2026-08-18', 12],
+      ['2026-08-19', 6],
+    ]);
+    const summary = summariseDailyHistory(finished);
+
+    expect(summary.windowHigh).toBe(12);
+    expect(summary.largestDrawdownPct).toBe(50);
+    expect(summary.notes.join(' | ')).not.toContain('still trading');
+  });
+});

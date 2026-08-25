@@ -384,6 +384,22 @@ export function findRuns(bars: readonly DailyBar[], minGainPct = MIN_RUN_PCT): P
  * Reports what the prices did and classifies nothing about the current move. The
  * runner status is a *candidate* flag: the interpreter decides, with this as
  * evidence rather than as a verdict.
+ *
+ * TWO BAR SETS, because the rate/bound rule partitions INSIDE this function
+ * rather than at its call site.
+ *
+ * An unfinished session is a running high and a part-day volume, so:
+ *
+ * - `windowHigh`, `windowLow` and `historicalResistance` are BOUNDS. A high only
+ *   rises within a session, so an unfinished one is a LOWER bound on the true
+ *   high — including it errs toward a higher ceiling, which is the safe side.
+ * - `largestDrawdownPct`, the runs and everything derived from them are RATES
+ *   over `close`. A part-day close is wrong in an unknown direction, so they use
+ *   finished sessions only.
+ *
+ * This is why the caller cannot fix it by choosing a filter: whichever it picks
+ * is wrong for half of what comes back. It passes everything and the split
+ * happens here.
  */
 export function summariseDailyHistory(
   bars: readonly DailyBar[],
@@ -393,7 +409,14 @@ export function summariseDailyHistory(
   if (usable.length === 0) return { ...EMPTY_HISTORY_SUMMARY };
 
   const adjustment = options.adjustment ?? 'split';
-  const runs = findRuns(usable);
+  /*
+   * Rates run over finished sessions only. `sessionComplete` is populated on
+   * every bar `readDailyBars` returns, so this is a real distinction rather than
+   * an absence being read as consent — and a caller that passes EXCLUDE simply
+   * finds both sets identical.
+   */
+  const complete = usable.filter((bar) => bar.sessionComplete);
+  const runs = findRuns(complete);
 
   let windowHigh: number | null = null;
   let windowHighDate: string | null = null;
@@ -426,9 +449,14 @@ export function summariseDailyHistory(
     }
   }
 
+  /*
+   * A RATE, so finished sessions only. A part-day close can sit anywhere inside
+   * the day's range, and a drawdown measured to it is wrong in a direction
+   * nothing downstream can recover.
+   */
   let largestDrawdownPct: number | null = null;
-  let peak = usable[0].close as number;
-  for (const bar of usable) {
+  let peak = (complete[0]?.close ?? usable[0].close) as number;
+  for (const bar of complete) {
     const close = bar.close as number;
     if (close > peak) peak = close;
     const drawdown = ((peak - close) / peak) * 100;
@@ -457,9 +485,22 @@ export function summariseDailyHistory(
     runnerCandidate = 'FORMER_RUNNER_CANDIDATE';
   }
 
+  const last = usable[usable.length - 1]!;
   const notes: string[] = [
-    `${usable.length} split-adjusted daily session(s) from ${usable[0].tradingDate} to ${usable[usable.length - 1].tradingDate}`,
+    `${usable.length} split-adjusted daily session(s) from ${usable[0].tradingDate} to ${last.tradingDate}`,
   ];
+  if (!last.sessionComplete) {
+    /*
+     * Told rather than hidden. The model is being handed a window whose last
+     * session is still forming, and the highs and lows above include it while
+     * the runs and the drawdown do not. Suppressing the bar would understate
+     * the bounds; suppressing the FACT would leave the model comparing figures
+     * built from different sets without knowing it.
+     */
+    notes.push(
+      `${last.tradingDate} is still trading — its high and low are included as bounds, its close and volume are excluded from run and drawdown figures`,
+    );
+  }
   if (historicalResistance !== null) {
     notes.push(
       `highest prior-session high ${historicalResistance} on ${historicalResistanceDate} — historical resistance, not a current-cycle high`,
