@@ -1895,3 +1895,26 @@ numbers each with its own source and date, and let "float" be whichever
 subtraction someone asks for. The trader said he does not know what a passive
 13G block means for float — **storing the components is what stops that question
 having to be answered before anything ships.**
+
+---
+
+**24. `stalledJobs`'s predicate is not importable, so its tests cannot fail with
+it.** *Disclosed in `2906a59` rather than discovered later. Small, unowned, no
+clock.*
+
+The query lives in `worker/research.ts`'s `publishHealth`, which is a process
+entry point. `tests/research/stalledJobsScope.test.ts` therefore **reproduces**
+the predicate instead of importing it — so the five tests pin the BOUNDARY and
+would not fail if someone edited the worker's copy.
+
+That matters more than it looks, because the boundary is the whole point: `<`
+rather than `<>` is what stops the field reporting the recap fix as the disease.
+A future edit could restore `<>` and every test would stay green.
+
+**The fix is to lift it into `lib/market/store/researchRepo.ts` beside the other
+job queries** and have both the worker and the tests call it. Kept out of
+`2906a59` deliberately — that commit had a same-day deadline and a refactor
+riding inside a deadline change is how the deadline gets missed.
+
+*Stated in the test file too, so five green tests are not read as covering the
+worker.*
