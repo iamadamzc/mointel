@@ -54,10 +54,25 @@ const STEP_TOLERANCE = 0.05;
  * Sessions the new level must hold before a candidate step is believed.
  *
  * A split changes the factor permanently; quote rounding changes it for one
- * bar. Alpaca reports raw closes to four decimals, so a stock at $0.0100 can
- * carry ±5% of implied error in a single session — enough to trip the tolerance
- * on its own. Requiring persistence separates a basis change from a rounding
+ * bar. Alpaca reports raw closes to four decimals, so the implied error in the
+ * factor is roughly ±(0.00005 ÷ price) — it grows as the price falls, and the
+ * point of requiring persistence is to separate a basis change from a rounding
  * artefact without needing to know the price scale.
+ *
+ * MEASURED 2026-08-25, and it corrected this comment. The factor is EXACT
+ * within a constant-basis run on four of the five cheapest names tested —
+ * literally 0.00e+0% dispersion — and BTCT's worst is 0.0625%, at a raw close
+ * of $0.0905 where the formula predicts 0.055%. So the model is right and the
+ * magnitude I first wrote here was ten times too high: ±0.5% at $0.0100, not
+ * ±5%.
+ *
+ * Which makes this window INSURANCE rather than a live necessity. Across the 24
+ * cheapest researched symbols, a single-crossing detector at 0.5% tolerance
+ * finds exactly the same 28 events this does — no false positives at all. The
+ * noise only reaches 0.5% at a raw close near $0.01 and 1% near $0.005, below
+ * anything observed. Kept because it costs nothing and the sub-penny case is
+ * real arithmetic rather than a hypothetical, but nobody should believe it is
+ * currently doing work.
  */
 const CONFIRM_SESSIONS = 3;
 
