@@ -1175,6 +1175,65 @@ tell them apart, which this thread established the expensive way.
 this is a production config change with a multi-day protocol, which is adjacent
 but not the same thing. Put to him rather than stretched.
 
+## Before the 21 → 22 deploy: checked in advance, and one instruction inverted
+
+Research's deep-history work adds `daily_bars.split_factor` and moves
+`SCHEMA_VERSION` to **22**. Both are in `lib/market/store/`, this thread's module.
+Checked while nothing was shipping.
+
+**The migration path is correct — both halves present**, which is the trap this
+charter names (*editing a `CREATE TABLE` migrates nothing*):
+
+- `split_factor REAL` in the `CREATE TABLE` (`db.ts:395`) — covers a new store
+- `{ table: 'daily_bars', column: 'split_factor', definition: 'REAL' }` in
+  `ADDED_COLUMNS` (`db.ts:603`) — covers an existing one
+- `SCHEMA_VERSION = 22`
+
+### The health version-mismatch window does not exist — so a mismatch is an incident
+
+I was asked to *"decide in advance what the health mismatch means during that
+window"*. **There is no window.** Both start paths order migration before
+anything that serves health:
+
+- **`deploy.sh`** stops the runtime units, migrates, and only then starts them —
+  with `fail "schema migration failed — nothing was started against it"`.
+- **systemd**: `mointel-web`, `-research` and `-assess` are each `After=` **and**
+  `Requires=mointel-migrate.service`, so a reboot orders the same way.
+
+During migration `mointel-web` is **down**, so health does not answer at all —
+it does not answer *with a mismatch*. By the time it responds, store and build
+are both 22.
+
+> **So the instruction inverts: a version mismatch on `/api/health` should never
+> appear, and if it does it is a genuine fault rather than a known transient.**
+
+Worth the check for a reason tonight keeps demonstrating: being told to expect a
+red signal is how a real one gets waved through.
+
+### The v21 backup does not exist yet — and the 22 deploy is what creates it
+
+Backups on disk: **v14, v15, v16, v17, v18, v19**. The store is **v21**. So
+there is no v21 restore point today, and `market-worker-release` (`fd9556f`,
+schema v21) carries `backup=none`.
+
+That is fine *now* — the store is v21, so rolling back to a v21 build needs no
+restore. **It stops being fine the moment 22 ships**, because an older build
+refuses a newer `user_version`.
+
+**It self-closes, and that is the thing to watch.** `openDatabase` calls
+`createSchemaBackup` when `fromVersion > 0 && fromVersion < SCHEMA_VERSION`, so
+migrating a v21 store to 22 writes `market-v21-<stamp>.db` as part of the deploy.
+
+> **The observable for the 22 deploy is the migrate line: it must read
+> `1 backup(s) written`, not `0`.** Every deploy so far has said **0** because no
+> version changed. If it says 0 on the 22 deploy, the migration did not take the
+> backup and there is no v21 rollback path at all.
+
+After 22 ships, the only backed rollback target is `rollback-baseline`
+(`372f5eb`, v18) — three schema versions back. `market-worker-release` remains
+what its own reason says it is: a **directory-preservation** pin keeping the
+running worker's cwd alive, not a rollback target.
+
 ## Reaching another thread: use `list_sessions`, not `ListAgents`
 
 Tested 2026-08-25 because Integration became unreachable and the charter's
