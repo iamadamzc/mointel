@@ -172,8 +172,22 @@ async function main(): Promise<void> {
     const stalled = (
       db
         .prepare(
+          /*
+           * `<` rather than `<>`, and the difference is the whole reading.
+           *
+           * The 22:00 recap now queues for the NEXT session, so from 22:00
+           * until the roll there are legitimately-queued jobs on a date that is
+           * not this one. Counting those would make this field report a
+           * successful fix as a continuing fault — every night, in exactly the
+           * shape the bug had — and it would have matched the previous night's
+           * number closely enough to argue against the change that caused it.
+           *
+           * Stalled means work the worker can never reach. A future date is
+           * reached the moment `MAX(trading_date)` rolls; only a past one is
+           * behind the one-way door.
+           */
           `SELECT COUNT(*) AS n FROM research_jobs
-             WHERE trading_date <> ?
+             WHERE trading_date < ?
                AND status IN ('QUEUED', 'COLLECTING', 'SOURCES_READY', 'ANALYZING')`,
         )
         .get(tradingDate) as { n: number }

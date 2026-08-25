@@ -185,3 +185,48 @@ describe('the next checkpoint', () => {
     expect(nextAssessment(schedule, at('23:00'))).toBeNull();
   });
 });
+
+/**
+ * The session a recap's work is FOR.
+ *
+ * The research worker claims for exactly one date — `MAX(trading_date)` from
+ * `ticker_session` — and that value only ever moves forward. A job not claimed
+ * before the roll is unreachable permanently, with no error and no sweep.
+ *
+ * The 22:00 recap queued for the session it summarises, at the end of it, so
+ * every job it made raced the roll. Measured on 2026-08-17: ids 41–48 queued
+ * together, claimed in pairs at concurrency 2, and 47/48 were next when the
+ * door shut. `NEXT_DAY_RECAP` is the only checkpoint that carries a target, and
+ * queueing for tomorrow is what its name already means.
+ */
+describe('the recap target date', () => {
+  const schedule = (nextTradingDate: string | null) =>
+    buildSchedule({ tradingDate: '2026-08-21', nextTradingDate });
+
+  it('is the only checkpoint that carries one', () => {
+    /*
+     * Load-bearing. The enqueue reads `targetTradingDate ?? tradingDate`, so if
+     * any other checkpoint gained a target its jobs would silently move session
+     * too — and a premarket scan queueing for tomorrow is a different bug from
+     * the one being fixed.
+     */
+    const withTarget = schedule('2026-08-24').filter((item) => item.targetTradingDate !== null);
+
+    expect(withTarget.map((item) => item.type)).toEqual(['NEXT_DAY_RECAP']);
+  });
+
+  it('skips a weekend, because it comes from the trading calendar', () => {
+    // 2026-08-21 is a Friday. Tomorrow-arithmetic would target Saturday, and a
+    // Saturday never becomes MAX(trading_date) — so the jobs would strand
+    // exactly as they do now while the fix LOOKED correct.
+    const recap = schedule('2026-08-24').find((item) => item.type === 'NEXT_DAY_RECAP');
+
+    expect(recap?.targetTradingDate).toBe('2026-08-24');
+  });
+
+  it('is null past the end of the cached calendar, rather than guessed', () => {
+    const recap = schedule(null).find((item) => item.type === 'NEXT_DAY_RECAP');
+
+    expect(recap?.targetTradingDate).toBeNull();
+  });
+});

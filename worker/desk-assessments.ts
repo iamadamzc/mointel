@@ -602,10 +602,37 @@ function captureAndPersist(
    * fingerprint already lives.
    */
   const queued: string[] = [];
+
+  /*
+   * The session a queued job is FOR, which is not always the one being
+   * summarised.
+   *
+   * The research worker claims for exactly one date — `MAX(trading_date)` from
+   * `ticker_session`, recomputed each cycle — and that value only ever moves
+   * forward. Nothing lowers it, nothing sweeps behind it, and a job not claimed
+   * before the roll is unreachable permanently, with no error.
+   *
+   * The 22:00 recap was queueing for the session it summarises, at the end of
+   * that session, which put every job it created into a race against the roll.
+   * Measured on 2026-08-17: ids 41-48 queued together, claimed in pairs at
+   * concurrency 2, and 47/48 were simply next when the door shut. 2 stranded
+   * that night, 8 on 08-21, 6 on 08-24 — whatever remained in the batch.
+   *
+   * `NEXT_DAY_RECAP` is the only checkpoint carrying a target, and preparing
+   * tomorrow is what it already means, so this makes the data match the intent
+   * rather than widening a filter to compensate. The job waits on the far side
+   * of the door instead of racing it.
+   *
+   * The fallback is the current session because that reproduces today's
+   * behaviour, which is the right thing to fail to: `nextTradingDate` reads the
+   * cached market calendar and returns null past its horizon.
+   */
+  const queueFor = scheduled.targetTradingDate ?? scheduled.tradingDate;
+
   const enqueue = (ticker: string, reason: string) => {
     const jobId = enqueueResearchJob(db, {
       ticker,
-      tradingDate: scheduled.tradingDate,
+      tradingDate: queueFor,
       priority: 0,
       reason,
       queuedAt: new Date().toISOString(),
