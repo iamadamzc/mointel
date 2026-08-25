@@ -1652,6 +1652,48 @@ suppressing the signal at its source over teaching a human to ignore it.
 **The safe direction is the opposite one: say a signal should never fire, and be
 wrong.** That costs one investigation. The other way costs the next real fault.
 
+## A quiet window is the best time to deploy and the worst time to FAIL
+
+**2026-08-25. This thread moved a deploy from 09:25 ET to 02:20 ET and the desk
+went down for 3h22m, dark through the first 102 minutes of his live premarket
+session.**
+
+**The reasoning for moving it was sound and I would make each step again:** no
+checkpoint until 06:10, market closed so research was idle with nothing to abandon,
+and nineteen hours of margin on the deadline instead of twelve. **Every one of
+those is about the deploy SUCCEEDING.**
+
+**What I did not price is that a deploy can fail in a way that leaves the desk
+stopped, and at 02:20 nobody is looking.** `push-release.sh` stalled after
+stopping the runtime units and before starting them; a ten-minute ssh timeout
+killed the remote process tree; **there is no watchdog, so nothing restarted
+them.**
+
+> **The outage length was set by when someone next looked, not by the fault.** A
+> ten-minute stall became a three-hour outage because the failure mode is silent
+> and unattended.
+
+**The inversion is the lesson.** At 09:25 he is at the desk and a dead board is
+noticed in minutes. **The very quietness that made 02:20 the right window for
+capture made it the worst window for an unattended failure.** I optimised the
+success path and lengthened the failure path, and only one of those was in front
+of me.
+
+**So: weigh a deploy window on BOTH paths.** *What does this cost if it works* and
+**what does it cost if it stops halfway and nobody notices for hours.** For an
+unattended hour the second dominates, and it is the one nobody computes.
+
+**What it actually cost, measured rather than estimated:** capture **nothing**
+(`RESTART_MARKET=no` held, market `MainPID` unchanged, 8,639 session rows today);
+checkpoints **nothing** (none fell in the window); research ~3h20m of
+**re-runnable** processing. **The board: 502 for 102 minutes of live premarket.
+That is the whole cost and it landed on him.**
+
+**And it is the second time in two days I have set a hold whose release depended on
+someone happening to look** — `ce145b8` sat ten hours, this ran three. **Both were
+time-based decisions with no mechanism behind them.** No thread here can wake
+itself; a schedule that depends on attention is not a schedule.
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin
