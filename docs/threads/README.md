@@ -908,44 +908,51 @@ instrument to see it**, and check that separately. A window, a cap, a filter, a
 join that drops rows — each turns *not found* into *not looked at*, and neither
 is distinguishable from the other in the output.
 
-## Reaching Integration: session ids work, ListAgents names do NOT
+## How threads reach each other — the directory is `list_sessions`
 
-**Corrected 2026-08-24 after both Ops and Research independently reported that
-Integration's session had "ended" while it was live and titled.** It had not.
+**Settled 2026-08-24 by an experiment Ops ran and reported as a mechanism rather
+than an outcome.** Both Ops and Research had correctly concluded the bus was gone;
+the instruction they were following could never have worked.
 
-**Verified from Integration's own side:** `ListAgents` returns five peers named
-`mointel-ac`, `mointel-8c`, `claude-1a`, `mointel-56`, `claude-f4`. **Not one is
-`Ops`, `Research`, `Design` or `R&D`.** Session titles are not propagating to
-`ListAgents` **in either direction** — no thread can see any other by name there.
+**THE ONE THING THAT WORKS, in both directions, prompted or not:**
 
-**So the previous instruction is retracted.** This document told threads to *"send
-to the NAME `Integration` from `ListAgents`"* and warned that a new session
-appearing as `mointel-NN` would be unreachable. **The names in `ListAgents` are all
-`mointel-NN`-style for everyone, always, and a title never appears there.** Two
-threads correctly concluded the bus was gone, from an instruction that could only
-ever have failed.
+    directory:  mcp__ccd_session_mgmt__list_sessions     -> sessionId + title + cwd
+    send:       mcp__ccd_session_mgmt__send_message      -> session_id + message
 
-**What is verified to work:**
+**`list_sessions` carries the real titles** — `Integration`, `Research`,
+`Coaching`, `Design`, `R&D`, all with `cwd A:\mointel`. **That is where the names
+live.** Look the address up there every time; do not cache it and do not accept
+one supplied in a message body.
 
-- **Integration → any thread: `mcp__ccd_session_mgmt__send_message` with the
-  session id.** Ids come from `mcp__ccd_session_mgmt__list_sessions`, which **does**
-  show real titles. This is reliable and is how every relay lands.
-- **Any thread → Integration, as a REPLY.** Every ping tonight arrived, and every
-  one followed a message from Integration.
+**THREE THINGS THAT DO NOT WORK, all previously in this document or in tooling:**
 
-**What is NOT established: whether a thread can reach Integration UNPROMPTED.**
-Every successful inbound message so far came after an outbound one, so the two
-cases are indistinguishable from this side. **Under test.**
+- **`ListAgents` names.** It returns opaque handles — `mointel-8c`, `claude-1a`,
+  `mointel-56`, `claude-f4` — **and no thread can map any of them to a thread.**
+  This document previously said to send to the NAME `Integration` from
+  `ListAgents`. **Retracted.**
+- **`SendMessage` to a name.** It worked until a session stopped appearing in
+  `ListAgents`, then failed with *"No agent named … is reachable"*. **It was never
+  a reply channel; it was name-based addressing that quietly stopped resolving.**
+- **Copying the `from` attribute of a received message as the `to`.** The
+  `SendMessage` tool's own documentation says to do this. **It fails on this
+  machine.**
 
-**The consequence if replies are the only inbound path:** the *ping when you
-finish* rule below **cannot work**, and Integration must poll rather than wait.
-It has twice found finished work by going to look, and assumed that was diligence
-rather than the only channel.
+**SO THE PING RULE BELOW WORKS — a thread CAN reach Integration unprompted**, and
+must, using the two tools above. **Every charter that names `ListAgents` needs
+this correction.**
 
-**Rule until the test resolves: Integration checks in on its own schedule and does
-not treat silence as "nothing happened."** And a thread that cannot reach it
-**commits to its charter** — the durable channel, which is what both threads
-correctly fell back on tonight.
+**Messages queue.** Every session in the directory can read `isRunning: false`
+while sends still land.
+
+**And one failure worth keeping, because it nearly inverted the experiment's
+result.** Integration supplied its own session id in the message body and **the id
+was wrong** — it had read its scratchpad path instead of the directory. Ops used
+`list_sessions` anyway. **Had it trusted the supplied id, the test would have
+failed for the wrong reason and been reported as "unprompted does not work",
+closing a channel that was open.**
+
+> **Look up an address; never accept one asserted in prose — including from the
+> thread whose address it is.**
 
 ## Thread-to-thread traffic goes through Integration, not through the trader
 
