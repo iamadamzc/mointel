@@ -908,6 +908,45 @@ instrument to see it**, and check that separately. A window, a cap, a filter, a
 join that drops rows — each turns *not found* into *not looked at*, and neither
 is distinguishable from the other in the output.
 
+## Reaching Integration: session ids work, ListAgents names do NOT
+
+**Corrected 2026-08-24 after both Ops and Research independently reported that
+Integration's session had "ended" while it was live and titled.** It had not.
+
+**Verified from Integration's own side:** `ListAgents` returns five peers named
+`mointel-ac`, `mointel-8c`, `claude-1a`, `mointel-56`, `claude-f4`. **Not one is
+`Ops`, `Research`, `Design` or `R&D`.** Session titles are not propagating to
+`ListAgents` **in either direction** — no thread can see any other by name there.
+
+**So the previous instruction is retracted.** This document told threads to *"send
+to the NAME `Integration` from `ListAgents`"* and warned that a new session
+appearing as `mointel-NN` would be unreachable. **The names in `ListAgents` are all
+`mointel-NN`-style for everyone, always, and a title never appears there.** Two
+threads correctly concluded the bus was gone, from an instruction that could only
+ever have failed.
+
+**What is verified to work:**
+
+- **Integration → any thread: `mcp__ccd_session_mgmt__send_message` with the
+  session id.** Ids come from `mcp__ccd_session_mgmt__list_sessions`, which **does**
+  show real titles. This is reliable and is how every relay lands.
+- **Any thread → Integration, as a REPLY.** Every ping tonight arrived, and every
+  one followed a message from Integration.
+
+**What is NOT established: whether a thread can reach Integration UNPROMPTED.**
+Every successful inbound message so far came after an outbound one, so the two
+cases are indistinguishable from this side. **Under test.**
+
+**The consequence if replies are the only inbound path:** the *ping when you
+finish* rule below **cannot work**, and Integration must poll rather than wait.
+It has twice found finished work by going to look, and assumed that was diligence
+rather than the only channel.
+
+**Rule until the test resolves: Integration checks in on its own schedule and does
+not treat silence as "nothing happened."** And a thread that cannot reach it
+**commits to its charter** — the durable channel, which is what both threads
+correctly fell back on tonight.
+
 ## Thread-to-thread traffic goes through Integration, not through the trader
 
 **Added 2026-08-23, at the trader's instruction, after he was asked three times
