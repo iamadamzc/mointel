@@ -1806,3 +1806,92 @@ split-adjusted deterministically, which is the `EBON`/`ZOOZ`/`ICCM` problem.
 
 **Cost impact: two calls per deep check instead of one.** At 0.4 checks a
 morning that is still nothing.
+
+---
+
+**22. Why the recap jobs are never claimed. Item 2's last question, answered.**
+*Diagnosed 2026-08-25. Not fixed — findings first, per Integration.*
+
+**The worker claims for ONE trading date and that date only ever moves forward.**
+`worker/research.ts:251` computes `tradingDate = MAX(trading_date) FROM
+ticker_session` fresh each cycle, and `claimQueuedJobs` filters
+`WHERE trading_date = ? AND status = 'QUEUED'` with no other condition. Nothing
+ever lowers `MAX`. **A job not claimed before the date rolls is unreachable
+forever** — there is no path back to it, no sweep, and no error.
+
+**The 22:00 recap queues on the wrong side of that door.** It enqueues with
+`tradingDate: scheduled.tradingDate` — the session it is summarising, `D` — at
+the end of `D`.
+
+**Proved on the 2026-08-17 batch, which is the clean case.** Eight jobs, ids
+41–48, all queued at the same instant, all priority 0, so `ORDER BY priority
+DESC, queued_at ASC, id ASC` makes it a straight run through the ids:
+
+| ids | claimed |
+| --- | --- |
+| 41, 42 | 02:00:19.968Z |
+| 43, 44 | 02:02:05.048Z |
+| 45, 46 | 02:02:34.213Z |
+| **47, 48** | **never** |
+
+Pairs, because `DEFAULT_CONCURRENCY = 2`. **The worker was alive, was claiming,
+and stopped mid-batch** — which rules out the desk being down and rules out
+anything about those two tickers. They were simply next when the door shut.
+
+The next claim for any date is `2026-08-18T08:00:00Z` — **04:00 ET, premarket** —
+and it is for `2026-08-18`. So the roll happened during the gap and there was no
+work for the new date until the board qualified names six hours later.
+
+**The counts follow: 2 stranded of 8 on 08-17, 8 on 08-21, 6 on 08-24.** Not a
+fixed number — whatever remained in the batch when the roll landed.
+
+*Limit, stated: I could not observe the `ticker_session` seed time directly.
+`updated_at` is overwritten on every write, so `MIN(updated_at)` is the earliest
+LAST write rather than the insert. The roll time is inferred from claim
+behaviour, which is strong but indirect.*
+
+**Two shapes worth keeping.** The queue is a one-way door with no dead-letter
+path, so its failure is silent by construction — the same family as
+`queuedJobs: 0` being correct and scoped. And a batch queued at the boundary is
+a **race whose loser is permanent**, which is why it recurs nightly rather than
+converging.
+
+---
+
+**23. Derived float: coverage and cost. Scoping only.** *Asked by Integration
+2026-08-25 after the trader said go. Measured, not designed.*
+
+**The hypothesis was that small caps would have little ownership data, making
+this narrow. The opposite is true.** Sampling 40 researched issuers' SEC
+submission indexes:
+
+| | issuers with it |
+| --- | --- |
+| **Any Form 3/4/5** | **39 of 40 — 98%** |
+| Any 13D/13G | **28 of 40 — 70%** |
+| SC 13G | 70% · SC 13D | 50% |
+
+**So the derivation has plenty to subtract on nearly every name.** It is not
+cheap-and-narrow; it is a real parsing problem across the population.
+
+**Volume, from 30 issuers:** median **12** 13D/G and **14** Form 3/4/5 all-time,
+max 764 on one name. Restricted to the **last 12 months** — which is what a
+CURRENT holdings picture needs — the median is **8** ownership filings and the
+max 45.
+
+**Fetching is not the constraint.** ~10–15 documents per issuer for current
+state, so a 231-ticker backfill is roughly 2,500–3,500 requests: about six
+minutes at SEC's 10/second. **`FAMILY_POLICIES.OWNERSHIP maxFetch: 1` is the
+only thing stopping it, and zero ownership forms have ever been collected** —
+not one Form 3, 4, 5, 13D or 13G across 231 researched tickers.
+
+**The cost is PARSING.** Forms 3/4/5 are XML `ownershipDocument` and yield to
+deterministic extraction. 13D/13G cover pages are the harder half and the place
+where an estimate would start creeping in.
+
+**Which is the argument for Integration's instruction rather than a caveat on
+it:** store filed shares, insider holdings, 13D blocks and 13G blocks as four
+numbers each with its own source and date, and let "float" be whichever
+subtraction someone asks for. The trader said he does not know what a passive
+13G block means for float — **storing the components is what stops that question
+having to be answered before anything ships.**
