@@ -260,7 +260,7 @@ describe('auditSplitFetch', () => {
   });
 });
 
-describe('the split factor', () => {
+describe('the split event ratio', () => {
   /*
    * These pin the MAGNITUDE, which was computed and discarded until 2026-08-25.
    * The distance answers when a split happened; only the factor can correct a
@@ -273,8 +273,8 @@ describe('the split factor', () => {
     // 0.0224 x 200. The two must agree or one of them is lying.
     const resolved = resolveBaseline(preSplit('2026-08-17', 0.0224, 200), level('2026-08-18', 3.34));
 
-    expect(resolved.splitFactor).toBeCloseTo(200, 6);
-    expect(resolved.referenceClose).toBeCloseTo(0.0224 * (resolved.splitFactor as number), 9);
+    expect(resolved.splitEventRatio).toBeCloseTo(200, 6);
+    expect(resolved.referenceClose).toBeCloseTo(0.0224 * (resolved.splitEventRatio as number), 9);
   });
 
   it('is null when nothing was restated, never 1', () => {
@@ -283,7 +283,7 @@ describe('the split factor', () => {
     const resolved = resolveBaseline(level('2026-08-17', 4.49), level('2026-08-18', 3.5));
 
     expect(resolved.splitDetected).toBe(false);
-    expect(resolved.splitFactor).toBeNull();
+    expect(resolved.splitEventRatio).toBeNull();
   });
 
   it('reports above 1 for a reverse split and below 1 for a forward one', () => {
@@ -299,7 +299,7 @@ describe('the split factor', () => {
       '2026-08-18',
     );
     expect(reverse.sessionsAgo).toBe(1);
-    expect(reverse.factor).toBeCloseTo(20, 6);
+    expect(reverse.eventRatio).toBeCloseTo(20, 6);
 
     // A 2-for-1 forward: history restates DOWN, so the factor is below 1.
     const forward = sessionsSinceSplit(
@@ -307,7 +307,7 @@ describe('the split factor', () => {
       '2026-08-18',
     );
     expect(forward.sessionsAgo).toBe(1);
-    expect(forward.factor).toBeCloseTo(0.5, 6);
+    expect(forward.eventRatio).toBeCloseTo(0.5, 6);
   });
 
   it('is null exactly when the distance is null', () => {
@@ -316,11 +316,11 @@ describe('the split factor', () => {
     // written before schema v6 is in.
     const none = sessionsSinceSplit([level('2026-08-17', 4), level('2026-08-18', 5)], '2026-08-18');
     expect(none.sessionsAgo).toBeNull();
-    expect(none.factor).toBeNull();
+    expect(none.eventRatio).toBeNull();
 
     const absent = sessionsSinceSplit([level('2026-08-17', 4)], '2026-08-19');
     expect(absent.sessionsAgo).toBeNull();
-    expect(absent.factor).toBeNull();
+    expect(absent.eventRatio).toBeNull();
   });
 
   it('recovers each split separately when a name has consolidated twice', () => {
@@ -340,10 +340,10 @@ describe('the split factor', () => {
 
     const recent = sessionsSinceSplit(series, '2026-08-13');
     expect(recent.sessionsAgo).toBe(1);
-    expect(recent.factor).toBeCloseTo(20, 6);
+    expect(recent.eventRatio).toBeCloseTo(20, 6);
 
     // And the earlier one is still reachable by resolving against its own pair.
     const earlier = resolveBaseline(series[0], series[1]);
-    expect(earlier.splitFactor).toBeCloseTo(30, 6);
+    expect(earlier.splitEventRatio).toBeCloseTo(30, 6);
   });
 });

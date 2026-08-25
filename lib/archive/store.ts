@@ -76,7 +76,21 @@ CREATE TABLE IF NOT EXISTS symbol_outcomes (
   -- was computed and discarded rather than stored. Those rows are identifiable
   -- by split_sessions_ago being non-null while this is null, and the only cure
   -- is a re-run; nothing can reconstruct it from what was kept.
-  split_factor REAL,
+  --
+  -- NOT split_factor, which is a DIFFERENT QUANTITY already live in
+  -- market.db's daily_bars: the CUMULATIVE factor still to apply from a
+  -- session forward, where 1 means "on today's basis" and 600 on a BTCT bar
+  -- from 2020 means two consolidations stand between. This column is the ratio
+  -- of a single split EVENT, matching lib/market/splits.ts SplitEvent.ratio and
+  -- its direction convention.
+  --
+  -- The two were briefly about to ship under one name. What settles it is not
+  -- that they differ but HOW: 1 is the ORDINARY value in the cumulative column
+  -- and an IMPOSSIBLE one here, since a ratio within tolerance of 1 is not
+  -- recorded as a split at all. A shared name where the commonest value in one
+  -- table cannot occur in the other is not a near-miss, it is a trap that reads
+  -- correctly right up until someone joins them.
+  split_event_ratio REAL,
   split_lookback_sessions INTEGER,
 
   -- Full product session, 04:00-20:00 ET.
@@ -327,7 +341,7 @@ function migrate(db: ArchiveDatabase, fromVersion: number): void {
 
   db.transaction(() => {
     if (fromVersion < 6) {
-      addColumn('symbol_outcomes', 'split_factor', 'REAL');
+      addColumn('symbol_outcomes', 'split_event_ratio', 'REAL');
     }
     if (fromVersion < 5) {
       addColumn('symbol_outcomes', 'split_lookback_sessions', 'INTEGER');

@@ -121,9 +121,9 @@ export interface BaselineResolution {
   rawPriorClose: number;
   /**
    * The factor the baseline was restated BY, null when it was not restated.
-   * Same convention as `SplitDistance.factor`: above 1 is a reverse split.
+   * Same convention as `SplitDistance.eventRatio`: above 1 is a reverse split.
    */
-  splitFactor: number | null;
+  splitEventRatio: number | null;
 }
 
 /**
@@ -154,20 +154,20 @@ export function resolveBaseline(
       referenceClose: prior.raw,
       splitDetected: false,
       rawPriorClose: prior.raw,
-      splitFactor: null,
+      splitEventRatio: null,
     };
   }
 
   // Restate by exactly the factor between the two sessions, not all the way to
   // today: raw x (priorRatio / targetRatio).
-  const splitFactor = priorRatio / targetRatio;
+  const splitEventRatio = priorRatio / targetRatio;
   return {
-    referenceClose: prior.raw * splitFactor,
+    referenceClose: prior.raw * splitEventRatio,
     splitDetected: true,
     rawPriorClose: prior.raw,
     // Kept rather than discarded. This quotient IS the split ratio, and until
     // 2026-08-25 it was computed here, used once, and dropped.
-    splitFactor,
+    splitEventRatio,
   };
 }
 
@@ -189,7 +189,7 @@ export interface SplitDistance {
    * rather than about wrong. Storing this does not overturn the refusal; it
    * removes the condition the refusal was about.
    */
-  factor: number | null;
+  eventRatio: number | null;
   /**
    * Sessions between the most recent split and `tradingDate`, or null when
    * none was found in the window searched. Zero means the split took effect ON
@@ -222,7 +222,7 @@ export function sessionsSinceSplit(
 ): SplitDistance {
   const index = series.findIndex((pair) => pair.date === tradingDate);
   if (index <= 0) {
-    return { sessionsAgo: null, factor: null, windowSessions: Math.max(0, index) };
+    return { sessionsAgo: null, eventRatio: null, windowSessions: Math.max(0, index) };
   }
 
   // Walk backwards so the FIRST boundary found is the most recent one.
@@ -234,9 +234,9 @@ export function sessionsSinceSplit(
     // larger cumulative factor, so a reverse split gives a number above 1 and a
     // forward split one below it.
     if (differs(here, before)) {
-      return { sessionsAgo: index - i, factor: before / here, windowSessions: index };
+      return { sessionsAgo: index - i, eventRatio: before / here, windowSessions: index };
     }
   }
 
-  return { sessionsAgo: null, factor: null, windowSessions: index };
+  return { sessionsAgo: null, eventRatio: null, windowSessions: index };
 }

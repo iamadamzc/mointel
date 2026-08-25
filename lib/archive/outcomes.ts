@@ -76,7 +76,7 @@ export interface SymbolOutcome {
    * The distance answers *when*; this answers *by how much*, and only the
    * second can correct a share count filed on the other side of it.
    */
-  splitFactor: number | null;
+  splitEventRatio: number | null;
   /** How many sessions were searched. Without it a null is unreadable. */
   splitLookbackSessions: number | null;
   sessionHigh: number | null;
@@ -140,7 +140,7 @@ export interface DeriveOutcomeInput {
   closeMinutes?: number;
   rawPriorClose?: number | null;
   splitSessionsAgo?: number | null;
-  splitFactor?: number | null;
+  splitEventRatio?: number | null;
   splitLookbackSessions?: number | null;
   /** Cycle as of this date, resolved by the caller from split-adjusted bars. */
   cycle?: ResolvedCycle | null;
@@ -180,7 +180,7 @@ export function deriveOutcome(input: DeriveOutcomeInput): SymbolOutcome {
     referenceBasis: input.referenceBasis ?? null,
     rawPriorClose: input.rawPriorClose ?? null,
     splitSessionsAgo: input.splitSessionsAgo ?? null,
-    splitFactor: input.splitFactor ?? null,
+    splitEventRatio: input.splitEventRatio ?? null,
     splitLookbackSessions: input.splitLookbackSessions ?? null,
     sessionHigh: null,
     sessionLow: null,

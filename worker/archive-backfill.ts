@@ -426,7 +426,7 @@ async function main(): Promise<void> {
         cycle: cycleAsOf(cycleSeries.get(symbol) ?? [], date),
         rawPriorClose: rawPriorCloses.get(`${date} ${symbol}`) ?? null,
         splitSessionsAgo: split.sessionsAgo,
-        splitFactor: split.factor,
+        splitEventRatio: split.eventRatio,
         splitLookbackSessions: split.windowSessions,
         asOf,
       });
