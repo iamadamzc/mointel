@@ -1120,6 +1120,48 @@ the first and costs a hole in the record** — which is why `RESTART_MARKET=no` 
 the release pin exist. **"Put a feed on any data point we need" is correct and
 means subscribing more channels on the one socket, never opening another.**
 
+## A better constant of the same kind is the same mistake
+
+**R&D, 2026-08-25, after making the error it had just caught in someone else's
+work.** It found the booklet's trading window inside its own archive columns and
+proposed **substituting the trader's window**. Coaching then established that he
+trades every session and **the setup is the requirement**, so both versions were
+wrong the same way.
+
+> **Noticing that a constant is inherited does not license replacing it with a
+> better constant of the same kind. The question is whether the quantity belongs
+> in the rule at all.**
+
+**That contains *check against him, not against the playbook* and is stronger than
+it.** Checking a threshold against the practitioner still assumes the threshold's
+*shape* is right. **Ask both: is this his number, and does a number of this kind
+belong here?**
+
+**The naming corollary, and this desk has now watched it fail twice in two days:**
+add `gain_to_0700_pct`, never `gain_his_window_pct`. **A column named after a
+person's habits inherits those habits when the habits change**, and the rename is
+never done at the same time as the behaviour.
+
+### A retraction can make a finding stronger
+
+**The half nobody expects, and it is the reason to retract loudly rather than
+quietly.** While the desk wrongly held that he traded only 04:00–09:30, the board
+surfacing a name *after* its move had an escape: **a name peaking at 06:00 and
+surfaced at 10:00 was outside his hours anyway.**
+
+**There is no such escape now.** He trades every session, so **a name surfaced
+after its move is missed at any hour** — the board's lateness is a **defect across
+the whole day** rather than a scheduling artifact.
+
+> **The wrong belief was hiding a real problem behind a false excuse, which is the
+> most expensive thing a wrong belief can do — and worth more attention than the
+> belief itself.**
+
+**So when a claim is retracted, re-read what it was EXCUSING, not only what it was
+supporting.** The retraction rule already says to chase every inference resting on
+a claim. **Inferences that a claim made harmless are the ones nobody searches
+for.**
+
 ## An intelligence platform, not a signal platform
 
 **Stated by the trader, 2026-08-24, and it settles a class of design argument that
