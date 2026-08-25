@@ -69,6 +69,15 @@ CREATE TABLE IF NOT EXISTS symbol_outcomes (
   -- distinguish "did not happen" from "outside the window I looked in". Same
   -- family as float_basis — a value whose meaning depends on a parameter has to
   -- travel with the parameter.
+  --
+  -- THE WINDOW STRUCTURALLY CANNOT REACH A SERIAL CONSOLIDATOR, and that is the
+  -- population where a missing factor is most wrong. BTCT sits here on
+  -- 2026-08-19 with this null and split_lookback_sessions 501; its real splits
+  -- are 2022-05-06 (1-for-30) and 2023-08-24 (1-for-20), both outside it. The
+  -- null is honest -- no split in the window searched -- and it also means no
+  -- factor would be applied on exactly the names that most need one. Raised by
+  -- Research 2026-08-25; recorded here rather than only in a thread, because
+  -- the reader at risk is the one reading this column.
   split_sessions_ago INTEGER,
   -- How large that split was: 20 for a 1-for-20 reverse, 0.5 for a 2-for-1
   -- forward. Null exactly when split_sessions_ago is null -- EXCEPT on rows
@@ -90,6 +99,21 @@ CREATE TABLE IF NOT EXISTS symbol_outcomes (
   -- recorded as a split at all. A shared name where the commonest value in one
   -- table cannot occur in the other is not a near-miss, it is a trap that reads
   -- correctly right up until someone joins them.
+  --
+  -- Detected on a single boundary crossing at a 0.5% tolerance, with no
+  -- confirmation window -- deliberately, and measured rather than assumed.
+  -- Research tested its own confirmed detector against this unconfirmed shape
+  -- over the 24 cheapest researched names: 28 events each, ZERO disagreements.
+  -- The adjusted series is derived from raw by an exact multiplier, so the
+  -- ratio is not an estimate; within a constant-basis run the dispersion is
+  -- 0.00e+0% on four of the five cheapest names.
+  --
+  -- Where it WOULD break is arithmetic, not opinion. Four-decimal quoting puts
+  -- the noise floor at 0.00005/price, so 0.5% is reached at a raw close of
+  -- exactly $0.01 and exceeded below it. The cheapest raw prior close in this
+  -- archive is CXAI at $0.0890, a noise floor of 0.056% -- about 9x margin, and
+  -- 0 of 63 rows come within even 2x. Sub-penny raw closes are the condition to
+  -- watch, and deep history is where they live.
   split_event_ratio REAL,
   split_lookback_sessions INTEGER,
 
