@@ -36,7 +36,11 @@ import { computeEvidenceFingerprint } from '../lib/research/fingerprint';
 import { queueDiscoveryResearch, timeToIntelligence } from '../lib/research/queue';
 import { queueResolverRecovery } from '../lib/research/recovery';
 import { RESOLVER_VERSION } from '../lib/research/catalyst/collector';
-import { ensureDailyHistory } from '../lib/research/historyFetch';
+import {
+  deepHistoryDue,
+  ensureDailyHistory,
+  ensureDeepHistory,
+} from '../lib/research/historyFetch';
 import { openDatabase, getMeta, type MarketDatabase } from '../lib/market/store/db';
 import { resolveActiveBoard, type BoardDescriptor } from '../lib/market/board';
 import {
@@ -350,6 +354,27 @@ async function main(): Promise<void> {
            * running in production.
            */
           log(`[history] ${job.ticker} ${history.detail}`);
+
+          /*
+           * Full depth, only for a name that is both running and not already
+           * disproved. Blue sky asks "has this price ever been exceeded", and
+           * ninety sessions cannot answer "ever" -- BTCT read as blue sky at
+           * $1.71 against an $1.80 ninety-session ceiling while the same symbol
+           * had traded at $26.58 two years earlier on today's basis.
+           *
+           * Gated rather than universal because the gate is what makes the
+           * correct approach affordable: the deep pass refetches a whole
+           * history to keep the fetch and retention windows coupled, and that
+           * is only cheap because it fires on about 3% of top-10 slots.
+           *
+           * After the shallow pass, not instead of it. The shallow one heals a
+           * partial bar and is what every other consumer depends on.
+           */
+          const deepDue = deepHistoryDue(db, job.ticker, job.tradingDate);
+          if (deepDue.due) {
+            const deep = await ensureDeepHistory(db, job.ticker);
+            log(`[history] ${job.ticker} deep: ${deep.detail} (${deepDue.reason})`);
+          }
 
           // ----- collection
           log(`[research] ${job.ticker} collecting sources`);

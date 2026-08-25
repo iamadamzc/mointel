@@ -178,6 +178,9 @@ export async function ensureDailyHistory(
  */
 const DEEP_HISTORY_YEARS = 10;
 
+/** Marks a row written by the deep pass, so a later pass can tell. */
+const DEEP_SOURCE = 'alpaca-daily-deep';
+
 export interface DeepHistoryResult extends DailyHistoryResult {
   /** Oldest session actually returned. Null when nothing was. */
   from: string | null;
@@ -249,7 +252,7 @@ export async function ensureDeepHistory(
           vwap: bar.vw ?? null,
           adjustment: 'split',
           splitFactor: splitFactorAt(factors, tradingDate),
-          source: 'alpaca-daily-deep',
+          source: DEEP_SOURCE,
           fetchedAt: now.toISOString(),
         };
       })
@@ -273,4 +276,84 @@ export async function ensureDeepHistory(
       detail: error instanceof Error ? error.message.slice(0, 120) : 'deep fetch failed',
     };
   }
+}
+
+/**
+ * Rank at which a name is worth knowing the true ceiling for.
+ *
+ * The trader's rule: blue sky only matters on a name that is actually running.
+ * Measured over 2026-08-14..21, top 10 turns over 9.5 of 10 every session, so a
+ * cache amortises nothing — but only 2 of 60 top-10 slots sat above their stored
+ * ceiling, which is what makes the whole thing affordable.
+ */
+export const DEEP_HISTORY_RANK = 10;
+
+export type DeepHistoryDecision =
+  | { due: true; reason: string }
+  | { due: false; reason: string };
+
+/**
+ * Whether a symbol has earned a full-depth fetch right now.
+ *
+ * Three gates, and the SECOND is the one that makes this cheap. If any stored
+ * prior session already exceeds today's price, blue sky is false and no
+ * additional depth can change that — so the expensive case is exactly the name
+ * that looks like a runner, and it is rare. That is measured, not assumed: 2 of
+ * 60 top-10 slots over 2026-08-14..21, about 0.4 fetches a morning.
+ *
+ * Deliberately NOT a "would the label be prettier" test. A name below the rank
+ * keeps its shallow ceiling, and a name already disproved keeps it too, because
+ * in both cases the answer the desk would give is already right.
+ */
+export function deepHistoryDue(
+  db: MarketDatabase,
+  symbol: string,
+  tradingDate: string,
+  now: Date = new Date(),
+): DeepHistoryDecision {
+  const session = db
+    .prepare('SELECT rvol_rank AS rank, price FROM ticker_session WHERE trading_date = ? AND symbol = ?')
+    .get(tradingDate, symbol) as { rank: number | null; price: number | null } | undefined;
+
+  if (!session || session.rank === null) return { due: false, reason: 'not ranked' };
+  if (session.rank > DEEP_HISTORY_RANK) {
+    return { due: false, reason: `rank ${session.rank} outside top ${DEEP_HISTORY_RANK}` };
+  }
+  if (session.price === null) return { due: false, reason: 'no price to compare' };
+
+  const ceiling = db
+    .prepare(
+      `SELECT MAX(high) AS high FROM daily_bars
+        WHERE symbol = ? AND trading_date < ? AND high IS NOT NULL`,
+    )
+    .get(symbol, tradingDate) as { high: number | null };
+
+  if (ceiling.high !== null && ceiling.high >= session.price) {
+    return { due: false, reason: `already below a stored high of ${ceiling.high}` };
+  }
+
+  /*
+   * Once per symbol per day. The deep pass refetches its whole window rather
+   * than appending -- which is what keeps the fetch and retention windows
+   * coupled and the basis consistent -- so repeating it inside a session buys
+   * nothing and costs a full history each time.
+   */
+  const deep = db
+    .prepare(
+      `SELECT MAX(fetched_at) AS at FROM daily_bars
+        WHERE symbol = ? AND source = ?`,
+    )
+    .get(symbol, DEEP_SOURCE) as { at: string | null };
+
+  if (deep.at !== null && etDateString(new Date(deep.at)) === etDateString(now)) {
+    return { due: false, reason: 'deep history already fetched today' };
+  }
+
+  return {
+    due: true,
+    reason:
+      ceiling.high === null
+        ? 'no stored history to disprove blue sky'
+        : `price ${session.price} above every stored high (${ceiling.high})`,
+  };
 }
