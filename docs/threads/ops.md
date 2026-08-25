@@ -1520,7 +1520,156 @@ met. The strongest version of the WAL answer would be the same sample during
 RTH; I do not think it is needed, since the question was whether checkpoints keep
 up under contention and they demonstrably do.
 
+## State: production is `bc78d49`, deployed 2026-08-25 09:42 UTC — and it cost a 3h22m outage
+
+Integration's recap-stranding fix. The payload was right, the gate was green
+(1403 tests, lint, build, typecheck at the sha that shipped), the sha was
+resolved rather than taken on trust, and the fix itself landed correctly. The
+deploy still took the desk down for three hours and twenty-two minutes.
+
+**What happened.** `push-release.sh` reached `[migrate] existing store found`
+and produced no further output. My local Bash timeout fired at ten minutes and
+killed the ssh connection, which killed the remote process tree — including
+migrate. The script had already stopped the runtime units and had not yet
+started them. Nothing restarted them, because nothing is watching. The desk
+stayed down from **06:20:03Z until 09:41:59Z**, when I next looked and started
+the three units by hand.
+
+**The outage length was set by when I next looked, not by the fault.** That is
+the finding. A ten-minute stall became a three-hour outage purely because the
+failure mode is silent and unattended.
+
+### `push-release.sh` is not atomic across the driving connection
+
+This is the defect, and it is this thread's. The script is a sequence —
+preflight, stop, switch symlink, migrate, start, prune, pins — driven from a
+laptop over ssh. If the driving process dies anywhere between **stop** and
+**start**, the desk is left stopped indefinitely. There is no watchdog, no
+timeout that restarts, and no alert. Every deploy carries this.
+
+Three ways out, cheapest first:
+
+1. **Run the remote half under `systemd-run --scope` or `setsid`**, so it
+   survives the ssh connection dying and completes the start step on its own.
+2. **A `OnFailure=` / start-fallback timer** that starts the runtime units if
+   they are found stopped with a `current` symlink present.
+3. **Trap in the script**: `trap 'start_services' EXIT` so any exit path —
+   including SIGHUP from a dropped connection — restarts what it stopped.
+
+(3) is the smallest and closes the exact hole seen here. It does not help if the
+whole ssh session is SIGKILLed, which (1) does.
+
+**Until one of these ships: never launch a deploy without watching it to
+completion, and if the connection drops, reconnect and check service state
+immediately rather than assuming the script finished.**
+
+### What the outage cost, precisely
+
+Measured, not assumed:
+
+- **Capture: nothing.** `mointel-market` was never stopped —
+  `RESTART_MARKET=no` did its job. `MainPID` 129202 dates to 2026-08-23 01:27
+  UTC with `NRestarts=0`, and `ticker_session` for 2026-08-25 holds **8,639
+  rows, 908 ranked**. The append-only record — the only thing that cannot be
+  rebuilt — is whole.
+- **Assessments: nothing.** The last row is id 95, `2026-08-24
+  NEXT_DAY_RECAP`, COMPLETE at 02:00. The next due is `STRUCTURAL_REFRESH` at
+  10:10Z. **No checkpoint fell inside the window.**
+- **Research: ~3h20m of processing**, of which ~1h40m was inside premarket
+  (04:00 ET onward). Jobs stay queued, so this is re-runnable, not lost.
+- **The board: 502 for the whole window.** Premarket opened at 04:00 ET and the
+  dashboard did not come back until 05:41 ET. **The desk was unusable for the
+  first 102 minutes of the trading session.** This is the real cost and it is
+  the one that lands on the user, not the data.
+
+### The WAL question is re-opened, and my earlier close was too narrow
+
+I closed the WAL question on evidence that it behaves under real premarket load.
+That conclusion was about **steady-state operation** and it still holds. It is
+not true of **deploys**, and I did not test that case.
+
+The WAL is now **531 MB against an 877 MB store**. The stall happened at the
+exact point where migrate opens the store, and the upgrade transaction in
+`lib/market/store/db.ts:938-945` runs unconditionally on every open — so a fresh
+connection must build its index over half a gigabyte of WAL before it can do
+anything, even when `user_version` is already correct and there is nothing to
+migrate.
+
+**This is the leading hypothesis, not a proven cause.** I have not measured a
+cold open against this store, and I will not add a connection to the live store
+during premarket capture to satisfy it. What would prove it: time a read-only
+open against a *copy* of the store off-host, at this WAL size. Two things are
+already true regardless of cause, and both are actionable:
+
+- The unconditional upgrade transaction is doing real work on every open for no
+  reason. An early return when `user_version` already equals `SCHEMA_VERSION`
+  removes the deploy's exposure to WAL size entirely. This is the same
+  early-return candidate already carried for the `BUSY_SNAPSHOT` race — it now
+  has a second, larger reason to exist.
+- A deploy that must wait on a half-gigabyte WAL is a deploy that will stall
+  again, and the WAL grows.
+
+### Post-deploy state, including what the killed script never did
+
+- Release: `bc78d49`, symlink correct. Store `user_version` **22** == expected.
+- All four units `active`. `NRestarts`: web 0, market 0, research 0, **assess 1**
+  — one crash on my manual start, consistent with the known `BUSY_SNAPSHOT`
+  race when three units open the store at once. It self-healed.
+- Health `ok:true`, market LIVE, `messageAgeSeconds: 1`, `NEW_HOD` events
+  flowing, 250 high-res symbols.
+- `stalledJobs` **16** — unchanged, as predicted. The fix stops new stranding;
+  it does not retire the existing 16.
+- **`prune.sh` never ran** — 6 release dirs against a keep-3 policy. Not a
+  risk (pins protect the rollback path) but disk will drift if this recurs.
+- **Pins intact and correct**: `market-worker-release` `fd9556f` (v21 build,
+  still needed until the market worker restarts) and `rollback-baseline`
+  `372f5eb`.
+
+**Verify prune and pins explicitly after any deploy that did not exit 0.** They
+are the last two steps and they are the ones a killed script silently skips.
+
 ## Open items
+
+**0d. A deploy that loses its driving connection leaves the desk stopped, with
+nothing to restart it.** *Ops. Raised by the 2026-08-25 outage, which cost 3h22m
+and 102 minutes of the live premarket session. Not built.*
+
+`push-release.sh` stops the runtime units, then migrates, then starts them. The
+sequence is driven from a laptop over ssh. Kill the driver between stop and
+start — a timeout, a dropped link, a closed lid — and the desk stays down until
+a human notices. There is no watchdog and no alert.
+
+Smallest fix that closes the observed hole: `trap 'start_services' EXIT` in the
+remote half, so SIGHUP from a dropped connection still restarts what it stopped.
+Stronger: run the remote half detached (`systemd-run --scope` / `setsid`) so it
+completes regardless of the connection, which also survives SIGKILL of the ssh
+session. **Until this ships, a deploy must be watched to completion, and a
+dropped connection means reconnect and check service state immediately.**
+
+Related and cheap: after any deploy that did not exit 0, verify `prune.sh` and
+the pins report explicitly. They are the last two steps and a killed script
+skips them silently — it did on 2026-08-25.
+
+**0e. The store's upgrade transaction runs unconditionally on every open, and
+the WAL has made that expensive.** *Ops. Not built.*
+
+`lib/market/store/db.ts:938-945` runs `db.exec(SCHEMA)`, `migrate()` and the
+`user_version` write on **every** open, including when the version already
+matches and there is nothing to do. With the WAL at **531 MB** against an 877 MB
+store, a cold connection has to build its index over that before it can proceed.
+This is the leading hypothesis for the 2026-08-25 migrate stall — not proven;
+proving it means timing a cold open against an off-host *copy* at this WAL size,
+never against the live store during capture.
+
+An early return when `user_version === SCHEMA_VERSION` removes the deploy's
+exposure to WAL size entirely. This is the same early-return already carried as
+the `BUSY_SNAPSHOT` candidate; it now has a second and larger reason. The WAL
+grows, so this gets worse, not better.
+
+Note the scope correction on the earlier WAL close: that conclusion was about
+**steady-state operation** and it still holds. It said nothing about deploys,
+and deploys are where the WAL now bites.
+
 
 **0c. Health measures that the worker is alive, not that it is working — so a
 hung worker reports healthy.** *Offered by Integration 2026-08-23 and not
@@ -1682,7 +1831,7 @@ someone thinks to check. The deploy summary should echo the same line, since a
 deploy is exactly the moment drift is created. Not built; a deploy-path change
 should not be shipped in the same window as the incident that prompted it.
 
-**2. The WAL is a 507 MB high-water mark that nothing truncates.** Measured, not
+**2. The WAL is a 531 MB high-water mark that nothing truncates.** Measured, not
 guessed — see the section below. Not urgent; disk is 13% used. Next step is
 agreed: sample it **under sustained concurrent write load with the dashboard
 polling** — which Monday's premarket is expected to supply, but the load is the
@@ -1694,6 +1843,13 @@ readers. On a thin premarket a flat WAL says exactly what Saturday's closed
 market said, which is nothing — a check that cannot fail. So record the write
 rate alongside the size: if writes are not landing steadily and the dashboard is
 not being polled, the sample has not been taken yet, whatever the clock says.*
+
+*Updated 2026-08-25: 507 MB → 531 MB, and the steady-state sample was taken
+and passed — under real premarket load the WAL behaves. That close was correct
+and too narrow: it said nothing about **deploys**, which open a cold connection
+and must build an index over the whole WAL first. That is the suspected cause of
+the 3h22m outage. Carried forward as item 0e, which fixes it at the source
+rather than by truncating.*
 
 **3. Nothing surfaces the age of the calendar cache.** The failure modes in
 §"When the Alpaca calendar fetch fails" are all silent, and the one number that
@@ -2807,7 +2963,7 @@ project memory. The three that have actually bitten:
 > or model-spend work belongs to the Research thread — if you find work there,
 > write it into that charter's Open items and hand it over rather than doing it.
 >
-> Production is `fd9556f`, schema v21. Credentials are in `A:\AWS_creds\` — use
+> Production is `bc78d49`, schema v22. Credentials are in `A:\AWS_creds\` — use
 > them non-interactively and never print, log, commit or move a value.
 >
 > Start by confirming the working tree, HEAD, and what production is actually
