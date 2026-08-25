@@ -1217,80 +1217,41 @@ practice governs:
 - **Hold time is seconds, at most 1-2 minutes.** Risk $0.15-$0.25 per share.
   A one-minute candle is wider than the whole trade — remember this before
   proposing any measurement at minute grain.
-- **HE TRADES PREMARKET. HE DOES NOT TRADE RTH.** *Stated directly 2026-08-24,
-  correcting how this thread had been reasoning all night.* The working session is
-  **04:00–09:30 ET**, with the profit concentrated **07:00–09:30**; after 11:00 is
-  avoided. RTH is the exception — a dip trade or a genuinely strong mover — **not
-  the default and not the reference point.**
+- **THE SETUP IS THE REQUIREMENT. THE SESSION IS NOT.** *His correction,
+  2026-08-24, `0595b2c` — and it supersedes an earlier entry here that said he
+  trades premarket and not RTH.* His words: **"we can change that. i do sometimes
+  trade RH and AH. but the core of the strategy is the same in terms of setups."**
 
-  **What this changes for every thread: "before the open" is NOT a safety
-  margin — it is his session.** Integration spent a night quoting *"RTH is four
-  and a half hours out"* as runway to threads that had none, on a morning when he
-  was already at the desk. **The premarket checkpoints — 06:25, 06:45, 07:00 —
-  are not preparation for the trading window. They are inside it.**
+  **He trades premarket, RTH and after hours.** The entry, the absorption gate and
+  the exit rule **do not change between them.**
 
-  **The capture rule is unchanged and still governs**: he can trade without the
-  tool, so a broken board during his session costs him a board rather than a
-  trade. **But do not compute a window from the opening bell.** If a thread wants
-  to know whether it is working in front of him, the answer at 04:00–10:00 ET is
-  yes.
+  > **NO RULE, CHECK OR THRESHOLD MAY BE KEYED TO THE SESSION.** Time of day is a
+  > **reporting dimension**, and becomes a rule only if the record shows one and he
+  > adopts it.
 
-  **THE DEEPER VERSION, found by Research in its own durable notes.** They said
-  *"9:30–10:00 is the core"* — **which is the BOOKLET's core, Cameron's, not
-  Adam's.** And the same notes carry the rule *where the booklet and Adam differ,
-  believe Adam.* **A rule written for exactly this error, with the error already
-  sitting under it.**
+  **THE ERROR THIS REPLACES IS WORTH KEEPING, because it was made twice and the
+  second time by the thread that caught the first.** The booklet's window
+  (`07:00–10:00`, avoid after 11:00) was Cameron's, not his — correct. **The fix
+  applied was to substitute HIS window, `04:00–09:30`, and that was the same
+  mistake with different numbers.** *"Is 07:00–09:30 where the money is made"* is
+  as clock-bound as the sentence it replaced. **Both were rules about the clock,
+  and the clock was never the rule.**
 
-  The practical effect was that **every time-window decision pointed at the
-  opening bell, which is roughly when his session ENDS.**
+  **And the record contradicted it on day one.** Coaching's first imported session:
+  **every dollar of the day's profit came from trades opened after 09:30, and the
+  stated 07:00–09:29 window was the day's worst block.** One day is not evidence of
+  a rule — **it is direct evidence against grading him on the clock.**
 
-  > **A taught method quietly stands in for the practitioner's, and it will recur
-  > on other facts in the same file.** The booklet is the reference; he is the
-  > authority. Where a note restates the booklet, check whether it was ever
-  > checked against him.
+  **R&D's market-side figures stand and mean something narrower than they were
+  used for**: of 95 movers, 27.4% peak 04:00–06:59, 18.9% in 07:00–09:29, 7.4% in
+  09:30–09:59. **That is where the OPPORTUNITIES are. It is not where his trades
+  have to be**, and anything built on the second reading needs re-checking.
 
-  Research kept the wrong text and why it was wrong rather than overwriting it,
-  for that reason.
+  **Every threshold inherited from the playbook carries its provenance** —
+  `lib/coaching/fills/rules.ts` marks each `stated` or `booklet`, and the report
+  prints the booklet-derived ones at the foot of every run. **Three remain
+  unverified against him: $0.25/share risk, 120s hold, 3 strikes.**
 
-  **AND IT HAD ALREADY RECURRED — MEASURED BY R&D IN THE ARCHIVE'S OWN COLUMNS,
-  `d8e9c60`.** Every derived gain field starts at or after the minute he stops
-  trading: `gain_open_30_pct` (09:30–10:00) **begins the minute his session ends**;
-  `gain_to_1100_pct` and `gain_to_close_pct` are entirely after it.
-
-  **Where the max gain actually lands, all 95 movers:**
-
-  | window | movers peaking there | |
-  | --- | ---: | ---: |
-  | 04:00–06:59 | 26 | **27.4%** — largest single bucket |
-  | 07:00–09:29 | 18 | 18.9% — his profit window |
-  | **09:30–09:59** | **7** | **7.4%** — the window the column is NAMED for |
-  | 10:00–10:59 | 9 | 9.5% |
-  | 11:00–15:59 | 18 | 18.9% |
-  | 16:00–20:00 | 17 | 17.9% |
-
-  **46.3% of movers peak inside his working session; 7.4% peak in the opening-gain
-  window.** *"The opening 30 minutes"* reads as the money window to anyone opening
-  the schema. **On this desk it is the worst half hour of the six** — and the
-  assumption is in the field name, which is why nobody questioned it.
-
-  **Nothing is lost, and not by luck.** `max_gain_pct`, `time_of_max_gain` and
-  `premarket_high` are full-session 04:00–20:00 and correct — **the defect is in
-  the derived windows, not the capture**, and minute bars are re-fetchable. It
-  lands on the reassuring side of the re-fetchable / observable-once split: **the
-  wrong question was asked of what was kept, rather than the right thing not being
-  kept.**
-
-  **The fix, when the desk is quiet: ADD gain-to-07:00 and gain-to-09:30. Do not
-  delete Cameron's windows** — a booklet-window number stays the right comparison
-  when the question is *how does his session differ from the taught one*.
-
-  > **Check against him, not against the playbook. A number's pedigree is not its
-  > basis.**
-
-  **A wider pass is registered and deliberately not started:** Pillar 4's window,
-  the hold-time grain, the RVOL and price bands all descend from the same
-  playbook. **None is known to be wrong. None has been checked against the
-  practitioner — and the one that was checked turned out to be the booklet's.**
 - **Entry** is a micro pullback on rising volume, plus flat top, ABCD and VWAP
   reclaim. **Absorption is a gate, not a trigger** — stay out while a large
   presence sits unconsumed on the tape.
