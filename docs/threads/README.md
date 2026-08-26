@@ -891,6 +891,50 @@ fix would have looked correct while changing nothing.**
 **Establishing that a fix CAN work is separate from establishing that it does**,
 and it is the cheaper half to skip.
 
+## "We missed it" is four different failures
+
+**Research, 2026-08-25, turning a headline-tracking tally into a diagnosis.** When
+the desk does not show a catalyst the trader can see, exactly one of these is true
+and they need different fixes:
+
+| what happened | failure |
+| --- | --- |
+| never found it | **COVERAGE** — no path to the source |
+| nothing then, found it later | **LATENCY** — the path exists and was slow |
+| found it, graded it low | **JUDGEMENT** — not a coverage problem at all |
+| found it, board showed an older version | **PLUMBING** |
+
+**Collapsing them is expensive in a specific direction:** a latency failure reads
+as a coverage failure, and **the next investigation goes hunting for a feed when
+the feed fired on time and came back empty.**
+
+**The RCON case is the worked example and it is also the caution.** The pipeline
+fired at **08:04, four minutes after an 08:00 wire release**, ran `RESOLVER`, found
+no durable company source, and returned **zero sources**. That **rules out *never
+looked***.
+
+> **But ruling out one cause is not evidence for a specific other one.** *Found it
+> later* is unverified for RCON — if no later pass ever picks up that release, it
+> is a **coverage** failure that arrived through a mechanism that fired on time.
+> **What is established is narrower: the lookup happened and came back empty.**
+
+**And the distinction exists only because someone pulled the collector report.**
+*"discovered 08:04, `ENTERED_TOP_N`, `modelCalls 1`, `sourcesAdded 0`"* is the
+whole difference between a diagnosis and a guess — **without it, indistinguishable
+from never having looked.** That is the argument for keeping collector reports.
+
+### A manual feed going quiet arrives looking like good news
+
+**The fourth costume, and the first one anticipated rather than caught.** The
+trader is supplying headlines from his own news service so the desk can measure its
+own miss rate. **When that feed thins out — and manual feeds do — a quiet week
+reads as "the desk found everything."**
+
+**So record what he supplied AND what he supplied nothing for, separately.** Same
+family as `queuedJobs` being correct-but-scoped-to-today, the `toolConfig`
+constant, and `stalledJobs` counting its own fix as the disease — **a number that
+is right, means something else, and flatters the thing being measured.**
+
 ## A constant dressed as a measurement
 
 **Research, 2026-08-24, found in its own ledger.** The hardest version of *a check
