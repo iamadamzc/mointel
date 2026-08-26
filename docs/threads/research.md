@@ -2068,8 +2068,37 @@ coverage:
 | found it, graded it low | judgement, not coverage |
 | found it, but the board showed an older dossier | plumbing |
 
-**RCON is NOT yet an example of any of them, and I filed it as latency before
-checking.** What is established is that the pipeline fired at 08:04 — four
+**RCON IS THE LATENCY CASE — SETTLED BY OPS 2026-08-25, TWO HOURS.**
+
+    08:00 ET  PR Newswire release
+    08:04 ET  detected, ENTERED_TOP_N. RESOLVER's turn. Re-asks a six-day-old
+              recorded no. sourcesAdded 0, no new version.
+    09:00 ET  he is watching it: rank 7, +24%. Board reads CATALYST UNKNOWN.
+    10:01 ET  FRESH_FOUND, NEWS_DRIVEN, LEGITIMATE_POSITIVE, HIGH, explains=true.
+              eventTimestamp 12:00:00Z -- the wire minute exactly. Sources 10 -> 13.
+
+**The alternation did not prevent the answer. It delayed it by two hours** — and
+the very next eligible pass ran `DISCOVERY` and got it in one call. **The single
+paid call went to the wrong tier on the only pass that mattered.**
+
+*That is a worse finding than coverage, not a lesser one.* A name entering top N
+on a wire release is exactly where the rotation is most likely to be mid-cycle
+and least able to afford a wasted pass — **the gate is latency-generating
+precisely on the names that are moving.**
+
+**And it sets a bar the structural answer has to clear.** The `DISCOVERY`
+fallback WOULD have fixed RCON, since the resolver reported no durable source on
+that same pass. So the expensive option is the one demonstrably known to work,
+and *"wire coverage decoupled from issuer resolution"* must now match its
+**latency**, not merely its coverage: an answer within minutes of the wire, not
+within the next eligible pass.
+
+**What I got wrong, and it is worth separating from what I got right.** I filed
+RCON as latency on no evidence, Integration caught it, and I retracted to
+unsettled. **The retraction was the correct move and it happened to point away
+from the correct answer** — ruling out `never looked` genuinely was not evidence
+for `found it later`, and the fact that it turned out to be `found it later`
+does not make the original guess sound. The lesson survives the outcome. What is established is that the pipeline fired at 08:04 — four
 minutes after an 08:00 wire — ran `RESOLVER`, and returned zero sources. **That
 rules out `never looked`. It is not evidence for `found it later`**, which
 requires a later pass to have actually picked the release up. If none ever does,
