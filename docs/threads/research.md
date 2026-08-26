@@ -2233,3 +2233,32 @@ ever consulted.
 a dossier **for this session** — or, more precisely, one that actually answers.
 A current-session dossier reading `UNKNOWN` on a name that is still ranking is
 the case worth re-asking, and the retry policy decides whether it is affordable.
+
+### First data on the unmeasured question, 2026-08-26 premarket
+
+The trader supplied his news service's board beside the desk's, same session.
+**News Count (4h) = 0 on all nine of his top premarket movers** — WVVIP +106.9%,
+YYGH +75.7%, PSNYW +69.4%, RDIB +68.4%, DAIC +44.6%, XPON +28.4%, SMTK +21.9%,
+BRNX +16.6%, SDOT +12.8%.
+
+**The desk says the same thing independently.** `NO FRESH NEWS` on RDIB, SMTK,
+YI, PDC, ARKR, DAIC; `NO FRESH CATALYST FOUND` on SMTK, LBGJ, DAIC.
+
+**Two sources that share no code and no data path agree there is nothing to
+find.** That is the cross-check the `429` denied me, and it supports his call:
+the desk is not missing news on these names — *there is no news*. RCON was the
+exception rather than the rule, which is exactly what makes it worth fixing and
+not worth building a wire integration for.
+
+**THE WINDOW CAVEAT, and it would corrupt the tracking if it went unnoticed.**
+His counter is **4 hours**. The desk's memory is longer, and on the same board it
+reports `PSNYW C 15h` and `YYGH A 7d` — **both outside his window.** So a `0`
+beside a desk catalyst is not a disagreement there; the two are measuring
+different spans. **Any comparison must align the windows first**, or it will
+score agreements and disagreements that are neither.
+
+*Also visible on that board: `WVVIP` tops his scanner at +106.9% and is correctly
+absent from the desk — `classifySecurity` reads it `PREFERRED`, `eligible=false`.
+And `PSNYW` is the documented 1-of-369 residual from `b467154`, "Class C-1 ADS
+(ADW)", classifying `ADR_ADS` and still board-eligible. Live at +69%, so the
+known miss is not hypothetical.*
