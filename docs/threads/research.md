@@ -2127,3 +2127,47 @@ separately** — otherwise a quiet week flatters the desk, which is the
 correct-but-narrow-number failure this thread has now hit three times.
 
 **It must mean something at n=20**, not require a month before it says anything.
+
+### The rotation's real defect: 51% of resolver turns spend nothing and achieve nothing
+
+*Found while scoping Integration's fix shape, 2026-08-25. Larger and cleaner
+than RCON, and measured rather than reasoned.*
+
+`collector.ts:788` stamps the turn as spent **unconditionally** — outside the
+`try`, after the resolver branch, regardless of whether a model call was made:
+
+    registry.lastDiscoveryAt   = now.toISOString();
+    registry.lastDiscoveryMode = 'RESOLVER';
+
+So when the 24-hour negative cooldown inside `resolveCompanySources` fires and
+returns `reused stored negative result` at `modelCalls: 0`, **the pass is still
+consumed and the interval clock still restarts.**
+
+**Measured across stored collector reports:**
+
+| pass outcome | count |
+| --- | --- |
+| DISCOVERY, made a call | 387 |
+| **RESOLVER, made NO call** | **130** |
+| RESOLVER, made a call | 123 |
+| no discovery mode | 84 |
+
+**130 of 253 resolver turns — 51% — spend nothing, learn nothing, and cost a
+pass.** The cooldown saves the money and keeps the delay, which is the wrong half
+to save: on a name that is moving, the pass is the scarce thing.
+
+**So Integration's fix shape is necessary and not sufficient.** *"Do not spend
+the paid call re-asking a question with a recent recorded negative"* is already
+true — that is what the cooldown does. **The missing half is that a resolver turn
+which makes no call must not consume the pass**; it should fall through to
+`DISCOVERY` in the same run rather than deferring it by a full interval.
+
+**A LIMIT ON THE RCON CHAIN, stated because the mechanism is tempting and
+unproven.** RCON's 08:04 pass DID make a call — its negative was six days old, so
+the cooldown had expired. The next pass ran `DISCOVERY` and answered
+immediately, **but the gap was ~117 minutes and the unresolved discovery
+interval is 10.** So the two-hour delay is **not** explained by the interval
+reset alone; it depends on when the next job was queued for RCON, which is board
+cadence and not visible in this thread's snapshot. **The rotation put the call on
+the wrong tier — that is established. That the rotation caused the full two hours
+is not.**
