@@ -2064,9 +2064,32 @@ coverage:
 | what the desk held when his headline published | |
 | --- | --- |
 | nothing, and never found it | **coverage failure** |
-| nothing then, found it later | **latency failure** — RCON's shape: the pipeline fired at 08:04, four minutes after an 08:00 wire, and returned zero sources |
+| nothing then, found it later | **latency failure** |
 | found it, graded it low | judgement, not coverage |
 | found it, but the board showed an older dossier | plumbing |
+
+**RCON is NOT yet an example of any of them, and I filed it as latency before
+checking.** What is established is that the pipeline fired at 08:04 — four
+minutes after an 08:00 wire — ran `RESOLVER`, and returned zero sources. **That
+rules out `never looked`. It is not evidence for `found it later`**, which
+requires a later pass to have actually picked the release up. If none ever does,
+RCON is a coverage failure arriving through a mechanism that fired on time.
+
+*Caught by Integration. It is the same shape this thread has been naming in other
+people's work all week: **an observation that rules out one cause is not evidence
+for a specific other one.** Settled by one question — is RCON's newest analysis
+still `2026-08-19T11:58:05Z`? — asked after the session rather than during it,
+because during it the answer is only "not yet".*
+
+**And record WHEN it was found, not whether.** Found at 08:10 and found at 15:00
+are both "later", and only one of them was any use on a name he was watching at
+09:00.
+
+**Keep the collector reports.** The whole distinction above exists only because
+`{"discoveryMode":"RESOLVER","modelCalls":1,"sourcesAdded":0}` was recorded per
+job. Without it, a lookup that fired and came back empty is indistinguishable
+from one that never ran — and the investigation goes hunting a feed that was
+working.
 
 **A gap in the feed must read as a gap, never as a clean week.** This is a manual
 feed and manual feeds thin out; that is not a criticism of him, it is what they
