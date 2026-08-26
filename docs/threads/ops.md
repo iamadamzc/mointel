@@ -1669,15 +1669,91 @@ store. The analysis belongs to Research.
 ```
 
 The 10:01 dossier names the distributor and timestamps the event at `12:00:00Z`
-— the wire minute exactly. **The desk could answer. The RESOLVER/DISCOVERY
-alternation made it wait for the next eligible pass.** Detection was four
-minutes; explanation was two hours and one minute.
+— the wire minute exactly. Detection was four minutes; explanation was two hours
+and one minute.
+
+**CORRECTED 2026-08-26.** I first wrote that the RESOLVER/DISCOVERY alternation
+"made it wait for the next eligible pass", and Integration relayed that to him as
+settled. **It is not what the queue shows.** The alternation wasted the 08:04
+call. It did not cause the remaining 116 minutes. See the section below.
 
 **For anyone reading a `CATALYST UNKNOWN` on the board: it means "no current
 dossier says why", not "no catalyst exists".** The board shows the *current*
 pointer, and the current pointer only moves when a pass produces a new version.
 A stale UNKNOWN and a genuine UNKNOWN are indistinguishable on the board, and
 RCON was the first one worth the distinction.
+
+## The 116 minutes were not the rotation and not the queue — RCON was never re-asked
+
+Measured 2026-08-26 from the live store, after Integration challenged my
+"the alternation converted a 4-minute detection into a 2-hour explanation".
+**That framing was wrong and it had already been relayed to him as settled.**
+
+RCON's four jobs on 2026-08-25, with the `reason` the scheduler recorded:
+
+```
+08:04 ET  top 12 at rank 12              priority 34.3   top12_at set
+10:00 ET  cycle context changed at 10:00 priority 0.0
+12:00 ET  cycle context changed at 12:00 priority 0.0
+12:30 ET  cycle context changed at 12:30 priority 0.0
+```
+
+**Only the first job was triggered by RCON doing anything.** Every later one is
+the periodic cycle sweep, which is indifferent to the name. The 10:00 sweep is
+what produced the correct catalyst — **by coincidence of timing, not because
+anything noticed RCON still had no answer.**
+
+### The queue was not the bottleneck, and this is the part that rules out cadence
+
+During the 12:04Z–14:00Z gap the desk queued **11 jobs across 11 tickers**:
+
+```
+PRZO  12:21Z  top 12 at rank 11
+AMOD  12:28Z  top 12 at rank 11
+BCCQ  13:12Z  top 12 at rank 12
+GITS  13:13Z  top 12 at rank 12
++ 7 more at 13:25Z  cycle context changed at 09:25
+```
+
+**Other names were queued within minutes of qualifying.** There is no two-hour
+desk cadence and there was no backlog. The scheduler was working normally and
+RCON simply never came up.
+
+### The actual defect: the rank trigger is edge-triggered, not level-triggered
+
+`top 12 at rank 12` fires on **entry** into the top 12. RCON entered at 08:04,
+got its one pass, produced no answer — and nothing re-queued it, because it had
+already entered. He reports it at **rank 7 or 8 around 09:00**, i.e. **more
+highly ranked during the gap than at the moment it qualified**, and that
+generated no job at all. (His observation and Integration's, not measured here —
+Tuesday's session ranking is not retained.)
+
+**So a name that qualifies once, fails to produce an answer, and keeps climbing
+is never re-asked.** The only thing that brings it back is an unrelated periodic
+sweep.
+
+That is a different fix from the one everyone was reaching for, in a different
+file, and it is Research's:
+
+- **The rotation fix** (`lastDiscoveryMode !== 'RESOLVER'` with no memory of
+  failure) is real and still worth doing — it wasted the one pass RCON got. But
+  it buys **ten minutes**, not two hours.
+- **The re-trigger fix** — re-queue a ranked name whose catalyst is still
+  UNKNOWN while it continues to rank or climb — is what buys the other 106.
+
+**Neither is sufficient alone.** Fixing only the rotation means the 08:04 pass
+buys DISCOVERY and RCON is answered at ~08:10 — which would have worked *this
+time*, because RCON's single pass happened to coincide with the wire. A name
+whose wire lands ten minutes *after* it qualifies still waits two hours.
+
+### The rule this is an instance of
+
+**A trigger that fires on entering a state cannot retry, because the condition
+that would justify the retry — still in the state, still unanswered — is not an
+edge.** This desk has now hit that shape twice: here, and in the assessment
+scheduler's one-way door. Both were invisible because the thing that failed
+produced no record of having failed; RCON's 08:04 job is recorded `PARTIAL` and
+nothing reads that status as "ask again".
 
 ## Open items
 
