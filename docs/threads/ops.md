@@ -1628,6 +1628,57 @@ already true regardless of cause, and both are actionable:
 **Verify prune and pins explicitly after any deploy that did not exit 0.** They
 are the last two steps and they are the ones a killed script silently skips.
 
+## `bc78d49` verified on its first live recap — 2026-08-26 03:09 ET
+
+The deploy that cost the 3h22m outage did the job it shipped for.
+
+`stalledJobs` **16**, breakdown unchanged and **no fourth row**:
+
+```
+2026-08-17 | QUEUED | 2
+2026-08-21 | QUEUED | 8
+2026-08-24 | QUEUED | 6
+```
+
+**The positive evidence matters more than the absence.** The 22:00 ET recap ran
+at `2026-08-26T02:00:05Z` and queued **9 jobs onto `trading_date` 2026-08-26** —
+the session it prepares, not the one it summarises — already worked to 2 COMPLETE
+and 7 PARTIAL. Nothing went through the one-way door. That is the enqueue fix
+observed working, not merely failing to break.
+
+Definition taken from the live code rather than from the expectation:
+`research_jobs WHERE trading_date < MAX(trading_date) AND status IN
+('QUEUED','COLLECTING','SOURCES_READY','ANALYZING')`.
+
+The existing 16 are not retired by this fix and nothing retires them. They are
+2026-08-17, -21 and -24 work that can never be reached. **Retiring them is a
+separate decision and nobody owns it yet.**
+
+### RCON was latency, not coverage — and the desk was two hours late, not wrong
+
+Recorded here because it is the first end-to-end measurement of time-to-
+intelligence against a known wire minute, and because Ops holds the only live
+store. The analysis belongs to Research.
+
+```
+08:00 ET  PR Newswire release
+08:04 ET  detected — 29s, RESOLVER, sourcesAdded 0, no new version
+09:00 ET  on his board at rank 7, +24%. Board reads CATALYST UNKNOWN
+10:01 ET  FRESH_FOUND / NEWS_DRIVEN / LEGITIMATE_POSITIVE, HIGH, explains move
+12:31 ET  refreshed — current version
+```
+
+The 10:01 dossier names the distributor and timestamps the event at `12:00:00Z`
+— the wire minute exactly. **The desk could answer. The RESOLVER/DISCOVERY
+alternation made it wait for the next eligible pass.** Detection was four
+minutes; explanation was two hours and one minute.
+
+**For anyone reading a `CATALYST UNKNOWN` on the board: it means "no current
+dossier says why", not "no catalyst exists".** The board shows the *current*
+pointer, and the current pointer only moves when a pass produces a new version.
+A stale UNKNOWN and a genuine UNKNOWN are indistinguishable on the board, and
+RCON was the first one worth the distinction.
+
 ## Open items
 
 **0d. A deploy that loses its driving connection leaves the desk stopped, with
