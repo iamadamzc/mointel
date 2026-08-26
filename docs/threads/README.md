@@ -957,8 +957,36 @@ having failed.** RCON's 08:04 job is recorded `PARTIAL` — **nothing reads that
 status as "ask again"**, so a name with no catalyst and a rising rank looks
 identical to one that was answered.
 
-**The repair is level-triggered rather than edge-triggered: ask "is this name
-ranked AND still unanswered", not "did this name just arrive".**
+**CORRECTED ONE LAYER IN, and the correction matters because "edge-triggered"
+sends the next reader to a trigger that is already right.** The board loop
+(`queueDiscoveryResearch`) **is** level-triggered — it runs over current candidates
+every cycle. **It is defeated one line later, by a skip:**
+
+    queue.ts:167
+    if (readCurrentAnalysis(db, candidate.ticker) && existingJob) {
+      ... reason: 'dossier already accepted for this session'
+
+**`readCurrentAnalysis` has NO DATE FILTER.** It returns whatever
+`research_dossiers.current_version_id` points at, of any age. **So the reason
+string names a condition the query does not check — "for this session" appears
+nowhere in the SQL.**
+
+> **The week's pattern again, and this time it is a STRING rather than a field: a
+> label asserting a constraint the code never applies.**
+
+RCON on 08-25: current analysis = the **08-19 `UNKNOWN`**, existing job = the 08:04
+`PARTIAL`, **skipped — on every cycle, all morning.**
+
+**Measured, board jobs per ticker-session:** `0 → 50`, `1 → 238`, `2+ → 35`. **The
+35 are names with no dossier at all, where the skip cannot fire.** So in practice:
+**a name the desk has ever analysed gets ONE board job per session and is then
+frozen out, whatever that job produced.**
+
+**The repair is to ask "is this name ranked AND still unanswered", not "has this
+name ever been analysed" — and the brake already exists.** `evaluateRetry` gates
+on the evidence fingerprint, so a re-queued name whose evidence has not changed is
+deferred by the existing retry policy. **The fix does not need a new bound; it
+needs to stop skipping before that bound is ever consulted.**
 
 ### The worked example would have validated an insufficient fix
 
