@@ -1719,18 +1719,73 @@ GITS  13:13Z  top 12 at rank 12
 desk cadence and there was no backlog. The scheduler was working normally and
 RCON simply never came up.
 
-### The actual defect: the rank trigger is edge-triggered, not level-triggered
+### CORRECTED TWICE. The defect is a skip, not a trigger — `queue.ts:167`
 
-`top 12 at rank 12` fires on **entry** into the top 12. RCON entered at 08:04,
-got its one pass, produced no answer — and nothing re-queued it, because it had
-already entered. He reports it at **rank 7 or 8 around 09:00**, i.e. **more
-highly ranked during the gap than at the moment it qualified**, and that
-generated no job at all. (His observation and Integration's, not measured here —
-Tuesday's session ranking is not retained.)
+*My first version said the alternation caused the two hours. My second said the
+rank trigger is edge-triggered. **Both were wrong**, and Research caught each.
+This third version is verified at the code by me rather than taken on report.*
 
-**So a name that qualifies once, fails to produce an answer, and keeps climbing
-is never re-asked.** The only thing that brings it back is an unrelated periodic
-sweep.
+**The selection is level-triggered.** `readBoardCandidates`,
+`lib/market/store/researchRepo.ts:127`:
+
+```sql
+WHERE s.trading_date = @tradingDate
+  AND ((s.<rankColumn> IS NOT NULL AND s.<rankColumn> <= @autoRank)
+       OR EXISTS (SELECT 1 FROM focus_tickers ...))
+```
+
+Current rank, every cycle. `s.top12_entered_at` **is** selected — but only into
+the projection, where it stamps `job.top12At` for the time-to-intelligence
+metric. **It never appears in the WHERE.** The edge-shaped thing is a
+measurement, not a filter, which is exactly why the behaviour looks
+edge-triggered from the outside.
+
+**So RCON at rank 7–8 was a candidate on every cycle all morning. The loop saw
+it and chose not to queue it.**
+
+**The skip.** `lib/research/queue.ts:167`:
+
+```js
+if (readCurrentAnalysis(db, candidate.ticker) && existingJob) {
+  ... reason: 'dossier already accepted for this session'
+```
+
+And `readCurrentAnalysis` (`researchRepo.ts:821`) has **no date filter at all**:
+
+```sql
+SELECT v.* FROM research_analysis_versions v
+  JOIN research_dossiers d ON d.current_version_id = v.id
+ WHERE d.ticker = ?
+```
+
+Any age. For RCON that returned **the 08-19 UNKNOWN dossier**, and `existingJob`
+was the 08:04 `PARTIAL`. Skipped, every cycle, all morning.
+
+**The reason string is false on both counts.** The dossier was not accepted this
+session — it was six days old. And the job that existed produced no answer. The
+string says "for this session" and *the query contains no session at all*.
+
+**This explains the control group rather than conflicting with it.** PRZO, AMOD,
+BCCQ and GITS were queued during the gap because they had **no prior job that
+session** — `existingJob` null, no skip. Research measured the population: **238
+ticker-sessions got exactly one board job; 35 got two or more, and the 35 are
+the ones with no dossier yet.** A name the desk has *ever* analysed gets one
+board job per session and is then frozen out, **whatever that job produced**.
+
+**The conclusion survives all three versions, and it is one line further in than
+I put it:** a name that qualifies once, fails to answer, and keeps climbing is
+never re-asked.
+
+**Why the precision matters operationally, in Research's words and I agree:**
+someone sent to fix "the trigger" opens `readBoardCandidates`, finds it already
+level-triggered, and either decides the diagnosis was wrong or bolts a
+re-trigger on top **while the skip keeps firing**.
+
+**The general rule restates better of the skip than of the trigger.** The
+condition that would justify a retry is *still ranked, still unanswered* — and
+`queue.ts:167` tests **neither**. It tests "have we ever analysed this name" and
+"is there a row for it today".
+
 
 That is a different fix from the one everyone was reaching for, in a different
 file, and it is Research's:
