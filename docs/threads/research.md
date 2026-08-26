@@ -2171,3 +2171,65 @@ reset alone; it depends on when the next job was queued for RCON, which is board
 cadence and not visible in this thread's snapshot. **The rotation put the call on
 the wrong tier — that is established. That the rotation caused the full two hours
 is not.**
+
+---
+
+**26. The re-trigger: a stale UNKNOWN dossier counts as an answer.** *Scoped
+2026-08-25 after Ops established RCON was never re-asked. Not built.*
+
+**The board loop is already level-triggered** — `queueDiscoveryResearch` runs
+over current candidates every cycle. So the defect is not the trigger; it is a
+skip that treats a six-day-old `UNKNOWN` as a satisfactory answer.
+
+`queue.ts:167`:
+
+    if (readCurrentAnalysis(db, candidate.ticker) && existingJob) {
+      ... reason: 'dossier already accepted for this session'
+
+**`readCurrentAnalysis` has no date filter.** It returns whatever
+`research_dossiers.current_version_id` points at, of any age. **The reason string
+names a condition the query does not check** — "for this session" appears
+nowhere in the SQL.
+
+So for RCON on 08-25: current analysis = the 08-19 `UNKNOWN`, existing job = the
+08:04 `PARTIAL`, and it is skipped. **On every subsequent cycle, all morning.**
+The three later jobs came from the checkpoint sweep, which is a different code
+path and noticed nothing about RCON — it re-queues everything.
+
+**The population split, from stored jobs:**
+
+| board-triggered jobs per ticker-session | ticker-sessions |
+| --- | --- |
+| 0 | 50 |
+| **1** | **238** |
+| 2+ | 35 |
+
+**The 35 are names with no dossier yet** — `readCurrentAnalysis` returns null, no
+skip, re-queued freely until one lands. **The 238 are names that already had
+one.** So the rule in practice: *a name the desk has ever analysed gets one board
+job per session and is then frozen out, whatever that job produced.*
+
+### Why fixing the rotation alone would have flattered itself
+
+Integration's point and it is the reason to scope both. **RCON's single pass
+happened to coincide with the wire**, so a rotation-only fix answers it at ~08:10
+and the investigation closes. **A name whose wire lands ten minutes AFTER it
+qualifies still waits for a sweep** — and nothing in the RCON case would show it.
+
+| | buys |
+| --- | --- |
+| rotation fix — do not burn a pass on a re-ask | the ~10 minutes RCON's wasted pass cost |
+| **re-trigger fix — re-queue a ranked name whose catalyst is still UNKNOWN** | **the rest** |
+
+### The loop bound already exists, which is what makes this small
+
+The obvious objection is a name with genuinely no news being re-queued forever.
+**`evaluateRetry` already gates on the evidence fingerprint** — a re-queued name
+whose evidence has not changed is deferred by the existing retry policy. So the
+fix does not need a new brake; it needs to stop skipping before that brake is
+ever consulted.
+
+**Shape, not a build:** the skip should require what its message already claims —
+a dossier **for this session** — or, more precisely, one that actually answers.
+A current-session dossier reading `UNKNOWN` on a name that is still ranking is
+the case worth re-asking, and the retry policy decides whether it is affordable.
