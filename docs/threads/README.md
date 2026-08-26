@@ -935,6 +935,47 @@ family as `queuedJobs` being correct-but-scoped-to-today, the `toolConfig`
 constant, and `stalledJobs` counting its own fix as the disease — **a number that
 is right, means something else, and flatters the thing being measured.**
 
+## An edge trigger cannot retry, because "still failing" is not an edge
+
+**Second instance on this desk, 2026-08-25, and the first was fixed three days
+earlier without anyone recognising the shape.**
+
+`top 12 at rank N` fires on **entry** to the top twelve. RCON entered at 08:04,
+got its one research pass, produced nothing — **and could not be re-queued,
+because it had already entered.** It was at **rank 7–8 an hour later, more highly
+ranked during the gap than at the moment it qualified, generating no job at all.**
+
+> **A name that qualifies once, fails to answer, and keeps climbing is never
+> re-asked.**
+
+**The first instance was the recap's one-way door:** a job queued for a session
+whose date had rolled became unreachable forever, because the claim filter was an
+equality on a value that only moves forward. **Different code, same shape.**
+
+**And both were invisible for the same reason: the failure produced no record of
+having failed.** RCON's 08:04 job is recorded `PARTIAL` — **nothing reads that
+status as "ask again"**, so a name with no catalyst and a rising rank looks
+identical to one that was answered.
+
+**The repair is level-triggered rather than edge-triggered: ask "is this name
+ranked AND still unanswered", not "did this name just arrive".**
+
+### The worked example would have validated an insufficient fix
+
+**The part worth more than the finding.** A separate, real defect was found in the
+same investigation — 51% of resolver turns consume a pass without making a model
+call. **Fixing only that answers RCON at ~08:10**, because its single pass happened
+to coincide with the wire.
+
+**A name whose release lands ten minutes AFTER it qualifies still waits two hours,
+and nothing in the RCON case would have shown it.** The fix would have looked
+complete, the example would have gone green, and the investigation would have
+closed.
+
+> **When one example motivates a fix, ask what the example does NOT test.** A
+> worked case that validates a partial fix is more dangerous than no case at all,
+> because it supplies the confidence to stop looking.
+
 ## A constant dressed as a measurement
 
 **Research, 2026-08-24, found in its own ledger.** The hardest version of *a check
