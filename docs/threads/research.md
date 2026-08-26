@@ -2257,6 +2257,30 @@ beside a desk catalyst is not a disagreement there; the two are measuring
 different spans. **Any comparison must align the windows first**, or it will
 score agreements and disagreements that are neither.
 
+**The two windows, confirmed 2026-08-26. His is FIXED at 4 hours and rolling;
+the desk's is 36** — `activeFreshnessHours`, chosen to cover *"a release from the
+prior session's after-hours through this morning's premarket, which is the span a
+morning gap can originate in."* A 9× difference, and his purpose is narrower on
+purpose: at 05:00 ET a 4-hour window is *today's releases*.
+
+**Which reduces the comparison to ONE cell.**
+
+| his count | desk | reading |
+| --- | --- | --- |
+| 0 | no fresh catalyst | agree — nothing to find |
+| 0 | catalyst 4–36h old | **expected**, not a disagreement. `PSNYW` at 15h is this |
+| 0 | catalyst >36h | outside both. `YYGH` at 7d is this |
+| **≥1** | **no fresh catalyst** | **the only cell that indicates a desk failure — RCON's shape** |
+
+**So the tracking is not a tally, it is a filter**: every name where his count is
+non-zero and the desk found nothing. Everything else is agreement or window
+arithmetic, and counting it would bury the signal in noise the desk cannot act
+on.
+
+*A snapshot must carry its own clock time, because the window is
+`[snapshot − 4h, snapshot]` and slides. A `0` at 05:00 says nothing about an
+08:00 release.*
+
 *Also visible on that board: `WVVIP` tops his scanner at +106.9% and is correctly
 absent from the desk — `classifySecurity` reads it `PREFERRED`, `eligible=false`.
 And `PSNYW` is the documented 1-of-369 residual from `b467154`, "Class C-1 ADS
