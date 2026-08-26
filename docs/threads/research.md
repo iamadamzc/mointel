@@ -2031,3 +2031,47 @@ not exist.** The options that do:
 
 **The constraint holds under all three:** a polled item is EVIDENCE and never a
 `companySource`. None of these touches `classifyCollectionPoint`.
+
+### Superseded 2026-08-25: the trader supplies the headlines instead
+
+**Nothing above was built and this is why.** He decided to supply headlines for
+every board name from his own news service — the one he reads in Scanz — and
+have the desk track them against what it found on its own. **No wire
+integration, no resolver fallback, no spend.**
+
+**So item 25 is a measurement waiting on data rather than a dead end.** A reader
+finding a costed integration here should know it was not abandoned on cost: it
+was overtaken by a cheaper way to answer the question underneath it.
+
+**The question underneath it, in his words: "the majority of them do not have
+news."** If that is right, every option costed above was solving the wrong
+problem — GlobeNewswire RSS, the PRN firehose, a commercial feed and the
+`+19%`-to-`+41%` resolver fallback all assume there is a release to find. **His
+feed tests that against real board names**, where my own coverage sample died on
+a `429` after two requests and went into this item as UNMEASURED.
+
+**What the tracking must capture, recorded before any of it exists.**
+
+**Ticker and publication timestamp, and nothing else.** Asking for less is what
+gets it supplied daily. The timestamp because an old release must not present as
+today's catalyst, and a headline with no time cannot be placed against a session.
+If the wire name is ever needed, derive it.
+
+**The desk's own state AT THAT TIMESTAMP** — Integration's addition and the one
+that turns a tally into a diagnosis. Four outcomes, and only the first two are
+coverage:
+
+| what the desk held when his headline published | |
+| --- | --- |
+| nothing, and never found it | **coverage failure** |
+| nothing then, found it later | **latency failure** — RCON's shape: the pipeline fired at 08:04, four minutes after an 08:00 wire, and returned zero sources |
+| found it, graded it low | judgement, not coverage |
+| found it, but the board showed an older dossier | plumbing |
+
+**A gap in the feed must read as a gap, never as a clean week.** This is a manual
+feed and manual feeds thin out; that is not a criticism of him, it is what they
+do. So **what he supplied and what he supplied nothing for are recorded
+separately** — otherwise a quiet week flatters the desk, which is the
+correct-but-narrow-number failure this thread has now hit three times.
+
+**It must mean something at n=20**, not require a month before it says anything.
