@@ -796,6 +796,62 @@ re-collapse that into a boolean by picking a number — the row shows how many
 sessions behind, and the trader decides. **Two sessions behind on a name he is
 about to size is his call, not a constant in this file.**
 
+### The masked risk chip: latent today, LIVE the day the Sheet retires
+
+R&D's reading (`0d4c46b`) is structurally right: `risk.ts:173` sets
+`floatUnknown` when `structure !== null && structure.displayedFloat === null`,
+and that is **null on 249 of 249 live versions**, so `FLOAT_UNKNOWN` returns at
+`:176` and `STRUCTURE_CAUTION` at `:187` is unreachable on that path. `CAUTION`
+is 54% of dossiers.
+
+**Measured on the live desk 2026-08-25, which is the query R&D left for Design.**
+Four board rows; every one renders `DIRTY FLOAT`. So **the mask is not what he is
+seeing today** — but the reason is the finding:
+
+| Ticker | dossier class | `displayedFloat` | supply | renders |
+| --- | --- | --- | --- | --- |
+| MIMI | CAUTION | null | yes | DIRTY FLOAT |
+| **DAIC** | **CAUTION** | **null** | **no** | **DIRTY FLOAT** |
+| WNW | DIRTY_FLOAT | null | yes | DIRTY FLOAT |
+
+**DAIC is the masked case** — CAUTION, null float, no supply — and it renders
+`DIRTY FLOAT` only because `:145` also fires on **the Sheet's**
+`row.research.structure.state`, which says `DIRTY_FLOAT` while the dossier says
+`CAUTION`.
+
+> **So the defect is hidden behind the Sheet, and the Sheet is a migration
+> artefact. The day the Sheet's structure state stops arriving, every CAUTION
+> name with a null float and no supply shares drops straight through to
+> `FLOAT UNKNOWN`.** Latent now, live at retirement, and nothing about that
+> transition would announce it.
+
+**Precedence answer: `STRUCTURE CAUTION` wins.**
+
+Both readings on record are true, and the tie-break is which one *varies*.
+`FLOAT UNKNOWN` from the dossier condition is true of **every row with a
+structure** — 249 of 249. **A chip identical on every row cannot make rejection
+cheap, which is the entire job F-05 gives it.** It is the wall-of-amber failure
+the audit opened with, in one cell. `CAUTION` is a judgement about *this* name
+and it discriminates.
+
+**The general rule, and it is the one to keep:** *when two conditions both hold,
+the chip shows the one that distinguishes this row from its neighbours. An
+invariant fact belongs in the detail line, never in the row's one saturated
+element.*
+
+**Minimal fix, and it is narrower than deleting the branch.** Split the
+condition. Keep `row.research?.structure.state === 'UNKNOWN_STRUCTURE'` — the
+Sheet's, which genuinely varies. **Drop the `structure.displayedFloat === null`
+half until a float source exists**, because it is not reporting a fact about the
+stock, only that the desk has no float for anybody. That is Research's item 9
+point preserved exactly: `FLOAT UNKNOWN` is the correct answer while there is no
+float source, and it is precisely *because* it is correct for everyone that it
+cannot be a per-row chip.
+
+**Not shipped.** Sizing and precedence were what was asked. It is a real defect
+with a known trigger date rather than an urgent one, and it should land with the
+Sheet retirement it is coupled to.
+
 ### Full-depth blue sky: render the post-consolidation ceiling, put depth in text
 
 The owner chose full-depth lookback — *"as deep as you can go"* — and Research's
