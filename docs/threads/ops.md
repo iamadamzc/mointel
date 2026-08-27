@@ -1810,6 +1810,79 @@ scheduler's one-way door. Both were invisible because the thing that failed
 produced no record of having failed; RCON's 08:04 job is recorded `PARTIAL` and
 nothing reads that status as "ask again".
 
+### The model DID propose floats — 7 times — and stopped on 2026-08-20
+
+**This corrects my own 0/249, which I gave to three threads and to the trader.**
+The count was true of its window and false as the general claim I attached to it,
+which is the id-range lesson landing on me a second time in one morning.
+
+```
+json_type census, WHOLE table (574 versions, ids 1-574):
+  null      567   ids 1-574
+  integer     7   ids 72-237    <- populated
+```
+
+**All 7 sit at or below id 237. My window was ids 326-574, so it could only ever
+return zero.** "0 of 249 since 08-23" was correct. **"The field is empty
+everywhere" was not**, and I said the second thing.
+
+```
+id   ticker  float          generated_at              conf
+72   SXTC    116,027,226    2026-08-18T10:15:51Z      LOW
+85   SXTC    116,027,226    2026-08-18T13:27:19Z      LOW
+125  EVAX    241,627,342    2026-08-19T11:56:25Z      LOW
+165  BEEM     18,261,585    2026-08-19T20:15:46Z      LOW
+181  EVAX    241,627,342    2026-08-20T08:05:09Z      LOW
+200  SGLY        897,000    2026-08-20T10:05:29Z      LOW
+237  EVAX    241,627,342    2026-08-20T16:32:32Z      LOW
+```
+
+**Six of the seven cite a "held by non-affiliates" public-float disclosure** —
+F-3, ATM and prospectus supplements. **That is precisely the baby-shelf route
+Research proposed building.** It is not new capability; it is capability that
+already ran and stopped. **Find what stopped it before building it.** The
+seventh, SGLY, cites an "unverified secondary social-media claim" — a bad source
+that got through, which is its own finding.
+
+**Bracket: the last float is id 237 at `2026-08-20T16:32:32Z`. Nothing in the
+337 versions since.** Whatever changed sits between id 237 and id 238.
+
+**It also corrects an inference, not just a number.** "`FLOAT_REQUIRES_SOURCE`
+fired zero times, so the model never proposes a float" does not follow — a guard
+that never fires is equally consistent with **every proposal carrying a valid
+source**, which is what these seven are. The census establishes rarity; the
+guard's silence never could.
+
+### The board consequence: `NO FLAG FOUND` has been unreachable for a week
+
+`resolveRisk` (`lib/dashboard/risk.ts:99`) is consumed by `MomentumTable.tsx:203`
+and `DiscoveryBoard.tsx:387`. Branch order:
+
+```
+NOT_RESEARCHED -> ANALYSIS_PENDING -> ANALYSIS_FAILED -> DIRTY_FLOAT
+  -> SUPPLY_OVERHEAD -> FLOAT_UNKNOWN -> STRUCTURE_CAUTION -> STRUCTURE_CLEAN
+```
+
+`floatUnknown` is true whenever `structure !== null && structure.displayedFloat
+=== null`. **Since id 237 that is every researched row**, so `FLOAT_UNKNOWN`
+short-circuits and the two branches after it are dead — including
+`STRUCTURE_CLEAN`, label **`NO FLAG FOUND`**, the only `tone: 'pos'` outcome in
+the function.
+
+**The desk has had no way to tell him a researched name is structurally clean
+since 2026-08-20.** Every researched row returns a warn-tone flag, and a flag
+that cannot be absent carries no information.
+
+**And the name collision does the damage precisely.** `STRUCTURE_CLEAN`'s value
+reads **`row.displayedFloat`** — the Sheet float, which IS populated. So the
+branch that would have shown him a real float number is gated by **a different
+field of the same name** that is null. Two floats, one name, and the populated
+one is displayed only by the branch the empty one makes unreachable.
+
+**Not mine to fix — Design owns the surface, Research owns the collector.**
+Routed to both. Naming work is already in flight at `c61c937`.
+
+
 ## Open items
 
 **0d. A deploy that loses its driving connection leaves the desk stopped, with
