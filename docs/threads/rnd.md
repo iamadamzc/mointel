@@ -40,6 +40,7 @@ questions is a thread that has stopped working.
 | Q6 | Can the 09:25 pre-open assessment be scored against outcomes? | 2026-08-23 | proposed — *handed over from Design*, see below |
 | Q7 | Can Chop Risk, Flush Risk or Effective Float Turnover be defined well enough to act on? | 2026-08-23 | proposed — *routed here by the desk owner*, see below |
 | Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | proposed — *from the trader*, scoped below; **the feasibility blocker is answered** |
+| Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-25 | proposed — *from the trader*, scoped below; **blocked: 1 of 94 dossiers carries a float number** |
 
 **Q8 came from the trader on 2026-08-24**, in his words: *"we are using gpt,
 which models for what calls, would anthropic models be better and/or less
@@ -173,6 +174,89 @@ provider enters anywhere, that is the seam it enters through.
 
 **Nothing further needed from Research**, which is not picking up Q8 and answers
 facts through Integration only.
+
+**Q9 came from the trader on 2026-08-25**, in his words: *"perhaps there is an
+entire different way to approach this. i'm not sure if studying performance of
+these and see if their performance is in any way tied to their float/overhang
+and if a correlation can be found. perhaps related or correlated to rvol. i dont
+know."* **He is explicit that he does not know, which makes it a question rather
+than a hypothesis to confirm** — the register's preferred shape.
+
+**It is Pillar 5, and Pillar 5 is the pillar with no measurement.** Pillar 4 has
+a bounded negative on this desk. *Float under 10M* has never been tested against
+outcomes here at all, and it is the one he is being asked to change how he sees.
+
+**WHY IT ARRIVED: `CLEAN` HAS NEVER BEEN PRODUCED.** Integration reports 0 across
+1,850 archived assessments; **independently confirmed here on a different sample**
+— 350 local ticker rows give `CAUTION` 201, null 66, `UNKNOWN` 54, `DIRTY_FLOAT`
+29, **`CLEAN` 0.**
+
+**The reason is structural rather than a data accident.** `DIRTY` is provable by
+finding one thing; **`CLEAN` requires proving the absence of resale
+registrations, conversion reserves and equity lines.** A three-state label whose
+third state requires proving a negative will never reach it, and the rule *never
+promote UNKNOWN to CLEAN* is correct and seals it. This thread's own work is why
+the DIRTY side is close to universally satisfiable: the vendor float contradicts
+itself on 4 of 18 names from the same source at the same instant, and ~35% of
+researched tickers carry a reverse split. **"Materially unreliable" is true of
+nearly every name he trades.** Replacing the verdict with an overhang ratio plus
+its basis is approved and is Research's work; **Q9 is the question underneath it
+— whether the quantity predicts anything at all.**
+
+#### The feasibility answer, and it is a hard blocker
+
+**Checked before registering, because a question that cannot be started is debt
+in the same way an unclosed one is.** There is **no float or overhang column
+anywhere in `market.db`** — not in `desk_assessment_tickers`, not in the archive.
+Float exists only inside the research dossier JSON, and there it is a field
+rather than a value:
+
+| dossier path | present | carries a NUMBER |
+| --- | ---: | ---: |
+| `/structure/sharesOutstanding` | 94 | **27** |
+| `/structure/displayedFloat` | 94 | **1** |
+| `/structure/displayedFloatDate` | 94 | 0 |
+| `/structure/displayedFloatSource` | 94 | 0 |
+| `/structure/floatConfidence` | 94 | 0 |
+
+**One float number across the entire local research corpus.** So Q9 is not
+answerable today, and the reason is sharper than the caveat it arrived with:
+the caveat was *every stored float is the Sheet's vendor number*. **The stronger
+fact is that there is essentially no stored float at all.**
+
+**Stated with its own limits, per the rule that cost me a wrong count last
+night:** this is the LOCAL store, 94 versions, stale after 2026-08-18.
+Production carries more. **The shape of the finding is a schema-and-pipeline
+fact rather than a sample-size one — a field that is written but not populated
+stays unpopulated at any scale — but the 1-of-94 itself must be re-measured on
+production before it is quoted as final.**
+
+**What would unblock it,** in the order that costs least: capture `displayedFloat`
+and `sharesOutstanding` into the archive **with `float_basis` beside them** at
+assessment time, so the series accumulates going forward. Nothing recovers the
+history; **this is an observable-once field the desk has been discarding.**
+
+#### Three design commitments, fixed now rather than after the numbers arrive
+
+1. **The outcome variable is settled and the grader problem does not apply.**
+   Float and overhang are quantities, and `max_gain_pct` and the archive's
+   outcome columns are measured from the tape. **No 45%-irreproducible grader
+   sits between the variable and the answer** — which makes Q9 a cleaner
+   instrument than Q1 had, and worth saying because Q1's attenuation ceiling
+   will be the reflex comparison.
+2. **RVOL is a CONFOUND before it is a partner.** His instinct to look at RVOL
+   alongside is right and the danger is in the order. If overhang correlates
+   with RVOL and RVOL with performance, **an apparent float effect is RVOL
+   wearing a costume.** RVOL must be conditioned on, not merely reported
+   beside. This is the shape that produced the *3-of-6 versus 52%* unit error.
+3. **A null is a result here and the verdict format applies.** Pillar 5 having
+   no relationship to outcomes on this universe would be as useful as Pillar 4's
+   bounded negative, and **must be reported with its attenuation** — a vendor
+   float that contradicts itself 4 times in 18 is exactly the measurement error
+   that biases an association toward zero.
+
+**NOT STARTED. Registered, and blocked on capture rather than on the queue.**
+
 
 **Q7 was routed here by the desk owner on 2026-08-23**, in those words: *"None
 yet. This needs to go to the viscosity study."* Audit §11 item 3 asked which of
