@@ -2477,3 +2477,68 @@ and every one of those numbers is dated and citable.
 *Not built. Recorded because I nearly reported "191 excerpts state the float",
 which would have been wrong by a factor of six — 95 are the $700M threshold
 boilerplate repeated, and the distinction is the whole finding.*
+
+---
+
+**30. The overturn check: stockanalysis.com exposes no float history.** *Run for
+R&D 2026-08-27. The capture clock stands.*
+
+Probed read-only, robots-permitted (`Disallow: /e/ /p/` only). `/statistics/`
+carries a **current** Float cell and a prose change statement — *"the number of
+shares has increased by 61…"* — and nothing dated. No `Shares Outstanding
+History` page, no `shares-outstanding` path, **zero dated object arrays in the
+payload.** `/financials/?p=quarterly` renders neither Float nor Shares
+Outstanding server-side.
+
+**So option (b) does not become real and R&D's argument holds:** float moves with
+dilution, offerings, lockups and reverse splits — 35% of researched tickers carry
+one — so a current fetch attached to a past date is **the latest state leaking
+backwards, which is the `cycleAsOf` error in a new costume.**
+
+*Limit: I checked the statistics and financials pages of one ticker and the
+robots policy. I did not enumerate the site, and I stopped at five requests
+rather than characterise someone's service by exhausting it.*
+
+**R&D's two conditions, folded into the scope:** `displayedFloatSource` travels
+with every captured number or the series silently mixes `RESEARCH` and `TODAY`
+rows; and `filedShares` is worth taking now **but is the cover-page figure, not
+retroactively split-adjusted** — so it ships with its filing date and must be
+read against `split_event_ratio`. *Present is not usable.*
+
+---
+
+**31. There are TWO floats called `displayedFloat`, and Ops's 0/249 is about the
+one nobody names.** *Correcting Integration's correction, 2026-08-27.*
+
+`resolveDisplayedFloat` (`merge.ts:143`) is **Sheet-only** — `StructuralResearch.float`
+then `MomentumTicker.float`, two tabs, no dossier. Integration is right and
+R&D's dossier-first description was wrong.
+
+**But the proposed reading — *"0/249 is true of a field the board never read"* —
+is also wrong, and I checked before repeating it.** The dossier's
+`structure.displayedFloat` IS read, by a different surface:
+
+| field | resolved by | rendered by |
+| --- | --- | --- |
+| `row.displayedFloat` | `resolveDisplayedFloat`, **Sheet only** | `DiscoveryBoard.tsx:478` |
+| `structure.displayedFloat` | the **model**, from cited evidence | `AutomaticIntelligence.tsx:334`, `deskRead.ts:359`, and `risk.ts:174` |
+
+**Two different quantities under one name, on two surfaces, and the desk has been
+quoting a coverage number without saying which.** Same collision as
+`recentMajorRuns` and `split_factor` — the third instance, and the first where
+both live in the SAME product rather than in two threads' tables.
+
+**AND ONE OF THEM FEEDS A RULE THAT CANNOT DISCRIMINATE.** `risk.ts:172`:
+
+    const floatUnknown =
+      row.research?.structure.state === 'UNKNOWN_STRUCTURE' ||
+      (structure !== null && structure.displayedFloat === null);
+
+With the dossier field null on **100%** of dossiers, **the second disjunct is a
+constant** — it never distinguishes anything, and `FLOAT UNKNOWN` reaches the
+trader on every analysed name that gets that far down the chain.
+
+*Not a defect.* Item 9 established that unknown IS the correct answer while the
+desk has no float source. But a condition that cannot currently vary should say
+so, or the next reader takes `FLOAT UNKNOWN` as a judgement about a particular
+name rather than a statement about the whole desk.
