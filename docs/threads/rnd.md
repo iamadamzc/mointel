@@ -38,7 +38,7 @@ questions is a thread that has stopped working.
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | **CLOSED 2026-08-27** — the viscosity lines already answered it; the row was debt |
 | Q2 | Can any tape-character measure be defined at the grain he trades, and does it separate outcomes? | 2026-08-23 | parked — **Q7 merged in**; blocked on sub-minute capture |
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | parked — blocked on tier A, the same blocker as Q1's second half |
-| Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | parked — scoped and ready; one open item, the incumbent's output multiple |
+| Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | parked — **output multiple measured 2026-08-27 for interpretation (0.289 vs Anthropic 0.282)**; discovery and resolver still unmeasured |
 | Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-27 | parked — blocked on capture; float populated on ~1% of dossiers |
 
 #### The closing pass, 2026-08-27
@@ -618,6 +618,52 @@ it states n beside it. **(a)'s clock is unaffected and (c) does not shorten it.*
 neither is wrong.** Mention-versus-number applies to both — including, as
 Research noted about its own count, to itself.
 
+
+
+#### The incumbent's output multiple, measured 2026-08-27 — Q8's open item, partly closed
+
+**Q8's one remaining item was the incumbent's output multiple, without which the
+saving could not be quoted even though the shape could.** It turns out to be
+recorded already: `research_analysis_versions.metadata.metrics` carries
+`inputTokens`, `outputTokens` and `cachedInputTokens` **on all 94 local
+versions.** Nobody had to be asked.
+
+    input      1,070,536
+    output       309,897
+    cached-in    135,172   (12.6% of input)
+
+    INCUMBENT OUTPUT MULTIPLE = 0.289 output per input
+
+    gpt-5.6-terra   n=80   ratio 0.283
+    gpt-5.6-sol     n=14   ratio 0.305
+
+**And the Anthropic replay arm, on the same task, is 0.282** — 2,792,169 output
+against 9,905,680 input in `data/replay-full.json`.
+
+> **0.289 against 0.282. The output multiple is not a differentiator.**
+
+**That materially simplifies Q8**: if the two providers emit near-identical
+output per unit of input on this work, **the comparison collapses onto price per
+token and retrieval volume**, and the verbosity worry that motivated the item
+does not survive its own measurement. **The 12.6% cached share independently
+matches Research's 10.6% overall**, which is a second reason to trust the
+accounting rather than only the arithmetic.
+
+**SCOPE, STATED BEFORE ANYONE GENERALISES IT — INCLUDING ME.** This is the
+**INTERPRETATION stage only**, which Q8 already established is **14% of the
+bill** against DISCOVERY's 56% and RESOLVER's 28%. **I have measured the output
+multiple on the smallest of the three stages.** Discovery and resolver ratios
+are unknown, live outside this table, and are where the cost actually is.
+
+**Naming that here because it is exactly today's recurring fault** — a component
+measured and reported as the system, four times over — **and this result is
+unusually easy to over-read, since 0.289-against-0.282 is a tidy number that
+invites a conclusion about "the pipeline".** It is a conclusion about one
+fourteenth of it.
+
+**Q8 status: the open item is one third closed.** What remains is the discovery
+and resolver output ratios; Research holds the by-stage input figures and may
+hold output alongside them. **That is one question to Research, not a build.**
 
 
 #### Q6 re-parked the same day it was promoted — 2026-08-27
