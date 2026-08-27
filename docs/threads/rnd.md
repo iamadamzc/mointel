@@ -272,6 +272,63 @@ and `sharesOutstanding` into the archive **with `float_basis` beside them** at
 assessment time, so the series accumulates going forward. Nothing recovers the
 history; **this is an observable-once field the desk has been discarding.**
 
+
+#### Which float Q9 needs — answered 2026-08-27
+
+Research's fork: does Q9 need **(a)** what the trader saw, observable-once, or
+**(b)** what the float was, re-fetchable from the vendor — with the urgency
+argument surviving only under (a).
+
+**Neither as posed, because the fork rests on a count of one of two sources.**
+
+**1. The board's float has TWO inputs and the live-store count measured one.**
+`resolveDisplayedFloat` in [../../lib/dashboard/merge.ts](../../lib/dashboard/merge.ts)
+takes the dossier's `displayedFloat` when present and **falls back to the
+Sheet's own float column**, recording which in `displayedFloatSource` —
+`RESEARCH` or `TODAY`. Ops measured the dossier field: 0 of 249. **That the
+`RESEARCH` path is empty does not mean the trader saw nothing; it means the
+board has been falling through to the Sheet.** Same shape as measuring a regex
+that never runs, and as measuring a checkout: **the component was counted and
+reported as the system.**
+
+**2. The Sheet's float is the observable-once field, and it is being discarded
+every day.** It is read live at [../../lib/data/rows.ts](../../lib/data/rows.ts)
+— column 8, with `floatSourceDate` 9, `floatSourceUrl` 10 and `floatQuality` 34
+beside it — and **nothing persists it.** `desk_assessment_tickers` writes
+`structure`, the classification label, and no float number at all. **The Sheet
+already carries the basis the capture would need and the desk reads past it.**
+
+**3. (b) is not re-fetchable in the sense the fork assumes.** A fetch today
+returns **today's** float, not the float on the date of the move. Float moves
+with dilution, offerings, lockups and reverse splits, and ~35% of researched
+tickers carry a reverse split — so a re-fetched number attached to a past date
+is the latest state leaking backwards, which is exactly what `cycleAsOf` exists
+to prevent. **A vendor endpoint being reachable is not the same as a history
+being reachable.**
+
+**THE ANSWER IS (a), and the daily clock is real — but for a sharper reason than
+"the trader saw it."** Q9 needs the float that was true **on the date of the
+move**. **A daily capture IS a point-in-time series; a re-fetch can never
+reconstruct one.** Even a perfectly re-fetchable vendor gives one column of
+today's values against outcomes spread over months.
+
+**The one check that would change this answer**, and it is cheap: **does
+`stockanalysis.com` expose a HISTORICAL float series** rather than a current
+figure? If it does, (b) becomes real, the clock stops, and capture drops down
+the queue. If it does not — the common case — every day without capture is a
+day of the independent variable that no later work recovers.
+
+**Capture `displayedFloatSource` alongside the number, not optionally.** Two
+vendors in one column with no basis is the `float > SO` problem rebuilt from
+scratch, and the field already exists.
+
+**And `filedShares` at 74.7% of live versions is worth taking now.** It is the
+shares-outstanding half of the denominator series, already present, no fetch
+required — but it is the SEC cover-page figure, **not retroactively split
+adjusted**, so it must be stored with its filing date and read against
+`split_event_ratio`. Present is not the same as usable.
+
+
 #### Three design commitments, fixed now rather than after the numbers arrive
 
 1. **The outcome variable is settled and the grader problem does not apply.**
