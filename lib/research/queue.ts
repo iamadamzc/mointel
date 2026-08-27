@@ -316,3 +316,73 @@ export function timeToIntelligence(job: {
     totalMs: delta(job.top12At, job.acceptedAt),
   };
 }
+
+/**
+ * Retires jobs left behind the one-way door.
+ *
+ * The worker claims for exactly one trading date — `MAX(trading_date)` from
+ * `ticker_session` — and that value only ever moves forward. A job for an
+ * earlier date can never be claimed again: no sweep reaches it, no retry
+ * touches it, and it produces no error. `2906a59` stopped new ones being
+ * created by having the recap queue for the session it PREPARES; these are the
+ * ones created before that.
+ *
+ * `STALE` rather than `FAILED`, and rather than deleting the row. They did not
+ * fail — nothing ever ran them — and the distinction is the record. `STALE` is
+ * outside `LIVE_STATUSES`, outside the `stalledJobs` count, and outside the
+ * partial unique index on `(ticker, trading_date)`, so a retired job neither
+ * shows as work nor blocks the same ticker being queued again.
+ *
+ * THE RETIREMENT IS ITS OWN RECORD, which is the point. `stalledJobs` going
+ * 16 → 0 because a population was retired reads identically to it going to zero
+ * because the fix worked, and the enqueue fix has its own positive evidence
+ * (jobs queued forward, nothing behind the door). So each row keeps its reason
+ * and the instant it was retired: the step in the series is explainable from
+ * the data rather than from someone remembering.
+ *
+ * `<` rather than `<>`, for the same reason `stalledJobs` uses it: the recap now
+ * queues for TOMORROW, and tomorrow's work is not stranded — it is waiting.
+ */
+export interface StrandedRetirement {
+  /** Jobs moved to STALE by this call. Zero on every run after the first. */
+  retired: number;
+  tickers: string[];
+  /** Jobs strictly before this date were considered. */
+  before: string;
+  retiredAt: string;
+}
+
+export function retireStrandedJobs(
+  db: MarketDatabase,
+  options: { before: string; now?: Date },
+): StrandedRetirement {
+  const retiredAt = (options.now ?? new Date()).toISOString();
+  const reason = `retired: stranded before the enqueue fix; unclaimable behind trading_date ${options.before}`;
+
+  const run = db.transaction((): StrandedRetirement => {
+    const rows = db
+      .prepare(
+        `SELECT id, ticker FROM research_jobs
+          WHERE trading_date < ?
+            AND status IN ('QUEUED', 'COLLECTING', 'SOURCES_READY', 'ANALYZING')
+          ORDER BY id ASC`,
+      )
+      .all(options.before) as Array<{ id: number; ticker: string }>;
+
+    const update = db.prepare(
+      `UPDATE research_jobs
+          SET status = 'STALE', error = ?, completed_at = ?
+        WHERE id = ?`,
+    );
+    for (const row of rows) update.run(reason, retiredAt, row.id);
+
+    return {
+      retired: rows.length,
+      tickers: rows.map((row) => row.ticker),
+      before: options.before,
+      retiredAt,
+    };
+  });
+
+  return run();
+}

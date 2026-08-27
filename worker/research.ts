@@ -33,7 +33,7 @@ import { NoopInterpreter } from '../lib/research/interpret/interpreter';
 import { loadSheetPriors } from '../lib/research/merge/sheetPrior';
 import { interpretTicker } from '../lib/research/interpret/pipeline';
 import { computeEvidenceFingerprint } from '../lib/research/fingerprint';
-import { queueDiscoveryResearch, timeToIntelligence } from '../lib/research/queue';
+import { queueDiscoveryResearch, retireStrandedJobs, timeToIntelligence } from '../lib/research/queue';
 import { queueResolverRecovery } from '../lib/research/recovery';
 import { RESOLVER_VERSION } from '../lib/research/catalyst/collector';
 import {
@@ -140,6 +140,29 @@ async function main(): Promise<void> {
     for (const job of orphans) {
       requeueJobForRetry(db, job.id, 'worker restarted mid-job');
       log(`[research] recovered orphaned job ${job.ticker} (${job.status})`);
+    }
+  }
+
+  /*
+   * And retire what recovery cannot reach.
+   *
+   * `readOrphanedJobs` requeues claimed-and-abandoned work for TODAY. Anything
+   * for an earlier date is behind the one-way door -- the claim filter is a
+   * single trading date that only moves forward -- so it will never run, never
+   * error, and never leave. `2906a59` stopped new ones being created; this
+   * clears the ones that predate it.
+   *
+   * At boot rather than on a schedule, because it is idempotent and the second
+   * run retires nothing. Ordering matters and is safe: recovery works on
+   * `= bootDate` and this works on `< bootDate`, so they cannot contend.
+   */
+  if (bootDate) {
+    const retirement = retireStrandedJobs(db, { before: bootDate });
+    if (retirement.retired > 0) {
+      log(
+        `[research] retired ${retirement.retired} stranded job(s) behind ${bootDate}: ` +
+          retirement.tickers.join(', '),
+      );
     }
   }
 
