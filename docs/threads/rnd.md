@@ -661,9 +661,36 @@ unusually easy to over-read, since 0.289-against-0.282 is a tidy number that
 invites a conclusion about "the pipeline".** It is a conclusion about one
 fourteenth of it.
 
-**Q8 status: the open item is one third closed.** What remains is the discovery
-and resolver output ratios; Research holds the by-stage input figures and may
-hold output alongside them. **That is one question to Research, not a build.**
+**Q8 status: the open item is one third closed** — and the remaining two thirds
+may not be closable at all.
+
+**Searched this store for discovery and resolver token accounting. There is
+none.** Every table, every column: the only token-shaped fields are
+`desk_assessments.model_calls`, which is 0 on every row because the assessment
+scheduler makes no model calls, and `review_tokens.token_hash`, which is auth
+and unrelated. **The interpretation stage is the only one whose usage is
+persisted**, and it is persisted because it happens to ride along in a version's
+`metadata.metrics`.
+
+**So Research's by-stage input figures — 216 discovery calls at 7,862,324
+tokens, resolver 181 at 3,853,202 — did not come from the store.** They came
+from instrumentation at run time. **Which makes the real question sharper than
+"does Research hold the output figures":**
+
+> **If discovery and resolver output was not captured while those runs
+> happened, it is gone. It is observable-once, and nothing in the store
+> reconstructs it.**
+
+**Same class as the Sheet float**, and arriving at the same conclusion from the
+opposite direction: **the field that matters is the one nobody persisted.**
+
+**Two futures and they need different work.** If Research logged output beside
+input, Q8 closes on a query. If it did not, **86% of the bill has no output
+history and never will** — and Q8's comparison has to be designed around
+instrumenting the two big stages going forward, which is a build with a clock on
+it rather than an analysis. **Knowing which is the cheapest thing left in this
+question.**
+
 
 
 #### Q6 re-parked the same day it was promoted — 2026-08-27
