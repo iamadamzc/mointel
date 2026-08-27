@@ -3014,6 +3014,18 @@ SELECT COALESCE(json_type(dossier,'$.structure.displayedFloat'),'(absent)'), COU
   FROM research_analysis_versions WHERE generated_at >= ? GROUP BY 1;
 ```
 
+**Qualify the 0/249 whenever it is quoted: the field has no reader on the
+display path.** Verified at `lib/dashboard/merge.ts:143` — `resolveDisplayedFloat`
+has exactly two branches, `record.float.value` (source `RESEARCH`) and
+`research.float.value` (source `TODAY`), and **neither reads
+`dossier.structure.displayedFloat`**. Both are Sheet-parsed: `mapResearchRow` and
+`mapTodayRow` in `lib/data/rows.ts` map spreadsheet rows, warning `"TODAY row N
+skipped"` / `"RESEARCH row N skipped"`. **So the trader saw Sheet floats
+throughout and the board was never blank.** The zero is true of an unread field,
+which is a different claim from "the desk has no float" — and the interesting one
+underneath it is that **the desks float comes from a sheet he maintains, not
+from its own analysis.**
+
 `null -> 249` says the field is explicitly null everywhere. `(absent) -> n`
 would say something completely different. **A zero on a field another thread is
 quoting deserves three confirmations, not one** — the third here was finding the
