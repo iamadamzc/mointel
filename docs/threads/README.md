@@ -53,6 +53,29 @@ false safety claim sitting in a charter, and a hazard spanning a systemd unit
 and a prune script. Splitting work created a gap between the pieces, and that
 gap needed an owner.
 
+## Session capacity, and when to retire
+
+**Ops's correction, 2026-08-27, when a capacity poll nearly retired sessions
+that had no need to go.** Long sessions are **summarised automatically** by the
+harness and continue — Ops was summarised mid-morning and ran a full incident
+afterwards. So **volume is not a capacity signal, and heaviest is not closest
+to retiring.** A needless retirement costs a context rebuild that summarisation
+would have preserved for free.
+
+The standing requirement is instead: **keep your documents current enough that
+a summarisation — or a sudden death — costs only the conversation.** Ops's
+form of the test: *nothing of today lives only in this session's head.* If
+something does, land it in your charter now; that is the whole protocol short
+of retiring.
+
+Retire only on a hard signal (an actual capacity warning, not a feeling of
+volume) or on the trader's word — and then by the preservation protocol:
+stop new work; rewrite your charter's live-state for the successor; sweep the
+day's corrections into the documents they correct; write the successor's
+opening message (title the session, addresses from `list_sessions`, read the
+charter completely); commit by explicit path, push, ping Integration with the
+sha, stop. Integration cross-checks the handover against the bus's record.
+
 ## Sharing one working tree
 
 Every thread works in `A:\mointel`. Rules, in order of how much they matter:
