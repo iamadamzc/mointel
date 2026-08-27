@@ -471,9 +471,42 @@ that does not require the literal word:
     distinct tickers with a float    9
     full triple present              7  ->  6 verified, 1 genuine mismatch
 
-**Nine tickers, not five.** The earlier figure was a floor produced by a broken
-parser and reported as a property of the corpus — **the third time in two days
-that a measurement of mine described my instrument rather than the world.**
+**Nine tickers, not five** — and then **seven**, which is the finding.
+
+**THE ONE "GENUINE MISMATCH" IN THAT TABLE WAS ALSO MINE.** GNPX flagged at
+78.6%. The filing is exact: 1,252,551 x $42.00 = $52,607,142, the stated value
+to the dollar. **My price pattern matched a `$9.00` elsewhere in the document**,
+because the share-noun fix had widened the search to the whole excerpt —
+**the repair broke a locality constraint the narrower version had been enforcing
+by accident.**
+
+Rescoping shows the fields have **different locality**, which is the actual
+design point: *held by non-affiliates* is self-labelling and safe to find
+anywhere, while a **price is only meaningful inside the calculation it belongs
+to.** Per-field scoping gives **7 stated, 1 derived, 7 distinct tickers, 4
+triples, 0 mismatches** — and reveals that **3 of the previous run's 4 "derived"
+floats were computed against prices from unrelated sentences.** Three fabricated
+numbers that would have entered a validation set as data.
+
+**Three measurements of the same 24 excerpts, three answers:**
+
+    ~5 tickers, 1 mismatch    share-noun pattern too strict
+     9 tickers, 1 mismatch    fixed, but price searched document-wide
+     7 tickers, 0 mismatches  per-field locality
+
+**The count is parser-dependent across the whole plausible range, so quoting any
+one figure without its parser repeats the error three times over.** What is
+stable and worth carrying: **floats ARE stated verbatim in these filings**, the
+product check works **once its operands are correctly scoped**, and coverage is
+**single-digit tickers** on this store.
+
+**STOP TUNING AND WRITE TESTS.** Every iteration here fixed a hand-checked case
+and introduced a new one. **Three of my last four errors were an output read
+without its input** — the store comparison, the display path, and this extractor
+twice. A regex refined against examples I chose is an instrument calibrated on
+its own agreement; the fixture set is what makes the next number mean anything.
+**The extraction is not blocked on data, it is blocked on tests**, and that is
+the honest state to hand over.
 
 **Three extraction traps, all silent, all producing a plausible number:**
 
@@ -492,8 +525,9 @@ yield no dollar value at all. **Carrying the words and yielding a defensible
 number are different counts** — the same split that made `displayedFloat`'s
 1-of-94 visible, and the same one behind Ops's *16 sub-keys present on all 249*.
 
-**So (c) is a validation set of nine tickers on this store** — not twenty, and
-not the five I first reported. A **measured** vendor error still beats Q1's
+**So (c) is a validation set of single-digit tickers on this store — most
+defensibly seven** — not twenty, not the five I first reported, and not the nine
+I reported second. A **measured** vendor error still beats Q1's
 assumed 15%, and nine is thin rather than negligible; any attenuation drawn from
 it states n beside it. **(a)'s clock is unaffected and (c) does not shorten it.**
 
