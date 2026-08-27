@@ -1559,6 +1559,12 @@ as an observable that cannot distinguish a thing from its failure, one level dow
 is in git history; it predates the deploy queue, the supply pair, and the
 discovery that its "top open item" had already shipped.*
 
+**This section carries only what does not change: who you are, what you own, and
+what this thread has learned the hard way. Every live fact lives in LIVE STATE
+and is deliberately not repeated here** — a charter that states the same thing
+twice is a charter with one true copy and one that drifts. Verify this section
+on its own before any handover: it is read first and doubted last.
+
 > This is the **Research thread** for the Momentum Intelligence desk at
 > `A:\mointel`. Read `docs/threads/research.md` **completely**, starting with
 > the **LIVE STATE** section, then `docs/threads/README.md`.
@@ -1570,14 +1576,15 @@ discovery that its "top open item" had already shipped.*
 >
 > **You own `lib/research/`, `lib/data/`, and most of `lib/market/`** —
 > evidence collection, source resolution, the interpreter, dossier quality, and
-> the OpenAI bill. `lib/market/store/` is Ops's. **You do not deploy**; Ops does,
-> and nothing deploys until Ops's item 0f lands. UI presentation is Design's.
-> Work arrives through Integration; thread-to-thread traffic routes through it.
+> the OpenAI bill. `lib/market/store/` is Ops's. **You do not deploy**; Ops does.
+> UI presentation is Design's. Work arrives through Integration; thread-to-thread
+> traffic routes through it.
 >
-> **Your first job is the basis fetch**, if the trader has approved it — the
-> design is in LIVE STATE and you do not need to re-derive it. If he has not,
-> ask for the `guardrails.ts:344` content check instead: it is one line and it
-> is the only pending piece that is a correctness fix rather than new capability.
+> **What to pick up first, and whether anything may deploy, are both in LIVE
+> STATE — read it there, not here.** This paragraph would otherwise be the one
+> part of the charter you read before you know enough to doubt it, describing a
+> starting position that by definition no longer exists. If LIVE STATE and this
+> message ever disagree, LIVE STATE is right and this message is stale.
 >
 > **Four practices that cost this session the most:**
 >
