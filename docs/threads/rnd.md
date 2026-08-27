@@ -32,15 +32,66 @@ questions is a thread that has stopped working.
 
 | # | Question | Opened | Status |
 | --- | --- | --- | --- |
-| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — first half has a verdict (`PILLAR_4_STRONG_FORM_EXCLUDED`, below); second half is blocked on tier A |
-| Q2 | What share of qualifying movers ever produce a tradeable pullback at all? | 2026-08-23 | proposed |
-| Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | proposed |
-| Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | dormant — see closed lines below |
-| Q5 | When does a board name's move happen, relative to when the desk puts it on the board? | 2026-08-23 | proposed — behind Q1, see the ordering note |
-| Q6 | Can the 09:25 pre-open assessment be scored against outcomes? | 2026-08-23 | proposed — *handed over from Design*, see below |
-| Q7 | Can Chop Risk, Flush Risk or Effective Float Turnover be defined well enough to act on? | 2026-08-23 | proposed — *routed here by the desk owner*, see below |
-| Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | proposed — *from the trader*, scoped below; **the feasibility blocker is answered** |
-| Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-27 | proposed — *from the trader*, scoped below; **blocked: float populated on ~1% of dossiers, 08-21 snapshot; live count queued** |
+| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — first half closed (`PILLAR_4_STRONG_FORM_EXCLUDED`); second half waits on tier A |
+| Q6 | Can the 09:25 pre-open assessment be scored against outcomes? | 2026-08-23 | **ACTIVE** — promoted 2026-08-27; runnable on the archive as it stands, no new capture |
+| Q5 | When does a board name's move happen, relative to when the desk boards it? | 2026-08-23 | **CLOSED 2026-08-27** — `BOARD_IS_LATE_TO_THE_MOVE`, below |
+| Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | **CLOSED 2026-08-27** — the viscosity lines already answered it; the row was debt |
+| Q2 | Can any tape-character measure be defined at the grain he trades, and does it separate outcomes? | 2026-08-23 | parked — **Q7 merged in**; blocked on sub-minute capture |
+| Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | parked — blocked on tier A, the same blocker as Q1's second half |
+| Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | parked — scoped and ready; one open item, the incumbent's output multiple |
+| Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-27 | parked — blocked on capture; float populated on ~1% of dossiers |
+
+#### The closing pass, 2026-08-27
+
+**Run at the trader's instruction.** Nine open questions against a two-active
+cap is the diffusion the cap exists to prevent, and I had let it accumulate
+while reporting on it.
+
+**Two closed, two merged into one, two active, four parked with the blocker
+named on each.** A parked question states what would unblock it, so the queue is
+a list of conditions rather than a list of intentions.
+
+**Q5 CLOSED — `BOARD_IS_LATE_TO_THE_MOVE`.** Measured on 306 symbol-days
+carrying both a first-board-entry timestamp and a session peak:
+
+    peak AFTER the desk boarded it        92   30.1%
+    peak BEFORE or AT boarding           214   69.9%
+    minutes boarding -> peak      p10 -355   median -43   p90 +246
+    among 50%+ movers (n=95)   peak after boarding 37   38.9%
+
+**Seven of ten board names had already topped out when the desk surfaced them,
+and the median name peaked 43 minutes before it appeared.** Among the movers it
+is six in ten. **This is a third instrument agreeing with two already recorded**
+— 32% of board symbol-days are `BACKSIDE` at surfacing, and 44 of 95 movers
+peaked before 09:30.
+
+*What would overturn it:* a boarding timestamp that is not first-entry, a
+population beyond the top-25-by-RVOL board, or a peak definition narrower than
+the full 04:00–20:00 session. *What it does not say:* nothing here is about
+names that never reached the board — that is tier A, and it is why **Q3 cannot
+be answered by widening this one.**
+
+**Q4 CLOSED.** Its substance was already settled in the closed viscosity lines
+below and the row had been carrying a pointer to its own answer since 08-19.
+**A question whose verdict is recorded elsewhere is not dormant, it is closed**,
+and leaving it open cost a register slot for eight days.
+
+**Q7 MERGED INTO Q2.** Chop Risk, Flush Risk and Effective Float Turnover are
+three instances of one question — *can a tape-character measure be defined at
+seconds-and-print grain and shown to separate outcomes* — and they share Q2's
+blocker exactly. **Two rows for one blocker is the diffusion in miniature.**
+Design is unblocked either way and none of the four concepts takes a Phase 2
+column.
+
+**Q6 PROMOTED.** The only open question answerable with the archive as it stands
+— assessments are captured per checkpoint and outcomes are measured from the
+tape, so no new capture and no vendor gates it. It takes the slot Q5 vacated.
+
+**Q1 STAYS ACTIVE while blocked**, deliberately: its first half is this thread's
+main result and its second half becomes live the moment tier A exists. **A
+blocked anchor is worth a slot; a blocked question with no result behind it is
+not**, which is the distinction that sent Q3 and Q9 to the parked list instead.
+
 
 **Q8 came from the trader on 2026-08-24**, in his words: *"we are using gpt,
 which models for what calls, would anthropic models be better and/or less
