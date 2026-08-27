@@ -2390,6 +2390,38 @@ write.** A checkpoint that skipped because the Sheet was slow would lose the
 whole row to save one field — and a null float must be distinguishable from *"we
 did not ask"*, or the series records absence as a value.
 
+### R&D's as-of-instant requirement, and what it exposes
+
+**`float_basis` must record the SOURCE and the CAPTURE INSTANT, not the source
+alone** — R&D's `float > SO` finding was valid only because both numbers came off
+one panel at one moment, and a float and a share count read minutes apart on a
+fast mover are not a ratio.
+
+**Adding a column does not satisfy it, and that is the finding.** In the design
+above the two halves are **asynchronous by construction**: the float comes from a
+live Sheet read at checkpoint, the share count from `dossier.filedShares`,
+written whenever that analysis last ran — **possibly days earlier.** They cannot
+be made simultaneous, so the requirement cannot be met by capturing harder.
+
+**What CAN be met is making the skew visible rather than hidden.** Three
+instants, and conflating any two is the error:
+
+| | |
+| --- | --- |
+| the float's own as-of | `StructuralResearch.floatSourceDate` — when the vendor computed it |
+| the share count's own as-of | `filedShares.asOf` — the filing cover-page date |
+| **the capture instant** | when the DESK read each — the assessment's `started_at` for the float, the version's `generated_at` for the shares |
+
+**So the basis carries both capture instants and a consumer computes the skew.**
+A ratio whose halves were observed four days apart is still recordable; what must
+never happen is it reading identically to one observed at a single instant.
+*Record the working, and let the reader judge what it is worth.*
+
+*Most of the plumbing exists: `desk_assessment_tickers` already carries
+`price_at` per ticker and `desk_assessments` carries `started_at`. Only the
+float's own read instant is new, and it is one value per checkpoint rather than
+per ticker.*
+
 **R&D's observable-once argument holds, with one qualifier worth having.** The
 Sheet is overwritten by the ChatGPT tasks and keeps no history, so **what the
 board displayed on a given day is genuinely unrecoverable.** But
