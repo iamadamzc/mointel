@@ -390,6 +390,59 @@ adjusted**, so it must be stored with its filing date and read against
 `split_event_ratio`. Present is not the same as usable.
 
 
+
+#### (c) issuer-stated float: measured before extracting. 2026-08-27
+
+Assigned to this thread as Q9's validation instrument. **Measured on the local
+store first, and the measurement changes the design.** 24 excerpts over 17
+tickers mention *public float* or *aggregate market value* here (Research counts
+29 over 20 on its own store; parallel runs, so the sets differ).
+
+**THE RELIABLE DERIVATION IS `value / price`, NOT THE STATED SHARE COUNT.** The
+baby-shelf sentence names up to four numbers and the obvious one is wrong.
+NWTG's S-3 reads: *aggregate market value ... held by non-affiliates was
+**$2,542,600** based on **1,459,587** shares of common stock outstanding, of
+which **758,985** shares were held by non-affiliates ... at **$3.35** per share.*
+
+**A regex taking the share count after *based on* gets 1,459,587 — shares
+OUTSTANDING, 1.92x the float — and it is silently plausible.** It also errs in
+the same direction as the stale-filed-shares defect: **overstating the
+denominator, which makes every ratio built on it look safer than it is.**
+
+**The check that catches it is arithmetic the filing supplies itself:**
+
+    float_shares x price == public_float_value    (within rounding)
+
+MNDR's F-3 fails it — 4,072,128 x $1.131 = $4,605,577 against a stated
+$3,761,845, **22.4% out**. Inverting instead gives 3,761,845 / 1.131 =
+**3,326,123**, which is **exactly the first value in Research's MNDR series.**
+Independent confirmation that Research derived its share counts correctly, and I
+had been about to ask whether dollar values had been read as counts — **the
+arithmetic answered it before the question was worth sending.**
+
+**Three extraction traps, all silent, all producing a plausible number:**
+
+1. **Shares outstanding read as float shares** — MNDR, NWTG. Caught by the
+   product check.
+2. **The threshold read as the value** — TDTH returns exactly `$75,000,000`,
+   which is the baby-shelf ceiling in *so long as our Public Float remains below
+   $75,000,000*, not a measurement of anything.
+3. **Truncated numerals** — AHG returns `$277`, which is a fragment. A float of
+   $277 is refuted by inspection, but only if someone inspects.
+
+**COVERAGE IS THINNER THAN THE MENTION COUNT, WHICH IS THE THIRD TIME THIS
+DISTINCTION HAS MATTERED HERE.** Of 24 excerpts: 3 yield a fully verified
+triple, ~5 carry both a value and a price and so can be derived and checked, 12
+yield no dollar value at all. **Carrying the words and yielding a defensible
+number are different counts** — the same split that made `displayedFloat`'s
+1-of-94 visible, and the same one behind Ops's *16 sub-keys present on all 249*.
+
+**So (c) is a validation set of roughly five tickers, not twenty.** That is
+still worth having — a **measured** vendor error beats Q1's assumed 15% — but it
+is too thin to carry a correction on its own, and any attenuation estimate drawn
+from it must state n. **(a)'s clock is unaffected and (c) does not shorten it.**
+
+
 #### Three design commitments, fixed now rather than after the numbers arrive
 
 1. **The outcome variable is settled and the grader problem does not apply.**
