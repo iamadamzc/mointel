@@ -2609,3 +2609,199 @@ trader on every analysed name that gets that far down the chain.
 desk has no float source. But a condition that cannot currently vary should say
 so, or the next reader takes `FLOAT UNKNOWN` as a judgement about a particular
 name rather than a statement about the whole desk.
+
+---
+
+**32. The float route never stopped, because it never worked.** *Investigated
+2026-08-27 on Ops's instruction to find what broke it before rebuilding it. The
+instruction was right and the hypothesis inside it was wrong.*
+
+Ops found 7 floats in `research_analysis_versions`, all at ids 72–237, none since
+2026-08-20, and bracketed the cause: *"whatever changed sits between id 237 and
+id 238."* Three measurements say nothing changed.
+
+**The drought predates every candidate change.**
+
+| | |
+| --- | --- |
+| last float | id 237, `2026-08-20T16:32:32Z` |
+| versions after it, in snapshot | 88, across **76 distinct tickers**, zero floats |
+| ...before the earliest 08-21 commit was AUTHORED | **29, across 29 distinct tickers** |
+| commits on 2026-08-20, all refs | **zero** |
+
+`lib/research/interpret/` — the only thing that emits a float — has no commit
+between 08-19 and 08-23. The four 08-21 resolver commits are innocent on
+inspection too: `domainPolicy` blocks only `example.com`, and
+`resolverSearchContext` ships defaulting to null.
+
+**The same evidence produced a float and then did not.** BEEM is the control:
+
+    165  2026-08-19T20:15Z  float 18,261,585   cites 12328, 12329
+    178  2026-08-20T08:01Z  float NULL         cites 12328, 12329
+
+Identical cited sources, both `active=1`, both excerpts containing "held by
+non-affiliates". SGLY does the same inside one day. **You cannot bracket a coin
+flip.**
+
+**The evidence was always there, at twenty times the scale.** 188 active
+`research_sources` whose excerpt states a public float, across **77 of the 231
+researched tickers**. The model found four. A ~5% hit rate against evidence
+already bought and stored — and 0-for-249 is what a 5% flip looks like, which is
+why the bracket had nothing to find.
+
+### Deterministic extraction gets 19 of 77, and widening it is a correctness loss
+
+The literal pattern — no arithmetic, no division — yields a stated share count
+for **19 tickers** with no paid call and no fetch. Widening it to bare "ordinary
+shares" / "common shares" lifts that to 31 **and is wrong on 8 of the 19 it
+overlaps**, always larger, because the gap clause bridges *"based on N shares
+outstanding, of which M … held by non-affiliates"* and captures N:
+
+| ticker | strict | widened | ratio |
+| --- | --- | --- | --- |
+| AIRE | 35,533,025 | 69,449,346 | 1.955 |
+| ODYS | 8,659,280 | 16,357,327 | 1.889 |
+| INDP | 5,757,149 | 8,258,597 | 1.434 |
+| MNDR | 3,326,123 | 4,072,128 | 1.224 |
+
+plus VSME, MYSZ, IMNN, GNPX. **This is R&D's own documented "based on" trap
+(1.92× on NWTG) arriving by regex instead of by model.** GNPX errs by 0.1% and
+looks correct; AIRE by 95%. **No magnitude check separates them** — a spot-check
+on a low-affiliate name would have cleared the pattern that fails on 8 of 19.
+The twelve extra tickers are **unverifiable by construction**: they are exactly
+the ones with no strict match to disagree with.
+
+### Two corrections taken
+
+**Mine:** *"`FLOAT_REQUIRES_SOURCE` fired zero times, therefore the model never
+proposes a float"* does not follow. A guard that never fires is equally
+consistent with every proposal carrying a valid source — which is what these
+seven are. Inferring behaviour from the silence of a check is the same error as
+reading a constant as health.
+
+**And `guardrails.ts:344` is a defect:** `Boolean(structure.displayedFloatSource)`
+tests that the model wrote *something* in the source field, not that what it
+wrote is a source. SGLY's string was *"Unverified secondary social-media claim;
+not reconciled to SEC-reported outstanding shares."* **The model confessed, in
+the field, that it had no source, and the guard read the confession as one.**
+
+**The board consequence is worse than "since 08-20".** `displayedFloat` was
+non-null on **7 of 574 production versions — 1.2%** — so `FLOAT_UNKNOWN` has
+short-circuited `STRUCTURE_CLEAN` since the first day. **`NO FLAG FOUND` has
+never been reachable in practice.** 08-20 is when the last 1% went.
+
+---
+
+**33. Writing the confirming test produced the disconfirming result. Three times
+in one week.** *2026-08-27.*
+
+The re-trigger fix (item 26) was scoped, recommended and approved on the premise
+that **`evaluateRetry` already bounded the re-ask** because it gates on the
+evidence fingerprint. It does not. `evaluateRetry` reads `research_retry_state`,
+which `nextRetryState` writes **on failure**. A job that finishes and produces an
+UNKNOWN dossier has not failed, records no state, and arrives as *"no prior
+failure", allow*. **It is a failure policy, not a re-ask policy**, and the board
+loop runs every 5s.
+
+The premise passed through the scoping, into Integration's recommendation, and
+out to the trader. **No step in that chain was where it could be caught** — a
+premise only fails when something executes against it.
+
+### The obvious bound was the same bug in the fix's clothes
+
+Skip while the evidence fingerprint has not moved. Written, tested, and measured
+as cutting the freed population from 46 ticker-sessions to 4 — which looked like
+a tight bound and was **the freeze reporting itself as success.**
+`collectCatalystEvidence` runs *inside job processing*, so a name with no job
+collects nothing, its fingerprint can never move, and it never earns a job. **The
+32 sessions it "bounded" were 32 names nothing was collecting for.** Thrown away.
+
+**What shipped is a clock** (`4ac30b5`): a name already holding a dossier waits
+the collector's own unresolved discovery interval, passed from config so the two
+cannot drift. Below it the collector refuses to pay for discovery anyway, so
+every re-ask is a pass that could learn something. **Model spend needs no bound
+at the queue: `interpretTicker` returns `REUSED_UNCHANGED` on an unmoved
+fingerprint without building a bundle or making a call.** The clock bounds job
+rows, SEC polling and worker slots — not dollars.
+
+**The three instances, because the pattern is the lesson:** the vacuous
+rounding-artefact test in `splits.test.ts` (4.8% deviation against a 5%
+tolerance, never reached the confirmation logic); the retry brake above; and the
+46→4 measurement. **A claim of the form "X already handles this" is a claim about
+code, and the cheapest possible test of it is to write the assertion and watch it
+go red.**
+
+---
+
+**34. The supply pair: built, correct, and renders on zero rows.** *Built
+2026-08-27 as `bc15588` after the trader chose a floor/total pair over either
+pole. Not deployed.*
+
+Floor = proven-live blocks. Total = every filed block with a share count. The gap
+is the unproven supply made numeric, so a massive block that cannot be shown
+active lands in the total rather than vanishing.
+
+### The basis check is the reason it is a file and not a sum
+
+A block's share count is stated on its filing's basis; shares outstanding on its
+own period end. Dividing one by the other compares two different quantities
+whenever a split sits between them — the `float_basis` rule again. The tell is a
+clean gradient across the 55 tickers a pair would render for:
+
+| total ratio band | rows | carrying a reverse split |
+| --- | --- | --- |
+| <50% | 21 | 28.6% |
+| 100–200% | 11 | 45.5% |
+| >500% | 7 | **71.4%** |
+
+GNLN reads **169,106%**: a 424B3 from 2025-04-29 stating 1,169,711,239 shares
+against 694,544 outstanding, behind a 1-for-8. **A magnitude threshold catches
+that and misses the 100–200% band**, where nearly half the rows carry a split and
+the number still looks plausible.
+
+So the test is basis, not size, and unknown is not yes. Comparison is against the
+**denominator's** basis rather than today's, so a name whose filings and share
+count all predate a split stays internally consistent. `sourceFiling` is never
+parsed for a date: it is free text a model wrote.
+
+### And the coverage figure the trader approved on was for a different design
+
+| | |
+| --- | --- |
+| FLOOR coverage (ticker-denominated) | 13 / 231, **5.6%** |
+| TOTAL coverage, **ungated** | 55 / 231, **23.8%** |
+| have a share-count denominator at all | 91 / 231, **39.4%** |
+| have any supply block at all | 208 / 231, **90%** |
+
+**The binding constraint is the denominator, not the numerator.** More filings
+buy nothing; the share count is the whole game — the same shape as the float
+work, where the evidence is there and the anchor is missing.
+
+**Then the guard takes 23.8% to zero.** The basis check needs a split factor per
+session, and those exist only where `ensureDeepHistory` has run — gated on rank
+≤ 10 **and** a price above every stored high. Replayed over every stored
+ticker-session:
+
+| | |
+| --- | --- |
+| symbols the deep gate would EVER fire for | 11 |
+| …that also hold a dossier | 2 (0.9%) |
+| rows that would render a pair | 55 |
+| …where deep history could have run | **0** |
+
+**I gave him 23.8% before he chose the guard, and the guard he chose makes it
+0%.** He chose correctly; the number was for the previous design. The fix is to
+decouple the dual-adjustment fetch from the blue-sky gate — two REST calls per
+symbol, close to once per ticker forever — which is a separate commit and a
+separate spend. **Shipped inert and said so, rather than weakening the guard to
+make a number appear.**
+
+**Note also two units in play for the same fact:** Ops's 17.4% is
+block-denominated, this 5.6% is ticker-denominated. Both correct. Whichever
+reaches the trader has to say which.
+
+### A cross-store check that passes on content
+
+657 supply blocks, 93 `KNOWN_ACTIVE`, 67 of those priced — identical in my
+snapshot and Ops's live store, arrived at independently. Worth recording after an
+earlier "agreement" that turned out to be ids 1–94 matching ids 1–94.
