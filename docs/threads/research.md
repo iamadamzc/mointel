@@ -2337,3 +2337,51 @@ safe to quote. `floatConfidence` is `UNKNOWN` on 229 of 231.
 of 231 (was 17% of 94); `CAUTION` 54%, `UNKNOWN` 33%. The desk is not calling
 every float dirty and never was — item 8 established the board was showing the
 Sheet's text.
+
+---
+
+**28. Q9 capture scope: it is a network dependency, not a column.** *Scoped for
+R&D via Integration 2026-08-27. Not trivial. Not built.*
+
+**`worker/desk-assessments.ts` DOES NOT READ THE SHEET.** No `loadSheetPriors`,
+no `resolveDisplayedFloat`, no `MomentumTicker`, no `StructuralResearch` — the
+checkpoint path is entirely Sheet-free, and none of
+`desk_assessment_tickers`' 33 columns carries a float or a share count.
+
+**So capturing the displayed float at checkpoint means introducing a Google
+Sheets call into the append-only writer**, which runs 19 times a session on a
+schedule. That is the cost, and it is not the schema.
+
+**What would be stored, and where each part comes from**
+
+| field | source |
+| --- | --- |
+| `displayed_float` | `resolveDisplayedFloat(research, record).value` — `merge.ts:143` |
+| `displayed_float_source` | the same call's `.source` — `RESEARCH` or `TODAY`, i.e. which tab |
+| `float_source_date` | `StructuralResearch.floatSourceDate` — the Sheet's own as-of |
+| `shares_outstanding` | `dossier.filedShares.shares`, already on the dossier since Phase C |
+| `shares_outstanding_as_of` | `dossier.filedShares.asOf` |
+| `float_basis` | `SHEET_VENDOR` today; the column exists so it need not be retrofitted |
+
+**Note the two halves arrive from opposite directions.** Shares outstanding is
+already in the store and needs no fetch. **Only the float needs the Sheet**, and
+it is the half that is observable-once.
+
+**Schema delta:** six columns on `desk_assessment_tickers`, `ADDED_COLUMNS`
+entries, `SCHEMA_VERSION` 22 → 23. `lib/market/store/` is Ops's and the
+`BUSY_SNAPSHOT` race lives there, so Ops gates it before it ships.
+
+**The failure mode is the real design work.** A Sheet call can time out. The
+checkpoint is append-only and cannot be re-run, so the rule has to be the one
+`ensureDailyHistory` already follows: **report the failure, never block the
+write.** A checkpoint that skipped because the Sheet was slow would lose the
+whole row to save one field — and a null float must be distinguishable from *"we
+did not ask"*, or the series records absence as a value.
+
+**R&D's observable-once argument holds, with one qualifier worth having.** The
+Sheet is overwritten by the ChatGPT tasks and keeps no history, so **what the
+board displayed on a given day is genuinely unrecoverable.** But
+`floatSourceUrls` points at stockanalysis.com, so the *vendor's* number may be
+re-fetchable even when the desk's record of it is not. **Those are different
+series** — *what the trader saw* versus *what the float was* — and Q9 should say
+which it needs before this is built.
