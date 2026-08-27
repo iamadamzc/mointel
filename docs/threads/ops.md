@@ -1940,7 +1940,149 @@ valid source for "what time is it" is a clock read in the same tool call as the
 claim** — not one read earlier in the session and advanced by how long the work
 felt.
 
+## INCIDENT 2026-08-27: the deploy's own build took the box down during premarket
+
+**The payload was never the problem. `push-release.sh` builds on the production
+box, and the build exhausted it.** Nothing shipped: production is still
+`bc78d49`, and `4ac30b5` never reached the symlink switch.
+
+### Timeline (ET)
+
+```
+03:47:20  preflight green — research IDLE queued 0, next checkpoint 142m out
+03:48:13  deploy launched DETACHED, full 40-char sha passed explicitly
+          on-box preflight: clear of every checkpoint by >5m, all pins satisfiable
+03:48:29  deps installed (470 packages, 16s) -> `next build` begins
+03:48:39  LAST CONTACT: all four units active, symlink still bc78d49
+~03:49    box stops answering. ssh first, then the app, then nginx
+04:00     PREMARKET BEGINS with the box thrashing
+04:38:03  reboot issued on the trader's explicit word
+04:42:25  box back. uptime 0m. ALL FOUR SERVICES INACTIVE. symlink bc78d49
+04:43:06  market started first — SIP authenticated, whole-market bars subscribed
+04:43:5x  web/research/assess started staggered — all four active, NRestarts=0
+```
+
+Memory after reboot: **549 MB used of 3832**. Before, almost certainly
+exhausted. **Lightsail exposes no memory metric**, which is why the one number
+that would have proved this in ten seconds was never available.
+
+### What it cost — measured against yesterday's same clock window
+
+**Capture never stopped. It degraded to ~5% of normal and kept writing.**
+
+```
+window                        symbols   bars
+today   08:00-08:40Z (04:00-04:40 ET)      60    365
+yday    08:00-08:40Z                    1,411  7,178
+today   since recovery (08:43Z+)          255    336  (~2 min)
+```
+
+Four to eleven symbols a minute instead of hundreds. **The first 40 minutes of
+premarket are real but very thin, and append-only means they cannot be
+backfilled.** That is the whole of the unrecoverable loss.
+
+**Not lost:** no checkpoint missed (`STRUCTURAL_REFRESH` 06:10 ET was still
+ahead). `stalledJobs` unchanged at 16. Research re-runs. Dashboard down ~54 min.
+
+### Root cause: the build runs on the production box
+
+`push-release.sh` runs `npm ci` and `next build` on the same 4 GB instance that
+runs four services against an 877 MB store with a 531 MB WAL. **Turbopack on that
+box is enough to exhaust it.**
+
+**Everything a deploy is supposed to get right, this deploy got right.** Gate
+green at the shipping sha (1419 tests / 91 files, lint, typecheck, build), sha
+resolved and passed explicitly as 40 chars, ancestry checked, payload verified at
+directory scope, schema confirmed unchanged, on-box preflight passed, research
+`IDLE` with zero in flight, and **run detached specifically so a repeat of
+Tuesday's timeout-kill was impossible**. None of it mattered. **The hazard is the
+build, and every deploy has carried it.**
+
+**This supersedes 0d as the first thing to fix.** 0d protects against a dropped
+connection; this one fires even when nothing drops.
+
+### The degradation signature, for whoever sees it next
+
+Services died in order of memory footprint, largest first:
+
+```
+ssh      dead first    (cannot fork a session)
+app      hung next     (proxied path times out, 25s)
+nginx    dead last     (was answering 401 in 0.5s, then nothing)
+market   SURVIVED      (kept writing at ~5% throughput)
+```
+
+**A fast 401 from nginx proves the box is alive and says NOTHING about the
+desk** — nginx answers Basic Auth itself and never touches the app. I read a
+0.54s 401 as "the box is fine" and it was the presence-versus-content error I had
+recorded in this charter the same morning. **The diagnostic that works is
+`/_next/static/`, which is `auth_basic off` and therefore proxies**: if that
+hangs while `/` returns 401 instantly, nginx is up and the app is not.
+
+**And the Lightsail metrics ruled out the obvious causes rather than confirming
+one.** `StatusCheckFailed_System` and `_Instance` both 0 throughout — no AWS
+fault. `BurstCapacityPercentage` 93% and falling only 0.85%/5min — **not
+throttled**, which was the hypothesis Integration thought most likely. CPU 1.6%
+before the deploy, then ~70% sustained for 48 minutes. **70% is not saturation**,
+so CPU never explained a dead sshd on its own; only swapping fits all of it.
+
+### Two failures of my own, separate from the cause
+
+**I made the ssh lockout worse.** Roughly ten retries with 45–65s
+`ConnectTimeout`, each holding a pre-authentication slot against sshd's default
+`MaxStartups` of 10. **Retrying a dead sshd with long timeouts is
+self-sustaining.** Single short-timeout probes release the slot quickly.
+
+**I declared myself blocked on AWS access while the credentials were already
+configured.** I tried to read the credential CSVs, was correctly denied by the
+permission classifier, and reported to the trader that I needed him in the
+console. **`aws configure list-profiles` would have shown `magellan_admin`
+already present.** Fifteen minutes lost, and the check I eventually ran was one
+command. **Check what access you already have before reporting that you have
+none.** Also: it is **Lightsail, not EC2** — `ec2 describe-instances` was never
+going to find this instance, and I ran it before checking.
+
+### What worked, kept because it will be tempting to change it
+
+Starting the services **staggered** after the reboot produced `NRestarts=0` on
+all four — no `BUSY_SNAPSHOT` crash, against a known ~1-in-3 rate when three
+open the store at once. **Start market first, then the others with a few seconds
+between.** Market first because capture is the only irreplaceable thing.
+
+
 ## Open items
+
+**0f. The deploy builds on the production box, and the build is enough to take
+it down.** *Ops. Raised by the 2026-08-27 incident, which cost ~54 minutes of
+desk and the first 40 minutes of premarket capture at ~5% coverage. Not built.
+**This is ahead of 0d.***
+
+`push-release.sh` runs `npm ci` (470 packages) and `next build` on the same 4 GB
+Lightsail instance that runs four services against an 877 MB store with a 531 MB
+WAL. On 2026-08-27 that exhausted memory: ssh died, then the app, then nginx.
+Only the market worker survived, at ~5% throughput.
+
+**Every deploy has carried this.** It is not conditional on a dropped
+connection, a bad payload, or a schema change — the deploy that triggered it had
+a green gate, a correct sha, a passing on-box preflight and was run detached.
+
+Options, and the first is the real fix:
+
+1. **Build off-box and ship the artifact.** The release archive already comes
+   from `git archive`; building locally or in a throwaway environment and
+   shipping `.next/` removes the hazard entirely rather than bounding it.
+2. **Bound the build's memory** — `NODE_OPTIONS=--max-old-space-size=<n>` plus
+   `nice`/`ionice`, so it degrades instead of taking the box.
+3. **Add swap**, which converts a hard exhaustion into a slow one. Palliative;
+   the incident already showed what swapping does to sshd.
+4. **A bigger bundle.** Costs money to work around a build that need not run
+   there at all.
+
+**Until one ships: a deploy is a capacity event, not just a release**, and the
+window has to be chosen on that basis — not merely on checkpoint distance and
+research idleness, which is what my preflight currently measures.
+
+
 
 **0d. A deploy that loses its driving connection leaves the desk stopped, with
 nothing to restart it.** *Ops. Raised by the 2026-08-25 outage, which cost 3h22m
