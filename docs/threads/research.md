@@ -2290,12 +2290,22 @@ known miss is not hypothetical.*
 ---
 
 **27. The overhang ratio: measured before starting, and the numerator is the
-blocker.** *Approved and unstarted. Measured on the production snapshot
-2026-08-27; nothing built.*
+blocker.** *Approved and unstarted. Nothing built.*
 
-**`supplyBound` HAS NEVER RUN.** The key is **absent** — not null — on all 325
-stored versions, so `1df1d75` shipped after the newest of them and the ratio has
-**zero production observations.** Nobody knows what it produces.
+> **AS-OF, and every number below carries it: the production snapshot is named
+> `market-prod-2026-08-23.db` but its versions run 2026-08-17 → 2026-08-21T22:25Z
+> and stop.** Nothing here observes the four days since. The file's name is not
+> its contents, and I quoted these figures for a day before noticing the gap.
+
+**`supplyBound` HAD NOT RUN AS OF 2026-08-21.** The key is **absent** — not null
+— on all 325 versions in range, and `1df1d75` shipped in the 08-23 build, so the
+two agree and neither speaks for today.
+
+*I first wrote this as "has never run — zero production observations". That was
+wrong and Integration had already relayed the stronger version. **Ops's RCON
+data settles it: versions were written on 2026-08-25 at 14:01Z and 16:31Z**, so
+"nothing has been written" is dead. Whether the key is attached on those is
+UNKNOWN FROM HERE and needs one query against the live store.*
 
 **Simulated offline against real dossiers**, replicating `computeSupplyBound`
 with a generous denominator (any collected company-facts row, not only a cited
@@ -2329,9 +2339,11 @@ converted to shares with no pricing or conversion terms"* names exactly that
 shape. **A ratio built on this today would render it.** Any display needs a
 sanity bound the verdict never required.
 
-**Confirmed for Integration and R&D: `displayedFloat` is populated on 2 of 231
-production dossiers — 1%.** R&D's 1-in-94 local figure holds on production and is
-safe to quote. `floatConfidence` is `UNKNOWN` on 229 of 231.
+**`displayedFloat` is populated on 2 of 231 dossiers — 1% — AS OF 2026-08-21.**
+R&D's 1-in-94 local figure agrees in shape, but **both carry an 08-21 as-of and
+neither is a current number.** Quotable only with the date attached, which is the
+`float_basis` rule turned on my own measurements. `floatConfidence` is `UNKNOWN`
+on 229 of 231, same window.
 
 **And the trader's original complaint remains answered.** `DIRTY_FLOAT` is **13%**
 of 231 (was 17% of 94); `CAUTION` 54%, `UNKNOWN` 33%. The desk is not calling
