@@ -2026,6 +2026,43 @@ throttled**, which was the hypothesis Integration thought most likely. CPU 1.6%
 before the deploy, then ~70% sustained for 48 minutes. **70% is not saturation**,
 so CPU never explained a dead sshd on its own; only swapping fits all of it.
 
+### `${3:-HEAD}` on a shared checkout: the default names whoever saved last
+
+Research's finding, verified here at the source rather than taken:
+
+```
+push-release.sh:18   REF="${3:-HEAD}"
+push-release.sh:28   SHA="$(git rev-parse "$REF")"
+push-release.sh:34   if ! git diff --quiet "$SHA" -- ':!*.md' ':!*.png'; then
+```
+
+**Every thread on this desk shares one working repo.** A deploy invoked without
+a third argument therefore ships **whatever the last thread happened to commit**
+— and since the dirty-tree check **excludes `*.md`**, a documentation commit
+retargets the default and produces **no warning on that path at all.** Silent by
+construction.
+
+This is not a hazard any one thread introduced. It is a property of a shared
+checkout plus a `HEAD` default, and it will do it again to whoever is mid-gate
+next week. On 2026-08-27 local HEAD moved twice during a single open gate —
+`4ac30b5` → `bc15588` → `664fdb7` — none of it deliberate retargeting.
+
+**It did not bite this time only because I passed the full 40-char sha
+explicitly**, which §"Name the sha. Do not deploy `HEAD`" already requires. **The
+rule held where the tool did not**, and a rule that is the only thing standing
+between a shared checkout and an accidental release is too thin a defence.
+
+**Fix, and it is this file and this thread's call:** require the ref, or default
+to `origin/main` rather than `HEAD`. A deploy that names no commit is a deploy
+that names an accident.
+
+**Research's observation, which is the better argument for 0f than the incident
+was:** building off-box and shipping the artifact **removes this failure
+entirely** — the sha is fixed at build time rather than re-resolved at push
+time, so the identity of what ships stops depending on what the repo looks like
+at the moment someone types the command. **0f solves this as a side effect.**
+
+
 ### Two failures of my own, separate from the cause
 
 **I made the ssh lockout worse.** Roughly ten retries with 45–65s
