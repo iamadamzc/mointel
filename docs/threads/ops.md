@@ -2989,6 +2989,41 @@ references no branch.
 
 ## Before you deploy
 
+### "Docs-only above production" is a snapshot, not a standing fact
+
+Integration recorded shared-tree rule 6 at `2732538`: **on shared local main, any
+thread's push publishes every commit below it.** R&D was holding two commits back
+pending the trader's word; both reached `origin` under other threads' pushes
+within the hour.
+
+Integration's read is that the deploy-follows-push check is unaffected. **The
+check is, but two things around it are not.**
+
+**First, re-run the docs-only check immediately before deploying, never carry it
+from an earlier turn.** On 2026-08-27 it read 21 commits above production at
+02:45 ET and **30 at 03:10 ET** — nine arrived in half an hour, none of them
+pushed by their authors deliberately. It stayed docs-only both times. Nothing
+guarantees the next sweep-up will.
+
+**Second, and this is the part that changed:** the only thing now standing
+between an author's held-back code and production is that **Ops names a specific
+sha and gates that sha**. An author can no longer hold work off `origin` by not
+pushing it. That process rule used to be hygiene — it is now the sole remaining
+control, and it means:
+
+- **Never deploy `origin/main`.** Never deploy `HEAD`. Both may contain work
+  nobody chose to publish. This was already the rule (§"Name the sha") and it is
+  now load-bearing rather than tidy.
+- **A sha named by another thread is not evidence its author intended to ship
+  it.** Confirm intent with the author, not with the fact it is on `origin`.
+- **Before pushing, check what goes with it.** `git log origin/main..HEAD`
+  publishes everything below the tip, including other threads' commits. Ops
+  pushes docs; Ops should still look first.
+
+**"Who pushed this" is not evidence of "whose work this is"** — Integration's
+sentence, and it is the one to keep.
+
+
 ### First check the sha is actually ahead of production — twice now it was not
 
 Before gating, before anything: **prove the candidate is a descendant of what is
