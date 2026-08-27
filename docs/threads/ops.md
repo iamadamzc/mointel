@@ -2063,6 +2063,22 @@ time, so the identity of what ships stops depending on what the repo looks like
 at the moment someone types the command. **0f solves this as a side effect.**
 
 
+### A trailing `echo` masked the deploy's exit code in the task notification
+
+The background task reported **"completed (exit code 0)"** for a deploy that had
+failed. The command ended `...push-release.sh ... ; echo "DEPLOY_EXIT=$?"`, so
+the **echo's** status became the task's. The real value was `DEPLOY_EXIT=255`,
+visible only inside the output file.
+
+**Third instance of exit-code masking on this desk**, after `$?` read after a
+pipeline reporting a failing typecheck as green, and `grep -c "error"` counting a
+lint summary line. **This one was the worst shape: a failed deploy that announced
+itself as successful**, and only checking the file caught it.
+
+**Put the status-carrying command last, or capture it into a variable and exit
+with it.** A trailing `echo` is a status-discarding command wearing the costume
+of a report.
+
 ### Two failures of my own, separate from the cause
 
 **I made the ssh lockout worse.** Roughly ten retries with 45–65s
