@@ -335,9 +335,35 @@ RESEARCH tab (`source: 'RESEARCH'`), then `MomentumTicker.float` from the TODAY
 tab (`source: 'TODAY'`). `displayedFloatSource` distinguishes **two Sheet tabs**,
 not dossier-versus-vendor. **There is no dossier branch to fall back FROM.**
 
-So Ops's 0 of 249 is a true statement about a field the board never reads.
-**Every float the trader has ever seen is the Sheet's** — not *mostly*, not *by
-fallback*, always.
+**Corrected again, and the precise version matters.** The board ROW never reads
+it — but **three other surfaces do**: `AutomaticIntelligence.tsx:334`,
+`deskRead.ts:359` and `risk.ts:174`, all reading
+`row.intelligence?.analysis?.dossier.structure.displayedFloat`. **All three have
+only ever seen `null`**, which is why no trader-visible float has ever come from
+it. So the claim that survives is not *nothing reads it* but:
+
+> **The desk's float has never been the desk's own work.** Every float the
+> trader has seen came from the Sheet.
+
+**AND ONE OF THOSE READERS IS A GATE, NOT A LABEL — handed to Design, not mine
+to fix.** `lib/dashboard/risk.ts` takes `structure` from the dossier at line 135
+and evaluates in order:
+
+    145  DIRTY_FLOAT        -> returns
+    173  floatUnknown  = structure !== null && structure.displayedFloat === null
+    176                     -> returns FLOAT_UNKNOWN
+    187  STRUCTURE_CAUTION  -> returns
+
+**`displayedFloat` is null on 249 of 249, so line 173 is true whenever a dossier
+structure exists, and `STRUCTURE_CAUTION` at 187 is unreachable on that path.**
+`DIRTY_FLOAT` survives because it is tested first; **`CAUTION` — the single most
+common classification the desk produces — is masked by a chip about a field that
+has never held a value.**
+
+Stated as a code reading rather than a frequency claim: I have not measured how
+often a live row carries a dossier structure, and that is the one number that
+turns this from a latent defect into a live one. **Design or Integration should
+measure it; the ordering itself is not in doubt.**
 
 **WHAT I GOT WRONG AND WHY, because the mechanism is a name collision this desk
 keeps hitting.** I read the type `StructuralResearch` and took it for the
