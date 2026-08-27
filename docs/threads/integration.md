@@ -1429,7 +1429,12 @@ written, divergent the first time the unconsidered case occurred.
 **A hold is collective or it is nothing.** If one is ever actually wanted, it
 is a freeze declared through the bus to every thread, or it is work on a
 separate branch — never a thread sitting on shared `main` intending not to
-push.
+push. And the intention is announced the moment it forms — R&D's amendment,
+from the silent half of the incident, in its own words: *a hold on shared
+`main` is not a slower push, it is a push by whoever moves next.* R&D's other
+half of the record is kept with it: the promise was made without checking
+whether the structure could keep it, and no pusher could have checked for a
+category that had never occurred.
 
 ## Working rules
 

@@ -90,7 +90,11 @@ Every thread works in `A:\mointel`. Rules, in order of how much they matter:
    made it — a per-thread "hold my commit back from origin" is not possible
    while any other thread pushes. A hold is collective (a freeze declared
    through Integration) or it is a separate branch; it is never a thread
-   sitting on shared `main` intending not to push. *(Recorded by Integration
+   sitting on shared `main` intending not to push. And an intention to hold is
+   announced through the bus at the moment it forms — the failure here was
+   silent, and R&D's own phrasing of why is the rule: **a hold on shared
+   `main` is not a slower push, it is a push by whoever moves next.**
+   *(Recorded by Integration
    2026-08-27, the day both of a held commit's successors reached origin under
    two different threads' routine pushes within the hour.)*
 
