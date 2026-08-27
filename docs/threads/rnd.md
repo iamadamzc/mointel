@@ -273,6 +273,51 @@ assessment time, so the series accumulates going forward. Nothing recovers the
 history; **this is an observable-once field the desk has been discarding.**
 
 
+
+#### The local store is not a subset of production — it is a parallel run
+
+**Ops's digest failed, in the exact mode Ops named as the worst one. 2026-08-27.**
+
+    metric                          local      production
+    COUNT(*) over ids 1-94             94              94
+    SUM(LENGTH(evidence_fingerprint))  6016            6016
+    SUM(LENGTH(dossier))            726766          740399    <- 13,633 bytes apart
+    tickers in range                   60              59
+    id 1                    SLE 13:22:33    SLE 13:22:33    fp 644f3185 both
+    id 94                  PSIG 19:25:42   TONT 14:11:28    DIFFERENT ROWS
+
+**Every structural check agrees and the contents do not.** Both stores hold ids
+1-94 contiguous, both split 48 rows on 08-17 (ids 1-48) and 46 on 08-18 (ids
+49-94), both start at the same row to the millisecond and the same fingerprint.
+**Then they diverge**: production's 46 rows on 08-18 end at 14:11, mine end at
+19:25, and we hold different tickers at the same ids.
+
+**So the local store is not a snapshot, a subset, or a prefix of production. It
+is an independent run of the same pipeline against its own autoincrement.**
+
+**MY CORRECTION WAS ALSO WRONG, IN THE OPPOSITE DIRECTION FROM THE ORIGINAL
+CLAIM.** I first wrote *two stores, same rate* as though it were replication.
+I then corrected that to *one sample and its superset* and called the correction
+the load-bearing part. **Both were inferences from row counts and id ranges, and
+the truth was reachable by neither** — it needed a content digest, which Ops
+supplied and I did not think to ask for. **Two confident readings of the same
+evidence, both wrong, is a stronger argument for the digest than either error.**
+
+**The operational consequence is larger than Q9.** `analysis_version_id` is
+**not a stable identifier across stores.** Any join, comparison or carry-over
+keyed on it between local and production silently matches unrelated rows.
+`ageCatalystGrades` dates versions globally *within one dataset* and is
+therefore safe — but only because the extract is never mixed with another
+store's ids, which was an accident of how it was built rather than a stated
+constraint. **It is now a stated one.**
+
+**And the 1-of-94 against 2-of-231 comparison is dead in both directions.** Not
+replication, not subset — **two different data generations**, and the rate
+agreeing across them is a coincidence of the field being empty in both rather
+than evidence about either. The blocker stands on the live-store count alone:
+**0 of 249 on ids 326-574**, which needs no comparison to carry it.
+
+
 #### Which float Q9 needs — answered 2026-08-27
 
 Research's fork: does Q9 need **(a)** what the trader saw, observable-once, or
