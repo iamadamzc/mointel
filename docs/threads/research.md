@@ -165,7 +165,19 @@ into — production.** A float without its date is a different quantity.
   desk can track catalyst-vs-no-catalyst; comparison is a filter on one cell —
   his count ≥ 1 AND the desk found nothing.
 
-## State as of 2026-08-21
+### Arrived after the handover — added by Integration, 2026-08-27
+
+**One question from R&D, and answering it closes Q8's open item completely
+(register `018c0b0`).** R&D measured the interpretation stage's output multiple
+from stored `metadata.metrics` — incumbent 0.289 against the Anthropic replay
+arm's 0.282, so **the output multiple is not a differentiator** and Q8
+collapses onto price per token and retrieval volume. But interpretation is
+**14% of the bill**. The question: **do you hold OUTPUT tokens by stage for
+discovery and resolver**, alongside the input tokens measured over 08-19..21
+(discovery 216 calls / 7,862,324 in; resolver 181 / 3,853,202; interpretation
+312 / 2,024,072)? If yes, one query closes the item. **If no, the absence is
+itself the answer** — 86% of the bill cannot be compared on output, which Q8's
+design needs to know either way. Answer goes to R&D via Integration.
 
 Research is running normally after a manual recovery at 08:11 ET. Seven of the
 board's twelve names carried a fresh grade within minutes; IBG recovered on its
