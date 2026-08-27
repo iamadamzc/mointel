@@ -4,7 +4,13 @@ import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { openDatabase } from '@/lib/market/store/db';
-import { completeJob, readLatestJobForTicker } from '@/lib/market/store/researchRepo';
+import {
+  completeJob,
+  enqueueResearchJob,
+  readLatestJobForTicker,
+  saveAnalysisVersion,
+} from '@/lib/market/store/researchRepo';
+import type { CatalystStatus } from '@/lib/research/types';
 import {
   isEligible,
   priorityScore,
@@ -34,6 +40,96 @@ afterEach(() => {
 
 const DATE = '2026-08-17';
 const NOW = new Date('2026-08-17T13:48:00Z');
+/** Comfortably past the re-ask interval, for tests isolating the other gates. */
+const PAST_THE_INTERVAL = new Date('2026-08-17T14:05:00Z');
+
+/**
+ * A ticker with a stored dossier and a finished job for this session.
+ *
+ * `acceptedAt` is the session-local half of the skip and `status` is the
+ * answered half, so both are parameters: a test that could only move them
+ * together would pass with either check removed.
+ */
+function acceptDossier(
+  db: ReturnType<typeof temporaryDb>,
+  options: { status: CatalystStatus; acceptedAt: string | null; completedAt?: string },
+) {
+  saveAnalysisVersion(db, {
+    ticker: 'ACME',
+    generatedAt: '2026-08-16T12:00:00Z',
+    evidenceFingerprint: 'fp-stored',
+    model: 'test-model',
+    dossier: {
+      ticker: 'ACME',
+      companyName: 'Acme Corp',
+      cik: '0001234567',
+      country: null,
+      foreignIssuer: null,
+      catalyst: {
+        catalystStatus: options.status,
+        catalystType: 'UNKNOWN',
+        catalystGrade: 'UNKNOWN',
+        summary: null,
+        eventTimestamp: null,
+        freshness: 'UNKNOWN',
+        whyTradersMayCare: null,
+        plausiblyExplainsMove: null,
+        confidence: 'LOW',
+        evidenceSourceIds: [],
+        unknowns: [],
+      },
+      structure: {
+        sharesOutstanding: null,
+        sharesOutstandingDate: null,
+        displayedFloat: null,
+        displayedFloatDate: null,
+        displayedFloatSource: null,
+        floatConfidence: 'UNKNOWN',
+        structureClassification: 'UNKNOWN',
+        supplyLedger: [],
+        structuralWarnings: [],
+        reverseSplitHistory: [],
+        knownRegistrationStatus: null,
+        summary: null,
+        confidence: 'LOW',
+        evidenceSourceIds: [],
+        unknowns: [],
+      },
+      cycle: {
+        cycleClassification: 'UNKNOWN',
+        reasoning: null,
+        currentCycleHigh: null,
+        currentCycleHighConfidence: 'UNKNOWN',
+        currentGivebackPct: null,
+        historicalResistance: null,
+        formerRunnerStatus: 'UNKNOWN',
+        recentMajorRuns: [],
+        cycleWarnings: [],
+        confidence: 'LOW',
+        evidenceSourceIds: [],
+        unknowns: [],
+      },
+    },
+    sourceIds: [],
+  });
+
+  const jobId = enqueueResearchJob(db, {
+    ticker: 'ACME',
+    tradingDate: DATE,
+    priority: 10,
+    reason: 'top-12',
+    queuedAt: '2026-08-17T13:00:00Z',
+  });
+  // Null would mean the insert was skipped, which would make every assertion
+  // below test nothing at all.
+  if (jobId === null) throw new Error('fixture failed to enqueue a job');
+
+  completeJob(db, jobId, {
+    status: 'COMPLETE',
+    completedAt: options.completedAt ?? '2026-08-17T13:40:00Z',
+    acceptedAt: options.acceptedAt,
+  });
+}
 
 function candidate(overrides: Partial<QueueCandidate> = {}): QueueCandidate {
   return {
@@ -142,6 +238,117 @@ describe('queueing', () => {
       now: NOW,
     });
     expect(again[0].queued).toBe(true);
+  });
+
+  /*
+   * The skip is what froze RCON out for a morning, so each half of the
+   * condition it now checks gets a test that fails if that half is dropped.
+   */
+  it('skips a name whose dossier was accepted THIS session and answers', () => {
+    const db = temporaryDb();
+    acceptDossier(db, { status: 'FRESH_FOUND', acceptedAt: '2026-08-17T13:50:00Z' });
+
+    const decisions = queueDiscoveryResearch(db, [candidate()], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: NOW,
+      currentFingerprint: () => 'fp-unchanged',
+    });
+    expect(decisions[0].queued).toBe(false);
+    expect(decisions[0].reason).toBe('dossier accepted for this session');
+  });
+
+  it('re-queues when the accepted dossier is from an earlier session', () => {
+    /*
+     * `readCurrentAnalysis` has no date filter, so the old condition skipped on
+     * a dossier of any age while reporting one "for this session". Here the
+     * dossier answers and the job is this session's — but nothing was accepted
+     * in it, which is the only session-local fact available.
+     */
+    const db = temporaryDb();
+    acceptDossier(db, { status: 'FRESH_FOUND', acceptedAt: null });
+
+    // Past the re-ask interval, so only the accepted-this-session half is
+    // under test here and the clock cannot account for the result.
+    const decisions = queueDiscoveryResearch(db, [candidate()], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: PAST_THE_INTERVAL,
+      currentFingerprint: () => 'fp-changed',
+    });
+    expect(decisions[0].queued).toBe(true);
+  });
+
+  it('re-queues a still-ranking name whose catalyst is UNKNOWN', () => {
+    // An UNKNOWN is not an answer. This is the case worth paying to re-ask.
+    const db = temporaryDb();
+    acceptDossier(db, { status: 'UNKNOWN', acceptedAt: '2026-08-17T13:45:00Z' });
+
+    const decisions = queueDiscoveryResearch(db, [candidate()], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: PAST_THE_INTERVAL,
+      currentFingerprint: () => 'fp-changed',
+    });
+    expect(decisions[0].queued).toBe(true);
+  });
+
+  it('does not re-ask an UNKNOWN faster than the collector could learn', () => {
+    /*
+     * The bound on the re-trigger, and it is NOT `evaluateRetry`: retry state
+     * is written on failure, and a job that produces an UNKNOWN dossier has not
+     * failed — it arrives there as "no prior failure", allow. Without a bound
+     * here the 5s board loop queues a job per UNKNOWN name per cycle.
+     *
+     * It is a clock and not a fingerprint on purpose. `collectCatalystEvidence`
+     * runs inside job processing, so "skip while the evidence has not moved"
+     * would mean a name with no job collects nothing, never moves, and never
+     * earns a job — the same freeze this fix exists to break.
+     */
+    const db = temporaryDb();
+    // The job finished at 13:50; the board is asking again 40 seconds later.
+    acceptDossier(db, {
+      status: 'UNKNOWN',
+      acceptedAt: '2026-08-17T13:50:00Z',
+      completedAt: '2026-08-17T13:50:00Z',
+    });
+
+    const decisions = queueDiscoveryResearch(db, [candidate()], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: new Date('2026-08-17T13:50:40Z'),
+      recheckAfterMs: 10 * 60_000,
+    });
+    expect(decisions[0].queued).toBe(false);
+    expect(decisions[0].reason).toContain('nothing new is reachable yet');
+  });
+
+  it('re-asks a still-UNKNOWN name once the interval has passed', () => {
+    // The other half. A wire that lands after the first pass gets read without
+    // waiting for the checkpoint sweep, which is what RCON waited two hours for.
+    const db = temporaryDb();
+    acceptDossier(db, { status: 'UNKNOWN', acceptedAt: '2026-08-17T13:50:00Z' });
+
+    const decisions = queueDiscoveryResearch(db, [candidate()], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: new Date('2026-08-17T14:05:00Z'),
+      recheckAfterMs: 10 * 60_000,
+    });
+    expect(decisions[0].queued).toBe(true);
+  });
+
+  it('never delays the first analysis of a name', () => {
+    // The interval applies only to a name that already has a dossier. A first
+    // look must not wait for a clock that is measuring a re-ask.
+    const db = temporaryDb();
+    const decisions = queueDiscoveryResearch(db, [candidate()], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: NOW,
+      recheckAfterMs: 10 * 60_000,
+    });
+    expect(decisions[0].queued).toBe(true);
   });
 
   it('skips names outside the rank window entirely', () => {

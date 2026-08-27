@@ -318,6 +318,9 @@ async function main(): Promise<void> {
       autoRank: config.autoRank,
       board: board.board === 'AFTER_HOURS' ? 'after-hours top' : 'top',
       now: new Date(),
+      // The collector's own gate, so a re-ask is never scheduled for a moment
+      // when discovery would refuse to pay anyway.
+      recheckAfterMs: config.catalyst.webDiscoveryUnresolvedMinutes * 60_000,
     });
     for (const decision of decisions.filter((item) => item.queued)) {
       log(`[research] ${decision.ticker} queued priority=${decision.priority}`);

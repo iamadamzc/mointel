@@ -108,6 +108,15 @@ export interface QueueDecision {
 const LIVE_STATUSES = ['QUEUED', 'COLLECTING', 'SOURCES_READY', 'ANALYZING'];
 
 /**
+ * Fallback re-ask interval, matching `webDiscoveryUnresolvedMinutes`.
+ *
+ * A default rather than the authority: the worker passes the collector's real
+ * configured interval, so the two cannot drift apart in production. This value
+ * only governs a caller that supplies none.
+ */
+const DEFAULT_RECHECK_AFTER_MS = 10 * 60_000;
+
+/**
  * Reconciles research coverage for the eligible Top-N.
  *
  * Deliberately reconciliatory rather than edge-triggered: it looks at the
@@ -136,6 +145,16 @@ export function queueDiscoveryResearch(
      * read and no network — the same evidence the analysis would have used.
      */
     currentFingerprint?: (ticker: string) => string;
+    /**
+     * How long a name already carrying a dossier waits before it may be asked
+     * again this session.
+     *
+     * Supply the collector's unresolved discovery interval. Below it the
+     * collector will not pay for discovery, so a re-ask can only repeat the
+     * deterministic poll — the board loop runs every 5s and would otherwise
+     * queue a job per name per cycle.
+     */
+    recheckAfterMs?: number;
   },
 ): QueueDecision[] {
   const decisions: QueueDecision[] = [];
@@ -149,6 +168,8 @@ export function queueDiscoveryResearch(
   const fingerprintFor =
     options.currentFingerprint ??
     ((ticker: string) => computeEvidenceFingerprint(readSources(db, ticker)));
+
+  const recheckAfterMs = options.recheckAfterMs ?? DEFAULT_RECHECK_AFTER_MS;
 
   for (const { candidate, priority } of ordered) {
     const existingJob = readLatestJobForTicker(db, candidate.ticker, options.tradingDate);
@@ -164,13 +185,91 @@ export function queueDiscoveryResearch(
       continue;
     }
 
-    if (readCurrentAnalysis(db, candidate.ticker) && existingJob) {
+    /*
+     * The skip must check what its message claims.
+     *
+     * `readCurrentAnalysis` has no date filter — it returns whatever
+     * `research_dossiers.current_version_id` points at, of any age — so this
+     * used to skip on a dossier from any prior session while reporting one
+     * "for this session". A name the desk had ever analysed then got one board
+     * job per session and was frozen out, whatever that job produced. RCON sat
+     * on an 08-19 UNKNOWN through the morning of 08-25 with its wire release
+     * unread.
+     *
+     * Two conditions, because "already answered" needs both halves:
+     *
+     * `existingJob` is already scoped to `options.tradingDate`, so its
+     * `acceptedAt` IS the session-local fact. Reading it from the job avoids
+     * comparing a UTC `generatedAt` against an exchange trading date, which
+     * would put every dossier accepted after 20:00 ET into the next session.
+     *
+     * And UNKNOWN is not an answer. A still-ranking name whose catalyst status
+     * is UNKNOWN is precisely the one worth re-asking.
+     */
+    const currentAnalysis = readCurrentAnalysis(db, candidate.ticker);
+    const answered =
+      currentAnalysis !== null &&
+      currentAnalysis.dossier.catalyst.catalystStatus !== 'UNKNOWN';
+
+    if (answered && existingJob?.acceptedAt) {
       decisions.push({
         ticker: candidate.ticker,
         queued: false,
-        reason: 'dossier already accepted for this session',
+        reason: 'dossier accepted for this session',
         priority,
         jobId: existingJob.id,
+      });
+      continue;
+    }
+
+    /*
+     * What bounds the re-ask, and why it is a clock rather than a fingerprint.
+     *
+     * This fix was scoped believing `evaluateRetry` already bounded it. That is
+     * true of the case it was built for and only that case: `evaluateRetry`
+     * reads `research_retry_state`, which `nextRetryState` writes on FAILURE. A
+     * job that finishes and produces an UNKNOWN dossier has not failed, records
+     * no state, and arrives there as "no prior failure", allow. It is a failure
+     * policy, not a re-ask policy.
+     *
+     * The obvious bound — skip while the evidence fingerprint has not moved —
+     * DEADLOCKS, and the deadlock is the same freeze this fix exists to break.
+     * `collectCatalystEvidence` runs inside job processing, so a name with no
+     * job collects nothing, its fingerprint cannot move, and it never earns a
+     * job. RCON would sit exactly where it sat.
+     *
+     * So the bound is time. The board loop runs every 5s; a re-ask sooner than
+     * the collector's own discovery interval cannot see anything the last one
+     * did not, because below that interval the collector refuses to pay for
+     * discovery at all. Matching the two means every re-ask is a pass that
+     * could actually learn something.
+     *
+     * What this does NOT need to bound is model spend. `interpretTicker`
+     * returns REUSED_UNCHANGED on an unmoved fingerprint without building a
+     * bundle or making a call, so a re-ask that finds nothing new is already
+     * free. The cost being bounded here is job rows, SEC polling and worker
+     * slots.
+     */
+    const sinceLastAsk =
+      existingJob?.completedAt === null || existingJob?.completedAt === undefined
+        ? null
+        : options.now.getTime() - Date.parse(existingJob.completedAt);
+
+    if (
+      currentAnalysis !== null &&
+      sinceLastAsk !== null &&
+      Number.isFinite(sinceLastAsk) &&
+      // A completion stamped in the future is clock skew, not a recent ask.
+      // Reading it as one would freeze the name until the clocks agreed.
+      sinceLastAsk >= 0 &&
+      sinceLastAsk < recheckAfterMs
+    ) {
+      decisions.push({
+        ticker: candidate.ticker,
+        queued: false,
+        reason: `re-asked ${Math.round(sinceLastAsk / 1000)}s ago; nothing new is reachable yet`,
+        priority,
+        jobId: existingJob?.id ?? null,
       });
       continue;
     }
