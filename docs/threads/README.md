@@ -68,6 +68,15 @@ form of the test: *nothing of today lives only in this session's head.* If
 something does, land it in your charter now; that is the whole protocol short
 of retiring.
 
+**And make the head-only check mechanical, not a judgement call** — R&D's
+form, after an honest "probably fine" became two commits: grep the day's key
+phrases against your own documents; a phrase that returns zero is a finding
+that lived only in a relay. Its sentence: *a register that is current only
+because its author remembers what is missing is not current.* Design's, same
+day, from the other side: "is anything true only in your head" is a check
+that can actually fail, which a token count is not — both threads answered it
+honestly and both found something they would not have volunteered.
+
 Retire only on a hard signal (an actual capacity warning, not a feeling of
 volume) or on the trader's word — and then by the preservation protocol:
 stop new work; rewrite your charter's live-state for the successor; sweep the
