@@ -79,7 +79,19 @@ interface FieldOutcome {
 
 interface ReplayRow {
   ticker: string;
-  /** The stored analysis this replays, and the join key for the archive. */
+  /**
+   * The stored analysis this replays. STORE-LOCAL -- NOT a cross-store key.
+   *
+   * This comment used to call it "the join key for the archive" and that was
+   * the trap. R&D compared a local store against production over ids 1-94:
+   * COUNT matched, fingerprint bytes matched exactly, dossier bytes differed by
+   * 13,633, and id 94 was PSIG in one and TONT in the other. The two stores are
+   * PARALLEL RUNS -- identical id sequence, unrelated rows -- so a join on id
+   * matches silently and wrongly.
+   *
+   * `ticker` plus `storedGeneratedAt` is the stable pair. The generation
+   * instant is a fact about the analysis; the id is a fact about the file.
+   */
   storedVersionId: number;
   storedGeneratedAt: string;
   /** Evidence cutoff used, by collection time. */
@@ -295,7 +307,18 @@ async function main(): Promise<void> {
   fs.writeFileSync(
     args.out,
     JSON.stringify(
-      { draws: args.draws, rows, tokens: { inputTokens, outputTokens, cachedTokens } },
+      {
+        /*
+         * The store these ids belong to, recorded because they mean nothing
+         * without it. A result file that names its source can be checked; one
+         * that does not invites the join that R&D proved silently wrong.
+         */
+        sourceStore: process.env.MARKET_DB_PATH ?? 'data/market.db',
+        generatedAt: new Date().toISOString(),
+        draws: args.draws,
+        rows,
+        tokens: { inputTokens, outputTokens, cachedTokens },
+      },
       null,
       2,
     ),
