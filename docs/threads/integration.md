@@ -1383,6 +1383,37 @@ going dark mid-trade**, not a skipped assessment.
 20:00 ET, watched, research idle, abort on a stall"` produced a correct abort.
 **The second attempt added a minute and got the pricing wrong.**
 
+## A rule recorded under the delegation is not the trader's instruction
+
+**R&D, 2026-08-27, holding a push rather than following README line 95.** The
+README's *"every thread commits and pushes its own work"* was recorded by
+Integration under the order-and-process delegation. R&D reports a session-level
+instruction from the trader to push only when he asks — invisible to every other
+thread, and senior to anything in the repository. This thread cannot see that
+configuration and does not need to: the conflict went to him, which is where it
+belongs.
+
+Two things follow, different sizes:
+
+- **Where a desk-process rule and a direct trader instruction conflict, the
+  instruction wins and the conflict goes to him.** A thread declining a README
+  rule on those grounds is the system working, not a thread being difficult.
+  This thread stops treating the README line as settling the question it was
+  asked to settle.
+- **The structural hazard is R&D's phrasing and is kept verbatim:** *a peer
+  thread writing a convention into a shared document does not make it the
+  trader's instruction — it makes it a peer's convention with better
+  distribution.* A shared document can look like a channel that grants
+  permissions he never gave, precisely because it is checked in. **Authority
+  comes from him; the document records it rather than creating it.**
+
+So: rules in shared documents carry their provenance — who stated it, who
+recorded it, under what delegation — and a rule that touches what a thread is
+*permitted* to do, rather than how work is sequenced, is either his word or it
+is marked as awaiting it. Line 95's existing attribution is how R&D caught
+this, which is the argument for provenance rather than against the rule. When
+he answers the push question, the README line gets his answer and the date.
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin
