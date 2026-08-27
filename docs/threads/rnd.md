@@ -1787,6 +1787,26 @@ What it argues against, and this is the part that changes work:
 ask about is still not worth capturing. Story that no one needs is not
 intelligence, it is volume — and volume is how a genuine signal gets buried.
 
+- **Figures in this register are COPIES. The findings log is the true copy.**
+  Prompted by Integration declining to restate a finding in a tombstone —
+  *pointer, not summary* — which is the better instinct and one this register
+  does not follow. Five load-bearing numbers currently live in both documents:
+
+        16.7% / 13.4%   Q1's catalyst contrast
+        46.3%           movers peaking before 09:30
+        70.6%           the 6-30-session split cohort
+        83%             movers with no legitimate-positive catalyst
+
+  **A correction that lands in one copy and not the other is how this thread
+  produced a self-contradiction in its own files once already** — two sentences
+  thirty lines apart, both mine, saying opposite things about the same 52%.
+
+  **The fix is not to delete the copies**; a register nobody can read without
+  opening a second document is worse. **It is to correct both, every time, and
+  to know the set.** That list is the set. **Extend it whenever a figure is
+  quoted here rather than derived here** — and prefer a pointer where the number
+  is not doing work in the sentence.
+
 - **Close questions.** A question that is neither active nor closed is debt. The
   verdict format that worked in viscosity — a single stated verdict plus what
   would have to be true to overturn it — should continue.
