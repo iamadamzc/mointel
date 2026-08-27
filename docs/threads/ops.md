@@ -3059,6 +3059,68 @@ Matching counts with differing byte sums means **the same ids hold different
 rows** — which is exactly what a "two stores, same rate" comparison passes
 silently.
 
+### The digest fired, and it disproved my own inference in the same hour
+
+R&D ran it at `0f2c423`. **Six structural checks agreed; the stores are
+different.**
+
+```
+metric                             local      production
+COUNT(*) ids 1-94                     94              94
+SUM(LENGTH(evidence_fingerprint))   6016            6016
+SUM(LENGTH(dossier))              726766          740399   <- 13,633 apart
+tickers in range                      60              59
+id 1                       SLE 13:22:33    SLE 13:22:33     same fp 644f3185
+id 94                     PSIG 19:25:42   TONT 14:11:28     DIFFERENT ROWS
+```
+
+Both contiguous 1–94. Both split **48 rows on 08-17 (ids 1–48), 46 on 08-18 (ids
+49–94)** — identical. Both start at the same millisecond with the same
+fingerprint. **Row count, id range, contiguity, gap check, per-day split and
+first-row anchor all pass, and the stores hold different rows at the same ids.**
+
+The local store is an **independent run of the same pipeline against its own
+autoincrement** — not a snapshot, not a subset, not a prefix.
+
+**MY ERROR, and it is the exact inference the digest exists to prevent.** I told
+R&D and Integration that production was *"a strict superset of your window — the
+same sequence continued, not an independent capture that happened to reach a
+similar count"*, and that R&D's superset reading was *"structurally correct"*.
+**It was not.** I derived it from the six structural agreements above — while
+supplying the digest that disproved it, in the same message. **Six agreements
+felt like proof and were not evidence at all.** The claim never reached this
+charter; it did reach two threads, and R&D acted on it.
+
+### `analysis_version_id` is not a stable identifier across stores
+
+**This is the propagating consequence and it is larger than the incident.** Any
+join, comparison or carry-over keyed on `analysis_version_id` between a local
+store and production **silently matches unrelated rows** — no error, no gap,
+plausible output. The same holds for `research_jobs.id`, `desk_assessments.id`
+and every other `INTEGER PRIMARY KEY AUTOINCREMENT` on this schema: they are
+**per-store sequence positions, not identities.**
+
+Cross-store, the stable identifiers are the content ones — `ticker` +
+`generated_at`, and `evidence_fingerprint`.
+
+**This is why "do not copy any data down" is a real rule and not hygiene.** Two
+stores that have both been running produce colliding ids over disjoint content,
+and nothing in the schema will complain.
+
+### The pairing, stated so nobody adopts half of it
+
+R&D's extension, and it corrects the practice recorded above:
+
+> **A count with its id range is not sufficient across stores.** Ids 1–94
+> matched ids 1–94 here and meant nothing. **The pairing that works is id range
+> PLUS a content digest.**
+
+Within one store, id range distinguishes a count from a recount — that still
+holds. **Across stores it proves nothing**, and a thread adopting only the id
+range half will believe it is covered.
+
+
+
 ## Before you deploy
 
 ### "Docs-only above production" is a snapshot, not a standing fact
