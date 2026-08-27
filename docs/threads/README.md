@@ -103,6 +103,15 @@ enough to doubt it, and the part most likely to be stale, because it describes
 a starting position that by definition no longer exists. *A stale opening
 message is the worst thing in a handover document.*
 
+Research's refinement, from fixing one stale sentence and writing two new
+expiring ones in its place: **the audit is for EXPIRY, not accuracy.** Both of
+its offending sentences were true when written — which is exactly how opening
+messages go stale, the named-event-not-condition failure in handover form. So
+the opening message carries only what does not expire — who you are, what you
+own, what the thread learned the hard way — points at LIVE STATE for every
+live fact, and **states its own precedence: if the two disagree, LIVE STATE
+is right and the opening message is stale.**
+
 ## Sharing one working tree
 
 Every thread works in `A:\mointel`. Rules, in order of how much they matter:
