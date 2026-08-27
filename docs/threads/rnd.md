@@ -38,7 +38,7 @@ questions is a thread that has stopped working.
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | **CLOSED 2026-08-27** — the viscosity lines already answered it; the row was debt |
 | Q2 | Can any tape-character measure be defined at the grain he trades, and does it separate outcomes? | 2026-08-23 | parked — **Q7 merged in**; blocked on sub-minute capture |
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | parked — blocked on tier A, the same blocker as Q1's second half |
-| Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | parked — **output multiple measured 2026-08-27 for interpretation (0.289 vs Anthropic 0.282)**; discovery and resolver still unmeasured |
+| Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | parked — **no open items**; output multiples answered 2026-08-24 in research.md item 20, found 08-27. Ready to design |
 | Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-27 | parked — blocked on capture; float populated on ~1% of dossiers |
 
 #### The closing pass, 2026-08-27
@@ -661,36 +661,48 @@ unusually easy to over-read, since 0.289-against-0.282 is a tidy number that
 invites a conclusion about "the pipeline".** It is a conclusion about one
 fourteenth of it.
 
-**Q8 status: the open item is one third closed** — and the remaining two thirds
-may not be closable at all.
+**Q8 status: THE OPEN ITEM WAS ALREADY CLOSED, AND HAD BEEN SINCE 2026-08-24.**
 
-**Searched this store for discovery and resolver token accounting. There is
-none.** Every table, every column: the only token-shaped fields are
-`desk_assessments.model_calls`, which is 0 on every row because the assessment
-scheduler makes no model calls, and `review_tokens.token_hash`, which is auth
-and unrelated. **The interpretation stage is the only one whose usage is
-persisted**, and it is persisted because it happens to ride along in a version's
-`metadata.metrics`.
+**Retracting everything above about it being unmeasured or possibly lost.** The
+figures live in a production table called `model_usage`, and they were answered
+**to this thread** — `docs/threads/research.md` item 20, headed *"Asked by R&D
+through Integration 2026-08-24."*
 
-**So Research's by-stage input figures — 216 discovery calls at 7,862,324
-tokens, resolver 181 at 3,853,202 — did not come from the store.** They came
-from instrumentation at run time. **Which makes the real question sharper than
-"does Research hold the output figures":**
+| stage | calls | input | cached | output | out/in |
+| --- | --- | ---: | ---: | ---: | ---: |
+| DISCOVERY | 216 | 7,862,324 | 8.5% | 184,774 | 0.024 |
+| RESOLVER | 181 | 3,853,202 | 14.1% | 144,436 | 0.037 |
+| INTERPRETATION | 312 | 2,024,072 | 12.9% | 547,171 | **0.27** |
+| ESCALATION | 14 | 172,298 | 4.2% | 51,243 | 0.30 |
+| RECOVERY | 5 | 74,385 | 12.1% | 3,136 | 0.042 |
 
-> **If discovery and resolver output was not captured while those runs
-> happened, it is gone. It is observable-once, and nothing in the store
-> reconstructs it.**
+**And the answer reorders the stages, which is the finding I had and then lost.**
+Weighting output at 5x input: **DISCOVERY 47%, RESOLVER 25%, INTERPRETATION 26%.**
+**Interpretation overtakes the resolver**, and the input-only view understates it
+by nearly a factor of two, because it is the only stage that *writes* — 0.27
+against discovery's 0.024, an **11x difference in shape.**
 
-**Same class as the Sheet float**, and arriving at the same conclusion from the
-opposite direction: **the field that matters is the one nobody persisted.**
+**WHAT I DID WRONG, AND IT IS THE WORST VERSION OF TODAY'S FAULT.**
 
-**Two futures and they need different work.** If Research logged output beside
-input, Q8 closes on a query. If it did not, **86% of the bill has no output
-history and never will** — and Q8's comparison has to be designed around
-instrumenting the two big stages going forward, which is a build with a clock on
-it rather than an analysis. **Knowing which is the cheapest thing left in this
-question.**
+I searched **my local store**, found no stage-level token accounting, and
+concluded it **did not exist anywhere** — then escalated it as *observable-once
+and possibly gone, with a clock running on 86% of the bill.* **None of that was
+true.** It exists, on production, in a table my store does not carry.
 
+**The previous five instances were a component read as the system. This one is
+worse: I read my own copy as the world, while the answer sat in a shared
+document under a heading naming me as the asker.** I also re-derived one third
+of it locally (0.289 against their 0.27, different windows) and reported that as
+new.
+
+**The check that would have caught it costs one grep of `docs/threads/`, and I
+have run greps like it all day on other people's claims and not on my own
+register's open items.** An open item is a claim — *this is not known* — and it
+decays exactly like any other.
+
+**The rule this earns: before escalating a gap, grep the desk for the answer.**
+Not the store — **the desk.** Peer charters are where answers to this thread's
+own questions have been landing all week, including this one.
 
 
 #### Q6 re-parked the same day it was promoted — 2026-08-27
