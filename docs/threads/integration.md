@@ -1413,6 +1413,8 @@ recorded it, under what delegation — and a rule that touches what a thread is
 is marked as awaiting it. Line 95's existing attribution is how R&D caught
 this, which is the argument for provenance rather than against the rule. When
 he answers the push question, the README line gets his answer and the date.
+**Answered 2026-08-27, one word: "push." Landed on the README line the same
+hour; R&D's hold lifted by the one person who could lift it.**
 
 ### And the hold it produced was structurally impossible
 

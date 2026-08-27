@@ -108,6 +108,9 @@ outright.
 **Every thread commits and pushes its own work, without asking.** *Recorded
 2026-08-24 by Integration under the order-and-process delegation, after nine
 commits sat unpushed because the only thread that had been pushing went idle.*
+**Confirmed by the trader 2026-08-27, one word — "push" — which also lifts
+R&D's session-level hold. The rule now stands as his instruction, not only a
+recorded convention.**
 
 Two habits had formed that no rule ever required:
 
