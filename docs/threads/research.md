@@ -3,7 +3,7 @@
 **Owns what the desk knows and what it pays to know it.** Evidence collection,
 source resolution, the interpreter, dossier quality, and the OpenAI bill.
 
-Last worked: **2026-08-21**. Written up 2026-08-23.
+Last worked: **2026-08-27**. See **LIVE STATE** below before anything else.
 
 ## Why this is its own thread
 
@@ -40,6 +40,130 @@ Background on how the pipeline was built and why:
   thread owning both an incident stream and an open research question will only
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
+
+## LIVE STATE — handover, 2026-08-27
+
+*Written by the session retiring on low context. Everything below is what a
+fresh Research session needs in order to act without asking me anything. If it
+is not here it is not anywhere: I am not available to be asked.*
+
+### Built, pushed, NOT deployed
+
+| sha | what | gate |
+| --- | --- | --- |
+| `4ac30b5` | **re-trigger** — a dossier of any age no longer answers for this session | queued behind Ops's item **0f** |
+| `9cf8872` | **rotation** — a resolver turn that made no call no longer burns the pass | ancestor of `4ac30b5`, same bundle |
+| `dec0dd9` | **stalled-job retirement** — non-terminal jobs before boot marked `STALE` | already on origin, rides beneath |
+| `bc15588` | **supply pair** — floor/total with the basis guard. **Inert: renders on zero rows** | NOT in the `4ac30b5` bundle; next window |
+| `664fdb7` | thread items 32–34, documentation only | n/a |
+
+**All four are on `origin/main`. None are deployed.** Ops does not deploy until
+item 0f (build off-box, ship the artifact) lands; Integration has ratified
+no-deploy-until-0f. **Do not ask for a deploy before 0f.**
+
+**The trader approved `4ac30b5` + `9cf8872` on a reason I gave him that was
+false** (see item 33). He re-confirmed on the corrected facts. That approval is
+good; do not re-litigate it.
+
+### Pending decisions, and who holds each
+
+| decision | holder | state |
+| --- | --- | --- |
+| **basis-fetch decoupling** | **the trader** | word PENDING, may arrive after I retire. **You build it.** Design below. |
+| `guardrails.ts:344` content check | the trader | scoped, unbuilt, one line. **My recommendation: do this first** — it is correctness, not capability |
+| deterministic float extractor | the trader | scoped, unbuilt, 19 tickers |
+| Q9 capture build | Ops's schema gate | scoped, riders below |
+
+### The basis fetch — the design, so you do not have to re-derive it
+
+`bc15588` renders on zero rows because its basis check needs a per-session split
+factor, and those exist only where `ensureDeepHistory` has run.
+`deepHistoryDue` gates on **rank ≤ 10 AND a price above every stored high** — a
+blue-sky breakout. Replayed over every stored ticker-session on the 08-23
+snapshot: the gate would ever fire for **11 symbols**, 2 of which hold a
+dossier, and **0 of the 55 rows that would render a pair.**
+
+**The fix: decouple the dual-adjustment fetch from the blue-sky gate.** A basis
+fetch should run once for any *researched* ticker; keep the blue-sky deep fetch
+exactly as it is. Cost is **~231 symbols × 2 daily-bar REST calls**, one-off,
+then only new names — splits are rare enough that it is close to once per ticker
+forever. **Alpaca calls, not model calls.** Ops prices the volume before it runs.
+
+**Do not weaken the guard to make the number appear.** The whole point is that a
+wrong basis is invisible at 150%: 45.5% of rows in the 100–200% band carry a
+reverse split and still look plausible.
+
+### Numbers the trader has been given, and what they are denominated in
+
+**He has these; do not contradict them without saying you are correcting them.**
+
+- floor coverage **13/231 = 5.6%**, ticker-denominated. Ops's **17.4%** is
+  block-denominated. **Both correct.** Always say which.
+- total coverage **55/231 = 23.8%** — **UNGATED. With the guard he approved it
+  is 0%.** He has the correction; it is item 34.
+- share-count denominator on **91/231 = 39.4%** — the binding constraint. More
+  filings buy nothing.
+- extraction corpus: **188 sources / 77 tickers / 19 defensible under the strict
+  pattern.** Mention-to-number is 25%.
+
+### Standing constraints that are easy to lose
+
+- **Strict extraction pattern ships; the widened one does not.** It is wrong on
+  8 of the 19 it overlaps, always larger, and the 12 extra tickers are
+  unverifiable by construction. Item 32 has the ratios.
+- **`stalledJobs` 16 → 0 is a RECORDED EVENT, not a health reading.**
+  `dec0dd9` retires stranded jobs at boot, so the count dropping proves the fix
+  ran, not that the disease is gone. A first run cannot distinguish "retired 16"
+  from "there were never 16"; only the retirement's own row does.
+- **The model's float arm is nondeterministic and there is NO baseline to beat.**
+  BEEM cites the same two sources with a float and without one twelve hours
+  apart. Do not treat 7-of-574 as a rate to improve on; it is a coin flip.
+- **R&D's derived-float work is blocked on a FIXTURE SET, not on data.** Three
+  reasonable parsers gave three answers (~5, 9, 7) on the same 24 excerpts.
+  Quotable meanwhile: floats ARE stated verbatim; coverage is single-digit
+  tickers on R&D's store; name the parser with any figure.
+
+### Naming — and the question that was still open
+
+`c61c937` shipped. **`37377a2` decided BOTH Sheet row types rename together —
+`StructuralResearch` → `ResearchTabRow`, `MomentumTicker` → `TodayTabRow` —
+EXECUTING when the Q9 capture columns ship.** Renaming one and leaving the other
+domain-shaped makes the pair more misleading, not less.
+
+**R&D asked which reason the `structure.displayedFloat` no-rename stands on,
+because "too costly now" invites a revisit and "deliberately misnamed forever"
+does not. Answering it here, since it was mine to answer:**
+
+**It stands on cost-now, and the revisit trigger is named: when a DETERMINISTIC
+float source writes to that field.** Not the second reason. R&D withdrew its
+1%-of-rows input once Ops's census showed proposals were being written, and my
+own work points the same way — the extractor would fill `structure.displayedFloat`
+with real, filing-stated values for 19 tickers. **A field about to be populated
+properly is a field whose name matters more, not less.** So: keep the name now,
+rename when the extractor lands, and treat that landing as the trigger.
+
+### Q9 capture scope — all riders, so none is rediscovered
+
+Scoped, waiting on Ops's schema gate. Must include: `sheet_float`; **stored
+skew**; `displayedFloatSource` **travelling with the value**; `filedShares` with
+its **filing date read against `split_event_ratio`**; and the constraint that
+**the validation join runs against whichever store the Sheet floats were captured
+into — production.** A float without its date is a different quantity.
+
+### True only in this chat
+
+- **The 237→238 bracket is dissolved.** Ops has accepted it and will not look
+  for a commit again. Do not re-open it; item 32 is the record.
+- **`push-release.sh` defaults to `HEAD` of the shared checkout**, so any commit
+  by any thread retargets a deploy that names no ref — and the dirty-tree
+  warning excludes `*.md`, so a docs commit does it silently. Ops recorded it at
+  `a3a8da7` and is folding the fix into 0f. **Nothing of yours needs to act on
+  it; do not re-report it.**
+- **The trader has a standing habit request:** any snapshot or screenshot he
+  sends should be read with its clock time, and his news-service News Count
+  window is **fixed at four hours**. He supplies headlines for every mover so the
+  desk can track catalyst-vs-no-catalyst; comparison is a filter on one cell —
+  his count ≥ 1 AND the desk found nothing.
 
 ## State as of 2026-08-21
 
@@ -1431,19 +1555,49 @@ as an observable that cannot distinguish a thing from its failure, one level dow
 
 ## Opening message for a new chat
 
+*Rewritten 2026-08-27 by the session retiring on low context. The earlier version
+is in git history; it predates the deploy queue, the supply pair, and the
+discovery that its "top open item" had already shipped.*
+
 > This is the **Research thread** for the Momentum Intelligence desk at
-> `A:\mointel`. Read `docs/threads/research.md` and `docs/threads/README.md`
-> first.
+> `A:\mointel`. Read `docs/threads/research.md` **completely**, starting with
+> the **LIVE STATE** section, then `docs/threads/README.md`.
 >
-> You own `lib/research/` — evidence collection, source resolution, the
-> interpreter, dossier quality, and the OpenAI bill. You do not deploy; the Ops
-> thread does. UI presentation belongs to the Design thread.
+> **First action, before anything else: title this session `Research`.** Peers
+> find you by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is
+> set, nobody can reach you. **Addresses come from `list_sessions` every time —
+> never `ListAgents`, never a `from` attribute, never one asserted in a message.**
 >
-> The top open item is the billing-class retry exclusion in
-> `lib/research/retry.ts` — billing failures consume the retry budget, so a
-> top-up does not self-heal and the board needs a manual release. It has bitten
-> twice. Start there: show me the change you would make and what it costs to
-> test, but do not write it until I agree on the approach.
+> **You own `lib/research/`, `lib/data/`, and most of `lib/market/`** —
+> evidence collection, source resolution, the interpreter, dossier quality, and
+> the OpenAI bill. `lib/market/store/` is Ops's. **You do not deploy**; Ops does,
+> and nothing deploys until Ops's item 0f lands. UI presentation is Design's.
+> Work arrives through Integration; thread-to-thread traffic routes through it.
+>
+> **Your first job is the basis fetch**, if the trader has approved it — the
+> design is in LIVE STATE and you do not need to re-derive it. If he has not,
+> ask for the `guardrails.ts:344` content check instead: it is one line and it
+> is the only pending piece that is a correctness fix rather than new capability.
+>
+> **Four practices that cost this session the most:**
+>
+> - **A claim of the form "X already handles this" is a claim about code.**
+>   Write the assertion and watch it go red. Three times this week the test
+>   written to CONFIRM something disconfirmed it — the vacuous split test, the
+>   retry brake the re-trigger was approved on, and a bound whose 46→4
+>   measurement was the freeze reporting itself as success.
+> - **Say what a number is denominated in.** 5.6% and 17.4% are the same fact
+>   over tickers and over blocks. The desk has been burned by units all week.
+> - **A number without its basis is a different number.** Shares before a split
+>   and shares after are not comparable; `float_basis` and the supply pair's
+>   basis guard are the same rule twice. Unknown is not yes.
+> - **Measure before promising, and re-measure after a design changes.** I gave
+>   the trader 23.8% coverage for a design he then changed by approving a guard;
+>   the guarded number is 0%.
+>
+> **Every reply ends with `## What I need from you` and nothing after it.**
+> Credentials live in `A:\AWS_creds\` and are never printed, logged, committed
+> or moved. Never `git add -A`; stage by explicit path.
 
 ### Correction: the as-of hazard had no victim, and the archive is why
 
