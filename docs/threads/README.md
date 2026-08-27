@@ -470,6 +470,21 @@ it was **Research volunteering its own schema unprompted.**
 with no backfill run. **Timing, not foresight**: populated first, this would have
 been a data migration across two stores.
 
+**FIFTH INSTANCE, 2026-08-27, and the first where both artefacts live in the SAME
+product.** `displayedFloat` names two quantities: `row.displayedFloat` — the
+Sheet's number, resolved Sheet-only at `merge.ts:143` and shown on the board
+row — and `structure.displayedFloat` — the model's, from cited evidence, read by
+`AutomaticIntelligence.tsx:334`, `deskRead.ts:359` and `risk.ts:174`. A coverage
+figure ("0 of 249") was quoted desk-wide without saying which; Integration then
+attached the wrong interpretive line — *"a field the board never reads"* — and
+Research caught it at the readers before it spread further. **The previous four
+instances were caught at a thread boundary, because a boundary makes someone
+ask which is meant. This one sits inside one product and no boundary exists** —
+so the standing repair (threads publishing what they hold) cannot fire, and the
+name itself has to carry the distinction. Naming settles before the Q9 capture
+columns ship, in Research's scope; until then any figure about "displayedFloat"
+states which field it measured.
+
 ### OPEN: two split detectors, different thresholds
 
 **Flagged by R&D rather than silently reconciled.** Research requires a split to
