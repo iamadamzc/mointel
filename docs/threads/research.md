@@ -2422,6 +2422,38 @@ never happen is it reading identically to one observed at a single instant.
 float's own read instant is new, and it is one value per checkpoint rather than
 per ticker.*
 
+### The naming decision, made before the columns ship
+
+**Renaming is not the cheap option and documenting is not the whole answer.** The
+deciding fact is that the capture would make it **three**: `row.displayedFloat`
+(Sheet, board), `structure.displayedFloat` (model, intelligence panel and risk),
+and a new `desk_assessment_tickers.displayed_float` capturing the first.
+
+**Decision, and each part has its own reason:**
+
+**The new column is `sheet_float` / `sheet_float_source`, not `displayed_float`.**
+It stores what `resolveDisplayedFloat` returns, which is the Sheet's value from
+the `RESEARCH` tab or the `TODAY` tab and never anything else. **Naming it for
+its source rather than its destination is what stops the collision growing**, and
+it costs nothing because the column does not exist yet.
+
+**`row.displayedFloat` keeps its name.** It is the float the board displays; the
+name is accurate for this one and it is a derived view field, persisted nowhere.
+
+**`structure.displayedFloat` is the misnamed one and it stays, documented.** Its
+own docstring already says *"only ever a sourced float figure"* — so it is the
+MODEL's sourced float, and `displayed` describes a destination it does not
+control. But it lives in `AUTOMATIC_DOSSIER_SCHEMA`, which is the model's output
+contract: renaming changes the shape the interpreter must produce, and every
+stored dossier keeps the old key.
+
+*The tempting argument is that the field is null on ~100% of rows so a rename
+costs nothing — and it is nearly right. It is 2 populated of ~574, not zero. But
+the cost was never the data; it is that a renamed key in an append-only store
+means readers carry both names forever, which is a second collision bought to
+settle the first.* **Rename it only if the dossier schema moves for another
+reason**, and take it then.
+
 **R&D's observable-once argument holds, with one qualifier worth having.** The
 Sheet is overwritten by the ChatGPT tasks and keeps no history, so **what the
 board displayed on a given day is genuinely unrecoverable.** But
