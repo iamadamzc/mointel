@@ -167,17 +167,26 @@ into — production.** A float without its date is a different quantity.
 
 ### Arrived after the handover — added by Integration, 2026-08-27
 
-**One question from R&D, and answering it closes Q8's open item completely
-(register `018c0b0`).** R&D measured the interpretation stage's output multiple
-from stored `metadata.metrics` — incumbent 0.289 against the Anthropic replay
-arm's 0.282, so **the output multiple is not a differentiator** and Q8
-collapses onto price per token and retrieval volume. But interpretation is
-**14% of the bill**. The question: **do you hold OUTPUT tokens by stage for
-discovery and resolver**, alongside the input tokens measured over 08-19..21
-(discovery 216 calls / 7,862,324 in; resolver 181 / 3,853,202; interpretation
-312 / 2,024,072)? If yes, one query closes the item. **If no, the absence is
-itself the answer** — 86% of the bill cannot be compared on output, which Q8's
-design needs to know either way. Answer goes to R&D via Integration.
+**One conditional from R&D, and it has a clock on one branch (register
+`018c0b0`, sharpened at `18061f3`).** R&D measured the interpretation stage's
+output multiple from stored `metadata.metrics` — incumbent 0.289 against the
+Anthropic replay arm's 0.282, so **the output multiple is not a
+differentiator** and Q8 collapses onto price per token and retrieval volume.
+But interpretation is **14% of the bill**, and R&D searched the whole store:
+**no discovery or resolver token accounting is persisted anywhere** — your
+predecessor's by-stage input figures (discovery 216 calls / 7,862,324 in;
+resolver 181 / 3,853,202; interpretation 312 / 2,024,072, over 08-19..21) came
+from run-time instrumentation, not the store. So the conditional:
+
+- **If output was logged beside input in that instrumentation** — say where,
+  and one query closes Q8's item.
+- **If it was not, the history is gone — observable-once, the desk's own
+  telemetry** — and Q8 must be designed around instrumenting discovery and
+  resolver output going forward. **That branch has a clock: every run between
+  now and the instrumentation is another day of 86% of the bill unmeasured.**
+  Treat it as a small build to scope, not a shrug.
+
+Answer goes to R&D via Integration.
 
 Research is running normally after a manual recovery at 08:11 ET. Seven of the
 board's twelve names carried a fresh grade within minutes; IBG recovered on its
