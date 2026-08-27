@@ -33,7 +33,7 @@ questions is a thread that has stopped working.
 | # | Question | Opened | Status |
 | --- | --- | --- | --- |
 | Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — first half closed (`PILLAR_4_STRONG_FORM_EXCLUDED`); second half waits on tier A |
-| Q6 | Can the 09:25 pre-open assessment be scored against outcomes? | 2026-08-23 | **ACTIVE** — promoted 2026-08-27; runnable on the archive as it stands, no new capture |
+| Q6 | Can the 09:25 pre-open assessment () be scored against outcomes? | 2026-08-23 | parked — **promoted and re-parked 2026-08-27**; needs a five-date assessment extract, read-only, Ops |
 | Q5 | When does a board name's move happen, relative to when the desk boards it? | 2026-08-23 | **CLOSED 2026-08-27** — `BOARD_IS_LATE_TO_THE_MOVE`, below |
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | **CLOSED 2026-08-27** — the viscosity lines already answered it; the row was debt |
 | Q2 | Can any tape-character measure be defined at the grain he trades, and does it separate outcomes? | 2026-08-23 | parked — **Q7 merged in**; blocked on sub-minute capture |
@@ -83,9 +83,9 @@ blocker exactly. **Two rows for one blocker is the diffusion in miniature.**
 Design is unblocked either way and none of the four concepts takes a Phase 2
 column.
 
-**Q6 PROMOTED.** The only open question answerable with the archive as it stands
-— assessments are captured per checkpoint and outcomes are measured from the
-tape, so no new capture and no vendor gates it. It takes the slot Q5 vacated.
+**Q6 PROMOTED — AND RE-PARKED THE SAME DAY.** I promoted it as answerable with
+the archive as it stands. Starting it showed otherwise; see below. **The pass
+stands otherwise, and the promotion is left visible rather than edited out.**
 
 **Q1 STAYS ACTIVE while blocked**, deliberately: its first half is this thread's
 main result and its second half becomes live the moment tier A exists. **A
@@ -618,6 +618,53 @@ it states n beside it. **(a)'s clock is unaffected and (c) does not shorten it.*
 neither is wrong.** Mention-versus-number applies to both — including, as
 Research noted about its own count, to itself.
 
+
+
+#### Q6 re-parked the same day it was promoted — 2026-08-27
+
+**I promoted Q6 as "runnable on the archive as it stands, no new capture."
+Started it, and that was wrong.** Recorded rather than quietly re-parked,
+because the reasoning error is the fourth instance of one fault.
+
+**What Q6 needs is PER-CHECKPOINT assessment state across dates. What I hold is
+neither.**
+
+    archive symbol_desk_day     5 dates, but checkpoints are ROLLUPS --
+                                checkpoints_looked / failed / not_looked, no per-checkpoint row
+    local market.db             2 assessment dates, 08-17 and 08-18
+    OPEN_SPIKE_ASSESSMENT       exactly 1 instance locally, 25 tickers
+
+**One pre-open assessment on one date cannot be scored against anything.** The
+production extract has five dates; I do not hold it, and `npm run
+archive:export` is the tool for getting it — **so Q6's blocker is an extract Ops
+runs read-only, which is far smaller than tier A or the float capture, and it is
+still a blocker.**
+
+**THE FAULT, AND IT IS THE FOURTH TIME TODAY.** I reasoned that *assessments are
+captured per checkpoint* and *outcomes are measured from the tape* — **both
+true, and both about the system rather than about my copy of it.** I never
+checked whether this store held them. The store comparison, the display path,
+the extractor twice, and now this: **every one was a property of the system
+asserted where an instance needed checking.**
+
+**And it happened in the register pass itself**, one line after I wrote that a
+parked question must state what would unblock it. **Promoting a question is the
+same act as parking one and deserves the same evidence** — I demanded a
+condition of every parked row and supplied none for the promoted one.
+
+**A SECOND FINDING WORTH MORE THAN THE CORRECTION: the 09:25 pre-open assessment
+is called `OPEN_SPIKE_ASSESSMENT`.** Scheduled 13:25 UTC, which is 09:25 ET.
+**Q6 has been recorded since 08-23 under a name that does not appear anywhere in
+the schema**, and a successor searching the assessment types for *09:25* or
+*pre-open* would find nothing and conclude the capture did not exist. **The
+question names the clock; the artifact names the phenomenon.** Registered here
+so the next reader joins them, and it is the reason Q6 could not simply be
+looked up.
+
+**Status: Q6 back to parked, blocker "a five-date assessment extract, read-only,
+Ops." Q1 remains the only active question and it is blocked on tier A — so the
+register currently has NOTHING runnable, which is the honest state and is a
+better thing to know than a promoted question that stalls on contact.**
 
 
 #### Two capture conditions that lived only in messages until 2026-08-27
