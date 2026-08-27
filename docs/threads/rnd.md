@@ -326,15 +326,31 @@ argument surviving only under (a).
 
 **Neither as posed, because the fork rests on a count of one of two sources.**
 
-**1. The board's float has TWO inputs and the live-store count measured one.**
-`resolveDisplayedFloat` in [../../lib/dashboard/merge.ts](../../lib/dashboard/merge.ts)
-takes the dossier's `displayedFloat` when present and **falls back to the
-Sheet's own float column**, recording which in `displayedFloatSource` —
-`RESEARCH` or `TODAY`. Ops measured the dossier field: 0 of 249. **That the
-`RESEARCH` path is empty does not mean the trader saw nothing; it means the
-board has been falling through to the Sheet.** Same shape as measuring a regex
-that never runs, and as measuring a checkout: **the component was counted and
-reported as the system.**
+**1. The dossier's `displayedFloat` is not in the display path at all** —
+corrected by Integration, verified at the lines, and it makes the conclusion
+stronger rather than weaker. `resolveDisplayedFloat`
+([../../lib/dashboard/merge.ts](../../lib/dashboard/merge.ts)) has exactly two
+branches and **both are Sheet tabs**: `StructuralResearch.float` from the
+RESEARCH tab (`source: 'RESEARCH'`), then `MomentumTicker.float` from the TODAY
+tab (`source: 'TODAY'`). `displayedFloatSource` distinguishes **two Sheet tabs**,
+not dossier-versus-vendor. **There is no dossier branch to fall back FROM.**
+
+So Ops's 0 of 249 is a true statement about a field the board never reads.
+**Every float the trader has ever seen is the Sheet's** — not *mostly*, not *by
+fallback*, always.
+
+**WHAT I GOT WRONG AND WHY, because the mechanism is a name collision this desk
+keeps hitting.** I read the type `StructuralResearch` and took it for the
+Research pipeline's dossier. It is the Sheet's **RESEARCH tab**, mapped by
+`mapResearchRow` over `researchRows`. **A tab and a pipeline share a name, and I
+inferred an architecture from it without reading the constructor.** Fourth
+collision after two "Research's inventory" artefacts, two "replay" harnesses,
+and `split_factor`.
+
+**Right conclusion, wrong reason, is not the same as being right** — and this is
+the third time in one exchange that a conclusion of mine survived a mechanism
+that did not. The other two were the store comparison, twice. **The common fault
+is inference from names and shapes where a definition was one file away.**
 
 **2. The Sheet's float is the observable-once field, and it is being discarded
 every day.** It is read live at [../../lib/data/rows.ts](../../lib/data/rows.ts)
