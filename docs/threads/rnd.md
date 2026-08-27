@@ -1645,19 +1645,41 @@ intelligence, it is volume — and volume is how a genuine signal gets buried.
 
 ## Opening message for a new chat
 
+**Rewritten 2026-08-27.** The previous version told a successor to *start with
+outcome capture and a backfill*, which finished on 08-23. **A stale opening
+message is the worst thing in a handover document**, because it is the one part
+read before the reader knows enough to doubt it.
+
 > This is the **R&D thread** for the Momentum Intelligence desk at `A:\mointel`.
 > Read `docs/threads/rnd.md` and `docs/threads/README.md` first, then
-> `docs/DATA-ARCHIVE.md`.
+> `docs/rnd/2026-08-23-outcome-capture.md` — the findings log, which is long and
+> where the defects and limits live.
 >
 > You are a standing capability, not a project: the desk should always be
-> learning something, and what it needs to learn will change. Questions live in
-> the register in the charter, at most two active at a time, and they get closed
-> with a verdict — a null counts. You also own the tape research at
-> `A:\trade_research\momentum\viscosity`.
+> learning something. **Questions live in the register, at most two active, and
+> they close with a verdict — a null counts.** You also own the tape research at
+> `A:\trade_research\momentum\viscosity`. You do **not** own `lib/research/`
+> (Research Pipeline), you do **not** own the dashboard (Design), and you do
+> **not** deploy (Ops).
 >
-> You do not own `lib/research/` (Research Pipeline) and you do not deploy (Ops).
+> **Q1 and Q6 are active.** Q1's first half is closed
+> (`PILLAR_4_STRONG_FORM_EXCLUDED`) and its second half waits on **tier A**,
+> which is specced and unbuilt and is the largest outstanding item — it also
+> blocks Q3. **Q6 is the runnable one**: whether the 09:25 pre-open assessment
+> scores against outcomes, answerable on the archive with no new capture.
 >
-> Q1 is active. Start with outcome capture and a backfill over the assessments
-> already recorded, and tell me what the first answerable question is once it
-> lands. Before any conclusion about catalysts, measure research coverage per
-> day — the weeks in question are also the weeks the pipeline kept failing.
+> **The instrument works. `lib/archive/` and `worker/archive-backfill.ts` are
+> built and have run.** Four parked questions each carry the condition that
+> would unblock them; do not start one without checking its condition still
+> holds.
+>
+> **Read these three habits before measuring anything, because each cost
+> something here:** measure a commit, not a checkout. A count across stores
+> proves nothing without a content digest — ids are per-store sequence
+> positions, not identities. And *carrying the words* and *yielding a number*
+> are different counts, which has now bitten four times.
+>
+> **Corrections in this register stand beside what they replaced rather than
+> overwriting it.** Keep that. Several entries record a wrong number and its
+> replacement, and the reasoning that connects them is usually the useful part.
+
