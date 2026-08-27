@@ -1844,8 +1844,45 @@ already ran and stopped. **Find what stopped it before building it.** The
 seventh, SGLY, cites an "unverified secondary social-media claim" — a bad source
 that got through, which is its own finding.
 
-**Bracket: the last float is id 237 at `2026-08-20T16:32:32Z`. Nothing in the
-337 versions since.** Whatever changed sits between id 237 and id 238.
+**Last float: id 237 at `2026-08-20T16:32:32Z`. Nothing in the 337 versions
+since.**
+
+**CORRECTED — the bracket was false, and Research disproved it by testing it
+rather than accepting it (`data/market-prod-2026-08-23.db`, read-only).**
+
+There is nothing between id 237 and id 238. **29 versions across 29 distinct
+tickers produced no float before a single candidate commit was written**, and
+**2026-08-20 has zero commits on any ref**. The earliest 08-21 commit is authored
+`00:40Z`, after the drought began. `lib/research/interpret/` — the only thing
+that emits a float — **has no commit between 08-19 and 08-23.**
+
+**The loss is the model, not a change.** BEEM is the control: id 165 at
+`08-19T20:15Z` produced 18,261,585 citing sources 12328/12329; id 178 at
+`08-20T08:01Z` produced **null citing the same two sources**, both `active=1`,
+both excerpts containing "held by non-affiliates". SGLY does it inside one day —
+id 200 has a float, ids 215 and 220 do not.
+
+**It was a coin flip per pass, and you cannot bracket a coin flip.** Against
+evidence in hand the hit rate is ~5%: **188 active sources whose excerpt says
+"non-affiliate", across 77 of 231 researched tickers — and the model produced a
+float for 4.** So 0-for-249 needs no explanation; it is what a 5% flip looks
+like. **"Find what stopped it" was the right instruction and the wrong
+hypothesis** — the value was in testing it, and the answer is that it never
+worked.
+
+**Deterministic extraction over the same stored excerpts gets 19 of 77 tickers,
+no paid calls and no fetches.** Five times the model's four.
+
+**And the coverage trap, recorded before anyone asks for more.** Widening the
+pattern to bare "ordinary/common shares" lifts 19 to 31 and is **wrong on 8 of
+the 19 it overlaps, always larger**, because it bridges *"based on N shares
+outstanding, of which M ... held by non-affiliates"* and captures N. AIRE
+1.955x, ODYS 1.889x, INDP 1.434x, MNDR 1.224x. **That is R&D's documented
+NWTG 1.92x trap reproduced by regex.** The strict pattern is the one that ships;
+the twelve extra tickers are unverifiable by construction, being exactly those
+where no strict match exists to disagree.
+
+
 
 **It also corrects an inference, not just a number.** "`FLOAT_REQUIRES_SOURCE`
 fired zero times, so the model never proposes a float" does not follow — a guard
@@ -1853,7 +1890,7 @@ that never fires is equally consistent with **every proposal carrying a valid
 source**, which is what these seven are. The census establishes rarity; the
 guard's silence never could.
 
-### The board consequence: `NO FLAG FOUND` has been unreachable for a week
+### The board consequence: `NO FLAG FOUND` has NEVER been reachable in practice
 
 `resolveRisk` (`lib/dashboard/risk.ts:99`) is consumed by `MomentumTable.tsx:203`
 and `DiscoveryBoard.tsx:387`. Branch order:
@@ -1864,13 +1901,16 @@ NOT_RESEARCHED -> ANALYSIS_PENDING -> ANALYSIS_FAILED -> DIRTY_FLOAT
 ```
 
 `floatUnknown` is true whenever `structure !== null && structure.displayedFloat
-=== null`. **Since id 237 that is every researched row**, so `FLOAT_UNKNOWN`
+=== null`. **That is 567 of 574 versions — 98.8%. Since id 237 it is every
+row**, so `FLOAT_UNKNOWN`
 short-circuits and the two branches after it are dead — including
 `STRUCTURE_CLEAN`, label **`NO FLAG FOUND`**, the only `tone: 'pos'` outcome in
 the function.
 
-**The desk has had no way to tell him a researched name is structurally clean
-since 2026-08-20.** Every researched row returns a warn-tone flag, and a flag
+**CORRECTED, and it is worse than I first wrote. The desk has never been able to
+tell him a researched name is structurally clean** — `FLOAT_UNKNOWN` has
+short-circuited ~99% of researched rows **from the first day**. 2026-08-20 is
+when the last 1% went, not when it broke. Research's correction. Every researched row returns a warn-tone flag, and a flag
 that cannot be absent carries no information.
 
 **And the name collision does the damage precisely.** `STRUCTURE_CLEAN`'s value
