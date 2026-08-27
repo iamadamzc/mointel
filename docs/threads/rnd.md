@@ -439,12 +439,41 @@ denominator, which makes every ratio built on it look safer than it is.**
 
     float_shares x price == public_float_value    (within rounding)
 
-MNDR's F-3 fails it — 4,072,128 x $1.131 = $4,605,577 against a stated
-$3,761,845, **22.4% out**. Inverting instead gives 3,761,845 / 1.131 =
-**3,326,123**, which is **exactly the first value in Research's MNDR series.**
-Independent confirmation that Research derived its share counts correctly, and I
-had been about to ask whether dollar values had been read as counts — **the
-arithmetic answered it before the question was worth sending.**
+MNDR appeared to fail it — 4,072,128 x $1.131 = $4,605,577 against a stated
+$3,761,845, 22.4% out.
+
+**RETRACTED. THE FILING DID NOT FAIL THE CHECK; MY EXTRACTOR DID, AND IT FAILED
+BY THE EXACT TRAP THIS SECTION DOCUMENTS.** Research caught it. The MNDR excerpt
+states the float **verbatim** — *"of which **3,326,123** Class A Ordinary Shares
+were held by non-affiliates"* — and the check on the stated number passes at
+**0.00%**. My non-affiliate pattern required the literal word `shares`; MNDR
+says *Class A Ordinary Shares*, so the branch missed and fell through to the
+number after *based on*, which is shares outstanding. **I substituted the wrong
+operand and then attributed the resulting mismatch to the filing.**
+
+**The check is vindicated and my reading of it was not.** It caught a real
+discrepancy; the discrepancy was its own input. **A validator that flags its own
+parse error as a property of the data is worse than no validator, because the
+finding it produces is confidently about the wrong object** — and it is only
+distinguishable by reading the source text, which is what Research did and I did
+not.
+
+**AND THE SIZING CONSEQUENCE IS LARGER THAN THE CORRECTION.** If floats are
+often stated outright, **the full triple is needed only to VALIDATE, not to
+EXTRACT** — so the 13 excerpts carrying no dollar value are ruled out as
+validation pairs, **not as extractions.** Re-measured with a share-noun pattern
+that does not require the literal word:
+
+    excerpts                        24
+    float STATED verbatim            7
+    float derived from value/price   4
+    no float obtainable             13
+    distinct tickers with a float    9
+    full triple present              7  ->  6 verified, 1 genuine mismatch
+
+**Nine tickers, not five.** The earlier figure was a floor produced by a broken
+parser and reported as a property of the corpus — **the third time in two days
+that a measurement of mine described my instrument rather than the world.**
 
 **Three extraction traps, all silent, all producing a plausible number:**
 
@@ -463,10 +492,14 @@ yield no dollar value at all. **Carrying the words and yielding a defensible
 number are different counts** — the same split that made `displayedFloat`'s
 1-of-94 visible, and the same one behind Ops's *16 sub-keys present on all 249*.
 
-**So (c) is a validation set of roughly five tickers, not twenty.** That is
-still worth having — a **measured** vendor error beats Q1's assumed 15% — but it
-is too thin to carry a correction on its own, and any attenuation estimate drawn
-from it must state n. **(a)'s clock is unaffected and (c) does not shorten it.**
+**So (c) is a validation set of nine tickers on this store** — not twenty, and
+not the five I first reported. A **measured** vendor error still beats Q1's
+assumed 15%, and nine is thin rather than negligible; any attenuation drawn from
+it states n beside it. **(a)'s clock is unaffected and (c) does not shorten it.**
+
+**My 24 and Research's 29 are different populations from parallel runs, and
+neither is wrong.** Mention-versus-number applies to both — including, as
+Research noted about its own count, to itself.
 
 
 #### Three design commitments, fixed now rather than after the numbers arrive
