@@ -2286,3 +2286,54 @@ absent from the desk — `classifySecurity` reads it `PREFERRED`, `eligible=fals
 And `PSNYW` is the documented 1-of-369 residual from `b467154`, "Class C-1 ADS
 (ADW)", classifying `ADR_ADS` and still board-eligible. Live at +69%, so the
 known miss is not hypothetical.*
+
+---
+
+**27. The overhang ratio: measured before starting, and the numerator is the
+blocker.** *Approved and unstarted. Measured on the production snapshot
+2026-08-27; nothing built.*
+
+**`supplyBound` HAS NEVER RUN.** The key is **absent** — not null — on all 325
+stored versions, so `1df1d75` shipped after the newest of them and the ratio has
+**zero production observations.** Nobody knows what it produces.
+
+**Simulated offline against real dossiers**, replicating `computeSupplyBound`
+with a generous denominator (any collected company-facts row, not only a cited
+one):
+
+| | of 231 tickers |
+| --- | --- |
+| **would get a ratio** | **39 (17%)** |
+| no filed share count | 46 |
+| **no priced ACTIVE block** | **146 (63%)** |
+
+**The numerator is the binding constraint, and it is by design.** Of 657 supply
+blocks: `KNOWN_ACTIVE` **14%**, `POSSIBLY_ACTIVE` **56%**, `UNKNOWN` 24%,
+`NOT_YET_ACTIVE` 6%. `computeSupplyBound` counts only `KNOWN_ACTIVE` *and* only
+those carrying a share count — **67 of 657 blocks, 10% of the evidence.**
+
+**So the design question is not presentational, and it is the one worth putting
+to him.** A floor that says *at least this much supply is live* exists on 17% of
+names. An estimate that admits `POSSIBLY_ACTIVE` — the 56% majority — would exist
+on most names and could overstate. **Replacing a verdict that fires on 100% with
+a floor available on 17% is a coverage regression**, and that is the trade, not a
+rendering choice.
+
+*That distinction is also the education he asked for: `DIRTY_FLOAT` is a
+judgement, a floor is a proof, and an estimate is neither.*
+
+**AND THE NUMERATOR HAS UNVALIDATED OUTLIERS.** Simulated, `HQ` returns
+**250,000,000%** from a single priced block — six orders of magnitude, so it is a
+unit error rather than an overhang, and the guardrail note about *"shelf capacity
+converted to shares with no pricing or conversion terms"* names exactly that
+shape. **A ratio built on this today would render it.** Any display needs a
+sanity bound the verdict never required.
+
+**Confirmed for Integration and R&D: `displayedFloat` is populated on 2 of 231
+production dossiers — 1%.** R&D's 1-in-94 local figure holds on production and is
+safe to quote. `floatConfidence` is `UNKNOWN` on 229 of 231.
+
+**And the trader's original complaint remains answered.** `DIRTY_FLOAT` is **13%**
+of 231 (was 17% of 94); `CAUTION` 54%, `UNKNOWN` 33%. The desk is not calling
+every float dirty and never was — item 8 established the board was showing the
+Sheet's text.
