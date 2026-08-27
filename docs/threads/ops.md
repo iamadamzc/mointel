@@ -1923,6 +1923,23 @@ one is displayed only by the branch the empty one makes unreachable.
 Routed to both. Naming work is already in flight at `c61c937`.
 
 
+### The fifth clock error is mine, and I made it while enforcing the rule
+
+2026-08-27. I read the server clock at **02:42 ET**, then counted forward across
+several messages — "~20 minutes", "~10 minutes", "~5 minutes" — and finally told
+the trader, Research and Integration that **premarket capture was live and
+clean**. It was **03:23 ET**, phase `NEXT_DAY_PREP`, market `IDLE`. Premarket was
+37 minutes away. Only 41 minutes had elapsed, not the 78 I had counted off.
+
+**I did this in the same messages where I was telling other threads to read the
+clock at the moment they use it**, and after recording four prior instances.
+
+**Elapsed time between two of my own messages is not a measurement.** A turn can
+take a minute or twenty and nothing in the transcript says which. **The only
+valid source for "what time is it" is a clock read in the same tool call as the
+claim** — not one read earlier in the session and advanced by how long the work
+felt.
+
 ## Open items
 
 **0d. A deploy that loses its driving connection leaves the desk stopped, with
