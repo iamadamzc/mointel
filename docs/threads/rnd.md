@@ -551,6 +551,38 @@ stable and worth carrying: **floats ARE stated verbatim in these filings**, the
 product check works **once its operands are correctly scoped**, and coverage is
 **single-digit tickers** on this store.
 
+**CORPUS AND SCALE, from Research 2026-08-27 — both change the sizing.** The
+real corpus is far larger than either of our counts: **188 active sources across
+77 distinct tickers state a public float, 33% of all researched names**, and
+**19 of the 77 yield a defensible stated count** under the strict pattern —
+free, already stored. **So (c) is a 19-ticker validation set, not seven**; my
+number was a subset of a subset, measured on a store that ends 08-18.
+
+**And the trap is now demonstrated at scale rather than argued.** Research ran a
+widened *ordinary/common shares* pattern against the strict one over every
+stored excerpt: **wrong on 8 of 19 overlapping tickers, always larger, always
+the shares-outstanding-to-float bridge.** AIRE 1.955x, ODYS 1.889x, INDP 1.434x,
+MNDR 1.224x. **My MNDR bridge computes to 1.224x on a different store** — two
+parallel runs, same ratio, which is the first cross-store agreement in this
+whole exchange that survives a content check.
+
+**THE BRIDGE VARIES, AND THAT IS WHY SPOT-CHECKING WOULD HAVE PASSED IT.**
+
+    GNPX   1,254,061 / 1,252,551  =  1.001x   <- error would be 0.1%, invisible
+    MNDR   4,072,128 / 3,326,123  =  1.224x
+    NWTG   1,459,587 /   758,985  =  1.923x
+    AIRE                             1.955x
+
+**The trap's severity is the affiliate holding, so it is silent precisely where
+it is small.** A spot-check on GNPX clears the widened pattern at 0.1% error and
+the same pattern is 95% wrong on AIRE. **No magnitude sanity check catches it;
+only the product check does, and only where a price is present** — which is the
+argument for the corpus-wide run over any number of hand-picked examples.
+
+**Mention-to-number holds at scale: 19 of 77 is 25%**, against 7 of 17 (41%) on
+my subset. **Fourth instance of the split, and the first with a corpus big
+enough to call it a rate rather than an observation.**
+
 **STOP TUNING AND WRITE TESTS.** Every iteration here fixed a hand-checked case
 and introduced a new one. **Three of my last four errors were an output read
 without its input** — the store comparison, the display path, and this extractor
