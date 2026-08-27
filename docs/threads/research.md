@@ -2397,3 +2397,51 @@ board displayed on a given day is genuinely unrecoverable.** But
 re-fetchable even when the desk's record of it is not. **Those are different
 series** — *what the trader saw* versus *what the float was* — and Q9 should say
 which it needs before this is built.
+
+---
+
+**29. Why `displayedFloat` is null on every dossier — and the float that IS in
+reach.** *Answering Ops's question from the live-store measurement, 2026-08-27.*
+
+**The model never proposes one. It is not being nulled.** `FLOAT_REQUIRES_SOURCE`
+fired **0 times across 325 versions** — the only rules that fire at all are
+`REGISTRATION_IS_NOT_SELLING` (69) and `NO_ABSORPTION_INFERENCE` (6).
+
+**This is the second instance of item 8's exact shape in the same module.** There,
+`CLEAN` was never chosen and `CLEAN_REQUIRES_RECONCILIATION` never fired — *"it
+was not proposed and downgraded, it was never proposed."* Here the same is true
+of the float, and the type's own docstring is again purely negative: *shares
+outstanding is not float, market cap is not float.* **Nothing tells the model
+what a float looks like when it sees one.**
+
+### And it would not recognise one if it did
+
+`FLOAT_TERMS` is `/\bfloat\b/i`. **The SEC does not call it that.** Across 4,289
+excerpts carrying text:
+
+| | |
+| --- | --- |
+| contain the literal word `float` | **55** — largely risk-factor prose, *"our liquidity and public float"* |
+| contain `held by non-affiliates` / `aggregate market value` | **191** |
+| — of those, a regulatory THRESHOLD ($700M / $75M / $250M) | **95** — S-3 eligibility and smaller-reporting-company tests, not a float |
+| — **of those, an adjacent SHARE COUNT** | **29, across 20 tickers** |
+
+**Those 29 are real, issuer-stated public floats**, from General Instruction
+I.B.6 baby-shelf calculations in `424B5`, `F-3` and `S-3`. `MNDR` alone carries
+four at different dates:
+
+    3,326,123  →  2,657,640  →  2,398,640  →  2,136,640
+
+**A dated, declining, issuer-stated float series — in filings the desk already
+holds.** That is precisely the shape R&D's Q9 wants and it exists today for 20 of
+231 tickers, about 9%.
+
+**So item 9's "the fix is collection" stands, but the target is narrower and
+cheaper than the ownership route.** Section 16 and 13D work needs new fetches and
+new parsing; **this needs a regex over excerpts already stored.** It does not
+solve float — 9% is not coverage — but it is more than the 0% on the board now,
+and every one of those numbers is dated and citable.
+
+*Not built. Recorded because I nearly reported "191 excerpts state the float",
+which would have been wrong by a factor of six — 95 are the $700M threshold
+boilerplate repeated, and the distinction is the whole finding.*
