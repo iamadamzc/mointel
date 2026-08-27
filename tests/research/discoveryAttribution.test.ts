@@ -263,6 +263,70 @@ describe('the purpose recorded against a paid call', () => {
     expect(usageRows(db)[0].trigger).not.toBe(INTERVAL_RECHECK);
   });
 
+  it('does not spend the pass on a resolver turn that made no call', async () => {
+    /*
+     * 130 of 253 resolver turns in production — 51% — spent nothing and cost a
+     * pass. The stamping used to sit outside the `try`, so a turn that
+     * short-circuited on the 24-hour negative cooldown at `modelCalls: 0` still
+     * restarted the interval clock. The cooldown saved the money and kept the
+     * delay, which is the wrong half to save: on a name that is moving, the
+     * pass is the scarce thing.
+     */
+    const db = temporaryDb();
+    upsertIssuer(db, {
+      ticker: 'ACME',
+      companyName: 'Acme Inc.',
+      cik: null,
+      exchange: null,
+      country: null,
+      foreignIssuer: null,
+      cikConfidence: 'NONE',
+      mappingSource: null,
+      irUrl: null,
+      lastVerifiedAt: null,
+      companySources: {
+        ...EMPTY_COMPANY_SOURCES,
+        resolverVersion: RESOLVER_VERSION,
+        // Discovery had the last turn, so this pass belongs to the resolver.
+        lastDiscoveryAt: AN_HOUR_AGO,
+        lastDiscoveryMode: 'DISCOVERY',
+        // A negative recorded an hour ago: inside the 24-hour cooldown.
+        note: 'no IR source located',
+        lastVerifiedAt: AN_HOUR_AGO,
+      },
+    } as never);
+    const discovery = new CountingDiscovery();
+    const resolver = new CountingResolver();
+
+    const report = await collect(db, discovery, resolver);
+
+    // The cooldown still saves the money.
+    expect(resolver.calls).toBe(0);
+    // But the pass now falls through instead of being consumed.
+    expect(discovery.calls).toBe(1);
+    expect(report.discoveryMode).toBe('DISCOVERY');
+    expect(usageRows(db).map((row) => row.stage)).toEqual(['DISCOVERY']);
+  });
+
+  it('still spends only one paid call when the resolver turn does buy something', async () => {
+    /*
+     * The bound on the fall-through. Two tiers, one pass: a resolver turn that
+     * actually made a call must still consume it, or this fix would double
+     * every resolver pass into a resolver call plus a discovery call.
+     */
+    const db = temporaryDb();
+    seedIssuer(db, { lastDiscoveryAt: AN_HOUR_AGO, lastDiscoveryMode: 'DISCOVERY' });
+    const discovery = new CountingDiscovery();
+    const resolver = new CountingResolver();
+
+    const report = await collect(db, discovery, resolver);
+
+    expect(resolver.calls).toBe(1);
+    expect(discovery.calls).toBe(0);
+    expect(report.discoveryMode).toBe('RESOLVER');
+    expect(usageRows(db).map((row) => row.stage)).toEqual(['RESOLVER']);
+  });
+
   it('records a recovery episode under the recovery trigger', async () => {
     const db = temporaryDb();
     upsertIssuer(db, {

@@ -757,6 +757,22 @@ export async function collectCatalystEvidence(
     !usableCompanySource &&
     registry.lastDiscoveryMode !== 'RESOLVER';
 
+  /*
+   * Whether the resolver turn actually cost anything.
+   *
+   * A pass is the scarce resource on a name that is moving, and the stamping
+   * below used to happen unconditionally — outside the `try`, regardless of
+   * whether a model call was made. So when the 24-hour negative cooldown inside
+   * `resolveCompanySources` returned `reused stored negative result` at
+   * `modelCalls: 0`, the pass was consumed and the interval clock restarted for
+   * a turn that spent nothing and learned nothing. Measured across stored
+   * collector reports: 130 of 253 resolver turns, 51%.
+   *
+   * The cooldown was saving the money and keeping the delay, which is the wrong
+   * half to save.
+   */
+  let resolverSpentThePass = false;
+
   if (resolverDue) {
     report.discoveryMode = 'RESOLVER';
     try {
@@ -774,6 +790,7 @@ export async function collectCatalystEvidence(
       report.companySourceDetail = resolution.detail;
       report.discoveryRan = resolution.resolved;
       report.discoveryDetail = `issuer source resolution: ${resolution.detail}`;
+      resolverSpentThePass = resolution.modelCalls > 0;
     } catch (error) {
       // A failed IR lookup must never take SEC collection down with it, and
       // must not consume the next pass's turn either — the mode below records
@@ -783,17 +800,42 @@ export async function collectCatalystEvidence(
       );
       report.companySourceDetail = 'resolution failed';
       report.discoveryDetail = 'issuer source resolution failed';
+
+      /*
+       * A throw is charged as a spent pass, deliberately.
+       *
+       * The failure may have come from anywhere in the call — including after
+       * the request was billed — so `modelCalls` is not readable here and
+       * falling through would risk two paid calls in one pass. The old comment
+       * claimed the stamp existed so a failed lookup would not retry forever;
+       * that reason still holds, and it is the only branch it ever applied to.
+       */
+      resolverSpentThePass = true;
     }
 
-    // The turn is spent either way. The next eligible pass belongs to general
-    // discovery, so an issuer whose IR site cannot be found still gets the
-    // fallback rather than retrying the same failing lookup forever.
-    registry.lastDiscoveryAt = now.toISOString();
-    registry.lastDiscoveryFingerprint = deterministicFingerprint;
-    registry.lastDiscoveryMode = 'RESOLVER';
-    registry.resolverVersion = RESOLVER_VERSION;
-    report.discoveryTrigger = discoveryTrigger;
-  } else if (discoveryNeeded && !(urgentResolutionRan && urgentResolutionResolved)) {
+    if (resolverSpentThePass) {
+      // The next eligible pass belongs to general discovery, so an issuer whose
+      // IR site cannot be found still gets the fallback rather than retrying
+      // the same failing lookup forever.
+      registry.lastDiscoveryAt = now.toISOString();
+      registry.lastDiscoveryFingerprint = deterministicFingerprint;
+      registry.lastDiscoveryMode = 'RESOLVER';
+      registry.resolverVersion = RESOLVER_VERSION;
+      report.discoveryTrigger = discoveryTrigger;
+    }
+  }
+
+  /*
+   * Falls through in the same run when the resolver turn cost nothing, rather
+   * than deferring discovery by a full interval. Otherwise reached exactly as
+   * before: this was an `else if` on `resolverDue`, and `resolverSpentThePass`
+   * is false whenever `resolverDue` was.
+   */
+  if (
+    !resolverSpentThePass &&
+    discoveryNeeded &&
+    !(urgentResolutionRan && urgentResolutionResolved)
+  ) {
     /*
      * Reached on an ordinary alternating pass, and also immediately after an
      * urgent resolution that found nothing — that is the second of the two
