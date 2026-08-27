@@ -1881,12 +1881,16 @@ practical size of the inflation is unknown. Needs the live desk.
   `Coaching`) with their `sessionId` and `cwd`. Send with `send_message` using
   that `session_id`.
 
-  **Three routes that do NOT work**, each recorded because this file asserted one
+  **Four routes that do NOT work**, each recorded because this file asserted one
   of them: `ListAgents` names are opaque handles (`mointel-8c`, `claude-1a`) that
   map to no thread; `SendMessage` to a bare name works only while a session
   happens to surface in `ListAgents`, then fails *"No agent named … is
-  reachable"*; and copying a received message's `from` attribute as the `to`
-  fails on this machine despite the tool's own docs.
+  reachable"*; copying a received message's `from` attribute as the `to` fails on
+  this machine despite the tool's own docs; and **as of 2026-08-27 a bare name
+  can fail a fourth way — *"matches 2 agents by prefix"*, because retired
+  sessions keep their titles (`Integration-retired1`, `Integration-retired2`) and
+  the LIVE session does not win its own name.** Retirements accumulate, so this
+  one gets worse with time rather than better.
 
   **This file previously said to address it by name and listed the `ListAgents`
   entries. That was verified true on 2026-08-23 and had drifted by 2026-08-24** —
