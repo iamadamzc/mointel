@@ -619,6 +619,50 @@ neither is wrong.** Mention-versus-number applies to both — including, as
 Research noted about its own count, to itself.
 
 
+
+#### Two capture conditions that lived only in messages until 2026-08-27
+
+**Found by auditing what was true only in this session and not in the register.**
+Both had been relayed to Research and neither was written down here, which means
+they would have survived only as long as the thread that said them.
+
+**1. `float_basis` must carry the as-of INSTANT, not only the source — and the
+skew must be STORED, not merely computable.**
+
+I first asked for *source and as-of instant* and implied simultaneity was
+achievable. It is not, and Research is right about why: **the two halves are
+asynchronous by construction** — the float is a live read at checkpoint, the
+share count was written when that analysis last ran, possibly days earlier.
+
+**What I actually needed was for the skew to be CHECKABLE, not zero.** Three
+instants distinguished — the vendor's as-of, the filing cover-page date, and the
+desk read time per half — satisfies that. The load-bearing clause is Research's:
+
+> **A ratio whose halves are four days apart must never read identically to a
+> single-instant one.**
+
+**Add: store the skew as a derived field rather than leaving it computable.**
+A consumer who must compute it will not, and **the reader who most needs it is
+the one reading a summary.** Same reason `split_lookback_sessions` sits beside
+`split_sessions_ago` instead of being left as arithmetic — a value whose meaning
+depends on a parameter has to travel with the parameter, and *available on
+request* is not travelling.
+
+**2. The capture is ONE SHEET READ, and that is a single point of failure rather
+than a saving.**
+
+Both branches of `resolveDisplayedFloat` are Sheet tabs, so the capture joins
+nothing — **cheaper than a scope written against two systems would assume.** But
+the same fact means **a Sheet outage loses the float and the outcome together,
+with no second source to fall back on.**
+
+**`displayedFloatSource` is provenance, not redundancy.** It records which tab a
+number came from; it does not mean a second tab can supply one when the first
+cannot. **Anyone reading two sources as a fallback path will size the failure
+mode wrongly** — and the natural reading of a two-branch resolver is exactly
+that.
+
+
 #### Three design commitments, fixed now rather than after the numbers arrive
 
 1. **The outcome variable is settled and the grader problem does not apply.**
