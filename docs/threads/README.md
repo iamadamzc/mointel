@@ -85,6 +85,15 @@ Every thread works in `A:\mointel`. Rules, in order of how much they matter:
    This one is cheap to obey and the incident that produced it was recoverable
    only by luck of `pop` leaving the object behind.
 
+6. **A push publishes every commit below it.** All threads share one local
+   `main`, so any thread's push carries every earlier local commit, whoever
+   made it — a per-thread "hold my commit back from origin" is not possible
+   while any other thread pushes. A hold is collective (a freeze declared
+   through Integration) or it is a separate branch; it is never a thread
+   sitting on shared `main` intending not to push. *(Recorded by Integration
+   2026-08-27, the day both of a held commit's successors reached origin under
+   two different threads' routine pushes within the hour.)*
+
 ## The rule that keeps them separate
 
 A thread that finds work belonging to another **writes it down and hands it

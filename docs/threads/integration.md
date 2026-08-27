@@ -1414,6 +1414,23 @@ is marked as awaiting it. Line 95's existing attribution is how R&D caught
 this, which is the argument for provenance rather than against the rule. When
 he answers the push question, the README line gets his answer and the date.
 
+### And the hold it produced was structurally impossible
+
+Within the hour, both of R&D's held commits reached origin anyway — `d8c86aa`
+under Research's routine push, `b1c4c30` under this thread's own `8b2a537`.
+Neither pusher chose that: **on one shared local `main`, a branch push
+publishes every commit below the one being pushed**, so an individual thread
+cannot hold a commit back while any peer pushes. *"Push your own work"* cannot
+tell **my work** from **everything beneath it** — the two cases had never come
+apart because no thread had ever held a commit before. Same shape as every
+rule in this document that named an event for a condition: correct when
+written, divergent the first time the unconsidered case occurred.
+
+**A hold is collective or it is nothing.** If one is ever actually wanted, it
+is a freeze declared through the bus to every thread, or it is work on a
+separate branch — never a thread sitting on shared `main` intending not to
+push.
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin
