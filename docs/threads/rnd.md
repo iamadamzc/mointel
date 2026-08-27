@@ -40,7 +40,7 @@ questions is a thread that has stopped working.
 | Q6 | Can the 09:25 pre-open assessment be scored against outcomes? | 2026-08-23 | proposed — *handed over from Design*, see below |
 | Q7 | Can Chop Risk, Flush Risk or Effective Float Turnover be defined well enough to act on? | 2026-08-23 | proposed — *routed here by the desk owner*, see below |
 | Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | proposed — *from the trader*, scoped below; **the feasibility blocker is answered** |
-| Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-25 | proposed — *from the trader*, scoped below; **blocked: 1 of 94 dossiers carries a float number** |
+| Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-25 | proposed — *from the trader*, scoped below; **blocked: float populated on 1 of 94 local and 2 of 231 production dossiers** |
 
 **Q8 came from the trader on 2026-08-24**, in his words: *"we are using gpt,
 which models for what calls, would anthropic models be better and/or less
@@ -225,11 +225,24 @@ the caveat was *every stored float is the Sheet's vendor number*. **The stronger
 fact is that there is essentially no stored float at all.**
 
 **Stated with its own limits, per the rule that cost me a wrong count last
-night:** this is the LOCAL store, 94 versions, stale after 2026-08-18.
-Production carries more. **The shape of the finding is a schema-and-pipeline
-fact rather than a sample-size one — a field that is written but not populated
-stays unpopulated at any scale — but the 1-of-94 itself must be re-measured on
-production before it is quoted as final.**
+night:** the table above is the LOCAL store, 94 versions, stale after
+2026-08-18. **The shape of the finding is a schema-and-pipeline fact rather than
+a sample-size one — a field that is written but not populated stays unpopulated
+at any scale — but the 1-of-94 itself must be re-measured on production before
+it is quoted as final.**
+
+**RE-MEASURED ON PRODUCTION 2026-08-25 BY RESEARCH, AND IT HOLDS.**
+`displayedFloat` is populated on **2 of 231 current dossiers — 1%** — against
+1 of 94, **1.06%**, locally. `floatConfidence` is `UNKNOWN` on **229 of 231**,
+matching 0 of 94 carrying a value here. **Two stores, 2.5x apart in size, same
+rate.**
+
+**Quote the pair, not either alone.** The prediction that separates them was
+made before the second number existed — *a field written but not populated stays
+unpopulated at any scale* — and it is the kind that is worth little once it has
+been confirmed and a great deal beforehand. Recording that it was made in
+advance is the only thing that keeps it from reading as a rationalisation of the
+result.
 
 **What would unblock it,** in the order that costs least: capture `displayedFloat`
 and `sharesOutstanding` into the archive **with `float_basis` beside them** at
