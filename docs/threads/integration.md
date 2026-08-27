@@ -190,473 +190,116 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-*Written 2026-08-24 ~00:40 UTC because this thread's context was at 96% and a
-compaction loses what is not on disk. Everything below expires. **If you are
-reading this after 2026-08-24, verify every line before acting on it.***
+*Rewritten 2026-08-27 06:25Z (02:25 ET Thursday) as this session's handover. The
+previous version covered 2026-08-24 and every line of it is now history.
+**Everything below expires. Verify before acting on it.***
 
-**Re-verified 2026-08-24, between 00:43Z and 00:50Z, by the successor session,
-line by line.** All
-four session ids below are correct and all four threads answer to the titles
-given. What had already changed in the fifteen minutes since it was written is
-marked inline — which is the argument for the section, not against it.*
+### Reaching the threads — THIS IS THE ONLY MECHANISM THAT WORKS
 
-**A note on the stamps above, because this section is where a stale clock does
-its damage.** Several of them were first written as invented precision — 00:52,
-00:53, 00:55, 00:58 — when the only clock this session had actually read was
-00:43:28Z. Nothing turned on the difference, and that is exactly why it is worth
-recording: **a fabricated timestamp is indistinguishable from a read one until
-something depends on it**, and the deploy preflight's checkpoint arithmetic does
-depend on it. They are now anchored to things that can be checked — commit
-times, and the one clock read. **Stamp from a reading or from a commit, never
-from a sense of how long the work took.**
+    directory:  mcp__ccd_session_mgmt__list_sessions   ->  sessionId + title + cwd
+    send:       mcp__ccd_session_mgmt__send_message    ->  session_id + message
 
-**MONDAY PREMARKET RESULTS, 2026-08-24 08:2x–08:3xZ (04:2x ET). The readings this
-whole night was built for. Read this block first.**
+**`list_sessions` carries the real titles. Look every address up there, every
+time. Do not cache one and do not accept one asserted in a message — including
+your own.** This thread gave Ops its own session id from its scratchpad path; it
+was wrong, and only Ops using the directory saved the experiment.
 
-- **THE MARKET WORKER IS PROVEN.** `messageAgeSeconds: 1`, off null, bars flowing,
-  `sessionPhase: PREMARKET`, `Market: Alpaca SIP — LIVE`. **Unproven for 31 hours
-  across ten deploys** — the closed-market checks only ever showed the stream
-  connects, authenticates and subscribes. `RESTART_MARKET=no` and the `fd9556f`
-  pin held throughout and the thing they protect works.
-- **THE WAL IS A HIGH-WATER MARK, NOT A LEAK. Ops open item 2 closed on evidence.**
-  Nine samples over ~3 minutes under live load: `wal=531,574,792`
-  **byte-identical across all nine and identical to Saturday's baseline**, while
-  `db mtime` advanced continuously and `ranked` climbed 846 → 848 → 850.
-  **Saturday's flat number proved nothing because the contention was absent; this
-  one means something because it is present.** `journal_size_limit` is a tidy-up
-  rather than a fix.
-- **THE HEALING WORKS AND THE MIDDLE COLUMN IS ZERO.** `friday_partial_now` 42 →
-  **37**; **`STILL_partial_after_reanalysis` = 0**, with both failure branches
-  unfired (`fetch_SUCCEEDED` 0, `NO_fetch` 0); 21 symbols re-analysed, five of them
-  in the pool, all five healed. **The aggregate would have read 42 → 37 as success
-  and would have read the same if healing were half-working** — zero means
-  something only because the per-symbol form conditioned on the trigger exists, and
-  that exists because Research killed the aggregate before it ran and Integration
-  caught the fetch-failure ambiguity after.
-- **NO UNIT FAILED.** web 0, market 0, research 1 (last night's `0778533` crash),
-  assess 0. **First reading of that counter with no deploy in the window**, so it
-  is the control the earlier ones lacked. The 50-second cliff did not materialise.
-- **`Gap` PASSED — the check that exists for one hour a day.** The old code carried
-  the word only in a `title` attribute and **could never render it as visible
-  text.**
-- **THE OVERLAY IS CONFIRMED IN PRODUCTION ON A BARE BOARD, first time.** 12
-  Discovery rows, 841 eligible of 8,653 tracked, cycle column populated with **no
-  `?symbols=` anywhere** — every prior observation went through the parameter that
-  bypasses the rank gate. Column: `BACKSIDE` ×6, `NO RUN` ×3, `FRONTSIDE` ×1,
-  `CYCLE NOT ESTABLISHED` ×1, `ANALYSIS PENDING` ×1. **`FRONTSIDE` newly observed —
-  four of six phase names now seen; `OFF HIGH` and `PRIOR RUN` remain UNOBSERVED,
-  not failed.** `BCTXL` and `IQMXW` absent, correct.
-- **OPEN:** whether the summary segments' counts (`frontside 10`, `backside 7`)
-  return the rows they advertise when clicked — the failure `MarketSummary.tsx:58`
-  was written to prevent, in a new costume. And whether `NO RUN` ×3 is genuine or
-  the short-series shape; those render identically and only per-name bar counts
-  separate them.
+**`ListAgents` does NOT work** — opaque handles (`mointel-8c`, `claude-1a`) that
+map to nothing. Neither does `SendMessage` to a name, nor copying a received
+message's `from` attribute as the `to` (the tool's own docs recommend the last one;
+it fails here). **Threads CAN reach this thread unprompted** — proven by Ops.
 
-**STATE AT 01:45Z, 2026-08-24 — read this block first; everything below it is
-older.**
+**Title this session `Integration` immediately.** Peers look for that title in
+`list_sessions`.
 
-- **Production is `a259e8c`**, live 01:37 UTC, gated at that exact sha (1278
-  tests, lint, build, typecheck), capture verified at directory scope. `c48e199`
-  shipped before it at 01:30:37. **Two deploys, two sub-second stops** — 01:30:27
-  to 01:30:27 and 01:37:06 to 01:37:06, against 31 seconds and a hard kill
-  before the fix. `97f198d` confirmed rather than consistent-with-one-run.
-- **The market worker is untouched across both** — pid 129202, `NRestarts=0`,
-  still on `fd9556f` behind its pin. Eight deploys now.
-- **The overlay's effect cannot be seen tonight and that is not a failure.** The
-  Discovery board is empty: 8,653 `ticker_session` rows seeded for 2026-08-24,
-  **0 with `rvol_rank`**, against 2,821 on the 21st. Nothing has traded, so
-  `/api/market` returns `discovery.rows: 0` and there is nothing for the overlay
-  to act on. The six phase names and the retracement figure are **gated on a
-  populated board**, not on the deploy.
-- **`/api/dashboard` is the Sheet-merged view and carries no `intelligence` key.**
-  Its `cycle` is the Sheet's — the overlay feeds the desk read at
-  `deskRead.ts:528`. Checking the wrong endpoint gives a confident wrong answer
-  **in either direction**. Third instance today of the Sheet's cycle vocabulary
-  sitting where the dossier's is expected.
-- **OPEN, ROUTED TO RESEARCH, AND IT HAS A MONDAY DATE: the guard and the overlay
-  disagree about what a trustworthy bar is.** `ensureDailyHistory` refuses a bar
-  whose `fetchedAt` precedes its own session end; **`overlayLiveCycle` applies no
-  such test** — verified at the live code, it takes `readDailyBars(...)` and
-  computes. So the 42 symbols holding a partial Friday bar render a cycle from an
-  unfinished session from Monday's open until each is re-analysed and healed,
-  **because board render and re-analysis are independent.** Ops's `latestDate`
-  discriminator does not flag them: a partial *Friday* bar carries a prior date
-  and reads clean. **Two definitions of a usable daily bar, one in the write path
-  and none in the read path, four commits apart on the same night.**
-- **Monday has four readings, all Ops's:** the WAL under real write pressure,
-  `messageAgeSeconds` off null, the **per-symbol** healing check on the 42, and
-  the stop time on whatever ships next.
-- **Deploy delegation is live and confirmed by the trader directly.** Next
-  instruction is a new gate: six non-docs files above `a259e8c`, including
-  `worker/research.ts`.
+### The clock, and it has bitten four times in three days
 
+**This host is UTC+2 (CEST). Every shell and test timestamp is SIX HOURS ahead of
+New York.** `10:45` local is `04:45 ET`. **Read `date -u` or an explicit
+`America/New_York` conversion at the moment you use it** — never extrapolate from
+an earlier reading, and never infer the trading day from tool output.
 
+### Production
 
-- **Both item 16 defects are CLOSED.** Guard at `e9e0a9e`, healing folded in;
-  read-time cycle at `a259e8c`. The backfill was cancelled and is not coming
-  back.
-- **The read-time fix landed as an OVERLAY, not a move**, and that is Design's
-  doing. `overlayLiveCycle` spreads into a new object and leaves the stored
-  dossier untouched, so the `asOf` boundary at `pipeline.ts:363` still governs
-  replays and archived assessments while the live board tracks the tape. A test
-  asserts the non-mutation directly. **No fetch enters the read path.**
-- **Deploy target is `a259e8c`**, not the `c48e199` Ops originally gated — Ops is
-  re-gating in its pinned rig while it waits. Non-docs content of
-  `a5a3a98..a259e8c`: `lib/market/readModel.ts`, `lib/research/history.ts`,
-  `lib/research/historyFetch.ts`, and two test files. **Still unshipped;
-  production remains `161f15f`.**
-- **The deploy is with the trader and is the only thing blocked on him.**
-- **`dossier.cycle`'s deletion is now a reader inventory, not a plan.** Four real
-  sites in `worker/desk-assessments.ts` — `:239`, `:240`, `:275`, `:308`, and
-  `:239` fires first — plus four false positives, all of them the same
-  Sheet-versus-dossier name collision. Writer made safe in the same commit as the
-  deletion, never after.
-- **Design's verification plan changed shape and check 4 is retired.** Its own
-  correction, and it is right: if both commits ship together, check 4 *cannot be
-  run at all* — it needs a row with a sheet cycle AND no computed one, and the
-  overlay removes the second half everywhere there are two or more stored bars.
-  **That is a gain.** Check 4 was a weak positive — the absence of the old answer,
-  never the presence of the new one. It is replaced by the six phase names and
-  the retracement figure, which I had called not-falsifiable an hour earlier and
-  which are **strictly stronger**: `DAY 1`, `OFF HIGH` and `PRIOR RUN` are strings
-  the old code cannot produce on any row under any data, and they arrive on every
-  row at once instead of trickling. The sitting to plan is: deploy, then check 3
-  and the phase names together.
-- **The ping rule is live and working.** Four unprompted pings in the first twenty
-  minutes, and three of them carried findings rather than status.
+**Live: `bc78d49`.** Nothing non-docs sits above it — **there is nothing to
+deploy.** Schema 22. Market worker untouched across thirteen deploys, pinned at
+`fd9556f` behind `RESTART_MARKET=no`.
 
-**Reaching the threads.** Send to the NAME from `ListAgents`, or by session id
-via `mcp__ccd_session_mgmt__send_message`. Ids are stable, names are not:
+**A deploy is NOT fire-and-forget.** `push-release.sh` stops the runtime units,
+migrates, then starts. On 2026-08-25 it stalled between stop and start, an ssh
+timeout killed the remote process tree, **and there is no watchdog** — the desk
+stayed down 3h22m, dark through the first 102 minutes of live premarket. **Ops's
+item 0d (`trap start_services EXIT`) is the fix and is still unbuilt.**
 
-| Thread | Session id |
-| --- | --- |
-| Ops | `local_c4fc69df-3427-45d9-97d1-3935510ac8bb` |
-| Research | `local_2163766c-fea1-4d95-b86b-c78930fd4771` |
-| Design | `local_c6befb28-5c0b-4f3b-b10d-5fefcd46fd58` |
-| R&D | `local_61f36ca0-906c-4624-947a-c3c5603257ad` |
+### DECISIONS WAITING ON HIM
 
-**Naming, and it is load-bearing rather than cosmetic.** The other threads
-address this one **by the session title**, which appears in their `ListAgents`.
-Design established that the title works and that the `from=` id on a
-cross-session message does **not**. So:
+1. **Replace the DIRTY FLOAT verdict with an overhang RATIO plus its basis** —
+   **he has said yes**, and it is unstarted. `CLEAN` is in the enum and has been
+   produced **zero times in 1,850 archived assessments**; the label cannot vary
+   because `CLEAN` requires proving a negative. **He asked for this to come with an
+   education**, because float is a core pillar and the change is conceptual, not
+   cosmetic.
+2. **The re-trigger fix** — `queue.ts:167` skips a ranked name whose dossier
+   exists *at any age*, so **a name the desk has ever analysed gets one board job
+   per session and is then frozen out** (238 of 323 ticker-sessions). Cost RCON two
+   hours on a name he was holding. Scoped, not built.
+3. **The rotation fix** — `collector.ts:788` stamps a resolver turn as spent
+   outside the `try`, so **130 of 253 resolver turns spend nothing, learn nothing,
+   and burn a pass.** Real, but **alone it would flatter itself** on the RCON case.
 
-- **A new Integration session must be titled `Integration`.** Until it is, it
-  appears as `mointel-NN` and **no thread can reach it** — they are all holding
-  `Integration` as the address. An untitled session is a bus nobody can board.
-- **The bracketed ref is per-session and changes.** The previous session was
-  `Integration [0338b5]`; that ref dies with it. Threads should send to the bare
-  name and only append a ref if `ListAgents` shows two rows sharing it.
-- **Two live Integration sessions is the failure case.** Identical names make
-  sends ambiguous, and a message can land in the dead one. **End or rename the
-  outgoing session before or immediately after the new one is titled.**
-- **A new session's first action is to announce its address** to Ops, Research,
-  Design and R&D — one line each. They will not discover it, and a thread
-  holding a handover for an unreachable bus goes to the trader instead, which
-  is the thing this role exists to stop.
+### IN FLIGHT
 
-*Earlier precedent: this thread appeared to peers as "Project Manager" for its
-first hours, which asserted an authority the charter explicitly denies — threads
-defer to a manager. The title is what peers see; treat it as part of the
-charter.*
+- **His headline feed.** He supplies ticker + timestamp from his own news service;
+  Research holds ingest and comparison, R&D gets the rate. **First data says the
+  desk is NOT missing news — News Count (4h) was 0 on all nine of his top movers
+  and the desk independently found none.** RCON was the exception.
+- **The comparison is ONE CELL, not a tally**: his window is 4h rolling, the
+  desk's is 36h. **Only "he has a headline inside 4h and the desk found nothing"
+  is a failure.** Anything else is window arithmetic.
+- **Derived float, phase one** — Forms 3/4/5 only, XML and deterministic, 98%
+  coverage. **Store four numbers, never a float**: filed shares, insider holdings,
+  13D blocks, 13G blocks, each with source and date. **He does not know what a
+  passive 13G block means and must not be made to decide it.** `OWNERSHIP
+  maxFetch: 1` is the only gate. **Held pending the items above.**
+- **NEW, and R&D's:** whether float or overhang correlates with performance at
+  all, possibly against RVOL. **His question, registered rather than started.**
 
-**CANCELLED BY THE TRADER, 2026-08-24. His words: "fix the path".** *Everything
-below this line about the backfill is history; it never ran. The section is kept
-rather than deleted because the reasoning that killed it is the useful part.*
+### Recently settled, so nobody reopens it
 
-**He killed it by challenging the premise, which nobody else had.** His question
-was why Alpaca should be called for 231 names when only the ones reaching the app
-matter. Checking it made the case against the run stronger than he put it:
+- **The enqueue fix works, with positive evidence** — last night's recap queued 9
+  jobs for the session it *prepares*; `stalledJobs` steady at 16, no fourth row.
+  **The existing 16 are not retired by it and nobody owns retiring them.**
+- **Deep history is live**: full-depth fetch on a top-10 name above its stored
+  ceiling, ~0.4 fetches a morning, split factors derived exactly from price data.
+  **BTCT: $1.80 shallow, $26.58 comparable, $14,249.94 all-history on a bar that
+  traded four shares.**
+- **`VERIFIED BLUE SKY` is gone** — the label now reads `ABOVE PRIOR CEILING $X`.
+- **A newswire is never a company SOURCE, but reading one as evidence was never
+  refused.** The `:250` rejection is about persistence, not newswires.
+- **He trades EVERY session.** The setup is the requirement; **no rule, check or
+  threshold may be keyed to the clock.**
 
-- **`resolveCycleHistory` has exactly one call site outside its own module** —
-  `pipeline.ts:365`, inside the accepted-analysis path, after the model call.
-  There is no model-free way to write `computedCycle`. So the backfill had to
-  force a full model re-interpretation per symbol, and **the ~2.6M input tokens
-  were the toll for reaching an arithmetic assignment**, not the cost of the
-  cycle. The cycle is a pure function over daily bars and costs nothing.
-- **The values would have decayed.** `pipeline.ts:194` returns the existing
-  dossier on the reuse path, so a stored cycle refreshes only when the EVIDENCE
-  fingerprint moves — filings, not price. `research.md` item 16 already said it:
-  *"the stored cycle freezes at the last filing. STAK would carry DAY_ONE from 24
-  July for the rest of that week."* A column correct on Monday morning, drifting
-  silently from the open.
-- **Research's item 16 fix removes the need for a backfill of any size.** Compute
-  at read time. And the read path is **synchronous** — `readDailyBars`
-  (`history.ts:62`) and `readCurrentAnalyses` (`readModel.ts:622`) are sync
-  better-sqlite3 calls — so a read-time cycle costs one arithmetic pass over
-  stored bars and **makes no Alpaca call at all.** Fetching stays in the worker,
-  for the names being analysed, which is exactly what he described.
+### The four practices that cost this session the most
 
-**THE DEADLINE MOVED; IT DID NOT DIE, and "backfill cancelled" reads like
-"clock gone".** The backfill's own 08:00Z deadline is void. **The live-path
-partial-bar exposure Ops escalated at `2830ca3` is untouched and still begins at
-Monday's open.** Nothing about this decision reduces it. So the item carrying the
-clock is now the **partial-bar guard**, not the read-time move.
-
-**THE GUARD IS DONE: `952f9e1`, committed and pushed 01:11Z.** `lastSettled
-TradingDate` is one concept doing both jobs — which bar may be STORED and whether
-the cache is CURRENT — because they are the same question asked twice. The cache
-test moves from `stored === today` (a **UTC** date) to `stored >= settled` (ET),
-and the store write filters `rows.filter(r => r.tradingDate <= settled)`. The
-boundary is the **20:00 ET session end, not the 16:00 close**, chosen against the
-unverifiable: nobody can establish tonight whether Alpaca folds extended-hours
-trades into a `1Day` bar, and four extra hours cost a daily-grain measure nothing
-while guessing wrong stores a bar that is still moving. Named as what is
-ACCEPTED, per the allowlist rule. Holidays deliberately unhandled and failing in
-the redundant-fetch direction.
-
-**Deploy target is `952f9e1`, and it carries both.** Sequencing called here:
-one deploy, not two. Outside `docs/`, `a5a3a98..952f9e1` is exactly the guard's
-two files, checked at directory scope. Design's checks have their own clock —
-review session 13 expires 11:59 ET — and two gates for two wanted changes buys
-nothing. Ops was told and offered the reversal.
-
-**MY OWN CLAIM WENT STALE INSIDE THIRTY MINUTES, and it is the section above
-this one working exactly as written.** I told Ops and Design that there was *no
-code between `a5a3a98` and HEAD, only charter files.* True when measured, false
-by `952f9e1`. It was a directory-scope diff, correctly done, against a HEAD that
-then moved — **the measurement was right and the tense was wrong**, which is the
-whole of *Observations go stale*. Corrected to Ops in the same message that
-asked it to deploy, before it could gate on the old sentence.
-
-**Open, and it is Ops's because it needs the box: is the store ALREADY poisoned?**
-The guard is **preventive, not corrective**. Item 16 says the live path always had
-this defect and only that it *"has not bitten"* — a claim about consequence, not
-about whether partial bars are already sitting in `daily_bars`. It is checkable
-and the column exists: `fetched_at` (`db.ts:390`). A row whose `trading_date`
-equals the ET date of its own `fetched_at`, with `fetched_at` before 20:00 ET
-that day, was written mid-session.
-
-**Checked before raising it, and it is a size question rather than an incident.**
-`upsertDailyBars` is `ON CONFLICT(symbol, trading_date) DO UPDATE`
-(`history.ts:47`), so a pre-existing partial row is overwritten by the next fetch
-that happens once `settled` has moved past its date. The change from `===` to
-`>=` **delays that healing by about a day; it does not remove it.** Handed to
-Research to record in item 16 in its own words, because the next reader of `>=`
-will ask the same question and should not have to re-derive it.
-
-**THE STORE WAS ALREADY POISONED, AND THE DEPLOY TARGET MOVED TWICE.** *Both
-within two minutes, 01:16–01:17Z.* Ops ran the read-only `fetched_at` check this
-thread routed to it and found **133 rows across 133 symbols** written mid-session
-— `trading_date` equal to the ET date of their own `fetched_at`, fetched before
-20:00 ET. The load-bearing part is not the total: **42 are Friday's, and those 42
-are exactly the 42 symbols whose latest bar IS Friday. Every symbol holding a
-Friday bar holds a partial one.** `c48e199`.
-
-**Ops traced `952f9e1` through Monday and found it protects the rows it exists to
-remove.** At Monday premarket `lastSettledTradingDate` returns `2026-08-21`,
-those symbols hold `stored = 2026-08-21`, `stored >= settled` is true, nothing
-refetches — **the partial Friday bar stands all Monday and any cycle computed
-from it uses it.** Research found the same defect from the other end, tracing a
-partial *Monday* bar surviving all of Tuesday's premarket and session.
-
-**Both threads produced the same repair fifteen seconds apart and neither could
-see the other.** Research's `e9e0a9e` at 03:16:44 local; Ops's `c48e199` at
-03:16:59, which names `fetched_at` as *"the improvement it is one column away
-from"* and says it *"would have refetched these 133 on first contact"* — of a fix
-already committed. The skip condition is now both conjuncts:
-`stored.tradingDate >= settled && Date.parse(stored.fetchedAt) >=
-sessionEndUtc(stored.tradingDate)`. A bar written before its own session ended
-fails the second whatever date it carries, is refetched, and is overwritten on
-conflict.
-
-**Ops's `latestDate` discriminator does not catch these, and that limit outlives
-the fix.** It flags a row whose `latestDate` equals the current trading date; a
-partial *Friday* bar carries a prior date and reads clean. So the stamp separates
-a cycle computed today from an unfinished session, and says nothing about one
-computed from a bar that was unfinished when captured.
-
-**DEPLOY TARGET AT 01:17:47Z IS `c48e199`.** Non-docs content of
-`a5a3a98..c48e199` at directory scope over the whole tree: `lib/research/
-history.ts`, `lib/research/historyFetch.ts`, `tests/research/historyFetch.test
-.ts`. **HEAD moved four times in twenty minutes tonight**, so this is stamped
-rather than stated.
-
-**Routed under the delegation, both pieces of item 16 to Research, in this order
-and the order inverts the obvious one:** the guard FIRST because it has the
-clock and fails closed whether or not Alpaca returns a partial `1Day` bar in
-premarket; the read-time cycle SECOND because it has no deadline and its absence
-is a blank column, which is honest.
-
-**The ownership call, and item 16 slightly overstates the seam.** It records the
-read path as having *"became Ops's in the 2026-08-24 split"*. True of
-`lib/market/store/researchRepo.ts` — but its caller is `readModel.ts:622`, and
-`lib/market/readModel.ts` is not in `store/`, so it is **Research's** under the
-same split. Either way the work is Research's on the split's own test — *does it
-define, migrate or version a table? Ops. Does it compute? Research.* It computes,
-and there is no schema change, so the schema-fails-on-the-box risk that earned
-Ops `store/` does not arise. **Ops reviews and deploys; Ops was told and offered
-the call back.**
-
----
-
-**HISTORICAL FROM HERE — the backfill as it stood before it was cancelled.**
-
-**NOT IN FLIGHT — BLOCKED ON THE TRADER, WITH A HARD DEADLINE.** *Corrected in `91000c1`
-(00:50:32Z): this section said "in flight" and it has not started.* Ops is to run a forced
-`research:interpret` backfill over 231 dossiers to populate `computedCycle`,
-**before 08:00 UTC 2026-08-24**. After that a partial Monday daily bar gets
-stored dated today, `latestDailyBarDate` then equals today, and
-`ensureDailyHistory` short-circuits forever — **the partial bar is locked in and
-no corrective pass reaches it.** Cost ~2.6M in / 0.9M out plus 231 Alpaca REST
-calls on the market worker's budget. Ops executes, Ops takes both WAL readings
-(baseline 531,574,792). **Research cannot run it — no production access.**
-
-**AND THE BACKFILL DOES NOT INOCULATE AGAINST THE PARTIAL-BAR LOCK-IN.**
-*Research, in `54d8c23` at 00:48:10Z; verified here at the lines rather than
-relayed.*
-`ensureDailyHistory` (`lib/research/historyFetch.ts:32`) short-circuits on exact
-string equality between `latestDailyBarDate` and `new Date().toISOString()
-.slice(0,10)` — a **UTC** date. A run tonight stores bars dated **2026-08-21**,
-the last trading day; UTC today is **2026-08-24**. Not equal, so Monday's live
-re-analyses refetch exactly as they would have without it. **The backfill
-neither causes the lock-in nor prevents it — all three scope options carry
-identical exposure.** It would be natural to assume otherwise, and Ops's own
-option 3 was framed as *"arguably the safer-looking board"*; that half does not
-hold and Ops was told before the trader answered. What survives of Ops's
-argument is a different axis and is untouched: backfilled-correct and
-Monday-possibly-wrong cycles are indistinguishable on the board, which is about
-running versus not running rather than about 148 versus 231.
-
-**AND OPS'S SECOND ARGUMENT IS RETIRED TOO — THE DISCRIMINATOR WAS ALREADY
-STORED.** *Research, verified here end to end.* Ops held that a backfilled-correct
-cycle and a Monday-partial-bar one are indistinguishable on the board. They are
-not: `CycleArc.latestDate` (`lib/market/cycle.ts:143`, assigned `latest
-.tradingDate` at `:330`) is the trading date of the last bar the cycle was
-computed through, and it reaches the stored dossier —
-`CycleResult` (`:215`) → `CycleHistory.current` (`:365`) →
-`computedCycle` (`lib/research/types.ts:563`), written at
-`pipeline.ts:365`. **A cycle computed tonight is stamped `2026-08-21`; one
-computed Monday from a partial bar is stamped `2026-08-24`, the same date as the
-session in progress.** A row whose `latestDate` equals the current trading date
-was computed against an unfinished session.
-
-**The step worth recording is which half each thread verified.** Research's
-evidence was an arc computed against production bars — necessarily, since 0 of
-231 dossiers carry the field, so no stored one existed to read. That left
-**persistence** unchecked: whether `latestDate` survives onto the dossier or
-lives only in the computation. It survives, by the chain above, and that was the
-step where the claim could have failed. **One limit, stated rather than
-absorbed: a `NO_CYCLE` result has no `latestDate`, so this is every row with an
-arc, not every row.**
-
-**So both arguments Ops offered for "don't run it" are retired** — the safety
-half by the inoculation finding, indistinguishability by this — and what remains
-behind that option is token cost alone. What remains between 148 and 231 is
-coverage against contention, which is Ops's and which nothing tonight touched.
-**Research's general form is the durable part: before concluding two states are
-indistinguishable, check whether the data already separates them.** The
-discriminator existed, was not built for this, and nobody had looked for it. It
-is the fourth observable-versus-failure problem the desk hit in a day and the
-first where the answer was already in the store.
-
-**It is blocked on one question and one only: scope.** Ops has gated everything
-and put the choice to the trader directly — 148 tickers (~1.7M in / 0.6M out,
-148 Alpaca calls) against all 231 (~2.6M / 0.9M, 231 calls) — because he
-approved it before the token number existed. Ops's words: *"Everything is ready;
-one word and I start."* **Nobody is waiting on anybody else.** Research had
-raised a possible deadlock — Ops signalling it for the second WAL reading — and
-Ops killed it outright: *"No deadlock from me. I'll run it and take both WAL
-readings around my own run."* Relayed to Research in the same window so it is not
-holding.
-
-**Monday 04:00 ET, two instruments, both Ops's, both need nobody present:** the
-WAL sample under real write pressure, and `messageAgeSeconds` coming off null
-for the market worker's first open since its 01:27 restart on the 23rd. The
-`computedCycle` progress meter is **retired** — it reads the same whether
-research works or not.
-
-**Decided, not started:** the float build (`research.md` item 14) in a fresh
-Research session.
-
-**~~The read-time cycle move plus the partial-bar lock (item 16).~~ ESCALATED BY
-OPS, AND THE ESCALATION IS AGAINST ME.** *`2830ca3`, committed 00:36:14Z.* I recorded it
-here as **not urgent before Monday**. Ops's judgement is that **it is Monday**,
-and the reason is exposure rather than code: `computedCycle` shipped in
-`161f15f`, so from Monday's open every re-analysis of a moving name runs
-`ensureDailyHistory` and none holds a bar dated today, so every one fetches. It
-was latent only while nothing re-analysed mid-session with a cycle depending on
-the bars, and tonight's deploy ended that. **What decides the size is
-unverified and untestable tonight** — whether Alpaca returns a partial `1Day`
-bar during premarket; the market is closed, so a call now proves nothing about
-08:00 UTC. Ops's framing of the cost is the part to carry: a blank column says
-nothing, **a cycle computed on a partial bar reads as a real answer** and is
-indistinguishable on the board from a correct one.
-
-**It landed in `ops.md` only.** `research.md` item 16 carries the mechanism and
-not the escalation, so a Research session opening item 16 would still read it as
-next-session work. Relayed to Research in the same window. **A charter can be corrected
-in the wrong document** — this thread's own version of the retraction failure,
-and the third instance of it recorded here.
-
-**Design's four verification checks: 2 of 4 done, and the other two are gated on
-a deploy rather than on the clock.** *Design's table in `design.md`, last written 00:27:59Z,
-is the authority; this is a pointer, not a copy.* PASSED live: the filter chips
-reading `All · Day 1 · Frontside · Off high · Backside`, and summary segments
-carrying no `warning`. FAILS TODAY: the researched table still shows
-`FRONTSIDE — WARNING` on six of nine rows. UNAVAILABLE until `a5a3a98` lands:
-a row **with** a sheet cycle rendering `CYCLE NOT ESTABLISHED`.
-
-**The instrument expires: review session 13 is valid to 11:59 ET.** Carried
-forward deliberately — I dropped this line in a first rewrite of this section
-and put it back, because a review-session expiry is the exact thing this charter
-records going missing (*"twelve hours"*, which expired four minutes before the
-window it was issued for). At 20:58 ET Sunday that is ~15 hours out and not
-tight, but it is the clock the last two checks run against, and it is Ops's
-deploy that decides whether they run inside it.
-
-**Two of those four were mine to have got wrong, in the direction that produces
-a false pass.** I listed *the six phase names rendering* and *the retracement
-figure being of the MOVE* as checkable before premarket. **Neither is.** Both
-need a dossier carrying a computed cycle and there are zero, so nothing renders
-at `CLOSED` or at 04:00 until re-analysis has run — **gated on the 0→231
-counter, not on the clock.** Design caught it. And its opposite correction is
-equally mine: I wrote that an empty cycle column is not falsifiable because it
-looks identical to a broken one. True in general, **false on a row that has a
-sheet cycle**, where `CYCLE NOT ESTABLISHED` is a string only the new path can
-produce. The distinguishing case is narrow and it exists.
-
-**Production is `161f15f` per `ops.md:187`, stamped 2026-08-24 00:16 UTC — Ops's
-record, not this thread's observation.** This thread has no box access and does
-not verify it; Ops confirms the running release at gate time.
-
-**`a5a3a98` is committed, pushed and NOT deployed**, and it is what the two
-remaining checks wait on. Design asked for it in its last message (00:27:59Z) and cannot
-reach Ops; relayed in this session's opening window. Verified here at directory scope over the whole tree rather
-than a file list: `git diff --name-only a5a3a98 4af4202` returns four paths and
-**all four are `docs/threads/*.md` — there is no code between it and HEAD.** So
-naming HEAD would have been executable this time, and the sha is named anyway
-because this thread holds doc edits and moves HEAD. Non-docs content of
-`161f15f..a5a3a98`: `components/MomentumTable.tsx`, `components/StatusBadge.tsx`,
-`components/TickerDrawer.tsx`, `tests/dashboard/cycle.test.ts` — no `worker/`,
-no `lib/market/`, no store, so under the README's capture test it needs no
-window.
-
-**Sequencing called under the delegation, not referred:** the deploy goes
-**before** the backfill starts, unless Ops confirms the backfill is a process its
-deploy does not restart. `ops.md` records the research worker SIGKILLed on every
-deploy today, three for three, and a SIGKILL mid-job abandons an in-flight model
-call with tokens spent and nothing recorded. A 231-dossier run on a hard
-deadline with no second attempt is the worst thing to hold in flight during a
-restart.
-
-**Everything was pushed as of 00:43:28Z**: `HEAD` = `origin/main` = `4af4202`,
-`git log origin/main..HEAD` empty. The nine-unpushed-commits condition that
-produced the *every thread pushes its own work* rule is not present.
-
-**The market worker still runs `fd9556f`**, held by the `market-worker-release`
-pin across six deploys.
+**Read what a thread SAID, not what it committed.** **Do not bring him decisions
+about work in motion.** **Verify, do not relay — and check the sha against
+production before instructing any deploy** (this thread instructed the same sha
+twice, the second time for work already live). **Name the sha, not the ref, and
+send the DEADLINE and the CONDITIONS — never the minute.** The thread holding the
+checkpoint schedule prices the minute; this one got that wrong and cost him a
+board.
 
 ## The third delegation: deploy instructions, confirmed directly
 
-**Granted 2026-08-24 by the trader. Ops reported it first — *"deploy — and you can
-accept deployment instructions from Integration"* — and this thread refused to use
+**Granted 2026-08-24 by the trader. Ops reported it first â€” *"deploy â€” and you can
+accept deployment instructions from Integration"* â€” and this thread refused to use
 it until he said it here himself. He did: one word, "confirmed."**
 
 **Refusing the relay was the point, and it is the same rule that ran all night in
 the other direction.** *A relayed delegation does not answer a question put to him
 directly* held four times, at a cost of one word each. The first time that
-principle would have worked in this thread's **favour** — a relay handing it more
-authority rather than less — is the worst possible moment to stop applying it.
+principle would have worked in this thread's **favour** â€” a relay handing it more
+authority rather than less â€” is the worst possible moment to stop applying it.
 Ops's relay was accurate; that was never in doubt. What was in doubt is whether an
 accurate relay is the same thing as his decision, and the whole charter says it is
 not.
@@ -664,7 +307,7 @@ not.
 **And it created a deadlock in the twenty minutes between.** Ops had stopped
 taking deploys to him; this thread had not started issuing them. `a259e8c` sat
 gated and green with nobody able to say ship. **Exactly the shape of the WAL
-signal deadlock Research and Ops nearly had earlier the same night** — two parties
+signal deadlock Research and Ops nearly had earlier the same night** â€” two parties
 each correctly waiting for the other, from a change of protocol neither had
 finished adopting. Broken the same way: say out loud who is waiting on whom, and
 put the question to the one person who can end it.
@@ -674,14 +317,14 @@ whether or not it is being watched:**
 
 - The gate runs at **the sha that ships**. A deploy instruction names a sha, never
   a ref, and never HEAD.
-- **Capture is verified at directory scope** before shipping — not against a file
+- **Capture is verified at directory scope** before shipping â€” not against a file
   list, which encodes the assumption under test.
 - **Spend, auth-model changes and destructive actions still go to him.** The
   delegation is deploys only.
 
 **What it does not license: composing a deploy.** Ops shipped `c48e199` while this
 thread was asking it to re-gate at `a259e8c`, and the messages crossed. That was
-correct of Ops — it shipped the sha it was approved for, and shipping a drifted
+correct of Ops â€” it shipped the sha it was approved for, and shipping a drifted
 sha is the error the gate exists to prevent. **A deploy instruction is a sha and
 a moment; if either has moved, it is a new instruction and a new gate.**
 
@@ -689,7 +332,7 @@ a moment; if either has moved, it is a new instruction and a new gate.**
 
 **The trader, 2026-08-24: *"make your messages smaller. if i want more context and
 details i'll ask. only surface essentials. i dont need team messages pasted. just
-very brief summary details."*** This is the second time volume has been raised —
+very brief summary details."*** This is the second time volume has been raised â€”
 the earlier note is under *do not ask him to arbitrate work in motion*, and it did
 not change enough.
 
@@ -703,7 +346,7 @@ not change enough.
 - **HEADLINES, NOT EXPLANATIONS.** *Third and sharpest ask, 2026-08-24: "you're
   being too wordy... we need to preserve context better. give me headlines not
   explanations."* One line per fact. No reasoning unless he asks. **No quoting
-  threads at all** — not their words, not their framing, not their self-criticism.
+  threads at all** â€” not their words, not their framing, not their self-criticism.
   He wants the state of the desk, not the conversation that produced it.
 - **Context is a shared budget.** Every paragraph he did not need is context a
   later turn cannot use. Verbosity is not just a reading cost now; it shortens the
@@ -720,8 +363,8 @@ named `0778533` at 01:57:44Z with `NEXT_DAY_RECAP` due at **02:00**, having neve
 looked at the checkpoint schedule. **Preflight refused it and caught what I should
 have.** Ops did not override, correctly.
 
-**This thread does not compute checkpoint windows.** The schedule is dense — three
-premarket scans, open spike, RTH intervals every thirty minutes, close, recap — so
+**This thread does not compute checkpoint windows.** The schedule is dense â€” three
+premarket scans, open spike, RTH intervals every thirty minutes, close, recap â€” so
 any arithmetic would either block half the day or be done off a clock this charter
 has already recorded going four hours stale while planning a deploy window.
 
@@ -733,7 +376,7 @@ override.**
 
 **Ops, same night, and corrected by Ops within the hour.** ~~The assessment worker
 dies on startup on roughly one deploy in three.~~ **It is not one worker with a
-fault — it is WHICHEVER WORKER LOSES THE MIGRATION SNAPSHOT RACE on startup, and
+fault â€” it is WHICHEVER WORKER LOSES THE MIGRATION SNAPSHOT RACE on startup, and
 which one varies per deploy.** `SQLITE_BUSY_SNAPSHOT` at `migrate()` inside
 `withMigrationLock`; seen from `desk-assessments.ts:380` and from
 `research.ts:98`; exit 1, systemd restarting ten seconds later. **Four occurrences
@@ -744,13 +387,13 @@ permanent hole.**
 **Two things Ops got right that I would have got wrong.** It shipped **tonight
 rather than Monday premarket**, on the reasoning that a crash costs nothing with
 the recap done and `STRUCTURAL_REFRESH` eight hours out, while **at premarket the
-checkpoints are minutes apart and the same crash is a permanent hole** — premarket
+checkpoints are minutes apart and the same crash is a permanent hole** â€” premarket
 was the worse window, not the safer one, and I had offered it as the cautious
 option.
 
 **And the observable that caught it was not the one it built.** It had built a
 stop-duration check, because the *last* bug was in shutdown; **this bug was one
-step further along the same lifecycle.** The stop was clean — fourth in a row.
+step further along the same lifecycle.** The stop was clean â€” fourth in a row.
 `NRestarts` caught it, on the first deploy where Ops checked it, having written
 that intention one message earlier. **`is-active` reports "active" for a service
 that crashed and came back, and neither it nor the deploy's health wait can tell
@@ -760,28 +403,28 @@ the difference.**
 connection, or ordering the runtime units *after* `mointel-migrate` rather than
 opening concurrently. **The documented fix does not cover it:** the
 cross-process lock serialises *writers*, and `BUSY_SNAPSHOT` is a *snapshot*
-conflict — web and research reopen the store alongside, and the migrating
+conflict â€” web and research reopen the store alongside, and the migrating
 connection loses its snapshot. **A lock that serialises writers does not stop a
 reader invalidating one.**
 
 Tonight it crashed at 01:55:05 with a recap due at 02:00. **Five minutes,
-unplanned, and on a checkpoint that is a permanent hole** — the record only grows
+unplanned, and on a checkpoint that is a permanent hole** â€” the record only grows
 in real time.
 
 **So the 5-minute preflight window, written for mid-checkpoint interruption, also
-happens to cover a 10-second crash-and-restart its author never had in view — a
-30× margin by luck.** *And the guard measures distance in BOTH directions: it
+happens to cover a 10-second crash-and-restart its author never had in view â€” a
+30Ã— margin by luck.** *And the guard measures distance in BOTH directions: it
 refused Ops at "3m away" from a checkpoint that had already completed, which is
 right, because a checkpoint may still be writing.* That is the inverse of this document's usual finding, where
 a rule names an event that later diverges from its condition. **Ops then measured the thing I called luck, and it is a CLIFF rather than a
 slope.** All four units run `Restart=always`, `StartLimitBurst=5`,
 `StartLimitInterval=5min`, `RestartSec=10s` (market 15s). **Five crashes exhausts
-the budget and systemd stops restarting — the unit stays failed until a human
+the budget and systemd stops restarting â€” the unit stays failed until a human
 looks. At ten seconds apart that is about FIFTY SECONDS, not five minutes.**
 
 So the fault **self-heals only while it is intermittent.** If the snapshot race
-recurred on each restart — plausible precisely when several services are cycling
-together, which is the condition that causes it — the worker exits the loop
+recurred on each restart â€” plausible precisely when several services are cycling
+together, which is the condition that causes it â€” the worker exits the loop
 **dead**, and every checkpoint after that is missed until someone looks. **That is
 the version with a permanent cost, and it is one systemd property away from
 today's behaviour.** Nowhere near it now: `NRestarts` is 0 or 1 on every unit.
@@ -790,21 +433,21 @@ today's behaviour.** Nowhere near it now: `NRestarts` is 0 or 1 on every unit.
 
 **Not fixed tonight. The call holds and the reasoning that carried it does NOT.**
 *Re-stated by Ops on request, because the risk profile moved after the judgement
-was made.* Its original sentence — *the wrong trade for a fault that self-heals* —
+was made.* Its original sentence â€” *the wrong trade for a fault that self-heals* â€”
 **died with its own 50-second measurement.**
 
 **What carries it is that the trigger is transient and the restart is not
 concurrent with it.** The race needs several services opening the store at once,
 which happens only in the deploy's **start burst**; the ten-second restart fires
 *after* that burst, when the others are up and idle. **That is why all four
-occurrences were a single crash and never a loop — mechanism, not luck.** The
+occurrences were a single crash and never a loop â€” mechanism, not luck.** The
 50-second cliff is real and requires a **persistent** cause; this one is
 self-limiting by construction.
 
 **My "cheap fix" was already in place and does not help.** All three runtime units
 already declare `After=mointel-migrate.service`. **The race is between the runtime
 units with EACH OTHER**, which that ordering does not constrain. Worth knowing
-before someone reaches for it as the obvious move — I did.
+before someone reaches for it as the obvious move â€” I did.
 
 **And the cause is sharper than "a migration path".** The upgrade transaction runs
 on **every open regardless of version**: `fromVersion` is read but used only to
@@ -814,12 +457,12 @@ decide whether to take a backup, while `db.exec(SCHEMA)`, `migrate()` and the
 three at once, one loses its snapshot.
 
 **The better candidate: an early return inside the lock when
-`fromVersion === SCHEMA_VERSION`** — an already-current store then opens with no
+`fromVersion === SCHEMA_VERSION`** â€” an already-current store then opens with no
 write transaction at all. **One real consequence, not to be waved at:** today a
 table or column added *without* a `SCHEMA_VERSION` bump is silently created by
 `CREATE TABLE IF NOT EXISTS` on the next open, and with an early return it would
 not be. That makes a trap this desk already documents fail **loudly** instead of
-quietly — probably an improvement, but a behaviour change rather than a no-op.
+quietly â€” probably an improvement, but a behaviour change rather than a no-op.
 
 **Ops's own guard on the decision, recorded because it is the right instinct:**
 *the size is not the deciding factor.* A one-line change to the path that decides
