@@ -2987,6 +2987,66 @@ trunk.** Nothing was lost — every commit is on `main`. Deploy tooling was
 unaffected either way: `push-release.sh` ships a sha via `git archive` and
 references no branch.
 
+## Querying production: two ways to get a confident wrong number
+
+Both of these happened on 2026-08-27, both on figures that were about to reach
+the trader for a floor-versus-estimate decision, and both were caught before the
+number was written down rather than after.
+
+### Key-presence is not value-presence, and on this store it inverts the answer
+
+Every `structure` sub-key in `research_analysis_versions.dossier` — all 16 of
+them — **is present on all 249 versions measured.** A coverage query written as
+key-presence therefore reports **100% on every field**, including the one that is
+empty everywhere.
+
+```
+displayedFloat:      key present 249 / 249      value present  0 / 249
+supplyBound:         key present 249 / 249      value present 39 / 249
+sharesOutstanding:   key present 249 / 249      value present 203 / 249
+```
+
+**Measure with `json_extract(...) IS NOT NULL`, and confirm a zero with a
+`json_type` census** before reporting it:
+
+```sql
+SELECT COALESCE(json_type(dossier,'$.structure.displayedFloat'),'(absent)'), COUNT(*)
+  FROM research_analysis_versions WHERE generated_at >= ? GROUP BY 1;
+```
+
+`null -> 249` says the field is explicitly null everywhere. `(absent) -> n`
+would say something completely different. **A zero on a field another thread is
+quoting deserves three confirmations, not one** — the third here was finding the
+data alive in a *different* key (`filedShares`, object on 186 of 249), which
+turned "the field is empty" into "the number is somewhere else".
+
+### State the id range beside any count, or it cannot be told from a recount
+
+R&D's phrasing, adopted here: **a count without its id range cannot be
+distinguished from a recount.** It caught one of my own figures within the hour.
+
+> 249 versions **, ids 326–574 **, `generated_at` 2026-08-24T08:02Z →
+> 2026-08-27T02:02Z. Whole table: 574 versions, ids 1–574.
+
+The count alone reads as a population. The id range shows it is the **top 43% of
+every version ever written** — deliberate, since `supplyBound` shipped 08-23 and
+measuring earlier would measure a field that did not exist, but **invisible to
+anyone comparing it against a figure computed over ids 1–574.**
+
+**When handing numbers to another thread, give the id range and the window.**
+When a thread asks whether its store matches production, do not answer — **give
+a digest it can run identically**, because the failure that matters is *the same
+count over different rows*:
+
+```sql
+SELECT COUNT(*), SUM(LENGTH(dossier)), SUM(LENGTH(evidence_fingerprint))
+  FROM research_analysis_versions WHERE id BETWEEN ? AND ?;
+```
+
+Matching counts with differing byte sums means **the same ids hold different
+rows** — which is exactly what a "two stores, same rate" comparison passes
+silently.
+
 ## Before you deploy
 
 ### "Docs-only above production" is a snapshot, not a standing fact
