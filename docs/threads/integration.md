@@ -1438,6 +1438,31 @@ half of the record is kept with it: the promise was made without checking
 whether the structure could keep it, and no pusher could have checked for a
 category that had never occurred.
 
+## A deploy is a capacity event
+
+**2026-08-27, 04:48 ET, incident closed at Ops's `cfd9d26`.** A deploy this
+thread instructed at `4ac30b5` took the production box down for ~54 minutes of
+premarket — not the payload: **`push-release.sh` runs `next build` on the
+production box, and the build exhausted its memory.** Every gate and preflight
+was green and none of it mattered, because the preflight prices checkpoint
+distance and research idleness and **nothing in it looks at capacity.** Ops's
+sentence is the rule. The payload never landed; production stayed `bc78d49`;
+capture degraded to ~5% for the first 40 premarket minutes and that thin
+window is the whole unrecoverable cost.
+
+**Standing conditions on any deploy instruction from this seat, superseding
+the earlier "0d or watched":** Ops's **item 0f — build off-box, ship the
+artifact — ships first**, or the window is explicitly priced as a capacity
+event by Ops; watched end-to-end remains; 0d remains behind 0f. This thread
+first logged the on-box build as "a candidate cause, a gate condition" — Ops's
+correction stands: **it is the cause, and it is unconditional.**
+
+Kept from the same incident: **staggered service starts, market worker first**
+— `NRestarts=0` on all four against a known ~1-in-3 startup race when three
+open the store together. And a diagnostic worth its line: **a fast 401 from
+nginx proves the box answers and says nothing about the app** — nginx answers
+Basic Auth itself; the probe that reaches the app is `/_next/static/`.
+
 ## Working rules
 
 - **Verify claims against the system, not against a transcript.** The false pin
