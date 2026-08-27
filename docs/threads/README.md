@@ -74,7 +74,25 @@ stop new work; rewrite your charter's live-state for the successor; sweep the
 day's corrections into the documents they correct; write the successor's
 opening message (title the session, addresses from `list_sessions`, read the
 charter completely); commit by explicit path, push, ping Integration with the
-sha, stop. Integration cross-checks the handover against the bus's record.
+sha, stop. Integration cross-checks the handover against the bus's record —
+**and archives the retired session**, because a retired title keeps matching
+name lookups: two retired Integrations made `SendMessage` to the name
+`Integration` fail with "matches 2 agents by prefix" on 2026-08-27, the third
+distinct name-addressing failure on this machine. The id route is unaffected;
+archiving removes the trap for anyone who forgets.
+
+A handover is a **pointer, not a summary** — Design's rule, kept: the charter
+is the authority, and a separate summary is a second copy that can drift from
+it. The live-state rewrite happens IN the charter; the successor's opening
+message points at it.
+
+And **the opening message is verified as its own step** — R&D's addition,
+from finding its own four days stale on 2026-08-27 (it still directed a
+successor to build an instrument that had been finished and running since
+08-23). It is the only part of a charter a successor reads before knowing
+enough to doubt it, and the part most likely to be stale, because it describes
+a starting position that by definition no longer exists. *A stale opening
+message is the worst thing in a handover document.*
 
 ## Sharing one working tree
 
