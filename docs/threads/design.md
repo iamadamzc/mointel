@@ -796,6 +796,54 @@ re-collapse that into a boolean by picking a number — the row shows how many
 sessions behind, and the trader decides. **Two sessions behind on a name he is
 about to size is his call, not a constant in this file.**
 
+### CORRECTED: the masked chip is LIVE, and my sizing could not have found it
+
+**Design sized this as latent on 2026-08-25 and was wrong.** Ops sized it in
+substance (`1e8acd4`) and the defect is live now.
+
+**My error is worth naming precisely, because it is the rule I wrote turned on
+me.** I sampled four board rows, found all four rendering `DIRTY FLOAT`, and
+concluded the mask was not biting. **Every one of those rows short-circuited at
+`:145`, two branches before the one under test.** A sample in which no row can
+reach the code being examined cannot report on it — *a check that cannot fail is
+not a check*, applied to my own sizing. I then generalised from it to the whole
+population.
+
+**What is actually true.** `structure.displayedFloat` has been null on **every
+version since id 237, 2026-08-20T16:32Z**. So for any researched row that is not
+dirty and carries no supply shares, `resolveRisk` returns `FLOAT_UNKNOWN` at
+`:176` and **both `STRUCTURE_CAUTION` (`:187`) and `STRUCTURE_CLEAN` (`:198`) are
+dead branches.**
+
+> **`tone: 'pos'` appears exactly ONCE in `risk.ts` — at `:203`, inside
+> `STRUCTURE_CLEAN`. So the board has had no way to tell the trader a researched
+> name is structurally CLEAN since 2026-08-20.** That is a missing positive
+> signal, which is worse than a mislabelled warning: a warning that reads wrong
+> gets questioned, and an absent all-clear never gets missed.
+
+**The collision fits in two lines.** `displayedFloat` occurs exactly twice in the
+file: `structure.displayedFloat` at `:174`, the **dossier's**, null — and
+`row.displayedFloat` at `:201`, the **Sheet's**, populated. **The gate reads one;
+the value it gates reads the other.** `STRUCTURE_CLEAN` would have displayed a
+real float the whole time; the field that suppresses it is a different field with
+the same name. The desk's fifth name collision (`7d5b3ed`), actively suppressing
+the board's only positive signal.
+
+**Two independence warnings to carry into any fix:**
+
+- **The Q9 capture column (`sheet_float`) will not unmask this.** `:174` reads
+  the dossier key, not the new column. Fixing one will *look* like fixing both
+  — R&D's warning and it is the dangerous kind, because the second defect would
+  then be believed fixed.
+- **`c61c937`'s naming work must not close the collision without noticing the
+  dead branches behind it.** Renaming the two floats apart is right and would
+  make `:174` and `:201` obviously different — and a rename that leaves the gate
+  intact removes the *evidence* while leaving the *defect*.
+
+**Precedence answer stands unchanged, and is independent of why the float went
+null.** Even a revived float pipeline leaves the order
+`DIRTY → FLOAT_UNKNOWN → CAUTION → CLEAN` to be judged.
+
 ### The masked risk chip: latent today, LIVE the day the Sheet retires
 
 R&D's reading (`0d4c46b`) is structurally right: `risk.ts:173` sets
