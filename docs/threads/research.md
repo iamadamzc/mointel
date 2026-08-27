@@ -2422,6 +2422,41 @@ never happen is it reading identically to one observed at a single instant.
 float's own read instant is new, and it is one value per checkpoint rather than
 per ticker.*
 
+### The naming pass, decided — two types, executed as one change
+
+**R&D's second candidate is right and its sibling has the same defect.**
+`StructuralResearch` names the Sheet's `RESEARCH` tab and reads as the research
+pipeline's dossier; `MomentumTicker` names the `TODAY` tab and reads as the
+desk's core ticker abstraction. **Both docstrings already say the truth** — *"One
+row of the RESEARCH tab"*, *"One row of the TODAY tab"* — so only the names
+disagree with the code around them.
+
+**It has cost two threads a wrong inference in one week, measurably.** R&D
+inferred a dossier-first architecture from `StructuralResearch` and was wrong.
+This thread nearly filed three false positives in item 13's reader inventory,
+because `StructuralResearch` carries `cycleClassificationRaw`, `cycleState`,
+`cycleReasoning` and `recentMajorRuns` — the dossier's vocabulary, in Sheet-land.
+
+**Decision: rename both, tab-shaped.** `ResearchTabRow` and `TodayTabRow`.
+
+**Both or neither, and that is the part worth arguing.** Renaming one for its tab
+and leaving the other as a domain-sounding name makes the pair *more* misleading
+than it is now: a reader who learns that one is tab-shaped will reasonably infer
+the other is not.
+
+**Why this rename and not `structure.displayedFloat`'s.** These are TypeScript
+types — 26 and 48 references, six and ten files, every one caught by the
+compiler, **nothing persisted anywhere.** The dossier field is a key in an
+append-only store and the model's output contract, where a rename means readers
+carry both names forever. *The cost of a rename is not the number of call sites;
+it is whether anything already written keeps the old one.*
+
+**Executed as one pass when the capture columns ship**, per Integration, rather
+than now — a 74-site rename on a shared `main` is merge friction bought for no
+urgency. **`components/TickerDrawer.tsx` and `components/DashboardShell.tsx` are
+Design's** and the change there is an import and an annotation; flagged rather
+than done silently.
+
 ### The naming decision, made before the columns ship
 
 **Renaming is not the cheap option and documenting is not the whole answer.** The
