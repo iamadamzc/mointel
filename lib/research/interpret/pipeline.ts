@@ -19,6 +19,7 @@ import {
 import { computeEvidenceFingerprint } from '../fingerprint';
 import { resolveCycleHistory } from '../../market/cycle';
 import { readDailyBars } from '../history';
+import { computeSupplyPair } from '../supply';
 import type { ResearchDossier } from '../types';
 import { buildEvidenceBundle, type ResearchEvidenceBundle, type SheetPriorAnalysis } from './bundle';
 import { describeViolations, validateDossier, type Violation } from './guardrails';
@@ -388,6 +389,27 @@ export async function interpretTicker(
         sourceId: reported.sourceId,
         basis: 'FILED_SHARES_OUTSTANDING',
       }
+    : null;
+
+  /*
+   * The supply pair, derived for the same reasons as the cycle above.
+   *
+   * It needs the daily bars, which the evidence bundle does not carry, and it
+   * reads the ledger AFTER validation has corrected it. `supplyBound` stays
+   * where it is and keeps its meaning; this adds the filed-maximum beside it
+   * and the basis check that makes either number safe to divide.
+   *
+   * Bounded by `asOf` like the cycle bars, so a replay cannot use a split the
+   * original analysis had not seen yet -- a factor from the future would
+   * silently make a block comparable that was not comparable at the time.
+   */
+  accepted.structure.supplyPair = reported
+    ? computeSupplyPair({
+        ledger: accepted.structure.supplyLedger,
+        sharesOutstanding: reported.shares,
+        sharesOutstandingAsOf: reported.asOf,
+        bars: cycleBars,
+      })
     : null;
 
   const version = saveAnalysisVersion(db, {

@@ -12,6 +12,7 @@
  */
 
 import type { FloatBasis } from './float';
+import type { SupplyPair } from './supply';
 import type { CycleHistory } from '../market/cycle';
 import type { TimePrecision } from './time';
 
@@ -507,6 +508,12 @@ export interface StructureFindings {
    * share count or an established share-denominated supply block is missing.
    */
   supplyBound?: SupplyBound | null;
+  /**
+   * Floor and filed-maximum over the same share count, with the blocks neither
+   * could use. Derived by the pipeline, not by the model, so it is optional
+   * here and absent from AUTOMATIC_DOSSIER_SCHEMA -- see `lib/research/supply.ts`.
+   */
+  supplyPair?: SupplyPair | null;
   structuralWarnings: string[];
   reverseSplitHistory: string[];
   knownRegistrationStatus: string | null;
