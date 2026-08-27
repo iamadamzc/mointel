@@ -40,7 +40,7 @@ questions is a thread that has stopped working.
 | Q6 | Can the 09:25 pre-open assessment be scored against outcomes? | 2026-08-23 | proposed — *handed over from Design*, see below |
 | Q7 | Can Chop Risk, Flush Risk or Effective Float Turnover be defined well enough to act on? | 2026-08-23 | proposed — *routed here by the desk owner*, see below |
 | Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | proposed — *from the trader*, scoped below; **the feasibility blocker is answered** |
-| Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-25 | proposed — *from the trader*, scoped below; **blocked: float populated on ~1% of dossiers, 08-21 snapshot; live count queued** |
+| Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-27 | proposed — *from the trader*, scoped below; **blocked: float populated on ~1% of dossiers, 08-21 snapshot; live count queued** |
 
 **Q8 came from the trader on 2026-08-24**, in his words: *"we are using gpt,
 which models for what calls, would anthropic models be better and/or less
@@ -175,7 +175,7 @@ provider enters anywhere, that is the seam it enters through.
 **Nothing further needed from Research**, which is not picking up Q8 and answers
 facts through Integration only.
 
-**Q9 came from the trader on 2026-08-25**, in his words: *"perhaps there is an
+**Q9 came from the trader on 2026-08-27**, in his words: *"perhaps there is an
 entire different way to approach this. i'm not sure if studying performance of
 these and see if their performance is in any way tied to their float/overhang
 and if a correlation can be found. perhaps related or correlated to rvol. i dont
@@ -242,7 +242,8 @@ of 94 carrying a value here.
 2026-08-21T22:25Z, not the live store.** I first wrote it as *production* with no
 as-of, which is this thread's own basis rule broken in the entry where it was
 being invoked. **Neither number is current.** The local corpus ends 08-18, the
-snapshot ends 08-21, today is 08-25. A live-store count is queued with Ops and
+snapshot ends 08-21, today is 2026-08-27 — **six and nine days stale
+respectively.** A live-store count is queued with Ops and
 supersedes both.
 
 **My correction, and it is the load-bearing one: I called these two samples and
