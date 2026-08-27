@@ -40,7 +40,7 @@ questions is a thread that has stopped working.
 | Q6 | Can the 09:25 pre-open assessment be scored against outcomes? | 2026-08-23 | proposed — *handed over from Design*, see below |
 | Q7 | Can Chop Risk, Flush Risk or Effective Float Turnover be defined well enough to act on? | 2026-08-23 | proposed — *routed here by the desk owner*, see below |
 | Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | proposed — *from the trader*, scoped below; **the feasibility blocker is answered** |
-| Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-25 | proposed — *from the trader*, scoped below; **blocked: float populated on 1 of 94 local and 2 of 231 production dossiers** |
+| Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-25 | proposed — *from the trader*, scoped below; **blocked: float populated on ~1% of dossiers, 08-21 snapshot; live count queued** |
 
 **Q8 came from the trader on 2026-08-24**, in his words: *"we are using gpt,
 which models for what calls, would anthropic models be better and/or less
@@ -231,18 +231,40 @@ a sample-size one — a field that is written but not populated stays unpopulate
 at any scale — but the 1-of-94 itself must be re-measured on production before
 it is quoted as final.**
 
-**RE-MEASURED ON PRODUCTION 2026-08-25 BY RESEARCH, AND IT HOLDS.**
-`displayedFloat` is populated on **2 of 231 current dossiers — 1%** — against
-1 of 94, **1.06%**, locally. `floatConfidence` is `UNKNOWN` on **229 of 231**,
-matching 0 of 94 carrying a value here. **Two stores, 2.5x apart in size, same
-rate.**
+**RE-MEASURED BY RESEARCH AND IT HOLDS, with two corrections to how I first
+recorded it — one theirs, one mine.**
 
-**Quote the pair, not either alone.** The prediction that separates them was
-made before the second number existed — *a field written but not populated stays
-unpopulated at any scale* — and it is the kind that is worth little once it has
-been confirmed and a great deal beforehand. Recording that it was made in
-advance is the only thing that keeps it from reading as a rationalisation of the
-result.
+`displayedFloat` is populated on **2 of 231 dossiers, 1%**, against 1 of 94,
+**1.06%**, locally. `floatConfidence` is `UNKNOWN` on **229 of 231**, matching 0
+of 94 carrying a value here.
+
+**Their correction: that 231 is a production SNAPSHOT whose versions end
+2026-08-21T22:25Z, not the live store.** I first wrote it as *production* with no
+as-of, which is this thread's own basis rule broken in the entry where it was
+being invoked. **Neither number is current.** The local corpus ends 08-18, the
+snapshot ends 08-21, today is 08-25. A live-store count is queued with Ops and
+supersedes both.
+
+**My correction, and it is the load-bearing one: I called these two samples and
+they are one sample and its superset.** Local holds versions with ids **1 to
+94**, 08-17 to 08-18; the snapshot holds 231 through 08-21 on the same pipeline,
+so **the 94 are almost certainly a prefix of the 231** — the check is whether
+production ids 1-94 are these rows, which I have not run and which Ops can
+settle in one query. If they are, the incremental evidence is **137 versions,
+not 231**, and if the local 1 is among the production 2 the rate on the genuinely
+new rows is **1 of 137, 0.73%.**
+
+**"Two stores 2.5x apart in size, same rate" was the strongest-sounding sentence
+in this entry and it was wrong.** A superset agreeing with its own prefix is
+arithmetic, not replication. The conclusion is untouched — 0.73%, 1% and 1.06%
+are the same answer — but *the reason to believe it* was overstated, and that is
+the half a reader carries forward.
+
+**What does survive is the prediction, and only because it was made first.** *A
+field written but not populated stays unpopulated at any scale* was recorded
+before any second number existed. That is worth little once confirmed and a
+great deal beforehand, and noting the order is what stops it reading as a
+rationalisation of a result already in hand.
 
 **What would unblock it,** in the order that costs least: capture `displayedFloat`
 and `sharesOutstanding` into the archive **with `float_basis` beside them** at
