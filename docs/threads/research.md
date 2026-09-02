@@ -69,7 +69,7 @@ good; do not re-litigate it.
 
 | decision | holder | state |
 | --- | --- | --- |
-| **basis-fetch decoupling** | **the trader** | word PENDING, may arrive after I retire. **You build it.** Design below. |
+| **basis-fetch decoupling** | **APPROVED** | **the trader said yes 2026-08-27** ("yes to all"); Integration's relay was dropped by a cut turn and landed here 2026-09-02. **You build it.** Design below. |
 | `guardrails.ts:344` content check | the trader | scoped, unbuilt, one line. **My recommendation: do this first** — it is correctness, not capability |
 | deterministic float extractor | the trader | scoped, unbuilt, 19 tickers |
 | Q9 capture build | Ops's schema gate | scoped, riders below |
