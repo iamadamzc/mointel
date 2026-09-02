@@ -1864,6 +1864,20 @@ practical size of the inflation is unknown. Needs the live desk.
   number. Two threads called the market open at 04:45. **And `PREMARKET` means
   premarket *capture* is live, not that trading is.** The codebase is clean; the
   hazard is entirely in reading tool output.
+- **A fixture can encode a world that has stopped existing, and stay green
+  through the outage it should have caught.** `resolveRisk`'s tests all passed a
+  dossier `displayedFloat` of 4 M or 12 M. That field went null in production on
+  **2026-08-20** and stayed null, so the suite tested a shape the live desk no
+  longer had — and remained green for thirteen days while two branches, including
+  the board's only positive chip, were unreachable. **A fixture's job is to carry
+  the production shape, not a convenient one**, and when a field's real
+  distribution changes the fixtures are stale even though nothing edited them.
+  Fixed at `d8794da` by adding the null case.
+
+  **This is the third instance of one shape in this thread** — with the `Move`
+  label at `CLOSED` and the four-row risk-chip sample — and it is the most
+  durable, because a fixture outlives whoever wrote it and is trusted by people
+  who never saw the world it was written in.
 - **A check that cannot fail is not a check.** Before reporting anything
   verified, ask what result would have proved it *broken*. If the answer is
   "none available right now", the observation confirms nothing — say so instead
