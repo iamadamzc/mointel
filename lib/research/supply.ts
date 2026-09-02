@@ -37,7 +37,6 @@
  */
 
 import { splitFactorAt } from '../market/splits';
-import type { DailyBar } from './history';
 import type { SupplyBlock } from './types';
 
 /** Why a block could not be counted. Never a judgement about the issuer. */
@@ -93,19 +92,23 @@ export interface SupplyPair {
 const PROVEN_ACTIVE = 'KNOWN_ACTIVE';
 
 /**
- * Cumulative split factors by trading date, from bars the caller already read.
+ * A factor for `date`, refusing to extrapolate past the series' end.
  *
- * Bars carry the factor per session because `daily_bars.adjustment` is written
- * as the literal 'split' on every row and can never report a change of basis.
+ * `splitFactorAt` falls back to the nearest EARLIER session, which is right
+ * INSIDE the series — a non-trading day sits on the prior session's basis, and
+ * the next covered session bounds the gap. Past the end there is no bounding
+ * session: a date months after the last covered one would inherit that last
+ * factor, and a split in between would make two incomparable operands read as
+ * comparable — a wrong answer, not a missing one. Beyond coverage is therefore
+ * unverifiable, the same three-state rule as everywhere else in this file.
  */
-export function splitFactorsFrom(bars: readonly DailyBar[]): Map<string, number> {
-  const factors = new Map<string, number>();
-  for (const bar of bars) {
-    if (typeof bar.splitFactor === 'number' && Number.isFinite(bar.splitFactor)) {
-      factors.set(bar.tradingDate, bar.splitFactor);
-    }
-  }
-  return factors;
+function factorWithinCoverage(
+  factors: ReadonlyMap<string, number>,
+  lastCovered: string | null,
+  date: string,
+): number | null {
+  if (lastCovered === null || date > lastCovered) return null;
+  return splitFactorAt(factors, date);
 }
 
 /** A usable positive share count, or null. */
@@ -151,14 +154,26 @@ export function computeSupplyPair(options: {
   ledger: readonly SupplyBlock[];
   sharesOutstanding: number;
   sharesOutstandingAsOf: string | null;
-  bars: readonly DailyBar[];
+  /**
+   * Established split factors by trading date — `readSplitFactors`, full
+   * stored depth. Not the cycle window: filing dates routinely sit months to
+   * years back, and a factor series clipped to 90 sessions returns null for
+   * exactly the operands this check exists to compare.
+   */
+  factors: ReadonlyMap<string, number>;
 }): SupplyPair | null {
-  const { ledger, sharesOutstanding, sharesOutstandingAsOf } = options;
+  const { ledger, sharesOutstanding, sharesOutstandingAsOf, factors } = options;
   if (!Number.isFinite(sharesOutstanding) || sharesOutstanding <= 0) return null;
 
-  const factors = splitFactorsFrom(options.bars);
+  let lastCovered: string | null = null;
+  for (const date of factors.keys()) {
+    if (lastCovered === null || date > lastCovered) lastCovered = date;
+  }
+
   const denominatorFactor =
-    sharesOutstandingAsOf === null ? null : splitFactorAt(factors, sharesOutstandingAsOf.slice(0, 10));
+    sharesOutstandingAsOf === null
+      ? null
+      : factorWithinCoverage(factors, lastCovered, sharesOutstandingAsOf.slice(0, 10));
 
   const exclusions = new Map<SupplyExclusionReason, { types: Set<string>; count: number }>();
   let floorShares = 0;
@@ -174,7 +189,7 @@ export function computeSupplyPair(options: {
     }
 
     const date = basisDate(block);
-    const blockFactor = date === null ? null : splitFactorAt(factors, date);
+    const blockFactor = date === null ? null : factorWithinCoverage(factors, lastCovered, date);
 
     /*
      * Both sides must be established. A known block factor against an unknown

@@ -1,26 +1,24 @@
 import { describe, expect, it } from 'vitest';
 
 import { computeSupplyPair } from '@/lib/research/supply';
-import type { DailyBar } from '@/lib/research/history';
 import type { SupplyBlock } from '@/lib/research/types';
 
 /**
- * Bars carrying only what the basis check reads.
+ * The factor series the basis check reads — in production `readSplitFactors`,
+ * full stored depth.
  *
- * `splitFactor` is the cumulative factor still to apply from that session
+ * A factor is the cumulative multiple still to apply from that session
  * forward, so 1 is today's basis and 8 is a session sitting behind a 1-for-8.
+ * A null entry models a session stored without a raw comparison: no factor was
+ * established, so the date is simply absent from the series — null must never
+ * read as 1.
  */
-function bars(entries: Array<[date: string, splitFactor: number | null]>): DailyBar[] {
-  return entries.map(([tradingDate, splitFactor]) => ({
-    tradingDate,
-    open: null,
-    high: null,
-    low: null,
-    close: null,
-    volume: null,
-    splitFactor,
-    sessionComplete: true,
-  }));
+function factors(entries: Array<[date: string, splitFactor: number | null]>): Map<string, number> {
+  const series = new Map<string, number>();
+  for (const [date, factor] of entries) {
+    if (factor !== null) series.set(date, factor);
+  }
+  return series;
 }
 
 function block(overrides: Partial<SupplyBlock> = {}): SupplyBlock {
@@ -42,7 +40,7 @@ function block(overrides: Partial<SupplyBlock> = {}): SupplyBlock {
 }
 
 /** Every session on today's basis. */
-const FLAT = bars([
+const FLAT = factors([
   ['2025-04-29', 1],
   ['2026-06-01', 1],
   ['2026-06-30', 1],
@@ -57,7 +55,7 @@ describe('the supply pair', () => {
   it('computes both numbers over the same share count', () => {
     const pair = computeSupplyPair({
       ...PAIR_DEFAULTS,
-      bars: FLAT,
+      factors: FLAT,
       ledger: [
         block({ amountShares: 2_000_000, status: 'KNOWN_ACTIVE' }),
         block({ amountShares: 5_000_000, status: 'POSSIBLY_ACTIVE' }),
@@ -80,7 +78,7 @@ describe('the supply pair', () => {
      */
     const pair = computeSupplyPair({
       ...PAIR_DEFAULTS,
-      bars: FLAT,
+      factors: FLAT,
       ledger: [block({ amountShares: 5_000_000, status: 'POSSIBLY_ACTIVE' })],
     })!;
 
@@ -103,7 +101,7 @@ describe('the supply pair', () => {
       ],
       sharesOutstanding: 694_544,
       sharesOutstandingAsOf: '2026-06-30',
-      bars: bars([
+      factors: factors([
         // Behind the 1-for-8: eight of today's shares per share of that day.
         ['2025-04-29', 8],
         ['2026-06-01', 1],
@@ -129,7 +127,7 @@ describe('the supply pair', () => {
       ledger: [block({ amountShares: 4_000_000, effectiveDate: '2025-04-29' })],
       sharesOutstanding: 8_000_000,
       sharesOutstandingAsOf: '2025-04-29',
-      bars: bars([
+      factors: factors([
         ['2025-04-29', 8],
         ['2026-06-30', 1],
       ]),
@@ -144,7 +142,7 @@ describe('the supply pair', () => {
     // Unknown is not yes. The same three-state rule as blueSky's ceiling.
     const noBlockDate = computeSupplyPair({
       ...PAIR_DEFAULTS,
-      bars: FLAT,
+      factors: FLAT,
       ledger: [block({ effectiveDate: null })],
     })!;
     expect(noBlockDate.totalShares).toBeNull();
@@ -153,7 +151,7 @@ describe('the supply pair', () => {
     const noDenominatorDate = computeSupplyPair({
       sharesOutstanding: 10_000_000,
       sharesOutstandingAsOf: null,
-      bars: FLAT,
+      factors: FLAT,
       ledger: [block()],
     })!;
     expect(noDenominatorDate.denominatorFactor).toBeNull();
@@ -164,7 +162,7 @@ describe('the supply pair', () => {
     // was established. Null must not read as 1.
     const noFactor = computeSupplyPair({
       ...PAIR_DEFAULTS,
-      bars: bars([
+      factors: factors([
         ['2026-06-01', null],
         ['2026-06-30', 1],
       ]),
@@ -177,7 +175,7 @@ describe('the supply pair', () => {
     // A dollar shelf is capacity, not a share count.
     const pair = computeSupplyPair({
       ...PAIR_DEFAULTS,
-      bars: FLAT,
+      factors: FLAT,
       ledger: [
         block({ amountShares: null, dollarCapacity: 200_000_000, type: 'SHELF_CAPACITY' }),
         block({ amountShares: 1_000_000 }),
@@ -197,7 +195,7 @@ describe('the supply pair', () => {
      */
     const pair = computeSupplyPair({
       ...PAIR_DEFAULTS,
-      bars: bars([
+      factors: factors([
         ['2025-04-29', 8],
         ['2026-06-30', 1],
       ]),
@@ -227,7 +225,7 @@ describe('the supply pair', () => {
         ledger: [block()],
         sharesOutstanding: 0,
         sharesOutstandingAsOf: '2026-06-30',
-        bars: FLAT,
+        factors: FLAT,
       }),
     ).toBeNull();
   });
@@ -240,10 +238,55 @@ describe('the supply pair', () => {
      */
     const pair = computeSupplyPair({
       ...PAIR_DEFAULTS,
-      bars: FLAT,
+      factors: FLAT,
       ledger: [block({ effectiveDate: null, sourceFiling: '424B3 filed 2026-06-01; registered' })],
     })!;
 
+    expect(pair.excluded[0].reason).toBe('BASIS_UNVERIFIABLE');
+  });
+
+  it('refuses to extrapolate a factor past the series end', () => {
+    /*
+     * The factor lookup falls back to the nearest EARLIER session, which is
+     * right inside the series and wrong past its end: a block dated months
+     * after the last covered session would inherit that session's factor, and
+     * a split in the gap would make two incomparable operands read as
+     * comparable — a wrong answer, where staying inside the series gives a
+     * missing one. Beyond coverage is unverifiable, not yes.
+     */
+    const pair = computeSupplyPair({
+      ...PAIR_DEFAULTS,
+      factors: factors([
+        ['2026-05-01', 1],
+        ['2026-06-30', 1],
+      ]),
+      ledger: [
+        block({ effectiveDate: '2026-06-01' }), // inside: gap bounded, falls back, counted
+        block({ effectiveDate: '2026-09-15', type: 'WARRANTS' }), // past the end: refused
+      ],
+    })!;
+
+    expect(pair.totalShares).toBe(1_000_000);
+    expect(pair.excluded).toEqual([
+      { reason: 'BASIS_UNVERIFIABLE', blockTypes: ['WARRANTS'], count: 1 },
+    ]);
+  });
+
+  it('treats a denominator dated past the series end as unverifiable', () => {
+    // The same refusal on the other operand: with the denominator's basis
+    // unknown, no block can be compared to it, whatever its own date.
+    const pair = computeSupplyPair({
+      ledger: [block({ effectiveDate: '2026-06-01' })],
+      sharesOutstanding: 10_000_000,
+      sharesOutstandingAsOf: '2026-09-30',
+      factors: factors([
+        ['2026-05-01', 1],
+        ['2026-06-30', 1],
+      ]),
+    })!;
+
+    expect(pair.denominatorFactor).toBeNull();
+    expect(pair.totalShares).toBeNull();
     expect(pair.excluded[0].reason).toBe('BASIS_UNVERIFIABLE');
   });
 });

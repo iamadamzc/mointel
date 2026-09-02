@@ -357,3 +357,52 @@ export function deepHistoryDue(
         : `price ${session.price} above every stored high (${ceiling.high})`,
   };
 }
+
+/**
+ * Whether a researched name still needs its split basis established.
+ *
+ * The SECOND trigger for `ensureDeepHistory`, decoupled from the blue-sky gate
+ * on the trader's approval of 2026-08-27. The supply pair's basis check needs a
+ * per-session split factor, and `deepHistoryDue` fires on rank and price —
+ * replayed over every stored ticker-session, it would ever have fired for 11
+ * symbols and for none of the 55 rows that would render a pair. A basis,
+ * unlike a ceiling, is worth having once for ANY researched ticker; this runs
+ * on the job path, where a ticker is researched by construction, so the only
+ * question left is "is the basis already established".
+ *
+ * Establishment is durable: `upsertDailyBars` COALESCEs `split_factor`, so a
+ * shallow refresh cannot erase it — which also means the source marker CANNOT
+ * be the predicate (the shallow path overwrites `source` on overlapping rows,
+ * and a young listing sits entirely inside the shallow window). The factor
+ * itself is what the supply pair reads, so its presence is the test.
+ *
+ * Cost shape: two REST calls, close to once per ticker forever. A symbol whose
+ * factors are underivable (no usable raw closes) would re-ask on every job, so
+ * the deep pass's own once-per-day marker caps that at one fetch a day.
+ *
+ * A split AFTER establishment is not re-fetched here: the stored series stays
+ * internally consistent for the dates it covers, and `computeSupplyPair`
+ * refuses to extrapolate past its end — operands beyond coverage read
+ * unverifiable, never wrong. The blue-sky gate still refetches the runners.
+ */
+export function basisFetchDue(
+  db: MarketDatabase,
+  symbol: string,
+  now: Date = new Date(),
+): DeepHistoryDecision {
+  const established = db
+    .prepare('SELECT COUNT(*) AS n FROM daily_bars WHERE symbol = ? AND split_factor IS NOT NULL')
+    .get(symbol) as { n: number };
+  if (established.n > 0) {
+    return { due: false, reason: `split basis established (${established.n} session(s))` };
+  }
+
+  const deep = db
+    .prepare('SELECT MAX(fetched_at) AS at FROM daily_bars WHERE symbol = ? AND source = ?')
+    .get(symbol, DEEP_SOURCE) as { at: string | null };
+  if (deep.at !== null && etDateString(new Date(deep.at)) === etDateString(now)) {
+    return { due: false, reason: 'deep history already fetched today' };
+  }
+
+  return { due: true, reason: 'no split basis established' };
+}

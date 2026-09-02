@@ -18,7 +18,7 @@ import {
 } from '../../market/store/researchRepo';
 import { computeEvidenceFingerprint } from '../fingerprint';
 import { resolveCycleHistory } from '../../market/cycle';
-import { readDailyBars } from '../history';
+import { readDailyBars, readSplitFactors } from '../history';
 import { computeSupplyPair } from '../supply';
 import type { ResearchDossier } from '../types';
 import { buildEvidenceBundle, type ResearchEvidenceBundle, type SheetPriorAnalysis } from './bundle';
@@ -394,10 +394,12 @@ export async function interpretTicker(
   /*
    * The supply pair, derived for the same reasons as the cycle above.
    *
-   * It needs the daily bars, which the evidence bundle does not carry, and it
-   * reads the ledger AFTER validation has corrected it. `supplyBound` stays
-   * where it is and keeps its meaning; this adds the filed-maximum beside it
-   * and the basis check that makes either number safe to divide.
+   * It reads the ledger AFTER validation has corrected it, and its factors at
+   * FULL stored depth rather than from the cycle window: the dates the basis
+   * check compares are filing dates, and half of the dated blocks sit beyond
+   * 90 sessions. `supplyBound` stays where it is and keeps its meaning; this
+   * adds the filed-maximum beside it and the basis check that makes either
+   * number safe to divide.
    *
    * Bounded by `asOf` like the cycle bars, so a replay cannot use a split the
    * original analysis had not seen yet -- a factor from the future would
@@ -408,7 +410,7 @@ export async function interpretTicker(
         ledger: accepted.structure.supplyLedger,
         sharesOutstanding: reported.shares,
         sharesOutstandingAsOf: reported.asOf,
-        bars: cycleBars,
+        factors: readSplitFactors(db, ticker, options.asOf?.slice(0, 10)),
       })
     : null;
 

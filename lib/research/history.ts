@@ -182,6 +182,52 @@ export function readDailyBars(
 }
 
 /**
+ * A symbol's established split factors at FULL stored depth, keyed by trading
+ * date and optionally bounded by `asOf`.
+ *
+ * The supply pair's basis check reads this rather than the 90-bar cycle
+ * window, because the dates it compares are filing dates: measured on the
+ * 08-23 snapshot, 122 of 239 dated supply blocks — and every dated block on
+ * 98 of 157 block-holding tickers — sit beyond the cycle window, and the filed
+ * denominator's median age is 82 days with 39% over 180. A factor series
+ * clipped to the window would hand the guard nulls for exactly the operands
+ * the basis fetch exists to make comparable.
+ *
+ * The `asOf` bound is on the ROWS, and that is enough to keep a replay honest:
+ * the guard only ever compares two dates' factors for EQUALITY, and two
+ * bounded dates differ only by splits between them — all of which predate the
+ * bound. The absolute values do encode later splits (a factor is "still to
+ * apply" as of its fetch), which is why nothing downstream may read a bounded
+ * factor as a price multiplier.
+ */
+export function readSplitFactors(
+  db: MarketDatabase,
+  symbol: string,
+  asOf?: string,
+): Map<string, number> {
+  const rows = (
+    asOf
+      ? db
+          .prepare(
+            `SELECT trading_date AS tradingDate, split_factor AS splitFactor
+               FROM daily_bars
+              WHERE symbol = ? AND split_factor IS NOT NULL AND trading_date <= ?
+              ORDER BY trading_date`,
+          )
+          .all(symbol, asOf)
+      : db
+          .prepare(
+            `SELECT trading_date AS tradingDate, split_factor AS splitFactor
+               FROM daily_bars
+              WHERE symbol = ? AND split_factor IS NOT NULL
+              ORDER BY trading_date`,
+          )
+          .all(symbol)
+  ) as Array<{ tradingDate: string; splitFactor: number }>;
+  return new Map(rows.map((row) => [row.tradingDate, row.splitFactor]));
+}
+
+/**
  * The adjustment basis of a symbol's retained daily bars.
  *
  * Null when there are none, and null when the window mixes bases — a series

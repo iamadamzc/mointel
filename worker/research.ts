@@ -37,6 +37,7 @@ import { queueDiscoveryResearch, retireStrandedJobs, timeToIntelligence } from '
 import { queueResolverRecovery } from '../lib/research/recovery';
 import { RESOLVER_VERSION } from '../lib/research/catalyst/collector';
 import {
+  basisFetchDue,
   deepHistoryDue,
   ensureDailyHistory,
   ensureDeepHistory,
@@ -396,21 +397,30 @@ async function main(): Promise<void> {
           log(`[history] ${job.ticker} ${history.detail}`);
 
           /*
-           * Full depth, only for a name that is both running and not already
-           * disproved. Blue sky asks "has this price ever been exceeded", and
-           * ninety sessions cannot answer "ever" -- BTCT read as blue sky at
-           * $1.71 against an $1.80 ninety-session ceiling while the same symbol
-           * had traded at $26.58 two years earlier on today's basis.
+           * Full depth, on either of TWO triggers into one mechanism.
            *
-           * Gated rather than universal because the gate is what makes the
-           * correct approach affordable: the deep pass refetches a whole
-           * history to keep the fetch and retention windows coupled, and that
-           * is only cheap because it fires on about 3% of top-10 slots.
+           * The BASIS trigger: a researched name whose split basis is not yet
+           * established gets the dual-adjustment fetch once, whatever its rank
+           * or price -- decoupled from the blue-sky gate on the trader's
+           * 2026-08-27 approval, because the supply pair's basis check needs
+           * per-session factors and the blue-sky gate would ever have fired
+           * for none of the 55 rows that would render a pair. Roughly two REST
+           * calls once per ticker forever; the one-off backfill for
+           * already-researched names is `worker/basis-backfill.ts`.
+           *
+           * The BLUE-SKY trigger, unchanged: a name that is both running and
+           * not already disproved. Blue sky asks "has this price ever been
+           * exceeded", and ninety sessions cannot answer "ever" -- BTCT read
+           * as blue sky at $1.71 against an $1.80 ninety-session ceiling while
+           * the same symbol had traded at $26.58 two years earlier on today's
+           * basis. Gated because the gate is what makes refetching a whole
+           * history per pass affordable: it fires on about 3% of top-10 slots.
            *
            * After the shallow pass, not instead of it. The shallow one heals a
            * partial bar and is what every other consumer depends on.
            */
-          const deepDue = deepHistoryDue(db, job.ticker, job.tradingDate);
+          const basisDue = basisFetchDue(db, job.ticker);
+          const deepDue = basisDue.due ? basisDue : deepHistoryDue(db, job.ticker, job.tradingDate);
           if (deepDue.due) {
             const deep = await ensureDeepHistory(db, job.ticker);
             log(`[history] ${job.ticker} deep: ${deep.detail} (${deepDue.reason})`);
