@@ -153,3 +153,60 @@ points against a +10 threshold, **it is reported as no detectable change** — a
 the temptation to call it "approaching significance" is the exact failure this
 document exists to prevent. **A scorecard whose thresholds move after the run
 measures its author, not the desk.**
+
+---
+
+## Amendment 1 — 2026-09-02, after Ops's integrity sweep
+
+**Amendments are dated and additive. Nothing above has been edited.**
+
+**The six unverified sessions are VERIFIED CLEAN.** 19/19 checkpoints complete on
+every trading day 08-27 → 09-02, recaps `asked == queued` all six nights
+including the Friday→Monday rollover, `ticker_session` 8,657–8,745 rows/day with
+no half-day class. **The pre-registered hole "no verdict ships before the sweep
+reports" is discharged.** The two remaining holes stand unchanged: **08-20 half
+day, 08-27's thin premarket — plotted, not trended through.**
+
+**Imported caution: `daily_bars` has a recency slope BY DESIGN.** Backfill-on-
+demand via `ensureDailyHistory` means each date climbs toward ~620 as
+interpretation touches symbols. **The plateau is the healthy signal; the slope is
+an artifact.** A count that grows across the window by construction is the
+perfect fake trend for a progress scorecard.
+
+**Checked: none of S1–S5 touches it.** `worker/archive-backfill.ts` fetches raw
+minute and daily bars over REST and never reads `daily_bars` — the reason is
+documented at its line 16, that the table is a research-cycle artifact populated
+only for symbols that got a cycle analysis. **So no measure here has a
+backfill-on-demand denominator.** Recorded because the check is cheap and the
+next instrument added to this scorecard may not be so lucky.
+
+> **A general guard, fixed with the rest: no measure whose denominator grows by
+> backfill-on-demand may be trended. Report its plateau or leave it out.**
+
+## Amendment 2 — run the instrument where the data is
+
+**The extract exists.** It ran on 08-27 and sits on the server: 9 dates,
+08-17→08-27, 136 assessments, 3,375 ticker rows. **Its copy-down was refused by
+Ops's permission classifier, consistent with the trader's do-not-copy-data-down
+instruction, and Ops stopped rather than route around it. That is the correct
+outcome and I am not asking for an exception.**
+
+**So invert it: move the instrument, not the data.**
+
+`worker/archive-backfill.ts` already takes `--market-db` and `--archive`. It
+reads the market store **read-only** and writes a separate archive file. **It can
+run entirely on the server.** Then either the derived archive comes down — no
+raw dossier text, no assessment bodies — or, better, **nothing comes down but
+the numbers.**
+
+**That requires the scorecard runner to be written BEFORE anyone sees the data,
+which is the strongest form of the pre-registration this document already
+claims.** The constraint improves the method rather than obstructing it: **a
+scoring script written blind, run by someone else, returning only aggregates,
+cannot have been tuned to its result.**
+
+**Not started.** It is a real build and the instruments above are still with the
+trader; if he changes a measure the runner changes with it. **Sequence: he
+approves or amends the five instruments, then the runner is written to them,
+then Ops runs it.** Asking otherwise would be building against a spec that is
+still a proposal.
