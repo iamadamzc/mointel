@@ -2200,6 +2200,52 @@ day eight has no clean restore point. **Creating a manual snapshot is a write
 action and costs money — the trader's call, not mine.**
 
 
+### The deploy backlog behind 0f, and the two composition rules that conflict
+
+As of 2026-09-02, **five approved pieces are queued behind an unbuilt 0f**:
+
+```
+4ac30b5 + 9cf8872 + dec0dd9   re-trigger clock, rotation fix, stalled retirement
+bc15588                        supply pair (renders on zero rows today)
+d8794da                        Design's risk-chip fix (risk.ts + decisionSurface.test.ts)
+(pending build)                basis fetch
+```
+
+**The backlog is now itself a risk.** Every one of these was approved on evidence
+gathered days ago, and the longer they queue the more the desk they were measured
+against has moved. **0f gating them is correct; 0f staying unbuilt is not.**
+
+**Two composition rules, and they pull opposite ways:**
+
+**Ship together what cannot be read apart.** The 08-25 recap-stranding pair had
+to ship as one, because the enqueue fix and the `stalledJobs` comparison
+measured each other — split, the metric would have reported the fix as the
+disease.
+
+**Ship apart what would otherwise read as one.** Design's warning on `d8794da`:
+its risk-chip fix and the Q9 `sheet_float` column **read different keys**, so
+shipping them together makes two independent fixes look like one, and a single
+observation would appear to confirm both. **That is the same false-corroboration
+shape as the `computedCycle` progress meter I withdrew** — an observable that
+seems to confirm a mechanism it never touched.
+
+**The test is not "are these related" but "would one reading be claimed as
+evidence for both".** If yes, separate them, whatever their file overlap.
+
+**Design's post-deploy check is the shape to ask for every time:** *"`NO FLAG
+FOUND` appearing on a researched row is a string the current build cannot
+produce."* **Falsifiable, one string, and it fails loudly if the fix did not
+land.** Compare it to my own withdrawn meter, which could not have failed. This
+also matches the finding at `1e8acd4` — `STRUCTURE_CLEAN` has been unreachable
+in practice since the first day — so the check tests exactly the thing that was
+broken.
+
+**One gating note carried forward:** Coaching's uncommitted work sits adjacent
+in the tree and a bare `git add` would sweep it into a bundle sha. **Gating in a
+pinned worktree already defeats this**, and `git archive` ships the commit, not
+the tree — but whoever *composes* the bundle sha has to care.
+
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
