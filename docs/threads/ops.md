@@ -2103,6 +2103,103 @@ open the store at once. **Start market first, then the others with a few seconds
 between.** Market first because capture is the only irreplaceable thing.
 
 
+## Six-day integrity sweep, 2026-08-27 → 09-02: the desk ran itself unattended
+
+Read-only, taken 17:21 ET Wed 2026-09-02. **Six days with no human and no
+watchdog. The desk held.**
+
+**Clean, and measured rather than assumed:**
+
+```
+release        bc78d49            (expected — nothing was pushed in six days)
+schema         22
+uptime         6d 12:38           (no reboot since the incident)
+checkpoints    19/19 COMPLETE on 08-27, 08-28, 08-31, 09-01; 18/18 on 09-02
+               ZERO incomplete. Weekend correctly absent.
+recaps         asked == queued SIX NIGHTS RUNNING: 2/2, 5/5, 8/8, 4/4, 2/2
+               target_trading_date skipped the weekend (08-28 -> 08-31)
+ticker_session 8,657-8,745 rows/day, ~2,850 ranked. No half-day class.
+stalledJobs    16
+```
+
+**`bc78d49`'s enqueue fix has now held for six consecutive nights**, including a
+Friday-to-Monday rollover, which is the case the `<` versus `<>` change existed
+for. That is the strongest evidence it will get.
+
+### The market worker has 6 days of unbroken capture
+
+`NRestarts=0`, started `2026-08-27 08:42:59` — the moment I brought it up after
+the incident reboot. **Capture has not been interrupted since.** Web and assess
+likewise `NRestarts=0` from the same second.
+
+### Research restarted three times, all self-healed, and two share a cause
+
+```
+2026-08-28T20:49:02Z  exit 1    SqliteError: database is locked
+                                researchRepo.ts:241/246  claimQueuedJobs
+2026-08-29T02:01:50Z  exit 1    SqliteError: database is locked
+                                researchRepo.ts:291      completeJob
+2026-09-02T14:30:09Z  exit 134  JavaScript heap out of memory
+```
+
+Each restarted within 10 seconds. **`database is locked` is NOT
+`SQLITE_BUSY_SNAPSHOT`** — it is a plain lock timeout, and it fired twice on
+different write paths. It arrives alongside a WAL that has grown to **546 MB**
+against an **886 MB** store, which is the environment lock contention gets worse
+in, not better.
+
+The second failure is at `02:01:50Z` — **the recap minute**. The recap and the
+research worker contend for the same writes at 22:00 ET.
+
+**Item 0e (early-return when `user_version` already matches) was raised for
+deploy stalls. These are a second symptom of the same untruncated WAL**, and
+they happen without any deploy at all.
+
+### `daily_bars` decline is NOT a defect — measuring the shape saved a false report
+
+Per-date counts fall monotonically from 08-26 to 09-02 (320, 269, 200, 147, 97,
+0). **In isolation that reads as a failing fetch.** The full curve says
+otherwise:
+
+```
+08-10..08-17   616, 616, 618, 619, 620, 622    <- plateau
+08-18..08-25   606, 556, 520, 469, 412, 378
+08-26..09-02   320, 269, 200, 147, 97, 0
+```
+
+**`daily_bars` is backfill-on-demand**, written by the *research* worker via
+`ensureDailyHistory` (`worker/research-interpret.ts:152`) — not by the market
+worker, which is why the market log has no fetch lines at all. Each date climbs
+toward ~620 as more symbols are interpreted on subsequent days. **A recency
+slope is the correct shape**, and today's zero is a session that has not settled.
+
+**The slope was not the evidence; the plateau was.** Reporting the slope alone
+would have manufactured an incident out of a working system.
+
+### Growth since the 2026-08-27 readings
+
+```
+store   877 MB -> 886 MB
+WAL     531 MB -> 546 MB
+disk     17%   ->  18%
+```
+
+Modest, and the WAL is still not truncating. See the lock failures above.
+
+### Snapshots: 7 rolling dailies and NO manual snapshot
+
+`get-auto-snapshots` returns 08-27 through 09-02, all `Success`.
+`get-instance-snapshots` returns **nothing** — there is no protected restore
+point of any age. Integration was right that the pre-incident snapshots rotated
+off; the oldest surviving one (08-27 08:19Z) was itself taken **during the
+thrashing window**.
+
+**So the entire restore capability is a 7-day sliding window.** For a desk whose
+value is an append-only record that cannot be rebuilt, a problem discovered on
+day eight has no clean restore point. **Creating a manual snapshot is a write
+action and costs money — the trader's call, not mine.**
+
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
