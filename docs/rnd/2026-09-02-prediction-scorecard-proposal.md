@@ -210,3 +210,74 @@ trader; if he changes a measure the runner changes with it. **Sequence: he
 approves or amends the five instruments, then the runner is written to them,
 then Ops runs it.** Asking otherwise would be building against a spec that is
 still a proposal.
+
+## Amendment 3 — baselines computed, and one decision rule was broken
+
+**Computed on 08-17..21 before any later data exists, as Amendment-0 promised.
+The extract has not landed. Nothing below could have been tuned to a result.**
+
+### S2 baseline — and the rule it breaks
+
+    graded n=211   never-graded n=95   never-graded share 31.0%
+    minutes board-entry -> first grade:  p25 0   MEDIAN 0   p75 15
+    graded BEFORE board entry: 0
+
+**The median is ZERO.** A grade is typically already present at the moment a name
+is surfaced — carried from a prior analysis rather than produced on surfacing,
+which agrees with S5's freshness picture from the other side.
+
+> **So S2's pre-registered rule — *a ≥25% fall in median* — is UNDEFINED. You
+> cannot fall 25% from zero.**
+
+**Amended, and this is why the baseline had to be computed first.** The
+discriminating statistics here are the **p75 (15 min)** and the **never-graded
+share (31.0%)**:
+
+| | |
+| --- | --- |
+| **Decision rule, replacing the above** | Improvement is **p75 falling ≥25% (15 → ≤11 min)** *and* the **never-graded share not rising** above 31.0%. |
+| **Reported alongside** | The median, so a shift off zero is visible if it happens. |
+
+**A rule that cannot be evaluated is worse than a lax one, because it looks
+rigorous until someone tries to apply it.** It was caught by keeping a promise
+this document made about ordering, not by care.
+
+### S4 baseline
+
+    GRADED           157   51.3%
+    NO_LOOK           65   21.2%
+    UNKNOWN_HONEST    54   17.6%
+    FAILED            20    6.5%
+    IN_FLIGHT         10    3.3%
+    ADMISSIBLE               69.0%
+
+**Rule stands as written**: improvement is admissible rising ≥10 points, to
+**≥79.0%**, with `UNKNOWN_HONEST` **not falling below 17.6%**.
+
+## Amendment 4 — method chosen, and it is not the one I argued for
+
+**The trader approved the copy-down as a specific exception, and left the
+server-side blind runner available. Both are permitted, so the choice is mine on
+method strength.**
+
+**I argued I would take the blind runner even if the copy-down were approved. I
+am not taking it, and the reason is today's record rather than a change of
+principle.**
+
+**My instruments have been wrong on first contact repeatedly** — the float
+extractor took three passes, each fixing a hand-checked case and introducing
+another; the store comparison was wrong twice. **A blind runner returning only
+aggregates gives me no way to see that a denominator collapsed or a join missed.
+It would produce a confident number with no tell**, which is the exact failure
+mode this desk has spent two days cataloguing.
+
+**What preserves the pre-registration without that risk: commit the runner
+BEFORE the data arrives.** The commit timestamp is the proof, verifiable by
+anyone, and it does not depend on my never having seen the data afterwards.
+**A script committed before the extract lands cannot have been tuned to a result
+that did not yet exist** — and it can still be debugged when its denominators
+look wrong.
+
+**The runner will also emit diagnostics beside every aggregate** — denominators,
+null counts, dates covered, rows dropped. **Today's errors were all invisible in
+the headline number and obvious in the input.**
