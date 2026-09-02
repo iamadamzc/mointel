@@ -169,9 +169,28 @@ export function resolveRisk(row: DeskRow): DeskRisk {
     };
   }
 
-  const floatUnknown =
-    row.research?.structure.state === 'UNKNOWN_STRUCTURE' ||
-    (structure !== null && structure.displayedFloat === null);
+  /*
+   * The Sheet's UNKNOWN_STRUCTURE only. The dossier's float is NOT a trigger.
+   *
+   * This also fired on `structure.displayedFloat === null`, which has been null
+   * on every stored version since id 237 (2026-08-20). That made FLOAT UNKNOWN
+   * true of every researched row, and a chip identical on every row cannot make
+   * rejection cheap, which is the one job this cell has. It short-circuited both
+   * branches below: STRUCTURE CAUTION never rendered, and neither did
+   * STRUCTURE_CLEAN — the only `tone: 'pos'` outcome in this function. The desk
+   * had no way to tell the trader a researched name was structurally clean for
+   * thirteen days.
+   *
+   * The two floats are different fields with the same name: `structure
+   * .displayedFloat` is the dossier's, null, and `row.displayedFloat` below is
+   * the Sheet's, populated — so the gate read one while the value it gated read
+   * the other.
+   *
+   * FLOAT UNKNOWN stays correct while the desk has no float source. It is
+   * BECAUSE it is correct for everyone that it cannot be a per-row chip.
+   * Restore a dossier-float condition only when that float can vary.
+   */
+  const floatUnknown = row.research?.structure.state === 'UNKNOWN_STRUCTURE';
 
   if (floatUnknown) {
     return {

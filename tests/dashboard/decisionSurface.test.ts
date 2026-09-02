@@ -293,6 +293,48 @@ describe('resolveRisk', () => {
     expect(risk.detail).not.toMatch(/selling shares|is selling/i);
   });
 
+  /*
+   * The production shape, which no fixture above reproduced.
+   *
+   * Every test in this block passes a dossier `displayedFloat` (4M, 12M) — and
+   * that field has been NULL on every stored version since id 237, 2026-08-20.
+   * So the fixtures encoded a world that had stopped existing, and the gate
+   * short-circuited both branches below FLOAT_UNKNOWN on the live board for
+   * thirteen days while these stayed green.
+   */
+  it('reaches STRUCTURE CAUTION when the dossier float is null, as it is in production', () => {
+    const risk = resolveRisk(
+      buildDeskRow(
+        'SUGP',
+        sheet({ structure: 'CLEAN' }),
+        null,
+        demand(),
+        intelligence({ structure: { structureClassification: 'CAUTION', displayedFloat: null } }),
+      ),
+    );
+    expect(risk.code).toBe('STRUCTURE_CAUTION');
+  });
+
+  /*
+   * STRUCTURE_CLEAN is the ONLY `tone: 'pos'` outcome in resolveRisk. While the
+   * dossier float gated FLOAT_UNKNOWN, the desk could not tell the trader a
+   * researched name was structurally clean at all — an absent all-clear, which
+   * is worse than a wrong warning because nobody notices it is missing.
+   */
+  it('can still say a researched name is clean — the only positive chip', () => {
+    const risk = resolveRisk(
+      buildDeskRow(
+        'SUGP',
+        sheet({ structure: 'CLEAN' }),
+        null,
+        demand(),
+        intelligence({ structure: { structureClassification: 'CLEAN', displayedFloat: null } }),
+      ),
+    );
+    expect(risk.code).toBe('STRUCTURE_CLEAN');
+    expect(risk.tone).toBe('pos');
+  });
+
   it('says the float is unknown rather than staying quiet about it', () => {
     const risk = resolveRisk(
       buildDeskRow('SUGP', sheet({ structure: 'UNKNOWN STRUCTURE' }), null, demand(), intelligence()),
