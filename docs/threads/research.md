@@ -71,7 +71,7 @@ good; do not re-litigate it.
 | --- | --- | --- |
 | **basis-fetch decoupling** | **APPROVED** | **the trader said yes 2026-08-27** ("yes to all"); Integration's relay was dropped by a cut turn and landed here 2026-09-02. **You build it.** Design below. |
 | `guardrails.ts:344` content check | the trader | scoped, unbuilt, one line. **My recommendation: do this first** — it is correctness, not capability |
-| deterministic float extractor | the trader | scoped, unbuilt, 19 tickers |
+| deterministic float extractor | **PARKED** (trader, 2026-09-02: "park, but let's put it where we should") | scoped, unbuilt, 19 tickers. **Unparks with the derived-float decision, or when Q9's validation needs ground truth once capture data accumulates. Prerequisite first build when it wakes: the fixture set from R&D's recorded extraction traps** — three parsers disagreed across the whole plausible range, which is the argument no assertion can make. |
 | Q9 capture build | Ops's schema gate | scoped, riders below |
 
 ### The basis fetch — the design, so you do not have to re-derive it

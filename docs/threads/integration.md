@@ -190,9 +190,42 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-*Rewritten 2026-08-27 06:25Z (02:25 ET Thursday) as this session's handover. The
-previous version covered 2026-08-24 and every line of it is now history.
-**Everything below expires. Verify before acting on it.***
+*Refreshed 2026-09-02 21:35Z (17:35 ET Tuesday) by the third Integration
+session, mid-flight, after the trader flagged it near context capacity.
+**Everything below this block that carries a 2026-08-27 frame is the previous
+handover, kept for its mechanisms and superseded by this block wherever they
+conflict. Verify before acting on any of it.***
+
+### State as of 2026-09-02
+
+- **Production `bc78d49`, schema 22, six days unattended and CLEAN** — Ops's
+  sweep at `1ffb77d`: 19/19 checkpoints every trading day, recaps asked==queued
+  six nights including the Fri→Mon rollover, unbroken capture. `stalledJobs` 16
+  until the retirement ships. Soft spot: research worker self-healed three
+  restarts (two lock timeouts, one OOM); WAL 546MB on an 886MB store; item 0e
+  reframed deploy-independent.
+- **The deploy bundle behind 0f** — 0f (off-box build) **approved by the trader
+  2026-09-02 and building at Ops**. Behind it: `4ac30b5` (fix pair + `dec0dd9`
+  retirement), `bc15588` (supply pair, inert until basis data), `d8794da`
+  (risk-chip fix), plus Research's basis-fetch and guardrails builds when
+  committed. One deploy instruction from this seat, one sha, watched,
+  capacity-priced — *a deploy is a capacity event* stands.
+- **Approved same day:** copy-down exception (assessments extract + re-run
+  through 09-02, Ops executing); manual Lightsail snapshot. **Parked:** float
+  extractor (condition recorded in research.md's pending table).
+- **Scoring:** R&D's pre-registered scorecard proposal `659754b`, five
+  instruments, thresholds fixed. Runner is written to the proposed five unless
+  the trader amends first — he has been told his silence is informed consent.
+  Copy-down and server-side blind-runner both permitted; method choice is
+  R&D's. News one-cell instrument excluded pending a denominator from Research.
+- **Sessions:** Research successor live (opened 08-27); the three retired
+  sessions archived 2026-09-02. Coaching holds six-day-old uncommitted code in
+  the tree, nudged to commit.
+- **Practices added since the 08-27 handover, all in README/charters:** push
+  rule is the trader's word; a hold is announced or it is a push by whoever
+  moves next; id range PLUS content digest across stores; the capacity
+  doctrine and retirement protocol (documents-current, opening-message expiry
+  audit, archive on retirement); clock read in the same tool call as the claim.
 
 ### Reaching the threads — THIS IS THE ONLY MECHANISM THAT WORKS
 
