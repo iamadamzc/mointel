@@ -3047,6 +3047,64 @@ spec is items 25/26.
 
 ---
 
+**40. Historical minute bars DO carry trade count, and my "at any price" was
+wrong.** *Contradiction between this thread and R&D, routed by Integration
+2026-09-03 before either built on it. Settled by probe, and it settles against
+me.*
+
+**None of the three offered answers is quite right: the VENDOR is (a) and the
+DESK is (b).**
+
+### The vendor returns `n` historically — measured, not assumed
+
+| symbol | date | depth | trade counts returned |
+| --- | --- | --- | --- |
+| VSME | 2026-06-10 | ~3 months | `n` = 12,699 / 20,008 / 23,663 |
+| BTCT | 2025-06-03 | ~15 months | `n` = 7 / 11 / 20 |
+
+*Two requests, `limit=3`, `timeframe=1Min`. Present at both depths, on a busy
+name and a quiet one.*
+
+### A persisting path exists and already carries it — but only ever asks for TODAY
+
+`worker/runtime.ts:868` maps `tradeCount: bar.n ?? null` from a **historical
+minute-bar fetch** (`source: 'alpaca-historical-minute-bars'`) and `:887`
+writes it via `upsertMinuteBars`, which stores `trade_count`.
+
+**But it is a same-session recovery backfill**, and it writes
+`upsertMinuteBars(this.db, this.tradingDate, …)` — the CURRENT date. The writer
+**takes** a date parameter, so it is nearly general already; **no caller ever
+passes a past one.**
+
+### And the pruner would delete anything re-fetched for a past date
+
+`pruneRetention()` builds `keep = [today, today-1, today-2]` and
+`pruneMinuteBars` runs `DELETE … WHERE trading_date NOT IN (keep)`. **So
+re-fetched history survives only until the next prune cycle** unless the keep
+set is widened or the analysis runs inside one.
+
+### What this means, and it is a much better sentence than mine
+
+> **The revival study's window is a BUILD away, not impossible.** Two small
+> pieces: a caller that fetches a past date and hands it to the writer that
+> already accepts one, and a retention decision so the pruner does not undo it.
+> **Nothing is being lost meanwhile** — that is the whole point of
+> re-fetchable.
+
+**My error, named because it is the same one twice in a day:** *"cannot go
+further back at any price"* was a claim about the **vendor**, inferred from a
+fact about **local retention**. Earlier today I inferred production's schema
+from a stale snapshot file. **Both times I read a property of a local store as
+a property of the world.**
+
+**R&D's re-fetchability finding DOES extend to trade counts**, which was the
+specific thing in doubt. *And it does not matter whether R&D's 13-session
+backfill was daily or minute bars — Integration's reconciling hypothesis is
+moot rather than wrong, because the measurement here stands on its own path.
+I did not verify R&D's path and am not claiming anything about it.*
+
+---
+
 **39. Alpaca trades are DEEP — bounded by the listing, not by the
 subscription. The 10-second question has no clock.** *Vendor probe run for
 Integration 2026-09-03, read-only. 12 requests, all HTTP 200, zero 429s.*
@@ -3193,11 +3251,14 @@ daily-bar path or the simulator.* So the measure the viscosity research
 and discarded at the point of use. Adding it is an **engine change only** — no
 subscription diff, no second connection, no REST call, no backfill.
 
-**And it is retrospectively measurable today, within a bound that must travel
-with any figure:** `minute_bars` retention is `minuteBarRetentionDays`,
-**default 3** (`config.ts:85`). R&D can test the revival question against real
-stored trade counts for roughly the last three days without collecting
-anything — and cannot go further back at any price.
+**And it is retrospectively measurable today**, against roughly three days of
+stored trade counts without collecting anything: `minute_bars` retention is
+`minuteBarRetentionDays`, **default 3** (`config.ts:85`).
+
+> **~~and cannot go further back at any price.~~ RETRACTED — see item 40.**
+> That was a claim about the VENDOR inferred from a fact about LOCAL
+> RETENTION, and it is wrong: Alpaca returns trade counts on historical
+> minute bars, measured 15 months back. R&D was right and caught it.
 
 **LIQUIDITY IS THE ASYMMETRIC ONE, AND ITS REAL COST IS NOT THE SUBSCRIPTION.**
 Quotes are already subscribed for the high-res set, so a spread measure **for
