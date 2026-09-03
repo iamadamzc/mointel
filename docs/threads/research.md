@@ -3088,6 +3088,41 @@ spec is items 25/26.
 > measurement.** *The compiler found this: adding a required field broke seven
 > call sites, which is how a persisted contract announces itself as one.*
 
+### THE GRAVEYARD IS PRESENTATIONAL, AND EVERY RANK-BASED CONSUMER STILL SEES A CORPSE
+
+*Traced 2026-09-03 immediately after the decision, before anything is wired.
+Nobody has named it and it is the board-lateness defect surviving its own fix.*
+
+**The decision is keep-the-row-and-flag-it, never null-the-rank** — which is
+right for the graveyard, because the row has to survive in order to be shown.
+**But the rank survives with it, and the rank is what other things read.**
+
+| consumer | gate | what a DEAD name at rank 3 still does |
+| --- | --- | --- |
+| **research queue** | `candidate.rank > autoRank → reject` (`queue.ts:55`) | **holds a top-N research slot** |
+| **high-res subscription** | `rank <= internalRank` (`engine.ts:1531`) | holds a trades/quotes slot in the 250 cap |
+
+> **So a LIVE name at rank 13 is excluded by a DEAD name at rank 3.** The
+> trader gets a clean board while the desk keeps spending research and
+> subscription budget on corpses — and keeps withholding both from names that
+> are actually moving. **That is exactly the defect this whole line of work
+> exists to fix, one layer below the surface that now looks fixed.**
+
+**The fix is NOT to null the rank** — that would take the graveyard's own data
+with it. It is the same repair as `latched`, and this thread has now given the
+same answer three times: **leave the value alone and change what READS it.**
+Rank-based consumers should ask for *ranked AND alive*, which keeps the row
+whole for the graveyard while stopping the spend.
+
+**Measurable once the emission is deployed, and worth sizing before building:**
+count how many top-N slots are held by `DEAD` names at an instant. Not
+measurable from here — it needs live data, and the local snapshot carries no
+`minute_bars` at all.
+
+*Not built, and deliberately not wired: Integration asked to coordinate through
+it before wiring, and this widens what "the removal" means from a Design
+partition into a change with two consumers in two threads' modules.*
+
 *Original scope below, unchanged.*
 
 **41a. The scope as delivered — SCOPE ONLY, nothing built at the time.**
