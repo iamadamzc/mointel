@@ -889,6 +889,35 @@ day:** *a correction inherits the confidence of whatever it corrects toward.*
 **I wrote a direction as a finding; Research corrected its own comment toward my
 finding; the error travelled upward in confidence at every step.**
 
+#### Q11 operational design — fixed 2026-09-04, before running
+
+**Drop event.** The instant the shipped predicate would have removed the name:
+**5 consecutive settled minutes at or below 30 trades/min, DECIDED AT MINUTE 6**
+because the in-flight minute is excluded. **The offset is reproduced, not just
+the threshold** — a replay deciding at five drops names a minute early and
+misattributes any revival inside that minute.
+
+**Ran.** Price at or above **+25%** from `reference_close` at some minute
+**after** the drop instant, in the same session. His number, his measure.
+
+**AND ONE AMBIGUITY REPORTED RATHER THAN RESOLVED.** A name already at +25% when
+it was dropped **has not "run" — it never fell.** Volume can die while price
+holds. So two figures, side by side and never pooled:
+
+    already at +25% at the drop instant   -- dropped while still elevated
+    below +25% at the drop, reaching it after   -- a genuine miss
+
+**Only the second is unambiguously the rule being wrong.** The first is the rule
+dropping a name that was still up — which may be correct behaviour (no tape) or
+may be the miss he cares about, **and that is his call rather than mine.**
+
+**Population: board symbol-days, 13 sessions. Reported BY SESSION** — premarket,
+RTH, after-hours — per the registered condition, since the thresholds are
+premarket-derived and the rule runs uniformly.
+
+**No pre-registered expectation.** Amendment 7 removed the mechanism that would
+have given one a direction, and I am not going to invent a replacement.
+
 **CONDITION ON ANY Q11 RATE, from Research and accepted:** **say which
 population it is over in the same sentence as the number.** The two definitions
 differ on the prior-active requirement — **a name never active can be DEAD in
