@@ -135,6 +135,25 @@ message and are read with the same authority, so they get audited with it — an
 the rule's first application is worth doing deliberately, on the auditor's own
 charter, because a rule is weakest immediately after it is written.
 
+**Both first applications found something, and neither was the case that
+motivated the rule** — which is why it widens again:
+
+- **Audit for EXPIRED REASONS, not only false claims.** R&D found a measure
+  recorded as *ready* and justified by an open question — and that question had
+  closed weeks earlier without needing it. **The claim stayed true while its
+  reason expired**, so it reads as current and is not. *Ready and wanted by
+  nothing* is a different state from *ready*.
+- **Stamp VERIFIED as well as UNVERIFIED, with the date and the method.**
+  Integration found an assertion nobody could check and stamped it unverified
+  rather than deleting it; R&D checked one that held and stamped it verified.
+  **Checked-and-true, checked-and-unknowable, and never-checked are three
+  states** and a charter that distinguishes only the first is lying by
+  omission. Deleting either is the tidy version that loses which one it is.
+- **A claim confirmed by a matching column NAME is not confirmed.** R&D's
+  keyword scan hit `updated_at` and nearly closed a live capture gap on it —
+  a last-write stamp is not a history. Same family as key-presence answering a
+  value-presence question, one level up in the schema.
+
 And **the opening message is verified as its own step** — R&D's addition,
 from finding its own four days stale on 2026-08-27 (it still directed a
 successor to build an instrument that had been finished and running since
