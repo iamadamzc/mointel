@@ -1660,6 +1660,33 @@ ranked* — instead of reporting the null count.
 > checks are still needed, and the second one is the older rule: can this
 > observation come out badly for a reason that is not the failure?
 
+## An ADDITION plan is a list of readers too — and this one had two
+
+**2026-09-04, found by Design on the first live surface read.** The graveyard
+rendered *"not recording yet"* while the store held 328 DEAD rows: the
+`activity` key was **absent** from the demand payload — not null, not
+`'UNKNOWN'`. Verified at the code from this seat rather than routed as two
+candidates: `repo.ts` carries `activity` in the row interface, the INSERT list,
+the VALUES placeholders and the DO UPDATE SET — **and `toDemandState` never
+assigns it.** The write path was complete and the surface read path was missing.
+
+**Ops's nine-site enumeration was excellent and answered a slightly different
+question:** *what does it take to ADD a column.* It included the whole write
+path plus **one** reader — `readBoardCandidates`, which Research had flagged by
+name. **There were two.** `toDemandState` was never flagged, so it was never
+enumerated.
+
+> **This desk already records that a DELETION plan is a list of readers. An
+> ADDITION plan is one too, and it is harder: a deletion breaks its readers
+> loudly, while an addition simply never reaches them.**
+
+Everything else measured consistently and that is what makes the diagnosis
+clean: columns populate, the research-slot gate works, the high-res gate works
+(engine-internal, never touches the store), and **only the consumer that reads
+`DemandState` back out is starved.** *And the surface said so* — Design's
+not-wired state, written before there was anything to distinguish, is what
+turned this into two queries instead of a false "graveyard working, empty".
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
