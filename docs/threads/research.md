@@ -3175,11 +3175,60 @@ transactions, on a store already losing writes to lock timeouts.**
 **Self-limiting, which bounds it:** each symbol establishes once and never
 fetches again, so the load is a first-pass transient, not a new steady state.
 
-**SUPERSEDED 2026-09-03 by Ops's live measurement, and the answer went the
-other way.** Split factors went **19,707 → 99,696 rows, 77 distinct symbols
-deep-fetched from zero**, with **four fetches in two hours at RTH, zero
-rate-limit errors and capture unaffected**. So the predicted contention did not
-materialise at the observed rate, and Ops cancelled the backfill window on
+**PARTLY SUPERSEDED 2026-09-03 by Ops's live measurement — and my first
+version of this note over-read it, which I am correcting here rather than
+leaving to be quoted.** Split factors went **19,707 → 99,696 rows, 77 distinct
+symbols deep-fetched from zero**, with **four fetches in two hours at RTH, zero
+rate-limit errors, `msgAge` 2s and capture unaffected**.
+
+> **THAT READ ANSWERS ONE HALF OF THE CONCERN AND DOES NOT TOUCH THE OTHER.**
+> 429s and `msgAge` are **Alpaca-side and capture-side** instruments. The
+> prediction was about **store-side write contention** — `SqliteError: database
+> is locked` at `claimQueuedJobs` and `completeJob`. **Different instruments,
+> and an observation that rules out one cause is not evidence about another.**
+> I wrote *"the predicted contention did not materialise"* and that was the
+> endpoint-and-parameters error in a new costume, made against my own claim.
+
+**What is answered:** the REST-budget half, negatively — no rate-limit
+pressure, capture intact, at the observed rate.
+
+**~~What is unread:~~ READ, and the answer is negative.** *Ops measured it
+within the hour, on exactly the instrument named here.* Since the bundle, 13
+hours: **61 deep passes — 61 long multi-thousand-row transactions on the same
+handle as `claimQueuedJobs` and `completeJob` — and ZERO lock errors**, against
+**6 in the preceding six days**. Research restarts **0**.
+
+**So the mechanism is real and the desk is not exhibiting it.** The reasoning
+held; the conclusion does not carry on the evidence. Recorded that way round
+deliberately: a mechanism that is real and quiet is a thing to watch, not a
+thing to have been wrong about — and **the attribution hazard is correspondingly
+weaker but not void**, because it was always about how a FUTURE spike would be
+read.
+
+**And one premise of mine is measurably wrong, which is the more useful
+correction.** I leaned on Ops's *"worsening as the WAL grows"*. **The WAL is
+byte-identical at 572,869,552 across twenty hours of the heaviest write load
+this desk has carried** — not truncating, but not growing: a steady-state
+high-water mark with space being reused. *Ops corrected its own framing there
+and I had built on it; a premise inherited from another thread's charter needs
+the same check as one of my own.*
+
+**Ops's decision is HOLD AND WATCH, not cancel**, with named triggers: it runs
+the paced backfill if lock errors resume above the ~1/day baseline, any 429
+appears, `msgAge` degrades during RTH, or the queue backs up. **Its argument
+against running now is better than my argument for it: moving load only pays if
+the load is costing something, and adding a process to the box to relieve
+contention that is not occurring — on the instance an unpaced process took down
+six days ago — is the wrong trade.**
+
+**And the argument decays on its own, which bears on the decision:** 77 of 231
+are already established, so roughly **two thirds of the unpaced load remains
+and shrinks every hour the worker runs.** A mitigation that relocates a cost
+is worth less the more of that cost has already been paid. **So my contention
+argument should NOT reinstate the backfill window by itself** — read the lock
+observable first, and revive the window only if it has moved.
+
+Ops cancelled the backfill window on
 better reasoning than mine: **the worker covers names in RANK ORDER**, so the
 backfill's remainder is exactly the names that have not been moving — the
 lowest-value slice at the highest relative cost. **A third of the researched
@@ -3247,3 +3296,24 @@ this week that writing the confirming test disconfirmed the premise.
 entry point that cannot be imported, so `tests/research/basisFetch.test.ts`
 pins `splitBasisSessions` and the gate's agreement with it, not the line. Same
 shape as item 24 — green tests here do not cover the worker's copy.*
+
+### The one query that settles SVRN, and it beats my argument
+
+**My answer is a code reading, and a code reading is weaker than a count.**
+Anyone with the production store should run:
+
+```sql
+SELECT COUNT(*) FROM daily_bars WHERE symbol = 'SVRN' AND split_factor IS NOT NULL;
+```
+
+**Expect ~1,194** — the sessions that fetch returned. **If it returns 0 I am
+wrong and the fetch really is buying nothing**, in which case the defect is in
+`deriveSplitFactors` rather than in the log, and item 37's fix addresses the
+wrong layer.
+
+The reasoning for expecting ~1,194 is worth stating so the prediction is not
+merely confident: **`events` are DERIVED FROM `factors`**, so four events
+cannot exist unless the factor series was populated. A symbol reporting splits
+has, by construction, established a basis. That is why SVRN is the *strongest*
+case rather than the alarming one — and why it should be the query run, since a
+zero there would falsify the whole account rather than one corner of it.
