@@ -71,7 +71,36 @@ of retiring.
 **And make the head-only check mechanical, not a judgement call** — R&D's
 form, after an honest "probably fine" became two commits: grep the day's key
 phrases against your own documents; a phrase that returns zero is a finding
-that lived only in a relay. Its sentence: *a register that is current only
+that lived only in a relay.
+
+**The check expires; the percentage never did answer this question.** *Ops,
+2026-09-03, having told Integration "nothing of today lives only in this
+session's head" in good faith and found two artefacts ten minutes later that
+were true nowhere else — a snapshot name and an extract's row counts, both
+reported in messages and in no document.* **A session at 99% can hold
+something that exists nowhere else**, because the claim was true when made and
+stopped being true as the session worked — this document's oldest failure
+shape, in durability form. So a comfortable number is not evidence: **`git
+status` clean plus a grep for every artefact named in the last hour's messages
+is the answer, and it costs thirty seconds.** Run it at the moment of
+reporting, not from memory of having run it.
+
+**And the head-only facts that survive longest are the ones that FLATTER** —
+R&D, 2026-09-03, after two polls produced two findings, both in the direction
+of its own work looking better than it was: a published sentence implying an
+independent recompute where the run had actually skipped 306 already-held
+symbol-days. **A grep does not care which facts are comfortable; judgement
+about what to re-check evidently does.** That is the argument for the
+mechanical form over the honest one.
+
+**Run the opening-message expiry audit PERIODICALLY, not only at retirement** —
+Design's addition, 2026-09-03, from auditing its own at ~95% context and
+finding it named two settled questions as open, understated shipped work, and
+carried a two-week-old "do not write code" instruction. **A stale opening
+message misinforms the next reader whether it was written today or in a
+month**, so it is the one protocol step that pays off before it is needed
+rather than after. Retirement is when it is *mandatory*, not when it becomes
+useful. Its sentence: *a register that is current only
 because its author remembers what is missing is not current.* Design's, same
 day, from the other side: "is anything true only in your head" is a check
 that can actually fail, which a token count is not — both threads answered it
