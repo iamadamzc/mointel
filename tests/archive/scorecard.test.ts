@@ -64,18 +64,43 @@ describe('S1 board timeliness', () => {
     expect(measure.diagnostics.dropped.noPeakTime).toBe(1);
   });
 
-  it('reports NO DETECTABLE CHANGE one point short of the threshold', () => {
+  it('reports NO DETECTABLE CHANGE just short of the threshold', () => {
     /*
-     * THE POINT OF THE WHOLE DOCUMENT. Nine points against a ten-point rule is
-     * a null, and calling it "approaching significance" is the failure the
+     * THE POINT OF THE WHOLE DOCUMENT. A whisker under a ten-point rule is a
+     * null, and calling it "approaching significance" is the failure the
      * pre-registration exists to prevent.
+     *
+     * REWRITTEN. The first version used one row per date, so every session was
+     * 0% or 100% and the fixture could not express "just short" at all -- it
+     * produced four sessions clearing against a requirement of eight. Right
+     * verdict, unrelated mechanism, and the comment described a test that was
+     * not being run. Same shape as the revival fixture whose peaks never
+     * reached the active level: a green that agrees with you for a reason you
+     * did not check.
+     *
+     * Ten rows per session, four of them peaking after entry, puts every
+     * session at exactly 40.0% against a bar of 40.1%.
      */
-    const target = BASELINE.s1AfterSharePct + THRESHOLD.ratePointsRequired - 1;
-    const rows = overDates(10, (i) => ({
-      // Just under target% of sessions have their peak after entry.
-      timeOfMaxGain: i * 10 < target ? '2026-08-25T13:00:00.000Z' : '2026-08-25T11:00:00.000Z',
-    }));
-    expect(scoreS1(rows).verdict).toBe('NO_DETECTABLE_CHANGE');
+    const bar = BASELINE.s1AfterSharePct + THRESHOLD.ratePointsRequired;
+    const rows: ScorecardRow[] = [];
+    for (let d = 0; d < 10; d += 1) {
+      for (let i = 0; i < 10; i += 1) {
+        rows.push(
+          row({
+            symbol: `S${i}`,
+            tradingDate: `2026-08-${String(10 + d).padStart(2, '0')}`,
+            timeOfMaxGain: i < 4 ? '2026-08-25T13:00:00.000Z' : '2026-08-25T11:00:00.000Z',
+          }),
+        );
+      }
+    }
+
+    const measure = scoreS1(rows);
+    expect(measure.value).toBeCloseTo(40.0, 5);
+    expect(measure.value as number).toBeLessThan(bar);
+    // Every session is short of the bar, so none of the ten clears it.
+    expect(measure.perSession.every((s) => (s.value as number) < bar)).toBe(true);
+    expect(measure.verdict).toBe('NO_DETECTABLE_CHANGE');
   });
 
   it('refuses a verdict without enough trendable sessions', () => {
