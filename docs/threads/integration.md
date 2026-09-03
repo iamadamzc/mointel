@@ -1635,6 +1635,31 @@ to be principled: the same restart happens unattended overnight regardless, so
 what was at stake was the OBSERVATION rather than the feature. When the cost of
 holding is small and the person is reachable, hold.
 
+## A PRE-REGISTERED criterion is protected from being fitted, not from being WRONG
+
+**2026-09-04, the first reading of the activity feature.** Research had
+pre-registered: *a DEAD row missing any of `dead_since` / `dead_at_rank` /
+`dead_at_peak_trades` / `dead_at_price` means the capture block did not run.*
+Sound-looking, written before the deploy, immune to being fitted to the result.
+**It would have cried wolf 268 times.** `dead_at_rank` records the rank held at
+the flip — and a name unranked at that instant correctly has none. Only ~250 of
+8,800 rows are ranked at any moment; of the 107 DEAD names that WERE ranked, 60
+had it. **The criterion could not tell *absent because there was nothing to
+record* from *absent because the writer is broken*** — a check that cannot
+distinguish, wearing pre-registration as armour.
+
+**And the near-miss underneath it is worse.** Ops's first reading was
+`dead_at_rank` **0 of 203, taken thirty seconds after the restart**, and it had
+drafted that as the named failure. Two minutes later: 60 of 328. **A brand-new
+writer has written almost nothing yet, so absence at t+30s is not absence.**
+What saved it was running the *discriminating* query — *are these names even
+ranked* — instead of reporting the null count.
+
+> **Pre-registration defends against fitting a criterion to the data. It does
+> nothing about a criterion that was never able to separate the cases.** Both
+> checks are still needed, and the second one is the older rule: can this
+> observation come out badly for a reason that is not the failure?
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
