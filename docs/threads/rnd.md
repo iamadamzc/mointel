@@ -41,6 +41,7 @@ questions is a thread that has stopped working.
 | Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | parked — **no open items**; output multiples answered 2026-08-24 in research.md item 20, found 08-27. Ready to design |
 | Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-27 | parked — blocked on capture; float populated on ~1% of dossiers |
 | Q10 | Once a name goes dead intraday, does it come back? | 2026-09-03 | **CLOSED 2026-09-03, AMENDED twice** — back to +25% is rare (14.6% at 5 min quiet, 5.2% at 30). **But every pooled rate blends three session regimes** — premarket 62.3%, RTH 65.6%, after-hours 9.5% at 5 min — **and should not be quoted alone** |
+| Q11 | How often does the 5-minute drop rule remove a name that subsequently runs? | 2026-09-03 | proposed — **the rule's own false-positive rate**; blocked until the graveyard columns land and data accumulates |
 
 #### The closing pass, 2026-08-27
 
@@ -817,6 +818,48 @@ that.
 
 **NOT STARTED. Registered, and blocked on capture rather than on the queue.**
 
+
+#### Q11 — the drop rule's false-positive rate. Registered 2026-09-03, not started.
+
+**Routed here by Design through Integration, with its reason: a live board
+header answering *how often was the rule wrong today* would duplicate the
+archive badly, and the session-long miss rate belongs to this thread rather than
+to a number invented in chrome.** Design declined to build a cumulative
+"revived and ran" tally and was right to.
+
+**The question.** A continuing-presence rule drops a name from the active board
+after **5 settled minutes below threshold on minute trade count** — a threshold
+**my premarket revival curve set.** So: **how often does that rule drop a name
+that subsequently runs?** That is the rule's own error rate, and **if this
+register does not hold it, it exists nowhere and the rule ships unmeasured.**
+
+**Blocked**, and honestly so: the columns have not landed, nothing has shipped,
+and data must accumulate. **Not urgent and not commissioned.**
+
+**Two design costs to carry into the measurement, both stated by Design rather
+than discovered:**
+
+**`dead_at_price` is OVERWRITTEN on each death**, so it measures from the
+**latest** death only. **The cost concentrates on the churniest names — which
+are precisely the ones the rule is most wrong about.** A name that dies five
+times and runs after the second is unmeasurable by construction. **That is a
+sample selected in a way that excludes the effect**, the shape this desk has now
+found four times, and it is accepted knowingly rather than overlooked.
+
+**And a PRE-REGISTERED expectation, which I can state because the reason exists
+already:** the thresholds are **premarket-derived and the rule runs uniformly.**
+Amendment 6 of the revival pre-registration establishes that **a duration
+threshold carries an implicit unit — fraction of the window — so 5 minutes is
+1.5% of premarket and 0.5% of the full day.**
+
+> **The rule is therefore already expected to be roughly three times looser
+> outside premarket than the curve that calibrated it. By-session reporting is
+> not prudence here; it is the instrument that would reveal a miscalibration
+> this register predicts in advance.**
+
+**Stated now, before the data exists, so that finding it later is a
+confirmation rather than a discovery** — and so that *not* finding it is
+informative too.
 
 #### Q10 VERDICT — `REVIVAL_IS_A_THRESHOLD_NOT_A_RULE`, 2026-09-03
 
