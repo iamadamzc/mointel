@@ -40,7 +40,7 @@ questions is a thread that has stopped working.
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | parked — blocked on tier A, the same blocker as Q1's second half |
 | Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | parked — **no open items**; output multiples answered 2026-08-24 in research.md item 20, found 08-27. Ready to design |
 | Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-27 | parked — blocked on capture; float populated on ~1% of dossiers |
-| Q10 | Once a name goes dead intraday, does it come back? | 2026-09-03 | **CLOSED 2026-09-03** — `REVIVAL_IS_A_THRESHOLD_NOT_A_RULE`; 68% at 1 minute quiet, 19% at 30, 11% at 60 |
+| Q10 | Once a name goes dead intraday, does it come back? | 2026-09-03 | **CLOSED 2026-09-03, AMENDED same day** — activity returns often; **back to +25% rarely: 14.6% at 5 min quiet, 5.2% at 30, 3.7% at 60.** His price condition inverted it |
 
 #### The closing pass, 2026-08-27
 

@@ -471,3 +471,69 @@ more — and it is still an asymmetry**, so it is recorded here as a deliberate
 choice rather than left to be found in the code by someone assuming one
 criterion governs both. **Anything built on this inherits two different bars and
 should say so on its face.**
+
+
+---
+
+# RESULT 3 — with his price condition. His instinct is right.
+
+**939 board symbol-days, same data, no new fetch. Three curves side by side as
+pre-registered, never folded.**
+
+    quiet for    activity only    + live +25%     + open gap +25%
+      1 min       68.2% (1557)     28.4% (442)      19.1% (298)
+      5 min       47.9% ( 913)     14.6% (133)       7.9% ( 72)
+     10 min       34.0% ( 694)      8.4% ( 58)       3.3% ( 23)
+     15 min       27.6% ( 616)      6.8% ( 42)       2.8% ( 17)
+     30 min       19.2% ( 515)      5.2% ( 27)       1.4% (  7)
+     60 min       11.0% ( 428)      3.7% ( 16)       0.7% (  3)
+
+## The verdict inverts, and the earlier one was answering a different question
+
+**Under his own definition, revival is rare at every level.** At the
+pre-registered persistence of five minutes: **14.6% on the live reading, 7.9% on
+the gap reading.** At thirty minutes: **5.2% and 1.4%.** At an hour: **3.7% and
+0.7%.**
+
+> **He was right, and my activity-only instrument was measuring something he
+> never asked about.** *Comeback* to him means back to a tradeable level. Back to
+> being busy is not the same event, and the gap between 68.2% and 19.1% at one
+> minute of quiet is how much not-the-same it is.
+
+**Per the pre-registered rule this is UNINFORMATIVE rather than agreement** —
+below 25%, and minute grain still undercounts, so I will not claim it as
+confirmation. **But one thing here is NOT subject to the grain caveat**, and it
+is the number worth carrying:
+
+> **The ratio between the price-conditional and activity-only curves is robust
+> to undercounting, because both are undercounted the same way.** Of names whose
+> activity returns, **only 28% / 19% are back at +25% after a minute of quiet,
+> and 5% / 1% after thirty.** That is a measured proportion, not a rate against
+> an unknown denominator.
+
+## The two readings diverge, and the divergence is informative
+
+**Live is more permissive than gap at every level** — 28.4% against 19.1% at one
+minute — because a name can climb to +25% intraday without having opened there.
+**The gap reading asks a materially different question**: it conditions on the
+whole day, so a name reviving at 11:00 that gapped only 10% fails it even while
+trading up 30%.
+
+**Both are on the page and neither is assumed.** Which one he means is his to
+say, and **the 9-point spread at one minute is the cost of the ambiguity** —
+worth knowing before anyone builds on either.
+
+## What this does to the earlier verdicts
+
+**Result 2 stands as measured and its meaning narrows.** Its curve is the
+activity-only column above, correct for what it measured and **a ceiling on what
+he cares about** — which is what Amendment 4 said before this ran.
+
+**Q10's verdict needs re-reading, not retracting.** *Revival is a threshold, not
+a rule* holds; **what changed is where the threshold sits.** On activity it was
+around thirty minutes. **On his definition there is no persistence level at
+which a comeback is likely** — the curve starts low and falls.
+
+**The instrument was never wrong. The question it answered was.** Three bounds
+were already recorded on those numbers; **the trader supplied the fourth, and it
+is the one that mattered most.**
