@@ -1795,6 +1795,37 @@ difference **cost 8.5 points** on one measure and **prevented a 45% dilution**
 on another. **Divergence between two threads' definitions is not uniformly bad.
 It is uniformly worth knowing about.**
 
+## "The board" is THREE numbers, and this thread relayed one as the answer
+
+**Design, 2026-09-04, checking a correction of mine before writing a predicate
+against it.** I had told it *the board is top 25, not top 50* — relaying R&D's
+figure as authoritative. There are **three**, differing by 4x, each a real
+meaning of "board" in this codebase:
+
+    discoveryRank defaults to 12   config.ts:69, driving engine.ts:1285, :1671
+    the archive holds ranks 1-25   R&D's population, and the source of my claim
+    the UI offers Top 12/25/50     and renders 50 by default
+
+**So my correction was one of three answers presented as the answer**, and a
+predicate written against any of them would have been this desk's oldest
+collision **manufactured while fixing something** — the exact thing Research had
+warned about two hours earlier when it asked Design not to type `300`.
+
+**The repair is the generalisable part: Design wrote PRESENCE, not a
+threshold** — `deadAtRank !== null`. A name that held ANY rank could have been
+on his screen at some view size; one that never held a rank could not. **It
+needs no number, so it cannot pick the wrong one, and it does not move when he
+changes Top 12 to Top 50.** A test asserts no rank threshold appears in the
+module at all.
+
+> **When a word has several numeric definitions, prefer a predicate that needs
+> no number.** Choosing one of them correctly still leaves the next reader
+> choosing again.
+
+**And it puts a caveat on every "board symbol-day" figure in the register**,
+including the 45.5%: that population is ranks **1–25**, which is a fact about
+the archive rather than about what he sees.
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
