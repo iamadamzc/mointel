@@ -1704,6 +1704,32 @@ practice governs:
   > **reporting dimension**, and becomes a rule only if the record shows one and he
   > adopts it.
 
+  **THE LINE THAT SETTLES ARGUMENTS ABOUT THIS RULE, R&D 2026-09-04:**
+
+  > **A threshold justified by RTH data and applied uniformly is not
+  > clock-keyed. A threshold computed FROM the clock is.**
+
+  *Reached by R&D correcting its own over-reach before the evidence arrived.*
+  It had argued a duration threshold carries an implicit unit — five minutes
+  being 1.5% of premarket and 0.5% of the full day — and that the repair, if the
+  rule misbehaved outside premarket, would be to rescale it as a fraction of the
+  session. **That repair is wrong, and the reason dissolves the question:
+  the rule has no window.** It is evaluated every minute, continuously. A name
+  quiet for five minutes at 14:00 is quiet for five minutes; nothing about the
+  session's total length reaches that name's tape. **Scaling by session length
+  would make the rule depend on a quantity the phenomenon does not contain —
+  which is not a rule that LOOKS clock-keyed, it is one.**
+  The 330-versus-960 distinction was a property of **the window it was measured
+  in**, not the window the rule operates in.
+  **The real effect is right-censoring** — a name dying at 19:55 has five
+  minutes to revive and one dying at 09:00 has eleven hours — already quantified
+  (four hours of required remaining session lifts 47.9% to 59.4%), and the fix
+  for censoring is to exclude or flag short-remaining episodes, never to rescale
+  a threshold. What survives: a threshold calibrated in one window **cannot be
+  read naively in another**, which is why by-session reporting stays. If the
+  rule does behave differently elsewhere, **measure the threshold at those times
+  and adjust on that evidence** rather than deriving it from the clock.
+
   **AMENDED 2026-09-03 — THE DESK'S MARKET-SIDE SCOPE IS PREMARKET.** *His
   instruction, asked directly whether premarket was the board's selection window
   or his trading window: "let's keep everything to premarket."* Recorded as a
