@@ -3047,6 +3047,115 @@ spec is items 25/26.
 
 ---
 
+**38. RVOL is cumulative — confirmed, with a SECOND latch nobody had named, and
+the obvious remedy is forbidden.** *Two diagnostics commissioned by the trader
+via Integration 2026-09-03. Reads, not builds. Nothing changed.*
+
+### Q1 — yes, and it is worse than the hypothesis
+
+`lib/market/rvol.ts` states it in its own header, and not incidentally:
+
+> *Daily RVOL = current cumulative trading-day volume / average full-session
+> volume over the previous 20 eligible full trading sessions.* **The
+> denominator is fixed for the whole session**, so it *"rises naturally as
+> cumulative volume accumulates"* — explicitly **not** volume-at-this-minute
+> over average-at-this-minute, not a rolling intraday comparison, not
+> time-normalised, not acceleration.
+
+**Confirmed at system level rather than from the pure function**, which is the
+distinction this thread got wrong once before: `engine.ts:1012` sets
+`cumulativeVolume = volumeBase + minuteSum`; `minuteSum` only ever accumulates
+(`:841-843`); and the single subtraction at `:713` is a **bookkeeping transfer**
+into `volumeBase` when the base is re-seeded, leaving the sum unchanged. **So
+RVOL is monotonically non-decreasing within a session.**
+
+**THE SECOND LATCH, AND IT IS THE BIGGER ONE.** `engine.ts:1110`:
+
+    priceEligible = price !== null && (inPriceRange(price) || runtime.latched)
+
+`latched` is set `true` on qualification (`:1156`) and **never cleared** —
+*searched `lib/market/*.ts`; the only `latched = false` is the initialiser at
+`:427` and after-hours' own at `afterHours.ts:45`.* **A name that qualified and
+then fell out of the $2–$20 band stays rankable for the rest of the session.**
+The trader's phrase *"board presence is a one-time qualification"* is not a
+characterisation; it is literally what the code does, twice.
+
+### The refinement that changes what a fix must do
+
+**"The board cannot drop a dead name" is very slightly too strong, and the
+correct version is worse.** Rank is cross-sectional (`rankByRvol` over the
+`eligible` array rebuilt each cycle at `:1104`), so a dead name *does* fall —
+**but only by being overtaken.** Its numerator is frozen while live names
+accumulate.
+
+> **A name that reached 50× RVOL at 06:00 sits above every name below 50× for
+> the entire session, whether or not it has traded since. The decay rate is set
+> by OTHER names' accumulation, and by nothing about this one.**
+
+That is the precise form of *integrating the past instead of measuring the
+present*, and it does make **late** and **stale** one defect.
+
+### But the obvious remedy is prohibited, which is why the four-measure proposal is the right shape
+
+`rvol.ts:4-5`: **"THE DEFINITION IS FIXED. It comes from completed backtesting
+and must not be replaced with a time-of-day adjusted formula."** So the
+diagnosis stands *and* windowing RVOL is closed by a standing instruction.
+**The continuing condition has to be an ADDITIONAL measure beside the ranking,
+never a replacement for it.**
+
+### Q2 — the four measures, and one of them is already on the wire
+
+**The subscription surface as shipped.** Wildcard, whole market, always on:
+`bars`, `updatedBars`, `statuses` (`stream.ts:45`, `:293`). Trades and quotes
+are **deliberately not** wildcarded (`:288-291`). The high-resolution set —
+`trades`, `quotes`, `lulds` — is applied as **diffs on the open socket** and
+capped at `highResMax`, **default 250**.
+
+| measure | computed from | on the EXISTING subscription? | grain |
+| --- | --- | --- | --- |
+| **volume** | minute bar `v` | **yes** — wildcard, whole market, already ingested as `minuteSum` | 1 min |
+| **activity** | minute bar **`n`, trade count** | **yes** — wildcard, whole market. See below | 1 min |
+| **volatility** | minute bar `h`/`l`/`c` | **yes** — wildcard, whole market | 1 min |
+| **liquidity** | bid/ask spread and sizes — **quotes** | **NO, not board-wide** — quotes exist only for the ≤250 high-res set | tick |
+
+**ACTIVITY IS FREE, AND FURTHER ALONG THAN "AVAILABLE".** Minute trade count is
+**parsed on every wildcard bar** (`alpaca/messages.ts:88`), **persisted to
+`minute_bars.trade_count`** (`store/repo.ts:143`, `:168`) and **read back**
+(`:196`) — and **nothing scores on it.** *Scope, so the null is interpretable:
+grepped `lib/`, `worker/`, `app/`, `components/`; every other hit is a
+daily-bar path or the simulator.* So the measure the viscosity research
+**confirmed as meaningful** is already arriving whole-market, already stored,
+and discarded at the point of use. Adding it is an **engine change only** — no
+subscription diff, no second connection, no REST call, no backfill.
+
+**And it is retrospectively measurable today, within a bound that must travel
+with any figure:** `minute_bars` retention is `minuteBarRetentionDays`,
+**default 3** (`config.ts:85`). R&D can test the revival question against real
+stored trade counts for roughly the last three days without collecting
+anything — and cannot go further back at any price.
+
+**LIQUIDITY IS THE ASYMMETRIC ONE, AND ITS REAL COST IS NOT THE SUBSCRIPTION.**
+Quotes are already subscribed for the high-res set, so a spread measure **for
+those names** is free too. Board-wide is impossible on one connection. Worse:
+
+> `applyHighResSelection` adds **every latched name** (`engine.ts:1546`) into a
+> set capped at 250, and latched never clears. **So a liquidity-based
+> continuing condition would be evaluated on a population selected by the very
+> latch it exists to correct** — and the cap is consumed by dead names as the
+> session runs.
+
+### On his exit rule, and whether it is the same measure
+
+**No — same quantity, different grain, and only one grain is available.** His
+exit is volume fading on **10-second** candles; minute bars cannot express
+that, sub-minute requires `trades` (the capped set), and the viscosity research
+**closed sub-minute prediction**. So the board's decay signal and his exit
+signal are the same idea at two timescales, of which **the board-wide one is
+the minute** — and the finer one is both restricted and already investigated to
+a negative.
+
+---
+
 **36. The basis fetch is live, and the two things I said about how it would
 arrive were both wrong.** *Found 2026-09-03 by reading Ops's deploy record
 after noticing `HEAD` had moved past my commits. Neither error is in the code.*
