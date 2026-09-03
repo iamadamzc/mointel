@@ -817,6 +817,37 @@ the inverse of intelligence-not-signal.
    +25% or better** (n=17, premarket). Every rate is a **floor**, because minute
    grain cannot see a sub-minute revival.
 
+### OPEN: is the active line the right floor, or the dead line?
+
+**Shipped at the ACTIVE line (`b560aa4`) and not settled.** Recorded here because
+it currently exists only in a cross-thread exchange, and an open question nobody
+holds is one nobody answers.
+
+**Why it shipped that way, honestly stated: it was a LABEL argument, not a
+substantive one.** The header already read `never active`, so the dead-line
+filter was listing names it simultaneously described as never active. That
+forced label and filter to agree — but the label could equally have changed. It
+settled an inconsistency, not the threshold.
+
+**The argument for the dead line, which has more force than Design first gave
+it.** A name peaking at 50 trades/min never reached the bar he trades at, but it
+*did* transition from not-dead to dead. Filtering at 300 hides that death.
+
+**And the fact that decides it has not been measured: board presence is RVOL
+RANK, not trade count.** A name can be ranked, on his board, and trading well
+under 300/min. **If that is common, filtering at the active line hides exactly
+the drops this surface exists to surface** — names he was watching that vanished.
+
+**The question, for R&D or Research from the archive:** *among names the rule
+kills, does peak trades/min track RVOL rank?* The first live reading cannot
+answer it — zero of 71 dead names were in the top 50, and rank was not recorded
+against peak before the token was revoked.
+
+**If board-ranked names routinely peak under 300, revert to the dead line and
+change the header label to match.** Both thresholds are documented against each
+other in `lib/dashboard/graveyard.ts` so the reversal is a one-line change with
+its reasoning already beside it.
+
 ### Pre-registered: how the graveyard reading will be read
 
 **Written before `6518e72` deploys and before any reading exists.** The
