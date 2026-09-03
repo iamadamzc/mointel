@@ -42,6 +42,7 @@ questions is a thread that has stopped working.
 | Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-27 | parked — blocked on capture; float populated on ~1% of dossiers |
 | Q10 | Once a name goes dead intraday, does it come back? | 2026-09-03 | **CLOSED 2026-09-03, AMENDED twice** — back to +25% is rare (14.6% at 5 min quiet, 5.2% at 30). **But every pooled rate blends three session regimes** — premarket 62.3%, RTH 65.6%, after-hours 9.5% at 5 min — **and should not be quoted alone** |
 | Q11 | How often does the 5-minute drop rule remove a name that subsequently runs? | 2026-09-03 | **ANSWERED 2026-09-04** — tradeable miss rate **27.1% premarket, 9.4% RTH, 1.5% after-hours** on 577 replayed drops; highest where the threshold was calibrated, by 18x |
+| Q12 | Is a name's eventual activity predictable at the moment the board ranks it? | 2026-09-04 | proposed — **not blocked, QUEUED**; decides whether the 45.5% yield finding is a defect or a description |
 
 #### The closing pass, 2026-08-27
 
@@ -888,6 +889,50 @@ small counts, and that is where it fails.**
 day:** *a correction inherits the confidence of whatever it corrects toward.*
 **I wrote a direction as a finding; Research corrected its own comment toward my
 finding; the error travelled upward in confidence at every step.**
+
+#### Q12 — registered 2026-09-04, not started
+
+**The survivor of the 45.5% finding, and the question that decides what it
+means.** Peak trades/min separates movers from non-movers almost perfectly
+**after the fact** — 0 of 427 board symbol-days below 300 produced a 50%+ move.
+**The board must rank BEFORE that peak exists.**
+
+> **So: is a name's eventual activity predictable at the moment the board ranks
+> it?** If yes, the yield finding is a **defect** and the ranking can be
+> improved. If no, it is a **description** — the board is doing the best that
+> can be done from what is knowable at ranking time, and 45.5% is the cost of
+> the problem rather than of the solution.
+
+**NOT BLOCKED — QUEUED, and the distinction matters.** Everything needed exists:
+assessment snapshots carry RVOL, price, percent change and rank at each
+checkpoint, and peak trades/min after that instant is computable from bars
+already re-fetchable. **This is a decision about priority, not about data**, and
+recording it as *blocked* would be false in the way this register keeps
+catching elsewhere.
+
+**A rule that drops names once they have already failed to trade is the DROP
+RULE, and it shipped tonight.** So this finding cannot become a better ranking
+without answering the predictability question first — **and treating a second
+instrument as a fix would be exactly the error the drop rule already avoids.**
+
+#### A correction to my own framing, from Integration
+
+**I have said "three instruments, one picture" several times today** — Q5/S1 on
+board lateness, Q6 on rank predicting volatility rather than edge, and now the
+yield finding.
+
+> **Pointing the same way is not the same as being independently confirmed.
+> All three are downstream of the same RVOL ordering.**
+
+**They are three views of one instrument, not three instruments.** A defect in
+the ordering would produce all three, and **nothing in the agreement between
+them distinguishes that from three separate facts.** The convergence is
+suggestive and it is **not** corroboration, and I have been describing it as
+though it were.
+
+**Q12 is the question that would break the circle**, because it asks about the
+ranking's *inputs* rather than about its outputs — the first of these that is
+not downstream of the ordering it is judging.
 
 #### The 45.5% — Integration's discriminator, run. Reading B is refuted. 2026-09-04.
 
