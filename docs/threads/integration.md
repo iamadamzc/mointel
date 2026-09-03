@@ -1770,6 +1770,14 @@ a number rather than a caution:
     two consecutive minutes >= active              admits 423   (Q11's numerator)
     difference                                      89   9.5%
 
+*Correction to this entry's own history: when first written, the shipped surface
+filter used the DEAD line (active ÷ 10), which admits far more than 512 — so
+this table described a proposed predicate as though it were the deployed one and
+was wrong at the moment of writing. Design moved the filter to the active line
+at `b560aa4` for its own reasons, and the entry became accurate afterwards.
+Recorded because a table that turns out right is not the same as one that was
+right, and the next reader cannot tell them apart.*
+
 **Both are correct for their own purpose and neither is a better version of the
 other.** The surface's question is *was this name ever meaningfully alive*, so a
 peak above the line qualifies. Q11's question is *could this name have been
