@@ -3173,6 +3173,48 @@ claimed in a release note.
 *Sizing stays post-deploy per Integration: how many top-N slots dead names hold
 at an instant needs live data, and prices the win rather than deciding it.*
 
+### CORRECTION: persistence gates the GRAVEYARD too, not only the research half
+
+*Found 2026-09-03 while answering the migration question. I told Integration
+the unpersisted bundle "fixes the subscription slots and leaves the research
+slots". **That understated it.***
+
+`toDemandState` (`repo.ts:367`) builds its result from explicit columns, and
+`readModel.ts:422` serves the board through `readDemandStates` — **a store
+read.** The emission is live-only inside the market worker; the surface is a
+different process reading the database. **With no columns, every activity field
+is absent by the time any surface sees it.**
+
+> **So Design cannot build the graveyard against live state. Without the
+> migration the bundle delivers ONE of three things — the high-res subscription
+> gate, which is engine-internal — and neither the graveyard nor the research
+> gate.**
+
+**The migration is therefore not a Q9 nicety and not half of this: it is the
+gate on nearly all of it.**
+
+### The migration question, answered: JOIN THE MIGRATION, SPLIT THE WRITERS
+
+**Joining costs essentially nothing.** `ADDED_COLUMNS` entries are bare
+nullable types with no default, and SQLite's `ADD COLUMN` for such a column is
+a **metadata-only O(1) operation — no table rewrite** — so eleven columns cost
+what one costs, even on `ticker_session`, the largest table on the desk. One
+gate, one migration, one startup-race exposure: Integration's reasoning holds
+and the marginal cost of joining is near zero.
+
+**But the WRITERS must stay separable, and that is where the entanglement
+would be.** Q9's capture is *"a network dependency, not a column"* (item 28) —
+it introduces a **Google Sheets call into the append-only checkpoint writer**,
+19 times a session. Activity persistence writes values already in memory.
+**Coupling those means a rollback of Q9's network risk also rolls back the
+thing that unblocks the graveyard and the research gate.**
+
+**Columns are inert until something writes them**, so the two are only
+entangled if we choose to entangle them. **One migration, two writers, shipped
+and verified on their own terms** — and their verifications are different
+anyway: activity is confirmed by the column populating and the gate excluding,
+Q9 by a validation join against production Sheet floats.
+
 *Original scope below, unchanged.*
 
 **41a. The scope as delivered — SCOPE ONLY, nothing built at the time.**
