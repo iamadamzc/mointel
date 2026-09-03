@@ -1657,6 +1657,26 @@ The rule: **record the date, the size, and whether it touches anything already
 measured, at the moment the change lands.** Reconstructing it from a series that
 looks odd months later costs far more and often fails.
 
+### 2026-09-03 — re-trigger clock and rotation fix, 
+
+**Not an eligibility change; a MEASUREMENT-MECHANISM change, which the log covers
+for the same reason.** Window 2 makes non-movers holding `UNKNOWN` dossiers
+re-askable once per ten minutes, aimed at the differential staleness the
+scorecard measured on 09-02 — movers 0.07 sessions against non-movers 0.44.
+
+**Everything in the scorecard results is pre-fix, through 2026-09-02.** The
+boundary matters most for **S3, which nobody would think to guard**: its measured
+gap is diluted by stale grades (+14.9pp all-admissible against +17.9pp on
+same-session grades). **Reducing staleness raises the measured gap with no change
+in the underlying relationship.**
+
+**So a rise of up to ~3pp in S3 after 09-03 is the predicted mechanical
+consequence of the fix and is NOT evidence about catalysts.** Recorded before the
+next window exists, with the check: recompute same-session-only each time, and if
+it holds near +17.9pp while all-admissible climbs to meet it, the movement is
+entirely measurement. Full statement in
+[../rnd/2026-09-02-prediction-scorecard-results.md](../rnd/2026-09-02-prediction-scorecard-results.md).
+
 ### 2026-08-24 — derivative classifier widened, `b467154`
 
 `lib/market/securities.ts`. **Two distinct changes shipped together**, and the

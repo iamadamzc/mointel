@@ -145,3 +145,35 @@ here.** It exists only for the baseline window, and its absence is stated rather
 than allowing the band to quietly become three. **The band as reported is
 +3.9 / +13.5 / +14.9pp**, and the honest summary is *two of three stored
 definitions clear the bar, the earliest-grade definition does not.*
+
+---
+
+## Regime boundary — everything above is PRE-fix
+
+**Window 2 deploys 2026-09-03 (`97f5fbd`), carrying the re-trigger clock and
+rotation fix. It changes S5's mechanism from that night.** Non-movers holding
+`UNKNOWN` dossiers become re-askable at most once per ten minutes — aimed
+directly at the differential staleness S5 flagged above.
+
+> **Every figure in this document is measured through 2026-09-02, before that
+> deploy. Any reading after 09-03 is a different mechanism and must not be
+> trended through this boundary.**
+
+**AND THE CONSEQUENCE FOR S3 IS THE PART THAT WOULD OTHERWISE BE MISSED.** S3's
+measured gap is *diluted* by stale grades — that is the finding above, +14.9pp
+all-admissible against +17.9pp on same-session grades only. **The fix reduces
+staleness. So it will raise S3's measured gap by removing dilution, with no
+change whatever in the underlying relationship.**
+
+**Pre-registered now, before the next window exists:**
+
+| | |
+| --- | --- |
+| **Predicted artifact** | S3's all-admissible gap rises toward the clean-measurement figure, **up to about +3pp (14.9 → ~17.9)**, purely mechanically. |
+| **How to read it** | **An S3 rise of that size after 09-03 is evidence the fix worked, not evidence that catalysts matter more.** Only a rise *past* the same-session estimate would be a new finding about the market. |
+| **The check** | Recompute the same-session-grades-only figure each window. **If it holds near +17.9pp while the all-admissible figure climbs to meet it, the movement is entirely measurement.** |
+
+**S5 improving after 09-03 is likewise attributable to a specific change rather
+than to the desk getting better in general** — which is the whole reason to
+record the boundary while it is still one day old rather than reconstruct it
+later from a series that looks odd.
