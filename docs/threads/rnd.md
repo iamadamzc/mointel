@@ -2011,6 +2011,17 @@ intelligence, it is volume — and volume is how a genuine signal gets buried.
   quoted here rather than derived here** — and prefer a pointer where the number
   is not doing work in the sentence.
 
+- **A correction inherits the confidence of whatever it corrects toward.**
+  Integration's, recorded in its charter and pointed at rather than restated.
+  **It is live for this register specifically**, which is correction-dense: on
+  2026-08-27 alone I corrected the store comparison twice, the extractor three
+  times, an S1 figure, and a claim about my own baselines. **Each of those
+  corrections was written with more confidence than the thing it replaced**, and
+  a wrong premise carried forward inside one is much harder to see than the
+  original error — it arrives wearing the authority of a fix. Integration nearly
+  sent one built on a prediction of mine that was refuted an hour later, and
+  **only the ordering of two messages stopped it.**
+
 - **Close questions.** A question that is neither active nor closed is debt. The
   verdict format that worked in viscosity — a single stated verdict plus what
   would have to be true to overturn it — should continue.
