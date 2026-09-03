@@ -2947,6 +2947,53 @@ Otherwise every past decision becomes unreproducible while still looking
 authoritative — a stored verdict without its parameters is exactly the
 `(no split basis established)` shape, one layer down.
 
+### The schema-gate conditions, and a correction to my own migration rule
+
+**One migration for the activity columns and Q9's capture columns. Settled at
+the code, not by preference.** `migrate()` (`db.ts:723`) applies plain
+`ALTER TABLE ... ADD COLUMN` guarded by a `PRAGMA table_info` check — **in SQLite
+that is metadata-only for a `TEXT`/`REAL` column with no non-constant default,
+O(1) regardless of table size.** Two columns and six columns cost the same.
+
+**The risk is in the DEPLOY, not the migration** — a capacity event on a 4 GB
+box, a restart, and the `BUSY_SNAPSHOT` race at ~1-in-3. **Two migrations means
+two of each.** "A bigger migration is a worse risk" is true of a table rewrite
+and false of an additive column.
+
+**CORRECTION TO A RULE I HAVE BEEN REPEATING.** This charter (and my standing
+notes) said a new column needs an `ADDED_COLUMNS` entry **and** a
+`SCHEMA_VERSION` bump *"or the live desk fails at the first INSERT"*. **Reading
+the current code, that is not the reason.** `migrate()` runs inside the upgrade
+transaction, which executes on **every open**, and each column add is
+idempotent — **so the column appears on the next restart with or without a
+bump.**
+
+**What the bump actually controls is the backup:**
+
+```js
+if (fromVersion > 0 && fromVersion < SCHEMA_VERSION) { createSchemaBackup(...) }
+```
+
+**No bump, no pre-migration backup.** Ship columns at `SCHEMA_VERSION = 22` and
+the schema changes on a live 886 MB store **with nothing snapshotted first.**
+The rule survives; **its justification was wrong and the real one is stricter.**
+
+**The remaining conditions, held for the gate:**
+
+- **`undefined` vs `'UNKNOWN'` needs an encoding decision, not a note.** A
+  nullable column gives one NULL and two meanings. The distinction only holds if
+  `'UNKNOWN'` is a written literal and NULL means did-not-round-trip — **which
+  requires that no writer can leave the column unset on a live row.** Audit that
+  path; do not assert it.
+- **Thresholds stored beside any persisted state**, or every past decision is
+  unreproducible while still looking authoritative — `(no split basis
+  established)` one layer down.
+- **One falsifiable observable per change.** Activity and `sheet_float` touch
+  different readers and different keys, so they may share a migration and must
+  not share an observable.
+- **The RTH dead-slot baseline must be taken BEFORE the readers change.** The
+  after-hours reading is method-validated only and cannot be recovered later.
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
