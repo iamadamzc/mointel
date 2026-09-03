@@ -263,7 +263,14 @@ conflict. Verify before acting on any of it.***
   login gets arranged and mentioned in passing, and by the time it is mentioned
   the desk is already in front of the new reader.* So it is attached to
   something **observable** instead: **a review link created for a label that is
-  not a thread's own diagnostic, or a second `htpasswd` login appearing.** Both
+  not a thread's own diagnostic, or a second `htpasswd` login appearing.**
+  **RE-KEYED 2026-09-04 ON OPS'S MEASURED BASELINE (`de71ea7`), because the
+  trigger as first written could never have fired: there are ALREADY TWO
+  logins** (`adam`, `mointel1` — the second reads as a service account), **and
+  seven unrevoked review tokens of which ZERO are usable, all expired, the
+  newest lapsed 2026-08-24.** A count of unrevoked rows would have reported a
+  live sharing surface that does not exist — presence versus validity again.
+  **The live trigger is therefore: a THIRD login, or ANY USABLE token.** Both
   are Ops's to see, and Ops has been asked to raise either the moment it
   appears. Same family as *a schedule that depends on attention is not a
   schedule* — a trigger that fires on someone remembering it fires last.
