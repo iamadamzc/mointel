@@ -1760,6 +1760,33 @@ existing code. **The routing obligation is the practical form: when a judgement
 is settled at one reader, it goes to every reader in the same message** — which
 is why this went to the analysis thread and the surface thread together.
 
+## Two predicates, deliberately different, never interchangeable
+
+**Measured 2026-09-04 after Research warned that a filter applied at one reader
+would create two populations under one word.** It would have, and the gap is now
+a number rather than a caution:
+
+    dead_at_peak_trades >= activeTradesPerMinute   admits 512   (the SURFACE)
+    two consecutive minutes >= active              admits 423   (Q11's numerator)
+    difference                                      89   9.5%
+
+**Both are correct for their own purpose and neither is a better version of the
+other.** The surface's question is *was this name ever meaningfully alive*, so a
+peak above the line qualifies. Q11's question is *could this name have been
+DROPPED*, and the live `ACTIVE` state requires two sustained minutes — so a name
+that never sustained two minutes was never on the active board and cannot be
+dropped from it. **The peak predicate is looser than the drop semantics on
+purpose.**
+
+> **So a graveyard count and a Q11 rate may never be compared without naming
+> which population each is over.** The rule is not "unify them"; it is that the
+> divergence is deliberate and must travel.
+
+**And the asymmetry is the durable half — R&D's:** the same kind of definition
+difference **cost 8.5 points** on one measure and **prevented a 45% dilution**
+on another. **Divergence between two threads' definitions is not uniformly bad.
+It is uniformly worth knowing about.**
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
