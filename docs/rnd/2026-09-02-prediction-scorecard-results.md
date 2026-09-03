@@ -18,11 +18,39 @@ those rows were **preserved intact** while eight sessions were appended around
 them — it is a corruption check, **not an independent re-derivation.** The
 archive was copied before the run for the same reason.
 
-**An independent recompute is one `--force` away and has not been done.** It
-would be a genuine check on the baselines and would also risk moving published
-figures, which is why it is a deliberate decision rather than a default — and
-naming it here is the difference between *the numbers survived* and *the numbers
-were re-earned.* Only the first is claimed.
+**RUN 2026-09-03. The baselines are now RE-EARNED, not merely survived.**
+Integration's call, and its argument was better than my hedge: *"it might move
+published figures" is a reason to run it, not against — a baseline that only
+survives because nothing re-derived it is exactly the check that cannot fail.*
+
+`--force` over 08-17..21 re-derived all 306 rows from a fresh Alpaca fetch.
+**Every scorecard figure is identical**: 30.1 / 38.9 / p75 15 / 31.05 /
+0.48-4.47-6.85 / 69.0 / 17.65 / 89.8 / 10.23 / 0.15 vs 0.11.
+
+**And the run could have refuted them, which is what makes the confirmation
+worth having. 209 row-cells DID change**, none of them read by any measure:
+
+    next_open / next_high     73 rows each, null -> value
+                              08-21 follow-through, which only exists now that 08-24 does
+    split_event_ratio        136 rows, null -> value
+                              the v6 column added AFTER the original run; these are
+                              exactly the 136 stranded rows named at 2bf4e93
+    cycle_advance/retrace      3 cells, shifts of ~1e-4, phase unchanged on both names
+                              the daily series is one session longer than it was
+
+**Every change is additive or negligible, and not one touches `max_gain_pct`,
+`time_of_max_gain`, `reference_close`, `coverage`, `catalyst_*` or
+`grade_age_*`.** The full-window verdicts are unchanged: S3 +14.9pp, S2 improved,
+S5 regressed, S1 and S4 flat.
+
+**One correction to the instruction I was given, raised before running rather
+than after.** It described this as *local computation over data in hand, no
+spend*. **It is not — `--force` re-fetches minute and daily bars over REST.**
+About 28 calls and 35 seconds against the vendor, no production store touched
+and no deploy. **That makes it a stronger check than described**, because the
+figures were re-derived from a fresh fetch rather than recomputed over cached
+input — an upstream data change would have shown. **None did**, which is itself
+a small finding about the vendor's history being stable over two weeks.
 
 ---
 
