@@ -1536,6 +1536,18 @@ Basic Auth itself; the probe that reaches the app is `/_next/static/`.
 
 ## Working rules
 
+- **A rendering decision can silently constrain a spend policy, and this seat
+  is where that happens.** *Research, 2026-09-03, framing an error of mine more
+  usefully than I had.* Asked whether a dropped name should vanish or show as
+  dropped, this thread answered *"keep the row and flag it"* — correct about the
+  surface, and it also decided that dead names keep their rank, which is what
+  the research queue and the subscription cap read. **A live name at rank 13
+  would have been denied both by a corpse at rank 3.** Research's version is the
+  keeper and is gentler than mine: not a routing lapse, but **evidence that
+  rendering and policy were never separable, because one field carried both.**
+  So when routing a question about how something LOOKS, ask what else reads the
+  field the answer preserves — the enumeration is cheap and the answer is
+  usually "more than the person asking knows".
 - **A SUPERSEDING TABLE IS NOT A RETRACTION.** *R&D's formulation, 2026-09-03,
   after this thread sent the trader a figure and later sent a corrected one for
   the same quantity.* Sending better numbers does not withdraw worse ones: **the
