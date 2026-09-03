@@ -13,7 +13,7 @@
  * It is not a signal, not a rating, and says nothing about structure.
  */
 
-import { resolveActivity, type ActivityState } from './activity';
+import { peakTradesPerMinute, resolveActivity, type ActivityState } from './activity';
 import { computeDailyRvol, rankByRvol, rvolConfidenceFor } from './rvol';
 import { computeAhParticipation, computeAhPercentChange, rankByAfterHours } from './afterHours';
 import {
@@ -137,6 +137,23 @@ interface TickerRuntime {
   minuteTrades: Map<string, number>;
   activity: ActivityState;
   deadSince: string | null;
+  /*
+   * Captured AT THE MOMENT OF DEATH, because neither survives it.
+   *
+   * The graveyard has to say what a name was doing before it died, and both
+   * of these are gone by the time anyone looks: rank keeps drifting as other
+   * names accumulate, and the peak minute is only meaningful against the
+   * session that produced it. A number read later is a different number.
+   */
+  deadAtRank: number | null;
+  deadAtPeakTrades: number | null;
+  /**
+   * Deaths this session. The graveyard's self-audit: a name that dies and
+   * revives repeatedly is visible evidence that the threshold is wrong, and
+   * it is the check that can FAIL — rendered, rather than a query somebody
+   * has to remember to run.
+   */
+  deathCount: number;
 
   minuteNotional: Map<string, number>;
   vwapNotional: Record<keyof SessionVwapSet, number>;
@@ -400,6 +417,9 @@ export class DemandEngine {
       minuteTrades: new Map(),
       activity: 'UNKNOWN',
       deadSince: null,
+      deadAtRank: null,
+      deadAtPeakTrades: null,
+      deathCount: 0,
       minuteNotional: new Map(),
       vwapNotional: { premarket: 0, regular: 0, afterHours: 0 },
       vwapVolume: { premarket: 0, regular: 0, afterHours: 0 },
@@ -1061,6 +1081,22 @@ export class DemandEngine {
     if (activity.state !== runtime.activity || activity.deadSince !== runtime.deadSince) {
       runtime.dirty = true;
     }
+
+    /*
+     * The transition, captured once. `rvolRank` still holds the rank the name
+     * carried while alive -- ranks are recomputed after this -- and the peak
+     * minute is read now because the map stops growing the moment it dies.
+     *
+     * On revival these are deliberately KEPT rather than cleared: a name that
+     * has died and come back is exactly what the graveyard's audit is for, and
+     * `deathCount` is only legible beside the last death it counted.
+     */
+    if (activity.state === 'DEAD' && runtime.activity !== 'DEAD') {
+      runtime.deadAtRank = runtime.rvolRank;
+      runtime.deadAtPeakTrades = peakTradesPerMinute(runtime.minuteTrades);
+      runtime.deathCount += 1;
+    }
+
     runtime.activity = activity.state;
     runtime.deadSince = activity.deadSince;
 
@@ -1703,6 +1739,9 @@ export class DemandEngine {
       latched: runtime.latched,
       activity: runtime.activity,
       deadSince: runtime.deadSince,
+      deadAtRank: runtime.deadAtRank,
+      deadAtPeakTrades: runtime.deadAtPeakTrades,
+      deathCount: runtime.deathCount,
       rthFinal: runtime.rthFinal ? { ...runtime.rthFinal } : null,
       afterHours: this.afterHoursStateOf(runtime),
       feed: this.options.feed,

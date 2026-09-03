@@ -100,6 +100,23 @@ export function minuteSlot(ms: number): string {
 }
 
 /**
+ * The busiest minute a name has had, from the bars actually held.
+ *
+ * Computed on demand rather than maintained as a running maximum, and the
+ * reason is corrections: `updatedBars` can revise a minute downward, and a
+ * running max would keep the withdrawn figure forever with nothing to reveal
+ * it. Reading the map is O(one session of minutes) and this is called once,
+ * when a name dies — the moment the number stops changing anyway.
+ */
+export function peakTradesPerMinute(minuteTrades: ReadonlyMap<string, number>): number | null {
+  let peak: number | null = null;
+  for (const trades of minuteTrades.values()) {
+    if (peak === null || trades > peak) peak = trades;
+  }
+  return peak;
+}
+
+/**
  * Resolves the activity state for one symbol.
  *
  * `minuteTrades` is keyed by minute-bar timestamp exactly as the engine stores

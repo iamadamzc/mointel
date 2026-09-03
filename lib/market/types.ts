@@ -392,6 +392,26 @@ export interface DemandState {
   activity?: ActivityState;
   /** When the name went quiet. Null unless `activity` is DEAD. */
   deadSince?: string | null;
+  /**
+   * What the name was doing before it died, captured AT the death.
+   *
+   * The graveyard has to answer "how long, and what was it" — and neither of
+   * these survives being read later. Rank keeps drifting as other names
+   * accumulate, so a rank fetched afterwards is not the rank it held; and the
+   * peak minute only means anything against the session that produced it.
+   * Both are therefore captured at the transition and then left alone.
+   */
+  deadAtRank?: number | null;
+  deadAtPeakTrades?: number | null;
+  /**
+   * Deaths this session, kept across revivals.
+   *
+   * The graveyard's own audit. A name that dies and revives repeatedly is
+   * direct evidence the threshold is wrong, and rendering it makes that a
+   * check that can FAIL in front of the trader rather than a query somebody
+   * has to remember to run.
+   */
+  deathCount?: number;
 
   /** Frozen regular-session state; null until the closing bell. */
   rthFinal: RthFinalState | null;

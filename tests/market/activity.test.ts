@@ -4,6 +4,7 @@ import {
   DEFAULT_ACTIVITY_CONFIG,
   deadLineFor,
   minuteSlot,
+  peakTradesPerMinute,
   resolveActivity,
   type ActivityConfig,
   type ActivityState,
@@ -151,6 +152,30 @@ describe('resolveActivity — the removal it exists for', () => {
       deadSince: first.deadSince,
     });
     expect(later.deadSince).toBe(first.deadSince);
+  });
+});
+
+describe('peakTradesPerMinute — what the graveyard shows beside the clock', () => {
+  it('is null on a name with no bars, rather than zero', () => {
+    // Zero is a measurement: "its busiest minute had no trades". Null is the
+    // truth: nothing was observed. The graveyard must not print the first.
+    expect(peakTradesPerMinute(new Map())).toBeNull();
+  });
+
+  it('reads the busiest minute held', () => {
+    expect(peakTradesPerMinute(new Map([at(2, 40), at(3, 1240), at(4, 900)]))).toBe(1240);
+  });
+
+  it('follows a downward correction, which a running maximum would not', () => {
+    /*
+     * `updatedBars` can revise a minute down. A running max would keep the
+     * withdrawn figure for the rest of the session with nothing to reveal it,
+     * so the peak is computed from the map instead — the map is what the
+     * correction actually changes.
+     */
+    const trades = new Map([at(2, 40), at(3, 1240)]);
+    trades.set(minuteSlot(NOW - 3 * 60_000), 90); // the correction
+    expect(peakTradesPerMinute(trades)).toBe(90);
   });
 });
 
