@@ -169,6 +169,19 @@ work was outstanding that had already shipped, which is the direction that
 costs most: anyone picking the desk up cold would have rebuilt it or waited
 for it.
 
+**An INDEX that disagrees with its BODY is more dangerous than a stale one.**
+*Research, 2026-09-04, finding its own LIVE STATE summary saying "stored skew"
+while the item it summarised had explicitly declined to store it — and
+Integration's spec request was drawn from the summary, so the contradiction
+propagated into a schema question before anyone read the body.* **A stale line
+is eventually doubted; a summary line reads as authoritative and nobody
+re-checks something they have just been handed.** Same shape as a published
+figure re-derived wrongly from its own summary, arriving inside a handover's
+index. So the expiry audit covers **the summary against the body**, not only the
+summary against the world — and a relayed extract carries the QUESTION it
+answered, since *"four sites"* scoped to one question reads as complete when
+quoted without it.
+
 And **the opening message is verified as its own step** — R&D's addition,
 from finding its own four days stale on 2026-08-27 (it still directed a
 successor to build an instrument that had been finished and running since
