@@ -4571,6 +4571,36 @@ range half will believe it is covered.
 
 
 
+### Multi-step edits to shared-imported files belong in the worktree, not the checkout
+
+**2026-09-04. I broke the gate for every thread on the desk for the length of a
+multi-step edit, and two of them paid for it.**
+
+Editing `lib/market/store/db.ts` in the shared checkout across many iterations
+left it unparseable in the tree. **Research hit it from esbuild, Design from
+`tsc`, both diagnosed it correctly as measure-a-checkout-not-a-commit, and
+neither filed it as a defect.** Design **held a finished file rather than
+committing it** — refusing both to claim a green gate it could not run and to
+commit ungated. Correct, and expensive.
+
+**The two faults, one line apart, both mine:** the inserted comment contained
+**backticks**, and the SQL lives in a template literal — `` `activity` ``
+terminated the string and everything after it parsed as code. The fix then put
+the columns **after** `PRIMARY KEY` with a trailing comma, which is the comma
+`tsc` reported.
+
+**THE RULE: a multi-step edit to a file every thread’s gate imports happens in
+`A:/mointel-gate`, and only the COMMIT appears in the shared checkout.** The
+worktree existed and was idle throughout; I used the shared tree because that is
+where `npm run` was convenient. **Convenience for one thread, a red gate for
+four.**
+
+**Two properties make a file high-blast-radius, and `db.ts` has both:** every
+thread’s gate imports it, and it carries SQL inside a template literal, so an
+ordinary comment character can terminate the string. **Check for backticks in
+anything inserted into a template literal** — the failure is a parse error a
+long way from the edit.
+
 ## THE SCHEMA-GATE CHECKLIST — run this, do not re-read the prose
 
 Consolidated 2026-09-03 because the conditions had spread across four narrative
