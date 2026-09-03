@@ -191,6 +191,64 @@ not proof the vendor populates it, and inferring capability from a type is the
 exact error this thread has made repeatedly this week. **One call settled what
 two threads had been asserting at each other.**
 
+## Amendment 3 — trade-count thresholds, fixed before the re-run
+
+**The trades probe came back deep** — BTCT returns trades to its 2020 listing —
+so **nothing on this question is observable-once, no capture decision is
+needed, and the 10s version is a build with no clock.** It queues behind the
+scorecard and Q1 like anything else.
+
+**And the minute-grain window is not gated.** My probe settled that: historical
+minute bars nine days back returned `n` on 6 of 6 bars. **The re-run can go now,
+on trade count, over 13 sessions.**
+
+### A surprise I checked instead of publishing
+
+An early scratch pass suggested volume and trade count were **inverted** —
+30,000-share bars showing fewer trades than 3,000-share bars. **That would have
+been a striking finding and it was a bug in my own script**: I sorted the
+trade-count list in place for quantiles and then zipped it against the unsorted
+volume list, destroying the correspondence.
+
+**Measured correctly, Spearman(volume, trade_count) = +0.921** on 25,466 board
+minute bars, and shares-per-trade rises monotonically with volume — 72 at the
+bottom band to 145 at the top. **No block-print distortion at these levels.**
+
+    volume band        n     median trades   median shares/trade
+    1-999           7,234          5                  72
+    3,000-14,999    6,179         54                 121
+    30,000-59,999   1,819        293                 147
+    60,000+         3,635      1,010                 145
+
+**So switching to trade count is principled but should NOT be expected to move
+the pilot's numbers**, and saying so now is what stops an unchanged result being
+presented as confirmation by a second instrument. **At rho +0.92 the two
+measures largely agree; trade count is preferred because it cannot be moved by a
+single print, not because it disagrees.**
+
+### Thresholds and persistence, fixed now
+
+**Calibrated from the predictor's own distribution, before any revival outcome
+was computed on it.** Bars near his 30,000 shares/min carry a median of **293
+trades/min**, so:
+
+| | |
+| --- | --- |
+| **Active** | **300 trades/min**, with sensitivity at **150** and **600** |
+| **Dead** | Active ÷ 10 — **30, 15, 60** — his ratio, kept |
+| **Persistence** | **5 consecutive dead minutes**, pre-registered this time rather than explored |
+| **Population** | Board symbol-days, per Amendment 1 |
+| **Window** | All 13 sessions, re-fetched |
+
+**Persistence is fixed at 5 minutes because the pilot showed it is the variable
+that matters, and leaving it free would let me pick it afterwards.** Five is the
+low end of the pilot's 5-10 minute crossover — **deliberately the value least
+favourable to his prior**, so that a result agreeing with him cannot be an
+artifact of a threshold I chose to agree with him.
+
+**Decision rule unchanged: revival ≥25% across all three thresholds refutes.**
+The full persistence curve is reported beside it as exploratory, as before.
+
 ---
 
 # RESULT — pilot on 2 sessions, 2026-09-03
