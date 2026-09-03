@@ -41,7 +41,7 @@ questions is a thread that has stopped working.
 | Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | parked — **no open items**; output multiples answered 2026-08-24 in research.md item 20, found 08-27. Ready to design |
 | Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-27 | parked — blocked on capture; float populated on ~1% of dossiers |
 | Q10 | Once a name goes dead intraday, does it come back? | 2026-09-03 | **CLOSED 2026-09-03, AMENDED twice** — back to +25% is rare (14.6% at 5 min quiet, 5.2% at 30). **But every pooled rate blends three session regimes** — premarket 62.3%, RTH 65.6%, after-hours 9.5% at 5 min — **and should not be quoted alone** |
-| Q11 | How often does the 5-minute drop rule remove a name that subsequently runs? | 2026-09-03 | proposed — **the rule's own false-positive rate**; blocked until the graveyard columns land and data accumulates |
+| Q11 | How often does the 5-minute drop rule remove a name that subsequently runs? | 2026-09-03 | **ANSWERED 2026-09-04** — genuine miss rate **32.2% premarket, 18.8% RTH, 8.1% after-hours** on 577 replayed drops; highest where the threshold was calibrated |
 
 #### The closing pass, 2026-08-27
 
@@ -888,6 +888,43 @@ small counts, and that is where it fails.**
 day:** *a correction inherits the confidence of whatever it corrects toward.*
 **I wrote a direction as a finding; Research corrected its own comment toward my
 finding; the error travelled upward in confidence at every step.**
+
+#### Q11 RESULT — the rule is most wrong where it was calibrated. 2026-09-04.
+
+**Replayed over 13 sessions, 939 board symbol-days, 577 drop events, decided at
+minute six.** Population: **board symbol-days** — stated in the same sentence as
+the rate, per the registered condition.
+
+    session      drops   already >=+25%    genuine miss
+    premarket      177     9  ( 5.1%)      57  (32.2%)
+    RTH            202    72  (35.6%)      38  (18.8%)
+    afterhours     198    64  (32.3%)      16  ( 8.1%)
+    ALL            577   145  (25.1%)     111  (19.2%)
+
+    genuine miss = below +25% when dropped, reached it afterwards in-session
+
+> **The false-positive rate is HIGHEST IN PREMARKET — 32.2% — the session the
+> threshold was calibrated for, and four times the after-hours rate.** Nearly one
+> dropped premarket name in three subsequently reaches +25%.
+
+**I had no pre-registered direction and that is why this is worth something.**
+Amendment 7 removed the fraction-of-window mechanism that would have supplied
+one, and I declined to invent a replacement. **A naive reading of
+*premarket-derived threshold, uniform rule* would have predicted the rule
+misbehaving OUTSIDE premarket. It misbehaves most INSIDE it.**
+
+**The two columns tell different stories by session and the pooled figure hides
+both.** *Already at +25% when dropped* is **5.1% in premarket against 35.6% in
+RTH** — in RTH a third of drops are names still elevated, volume dying while
+price holds. **In premarket that is one in twenty**, because those names are
+still building rather than fading.
+
+**What this does NOT establish.** It is a replay of the **predicate**, not an
+audit of the **deployment** — an off-by-one in `activity.ts` would be reproduced
+rather than revealed. And **whether 32.2% is too high is not a measurement
+question**: the graveyard surface exists precisely so a dropped name stays
+findable, so a miss is a cost only if he does not look there. **That is his call
+and the number is now available to make it with.**
 
 #### Q11 operational design — fixed 2026-09-04, before running
 
