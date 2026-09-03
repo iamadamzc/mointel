@@ -750,3 +750,61 @@ threshold in this register states the window it was calibrated against, and
 re-scoping the window re-opens the threshold.* **A pre-registration binds the
 number; it cannot bind what the number means when the window moves underneath
 it.**
+
+
+---
+
+## Amendment 7 — fraction-of-window is the WRONG repair, and Amendment 6 over-reached
+
+**Integration asked that the framing be settled before the number arrives,
+because a repair that looks like a rule violation gets argued about instead of
+applied. Working it through says the repair itself is wrong**, which dissolves
+the dilemma rather than resolving it.
+
+**The proposed repair:** if the drop rule proves looser outside premarket,
+express persistence as a **fraction of the window** — 1.5% giving 5 minutes in a
+330-minute premarket and 14 minutes in a 960-minute day. **Uniform in the right
+unit; different absolute minutes per session.**
+
+### Why it is wrong
+
+**The rule has no window. It is evaluated every minute, continuously.** The
+330-versus-960 distinction is a property of **the window I MEASURED IN**, not of
+the window the rule operates in. **I conflated the two in Amendment 6 and the
+conflation is mine.**
+
+**A name quiet for five minutes at 14:00 is quiet for five minutes.** Nothing
+about the session's total length reaches the tape of that name in that minute.
+**Scaling the threshold by session length would make the rule depend on a
+quantity the phenomenon does not contain** — which is not merely a rule that
+*looks* clock-keyed, it **is** one, and `0595b2c` would be right to forbid it.
+
+### What the real effect is, and it is already measured
+
+**Right-censoring.** A name dying at 19:55 has five minutes to revive; one dying
+at 09:00 has eleven hours. **That is why longer windows show higher revival
+rates**, and it is a fact about the measurement rather than about the name.
+Already quantified in Amendment 5: requiring four hours of remaining session
+lifts the rate 47.9% → 59.4% at persistence 5.
+
+> **Fraction-of-window is a confused proxy for censoring. The fix for censoring
+> is to exclude or flag episodes without enough remaining window — which this
+> document already does — not to rescale the threshold.**
+
+### So what Amendment 6 should have said
+
+**It is right that a duration threshold calibrated in one window carries an
+implicit unit and cannot be read naively in another.** That part stands and it
+is why Q11 must report by session.
+
+**It is wrong to imply the RULE should be rescaled.** The correct sentence is
+narrower: **my premarket revival curve was measured on a 330-minute window, so
+the rates it produced are not directly comparable to rates from a longer one,
+and a threshold chosen from it is calibrated on that comparison rather than on
+the phenomenon.**
+
+**If Q11 confirms the rule behaves differently outside premarket, the answer is
+to measure the threshold's behaviour AT THOSE TIMES and adjust on that
+evidence** — a threshold justified by RTH data applied uniformly is not
+clock-keyed. **A threshold computed FROM the clock is.** That distinction is the
+whole of it, and it is worth having before the number lands.
