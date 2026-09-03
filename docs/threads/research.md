@@ -1642,12 +1642,16 @@ on its own before any handover: it is read first and doubted last.
 > **Four practices that cost this session the most:**
 >
 > - **A claim of the form "X already handles this" is a claim about code.**
->   Write the assertion and watch it go red. Three times this week the test
->   written to CONFIRM something disconfirmed it — the vacuous split test, the
->   retry brake the re-trigger was approved on, and a bound whose 46→4
->   measurement was the freeze reporting itself as success.
+>   Write the assertion and watch it go red. Repeatedly, the test written to
+>   CONFIRM something has disconfirmed it — the vacuous split test, the retry
+>   brake the re-trigger was approved on, a bound whose 46→4 measurement was
+>   the freeze reporting itself as success, and a log line that printed a
+>   precondition where every reader saw a verdict. **This binds hardest when
+>   the claim is one you are SENDING**: a reading asked to be trusted travels
+>   further than a test, and arrives somewhere nobody can check it.
 > - **Say what a number is denominated in.** 5.6% and 17.4% are the same fact
->   over tickers and over blocks. The desk has been burned by units all week.
+>   over tickers and over blocks. Units have cost this desk more than one
+>   conclusion.
 > - **A number without its basis is a different number.** Shares before a split
 >   and shares after are not comparable; `float_basis` and the supply pair's
 >   basis guard are the same rule twice. Unknown is not yes.
