@@ -898,6 +898,50 @@ each time** — irritating, not expensive. A name that died once and came back +
 is the costly one. **Collapsing them into a single "the rule is wrong" number
 would hide which of the two is happening.**
 
+### `dead_at_price` overwrites on each death — keep it that way
+
+Research added it (`c93f321`), captured at the same flip as `deadAtRank`, so the
+**revived-and-ran** miss signal is computable. It is **overwritten on each
+death**, so it measures from the *latest* death only. Design's call: **keep the
+overwrite, add no cumulative field.**
+
+**The cost is real and is accepted rather than waved off.** Overwrite understates
+misses, and understates them **specifically on the churniest names** — a name
+with `deathCount` 5 that ran after revival 2 and is quiet on revival 5 shows
+`ran: 0`, and those are exactly the names the rule is most wrong about. **Same
+shape as `CANNOT_VERIFY` firing hardest on the heaviest diluters: the measurement
+is weakest where the failure concentrates.**
+
+Three reasons it stays, in ascending order:
+
+1. **Two questions, two homes.** *"Is this name running now after we dropped
+   it"* is live and belongs on the board. *"How often was the rule wrong today"*
+   is an archive question, and `desk_assessments` answers it better than a header
+   ever will.
+2. **A session tally contradicts a decision already made here.** The graveyard
+   clears at session end because its central promise expires. A cumulative count
+   would outlive the surface carrying it.
+3. **A cumulative count would force the ENGINE to decide what "ran" means.** To
+   increment at death it must evaluate the prior revival against a threshold —
+   R&D's +25%, presumably — which then freezes in a column and changes only by
+   migration. **Overwrite keeps `dead_at_price` a fact and leaves "did that count
+   as a run" a judgement made by the surface**, where it can change when he
+   changes his mind about what a run is.
+
+> **A stored fact plus a surface judgement beats a stored judgement.** This desk
+> has already paid for the alternative: the model's cycle classification was a
+> stored judgement, and replacing it cost a cutover, a schema deletion, and
+> thirteen days of a masked risk chip.
+
+**So the header says what it means and no more.** The count is **"running now,
+after a drop"** — not *"misses this session"*. The session-long miss rate is
+R&D's, from the archive, rather than a number invented in chrome.
+
+**Owed, and easy to lose between threads:** the surface does **not** consume
+`dead_at_price` yet. Research shipping the column does not make the count appear
+— that is a further small Design change, and it is exactly the seam that goes
+missing between *the data shipped* and *the number is on screen*.
+
 ### Two things the surface must not paper over
 
 **`undefined` and `'UNKNOWN'` are different, and a row whose `activity` is
