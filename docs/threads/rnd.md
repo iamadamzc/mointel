@@ -897,6 +897,42 @@ a revival denominator**. A rate quoted without its population would be exactly
 the failure this register keeps finding elsewhere, **arriving at its own future
 output.**
 
+**Q11 IS LARGELY UNBLOCKED — the drop events are RECONSTRUCTIBLE, and Integration
+was right to ask rather than assume.** The shipped predicate can be replayed over
+history: `lib/archive/revival.ts` already computes deaths and revivals from
+re-fetched minute bars, trade counts come back to the vendor's depth, and the
+13-session run proved the path. **Waiting for events to accumulate buys a smaller
+sample, not a better one.**
+
+**Three conditions on the replay, and the first was named by neither of us:**
+
+1. **THE SETTLE OFFSET. The live rule excludes the in-flight minute, so a
+   five-minute rule DECIDES AT SIX** (`settleMinutes: 1`,
+   `lib/market/activity.ts`). **My detector decides at five.** A replay that
+   does not reproduce the offset **drops names a minute earlier than the
+   deployment did** — and a revival inside that minute counts as *after the
+   drop* in my version and *before it* in the live one. **That lands directly on
+   the numerator**, which makes it the condition that matters most.
+2. **`reviveMinutes: 2`**, per the definitions comparison above.
+3. **Rank-held is NOT exactly reconstructible** — rank exists at **226
+   checkpoint instants**, not at arbitrary minutes, which is the same limit Ops
+   found on slot-time. **It is also not needed**: rank-held is graveyard colour,
+   not part of the false-positive rate.
+
+**WHAT A RECONSTRUCTION CANNOT DO, and it is the residual reason to still want
+the events.** It measures what the rule **WOULD** have done. **For a rate that is
+fine and arguably better** — 13 sessions now against waiting weeks, and re-runnable
+whenever the rule changes. **But it validates the PREDICATE, not the
+IMPLEMENTATION.** A replay built from the same specification **cannot see an
+off-by-one in `activity.ts`**, because it would reproduce the bug.
+
+> **So the capture gap is real and much narrower than blocked: drop events are
+> wanted for auditing the DEPLOYMENT, not for measuring the RATE.** Those are
+> different questions and only the second was ever Q11.
+
+**Which means the clock date below matters less than I gave it**, and I would
+rather say so than leave a date standing that implies a wait.
+
 **THE CLOCK STARTED 2026-09-03.** The activity rule is live in production, so
 **Q11's accumulation window opens here** — this is the date any future rate is
 measured from, and it is worth having because a rate over "since it shipped" is
