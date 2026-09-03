@@ -889,6 +889,48 @@ day:** *a correction inherits the confidence of whatever it corrects toward.*
 **I wrote a direction as a finding; Research corrected its own comment toward my
 finding; the error travelled upward in confidence at every step.**
 
+#### The graveyard filter — measured for Design, 2026-09-04
+
+**The question, from Design through Integration: do board-ranked names routinely
+peak under 300 trades/min?** If they do, a graveyard filtered at the ACTIVE line
+**hides exactly the drops it exists to surface.**
+
+    best rank     n     peak < 300 (ACTIVE)   peak < 30 (DEAD)   median peak
+    1-10        342      91  (26.6%)          37  (10.8%)          1,888
+    11-25       597     336  (56.3%)         134  (22.4%)            190
+    ALL BOARD   939     427  (45.5%)         171  (18.2%)
+
+> **YES, and by a wide margin. 45.5% of board symbol-days never reach the ACTIVE
+> line, including 26.6% of TOP-TEN names.** A graveyard filtered at 300 would
+> hide **nearly half** the board.
+
+**First, a fact that retires part of the question: the board is TOP 25, not top
+50.** Every one of the 939 board symbol-days carries a rank of 1–25 and none
+above it. **"Top 50" describes nothing that exists**, and a filter written
+against it would behave as no filter at all.
+
+**AND THE RIGHT ANSWER IS NEITHER LINE.** Design's actual problem was that 60 of
+71 dead rows were names that **never lived** — and Design also reports **zero of
+those 71 held a board rank.** So they are **universe names, not board names.**
+
+> **The filter should be BOARD PRESENCE, not trade count.** *Was this name on
+> his board?* answers the question directly; **a trade-count line is a proxy for
+> it, and a bad one.** Rank presence removes Design's 60-of-71 completely while
+> hiding **none** of the 45.5% — because those names were ranked. They were on
+> his screen. **They just did not trade much.**
+
+**That dissolves the disagreement rather than picking a side.** Research asked
+for the ACTIVE line and Integration had endorsed the DEAD line; **both are
+proxies for "was this a real name", and the board already records the answer.**
+Design was right to refuse to settle it by whichever message arrived last.
+
+**One caveat on the low-activity board names, because it cuts the other way.**
+That 45.5% of board symbol-days never reach 300 trades/min is **itself a finding
+about the board**: nearly half of what it ranks by RVOL is not trading at a rate
+his own activity threshold calls alive. **That is not a graveyard question and I
+am not answering it here**, but it is the kind of thing the standing sweep exists
+to notice.
+
 #### Q11 — the threshold curve. Lengthening is a bad trade. 2026-09-04.
 
 **Asked for by Integration so the number becomes a decision rather than a fact.
