@@ -204,20 +204,28 @@ conflict. Verify before acting on any of it.***
   until the retirement ships. Soft spot: research worker self-healed three
   restarts (two lock timeouts, one OOM); WAL 546MB on an 886MB store; item 0e
   reframed deploy-independent.
-- **The deploy bundle behind 0f** — 0f (off-box build) **approved by the trader
-  2026-09-02 and building at Ops**. Behind it: `4ac30b5` (fix pair + `dec0dd9`
-  retirement), `bc15588` (supply pair, inert until basis data), `d8794da`
-  (risk-chip fix), plus Research's basis-fetch and guardrails builds when
-  committed. One deploy instruction from this seat, one sha, watched,
-  capacity-priced — *a deploy is a capacity event* stands.
-- **Approved same day:** copy-down exception (assessments extract + re-run
-  through 09-02, Ops executing); manual Lightsail snapshot. **Parked:** float
-  extractor (condition recorded in research.md's pending table).
-- **Scoring:** R&D's pre-registered scorecard proposal `659754b`, five
-  instruments, thresholds fixed. Runner is written to the proposed five unless
-  the trader amends first — he has been told his silence is informed consent.
-  Copy-down and server-side blind-runner both permitted; method choice is
-  R&D's. News one-cell instrument excluded pending a denominator from Research.
+- **The deploy sequence RAN, 2026-09-03 ~05:00–05:15Z, all verified.** Window 1:
+  0f alone on composed sha `7f4aa91` (branch `ops/0f-only`) — the build cap
+  protected its own installation. Window 2: the full bundle at tip `97f5fbd` —
+  the retirement logged **exactly "retired 16"**, all named, `stalledJobs` now
+  0, confirming the enqueue fix by a refutable check. Production runs
+  `97f5fbd`; schema 22 unchanged (the migrates-the-store premise was wrong
+  twice — nothing waits on a migration). Window 3 (basis backfill, ~462 REST
+  calls) unblocked, parked for an Ops-priced DAYLIGHT window. Stale
+  market-worker pin retires after window 3. Design's chip verification read
+  NULL exactly as pre-registered — unfalsified, not confirmed; the Sheet-
+  retirement flip hazard is recorded in README's retirement block.
+- **Executed 09-02/03:** copy-down done (`data/assessments-prod-2026-09-02.db`,
+  ids 1–227); manual snapshot taken. **Parked:** float extractor (condition in
+  research.md's pending table).
+- **Scoring: RUN, results `3ed04c4`** (`docs/rnd/2026-09-02-prediction-
+  scorecard-results.md`, sent to the trader). Headlines: S3 catalyst separation
+  +14.9pp p=0.00002 (floor; same-session +17.9), S2 time-to-intelligence 15→0
+  min, S1 board timeliness UNCHANGED at 30% (the standing product gap), S5
+  freshness regressed (differential; the just-shipped clock targets it). **The
+  post-fix S3 rise toward +17.9 is pre-registered as mechanical** (`584b734`)
+  — only past it is the market. News one-cell instrument excluded permanently
+  until its capture is built (trader's optional word, no clock).
 - **Sessions:** Research successor live (opened 08-27); the three retired
   sessions archived 2026-09-02. Coaching holds six-day-old uncommitted code in
   the tree, nudged to commit.
