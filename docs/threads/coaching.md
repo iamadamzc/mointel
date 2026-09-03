@@ -148,6 +148,16 @@ the booklet, the live practice governs:
   alongside price, float and setup type — and it becomes a rule only if the
   record shows one and he adopts it.
 
+  **A scope decision elsewhere on the desk does not reach this.** *Added
+  2026-09-03, after the board's hunting universe was narrowed to premarket and
+  Integration flagged this thread as the side of that line most likely to be
+  crossed by accident.* What the **board hunts** and what **he is graded on**
+  are different questions. Grading covers every fill in the export, whatever
+  session it was taken in, and a scope decision about the product does not
+  narrow it. Only he can narrow it, directly and explicitly — and a statement
+  that merely sounds like it needs confirming rather than acting on, because
+  the record already contains sessions whose result argues the other way.
+
   **The distribution is still worth knowing.** R&D measured the market side on
   2026-08-24: of 95 movers, 27.4% peak 04:00-06:59, 18.9% in 07:00-09:29, and
   only 7.4% in 09:30-09:59. That is where the opportunities are, not where his
