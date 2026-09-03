@@ -708,6 +708,37 @@ describe('high-resolution interest set', () => {
     expect(engine.getDemandState('GONE')?.rvolRank).not.toBeNull();
     expect(engine.getDemandState('GONE')?.latched).toBe(true);
   });
+
+  it('captures rank, peak and PRICE at the death, not at the read', () => {
+    /*
+     * All three keep moving after a death, so a value read when the graveyard
+     * renders is not the value at the death. Price is the one that decides
+     * whether the RULE is wrong: deathCount shows the rule firing often, but
+     * only "revived AND RAN" shows it firing WRONGLY, and that needs a
+     * baseline taken here. percentChange cannot substitute -- it is the
+     * session move, so a name that was up before dying and is up now looks
+     * identical to one that ran after reviving.
+     */
+    const engine = createEngine({ internalRank: 50 });
+    engine.setBaselines(new Map([['GONE', baseline('GONE', 1_000_000)]]));
+    engine.track('GONE');
+    engine.ingest(bar('GONE', ts(5), { c: 7.5, v: 4_000_000, n: 1240 }));
+
+    clock = Date.UTC(2026, 7, 14, 13, 50, 0);
+    engine.recompute();
+
+    const dead = engine.getDemandState('GONE');
+    expect(dead?.activity).toBe('DEAD');
+    expect(dead?.deadAtPrice).toBe(7.5);
+    expect(dead?.deadAtPeakTrades).toBe(1240);
+    expect(dead?.deathCount).toBe(1);
+
+    // The price moves on; the captured one does not follow it.
+    engine.ingest(bar('GONE', ts(19), { c: 11.25, v: 100_000, n: 5 }));
+    engine.recompute();
+    expect(engine.getDemandState('GONE')?.price).toBe(11.25);
+    expect(engine.getDemandState('GONE')?.deadAtPrice).toBe(7.5);
+  });
 });
 
 function hodEvents(events: EngineEvent[]): EngineEvent[] {

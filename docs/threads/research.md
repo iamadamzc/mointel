@@ -3123,6 +3123,64 @@ measurable from here — it needs live data, and the local snapshot carries no
 it before wiring, and this widens what "the removal" means from a Design
 partition into a change with two consumers in two threads' modules.*
 
+### BUILT `5c8e9a7`, and the build found a FOURTH selection source the scope missed
+
+**`applyHighResSelection` has four sources, not two — and two must NOT be
+gated.** Pinned sheet names are pinned. And the **after-hours daytime-leaders
+block exists precisely so a quiet name keeps its subscription after the bell**
+(*"a Focus name or a daytime leader must not go dark just because it is quiet
+now"*), so gating it would delete the reason it was written. **The enumeration
+discipline caught the same class of error twice: once in the scope, once in the
+build.** Both exclusions now carry their reason at the site.
+
+**Focus exempts a name from the activity test** as it already does from the
+rank window — the trader saying he is watching a name outranks the desk's
+opinion about whether it is interesting. *My judgement, flagged to Integration
+as mine to overrule.*
+
+**The engine test asserts the rank and the latch SURVIVE**, so a later drift
+into nulling the rank fails loudly instead of quietly emptying the graveyard.
+
+**`deadAtPrice` added `<next commit>`** at Design's request via Integration,
+captured at the same flip and for the same reason as the rank: **`deathCount`
+shows the rule firing OFTEN; only *revived AND RAN* shows it firing WRONGLY**,
+and that needs a baseline taken at the death. `percentChange` cannot
+substitute — it is the SESSION move, so a name that was +40% before dying and
+is +40% now is indistinguishable from one that ran after reviving. *Design
+refused to approximate the "ran" count rather than ship one that might be
+wrong, which is the check-that-cannot-fail argument applied to the single field
+that would trigger a rule change.*
+
+### Q9's writer: the Sheets call goes BEFORE the claim, and that answers both of Ops's problems
+
+*Ops's condition 6, answered from the code 2026-09-04. Not built — Q9 is behind
+the schema gate.*
+
+`captureAssessment` takes `startedAt`/`startMs`, **then** claims the slot, and
+only **then** enters the `try`. So Ops is right twice over: **an awaited Sheets
+call that never returns does not throw**, the row stays `RUNNING`, and the slot
+is dead for the whole `STALE_RUNNING_MS`; and a network call inside the window
+converts checkpoint duration from database work to network-bound, breaking the
+28–74 ms baseline Ops uses as a health signal.
+
+**Both disappear if the read happens before `startedAt` is taken** (`:525`),
+which is structurally trivial:
+
+- **nothing is claimed yet**, so a hang cannot strand a slot — the hazard is
+  eliminated rather than bounded, which is Ops's stated preference;
+- **the duration measured is claim-to-complete**, so it stays database work and
+  **Ops's health baseline survives — no dated discontinuity entry is needed**;
+- the only cost is a wasted Sheets read when another worker already holds the
+  slot, which is rare and vastly cheaper than a ten-minute dead slot;
+- and it makes **the float's capture instant explicit** rather than inherited
+  from `started_at` — which **item 28 already required**, so the safer shape is
+  also the one the design asked for.
+
+**The ordering stands whatever shape is chosen: the checkpoint completing is
+worth more than the column being populated, every time.** A timeout degrades to
+a null column, never to a failed checkpoint — Q9's capture is a nice-to-have
+riding inside the writer of the one record nothing rebuilds.
+
 ### SCOPE: ranked-and-alive. *Integration's word 2026-09-03; enumerated by search, not from the two sites it named.*
 
 **Most rank consumers must NOT change, and two of them would be damaged by

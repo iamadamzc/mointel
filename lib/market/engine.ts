@@ -148,6 +148,21 @@ interface TickerRuntime {
   deadAtRank: number | null;
   deadAtPeakTrades: number | null;
   /**
+   * Price at the flip, and it is the one that decides whether the RULE is
+   * wrong rather than merely noisy.
+   *
+   * `deathCount` shows the rule firing often; only "revived AND RAN" shows it
+   * firing WRONGLY, and that cannot be computed without a baseline taken at
+   * the death. `percentChange` is the SESSION move, so a name that was +40%
+   * before dying and is +40% now looks identical to one that ran after
+   * reviving. Price keeps moving after death, so a price read at render time
+   * is not this number -- the same reason rank is captured here.
+   *
+   * Overwritten on each death, so a multi-death name measures from its LATEST
+   * death, which is the one a reader is asking about.
+   */
+  deadAtPrice: number | null;
+  /**
    * Deaths this session. The graveyard's self-audit: a name that dies and
    * revives repeatedly is visible evidence that the threshold is wrong, and
    * it is the check that can FAIL — rendered, rather than a query somebody
@@ -419,6 +434,7 @@ export class DemandEngine {
       deadSince: null,
       deadAtRank: null,
       deadAtPeakTrades: null,
+      deadAtPrice: null,
       deathCount: 0,
       minuteNotional: new Map(),
       vwapNotional: { premarket: 0, regular: 0, afterHours: 0 },
@@ -1094,6 +1110,7 @@ export class DemandEngine {
     if (activity.state === 'DEAD' && runtime.activity !== 'DEAD') {
       runtime.deadAtRank = runtime.rvolRank;
       runtime.deadAtPeakTrades = peakTradesPerMinute(runtime.minuteTrades);
+      runtime.deadAtPrice = runtime.price;
       runtime.deathCount += 1;
     }
 
@@ -1772,6 +1789,7 @@ export class DemandEngine {
       deadSince: runtime.deadSince,
       deadAtRank: runtime.deadAtRank,
       deadAtPeakTrades: runtime.deadAtPeakTrades,
+      deadAtPrice: runtime.deadAtPrice,
       deathCount: runtime.deathCount,
       rthFinal: runtime.rthFinal ? { ...runtime.rthFinal } : null,
       afterHours: this.afterHoursStateOf(runtime),

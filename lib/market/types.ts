@@ -404,6 +404,18 @@ export interface DemandState {
   deadAtRank?: number | null;
   deadAtPeakTrades?: number | null;
   /**
+   * Price at the death, and the field that lets the graveyard show a MISS.
+   *
+   * `deathCount` says the rule fires often; only *revived AND RAN* says it
+   * fires WRONGLY, and that needs a baseline taken at the death.
+   * `percentChange` cannot substitute — it is the SESSION move, so a name that
+   * was +40% before dying and is +40% now is indistinguishable from one that
+   * ran after reviving. Design refused to approximate it rather than ship a
+   * "ran" count that might be wrong, which is right: it is the number that
+   * would decide whether the rule gets changed.
+   */
+  deadAtPrice?: number | null;
+  /**
    * Deaths this session, kept across revivals.
    *
    * The graveyard's own audit. A name that dies and revives repeatedly is
