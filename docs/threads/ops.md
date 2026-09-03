@@ -2828,6 +2828,35 @@ bandwidth we have no use for"). **But a targeted trades subscription runs for
 ~250 high-res symbols right now**, is consumed for live price and HOD decisions,
 and is **never written**.
 
+### CORRECTED 2026-09-03: reconstruction IS possible — I measured our store and generalised to the world
+
+**Research probed the Alpaca trades REST endpoint: 12 requests, all HTTP 200,
+`limit=1` so depth was tested without pulling volume. BTCT returns trades back
+to its 2020 listing.** The vendor retains tick history.
+
+**So ten-second grain CAN be reconstructed historically.** It is a build with no
+clock, **not a capture emergency**, and nothing from this line should reach the
+trader as urgent.
+
+**My error, and it is a new costume of a familiar shape.** I established that
+*our store* holds no sub-minute data — true, and still true — and concluded
+*"historically: impossible, and no amount of work recovers it"*. **That is a
+claim about the world inferred from a measurement of one store.** I had the
+means to check the vendor and did not; I checked everything else that day.
+
+**The retraction is specific:** "observable-once", "a loss that accrues daily",
+"more urgent than it looks" — **all three are withdrawn.** What survives is only
+that *our store* has never held it and retains three days of minute bars.
+
+**Same family as key-presence-not-value-presence, ancestry-not-content, and
+measure-a-commit-not-a-checkout: the measurement was sound and its SCOPE was
+wrong.** Ours-versus-available is the axis this one turned on.
+
+**What still stands:** the live trades subscription for ~250 high-res symbols is
+real and unpersisted, so forward capture remains a storage decision rather than
+a feed one. **That is now a cost comparison — REST backfill versus stream
+capture — rather than an argument for haste.**
+
 ### What this means for the 10-second question
 
 **Historically: impossible, and no amount of work recovers it.** Nothing
