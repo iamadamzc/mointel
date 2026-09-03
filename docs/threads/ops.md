@@ -2612,6 +2612,76 @@ shape as the durability claim earlier the same night: **a true statement about a
 system that keeps running does not stay true, and nothing announces when it
 stops.**
 
+### PRE-REGISTERED, 2026-09-03, before any evidence: two sufficient causes for the next lock error
+
+**Research's warning, and it is the most useful thing anyone said this week.** A
+lock-timeout spike after 2026-09-03 **fits item 0e exactly** — deploy-independent,
+WAL-related, worsening over time. **And a second sufficient cause landed the same
+day**: `ensureDeepHistory` writes up to ten years in ONE upsert transaction per
+symbol, on the same handle as `claimQueuedJobs` and `completeJob` — **the exact
+two sites that produced `database is locked` on 08-28 and 08-29.**
+
+Upper bound from Research: ~231 names x up to ~2,520 rows, ~580,000 rows / ~71MB,
+in ~231 long transactions.
+
+**Left unrecorded, the next lock error gets attributed to 0e because 0e is
+already in the charter.** So both causes are written down now, with today's
+baseline, **before the observation exists**. A hypothesis registered after the
+fact is not the same object as one registered before it.
+
+**Today's baseline, which is what makes future attribution possible:**
+
+```
+lock errors SINCE 97f5fbd (13h)      0
+lock errors in the 6 days BEFORE     6        (~1/day)
+deep passes since the bundle        61        long multi-thousand-row txns
+research restarts                    0
+WAL                        572,869,552 B
+```
+
+**61 long transactions, zero locks.** The mechanism is sound; the desk is not
+exhibiting it.
+
+### The WAL is NOT growing, and I had left the opposite implication standing
+
+`572,869,552` bytes — **identical to the reading twenty hours earlier**, across
+the heaviest write load this store has carried (`daily_bars` 78,729 -> 155,390).
+
+**It is not truncating, but it is not growing either**: a steady-state
+high-water mark with space reused. **"Worsening as the WAL grows" is not
+currently a description of this store**, and item 0e should be read as *a large
+WAL costs a cold open* rather than *a WAL that will keep getting worse*. I had
+written "still not truncating" and let the growth implication stand unexamined.
+
+### Window 3: HOLD AND WATCH, with triggers rather than a cancellation
+
+**Research's reframe is better reasoning than my cancellation was.** I cancelled
+on coverage — the backfill's remainder is the names that have not moved, lowest
+value. Research reprices it as **moving load**: every name the paced tool
+establishes is one the in-worker trigger then skips, so it **relocates** an
+unpaced trading-day cost into a quiet window rather than adding spend. That is a
+contention argument and it is the stronger frame.
+
+**It still does not carry, because moving load only pays if the load costs
+something.** Measured during RTH: **zero 429s, `msgAge 2s`, research IDLE with an
+empty queue, zero locks across 61 transactions.** The unpaced version is
+invisible in every observable available.
+
+**So the paced run would put a process on the box — a capacity event by doctrine,
+on the instance an unpaced process took down six days ago — to relieve
+contention that is not occurring.** And it is self-limiting: each symbol
+establishes once, 77 of ~231 arrived free in half a day.
+
+**Run it paced if ANY of these appear:**
+
+- lock errors resuming **above the ~1/day baseline**
+- any **429** from Alpaca
+- **`msgAge` degrading during RTH**
+- the **research queue backing up** rather than sitting at 0
+
+**Those are the conditions under which "move the load" becomes true rather than
+precautionary.**
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
