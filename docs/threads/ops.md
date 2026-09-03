@@ -2885,8 +2885,13 @@ schema** — this desk has now learned that lesson twice.
 
 **0f. The deploy builds on the production box, and the build is enough to take
 it down.** *Ops. Raised by the 2026-08-27 incident, which cost ~54 minutes of
-desk and the first 40 minutes of premarket capture at ~5% coverage. Not built.
-**This is ahead of 0d.***
+desk and the first 40 minutes of premarket capture at ~5% coverage.*
+
+**BUILT AND SHIPPED 2026-09-03 05:04 UTC as `7f4aa91` (window 1), verified
+live.** The heap cap and the prebuilt-artefact path are both in production and
+the cap protected the deploy that installed it. **This entry read "Not built"
+for sixteen hours after it shipped** — found by running R&D's expiry audit on my
+own charter rather than only on someone else's.
 
 `push-release.sh` runs `npm ci` (470 packages) and `next build` on the same 4 GB
 Lightsail instance that runs four services against an 877 MB store with a 531 MB
@@ -2917,7 +2922,9 @@ research idleness, which is what my preflight currently measures.
 
 **0d. A deploy that loses its driving connection leaves the desk stopped, with
 nothing to restart it.** *Ops. Raised by the 2026-08-25 outage, which cost 3h22m
-and 102 minutes of the live premarket session. Not built.*
+and 102 minutes of the live premarket session. **Not built — verified
+2026-09-03**: no `trap` in `deploy/aws/push-release.sh` or `deploy.sh`, either at
+`7f4aa91` or in the live `97f5fbd`. 0f shipping did NOT carry it.*
 
 `push-release.sh` stops the runtime units, then migrates, then starts them. The
 sequence is driven from a laptop over ssh. Kill the driver between stop and
@@ -2936,7 +2943,12 @@ the pins report explicitly. They are the last two steps and a killed script
 skips them silently — it did on 2026-08-25.
 
 **0e. The store's upgrade transaction runs unconditionally on every open, and
-the WAL has made that expensive.** *Ops. Not built.*
+the WAL has made that expensive.** *Ops. **Not built — re-verified against the
+live release 2026-09-03.** Line numbers have moved: the block is now
+`lib/market/store/db.ts:925-953`. The backup IS guarded (`fromVersion > 0 &&
+fromVersion < SCHEMA_VERSION`); the `upgrade()` transaction is NOT — `db.exec(SCHEMA)`,
+`migrate()` and the `user_version` write still run on every open of a current
+store.*
 
 `lib/market/store/db.ts:938-945` runs `db.exec(SCHEMA)`, `migrate()` and the
 `user_version` write on **every** open, including when the version already
@@ -2958,7 +2970,10 @@ and deploys are where the WAL now bites.
 
 **0c. Health measures that the worker is alive, not that it is working — so a
 hung worker reports healthy.** *Offered by Integration 2026-08-23 and not
-assigned; taking it, because it is monitoring and incident diagnosis. Not built.*
+assigned; taking it, because it is monitoring and incident diagnosis. **Build
+state UNVERIFIED as of 2026-09-03** — asserted since 08-23 and not re-checked
+against the live release. Stamped rather than restated, per the expiry audit: an
+unchecked claim about what exists is the thing most likely to be wrong.*
 
 The research worker's heartbeat is an independent `setInterval` (`unref`'d),
 separate from its `for (;;)` loop. If the loop blocks — on an unbounded fetch, as
