@@ -4601,6 +4601,50 @@ ordinary comment character can terminate the string. **Check for backticks in
 anything inserted into a template literal** — the failure is a parse error a
 long way from the edit.
 
+### Nine wiring sites, and nobody asked WHICH PROCESS runs the ninth
+
+**2026-09-03. `6d368dc` deployed clean, the migration succeeded, and the feature
+it delivers is inert — because `RESTART_MARKET=no` guaranteed it.**
+
+```
+activity distribution after deploy:   (NULL)  8806 rows   — every row
+
+market   MainPID 30233   cwd 97f5fbd   <- OLD release, started 06:34 UTC
+web / research / assess  cwd 6d368dc   <- new release
+
+97f5fbd toRow, occurrences of 'activity:'   ->  0
+6d368dc toRow                               ->  1
+```
+
+**`toRow` lives in `worker/runtime.ts`. That is the MARKET WORKER** — the only
+writer of `ticker_session`, and the one process this desk protects above all
+others precisely by never restarting it.
+
+**All-NULL is the first failure signature Research named (the four-site trap).
+It was not that.** The wiring is correct at all nine sites; the process holding
+the wiring is running last week’s copy of it. **Shipped-and-inert and
+shipped-and-broken produce the SAME reading, and the only thing that separated
+them was checking the cwd.**
+
+**The instruction said "nothing here touches the market worker’s ingestion
+path". True of INGESTION, false of the WRITER — and I read it, agreed with it,
+and priced a window around it.** The nine-site enumeration found every site in
+the code. **It is an enumeration of PLACES, and the missing question was about
+PROCESSES.**
+
+**NEW CHECKLIST LINE, and it belongs above the four-site trap because it
+subsumes it:**
+
+> **For every new column, name the process that writes it, then ask whether
+> that process restarts on this deploy.** `RESTART_MARKET=no` means anything
+> written by `worker/runtime.ts` is inert until the market worker restarts —
+> which happens on an explicit restart, or unattended when `apt-daily-upgrade`
+> cycles it between roughly 02:25 and 03:25 ET.
+
+**A column whose writer did not restart is not a defect and not a success. It
+is a deploy that has not finished**, and it reads as neither from the data
+alone.
+
 ## THE SCHEMA-GATE CHECKLIST — run this, do not re-read the prose
 
 Consolidated 2026-09-03 because the conditions had spread across four narrative
