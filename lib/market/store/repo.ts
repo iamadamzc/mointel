@@ -295,6 +295,13 @@ export interface TickerSessionRow {
   rth_final_rvol: number | null;
   rth_final_rank: number | null;
   rth_final_frozen_at: string | null;
+  activity: string | null;
+  dead_since: string | null;
+  dead_at_rank: number | null;
+  dead_at_peak_trades: number | null;
+  dead_at_price: number | null;
+  death_count: number | null;
+  activity_config: string | null;
   feed: string;
   last_event_at: string | null;
   updated_at: string;
@@ -457,6 +464,8 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       ah_entered_topn_at, ah_entered_rank, ah_qualified_at, ah_qualification_price, ah_latched,
       rth_final_close, rth_final_high, rth_final_low, rth_final_volume, rth_final_rvol,
       rth_final_rank, rth_final_frozen_at,
+      activity, dead_since, dead_at_rank, dead_at_peak_trades, dead_at_price,
+      death_count, activity_config,
       feed, last_event_at, updated_at
     ) VALUES (
       @symbol, @trading_date, @price, @price_source, @price_at, @bar_close, @bar_at,
@@ -479,6 +488,8 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       @ah_entered_topn_at, @ah_entered_rank, @ah_qualified_at, @ah_qualification_price, @ah_latched,
       @rth_final_close, @rth_final_high, @rth_final_low, @rth_final_volume, @rth_final_rvol,
       @rth_final_rank, @rth_final_frozen_at,
+      @activity, @dead_since, @dead_at_rank, @dead_at_peak_trades, @dead_at_price,
+      @death_count, @activity_config,
       @feed, @last_event_at, @updated_at
     )
     ON CONFLICT(symbol, trading_date) DO UPDATE SET
@@ -547,6 +558,37 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       rth_final_rank = COALESCE(ticker_session.rth_final_rank, excluded.rth_final_rank),
       rth_final_frozen_at =
         COALESCE(ticker_session.rth_final_frozen_at, excluded.rth_final_frozen_at),
+      /*
+       * A RESTART MUST NOT ERASE A DEATH.
+       *
+       * After a restart the engine's maps are empty, so it reports UNKNOWN
+       * with the death fields null and death_count 0. A plain overwrite would
+       * destroy the stored record of a name that died BEFORE the restart --
+       * the graveyard’s own evidence deleted by a process event rather than
+       * by the market.
+       *
+       * Blanket COALESCE is the obvious defence and the WRONG one, because
+       * dead_since must clear on a genuine revival. The cases are told apart
+       * by the activity value itself: UNKNOWN is amnesia and PRESERVES,
+       * ACTIVE is a determination and CLEARS, DEAD writes a fresh record.
+       */
+      activity = excluded.activity,
+      dead_since = CASE excluded.activity
+        WHEN 'UNKNOWN' THEN ticker_session.dead_since
+        WHEN 'ACTIVE' THEN NULL
+        ELSE excluded.dead_since END,
+      dead_at_rank = CASE
+        WHEN excluded.activity = 'UNKNOWN' THEN ticker_session.dead_at_rank
+        ELSE COALESCE(excluded.dead_at_rank, ticker_session.dead_at_rank) END,
+      dead_at_peak_trades = CASE
+        WHEN excluded.activity = 'UNKNOWN' THEN ticker_session.dead_at_peak_trades
+        ELSE COALESCE(excluded.dead_at_peak_trades, ticker_session.dead_at_peak_trades) END,
+      dead_at_price = CASE
+        WHEN excluded.activity = 'UNKNOWN' THEN ticker_session.dead_at_price
+        ELSE COALESCE(excluded.dead_at_price, ticker_session.dead_at_price) END,
+      /* Monotonic: a restart reporting 0 must never lower a stored count. */
+      death_count = MAX(COALESCE(ticker_session.death_count, 0), COALESCE(excluded.death_count, 0)),
+      activity_config = COALESCE(excluded.activity_config, ticker_session.activity_config),
       feed = excluded.feed, last_event_at = excluded.last_event_at, updated_at = excluded.updated_at
   `);
 

@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 22;
+export const SCHEMA_VERSION = 23;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -155,6 +155,29 @@ CREATE TABLE IF NOT EXISTS ticker_session (
   feed                   TEXT NOT NULL,
   last_event_at          TEXT,
   updated_at             TEXT NOT NULL,
+  /*
+   * Activity, and the record of a death.
+   *
+   * activity is 'ACTIVE' | 'DEAD' | 'UNKNOWN'. NULL means only that the row
+   * predates this column. UNKNOWN is a determination the engine made; NULL is
+   * the absence of one, and collapsing them would destroy the distinction
+   * permanently.
+   *
+   * The dead_at_* trio is captured AT THE MOMENT OF DEATH because none of
+   * them survives it: rank drifts, the peak minute only means anything against
+   * its own session, and price keeps moving. Read later they are different
+   * numbers.
+   *
+   * activity_config carries the thresholds in force when the verdict was
+   * written, so a past decision stays reproducible after anyone tunes the rule.
+   */
+  activity               TEXT,
+  dead_since             TEXT,
+  dead_at_rank           INTEGER,
+  dead_at_peak_trades    INTEGER,
+  dead_at_price          REAL,
+  death_count            INTEGER,
+  activity_config        TEXT,
   PRIMARY KEY (symbol, trading_date)
 );
 CREATE INDEX IF NOT EXISTS idx_ticker_session_rank ON ticker_session (trading_date, rvol_rank);
@@ -718,6 +741,18 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'desk_assessments', column: 'catch_up', definition: 'INTEGER NOT NULL DEFAULT 0' },
   { table: 'desk_assessments', column: 'failure', definition: 'TEXT' },
   { table: 'desk_assessments', column: 'superseded_reason', definition: 'TEXT' },
+
+  /*
+   * v23. Bare nullable types with no default, which is what keeps
+   * ALTER TABLE ADD COLUMN metadata-only on the largest table on the desk.
+   */
+  { table: 'ticker_session', column: 'activity', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'dead_since', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'dead_at_rank', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'dead_at_peak_trades', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'dead_at_price', definition: 'REAL' },
+  { table: 'ticker_session', column: 'death_count', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'activity_config', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {

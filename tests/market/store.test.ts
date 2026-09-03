@@ -550,4 +550,126 @@ describe('schema upgrade reporting', () => {
 
     expect(calls).toBe(0);
   });
+
+  /**
+   * The four-site wiring trap, and it is the reason this test exists.
+   *
+   * `ON CONFLICT DO UPDATE SET` is an explicit column list, so a new column
+   * needs FOUR wiring sites: the insert list, the VALUES placeholders, the
+   * DO UPDATE SET, and `toRow`. Wire three of the four and the column INSERTS
+   * ONCE AND NEVER UPDATES — frozen at whatever was written when the symbol was
+   * first seeded.
+   *
+   * It would be populated, non-null, and every existing guard would pass. A
+   * constant wearing a measurement's clothes, in the store, forever.
+   *
+   * So this asserts the stored value CHANGED. A test that only asserted "not
+   * null" would pass on the broken wiring.
+   */
+  it('updates activity on conflict rather than freezing it at the seeded value', () => {
+    const db = temporaryDb();
+
+    const first = demand('ABCD', 1);
+    upsertTickerSessions(db, [toRow({ ...first, activity: 'ACTIVE', deathCount: 0 })]);
+
+    const second = demand('ABCD', 1);
+    upsertTickerSessions(db, [toRow({ ...second, activity: 'DEAD', deathCount: 1 })]);
+
+    const row = db
+      .prepare('SELECT activity, death_count FROM ticker_session WHERE symbol = ?')
+      .get('ABCD') as { activity: string | null; death_count: number | null };
+
+    expect(row.activity).toBe('DEAD');
+    expect(row.death_count).toBe(1);
+    db.close();
+  });
+
+  /**
+   * A restart must not erase a death.
+   *
+   * After a restart the engine's maps are empty, so it reports UNKNOWN with the
+   * death fields null and deathCount 0. A plain overwrite would delete the
+   * stored record of a name that died BEFORE the restart — the graveyard's own
+   * evidence destroyed by a process event rather than by the market.
+   */
+  it('preserves a recorded death when the engine reports UNKNOWN after a restart', () => {
+    const db = temporaryDb();
+
+    upsertTickerSessions(db, [
+      toRow({
+        ...demand('ABCD', 1),
+        activity: 'DEAD',
+        deadSince: '2026-08-14T14:00:00.000Z',
+        deadAtRank: 3,
+        deadAtPeakTrades: 900,
+        deadAtPrice: 6.5,
+        deathCount: 2,
+      }),
+    ]);
+
+    // The restart: amnesia, not a determination.
+    upsertTickerSessions(db, [
+      toRow({
+        ...demand('ABCD', 1),
+        activity: 'UNKNOWN',
+        deadSince: null,
+        deadAtRank: null,
+        deadAtPeakTrades: null,
+        deadAtPrice: null,
+        deathCount: 0,
+      }),
+    ]);
+
+    const row = db
+      .prepare(
+        `SELECT activity, dead_since, dead_at_rank, dead_at_peak_trades,
+                dead_at_price, death_count
+           FROM ticker_session WHERE symbol = ?`,
+      )
+      .get('ABCD') as Record<string, unknown>;
+
+    expect(row.activity).toBe('UNKNOWN');
+    expect(row.dead_since).toBe('2026-08-14T14:00:00.000Z');
+    expect(row.dead_at_rank).toBe(3);
+    expect(row.dead_at_peak_trades).toBe(900);
+    expect(row.dead_at_price).toBe(6.5);
+    // Monotonic: a restart reporting 0 must never lower a stored count.
+    expect(row.death_count).toBe(2);
+    db.close();
+  });
+
+  /**
+   * ...but a genuine revival DOES clear it, which is why blanket COALESCE is
+   * the obvious defence and the wrong one.
+   */
+  it('clears dead_since on a genuine revival while keeping the death record', () => {
+    const db = temporaryDb();
+
+    upsertTickerSessions(db, [
+      toRow({
+        ...demand('ABCD', 1),
+        activity: 'DEAD',
+        deadSince: '2026-08-14T14:00:00.000Z',
+        deadAtRank: 3,
+        deadAtPrice: 6.5,
+        deathCount: 1,
+      }),
+    ]);
+
+    upsertTickerSessions(db, [
+      toRow({ ...demand('ABCD', 1), activity: 'ACTIVE', deadSince: null, deathCount: 1 }),
+    ]);
+
+    const row = db
+      .prepare('SELECT activity, dead_since, dead_at_rank, dead_at_price FROM ticker_session WHERE symbol = ?')
+      .get('ABCD') as Record<string, unknown>;
+
+    expect(row.activity).toBe('ACTIVE');
+    expect(row.dead_since).toBeNull();
+    // The record of the last death survives the revival — it is what
+    // "revived AND RAN" is computed against.
+    expect(row.dead_at_rank).toBe(3);
+    expect(row.dead_at_price).toBe(6.5);
+    db.close();
+  });
 });

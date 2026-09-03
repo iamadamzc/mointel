@@ -39,6 +39,7 @@ import {
   type ClassificationSummary,
 } from '../lib/market/securities';
 import { DemandEngine, type EngineEvent } from '../lib/market/engine';
+import { DEFAULT_ACTIVITY_CONFIG } from '../lib/market/activity';
 import { buildBaseline, computeDailyRvol } from '../lib/market/rvol';
 import {
   addDays,
@@ -1665,6 +1666,23 @@ export function toRow(state: DemandState): TickerSessionRow {
     rth_final_frozen_at: state.rthFinal?.frozenAt ?? null,
     feed: state.feed,
     last_event_at: state.freshness.lastEventAt,
+    activity: state.activity ?? null,
+    dead_since: state.deadSince ?? null,
+    dead_at_rank: state.deadAtRank ?? null,
+    dead_at_peak_trades: state.deadAtPeakTrades ?? null,
+    dead_at_price: state.deadAtPrice ?? null,
+    death_count: state.deathCount ?? null,
+    /*
+     * The thresholds in force, stored beside the verdict so a past decision
+     * stays reproducible after anyone tunes the rule.
+     *
+     * INVARIANT: the engine calls resolveActivity WITHOUT a config, so the
+     * default is genuinely what produced this verdict. If the engine is ever
+     * given a custom config, this MUST follow it -- otherwise the column
+     * becomes a constant wearing a measurement’s clothes, which is the exact
+     * failure this column exists to prevent.
+     */
+    activity_config: JSON.stringify(DEFAULT_ACTIVITY_CONFIG),
     updated_at: state.updatedAt,
   };
 }

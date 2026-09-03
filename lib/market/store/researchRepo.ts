@@ -28,6 +28,10 @@ import type {
 import { ANALYSIS_VERSION, EMPTY_COMPANY_SOURCES } from '../../research/types';
 import { nextRetryState, type RetryState } from '../../research/retry';
 import type { QueueCandidate } from '../../research/queue';
+import type { ActivityState } from '../activity';
+
+/** The only three values the engine writes. Anything else is not a verdict. */
+const ACTIVITY_STATES = new Set(['ACTIVE', 'DEAD', 'UNKNOWN']);
 
 /* -------------------------------------------------------------- table guard */
 
@@ -119,6 +123,7 @@ export function readBoardCandidates(
               s.ah_entered_topn_at AS ahEnteredTopNAt,
               s.qualified_at AS qualifiedAt,
               s.ah_qualified_at AS ahQualifiedAt,
+              s.activity,
               u.classification,
               (SELECT COUNT(*) FROM focus_tickers f
                 WHERE f.ticker = s.symbol AND f.trading_date = s.trading_date) AS focused
@@ -155,6 +160,17 @@ export function readBoardCandidates(
       spreadPct: numeric(r.spreadPct),
       latched: afterHours ? r.ahLatched === 1 : r.latched === 1,
       classification: text(r.classification),
+      /*
+       * NULL becomes undefined, never UNKNOWN.
+       *
+       * A NULL here means the row predates the column -- the value did not
+       * survive its journey. UNKNOWN means the engine looked and could not
+       * say. Only the second is a measurement, and collapsing them would
+       * destroy the distinction the column was added to preserve.
+       */
+      activity: ACTIVITY_STATES.has(String(r.activity))
+        ? (String(r.activity) as ActivityState)
+        : undefined,
       /*
        * Board entry, measured on the board that queued this name.
        *
