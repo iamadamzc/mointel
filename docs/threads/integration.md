@@ -1536,6 +1536,17 @@ Basic Auth itself; the probe that reaches the app is `/_next/static/`.
 
 ## Working rules
 
+- **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
+  *Ops, 2026-09-03, against its own figures — and this seat published them.* Ops
+  produced a method-validation reading, labelled it inflated and provisional,
+  and relayed it; this thread passed it to the trader with the caveat attached.
+  The real measurement hours later was **25% and 24% against 50% and 80%** —
+  wrong by two and three times, warning notwithstanding. **The caveat did not
+  survive contact with the number.** Ops's own conclusion is the rule: hold a
+  method-validated figure rather than shipping it with a warning, when the real
+  measurement is hours away. For this seat specifically: **a preliminary number
+  relayed to him is a number he now holds**, and the retraction costs more than
+  the wait would have.
 - **A rendering decision can silently constrain a spend policy, and this seat
   is where that happens.** *Research, 2026-09-03, framing an error of mine more
   usefully than I had.* Asked whether a dropped name should vanish or show as
