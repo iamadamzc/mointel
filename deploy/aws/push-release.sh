@@ -83,6 +83,42 @@ git archive --format=tar "$SHA" \
 # is running.
 "${SSH[@]}" "printf '%s\n' '$SHA' | sudo tee /opt/mointel/releases/$SHA/RELEASE_SHA >/dev/null"
 
+
+# ------------------------------------------------------- prebuilt artefact ---
+#
+# Building on the production box took it down on 2026-08-27, so the release can
+# carry a `.next` built somewhere else and `deploy.sh` will skip its own build.
+#
+# `.next` is gitignored, so it cannot ride in the archive above — it is shipped
+# separately, after the tree is in place.
+#
+# ARTIFACT_NEXT names the directory to ship. It MUST have been built from this
+# exact sha: a stale artefact would deploy code the sha does not contain, and
+# nothing downstream would notice, because a `.next` directory carries no
+# record of what produced it. The gate already builds at the shipping sha in a
+# pinned worktree, so that build is the one to point at.
+#
+# The platform guard is not caution, it is an untested path. Next.js build
+# output is not guaranteed portable across platforms, production has always
+# built on Linux, and Windows-to-Linux has never been verified here. Shipping
+# it unverified would trade a known capacity problem for an unknown correctness
+# one. Set ARTIFACT_PLATFORM_OK=yes only once that equivalence is established.
+if [ -n "${ARTIFACT_NEXT:-}" ]; then
+  [ -d "$ARTIFACT_NEXT" ] || { echo "[release] ARTIFACT_NEXT is not a directory: $ARTIFACT_NEXT" >&2; exit 4; }
+
+  if [ "$(uname -s)" != "Linux" ] && [ "${ARTIFACT_PLATFORM_OK:-no}" != "yes" ]; then
+    echo "[release] REFUSING to ship a $(uname -s)-built artefact to a Linux server — unverified path." >&2
+    echo "[release] Build on Linux, or set ARTIFACT_PLATFORM_OK=yes once equivalence is established." >&2
+    exit 5
+  fi
+
+  echo "[release] shipping prebuilt artefact from $ARTIFACT_NEXT"
+  tar -C "$(dirname "$ARTIFACT_NEXT")" -cf - "$(basename "$ARTIFACT_NEXT")" \
+    | "${SSH[@]}" "sudo tar -x -C /opt/mointel/releases/$SHA && sudo chown -R mointel:mointel /opt/mointel/releases/$SHA/.next"
+else
+  echo "[release] no prebuilt artefact; the server will build with a capped heap" >&2
+fi
+
 "${SSH[@]}" "sudo RESTART_MARKET=${RESTART_MARKET:-no} bash /opt/mointel/releases/$SHA/deploy/aws/deploy.sh $SHA"
 
 echo "[release] $SHORT is live on $HOST"
