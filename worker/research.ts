@@ -41,6 +41,7 @@ import {
   deepHistoryDue,
   ensureDailyHistory,
   ensureDeepHistory,
+  splitBasisSessions,
 } from '../lib/research/historyFetch';
 import { openDatabase, getMeta, type MarketDatabase } from '../lib/market/store/db';
 import { resolveActiveBoard, type BoardDescriptor } from '../lib/market/board';
@@ -423,7 +424,33 @@ async function main(): Promise<void> {
           const deepDue = basisDue.due ? basisDue : deepHistoryDue(db, job.ticker, job.tradingDate);
           if (deepDue.due) {
             const deep = await ensureDeepHistory(db, job.ticker);
-            log(`[history] ${job.ticker} deep: ${deep.detail} (${deepDue.reason})`);
+            /*
+             * The trigger reason and the OUTCOME, labelled as two different
+             * things.
+             *
+             * This line used to print `deepDue.reason` bare, which is
+             * evaluated BEFORE the fetch and therefore reads as a verdict on
+             * it: a symbol that established a basis logged "(no split basis
+             * established)" identically to one that did not. On 2026-09-03 it
+             * cost Ops an investigation -- SVRN found four split events and
+             * still printed the failure-shaped line -- and it is the desk's
+             * most-repeated defect, an observable that cannot distinguish a
+             * thing from its failure.
+             *
+             * The post-state is asked of the STORE rather than inferred from
+             * the fetch result, because a fetch can succeed and derive
+             * nothing: bars returned with no usable raw closes yield no
+             * factors, and "fetched" is not the claim this line makes.
+             */
+            const basisSessions = splitBasisSessions(db, job.ticker);
+            log(
+              `[history] ${job.ticker} deep: ${deep.detail} (due: ${deepDue.reason}; ` +
+                `basis after: ${
+                  basisSessions > 0
+                    ? `established on ${basisSessions} session(s)`
+                    : 'STILL UNESTABLISHED'
+                })`,
+            );
           }
 
           // ----- collection

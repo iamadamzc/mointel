@@ -359,6 +359,26 @@ export function deepHistoryDue(
 }
 
 /**
+ * Sessions carrying an established split factor.
+ *
+ * ONE definition of "established", used by the gate below AND by the worker's
+ * log line, so the two cannot drift into disagreeing about what the word
+ * means. That is not hypothetical tidiness: the log previously printed the
+ * gate's PRE-fetch reason, which read as an outcome and cost Ops an
+ * investigation on 2026-09-03.
+ *
+ * Note what this does NOT ask: whether a deep fetch has run. A fetch that
+ * returns bars but no usable raw closes derives no factors and establishes
+ * nothing, and those two states have to stay distinguishable.
+ */
+export function splitBasisSessions(db: MarketDatabase, symbol: string): number {
+  const row = db
+    .prepare('SELECT COUNT(*) AS n FROM daily_bars WHERE symbol = ? AND split_factor IS NOT NULL')
+    .get(symbol) as { n: number };
+  return row.n;
+}
+
+/**
  * Whether a researched name still needs its split basis established.
  *
  * The SECOND trigger for `ensureDeepHistory`, decoupled from the blue-sky gate
@@ -390,11 +410,9 @@ export function basisFetchDue(
   symbol: string,
   now: Date = new Date(),
 ): DeepHistoryDecision {
-  const established = db
-    .prepare('SELECT COUNT(*) AS n FROM daily_bars WHERE symbol = ? AND split_factor IS NOT NULL')
-    .get(symbol) as { n: number };
-  if (established.n > 0) {
-    return { due: false, reason: `split basis established (${established.n} session(s))` };
+  const established = splitBasisSessions(db, symbol);
+  if (established > 0) {
+    return { due: false, reason: `split basis established (${established} session(s))` };
   }
 
   const deep = db

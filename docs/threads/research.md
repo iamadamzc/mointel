@@ -3175,8 +3175,21 @@ transactions, on a store already losing writes to lock timeouts.**
 **Self-limiting, which bounds it:** each symbol establishes once and never
 fetches again, so the load is a first-pass transient, not a new steady state.
 
-**And the mitigation is the tool I already shipped, used deliberately rather
-than left as a redundant duplicate.** `worker/basis-backfill.ts` does exactly
+**SUPERSEDED 2026-09-03 by Ops's live measurement, and the answer went the
+other way.** Split factors went **19,707 → 99,696 rows, 77 distinct symbols
+deep-fetched from zero**, with **four fetches in two hours at RTH, zero
+rate-limit errors and capture unaffected**. So the predicted contention did not
+materialise at the observed rate, and Ops cancelled the backfill window on
+better reasoning than mine: **the worker covers names in RANK ORDER**, so the
+backfill's remainder is exactly the names that have not been moving — the
+lowest-value slice at the highest relative cost. **A third of the researched
+population was covered free in half a day.** The prediction above is left
+standing rather than deleted because the mechanism is real and the write volume
+is real; what was wrong was treating an upper bound as an expected value.
+Re-price the tail in a week; it may never earn a window.
+
+**And the mitigation reasoning below is now the minority case** — kept because
+it is still the right shape if the load ever does bite: `worker/basis-backfill.ts` does exactly
 this work **paced** (`--pace-ms`, default 350) and can run in a quiet window.
 **Running it does not add to the load — it MOVES the load off the job path**,
 because every name it establishes is a name the in-worker trigger then skips by
@@ -3184,3 +3197,53 @@ construction. That reframes the tool: it is not a redundant second route to the
 same rows, it is the controlled way to spend a cost that is otherwise spent
 unpaced during the trading day. **Whether to run it, and when, is Ops's call
 and the trader's spend.**
+
+---
+
+**37. "(no split basis established)" on a fetch that found four splits — the
+log printed a PRECONDITION and it read as a verdict.** *Ops observed it live
+2026-09-03 and refused to diagnose code it does not own, which was right.
+Answered from the shipped sha, not from memory.*
+
+**The behaviour is correct. The line was not.**
+
+`worker/research.ts` evaluated `deepDue` at `:422` and logged `deepDue.reason`
+at `:426`, **after** `ensureDeepHistory` ran at `:425`. So the parenthetical is
+**the reason the fetch was TRIGGERED**, stating the state before it — and
+SVRN's four split events were found *by that very fetch*.
+
+**The second half, and it is why 0-events names are not the counter-example
+they look like.** `deriveSplitFactors` populates `factors` per date and derives
+`events` from them afterwards, so **a symbol with zero splits still gets a
+complete factor series** (a constant, typically 1). *Zero events is not zero
+basis.* CURR, KRSP, SVRN and VRM all established.
+
+**Ops already held the disconfirming evidence and it points the same way:**
+`split_factor` rows **19,707 → 99,696**, 77 distinct symbols from zero. Had
+establishment been failing, that count could not have moved.
+
+### It is still a real defect, of the family this desk names most
+
+**A symbol that established and one that did not printed the SAME line.** The
+underivable case is real — bars returned with no usable raw closes derive no
+factors — so the observable genuinely could not separate success from failure,
+which is why Ops could not tell and was right not to guess.
+
+Fixed by logging the outcome beside the trigger, asked of the **store** rather
+than inferred from the fetch result, with `splitBasisSessions` as **one
+definition of "established" shared by the gate and the line** so the two cannot
+drift.
+
+### The fix's first draft had the bug in it
+
+**I nearly wrote `basisAfter.due` as the test**, which reads beautifully and is
+wrong: after an underivable fetch `basisFetchDue` returns **not-due** — held
+off by the once-a-day cap — so the line would have printed *established* for
+precisely the failure it exists to expose. **Dueness cannot stand in for
+establishment.** Caught while writing the assertion, which is the third time
+this week that writing the confirming test disconfirmed the premise.
+
+*Test limit stated rather than left implied: the log STRING lives in a process
+entry point that cannot be imported, so `tests/research/basisFetch.test.ts`
+pins `splitBasisSessions` and the gate's agreement with it, not the line. Same
+shape as item 24 — green tests here do not cover the worker's copy.*

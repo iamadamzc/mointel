@@ -4,7 +4,7 @@ import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { openDatabase } from '@/lib/market/store/db';
-import { basisFetchDue, deepHistoryDue } from '@/lib/research/historyFetch';
+import { basisFetchDue, deepHistoryDue, splitBasisSessions } from '@/lib/research/historyFetch';
 import { readSplitFactors, upsertDailyBars, type NewDailyBar } from '@/lib/research/history';
 
 /**
@@ -137,6 +137,85 @@ describe('basisFetchDue', () => {
     expect(sameDay.reason).toContain('already fetched today');
 
     expect(basisFetchDue(store, 'ACME', new Date('2026-08-25T14:00:00Z')).due).toBe(true);
+  });
+});
+
+describe('splitBasisSessions — the outcome the log line reports', () => {
+  /*
+   * Added 2026-09-03 after the worker's deep-fetch line printed the gate's
+   * PRE-fetch reason, so a symbol that established a basis logged identically
+   * to one that did not. SVRN found four split events and still read "(no
+   * split basis established)".
+   *
+   * `not.toBe(0)` would pass on undefined, so every assertion here is on the
+   * exact count -- a negative assertion passes for the wrong reason as easily
+   * as the right one.
+   *
+   * WHAT THIS DOES NOT COVER, stated so green tests are not read as covering
+   * the worker: the log STRING lives in `worker/research.ts`, a process entry
+   * point that cannot be imported, so these pin the helper it calls rather
+   * than the line itself. Same limit as `stalledJobs` in item 24.
+   */
+
+  it('counts established sessions, and zero is a real answer', () => {
+    const store = db();
+    expect(splitBasisSessions(store, 'ACME')).toBe(0);
+
+    upsertDailyBars(store, [
+      bar({ tradingDate: '2026-08-18', splitFactor: 8, source: 'alpaca-daily-deep' }),
+      bar({ tradingDate: '2026-08-19', splitFactor: 1, source: 'alpaca-daily-deep' }),
+    ]);
+    expect(splitBasisSessions(store, 'ACME')).toBe(2);
+  });
+
+  it('separates a fetch that established from one that derived nothing', () => {
+    /*
+     * The distinction the old log line could not make, and the reason the
+     * post-state is asked of the STORE rather than inferred from the fetch
+     * result. Both symbols were deep-fetched today; only one has a basis.
+     * Note that basisFetchDue reports NEITHER as due -- the underivable one is
+     * held off by the once-a-day cap -- so dueness cannot stand in for
+     * establishment, which is exactly the substitution that would have
+     * reintroduced the bug.
+     */
+    const store = db();
+    upsertDailyBars(store, [
+      bar({
+        symbol: 'GOOD',
+        tradingDate: '2026-08-19',
+        splitFactor: 1,
+        source: 'alpaca-daily-deep',
+        fetchedAt: '2026-08-24T14:00:00Z',
+      }),
+      bar({
+        symbol: 'BARE',
+        tradingDate: '2026-08-19',
+        splitFactor: null,
+        source: 'alpaca-daily-deep',
+        fetchedAt: '2026-08-24T14:00:00Z',
+      }),
+    ]);
+    const now = new Date('2026-08-24T18:00:00Z');
+
+    expect(splitBasisSessions(store, 'GOOD')).toBe(1);
+    expect(splitBasisSessions(store, 'BARE')).toBe(0);
+
+    expect(basisFetchDue(store, 'GOOD', now).due).toBe(false);
+    expect(basisFetchDue(store, 'BARE', now).due).toBe(false);
+    expect(basisFetchDue(store, 'BARE', now).reason).toContain('already fetched today');
+  });
+
+  it('is the same count the gate reports, so the two cannot drift', () => {
+    const store = db();
+    upsertDailyBars(store, [
+      bar({ tradingDate: '2026-08-18', splitFactor: 1, source: 'alpaca-daily-deep' }),
+      bar({ tradingDate: '2026-08-19', splitFactor: 1, source: 'alpaca-daily-deep' }),
+      bar({ tradingDate: '2026-08-20', splitFactor: 1, source: 'alpaca-daily-deep' }),
+    ]);
+
+    expect(basisFetchDue(store, 'ACME').reason).toBe(
+      `split basis established (${splitBasisSessions(store, 'ACME')} session(s))`,
+    );
   });
 });
 
