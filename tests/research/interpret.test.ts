@@ -335,6 +335,43 @@ describe('structural guardrails', () => {
     expect(result.dossier.structure.displayedFloat).toBeNull();
   });
 
+  it('does not read a confession in the source field as a source', () => {
+    /*
+     * SGLY, 2026-08-27. The field held "Unverified secondary social-media
+     * claim; not reconciled to SEC-reported outstanding shares" — the model
+     * saying, in the source field, that it had no source — and
+     * `Boolean(field)` read the confession as one. The field's CONTENT has to
+     * state a float, the same test the excerpt takes.
+     */
+    const d = dossier();
+    d.structure.displayedFloat = 1_234_000;
+    d.structure.displayedFloatSource =
+      'Unverified secondary social-media claim; not reconciled to SEC-reported outstanding shares.';
+    const b = bundle({
+      sources: [{ ...bundle().sources[0], excerpt: 'The Company announced a contract award.' }],
+    });
+    const result = validateDossier(d, b);
+
+    expect(result.violations.map((v) => v.rule)).toContain('FLOAT_REQUIRES_SOURCE');
+    expect(result.dossier.structure.displayedFloat).toBeNull();
+    expect(result.dossier.structure.displayedFloatSource).toBeNull();
+  });
+
+  it('still accepts a source field that itself states a float', () => {
+    // The escape hatch the disjunct exists for: a float stated in a cited
+    // source whose stored excerpt happens not to carry the term.
+    const d = dossier();
+    d.structure.displayedFloat = 1_234_000;
+    d.structure.displayedFloatSource = 'Public float stated in 424B5 baby-shelf calculation';
+    const b = bundle({
+      sources: [{ ...bundle().sources[0], excerpt: 'The Company announced a contract award.' }],
+    });
+    const result = validateDossier(d, b);
+
+    expect(result.violations.map((v) => v.rule)).not.toContain('FLOAT_REQUIRES_SOURCE');
+    expect(result.dossier.structure.displayedFloat).toBe(1_234_000);
+  });
+
   it('will not convert a dollar shelf into a share count', () => {
     const d = dossier();
     d.structure.supplyLedger = [

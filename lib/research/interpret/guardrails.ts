@@ -341,7 +341,15 @@ export function validateDossier(
   // quantity, and market cap is not a share count at all.
   if (structure.displayedFloat !== null) {
     const excerpt = excerptFor(bundle, structure.evidenceSourceIds);
-    const floatStated = FLOAT_TERMS.test(excerpt) || Boolean(structure.displayedFloatSource);
+    /*
+     * The source field's CONTENT has to state a float — the same test the
+     * excerpt takes. `Boolean(field)` tested only that the model wrote
+     * something, and on SGLY what it wrote was "Unverified secondary
+     * social-media claim; not reconciled to SEC-reported outstanding shares"
+     * — a confession of having no source, read as one.
+     */
+    const floatStated =
+      FLOAT_TERMS.test(excerpt) || FLOAT_TERMS.test(structure.displayedFloatSource ?? '');
 
     if (!floatStated) {
       violations.push(
