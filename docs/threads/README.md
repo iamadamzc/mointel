@@ -525,6 +525,35 @@ study — it was a different answer.** It overstated revival **at every setting*
 direction. **A cheap look is evidence about the cheap look**, and the temptation
 to treat it as a preview is strongest exactly when it agrees with you.
 
+## A stored FACT plus a surface JUDGEMENT beats a stored judgement
+
+**Design, 2026-09-04, refusing a cumulative field it had asked for.** The
+graveyard wanted a "revived and ran" tally. Building it as a stored count would
+force the ENGINE to decide what *ran* means — evaluating each revival against a
+threshold, presumably +25% — and **that number would then be frozen in a column
+and changeable only by migration.** Storing `dead_at_price` instead keeps the
+column a **fact** and leaves *"did that count as a run"* a **judgement made at
+the surface**, where it changes the day the trader changes his mind about what
+a run is.
+
+**The desk has already paid for the alternative:** the model's cycle
+classification was a stored judgement, and replacing it took a cutover, a
+schema deletion, and thirteen days of a masked risk chip.
+
+**Two supporting rules from the same decision.** *A live surface and a session
+tally are different questions with different homes* — "is this name running
+now" belongs on the board, "how often was the rule wrong today" belongs in the
+archive, and a header carrying the second duplicates the archive badly. And a
+cumulative tally would have **outlived the surface carrying it**, since the
+graveyard clears at session end when its central claim expires.
+
+**And the cost was stated rather than hidden, which is why the trade is
+trustworthy:** overwrite understates misses **specifically on the churniest
+names** — the ones the rule is most wrong about. *The measurement is weakest
+where the failure concentrates*, the same shape as a verification that fires
+hardest on the cases it can least resolve. Accepted knowingly, with the
+session-long miss rate routed to the archive rather than invented in chrome.
+
 ## An aggregate that falls is not proof the thing you fixed is working
 
 **Research, 2026-08-24, catching a check before it ran rather than after.**
