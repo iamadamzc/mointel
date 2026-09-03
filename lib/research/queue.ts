@@ -8,6 +8,7 @@
  * Ranking itself is untouched: research enriches names, it never reorders them.
  */
 
+import type { ActivityState } from '../market/activity';
 import type { MarketDatabase } from '../market/store/db';
 import {
   claimQualificationEpisode,
@@ -46,13 +47,43 @@ export interface QueueCandidate {
   top12EnteredAt: string | null;
   /** Entry to the tracked population at any rank. Retained, not replaced. */
   qualifiedAt: string | null;
+  /**
+   * Whether the name is still trading. See `lib/market/activity.ts`.
+   *
+   * OPTIONAL, AND UNDEFINED IS NOT DEAD. It arrives from `ticker_session`, and
+   * until that column exists every candidate carries `undefined` — which means
+   * the value did not survive its journey, never that the name is silent. The
+   * gate below is written to be correct under both, so activating it is one
+   * line added to a SELECT rather than a change of logic.
+   */
+  activity?: ActivityState;
 }
 
 /** Instruments allowed onto the ranked board, and therefore into research. */
 const ELIGIBLE_CLASSES = new Set(['COMMON_EQUITY', 'ADR_ADS', 'UNKNOWN']);
 
+/**
+ * RANKED AND ALIVE, rather than ranked.
+ *
+ * A dead name kept its rank — RVOL is cumulative, so the rank its morning
+ * earned survives the morning — and rank is what this gate reads. The result
+ * was that a dead name inside `autoRank` held a research slot while a LIVE
+ * name just outside it was refused one, which is the board-lateness defect
+ * arriving in the spend rather than on the screen.
+ *
+ * The rank is deliberately untouched: the graveyard needs the row whole, so
+ * the repair is to change what READS the rank and nothing else. Third time
+ * that has been the right answer in this line of work.
+ *
+ * FAIL OPEN. Only `'DEAD'` refuses; `undefined` and `'UNKNOWN'` both keep the
+ * name, so research is denied only when the desk POSITIVELY KNOWS the name is
+ * silent. A focused name is exempt for the same reason it is exempt from the
+ * rank test — the trader has said he is still watching it, and that outranks
+ * the desk's opinion about whether it is interesting.
+ */
 export function isEligible(candidate: QueueCandidate, autoRank: number): boolean {
   if (candidate.rank > autoRank && !candidate.focused) return false;
+  if (candidate.activity === 'DEAD' && !candidate.focused) return false;
   return ELIGIBLE_CLASSES.has(candidate.classification ?? 'UNKNOWN');
 }
 

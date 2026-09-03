@@ -1612,16 +1612,40 @@ export class DemandEngine {
     const rankOf = (runtime: TickerRuntime): number | null =>
       this.rthClosed ? runtime.ahRank : runtime.rvolRank;
 
+    /*
+     * FAIL OPEN. Only a positive DEAD gives up a subscription: 'UNKNOWN' means
+     * the engine looked and could not say, and a name is never demoted on an
+     * absence. The safe error here is keeping a corpse subscribed, not
+     * dropping a live name.
+     */
+    const alive = (runtime: TickerRuntime): boolean => runtime.activity !== 'DEAD';
+
     const ranked = [...this.tickers.values()]
       .filter((runtime) => rankOf(runtime) !== null)
       .sort((a, b) => (rankOf(a) as number) - (rankOf(b) as number));
 
+    /*
+     * RANKED AND ALIVE.
+     *
+     * Rank alone put corpses here: RVOL is cumulative so a dead name keeps the
+     * rank its morning earned, and this set is capped -- so a dead name at
+     * rank 3 held a trades/quotes slot that a live name at rank 251 was
+     * waiting for. The rank itself is untouched, because the graveyard needs
+     * the row whole; only this reader changed.
+     */
     for (const runtime of ranked) {
-      if ((rankOf(runtime) as number) <= this.options.internalRank) selected.add(runtime.symbol);
+      if ((rankOf(runtime) as number) <= this.options.internalRank && alive(runtime)) {
+        selected.add(runtime.symbol);
+      }
     }
 
-    // The day's leaders keep their subscriptions through the evening: a Focus
-    // name or a daytime leader must not go dark just because it is quiet now.
+    /*
+     * NOT gated on activity, deliberately, and it is the one rank source here
+     * that must not be: this block exists SO THAT a quiet name keeps its
+     * subscription after the bell -- "a Focus name or a daytime leader must
+     * not go dark just because it is quiet now." Adding an aliveness test
+     * would delete the reason the block was written.
+     */
     if (this.rthClosed) {
       const daytime = [...this.tickers.values()]
         .filter((runtime) => runtime.rvolRank !== null)
@@ -1631,8 +1655,15 @@ export class DemandEngine {
       }
     }
 
+    /*
+     * LATCHED AND ALIVE. `latched` answers "did this name ever qualify today"
+     * and is never cleared -- correctly, since it is what makes re-entry
+     * possible. But it was also being read as "is this worth a subscription",
+     * which is a different question, and the cap filled with names that
+     * qualified hours ago. One flag, two jobs; only this reader changed.
+     */
     for (const runtime of this.tickers.values()) {
-      if (runtime.latched) selected.add(runtime.symbol);
+      if (runtime.latched && alive(runtime)) selected.add(runtime.symbol);
     }
 
     const max = this.options.highResMax ?? 250;

@@ -31,7 +31,7 @@ function baseline(symbol: string, averageVolume: number | null, sessionCount = 2
 function bar(
   symbol: string,
   at: string,
-  values: { o?: number; h?: number; l?: number; c: number; v: number },
+  values: { o?: number; h?: number; l?: number; c: number; v: number; n?: number },
   kind: 'bar' | 'updatedBar' = 'bar',
 ): MarketObservation {
   const close = values.c;
@@ -50,7 +50,9 @@ function bar(
       low: values.l ?? close,
       close,
       volume: values.v,
-      tradeCount: null,
+      // Null unless a test is exercising activity: "not reported" and "no
+      // trades" are different, and the engine must not read one as the other.
+      tradeCount: values.n ?? null,
       vwap: null,
       source: kind === 'bar' ? 'live-bar' : 'live-updated-bar',
       receivedAt: at,
@@ -656,6 +658,55 @@ describe('high-resolution interest set', () => {
     expect(engine.getDemandState('EEE')?.rvolRank).toBeGreaterThan(3);
     // Neither pinned, ranked, nor latched.
     expect(highRes).not.toContain('EXPENSIVE');
+  });
+
+  it('drops a DEAD name from the set and keeps the live one', () => {
+    /*
+     * RANKED AND ALIVE. The set is capped at 250 and rank alone put corpses in
+     * it: RVOL is cumulative, so a dead name keeps the rank its morning
+     * earned, and a dead name at rank 3 held a trades/quotes slot a live name
+     * was waiting for.
+     *
+     * Both names here are ranked and latched, so BEFORE this change both were
+     * selected twice over -- by the rank gate and by the latch. Only activity
+     * separates them.
+     */
+    const engine = createEngine({ internalRank: 50 });
+    engine.setBaselines(
+      new Map([
+        ['LIVE', baseline('LIVE', 1_000_000)],
+        ['GONE', baseline('GONE', 1_000_000)],
+      ]),
+    );
+    engine.track('LIVE');
+    engine.track('GONE');
+
+    // Both trade early, so both rank and both latch.
+    engine.ingest(bar('LIVE', ts(5), { c: 5, v: 5_000_000, n: 900 }));
+    engine.ingest(bar('GONE', ts(5), { c: 5, v: 4_000_000, n: 900 }));
+
+    // Advance to 13:50. The judged window is 13:44-13:48 (five minutes, after
+    // the one-minute settle), so the 13:35 bars above sit outside it.
+    clock = Date.UTC(2026, 7, 14, 13, 50, 0);
+    // LIVE keeps trading inside the window; GONE produces no bars at all,
+    // which is how death actually arrives -- absent rows, not low counts.
+    engine.ingest(bar('LIVE', ts(17), { c: 5, v: 500_000, n: 900 }));
+    engine.ingest(bar('LIVE', ts(18), { c: 5, v: 500_000, n: 900 }));
+
+    engine.recompute();
+
+    expect(engine.getDemandState('GONE')?.activity).toBe('DEAD');
+    expect(engine.getDemandState('LIVE')?.activity).toBe('ACTIVE');
+
+    const highRes = engine.highResSymbols();
+    expect(highRes).toContain('LIVE');
+    expect(highRes).not.toContain('GONE');
+
+    // The rank is UNTOUCHED -- the graveyard needs the row whole, so only the
+    // reader changed. If this ever starts returning null, the fix has drifted
+    // into nulling the rank and the graveyard loses its data.
+    expect(engine.getDemandState('GONE')?.rvolRank).not.toBeNull();
+    expect(engine.getDemandState('GONE')?.latched).toBe(true);
   });
 });
 

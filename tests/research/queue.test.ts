@@ -159,6 +159,45 @@ describe('research eligibility', () => {
     expect(isEligible(candidate({ classification: 'WARRANT' }), 12)).toBe(false);
     expect(isEligible(candidate({ rank: 13 }), 12)).toBe(false);
   });
+
+  /*
+   * RANKED AND ALIVE.
+   *
+   * A dead name keeps the rank its morning earned, because RVOL is cumulative
+   * and nothing decays it. Rank is what this gate reads, so a corpse at rank 3
+   * held a research slot while a live name just outside the window was refused
+   * one -- the board-lateness defect arriving in the spend rather than on the
+   * screen.
+   */
+  it('refuses a name the desk KNOWS is dead', () => {
+    expect(isEligible(candidate({ activity: 'DEAD' }), 12)).toBe(false);
+  });
+
+  it('fails OPEN: neither absent nor UNKNOWN refuses research', () => {
+    /*
+     * The distinction the whole design rests on. `undefined` means the value
+     * did not survive its journey -- and it will be undefined on every
+     * candidate until the ticker_session column exists -- while 'UNKNOWN'
+     * means the engine looked and could not say. NEITHER is evidence of
+     * silence, and research is denied only on positive knowledge.
+     *
+     * This is also what makes the gate safe to ship before the migration:
+     * inert, and correct the moment the column lands.
+     */
+    expect(isEligible(candidate({ activity: undefined }), 12)).toBe(true);
+    expect(isEligible(candidate({ activity: 'UNKNOWN' }), 12)).toBe(true);
+    expect(isEligible(candidate({ activity: 'ACTIVE' }), 12)).toBe(true);
+  });
+
+  it('still researches a DEAD name the trader has focused', () => {
+    /*
+     * Focus is the trader saying he is watching it, and that outranks the
+     * desk's opinion about whether the name is interesting -- the same reason
+     * focus already exempts a name from the rank window. A focused name going
+     * quiet is arguably when its structure matters most.
+     */
+    expect(isEligible(candidate({ activity: 'DEAD', focused: true }), 12)).toBe(true);
+  });
 });
 
 describe('priority', () => {
