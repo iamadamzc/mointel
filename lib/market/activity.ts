@@ -117,7 +117,22 @@ export interface ActivityReading {
   deadSince: string | null;
   /** Trades per minute over the judged window, oldest first. For display. */
   window: number[];
-  /** Why this reading came out as it did, in one clause. */
+  /**
+   * Why this reading came out as it did — stating the FULL predicate, not a
+   * summary of it.
+   *
+   * It names the settle window as well as the threshold and the run length,
+   * because those three together are what makes this rule fire LESS OFTEN than
+   * the obvious approximation ("no bar in five minutes") that anyone reaches
+   * for when counting dead names by hand. A baseline taken with the loose
+   * predicate reads HIGHER, and comparing the two without noticing looks
+   * exactly like a regression.
+   *
+   * That caveat has been relayed between threads repeatedly, which is a sign
+   * nobody trusts a relay to carry it. **So it travels with every verdict
+   * instead** — a number's basis belongs beside the number, and a verdict is a
+   * number wearing a word.
+   */
   reason: string;
 }
 
@@ -196,7 +211,9 @@ export function resolveActivity(options: {
       // not when it was last looked at.
       deadSince: previous === 'DEAD' && deadSince ? deadSince : slots[slots.length - config.deadMinutes]!,
       window,
-      reason: `${config.deadMinutes} consecutive minute(s) at or below ${deadLine} trades/min`,
+      reason:
+        `${config.deadMinutes} consecutive settled minute(s) at or below ${deadLine} trades/min` +
+        ` (most recent ${config.settleMinutes} excluded as still arriving)`,
     };
   }
 
@@ -209,7 +226,9 @@ export function resolveActivity(options: {
       state: 'ACTIVE',
       deadSince: null,
       window,
-      reason: `${config.reviveMinutes} consecutive minute(s) at or above ${config.activeTradesPerMinute} trades/min`,
+      reason:
+        `${config.reviveMinutes} consecutive settled minute(s) at or above ${config.activeTradesPerMinute} trades/min` +
+        ` (most recent ${config.settleMinutes} excluded as still arriving)`,
     };
   }
 
@@ -222,6 +241,7 @@ export function resolveActivity(options: {
     state: previous,
     deadSince: previous === 'DEAD' ? deadSince : null,
     window,
-    reason: `between ${deadLine} and ${config.activeTradesPerMinute} trades/min — state held`,
+    reason:
+      `between ${deadLine} and ${config.activeTradesPerMinute} trades/min over ${config.deadMinutes} settled minute(s) — state held`,
   };
 }

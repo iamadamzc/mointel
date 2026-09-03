@@ -110,7 +110,21 @@ describe('resolveActivity — the removal it exists for', () => {
       previous: 'ACTIVE',
     });
     expect(reading.state).toBe('DEAD');
-    expect(reading.reason).toContain('5 consecutive minute(s)');
+
+    /*
+     * The verdict must state its FULL predicate, not a summary of it. All
+     * three parts are asserted because all three are what make this rule fire
+     * LESS than the obvious approximation ("no bar in five minutes") someone
+     * reaches for when counting dead names by hand — and a baseline taken with
+     * the loose predicate reads higher, which without this looks like a
+     * regression rather than a definition change.
+     *
+     * That caveat has crossed thread boundaries repeatedly by relay. This test
+     * is what stops it being dropped from the verdict it belongs to.
+     */
+    expect(reading.reason).toContain('5 consecutive settled minute(s)');
+    expect(reading.reason).toContain('at or below 30 trades/min');
+    expect(reading.reason).toContain('excluded as still arriving');
   });
 
   it('treats a MISSING minute as zero trades, which is how death arrives', () => {
