@@ -12,7 +12,22 @@
  * are the detail.
  */
 
+import { DEFAULT_ACTIVITY_CONFIG, deadLineFor } from '@/lib/market/activity';
+
 import type { DeskRow } from './merge';
+
+/**
+ * The busiest minute a name must have had before its death is worth showing.
+ *
+ * Derived from the engine's own config rather than restated as a number, so it
+ * cannot drift from the ratio the trader actually chose.
+ *
+ * **Why the DEAD line and not the ACTIVE one.** A name that peaked at 50
+ * trades/min was never ACTIVE (300), but it was above the dead line, so it
+ * genuinely transitioned from not-dead to dead. Filtering at 300 would hide
+ * real deaths; filtering here hides only names that were never anything else.
+ */
+const ALIVE_PEAK_FLOOR = deadLineFor(DEFAULT_ACTIVITY_CONFIG);
 
 /**
  * Deaths at which a name counts as churning rather than as having died.
@@ -82,6 +97,21 @@ export interface GraveyardSummary {
    * fixes, so one number could not carry both.
    */
   ran: number;
+  /**
+   * Rows withheld because the name was never alive.
+   *
+   * Shown rather than silently filtered. The engine marks a name DEAD on
+   * current quiet alone, deliberately and correctly — history does not make a
+   * silent name worth a model call. But most of them never went anywhere: on
+   * the first live reading, 60 of 71 had a busiest minute BELOW the dead line,
+   * so they did not go quiet, they were always quiet.
+   *
+   * Filtering them out is a surface judgement. **Hiding the fact that they were
+   * filtered would not be** — the count moves if the determination changes, and
+   * a falsification surface that quietly drops most of its population is one
+   * nobody can audit.
+   */
+  neverActive: number;
 }
 
 /** Minutes since a death, from `deadSince` — never from when detection fired. */
@@ -120,15 +150,28 @@ function measured(row: DeskRow): boolean {
   return row.demand?.activity !== undefined;
 }
 
+/**
+ * Did this name ever rise above the dead line?
+ *
+ * Null peak is excluded and counted, not silently dropped: without a peak there
+ * is no evidence it was ever alive, and the header says how many were withheld
+ * on that basis.
+ */
+function wasAlive(row: DeskRow): boolean {
+  const peak = row.demand?.deadAtPeakTrades;
+  return peak !== null && peak !== undefined && peak >= ALIVE_PEAK_FLOOR;
+}
+
 export function graveyardSummary(rows: DeskRow[], now = Date.now()): GraveyardSummary {
   void now;
   const measuredRows = rows.filter(measured);
 
-  const dead = measuredRows.filter((r) => r.demand?.activity === 'DEAD');
-  const revived = measuredRows.filter(
+  const inGraveyard = measuredRows.filter(wasAlive);
+  const dead = inGraveyard.filter((r) => r.demand?.activity === 'DEAD');
+  const revived = inGraveyard.filter(
     (r) => (r.demand?.deathCount ?? 0) > 0 && r.demand?.activity === 'ACTIVE',
   );
-  const churned = measuredRows.filter(
+  const churned = inGraveyard.filter(
     (r) => (r.demand?.deathCount ?? 0) >= DEATH_CHURN_THRESHOLD,
   );
   const ran = revived.filter((r) => {
@@ -142,6 +185,9 @@ export function graveyardSummary(rows: DeskRow[], now = Date.now()): GraveyardSu
     revived: revived.length,
     churned: churned.length,
     ran: ran.length,
+    neverActive: measuredRows.filter(
+      (r) => (r.demand?.activity === 'DEAD' || (r.demand?.deathCount ?? 0) > 0) && !wasAlive(r),
+    ).length,
   };
 }
 
@@ -161,6 +207,7 @@ export function graveyardSummary(rows: DeskRow[], now = Date.now()): GraveyardSu
 export function graveyardRows(rows: DeskRow[], now = Date.now()): GraveyardEntry[] {
   const entries = rows
     .filter(measured)
+    .filter(wasAlive)
     .filter((row) => {
       const d = row.demand;
       if (!d) return false;

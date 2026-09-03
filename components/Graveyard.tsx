@@ -87,6 +87,17 @@ export function Graveyard({ rows, onSelect }: GraveyardProps) {
             {summary.ran > 0 ? (
               <span className="text-neg"> · {summary.ran} running</span>
             ) : null}
+            {/*
+             * Withheld, not hidden. Most names the engine marks DEAD were never
+             * alive — on the first live reading, 60 of 71 had a busiest minute
+             * below the dead line, so they did not go quiet, they were always
+             * quiet. Filtering them is a surface judgement; concealing that the
+             * filter ran would not be, and this count moves if the engine's
+             * determination changes.
+             */}
+            {summary.neverActive > 0 ? (
+              <span> · {summary.neverActive} never active</span>
+            ) : null}
           </span>
         ) : (
           /*

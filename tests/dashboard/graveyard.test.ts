@@ -77,7 +77,7 @@ describe('graveyard rows', () => {
    */
   it('keeps a revived name listed and marks it', () => {
     const entries = graveyardRows(
-      [row('BACK', { activity: 'ACTIVE', deadSince: null, deathCount: 1, deadAtRank: 3 })],
+      [row('BACK', { activity: 'ACTIVE', deadSince: null, deathCount: 1, deadAtRank: 3, deadAtPeakTrades: 310 })],
       NOW,
     );
     expect(entries).toHaveLength(1);
@@ -121,8 +121,8 @@ describe('the falsification counts', () => {
   it('counts churn separately from revival', () => {
     const summary = graveyardSummary(
       [
-        row('TWITCH', { activity: 'ACTIVE', deathCount: 1 }),
-        row('CHURN', { activity: 'DEAD', deadSince: new Date(NOW).toISOString(), deathCount: 4 }),
+        row('TWITCH', { activity: 'ACTIVE', deathCount: 1, deadAtPeakTrades: 310 }),
+        row('CHURN', { activity: 'DEAD', deadSince: new Date(NOW).toISOString(), deathCount: 4, deadAtPeakTrades: 310 }),
         dead('ONCE', 10),
       ],
       NOW,
@@ -148,10 +148,18 @@ describe('the falsification counts', () => {
  * absence cannot tell a working field from a missing one.
  */
 describe('revived and running', () => {
+  // A revived name was alive once by definition, so the fixture carries a peak
+  // above the dead line — the production shape, not a convenient one.
   const revivedAt = (deadAtPrice: number | null, price: number | null) =>
     ({
       ticker: 'BACK',
-      demand: { activity: 'ACTIVE', deathCount: 1, deadSince: null, deadAtPrice },
+      demand: {
+        activity: 'ACTIVE',
+        deathCount: 1,
+        deadSince: null,
+        deadAtPrice,
+        deadAtPeakTrades: 310,
+      },
       telemetry: { price },
     }) as unknown as DeskRow;
 
@@ -194,6 +202,7 @@ describe('revived and running', () => {
         deathCount: 1,
         deadSince: new Date(NOW - 600_000).toISOString(),
         deadAtPrice: 4,
+        deadAtPeakTrades: 310,
       },
       telemetry: { price: 9 },
     } as unknown as DeskRow;
@@ -208,7 +217,7 @@ describe('revived and running', () => {
   it('keeps churn and miss as independent counts', () => {
     const churnOnly = {
       ticker: 'CHURN',
-      demand: { activity: 'ACTIVE', deathCount: 4, deadSince: null, deadAtPrice: 4 },
+      demand: { activity: 'ACTIVE', deathCount: 4, deadSince: null, deadAtPrice: 4, deadAtPeakTrades: 310 },
       telemetry: { price: 4.05 },
     } as unknown as DeskRow;
 
@@ -216,5 +225,65 @@ describe('revived and running', () => {
     expect(summary.churned).toBe(1);
     expect(summary.ran).toBe(1);
     expect(summary.revived).toBe(2);
+  });
+});
+
+
+/*
+ * Only names that were ever alive.
+ *
+ * Measured on the first live reading: 60 of 71 rows the engine marked DEAD had
+ * a busiest minute BELOW the dead line. They did not go quiet — they were
+ * always quiet. The engine is right to mark them on current quiet alone, since
+ * history does not make a silent name worth a model call, but a graveyard 6:1
+ * diluted by non-events buries the churn and miss counts it exists to show.
+ */
+describe('the never-alive filter', () => {
+  const withPeak = (t: string, peak: number | null) =>
+    row(t, {
+      activity: 'DEAD',
+      deadSince: new Date(NOW - 10 * 60_000).toISOString(),
+      deadAtPeakTrades: peak,
+      deathCount: 1,
+    });
+
+  it('lists a name that rose above the dead line and then stopped', () => {
+    // 50/min: never ACTIVE at 300, but genuinely not-dead before it died.
+    // Filtering at the ACTIVE threshold would hide this real death.
+    expect(graveyardRows([withPeak('REAL', 50)], NOW)).toHaveLength(1);
+  });
+
+  it('withholds a name whose busiest minute never cleared the dead line', () => {
+    expect(graveyardRows([withPeak('QUIET', 2)], NOW)).toHaveLength(0);
+  });
+
+  it('withholds a name with no peak at all, rather than assuming it lived', () => {
+    expect(graveyardRows([withPeak('NOPEAK', null)], NOW)).toHaveLength(0);
+  });
+
+  /*
+   * The count is the point. Filtering is a surface judgement; concealing that
+   * the filter ran would not be, and this number moves if the engine's
+   * determination changes.
+   */
+  it('reports how many were withheld rather than dropping them silently', () => {
+    const summary = graveyardSummary(
+      [withPeak('REAL', 50), withPeak('QUIET', 2), withPeak('ALSOQUIET', 1)],
+      NOW,
+    );
+    expect(summary.dead).toBe(1);
+    expect(summary.neverActive).toBe(2);
+  });
+
+  it('keeps the counts on the shown population, not the withheld one', () => {
+    const churnQuiet = row('CQ', {
+      activity: 'DEAD',
+      deadSince: new Date(NOW).toISOString(),
+      deadAtPeakTrades: 2,
+      deathCount: 5,
+    });
+    // A never-alive name dying five times is noise, not evidence about the
+    // threshold, and must not inflate the churn signal.
+    expect(graveyardSummary([churnQuiet], NOW).churned).toBe(0);
   });
 });
