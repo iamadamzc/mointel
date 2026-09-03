@@ -3055,6 +3055,122 @@ spec is items 25/26.
 
 ---
 
+**41. Board presence as a continuing condition — SCOPE ONLY, nothing built.**
+*Trader's decision via Integration 2026-09-03: persistence is 5 minutes,
+activity is minute trade count, active ~300/min and dead = ÷10 = 30/min, his
+10× ratio kept. Design goes to him before code exists; Ops gates anything
+touching the store.*
+
+### The mechanic that decides the implementation: A DEAD MINUTE HAS NO BAR
+
+**Measured, not assumed.** In the item 40 probe, `BTCT` on 2025-06-03 returned
+bars at **13:30, 13:32, 13:33** — with `limit=3`, so 13:31 was not displaced,
+it **does not exist.** Alpaca emits no minute bar for a minute with no trades.
+
+> **So death arrives as ABSENT bars, not as bars with low `n`. The check must
+> be a WALL-CLOCK window over five minute-slots with a missing slot counted as
+> ZERO trades — never "the last five bars", which on a dying name spans an
+> arbitrary and expanding stretch of real time.**
+
+This is *absence of detection is not detection of absence* in its most
+literal form: the quiet name and the dead name differ by whether a row exists.
+
+### The population trap, measured
+
+The threshold is calibrated for names that are RUNNING. Across the 24,429
+stored symbol-days:
+
+| | |
+| --- | --- |
+| median symbol-day, averaged over RTH | **2.24 trades/min** |
+| symbol-days averaging **> 300/min** | 333 — **1.4%** |
+| symbol-days averaging **> 30/min** (the dead line) | 3,023 — **12.4%** |
+
+> **So ~88% of tracked symbol-days sit below the DEAD threshold for the entire
+> session.** The rule is sound for the board — the top of the RVOL ranking is
+> the 1.4% — but `this.tickers` holds the whole tracked universe, and anything
+> iterating it rather than the RANKED set marks nearly everything dead.
+> **The scope is "should this name stay on the board", never "is this ticker
+> alive".**
+
+*Limit, stated: a daily average cannot predict how often FIVE CONSECUTIVE
+minutes fall below 30. That needs minute data — measurable on production's
+3-day window, or re-fetched per item 40, and NOT measurable from here. The
+figures above bound the population; they do not give the firing rate.*
+
+### The three scope questions, answered
+
+**Q1 — unranked, hidden, or flagged? Today there is no third state, and that
+is the finding.** `rvol_rank = null` removes the row from the board query
+entirely (`readDemandStates` filters `rvol_rank IS NOT NULL`), so *unranked*
+**is** *hidden*.
+
+**Recommendation: the engine DETERMINES and EXPOSES; the board decides.** If
+the engine merely nulls the rank, Design has no choice and the row vanishes
+with no trace — **a name silently disappearing is the exact inverse of
+"intelligence platform, not signal platform"**, and the trader cannot tell a
+dropped name from one that was never there. So the engine emits
+`activityState` and `deadSince` regardless of what the board then does with
+them. **The determination is mine; the rendering is Design's — and Design can
+only have that choice if the state is emitted rather than implied by an
+absence.**
+
+**Q2 — revival. 33% is not an edge case, and the latch is why it flickers.**
+Because RVOL is cumulative and never decays (item 38), **a revived name
+returns instantly at its old high rank** — its numerator was frozen, not lost.
+Without hysteresis the board oscillates for a third of all removals.
+
+**Recommendation: asymmetric hysteresis** — five minutes below to leave, and
+**more than one minute above to return.** The asymmetry is the whole point and
+it is cheap. R&D's own figure argues for making re-entry deliberately sticky:
+**only 7% of revivals reach +25% or better**, so most returns are not tradeable
+and a fast re-entry buys flicker rather than opportunity.
+
+**Q3 — clear `latched` on removal? NO — and the reason is one flag doing two
+jobs.**
+
+| what `latched` is used for | should activity affect it? |
+| --- | --- |
+| *"did this name ever qualify today"* — price-band eligibility (`engine.ts:1110`) | **no.** It is a session fact, and it is what makes re-entry possible at all. Clearing it breaks exactly the 33% that revive — permanently, if their price has also left the band |
+| *"is this worth a high-resolution subscription"* — `applyHighResSelection` adds **every** latched name to a set capped at 250 (`engine.ts:1546`) | **yes** — and this is where the cap problem I found already lives |
+
+> **Leave `latched` alone and change what READS it.** High-res selection should
+> ask for `latched && alive`. That fixes the cap filling with dead names, which
+> is a second and independent benefit, without touching the flag that makes
+> re-entry meaningful.
+
+### Size, and where the gates are
+
+**Engine-only for the determination.** `minuteTrades: Map<string, number>`
+mirroring the existing `minuteVolumes` (`engine.ts:106`) — the same pattern
+`minuteNotional` already uses, so it is a proven shape rather than a new one.
+**No subscription change, no second SIP connection, no REST call**: the data is
+already on the wildcard bar and already ignored at `ingestBar`.
+
+**Persisting the state to `ticker_session` is a schema change and therefore
+Ops's gate.** Whether it needs persisting at all is the open question below.
+
+**And if it IS persisted, the threshold must travel with it.** The removal
+decision is derived state at an instant; its inputs are re-fetchable (item 40),
+so it is re-derivable **only if the thresholds in force at the time are
+recorded**. Change 300 or the ÷10 later and every past decision becomes
+unreproducible while still looking authoritative. **`float_basis` one more
+time, on a new field.**
+
+### Two things the evidence does not cover, stated before he sees it
+
+- **The study is premarket-only** (04:00–09:29, deaths that cannot straddle the
+  open). The desk's standing rule is that **no rule may be keyed to the
+  session** — time of day is a reporting dimension until the record shows
+  otherwise. **So apply it uniformly and report the outcome BY session**, and
+  treat the rates as unverified outside premarket rather than as general.
+- **Every rate is a FLOOR, by grain.** Minute bars cannot see a sub-minute
+  revival, and his own exit grain is 10 seconds. **A name can die and revive
+  inside one minute and this rule is blind to it by construction** — not a
+  defect, but it bounds what the 33% and 7% mean.
+
+---
+
 **40. Historical minute bars DO carry trade count, and my "at any price" was
 wrong.** *Contradiction between this thread and R&D, routed by Integration
 2026-09-03 before either built on it. Settled by probe, and it settles against
