@@ -335,3 +335,79 @@ refutation at 1-minute persistence and says nothing about the 60-minute end.
 what he does, which is exactly why it must not be quoted as though it had been
 pre-registered. **The honest next step is to pre-register a persistence
 threshold and re-run on the full window.**
+
+
+---
+
+# RESULT 2 — full 13 sessions, trade count, 2026-09-03
+
+**Supersedes the two-session volume pilot.** 939 board symbol-days, **zero with
+no bars at all**, minute bars re-fetched from the vendor and persisted nowhere.
+`npm run archive:revival`, detector in `lib/archive/revival.ts`, 10 tests.
+
+## Pre-registered verdict: REFUTED, and by a much narrower margin
+
+    measure   active>=   persist   episodes   revived     rate   median   p90
+    trades         150         5      1,123       597    53.2%      51    278
+    trades         300         5        913       437    47.9%      60    265
+    trades         600         5        705       305    43.3%      66    257
+
+**Rule required ≥25% across all three. Observed 43.3–53.2%.** Refuted — **but at
+roughly half the pilot's 74.9–83.5%**, and the gap is not noise.
+
+## My pre-registered expectation about the instrument was WRONG
+
+I wrote, before running: *at rho +0.92 the two measures largely agree, so
+switching to trade count should NOT be expected to move the pilot's numbers.*
+**It moved them 14 points.** Isolated with a volume control on the same 13
+sessions, so window and measure separate cleanly:
+
+    volume, persist 5, active 30,000    pilot 2 sessions    57.1%
+    volume, persist 5, active 30,000    full 13 sessions    62.1%     window  +5.0
+    trades, persist 5, active 300       full 13 sessions    47.9%     measure -14.2
+
+> **Rank correlation is not threshold agreement.** Two series can sit at
+> Spearman +0.92 on levels and still disagree about *which minutes fall below a
+> cut*, because a correlation is dominated by the bulk and a threshold is
+> decided at the boundary. **I reasoned from the first to the second and it does
+> not follow.**
+
+**That vindicates trade count on substance rather than on principle.** The
+instruments genuinely disagree by 14 points, and **the one that cannot be moved
+by a single block print is the one to believe.**
+
+## The exploratory curve, and where his instinct becomes right
+
+**Not pre-registered.** Persistence at the middle threshold, 300 trades/min:
+
+    quiet for    episodes   revived     rate    median dead-min before revival
+      1 min         1,557     1,062    68.2%          22
+      2 min         1,305       816    62.5%          27
+      3 min         1,213       727    59.9%          25
+      5 min           913       437    47.9%          60
+     10 min           694       236    34.0%         100
+     15 min           616       170    27.6%         116
+     30 min           515        99    19.2%         167
+     60 min           428        47    11.0%         236
+
+**The curve crosses the refutation bar between 15 and 30 minutes.** Above that
+his prior is not merely unrefuted — **it is supported: a name quiet for half an
+hour comes back 19% of the time, and quiet for an hour, 11%.**
+
+> **The answer to his question is a threshold, not a yes or a no.** Under about
+> ten minutes of quiet, revival is the norm and he is looking at burstiness.
+> **Past about thirty, death is the norm and he is right.**
+
+**And the two-session pilot overstated revival throughout** — 79.7% against
+68.2% at the same persistence-1 setting, and 57.1% against 47.9% at
+persistence 5. **A 2-session pilot was not a small version of this; it was a
+different answer**, which is the argument for running the full window rather
+than trusting a cheap look.
+
+## What still is not answered
+
+**His 10-second grain.** Everything here is minute bars, so **every rate remains
+a floor** — a death and revival inside one minute is still invisible. The trades
+endpoint is deep enough to build it and carries **no clock**; it needs
+`daily_bars.split_factor` to be comparable across a reverse split, and its page
+cost lands entirely on the runner days this question is about.

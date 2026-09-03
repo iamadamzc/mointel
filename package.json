@@ -34,7 +34,8 @@
     "fills:import": "tsx worker/fills-import.ts",
     "fills:report": "tsx worker/fills-report.ts",
     "fills:rules": "tsx worker/fills-rules.ts",
-    "archive:scorecard": "tsx worker/scorecard.ts"
+    "archive:scorecard": "tsx worker/scorecard.ts",
+    "archive:revival": "tsx worker/revival.ts"
   },
   "dependencies": {
     "better-sqlite3": "^11.10.0",
