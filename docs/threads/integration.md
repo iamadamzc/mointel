@@ -1667,8 +1667,25 @@ rendered *"not recording yet"* while the store held 328 DEAD rows: the
 `activity` key was **absent** from the demand payload — not null, not
 `'UNKNOWN'`. Verified at the code from this seat rather than routed as two
 candidates: `repo.ts` carries `activity` in the row interface, the INSERT list,
-the VALUES placeholders and the DO UPDATE SET — **and `toDemandState` never
-assigns it.** The write path was complete and the surface read path was missing.
+the VALUES placeholders and the DO UPDATE SET — **and the row→DemandState
+mapping never assigns it.** The write path was complete and the surface read
+path was missing. *The site is `rowToDemandState` at `repo.ts:336` — Ops's
+correction of my name for it, and worth being exact because someone will grep:
+`toDemandState` at `engine.ts:1742` builds from LIVE MEMORY and carries activity
+fine. The starved path is the one `readDemandStates` uses to read out of the
+store.* Fixed at `0da5377`.
+
+**And the mutation check told Ops WHICH of its tests guarded — one of two.** It
+deleted the mapping line: the round-trip test failed, and **the
+NULL-to-`undefined` test PASSED VACUOUSLY**, because with the mapping gone the
+field is `undefined` anyway. It guards a NULL→`'UNKNOWN'` collapse and is no
+guard at all against the missing mapping.
+
+> **A mutation check does not only tell you a test works — it tells you WHICH of
+> your tests works, and the answer is usually fewer than you wrote.**
+
+Ops's note that it nearly reported *"two tests cover it"* is the reason that
+sentence is here.
 
 **Ops's nine-site enumeration was excellent and answered a slightly different
 question:** *what does it take to ADD a column.* It included the whole write
