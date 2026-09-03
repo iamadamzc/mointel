@@ -13,6 +13,7 @@
  * It is not a signal, not a rating, and says nothing about structure.
  */
 
+import { resolveActivity, type ActivityState } from './activity';
 import { computeDailyRvol, rankByRvol, rvolConfidenceFor } from './rvol';
 import { computeAhParticipation, computeAhPercentChange, rankByAfterHours } from './afterHours';
 import {
@@ -120,6 +121,23 @@ interface TickerRuntime {
    * keeps cumulative volume correct. The per-session sums are scalars, so the
    * whole feature costs one extra Map per ticker, not three.
    */
+  /**
+   * Trades per minute, mirroring `minuteVolumes` exactly.
+   *
+   * A third Map per ticker, for the continuing-condition check in
+   * `activity.ts`. The count arrives on every wildcard bar and was previously
+   * discarded here, so this costs storage and nothing else — no subscription
+   * change and no second connection.
+   *
+   * A minute with no trades produces NO BAR, so an absent key means zero
+   * trades. That reading is what makes the whole check work, and it is only
+   * sound because this map is written from received bars alone and never
+   * pre-seeded.
+   */
+  minuteTrades: Map<string, number>;
+  activity: ActivityState;
+  deadSince: string | null;
+
   minuteNotional: Map<string, number>;
   vwapNotional: Record<keyof SessionVwapSet, number>;
   vwapVolume: Record<keyof SessionVwapSet, number>;
@@ -379,6 +397,9 @@ export class DemandEngine {
       volumeBaseSource: null,
       cumulativeVolume: null,
       volumeSource: null,
+      minuteTrades: new Map(),
+      activity: 'UNKNOWN',
+      deadSince: null,
       minuteNotional: new Map(),
       vwapNotional: { premarket: 0, regular: 0, afterHours: 0 },
       vwapVolume: { premarket: 0, regular: 0, afterHours: 0 },
@@ -843,6 +864,15 @@ export class DemandEngine {
       runtime.minuteSum += bar.volume;
     }
     runtime.minuteVolumes.set(bar.ts, bar.volume);
+    /*
+     * Recorded only when the feed actually supplies it. A null trade count is
+     * "not reported", and writing 0 for it would be indistinguishable from a
+     * minute that genuinely had no trades -- which is the exact signal this
+     * map exists to carry.
+     */
+    if (bar.tradeCount !== null && bar.tradeCount !== undefined) {
+      runtime.minuteTrades.set(bar.ts, bar.tradeCount);
+    }
     this.accumulateVwap(runtime, bar, previous);
 
     // The same minute, counted a second time against the after-hours window.
@@ -1010,6 +1040,29 @@ export class DemandEngine {
 
   private refreshDerived(runtime: TickerRuntime): void {
     runtime.cumulativeVolume = runtime.volumeBase + runtime.minuteSum;
+
+    /*
+     * The continuing condition. COMPUTED AND REPORTED, DELIBERATELY NOT ACTED
+     * ON: nothing below reads `runtime.activity`, so ranking and the
+     * high-resolution interest set behave exactly as before.
+     *
+     * The trader has decided the rule (5 minutes, minute trade count, his 10x
+     * ratio) but not yet whether a dropped name VANISHES or SHOWS as dropped,
+     * and those want opposite implementations -- nulling the rank versus
+     * keeping it beside a flag. Wiring either now would answer his question
+     * for him, so the state ships visible and inert, as the supply pair did.
+     */
+    const activity = resolveActivity({
+      minuteTrades: runtime.minuteTrades,
+      now: this.now(),
+      previous: runtime.activity,
+      deadSince: runtime.deadSince,
+    });
+    if (activity.state !== runtime.activity || activity.deadSince !== runtime.deadSince) {
+      runtime.dirty = true;
+    }
+    runtime.activity = activity.state;
+    runtime.deadSince = activity.deadSince;
 
     // Percent change is measured against the most recent RELEVANT official
     // regular-session close, which is today's close only after the bell.
@@ -1648,6 +1701,8 @@ export class DemandEngine {
           }
         : null,
       latched: runtime.latched,
+      activity: runtime.activity,
+      deadSince: runtime.deadSince,
       rthFinal: runtime.rthFinal ? { ...runtime.rthFinal } : null,
       afterHours: this.afterHoursStateOf(runtime),
       feed: this.options.feed,

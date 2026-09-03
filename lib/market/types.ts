@@ -6,6 +6,7 @@
  * reported as unknown — never coerced to zero.
  */
 
+import type { ActivityState } from './activity';
 import type { BlueSkyState } from './blueSky';
 import type { SessionVwapSet } from './vwap';
 
@@ -364,6 +365,33 @@ export interface DemandState {
   top12EnteredAt: string | null;
   qualified: DiscoveryQualification | null;
   latched: boolean;
+
+  /**
+   * Whether the name is still trading, from minute trade counts.
+   *
+   * REPORTED, and not yet acted on. Board presence is a one-time qualification
+   * today — RVOL is cumulative and `latched` never clears — and this is the
+   * continuing condition that sits beside that ranking without replacing it.
+   * Whether a dead name VANISHES from the board or shows AS dropped is the
+   * trader's open product question, so the engine emits the state and nothing
+   * consumes it yet.
+   *
+   * Emitted rather than implied by an absent rank on purpose: a name that
+   * simply disappears cannot be told from one that was never there, which is
+   * the inverse of what this product is for.
+   *
+   * OPTIONAL BECAUSE IT IS LIVE-ONLY. The engine always populates it; the
+   * store has no column for it yet, so a row that has been round-tripped
+   * through `repo.ts` comes back without it. That is a schema change and it
+   * waits on Ops's gate.
+   *
+   * So `undefined` and `'UNKNOWN'` are DIFFERENT and must not be collapsed:
+   * undefined means the value did not survive its journey, `'UNKNOWN'` means
+   * the engine looked and could not say. Only the second is a measurement.
+   */
+  activity?: ActivityState;
+  /** When the name went quiet. Null unless `activity` is DEAD. */
+  deadSince?: string | null;
 
   /** Frozen regular-session state; null until the closing bell. */
   rthFinal: RthFinalState | null;
