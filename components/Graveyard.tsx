@@ -92,6 +92,26 @@ export function Graveyard({ rows, onSelect }: GraveyardProps) {
         )}
       </button>
 
+      {open && summary.wired ? (
+        /*
+         * The measurement limit, stated where it is visible.
+         *
+         * A dead minute produces no bar, so a name that goes quiet and returns
+         * inside one minute is never seen to have died at all. Every count here
+         * is therefore a FLOOR — the real revival rate is higher than shown.
+         *
+         * Not in the header, whose number has to stay glanceable, and not in a
+         * hover: §10 rules out content reachable only that way, and a caveat
+         * that qualifies a falsification count is exactly the content that must
+         * not hide. Opening the section is what asks the question, so this is
+         * where the answer belongs.
+         */
+        <p className="mt-1.5 text-[11px] text-ink-3">
+          Counts are a floor. A name that goes quiet and returns inside one minute leaves no gap to
+          detect, so revivals are undercounted rather than over.
+        </p>
+      ) : null}
+
       {open ? (
         summary.wired && entries.length > 0 ? (
           <table className="mt-1.5 w-full table-fixed border-collapse border-t border-line">
