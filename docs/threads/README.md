@@ -218,7 +218,19 @@ Every thread works in `A:\mointel`. Rules, in order of how much they matter:
    This one is cheap to obey and the incident that produced it was recoverable
    only by luck of `pop` leaving the object behind.
 
-6. **`Everything up-to-date` after a fresh commit is what a FAILED push looks
+6. **A MULTI-STEP EDIT TO A FILE EVERY THREAD'S GATE IMPORTS BELONGS IN A
+   WORKTREE — the COMMIT is what appears in the shared tree.** *Ops, 2026-09-04,
+   against itself, after editing `db.ts` across many iterations in the shared
+   checkout and blocking every thread's gate for the duration.* It had a durable
+   worktree sitting idle precisely for this and used the shared tree because
+   that is where `npm run` was convenient. **The cost lands on everyone else:**
+   two threads hit a red gate that was not theirs, and one held a finished file
+   rather than commit it ungated — the correct call and the expensive one.
+   *(The fault itself is worth knowing: backticks inside a comment placed in a
+   SQL template literal terminated the string, so everything after it parsed as
+   code. Two toolchains reported two different symptoms of it.)*
+
+7. **`Everything up-to-date` after a fresh commit is what a FAILED push looks
    like — and it is usually a race.** *Design, 2026-09-04, on a tree five
    threads push to.* A concurrent push can land your commit before yours runs,
    and git then prints the same line it prints when nothing was pushed at all.
@@ -227,7 +239,7 @@ Every thread works in `A:\mointel`. Rules, in order of how much they matter:
    `git branch -r --contains <sha>`, never by trusting the push output.** Same
    shape as the review link answering 200 while dead.
 
-7. **A push publishes every commit below it.** All threads share one local
+8. **A push publishes every commit below it.** All threads share one local
    `main`, so any thread's push carries every earlier local commit, whoever
    made it — a per-thread "hold my commit back from origin" is not possible
    while any other thread pushes. A hold is collective (a freeze declared
