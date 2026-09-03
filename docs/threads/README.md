@@ -2212,6 +2212,13 @@ As of the last session, **2026-08-23**:
   The retirement question and the pause question have different boundaries and only
   one of them was ever mapped.
 
+- **Retiring the Sheet also silently changes risk chips, and nothing will
+  announce it.** *Design, 2026-09-03, from the d8794da null reading (its
+  `9923d1c`):* rows whose dossier says CAUTION but whose Sheet structure state
+  says DIRTY_FLOAT render the Sheet's verdict first — two of six board rows
+  that day. **The day the Sheet's structure state retires, those rows flip to
+  STRUCTURE CAUTION with no deploy and no signal.** Whoever plans the
+  retirement adds this to the reader list.
 - **Retiring the Sheet takes pillar 5 with it unless float is replaced first.**
   `resolveDisplayedFloat` (`lib/dashboard/merge.ts:143`) has exactly two
   branches, the Sheet's RESEARCH tab and its TODAY tab, and the type says so:
