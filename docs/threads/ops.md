@@ -2682,6 +2682,47 @@ establishes once, 77 of ~231 arrived free in half a day.
 **Those are the conditions under which "move the load" becomes true rather than
 precautionary.**
 
+### The `market-worker-release` pin is retired — its reason had expired weeks before I noticed
+
+```
+[pins] unpinned market-worker-release (was fd9556f1b94ef977df854096c8c01bb1a2676d18)
+```
+
+**Its stated reason:** *"the market worker runs from this release until it next
+restarts; v21 build, so a rollback needs the paired v21 backup now the store is
+v22."*
+
+**Both halves were false by the time I read them.**
+
+**The market worker does not run from `fd9556f`.** All four services now run from
+`97f5fbd`. The worker restarted during the 08-27 incident reboot onto `bc78d49`,
+and again on 09-03 when `apt-daily-upgrade` cycled it. **The pin outlived its
+subject twice** and nothing announced either time — `NRestarts` stayed 0 through
+the second one.
+
+**The v21 rollback is dead in practice.** The paired backup is
+`market-v21-2026-08-25T05-56-41.db` at **332 MB** against a live store of
+**886 MB**. Restoring it would discard **nine days of append-only capture**, and
+the append-only record is the thing that cannot be rebuilt. **A rollback nobody
+would ever perform is not a rollback capability.**
+
+`rollback-baseline` (`372f5eb9`, v18) remains, and it has the same shape of
+problem waiting — **check its premise before relying on it, do not assume it
+because it is pinned.**
+
+**Unpinning is reversible and does nothing immediately.** `cmd_unpin` removes
+only the `.pin` file; the release survives until the next prune, so re-pinning
+restores protection until a deploy runs. Verified after: `pins.sh check` reports
+all pins satisfiable, `fd9556f` still on disk, all four services active.
+
+**The general shape, and this desk has now hit it four times in a week:**
+`top12_entered_at` measured but never filtered; `computedCycle` flat and read as
+health; `Boolean(displayedFloatSource)` reading a confession as a source; and a
+pin whose reason expired while the pin stayed true-looking. **Metadata that
+asserts a live dependency does not notice when the dependency ends.** The pin
+was not wrong when written — it stopped being right, silently, and it was
+protecting nothing for two weeks while reading as protection in every deploy log.
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
