@@ -9,6 +9,7 @@ import { DiscoveryBoard } from '@/components/DiscoveryBoard';
 import { FilterBar } from '@/components/FilterBar';
 import { MarketSummary } from '@/components/MarketSummary';
 import { countCyclePhases, cyclePhaseOf } from '@/lib/dashboard/cycle';
+import { Graveyard } from '@/components/Graveyard';
 import { MomentumTable } from '@/components/MomentumTable';
 import { FocusStrip } from '@/components/FocusStrip';
 import { TickerDrawer } from '@/components/TickerDrawer';
@@ -401,6 +402,13 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           // controls above an empty board.
           defaultOpen={merged.discovery.length === 0}
         />
+
+        {/*
+         * Below the active names, never among them — his one constraint on this
+         * surface. The counts live in the collapsed header so the drop rule can
+         * be judged without opening anything.
+         */}
+        <Graveyard rows={[...merged.rows.values()]} onSelect={setSelectedTicker} />
 
         {data.meta.warnings.length > 0 ? (
           <footer className="border-t border-line bg-panel px-4 py-2">
