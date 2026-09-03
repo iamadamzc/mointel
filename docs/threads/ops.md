@@ -2553,6 +2553,65 @@ fetch is meant to establish a basis and does not when splits exist, **it is
 running and buying less than it appears to.** Ops holds the log line; Research
 holds the code.
 
+### The box restarts the SIP worker by itself: `unattended-upgrades` is enabled
+
+**Found while checking why the market worker's cwd had moved.** It had not been
+touched by any thread — **the instance upgraded itself and cycled the SIP
+connection as collateral.**
+
+```
+2026-09-03T06:34:24Z  Stopped  mointel-market.service
+2026-09-03T06:34:24Z  Started  mointel-market.service
+2026-09-03T06:34:30Z  [alpaca] connected / authenticated SIP
+2026-09-03T06:34:37Z  systemd Reexecuting requested ... (unit apt-daily-upgrade.service)
+                      networkd, polkit, resolved, rsyslog, fwupd, ... all restarted
+```
+
+`NRestarts=0` throughout, because **systemd does not count this as a restart** —
+it is a stop and a start, not a failure recovery. **A worker can be cycled with
+`NRestarts` still reading 0**, which breaks the check I have used as the
+health-of-a-deploy signal all week.
+
+**Upgraded today:** `libevent-core-2.1-7t64`, `libgcrypt20`, `libncurses6`,
+`libncursesw6`, `libtinfo6`, `ncurses-base`, `ncurses-bin`, `ncurses-term`,
+`python3-pyasn1`. `All upgrades installed` at 06:34:40. No ssh logins; nobody
+was there.
+
+**The irony worth stating plainly: `RESTART_MARKET=no` exists so a deploy never
+drops the one permitted SIP connection, and every deploy honours it — then apt
+restarts the worker anyway, unattended, on its own timer.** The most carefully
+protected process on the desk is restarted by the thing nobody was watching.
+
+**Schedule and current risk:**
+
+```
+apt-daily-upgrade.timer   next Fri 2026-09-04 06:25 UTC = 02:25 ET
+apt-daily.timer           next 20:31 UTC = 16:31 ET  (package lists only, no service restarts)
+```
+
+**02:25 ET is before premarket (04:00 ET), so as scheduled this is low risk** —
+today it cost about six seconds of SIP downtime overnight. Ubuntu's timer
+carries a randomised delay, so treat the window as roughly **02:25–03:25 ET**
+rather than a fixed minute.
+
+**`Unattended-Upgrade::Automatic-Reboot` is not set in
+`/etc/apt/apt.conf.d/`**, so it takes the default of false and today's run did
+not reboot. **That default is the only thing standing between a kernel update
+and an unannounced reboot of the live desk**, and it is unmanaged.
+
+**Not changed, and not to be changed without the trader's word** — disabling
+security updates on an internet-facing box is a worse trade than a six-second
+overnight SIP gap. **Recorded so the next unexplained restart is not
+investigated from scratch.**
+
+### A correction to my own window-2 report
+
+I reported *"market never restarted, SIP intact 7 days"* at 01:11 ET. **True when
+said, false at 02:34 ET**, and I only found it because the cwd had moved. Same
+shape as the durability claim earlier the same night: **a true statement about a
+system that keeps running does not stay true, and nothing announces when it
+stops.**
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
