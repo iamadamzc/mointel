@@ -167,3 +167,88 @@ describe('splitsBetween', () => {
     expect(splitsBetween(events, '2023-08-24', '2026-08-24')).toHaveLength(0);
   });
 });
+
+describe('events cannot exist without a basis — the SVRN claim, asserted', () => {
+  /*
+   * Added 2026-09-03. On the live desk SVRN logged "(no split basis
+   * established)" while reporting FOUR split events, and Ops asked whether the
+   * deep fetch was running and buying less than it appeared to.
+   *
+   * The answer was that the log prints the fetch's PRECONDITION, and it rested
+   * on a structural claim about this function: `events` are derived FROM
+   * `factors`, so a symbol reporting splits has a populated series by
+   * construction. That claim was defended by READING the code and telling
+   * another thread to trust the reading.
+   *
+   * This desk's own rule is that a claim of the form "X already handles this"
+   * is a claim about code, and the cheapest test of it is to write the
+   * assertion and watch it go red. So it is written here rather than left as
+   * an argument, because the argument is load-bearing for a verification that
+   * has already been reported as passing.
+   */
+
+  it('populates a factor for every usable session whenever it reports an event', () => {
+    // SVRN's shape, reduced: four consolidations across a long history.
+    const schedule = [
+      ...level(1, 4, 0.5, 240),
+      ...level(5, 4, 0.5, 24),
+      ...level(9, 4, 0.5, 8),
+      ...level(13, 4, 0.5, 2),
+      ...level(17, 4, 0.5, 1),
+    ];
+    const { adjusted, raw } = series(schedule);
+
+    const { factors, events } = deriveSplitFactors(adjusted, raw);
+
+    expect(events).toHaveLength(4);
+    // The claim itself: every session carries a factor, none left null.
+    expect(factors.size).toBe(schedule.length);
+    for (const row of schedule) {
+      expect(factors.get(row.date)).toBeCloseTo(row.factor);
+    }
+  });
+
+  it('populates the same full series when it reports NO events', () => {
+    /*
+     * The other half, and the one that makes CURR and KRSP unremarkable:
+     * factors are set per date independently of events, so a symbol that never
+     * split still establishes a basis. ZERO EVENTS IS NOT ZERO BASIS — the
+     * inference the log line invited.
+     */
+    const schedule = level(1, 12, 3.25, 1);
+    const { adjusted, raw } = series(schedule);
+
+    const { factors, events } = deriveSplitFactors(adjusted, raw);
+
+    expect(events).toHaveLength(0);
+    expect(factors.size).toBe(12);
+  });
+
+  it('establishes nothing when no session has a usable raw close', () => {
+    /*
+     * The genuinely underivable case, which is why the worker asks the STORE
+     * what was established rather than inferring it from a successful fetch.
+     * Bars come back, and nothing is learned.
+     *
+     * AND THIS IS WHAT MAKES THE TWO ABOVE NON-VACUOUS. They assert
+     * `factors.size` equals the session count; that only means something if an
+     * empty map is reachable, and here it is. This file has shipped a vacuous
+     * test before — the rounding-artefact one that never reached the
+     * confirmation logic — so the demonstration belongs beside the tests it
+     * protects rather than in a commit message.
+     */
+    const adjusted = new Map([
+      ['2026-01-01', 4],
+      ['2026-01-02', 4],
+    ]);
+    const raw = new Map([
+      ['2026-01-01', 0],
+      ['2026-01-02', 0],
+    ]);
+
+    const { factors, events } = deriveSplitFactors(adjusted, raw);
+
+    expect(factors.size).toBe(0);
+    expect(events).toHaveLength(0);
+  });
+});
