@@ -897,6 +897,35 @@ a revival denominator**. A rate quoted without its population would be exactly
 the failure this register keeps finding elsewhere, **arriving at its own future
 output.**
 
+**THE CLOCK STARTED 2026-09-03.** The activity rule is live in production, so
+**Q11's accumulation window opens here** — this is the date any future rate is
+measured from, and it is worth having because a rate over "since it shipped" is
+unreadable without knowing when that was.
+
+**First live distribution, after the bell: UNKNOWN 7659, DEAD 1146, ACTIVE 1.**
+Recorded as an observation with its instant attached. **It is not evidence about
+Q11 and I would not let it be read as any**, for three reasons worth stating
+because the number is tempting:
+
+- **A state distribution does not measure a false-positive rate.** Q11 asks how
+  often a dropped name subsequently RUNS. **Counting how many names are in each
+  state answers a different question entirely** — no arrangement of that
+  distribution produces the numerator.
+- **The counts are dominated by `UNKNOWN` at 7,659**, which mostly says the
+  universe is not trading after hours. **That is a fact about the session, not
+  about the threshold.**
+- **n=1 for `ACTIVE`.** One name is a shape, not a rate.
+
+**The one thing it does establish, weakly and usefully: 300 trades/min is
+REACHABLE after the bell.** That rules out the failure where the rule can never
+re-admit a name once the session drains — **not a finding, a floor on the rule's
+operating range**, and worth exactly one line.
+
+**What WOULD accumulate toward Q11**, so nobody relays the wrong thing for
+weeks: **the drop events themselves** — name, instant, rank held, and whether it
+subsequently ran. **Those are the numerator.** A daily state distribution could
+run for a month and leave Q11 exactly as blocked as it is now.
+
 **Blocked**, and honestly so: the columns have not landed, nothing has shipped,
 and data must accumulate. **Not urgent and not commissioned.**
 
