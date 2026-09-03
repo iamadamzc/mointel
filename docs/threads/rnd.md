@@ -40,6 +40,7 @@ questions is a thread that has stopped working.
 | Q3 | What separates a mover from a non-mover in the current regime? | 2026-08-23 | parked — blocked on tier A, the same blocker as Q1's second half |
 | Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | parked — **no open items**; output multiples answered 2026-08-24 in research.md item 20, found 08-27. Ready to design |
 | Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-27 | parked — blocked on capture; float populated on ~1% of dossiers |
+| Q10 | Once a name goes dead intraday, does it come back? | 2026-09-03 | **CLOSED 2026-09-03** — `REVIVAL_IS_A_THRESHOLD_NOT_A_RULE`; 68% at 1 minute quiet, 19% at 30, 11% at 60 |
 
 #### The closing pass, 2026-08-27
 
@@ -817,6 +818,37 @@ that.
 **NOT STARTED. Registered, and blocked on capture rather than on the queue.**
 
 
+#### Q10 VERDICT — `REVIVAL_IS_A_THRESHOLD_NOT_A_RULE`, 2026-09-03
+
+**Commissioned by the trader**, defined in his own numbers: a name doing ~5,000
+shares on a 10-second candle dropping below ~500, and whether it returns. His
+instinct was that once something dies it is usually dead, **offered explicitly
+for investigation rather than confirmation.**
+
+**The answer is a threshold, not a yes or a no.** Full 13 sessions, 939 board
+symbol-days, minute trade count, persistence pre-registered at 5 minutes:
+
+    quiet for    1 min  68.2%     10 min  34.0%     30 min  19.2%
+                 5 min  47.9%     15 min  27.6%     60 min  11.0%
+
+**Under about ten minutes of quiet he is looking at burstiness; past about
+thirty he is right, and supported rather than merely unrefuted.** The
+pre-registered rule (≥25% refutes) is met at 5 minutes and fails past 15.
+**His threshold was the missing quantity and it now has a number.**
+
+**Every rate is a FLOOR** — minute grain cannot see a death and revival inside
+one minute, and his grain is ten seconds. The 10s reconstruction is a build with
+no clock, needing `daily_bars.split_factor` to survive a reverse split.
+
+**Two methodological findings came out of it and are now desk doctrine**
+(`587db62`): **rank correlation is not threshold agreement** — volume and trade
+count sit at Spearman +0.92 and disagree by 14.2 points at the cut, isolated by a
+volume control; and **a pilot is not a small study** — two sessions overstated
+revival at every setting, in one direction, rather than being merely noisier.
+
+Full working in
+[../rnd/2026-09-03-revival-question-preregistration.md](../rnd/2026-09-03-revival-question-preregistration.md).
+
 #### Q6 VERDICT — `PRE_OPEN_RANK_PREDICTS_VOLATILITY_NOT_EDGE`, 2026-09-03
 
 **The pre-registered rule is met and my pre-registered expectation was wrong.**
@@ -1015,9 +1047,22 @@ was never tested.
 ## The standing sweep
 
 The discovery mechanism, and the part that makes "always learning" real rather
-than aspirational. **Not yet built.** A routine pass over the archive, run on a
-regular cadence, that compares the current window against a trailing baseline
-and flags what moved:
+than aspirational.
+
+**BUILT 2026-09-02 as the prediction scorecard** — `lib/archive/scorecard.ts`,
+`worker/scorecard.ts`, `npm run archive:scorecard`, 15 tests. It was commissioned
+as a progress measure and it is this sweep: a routine pass over the archive
+comparing a window against a pre-registered baseline and reporting what moved.
+**Five instruments, thresholds fixed before the data existed, and two of the five
+decision rules turned out to be unevaluable as written** — both caught by
+computing baselines before the run rather than after.
+
+**This section said "not yet built" for eleven days after the thing existed.**
+Recorded because it is the same staleness that had the opening message telling a
+successor to start work that had already finished: **a charter describes a
+starting position, and a starting position is the part most likely to be wrong.**
+
+The dimensions it was specified to cover, against what it measures:
 
 - catalyst rate among movers, and the grade distribution
 - float, price and RVOL distributions of names that ran
