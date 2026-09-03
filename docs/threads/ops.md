@@ -3039,6 +3039,60 @@ the close. **If anyone wants the real integral, rank has to be sampled forward**
 the same shape as the 10-second question, and worth knowing before someone
 promises a number that only forward capture can produce.
 
+**PREDICATE CAVEAT, QUANTIFIED RATHER THAN CARRIED.** My predicate is *no bar
+in five minutes*. The shipped rule is stricter — it excludes the in-flight
+minute and requires the dead run to be CONSECUTIVE — so a baseline taken with
+mine reads HIGH, and **if that is not stated beside the figure the post-deploy
+comparison looks like a regression when it is a definition change.**
+
+**Measured at the same instant rather than left as a warning:**
+
+```
+gap > 5 min  (my predicate)          59 of 250
+gap > 6 min  (in-flight excluded)    56 of 250
+gap > 7 min  (stricter still)        55 of 250
+names in the 5-7 minute band          4
+```
+
+**So the definition change is worth 3 slots on top250 (5%) and ZERO on top12** —
+FDMM, BLUW and NWAX sit at 9, 37 and 107 minutes, far outside the boundary band.
+**Quote top12 3-of-12 without qualification; quote top250 as 56-59 depending on
+predicate.** A caveat with a magnitude beside it is usable; one without is just
+a reason to distrust the number.
+
+### Gate checklist additions from Research's writer audit
+
+**Condition 2 is AUDITED CLEAN (`f381509`), by search not assertion:**
+`upsertTickerSessions` is the only insert, `worker/runtime.ts:1346` the only call
+site, every row originates in an engine snapshot where activity initialises
+`'UNKNOWN'` and is reassigned on every refresh. **So NULL can only mean
+"written before the column existed", and the `undefined` / `'UNKNOWN'`
+distinction survives contact with the store.**
+
+**THE FOUR-SITE WIRING TRAP — this goes in the gate checklist.** `ON CONFLICT DO
+UPDATE SET` is an explicit column-by-column list, so a new column needs **four**
+wiring sites: the insert list, the VALUES placeholders, the DO UPDATE SET, and
+`toRow`. **Miss the DO UPDATE SET and the column inserts once and never
+updates** — every row frozen at the `'UNKNOWN'` written when the symbol was
+seeded.
+
+**It would look populated, be non-null so nothing flags it, and read as "the
+desk cannot tell" forever while the engine computed perfectly good answers
+nobody stored.** A constant dressed as a measurement, in the store, on a
+three-of-four wiring. **Fifth instance of that shape here**, after `computedCycle`
+flat-at-zero, key-presence, `Boolean(displayedFloatSource)` and the expired pin.
+**The test that kills it: upsert, upsert again with a different activity, assert
+the stored value CHANGED.**
+
+**AND A RESTART MUST NOT ERASE A DEATH.** After a restart the engine's maps are
+empty, so activity returns `'UNKNOWN'` with death fields null and
+`deathCount 0`. **A plain overwrite would destroy the stored record of a name
+that died BEFORE the restart — the graveyard's own evidence erased by a process
+event rather than by the market.** Blanket `COALESCE` is wrong because
+`deadSince` must clear on a genuine revival. **The cases are distinguishable by
+the activity value itself: `'UNKNOWN'` is amnesia and preserves, `'ACTIVE'` is
+a determination and clears; `death_count` takes MAX.**
+
 **Method note.** `julianday(a) - julianday(b)` in minutes, never string
 comparison — the first version of this query compared ISO `...T19:59:00.000Z`
 against `datetime()`'s space-separated form and **returned a clean zero**
