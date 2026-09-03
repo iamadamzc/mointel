@@ -411,3 +411,63 @@ a floor** — a death and revival inside one minute is still invisible. The trad
 endpoint is deep enough to build it and carries **no clock**; it needs
 `daily_bars.split_factor` to be comparable across a reverse split, and its page
 cost lands entirely on the runner days this question is about.
+
+
+---
+
+## Amendment 4 — the trader found a definition gap, and it bounds every published rate
+
+**His catch, and it is his not mine:** *what are we defining as "comeback" — if
+they do not come back to +25%, they can stay off the board; being up 5% or 10%
+is not enough validated momentum.*
+
+**He is right and my definition has no price in it.** Revival was volume back to
+30,000 shares/min, then trade count back to ~300/min. **Both are pure ACTIVITY.**
+Nothing in the instrument separates a name reviving into a real move from one
+reviving into a **flush** — and a flush is activity returning *while price
+falls*, which my definition scores as a comeback.
+
+> **So every rate published above is a CEILING on what he cares about, at the
+> same time as being a FLOOR for grain reasons. The two bounds run in opposite
+> directions and both must travel with the number.** 19% at thirty dead minutes
+> is *activity* returning; **the tradeable subset is necessarily smaller.**
+
+**This is the third bound on the same figure** — floor from minute grain, ceiling
+from missing price, and the pilot-versus-full-window gap on top. **A rate with
+three bounds is not a rate, it is a range**, and it should be read as one.
+
+### Design, fixed before computing
+
+**Revival becomes: activity back AND price at a validated-momentum level.** Same
+data, no new fetch.
+
+**The measurement basis is ambiguous and I am NOT resolving it by assumption.**
+*Gap* loosely means percent change from prior close; *gap* strictly is fixed at
+the open. **For a name reviving at 11:00 those diverge.** Rather than wait or
+guess, **both are computed and reported side by side** — and the divergence is
+itself the answer to which he meant:
+
+| reading | definition |
+| --- | --- |
+| **(a) live** | percent change from `reference_close` **at the minute of revival** |
+| **(b) gap** | `rth_open` against `reference_close`, **fixed at the open**, same for every revival that day |
+
+**Threshold +25%**, his number, on both readings.
+
+**Reported as three curves side by side, never folded together:** activity-only,
+activity-plus-(a), activity-plus-(b). **The cost of the price condition must be
+visible.** His prior almost certainly strengthens under it, **which is exactly
+why the unconditional numbers stay on the page beside it** — a condition that
+only ever moves a result toward the person who proposed it needs its effect
+shown, not absorbed.
+
+### The asymmetry, stated deliberately rather than discovered later
+
+**The re-entry bar is HIGHER than the entry bar.** The pillars admit a name at
+up 10%+; he proposes **25% for a returning name.**
+
+**That is defensible — a name that already ran and died should have to prove
+more — and it is still an asymmetry**, so it is recorded here as a deliberate
+choice rather than left to be found in the code by someone assuming one
+criterion governs both. **Anything built on this inherits two different bars and
+should say so on its face.**
