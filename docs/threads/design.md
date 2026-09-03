@@ -1008,6 +1008,14 @@ two branches early, which is exactly why the sizing done from them was wrong.
 
 **Report which of the three, with counts — not a verdict word.**
 
+**A FOURTH outcome, added 2026-09-03 after it occurred.** All three above
+presuppose the measurement *arriving*. The fourth is **the surface correctly
+reporting it has none** — which is what the graveyard did on its first live
+exercise, while 328 names were dead in the store. The state was designed for and
+simply not enumerated as a reading: **the code was ahead of the protocol.** Any
+pre-registration over a new field needs it, because "the measurement did not
+reach me" is neither a pass nor a fail.
+
 **Composition:** both positive strings come from the gate change alone. The Q9
 `sheet_float` capture reads a different key and is **not** aboard this bundle, so
 the reading cannot borrow credit from it. Were it aboard, a positive could not be
@@ -2127,6 +2135,15 @@ practical size of the inflation is unknown. Needs the live desk.
   label at `CLOSED` and the four-row risk-chip sample — and it is the most
   durable, because a fixture outlives whoever wrote it and is trusted by people
   who never saw the world it was written in.
+- **An addition plan is a list of readers too — and unlike a deletion, it fails
+  SILENTLY.** A deletion breaks its readers loudly; an addition simply never
+  reaches them. Design sits at the end of these chains, so **this thread is where
+  an addition silently fails to arrive.** Proven 2026-09-03: the activity columns
+  were written, populated and climbing in production — 8,476 `UNKNOWN`, 328
+  `DEAD` — while `toDemandState` never assigned the field, so the key was absent
+  from `/api/market` entirely. Write path complete, read path never written.
+  **Never assume a shipped column reaches this surface: check that the key
+  exists on the payload, not that the migration landed.**
 - **A model consumer cannot ask a clarifying question, so a label must be true
   without context.** The `chatgpt-*` review routes were built so ChatGPT could
   read this desk — and ChatGPT is what *writes* the Sheet, so for a day in
