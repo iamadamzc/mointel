@@ -137,3 +137,84 @@ describe('the falsification counts', () => {
     expect(DEATH_CHURN_THRESHOLD).toBe(2);
   });
 });
+
+/*
+ * The miss signal.
+ *
+ * Every test here asserts a VALUE ARRIVES rather than that its absence is
+ * handled. Ops mutation-tested the store mapping and found that deleting the
+ * line failed the round-trip test but PASSED the null-handling test vacuously —
+ * with the mapping gone the field is undefined anyway, so a test written around
+ * absence cannot tell a working field from a missing one.
+ */
+describe('revived and running', () => {
+  const revivedAt = (deadAtPrice: number | null, price: number | null) =>
+    ({
+      ticker: 'BACK',
+      demand: { activity: 'ACTIVE', deathCount: 1, deadSince: null, deadAtPrice },
+      telemetry: { price },
+    }) as unknown as DeskRow;
+
+  it('counts a revived name that ran, and reports how far', () => {
+    // 4.00 at death, 6.00 now: +50%, comfortably past the bar.
+    const entries = graveyardRows([revivedAt(4, 6)], NOW);
+    expect(entries[0].ran).toBe(true);
+    expect(entries[0].moveSinceDeathPct).toBeCloseTo(50, 5);
+    expect(graveyardSummary([revivedAt(4, 6)], NOW).ran).toBe(1);
+  });
+
+  it('does not count a twitch, which was correctly dropped', () => {
+    // +2%: activity returned, the name did not. The rule was right here.
+    const entries = graveyardRows([revivedAt(4, 4.08)], NOW);
+    expect(entries[0].revived).toBe(true);
+    expect(entries[0].ran).toBe(false);
+  });
+
+  it('sits exactly on the threshold rather than near it', () => {
+    expect(graveyardRows([revivedAt(4, 5)], NOW)[0].ran).toBe(true); // +25%
+    expect(graveyardRows([revivedAt(4, 4.99)], NOW)[0].ran).toBe(false);
+  });
+
+  /*
+   * Cannot-compute is not did-not-run. Without a price at death the question
+   * has no answer, and answering it `false` would report a measurement nobody
+   * could take — the same distinction as undefined against UNKNOWN.
+   */
+  it('reports null rather than false when the move cannot be computed', () => {
+    expect(graveyardRows([revivedAt(null, 6)], NOW)[0].moveSinceDeathPct).toBeNull();
+    expect(graveyardRows([revivedAt(4, null)], NOW)[0].moveSinceDeathPct).toBeNull();
+    expect(graveyardRows([revivedAt(null, 6)], NOW)[0].ran).toBe(false);
+  });
+
+  it('never calls a still-dead name running, however far the price moved', () => {
+    const stillDead = {
+      ticker: 'DEAD',
+      demand: {
+        activity: 'DEAD',
+        deathCount: 1,
+        deadSince: new Date(NOW - 600_000).toISOString(),
+        deadAtPrice: 4,
+      },
+      telemetry: { price: 9 },
+    } as unknown as DeskRow;
+    expect(graveyardRows([stillDead], NOW)[0].ran).toBe(false);
+  });
+
+  /*
+   * Churn and miss are separate counts because they argue for different fixes:
+   * a high deathCount says the threshold is too tight, a run says the drop cost
+   * a trade. One number could not carry both.
+   */
+  it('keeps churn and miss as independent counts', () => {
+    const churnOnly = {
+      ticker: 'CHURN',
+      demand: { activity: 'ACTIVE', deathCount: 4, deadSince: null, deadAtPrice: 4 },
+      telemetry: { price: 4.05 },
+    } as unknown as DeskRow;
+
+    const summary = graveyardSummary([churnOnly, revivedAt(4, 6)], NOW);
+    expect(summary.churned).toBe(1);
+    expect(summary.ran).toBe(1);
+    expect(summary.revived).toBe(2);
+  });
+});

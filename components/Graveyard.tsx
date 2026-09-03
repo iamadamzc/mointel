@@ -76,6 +76,17 @@ export function Graveyard({ rows, onSelect }: GraveyardProps) {
             {summary.churned > 0 ? (
               <span className="text-warn"> · {summary.churned} died {DEATH_CHURN_THRESHOLD}+</span>
             ) : null}
+            {/*
+             * The MISS signal, and the loudest thing in the header when it is
+             * non-zero. Churn says the threshold is too tight and is irritating;
+             * a dropped name running again says the drop cost a trade. Worded
+             * "running" rather than "missed" because dead_at_price is
+             * overwritten at each death, so this is the CURRENT revival rather
+             * than a tally of every revival that ran.
+             */}
+            {summary.ran > 0 ? (
+              <span className="text-neg"> · {summary.ran} running</span>
+            ) : null}
           </span>
         ) : (
           /*
@@ -201,6 +212,14 @@ function GraveyardRow({
           {entry.revived ? (
             <span className="text-[11px] font-semibold tracking-wide text-accent uppercase">
               revived
+            </span>
+          ) : null}
+          {entry.ran ? (
+            <span
+              className="num text-[11px] font-semibold text-neg"
+              title="Running again since the drop, measured from the price captured at its latest death. The drop looks like a miss rather than churn."
+            >
+              running {entry.moveSinceDeathPct !== null ? `+${entry.moveSinceDeathPct.toFixed(0)}%` : ''}
             </span>
           ) : null}
           {entry.deathCount >= DEATH_CHURN_THRESHOLD ? (
