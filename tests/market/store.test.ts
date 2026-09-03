@@ -672,4 +672,54 @@ describe('schema upgrade reporting', () => {
     expect(row.dead_at_price).toBe(6.5);
     db.close();
   });
-});
+
+  /**
+   * The round trip, which is what a write-path test cannot see.
+   *
+   * Every wiring site for these columns was correct — schema, ADDED_COLUMNS,
+   * interface, insert list, VALUES, DO UPDATE SET, toRow, readBoardCandidates —
+   * and the surface still rendered "not recording yet", because
+   * `rowToDemandState` never assigned the field. The gates worked, the columns
+   * populated, and the one consumer that reads DemandState back out saw nothing.
+   *
+   * An ADDITION plan is a list of readers, exactly as a deletion plan is. This
+   * asserts the value comes BACK, not merely that it went in.
+   */
+  it('returns activity and the death record through readDemandStates', () => {
+    const db = temporaryDb();
+
+    upsertTickerSessions(db, [
+      toRow({
+        ...demand('ABCD', 1),
+        activity: 'DEAD',
+        deadSince: '2026-08-14T14:00:00.000Z',
+        deadAtRank: 3,
+        deadAtPeakTrades: 900,
+        deadAtPrice: 6.5,
+        deathCount: 2,
+      }),
+    ]);
+
+    const states = readDemandStates(db, '2026-08-14', { limit: 10 });
+    const state = states[0]!;
+
+    expect(state.activity).toBe('DEAD');
+    expect(state.deadSince).toBe('2026-08-14T14:00:00.000Z');
+    expect(state.deadAtRank).toBe(3);
+    expect(state.deadAtPeakTrades).toBe(900);
+    expect(state.deadAtPrice).toBe(6.5);
+    expect(state.deathCount).toBe(2);
+    db.close();
+  });
+
+  /** A row written before the column existed reads as undefined, never UNKNOWN. */
+  it('maps a NULL activity column to undefined rather than UNKNOWN', () => {
+    const db = temporaryDb();
+    upsertTickerSessions(db, [toRow(demand('ABCD', 1))]);
+    db.prepare('UPDATE ticker_session SET activity = NULL').run();
+
+    const states = readDemandStates(db, '2026-08-14', { limit: 10 });
+
+    expect(states[0]!.activity).toBeUndefined();
+    db.close();
+  });});

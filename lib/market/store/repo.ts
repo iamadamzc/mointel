@@ -14,6 +14,10 @@ import type {
   RvolBaseline,
   SecurityClassification,
 } from '../types';
+import type { ActivityState } from '../activity';
+
+/** The only three values the engine writes. Anything else is not a verdict. */
+const ACTIVITY_STATES = new Set(['ACTIVE', 'DEAD', 'UNKNOWN']);
 
 /* ------------------------------------------------------------------ baselines */
 
@@ -394,6 +398,26 @@ export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandSt
     haltRaw: row.halt_raw,
     haltAt: row.halt_at,
     highRes: row.high_res === 1,
+    /*
+     * The tenth wiring site, and the one a nine-site enumeration missed.
+     *
+     * The write path was complete and readBoardCandidates had its column, so
+     * the gates worked and the columns populated — and the SURFACE still saw
+     * nothing, because it is the one consumer that reads DemandState back out
+     * of the store. An addition plan is a list of READERS, and there were two.
+     *
+     * NULL becomes undefined, never UNKNOWN: a NULL here means the row predates
+     * the column, and UNKNOWN means the engine looked and could not say. Only
+     * the second is a measurement.
+     */
+    activity: ACTIVITY_STATES.has(String(row.activity))
+      ? (row.activity as ActivityState)
+      : undefined,
+    deadSince: row.dead_since,
+    deadAtRank: row.dead_at_rank,
+    deadAtPeakTrades: row.dead_at_peak_trades,
+    deadAtPrice: row.dead_at_price,
+    deathCount: row.death_count ?? undefined,
     top12EnteredAt: row.top12_entered_at,
     qualified: row.qualified_at
       ? {
