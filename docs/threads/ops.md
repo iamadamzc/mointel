@@ -3197,6 +3197,96 @@ independent argument for the shape already preferred on hazard grounds. **A
 design that keeps a measurement comparable across its own deploy is worth more
 than one that needs a footnote forever.**
 
+## `6d368dc` verified live: the activity determination is working, and one pre-registered criterion is too strict
+
+Market worker restarted **19:04:51 ET on the trader's own word**, given in this
+session after I refused the relay. **~17 seconds of SIP downtime**, not the ~6 I
+estimated — `connected` / `authenticated SIP` / `whole-market bars subscribed` at
+19:05:08, health `LIVE` at `msgAge 3`.
+
+```
+before  pid 30233  cwd 97f5fbd     after  pid 37519  cwd 6d368dc
+```
+
+### The distribution gate PASSES
+
+```
+19:06 ET      UNKNOWN 8476    DEAD 328    (NULL) 2
+```
+
+Not all-NULL, not one-value-forever, not UNKNOWN-and-nothing-else — **three of
+Research's four named failures ruled out.** DEAD climbed 203 -> 328 across two
+minutes, so the engine is actively determining rather than having written once.
+
+**No ACTIVE, and that is expected rather than a fourth failure**: ACTIVE needs
+300 trades/min, an RTH-calibrated threshold, at 19:06 ET after the bell. **The
+mix-of-all-three reading cannot be taken until RTH**, and claiming the gate
+passed on two of three would be overstating it.
+
+**`activity_config` is stored in production** —
+`{"activeTradesPerMinute":300,"deadRatio":10,"deadMinutes":5,...}` — so condition
+3 holds on live data, not just in the schema.
+
+### The capture block runs, and Research's criterion would have flagged 268 false failures
+
+```
+328 DEAD rows:  dead_since 328   dead_at_peak_trades 328   dead_at_price 328
+                death_count>0 328     dead_at_rank 60
+```
+
+**Pre-registered criterion: "a DEAD row missing ANY of the four means the capture
+block did not run." By that rule 268 of 328 rows are failures. They are not.**
+
+`dead_at_rank` records rank **at the flip**. A name unranked at that instant
+correctly has none — and most names are unranked, since only ~250 of 8,800 are on
+a board at any moment. Of the 107 DEAD names ranked on the active board **60 have
+it**, which is the shape of a field that captures when there is something to
+capture.
+
+**The criterion cannot distinguish absent-because-nothing-to-record from
+absent-because-broken**, which is the same defect as every observable this desk
+has had to fix. **`dead_at_rank` should be checked only on rows that were ranked
+at death, and nothing stores that — so the honest check is the 60-of-107 ratio,
+not a null count.**
+
+### I nearly reported a defect that was a 30-second-old measurement
+
+My first reading, taken **30 seconds after the restart**, was `dead_at_rank` **0
+of 203** — and I had already drafted it as Research's named failure. Two minutes
+later it was 60 of 328.
+
+**A brand-new writer has written almost nothing yet, and absence at t+30s is not
+absence.** The only reason I did not file it is that I ran the discriminating
+query first — are the DEAD names ranked — rather than reporting the null count.
+**Reading a new writer immediately after start and treating emptiness as failure
+is a trap this desk has not previously named.**
+
+### Rank and latch survive — the guard on the whole approach holds
+
+```
+AH top 12 at 19:07 ET:  10 of 12 held by DEAD names, ranks intact
+  1 YQ DEAD   2 GEG DEAD   3 MGRD DEAD   4 AOUT DEAD   5 QVCG DEAD
+  6 CHPT DEAD  7 CURV UNKNOWN  8 GLAS UNKNOWN  9 DLTH DEAD
+ 10 EGAN DEAD  11 AKAN DEAD  12 PL DEAD
+```
+
+**A graveyard that empties itself was the failure mode, and it did not happen.**
+This is also the phenomenon the bundle exists to fix, visible in production for
+the first time.
+
+### What is NOT verified yet, and must not be claimed
+
+- **The slot comparison.** My baseline is **RTH close**; this is the **AH board**.
+  10-of-12 here and 3-of-12 there are different boards at different hours and
+  comparing them would be meaningless. **The comparison happens at RTH, against
+  3 of 12 and 56-59 of 250, with the predicate stated beside it** — the shipped
+  rule excludes the in-flight minute and requires five consecutive, so it fires
+  less than my baseline's "no bar in five minutes" by 3 slots on top250 and 0 on
+  top12.
+- **ACTIVE appearing at all**, which needs RTH volume.
+- **The graveyard surface.** Design's to read, and a null graveyard tonight is
+  expected.
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
