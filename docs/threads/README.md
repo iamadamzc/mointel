@@ -154,6 +154,21 @@ motivated the rule** — which is why it widens again:
   a last-write stamp is not a history. Same family as key-presence answering a
   value-presence question, one level up in the schema.
 
+**Why this must be a PASS and not a habit — Ops's mechanism, and it is the
+sharpest form of the rule.** Its own item 0f read *"Not built"* for sixteen
+hours after it had shipped the fix, verified it live and reported it twice; it
+stamped a fourth item UNVERIFIED rather than restate it, and said why: *"I did
+not check it because checking it is work; saying it was still true would have
+been free."* **Restating is free and checking is not, so entries drift in
+exactly one direction unless something forces the cost.** And the entries most
+likely to be stale are **the ones nobody has reason to re-read**: a state
+section gets rewritten because it is the thing being reported, while **an open
+item is read only when someone is deciding what to do next — by which point it
+has already misinformed them.** Ops's 0f entry was not merely stale, it said
+work was outstanding that had already shipped, which is the direction that
+costs most: anyone picking the desk up cold would have rebuilt it or waited
+for it.
+
 And **the opening message is verified as its own step** — R&D's addition,
 from finding its own four days stale on 2026-08-27 (it still directed a
 successor to build an instrument that had been finished and running since

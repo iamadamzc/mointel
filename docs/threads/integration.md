@@ -240,10 +240,12 @@ conflict. Verify before acting on any of it.***
   10x-in-one-minute criterion catches burstiness. **All rates are FLOORS**;
   his 10-second grain is reachable (trades deep to listing) and unbuilt, with
   no clock. **Open with him: which persistence.**
-- **0d (`trap start_services EXIT`) status is UNVERIFIED as of 2026-09-03.**
-  It was Ops's outstanding item before `7f4aa91` shipped 0f; whether that
-  release also carried the trap has not been confirmed from this seat. Older
-  text below asserting it unbuilt predates the deploy — ask Ops, do not quote.
+- **0d (`trap start_services EXIT`) is UNBUILT — VERIFIED 2026-09-03 by Ops**,
+  method stated: no `trap` in `push-release.sh` or `deploy.sh` at `7f4aa91`,
+  and none in either file on the live release. **0f touched both files and
+  carried none of 0d** — two unrelated changes in the same files, which is
+  exactly why it could not be inferred from the diff's filenames. Older text
+  below asserting it unbuilt is therefore still true.
 - **Sessions:** Research successor live (opened 08-27); the three retired
   sessions archived 2026-09-02. Coaching holds six-day-old uncommitted code in
   the tree, nudged to commit.
