@@ -3193,6 +3193,67 @@ is absent by the time any surface sees it.**
 **The migration is therefore not a Q9 nicety and not half of this: it is the
 gate on nearly all of it.**
 
+### AUDIT (Ops's condition 2): can a LIVE row carry a NULL activity?
+
+**Answer: no — there is exactly one writer, and it always populates the field.
+But the audit found a trap that would have made the column look populated and
+be permanently wrong.**
+
+*Search scope stated so the null is interpretable: `INTO ticker_session`,
+`UPDATE ticker_session`, `DELETE FROM ticker_session` across `lib/` and
+`worker/`.*
+
+| path | verdict |
+| --- | --- |
+| `upsertTickerSessions` (`repo.ts:435`) — the **only** INSERT | the single writer |
+| called from `worker/runtime.ts:1346` — the **only** call site | `engine.drainDirty()` mapped through `toRow` |
+| `db.ts:994` `DELETE FROM ticker_session` | the `claimStoreForMode` wipe. **Removes rows; never writes a partial one** |
+
+**Every row therefore originates in an engine snapshot, and the engine always
+sets `activity`** — initialised `'UNKNOWN'` in `createRuntime`, reassigned on
+every `refreshDerived`. **Seeded symbols come through the same path** (there is
+no second INSERT), so a seeded row carries `'UNKNOWN'`, which is both correct
+and meaningful: the desk holds the symbol and has no minute data for it.
+
+**So NULL can only mean "written before this column existed", and the
+undefined-versus-`UNKNOWN` distinction survives contact with the store.**
+
+### THE TRAP: the upsert needs the column in FOUR places, and three is silent
+
+`ON CONFLICT DO UPDATE SET` is an **explicit column-by-column list**
+(`repo.ts:495-530`). A new column must appear in the INSERT list, the `VALUES`
+placeholders, the `DO UPDATE SET`, **and** `toRow`.
+
+> **Miss the `DO UPDATE SET` and the column INSERTS ONCE AND NEVER UPDATES.**
+> Every row freezes at its first value — which for `activity` is `'UNKNOWN'`,
+> written the moment the symbol was seeded. **A column that is always
+> `'UNKNOWN'` looks populated**, is non-null so nothing flags it, and would
+> read as "the desk cannot tell" forever. *A constant dressed as a
+> measurement*, in the exact place this desk has already been bitten twice.
+
+**The falsifiable check is one test: upsert a row, upsert it again with a
+different activity, assert the stored value CHANGED.** It fails loudly on a
+three-of-four wiring and cannot pass by accident.
+
+### SECOND FINDING: a restart must not erase a death
+
+On restart the engine's maps are empty, so `activity` returns `'UNKNOWN'` with
+`deadSince`, `deadAtRank` and `deadAtPeakTrades` null and `deathCount` 0. **A
+plain overwrite would erase the stored record of a name that died before the
+restart** — the graveyard's own evidence, destroyed by a process event rather
+than by anything the market did.
+
+`top12_entered_at` already sets the precedent with `COALESCE`. **But a blanket
+COALESCE is wrong here, because `deadSince` MUST clear on a genuine revival.**
+
+**The two cases are distinguishable by the activity value itself:** `'UNKNOWN'`
+is amnesia and must preserve; `'ACTIVE'` is a real determination and must
+clear. And **`death_count` wants `MAX`** — a restart forgetting is not evidence
+that the deaths did not happen.
+
+*Recommendation recorded rather than built, since the columns do not exist
+yet.*
+
 ### The migration question, answered: JOIN THE MIGRATION, SPLIT THE WRITERS
 
 **Joining costs essentially nothing.** `ADDED_COLUMNS` entries are bare
