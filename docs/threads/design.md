@@ -858,12 +858,65 @@ useless. It is **"if this comes back, does it matter?"**
 | --- | --- |
 | Ticker | — |
 | **Dead for** | Decays in relevance; the primary sort key. |
-| **Rank held** | **Not history — a prediction.** RVOL is frozen, so this is exactly where it re-enters. A name that died at rank 3 returns at rank 3. |
+| **Rank held** (`deadAtRank`) | How high it got. **Corrected below — it is NOT where it re-enters.** Captured at the flip and unrecoverable later. |
 | **What it did** | Peak move while alive. The "was it worth anything" axis. |
 | **Revived at** | Time, and whether it ran. Present only once revived. |
 
-`Rank held` is the field a naive design would drop as backward-looking. It is the
-most forward-looking thing on the row.
+**CORRECTED 2026-09-03: `deadAtRank` is not a prediction of re-entry.** An
+earlier version of this section said RVOL is frozen so *"a name that died at rank
+3 returns at rank 3."* **Wrong.** The dead name's numerator is frozen — but every
+*living* name keeps accumulating past it, so **the dead name's rank decays while
+it is dead**, and the longer it lies there the lower it re-enters. `deadAtRank`
+records **how high it got**, not where it comes back.
+
+That is worth more than the mistaken version, because the drift is itself
+information: **a long-dead name returning is returning weaker**, and the gap
+between `deadAtRank` and its live rank on revival measures how much the field
+moved on without it.
+
+### The contract, and what `deathCount` changes
+
+Research built and exposed it (`6e18c83`, inert, live-only): `activity`,
+`deadSince`, `deadAtRank`, `deadAtPeakTrades`, `deathCount`.
+
+**`deathCount` is better than the header's `revived` count and replaces it as the
+primary signal.** A row reading **"died 4 times today"** is the finding itself —
+it names *which* name the threshold is wrong for, where a population count only
+says *some*. And you can only die twice by reviving in between, so `deathCount`
+encodes the same events with identity attached.
+
+**But `ran` survives, because the two falsify different things and want different
+fixes:**
+
+| Signal | What is wrong | The fix it argues for |
+| --- | --- | --- |
+| **`deathCount` high** | **Churn** — the name is being killed and revived repeatedly | The dead threshold or the settle window is too tight |
+| **revived AND ran** | **A miss** — the drop cost a trade | The rule is wrong for that class of name |
+
+A name that died four times and never ran on any revival was **correctly dropped
+each time** — irritating, not expensive. A name that died once and came back +40%
+is the costly one. **Collapsing them into a single "the rule is wrong" number
+would hide which of the two is happening.**
+
+### Two things the surface must not paper over
+
+**`undefined` and `'UNKNOWN'` are different, and a row whose `activity` is
+`undefined` MUST NOT APPEAR IN THE GRAVEYARD AT ALL.** `undefined` means the
+field did not survive a store round-trip — nobody asked. `UNKNOWN` means the
+engine looked and could not say. Only the second is a measurement. Rendering them
+alike would show *"status unknown"* where the truth is *"we never asked"*.
+
+**This is the sixth instance of one distinction on this desk** — after
+`NOT YET ANALYZED` vs `UNKNOWN`, *unknown* vs *changed* for cycle, *wrong* vs
+*absent* for float, *cannot tell* as its own state, and a bound as a sixth
+position. **It keeps arriving because it keeps being the thing that matters**,
+and it should be checked for on every new field rather than rediscovered.
+
+**Elapsed time shows from `deadSince`, never from detection.** The rule decides at
+six minutes for a five-minute death, so a row **appears already reading "dead
+6m"** and never "dead 0m". That looks like an off-by-one and is not: the minute
+is real and Research asks it not be hidden. **Recorded here so nobody later
+"fixes" it into a lie.**
 
 ### Ordering and lifetime
 
