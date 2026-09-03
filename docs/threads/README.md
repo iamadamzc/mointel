@@ -1675,6 +1675,27 @@ practice governs:
   > **reporting dimension**, and becomes a rule only if the record shows one and he
   > adopts it.
 
+  **AMENDED 2026-09-03 — THE DESK'S MARKET-SIDE SCOPE IS PREMARKET.** *His
+  instruction, asked directly whether premarket was the board's selection window
+  or his trading window: "let's keep everything to premarket."* Recorded as a
+  **product scope decision**, and the two statements are reconcilable rather
+  than contradictory — **the board hunts and measures premarket; how he is
+  GRADED is still not keyed to the clock.** Both survive only if that line is
+  held, so it is stated here rather than inferred.
+
+  **What it re-scopes** (readers named, per the deletion rule): the revival
+  study and any board-presence threshold, to premarket minutes only, with
+  episodes not straddling the open. **What it puts out of window rather than
+  wrong:** Q6's verdict, measured on RTH excursions, and any scorecard
+  instrument using full-day outcomes — these need re-running on premarket
+  before being quoted as current, not retracting. **What it must NOT silently
+  reach:** Coaching's grading of his own fills. The record contains his own
+  contrary evidence — every dollar of one imported session's profit came from
+  trades opened after 09:30, and the stated 07:00–09:29 block was that day's
+  worst — so narrowing personal-record grading to premarket would stop
+  measuring the trades that made money. **That narrowing requires his separate
+  and explicit word and has not been given.**
+
   **THE ERROR THIS REPLACES IS WORTH KEEPING, because it was made twice and the
   second time by the thread that caught the first.** The booklet's window
   (`07:00–10:00`, avoid after 11:00) was Cameron's, not his — correct. **The fix
