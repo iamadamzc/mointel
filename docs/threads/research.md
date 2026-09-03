@@ -1639,7 +1639,7 @@ on its own before any handover: it is read first and doubted last.
 > starting position that by definition no longer exists. If LIVE STATE and this
 > message ever disagree, LIVE STATE is right and this message is stale.
 >
-> **Four practices that cost this session the most:**
+> **Five practices that cost this session the most:**
 >
 > - **A claim of the form "X already handles this" is a claim about code.**
 >   Write the assertion and watch it go red. Repeatedly, the test written to
@@ -1658,6 +1658,14 @@ on its own before any handover: it is read first and doubted last.
 > - **Measure before promising, and re-measure after a design changes.** I gave
 >   the trader 23.8% coverage for a design he then changed by approving a guard;
 >   the guarded number is 0%.
+> - **A property of the local store is not a property of the world.** The
+>   snapshot on this disk is a file, and the desk runs somewhere else. Read off
+>   it: *production's schema* (it was a version ahead, and the gate I announced
+>   did not exist) and *the vendor's historical depth* (it was years deeper than
+>   local retention, and I told another thread the data was unobtainable). **Both
+>   read as facts about the system and were facts about a file.** When a claim is
+>   about production, the vendor, or the market, the local store is evidence
+>   about none of them — go and look, or say which you looked at.
 >
 > **Every reply ends with `## What I need from you` and nothing after it.**
 > Credentials live in `A:\AWS_creds\` and are never printed, logged, committed
