@@ -1498,6 +1498,14 @@ Basic Auth itself; the probe that reaches the app is `/_next/static/`.
 
 ## Working rules
 
+- **Once production runs a composed sha, ancestry stops being the test and
+  content becomes it.** *Ops's correction, 2026-09-03.* This seat verified that
+  window 2's sha descended from `bc78d49` while production was already on the
+  composed `7f4aa91` — not an ancestor of the tip, so pure ancestry read as
+  rollback risk in one direction and false safety in the other. The question
+  that mattered was whether the changed files were byte-identical between the
+  two shas. Check content across the composed boundary; ancestry resumes once
+  production rejoins the main lineage.
 - **Verify claims against the system, not against a transcript.** The false pin
   claim came from reading a deploy log instead of asking `pins.sh`.
 - **Corrections land in the document.** A charter that is wrong is worse than no
