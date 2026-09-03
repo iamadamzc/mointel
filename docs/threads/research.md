@@ -54,8 +54,10 @@ is not here it is not anywhere: I am not available to be asked.*
 | `4ac30b5` | **re-trigger** — a dossier of any age no longer answers for this session | queued behind Ops's item **0f** |
 | `9cf8872` | **rotation** — a resolver turn that made no call no longer burns the pass | ancestor of `4ac30b5`, same bundle |
 | `dec0dd9` | **stalled-job retirement** — non-terminal jobs before boot marked `STALE` | already on origin, rides beneath |
-| `bc15588` | **supply pair** — floor/total with the basis guard. **Inert: renders on zero rows** | NOT in the `4ac30b5` bundle; next window |
+| `bc15588` | **supply pair** — floor/total with the basis guard. **Inert until the backfill runs** | NOT in the `4ac30b5` bundle; next window |
 | `664fdb7` | thread items 32–34, documentation only | n/a |
+| `3379809` | **basis-fetch decoupling** — `basisFetchDue`, full-depth factor read, coverage-boundary refusal, `worker/basis-backfill.ts` | built 2026-09-02 on the recorded approval; backfill itself runs post-0f, Ops prices 462 calls |
+| `268e438` | **float-source content check** — `FLOAT_TERMS` over the field, not `Boolean()` | built 2026-09-02 on the trader's word via Integration |
 
 **All four are on `origin/main`. None are deployed.** Ops does not deploy until
 item 0f (build off-box, ship the artifact) lands; Integration has ratified
@@ -69,8 +71,8 @@ good; do not re-litigate it.
 
 | decision | holder | state |
 | --- | --- | --- |
-| **basis-fetch decoupling** | **APPROVED** | **the trader said yes 2026-08-27** ("yes to all"); Integration's relay was dropped by a cut turn and landed here 2026-09-02. **You build it.** Design below. |
-| `guardrails.ts:344` content check | the trader | scoped, unbuilt, one line. **My recommendation: do this first** — it is correctness, not capability |
+| **basis-fetch decoupling** | **BUILT** `3379809`, 2026-09-02 | approval was the trader's 2026-08-27 yes, relayed late. Rides the post-0f bundle; the one-off backfill is `worker/basis-backfill.ts` and **cannot run until the 0f deploy migrates production to schema v22** — its census (read-only, default mode) is what Ops prices: 231 researched → **462 Alpaca REST calls** on the 08-23 snapshot. |
+| `guardrails.ts:344` content check | **BUILT** `268e438`, 2026-09-02 | the trader's approval arrived via Integration the same day. The field's content now takes the same `FLOAT_TERMS` test as the excerpt. |
 | deterministic float extractor | **PARKED** (trader, 2026-09-02: "park, but let's put it where we should") | scoped, unbuilt, 19 tickers. **Unparks with the derived-float decision, or when Q9's validation needs ground truth once capture data accumulates. Prerequisite first build when it wakes: the fixture set from R&D's recorded extraction traps** — three parsers disagreed across the whole plausible range, which is the argument no assertion can make. |
 | Q9 capture build | Ops's schema gate | scoped, riders below |
 
@@ -92,6 +94,40 @@ forever. **Alpaca calls, not model calls.** Ops prices the volume before it runs
 **Do not weaken the guard to make the number appear.** The whole point is that a
 wrong basis is invisible at 150%: 45.5% of rows in the 100–200% band carry a
 reverse split and still look plausible.
+
+**EXECUTED 2026-09-02, `3379809`, with two riders the design turned out to
+need — both measured before building, neither weakening the guard:**
+
+- **The pair reads its factors at FULL stored depth, not from the 90-bar cycle
+  window.** The dates the basis check compares are filing dates, and on the
+  08-23 snapshot **122 of 239 dated supply blocks (block-denominated) — and
+  every dated block on 98 of 157 block-holding tickers (ticker-denominated) —
+  sit beyond that window**; the filed denominator's median age is 82 days with
+  39% over 180 (item 14's measurement). Factors clipped to the cycle window
+  would hand the guard nulls for exactly the operands the fetch was approved to
+  make comparable. `readSplitFactors` in `lib/research/history.ts`, `asOf`-
+  bounded like the cycle bars.
+- **`computeSupplyPair` refuses to extrapolate a factor past the series end.**
+  `splitFactorAt` falls back to the nearest EARLIER session — right inside the
+  series, wrong past its end: an operand dated after the last covered session
+  would inherit that session's factor, and a split in the gap would make two
+  incomparable operands read as COMPARABLE. Beyond coverage is
+  `BASIS_UNVERIFIABLE`: a wrong answer becomes a missing one. Consequence a
+  successor should expect rather than rediscover: **an established basis decays
+  for actively re-analysed names** — operands dated after the establishment
+  fetch go unverifiable, visibly, in the exclusion reasons. The honest fix if
+  it starts to bite is a bounded re-fetch trigger, a new (small) spend
+  decision, not a wider fallback.
+
+**The predicate is the FACTOR, not the deep-source marker** — the shallow
+refresh overwrites `source` on every row it touches while `split_factor` is
+COALESCEd, so a source-based test would re-arm forever on any listing younger
+than the shallow window. Pinned in `tests/research/basisFetch.test.ts`,
+including the decoupling itself (due where `deepHistoryDue` says not-due).
+
+**The rendered-coverage number does not exist yet and must not be promised.**
+It is measurable only after the backfill runs on the migrated store and names
+re-analyse — the stored pairs in old dossiers do not retroactively change.
 
 ### Numbers the trader has been given, and what they are denominated in
 
@@ -2976,3 +3012,24 @@ reaches the trader has to say which.
 657 supply blocks, 93 `KNOWN_ACTIVE`, 67 of those priced — identical in my
 snapshot and Ops's live store, arrived at independently. Worth recording after an
 earlier "agreement" that turned out to be ids 1–94 matching ids 1–94.
+
+---
+
+**35. The news one-cell instrument holds zero persisted observations, answered
+so R&D's scorecard can exclude it honestly.** *Asked by R&D via Integration
+2026-09-02; answered from a grep, not from memory.*
+
+Nothing in `lib/` or `worker/` records what the trader supplies from his news
+service — no table, no capture path; the only `headline` code is the desk's own
+assessment headline and the catalyst clusterer. The single existing dataset is
+the 2026-08-26 premarket comparison, which lives as **prose in item 26**: nine
+tickers, all agreement cells, zero failure cells, not queryable rows.
+
+Definitions given with the answer, for whenever it IS built: one observation is
+one **(snapshot clock-time, ticker) pair**, valid only when the snapshot's
+clock time is legible — the 4h window rolls, so a count without its instant is
+uninterpretable. And **supplied-nothing days are currently indistinguishable
+from no-news days**, because nothing records what he supplied at all; the
+manual-feed caveat in item 25 is a design requirement, not an implemented
+distinction. Building the capture is a decision that sits with the trader; the
+spec is items 25/26.
