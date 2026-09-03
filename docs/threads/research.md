@@ -3259,6 +3259,46 @@ worth more than the column being populated, every time.** A timeout degrades to
 a null column, never to a failed checkpoint — Q9's capture is a nice-to-have
 riding inside the writer of the one record nothing rebuilds.
 
+### NO OBJECTION: a never-active name being DEAD is harmless in the gates, and the dilution is in the STORE
+
+*Integration decided the determination stays and the fix goes in the display,
+and asked for an objection from inside the module. There is none — but its
+reasoning is right for a reason it could not check, and the call does not reach
+far enough.*
+
+**Design's finding: 60 of 71 dead rows peaked BELOW the dead line and none held
+a top-50 rank.** Those names never went quiet; they were always quiet.
+
+**Checked at each gate rather than reasoned about from outside:**
+
+| gate | does it act on a name at rank 72–1240? |
+| --- | --- |
+| research, `queue.ts:86` | **no.** `rank > autoRank` (12) rejects it first — activity adds nothing |
+| high-res rank, `engine.ts:1654` | **no.** `rank <= internalRank` (50) never selected it |
+| **high-res LATCH, `engine.ts:1683`** | **YES — and this is the one that matters.** The latch selects **regardless of rank**, so a latched-but-silent name at rank 900 was holding a capped trades/quotes slot. **Excluding it is the cap-clearing this change exists for, not a side effect.** |
+
+**So the only gate where "never active" reaches is the one where the exclusion
+is the intended win.** And there is no deadlock: **wildcard bars keep flowing
+whatever the high-res set holds**, so a dropped name is still observed and can
+still revive. Focus remains the safety valve, already built.
+
+### But the filter is needed by more readers than the surface
+
+**The dilution is in the STORE, not on the screen.** Design's filter fixes ONE
+reader. **Any analysis over stored `DEAD` rows inherits the 6:1 dilution** — a
+revival rate computed over them measures a population six-sevenths composed of
+names that never lived. **That is R&D's Q11 problem returning through a
+different door**, and Q11 was already constrained once for exactly this reason.
+
+> **NAME THE PREDICATE ONCE.** If the surface filters on *ever reached the
+> ACTIVE line* and an analysis filters on something near it, we have two
+> populations under one word again — the collision this desk has now hit six
+> times. The filter is *`dead_at_peak_trades >= activeTradesPerMinute`*, and it
+> should be that expression everywhere rather than a number retyped per reader.
+
+*This is why the display-side fix is right AND insufficient on its own: a
+judgement applied at one reader is not applied, it is applied there.*
+
 ### POST-DEPLOY VERIFICATION, PRE-REGISTERED before the deploy so it cannot be fitted to what lands
 
 *The author confirms the behaviour; Ops confirms the release. Written 2026-09-04
