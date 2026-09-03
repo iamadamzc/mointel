@@ -4601,6 +4601,54 @@ ordinary comment character can terminate the string. **Check for backticks in
 anything inserted into a template literal** — the failure is a parse error a
 long way from the edit.
 
+### STANDING WATCH: a second reader of the desk, with its baseline measured
+
+**Raised by Integration 2026-09-03, and it is Ops-only because both surfaces are
+mine** (`aws-create-review.ps1`, `setup-auth.sh`) **and invisible to every other
+thread.**
+
+**Why it matters:** the board labels another model’s output as "human review".
+Design’s fix (`f228467`) deliberately rides the next deploy, because the label
+misleads a reader **who does not already know the answer** — and the trader is
+the one reader who does, since he is the person who told the desk no human
+reviews the Sheet. **The moment a second reader exists, a stale string becomes a
+false claim to someone who would believe it.**
+
+**The watch is attached to a measurement rather than to anyone remembering**,
+which is the same rule as *a schedule depending on attention is not a schedule*.
+A demo gets arranged and mentioned in passing, and by then the desk is already in
+front of the new reader.
+
+**BASELINE, measured 2026-09-03 18:3x ET — raise it the moment either number
+moves:**
+
+```
+htpasswd logins                     2      adam, mointel1
+review tokens USABLE right now      0
+review tokens unrevoked but EXPIRED 7      ids 2,4,5,6,7,8,13
+```
+
+**Two corrections to how this was framed to me, both worth having.**
+
+**"Active tokens" was going to read as 7 and mean nothing.** All seven are
+unrevoked and **every one has expired** — the newest lapsed 2026-08-24. **The
+number that matters is 0 usable**, and a count of unrevoked rows would have
+reported a live sharing surface that does not exist. *Presence versus validity,
+again.*
+
+**The trigger was stated as "a SECOND htpasswd login" and there are ALREADY
+TWO** — `adam` and `mointel1`. `mointel1` reads as a service account rather than
+a person, so the one-human-reader premise probably holds, **but the trigger as
+worded has already fired and would never fire again.** Keyed on the baseline
+instead: **a THIRD login, or any usable token, is the signal.**
+
+**Historical note the labels make visible:** ids 4–8 are `chatgpt`,
+`chatgpt-1h`, `chatgpt-direct`, `chatgpt-apigw`, `chatgpt-mcp`, all from
+2026-08-18. **A second reader has been put in front of this desk before.** All
+expired the following day, so nothing is live — but "no one else has ever seen
+it" is not true, and anyone reasoning about the label’s audience should know
+that.
+
 ### Nine wiring sites, and nobody asked WHICH PROCESS runs the ninth
 
 **2026-09-03. `6d368dc` deployed clean, the migration succeeded, and the feature
