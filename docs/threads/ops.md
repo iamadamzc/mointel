@@ -2994,6 +2994,56 @@ The rule survives; **its justification was wrong and the real one is stricter.**
 - **The RTH dead-slot baseline must be taken BEFORE the readers change.** The
   after-hours reading is method-validated only and cannot be recovered later.
 
+### RTH dead-slot baseline — TAKEN, and it did not need tomorrow's session
+
+**Integration gated the bundle on this and framed it as unrecoverable after the
+fact. It was not.** `ticker_session.rth_final_rank` **is** the rank at RTH close
+(populated for 2,822 symbols today), and `minute_bars` retains three days —
+947,512 RTH bars across 7,798 symbols, `13:30Z` to `19:59Z`. **So the close
+instant is reconstructable exactly, not approximately**, because the stored rank
+and the stored activity describe the same moment.
+
+**Measured at the RTH close instant, 2026-09-03 19:59Z (15:59 ET):**
+
+```
+top12  research slots      12 total     3 dead   (25%)
+top250 high-res slots     250 total    59 dead   (24%)
+```
+
+**Both far below my after-hours reading of 50% / 80%**, which confirms those were
+inflated exactly as flagged. **The after-hours figures should not be quoted.**
+
+**A headcount understates it. The duration is the cost:**
+
+```
+rank  2   FDMM     9 minutes dead at close
+rank  8   BLUW   107 minutes dead at close     <- 1h47m
+rank 11   NWAX    37 minutes dead at close
+the other nine    live at close
+```
+
+**BLUW held a top-12 research slot AND a high-res subscription slot for one hour
+forty-seven minutes with no trades.** That is the win priced: not "three slots",
+but a research pass and a subscription slot spent on a corpse for most of a
+session, while a live name at rank 13 was excluded from both by construction.
+
+**THIS IS A LOWER BOUND AND MUST BE QUOTED AS ONE.** It counts only names dead
+**at the close**. A name that died at 10:30 and lost rank by 15:00 wasted slot
+time all afternoon and is **invisible here**, because the only historical rank
+the store keeps is the closing one. **The true cost is higher and the store
+cannot say by how much.**
+
+**That gap is itself a finding:** rank is retained only as a final value, so
+slot-time-on-dead-names cannot be measured historically at any instant except
+the close. **If anyone wants the real integral, rank has to be sampled forward** —
+the same shape as the 10-second question, and worth knowing before someone
+promises a number that only forward capture can produce.
+
+**Method note.** `julianday(a) - julianday(b)` in minutes, never string
+comparison — the first version of this query compared ISO `...T19:59:00.000Z`
+against `datetime()`'s space-separated form and **returned a clean zero**
+because `'T'` sorts above `' '`.
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
