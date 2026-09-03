@@ -3055,7 +3055,42 @@ spec is items 25/26.
 
 ---
 
-**41. Board presence as a continuing condition — SCOPE ONLY, nothing built.**
+**41. Board presence as a continuing condition — SCOPED, then BUILT INERT at
+`05b28b9`.**
+
+> **BUILT 2026-09-03 on Integration's order-and-process word** (*"build the
+> engine-only determination"*), after it took hysteresis, the `latched`
+> decision and uniform application as decided. `lib/market/activity.ts` plus
+> engine wiring; **nothing reads `runtime.activity`**, so ranking and the
+> high-res set behave exactly as before. **Full suite green, 1502 tests.**
+>
+> **It is inert because his product question is still open** — vanish versus
+> show-as-dropped want opposite implementations (null the rank, or keep it
+> beside a flag), and wiring either would answer it for him. Same disposition
+> as `bc15588`.
+>
+> **Two things the build added that the scope did not have**, both refusals of
+> the same family:
+> - **The most recent minutes are excluded as still arriving.** A minute in
+>   progress is not a dead minute, and a just-closed minute may not have
+>   delivered its bar — either read as zero would manufacture death every
+>   minute on every name. `lastSettledTradingDate` at a finer grain. **It costs
+>   one minute of latency, so a five-minute rule decides at six**, and that is
+>   stated rather than hidden.
+> - **A null trade count is not stored as zero.** *"Not reported"* and *"no
+>   trades"* are the exact two states the map exists to separate.
+>
+> **And `activity` is OPTIONAL on `DemandState` because it is live-only.** The
+> engine always sets it; the store has no column, so a round-tripped row comes
+> back without it. **`undefined` and `'UNKNOWN'` are therefore different and
+> documented as such** — the first means the value did not survive its journey,
+> the second means the engine looked and could not say. **Only the second is a
+> measurement.** *The compiler found this: adding a required field broke seven
+> call sites, which is how a persisted contract announces itself as one.*
+
+*Original scope below, unchanged.*
+
+**41a. The scope as delivered — SCOPE ONLY, nothing built at the time.**
 *Trader's decision via Integration 2026-09-03: persistence is 5 minutes,
 activity is minute trade count, active ~300/min and dead = ÷10 = 30/min, his
 10× ratio kept. Design goes to him before code exists; Ops gates anything
