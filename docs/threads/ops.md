@@ -2246,6 +2246,81 @@ pinned worktree already defeats this**, and `git archive` ships the commit, not
 the tree — but whoever *composes* the bundle sha has to care.
 
 
+## State: production is `7f4aa91`, deployed 2026-09-03 05:04 UTC — 0f, and it protected its own deploy
+
+Window 1 of three. **The minimal possible payload, composed deliberately**: a
+cherry-pick of the 0f commit onto `bc78d49`, three files, nothing else.
+
+**Why composing was necessary.** The natural sha, `22643ca`, carries **100
+commits** above production — not only the six-piece bundle but Coaching's
+`lib/coaching/fills/*` and a `package.json` change. Shipping any tip-lineage sha
+would have put all of it on the box **under the uncapped build 0f exists to
+remove**. Integration caught the ancestry; the 100-commit measurement is mine.
+
+**Composed in an isolated worktree, never by switching branches in the shared
+checkout.** With rule 6 in force a branch switch could disturb another thread's
+in-flight work. The shared tree held 0 tracked modifications throughout and the
+push published exactly one commit.
+
+### The fix protected its own deploy, and the log proves it
+
+```
+[release] no prebuilt artefact; the server will build with a capped heap
+[deploy] building (heap capped at 1536MB, niced)
+✓ Compiled successfully in 17.5s
+```
+
+**I said twice that this would be "the last deploy that runs the uncapped
+build". That was wrong.** `push-release.sh` invokes `deploy.sh` **from the new
+release directory**, so the cap was live for the deploy that installed it —
+**the first capped deploy, not the last uncapped one.** Memory bottomed at
+1,733 MB available and recovered immediately. On 08-27 the same phase took the
+instance.
+
+**This is a general property worth naming: a fix to the deploy path takes effect
+on the deploy that ships it**, because the script runs from the incoming
+release. It cut the right way here. It could as easily cut the other way, and a
+change that breaks `deploy.sh` breaks the deploy installing it — with no
+previous version to fall back to, because the switch has already happened.
+
+### Verified after
+
+```
+release   7f4aa91          schema 22, unchanged — migration cleared in 20s
+web/market/research/assess   all active, NRestarts=0 ON ALL FOUR
+market    started 2026-08-27 08:42:59 — never restarted, SIP intact 7 days
+health    ok: true | research IDLE | stalledJobs 16
+prune     3 removed, 5 retained     pins  reported and satisfiable
+```
+
+`NRestarts=0` on all four against a known ~1-in-3 `BUSY_SNAPSHOT` rate. **Prune
+and the pins report both ran** — the two steps a killed script skips silently.
+
+**The migration cleared in 20 seconds** at `[migrate] existing store found`, the
+line that hung over ten minutes on 08-25, now against a **larger** 546 MB WAL.
+**This does not close item 0e.** A transient that did not fire is not a defect
+that is gone — the same reasoning that kept the `BUSY_SNAPSHOT` decision open
+across four single crashes.
+
+### The gate nearly reported a red that was not there
+
+The first gate run at the composed sha returned `test FAIL, build FAIL`. Both
+were **the rig**: `vite/dist/client/client.mjs` and
+`next/dist/compiled/webpack/webpack-lib` missing from `node_modules`. **Windows
+temp cleanup prunes the scratchpad**, and the rig had been sitting there since
+08-25 — it had also silently lost two tracked files. `npm ci` restored it and
+all four passed at 1407 tests / 90 files, exactly +4 over production.
+
+**A gating rig in a temp directory decays, and a decayed rig fails exactly like
+a broken payload.** Re-verify the rig, not just the sha, after any gap.
+
+### A pin whose reason has expired
+
+`market cwd` is now **`bc78d49`**, not `fd9556f`. The `market-worker-release`
+pin says *"the market worker runs from this release until it next restarts"* —
+**it restarted during the 08-27 incident reboot.** The pin now protects a
+release nothing runs. Not urgent; not to be read as live protection either.
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
