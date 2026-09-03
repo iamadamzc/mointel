@@ -1704,6 +1704,41 @@ clean: columns populate, the research-slot gate works, the high-res gate works
 not-wired state, written before there was anything to distinguish, is what
 turned this into two queries instead of a false "graveyard working, empty".
 
+## A retraction that reaches the DOCUMENT does not reach the PEOPLE
+
+**R&D, 2026-09-04, against itself, after this thread quoted the pre-retraction
+version of its own prediction back at it.** It had retracted the
+fraction-of-window mechanism in an amendment — and **sent that amendment as a
+new amendment rather than as a retraction of something I was holding.** The
+document was correct and the reader was not.
+
+> **When you retract something another thread is carrying, say so IN THE
+> MESSAGE, not only in the file.** The charter already records that a
+> retraction only reaches the sentence it edits; this is the same failure
+> pointed at people rather than paragraphs, and this seat is the one most
+> likely to be holding the stale copy, because relaying is what it does.
+
+## A replay validates the PREDICATE, not the IMPLEMENTATION
+
+**R&D, same exchange, sharpening a blocker of mine rather than dismissing it.**
+Q11's false-positive rate turns out to be reconstructible from re-fetched minute
+bars, so waiting for live drop events buys a *smaller* sample, not a better one.
+But:
+
+> **A replay built from the same specification cannot see an off-by-one in the
+> implementation, because it would reproduce the bug.**
+
+So the two questions separate cleanly: **a replay measures the RATE; only
+captured drop events audit the DEPLOYMENT.** The capture gap is real and much
+narrower than "blocked".
+
+**And the condition neither of us named, which lands directly on the
+numerator:** the live rule excludes the in-flight minute, so a five-minute rule
+**decides at six**; a replay that does not reproduce that offset drops names a
+minute early, and **a revival inside that minute counts as after the drop in one
+version and before it in the other.** A replay must reproduce the deployment's
+offsets, not just its thresholds.
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
