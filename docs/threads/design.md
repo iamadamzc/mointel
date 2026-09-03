@@ -3,7 +3,7 @@
 **Owns the trader-facing surface.** The audit remediation plan, the Discovery
 board, the watchlist, the dossier drawer, and the visual system.
 
-Last worked: **2026-08-21**. Written up 2026-08-23.
+Last worked: **2026-09-03**.
 
 ## The design authority
 
@@ -1997,16 +1997,23 @@ practical size of the inflation is unknown. Needs the live desk.
 > then `docs/Design/design-audit-report.md` completely — that audit is the
 > design authority.
 >
-> Phase 1 (§9 items 1–11) is done and live in `32e47c9`. Phase 2 is §9 items
-> 12–19 and has not started.
+> **All six §11 decisions are settled** — answers sit beside each question in the
+> audit, indexed in `design.md`. **Do not re-ask one.**
 >
-> The §11 decisions were worked on 2026-08-23: **items 1, 2 and 4 are settled,
-> item 6 went to R&D as register Q6, and items 3 and 5 are still open.** The
-> answers are recorded beside each question in audit §11 and indexed in
-> `design.md`. Read them before planning — item 1 in particular changes the size
-> of half of Phase 2. Do not re-ask a settled item.
+> Phase 1 (§9 items 1–11) is live. **§9 items 12–19 are still unstarted**, but a
+> good deal has shipped outside that list since 2026-08-23: Discovery sorting,
+> the cycle cutover onto arithmetic, the `ABOVE PRIOR CEILING` label, and the
+> risk-chip gate fix. **Do not read "Phase 2 not started" as "nothing has
+> changed"** — read `design.md` top to bottom first; it carries the decisions,
+> the corrections and the working rules, several of which were learned the
+> expensive way.
 >
-> You do not deploy; the Ops thread does. Produce commits and hand them over.
+> **Next piece is §9 item 16a**, scoped and ready: the five false "human review"
+> strings and the `desk research` / `outside research` swap across ~20 rendered
+> sites. It has been displaced repeatedly by live defects and is still owed.
 >
-> Start by telling me what you think Phase 2 should tackle first, given what
-> item 1 settled. Do not write code until we have settled that.
+> You do not deploy; Ops does. **You may commit and push your own work** — stage
+> by explicit path, always.
+>
+> Verify on the live desk *after* a deploy, not only before, and read the
+> working rules on what makes a check capable of failing before you trust one.
