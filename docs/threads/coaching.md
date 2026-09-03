@@ -67,6 +67,7 @@ As of 2026-08-24, the whole loop runs:
 ```bash
 npm run fills:import -- "<webull-export.csv>"   # parse, store, rebuild round trips
 npm run fills:report                            # adherence checks for the latest date
+npm run fills:rules                             # show/set his three session numbers
 ```
 
 - `lib/coaching/fills/` — the Webull parser, the store, flat-to-flat FIFO
@@ -88,9 +89,14 @@ Three properties are worth knowing before trusting a number out of it:
   inside an acceptable average. Every check reading loss-per-share inherits
   that. Commissions and regulatory fees are in no number.
 
-`rules.ts` marks every threshold `stated` or `booklet`, and the report prints
-the booklet-derived ones at the foot of each run. That footer is the standing
-reminder below, made hard to walk past.
+`rules.ts` marks every threshold `stated`, `booklet` or `proposed`, and the
+report prints every non-`stated` one at the foot of each run. That footer is the
+standing reminder below, made hard to walk past.
+
+The three numbers he owns — green stop, red stop, win-ritual threshold — are
+stored in the database, never in code, and are null until he sets them. An
+unset rule reports "not set" rather than borrowing a default. The values are
+his to bring; the desk does not choose them.
 
 ## Handling
 
