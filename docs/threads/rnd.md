@@ -890,6 +890,57 @@ day:** *a correction inherits the confidence of whatever it corrects toward.*
 **I wrote a direction as a finding; Research corrected its own comment toward my
 finding; the error travelled upward in confidence at every step.**
 
+#### "BOARD" IS THREE NUMBERS, AND MY FIGURES USE THE MIDDLE ONE. 2026-09-04.
+
+**Design found it, Integration relayed it, and it is a caveat on every
+board-scoped figure in this register.**
+
+    discoveryRank = 12    config.ts:69 -- the DESK'S OWN "on the board"
+                          lib/desk/assessment.ts fires ENTERED_TOP_N at
+                          assessmentRank <= discoveryRank, noting "entered Top 12"
+    25                    the ASSESSMENT CAPTURE. Exactly 25 rows on all 225
+                          complete assessments; rank 26 appears ZERO times
+    50                    what the UI renders by default; Design displayed 50
+                          ranked rows on 09-03
+
+**Every figure I have published as "board symbol-days" is over the CAPTURE
+window of 25** — not the desk's board of 12, and not his screen.
+
+**AND IT MATERIALLY CHANGES THE YIELD FINDING:**
+
+    top 12  (the desk's own board)     n=418    below 300: 31.8%    50%+ movers: 37.3%
+    top 25  (assessment capture)       n=939    below 300: 45.5%    50%+ movers: 20.8%
+
+> **At the boundary the desk itself uses, the yield problem is 31.8%, not 45.5%
+> — and the mover rate is nearly double.** The 45.5% was inflated by ranks 13–25,
+> which the desk's own code does not call boarded. **Still nearly a third, and
+> materially smaller than reported.**
+
+**RANKS 26–50 ARE STRUCTURALLY INVISIBLE, and this is the part that cannot be
+fixed by recomputing.** The capture is hard-capped at 25 — **not because the
+market stops there, but because the writer stores 25 rows.** So:
+
+> **The archive's silence about ranks 26–50 is NOT evidence they are empty.** If
+> the surface renders 50 populated rows, **half his screen has never been
+> measured by anything in this register**, and no query I can run will tell me
+> which.
+
+**That is a capture gap and it is named as one.** Whether it matters depends on
+whether 26–50 are populated in practice — **a question about the engine and the
+surface, not about the archive**, because the archive is the thing that cannot
+see them.
+
+**Design's repair is the pattern and I am adopting it:** it wrote
+`deadAtRank !== null` — **presence rather than a threshold** — so the predicate
+needs no number, cannot pick the wrong one, and does not move when he changes
+his view size. **When a word has several numeric definitions, prefer a predicate
+that needs none: choosing one correctly still leaves the next reader choosing
+again.**
+
+**Every board-scoped figure in this register should now be read as *over the
+assessment capture window, ranks 1–25*** — Q5, Q6, Q11, S1, S3 and the yield
+finding alike. **Not one of them said so.**
+
 #### Q12 — registered 2026-09-04, not started
 
 **The survivor of the 45.5% finding, and the question that decides what it
