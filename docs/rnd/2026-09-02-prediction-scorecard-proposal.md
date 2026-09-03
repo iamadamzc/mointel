@@ -327,3 +327,49 @@ figure**, each of which came from a separate ad-hoc script days earlier:
 **Scored against its own baseline the card returns NOT_EVALUABLE or NO
 DETECTABLE CHANGE on every measure, which is the correct null** — a scorecard
 that found improvement in the window that defined it would be broken.
+
+## Amendment 7 — the one-cell filter stays out, and now for a stated reason
+
+**My original exclusion said I did not know the instrument well enough to define
+its denominator. Research has answered, by grep across `lib/` and `worker/`
+rather than from memory, and the answer is firmer than my caution was.**
+
+**Nothing is persisted.** The observation unit is well defined — one
+snapshot-clock-time-ticker pair, a legible instant required, a `[t-4h, t]`
+rolling window, failure only on *count ≥ 1 AND desk found nothing* under the
+36h/4h alignment. **But no dataset exists.** The only observations are **nine
+tickers living as PROSE** in `research.md` item 26: not queryable, and
+**every cell is an agreement. Zero failure cells.**
+
+> **A measure whose only recorded observations are agreements cannot detect
+> disagreement. It is not a thin sample, it is a sample selected in a way that
+> excludes the effect** — Research's own phrase about CRGO/MYSZ, arriving here
+> about a different instrument.
+
+**And the denominator is unrecoverable for a second, independent reason:
+supplied-nothing days are indistinguishable from no-news days.** Nothing records
+what the trader supplied, **so nothing records what he did not.** The manual-feed
+caveat was a design requirement that was never implemented as a distinction.
+
+**So the exclusion stands and hardens: not *I lack the definition*, but *the
+definition exists and the data to satisfy it does not.*** Those are different
+exclusions and only the second is permanent until someone captures differently.
+
+**It is scoreable in a future window if he wants it.** The capture spec already
+exists — Research items 25/26: ticker, publication timestamp, desk state at that
+instant, **and supplied-nothing recorded separately.** That last field is the one
+that does not exist today and without which the other three cannot be read.
+**His call, no clock, and nothing here waits on it.**
+
+## Amendment 8 — the amendment window is closed
+
+**Closed as of the runner's commit, `e9643b3`.** The trader has held the
+proposal since it was sent, was told explicitly through Integration that silence
+means the runner is written to the five instruments as proposed, and did not
+amend. **The runner implements them.**
+
+**This is not a deadline and reopening is cheap until the data lands.** An
+amendment now costs a script change and nothing else — **no result has been
+computed on the extended window, so nothing can be invalidated by changing a
+rule.** After the run it would be a different matter, and that asymmetry is the
+only reason the window is worth naming at all.
