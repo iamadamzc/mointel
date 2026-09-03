@@ -712,3 +712,41 @@ scope.
 prioritises.** And it raises a product question that is not mine to answer:
 **an instrument that fires at 09:25 and predicts into RTH is, under this scope,
 an instrument aimed outside it.** Flagged for whoever owns that assessment.
+
+
+---
+
+## Amendment 6 — a persistence threshold carries an implicit unit, and the scope changed it
+
+**Integration's point, taken back into the design because it lands on my
+pre-registration rather than on the reporting.**
+
+**I fixed persistence at 5 minutes against a 960-minute grid.** The premarket
+grid is **330 minutes.** The number did not change and what it means did:
+
+    threshold    of the pooled day (960 min)    of premarket (330 min)
+      5 min              0.5%                          1.5%
+     30 min              3.1%                          9.1%
+
+> **The same absolute duration is roughly three times stricter under his scope.
+> A duration threshold carries an implicit unit — fraction of the window — and
+> re-scoping silently rescaled it.** A units problem hiding inside a number that
+> looks unitless.
+
+**So Result 4's curve is not the pooled curve restricted; it is a differently
+calibrated instrument.** Thirty minutes dead is a routine pause in a
+sixteen-hour day and **a tenth of the session** in premarket. **That is part of
+why the premarket figures sit lower**, alongside the excluded post-open
+revivals, and the two causes are not separated here.
+
+**Which strengthens Integration's 5-minute recommendation on a ground neither of
+us started from.** It argued 5 on event counts and on 30-being-a-tenth. **The
+sharper version is that 5 minutes was pre-registered against a window that no
+longer exists**, so it is not obviously the right number either — **it is simply
+the one whose recalibration is smallest.**
+
+**Fixed as a rule rather than a note, because it will recur:** *any duration
+threshold in this register states the window it was calibrated against, and
+re-scoping the window re-opens the threshold.* **A pre-registration binds the
+number; it cannot bind what the number means when the window moves underneath
+it.**
