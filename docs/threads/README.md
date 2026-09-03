@@ -218,7 +218,16 @@ Every thread works in `A:\mointel`. Rules, in order of how much they matter:
    This one is cheap to obey and the incident that produced it was recoverable
    only by luck of `pop` leaving the object behind.
 
-6. **A push publishes every commit below it.** All threads share one local
+6. **`Everything up-to-date` after a fresh commit is what a FAILED push looks
+   like — and it is usually a race.** *Design, 2026-09-04, on a tree five
+   threads push to.* A concurrent push can land your commit before yours runs,
+   and git then prints the same line it prints when nothing was pushed at all.
+   **The output is identical in the success and failure cases**, so somebody
+   reads it literally, re-pushes, or assumes they lost work. **Verify with
+   `git branch -r --contains <sha>`, never by trusting the push output.** Same
+   shape as the review link answering 200 while dead.
+
+7. **A push publishes every commit below it.** All threads share one local
    `main`, so any thread's push carries every earlier local commit, whoever
    made it — a per-thread "hold my commit back from origin" is not possible
    while any other thread pushes. A hold is collective (a freeze declared
@@ -504,6 +513,33 @@ predicate** — so `?symbols=` finds exactly those seeded rows and bypasses the 
 thing they lack. **Everything reconciles to one date and one deploy.** The fact
 that settled it had been sitting in a relay for an hour, in a message whose author
 did not know what it was for.
+
+## Pin a measured constant; a bound lets it drift in the flattering direction
+
+**Research, 2026-09-04, tightening its own test after R&D quantified the value
+it was guarding.** The test asserted `reviveMinutes > 1`. **A bound would have
+let it drift silently to 3 or 4** — and the measured table shows each step is a
+real trade against opportunity (3 costs 41% of genuine returns), not a free
+tightening. It now asserts the value **is 2**, so anyone moving it has to see
+the numbers and go and find newer ones. **A bound permits movement in the
+direction that feels safe, which is exactly where an unexamined change goes.**
+
+**And in the same pass, a rule about how justifications are written:**
+
+> **Understating your case is how a constant later gets loosened by someone who
+> reads only the weaker argument.**
+
+Research had justified the value as *a fast return buys flicker rather than
+opportunity*; the data showed it also buys **a worse mix** — conditional quality
+rises 7.0% → 7.9% when the constant holds. The comment now carries the stronger
+claim, because the comment is what the next reader weighs against the cost.
+
+**Related: derive a dependent constant rather than configuring it twice.** The
+dead line is `active ÷ 10` rather than a second configured number, because the
+10× is the trader's choice and **two separately configured values can drift
+until they no longer express his ratio, with nothing anywhere to notice.**
+Deriving makes the choice structurally unforgettable — and the config carries a
+comment saying so, or the next person to simplify it will configure both.
 
 ## A correlation is not a threshold agreement, and a pilot is not a small study
 
