@@ -796,6 +796,101 @@ re-collapse that into a boolean by picking a number — the row shows how many
 sessions behind, and the trader decides. **Two sessions behind on a name he is
 about to size is his call, not a constant in this file.**
 
+## The Graveyard — commissioned 2026-09-03
+
+The desk is adding a continuing board-presence condition: a name dead for five
+consecutive minutes leaves the active board. Dead is minute **trade count**
+(active ~300/min, dead = active ÷ 10). Research determines and exposes
+(`activityState`, `deadSince`); **the surface is Design's.** His one constraint:
+**not in the main view with active names.**
+
+**Why it exists at all:** today unranked means invisible — a dropped name
+vanishes and cannot be told from one that was never there. He rejected that as
+the inverse of intelligence-not-signal.
+
+**Three structural facts that drive every decision below.**
+
+1. **RVOL is cumulative and never decays**, so a revived name returns
+   **instantly at its old rank** — the numerator was frozen, not lost.
+2. **A dead minute produces no bar at all**, so absence is the signal.
+3. **33% of dead-5-minute names see activity return, but only 7% come back at
+   +25% or better** (n=17, premarket). Every rate is a **floor**, because minute
+   grain cannot see a sub-minute revival.
+
+### The decision that matters most: revived rows STAY, marked
+
+The graveyard is **the rule's own falsification surface**. Getting that right is
+worth more than every other choice in it.
+
+**So a revived name does not silently leave.** It stays for the session, marked
+revived, with the time it came back. **The graveyard's own composition then
+becomes the evidence**, and the header carries it as a live count:
+
+    GRAVEYARD · 14 dead · 4 revived · 1 ran
+
+**He never has to open it.** If that middle number runs at half the rows, the
+threshold is wrong and he sees it without counting anything. **A check that can
+fail, rendered as chrome.**
+
+**And `revived` alone would overstate the error five-fold — which is why there
+are two numbers, not one.** 33% see activity return; only 7% return at +25%+. A
+name that twitches back at +2% was **correctly dropped**. **The rule is wrong
+only when dropped names come back and RUN**, so `ran` is the falsifying count and
+`revived` is context for it. A single "revived" tally would have read as a 33%
+miss rate against a real one nearer 7%.
+
+### Where it lives, and why not the rail
+
+**Below the researched names, collapsed by default, count in the header.** Not
+the §6 Changes rail: **the rail is for events — things that happened; the
+graveyard is a population — things that are.** Merging them costs the rail its
+one job.
+
+Collapsed-with-a-count is what makes it free: the falsification signal is in the
+header, so the section earns its place without ever being opened.
+
+### The row
+
+The question a graveyard row answers is **not** *what died* — a memorial is
+useless. It is **"if this comes back, does it matter?"**
+
+| Field | Why |
+| --- | --- |
+| Ticker | — |
+| **Dead for** | Decays in relevance; the primary sort key. |
+| **Rank held** | **Not history — a prediction.** RVOL is frozen, so this is exactly where it re-enters. A name that died at rank 3 returns at rank 3. |
+| **What it did** | Peak move while alive. The "was it worth anything" axis. |
+| **Revived at** | Time, and whether it ran. Present only once revived. |
+
+`Rank held` is the field a naive design would drop as backward-looking. It is the
+most forward-looking thing on the row.
+
+### Ordering and lifetime
+
+**Default: most recently dead first.** Revival probability decays with time dead,
+so recency is the actionable order — a name dead six minutes is a candidate, one
+dead three hours is history. **Second key: rank held**, which is the "does it
+matter" axis. Reuse the Discovery sort control rather than inventing a second
+mechanism.
+
+**It clears at session end, and not arbitrarily.** RVOL resets between sessions,
+so `rank held` stops predicting where a name re-enters — **the row's central
+promise expires**, and a surface that outlives its own claim is the thing this
+thread keeps removing. The record persists in the archive; the surface does not.
+
+### Revival must announce itself on the main board too
+
+A name silently reappearing among active names is the same information loss he
+just rejected, inverted. **The revival is a Changes rail event** (§9 item 12) —
+`SUIG revived · dead 14m · back at rank 4` — which is exactly what the rail is
+for and avoids inventing a second notification path.
+
+**Open, and not Design's to answer alone:** whether the displayed revival rate
+should be labelled a floor. It is one, by Research's own statement. Showing
+`4 revived` without that caveat slightly understates; a caveat in the header
+costs space on a number whose job is to be glanced at. Leaning toward the caveat
+living in hover or the drawer rather than the header.
+
 ### Pre-registered: how the `d8794da` verification will be read
 
 **Written before the deploy and before any reading exists**, so the reading
