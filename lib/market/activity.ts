@@ -52,10 +52,31 @@ export interface ActivityConfig {
   /**
    * Consecutive active minutes before presence returns — deliberately NOT 5.
    *
-   * 33% of five-minute deaths see activity return, so without hysteresis the
-   * board oscillates for a third of every removal; and only 7% of those
-   * revivals reach +25%, so a fast return buys flicker rather than
-   * opportunity. Asymmetry is the entire point.
+   * MEASURED, not reasoned. R&D quantified this on premarket at dead = 5
+   * minutes, and the numbers below are why the value is 2:
+   *
+   *     revival needs      revival events     of those, live +25%
+   *     1 consecutive       32.8%  (244)       7.0%  (17)
+   *     2 consecutive       24.3%  (177)       7.9%  (14)
+   *     3 consecutive       15.3%  (118)       8.5%  (10)
+   *
+   * At 2 the rule discards 67 of 244 revival events — 27% of the flicker —
+   * and gives up 3 of 17 genuine +25% returns, 18% of the opportunity.
+   * Favourable on its own.
+   *
+   * AND THE SURVIVORS ARE BETTER, WHICH IS MORE THAN THE ORIGINAL ARGUMENT
+   * CLAIMED. Conditional quality rises 7.0% → 7.9% as the requirement
+   * tightens, because sustained activity filters flickers more effectively
+   * than it filters real moves. The first version of this comment said only
+   * that a fast return buys flicker rather than opportunity; the data says it
+   * also buys a WORSE MIX.
+   *
+   * Going to 3 keeps improving the mix and costs 41% of the opportunity, so 2
+   * is the knee rather than the extreme.
+   *
+   * *Premarket-derived, like the thresholds, while the rule itself is uniform
+   * — so by-session reporting is what would reveal these rates not holding
+   * elsewhere.*
    */
   reviveMinutes: number;
   /**

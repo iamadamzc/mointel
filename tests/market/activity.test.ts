@@ -201,12 +201,20 @@ describe('resolveActivity — hysteresis, because a third of deaths revive', () 
   });
 
   it('is asymmetric: leaving takes five minutes, returning takes two', () => {
-    // Stated as an assertion rather than left to the config, because the
-    // asymmetry IS the design and a symmetric edit would look reasonable.
+    /*
+     * Stated as an assertion rather than left to the config, because the
+     * asymmetry IS the design and a symmetric edit would look reasonable.
+     *
+     * The exact value is pinned rather than merely bounded because it is
+     * MEASURED: at 2, R&D's premarket figures discard 27% of revival flicker
+     * for 18% of the genuine +25% returns, and the conditional quality of the
+     * survivors rises 7.0% → 7.9%. Anyone moving it should have to see this
+     * test and go and find newer numbers.
+     */
     expect(DEFAULT_ACTIVITY_CONFIG.deadMinutes).toBe(5);
+    expect(DEFAULT_ACTIVITY_CONFIG.reviveMinutes).toBe(2);
     expect(DEFAULT_ACTIVITY_CONFIG.reviveMinutes).toBeLessThan(
       DEFAULT_ACTIVITY_CONFIG.deadMinutes,
     );
-    expect(DEFAULT_ACTIVITY_CONFIG.reviveMinutes).toBeGreaterThan(1);
   });
 });
