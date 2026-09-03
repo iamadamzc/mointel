@@ -1261,6 +1261,18 @@ to board entry" restated is *what cycle phase is a name in when the board
 surfaces it*, and `first_board_entry_at` is already stored. **Not built** — Q1 is
 active and does not need it. Recorded as ready.
 
+**STALE, found by the 2026-09-03 existence audit. Q5 CLOSED on 08-27 and did not
+need this either.** It was answered from `first_board_entry_at` against
+`time_of_max_gain` directly, with no cycle phase involved. **So this measure is
+now unbuilt AND unattached to any open question** — it was justified by a
+question that has since been answered without it. Kept rather than deleted,
+because *ready and wanted by nothing* is a different state from *ready*, and the
+next reader should be told which.
+
+**This is the audit's own first catch on this document**, and it is the subtler
+form: not a claim about what exists, but a **justification whose reason expired
+while the claim stayed true.**
+
 **Structure's freeze stands and hardens**: 45% unanimous, mean agreement 84%,
 least reproducible of the three, and *not* becoming arithmetic.
 
@@ -2053,6 +2065,12 @@ intelligence, it is volume — and volume is how a genuine signal gets buried.
   so *"was this tradable on 2026-08-19"* is already unanswerable and each
   delisting makes the cross-section retroactively incomplete. ~13k rows a day of
   symbol, date, status, tradability. Handed over, not built.
+
+  **VERIFIED STILL TRUE 2026-09-03.** `universe` holds 13,089 rows, one per
+  symbol, with `tradable` and `status` overwritten in place. **It does carry an
+  `updated_at`, and that is the trap** — a keyword scan for a date column
+  reports a hit, and `updated_at` is a last-write stamp rather than a history.
+  **A claim confirmed by a matching column name is not confirmed.**
 
 ## Opening message for a new chat
 
