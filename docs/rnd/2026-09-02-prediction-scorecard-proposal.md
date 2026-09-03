@@ -373,3 +373,30 @@ amendment now costs a script change and nothing else — **no result has been
 computed on the extended window, so nothing can be invalidated by changing a
 rule.** After the run it would be a different matter, and that asymmetry is the
 only reason the window is worth naming at all.
+
+## Amendment 9 — pre-flight against an extract-shaped store, before the real one arrives
+
+**Run rather than reasoned about, because a failure discovered when the extract
+lands costs a round trip with Ops.**
+
+Built a synthetic extract with `npm run archive:export`, confirmed it carries
+**only `desk_assessments` and `desk_assessment_tickers`** — no `ticker_session`,
+`universe`, `minute_bars` or `daily_bars` — then ran the backfill and the
+scorecard against it. **Both work.** The backfill reads exactly those two tables
+by design and the export copies exactly those two; the match held under test
+rather than only in the comment claiming it.
+
+**And the diagnostics earned their place on first contact with incomplete data,
+by accident.** A `--coverage-only` run fetches no outcomes, so S1 reported:
+
+    ? S1  value n/a  NOT_EVALUABLE
+          n=0  dropped: noPeakTime=100
+
+**`noPeakTime=100` is the whole argument of Amendment 4 in one line.** An
+aggregates-only runner would have returned a missing value with nothing to say
+why, and the first guess would have been a broken join rather than an
+unfetched column. **The measure that could not be computed said so, and said
+which input was absent.**
+
+Scratch files removed. Nothing touched the real archive: `--archive` redirected
+every write.
