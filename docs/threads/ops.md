@@ -3044,6 +3044,59 @@ comparison — the first version of this query compared ISO `...T19:59:00.000Z`
 against `datetime()`'s space-separated form and **returned a clean zero**
 because `'T'` sorts above `' '`.
 
+### Condition 6: a network call in the checkpoint writer is guarded by a `catch`, and a hang is not a throw
+
+**Raised before Q9's capture writer is built, which is the only time raising it
+is cheap.** The proposal puts a Google Sheets call inside the append-only
+checkpoint writer, nineteen times a session.
+
+**The writer claims the slot BEFORE doing the work** (`worker/desk-assessments.ts:529`):
+
+```js
+const id = claimAssessmentSlot(db, {...});   // row is RUNNING from here
+if (id === null) return false;
+try {
+  return captureAndPersist(db, {...});
+} catch (error) {
+  completeAssessment(db, id, { status: 'FAILED', ... });
+}
+```
+
+**The comment beside that catch already names the failure it prevents:**
+*"Leaving the row RUNNING would make the slot look taken while holding nothing,
+and the next worker would only reclaim it after the ten-minute abandonment
+window."*
+
+**A catch handles a throw. It cannot handle a hang.** An awaited network call
+that never returns does not throw — **the row stays `RUNNING`, no `FAILED` is
+written, and the slot is dead for the full `STALE_RUNNING_MS` of ten minutes.**
+The existing protection is complete against failure and absent against latency.
+
+**This desk has already had an assessment claim its slot and sit stuck at
+RUNNING.** It is a shape with a history here, not a hypothetical.
+
+**Required before Q9's writer ships:**
+
+1. **An explicit hard timeout** on every external call in that path, an order of
+   magnitude under ten minutes. Not a library default, not "fetch has one
+   somewhere" — a stated bound.
+2. **A timeout degrades to a NULL column, never to a failed checkpoint.** The
+   capture is a nice-to-have riding inside the writer of the one record that
+   cannot be rebuilt. **The checkpoint completing is worth more than the column
+   being populated, every time.**
+3. **Nineteen calls a session** multiplies the per-call probability before it
+   becomes a per-session one.
+
+**Latency, measured rather than assumed: checkpoints complete in 28–74 ms**
+across every assessment type over six days. **A Sheets round-trip is two to
+three orders of magnitude slower even when healthy.** This does not only add a
+failure mode — it moves the checkpoint from database-bound to network-bound, and
+anything later reasoning about checkpoint duration will be reasoning about a
+different thing.
+
+**The fix is structural, not a bound: fetch BEFORE the claim, or write the
+column AFTER the complete.** Either removes the hazard; a timeout only limits it.
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
