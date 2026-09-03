@@ -3290,14 +3290,40 @@ revival rate computed over them measures a population six-sevenths composed of
 names that never lived. **That is R&D's Q11 problem returning through a
 different door**, and Q11 was already constrained once for exactly this reason.
 
-> **NAME THE PREDICATE ONCE.** If the surface filters on *ever reached the
-> ACTIVE line* and an analysis filters on something near it, we have two
-> populations under one word again — the collision this desk has now hit six
-> times. The filter is *`dead_at_peak_trades >= activeTradesPerMinute`*, and it
-> should be that expression everywhere rather than a number retyped per reader.
+> **~~NAME THE PREDICATE ONCE.~~ WRONG AS WRITTEN, and it is my second
+> instance of this exact error.** I proposed
+> *`dead_at_peak_trades >= activeTradesPerMinute`* **as that expression
+> everywhere**. R&D measured the two candidates: **mine admits 512
+> symbol-days, Q11's two-consecutive admits 423, and the 89 between them peak
+> above the line without ever SUSTAINING it — a 9.5% gap.**
 
-*This is why the display-side fix is right AND insufficient on its own: a
-judgement applied at one reader is not applied, it is applied there.*
+**Both are right, for different questions, and unifying them would have been
+the failure rather than the fix:**
+
+| reader | asks | predicate |
+| --- | --- | --- |
+| the graveyard surface | *was this ever meaningfully alive* | peak ≥ active line |
+| Q11 | *could this have been DROPPED* | **two consecutive** ≥ active line, because the live `ACTIVE` state requires two sustained minutes — a name that never sustained two was never on the active board and cannot have fallen off it |
+
+> **COUNTING THE CALLERS IS NOT ASKING EACH WHAT IT NEEDS — and this is the
+> SECOND time I have made that mistake.** The first was `readDailyBars`, where
+> I unified four callers on one definition of a usable bar and it was right for
+> rates and wrong for bounds. **Here I proposed unifying two readers on one
+> definition of "ever active", and it is right for a display and wrong for a
+> drop rate.** Same thread, same shape, different function. **The repair is the
+> same one that worked there: let the boundary fall between the readers, and
+> make the choice VISIBLE at each call site rather than unified away.**
+
+**What survives of the original point is the half that was right:** two
+predicates under one phrase, *unstated*, is still the collision. **The fix is
+naming which, not forcing one.** R&D's version is better than mine and is the
+form to keep: **divergence is not uniformly bad — it is uniformly worth knowing
+about.** The same definition difference cost 8.5 points on the revival rate and
+PREVENTED a 45% dilution on Q11's drop population.
+
+*And the display-side fix remains right and still insufficient alone: a
+judgement applied at one reader is not applied, it is applied there. That part
+stands.*
 
 ### POST-DEPLOY VERIFICATION, PRE-REGISTERED before the deploy so it cannot be fitted to what lands
 
