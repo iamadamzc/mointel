@@ -2368,6 +2368,16 @@ As of the last session, **2026-08-23**:
   re-joined at will — no run buys a day of it.
 - Credentials live in `A:\AWS_creds\` — **outside the repo, and they stay there.**
   Never print, log, commit or move a credential value.
+- **A rule he set may be written down; a number the market gave him may not.**
+  *Coaching's formulation, 2026-09-03, after Integration re-quoted one of his
+  results into a charter and Coaching had declined to.* A threshold he chose is
+  a **decision** and belongs in the record; a P&L, a hit rate, a day total or a
+  trade size is a **personal financial record** and belongs only in the report
+  output, which lives outside the repo by construction. `$0.15–$0.25` in
+  `coaching.md` is his stated rule and is fine; a dollar he actually made is
+  not. **Two independent reasons want the same thing here:** privacy, and the
+  fact that a second copy of a figure rots — a stale P&L quoted by a future
+  session as current is worse than a private one.
 - Project memory is at `~/.claude/projects/A--mointel/memory/` — seven files:
   desk state, operations traps, deployment, how the trader works, how he
   *trades*, the catalyst structure break, and the viscosity research. The last
