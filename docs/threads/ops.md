@@ -2881,6 +2881,72 @@ instance that an unpaced process took down on 08-27 and whose WAL sits at
 546 MB. **Whoever scopes 10s capture should price the write load before the
 schema** — this desk has now learned that lesson twice.
 
+### Pre-deploy baseline: dead names holding ranked slots, measured before the fix
+
+Integration framed this as a **post**-deploy measurement. **The phenomenon is
+live in the current code** — keeping a dead name's row keeps its rank, and rank
+is what `queue.ts:55` (`isEligible`, `autoRank`) and the high-res selection read.
+So the "after" wants a "before", and it can be approximated **without** the
+undeployed activity emission: a ranked name with no minute bar in five minutes is
+dead by observation.
+
+**Effective thresholds:** `RESEARCH_AUTO_RANK=12` (set in
+`/etc/mointel/mointel.env`, matching `DEFAULT_AUTO_RANK`), high-res cap 250.
+
+**First reading, 2026-09-03 ~17:50 ET, AFTER-HOURS:**
+
+```
+top12  research slots     12 total     6 dead   (50%)
+top250 high-res slots    250 total   199 dead   (80%)
+```
+
+**Read this as method-validated, not as the price.** After hours, "no bar in five
+minutes" catches names that have legitimately finished for the day, so both
+figures are inflated. **The RTH reading is the one that prices the win**, and it
+must be taken before the readers change to `ranked AND alive`.
+
+### The first version of this query returned a clean ZERO, and the zero was a lie
+
+```sql
+lastbar < datetime((SELECT MAX(ts) ...), '-5 minutes')     -- WRONG
+```
+
+`ts` is stored as `2026-09-03T21:48:00.000Z`; `datetime()` returns
+`2026-09-03 21:43:00`. **String comparison puts `'T'` (0x54) above `' '`
+(0x20)**, so every `lastbar` sorts after every `datetime()` output and **nothing
+is ever less-than.** The query reported **0 dead slots** while the rows it
+printed alongside showed FDMM stale by 1h58m and BLUW by 3h36m.
+
+**The correct form compares as time, not as text:**
+
+```sql
+(julianday(now_ts) - julianday(lastbar)) * 1440.0 > 5
+```
+
+**I nearly reported "no dead slots" and priced a real fix at zero.** The only
+reason I caught it is that the same query printed the underlying rows next to
+the count, and the rows contradicted the total. **A count and its evidence in the
+same output is what made a false zero visible** — the count alone was clean,
+confident, and wrong.
+
+**Same family as every other trap this week — key-presence, ancestry, scope,
+`grep -c "429"` matching a millisecond field.** This one is *format* mismatch,
+and it fails in the most dangerous direction: **silently, toward "no problem
+here".**
+
+### Two schema constraints from Research, held for whenever the gate opens
+
+**`undefined` and `'UNKNOWN'` are different and must not collapse.** The activity
+field is deliberately optional and live-only: `undefined` means *no column, did
+not survive a store round-trip*; `'UNKNOWN'` means *the engine looked and could
+not say*. **Only the second is a measurement.** A column added later that maps
+both to NULL destroys the distinction permanently.
+
+**If the state is ever persisted, the thresholds in force must travel with it.**
+Otherwise every past decision becomes unreproducible while still looking
+authoritative — a stored verdict without its parameters is exactly the
+`(no split basis established)` shape, one layer down.
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
