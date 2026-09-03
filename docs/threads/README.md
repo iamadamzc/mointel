@@ -526,6 +526,23 @@ thing they lack. **Everything reconciles to one date and one deploy.** The fact
 that settled it had been sitting in a relay for an hour, in a message whose author
 did not know what it was for.
 
+## A test can pass because the setup never reached the condition
+
+**R&D, 2026-09-04, catching it in a test it had just written.** The fixture used
+activity peaks of **500** against an active level of **600** — **so the name
+never went active at all.** No episode was ever found, the assertion passed, and
+it demonstrated nothing.
+
+> **Right outcome, wrong mechanism. A green that agrees with you for a reason
+> you did not check.**
+
+Rewritten with peaks of 700, so raising the active level genuinely changes how
+the same series reads. **This is the test-side twin of *a claim confirmed by a
+matching column name is not confirmed*** — and it is nastier than a check that
+cannot fail, because that one at least exercises the code. **This one never
+arrives.** The prompt that catches it: *does my fixture actually enter the state
+under test, or does it pass by never getting there?*
+
 ## Pin a measured constant; a bound lets it drift in the flattering direction
 
 **Research, 2026-09-04, tightening its own test after R&D quantified the value
