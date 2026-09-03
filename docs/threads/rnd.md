@@ -889,6 +889,55 @@ day:** *a correction inherits the confidence of whatever it corrects toward.*
 **I wrote a direction as a finding; Research corrected its own comment toward my
 finding; the error travelled upward in confidence at every step.**
 
+#### The 45.5% — Integration's discriminator, run. Reading B is refuted. 2026-09-04.
+
+**Integration split the finding into two readings before it became a question,
+and named the discriminator: do the board names that never reach 300 trades/min
+nonetheless produce tradeable moves?**
+
+    board symbol-days           n      >=50% move       >=25% move    median gain
+    peak >= 300 trades/min     512    195  (38.1%)     331  (64.6%)      37.6%
+    peak <  300 trades/min     427      0  ( 0.0%)      32  ( 7.5%)       2.1%
+
+    rank 1-10,  peak >= 300    251    145  (57.8%)     226  (90.0%)      56.5%
+    rank 1-10,  peak <  300     91      0  ( 0.0%)      17  (18.7%)       1.6%
+    rank 11-25, peak >= 300    261     50  (19.2%)     105  (40.2%)      20.6%
+    rank 11-25, peak <  300    336      0  ( 0.0%)      15  ( 4.5%)       2.1%
+
+> **ZERO of 427. Not one board symbol-day that failed to reach 300 trades/min
+> produced a 50%+ move**, against 38.1% of those that did. Median gain **2.1%
+> against 37.6%.** It holds inside every rank band.
+
+**READING B IS REFUTED. 300 trades/min is not too high a bar for "alive"** — it
+is an almost perfect separator, and a name below it is not *inert-looking but
+tradeable*, it is **not moving.** The word is doing exactly the work it claims.
+
+**READING A SURVIVES, and it is the third instrument saying the same thing.**
+**45.5% of board slots go to names that never move**, beside Q6 (rank predicts
+volatility, not edge) and Q5/S1 (the board is late). **Nearly half of what the
+RVOL ordering surfaces is not worth surfacing.**
+
+### THE CIRCULARITY, and it bounds the claim rather than voiding it
+
+**A 50% move REQUIRES trading. So "low trade count implies no big move" is close
+to mechanical**, and the zero is less surprising than it looks. **What this
+establishes is that peak trades/min is a near-perfect EX-POST separator, not
+that it is a usable EX-ANTE filter.**
+
+**That distinction is the whole of what can and cannot be done with it.** The
+board must rank names **before** the session's peak exists, and **nothing here
+shows that low activity is detectable early enough to act on.** A rule that drops
+names once they have already failed to trade is the drop rule, which exists.
+
+> **So the finding is about the BOARD'S YIELD, not about a fix.** Nearly half its
+> slots produce nothing, and **whether that is repairable depends on a question
+> this does not answer: is a name's eventual activity predictable at the moment
+> the board ranks it?** That is the next question and it is not this one.
+
+**Registered as such rather than as a verdict.** Integration was right that the
+number had two readings; **one is now closed and the survivor is smaller than it
+first looked.**
+
 #### The graveyard filter — measured for Design, 2026-09-04
 
 **The question, from Design through Integration: do board-ranked names routinely
