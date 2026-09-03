@@ -56,23 +56,29 @@ export interface ActivityConfig {
    * minutes, and the numbers below are why the value is 2:
    *
    *     revival needs      revival events     of those, live +25%
-   *     1 consecutive       32.8%  (244)       7.0%  (17)
-   *     2 consecutive       24.3%  (177)       7.9%  (14)
-   *     3 consecutive       15.3%  (118)       8.5%  (10)
+   *     1 consecutive       32.8%  (244)       7.0%  (17 of 244)
+   *     2 consecutive       24.3%  (177)       7.9%  (14 of 177)
+   *     3 consecutive       15.3%  (118)       8.5%  (10 of 118)
    *
    * At 2 the rule discards 67 of 244 revival events — 27% of the flicker —
-   * and gives up 3 of 17 genuine +25% returns, 18% of the opportunity.
-   * Favourable on its own.
+   * and gives up 3 of 17 genuine +25% returns, 18% of the opportunity. Going
+   * to 3 costs 7 of 17, 41%, so 2 is the knee rather than the extreme.
    *
-   * AND THE SURVIVORS ARE BETTER, WHICH IS MORE THAN THE ORIGINAL ARGUMENT
-   * CLAIMED. Conditional quality rises 7.0% → 7.9% as the requirement
-   * tightens, because sustained activity filters flickers more effectively
-   * than it filters real moves. The first version of this comment said only
-   * that a fast return buys flicker rather than opportunity; the data says it
-   * also buys a WORSE MIX.
+   * THE QUALITY COLUMN IS FLAT, NOT RISING, AND THE RAW COUNTS ARE WHY.
+   * 7.0 → 7.9 → 8.5 looks like a trend and is 17, 14 and 10 events: Fisher
+   * gives p = 0.71 for 1-vs-2 and p = 0.67 for 1-vs-3, which is the same rate
+   * measured three times. So the honest claim is that quality does NOT FALL
+   * as the requirement tightens — **the 27% flicker reduction is FREE on
+   * quality rather than positive on it**, which is still a good trade and is
+   * all the data will carry.
    *
-   * Going to 3 keeps improving the mix and costs 41% of the opportunity, so 2
-   * is the knee rather than the extreme.
+   * *An earlier version of this comment said the mix IMPROVES. It does not;
+   * that was a direction read as a finding, and it sat above a pinned test as
+   * the strongest sentence here. The counts are quoted beside the percentages
+   * deliberately — the next reader will otherwise quote 7.0 → 7.9 and not
+   * 17 → 14. A count of 244 discarded events is solid; a ratio between two
+   * counts that small is not, and the two halves of this table are not
+   * equally strong.*
    *
    * *Premarket-derived, like the thresholds, while the rule itself is uniform
    * — so by-session reporting is what would reveal these rates not holding

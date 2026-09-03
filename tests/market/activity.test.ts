@@ -207,9 +207,11 @@ describe('resolveActivity — hysteresis, because a third of deaths revive', () 
      *
      * The exact value is pinned rather than merely bounded because it is
      * MEASURED: at 2, R&D's premarket figures discard 27% of revival flicker
-     * for 18% of the genuine +25% returns, and the conditional quality of the
-     * survivors rises 7.0% → 7.9%. Anyone moving it should have to see this
-     * test and go and find newer numbers.
+     * (67 of 244 events) for 18% of the genuine +25% returns (3 of 17), and
+     * quality does not fall — 7.0%, 7.9%, 8.5% are 17, 14 and 10 events and
+     * sit within noise, so the flicker reduction is FREE on quality rather
+     * than positive on it. Anyone moving this should have to see the numbers
+     * and go and find newer ones.
      */
     expect(DEFAULT_ACTIVITY_CONFIG.deadMinutes).toBe(5);
     expect(DEFAULT_ACTIVITY_CONFIG.reviveMinutes).toBe(2);
