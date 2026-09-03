@@ -889,6 +889,57 @@ day:** *a correction inherits the confidence of whatever it corrects toward.*
 **I wrote a direction as a finding; Research corrected its own comment toward my
 finding; the error travelled upward in confidence at every step.**
 
+#### Q11's population, after Research's dilution warning — measured 2026-09-04
+
+**Research warned that stored DEAD rows are six-sevenths names that never lived,
+and named me as the reader who would compute a rate over them without seeing it.
+The warning is right, the dilution is large, and it does not reach the Q11
+result — for a reason worth stating precisely rather than claiming as foresight.**
+
+    board symbol-days                                     939
+      never reached 300 trades/min at all      427   45.5%
+      peak >= 300 but never 2 consecutive       89    9.5%
+      2 consecutive minutes >= 300             423   45.0%
+
+**Nearly half the board population never lives.** So a false-positive rate
+computed over stored DEAD rows would be **diluted by names that were always
+quiet**, exactly as Research says.
+
+**THE Q11 REPLAY EXCLUDED THEM BY CONSTRUCTION.** Its detector cannot record a
+drop except from the `active` state, and reaching `active` needs **two
+consecutive minutes at or above 300**. A name that never lived produces no drop
+event. **The 577 drops are all names that were genuinely active first.**
+
+**That was not foresight.** The prior-active requirement is in
+`lib/archive/revival.ts` because *a name that goes dead must first be alive* is
+the natural reading of the trader's question — **not because I anticipated this
+dilution.** It is the same divergence from `activity.ts` I flagged as a RISK in
+the definitions comparison, and here it turned out to be the protection.
+
+**BUT MY FILTER IS NOT RESEARCH'S PROPOSED FILTER, and the gap is measured:**
+
+    Research's predicate, dead_at_peak_trades >= activeTradesPerMinute   admits 512
+    Q11's replay, two consecutive minutes at or above active             admits 423
+    difference                                                            89  (9.5%)
+
+**Eighty-nine symbol-days peak above the active line without ever sustaining
+it.** Naming that now rather than after: **it is the sixth instance of this
+desk's oldest collision and would have been the first created BY A FIX**, which
+is what Research warned about.
+
+**For Q11 the two-consecutive filter is the correct one**, because it is what
+makes a name **droppable**: the live rule's `ACTIVE` state requires
+`reviveMinutes: 2`, so a name that never sustained two minutes was never on the
+active board and cannot be dropped from it. **Research's peak predicate is right
+for the SURFACE — filtering never-lived names out of a display — and looser than
+the drop semantics.** Both correct for their own purpose; **not interchangeable,
+and 9.5% apart.**
+
+**So Q11's stated population, in full, travels as: board symbol-days reaching
+two consecutive minutes at or above 300 trades/min, `reviveMinutes: 2`, decided
+at minute six.** Three constraints on one numerator, all from two threads'
+definitions diverging, all in the same sentence as any rate.
+
 #### Q11 RESULT — the rule is most wrong where it was calibrated. 2026-09-04.
 
 **Replayed over 13 sessions, 939 board symbol-days, 577 drop events, decided at
