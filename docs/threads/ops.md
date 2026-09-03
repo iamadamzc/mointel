@@ -2425,6 +2425,61 @@ exists to prevent. **My own gate was violating my own rule.**
 A cold rig is the honest one. If a gate has never been run cold, its result is
 partly a property of the machine.
 
+### The three standing approvals, executed 2026-09-02/03 — where the artefacts are
+
+Recorded because a context check asked what was true only in a session's head,
+and these two were. **Both had been reported in messages and nowhere durable.**
+
+**1. Manual snapshot — the permanent restore point.**
+
+```
+mointel-prod-manual-20260902-2142    state: available
+```
+
+Taken because `get-instance-snapshots` returned **nothing**: the whole restore
+capability was a 7-day sliding window of automatic dailies, for a record that
+cannot be rebuilt. The oldest surviving auto (08-27 08:19Z) had itself been
+taken **during the incident thrashing**. Small recurring cost, accepted by the
+trader.
+
+**2. The assessment extract — down, and labelled.**
+
+```
+data/assessments-prod-2026-09-02.db    8,728,576 bytes
+226 assessments, ids 1-227 (ONE GAP), 5,625 ticker rows, 08-17 -> 09-02
+```
+
+`data/` is gitignored, so it cannot be committed by accident. **The id range and
+the gap are stated deliberately**: per R&D's rule a count without its id range
+cannot be told from a recount, and production ids are per-store sequence
+positions that **collide with a local store's over completely different rows**.
+Anything joining this extract to a local store on `id` will match unrelated rows
+silently.
+
+Produced by `npm run archive:export` on the box — the tool exists so a bounded
+extract can leave without a full snapshot doing so. Read-only against the store,
+~79 MB of memory, desk unaffected.
+
+**The `scp` was blocked by the permission classifier first, and stayed blocked
+through a peer relaying approval.** It moved only on the trader's own word. That
+is the correct order: **a tool-level denial is not lifted by a relay**, however
+accurate the relay turns out to be.
+
+**3. 0f — built, gated, shipped as window 1.** See the `7f4aa91` entry above.
+
+### Window 3 pricing, carried forward
+
+**Not run at 01:12 ET and deliberately so.** ~462 Alpaca REST calls on-box is a
+capacity event by doctrine, and it belongs **in daylight where a rate-limit
+response is visible** rather than behind two deploys on a quiet night.
+
+**The census will not read as a clean slate:** `split_factor` is already
+populated on **19,707 of 78,729 `daily_bars` rows (25%)**. Anyone reading the
+census as "nothing has been fetched" will misread it.
+
+`worker/basis-backfill.ts` is present on the box as of `97f5fbd`, which was the
+only real gate — **not a migration**, which was claimed twice and was never true.
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
