@@ -4624,6 +4624,17 @@ section is older.
 - [ ] **Ask of every new field: COULD THIS BE CONSTANT?** Fifth instance of a
       constant dressed as a measurement. **The test must be able to fail**: write,
       write again with a different value, assert the stored value **changed**.
+- [ ] **The question has THREE answers, not two.** *No* is fine. *Yes,
+      accidentally* is the defect. **The third is *yes, knowingly, and here is
+      when it stops*** — `float_basis` will be `SHEET_VENDOR` on every row until
+      a derived float exists, and it ships anyway because a basis comes from the
+      first row and is never retrofitted.
+- [ ] **For a deliberate constant: NEVER write a test asserting the constant.**
+      That is precisely what let the `toolConfig` case survive review — a test
+      pinning the current value converts a known-temporary constant into a
+      guarded invariant, and the next person to make it vary has to argue with
+      a green test. **Record the expected variation instead, so an auditor
+      finding it constant knows whether they found a defect or a schedule.**
 - [ ] **`undefined` and a sentinel like `'UNKNOWN'` must not collapse into one
       NULL.** Only one of them is a measurement. Requires that no writer can
       leave the column unset on a live row — **audit the writer paths, do not
