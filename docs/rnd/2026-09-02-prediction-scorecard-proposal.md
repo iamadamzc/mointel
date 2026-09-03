@@ -281,3 +281,49 @@ look wrong.
 **The runner will also emit diagnostics beside every aggregate** — denominators,
 null counts, dates covered, rows dropped. **Today's errors were all invisible in
 the headline number and obvious in the input.**
+
+## Amendment 5 — S5's rule was broken too, in the opposite direction
+
+**Second unevaluable rule caught by computing a baseline before the run. Two of
+five.**
+
+The baseline age-0 share is **89.8%** — most grades *are* produced the same
+session. So S5's rule, *the age-0 share rising ≥10 points*, **demands 99.8% and
+can never be met.** A ceiling effect, and the mirror image of S2's median of
+zero: **one rule had no room below, the other none above.**
+
+**Amended to the tail, where the room is.** The carried share — grades **not**
+produced the same session — is **10.2%** at baseline.
+
+| | |
+| --- | --- |
+| **Decision rule, replacing the above** | Improvement is the **carried share falling ≥25%** (10.2% → ≤7.7%). Regression is it rising ≥25% (→ ≥12.8%). |
+| **Reported alongside** | Age-0 share, and the mover/non-mover mean-age differential, unchanged. |
+
+**Two of five pre-registered rules could not be evaluated as written, and both
+were expressed against the statistic with no headroom.** That is the argument
+for computing baselines before the run stated as plainly as it can be: **the
+rules looked rigorous, were written carefully, and two of them were arithmetic
+that could not resolve.** Neither would have been noticed after a run — a rule
+that cannot fire looks exactly like a measure that did not move.
+
+## Amendment 6 — the runner exists, and it reproduces every baseline
+
+`lib/archive/scorecard.ts` and `worker/scorecard.ts`, `npm run archive:scorecard`,
+15 tests. **Committed before the extract landed; the commit timestamp is the
+pre-registration.**
+
+**Run against the baseline window it independently reproduces every published
+figure**, each of which came from a separate ad-hoc script days earlier:
+
+    S1        30.1%    matches Q5's verdict
+    S1-movers 38.9%    matches
+    S2        p75 15, median 0, never-graded 31.05%
+    S3        +0.48 / +4.47 / +6.85 pp    matches the +0.5 / +4.5 / +6.9 band
+              n = 84 movers, 127 non-movers    matches
+    S4        69.0% admissible, UNKNOWN_HONEST 17.65%, all five counts match
+    S5        mean age movers 0.15, non-movers 0.11, differential 0.04
+
+**Scored against its own baseline the card returns NOT_EVALUABLE or NO
+DETECTABLE CHANGE on every measure, which is the correct null** — a scorecard
+that found improvement in the window that defined it would be broken.
