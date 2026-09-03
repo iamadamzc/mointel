@@ -246,6 +246,18 @@ conflict. Verify before acting on any of it.***
   carried none of 0d** — two unrelated changes in the same files, which is
   exactly why it could not be inferred from the diff's filenames. Older text
   below asserting it unbuilt is therefore still true.
+- **HELD TRIGGER — item 16a expedites the moment a SECOND READER exists.**
+  *Design, 2026-09-04, declining to expedite its own fix and asking this seat to
+  hold the condition rather than holding it itself.* The board labels another
+  model's output as "human review". **It misleads a reader who does not already
+  know the answer — and the trader is the one reader who does**, since he is the
+  person who told the desk no human reviews the Sheet. So today the only human
+  seeing that string is the only human it cannot deceive, and it ships in the
+  ordinary next deploy (`f228467`, committed, outside `6d368dc`). **The moment a
+  demo, a second login, or a shared review link puts a new reader in front of
+  the desk, the string stops being cosmetic and becomes a false claim to
+  someone who would believe it.** Watch for it; the trader is the only source
+  for whether one is coming.
 - **Sessions:** Research successor live (opened 08-27); the three retired
   sessions archived 2026-09-02. Coaching holds six-day-old uncommitted code in
   the tree, nudged to commit.
