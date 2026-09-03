@@ -460,6 +460,26 @@ thing they lack. **Everything reconciles to one date and one deploy.** The fact
 that settled it had been sitting in a relay for an hour, in a message whose author
 did not know what it was for.
 
+## A correlation is not a threshold agreement, and a pilot is not a small study
+
+**R&D, 2026-09-03, from the revival question — two findings, both against its own
+pre-registered expectations, and both about instruments rather than markets.**
+
+**Rank correlation is decided by the bulk; a threshold is decided at the
+boundary.** It measured Spearman **+0.92** between minute volume and minute trade
+count and pre-registered that switching measures *should not move the result*.
+**It moved it 14.2 points.** Two series can agree almost perfectly on levels and
+still disagree about *which minutes fall below a cut* — so a correlation licenses
+nothing about a cutoff, and reasoning from one to the other does not follow.
+**A volume control on the same window separated it cleanly** (window +5.0,
+measure −14.2), which is the only reason the cause is known rather than argued.
+
+**And the two-session pilot was not a small version of the thirteen-session
+study — it was a different answer.** It overstated revival **at every setting**,
+79.7% against 68.2% at identical persistence. Not noisier: *biased*, in one
+direction. **A cheap look is evidence about the cheap look**, and the temptation
+to treat it as a preview is strongest exactly when it agrees with you.
+
 ## An aggregate that falls is not proof the thing you fixed is working
 
 **Research, 2026-08-24, catching a check before it ran rather than after.**
