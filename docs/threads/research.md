@@ -3121,3 +3121,66 @@ not change retroactively. A dossier written before its symbol's basis was
 established keeps the pair it was written with. Coverage moves only as names
 re-analyse after their factor lands, so any figure taken in the first days is a
 floor on a moving quantity and has to say so.*
+
+### The cheap observable, which is a log line rather than a query
+
+`worker/research.ts:426` logs every deep pass with the deciding reason
+attached, so the basis trigger is greppable in the journal without touching the
+store:
+
+```
+[history] <TICKER> deep: <detail> (no split basis established)
+```
+
+**`no split basis established` appears only from `basisFetchDue`** — the
+blue-sky reasons are worded differently — so a count of that string is a direct
+count of basis fetches, and its absence while jobs run is the flat-count
+failure above.
+
+### IT LANDS ON OPS'S OPEN LOCK INCIDENT, AND WOULD BE MISATTRIBUTED TO IT
+
+*Predicted from the code and the measured scale, 2026-09-03. Not observed — I
+cannot see production — and stated as a mechanism so it can be checked rather
+than believed.*
+
+Ops reported two `SqliteError: database is locked` restarts at
+`claimQueuedJobs` (`researchRepo.ts:241`) and `completeJob` (`:291`), with a
+546MB WAL on an 886MB store, and framed item 0e as *deploy-independent and
+worsening as the WAL grows.*
+
+**My change adds a long write transaction to the middle of the job path.**
+`ensureDeepHistory` fetches up to ten years and `upsertDailyBars` writes them
+in **one transaction per symbol**, on the same handle the worker uses to claim
+and complete jobs — and it now runs for **every researched name**, where the
+blue-sky gate fired about 0.4 times a morning.
+
+Measured scale, from the 08-23 snapshot:
+
+| | |
+| --- | --- |
+| `daily_bars` today | **24,429 rows across 256 symbols** — 95.4/symbol, the 90-session window |
+| researched tickers that will each fetch once | **231** |
+| rows per fetch | up to **~2,520** (AAPL's measured full ten years); small caps are younger — BTCT 1,608, NTWO 414 |
+| first-pass upper bound | **~580,000 rows, ~71MB** at the measured 123.1 B/row |
+
+**So the table grows by roughly an order of magnitude, in ~231 long
+transactions, on a store already losing writes to lock timeouts.**
+
+> **The hazard is not the size, it is the ATTRIBUTION.** A lock-timeout spike
+> after 09-03 fits Ops's existing diagnosis exactly — *worsening as the WAL
+> grows* — and a new cause landed the same day. **Matching symptoms are not a
+> shared cause**, and this one is pre-loaded to be read as the old one getting
+> worse.
+
+**Self-limiting, which bounds it:** each symbol establishes once and never
+fetches again, so the load is a first-pass transient, not a new steady state.
+
+**And the mitigation is the tool I already shipped, used deliberately rather
+than left as a redundant duplicate.** `worker/basis-backfill.ts` does exactly
+this work **paced** (`--pace-ms`, default 350) and can run in a quiet window.
+**Running it does not add to the load — it MOVES the load off the job path**,
+because every name it establishes is a name the in-worker trigger then skips by
+construction. That reframes the tool: it is not a redundant second route to the
+same rows, it is the controlled way to spend a cost that is otherwise spent
+unpaced during the trading day. **Whether to run it, and when, is Ops's call
+and the trader's spend.**
