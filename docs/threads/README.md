@@ -124,6 +124,17 @@ is the authority, and a separate summary is a second copy that can drift from
 it. The live-state rewrite happens IN the charter; the successor's opening
 message points at it.
 
+**Widen the expiry audit to every section stating WHAT IS OR IS NOT BUILT** —
+R&D's generalisation, 2026-09-03, after the second instance in its own charter
+from the same cause: a standing-sweep section reading *"not yet built"* for
+eleven days while the thing existed and had shipped with tests, and before that
+an opening message telling a successor to start work that had finished four days
+earlier. **A charter describes a starting position, and a starting position is
+the part most likely to be wrong.** Those sections decay exactly like an opening
+message and are read with the same authority, so they get audited with it — and
+the rule's first application is worth doing deliberately, on the auditor's own
+charter, because a rule is weakest immediately after it is written.
+
 And **the opening message is verified as its own step** — R&D's addition,
 from finding its own four days stale on 2026-08-27 (it still directed a
 successor to build an instrument that had been finished and running since

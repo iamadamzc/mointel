@@ -226,6 +226,24 @@ conflict. Verify before acting on any of it.***
   post-fix S3 rise toward +17.9 is pre-registered as mechanical** (`584b734`)
   — only past it is the market. News one-cell instrument excluded permanently
   until its capture is built (trader's optional word, no clock).
+- **Board lateness is the desk's live workstream, commissioned 2026-09-03.**
+  Diagnosis complete: RVOL is confirmed cumulative (`lib/market/rvol.ts`) AND a
+  second `latched` flag is never cleared, so board presence is literally a
+  one-time qualification in two independent places; a dead name falls only by
+  being OVERTAKEN. **Windowing RVOL is closed** by a standing backtested
+  instruction in that file, so any continuing condition is ADDITIONAL to the
+  ranking. **Activity = minute trade count is already parsed, persisted and
+  scored on by nothing** — the cheapest available measure. Liquidity cannot be
+  board-wide (≤250 high-res cap, populated BY the latch). Revival answered over
+  13 sessions on trade count: **68% at 1 dead minute, 48% at 5, 34% at 10, 19%
+  at 30, 11% at 60** — the trader's prior holds past ~30 minutes and his stated
+  10x-in-one-minute criterion catches burstiness. **All rates are FLOORS**;
+  his 10-second grain is reachable (trades deep to listing) and unbuilt, with
+  no clock. **Open with him: which persistence.**
+- **0d (`trap start_services EXIT`) status is UNVERIFIED as of 2026-09-03.**
+  It was Ops's outstanding item before `7f4aa91` shipped 0f; whether that
+  release also carried the trap has not been confirmed from this seat. Older
+  text below asserting it unbuilt predates the deploy — ask Ops, do not quote.
 - **Sessions:** Research successor live (opened 08-27); the three retired
   sessions archived 2026-09-02. Coaching holds six-day-old uncommitted code in
   the tree, nudged to commit.
