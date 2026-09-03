@@ -1506,6 +1506,15 @@ Basic Auth itself; the probe that reaches the app is `/_next/static/`.
 
 ## Working rules
 
+- **A premise inherited from another thread's charter needs the same check as
+  one of your own.** *Research's formulation, 2026-09-03, crediting Ops's
+  catch; it applies to this seat hardest, because relaying premises is the
+  job.* "The WAL is growing" travelled from Ops's charter through this thread
+  to the trader as a named hazard, and the WAL was byte-identical across
+  twenty hours of the heaviest write load the desk had carried. **A borrowed
+  premise arrives pre-trusted and is exactly as perishable as a measured one.**
+  Same family as *verify, do not relay* — but that rule is about claims, and
+  this one is about the assumptions underneath them, which nobody re-reads.
 - **Once production runs a composed sha, ancestry stops being the test and
   content becomes it.** *Ops's correction, 2026-09-03.* This seat verified that
   window 2's sha descended from `bc78d49` while production was already on the
