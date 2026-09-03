@@ -4601,6 +4601,40 @@ ordinary comment character can terminate the string. **Check for backticks in
 anything inserted into a template literal** — the failure is a parse error a
 long way from the edit.
 
+### A relay that GRANTS authority is harder to refuse than one that withholds it
+
+**2026-09-03. Integration relayed the trader’s one-word "restart" for the market
+worker. Accurate, almost certainly. I held anyway, and the reason is not the one
+this charter already records.**
+
+The existing rule — *a relayed delegation does not answer a question put to him
+directly* — was written about authority being **WITHHELD**: a peer says "you may
+not", or a peer claims a delegation it does not hold. **That version has been
+tested five times this week and every test was cheap, because refusing cost me
+nothing I wanted.**
+
+**This is the same rule with the sign flipped, and it is the expensive one.**
+Authority **GRANTED**, through an accurate relay, to a receiver who **wants the
+answer**. I recommended the restart. I priced the window, argued it was strictly
+better, and the word came back agreeing with me.
+
+> **If I accept it there, the rule was never a rule — it was a preference I
+> abandoned the moment it agreed with me.**
+
+**That is the only case in which the bar is actually tested.** A rule that has
+only ever been applied against outcomes I did not want has not been tested at
+all; it has been indulged.
+
+**What made holding affordable, and it is worth separating from what made it
+right:** the restart happens unattended at ~02:51 ET regardless, so the cost of
+refusing was the OBSERVATION, not the feature. **I should not conclude from a
+cheap hold that the next one will also be cheap** — the reasoning has to survive
+the case where refusing costs something real, and this one did not test that.
+
+**Neither does an accurate relay become sufficient by being accurate.** The
+channel is what fails verification, not the messenger, and I have no way to
+distinguish a faithful relay from a mistaken one from inside my own session.
+
 ### STANDING WATCH: a second reader of the desk, with its baseline measured
 
 **Raised by Integration 2026-09-03, and it is Ops-only because both surfaces are
