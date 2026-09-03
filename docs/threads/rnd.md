@@ -890,6 +890,46 @@ day:** *a correction inherits the confidence of whatever it corrects toward.*
 **I wrote a direction as a finding; Research corrected its own comment toward my
 finding; the error travelled upward in confidence at every step.**
 
+#### Boundary sensitivity of every published board figure. Q6 is the one that moves.
+
+**Integration asked whether any other figure changes at the top-12 boundary the
+way the yield finding did, and flagged Q6 as the one that would matter most. It
+was right.**
+
+    figure                          top 12 (desk board)      top 25 (capture)
+    S3 catalyst separation          +14.9pp                  +14.9pp        IDENTICAL
+    Q5/S1 board timeliness          32.5% (movers 43.6%)     30.0% (41.0%)  +2.5pp
+    Q6 rank vs RTH excursion        rho -0.178  (n=144)      rho -0.276     MOVES
+
+**S3 is boundary-insensitive to the decimal** — the catalyst gap is +14.9pp at
+both. **Q5/S1 moves 2.5 points and its verdict is untouched**: seven in ten board
+names still peak before surfacing at either boundary.
+
+**Q6 CROSSES ITS OWN PRE-REGISTERED BAR.**
+
+> Q6's rule required **rho ≤ −0.20**. At the capture window it is **−0.276** and
+> the rule is met. **At the desk's operative board of 12 it is −0.178 — and would
+> have been reported as NO DETECTABLE CONTENT.**
+
+**Q6's verdict STANDS as pre-registered**, because ranks 1–25 was its stated
+population, fixed before the run, and **re-cutting it to 12 afterwards is exactly
+the post-hoc move the pre-registration exists to forbid.** Nothing is retracted.
+
+**But the sensitivity is a real narrowing and it belongs beside the verdict.**
+The correlation is **driven by ranks 13–25** — the band the desk's own code does
+not call boarded. **Within the top 12 that he actually watches, the 09:25
+ordering carries little forward information at all**, at an effect size below the
+bar Q6 itself set.
+
+**That does not weaken `PRE_OPEN_RANK_PREDICTS_VOLATILITY_NOT_EDGE`. It
+sharpens it** — inside the real board the ordering barely orders anything, and
+what signal exists sits in the band beneath it.
+
+**Recorded as a sensitivity rather than a correction, and the distinction is the
+point:** the yield finding **changed** at the boundary because it had no
+pre-registered population; **Q6 does not change, because it did.** A stated
+population is what makes a figure survive a boundary it did not anticipate.
+
 #### "BOARD" IS THREE NUMBERS, AND MY FIGURES USE THE MIDDLE ONE. 2026-09-04.
 
 **Design found it, Integration relayed it, and it is a caveat on every
