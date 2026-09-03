@@ -1657,7 +1657,7 @@ The rule: **record the date, the size, and whether it touches anything already
 measured, at the moment the change lands.** Reconstructing it from a series that
 looks odd months later costs far more and often fails.
 
-### 2026-09-03 — re-trigger clock and rotation fix, 
+### 2026-09-03 — re-trigger clock and rotation fix, `97f5fbd`
 
 **Not an eligibility change; a MEASUREMENT-MECHANISM change, which the log covers
 for the same reason.** Window 2 makes non-movers holding `UNKNOWN` dossiers
