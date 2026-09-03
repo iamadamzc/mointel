@@ -11,6 +11,19 @@ stated so it can be told from a recount). **The baseline window reproduces
 exactly after the backfill**: 30.1 / 38.9 / p75 15 / 6.85 / 69.0 / 0.15 vs 0.11,
 every published figure unchanged.
 
+**Precisely what that reproduction is, because the looser reading flatters it.**
+The backfill reported *306 symbol-days already held; --force to redo* and
+**skipped the baseline rows rather than recomputing them.** So the match confirms
+those rows were **preserved intact** while eight sessions were appended around
+them — it is a corruption check, **not an independent re-derivation.** The
+archive was copied before the run for the same reason.
+
+**An independent recompute is one `--force` away and has not been done.** It
+would be a genuine check on the baselines and would also risk moving published
+figures, which is why it is a deliberate decision rather than a default — and
+naming it here is the difference between *the numbers survived* and *the numbers
+were re-earned.* Only the first is claimed.
+
 ---
 
 ## The card
