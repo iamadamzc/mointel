@@ -566,11 +566,38 @@ the bell.
 
 ## (3) The phase spread is enormous, and the pooled curve describes no session
 
-    persist   premarket        RTH        after-hours
-      1 min    74.4% (367)   82.8% (877)   20.1% (313)
-      5 min    62.3% (244)   65.6% (395)    9.5% (274)
-     15 min    49.1% (167)   37.3% (193)    6.3% (256)
-     30 min    42.5% (127)   24.8% (137)    4.4% (251)
+**READ THE COLUMN HEADING CAREFULLY — the original version of this table did not
+make it possible to, and a careful reader misread it exactly as written.**
+
+**The phase is where the death STARTED. Revival was allowed anywhere later in
+the 04:00–20:00 grid.** So *premarket 42.5%* means **premarket deaths that
+revived at some point in the day** — most of them after the open. **It is not
+the premarket revival rate.**
+
+    death STARTED in     premarket        RTH        after-hours
+      1 min               74.4% (367)   82.8% (877)   20.1% (313)
+      5 min               62.3% (244)   65.6% (395)    9.5% (274)
+     15 min               49.1% (167)   37.3% (193)    6.3% (256)
+     30 min               42.5% (127)   24.8% (137)    4.4% (251)
+
+    revival permitted anywhere up to 20:00 ET, including after the open
+
+**Against the premarket-ONLY grid in Result 4, where revival must also occur
+before 09:30:**
+
+    persist 30    premarket death, revives any time    42.5%
+                  premarket death, revives premarket   18.4%
+
+> **More than half the "premarket" revivals happen in a window this desk has
+> since scoped out.** The two figures answer different questions and the
+> original table made them look like one.
+
+**This is my defect and it cost a wrong sentence downstream** — Integration read
+*premarket 42.5%* as the premarket revival rate, reported it to the trader as
+*dead names come back more than twice as often as I said*, and had to retract
+it. **The table was ambiguous in exactly the direction a reasonable reader would
+resolve it**, which is the same failure as a rate printed without its
+denominator: **nothing was false, and nothing was readable.**
 
 > **At five minutes: premarket 62.3%, RTH 65.6%, after-hours 9.5%. The pooled
 > figure was 47.9%, which is no session's answer.** And after-hours supplies
