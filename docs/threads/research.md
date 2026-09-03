@@ -3123,6 +3123,56 @@ measurable from here — it needs live data, and the local snapshot carries no
 it before wiring, and this widens what "the removal" means from a Design
 partition into a change with two consumers in two threads' modules.*
 
+### SCOPE: ranked-and-alive. *Integration's word 2026-09-03; enumerated by search, not from the two sites it named.*
+
+**Most rank consumers must NOT change, and two of them would be damaged by
+this if it were applied broadly. That is the finding of the enumeration.**
+
+| # | site | change? |
+| --- | --- | --- |
+| 1 | `lib/research/queue.ts:55` — `isEligible`, `rank > autoRank → reject` | **YES.** A dead name inside `autoRank` holds a research slot |
+| 2 | `engine.ts applyHighResSelection` — `rank <= internalRank` | **YES.** Holds a trades/quotes slot in the 250 cap |
+| 3 | same function — `if (runtime.latched) selected.add(…)` | **YES**, the already-scoped `latched && alive`. Two independent gates in one function wanting one predicate |
+| 4 | `repo.ts:583` — the board query, `WHERE rvol_rank IS NOT NULL` | **NO — AND IT MUST NOT.** This feeds the graveyard as well as the board. Filter dead names here and **the graveyard has nothing to render** |
+| 5 | `worker/desk-assessments.ts` / `assessmentRepo` — checkpoint capture | **NO — AND IT MUST NOT.** Append-only since 2026-08-17. Excluding corpses would **silently change what a historical checkpoint means**, and no run buys that back |
+| 6 | `lib/desk/assessment.ts:160,186` — "entered/left Top N" | **no.** Cleared, with the reason: we change READERS, not the rank, so no transition fires that would not have fired anyway |
+| 7 | `lib/desk/assessment.ts:88` — the a/b/c/d rank bucket | **no.** Same reason as 6 |
+| 8 | `lib/dashboard/telemetry.ts`, `view.ts` sorting | **no.** Presentation, and the graveyard partition is Design's |
+
+**Sites 4 and 5 are why this had to be enumerated rather than taken as "the
+rank consumers".** A plausible reading of *"rank-based consumers ask ranked and
+alive"* would have emptied the graveyard and corrupted the append-only record —
+the two most expensive things on this desk — while looking like faithful
+implementation.
+
+### THE GATE MUST FAIL OPEN: exclude only on explicit DEAD
+
+`activity` is optional and live-only. A candidate built from a store read
+carries `undefined`, which means *the value did not survive its journey* and
+**not** *this name is dead*. So the predicate is **`activity === 'DEAD'` →
+exclude**, with `undefined` and `'UNKNOWN'` both keeping the name. **A name is
+denied research only when the desk positively knows it is dead**, never on an
+absence — which is the same rule as everywhere else here, and the safe
+direction besides.
+
+### AND THE SEQUENCING IS FORCED, NOT CHOSEN
+
+**`readBoardCandidates(db, …)` reads the STORE** (`worker/research.ts:312`).
+The research worker is a **different process** from the market worker and has
+no access to engine memory.
+
+> **So site 1 CANNOT WORK until `activity` is persisted to `ticker_session` —
+> Ops's schema gate. Sites 2 and 3 are engine-internal and work immediately.**
+
+**Which means the bundle does not deliver what the finding describes.**
+Shipping it without persistence fixes the **subscription** slots and leaves the
+**research** slots — the more expensive half — exactly as they are. That is a
+statement about what the win is, and it should not be discovered mid-build or
+claimed in a release note.
+
+*Sizing stays post-deploy per Integration: how many top-N slots dead names hold
+at an instant needs live data, and prices the win rather than deciding it.*
+
 *Original scope below, unchanged.*
 
 **41a. The scope as delivered — SCOPE ONLY, nothing built at the time.**
