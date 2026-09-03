@@ -796,6 +796,31 @@ re-collapse that into a boolean by picking a number — the row shows how many
 sessions behind, and the trader decides. **Two sessions behind on a name he is
 about to size is his call, not a constant in this file.**
 
+### Pre-registered: how the `d8794da` verification will be read
+
+**Written before the deploy and before any reading exists**, so the reading
+cannot be interpreted to suit it. `d8794da` is aboard window 2 (`97f5fbd`).
+
+**A null is NOT a failed fix, and on a small board it is the likely outcome.**
+`resolveRisk` returns at the first matching branch, so a researched row only
+reaches `CAUTION` or `CLEAN` if it is neither dirty nor carrying supply shares.
+On 2026-08-25 all four researched rows were `DIRTY FLOAT` — they short-circuited
+two branches early, which is exactly why the sizing done from them was wrong.
+**The same board would produce a null today with the fix working perfectly.**
+
+| Outcome | Reading |
+| --- | --- |
+| **Positive** | `STRUCTURE CAUTION` or `NO FLAG FOUND` on any researched row. Both unreachable before `d8794da`, so either evidences the fix. `NO FLAG FOUND` is the stronger — the only `tone: 'pos'` outcome in the function; `CAUTION` the likelier, at 54% of dossiers. |
+| **Null** | Every researched row renders `DIRTY FLOAT` or `SUPPLY OVERHEAD`. **Evidences nothing in either direction.** Report the row count and the branch each row took, so the null is legible rather than merely absent. |
+| **Negative** | A row that is not dirty, carries no supply, and still renders `FLOAT UNKNOWN`. That falsifies the fix. |
+
+**Report which of the three, with counts — not a verdict word.**
+
+**Composition:** both positive strings come from the gate change alone. The Q9
+`sheet_float` capture reads a different key and is **not** aboard this bundle, so
+the reading cannot borrow credit from it. Were it aboard, a positive could not be
+attributed to either piece.
+
 ### CORRECTED: the masked chip is LIVE, and my sizing could not have found it
 
 **Design sized this as latent on 2026-08-25 and was wrong.** Ops sized it in
