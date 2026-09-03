@@ -817,6 +817,42 @@ the inverse of intelligence-not-signal.
    +25% or better** (n=17, premarket). Every rate is a **floor**, because minute
    grain cannot see a sub-minute revival.
 
+### Pre-registered: how the graveyard reading will be read
+
+**Written before `6518e72` deploys and before any reading exists.** The
+three-outcome protocol further down was written for the risk chip; these
+outcomes are different and need saying first.
+
+**It is TWO readings, not one, and they must not be run together.**
+
+**Stage 1 — does the surface work?** That is a question about Design's code.
+
+| | Reading |
+| --- | --- |
+| **Not wired** | Header says `not recording yet`. Already happened once, on 2026-09-03, and was correct — 328 names were dead in the store while `toDemandState` never mapped the field. |
+| **Wired, no rows** | Nothing has gone quiet. Honest and uninformative. |
+| **Wired, rows** | The surface works. **Integration expects this**, since 328 names were DEAD after the bell — so the null everyone originally expected is now the least likely. |
+| **Negative** | Any of: a row whose `activity` is undefined appears at all; elapsed reads under the six-minute settle window; a still-dead name marked `running`; a rank-less row rendered as broken rather than as `—`. |
+
+**Stage 2 — is the DROP RULE right?** Only readable once stage 1 says *wired,
+rows*. **A finding about the rule read off an unverified surface would be a
+finding about the surface.**
+
+- **`died 2+` climbing** → churn; the threshold or the settle window is too tight.
+- **`running` non-zero** → a miss; the drop cost a trade.
+- **Both zero across a populated graveyard** → the rule is doing its job, and
+  that is a genuine result rather than an absence.
+
+**Expect most rows to carry no rank.** `deadAtRank` is captured at the flip and
+only ~250 of ~8,800 names are ranked at any instant, so a rank-less row is the
+**common case, not a gap**. Ops nearly filed that as a capture failure. It
+renders `—`.
+
+**And `running` will read zero tonight for a reason that is not the rule.** The
+`ACTIVE` threshold is 300 trades/min, calibrated on RTH and read after the bell,
+so nothing can revive. **A zero there is uninformative until RTH** and must not
+be reported as evidence the rule is sound.
+
 ### The decision that matters most: revived rows STAY, marked
 
 The graveyard is **the rule's own falsification surface**. Getting that right is
