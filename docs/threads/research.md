@@ -187,11 +187,24 @@ rename when the extractor lands, and treat that landing as the trigger.
 
 ### Q9 capture scope — all riders, so none is rediscovered
 
-Scoped, waiting on Ops's schema gate. Must include: `sheet_float`; **stored
-skew**; `displayedFloatSource` **travelling with the value**; `filedShares` with
-its **filing date read against `split_event_ratio`**; and the constraint that
-**the validation join runs against whichever store the Sheet floats were captured
-into — production.** A float without its date is a different quantity.
+Scoped, waiting on Ops's schema gate. Must include: `sheet_float`; **~~stored
+skew~~ BOTH CAPTURE INSTANTS, from which a consumer computes the skew —
+corrected 2026-09-04, see below**; `displayedFloatSource` **travelling with the
+value**; `filedShares` with its **filing date read against
+`split_event_ratio`**; and the constraint that **the validation join runs
+against whichever store the Sheet floats were captured into — production.** A
+float without its date is a different quantity.
+
+> **THIS SUMMARY LINE CONTRADICTED ITS OWN ITEM AND THE ERROR PROPAGATED.**
+> Item 28 says *"the basis carries both capture instants and a consumer
+> computes the skew"*; this line said **stored skew**, and a column spec was
+> requested from it. **Skew is derived — storing it creates a value that can
+> drift from the two instants it is computed from, which is the whole reason
+> item 28 declined to store it.**
+>
+> *A summary line will be re-derived wrongly by someone reading only the
+> summary — including by the thread that wrote both halves. This desk recorded
+> that rule about a published figure; it applies to a handover's own index.*
 
 ### True only in this chat
 
@@ -2647,6 +2660,58 @@ never happen is it reading identically to one observed at a single instant.
 `price_at` per ticker and `desk_assessments` carries `started_at`. Only the
 float's own read instant is new, and it is one value per checkpoint rather than
 per ticker.*
+
+### Q9 COLUMN SPEC — names and SQL types, 2026-09-04. *Asked by Integration so Q9 can ride the activity migration. Names only; no writer, no build.*
+
+**Eight columns across TWO tables, because one of them is per-checkpoint
+rather than per-ticker.** All nullable, without exception: a timeout must
+degrade to a null column and never to a failed checkpoint.
+
+**On `desk_assessment_tickers` — per ticker:**
+
+| column | type | what |
+| --- | --- | --- |
+| `sheet_float` | `REAL` | `resolveDisplayedFloat().value` — the Sheet's number |
+| `sheet_float_source` | `TEXT` | `'RESEARCH'` or `'TODAY'`, which tab. **Travels with the value** or the series silently mixes two populations |
+| `sheet_float_as_of` | `TEXT` | the VENDOR's own as-of, `StructuralResearch.floatSourceDate` |
+| `shares_outstanding` | `INTEGER` | `dossier.filedShares.shares` |
+| `shares_outstanding_as_of` | `TEXT` | `filedShares.asOf` — the filing cover-page date |
+| `shares_outstanding_captured_at` | `TEXT` | the version's `generated_at`: when the DESK read the count |
+| `float_basis` | `TEXT` | `'SHEET_VENDOR'` today |
+
+**On `desk_assessments` — one value per checkpoint:**
+
+| column | type | what |
+| --- | --- | --- |
+| `sheet_float_captured_at` | `TEXT` | when the Sheets read returned |
+
+*Named `sheet_float_as_of` rather than item 28's `float_source_date`, to match
+`shares_outstanding_as_of`: both answer "what date is this value's own", and
+two names for one question is how the next reader concludes they differ.*
+
+**`sheet_float_captured_at` is per-checkpoint because the read is** — one
+Sheets call serves every ticker in the checkpoint. **And under fetch-before-
+claim it is strictly EARLIER than `started_at`**, which is exactly why it
+cannot be inferred from the row it sits beside.
+
+**NOT A COLUMN: skew.** Two capture instants are stored and a consumer
+subtracts them. See the correction above.
+
+### `float_basis` will be a constant, and that is the fourth instance
+
+**`'SHEET_VENDOR'` on every row until a second float source exists** —
+identical in shape to the `adjustment: 'split'` literal, the
+`web_search:default` `toolConfig`, and `activity` frozen by a missing
+`DO UPDATE SET`. A `select distinct` will return one value and it will look
+broken.
+
+**It ships anyway, and the reason is the difference from those three:** R&D's
+rule is that a basis comes from the FIRST row and is never retrofitted, and a
+derived float is already scoped (items 14, 29). **This is a constant that is
+known to become variable, where those three were constants nobody expected to
+vary.** Recorded here so the next person to run that query finds the reason
+instead of filing a defect — and so nobody writes a test asserting the
+constant, which is what made the `toolConfig` case survive review.
 
 ### The naming pass, decided — two types, executed as one change
 
