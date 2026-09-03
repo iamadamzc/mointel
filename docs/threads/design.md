@@ -2211,6 +2211,15 @@ practical size of the inflation is unknown. Needs the live desk.
   from `/api/market` entirely. Write path complete, read path never written.
   **Never assume a shipped column reaches this surface: check that the key
   exists on the payload, not that the migration landed.**
+- **When a word has several numeric definitions, prefer a predicate that needs
+  none.** Choosing one of them correctly still leaves the next reader choosing
+  again. Established 2026-09-04: "the board" means `discoveryRank` 12
+  (`config.ts:69`), the archive's ranks 1–25, and the UI's Top 12/25/50 — three
+  live meanings differing by 4x. The graveyard filters on `deadAtRank !== null`,
+  **presence rather than a threshold**, so it cannot pick the wrong number and
+  does not move when he changes the view size. **Assert the absence of a
+  threshold in the module**, not the correctness of one — the same way asserting
+  a constant *references* config beats asserting its value.
 - **A model consumer cannot ask a clarifying question, so a label must be true
   without context.** The `chatgpt-*` review routes were built so ChatGPT could
   read this desk — and ChatGPT is what *writes* the Sheet, so for a day in
