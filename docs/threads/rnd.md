@@ -41,7 +41,7 @@ questions is a thread that has stopped working.
 | Q8 | Which models for which calls — would Anthropic models be better and/or less expensive? | 2026-08-24 | parked — **no open items**; output multiples answered 2026-08-24 in research.md item 20, found 08-27. Ready to design |
 | Q9 | Does float — or overhang — relate to how a name performs, and is RVOL the real variable? | 2026-08-27 | parked — blocked on capture; float populated on ~1% of dossiers |
 | Q10 | Once a name goes dead intraday, does it come back? | 2026-09-03 | **CLOSED 2026-09-03, AMENDED twice** — back to +25% is rare (14.6% at 5 min quiet, 5.2% at 30). **But every pooled rate blends three session regimes** — premarket 62.3%, RTH 65.6%, after-hours 9.5% at 5 min — **and should not be quoted alone** |
-| Q11 | How often does the 5-minute drop rule remove a name that subsequently runs? | 2026-09-03 | **ANSWERED 2026-09-04** — genuine miss rate **32.2% premarket, 18.8% RTH, 8.1% after-hours** on 577 replayed drops; highest where the threshold was calibrated |
+| Q11 | How often does the 5-minute drop rule remove a name that subsequently runs? | 2026-09-03 | **ANSWERED 2026-09-04** — tradeable miss rate **27.1% premarket, 9.4% RTH, 1.5% after-hours** on 577 replayed drops; highest where the threshold was calibrated, by 18x |
 
 #### The closing pass, 2026-08-27
 
@@ -954,9 +954,48 @@ the rate, per the registered condition.
 
     genuine miss = below +25% when dropped, reached it afterwards in-session
 
-> **The false-positive rate is HIGHEST IN PREMARKET — 32.2% — the session the
-> threshold was calibrated for, and four times the after-hours rate.** Nearly one
-> dropped premarket name in three subsequently reaches +25%.
+> **The false-positive rate is HIGHEST IN PREMARKET, and it is the session the
+> threshold was calibrated for.**
+
+**CORRECTED THE SAME DAY, BEFORE THE FIGURE REACHED HIM. Integration caught that
+my "ran" was PRICE-ONLY** — `if (pct[j] >= 25) ran = true`, **no volume
+requirement**, and with price carried forward through silent minutes **a name
+that never traded again but drifted to +25% counted as a miss.** He trades
+momentum on volume; **a +25% print on no tape is a price he could not have
+taken**, so a price-only rate overstates the rule's cost.
+
+**Re-run with the miss requiring the name to become ACTIVE again — two
+consecutive minutes at 300+ — and reach +25%:**
+
+    session      drops    price-only    VOLUME-QUALIFIED
+    premarket     177     32.2% (57)      27.1% (48)
+    RTH           202     18.8% (38)       9.4% (19)
+    afterhours    198      8.1% (16)       1.5% ( 3)
+    ALL           577     19.2%           12.1%
+
+**27.1% is the number. And the finding STRENGTHENS.** The overstatement was
+**largest outside premarket** — RTH halves, after-hours falls 80%, premarket
+loses only 9 of 57. **Premarket names that recover do so on real activity;
+later-session price drifts happen on thin tape.**
+
+> **Premarket against after-hours goes from 4.0x on the price-only measure to
+> 18x on the tradeable one.** *Most wrong where it was calibrated* is **more**
+> true on the correct measure.
+
+**RECONCILING WITH THE 7.0% ALREADY GIVEN TO HIM — they are different quantities
+and both stand.** Three differences, not one:
+
+    7.0%    denominator REVIVAL events (244)   price >=25% AT the revival instant   1-consecutive admission
+    27.1%   denominator DROP events (177)      revived AND >=25% at any later point  2-consecutive admission
+
+**Different denominators, different timing, different admission rule.** *Of
+revivals, 7% were at +25% when they revived* and *of drops, 27% came back
+tradeable* are both true and **neither is the other.**
+
+**The defect is the one this register keeps finding: a measure whose name
+promises more than its definition delivers.** *Ran* sounds like it includes being
+tradeable and did not. **Integration held the headline rather than caveating it,
+which is the only reason it was caught before he had the number.**
 
 **I had no pre-registered direction and that is why this is worth something.**
 Amendment 7 removed the fraction-of-window mechanism that would have supplied
