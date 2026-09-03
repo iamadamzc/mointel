@@ -1826,6 +1826,34 @@ module at all.
 including the 45.5%: that population is ranks **1–25**, which is a fact about
 the archive rather than about what he sees.
 
+## A STATED population is what lets a figure survive a boundary it never anticipated
+
+**R&D, 2026-09-04, after the desk discovered that "the board" means 12, 25 or 50
+depending on where you look.** Re-cut at the desk's operative boundary of 12:
+
+    S3 catalyst separation      +14.9pp both windows      IDENTICAL
+    Q5/S1 board timeliness      32.5% vs 30.0%            verdict untouched
+    Q6 rank vs RTH excursion    rho -0.178 vs -0.276      CROSSES ITS OWN BAR
+
+Q6's pre-registered rule required rho ≤ −0.20. **At ranks 1–25 it met it; at the
+top 12 it would have read as no detectable content.** And **nothing is
+retracted**, for the reason that is the whole finding:
+
+> **Q6's population — ranks 1–25 — was STATED, before the run. Re-cutting it
+> afterwards is exactly the post-hoc move the pre-registration exists to forbid.
+> The yield finding CHANGED at the boundary because it had no pre-registered
+> population. Q6 does NOT change, because it did.**
+
+**That is the units rule at register scale, and it answers it.** A figure with
+its population stated is not merely honest — **it is survivable**, because a
+boundary discovered later cannot retroactively redefine what it measured.
+
+**The sensitivity still travels beside the verdict**, and it sharpens rather
+than weakens it: the correlation is **driven by ranks 13–25**, the band the desk
+does not call boarded. **Inside the top 12 the trader actually watches, the
+09:25 ordering carries little forward information at all** — which strengthens
+*rank predicts volatility, not edge* rather than qualifying it.
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
