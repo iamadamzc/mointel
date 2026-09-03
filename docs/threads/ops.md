@@ -2723,6 +2723,55 @@ asserts a live dependency does not notice when the dependency ends.** The pin
 was not wrong when written — it stopped being right, silently, and it was
 protecting nothing for two weeks while reading as protection in every deploy log.
 
+### SVRN closed: `(no split basis established)` is a PRECONDITION, not a verdict
+
+**The basis IS established. The fetch buys what it appears to.** Verified at the
+shipped sha rather than taken on report — `worker/research.ts` in `97f5fbd`:
+
+```js
+const deep = await ensureDeepHistory(db, job.ticker);
+log(`[history] ${job.ticker} deep: ${deep.detail} (${deepDue.reason})`);
+```
+
+`deepDue.reason` is computed **before** the fetch and printed **after** it. So
+`(no split basis established)` is **why the fetch was triggered**, describing the
+state that no longer holds by the time it is printed. **SVRN's four split events
+were found BY that fetch, not despite it.**
+
+**And the line mixes two kinds of thing, which is why it misleads.**
+`deep.detail` — *"1194 sessions from 2021-11-30, 4 split event(s)"* — **is** an
+outcome. The parenthetical is a premise. **The conclusion-shaped end of the
+sentence is the input**, and read left to right it parses as a verdict.
+
+**Zero-event names are not counter-examples.** Factors are derived per date and
+events derived from them afterwards, so a symbol with no splits still gets a
+complete factor series. **Zero events is not zero basis.** CURR, KRSP, SVRN and
+VRM all established.
+
+**My own baseline answered my own question and I did not notice.** `split_factor`
+19,707 -> 99,696 across 77 symbols **could not have moved had establishment been
+failing.** The measurement that settled it was already in my hands when I raised
+the flag. **A number taken for one purpose answered a question asked hours later
+— that pre-deploy baseline has now paid three separate times.**
+
+**The flag was still right, for a better reason than I gave it.** I argued four
+events not establishing a basis was a different statement from zero events not
+establishing one. **The real defect is that a symbol that established and one
+that did not print the SAME line** — the observable cannot separate success from
+failure, and the underivable case is real (bars with no usable raw closes derive
+no factors). **An observable that cannot fail differently is the shape this desk
+keeps finding.**
+
+**Fixed at `9bfeabf`** — the line logs the outcome beside the trigger, asked of
+the **store** rather than inferred, through one shared definition so gate and log
+cannot drift. **Not deployed, and not worth a deploy on its own: it queues for
+the next ship.**
+
+**UNTIL THEN, THE READING RULE: treat the parenthetical as "why we fetched",
+never as an outcome. The store counts are the truth in the meantime** —
+`SELECT COUNT(*) FROM daily_bars WHERE split_factor IS NOT NULL` and
+`SELECT COUNT(DISTINCT symbol) FROM daily_bars WHERE source='alpaca-daily-deep'`.
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
