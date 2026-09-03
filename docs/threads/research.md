@@ -47,7 +47,13 @@ Background on how the pipeline was built and why:
 fresh Research session needs in order to act without asking me anything. If it
 is not here it is not anywhere: I am not available to be asked.*
 
-### Built, pushed, NOT deployed
+### Built and pushed — the first two rows are now LIVE
+
+**Production is `97f5fbd`, deployed 2026-09-03 05:10 UTC** (Ops's record, its
+own charter). **`3379809` and `268e438` are in it**, verified by ancestry here
+rather than taken from the message. The table's old heading said *none are
+deployed*; that was true when written on 08-27 and is the exact shape of a
+stale opening line, so it is corrected rather than annotated.
 
 | sha | what | gate |
 | --- | --- | --- |
@@ -56,12 +62,13 @@ is not here it is not anywhere: I am not available to be asked.*
 | `dec0dd9` | **stalled-job retirement** — non-terminal jobs before boot marked `STALE` | already on origin, rides beneath |
 | `bc15588` | **supply pair** — floor/total with the basis guard. **Inert until the backfill runs** | NOT in the `4ac30b5` bundle; next window |
 | `664fdb7` | thread items 32–34, documentation only | n/a |
-| `3379809` | **basis-fetch decoupling** — `basisFetchDue`, full-depth factor read, coverage-boundary refusal, `worker/basis-backfill.ts` | built 2026-09-02 on the recorded approval; backfill itself runs post-0f, Ops prices 462 calls |
-| `268e438` | **float-source content check** — `FLOAT_TERMS` over the field, not `Boolean()` | built 2026-09-02 on the trader's word via Integration |
+| `3379809` | **basis-fetch decoupling** — `basisFetchDue`, full-depth factor read, coverage-boundary refusal, `worker/basis-backfill.ts` | **LIVE in `97f5fbd`.** Behaviour NOT yet verified — see item 36 |
+| `268e438` | **float-source content check** — `FLOAT_TERMS` over the field, not `Boolean()` | **LIVE in `97f5fbd`** |
 
-**All four are on `origin/main`. None are deployed.** Ops does not deploy until
-item 0f (build off-box, ship the artifact) lands; Integration has ratified
-no-deploy-until-0f. **Do not ask for a deploy before 0f.**
+**The four 08-27 rows above are on `origin/main`; check Ops's charter for which
+of them rode the same bundle rather than assuming from this table.** The
+no-deploy-until-0f freeze is **over**: 0f went live at `7f4aa91` and the
+six-piece bundle followed at `97f5fbd`.
 
 **The trader approved `4ac30b5` + `9cf8872` on a reason I gave him that was
 false** (see item 33). He re-confirmed on the corrected facts. That approval is
@@ -71,7 +78,7 @@ good; do not re-litigate it.
 
 | decision | holder | state |
 | --- | --- | --- |
-| **basis-fetch decoupling** | **BUILT** `3379809`, 2026-09-02 | approval was the trader's 2026-08-27 yes, relayed late. Rides the post-0f bundle; the one-off backfill is `worker/basis-backfill.ts` and **cannot run until the 0f deploy migrates production to schema v22** — its census (read-only, default mode) is what Ops prices: 231 researched → **462 Alpaca REST calls** on the 08-23 snapshot. |
+| **basis-fetch decoupling** | **LIVE** `3379809` in `97f5fbd` | approval was the trader's 2026-08-27 yes, relayed late. **Two things I said about it were wrong — item 36.** The v22 gate does not exist (production was already 22), and the 462 calls are being spent by the LIVE WORKER, not by the backfill Ops was asked to price. |
 | `guardrails.ts:344` content check | **BUILT** `268e438`, 2026-09-02 | the trader's approval arrived via Integration the same day. The field's content now takes the same `FLOAT_TERMS` test as the excerpt. |
 | deterministic float extractor | **PARKED** (trader, 2026-09-02: "park, but let's put it where we should") | scoped, unbuilt, 19 tickers. **Unparks with the derived-float decision, or when Q9's validation needs ground truth once capture data accumulates. Prerequisite first build when it wakes: the fixture set from R&D's recorded extraction traps** — three parsers disagreed across the whole plausible range, which is the argument no assertion can make. |
 | Q9 capture build | Ops's schema gate | scoped, riders below |
@@ -3033,3 +3040,84 @@ from no-news days**, because nothing records what he supplied at all; the
 manual-feed caveat in item 25 is a design requirement, not an implemented
 distinction. Building the capture is a decision that sits with the trader; the
 spec is items 25/26.
+
+---
+
+**36. The basis fetch is live, and the two things I said about how it would
+arrive were both wrong.** *Found 2026-09-03 by reading Ops's deploy record
+after noticing `HEAD` had moved past my commits. Neither error is in the code.*
+
+**Production is `97f5fbd`, deployed 05:10 UTC; `3379809` and `268e438` are in
+it** — checked by ancestry here, not taken from the commit subject that said so.
+
+### The v22 gate does not exist
+
+I wrote, in this charter and in the message Ops priced from, that the backfill
+*"cannot run until the 0f deploy migrates production to schema v22."*
+**`SCHEMA_VERSION` was already 22, the bundle contains no `db.ts` at all, and
+Ops's post-deploy reading confirms 22.** Ops caught it: *"the earlier claim
+that the backfill needed one was wrong, and the real gate was only ever
+`worker/basis-backfill.ts` reaching the box."*
+
+**Where the error came from is the reusable part: I inferred production's
+schema from the 08-23 SNAPSHOT, which is v21 because it predates the
+migration.** The snapshot is the only store I can open from here, and its
+schema is a fact about a file from eleven days ago. *Measure a commit, not a
+checkout* — in its third costume on this desk: a checkout, a regex, and now a
+stale database file, each mistaken for the system.
+
+**The code was never wrong.** `basis-backfill.ts` preflights for the column and
+reports rather than raising; against a v21 file that guard is correct and fired
+correctly. **What was wrong was a claim about production made from a file.**
+
+### The 462 calls are already being spent, and not by the thing Ops was asked to price
+
+`basisFetchDue` is wired into `worker/research.ts:422` **in the shipped sha** —
+verified by reading `97f5fbd:worker/research.ts`, not by remembering what I
+wrote. So **every research job for a name with no established factor now
+triggers the dual-adjustment fetch automatically.**
+
+**I framed the pricing entirely around the backfill.** *"FOR OPS TO PRICE: 231
+researched → 462 Alpaca REST calls"* describes a paced one-off that has not
+run and may now never need to. **The live trigger spends the same budget on the
+job path, ungated, starting the moment the bundle went live** — and it
+pre-empts the backfill for every name that gets researched, leaving the tool
+useful only for researched names that are not being re-analysed.
+
+**Bounded, and the bounds are why this is a disclosure rather than an
+incident:** two calls per symbol, once ever (the factor persists through
+`COALESCE`), one deep fetch per symbol per day from the existing marker, only
+for researched names, at `DEFAULT_CONCURRENCY = 2`. **Alpaca REST, no model
+spend.** The exposure is the live desk's REST budget inside the trading window
+— the same cost item 0 flagged about `ensureDailyHistory` on the server.
+
+> **A gate I put on the TOOL was read as a gate on the CHANGE.** Both halves
+> shipped in one commit and I described only the half that waits. Nobody was
+> misled about the number; they were misled about *when it starts*.
+
+### Behaviour is NOT verified, and I cannot verify it from here
+
+The README rule is that Ops confirms the deploy and **the author confirms the
+behaviour**. Ops has confirmed the release, the services and `stalledJobs`
+16 → 0. **Nothing has yet observed my change doing its job**, and the local
+snapshot cannot show it — it predates the deploy and the desk runs on AWS.
+
+The falsifiable read, for whoever has the production store, is two counts:
+
+```sql
+SELECT COUNT(*) FROM daily_bars WHERE split_factor IS NOT NULL;
+SELECT COUNT(DISTINCT symbol) FROM daily_bars WHERE source = 'alpaca-daily-deep';
+```
+
+**Both were effectively zero before this shipped** — the blue-sky gate would
+ever have fired for 11 symbols, 2 holding a dossier. A rising distinct-symbol
+count is the trigger working; **a count that stays flat while research jobs run
+is the change doing nothing**, which is exactly the reading `computedCycle`'s
+gate produced when it looked healthy at zero. **Ask what makes the number move
+before reading either direction as success.**
+
+*And the number that must NOT be quoted as coverage: rendered supply pairs do
+not change retroactively. A dossier written before its symbol's basis was
+established keeps the pair it was written with. Coverage moves only as names
+re-analyse after their factor lands, so any figure taken in the first days is a
+floor on a moving quantity and has to say so.*
