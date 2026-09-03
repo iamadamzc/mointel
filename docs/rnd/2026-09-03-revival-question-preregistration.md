@@ -144,6 +144,53 @@ that should not wait is the trades-endpoint depth check**, because that is what
 decides whether his real question has a clock on it.
 
 
+## Amendment 2 — the retention disagreement, settled by probe
+
+**Research and I contradicted each other on a load-bearing fact.** I said minute
+bars are re-fetchable for past dates; Research (item 38, `0b8417a`) said stored
+trade counts exist for roughly three days and **"nothing further back at any
+price."** Integration held the design and offered a reconciling hypothesis: that
+my 13-session backfill had been **daily** bars, which would make re-fetchability
+irrelevant to minute-level trade counts.
+
+**Settled by reading one line and running one call rather than waiting.**
+
+**The hypothesis is wrong.** `worker/archive-backfill.ts` fetches
+`timeframe: '1Min'` — minute bars, explicitly.
+
+**And the vendor returns trade counts on historical minute bars.** A probe for
+`AAPL`, **2026-08-25 — nine days back, well outside the three-day retention**:
+
+    {"t":"2026-08-25T14:00:00Z","o":310.46,"h":310.56,"l":309.65,
+     "c":309.685,"v":192975,"n":3808,"vw":310.141083}
+
+    6 of 6 bars carried a trade count.
+
+> **Both of us were right about different objects. Research's "nothing further
+> back at any price" is true of the local STORE and false of the VENDOR.** The
+> desk prunes `minute_bars.trade_count` to three days; Alpaca still has it, and
+> `AlpacaDailyBar` already declares `n`.
+
+**WHAT THIS UNBLOCKS, and it is more than a window.** Research established that
+**minute trade count is parsed on every bar, persisted, read back, and scored on
+by nothing.** It is the measure the viscosity programme *confirmed*, and it is a
+better answer to *is this name alive right now* than volume alone — volume is one
+block print away from lying, and a trade count is not.
+
+**So the revival question can be re-asked at minute grain on trade count, over
+the full 13 sessions, with no capture clock.** That is a better instrument than
+the volume threshold the pilot used, on a longer window, at no cost.
+
+**What it does NOT resolve: his 10-second grain.** The bars endpoint still has a
+one-minute floor and the trades endpoint is still unimplemented and unprobed.
+**That probe remains the only item here with a possible clock on it.**
+
+**Method note, because it is the point.** I inferred from a type declaration that
+`n` was available and then **did not stop there** — a declared optional field is
+not proof the vendor populates it, and inferring capability from a type is the
+exact error this thread has made repeatedly this week. **One call settled what
+two threads had been asserting at each other.**
+
 ---
 
 # RESULT — pilot on 2 sessions, 2026-09-03
