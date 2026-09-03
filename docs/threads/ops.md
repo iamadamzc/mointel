@@ -2480,6 +2480,79 @@ census as "nothing has been fetched" will misread it.
 `worker/basis-backfill.ts` is present on the box as of `97f5fbd`, which was the
 only real gate — **not a migration**, which was claimed twice and was never true.
 
+## Window 3 is superseded by its own fix: the basis fetch is already running live
+
+**The change carried its own trigger.** `basisFetchDue` sits at
+`worker/research.ts:422` in `97f5fbd`, so every research job for a name with no
+established factor fires the dual-adjustment fetch **now**, ungated. Nobody was
+wrong about the number of calls; the gate was put on the tool and the trigger
+shipped inside the change.
+
+### The author-half read: RISING, and the pre-deploy baseline is what proves it
+
+```
+                          BEFORE (pre-97f5fbd)   NOW (2026-09-03 13:45 ET)   delta
+daily_bars rows                     78,729                 155,390        +76,661
+split_factor NOT NULL               19,707                  99,696        +79,989
+symbols source=alpaca-daily-deep         —                      77
+```
+
+`alpaca-daily-deep` 99,000 rows / 77 symbols; `alpaca-daily-bar` 56,390 / 585.
+
+**This is not the `computedCycle` shape** — flat-while-jobs-run would have meant
+the change did nothing, and it is decisively not flat.
+
+**The baseline is the whole value of this read.** It was taken days earlier while
+checking an unrelated sequencing claim, and it is the only reason today's 99,696
+is a *delta* rather than a bare count. **Integration's framing — "both
+effectively zero before this shipped" — was wrong on `split_factor`, which was
+already 19,707.** A number without its before is not evidence of a change.
+
+### Live REST budget: does not need watching, on evidence
+
+```
+13:45 ET, RTH open      all four active, NRestarts=0
+market LIVE, msgAge 2s, phase RTH        research IDLE, queued 0, stalled 0
+429 / rate-limit errors today: 0         memory 1,710 MB available
+```
+
+**Sparse, not bursty:** four deep fetches in two hours (CURR 11:33, SVRN 12:33,
+KRSP 12:39, VRM 13:30 ET). **The job cadence is the throttle**, concurrency 2 is
+nowhere near a limit, and capture is untouched mid-RTH. Periodic checks, not
+supervision.
+
+### The backfill should shrink to the tail, and may not be worth a window at all
+
+**77 of ~231 researched names covered in half a day, unattended.** The worker
+reaches a name when it re-analyses, and **a name re-analyses because it ranks**
+— so the worker is already doing the highest-value names first, in value order.
+
+**What a backfill would add is the complement: names that have NOT re-analysed,
+i.e. the names that have not moved.** Lowest value, highest relative cost.
+
+**Do not run the 462.** Re-price in a week against the symbols still lacking a
+factor, and run only that remainder if it is still large. **A window whose
+premise was "spend 462 calls" is now a window about spending the remainder
+faster than a worker that is already spending it for free.**
+
+### One observation held for Research, not diagnosed here
+
+Every deep fetch logs `(no split basis established)` — **including SVRN, which
+found four split events.**
+
+```
+CURR  1166 sessions, 0 split event(s)  (no split basis established)
+SVRN  1194 sessions, 4 split event(s)  (no split basis established)
+VRM   1567 sessions, 1 split event(s)  (no split basis established)
+```
+
+**Zero events not establishing a basis is unremarkable; four events not
+establishing one is a different statement.** It should not be read as the supply
+pair's expected INERT until someone confirms they are the same thing. If the
+fetch is meant to establish a basis and does not when splits exist, **it is
+running and buying less than it appears to.** Ops holds the log line; Research
+holds the code.
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
