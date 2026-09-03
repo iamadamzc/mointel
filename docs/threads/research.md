@@ -3317,3 +3317,29 @@ cannot exist unless the factor series was populated. A symbol reporting splits
 has, by construction, established a basis. That is why SVRN is the *strongest*
 case rather than the alarming one — and why it should be the query run, since a
 zero there would falsify the whole account rather than one corner of it.
+
+### That reasoning is now asserted rather than argued — `aef29c7`
+
+**I had defended it by READING the code and asking another thread to trust the
+reading, while a verification resting on it was already reported as passing.**
+Same shape as the retry brake in item 33: a premise about code, passed down a
+chain no step of which could catch it. So it is pinned, in
+`tests/market/splits.test.ts`:
+
+| assertion | what it closes |
+| --- | --- |
+| a four-consolidation series populates a factor for **every** usable session while reporting 4 events | SVRN's exact shape — the fetch cannot report splits and leave a null basis |
+| a never-split series populates the **same full series** with 0 events | **zero events is not zero basis** — CURR and KRSP, and the inference the log invited |
+| a series with no usable raw closes establishes **nothing** | the real underivable case, and why the worker asks the STORE rather than inferring from a successful fetch |
+
+**The third is not filler — it is what makes the first two non-vacuous.** They
+assert `factors.size` equals the session count, which means nothing unless an
+empty map is reachable. **This file has shipped a vacuous test before** (item
+33's rounding artefact, which never reached the confirmation logic), so the
+reachability demonstration sits beside the tests it protects rather than in a
+commit message.
+
+**What a green suite does NOT settle**, kept because the distinction is the
+whole discipline: it establishes that **the mechanism cannot do what was
+feared**. It does not establish that **SVRN did it**. Only the count above does
+that.
