@@ -2321,6 +2321,70 @@ pin says *"the market worker runs from this release until it next restarts"* —
 **it restarted during the 08-27 incident reboot.** The pin now protects a
 release nothing runs. Not urgent; not to be read as live protection either.
 
+## State: production is `97f5fbd`, deployed 2026-09-03 05:10 UTC — the six-piece bundle
+
+Window 2 of three, under the capped build 0f installed an hour earlier.
+
+```
+release   97f5fbd    schema 22, unchanged — this bundle does NOT migrate
+all four  active, NRestarts=0
+market    started 2026-08-27 08:42:59 — never restarted, SIP intact 7 days
+prune     1 removed, 5 retained    pins  reported and satisfiable
+```
+
+### The falsifiable check passed, and that is the point
+
+```
+[research] retired 16 stranded job(s) behind 2026-09-03: CRGO, MYSZ, USDE,
+SDEV, ZJK, ADXN, LSTA, AIAI, MFI, ZKH, DAIC, PMI, OSPR, GGR, XPON, OLOX
+```
+
+**Exactly 16, once, all named. `stalledJobs` 16 -> 0.** Any other number would
+have falsified the 08-25 enqueue fix. **A check that could have refuted it and
+did not is worth more than the six clean nights**, which could only ever fail to
+disconfirm.
+
+### Ancestry was the wrong test, and it would have misled in both directions
+
+Integration verified `97f5fbd` descends from `bc78d49`. **Production was
+`7f4aa91`** — a cherry-pick on a side branch — so `7f4aa91` is **NOT an
+ancestor** of the shipping sha. Read as ancestry, that is a rollback risk.
+
+**The question that mattered was content.** `deploy/aws/deploy.sh` and
+`push-release.sh` are **byte-identical** across the two shas, because main
+carries its own copy of the same change. 0f survived the deploy that did not
+descend from it.
+
+> **Once production runs a composed sha, ancestry stops being the test and
+> content becomes it.** The §"is it actually ahead of production" check assumes
+> a linear main. A cherry-picked production sha breaks that assumption, and the
+> replacement is: **diff the files you care about between production and the
+> candidate, and require identical or intended.**
+
+### The bundle does not migrate, and that premise was stated twice
+
+`SCHEMA_VERSION` is **22** at the shipping sha and **`db.ts` is not in the diff
+at all**; the post-deploy reading confirms 22. Nothing in window 3 waits on a
+migration — the earlier claim that the backfill needed one was wrong, and the
+real gate was only ever `worker/basis-backfill.ts` reaching the box.
+
+**One thing checked because it could have failed the deploy:** `package.json`
+moved while `package-lock.json` did not, which normally makes `npm ci` refuse.
+It was **scripts only** — `fills:rules`, `archive:scorecard` — so the lockfile
+did not need to move.
+
+### The rig decayed a SECOND time, within the hour, from a different cause
+
+The gate returned `build FAIL (exit 127)`: Turbopack had lost
+`.next/cache/turbopack/.../00000020.sst` mid-build. Earlier the same day it was
+`node_modules` and two tracked files. **Windows temp cleanup prunes the
+scratchpad while work is in flight, not merely between sessions.**
+`rm -rf .next` and a rebuild passed.
+
+**Twice in one session, each time failing in a way indistinguishable from a
+broken payload.** A gating rig does not belong under `%TEMP%`. Move it before
+the next sequence, and until then treat any gate red as "verify the rig first".
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
