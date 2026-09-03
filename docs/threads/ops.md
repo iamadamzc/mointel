@@ -2789,6 +2789,69 @@ never as an outcome. The store counts are the truth in the meantime** —
 `SELECT COUNT(*) FROM daily_bars WHERE split_factor IS NOT NULL` and
 `SELECT COUNT(DISTINCT symbol) FROM daily_bars WHERE source='alpaca-daily-deep'`.
 
+### Intraday retention: 3 days of minute bars, and NO sub-minute data has ever been stored
+
+Measured on production 2026-09-03, read-only, for the trader's 10-second exit
+rule.
+
+**(a) Minute bars reach back exactly three trading dates.**
+
+```
+2026-09-01   1,084,573 bars   7,798 symbols
+2026-09-02   1,054,662 bars   7,838 symbols
+2026-09-03   1,029,902 bars   7,814 symbols
+```
+
+`pruneRetention()` (`worker/runtime.ts:1541`) keeps `minuteBarRetentionDays`
+dates and `pruneMinuteBars` deletes the rest. **The default is 3
+(`lib/market/config.ts:85`) and `MARKET_MINUTE_BAR_RETENTION_DAYS` is not set in
+`/etc/mointel/mointel.env`** — so production runs the default. **This corrects a
+long-standing note that minute bars "never survive to the next session": they
+survive three.**
+
+**(b) There is no trade-level table. There never has been.**
+
+The store holds 23 tables and **not one of them is trades or ticks**. A grep for
+`INSERT INTO trades|ticks` across `lib/` and `worker/` returns **nothing**.
+
+**But the trades ARE arriving, and that is the part that matters.**
+
+```
+[alpaca] high-res interest set: 250 symbols        (continuously, every minute)
+lib/market/alpaca/stream.ts:123   desired = { trades, quotes, lulds } for the high-res set
+worker/runtime.ts:1134            case 'trade':   — handled, in memory
+```
+
+Whole-market wildcards are `['bars','updatedBars','statuses']` only — trades and
+quotes are **deliberately not wildcarded** ("whole-market tick data would be
+bandwidth we have no use for"). **But a targeted trades subscription runs for
+~250 high-res symbols right now**, is consumed for live price and HOD decisions,
+and is **never written**.
+
+### What this means for the 10-second question
+
+**Historically: impossible, and no amount of work recovers it.** Nothing
+sub-minute has ever been persisted. Minute bars can *characterise* a volume
+collapse — they carry `volume` and `trade_count` — but they **smear the exact
+transition**, so the trader's specific threshold (~5,000 shares on a 10s candle
+falling below ~500) **cannot be evaluated on stored data at any grain we hold.**
+
+**Going forward: available without a feed change, entitlement change, or
+subscription change.** The trades are already on the wire for the high-res set.
+**Ten-second capture is a STORAGE decision, not a data-access one** — which
+makes it far cheaper than it sounds and far more urgent than it looks.
+
+**This is an observable-once finding in the strict sense.** Every session that
+passes without the decision is a session of 10s structure that can never be
+recovered — the same logic as the append-only record, one grain finer. **It is
+not a delay; it is a loss that accrues daily.**
+
+**The capacity question is real and belongs beside it.** 250 symbols of raw
+trades is a materially heavier write path than 1M minute bars a day, on a 4 GB
+instance that an unpaced process took down on 08-27 and whose WAL sits at
+546 MB. **Whoever scopes 10s capture should price the write load before the
+schema** — this desk has now learned that lesson twice.
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
