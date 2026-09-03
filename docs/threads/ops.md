@@ -3151,6 +3151,52 @@ different thing.
 **The fix is structural, not a bound: fetch BEFORE the claim, or write the
 column AFTER the complete.** Either removes the hazard; a timeout only limits it.
 
+### DATED DISCONTINUITY, pre-registered: checkpoint duration stops being comparable when Q9 ships
+
+**Recorded BEFORE the change, because after it the comparison is already broken
+and nobody can tell which side of the boundary a number came from.**
+
+**Checkpoint duration is a health signal I have actually used.** On 2026-09-03 a
+recap completed in 45 ms and I was ready to flag it as a hung dispatch; comparing
+it against **its own history** showed 33-58 ms was normal and the alarm was
+false. **That comparison stops working the moment a checkpoint contains a
+network round trip.**
+
+**THE PRE-Q9 BASELINE — 113 checkpoints, 2026-08-27 to 2026-09-03:**
+
+```
+overall                    25 - 209 ms,  avg 42
+
+PREMARKET_0700     n=6     28 /  62 / 196
+NEXT_DAY_RECAP     n=5     33 /  61 / 115
+PREMARKET_0625     n=6     28 /  43 /  76
+STRUCTURAL_REFRESH n=6     30 /  41 /  50
+RTH_INTERVAL      n=72     25 /  41 / 209
+OPEN_SPIKE        n=6      31 /  37 /  47
+RTH_CLOSE          n=6     27 /  34 /  54
+PREMARKET_0645     n=6     26 /  32 /  37
+```
+
+**AND THIS CORRECTS A FIGURE I HAVE QUOTED TWICE.** I have been saying
+**"28-74 ms"**. Over the full 113-checkpoint sample the range is **25-209 ms**.
+My band came from a smaller window and was **narrow enough that a perfectly
+normal 196 ms or 209 ms checkpoint would have read as anomalous against it** —
+a false-alarm band, produced by the same habit I caught myself in when I nearly
+flagged the 45 ms recap. **A health band drawn from a short window is a
+false-positive generator, and I built one and then quoted it as fact.**
+
+**THE DISCONTINUITY RULE:** if Q9's capture ships inside the claim-to-complete
+window, **every duration after that deploy is measured in different units** —
+database work becomes network-bound. **Any comparison spanning the deploy is
+invalid and will read as a fault when it is a units change.** The band above
+applies to the pre-Q9 regime ONLY and must be re-derived afterwards from at
+least a week of the new regime.
+
+**Fetch-before-claim avoids the discontinuity entirely**, which is a second and
+independent argument for the shape already preferred on hazard grounds. **A
+design that keeps a measurement comparable across its own deploy is worth more
+than one that needs a footnote forever.**
+
 ## Open items
 
 **0f. The deploy builds on the production box, and the build is enough to take
