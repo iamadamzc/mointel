@@ -32,8 +32,8 @@ questions is a thread that has stopped working.
 
 | # | Question | Opened | Status |
 | --- | --- | --- | --- |
-| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — first half closed (`PILLAR_4_STRONG_FORM_EXCLUDED`); second half waits on tier A |
-| Q6 | Can the 09:25 pre-open assessment () be scored against outcomes? | 2026-08-23 | parked — **promoted and re-parked 2026-08-27**; needs a five-date assessment extract, read-only, Ops |
+| Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — first half **AMENDED 2026-09-02**: strong form still excluded, but the relationship is now DETECTED at +17.9pp; second half waits on tier A |
+| Q6 | Can the 09:25 pre-open assessment (`OPEN_SPIKE_ASSESSMENT`) be scored against outcomes? | 2026-08-23 | **ACTIVE** — unblocked 2026-09-02 by Ops's extract; 12 assessments x 25 tickers = 300 symbol-days, verified present |
 | Q5 | When does a board name's move happen, relative to when the desk boards it? | 2026-08-23 | **CLOSED 2026-08-27** — `BOARD_IS_LATE_TO_THE_MOVE`, below |
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | **CLOSED 2026-08-27** — the viscosity lines already answered it; the row was debt |
 | Q2 | Can any tape-character measure be defined at the grain he trades, and does it separate outcomes? | 2026-08-23 | parked — **Q7 merged in**; blocked on sub-minute capture |
@@ -861,6 +861,40 @@ the kind of thing this register exists for. Design acts on whatever comes back.
 | Q1, first half — do 50%+ movers carry catalysts? | `PILLAR_4_STRONG_FORM_EXCLUDED` — **83% of 50%+ movers carried no legitimate-positive-or-stronger catalyst**, prior-free, as-of-correct, five-draw modal, over 211 graded symbol-days on the desk's board. Movers 16.7% against non-movers 13.4% **on a prior-free five-draw modal** (the basis matters — the stored columns give +0.5pp, +4.5pp and +6.9pp, and none of the four is significant), p=0.51; corrected for 15% misclassification the largest true difference consistent with the data is **+19 points**. **Definition-robust:** the contrast survives every definition of *carried a catalyst* the archive can express, and grade staleness is not differential by mover status, so the attenuation assumption behind the ceiling holds. Pillar 4 calls a breaking-news catalyst *non-negotiable*, which implies far more than that, so **the strong form is excluded**. A weak relationship is not excluded and nothing here says catalysts are irrelevant. | 2026-08-23 |
 | Sub-minute execution arrival | `NO_SUBMINUTE_INCREMENTAL_SIGNAL` — 2–20s execution count and arrival timing add nothing over the completed-minute baseline. The density gate that makes the price path measurable makes a 2s window a rescaling of the minute. | 2026-08-21 |
 | Minute trade count | `WITHIN_DAY_TRADE_COUNT_SIGNAL_CONFIRMED` — raw completed-minute trade count predicts a *less* clean next 30–60s. More executions is worse. The programme's only usable artifact. | 2026-08-21 |
+
+**AMENDED 2026-09-02 BY THE PREDICTION SCORECARD, and the amendment is a
+vindication rather than a retraction.** Over 13 sessions and n=688 admissible
+symbol-days — three times the original population — the contrast is **+14.9pp
+all-admissible at p=0.00002**, and **+17.9pp restricted to same-session grades**,
+which is the estimate free of attenuation.
+
+> **The verdict published a ceiling: *the largest true difference consistent
+> with the data is about +19 points*. The clean-measurement figure is +17.9pp.**
+
+**Two halves of the original now separate, and only one of them moved:**
+
+- **`PILLAR_4_STRONG_FORM_EXCLUDED` STANDS.** Pillar 4 calls a breaking-news
+  catalyst *non-negotiable*, which implies something near-total. **+17.9pp is
+  not that, and 67% of movers still carry no legitimate-positive-or-stronger
+  catalyst.**
+- **The "no detectable relationship" reading is SUPERSEDED.** p=0.51 on n=211
+  became p=0.00002 on n=688. **The relationship is moderate, real, and now
+  measured rather than bounded.**
+
+**And the sentence that made the verdict survivable was the one it would have
+been easiest to drop:** *a weak relationship is not excluded and nothing here
+says catalysts are irrelevant.* **Had this closed as "catalysts do not matter",
+the scorecard would have refuted it outright.** It closed as a bounded negative
+and the follow-up landed inside the published interval. Full working in
+[../rnd/2026-09-02-prediction-scorecard-results.md](../rnd/2026-09-02-prediction-scorecard-results.md).
+
+**One assumption behind the original DID fail, and it does not damage the
+result.** Grade staleness has become differential — movers mean age 0.07
+sessions against non-movers 0.44 — so the non-differential error the +19pp
+correction assumed no longer holds. **Checked rather than assumed: restricting
+to same-session grades WIDENS the gap.** Stale grades dilute, exactly as
+attenuation predicts, so **+14.9pp is a floor and the assumption's failure
+costs nothing here.** It may cost something elsewhere.
 
 **What would overturn `PILLAR_4_STRONG_FORM_EXCLUDED`:** a tier A cross-section
 showing that movers *outside* the desk's board carry catalysts at a materially
