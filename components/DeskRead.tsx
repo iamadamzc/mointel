@@ -31,9 +31,9 @@ import { formatCount, formatMultiple, formatPrice, formatSignedPercent } from '@
  * is the one source on this list a trader can check himself.
  */
 const PROVENANCE_MARK: Record<DeskConclusion['provenance'], string> = {
-  SHEET: 'sheet',
-  AUTO: 'auto',
-  SHEET_AUTO: 'sheet + auto',
+  SHEET: 'outside',
+  AUTO: 'desk',
+  SHEET_AUTO: 'desk + outside',
   CONFLICT: 'conflict',
   COMPUTED: 'price history',
   NONE: '',
@@ -57,7 +57,7 @@ function Conclusion({ label, value }: { label: string; value: DeskConclusion }) 
           }`}
           title={
             value.provenance === 'CONFLICT'
-              ? `The automatic layer concluded ${value.otherLabel ?? 'differently'}. Both are kept; see the comparison below.`
+              ? `The desk research concluded ${value.otherLabel ?? 'differently'}. Both are kept; see the comparison below.`
               : mark
           }
         >
@@ -103,10 +103,10 @@ function LevelRun({ label, levels, tone }: { label: string; levels: DeskReadLeve
 }
 
 const NARRATIVE_SOURCE: Record<DeskNarrative['provenance'], string> = {
-  SHEET: 'sheet',
-  AUTO: 'automatic',
-  SHEET_AUTO: 'sheet + auto',
-  CONFLICT: 'sheet vs auto',
+  SHEET: 'outside research',
+  AUTO: 'desk research',
+  SHEET_AUTO: 'desk + outside',
+  CONFLICT: 'desk vs outside',
   COMPUTED: 'price history',
   NONE: '',
 };
@@ -166,7 +166,7 @@ function Narrative({
       {narrative.counterText ? (
         <p className="mt-1.5 max-w-[70ch] border-l-2 border-warn/40 pl-2 text-[11px] leading-relaxed text-ink-3">
           <span className="tracking-wider text-warn uppercase">
-            automatic{narrative.counterLabel ? ` · ${narrative.counterLabel}` : ''}:
+            desk{narrative.counterLabel ? ` · ${narrative.counterLabel}` : ''}:
           </span>{' '}
           {narrative.counterText}
         </p>

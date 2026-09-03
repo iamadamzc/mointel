@@ -155,7 +155,7 @@ export function resolveIntelligenceState(input: IntelligenceInput): Intelligence
   if (isMaterialConflict(comparison)) {
     return build(
       'CONFLICT',
-      `The human review and the automatic layer disagree (${comparison?.conflictReasons.join(', ')}). Both conclusions are kept.`,
+      `The outside research and the desk research disagree (${comparison?.conflictReasons.join(', ')}). Both conclusions are kept.`,
     );
   }
 
@@ -163,22 +163,22 @@ export function resolveIntelligenceState(input: IntelligenceInput): Intelligence
     return build(
       'SHEET_AUTO',
       autoComplete
-        ? 'Human review and automatic analysis both present and not in material disagreement'
-        : `Human review present; automatic analysis did not establish ${missingAutoFields.join(', ') || 'complete coverage'}`,
+        ? 'Outside and desk research both present and not in material disagreement'
+        : `Outside research present; desk research did not establish ${missingAutoFields.join(', ') || 'complete coverage'}`,
     );
   }
 
-  if (hasSheet) return build('SHEET', 'Human-reviewed research only; no accepted automatic dossier');
+  if (hasSheet) return build('SHEET', 'Outside research only; no accepted desk dossier');
 
   if (hasAuto) {
     if (autoComplete) {
-      return build('AUTO', 'Accepted automatic dossier with all core conclusions established');
+      return build('AUTO', 'Accepted desk dossier with all core conclusions established');
     }
     // Some accepted intelligence exists. Saying "not yet analyzed" here would
     // discard work that is already on screen a few lines below.
     return build(
       'PARTIAL_AUTO',
-      `Accepted automatic intelligence, but ${
+      `Accepted desk research, but ${
         missingAutoFields.length > 0
           ? `${missingAutoFields.join(', ')} could not be established`
           : 'source coverage was incomplete'

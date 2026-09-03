@@ -141,7 +141,7 @@ describe('humanise', () => {
   });
 
   it('gives the values that need more than de-underscoring a real phrase', () => {
-    expect(humanise('AUTO_SOURCE_GAP')).toBe('the automatic pass had not seen the newer source');
+    expect(humanise('AUTO_SOURCE_GAP')).toBe('the desk research had not seen the newer source');
     expect(humanise('YELLOW_FRONTSIDE_WARNING')).toBe('yellow — frontside warning');
     expect(humanise('SEC_SUBMISSIONS')).toBe('SEC submissions');
   });
@@ -158,6 +158,54 @@ describe('humanise', () => {
   it('describes supply as capacity, never as selling', () => {
     for (const value of [...SUPPLY_TYPES, ...SUPPLY_STATUS]) {
       expect(humanise(value)).not.toMatch(/\bselling\b|\bis selling\b/i);
+    }
+  });
+});
+
+/*
+ * No surface claims a human reviewed anything.
+ *
+ * Five trader-facing strings said a human review reached a conclusion, plus a
+ * `Sheet (human)` column heading. No human has ever reviewed any of it: the
+ * Sheet is written by four scheduled ChatGPT tasks. That is a worse failure
+ * than the engine enums Phase 1 removed — LATCH was jargon, this asserted a
+ * fact about who did the work.
+ *
+ * `automatic` went with them, for a different reason: with no human in the
+ * comparison it had stopped distinguishing the two things it existed to
+ * separate. Both sides are automatic. `desk research` and `outside research`
+ * name what each actually is, and both fall out of use rather than needing
+ * renaming when the Sheet retires.
+ */
+describe('no surface claims a human reviewed anything', () => {
+  it('has no human-review wording and no bare "automatic" left', async () => {
+    const { promises: fs } = await import('node:fs');
+    const files = [
+      'lib/dashboard/language.ts',
+      'lib/dashboard/intelligence.ts',
+      'lib/dashboard/deskRead.ts',
+      'lib/dashboard/risk.ts',
+      'components/DeskRead.tsx',
+      'components/AutomaticIntelligence.tsx',
+      'components/MomentumTable.tsx',
+    ];
+
+    for (const file of files) {
+      const raw = await fs.readFile(file, 'utf8');
+      // Comment lines are stripped: this guards what the trader READS. An
+      // internal comment calling the dossier "automatic" is not false, only
+      // non-distinguishing, and rewriting every one would be churn.
+      const source = raw
+        .split(/\r?\n/)
+        .filter((line) => !/^\s*(\/\/|\*|\/\*)/.test(line))
+        .join(' ');
+
+      expect(source, `${file} claims a human review`).not.toMatch(
+        /human[- ]review|human-reviewed|Sheet \(human\)/i,
+      );
+      expect(source, `${file} still says "automatic" of a research source`).not.toMatch(
+        /automatic (layer|analysis|pass|research|dossier|intelligence)/i,
+      );
     }
   });
 });

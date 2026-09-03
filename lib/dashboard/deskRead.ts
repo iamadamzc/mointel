@@ -289,7 +289,7 @@ function resolveConclusion(options: {
       label: options.inFlightLabel,
       tone: 'dim',
       provenance: 'NONE',
-      title: 'Automatic research is under way for this ticker.',
+      title: 'Desk research is under way for this ticker.',
       otherLabel: null,
     };
   }
@@ -422,7 +422,7 @@ function mergeNarrative(options: {
   if (!sheetText && !autoText) return EMPTY_NARRATIVE;
 
   if (options.conflict && sheetText && autoText) {
-    // Both sides reached a conclusion and they differ. The human review leads
+    // Both sides reached a conclusion and they differ. The outside read leads
     // because it is reviewed work, but the automatic reading stays visible and
     // the state is named. Nothing is resolved here.
     return {

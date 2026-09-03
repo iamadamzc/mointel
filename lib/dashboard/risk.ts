@@ -140,7 +140,8 @@ export function resolveRisk(row: DeskRow): DeskRisk {
   const line = firstSentence(warning) ?? firstSentence(structuralWarning);
 
   // A dirty float is the strongest structural statement the desk makes, and it
-  // comes from a human review or an accepted dossier, never from arithmetic.
+  // comes from the outside research or an accepted desk dossier, never from
+  // arithmetic.
   const dirty =
     row.research?.structure.state === 'DIRTY_FLOAT' ||
     structure?.structureClassification === 'DIRTY_FLOAT';

@@ -57,8 +57,8 @@ function SheetVsAuto({
       <thead>
         <tr className="text-ink-3">
           <th className="py-1 text-left font-normal">Field</th>
-          <th className="py-1 text-left font-normal">Sheet (human)</th>
-          <th className="py-1 text-left font-normal">Automatic</th>
+          <th className="py-1 text-left font-normal">Outside research</th>
+          <th className="py-1 text-left font-normal">Desk research</th>
           <th className="py-1 text-left font-normal">Reason</th>
         </tr>
       </thead>
@@ -87,7 +87,7 @@ function SheetVsAuto({
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge label={humanise(comparison.provenance)} tone="dim" />
           <span className="text-[10px] text-ink-3">
-            the human review and the automatic layer do not materially disagree
+            the outside research and the desk research do not materially disagree
           </span>
         </div>
         <details className="mt-2">
@@ -101,7 +101,7 @@ function SheetVsAuto({
   }
 
   return (
-    <Section title="Sheet vs Automatic">
+    <Section title="Desk vs outside">
       <div className="flex flex-wrap items-center gap-2">
         <StatusBadge label="Conflict" tone="warn" />
         <span className="text-[10px] tracking-wide text-warn uppercase">
@@ -248,7 +248,7 @@ export function AutomaticIntelligence({
 
   if (!intel.analysis) {
     return (
-      <Section title="Automatic Research">
+      <Section title="Desk Research">
         <StatusBadge label={intel.statusLabel} tone="dim" />
         <p className="mt-3 text-[12px] leading-relaxed text-ink-2">
           Source collection and interpretation are in progress. Nothing here yet should be read as
@@ -314,7 +314,7 @@ export function AutomaticIntelligence({
         />
       </Section>
 
-      <Section title="Structural Intelligence — Automatic">
+      <Section title="Structural Intelligence — Desk">
         {/* The immediate read first; the model's fuller account below it. */}
         {structureSummary ? (
           <StructureSummaryBlock summary={structureSummary} FieldLabel={FieldLabel} />

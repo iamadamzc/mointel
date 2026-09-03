@@ -11,17 +11,17 @@
  * rule, and a rule that cannot be tested is a habit. The first pass at this
  * humanised the comparison table's *reason* column and missed its value
  * columns, which only showed up against production data — there is no
- * Sheet-vs-Auto table to render until a ticker has both a human review and an
+ * comparison table to render until a ticker has both an outside read and a desk
  * accepted dossier, and no local fixture had both.
  */
 
 /** Phrases for the values that carry more meaning than a de-underscoring gives. */
 const ENUM_PHRASE: Record<string, string> = {
   /* Why two sides differ. */
-  AUTO_SOURCE_GAP: 'the automatic pass had not seen the newer source',
+  AUTO_SOURCE_GAP: 'the desk research had not seen the newer source',
   INTERPRETATION_DIFFERENCE: 'both sides had evidence and read it differently',
-  SHEET_ONLY: 'only the human review reached a conclusion',
-  AUTO_ONLY: 'only the automatic analysis reached a conclusion',
+  SHEET_ONLY: 'only the outside research reached a conclusion',
+  AUTO_ONLY: 'only the desk research reached a conclusion',
   AGREE: 'agree',
   DISAGREE: 'disagree',
 

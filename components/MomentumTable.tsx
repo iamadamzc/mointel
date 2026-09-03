@@ -248,7 +248,7 @@ function TableRow({
           ageSeconds={t.ageSeconds}
         />
         {/* Research status is material and is never hidden behind the Risk chip
-            alone: a conflict between the human review and the automatic layer
+            alone: a conflict between the outside research and the desk research
             changes how the row should be read. */}
         <span
           className={`block text-[10px] tracking-wide uppercase ${
