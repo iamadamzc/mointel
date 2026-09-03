@@ -227,6 +227,64 @@ function migrateV1(db: FillsDatabase): void {
   db.exec('DROP TABLE fills_v1');
 }
 
+/**
+ * The trader's own session numbers: the green stop, the red stop, and the
+ * winner size that triggers the hands-off ritual. All null until he sets them
+ * -- the checks that read them print "not set" rather than borrowing a
+ * default, because a default here would be one more inherited threshold.
+ *
+ * Stored in the database rather than in code deliberately: these numbers
+ * reveal account scale, and the handling rule is that results and the numbers
+ * around them stay outside the repository.
+ */
+export interface PersonalRules {
+  greenStop: number | null;
+  redStop: number | null;
+  winRitual: number | null;
+}
+
+const PERSONAL_RULE_KEYS: Record<keyof PersonalRules, string> = {
+  greenStop: 'rule_green_stop',
+  redStop: 'rule_red_stop',
+  winRitual: 'rule_win_ritual',
+};
+
+export function getPersonalRules(db: FillsDatabase): PersonalRules {
+  const read = (key: string): number | null => {
+    const row = db.prepare('SELECT value FROM meta WHERE key = ?').get(key) as
+      | { value: string }
+      | undefined;
+    if (!row) return null;
+    // Mirror the write contract: the CLI can only store finite positives, but
+    // this is a plain key/value row in a user-editable file. An empty string
+    // reads as zero and a hand-typed negative would invert the red-stop
+    // comparison, so anything not a positive finite number reads as "not set".
+    const value = Number(row.value);
+    return Number.isFinite(value) && value > 0 ? value : null;
+  };
+  return {
+    greenStop: read(PERSONAL_RULE_KEYS.greenStop),
+    redStop: read(PERSONAL_RULE_KEYS.redStop),
+    winRitual: read(PERSONAL_RULE_KEYS.winRitual),
+  };
+}
+
+export function setPersonalRule(
+  db: FillsDatabase,
+  name: keyof PersonalRules,
+  value: number | null,
+): void {
+  const key = PERSONAL_RULE_KEYS[name];
+  if (value === null) {
+    db.prepare('DELETE FROM meta WHERE key = ?').run(key);
+    return;
+  }
+  if (!Number.isFinite(value) || value <= 0) {
+    throw new Error(`${name} must be a positive dollar amount, got ${value}`);
+  }
+  db.prepare('INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)').run(key, String(value));
+}
+
 export function openFillsStore(explicit?: string | null): FillsDatabase {
   const dbPath = resolveFillsPath(explicit);
   assertSafeFillsPath(dbPath);

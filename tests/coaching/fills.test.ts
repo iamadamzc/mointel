@@ -18,8 +18,20 @@ import path from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
+import {
+  greenStopCheck,
+  redStopCheck,
+  winRitualCheck,
+} from '../../lib/coaching/fills/checks';
 import { buildRoundTrips, type FillRow } from '../../lib/coaching/fills/roundtrips';
-import { assertSafeFillsPath, fillKey, openFillsStore } from '../../lib/coaching/fills/store';
+import type { RoundTrip } from '../../lib/coaching/fills/roundtrips';
+import {
+  assertSafeFillsPath,
+  fillKey,
+  getPersonalRules,
+  openFillsStore,
+  setPersonalRule,
+} from '../../lib/coaching/fills/store';
 import { parseWebullExport, parseWebullTime } from '../../lib/coaching/fills/webull';
 
 const HEADER =
@@ -260,3 +272,179 @@ describe('fills store', () => {
     db.close();
   });
 });
+
+function trip(overrides: Partial<RoundTrip>): RoundTrip {
+  return {
+    symbol: 'TEST',
+    direction: 'LONG',
+    openedAt: '2026-08-25T06:00:00',
+    closedAt: '2026-08-25T06:00:30',
+    holdSeconds: 30,
+    qty: 100,
+    entryVwap: 2,
+    exitVwap: 2.1,
+    exitQty: 100,
+    pnl: 10,
+    pnlPerShare: 0.1,
+    entryLegs: 1,
+    exitLegs: 1,
+    ...overrides,
+  };
+}
+
+describe('personal session rules', () => {
+  const day: RoundTrip[] = [
+    trip({ openedAt: '2026-08-25T06:00:00', closedAt: '2026-08-25T06:00:30', pnl: 60 }),
+    trip({ openedAt: '2026-08-25T06:01:00', closedAt: '2026-08-25T06:01:20', pnl: 50 }),
+    trip({ openedAt: '2026-08-25T06:10:00', closedAt: '2026-08-25T06:10:40', pnl: -40 }),
+    trip({ openedAt: '2026-08-25T06:12:00', closedAt: '2026-08-25T06:12:30', pnl: -90 }),
+    trip({ openedAt: '2026-08-25T06:20:00', closedAt: '2026-08-25T06:20:30', pnl: -30 }),
+  ];
+  // cumulative: +60, +110, +70, -20, -50
+
+  it('greenStopCheck finds the first touch and what came after', () => {
+    const g = greenStopCheck(day, 100);
+    expect(g.firstHitTrade).toBe(2);
+    expect(g.pnlAtHit).toBeCloseTo(110, 6);
+    expect(g.tradesAfter).toBe(3);
+    expect(g.pnlAfter).toBeCloseTo(-160, 6);
+  });
+
+  it('greenStopCheck reports a line that was never touched', () => {
+    const g = greenStopCheck(day, 500);
+    expect(g.firstHitTrade).toBeNull();
+    expect(g.tradesAfter).toBe(0);
+  });
+
+  it('redStopCheck triggers when net P&L reaches -threshold, not on single-loss size', () => {
+    const r = redStopCheck(day, 45);
+    expect(r.firstHitTrade).toBe(5);
+    expect(r.pnlAtHit).toBeCloseTo(-50, 6);
+    expect(r.tradesAfter).toBe(0);
+  });
+
+  it('winRitualCheck flags a re-entry inside the hands-off window', () => {
+    const w = winRitualCheck(day, 25, 300);
+    // Trade 1 (+60) -> trade 2 opens 30s later: break. Trade 2 (+50) -> trade 3
+    // opens 8m40s later: clean.
+    expect(w.winners).toBe(2);
+    expect(w.breaks).toHaveLength(1);
+    expect(w.breaks[0].gapSeconds).toBe(30);
+    expect(w.pnlOfNextTrades).toBeCloseTo(50, 6);
+  });
+
+  it('winRitualCheck counts a qualifying winner that ends the day', () => {
+    const w = winRitualCheck([trip({ pnl: 60 })], 25, 300);
+    expect(w.winners).toBe(1);
+    expect(w.breaks).toHaveLength(0);
+  });
+
+  it('stores, reads and clears the numbers in the database', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-rules-'));
+    const db = openFillsStore(path.join(dir, 'fills.db'));
+    try {
+      expect(getPersonalRules(db)).toEqual({ greenStop: null, redStop: null, winRitual: null });
+
+      setPersonalRule(db, 'greenStop', 100);
+      setPersonalRule(db, 'winRitual', 25);
+      expect(getPersonalRules(db)).toEqual({ greenStop: 100, redStop: null, winRitual: 25 });
+
+      setPersonalRule(db, 'greenStop', null);
+      expect(getPersonalRules(db).greenStop).toBeNull();
+
+      expect(() => setPersonalRule(db, 'redStop', -5)).toThrow(/positive/);
+      expect(() => setPersonalRule(db, 'redStop', Number.NaN)).toThrow(/positive/);
+    } finally {
+      db.close();
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('reads a hand-edited meta row of garbage back as "not set"', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-rules-'));
+    const db = openFillsStore(path.join(dir, 'fills.db'));
+    try {
+      const put = db.prepare('INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)');
+      put.run('rule_green_stop', '');
+      put.run('rule_red_stop', '-50');
+      put.run('rule_win_ritual', 'lots');
+      expect(getPersonalRules(db)).toEqual({ greenStop: null, redStop: null, winRitual: null });
+    } finally {
+      db.close();
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('walks equity in realization order when positions overlap across symbols', () => {
+    // AAAA is carried at a loss while BBBB scalps a win inside it. Realized
+    // equity is +100 at 06:06, then 0 at 06:30 -- it is never negative, and
+    // the green line IS touched. A walk in entry order gets both wrong.
+    const overlapping = [
+      trip({ symbol: 'AAAA', openedAt: '2026-08-25T06:00:00', closedAt: '2026-08-25T06:30:00', pnl: -100 }),
+      trip({ symbol: 'BBBB', openedAt: '2026-08-25T06:05:00', closedAt: '2026-08-25T06:06:00', pnl: 100 }),
+    ];
+    const red = redStopCheck(overlapping, 50);
+    expect(red.firstHitTrade).toBeNull();
+    const green = greenStopCheck(overlapping, 100);
+    expect(green.firstHitTrade).toBe(1);
+    expect(green.firstHitAt).toBe('2026-08-25T06:06:00');
+    expect(green.pnlAtHit).toBeCloseTo(100, 6);
+    expect(green.tradesAfter).toBe(1);
+    expect(green.pnlAfter).toBeCloseTo(-100, 6);
+  });
+
+  it('reports the first touch of the line, not a later one', () => {
+    const twice = [
+      trip({ openedAt: '2026-08-25T06:00:00', closedAt: '2026-08-25T06:00:30', pnl: 110 }),
+      trip({ openedAt: '2026-08-25T06:01:00', closedAt: '2026-08-25T06:01:30', pnl: -50 }),
+      trip({ openedAt: '2026-08-25T06:02:00', closedAt: '2026-08-25T06:02:30', pnl: 60 }),
+    ];
+    const g = greenStopCheck(twice, 100);
+    expect(g.firstHitTrade).toBe(1);
+    expect(g.pnlAtHit).toBeCloseTo(110, 6);
+  });
+
+  it('win ritual: a position opened BEFORE the winner closed is concurrent, not a break', () => {
+    // BBBB opened while the AAAA winner was still running (would be a negative
+    // gap); CCCC, opened 60s after the close, is the real break.
+    const overlapped = [
+      trip({ symbol: 'AAAA', openedAt: '2026-08-25T06:00:00', closedAt: '2026-08-25T06:10:00', pnl: 60 }),
+      trip({ symbol: 'BBBB', openedAt: '2026-08-25T06:05:00', closedAt: '2026-08-25T06:05:30', pnl: -10 }),
+      trip({ symbol: 'CCCC', openedAt: '2026-08-25T06:11:00', closedAt: '2026-08-25T06:11:30', pnl: -5 }),
+    ];
+    const w = winRitualCheck(overlapped, 25, 300);
+    expect(w.breaks).toHaveLength(1);
+    expect(w.breaks[0].next.symbol).toBe('CCCC');
+    expect(w.breaks[0].gapSeconds).toBe(60);
+  });
+
+  it('win ritual: a re-entry still open at report time is a break, not invisible', () => {
+    const withOpen = [
+      trip({ symbol: 'AAAA', openedAt: '2026-08-25T06:00:00', closedAt: '2026-08-25T06:00:30', pnl: 60 }),
+      trip({ symbol: 'BBBB', openedAt: '2026-08-25T06:00:45', closedAt: null, holdSeconds: null, pnl: 0, exitQty: 0, exitVwap: null }),
+    ];
+    const w = winRitualCheck(withOpen, 25, 300);
+    expect(w.winners).toBe(1);
+    expect(w.breaks).toHaveLength(1);
+    expect(w.breaks[0].gapSeconds).toBe(15);
+  });
+
+  it('win ritual boundaries: gap equal to the window is clean, a winner exactly at threshold counts', () => {
+    const exact = [
+      trip({ openedAt: '2026-08-25T06:00:00', closedAt: '2026-08-25T06:00:30', pnl: 25 }),
+      trip({ openedAt: '2026-08-25T06:05:30', closedAt: '2026-08-25T06:06:00', pnl: -5 }),
+    ];
+    const w = winRitualCheck(exact, 25, 300);
+    expect(w.winners).toBe(1);
+    expect(w.breaks).toHaveLength(0);
+  });
+
+  it('all three checks stay quiet on an empty day', () => {
+    expect(greenStopCheck([], 100).firstHitTrade).toBeNull();
+    expect(redStopCheck([], 100).firstHitTrade).toBeNull();
+    const w = winRitualCheck([], 25, 300);
+    expect(w.winners).toBe(0);
+    expect(w.breaks).toHaveLength(0);
+  });
+});
+

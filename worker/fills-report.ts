@@ -26,12 +26,15 @@ import { pathToFileURL } from 'node:url';
 
 import {
   bySymbol,
+  greenStopCheck,
   holdTime,
   lossPerShare,
+  redStopCheck,
   revenge,
   sessionBreakdown,
   summarise,
   threeStrikes,
+  winRitualCheck,
 } from '../lib/coaching/fills/checks';
 import type { RoundTrip } from '../lib/coaching/fills/roundtrips';
 import {
@@ -39,9 +42,15 @@ import {
   MAX_LOSS_PER_SHARE,
   REVENGE_GAP_SECONDS,
   STRIKE_LIMIT,
+  WIN_RITUAL_GAP_SECONDS,
   unverified,
 } from '../lib/coaching/fills/rules';
-import { openFillsStore, resolveFillsPath } from '../lib/coaching/fills/store';
+import {
+  getPersonalRules,
+  openFillsStore,
+  resolveFillsPath,
+  type PersonalRules,
+} from '../lib/coaching/fills/store';
 
 interface Options {
   db: string | null;
@@ -82,7 +91,7 @@ function line(): void {
   console.log('-'.repeat(72));
 }
 
-function report(trips: RoundTrip[], tradingDate: string): void {
+function report(trips: RoundTrip[], tradingDate: string, personal: PersonalRules): void {
   const day = summarise(trips);
   const open = trips.filter((t) => t.closedAt === null);
 
@@ -187,6 +196,47 @@ function report(trips: RoundTrip[], tradingDate: string): void {
   }
 
   console.log('');
+  console.log('  HIS OWN NUMBERS  (set with: npm run fills:rules -- --green-stop N --red-stop N --win-ritual N)');
+  if (personal.greenStop === null && personal.redStop === null && personal.winRitual === null) {
+    console.log('        none set yet - the report grades them the day they exist');
+  } else {
+    if (personal.greenStop !== null) {
+      const g = greenStopCheck(trips, personal.greenStop);
+      console.log(
+        g.firstHitTrade === null
+          ? `        green stop  $${personal.greenStop}   never touched`
+          : `        green stop  $${personal.greenStop}   touched at trade #${g.firstHitTrade} ` +
+              `(${clock(g.firstHitAt as string)}) at ${money(g.pnlAtHit)}; ` +
+              `${g.tradesAfter} trades after it, ${money(g.pnlAfter)}`,
+      );
+    }
+    if (personal.redStop !== null) {
+      const r = redStopCheck(trips, personal.redStop);
+      console.log(
+        r.firstHitTrade === null
+          ? `        red stop    $${personal.redStop}   never touched`
+          : `        red stop    $${personal.redStop}   touched at trade #${r.firstHitTrade} ` +
+              `(${clock(r.firstHitAt as string)}) at ${money(r.pnlAtHit)}; ` +
+              `${r.tradesAfter} trades after it, ${money(r.pnlAfter)}`,
+      );
+    }
+    if (personal.winRitual !== null) {
+      const w = winRitualCheck(trips, personal.winRitual);
+      console.log(
+        `        win ritual  $${personal.winRitual}/${Math.round(w.gapSeconds / 60)}min   ` +
+          `${w.winners} qualifying winner(s), ${w.breaks.length} re-entered early; ` +
+          `those next trades ${money(w.pnlOfNextTrades)}`,
+      );
+      for (const b of w.breaks.slice(0, 6)) {
+        console.log(
+          `          ${b.winner.symbol.padEnd(5)} ${money(b.winner.pnl).padStart(8)} -> ` +
+            `${String(b.gapSeconds).padStart(3)}s later ${b.next.symbol.padEnd(5)} ${money(b.next.pnl)}`,
+        );
+      }
+    }
+  }
+
+  console.log('');
   console.log('  BY SYMBOL');
   for (const entry of bySymbol(trips)) {
     console.log(
@@ -214,10 +264,15 @@ function report(trips: RoundTrip[], tradingDate: string): void {
   console.log('    - A loss per share over the limit is not proof a stop was moved; the');
   console.log('      fast/held split above is what separates the two.');
 
-  const unchecked = unverified(MAX_LOSS_PER_SHARE, MAX_HOLD_SECONDS, STRIKE_LIMIT);
+  const unchecked = unverified(
+    MAX_LOSS_PER_SHARE,
+    MAX_HOLD_SECONDS,
+    STRIKE_LIMIT,
+    WIN_RITUAL_GAP_SECONDS,
+  );
   if (unchecked.length > 0) {
     console.log('');
-    console.log('  Thresholds NOT confirmed against the trader (booklet-derived):');
+    console.log('  Thresholds NOT confirmed against the trader:');
     for (const threshold of unchecked) {
       console.log(`    - ${threshold.value}  ${threshold.note}`);
     }
@@ -272,7 +327,7 @@ function main(): void {
       )
       .all(target) as RoundTrip[];
 
-    report(trips, target);
+    report(trips, target, getPersonalRules(db));
   } finally {
     db.close();
   }

@@ -17,7 +17,7 @@
  * requirement; the session is a reporting dimension.
  */
 
-export type ThresholdSource = 'stated' | 'booklet';
+export type ThresholdSource = 'stated' | 'booklet' | 'proposed';
 
 export interface Threshold {
   readonly value: number;
@@ -58,6 +58,17 @@ export const REVENGE_GAP_SECONDS: Threshold = {
   note: 'Heuristic for the charter\'s revenge signature, not a rule the trader states.',
 };
 
+/**
+ * The five-minute hands-off window after a big winner. Proposed by the desk on
+ * 2026-08-25 after both recorded days showed every $25+ winner followed by a
+ * net-losing burst; it becomes `stated` only if the trader adopts it.
+ */
+export const WIN_RITUAL_GAP_SECONDS: Threshold = {
+  value: 300,
+  source: 'proposed',
+  note: 'Proposed 2026-08-25; not yet adopted by the trader.',
+};
+
 export function unverified(...thresholds: Threshold[]): Threshold[] {
-  return thresholds.filter((t) => t.source === 'booklet');
+  return thresholds.filter((t) => t.source !== 'stated');
 }

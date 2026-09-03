@@ -21,6 +21,7 @@ import {
   MAX_LOSS_PER_SHARE,
   REVENGE_GAP_SECONDS,
   STRIKE_LIMIT,
+  WIN_RITUAL_GAP_SECONDS,
 } from './rules';
 import type { RoundTrip } from './roundtrips';
 
@@ -218,15 +219,19 @@ export function revenge(trips: readonly RoundTrip[]): RevengePair[] {
   const closed = trips.filter((t) => t.closedAt !== null);
   const pairs: RevengePair[] = [];
 
-  for (let i = 0; i < closed.length - 1; i += 1) {
+  // The re-take is the next trip in the SAME symbol, not the next trip
+  // globally -- a scalp in another name interleaved between the loss and the
+  // re-entry used to hide the pair from this check.
+  for (let i = 0; i < closed.length; i += 1) {
     const loss = closed[i];
-    const next = closed[i + 1];
-    if (loss.pnl >= 0 || next.symbol !== loss.symbol || next.qty <= loss.qty) continue;
+    if (loss.pnl >= 0) continue;
+    const next = closed.slice(i + 1).find((t) => t.symbol === loss.symbol);
+    if (!next || next.qty <= loss.qty) continue;
 
     const gap = Math.round(
       (Date.parse(next.openedAt + 'Z') - Date.parse((loss.closedAt as string) + 'Z')) / 1000,
     );
-    if (gap < REVENGE_GAP_SECONDS.value) pairs.push({ loss, next, gapSeconds: gap });
+    if (gap >= 0 && gap < REVENGE_GAP_SECONDS.value) pairs.push({ loss, next, gapSeconds: gap });
   }
 
   return pairs;
@@ -279,4 +284,126 @@ export function sessionBreakdown(trips: readonly RoundTrip[]): Group[] {
       SESSIONS.indexOf(a.key as (typeof SESSIONS)[number]) -
       SESSIONS.indexOf(b.key as (typeof SESSIONS)[number]),
   );
+}
+
+/**
+ * The trader's own session rules -- the green stop, the red stop, and the
+ * after-win ritual. Unlike everything above, these grade numbers HE chose,
+ * which is the point: a threshold he wrote down the night before is the only
+ * kind the record has ever shown him obeying. The callers print "not set"
+ * when a value is missing rather than substituting anything.
+ */
+
+export interface StopCheck {
+  /** The dollar threshold, always positive; redStopCheck negates it. */
+  threshold: number;
+  /**
+   * 1-based trade number where the line was first touched, or null. Numbered
+   * in realization (close) order, not entry order.
+   */
+  firstHitTrade: number | null;
+  /** When the crossing trip CLOSED -- the moment the money became real. */
+  firstHitAt: string | null;
+  pnlAtHit: number;
+  tradesAfter: number;
+  pnlAfter: number;
+}
+
+function stopCheck(trips: readonly RoundTrip[], threshold: number, direction: 1 | -1): StopCheck {
+  // Equity moves when a trip CLOSES, so the walk runs in realization order --
+  // which differs from entry order whenever positions overlap across symbols
+  // (holding one name while scalping another is a real pattern in this
+  // record). Trade numbers and the touch time here are close-order for the
+  // same reason: the line is crossed at the moment the money is realized.
+  const closed = [...trips]
+    .filter((t) => t.closedAt !== null)
+    .sort((a, b) => (a.closedAt as string).localeCompare(b.closedAt as string));
+  let cum = 0;
+  let hit: number | null = null;
+  let pnlAtHit = 0;
+  for (let i = 0; i < closed.length; i += 1) {
+    cum += closed[i].pnl;
+    if (hit === null && (direction === 1 ? cum >= threshold : cum <= -threshold)) {
+      hit = i;
+      pnlAtHit = cum;
+    }
+  }
+  return {
+    threshold,
+    firstHitTrade: hit === null ? null : hit + 1,
+    firstHitAt: hit === null ? null : closed[hit].closedAt,
+    pnlAtHit,
+    tradesAfter: hit === null ? 0 : closed.length - hit - 1,
+    pnlAfter: hit === null ? 0 : cum - pnlAtHit,
+  };
+}
+
+/** Did the day touch +threshold, and what happened to the trades after it. */
+export function greenStopCheck(trips: readonly RoundTrip[], threshold: number): StopCheck {
+  return stopCheck(trips, threshold, 1);
+}
+
+/** Did the day touch -threshold, and what happened to the trades after it. */
+export function redStopCheck(trips: readonly RoundTrip[], threshold: number): StopCheck {
+  return stopCheck(trips, threshold, -1);
+}
+
+export interface RitualBreak {
+  winner: RoundTrip;
+  next: RoundTrip;
+  gapSeconds: number;
+}
+
+export interface WinRitualReport {
+  threshold: number;
+  gapSeconds: number;
+  /** Winners at or above the threshold. */
+  winners: number;
+  /** Winners followed by a new entry inside the hands-off window. */
+  breaks: RitualBreak[];
+  pnlOfNextTrades: number;
+}
+
+/**
+ * The hands-off window after a big winner: no new entry for `gapSeconds`
+ * after any winner at or above `threshold`. Both recorded days showed every
+ * such winner followed by a net-losing burst, which is why this exists.
+ */
+export function winRitualCheck(
+  trips: readonly RoundTrip[],
+  threshold: number,
+  gapSeconds: number = WIN_RITUAL_GAP_SECONDS.value,
+): WinRitualReport {
+  // Only a CLOSED trip can qualify as a winner (its P&L is realized), but the
+  // ritual polices the next ENTRY, and an entry's time is known the moment the
+  // position opens -- so a still-open trip is a perfectly valid `next`. The
+  // candidate must have opened at-or-after the winner closed: a trip already
+  // open while the winner ran is concurrent, not a re-entry, and comparing it
+  // against the winner's close produced negative "gaps" in an earlier version
+  // of this check. One break per winner, on the FIRST entry inside the window:
+  // the ritual is broken once, however much follows.
+  const closed = trips.filter((t) => t.closedAt !== null);
+  const entries = [...trips].sort((a, b) => a.openedAt.localeCompare(b.openedAt));
+  const breaks: RitualBreak[] = [];
+  let winners = 0;
+
+  for (const winner of closed) {
+    if (winner.pnl < threshold) continue;
+    winners += 1;
+    const closedAt = winner.closedAt as string;
+    const next = entries.find((t) => t !== winner && t.openedAt >= closedAt);
+    if (!next) continue;
+    const gap = Math.round((Date.parse(next.openedAt + 'Z') - Date.parse(closedAt + 'Z')) / 1000);
+    if (gap < gapSeconds) breaks.push({ winner, next, gapSeconds: gap });
+  }
+
+  return {
+    threshold,
+    gapSeconds,
+    winners,
+    breaks,
+    // Realized portion only: an open `next` contributes what it has realized,
+    // which may be nothing yet. The break itself is the finding.
+    pnlOfNextTrades: breaks.reduce((sum, b) => sum + b.next.pnl, 0),
+  };
 }

@@ -32,7 +32,8 @@
     "archive:export": "tsx worker/archive-export.ts",
     "research:replay": "tsx --conditions=react-server worker/research-replay.ts",
     "fills:import": "tsx worker/fills-import.ts",
-    "fills:report": "tsx worker/fills-report.ts"
+    "fills:report": "tsx worker/fills-report.ts",
+    "fills:rules": "tsx worker/fills-rules.ts"
   },
   "dependencies": {
     "better-sqlite3": "^11.10.0",
