@@ -537,3 +537,81 @@ which a comeback is likely** — the curve starts low and falls.
 **The instrument was never wrong. The question it answered was.** Three bounds
 were already recorded on those numbers; **the trader supplied the fourth, and it
 is the one that mattered most.**
+
+
+---
+
+# Amendment 5 — the session question, and the pooled curve should not be used
+
+**Asked by the trader through Integration: is this all premarket?** It is not,
+and answering it exposed two defects in every pooled number above.
+
+## (1) The window, stated plainly
+
+**04:00–20:00 ET, all three phases pooled.** `worker/revival.ts` starts each
+grid at 08:00 UTC and runs 960 minutes. **Premarket, RTH and after-hours in one
+series.** No phase was ever excluded and none was ever reported separately —
+**the window was never stated in anything I sent, which is the omission that
+allowed the question to be necessary.**
+
+Episodes **do not** cross trading dates: each symbol-day is its own grid and an
+unrevived death at 20:00 is recorded as unrevived.
+
+## (2) Episodes DO span the open, and Integration was right that it matters
+
+**At persistence 30, 104 of 515 episodes straddle 09:30.** A death confirmed at
+09:15 and revived at 09:31 is **the open reasserting itself, not a name coming
+back** — and a 30-minute persistence window laid across the bell is measuring
+the bell.
+
+## (3) The phase spread is enormous, and the pooled curve describes no session
+
+    persist   premarket        RTH        after-hours
+      1 min    74.4% (367)   82.8% (877)   20.1% (313)
+      5 min    62.3% (244)   65.6% (395)    9.5% (274)
+     15 min    49.1% (167)   37.3% (193)    6.3% (256)
+     30 min    42.5% (127)   24.8% (137)    4.4% (251)
+
+> **At five minutes: premarket 62.3%, RTH 65.6%, after-hours 9.5%. The pooled
+> figure was 47.9%, which is no session's answer.** And after-hours supplies
+> **251 of 515 episodes at persistence 30** — nearly half the count, at a rate
+> an order of magnitude below the others.
+
+**A board rule calibrated on the pooled curve would be calibrated on a blend
+that describes nothing.** Integration's phrase, and it is exactly right.
+
+## (4) Right-censoring, measured — real but the smaller effect
+
+**A death starting late has less session left to revive in**, and unrevived is
+recorded as a failure regardless.
+
+    persist 5     >=0 min left  47.9%    >=240 min left  59.4%
+    persist 30    >=0 min left  19.2%    >=240 min left  27.1%
+
+**Requiring four hours of remaining session lifts the rate 11.5 and 7.9
+points.** So censoring inflated the *stays-dead* reading, but **the phase spread
+is several times larger.**
+
+**And the two cannot be fully separated here.** The ≥240-minute filter excludes
+after-hours almost entirely, so *late* and *after-hours* are nearly the same set
+in this design. **After-hours is low for both reasons and this instrument cannot
+apportion them.** Stated rather than resolved.
+
+## What this does to everything above
+
+**Every pooled figure in Results 1, 2 and 3 is a blend of three regimes and
+should not be quoted alone** — including the price-conditional curves, which
+were pooled the same way.
+
+**Nothing is retracted as measured.** The numbers are what they are for the
+window stated; **what changes is that the window was not stated, and pooled was
+the wrong unit.** The instrument needs a phase argument and the open needs a
+boundary, and neither is a re-fetch — the grids carry the index.
+
+**Not re-run pending his answer**, because it turns on a distinction only he can
+draw: whether he means **the board's universe is premarket-selected gappers** (a
+claim about which names qualify) or **premarket is the only window he cares
+about** (a claim about when he trades, which would supersede the recorded
+finding at `0595b2c` that *the setup is the requirement and the session is
+not*). **Different instruments, and assuming would be the error this whole
+document exists to avoid.**
