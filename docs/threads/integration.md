@@ -1187,6 +1187,16 @@ bell would have measured a faded runner against the price it faded to, and every
 number would have looked plausible. **Float should arrive with `float_basis`
 from the first row, not the hundredth.**
 
+**And record the basis even when no consumer exists.** *R&D, 2026-09-03, after
+its basis work paid twice in one day in directions it was not built for:
+`split_event_ratio` became the float denominator's guard, and `split_factor`
+became a prerequisite for a ten-second trade series nobody had scoped — the
+trades endpoint returns raw prices, so that series is silently wrong across the
+~35% of tickers carrying a reverse split.* **Both consumers arrived from
+directions the work did not anticipate**, which is the argument against the
+usual objection that a basis column has nothing reading it yet. A basis is
+cheap when the value is written and unrecoverable afterwards.
+
 It is the constructive form of a problem this thread keeps finding by accident:
 the Sheet's float is vendor-displayed, the derived one is filing-computed, and
 *float* names both. Same shape as the model cycle becoming arithmetic, and as
