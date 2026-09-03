@@ -12,31 +12,7 @@
  * are the detail.
  */
 
-import { DEFAULT_ACTIVITY_CONFIG } from '@/lib/market/activity';
-
 import type { DeskRow } from './merge';
-
-/**
- * The busiest minute a name must have had before its death is worth showing.
- *
- * **The ACTIVE line, referenced from config — never a literal.** Two reasons,
- * and the second overturned an earlier version of this file.
- *
- * The expression matters because this desk's oldest collision is two
- * populations under one word. If this surface filtered on "ever reached the
- * active line" while an analysis filtered on something near it, the word
- * `active` would name two different sets — and this time we would have created
- * the collision with a fix rather than inherited it.
- *
- * The THRESHOLD matters because it was first written as the dead line, on the
- * reasoning that a name peaking at 50 trades/min was never ACTIVE but did
- * transition from not-dead to dead. That is definitionally true and beside the
- * point. **The graveyard is a falsification surface: a drop is wrong only if it
- * cost him something, and a name that never reached the bar he trades at never
- * could.** The header already said `never active` — so the label was right and
- * the filter was wrong, and they now agree.
- */
-const ALIVE_PEAK_FLOOR = DEFAULT_ACTIVITY_CONFIG.activeTradesPerMinute;
 
 /**
  * Deaths at which a name counts as churning rather than as having died.
@@ -54,11 +30,37 @@ export const DEATH_CHURN_THRESHOLD = 2;
  * `dead_at_price` is a fact captured at the flip; whether the move since counts
  * as a run is a judgement, and a judgement frozen in a schema changes only by
  * migration. Set to R&D's +25%, which is the bar its own premarket measurement
- * used — 33% of dead names see activity return but only 7% come back at +25% or
- * better — so the count here is comparable to that number rather than to a
+ * used, so the count here is comparable to that number rather than to a
  * threshold invented in a component.
  */
 export const RAN_THRESHOLD_PCT = 25;
+
+/**
+ * Was this name ON HIS BOARD when it died?
+ *
+ * **A rank at all, rather than a rank threshold.** `deadAtRank` is captured at
+ * the flip and is null for a name that was never ranked, so its mere presence
+ * answers the question the graveyard asks: could he have been looking at this?
+ *
+ * **Deliberately no number.** "The board" currently names three different sets
+ * in this codebase — `discoveryRank` defaults to 12 (`config.ts:69`, used by
+ * `engine.ts:1285` and `:1671`), the archive holds ranks 1–25, and the UI offers
+ * Top 12/25/50 and will render 50. They differ by 4x. **A predicate written
+ * against any one of them would be this desk's oldest collision, self-inflicted
+ * while fixing something** — and picking one would also make the filter depend
+ * on a view size the trader changes at will.
+ *
+ * **This replaced a trade-count floor, which was a proxy for the wrong thing.**
+ * R&D measured that 45.5% of board symbol-days never reach 300 trades/min,
+ * including 26.6% of top-ten names, with a median peak of 190 for ranks 11–25.
+ * So an active-line filter hid nearly half the board — names he WAS watching
+ * that simply did not trade much. The board already records the answer directly;
+ * trade count was standing in for it badly.
+ */
+function wasOnTheBoard(row: DeskRow): boolean {
+  const rank = row.demand?.deadAtRank;
+  return rank !== null && rank !== undefined;
+}
 
 export interface GraveyardEntry {
   ticker: string;
@@ -159,26 +161,11 @@ function measured(row: DeskRow): boolean {
   return row.demand?.activity !== undefined;
 }
 
-/**
- * Did this name ever rise above the dead line?
- *
- * Null peak is excluded and counted, not silently dropped: without a peak there
- * is no evidence it was ever alive, and the header says how many were withheld
- * on that basis.
- */
-function wasAlive(row: DeskRow): boolean {
-  const peak = row.demand?.deadAtPeakTrades;
-  return peak !== null && peak !== undefined && peak >= ALIVE_PEAK_FLOOR;
-}
-
-/** The predicate, exported so any other reader filters the SAME population. */
-export const ALIVE_PEAK_TRADES = ALIVE_PEAK_FLOOR;
-
 export function graveyardSummary(rows: DeskRow[], now = Date.now()): GraveyardSummary {
   void now;
   const measuredRows = rows.filter(measured);
 
-  const inGraveyard = measuredRows.filter(wasAlive);
+  const inGraveyard = measuredRows.filter(wasOnTheBoard);
   const dead = inGraveyard.filter((r) => r.demand?.activity === 'DEAD');
   const revived = inGraveyard.filter(
     (r) => (r.demand?.deathCount ?? 0) > 0 && r.demand?.activity === 'ACTIVE',
@@ -198,7 +185,7 @@ export function graveyardSummary(rows: DeskRow[], now = Date.now()): GraveyardSu
     churned: churned.length,
     ran: ran.length,
     neverActive: measuredRows.filter(
-      (r) => (r.demand?.activity === 'DEAD' || (r.demand?.deathCount ?? 0) > 0) && !wasAlive(r),
+      (r) => (r.demand?.activity === 'DEAD' || (r.demand?.deathCount ?? 0) > 0) && !wasOnTheBoard(r),
     ).length,
   };
 }
@@ -219,7 +206,7 @@ export function graveyardSummary(rows: DeskRow[], now = Date.now()): GraveyardSu
 export function graveyardRows(rows: DeskRow[], now = Date.now()): GraveyardEntry[] {
   const entries = rows
     .filter(measured)
-    .filter(wasAlive)
+    .filter(wasOnTheBoard)
     .filter((row) => {
       const d = row.demand;
       if (!d) return false;
