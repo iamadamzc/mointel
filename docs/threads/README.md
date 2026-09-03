@@ -1689,12 +1689,16 @@ practice governs:
   wrong:** Q6's verdict, measured on RTH excursions, and any scorecard
   instrument using full-day outcomes — these need re-running on premarket
   before being quoted as current, not retracting. **What it must NOT silently
-  reach:** Coaching's grading of his own fills. The record contains his own
-  contrary evidence — every dollar of one imported session's profit came from
-  trades opened after 09:30, and the stated 07:00–09:29 block was that day's
-  worst — so narrowing personal-record grading to premarket would stop
-  measuring the trades that made money. **That narrowing requires his separate
-  and explicit word and has not been given.**
+  reach:** Coaching's grading of his own fills. **The fills record already
+  contradicted a premarket-only reading once — see the Coaching paragraph
+  below, which is where that evidence belongs and the only place it should
+  sit** — so narrowing personal-record grading to premarket would stop
+  measuring part of what his own record shows works. **That narrowing requires
+  his separate and explicit word and has not been given.** *(Restated at
+  Coaching's standard after it declined to put the same figure in a document:
+  argue from the principle and point at the record rather than re-quoting it —
+  a second copy of a personal figure is both a privacy cost and a copy that
+  can drift.)*
 
   **THE ERROR THIS REPLACES IS WORTH KEEPING, because it was made twice and the
   second time by the thread that caught the first.** The booklet's window
