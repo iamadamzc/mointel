@@ -33,7 +33,7 @@ questions is a thread that has stopped working.
 | # | Question | Opened | Status |
 | --- | --- | --- | --- |
 | Q1 | Why do 50%+ movers no longer carry catalysts, and why are catalyst-driven names passed over? | 2026-08-23 | **ACTIVE** — first half **AMENDED 2026-09-02**: strong form still excluded, but the relationship is now DETECTED at +17.9pp; second half waits on tier A |
-| Q6 | Can the 09:25 pre-open assessment (`OPEN_SPIKE_ASSESSMENT`) be scored against outcomes? | 2026-08-23 | **ACTIVE** — unblocked 2026-09-02 by Ops's extract; 12 assessments x 25 tickers = 300 symbol-days, verified present |
+| Q6 | Can the 09:25 pre-open assessment (`OPEN_SPIKE_ASSESSMENT`) be scored against outcomes? | 2026-08-23 | **CLOSED 2026-09-03** — `PRE_OPEN_RANK_PREDICTS_VOLATILITY_NOT_EDGE`; rho -0.276 on excursion, but rank 1-5 median RTH close is -8.10% |
 | Q5 | When does a board name's move happen, relative to when the desk boards it? | 2026-08-23 | **CLOSED 2026-08-27** — `BOARD_IS_LATE_TO_THE_MOVE`, below |
 | Q4 | Can tape character be measured well enough to call a name tradeable? | 2026-08-19 | **CLOSED 2026-08-27** — the viscosity lines already answered it; the row was debt |
 | Q2 | Can any tape-character measure be defined at the grain he trades, and does it separate outcomes? | 2026-08-23 | parked — **Q7 merged in**; blocked on sub-minute capture |
@@ -816,6 +816,64 @@ that.
 
 **NOT STARTED. Registered, and blocked on capture rather than on the queue.**
 
+
+#### Q6 VERDICT — `PRE_OPEN_RANK_PREDICTS_VOLATILITY_NOT_EDGE`, 2026-09-03
+
+**The pre-registered rule is met and my pre-registered expectation was wrong.**
+I predicted no detectable content. There is content, and it is not the kind the
+ranking implies.
+
+**First, the prior check answered part of Q6 before the correlation did.**
+`assessment_rank` and `rvol_rank` are **identical on 300 of 300 rows, all 12
+dates, difference exactly zero everywhere.** The pre-open ordering is **an RVOL
+sort, not a judgement.** Any content in it belongs to RVOL; nothing here scores
+the desk's discretion, because at 09:25 the desk exercises none.
+
+**The confirmatory result, on the rule fixed beforehand:**
+
+    predictor  assessment_rank at 09:25    outcome  RTH up-excursion from the open
+    pooled     n = 300, zero rows dropped   rho = -0.276   p < 0.0001
+    per date   12 of 12 negative, -0.028 to -0.594
+
+**Rule required rho <= -0.20 at p < 0.05. Met, and not carried by one session.**
+
+**AND THEN THE PART THAT MATTERS, WHICH THE CORRELATION HIDES.** Broken out by
+rank band, median RTH move from the open:
+
+    band     n    up excursion   down excursion   NET close
+    1-5     60        +10.45%          -16.04%       -8.10%
+    6-10    60        +10.62%          -10.19%       -1.68%
+    11-15   60         +3.70%           -8.25%       -1.35%
+    16-20   60         +6.66%           -7.15%       -0.41%
+    21-25   60         +4.83%           -4.02%       -0.55%
+
+> **The top-ranked names move more in BOTH directions, and their median RTH
+> close is -8.10% against -0.55% at the bottom of the board.**
+
+**The ranking predicts volatility. It does not predict edge, and on the median
+it points the wrong way.** *(Exploratory, not pre-registered: 25.0% of rank-1-5
+symbol-days close RTH above the open, against 41.7% of rank-21-25. Labelled as
+exploratory because the design fixed an excursion outcome, not a directional
+one — it is the sharper number and it did not earn confirmatory status.)*
+
+**This is Q5 and S1 arriving from a third direction, and it is the strongest
+version yet.** `BOARD_IS_LATE_TO_THE_MOVE` said seven of ten board names peak
+before surfacing. S1 said that is stable over 13 sessions. **Q6 now measures
+what that costs: the names the board ranks highest at 09:25 are the ones that
+give back most after the open.** Three instruments, three windows, one picture —
+**by the time a name reaches the top of this board, its move is behind it.**
+
+**What this is NOT.** It is a measurement of the board's ordering against the
+tape, on 300 symbol-days over 12 sessions. **It is not a strategy and nothing
+here says what to do with a rank-1 name** — a median is not a plan, the trader
+holds for seconds where these figures span a session, and an excursion measured
+from the RTH open says nothing about entries taken before it.
+
+**What would overturn it:** an `assessment_rank` that stops being an RVOL sort,
+which would make this a measurement of a different instrument; a directional
+outcome pre-registered rather than explored; or the 09-03 re-trigger deploy
+changing what the 09:25 board contains. **The first is the one to watch, since
+it is a code change away.**
 
 #### Q6 design — fixed 2026-09-03, before any correlation was computed
 
