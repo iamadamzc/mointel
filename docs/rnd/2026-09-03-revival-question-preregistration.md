@@ -98,6 +98,24 @@ part**, so the whole thing is re-run at **half and double** the Active threshold
 and all three are reported. **If the answer moves with the threshold, the answer
 is about the threshold.**
 
+## Amendment 1 — the population, which the original omitted
+
+**Caught before running, not after.** The definitions above fix *active*, *dead*,
+*revived* and the episode unit, and **say nothing about which symbols are in
+scope.** That is a denominator, and this thread has spent two days on the cost of
+an unfixed one.
+
+| | |
+| --- | --- |
+| **Primary population** | **Board symbol-days** — symbols present in `symbol_desk_day` for that date. **This is what he is watching when he sees a name die**, and a revival on a name that was never on his screen is not the phenomenon he described. |
+| **Secondary, reported for context** | The full tracked universe on the same dates, stated separately and **never pooled with the primary.** |
+
+**Fixed now because the two populations will not agree**, and choosing between
+them afterwards would be picking the number. **If they disagree materially that
+is itself reportable** — it would mean the board selects for names whose deaths
+behave differently, which is a finding about the board rather than about
+revival.
+
 ## Decision rule, fixed now
 
 | | |
