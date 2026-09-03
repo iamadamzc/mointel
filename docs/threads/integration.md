@@ -1555,6 +1555,32 @@ open the store together. And a diagnostic worth its line: **a fast 401 from
 nginx proves the box answers and says nothing about the app** — nginx answers
 Basic Auth itself; the probe that reaches the app is `/_next/static/`.
 
+## Enumerating the code sites does not enumerate the PROCESSES
+
+**2026-09-04, the shipped-and-inert case arriving for real.** `6d368dc` deployed
+clean, schema 23, all seven activity columns present — **and every row NULL,
+because the only writer of `ticker_session` is `toRow` in `worker/runtime.ts`,
+which is the MARKET WORKER, the one process `RESTART_MARKET=no` exists to leave
+alone.** It was still running the previous release.
+
+**Ops enumerated nine wiring sites and found every one. Nobody asked which
+PROCESS runs the ninth.** This thread's instruction said *"nothing here touches
+the market worker's ingestion path"* — **true about ingestion and false about
+the writer**; Ops read the same sentence, agreed, and priced a window around it.
+
+> **A code-site enumeration answers "is it wired". It does not answer "will the
+> process that runs it be restarted".** On a desk with a deliberately
+> unrestarted worker, those are different questions and only the second decides
+> whether a deploy does anything.
+
+**The fail-open design is what made this harmless** — NULL maps to `undefined`,
+both gates exclude nothing, the desk is exactly as it was plus seven empty
+columns. And it was diagnosable only because Ops checked the worker's `cwd`
+against the release: **shipped-and-inert and shipped-and-broken produce the same
+distribution reading**, and only the process check separates them. Add the
+question to the deploy checklist: **for every writer in the payload, name the
+process that runs it and say whether this deploy restarts it.**
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
