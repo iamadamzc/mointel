@@ -4571,6 +4571,73 @@ range half will believe it is covered.
 
 
 
+## THE SCHEMA-GATE CHECKLIST — run this, do not re-read the prose
+
+Consolidated 2026-09-03 because the conditions had spread across four narrative
+sections in a 4,800-line document. **The detail lives in those sections; this is
+the list to actually run.** If a line here and a section there disagree, the
+section is older.
+
+**Before the migration ships:**
+
+- [ ] **`SCHEMA_VERSION` bumped.** Not for the column — `migrate()` runs on every
+      open and each add is idempotent, so the column appears either way. **The
+      bump gates `createSchemaBackup`.** No bump means the schema changes on a
+      live ~900 MB store with nothing snapshotted first.
+- [ ] **Every new column in `ADDED_COLUMNS`**, bare nullable type, no default —
+      that is what keeps `ALTER TABLE ADD COLUMN` metadata-only. A default or a
+      constraint turns an O(1) migration into a rewrite.
+- [ ] **FOUR wiring sites per column on any upserted table**: insert list, VALUES
+      placeholders, **`ON CONFLICT DO UPDATE SET`**, and `toRow`. **Miss the DO
+      UPDATE SET and the column inserts once and never updates** — populated,
+      non-null, every guard passes, frozen forever at its seed value.
+- [ ] **Ask of every new field: COULD THIS BE CONSTANT?** Fifth instance of a
+      constant dressed as a measurement. **The test must be able to fail**: write,
+      write again with a different value, assert the stored value **changed**.
+- [ ] **`undefined` and a sentinel like `'UNKNOWN'` must not collapse into one
+      NULL.** Only one of them is a measurement. Requires that no writer can
+      leave the column unset on a live row — **audit the writer paths, do not
+      assert them.**
+- [ ] **Thresholds travel with any persisted verdict**, or past decisions become
+      unreproducible while still looking authoritative.
+- [ ] **A restart must not erase a real observation.** Post-restart the engine
+      reports amnesia, not a determination. Distinguish by the value itself —
+      the amnesia sentinel preserves, a real determination clears — and take MAX
+      on monotonic counters. **Blanket `COALESCE` is the obvious move and the
+      wrong one.**
+
+**Before any writer touching the checkpoint path ships:**
+
+- [ ] **No external call between `claimAssessmentSlot` and `completeAssessment`.**
+      **A `catch` handles a throw and cannot handle a hang** — the row stays
+      `RUNNING` and the slot is dead for `STALE_RUNNING_MS` (10 min).
+      **Fetch before the claim, or write the column after the complete.** A
+      timeout only bounds the hazard; moving the call removes it.
+- [ ] **If it cannot move: an explicit hard timeout**, an order of magnitude
+      under ten minutes, and **failure degrades to a NULL column, never a failed
+      checkpoint.** The checkpoint completing is worth more than the column being
+      populated, every time.
+- [ ] **Log a dated discontinuity** if the change alters what a health signal
+      measures. Checkpoint duration is currently **25–209 ms, avg 42, n=113**
+      (08-27 to 09-03, pre-Q9). Network-bound work makes every later duration a
+      different unit, and a comparison spanning the deploy reads as a fault.
+
+**Before and after the deploy:**
+
+- [ ] **One falsifiable observable per change** — changes may share a migration
+      and must never share an observable.
+- [ ] **Any baseline that cannot be recovered afterwards is taken FIRST.** Check
+      whether it truly cannot be: the RTH dead-slot baseline looked
+      forward-only and was reconstructable from `rth_final_rank` plus retained
+      minute bars.
+- [ ] **State the predicate beside the figure, with its magnitude.** A caveat
+      without a number is a reason to distrust the figure; a caveat with one
+      becomes part of it.
+- [ ] **Do not publish a preliminary number to the trader.** A caveated wrong
+      number anchors exactly as hard as an uncaveated one, and the retraction
+      costs more than the wait would have.
+
+
 ## Before you deploy
 
 ### "Docs-only above production" is a snapshot, not a standing fact
