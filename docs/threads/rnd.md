@@ -865,11 +865,29 @@ oscillation risk without hysteresis is exactly the 1-minute number.
 
 > **The trade is now quantified: 2-minute hysteresis eliminates 67 of 244
 > revival events — 27% of the flicker — and costs 3 of 17 genuine +25% returns,
-> 18% of the opportunity.** Favourable, and **the conditional quality of what
-> survives RISES**, 7.0% to 7.9%, because sustained activity filters flickers
-> better than it filters real moves.
+> 18% of the opportunity.** Favourable.
 
-**That supports their decision on a ground their comment does not state.**
+**RETRACTED, same day, and it was mine.** I also wrote that **the conditional
+quality of what survives RISES**, 7.0% to 7.9%. **It does not. Tested: p = 0.710
+between revive-1 and revive-2, p = 0.671 against revive-3.** A 0.9-point move on
+**17 events against 14** is the same rate measured twice.
+
+**Research adopted that sentence into `activity.ts` on my authority and
+strengthened its own comment toward it** — *a fast return buys a worse mix* —
+which is now the strongest line above a pinned test. **I have sent the
+correction and the repair: what the numbers carry is that quality does NOT FALL
+as the requirement tightens, so the flicker reduction is bought without
+degrading the mix.** Free on quality, not positive on it.
+
+**The distinction that matters for why one half survives and the other does
+not:** the discard side is a **count** — 244 → 177 events, 17 → 14 returns —
+and counts of that size are solid. **The quality claim is a ratio between two
+small counts, and that is where it fails.**
+
+**The shape is the one recorded in the working rules above, arriving inside a
+day:** *a correction inherits the confidence of whatever it corrects toward.*
+**I wrote a direction as a finding; Research corrected its own comment toward my
+finding; the error travelled upward in confidence at every step.**
 
 **Blocked**, and honestly so: the columns have not landed, nothing has shipped,
 and data must accumulate. **Not urgent and not commissioned.**
