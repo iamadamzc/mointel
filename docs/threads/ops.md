@@ -2926,6 +2926,22 @@ and 102 minutes of the live premarket session. **Not built — verified
 2026-09-03**: no `trap` in `deploy/aws/push-release.sh` or `deploy.sh`, either at
 `7f4aa91` or in the live `97f5fbd`. 0f shipping did NOT carry it.*
 
+**PRIORITY RE-ASSESSED 2026-09-03, downward, and stated because a stale
+priority misleads exactly like a stale build state.** 0d was raised when a
+10-minute tool timeout killed the driving ssh mid-sequence and left the desk
+stopped for 3h22m. **That specific failure is now mitigated by process rather
+than code:** both subsequent deploys ran detached in the background, survived
+their own tool timeouts, and completed unattended.
+
+**What 0d still buys is the cases process cannot cover** — a network drop, a
+sleeping laptop, a SIGKILL of the driving process. **Real, and no longer the
+thing that has actually bitten.** It sits behind 0e, which fired twice in six
+days with no deploy involved.
+
+**The honest form: 0d is worth building and is no longer urgent.** Recording the
+downgrade rather than leaving a 3h22m outage attached to it, because an item
+carrying its founding incident reads as more urgent every time it is skimmed.
+
 `push-release.sh` stops the runtime units, then migrates, then starts them. The
 sequence is driven from a laptop over ssh. Kill the driver between stop and
 start — a timeout, a dropped link, a closed lid — and the desk stays down until
