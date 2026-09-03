@@ -889,6 +889,53 @@ day:** *a correction inherits the confidence of whatever it corrects toward.*
 **I wrote a direction as a finding; Research corrected its own comment toward my
 finding; the error travelled upward in confidence at every step.**
 
+#### Q11 — the threshold curve. Lengthening is a bad trade. 2026-09-04.
+
+**Asked for by Integration so the number becomes a decision rather than a fact.
+Volume-qualified miss rate and staleness, uniform threshold, by session.**
+
+    persist   premarket miss    RTH miss     AH miss    stale board-minutes (pre / RTH / AH)
+     5 min     27.1% (177)     9.4% (202)   1.5% (198)     2,784 /  5,007 /  2,681
+    10 min     24.3% (140)    10.4% (134)   1.5% (197)     5,460 / 10,072 /  5,686
+    15 min     21.2% (118)     9.2% (109)   1.0% (201)     7,491 / 14,506 /  8,791
+    30 min     23.3% ( 86)     9.8% ( 82)   1.5% (206)    10,907 / 23,377 / 17,492
+
+    stale = minutes a name sat on the board while below the dead line
+
+> **THE MISS RATE IS ROUGHLY THRESHOLD-INVARIANT AND THE STALENESS QUADRUPLES.**
+> Premarket moves 27.1% → 21.2% across a sixfold change in the threshold — and
+> back up to 23.3% at thirty. RTH sits at 9–10% throughout. **Staleness rises
+> 3.9x in premarket, 4.7x in RTH and 6.5x after hours.**
+
+**So lengthening pays a great deal of staleness for almost nothing.** At fifteen
+minutes premarket buys 5.9 points of miss reduction for **2.7x the dead-name
+board time**, and RTH and after-hours — **already good at 9.2% and 1.0%** — pay
+that cost for no gain at all.
+
+**AND THE INVARIANCE IS THE REAL FINDING, not the trade.** A miss rate that
+barely moves as the threshold sextuples is **not a calibration failure. It is a
+property of the market**: premarket names genuinely come back, which is what the
+revival curve said from the other side. **No threshold fixes that, because the
+threshold is not what is causing it.**
+
+**The 30-minute row is non-monotonic — 23.3% against 21.2% at fifteen — on 86
+drops.** Small-n wobble, not a turning point, and marked as such rather than
+read as one.
+
+**THE CONSTRAINT, stated because it bounds his options and he should not have to
+find it.** A premarket-only threshold is **forbidden by this register's own
+rule**: *a threshold computed FROM the clock is clock-keyed*, and `0595b2c`
+stands. **So the levers are keep 5 uniformly, or lengthen uniformly** — and
+lengthening makes the board staler everywhere to buy a few points in one
+session.
+
+**What the data supports, stated as a recommendation rather than a decision:
+keep 5, and treat the graveyard as the mitigation.** The premarket miss rate is
+**not a threshold problem to be tuned away**; it is the cost of a rule that must
+also keep the board clean, and **the surface that keeps a dropped name findable
+is the thing that makes 27.1% survivable.** Whether it does is his call, and it
+is a question about the surface rather than about the number.
+
 #### Q11's population, after Research's dilution warning — measured 2026-09-04
 
 **Research warned that stored DEAD rows are six-sevenths names that never lived,
