@@ -833,6 +833,44 @@ after **5 settled minutes below threshold on minute trade count** — a threshol
 that subsequently runs?** That is the rule's own error rate, and **if this
 register does not hold it, it exists nowhere and the rule ships unmeasured.**
 
+**THE TWO DEFINITIONS COMPARED, 2026-09-03, before either side publishes a
+rate.** Integration flagged the risk exactly: **Q11's answer would be a rate
+produced by MY definition about a rule implemented in RESEARCH'S.**
+
+`lib/market/activity.ts` and `lib/archive/revival.ts` **agree on everything that
+was likely to collide** — active 300 trades/min, dead line derived as active/10
+rather than configured separately, 5 consecutive dead minutes, and absent-means-
+zero. **Two material differences remain:**
+
+- **Revival needs 2 consecutive active minutes in theirs, 1 in mine.**
+- **Their death has no prior-active requirement; mine does.** A name never
+  active can be DEAD for them — correct for a board rule that drops quiet names,
+  and a different population for a revival rate.
+
+**Measured on premarket, dead = 5 minutes:**
+
+    revival needs        activity-only     + live +25%
+    1 consecutive min       32.8% (244)      7.0% (17)
+    2 consecutive min       24.3% (177)      7.9% (14)
+    3 consecutive min       15.3% (118)      8.5% (10)
+
+**So a Q11 rate computed on my definition would overstate revival by 8.5 points
+against the rule it is judging.** Any false-positive rate must be computed on
+`reviveMinutes: 2`.
+
+**And the comparison produced something for THEIR design that neither of us
+had.** Their `reviveMinutes: 2` comment cites *33% of five-minute deaths see
+activity return* — **that is my 1-minute figure, correctly used**, since the
+oscillation risk without hysteresis is exactly the 1-minute number.
+
+> **The trade is now quantified: 2-minute hysteresis eliminates 67 of 244
+> revival events — 27% of the flicker — and costs 3 of 17 genuine +25% returns,
+> 18% of the opportunity.** Favourable, and **the conditional quality of what
+> survives RISES**, 7.0% to 7.9%, because sustained activity filters flickers
+> better than it filters real moves.
+
+**That supports their decision on a ground their comment does not state.**
+
 **Blocked**, and honestly so: the columns have not landed, nothing has shipped,
 and data must accumulate. **Not urgent and not commissioned.**
 
