@@ -231,8 +231,17 @@ Every thread works in `A:\mointel`. Rules, in order of how much they matter:
    This one is cheap to obey and the incident that produced it was recoverable
    only by luck of `pop` leaving the object behind.
 
-6. **A MULTI-STEP EDIT TO A FILE EVERY THREAD'S GATE IMPORTS BELONGS IN A
-   WORKTREE — the COMMIT is what appears in the shared tree.** *Ops, 2026-09-04,
+6. **ANY EDIT TO A FILE EVERY THREAD'S GATE IMPORTS BELONGS IN A WORKTREE — the
+   COMMIT is what appears in the shared tree.** *Keyed on the FILE, not the
+   edit — Ops's own correction of its first draft, 2026-09-04: it wrote the rule
+   as "a multi-step edit", then pointed out that **it did not know the edit
+   would be multi-step when it started.** It became one after a backtick fault,
+   a PRIMARY KEY placement and a type coalescing. **A rule keyed on "multi-step"
+   can only be applied in hindsight** — this document's oldest failure, a rule
+   naming an event instead of the condition. The keyable property is the file:
+   `db.ts` is imported by every gate and carries SQL in a template literal, so
+   any edit to it goes in the worktree regardless of how small it looks going
+   in.* *Ops, 2026-09-04,
    against itself, after editing `db.ts` across many iterations in the shared
    checkout and blocking every thread's gate for the duration.* It had a durable
    worktree sitting idle precisely for this and used the shared tree because
