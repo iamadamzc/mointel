@@ -821,6 +821,38 @@ two branches early, which is exactly why the sizing done from them was wrong.
 the reading cannot borrow credit from it. Were it aboard, a positive could not be
 attributed to either piece.
 
+### READING, 2026-09-03 on `97f5fbd`: **NULL** — six rows, none reached the branch
+
+Ran as pre-registered. Six Discovery rows, no researched-names table rendered.
+**Every row short-circuited before `CAUTION` / `CLEAN`, so the reading evidences
+nothing in either direction.**
+
+| Ticker | dossier class | float null | supply | sheet state | chip | branch |
+| --- | --- | --- | --- | --- | --- | --- |
+| TLYS | CAUTION | yes | **yes** | CLEAN | SUPPLY OVERHEAD | `:161` supply |
+| CHPT | **CAUTION** | yes | no | **DIRTY_FLOAT** | DIRTY FLOAT | `:145` sheet-dirty |
+| INDO | **CAUTION** | yes | no | **DIRTY_FLOAT** | DIRTY FLOAT | `:145` sheet-dirty |
+| GPRO | UNKNOWN | yes | no | **UNKNOWN_STRUCTURE** | FLOAT UNKNOWN | `:176` — **the surviving Sheet trigger** |
+| NCT | *(no dossier)* | — | — | DIRTY_FLOAT | DIRTY FLOAT | `:145` sheet-dirty |
+| BRNX | UNKNOWN | yes | yes | DIRTY_FLOAT | DIRTY FLOAT | `:145` sheet-dirty |
+
+**GPRO is NOT the negative outcome, and it was the one to check rather than
+assume.** Negative required *not dirty, no supply, and still `FLOAT UNKNOWN`*.
+GPRO meets the first two — but its Sheet state is `UNKNOWN_STRUCTURE`, which is
+the condition `d8794da` deliberately **kept**. The chip is correct.
+
+**CHPT and INDO are the fix working and still invisible.** Both are dossier
+`CAUTION` with no supply — they would render `STRUCTURE CAUTION` today were the
+Sheet not saying `DIRTY_FLOAT` first. **That is the 08-25 mechanism confirmed a
+second time: the defect was hidden behind the Sheet, and so is the repair.** Two
+of six rows are queued to change the day the Sheet's structure state retires, and
+nothing about that transition will announce it.
+
+**So the fix is unfalsified rather than confirmed.** A positive needs a board
+carrying a researched row that is neither dirty nor supply-bearing, and this
+board had none. That is not a defect in the fix or in the reading — it is what
+the pre-registration said would happen on a board of dirty floats.
+
 ### CORRECTED: the masked chip is LIVE, and my sizing could not have found it
 
 **Design sized this as latent on 2026-08-25 and was wrong.** Ops sized it in
