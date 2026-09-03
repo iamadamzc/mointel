@@ -1708,10 +1708,15 @@ practice governs:
   as clock-bound as the sentence it replaced. **Both were rules about the clock,
   and the clock was never the rule.**
 
-  **And the record contradicted it on day one.** Coaching's first imported session:
-  **every dollar of the day's profit came from trades opened after 09:30, and the
-  stated 07:00–09:29 window was the day's worst block.** One day is not evidence of
-  a rule — **it is direct evidence against grading him on the clock.**
+  **And the record contradicted it on day one.** **Coaching holds fill-level
+  evidence from the first imported session that runs directly against the stated
+  window** — the figures live in its report output, outside the repo, and are
+  deliberately not restated here. One day is not evidence of a rule — **it is
+  direct evidence against grading him on the clock, in either direction.**
+  *(Figures removed 2026-09-03 under the rule above: a rule he set may be
+  written down, a number the market gave him may not. Found by R&D after an
+  earlier fix reached the amendment that cited this passage and not the passage
+  itself — one fact in two places, one correction.)*
 
   **R&D's market-side figures stand and mean something narrower than they were
   used for**: of 95 movers, 27.4% peak 04:00–06:59, 18.9% in 07:00–09:29, 7.4% in
