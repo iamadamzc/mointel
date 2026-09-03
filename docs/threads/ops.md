@@ -2767,6 +2767,23 @@ the **store** rather than inferred, through one shared definition so gate and lo
 cannot drift. **Not deployed, and not worth a deploy on its own: it queues for
 the next ship.**
 
+**FALSIFIED-OR-CONFIRMED, and it confirmed.** Research offered its own
+refutation rather than asking to be believed — *if `SVRN` returns 0, the fetch
+buys nothing and `9bfeabf` fixed the wrong layer*. Run 2026-09-03 13:54 ET:
+
+```
+SVRN split_factor populated   1194   (predicted ~1,194)
+SVRN total rows               1194   -> 100%, every row
+span 2021-11-30 -> 2026-09-02, single source
+distinct split_factor values    23   -> a real series, not a constant
+CURR 1166/1166    KRSP 195/195    VRM 1567/1567
+```
+
+**The 23 distinct values are the part that matters.** A degenerate all-`1.0`
+fill would have counted as populated while establishing nothing — **presence
+again, not value.** The varying series is what makes this establishment. Had the
+check been `IS NOT NULL` alone it would have passed either way.
+
 **UNTIL THEN, THE READING RULE: treat the parenthetical as "why we fetched",
 never as an outcome. The store counts are the truth in the meantime** —
 `SELECT COUNT(*) FROM daily_bars WHERE split_factor IS NOT NULL` and
