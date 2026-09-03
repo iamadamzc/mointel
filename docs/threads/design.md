@@ -2127,6 +2127,22 @@ practical size of the inflation is unknown. Needs the live desk.
   label at `CLOSED` and the four-row risk-chip sample — and it is the most
   durable, because a fixture outlives whoever wrote it and is trusted by people
   who never saw the world it was written in.
+- **A model consumer cannot ask a clarifying question, so a label must be true
+  without context.** The `chatgpt-*` review routes were built so ChatGPT could
+  read this desk — and ChatGPT is what *writes* the Sheet, so for a day in
+  August the desk told the Sheet's own author that the Sheet was human-reviewed.
+  That instance was a loop rather than a deception, because the one consumer able
+  to know it was false was the thing producing it. **The general case is not.** A
+  human reader who finds a label odd can ask; a model ingests it as a fact and
+  propagates it. **So "he already knows better" is never a defence for a false
+  label** — it holds only while every reader is him, and this is a product.
+- **State what the count is RIGHT NOW before choosing a threshold.** Two triggers
+  written on this desk in one day were keyed to a state the world was already in
+  — "a second login" had already fired and could never fire again. The same
+  family: expired tokens counted as active, `undefined` read as `UNKNOWN`, a
+  `200` on a dead page, a key present with no value. **Four shapes of one
+  failure, and the only reliable catch has been measuring the baseline rather
+  than re-reading the rule.**
 - **A check that cannot fail is not a check.** Before reporting anything
   verified, ask what result would have proved it *broken*. If the answer is
   "none available right now", the observation confirms nothing — say so instead
