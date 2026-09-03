@@ -270,9 +270,31 @@ conflict. Verify before acting on any of it.***
   seven unrevoked review tokens of which ZERO are usable, all expired, the
   newest lapsed 2026-08-24.** A count of unrevoked rows would have reported a
   live sharing surface that does not exist — presence versus validity again.
-  **The live trigger is therefore: a THIRD login, or ANY USABLE token.** Both
-  are Ops's to see, and Ops has been asked to raise either the moment it
-  appears. Same family as *a schedule that depends on attention is not a
+  **The live trigger is therefore: a THIRD login, or ANY USABLE token —
+  INCLUDING ONE LABELLED FOR A MODEL CONSUMER.** *Design's addition: the five
+  expired `chatgpt-*` tokens were routes built so ChatGPT could reach this desk,
+  and ChatGPT is also what WRITES the Sheet — so for one day in August the desk
+  told the Sheet's own author that the Sheet was human-reviewed. A loop rather
+  than a deception, because the one consumer able to know it was false was the
+  thing producing it. But a model ingesting "human-reviewed" as a fact is
+  exactly how a false provenance propagates, and **a model cannot ask a
+  clarifying question** — so a machine reader fires this trigger on its own
+  grounds, separately from any human one.* Both are Ops's to see, and Ops has
+  been asked to raise either the moment it appears.
+
+  **And the decision is TIME-BOUNDED, not principled** — Design's own
+  correction, so it is never cited as *"16a is never urgent"*: it is **"16a is
+  not urgent while readership is one"**, and the trader has said this is a
+  product for a niche of momentum traders, so readership will be more than one
+  again.
+
+  **WHEN WRITING ANY TRIGGER, STATE WHAT THE COUNT IS RIGHT NOW BEFORE CHOOSING
+  THE THRESHOLD.** Two of this thread's triggers in one day were keyed to a
+  state the world was already in, and both were caught by someone measuring the
+  baseline rather than reading the rule. Presence-versus-validity is now four
+  shapes of one failure in two days — expired tokens counted as active,
+  `undefined` versus `'UNKNOWN'`, a 200 on a dead page, a key present with no
+  value. Same family as *a schedule that depends on attention is not a
   schedule* — a trigger that fires on someone remembering it fires last.
 - **Sessions:** Research successor live (opened 08-27); the three retired
   sessions archived 2026-09-02. Coaching holds six-day-old uncommitted code in
