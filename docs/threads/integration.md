@@ -256,8 +256,17 @@ conflict. Verify before acting on any of it.***
   ordinary next deploy (`f228467`, committed, outside `6d368dc`). **The moment a
   demo, a second login, or a shared review link puts a new reader in front of
   the desk, the string stops being cosmetic and becomes a false claim to
-  someone who would believe it.** Watch for it; the trader is the only source
-  for whether one is coming.
+  someone who would believe it.**
+
+  **AND THE TRIGGER MUST NOT DEPEND ON HIM VOLUNTEERING** — Design's addition,
+  and it is what makes this a trigger rather than a note. *A demo or a second
+  login gets arranged and mentioned in passing, and by the time it is mentioned
+  the desk is already in front of the new reader.* So it is attached to
+  something **observable** instead: **a review link created for a label that is
+  not a thread's own diagnostic, or a second `htpasswd` login appearing.** Both
+  are Ops's to see, and Ops has been asked to raise either the moment it
+  appears. Same family as *a schedule that depends on attention is not a
+  schedule* — a trigger that fires on someone remembering it fires last.
 - **Sessions:** Research successor live (opened 08-27); the three retired
   sessions archived 2026-09-02. Coaching holds six-day-old uncommitted code in
   the tree, nudged to commit.
