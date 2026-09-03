@@ -3226,7 +3226,20 @@ only **then** enters the `try`. So Ops is right twice over: **an awaited Sheets
 call that never returns does not throw**, the row stays `RUNNING`, and the slot
 is dead for the whole `STALE_RUNNING_MS`; and a network call inside the window
 converts checkpoint duration from database work to network-bound, breaking the
-28–74 ms baseline Ops uses as a health signal.
+duration baseline Ops uses as a health signal.
+
+> **The band is `25–209 ms, average 42` — NOT the `28–74 ms` I was given and
+> recorded here.** *Retracted by Ops at `6678d94`: the narrow band came from
+> too short a window and would itself have fired on a perfectly normal 196 or
+> 209 ms checkpoint. **A health signal with too tight a baseline manufactures
+> incidents**, which is worse than one that stays quiet.*
+>
+> **The conclusion is unaffected, and the correction slightly strengthens it.**
+> A Sheets round-trip is still orders of magnitude above 42 ms. But the wider
+> natural variance means **a network call inside the window would be HARDER to
+> spot as an anomaly, not easier** — 200 ms of real spread is room for a slow
+> call to hide in. That argues for ELIMINATING the call from the window rather
+> than bounding it with a timeout, which was already the recommendation.
 
 **Both disappear if the read happens before `startedAt` is taken** (`:525`),
 which is structurally trivial:
