@@ -1739,6 +1739,27 @@ minute early, and **a revival inside that minute counts as after the drop in one
 version and before it in the other.** A replay must reproduce the deployment's
 offsets, not just its thresholds.
 
+## A judgement applied at ONE reader is not applied; it is applied THERE
+
+**Research, 2026-09-04, agreeing with a display-filter call and then widening
+it.** The graveyard's population was six-sevenths names that had never been
+active. Filtering the SURFACE fixes the surface — **and the dilution is in the
+STORE.** Any analysis over stored DEAD rows inherits the same population, so a
+revival rate computed over them measures something else entirely, and the thread
+most likely to compute one is the least likely to see the dilution.
+
+> **Name the predicate ONCE, as an expression, and use that expression at every
+> reader** — `dead_at_peak_trades >= activeTradesPerMinute`, not a number
+> retyped per consumer. If the surface filters on *ever reached the active line*
+> and an analysis filters on something near it, there are two populations under
+> one word again.
+
+**This is the sixth instance of that shape on this desk**, and the first where
+the two populations would have been created by a fix rather than found in
+existing code. **The routing obligation is the practical form: when a judgement
+is settled at one reader, it goes to every reader in the same message** — which
+is why this went to the analysis thread and the surface thread together.
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
