@@ -66,6 +66,16 @@ esac
     { encoding: 'utf8', mode: 0o755 },
   );
 
+  // `push-release.sh` asks the platform before it will ship an artefact.
+  // Stubbed so the guard is exercised on whatever host runs the suite.
+  fs.writeFileSync(
+    path.join(stubs, 'uname'),
+    `#!/usr/bin/env bash
+echo "\${FAKE_UNAME:-Linux}"
+`,
+    { encoding: 'utf8', mode: 0o755 },
+  );
+
   fs.writeFileSync(
     path.join(stubs, 'git'),
     `#!/usr/bin/env bash
@@ -84,14 +94,14 @@ esac
   );
 }
 
-function run(): { status: number; output: string } {
+function run(extraEnv: Record<string, string> = {}): { status: number; output: string } {
   // The script narrates to stderr as well as stdout, and the fallback notice is
   // one of the stderr lines — so both streams are captured together.
   const command = `"${PUSH_RELEASE_SH.replace(/\\/g, '/')}" 10.0.0.1 /dev/null 2>&1`;
 
   try {
     const output = execFileSync('bash', ['-c', command], {
-      env: { ...process.env, PATH: `${stubs}${path.delimiter}${process.env.PATH}` },
+      env: { ...process.env, ...extraEnv, PATH: `${stubs}${path.delimiter}${process.env.PATH}` },
       encoding: 'utf8',
       cwd: ROOT,
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -176,5 +186,61 @@ describe('release bootstrap', () => {
     expect(result.status).toBe(3);
     expect(result.output).toContain('nothing was shipped');
     expect(transcript()).not.toContain('GIT archive');
+  });
+
+  /**
+   * The deploy's own build took the production box down on 2026-08-27. A
+   * release can now carry a `.next` built elsewhere so the server skips its
+   * build — but a Windows-built artefact on a Linux server is an untested
+   * path, and trading a known capacity problem for an unknown correctness one
+   * is not an improvement. The guard refuses by default and says why.
+   */
+  it('refuses to ship an artefact built on a platform it cannot vouch for', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0 });
+    const artefact = path.join(sandbox, '.next');
+    fs.mkdirSync(artefact, { recursive: true });
+
+    const result = run({ ARTIFACT_NEXT: artefact, FAKE_UNAME: 'Darwin' });
+
+    expect(result.status).toBe(5);
+    expect(result.output).toContain('REFUSING');
+    // It names the way forward rather than only the refusal.
+    expect(result.output).toContain('ARTIFACT_PLATFORM_OK');
+    // Nothing was shipped: no tar of the artefact reached the server.
+    expect(transcript()).not.toContain('.next');
+  });
+
+  it('ships the artefact once the platform equivalence is asserted', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0 });
+    const artefact = path.join(sandbox, '.next');
+    fs.mkdirSync(artefact, { recursive: true });
+
+    const result = run({
+      ARTIFACT_NEXT: artefact,
+      ARTIFACT_PLATFORM_OK: 'yes',
+      FAKE_UNAME: 'Darwin',
+    });
+
+    expect(result.status).toBe(0);
+    expect(result.output).toContain('shipping prebuilt artefact');
+    expect(transcript()).toContain('.next');
+  });
+
+  it('says plainly when no artefact is supplied, so the capped build is expected', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0 });
+
+    const result = run();
+
+    expect(result.status).toBe(0);
+    expect(result.output).toContain('no prebuilt artefact');
+  });
+
+  it('refuses an ARTIFACT_NEXT that does not exist rather than shipping nothing quietly', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0 });
+
+    const result = run({ ARTIFACT_NEXT: path.join(sandbox, 'absent'), ARTIFACT_PLATFORM_OK: 'yes' });
+
+    expect(result.status).toBe(4);
+    expect(result.output).toContain('is not a directory');
   });
 });

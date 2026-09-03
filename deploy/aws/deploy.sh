@@ -63,8 +63,35 @@ sudo -u "$SERVICE_USER" env -C "$RELEASE" npm ci --no-audit --no-fund
 # which is one of them. Pruning here would leave a desk that builds and then
 # cannot start a single worker.
 
-log "building"
-sudo -u "$SERVICE_USER" env -C "$RELEASE" NODE_ENV=production npm run build
+# The build is the largest thing this instance ever runs, and on 2026-08-27 it
+# took the box down: `next build` exhausted a 4 GB Lightsail instance that was
+# also running four services against an 877 MB store. ssh died, then the app,
+# then nginx; only the market worker survived, at ~5% throughput, through the
+# first 40 minutes of premarket. Capture cannot be backfilled, so that cost was
+# permanent.
+#
+# Two defences, in order of preference.
+#
+# First: if the release already carries a built artefact, do not build at all.
+# `push-release.sh` ships one when it has a trustworthy build — see there for
+# why "trustworthy" excludes an artefact built on a different platform.
+#
+# Second, when building here is unavoidable: cap the heap and yield the CPU.
+# A capped build FAILS, which is recoverable — the runtime units are still up
+# at this point, because the build runs before the stop below. An uncapped
+# build takes the instance, which is not.
+BUILD_HEAP_MB="${BUILD_HEAP_MB:-1536}"
+
+if [ -d "$RELEASE/.next" ]; then
+  log "prebuilt artefact present; skipping the on-box build"
+else
+  log "building (heap capped at ${BUILD_HEAP_MB}MB, niced)"
+  sudo -u "$SERVICE_USER" env -C "$RELEASE" \
+    NODE_ENV=production \
+    NODE_OPTIONS="--max-old-space-size=$BUILD_HEAP_MB" \
+    nice -n 10 npm run build \
+    || fail "the build failed or hit its ${BUILD_HEAP_MB}MB heap cap; the previous release is still serving"
+fi
 
 # ---------------------------------------------------------------- install ---
 
