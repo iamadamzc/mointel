@@ -817,6 +817,53 @@ that.
 **NOT STARTED. Registered, and blocked on capture rather than on the queue.**
 
 
+#### Q6 design — fixed 2026-09-03, before any correlation was computed
+
+**The same order the scorecard used, for the same reason.** Nothing below was
+written after seeing a result.
+
+**What the desk predicts at 09:25.** `OPEN_SPIKE_ASSESSMENT` snapshots the board
+five minutes before the open: 25 tickers, each with `assessment_rank`,
+`rvol_rank`, price, percent change, and the cycle/catalyst/structure grades.
+**Putting a name at rank 1 asserts it is the one to watch.** Q6 asks whether
+that ordering carries information about what happens next.
+
+**The outcome must be STRICTLY FORWARD, and this is the design's whole risk.**
+Q5 established that seven of ten board names peak before the desk surfaces them,
+and 44 of 95 movers peak before 09:30. **Scoring a 09:25 read against a
+full-session `max_gain_pct` would credit the assessment for a move it was
+looking at.** That is the circularity this thread refused for cycle, and it
+would produce a large, flattering, meaningless number.
+
+    predictor   assessment_rank at 09:25, 1 = best
+    outcome     RTH excursion from the open, (rth_high - rth_open) / rth_open
+                -- entirely after 09:30, so entirely after the assessment
+    population  12 assessments x 25 tickers, joined to symbol_outcomes
+    test        Spearman rank correlation, pooled and per date
+
+**Predictive content means a NEGATIVE correlation** — a lower rank number
+pairing with a larger excursion. A positive one would mean the board is ordered
+backwards, which is a finding rather than a null.
+
+| | |
+| --- | --- |
+| **Decision rule, fixed now** | Predictive content requires **rho <= -0.20 pooled at p < 0.05**. Anything weaker is reported as **no detectable content**, including a p just above the line. |
+| **Reported regardless** | Per-date rho, so a single day cannot carry the pooled figure; and n after the join, since names without an RTH outcome drop out. |
+
+**THE PRIOR CHECK, WHICH MAY ANSWER Q6 BEFORE THE CORRELATION DOES.** In the
+first rows inspected, `assessment_rank` and `rvol_rank` are identical. **If they
+agree everywhere, Q6 collapses**: the pre-open assessment would be an RVOL sort
+wearing a different column name, and any predictive content would belong to RVOL
+rather than to the desk's judgement. **That is measured first and reported
+whichever way it falls** — it changes what the correlation means rather than
+whether it is worth computing.
+
+**Pre-registered expectation: no detectable content.** The scorecard's S1 found
+the board surfaces most names after their move and that this is stable across 13
+sessions. **A read taken five minutes before the open, on a board already
+established as late, has no obvious reason to predict the next hour.** Saying so
+now is what stops a weak negative being written up as a hint.
+
 **Q7 was routed here by the desk owner on 2026-08-23**, in those words: *"None
 yet. This needs to go to the viscosity study."* Audit §11 item 3 asked which of
 four briefed-but-unbuilt concepts Design should surface. Three of them —
