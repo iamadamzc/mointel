@@ -3259,6 +3259,47 @@ worth more than the column being populated, every time.** A timeout degrades to
 a null column, never to a failed checkpoint — Q9's capture is a nice-to-have
 riding inside the writer of the one record nothing rebuilds.
 
+### POST-DEPLOY VERIFICATION, PRE-REGISTERED before the deploy so it cannot be fitted to what lands
+
+*The author confirms the behaviour; Ops confirms the release. Written 2026-09-04
+while the deploy instruction was still being composed.*
+
+**THE ORDER MATTERS: check the DISTRIBUTION first, and the exclusions second.**
+Both gates FAIL OPEN, so if `activity` were `UNKNOWN` everywhere the gates
+would correctly do nothing — **and a board with no exclusions would look
+exactly like a board with no dead names.** Checking "did dead names get
+excluded" first is a check that cannot tell success from failure.
+
+**1. Does the column VARY?** `SELECT activity, COUNT(*) … GROUP BY activity`
+on the live trading date.
+
+| reading | means |
+| --- | --- |
+| all `NULL` | **the four-site trap** — a column added but not in `DO UPDATE SET`, or missing from `toRow` |
+| one value forever | same trap, or the value frozen at the seeded `'UNKNOWN'` |
+| all `'UNKNOWN'`, none else | **the engine is computing but `minuteTrades` is empty** — trade counts not reaching `ingestBar` |
+| a mix of all three | working |
+
+**2. Does a death carry its evidence?** For rows where `activity = 'DEAD'`,
+`dead_since`, `dead_at_rank`, `dead_at_peak_trades` and `dead_at_price` must
+all be non-null — they are captured together at one transition, so **a DEAD row
+with any of them null means the capture block did not run**, and the graveyard
+would render a death it cannot describe.
+
+**3. Only then, the exclusions.** Count top-`autoRank` slots held by `'DEAD'`
+names, and compare against Ops's pre-deploy RTH baseline — **stating the
+predicate beside the number**, because the baseline used "no bar in five
+minutes" and the shipped rule excludes the in-flight minute and requires five
+CONSECUTIVE minutes at or below the dead line. **The shipped rule will fire
+LESS than the baseline predicate. That is a definition change, not a
+regression**, and it must be said in the same sentence as the comparison.
+
+**What would make me say it is NOT working:** any of the four readings above;
+a `DEAD` row missing its captured evidence; or `death_count` climbing into
+double figures on many names in one session, which would mean the thresholds
+are wrong for RTH rather than that the rule is broken — *the premarket-derived
+threshold caveat arriving as data.*
+
 ### SCOPE: ranked-and-alive. *Integration's word 2026-09-03; enumerated by search, not from the two sites it named.*
 
 **Most rank consumers must NOT change, and two of them would be damaged by
