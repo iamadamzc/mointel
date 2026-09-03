@@ -1536,6 +1536,15 @@ Basic Auth itself; the probe that reaches the app is `/_next/static/`.
 
 ## Working rules
 
+- **A SUPERSEDING TABLE IS NOT A RETRACTION.** *R&D's formulation, 2026-09-03,
+  after this thread sent the trader a figure and later sent a corrected one for
+  the same quantity.* Sending better numbers does not withdraw worse ones: **the
+  reader has to already know which is newer, and he has no way to.** He ends up
+  holding two values for one thing with no rule for choosing. So when a number
+  already delivered turns out wrong, **name the earlier sentence and retract
+  it** — quoting it back if necessary — rather than letting a fresh table do the
+  work silently. This costs three lines and is the difference between a
+  correction and a collision.
 - **A premise inherited from another thread's charter needs the same check as
   one of your own.** *Research's formulation, 2026-09-03, crediting Ops's
   catch; it applies to this seat hardest, because relaying premises is the
