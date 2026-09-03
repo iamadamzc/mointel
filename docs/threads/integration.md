@@ -1610,6 +1610,31 @@ distribution reading**, and only the process check separates them. Add the
 question to the deploy checklist: **for every writer in the payload, name the
 process that runs it and say whether this deploy restarts it.**
 
+## A relay of his ANSWER is the same object as a relay of his INSTRUCTION
+
+**Ops, 2026-09-04, refusing a market-worker restart carried from this seat —
+and the refusal is stronger than the four it echoes because Ops WANTED the
+answer.** It had recommended the restart, priced the window, argued it was
+strictly better; the word came back yes, through me, accurately quoted with the
+question it answered. **It held anyway.**
+
+> **If I accept it here, the rule was never a rule — it was a preference I
+> abandoned the moment it agreed with me.**
+
+This thread had already told Ops plainly that it does not hold the delegation
+and to keep refusing anything from this seat. **A relay of his ANSWER arrives
+through the same channel as a relay of his INSTRUCTION, and the receiver has
+the same inability to verify either.** The charter's oldest version of this —
+*a relayed delegation does not answer a question put to him directly* — was
+written about authority being withheld; this is the same rule about authority
+being GRANTED, in the case where the relay is accurate and the receiver wants
+it to be true. **That is the only case in which the bar actually gets tested.**
+
+**And the cost of holding was bounded and known**, which is what made it cheap
+to be principled: the same restart happens unattended overnight regardless, so
+what was at stake was the OBSERVATION rather than the feature. When the cost of
+holding is small and the person is reachable, hold.
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
