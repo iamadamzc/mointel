@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  ALIVE_PEAK_TRADES,
   DEATH_CHURN_THRESHOLD,
   graveyardRows,
   graveyardSummary,
@@ -247,14 +248,36 @@ describe('the never-alive filter', () => {
       deathCount: 1,
     });
 
-  it('lists a name that rose above the dead line and then stopped', () => {
-    // 50/min: never ACTIVE at 300, but genuinely not-dead before it died.
-    // Filtering at the ACTIVE threshold would hide this real death.
-    expect(graveyardRows([withPeak('REAL', 50)], NOW)).toHaveLength(1);
+  it('lists a name that reached the active line and then stopped', () => {
+    expect(graveyardRows([withPeak('REAL', ALIVE_PEAK_TRADES)], NOW)).toHaveLength(1);
+    expect(graveyardRows([withPeak('BUSY', ALIVE_PEAK_TRADES + 400)], NOW)).toHaveLength(1);
   });
 
-  it('withholds a name whose busiest minute never cleared the dead line', () => {
+  /*
+   * 50/min was above the DEAD line and never near the ACTIVE one, and an
+   * earlier version of this filter listed it. Definitionally it did transition
+   * from not-dead to dead; that is beside the point. A drop is only wrong if it
+   * cost him something, and a name that never reached the bar he trades at
+   * never could. The header saying "never active" is what settled it.
+   */
+  it('withholds a name that was never near the bar he trades at', () => {
     expect(graveyardRows([withPeak('QUIET', 2)], NOW)).toHaveLength(0);
+    expect(graveyardRows([withPeak('MIDDLING', 50)], NOW)).toHaveLength(0);
+    expect(graveyardRows([withPeak('JUSTUNDER', ALIVE_PEAK_TRADES - 1)], NOW)).toHaveLength(0);
+  });
+
+  /*
+   * The predicate is the CONFIGURED active line, never a literal. Two
+   * populations under one word is this desk's oldest collision, and a filter
+   * typed as 300 here would create a fresh one the day the config moves.
+   */
+  it('takes the bar from the engine config rather than a number typed here', async () => {
+    const { DEFAULT_ACTIVITY_CONFIG } = await import('@/lib/market/activity');
+    expect(ALIVE_PEAK_TRADES).toBe(DEFAULT_ACTIVITY_CONFIG.activeTradesPerMinute);
+
+    const { promises: fs } = await import('node:fs');
+    const source = await fs.readFile('lib/dashboard/graveyard.ts', 'utf8');
+    expect(source).toContain('DEFAULT_ACTIVITY_CONFIG.activeTradesPerMinute');
   });
 
   it('withholds a name with no peak at all, rather than assuming it lived', () => {
@@ -268,10 +291,12 @@ describe('the never-alive filter', () => {
    */
   it('reports how many were withheld rather than dropping them silently', () => {
     const summary = graveyardSummary(
-      [withPeak('REAL', 50), withPeak('QUIET', 2), withPeak('ALSOQUIET', 1)],
+      [withPeak('REAL', ALIVE_PEAK_TRADES), withPeak('QUIET', 2), withPeak('MIDDLING', 50)],
       NOW,
     );
     expect(summary.dead).toBe(1);
+    // Both the always-quiet name AND the one that peaked at 50 are withheld:
+    // neither ever reached the bar, and the count says so rather than hiding it.
     expect(summary.neverActive).toBe(2);
   });
 

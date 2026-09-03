@@ -12,22 +12,31 @@
  * are the detail.
  */
 
-import { DEFAULT_ACTIVITY_CONFIG, deadLineFor } from '@/lib/market/activity';
+import { DEFAULT_ACTIVITY_CONFIG } from '@/lib/market/activity';
 
 import type { DeskRow } from './merge';
 
 /**
  * The busiest minute a name must have had before its death is worth showing.
  *
- * Derived from the engine's own config rather than restated as a number, so it
- * cannot drift from the ratio the trader actually chose.
+ * **The ACTIVE line, referenced from config — never a literal.** Two reasons,
+ * and the second overturned an earlier version of this file.
  *
- * **Why the DEAD line and not the ACTIVE one.** A name that peaked at 50
- * trades/min was never ACTIVE (300), but it was above the dead line, so it
- * genuinely transitioned from not-dead to dead. Filtering at 300 would hide
- * real deaths; filtering here hides only names that were never anything else.
+ * The expression matters because this desk's oldest collision is two
+ * populations under one word. If this surface filtered on "ever reached the
+ * active line" while an analysis filtered on something near it, the word
+ * `active` would name two different sets — and this time we would have created
+ * the collision with a fix rather than inherited it.
+ *
+ * The THRESHOLD matters because it was first written as the dead line, on the
+ * reasoning that a name peaking at 50 trades/min was never ACTIVE but did
+ * transition from not-dead to dead. That is definitionally true and beside the
+ * point. **The graveyard is a falsification surface: a drop is wrong only if it
+ * cost him something, and a name that never reached the bar he trades at never
+ * could.** The header already said `never active` — so the label was right and
+ * the filter was wrong, and they now agree.
  */
-const ALIVE_PEAK_FLOOR = deadLineFor(DEFAULT_ACTIVITY_CONFIG);
+const ALIVE_PEAK_FLOOR = DEFAULT_ACTIVITY_CONFIG.activeTradesPerMinute;
 
 /**
  * Deaths at which a name counts as churning rather than as having died.
@@ -161,6 +170,9 @@ function wasAlive(row: DeskRow): boolean {
   const peak = row.demand?.deadAtPeakTrades;
   return peak !== null && peak !== undefined && peak >= ALIVE_PEAK_FLOOR;
 }
+
+/** The predicate, exported so any other reader filters the SAME population. */
+export const ALIVE_PEAK_TRADES = ALIVE_PEAK_FLOOR;
 
 export function graveyardSummary(rows: DeskRow[], now = Date.now()): GraveyardSummary {
   void now;
