@@ -3047,6 +3047,71 @@ spec is items 25/26.
 
 ---
 
+**39. Alpaca trades are DEEP — bounded by the listing, not by the
+subscription. The 10-second question has no clock.** *Vendor probe run for
+Integration 2026-09-03, read-only. 12 requests, all HTTP 200, zero 429s.*
+
+**ANSWER: deep. So by Integration's own decision rule, nothing is
+observable-once here, no capture decision goes to the trader, and a
+ten-second reconstruction is a build that queues like any other.**
+
+### Depth — and the absences are listing history, not a floor
+
+| symbol | 2019-06 | 2021-06 | 2023-06 | 2025-06 | 2026-08 |
+| --- | --- | --- | --- | --- | --- |
+| **BTCT** | — | **hit** | **hit** | **hit** | **hit** |
+| **VSME** | — | — | — | **hit** | **hit** |
+
+**The decisive request was the one after the table.** An absence alone could
+not distinguish *"the subscription stops here"* from *"the symbol did not
+exist yet"* — the desk's standing rule — so BTCT was probed at its own listing
+start: **trades exist at 2020-06-15, ~6.2 years back**, against a daily history
+measured at 1,608 sessions. **Depth runs to the listing.** VSME's absences sit
+before its own listing for the same reason.
+
+*Method and its limits: `limit=1` on every request, so depth was tested WITHOUT
+pulling volume — one row answers "does data exist here" at the cost of one row.
+A one-day window at each depth, so a hit means trades on THAT date. I did not
+search for the account's maximum depth and did not characterise the service by
+exhausting it; the claim is "reaches the listing", not "has no limit".*
+
+### Page cost, measured from the desk's own store at ZERO vendor cost
+
+Using the trade counts item 38 found already stored — 24,429 symbol-days:
+
+| | trades in a symbol-day | pages at 10,000/page |
+| --- | ---: | ---: |
+| p50 | 873 | **1** |
+| p90 | 14,641 | 2 |
+| p99 | 150,739 | **16** |
+| heaviest (AZI 2026-06-09) | 1,908,100 | **~191** |
+
+> **THE COST SITS ENTIRELY ON THE DAYS OF INTEREST.** A quiet symbol-day is one
+> request. **The day a name actually runs — the only day this question is about
+> — is tens to ~200 requests for ONE symbol-day.** Quoting the median here
+> would be true and useless, which is this desk's own units problem in a new
+> place.
+
+### A dependency nobody named: trades come back RAW
+
+BTCT prints **$11.17 on 2020-06-15 and $0.45 on 2026-08-18**. That is
+pre-reverse-split pricing — **the trades endpoint is unadjusted.** So any
+ten-second reconstruction spanning a split needs the cumulative factor to be
+comparable at all, and that factor is `daily_bars.split_factor`, which the
+basis fetch is populating right now.
+
+**The basis work has a second consumer that nobody anticipated when it was
+approved**, and it arrived from an unrelated direction. Worth saying plainly
+because the reverse would have been expensive: a ten-second series built
+without it would look fine and be wrong across exactly the 35% of researched
+tickers carrying a reverse split.
+
+*Attribution, so nothing is misread against Ops's watch triggers: 12 REST
+requests between 20:47:14Z and 20:47:52Z, all HTTP 200, no rate limiting. Any
+429 in that window is mine, not the basis fetch's.*
+
+---
+
 **38. RVOL is cumulative — confirmed, with a SECOND latch nobody had named, and
 the obvious remedy is forbidden.** *Two diagnostics commissioned by the trader
 via Integration 2026-09-03. Reads, not builds. Nothing changed.*
