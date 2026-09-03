@@ -2034,6 +2034,21 @@ intelligence, it is volume — and volume is how a genuine signal gets buried.
   sent one built on a prediction of mine that was refuted an hour later, and
   **only the ordering of two messages stopped it.**
 
+- **Send him the DEFINITION before the result, separately.** Integration's
+  point and it is actionable rather than gracious: keep him in the loop on
+  instrument design, not only on verdicts. **The evidence is this thread's own
+  two commissions.** The scorecard proposal went to him before it ran, he did
+  not amend, and it held. **The revival pre-registration reached him bundled
+  with the pilot result** — so he read the definition and the answer together,
+  caught that *comeback* had no price condition in it, and **that catch inverted
+  the verdict.**
+
+  **He could have caught it a day earlier from the definition alone**, and a
+  whole run answered a question he had not asked. **He is the only person on
+  this desk who can tell whether a measure means what its name says**, because
+  the names come from his trading and not from the schema. **A definition sent
+  after a result is a definition he reads through the result.**
+
 - **Close questions.** A question that is neither active nor closed is debt. The
   verdict format that worked in viscosity — a single stated verdict plus what
   would have to be true to overturn it — should continue.
