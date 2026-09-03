@@ -142,3 +142,91 @@ before.
 **Priority: below the scorecard and Q1**, per the commission. **The one thing
 that should not wait is the trades-endpoint depth check**, because that is what
 decides whether his real question has a clock on it.
+
+
+---
+
+# RESULT — pilot on 2 sessions, 2026-09-03
+
+**This is a PILOT on 08-17 and 08-18 only** — the two dates of minute bars the
+desk still holds locally. **Not the 13-session window.** The full window needs a
+vendor re-fetch, which is cheap and has not been run. **Every figure below is
+n=2 sessions and must be quoted that way.**
+
+## The pre-registered verdict: HIS PRIOR IS REFUTED ON HIS STATED DEFINITION
+
+    population         threshold        episodes   revived    rate
+    board sym-days     active>=15,000        498       416    83.5%
+    board sym-days     active>=30,000        385       307    79.7%
+    board sym-days     active>=60,000        267       200    74.9%
+    full universe      active>=30,000     16,554    12,701    76.7%
+
+**The rule required ≥25% across all three thresholds. Observed 74.9–83.5%, about
+three times the bar, and the secondary population agrees at 69.7–82.0%.**
+
+**This is the direction minute grain is allowed to license.** The
+pre-registration fixed that revivals-common **refutes decisively** because a
+floor that high cannot be a smearing artifact. **79.7% is not an artifact.**
+
+**Median 9 minutes dead before revival; p90 196 minutes.**
+
+## But the definition does not capture what he means, and that is the real finding
+
+**NTWO on 08-18 generated nineteen death episodes in one session**, oscillating
+208k → 600 → 65k → 1,450 → 156k within minutes. **44% of its bars sit below the
+dead line and 25% sit above the active line.** That is a bursty tape, not a name
+that died.
+
+**A single sub-threshold minute is not death.** The missing element is
+**persistence**, and it is not in his stated numbers because he was describing
+what he sees, not writing a filter.
+
+**EXPLORATORY — not pre-registered, and not promoted to confirmatory.** Revival
+rate as a function of how long a name must stay quiet before it counts as dead,
+board symbol-days, active ≥30,000:
+
+    quiet for    episodes   revived     rate    median dead-min before revival
+      1 min           385       307    79.7%          9
+      2 min           277       199    71.8%         11
+      3 min           248       170    68.5%         11
+      5 min           182       104    57.1%         46
+     10 min           138        60    43.5%        135
+     15 min           128        50    39.1%        226
+     30 min           120        42    35.0%        277
+     60 min           105        27    25.7%        283
+
+> **He is right about real deaths and the stated threshold is not measuring
+> them.** A name quiet for one minute comes back 80% of the time. **A name quiet
+> for an hour comes back 26% of the time, and takes about five hours to do it.**
+
+**The crossover sits around 5–10 minutes.** Below it revival is the norm; past
+about 30 minutes death is the norm. **That also explains why he has rarely seen
+a revival: he is watching for sustained death, and sustained deaths mostly stay
+dead.** His instinct is calibrated to the phenomenon; his stated criterion
+catches a much larger and more ordinary one.
+
+## A defect found and fixed mid-run, which changed the durations and not the rate
+
+**The first detector iterated over stored bars. Alpaca emits no bar for a minute
+with no trades**, so true silence was invisible: NTWO showed `14:14 DEAD` then
+`18:52 REVIVED` counted as **one dead minute** when it was 278. **88% of that
+symbol-day's session minutes have no bar at all.**
+
+**Rebuilt on a continuous minute grid with silence as zero volume.** The
+durations changed enormously — p90 went from single digits to 196 minutes — and
+**the revival rate barely moved, 78.0% to 79.7%.** Recorded because the rate
+being robust to a serious bug is luck, not design, and **the durations would have
+been published badly wrong.**
+
+## What is still not answered
+
+**His actual grain.** All of this is minute bars; a death-and-revival inside one
+minute remains invisible, so **every rate here is a floor.** That strengthens the
+refutation at 1-minute persistence and says nothing about the 60-minute end.
+
+**The full window.** Two sessions. The 13-session re-fetch is cheap and unrun.
+
+**And the persistence result is exploratory.** It is the number that would change
+what he does, which is exactly why it must not be quoted as though it had been
+pre-registered. **The honest next step is to pre-register a persistence
+threshold and re-run on the full window.**
