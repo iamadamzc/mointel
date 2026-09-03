@@ -36,6 +36,8 @@ import {
 const TRADE_ACTIVE = [150, 300, 600] as const;
 /** The pilot's volume levels, kept so the two instruments can be compared. */
 const VOLUME_ACTIVE = [15_000, 30_000, 60_000] as const;
+/** The trader's 10x, derived rather than configured. See RevivalThresholds. */
+const DEAD_RATIO = 10;
 /** Pre-registered before this run, not chosen after it. */
 const PERSISTENCE = 5;
 /** Exploratory curve, reported beside the verdict as in the pilot. */
@@ -156,11 +158,11 @@ export async function runRevival(argv: readonly string[]): Promise<number> {
 
   const levels = options.measure === 'trades' ? TRADE_ACTIVE : VOLUME_ACTIVE;
   console.log('PRE-REGISTERED — persistence 5, three thresholds');
-  for (const active of levels) row(options.measure, { active, dead: active / 10, persistence: PERSISTENCE }, grids);
+  for (const active of levels) row(options.measure, { active, deadRatio: DEAD_RATIO, persistence: PERSISTENCE }, grids);
 
   const mid = levels[1];
   console.log('\nEXPLORATORY — persistence curve at the middle threshold, not pre-registered');
-  for (const p of PERSISTENCE_CURVE) row(options.measure, { active: mid, dead: mid / 10, persistence: p }, grids);
+  for (const p of PERSISTENCE_CURVE) row(options.measure, { active: mid, deadRatio: DEAD_RATIO, persistence: p }, grids);
 
   console.log('\n[revival] a rate below 25% across all three thresholds is UNINFORMATIVE, not agreement.');
   return 0;

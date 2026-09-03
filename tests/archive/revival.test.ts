@@ -8,9 +8,15 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { buildGrid, findEpisodes, summarise, type RevivalThresholds } from '@/lib/archive/revival';
+import {
+  buildGrid,
+  deadLineFor,
+  findEpisodes,
+  summarise,
+  type RevivalThresholds,
+} from '@/lib/archive/revival';
 
-const T: RevivalThresholds = { active: 300, dead: 30, persistence: 5 };
+const T: RevivalThresholds = { active: 300, deadRatio: 10, persistence: 5 };
 
 /** A dense series from a compact spec: [value, repeat] pairs. */
 function series(...runs: [number, number][]): number[] {
@@ -34,6 +40,41 @@ describe('buildGrid', () => {
 
   it('a fully silent session is nine zeroes, not an empty series', () => {
     expect(buildGrid(new Map(), 9)).toEqual(Array(9).fill(0));
+  });
+});
+
+describe('the derived dead line', () => {
+  it('derives dead from active and the ratio, never from a separate number', () => {
+    /*
+     * The 10x is the TRADER'S, from his own description: ~5,000 shares on a
+     * 10-second candle dropping below ~500. Two separately configured numbers
+     * drift until they no longer express that ratio and nothing anywhere
+     * notices, so the ratio is structural rather than conventional.
+     *
+     * Pinned rather than bounded, on Research's reasoning about reviveMinutes:
+     * a bound lets a value drift silently, and anyone changing this should have
+     * to see the trader's number and decide to overrule it.
+     */
+    expect(deadLineFor({ active: 300, deadRatio: 10, persistence: 5 })).toBe(30);
+    expect(deadLineFor({ active: 150, deadRatio: 10, persistence: 5 })).toBe(15);
+  });
+
+  it('moves the dead line with the active level, keeping the ratio intact', () => {
+    /*
+     * The property a separate `dead` field would silently lose: raise the
+     * active level and the dead line rises with it, so the SAME series is read
+     * differently. The first draft of this test used peaks of 500 against an
+     * active level of 600, so the name never went active at all and the test
+     * passed for the wrong reason -- right outcome, wrong mechanism.
+     */
+    const grid = series([700, 2], [40, 6], [700, 2]);
+
+    // active 300 -> dead line 30. A 40-trade minute is NOT dead: no episode.
+    expect(findEpisodes(grid, { active: 300, deadRatio: 10, persistence: 5 })).toEqual([]);
+
+    // active 600 -> dead line 60. The same 40 IS dead, and the name revives.
+    const stricter = findEpisodes(grid, { active: 600, deadRatio: 10, persistence: 5 });
+    expect(stricter).toEqual([{ deadMinutes: 6, revived: true, startIndex: 2 }]);
   });
 });
 

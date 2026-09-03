@@ -889,6 +889,14 @@ day:** *a correction inherits the confidence of whatever it corrects toward.*
 **I wrote a direction as a finding; Research corrected its own comment toward my
 finding; the error travelled upward in confidence at every step.**
 
+**CONDITION ON ANY Q11 RATE, from Research and accepted:** **say which
+population it is over in the same sentence as the number.** The two definitions
+differ on the prior-active requirement — **a name never active can be DEAD in
+`activity.ts`**, correct for a board rule that drops quiet names and **wrong for
+a revival denominator**. A rate quoted without its population would be exactly
+the failure this register keeps finding elsewhere, **arriving at its own future
+output.**
+
 **Blocked**, and honestly so: the columns have not landed, nothing has shipped,
 and data must accumulate. **Not urgent and not commissioned.**
 

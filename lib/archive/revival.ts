@@ -36,8 +36,23 @@ export interface Episode {
 export interface RevivalThresholds {
   /** At or above this, the name is active. */
   active: number;
-  /** Below this, the name is dead. Fixed by the trader's 10x ratio. */
-  dead: number;
+  /**
+   * The dead line is DERIVED as `active / deadRatio`, never configured
+   * separately — adopted from `lib/market/activity.ts`, and the reason is not
+   * tidiness.
+   *
+   * **The 10x is the TRADER'S choice**, from his own description of a name
+   * dying: ~5,000 shares on a 10-second candle dropping below ~500. Two
+   * separately configured numbers can drift apart until they no longer express
+   * that ratio, **with nothing anywhere to notice** — a plausible edit to
+   * either one destroys his choice silently.
+   *
+   * Deriving it makes the ratio structurally unforgettable. **Keep this comment
+   * if you touch this type**: the next person to simplify will configure both,
+   * and the justification is the only thing standing between his ratio and a
+   * well-meaning refactor.
+   */
+  deadRatio: number;
   /**
    * Consecutive dead minutes required before a death is confirmed.
    *
@@ -48,6 +63,11 @@ export interface RevivalThresholds {
    * what he sees, not writing a filter.
    */
   persistence: number;
+}
+
+/** The derived dead line. Exported so a caller can state it beside a rate. */
+export function deadLineFor(t: RevivalThresholds): number {
+  return t.active / t.deadRatio;
 }
 
 /**
@@ -71,6 +91,7 @@ export function buildGrid(bars: ReadonlyMap<number, number>, length: number): nu
  * moderate activity has not stayed quiet, whatever the volume says.
  */
 export function findEpisodes(grid: readonly number[], t: RevivalThresholds): Episode[] {
+  const dead = deadLineFor(t);
   const out: Episode[] = [];
   let state: 'seek' | 'active' | 'dead' = 'seek';
   let run = 0;
@@ -82,7 +103,7 @@ export function findEpisodes(grid: readonly number[], t: RevivalThresholds): Epi
     if (state === 'seek') {
       if (v >= t.active) state = 'active';
     } else if (state === 'active') {
-      if (v < t.dead) {
+      if (v < dead) {
         run += 1;
         if (run >= t.persistence) {
           state = 'dead';
