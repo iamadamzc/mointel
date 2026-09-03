@@ -615,3 +615,73 @@ about** (a claim about when he trades, which would supersede the recorded
 finding at `0595b2c` that *the setup is the requirement and the session is
 not*). **Different instruments, and assuming would be the error this whole
 document exists to avoid.**
+
+
+---
+
+# RESULT 4 — premarket only, his scope. 2026-09-03
+
+**His decision: *let's keep everything to premarket.*** Re-scoped to
+**04:00–09:29 ET**, and **no episode can straddle the open** — the grid ends at
+09:29, so the defect Integration identified is structurally impossible rather
+than filtered out.
+
+**782 symbol-days of 939.** The 157 that drop out have no premarket bars at all,
+which is a denominator change worth stating rather than absorbing.
+
+    quiet for    activity only        + live +25%
+      1 min       46.6% (367 eps)     13.6% (50)
+      5 min       32.8% (244 eps)      7.0% (17)
+     10 min       27.5% (189 eps)      4.8% ( 9)
+     15 min       21.0% (167 eps)      3.6% ( 6)
+     30 min       18.4% (125 eps)      3.2% ( 4)
+
+> **Under his scope and his definition: 7.0% at five minutes of quiet, 3.2% at
+> thirty.** His instinct holds, and it holds more cleanly than in any earlier
+> cut because the open is no longer in the measurement.
+
+**The counts get thin fast and that must travel with them — four revivals at
+persistence 30.** A rate on four events is a direction, not a number, and it
+should not be quoted to three significant figures by anyone including me.
+
+**The pooled figures above are OUT OF WINDOW, not wrong.** Marked, not deleted,
+per the stamp discipline: *checked-and-true*, *checked-and-unknowable* and
+*never-checked* are three states, and **out-of-scope is a fourth** — the
+measurement was sound for a window the desk has since narrowed.
+
+## Which other verdicts the scope reaches — my read, asked for by Integration
+
+**Unaffected. No outcome variable in them; they measure the pipeline, not the
+tape.**
+
+- **S2** time to intelligence — timestamps only
+- **S4** coverage honesty — classifications only
+- **S5** grade freshness — analysis version ages only
+
+**Out of window, and CHEAP to re-run — `premarket_high` is already stored on 715
+of 939 rows, so no re-fetch.** All four use a full-session outcome:
+
+- **S1** board timeliness — `time_of_max_gain` over 04:00–20:00
+- **S3** catalyst separation — `max_gain_pct` decides mover status
+- **Q1** — same mover definition
+- **Q5** `BOARD_IS_LATE_TO_THE_MOVE` — same
+
+**The mover population itself changes: 122 premarket movers against 195
+full-session.** So these are not re-runs of the same cross-section with a
+different lens; **they are a different cross-section**, and the results may move
+for that reason alone.
+
+## Q6 is the one that does not merely go out of window
+
+**Q6 scored the 09:25 pre-open assessment against RTH excursion.** Under a
+premarket scope **there is no forward window left to score it against** — the
+assessment fires five minutes before the open, and everything after it is out of
+scope.
+
+> **Q6 cannot be re-run in premarket. Its predictor sits on the boundary and
+> everything it predicts into has been scoped out.**
+
+**Its verdict stands as measured and describes a window the desk no longer
+prioritises.** And it raises a product question that is not mine to answer:
+**an instrument that fires at 09:25 and predicts into RTH is, under this scope,
+an instrument aimed outside it.** Flagged for whoever owns that assessment.
