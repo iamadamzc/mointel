@@ -2156,6 +2156,19 @@ intelligence, it is volume — and volume is how a genuine signal gets buried.
   the names come from his trading and not from the schema. **A definition sent
   after a result is a definition he reads through the result.**
 
+- **A table gives every row the same authority, and rows do not have it.**
+  Research's, from the `reviveMinutes` exchange, and it is about layout rather
+  than about statistics: **same column widths, same decimal places, one half
+  load-bearing and one half noise.** A count of 244 discarded events is solid;
+  a ratio between two counts of 17 and 14 is not — **and nothing in the
+  formatting says which is which.**
+
+  **Raw counts beside every percentage is necessary and not sufficient.** This
+  register already does that and it did not stop the error, because a reader
+  quotes `7.0 → 7.9` and not `17 → 14` even when both are printed. **Mark the
+  thin rows as thin, in the table, where the number is** — a caveat in the prose
+  above gets separated from the figure the moment anyone copies a row.
+
 - **Close questions.** A question that is neither active nor closed is debt. The
   verdict format that worked in viscosity — a single stated verdict plus what
   would have to be true to overturn it — should continue.

@@ -659,9 +659,12 @@ which is a denominator change worth stating rather than absorbing.
     quiet for    activity only        + live +25%
       1 min       46.6% (367 eps)     13.6% (50)
       5 min       32.8% (244 eps)      7.0% (17)
-     10 min       27.5% (189 eps)      4.8% ( 9)
-     15 min       21.0% (167 eps)      3.6% ( 6)
-     30 min       18.4% (125 eps)      3.2% ( 4)
+     10 min       27.5% (189 eps)      4.8% ( 9)   thin
+     15 min       21.0% (167 eps)      3.6% ( 6)   THIN
+     30 min       18.4% (125 eps)      3.2% ( 4)   THIN -- a direction, not a rate
+
+    the two columns are NOT equally strong. Episode counts are solid throughout.
+    The +25% column is a ratio on small counts and degrades down the table.
 
 > **Under his scope and his definition: 7.0% at five minutes of quiet, 3.2% at
 > thirty.** His instinct holds, and it holds more cleanly than in any earlier
