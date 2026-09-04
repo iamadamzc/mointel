@@ -3345,6 +3345,66 @@ spending decision is made from.**
 a leak; it does not add a source. **The vendor question is exactly where it was
 before the defect was found.**
 
+### THE LIVE FORMAT CARRIES A SECOND NUMBER — designed, NOT shipped
+
+*Design read five live cells at 01:35 ET and the deployed parser refused all
+five, `AKAN` included. Every one carries a `"; N SO"` clause that was not in my
+thirteen. **The allowlist refusing them is the safety property working exactly
+as specified**, and it means the column may currently read empty.*
+
+    "537,665 displayed; 785,655 SO"      "6,109 displayed; ~1.05M SO"
+    "11.79M displayed; 13.1M SO"         "2.46M displayed; 3.75M SO"
+
+> **AND THE TRAP IS REAL: two numbers, and only the FIRST is the float.** The
+> second is shares outstanding. **That is R&D's NWTG trap in a shorter
+> costume** — capture the wrong one and a share count lands in the one column
+> that must never hold one, on every row, silently, *looking like a coverage
+> win*. **The current refusal is the safe failure.**
+
+#### Can the SO number be made unreachable BY CONSTRUCTION? Yes — split first
+
+**Do not extend the regex.** A wider pattern leaves the SO figure inside a
+capture group that a later edit could read by reordering. Instead:
+
+1. **Split the cell on `;` BEFORE any numeric parsing.**
+2. **Parse the HEAD with the existing float grammar** — unchanged.
+3. **Validate every TAIL clause against its own allowlist** (`<number> SO`).
+   **Any unrecognised clause refuses the whole cell.**
+
+> **The float grammar is then applied to a substring that PROVABLY CANNOT
+> CONTAIN the SO number** — not merely unmatched, structurally out of reach.
+> That is the property Integration asked for and the reason it is a split
+> rather than a longer pattern.
+
+**It handles both formats for free:** no semicolon → empty tail → today's
+behaviour exactly. **Which matters, because Ops read 16 of 17 parsing at 23:33
+and Design read 0 of 11 at 01:35 on disjoint tickers — two tabs carrying two
+formats would produce that with neither of them wrong.**
+
+#### THE TAIL IS NOT NOISE. IT IS THE OTHER HALF OF THE RATIO
+
+**He is now writing float AND shares outstanding in one cell, from one source,
+at one instant.** Item 28 recorded that this pair *could not be assembled*,
+because the float came from a live Sheet read and the share count from a
+dossier written days earlier — **"asynchronous by construction"**.
+
+> **That constraint is gone. The two halves arrive together, authored
+> together.** The float-versus-SO checks this desk already implements —
+> `float > shares` and the **2% unit-mismatch rule** — become available on the
+> board for the first time, with no capture, no migration and no join.
+
+**AND ONE OF THE FIVE LIVE ROWS ALREADY TRIPS IT:**
+`"6,109 displayed; ~1.05M SO"` is **0.58%**, well under `UNIT_MISMATCH_RATIO`
+(`float.ts:82`). **The desk's own rule calls that a probable unit error, not a
+tiny float** — so a parser that simply ingested the head would have put a
+suspect number on the board, and the existing machinery would have caught it
+had the pair ever reached it. *Parse both, and hand the pair to `assessFloat`
+rather than inventing a second checker.*
+
+**NOT BUILT.** Ops is establishing which tab and endpoint each reading hit, and
+the design does not change either way — but shipping before that is shipping
+into an unknown denominator.
+
 ### AND THE FIX MUST NOT REINTRODUCE THE SILENCE THAT HID IT
 
 *Caught reviewing my own build, with the time Integration gave instead of the
