@@ -2008,6 +2008,52 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## AN INSTRUCTION IN FLIGHT IS NOT AN INSTRUCTION RECEIVED
+
+**2026-09-04, 01:40 ET.** This seat sent *"STOP BEFORE YOU DEPLOY `b2399a2`"*.
+It queued behind Ops's in-flight turn. **Ops was already deploying.** Third
+crossed message of the night and the first that cost something.
+
+**A build can be redone; a deploy cannot be unshipped.** So a hold is the one
+message where the gap between sent and received is expensive, and every earlier
+crossing had trained the desk to treat crossing as merely wasteful.
+
+**RULE, EFFECTIVE IMMEDIATELY: a deploy hold is not assumed to land.** If it
+must be honoured it says **HOLD AND ACKNOWLEDGE**, and the recipient confirms
+before acting. Absent that, the standing instruction governs and **the deployer
+was right to ship on what it had.** Ops committed no error here; the protocol
+did.
+
+## THE FAILURE WAS CAUSED BY WORK THAT DID NOT NEED DOING
+
+**The deploy failed on `database is locked` and the desk was down ~80
+seconds.** `SCHEMA_VERSION` 23, store at 23, **a migration with nothing to
+do** — taking a lock it had no reason to take, contending with the market
+worker's connection, `busy_timeout` expiring at 5s. **Item 0e, the upgrade
+transaction running unconditionally on every open, moved from a theoretical
+stall risk to a realised outage on a payload that changed two dashboard files.**
+
+**The pre-registration paid, and it paid by ELIMINATION rather than
+confirmation.** Cause 2 — `ensureDeepHistory`'s long transactions — was ruled
+out on evidence: **zero research deep fetches in the window.** Naming both
+candidates before the failure meant the failure could distinguish them.
+
+**Three things kept it at 80 seconds instead of 2026-08-25's 3h22m.** The deploy
+script **refused to start anything against a failed migration and said so** —
+the silent hang was what cost three hours that day. **Capture never stopped**,
+because market was the one process left running. And restoring forward was safe
+**because the release expected 23 and the store read 23**, checked rather than
+assumed.
+
+**AND THE NEAR-MISS IS THE BETTER ENTRY.** Ops was about to report the
+observable had FAILED, remembering the chip's gate as carrying a
+`displayedFloat === null` disjunct — which would have moved the population
+enormously. **The disjunct was real, on 2026-09-03, in an older release, and had
+already been removed.** It diffed the two shas instead of asserting and the
+false alarm never left its session. **Memory of an artefact is not the
+artefact** — the third time in one night that someone's own record, not the
+system, was the stale object.
+
 ## UNMATCHED IS NOT UNREACHABLE, AND A FORMAT CHANGE DISSOLVED A RECORDED IMPOSSIBILITY
 
 **2026-09-04, hours after the parser shipped.** Every float cell on the live
