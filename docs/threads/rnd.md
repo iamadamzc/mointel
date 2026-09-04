@@ -901,8 +901,15 @@ was right.**
     Q5/S1 board timeliness          32.5% (movers 43.6%)     30.0% (41.0%)  +2.5pp
     Q6 rank vs RTH excursion        rho -0.178  (n=144)      rho -0.276     MOVES
 
-**S3 is boundary-insensitive to the decimal** — the catalyst gap is +14.9pp at
-both. **Q5/S1 moves 2.5 points and its verdict is untouched**: seven in ten board
+**S3 IS THE CONTROL, and without it the whole test is uninterpretable.** Its
+catalyst gap is **+14.9pp at both boundaries, identical to the decimal.** Re-cutting
+to top 12 more than halves the sample, so **a figure that moved could always be
+blamed on the smaller n** — S3 not moving at all shows the boundary is not
+shifting everything, which makes **Q6's move a fact about Q6 rather than an
+artefact of re-cutting.** Integration's point, and it is the difference between a
+sensitivity analysis and three numbers.
+
+**Q5/S1 moves 2.5 points and its verdict is untouched**: seven in ten board
 names still peak before surfacing at either boundary.
 
 **Q6 CROSSES ITS OWN PRE-REGISTERED BAR.**
