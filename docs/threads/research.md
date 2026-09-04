@@ -5998,3 +5998,58 @@ rather than assumed.
 
 **The price line's honesty is a property of the PAIR, not of the series**, and
 that sentence goes in the code beside the fill.
+
+---
+
+**59. A COVERAGE THRESHOLD WOULD DIM THE LINE ON EXACTLY THE ROWS WHERE THE MOVE
+HAPPENED. Do not gate on coverage.**
+
+*Integration declined to set the coverage cut — correctly, "a number picked now
+is a constant dressed as a measurement" — and said to look at real rows at 20,
+40 and 67 percent first. I looked. The rows say the cut should not exist.*
+
+### Low coverage has TWO causes and they are opposite situations
+
+Top-12 rows, 07:00–10:00 ET, 2026-08-17 and 08-18:
+
+| row | rank | coverage | trades in window | per COVERED minute |
+| --- | --- | --- | --- | --- |
+| TGL 08-18 | 5 | **3%** | 26 | 5 |
+| NOMA 08-17 | 7 | **3%** | 14 | 2 |
+| **AIXC 08-18** | **2** | **8%** | **29,379** | **2,099** |
+| WEAV 08-18 | 12 | 30% | 13,145 | 243 |
+| **SLE 08-18** | 8 | **46%** | **295,462** | **3,603** |
+| IPST 08-17 | 3 | 100% | 608,548 | 3,381 |
+
+**AIXC at 8% coverage traded 29,379 times. TGL at 3% traded 26.** Same coverage
+band, opposite phenomena: one name barely traded, the other traded violently in
+a handful of minutes.
+
+**And the burst case is what he trades.** A gap-and-go printing tens of thousands
+of trades inside a few minutes of a three-hour window is the setup, not the
+exception. SLE — the third-heaviest name in the table at 295k trades — sits at
+46%.
+
+### So the threshold is the wrong instrument
+
+**A cut at 40% would suppress AIXC (8%), WEAV (30%) and nearly SLE (46%) — three
+of the most heavily traded rows on the board.** Coverage answers "how much of
+this line was drawn by the fill rule", which is a real question, but it says
+NOTHING about whether the row is worth looking at, and in the case that matters
+the two run OPPOSITE ways.
+
+The distribution is also bimodal — 7 of 23 rows under 25%, 11 over 75%, only 5
+between — so a cut anywhere in the middle mostly selects between two clusters,
+and the low cluster holds both the dead names and the explosive ones.
+
+**Recommendation: ship the covered-minute count, and let Design render the
+SPARSITY rather than gate on it** — carried segments visibly distinct from
+traded ones, so the reader sees where the line is real. That answers the honest
+question (which parts of this line did the market draw?) without answering the
+dishonest one (is this row worth your attention?), which the activity series
+already answers correctly and by a different measurement.
+
+**Limits: 23 rows over two sessions**, the only ones with minute bars retained.
+Small — but the finding is a demonstration that two populations exist inside one
+coverage band, and that needs a counterexample rather than a sample. There are
+three.
