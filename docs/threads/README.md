@@ -1263,6 +1263,35 @@ read 23. **The failed deploy is the reason that sha is live.**
 something they cannot observe** — the same reasoning as reporting existence
 rather than a rate.
 
+## A PRECEDENT FOR "UP" IS NOT A PRECEDENT FOR "BUSY"
+
+**Ops refusing a deploy window from this seat, 2026-09-04.** I proposed running a
+schema migration during RTH, citing two clean precedents: **22→23 after the
+close, and 23→24 at 03:29.**
+
+**Both prove migration with the market worker UP. Neither proves migration with
+the market worker BUSY.** At 03:29 the SIP worker was idle in `NEXT_DAY_PREP`.
+During RTH it is ingesting a live tape — **`NEW_HOD` firing 25,984 times across
+5,247 symbols that day.**
+
+**And the difference is the variable the failure depends on.** The upgrade
+transaction takes the write lock against that writer on a **5-second
+`busy_timeout`**, and `worker/migrate.ts` **has no retry of its own** — the exact
+failure that cost 80 seconds at 01:40, whose probability is a function of how
+busy the writer is.
+
+**So the precedents cover the condition that was easy to see and not the one
+that matters.** "It worked before" is a claim about a population of one, and the
+population has a boundary nobody stated.
+
+**The benefit being bought was fifty minutes on a name nobody was trading.** An
+asymmetry weighed with an unmeasured magnitude — **the third time in one day
+from this seat**, and the first inside a deploy decision rather than a number.
+
+**The test: name the condition the precedent actually held under, and check
+whether today matches it.** Up, idle, shut and busy are four states, and a
+success in one is silent about the rest.
+
 ## TWO FAILURES WITH OPPOSITE REMEDIES MUST NOT SHARE A SENTENCE
 
 **Design, 2026-09-04, correcting its own four-rung model against the probe.** It
