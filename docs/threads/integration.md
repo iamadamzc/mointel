@@ -1893,6 +1893,33 @@ extract carries the question it answered.** Both already recorded — this entry
 names the class the three belong to, because three instances in one day is a
 property of summaries rather than three separate lapses.
 
+**AND THE REPAIR IS MECHANICAL: AFTER CORRECTING A CLAIM, GREP THE FIGURE, NOT
+THE SENTENCE.** *Research's rule, found by correcting item 34's body and then
+discovering it had left TWO uncorrected copies — one of them in the LIVE STATE
+index labelled "numbers the trader has been given", which is the one place a
+successor looks to learn what he knows.* **A sentence is rewritten in each copy
+and will not match; the NUMBER is identical everywhere it was pasted.**
+`91/231` found all three sites in one query. *"Check for other copies" is
+advice; "grep the number" is an action* — and this seat ran it on its own
+charter before recording the rule, which is the first application a new rule
+is owed.
+
+**And it happened in the same hour Research wrote the summary rule** — the
+rule-you-just-wrote shape again, caught by its own author for the first time,
+with the author noting it was not a lapse in care: it was careful, and had the
+rule in front of mind because it had just typed it.
+
+**One sharpening of the blind spot, Research's:** the standing repair for name
+collisions is threads publishing what they hold. **It has worked five times and
+every one was caught at a THREAD BOUNDARY**, because a boundary is what makes
+someone ask which is meant. When both artefacts belong to one thread there is
+nobody to publish to. **The desk's best defence has a blind spot exactly the
+size of one thread** — and what found this one was an unrelated query forcing a
+number to be RE-DERIVED rather than quoted again. Offered rather than adopted:
+for a figure that has become a **strategic conclusion** rather than a
+measurement, re-deriving it may be worth the cost; item 34's number survived
+every reading because it was always read and never recomputed.
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
