@@ -5241,6 +5241,66 @@ from a product number into a design gate.
 6. alias table
 7. history-depth pricing, taken with 5
 
+## The same question answers 44% or 74% depending on what you count
+
+2026-09-04. Two paired reads on `research_analysis_versions`, one row per ticker
+per `promptVariant` (latest within each), catalyst types per `collector.ts:257`,
+non-SEC as `authority <> 'SEC'`.
+
+**First, the prompt-variant boundary that makes any archive comparison
+meaningful:** `promptVersion` is **1 across all 1,188 production rows**
+(08-17 → 09-04) — no drift. But `promptVariant` is **null for 08-17..08-21 (325
+rows) and `A` for 08-24..09-04 (863)**. The 325 is exactly the archived sample.
+**Asking only the field named would have returned a false all-clear; the change
+was in a sibling field.**
+
+### READ ONE — model behaviour. Method validated, result flat.
+
+| population | UNKNOWN dossiers | zero non-SEC catalyst sources | |
+|---|---|---|---|
+| archive | 60 | 57 | 95.0% |
+| variant A | 135 | 125 | 92.6% |
+
+**The archive half reproduces the independently-computed 57-of-60 exactly.** A
+method that lands on someone else's figure to the unit has been *tested*, not
+trusted — and it was tested before being applied to the population that
+mattered. **2.4 points on 60 and 135 is not movement.**
+
+### READ TWO — the spread is the finding
+
+| method | archive | variant A |
+|---|---|---|
+| the version's own `source_ids` | 171/231 = **74.0%** | 271/493 = 55.0% |
+| the ticker's accumulated source set | 125/231 = **54.1%** | 218/493 = 44.2% |
+| (independently reported) | 144/231 = **62.3%** | — |
+
+Same denominator, so the dedup agrees; three different numerators. **The answer
+to one question ranges 44%–74% depending on whether you count a version's
+sources or a ticker's accumulated set.** Anyone quoting a single figure later
+needs that. **Report all three with their definitions rather than picking one.**
+
+**No delta was quoted against the unreproduced figure.** A number that sizes a
+fix must be reproduced before it is *quoted*; it need not be before the fix is
+*built*, when the decision is the same across the plausible range — here, an
+interpreter shown one side must not reach for balance language at any of 44,
+54, 62, 74.
+
+**What survives without resolving the counting rule: both methods agree
+collection exposure improved under variant A, and the confound runs against the
+finding** — archive tickers had two more weeks to accumulate sources, so they
+should look better and they look worse. **A result that survives a confound
+pointing the other way beats a clean one.**
+
+### Two controls worth keeping
+
+- **`active=1` for all 14,377 rows of `research_sources`. Not one source has
+  ever been deactivated**, so the retrospective filter contributes *no* error
+  rather than an error needing a direction. The question assumed a bad answer;
+  checking removed the caveat instead of qualifying it.
+- **Four commits landed in the variant gap** (`55f3e20`, `1df1d75`, `86f49fb`,
+  `1baf92c`). **This detects movement, not cause** — nothing here attributes the
+  READ TWO direction to the variant.
+
 ## Before you deploy
 
 ### "Docs-only above production" is a snapshot, not a standing fact
