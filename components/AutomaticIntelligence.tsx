@@ -12,6 +12,7 @@ import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
 import { humanise } from '@/lib/dashboard/language';
+import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
 import { noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
 import { etTimestamp, relativeAge } from '@/lib/dashboard/why';
 import type { SheetAutoComparison } from '@/lib/research/merge/sheetAuto';
@@ -285,6 +286,27 @@ export function AutomaticIntelligence({
   const eventTime = timeWithAge(catalyst.eventTimestamp);
   const generatedAt = timeWithAge(intel.generatedAt);
 
+  /*
+   * The newest source the CATALYST conclusion actually rests on.
+   *
+   * Computed by `catalystEvidenceLatest` rather than here, because the ordering
+   * has a subtlety that must not be reimplemented: a date-only page is stored
+   * at noon UTC and would sort AFTER a real 06:30 stamp for the same
+   * announcement, ranking the imprecise copy as the later event. One
+   * implementation, no drift.
+   *
+   * It was already computed at `merge.ts:270` and consumed only by the
+   * sheet-vs-auto comparison. Nothing rendered it, so the trader read a
+   * catalyst summary with no way to see how old the evidence under it was —
+   * which is what he asked for: "the sources should be dated, this is not the
+   * latest news."
+   *
+   * A DATE, NEVER A GRADE. The observation is the date; whether three days is
+   * fresh is an opinion, and his differs from the model's. `catalyst.freshness`
+   * already renders the model's opinion above; this renders the fact.
+   */
+  const latestSourceAt = timeWithAge(catalystEvidenceLatest(intel));
+
   const remainingWarnings = structureSummary?.keyWarning
     ? structure.structuralWarnings.filter((warning) => warning !== structureSummary.keyWarning)
     : structure.structuralWarnings;
@@ -302,6 +324,28 @@ export function AutomaticIntelligence({
             {humanise(catalyst.confidence)}
           </span>
         </div>
+        {/*
+          * Dates sit ABOVE the summary, not under it.
+          *
+          * The prose is what he acts on, and a date discovered after reading it
+          * cannot un-read the claim. This is the same reason the float verdict
+          * replaces its number rather than annotating it.
+          *
+          * Structured as a list so LAST CHECKED can join LAST CHANGED without a
+          * retrofit: a reused-unchanged fingerprint mints no version, so an old
+          * generatedAt is ambiguous between "nobody looked" and "looked today
+          * and found nothing outside SEC" — opposite facts, and today they
+          * render identically.
+          */}
+        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] text-ink-3">
+          <span>
+            Newest cited source{' '}
+            <span className="num text-ink-2">
+              {latestSourceAt ?? 'none dated'}
+            </span>
+          </span>
+        </div>
+
         <ProseField label="Summary" value={catalyst.summary ?? '—'} className="mt-3" />
         <ProseField
           label="Why traders may care"

@@ -38,7 +38,7 @@ import {
  * answer: with nothing to compare, the classifier makes no claim about who is
  * behind rather than assuming the automatic side is current.
  */
-function catalystEvidenceLatest(intelligence: AutoIntelligence | null): string | null {
+export function catalystEvidenceLatest(intelligence: AutoIntelligence | null): string | null {
   const ids = intelligence?.analysis?.dossier?.catalyst?.evidenceSourceIds;
   if (!intelligence || !Array.isArray(ids) || ids.length === 0) return null;
 
