@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { SecClient } from '../../lib/research/sec/client';
+import { SecClient, describeReachability } from '../../lib/research/sec/client';
 
 const CONFIG = {
   userAgent: 'Test Desk test@example.com',
@@ -69,6 +69,57 @@ describe('SEC reachability is observed, not configured', () => {
     const c = client(async () => response('not found', 404));
     await expect(c.get('https://data.sec.gov/missing.json')).rejects.toThrow();
     expect(c.reachability.state).toBe('REACHABLE');
+  });
+
+  /**
+   * The case that produced a FALSE SENTENCE, and nothing exercised it.
+   *
+   * When every attempt throws — DNS failure, timeout, connection refused —
+   * there is no Response and no status. The first version of this record
+   * forced that absence to 0 and rendered "SEC responded 0", which states
+   * something that did not happen and sends the next reader hunting a status
+   * code that does not exist, during an incident, inside the field built to
+   * stop exactly that.
+   *
+   * A refusal and a network failure are two different observations.
+   */
+  it('records a thrown fetch as UNREACHABLE with a NULL status, not 0', async () => {
+    const c = client(async () => {
+      throw new Error('ECONNREFUSED');
+    });
+
+    await expect(c.get('https://data.sec.gov/x.json')).rejects.toThrow();
+
+    const r = c.reachability;
+    expect(r.state).toBe('UNREACHABLE');
+    if (r.state !== 'UNREACHABLE') throw new Error('expected UNREACHABLE');
+    expect(r.status).toBeNull();
+  });
+
+  it('says no response rather than naming a status that never arrived', async () => {
+    const c = client(async () => {
+      throw new Error('ETIMEDOUT');
+    });
+    await expect(c.get('https://data.sec.gov/x.json')).rejects.toThrow();
+
+    const detail = describeReachability(c.reachability);
+    expect(detail).toContain('no response');
+    expect(detail).not.toContain('responded 0');
+  });
+
+  /**
+   * The counter increments once per exhausted get(), and each of those is up
+   * to MAX_ATTEMPTS HTTP requests. "3 attempts" would be read as 3 requests
+   * when it can be 12, so the detail states what the number counts.
+   */
+  it('denominates the failure count rather than calling them attempts', async () => {
+    const c = client(async () => response('blocked', 403));
+    await expect(c.get('https://www.sec.gov/a.json')).rejects.toThrow();
+
+    const detail = describeReachability(c.reachability);
+    expect(detail).toContain('fetch(es)');
+    expect(detail).toContain('each after');
+    expect(detail).toContain('403');
   });
 
   it('recovers to REACHABLE and clears the failure count after a success', async () => {

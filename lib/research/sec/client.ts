@@ -112,13 +112,36 @@ export function backoffDelayMs(attempt: number): number {
 export type SecReachability =
   | { state: 'UNKNOWN' }
   | { state: 'REACHABLE'; at: string }
-  | { state: 'UNREACHABLE'; at: string; status: number; consecutiveFailures: number };
+  | {
+      state: 'UNREACHABLE';
+      at: string;
+      /**
+       * The HTTP status SEC refused with, or NULL when there was no response
+       * at all — DNS failure, timeout, connection refused.
+       *
+       * Nullable because 0 is not a status. Rendering "SEC responded 0" states
+       * something that did not happen and sends the next reader looking for a
+       * status code that does not exist, during an incident, inside the field
+       * built to stop exactly that. An absence must not borrow a plausible
+       * value.
+       */
+      status: number | null;
+      /** Exhausted get() calls, NOT HTTP requests — each is up to MAX_ATTEMPTS. */
+      consecutiveFailures: number;
+    };
 
 /** One line for the health payload, so an outage is legible without parsing. */
 export function describeReachability(r: SecReachability): string {
   if (r.state === 'UNKNOWN') return 'not yet observed';
   if (r.state === 'REACHABLE') return `last reached ${r.at}`;
-  return `SEC responded ${r.status} on ${r.consecutiveFailures} consecutive attempt(s), last ${r.at}`;
+
+  // "attempt" was ambiguous: the counter increments once per exhausted get(),
+  // and each of those is up to MAX_ATTEMPTS HTTP requests. Every reader would
+  // have taken 3 to mean 3. Say what the number counts.
+  const scope = `${r.consecutiveFailures} consecutive fetch(es), each after ${MAX_ATTEMPTS} attempts`;
+  const what =
+    r.status === null ? 'no response — network failure' : `SEC responded ${r.status}`;
+  return `${what} on ${scope}, last ${r.at}`;
 }
 
 export class SecClient {
@@ -160,7 +183,7 @@ export class SecClient {
     this.reachabilityState = { state: 'REACHABLE', at: new Date(this.now()).toISOString() };
   }
 
-  private recordUnreachable(status: number): void {
+  private recordUnreachable(status: number | null): void {
     this.consecutiveFailures += 1;
     this.reachabilityState = {
       state: 'UNREACHABLE',
@@ -243,7 +266,9 @@ export class SecClient {
     // Every attempt exhausted on a retryable status: 403 or 429 repeated until
     // the client gave up. THAT is an outage, and it is the case the old health
     // field could not express.
-    this.recordUnreachable(lastError instanceof SecRequestError ? lastError.status : 0);
+    // null, not 0: a thrown fetch means SEC never answered, and a refusal and
+    // a network failure are two different observations.
+    this.recordUnreachable(lastError instanceof SecRequestError ? lastError.status : null);
     throw lastError ?? new SecRequestError('SEC request failed', 0, url);
   }
 
