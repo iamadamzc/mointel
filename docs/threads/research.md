@@ -7672,3 +7672,61 @@ There is **no gate between parsing and storage** — `if (collected.length > 0)
 insertResearchSources(db, collected)`, no filter. So "no failure, no rows"
 genuinely means nothing survived the read or the cutoff, **not** a silent
 downstream drop. Integration's fourth signature is cleaner than it looked.
+
+---
+
+**81. THE FIVE MAY NOT ALL BE DEFECTS — 29% OF THE ARCHIVE'S EQUIVALENT
+POPULATION HAD THEIR ADDRESS RESOLVED AFTER THEIR LAST COLLECTION.**
+
+*Integration: the five are a read path demonstrably working against names that
+produced nothing, so the gap is strictly downstream of `kept`. Started where the
+probe stops — and the first thing downstream is not a bug, it is a date.*
+
+### The loop is unconditional, so the block cannot be losing items
+
+`collector.ts:583-620`: the kept items are capped at `MAX_RELEASES_FETCHED` (4)
+and **every one is pushed** — a failed per-item fetch is recorded in
+`inaccessible` and does not skip. `insertResearchSources` then runs on anything
+collected. **There is no filter between a kept item and a stored row.**
+
+**So if rows are absent, the BLOCK did not run** — and it runs when
+`hasUsableSource(registry)`, where `registry` is merged from
+`issuer?.companySources` at `:336`.
+
+### Which makes the question a date, not a code path
+
+**The probe ran TODAY against a registry read TODAY. The rows were written
+THEN.** If the address was resolved AFTER the last collection, the collector
+never had it — and the name will collect on its next pass. **No defect.**
+
+Measured on the archive's equivalent population — durable registry, zero non-SEC
+rows:
+
+| | n |
+| --- | --- |
+| durable registries | 81 |
+| of those, ZERO non-SEC rows | **34** |
+| **of those, registry resolved AFTER the last SEC collection** | **10 = 29%** |
+
+TNON resolved 08-20T08:13 against a last collection of 08-19T11:32. ARI 08-20
+against 08-18. FEMY, KFFB, FRSX, CURX the same shape.
+
+**This is the SAME CONFOUND as the 13-of-23 falsifier** — today's registry state
+compared against a historical collection — and Ops named its direction hours ago
+about `company_sources` being current-state. It applies here and neither of us
+said so.
+
+### But 71% are not explained by it, so the defect is real and smaller
+
+**24 of 34 had the address BEFORE their last collection and still produced
+nothing.** That is the population worth chasing, and the five need splitting the
+same way before any of them is called a defect.
+
+**The query for Ops, per name:** `issuer_registry.last_verified_at` against
+`MAX(fetched_at)` over that ticker's SEC sources. **Resolved after → not a
+defect, it has not been re-collected yet. Resolved before → a real gap.**
+
+**Not yet found: the cause for the 24.** The loop cannot lose them and the
+registry merge is correct, so the next place is whether
+`collectCatalystEvidence` is reached at all on the path those names took —
+which is a different question from what the probe answers.
