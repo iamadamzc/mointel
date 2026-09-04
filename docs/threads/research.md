@@ -5546,3 +5546,101 @@ The root cause is item 51's, once more: **every one of these is forced to pick a
 value from a type that cannot express "not observed", and each picks the most
 plausible-looking one.** `eligibleCount: number` cannot say "not counted", so it
 says 0 — and 0 is a measurement. No choice of constant fixes that.
+
+---
+
+**53. THE DEMAND/SUPPLY FRAME, TESTED AGAINST 83 REAL CATALYSTS — 42 fit, 41
+do not, and the misfits break exactly four assumptions.**
+
+*Integration proposed classifying catalysts by WHICH SIDE OF THE BOOK the event
+brings, and asked for it to be TESTED rather than adopted: place the accepted
+catalysts, report the ones that do not fit. Read-only against
+`data/market-prod-2026-08-23.db`. Nothing built.*
+
+Population: 231 current dossiers. `FRESH_FOUND` 83, `SECONDARY_STALE` 75,
+`UNKNOWN` 60, `NONE_FOUND` 13. The 83 accepted-and-fresh were classified by
+hand.
+
+### The four assumptions, each broken by one family
+
+**The frame assumes an event has ONE side, a KNOWN sign, a KNOWN content, and a
+magnitude that REACHES THE TRADEABLE FLOAT.**
+
+| family | n | what it breaks |
+| --- | --- | --- |
+| both sides at once | **12** | SLE, TRUG, MNDR, BATL, HCWB, ENRD, TGL, FEMY, ZSTK, FRSX, BOSC, AIRE |
+| sign, not just side | **8** | shares LEAVE (UCL buyback, ABUS tender, CHRS CVR, RENX avoided supply); buyers LEAVE (EYPT Phase 3 miss); supply CANCELLED (CEPO); terminal demand (WEAV cash merger, LSTA offer) |
+| content unknown | **7** | GNLN, HUIZ, RERE, KRKR, CATO, STG, ZKH — results confirmed, numbers absent |
+| neither side | **10** | credibility (IPST, TRSG), governance (INSE, HGTY, TG), non-events (LONA, PURR, ALZN, MFI), debt (SDOT) |
+
+**The largest family is the one that matters.** Integration's argument was that
+the same DOCUMENT TYPE lands on opposite sides. The population says something
+stronger: **the same EVENT lands on both sides at once, because that is how a
+microcap pays for things.** TRUG acquires for 19.9% of its Class A plus
+convertible preferred; SLE's $132M Bitcoin contribution hands an acquirer 95.7%
+of the company; HCWB's Q2 release contains $5.6M of equity financings. Forcing
+one side discards the half the trader most needs.
+
+### THE CROSS-CUTTING FINDING: SUPPLY IS ONLY TRADEABLE WHEN IT CAN REACH THE BOOK
+
+MNDR's acquisition shares carry a nine-month lock-up. EZGO's PIPE shares are
+unregistered and transfer-restricted. SLE's 95.7% goes to an acquirer taking
+control, not to the book. And INDP's event is an S-3 registering resale of
+58,895,000 shares **including 20,000,000 issued in a June private placement** —
+the event is not the CREATION of supply but **the date it becomes reachable**.
+
+**That date is a different date from the announcement**, and it is where the
+catalyst joins the structure work: the catalyst says supply was created, the
+supply pair says how much can arrive, and the missing third is when it comes
+free. The desk already collects the forms that state it.
+
+### Earnings needs no special case — and the test does not come out as framed
+
+21 of the 83 are results releases. **7 are the content-unknown family and 6 are
+the both-sides family.** Earnings is not a category and not special; it is the
+most frequent CARRIER of the two general defects. The frame survives its own
+test case and fails on the two things that test case exposed — a better result
+than a pass, because it names what to build instead of a special case.
+
+### COVERAGE COLLAPSED INTO THE VERDICT — MEASURED
+
+**57 of the 60 `UNKNOWN` dossiers had ZERO non-SEC catalyst sources (95%).** All
+13 `NONE_FOUND` had non-SEC coverage available. **`UNKNOWN` is very largely the
+coverage state re-expressed as a verdict about the company.**
+
+**And the absence is informative, which is proved rather than assumed.** All 57
+had SEC evidence collected; 55 of 57 had an 8-K or 6-K; and across them the
+collector returned 25 S-1, 24 S-1/A, 22 424B5, 25 424B4, 16 S-3, 10 Form 144, 61
+EFFECT. **The instrument can see a supply event.** So "no supply event on file"
+is a real observation for those 57 names — 25% of the population — currently
+rendered as a shrug.
+
+### THE HONEST CLAUSE CANNOT BE RESTORED AS A COPY FIX
+
+`bundle.ts:448` composes it correctly. But **`coverage.gaps` has exactly ONE
+consumer in the codebase** — `lib/research/interpret/openaiInterpreter.ts:157`,
+the model prompt. **It is never rendered.** The trader has never seen the clause;
+what he read was the model's prose.
+
+- **The prompt frames the finding as a deficiency and then asks for the shrug:**
+  `NOTE: source coverage is INCOMPLETE. Gaps: … Prefer UNKNOWN over confident
+  conclusions in the affected areas.` The directional clause is interpolated
+  inside a wrapper that says INCOMPLETE and ends by requesting UNKNOWN. **The
+  model is not dropping the clause; it is obeying the frame around it.** That is
+  the mechanism behind the 57.
+- **Persistence keeps only `metadata.coverageIncomplete: boolean`.** The gap
+  strings are discarded, so "we lacked a share count" and "we could not see press
+  releases" are the same bit — with opposite implications. Same shape as the
+  activity window: computed, used for a verdict, discarded.
+
+### Limits, and one defect found in passing
+
+One reader's judgment over 330-character summaries, one snapshot, one week of
+names; individual placements are arguable, the families are not.
+`companySourceKnown` could not be reconstructed (it comes from the issuer
+record), so the SEC-only count measures the source half of that condition only.
+
+**CLPS is `FRESH_FOUND` while its own summary says "No contemporaneous
+company-specific announcement was located"** and cites a July panel discussion —
+a status contradicting its own summary. Unrelated to the taxonomy; recorded so
+it is not lost.
