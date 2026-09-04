@@ -995,26 +995,38 @@ export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketD
        * Both reads are cheap and neither takes a write lock, which is the
        * entire point.
        */
-      const expectedTables = [...SCHEMA.matchAll(/CREATE TABLE IF NOT EXISTS (\w+)/g)].map(
-        (match) => match[1]!,
-      );
-      const presentTables = new Set(
+      /*
+       * Tables AND indexes. SCHEMA creates both, and a current-version store
+       * missing an index passes a table-only check while every query that
+       * needed it silently goes to a scan -- a slow answer rather than a wrong
+       * one, which is the kind nobody notices.
+       *
+       * Research named this gap in review and proposed a checklist line: bump
+       * SCHEMA_VERSION when adding an index. It is covered in code instead,
+       * because a rule that depends on the next person remembering is the
+       * failure this desk keeps recording.
+       */
+      const expected = [
+        ...SCHEMA.matchAll(/CREATE TABLE IF NOT EXISTS (\w+)/g),
+        ...SCHEMA.matchAll(/CREATE (?:UNIQUE )?INDEX IF NOT EXISTS (\w+)/g),
+      ].map((match) => match[1]!);
+      const present = new Set(
         (
-          db.prepare("SELECT name FROM sqlite_master WHERE type = 'table'").all() as Array<{
-            name: string;
-          }>
+          db
+            .prepare("SELECT name FROM sqlite_master WHERE type IN ('table', 'index')")
+            .all() as Array<{ name: string }>
         ).map((row) => row.name),
       );
       /*
-             * length > 0 is NOT redundant. If this regex ever stops matching, an
-             * empty list makes `every` vacuously TRUE and the guard would skip the
-             * upgrade on every store forever -- a check that cannot fail, which is
-             * the exact shape this guard exists to remove. It failed that way once
-             * while being written. Empty means "cannot vouch for it", so fall
-             * through and do the work.
-             */
-            const complete =
-              expectedTables.length > 0 && expectedTables.every((table) => presentTables.has(table));
+       * length > 0 is NOT redundant. If this regex ever stops matching, an
+       * empty list makes `every` vacuously TRUE and the guard would skip the
+       * upgrade on every store forever -- a check that cannot fail, which is
+       * the exact shape this guard exists to remove. It failed that way once
+       * while being written. Empty means "cannot vouch for it", so fall
+       * through and do the work.
+       */
+      const complete =
+        expected.length > 0 && expected.every((name) => present.has(name));
 
       if (fromVersion === SCHEMA_VERSION && complete) return;
 

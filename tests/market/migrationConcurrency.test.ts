@@ -199,6 +199,38 @@ describe('an already-current store skips the upgrade transaction', () => {
     db.close();
   });
 
+  /**
+   * Research found this gap in review: the first completeness check covered
+   * TABLES only, so a current-version store missing an INDEX passed the guard.
+   * The failure is a slow query rather than a wrong answer, which is the kind
+   * nobody notices.
+   *
+   * It was going to be a checklist line telling the next person to bump
+   * SCHEMA_VERSION when adding an index. This is that rule in code instead.
+   */
+  it('repairs a missing index on a store that reports the current version', () => {
+    const dbPath = path.join(dir, 'missingindex.db');
+
+    const created = openDatabase(dbPath);
+    const found = created
+      .prepare("SELECT name FROM sqlite_master WHERE type = 'index' AND name LIKE 'idx_%'")
+      .get() as { name: string } | undefined;
+    expect(found).toBeTruthy();
+    const indexName = found!.name;
+
+    // Version stays current; only the index goes. A table-only check passes here.
+    created.exec(`DROP INDEX ${indexName}`);
+    expect(Number(created.pragma('user_version', { simple: true }))).toBe(SCHEMA_VERSION);
+    created.close();
+
+    const reopened = openDatabase(dbPath);
+    const restored = reopened
+      .prepare("SELECT name FROM sqlite_master WHERE type = 'index' AND name = ?")
+      .get(indexName);
+    expect(restored).toBeTruthy();
+    reopened.close();
+  });
+
   it('still upgrades a store behind the current version', () => {
     const dbPath = path.join(dir, 'old.db');
 
