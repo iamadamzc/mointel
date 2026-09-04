@@ -2671,6 +2671,40 @@ intelligence, it is volume — and volume is how a genuine signal gets buried.
   thin rows as thin, in the table, where the number is** — a caveat in the prose
   above gets separated from the figure the moment anyone copies a row.
 
+- **EVERY BOARD-SCOPED FIGURE IN THIS REGISTER IS BOUNDED AT RANKS 1–25, AND
+  MUST SAY SO.** Not a caveat from 2026-09-04 but a **standing property**: the
+  UI offers up to 50, the assessment writer stores 25, and **the trader decided
+  on 2026-09-04 that capture stays at 25.**
+
+  **This is an ACCEPTED LIMIT, not a gap awaiting a fix.** Recorded as accepted
+  so a future session does not file it as a defect and spend a day on it.
+
+  **And the sentence that must travel with the bound wherever it is stated:**
+  **rank 26 appears ZERO times in 5,625 ticker rows because the cap is in the
+  WRITER.** So **the archive's silence about ranks 26–50 is not evidence they
+  are empty**, and no query can settle it. Without that sentence the next reader
+  takes the absence for a market fact.
+
+  If he views 50, ranks 26–50 are on his screen and in no record, **and the rows
+  are observable-once** — unrecoverable rather than unfetched. **Q5, Q6, Q11,
+  S1, S3 and the yield finding all carry this bound.**
+
+- **Capturing only the names that turned out to matter is selecting on the
+  outcome.** He considered narrowing capture to the four or five daily
+  candidates; Integration argued against it on this thread's behalf and was
+  right. **Every finding this week needed the control group** — catalyst
+  separation needed non-movers, timeliness needed names surfaced late, the yield
+  finding needed names that never moved. **A record of only the winners answers
+  no question that has a denominator.**
+
+  **And it would have saved nothing.** The assessment writer makes **zero model
+  calls**, so capture is a database write rather than spend; the effort is in
+  research passes and subscriptions, which are separately capped.
+
+  **This is the first time this week the shape was caught BEFORE the capture
+  changed rather than after.** Every other instance — the Sheet float, the
+  stage tokens, the dated universe — was found once the data was already gone.
+
 - **Close questions.** A question that is neither active nor closed is debt. The
   verdict format that worked in viscosity — a single stated verdict plus what
   would have to be true to overturn it — should continue.
