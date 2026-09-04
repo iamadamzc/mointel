@@ -2276,8 +2276,15 @@ As of the last session, **2026-08-23**:
 - Production is **`fd9556f`**, schema **v21**, on Lightsail `98.85.49.227`
   behind CloudFront `https://dwwep02jje2ag.cloudfront.net/`, Basic Auth with two
   logins.
-- **The Google Sheet is written by four ChatGPT scheduled tasks, not by the
-  trader** — 22:00, 06:10, 09:25 and 16:15 ET on weekdays. He has never
+- **The Google Sheet is written by TWO ChatGPT scheduled tasks as of
+  2026-08-23, not by the trader** — `After-Hours Momentum Recap` at 22:00 and
+  `Premarket Momentum Confirmation` at 06:10. *Corrected 2026-09-04 by the
+  trader: this bullet said FOUR and was the historical state. Two were paused
+  on 2026-08-23 and the very next bullet says so — an index contradicting its
+  own body, in the section every thread reads first, and this seat quoted the
+  stale half to him.* The paused pair — `9:25 Opening Spike Assessment` and
+  `Close & Learn Momentum` — ran at 09:25 and 16:15 and are reversible in one
+  click; see the DECIDED bullet below. He has never
   reviewed anything in it and does not write to it. The desk reads it
   read-only and nothing in this repo writes back, so it is a live input
   produced outside the system that no charter owned until 2026-08-23. It is
