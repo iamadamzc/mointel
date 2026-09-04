@@ -555,6 +555,48 @@ thing they lack. **Everything reconciles to one date and one deploy.** The fact
 that settled it had been sitting in a relay for an hour, in a message whose author
 did not know what it was for.
 
+## ONE CONSTANT FOR A FAULT AND AN ABSENCE IS THE WHOLE BUG IN MINIATURE
+
+**Design, 2026-09-04, ruling on how to remove the placeholder family.**
+`OFFLINE_PANEL` is returned from three sites. **Two fire after the store failed
+to open or failed to read — a real observation, and an honest fault verdict.**
+The third is an early return **with the database open and fine**, which is the
+family: a fault asserted from no observation.
+
+**So the fix is a SPLIT, not a deletion.** Delete it wholesale and a true verdict
+becomes silence — **the same error in the opposite direction**, and the third
+time in one night that removing a defect risked walking into its mirror.
+
+**And "render nothing until loaded" is the wrong target for the same reason.**
+The board draws from **two endpoints**: rows, float, catalyst and structure from
+one; counts, phase and health from another. **A blank page while the first half
+is fully loaded discards real data and claims LESS than the desk knows** — the
+mirror of claiming more, and just as false. **It would also hide the exact
+failure that motivated the work**, where one endpoint is dead and the other fine.
+
+**The ruling is PER ELEMENT: what is sourced from the absent snapshot says
+not-loaded; what is sourced elsewhere renders normally.** Stronger than blanking,
+because it prevents the failure that actually occurs — a populated board with a
+header describing a different desk.
+
+### And the test the family needs is an EMPTINESS assertion
+
+**Research's form, which supersedes an "assert what each constant claims" rule
+from this seat:** *"assert what each claims"* is **enumeration-by-memory one
+level up**, and enumeration-by-memory is what produced rounds two and three.
+
+**A test asserting there are NO placeholder constants cannot silently pass a new
+lie. A test asserting there are exactly the five known ones always can — and did,
+twice.** If the fix removes the category, the assertion becomes emptiness and
+there is nothing left to police.
+
+### The root cause, uniform across all of them
+
+**Every one picks a value from a type that cannot express NOT OBSERVED, and
+picks the most plausible-looking one.** `eligibleCount: number` cannot say *"not
+counted"*, so it says **0 — and 0 is a measurement.** That is why better
+constants were never going to fix it.
+
 ## AN INTENTION YOU CAN FORGET; A PATTERN-ASSERTION FAILS FOR YOU
 
 **Design, 2026-09-04, after breaking its own rule inside the fix for it.** It had
