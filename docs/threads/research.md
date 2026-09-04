@@ -3140,6 +3140,95 @@ spec is items 25/26.
 
 ---
 
+**48. THE SHEET REPLACEMENT INVENTORY — what we would have to build to lose
+nothing.** *Written 2026-09-04 for the trader's spending decisions, after he
+said the capabilities must survive but the mechanism must become production
+grade. Short and honest beats complete and optimistic.*
+
+### The classification, and why it is not "does the code exist"
+
+**Twice tonight I called something PRODUCED on code presence and was wrong in
+opposite directions.** The float parser existed, ran, and returned null for 12
+of 13 names. The supply pair existed, was correct, and reached no screen. **So
+every row below is marked on OBSERVED state:**
+
+| mark | meaning |
+| --- | --- |
+| **WORKS** | desk produces it, wired, and something observed confirms it |
+| **WIRED, UNPROVEN** | on the code path, no observation either way |
+| **BUILT, NOT SHOWN** | correct and reaches no reader |
+| **BROKEN IN PLACE** | runs, and its output is wrong or empty |
+| **ABSENT** | no desk equivalent |
+
+### The two tasks, capability by capability
+
+| capability | Sheet source | desk today | mark |
+| --- | --- | --- | --- |
+| **float value** | task 1, TODAY col I / RESEARCH col I | nothing of our own; and **we discard 12 of 13 of theirs** | **BROKEN IN PLACE + ABSENT** |
+| float source date | task 1, RESEARCH col J | none | **ABSENT** (rendered from theirs, drawer only) |
+| catalyst text / time | task 2, `T:AA` | `dossier.catalyst.summary`, fallback at `why.ts:118`, `deskRead.ts:587` | **WIRED, UNPROVEN** — quality never compared |
+| warning line | task 2, `T:AA` | `structuralWarnings[0]` → `summary`, `risk.ts:139` | **WIRED, UNPROVEN** |
+| structure / float quality | both, `AI` | `dossier.structure`, `DIRTY_FLOAT` on 13% | **WORKS** |
+| **overhang / float** | both, `AJ` | **`supplyPair` — deterministic, basis-guarded, better** | **BUILT, NOT SHOWN** |
+| supply evidence | both, `AK` | `supplyLedger` → `deskRead.ts:363` | **WORKS** |
+| cycle classification | both | `computedCycle` | **WORKS**, with a known defect (item 44) |
+| cycle / run highs, key levels | both | `computedCycle.cycleHigh` **excludes the live session** | **BROKEN IN PLACE** for premarket |
+| newly qualifying premarket names | task 2 | engine qualification over the whole market | **WORKS, and better** — thousands against a watchlist |
+| price / change / volume | task 1 baseline | the live tape | **WORKS, and better** |
+| priority / scalp rank | both, col 32 | `rvolRank` | **WORKS**, different basis |
+| split history | both, col 22 | `split_factor`, `splitsBetween` — deterministic | **WORKS, and better** |
+| daily resistance / support | both, cols 23-24 | `historicalResistance`, blue sky | **WIRED, UNPROVEN** |
+| analyst notes | both, col 33 | none | **ABSENT** — prose, and no reader asks for it |
+
+### What is genuinely missing, and what it would take
+
+**1. FLOAT — and the honest engineering answer is unwelcome.** The parked
+extractor reads floats stated verbatim in filings. Its ceiling is **~9% of
+researched tickers** (29 excerpts, 20 tickers — item 29), **19 defensible under
+the strict pattern**, and the widened pattern is **wrong on 8 of the 19 it
+overlaps** (item 32). Its blocker is not effort: **R&D's fixture set**, because
+three reasonable parsers gave three answers on the same 24 excerpts, so there
+is no ground truth to test against.
+
+> **THERE IS NO PATH FROM FILINGS TO BOARD-WIDE FLOAT.** Filings give a
+> minority of names a high-confidence number. **Board coverage requires a
+> vendor** — which `domainPolicy` already permits and the desk simply never
+> calls (item 6: `stockanalysis.com` is 505 citations in his workbook and 0
+> collected here). **The choice he is actually making is vendor-versus-nothing,
+> not build-versus-buy**, and it was last decided when "scrape a vendor" was
+> the unexamined option.
+
+**2. CYCLE AND RUN HIGHS.** Compose the settled-daily cycle high with the live
+`sessionHigh`, which already exists per ticker. Scoped at item 44 — *bigger,
+not blocked*.
+
+**3. FLOAT SOURCE DATE.** Comes free with whichever float source lands. No
+separate work.
+
+### The capabilities nobody reads — and one is neglect, not decision
+
+**Nothing in the desk fetches ARCHIVE, OUTCOMES, PATTERNS or the dated tabs**
+(verified: only two ranges are ever requested).
+
+- **OUTCOMES and the dated scorecards — superseded BY DECISION**, 2026-08-24.
+  The desk's own archive measures outcomes from the tape and measures them
+  better. *Safe to stop producing; the do-not-delete condition is separate and
+  stands.*
+- **PATTERNS — LOST TO NEGLECT, and I am naming it rather than letting it fall
+  off.** A single read to harvest P1–P6 as candidate questions **was approved on
+  2026-08-24 and has never been done.** It is frozen rather than decaying, so
+  nothing is being lost per hour — **but "no code reads it" is not the same as
+  "we decided not to", and this one was decided FOR and then dropped.**
+
+### The line I would put in front of him
+
+**Losing no capability is achievable for everything except float, and float was
+never ours to lose — we have never had one.** The Sheet is not providing a
+capability we could rebuild; **it is providing the only one we have never
+built**, and the parser defect means we are not even receiving that.
+
+---
+
 **46. Per-field, per-task: TASK 2 IS RETIRABLE AND TASK 1 IS NOT — with one
 caveat I cannot close from code.** *Asked by Integration 2026-09-04 after the
 trader corrected the four-tasks figure to two. Enumerated by search over what
