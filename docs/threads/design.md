@@ -3021,12 +3021,31 @@ silent on the one name that needed it.
 
 ## Two consequences for the surface, from the CMND mechanism (2026-09-04)
 
-**The frozen article is re-selected forever, and the reason is one line.**
-`collector.ts:577-583` expires DATED items at 45 days and treats an UNDATED item
-as always a candidate. CMND's leaf article has `publishedAt: null`, so it never
-ages out. 44% of `COMPANY_IR`/`COMPANY_NEWSROOM` sources are undated, and the
-same line explains the opposite failure on feeds — a feed's entries are dated by
-construction, so they EXPIRE. One rule, two opposite failures.
+**RETRACTED 2026-09-04 — the expiry mechanism does not explain CMND, and I
+should not have accepted it over my own read.**
+
+CMND's article is `eventTimestamp 2026-09-01`, read on the 4th: **THREE DAYS
+OLD, against a 45-day expiry.** Nothing had expired, and ageing undated items by
+first-seen would have KEPT it, correctly. Checked the subtraction myself this
+time.
+
+**My ORIGINAL diagnosis was right and I let a better story displace it.** The
+stored source is a `/news-release/<slug>` LEAF — a collection point that can
+surface exactly one article, forever. The desk reads one real, recent release
+and concludes nothing else happened. That is the whole CMND story.
+
+**The lesson is mine, not Research's:** I had seen the leaf URL with my own eyes
+in a live read, then accepted a mechanism that explained a DIRECTION as though
+it explained THIS ROW. A mechanism that fits the shape of a failure is not
+evidence about the instance in front of you — and I had the disconfirming date
+in my own message.
+
+**What survives:** the feed half. A feed's entries carry the ISSUER's dates,
+which can be months old whatever the store's age, so dated-entries-expire still
+explains the 85% of feeds that collected nothing. And the undated-immortality
+defect is REAL but LATENT — all 87 undated company sources were first seen
+within 4 days and production began 08-17, so nothing reaches 45 days before
+about 2026-10-01.
 
 ### The fourth-state predicate needs `contentHash`, not `documentFingerprint`
 
@@ -3035,9 +3054,16 @@ the body.** It reports "same document" for a page whose content changed
 entirely. So the "returned the same thing again" state cannot be built on it;
 `contentHash` is the operative field.
 
-**And neither reaches this surface.** `EvidenceLink` (`view.ts:70-80`) carries
-nine fields and no hash, so the read-only review route cannot confirm the frozen
-content from outside — that check has to run where the store is.
+**And the store cannot answer it either — this is not a projection gap.**
+`insertResearchSources` (`researchRepo.ts:533,550`) is `INSERT OR IGNORE` on
+`(ticker, document_fingerprint)`. **A re-collected article writes nothing at
+all**, so there is exactly ONE observation per document, ever, and `content_hash`
+is written once and compared to nothing.
+
+So adding the hash to `EvidenceLink` (`view.ts:70-80`, nine fields, no hash)
+would expose a value that CANNOT answer the question. **Frozen-content detection
+needs forward instrumentation — a second observation that does not currently
+exist** — wherever it runs. Not a render change at all.
 
 ### The bound and the pair will DISAGREE on most rows, and that is correct
 
