@@ -82,6 +82,81 @@ export function parseNumber(raw: string): number | null {
   return (negative ? -parsed : parsed) * multiplier;
 }
 
+/**
+ * Phrases that disqualify a float cell outright, whatever number it contains.
+ *
+ * `shares outstanding is not float` is this thread's oldest working rule, and
+ * these are the ways the Sheet says so in prose. `TENX` reads
+ * `"~50M share base — OUT OF FLOAT RANGE"`: it announces twice that the number
+ * is not a float, and a parser that returned 50,000,000 for it would be worse
+ * than one that returns nothing.
+ */
+const NOT_A_FLOAT = /share base|shares?\s+outstanding|market\s*cap|out of float range/i;
+
+/**
+ * The suffixes the float column is allowed to carry after its number.
+ *
+ * An ALLOWLIST, and that is the whole design. Unrecognised trailing text
+ * REFUSES rather than being ignored, so a phrasing nobody has seen cannot
+ * silently yield a number, and adding one is a deliberate edit with a test
+ * behind it.
+ */
+const FLOAT_SUFFIX = /(?:displayed\s+float|displayed|float)?/.source;
+
+/**
+ * Parses the Sheet's FLOAT cell, which has its own convention.
+ *
+ * `parseNumber` is deliberately strict — the whole cell must be one numeric
+ * token — because it serves price, volume, change and resistance cells, where
+ * `"$2.69/$3.00 resistance"` must yield null. That strictness is correct and
+ * must not be loosened.
+ *
+ * But the float column is not written that way. The trader writes
+ * `"11.93M displayed"`, `"532,255 displayed"`, `"~0.547M displayed float"` —
+ * a number, a unit, and a provenance word. Measured on the live board on
+ * 2026-09-04: **thirteen top-50 names carried a float string and exactly one
+ * parsed**, because every other one ended in a word.
+ *
+ * So this is a dedicated parser for a field with a convention, not a relaxed
+ * general one. Counting the callers is not asking each what it needs — and the
+ * tempting fix, loosening `parseNumber`, would have made every price cell on
+ * the desk read a resistance range as a price.
+ *
+ * The leading `~` is accepted: it marks an approximation the trader wrote
+ * deliberately, and the value is still his stated float. The raw string is
+ * preserved on the field either way, so nothing about the approximation is
+ * lost by parsing it.
+ */
+export function parseSheetFloat(raw: string): number | null {
+  const candidate = raw.trim();
+  if (!candidate) return null;
+  if (NOT_A_FLOAT.test(candidate)) return null;
+
+  const match = candidate.match(
+    new RegExp(`^~?\\s*\\$?\\s*(\\d{1,3}(?:,\\d{3})+|\\d+)(\\.\\d+)?\\s*([KMB])?\\s*${FLOAT_SUFFIX}\\s*$`, 'i'),
+  );
+  if (!match) return null;
+
+  const parsed = Number(`${match[1].replace(/,/g, '')}${match[2] ?? ''}`);
+  if (!Number.isFinite(parsed) || parsed <= 0) return null;
+
+  const suffix = (match[3] ?? '').toUpperCase();
+  const multiplier = suffix === 'B' ? 1e9 : suffix === 'M' ? 1e6 : suffix === 'K' ? 1e3 : 1;
+  return parsed * multiplier;
+}
+
+/** A NumericField for the float column, read by `parseSheetFloat`. */
+export function floatField(value: unknown): NumericField {
+  const raw = text(value);
+  const unknown = isExplicitUnknown(raw);
+  return {
+    raw,
+    display: raw || EMPTY_DISPLAY,
+    value: unknown ? null : parseSheetFloat(raw),
+    isUnknown: unknown,
+  };
+}
+
 /** Builds a NumericField, preserving the source text exactly as written. */
 export function numericField(value: unknown): NumericField {
   const raw = text(value);
