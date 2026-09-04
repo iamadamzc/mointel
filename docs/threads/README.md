@@ -720,6 +720,41 @@ still looking.
 **A placeholder that decays toward truth is safe. One that decays toward
 plausibility hides itself.**
 
+## A VERSION NUMBER THAT CANNOT CHANGE IS A CHECK THAT CANNOT FAIL
+
+**Research, 2026-09-04, settling from git what was about to be settled from
+production.** `INTERPRETER_PROMPT_VERSION = 1` has been **touched exactly once
+in history — by the commit that created the interpreter.** It reads 1 at every
+sha since.
+
+**And the code says why, at `pipeline.ts:430`: "variant B changes the
+instructions without changing the schema, so both variants report version 1."**
+That is a deliberate and defensible decision about SCHEMA compatibility — and it
+means **the field cannot answer the question "has the interpreter changed",
+which is the question everyone will ask it.**
+
+**Four commits changed the interpreter prompt or its bundle after the archive's
+last analysis.** So the archive genuinely describes a superseded system, and
+**the desk's own provenance stamp reports no change.**
+
+**Sixth instance of the class today, and the venue is the point: this one is the
+stamp we would use to audit everything else.** A check that cannot fail, wearing
+the name of the thing it fails to check.
+
+### And the same evening produced its mirror
+
+**Research proposed work that had already shipped.** Item 60 recommended
+computing the share count from structured filing data instead of a model
+transcription — **`55f3e20` did exactly that on 2026-08-23, twelve days
+earlier**, and its commit message diagnoses the same defect from the other side.
+**This seat approved it as new work without asking whether it existed.**
+
+**So one measurement said "nothing changed" when four things had, and one
+proposal said "this is missing" when it was present.** Same root: **a claim
+about the state of the system, believed without being checked against the
+system.** The archive was the sample in both cases, and it stopped being current
+on the day the variant switched.
+
 ## A QUERY FOR A NAMED FIELD ANSWERS ABOUT THAT FIELD, NOT ABOUT THE QUESTION
 
 **2026-09-04, and the instance is the query written to detect this exact
