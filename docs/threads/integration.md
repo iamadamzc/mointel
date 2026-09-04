@@ -246,6 +246,21 @@ conflict. Verify before acting on any of it.***
   carried none of 0d** — two unrelated changes in the same files, which is
   exactly why it could not be inferred from the diff's filenames. Older text
   below asserting it unbuilt is therefore still true.
+- **DECIDED 2026-09-04: ASSESSMENT CAPTURE STAYS AT 25 RANKS.** *His word, one
+  number, asked whether to widen to 50 or narrow toward the four or five names
+  that become real candidates.* **Narrowing was considered and rejected on the
+  reasoning that it saves nothing it appears to** — the assessment writer makes
+  **zero model calls** (`desk_assessments.model_calls` is 0 on every row ever
+  written), so capture is a database write and not spend; the effort he wanted
+  back lives in research passes and subscriptions, already capped at 12 and 250
+  and freed further by the dead-name gates. **And capturing only the names that
+  became real candidates would be selecting on the outcome**, discarding the
+  control group that every finding this week depended on.
+  **WHAT IT FORECLOSES, recorded so it is not rediscovered as a defect:** the UI
+  offers up to 50 ranked rows, so **if he is viewing 50, ranks 26–50 are on his
+  screen and in no record** — permanently, since the rows are observable-once.
+  **Every board-scoped figure is therefore bounded at ranks 1–25 forever and
+  must say so.** This is an accepted limit, not a gap awaiting a fix.
 - **HELD TRIGGER — item 16a expedites the moment a SECOND READER exists.**
   *Design, 2026-09-04, declining to expedite its own fix and asking this seat to
   hold the condition rather than holding it itself.* The board labels another
