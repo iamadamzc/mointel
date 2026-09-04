@@ -720,6 +720,49 @@ still looking.
 **A placeholder that decays toward truth is safe. One that decays toward
 plausibility hides itself.**
 
+## THE ARCHIVE IS THE RIGHT INSTRUMENT FOR FACTS ABOUT FILINGS AND THE WRONG ONE FOR FACTS ABOUT THE DESK
+
+**Research, 2026-09-04, after proposing built work twice in three messages.**
+Item 60 recommended computing the share count from structured filing data —
+**shipped twelve days earlier.** Item 68 was about to commission a measurement of
+whether the model's reading stays independent — **the code answers it: the bound
+never used the model's number.**
+
+**Same tell both times: reasoning about the SYSTEM from an archive instead of
+reading the current code.** The archive is authoritative for what a filing said
+and stops being evidence the moment the question is what the desk does — because
+**a snapshot cannot see forward, and it does not report that limitation.** It
+returns the answer it was built to give, for the system it was built against.
+
+**Which pairs with the version stamp that cannot move.** One instrument cannot
+see forward; the other cannot change. **Neither reports uncertainty** — both
+answer confidently about a world that has moved.
+
+**The rule: for "what did the world do", read the archive. For "what does the
+desk do", read the code, and read the commit log for what changed.**
+
+## A CROSS-CHECK THAT HAS SEEN THE ANSWER IS STILL WORTH KEEPING — ASYMMETRICALLY
+
+**The float bound was designed with the model's cover-page reading as an
+INDEPENDENT check on the filed share count. The model is now handed that count,
+so independence is gone.** This seat put it as a binary: prove it is still
+independent, or drop the check.
+
+**Research found the third option, and the loss turns out to be one-sided:**
+
+    the two AGREE      nothing. The model may be copying what it was handed
+    the two DISAGREE   STRONGER than before. A model shown X that reports Y
+                       has actively diverged from something in front of it
+
+**Conclusive in one direction only — the same shape as the bound it serves**, as
+the supply bound conclusive-when-high, and as the volume bound conclusive-when-
+low. **Agreement is uninformative, disagreement is a finding, and neither
+requires an independence claim.**
+
+**So a contaminated check is not necessarily a dead one. Ask which of its
+outcomes the contamination could have produced** — if it can only manufacture
+agreement, disagreement survives intact.
+
 ## A VERSION NUMBER THAT CANNOT CHANGE IS A CHECK THAT CANNOT FAIL
 
 **Research, 2026-09-04, settling from git what was about to be settled from
