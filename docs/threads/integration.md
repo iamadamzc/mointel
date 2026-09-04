@@ -2071,6 +2071,41 @@ named `research` holds the **TODAY** row and the one named `record` holds the
 **RESEARCH** row. Two things under one word, in the function this whole
 disagreement turned on.
 
+## MAKE IT IMPOSSIBLE, NOT VISIBLE — FIVE TIMES IN ONE NIGHT, AND THE FIFTH DELETES THE STATE
+
+**2026-09-04. Every time this seat reached for a label, it was corrected toward a
+structure:**
+
+1. **The split parser** puts the share count in a substring the float grammar
+   never sees — **unreachable, not unmatched.** A wider regex would have left the
+   wrong number in a capture group a later edit could read.
+2. **The auto tick set is DEFINED as the remainder** rather than fixed at five
+   and quietly shrunk — **nothing degrades, so there is no degradation to
+   announce.**
+3. **The sparkline IS the verdict's own array**, not a second measurement that
+   agrees with it — **nothing to drift.**
+4. **The impossible float is refused at `resolveDisplayedFloat`**, so the sort has
+   nothing to sort and turnover has nothing to divide by — **no consumer has to
+   remember.**
+5. **The placeholder constants STOP EXISTING.** A nullable prop represents absent
+   data **as absent** rather than as a fabricated object.
+
+**Design's observation on the fifth, and it is the escalation: the first four
+keep a correct value. This one removes the ability to state a wrong one.** There
+is no constant left to police, no test needed to check its honesty, and no
+sibling to miss in the next enumeration — **the family is dissolved rather than
+audited.**
+
+**AND THE ALTERNATIVE WOULD HAVE REINTRODUCED THE BUG THROUGH THE FIX FOR ITS
+SIBLING.** Adding `'UNKNOWN'` to `SessionPhase` leaves `isMarketDataExpected` —
+a positive allowlist — returning false, yielding **IDLE**, which is precisely the
+answer the change existed to prevent. **One compiler error; every other reader
+silently wrong.**
+
+**The tell, in hindsight, is that a label is a promise about future readers and a
+structure is a fact about the current code.** Every label proposed tonight
+required someone later to notice it; none of the structures did.
+
 ## I WEIGHED THE ASYMMETRY CORRECTLY USING MAGNITUDES I HAD NEVER MEASURED
 
 **2026-09-04, twice in one night, and both times the decision turned on the
