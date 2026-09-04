@@ -3237,6 +3237,40 @@ nobody has counted it.**
 **So retiring task 2 REMOVES a contamination path rather than costing one** —
 the same argument that makes losing `sheetPrior` a gain for R&D's Q1.
 
+### CORRECTION AGAINST MYSELF: "nothing carries it across" WAS WRONG, and it is the empty-grep rule again
+
+*Caught 2026-09-04 while starting the build Integration instructed on the
+strength of the claim. **No build is needed.***
+
+**I told Integration that `supplyPair` never leaves its layer, so Design could
+not render it even if it wanted to. That is FALSE.**
+`AutoIntelligence.analysis` carries the **whole** `ResearchAnalysisVersion`,
+dossier included, and `supplyPair` is on `StructureFindings`
+(`types.ts:516`) — so
+
+    row.intelligence?.analysis?.dossier.structure.supplyPair
+
+**is reachable today, by the same path `deskRead.ts:351` and `risk.ts:135`
+already use to read `structure`.** No plumbing is missing. Design can render
+it whenever it chooses, and a *shaped* field beside `deskRead.ts:363`'s
+`supply` would be Design's small change in Design's file, not a prerequisite
+in mine.
+
+> **HOW I GOT IT WRONG: I grepped for `supplyPair` BY NAME in `view.ts`,
+> `deskRead.ts` and `intelligence.ts`, found nothing, and read absence as
+> unreachability.** Those files reach it *through* the dossier without ever
+> naming it. **The evidence for "nothing carries this" and the evidence for
+> "I searched for the wrong token" are identical from inside the search** —
+> this thread's own rule, which I quoted to Integration earlier today about
+> `RESEARCH_RESOLVER_SEARCH_CONTEXT`, and then committed within hours.
+
+**So the accurate statement is the ORIGINAL one, and my "sharpening" of it made
+it worse:** *it has no reader.* Nothing more. **It belongs in the
+exists-but-unwired class exactly as the other four do, and it does NOT sharpen
+that class into two causes** — I invented the second cause by mis-reading a
+grep, and Integration recorded a routing error of its own on the strength of
+it. **That correction is owed to it more than the finding was.**
+
 ### CORRECTION: the desk DOES carry the float's as-of, and it is rendered
 
 *Integration wrote that a stale float would be invisible — "no basis column, no
@@ -3464,7 +3498,7 @@ built" and it is where the cheapest progress is.**
 | | state |
 | --- | --- |
 | **float** | **no replacement anywhere.** The dossier's own `structure.displayedFloat` is populated on **7 of 574 versions** (item 32), so there is nothing to switch to |
-| **supply** | **BUILT, STORED, AND ON NO SURFACE.** `supplyPair` is computed for every dossier and the basis fetch now populates the split factors it needs — but grep across `lib/dashboard/` and `components/` finds **no reader at all** |
+| **supply** | **BUILT, STORED, REACHABLE, AND READ BY NOTHING.** `supplyPair` is computed for every dossier and the basis fetch now populates the factors it needs. **It has no reader — but it is NOT unreachable; see the correction below** |
 | **cycle levels** | **BUILT, AND THIS READER WAS NEVER SWITCHED.** `deriveCycleLevels` reads the Sheet's `recentCycleHigh` and `recentRunHigh` while `lib/market/cycle.ts` computes the desk's own cycle high arithmetically |
 
 ### What leaves with the Sheet, which is the list he asked for
