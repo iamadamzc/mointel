@@ -4691,6 +4691,42 @@ ordinary comment character can terminate the string. **Check for backticks in
 anything inserted into a template literal** — the failure is a parse error a
 long way from the edit.
 
+### A wrong step to a right answer survives, because nobody recomputes what they agree with
+
+**2026-09-04. I told R&D its bound moved AGAINST the detection because the
+non-mover rate was "7.6% rather than the 13.6% your worked cases used". Those
+are two different quantities and I read one as a revision of the other.**
+
+```
+13.6%   non-mover POSITIVE-CATALYST rate     69/509, from S3 outcomes
+ 7.6%   non-mover CONTAMINATION rate         33/435, from my count
+```
+
+**Same cohort, different numerators, different questions.** My contamination
+count does not touch the catalyst rate; it stays 13.6% whatever the provenance
+figure turns out to be. Recomputed properly the mid case moves **+9.4 -> +9.5pp,
+slightly IN FAVOUR** of the detection — fewer contaminated movers means less
+inflation to strip out — **the opposite direction from what I claimed.**
+
+**The verdict was unchanged: band still spans zero, re-run still justified. My
+conclusion was right and my step was wrong**, which is the combination that
+survives, because a wrong step carrying a right answer looks load-bearing later.
+
+**AND THE CONDITION UNDER WHICH IT SURVIVED IS THE PART TO KEEP.** R&D checked
+it **only because it agreed with where I landed** — its words, and it named that
+as *the condition under which checking is cheapest to skip and worst to have
+skipped*.
+
+**That is the same shape as the relayed-authority finding above, one level
+over.** There, a relay was hardest to refuse because it granted what I wanted.
+Here, a derivation was hardest to check because it concluded what the reader
+already believed. **Agreement is the common solvent: it dissolves the refusal in
+one case and the recomputation in the other.**
+
+**Neither is caught by care. Both are caught by a rule that fires regardless of
+whether you like the answer** — refuse an unverified relay even when it says
+yes; recompute a step even when it lands where you expected.
+
 ### A relay that GRANTS authority is harder to refuse than one that withholds it
 
 **2026-09-03. Integration relayed the trader’s one-word "restart" for the market
