@@ -5020,6 +5020,50 @@ section is older.
       costs more than the wait would have.
 
 
+## State: production is `ac63643`, deployed 2026-09-04 07:29 UTC — schema **v24**, and two observables are inert
+
+44 commits ahead of the `b2399a2` it replaced. Carries 0e with the index gap
+closed (`eabc989`), Design's header (`75a3917`), Research's activity window
+column (`fce254c`), the split parser (`bfb70c1`), the sheet-pair checker
+(`5d97d8b`), the sparkline (`3921a50`) and the paired share count (`699cc2a`).
+
+Gate at `ac63643`: 1647 tests / 105 files, lint 0 errors, build 0, typecheck 0.
+Deploy took **~2.5 minutes**, not the 6–9 I predicted. `migrate` ran v23 → v24,
+wrote `market-v23-2026-09-04T07-29-59-746Z.db`, integrity ok, quick_check ok.
+
+**A clean gate at a later sha is not evidence for an ancestor.** Ancestry tells
+you what a sha CONTAINS; it says nothing about whether an ancestor PASSES,
+because later commits can fix what an earlier point broke. This nearly cost a
+re-gate when the named sha was three commits back. Related: when the tip moves
+faster than the gate runs, **a gated point beats the newest point.**
+
+### Two of the four observables were inert, for one reason
+
+- **Schema — PASS.** Store reports 24; `activity_window` present, read as a
+  column rather than trusted from the version number.
+- **Header — PASS, and it nearly reported FAIL.** `Alpaca SIP` 0. `Google Sheet`
+  **1** — the stated fail condition. It is a hover `title=` attribute; the
+  rendered element is a bare `live-dot` span with no words. The loose-grep
+  family again. **A count is not a reading; look at the context before
+  reporting a failure.**
+- **Window arrays — INERT, neither passed nor failed.** 8,754 rows on the
+  current date, **8,754 NULL, 0 populated**. Not the engine declining to
+  observe: `toRow` lives in `worker/runtime.ts`, and **`RESTART_MARKET=no` means
+  `mointel-market` was never restarted.** Its `ActiveEnterTimestamp` was
+  2026-09-03 23:04:51 UTC — eight hours before the deploy — so it runs pre-24
+  code and cannot write the column. Correct, wired, and empty.
+- **Sparkline — SHIPPED, INERT for the same reason.** `ActivitySparkline.tsx`
+  is in the release and referenced from `DiscoveryBoard.tsx`. It draws from
+  `activity_window`, which is NULL everywhere. **It is not independent of the
+  observable above — one change, and these two share a single observable**,
+  which is the rule this desk set and did not notice it was breaking.
+
+**The price of `RESTART_MARKET=no`, named deliberately: the activity window and
+the sparkline stay dark until `mointel-market` restarts.** Not done tonight —
+premarket capture was ~22 minutes out and a SIP reconnect against that deadline
+is the unrehearsed risk. **Schedule the restart after a close and verify both
+then.** 0e is owed to the next deploy, which will be 24 against 24.
+
 ## Before you deploy
 
 ### "Docs-only above production" is a snapshot, not a standing fact
