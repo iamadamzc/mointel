@@ -3081,6 +3081,37 @@ absence of established blocks. The bound answers "can supply exceed float"; the
 pair answers "how much is proven live". Different questions, and only the second
 is usually unanswerable.
 
+## Two fixes that destroy each other silently (carry this to whoever writes either)
+
+**The expiry fix needs `fetched_at` to remain FIRST-SEEN. Frozen-content
+detection needs a LAST-SEEN.** If anyone repairs re-collection by UPSERTING
+`fetched_at`, every undated item's age resets on each pass, **immortality
+returns, and the field still looks correct.** Two repairs that are each right
+alone, with no error raised and no test failing.
+
+**The new column must be `last_seen_at`, never a mutation of `fetched_at`** —
+and the comment belongs at the write site, not only in a scope document, because
+the person who breaks it will be reading the write and not the plan.
+
+### Refinement: re-collection is not why the leaf article persists
+
+The bundle is rebuilt from `readSources(db, ticker)` (`collector.ts:640`) — from
+the STORE, after the insert. So the leaf article reaches every pass because it
+is a **persisted, append-only source**, not because collection re-presents it.
+`INSERT OR IGNORE` writing nothing changes nothing here.
+
+That matters for the repair: **stopping re-collection would not remove it.**
+Even if the collector never ran again, `readSources` would return that row on
+every pass forever. The fix has to be at what ADMITS a leaf as a collection
+point, or at what can retire a stored source — not at the write path.
+
+### And the guard that was fixed is not the guard that failed
+
+CMND's source arrived via BOUNDED DISCOVERY, not the registry. The `sourceShape`
+guard protects registry-resolved addresses, and this one never went through it.
+**Whatever admits a leaf article on the discovery path is the repair**, and it is
+different code from what was already fixed.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
