@@ -6806,3 +6806,60 @@ say either, because only `incomplete` survives persistence.
 43.7%, 62.3% or 74.0%, an interpreter shown one side must not reach for balance
 language. **The level sizes the fix; it does not decide it.** But 43.7% is the
 number with the code behind it, and it is the one that should reach him.
+
+---
+
+**71. DO NOT DELETE `filedShares` — the pair drops two facts, and one of them is
+a basis.**
+
+*Integration assigned the decision: consumed or deleted, decided in the same
+piece, and "if the pair is the canonical route, delete it and say so at the write
+site." I recommended leaving it unwired on the grounds that the pair carries the
+same number. **Checked, and it does not.***
+
+`SupplyPair` carries `sharesOutstanding`, `sharesOutstandingAsOf`,
+`denominatorFactor`, the floor/total figures, `excluded` and `note`. **It carries
+no `concept` and no `sourceId`.** `FiledSharesOnDossier` carries both.
+
+| dropped by the pair | why it matters |
+| --- | --- |
+| **`concept`** | the XBRL tag the number came from — **a basis fact** |
+| **`sourceId`** | the citation. This desk's own rule is that a claim without a source id is a claim the model could only assert |
+
+### The concept is not decoration — it names a different quantity
+
+Measured across the archive's 211 company-facts rows:
+
+| concept | n |
+| --- | --- |
+| `dei:EntityCommonStockSharesOutstanding` | 179 |
+| `us-gaap:CommonStockSharesOutstanding` | 28 |
+| **`us-gaap:CommonStockSharesIssued`** | **3** |
+| `ifrs-full:NumberOfSharesOutstanding` | 1 |
+
+**Shares ISSUED is not shares OUTSTANDING** — issued includes treasury stock, so
+it is a LOOSER upper bound. `float ≤ outstanding ≤ issued` still holds, so the
+bound stays VALID on those three, which is the safe direction. **But it is a
+weaker claim wearing the same words, and the card should say which quantity it
+bounded.**
+
+**Deleting `filedShares` would delete the only carrier of that distinction.**
+
+### So: consumed, not deleted — and the write site says why
+
+The pair stays canonical for the NUMBER. `filedShares` is consumed for the two
+facts the pair drops, or those two fields move onto `SupplyPair` and
+`filedShares` goes. **Either resolves Integration's real objection — a
+written-and-unread field is how the next reader concludes it is canonical — and
+neither loses the basis.**
+
+**I would move `concept` and `sourceId` onto `SupplyPair` and delete
+`filedShares`**, because one structure carrying the number, its date, its basis
+and its citation is the shape every other verdict on this desk already has. But
+that is a bigger edit than the bound needs, so the decision is Integration's.
+
+**And my own recommendation one message ago was wrong in the direction this desk
+keeps finding: I said "the pair already carries the same number" from memory of
+reading the pair, without diffing the two types.** Third time today I have
+reasoned about the codebase instead of reading it, and the first where the error
+would have deleted evidence rather than duplicated work.
