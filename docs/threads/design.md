@@ -2337,6 +2337,55 @@ Research or R&D must settle that before item 2 is scheduled. If the answer is
 no, item 2 is **blocked, not ready**, and must not sit on a list as though it
 were wiring.
 
+## The float parser's blast radius on Design's surfaces — read 2026-09-04
+
+Integration asked whether any surface of mine assumes float is usually absent,
+ahead of Research's Sheet float parser (`33e7bb8`). Enumerated the readers
+rather than reasoned about them. **One claim is wrong, and there is one real
+defect the addition makes reachable.**
+
+### The chip does NOT stop appearing — that claim is wrong
+
+`FLOAT_UNKNOWN` is gated on `row.research?.structure.state ===
+'UNKNOWN_STRUCTURE'` (`risk.ts:194`) — the SHEET'S STRUCTURE STATE, not the
+float value. `structureState` (`normalize.ts:234`) reads Sheet TEXT for the word
+UNKNOWN and `33e7bb8` does not touch it. A parsed float changes no text.
+
+**The change Integration feared was already prevented by `d8794da`**, which
+removed the `displayedFloat === null` half of that gate. Had the parser landed
+before that fix, the effect would have been real and inverted — the chip would
+have vanished from twelve names for the wrong reason.
+
+### THE REAL DEFECT: the chip is named for a field it does not read
+
+`FLOAT_UNKNOWN` gates on STRUCTURE state and its detail says **"No sourced float
+figure."** After the parser, a row can carry `UNKNOWN_STRUCTURE` in the
+structure cell AND a parsed float from the float cell — different columns.
+
+**Then the chip says "No sourced float figure" while the same drawer renders
+that float.** A contradiction inside one screen.
+
+This was unreachable while `displayedFloat` was null on 49 of 50 rows. At 12 of
+50 it becomes reachable, and it is a MISLABEL rather than a logic error: the
+condition is right, the word `FLOAT` is wrong. It should say the STRUCTURE is
+unknown, because that is what it gates on.
+
+**Not measured.** I cannot count rows with both `UNKNOWN_STRUCTURE` and a
+parseable float without live data — the condition is reachable, the frequency is
+unknown, and I am marking that rather than implying a size. (The rule from
+last night: an unmarked guess becomes an instruction once relayed.)
+
+### Clear on inspection
+
+- **Float sort** (`view.ts:317`, `DiscoveryBoard.tsx:125`) — the "N unknown"
+  count is computed live from the rows, not worded as a constant. It improves
+  silently and needs nothing.
+- **`STRUCTURE_CLEAN`'s value** (`risk.ts:221`) — already conditional on
+  `row.displayedFloat`; clean rows gain a float figure where they showed none.
+  Additive and intended, and the code path already existed.
+- **`buildStructureSummary`** (`deskRead.ts:359`) — "Unknown" or the number, per
+  row. Correct in both worlds.
+
 ## Working rules
 
 - **Terminology is trader-facing.** Labels that describe engine internals get
