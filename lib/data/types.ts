@@ -133,6 +133,30 @@ export interface MomentumTicker {
   pmVolume: NumericField;
 
   float: NumericField;
+  /**
+   * The share count stated INSIDE the float cell, beside the float itself.
+   *
+   * `"537,665 displayed; 785,655 SO"` -- one author, one cell, one instant.
+   *
+   * DELIBERATELY NOT NAMED `sharesOutstanding`. `StructuralResearch` already
+   * has a field by that name, read from a DIFFERENT CELL with its own
+   * `floatSourceDate`, and the two are indistinguishable at a call site: both
+   * are `NumericField`, both hold a share count, both typecheck, and reaching
+   * for the wrong one passes every test.
+   *
+   * WHAT THE SWAP WOULD COST is the reason the name is long. Item 28 recorded
+   * the float and the share count as "asynchronous by construction" -- written
+   * at different times, so a comparison between them proves nothing. The
+   * trader dissolved that by stating both in one cell, AND THAT IS THE ONLY
+   * REASON `assessSheetPair` IS SOUND. A pair assembled from two cells does
+   * not give a weaker verdict, it gives a WRONG one -- and IMPOSSIBLE is the
+   * one most likely to fire falsely, because issuance between two cells' write
+   * times is ordinary. The desk's strongest check would become its loudest
+   * false positive.
+   *
+   * THE VALIDITY IS A PROPERTY OF PROVENANCE, NOT OF THE TWO NUMBERS.
+   */
+  floatCellShares: NumericField;
   recentRunHigh: NumericField;
   flushFromHighPct: NumericField;
 
@@ -165,8 +189,40 @@ export interface StructuralResearch {
   ahVolume: NumericField;
 
   float: NumericField;
+  /**
+   * The share count stated INSIDE the float cell, beside the float itself.
+   *
+   * `"537,665 displayed; 785,655 SO"` -- one author, one cell, one instant.
+   *
+   * DELIBERATELY NOT NAMED `sharesOutstanding`. `StructuralResearch` already
+   * has a field by that name, read from a DIFFERENT CELL with its own
+   * `floatSourceDate`, and the two are indistinguishable at a call site: both
+   * are `NumericField`, both hold a share count, both typecheck, and reaching
+   * for the wrong one passes every test.
+   *
+   * WHAT THE SWAP WOULD COST is the reason the name is long. Item 28 recorded
+   * the float and the share count as "asynchronous by construction" -- written
+   * at different times, so a comparison between them proves nothing. The
+   * trader dissolved that by stating both in one cell, AND THAT IS THE ONLY
+   * REASON `assessSheetPair` IS SOUND. A pair assembled from two cells does
+   * not give a weaker verdict, it gives a WRONG one -- and IMPOSSIBLE is the
+   * one most likely to fire falsely, because issuance between two cells' write
+   * times is ordinary. The desk's strongest check would become its loudest
+   * false positive.
+   *
+   * THE VALIDITY IS A PROPERTY OF PROVENANCE, NOT OF THE TWO NUMBERS.
+   */
+  floatCellShares: NumericField;
   floatSourceDate: string;
   floatSourceUrls: string[];
+  /**
+   * RESEARCH column 11 -- ITS OWN CELL, with its own `floatSourceDate`.
+   *
+   * NOT the counterpart of `float`. For anything comparing a float against a
+   * share count, use `floatCellShares`, which comes from the same cell at the
+   * same instant. This one may have been written days apart from the float and
+   * a comparison against it proves nothing -- see `floatCellShares`.
+   */
   sharesOutstanding: NumericField;
 
   catalystDetails: string;

@@ -254,9 +254,19 @@ export interface SheetPairAssessment {
  */
 export function assessSheetPair(pair: {
   float: number;
-  sharesOutstanding: number;
+  /**
+   * The share count from the SAME CELL as the float.
+   *
+   * Named for the constraint rather than the quantity, so a call site that
+   * does not satisfy it READS wrong: `sharesFromSameCell: row.sharesOutstanding`
+   * is visibly a claim about provenance that the argument does not support.
+   * The types cannot tell the two apart -- both are numbers off a
+   * `NumericField` -- so the parameter name is the only thing standing between
+   * a sound verdict and a confidently wrong one.
+   */
+  sharesFromSameCell: number;
 }): SheetPairAssessment | null {
-  const { float, sharesOutstanding } = pair;
+  const { float, sharesFromSameCell: sharesOutstanding } = pair;
   if (!Number.isFinite(float) || float <= 0) return null;
   if (!Number.isFinite(sharesOutstanding) || sharesOutstanding <= 0) return null;
 

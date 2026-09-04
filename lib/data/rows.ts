@@ -12,6 +12,7 @@ import {
   cycleState,
   extractUrls,
   floatField,
+  sheetSharesOutstandingField,
   numericField,
   parseDateValue,
   pickSessionValue,
@@ -293,6 +294,7 @@ export function mapTodayRow(
     pmVolume,
 
     float: floatField(row[T.float]),
+    floatCellShares: sheetSharesOutstandingField(row[T.float]),
     recentRunHigh: numericField(row[T.recentRunHigh]),
     flushFromHighPct: numericField(row[T.flushFromHigh]),
 
@@ -348,6 +350,7 @@ export function mapResearchRow(
     ahVolume: numericField(row[R.ahVolume]),
 
     float: floatField(row[R.float]),
+    floatCellShares: sheetSharesOutstandingField(row[R.float]),
     floatSourceDate: cell(row, R.floatSourceDate),
     floatSourceUrls: extractUrls(proseCell(row, R.floatSourceUrl)),
     sharesOutstanding: numericField(row[R.sharesOutstanding]),

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { mapResearchRow, mapTodayRow } from '@/lib/data/rows';
 import {
   floatField,
   parseSheetFloat,
@@ -132,5 +133,39 @@ describe('the pair item 28 said could not be assembled', () => {
     expect(float).not.toBeNull();
     expect(sharesOutstanding).not.toBeNull();
     expect(float! / sharesOutstanding!).toBeLessThan(0.02);
+  });
+});
+
+describe('the pair actually reaches a row', () => {
+  /*
+   * The field existed and was called from nothing but its own test — built and
+   * unwired, which is the failure this desk keeps finding. So this asserts the
+   * wiring rather than the parser: a cell in, a populated pair out of the
+   * builder a provider actually calls.
+   */
+  const cells = (index: number, value: string) => {
+    const row: unknown[] = [];
+    row[1] = 'ACME';
+    row[index] = value;
+    return row;
+  };
+
+  it('populates floatCellShares on a TODAY row', () => {
+    const built = mapTodayRow(cells(8, '537,665 displayed; 785,655 SO'), 2);
+    expect(built?.float.value).toBe(537_665);
+    expect(built?.floatCellShares.value).toBe(785_655);
+  });
+
+  it('populates floatCellShares on a RESEARCH row', () => {
+    const built = mapResearchRow(cells(8, '11.79M displayed; 13.1M SO'), 2);
+    expect(built?.float.value).toBe(11_790_000);
+    expect(built?.floatCellShares.value).toBe(13_100_000);
+  });
+
+  it('leaves it null when the cell states no share count', () => {
+    // The RESEARCH tab's own format. Absent, not zero.
+    const built = mapResearchRow(cells(8, '537,665 displayed'), 2);
+    expect(built?.float.value).toBe(537_665);
+    expect(built?.floatCellShares.value).toBeNull();
   });
 });

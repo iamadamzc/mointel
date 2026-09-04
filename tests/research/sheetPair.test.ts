@@ -19,7 +19,7 @@ import { UNIT_MISMATCH_RATIO, assessSheetPair } from '@/lib/research/float';
 describe('the verdicts a same-instant pair can support', () => {
   it('calls a fraction-of-a-percent ratio a unit error', () => {
     // INLF on the live board: 6,109 against ~1.05M is 0.58%.
-    const result = assessSheetPair({ float: 6_109, sharesOutstanding: 1_050_000 });
+    const result = assessSheetPair({ float: 6_109, sharesFromSameCell: 1_050_000 });
     expect(result?.verdict).toBe('UNIT_MISMATCH');
     expect(result?.ratio).toBeLessThan(UNIT_MISMATCH_RATIO);
   });
@@ -31,13 +31,13 @@ describe('the verdicts a same-instant pair can support', () => {
      * issued shares since filing legitimately exceeds it — but against a count
      * written in the same breath there is no such escape.
      */
-    const result = assessSheetPair({ float: 900_000, sharesOutstanding: 785_655 });
+    const result = assessSheetPair({ float: 900_000, sharesFromSameCell: 785_655 });
     expect(result?.verdict).toBe('IMPOSSIBLE');
   });
 
   it('accepts an ordinary pair', () => {
     // AKAN: 537,665 of 785,655 is 68%.
-    const result = assessSheetPair({ float: 537_665, sharesOutstanding: 785_655 });
+    const result = assessSheetPair({ float: 537_665, sharesFromSameCell: 785_655 });
     expect(result?.verdict).toBe('CONSISTENT');
     expect(result?.ratio).toBeCloseTo(0.684, 2);
   });
@@ -45,7 +45,7 @@ describe('the verdicts a same-instant pair can support', () => {
   it('treats the boundary as consistent rather than a mismatch', () => {
     // Exactly at the line is not below it; the threshold is where a unit error
     // starts, and an arbitrary tie must not manufacture a verdict.
-    const result = assessSheetPair({ float: 20_000, sharesOutstanding: 1_000_000 });
+    const result = assessSheetPair({ float: 20_000, sharesFromSameCell: 1_000_000 });
     expect(result?.ratio).toBe(UNIT_MISMATCH_RATIO);
     expect(result?.verdict).toBe('CONSISTENT');
   });
@@ -54,9 +54,9 @@ describe('the verdicts a same-instant pair can support', () => {
 describe('what it refuses to judge', () => {
   it('returns null when either half is missing or non-positive', () => {
     // Absence is not a verdict. A pair with one number is not a pair.
-    expect(assessSheetPair({ float: 0, sharesOutstanding: 1_000 })).toBeNull();
-    expect(assessSheetPair({ float: 1_000, sharesOutstanding: 0 })).toBeNull();
-    expect(assessSheetPair({ float: Number.NaN, sharesOutstanding: 1_000 })).toBeNull();
+    expect(assessSheetPair({ float: 0, sharesFromSameCell: 1_000 })).toBeNull();
+    expect(assessSheetPair({ float: 1_000, sharesFromSameCell: 0 })).toBeNull();
+    expect(assessSheetPair({ float: Number.NaN, sharesFromSameCell: 1_000 })).toBeNull();
   });
 });
 
@@ -69,7 +69,7 @@ describe('the threshold is shared, not restated', () => {
      */
     const justUnder = assessSheetPair({
       float: UNIT_MISMATCH_RATIO * 1_000_000 - 1,
-      sharesOutstanding: 1_000_000,
+      sharesFromSameCell: 1_000_000,
     });
     expect(justUnder?.verdict).toBe('UNIT_MISMATCH');
   });
