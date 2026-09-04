@@ -5940,3 +5940,61 @@ That makes **four** reachability states, not three: **~19–22 days** (original
 registration), **~5 days** (POS AM), **NOW** (424B5 off a live shelf), and
 **unknown**. The accession variant also identifies the exact registration
 statement, so its link is stronger than the form-name match everything else uses.
+
+---
+
+**58. THE CLOSE SERIES: CARRY FORWARD, BUT 36% OF THE BOARD HAS NOTHING TO CARRY
+FROM — measured, and it splits Integration's read rather than confirming or
+refuting it.**
+
+*Integration read the hole question as "carry-forward is honest because the
+activity sparkline beside it shows zero for that minute", and said to take the
+hole instead if the data disagreed. Measured on `data/market.db`, 2026-08-17 and
+08-18, the only sessions with minute bars retained.*
+
+### The denominator changes the answer completely
+
+07:00–10:00 ET, 180 minutes:
+
+| population | names | minute coverage | window STARTS with a hole | gap median | gap p90 | gap max |
+| --- | --- | --- | --- | --- | --- | --- |
+| all `high_res` tracked | 238 | **20.3%** | **77%** | 2 | 25 | 149 |
+| top 50 by `rvol_rank` | 43 | 39.0% | 63% | 2 | 13 | 122 |
+| **top 12 — the board he watches** | 11 | **66.6%** | **36%** | 2 | 13 | 122 |
+
+08-18 top 12: 12 names, **54.2%** coverage, 5 of 12 starting with a hole, gap
+median 3, p90 10.
+
+**Reporting the tracked-universe number alone would have been a denominator
+error of the kind this thread keeps recording** — 20% coverage describes 250
+names most of which never woke up, not the board.
+
+### Where Integration's argument holds, and where it does not
+
+**It holds on the top 12.** A median gap of 2–3 minutes, drawn flat beside an
+activity bar reading zero, says "nothing happened" and that is true. The
+composition is honest because the pair is read together.
+
+**It does not survive two things the data shows:**
+
+1. **36–42% of top-12 names START their window with a hole. There is nothing to
+   carry forward.** That is not a rendering preference, it is undefined. The line
+   must BEGIN at the first traded minute, never at the window's left edge, or it
+   asserts a price before one existed.
+2. **The property degrades sharply off the top 12.** At 20% coverage a carried
+   line is mostly interpolation — a shape drawn by the fill rule rather than by
+   the market — and the row list goes deeper than 12.
+
+### The distinction that decides it
+
+**The activity window's zeros are OBSERVATIONS: a minute with no trades genuinely
+had zero trades. The close series' holes are ABSENCES: there is no price, because
+nothing traded.** Same missing slot, opposite meaning.
+
+So the series must not be a bare `number[]`. **It carries its own covered-minute
+count**, so a sparkline drawn at 20% coverage can render differently — or refuse
+— from one drawn at 67%, and so the pair dependency Integration named is checkable
+rather than assumed.
+
+**The price line's honesty is a property of the PAIR, not of the series**, and
+that sentence goes in the code beside the fill.
