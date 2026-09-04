@@ -7730,3 +7730,40 @@ defect, it has not been re-collected yet. Resolved before → a real gap.**
 registry merge is correct, so the next place is whether
 `collectCatalystEvidence` is reached at all on the path those names took —
 which is a different question from what the probe answers.
+
+**81a. THE TWENTY ARE A SAMPLING ARTEFACT, NOT A POLICY — answered from code
+already read, not started.**
+
+*Integration held the reach question and said `queue.ts` is mine and I may
+already know. I do, and the answer costs one read rather than a rediscovery.*
+
+**`autoRank` defaults to 12 — the same as the board.** So it is not a narrower
+threshold declining brief visitors.
+
+**The candidate query reads `ticker_session.rvol_rank`, the CURRENT rank
+column** (`researchRepo.ts:133`) — the column Integration has just said
+**OVERWRITES**, so a name that held a slot and fell out is gone from it.
+
+**So the queue enumerates whoever is ranked ≤ 12 AT THE MOMENT IT RUNS.** A name
+that entered the top 12 and left before the next pass is **not declined and not
+deferred — never seen.** That is Integration's second option: a queue that
+samples rather than enumerates.
+
+**And it is quantitative now.** 70 entry events across 53 names against 12 slots
+is **4.4× churn**; a queue sampling a snapshot of a set turning over 4.4× a day
+**necessarily** leaves names with no job. The 20 are the expected consequence,
+not a failure — which is consistent with FAILED 0 and QUEUED 0.
+
+### So: a defect only if the desk intends to research everything that touches the board
+
+Nothing is broken. **The reach is a property of the sampling interval against the
+churn rate**, and the queue was built to research what is ranked, reading a
+column designed to hold current state.
+
+**If reach is wanted, the evidence is already recorded**: `desk_events`
+`RVOL_RANK_ENTRY` holds every entry for the session, so the queue could enumerate
+entries rather than sample the current rank. **Same shape as the graveyard fix —
+change what READS the rank, not what is stored.** Fourth time that has been the
+answer in this line of work.
+
+**Not started, per Integration. The close series is done and the five come next.**
