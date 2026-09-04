@@ -2,6 +2,7 @@
 
 import { StatusBadge } from '@/components/StatusBadge';
 import type { MarketHealthView } from '@/lib/market/health';
+import { isMarketDataExpected } from '@/lib/market/session';
 import type { DiscoveryState, MarketFeedHealth } from '@/lib/market/types';
 
 interface MarketStatusProps {
@@ -63,21 +64,38 @@ function ageDetail(
 export function MarketStatus({ health, marketHealth, discovery, mounted }: MarketStatusProps) {
   const age = marketHealth.messageAgeSeconds;
 
+  /*
+   * What this hour SHOULD produce. Inside the session window a feed is expected
+   * to be LIVE; outside it, IDLE is the correct and uninteresting answer.
+   */
+  const nominalState = isMarketDataExpected(discovery.sessionPhase) ? 'LIVE' : 'IDLE';
+
   return (
     <div className="flex items-center gap-2.5">
       {/*
-       * The words appear only when the light is NOT in its normal state.
+       * The words appear only when the light is NOT in its normal state — and
+       * NORMAL IS RELATIVE TO THE CLOCK.
        *
-       * Healthy, this said "Market: Alpaca SIP" every second of every session —
-       * a constant dressed as a status line, holding permanent space in the one
-       * row that is always on screen. The feed never changes; an observable
-       * that cannot vary is not a measurement.
+       * The first version of this suppressed one literal, `state === 'LIVE'`,
+       * which made every other state abnormal by definition. So at 02:04 ET the
+       * header read "MARKET: ALPACA SIP — CLOSED": the desk announcing, in a
+       * permanent row, that the market is shut in the middle of the night. That
+       * is the most normal a market can be.
        *
-       * Everything that CAN vary keeps its words: worker offline, not entitled,
-       * disconnected, connecting, stale, simulated. Those are the states he
-       * would act on, and they are exactly the ones the constant was crowding.
-       * The feed name moves to the hover, where it is available and costs
-       * nothing.
+       * It was also a DUPLICATE. The session phase renders immediately to the
+       * right of this badge and already says "Closed" — the header stated it
+       * twice, and the audit that was supposed to reclaim space added a second
+       * copy of a word already on screen.
+       *
+       * `isMarketDataExpected` is the engine's own definition of whether prints
+       * are due, imported rather than restated as a phase list, so this cannot
+       * drift from the rule the rest of the desk uses.
+       *
+       * Everything that CAN vary keeps its words, and now they mean something:
+       * CLOSED during premarket is a real failure and speaks, where before it
+       * was indistinguishable from closed at 2am. Offline, not entitled,
+       * disconnected, connecting, stale, degraded and simulated are abnormal at
+       * every hour and are unaffected.
        */}
       <span
         title={marketHealth.label + ' — ' + marketHealth.detail}
@@ -90,7 +108,7 @@ export function MarketStatus({ health, marketHealth, discovery, mounted }: Marke
             marketHealth.live ? 'live-dot' : ''
           }`}
         />
-        {marketHealth.state === 'LIVE' ? null : marketHealth.label}
+        {marketHealth.state === nominalState ? null : marketHealth.label}
       </span>
 
       {/*

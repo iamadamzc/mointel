@@ -42,7 +42,20 @@ export function DataFreshness({ meta, now, mounted, transportError }: DataFreshn
             <span
               className={`h-1.5 w-1.5 rounded-full ${degraded ? 'bg-neg' : 'bg-pos'} ${degraded ? '' : 'live-dot'}`}
             />
-            Research: Google Sheet — {degraded ? 'Stale' : 'Current'}
+            {/*
+             * Words only when degraded — the same rule as the market light, and
+             * this component is the reason the trader still saw a constant.
+             *
+             * The header audit changed MarketStatus and ResearchEngineStatus
+             * and never enumerated what else was in the header. "Research:
+             * Google Sheet — Current" is a third indicator that survived it,
+             * and it is a pure constant in the healthy case: the provider does
+             * not change, and "current" is the state it holds all day.
+             *
+             * Stale keeps its words, and its colour and hover are unchanged in
+             * both states.
+             */}
+            {degraded ? 'Research: Google Sheet — Stale' : null}
           </span>
         )}
       </div>
