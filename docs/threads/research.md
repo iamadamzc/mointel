@@ -6436,3 +6436,50 @@ it is not only over-producing UNKNOWN, it is producing confident balance.
 layer.** So a one-sided-search warning is renderable **today**, at boolean
 granularity, with no persistence work and no prompt change — the cheapest
 partial fix available, on the row he is reading now.
+
+**65a. THE BALANCE-VOCABULARY BASELINE CANNOT BE TAKEN FROM THE ARCHIVE — and
+the instrument was proved before the zero was believed.**
+
+*Integration added a fourth A/B outcome: how many outputs use balance vocabulary
+under one-sided coverage, before and after. I tried to take the "before" from the
+231 stored dossiers.*
+
+**Result: 0 of 144 SEC-only and 0 of 87 two-sided.** Zero everywhere, for the
+net-asserting family — *counterbalanced, offset by, weighed against, balanced
+against, on the other hand, on balance, net effect, tempered by, outweigh,
+partially offset*. Milder concessives excluded deliberately: they qualify without
+claiming a net.
+
+**A zero from a check that cannot see is worse than no check, so the instrument
+was proved first:** 231 dossiers, **none with empty prose**, mean 968 characters,
+and the probe words land at plausible rates — `"but "` in 168, `"while "` in 84,
+`"however"` in 28, `"mixed"` in 20, `"although"` in 20. **The extractor reads the
+right field and the model does write concessive prose. It just never claims a
+net in this vintage.**
+
+### Which means the A/B as specified has a confound
+
+**The archive is `promptVersion: 1` throughout, 325 versions spanning 2026-08-17
+to 08-21.** CMND is 09-04. So either the behaviour is newer than the snapshot or
+it is rarer than 1 in 231 — and **`counterbalanced` is distinctive enough that
+"rare" is the weaker explanation.**
+
+**So the first question is not the wrapper. It is: what `promptVersion` is live
+in production?**
+
+- still **1** → the behaviour is rare, CMND is an outlier, and it should be read
+  directly rather than generalised from
+- **≥ 2** → something other than the wrapper changed between 08-21 and 09-04, and
+  **an A/B that varies only the wrapper would attribute a prompt-version effect
+  to the wrapper**
+
+Either way the "before" half must be measured on CURRENT production output, not
+on what I hold. That needs a production read and it is one query.
+
+### Kept open per Integration, not closed by the render
+
+Design's own flag: **the one-sided-search warning is WEAKER than fixing the
+source and is not a substitute for it.** It stays a live item in this thread
+after the render ships. The render annotates a claim; it cannot unmake it —
+`"counterbalanced by"` appears nowhere in the codebase, so the sentence is
+model-authored and only the interpreter can stop it being written.
