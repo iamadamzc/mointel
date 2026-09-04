@@ -1869,6 +1869,30 @@ does not call boarded. **Inside the top 12 the trader actually watches, the
 09:25 ordering carries little forward information at all** — which strengthens
 *rank predicts volatility, not edge* rather than qualifying it.
 
+## THE SUMMARY IS WHERE THE ERROR LIVES — written last, read first
+
+**Research's formulation, 2026-09-04, after three instances in one day, none
+caught by its author and each found by a reader acting on it:**
+
+- Its own LIVE STATE said *"stored skew"* while the item it summarised had
+  explicitly declined to store it — and this thread's schema request was drawn
+  from the summary.
+- Its item 34 said the share count was the binding constraint, quoting the
+  MODEL's transcription while the code divides by the filed value. **This seat
+  relayed that to the trader as a strategic direction, and it was backwards.**
+- The shared README's facts bullet said the Sheet had FOUR writers while its
+  very next bullet said two were paused. **The trader corrected it.**
+
+> **A summary is written last, when the author is tired and certain, and read
+> first, by someone with no way to doubt it.** Every one of these was a
+> body-correct document with a wrong index, and in each case the index is what
+> travelled.
+
+**So the expiry audit covers the summary against the BODY, and a relayed
+extract carries the question it answered.** Both already recorded — this entry
+names the class the three belong to, because three instances in one day is a
+property of summaries rather than three separate lapses.
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
