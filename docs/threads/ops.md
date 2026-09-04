@@ -5173,6 +5173,74 @@ with a timestamp, not a capability boundary.
 where it came from.** Third appearance tonight of the good-news-shaped figure,
 after the censored top-50 read. **A confirming number is the one nobody audits.**
 
+## The price history stays ticker-keyed, and that is a decision
+
+Scoped 2026-09-04 after the SGRX rename. **Approved: an alias table, not a
+re-key.** The measurement that settled it — reference counts across
+lib/worker/app for the 15 symbol-keyed tables:
+
+```
+universe 111 (25 files)   ticker_session 99 (15)   research_jobs 35 (6)
+research_sources 32 (4)   desk_assessment_tickers 26 (8)   daily_bars 26 (10)
+research_analysis_versions 16 (4)   focus_tickers 16 (4)   minute_bars 13 (7)
+research_dossiers 9 (5)   issuer_registry 9 (3)   research_retry_state 8 (4)
+rvol_baseline 6 (2)   recovery_episodes 6 (3)   qualification_episodes 2 (2)
+```
+
+**414 references. That kills a full re-key without needing a compiler
+experiment** — running one would only have confirmed a decisive number.
+
+### What follows a rename, and what must not
+
+**Follows — the identity and research cluster, ~117 refs / ~10 files.**
+`issuer_registry`, `research_dossiers`, `research_analysis_versions`,
+`research_sources`, `research_jobs`, `research_retry_state`, the recovery and
+qualification episodes. This is the cluster that actually broke: dossier, filing
+history and registry all filed under a dead ticker.
+
+**MUST NOT FOLLOW — the market time-series, 255 refs.** `minute_bars`,
+`daily_bars`, `ticker_session`, `rvol_baseline`, `universe`. **A rename is a
+genuine discontinuity in the tape.** SGRX's prints start today; BTOG's ended.
+Keying these to a registrant merges two tapes, and `rvol_baseline` would then
+average pre- and post-rename volume into one baseline that describes neither
+period.
+
+**That is a modelling decision about whether a renamed company's history is
+comparable — not a bug fix.** Taking it as a side effect of an identity change
+would give the desk a position on tape continuity that nobody chose. **The
+exclusion is deliberate, not an omission to tidy later** — say so in the code
+where the alias is read, or the next person will "finish the job".
+
+### The dependency that gates it
+
+**The alias link cannot come from Alpaca.** SGRX and BTOG have different asset
+ids (`13508d2a…` / `1e8f58aa…`) and Alpaca carries no CIK. The only join is the
+registrant, which comes from SEC's `company_tickers_exchange.json` — **the fetch
+that currently 403s this box, behind `secAvailable`, which cannot report it.**
+
+Building continuity on a dependency that fails silently produces a desk that
+loses history and reports itself healthy — the morning's defect, rebuilt on
+purpose. **So the `secAvailable` probe is a prerequisite of the alias table, not
+a separate ticket.** Research's finding makes it free: the client already sees
+every 403 and discards it, so reachability is an observed-outcome record rather
+than a new probe, and costs no extra SEC requests.
+
+**Still unverified and load-bearing: whether SEC's file maps SGRX to
+0001735556 at all.** If SANGRIX filed under a new CIK there is no alias to
+record and the approach needs rethinking. That turns a blocked one-line fetch
+from a product number into a design gate.
+
+### Post-close order, agreed
+
+1. universe refresh fix — the only thing that cost a live move today
+2. SEC fetch retry — gates the head-to-head, the CIK capability question, *and*
+   the alias design
+3. `secAvailable` as an observed-outcome record — prerequisite of 6
+4. the three coverage reads and PATTERNS
+5. split census with the factor-coverage start date
+6. alias table
+7. history-depth pricing, taken with 5
+
 ## Before you deploy
 
 ### "Docs-only above production" is a snapshot, not a standing fact
