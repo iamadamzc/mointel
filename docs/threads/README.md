@@ -1263,6 +1263,32 @@ read 23. **The failed deploy is the reason that sha is live.**
 something they cannot observe** — the same reasoning as reporting existence
 rather than a rate.
 
+## THE UNTESTED BRANCH AND THE DEFECTIVE BRANCH WERE THE SAME BRANCH
+
+**Research reviewing Ops, 2026-09-04.** A new SEC-reachability field rendered
+**"SEC responded 0"** when every attempt threw — a DNS failure or a refused
+connection, where **there was no response at all.** An absence forced to borrow a
+plausible value, in the instrument built to stop readers inferring one.
+
+**And the sharpest part is the coverage observation: all five reachability tests
+rejected with a RESPONSE. None rejected with a THROWN FETCH.** So the one branch
+with no test was the one branch with the defect.
+
+**That is not a coincidence — it is a consequence.** A branch nobody wrote a test
+for is a branch nobody held a case in mind for, **and the same absence of
+attention produces both facts.** So a coverage gap is not merely a risk that a
+bug is hiding there; **it is evidence about where the author's model of the
+input space ran out.**
+
+**The practical form: when reviewing, enumerate the ways the call can FAIL and
+check which of them a test constructs.** Rejecting with a response and rejecting
+with a network error are different inputs, and only one had been imagined.
+
+**Ops's own note on it is the entry's other half:** it authored a commit whose
+subject is *"a field that could not fail for its own failure"* and **put the same
+shape one string over — the fifth instance in a day, and the only one where the
+same person wrote the rule and the violation in the same file.**
+
 ## A FLAKY TEST MAY BE REPORTING A REAL INTERMITTENT DEFECT
 
 **Ops, 2026-09-04, `d3c56ce`.** A retention test in the suite that gates deploys
