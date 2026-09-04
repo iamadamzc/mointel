@@ -548,6 +548,48 @@ thing they lack. **Everything reconciles to one date and one deploy.** The fact
 that settled it had been sitting in a relay for an hour, in a message whose author
 did not know what it was for.
 
+## A TEST WRITTEN BY COPYING THE IMPLEMENTATION CANNOT DISAGREE WITH IT
+
+**Design, 2026-09-04, naming the general form after producing both instances.**
+The header suppression read `state === 'LIVE' ? null : label`. **Its test
+asserted `state === 'LIVE' ? null` exactly** — so the test defended the defect it
+existed to catch. Earlier the same session, a suite asserted
+`toContain('high is today')` and pinned a false label the same way.
+
+**The mechanism is that the assertion was DERIVED FROM the code rather than from
+the requirement.** A test written that way agrees with the implementation by
+construction, including where the implementation is wrong. It will go green
+forever and it is indistinguishable, in a passing run, from a test that checks
+something.
+
+**The tell is that the test restates the code's condition instead of the
+behaviour's.** `state === 'LIVE'` is an implementation detail; *"the label is
+hidden when the market is doing what this hour expects"* is the requirement, and
+those two sentences diverge exactly where the bug lives.
+
+**The repair, and it is the standard now:** enumerate the whole input space
+rather than the firing case. Design replaced the single-value assertion with **a
+mapping over EVERY session phase** — LIVE nominal in premarket, RTH and
+after-hours; IDLE nominal in closed, post-market and next-day-prep — **which is
+precisely the half a single-state check cannot reach** — plus a guard asserting
+the old literal cannot return. **Both mutation-tested against the old code and
+confirmed to fail before committing.**
+
+### And a check that only exercises the firing case cannot tell you the predicate is right
+
+**Same date, same thread, on the verification rather than the test.** Design
+confirmed the fix live by seeing *"Market: worker offline"* render its words —
+an abnormal state speaking, as designed — and called the feature verified.
+
+**It proved only that the true-positive path works. It said nothing about
+whether ABNORMAL was defined correctly** — and the screen it verified on was at
+that moment **displaying the defect**, because "worker offline" out of hours was
+itself a state wrongly classified. **The verification and the bug were the same
+pixels.**
+
+**So a live check must exercise the case where the feature should stay SILENT,
+not only the case where it should speak.**
+
 ## A test can pass because the setup never reached the condition
 
 **R&D, 2026-09-04, catching it in a test it had just written.** The fixture used
