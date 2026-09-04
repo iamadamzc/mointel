@@ -95,9 +95,29 @@ export function cycleDetail(current: CycleResult): string | null {
 
   parts.push(
     current.sessionsSinceHigh === 0
-      ? 'high is today'
+      ? 'high is the latest session'
       : `${current.sessionsSinceHigh} session${current.sessionsSinceHigh === 1 ? '' : 's'} since the high`,
   );
+
+  /*
+   * The as-of, and the whole point of this line.
+   *
+   * Every number above is settled-only: `ensureDailyHistory` writes no bar until
+   * 20:00 ET and `readDailyBars` defaults to EXCLUDE, so the latest bar is never
+   * today's. During premarket -- the window he actually trades -- the reading is
+   * a statement about YESTERDAY wearing the present tense.
+   *
+   * That matters beyond this string, because `cycleHigh` feeds `retracementPct`
+   * and `retracementPct` decides the PHASE: a name gapping above yesterday's
+   * cycle high is labelled OFF HIGH while it makes new highs. Dating the reading
+   * does not fix the phase. It stops the reading claiming to be current, which
+   * is a smaller thing done honestly rather than a fix pretending to be one.
+   *
+   * Stated as what IS true and never as "today not included" -- after 20:00 ET
+   * today IS the latest session, and a clause that flips is the failure this
+   * desk keeps finding. A bare date is true in every window.
+   */
+  parts.push(`through ${current.latestDate} close`);
 
   return parts.join(' · ');
 }

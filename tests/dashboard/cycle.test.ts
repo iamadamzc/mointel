@@ -90,9 +90,35 @@ describe('cycle detail', () => {
     expect(detail).not.toContain('8.3');
   });
 
-  it('says the high is today rather than "0 sessions"', () => {
-    expect(cycleDetail(arc({ sessionsSinceHigh: 0 }))).toContain('high is today');
+  /*
+   * It said "high is today", and the latest bar is NEVER today.
+   *
+   * `ensureDailyHistory` writes no bar until 20:00 ET and `readDailyBars`
+   * defaults to EXCLUDE, so during the premarket window he trades this rendered
+   * a claim about YESTERDAY containing the word today. Not stale — false.
+   */
+  it('never calls the latest settled session "today"', () => {
+    expect(cycleDetail(arc({ sessionsSinceHigh: 0 }))).not.toContain('today');
+    expect(cycleDetail(arc({ sessionsSinceHigh: 0 }))).toContain('high is the latest session');
     expect(cycleDetail(arc({ sessionsSinceHigh: 1 }))).toContain('1 session since');
+  });
+
+  /*
+   * The as-of. Every number in this string is settled-only, so without a date
+   * the whole reading claims a present tense it does not have.
+   */
+  it('dates the reading, so it cannot claim to be current', () => {
+    expect(cycleDetail(arc())).toContain('through 2026-08-21 close');
+  });
+
+  /*
+   * A clause that is true in one window and false in another is the failure
+   * this desk keeps finding. After 20:00 ET today IS the latest session, so
+   * "today not included" would flip. A bare date holds in every window.
+   */
+  it('states what is true rather than what is excluded', () => {
+    const detail = cycleDetail(arc()) ?? '';
+    expect(detail).not.toMatch(/not included|excludes today|as of yesterday/i);
   });
 
   it('omits a giveback that has not happened', () => {
