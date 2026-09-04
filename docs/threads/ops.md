@@ -5301,6 +5301,71 @@ pointing the other way beats a clean one.**
   `1baf92c`). **This detects movement, not cause** — nothing here attributes the
   READ TWO direction to the variant.
 
+## PRE-REGISTERED: index-path coverage will FALL after the catalyst fix, and that is the fix working
+
+**Written 2026-09-04, before the change ships.** Pre-registered by Integration
+at `24113f2`. **A prediction dated before a deploy is evidence; the same
+sentence written afterwards is a rationalisation.**
+
+When undated feed/index items are aged by their stored `fetched_at`, rows older
+than 45 days since first sight will finally drop out, and **index-path coverage
+will drop.** Those rows were never fresh — they were *exempt*. **A coverage drop
+following a coverage fix is exactly the result that gets reverted by whoever
+sees it first.** Ops takes the after-measurement; do not revert on it.
+
+### The mechanism, confirmed in code
+
+`collector.ts:577-583` applies a 45-day cutoff and keeps undated entries:
+
+```js
+if (!item.published.utc) return true; // undated entries stay candidates
+return Date.parse(item.published.utc) >= cutoffMs;
+```
+
+A feed is dated by construction, so every entry faces the cutoff. A scraped HTML
+index frequently yields undated items, which are kept **unconditionally**.
+Measured: `COMPANY_IR` (feed) 93 rows, **1 undated (1%)**; `COMPANY_NEWSROOM`
+(index) 105 rows, **86 undated (82%)**.
+
+**A quality filter that skips what it cannot parse silently favours unparseable
+input.** Every other instance recorded today is a check that cannot fail for a
+case it cannot see. **Here the unreadable case is the one that passes.**
+
+**"The index path works better" is false — it fails differently.** The feed path
+collects nothing because everything expires; the index path collects things that
+can never expire. Reporting the two never-collected rates (feed 85%, index 62%)
+as a comparison between a working path and a broken one was wrong: it is one
+defect with two faces.
+
+### The evidence measured
+
+Of 118 variant-A names with a known IR location and no non-SEC catalyst source:
+**79 (67%) have zero non-SEC rows of any type; 39 (33%) carry some.** Both
+mechanisms are live. **118 of 118 were model-resolved and 118 of 118 have a
+durable shape** (91 INDEX, 27 FEED) — so the resolver is not the defect and
+un-retiring it fixes nothing. Feed: 23 of 27 never collected; index: 56 of 91.
+
+## The 125-vs-144 reconciliation: current-state read as as-of, again
+
+Five rounds, closed by one query. The same `(e)` query on the same 231 tickers:
+
+```
+no date filter        125
+fetched_at <= 08-23   144
+fetched_at <= 08-22   144
+```
+
+**Neither figure was wrong.** 144 is the archive as it stood; 125 is the same
+231 names seen through today's sources. **19 names acquired non-SEC catalyst
+coverage after 08-23** — a fact about collection since, not a counting dispute.
+
+**And it is the same confound named against `company_sources` one hour earlier
+and then walked into on the next figure.** Naming a trap in one column does not
+stop you taking it in another. Four candidate explanations were eliminated by
+measurement first — point-in-time (gave 145, one *more*), authority-only (144,
+identical), SEC_EXHIBIT-as-non-SEC (12), and the ticker sets (identical) — which
+is why the right answer was reachable at all.
+
 ## Before you deploy
 
 ### "Docs-only above production" is a snapshot, not a standing fact
