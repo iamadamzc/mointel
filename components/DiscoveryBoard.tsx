@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
+import { ActivitySparkline } from '@/components/ActivitySparkline';
 import {
   ChangeMarker,
   HaltBadge,
@@ -283,6 +284,17 @@ export function DiscoveryBoard({
               <Th className="w-[68px]" align="right">
                 RVOL
               </Th>
+              {/*
+               * Beside RVOL deliberately: this is the CORRECTION to it.
+               *
+               * RVOL is cumulative and never decays within a session, so at
+               * 10:00 a name that ran at 07:15 and died still carries a large
+               * number. Putting the "now" measure anywhere else would leave the
+               * two readings to be joined by the trader mid-scan.
+               */}
+              <Th className="w-[36px]" align="right">
+                Now
+              </Th>
               {showFloat ? (
                 <Th className="w-[84px]" align="right">
                   Float
@@ -467,6 +479,10 @@ function DiscoveryRow({
 
       <td className="px-2 py-1 text-right align-middle">
         <RvolCell telemetry={t} />
+      </td>
+
+      <td className="px-1 py-1 text-right align-middle">
+        <ActivitySparkline window={row.demand?.activityWindow} />
       </td>
 
       {showFloat ? (
