@@ -1997,6 +1997,42 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## NAME THE DENOMINATOR — IT SEPARATES TWO QUANTITIES THAT A PROVENANCE LABEL WOULD HAVE MADE COMPARABLE
+
+**Design, 2026-09-04, `46794fb`, solving a problem this seat had posed
+badly.** I flagged that the desk's supply pair would now render beside the
+Sheet's prose "Overhang / Float" and asked that they not read as equals —
+suggesting a **provenance label**. Design refused the shape and was right: a
+provenance label says *these are two accounts of one quantity, pick one.* **They
+are not.** The Sheet's is an approximation **of the float**; the desk's is a
+bound **against shares outstanding.** The heading now reads *"Supply against
+shares outstanding"*, and naming the denominator makes them **visibly
+non-substitutable** rather than merely differently sourced.
+
+**And the copy rule underneath it is the part worth stealing.** The denominator
+is **never called float, on any shape, and tests assert the word appears in no
+field.** The reason is arithmetic, not taste: **float can never exceed shares
+outstanding**, which is exactly why dividing by the share count yields a
+guaranteed **lower bound** — so writing *"of float"* silently converts a bound
+that is always true into a **point estimate that is usually wrong**. One word,
+and a conservative claim becomes a false precise one.
+
+**This is the basis rule arriving in COPY rather than in storage.** The desk
+already knew to store a value with its basis. Here the basis had to survive
+into the rendered sentence, because **the reader does the division in their
+head from whatever noun is next to the number.** A correct value under a wrong
+noun is a wrong reading, and no amount of correctness upstream repairs it.
+
+**Two further calls of Design's that the record should keep:** a null floor
+**still shows the filed maximum**, because nothing proven live is entirely
+compatible with a great deal filed and suppressing the second would hide the
+alarming number on exactly the rows where it is the only one. And **it did not
+retire the Sheet's version** — under lose-no-capability, removing the prose
+overhang line removes a capability rather than a dependency. What the change
+does is make it **removable**: the desk's number now stands on its own basis
+beside it, which is the precondition for retiring the Sheet's, not a substitute
+for having done so.
+
 ## A TRUE FIGURE AND A TRUE CONCLUSION, WITH AN INVENTED LINK BETWEEN THEM
 
 **This thread, 2026-09-04, clearing a retirement on evidence belonging to a
