@@ -1997,6 +1997,43 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## I ASKED FOR THE CHECK AND SHIPPED IN THE SAME BREATH
+
+**This thread, 2026-09-04.** I relayed Research's headline to the trader —
+*"pillar 5 isn't dark for want of data, we throw the data away, twelve of
+thirteen"* — and **in the same turn** wrote to Research: *"say if you think that
+overstates it before I send anything further on it."* **It did overstate it. The
+substance was already gone.** Asking for a check and acting before the answer
+arrives is not verification; it is verification-shaped, which is worse, because
+the request creates a record that looks like diligence and the recipient
+reasonably believes they were consulted in time.
+
+**What was wrong: a RATE quoted as a COVERAGE claim.** We discard 92% of the
+float strings we are given — true. We are only given a quarter of them. **Thirty-
+seven of fifty top names carry no float string at all, so there is nothing to
+discard.**
+
+    today, top 50        1 of 50    2%
+    after the parser fix 12 of 50   24%
+    still blank          38 of 50   76%
+
+**So the fix is worth taking and does not solve pillar 5.** It moves float from
+essentially absent to a quarter covered, and **three-quarters of the board stays
+blank.**
+
+**The consequence is why this one had to be chased down rather than filed.** The
+misreading — *a bug fix solved float* — is precisely the one that would stop him
+buying the thing he actually needs, **and I had asked him about the vendor
+decision in the same message that carried the overstatement.** A wrong number
+next to an open question is not an error waiting to be corrected; it is an input
+to a decision already in flight.
+
+**Two threads produced this and the mechanism was identical in both.** Research
+quoted a ratio in the headline of its own inventory and let it stand as
+coverage. I relayed it without asking what the denominator was. **Neither of us
+was wrong about the ratio.** This desk's oldest failure, arriving in the
+sentence written last and read first.
+
 ## NAME THE DENOMINATOR — IT SEPARATES TWO QUANTITIES THAT A PROVENANCE LABEL WOULD HAVE MADE COMPARABLE
 
 **Design, 2026-09-04, `46794fb`, solving a problem this seat had posed
