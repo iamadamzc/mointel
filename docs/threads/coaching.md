@@ -1,5 +1,16 @@
 # Thread: Coaching
 
+**Model, and why it is recorded here.** Added 2026-09-04 so the choice is
+explicit rather than drifting. **The honest state of the evidence: there is
+none yet supporting differentiation.** Every thread on 2026-09-04 caught a
+subtle defect in its own work that a weaker model plausibly misses, and the
+capacity actually burned that night was message VOLUME, not model strength.
+**A downgrade recorded as a saving without a measurement would be this desk's
+"constant dressed as a measurement".** What would settle it: run a thread's
+next self-contained task at a smaller model and compare what it catches.
+
+**Model: Opus 5.** Handles the trader's own fills and P&L. The reasoning load is lighter than the other threads' and this is the most defensible place to test a smaller model — but it is also the thread holding personal financial records, where a mistake is least recoverable.
+
 **Owns the trader's own execution.** Daily fills, adherence to the playbook, and
 the gap between the system as written and the system as traded.
 

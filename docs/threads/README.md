@@ -1396,6 +1396,51 @@ So, on finishing any piece of work:
   the log. This is the same failure the Integration charter records under *read
   what a thread SAID, not what it committed*, seen from the sending end.
 
+### The ping is ONE LINE. Amended 2026-09-04, because the rule was being quoted and not applied
+
+**Every message between threads on the night of 2026-09-04 ran 400–800 words.
+Not one was a one-line ping.** The rule above was written on 08-24, has been
+cited since, and has never been followed. It is not missing; it is unenforced —
+**this desk's own "quoting a rule feels like having applied it", in the rule
+about how we talk to each other.**
+
+- **A completion ping is one line.** Sha, what it does, what is next or blocked.
+  **If it needs a paragraph, the paragraph belongs in your charter and the ping
+  says where to read it.**
+- **Integration sets the register and must go first.** A thread receiving 600
+  words answers in 600. **The longest messages of 2026-09-04 were Integration's
+  instructions**, so the reply length was authored by the seat complaining about
+  it.
+- **One message per milestone, not per event.** Scoped, built, gated and pushed
+  is **one** ping, not four.
+
+**THREE EXEMPTIONS, AND THEY ARE NOT NEGOTIABLE:**
+
+1. **A CORRECTION OR RETRACTION GOES IMMEDIATELY, AT WHATEVER LENGTH IT NEEDS.**
+   Never batched, never held for a milestone. On 2026-09-04 a retraction of a
+   float coverage claim reached the trader within the hour and stopped a wrong
+   number entering a purchasing decision. **Under consolidation it would have
+   waited.** The messages that mattered most that night were interruptions.
+2. **A blocking question goes immediately** — a thread idle on an unasked
+   question is more expensive than any message.
+3. **A live defect on his board goes immediately**, with names, not a rate.
+
+### Ask Integration only for what Integration knows
+
+**Same date, same cause.** Integration gated a parser fix behind its own approval
+**twice**, and both times the message crossed with the thread building it —
+**two full exchanges for one event, and the approval added nothing**, because
+the owner had scoped, tested and gated the work and knew more about it than the
+seat approving it.
+
+- **Integration's word is required for:** spend, sequencing across threads,
+  deploys, anything that reaches the trader, and anything where two threads
+  disagree.
+- **It is NOT required for work inside your own module that your own gate
+  covers.** Build it, gate it, ping in one line. **Asking for permission you do
+  not need is the seventh-worker failure wearing a process costume**, and it
+  costs two messages and a round-trip every time.
+
 **Integration's side of the bargain:** every ping gets one of three outcomes —
 answered, relayed onward with the context the receiver is missing, or declined
 with the reason said back. Never silence.

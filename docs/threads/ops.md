@@ -1,5 +1,16 @@
 # Thread: Operations & Deployment
 
+**Model, and why it is recorded here.** Added 2026-09-04 so the choice is
+explicit rather than drifting. **The honest state of the evidence: there is
+none yet supporting differentiation.** Every thread on 2026-09-04 caught a
+subtle defect in its own work that a weaker model plausibly misses, and the
+capacity actually burned that night was message VOLUME, not model strength.
+**A downgrade recorded as a saving without a measurement would be this desk's
+"constant dressed as a measurement".** What would settle it: run a thread's
+next self-contained task at a smaller model and compare what it catches.
+
+**Model: Opus 5.** Production access, irreversible actions, and the single SIP connection. On 2026-09-04 it rejected its own `ps -W` result as too blunt an instrument to close a SIP question, and caught a censored query inside its own live reading because the wrong answer arrived in the right direction.
+
 **Owns the live desk.** The server, the market worker, deploys, rollbacks,
 auth, backups, and any incident that reaches production.
 
