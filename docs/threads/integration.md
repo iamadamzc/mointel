@@ -2008,6 +2008,30 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## "WHAT I NEED FROM YOU" IS FOR HIS JUDGEMENT, NOT FOR MY SEQUENCING
+
+**The trader, 2026-09-04, correcting this seat: *"you direct traffic, i just
+wanted to make sure it wasn't forgotten."*** Asked whether the momentum dial
+should run ahead of the float work, he declined the question — **because it was
+never his.**
+
+**The delegation says order-and-process calls are decided here rather than
+referred.** So a sequencing question in the closing section is not caution, it
+is **the delegation handed back**, and it costs him a decision he explicitly
+gave away. The section exists for spend, auth, destructive actions and genuine
+judgement calls. **Priority between two pieces of work is none of those.**
+
+**And it hid the real failure.** The dial was registered, designed, marked not
+blocked — and moved zero inches while the float work took the session. **He was
+not chasing it; he was checking it had not been dropped.** It effectively had.
+That is *decided for and then dropped*, and asking him to re-decide it was
+**this seat's own omission dressed up as his choice.** The honest report is that
+I deprioritised it by not thinking about it, and the honest fix is to sequence
+it now.
+
+**The test for the section, going forward: could the answer be "either is fine,
+you pick"? Then it does not belong there.**
+
 ## TWO THREADS READ REAL DATA, DISAGREED COMPLETELY, AND NEITHER MISREAD ANYTHING
 
 **2026-09-04.** Ops measured 16 of 17 floats parsing; Design ran the deployed
