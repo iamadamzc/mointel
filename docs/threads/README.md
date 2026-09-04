@@ -890,6 +890,48 @@ breaks this will be fixing something else.
 column to MEAN, not what each writes to it.** Both of these write a timestamp;
 only one of them can be right about which timestamp it is.
 
+## YOU CANNOT INSTRUMENT THE ROW WHEN THE FAILURE PRODUCES NO ROW
+
+**Research, 2026-09-04, correcting a scope before it was written.** The pass was
+to record `mode`, `failure` and `status` for company-source collection. **`mode`
+is already persisted** — `metadata.discoveredVia` carries it on 189 of 198 rows
+and nobody has ever read it.
+
+**And the instruction "add these columns to `research_sources`" would have
+instrumented exactly the population that already works.** The failing case
+produces **no row at all**, so there is nothing to attach a column to. **The
+record has to be per collection ATTEMPT, keyed on ticker and time** — a different
+table or a different write.
+
+**That is the sort of thing discovered after the pass returns nothing**, having
+cost a deploy and a day, with the conclusion "no failures found" reading as good
+news.
+
+### And the zero it did produce cannot mean what it looks like
+
+`discoveredVia` shows **0 of 42** feed-registry sources read as an index — so
+**dispatch does not misfire on a healthy fetch**, which refutes general
+flakiness.
+
+**It cannot refute the challenge-page hypothesis, BY CONSTRUCTION: a challenge
+page produces no row**, so those cases are absent from the population being
+counted. **Same by-construction exclusion that ruled the frozen page out of the
+43** — a zero over a population the mechanism cannot enter is not evidence about
+the mechanism.
+
+**Which narrows rather than eliminates:** misdispatch does not happen on healthy
+fetches, so if these names ARE misdispatching, the cause is **what the fetch
+returned** — not the dispatch logic. **Two candidate mechanisms collapse into
+one with the fetch as its cause.**
+
+### A repair that is obviously right is still a variable
+
+**The user-agent defect is legible without any measurement**, which is exactly why
+it must not be fixed before the pass runs. **Changing it first yields a possible
+improvement with no evidence, and no way to separate it from a parser bug fixed
+by accident.** Measure, then change — and the temptation is strongest precisely
+where the defect needs no measuring to see.
+
 ## A CONFIRMED PREMISE IS NOT A CONFIRMED MECHANISM
 
 **Research, 2026-09-04, retracting a synthesis this seat had approved and
