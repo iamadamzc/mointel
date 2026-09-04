@@ -1963,10 +1963,17 @@ without checking a date.
   fixture-encodes-a-dead-world rule arriving as an ASSERTION rather than as a
   fixture, which is worse, because a fixture merely fails to catch a bug and an
   assertion actively defends it.
-- **Its source was a comment.** `lib/market/cycle.ts` documents
-  `sessionsSinceHigh` as *"zero means today"*. It does not. A reader believed
-  the comment and wrote the label from it. **A wrong comment produced a shipped
-  falsehood**, which is more than comments usually cost.
+- **Its source was a comment.** `lib/market/cycle.ts` documented
+  `sessionsSinceHigh` as *"zero means today"*. **It was TRUE ONLY AFTER 20:00
+  ET**, when the latest settled session IS today — **true in one window and
+  false in the window he trades.** That is the name-the-condition-not-the-event
+  failure arriving in a DOCSTRING, a venue this desk had not seen it in: it has
+  appeared in rules, in columns and in handover lines, never in a comment that
+  a reader then rendered. Corrected by Research at `fe3fbb4` to state the
+  condition — *"zero means the latest SETTLED session"*. **Readers were then
+  enumerated rather than assumed: five, of which four were correct on settled
+  semantics and one rendered the false label. One bad reader, and the comment
+  was the common cause.**
 
 **And the repair's own decision is worth copying:** Design refused to write
 *"today not included"*, because after 20:00 ET today IS the latest session and
