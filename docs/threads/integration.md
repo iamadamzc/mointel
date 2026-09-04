@@ -1997,6 +1997,37 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## A TRUE FIGURE AND A TRUE CONCLUSION, WITH AN INVENTED LINK BETWEEN THEM
+
+**This thread, 2026-09-04, clearing a retirement on evidence belonging to a
+different task.** I told the trader the **06:10 task** was safe to retire **"on
+the number — ~2% top-50 Sheet-float coverage."** The figure was correct. The
+conclusion was correct. **The 06:10 task does not write float.** Column I is
+written by the **22:00** after-hours task, which runs the universe discovery and
+the structure check and sets Float Quality and Overhang; the premarket task
+writes T:AA — PM price, volume, catalyst, Confirmation, Revised Priority — and
+**not one of those fields is float.** The real justification was the one from
+two days earlier and still stands: three desk-read fields with wired fallbacks.
+
+**So nothing here was WRONG, which is precisely what made it invisible.** Every
+prior entry in this file catches a false number or a false call. This is a true
+number attached to a true call **by a load-bearing claim nobody checked, because
+the answer looked right and checking felt like re-litigating a settled thing.**
+A conclusion is not evidence that its stated reason is the reason.
+
+**AND IT PROPAGATED AS AUTHORITY.** Research reasoned correctly from what I gave
+it and arrived at *"fix the parser, re-measure, then decide the retirement"* —
+sound logic, aimed at the wrong task, and it would have **stalled a retirement
+that was never coupled to the parser at all.** A borrowed premise does not
+announce itself as borrowed once a peer restates it in its own words.
+
+**The mechanism is the fifth name collision on this desk:** *"the Sheet's float
+dependency"* meant two different tasks inside one sentence, and neither speaker
+noticed because the phrase is true of both. **A phrase true of two objects is
+where a conclusion crosses from the one it was proved about to the one it is
+being applied to.** The check is cheap and neither of us did it: the audit maps
+column I, and the task definition names its own range.
+
 ## "WHAT CAN WE DROP" AND "WHAT MUST WE PRODUCE" ARE THE SAME AUDIT WITH OPPOSITE SIGNS
 
 **The trader, 2026-09-04, setting a direction rather than answering a question.**
