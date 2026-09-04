@@ -42,7 +42,7 @@ export interface AssessmentPanel {
   /** Completed assessments for this trading date, oldest first. */
   today: AssessmentSummary[];
   scheduler: {
-    state: 'OFFLINE' | 'IDLE' | 'WORKING' | 'ERROR';
+    state: 'OFFLINE' | 'IDLE' | 'WORKING' | 'ERROR' | 'UNKNOWN';
     label: string;
     detail: string;
     tone: 'pos' | 'warn' | 'neg' | 'dim';

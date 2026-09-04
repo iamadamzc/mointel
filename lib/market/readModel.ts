@@ -214,13 +214,52 @@ const ASSESSMENT_LABELS: Record<string, string> = {
   RTH_CLOSE: 'RTH close',
 };
 
-const OFFLINE_PANEL: AssessmentPanel = emptyAssessmentPanel();
+/**
+ * The store could not be opened or could not be read.
+ *
+ * A REAL observation, so a fault verdict is honest here — but the specific
+ * claims are not free. `emptyAssessmentPanel()` alone reports MARKET CLOSED and
+ * "no session scheduled", neither of which a failed read establishes, so the
+ * detail says what actually happened.
+ */
+const UNREADABLE_PANEL: AssessmentPanel = {
+  ...emptyAssessmentPanel('The market state store could not be read'),
+  headline: 'STORE UNREADABLE',
+};
+
+/**
+ * The store opened and the assessments were NOT LOOKED AT.
+ *
+ * `emptyAssessmentPanel` runs `projectSchedulerHealth({ health: null })`, and
+ * that function reads null CORRECTLY as "no worker has ever reported" — tone
+ * `neg`, and a detail that INSTRUCTS the trader to start the desk. The function
+ * is right. Handing it THIS case is wrong: the database opened, and the only
+ * thing missing is a table or a trading date.
+ *
+ * So a healthy desk was being told to restart itself — the same defect
+ * `OFFLINE_ASSESSMENTS` fixed at the client boundary, still live on the server
+ * path that shares the function. Not measured is not a fault.
+ */
+const UNMEASURED_PANEL: AssessmentPanel = {
+  ...emptyAssessmentPanel('Assessment history was not read for this session'),
+  headline: 'NOT MEASURED',
+  scheduler: {
+    state: 'UNKNOWN',
+    label: 'Assessments: not measured',
+    detail: 'Assessment history was not read for this session',
+    tone: 'dim',
+    running: false,
+  },
+};
 
 /**
  * The assessment panel: last checkpoint, next checkpoint, today's history.
  *
- * Degrades to "scheduler offline" rather than throwing. A store written before
- * the assessment tables existed must still render a desk.
+ * Degrades to NOT MEASURED rather than throwing. A store written before the
+ * assessment tables existed must still render a desk — and must not be reported
+ * as a stopped scheduler, which is what this used to do: the shared offline
+ * panel resolved to `tone: 'neg'` with a detail instructing the trader to start
+ * a desk that was already running.
  */
 function buildAssessmentPanel(
   db: MarketDatabase,
@@ -234,7 +273,7 @@ function buildAssessmentPanel(
     now: Date;
   },
 ): AssessmentPanel {
-  if (!assessmentTablesPresent(db) || !options.tradingDate) return OFFLINE_PANEL;
+  if (!assessmentTablesPresent(db) || !options.tradingDate) return UNMEASURED_PANEL;
 
   const records = readAssessments(db, options.tradingDate);
   const completed = records.filter((record) => record.status !== 'RUNNING');
@@ -363,7 +402,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       health,
       marketHealth: healthView(health, 'CLOSED', config),
       researchHealth: projectResearchHealth({ health: null, now: Date.now() }),
-      assessments: OFFLINE_PANEL,
+      assessments: UNREADABLE_PANEL,
       discovery: emptyDiscovery(config),
       demand: {},
       intelligence: {},
@@ -542,7 +581,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       health,
       marketHealth: healthView(health, 'CLOSED', config),
       researchHealth: projectResearchHealth({ health: null, now: Date.now() }),
-      assessments: OFFLINE_PANEL,
+      assessments: UNREADABLE_PANEL,
       discovery: emptyDiscovery(config),
       demand: {},
       intelligence: {},

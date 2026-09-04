@@ -721,7 +721,15 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
     }
   }
 
-  if (!panel.scheduler.running) {
+  /*
+   * `running: false` means two different things and only one is an error.
+   *
+   * A scheduler that has reported and is stopped is a fault. A panel that was
+   * never read reports `running: false` because nothing set it true — and
+   * raising ERROR on that is the not-measured-rendered-as-failure defect, on
+   * the page a trader opens BECAUSE he suspects something is broken.
+   */
+  if (panel.scheduler.state !== 'UNKNOWN' && !panel.scheduler.running) {
     consistency.push({
       severity: 'ERROR',
       check: 'assessment.scheduler',
