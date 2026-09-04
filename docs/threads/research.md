@@ -3120,6 +3120,61 @@ spec is items 25/26.
 
 ---
 
+**44. NO — the cycle bars END AT THE LAST SETTLED SESSION, and today is never
+in them.** *Design's gating question, answered 2026-09-04. It decides whether
+the `deriveCycleLevels` switch is ready or a downgrade.*
+
+**During premarket on a Thursday the bar set runs through WEDNESDAY.** Today's
+session is absent, so `cycleHigh` cannot contain today's high — **including the
+premarket high he is trading against between 04:00 and 09:30.**
+
+### Two independent mechanisms exclude it, and that is the part a fixer needs
+
+| | |
+| --- | --- |
+| **the write path never stores it** | `ensureDailyHistory` keeps only `tradingDate <= lastSettledTradingDate`, and settled requires `now >= sessionEndUtc` — **20:00 ET.** Today's bar is not written at all until the session ends |
+| **the read path would drop it anyway** | `readDailyBars` defaults to `'EXCLUDE'`, and `overlayLiveCycle` calls it with defaults |
+
+> **SO ANYONE CLOSING THIS GAP BY CHANGING ONE WILL FIND IT STILL DOES NOT
+> WORK.** Store today's partial bar and the reader silently discards it; flip
+> the reader and there is nothing stored to read. **A correct guard and a
+> correct filter composing into a wrong number — the same shape as
+> `historicalResistance` losing two sessions, in a different file.**
+
+*And `cycleHigh` is a BOUND — computed from `bars[i].high` at `cycle.ts:249` —
+read from a bar set filtered for rates. Harmless today because the write path
+already withholds unsettled sessions, so the filter has nothing to drop. It is
+the second lock on the door, not a live defect.*
+
+### Design's concern is right, and the work is bigger than a pointer — but NOT blocked
+
+**The switch as scoped WOULD be a downgrade** in exactly his window: the
+Sheet's `TODAY · Recent Run High` is intraday and covers the session the desk's
+number cannot see.
+
+**But the data is not missing — it is somewhere else.** `sessionHigh` is
+live, tick-updated per ticker and already persisted to `ticker_session`. **So
+the switch has to COMPOSE the settled-daily cycle high with the live session
+high, rather than redirect one pointer.** That is a real piece of work and it
+should be scoped as one — *mark it bigger, not blocked.*
+
+### And the fact worth saying on its own, because it is not about the Sheet
+
+> **The desk's cycle high excludes the live session EVERYWHERE it is read, not
+> only in the ladder.** Any surface showing `computedCycle.cycleHigh` during
+> premarket is showing a ceiling that stops at yesterday's close — the
+> intelligence panel included. **That is true today, with the Sheet still in
+> place, and nobody has been told.**
+
+*Design's two non-questions, agreed: `NO_CYCLE` returning no `cycleHigh` is
+correct rather than a loss — a cycle high for a name in no cycle is the error
+`cycle.ts:220` warns about — and `classifyLevel`'s HISTORICAL/CURRENT/
+UNVERIFIED apparatus does become dead, because it exists only to sort a Sheet
+level carrying no bounded basis. The change removes a layer rather than
+redirecting one.*
+
+---
+
 **42. Can we leave the Sheet? NO — and the shape has changed since the record.**
 *Asked by the trader via Integration 2026-09-04. Answered from the code, not
 from item 6, because the record is from 08-23 and things have moved.*
