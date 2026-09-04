@@ -1085,6 +1085,49 @@ behaved rather than how *durably*, and his complaint is about durability.
 
 **All three must clear the ex-ante test in question 3 or none of them ships.**
 
+**GRAIN, FIXED BEFORE THE STUDY BECAUSE THE ARTEFACT WOULD BE IN THE
+MEASUREMENT TOO.** Research's feasibility read, and it constrains what a valid
+instrument looks like rather than adding a question.
+
+**A partial minute reads as low activity.** Choppy-or-trending is a rate, so an
+unsettled minute **manufactures calm** — and if a candidate state is tested on
+minute-grain history **without the settle exclusion**, that artefact is in the
+measurement as well as in any future dial. **I would be asking whether an
+instrument that reads calm at the wrong moments predicts anything.**
+
+> **So the study uses MINUTE GRAIN WITH THE SETTLE EXCLUSION `activity.ts`
+> already applies.** Fixed now, not after.
+
+**AND A LIMIT THAT FALLS OUT OF IT, which is the predicate-versus-implementation
+distinction one level up.** Research establishes that a **tick-grain** aggregate
+is available in process — the top 5 are always inside `internalRank` 50, trades
+are already subscribed, `ingestTrade` updates per message, **no subscription diff
+and no second SIP connection.** But the archive holds minute bars, so **the study
+is minute grain and the dial would be tick grain.**
+
+> **A minute-grain study cannot validate a tick-grain dial. It can validate the
+> CONCEPT and not the INSTRUMENT** — the same gap as a replay that reproduces a
+> predicate without auditing the deployment. **If the study says yes, the dial
+> still has to be checked against it once built.**
+
+**ON THE ERROR ASYMMETRY — I am sharpening rather than adopting it.** Research
+says a false calm is the expensive direction. **The robust form is weaker and
+more useful:** the artefact is **directional**, so **the acceptable error rate
+differs by direction, and only he can price the two.** A stand-down signal that
+wrongly says *safe* and one that wrongly says *danger* cost different things —
+**one is a loss taken, the other a day missed** — and **which is worse is his
+judgement, not a measurement.** What this thread owes him is **the error rate in
+each direction separately**, never a single accuracy figure.
+
+**That is also what makes the falsifiability rule concrete:** a dial passes only
+if it can be shown **wrong in each direction independently.** A single blended
+accuracy number is exactly the unfalsifiable shape Integration warned about.
+
+**No capture clock and nothing for him to decide today.** The aggregate is
+**re-derivable** — board membership at an instant is in `ticker_session`, minute
+bars are re-fetchable — so it is not observable-once, same answer the 10-second
+question got.
+
 **NOT BLOCKED — the archive can express all three candidates.** Research is
 separately answering availability (what is computable with no second SIP
 connection); **this thread owns whether the number would MEAN anything.**
