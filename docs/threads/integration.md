@@ -2071,6 +2071,53 @@ named `research` holds the **TODAY** row and the one named `record` holds the
 **RESEARCH** row. Two things under one word, in the function this whole
 disagreement turned on.
 
+## THE THIRD INERT SHIP, SAME CAUSE, AND I MADE THE CALL THAT CAUSED IT
+
+**`ac63643` live 2026-09-04, clean in ~2.5 minutes.** Schema 24 confirmed **by
+reading the column, not the version number.** Header passed in both indicators —
+the silent half exercised for the first time.
+
+**And two observables came back INERT rather than pass or fail.**
+`activity_window` is NULL on all 8,754 rows; the sparkline shipped and has
+nothing to draw. **The writer is `toRow` in `worker/runtime.ts` — the market
+worker — and `RESTART_MARKET=no` left it running code from 23:04:51 UTC, eight
+and a half hours before the deploy.** The column is correct, wired, and empty.
+
+**THIS IS THE THIRD TIME. The activity feature shipped inert three days ago for
+exactly this reason, and the charter entry from it reads *"enumerating the code
+sites does not enumerate the PROCESSES."*** I wrote that entry. **Then I made
+the `RESTART_MARKET=no` call and never asked which process WRITES the new
+column.**
+
+**My reasoning was sound and answered the wrong question.** I weighed SIP
+reconnect risk against migration-lock risk and chose the rehearsed recovery —
+correct on its own terms. **But "does this deploy need the worker restarted?" is
+not the same question as "is restarting the worker safe?", and I only asked the
+second.** Ops's enumeration was likewise about the SIP cost, not about the
+writer. **Two threads, both careful, both answering the adjacent question.**
+
+**The rule needs the sharper form: A DEPLOY'S PROCESS LIST IS DERIVED FROM WHAT
+THE CHANGE WRITES, NOT FROM WHAT IT RISKS.** Ask what process performs each new
+write before choosing which processes restart.
+
+### And I broke my own no-shared-observables rule while writing it
+
+**Observables 3 and 4 are one observable.** The sparkline draws from
+`activity_window`; if the column is empty the chart is blank, so a single cause
+explains both and neither can independently confirm its own change. **I
+instructed "per-change falsifiable observables, and no shared ones" on this very
+deploy** — then supplied two changes sharing one. Ops named it rather than
+reporting three-of-four.
+
+### The near-miss worth keeping
+
+**Observable 2 nearly reported FAIL.** `"Google Sheet"` returned 1 occurrence
+against a stated fail condition of zero. **It survives only inside
+`title="Google Sheet research is current"` — a hover tooltip — while the
+rendered element is a bare dot with no words.** The raw count said fail; the
+context said pass. **The loose-grep family again, caught before it travelled
+rather than after.**
+
 ## I WAKE ONLY ON MESSAGES, SO WAITING FOR ONE IS NOT A PLAN
 
 **The trader, 2026-09-04, for the SECOND time in one night: "no one is working
