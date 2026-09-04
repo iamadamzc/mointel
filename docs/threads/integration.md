@@ -1920,6 +1920,33 @@ for a figure that has become a **strategic conclusion** rather than a
 measurement, re-deriving it may be worth the cost; item 34's number survived
 every reading because it was always read and never recomputed.
 
+## FINISHED WORK THAT DOES NOT ARRIVE — the last hop keeps not happening
+
+**Research's class, 2026-09-04, after the fourth instance in one evening:**
+
+- **The supply pair** — computed for every dossier, stored, and read by nothing.
+- **The cycle-levels replacement** — the desk's own arithmetic exists; the
+  reader was never switched.
+- **The research-slot gate** — complete, and inert until one column entered one
+  `SELECT`.
+- **The float's own as-of** — `floatSourceDate` is parsed, typed and RENDERED,
+  in a drawer nobody opens while looking at a float on the board row.
+
+> **Every instance looks like MISSING WORK and is actually FINISHED WORK THAT
+> DOES NOT ARRIVE.** The last hop — from a value existing to a value being
+> where a decision gets made — is the one that keeps not happening.
+
+**And it is invisible in every direction, which is why it recurs:** the builder
+sees it built, the reader sees a blank, and **nothing in between reports a
+gap.** No test fails, no query returns wrong, no surface errors. The same
+property as the summary-versus-body class — a document correct in its body with
+a wrong index — one layer out, in code rather than prose.
+
+**The practical form for this seat:** when a thread reports something BUILT,
+the routing question is not *does it work* but **WHO READS IT, AND IS THAT
+WHERE THE DECISION HAPPENS.** Three of tonight's four were found by asking a
+question next to the work rather than about it.
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
