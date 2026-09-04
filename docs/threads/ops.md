@@ -5075,6 +5075,104 @@ premarket capture was ~22 minutes out and a SIP reconnect against that deadline
 is the unrehearsed risk. **Schedule the restart after a close and verify both
 then.** 0e is owed to the next deploy, which will be 24 against 24.
 
+## INCIDENT 2026-09-04: a 53% mover was invisible, and the guard was working
+
+SGRX moved hard in premarket and never appeared on the board. **Not display, not
+the graveyard, not the rank boundary, not the price band — discovery.** SGRX had
+no row in `ticker_session` on any date, no minute bars ever, and no entry in any
+of the six symbol-bearing tables including `universe`.
+
+### The chain
+
+`ensureUniverse()` (worker/runtime.ts:474) only fetches from Alpaca when the
+cached universe is older than `UNIVERSE_MAX_AGE_MS` — **20 hours**
+(runtime.ts:91). `bootstrapTradingDate()` calls it at startup *and* on every
+session roll, so there is a refresh opportunity daily.
+
+- **Sept 3, 19:04 ET** — worker restarted, cache >20h, refreshed, stamped
+  `23:04:52Z`
+- **Sept 4, ~04:00 ET roll** — cache 8.9h old → *fresh* → skipped
+- **Sept 4, 03:48 ET restart** — cache 8.7h old → *fresh* → skipped
+
+**An evening restart poisons the next morning's refresh.** It resets the stamp
+late in the day, so the next session's roll falls inside the 20-hour window and
+never refetches. **The guard that exists to stop restart-thrash suppressed the
+daily refresh.** Nothing was broken; the consequence was untraced.
+
+**This is not SGRX-specific and it has been firing silently for as long as the
+guard has existed.** The `unattended-upgrades` restart around 02:25–03:25 ET
+sets up the next session to run stale every time. We had simply never had a
+rename land in the window.
+
+### The blast radius, measured rather than argued
+
+Live Alpaca vs the cache, replicating the exact admission filter: **13,133 live,
+13,247 cached. Five symbols invisible** — HQDG, PJIN, RIV.RT (all ETF/right,
+excluded by the classifier anyway), **SGRX** and **XTND**. So **two relevant
+common equities.** And **119 stale subscriptions** to names that no longer
+trade. The count is what settled the "force a refresh mid-session" question —
+two names does not buy a live write plus a worker bounce.
+
+### The fix
+
+**Refresh unconditionally on session roll; keep the cache guard on startup.**
+One assets call per trading date, the guard's real purpose untouched.
+`universe.updated_at` carrying today's date is a real observable that can fail —
+**and it belongs in the daily state read, not only in the deploy check.** A
+universe stamped yesterday is this defect's signature and nothing looks at it.
+
+**The fix does not need to understand renames.** BTOG is now `inactive` and
+`tradable:false`, so it fails the existing filter; the next refresh drops it and
+admits SGRX with no rename logic at all. It needs to *happen*, not to be clever.
+
+### Two corrections I had to make to my own reporting
+
+- **"The universe will self-heal around 15:04 ET" was wrong.** 15:04 is when the
+  cache becomes *eligible*. It only refreshes on a startup or roll, and the next
+  roll is tomorrow — so absent a restart it would not refresh today at all.
+  **Eligible and happens are different claims**, and the weaker one got relayed
+  onward as the stronger.
+- **"SGRX is BTOG renamed" was asserted from a name match.** The asset ids
+  differ. What is true is sharper: asset `13508d2a…` read `Bit Origin Limited`
+  at 11:0x and `SANGRIX INC.` at 11:2x — **the same record relabelled while
+  being read.** Right conclusion; the disagreement between two reads of one
+  endpoint caught it, not any care of mine.
+
+## `secAvailable` cannot fail for the failure it is named after
+
+`secAvailability()` (lib/research/config.ts:232) checks **only** that
+`SEC_USER_AGENT` is set and contains an `@`. **It never touches the network.**
+So health's `secAvailable: true, "configured, 5 req/s ceiling"` means a user
+agent is configured — not that SEC is reachable.
+
+Found because SEC returned **HTTP 403 "Request Rate Threshold Exceeded"** to the
+production box twice while health reported SEC available. The comment at `:240`
+says the `@` check exists so we are "rejected here rather than quietly
+rate-limited by them later" — while being quietly rate-limited by them later.
+
+**Latent, not an incident:** a research job completed at 11:06Z and the status
+mix tracked baseline. **A defect and an incident are different objects**, and
+reporting this as an incident mid-session would have cost attention for nothing.
+
+Separately and uninterpreted: **PARTIAL is 1,809 of 2,524 research jobs
+all-time** (481 COMPLETE, 218 FAILED, 16 STALE). Either the pipeline working as
+designed on incomplete evidence, or a shortfall nobody has named.
+
+## Reading a cache and reporting it as a capability
+
+I measured "the desk resolves a CIK for 1 of 10 names" from `issuer_registry`
+and told the trader it falsified a build decision. **The registry fills on
+demand**, so that measured what the desk *had looked up*, not what it *can*.
+
+**The corroboration is better than the argument:** `research_health`'s
+`lastCompletedTicker` was **ANPA — the single one of the ten with a row.** The
+one name that resolved is the one name research had just processed. A work queue
+with a timestamp, not a capability boundary.
+
+**A number that agreed with a tidy conclusion went out without anyone asking
+where it came from.** Third appearance tonight of the good-news-shaped figure,
+after the censored top-50 read. **A confirming number is the one nobody audits.**
+
 ## Before you deploy
 
 ### "Docs-only above production" is a snapshot, not a standing fact
