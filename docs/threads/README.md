@@ -3060,3 +3060,49 @@ As of the last session, **2026-08-23**:
 Both settled on 2026-08-23 in `c8f95a3`: `docs/Design/` is committed, and the
 duplicate `docs/designaudit.md` is gone. `docs/Design/` is the canonical home
 for design documents.
+
+## AN ABSENCE FORCED TO BORROW A VALUE ALWAYS BORROWS THE REASSURING ONE
+
+**Research, 2026-09-04. Five design questions in one day, three threads, one
+answer: the thing is N STATES, not a value plus an absence.**
+
+| where | the collapse | the states |
+| --- | --- | --- |
+| activity | a zeroed array and an unmeasured one render alike | ACTIVE / DEAD / **UNKNOWN**, with NULL read as `undefined`, never `[]` |
+| session phase | `OFFLINE_DISCOVERY` must pick a phase before one is known | the absence is nullable AT THE BOUNDARY, not a seventh phase |
+| reachability | one date, or nothing | ~19–22 days / ~5 days / **NOW** / unknown |
+| float bound | a number, or null | proven-and-verified / **computed-but-basis-unverifiable** / no count |
+| split census | a count | N observed / zero observed WITH a basis / **basis never established** |
+
+**The mechanism is always the same.** A type can represent the value but not the
+absence, so the absence is forced to borrow one — and it borrows whatever looks
+most like a normal answer:
+
+- `'CLOSED'` for a phase nobody has looked up
+- `0` for an eligible count nobody has counted
+- `[]` for a window nobody has measured
+- `sharesOutstanding: 0` passing *"at most 10M"* more emphatically than any real number could
+
+**AND THAT IS THE DANGEROUS PART: PLAUSIBLE MEANS IT DOES NOT RAISE AN ALARM.**
+The borrowed value is chosen because it looks ordinary, so every one of these
+errors points toward reassurance. There is no version of this bug that renders
+as a scary number.
+
+### The fix is not always a new enum member — that was measured
+
+Adding `'UNKNOWN'` to `SessionPhase` produced **ONE compile error in the whole
+codebase**, because the dominant reader pattern is a positive allowlist that
+silently answers `false`. **The member would have changed a type twenty modules
+depend on and fixed nothing.**
+
+**So ask whose property the absence is:**
+
+- **a property of the OBSERVER** — "I have not loaded", "I did not look" —
+  belongs at the BOUNDARY, nullable, where the compiler stops it exactly where
+  the absence is true and the producers never carry a case they cannot emit
+- **a property of the THING** — "this minute had no trades", "this basis cannot
+  be established" — is a REAL STATE and belongs in the enum
+
+Getting that backwards is how an observer's state ends up in a market vocabulary,
+and every producer then carries a member it can never emit while every consumer
+carries a case it can never see.
