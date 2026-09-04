@@ -7565,3 +7565,46 @@ of the same claim.**
 is the one I would put to him: not "we are paying for duplicates" but **"one
 story can currently look like three."** Whether it HAS produced a false
 corroboration is unmeasured and I am not claiming it has.
+
+**80c. `companyUserAgent` DOES NO DERIVATION — and a CDN challenge page would
+produce mechanism 3's exact signature, which unifies it with mechanism 4.**
+
+*I asserted the desk sends an SEC-style contact string to corporate sites and
+Integration relayed it as a finding. I had inferred it from a function name, so I
+read the function.*
+
+    export function companyUserAgent(secUserAgent: string | null): string {
+      return secUserAgent ?? 'Momentum Intelligence Trading Desk';
+    }
+
+**A pass-through with a fallback. The name promises a derivation and there is
+none.** So:
+
+- **`SEC_USER_AGENT` is sent verbatim to every corporate website** — a compliance
+  string built for one regulator's fair-access policy, which by that policy
+  carries a contact email. **It self-identifies as an automated crawler**, which
+  is what SEC asks for and what a commercial CDN uses to classify and block.
+- **The fallback is worse in the other direction:** `'Momentum Intelligence
+  Trading Desk'` — no contact, no URL. **That is the exact shape `secAvailability`
+  REFUSES to send to SEC** (the `@` check). The desk declines to send it to the
+  regulator and sends it to everyone else.
+
+### And this may explain the asymmetry after all
+
+I said mechanism 4 was a candidate for the population and not for the gap,
+because both shapes sit on issuer hosts. **There is a route by which it IS the
+gap: a CDN challenge page returns HTTP 200 with an HTML body, not a 403.**
+
+| what was requested | what a challenge page produces |
+| --- | --- |
+| an INDEX (HTML expected) | HTML with no releases → `mode: INDEX`, `failure: EMPTY`/`JS_ONLY` — **looks like an ordinary empty index** |
+| a FEED (XML expected) | HTML, so `readCompanySource` dispatches to `parseReleaseIndex` → **`mode: INDEX` on a FEED registry — mechanism 3's exact signature** |
+
+**Same cause, two signatures, and the feed one is louder because a feed's content
+type is violated while an index's is not.** That would unify mechanisms 3 and 4
+and account for 85% versus 62% without a parser bug at all.
+
+**Testable by the persistence step already scoped, at no additional cost:**
+`mode: INDEX` on a FEED registry **with `status: 200`** is a challenge page;
+`mode: FEED` with `failure: EMPTY` is the parser. **The status code separates
+them and `PageFetch` already carries it.**
