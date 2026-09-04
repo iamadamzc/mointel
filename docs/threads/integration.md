@@ -1997,6 +1997,56 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## THREE POOLED FIGURES IN ONE DAY, AND EVERY ONE WAS THE REASSURING NUMBER
+
+**2026-09-04, counted by R&D after producing two of them:**
+
+    Ops    15.1%   pooled 30.8% movers with 9.1% non-movers
+    R&D    10.5%   pooled a live era with a dead one
+    R&D    19.8%   pooled a working pipeline with a broken one
+
+**R&D caught Ops's within the hour and then made two of its own in the four
+hours after.** Its conclusion, which is the entry: **recognising this shape in
+someone else's number is not the same skill as noticing it in your own.** The
+pair to *quoting a rule feels like having applied it* — both describe a
+competence that fires outward and not inward.
+
+**And "reassuring" needs the precise reading, because two of the three were bad
+news.** 10.5% made the free path look hopeless. What made it reassuring was not
+its direction but that **it SETTLED something** — vendor-or-nothing, decided, no
+further work needed. **A figure that closes a question is comfortable whichever
+way it points**, and that comfort is what stops anyone asking what went into it.
+
+**The mechanism underneath all three is one move: a population that changed
+state mid-window, averaged across the change.** Movers and non-movers, live era
+and dead era, working pipeline and broken one. **The average is always real
+arithmetic over a set that stopped being one thing.**
+
+## A LIVE TABLE JOINED TO A DEAD ONE READS AS A CAPABILITY GAP
+
+**R&D, 2026-09-04, retracting `4.5%` and `3.9%`.** `symbol_desk_day` spans
+thirteen sessions because it is built from the **production** extract.
+`research_sources` is **local**. Joining them measured the difference between a
+live board and an abandoned table — **and that difference renders exactly like a
+method that fails on 95% of names.**
+
+**The local store did not stop researching on 08-18. It stopped everything** —
+minute bars, `ticker_session`, `desk_events`, `desk_assessments`. Which means
+**the store answered the question against itself**: a research outage does not
+take minute bars with it, so no production query was needed to refute it. The
+check was available locally and cheaper than the one I commissioned.
+
+**What survives is `69.2%` / `89.1%`, and its caveat changed rather than
+lifted:** valid because both stores were live 08-17..08-18, **and thin for the
+same reason — two sessions, 91 tickers.** The era qualification was wrong; a
+sample-size one is right.
+
+**And the failure shape is sharper than a backlog.** Last COMPLETE queued
+19:00, first FAILED queued 19:30, **zero overlap**, `completed_at` set on all 47
+FAILED and all 108 PARTIAL. **They terminated; they did not freeze.** A pipeline
+that broke at a moment and failed everything after — 27.2% before it, 0.0%
+after. **Only 7 QUEUED never ran.**
+
 ## A RESULT IN THE EXPECTED DIRECTION SUPPRESSES THE CHECK ON THE POPULATION
 
 **Ops, 2026-09-04, against its own live reading, minutes after using the same
