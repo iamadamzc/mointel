@@ -93,56 +93,115 @@ export function parseNumber(raw: string): number | null {
  */
 const NOT_A_FLOAT = /share base|shares?\s+outstanding|market\s*cap|out of float range/i;
 
-/**
- * The suffixes the float column is allowed to carry after its number.
- *
- * An ALLOWLIST, and that is the whole design. Unrecognised trailing text
- * REFUSES rather than being ignored, so a phrasing nobody has seen cannot
- * silently yield a number, and adding one is a deliberate edit with a test
- * behind it.
- */
-const FLOAT_SUFFIX = /(?:displayed\s+float|displayed|float)?/.source;
 
 /**
- * Parses the Sheet's FLOAT cell, which has its own convention.
+ * The float grammar, applied ONLY to the head clause.
  *
- * `parseNumber` is deliberately strict — the whole cell must be one numeric
- * token — because it serves price, volume, change and resistance cells, where
- * `"$2.69/$3.00 resistance"` must yield null. That strictness is correct and
- * must not be loosened.
+ * A LITERAL regex rather than one built from a template string. The first
+ * version interpolated an allowlist of suffixes and the template literal ate
+ * every backslash -- `\s` became `s`, `\d` became `d` -- producing
+ * `/^~?s*$?s*(d{1,3}...)/` which threw at module load. TYPECHECK PASSED: it is
+ * a runtime failure in a string, and tsc cannot see inside one. The suffixes
+ * are inlined here instead, which is both correct and easier to read.
  *
- * But the float column is not written that way. The trader writes
- * `"11.93M displayed"`, `"532,255 displayed"`, `"~0.547M displayed float"` —
- * a number, a unit, and a provenance word. Measured on the live board on
- * 2026-09-04: **thirteen top-50 names carried a float string and exactly one
- * parsed**, because every other one ended in a word.
- *
- * So this is a dedicated parser for a field with a convention, not a relaxed
- * general one. Counting the callers is not asking each what it needs — and the
- * tempting fix, loosening `parseNumber`, would have made every price cell on
- * the desk read a resistance range as a price.
- *
- * The leading `~` is accepted: it marks an approximation the trader wrote
- * deliberately, and the value is still his stated float. The raw string is
- * preserved on the field either way, so nothing about the approximation is
- * lost by parsing it.
+ * The trailing group is the ALLOWLIST: a recognised provenance word, or
+ * nothing. Anything else fails to match and the cell is refused rather than
+ * having the unknown text ignored.
  */
-export function parseSheetFloat(raw: string): number | null {
-  const candidate = raw.trim();
-  if (!candidate) return null;
-  if (NOT_A_FLOAT.test(candidate)) return null;
+const FLOAT_HEAD =
+  /^~?\s*\$?\s*(\d{1,3}(?:,\d{3})+|\d+)(\.\d+)?\s*([KMB])?\s*(?:displayed\s+float|displayed|float)?\s*$/i;
 
-  const match = candidate.match(
-    new RegExp(`^~?\\s*\\$?\\s*(\\d{1,3}(?:,\\d{3})+|\\d+)(\\.\\d+)?\\s*([KMB])?\\s*${FLOAT_SUFFIX}\\s*$`, 'i'),
-  );
-  if (!match) return null;
 
-  const parsed = Number(`${match[1].replace(/,/g, '')}${match[2] ?? ''}`);
+/**
+ * A trailing clause stating shares outstanding.
+ *
+ * Its own grammar, applied ONLY to tail clauses. The float grammar never sees
+ * this text and this grammar never sees the head, which is what makes the SO
+ * figure unreachable by the float parser rather than merely unmatched by it.
+ */
+const SO_TAIL = /^\s*~?\s*\$?\s*(\d{1,3}(?:,\d{3})+|\d+)(\.\d+)?\s*([KMB])?\s*(?:SO|shares?\s+outstanding)\s*$/i;
+
+function scale(digits: string, decimals: string | undefined, suffix: string | undefined): number | null {
+  const parsed = Number(`${digits.replace(/,/g, '')}${decimals ?? ''}`);
   if (!Number.isFinite(parsed) || parsed <= 0) return null;
+  const unit = (suffix ?? '').toUpperCase();
+  return parsed * (unit === 'B' ? 1e9 : unit === 'M' ? 1e6 : unit === 'K' ? 1e3 : 1);
+}
 
-  const suffix = (match[3] ?? '').toUpperCase();
-  const multiplier = suffix === 'B' ? 1e9 : suffix === 'M' ? 1e6 : suffix === 'K' ? 1e3 : 1;
-  return parsed * multiplier;
+/**
+ * Reads the Sheet's FLOAT cell, which states a float and MAY state the share
+ * count beside it.
+ *
+ *     "537,665 displayed"                  float only
+ *     "537,665 displayed; 785,655 SO"      float AND shares outstanding
+ *
+ * `parseNumber` is deliberately strict -- the whole cell must be one numeric
+ * token -- because it serves price, volume, change and resistance cells where
+ * `"$2.69/$3.00 resistance"` must yield null. That strictness is correct and
+ * must NOT be loosened: the defect was never in the parser that failed, it was
+ * a field with its own convention being read by a general one. Counting the
+ * callers is not asking each what it needs, and here the tempting fix would
+ * have made every price cell read a resistance range as a price.
+ *
+ * SPLIT BEFORE PARSING, and that is the design rather than an implementation
+ * detail. The cell carries TWO numbers and only the first is the float; a
+ * wider single pattern would leave the share count inside a capture group that
+ * a later edit could read by reordering. Splitting first means the float
+ * grammar is applied to a substring that PROVABLY CANNOT CONTAIN the share
+ * count -- unreachable, not unmatched. R&D's NWTG trap, where "based on N
+ * shares outstanding, of which M held by non-affiliates" was read as N, is the
+ * same mistake at 1.92x and it is what this shape forbids.
+ *
+ * The tail is an ALLOWLIST like the head: an unrecognised clause refuses the
+ * WHOLE cell rather than being skipped, so a phrasing nobody has seen cannot
+ * yield a float with an unread qualifier attached to it.
+ *
+ * And the pair is worth having on its own. Item 28 recorded that a float and a
+ * share count could not be compared because they arrived from different reads
+ * at different times -- "asynchronous by construction". Written in one cell by
+ * one author at one instant, they can be, so `assessFloat`'s existing
+ * `float > shares` and 2% unit-mismatch rules become usable without a capture
+ * or a join.
+ */
+export function parseSheetFloatCell(raw: string): {
+  float: number | null;
+  sharesOutstanding: number | null;
+} {
+  const empty = { float: null, sharesOutstanding: null };
+  const cell = raw.trim();
+  if (!cell) return empty;
+
+  const [head, ...tail] = cell.split(';');
+
+  /*
+   * The disqualifier applies to the HEAD only. A tail clause saying "shares
+   * outstanding" is the tail doing its job; the same words in the head mean
+   * the cell is quoting a share count as if it were a float, which is what
+   * `TENX` does and what must still be refused.
+   */
+  if (head === undefined || NOT_A_FLOAT.test(head)) return empty;
+
+  const headMatch = FLOAT_HEAD.exec(head);
+  if (!headMatch) return empty;
+  const float = scale(headMatch[1]!, headMatch[2], headMatch[3]);
+  if (float === null) return empty;
+
+  let sharesOutstanding: number | null = null;
+  for (const clause of tail) {
+    const soMatch = SO_TAIL.exec(clause);
+    // Unrecognised, or a second share count: refuse the whole cell rather than
+    // choose between two numbers that claim the same meaning.
+    if (!soMatch || sharesOutstanding !== null) return empty;
+    sharesOutstanding = scale(soMatch[1]!, soMatch[2], soMatch[3]);
+    if (sharesOutstanding === null) return empty;
+  }
+
+  return { float, sharesOutstanding };
+}
+
+/** The float alone. Kept as the narrow reader for callers that want only it. */
+export function parseSheetFloat(raw: string): number | null {
+  return parseSheetFloatCell(raw).float;
 }
 
 /** A NumericField for the float column, read by `parseSheetFloat`. */
@@ -153,6 +212,23 @@ export function floatField(value: unknown): NumericField {
     raw,
     display: raw || EMPTY_DISPLAY,
     value: unknown ? null : parseSheetFloat(raw),
+    isUnknown: unknown,
+  };
+}
+
+/**
+ * The SHARE COUNT stated beside the float in the same cell.
+ *
+ * A NumericField of its own so it carries the raw text and can be absent
+ * without becoming zero -- the same rule as every other unknown on this desk.
+ */
+export function sheetSharesOutstandingField(value: unknown): NumericField {
+  const raw = text(value);
+  const unknown = isExplicitUnknown(raw);
+  return {
+    raw,
+    display: raw || EMPTY_DISPLAY,
+    value: unknown ? null : parseSheetFloatCell(raw).sharesOutstanding,
     isUnknown: unknown,
   };
 }
