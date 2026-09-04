@@ -3064,9 +3064,22 @@ parsed for a date: it is free text a model wrote.
 | have a share-count denominator at all | 91 / 231, **39.4%** |
 | have any supply block at all | 208 / 231, **90%** |
 
-**The binding constraint is the denominator, not the numerator.** More filings
-buy nothing; the share count is the whole game — the same shape as the float
-work, where the evidence is there and the anchor is missing.
+**~~The binding constraint is the denominator, not the numerator. More filings
+buy nothing; the share count is the whole game.~~ WRONG, AND IT IS A COLLISION
+OF MY OWN MAKING. Corrected 2026-09-04 — see item 45.**
+
+**`91/231` is the MODEL'S TRANSCRIBED `structure.sharesOutstanding`. The
+denominator `computeSupplyPair` actually divides by is
+`bundle.reportedSharesOutstanding` — the deterministically parsed SEC
+company-facts value — and that is available on 185 of 231, 80.1%.** Two
+quantities called *the share count*, and I quoted the one the code does not
+use.
+
+**So the numerator IS the binding constraint, exactly as item 27 says**: of
+231, 46 lack a count and **146 lack a priced `KNOWN_ACTIVE` block** — three
+times as many. **Items 27 and 34 contradicted each other and 34 was the wrong
+one.** *"More filings buy nothing" is the dangerous half: it argues against
+collecting the very evidence that is actually short.*
 
 **Then the guard takes 23.8% to zero.** The basis check needs a split factor per
 session, and those exist only where `ensureDeepHistory` has run — gated on rank
@@ -3117,6 +3130,62 @@ from no-news days**, because nothing records what he supplied at all; the
 manual-feed caveat in item 25 is a design requirement, not an implemented
 distinction. Building the capture is a decision that sits with the trader; the
 spec is items 25/26.
+
+---
+
+**45. Design's count: 38 of 46. BUILD THE FALLBACK — and the query found a
+contradiction between two of my own items.** *Asked 2026-09-04. Measured by
+replicating `readReportedShares` rather than proxying it.*
+
+**Design's framing is correct and I confirm it:** `computeSupplyPair` returns
+null on exactly one condition (`supply.ts:157`), guarded at `pipeline.ts:409`.
+**Pair-absent means NO FILED SHARE COUNT and nothing else** — a ledger with no
+usable blocks still produces a pair with nulls and a filled `excluded`.
+
+| | of 231 current dossiers |
+| --- | --- |
+| have a filed share count | **185 — 80.1%** |
+| **no filed count, so no pair** | **46 — 19.9%** |
+| **…of those, ledger NON-EMPTY** | **38 — 82.6%**, holding **103 blocks** |
+| any dossier with a ledger at all | 208 — 90% |
+
+> **BUILD IT. Design's own threshold was "five rows in six"; the answer is
+> 82.6%.** Those 38 names have researched supply and no way to express it as a
+> ratio — a blank tells him *"we do not know this company's supply"* when the
+> truth is *"we know the blocks and cannot divide them."*
+
+*Two independent cross-checks that the replication is right: the 46 matches
+item 27's separately measured "no filed share count: 46", and the 208 matches
+item 34's "any supply block at all: 208".*
+
+*Limits, both stated: the snapshot is the 08-23 file whose versions run
+08-17→08-21, so this is vintage rather than current; and citability is
+generous — ACTIVE sources rather than CITED, as item 27 also used. A stricter
+citability test would move tickers INTO the no-denominator bucket, so **46 is a
+floor on the gap and 38 a floor on the opportunity.** The direction favours
+building.*
+
+### AND THE QUERY EXPOSED A CONTRADICTION BETWEEN ITEMS 27 AND 34
+
+**Item 34 records the denominator on `91/231 = 39.4%` and concludes *"the
+binding constraint is the denominator, not the numerator; more filings buy
+nothing."* Item 27 records `no filed share count: 46` — which implies 185 — and
+concludes *"the numerator is the binding constraint."* Both are mine and they
+cannot both be right.**
+
+**Resolved by measuring: 91 is `structure.sharesOutstanding`, the MODEL'S
+TRANSCRIPTION. 185 is `bundle.reportedSharesOutstanding`, the parsed filed
+value the code actually divides by.** Item 34 quoted the quantity the code does
+not use.
+
+> **Two quantities called "the share count", one of them the model's and one
+> deterministic — the same collision as `displayedFloat`, `split_factor` and
+> `recentMajorRuns`, and this one lived inside a single thread's own charter
+> where no boundary existed to make anyone ask which.**
+
+**The consequence is not cosmetic: item 34's line argues against collecting
+more evidence, and the evidence is what is actually short** — 146 names lack a
+priced `KNOWN_ACTIVE` block against 46 lacking a count.
 
 ---
 
