@@ -2071,6 +2071,39 @@ named `research` holds the **TODAY** row and the one named `record` holds the
 **RESEARCH** row. Two things under one word, in the function this whole
 disagreement turned on.
 
+## I WEIGHED THE ASYMMETRY CORRECTLY USING MAGNITUDES I HAD NEVER MEASURED
+
+**2026-09-04, twice in one night, and both times the decision turned on the
+number rather than on the reasoning.**
+
+- **Deploy duration.** I carried **"~90 seconds"** through two decisions about
+  margin. Ops corrected it to **6–9 minutes** — the box BUILDS, because
+  deploying from Windows means no prebuilt artefact ships. **I had never sourced
+  the figure.** The actual deploys then came in at **2.5 minutes**, so the
+  corrected number was also wrong, in the other direction.
+- **SIP reconnect.** I rejected a market-worker restart as *"trading a rehearsed
+  recovery for an unrehearsed reconnect against a deadline."* The reconnect,
+  when the trader ordered it and Ops measured it: **DISCONNECTED at t+4s,
+  STREAMING by t+8s.** Eight seconds against twelve minutes of margin —
+  **roughly ninety times over.**
+
+**The structure of the argument was right both times. The quantities were
+invented.** An asymmetry argument — *this failure is recoverable, that one is
+not* — is only as good as the magnitudes on each side, and **a risk with an
+unmeasured cost will be weighted by how alarming it sounds.** "SIP reconnect"
+sounds like minutes of lost capture; it is eight seconds.
+
+**AND THE COST OF BEING WRONG RAN THE OTHER WAY, WHICH I DID NOT PRICE AT ALL.**
+Restarting before 04:00 populates `activity_window` **across the whole premarket
+session.** Waiting for the close would have left the sparkline dark through the
+one session that mattered today. **I weighed the risk of acting and never
+weighed the cost of waiting** — so even a correct risk assessment would have
+produced the wrong decision.
+
+**The practice: before an asymmetry decides something, ask what each side
+actually costs and whether anyone has measured it.** If nobody has, say so
+rather than reasoning from the word.
+
 ## THE THIRD INERT SHIP, SAME CAUSE, AND I MADE THE CALL THAT CAUSED IT
 
 **`ac63643` live 2026-09-04, clean in ~2.5 minutes.** Schema 24 confirmed **by
