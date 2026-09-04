@@ -7305,3 +7305,36 @@ coverage fix is exactly the result someone reverts.
 items the cutoff discarded. It establishes the premise — the feed path produces
 dated items and the index path does not — and it cannot show what was dropped.
 **`parsed-versus-kept` is still the counter that settles mechanism 1 outright.**
+
+**78a. WHAT THE BOUND WILL DO TO THE 22 BLANK ROWS — predicted now, verified at
+build time.**
+
+*Integration: check whether the bound covers the 22 pairs that render with both
+ratios null, because if it does, the blank render is repaired by addition.*
+
+**A pair renders whenever `reported` exists, so all 22 already have the bound's
+only required input.** The bound needs no blocks — `sharesOutstanding`, its
+`asOf`, and the factor — so **every one of the 22 will produce a statement rather
+than a blank.** Which statement depends on the factor:
+
+| `denominatorFactor` | the row says |
+| --- | --- |
+| established | an adjusted count, and **proven or not proven against 10M** |
+| null | **`BASIS_UNVERIFIABLE`** — the count, its date, where our history begins |
+
+**Both beat a blank**, and the second is the sentence Integration and the trader
+both asked for.
+
+**Rate, from the archive and stated as a prediction rather than a measurement:**
+75 of 211 company-facts counts are ≤ 10M raw (**35%**), and item 62 puts ~61% of
+`asOf` dates inside the stored bar window. So of 22 representative rows, expect
+roughly **a third to read PROVEN**, the rest to read a number with a verdict, and
+**around 40% to carry the unverifiable-basis clause**. I will report the actual
+split at build time; if the bound does NOT cover them, that is its own piece.
+
+### One hazard for the build: an unadjusted count is not conclusive even when small
+
+A **reverse** split makes a stale count HIGHER than today's — safe. **A FORWARD
+split makes a stale count LOWER**, so an unadjusted figure under 10M can be a
+false pass. **The factor cannot be skipped for "obviously small" counts**, which
+is the same inversion risk ZOOZ guards, arriving from the other end.
