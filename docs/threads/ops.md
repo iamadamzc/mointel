@@ -5208,6 +5208,60 @@ reuse, growth means starvation.
 Do not change pragmas on the live store to find out; ship a change through the
 gate like anything else.
 
+## 0e now covers indexes, and the mutation that proved it lied twice first
+
+**Committed `eabc989`, gated, pushed. NOT DEPLOYED** — Integration holds it for
+the first slot in the next bundle after the close. Production is still
+`b2399a2`.
+
+Research reviewed the guard clean and named the one gap: the completeness check
+covered `CREATE TABLE` only, so **a store reporting the current version with an
+index missing passed the guard**, and every query that needed that index goes to
+a scan. A slow answer rather than a wrong one — the kind nobody notices.
+
+Integration proposed a checklist line: bump `SCHEMA_VERSION` when adding an
+index. It is closed in code instead, because **a rule that depends on the next
+person remembering is the failure this desk keeps recording.** `expected` now
+matches `CREATE TABLE` and `CREATE [UNIQUE] INDEX`; `present` reads
+`type IN ('table','index')`. Both are cheap reads that take no write lock, so
+the guard still costs nothing on the path it exists to protect.
+
+**Mutation-proven, eventually.** Reverting to a tables-only check fails the new
+index test *and only that test*. Two earlier revert attempts appeared to refute
+a **different** test — see the section below for why, because the reason is the
+more useful finding.
+
+## Four checks failed by returning a plausible answer — 2026-09-04
+
+Not one of these threw. Each returned a value that looked like a legitimate
+reading, and two of them would have reached the trader as a wrong statement of
+fact. The family is worth naming because the desk keeps meeting it:
+
+**a check that fails renders as an answer, not as an error.**
+
+- **`grep "INDEX IF NOT EXISTS (\w+)"` returned 0 for a line that was there.**
+  In BRE, `\w` is a word-character and `+` is a *literal plus*, so the pattern
+  demanded `(` followed by one word char and a `+`. The file has a literal
+  backslash. **This cost two rounds**: I read `0` as "the mutation applied",
+  concluded the guard was incoherent, and started explaining a failure that had
+  not happened. Verify with a substring that contains no backslashes at all.
+- **`systemctl is-active mointel-scheduler` returned `inactive`** — because
+  there *is* no `mointel-scheduler`. The fourth unit is **`mointel-assess`**.
+  A misspelt unit and a dead service are the same string. **Check `LoadState`
+  alongside `is-active`**; `loaded` is what separates them.
+- **`TZ=America/New_York date` returned UTC**, because this shell has no tz
+  database. It emitted a valid, plausible, six-hours-wrong timestamp. Do the
+  offset arithmetic from UTC by hand, or read the clock on the server.
+- **`grep -c` on a root-owned file returned empty, not `0`** — permission
+  denied. Empty sat one character away from a legitimate count.
+
+**The shared shape: the failure mode is in-range.** An exception announces
+itself; `0`, `inactive`, a timestamp and an empty string all pass for data.
+**When a check reports the absence of something, prove the check can see a
+present one** before believing the absence — the same discipline as the
+`length > 0` clause inside the 0e guard itself, which exists because the regex
+there once matched nothing and made `every()` vacuously true.
+
 ## Traps that cost time before
 
 Full list in [../OPERATIONS.md](../OPERATIONS.md) §"Known rough edges" and the
