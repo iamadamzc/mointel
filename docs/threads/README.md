@@ -1263,6 +1263,41 @@ read 23. **The failed deploy is the reason that sha is live.**
 something they cannot observe** — the same reasoning as reporting existence
 rather than a rate.
 
+## A DELIBERATE INCONSISTENCY MUST BE RECORDED AS DELIBERATE, OR IT WILL BE "FIXED"
+
+**Design, 2026-09-04, `2b3ddd9`, flagging its own.** Two series sit on the same
+row and are scaled **oppositely**: activity to a **shared** ceiling (the active
+line), price to **each row's own range.**
+
+**Both are right, for opposite reasons.** Trades per minute means the same thing
+on every row, so a shared scale makes rows comparable and a full bar means 300/min
+everywhere. **A $2 name and a $40 name share no price axis** — shape is the only
+honest content, and a shared scale would flatten every cheap name to nothing.
+
+**Its own sentence is the point: "if that ever looks like an oversight, it is
+not."** An inconsistency that is correct is indistinguishable from one that is
+sloppy, **and the tidier of the two is the one a future editor will impose.**
+Record the reason at the code, not in a scope document.
+
+### And the structural fix bought a class of bug no test could reach
+
+Both series map over **one extracted `windowSlots`**, so the render reconciles
+nothing. Design's note on what that actually saved: **not effort, but a bug it
+could not have tested for** — two series each computing their own window and
+agreeing **by coincidence** is invisible from the render side, **because both
+would look right on every fixture the author would think to choose.**
+
+**That is the strongest case for making a thing impossible rather than checking
+it: the check you would write comes from the same model of the problem that
+produced the bug.**
+
+### A flat series belongs mid-height, not on the floor
+
+**Confirmed by mutation against a floor rendering.** A price that did not move is
+not a price at its low — **collapsing an unchanged series to the bottom of its
+box states a direction the data does not contain**, on a surface read to judge
+whether a name is going up.
+
 ## WHEN A FILTER RETURNS NOTHING, LIST THE VALUES THAT DO EXIST
 
 **Ops, 2026-09-04, measuring board churn.** Its first query asked for
