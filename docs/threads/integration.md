@@ -1997,6 +1997,58 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## AN UNSETTLED QUESTION CAN BE RESOLVED BY ERROR DIRECTION INSTEAD OF BY ANSWERING IT
+
+**Research, 2026-09-04, `ebeb9bb`, answering the trader's "why can't we compute
+a float ourselves and label it".** The answer is yes — **and the thing to build
+is better than what he asked for.**
+
+**He proposed a labelled ESTIMATE. What the method actually yields is a BOUND.**
+Because we can only subtract affiliates we FOUND, **true float is at most our
+number.** So an upper bound below 10M is a **proof that pillar 5 holds**, not an
+estimate of it; above 10M it says nothing and must say nothing. *"No more than
+X"* is both stronger and honester than *"about X"* — and it puts float in the
+same family as `supplyBound` (conclusive when high) and the volume bound
+(conclusive when low) rather than leaving it the one soft number on a desk of
+hard ones.
+
+**AND THE 13G BLOCKER DISSOLVED WITHOUT BEING SETTLED, which is the part worth
+copying.** Whether 13G filers are passive has been open for weeks. The
+resolution is not an answer, it is the **error direction**:
+
+- **Miss an affiliate** → float too HIGH → fails pillar 5 → **he skips a name.**
+  Conservative.
+- **Subtract a passive holder** → float too LOW → passes pillar 5 → **he takes a
+  trade.** Dangerous.
+
+**So subtract only what is PROVEN an affiliate, and the unsettledness resolves
+safely by default.** The question stops being load-bearing. That is
+name-the-condition discipline applied to an **epistemic gap** rather than to a
+rule, and this desk had not done it before.
+
+**Both header objections moved rather than being overruled.** The supply bound
+does NOT stand in for a float — it answers how much filed supply is live against
+shares outstanding, pillar 5 asks whether tradeable float is under 10M, and the
+floor renders on 5.6% of tickers. **That sentence was written before the bound
+reached a screen**, which is the borrowed-premise-perishes rule catching a
+premise inside our own source file.
+
+**Feasibility was never the objection:** Forms 3/4/5 on 39 of 40 issuers, 13D/G
+on 70%, a denominator on 185 of 231. **And the degradation is graceful** — if
+13D/G cover pages prove unparseable, the bound falls back to shares outstanding
+minus Section 16, **looser and still an upper bound.**
+
+**MY THIRD INVENTED LINK OF THE NIGHT SITS INSIDE THIS ONE.** I told Research
+its 19-20 tickers were filed-share-count coverage rather than float coverage,
+on R&D's reading of `float.ts`. **Both threads were right and only my link was
+false:** the module produces no float, AND Research's excerpts are
+issuer-stated public floats — non-affiliate share counts from baby-shelf
+calculations — **beside** `float.ts`, not inside it. MNDR walking 3,326,123 →
+2,136,640 across successive filings settles which quantity it is; shares
+outstanding does not decline like that. **Two true statements about two
+artefacts, joined by an assertion nobody had checked.** The only improvement
+over the earlier instances is that I flagged it as unverified while sending it.
+
 ## TWO EXPLANATIONS IDENTICAL IN THE DATA, SEPARATED ONLY BY A CHECK OUTSIDE IT
 
 **Ops, 2026-09-04, closing the orphaned-worker question.** The signature was
