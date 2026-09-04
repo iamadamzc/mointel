@@ -1997,6 +1997,45 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## EXISTENCE NEEDS NO DENOMINATOR; THE RATE DOES
+
+**Ops, 2026-09-04, reporting a live defect without a population.** Asked how many
+rows carry UNKNOWN structure **and** a parsed float, it found four — **AOUT,
+CHPT, DLTH, TLYS** — and refused to give the proportion.
+
+**The reason is that the only population available was the censored one:** 16
+names from a post-market API reading, the same read where it asked for 50 and got
+17. **So "4 of 12" would be a rate over an unstated population**, and it would
+have been quoted as a board figure within the hour.
+
+**What survives without a denominator is exactly what was claimed: the
+population is NON-EMPTY, and here are its members.** An existence claim is
+complete without a denominator. **A rate is not a claim at all until its
+population is named.** That is the cleanest statement of this desk's oldest
+failure that anyone has produced, and it arrived as a refusal rather than as a
+rule.
+
+**And it was a refusal of the tempting kind.** A count there would have been
+precisely the good-news-shaped figure recorded three hours earlier as the thing
+that stops people auditing a population — **the same thread, the same evening,
+declining to repeat it.**
+
+## THE COUNT I GATED ON CAME BACK NON-ZERO, SO THE GATE MOVED
+
+**This seat, 2026-09-04.** I held `b2399a2` behind "Design verifies what is live
+first", writing that **if the affected population were zero the fix would be
+right and much less urgent.** Ops resolved it: four rows, on his board, three
+created by the parser turning `"23.75M displayed"` and its siblings into
+numbers. **The premise of the hold was the unknown count, and it was answered.**
+
+**The gate itself was also wrong in shape, which matters more than the count.**
+"Do not ship on top of unverified work" is correct when changes **stack on one
+surface**. The structure chip and the supply pair are **independent surfaces** —
+if the null-floor row proves wrong, that is a new fix, not a reason to leave a
+false sentence on four rows overnight. **A general principle applied where its
+condition does not hold is the event-versus-condition failure**, committed by
+the seat that keeps recording it.
+
 ## A BOUND IS VALIDATED BY ITS SUBTRACTION, NOT BY ADJUDICATING ITS ANSWER
 
 **Research, 2026-09-04, `2600b4c`, confirming a challenge and then improving
