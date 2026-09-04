@@ -13,6 +13,7 @@
  * character 10-Q pasted into a prompt buries the one sentence that matters.
  */
 
+import { hasUsableSource } from '../catalyst/irRegistry';
 import type { MarketDatabase } from '../../market/store/db';
 import { readIssuer, readSources } from '../../market/store/researchRepo';
 import { readDemandStates } from '../../market/store/repo';
@@ -433,12 +434,24 @@ export function buildEvidenceBundle(
   const nonSecCatalystSources = catalystSources.filter(
     (source) => source.authority !== 'SEC',
   );
-  const companySourceKnown = Boolean(
-    issuer?.companySources?.feedUrl ??
-      issuer?.companySources?.pressReleaseIndexUrl ??
-      issuer?.companySources?.newsroomUrl ??
-      issuer?.companySources?.investorRelationsUrl,
-  );
+  /*
+   * A DURABLE collection point, not merely a URL.
+   *
+   * This tested URL PRESENCE, and `investorRelationsUrl` is set to a bare
+   * origin as a by-product of resolution — so an issuer whose only stored
+   * address is a homepage satisfied "we know where to look" while having
+   * nowhere to poll. Measured on the 2026-08-23 store: 19 registry rows carry
+   * only that origin, and on NINE current dossiers it SUPPRESSED the SEC-only
+   * gap entirely. The warning was silent on the names where the desk is blind
+   * and believes it is not.
+   *
+   * `hasUsableSource` is the same predicate the COLLECTOR gates its poll on —
+   * imported rather than restated, so coverage cannot claim a source the
+   * collector would refuse to read.
+   */
+  const companySourceKnown = issuer?.companySources
+    ? hasUsableSource(issuer.companySources)
+    : false;
 
   const gaps: string[] = [];
   if (!issuer?.cik) gaps.push('no SEC registrant matched for this ticker');
