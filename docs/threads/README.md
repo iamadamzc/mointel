@@ -248,6 +248,13 @@ Every thread works in `A:\mointel`. Rules, in order of how much they matter:
    that is where `npm run` was convenient. **The cost lands on everyone else:**
    two threads hit a red gate that was not theirs, and one held a finished file
    rather than commit it ungated — the correct call and the expensive one.
+
+   **THE RULE IS ABOUT EXPOSURE, NOT OUTCOME.** *Research, 2026-09-04, having
+   edited `db.ts` in the shared tree and landed it green.* A shared-tree edit
+   that stays green for the window it is uncommitted is **luck about timing, not
+   a property of what was done** — the cost lands on whoever runs a gate during
+   that window, and they are not the one who chose to take the risk. **So "it
+   was fine" is not a defence and a clean outcome does not retire the rule.**
    *(The fault itself is worth knowing: backticks inside a comment placed in a
    SQL template literal terminated the string, so everything after it parsed as
    code. Two toolchains reported two different symptoms of it.)*
