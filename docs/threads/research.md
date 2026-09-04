@@ -6128,3 +6128,73 @@ Integration's own discipline: it has asked Ops for a head-to-head on the ten
 names Scanz shows N/A, **and that measurement can falsify the decision**.
 Building before a falsification test returns is the instrument-proving rule run
 backwards. The close series has no such dependency.
+
+---
+
+**61. I HAD IT BACKWARDS: THE MODEL IS RIGHT AND THE XBRL IS STALE. Correcting
+item 60 before it is built.**
+
+*Item 60 said compute the bound from `SEC_COMPANY_FACTS` — "deterministic, dated,
+no transcription step" — and framed the model transcription as the error source.
+Integration approved it and told the trader. Then I cross-checked the two
+against each other, which I should have done before recommending either.*
+
+### The cross-check
+
+79 names carry BOTH a model transcription and an XBRL figure. **44% disagree by
+more than 1%.** Five of the disagreements flip the 10M pillar-5 test — and in
+**every one of the five the MODEL IS RIGHT**:
+
+| ticker | XBRL | its `asOf` | model | ratio | why |
+| --- | --- | --- | --- | --- | --- |
+| **ZOOZ** | 162.00M | **2025-12-31** | 8.10M | **20.00×** | 1-for-20 reverse split effective **June 1 2026** |
+| ICCM | 73.12M | 2025-12-31 | 3.43M | 21.3× | 30-for-1 effective June 4 2026 |
+| EBON | 111.77M | **2019-12-31** | 4.99M | 22.4× | 1-for-30 in 2022; the figure is seven years old |
+| SKK | 18.75M | 2025-12-31 | 3.96M | 4.7× | 1-for-10 April 2026 |
+| AZI | 73.58M | 2023-09-30 | 5.50M | 13.4× | no split recorded; the figure is three years old |
+
+**ZOOZ is exactly 20.00× against a documented 1-for-20.** That is not a
+transcription error, it is a **basis** error — the same class the split work
+exists to fix, arriving from the other end.
+
+### Staleness is NOT uniformly safe, which is the part that matters
+
+`asOf` age at 2026-08-23: **median 84 days, p75 235, p90 600, max 3,067 (8.4
+years)**. 16% are over a year old.
+
+- **pre-reverse-split staleness OVERSTATES** shares outstanding. Safe for a
+  bound — float really is under it — but it destroys the bound's value, failing
+  to prove pillar 5 on names where the truth is 8M.
+- **pre-issuance staleness UNDERSTATES.** **That manufactures proof.**
+
+**Both are in the population.** Of the 75 names a raw XBRL bound would call
+PROVEN, **20 — 27% — rest on a figure more than 180 days old**, including STG at
+**8.4 years** and WALD at nearly 5.
+
+### And one of them is a zero
+
+**HQ carries `sharesOutstanding: 0.00M`, which passes a `≤ 10M` test as the most
+emphatic proof in the set.** A zero is not a tiny float; it is a failed read
+wearing a passing answer — the exact failure this desk has a memory note about.
+**Zero must be refused, not compared.**
+
+### The fix is machinery already built
+
+**`sharesOutstanding(asOf) ÷ splitFactor(asOf → today)`.** `daily_bars.split_factor`
+and `splitFactorAt` already do this, and `splitFactorAt` falls back to the
+nearest EARLIER session precisely so a figure dated between bars still lands on a
+basis. **The basis work and the float bound are the same problem** — the third
+convergence tonight.
+
+**So the model transcription is not a COMPETITOR to XBRL. It is a FRESHER
+READING OF THE SAME FACT.** The architecture is XBRL for the number with its
+`asOf`, split-adjusted to today; the model's cover-page reading as an independent
+freshness cross-check; **and a disagreement that the split factor does not
+explain is a FINDING, not a tie to break.**
+
+### BTOG is in the proven set
+
+`BTOG 1.48M asOf 2025-12-31`. So an SGRX bound computed today would rest on an
+eight-month-old count filed under the old ticker. **The staleness defect and the
+rename defect compose**, and the name they compose on is the one that started
+this.
