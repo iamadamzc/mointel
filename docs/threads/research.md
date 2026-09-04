@@ -6689,3 +6689,68 @@ economical.
 says WHICH side went unsearched — "no company IR or newswire location is known"
 is a different sentence from "one is known and returned nothing", and the render
 cannot tell them apart today.
+
+---
+
+**69. THE BOUND IS ONE DIVISION THE SUPPLY PAIR DELIBERATELY DOES NOT DO — and
+ZOOZ is its falsification case.**
+
+*Checked the machinery BEFORE reporting the re-scope, having twice this session
+told Integration to build something that existed.*
+
+### More exists than "three-quarters"
+
+`pipeline.ts:409` already computes `supplyPair` from
+`bundle.reportedSharesOutstanding` — `reported.shares`, `reported.asOf`, and
+`readSplitFactors(db, ticker, asOf)` at full stored depth. `factorWithinCoverage`
+returns `BASIS_UNVERIFIABLE` rather than extrapolating,
+`components/AutomaticIntelligence.tsx:276` renders the pair, and
+`lib/dashboard/supply.ts:67` **already labels `BASIS_UNVERIFIABLE` as "unverifiable
+split basis"**. End to end, live.
+
+**And `SupplyPair` exposes all three inputs the bound needs**, the first with the
+answer in its own comment:
+
+    /** The denominator, and an upper bound on the float. */
+    sharesOutstanding: number;
+    sharesOutstandingAsOf: string | null;
+    /** Cumulative split factor at that date; null when unestablished. */
+    denominatorFactor: number | null;
+
+### But the adjustment is genuinely missing, and the code is RIGHT not to have it
+
+**`computeSupplyPair` never divides by the factor.** It uses it only as a
+comparability guard — both operands must share a basis or the block is excluded
+as `BASIS_DIFFERS` — and its comment says why: *"The ratio only needs its two
+operands to agree with each other."*
+
+**For a RATIO the factor cancels. For a BOUND there is nothing to cancel
+against.** "Is shares outstanding under 10M" is a question about an absolute
+number on TODAY's basis, and a 162M count on a pre-split basis is 8.1M today.
+
+**So the bound is one division the pair deliberately omits, plus a threshold and
+a render.** Not a collection problem, not a computation problem, not a coverage
+problem — those are all done.
+
+### Direction confirmed from data, not derived
+
+The factor is `adjusted_close ÷ raw_close`, above 1 at dates before a reverse
+split. **Share counts scale the other way: `shares_today = shares_then ÷
+factor`.**
+
+**ZOOZ: 162.00M ÷ 20.00 = 8.10M, against the 8.10M the model read independently
+off a cover page.** An exact match on a documented 1-for-20 — a confirmation from
+two independent routes, not an inference.
+
+**So the build carries ZOOZ as its falsification case, the way the census spec
+carries PFSA: if the adjustment returns 3,240M, the division is inverted and
+every bound is contaminated.** An inverted factor is the failure that
+manufactures proof — 162M becomes 3.24B and refuses everything, or worse, a
+forward-split name inverts into a false pass.
+
+### The three states already have their guards
+
+`denominatorFactor` non-null → adjusted count → **proven or not against 10M**.
+Non-null `asOf` with a null factor → **`BASIS_UNVERIFIABLE`**. No pair →
+**no share count**. The same three the pair already distinguishes, and the
+render already has words for one of them.
