@@ -1947,6 +1947,21 @@ the routing question is not *does it work* but **WHO READS IT, AND IS THAT
 WHERE THE DECISION HAPPENS.** Three of tonight's four were found by asking a
 question next to the work rather than about it.
 
+**And a near-miss worth keeping, because it nearly added a fifth instance and
+a second cause that do not exist.** Research reported that `supplyPair` never
+leaves its layer, so the surface *could not* render it — which would have made
+this class two causes rather than one, and made a routing error of mine that
+never happened. **It was wrong.** It had grepped for `supplyPair` BY NAME in
+three files, found nothing, and read that absence as unreachability — while
+those files reach it **through the dossier**, by the same path they already use
+for other structure fields, without ever naming it. **A grep for a LEAF name
+misses every path that goes through the PARENT**, and the evidence for *nothing
+carries this* is identical from inside the search to the evidence for *I
+searched for the wrong token*. Its own rule, committed by its own author within
+hours of quoting it. **Retracted at its request, and the class stays at four
+with its original wording** — a register entry quietly resting on a false
+premise is worse than a missing one.
+
 ## A test can PIN a defect, and a comment can be its source
 
 **Design, 2026-09-04, commissioned to add a date to a stale cycle reading and
