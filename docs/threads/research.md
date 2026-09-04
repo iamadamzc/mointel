@@ -7479,3 +7479,54 @@ look.** Those are different concepts and only the first exists.
 as a collection point* is the live gap and needs the discovery admission path;
 *what can retire a stored source* is written, unwired, and aimed at a different
 problem.
+
+**80a. MECHANISM 1 IS OUT, AND THERE IS A FOURTH THAT THE SAME PERSISTENCE STEP
+CATCHES FREE.**
+
+*13 of 23 published inside the window and their resolved feeds collected nothing.
+By the rule Integration set before the query ran, that is decisive: the cutoff is
+not the cause for the majority. My 1%-versus-82% premise test was necessary and
+not sufficient — the falsifier is what closed it.*
+
+**I read the fetch path to narrow what remains.** `companySource.ts:76` sends
+`Accept: text/html,application/xml,*/*`, `contentType` is captured, and **there
+is no content-type gate anywhere between response and body.** So "the fetcher
+cannot read XML" is out too.
+
+### A fourth mechanism, and it is already in the field we were going to persist
+
+`companySource.ts:90-98` returns **`ACCESS_RESTRICTED` on 403/401/429 BEFORE the
+parser is ever reached.** The desk sends `companyUserAgent(config.sec.userAgent)`
+— **an SEC-style contact user agent — to corporate sites**, which is what a CDN
+blocks. And SEC is 403-ing this box today, so the desk is demonstrably in a
+window where access refusals happen.
+
+**It does not obviously explain the FEED-versus-INDEX asymmetry** — both are on
+issuer-controlled hosts, since `classifyCollectionPoint` rejects newswire and
+aggregator ones — **so it is a candidate for the population rather than for the
+gap.** But `failure` already carries it:
+
+| `mode` + `failure` | mechanism |
+| --- | --- |
+| FEED + EMPTY | the parser |
+| INDEX on a FEED registry | misdispatch |
+| **any + ACCESS_RESTRICTED** | **blocked before parsing** |
+| no failure, no rows | the cutoff — largely dead |
+
+**So the persistence step discriminates FOUR mechanisms at no extra cost, because
+three of them are already distinct values of a field that is computed and
+discarded.**
+
+### `parsed`-versus-`kept`: drop it
+
+It was mechanism 1's discriminator and mechanism 1 is dead for the 13. **The 10
+quiet issuers are where it could still fire, and those discriminate nothing in
+either direction** — so if the 13 resolve to parser, dispatch or access, the 10
+can be revisited then. **Do not build what nothing currently needs.**
+
+### AKAN, and why it is the clean demonstration
+
+Three 8-K/6-K and an exhibit inside the window, feed resolved, nothing collected,
+on his screenshot — **and its Sheet float parses at 537,663, so the STRUCTURE side
+of that name works.** The failure is isolated to catalyst collection, which makes
+it a single-variable case he can verify end to end without trusting any of us.
