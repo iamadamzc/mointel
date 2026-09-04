@@ -720,6 +720,47 @@ still looking.
 **A placeholder that decays toward truth is safe. One that decays toward
 plausibility hides itself.**
 
+## A QUERY FOR A NAMED FIELD ANSWERS ABOUT THAT FIELD, NOT ABOUT THE QUESTION
+
+**2026-09-04, and the instance is the query written to detect this exact
+failure.** Integration suspected the research archive described a superseded
+system and asked Ops for **`promptVersion`**. The answer was **no drift — 1
+across all 1,188 production rows.**
+
+**And `promptVariant` had changed, exactly at the archive boundary:**
+
+    (null)  325 rows  2026-08-17 .. 2026-08-21   the archive, entire
+    A       863 rows  2026-08-24 .. 2026-09-04   everything since
+
+**325 is exactly the archive count. The archive is entirely pre-variant.** The
+suspicion was right and the named field was wrong, so **asking only what was
+named would have produced a confident all-clear on a real problem.**
+
+Ops's own note: *"I asked the field you named and almost generalised 'no change'
+from it, which is tonight's shape one more time, in the query sent to detect
+it."*
+
+**The general form: a question is about a WORLD, a query is about a COLUMN, and
+the requester names the column.** When the answer is reassuring, nobody
+re-derives whether the column was the right one — **the all-clear closes the
+investigation that would have found the real field.**
+
+**So: state the QUESTION to whoever runs the query, not only the field.** "Has
+the interpreter changed since the archive" would have found `promptVariant`.
+"What is `promptVersion`" could not.
+
+### And the sample was wrong, not the method
+
+**Research measured the balance-language family across 231 archived dossiers and
+got ZERO — correctly, with the instrument proved first.** The behaviour appears
+**13 times in 863 variant-A rows and once in 325 archive rows.** CMND is **the
+twelfth instance**, spread evenly across variant A's life, not an outlier.
+
+**A true zero from a correctly-built instrument over a population that predates
+the behaviour.** Nothing about the measurement was wrong. **A baseline drawn
+from before the change is structurally blind to it**, and no amount of care
+inside the measurement can see that from within.
+
 ## HOUSE RULE: IT IS N STATES, NOT A VALUE AND AN ABSENCE
 
 **Named 2026-09-04 after the fifth instance in one day.** Every time a field was
