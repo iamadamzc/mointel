@@ -7119,3 +7119,70 @@ have a DURABLE `FEED`/`INDEX` shape** — so the honest ladder is:
 **The third is the alarming one and it is currently indistinguishable from the
 first two.** It is also the only one that indicts the desk rather than the
 issuer.
+
+---
+
+**76. THE FEED PATH — THREE MECHANISMS, AND THE INSTRUMENT THAT SEPARATES THEM
+IS COMPUTED AND THROWN AWAY.**
+
+*Ops: 118 of 118 durably resolved, 79 never collected, and FEED fails worse than
+INDEX — 23 of 27 (85%) against 56 of 91 (62%). Integration: the most
+machine-readable shape has the highest never-collected rate, so it is broken
+rather than hard. Scoped, not started.*
+
+### Mechanism 1 — the date filter penalises a feed FOR BEING DATED
+
+`collector.ts:577-583`:
+
+    const cutoffMs = now - config.catalyst.contextLookbackDays * 86_400_000;  // 45 days
+    read.items.filter((item) => {
+      if (!item.published.utc) return true;   // UNDATED ENTRIES STAY CANDIDATES
+      return Date.parse(item.published.utc) >= cutoffMs;
+    })
+
+**A feed's entries are dated by construction. A scraped HTML index frequently
+yields undated items.** So an issuer quiet for 45 days yields ZERO from a feed
+and SOME from an index — **the better-structured input is filtered harder, which
+is exactly the direction Ops measured.**
+
+### Mechanism 2 — `parseFeed` returning nothing
+
+`readCompanySource` reports `failure: 'EMPTY'`, *"feed parsed but contained no
+entries"*. A parser gap — Atom versus RSS, namespaced elements — produces
+systematic zeros. **85% on names that demonstrably HAD news is more consistent
+with a parser gap than with quiet issuers**, which is the argument against
+mechanism 1 as the whole story.
+
+### Mechanism 3 — misdispatch
+
+`looksLikeFeed(body) || (contentType ?? '').includes('xml')`. A feed failing both
+falls through to `parseReleaseIndex`, which finds nothing in XML and reports
+`EMPTY` or `JS_ONLY`.
+
+### THE DISCRIMINATOR ALREADY EXISTS AND IS DISCARDED — the sixth tonight
+
+`CompanySourceRead` carries **`mode`** (`FEED`/`INDEX`/`NONE`) and **`failure`**
+(`EMPTY`/`JS_ONLY`/a fetch failure). The collector pushes both into
+`report.inaccessible`. **The only consumer in the codebase is
+`worker/research-catalyst.ts:174` — a manual one-off that `console.log`s them.**
+The main worker and the queue never touch the report.
+
+**So the desk already computes exactly the value that tells the three mechanisms
+apart, on every pass, and drops it.** Persist `mode` + `failure` per attempt and
+they separate with no new instrumentation:
+
+| observed | mechanism |
+| --- | --- |
+| `mode: FEED`, `failure: EMPTY` | **2** — the parser |
+| `mode: INDEX` on a registry that says FEED | **3** — misdispatch |
+| no failure recorded, still no rows | **1** — the cutoff |
+
+### And mechanism 1 is invisible even to `inaccessible`
+
+Parsing SUCCEEDS and the filter drops everything **silently** — `read.items.length`
+and `recent.length` are never compared. **So the fourth thing to record is
+parsed-versus-kept**, without which mechanism 1 registers as "no failure and no
+rows", which is indistinguishable from success.
+
+**A cheap falsifier for mechanism 1:** if the 23 failed feeds belong to issuers
+that demonstrably published inside 45 days, the cutoff is not the cause.
