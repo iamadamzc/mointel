@@ -76,8 +76,11 @@ stale opening line, so it is corrected rather than annotated.
 | `3379809` | **basis-fetch decoupling** — `basisFetchDue`, full-depth factor read, coverage-boundary refusal, `worker/basis-backfill.ts` | **LIVE in `97f5fbd`.** Behaviour NOT yet verified — see item 36 |
 | `268e438` | **float-source content check** — `FLOAT_TERMS` over the field, not `Boolean()` | **LIVE in `97f5fbd`** |
 | `9bfeabf` | **deep-fetch log** states the OUTCOME beside the trigger — `splitBasisSessions` | built 09-03, awaiting deploy |
-| `33e7bb8` | **`parseSheetFloat`** — the float column read by an allowlist, `parseNumber` untouched. **TENX stays null** | built 09-04. **Refuses the live `"; N SO"` format — extension DESIGNED, not built (item 48)** |
+| `33e7bb8` | **`parseSheetFloat`** — the float column read by an allowlist, `parseNumber` untouched. **TENX stays null** | built 09-04. **Its refusal of the live `"; N SO"` format is FIXED in `bfb70c1` below** |
 | `fce254c` | **`activity_window`** persisted on `ticker_session` — the same array the ACTIVE/DEAD verdict was computed from. **`SCHEMA_VERSION` 23 → 24 in the same commit** | built 09-04, gated |
+| `bfb70c1` | **split before parsing** — the float cell's `"; N SO"` tail is a separate grammar; the share count is unreachable by the float parser rather than merely unmatched | built 09-04, gated |
+| `5d97d8b` | **`assessSheetPair`** — `CONSISTENT` / `UNIT_MISMATCH` / `IMPOSSIBLE` on two numbers one author wrote at one instant. Dissolves item 28's asynchronous-pair objection | built 09-04, gated |
+| `699cc2a` | **`floatCellShares` wired** into both row builders, and NAMED so it cannot be swapped with `StructuralResearch.sharesOutstanding` (RESEARCH col 11, a different cell). `assessSheetPair`'s parameter is `sharesFromSameCell` so a wrong call site reads wrong | built 09-04, gated. **Design unblocked** |
 
 > **NOTHING DEPLOYS UNTIL THE TRADER ASKS.** Ops's session brief says so, later
 > and narrower than the standing delegation, and Ops correctly refuses to lift
@@ -5328,3 +5331,64 @@ commit message.
 whole discipline: it establishes that **the mechanism cannot do what was
 feared**. It does not establish that **SVRN did it**. Only the count above does
 that.
+
+---
+
+**50. THE FIELD THAT AUTOCOMPLETES IS THE WRONG ONE — `floatCellShares`,
+wired and named. `699cc2a`.**
+
+*Integration asked for the wiring and said the naming half mattered more. It
+was right, and the reason is worth keeping.*
+
+`sheetSharesOutstandingField` existed and was called from nothing but its own
+test — built and unwired, the third of the night. Both row builders now
+populate it, so the pair reaches a row and Design's resolver can assemble it.
+That half took three lines.
+
+### The half that took the thought
+
+`StructuralResearch` already has a `sharesOutstanding`. **Right name, right
+type, wrong number**: it is RESEARCH column 11, a different cell with its own
+`floatSourceDate`. Whoever wires a float-versus-shares check reaches for it, it
+autocompletes, it typechecks, and every test passes — while silently
+resurrecting item 28, whose dissolution is the ONLY reason `assessSheetPair` is
+sound at all.
+
+**The failure is not a weaker verdict, it is a wrong one, and it fires on the
+best-looking rows.** `IMPOSSIBLE` means "float exceeds its own share count",
+which against two numbers written in one breath is arithmetic. Against two
+cells written days apart it is *ordinary*: a company that issued shares between
+the two write times legitimately exceeds the older count. So the desk's
+strongest check becomes its loudest false positive, on exactly the low-float
+names pillar 5 exists to find.
+
+The types cannot separate them — both are numbers off a `NumericField`. **The
+name is the only thing standing between a sound verdict and a confidently wrong
+one.** So:
+
+| where | what |
+| --- | --- |
+| the new field | `floatCellShares` — named for the CELL, sharing no prefix with the field it must not be confused with |
+| the old field | now carries a docstring pointing at the new one, because **the mistake happens at the field someone wrongly reaches for**, not at the one they should have used |
+| `assessSheetPair`'s parameter | renamed `sharesFromSameCell`, so `sharesFromSameCell: row.sharesOutstanding` READS as a provenance claim the argument does not support |
+
+**The validity is a property of provenance, not of the two numbers.** Three
+tests assert the wiring rather than the parser, because "the field exists" was
+exactly the state this commit fixed.
+
+### What this does NOT settle, and it is a number nobody has
+
+**How many rows carry the `; N SO` tail is UNMEASURED.** Five live TODAY cells
+were read at 01:35 ET and all five carried it; that is a sample of five, taken
+because they were the ones on screen. The pair check runs on whatever fraction
+carries the tail, and *the fraction is the whole value of the feature* — a
+sound check on 4% of rows is a sound check nobody sees.
+
+The query is cheap and belongs to whoever next has Sheet access: **count TODAY
+and RESEARCH float cells matching `/;\s*[~\d]/`, over total non-empty float
+cells.** I cannot run it from here — `load()` requests only `TODAY!A1:AA` and
+`RESEARCH!A1:AK` and the provider is behind `import 'server-only'`.
+
+Until that number exists, the honest statement to the trader is **"the check is
+correct where the Sheet states both numbers"**, not "the board now checks
+floats".
