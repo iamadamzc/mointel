@@ -6053,3 +6053,78 @@ already answers correctly and by a different measurement.
 Small — but the finding is a demonstration that two populations exist inside one
 coverage band, and that needs a counterexample rather than a sample. There are
 three.
+
+---
+
+**60. THE FLOAT BOUND, SCOPED — the CIK advantage is half true, affiliate
+subtraction is not possible today, and the coverage limit is OURS not EDGAR's.**
+
+*The trader chose to compute it: "the vendors are not computing float based on
+anything we dont have access to… we can explain why a float is dirty or
+unreliable, WITH THE NUMBERS, instead of just putting NA." Trigger: ten of
+seventeen top premarket movers showing N/A on Scanz at 06:56 ET, SGRX among them
+— the name our own desk went deaf to when it renamed from BTOG.*
+
+### The CIK claim is half true, and the half that fails is ours
+
+Integration's argument: vendor float is keyed to a TICKER and a rename orphans
+it; a filings-derived bound is keyed to a CIK and survives. **Checked, because it
+is a claim about code.**
+
+`issuer_registry` is **keyed on TICKER** — `ticker` is the first column — and
+maps to a CIK via SEC's `company_tickers_exchange`. So:
+
+- **Forward resolution SURVIVES.** SGRX resolves to the same CIK the SEC file
+  gives, so **we can compute a bound this morning on a name the vendor shows
+  blank. The advantage is real.**
+- **Continuity does NOT.** The store holds `BTOG → 0001735556` and nothing
+  linking it to SGRX. The dossier, the filing history, the split factors and the
+  RVOL baseline are all filed under the old ticker. **We reproduce the vendor's
+  orphaning one layer in** — a fresh bound with no history, and the desk unaware
+  it has been researching the same registrant for weeks.
+
+**The fix is to key the store on CIK with the ticker as an alias.** That is
+schema-shaped and belongs with Ops, not to this piece.
+
+### Affiliate subtraction is not possible today
+
+**Zero Forms 3, 4, 5. Zero SC 13D/G. Zero DEF 14A.** The only ownership form
+collected is **Form 144 across 50 tickers** — a notice of PROPOSED sale, which is
+a reachability signal, not a holdings figure.
+
+So the bound is **shares outstanding alone**, which is exactly the one-sided
+upper bound the argument always rested on: float ≤ SO, so **SO under 10M PROVES
+pillar 5 regardless of who holds what**. Tightening it with affiliate data is a
+NEW COLLECTOR, not a join, and should be scoped separately if ever.
+
+### How often SO alone settles the question
+
+**32 of the 91 dossiers carrying a share count have SO ≤ 10M — 35%.** On those,
+the bound is conclusive without any affiliate data at all.
+
+### THE COVERAGE LIMIT IS OURS, NOT EDGAR'S — and this is the scope finding
+
+| layer | coverage |
+| --- | --- |
+| `SEC_COMPANY_FACTS` **collected** | **209 of 258 tickers = 81%** |
+| `structure.sharesOutstanding` **present in the dossier** | **91 of 231 = 39%** |
+
+**A 2× gap between what the desk FETCHED and what reached the dossier.** The
+share count is being read out of a MODEL TRANSCRIPTION when the structured XBRL
+source was already collected for twice as many names.
+
+**So the bound must be computed from `SEC_COMPANY_FACTS` directly, deterministic
+and dated, not lifted from the interpreter's output.** That roughly doubles
+coverage before a single new source is added, and it removes a transcription step
+from a number the whole pillar rests on.
+
+`structure` already carries `reverseSplitHistory` and `knownRegistrationStatus`,
+so the split annotation and the reachability state have homes.
+
+### Ordering: this does NOT jump the close series
+
+Integration invited the argument. **It should not jump**, and the reason is
+Integration's own discipline: it has asked Ops for a head-to-head on the ten
+names Scanz shows N/A, **and that measurement can falsify the decision**.
+Building before a falsification test returns is the instrument-proving rule run
+backwards. The close series has no such dependency.
