@@ -1077,6 +1077,67 @@ Q9's columns. **The refusal produced a better answer than the export would
 have**, which is worth recording as an argument for refusals rather than an
 apology for one.
 
+#### The float funnel: research REACH is not the constraint, and I nearly reported that it was. 2026-09-04.
+
+**Integration warned me not to adopt Research's 9% against my population. The
+denominator error I actually made was one step earlier and in my own store.**
+
+**I was about to report that 68 of 650 top-25 board tickers (10.5%) had ever been
+researched, as the ceiling on any filings path. It is not a ceiling. Local
+`research_sources` stops at `2026-08-18` — two sessions against a
+thirteen-session board.** Split on the era where research actually ran:
+
+    boundary   era                       board tickers   researched
+    top 12     08-17..08-18 (research)         46           89.1%
+    top 12     08-19..09-02 (none locally)    286            4.5%
+    top 25     08-17..08-18 (research)         91           69.2%
+    top 25     08-19..09-02 (none locally)    586            3.9%
+
+> **Research reaches 69-89% of his board WHEN IT RUNS.** The 10.5% is a store
+> boundary, not a capability — **the cache-versus-capability error I had just
+> warned Integration about, one level up and in my own hands.** Pooling across an
+> era boundary averaged 89% and 4% into a number that looked like a ceiling.
+
+**LATENCY DOES NOT RULE OUT THE RESEARCH PATH — it rules out the derived ones.**
+Earliest evidence minus board arrival, over 80 board symbol-days with local
+evidence:
+
+    median -123 min   p75 +2 min
+    evidence in hand BEFORE arrival        75.0%
+    within 15 min of arrival               82.5%
+    within 60 min                          85.0%
+
+**So the filing-evidence path is broadly contemporaneous with his board.** Forms
+3/4/5 and 13D/G remain excluded on multi-day lags; that exclusion stands and this
+does not touch it.
+
+**THE NUMBER NOBODY HAS QUOTED, and it sits between reach and float:**
+
+    research_jobs   COMPLETE 40   PARTIAL 108   FAILED 47   QUEUED 7   = 202
+
+**19.8% of jobs complete.** Reach of 69-89% is reach of the *attempt*, not of a
+finished dossier, and the two are being used interchangeably.
+
+**WHY I WILL NOT COMPOSE 24.7% x 69.2% INTO A BOARD FLOAT RATE — TWO COINCIDENT
+77s.** Research reports *"188 active sources across 77 distinct tickers state a
+public float, 33% of all researched names"*, which puts its researched universe
+near **233**. My local `research_sources` holds **exactly 77 distinct tickers**.
+
+> **These are almost certainly different populations that share a number.**
+> Research's 77 is *tickers stating a float*; mine is *tickers researched at
+> all*. Multiplying a yield measured on one by a reach measured on the other is
+> the boundary substitution Integration named, **made maximally easy to miss by
+> the numbers being identical.** 19/233 = 8.2% is where the 9% comes from, so the
+> two figures are already denominated differently.
+
+**ANSWER TO THE ASK AS POSED: board float coverage is NOT computable from what we
+hold, and the blocking gap is not effort.** It needs the parser run against the
+board population inside production, which is Ops's to do in place. **What is
+settled is that the vendor-versus-nothing framing rests on a reach figure that is
+wrong in the free paths' favour** — reach is 69-89%, not 9-10% — **so the middle
+option cannot be dismissed on reach.** It may still die on parser yield or on
+completion rate, and those are the two measurements that would kill it honestly.
+
 #### Float coverage for the self-containment decision: the filings path serves ZERO, by construction. 2026-09-04.
 
 **Integration asked what fraction of the board each float method could serve and
@@ -2975,6 +3036,25 @@ ends in `L`, so no fifth-letter W/U/R convention would ever have reached it.
 One name at rank 43 is the entire justification for a name-based rule.
 
 ## Working rules
+
+**AGREEMENT IS THE SOLVENT. A rule that only fires when you dislike the answer
+is not a rule.** Recorded 2026-09-04 as the general form of two failures on the
+same night, one level apart:
+
+- **A derivation is hardest to CHECK when it concludes what you already
+  believe.** I recomputed Ops's contamination bound only because I agreed with
+  it; the step was backwards and the conclusion was right, **which is the pairing
+  that survives** — nobody revisits a derivation whose result they accepted, and
+  the wrong step then reads as load-bearing.
+- **A relay is hardest to REFUSE when it grants what you recommended.** Ops
+  refused a relayed instruction giving it exactly what it had asked for, on the
+  grounds that accepting it there would prove the rule had always been a
+  preference.
+
+> Neither is caught by being careful, because in both cases carefulness has
+> already been satisfied by the answer looking right. **Both are caught only by a
+> rule that fires whether or not you like where it lands.**
+
 
 **The framing these sit under, from the trader, 2026-08-24** — recorded at
 `8c2d2d5` and charter-level:
