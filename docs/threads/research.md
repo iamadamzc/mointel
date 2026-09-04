@@ -3182,6 +3182,27 @@ every row below is marked on OBSERVED state:**
 
 ### What is genuinely missing, and what it would take
 
+**0. FIRST, TWO ARTEFACTS THAT ARE NOT THE SAME THING — R&D's correction, and
+it lands next to my line rather than on it.**
+
+- **`lib/research/float.ts` PRODUCES NO FLOAT.** Verified in its own header:
+  *"this module does not produce a float. It produces the filed share count…
+  and a verdict on whatever float it is shown."* `claimedFloat` is an **input**
+  at `:140`. **R&D is right about the module.**
+- **The PARKED EXTRACTOR is a different, unbuilt thing** — a regex over stored
+  excerpts recovering **issuer-stated public floats** from baby-shelf
+  calculations (item 29: 29 excerpts, 20 tickers). Those *are* floats. **My ~9%
+  belongs to this and not to `float.ts`.**
+
+**Two readers took my line as a claim about `float.ts`, so the ambiguity is
+real even though the number is right.** Stated apart here so nobody merges them
+again.
+
+**AND R&D'S COUPLING, WHICH NOBODY PRICED:** retiring the Sheet removes
+`assessFloat`'s **input**. The verdict machinery has nothing to judge — **self
+containment costs the VERIFICATION as well as the number**, and every estimate
+we have given him was silent about it.
+
 **1. FLOAT — and the honest engineering answer is unwelcome.** The parked
 extractor reads floats stated verbatim in filings. Its ceiling is **~9% of
 researched tickers** (29 excerpts, 20 tickers — item 29), **19 defensible under
@@ -3297,6 +3318,79 @@ in exactly the same invisible way. *Design's to render; mine to have named.*
 one day, thirteen strings.** Other phrasings on other days will refuse until
 they are added. **That is the allowlist working as designed, and it is a reason
 to watch the given-but-unread count rather than to loosen anything.**
+
+### HIS QUESTION: "every float is invented — why not compute our own and LABEL it?"
+
+*Answered 2026-09-04 at Integration's insistence that the answer be the real
+one. **The answer is YES — and the thing to build is not what he asked for, it
+is better.** Nothing started.*
+
+**He is right that this module was designed for exactly this**, and its own
+header says so: *"The point of deriving rather than buying is not that the data
+is better. That is unproven. It is that the rules are visible and a failure is
+detectable."* **The two objections in that header are the ones to answer, and
+both move.**
+
+#### Objection 1 — "the supply bound may answer the trading question often enough"
+
+**It does not, and the sentence was written before the bound reached a screen.**
+The bound answers *how much filed supply is live against shares outstanding*.
+**Pillar 5 asks whether the tradeable float is under 10M.** Related, different
+question — and the floor renders on **5.6% of tickers** (item 34). *It cannot
+stand in for a float.*
+
+#### Objection 2 — 13G passivity. **The uncertainty does not block the build; it FIXES THE RULE.**
+
+**Work the ERROR DIRECTION, which is what pillar 5 actually cares about:**
+
+| we get it wrong by… | float comes out | how it reads | consequence |
+| --- | --- | --- | --- |
+| **missing an affiliate** | **too HIGH** | more float than there is → **fails pillar 5** | **he skips a name. Conservative.** |
+| **subtracting a passive 13G** | **too LOW** | tighter than it is → **passes pillar 5** | **he TAKES a trade. Dangerous.** |
+
+> **So the rule writes itself: SUBTRACT ONLY WHAT IS PROVEN AN AFFILIATE.**
+> Every affiliate we fail to find makes the number MORE conservative, and the
+> only way to be dangerous is to subtract something we should not have.
+> **13G's unsettledness resolves in the safe direction by default — leave them
+> in.**
+
+**What would settle it precisely**, since form type alone is not the test: take
+Section 16 (Forms 3/4/5) and 13D blocks, **plus any holder at ≥10% whatever
+form they filed** — because ≥10% makes them a Section 16 insider regardless of
+declared passivity. **Leave sub-10% 13G in the float.**
+
+#### AND THAT MAKES IT A BOUND, NOT AN ESTIMATE — which is the real answer
+
+Because we can only ever subtract affiliates we FOUND, the result is not a
+guess with error bars in both directions. **It is one-sided:**
+
+    true float  ≤  our number
+
+> **An upper bound below 10M is a PROOF that pillar 5 is satisfied, not an
+> estimate of it.** Above 10M it says nothing and must say nothing. **That is
+> exactly the shape this desk already ships** — `supplyBound` is conclusive when
+> high, the volume bound is conclusive when low, and item 10 records why.
+>
+> **So he should not label an estimate. He should be given a bound**, and *"no
+> more than X"* is a stronger sentence than *"about X"* as well as an honester
+> one.
+
+#### Feasibility, since the objection was never coverage
+
+**The inputs are broadly there and item 23 measured them:** Forms 3/4/5 on
+**39 of 40 issuers (98%)**, 13D/G on **70%**, median 8 ownership filings in the
+last 12 months. **The ceiling is the denominator — filed shares outstanding, on
+185 of 231 (80%).** *The cost is PARSING*: Forms 3/4/5 are XML
+`ownershipDocument` and yield deterministically; **13D/G cover pages are the
+hard half**, and they are the ones the ≥10% rule needs.
+
+**This is not the ~9% extractor.** That recovers a float somebody already
+wrote. **This computes one, on the ~80% of names that have a denominator.**
+
+*What I have NOT done: started it. And the honest caveat is that the 13D/G
+cover-page parse is where an estimate would creep back in — if that half proves
+unreliable, the bound degrades toward `SO − Section 16`, which is looser but
+STILL AN UPPER BOUND and still conclusive when it binds.*
 
 ### The line I would put in front of him
 
