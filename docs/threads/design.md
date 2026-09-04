@@ -2822,6 +2822,72 @@ constant CLAIMS** — no fault label, no stated count, no market-state assertion
 not that the set is known. If the nullable fix lands, most of it becomes moot,
 which is the better outcome than a stricter police test.
 
+## The placeholder family, part 2 — the UI ruling and the split (not built)
+
+**My test asserts an absence that is false one file over.** It runs
+`not.toContain("label: 'Assessments: scheduler offline'")` against
+`components/DashboardShell.tsx`. The literal lives at `lib/desk/view.ts:70` and
+`:83` and reaches production through `readModel.ts:217`, where `OFFLINE_PANEL =
+emptyAssessmentPanel()` takes no override.
+
+**Absence of detection is not detection of absence — in a test written to catch
+that class, and it is green.** My fix went to the CALLER (spread the panel,
+override the scheduler) rather than the source; the server path calls the same
+function with no override. One function, two callers, one fixed.
+
+### The UI ruling asked of me: can the shell render nothing until a snapshot exists?
+
+**Yes — but "render nothing" is the wrong target, and choosing it would repeat
+tonight's mistake in a new costume.**
+
+The board's data has TWO sources. `/api/dashboard` (sheet: tickers, float,
+catalyst, structure) and `/api/market` (telemetry, discovery, health) are
+separate fetches from separate hooks. **A blank page while the sheet half is
+fully loaded would discard real data and claim less than the desk knows** — the
+mirror of claiming more, and equally false.
+
+So the ruling is per-element, not per-page:
+
+| Element | Source | With no snapshot |
+| --- | --- | --- |
+| Rows, float, catalyst, structure | `/api/dashboard` | render normally |
+| Counts, session phase, health, discovery | `/api/market` | explicit not-loaded |
+
+**Every element sourced from the absent snapshot says so; every element sourced
+elsewhere renders.** That is achievable and it is stronger than blanking,
+because the failure it prevents is the one that actually occurs — a populated
+board with a header describing a different desk.
+
+### `OFFLINE_PANEL` cannot simply be deleted — it serves two meanings
+
+`readModel.ts:366` and `:545` return it AFTER the store failed to open or read.
+**That is a real observation and an honest fault verdict.** Only the
+`buildAssessmentPanel` early return — `!assessmentTablesPresent(db) ||
+!options.tradingDate`, with the DB OPEN and fine — is the family.
+
+So the change is a SPLIT, not a removal: keep a fault panel for the failed
+store, return null for not-observed. **A constant used for both a fault and an
+absence is the whole bug in miniature**, and deleting it wholesale would turn a
+true verdict into silence.
+
+### Research's test form supersedes the one I was given
+
+I was told to assert what each constant CLAIMS. **That is enumeration-by-memory
+one level up** — and enumeration-by-memory is what produced rounds two and
+three. The stronger form: **a test asserting there are NO placeholder constants
+cannot silently pass a new lie; a test asserting there are exactly the five
+known ones always can — and just did, twice.**
+
+If the nullable fix removes the category, the assertion becomes emptiness and
+the problem dissolves rather than being policed.
+
+### Root cause, uniform, and worth the comment
+
+Every one of these is forced to pick a value from a type that cannot express NOT
+OBSERVED, and each picks the most plausible-looking one. **`eligibleCount:
+number` cannot say "not counted", so it says 0 — and 0 is a MEASUREMENT.** Not
+fixable by choosing better constants; only by making absence representable.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
