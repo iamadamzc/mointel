@@ -2616,6 +2616,78 @@ on screen that says a name matters.
 a change — ticks are every trade and quote through the one SIP connection that
 IS capture, and nobody has measured whether 6 is a ceiling or a cautious default.
 
+## SCOPE — a float that fails the desk's own check (2026-09-04, not built)
+
+INLF reads `6,109 displayed; ~1.05M SO` — 0.58% of shares outstanding, under the
+2% `UNIT_MISMATCH_RATIO` (`float.ts:82`) that calls a float a UNIT ERROR rather
+than a small float. **A live row.**
+
+**The error direction is what makes this a safety decision.** Pillar 5 is float
+under 10M. 6,109 does not merely pass it — it is the most bullish structural
+reading this desk can produce. A float wrongly too LARGE makes him skip a name;
+a float wrongly too SMALL puts him IN one.
+
+### I agree it must not stand as a bare number. I disagree with suppression.
+
+**Suppressing it collapses a DETECTION into an ABSENCE.** The board already
+shows "unknown" on the names with no float at all. Blanking a UNIT_MISMATCH
+makes the strongest structural finding the desk has ever made look identical to
+never having looked — the wired-versus-empty error, in the one place where the
+desk actually knows something.
+
+**So: replace the number with the verdict, do not annotate it.** The cell must
+read as a PROBLEM whose evidence happens to include digits, never as a number
+wearing a caveat. `6,109 ⚠` still scans as 6,109; the mark is what gets lost at
+a glance, and the glance is the whole risk.
+
+Three renderings, all distinguishable:
+
+| Case | Renders |
+| --- | --- |
+| Float, checked, consistent | the number |
+| Float, checked, FAILS | the verdict, with both figures as its evidence |
+| No float | "unknown" — unchanged |
+
+### The two consumers that amplify it, and neither is on screen as a float
+
+**Float sort** (`view.ts:317`) returns `row.displayedFloat`. A suspect 6,109
+sorts to the **top of a tightest-float sort** — the single most dangerous place
+to put a number the desk believes is wrong.
+
+**Turnover** (`derive.ts:133`) is `volume / displayedFloat`. INLF's ratio is
+172:1, so a float 172x too small makes turnover **172x too large** — and high
+turnover is another bullish reading.
+
+**Both must drop the value, not caveat it.** A verdict rendered in the float
+cell while the sort and the turnover still use the number would be a caveat that
+does not travel — the exact shape of the masked risk chip, where a gate read one
+field and the value it gated read another.
+
+### The check is valid HERE for a reason that did not hold before
+
+Item 28 recorded that this pair could not be assembled: float from a live read,
+share count from a days-old dossier, "asynchronous by construction". **The
+trader dissolved that by changing his own sheet format** — both halves now
+arrive in one cell, one source, one instant.
+
+That distinction is load-bearing and I got it wrong once before: the same source
+at one instant proves inconsistency; across sources with different as-of dates
+it proves nothing. **This is the first case.**
+
+### The open question, which is Research's
+
+`assessFloat` expects a `FiledShareCount` — `shares`, `asOf`, `concept`,
+`sourceId`. The Sheet's SO figure has **none of those**. Its freshness gate
+exists because a stale denominator produces a false verdict, and a same-cell
+figure has no date to gate on.
+
+**Do not fabricate an `asOf` to make the types fit.** Either the sheet pair gets
+its own narrow check — internal inconsistency between two numbers one person
+wrote at one instant, which needs no freshness at all — or `FloatClaim` gains an
+explicit sheet-pair provenance. My surface consumes a verdict either way, but
+the answer changes which verdicts are reachable, and `IMPOSSIBLE` and
+`CANNOT_VERIFY` both depend on the denominator's age.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
