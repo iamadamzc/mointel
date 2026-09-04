@@ -1263,6 +1263,33 @@ read 23. **The failed deploy is the reason that sha is live.**
 something they cannot observe** — the same reasoning as reporting existence
 rather than a rate.
 
+## TWO FAILURES WITH OPPOSITE REMEDIES MUST NOT SHARE A SENTENCE
+
+**Design, 2026-09-04, correcting its own four-rung model against the probe.** It
+had recorded *"a durable route that returned nothing"* as **the one state that
+indicts the desk rather than the issuer.** True of the state as described and
+**false of the population**: of thirteen such names, **six are feeds that parse
+perfectly whose newest item is months old.**
+
+**AKAN's newsroom has not published since November while the company files
+normally. Nothing is broken.** *"We looked and found nothing"* is TRUE there.
+*"The desk could not see it"* is FALSE — **on a name the trader is looking at.**
+
+**So a single searched-and-found-nothing sentence flattens an issuer problem
+into a desk problem, and the two point OPPOSITE WAYS:**
+
+    a dead newsroom      -> look elsewhere for the catalyst
+    a collector gap      -> the desk is misreporting its own reach
+
+**He would act differently on each, so a sentence covering both is worse than no
+sentence.** Same shape as *"worker offline"* inviting a restart that drops
+capture: **a message that merges two faults prescribes the remedy for whichever
+one it happens to name.**
+
+**And it is a persistence requirement rather than a copy choice** — the card
+cannot derive which it is looking at, so the distinction has to survive storage
+or the honest sentence cannot be written at all.
+
 ## THE METHOD WAS IMPROVED TWICE WITHOUT ANYONE ASKING WHAT THE NAMES WERE
 
 **Ops, 2026-09-04, on its own three-round investigation.** A vendor showed `N/A`
