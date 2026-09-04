@@ -7428,3 +7428,54 @@ it.
 **AKAN is worth running first** — on the never-collected list, on his Scanz
 screenshot, and its Sheet float parsed cleanly at 537,663. A name he can check by
 hand beats a rate.
+
+---
+
+**80. A RETIREMENT PATH EXISTS, IS DOCUMENTED, AND HAS ZERO CALLERS — the
+seventh built-and-unwired. And it would not have retired CMND's source anyway.**
+
+*Integration's correction of my mechanism is right — verified. And its hypothesis
+that no deactivation path exists is wrong in a way that makes the repair smaller
+and the gap sharper.*
+
+### The correction stands
+
+`collector.ts:640` — `catalystSourcesOf(readSources(db, ticker))`, rebuilt **from
+the store** after `clusterAndPersist`. **So the leaf reaches every pass because it
+is a persisted append-only row, not because collection re-presents it.** My
+"the item still enters `collected`" was wrong, and the consequence Integration
+drew from it is the important half: **stopping re-collection would not remove it.**
+
+### But the deactivation path is not missing — it is UNWIRED
+
+`researchRepo.ts:721-728`:
+
+    /** Marks superseded sources inactive without deleting them. History is kept. */
+    export function deactivateSources(db, ids) { ... SET active = 0 ... }
+
+**Exported, documented, and called by NOTHING in `lib` or `worker`.** Seventh
+built-and-unwired today.
+
+**So `active = 1` on all 14,377 rows has now been read three ways** — Ops: no
+error in a retrospective filter (true). Integration: the signature of a path that
+does not exist. **Actual: the path exists and nobody calls it.** That makes the
+repair *wire the thing that is written*, not *build a supersession mechanism*.
+
+### And it still would not have retired CMND's source
+
+`cluster.ts` assigns canonical status by authority, and **"single-member clusters
+are produced too: every announcement has a canonical."** CMND's leaf is one
+article — **a single-member cluster, canonical by construction.**
+
+Archive: 917 canonical, 3,965 non-canonical, 1,161 rows in a cluster. **The 244
+non-canonical cluster members are the population `deactivateSources` was written
+for — recycled and aggregated COPIES.**
+
+**So supersession here is ANNOUNCEMENT-level: this story is a duplicate of that
+story. What CMND needs is COLLECTION-POINT-level: this URL is a bad place to
+look.** Those are different concepts and only the first exists.
+
+**Integration's two repair sites therefore split unevenly:** *what admits a leaf
+as a collection point* is the live gap and needs the discovery admission path;
+*what can retire a stored source* is written, unwired, and aimed at a different
+problem.
