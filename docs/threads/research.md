@@ -7186,3 +7186,72 @@ rows", which is indistinguishable from success.
 
 **A cheap falsifier for mechanism 1:** if the 23 failed feeds belong to issuers
 that demonstrably published inside 45 days, the cutoff is not the cause.
+
+---
+
+**77. THE FIFTH RUNG AND THE FEED FAILURE ARE THE SAME LINE OF CODE, RUNNING IN
+OPPOSITE DIRECTIONS.**
+
+*Design verified CMND live: a `COMPANY_NEWSROOM` source whose URL is a
+`/news-release/<slug>` leaf — the very release the card quotes — with
+`publishedAt: null`, `publishedPrecision: UNKNOWN`, and `coverageIncomplete:
+false`. Integration: a route is known, it returned something, and what it
+returned is the same thing as last time.*
+
+### One rule, both failures
+
+`collector.ts:577-583`:
+
+    if (!item.published.utc) return true;                 // UNDATED: always a candidate
+    return Date.parse(item.published.utc) >= cutoffMs;    // DATED: expires at 45 days
+
+| input | consequence |
+| --- | --- |
+| a FEED, entries dated by construction | **expires.** Quiet issuer → zero rows. **85% never-collected** |
+| an UNDATED leaf article | **never expires.** Re-selected on every pass, forever |
+
+**So the frozen article is not merely stored forever — it is RE-COLLECTED
+forever, because undatedness exempts it from the only expiry the desk has.**
+CMND's `publishedAt: null` is exactly the case.
+
+**And the exposure is large: 87 of 198 `COMPANY_IR`/`COMPANY_NEWSROOM` sources
+carry `publishedAt: null` — 44%.**
+
+### The fix has a stamp already, and I verified it survives
+
+`researchRepo.ts:533`: *"Inserts sources, skipping any whose (ticker,
+document_fingerprint) exists."* **A re-fetched article is SKIPPED, not updated,
+so the stored `fetched_at` is the FIRST time this desk saw it** — and the file
+already states that semantic: *"`fetched_at` says when this desk did."*
+
+**So: when `published.utc` is null, age the item by the stored `fetched_at` for
+its `document_fingerprint`.** An undated article first seen 30 days ago is 30
+days old to this desk and ages out of a 45-day window like anything else. The
+filter runs over freshly parsed items, so this needs a fingerprint lookup —
+`hashContent('company|' + url)` — which is a small addition, not a redesign.
+
+**It keeps the comment's real intent** — a genuinely NEW undated item stays a
+candidate — and removes the immortality.
+
+### Why every count today missed it, and Integration's correction is right
+
+The fifth rung has a non-SEC source row, so it is excluded **by construction**
+from the 144, the 118 and the 43 — the same exclusion that correctly ruled the
+frozen page OUT of the 43. **It is in the population that looks healthy, and that
+population has never been counted.** `coverageIncomplete` reads FALSE, so the
+warning being built would have been **silent on the name that started this.**
+
+`contentHash`/`documentFingerprint` is the right instrument and this is the
+population it was built for: **how many names have a non-SEC source whose content
+has not changed across N passes.**
+
+### The supply pair, which I cannot measure here
+
+`supplyPair` is on **0 of 231** archive dossiers — it postdates the snapshot — so
+Design's live figures are the only data: **23 of 40 render a pair and 22 of those
+have BOTH `floorRatio` and `totalRatio` null.**
+
+**That is a denominator and nothing else.** Worth stating for the bound: **the
+float bound needs NO blocks — only `sharesOutstanding`, its `asOf` and the
+factor. So it works precisely where the pair is empty**, which is an argument for
+it and also says the pair's current render is close to useless and should say so.
