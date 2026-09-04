@@ -89,6 +89,37 @@ import type {
 const CALENDAR_META_KEY = 'calendar';
 const CALENDAR_FETCHED_KEY = 'calendar_fetched_at';
 const UNIVERSE_MAX_AGE_MS = 20 * 60 * 60 * 1000; // refresh roughly daily
+
+/**
+ * Whether the Alpaca asset list must be refetched.
+ *
+ * On 2026-09-04 SGRX renamed from BTOG and was invisible all session: the
+ * worker restarted at 19:04 ET the previous evening, which stamped the cache,
+ * so the next morning's session roll found it 8h43m old -- inside the 20-hour
+ * window -- and skipped the fetch. AN EVENING RESTART POISONS THE NEXT
+ * MORNING'S REFRESH, and the guard that exists to stop restart-thrash was what
+ * suppressed the daily refresh.
+ *
+ * So the age guard applies at STARTUP, where its purpose is real: repeated
+ * restarts must not hammer the asset endpoint. A SESSION ROLL HAPPENS ONCE PER
+ * TRADING DATE and is exactly when a day-old universe must be replaced, so it
+ * forces. One asset call per trading day is the whole cost.
+ *
+ * Pure and exported so the decision can be tested without a runtime or a REST
+ * client -- the failure above is a branch, not an integration.
+ */
+export function shouldRefreshUniverse(input: {
+  cachedCount: number;
+  updatedAt: string | null;
+  now: number;
+  force: boolean;
+}): boolean {
+  if (input.cachedCount === 0) return true;
+  if (input.force) return true;
+  if (input.updatedAt === null) return true;
+  const age = input.now - Date.parse(input.updatedAt);
+  return !(age < UNIVERSE_MAX_AGE_MS);
+}
 /** How long the admission gate reuses its view of the universe. */
 const UNIVERSE_ADMISSION_CACHE_MS = 10 * 60 * 1000;
 const CLASSIFIER_VERSION_KEY = 'classifier_version';
@@ -471,12 +502,17 @@ export class MarketRuntime {
 
   /* ------------------------------------------------------------ universe */
 
-  async ensureUniverse(): Promise<string[]> {
+  async ensureUniverse(options: { force?: boolean } = {}): Promise<string[]> {
     const cached = readUniverseSymbols(this.db);
     const updatedAt = universeUpdatedAt(this.db);
-    const fresh = updatedAt !== null && Date.now() - Date.parse(updatedAt) < UNIVERSE_MAX_AGE_MS;
+    const refresh = shouldRefreshUniverse({
+      cachedCount: cached.length,
+      updatedAt,
+      now: Date.now(),
+      force: options.force === true,
+    });
 
-    if (cached.length > 0 && fresh) {
+    if (!refresh) {
       this.universeMode = 'FULL';
       this.reclassifyCachedUniverseIfNeeded();
       this.loadDiscoveryEligibility();

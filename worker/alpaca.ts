@@ -66,8 +66,11 @@ async function main(): Promise<void> {
    * only at startup, so on 19 August it streamed a whole premarket into the
    * 18th — right ranks, right prices, wrong day.
    */
-  const bootstrapTradingDate = async () => {
-    const universe = await runtime.ensureUniverse();
+  const bootstrapTradingDate = async (trigger: 'startup' | 'roll') => {
+    // A roll forces the asset refetch: it happens once per trading date, and a
+    // universe carried over from yesterday cannot see a ticker that renamed
+    // overnight. Startup keeps the age guard so restarts do not hammer Alpaca.
+    const universe = await runtime.ensureUniverse({ force: trigger === 'roll' });
     await runtime.refreshSheetSymbols();
 
     const pinned = runtime.pinnedSheetSymbols;
@@ -78,9 +81,9 @@ async function main(): Promise<void> {
     runtime.flush();
   };
 
-  await bootstrapTradingDate();
+  await bootstrapTradingDate('startup');
   runtime.onSessionRoll = async () => {
-    await bootstrapTradingDate();
+    await bootstrapTradingDate('roll');
   };
 
   // ---- live stream ---------------------------------------------------------
