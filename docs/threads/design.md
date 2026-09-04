@@ -2342,6 +2342,22 @@ were wiring.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
+- **An observation sent to the routing seat comes back as an instruction, with
+  authority attached.** On 2026-09-04 I sized a supply fallback against a blank
+  screen I had never opened; Integration turned that sizing into a build order
+  without opening it either, and only a render-path check before writing code
+  stopped it. **Mark the confidence of a claim when reporting it** — "I have not
+  looked at this screen" travels, and an unmarked guess is indistinguishable
+  from a finding once it has been relayed once.
+- **Check the screen state before designing against it.** The design was for a
+  blank that did not exist: `AutomaticIntelligence.tsx:361` already rendered the
+  ledger. Same class as sizing the masked risk chip from four rows that
+  short-circuited two branches earlier — describing a surface instead of opening
+  it.
+- **A test can pin a defect.** `cycleDetail`'s suite asserted
+  `toContain('high is today')` on a string that could never be about today. The
+  fixture-encodes-a-dead-world rule shows up as an ASSERTION too, and there it
+  is worse: a fixture merely fails to catch, an assertion actively defends.
 - **Verify on the live desk**, not fixtures. The one Phase 1 defect that reached
   production was invisible to local fixtures.
 - **And verify it *after* the deploy, not only before.** Added 2026-08-23 with
