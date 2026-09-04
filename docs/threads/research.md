@@ -7608,3 +7608,55 @@ and account for 85% versus 62% without a parser bug at all.
 `mode: INDEX` on a FEED registry **with `status: 200`** is a challenge page;
 `mode: FEED` with `failure: EMPTY` is the parser. **The status code separates
 them and `PageFetch` already carries it.**
+
+**80d. ZERO MISDISPATCHES IN 42 SUCCESSFUL FEED READS — and `mode` is already
+persisted, on the rows that do not matter.**
+
+*`metadata.discoveredVia` records `read.mode` on every collected company source.
+Nobody has used it. It makes half the misdispatch question answerable now.*
+
+**189 of 198 company sources carry it.** Registry shape versus the mode the read
+actually used:
+
+| registry | read | n |
+| --- | --- | --- |
+| FEED | FEED | 42 |
+| **FEED** | **INDEX** | **0** |
+| INDEX | INDEX | 84 |
+| INDEX | FEED | 22 |
+| null / absent | either | 41 |
+
+**`registry FEED → read INDEX` — mechanism 3's signature — does not occur once.**
+
+### What that establishes, and what it cannot
+
+**It refutes general dispatch flakiness.** If `looksLikeFeed` or the content-type
+test were unreliable we would expect some misdispatch among 42 successful feed
+reads. **Zero of 42 says the dispatch works when the fetch succeeds.**
+
+**It CANNOT refute the challenge-page hypothesis, by construction.** A challenge
+page produces no row, so those cases are absent from this population — **the same
+by-construction exclusion that ruled the frozen page out of the 43**, and I am
+naming it rather than letting the zero read as reassurance.
+
+**So mechanism 3 narrows into mechanism 4:** misdispatch does not happen on
+healthy fetches, so if the 13 are misdispatching, the cause is **what the fetch
+RETURNED** — a challenge page or an error body — not the dispatch logic. **Three
+and four are one mechanism with the fetch as its cause.**
+
+### And a scoping correction: do NOT add `mode` to the source row
+
+**It is already there.** What is missing is a record of the ATTEMPT — and the
+failing case **produces no row to attach anything to.** Someone implementing this
+as "add a column to `research_sources`" would instrument exactly the population
+that already works and leave the one under investigation dark.
+
+**The record has to be per collection ATTEMPT, keyed on ticker and time, not per
+source.**
+
+### One candidate eliminated by reading
+
+There is **no gate between parsing and storage** — `if (collected.length > 0)
+insertResearchSources(db, collected)`, no filter. So "no failure, no rows"
+genuinely means nothing survived the read or the cutoff, **not** a silent
+downstream drop. Integration's fourth signature is cleaner than it looked.
