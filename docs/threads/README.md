@@ -720,6 +720,58 @@ still looking.
 **A placeholder that decays toward truth is safe. One that decays toward
 plausibility hides itself.**
 
+## HOUSE RULE: IT IS N STATES, NOT A VALUE AND AN ABSENCE
+
+**Named 2026-09-04 after the fifth instance in one day.** Every time a field was
+modelled as *a value, plus null when we do not have one*, the null turned out to
+be carrying two or more distinct meanings that needed different treatment:
+
+- **activity** — populated / observed-and-empty / never-measured. A zero-filled
+  array and a null are opposite claims.
+- **reachability** — ~19–22 days (original registration) / ~5 days (post-effective
+  amendment) / NOW (takedown off a live shelf) / unknown. **Rendering "unknown"
+  like the slow case says weeks-away about something on the tape that morning.**
+- **the float bound** — proven with basis verified / computed but
+  `BASIS_UNVERIFIABLE` with the dates stated / no share count at all. **The middle
+  one is the product**, and a number-plus-null cannot express it.
+- **the session phase** — six real phases, and *not yet loaded*, which is a
+  property of the observer rather than of the market.
+- **`secAvailable`** — configured (ours, gates) versus reachable (theirs, reports),
+  **whose consumers need opposite responses.**
+
+**The tell is always the same: someone asks what the null MEANS and there is more
+than one answer.** If two of those answers would be acted on differently, it was
+never a null — **it was a state nobody had named**, and leaving it unnamed pushes
+the distinction onto every reader forever.
+
+**The cheapest moment to find this is when writing the type**, and the question
+that finds it is *"what are the ways this can be absent, and would I treat them
+alike?"*
+
+## THE CONSTANT EXPIRES BECAUSE THE THING IT MEASURES MOVES
+
+**Research, 2026-09-04, on how deep the price history must reach.** The coverage
+curve has a **sharp knee**: five months of history covers 73% of the small-float
+set, **a sixth month buys nothing, and a ninth buys twenty points** — the largest
+step on the curve — after which the return collapses.
+
+**The knee is fiscal-year-end.** 27% of share counts are dated 12-31 and 39% land
+on a quarter or year end, so the distribution is bimodal and the curve is a step
+rather than a slope. **A 2025-12-31 figure is 7.7 months old in August: a
+nine-month window catches the entire December cohort and a five-month window
+catches none of it.**
+
+**AND THEREFORE A FIXED DEPTH IS THE WRONG RULE. A 12-31 figure is one month old
+in January and twelve months old in December.** A session count that suffices in
+March fails in November — **and fails SILENTLY**, by returning
+`BASIS_UNVERIFIABLE` on more names each month, **which reads as worsening
+coverage rather than as an expiring constant.**
+
+**So the requirement is computed, not configured: the history must reach the most
+recent fiscal-year-end that any held share count references.** Naming the
+condition rather than the date on which it usually holds — this desk's oldest
+rule, applied to a config constant rather than to a business rule.
+
 ## COMPUTED, USED FOR A DECISION, DISCARDED — FOUR TIMES IN ONE DAY
 
 **2026-09-04. The same shape in four unrelated modules, which makes it a design
