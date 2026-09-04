@@ -2071,6 +2071,46 @@ named `research` holds the **TODAY** row and the one named `record` holds the
 **RESEARCH** row. Two things under one word, in the function this whole
 disagreement turned on.
 
+## I WAKE ONLY ON MESSAGES, SO WAITING FOR ONE IS NOT A PLAN
+
+**The trader, 2026-09-04, for the SECOND time in one night: "no one is working
+and you haven't given an update or instructions."** After the first, this seat
+amended the shared ping rule. **It failed again within the hour, because a rule
+in a document does not create a wake signal.**
+
+**And the diagnosis was wrong both times. It was never their silence — it was my
+dropped hops.** Checking directly took two commands and found:
+
+- **Ops was working**, mid-deploy, at that moment.
+- **Research had been idle waiting on a word I never sent.** It said *"say the
+  word once Ops reports and it is a short build."* Ops reported hours earlier. I
+  relayed nothing.
+- **Design had never been given the trader's answers** on all-rows sparklines and
+  top-5 ticks. I wrote *"I'm scoping it that way"* to the trader and sent it to
+  nobody.
+
+**So two threads were idle because the bus stopped, and the bus is me.** Writing
+a stricter rule for THEM was fixing the wrong end — it also, conveniently, put
+the failure somewhere other than here.
+
+**THE STRUCTURAL FACT: THIS SEAT WAKES ONLY ON AN INCOMING MESSAGE.** No commit,
+no idle thread, no elapsed hour wakes it. **So any plan that depends on someone
+else choosing to send one has a single point of failure that is not under this
+seat's control** — and the trader becomes the fallback wake signal, which is
+exactly the transport role the whole arrangement exists to remove.
+
+**THE PRACTICE, AND IT REPLACES THE RULE RATHER THAN SUPPLEMENTING IT:**
+
+- **Before reporting state, READ IT.** `list_sessions` gives `isRunning` and
+  `lastActivityAt` per thread; `git log origin/main` gives what landed. **Two
+  commands, and they do not depend on anyone's compliance.**
+- **Before going idle, re-read every "waiting on X" in flight and confirm X was
+  actually sent.** Both drops tonight were an instruction that existed in a
+  message to the trader and in no message to the thread.
+- **A thread idle for a while is a QUESTION, not a status.** It means finished
+  and quiet, or blocked on me — and those are indistinguishable from here without
+  looking.
+
 ## A BUNDLE IS A POINT, NOT A SET — AND MY MODEL WAS STALE, NOT MY FACTS
 
 **Ops, 2026-09-04, refusing a deploy instruction from this seat.** I named
