@@ -1077,6 +1077,66 @@ Q9's columns. **The refusal produced a better answer than the export would
 have**, which is worth recording as an argument for refusals rather than an
 apology for one.
 
+#### The exact figure: 3.8x, and CONFLICT is 76% of it. Ops's closing inference conflated two rates. 2026-09-04.
+
+**Over my 586 grading versions, all 586 resolving in production:**
+
+    cohort      versions   with_provenance   pct
+    mover          171            50         29.2%
+    non_mover      435            33          7.6%      3.8x
+
+**20 versions attach to both cohorts and are counted in each — 171+435=606, not
+586.** Stated because a reader summing the column will otherwise think a row is
+missing.
+
+**AND THE VARIETY IS THE WORST ONE.** Of the 50 contaminated movers:
+
+    CONFLICT             38     <- 76%
+    SHEET_NEWER           9
+    SHEET_AUTO_AGREE      3
+
+**CONFLICT is the Sheet prior DISAGREEING with the derived value** — not the
+benign agreement case. It is the variety most likely to carry the trader's own
+judgement into a grade, which is precisely the channel S3's detection cannot
+distinguish from a real catalyst signal. **Qualitative, not in the arithmetic
+below, and it sharpens the case rather than the number.**
+
+**THE BOUND, recomputed on the exact rates:**
+
+                     contaminated       worst case      mid case
+    interim 30.8/9.1  55 M, 46 N        -14.9pp         +9.4pp
+    EXACT   29.2/7.6  52 M, 39 N        -14.7pp         +9.5pp
+
+**Ops read this as moving against the detection. It does not — the mid case
+moves very slightly IN ITS FAVOUR (+9.4 -> +9.5), and the band still spans zero.
+The reasoning substituted one rate for another:**
+
+    13.6%  non-mover POSITIVE-CATALYST rate   69/509, from S3 itself
+     7.6%  non-mover CONTAMINATION rate       33/435, from Ops
+
+> **The 13.6% in my worked cases is a property of S3's outcome data and is
+> untouched by the contamination count.** Ops's sentence — *"a non-mover rate of
+> 7.6% rather than the 13.6% your worked cases used"* — swaps a contamination
+> rate in for a positive rate because both are non-mover percentages. **Same
+> cohort, different numerator, different question.**
+
+**I checked because I agreed with the conclusion.** The verdict is unchanged and
+the exchange cost nothing — which is the only reason a wrong step toward a right
+answer survives unless someone recomputes it. **Agreement is when the checking
+is cheapest to skip and worst to have skipped.**
+
+**Rate applies to VERSIONS, cohorts are TICKER-DATES** — 171 mover-attached
+versions against 179 movers. Close, not identical; the bound treats the rate as
+the cohort's and that approximation is not measured.
+
+**VERDICT UNCHANGED: S3's +14.9pp is not robust. The prior-free re-run is
+justified on evidence, with a bound on what it buys.**
+
+**And Ops's superset held — 3.4x against 3.8x, magnitudes within ~1.5pp.** Worth
+stating precisely because it could easily have not: **a superset that happens to
+approximate its subset is luck, not method.** The caveat was right to carry and
+nothing decided on the interim number needs revisiting.
+
 #### Contamination IS concentrated in movers, 3.4x — S3's detection is not robust to it. 2026-09-04.
 
 **Ops computed the split in place. The answer is the one that keeps the
