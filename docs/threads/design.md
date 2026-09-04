@@ -2764,6 +2764,64 @@ broken desk; it is a working-looking one.
 deploy failed on a LOCKED market database — exactly the condition that fails
 `/api/market` while `/api/dashboard` serves normally.
 
+## SCOPE — the placeholder family, as ONE change (after Friday's close)
+
+Three rounds, three fixes, siblings missed every time. **Fixing one at a time is
+what produced three rounds.** The remaining work goes in as one piece.
+
+### Two still live, and one is louder than anything fixed so far
+
+**`OFFLINE_HEALTH` (`:49`)** — the raw object directly above the view I
+repaired. `offline: true` reaches `marketOffline` and renders, at
+`DiscoveryBoard.tsx:259`: *"Market feed is not running. Discovery cannot
+populate until it reconnects."* **Verbatim the claim my own commit said I had
+removed**, one component over, as a full sentence instead of a label.
+
+It also MASKS the phase defect: `marketOffline` takes priority at `:255`, so the
+`sessionPhase === 'CLOSED'` branch at `:260` is unreachable from the
+placeholder. Fixing the phase alone would change nothing on screen.
+
+**`OFFLINE_DISCOVERY` (`:135`)** — not one lie, seven. Beyond `sessionPhase`,
+`eligibleCount: 0` and `trackedCount: 0` render at `DiscoveryBoard.tsx:188` as
+**"0 eligible · 0 tracked"** — a MEASUREMENT, STATED, FROM NO MEASUREMENT — and
+no phase change touches it. Also `tradingDate: ''`, `rankedCount`,
+`baselineCount`, `calculatedAt`.
+
+### The fix is a NULLABLE PROP, not a new enum member
+
+Research measured both. Adding `'UNKNOWN'` to `SessionPhase` produces ONE
+compiler error; every other reader compiles clean and answers WRONGLY —
+`isMarketDataExpected` returns false for UNKNOWN and yields IDLE, the exact
+answer the change existed to prevent. `market.snapshot?.discovery ?? null`
+produces TWO errors, both at prop sites in `DashboardShell`, so **the compiler
+stops it at the boundary.**
+
+`DiscoveryState | null` through `DashboardHeader`, `MarketStatus`,
+`DiscoveryBoard`. `SessionPhase` does not change.
+
+**The framing, Research's and worth keeping in the comment: UNKNOWN IS NOT A
+PHASE OF THE MARKET, IT IS A PROPERTY OF THE OBSERVER.** The market always has a
+phase; the browser has sometimes not loaded.
+
+### The end state is that these constants stop existing
+
+A nullable prop represents "no data" as null rather than as a fabricated object.
+Then there is nothing to lie. **Policing the placeholders is worse than deleting
+them** — and this is the fifth time tonight the answer has been to make the
+wrong state unrepresentable rather than to keep it honest by discipline.
+
+### MY ENUMERATION TEST IS AIMED ONE STEP SHORT, AND THAT IS THE BEST FINDING
+
+It extracts every `OFFLINE_` constant by pattern and asserts the exact five
+reviewed — so **it proves they were ENUMERATED, not that they were FIXED.** Two
+of the five assert faults from no observation right now and the test is GREEN.
+
+Same shape as my vacuous checks: the test runs, passes, and answers a question
+that does not cover the defect. **The assertion has to be about what each
+constant CLAIMS** — no fault label, no stated count, no market-state assertion —
+not that the set is known. If the nullable fix lands, most of it becomes moot,
+which is the better outcome than a stricter police test.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
