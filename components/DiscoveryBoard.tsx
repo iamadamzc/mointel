@@ -61,7 +61,9 @@ const SORT_KEYS: ReadonlyArray<{ key: DiscoverySortKey; label: string; title: st
  * desk's own vocabulary for the prior-close-to-premarket move, and it is what a
  * momentum trader calls it.
  */
-function moveLabel(phase: DiscoveryState['sessionPhase']): { label: string; title: string } {
+function moveLabel(
+  phase: DiscoveryState['sessionPhase'] | null,
+): { label: string; title: string } {
   switch (phase) {
     case 'PREMARKET':
       return { label: 'Gap', title: 'Change from the prior session close, including after hours' };
@@ -76,7 +78,8 @@ function moveLabel(phase: DiscoveryState['sessionPhase']): { label: string; titl
 }
 
 interface DiscoveryBoardProps {
-  discovery: DiscoveryState;
+  /** Null until the first market payload arrives — not a fabricated state. */
+  discovery: DiscoveryState | null;
   rows: DeskRow[];
   onSelect: (ticker: string) => void;
   selectedTicker: string | null;
@@ -127,7 +130,8 @@ export function DiscoveryBoard({
   const showFloat = sort.key === 'float';
   // Resolved once: the button, the active marker and the tooltip must never
   // disagree about what the percent change is measured from.
-  const move = moveLabel(discovery.sessionPhase);
+  // Null phase falls to the neutral label rather than guessing a session.
+  const move = moveLabel(discovery?.sessionPhase ?? null);
   const activeLabel =
     sort.key === 'changePct'
       ? move.label
@@ -150,8 +154,8 @@ export function DiscoveryBoard({
    * is post-close activity. A board that still reads DISCOVERY / Daily RVOL
    * after the bell implies the ranking means something it no longer means.
    */
-  const afterHours = discovery.board === 'AFTER_HOURS';
-  const frozen = discovery.sessionPhase === 'POST_MARKET';
+  const afterHours = discovery?.board === 'AFTER_HOURS';
+  const frozen = discovery?.sessionPhase === 'POST_MARKET';
 
   return (
     <section className="border-b border-line bg-desk px-4 py-2">
@@ -160,9 +164,11 @@ export function DiscoveryBoard({
           {afterHours ? 'After-Hours Discovery' : 'Discovery'}
         </h2>
         <span className="text-[11px] text-ink-3">
-          {afterHours
-            ? `AH participation rank · $${discovery.priceMin}–$${discovery.priceMax}`
-            : `Daily RVOL rank · $${discovery.priceMin}–$${discovery.priceMax}`}
+          {discovery
+            ? afterHours
+              ? `AH participation rank · $${discovery.priceMin}–$${discovery.priceMax}`
+              : `Daily RVOL rank · $${discovery.priceMin}–$${discovery.priceMax}`
+            : 'Ranking not loaded'}
         </span>
 
         {frozen ? (
@@ -177,16 +183,26 @@ export function DiscoveryBoard({
         {sortActive ? (
           <span
             className="text-[10px] font-semibold tracking-wide text-accent uppercase"
-            title={`The board's own order for this session is ${discovery.rankingLabel}. You are overriding it. Choose Rank to return.`}
+            title={
+              discovery
+                ? `The board's own order for this session is ${discovery.rankingLabel}. You are overriding it. Choose Rank to return.`
+                : 'You are overriding the board order. Choose Rank to return.'
+            }
           >
             sorted by {activeLabel.toLowerCase()}
           </span>
         ) : null}
 
         <div className="ml-auto flex items-center gap-3">
+          {/*
+            * A COUNT OR NOTHING. It rendered "0 eligible · 0 tracked" from a
+            * placeholder — a measurement, stated, from no measurement — and
+            * zero is the most confident-looking null there is.
+            */}
           <span className="num text-[11px] text-ink-3">
-            {discovery.eligibleCount.toLocaleString()} eligible ·{' '}
-            {discovery.trackedCount.toLocaleString()} tracked
+            {discovery
+              ? `${discovery.eligibleCount.toLocaleString()} eligible · ${discovery.trackedCount.toLocaleString()} tracked`
+              : 'counts not loaded'}
           </span>
 
           <div className="flex items-center gap-1.5">
@@ -252,7 +268,13 @@ export function DiscoveryBoard({
 
       {visible.length === 0 ? (
         <p className="rounded-sm border border-dashed border-line-2 bg-panel px-3 py-4 text-[12px] text-ink-2">
-          {marketOffline
+          {discovery === null
+            ? // FIRST, ahead of every other branch. With no payload the desk has
+              // observed nothing, so it may claim nothing — and `marketOffline`
+              // below is itself derived from a placeholder in that state, which
+              // is how "Market feed is not running" reached a healthy desk.
+              'Waiting for the first market payload.'
+            : marketOffline
             ? // No shell command here. The desk is one supervised process and a
               // second market worker silently displaces the live SIP connection,
               // so telling a trader to start one is worse than telling them
@@ -267,9 +289,9 @@ export function DiscoveryBoard({
       ) : (
         <table className="w-full table-fixed border-collapse border-t border-line">
           <caption className="sr-only">
-            {afterHours ? 'After-hours discovery' : 'Discovery'} board, ranked by{' '}
-            {discovery.rankingLabel}. Use the arrow keys to move between rows and Enter to open a
-            ticker.
+            {afterHours ? 'After-hours discovery' : 'Discovery'} board
+            {discovery ? `, ranked by ${discovery.rankingLabel}` : ''}. Use the arrow keys to move
+            between rows and Enter to open a ticker.
           </caption>
           <thead className="sticky top-0 z-10 bg-panel-2">
             <tr>
@@ -315,8 +337,8 @@ export function DiscoveryBoard({
                 onSelect={onSelect}
                 focused={isFocused(row.ticker)}
                 onToggleFocus={onToggleFocus}
-                priceMin={discovery.priceMin}
-                priceMax={discovery.priceMax}
+                priceMin={discovery?.priceMin ?? null}
+                priceMax={discovery?.priceMax ?? null}
                 afterHours={afterHours}
                 showFloat={showFloat}
               />
@@ -386,8 +408,9 @@ function DiscoveryRow({
   onSelect: (ticker: string) => void;
   focused: boolean;
   onToggleFocus: (ticker: string) => void;
-  priceMin: number;
-  priceMax: number;
+  /** Null until the first market payload arrives. */
+  priceMin: number | null;
+  priceMax: number | null;
   afterHours: boolean;
   showFloat: boolean;
 }) {

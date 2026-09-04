@@ -30,7 +30,7 @@ import type { DashboardState } from '@/lib/data/types';
 import type { MarketHealthView } from '@/lib/market/health';
 import { emptyAssessmentPanel, type AssessmentPanel } from '@/lib/desk/view';
 import type { ResearchHealthView } from '@/lib/research/health';
-import type { DiscoveryState, MarketFeedHealth } from '@/lib/market/types';
+import type { MarketFeedHealth } from '@/lib/market/types';
 import { useClock } from '@/lib/hooks/useClock';
 import { useDashboard } from '@/lib/hooks/useDashboard';
 import { useFocus } from '@/lib/hooks/useFocus';
@@ -159,26 +159,6 @@ const OFFLINE_ASSESSMENTS: AssessmentPanel = {
   },
 };
 
-const OFFLINE_DISCOVERY: DiscoveryState = {
-  tradingDate: '',
-  sessionPhase: 'CLOSED',
-  board: 'DAILY_RVOL',
-  rankingLabel: 'Daily RVOL',
-  afterHoursStart: null,
-  rthClose: '16:00',
-  earlyClose: false,
-  universeMode: 'SHEET_ONLY',
-  eligibleCount: 0,
-  rankedCount: 0,
-  baselineCount: 0,
-  trackedCount: 0,
-  discoveryRank: 12,
-  internalRank: 50,
-  priceMin: 1,
-  priceMax: 20,
-  ranked: [],
-  calculatedAt: null,
-};
 
 export function DashboardShell({ initialState }: { initialState: DashboardState | null }) {
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
@@ -345,7 +325,25 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   const health = market.snapshot?.health ?? OFFLINE_HEALTH;
   const healthView = market.snapshot?.marketHealth ?? OFFLINE_HEALTH_VIEW;
   const researchHealth = market.snapshot?.researchHealth ?? OFFLINE_RESEARCH;
-  const discovery = market.snapshot?.discovery ?? OFFLINE_DISCOVERY;
+  /*
+   * NULL, not a fabricated DiscoveryState.
+   *
+   * `OFFLINE_DISCOVERY` asserted seven things the desk had not observed —
+   * `sessionPhase: 'CLOSED'` when the market may be open, and
+   * `eligibleCount: 0` / `trackedCount: 0`, which rendered as "0 eligible ·
+   * 0 tracked". **Zero is a MEASUREMENT.** A type that cannot express NOT
+   * OBSERVED forces every field to pick its most plausible-looking value, and
+   * that is not fixable by choosing better constants.
+   *
+   * UNKNOWN IS NOT A PHASE OF THE MARKET, IT IS A PROPERTY OF THE OBSERVER.
+   * The market always has a phase; the browser has sometimes not loaded. So the
+   * absence lives in the PROP rather than in a new `SessionPhase` member —
+   * measured: adding `'UNKNOWN'` produces ONE compiler error and leaves every
+   * other reader compiling clean and answering wrongly, including
+   * `isMarketDataExpected` returning false and yielding IDLE, which is the exact
+   * answer the clock-relative predicate exists to prevent.
+   */
+  const discovery = market.snapshot?.discovery ?? null;
   const assessments = market.snapshot?.assessments ?? OFFLINE_ASSESSMENTS;
 
   return (

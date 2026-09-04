@@ -9,7 +9,8 @@ interface MarketStatusProps {
   health: MarketFeedHealth;
   /** Connection and freshness, already combined server-side. */
   marketHealth: MarketHealthView;
-  discovery: DiscoveryState;
+  /** Null until the first market payload arrives — not a fabricated state. */
+  discovery: DiscoveryState | null;
   mounted: boolean;
 }
 
@@ -68,7 +69,20 @@ export function MarketStatus({ health, marketHealth, discovery, mounted }: Marke
    * What this hour SHOULD produce. Inside the session window a feed is expected
    * to be LIVE; outside it, IDLE is the correct and uninteresting answer.
    */
-  const nominalState = isMarketDataExpected(discovery.sessionPhase) ? 'LIVE' : 'IDLE';
+  /*
+   * Null when nothing has loaded, and then there IS no nominal state.
+   *
+   * Suppression means "this light is in the state this hour should produce".
+   * With no session known, no hour is known either, so nothing may be
+   * suppressed — the label renders, and it says "not loaded" because the health
+   * view is its own placeholder. Guessing a nominal here would silence a light
+   * on the strength of a phase nobody observed.
+   */
+  const nominalState = discovery
+    ? isMarketDataExpected(discovery.sessionPhase)
+      ? 'LIVE'
+      : 'IDLE'
+    : null;
 
   return (
     <div className="flex items-center gap-2.5">
@@ -126,11 +140,14 @@ export function MarketStatus({ health, marketHealth, discovery, mounted }: Marke
        */}
       <div className="text-[11px] text-ink-2">
         <span title={ageDetail(mounted ? age : null, marketHealth.thresholds)}>
-          {SESSION_PHASE_LABEL[discovery.sessionPhase] ?? discovery.sessionPhase}
+          {discovery
+            ? (SESSION_PHASE_LABEL[discovery.sessionPhase] ?? discovery.sessionPhase)
+            : /* Not "Closed". The phase is unobserved, and CLOSED is a claim. */
+              'Session not loaded'}
         </span>
       </div>
 
-      {discovery.universeMode !== 'FULL' && health.mode !== 'OFFLINE' ? (
+      {discovery && discovery.universeMode !== 'FULL' && health.mode !== 'OFFLINE' ? (
         <StatusBadge
           label={universeLabel(discovery.universeMode)}
           tone="warn"

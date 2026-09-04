@@ -70,37 +70,85 @@ describe('status chrome shows only what varies', () => {
   });
 
   /*
-   * ASSERTED OVER THE PATTERN, NOT OVER THE THREE I HAPPEN TO KNOW.
+   * AN EMPTINESS ASSERTION, NOT A ROLL-CALL.
    *
-   * The first fix said "both twins" and there were five OFFLINE_ constants in
-   * the file; the third stayed red on the live desk. Naming the constants I
-   * remember reproduces exactly the enumeration failure that caused it, so this
-   * counts them and fails when a new one appears unreviewed.
+   * The previous version listed the five known `OFFLINE_` constants and
+   * asserted the set matched. That proved they had been ENUMERATED, not that
+   * any of them was HONEST — two were asserting faults from no observation
+   * while it stayed green, twice.
    *
-   * The instrument is proved first: if the pattern matched nothing, an
-   * expectation about what it found would pass vacuously.
+   * **A test asserting there are NO placeholder constants cannot silently pass
+   * a new lie; one asserting there are exactly the known five always can.** So
+   * the nullable fix does not merely repair the constants, it removes the
+   * category the test had to police.
+   *
+   * `OFFLINE_HEALTH` and its view survive deliberately: they are a MarketFeedHealth
+   * and a MarketHealthView, both of which now say "not loaded" rather than
+   * naming a fault, and neither fabricates a count or a market state.
    */
-  it('has exactly the five placeholder constants that have been reviewed', async () => {
+  it('fabricates no discovery state before the first payload', async () => {
     const source = await read('components/DashboardShell.tsx');
-    const found = [...source.matchAll(/^const (OFFLINE_[A-Z_]+)/gm)].map((m) => m[1]);
 
-    // The extractor can see. Without this the assertion below is vacuous.
-    expect(found.length).toBeGreaterThan(0);
+    // The extractor can see. Otherwise the assertion below is vacuous.
+    expect(source).toContain('const OFFLINE_HEALTH');
 
-    expect(found.sort()).toEqual([
-      'OFFLINE_ASSESSMENTS',
-      'OFFLINE_DISCOVERY',
-      'OFFLINE_HEALTH',
-      'OFFLINE_HEALTH_VIEW',
-      'OFFLINE_RESEARCH',
-    ]);
+    expect(source).not.toContain('const OFFLINE_DISCOVERY');
+    expect(source).toContain('market.snapshot?.discovery ?? null');
   });
 
+  /*
+   * The absence must reach the READERS, not be defaulted at the boundary. A
+   * component that fills in a phase or a count of its own would rebuild the
+   * same lie one layer down.
+   */
+  it('passes the absence through to every consumer', async () => {
+    for (const file of [
+      'components/DashboardHeader.tsx',
+      'components/MarketStatus.tsx',
+      'components/DiscoveryBoard.tsx',
+    ]) {
+      const source = await read(file);
+      expect(source, `${file} does not accept an absent discovery`).toContain(
+        'discovery: DiscoveryState | null',
+      );
+    }
+  });
 
   /*
-   * And it must not SHOUT it either. Red is the alarm; nothing has been observed
-   * to be wrong, so the placeholder is dim.
+   * Zero is a MEASUREMENT. "0 eligible · 0 tracked" was a measurement stated
+   * from no measurement, and it is the most confident-looking null there is.
    */
+  it('states a count or nothing, never a zero it did not measure', async () => {
+    const source = await read('components/DiscoveryBoard.tsx');
+    expect(source).toContain("'counts not loaded'");
+    // The count may only appear inside the guarded branch.
+    const at = source.indexOf('eligibleCount');
+    expect(at).toBeGreaterThan(-1);
+    expect(source.slice(Math.max(0, at - 120), at)).toContain('discovery');
+  });
+
+  /*
+   * Not-loaded outranks every other branch. `marketOffline` is itself derived
+   * from a placeholder in that state, which is how "Market feed is not running"
+   * reached a demonstrably healthy desk.
+   */
+  it('claims nothing about the feed before anything has loaded', async () => {
+    const source = await read('components/DiscoveryBoard.tsx');
+    // The string LITERALS, not the comments that quote them — my first version
+    // measured its own rationale and failed on it.
+    // The CONDITION, not just the order. A first version asserted only that the
+    // strings appeared in order, and passed when the branch was made
+    // unreachable -- the literal was still there, just never reached.
+    expect(source).toContain('{discovery === null');
+
+    // The string LITERALS, not the comments that quote them -- my first version
+    // measured its own rationale and failed on it.
+    const notLoaded = source.indexOf("'Waiting for the first market payload.'");
+    const feedDown = source.indexOf("'Market feed is not running.");
+    expect(notLoaded).toBeGreaterThan(-1);
+    expect(feedDown).toBeGreaterThan(-1);
+    expect(notLoaded).toBeLessThan(feedDown);
+  });
 
   /*
    * NORMAL IS RELATIVE TO THE CLOCK, and the first version of this test pinned

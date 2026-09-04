@@ -260,11 +260,19 @@ export function selectFocusRows(
 export function retentionNote(options: {
   latched: boolean;
   price: number | null;
-  priceMin: number;
-  priceMax: number;
+  /** Null until the first market payload arrives — no band, so no claim. */
+  priceMin: number | null;
+  priceMax: number | null;
 }): string | null {
   const { latched, price, priceMin, priceMax } = options;
   if (!latched || price === null) return null;
+
+  /*
+   * Without the band there is no "outside" to be retained from. Returning null
+   * says nothing, where defaulting the bounds would silently decide whether a
+   * name is out of range using numbers nobody observed.
+   */
+  if (priceMin === null || priceMax === null) return null;
 
   if (price > priceMax) return `retained > $${priceMax}`;
   if (price < priceMin) return `retained < $${priceMin}`;

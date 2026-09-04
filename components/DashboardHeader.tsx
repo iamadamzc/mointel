@@ -20,7 +20,8 @@ interface DashboardHeaderProps {
   researchHealth: ResearchHealthView;
   /** Session headline plus the last and next scheduled checkpoints. */
   assessments: AssessmentPanel;
-  discovery: DiscoveryState;
+  /** Null until the first market payload arrives. */
+  discovery: DiscoveryState | null;
   now: number;
   mounted: boolean;
   refreshing: boolean;
