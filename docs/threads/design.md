@@ -2888,6 +2888,57 @@ OBSERVED, and each picks the most plausible-looking one. **`eligibleCount:
 number` cannot say "not counted", so it says 0 — and 0 is a MEASUREMENT.** Not
 fixable by choosing better constants; only by making absence representable.
 
+## The price sparkline's sparse case — no threshold, and no gradient either (not built)
+
+Research's finding stands and I am not arguing with it: **coverage is a FIDELITY
+measure being recruited to answer a RELEVANCE question.** It honestly answers
+"how much of this line did the fill rule draw" and says nothing about "is this
+row worth looking at" — and on the rows that matter the two run OPPOSITE. TGL at
+3% barely traded; AIXC at 8% traded 29,379 times in a handful of minutes. A cut
+at 40% would have dimmed three of the most heavily traded rows on the board.
+
+Relevance is already answered beside it, by a different measurement: the
+activity series.
+
+### The gate is rejected — and so is its smooth twin
+
+**The obvious next idea after "no threshold" is a GRADIENT: opacity tied to
+coverage.** That is the same error made continuous instead of stepwise. AIXC
+would render at 8% opacity — suppressed just as effectively as by a cut, and
+harder to notice because nothing declares a rule. **Reject the gradient with the
+threshold.** Sparsity is rendered per-segment, never as a property of the whole
+line.
+
+### The mark type IS the claim, and a line is the wrong one here
+
+**A line asserts continuity between its points. Discrete marks assert only the
+points.** At 8% coverage a dashed or dimmed line is still 92% non-data wearing
+the shape of data — the reader's eye follows the stroke, not its texture.
+
+So the honest mark for a sparse row is **points at traded minutes**, not a
+styled line. That has three consequences worth the build:
+
+1. **The first-traded-minute rule becomes STRUCTURAL rather than enforced.** No
+   trade, no point — so a line cannot start at the window edge, because there is
+   no line. The rule that 36-42% of top-12 rows depend on stops needing a
+   guard.
+2. **It aligns with the activity sparkline directly beneath it.** Price gaps and
+   activity gaps land on the same minutes, so the reader can SEE that the
+   absence is corroborated by a second, independent measurement.
+3. **The burst pattern becomes visible rather than degraded.** Which is
+   Research's point below.
+
+### Sparse-and-violent is a PATTERN, not a defect
+
+AIXC at 8% coverage with 2,099 trades per covered minute is close to what he
+originally asked for: RVOL is cumulative and cannot say what is active NOW, and
+a row that is mostly silent and violent in bursts is a distinct thing.
+
+**Do not design the sparse case as degradation only.** Not building on it — but
+a rendering that treats sparsity purely as damage would erase the signal while
+apologising for it, and that decision gets baked in at the mark type, before any
+of it is measured.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
