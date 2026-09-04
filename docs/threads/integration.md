@@ -1997,6 +1997,57 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## A RESULT IN THE EXPECTED DIRECTION SUPPRESSES THE CHECK ON THE POPULATION
+
+**Ops, 2026-09-04, against its own live reading, minutes after using the same
+warning on someone else.** It queried the top **50** for the post-deploy float
+count and the API returned **17 rows**. It did not notice — **because 17 was
+more than the 13 it expected, and it read the increase as the parser working.**
+
+**That is R&D's censored boundary arriving inside the very read that was
+commissioned to avoid it.** `best_rank` runs 1..25 because capture stops at 25,
+so a top-50 query returns top-25 rows and reads as full coverage of a boundary
+never observed. The warning had been sent to Ops that same evening, in writing,
+naming this exact query shape.
+
+**The mechanism is the part worth keeping.** A wrong population normally
+announces itself as a surprising number. **Here the number was surprising in the
+DIRECTION THE HYPOTHESIS PREDICTED**, and a confirmation is the one result
+nobody audits. The censoring was not hidden by being subtle; **it was hidden by
+being good news.** So the check cannot be "does this figure look right" — a
+figure that looks right is exactly when the population goes unexamined.
+
+**Ops caught it before the number travelled and refused to let 16-of-17 stand as
+board coverage.** It is coverage of the rows the API returned. The board read
+now waits for a settled premarket or RTH board **with the boundary named and
+slots-versus-names stated**, because a purchase is being priced against it.
+
+## THE OBSERVABLE THAT COULD FAIL IN BOTH DIRECTIONS DID ITS JOB
+
+**`fff1f1d`, live 2026-09-04.** The float parser's check was written so that a
+pass required a number rather than a direction:
+
+    PARSED             1 (AKAN)  ->  16 of 17
+    GIVEN BUT UNREAD  12         ->   1  (TENX)
+
+**Exactly 1, and it is the right one.** Above 1 would have been an uncovered
+phrasing shipping the old defect in a new costume; **0 would have been WORSE
+than the bug**, because it would have meant TENX's `"~50M share base — OUT OF
+FLOAT RANGE"` parsed and a share count entered the one column that must never
+hold one. **A one-sided check passes on both of those.**
+
+**Twelve floats the trader wrote weeks ago are numbers on his board tonight**,
+recovered at zero collection cost. And the market worker stayed deliberately on
+`6d368dc` — no restart, no SIP downtime, capture untouched.
+
+**One further habit worth the entry:** Ops read the clock after deploying,
+briefly believed it had shipped across the 22:00 recap, and **reconstructed the
+timeline rather than trusting the impression** — preflight 21:12, web up 21:14,
+recap COMPLETE 22:00:00.5 on the new release, 46 minutes clear. The two hours
+were time spent in other exchanges, not deploy duration. **The extrapolation
+habit caught by reading, in the case where the answer was that nothing was
+wrong** — which is the case that normally goes unchecked.
+
 ## A REFUSAL AND AN ABSENCE RENDER THE SAME, AND THIS DESK ALREADY KNOWS BETTER
 
 **Research, 2026-09-04, against its own fix.** The new float allowlist **refuses
