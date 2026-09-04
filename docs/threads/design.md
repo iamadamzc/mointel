@@ -3112,6 +3112,40 @@ guard protects registry-resolved addresses, and this one never went through it.
 **Whatever admits a leaf article on the discovery path is the repair**, and it is
 different code from what was already fixed.
 
+## Rung 3 is not one state — it is three, and only one indicts the desk
+
+I recorded "a durable route that returned nothing" as the alarming rung, on the
+grounds that it is the only state indicting the DESK rather than the ISSUER.
+**That was true of the state as I described it and false of the population.**
+
+Ops probed all thirteen never-collected feed names: **CUTOFF 6, OK 5, PARSER 2.**
+
+| Probe result | What it means | Who it indicts |
+| --- | --- | --- |
+| CUTOFF | the feed parses and its newest entry is old — **a DEAD SOURCE** | the issuer |
+| OK | fetched and parsed fine, and the desk collected nothing anyway | **the desk** |
+| PARSER | the feed could not be read | the desk, differently |
+
+**AKAN is the concrete case and it is on his screenshot.** Its newsroom feed has
+not published since last November while the company files normally. **Nothing is
+broken.** A warning saying "we looked and found nothing" would be true; one
+implying the desk failed would be false, and it is the name he is looking at.
+
+So the honest warning needs to distinguish **"the source is dead"** from
+**"we failed to read a live source"** — and it can, because the probe's own
+categories already separate them. Five of thirteen are a real collector gap.
+
+**The design consequence:** a single "searched and found nothing" sentence
+flattens an issuer problem into a desk problem. On a card he reads to decide
+whether to trust a row, those point in opposite directions — a dead newsroom
+means look elsewhere; a collector gap means the desk is lying to him about its
+reach.
+
+**And it re-rates rung 3 downward as an alarm.** 6 of 13 are dead sources, so
+the majority of "durable route, nothing collected" is the issuer, not us. My
+"only state that indicts the desk" framing overstated it by roughly two to one,
+on a population I had not looked at when I wrote it.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
