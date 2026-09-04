@@ -2726,6 +2726,44 @@ property of provenance, not of the two numbers, and nothing in the types
 distinguishes the safe field from the unsafe one. That distinction has to be
 carried by a name or a comment, or it will be lost.
 
+## FOLLOW-UP SCOPE — say TRANSPORT when transport failed (2026-09-04, not built)
+
+`e67e89d` relabels the placeholder from `Market: worker offline` to
+`Market: not loaded`. That fixes the FLASH. **It does not fix the persistent
+case, which is the one that misattributes.**
+
+When `/api/market` fails, `useMarket.ts:49-54` sets `transportError` and never
+touches `snapshot`, so the placeholder stands. The browser cannot reach the
+desk — and the header names the MARKET WORKER, a different subsystem with a
+different remedy. `transportError` is set and sitting unused by these
+placeholders.
+
+**The remedy the wrong label implies is actively harmful here.** Restarting the
+market worker drops and re-establishes the SIP connection, and that connection
+IS capture. A false "worker offline" during premarket invites him to break the
+thing it claims is broken.
+
+So: when `transportError` is set, the header should say the DESK IS UNREACHABLE,
+not that a worker is down. Three states, not two — reachable-and-loading,
+unreachable, and a real worker verdict from `health.ts`.
+
+### The premise this corrects
+
+The stand-down reasoning was that a persistent failure arrives with an obviously
+broken board, so the cost is a wrong diagnosis on a desk he can already see is
+dead. **`/api/market` and `/api/dashboard` are separate fetches** —
+`useMarket.ts:39` and `useDashboard.ts:66`, different hooks, different routes,
+and `/api/dashboard` does not read the market store.
+
+So `/api/market` down with `/api/dashboard` up renders a **fully populated
+board** — tickers, float, catalyst, structure, warnings — with stale or absent
+telemetry and a red header naming the wrong subsystem. That is not an obviously
+broken desk; it is a working-looking one.
+
+**And that split is not hypothetical: it is what happened last night.** The
+deploy failed on a LOCKED market database — exactly the condition that fails
+`/api/market` while `/api/dashboard` serves normally.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
