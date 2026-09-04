@@ -37,7 +37,18 @@ CHECKPOINTS=(
 # Plus RTH_INTERVAL every 30 minutes from 10:00 to the close.
 for ((m = 600; m <= 960; m += 30)); do CHECKPOINTS+=("$m RTH_INTERVAL"); done
 
+# PREFLIGHT_NOW_MINUTES overrides the clock, for tests only.
+#
+# Without it this function is the wall clock, so any test of the protected
+# window is a test of when it happened to run. That is how the suite that
+# gates deploys acquired a flake: with PROTECTED_MINUTES=0 the comparison
+# below blocked whenever a run landed exactly on a checkpoint minute, which
+# RTH_INTERVAL provides every thirty minutes.
 now_et_minutes() {
+  if [ -n "${PREFLIGHT_NOW_MINUTES:-}" ]; then
+    echo "$(( 10#$PREFLIGHT_NOW_MINUTES ))"
+    return
+  fi
   local hm
   hm=$(TZ=America/New_York date +"%H %M")
   echo $(( 10#${hm% *} * 60 + 10#${hm#* } ))
@@ -74,7 +85,10 @@ main() {
     bash "$(dirname "$0")/pins.sh" check || log "WARNING: pins are not satisfiable"
   fi
 
-  if (( nearest_diff <= PROTECTED_MINUTES )); then
+  # PROTECTED_MINUTES=0 means NO protected window, so it must not block.
+  # `0 <= 0` blocked on the exact minute of every checkpoint, which is a
+  # deploy refused for a window the operator had switched off.
+  if (( PROTECTED_MINUTES > 0 )) && (( nearest_diff <= PROTECTED_MINUTES )); then
     if [ -n "$OVERRIDE" ]; then
       # Recorded in deployment output and therefore in the operator's shell
       # history and any CI log. An override is a decision, not a flag.

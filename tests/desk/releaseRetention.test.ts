@@ -199,7 +199,40 @@ describe('deployment preflight', () => {
   });
 
   it('reports the surrounding checkpoints either way', () => {
-    const out = sh(PREFLIGHT_SH, [], { PROTECTED_MINUTES: '0' });
+    // 12:05 ET, deliberately BETWEEN checkpoints (720 and 750) so this asserts
+    // the reporting and nothing else. The clock is pinned because the
+    // assertion used to depend on when the suite happened to run.
+    const out = sh(PREFLIGHT_SH, [], {
+      PROTECTED_MINUTES: '0',
+      PREFLIGHT_NOW_MINUTES: '725',
+    });
     expect(out).toMatch(/previous checkpoint|next checkpoint/);
+  });
+
+  /**
+   * The flake this file used to carry, and it was a real defect underneath.
+   *
+   * `nearest_diff <= PROTECTED_MINUTES` with both zero BLOCKS — so with the
+   * window switched off, preflight still refused on the exact minute of any
+   * checkpoint, and RTH_INTERVAL supplies one every thirty minutes. The suite
+   * that decides whether a deploy is safe therefore failed whenever a run
+   * landed on one, which either blocks a good deploy or teaches the reader to
+   * re-run until green. That second one is the corrosive half: a gate that is
+   * sometimes wrong gets discounted, and then a real red is re-run too.
+   *
+   * 960 is RTH_CLOSE, so nearest_diff is exactly 0 here.
+   */
+  it('does not block on the exact minute of a checkpoint when the window is zero', () => {
+    const out = sh(PREFLIGHT_SH, [], {
+      PROTECTED_MINUTES: '0',
+      PREFLIGHT_NOW_MINUTES: '960',
+    });
+    expect(out).toContain('clear of every checkpoint');
+  });
+
+  it('still blocks on that same minute when a window is actually set', () => {
+    expect(() =>
+      sh(PREFLIGHT_SH, [], { PROTECTED_MINUTES: '5', PREFLIGHT_NOW_MINUTES: '960' }),
+    ).toThrow();
   });
 });
