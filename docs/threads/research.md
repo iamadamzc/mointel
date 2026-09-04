@@ -3226,7 +3226,26 @@ resolver replicates.
 and the **ARCHIVE / OUTCOMES / PATTERNS history** — and *task 1* is the archiver,
 which is a second and independent reason it is the harder one to retire.
 
-### A SECOND CONTAMINATION PATH, NOT PREVIOUSLY NAMED
+### ~~A SECOND CONTAMINATION PATH~~ — WRONG. IT IS ONE CHANNEL, AND ITEM 7 COUNTED IT
+
+*Retracted by me 2026-09-04, within the hour, before Integration acted further
+on it.* **`floatQuality` is a FIELD OF `SheetPriorAnalysis`** —
+`bundle.ts:92-100`, alongside `catalyst`, `catalystGrade`, `structure`, `cycle`
+and `warnings` — **and `SheetPriorAnalysis` IS `priorHumanAnalysis`.** Item 7
+established that channel and this is inside it.
+
+**I read a grep line number without reading the enclosing interface.** Third
+grep-shaped error tonight, after the `supplyPair` reachability claim and the
+`91/231` denominator.
+
+**What survives, and it is the part that matters for a CATALYST result:**
+`SheetPriorAnalysis` carries **`catalyst` and `catalystGrade` verbatim**. So
+the prior does not merely prime structure — **it hands the interpreter the
+Sheet's catalyst judgement directly**, which is the channel a catalyst
+detection would be contaminated through. **One channel, correctly counted, and
+pointed straight at the thing under test.**
+
+### The original (retracted) claim, kept so the reversal is legible
 
 **`floatQuality` (column AI, task 2's) reaches the EVIDENCE BUNDLE** —
 `bundle.ts:99`, `sheetPrior.ts:61` — so **task 2's structure judgement is an
@@ -3236,6 +3255,53 @@ nobody has counted it.**
 
 **So retiring task 2 REMOVES a contamination path rather than costing one** —
 the same argument that makes losing `sheetPrior` a gain for R&D's Q1.
+
+---
+
+**47. The prior-free replay CANNOT be run validly today, and it is spend.**
+*Asked by Integration 2026-09-04 as the desk's highest priority, to test whether
+S3's +14.9pp is contamination. The question is right; two things block the
+method.*
+
+**1. THE AS-OF HAZARD HAS EXPIRED.** Item 10 pinned the original run to
+`market-prod-2026-08-23.db` because **`readSources` has no date filter** —
+`activeOnly` is its only option — so a replay bundles every source a ticker
+has, *including ones collected after the session being replayed*. It recorded
+that this was **"safe today by accident of timing, not by design"**: exactly one
+source, one ticker, published after the window.
+
+> **That was two weeks ago. A replay of an August window against today's store
+> would re-derive grades from September sources** — and item 10 says exactly
+> what that costs: *"Q1 would be invalid in a way nobody would see: the grades
+> would look ordinary and would have been formed from news that had not happened
+> yet."* **A contaminated headline replaced by a look-ahead one is not an
+> improvement.**
+
+**As-of source filtering must be built first, or the run must be pinned to a
+snapshot whose sources end at the window.** The capability itself exists —
+`config.model.omitSheetPrior` already switches the arm off.
+
+**2. IT IS MODEL SPEND, WHICH IS THE TRADER'S.** Item 10 costed the 5-session,
+58-ticker version at 0.65M input / 0.23M output. Thirteen sessions is larger.
+**Integration's delegation covers deploys and order-and-process; spend goes to
+him.** Not an obstruction — the two facts simply travel together.
+
+### Cheaper first, and it needs neither spend nor a replay
+
+**Measure how much prior there even WAS.** `sheetProvenance` is on stored
+analyses (item 7 measured 94 carrying it). **If the rows behind S3 largely had
+no Sheet prior, contamination is bounded by construction and the expensive run
+may be unnecessary.** That is free, exact, and answerable from the store.
+
+*Stated with its own weakness: splitting the effect by prior-presence is a
+MODERATION test, not a clean re-derivation, and item 10 already rejected
+restricting Q1 to no-TODAY rows as selection on the dependent variable — TODAY
+is the Sheet's own $2–$10 watchlist and 82% of 50%+ movers sit inside it. The
+selection biases the LEVEL; it does not obviously bias the COMPARISON. So this
+is a first look that could show contamination is small, and cannot prove it is
+absent.*
+
+### The original (retracted) claim, kept so the reversal is legible
 
 ### CORRECTION AGAINST MYSELF: "nothing carries it across" WAS WRONG, and it is the empty-grep rule again
 
