@@ -2714,6 +2714,25 @@ the answer changes which verdicts are reachable, and `IMPOSSIBLE` and
   changed two components and missed a third printing a pure constant onto the
   row he complained about. The addition-plan rule inverted — and the reason the
   fix took two rounds.
+- **A status row and a working set are looked at in different moments.** That,
+  not "no room", is why the tick budget belongs in the Focus strip rather than
+  the header. The header reports whether the desk is functioning; a working set
+  is what he is doing. The distinction is durable and will survive the next
+  request to put something in the header — including one from me.
+- **Prefer making it IMPOSSIBLE over making it VISIBLE.** Three times in one
+  night the better answer was structural rather than disclosed: the sparkline
+  reads the verdict's OWN array, so it cannot disagree with the graveyard rather
+  than agreeing by discipline; the tick budget defines the auto set as the
+  REMAINDER, so there is no silent degradation to announce because nothing
+  degrades; and the sparkline view exposes no field that could carry a tone, so
+  adding a verdict fails a test rather than requiring restraint. **A disclosure
+  is a promise someone has to keep. A structure keeps itself.**
+- **A collapse keyed on the wrong proxy fires on a false negative.** The Focus
+  strip hides itself on "no pins", which meant "nothing to say" only while pins
+  were the only content. Naming the case where a requirement usually holds,
+  instead of naming the requirement — and the tell was that its empty state
+  holds INSTRUCTIONAL TEXT: a constant dressed as content, in a band collapsed
+  for saying nothing.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
