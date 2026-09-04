@@ -3188,6 +3188,41 @@ That is the whole of it, and it is unchanged.
 searching the readers, which is code-verifiable. Which task WRITES each field
 is not, and that half rests on the 08-23 record.*
 
+### CORRECTION: the desk DOES carry the float's as-of, and it is rendered
+
+*Integration wrote that a stale float would be invisible — "no basis column, no
+as-of on that path, no alert". **Two of those three are wrong**, and it changes
+what the gating question costs to answer.*
+
+**`floatSourceDate` is parsed from `RESEARCH` column 9 (`rows.ts:169`, `:350`),
+typed (`types.ts:168`), and RENDERED — `TickerDrawer.tsx:544`, as a
+"Float Source Date" field.** `floatSourceUrls` ships beside it.
+
+**What is actually missing is narrower and cheaper than "nothing would surface
+it":**
+
+| | |
+| --- | --- |
+| an as-of on the float path | **exists, parsed, rendered** |
+| it on the BOARD ROW, beside the float itself | **no** — drawer only |
+| anything computing its AGE, or flagging staleness | **no** — it is a raw date, shown |
+
+> **So a stale float is visible to someone who opens the drawer and reads a
+> date, and invisible to everyone else.** That is *story rather than signal* —
+> defensible under the desk's own principle, except that **nobody would think
+> to look, because nothing tells them there is a reason to.**
+
+**Which reframes the risk of retiring task 2 from a blocker into a
+precondition:** the ingredient is already in hand, so surfacing the float's
+**age** rather than its **date** is small work on data already parsed. **Stop
+task 2 whenever, PROVIDED that lands first.**
+
+*Limit: I can confirm the field is parsed and rendered. I cannot confirm the
+tasks POPULATE it — Sheet cell contents are not persisted anywhere I can query,
+so an empty column would look identical to a fresh one from here. That is the
+same class of question as which task writes what, and it belongs in the same
+one look.*
+
 ---
 
 **45. Design's count: 38 of 46. BUILD THE FALLBACK — and the query found a
