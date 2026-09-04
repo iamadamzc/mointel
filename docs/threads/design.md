@@ -2354,6 +2354,14 @@ were wiring.
   ledger. Same class as sizing the masked risk chip from four rows that
   short-circuited two branches earlier — describing a surface instead of opening
   it.
+- **A grep for a leaf name misses every path that reaches it through the
+  parent**, and from inside the search "nothing carries this" and "I searched
+  for the wrong token" look identical. `supplyPair` was reported unreachable
+  because it is not named in `deskRead.ts` — but `deskRead.ts:351` already binds
+  the object it hangs off (`row.intelligence?.analysis?.dossier.structure`), so
+  it was one property access away the whole time. **Search for the PARENT you
+  would traverse, not the field you want.** Verified before accepting: the
+  rendering is a small change in this thread's own file.
 - **A test can pin a defect.** `cycleDetail`'s suite asserted
   `toContain('high is today')` on a string that could never be about today. The
   fixture-encodes-a-dead-world rule shows up as an ASSERTION too, and there it
