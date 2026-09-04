@@ -6309,3 +6309,55 @@ until Ops hit it.** A reachability field is precisely what would have surfaced
 that before it was scheduled — the desk misleading itself about its own state,
 which is the class this thread has recorded repeatedly, wired into the health
 endpoint rather than into a test.
+
+---
+
+**64. THE DEPTH CURVE HAS A KNEE AT NINE MONTHS, AND THE REQUIRED DEPTH DRIFTS
+THROUGH THE CALENDAR YEAR.**
+
+*Integration said the census would finally attach a number to "extend the deep
+fetch beyond 77 symbols", and asked for it to be flagged rather than scoped. Part
+of it does not need the census — the curve is computable from the snapshot now.*
+
+n = 211 share counts, 75 of them ≤ 10M:
+
+| depth | all counts covered | of the ≤10M set | gained |
+| --- | --- | --- | --- |
+| 3 months | 50% | 57% | — |
+| **5 months (today)** | **62%** | **73%** | — |
+| 6 months | 62% | 73% | **+0** |
+| **9 months** | **82%** | **88%** | **+43 names** |
+| 12 months | 84% | 89% | +4 |
+| 18 months | 88% | 93% | +8 |
+| 24 months | 91% | 97% | +7 |
+| 10 years | 100% | 100% | +19 |
+
+**The current depth sits just below a cliff.** A sixth month buys NOTHING. Four
+more months buy twenty percentage points — the largest single step on the curve —
+and beyond twelve months the return collapses.
+
+### The knee is not arbitrary: it is fiscal-year-end
+
+**57 of 211 `asOf` values are 12-31** (27%), and 39% land on a quarter or year
+end. On 2026-08-23 a 2025-12-31 figure is 235 days old — **7.7 months** — so a
+nine-month window captures the entire December cohort and a five-month window
+captures none of it. The rest of the population is fresh cover pages from the
+fetch week itself, which is why the distribution is bimodal and the curve is a
+step rather than a slope.
+
+### Which means a FIXED depth is the wrong rule
+
+**A 12-31 figure is one month old in January and twelve months old in December.**
+A session count that suffices in March fails in November, and it fails silently —
+by returning `BASIS_UNVERIFIABLE` on more names each month, which reads as
+worsening coverage rather than as an expiring constant.
+
+**So the requirement is "the history reaches the most recent fiscal-year-end that
+any held share count references", computed, not a number of sessions.** Naming
+the condition rather than the date it usually holds — the same correction this
+desk has recorded before.
+
+**Caveat kept:** this measures whether an `asOf` falls inside a window of that
+depth. Whether a factor is DERIVABLE there additionally needs the dual-adjustment
+fetch, and the fetch COST per symbol-day is not measured here. The curve gives
+the shape of the return, not its price.
