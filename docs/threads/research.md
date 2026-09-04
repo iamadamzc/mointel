@@ -7530,3 +7530,38 @@ Three 8-K/6-K and an exhibit inside the window, feed resolved, nothing collected
 on his screenshot — **and its Sheet float parses at 537,663, so the STRUCTURE side
 of that name works.** The failure is isolated to catalyst collection, which makes
 it a single-variable case he can verify end to end without trusting any of us.
+
+**80b. THE 244 IS EXACT — and the spend argument is weaker than the correctness
+one.**
+
+*Integration approved wiring `deactivateSources` as a separate piece and framed it
+as spend rather than tidiness. The population is confirmed; the framing needs
+correcting before it reaches the trader.*
+
+**Population, by the right predicate rather than by my subtraction:** every
+non-canonical row carrying a `cluster_id` is in a multi-member cluster — 214
+clusters, 458 members, **244 non-canonical.** All 917 canonical rows have a
+cluster_id, and **703 single-member clusters are canonical by construction**,
+which is the careless-predicate trap Integration named. My earlier `1161 − 917`
+was right by coincidence and is now right by derivation.
+
+**Spend, measured:** those 244 carry **507,457 excerpt bytes ≈ 127k tokens.**
+Against **3.53M total input tokens across 325 analyses**, that is **≈3.6% of one
+pass over everything** — higher in recurrence, since tickers are re-analysed
+about 1.4× in this window.
+
+**So the cost is real and small. It is not a 12M-token-day lever and should not
+be presented as one.**
+
+### The correctness argument is the stronger one
+
+`cluster.ts` exists to detect *"recycled or duplicated content"*. **If duplicates
+stay active, one announcement appears in the bundle as several sources** — and
+the model is instructed to cite source ids, so **a single press release
+redistributed by three aggregators can read as three independent corroborations
+of the same claim.**
+
+**That is a reason to wire it that does not depend on the token price**, and it
+is the one I would put to him: not "we are paying for duplicates" but **"one
+story can currently look like three."** Whether it HAS produced a false
+corroboration is unmeasured and I am not claiming it has.
