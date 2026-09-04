@@ -2206,6 +2206,63 @@ fallback is not worth building and the sentence stands alone. Ask before
 designing the fallback — this is exactly the "state what the count is RIGHT NOW
 before choosing a threshold" rule, and I have not stated it.
 
+### SIZED 2026-09-04 — the stale cycle high, and which number leads
+
+Research confirmed the bar set ends at the last SETTLED session, so `cycleHigh`
+cannot contain today's high. Sizing it myself gives a NARROWER blast radius and
+a WORSE symptom than the report.
+
+**Narrower.** Grepping `cycleHigh` outside `lib/market/cycle.ts` returns exactly
+one trader-facing reader — `lib/dashboard/cycle.ts:89`, inside `cycleDetail`.
+Not "everywhere it is read", and the intelligence panel does not render it.
+
+**Worse.** `cycleHigh` feeds `retracementPct`, and `retracementPct` decides the
+PHASE (`cycle.ts:136-140`). So the defect is not the hover string — **it is the
+chip LABEL**: DAY 1 / FRONTSIDE / OFF HIGH / BACKSIDE. A name gapping premarket
+above yesterday's cycle high reads OFF HIGH while it is making new highs. On a
+board of 50%+ gappers that is not an edge case; it is near the normal case, in
+the window he actually trades.
+
+**But it is stale, not inconsistent.** `cycleHigh` and `latestClose` are both
+settled, so the arc is a CORRECT statement about the last settled session,
+rendered with no date during a window where the name has usually moved. The
+falsehood is the implied "now", not the arithmetic.
+
+**A THIRD exclusion mechanism, at the surface.** Beyond the write guard and the
+read filter: `merge.ts:229-230` nulls `sessionHigh` during PREMARKET and routes
+the value to `premarketHigh`. A composition reading `sessionHigh` gets null in
+exactly the window that matters. (Checked `DeskRead.tsx:238` for the same trap —
+safe: `t` is `read.telemetry`, upstream of the split.)
+
+**`overlayLiveCycle` contains no live session data.** The name will be believed.
+Rename it with the work.
+
+### Which number leads — the question dissolves
+
+They do not disagree, and treating this as arbitration is the error. `cycleHigh`
+is *the highest high since the cycle started, through the last settled session*.
+`sessionHigh` is *today's high so far*. **Two halves of one maximum, not two
+estimates of one quantity.** The composed high is the larger, and that IS the
+cycle high correctly computed. There is nothing to tie-break.
+
+So the surface shows **one number and the date it was set** — `cycleHighDate`
+exists already. **When that date is today, the name is making its cycle high
+right now, which is the most tradeable fact on the board rather than an
+ambiguity to resolve.** The supposed conflict case is the signal case.
+
+One honesty constraint: today's high is partial and can be exceeded a minute
+later, so it must read as *so far*. The date carries that if the copy says it.
+
+### Sequencing — and a cheap fix that does not wait
+
+The composition IS the defect fix; there is no separate cheaper version of it.
+But there is a smaller honest step available NOW, independent of any of it:
+**date the claim.** A chip whose detail says "through Wednesday's close" stops
+being a false present-tense statement and becomes a true past-tense one. That is
+this thread's own rule — a label must be true without context — and it costs one
+string. It is worth doing before the composition rather than after, because it
+removes the falsehood without waiting on the work that removes the staleness.
+
 ### The cycle levels — a layer removed, not a pointer redirected
 
 Two consequences, both deliberate-or-not rather than free:
