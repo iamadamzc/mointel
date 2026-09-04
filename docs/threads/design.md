@@ -2939,6 +2939,65 @@ a rendering that treats sparsity purely as damage would erase the signal while
 apologising for it, and that decision gets baked in at the mark type, before any
 of it is measured.
 
+## SCOPE — the one-sided-search warning and dated citations (post-close bundle)
+
+CMND, live, up 18.8%: the card reports a $696k conversion (SUPPLY, an SEC
+filing) and misses a robotics acquisition (DEMAND, not an SEC filing). The
+SEC-only coverage asymmetry, on a real row, in his window.
+
+### What my layer can and cannot fix
+
+**"COUNTERBALANCED BY" IS NOT IN THIS CODEBASE.** It is model-authored prose
+inside the dossier text. So the sentence asserting the two sides were WEIGHED
+cannot be corrected here — **Design can annotate the card, not rewrite the
+claim.** The durable fix is at the prompt: an interpreter that knows only SEC
+was searched must not reach for the vocabulary of balance. That is Research's.
+
+I am flagging this because it is the shape I REJECTED for the float — a caveat
+beside a confident claim rather than a claim that does not overreach. The
+difference that makes it acceptable here: the float was a NUMBER scanned at a
+glance, where a mark gets dropped; this is PROSE he reads, where a line above it
+is read too. **Weaker than fixing the source, stronger than nothing, and not a
+substitute for the prompt change.**
+
+### Renderable today, verified
+
+- `coverageIncomplete` is on `row.intelligence` and already consumed at
+  `deskRead.ts:586`, with a qualifier string at `:471`. Boolean granularity, no
+  persistence or schema change.
+- `catalystEvidenceLatest` (`merge.ts:41-46`) ALREADY joins the cited evidence
+  ids against `intelligence.evidence` filtering on `link.publishedAt`. The join
+  exists; nobody rendered the date. `publishedPrecision` rides with it.
+  Only `fetchedAt` is genuinely missing from the projection.
+
+### The copy constraint, which decides whether this helps or harms
+
+**Not "our coverage is incomplete".** That is a data-quality apology and it
+invites him to discount the whole row — including the supply side, which was
+searched properly and is correct.
+
+**"The other side of this was not looked for."** A fact about the SEARCH, not a
+confession about the desk, and it tells him where to go. Same distinction as the
+header placeholder: name what was not observed rather than assert a state.
+
+### Leave room for LAST CHECKED beside LAST CHANGED
+
+`interpretTicker` returns `REUSED_UNCHANGED` on an unmoved fingerprint without
+minting a version, so `generatedAt` stays old. **"3d" is therefore ambiguous
+between two OPPOSITE facts** — nobody looked for three days, or looked TODAY and
+found nothing because only SEC is searched. On CMND it is the second.
+
+Staleness and blindness are different failures with different fixes, and the
+card renders them identically. The repair is two dates, not one; the second
+needs a projection change from Research. **Design the citation block to take a
+second date now** rather than retrofitting it.
+
+### And his framing is the rule for the dates
+
+**The observation is a DATE. Whether three days is fresh is an OPINION** — and
+his differs from the model's. Show the date, do not grade it. Same boundary as
+the sparkline.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
