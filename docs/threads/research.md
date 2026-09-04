@@ -3254,6 +3254,50 @@ product he sells.** Integration's distinction holds.
 > determination is neither mine nor Integration's to make** — I am naming the
 > question, not answering it.
 
+### THE PARSER FIX AND THE VENDOR QUESTION ARE INDEPENDENT
+
+**Stated here rather than left in a relay, because this document is what the
+spending decision is made from.**
+
+> **Fixing the parser recovers floats HE WROTE. It cannot produce floats nobody
+> wrote.** Thirty-eight of the top fifty carry no float string at all, and no
+> parser reaches them.
+
+| | top 50 |
+| --- | --- |
+| shows a float today | **1 — 2%** |
+| after the parser fix | **12 — 24%** |
+| **still blank** | **38 — 76%** |
+
+**There is no reading of the fix as progress toward board coverage.** It closes
+a leak; it does not add a source. **The vendor question is exactly where it was
+before the defect was found.**
+
+### AND THE FIX MUST NOT REINTRODUCE THE SILENCE THAT HID IT
+
+*Caught reviewing my own build, with the time Integration gave instead of the
+window.*
+
+**The allowlist refuses an unrecognised phrasing — correctly — and refuses it
+SILENTLY. That is the exact property that let twelve floats be discarded for
+weeks without anyone noticing.** A new wording appears, it returns null, and
+the board shows a blank that looks like *"no float supplied"* rather than
+*"a float was supplied and we could not read it."*
+
+**The signature is already available and nothing reads it:**
+
+    field.raw is non-empty  AND  field.value is null   →  given, unread
+
+**`floatField` preserves `raw` through a refusal** (asserted in the tests), so
+this is detectable today by anyone who looks. **Nobody looks.** Something should
+surface it — a count is enough — or the next unseen phrasing repeats this defect
+in exactly the same invisible way. *Design's to render; mine to have named.*
+
+**And it bounds the claim:** the 12-of-13 recovery is measured on **one sample,
+one day, thirteen strings.** Other phrasings on other days will refuse until
+they are added. **That is the allowlist working as designed, and it is a reason
+to watch the given-but-unread count rather than to loosen anything.**
+
 ### The line I would put in front of him
 
 **Losing no capability is achievable for everything except float, and float was
