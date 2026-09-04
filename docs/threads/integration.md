@@ -1997,6 +1997,38 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## TWO EXPLANATIONS IDENTICAL IN THE DATA, SEPARATED ONLY BY A CHECK OUTSIDE IT
+
+**Ops, 2026-09-04, closing the orphaned-worker question.** The signature was
+real: 47 FAILED and 108 PARTIAL jobs with `completed_at` **set** — terminated,
+not frozen — which means a worker was alive and failing them. That is the
+signature an orphan leaves.
+
+**It is also the signature a cutover leaves, and the stored data cannot tell
+them apart.** The local desk kept running after production took over on 08-17,
+and its jobs began failing **because** production had taken over: one SIP
+connection per account, production holding it, the local worker unable to get
+what it needed. **Last COMPLETE queued 19:00, first FAILED 19:30, zero overlap —
+a cutover boundary, not a decay curve.** Then it was shut down.
+
+**Nothing in `research_jobs` distinguishes those two stories.** Only the process
+list does, and the process list is not in the database. **So a check whose
+expected result was "nothing" was still worth its cost** — it did not merely
+fail to find an orphan, it selected between two readings that the evidence
+alone left tied.
+
+**AND THE INSTRUMENT MATTERED MORE THAN THE RESULT.** `ps -W` returned nothing
+first. Ops rejected that as **too weak to close a SIP question on** and re-ran
+with `Get-CimInstance Win32_Process` against full command lines, plus production
+corroboration — market `LIVE`, `messageAgeSeconds` 1–3, one continuous
+connection since the 19:04:51 restart, **no silent kill and reconnect in the
+log, which is what a competing connection would have produced.**
+
+**A negative is only as strong as the instrument that produced it.** This desk
+already records *a check that cannot fail*; this is its neighbour — **a check
+that can fail but is too blunt to**, and which returns the comfortable answer
+either way.
+
 ## THREE POOLED FIGURES IN ONE DAY, AND EVERY ONE WAS THE REASSURING NUMBER
 
 **2026-09-04, counted by R&D after producing two of them:**
