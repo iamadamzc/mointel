@@ -3443,6 +3443,51 @@ cover-page parse is where an estimate would creep back in — if that half prove
 unreliable, the bound degrades toward `SO − Section 16`, which is looser but
 STILL AN UPPER BOUND and still conclusive when it binds.*
 
+### DOES A BOUND NEED THE FIXTURE SET? NO — and the cheap check is not the one named
+
+*Integration's question, with an authorisation in front of him. Answered from
+the arithmetic rather than agreed.*
+
+**Integration is RIGHT, and right about why: you never need the true float to
+validate an upper bound.** You need the SUBTRACTION to be sound. That is
+checkable against the filings themselves, and it does not require adjudicating
+a number nobody publishes. **The fixture set was scoped to settle disagreements
+between parsers producing a float FIGURE — that is Route 1's problem, and
+Route 2 does not inherit it.**
+
+**BUT THE CHECK IT NAMED IS NOT WHERE THE DANGER IS.** *"Was this holder really
+an affiliate"* is necessary and is **already avoided by construction**: the rule
+is subtract-only-what-is-proven, so an unproven holder is never subtracted.
+
+> **The bound's dangerous failures are ARITHMETIC, not classificatory.** All
+> three make the bound TOO LOW, which passes pillar 5 and puts him in a trade:
+
+| failure | why the bound goes low | already measured / guarded? |
+| --- | --- | --- |
+| **stale SO under DILUTION** | the company issued shares since filing, so the denominator is too small | **measured: 39% over 180 days, median 82** (item 14) — and it concentrates on the names that dilute hardest, which is the population that matters |
+| **basis mismatch** | a holding stated pre-split subtracted from a post-split count | **guard already SHIPPED** — the supply pair's `split_factor` / coverage refusal |
+| **double counting** | one holder appearing in both a Form 4 and a 13D | not yet addressed |
+
+**None of those needs adjudicated floats either — so Integration's conclusion
+survives and gets stronger: the fixture set is Route 1's instrument and should
+not be spent on Route 2.**
+
+**And most of Route 2's validation apparatus already exists.** The basis guard
+is built and shipped. The staleness rule is written — *carry the denominator's
+age and report CANNOT VERIFY on a stale one rather than refusing* (item 14).
+**Route 2 reuses the supply pair's machinery rather than needing a new one.**
+
+*On Integration's specific worry: R&D's "based on N shares outstanding, of which
+M held by non-affiliates" trap — capturing N instead of M, 1.92× on NWTG — is a
+**Route 1 PARSING error**, not a Route 2 subtraction error. Route 2 never reads
+that sentence; it reads a cover-page count and an ownership form. **Different
+failure, different route, and it does not transfer.***
+
+**What Route 2 DOES need instead, and it is smaller:** a sample confirming that
+subtracted holdings are (a) affiliates, (b) **on the denominator's basis**, and
+(c) **not double-counted** — all three verifiable against the filing that states
+them, with no adjudication of an unpublished answer.
+
 ### The line I would put in front of him
 
 **Losing no capability is achievable for everything except float, and float was
