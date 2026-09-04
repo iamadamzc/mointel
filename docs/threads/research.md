@@ -6483,3 +6483,67 @@ source and is not a substitute for it.** It stays a live item in this thread
 after the render ships. The render annotates a claim; it cannot unmake it —
 `"counterbalanced by"` appears nowhere in the codebase, so the sentence is
 model-authored and only the interpreter can stop it being written.
+
+---
+
+**66. THE PROMPT VERSION HAS NEVER CHANGED AND THE PROMPT CHANGED FOUR TIMES.
+Integration's concern was right; the check it proposed would have missed it.**
+
+*Integration widened the promptVersion question to every model-derived number I
+produced tonight. Settled from git, without Ops — and the answer is worse than
+"nothing changed".*
+
+### The label says no; the code says yes
+
+**`INTERPRETER_PROMPT_VERSION = 1` at `97f5fbd`, at `2531cca`, and at HEAD, and
+it has been touched exactly once in history — the commit that created the
+interpreter.** So the reassuring answer is available and it is worthless.
+
+**Four commits changed the interpreter prompt or its bundle after the archive's
+last analysis (2026-08-21):** `55f3e20`, `1df1d75`, `86f49fb`, `1baf92c`. And
+**0 of 325 archive rows carry `promptVariant`**, which was added later.
+
+**The code says why itself**, at `pipeline.ts:430`: *"variant B changes the
+instructions without changing the schema, so both variants report version 1."*
+**A version number that cannot change is a check that cannot fail** — sixth
+instance today, and this one is the desk's own provenance stamp.
+
+### And `55f3e20` invalidates part of item 61 — my own finding
+
+**"Hand the model the share count it was already being charged to guess",
+2026-08-23, ONE DAY after the archive ends.** It adds
+`reportedSharesOutstanding` — the XBRL number with its `asOf` and concept — to
+the bundle, and `buildInput` does `JSON.stringify(bundle)`, **so the model sees
+it. Wired, not merely built; checked.**
+
+Its own message diagnoses exactly what I measured: `toBundleSource` forwarded
+title and excerpt but not metadata, and company-facts excerpts are empty, **so
+the bundle held a source titled "Reported shares outstanding" with no number in
+it.** It even quotes the same gap from the other side — *"reached the dossier on
+27 of 94 analyses despite company facts existing for 62 of 77 issuers."*
+
+| claim | status |
+| --- | --- |
+| "44% of model transcriptions disagree with XBRL" | **measured a model that had never been shown the XBRL number.** True of that system, not of this one |
+| "the model is the fresher reading" | it was fresher **because it was reading elsewhere**. It is now shown both; the disagreement rate is unmeasured |
+| **"compute the bound from company facts directly"** — item 60, which Integration approved as new work | **SHIPPED 2026-08-23.** I proposed work that was twelve days old |
+| the 39% dossier share-count coverage | a pre-fix number |
+
+### What survives, and it is most of it
+
+**Every filing-derived fact is untouched by any prompt**: the five named cases as
+facts (ZOOZ really is 8.10M post-split against a stale 12-31 XBRL), the staleness
+distribution, 20 of 75 proofs resting on figures over 180 days old, HQ's zero,
+the EFFECT lag and its two classes, the depth curve and its fiscal-year knee, the
+split factors. **The asymmetry argument stands: pre-split staleness overstates,
+pre-issuance staleness understates, and only one of those is safe.**
+
+### The real question is now a different one
+
+The model is handed the XBRL count AND reads cover pages. **What does it do when
+they disagree?** That is the interesting question, it is the one the float bound
+depends on, and it can only be answered on post-08-23 output.
+
+**And the A/B infrastructure already exists** — `1df1d75` put both prompts behind
+a switch, `systemPromptFor(variant)`, `PromptVariant = 'A' | 'B'`. The third arm
+Integration asked about is a third constant, not a mechanism.
