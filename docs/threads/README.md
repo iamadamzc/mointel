@@ -3481,3 +3481,41 @@ evidence and is not evidence about the case.
 it disagrees with a satisfying general story, **the instance wins**. A story that
 explains a population is a hypothesis about the population; the row you read is
 data about the row.
+
+## BEFORE SCOPING AN INSTRUMENT, ENUMERATE WHAT IS ALREADY WRITTEN — AND OPEN THE JSON
+
+**2026-09-04. Eight built-and-unwired findings in one day, and they are not all
+the same failure.**
+
+| kind | example | how you find it |
+| --- | --- | --- |
+| **written, never called** | `deactivateSources` — exported, documented, zero callers | grep for the identifier |
+| **written, never read** | `filedShares` — set by the pipeline, referenced only by its own type | grep for the identifier |
+| **WRITTEN, PERSISTED, AND NEVER LOOKED AT** | **`metadata.discoveredVia`** — the read mode, on 189 of 198 company sources, since the feature shipped | **nothing greps for it, because something DOES write it** |
+
+**The third kind is the dangerous one.** It is not missing and not dead — it is
+data nobody thought to ask for. **Three threads spent a day on which of four
+mechanisms broke feed collection, and the mode of every successful read had been
+stored the whole time.**
+
+### And it hides in JSON
+
+`discoveredVia` lives inside a `metadata` blob. **A schema read does not show it.
+A grep for column names does not show it. `PRAGMA table_info` does not show it.**
+Every instrument this desk uses to find out what it stores is blind to the inside
+of a JSON column, and that is where the desk puts everything it did not want to
+migrate for.
+
+### The rule
+
+**Before scoping any instrumentation: enumerate what is already written, and
+read the JSON columns.** On 2026-09-04 that would have found `coverage.gaps`
+(computed, reduced to a boolean), `splitEvents` (logged, dropped), SEC response
+statuses (observed, discarded), `discoveredVia` (persisted, unread), and
+`mode`/`failure` (computed, printed to a console nobody reads).
+
+**And the corollary that nearly cost a deploy and a day:** a proposal to *"add
+these columns"* must name the population the new column lands on. **A failing
+attempt writes no row, so a column on the results table instruments exactly the
+cases that already work — and the pass comes back "no failures found", which
+reads as good news.**
