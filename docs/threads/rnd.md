@@ -1077,6 +1077,62 @@ Q9's columns. **The refusal produced a better answer than the export would
 have**, which is worth recording as an argument for refusals rather than an
 apology for one.
 
+#### CORRECTION: I conflated filing lag with fetch latency, and CIK resolution is 99.8%. 2026-09-04.
+
+**Integration pushed back on my latency argument and is right. Correcting `39caa8f`,
+which said anything on a multi-day filing lag has ZERO coverage of the
+requirement. That claim is wrong and it closed a path that is merely unbuilt.**
+
+> **FILING LAG AND FETCH LATENCY ARE DIFFERENT CLOCKS.** Forms 3/4/5 and 13D/G
+> lag by days **for NEW transactions**. When a cold name appears at 06:40, its
+> EXISTING Section 16 and 13D/G holdings **have been on EDGAR for months** — we
+> are not waiting for a filing, we are fetching what is already there.
+>
+> **So the 69%-novel single-session population rules out a PRE-WARMED CACHE, not
+> an on-demand derivation.** Those are different mitigations and only the first
+> is blocked.
+
+**And my own measurement was already evidence AGAINST my claim**: 75.0% of board
+symbol-days had SEC evidence in hand before arrival, 82.5% within fifteen
+minutes, **on a pipeline that fetches on demand.** I quoted that number in the
+same message as "latency is dispositive" and did not notice it refuted the
+second. **A rate I had just computed, contradicting a claim I made two paragraphs
+later.**
+
+**THE APPROVED FETCH SETTLES THE OTHER ONE — and the gap is 10x.** Public SEC
+`company_tickers_exchange.json`, read to scratchpad, **nothing persisted, the
+registry NOT warmed:**
+
+    top 12   325 of 325 board tickers resolve   100.0%
+    top 25   649 of 650 board tickers resolve    99.8%   (only miss: GTN.A, a dotted class symbol)
+    local issuer_registry                        10.5%   <- the cache hit rate
+
+**CIK resolution is not a constraint at all. Every name he trades is an SEC
+registrant.** The 10.5% understated the capability by an order of magnitude, and
+**it was one fetch away the whole time.**
+
+**THE REAL OBJECTION IS ERROR BARS, NOT COVERAGE — and one structural hole is
+worth adding to it.**
+
+    issuer_registry foreign_issuer=1:  26 of 77  (33.8%), 23 of them board names
+
+**Foreign private issuers are EXEMPT from Section 16** — Forms 3/4/5 do not exist
+for them, so the insider leg of a derived float is simply absent on about a third
+of researched board names. **INDICATIVE, NOT MEASURED: the flag is domicile, and
+a foreign-domiciled issuer filing 10-K IS subject to Section 16.** The overlap is
+unquantified and that is the next measurement, not a conclusion.
+
+**Then the direction, which is his module's own argument and the better answer to
+him than "vendor or nothing":** 13G passivity is unsettled, subtracting those
+filers **understates float across the board — a FALSE POSITIVE on pillar 5**, and
+holders under 5% who are not Section 16 insiders are invisible, so **only what is
+filed can be subtracted.**
+
+> **His question — "everyone's float is invented, why not compute one and LABEL
+> it" — is answerable YES, and the label is the deliverable.** Not a float: a
+> RANGE with a stated direction of error, exactly the supply-bound pattern. **The
+> honest objection was never that it cannot be fetched in time.**
+
 #### The float funnel: research REACH is not the constraint, and I nearly reported that it was. 2026-09-04.
 
 **Integration warned me not to adopt Research's 9% against my population. The
