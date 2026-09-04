@@ -65,8 +65,22 @@ export function MarketStatus({ health, marketHealth, discovery, mounted }: Marke
 
   return (
     <div className="flex items-center gap-2.5">
+      {/*
+       * The words appear only when the light is NOT in its normal state.
+       *
+       * Healthy, this said "Market: Alpaca SIP" every second of every session —
+       * a constant dressed as a status line, holding permanent space in the one
+       * row that is always on screen. The feed never changes; an observable
+       * that cannot vary is not a measurement.
+       *
+       * Everything that CAN vary keeps its words: worker offline, not entitled,
+       * disconnected, connecting, stale, simulated. Those are the states he
+       * would act on, and they are exactly the ones the constant was crowding.
+       * The feed name moves to the hover, where it is available and costs
+       * nothing.
+       */}
       <span
-        title={marketHealth.detail}
+        title={marketHealth.label + ' — ' + marketHealth.detail}
         className={`inline-flex items-center gap-1.5 rounded-sm border px-1.5 py-px text-[10px] font-semibold tracking-wide uppercase ${
           TONE_CLASS[marketHealth.tone]
         }`}
@@ -76,7 +90,7 @@ export function MarketStatus({ health, marketHealth, discovery, mounted }: Marke
             marketHealth.live ? 'live-dot' : ''
           }`}
         />
-        {marketHealth.label}
+        {marketHealth.state === 'LIVE' ? null : marketHealth.label}
       </span>
 
       {/*

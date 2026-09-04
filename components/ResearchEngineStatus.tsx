@@ -36,8 +36,16 @@ export function ResearchEngineStatus({
 }) {
   return (
     <div className="flex items-center gap-2">
+      {/*
+       * Same rule as the market light: words only when it is not idle.
+       *
+       * "Research: idle" is what the engine reads almost always, so the text
+       * was permanent and told him nothing on the occasions he looked. Working,
+       * degraded, error and offline all keep their words — they vary, and each
+       * one is something he would act on.
+       */}
       <span
-        title={health.detail}
+        title={health.label + ' — ' + health.detail}
         className={`inline-flex items-center gap-1.5 rounded-sm border px-1.5 py-px text-[10px] font-semibold tracking-wide uppercase ${
           TONE_CLASS[health.tone]
         }`}
@@ -47,7 +55,7 @@ export function ResearchEngineStatus({
             health.state === 'WORKING' ? 'live-dot' : ''
           }`}
         />
-        {health.label}
+        {health.state === 'IDLE' ? null : health.label}
       </span>
 
       {/*
