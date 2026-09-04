@@ -2165,6 +2165,47 @@ to LESS data. `supply.ts:69-73` already documents the first case ("at least 0%"
 is an absence wearing a number's clothes); the second has no line and needs one
 before anything ships.
 
+### ANSWERED 2026-09-04 — the absent pair has ONE cause, and it is the denominator
+
+I told Integration the pair is absent when there is "no share count **or** no
+comparable block." **The second half is wrong.** `computeSupplyPair` returns
+null on exactly one condition — `sharesOutstanding` missing or non-positive
+(`supply.ts:166`), guarded at the call site by `reported`
+(`pipeline.ts:409`), which is `bundle.reportedSharesOutstanding`: a FILED
+figure carrying a concept and a source id.
+
+A ledger with no usable blocks **still produces a pair** — `floorShares` and
+`totalShares` null, `excluded` populated with `NO_SHARE_COUNT`,
+`BASIS_UNVERIFIABLE` or `BASIS_DIFFERS`. That case is already covered by the
+trader's exclusions-counted decision.
+
+**So the 82.6% is not a supply-research gap. It is a missing denominator.** The
+blocks may be fully researched; there is nothing to divide them by. A reader
+seeing a blank would conclude *we do not know this company's supply*, when the
+truth is *we know the blocks and cannot express them as a ratio* — a different
+statement, and a more useful one. It is also the same hole as float: a ratio
+needs a denominator and this desk has none. Same root, and it says so.
+
+**The copy therefore names the missing denominator, never the missing answer.**
+
+| Case | Cause | What it says |
+| --- | --- | --- |
+| Pair, floor null | Measured; no established live block | "no live supply proven" + exclusions counted |
+| **No pair** | **No filed share count** | **names the absent denominator, not absent knowledge** |
+
+### The consequence worth more than the sentence
+
+The pair is a RATIO surface. A missing denominator kills the ratio — **it does
+not kill the share counts.** If the ledger carries blocks on those rows, the
+honest fallback is to show them as SHARES with no percentage, which converts
+five rows in six from a blank into something readable.
+
+**Conditional on a measurement I do not have:** how many rows with no filed
+share count still carry a populated `supplyLedger`. If that number is small the
+fallback is not worth building and the sentence stands alone. Ask before
+designing the fallback — this is exactly the "state what the count is RIGHT NOW
+before choosing a threshold" rule, and I have not stated it.
+
 ### The cycle levels — a layer removed, not a pointer redirected
 
 Two consequences, both deliberate-or-not rather than free:
