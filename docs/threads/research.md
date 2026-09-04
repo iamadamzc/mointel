@@ -5731,3 +5731,83 @@ Where a rename follows a pivot, **the pivot is the demand event and the rename
 is its trace** — classify the pivot. In practice it co-travels with supply
 anyway: INCR's own event is "reverse stock split and CUSIP-number change" in one
 alert.
+
+---
+
+**55. REACHABILITY IS ALREADY IN THE ARCHIVE — 100% of EFFECT notices yield a
+date, and the median lag is 19 days.**
+
+*Integration guessed that the EFFECT forms already carry the reachability date
+and told me to CHECK BEFORE SCOPING A PARSER. The guess is right and stronger
+than it thought.*
+
+**344 EFFECT rows, 209 tickers, 128 dated 2026. Every one yields an
+effectiveness date. None yields neither a form nor a link:**
+
+- **302 state the registration form inline** — 91 S-1, 84 S-3, 54 F-3, 53 F-1,
+  plus S-4/F-4/F-6/F-10
+- **42 state an ACCESSION NUMBER instead** — a *stronger* link, naming the exact
+  registration statement rather than its type
+
+The notice is SEC-generated boilerplate in a fixed layout, so this is a regex
+over a machine-written form, not prose extraction. **There are TWO variants**;
+the first pass recovered 87.8% and every miss was the second variant, not noise.
+
+### The lag is the product number
+
+Registration filing → effectiveness, matched on ticker and form, n=262:
+
+| min | p25 | **median** | p75 | max |
+| --- | --- | --- | --- | --- |
+| 2 | 9 | **19 days** | 49 | 384 |
+
+**A supply event announced today typically becomes reachable about three weeks
+later; a quarter of the time it takes seven weeks or more.** The match
+over-counts across S-1/A chains, and **that bias INFLATES the lag**, so 19 days
+is an upper-ish estimate of the typical gap rather than a floor.
+
+### What v1 may NOT claim
+
+EFFECT dates a **registered resale** — INDP's case exactly. Three other routes
+are not covered:
+
+| route | why EFFECT misses it |
+| --- | --- |
+| automatic shelves (S-3ASR / F-3ASR) | effective ON FILING, no notice issued — 6 here |
+| primary takedown off a live shelf | the 424B5 IS the date, and it is immediate |
+| Rule 144 holding period | nothing announces it; Form 144 (10 here) is a notice of PROPOSED sale and is a second signal worth taking |
+
+**So it covers one route and must SAY it covers one route.** If "no reachability
+date" renders as "not reachable", that is absence-of-detection read as
+detection-of-absence — on the field whose entire purpose is to warn him.
+
+### The credibility family needs no third dimension, and that is the shape passing
+
+On two signed axes, IPST's 12b-25 is **demand −** (a reason to leave) **and
+supply +** (a company that cannot file will need to raise). Both non-zero,
+opposite signs. TRSG likewise. A categorical side could not have said it.
+
+**But it exposes the one genuinely missing property, and it is the SAME property
+as reachability.** A 12b-25's supply pressure is real and months away; a priced
+offering's supply is here. Same axis value, different tradability.
+**Reachability and the "long fuse" are one field — TIME TO EFFECT — not two.**
+
+### Inference versus observation already has a home
+
+`evidenceSourceIds`. **An observed verdict cites sources; an inferred one has no
+source id for its inference step.** Each axis value should carry `basis:
+OBSERVED | INFERRED` and, when inferred, NAME THE RULE — so "reverse split →
+supply +" renders as a rule-derived warning at 1.65× rather than as something
+the desk saw. **Fourth time tonight the observer/observed line settled a design
+question, and the first time it points at the desk's claims about ITSELF.**
+
+### The prompt A/B, priced from the archive's own metrics
+
+Median interpretation: **10,344 input / 2,721 output tokens** (325
+interpretations, gpt-5.6-terra for 299). A 20-name before-and-after is 40
+interpretations ≈ **0.41M input / 0.11M output** — a few percent of one bad day
+against this thread's own record of 12M input tokens on 08-18.
+
+**Report UNKNOWN-to-still-UNKNOWN as well as UNKNOWN-to-decided.** A reframe
+that moves nothing is the other possible outcome and it is the one a hopeful
+reading glosses over.
