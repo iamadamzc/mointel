@@ -3019,6 +3019,42 @@ what it returned is the same thing as last time. **Invisible to any count of
 sources**, and `coverageIncomplete` reads FALSE, so the warning would have been
 silent on the one name that needed it.
 
+## Two consequences for the surface, from the CMND mechanism (2026-09-04)
+
+**The frozen article is re-selected forever, and the reason is one line.**
+`collector.ts:577-583` expires DATED items at 45 days and treats an UNDATED item
+as always a candidate. CMND's leaf article has `publishedAt: null`, so it never
+ages out. 44% of `COMPANY_IR`/`COMPANY_NEWSROOM` sources are undated, and the
+same line explains the opposite failure on feeds — a feed's entries are dated by
+construction, so they EXPIRE. One rule, two opposite failures.
+
+### The fourth-state predicate needs `contentHash`, not `documentFingerprint`
+
+`documentFingerprint` is `hashContent('company|' + url)` — **over the URL, not
+the body.** It reports "same document" for a page whose content changed
+entirely. So the "returned the same thing again" state cannot be built on it;
+`contentHash` is the operative field.
+
+**And neither reaches this surface.** `EvidenceLink` (`view.ts:70-80`) carries
+nine fields and no hash, so the read-only review route cannot confirm the frozen
+content from outside — that check has to run where the store is.
+
+### The bound and the pair will DISAGREE on most rows, and that is correct
+
+The supply pair is present on 23 of 40 live dossiers and **22 of those 23 have
+both `floorRatio` and `totalRatio` null** — a denominator and nothing else.
+
+The float bound needs NO blocks: only the share count, its date and the split
+factor. **So it produces an answer exactly where the pair is empty.** Laid out
+together they will look inconsistent on most rows — one speaking, one silent —
+and that is the two measures doing their jobs, not a defect.
+
+**Design consequence:** they must not be laid out as a matched pair of numbers,
+or the reader will read the silence as a failure of the row rather than as the
+absence of established blocks. The bound answers "can supply exceed float"; the
+pair answers "how much is proven live". Different questions, and only the second
+is usually unanswerable.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
