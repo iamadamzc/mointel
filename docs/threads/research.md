@@ -3385,6 +3385,59 @@ that class into two causes** — I invented the second cause by mis-reading a
 grep, and Integration recorded a routing error of its own on the strength of
 it. **That correction is owed to it more than the finding was.**
 
+### NOTHING READS THE DATED TABS, ARCHIVE, OUTCOMES OR PATTERNS — verified in code
+
+*Asked by Integration 2026-09-04, after the trader settled that he no longer
+looks at the Sheet at all. Checked rather than repeated from the record, which
+has been wrong twice today.*
+
+**Exactly two ranges are ever requested:** `TODAY!A1:AA` and `RESEARCH!A1:AK`
+(`googleSheets.ts:25-26`, issued at `:154-156`). The only other Sheets call is
+`?fields=properties.title` — the workbook's name, not data. **No code anywhere
+names ARCHIVE, OUTCOMES or PATTERNS as a tab.**
+
+> **So task 1's archiving is consumed by NOBODY.** With the trader no longer
+> reading the Sheet, that is not a reason to keep the task — **it is a sixth
+> exists-but-unwired, and the most expensive kind: work being PRODUCED that
+> nothing consumes**, rather than a value sitting unread.
+>
+> **Integration's own argument dies, and the replacement is cleaner: TASK 1'S
+> ONLY GENUINE BLOCKER IS FLOAT.**
+
+*One distinction that survives and is not a counter-argument: R&D's "do not
+delete the corpus" condition stands. **Stopping PRODUCTION and DELETING the
+history are two decisions**, and only the first is in question — the desk's own
+archive superseded the second on 08-24.*
+
+### The Sheet-float coverage question is NOT ANSWERABLE FROM HERE, and that is itself the answer
+
+**The Sheet's float is never persisted.** It is fetched live, merged at read
+time into `DeskRow.displayedFloat`, and stored nowhere — so **no retrospective
+query can size it.**
+
+> **The question Integration is asking is precisely the question the Q9
+> `sheet_float` capture exists to make answerable.** Until that ships, *"what
+> fraction of the board carried a Sheet float"* is unanswerable on any past
+> date, permanently. **That is a stronger argument for the capture than any I
+> made when scoping it.**
+
+**And a live read is blocked for me, not merely inconvenient:**
+`googleSheets.ts:9` is `import 'server-only'`, a deliberate guard that resolves
+to a client-component error outside the worker's runtime. **It needs the
+worker's own process — Ops's box — and I declined to stub past a guard that was
+put there on purpose.**
+
+**What IS knowable, as a bound rather than a measurement:** the Sheet's corpus
+is ~146 tickers (the 08-23 report's figure) against **~2,800 ranked per
+session**, so **board-wide Sheet float coverage cannot exceed roughly 5%.** The
+number that actually decides the question is the **top-N overlap**, and that
+needs the live read.
+
+*Compare the desk's own, which I can measure and did (item 14): `filedShares`
+covers **10 of 12** at the top, 28 of 50, and 7% board-wide. The desk's
+coverage is steeply rank-weighted; whether the Sheet's is too is exactly the
+unknown.*
+
 ### CORRECTION: the desk DOES carry the float's as-of, and it is rendered
 
 *Integration wrote that a stale float would be invisible — "no basis column, no
