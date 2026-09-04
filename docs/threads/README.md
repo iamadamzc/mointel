@@ -2265,6 +2265,34 @@ gets written for two problems.**
 **The sentence that catches it either way: `PREMARKET` means premarket CAPTURE is
 live, not that trading is.**
 
+## A GREEN TEST PROVES NOTHING IF THE FIXTURE SILENTLY DROPPED THE FIELD
+
+**Design, 2026-09-04, catching itself inside its own build.** Writing the test
+for a contradiction between a chip's wording and a displayed float, it wrote a
+fixture as `sheet({ structure: 'UNKNOWN STRUCTURE', float: '5,200,000' })`. **The
+sheet fixture accepts no `float` key.** The row was built with no float at all,
+so the test asserted a contradiction **it could not construct — and passed.**
+
+**VITEST DOES NOT TYPECHECK, so an excess-property mistake in a fixture survives
+a green run.** Every thread's tests are exposed to this. The property that makes
+it dangerous is that it fails in the reassuring direction: a fixture key that
+silently vanishes produces a test that cannot fail, and *cannot fail* renders
+identically to *passes*.
+
+**The standard that caught it, and the one to hold:**
+
+- **Assert the SETUP before asserting the behaviour.** The fixed test asserts
+  `row.displayedFloat` is 5,200,000 **before** it asserts anything about
+  wording. A setup assertion is what converts a silent drop into a red run.
+- **Mutation-test a new test against the bug it exists to catch.** Design ran
+  both new tests against the OLD sentence and confirmed they fail. **A test that
+  has never been seen to fail is a hypothesis, not a check.**
+
+**This is the desk's own "a check that cannot fail is not a check" arriving in
+the FIXTURE rather than in the assertion** — and it is the harder version,
+because the assertion is visibly correct and the defect is one layer beneath it
+in an object that typechecking would have rejected and the runner does not.
+
 ## Facts every thread starts from
 
 As of the last session, **2026-08-23**:
