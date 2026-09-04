@@ -555,6 +555,31 @@ thing they lack. **Everything reconciles to one date and one deploy.** The fact
 that settled it had been sitting in a relay for an hour, in a message whose author
 did not know what it was for.
 
+## THE STATE IS A JUDGEMENT; THE ARRAY IS THE OBSERVATION
+
+**Research, 2026-09-04, correcting a spec from Integration.** The instruction was
+that an `UNKNOWN` activity reading must persist as *not measured*. **Keyed on the
+state label, that is wrong:** `resolveActivity` can return `UNKNOWN` **while
+carrying a genuine series** — the band-held branch keeps the previous verdict and
+still observes the window. Keying null on `state === 'UNKNOWN'` would have
+discarded real measurements.
+
+**Keyed on `window.length === 0` it is exact.** Empty means nothing was observed,
+whatever the engine concluded.
+
+**The general form, and it is the presence-versus-validity distinction in its
+sharpest phrasing: a STATE is a conclusion drawn from data; the DATA is a
+separate fact.** They can disagree — a confident label over an empty
+observation, or an uncertain label over a full one — and **storing the label as
+a proxy for the data throws away the case where they differ**, which is exactly
+the case worth keeping.
+
+**It also simplified the write:** null already carries the meaning, so the upsert
+is a `COALESCE` rather than a `CASE` on the state — **a restart preserves the
+stored series and any real reading wins, including a real `UNKNOWN` reading**,
+which a state-keyed branch would have thrown away. One fewer branch to get wrong
+later.
+
 ## A TOOL THAT REPORTS "NOT FOUND" THE SAME WAY IT REPORTS "NONE" IS NOT AN INSTRUMENT
 
 **Ops, 2026-09-04, four instances in one night, each returning a plausible
