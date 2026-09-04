@@ -2128,6 +2128,71 @@ practical size of the inflation is unknown. Needs the live desk.
 
 **Unblocked and startable now:** 16a, then 12, 18, 19 — none touch the Sheet.
 
+## Two surfaces that exist behind nothing — raised by Integration 2026-09-04
+
+Research found both answering the Sheet-exit question (`0cdd8de`, items 42–43).
+Neither is instructed by the trader. **Not built and built-but-unwired are
+different problems**, and these are the second: work already paid for that
+reaches no screen.
+
+Both claims verified in code before answering. `supplyPair` (`lib/research/supply.ts:58`,
+declared `types.ts:512`) has no reader anywhere in `lib/dashboard/` or
+`components/`. `deriveCycleLevels` (`lib/data/cycleLevels.ts:164`) reads the
+Sheet's `recentCycleHigh` and `recentRunHigh`, is called once from
+`merge.ts:178`, and renders in exactly one place — `TickerDrawer.tsx:174`.
+
+**Order: supply first.** Supply delivers nothing at all; cycle levels delivers
+something correct from a source we want to retire. A value gap outranks a
+dependency gap. Supply also carries the trader's own settled decision — floor
+AND total as a pair, exclusions counted rather than hidden — so it starts at
+zero design cost.
+
+### The supply pair — TWO NULLS, and the decision covers only one
+
+Coverage is 17.4%, so the pair is null on five rows in six. **The design
+question is therefore not how to render the pair. It is what the other 82.6%
+renders**, and that is not what the trader decided.
+
+| Case | Meaning | Sentence |
+| --- | --- | --- |
+| Pair present, `floorShares` null | Measured; nothing established | "no live supply proven" — his decision |
+| Pair absent | Never measured — no share count, or no comparable block | **Owed. Does not exist yet.** |
+
+Collapsing these is the failure the graveyard's `wired` flag exists to prevent,
+and the same shape as `UNKNOWN` against `undefined`. A blank across 82.6% of
+rows reads as *no supply* — the surface would make a STRONGER claim while wired
+to LESS data. `supply.ts:69-73` already documents the first case ("at least 0%"
+is an absence wearing a number's clothes); the second has no line and needs one
+before anything ships.
+
+### The cycle levels — a layer removed, not a pointer redirected
+
+Two consequences, both deliberate-or-not rather than free:
+
+1. **A coverage hole.** `resolveCycle` returns `{ phase: 'NO_CYCLE' }` with no
+   `CycleArc` and therefore no `cycleHigh` at all (`cycle.ts:215`, `:228`,
+   `:237`). A name outside a cycle can show a Sheet level today and would show
+   nothing after. That is probably right — a cycle high for a name in no cycle
+   is the FIEE error `:220` warns about — but it is a loss to state, not to
+   discover.
+2. **`classifyLevel` goes dead on this path.** Its HISTORICAL/CURRENT/UNVERIFIED
+   sorting and the historical-twin inheritance at `:186-194` exist because a
+   Sheet level carries no bounded basis. The desk's `cycleHigh` is bounded to
+   the current cycle by construction and needs none. A real simplification — and
+   the reason this is bigger than a source swap.
+
+### The gating question, which is NOT Design's
+
+`cycleHigh` is computed over **daily** bars. The Sheet's second reading is
+`TODAY · Recent Run High` — intraday. **If the bars behind `CycleHistory.current`
+end at yesterday's close, the desk's number misses today's high — the level he
+is trading against between 04:00 and 09:30.** The Sheet reading would then not
+be redundant; it would be the only one covering the session he actually trades.
+
+Research or R&D must settle that before item 2 is scheduled. If the answer is
+no, item 2 is **blocked, not ready**, and must not sit on a list as though it
+were wiring.
+
 ## Working rules
 
 - **Terminology is trader-facing.** Labels that describe engine internals get
