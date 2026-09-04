@@ -867,6 +867,59 @@ the distinction onto every reader forever.
 that finds it is *"what are the ways this can be absent, and would I treat them
 alike?"*
 
+## TWO FIXES THAT EACH LOOK RIGHT ALONE AND DESTROY EACH OTHER IN ONE ROW
+
+**Research, 2026-09-04, before either was written.** Two repairs are queued on
+`research_sources` and they impose **opposite requirements on the same column:**
+
+- **The undated-expiry fix needs `fetched_at` to remain FIRST-seen** — an undated
+  article first seen 30 days ago must be 30 days old to this desk.
+- **Frozen-content detection needs a LAST-seen** — how long has this source been
+  returning the same thing.
+
+**So if anyone repairs re-collection by UPSERTING `fetched_at`, the expiry fix
+silently inverts:** every undated item's age resets on every pass, immortality
+returns, **and the column still looks correct.** No error, no failing test, and
+the field's name still describes what it holds.
+
+**The new field must be `last_seen_at`. It must never be a mutation of
+`fetched_at`.** Written at the store, not only in a scope — the person who
+breaks this will be fixing something else.
+
+**The general shape: when two fixes touch one column, ask what each requires the
+column to MEAN, not what each writes to it.** Both of these write a timestamp;
+only one of them can be right about which timestamp it is.
+
+## A CONFIRMED PREMISE IS NOT A CONFIRMED MECHANISM
+
+**Research, 2026-09-04, retracting a synthesis this seat had approved and
+relayed.** Undated company-news items are exempt from the 45-day cutoff — **that
+premise was tested and is enormous: 1% of feed rows undated against 82% of index
+rows.** From it came the conclusion that CMND's article is immortal and that this
+is the bug.
+
+**CMND's article is three days old.** `eventTimestamp 2026-09-01`, read 09-04.
+**Nothing has expired.** The expiry fix would have KEPT it, correctly, and
+changed nothing about the card.
+
+**And the immortality defect cannot have manifested anywhere yet:** all 87
+undated company sources were first seen within four days, production began
+2026-08-17, and **no undated row reaches 45 days before roughly 2026-10-01.** A
+real latent defect with a date on it, presented as the live explanation for a
+name failing today.
+
+**The tell: the date was in the message that prompted the synthesis.** Design's
+read carried `eventTimestamp 2026-09-01` and nobody subtracted. **A mechanism
+that explains a direction is not thereby the mechanism** — and testing its
+PREMISE, which Research did and which came back 1% versus 82%, is not testing the
+mechanism at all.
+
+**What was actually happening is narrower and needed no expiry:**
+`INSERT OR IGNORE` writes nothing on a re-collected article, **but the item still
+enters `collected`, and `collected` feeds this pass's bundle.** With
+`publishedAt: null` the model has no date to judge it by — **so one leaf article
+becomes "a fresh update" on every pass.**
+
 ## PRE-REGISTERED 2026-09-04: THE UNDATED-AGEING FIX WILL LOOK LIKE A COVERAGE REGRESSION
 
 **Written BEFORE the change, because the result is the one most likely to be
