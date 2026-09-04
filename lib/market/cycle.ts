@@ -125,7 +125,25 @@ export interface CycleArc {
   /** Highest high at or after the start. This is the current-cycle high. */
   cycleHigh: number;
   cycleHighDate: string;
-  /** Sessions from the cycle high to the latest bar. Zero means today. */
+  /**
+   * Sessions from the cycle high to the latest bar in the set.
+   *
+   * ZERO MEANS THE LATEST SETTLED SESSION — **not today**, and the difference
+   * is the whole premarket.
+   *
+   * ~~Zero means today.~~ That wording shipped a falsehood. The bar set never
+   * contains the live session: `ensureDailyHistory` stores nothing newer than
+   * `lastSettledTradingDate` (20:00 ET) and `readDailyBars` defaults to
+   * excluding unfinished bars, so during premarket the latest bar is
+   * YESTERDAY. A reader took the comment at its word and rendered *"high is
+   * today"*, which printed a claim about yesterday with the word today in it.
+   *
+   * **It was true only after 20:00 ET**, when the latest settled session IS
+   * today — true in one window and false in the window he trades, which is
+   * this desk's named-event-rather-than-condition failure arriving in a
+   * docstring. **State the condition (`settled`), never the moment
+   * (`today`).**
+   */
   sessionsSinceHigh: number;
   /** Sessions from the start day to the latest bar, inclusive. */
   sessionsInCycle: number;

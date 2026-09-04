@@ -3381,6 +3381,43 @@ read from a bar set filtered for rates. Harmless today because the write path
 already withholds unsettled sessions, so the filter has nothing to drop. It is
 the second lock on the door, not a live defect.*
 
+### AND MY OWN COMMENT SHIPPED THE FALSEHOOD
+
+*Design found it, declined to edit another thread's file mid-flight, and asked
+the owner to correct it. Corrected 2026-09-04.*
+
+**`cycle.ts:128` documented `sessionsSinceHigh` as *"Zero means today."* It does
+not.** The bar set never contains the live session — that is this item — so a
+reader took the comment at its word and rendered **"high is today"**, printing a
+claim about YESTERDAY with the word *today* in it. **Not stale: false**, and the
+one part of the reading a trader takes at face value without checking a date.
+
+> **It was true only after 20:00 ET**, when the latest settled session IS today.
+> **True in one window and false in the window he trades** — this desk's
+> name-the-condition-not-the-event failure, arriving in a docstring. **State
+> `settled`, never `today`.**
+
+**Readers checked rather than assumed** (`sessionsSinceHigh` has five): the
+in-module `=== 0` at `:312` sets `DAY_ONE`/`FRONTSIDE`, which is correct on
+settled-session semantics; `lib/archive/` passes it through; and
+`lib/dashboard/cycle.ts:97` is the one that rendered the false label. **Design
+fixed that surface at `e76d654` and the comment is mine.**
+
+**Two things from Design's fix worth keeping**, both about my finding rather
+than its surface. It deliberately did NOT write *"today not included"*, because
+after 20:00 ET that clause flips from true to false inside one evening — **a
+bare date is true in every window**, and there is now a test asserting the
+string contains no such clause. And **the OLD test asserted
+`toContain('high is today')` — it was PINNING THE DEFECT.** A green test
+enforcing a false label is the fixture-encodes-a-dead-world rule arriving as an
+assertion: **the defect was protected by its own suite.**
+
+*What the fix does NOT do, carried unchanged: it does not fix the PHASE.
+`cycleHigh` still feeds `retracementPct` and that still decides the label, so a
+name gapping above yesterday's cycle high STILL READS OFF-HIGH WHILE MAKING NEW
+HIGHS. Dating the reading stops it claiming to be current; it does not make it
+current. The composition work below is what fixes that.*
+
 ### Design's concern is right, and the work is bigger than a pointer — but NOT blocked
 
 **The switch as scoped WOULD be a downgrade** in exactly his window: the
