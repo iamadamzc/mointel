@@ -14,7 +14,7 @@ import type {
   RvolBaseline,
   SecurityClassification,
 } from '../types';
-import type { ActivityState } from '../activity';
+import type { ActivityState, PriceWindow } from '../activity';
 
 /** The only three values the engine writes. Anything else is not a verdict. */
 const ACTIVITY_STATES = new Set(['ACTIVE', 'DEAD', 'UNKNOWN']);
@@ -307,6 +307,7 @@ export interface TickerSessionRow {
   death_count: number | null;
   activity_config: string | null;
   activity_window: string | null;
+  price_window: string | null;
   feed: string;
   last_event_at: string | null;
   updated_at: string;
@@ -355,6 +356,40 @@ function parseActivityWindow(raw: string | null): number[] | undefined {
       return undefined;
     }
     return parsed as number[];
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * The price window, refused rather than repaired when it is not what it claims.
+ *
+ * A stricter reader than `parseActivityWindow` because the payload has more
+ * shape to be wrong about, and every wrong shape renders as a line. `covered`
+ * is RECOMPUTED from `closes` rather than trusted: it is the number a surface
+ * decides whether to draw on, and a stored count that disagreed with the array
+ * would be the one field nothing could catch.
+ */
+function parsePriceWindow(raw: string | null): PriceWindow | undefined {
+  if (raw === null) return undefined;
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (typeof parsed !== 'object' || parsed === null) return undefined;
+    const { startsAt, closes } = parsed as { startsAt?: unknown; closes?: unknown };
+    if (typeof startsAt !== 'number' || !Number.isInteger(startsAt) || startsAt < 0) {
+      return undefined;
+    }
+    if (!Array.isArray(closes) || closes.length === 0) return undefined;
+    if (!closes.every((c) => c === null || (typeof c === 'number' && Number.isFinite(c) && c > 0))) {
+      return undefined;
+    }
+    // A series whose FIRST entry is a hole contradicts its own contract: it is
+    // trimmed to the first traded minute, so a leading null means the writer
+    // and the reader disagree about what `startsAt` points at.
+    if (closes[0] === null) return undefined;
+
+    const typed = closes as (number | null)[];
+    return { startsAt, closes: typed, covered: typed.filter((c) => c !== null).length };
   } catch {
     return undefined;
   }
@@ -449,6 +484,7 @@ export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandSt
      * distinguishable from this.
      */
     activityWindow: parseActivityWindow(row.activity_window),
+    priceWindow: parsePriceWindow(row.price_window),
     top12EnteredAt: row.top12_entered_at,
     qualified: row.qualified_at
       ? {
@@ -520,7 +556,7 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       rth_final_close, rth_final_high, rth_final_low, rth_final_volume, rth_final_rvol,
       rth_final_rank, rth_final_frozen_at,
       activity, dead_since, dead_at_rank, dead_at_peak_trades, dead_at_price,
-      death_count, activity_config, activity_window,
+      death_count, activity_config, activity_window, price_window,
       feed, last_event_at, updated_at
     ) VALUES (
       @symbol, @trading_date, @price, @price_source, @price_at, @bar_close, @bar_at,
@@ -544,7 +580,7 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       @rth_final_close, @rth_final_high, @rth_final_low, @rth_final_volume, @rth_final_rvol,
       @rth_final_rank, @rth_final_frozen_at,
       @activity, @dead_since, @dead_at_rank, @dead_at_peak_trades, @dead_at_price,
-      @death_count, @activity_config, @activity_window,
+      @death_count, @activity_config, @activity_window, @price_window,
       @feed, @last_event_at, @updated_at
     )
     ON CONFLICT(symbol, trading_date) DO UPDATE SET
@@ -652,6 +688,10 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
        * the state would have wrongly discarded.
        */
       activity_window = COALESCE(excluded.activity_window, ticker_session.activity_window),
+      -- COALESCE for the same reason as the window beside it: after a restart
+      -- the engine's minute maps are empty and it writes NULL, which is amnesia
+      -- rather than a measurement.
+      price_window = COALESCE(excluded.price_window, ticker_session.price_window),
       feed = excluded.feed, last_event_at = excluded.last_event_at, updated_at = excluded.updated_at
   `);
 

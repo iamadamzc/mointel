@@ -107,8 +107,71 @@ export const DEFAULT_ACTIVITY_CONFIG: ActivityConfig = {
 };
 
 /** The derived dead line. Exported so a surface can state it with a verdict. */
+/**
+ * The minute slots the window judges, oldest first.
+ *
+ * EXPORTED so a second series can cover exactly the same minutes rather than
+ * building its own and agreeing by coincidence. The price sparkline's honesty
+ * is a property of the PAIR — a flat price beside a zero-trade bar reads as
+ * "nothing happened", which is true; a flat price beside nothing at all is a
+ * claim the price line has no business making.
+ */
+export function windowSlots(now: number, config: ActivityConfig): string[] {
+  const span = Math.max(config.deadMinutes, config.reviveMinutes);
+  const slots: string[] = [];
+  for (let back = config.settleMinutes + span; back > config.settleMinutes; back -= 1) {
+    slots.push(minuteSlot(now - back * 60_000));
+  }
+  return slots;
+}
+
+/**
+ * Closes over the same slots, trimmed to the first minute that TRADED.
+ *
+ * TWO CONSTRAINTS, both measured rather than chosen.
+ *
+ * It starts at the first traded minute and never at the window edge. 36-42% of
+ * top-12 rows begin with a hole, and a line drawn from the edge shows
+ * FLAT-THEN-RISING where the truth is ABSENT-THEN-RISING — on precisely the
+ * setup a momentum trader is hunting, a name that sits silent and then moves.
+ *
+ * And a hole is `null`, never a carried price. The activity window's zeros are
+ * OBSERVATIONS: that minute genuinely had zero trades. These holes are
+ * ABSENCES: there is no price, because nothing traded. Same missing slot,
+ * opposite meaning, so the two series cannot share a fill convention.
+ *
+ * `covered` travels with it so the pair dependency is CHECKABLE rather than
+ * trusted: a renderer can refuse a line it should not draw without re-counting.
+ */
+export function buildPriceWindow(
+  minuteCloses: ReadonlyMap<string, number>,
+  slots: readonly string[],
+): PriceWindow | null {
+  const startsAt = slots.findIndex((slot) => minuteCloses.has(slot));
+  if (startsAt === -1) return null;
+
+  const closes = slots.slice(startsAt).map((slot) => minuteCloses.get(slot) ?? null);
+  return { startsAt, closes, covered: closes.filter((close) => close !== null).length };
+}
+
 export function deadLineFor(config: ActivityConfig): number {
   return config.activeTradesPerMinute / config.deadRatio;
+}
+
+/**
+ * Minute closes over the activity window, aligned to it by `startsAt`.
+ *
+ * Separate from `ActivityReading` because it answers a different question and
+ * fails differently: an absent close is no price, an absent trade count is zero
+ * trades.
+ */
+export interface PriceWindow {
+  /** Index into the activity window where the first TRADED minute sits. */
+  startsAt: number;
+  /** Closes from that minute forward. `null` is a minute that did not trade. */
+  closes: (number | null)[];
+  /** How many of `closes` are real prices. */
+  covered: number;
 }
 
 export interface ActivityReading {
@@ -192,11 +255,7 @@ export function resolveActivity(options: {
   }
 
   const deadLine = deadLineFor(config);
-  const span = Math.max(config.deadMinutes, config.reviveMinutes);
-  const slots: string[] = [];
-  for (let back = config.settleMinutes + span; back > config.settleMinutes; back -= 1) {
-    slots.push(minuteSlot(options.now - back * 60_000));
-  }
+  const slots = windowSlots(options.now, config);
 
   // A missing slot is zero trades. The single most important line in the file.
   const window = slots.map((slot) => options.minuteTrades.get(slot) ?? 0);

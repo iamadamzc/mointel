@@ -13,7 +13,15 @@
  * It is not a signal, not a rating, and says nothing about structure.
  */
 
-import { peakTradesPerMinute, resolveActivity, type ActivityState } from './activity';
+import {
+  DEFAULT_ACTIVITY_CONFIG,
+  buildPriceWindow,
+  peakTradesPerMinute,
+  resolveActivity,
+  windowSlots,
+  type ActivityState,
+  type PriceWindow,
+} from './activity';
 import { computeDailyRvol, rankByRvol, rvolConfidenceFor } from './rvol';
 import { computeAhParticipation, computeAhPercentChange, rankByAfterHours } from './afterHours';
 import {
@@ -135,6 +143,14 @@ interface TickerRuntime {
    * pre-seeded.
    */
   minuteTrades: Map<string, number>;
+  /**
+   * Minute CLOSES, mirroring `minuteTrades` exactly.
+   *
+   * A separate map rather than a field on one entry, because the two are
+   * recorded on different conditions: a trade count is written only when the
+   * feed supplies one, and a close is always present on a bar.
+   */
+  minuteCloses: Map<string, number>;
   activity: ActivityState;
   deadSince: string | null;
   /*
@@ -171,6 +187,7 @@ interface TickerRuntime {
   deathCount: number;
   /** Trades per minute over the judged window. Null when nothing was observed. */
   activityWindow: number[] | null;
+  priceWindow: PriceWindow | null;
 
   minuteNotional: Map<string, number>;
   vwapNotional: Record<keyof SessionVwapSet, number>;
@@ -432,6 +449,7 @@ export class DemandEngine {
       cumulativeVolume: null,
       volumeSource: null,
       minuteTrades: new Map(),
+      minuteCloses: new Map(),
       activity: 'UNKNOWN',
       deadSince: null,
       deadAtRank: null,
@@ -439,6 +457,7 @@ export class DemandEngine {
       deadAtPrice: null,
       deathCount: 0,
       activityWindow: null,
+      priceWindow: null,
       minuteNotional: new Map(),
       vwapNotional: { premarket: 0, regular: 0, afterHours: 0 },
       vwapVolume: { premarket: 0, regular: 0, afterHours: 0 },
@@ -912,6 +931,8 @@ export class DemandEngine {
     if (bar.tradeCount !== null && bar.tradeCount !== undefined) {
       runtime.minuteTrades.set(bar.ts, bar.tradeCount);
     }
+    // Unconditional: every bar carries a close, and a minute with a bar traded.
+    runtime.minuteCloses.set(bar.ts, bar.close);
     this.accumulateVwap(runtime, bar, previous);
 
     // The same minute, counted a second time against the after-hours window.
@@ -1126,6 +1147,15 @@ export class DemandEngine {
      * array is a real reading a DEAD name genuinely has.
      */
     runtime.activityWindow = activity.window.length > 0 ? activity.window : null;
+    /*
+     * Built from the SAME slots the verdict was judged over, so the two series
+     * cannot disagree about which minutes they cover. That is why `windowSlots`
+     * is exported rather than rebuilt here.
+     */
+    runtime.priceWindow = buildPriceWindow(
+      runtime.minuteCloses,
+      windowSlots(this.now(), DEFAULT_ACTIVITY_CONFIG),
+    );
     runtime.activity = activity.state;
     runtime.deadSince = activity.deadSince;
 
@@ -1804,6 +1834,7 @@ export class DemandEngine {
       deadAtPrice: runtime.deadAtPrice,
       deathCount: runtime.deathCount,
       activityWindow: runtime.activityWindow ?? undefined,
+      priceWindow: runtime.priceWindow ?? undefined,
       rthFinal: runtime.rthFinal ? { ...runtime.rthFinal } : null,
       afterHours: this.afterHoursStateOf(runtime),
       feed: this.options.feed,

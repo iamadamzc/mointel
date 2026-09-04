@@ -6,7 +6,7 @@
  * reported as unknown — never coerced to zero.
  */
 
-import type { ActivityState } from './activity';
+import type { ActivityState, PriceWindow } from './activity';
 import type { BlueSkyState } from './blueSky';
 import type { SessionVwapSet } from './vwap';
 
@@ -441,6 +441,16 @@ export interface DemandState {
    * before the column existed.
    */
   activityWindow?: number[];
+  /**
+   * Minute closes over the SAME slots as `activityWindow`, aligned by
+   * `startsAt`, holes as null.
+   *
+   * The pair is the point: a flat price beside a zero-trade bar reads as
+   * "nothing happened", which is true. A flat price alone is a claim about
+   * activity a price series has no business making — so `covered` travels with
+   * it and a surface can refuse a line it should not draw.
+   */
+  priceWindow?: PriceWindow;
 
   /** Frozen regular-session state; null until the closing bell. */
   rthFinal: RthFinalState | null;

@@ -61,7 +61,7 @@ const COLUMNS = [
   'ah_latched', 'rth_final_close', 'rth_final_high', 'rth_final_low', 'rth_final_volume',
   'rth_final_rvol', 'rth_final_rank', 'rth_final_frozen_at', 'activity', 'dead_since',
   'dead_at_rank', 'dead_at_peak_trades', 'dead_at_price', 'death_count', 'activity_config',
-  'activity_window', 'last_event_at',
+  'activity_window', 'price_window', 'last_event_at',
 ] as const;
 
 function row(over: Record<string, unknown> = {}) {

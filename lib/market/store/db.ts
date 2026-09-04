@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 24;
+export const SCHEMA_VERSION = 25;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -193,6 +193,7 @@ CREATE TABLE IF NOT EXISTS ticker_session (
    * measurement -- so the two must not share a representation.
    */
   activity_window        TEXT,
+  price_window           TEXT,
   PRIMARY KEY (symbol, trading_date)
 );
 CREATE INDEX IF NOT EXISTS idx_ticker_session_rank ON ticker_session (trading_date, rvol_rank);
@@ -769,6 +770,7 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'ticker_session', column: 'death_count', definition: 'INTEGER' },
   { table: 'ticker_session', column: 'activity_config', definition: 'TEXT' },
   { table: 'ticker_session', column: 'activity_window', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'price_window', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {

@@ -1721,6 +1721,14 @@ export function toRow(state: DemandState): TickerSessionRow {
     activity_config: JSON.stringify(DEFAULT_ACTIVITY_CONFIG),
     /* NULL is "not measured". Never [] -- see DemandState.activityWindow. */
     activity_window: state.activityWindow ? JSON.stringify(state.activityWindow) : null,
+    /*
+     * `startsAt` and `closes` only. `covered` is derived on read rather than
+     * stored, so a count cannot drift from the array it counts -- and that is
+     * the field a surface decides whether to draw on.
+     */
+    price_window: state.priceWindow
+      ? JSON.stringify({ startsAt: state.priceWindow.startsAt, closes: state.priceWindow.closes })
+      : null,
     updated_at: state.updatedAt,
   };
 }
