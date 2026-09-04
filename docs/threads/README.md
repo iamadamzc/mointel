@@ -3398,3 +3398,44 @@ depend on and fixed nothing.**
 Getting that backwards is how an observer's state ends up in a market vocabulary,
 and every producer then carries a member it can never emit while every consumer
 carries a case it can never see.
+
+## A MECHANISM THAT EXPLAINS THE CLASS IS NOT EVIDENCE ABOUT THE INSTANCE
+
+**Research and Design, 2026-09-04, on CMND — and the same error was made from
+both directions in one exchange, which is what makes it worth a rule.**
+
+The failure: a name showed a three-day-old catalyst card while the company had
+announced an acquisition. A mechanism was found that explained the shape
+beautifully — an undated article is exempt from the desk's only recency filter,
+so it survives forever, while a feed's dated entries expire at 45 days. **One
+line, two opposite failures. The premise was then MEASURED and held: 1% of
+feed-path rows are undated against 82% of index-path rows.**
+
+**It was still the wrong explanation for that row.** The article was dated
+2026-09-01 and read on the 4th. **Three days against a 45-day window. Nothing had
+expired.** The correct diagnosis was the one already made by direct observation
+and then abandoned: the stored source is a single release page, so the collection
+point can surface exactly one article, forever.
+
+| who | the error |
+| --- | --- |
+| **Research** | had a mechanism and a confirmed premise, and **did not subtract two dates that were in the message in front of it** |
+| **Design** | had **looked at the row directly**, seen the leaf URL, and gave that up for an explanation that fitted better |
+
+**Both directions of one mistake, on one row, inside one exchange.**
+
+### The test that catches it, and it is one subtraction
+
+**A mechanism that predicts something MEASURABLE about the instance must be
+checked against the instance.** Here it predicted expiry, the instance carried a
+date, and the check was arithmetic.
+
+**And a confirmed PREMISE is not a confirmed APPLICATION.** The 1%-versus-82%
+measurement was correct, and it said nothing whatever about whether this row's
+article had expired. Measuring the mechanism's *precondition* feels like
+evidence and is not evidence about the case.
+
+**Corollary for the other direction:** when you have looked at the instance and
+it disagrees with a satisfying general story, **the instance wins**. A story that
+explains a population is a hypothesis about the population; the row you read is
+data about the row.
