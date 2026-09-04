@@ -1414,6 +1414,25 @@ about how we talk to each other.**
 - **One message per milestone, not per event.** Scoped, built, gated and pushed
   is **one** ping, not four.
 
+**CONSOLIDATION APPLIES TO CONTENT, NEVER TO THE COMPLETION PING. Amended
+again the same night, hours later, because the first amendment caused a
+failure.** Within four hours of *"one message per milestone, not per event"*
+being written, **all four threads did work and went idle without pinging at
+all** — and Integration only learned of it because **the trader said "no one is
+working on anything."** He was put back in the transport role that this entire
+section exists to remove, which is precisely the complaint that created the rule
+on 08-24.
+
+**The cause was the amendment.** *One message per milestone* reads as permission
+to stay quiet, and **a thread still working and a thread finished-and-silent are
+indistinguishable from outside.** Integration does not wake on a commit. **So
+silence is not a smaller message; it is no message, and it stops the bus.**
+
+- **Going idle IS a milestone.** If you are about to stop, ping first — even if
+  the ping is *"done, nothing to report"* or *"blocked on X, stopping."*
+- **Shorter is the goal. Silent is a failure.** The rule was written to cut 800
+  words to one line, never to cut one line to zero.
+
 **THREE EXEMPTIONS, AND THEY ARE NOT NEGOTIABLE:**
 
 1. **A CORRECTION OR RETRACTION GOES IMMEDIATELY, AT WHATEVER LENGTH IT NEEDS.**
