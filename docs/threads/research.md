@@ -6198,3 +6198,46 @@ explain is a FINDING, not a tie to break.**
 eight-month-old count filed under the old ticker. **The staleness defect and the
 rename defect compose**, and the name they compose on is the one that started
 this.
+
+---
+
+**62. THE ADJUSTMENT CAN ONLY REACH BACK AS FAR AS THE BARS DO — 38% of share
+counts predate the stored history.**
+
+*Integration reordered the census ahead of the close series because it now
+feeds the bound. It is more load-bearing than that: measured here, the
+adjustment's ceiling IS the history depth.*
+
+Measured on the **2026-08-23 snapshot, which predates the basis backfill** —
+so these are FLOOR figures, not current state:
+
+| | |
+| --- | --- |
+| daily bar depth per symbol | **median 100** (~5 months), max 102 |
+| XBRL `asOf` INSIDE the stored window — factor derivable | **129 of 211 = 61%** |
+| `asOf` BEFORE the history starts — **`BASIS_UNVERIFIABLE`** | **80 = 38%** |
+| of the 75 names a raw bound calls PROVEN, adjustable | **55 = 73%** |
+
+**The refusal is not random — it is targeted at exactly the dangerous cases.** A
+figure 8 months old needs the adjustment most and is furthest outside a 5-month
+window. `factorWithinCoverage()` already refuses to extrapolate past the series
+end, so those return `BASIS_UNVERIFIABLE` rather than a wrong answer, which is
+the right behaviour and also the reason the usable proven set shrinks toward the
+fresh subset.
+
+**Two precisions, because this number is easy to overstate:**
+
+- It measures whether the `asOf` falls inside the stored DAILY-BAR window, which
+  is the **precondition**. A factor additionally requires the dual-adjustment
+  fetch, and the snapshot carries only `adjustment: 'split'` — the dual fetch
+  post-dates it. So 61% is a CEILING on adjustability at that depth, not an
+  observed factor coverage.
+- **Production is deeper now.** The backfill took `split_factor` from 19,707 to
+  99,696 rows across 77 symbols, and raising this fraction was its whole point.
+
+**Which quantifies what the deep-history fetch is worth:** every symbol whose
+history is fetched deeper moves names from `BASIS_UNVERIFIABLE` to adjustable,
+and each one of those is a share count that can be trusted or corrected rather
+than refused. That is a concrete value for work already shipped and a concrete
+argument for extending it — and it is why the census belongs ahead of the bound
+rather than beside it.
