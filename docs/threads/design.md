@@ -2263,6 +2263,52 @@ this thread's own rule — a label must be true without context — and it costs
 string. It is worth doing before the composition rather than after, because it
 removes the falsehood without waiting on the work that removes the staleness.
 
+### NOT BUILT 2026-09-04 — the fallback I proposed already exists
+
+Research's count came back 38 of 46 and cleared the threshold I set, and
+Integration asked for the fallback. **Checked the render path first and did not
+build it: `AutomaticIntelligence.tsx:361-381` already renders the whole supply
+ledger** — type, status, `amountShares`, dollar capacity, registration status,
+source ids.
+
+**So the 38 names do not show a blank. They show their blocks, as shares, with
+no percentage — which is exactly the fallback I described.** Building it would
+duplicate a live surface, and the comment at `:383` on that very element warns
+about the last time this card printed the same sentence twice.
+
+`Shares outstanding` at `:345` already renders "unknown" when the count is null,
+so the desk **already says** the denominator is missing. It simply never
+connects that to the absent ratio.
+
+### What is actually missing, re-derived
+
+Four states, and the ledger covers the blocks in all of them:
+
+| Rows | State | Rendered today |
+| --- | --- | --- |
+| ~85 | Pair with a real floor | **nothing — `supplyPair` has no reader** |
+| ~100 | Pair, floor null | **nothing — same** |
+| 38 | No pair, ledger present | blocks ✓, no reason for the missing ratio |
+| 8 | No pair, no ledger | nothing, correctly |
+
+**The gap is the pair itself on 185 rows, not a fallback on 38.** For the 38 the
+owed thing is one clause connecting the absent ratio to the absent count — not a
+surface.
+
+**And it belongs WITH the ledger, not beside it.** A ratio panel in a different
+card from the blocks it divides would make the reader carry the join. That is a
+placement decision, and getting it wrong is rework, which is why this went back
+before anything was written.
+
+### The proportion that must not leak into the copy
+
+Integration retracted a 91/231 figure (the model's transcription, not the parsed
+value the code divides by; the real one is 185/231). The binding constraint is
+the NUMERATOR — **146 names lack a priced active block against 46 lacking a
+count.** So the dominant reading on this surface is "we have a denominator and
+nothing established to divide", not "we cannot divide". The copy must not imply
+the missing count is the main story. It is the smaller gap.
+
 ### The cycle levels — a layer removed, not a pointer redirected
 
 Two consequences, both deliberate-or-not rather than free:
