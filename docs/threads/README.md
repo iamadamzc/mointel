@@ -580,6 +580,37 @@ stored series and any real reading wins, including a real `UNKNOWN` reading**,
 which a state-keyed branch would have thrown away. One fewer branch to get wrong
 later.
 
+## A BACKSLASH EATEN BY A LAYER — THREE TIMES IN ONE NIGHT, EACH SILENT
+
+**2026-09-04. Three threads, three layers, one mechanism:**
+
+- **Ops's guard**: the table regex lost its backslash to the harness, `(\w+)`
+  became `(w+)`, matched nothing, and `every()` over an empty list returned
+  **vacuously true**. The guard skipped on every store.
+- **Ops's verifying grep**: BRE read `\w` as a literal `w` and `+` as a literal
+  plus, **returned 0 for a line that was present**, and two rounds were spent
+  explaining a failure that had not happened.
+- **Research's parser**: a regex built from a **template literal** had every
+  backslash eaten — `\s` to `s`, `\d` to `d` — producing a pattern that **threw
+  at module load.**
+
+**The escape is consumed by something between the author and the engine** — a
+shell, a tool harness, a template literal — and what arrives is a **valid
+pattern that means something else.** Nothing errors at the point of the mistake.
+
+**AND THE THIRD ONE CARRIES THE SHARPER LESSON: TYPECHECK PASSED.** The failure
+lived **inside a string**, and `tsc` cannot see in there, so the compile
+**reported clean on a file that could not be imported at all.** It was caught by
+running the tests, not by the gate one would instinctively trust.
+
+**That is the neighbour of a check that cannot fail: A CHECK THAT SUCCEEDS AT A
+QUESTION THAT DOES NOT COVER THE DEFECT.** It did not fail to run and it did not
+return the wrong answer — **it answered a different question, correctly**, and a
+green result is indistinguishable from coverage.
+
+**So: build regexes as plain literals, not from template strings or shell
+arguments; and never treat a green typecheck as evidence that a module loads.**
+
 ## A TOOL THAT REPORTS "NOT FOUND" THE SAME WAY IT REPORTS "NONE" IS NOT AN INSTRUMENT
 
 **Ops, 2026-09-04, four instances in one night, each returning a plausible
