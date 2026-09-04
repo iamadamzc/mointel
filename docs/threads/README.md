@@ -548,6 +548,27 @@ thing they lack. **Everything reconciles to one date and one deploy.** The fact
 that settled it had been sitting in a relay for an hour, in a message whose author
 did not know what it was for.
 
+## A FAILED DEPLOY DOES NOT LEAVE YOU WHERE YOU WERE
+
+**Design, 2026-09-04, on why both its pending lists were wrong.** It had
+`b2399a2` down as unshipped, on the reasonable theory that **a deploy which
+failed leaves the previous release running.** Here it does not: the deploy
+switched the symlink, the schema migration failed, and Ops **restored FORWARD
+onto `b2399a2`** — having verified the release expected schema 23 and the store
+read 23. **The failed deploy is the reason that sha is live.**
+
+**Nothing about that is inferable from outside Ops**, which is the point. So:
+
+- **Only Ops knows what is live.** Not the log, not `origin/main`, not the last
+  successful-looking message.
+- **A thread reports its OWN HEAD and stops there.** *"My head is X, last code
+  commit Y."* **A pending list a thread cannot verify is a guess with a shape**,
+  and it will be believed because it looks like a fact.
+
+**This removes the failure rather than asking anyone to be more careful about
+something they cannot observe** — the same reasoning as reporting existence
+rather than a rate.
+
 ## A TEST WRITTEN BY COPYING THE IMPLEMENTATION CANNOT DISAGREE WITH IT
 
 **Design, 2026-09-04, naming the general form after producing both instances.**
