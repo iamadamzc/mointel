@@ -6601,3 +6601,65 @@ is correct.**
 **The collection figure deserves its own re-take** for the opposite reason: IR
 and newsroom discovery may have improved since 08-21, which would lower the
 exposure. Same query shape, no model involvement.
+
+---
+
+**68. THE CROSS-CHECK PROBLEM DISSOLVES, AND THE BOUND'S HARDEST INPUT IS
+ALREADY PERSISTED AND UNWIRED.**
+
+*Integration: "a cross-check that has seen the number it is checking is not a
+cross-check" — either establish independence or drop it, and solve it before the
+build. Checked in code rather than commissioned as a measurement.*
+
+### The bound never used the model's reading
+
+`computeSupplyBound` (`guardrails.ts:189`) takes
+**`bundle.reportedSharesOutstanding`** — the deterministic XBRL figure — and the
+comment above it says why: *"a share count that came in too low would inflate the
+ratio and turn a bound into an over-statement — the one failure this must not
+have."*
+
+**So the bound's input has been deterministic since `55f3e20`. The
+independence problem does not gate the build, because the build does not depend
+on the model's number.**
+
+### And both numbers persist SEPARATELY — nothing is merged
+
+`pipeline.ts:383` writes `accepted.filedShares` from the bundle AFTER the model
+has answered, as a distinct field:
+
+    { shares, asOf, concept, sourceId, basis: 'FILED_SHARES_OUTSTANDING' }
+
+**`structure.sharesOutstanding` (the model's reading) and `filedShares` (the
+deterministic one) sit side by side on every post-08-23 dossier.** Neither
+overwrites the other, and the type comment says the merge is refused precisely
+because it *"cannot be un-merged"*.
+
+### So the third option: keep it, and read it ASYMMETRICALLY
+
+Integration is right that independence is gone — the model is shown the number.
+**But the loss is one-sided:**
+
+| observation | what it now means |
+| --- | --- |
+| the two AGREE | **nothing.** The model may be copying what it was handed |
+| the two DISAGREE | **stronger than before.** A model shown X that reports Y has actively diverged from something in front of it |
+
+**Same shape as the bound itself** — conclusive in one direction only. Agreement
+is uninformative; disagreement is a finding. That is the honest reading and it
+needs no independence claim.
+
+### AND IT IS BUILT AND UNWIRED — the fourth tonight
+
+**`filedShares` is written by `pipeline.ts:384` and read by NOTHING.** The only
+other occurrence in the codebase is its type declaration at `types.ts:589`.
+
+**So the float bound's hardest input — a dated, cited, concept-stamped share
+count with an explicit `FILED_SHARES_OUTSTANDING` basis — is already attached to
+every post-08-23 dossier and reaches no surface.** The build is substantially
+smaller than scoped: the number does not need computing, collecting or
+transcribing. It needs the split adjustment, the three-population verdict, and a
+render.
+
+Its own comment carries the remaining work: *"The cover-page date. NOT
+split-adjusted."*
