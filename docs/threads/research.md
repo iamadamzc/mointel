@@ -6663,3 +6663,29 @@ render.
 
 Its own comment carries the remaining work: *"The cover-page date. NOT
 split-adjusted."*
+
+**68a. WE PERSISTED THE DERIVATIVE AND DISCARDED THE SOURCE.**
+
+*Integration: persist the whole coverage object rather than picking fields, since
+two of its parts have now been needed months apart. Checked the size before
+agreeing, because "persist the whole object" is a claim about cost and rights.*
+
+The object is **three counts, five booleans, one nullable timestamp and the gap
+strings** — `secSourceCount`, `catalystSourceCount`,
+`nonSecCatalystSourceCount`, `companySourceKnown`, `canonicalClusterCount`,
+`latestSourceAt`, `hasCurrentReport`, `hasRegistrationEvidence`,
+`hasSharesOutstanding`, `incomplete`, `gaps`. **No source text, no excerpts, no
+rights exposure** — the bundle's rights caveat covers article and filing bodies,
+none of which are here. A few hundred bytes per analysis.
+
+**And the sharpest version of the failure: `incomplete: gaps.length > 0`.** The
+one field that IS persisted is DERIVED from the field that is not. **Storing
+`gaps` alone would have given `incomplete` for free** — the desk kept the
+derivative and discarded its source, which is this class stated at its most
+economical.
+
+**It also unblocks the directional warning rather than only the boolean one.**
+`companySourceKnown` and `nonSecCatalystSourceCount` together are exactly what
+says WHICH side went unsearched — "no company IR or newswire location is known"
+is a different sentence from "one is known and returned nothing", and the render
+cannot tell them apart today.
