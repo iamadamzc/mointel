@@ -6547,3 +6547,57 @@ depends on, and it can only be answered on post-08-23 output.
 **And the A/B infrastructure already exists** — `1df1d75` put both prompts behind
 a switch, `systemPromptFor(variant)`, `PromptVariant = 'A' | 'B'`. The third arm
 Integration asked about is a third constant, not a mechanism.
+
+---
+
+**67. RE-TAKING THE COVERAGE FIGURE — the spec, and the reason the wrapper fix
+is not blocked on it.**
+
+*Integration measured production: `promptVersion` 1 across all 1,188 rows, but
+`promptVariant` null for 325 (08-17 → 08-21, exactly my archive) and `A` for 863
+(08-24 → 09-04). The phrase family is 13 in A against 1 in the archive, and the
+1 is CMND. **The behaviour is newer, not rarer. My baseline was structurally
+blind to it.***
+
+**I cannot re-take it here — checked, not assumed.** `assessments-prod-2026-09-02.db`,
+`archive.db` and `assessments.db` carry no research tables. It is a production
+read.
+
+### Four things the re-take must control, or it will move for the wrong reason
+
+1. **Report BOTH populations side by side.** "If it moved" needs a before and an
+   after, and the archive half is already computed here — 57 of 60.
+2. **ONE ROW PER TICKER PER VARIANT.** My figure used
+   `research_dossiers.current_version_id` — one accepted dossier per ticker. The
+   863 variant-A rows are VERSIONS; counting them all weights frequently
+   re-asked names and would move the number for a reason unrelated to the
+   wrapper.
+3. **`active = 1` is a RETROSPECTIVE filter.** SEC-only-ness is reconstructed as
+   `source_type IN CATALYST_TYPES AND authority != 'SEC'`, and a source
+   deactivated since would make a historical dossier look SEC-only when it was
+   not. The bundle's own `coverage.nonSecCatalystSourceCount` was computed at
+   interpretation time and **is not persisted** — only `coverageIncomplete` is,
+   which is the same discard again. So the reconstruction is the only route and
+   its direction of error must be stated.
+4. **THE VARIANT IS NOT THE ONLY THING THAT MOVED.** `55f3e20`, `1df1d75`,
+   `86f49fb` and `1baf92c` all landed in the same gap. **A difference between
+   the two populations is attributable to "something changed", not to the
+   variant** — the re-take can detect movement, not cause.
+
+### And the wrapper fix does not depend on the answer
+
+The 57-of-60 is a **model-behaviour** number: of dossiers the model marked
+UNKNOWN, how many were one-sided. **The exposure is a COLLECTION number: 144 of
+231 names — 62% — had zero non-SEC catalyst sources at all.** That is a fact
+about what was fetched, not about what any prompt did with it.
+
+**So the two numbers answer different questions.** 62% is how many names the
+wrapper's treatment of one-sided coverage APPLIES to; 57-of-60 is what the model
+currently DOES with them. The reframe — *an interpreter shown one side must not
+reach for balance language, and must say which side was searched* — is justified
+by the first. **The re-take tells us how much the fix will change, not whether it
+is correct.**
+
+**The collection figure deserves its own re-take** for the opposite reason: IR
+and newsroom discovery may have improved since 08-21, which would lower the
+exposure. Same query shape, no model involvement.
