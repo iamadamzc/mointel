@@ -2008,6 +2008,45 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## TWO THREADS READ REAL DATA, DISAGREED COMPLETELY, AND NEITHER MISREAD ANYTHING
+
+**2026-09-04.** Ops measured 16 of 17 floats parsing; Design ran the deployed
+parser against live strings and got **0 of 11, AKAN included.** Disjoint tickers,
+opposite results, both live, both correct.
+
+**The same names appear on BOTH Sheet tabs in DIFFERENT FORMATS:**
+
+    TODAY     AKAN  "537,665 displayed; 785,655 SO"   -> refuses
+    RESEARCH  AKAN  "537,665 displayed"               -> 537665
+
+**Eleven of eleven each way.** And `resolveDisplayedFloat`
+(`lib/dashboard/merge.ts:143`) checks **RESEARCH first** — verified in the code,
+not taken on report. It parses, so the board shows its value and **the TODAY
+branch is never reached.**
+
+**Design tested the branch that does not fire.** Its measurement was correct and
+its conclusion — *"the parser reads nothing on his board"* — did not follow from
+it. **So my correction to the trader was the error, and the original statement
+was true: twelve floats he wrote are numbers on his board.** A retraction of a
+retraction, and the lesson is that **a live measurement is not self-locating** —
+it tells you what a code path does, never whether that path runs.
+
+**THE REAL FINDING IS UNDERNEATH AND OUTLIVES THE RECONCILIATION: THE FALLBACK
+IS DEAD.** TODAY's float column is **entirely unparseable, 11 of 11.** It costs
+nothing today because every one of those names is also in RESEARCH. **It costs
+everything the moment a name is in TODAY and not in RESEARCH** — and the
+fallback exists for exactly that case. **The parser fix is incomplete rather
+than wrong:** it covers the branch that fires and not the branch that exists for
+the case nobody has hit yet.
+
+**A dead fallback is invisible precisely while the primary works**, which is
+every day until the one day it matters.
+
+**One naming hazard found in passing:** in `resolveDisplayedFloat` the parameter
+named `research` holds the **TODAY** row and the one named `record` holds the
+**RESEARCH** row. Two things under one word, in the function this whole
+disagreement turned on.
+
 ## AN INSTRUCTION IN FLIGHT IS NOT AN INSTRUCTION RECEIVED
 
 **2026-09-04, 01:40 ET.** This seat sent *"STOP BEFORE YOU DEPLOY `b2399a2`"*.
