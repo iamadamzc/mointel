@@ -3286,6 +3286,54 @@ snapshot whose sources end at the window.** The capability itself exists —
 **Integration's delegation covers deploys and order-and-process; spend goes to
 him.** Not an obstruction — the two facts simply travel together.
 
+### THE FREE MEASUREMENT, RUN: ~4 IN 5 ANALYSES HAD NO SHEET PRIOR AT ALL
+
+**The mechanism first, because the number is worthless without it.**
+`sheetProvenance` is `comparison?.provenance ?? null` (`pipeline.ts:442`), and
+`comparison` exists only when `options.sheetSnapshot` does (`:266`). **Both the
+snapshot and the prior gate on the SAME object** — `worker/research.ts:547`
+and `:549` are `prior?.analysis` and `prior?.snapshot`. **So a null provenance
+means no `prior`, which means `priorHumanAnalysis` was null too: that row was
+never exposed.**
+
+| `sheetProvenance` on 325 stored versions | | |
+| --- | ---: | --- |
+| **null** | **255** | **no prior — provably uncontaminated** |
+| absent (no key) | 15 | unknown; counted against me |
+| `CONFLICT` | 35 | prior present |
+| `SHEET_NEWER` | 13 | prior present |
+| `SHEET_AUTO_AGREE` | 7 | prior present |
+
+> **AT LEAST 255 of 325 — 78.5% — CARRIED NO SHEET PRIOR. At most 70 (21.5%)
+> could have.** The 15 unknowns are counted as possibly-exposed, so the bound
+> is conservative. **`omitSheetPrior` pushes it the same way**: it nulls the
+> prior while leaving the snapshot, so a "prior present" row may still have
+> been clean.
+
+**So contamination is bounded to roughly one row in five on this window, and
+cannot be the bulk of any separation measured across it.**
+
+### THE LIMIT THAT DECIDES WHETHER THIS RETIRES THE EXPENSIVE RUN
+
+**This is the 08-23 snapshot — versions 08-17 → 08-21. It is NOT S3's
+13-session window**, which is more recent and whose population R&D holds.
+
+> **So this bounds the mechanism, not S3.** It says the contamination channel
+> is narrow where I can see it. **The exact answer for S3's rows is the SAME
+> QUERY against the live store, and it costs nothing** — one `select` over
+> `metadata.sheetProvenance` restricted to S3's admitted symbol-days. **Whoever
+> holds that population should run it before anyone authorises a model spend.**
+
+### The moderation test, and why the above is better than it
+
+*Kept because I proposed it and it is the weaker instrument: splitting the
+effect by prior-presence is a MODERATION test, and item 10 already rejected
+restricting Q1 to no-TODAY rows as selection on the dependent variable — TODAY
+is the Sheet's own $2–$10 watchlist and 82% of 50%+ movers sit inside it. The
+selection biases the LEVEL, not obviously the COMPARISON. **The provenance
+count above needs no such argument: it counts exposure directly rather than
+inferring it from an effect.***
+
 ### Cheaper first, and it needs neither spend nor a replay
 
 **Measure how much prior there even WAS.** `sheetProvenance` is on stored
