@@ -17,6 +17,11 @@
  * than either alone.
  */
 
+import {
+  LOW_FLOAT_CEILING,
+  assessFloatBound,
+  type FloatBoundVerdict,
+} from '@/lib/research/float';
 import type { SupplyExclusionReason, SupplyPair } from '@/lib/research/supply';
 
 /** Ratio at or above which supply covers every share in existence. */
@@ -136,4 +141,76 @@ export function supplyReading(pair: SupplyPair | null | undefined): SupplyReadin
 export function noDenominatorNote(ledgerBlocks: number): string | null {
   if (ledgerBlocks === 0) return null;
   return 'No filed share count, so this supply cannot be expressed as a ratio.';
+}
+
+export interface FloatBoundReading {
+  verdict: FloatBoundVerdict;
+  /** The claim, in the words he reads. Never a bare number. */
+  sentence: string;
+  /** Why the bound could not be stated, when it could not. */
+  detail: string | null;
+  tone: 'pos' | 'dim';
+}
+
+/**
+ * The float bound as a sentence, including WHICH quantity was bounded.
+ *
+ * "At most 8.1M shares ISSUED" is a different claim from "at most 8.1M shares
+ * OUTSTANDING" and he can tell them apart — issued includes treasury stock, so
+ * it bounds a looser quantity. `float <= outstanding <= issued` still holds, so
+ * the bound stays valid; it is a weaker claim wearing the same words, on a card
+ * that says PROVEN. A schema field he never sees cannot help him.
+ *
+ * BASIS_UNVERIFIABLE is not an error state. It is the sentence he asked for —
+ * a number, a date, a reason, and the boundary of our own knowledge — where a
+ * vendor writes N/A.
+ */
+export function floatBoundReading(
+  pair: SupplyPair | null | undefined,
+  coverageStart?: string | null,
+): FloatBoundReading | null {
+  if (!pair) return null;
+
+  const bound = assessFloatBound({
+    reportedShares: pair.sharesOutstanding,
+    asOf: pair.sharesOutstandingAsOf,
+    factor: pair.denominatorFactor,
+    concept: pair.concept,
+    sourceId: pair.sourceId,
+  });
+
+  // Named only when it is LOOSER. Silence here means the ordinary quantity, and
+  // an unrecorded concept says "shares" without claiming which.
+  const quantity =
+    bound.looser === true ? 'shares issued' : bound.looser === false ? 'shares outstanding' : 'shares';
+
+  if (bound.verdict === 'BASIS_UNVERIFIABLE') {
+    const dated = pair.sharesOutstandingAsOf ? ` dated ${pair.sharesOutstandingAsOf}` : '';
+    const since = coverageStart ? `; our price history begins ${coverageStart}` : '';
+    return {
+      verdict: bound.verdict,
+      sentence: `Float bound unverifiable — ${shares(pair.sharesOutstanding)} ${quantity}${dated}`,
+      detail:
+        `${since ? since.slice(2) : 'The share count predates our price history'}` +
+        ', so we cannot certify no split occurred in between.',
+      tone: 'dim',
+    };
+  }
+
+  const at = shares(bound.adjustedShares!);
+  const asOf = pair.sharesOutstandingAsOf ? ` as of ${pair.sharesOutstandingAsOf}` : '';
+  const adjusted = pair.denominatorFactor !== 1 ? ', split-adjusted' : '';
+
+  return {
+    verdict: bound.verdict,
+    sentence:
+      bound.verdict === 'PROVEN'
+        ? `Float is at most ${at} ${quantity}${adjusted}`
+        : `Float not bounded under ${shares(LOW_FLOAT_CEILING)} — ${at} ${quantity}${adjusted}`,
+    detail:
+      bound.verdict === 'PROVEN'
+        ? `Float cannot exceed the share count${asOf}, whoever holds the rest.`
+        : `A share count above the ceiling does not mean the float is large; it means this cannot settle it.`,
+    tone: bound.verdict === 'PROVEN' ? 'pos' : 'dim',
+  };
 }

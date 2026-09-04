@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
+import { floatBoundReading, noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
 import type { SupplyPair } from '@/lib/research/supply';
 
 const pair = (over: Partial<SupplyPair> = {}): SupplyPair => ({
@@ -157,5 +157,69 @@ describe('absence of a pair', () => {
   it('returns null rather than an empty reading', () => {
     expect(supplyReading(null)).toBeNull();
     expect(supplyReading(undefined)).toBeNull();
+  });
+});
+
+describe('the float bound, as a sentence he reads', () => {
+  it('states the ceiling claim when the count proves it', () => {
+    const reading = floatBoundReading(pair({ sharesOutstanding: 1_480_000 }));
+    expect(reading?.verdict).toBe('PROVEN');
+    expect(reading?.sentence).toContain('at most 1,480,000 shares outstanding');
+    expect(reading?.tone).toBe('pos');
+  });
+
+  it('names shares ISSUED when the bound is looser', () => {
+    /*
+     * "At most 5,000,000 shares issued" is a different claim from the same
+     * number of shares outstanding, because issued includes treasury stock. He
+     * can tell them apart; a schema field he never sees cannot help him.
+     */
+    const reading = floatBoundReading(
+      pair({ sharesOutstanding: 5_000_000, concept: 'us-gaap:CommonStockSharesIssued' }),
+    );
+    expect(reading?.sentence).toContain('shares issued');
+    expect(reading?.sentence).not.toContain('shares outstanding');
+  });
+
+  it('says only "shares" when no concept was recorded', () => {
+    // Absent is not the tight quantity, and must not render as it.
+    const reading = floatBoundReading(pair({ sharesOutstanding: 5_000_000, concept: null }));
+    expect(reading?.sentence).toContain('shares');
+    expect(reading?.sentence).not.toContain('shares outstanding');
+    expect(reading?.sentence).not.toContain('shares issued');
+  });
+
+  it('does not disprove anything above the ceiling', () => {
+    const reading = floatBoundReading(pair({ sharesOutstanding: 73_580_000 }));
+    expect(reading?.verdict).toBe('NOT_PROVEN');
+    expect(reading?.detail).toContain('does not mean the float is large');
+  });
+
+  it('gives the unverifiable case a number, a date and a reason', () => {
+    /*
+     * The middle population, and the one with no competitor: a vendor writes
+     * N/A. This says what we hold, when it is from, and where our knowledge
+     * stops.
+     */
+    const reading = floatBoundReading(
+      pair({ sharesOutstanding: 4_330_000, sharesOutstandingAsOf: '2018-03-31', denominatorFactor: null }),
+      '2026-04-02',
+    );
+    expect(reading?.verdict).toBe('BASIS_UNVERIFIABLE');
+    expect(reading?.sentence).toContain('4,330,000');
+    expect(reading?.sentence).toContain('2018-03-31');
+    expect(reading?.detail).toContain('2026-04-02');
+    expect(reading?.detail).toContain('cannot certify no split occurred');
+  });
+
+  it('renders on a pair with no comparable blocks at all', () => {
+    /*
+     * The 22-of-23 case. A pair whose floor and total are both null renders a
+     * denominator and nothing else — and the bound needs NO blocks, so it
+     * speaks exactly where the pair is silent. Repaired by addition.
+     */
+    const empty = pair({ floorShares: null, floorRatio: null, totalShares: null, totalRatio: null });
+    expect(supplyReading(empty)?.filedMax ?? null).toBeNull();
+    expect(floatBoundReading(empty)?.verdict).toBe('PROVEN');
   });
 });
