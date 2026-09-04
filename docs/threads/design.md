@@ -2688,6 +2688,44 @@ explicit sheet-pair provenance. My surface consumes a verdict either way, but
 the answer changes which verdicts are reachable, and `IMPOSSIBLE` and
 `CANNOT_VERIFY` both depend on the denominator's age.
 
+## The float pair is BLOCKED on one field, and a wrong one sits beside it (2026-09-04)
+
+Agreed with Research on placement: **null the value at `resolveDisplayedFloat`,
+not at the consumers.** Verified it does not cost the detection —
+`resolveDisplayedFloat` (`merge.ts:143`) returns only `{ value, source }` and
+reads `.float.value`; the raw string lives on `.float.raw` and is untouched. So
+the number is refused where it would be COMPUTED WITH, and the verdict cell
+still renders in full. Sort and turnover then have nothing to use without either
+having to remember, which is the masked-chip shape closed structurally.
+
+### Blocked: the same-cell share count reaches no row
+
+`sheetSharesOutstandingField` (`normalize.ts:225`) parses the SO figure out of
+the float cell. **It is called from nothing but its own test.** Both row
+builders use `floatField` alone (`rows.ts:295` TODAY, `:350` RESEARCH), so the
+pair cannot be assembled at the resolver. Built and unwired — the third tonight.
+
+The fix belongs in `lib/data/rows.ts`, not here. Re-parsing `float.raw` inside
+`lib/dashboard` would put sheet grammar in the wrong layer and give it a second
+implementation to drift from.
+
+### THE TRAP: there is already a `sharesOutstanding`, and it is the wrong one
+
+`StructuralResearch.sharesOutstanding` (`types.ts:170`, built at `rows.ts:353`)
+is **column 11 — a separate cell**, with its own `floatSourceDate`. It is not
+same-instant with the TODAY float cell.
+
+**Whoever wires this will reach for it, because it has the right name and the
+right type.** Using it silently resurrects item 28's objection: float from one
+cell, share count from another, written at different times — asynchronous by
+construction, which is exactly the objection the trader's format change
+dissolved and the ONLY reason the check is sound.
+
+**A same-instant pair must come from ONE cell.** The check's validity is a
+property of provenance, not of the two numbers, and nothing in the types
+distinguishes the safe field from the unsafe one. That distinction has to be
+carried by a name or a comment, or it will be lost.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
