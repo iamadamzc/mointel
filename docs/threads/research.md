@@ -4235,6 +4235,38 @@ version needs the same settle exclusion `activity.ts` uses.
 
 ---
 
+**49. A COLUMN CANNOT BE REMOVED FROM `ticker_session` OR `model_usage` BY
+`ALTER TABLE`.** *Found while testing the window column 2026-09-04. Costs
+nothing today; recorded because someone will plan a removal without knowing.*
+
+    ALTER TABLE ticker_session DROP COLUMN <x>
+      -> SqliteError: error in table ticker_session after drop column:
+         incomplete input
+
+**SQLite re-parses the STORED `CREATE TABLE` text when dropping a column, and a
+`/* … */` block comment inside the column list defeats that re-parse.**
+
+**Isolated rather than inferred** — two tables, identical shape, one with a
+comment in its column list:
+
+    no_comment    -> DROP OK
+    with_comment  -> FAILS: ...after drop column: incomplete input
+
+**Two tables carry such comments and are therefore affected: `ticker_session`
+and `model_usage`.** *Both are Ops's.*
+
+> **Nothing in the migration path uses `DROP COLUMN` — `ADDED_COLUMNS` only
+> adds — so this is not a defect. It is a CONSTRAINT: removing a column from
+> either table needs a TABLE REBUILD (create-new, copy, drop, rename), not an
+> `ALTER`.** Anyone who plans the `ALTER` will discover it at the moment of
+> running a migration, which is the worst moment to discover it.
+
+*And the comments are worth more than the convenience: they are why the
+activity columns explain themselves at the schema. **The right response is to
+know the constraint, not to strip the comments.***
+
+---
+
 **41. Board presence as a continuing condition — SCOPED, then BUILT INERT at
 `05b28b9`.**
 
