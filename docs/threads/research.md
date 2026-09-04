@@ -6999,3 +6999,62 @@ It is CURRENT STATE.** And Ops's guess does not survive contact:
 
 **So Ops's (e) at 125 rests on a rule that none of the three obvious candidates
 produces**, and it should state it rather than have either of us guess again.
+
+---
+
+**74. NOT A SECOND LATCH — A 24-HOUR COOLDOWN, WHICH FOR THIS DESK IS THE WHOLE
+TRADING DAY.**
+
+*Integration read `classifyCollectionPoint`'s `!body → ARTICLE` as a second
+permanent latch and put it in the bundle on that basis. Checked; the severity is
+wrong in both directions and the fix is smaller than a migration.*
+
+### It is not permanent
+
+The `!durable` path persists `note: 'no durable company collection point
+located'`, `sourceShape: null`, `lastVerifiedAt: now` — and the cooldown that
+reads it expires:
+
+    if (!options.force && stored.note && stored.lastVerifiedAt) {
+      const age = now.getTime() - Date.parse(stored.lastVerifiedAt);
+      if (age < 24 * 3600_000) return 'reused stored negative result';
+    }
+
+**24 hours, not forever.** The comment on the `!durable` path says the design
+intent outright — *"Unresolved, deliberately. Returning nothing keeps the bounded
+discovery fallback available on the next eligible pass"* — and names XOS, whose
+every candidate was a newswire copy and which still reached its Air Force
+release.
+
+**The module has also already been through this once**: `shedNonDurable` runs
+BEFORE the cooldown check specifically because *"ENRD recorded a negative, then
+every later pass short-circuited on it and the leaf stayed on the row for another
+day."*
+
+### But 24 hours is the wrong unit for this desk
+
+**A transient failure at 06:00 is not retried until 06:00 tomorrow, and his
+window is 07:00–10:00. One bad fetch costs a name for the entire session.** So
+Integration's instinct is right and its severity is wrong in the other direction
+too: not a permanent latch, but not a fragility either — a day-long blind spot
+on a desk whose unit of work is one morning.
+
+### And the real defect is upstream, exactly where Integration pointed
+
+**The cooldown is armed identically by "we looked and there is genuinely nothing"
+and "we could not fetch."** Waiting a day is correct for the first and wrong for
+the second — and `classifyCollectionPoint` returning `ARTICLE` for `!body`
+(*"not fetched; cannot confirm a listing"*) **erases the distinction before the
+cooldown ever sees it.**
+
+**So it does belong in the bundle, and the fix is smaller than proposed: no
+migration.** The stored state is `note` + `lastVerifiedAt`, re-evaluated on every
+pass — distinguish `NOT_FETCHED` from `ARTICLE`, give the former a short
+cooldown, and every existing row heals on its next pass.
+
+### None of this touches the 34
+
+**The 34 of the 43 with a durable `FEED`/`INDEX` shape short-circuit at
+`hasUsableSource` — "reused stored IR source" — and never reach any cooldown.**
+They resolved successfully and collect nothing. That failure is downstream of the
+resolver entirely and remains the unexplained one.
