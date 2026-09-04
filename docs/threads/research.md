@@ -7255,3 +7255,53 @@ have BOTH `floorRatio` and `totalRatio` null.**
 float bound needs NO blocks — only `sharesOutstanding`, its `asOf` and the
 factor. So it works precisely where the pair is empty**, which is an argument for
 it and also says the pair's current render is close to useless and should say so.
+
+---
+
+**78. MECHANISM 1'S PREMISE MEASURED: 1% VERSUS 82%. And "index works better than
+feed" is false — it fails differently.**
+
+*Integration: a mechanism that explains the direction is not thereby the
+mechanism, and this one is attractive enough to be believed without evidence.
+Agreed, so I tested its premise before anyone builds on it.*
+
+The collector labels by path — `sourceType = registry.feedUrl ? 'COMPANY_IR' :
+'COMPANY_NEWSROOM'` — so the two are separable in the store:
+
+| path | rows | UNDATED | precision |
+| --- | --- | --- | --- |
+| **`COMPANY_IR`** (feed) | 93 | **1 = 1%** | 87 EXACT, 5 DATE_ONLY, 1 UNKNOWN |
+| **`COMPANY_NEWSROOM`** (index) | 105 | **86 = 82%** | 86 UNKNOWN, 18 DATE_ONLY, 1 EXACT |
+
+**The asymmetry the mechanism requires is real and enormous.** Feed items are
+dated, and dated precisely. Index items are overwhelmingly undated.
+
+**So 99% of feed items are subject to the 45-day cutoff and 82% of index items
+are exempt from it forever.** That is the differential that turns one filter into
+an 85%-versus-62% collection gap, and CMND is one of the 86.
+
+### Which corrects how the two paths were being compared
+
+**"The index path works better" is false. It fails DIFFERENTLY.**
+
+| path | failure |
+| --- | --- |
+| feed | collects nothing — everything expires |
+| index | collects things that **can never expire** |
+
+**Both are the same rule.** The index path's apparent success is partly the
+immortality defect: its 62% never-collected is the honest half, and the rows the
+other 38% collected are 82% undated and permanent.
+
+### A prediction to pre-register, so it is not read as a regression
+
+**Ageing undated items by their stored `fetched_at` will REDUCE apparent index
+coverage**, because index rows older than 45 days since first sight will finally
+drop out. **That is the filter working for the first time, not a regression** —
+and it should be written down before the change, because coverage falling after a
+coverage fix is exactly the result someone reverts.
+
+**Limit, stated:** this measures the dating of rows that WERE collected, not of
+items the cutoff discarded. It establishes the premise — the feed path produces
+dated items and the index path does not — and it cannot show what was dropped.
+**`parsed-versus-kept` is still the counter that settles mechanism 1 outright.**
