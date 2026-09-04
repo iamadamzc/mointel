@@ -3133,6 +3133,56 @@ spec is items 25/26.
 
 ---
 
+**46. Per-field, per-task: TASK 2 IS RETIRABLE AND TASK 1 IS NOT — with one
+caveat I cannot close from code.** *Asked by Integration 2026-09-04 after the
+trader corrected the four-tasks figure to two. Enumerated by search over what
+the desk READS, not over what the Sheet holds.*
+
+**Integration's hypothesis is CONFIRMED, and by a stronger mechanism than it
+expected: the desk-side replacements for task 2's fields are not merely built,
+they are ALREADY WIRED as fallbacks.** Stopping it degrades those fields to the
+desk's own values rather than to null.
+
+| field the desk reads | replacement | wired? |
+| --- | --- | --- |
+| **`float`** (TODAY col I, and the RESEARCH branch) | **NOT EXIST** | — |
+| `catalyst.latest` (T:AA) | `dossier.catalyst.summary` | **YES** — `why.ts:118` falls through to it, and `deskRead.ts:587` feeds both into `mergeNarrative` with `autoUsable` gating |
+| `warning.current` (T:AA) | `structure.structuralWarnings[0]`, then `structure.summary` | **YES** — `risk.ts:139` is literally `warning ?? structuralWarning ?? summary` |
+| `cycle` | `computedCycle` | **YES** — Design cut over |
+| newly qualifying premarket names | the engine's own qualification latch, off whole-market wildcard bars | **YES** |
+| `price` / `changePct` / `volume` | the live tape | **YES, and better** |
+| `structure`, `catalyst.gradeBucket` | `dossier.structure` / `dossier.catalyst` | exists; the Sheet side is one half of a deliberate two-column comparison |
+| `recentRunHigh` / `recentCycleHigh` | `computedCycle.cycleHigh` | **EXIST-BUT-INCOMPLETE — item 44.** The desk's high stops at yesterday's close |
+| `sheetPrior` → `priorHumanAnalysis` | nothing, and **retiring it is a GAIN** — R&D's Q1 wants uncontaminated grades | n/a |
+
+### So the two lists Integration asked for, and only the second is a plan
+
+**What BREAKS if task 2 stops:** on the code path, **nothing goes null.**
+Catalyst text and the warning line degrade to the desk's own, which are already
+the fallback arm at three call sites.
+
+**What the desk must PRODUCE to make stopping task 2 a non-event: nothing
+new** — with the one caveat below.
+
+**What the desk must PRODUCE to make stopping task 1 a non-event: the float.**
+That is the whole of it, and it is unchanged.
+
+> **THE CAVEAT, AND IT IS THE ONE THING THAT COULD OVERTURN THIS: both tasks
+> write `RESEARCH`, and `RESEARCH.float` is the FIRST branch of
+> `resolveDisplayedFloat`.** If task 2 is what keeps that column current, then
+> stopping it degrades the primary float source to whatever task 1 last wrote —
+> **stale rather than absent, which is the failure mode nothing on this desk
+> would surface.** *I cannot check this: which task writes which column is a
+> fact about the ChatGPT side, not about this repository. It is the one
+> question standing between "task 2 is retirable" and "task 2 is retirable,
+> verified."*
+
+*Method and its limit, stated: I enumerated the fields the desk CONSUMES by
+searching the readers, which is code-verifiable. Which task WRITES each field
+is not, and that half rests on the 08-23 record.*
+
+---
+
 **45. Design's count: 38 of 46. BUILD THE FALLBACK — and the query found a
 contradiction between two of my own items.** *Asked 2026-09-04. Measured by
 replicating `readReportedShares` rather than proxying it.*
