@@ -5811,3 +5811,84 @@ against this thread's own record of 12M input tokens on 08-18.
 **Report UNKNOWN-to-still-UNKNOWN as well as UNKNOWN-to-decided.** A reframe
 that moves nothing is the other possible outcome and it is the one a hopeful
 reading glosses over.
+
+---
+
+**56. THE OPS SPLIT QUERY — AND SQL CANNOT ANSWER IT, BECAUSE THE EVENTS WERE
+NEVER PERSISTED.**
+
+*Integration folded the trader's addition into the Ops read: not "was there a
+split" but "how many, and is this a habit". Spec written; script deliberately
+NOT written until Ops is ready to run it — three things were built and left
+unwired tonight already.*
+
+### The trap that would have produced a wrong number silently
+
+`daily_bars.split_factor` stores the cumulative factor per date. **The confirmed
+EVENTS are not stored anywhere.** `historyFetch.ts:270` puts `splitEvents` into
+a log line and drops them — the third time tonight a value was computed, used
+for a verdict, and discarded (activity window, `coverage.gaps`, this).
+
+So a confirmed event is not "the factor changed". `deriveSplitFactors` requires
+a step exceeding **STEP_TOLERANCE 5%**, whose new level then **HOLDS for
+CONFIRM_SESSIONS 3** within **SAME_LEVEL 1%** — unless the step sits at the
+series end. **A naive `COUNT(DISTINCT split_factor)` has no tolerance at all and
+would count last-digit wobble as splits.** The factor is exact within a
+constant-basis run on most names but drifts to 0.0625% at a $0.0905 close.
+
+**And the error runs in the dangerous direction**: it INFLATES the count, and a
+high count is the alarming reading. A name with three quote artefacts would
+render as a three-time repeat offender.
+
+**So the read is a script applying the same step-detection over the stored
+factors — and the loop should be EXTRACTED so one function serves both**, not
+reimplemented beside it.
+
+### Direction, and the spec carries its own falsification case
+
+`ratio > 1` is a **reverse** split — documented in `splits.ts` and verified
+against BTCT: steps 600 → 20 → 1, i.e. 1-for-30 then 1-for-20, reconciling to
+600. Counting all steps mixes in forward splits, which are the OPPOSITE signal.
+
+**Run this first and treat everything else as void until it passes:**
+
+| ground truth in the archive | the query must return |
+| --- | --- |
+| **PFSA** — "Announces 1-for-4 Reverse Stock Split", effective 2026-08-17 | exactly one reverse split, ratio ≈ 4, at 2026-08-17 |
+| **INCR** — reverse split + CUSIP change, alert 2026-08-20 | one reverse split near that date; ratio not stated in the excerpt |
+| **ZOOZ** — "EXPECTED Implementation of 1-for-20 Reverse Share Split" | a date check only — "expected" is not "effected" |
+
+**If PFSA returns a forward split or ratio 0.25 the sign convention is inverted
+and every count in the result is contaminated.**
+
+### Three states, not two
+
+**N reverse splits observed** / **zero observed WITH a factor series present** /
+**basis never established** (`split_factor` null). The backfill reached 77
+symbols and 99,696 rows; everything outside that has no factor. **Zero and
+unmeasured must not render alike.**
+
+### Count-and-latest cannot answer the question Integration most wants
+
+"Does the prediction strengthen with the count" is a **per-EVENT** analysis
+keyed on the ORDINAL, not a per-symbol summary. Return per event: symbol, date,
+ratio, ordinal within the observed window, and the per-symbol window (earliest
+and latest dated bar carrying a non-null factor).
+
+**Denominators.** The window differs per symbol, so a global "since X" is wrong.
+The count is over what the desk HOLDS, not the company's life — it
+**understates**, which is the safe direction and must be labelled anyway. And
+the population is names that reached the board, so a base rate computed inside
+it is **not the market's base rate**; for his purposes the board population is
+the right one, but the label has to say which.
+
+### The float is not wrong, and that matters for the fix
+
+A 1M float after three consolidations is a REAL post-split share count. **Nothing
+is mis-measured; the INFERENCE from small float to squeeze potential is what
+breaks.** So the desk must ANNOTATE the float, not correct it — a fix that tried
+to un-adjust the number would be wrong in a new way.
+
+**The count is an OBSERVATION. "Repeat splitter therefore likely to issue" is an
+INFERENCE** until the ordinal analysis returns a number, and carries the
+`basis: INFERRED` label with the rule named.
