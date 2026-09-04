@@ -75,6 +75,15 @@ stale opening line, so it is corrected rather than annotated.
 | `664fdb7` | thread items 32–34, documentation only | n/a |
 | `3379809` | **basis-fetch decoupling** — `basisFetchDue`, full-depth factor read, coverage-boundary refusal, `worker/basis-backfill.ts` | **LIVE in `97f5fbd`.** Behaviour NOT yet verified — see item 36 |
 | `268e438` | **float-source content check** — `FLOAT_TERMS` over the field, not `Boolean()` | **LIVE in `97f5fbd`** |
+| `9bfeabf` | **deep-fetch log** states the OUTCOME beside the trigger — `splitBasisSessions` | built 09-03, awaiting deploy |
+| `33e7bb8` | **`parseSheetFloat`** — the float column read by an allowlist, `parseNumber` untouched. **TENX stays null** | built 09-04. **Refuses the live `"; N SO"` format — extension DESIGNED, not built (item 48)** |
+| `fce254c` | **`activity_window`** persisted on `ticker_session` — the same array the ACTIVE/DEAD verdict was computed from. **`SCHEMA_VERSION` 23 → 24 in the same commit** | built 09-04, gated |
+
+> **NOTHING DEPLOYS UNTIL THE TRADER ASKS.** Ops's session brief says so, later
+> and narrower than the standing delegation, and Ops correctly refuses to lift
+> it on a relay of his approval — **a peer's account of the user's word is not
+> the word.** `c2920e3` sits ready and gated; the window column, the float
+> parser, the log fix and 0e all ride it.
 
 **The four 08-27 rows above are on `origin/main`; check Ops's charter for which
 of them rode the same bundle rather than assuming from this table.** The
