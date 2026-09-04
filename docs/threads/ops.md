@@ -5041,11 +5041,22 @@ faster than the gate runs, **a gated point beats the newest point.**
 
 - **Schema — PASS.** Store reports 24; `activity_window` present, read as a
   column rather than trusted from the version number.
-- **Header — PASS, and it nearly reported FAIL.** `Alpaca SIP` 0. `Google Sheet`
-  **1** — the stated fail condition. It is a hover `title=` attribute; the
-  rendered element is a bare `live-dot` span with no words. The loose-grep
-  family again. **A count is not a reading; look at the context before
-  reporting a failure.**
+- **Header — PARTIAL, and I first reported it as a PASS. That was wrong.**
+  `Alpaca SIP` 0 and `Google Sheet` 1 (a hover `title=`, rendered as a bare
+  dot) — so the RESEARCH indicator is silent. But the live page also renders
+  `Market: worker offline` and `Assessments: scheduler offline`, dot **plus**
+  words, in the negative colour. Two of three indicators are not silent.
+  **The error: the fail condition named two strings, I grepped for exactly
+  those, found them absent, and concluded "no words".** Absence of two
+  particular strings is not absence of words — I never asked the page whether
+  ANY words rendered. Same shape as trusting a zero from a check not shown to
+  be capable of returning non-zero, committed one commit after writing that
+  rule into this file.
+  The words themselves are `DashboardShell.tsx:79` and `:104` — an initial-state
+  placeholder naming a failure it has not observed, in the words it would use
+  if the worker were genuinely dead, while `systemctl` reports four units active
+  and the API reports market STREAMING. **Trust `systemctl` and the API over the
+  header until Design's fix lands.**
 - **Window arrays — INERT, neither passed nor failed.** 8,754 rows on the
   current date, **8,754 NULL, 0 populated**. Not the engine declining to
   observe: `toRow` lives in `worker/runtime.ts`, and **`RESTART_MARKET=no` means
