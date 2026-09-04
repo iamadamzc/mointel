@@ -3477,6 +3477,14 @@ most like a normal answer:
 - `sharesOutstanding: 0` passing *"at most 10M"* more emphatically than any real number could
 
 **AND THAT IS THE DANGEROUS PART: PLAUSIBLE MEANS IT DOES NOT RAISE AN ALARM.**
+**AND THE MIRROR IS NOT A SAFER PLACE TO ERR.** *Ops, 2026-09-04, refusing to
+let its own new health signal degrade in either direction:* **a signal wrong in
+the ALARMING direction is not safer than one wrong in the REASSURING direction —
+it is the same failure with a different half-life.** A reassuring lie is believed
+until it costs something. **An alarming lie trains the reader to discount the
+signal, and then the true alarm is discounted too** — the flaky gate's corrosion,
+arriving in a health field rather than in a test suite.
+
 The borrowed value is chosen because it looks ordinary, so every one of these
 errors points toward reassurance. There is no version of this bug that renders
 as a scary number.
