@@ -6928,3 +6928,74 @@ Design is right that raising refresh frequency cannot help, because the
 fingerprint is computed over collected sources. **The deeper version: for 69% of
 issuers there is no non-SEC source to collect at all — so it is not that the
 search is stale, it is that for most names there is no search.**
+
+---
+
+**73. THE FROZEN-PAGE HYPOTHESIS IS FALSIFIED FOR THE 43, AND WHAT THEY ARE IS
+WORSE: 34 HAVE A GOOD ADDRESS AND NOTHING WAS EVER COLLECTED FROM IT.**
+
+*Integration: "of those 43, how many have a resolved company source whose
+collected content is a single frozen document?" The answer is none, and it is
+none BY CONSTRUCTION — which the definition of the 43 already guaranteed.*
+
+### Why a frozen page cannot be in the 43
+
+The 43 are names with **zero non-SEC CATALYST sources**, and `CATALYST_TYPES`
+contains every non-SEC source type this desk has — measured: `COMPANY_IR`,
+`COMPANY_NEWSROOM`, `NEWSWIRE`, `SECONDARY_DISCOVERY` are the only non-SEC
+authorities in the table.
+
+**A retired resolver re-reading a frozen page still COLLECTS that page.** It
+produces a `COMPANY_IR` or `COMPANY_NEWSROOM` row with a stable `content_hash` —
+**collected-but-never-new**. That row is a non-SEC catalyst source, so the name
+is excluded from the 43 by definition.
+
+**Measured, not merely argued: the 43 have ZERO non-SEC source rows of ANY
+type.** Not one stale row. None.
+
+### What they actually are, and it is a worse failure
+
+| the 43, by resolver state | n |
+| --- | --- |
+| **`sourceShape: INDEX`** | **26** |
+| **`sourceShape: FEED`** | **8** |
+| `null` | 8 |
+| absent (legacy) | 1 |
+| `discoveryMethod: openai-company-source` | 42 of 43 |
+
+**34 of 43 have a DURABLE collection point.** The resolver ran, paid for a model
+call, classified the page correctly as a feed or an index — **and not one row was
+ever collected from it.**
+
+**So the failure is not the latch. It sits BETWEEN RESOLUTION AND COLLECTION**:
+an address that resolved well and was never fetched, or fetched and never
+stored. A resolver that can be un-retired does not fix this, because the resolver
+already succeeded.
+
+### What this predicts for the live 118
+
+Integration's variant-A population — IR location known, no non-SEC catalyst
+source — is the right test set and the check is the same: **do those 118 have
+any non-SEC row at all?** If zero, it is this failure and not the latch. If some
+carry a single stale row, that subset IS the frozen page and the two mechanisms
+coexist.
+
+**And Integration's confound points the same way as this finding:** an IR URL
+discovered after the dossier makes a name look like a collection failure when it
+was a coverage gap. **The 34 with a durable shape are the ones that confound
+cannot explain away** — a good address was resolved, and nothing came back.
+
+### The counting-rule question, answered and three candidates eliminated
+
+**No — rule (a) does NOT filter to sources fetched at or before `generated_at`.
+It is CURRENT STATE.** And Ops's guess does not survive contact:
+
+| variant | archive |
+| --- | --- |
+| (a) as I ran it, current state | **144** |
+| same, POINT-IN-TIME (`fetched_at <= generated_at`) | **145** — one MORE, not 19 fewer |
+| any non-SEC AUTHORITY, no type filter | **144** — identical; every non-SEC row is already a catalyst type |
+| counting `SEC_EXHIBIT` as non-SEC | **12** — nowhere near |
+
+**So Ops's (e) at 125 rests on a rule that none of the three obvious candidates
+produces**, and it should state it rather than have either of us guess again.
