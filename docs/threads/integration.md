@@ -1997,6 +1997,55 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## UNMATCHED IS NOT UNREACHABLE, AND A FORMAT CHANGE DISSOLVED A RECORDED IMPOSSIBILITY
+
+**2026-09-04, hours after the parser shipped.** Every float cell on the live
+board turned out to carry a **`; N SO` suffix** absent from the thirteen strings
+the parser was built against. The allowlist refused all of them — **correctly**,
+since unrecognised trailing text refuses by design — which meant the column was
+empty again within hours of being fixed.
+
+**The danger was not the refusal. It was the obvious repair.**
+`"537,665 displayed; 785,655 SO"` carries **two numbers, and only the first is
+the float.** A wider regex would have captured shares outstanding into the one
+column that must never hold one — **silently, on every row, looking exactly like
+a coverage win.** R&D's NWTG trap, 1.92x wrong, arriving in a shorter costume.
+
+**Research's design is the entry: A SPLIT, NOT A LONGER PATTERN.** Split the cell
+on `;` **before any numeric parsing**, apply the existing float grammar to the
+head, validate each tail clause against its own allowlist, and refuse the whole
+cell on anything unrecognised. **The float grammar is then applied to a substring
+that provably cannot contain the SO number.**
+
+**A wider pattern leaves the wrong number in a capture group that a later edit
+could read by reordering. That is UNMATCHED. This is UNREACHABLE.** The
+distinction is the whole of the safety, and it is structural rather than careful.
+
+**AND THE TAIL IS NOT NOISE — IT IS THE OTHER HALF OF THE RATIO.** He is now
+writing float **and** shares outstanding **in one cell, one source, one
+instant.** Item 28 recorded that this pair could not be assembled — float from a
+live Sheet read, share count from a dossier written days earlier,
+*"asynchronous by construction"*. **That constraint is gone**, and not because
+anyone solved it: **the trader changed his own format and dissolved it.** The
+`float > shares` check and the 2% unit-mismatch rule, both already implemented,
+become available with no capture, no migration and no join.
+
+**One of the five live rows already trips it.** `"6,109 displayed; ~1.05M SO"`
+is **0.58%**, under `UNIT_MISMATCH_RATIO` — the desk's own rule calls that a
+**probable unit error, not a tiny float.** So a head-only parser would have put
+a suspect number on the board looking like a win: **the greedy-capture failure
+arriving by a second route**, and the reason to parse both halves and hand the
+pair to `assessFloat` rather than invent a second checker.
+
+**THE CAVEAT WAS LOAD-BEARING AND ITS OWN AUTHOR DID NOT ACT ON IT.** Research
+wrote that the allowlist refuses silently, that something must surface the
+given-but-unread count, and that twelve-of-thirteen was **one sample, one day,
+thirteen strings**. **The very next live read refuted the sample.** That is not
+the caveat being vindicated — **it is proof the caveat mattered and nobody built
+the thing it asked for**, so a format change emptied the column again and it was
+found by a person reading raw strings at 01:35 rather than by the signal that
+already exists in the data.
+
 ## EXISTENCE NEEDS NO DENOMINATOR; THE RATE DOES
 
 **Ops, 2026-09-04, reporting a live defect without a population.** Asked how many
