@@ -3385,6 +3385,80 @@ that class into two causes** — I invented the second cause by mis-reading a
 grep, and Integration recorded a routing error of its own on the strength of
 it. **That correction is owed to it more than the finding was.**
 
+### 12 OF 13 SHEET FLOATS ARE DISCARDED — and the defect is NOT in the parser that fails
+
+*Ops took the live read on the running app. **Do not "fix" `parseNumber`.***
+
+`parseNumber` (`normalize.ts:65`) anchors `^…$`, so the entire cell must be one
+numeric token. `"540,840"` parses; `"11.93M displayed"` does not, because of a
+trailing word. **Its docstring says this is deliberate — *"Descriptive text
+($2.69/$3.00 resistance) intentionally yields null"* — and it is RIGHT.** It is
+a general parser serving price, volume, change and resistance cells; loosening
+it would make `$2.69/$3.00 resistance` parse as `2.69` on every one of them.
+
+> **THE DEFECT IS THAT THE FLOAT CELL USES A GENERAL STRICT PARSER FOR A FIELD
+> WITH ITS OWN CONVENTION.** The trader's format is
+> `<number><unit> displayed [float]`. That wants a dedicated parser. **Counting
+> the callers is not asking each what it needs — third time in this thread, and
+> the first where I nearly made the mistake as the FIX.**
+
+### The float parser: allowlist, and TENX must stay null
+
+| accept | refuse |
+| --- | --- |
+| optional `~`, number with separators/decimals, optional `K`/`M`/`B` | any disqualifying phrase — `share base`, `shares outstanding`, `market cap`, `OUT OF FLOAT RANGE` |
+| followed by a KNOWN suffix only: `displayed`, `displayed float`, `float`, or nothing | **any unrecognised trailing text** |
+
+**Unrecognised text REFUSES rather than guessing**, so a new phrasing is a
+deliberate addition and a novel string can never silently produce a wrong
+number. Named for what is accepted, as `lastSettledTradingDate` is.
+
+**`TENX` — `"~50M share base — OUT OF FLOAT RANGE"` — must stay NULL, and that
+is not a limitation.** *Shares outstanding is not float* is this thread's own
+working rule, and the cell says so twice. **Expected: 12 of 13 parse, 1
+correctly refuses.**
+
+### THE CONSEQUENCE THAT CHANGES WHAT I HAVE BEEN TELLING THE DESK
+
+**I have been saying every float on the board is the Sheet's, and treating
+float as the blocker on retirement. The sharper truth is worse and cheaper:
+PILLAR 5 IS ALREADY MOSTLY DARK — not because the Sheet lacks data, but because
+we throw it away.** Twelve of thirteen top-50 floats, discarded at the parse.
+
+> **So fixing this restores float coverage on the board immediately, at zero
+> collection cost and no model spend. It is very likely the cheapest
+> improvement available on this desk right now**, and it needs no new source,
+> no migration and no deploy window beyond the next bundle.
+
+### AND THE FIX IS COUPLED TO THE RETIREMENT — Integration's trap, sharpened
+
+**The 06:10 task looks near-free to retire TODAY because the desk cannot read
+what the Sheet says anyway. Fix the parser and that cost becomes real.**
+
+> **YOU CANNOT EVALUATE A DEPENDENCY YOU ARE FAILING TO CONSUME.** Every
+> measurement of how much the desk needs the Sheet's float is understated by a
+> 92% discard rate — including mine. **A retirement decided on the broken
+> behaviour is decided on a defect**, and whoever fixes the parser would
+> silently reintroduce a dependency he had just retired.
+
+**So the order matters: fix the parser, re-measure the dependency, then decide
+the retirement.** Deciding first inverts it.
+
+### Q9 AMENDED: capture the RAW STRING beside the parsed number
+
+**Ops's point and it is better than my scoping.** A parsed-only capture stores
+`null` 92% of the time and loses what he wrote; **the raw text lets the parse be
+fixed later against stored strings rather than lost forever.** Add to the
+spec:
+
+| column | type | what |
+| --- | --- | --- |
+| `sheet_float_raw` | `TEXT` | the cell exactly as written — `"~0.547M displayed float"` |
+
+*Same principle as recording the working rather than the verdict: a stored
+number is a conclusion, a stored string is evidence, and only one of them
+survives a change of mind about how to read it.*
+
 ### NOTHING READS THE DATED TABS, ARCHIVE, OUTCOMES OR PATTERNS — verified in code
 
 *Asked by Integration 2026-09-04, after the trader settled that he no longer
