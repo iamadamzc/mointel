@@ -867,6 +867,57 @@ the distinction onto every reader forever.
 that finds it is *"what are the ways this can be absent, and would I treat them
 alike?"*
 
+## A QUALITY FILTER THAT SKIPS WHAT IT CANNOT PARSE SILENTLY FAVOURS UNPARSEABLE INPUT
+
+**Ops measured it, Research found the mechanism, 2026-09-04.** Company feeds
+never produced a source row on **85%** of the names that had one, against **62%**
+for scraped HTML indexes — **the most machine-readable input failing worst**,
+which is the opposite of what parsing difficulty predicts.
+
+**`collector.ts:577-583` is the whole explanation:**
+
+    const recent = read.items.filter((item) => {
+      if (!item.published.utc) return true;   // undated entries stay candidates
+      return Date.parse(item.published.utc) >= cutoffMs;
+    })
+
+**A feed dates every entry by construction, so every entry meets the filter and
+the old ones are dropped. A scraped index frequently yields undated items, and
+undated items are kept UNCONDITIONALLY.**
+
+**So the better-structured source is filtered harder. THE FILTER CAN ONLY
+EXCLUDE WHAT IT CAN READ.** Feeds are not failing because they are hard — **they
+are failing because they are legible enough to be discarded.**
+
+**Ops's naming of the shape is the general form: this is the mirror of every
+other entry here.** Elsewhere a check cannot fail for a case it cannot see.
+**Here the unreadable case is the one that PASSES** — and the effect is
+invisible, because the parse succeeds, no failure is recorded, and nothing
+compares parsed against kept.
+
+**The rule for any predicate over parsed content: state what happens to items
+the parser could not populate, and check whether that branch is the lenient
+one.**
+
+## NAMING A TRAP IN ONE COLUMN DOES NOT STOP YOU TAKING IT IN ANOTHER
+
+**Ops, 2026-09-04, against itself.** It flagged that `issuer_registry.
+company_sources` is **current state read as as-of**, stated the error direction,
+and warned that it inflates one half of the finding — **then computed the very
+next figure against the full production sources table with no date predicate,
+and took the identical confound.**
+
+**Demonstrated rather than argued: same query, same 231 tickers, adding only a
+cutoff — 125 with no filter, 144 at `fetched_at <= 08-23`, exactly reproducing
+the figure it could not reconcile for five rounds.** Neither number was wrong.
+**19 names acquired non-SEC coverage after the archive closed**, which is a fact
+about collection since rather than a disagreement about counting.
+
+**The pair to *quoting a rule feels like having applied it*, and worse: here the
+rule had just been applied, deliberately, in the adjacent column.** Recognising a
+trap is a property of the sentence you are writing, not of the query you write
+next.
+
 ## A RETRY INTERVAL MUST BE SHORTER THAN THE UNIT OF WORK IT PROTECTS
 
 **Research, 2026-09-04, correcting a severity this seat got wrong in one
