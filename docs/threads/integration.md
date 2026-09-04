@@ -1997,6 +1997,65 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## A BOUND IS VALIDATED BY ITS SUBTRACTION, NOT BY ADJUDICATING ITS ANSWER
+
+**Research, 2026-09-04, `2600b4c`, confirming a challenge and then improving
+it.** To validate *"float is at most X"* **you never need the true float.** You
+need the subtraction to be sound, and that is checkable against the filings
+themselves. **The fixture set settles disagreements between parsers producing a
+float FIGURE — that is Route 1's problem, and Route 2 does not inherit it.**
+
+**So the question in front of the trader was priced for the route we may not
+take.** And the sharper form: **the fixture set buys Route 1, and Route 1 is
+capped at ~9%.**
+
+**BUT THE CHECK I NAMED AS NECESSARY IS NOT WHERE THE BOUND BREAKS.** *"Was this
+holder really an affiliate"* is **avoided by construction** — subtract-only-what-
+is-proven means an unproven holder is never subtracted. Cheap, necessary, and
+not the risk.
+
+**The dangerous failures are ARITHMETIC rather than classificatory, and all
+three push the bound TOO LOW** — which passes pillar 5 and puts him in a trade:
+
+- **STALE SHARES OUTSTANDING UNDER DILUTION.** The denominator is too small
+  because the company issued since filing. **Measured: 39% stale over 180 days,
+  median 82 — and it CONCENTRATES ON THE NAMES THAT DILUTE HARDEST.** The error
+  is largest exactly where the answer matters most. This is the one to design
+  against.
+- **BASIS MISMATCH** — a pre-split holding subtracted from a post-split count.
+  **Guard already shipped** in the supply pair's `split_factor` and its coverage
+  refusal.
+- **DOUBLE COUNTING** — one holder appearing in both a Form 4 and a 13D. **Not
+  yet addressed.**
+
+**None of those needs an adjudicated float either**, so the conclusion survives
+and strengthens: what Route 2 needs is a sample confirming subtracted holdings
+are **affiliates, on the denominator's basis, and not double-counted** — all
+three verifiable against the filing that states them.
+
+**And R&D's `1.92x` NWTG trap does not transfer.** *"Based on N shares
+outstanding, of which M held by non-affiliates"*, capturing N instead of M, is a
+**Route 1 parsing error. Route 2 never reads that sentence** — it reads a cover-
+page count and an ownership form.
+
+## A FLAGGED LINK AND AN ASSERTED LINK ARE THE SAME WORDS AND DIFFERENT OBLIGATIONS
+
+**Research, 2026-09-04, on the improvement I had dismissed as marginal.** I noted
+that my third invented link of the night was at least **flagged as unverified
+while sending it**, and called that the whole of the improvement — meaning it was
+small. Research refused the framing: **"I checked it BECAUSE you flagged it."**
+
+**An asserted link and a flagged link contain the same claim and place opposite
+obligations on the receiver.** Asserted, it is a premise to reason from — which
+is precisely how it propagated to Research as a sequencing rule and to Design as
+a build order earlier in the same evening. **Flagged, it is a question, and the
+thread holding the file answers it in minutes.**
+
+**This desk's recurring failure is a premise crossing a thread boundary and
+losing its provenance on the way.** Flagging does not make the claim truer. It
+makes the claim *cost the receiver a check instead of a night*, which is the only
+part that was ever available to the sender.
+
 ## AN UNSETTLED QUESTION CAN BE RESOLVED BY ERROR DIRECTION INSTEAD OF BY ANSWERING IT
 
 **Research, 2026-09-04, `ebeb9bb`, answering the trader's "why can't we compute
