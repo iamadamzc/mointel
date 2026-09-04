@@ -1077,6 +1077,64 @@ Q9's columns. **The refusal produced a better answer than the export would
 have**, which is worth recording as an argument for refusals rather than an
 apology for one.
 
+#### Does a BOUND need the ground truth an ESTIMATE needs? Yes, smaller, and pointed somewhere else. 2026-09-04.
+
+**Answer: (b) required, differently scoped and smaller — but NOT for the reason
+Integration offered, and its own self-suspicion is unfounded.**
+
+**THE 8-OF-19 IS NOT THE SUBTRACTION. IT IS AN EXTRACTION ERROR.** The widened
+pattern grabbed **shares outstanding where a float was wanted** — that is what
+"always larger, always the shares-outstanding-to-float bridge" means. AIRE
+1.955x, ODYS 1.889x, GNPX 1.001x are all SO/float ratios.
+
+> **Under a bound, shares outstanding is THE CORRECT THING TO GRAB.** It is the
+> numerator, not a mistake for one. **The error mode does not transfer to Route 2
+> — it dissolves, because the quantity being sought changed.** Integration
+> offered me the strongest argument against its own position and the argument
+> does not hold.
+
+**BUT A BOUND HAS ITS OWN DANGEROUS FAILURE AND IT IS THE NUMERATOR, NOT THE
+SUBTRACTION.**
+
+    float <= sharesOutstanding - (proven affiliates)
+
+    bound too HIGH  -> fails pillar 5 -> he SKIPS      conservative
+    bound too LOW   -> passes pillar 5 -> he TAKES     DANGEROUS
+
+    stale SO before a REVERSE SPLIT   -> SO overstated  -> bound HIGH  -> safe
+    stale SO after a DILUTION         -> SO understated -> bound LOW   -> DANGEROUS
+
+**`float.ts` already names this and nobody has read it as a Route 2 hazard:**
+the 45-day rule *"lands hardest on the names that dilute hardest."* **Those are
+exactly this population** — a name running 50% is a name with an ATM open. **45
+days is a long time on a shelf.**
+
+**THE SUBTRACTION FAILURES THAT DO NEED CHECKING — all of them push the bound
+LOW, all of them are RULE errors rather than DOCUMENT errors:**
+
+    same holder in a Form 4 and a 13D          -> subtracted twice
+    Form 4 DERIVATIVE holdings (options/warrants) -> subtracting shares not in SO
+    a filer who has since sold                 -> subtracting a holding that is gone
+
+**And that difference is the whole answer to the scoping question.** Extraction
+errors are **per-document** — every filing phrases it differently, so you need
+MANY documents. Reconciliation errors are **per-rule** — they recur identically,
+so you need FEW names checked EXHAUSTIVELY.
+
+> **The fixture set becomes: a smaller set of names with EVERY holder row
+> adjudicated, plus the SO freshness verified against filings after the cover
+> date — not ~50 filings adjudicated for one number.** Different unit (holder
+> rows, not filings), different question (is this subtraction legitimate, not is
+> this number the float), and **checkable against a filing that NAMES the
+> holder**, which is Integration's point and it stands.
+
+**ONE CHECK I TRIED AND REJECTED, recorded because it was asked for as a test
+rather than an agreement.** A bound looks falsifiable against observed volume —
+if float <= X, does turnover above X refute it? **No. A share trades many times
+in a session and volume routinely exceeds float on these names.** Not a
+falsifier, and the free ongoing validation channel it would have given does not
+exist.
+
 #### RETRACTION: the era boundary was a DEAD STORE, and I pooled across a break for the third time tonight. 2026-09-04.
 
 **Integration's hypothesis is confirmed and it is stronger than it stated. The
