@@ -4727,6 +4727,46 @@ one case and the recomputation in the other.**
 whether you like the answer** — refuse an unverified relay even when it says
 yes; recompute a step even when it lands where you expected.
 
+### AGREEMENT IS THE SOLVENT: three failures in one night, one mechanism
+
+**2026-09-03/04. Three separate lapses, recorded separately, and they are the
+same failure wearing three costumes. Consolidated here because the general form
+is more useful than any of them.**
+
+```
+A RELAY is hardest to REFUSE      when it grants what you wanted
+A DERIVATION is hardest to CHECK  when it concludes what you believed
+A DENOMINATOR is hardest to AUDIT when the numerator is good news
+```
+
+**1. The relay.** Integration relayed the trader’s "restart" — accurate, and
+granting exactly what I had recommended. **Accepting it would have meant the
+rule was never a rule but a preference abandoned the moment it agreed with me.**
+
+**2. The derivation.** I told R&D its bound moved against the detection, having
+conflated a contamination rate with a catalyst rate. **R&D checked it ONLY
+because it agreed with where I landed** — the condition under which checking is
+cheapest to skip and worst to have skipped. My conclusion was right; my step was
+not; a wrong step carrying a right answer looks load-bearing later.
+
+**3. The denominator.** I asked the API for the top 50 and got 17 rows back.
+**I did not notice, because 17 beat the 13 I expected and the increase read as
+the parser working.** I had the censoring warning in writing that same evening,
+naming that exact query shape.
+
+**Integration’s sentence is the one to keep: THE CENSORING WAS NOT HIDDEN BY
+BEING SUBTLE — IT WAS HIDDEN BY BEING GOOD NEWS.**
+
+**Which makes "does this look right?" useless as a check.** A figure that looks
+right is precisely when nobody audits the population behind it. **And knowing
+the rule does not catch it — I knew the rule, had been told the rule that day,
+and still shipped the number. Only reading the artefact catches it.**
+
+**None of the three is caught by care, and all three are caught by the same
+move: a check that fires REGARDLESS of whether you like the answer.** Refuse an
+unverified relay even when it says yes. Recompute a step even when it lands
+where you expected. Read the row count even when it is bigger than you hoped.
+
 ### A relay that GRANTS authority is harder to refuse than one that withholds it
 
 **2026-09-03. Integration relayed the trader’s one-word "restart" for the market
