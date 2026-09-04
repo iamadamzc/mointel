@@ -144,8 +144,14 @@ re-analyse — the stored pairs in old dossiers do not retroactively change.
   block-denominated. **Both correct.** Always say which.
 - total coverage **55/231 = 23.8%** — **UNGATED. With the guard he approved it
   is 0%.** He has the correction; it is item 34.
-- share-count denominator on **91/231 = 39.4%** — the binding constraint. More
-  filings buy nothing.
+- ~~share-count denominator on **91/231 = 39.4%** — the binding constraint.
+  More filings buy nothing.~~ **RETRACTED 2026-09-04 — WRONG, AND HE WAS TOLD
+  IT.** `91` is the MODEL'S transcription; the denominator the code divides by
+  is available on **185/231 = 80.1%**. **The NUMERATOR binds**: 146 names lack
+  a priced `KNOWN_ACTIVE` block against 46 lacking a count. **The error was a
+  DIRECTION, not a figure** — he was told collecting more supply evidence buys
+  almost nothing, and the opposite is true. Integration is retracting it to him
+  by name; item 45 has the working.
 - extraction corpus: **188 sources / 77 tickers / 19 defensible under the strict
   pattern.** Mention-to-number is 25%.
 
@@ -3061,7 +3067,8 @@ parsed for a date: it is free text a model wrote.
 | --- | --- |
 | FLOOR coverage (ticker-denominated) | 13 / 231, **5.6%** |
 | TOTAL coverage, **ungated** | 55 / 231, **23.8%** |
-| have a share-count denominator at all | 91 / 231, **39.4%** |
+| ~~have a share-count denominator at all~~ **model's TRANSCRIBED count** | 91 / 231, **39.4%** — *not the denominator; see below* |
+| **have the FILED count the code divides by** | **185 / 231, 80.1%** |
 | have any supply block at all | 208 / 231, **90%** |
 
 **~~The binding constraint is the denominator, not the numerator. More filings
@@ -3232,6 +3239,31 @@ not use.
 > deterministic — the same collision as `displayedFloat`, `split_factor` and
 > `recentMajorRuns`, and this one lived inside a single thread's own charter
 > where no boundary existed to make anyone ask which.**
+
+**THE STANDING REPAIR CANNOT FIRE HERE, AND THAT IS THE FINDING RATHER THAN
+THE INSTANCE.** This desk's defence against name collisions is *threads
+publishing what they hold* — it has worked five times, and every one of those
+was caught **at a thread boundary, because a boundary makes someone ask which
+is meant.** **Both artefacts here are mine.** There is no second thread to
+publish to, no boundary to cross, and nothing to prompt the question. *The
+desk's best defence has a blind spot exactly the size of one thread.*
+
+### AND I CORRECTED THE BODY AND LEFT THE INDEX — WITHIN THE HOUR OF SAYING NOT TO
+
+**I struck the conclusion in this item and left both the table row above it and
+the copy in LIVE STATE's "numbers the trader has been given"** — the single
+place a successor looks to see what he knows. Corrected 2026-09-04, after
+Integration reported the line had gone to him as a strategic conclusion.
+
+**In the same hour I had written to Integration that *"the summary is where the
+error lives, because it is the part written last and read first."*** Then I
+fixed a body and left two summaries.
+
+> **The rule you have just written is the one you are least likely to apply,
+> because writing it feels like having done it.** Third time this desk has
+> recorded that shape and the first time I have caught it in myself. **The
+> repair is mechanical: after correcting a claim, grep the FIGURE, not the
+> sentence** — the sentence is rewritten in each copy, the number is not.
 
 **The consequence is not cosmetic: item 34's line argues against collecting
 more evidence, and the evidence is what is actually short** — 146 names lack a
