@@ -1077,6 +1077,67 @@ Q9's columns. **The refusal produced a better answer than the export would
 have**, which is worth recording as an argument for refusals rather than an
 apology for one.
 
+#### Float coverage for the self-containment decision: the filings path serves ZERO, by construction. 2026-09-04.
+
+**Integration asked what fraction of the board each float method could serve and
+at what latency. The first two answers are structural and neither is a
+percentage.**
+
+**ONE. TOP 50 IS NOT MEASURABLE FROM THIS ARCHIVE.** `best_rank` runs 1..25 and
+nothing beyond 25 was ever captured, so a top-50 query returns the top-25 rows
+and **reads as 100% coverage of a boundary that was never observed.** Any figure
+quoted at 50 off this store is a capture artefact. **This is tonight's 45.5%
+retraction with a different number attached** — it would have happened again.
+
+    boundary   symbol-days   distinct tickers   status
+    top 12         418            325           measured
+    top 25         939            650           measured, == capture ceiling
+    top 50         939            650           CENSORED, not equal
+
+**TWO. THE FILINGS PATH DOES NOT PRODUCE A FLOAT.** `lib/research/float.ts`
+exports exactly one function, `assessFloat`, and it takes a `FloatClaim` whose
+`claimedFloat` is an input. Its verdicts are `CONSISTENT / IMPOSSIBLE /
+UNIT_MISMATCH / DERIVATIVE_SYMBOL / NO_FILED_COUNT / CANNOT_VERIFY`. **It is a
+checker, and the thing it checks is the Sheet's number.**
+
+> **Coverage of float by the filings path is 0%, and that is by design rather
+> than by shortfall** — the module says so in its own header: *"this module does
+> not produce a float."* `dei:EntityCommonStockSharesOutstanding` is an UPPER
+> BOUND on float, a different quantity that shares a name. **The ~19 tickers is
+> filed-share-count coverage, not float coverage.**
+>
+> **The coupling that matters for the monetisation decision: retiring the Sheet
+> does not merely remove a float, it removes the checker's INPUT.** Self-
+> containment costs the verification too, and that is not in anyone's estimate.
+
+**THREE. THE LATENCY BOUND, which is what makes a purchase decidable:**
+
+    top 12   77.8% of symbol-days are the ticker's FIRST appearance in 13 sessions
+             59.6% arrive PREMARKET, 40.4% before 07:00 ET
+    top 25   69.2% first appearance, 51.8% premarket, 35.3% before 07:00 ET
+
+    76.0% of top-12 tickers appear on exactly ONE session, ever.
+
+**Two thirds of the requirement is a cold name, seen once, needing a float before
+07:00 ET.** No method with a multi-day path serves it at any coverage, and **a
+cache cannot be pre-warmed for names that are 69% novel and 76% single-session.**
+Forms 3/4/5 and 13D/G are on filing lags measured in days and have therefore
+**zero coverage of the requirement as stated, whatever their coverage of the
+universe.**
+
+**AND THE BOARD IS NOT 25 NAMES A DAY.** Median 76 distinct names touch the top
+25 in a session (38..86); 32 touch the top 12 (18..40). **A rank-25 board is 25
+SLOTS that ~76 names pass through** — so per-name cost estimates against a
+vendor feed must use 76/day, not 25.
+
+**WHAT I DID NOT MEASURE, and it is the one number a purchase decision still
+wants.** 68 of 650 top-25 tickers (10.5%) sit in `issuer_registry`. **That is a
+CACHE HIT RATE, not a capability** — the registry is filled on demand from SEC's
+full `company_tickers_exchange.json`, so the real resolution rate over 650 is
+unmeasured and quoting 10.5% as the filings ceiling would be **the broken-parser
+error in a second costume**: reporting the state of a cache as the limit of a
+method. Settling it is one public fetch, not a capture.
+
 #### The exact figure: 3.8x, and CONFLICT is 76% of it. Ops's closing inference conflated two rates. 2026-09-04.
 
 **Over my 586 grading versions, all 586 resolving in production:**
