@@ -555,6 +555,48 @@ thing they lack. **Everything reconciles to one date and one deploy.** The fact
 that settled it had been sitting in a relay for an hour, in a message whose author
 did not know what it was for.
 
+## A GRADIENT IS A THRESHOLD THAT DOES NOT DECLARE ITSELF
+
+**Design, 2026-09-04, naming the trap it was about to walk into.** Having
+accepted that a coverage cutoff would dim the desk's most active rows, **the
+obvious next idea is opacity proportional to coverage** — and that is **the same
+error made continuous instead of stepwise.**
+
+`AIXC` at 8% coverage would render at 8% opacity: **suppressed exactly as
+effectively as by a cut at 40%, and harder to notice, because no rule declares
+itself.** A threshold can be argued with. A gradient looks like nuance.
+
+**The tell is that both encode the same wrong premise** — that low coverage means
+low importance — and only one of them is visible enough to be challenged.
+
+## THE MARK TYPE IS ITSELF A CLAIM
+
+**A line asserts CONTINUITY BETWEEN ITS POINTS. Discrete marks assert only the
+points.** So at 8% coverage a dashed or dimmed line is still **92% non-data
+wearing the shape of data** — the eye follows the stroke, not its texture.
+*"Carried segments visibly distinct"* is right in principle and **under-strong at
+these coverages.**
+
+**Points at traded minutes rather than a styled line**, and three properties
+follow that no amount of styling would have produced:
+
+- **The start-at-first-trade rule becomes STRUCTURAL rather than enforced.** No
+  trade, no point — **a line cannot start at the window edge because there is no
+  line.** A rule that 36–42% of top-12 rows depend on stops needing a guard.
+- **It aligns with the activity series directly beneath**, so price gaps and
+  activity gaps fall on the same minutes and **an absence is corroborated by a
+  second independent measurement** rather than asserted.
+- **The burst pattern becomes visible instead of degraded.**
+
+**AND THE MARK TYPE FORECLOSES OR PRESERVES A FINDING NOBODY HAS MADE YET.** A
+row that is mostly silent and violently active in a handful of minutes may be a
+signal — it is close to what the trader originally asked for, since RVOL cannot
+say what is live now. **A rendering that treats sparsity purely as damage would
+erase that signal while apologising for it**, and the decision gets baked in at
+the mark type, **before anything is measured.**
+
+**Not building the signal. Not foreclosing it.**
+
 ## ONE CONSTANT FOR A FAULT AND AN ABSENCE IS THE WHOLE BUG IN MINIATURE
 
 **Design, 2026-09-04, ruling on how to remove the placeholder family.**
