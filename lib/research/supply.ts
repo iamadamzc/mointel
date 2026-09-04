@@ -36,6 +36,7 @@
  * `blueSky.ts` uses for a deep ceiling, for the same reason.
  */
 
+import type { FloatBasis } from './float';
 import { splitFactorAt } from '../market/splits';
 import type { SupplyBlock } from './types';
 
@@ -62,6 +63,28 @@ export interface SupplyPair {
   sharesOutstandingAsOf: string | null;
   /** Cumulative split factor at that date; null when unestablished. */
   denominatorFactor: number | null;
+  /**
+   * The XBRL concept the denominator came from, and the source that reported it.
+   *
+   * Carried HERE rather than in a sibling field, because the bound built on this
+   * renders the word PROVEN — and a verdict that strong must carry its number,
+   * its date, its BASIS and its CITATION in one object. Two structures means a
+   * later render shows the verdict without the basis and nobody notices.
+   *
+   * The concept is not decoration: `us-gaap:CommonStockSharesIssued` includes
+   * treasury stock, so it bounds a LOOSER quantity. `float <= outstanding <=
+   * issued` still holds, so the bound stays valid -- but it is a weaker claim
+   * wearing the same words.
+   */
+  concept: string | null;
+  sourceId: number | null;
+  /**
+   * `FILED_SHARES_OUTSTANDING` for every row this code writes.
+   *
+   * Carried because the day a second basis appears is the day an un-labelled
+   * number becomes unrecoverable — R&D's rule, and never retrofitted.
+   */
+  basis: FloatBasis;
 
   /**
    * Proven-live supply, or null when none is proven.
@@ -154,6 +177,9 @@ export function computeSupplyPair(options: {
   ledger: readonly SupplyBlock[];
   sharesOutstanding: number;
   sharesOutstandingAsOf: string | null;
+  /** The XBRL concept the count came from, and the source that reported it. */
+  concept?: string | null;
+  sourceId?: number | null;
   /**
    * Established split factors by trading date — `readSplitFactors`, full
    * stored depth. Not the cycle window: filing dates routinely sit months to
@@ -163,6 +189,8 @@ export function computeSupplyPair(options: {
   factors: ReadonlyMap<string, number>;
 }): SupplyPair | null {
   const { ledger, sharesOutstanding, sharesOutstandingAsOf, factors } = options;
+  const concept = options.concept ?? null;
+  const sourceId = options.sourceId ?? null;
   if (!Number.isFinite(sharesOutstanding) || sharesOutstanding <= 0) return null;
 
   let lastCovered: string | null = null;
@@ -232,6 +260,9 @@ export function computeSupplyPair(options: {
     sharesOutstanding,
     sharesOutstandingAsOf,
     denominatorFactor,
+    concept,
+    sourceId,
+    basis: 'FILED_SHARES_OUTSTANDING',
     floorShares: floorBlocks > 0 ? floorShares : null,
     floorRatio: floorBlocks > 0 ? floorShares / sharesOutstanding : null,
     floorBlocks,

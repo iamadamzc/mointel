@@ -1638,9 +1638,12 @@ describe('filed shares on the dossier', () => {
       ticker: 'ACME', tradingDate: DATE,
     });
 
-    const filed = report.dossier?.filedShares;
-    expect(filed?.shares).toBe(12_345_678);
-    expect(filed?.asOf).toBe('2026-08-11');
+    // Carried on the supply pair rather than a sibling field: the bound built
+    // on this renders the word PROVEN, and a verdict that strong must carry its
+    // number, its date, its basis and its citation in ONE object.
+    const filed = report.dossier?.structure.supplyPair;
+    expect(filed?.sharesOutstanding).toBe(12_345_678);
+    expect(filed?.sharesOutstandingAsOf).toBe('2026-08-11');
     // The basis is on the first row ever written, never retrofitted.
     expect(filed?.basis).toBe('FILED_SHARES_OUTSTANDING');
     // And it is citable, which is the whole difference from a transcription.
@@ -1667,7 +1670,7 @@ describe('filed shares on the dossier', () => {
     });
 
     expect(report.dossier?.structure.sharesOutstanding).toBe(999);
-    expect(report.dossier?.filedShares?.shares).toBe(12_345_678);
+    expect(report.dossier?.structure.supplyPair?.sharesOutstanding).toBe(12_345_678);
   });
 
   it('is null rather than guessed when no company facts were collected', async () => {
@@ -1684,7 +1687,7 @@ describe('filed shares on the dossier', () => {
 
     // The seed's company-facts row carries an empty metadata object, which is
     // the shape a collection that found no figure leaves behind.
-    expect(report.dossier?.filedShares ?? null).toBeNull();
+    expect(report.dossier?.structure.supplyPair ?? null).toBeNull();
   });
 
   it('stores no verdict, because the float it would judge is not evidence', async () => {

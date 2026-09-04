@@ -381,15 +381,6 @@ export async function interpretTicker(
    * Evidence is stored; live comparisons are made at read time.
    */
   const reported = bundle.reportedSharesOutstanding;
-  accepted.filedShares = reported
-    ? {
-        shares: reported.shares,
-        asOf: reported.asOf,
-        concept: reported.concept,
-        sourceId: reported.sourceId,
-        basis: 'FILED_SHARES_OUTSTANDING',
-      }
-    : null;
 
   /*
    * The supply pair, derived for the same reasons as the cycle above.
@@ -410,6 +401,8 @@ export async function interpretTicker(
         ledger: accepted.structure.supplyLedger,
         sharesOutstanding: reported.shares,
         sharesOutstandingAsOf: reported.asOf,
+        concept: reported.concept,
+        sourceId: reported.sourceId,
         factors: readSplitFactors(db, ticker, options.asOf?.slice(0, 10)),
       })
     : null;

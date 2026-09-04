@@ -407,3 +407,102 @@ export function assessFloat(claim: FloatClaim): FloatAssessment {
     detail: `float is ${(ratio * 100).toFixed(1)}% of filed shares as of ${claim.filed.asOf}`,
   };
 }
+
+/**
+ * The share count under which pillar 5 is PROVEN rather than estimated.
+ *
+ * Float cannot exceed shares outstanding, so a count at or under this ceiling
+ * settles the pillar whoever holds the rest — and settles it without an
+ * affiliate collector, which this desk does not have.
+ */
+export const LOW_FLOAT_CEILING = 10_000_000;
+
+/** XBRL concepts that mean shares OUTSTANDING rather than a looser quantity. */
+const OUTSTANDING_CONCEPTS = new Set([
+  'dei:EntityCommonStockSharesOutstanding',
+  'us-gaap:CommonStockSharesOutstanding',
+  'ifrs-full:NumberOfSharesOutstanding',
+]);
+
+export type FloatBoundVerdict = 'PROVEN' | 'NOT_PROVEN' | 'BASIS_UNVERIFIABLE';
+
+export interface FloatBoundAssessment {
+  verdict: FloatBoundVerdict;
+  /** Shares outstanding on TODAY's basis. Null when the basis is unverifiable. */
+  adjustedShares: number | null;
+  /** As filed, on the basis of its own `asOf`. */
+  reportedShares: number;
+  asOf: string | null;
+  factor: number | null;
+  concept: string | null;
+  sourceId: number | null;
+  /**
+   * Whether the concept bounds a LOOSER quantity than shares outstanding.
+   *
+   * `null` when no concept was recorded — absent is not the same as tight, and
+   * this desk does not render an absence as reassurance.
+   */
+  looser: boolean | null;
+}
+
+/**
+ * A one-sided upper bound on the float, on today's basis.
+ *
+ * `computeSupplyPair` deliberately never divides by the factor: it uses it as a
+ * comparability guard, because for a RATIO the factor cancels on both sides.
+ * A BOUND has nothing to cancel against — "under ten million" is a question
+ * about an absolute number on TODAY's basis, and a 162M count on a pre-split
+ * basis is 8.1M today.
+ *
+ * DIRECTION, verified against data rather than derived: the factor is
+ * `adjusted_close / raw_close`, above 1 at dates before a reverse split, so
+ * share counts scale the other way — `shares_today = shares_then / factor`.
+ * ZOOZ is 162.00M / 20.00 = 8.10M against a cover page the model read
+ * independently. An INVERTED factor manufactures proof: on a forward-split name
+ * it understates the count and returns a false PROVEN.
+ */
+export function assessFloatBound(input: {
+  reportedShares: number;
+  asOf: string | null;
+  /** Cumulative split factor at `asOf`; null when it could not be established. */
+  factor: number | null;
+  concept: string | null;
+  sourceId: number | null;
+}): FloatBoundAssessment {
+  const { reportedShares, asOf, factor, concept, sourceId } = input;
+  const looser = concept === null ? null : !OUTSTANDING_CONCEPTS.has(concept);
+
+  const base: Omit<FloatBoundAssessment, 'verdict' | 'adjustedShares'> = {
+    reportedShares,
+    asOf,
+    factor,
+    concept,
+    sourceId,
+    looser,
+  };
+
+  /*
+   * Zero is refused, not compared.
+   *
+   * HQ carries a share count of zero in the store, and zero satisfies "at most
+   * ten million" more completely than any real number could — a failed read
+   * wearing the most emphatic passing answer in the set.
+   */
+  if (!Number.isFinite(reportedShares) || reportedShares <= 0) {
+    return { ...base, verdict: 'BASIS_UNVERIFIABLE', adjustedShares: null };
+  }
+
+  // No factor means the count cannot be moved onto today's basis, and
+  // extrapolating past the series is what `factorWithinCoverage` refuses to do.
+  if (factor === null || !Number.isFinite(factor) || factor <= 0) {
+    return { ...base, verdict: 'BASIS_UNVERIFIABLE', adjustedShares: null };
+  }
+
+  const adjustedShares = reportedShares / factor;
+
+  return {
+    ...base,
+    adjustedShares,
+    verdict: adjustedShares <= LOW_FLOAT_CEILING ? 'PROVEN' : 'NOT_PROVEN',
+  };
+}

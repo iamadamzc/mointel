@@ -569,41 +569,6 @@ export interface ResearchDossier {
    * five identical draws 46% of the time. This does not.
    */
   computedCycle?: CycleHistory | null;
-  /**
-   * The share count as the issuer filed it, parsed rather than transcribed.
-   *
-   * Sits beside `structure.sharesOutstanding`, which is the MODEL's reading of
-   * the same evidence, and the two are kept apart on purpose. Measured over 325
-   * stored dossiers: the model filled its field on 125 (38%), left it null on
-   * 156 despite company facts existing for that ticker, and disagreed with the
-   * filing on 58 of the 125 it did fill.
-   *
-   * Those disagreements are NOT all the model being wrong — on the largest, the
-   * model is right and the filing is a pre-reverse-split cover page. Which is
-   * the argument for storing both rather than picking: they are different
-   * quantities, one deterministic and citable, one a reading, and a column that
-   * merges them cannot be un-merged.
-   *
-   * Null when no company-facts source was collected or citable.
-   */
-  filedShares?: FiledSharesOnDossier | null;
-}
-
-/**
- * A filed share count on the dossier, with its basis and its date.
- *
- * `basis` from the first row, per R&D's rule and never retrofitted. It is
- * `FILED_SHARES_OUTSTANDING` for every row this code writes; the type carries
- * the alternative because the day a second basis appears is the day an
- * un-labelled column becomes unrecoverable.
- */
-export interface FiledSharesOnDossier {
-  shares: number;
-  /** The cover-page date. NOT split-adjusted — see `lib/research/float.ts`. */
-  asOf: string;
-  concept: string | null;
-  sourceId: number;
-  basis: FloatBasis;
 }
 
 /* --------------------------------------------------------------- provenance */
