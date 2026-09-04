@@ -143,7 +143,15 @@ const AGGREGATOR_HOSTS = [
 ];
 
 /** Verdict for a candidate collection point. */
-export type CollectionPointShape = 'FEED' | 'INDEX' | 'ARTICLE' | 'REJECTED';
+/**
+ * `NOT_FETCHED` is separate from `ARTICLE` on purpose.
+ *
+ * A page that could not be retrieved and a page retrieved and found unsuitable
+ * were the same verdict, so a transient network window wrote a durable-looking
+ * rejection and the issuer waited a full day to be re-examined. Only one of
+ * those two deserves a day.
+ */
+export type CollectionPointShape = 'FEED' | 'INDEX' | 'ARTICLE' | 'REJECTED' | 'NOT_FETCHED';
 
 export interface CollectionPointVerdict {
   shape: CollectionPointShape;
@@ -264,7 +272,7 @@ export function classifyCollectionPoint(
     return { shape: 'ARTICLE', reason: 'single-article publication metadata' };
   }
 
-  if (!body) return { shape: 'ARTICLE', reason: 'not fetched; cannot confirm a listing' };
+  if (!body) return { shape: 'NOT_FETCHED', reason: 'not fetched; cannot confirm a listing' };
 
   let pathname: string;
   try {

@@ -36,6 +36,22 @@ const INDEX_PATHS = ['/press', '/news', '/newsroom', '/press-releases', '/media'
 /** Most candidates worth fetching before giving up and letting discovery run. */
 const MAX_CANDIDATE_PROBES = 6;
 
+/** A confirmed negative is worth a day; re-asking every cycle relearns it. */
+const NEGATIVE_COOLDOWN_MS = 24 * 3600_000;
+
+/**
+ * An UNREACHABLE candidate is not a negative and must not buy a day.
+ *
+ * The trading window is 07:00-10:00 ET, so a failure at 06:00 under the old
+ * single cooldown cost the name the entire session. One hour is short enough to
+ * recover inside the morning and long enough not to hammer a host that is
+ * refusing us.
+ */
+const UNREACHABLE_COOLDOWN_MS = 3600_000;
+
+/** Written when nothing durable was found because nothing could be READ. */
+const UNREACHABLE_NOTE = 'company source unreachable; not confirmed unsuitable';
+
 export interface ResolveOptions {
   ticker: string;
   companyName: string | null;
@@ -129,11 +145,20 @@ export async function resolveCompanySources(
     return { registry: stored, resolved: false, modelCalls: 0, detail: 'reused stored IR source' };
   }
 
-  // A previous attempt that found nothing is also worth reusing for a while;
-  // re-asking every cycle would cost a call per cycle to relearn a negative.
+  /*
+   * A previous attempt that found nothing is worth reusing for a while, but for
+   * HOW LONG depends on what "nothing" meant.
+   *
+   * The two were armed identically: "we looked and there is genuinely nothing"
+   * and "we could not fetch". Only the first is a fact about the issuer. A
+   * transient failure inside his 07:00-10:00 window used to cost the name the
+   * whole session.
+   */
   if (!options.force && stored.note && stored.lastVerifiedAt) {
     const age = now.getTime() - Date.parse(stored.lastVerifiedAt);
-    if (Number.isFinite(age) && age < 24 * 3600_000) {
+    const cooldown =
+      stored.note === UNREACHABLE_NOTE ? UNREACHABLE_COOLDOWN_MS : NEGATIVE_COOLDOWN_MS;
+    if (Number.isFinite(age) && age < cooldown) {
       return {
         registry: stored,
         resolved: false,
@@ -166,7 +191,7 @@ export async function resolveCompanySources(
     companyName: options.companyName,
   });
 
-  const durable = await selectCollectionPoint(result.candidates, userAgent);
+  const { point: durable, unreachable } = await selectCollectionPoint(result.candidates, userAgent);
 
   if (!durable) {
     /*
@@ -180,7 +205,7 @@ export async function resolveCompanySources(
       ...stored,
       discoveryMethod: resolver.name,
       confidence: 'UNKNOWN',
-      note: 'no durable company collection point located',
+      note: unreachable ? UNREACHABLE_NOTE : 'no durable company collection point located',
       sourceShape: null,
       lastVerifiedAt: now.toISOString(),
     };
@@ -258,9 +283,10 @@ interface DurablePoint {
 async function selectCollectionPoint(
   candidates: readonly { url: string }[],
   userAgent: string,
-): Promise<DurablePoint | null> {
+): Promise<{ point: DurablePoint | null; unreachable: boolean }> {
   const seen = new Set<string>();
   let fallbackFromArticle: DurablePoint | null = null;
+  let unreachable = false;
 
   for (const candidate of candidates.slice(0, MAX_CANDIDATE_PROBES)) {
     if (seen.has(candidate.url)) continue;
@@ -269,8 +295,15 @@ async function selectCollectionPoint(
     const page = await fetchCompanyPage(candidate.url, { userAgent, timeoutMs: 6000 });
     const verdict = classifyCollectionPoint(candidate.url, page.failure ? null : page.body);
 
-    if (verdict.shape === 'FEED') return { url: candidate.url, shape: 'FEED' };
-    if (verdict.shape === 'INDEX') return { url: candidate.url, shape: 'INDEX' };
+    if (verdict.shape === 'FEED')
+      return { point: { url: candidate.url, shape: 'FEED' }, unreachable };
+    if (verdict.shape === 'INDEX')
+      return { point: { url: candidate.url, shape: 'INDEX' }, unreachable };
+
+    // Not probed for an index: a host that just refused us will refuse the
+    // derived path too, and spending a request to learn that is what the
+    // shortened cooldown exists to avoid.
+    if (verdict.shape === 'NOT_FETCHED') unreachable = true;
 
     if (verdict.shape === 'ARTICLE' && !fallbackFromArticle) {
       const index = await probeIndex(candidate.url, userAgent);
@@ -278,7 +311,7 @@ async function selectCollectionPoint(
     }
   }
 
-  return fallbackFromArticle;
+  return { point: fallbackFromArticle, unreachable };
 }
 
 async function probeFeed(origin: string, userAgent: string): Promise<string | null> {

@@ -181,7 +181,23 @@ describe('which hosts can be an issuer index at all', () => {
 
   it('will not promote a page it could not fetch', () => {
     // Guessing here is what persists a bad index and freezes the issuer.
-    expect(classifyCollectionPoint(ENRD_INDEX, null).shape).toBe('ARTICLE');
+    const shape = classifyCollectionPoint(ENRD_INDEX, null).shape;
+    expect(shape).not.toBe('FEED');
+    expect(shape).not.toBe('INDEX');
+  });
+
+  it('says NOT FETCHED rather than unsuitable, because only one deserves a day', () => {
+    /*
+     * This used to return ARTICLE, so a page that could not be RETRIEVED and a
+     * page retrieved and found unsuitable were the same verdict — and both
+     * armed the same 24-hour cooldown. A transient failure at 06:00 therefore
+     * cost the name his whole 07:00-10:00 window.
+     *
+     * The distinction was available at the CALL SITE and discarded one line
+     * earlier: `classifyCollectionPoint(url, page.failure ? null : page.body)`.
+     */
+    expect(classifyCollectionPoint(ENRD_INDEX, null).shape).toBe('NOT_FETCHED');
+    expect(classifyCollectionPoint(ENRD_INDEX, ARTICLE_BODY).shape).toBe('ARTICLE');
   });
 
   it('reads single-article metadata as a release even on a short path', () => {
@@ -487,5 +503,31 @@ describe('unrecorded shape', () => {
     expect(
       hasUsableSource({ ...EMPTY_COMPANY_SOURCES, feedUrl: 'https://example.com/rss' }),
     ).toBe(true);
+  });
+});
+
+describe('an unreachable candidate does not buy a day', () => {
+  /*
+   * The cooldown was armed identically by "we looked and there is genuinely
+   * nothing" and "we could not fetch", and only the first is a fact about the
+   * issuer. Pinned as source because the constants are module-private and the
+   * failure is which one a branch selects.
+   */
+  it('separates the two cooldowns and keys them on the note', async () => {
+    const fs = await import('node:fs/promises');
+    const source = await fs.readFile('lib/research/catalyst/irRegistry.ts', 'utf8');
+
+    // The instrument first: without these the assertions below pass vacuously.
+    expect(source).toContain('UNREACHABLE_COOLDOWN_MS');
+    expect(source).toContain('NEGATIVE_COOLDOWN_MS');
+
+    expect(source).toContain(
+      "stored.note === UNREACHABLE_NOTE ? UNREACHABLE_COOLDOWN_MS : NEGATIVE_COOLDOWN_MS",
+    );
+    // And the write side must set the note the read side keys on, or the two
+    // speeds exist and nothing ever selects the short one.
+    expect(source).toContain('note: unreachable ? UNREACHABLE_NOTE :');
+    // The single hardcoded window is gone.
+    expect(source).not.toContain('age < 24 * 3600_000');
   });
 });
