@@ -1263,6 +1263,48 @@ read 23. **The failed deploy is the reason that sha is live.**
 something they cannot observe** — the same reasoning as reporting existence
 rather than a rate.
 
+## 13 OF 23, THEN 5 OF 13, THEN ZERO — AND EVERY STEP WAS A CORRECT MEASUREMENT
+
+**2026-09-04, the day's longest investigation, resolved.** Company-news
+collection was failing on names that were demonstrably publishing. The claimed
+cause moved three times:
+
+    "the parser gap is the cause"      13 of 23   <- a rule this seat wrote
+    "the collector gap is real"         5 of 13   <- after the probe
+    the collector gap                        0    <- after the gate condition
+
+**Each figure was correctly measured. Each was over a population that did not
+answer the question**, and each was caught by someone asking **what the number
+counted** rather than whether it was right.
+
+**The final answer is that there is no code defect.** Six feeds are abandoned —
+parsing perfectly, newest item months old, while the issuer files normally. Two
+are empty. **Five had their address resolved during or after the pass that last
+collected**, so deterministic collection had no address to use. **The finding is
+entirely a source problem.**
+
+### And the last method to fail was the obvious one
+
+Four names showed `lastDiscoveryAt` **equal to their newest source, to the
+millisecond** — and a strict `>` scored that as *"resolved before, real gap"*.
+**It is an artefact: `now` is computed once per pass and handed to both**, so
+same-pass events share a timestamp **by construction. Comparing them orders
+nothing.**
+
+**What settled it was an IMPLICATION rather than a comparison.** `discoveryMode`
+is set only when `!usableCompanySourceBefore`, so **its presence proves no usable
+address existed at the start of that pass** — a fact the shared-`now` problem
+cannot touch.
+
+**When a timestamp comparison sits on an exact tie, suspect a shared clock before
+suspecting a boundary.**
+
+### The conclusion carries a falsifiable prediction rather than an assertion
+
+**Those five now hold a resolved feed. If any runs again and still writes zero
+non-SEC rows, the gate-condition argument is wrong and the gap is real.**
+Checkable tomorrow, and stated before the check rather than after.
+
 ## A DELIBERATE INCONSISTENCY MUST BE RECORDED AS DELIBERATE, OR IT WILL BE "FIXED"
 
 **Design, 2026-09-04, `2b3ddd9`, flagging its own.** Two series sit on the same
