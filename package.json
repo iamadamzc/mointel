@@ -35,6 +35,7 @@
     "fills:report": "tsx worker/fills-report.ts",
     "fills:rules": "tsx worker/fills-rules.ts",
     "archive:scorecard": "tsx worker/scorecard.ts",
+    "archive:dial": "tsx worker/dial.ts",
     "archive:revival": "tsx worker/revival.ts"
   },
   "dependencies": {

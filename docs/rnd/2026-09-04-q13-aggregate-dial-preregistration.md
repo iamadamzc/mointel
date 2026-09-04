@@ -160,3 +160,84 @@ Amendments are appended here with a timestamp and a reason, before the affected
 measurement runs. An amendment after a result is a retraction, not an amendment.
 
 - *(none yet)*
+
+---
+
+# RESULTS — run 2026-09-04, `npm run archive:dial`
+
+## VERDICT: NOT DETECTABLE AT n=13. THE DIAL IS NOT BUILT.
+
+Nothing cleared 0.553. Under the pre-registered rule that is the answer, and
+under the trader's condition — **falsifiable or not built** — it means not built.
+
+    TOP 5 BY PREMARKET GAP AT 07:00
+      candidate      r(primary)  partial  own trend  r(secondary)
+      1 roundTrip      -0.332     0.279     0.493      -0.181
+      2 breadth         0.282    -0.083    -0.355       0.317
+      3 dispersion      0.504     0.325    -0.415       0.380
+
+    TOP 12
+      1 roundTrip      -0.303     0.094     0.383      -0.185
+      2 breadth        -0.340    -0.216     0.276      -0.221
+      3 dispersion      0.544     0.356    -0.448       0.427
+
+## THE ORDER COMMITMENT EARNED ITS KEEP
+
+**The candidate I ranked THIRD is the strongest, and the one I named FIRST is
+the weakest.** Dispersion reaches 0.544; round-trip — my own reasoning about
+*choppy is movement given back* — reaches −0.303 and **its partial flips sign**
+to +0.094.
+
+> Had the order not been fixed in advance, the honest-looking write-up is
+> *"dispersion, the natural measure of a choppy tape, comes closest"* — and it
+> would have been a story assembled after the fact. **The pre-registration is
+> the only reason that sentence is not in this document.**
+
+## THE TREND CONTROL DID THE WORK IT WAS ADDED FOR
+
+**Dispersion's own trend is −0.448** against a declining mover rate. Controlling
+for session index takes it from **0.544 to 0.356** — **most of its raw
+correlation is the calendar, not the market.** Round-trip's sign flip is the
+same effect in a more visible form.
+
+**Registered before looking, and it is the control that would have been dropped
+after seeing 0.544.**
+
+## A DEFECT IN MY OWN PRE-REGISTRATION, recorded rather than quietly patched
+
+**I fixed one threshold and registered SIX tests** — 3 candidates × 2
+boundaries — **and did not adjust for multiplicity.**
+
+    uncorrected   alpha 0.05      critical |r| = 0.553
+    Bonferroni    alpha 0.05/6    critical |r| = 0.695
+
+**The best observed value is 0.544, under both bars, so the omission changed no
+verdict.** It is recorded because next time it might, and because a correction
+applied after seeing results is not a correction.
+
+## THE NULL'S DELIVERABLE — and the partial is the honest input
+
+                        raw                partial
+    dispersion top12    +0.544 -> ~14     +0.356 -> ~31 sessions
+    dispersion top5     +0.504 -> ~16     +0.325 -> ~37
+    roundTrip  top5     -0.332 -> ~36     +0.279 -> ~50
+    breadth    top12    -0.340 -> ~34     -0.216 -> ~83
+
+> **~31 more sessions would settle dispersion — about six trading weeks, at no
+> cost, since capture already runs.** Quoting the raw's ~14 would be quoting the
+> confounded number.
+>
+> **And a re-test must be pre-registered as a test of DISPERSION SPECIFICALLY**,
+> because it is now a candidate selected for looking best on this data. Re-running
+> all three on new sessions and reporting the winner repeats the error one level
+> up.
+
+## WHAT THIS DOES NOT SAY
+
+**It does not say the tape has no aggregate state.** At n=13 an |r| of 0.45 —
+a useful dial — is invisible. **This is an underpowered null and the design said
+so before the numbers existed.**
+
+**Coverage caveat carried:** 22..52 of each session's board had premarket bars
+(41..67%). Names that never traded premarket cannot enter a premarket state, and
+whether they differ systematically is unmeasured.
