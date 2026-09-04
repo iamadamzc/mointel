@@ -3145,6 +3145,41 @@ nothing.** *Written 2026-09-04 for the trader's spending decisions, after he
 said the capabilities must survive but the mechanism must become production
 grade. Short and honest beats complete and optimistic.*
 
+### READ THIS FIRST: the principled path and the LEGALLY SETTLED path are the same path
+
+*Promoted to the head of the inventory 2026-09-04 — it is decision-grade and it
+was buried in the middle.*
+
+| source | commercial-use question |
+| --- | --- |
+| **SEC EDGAR filings** | **none of this kind.** US government work product, published by the SEC for public use |
+| a vendor's displayed float | **the vendor's own product**, however public the page. Terms govern |
+| **Alpaca — already licensed** | checked, not assumed: assets carry symbol, name, exchange, status, tradable, class. **No share structure, no float** |
+
+> **`domainPolicy` permitting a host says what this desk's FETCHER will allow.
+> It says nothing about whether the data may be used in a product he sells.**
+> And my own item 30 wording — *"robots-permitted"* — is a CRAWLING
+> instruction, not a licence; in a monetization discussion it reads as
+> clearance and it is silent on use.
+
+**So a filings-derived float is the only route whose licensing is settled
+before anyone asks.** *The determination itself is neither mine nor
+Integration's to make; this names the question.*
+
+### TWO DERIVED-FLOAT ROUTES, AND THEY KEEP COLLAPSING INTO ONE SENTENCE
+
+**Integration's catch, and it is right — including about me.** The ~9% has been
+quoted three times tonight as the limit of a computation. **It is the limit of a
+scavenge.**
+
+| | what it does | ceiling |
+| --- | --- | --- |
+| **ROUTE 1 — scavenge** | finds a float **somebody already wrote** in a filing | **~9%** of researched tickers, and lower on his board |
+| **ROUTE 2 — compute** | **shares outstanding − proven affiliates** | bounded by **which issuers FILE**, not by who happened to write prose — the denominator sits on **185 of 231, 80%** |
+
+> **HE ASKED FOR ROUTE 2. A cap belonging to Route 1 has been quoted as its
+> limit, which makes what he proposed look roughly ten times worse than it is.**
+
 ### The classification, and why it is not "does the code exist"
 
 **Twice tonight I called something PRODUCED on code presence and was wrong in
@@ -3197,6 +3232,22 @@ it lands next to my line rather than on it.**
 **Two readers took my line as a claim about `float.ts`, so the ambiguity is
 real even though the number is right.** Stated apart here so nobody merges them
 again.
+
+**AND INTEGRATION'S CORRECTION TO ME WAS WRONG, asked for plainly and given
+plainly.** It said my 19 were *filed-share-count* coverage rather than float
+coverage. **They are FLOAT figures.** Item 29's own words: the 29 are
+*"real, issuer-stated public floats"* — share counts **of shares held by
+non-affiliates**, from baby-shelf calculations — and `MNDR`'s dated declining
+series `3,326,123 → 2,657,640 → 2,398,640 → 2,136,640` is a float series, not
+a shares-outstanding one.
+
+**And that work is BESIDE `float.ts`, not inside it: `float.ts` contains ZERO
+excerpt, regex or `research_sources` references** — it exports types, three
+constants and `assessFloat`, and nothing else. **R&D's claim about the module
+is right and untouched; the LINK between the module and my excerpt count is
+what was asserted, and it is false.** *Both can be true because they are
+different artefacts — which is the same shape Integration recorded two hours
+ago about doing it to the trader.*
 
 **AND R&D'S COUPLING, WHICH NOBODY PRICED:** retiring the Sheet removes
 `assessFloat`'s **input**. The verdict machinery has nothing to judge — **self
