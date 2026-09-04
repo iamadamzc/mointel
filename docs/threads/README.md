@@ -1263,6 +1263,52 @@ read 23. **The failed deploy is the reason that sha is live.**
 something they cannot observe** — the same reasoning as reporting existence
 rather than a rate.
 
+## THE METHOD WAS IMPROVED TWICE WITHOUT ANYONE ASKING WHAT THE NAMES WERE
+
+**Ops, 2026-09-04, on its own three-round investigation.** A vendor showed `N/A`
+for float on ten of seventeen premarket movers. That drove a head-to-head, a
+falsification, a retraction of the falsification, and an on-demand re-test —
+**each round a genuine improvement in method.**
+
+**Nine of the ten are LEVERAGED ETFs.** *2X Long AAOI Daily*, *2X Long SNDK
+Daily*, *Daily Target 2x Long PL*. **A share count for a 2X daily leveraged ETF
+is not a hard number, it is a category error, and `N/A` is the correct answer.**
+The vendor was right. **And this desk already agreed with it** — all eight are
+classified `ETF_ETP` at HIGH confidence with `eligible = 0`, kept off the board
+by design.
+
+**The tenth is the renamed ticker, which is a separate known defect.**
+
+**So three correct measurements were taken over a population the question did not
+cover**, and the fix each round was to the instrument rather than to the
+population. **Nobody read the company names.** The cheapest check in the
+investigation was the one nobody ran: *what ARE these?*
+
+**The general form: before measuring a population, look at a few of its members.**
+A method dispute survives many rounds because each round produces a defensible
+number — **and a defensible number over the wrong set is indistinguishable from
+progress.**
+
+### And the ceiling it produced was a difference of two totals
+
+The same investigation reported that **~20% of tradable names have no SEC
+registrant mapping** — computed as 10,412 against 13,133, **over a universe
+stuffed with ETFs, warrants, units and preferreds.**
+
+**Measured properly and split by board reach:**
+
+    discovery-eligible   5,867 names   57 unmapped   1.0%
+    ever reached top-25    334 names    1 unmapped   0.3%
+    ever reached top-12    182 names    0 unmapped   0.0%
+
+**And the single miss is a format mismatch, not a gap:** `GTN.A` is absent
+because SEC carries `GTN-A`. **Normalising "." to "-" closes it — so the board
+figure is effectively 334 of 334.**
+
+**A ratio of two totals is not a coverage rate.** It is a statement about
+whichever population happens to dominate the denominator, and here that was
+instruments the desk never trades.
+
 ## THE UNTESTED BRANCH AND THE DEFECTIVE BRANCH WERE THE SAME BRANCH
 
 **Research reviewing Ops, 2026-09-04.** A new SEC-reachability field rendered
