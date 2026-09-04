@@ -555,6 +555,48 @@ thing they lack. **Everything reconciles to one date and one deploy.** The fact
 that settled it had been sitting in a relay for an hour, in a message whose author
 did not know what it was for.
 
+## AN INTENTION YOU CAN FORGET; A PATTERN-ASSERTION FAILS FOR YOU
+
+**Design, 2026-09-04, after breaking its own rule inside the fix for it.** It had
+diagnosed a header audit that *"enumerated what I was CHANGING and not what was
+THERE"*, written the rule up — **and then fixed two of three placeholder
+constants**, leaving `OFFLINE_ASSESSMENTS` naming a fault on a healthy desk.
+
+**Its conclusion is the entry: KNOWING TO ENUMERATE DID NOT PRODUCE AN
+ENUMERATION.** The rule as stated was an intention, and an intention is
+available to be forgotten by the same person who wrote it, in the same file,
+within the hour.
+
+**The mechanical version works because it is a TEST rather than a resolution:**
+extract every `OFFLINE_` constant **by pattern** and assert the exact set
+reviewed. Design added a sixth constant and confirmed the test fails. **A new
+sibling now breaks the build instead of shipping silently.**
+
+**And it carries the proof-of-instrument rule inside it** — the enumeration
+asserts it found *something* before asserting *what*, so an extractor that
+matched nothing cannot pass as "no constants found".
+
+### The worst of the three PRESCRIBED rather than misinformed
+
+`emptyAssessmentPanel` passed `{ health: null }` to `projectSchedulerHealth`,
+which reads null **correctly** as *"no worker has ever reported"* and returns a
+real verdict telling the trader to **start the desk with `npm run desk`.**
+
+**The function was right. The caller was wrong to pass null to mean "not loaded
+yet".** So a healthy desk was **instructing him to restart it, fourteen minutes
+before capture** — the same absence-as-evidence conflation as its two siblings,
+except that the other two only misinformed and **this one issued an
+instruction.**
+
+### And one placeholder feeds a PREDICATE, so the lie propagates
+
+`OFFLINE_DISCOVERY` sets `sessionPhase: 'CLOSED'`. Not a fault claim, so outside
+the class above — **but false in the same way, and it is an input to the header's
+own nominal-state predicate.** An unloaded page asserts the market is closed;
+during RTH that is simply wrong, and the predicate then reasons from it.
+**`DiscoveryState` has no `UNKNOWN` phase, so the honest fix is a type change
+rather than a constant edit.**
+
 ## GUARDING AGAINST ONE FAILURE AND WALKING INTO ITS MIRROR
 
 **Design, 2026-09-04, `e67e89d`.** The dashboard header rendered **"Market:
