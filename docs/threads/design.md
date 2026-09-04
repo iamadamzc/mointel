@@ -2467,6 +2467,86 @@ field it does not read regardless of how many rows expose it today.
 component MOUNTS before reading meaning into the absence of its text — otherwise
 "the bad label is gone" and "the feature never drew" are the same observation.
 
+## SCOPE — the current-activity indicator (2026-09-04, not built)
+
+His complaint: the board cannot tell him what is moving NOW. RVOL is cumulative,
+so at 10:00 a name that ran at 07:15 and died still carries a large number. Real
+defect, and the discrimination a 07:00–10:00 trader needs most.
+
+### The finding: it is computed, labelled for display, and thrown away
+
+`ActivityReading.window` (`activity.ts:118-119`) is **"Trades per minute over the
+judged window, oldest first. For display."** Built at `:202`, one line under the
+comment calling it the most important in the file.
+
+It is not persisted. `ticker_session` carries `activity`, the `dead_at_*` trio
+and `activity_config` (`db.ts:174-180`) — **no window column.** So the sparkline's
+input is produced every evaluation, used to decide ACTIVE/DEAD, and discarded.
+
+Worse than built-and-unwired: **built, named for the surface, and deleted.**
+
+### Shape
+
+**Persist the array; do not re-query at render.** The `ticker_session` row is
+already read for every board row, so the sparkline costs ZERO extra queries. The
+alternative — `readMinuteBars` per symbol — is 25–50 queries per poll, each
+`SELECT *` over the WHOLE trading date (`repo.ts:188`, no time predicate, up to
+~390 rows), to draw five points.
+
+**Reuse the verdict's own array, exactly.** Same numbers that produced ACTIVE or
+DEAD. This is the requirement not to invent a second liveness notion, and
+persisting the array satisfies it structurally rather than by discipline.
+
+### The window is 5 minutes ending 2 minutes ago — and that must be on screen
+
+`span = max(deadMinutes 5, reviveMinutes 2) = 5`; slots run t−6 … t−2
+(`:195-199`). The most recent minute is excluded on purpose — an unsettled
+minute undercounts.
+
+**He holds for seconds.** A picture of t−6…t−2 is still enormously better than a
+cumulative figure covering the whole morning, but it is NOT "now", and a
+sparkline reads as now unless it says otherwise. Label the span.
+
+**If he wants a longer visual, lengthen ONLY the display array.** The judged
+window is fixed by completed backtesting (`:12`, "must not be windowed"). A
+display array and a verdict window are different objects; widening the second to
+serve the first would silently redefine ACTIVE.
+
+### The gap in the ask, which needs his answer
+
+He said "going up **and** has some volume" — TWO claims. Trades-per-minute
+answers volume only. Direction needs minute CLOSES, a second series the activity
+engine does not compute. **Scope decision, his:** one sparkline of activity, or
+activity plus a direction mark. I would not silently render trade count and let
+a rising line read as a rising price — the shapes are indistinguishable and the
+mistake is expensive.
+
+### DEAD versus quiet versus not-measured
+
+Three states, and only the third is a trap:
+
+| State | Window | Renders |
+| --- | --- | --- |
+| ACTIVE, quiet | low bars | the bars — low is information |
+| DEAD | at/below the dead line | the bars; the graveyard already owns the verdict |
+| UNKNOWN | `[]` (`:191`) | **"not measured" — never a flat zero line** |
+
+An empty window means no minute bars were observed. Drawing that as a flat line
+would show "no trading" where the truth is "not looked at" — the `wired`
+distinction again, and a flat line is the most confident-looking null there is.
+
+### The claim boundary
+
+**Descriptive only.** A picture of the last five minutes is falsifiable against
+any chart in seconds, so it needs no study. **The moment it becomes a colour
+verdict, a score, or a rank, it claims prediction** and inherits the bar the dial
+had to clear. Show what happened; do not grade it.
+
+### Not a constraint: retention
+
+Pruning is by trading DATE (`pruneMinuteBars`, `repo.ts:207`), so the whole
+session is retained intraday. Moot anyway if the array is persisted.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
