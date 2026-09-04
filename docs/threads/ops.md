@@ -5366,6 +5366,68 @@ measurement first — point-in-time (gave 145, one *more*), authority-only (144,
 identical), SEC_EXHIBIT-as-non-SEC (12), and the ticker sets (identical) — which
 is why the right answer was reachable at all.
 
+## Sourcing a systemd EnvironmentFile in bash silently unsets the variable
+
+**Cost most of 2026-09-04 believing SEC was blocking production. It never was.**
+
+`/etc/mointel/mointel.env` is a systemd `EnvironmentFile`, which does not quote
+values. `SEC_USER_AGENT=Momentum Intelligence contact@…` is valid there. Bash
+`source` parses that line as **"run the command `Intelligence` with
+`SEC_USER_AGENT=Momentum` in its environment"** — so after the line the
+variable is **unset**, not truncated.
+
+Every ad-hoc `curl` then sent an empty User-Agent and SEC returned **HTTP 403
+"Request Rate Threshold Exceeded"**, which is its generic block page whatever
+the cause. **An error message that names one reason for every refusal is a
+check that cannot fail, wearing a diagnosis.**
+
+**Read the value out instead of sourcing it:**
+
+```bash
+UA=$(sudo sed -n 's/^SEC_USER_AGENT=//p' /etc/mointel/mointel.env)
+curl -H "User-Agent: $UA" ...   # HTTP 200, first try
+```
+
+**Two things in the output said so and both were skipped:**
+`line 29: Intelligence: command not found` appeared in the very first attempt,
+and **a check written to verify the User-Agent printed "set: yes" on an empty
+variable.** The verification built to prevent the error returned the
+reassuring answer — today's shape, inside the instrument meant to catch it.
+
+**The desk was never affected.** SEC rows landed continuously throughout
+(`/Archives/edgar` and `data.sec.gov`, newest 15:46Z, registry verified 15:49Z)
+while the same hosts 403'd for an ad-hoc request minutes apart. **A production
+process succeeding and your shell failing on the same host is evidence about
+your shell.**
+
+## The CIK ceiling, measured on demand, and why the alias table is held
+
+**0 of 9 resolve.** SGRX, PLU, AXTX, AAOX, AAOG, IONL, SNDG, ORCU and SNXX are
+**not in SEC's `company_tickers_exchange.json`**. Controls resolve: ANPA
+2031688, BTOG 1735556, AOUT 1808997.
+
+So the earlier "1 of 10 from `issuer_registry`" was right by accident — it read
+a cache that fills on demand, and the cache was correctly refused as evidence.
+**The on-demand answer is the same figure for a real reason: those tickers are
+not in the mapping file.** On the ten names the vendor shows N/A, this desk can
+reach a registrant for exactly one.
+
+**And the file is smaller than the universe:** 10,412 tickers against 13,133
+live tradable US equities. The precise overlap against *our* universe, split by
+whether a name has ever reached the board, is still owed — a difference of
+totals is a ceiling on the gap, not the gap.
+
+### The alias table is held, not deferred
+
+**SGRX is not in the SEC file; BTOG is.** So there is **no SGRX→CIK mapping to
+join them with**, and a CIK-keyed alias cannot record the rename that motivated
+it. Alpaca cannot supply the link either — different asset ids, no CIK.
+
+**A design killed by its own falsifier, which is the cheapest way to kill one.**
+The load-bearing unknown was named before it ran and came back negative. Hold
+until someone establishes where a renamed ticker's registrant identity is going
+to come from, because for a new ticker it is demonstrably not this file.
+
 ## Before you deploy
 
 ### "Docs-only above production" is a snapshot, not a standing fact
