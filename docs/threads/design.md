@@ -2386,6 +2386,76 @@ last night: an unmarked guess becomes an instruction once relayed.)
 - **`buildStructureSummary`** (`deskRead.ts:359`) — "Unknown" or the number, per
   row. Correct in both worlds.
 
+## LIVE VERIFICATION 2026-09-04 — one confirmed, two unobservable, one surprise
+
+Ran against the live desk on a 2-hour review token (id 18, revoked). Three of my
+four pieces are in `fff1f1d`; `b2399a2` is not. **I had told the trader "Ops has
+none of them" and that was wrong** — verified by `git merge-base --is-ancestor`
+rather than by memory.
+
+| Piece | Status |
+| --- | --- |
+| Header chrome `97fc68a` | **CONFIRMED LIVE** |
+| Dated cycle reading `e76d654` | **UNOBSERVABLE** at this hour |
+| Supply pair `46794fb` | **UNOBSERVABLE** at this hour |
+| Structure chip `b2399a2` | not deployed; 0 live instances of its defect |
+
+### Confirmed: the header rule works exactly as designed
+
+`Market: worker offline` renders its words — an abnormal state, so it speaks.
+`Research:` renders **no label at all** — the normal state, suppressed to a dot.
+`Market: Alpaca SIP` and `Research: idle` appear nowhere in the page. That is
+the rule holding in both directions on one screen.
+
+### Unobservable, and NOT the same as verified
+
+`intelligence` is `{}` on `/api/market` at 01:35 ET, so no dossier reaches a
+row: `resolveComputedCycle` returns null, the cycle chip does not render, and
+`AutomaticIntelligence` never mounts. Confirmed by absence of `of the move given
+back` and `sessions since the high` anywhere in the HTML — the chip is not
+rendering a bad string, it is not rendering.
+
+**So `high is today` returning 0 hits is NOT evidence the fix works.** A string
+absent because its component never mounted looks identical to a string absent
+because it was corrected. Both remain owed a premarket check, when research has
+run and the board carries dossiers.
+
+### The surprise: the float parser returns null on all eleven rows
+
+I looked for the row `b2399a2` fixes — `UNKNOWN_STRUCTURE` plus a parsed float.
+Four rows carry `UNKNOWN_STRUCTURE` (INLF, MODD, PLAG, PRHI) and **every one has
+`float.value === null`.** So the contradiction is reachable and currently
+unrealised: **0 live instances.**
+
+The cause is not the fix. `33e7bb8` IS in `fff1f1d` (checked), and every float
+cell on this watchlist ends `"...displayed; N SO"` — a shares-outstanding
+suffix. Ran the deployed `parseSheetFloat` against the exact live strings:
+
+```
+"537,665 displayed; 785,655 SO"  -> null
+"11.79M displayed; 13.1M SO"     -> null
+"7.14M displayed; 8.15M SO"      -> null
+"6,109 displayed; ~1.05M SO"     -> null
+"2.46M displayed; 3.75M SO"      -> null
+```
+
+**The allowlist is refusing correctly** — unrecognised trailing text refuses by
+design, which is the property that makes it safe. But "twelve floats that were
+null are numbers now" does not hold on this board, AKAN included. Whether the
+12-of-50 figure was measured on a different population (top-50 discovery rather
+than this 11-row watchlist) is Research's to say; what is observable here is
+0 of 11.
+
+**`b2399a2` is still right and still worth shipping.** The condition is
+reachable the moment one cell lacks the suffix, and the chip is named for a
+field it does not read regardless of how many rows expose it today.
+
+### The rule
+
+**A surface that renders nothing cannot verify a string.** Check that the
+component MOUNTS before reading meaning into the absence of its text — otherwise
+"the bad label is gone" and "the feature never drew" are the same observation.
+
 ## Working rules
 
 - **Terminology is trader-facing.** Labels that describe engine internals get
