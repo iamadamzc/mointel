@@ -2071,6 +2071,36 @@ named `research` holds the **TODAY** row and the one named `record` holds the
 **RESEARCH** row. Two things under one word, in the function this whole
 disagreement turned on.
 
+## A BUNDLE IS A POINT, NOT A SET — AND MY MODEL WAS STALE, NOT MY FACTS
+
+**Ops, 2026-09-04, refusing a deploy instruction from this seat.** I named
+*"your after-close bundle is `e48107e` AND `75a3917`"*. **There is nothing to
+assemble: the history is linear**, and `e48107e` is an ancestor of `75a3917`,
+which is an ancestor of `eabc989` and `7068303`. Verified here by ancestry
+rather than taken on report.
+
+**So naming the earlier sha ships the WORST available point.** It carries 0e in
+its **pre-index form** — the exact gap Research found and Ops had just closed —
+and **contains Design's header not at all.** A deploy that "shipped the bundle"
+would have shipped neither finished piece.
+
+**EVERY OTHER ENTRY IN THIS FILE IS A STALE FACT. THIS ONE IS A STALE MENTAL
+MODEL, AND THAT IS WHY IT SURVIVED.** The desk spent a week on composed
+side-branch shas, where a bundle genuinely *was* several shas assembled — the
+composed-sha rule is in this charter. **The branch topology changed; the vocabulary
+did not.** A fact goes stale visibly, because something contradicts it. **A model
+goes stale silently, because it keeps producing well-formed sentences** — "the
+bundle is X and Y" parses perfectly and is simply about a world that ended.
+
+**TWO STANDING RULES OUT OF IT:**
+
+- **Name ONE sha. Never a list, never `HEAD`, never `main`.**
+  `push-release.sh:18` is `REF="${3:-HEAD}"`, so on a shared checkout an omitted
+  ref names **whoever committed last** — which on this night was repeatedly not
+  Ops. **Ops states what the sha contains before it moves.**
+- **The deployable is a point at or after the last thing that must ship.** If two
+  pieces must both be in, the instruction is the later sha, not both.
+
 ## AN INSTRUCTION IN FLIGHT IS NOT AN INSTRUCTION RECEIVED
 
 **2026-09-04, 01:40 ET.** This seat sent *"STOP BEFORE YOU DEPLOY `b2399a2`"*.
