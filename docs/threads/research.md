@@ -7338,3 +7338,58 @@ A **reverse** split makes a stale count HIGHER than today's — safe. **A FORWAR
 split makes a stale count LOWER**, so an unadjusted figure under 10M can be a
 false pass. **The factor cannot be skipped for "obviously small" counts**, which
 is the same inversion risk ZOOZ guards, arriving from the other end.
+
+---
+
+**79. MY FIX WOULD NOT HAVE FIXED CMND. Correcting item 77 before two threads
+build on it.**
+
+*Integration and Design have both adopted the undated-never-expires synthesis.
+Part of it is wrong for the name that started it, and the error is mine.*
+
+### CMND's article is not stale — it is the only thing its source can return
+
+`eventTimestamp 2026-09-01`, read 09-04. **Three days old.** Ageing undated items
+by their stored `fetched_at` would keep it — correctly — because it IS recent.
+
+**The defect is not expiry. It is that the stored source is a `/news-release/<slug>`
+LEAF**, so the collection point can surface exactly one article, forever. The
+desk sees one real, recent release and concludes nothing else happened. **That is
+Design's original candidate 2, and my expiry mechanism does not touch it.**
+
+### What survives, and what I overstated
+
+| claim | status |
+| --- | --- |
+| a feed's dated entries expire at 45 days → the 85% | **stands.** Feed entries carry the ISSUER's dates, which can be months old whatever the store's age |
+| undated items are exempt from the recency filter | **stands as a mechanism** |
+| …therefore CMND's article is immortal and that is the bug | **WRONG.** It is three days old; nothing has expired |
+
+**And the immortality defect cannot yet have MANIFESTED anywhere.** All 87
+undated company sources were first seen within **4 days** (archive spans
+08-17→08-23), and production began 08-17 — **so no undated row has reached 45
+days, and none will before roughly 2026-10-01.** It is a real latent defect with
+a date, not an active one.
+
+### The mechanism that IS active, stated precisely
+
+`insertResearchSources` is `INSERT OR IGNORE` on `(ticker, document_fingerprint)`
+— verified at `researchRepo.ts:543-560`. So a re-collected article writes
+nothing. **But the ITEM still enters `collected`, and `collected` feeds this
+pass's bundle.** With `publishedAt: null` the model has no date to judge it by,
+which is how a single leaf article becomes *"A FRESH clinical-development
+update"* on every pass.
+
+### Two consequences for whoever builds this
+
+1. **The fourth-state count Integration wants is UNMEASURABLE from the current
+   schema — not hard, impossible.** `INSERT OR IGNORE` means exactly ONE
+   observation per document, ever. `content_hash` is written once and compared to
+   nothing. Design is right that `EvidenceLink` lacks the hash; **the store lacks
+   the second observation.** Forward instrumentation is the only route.
+2. **The two fixes collide on one row.** My expiry fix needs `fetched_at` to stay
+   FIRST-seen. Frozen-content detection needs a LAST-seen. **If anyone "fixes"
+   re-collection by upserting `fetched_at`, the expiry fix silently inverts** —
+   every undated item's age resets each pass and immortality returns, invisibly,
+   with the field still looking correct. **The new field must be `last_seen_at`,
+   never a mutation of `fetched_at`.**
