@@ -2469,6 +2469,30 @@ component MOUNTS before reading meaning into the absence of its text — otherwi
 
 ## Working rules
 
+- **Never state what is deployed. State what is COMMITTED.** Both pending lists
+  I gave Integration were wrong — three pieces live when I said none, and
+  `b2399a2` live when I called it pending. Design has no deploy signal, and a
+  bundle can be composed, fail, and be RESTORED FORWARD without any of it
+  reaching this thread. Say "my head is `<sha>`" and let Ops say what is live:
+  that removes the failure rather than asking me to be more careful about a fact
+  I cannot observe. **A list I cannot verify is a guess with a shape.**
+- **A test written by copying the implementation cannot disagree with it.** Two
+  instances in one session, both mine: a suite asserting `toContain('high is
+  today')` on a string that could never be about today, and one asserting
+  `state === 'LIVE' ? null` — each DEFENDING the defect it should have caught.
+  Write the test from the RULE, not from the code. The repair shape is the same
+  both times: assert the mapping over every input, which is the half a
+  single-case check cannot reach.
+- **A check that only exercises the FIRING case cannot tell you the predicate is
+  right.** I confirmed an abnormal market state renders words and called the
+  header verified — while the screen was displaying the very defect, because
+  "worker offline" was itself an out-of-hours state I had wrongly classified.
+  Exercise both sides: the case that should speak AND the case that should be
+  silent.
+- **Enumerate what is THERE, not what you are changing.** The header audit
+  changed two components and missed a third printing a pure constant onto the
+  row he complained about. The addition-plan rule inverted — and the reason the
+  fix took two rounds.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
