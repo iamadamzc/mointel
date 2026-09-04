@@ -5644,3 +5644,90 @@ record), so the SEC-only count measures the source half of that condition only.
 company-specific announcement was located"** and cites a July panel discussion —
 a status contradicting its own summary. Unrelated to the taxonomy; recorded so
 it is not lost.
+
+---
+
+**54. DROPPING THE LEFTOVER BUCKET IMPROVED THE FIT — 45 of 83 — and the
+reverse-split sequence measures 1.65×, not "one of the most reliable".**
+
+*Integration retracted the `MECHANICAL` bucket after the trader challenged it:
+a reverse split creates the headroom to raise and is a LEADING supply signal,
+and a mechanism bucket in a taxonomy that is supposed to classify by effect is
+where falsifying cases go to be ignored. Re-tested on two sides.*
+
+### The bucket was absorbing three cases that place fine
+
+**45 fit, up from 42.** Removing the leftover moved:
+
+| case | was | is |
+| --- | --- | --- |
+| GHXI — Class A and warrants begin trading SEPARATELY | filed under mechanics | **SUPPLY** — new tradeable securities arrive |
+| AGMH, SUGP — regained Nasdaq compliance | filed under mechanics | **DEMAND (risk removal)** |
+| PFSA, INCR — reverse splits | fits, as MECHANICAL | fits, as **SUPPLY (leading)** — but the LABEL changes from "does not explain the move" to an advance warning |
+
+**And the rule applies further than Integration took it.** If a reverse split is
+leading supply because it creates the HEADROOM to raise, a filing failure is
+leading supply because it signals the NEED to raise. **IPST** (12b-25, 10-Q
+late) and **TRSG** (undisclosed related-party guarantees, audit review, CFO
+resignation) are distress markers, and distress here is financed by issuance.
+**47 of 83.**
+
+The residue keeps four genuine non-events — a reiterated milestone, a webcast
+notice, a poster acceptance, a website launch. **They need no bucket:
+`plausiblyExplainsMove: false` already carries them and three of the four
+already have it. A non-event is a GRADE, not a side.**
+
+**Caveat on compliance restoration:** KWM, same week, regained minimum-bid-price
+compliance AND priced a 526,314-share offering. Restoration is frequently the
+PRECONDITION for the raise, so it belongs in the both-sides family more often
+than it looks.
+
+### The sequence claim, measured — and the first attempt was worthless
+
+119 of 258 tickers mention a reverse split somewhere, but the mentions are
+dominated by prospectus boilerplate: 39 S-1, 40 424B5, 52 424B3, 31 424B4, 21
+S-3. **A search that finds the phrase inside the offering document cannot test
+whether the phrase predicts the offering.** Only 3 rows name a split in a title.
+
+De-biased: restrict the mention to CURRENT REPORTS, index BOTH cohorts on their
+first 2026 current report, measure registration/prospectus filings strictly
+after.
+
+| cohort | subsequent registration filing | median index |
+| --- | --- | --- |
+| reverse-split mention in a 2026 current report | **24 / 72 = 33%** | 2026-06-11 |
+| no such mention | **36 / 180 = 20%** | 2026-04-21 |
+
+**≈1.65×, with the bias running AGAINST the finding** — the control indexes
+seven weeks earlier, so it has longer to file and still comes in lower.
+**z ≈ 2.2, p ≈ 0.03: suggestive, not decisive.** Enough to treat a reverse split
+as a leading supply signal; **not enough to say "one of the most reliable
+sequences", and that sentence should not reach the trader on this evidence.**
+
+Limits: the treatment is a MENTION in a current report, not a confirmed split;
+the collector's history is what it fetched; the window is short for a months-long
+sequence.
+
+**THE DEFINITIVE TEST IS NOW POSSIBLE FOR THE FIRST TIME AND NEEDS THE AWS
+STORE.** `daily_bars.split_factor` is populated on production since the basis
+backfill (19,707 → 99,696 rows). Every symbol-date where the cumulative factor
+CHANGES is a confirmed split with a date; join to registration forms in the
+following 90 days against the same base rate. That replaces the proxy entirely.
+Routed to Ops via Integration.
+
+### Ticker and name change has NO side, and that is the answer
+
+**A rename is not an event about the book. It is an event about the desk's
+ability to OBSERVE.** SGRX cost a live name because the desk went deaf; the
+consequence landed on the observer, not on either side.
+
+**Third time tonight the same distinction settled a design question** — the
+activity window (the state is a judgement, the array is the observation), the
+session phase (item 51: `UNKNOWN` is a property of the observer), and now this.
+A two-sided frame is right AND a rename still does not fit, because it is not in
+the frame's domain.
+
+Where a rename follows a pivot, **the pivot is the demand event and the rename
+is its trace** — classify the pivot. In practice it co-travels with supply
+anyway: INCR's own event is "reverse stock split and CUSIP-number change" in one
+alert.
