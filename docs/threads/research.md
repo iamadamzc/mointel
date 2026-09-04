@@ -7393,3 +7393,38 @@ update"* on every pass.
    every undated item's age resets each pass and immortality returns, invisibly,
    with the field still looking correct. **The new field must be `last_seen_at`,
    never a mutation of `fetched_at`.**
+
+**79a. THE FALSIFIER: 21 OF THE 23 ARE NOT IN MY ARCHIVE. One that is refutes the
+cutoff; one is uninformative.**
+
+*Ops named the 23 never-collected feeds. Only **IOTR** and **SONM** exist in the
+2026-08-23 snapshot — the rest are variant-A names collected after it — so **I
+cannot run the falsifier**; it needs production.*
+
+| ticker | rows | 8-K/6-K inside 45 days | SEC exhibits | latest |
+| --- | --- | --- | --- | --- |
+| **IOTR** | 20 | **3** | **2** | 2026-08-07 |
+| SONM | 22 | 0 | 0 | — |
+
+**IOTR published inside the window — three current reports and two exhibits, an
+exhibit to an 8-K typically being the press release itself — and its resolved
+FEED produced nothing.** That is one confirmed counterexample to the cutoff being
+the cause. **SONM was quiet, which is consistent with either mechanism and
+therefore says nothing.**
+
+**Weight, stated as Integration asked:** one counterexample is enough to say the
+cutoff cannot be the WHOLE story and not enough to say it is no part of it.
+**And my check errs toward UNDER-detecting publication** — it sees only filings
+this desk collected, for 2 of 23 tickers — **so "1 of 2 published" is a floor,
+not a rate.**
+
+**The query for Ops, on production:** for each of the 23, `MAX(published_at)`
+over `sec_form IN ('8-K','6-K')` and over `source_type = 'SEC_EXHIBIT'`, within 45
+days of the collection date. **If most published, the parser gap is the cause. If
+most were quiet, mechanism 1 survives WITHOUT being proven** — a quiet issuer and
+a broken parser produce the same zero, which is why the negative cannot confirm
+it.
+
+**AKAN is worth running first** — on the never-collected list, on his Scanz
+screenshot, and its Sheet float parsed cleanly at 537,663. A name he can check by
+hand beats a rate.
