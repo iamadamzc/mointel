@@ -2547,6 +2547,75 @@ had to clear. Show what happened; do not grade it.
 Pruning is by trading DATE (`pruneMinuteBars`, `repo.ts:207`), so the whole
 session is retained intraday. Moot anyway if the array is persisted.
 
+## SCOPE — sparkline on every row, and the focus separation (2026-09-04)
+
+### 1. The data reaches the board today — nothing to plumb
+
+`fce254c` landed `activity_window`, and `repo.ts:451` maps it to
+`activityWindow` on `DemandState` — the SAME type `merge.ts:19` imports. So
+`row.demand?.activityWindow` is already on every board row. **No store change,
+no mapping, no new query.** Pure surface work.
+
+Its stored semantics match what the scope asked for, verbatim in `db.ts:182-194`:
+the array is the one the verdict came from, NULL means not-measured, and a DEAD
+row's zeros are a real measurement that must not share a representation with it.
+`repo.ts:444-451` maps NULL to `undefined` rather than `[]` for that reason.
+
+### THE FINDING THAT DECOUPLES THE TWO SURFACES
+
+**Minute bars are whole-market, not per-subscription.** `minuteTrades` is filled
+from the bar stream (`engine.ts:913`), which covers every tracked name — not
+from the tick feed the top 5 will get.
+
+**So a sparkline on rank 25 is exactly as good as one on rank 1.** The tick
+change does not improve the sparklines of the names it subscribes, and the two
+surfaces do not interact on data quality.
+
+That mattered enough to check: had ticks fed the sparkline, twenty-five
+identical-looking charts would have carried two different resolutions, and
+nothing on screen would have said which — the worst class of surface, because
+the reader cannot see the seam.
+
+### Empty is a first-class case, not an edge
+
+`tradeCount` is recorded ONLY when the feed supplies it (`engine.ts:907-913`) —
+a null is "not reported" and is deliberately not written as 0. So absence has
+two upstream causes before it ever reaches a row, and the count of board rows
+with a populated window is unknown. **Design the empty state as normal.**
+
+| Value | Meaning | Renders |
+| --- | --- | --- |
+| `undefined` | not measured | an explicit absence — never a line |
+| all zeros | measured, silent | a flat line at zero, truthfully |
+| low numbers | alive and quiet | the bars |
+
+### 2. The focus separation — two things currently sharing one mechanism
+
+Today Focus is a MANUAL PIN: `focusStore.ts` is the one place the browser writes
+rather than the worker, seeded once per trading date from A-priority candidates
+(`:122-131`), capped at `focusMaxTickers` 6 (`config.ts:84`).
+
+His change separates them: **what the engine watches closely follows rank
+automatically; what HE has decided to watch stays a human act.** Scope it as the
+separation, not as a number.
+
+**The design hazard is CHURN.** Rank oscillates. If board membership of the
+automatic top 5 is rendered as a badge, it will flicker on and off rows as ranks
+cross — motion in the one row he is scanning, carrying no decision. **Either
+render the subscription state quietly or not at all.** It is an engine fact, not
+a trading fact, and he did not choose it.
+
+**And the claim boundary bites harder here than on the sparkline.** A sparkline
+he reads is description. A top-5 marker presented as "these are the ones worth
+watching" is a RECOMMENDATION and inherits the dial's bar. Rank is an existing
+fact and may be shown; endorsement is not. The safe form: show rank, let the
+subscription be invisible or near-invisible, and let HIS pin be the only thing
+on screen that says a name matters.
+
+**Cap:** 5 fits inside 6 with room, and this design needs no more. Not proposing
+a change — ticks are every trade and quote through the one SIP connection that
+IS capture, and nobody has measured whether 6 is a ceiling or a cautious default.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
