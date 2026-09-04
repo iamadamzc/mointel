@@ -223,3 +223,53 @@ describe('the float bound, as a sentence he reads', () => {
     expect(floatBoundReading(empty)?.verdict).toBe('PROVEN');
   });
 });
+
+/*
+ * THE RENDER, not the reading. `floatBoundReading` is Research's and tested
+ * there; these assert what the card is allowed to do with it.
+ */
+describe('the card renders the bound without implying a reading it does not have', () => {
+  const read = () =>
+    import('node:fs').then((fs) =>
+      fs.promises.readFile('components/AutomaticIntelligence.tsx', 'utf8'),
+    );
+
+  it('renders the bound', async () => {
+    const source = await read();
+    expect(source).toContain('floatBoundReading(structure.supplyPair)');
+    expect(source).toContain('{bound.sentence}');
+  });
+
+  /*
+   * The bound is a PROOF in one direction only. Under the ceiling it
+   * ESTABLISHES the low-float condition; above it, it says nothing — and the
+   * render must not colour that silence as a negative.
+   *
+   * So tone comes from the reading, never from a comparison the card invents.
+   */
+  it('takes tone from the reading rather than deciding one', async () => {
+    const source = await read();
+    const at = source.indexOf('{bound.sentence}');
+    expect(at).toBeGreaterThan(-1);
+    const block = source.slice(Math.max(0, at - 420), at);
+    expect(block).toContain("bound.tone === 'pos'");
+    // No negative colour anywhere near it: NOT_PROVEN is silence, not bad news.
+    expect(block).not.toContain('text-neg');
+    expect(block).not.toContain('text-warn');
+  });
+
+  /*
+   * Above the ratios and shaped unlike them. They do not share an input -- the
+   * pair needs an established block, the bound needs only the share count -- so
+   * a matched pair of numbers would read the pair's usual silence as a failure
+   * of the row.
+   */
+  it('places the bound before the ratio block', async () => {
+    const source = await read();
+    const boundAt = source.indexOf('{bound.sentence}');
+    const ratiosAt = source.indexOf('Supply against shares outstanding');
+    expect(boundAt).toBeGreaterThan(-1);
+    expect(ratiosAt).toBeGreaterThan(-1);
+    expect(boundAt).toBeLessThan(ratiosAt);
+  });
+});

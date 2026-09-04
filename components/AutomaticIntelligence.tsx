@@ -13,7 +13,7 @@ import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
 import { humanise } from '@/lib/dashboard/language';
 import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
-import { noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
+import { floatBoundReading, noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
 import { etTimestamp, relativeAge } from '@/lib/dashboard/why';
 import type { SheetAutoComparison } from '@/lib/research/merge/sheetAuto';
 import {
@@ -275,6 +275,18 @@ export function AutomaticIntelligence({
    * denominator part of the heading is what keeps them from reading as equals.
    */
   const supply = supplyReading(structure.supplyPair);
+
+  /*
+   * The float bound, and it answers where the pair is silent.
+   *
+   * The pair needs an established KNOWN_ACTIVE block; the bound needs only the
+   * share count, its date and the split factor. On the live board 22 of 23
+   * pairs carry a denominator and nothing else, so this is the line that
+   * usually speaks — and the two must NOT be laid out as matched numbers, or
+   * the silence beside it reads as a failure of the row rather than as the
+   * absence of established blocks. THEY DO NOT SHARE AN INPUT.
+   */
+  const bound = floatBoundReading(structure.supplyPair);
   const noDenominator = supply ? null : noDenominatorNote(structure.supplyLedger.length);
 
   /*
@@ -420,6 +432,26 @@ export function AutomaticIntelligence({
 
         {supply ? (
           <div className="mt-3 border-l-2 border-line pl-2.5" title={supply.method}>
+            {/*
+              * A SENTENCE, above the ratios and shaped unlike them.
+              *
+              * It is a PROOF rather than an estimate: because only holders we
+              * actually found can be subtracted, the true float is AT MOST this
+              * number. So a bound under the ceiling ESTABLISHES the low-float
+              * condition whatever the real float turns out to be — and above it
+              * the bound SAYS NOTHING and must be allowed to say nothing. Tone
+              * comes from the reading, so NOT_PROVEN renders dim and never as a
+              * negative reading in the direction where it is silent.
+              */}
+            {bound ? (
+              <p
+                className={`mb-1.5 text-[11px] ${bound.tone === 'pos' ? 'text-pos' : 'text-ink-3'}`}
+                title={bound.detail ?? undefined}
+              >
+                {bound.sentence}
+              </p>
+            ) : null}
+
             <FieldLabel>Supply against shares outstanding</FieldLabel>
             <p
               className={`num mt-1 text-[11px] ${
