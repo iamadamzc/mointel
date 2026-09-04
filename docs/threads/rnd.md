@@ -989,6 +989,57 @@ again.**
 assessment capture window, ranks 1–25*** — Q5, Q6, Q11, S1, S3 and the yield
 finding alike. **Not one of them said so.**
 
+#### A second contamination channel, and it threatens the NEW result rather than the old one. 2026-09-04.
+
+**Research found that `floatQuality` — RESEARCH column AI, written by the 06:10
+ChatGPT task — reaches the evidence bundle at `bundle.ts:99` via
+`sheetPrior.ts:61`.** So a **ChatGPT task's structure judgement is an input to
+the desk's own interpreter**, alongside `priorHumanAnalysis`. **A second channel,
+never counted in any contamination assessment, including the ones behind Q1's
+design.**
+
+**Integration's reasoning — that this cannot change a verdict, because
+contamination inflates agreement and biases toward finding an effect, while Q1's
+headline is a bounded NEGATIVE — was correct for the Q1 that existed a week ago.
+It is wrong for the one that exists now, and the direction inverts.**
+
+> **Q1's headline is no longer a bounded negative.** The scorecard superseded it:
+> S3 **DETECTS** separation at **+14.9pp, p = 0.00002**. **A bias toward finding
+> an effect is harmless to a null and dangerous to a detection.** The
+> contamination threat is LARGER now than when the finding was negative.
+
+**AND THE ONE WINDOW WHERE BOTH INSTRUMENTS RAN IS SUGGESTIVE.** Same 211
+symbol-days, same 84 movers and 127 non-movers:
+
+    prior-free five-draw modal (NO sheetPrior)    +3.3pp
+    stored catalyst_best (sees BOTH channels)     +6.9pp     2.1x
+
+**The contaminated instrument shows roughly double the separation of the clean
+one on identical rows.** That is **not proof** — the modal differs in more than
+contamination, being five draws and prior-free and as-of-correct — **but it is
+the right comparison to put beside a detection built entirely on the
+contaminated columns.**
+
+**S3's +14.9pp is computed on `catalyst_last` and `catalyst_best`, both of which
+see both channels.** The prior-free arm has **never been recomputed on the
+13-session window**, so **the detection has no clean counterpart** — and until
+it does, the honest reading is that **some unknown part of it is the interpreter
+agreeing with a judgement that was already in its input.**
+
+**So S3 gains a caveat it did not carry, and it is a real one:**
+
+> **The strongest recent result on this desk rests on grades produced while two
+> contamination channels were open, one of which nobody had counted.**
+
+**What would settle it:** re-run the prior-free replay over the 13-session
+window and compare. **That is Research's arm to run, not mine**, and it is the
+only thing that separates a real relationship from an inflated one.
+
+**And it strengthens the retirement case rather than complicating it** —
+retiring the 06:10 task **removes a contamination path rather than costing
+one**, exactly as Integration says. **The correction is to which finding is at
+risk, not to the recommendation.**
+
 #### The viscosity programme — status, checked rather than recalled. 2026-09-04.
 
 **He asked what state it is in and what effort remains. I read the folder rather
