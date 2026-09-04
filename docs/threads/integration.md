@@ -1947,6 +1947,34 @@ the routing question is not *does it work* but **WHO READS IT, AND IS THAT
 WHERE THE DECISION HAPPENS.** Three of tonight's four were found by asking a
 question next to the work rather than about it.
 
+## A test can PIN a defect, and a comment can be its source
+
+**Design, 2026-09-04, commissioned to add a date to a stale cycle reading and
+finding a false one instead.** `cycleDetail` rendered **`'high is today'`** when
+`sessionsSinceHigh === 0` — and the latest bar is never today. **So during
+premarket the desk printed a claim about YESTERDAY with the word TODAY in it.**
+Not stale: false, and the one part of the reading a trader takes at face value
+without checking a date.
+
+**Two things made it durable, and both are the point:**
+
+- **The old test asserted `toContain('high is today')`. IT WAS PINNING THE
+  DEFECT.** A green suite enforcing a false label — the
+  fixture-encodes-a-dead-world rule arriving as an ASSERTION rather than as a
+  fixture, which is worse, because a fixture merely fails to catch a bug and an
+  assertion actively defends it.
+- **Its source was a comment.** `lib/market/cycle.ts` documents
+  `sessionsSinceHigh` as *"zero means today"*. It does not. A reader believed
+  the comment and wrote the label from it. **A wrong comment produced a shipped
+  falsehood**, which is more than comments usually cost.
+
+**And the repair's own decision is worth copying:** Design refused to write
+*"today not included"*, because after 20:00 ET today IS the latest session and
+that clause flips from true to false inside one evening — **the
+event-versus-condition failure, which it would have shipped into the fix for
+another one.** A bare date is true in every window, and a test now asserts the
+string contains no flipping clause.
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
