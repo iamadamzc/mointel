@@ -867,6 +867,37 @@ the distinction onto every reader forever.
 that finds it is *"what are the ways this can be absent, and would I treat them
 alike?"*
 
+## PRE-REGISTERED 2026-09-04: THE UNDATED-AGEING FIX WILL LOOK LIKE A COVERAGE REGRESSION
+
+**Written BEFORE the change, because the result is the one most likely to be
+reverted.** When undated company-news items are aged by the `fetched_at` this
+desk first saw them, **index-path coverage will FALL.** Rows older than 45 days
+since first sight will finally drop out.
+
+**THAT IS THE FILTER WORKING FOR THE FIRST TIME, NOT A REGRESSION.** They were
+never fresh; they were exempt.
+
+**The premise is measured, not assumed** — the collector labels by path, so the
+two are separable in the store:
+
+    COMPANY_IR   (feed)   93 rows    1 undated =  1%   87 EXACT
+    COMPANY_NEWSROOM (index) 105 rows  86 undated = 82%   86 UNKNOWN
+
+**99% of feed items are subject to the 45-day cutoff; 82% of index items are
+exempt from it forever.** That differential is what turns one filter into an
+85-versus-62 gap. **CMND is one of the 86.**
+
+**And it corrects how the two paths have been compared: "the index path works
+better" is FALSE. It fails DIFFERENTLY.** The feed path collects nothing because
+everything expires; the index path collects things that **can never expire**.
+**One defect, two faces** — so a fix aimed at either alone leaves the other, and
+a metric that improves for one will worsen for the other.
+
+**Limit, stated: this measures the dating of rows that WERE collected, not of
+items the cutoff discarded.** It establishes the premise and cannot settle the
+mechanism. **`parsed-versus-kept` is the counter that does that**, and it does
+not exist yet.
+
 ## A QUALITY FILTER THAT SKIPS WHAT IT CANNOT PARSE SILENTLY FAVOURS UNPARSEABLE INPUT
 
 **Ops measured it, Research found the mechanism, 2026-09-04.** Company feeds
