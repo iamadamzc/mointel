@@ -1,8 +1,10 @@
 import { spawn } from 'node:child_process';
+
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { describe, expect, it } from 'vitest';
+import Database from 'better-sqlite3';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { openDatabase, schemaBackupDirectory, SCHEMA_VERSION } from '@/lib/market/store/db';
 
@@ -131,5 +133,82 @@ describe('concurrent schema migration', () => {
     } finally {
       fs.rmSync(directory, { recursive: true, force: true });
     }
+  });
+});
+
+/**
+ * A current store must not take a write lock to discover it has nothing to do.
+ *
+ * On 2026-09-04 a deploy of two dashboard files failed with "database is
+ * locked". SCHEMA_VERSION was 23 and the store was 23 — the migration had
+ * NOTHING TO DO — and the unconditional upgrade transaction still contended
+ * with the market worker, lost the five-second busy_timeout race, and failed.
+ * The symlink had already switched, so the runtime units stopped and nothing
+ * started against a failed migration. Eighty seconds of desk, caused by work
+ * that did not need doing.
+ *
+ * These hold a real write lock and open the store underneath it, so the test
+ * exercises the contention rather than asserting about it.
+ */
+describe('an already-current store skips the upgrade transaction', () => {
+  let dir: string;
+
+  beforeEach(() => {
+    dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-0e-'));
+  });
+
+  afterEach(() => {
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  it('opens while another connection holds the write lock', () => {
+    const dbPath = path.join(dir, 'market.db');
+
+    // First open creates the schema and leaves the store at SCHEMA_VERSION.
+    const created = openDatabase(dbPath);
+    expect(Number(created.pragma('user_version', { simple: true }))).toBe(SCHEMA_VERSION);
+    created.close();
+
+    // A writer holding the lock, exactly as the market worker does mid-deploy.
+    const holder = new Database(dbPath);
+    holder.pragma('journal_mode = WAL');
+    holder.prepare('CREATE TABLE IF NOT EXISTS lock_probe(x INTEGER)').run();
+    holder.exec('BEGIN IMMEDIATE');
+
+    try {
+      // Before the guard this threw SqliteError: database is locked.
+      const opened = openDatabase(dbPath);
+      expect(Number(opened.pragma('user_version', { simple: true }))).toBe(SCHEMA_VERSION);
+      opened.close();
+    } finally {
+      holder.exec('ROLLBACK');
+      holder.close();
+    }
+  });
+
+  it('still creates a brand-new store, which reports version 0 and needs everything', () => {
+    const dbPath = path.join(dir, 'fresh.db');
+
+    const db = openDatabase(dbPath);
+
+    expect(Number(db.pragma('user_version', { simple: true }))).toBe(SCHEMA_VERSION);
+    const tables = db
+      .prepare("SELECT name FROM sqlite_master WHERE type = 'table'")
+      .all() as Array<{ name: string }>;
+    expect(tables.map((t) => t.name)).toContain('ticker_session');
+    db.close();
+  });
+
+  it('still upgrades a store behind the current version', () => {
+    const dbPath = path.join(dir, 'old.db');
+
+    const db = openDatabase(dbPath);
+    // Pretend it predates the current schema. The guard must NOT fire here.
+    db.pragma('user_version = 1');
+    db.close();
+
+    const reopened = openDatabase(dbPath);
+    expect(Number(reopened.pragma('user_version', { simple: true }))).toBe(SCHEMA_VERSION);
+    reopened.close();
   });
 });

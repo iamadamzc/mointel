@@ -965,6 +965,59 @@ export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketD
     withMigrationLock(dbPath, () => {
       const fromVersion = Number(db.pragma('user_version', { simple: true }));
 
+      /*
+       * An already-current store needs nothing, so do not open a write
+       * transaction to discover that.
+       *
+       * On 2026-09-04 this cost a deploy and eighty seconds of desk. The
+       * payload changed two dashboard files, SCHEMA_VERSION was 23 and the
+       * store was 23 -- the migration had NOTHING TO DO -- and it still took
+       * the write lock, lost a five-second race against the market worker,
+       * and failed with "database is locked". The symlink had already
+       * switched, so the runtime units stopped and nothing started against a
+       * failed migration. THE FAILURE WAS CAUSED BY WORK THAT DID NOT NEED
+       * DOING.
+       *
+       * It also cost time on 2026-08-25, when the same unconditional
+       * transaction stalled ten minutes on a cold open over a 531 MB WAL.
+       *
+       * CONSEQUENCE, AND IT TIGHTENS AN EXISTING RULE RATHER THAN ADDING ONE:
+       * before this guard, ADDED_COLUMNS ran on every open, so a new column
+       * appeared even if someone forgot to bump SCHEMA_VERSION -- the bump
+       * only gated the backup. AFTER THIS GUARD, A COLUMN ADDED WITHOUT A
+       * BUMP IS NEVER APPLIED TO A CURRENT STORE. The bump is now load-bearing
+       * for the column as well as the snapshot, and forgetting it fails
+       * silently on exactly the machine that matters.
+       * NOT VERSION ALONE. A store can report the current version and still be
+       * missing a table -- a future CREATE TABLE added without a bump, or a
+       * store damaged by hand. Version says what was INTENDED; the table list
+       * says what is THERE, and only the second is a fact about this file.
+       * Both reads are cheap and neither takes a write lock, which is the
+       * entire point.
+       */
+      const expectedTables = [...SCHEMA.matchAll(/CREATE TABLE IF NOT EXISTS (\w+)/g)].map(
+        (match) => match[1]!,
+      );
+      const presentTables = new Set(
+        (
+          db.prepare("SELECT name FROM sqlite_master WHERE type = 'table'").all() as Array<{
+            name: string;
+          }>
+        ).map((row) => row.name),
+      );
+      /*
+             * length > 0 is NOT redundant. If this regex ever stops matching, an
+             * empty list makes `every` vacuously TRUE and the guard would skip the
+             * upgrade on every store forever -- a check that cannot fail, which is
+             * the exact shape this guard exists to remove. It failed that way once
+             * while being written. Empty means "cannot vouch for it", so fall
+             * through and do the work.
+             */
+            const complete =
+              expectedTables.length > 0 && expectedTables.every((table) => presentTables.has(table));
+
+      if (fromVersion === SCHEMA_VERSION && complete) return;
+
       // Back up only a real upgrade of an existing store. A brand-new database
       // reports 0 and has nothing to lose; a current one reports SCHEMA_VERSION
       // and is left alone, so ordinary startups do not accumulate copies.
