@@ -867,6 +867,35 @@ the distinction onto every reader forever.
 that finds it is *"what are the ways this can be absent, and would I treat them
 alike?"*
 
+## A RETRY INTERVAL MUST BE SHORTER THAN THE UNIT OF WORK IT PROTECTS
+
+**Research, 2026-09-04, correcting a severity this seat got wrong in one
+direction and it got wrong in the other.** The IR resolver's negative result is
+**not a permanent latch** — it carries a **24-hour cooldown** and every stored
+row re-evaluates on its next pass, so there is nothing to migrate. This seat
+called it a second latch; Research had called it a log item.
+
+**It is neither. It is a day-long blind spot on a desk whose unit of work is one
+morning.** A transient fetch failure at 06:00 is not retried until 06:00
+tomorrow, **and the trading window is 07:00–10:00** — so one bad fetch costs a
+name for the entire session it mattered in.
+
+**Twenty-four hours is a defensible interval for a system whose work repeats
+daily and a wrong one for a system whose work IS a day.** The number is not too
+large in the abstract; it is larger than the thing it sits inside.
+
+**And the defect underneath is the usual one:** the cooldown is armed
+**identically** by *"we looked and there is genuinely nothing"* and *"we could
+not fetch"* — because `classifyCollectionPoint` returns `ARTICLE` for `!body`
+(*"not fetched; cannot confirm a listing"*) and **erases the distinction before
+the cooldown ever sees it.** Waiting a day is correct for the first and wrong for
+the second.
+
+**The module has already survived this once**, which is why the diagnosis was
+available: `shedNonDurable` runs BEFORE the cooldown check specifically because
+*"ENRD recorded a negative, then every later pass short-circuited on it and the
+leaf stayed on the row for another day."*
+
 ## THE CONSTANT EXPIRES BECAUSE THE THING IT MEASURES MOVES
 
 **Research, 2026-09-04, on how deep the price history must reach.** The coverage
