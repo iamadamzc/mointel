@@ -1263,6 +1263,28 @@ read 23. **The failed deploy is the reason that sha is live.**
 something they cannot observe** — the same reasoning as reporting existence
 rather than a rate.
 
+## A TEST THAT ASSERTS TEXT ORDER DOES NOT ASSERT REACHABILITY
+
+**Design, 2026-09-04, `efd2a6d` — its fifth vacuous check of the day and the
+third found only by mutation testing.** A branch-order assertion **passed after
+the not-loaded branch was made UNREACHABLE**, because the string literal was
+still present in the file and still first. **It was checking where text appears,
+not which code runs.** It now asserts the condition as well.
+
+**And two of its assertions were broken by the source they read.** One matched a
+template literal it existed to forbid. **One measured the author's own COMMENT,
+which quoted the string whose order it was checking.**
+
+**A test asserting on source cannot tell code from prose about code unless you
+make it.** Comments, template literals and strings inside other strings are all
+"present in the file" — so a source-scanning assertion needs its matches scoped
+to the literals, or the file's documentation will satisfy the check that its
+implementation was supposed to.
+
+**The pair to the enumeration rule: `grep`-shaped tests are cheap and their
+failure mode is silence.** Mutation-test every one — break the thing it exists to
+catch and watch it go red — or it is a hypothesis rather than a check.
+
 ## A TEST WRITTEN BY COPYING THE IMPLEMENTATION CANNOT DISAGREE WITH IT
 
 **Design, 2026-09-04, naming the general form after producing both instances.**
