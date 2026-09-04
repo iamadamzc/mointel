@@ -6361,3 +6361,78 @@ desk has recorded before.
 depth. Whether a factor is DERIVABLE there additionally needs the dual-adjustment
 fetch, and the fetch COST per symbol-day is not measured here. The curve gives
 the shape of the return, not its price.
+
+---
+
+**65. "3d" MEANS EITHER "NOT LOOKED AT FOR THREE DAYS" OR "LOOKED AT TODAY AND
+SAW NOTHING", AND THOSE ARE OPPOSITE FACTS. CMND, found by the trader on a live
+row.**
+
+*His words: "these comments should have the source dated, this is not the latest
+news. they have acquired a robotics company." Scoped, not built; front of the
+post-census queue because it is the first defect of the night HE found rather
+than one we found in the code.*
+
+### 1. The date is not merely available — it is ALREADY JOINED AT THE SURFACE
+
+`EvidenceLink` carries `publishedAt` **and `publishedPrecision`**, and
+`lib/dashboard/merge.ts:42-46` **already joins the cited ids against
+`intelligence.evidence`** to compute a latest-evidence date for a different
+purpose.
+
+**So the card renders no date not because the join is missing but because nobody
+rendered it.** `publishedPrecision` also half-answers Integration's "say which":
+EXACT versus date-only is already distinguishable.
+
+**The only thing genuinely absent is `fetchedAt`** — it exists on
+`ResearchSource` and in `research_sources`, and the `EvidenceLink` projection
+drops it. **Scope: one field on a projection, plus a render.**
+
+And "FRESH" is a judgement rendered as an observation. The observation is a date;
+whether three days is fresh is an OPINION, and his differs from the model's — he
+holds for seconds. **Because the word replaced the date, the disagreement is
+invisible to him.**
+
+### 2. THE REFRESH IS WORKING AS DESIGNED, AND THAT IS THE WORSE ANSWER
+
+Integration asked whether this is a scheduling gap or unpriced staleness.
+**Neither.** `lib/research/queue.ts` skips a name only when a dossier exists AND
+a job was accepted **this session** AND the status is not UNKNOWN, plus a
+short re-ask clock matched to the collector's discovery interval. A three-day-old
+dossier does not block a re-ask on a new session.
+
+**So CMND was almost certainly re-asked today, and `interpretTicker` returned
+`REUSED_UNCHANGED` on an unmoved fingerprint — no new version, so `generatedAt`
+stays three days old.**
+
+**Which makes "3d" ambiguous between two OPPOSITE operational facts:**
+
+| what "3d" could mean | what it would take to fix |
+| --- | --- |
+| nobody looked for three days | scheduling |
+| looked TODAY, found nothing, because we only search SEC | **coverage** |
+
+**It is the second, and the card cannot say so.** The fix for staleness is a
+scheduler; the fix for blindness is a source. **Sixth instance of the class, and
+the first to arrive from the trader instead of from the code.**
+
+The card should show **when the dossier was last CHECKED** beside when it was
+last CHANGED. Both facts exist — `generatedAt` on the version, the job's
+`completedAt` on the re-ask.
+
+### 3. "COUNTERBALANCED" FROM A ONE-SIDED SEARCH — and a fix available TODAY
+
+The supply side was caught because it is an SEC filing. The demand side — the
+acquisition — was not, which is the SEC-only asymmetry measured in item 53, live
+on a name up 18.8%.
+
+**And it renders as BALANCE.** *"This is counterbalanced by…"* asserts that two
+sides were weighed. **A shrug at least declines to conclude; this concludes,
+from half a search, in the vocabulary of a balanced judgement.** The prompt
+wrapper asks for UNKNOWN but **does not forbid the language of weighing** — so
+it is not only over-producing UNKNOWN, it is producing confident balance.
+
+**`coverageIncomplete` is ALREADY a field on `AutoIntelligence` at the render
+layer.** So a one-sided-search warning is renderable **today**, at boolean
+granularity, with no persistence work and no prompt change — the cheapest
+partial fix available, on the row he is reading now.
