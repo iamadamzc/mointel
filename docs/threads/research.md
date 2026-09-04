@@ -7498,8 +7498,20 @@ cannot read XML" is out too.
 `companySource.ts:90-98` returns **`ACCESS_RESTRICTED` on 403/401/429 BEFORE the
 parser is ever reached.** The desk sends `companyUserAgent(config.sec.userAgent)`
 — **an SEC-style contact user agent — to corporate sites**, which is what a CDN
-blocks. And SEC is 403-ing this box today, so the desk is demonstrably in a
-window where access refusals happen.
+blocks. **CORRECTED 2026-09-04: the premise I attached to this was false.** I wrote
+that SEC was 403-ing this box, so the desk was demonstrably in a window where
+access refusals happen. **The 403s were Ops's own ad-hoc `curl` with an EMPTY
+User-Agent** — `/etc/mointel/mointel.env` is a systemd `EnvironmentFile`, so its
+values are unquoted, and bash `source` parses `SEC_USER_AGENT=Momentum
+Intelligence …` as *run the command `Intelligence`*, leaving the variable unset.
+**The desk itself was never blocked**; its SEC rows landed continuously
+throughout. So the mechanism stands on what the user agent IS, not on any
+observed refusal — and the one thing today does establish is narrower and
+already known: **SEC refuses an empty UA, which is its documented policy.**
+
+Worth keeping for a different reason: **`secAvailability` would have refused
+that request before it was sent** — it checks the variable is set and contains an
+`@`. The shell went around the desk's own guard, which is the guard working.
 
 **It does not obviously explain the FEED-versus-INDEX asymmetry** — both are on
 issuer-controlled hosts, since `classifyCollectionPoint` rejects newswire and
