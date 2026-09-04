@@ -631,7 +631,16 @@ export interface ResearchHealth {
   lastCompletedTicker: string | null;
   lastCompletedAt: string | null;
   /** Whether SEC fetching is configured and answering. Never holds a key. */
+  /** Whether a User-Agent is configured. This GATES fetching; it cannot report an outage. */
   secAvailable: boolean;
+  /**
+   * What SEC last actually did. UNKNOWN until a request has been made, and
+   * UNKNOWN is not healthy — it is "not yet observed". Separate from
+   * secAvailable because configuration and reachability are different facts
+   * and collapsing them cost a morning on 2026-09-04.
+   */
+  secReachable?: 'UNKNOWN' | 'REACHABLE' | 'UNREACHABLE';
+  secReachableDetail?: string;
   secDetail: string | null;
   /** Whether an interpreter is configured. Never holds a key. */
   modelAvailable: boolean;

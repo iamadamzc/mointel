@@ -116,9 +116,24 @@ export function projectResearchHealth(options: {
    * there is no interpretation. The engine still runs — it just cannot produce
    * what the desk expects, and that is not the same as healthy.
    */
-  if (health.state === 'DEGRADED' || !health.secAvailable || !health.modelAvailable) {
+  /*
+   * secAvailable gates; secReachable reports. An OBSERVED outage degrades —
+   * that is the case the configuration flag could never express. UNKNOWN does
+   * NOT degrade: no request has been made, and "not yet observed" is neither
+   * healthy nor broken. Treating it as either is the collapse this split
+   * exists to prevent.
+   */
+  const secUnreachable = health.secReachable === 'UNREACHABLE';
+
+  if (
+    health.state === 'DEGRADED' ||
+    !health.secAvailable ||
+    secUnreachable ||
+    !health.modelAvailable
+  ) {
     const missing = [
       health.secAvailable ? null : 'SEC access unavailable',
+      secUnreachable ? `SEC unreachable (${health.secReachableDetail ?? 'observed failure'})` : null,
       health.modelAvailable ? null : 'no interpreter configured',
     ].filter(Boolean);
 

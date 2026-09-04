@@ -95,6 +95,32 @@ export function backoffDelayMs(attempt: number): number {
   return Math.min(BASE_BACKOFF_MS * 2 ** (attempt - 1), MAX_BACKOFF_MS);
 }
 
+/**
+ * What SEC has actually done, as opposed to what we are configured to do.
+ *
+ * `secAvailability` answers "is a User-Agent set", never touches the network,
+ * and therefore CANNOT REPORT AN OUTAGE. On 2026-09-04 the desk reported SEC
+ * available for hours while every request from that box returned 403, and two
+ * threads spent the morning reasoning about a block that the health endpoint
+ * was structurally unable to see.
+ *
+ * UNKNOWN is a real state and must never read as healthy. A client that has
+ * made no request has observed nothing, and "nothing observed" is not "fine" —
+ * that collapse is the defect this record exists to remove. It costs no extra
+ * requests: every status below is one the client already saw and discarded.
+ */
+export type SecReachability =
+  | { state: 'UNKNOWN' }
+  | { state: 'REACHABLE'; at: string }
+  | { state: 'UNREACHABLE'; at: string; status: number; consecutiveFailures: number };
+
+/** One line for the health payload, so an outage is legible without parsing. */
+export function describeReachability(r: SecReachability): string {
+  if (r.state === 'UNKNOWN') return 'not yet observed';
+  if (r.state === 'REACHABLE') return `last reached ${r.at}`;
+  return `SEC responded ${r.status} on ${r.consecutiveFailures} consecutive attempt(s), last ${r.at}`;
+}
+
 export class SecClient {
   private readonly limiter: RateLimiter;
   private readonly cache = new Map<string, SecFetchResult>();
@@ -102,6 +128,8 @@ export class SecClient {
   private readonly sleep: (ms: number) => Promise<void>;
   private readonly now: () => number;
   private networkRequests = 0;
+  private reachabilityState: SecReachability = { state: 'UNKNOWN' };
+  private consecutiveFailures = 0;
 
   constructor(private readonly options: SecClientOptions) {
     this.fetchImpl = options.fetchImpl ?? fetch;
@@ -117,6 +145,29 @@ export class SecClient {
   /** Requests that actually reached the network, excluding cache hits. */
   get requestCount(): number {
     return this.networkRequests;
+  }
+
+  /**
+   * The last thing SEC actually did. UNKNOWN until a request has been made —
+   * reported as such rather than as success.
+   */
+  get reachability(): SecReachability {
+    return this.reachabilityState;
+  }
+
+  private recordReachable(): void {
+    this.consecutiveFailures = 0;
+    this.reachabilityState = { state: 'REACHABLE', at: new Date(this.now()).toISOString() };
+  }
+
+  private recordUnreachable(status: number): void {
+    this.consecutiveFailures += 1;
+    this.reachabilityState = {
+      state: 'UNREACHABLE',
+      at: new Date(this.now()).toISOString(),
+      status,
+      consecutiveFailures: this.consecutiveFailures,
+    };
   }
 
   clearCache(): void {
@@ -164,6 +215,7 @@ export class SecClient {
       }
 
       if (response.ok) {
+        this.recordReachable();
         const body = await response.text();
         const result: SecFetchResult = { url, body, status: response.status, cached: false };
         this.cache.set(url, result);
@@ -172,7 +224,9 @@ export class SecClient {
 
       if (!RETRYABLE_STATUS.has(response.status)) {
         // 404 for a document that does not exist is an answer, not a failure to
-        // retry against.
+        // retry against — and an answer means SEC is reachable. Recording it as
+        // an outage would make a missing filing look like a blocked desk.
+        this.recordReachable();
         throw new SecRequestError(`SEC responded ${response.status}`, response.status, url);
       }
 
@@ -186,6 +240,10 @@ export class SecClient {
       if (attempt < MAX_ATTEMPTS) await this.sleep(delay);
     }
 
+    // Every attempt exhausted on a retryable status: 403 or 429 repeated until
+    // the client gave up. THAT is an outage, and it is the case the old health
+    // field could not express.
+    this.recordUnreachable(lastError instanceof SecRequestError ? lastError.status : 0);
     throw lastError ?? new SecRequestError('SEC request failed', 0, url);
   }
 

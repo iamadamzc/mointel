@@ -18,7 +18,7 @@ import { loadWorkerEnv } from './env';
 loadWorkerEnv();
 
 import { modelAvailability, readResearchConfig, secAvailability } from '../lib/research/config';
-import { SecClient } from '../lib/research/sec/client';
+import { SecClient, describeReachability } from '../lib/research/sec/client';
 import { collectSecEvidence, TickerMapCache } from '../lib/research/sec/collector';
 import { collectCatalystEvidence } from '../lib/research/catalyst/collector';
 import type { MaterialDemandEvent } from '../lib/research/catalyst/collector';
@@ -226,6 +226,8 @@ async function main(): Promise<void> {
       lastCompletedAt,
       secAvailable: sec.available,
       secDetail: sec.detail,
+      secReachable: secClient.reachability.state,
+      secReachableDetail: describeReachability(secClient.reachability),
       modelAvailable: model.available,
       modelDetail: model.detail,
       updatedAt: new Date().toISOString(),
