@@ -1040,6 +1040,43 @@ retiring the 06:10 task **removes a contamination path rather than costing
 one**, exactly as Integration says. **The correction is to which finding is at
 risk, not to the recommendation.**
 
+#### The contamination bound: the RATE does not decide it, the DISTRIBUTION does. 2026-09-04.
+
+**Ops computed in place rather than exporting** — over `research_analysis_versions`
+ids 4–1022, **`sheetProvenance` non-null on 154 of 1019 rows, 15.1%** (CONFLICT
+128, SHEET_NEWER 15, SHEET_AUTO_AGREE 11).
+
+**And it carries the trap this register keeps finding, in the query that was
+about to decide a spend: 853 rows carry the `sheetProvenance` KEY with a NULL
+VALUE.** A `json_each` key census — the natural way to write it — returns 1007
+and **reads as 99% contamination.** The real figure is 15%. **Presence versus
+value, fifth instance, first to reach a cost.**
+
+**INTEGRATION'S READ — that 15.1% cannot substantially explain a +14.9pp
+detection — is true only under an assumption it did not state. Checked rather
+than accepted:**
+
+    evenly spread     ~27 contaminated movers, ~77 non-movers
+                      inflates BOTH rates -> cannot manufacture a gap, only noise
+    concentrated      27 contaminated movers, all reading positive
+                      -> clean movers 23/151 = 15.8%, non-movers 13.6%
+                      -> CLEAN GAP +2.2pp against +14.9pp observed
+
+> **15% CAN account for nearly the whole effect — but only if it is concentrated
+> in movers.** The rate alone does not decide it. **A pooled figure would have
+> looked reassuring and settled nothing.**
+
+**So the request to Ops is the count SPLIT BY MOVER STATUS**, not the pooled
+rate. **If contamination is roughly even across movers and non-movers it cannot
+have created the gap and the expensive re-run dies for free; if it is
+concentrated in movers, the re-run is justified with a bound.**
+
+**And Ops judging the versions export a NEW exception was right** — extending a
+specific approval to a new table by inference is the move this desk refused on
+Q9's columns. **The refusal produced a better answer than the export would
+have**, which is worth recording as an argument for refusals rather than an
+apology for one.
+
 #### The viscosity programme — status, checked rather than recalled. 2026-09-04.
 
 **He asked what state it is in and what effort remains. I read the folder rather
