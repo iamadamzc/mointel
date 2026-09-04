@@ -12,6 +12,7 @@ import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
 import { humanise } from '@/lib/dashboard/language';
+import { noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
 import { etTimestamp, relativeAge } from '@/lib/dashboard/why';
 import type { SheetAutoComparison } from '@/lib/research/merge/sheetAuto';
 import {
@@ -261,6 +262,21 @@ export function AutomaticIntelligence({
   const { catalyst, structure, cycle } = intel.analysis.dossier;
 
   /*
+   * The desk's OWN supply arithmetic, rendered with the blocks it divides.
+   *
+   * Deliberately not a separate panel: a ratio shown apart from its evidence
+   * makes the reader carry the join, and this card already holds the ledger.
+   *
+   * The heading says "against shares outstanding" rather than naming supply
+   * alone, because the Sheet's prose "Overhang / Float" is on the same screen
+   * and the two are NOT competing estimates of one quantity -- this is a bound
+   * against the share count, that is an approximation of the float. Making the
+   * denominator part of the heading is what keeps them from reading as equals.
+   */
+  const supply = supplyReading(structure.supplyPair);
+  const noDenominator = supply ? null : noDenominatorNote(structure.supplyLedger.length);
+
+  /*
    * The structure summary above already leads with the first warning, so the
    * list below starts after it. Printing both put the identical reverse-split
    * sentence on screen twice inside one bordered card, which reads as the desk
@@ -357,6 +373,28 @@ export function AutomaticIntelligence({
         </div>
 
         <ProseField label="Summary" value={structure.summary ?? '—'} className="mt-3" />
+
+        {supply ? (
+          <div className="mt-3 border-l-2 border-line pl-2.5" title={supply.method}>
+            <FieldLabel>Supply against shares outstanding</FieldLabel>
+            <p
+              className={`num mt-1 text-[11px] ${
+                supply.settles ? 'text-neg' : supply.floorProven ? 'text-ink-1' : 'text-ink-3'
+              }`}
+            >
+              {supply.floor}
+            </p>
+            {supply.filedMax ? (
+              <p className="num mt-0.5 text-[11px] text-ink-2">{supply.filedMax}</p>
+            ) : null}
+            <p className="num mt-0.5 text-[11px] text-ink-3">{supply.denominator}</p>
+            {supply.exclusions ? (
+              <p className="mt-0.5 text-[11px] text-ink-3">Not counted: {supply.exclusions}</p>
+            ) : null}
+          </div>
+        ) : noDenominator ? (
+          <p className="mt-3 text-[11px] text-ink-3">{noDenominator}</p>
+        ) : null}
 
         {structure.supplyLedger.length > 0 ? (
           <div className="mt-3">
