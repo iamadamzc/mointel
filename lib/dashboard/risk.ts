@@ -23,7 +23,7 @@ export type RiskCode =
   | 'ANALYSIS_FAILED'
   | 'DIRTY_FLOAT'
   | 'SUPPLY_OVERHEAD'
-  | 'FLOAT_UNKNOWN'
+  | 'STRUCTURE_UNKNOWN'
   | 'STRUCTURE_CAUTION'
   | 'STRUCTURE_CLEAN';
 
@@ -187,18 +187,46 @@ export function resolveRisk(row: DeskRow): DeskRisk {
    * the Sheet's, populated — so the gate read one while the value it gated read
    * the other.
    *
-   * FLOAT UNKNOWN stays correct while the desk has no float source. It is
-   * BECAUSE it is correct for everyone that it cannot be a per-row chip.
-   * Restore a dossier-float condition only when that float can vary.
+   * The chip stays correct while the desk has no float source. It is BECAUSE it
+   * is correct for everyone that it cannot be a per-row chip. Restore a
+   * dossier-float condition only when that float can vary.
+   *
+   * **It was called FLOAT UNKNOWN and it reads STRUCTURE.** The name was
+   * harmless while `displayedFloat` was null on 49 of 50 rows, because the two
+   * were absent together. Research's Sheet float parser takes top-50 coverage
+   * to about 12 of 50, and a row can carry UNKNOWN in the structure cell AND a
+   * parsed float in the float cell — different columns. The old detail said
+   * "No sourced float figure" and the same drawer would have rendered that
+   * float: a contradiction inside one screen.
+   *
+   * The gate is untouched; it was never wrong. Only the words were, and they
+   * were wrong about WHICH FIELD IS MISSING.
+   *
+   * The general form, which is the part worth carrying: **a condition
+   * unreachable because a field is universally absent becomes reachable the
+   * moment the field is populated.** Filling a data gap activates dormant code
+   * paths, and no grep for the field name finds them.
    */
-  const floatUnknown = row.research?.structure.state === 'UNKNOWN_STRUCTURE';
+  const structureUnknown = row.research?.structure.state === 'UNKNOWN_STRUCTURE';
 
-  if (floatUnknown) {
+  if (structureUnknown) {
     return {
-      code: 'FLOAT_UNKNOWN',
-      label: 'FLOAT UNKNOWN',
+      code: 'STRUCTURE_UNKNOWN',
+      label: 'STRUCTURE UNKNOWN',
       value: null,
-      detail: line ?? 'No sourced float figure. Size the position as if it could be large.',
+      /*
+       * Says what is unknown rather than prescribing a size.
+       *
+       * The old sentence ended "size the position as if it could be large",
+       * which was advice about the FLOAT. It goes stale the moment a float
+       * appears beside it, and this chip is not about the float.
+       *
+       * "Outside research" rather than "the Sheet": the 16a vocabulary, and it
+       * falls out of use rather than needing renaming when the Sheet retires.
+       */
+      detail:
+        line ??
+        'The outside research did not establish the share structure. Nothing here is known about supply or dilution.',
       tone: 'warn',
       full,
     };
