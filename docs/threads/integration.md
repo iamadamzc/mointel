@@ -1997,6 +1997,56 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## "WHAT CAN WE DROP" AND "WHAT MUST WE PRODUCE" ARE THE SAME AUDIT WITH OPPOSITE SIGNS
+
+**The trader, 2026-09-04, setting a direction rather than answering a question.**
+He wants the app **monetizable**, does not accept external ChatGPT tasks plus a
+Google Sheet as production-grade, and **will not give up capability to get
+there.** Three sentences, and they invert a workstream this thread had been
+running for two days.
+
+**The Sheet exit had been an audit of what nothing reads.** Every finding was
+cheerful — the archive tabs feed nothing, task 2's three fields have wired
+fallbacks, float coverage at the top of his board is ~2%. Each one shrank the
+dependency. **Under "lose no capability" every one of those findings changes
+sign.** A capability the desk does not consume is no longer free to drop; it is
+either genuinely dead or **being lost to neglect rather than to a decision**,
+and the audit that was retiring things is now costing them. Same facts, same
+document, opposite conclusion — **because the question changed and the findings
+were phrased as answers to the old one.**
+
+**AND THE REASON IT IS BLOCKING IS NOT THE ONE ANYONE ARGUED.** This thread had
+been defending the Sheet on robustness — it works, the desk barely reads it,
+the failure modes are known. **Robustness was never the binding constraint. The
+Sheet is SINGLE-TENANT.** It lives in his personal Google account, written by
+tasks in his personal ChatGPT account, and **a second customer cannot have it —
+not a degraded copy, not a shared one, none.** So it is not that the setup is
+fragile and should be hardened; **it is that the product cannot have a second
+user while any of it is on that path**, and no amount of making the Sheet more
+reliable moves that. A dependency can be perfectly sound and still be
+disqualifying, and this desk graded it on the wrong axis for two days because
+the trader's goal had not yet been stated.
+
+**Which relocates the float problem.** Float was a data-quality item — a broken
+parser, thin coverage, a parked extractor. Under monetization **it is the
+product's only genuine blocker**, because it is the one capability the Sheet
+provides that the desk does not, and it must be produced FOR ANY USER rather
+than written by him for himself. The measurement that decides it is coverage
+against real board populations with **latency counted as part of coverage**: a
+float derivable in a week for a name he trades in the first thirty minutes
+covers nothing, and a figure that quietly counts it makes the free paths look
+sufficient and talks him out of a purchase he needs.
+
+**The trap now standing, and it is recorded because it is live:** today's
+observed float coverage is near zero *because the parser is broken*, not
+because the Sheet is thin. **Measuring the defect and reporting it as the
+Sheet's capability would make self-containment look cheaper than it is.** The
+comparison has to be against what the Sheet would give working — which is the
+same coupling that already threatens the retirement from the other side, where
+fixing the parser reintroduces a dependency he retired on the broken behaviour.
+**One defect, two decisions, and it flatters both of them in opposite
+directions.**
+
 ## Working rules
 
 - **A CAVEATED WRONG NUMBER ANCHORS EXACTLY AS HARD AS AN UNCAVEATED ONE.**
