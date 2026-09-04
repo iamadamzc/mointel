@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
 import { DEFAULT_ACTIVITY_CONFIG } from '@/lib/market/activity';
-import { SPARK_FULL_SCALE, sparklineSpanLabel, sparklineView } from '@/lib/dashboard/sparkline';
+import {
+  SPARK_FULL_SCALE,
+  pricePointsView,
+  sparklineSpanLabel,
+  sparklineView,
+} from '@/lib/dashboard/sparkline';
 
 /*
  * NOT MEASURED against MEASURED-AND-SILENT.
@@ -108,5 +113,97 @@ describe('defensive shapes', () => {
     const view = sparklineView([-5, Number.NaN, 10])!;
     expect(view.values).toEqual([0, 0, 10]);
     expect(view.heights[0]).toBe(0);
+  });
+});
+
+/*
+ * THE PRICE SERIES — points at traded minutes, never a line.
+ *
+ * A line asserts continuity between its points. At 8% coverage a dashed one is
+ * still 92% non-data wearing the shape of data, because the eye follows the
+ * stroke rather than its texture.
+ */
+describe('the price series', () => {
+  const win = (startsAt: number, closes: (number | null)[]) => ({
+    startsAt,
+    closes,
+    covered: closes.filter((c) => c !== null).length,
+  });
+
+  it('places points at the slots that traded, aligned to the activity window', () => {
+    const v = pricePointsView(win(2, [4, null, 5]), 5)!;
+    expect(v.points.map((p) => p.slot)).toEqual([2, 3, 4]);
+    expect(v.points[1].y).toBeNull();
+  });
+
+  /*
+   * The first-traded-minute rule, made STRUCTURAL. No trade, no point -- so
+   * there is no line to begin at the window edge. 36-42% of top-12 rows open
+   * with a hole, and drawing from the edge would show flat-then-rising where
+   * the truth is absent-then-rising.
+   */
+  it('never emits a point before the first traded minute', () => {
+    const v = pricePointsView(win(3, [7, 8]), 5)!;
+    expect(Math.min(...v.points.map((p) => p.slot))).toBe(3);
+  });
+
+  /*
+   * Scaled to the row's OWN range, unlike the activity bars. Trades per minute
+   * means the same thing on every row; $2 and $40 names share no price axis, so
+   * shape is the only honest content.
+   */
+  it('scales to the row and seats a flat series mid-height', () => {
+    const rising = pricePointsView(win(0, [1, 2, 3]), 3)!;
+    expect(rising.points[0].y).toBe(0);
+    expect(rising.points[2].y).toBe(1);
+
+    // Flat must not collapse to the floor, which would read as a low.
+    const flat = pricePointsView(win(0, [5, 5, 5]), 3)!;
+    expect(flat.points.every((p) => p.y === 0.5)).toBe(true);
+  });
+
+  /*
+   * Null rather than a drawn-but-empty axis. After a market restart the column
+   * is legitimately absent while the engine rebuilds its minute maps -- amnesia,
+   * not a reading -- and an empty axis would say "nothing traded".
+   */
+  it('returns null when there is nothing measured', () => {
+    expect(pricePointsView(null, 5)).toBeNull();
+    expect(pricePointsView(undefined, 5)).toBeNull();
+    expect(pricePointsView(win(0, []), 5)).toBeNull();
+    expect(pricePointsView(win(0, [null, null]), 5)).toBeNull();
+  });
+
+  it('carries the coverage as a fact rather than gating on it', () => {
+    const v = pricePointsView(win(0, [1, null, null, 2]), 4)!;
+    expect(v.covered).toBe(2);
+    expect(v.title).toContain('2 of 4 minutes traded');
+  });
+});
+
+/*
+ * NO THRESHOLD AND NO GRADIENT. Coverage is a fidelity measure recruited to
+ * answer a relevance question, and on the rows that matter the two run
+ * opposite: TGL at 3% barely traded, AIXC at 8% traded 29,379 times. Opacity
+ * by coverage is the same error made continuous and harder to notice.
+ */
+describe('sparsity is rendered, never gated', () => {
+  const read = () =>
+    import('node:fs').then((fs) =>
+      fs.promises.readFile('components/ActivitySparkline.tsx', 'utf8'),
+    );
+
+  it('draws a sparse row at the same strength as a dense one', async () => {
+    const source = await read();
+    const at = source.indexOf('prices.points.map');
+    expect(at).toBeGreaterThan(-1);
+    const block = source.slice(at, at + 700);
+    // No coverage-derived opacity, and no suppression by count.
+    expect(block).not.toMatch(/opacity|covered\s*[<>]|covered\s*\?/);
+  });
+
+  it('emits discrete marks rather than a path', async () => {
+    const source = await read();
+    expect(source).not.toMatch(/<svg|polyline|<path/i);
   });
 });

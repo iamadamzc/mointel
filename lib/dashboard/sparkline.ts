@@ -86,3 +86,80 @@ export function sparklineView(window: number[] | undefined | null): SparklineVie
       `Full height is ${SPARK_FULL_SCALE}/min, the active line.`,
   };
 }
+
+/**
+ * The price series, as POINTS at traded minutes — never a line.
+ *
+ * **A line asserts continuity between its points.** At 8% coverage a dashed or
+ * dimmed line is still 92% non-data wearing the shape of data, and the eye
+ * follows the stroke rather than its texture. Discrete marks assert only the
+ * minutes that traded, which is all the desk observed.
+ *
+ * That also makes the first-traded-minute rule STRUCTURAL rather than enforced:
+ * no trade, no point, so there is no line to begin at the window edge. 36-42% of
+ * top-12 rows open with a hole, and drawing from the edge would show
+ * flat-then-rising where the truth is absent-then-rising — on exactly the setup
+ * he hunts.
+ *
+ * **No threshold and no gradient.** Coverage is a FIDELITY measure and it was
+ * being recruited to answer a RELEVANCE question; on the rows that matter the
+ * two run opposite. A cut at 40% would have dimmed a name trading 2,099 times
+ * per covered minute, and opacity-by-coverage is the same error made continuous
+ * and harder to notice, because no rule declares itself. Sparsity is rendered
+ * per point, never as a property of the series.
+ */
+export interface PricePointsView {
+  /** One entry per slot of the FULL activity window, so the two series align. */
+  points: Array<{ slot: number; y: number | null }>;
+  /** Real prices in the series. Derived upstream, never stored. */
+  covered: number;
+  /** Minutes the window spans, traded or not. */
+  span: number;
+  title: string;
+}
+
+/**
+ * Null when there is no price window at all — NEVER an empty series.
+ *
+ * A drawn-but-empty axis would say "nothing traded" where the truth is "not
+ * measured", and after a market restart the column is legitimately absent while
+ * the engine rebuilds its minute maps. That is amnesia, not a reading.
+ */
+export function pricePointsView(
+  price: { startsAt: number; closes: (number | null)[]; covered: number } | undefined | null,
+  activityLength: number,
+): PricePointsView | null {
+  if (!price || price.closes.length === 0) return null;
+
+  const real = price.closes.filter((c): c is number => c !== null && Number.isFinite(c));
+  if (real.length === 0) return null;
+
+  const lo = Math.min(...real);
+  const hi = Math.max(...real);
+  const range = hi - lo;
+
+  /*
+   * Scaled to the row's OWN range, unlike the activity bars.
+   *
+   * The opposite decision from `SPARK_FULL_SCALE`, and deliberately: activity is
+   * comparable across rows because trades per minute means the same thing on
+   * every one, whereas $2 and $40 names share no price axis. Here shape is the
+   * only honest content, so the scale is local — and a flat series sits at
+   * mid-height rather than collapsing to a floor that would read as a low.
+   */
+  const points = price.closes.map((close, i) => ({
+    slot: price.startsAt + i,
+    y: close === null ? null : range === 0 ? 0.5 : (close - lo) / range,
+  }));
+
+  const span = Math.max(activityLength, price.startsAt + price.closes.length);
+
+  return {
+    points,
+    covered: price.covered,
+    span,
+    title:
+      `Minute closes, ${price.covered} of ${price.closes.length} minutes traded. ` +
+      `Range ${lo.toFixed(2)}-${hi.toFixed(2)}. Points mark minutes that traded; gaps did not.`,
+  };
+}
