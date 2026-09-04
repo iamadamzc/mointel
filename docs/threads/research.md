@@ -3220,6 +3220,40 @@ separate work.
   nothing is being lost per hour — **but "no code reads it" is not the same as
   "we decided not to", and this one was decided FOR and then dropped.**
 
+### SCRAPE vs LICENCE — Integration is right, and my own item 30 wording is a hazard
+
+*Asked 2026-09-04 before the vendor question goes to him. Not vendor research —
+that is his purchase. This is about the SHAPE of the permission.*
+
+**`domainPolicy` permitting a host is a statement about what this desk's
+FETCHER will allow. It is not a statement that the data may be used in a
+product he sells.** Integration's distinction holds.
+
+> **AND I MUST FLAG MY OWN PHRASING BEFORE IT IS QUOTED INTO THAT DECISION.**
+> Item 30 says of stockanalysis.com: *"Probed read-only, robots-permitted
+> (`Disallow: /e/ /p/` only)."* **`robots.txt` is a CRAWLING instruction, not a
+> licence.** That sentence is true about fetching and silent about use, and in
+> a monetization discussion it reads as clearance. **Same category error one
+> level down from `domainPolicy`, and it is mine.**
+
+**The distinction that actually collapses part of the decision:**
+
+| source | commercial-use question |
+| --- | --- |
+| **SEC EDGAR filings** | **none of this kind.** Filings are US government work product, published by the SEC for public use — a float derived from them is derived from public record |
+| a vendor's displayed float | **the vendor's own product**, however public the page. Terms govern, not robots.txt |
+| **Alpaca — the feed he ALREADY licenses** | checked: `AlpacaAsset` carries symbol, name, exchange, status, tradable, class. **No share structure, no float.** The existing contract does not help here |
+
+> **So the filings route is not merely the principled one — it is the only one
+> with NO commercial-use question at all.** That is a genuine argument I had not
+> made: I have been selling it on provenance and it also happens to be the only
+> path whose licensing is settled before anyone asks.
+>
+> **It is still capped at ~9% of researched tickers.** So the real choice is
+> *narrow-and-clean* against *broad-and-licensed*, and **the licensing
+> determination is neither mine nor Integration's to make** — I am naming the
+> question, not answering it.
+
 ### The line I would put in front of him
 
 **Losing no capability is achievable for everything except float, and float was
