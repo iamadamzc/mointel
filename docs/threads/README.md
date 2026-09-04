@@ -1263,6 +1263,22 @@ read 23. **The failed deploy is the reason that sha is live.**
 something they cannot observe** — the same reasoning as reporting existence
 rather than a rate.
 
+## WHEN A FILTER RETURNS NOTHING, LIST THE VALUES THAT DO EXIST
+
+**Ops, 2026-09-04, measuring board churn.** Its first query asked for
+`type LIKE '%TOP%'` and returned **nothing**. The type is `RVOL_RANK_ENTRY`.
+
+**It caught that by listing the event types that actually exist rather than
+reading the empty result as "no churn"** — and that control is the only reason
+there is a measured churn figure at all: **70 entry events across 53 distinct
+names against 12 slots, 4.4x.**
+
+**This is the instrument-proof rule arriving in a query rather than in a test.**
+An empty result set is the same shape as a wrong predicate, and the reassuring
+reading is available for free. **So: before believing a zero from a filter,
+enumerate the domain the filter runs over.** One extra query, and it is the
+cheapest control on this desk.
+
 ## A PRECEDENT FOR "UP" IS NOT A PRECEDENT FOR "BUSY"
 
 **Ops refusing a deploy window from this seat, 2026-09-04.** I proposed running a
