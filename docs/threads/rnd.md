@@ -54,7 +54,7 @@ questions is a thread that has stopped working.
 | Q10 | Once a name goes dead intraday, does it come back? | 2026-09-03 | **CLOSED 2026-09-03, AMENDED twice** — back to +25% is rare (14.6% at 5 min quiet, 5.2% at 30). **But every pooled rate blends three session regimes** — premarket 62.3%, RTH 65.6%, after-hours 9.5% at 5 min — **and should not be quoted alone** |
 | Q11 | How often does the 5-minute drop rule remove a name that subsequently runs? | 2026-09-03 | **ANSWERED 2026-09-04** — tradeable miss rate **27.1% premarket, 9.4% RTH, 1.5% after-hours** on 577 replayed drops; highest where the threshold was calibrated, by 18x |
 | Q12 | Is a name's eventual activity predictable at the moment the board ranks it? | 2026-09-04 | proposed — **not blocked, QUEUED**; decides whether the 45.5% yield finding is a defect or a description |
-| Q13 | Is an aggregate momentum state across the top gappers measurable, and does it predict anything? | 2026-09-04 | proposed — *from the trader*; **not blocked**, design below, **must be falsifiable or not built** |
+| Q13 | Is an aggregate momentum state across the top gappers measurable, and does it predict anything? | 2026-09-04 | **CLOSED 2026-09-04 — NOT DETECTABLE at n=13, dial NOT BUILT.** Underpowered null, not absence; ~31 sessions would settle dispersion. `250388f` |
 
 #### The closing pass, 2026-08-27
 
@@ -1512,6 +1512,53 @@ what `lib/market/activity.ts` runs on, what the drop rule shipped on, and what
 Q10 and Q11 are measured in. **A study that failed on its own terms produced the
 one number this desk now depends on**, which is worth stating whenever a null is
 described as wasted.
+
+#### Q13 CLOSED — nothing clears the bar, the dial is not built, and the order commitment is what makes that trustworthy. 2026-09-04, `250388f`.
+
+**Pre-registered at `ae4205c`, run the same day. Full record in
+`docs/rnd/2026-09-04-q13-aggregate-dial-preregistration.md`.**
+
+    TOP 12 BY PREMARKET GAP AT 07:00
+      candidate      r(primary)  partial  own trend
+      1 roundTrip      -0.303     0.094     0.383
+      2 breadth        -0.340    -0.216     0.276
+      3 dispersion      0.544     0.356    -0.448
+
+**Nothing reached the 0.553 needed at n=13. Under his condition —
+FALSIFIABLE OR NOT BUILT — that means NOT BUILT.**
+
+**THE CANDIDATE I RANKED THIRD IS THE STRONGEST AND THE ONE I NAMED FIRST IS THE
+WEAKEST.** Round-trip was my own reasoning — *choppy is movement given back* —
+and it reaches −0.303 with a partial that **flips sign** to +0.094. Dispersion,
+which I argued down to third, reaches 0.544.
+
+> **Without the fixed order the natural write-up is *"dispersion, the obvious
+> measure of a choppy tape, comes closest"* — and it would have been assembled
+> after the fact.** The pre-registration is the only reason that sentence is not
+> in the results.
+
+**THE TREND CONTROL DID THE WORK IT WAS ADDED FOR.** Dispersion's own trend is
+−0.448 against a declining mover rate; controlling for session index takes it
+**0.544 → 0.356**. **Most of the raw figure is the calendar** — and it is exactly
+the control one is tempted to drop after seeing 0.544.
+
+**A DEFECT IN MY OWN PRE-REGISTRATION, recorded rather than patched.** I fixed
+one threshold and registered **six** tests (3 candidates × 2 boundaries) with **no
+multiplicity adjustment**. Bonferroni puts the bar at **0.695**. Best observed is
+0.544, under both, **so no verdict changed** — recorded because next time it
+might, and **a correction applied after seeing results is not a correction.**
+
+**THE NULL'S DELIVERABLE IS A SAMPLE SIZE, and the partial is the honest input:**
+**~31 further sessions settle dispersion** — about six trading weeks, **at no
+cost, since capture already runs.** The raw's ~14 would be quoting the confounded
+number. **A re-test must be pre-registered as a test of DISPERSION SPECIFICALLY**,
+since it is now a candidate selected for looking best on this data; re-running all
+three and reporting the winner repeats the error one level up.
+
+**WHAT THIS DOES NOT SAY: that the tape has no aggregate state.** At n=13 an |r|
+of 0.45 — a useful dial — is invisible. **This is an underpowered null and the
+design said so before the numbers existed.** Coverage caveat: 41..67% of each
+board had premarket bars, and whether the absent names differ is unmeasured.
 
 #### Q13 — aggregate momentum state. Registered 2026-09-04, design fixed, not run.
 
