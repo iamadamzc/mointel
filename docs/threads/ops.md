@@ -29,8 +29,18 @@ short-circuits, and **the same is true of the 13 INDEXES in SCHEMA**: the
 completeness check covers **tables only**, so a missing index on a current-version
 store passes the guard.
 
-**So, when adding a column or an index to SCHEMA: BUMP `SCHEMA_VERSION` IN THE
-SAME COMMIT.** Forgetting it now:
+**AMENDED SAME DAY, `eabc989`: THE INDEX HALF IS NOW HANDLED IN CODE.** Ops
+extended the completeness check to `CREATE [UNIQUE] INDEX` as well as
+`CREATE TABLE`, reading `type IN ('table','index')` — both still cheap reads
+taking no write lock. **It chose code over the checklist line proposed here, and
+the reason is the better rule: a guard depending on the next person remembering
+is the failure this desk keeps recording.** Mutation-proven — a tables-only
+revert fails the new index test and only that test.
+
+**WHAT REMAINS MANUAL IS COLUMNS.** The guard verifies that tables and indexes
+EXIST; it cannot see that an existing table is missing a newly added column. So:
+**adding a column to SCHEMA still requires bumping `SCHEMA_VERSION` in the same
+commit.** Forgetting it:
 
 - passes every test, because a fresh test store is created from SCHEMA whole;
 - **fails silently on the one machine that matters**, which already reports the

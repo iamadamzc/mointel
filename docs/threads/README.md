@@ -548,6 +548,34 @@ thing they lack. **Everything reconciles to one date and one deploy.** The fact
 that settled it had been sitting in a relay for an hour, in a message whose author
 did not know what it was for.
 
+## A TOOL THAT REPORTS "NOT FOUND" THE SAME WAY IT REPORTS "NONE" IS NOT AN INSTRUMENT
+
+**Ops, 2026-09-04, four instances in one night, each returning a plausible
+negative that was actually a failure to look:**
+
+- **`grep "INDEX IF NOT EXISTS (\w+)"` returned 0** for a line that was
+  present — BRE reads `\w` as a word-character and `+` as a literal plus. **Two
+  rounds were spent explaining a test failure that had not happened.**
+- **`systemctl is-active` on a MISSPELT unit returns `inactive`** — byte-identical
+  to a dead service. *(The fourth unit is `mointel-assess`, not
+  `mointel-scheduler`.)*
+- **`TZ=America/New_York date` returns UTC** on this shell, which has no tz
+  database — **a plausible time that is six hours wrong**, on the desk whose
+  charter already records four clock errors.
+- **`grep -c` on a root-owned file returns empty, not 0.**
+
+**The shape: the tool's "I could not look" is spelled identically to its "I
+looked and found nothing."** A wrong population announces itself; **this
+announces nothing, and it always announces it in the reassuring direction** —
+zero hits, service down, no matches, all of which read as clean answers.
+
+**So a negative from a shell command is not evidence until the instrument has
+been shown capable of returning a positive.** Run it against a case you KNOW
+matches before trusting the case that does not. This is the neighbour of *a
+check that cannot fail* and of *a negative is only as strong as its
+instrument* — and it is the version that bites in a terminal rather than in a
+test suite.
+
 ## A FAILED DEPLOY DOES NOT LEAVE YOU WHERE YOU WERE
 
 **Design, 2026-09-04, on why both its pending lists were wrong.** It had
