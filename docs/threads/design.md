@@ -2771,6 +2771,25 @@ carried by a name or a comment, or it will be lost.
   instead of naming the requirement — and the tell was that its empty state
   holds INSTRUCTIONAL TEXT: a constant dressed as content, in a band collapsed
   for saying nothing.
+- **Never gate work on a wall time you derived. Gate it on an OBSERVABLE.**
+  I reported 03:31 and then 03:42 when the true times were ~03:06 and 03:25 —
+  drifting because I was adding elapsed time by feel between messages instead of
+  reading a clock. The box's UTC was correct throughout; the arithmetic was not.
+  A "run it at 04:00" plan would have fired at ~03:42 actual and repeated the
+  03:02 failure exactly. **The gate for the owed reads is
+  `sessionPhase !== 'NEXT_DAY_PREP'` and `intelligence` non-empty** — a
+  CONDITION rather than a MOMENT, and it cannot drift. Same rule as the header
+  predicate: derive nominal from the session, not from a literal.
+  When a time is genuinely needed, take it from `date -u` or the API's
+  `fetchedAt` at the moment of use, never from memory of an earlier message.
+- **Reverse the edit, never the file.** `git checkout <file>` to undo a
+  deliberate mutation took the whole change with it. Same class as `git stash`
+  on this tree, which is already forbidden here for the same reason: a
+  destructive command aimed at a small target.
+- **Mutation-test every new assertion before trusting it.** Four vacuous checks
+  in one night; the fourth was the first caught by mutation rather than luck. It
+  asserted a null turnover against a fixture with no volume, so it PASSED with
+  the refusal removed entirely — it was asserting the fixture, not the code.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
