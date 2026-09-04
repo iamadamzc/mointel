@@ -909,6 +909,15 @@ habit rather than four accidents:**
   **only the request COUNT is recorded**, so the desk cannot report a
   reachability it already observed.
 
+**And the sharpest instance is `coverage`: `incomplete: gaps.length > 0`.** The
+one field that IS persisted is **DERIVED from the field that is not.** Storing
+`gaps` alone would have given `incomplete` for free — **so the discard saved
+nothing and cost the reason.** When a derived value is kept and its source
+dropped, the storage saved is negative: **less information, for the same
+write.** That is the argument for persisting the whole object rather than
+picking fields, and field-picking has now cost this desk twice on the same
+object, months apart, for unrelated reasons.
+
 **The tell in every case: the value was rich enough to make a decision with and
 was reduced to the decision.** A verdict is kept; the evidence that produced it
 is not. **So the next question — which is always "why?" — has to be answered by
