@@ -720,6 +720,58 @@ still looking.
 **A placeholder that decays toward truth is safe. One that decays toward
 plausibility hides itself.**
 
+## COMPUTED, USED FOR A DECISION, DISCARDED — FOUR TIMES IN ONE DAY
+
+**2026-09-04. The same shape in four unrelated modules, which makes it a design
+habit rather than four accidents:**
+
+- **`ActivityReading.window`** — trades per minute, documented *"FOR DISPLAY"*,
+  used for the ACTIVE/DEAD verdict, **no column on `ticker_session`.**
+- **`coverage.gaps`** — the directional strings saying WHICH source was missing,
+  consumed only by the model prompt; **persistence keeps a boolean**, so *"we
+  lacked a share count"* and *"we could not see press releases"* survive as the
+  same bit with opposite implications.
+- **`splitEvents`** — derived by `deriveSplitFactors`, **written to a log line
+  and dropped**; only the cumulative factor is stored, so the events have to be
+  re-detected from it later.
+- **SEC response statuses** — the client sees every 403, `lastError` is a local,
+  **only the request COUNT is recorded**, so the desk cannot report a
+  reachability it already observed.
+
+**The tell in every case: the value was rich enough to make a decision with and
+was reduced to the decision.** A verdict is kept; the evidence that produced it
+is not. **So the next question — which is always "why?" — has to be answered by
+recomputing, or cannot be answered at all.**
+
+**And the cost is never paid where the discard happens.** It lands on a surface
+months later that has nothing to render, or on a person reading raw strings at
+01:35 because no count existed to raise an alarm.
+
+## SPLIT A BOOLEAN WHEN ITS TWO FACTS HAVE OPPOSITE CORRECT ACTIONS
+
+**Research, 2026-09-04, on `secAvailable`.** The field conflates *SEC is
+configured* with *SEC is reachable*. The obvious fix — make it honest — **would
+be worse than the defect**, because the field is **a gate, not a display**:
+`client.ts:132` throws before every fetch and four workers gate on it. **An
+honest field would convert a rate limit into an outage.**
+
+**The test for splitting is not that the two facts differ. It is that their
+consumers need OPPOSITE responses:**
+
+    configured   ours    GATE — never send SEC an anonymous request
+    reachable    theirs  REPORT AND BACK OFF — hard-stopping on a throttle is wrong
+
+**A single boolean cannot serve both, and no amount of making it more accurate
+would help** — the accuracy is not the problem, the merged control is.
+
+**One defence of the code, against this seat's framing.** The comment at `:240`
+says the `@` check exists so we are *"rejected here rather than quietly
+rate-limited by them later"*, and **that is right about its own purpose**: the
+check is about COMPLIANCE, and a non-compliant user agent is what INVITES
+throttling. **The function never claimed to test reachability — the NAME and the
+DETAIL STRING promise it.** Part of this is nominal, and the nominal half is the
+cheapest to fix.
+
 ## THE STATE IS A JUDGEMENT; THE ARRAY IS THE OBSERVATION
 
 **Research, 2026-09-04, correcting a spec from Integration.** The instruction was
