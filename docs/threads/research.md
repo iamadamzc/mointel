@@ -3120,6 +3120,91 @@ spec is items 25/26.
 
 ---
 
+**42. Can we leave the Sheet? NO — and the shape has changed since the record.**
+*Asked by the trader via Integration 2026-09-04. Answered from the code, not
+from item 6, because the record is from 08-23 and things have moved.*
+
+**Integration's summary is CORRECT on the float and I confirm it verbatim:**
+`resolveDisplayedFloat` (`merge.ts:143`) still has **exactly two branches**, and
+both read Sheet tabs — `StructuralResearch.float` then `MomentumTicker.float`.
+**Every float on the desk is still the Sheet's.**
+
+### What has changed is the middle category, and it is the useful part
+
+**Two replacements now EXIST and are NOT WIRED. That is different from "not
+built" and it is where the cheapest progress is.**
+
+| | state |
+| --- | --- |
+| **float** | **no replacement anywhere.** The dossier's own `structure.displayedFloat` is populated on **7 of 574 versions** (item 32), so there is nothing to switch to |
+| **supply** | **BUILT, STORED, AND ON NO SURFACE.** `supplyPair` is computed for every dossier and the basis fetch now populates the split factors it needs — but grep across `lib/dashboard/` and `components/` finds **no reader at all** |
+| **cycle levels** | **BUILT, AND THIS READER WAS NEVER SWITCHED.** `deriveCycleLevels` reads the Sheet's `recentCycleHigh` and `recentRunHigh` while `lib/market/cycle.ts` computes the desk's own cycle high arithmetically |
+
+### What leaves with the Sheet, which is the list he asked for
+
+1. **Float — and pillar 5 with it.** `displayedFloatTurnover` and a branch of
+   `risk.ts` hang off the same number.
+2. **The cycle-level ladder's readings**, until `deriveCycleLevels` is pointed
+   at the computed cycle.
+3. **The interpreter's prior** — `sheetPrior` reaches every `Terra` call.
+   *Losing it is arguably a gain; R&D's Q1 wants uncontaminated grades.*
+4. **The second grader** — `compareSheetAndAuto` and the whole conflict
+   apparatus have nothing to compare against.
+5. **`keyLevels`**, read straight from the Sheet in `merge.ts`.
+
+> **AND IT FAILS SILENTLY, WHICH IS THE PROPERTY THAT MATTERS.** A missing
+> float resolves to `null`, and the code treats null as a legitimate unknown
+> rather than an error. **The day the Sheet stops, the board keeps rendering
+> and pillar 5 simply goes quiet.** No exception, no alert, no gap on screen —
+> the same shape as every silent-degradation finding on this desk.
+
+*Limit stated: the two ChatGPT tasks writing `TODAY` and `RESEARCH` are not
+checkable from this repository. That half of the answer stands on the record,
+not on code, and I did not re-verify it.*
+
+**So the answer he needs: not yet — one thing has no replacement, and two have
+replacements already built that nobody wired.** The second category is work
+already paid for and not delivering.
+
+---
+
+**43. The aggregate momentum state is computable now, at TICK grain, for exactly
+the names he means.** *Feasibility read for the trader via Integration
+2026-09-04. Availability only; whether it PREDICTS anything is R&D's.*
+
+**It is summing what already exists. Nothing new is needed on the wire.**
+
+| grain | what carries it | population |
+| --- | --- | --- |
+| **tick** | `trades` and `quotes`, already subscribed and already ingested — `ingestTrade` at `engine.ts:1035` updates price, session high and low per message | **rank ≤ 50**, so the top 5 are ALWAYS in it |
+| minute | wildcard `bars` — volume, trade count, OHLC range | whole market |
+
+> **THE TOP 5 GAPPERS ARE ALREADY IN THE HIGH-RESOLUTION INTEREST SET, so the
+> desk already holds TICK data for exactly the population the indicator is
+> about. No subscription diff, no second SIP connection, and no minute-grain
+> compromise for the names that matter.**
+
+Per-ticker fields an aggregate could read in-process today: `price`,
+`percentChange`, `sessionHigh`/`sessionLow`, `rvol`, `rvolRank`,
+`minuteTrades`, `minuteVolumes`, and now `activity`. **A top-N aggregate is a
+loop over ranked runtimes.**
+
+**What IS new: storing it.** The store is per-symbol; nothing holds a
+cross-sectional value per instant. **But it is re-derivable rather than
+observable-once** — board membership at an instant is in `ticker_session`, and
+minute bars are re-fetchable (item 40). **So there is no capture clock and no
+decision that needs taking today**, which is the same answer the 10-second
+question got.
+
+**One caution that is availability, not design:** a "choppy or trending"
+reading is a RATE, and this thread has already paid for the rule that a rate
+over an unfinished minute is wrong in an unknown direction. **A partial minute
+reads as low activity — which would manufacture a false CALM, and his use case
+is deciding NOT to trade.** The tick path avoids it entirely; a minute-grain
+version needs the same settle exclusion `activity.ts` uses.
+
+---
+
 **41. Board presence as a continuing condition — SCOPED, then BUILT INERT at
 `05b28b9`.**
 
