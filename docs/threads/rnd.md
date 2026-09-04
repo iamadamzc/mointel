@@ -43,6 +43,7 @@ questions is a thread that has stopped working.
 | Q10 | Once a name goes dead intraday, does it come back? | 2026-09-03 | **CLOSED 2026-09-03, AMENDED twice** — back to +25% is rare (14.6% at 5 min quiet, 5.2% at 30). **But every pooled rate blends three session regimes** — premarket 62.3%, RTH 65.6%, after-hours 9.5% at 5 min — **and should not be quoted alone** |
 | Q11 | How often does the 5-minute drop rule remove a name that subsequently runs? | 2026-09-03 | **ANSWERED 2026-09-04** — tradeable miss rate **27.1% premarket, 9.4% RTH, 1.5% after-hours** on 577 replayed drops; highest where the threshold was calibrated, by 18x |
 | Q12 | Is a name's eventual activity predictable at the moment the board ranks it? | 2026-09-04 | proposed — **not blocked, QUEUED**; decides whether the 45.5% yield finding is a defect or a description |
+| Q13 | Is an aggregate momentum state across the top gappers measurable, and does it predict anything? | 2026-09-04 | proposed — *from the trader*; **not blocked**, design below, **must be falsifiable or not built** |
 
 #### The closing pass, 2026-08-27
 
@@ -987,6 +988,75 @@ again.**
 **Every board-scoped figure in this register should now be read as *over the
 assessment capture window, ranks 1–25*** — Q5, Q6, Q11, S1, S3 and the yield
 finding alike. **Not one of them said so.**
+
+#### The viscosity programme — status, checked rather than recalled. 2026-09-04.
+
+**He asked what state it is in and what effort remains. I read the folder rather
+than the desk's summary of it, and the two differ.**
+
+**CLOSED, and not by choice — by data loss.**
+
+- **Phase 0 completed and killed it.** Its own headline: the archive held a
+  median **14% of consolidated premarket share volume**, **23% of trades carried
+  no aggressor side**, and the quote columns were **three concatenated
+  venue-local books with the venue label dropped**. Decisively: **the capture
+  fraction is not stable within a day, so it does not cancel out of a normalized
+  ratio — which is exactly what viscosity is.**
+- **The recommendation was to NOT proceed to Phase 1 as specified**, and it was
+  followed: **no `phase1_panel` directory exists.** Phase 1 never started.
+- **What did run:** `phase0`, `price_baseline`, `minute_effort`,
+  `minute_effort_confirmation`, `event_pilot`.
+- **The source archive is gone.** `A:\trade_research\data` is **4.7 MB holding
+  one `cot` folder**. A tick archive is gigabytes. **Even the price-only
+  baseline the recommendation fell back to cannot be re-run.**
+- **15 open questions from spec §19 remain formally open** and are now
+  unanswerable, because the data that would answer them does not exist.
+
+> **So: closed, nothing remains, and the register supersedes it.** Said plainly
+> so nobody re-opens it.
+
+**ONE THING IS NOT DEAD AND IS LOAD-BEARING TODAY.** Its single transferable
+result — **minute trade count is a meaningful measure of tape activity** — is
+what `lib/market/activity.ts` runs on, what the drop rule shipped on, and what
+Q10 and Q11 are measured in. **A study that failed on its own terms produced the
+one number this desk now depends on**, which is worth stating whenever a null is
+described as wasted.
+
+#### Q13 — aggregate momentum state. Registered 2026-09-04, design fixed, not run.
+
+**His idea, his words: a tell on the momentum state — *are we overall choppy,
+are there gappers moving in the current n time period* — across the top 5
+gappers, rendered as a dial. His use case is DECIDING NOT TO TRADE**: he read a
+session as bearish, took three trades, stopped, and wants that read faster and
+less dependent on his own impression.
+
+**Integration's caution is the design constraint, not a footnote:** *this is the
+exact shape that produces a plausible dial that always looks right.* **A state
+indicator that cannot read WRONG visibly is unfalsifiable, and an unfalsifiable
+dial is worse than no dial** — it launders an impression into a number.
+
+**So the rule, fixed before any measurement: if no candidate state produces a
+falsifiable reading, the answer is that it should not be built.** A bounded
+negative here saves a dial nobody should trust.
+
+**Three questions in order, and the third is where this most likely dies:**
+
+1. **Is a state DEFINABLE from what the archive holds?** Candidates:
+   **breadth** (share of the top N holding versus fading), **aggregate
+   activity** (median trades/min across the top N), **dispersion** (spread of
+   gains — his *choppy* may be low dispersion rather than low activity).
+2. **Does it CORRELATE with anything that matters?** The outcome must match his
+   use, which is **not** *did the market go up* but **did the session produce
+   tradeable setups**. Pre-registered before looking, as everything else here.
+3. **Is it computable EX-ANTE, at the moment he would need it?** **This is the
+   trap.** Tonight's peak-trade-count finding was a near-perfect separator that
+   **cannot be used in advance**, and an aggregate state assembled from
+   full-session quantities would fail the same way while looking identical on a
+   chart.
+
+**NOT BLOCKED — the archive can express all three candidates.** Research is
+separately answering availability (what is computable with no second SIP
+connection); **this thread owns whether the number would MEAN anything.**
 
 #### Q12 — registered 2026-09-04, not started
 
