@@ -5762,9 +5762,17 @@ Registration filing → effectiveness, matched on ticker and form, n=262:
 | 2 | 9 | **19 days** | 49 | 384 |
 
 **A supply event announced today typically becomes reachable about three weeks
-later; a quarter of the time it takes seven weeks or more.** The match
-over-counts across S-1/A chains, and **that bias INFLATES the lag**, so 19 days
-is an upper-ish estimate of the typical gap rather than a floor.
+later; a quarter of the time it takes seven weeks or more.**
+
+**CORRECTED — I had the bias direction BACKWARDS.** I first wrote that the match
+over-counts across S-1/A chains and therefore INFLATES the lag, making 19 days
+an upper estimate. Controlled on the 171 cases where the ticker filed exactly
+ONE prior registration of that form — where the match is unambiguous — the
+median is **22 days, p25 9, p75 56**, i.e. HIGHER than the full set. The
+heuristic takes the MOST RECENT prior filing, so an ambiguous case matches too
+NEAR rather than too far back, and multi-filers pull the median DOWN. **The real
+typical gap is at least 19 days and nearer 22; the bias deflates.** Reasoned from
+the armchair, then measured, and the measurement reversed it.
 
 ### What v1 may NOT claim
 
@@ -5892,3 +5900,43 @@ to un-adjust the number would be wrong in a new way.
 **The count is an OBSERVATION. "Repeat splitter therefore likely to issue" is an
 INFERENCE** until the ordinal analysis returns a number, and carries the
 `basis: INFERRED` label with the rule named.
+
+---
+
+**57. TWO EFFECT NOTICE VARIANTS ARE TWO DIFFERENT REACHABILITY CLASSES — and
+the lag bias runs the opposite way from what I told Integration.**
+
+*Checked because the 19-day median was about to become product framing. It
+survives; the sentence I attached to it did not.*
+
+### The bias direction was wrong, and the control reversed it
+
+| population | n | p25 | median | p75 |
+| --- | --- | --- | --- | --- |
+| all matched | 262 | 9 | 19 | 49 |
+| **unambiguous** — exactly one prior filing of that form | **171** | **9** | **22** | **56** |
+
+The heuristic matches the **most recent** prior filing, so an ambiguous case
+matches too NEAR, not too far back. Multi-filers therefore pull the median DOWN.
+**The typical gap is at least 19 days and nearer 22, and the bias deflates
+rather than inflates.** Item 55 is corrected in place.
+
+### The two notice variants are not two formats of one thing
+
+- **the `Form:` variant — 302 rows — contains NO post-effective amendments.**
+  91 S-1, 84 S-3, 54 F-3, 53 F-1, 7 F-6, 6 S-4, 4 F-4, 3 F-10. Original
+  registrations going effective. **This is the population behind the 19–22 day
+  median.**
+- **the `Accession Number:` variant — 42 rows, 38 resolvable — is ENTIRELY
+  POS AM**, and its lag is **median 5 days, max 60**.
+
+**So they are two reachability CLASSES, not one measurement with two encodings.**
+A post-effective amendment to an already-effective registration reaches the book
+in days; an original registration takes three weeks. Rendering them as one number
+would understate the near case by a factor of four — and the near case is the
+one that can hit the morning he is trading.
+
+That makes **four** reachability states, not three: **~19–22 days** (original
+registration), **~5 days** (POS AM), **NOW** (424B5 off a live shelf), and
+**unknown**. The accession variant also identifies the exact registration
+statement, so its link is stronger than the form-name match everything else uses.
