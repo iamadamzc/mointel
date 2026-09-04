@@ -5392,3 +5392,82 @@ cells.** I cannot run it from here — `load()` requests only `TODAY!A1:AA` and
 Until that number exists, the honest statement to the trader is **"the check is
 correct where the Sheet states both numbers"**, not "the board now checks
 floats".
+
+---
+
+**51. ADDING A UNION MEMBER FORCED ONE READER, NOT TWENTY — measured, and it
+reversed the recommendation.**
+
+*Integration asked for a SCOPE of what an `UNKNOWN` session phase would cost.
+The scope is the deliverable; nothing was built.*
+
+The defect is real. `OFFLINE_DISCOVERY` — the dashboard's not-yet-loaded
+placeholder, `components/DashboardShell.tsx:162` — sets `sessionPhase: 'CLOSED'`
+because `SessionPhase` cannot say "not yet known". So an unloaded page renders
+the word **"Closed"** (`MarketStatus.tsx:129`) at any hour, including RTH.
+
+### The measurement, which is the whole item
+
+Added `| 'UNKNOWN'` to `SessionPhase`, ran `tsc`, reverted.
+
+**ONE error in the entire codebase**: `SESSION_PHASE_LABEL`'s
+`Record<DiscoveryState['sessionPhase'], string>`. No other `Record<SessionPhase,
+…>` exists; both switches over the type carry `default:`.
+
+Integration's framing was *"if adding a phase forces every reader to handle it,
+that is the point rather than the cost."* **It does not force them.** The
+readers that keep compiling keep answering, and the answers are the wrong ones:
+
+| reader | what UNKNOWN silently becomes |
+| --- | --- |
+| `isMarketDataExpected` — a POSITIVE allowlist | `false` → **IDLE**, the exact answer the change was meant to prevent |
+| `lib/desk/view.ts:191` `default:` | headline **`MARKET CLOSED`** |
+| `lib/dashboard/telemetry.ts:108` | `phase ?? 'CLOSED'` — absence already coerced into the lie |
+| `board.ts:36`, `health.ts:121`/`:227`, `vwap.ts:177`, `diagnose.ts:109` | positive tests, all fall through |
+
+**A positive allowlist is not exhaustive and the compiler cannot see that it
+should be.** Adding the member is the most expensive way to NOT fix the defect:
+it changes a type the worker, `desk_assessment.session_phase`, the MCP tools and
+the health route all sit on, is enforced in one place, and leaves the header
+saying IDLE.
+
+The alternative, measured the same way: `market.snapshot?.discovery ?? null`
+gives **2 errors, both inside `DashboardShell`, both at the prop sites**. The
+compiler stops it at the boundary and the producer half is untouched.
+
+**`UNKNOWN` is not a phase of the market. It is a property of the OBSERVER.**
+The market always has a phase; the browser has sometimes not loaded. Putting the
+observer's state into the market's vocabulary gives every producer a member it
+can never emit and every consumer a case it can never see.
+
+### One wrong answer, not two — and the second is prevented by an unwritten coupling
+
+Integration read the placeholder as producing two: the label AND the header's
+nominal-state predicate. The predicate does reason from a false input, but
+reaches the same output either way — `marketHealth.state` is `'OFFLINE'` on an
+unloaded page, and `'OFFLINE'` is not nominal against `'IDLE'` OR `'LIVE'`. It
+is safe because `health` and `discovery` fall back behind the SAME
+`market.snapshot?` guard and cannot diverge. **Safe by coupling, not by design**,
+which is a reason to fix it rather than a reason not to.
+
+### The louder defect is a DIFFERENT constant, and it was masking this one
+
+`OFFLINE_DISCOVERY` lies in **seven** fields, not one: `eligibleCount: 0` and
+`trackedCount: 0` render "0 eligible · 0 tracked" — a measurement stated from no
+measurement — and no phase change touches them.
+
+And `OFFLINE_HEALTH` (`DashboardShell.tsx:49`), the raw object sitting DIRECTLY
+ABOVE the carefully repaired `OFFLINE_HEALTH_VIEW`, still carries `offline:
+true`. It reaches `DiscoveryBoard.tsx:255` and renders **"Market feed is not
+running. Discovery cannot populate until it reconnects."** on an unloaded page —
+verbatim the failure the View twin's own comment says it removed, one component
+over, as a sentence instead of a label.
+
+**It also masks the phase defect**: `marketOffline` takes priority at `:255`, so
+the `sessionPhase === 'CLOSED'` branch at `:261` is UNREACHABLE from the
+placeholder. I nearly reported that as a second phase lie. It is not one.
+
+That file's comment names five `OFFLINE_` constants and records three twins
+fixed. **The two unfixed are the two above.** Enumerating by pattern found them;
+enumerating from the fix that was made would have missed both — which is the
+same lesson the comment itself already records, one level up.
