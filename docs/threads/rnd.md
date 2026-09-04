@@ -1054,6 +1054,37 @@ negative here saves a dial nobody should trust.
    full-session quantities would fail the same way while looking identical on a
    chart.
 
+**THE DEFINITIONAL GUESS, REGISTERED NOW BECAUSE IT DECIDES WHAT GETS TESTED
+FIRST — and it is a prediction I can be wrong about.**
+
+**Re-reading his words: *are we overall choppy, are there gappers moving in the
+current n time period.* That is TWO questions, not one.**
+
+    "are there gappers moving"   -> PRESENCE of movement.  Breadth, activity.
+    "are we overall choppy"      -> QUALITY of movement.   Not absence -- movement
+                                    that does not hold.
+
+> **A single dial compresses two questions, and the compression is lossy in the
+> direction that matters most to him.** A session with no movers and a session
+> full of movers that all fade are **both bad and bad differently**, and one
+> number cannot say which. **Registering that before anyone builds one dial.**
+
+**First candidate is NOT dispersion — it is ROUND-TRIP RATIO**, and I am naming
+it now so a better result from a later candidate cannot be presented as the
+first thing I reached for. **Choppy is movement given back**: aggregate
+excursion against aggregate net close across the top N. **High round-trip means
+names moved and did not hold**, which is exactly what he described and what
+dispersion would miss — **a choppy session and a trending session can have
+identical dispersion.**
+
+**Second candidate: breadth** — share of the top N holding rather than fading,
+answering the other half of his sentence.
+
+**Dispersion drops to third**, because it measures how *differently* names
+behaved rather than how *durably*, and his complaint is about durability.
+
+**All three must clear the ex-ante test in question 3 or none of them ships.**
+
 **NOT BLOCKED — the archive can express all three candidates.** Research is
 separately answering availability (what is computable with no second SIP
 connection); **this thread owns whether the number would MEAN anything.**
