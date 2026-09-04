@@ -6863,3 +6863,68 @@ keeps finding: I said "the pair already carries the same number" from memory of
 reading the pair, without diffing the two types.** Third time today I have
 reasoned about the codebase instead of reading it, and the first where the error
 would have deleted evidence rather than duplicated work.
+
+---
+
+**72. FOR 69% OF ISSUERS THERE IS NO NON-SEC SEARCH TO BE STALE. Design's CMND
+lookup, answered from the archive and the code.**
+
+*Design asked four live-desk questions about CMND and named three candidates.
+**CMND is not in the 2026-08-23 archive**, so (a)–(d) need the production store,
+which I cannot read. What I can settle is which candidate the prior favours, and
+the code answers one of them outright.*
+
+### Candidate 2 already happened, and it is guarded now
+
+`irRegistry.ts:88-95` records the incident verbatim: legacy rows had no
+`sourceShape`, *"so the value deserialises to `undefined`, and `undefined !==
+null` is true — every legacy row was believed… **All four resolved issuers in
+production were affected, and their stored "index" URLs are single articles**…
+so the deterministic IR poll refetched a frozen page and could never see anything
+new."*
+
+**The `sourceShape` guard at :96 is the fix** — `resolved` requires `FEED` or
+`INDEX`, `classifyCollectionPoint` returns `ARTICLE` for a leaf release and
+`:272-273` refuses it, and a legacy row without a shape now reads as unresolved
+and **re-resolves**. So a frozen page no longer retires the resolver permanently.
+
+### Candidate 1 is the base case, by a wide margin
+
+| `sourceShape` across 258 issuer rows | n |
+| --- | --- |
+| INDEX | 62 |
+| FEED | 19 |
+| **durable total** | **81 = 31.4%** |
+| null | 159 |
+| absent (legacy) | 18 |
+
+**177 issuers — 69% — have no durable collection point**, so non-SEC catalyst
+collection has nowhere to poll. **That is where the prior for CMND sits.**
+
+### And Design's question surfaced a live defect in the gap condition
+
+**`companySourceKnown` tests URL PRESENCE, not durability.** 19 registry rows
+carry only a bare `investorRelationsUrl` — an origin, not a listing page.
+
+| gap over 231 current dossiers | n | share |
+| --- | --- | --- |
+| **as coded** — no non-SEC sources && `!companySourceKnown` | 101 | 43.7% |
+| **honest** — no non-SEC sources && no DURABLE shape | **110** | **47.6%** |
+| **suppressed by a URL that is not a collection point** | **9** | 3.9% |
+
+**On nine names the desk says "we know where to look" when what it knows is a
+homepage**, and the SEC-only warning is suppressed by it.
+
+### A fragility worth knowing while SEC is 403-ing
+
+`classifyCollectionPoint` returns `ARTICLE` when `!body` — *"not fetched; cannot
+confirm a listing"*. **A transient fetch failure is classified identically to a
+genuinely unsuitable page.** A resolution attempted during a bad window records a
+rejection that looks permanent. Tonight's class again, in the resolver.
+
+### The structural point, sharpened
+
+Design is right that raising refresh frequency cannot help, because the
+fingerprint is computed over collected sources. **The deeper version: for 69% of
+issuers there is no non-SEC source to collect at all — so it is not that the
+search is stale, it is that for most names there is no search.**
