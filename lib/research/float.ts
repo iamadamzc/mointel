@@ -209,6 +209,85 @@ function ageInDays(asOf: string, now: Date): number | null {
  * dividing a share count by a number parsed out of a sentence is a worse
  * failure than declining to answer.
  */
+/**
+ * The verdict available for a float and a share count written TOGETHER.
+ *
+ * Narrower than `FloatVerdict` on purpose: `CANNOT_VERIFY` and `NO_FILED_COUNT`
+ * are unreachable for a pair that is present and same-instant, and a type that
+ * can express them invites someone to produce them.
+ */
+export type SheetPairVerdict = 'CONSISTENT' | 'UNIT_MISMATCH' | 'IMPOSSIBLE';
+
+export interface SheetPairAssessment {
+  verdict: SheetPairVerdict;
+  ratio: number;
+  detail: string;
+}
+
+/**
+ * Judges a float against a share count STATED IN THE SAME CELL.
+ *
+ * NO DATE IS INVOLVED, AND NONE MAY BE INVENTED TO MAKE A TYPE FIT.
+ * `assessFloat` takes a `FiledShareCount` — shares, asOf, concept, sourceId —
+ * because it compares a live float against a filing that could be years old.
+ * The Sheet's pair has none of those fields and needs none of them.
+ *
+ * WHY THE FRESHNESS GATE DOES NOT APPLY, WHICH IS THE WHOLE ARGUMENT.
+ * `assessFloat` puts ONE gate in front of BOTH arithmetic tests, and its reason
+ * is that a stale count can be too LOW (shares issued since) or too HIGH (a
+ * reverse split the cover page predates) and nothing can tell which. **Two
+ * numbers one author wrote in one cell at one instant have no gap to be stale
+ * across**, so the gate is satisfied by construction rather than skipped — and
+ * BOTH tests become sound, not one.
+ *
+ * ITEM 28 IS WHY THIS IS VALID NOW AND WAS NOT BEFORE, and it is stated here
+ * because a reader will otherwise re-derive the objection and think the check
+ * unsound. The float and the share count were "asynchronous by construction" —
+ * float from a live Sheet read, count from a dossier written days earlier — and
+ * a comparison across two as-of dates proves nothing. **The trader dissolved
+ * that by changing his own Sheet format.** Same source, one instant, so an
+ * inconsistency is now genuinely an inconsistency.
+ *
+ * NOT a substitute for `assessFloat`. This says only whether the pair
+ * contradicts itself; it says nothing about whether the float belongs to this
+ * symbol at all, which is what `DERIVATIVE_SYMBOL` is for.
+ */
+export function assessSheetPair(pair: {
+  float: number;
+  sharesOutstanding: number;
+}): SheetPairAssessment | null {
+  const { float, sharesOutstanding } = pair;
+  if (!Number.isFinite(float) || float <= 0) return null;
+  if (!Number.isFinite(sharesOutstanding) || sharesOutstanding <= 0) return null;
+
+  const ratio = float / sharesOutstanding;
+
+  // The same constant assessFloat uses, called rather than restated, so the two
+  // cannot drift into disagreeing about what a unit error looks like.
+  if (ratio < UNIT_MISMATCH_RATIO) {
+    return {
+      verdict: 'UNIT_MISMATCH',
+      ratio,
+      detail: `float is ${(ratio * 100).toFixed(2)}% of the share count stated beside it; below ${UNIT_MISMATCH_RATIO * 100}% reads as a unit error rather than a small float`,
+    };
+  }
+
+  if (ratio > 1) {
+    return {
+      verdict: 'IMPOSSIBLE',
+      ratio,
+      detail:
+        'float exceeds the share count stated beside it; both were written together, so one of the two is wrong',
+    };
+  }
+
+  return {
+    verdict: 'CONSISTENT',
+    ratio,
+    detail: `float is ${(ratio * 100).toFixed(1)}% of the share count stated beside it`,
+  };
+}
+
 export function assessFloat(claim: FloatClaim): FloatAssessment {
   const security = classifySecurity({ symbol: claim.ticker, name: claim.issuerName });
   if (
