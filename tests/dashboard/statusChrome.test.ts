@@ -37,22 +37,70 @@ describe('status chrome shows only what varies', () => {
 
     expect(source).not.toContain("label: 'Market: worker offline'");
     expect(source).not.toContain("label: 'Research: engine offline'");
+    expect(source).not.toContain("label: 'Assessments: scheduler offline'");
     expect(source).toContain("label: 'Market: not loaded'");
     expect(source).toContain("label: 'Research: not loaded'");
+    expect(source).toContain("label: 'Assessments: not loaded'");
   });
+
+  /*
+   * And it must not SHOUT it either. Red is the alarm, and nothing has been
+   * observed to be wrong.
+   *
+   * Sliced AFTER each label rather than over the whole file: the doc comments
+   * here quote the old tone to explain why it was wrong, and a test that
+   * cannot tell code from prose about code fails on its own rationale. Which
+   * it did, once.
+   */
+  it('does not colour an unloaded header as a fault', async () => {
+    const source = await read('components/DashboardShell.tsx');
+
+    for (const label of [
+      "label: 'Market: not loaded'",
+      "label: 'Research: not loaded'",
+      "label: 'Assessments: not loaded'",
+    ]) {
+      const at = source.indexOf(label);
+      // The label exists. Otherwise the tone assertions are vacuous.
+      expect(at, label + ' missing').toBeGreaterThan(-1);
+      const body = source.slice(at, at + 220);
+      expect(body, label + ' is coloured as a fault').not.toContain("tone: 'neg'");
+      expect(body, label + ' has no tone').toContain("tone: 'dim'");
+    }
+  });
+
+  /*
+   * ASSERTED OVER THE PATTERN, NOT OVER THE THREE I HAPPEN TO KNOW.
+   *
+   * The first fix said "both twins" and there were five OFFLINE_ constants in
+   * the file; the third stayed red on the live desk. Naming the constants I
+   * remember reproduces exactly the enumeration failure that caused it, so this
+   * counts them and fails when a new one appears unreviewed.
+   *
+   * The instrument is proved first: if the pattern matched nothing, an
+   * expectation about what it found would pass vacuously.
+   */
+  it('has exactly the five placeholder constants that have been reviewed', async () => {
+    const source = await read('components/DashboardShell.tsx');
+    const found = [...source.matchAll(/^const (OFFLINE_[A-Z_]+)/gm)].map((m) => m[1]);
+
+    // The extractor can see. Without this the assertion below is vacuous.
+    expect(found.length).toBeGreaterThan(0);
+
+    expect(found.sort()).toEqual([
+      'OFFLINE_ASSESSMENTS',
+      'OFFLINE_DISCOVERY',
+      'OFFLINE_HEALTH',
+      'OFFLINE_HEALTH_VIEW',
+      'OFFLINE_RESEARCH',
+    ]);
+  });
+
 
   /*
    * And it must not SHOUT it either. Red is the alarm; nothing has been observed
    * to be wrong, so the placeholder is dim.
    */
-  it('does not colour an unloaded header as a fault', async () => {
-    const source = await read('components/DashboardShell.tsx');
-    const placeholders = source.slice(
-      source.indexOf('const OFFLINE_HEALTH_VIEW'),
-      source.indexOf('const OFFLINE_ASSESSMENTS'),
-    );
-    expect(placeholders).not.toContain("tone: 'neg'");
-  });
 
   /*
    * NORMAL IS RELATIVE TO THE CLOCK, and the first version of this test pinned

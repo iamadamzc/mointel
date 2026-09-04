@@ -127,10 +127,37 @@ const OFFLINE_RESEARCH: ResearchHealthView = {
   running: false,
 };
 
-/** Until the first payload lands, the scheduler is unknown — reported as offline. */
-const OFFLINE_ASSESSMENTS: AssessmentPanel = emptyAssessmentPanel(
-  'No market payload has been received yet',
-);
+/**
+ * Until the first payload lands the scheduler is UNKNOWN, and now says so.
+ *
+ * **The third twin, and I missed it while fixing the other two.** I wrote "both
+ * twins" in a file that holds FIVE `OFFLINE_` constants — the same enumeration
+ * failure I had diagnosed in my own header audit hours earlier, repeated inside
+ * the fix for it. Knowing to enumerate did not produce an enumeration; the
+ * version that works is mechanical: grep the CONSTANT PATTERN, not the
+ * components you have in mind.
+ *
+ * `emptyAssessmentPanel` calls `projectSchedulerHealth({ health: null })`, and
+ * that function reads null CORRECTLY as "no worker has ever reported" — a real
+ * verdict, `tone: 'neg'`, whose detail tells him to START THE DESK. The
+ * function is right. The caller was wrong to pass null to mean "not loaded
+ * yet", which is the same conflation as the other two: absence of a reading
+ * used as evidence of a fault.
+ *
+ * Worse here than for the market light, because the detail is an INSTRUCTION.
+ * A healthy desk told him to restart it.
+ */
+const OFFLINE_ASSESSMENTS: AssessmentPanel = {
+  ...emptyAssessmentPanel('No market payload has been received yet'),
+  headline: 'LOADING',
+  scheduler: {
+    state: 'OFFLINE',
+    label: 'Assessments: not loaded',
+    detail: 'No market payload has been received yet',
+    tone: 'dim',
+    running: false,
+  },
+};
 
 const OFFLINE_DISCOVERY: DiscoveryState = {
   tradingDate: '',
