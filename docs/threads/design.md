@@ -2998,6 +2998,27 @@ second date now** rather than retrofitting it.
 his differs from the model's. Show the date, do not grade it. Same boundary as
 the sparkline.
 
+## The coverage ladder has FOUR rungs (for the warning, when it is built)
+
+1. **No route known** — no IR or newsroom address at all. 69% of issuers.
+2. **A route known but not durable** — a homepage, not a listing page. The nine
+   names where the desk believes it can see and cannot.
+3. **A DURABLE route that returned nothing.** 34 of the archive's 43 hold a
+   verified FEED or INDEX address and collected nothing from it.
+4. **Both sides genuinely searched.**
+
+**Rung 3 is the alarming one and the only state that indicts the DESK rather
+than the ISSUER.** "Searched and empty is evidence" is right, and this is its
+strongest form: not merely that we looked, but that **we looked somewhere we had
+verified was the right place** and came back with nothing.
+
+**And CMND sits in a fifth position none of these name.** Verified live: it has
+a `COMPANY_NEWSROOM` source whose URL is a `/news-release/<slug>` LEAF ARTICLE —
+the very release the card quotes. A route is known, it returned something, and
+what it returned is the same thing as last time. **Invisible to any count of
+sources**, and `coverageIncomplete` reads FALSE, so the warning would have been
+silent on the one name that needed it.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
@@ -3062,6 +3083,20 @@ the sparkline.
   in one night; the fourth was the first caught by mutation rather than luck. It
   asserted a null turnover against a fixture with no volume, so it PASSED with
   the refusal removed entirely — it was asserting the fixture, not the code.
+- **I reported a MECHANISM as a FINDING, and it was wrong.** I observed that a
+  wrong-module import passed `npx tsc --noEmit` and failed `next build`, then
+  said tsc "does not cover the test files". **It does** — probed it myself:
+  planting `const probe: number = 'not a number'` in `tests/` produces TS2322.
+  The real mechanisms are `incremental: true` with a stamped
+  `tsconfig.tsbuildinfo` (a pass can SKIP files it believes unchanged), and
+  `.next/types/**` being in the include list, so the same command covers
+  different things depending on whether a build has run.
+  **The symptom was real; the explanation was invented.** Separate what you SAW
+  from what you CONCLUDED when reporting, because a plausible mechanism travels
+  as fact and my wrong one would have sent someone to widen an include list that
+  was already correct — a fix changing nothing while looking like it did.
+  Mitigation: `rm tsconfig.tsbuildinfo` before a decisive check; run the full
+  build before reporting clean or shipping.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
