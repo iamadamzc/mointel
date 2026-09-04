@@ -71,26 +71,53 @@ const OFFLINE_HEALTH: MarketFeedHealth = {
       rthCloseCapture: null,
 };
 
-/** Shown before the first market payload arrives; never claims LIVE. */
+/**
+ * Shown before the first market payload arrives.
+ *
+ * **Never claims LIVE — and never claims a FAILURE either.** It used to render
+ * `Market: worker offline`, the exact words `health.ts:181` uses when the worker
+ * really is dead, in red, at every page load before the first payload. So the
+ * header announced that capture was down when the truth was that the page had
+ * not finished loading.
+ *
+ * Not-yet-known and known-bad must not render alike, and this is the dangerous
+ * direction of that: a refusal shown as an absence loses information, but a
+ * LATENCY shown as a failure raises a false alarm about the one subsystem he
+ * cannot trade without — on the one line he cannot look away from.
+ *
+ * `detail` was already honest. Only the label lied, so the label now matches it,
+ * and the tone drops from `neg` to `dim` because nothing bad has been observed.
+ * If the payload never arrives the header keeps saying "not loaded", which stays
+ * TRUE and reads as wrong the longer it persists — where a specific failure
+ * would have been a confident lie from the first paint.
+ */
 const OFFLINE_HEALTH_VIEW: MarketHealthView = {
   state: 'OFFLINE',
   connection: 'OFFLINE',
   freshness: 'UNKNOWN',
-  label: 'Market: worker offline',
+  label: 'Market: not loaded',
   detail: 'No market payload has been received yet',
-  tone: 'neg',
+  tone: 'dim',
   messageAgeSeconds: null,
   heartbeatAgeSeconds: null,
   live: false,
   thresholds: { freshSeconds: 90, staleSeconds: 240 },
 };
 
-/** Until the first payload lands, the engine is unknown — reported as offline. */
+/**
+ * Until the first payload lands the engine is UNKNOWN — and is now reported as
+ * unknown rather than as offline.
+ *
+ * The old comment said the quiet part: "the engine is unknown — reported as
+ * offline". Written deliberately and for a good reason — it must not claim the
+ * engine is fine — but it overshot from "claim nothing" to "claim the
+ * failure". See `OFFLINE_HEALTH_VIEW`.
+ */
 const OFFLINE_RESEARCH: ResearchHealthView = {
   state: 'OFFLINE',
-  label: 'Research: engine offline',
+  label: 'Research: not loaded',
   detail: 'No market payload has been received yet',
-  tone: 'neg',
+  tone: 'dim',
   queuedJobs: 0,
   activeJobs: [],
   activeCount: 0,

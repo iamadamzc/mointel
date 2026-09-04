@@ -18,6 +18,43 @@ describe('status chrome shows only what varies', () => {
     import('node:fs').then((fs) => fs.promises.readFile(f, 'utf8'));
 
   /*
+   * A PLACEHOLDER MUST NOT NAME A FAILURE IT HAS NOT OBSERVED.
+   *
+   * `OFFLINE_HEALTH_VIEW` rendered `Market: worker offline` — the exact string
+   * `health.ts:181` uses when the worker really is dead — in red, at every page
+   * load before the first payload arrived. The desk announced that capture was
+   * down when the truth was that the page had not loaded.
+   *
+   * This is the dangerous direction of the not-measured family. A refusal shown
+   * as an absence loses information; a LATENCY shown as a failure raises a false
+   * alarm about the one subsystem he cannot trade without.
+   *
+   * Asserted against source because the failure is a constant in a file, and
+   * because these views are not exported.
+   */
+  it('never names a failure before the first payload arrives', async () => {
+    const source = await read('components/DashboardShell.tsx');
+
+    expect(source).not.toContain("label: 'Market: worker offline'");
+    expect(source).not.toContain("label: 'Research: engine offline'");
+    expect(source).toContain("label: 'Market: not loaded'");
+    expect(source).toContain("label: 'Research: not loaded'");
+  });
+
+  /*
+   * And it must not SHOUT it either. Red is the alarm; nothing has been observed
+   * to be wrong, so the placeholder is dim.
+   */
+  it('does not colour an unloaded header as a fault', async () => {
+    const source = await read('components/DashboardShell.tsx');
+    const placeholders = source.slice(
+      source.indexOf('const OFFLINE_HEALTH_VIEW'),
+      source.indexOf('const OFFLINE_ASSESSMENTS'),
+    );
+    expect(placeholders).not.toContain("tone: 'neg'");
+  });
+
+  /*
    * NORMAL IS RELATIVE TO THE CLOCK, and the first version of this test pinned
    * the bug that fact caused.
    *
