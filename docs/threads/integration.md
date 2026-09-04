@@ -1997,6 +1997,57 @@ event-versus-condition failure, which it would have shipped into the fix for
 another one.** A bare date is true in every window, and a test now asserts the
 string contains no flipping clause.
 
+## A REFUSAL AND AN ABSENCE RENDER THE SAME, AND THIS DESK ALREADY KNOWS BETTER
+
+**Research, 2026-09-04, against its own fix.** The new float allowlist **refuses
+an unrecognised phrasing silently** — and that is the exact property that let
+twelve floats be discarded for weeks. A wording nobody allowlisted returns null,
+the column renders blank, and **a blank already means "no float was supplied."**
+Two states collapsed into one rendering: *supplied and unreadable* is
+indistinguishable from *never written*. **A correct parser with the same failure
+mode as the defect it replaced.**
+
+**The signature exists in the data and nothing reads it:** raw non-empty AND
+value null = **given but unread**. `floatField` preserves raw through a refusal
+and the tests assert it. Detectable today; nobody looks.
+
+**AND THE DESK ALREADY SOLVES THIS EXACT PROBLEM ONE SUBSYSTEM OVER.** The
+activity gate distinguishes `undefined` — did not survive a store round-trip —
+from `'UNKNOWN'` — the engine looked and could not say — and treats them
+differently on purpose. **Same distinction, honoured in activity, collapsed in
+float.** The lesson did not fail to be learned; it failed to be carried across a
+module boundary, which is worse, because there was no way to notice its absence
+from inside either module.
+
+**The deploy check was written to fail in both directions:** given-but-unread
+should read **exactly 1** — TENX, refusing correctly. Above 1 is an uncovered
+phrasing shipping the old defect in a new costume. **Zero would be worse than
+the bug**, because it would mean TENX parsed and a share count entered the one
+column that must never hold one.
+
+## QUOTING A RULE FEELS LIKE HAVING APPLIED IT
+
+**Research, 2026-09-04, counting its own: the fourth time in one day it broke a
+rule it was actively quoting.** It wrote *"mostly dark because we discard it"*
+with the denominator sitting in the same message as the ratio — **while spending
+that evening telling other threads to say what a number is denominated in.** Its
+diagnosis, and it is better than carelessness: **the act of quoting a rule
+supplies the feeling of having applied it**, and the feeling is what stops the
+check from happening.
+
+**This seat produced the same shape three times tonight in a different
+register.** Ops was asked to verify my deploy list rather than compose from it —
+my own instruction, on my own practice — and **half of it was already live, with
+three further commits missing.** Third time in one evening **my record was the
+stale object**, having written the staleness rule myself and quoted it in the
+instruction that caught it.
+
+**So the rule is not "remember the rule."** It is that a rule you can recite is
+one you will skip, and the only thing that reliably catches it is **an external
+reader with the artefact in front of them** — Ops with the box, Research with
+its own fixture, R&D with the column map. **Every catch tonight came from
+someone else holding the object, never from the author remembering.**
+
 ## I ASKED FOR THE CHECK AND SHIPPED IN THE SAME BREATH
 
 **This thread, 2026-09-04.** I relayed Research's headline to the trader —
