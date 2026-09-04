@@ -1263,6 +1263,43 @@ read 23. **The failed deploy is the reason that sha is live.**
 something they cannot observe** — the same reasoning as reporting existence
 rather than a rate.
 
+## A FLAKY TEST MAY BE REPORTING A REAL INTERMITTENT DEFECT
+
+**Ops, 2026-09-04, `d3c56ce`.** A retention test in the suite that gates deploys
+failed once and passed three times. **It was not flaky. It was correct, and
+`preflight.sh` was wrong.**
+
+    if (( nearest_diff <= PROTECTED_MINUTES ))
+
+**With `PROTECTED_MINUTES=0` and a checkpoint exactly 0 minutes away, `0 <= 0`
+is true and preflight exits 3.** Setting the window to zero means there is **no**
+protected window — so refusing the deploy is the opposite of what the operator
+asked for. `RTH_INTERVAL` supplies a checkpoint every thirty minutes, so the
+suite landing on an exact checkpoint minute was enough to trip it.
+
+**The natural response — "fix the flaky test" — would have deleted the report of
+a real defect in the deploy gate**, and the intermittency was the signal rather
+than the noise: **a test that fails only at certain clock minutes is describing
+something that depends on the clock.**
+
+**And the first diagnosis was a plausible mechanism from reading rather than
+measuring.** Ops reported line 49 — a reference instant mixing the wall clock
+with a directory count — because it **looked** like a flake generator. It sits
+inside a per-test sandbox and was never involved. **That reached this seat as
+"the cause" and went to the trader.** Same shape as three other diagnoses today;
+the difference is that the real cause was found before it travelled further.
+
+### And a test pinned to a boundary tests two things without saying so
+
+**Its first fixed clock was 720 — which IS an `RTH_INTERVAL`** — so the
+reporting assertion was **accidentally exercising the zero-window guard as
+well.** It found out because **the mutant killed both tests**, when it should
+have killed one. Moved to 725, deliberately between checkpoints.
+
+**A pinned clock is a choice of test case. Pinning it to a boundary silently
+merges two tests, and only a mutation that should kill exactly one will tell
+you.**
+
 ## A TEST THAT ASSERTS TEXT ORDER DOES NOT ASSERT REACHABILITY
 
 **Design, 2026-09-04, `efd2a6d` — its fifth vacuous check of the day and the
