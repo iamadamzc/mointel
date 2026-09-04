@@ -492,11 +492,42 @@ function DiscoveryRow({
         // board does not have.
         <td className="num px-2 py-1 text-right align-middle">
           {row.displayedFloat === null ? (
-            <span className="text-[11px] text-warn" title="No float on file for this name.">
-              unknown
-            </span>
+            /*
+             * Three outcomes, and collapsing any two would lose the finding.
+             *
+             * A REFUSED float renders as the verdict, never as the number with
+             * a mark beside it — `6,109 ⚠` still scans AS 6,109, and the mark
+             * is exactly what a scanning eye drops. The digits appear only in
+             * the hover, as the evidence FOR the verdict rather than as a
+             * reading.
+             *
+             * A missing float stays "unknown". Rendering a detection as an
+             * absence would make the strongest structural finding on the board
+             * look identical to never having looked.
+             */
+            row.floatAssessment && row.floatAssessment.verdict !== 'CONSISTENT' ? (
+              <span
+                className="text-[11px] font-semibold text-neg"
+                title={`Float refused: ${row.floatAssessment.detail}. The number is not used for sorting or turnover.`}
+              >
+                {row.floatAssessment.verdict === 'IMPOSSIBLE' ? 'impossible' : 'units?'}
+              </span>
+            ) : (
+              <span className="text-[11px] text-warn" title="No float on file for this name.">
+                unknown
+              </span>
+            )
           ) : (
-            <span className="text-[12px] text-ink">{formatCount(row.displayedFloat)}</span>
+            <span
+              className="text-[12px] text-ink"
+              title={
+                row.floatAssessment
+                  ? `Checked against the share count stated beside it: ${row.floatAssessment.detail}.`
+                  : 'The Sheet states no share count beside this float, so it is unchecked.'
+              }
+            >
+              {formatCount(row.displayedFloat)}
+            </span>
           )}
         </td>
       ) : null}

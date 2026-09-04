@@ -8,6 +8,7 @@
  */
 
 import { computeDisplayedFloatTurnover } from '@/lib/market/derive';
+import { assessSheetPair, type SheetPairAssessment } from '@/lib/research/float';
 import { deriveCycleLevels, type CycleLevels } from '@/lib/data/cycleLevels';
 import { buildLevelMap, type LevelMap } from '@/lib/data/priceLevels';
 import { buildTelemetry, type MarketTelemetry } from '@/lib/dashboard/telemetry';
@@ -87,6 +88,13 @@ export interface DeskRow {
   displayedFloatSource: 'RESEARCH' | 'TODAY' | null;
   /** Cumulative session volume / displayed float. NOT effective float turnover. */
   displayedFloatTurnover: number | null;
+  /**
+   * Why a float was refused, or that it was checked and stands.
+   *
+   * Null when the Sheet states no share count beside the float — UNCHECKED,
+   * which is a different statement from CONSISTENT and must not render alike.
+   */
+  floatAssessment: SheetPairAssessment | null;
   /** Current-cycle high vs historical resistance, kept strictly separate. */
   cycleLevels: CycleLevels;
   /**
@@ -140,17 +148,78 @@ export interface DeskRowContext {
  * Picks a usable numeric float. Sheet cells often carry UNKNOWN or DIRTY FLOAT
  * instead of a number; those parse to null and must stay null.
  */
+/**
+ * The pair from ONE row: its float and the share count written in the SAME
+ * cell.
+ *
+ * **Never `sharesOutstanding`.** That is column 11, a different cell with its
+ * own source date, and a pair assembled across two cells is asynchronous by
+ * construction — the objection the trader's format change dissolved and the
+ * only reason this check is sound. Both halves come from the row passed in, or
+ * there is no assessment.
+ */
+function assessRowPair(row: MomentumTicker | StructuralResearch | null) {
+  const float = row?.float.value;
+  const shares = row?.floatCellShares.value;
+  if (float === null || float === undefined || shares === null || shares === undefined) return null;
+  return assessSheetPair({ float, sharesFromSameCell: shares });
+}
+
+/** A verdict that means the number must not be computed with. */
+function refused(assessment: SheetPairAssessment | null): boolean {
+  return assessment?.verdict === 'UNIT_MISMATCH' || assessment?.verdict === 'IMPOSSIBLE';
+}
+
+/**
+ * A float that contradicts the count beside it yields NULL, not a number.
+ *
+ * **Refused where it would be COMPUTED WITH, shown where it would be READ.**
+ * The raw string survives untouched on `float.raw`, so the verdict cell renders
+ * in full and a detection is never collapsed into an absence.
+ *
+ * Done HERE rather than at each consumer because a caveat at one consumer is
+ * the masked-chip shape: a gate reading one field while the value it gated read
+ * another, invisible for thirteen days. With the value null, the float sort has
+ * nothing to sort and turnover has nothing to divide by — WITHOUT EITHER HAVING
+ * TO REMEMBER, including a consumer written next month.
+ *
+ * The direction is why this is worth the strictness. Pillar 5 is float under
+ * 10M, so a float wrongly too SMALL does not merely mislead — it is the most
+ * bullish structural reading the desk can produce, and it puts him IN a trade.
+ * INLF reads 6,109 against ~1.05M stated beside it: a 172:1 ratio that would
+ * also have overstated turnover 172-fold.
+ */
 function resolveDisplayedFloat(
   research: MomentumTicker | null,
   record: StructuralResearch | null,
-): { value: number | null; source: DeskRow['displayedFloatSource'] } {
-  if (record?.float.value !== null && record?.float.value !== undefined && record.float.value > 0) {
-    return { value: record.float.value, source: 'RESEARCH' };
+): {
+  value: number | null;
+  source: DeskRow['displayedFloatSource'];
+  assessment: SheetPairAssessment | null;
+} {
+  const recordPair = assessRowPair(record);
+  if (
+    record?.float.value !== null &&
+    record?.float.value !== undefined &&
+    record.float.value > 0 &&
+    !refused(recordPair)
+  ) {
+    return { value: record.float.value, source: 'RESEARCH', assessment: recordPair };
   }
-  if (research?.float.value !== null && research?.float.value !== undefined && research.float.value > 0) {
-    return { value: research.float.value, source: 'TODAY' };
+
+  const researchPair = assessRowPair(research);
+  if (
+    research?.float.value !== null &&
+    research?.float.value !== undefined &&
+    research.float.value > 0 &&
+    !refused(researchPair)
+  ) {
+    return { value: research.float.value, source: 'TODAY', assessment: researchPair };
   }
-  return { value: null, source: null };
+
+  // A refused pair still reports WHY, so the cell can say what was wrong rather
+  // than only that something was.
+  return { value: null, source: null, assessment: recordPair ?? researchPair };
 }
 
 export function buildDeskRow(
@@ -214,6 +283,7 @@ export function buildDeskRow(
       research !== null || researchRecord !== null || intelligence?.analysis != null,
     displayedFloat: float.value,
     displayedFloatSource: float.source,
+    floatAssessment: float.assessment,
     displayedFloatTurnover: computeDisplayedFloatTurnover(
       demand?.cumulativeVolume ?? null,
       float.value,
