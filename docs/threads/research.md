@@ -5471,3 +5471,78 @@ That file's comment names five `OFFLINE_` constants and records three twins
 fixed. **The two unfixed are the two above.** Enumerating by pattern found them;
 enumerating from the fix that was made would have missed both — which is the
 same lesson the comment itself already records, one level up.
+
+---
+
+**52. THE PLACEHOLDER FAMILY IS BIGGER THAN THE FILE THE TEST READS — two
+siblings in `lib/market/readModel.ts`, and one renders a string the test
+asserts is absent.**
+
+*Integration ruled: nullable at the shell boundary, `OFFLINE_HEALTH` rides with
+it, the whole family goes as one piece. It also flagged that Design's new test
+proves the constants were ENUMERATED, not that they were FIXED. That is true,
+and the gap is wider than stated.*
+
+### The extractor's four exclusions are all load-bearing
+
+`tests/dashboard/statusChrome.test.ts` reads `components/DashboardShell.tsx`
+and matches `/^const (OFFLINE_[A-Z_]+)/gm`. That population cannot see another
+file, an `export const`, an indented declaration, or a sibling not named
+`OFFLINE_*`. **There are siblings in `lib/market/readModel.ts` — mine — that
+fail all four.**
+
+| sibling | what it is |
+| --- | --- |
+| `emptyDiscovery` | a near-exact twin of `OFFLINE_DISCOVERY`: the same seven lies, `sessionPhase: 'CLOSED'` and `eligibleCount: 0` included, server side |
+| `OFFLINE_PANEL` (`:217`) | `emptyAssessmentPanel()` with NO override |
+
+### The second one renders a string the test asserts is absent
+
+`OFFLINE_PANEL`'s scheduler resolves through `projectSchedulerHealth({ health:
+null })` to `label: 'Assessments: scheduler offline'`, `tone: 'neg'`, and a
+`detail` that INSTRUCTS the trader to run `npm run desk`.
+
+**That label is verbatim one of the three strings the test runs
+`expect(source).not.toContain(...)` on.** The test proves it absent from ONE
+FILE; it is live in another. `DashboardShell`'s `OFFLINE_ASSESSMENTS` fixed this
+AT THE CALLER, by spreading `emptyAssessmentPanel(...)` and overriding
+`headline` and `scheduler` — so **the fix reached the copy the test can see and
+not the original**.
+
+And the trigger is not an observation: `buildAssessmentPanel` returns it when
+`!assessmentTablesPresent(db) || !options.tradingDate`, with **the db opened
+fine**. An old store, or an unresolved trading date, rendered as "no worker has
+reported, start the desk", in red — *"A healthy desk told him to restart it"*,
+which is `OFFLINE_ASSESSMENTS`'s own comment, still live one layer down.
+
+### What is NOT a defect, because two of three server paths observed something
+
+`readModel.ts:366` and `:545` also return `OFFLINE_PANEL`, but only after the
+store **failed to open or failed to read**. That is a real observation and a
+fault verdict there is honest. Only the `buildAssessmentPanel` early return is
+the family.
+
+**Unmeasured, and stated rather than assumed:** whether that early return fires
+in production. `assessmentTablesPresent` is presumably true on the live store;
+`!options.tradingDate` is the reachable half. The desk is on AWS and I cannot
+read it from here.
+
+**Flagged, not claimed:** those two paths pass `healthView(health, 'CLOSED',
+config)` — a hardcoded phase — so freshness returns `NOT_EXPECTED` during RTH.
+That is the family running the OTHER way, a fault suppressed rather than
+invented. Probably moot since `health.offline` is already true there, and I have
+not established that anything renders it.
+
+### The test shape, which the ruling already implies
+
+A per-constant content assertion is enumeration-by-memory one level up, and it
+is what produced rounds two and three. **The nullable ruling removes the
+category**: if the object is nullable at the boundary the placeholder need not
+exist. **A test asserting there are NO placeholder constants cannot silently
+pass a new lie; one asserting there are exactly the five known ones always can**,
+and just did, twice.
+
+The root cause is item 51's, once more: **every one of these is forced to pick a
+value from a type that cannot express "not observed", and each picks the most
+plausible-looking one.** `eligibleCount: number` cannot say "not counted", so it
+says 0 — and 0 is a measurement. No choice of constant fixes that.
