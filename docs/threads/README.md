@@ -555,6 +555,45 @@ thing they lack. **Everything reconciles to one date and one deploy.** The fact
 that settled it had been sitting in a relay for an hour, in a message whose author
 did not know what it was for.
 
+## GUARDING AGAINST ONE FAILURE AND WALKING INTO ITS MIRROR
+
+**Design, 2026-09-04, `e67e89d`.** The dashboard header rendered **"Market:
+worker offline"** before any payload arrived — a hardcoded placeholder at
+`DashboardShell.tsx:79`, reached by `market.snapshot?.marketHealth ??
+OFFLINE_HEALTH_VIEW`. Nothing renders it when the worker actually IS offline;
+the real verdict comes from `health.ts`.
+
+**So the first paint of every page named the one failure that means capture is
+down, having observed nothing.**
+
+**IT WAS DELIBERATE, DOCUMENTED, AND THE COMMENT SAID THE QUIET PART:** *"Until
+the first payload lands, the engine is unknown — reported as offline."*
+**Someone wrote "unknown" and "reported as offline" in one sentence and did not
+hear it.**
+
+**And the reasoning was HALF RIGHT, which is why it survived.** The other
+comment reads *"never claims LIVE"* — correct and important: a placeholder must
+not assert health. **It overshot from CLAIM NOTHING to CLAIM THE FAULT.** The
+author was guarding against the obvious failure and walked into its mirror, and
+a guard aimed at one direction is exactly what stops anyone looking at the
+other.
+
+**The honest detail was already sitting beside the lie** — *"No market payload
+has been received yet"* — so the fix was smaller than the diagnosis: the label
+now matches the detail it was already contradicting.
+
+### Ask which way the error moves as time passes
+
+**Design's test for the replacement, and it is the general form worth
+keeping.** If the payload never arrives, *"not loaded"* **stays true, and reads
+as more alarming the longer it persists** — the error grows in the safe
+direction. **The named fault was a confident lie from the first paint and became
+LESS wrong over time**, so the moment it was true was the moment nobody was
+still looking.
+
+**A placeholder that decays toward truth is safe. One that decays toward
+plausibility hides itself.**
+
 ## THE STATE IS A JUDGEMENT; THE ARRAY IS THE OBSERVATION
 
 **Research, 2026-09-04, correcting a spec from Integration.** The instruction was
