@@ -169,6 +169,8 @@ interface TickerRuntime {
    * has to remember to run.
    */
   deathCount: number;
+  /** Trades per minute over the judged window. Null when nothing was observed. */
+  activityWindow: number[] | null;
 
   minuteNotional: Map<string, number>;
   vwapNotional: Record<keyof SessionVwapSet, number>;
@@ -436,6 +438,7 @@ export class DemandEngine {
       deadAtPeakTrades: null,
       deadAtPrice: null,
       deathCount: 0,
+      activityWindow: null,
       minuteNotional: new Map(),
       vwapNotional: { premarket: 0, regular: 0, afterHours: 0 },
       vwapVolume: { premarket: 0, regular: 0, afterHours: 0 },
@@ -1114,6 +1117,15 @@ export class DemandEngine {
       runtime.deathCount += 1;
     }
 
+    /*
+     * Kept, not recomputed. The surface must show the series the VERDICT was
+     * made from; a second read for display could disagree with the graveyard
+     * and nothing would say which was right.
+     *
+     * Empty becomes null: nothing observed is NOT MEASURED, and a zero-filled
+     * array is a real reading a DEAD name genuinely has.
+     */
+    runtime.activityWindow = activity.window.length > 0 ? activity.window : null;
     runtime.activity = activity.state;
     runtime.deadSince = activity.deadSince;
 
@@ -1791,6 +1803,7 @@ export class DemandEngine {
       deadAtPeakTrades: runtime.deadAtPeakTrades,
       deadAtPrice: runtime.deadAtPrice,
       deathCount: runtime.deathCount,
+      activityWindow: runtime.activityWindow ?? undefined,
       rthFinal: runtime.rthFinal ? { ...runtime.rthFinal } : null,
       afterHours: this.afterHoursStateOf(runtime),
       feed: this.options.feed,

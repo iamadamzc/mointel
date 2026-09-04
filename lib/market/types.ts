@@ -424,6 +424,23 @@ export interface DemandState {
    * has to remember to run.
    */
   deathCount?: number;
+  /**
+   * Trades per minute over the JUDGED window, oldest first.
+   *
+   * THE SAME ARRAY THE ACTIVE/DEAD VERDICT WAS COMPUTED FROM. Not a second
+   * measurement taken for the surface -- which is what makes it structurally
+   * impossible for a sparkline to disagree with the graveyard, rather than two
+   * numbers agreeing by discipline until one drifts.
+   *
+   * `undefined` means NOT MEASURED and never "silent". A DEAD row's window IS
+   * all zeros and that is a real reading; nothing observed is absent instead,
+   * because a stored zero-filled array renders as a confident flat line saying
+   * "no trading" where the truth is "not looked at".
+   *
+   * Live-only until it round-trips: like `activity`, absent from a row written
+   * before the column existed.
+   */
+  activityWindow?: number[];
 
   /** Frozen regular-session state; null until the closing bell. */
   rthFinal: RthFinalState | null;

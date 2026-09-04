@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 23;
+export const SCHEMA_VERSION = 24;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -178,6 +178,21 @@ CREATE TABLE IF NOT EXISTS ticker_session (
   dead_at_price          REAL,
   death_count            INTEGER,
   activity_config        TEXT,
+  /*
+   * Trades per minute over the JUDGED window, oldest first, as JSON.
+   *
+   * The same array the ACTIVE/DEAD verdict was computed from -- not a second
+   * measurement taken for the surface. That is what makes it structurally
+   * impossible for a sparkline to disagree with the graveyard, rather than two
+   * numbers agreeing by discipline until one of them drifts.
+   *
+   * NULL means NOT MEASURED and never "silent". An UNKNOWN reading carries an
+   * empty window because nothing was observed, and a stored zero-filled array
+   * would render as a confident flat line saying "no trading" where the truth
+   * is "not looked at". A DEAD row's array IS all zeros and that is a real
+   * measurement -- so the two must not share a representation.
+   */
+  activity_window        TEXT,
   PRIMARY KEY (symbol, trading_date)
 );
 CREATE INDEX IF NOT EXISTS idx_ticker_session_rank ON ticker_session (trading_date, rvol_rank);
@@ -753,6 +768,7 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'ticker_session', column: 'dead_at_price', definition: 'REAL' },
   { table: 'ticker_session', column: 'death_count', definition: 'INTEGER' },
   { table: 'ticker_session', column: 'activity_config', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'activity_window', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {

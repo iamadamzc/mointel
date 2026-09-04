@@ -1683,6 +1683,8 @@ export function toRow(state: DemandState): TickerSessionRow {
      * failure this column exists to prevent.
      */
     activity_config: JSON.stringify(DEFAULT_ACTIVITY_CONFIG),
+    /* NULL is "not measured". Never [] -- see DemandState.activityWindow. */
+    activity_window: state.activityWindow ? JSON.stringify(state.activityWindow) : null,
     updated_at: state.updatedAt,
   };
 }

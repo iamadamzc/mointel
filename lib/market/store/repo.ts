@@ -306,6 +306,7 @@ export interface TickerSessionRow {
   dead_at_price: number | null;
   death_count: number | null;
   activity_config: string | null;
+  activity_window: string | null;
   feed: string;
   last_event_at: string | null;
   updated_at: string;
@@ -335,6 +336,28 @@ function readSessionVwap(
     volume: usable ? volume : null,
     coverage: usable ? known : 'UNAVAILABLE',
   };
+}
+
+/**
+ * Reads the stored trades-per-minute window.
+ *
+ * Refuses anything that is not an array of finite non-negative numbers rather
+ * than passing a half-parsed shape to a surface: the column is TEXT and
+ * nothing constrains its contents, and a chart given a string renders
+ * something rather than failing.
+ */
+function parseActivityWindow(raw: string | null): number[] | undefined {
+  if (raw === null) return undefined;
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0) return undefined;
+    if (!parsed.every((n) => typeof n === 'number' && Number.isFinite(n) && n >= 0)) {
+      return undefined;
+    }
+    return parsed as number[];
+  } catch {
+    return undefined;
+  }
 }
 
 export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandState {
@@ -418,6 +441,14 @@ export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandSt
     deadAtPeakTrades: row.dead_at_peak_trades,
     deadAtPrice: row.dead_at_price,
     deathCount: row.death_count ?? undefined,
+    /*
+     * NULL means NOT MEASURED, so it becomes undefined rather than []. An
+     * empty array would render as a flat zero line -- the most confident
+     * looking null there is -- saying "no trading" where the truth is "not
+     * looked at". A DEAD row's zeros are a real measurement and must stay
+     * distinguishable from this.
+     */
+    activityWindow: parseActivityWindow(row.activity_window),
     top12EnteredAt: row.top12_entered_at,
     qualified: row.qualified_at
       ? {
@@ -489,7 +520,7 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       rth_final_close, rth_final_high, rth_final_low, rth_final_volume, rth_final_rvol,
       rth_final_rank, rth_final_frozen_at,
       activity, dead_since, dead_at_rank, dead_at_peak_trades, dead_at_price,
-      death_count, activity_config,
+      death_count, activity_config, activity_window,
       feed, last_event_at, updated_at
     ) VALUES (
       @symbol, @trading_date, @price, @price_source, @price_at, @bar_close, @bar_at,
@@ -513,7 +544,7 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       @rth_final_close, @rth_final_high, @rth_final_low, @rth_final_volume, @rth_final_rvol,
       @rth_final_rank, @rth_final_frozen_at,
       @activity, @dead_since, @dead_at_rank, @dead_at_peak_trades, @dead_at_price,
-      @death_count, @activity_config,
+      @death_count, @activity_config, @activity_window,
       @feed, @last_event_at, @updated_at
     )
     ON CONFLICT(symbol, trading_date) DO UPDATE SET
@@ -613,6 +644,14 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       /* Monotonic: a restart reporting 0 must never lower a stored count. */
       death_count = MAX(COALESCE(ticker_session.death_count, 0), COALESCE(excluded.death_count, 0)),
       activity_config = COALESCE(excluded.activity_config, ticker_session.activity_config),
+      /*
+       * COALESCE and not a CASE on activity, because NULL already carries the
+       * meaning: the engine writes NULL only when it observed nothing, so a
+       * restart preserves the stored series and a real reading always wins --
+       * including a real reading that happens to be UNKNOWN, which a CASE on
+       * the state would have wrongly discarded.
+       */
+      activity_window = COALESCE(excluded.activity_window, ticker_session.activity_window),
       feed = excluded.feed, last_event_at = excluded.last_event_at, updated_at = excluded.updated_at
   `);
 
