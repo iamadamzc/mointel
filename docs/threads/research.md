@@ -6241,3 +6241,71 @@ and each one of those is a share count that can be trusted or corrected rather
 than refused. That is a concrete value for work already shipped and a concrete
 argument for extending it — and it is why the census belongs ahead of the bound
 rather than beside it.
+
+---
+
+**63. AN HONEST `secAvailable` WOULD MAKE THINGS WORSE — the field is a GATE,
+and the behaviour it would gate is already correct.**
+
+*Integration found `secAvailability()` reports `available: true` on a configured
+user agent while SEC returns 403 to production, and asked what an honest field
+costs. Scoped, not built; it sits behind everything.*
+
+### The field is not a display — it is a gate, and that decides the answer
+
+`lib/research/sec/client.ts:132` calls `secAvailability` **before every fetch**
+and throws `SecUnavailableError` when it is false. `worker/research.ts:98`,
+`research-collect.ts:126`, `research-catalyst.ts:184` and
+`research-diagnose.ts:167` all gate on it too.
+
+**So making the EXISTING field honest would hard-stop SEC collection on a
+transient throttle** — converting a rate limit into an outage. That is worse than
+the defect.
+
+### And the behaviour is already right
+
+`client.ts` has `RETRYABLE_STATUS = {403, 429, 500, 502, 503, 504}`, parses
+`Retry-After` as seconds or HTTP date, and backs off. **The desk is already
+responding to the 403 correctly.** Nothing about control needs to change.
+
+### So two fields — and the reason is stronger than "two different facts"
+
+**The two facts have OPPOSITE CORRECT ACTIONS:**
+
+| fact | whose property | correct response |
+| --- | --- | --- |
+| **configured** | ours | **GATE.** Never send SEC an anonymous request. Hard-stop is right. |
+| **reachable** | theirs | **REPORT + BACK OFF.** Hard-stopping on a transient throttle is the wrong response. |
+
+A single boolean cannot carry both because the CONSUMERS need different
+responses, not merely because the facts differ. `secAvailability` should be
+renamed to what it computes — a **configuration** verdict — since the comment at
+`:240` is right about its own purpose: the `@` check is about COMPLIANCE, and a
+non-compliant UA is what INVITES throttling. **The name and the detail string
+promise availability; the function never claimed to test it.**
+
+### NO PROBE. The fact is a by-product of work already done
+
+Integration named the hazard exactly — a check that spends an SEC request to ask
+whether SEC is rate-limiting us has an obvious way to make things worse.
+
+**It does not need one.** The client sees every 403 and then discards it:
+`lastError` is a local, statuses are never recorded, only `networkRequests` is
+counted. **Fourth instance tonight of computed-then-discarded** — after the
+activity window, `coverage.gaps` and `splitEvents`.
+
+So reachability is an **observed-outcome record**, not a check: last status, last
+403 at, consecutive retry exhaustions. **Zero extra SEC requests, because the
+desk is already making the requests that answer the question.**
+
+### What an honest field would have caught — and what it would not
+
+**Not a behaviour problem.** The backoff already handled it; job throughput
+tracked baseline (Ops measured that rather than assuming it).
+
+**A reporting problem, and one that has already cost something concrete:**
+**Ops's head-to-head falsification was blocked by this same 403, and nobody knew
+until Ops hit it.** A reachability field is precisely what would have surfaced
+that before it was scheduled — the desk misleading itself about its own state,
+which is the class this thread has recorded repeatedly, wired into the health
+endpoint rather than into a test.
