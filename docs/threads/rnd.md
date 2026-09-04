@@ -1077,6 +1077,60 @@ Q9's columns. **The refusal produced a better answer than the export would
 have**, which is worth recording as an argument for refusals rather than an
 apology for one.
 
+#### RETRACTION: the era boundary was a DEAD STORE, and I pooled across a break for the third time tonight. 2026-09-04.
+
+**Integration's hypothesis is confirmed and it is stronger than it stated. The
+local store did not stop RESEARCHING on 08-18. It stopped EVERYTHING.**
+
+    minute_bars          2026-08-17 .. 2026-08-18    2 dates
+    ticker_session       2026-08-14 .. 2026-08-18    3 dates
+    desk_events          2026-08-14 .. 2026-08-18    3 dates
+    desk_assessments     2026-08-17 .. 2026-08-18    2 dates, 14 rows
+    research_sources     2026-08-17 .. 2026-08-18
+
+**AWS became production 2026-08-17. This is the split-brain hazard, and I
+measured the dead half.**
+
+**AND THE JOIN WAS LIVE AGAINST DEAD.** `symbol_desk_day` covers 13 sessions
+because it is built from the **production** extract (226 assessments,
+08-17..09-02). `research_sources` is the **local** store. **I joined a live board
+to a dead research table and read the difference as a capability.**
+
+> **RETRACTED: the 4.5% / 3.9% "no local research" figures.** They measure a
+> store that stopped receiving anything. Not a capability, not a cache, not an
+> era — **the wrong store.**
+>
+> **SURVIVES, with a different caveat than the one I gave it: 69.2% / 89.1%
+> reach.** It is confined to 08-17..08-18, when **both** stores were live, so the
+> join is valid there. **No era qualification is needed. A SAMPLE-SIZE one is —
+> it is two sessions, 91 tickers.**
+
+**RETRACTED: 19.8% completion. And the shape is sharper than a backlog.**
+
+    last COMPLETE queued   2026-08-18T19:00
+    first FAILED queued    2026-08-18T19:30      <- ZERO OVERLAP
+
+    before the break   COMPLETE 40, PARTIAL 100, QUEUED 7   = 27.2%
+    after  the break   COMPLETE  0, PARTIAL   8, FAILED 47  =  0.0%
+
+**Every failure is after the last success.** The pipeline broke at ~19:30 on
+08-18 and everything queued afterwards failed. **19.8% pooled a working pipeline
+with a broken one.** Correcting Integration on one detail: these did not freeze
+mid-flight — `completed_at` is set on all 47 FAILED and all 108 PARTIAL, so they
+terminated rather than hung. **Only the 7 QUEUED never ran.**
+
+**THIRD TIME TONIGHT, AND IT IS THE SAME MOVE EVERY TIME:**
+
+    Ops   15.1%   pooled 30.8% movers with 9.1% non-movers
+    me    10.5%   pooled a live era with a dead one
+    me    19.8%   pooled a working pipeline with a broken one
+
+> **A rate whose denominator spans a boundary is not a rate, it is an average of
+> two answers to different questions** — and in all three cases the pooled figure
+> was the reassuring one. **I caught Ops's within the hour and produced two of my
+> own in the four hours after.** Recognising the shape in someone else's number
+> is evidently not the same skill as noticing it in my own.
+
 #### CORRECTION: I conflated filing lag with fetch latency, and CIK resolution is 99.8%. 2026-09-04.
 
 **Integration pushed back on my latency argument and is right. Correcting `39caa8f`,
