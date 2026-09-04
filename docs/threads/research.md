@@ -3188,6 +3188,55 @@ That is the whole of it, and it is unchanged.
 searching the readers, which is code-verifiable. Which task WRITES each field
 is not, and that half rests on the 08-23 record.*
 
+### THE CAVEAT CLOSES FOR EXISTING ROWS — `float` is column I, outside `AI:AK`
+
+*Answered against the parser 2026-09-04, once the trader supplied both task
+definitions.*
+
+**`StructuralResearch.float` reads RESEARCH index 8 — column I.** Task 2's text
+writes `AI:AK` and preserves `A:S`; **`AI:AK` is indices 34/35/36, which are
+exactly `floatQuality`, `overhangFloat` and `supplyEvidence`** — precisely the
+trio its Dirty Float protocol names. **The task text and `rows.ts` agree
+independently, which is what makes this a verification rather than a reading.**
+
+> **So task 2 does not refresh the float VALUE, and stopping it cannot make an
+> existing row's float stale. The caveat closes.**
+
+**RESIDUAL, and it lands on exactly the population he trades.** Task 2 appends
+NEW premarket rows and completes their `A:S`. **So a newly qualifying premarket
+mover would carry no float until task 1's next 22:00 pass** — a gap of one
+session, on the names that qualify DURING the morning he is trading. *Not
+stale; absent. And absent is the honest failure, but it is not nothing.*
+
+### What the desk already produces itself, and the residue that is genuinely theirs
+
+**Both tasks perform the desk's own work.** From the definitions: independent
+universe discovery, a mandatory structure check over shares outstanding, resale
+registrations, converts, warrants, ATMs and splits, and the catalyst search the
+resolver replicates.
+
+> **AND "OVERHANG / FLOAT WITH SPLIT NORMALISATION AND A ≥2.0× MARK" IS THE
+> SUPPLY PAIR.** The desk computes it deterministically, with a basis guard that
+> REFUSES across a split — and **it has no reader** (item 42). The Sheet's
+> version is prose a model wrote, rendered in the drawer at
+> `TickerDrawer.tsx:561`. **The better number is invisible and the weaker one is
+> on screen**, and the desk pays a scheduled task to produce it.
+
+**The genuinely unique residue is two things:** the **float VALUE** (column I),
+and the **ARCHIVE / OUTCOMES / PATTERNS history** — and *task 1* is the archiver,
+which is a second and independent reason it is the harder one to retire.
+
+### A SECOND CONTAMINATION PATH, NOT PREVIOUSLY NAMED
+
+**`floatQuality` (column AI, task 2's) reaches the EVIDENCE BUNDLE** —
+`bundle.ts:99`, `sheetPrior.ts:61` — so **task 2's structure judgement is an
+input to the desk's own interpreter**, alongside `priorHumanAnalysis`. Item 7
+established the prior reaches every `Terra` call; **this is a second channel and
+nobody has counted it.**
+
+**So retiring task 2 REMOVES a contamination path rather than costing one** —
+the same argument that makes losing `sheetPrior` a gain for R&D's Q1.
+
 ### CORRECTION: the desk DOES carry the float's as-of, and it is rendered
 
 *Integration wrote that a stale float would be invisible — "no basis column, no
