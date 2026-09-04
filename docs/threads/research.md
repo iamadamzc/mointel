@@ -6754,3 +6754,55 @@ forward-split name inverts into a false pass.
 Non-null `asOf` with a null factor → **`BASIS_UNVERIFIABLE`**. No pair →
 **no share count**. The same three the pair already distinguishes, and the
 render already has words for one of them.
+
+---
+
+**70. THE 62% WAS HALF A TWO-PART CONDITION. The code's own gap fires on 43.7%.**
+
+*Ops reproduced the 57-of-60 to the unit and could not reproduce the 144. It was
+right not to quote a delta against a number it could not reproduce. Here is the
+method, all three rules computed side by side, and a correction to my own figure.*
+
+### The counting rules, on the same 231 archive dossiers
+
+| rule | count | share |
+| --- | --- | --- |
+| **(a) MINE** — every active source row for the ticker | 144 | **62.3%** |
+| (b) `source_ids` on the CURRENT version | 171 | **74.0%** — **Ops's read-two archive figure, to the unit** |
+| (c) union of `source_ids` across ALL versions | 170 | 73.6% |
+| **(d) THE CODE'S OWN GAP CONDITION** | **101** | **43.7%** |
+
+**So (b) is reproduced exactly and my rule is (a): every active source row for
+the ticker, cited or not.** Ops's "ticker-level set" is a fourth rule again — it
+is not (c), which lands with (b).
+
+### And (d) is the number I should have quoted
+
+`bundle.ts:447` pushes the SEC-only gap only when **BOTH** halves hold:
+
+    nonSecCatalystSources.length === 0 && !companySourceKnown
+
+**I measured the first half and quoted it as the exposure.** I even flagged the
+omission when I reported it — *"I could not reconstruct `companySourceKnown`, so
+this measures the source half only"* — and then used the number anyway.
+`issuer_registry.company_sources` was in the archive the whole time; the
+reconstruction was one join.
+
+| | archive |
+| --- | --- |
+| zero non-SEC catalyst sources | 144 = 62.3% |
+| `companySourceKnown` — an IR/newsroom/feed URL is known | 107 = 46.3% |
+| **both halves — the gap that actually fires** | **101 = 43.7%** |
+
+### The 43 names between the two numbers are a verdict, not a rounding
+
+144 minus 101 = **43 names where an IR location IS known and no non-SEC catalyst
+source was collected anyway.** That is *"we knew where to look and found
+nothing"* — **a different fact from "we do not know where to look"**, and it is
+exactly the distinction the directional warning needs. The desk currently cannot
+say either, because only `incomplete` survives persistence.
+
+**Integration's insensitivity argument still holds and I am not weakening it:**
+43.7%, 62.3% or 74.0%, an interpreter shown one side must not reach for balance
+language. **The level sizes the fix; it does not decide it.** But 43.7% is the
+number with the code behind it, and it is the one that should reach him.
