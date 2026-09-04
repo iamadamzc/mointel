@@ -16,6 +16,34 @@ auth, backups, and any incident that reaches production.
 
 Last worked: **2026-08-23**.
 
+## BUMPING `SCHEMA_VERSION` IS NOT OPTIONAL ANY MORE — ADD IT TO THE GATE CHECKLIST
+
+**Added 2026-09-04 by Integration, from Ops's own note on `e48107e` and
+Research's review of it. This is a consequence of the 0e guard, not a
+pre-existing rule.**
+
+**Before the guard, `ADDED_COLUMNS` ran on every open**, so a new column appeared
+even if someone forgot to bump `SCHEMA_VERSION` — the bump only gated the backup.
+**It will not any more.** A store already reporting the current version now
+short-circuits, and **the same is true of the 13 INDEXES in SCHEMA**: the
+completeness check covers **tables only**, so a missing index on a current-version
+store passes the guard.
+
+**So, when adding a column or an index to SCHEMA: BUMP `SCHEMA_VERSION` IN THE
+SAME COMMIT.** Forgetting it now:
+
+- passes every test, because a fresh test store is created from SCHEMA whole;
+- **fails silently on the one machine that matters**, which already reports the
+  current version and will therefore skip the work;
+- surfaces as a missing column (wrong answer) or a missing index (slow query),
+  **not as an error.**
+
+**The index gap was shipped knowingly rather than held.** Research named it in
+review and judged the failure mode — a slow query, not a wrong answer — not worth
+holding a deploy for. **Recorded so the next person adding an index does not have
+to rediscover it.**
+
+
 ## Scope
 
 - The AWS Lightsail instance, Nginx, CloudFront, TLS, firewall, Basic Auth
