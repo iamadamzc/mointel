@@ -1077,6 +1077,48 @@ Q9's columns. **The refusal produced a better answer than the export would
 have**, which is worth recording as an argument for refusals rather than an
 apology for one.
 
+#### Contamination IS concentrated in movers, 3.4x — S3's detection is not robust to it. 2026-09-04.
+
+**Ops computed the split in place. The answer is the one that keeps the
+expensive re-run alive:**
+
+    cohort       versions   with sheetProvenance   pct
+    mover           273             84            30.8%
+    non_mover       548             50             9.1%
+
+**Joined on TICKER + TRADING_DATE inside production; no id crossed the boundary.
+`sheetProvenance` tested as VALUE non-null, never key presence.**
+
+**AND OPS'S ROW TOTALS MATCH MINE EXACTLY — 179 movers, 509 non-movers, all 688
+pairs resolving.** My `max_gain_pct` is computed off raw minute bars in a
+separate store and production agrees on **every name**. After the parallel-run
+digest failure earlier tonight I would not have assumed that: **it is the first
+cross-store agreement between these two stores that survives a content check.**
+
+**THE BOUND, applying those rates to S3's cohorts:**
+
+    contaminated movers ~55 of 179, non-movers ~46 of 509
+
+    worst case   every positive mover contaminated
+                 -> clean movers 0%, non-movers 13.6%   clean gap -13.6pp   SIGN REVERSES
+    mid case     contaminated movers positive at twice the clean rate
+                 -> clean movers 21.8%, non-movers 13.6%  clean gap +8.2pp   HALVED
+
+> **S3's +14.9pp is NOT robust to the concentration Ops measured.** The exact
+> figure will narrow the band; **it will not move it back inside the range where
+> the detection is safe.** The prior-free re-run is justified **on evidence**
+> rather than on an unbounded worry.
+
+**Superset caveat carried: Ops counted every version attached to a ticker-date;
+I use the one that produced the grade.** 821 versions against my 586. **Direction
+robust — a 3.4x concentration does not invert on a subset — magnitudes pending**
+the exact count, and Ops's percentages are **not** quoted as S3's.
+
+**AND OPS RETRACTED ITS OWN 15.1% BEFORE I HAD TO.** A pooled figure that
+averaged 30.8% and 9.1% into something reassuring and **hid the entire signal**.
+That is a rate without its denominator one level up — **an aggregate over a
+population whose heterogeneity WAS the finding.**
+
 #### The viscosity programme — status, checked rather than recalled. 2026-09-04.
 
 **He asked what state it is in and what effort remains. I read the folder rather
