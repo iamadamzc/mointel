@@ -2582,6 +2582,25 @@ silence is not a smaller message; it is no message, and it stops the bus.**
 - **Shorter is the goal. Silent is a failure.** The rule was written to cut 800
   words to one line, never to cut one line to zero.
 
+**CROSSED MESSAGES ARE THE NEXT COST, AND ON 2026-09-05 THEY RAN AT ROUGHLY ONE
+IN THREE.** A thread asked two questions, Integration ruled on them, and the
+thread re-asked in its next message because the ruling had not landed yet —
+**twice.** Integration then re-stated the ruling, and the thread replied *"already
+built, our messages crossed."* **Three turns spent on state that was already
+settled.**
+
+- **Never repeat a question in a later message. Point at it** — *"the two
+  questions in my previous message stand"* — so the answer, when it arrives,
+  answers something the sender has not also re-asked.
+- **Before re-stating a ruling, read the repo.** A thread's head sha says whether
+  it acted. **On 2026-09-05 a re-statement was sent to a thread that had already
+  shipped the ruling in full.**
+- **A message that crosses is not a failure of either party.** It is the cost of
+  a bus with no ordering, and the only lever is to make each message carry its
+  own state: **head sha, what is done, what is waited on.** The threads that do
+  this were readable through every crossing; the confusion was always in the
+  messages that carried only content.
+
 **THREE EXEMPTIONS, AND THEY ARE NOT NEGOTIABLE:**
 
 1. **A CORRECTION OR RETRACTION GOES IMMEDIATELY, AT WHATEVER LENGTH IT NEEDS.**
