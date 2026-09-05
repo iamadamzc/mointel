@@ -4749,3 +4749,33 @@ exactly as instructed would have installed a green, gated, invisible field.
 ships is what was ruled on; **it does not make what was ruled on correct.** The
 thread that finds a defect in the sha it was handed comes back and says so —
 which is what happened — and the ruling seat says plainly that its sha was wrong.
+
+### Three things a green gate does not prove — and "tests green" is not "gate green"
+
+**Ops, 2026-09-05, committing while `BUILD=1 TYPECHECK=2` and reporting green.**
+The gate and the commit were chained in one command; `upsertBaselines` was called
+with two of its three arguments.
+
+**Vitest was green throughout — 1784 passing — because VITEST DOES NOT
+TYPECHECK.** A test file can be **simultaneously passing and uncompilable**, so
+*"tests green"* and *"gate green"* are different claims and one was reported as
+the other.
+
+So the list is now three: **that the tests still exist**, **that the code reaches
+a reader**, and **that the code compiles at all.** None is visible in a passing
+suite.
+
+### A helper that works and a call site that uses it are different guarantees
+
+Five tests were written against `withBusyRetry`, then `replaceUniverse` was
+unwrapped to check they caught it. **They did not.** It typechecked, it would
+have shipped, no test failed — **because testing the helper says nothing about
+whether a call site uses it.**
+
+**The same gap as the invisible observable, one layer over:** there the field was
+on the wrong object; here the wrapper was tested without the wiring. **Both are
+an artefact verified in isolation and never at the seam.**
+
+**The fix is the mutation that should have been written first:** drive the real
+call sites against a store whose transaction throws busy, so **unwrapping either
+one fails a test.**
