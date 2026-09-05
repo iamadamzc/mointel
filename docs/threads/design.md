@@ -2890,19 +2890,41 @@ fixable by choosing better constants; only by making absence representable.
 
 ## The price sparkline's sparse case — no threshold, and no gradient either (not built)
 
-> **PROVENANCE WARNING (2026-09-05).** The coverage percentages below — TGL 3%,
-> AIXC 8%, SLE 46% — come from a 23-row read over 08-18/08-19. **08-18 has a
-> three-hour hole whose cause is UNIDENTIFIED**, and it is NOT the retention cut:
-> `repo.ts:262` deletes whole trading dates and cannot remove hours from inside
-> one. So these figures **may have been computed against a partial archive**, and
-> nobody can currently say whether they overlap it. Research is separating a
-> partial archive from a real hole and will answer directly. **Do not quote these
-> percentages as measured.**
+> **PROVENANCE (2026-09-05, answered — and the risk is NOT the one I first
+> recorded).**
+>
+> **The window is clean.** Research measured 11:00–14:00 UTC — his 07:00–10:00
+> ET — and got **180 of 180 minutes on both 08-17 and 08-18**. Every gap in that
+> store falls outside the traded window, and the gaps are not a defect at all:
+> the local worker was stopped and restarted three times. Nothing in production
+> is implicated. **My earlier warning named the hole, and the hole is not the
+> problem.**
+>
+> **The store is.** These were measured on `data/market.db` — **the LOCAL
+> split-brain desk, not production.** AWS has been production since 08-17, and a
+> second SIP connection is a documented hazard in its own right. So these
+> percentages describe **a desk running alongside the one he trades on.**
+>
+> **Directionally right; not the numbers.** Re-take on production's minute bars
+> once Monday's capture fills, before any of them reaches a rendered figure
+> rather than an argument.
 
 Research's finding stands and I am not arguing with it: **coverage is a FIDELITY
 measure being recruited to answer a RELEVANCE question.** It honestly answers
 "how much of this line did the fill rule draw" and says nothing about "is this
 row worth looking at".
+
+### A caveat that names the wrong mechanism can be DISCHARGED by the wrong answer
+
+The first version of this warning said the risk was the 08-18 hole. Research then
+established the window is clean — **and on that answer alone the warning would
+have been deleted, taking the split-brain problem with it silently.** The
+percentages would have read as verified BECAUSE a question that was never the
+real one came back negative.
+
+**A caveat is only as good as the mechanism it names.** Where the mechanism is
+uncertain, say what is unverified rather than why — "measured somewhere whose
+provenance is unconfirmed" cannot be discharged by clearing one candidate cause.
 
 ### The two loads are separable, and only one depends on the numbers
 
