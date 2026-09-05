@@ -5051,3 +5051,48 @@ paying to store the 98.4% that answers nothing.**
 **It needs a predicate in the prune rather than a bigger number, and it does not
 touch the archive schema.** Neither the seat pricing depth nor the seat ruling on
 it had thought past *more* versus *less*.
+
+## A SCHEMA IS NOT A STORE
+
+**Integration, 2026-09-05.** Told the archive keeps only `minute_bar_count`, this
+seat read `lib/archive/store.ts:191`, confirmed `PRIMARY KEY (symbol,
+trading_date)`, and ruled that **the archive could serve as the backfill's target
+list and completeness check.** The reasoning was sound.
+
+**There is no `archive.db` on production.** No archive path in the environment,
+and `archive-backfill` has **never run on that host** — zero journal mentions,
+ever. The `archive.db` that exists is in the local `data/` directory: **the
+split-brain desk's archive, 901KB.**
+
+**The wrong-desk trap for the third time in two days, and this time from the seat
+that recorded the rule.** Ops caught it before scoping rather than after.
+
+**Verifying a table definition proves a table CAN exist. It says nothing about
+whether one DOES, or on which machine.** The file that was read is checked into
+the repo and identical on every host; **the store it describes exists on exactly
+one of them, and not the one that matters.**
+
+**Reading the code is how you learn what is possible. Reading the box is how you
+learn what is there.** Every instrument used to confirm the plan lived in git.
+
+### The data was on the box the whole time
+
+`createSchemaBackup` VACUUMs the entire store before every migration, so each
+backup is **production entire at that instant**. `market-v23-2026-09-04` holds
+**2,116,296 minute bars** — 09-02 and 09-03 complete, ~7,800 symbols each. **The
+rows the prune deleted were sitting in `/var/lib/mointel/backups`.**
+
+And `minute_bars` is **byte-for-byte the same CREATE TABLE at v23 and live v25** —
+the v24 and v25 columns went onto `ticker_session`. **So the restore is ATTACH
+plus INSERT: no Alpaca, no rate limit, no pagination, no new write path, and the
+rows are EXACT rather than refetched.**
+
+**A backup taken for migration safety is a backup.** It was described as a
+rollback artefact and read as nothing else; nobody asked what else it contained.
+
+### And one estimate that was six times low
+
+The *"~1,300 symbols per session"* figure came from counting distinct symbols in
+**`daily_bars`** on a **partial** 09-04 — **a different table, a partial day,
+generalised to a per-session rate.** It is ~7,800. **The backups state it
+directly.** It cost nothing only because the plan it justified was abandoned.
