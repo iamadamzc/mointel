@@ -567,6 +567,18 @@ scp -i A:\AWS_creds\mointel-prod-key.pem ubuntu@98.85.49.227:/var/lib/mointel/ba
 npm run desk
 ```
 
+**`data/market.db` is the LOCAL split-brain desk, not a copy of production.**
+It is the failback *target* — the path is load-bearing for this procedure, so
+do not rename it — but until a failback actually happens it holds whatever the
+local desk last wrote, which on 2026-09-05 was sixteen days stale.
+
+On 2026-09-05 two threads read it as production's store, found a 4h37m hole in
+2026-08-18's minute bars, and diagnosed a capture fault that did not exist: the
+local worker had simply been off. Production wrote 10,489 events in the window
+where that file wrote nine. **A store that answers is not a store that answers
+for the right desk** — it cannot fail to return rows, only return the wrong
+desk's. `data/README.md` names every store in that directory.
+
 Going the other way is the same procedure in reverse. The rule is the same in
 both directions: **the writers run in one place at a time.**
 
