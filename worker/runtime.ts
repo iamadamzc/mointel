@@ -1424,16 +1424,6 @@ export class MarketRuntime {
       baselineCount: this.engine.baselineCount,
       calculatedAt: result.calculatedAt,
       universeMode: this.universeMode,
-      universeFreshness: universeFreshness({
-        universeUpdatedAt: universeUpdatedAt(this.db),
-        tradingDateRolledAt: getMeta(this.db, TRADING_DATE_ROLLED_AT_KEY),
-      }),
-      universeUpdatedAt: universeUpdatedAt(this.db),
-      // A roll is due once the session's data is expected: the roll fires at
-      // 22:00 ET, so by premarket it must already have happened. Reuses the
-      // session predicate rather than inventing a clock threshold, which is the
-      // substitution that has cost this desk three defects in one day.
-      universeRollDue: isMarketDataExpected(this.sessionPhase),
       discoveryRank: this.config.discoveryRank,
       internalRank: this.config.internalRank,
       priceMin: this.config.discoveryPriceMin,
@@ -1451,6 +1441,21 @@ export class MarketRuntime {
 
     this.health.heartbeatAt = new Date().toISOString();
     this.health.universeMode = this.universeMode;
+
+    // feed_health is persisted as a whole payload, so a field added here
+    // reaches a reader. The discovery snapshot is projected field-by-field in
+    // readModel, which silently drops anything it was not told about — an
+    // observable put there is computed, typechecked, deployed and invisible.
+    const stamped = universeUpdatedAt(this.db);
+    this.health.universeUpdatedAt = stamped;
+    this.health.universeFreshness = universeFreshness({
+      universeUpdatedAt: stamped,
+      tradingDateRolledAt: getMeta(this.db, TRADING_DATE_ROLLED_AT_KEY),
+    });
+    // A roll is due once the session's data is expected: the roll fires at
+    // 22:00 ET, so by premarket it must already have happened. Reuses the
+    // session predicate rather than inventing a clock threshold.
+    this.health.universeRollDue = isMarketDataExpected(this.sessionPhase);
     this.health.backfill = this.backfill;
     this.health.rejectedSymbols = this.rejectedSymbols;
     this.health.rthCloseCapture = this.rthClose.status;

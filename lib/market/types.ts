@@ -482,39 +482,6 @@ export interface DiscoveryState {
   rthClose: string;
   earlyClose: boolean;
   universeMode: UniverseMode;
-  /**
-   * Whether the universe was refreshed by the roll that set the current trading
-   * date. FRESH / STALE / UNKNOWN, and UNKNOWN is "no roll observed yet" rather
-   * than a default to healthy.
-   *
-   * Two causes produce STALE and neither was visible before: the roll ran and
-   * the cache guard skipped the fetch (2026-09-04, which cost a 53% mover), or
-   * the roll ran and the write was caught and logged. The desk reported ok in
-   * both cases while running on yesterday's universe.
-   */
-  universeFreshness?: 'FRESH' | 'STALE' | 'UNKNOWN';
-  /**
-   * When the universe was last refreshed, surfaced rather than only the verdict
-   * derived from it.
-   *
-   * "Universe from Friday" is checkable against something he already knows;
-   * "STALE" is a claim he has to take on trust. A surface that can be wrong
-   * should carry what it would be wrong about.
-   */
-  universeUpdatedAt?: string | null;
-  /**
-   * Whether a roll should have happened by now, for the reader deciding
-   * whether UNKNOWN is worth saying.
-   *
-   * UNKNOWN IS NOT ONE STATE. Silent at cold start is right; still UNKNOWN at
-   * 06:55 on a trading day means no roll was recorded when one was due, and
-   * that is indistinguishable IN CONSEQUENCE from STALE — the desk is running
-   * on an unverified universe either way.
-   *
-   * The engine computes it because it is clock-relative, and a component
-   * inferring it from its own clock is how the market indicator went wrong.
-   */
-  universeRollDue?: boolean;
   /** Symbols with a valid RVOL denominator AND an eligible price (or latched). */
   eligibleCount: number;
   /** Symbols actually ranked this pass. */
@@ -556,6 +523,39 @@ export interface MarketFeedHealth {
   subscriptions: FeedSubscriptionCounts;
   highResCount: number;
   universeMode: UniverseMode;
+  /**
+   * Whether the universe was refreshed by the roll that set the current trading
+   * date. FRESH / STALE / UNKNOWN, and UNKNOWN is "no roll observed yet" rather
+   * than a default to healthy.
+   *
+   * Two causes produce STALE and neither was visible before: the roll ran and
+   * the cache guard skipped the fetch (2026-09-04, which cost a 53% mover), or
+   * the roll ran and the write was caught and logged. The desk reported ok in
+   * both cases while running on yesterday's universe.
+   */
+  universeFreshness?: 'FRESH' | 'STALE' | 'UNKNOWN';
+  /**
+   * When the universe was last refreshed, surfaced rather than only the verdict
+   * derived from it.
+   *
+   * "Universe from Friday" is checkable against something he already knows;
+   * "STALE" is a claim he has to take on trust. A surface that can be wrong
+   * should carry what it would be wrong about.
+   */
+  universeUpdatedAt?: string | null;
+  /**
+   * Whether a roll should have happened by now, for the reader deciding
+   * whether UNKNOWN is worth saying.
+   *
+   * UNKNOWN IS NOT ONE STATE. Silent at cold start is right; still UNKNOWN at
+   * 06:55 on a trading day means no roll was recorded when one was due, and
+   * that is indistinguishable IN CONSEQUENCE from STALE — the desk is running
+   * on an unverified universe either way.
+   *
+   * The engine computes it because it is clock-relative, and a component
+   * inferring it from its own clock is how the market indicator went wrong.
+   */
+  universeRollDue?: boolean;
   workerStartedAt: string | null;
   heartbeatAt: string | null;
   /** Derived on read: worker heartbeat older than the liveness threshold. */
