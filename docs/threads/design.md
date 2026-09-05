@@ -2890,12 +2890,37 @@ fixable by choosing better constants; only by making absence representable.
 
 ## The price sparkline's sparse case — no threshold, and no gradient either (not built)
 
+> **PROVENANCE WARNING (2026-09-05).** The coverage percentages below — TGL 3%,
+> AIXC 8%, SLE 46% — come from a 23-row read over 08-18/08-19. **08-18 has a
+> three-hour hole whose cause is UNIDENTIFIED**, and it is NOT the retention cut:
+> `repo.ts:262` deletes whole trading dates and cannot remove hours from inside
+> one. So these figures **may have been computed against a partial archive**, and
+> nobody can currently say whether they overlap it. Research is separating a
+> partial archive from a real hole and will answer directly. **Do not quote these
+> percentages as measured.**
+
 Research's finding stands and I am not arguing with it: **coverage is a FIDELITY
 measure being recruited to answer a RELEVANCE question.** It honestly answers
 "how much of this line did the fill rule draw" and says nothing about "is this
-row worth looking at" — and on the rows that matter the two run OPPOSITE. TGL at
-3% barely traded; AIXC at 8% traded 29,379 times in a handful of minutes. A cut
-at 40% would have dimmed three of the most heavily traded rows on the board.
+row worth looking at".
+
+### The two loads are separable, and only one depends on the numbers
+
+**THE COUNTEREXAMPLE — robust, and it carries the conclusion alone.** A name
+trading 29,379 times inside a handful of minutes **is not a fidelity problem at
+any coverage figure.** Whatever its true percentage turns out to be, a threshold
+computed on coverage would suppress it, because coverage is not what makes it
+worth looking at. **This survives whatever the archive question decides**, and it
+is sufficient on its own to reject a threshold.
+
+**THE BAND ARGUMENT — dependent, and quarantined.** "Two opposite populations
+share the 20% band" — TGL barely trading at 3% against AIXC trading violently at
+8% — needs the percentages to be right about WHICH band each row sits in. **If
+the figures move, this argument moves with them.** It is the more vivid of the
+two and the more fragile, which is exactly the combination that gets quoted.
+
+Same for "a cut at 40% would have dimmed three of the most heavily traded rows":
+the DIRECTION holds, the COUNT of three does not, pending the same answer.
 
 Relevance is already answered beside it, by a different measurement: the
 activity series.
