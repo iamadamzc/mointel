@@ -4430,3 +4430,40 @@ expensive outcome.
 stores of 112–120MB with identical tables and dates. `market.db` misled three
 threads because it has the **default** name, and a reader who knows nothing
 reaches for the default first. **The next one is already sitting there.**
+
+## SILENCE IS WHAT PAYS FOR LOUDNESS — AND A SPECIFICATION SHOULD NAME THE PREDICATE'S SOURCE, NOT ITS VALUE
+
+**Design, 2026-09-05**, resolving what looked like a contradiction in an
+Integration instruction: *"do not make it subtle enough to be missed"* against
+its own standing rule that a light shows words only when it is not nominal.
+
+**They are the same constraint.** A marker that fires **rarely** can afford to be
+loud; one that fires **daily** cannot. STALE is a defect condition and should be
+rare, so prominence is affordable. UNKNOWN-before-a-roll-is-due would fire on
+**every cold start** and would spend exactly the budget that makes the real one
+visible.
+
+**So the silence rules are not a concern to be traded against loudness — they are
+what pays for it.** Every state that correctly says nothing is what lets the one
+that speaks be impossible to miss.
+
+### The test that outlives the conversation
+
+**If it would fire on a normal morning, it does not belong on this channel at any
+volume.**
+
+That is enforceable by someone who was not in the room. *"Make it prominent but
+not too prominent"* is not. **A rule that requires the author's judgement to
+apply has not been written down yet.**
+
+### And the reason three of my specifications were wrong in one day
+
+All three were caught **by someone reading the code**, never by anyone reviewing
+the specification. **A flat rule reads as complete BECAUSE it has no
+conditions** — the missing clock-dependence is invisible in the sentence and
+only appears at the line where the state is compared.
+
+**So specify the SOURCE of a predicate, not its VALUE.** *"Nominal is whatever
+the roll-due predicate says"* cannot be flat. *"UNKNOWN must not degrade"* cannot
+be anything else. **The first form makes the dependency a question someone has to
+answer; the second hides that there was one.**
