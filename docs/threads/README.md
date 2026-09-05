@@ -3957,3 +3957,46 @@ accumulates dead rows at 39 a day, one is latency. **Shape is how you recognise 
 family; consequence is how you schedule it.** Bundling by shape parks the one
 with teeth behind two that can wait — and it is tempting precisely because the
 shape is elegant.
+
+## CHECK THE TREE BEFORE SCOPING IT — AND CHECK THE ARTEFACT BEFORE NAMING IT
+
+**2026-09-05, twice in one hour, by Integration and by Ops.** Two different
+seats, one failure: **a claim accepted without opening the thing it was about.**
+
+### Integration scoped a feature that was already rendering
+
+The trader asked for a current-activity mark. This seat wrote a scope — mark
+type, window, empty state — and dispatched it. **Design checked the tree rather
+than taking the premise and replied that it ships: `3921a50` activity bars and
+`2b3ddd9` minute closes, rendering at `DiscoveryBoard.tsx:508` under "NOW",
+beside RVOL because it is the correction to RVOL.** Verified independently.
+
+**This is the second time this seat has approved work that had already shipped.**
+The first was share count from company facts, twelve days late. **A scope is a
+claim that something does not exist, and it is the cheapest claim on the desk to
+check.** `git log`, one grep for the component, before writing a word of it.
+
+**What the trader actually asked for was the part that was NEW in his words** —
+direction-and-colour as an alternative to shape — and that part was buried under
+a re-scope of the part that was done.
+
+### Ops named a consequence it had never opened
+
+Stale `replaceUniverse` rows were reported twice as *"listening for 119 names
+that no longer trade"*, then 158. **`stream.ts:292` subscribes the base channels
+with a WILDCARD.** Dead rows produce no dead subscriptions and count down to no
+ceiling. **The defect is real and the consequence was invented** — it is waste
+(rows that never expire, an eligibility count drifting upward at ~39/day), not a
+deadline.
+
+**Wrong in the alarming direction is still wrong**, and it is worse than wrong in
+the reassuring direction for scheduling, because it buys attention it did not
+earn — attention that on this desk is finite and was owed elsewhere.
+
+### The rule
+
+**A word you introduce becomes a fact the desk reasons from.** "Subscriptions"
+was never checked against what the desk subscribes to, and it survived two
+reports and a relay. **Before a noun enters a report, open the code that would
+make it true.**
+
