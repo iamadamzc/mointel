@@ -205,6 +205,56 @@ export function loadMinuteBars(
 }
 
 /** Drops minute bars outside the retained trading dates. */
+/**
+ * The trading dates minute bars actually exist for, newest first.
+ *
+ * Retention counts SESSIONS, and only the stored rows know which dates were
+ * sessions. Counting calendar days back from the trading date instead deletes
+ * everything whenever the window contains no session -- which is every
+ * weekend: on 2026-09-05 the roll set the trading date to Monday 09-08, the
+ * three-day calendar window became Mon/Sun/Sat, no stored date was in it, and
+ * 2,121,548 minute bars were deleted. A long weekend does the same with an
+ * extra day of loss.
+ *
+ * The docstring in db.ts always said "trading dates". The loop said calendar
+ * days. This is the function that makes the prose true.
+ */
+export function recentMinuteBarDates(db: MarketDatabase, limit: number): string[] {
+  if (limit <= 0) return [];
+  return (
+    db
+      .prepare(
+        'SELECT DISTINCT trading_date FROM minute_bars ORDER BY trading_date DESC LIMIT ?',
+      )
+      .all(limit) as Array<{ trading_date: string }>
+  ).map((row) => row.trading_date);
+}
+
+/**
+ * The keep-list for a retention pass: the N most recent SESSIONS that exist,
+ * plus the current trading date so a live session's incoming bars are never
+ * the thing being deleted.
+ *
+ * Exported so the decision can be tested against a real store rather than a
+ * reimplementation of it -- this is a DELETE path, and a wrong keep-list
+ * removes more rather than less.
+ *
+ * Returns EMPTY when nothing is stored, and pruneMinuteBars treats empty as
+ * "delete nothing". On a delete path an empty list must never mean "keep
+ * nothing".
+ */
+export function retainedMinuteBarDates(
+  db: MarketDatabase,
+  retainSessions: number,
+  tradingDate: string,
+): string[] {
+  const sessions = recentMinuteBarDates(db, retainSessions);
+  if (sessions.length === 0) return [];
+  const keep = new Set(sessions);
+  keep.add(tradingDate);
+  return [...keep];
+}
+
 export function pruneMinuteBars(db: MarketDatabase, keepDates: string[]): number {
   if (keepDates.length === 0) return 0;
   const placeholders = keepDates.map(() => '?').join(',');

@@ -19,6 +19,7 @@ import {
   insertDeskEvents,
   loadBaselines,
   pruneMinuteBars,
+  retainedMinuteBarDates,
   readClassificationCounts,
   readDiscoveryEligibleSymbols,
   readUniverseRows,
@@ -1576,14 +1577,22 @@ export class MarketRuntime {
   /* -------------------------------------------------------------- lifecycle */
 
   pruneRetention(): void {
-    const keep: string[] = [this.tradingDate];
-    let cursor = this.tradingDate;
-    for (let index = 1; index < this.config.minuteBarRetentionDays; index += 1) {
-      cursor = addDays(cursor, -1);
-      keep.push(cursor);
-    }
+    // Retention is N SESSIONS, not N calendar days. Ask the store which dates
+    // are sessions rather than counting backwards from the trading date: on a
+    // Saturday roll the trading date is already Monday, so a calendar window
+    // covers Mon/Sun/Sat, matches no stored date, and deletes everything.
+    const keep = retainedMinuteBarDates(
+      this.db,
+      this.config.minuteBarRetentionDays,
+      this.tradingDate,
+    );
+
+    // Empty means nothing is stored, and on a DELETE path that must mean "do
+    // nothing" rather than "keep nothing".
+    if (keep.length === 0) return;
+
     const removed = pruneMinuteBars(this.db, keep);
-    if (removed > 0) this.logger.debug(`[store] pruned ${removed} minute bars`);
+    if (removed > 0) this.logger.info(`[store] pruned ${removed} minute bars`);
   }
 
   shutdown(): void {
