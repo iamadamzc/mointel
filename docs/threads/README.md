@@ -1263,6 +1263,49 @@ read 23. **The failed deploy is the reason that sha is live.**
 something they cannot observe** — the same reasoning as reporting existence
 rather than a rate.
 
+## THE DOCSTRING NAMED THE REQUIREMENT; THE LOOP NAMED A PROXY FOR IT
+
+**Ops, 2026-09-05.** `minute_bars` held **2,121,548 rows on Friday and zero on
+Saturday.** Not a corrupted store — `daily_bars` and `ticker_session` are intact
+and the file size is unchanged. **Rows deleted, deliberately, by the desk.**
+
+`pruneRetention` builds its keep-list by **counting back calendar days:**
+
+    keep = [tradingDate]
+    for (i = 1; i < minuteBarRetentionDays; i++) keep.push(addDays(cursor, -1))
+    DELETE FROM minute_bars WHERE trading_date NOT IN (keep)
+
+**The 02:00 Saturday roll sets `tradingDate` to MONDAY. So the keep-list is
+Monday, Sunday, Saturday — a three-day window containing no trading session at
+all**, and every real date including Friday falls outside it.
+
+**And `db.ts:8` says bars are pruned to N "TRADING DATES".** The comment states
+the requirement. **The loop implements a proxy for it that coincides on weekdays
+and inverts across a weekend.** The correct statement was sitting three lines
+away in prose and nobody read it against the code.
+
+**IT FIRES EVERY SATURDAY**, and has since the retention was written. A roll into
+a long weekend is worse — Tuesday, Monday, Sunday, and a fourth day lost.
+
+### And it had already explained a fact everyone accepted
+
+Research reported *"the only two sessions with minute bars retained"* and this
+seat read it as a small retention window. **It was not a window, it was a cut.**
+Every measurement taken against `minute_bars` this week was taken against the
+survivors of a weekly deletion — **and nobody asked why a three-day retention
+was showing two days.**
+
+**A number that is smaller than its own configured limit is a question, not a
+setting.**
+
+### Bundle by consequence, not by shape
+
+Three defects sit in one function family: **one deletes too much, one deletes
+nothing** (`replaceUniverse` upserts and never removes, 119 stale rows on Friday
+and 158 on Saturday), **one holds the lock too long.** An elegant grouping —
+**and grouping them delays the only one that destroys data.** Shape is how you
+recognise a family; consequence is how you schedule it.
+
 ## THE GUARD THAT CAUSED THE DEFECT WAS ALSO PREVENTING A CRASH NOBODY KNEW ABOUT
 
 **2026-09-05, hours after the fix shipped.** The 20-hour universe cache guard
