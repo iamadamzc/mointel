@@ -3282,6 +3282,86 @@ otherwise flat run is a small visual difference. It is correct, not
 prominent — worth knowing before anyone reads a single hole off the row rather
 than the shape.
 
+## SCOPE — the stale-universe signal (2026-09-05, not built)
+
+Checked the tree first: **no `universeFresh`/`universeStale` anywhere.** Not
+built. The sibling `universeMode` renders at `MarketStatus.tsx:150` as a warn
+badge whenever it is not `FULL`, so there is an existing pattern to reason from.
+
+**The difficulty, stated exactly:** a board missing names looks IDENTICAL to a
+quiet morning. A missing name is invisible by construction, so **the indicator
+is the only thing that can say the absence is not real.** He cannot ever detect
+this himself from the rows.
+
+### NOT the market indicator, and this is the load-bearing decision
+
+The market light answers **"is the feed working"**. A stale universe is not a
+feed fault — the feed is streaming perfectly, delivering correct data about the
+**wrong set of names**. Folding it in would make a HEALTHY feed render degraded,
+which is two different facts under one light: the exact conflation removed from
+this header three times this week.
+
+It would also train him to distrust the market light for a reason it is not
+about, which is how a real feed warning gets ignored later.
+
+### NOT diagnostics either
+
+The whole property of this failure is that it is **undetectable from the board**.
+A signal he must go and look for requires him to suspect first — and there is
+nothing to suspect from. Diagnostics-only is equivalent to no signal.
+
+### So: its own marker, ON THE COUNTS IT INVALIDATES
+
+The Discovery header already renders `N eligible · N tracked`. **A stale
+universe means those numbers are yesterday's**, so the marker belongs on them —
+the same rule as the provenance warning sitting at the figures and the
+interpolation note sitting at the point of temptation. **A caveat belongs on the
+thing it qualifies**, not in a corner of the chrome.
+
+### THE STATE MODEL — and UNKNOWN is not one state
+
+Integration's constraint is right: **UNKNOWN must not degrade**, because a signal
+that alarms on every cold start gets ignored and takes the real one with it.
+
+**But "UNKNOWN is benign" is the `state === 'LIVE'` error again.** Cold start at
+04:00 is expected. **UNKNOWN still present at 06:55 on a trading day is not the
+same fact** — it means no roll has been recorded when one should have been, and
+that is indistinguishable in consequence from STALE. Nominality is
+CLOCK-RELATIVE here exactly as it was for the market light.
+
+| State | Before a roll is due | After a roll is due |
+| --- | --- | --- |
+| FRESH | silent | silent |
+| STALE | speaks | speaks |
+| UNKNOWN | **silent** | **speaks** |
+
+Which needs a "a roll should have happened by now" reference. The 22:00 roll
+sets the trading date, so by the time the premarket window opens a roll for
+today's date should exist. **That predicate is Ops's to supply** — I will not
+infer it from a clock in the component, which is how the last one went wrong.
+
+### The copy: name what is MISSING, not that something is wrong
+
+**"Universe stale" is engine vocabulary.** What he needs is that **the board may
+not contain everything that gapped** — the SGRX case, a 53% move the desk could
+not see.
+
+And it must **show its own evidence rather than asserting a verdict**: render the
+universe's AS-OF DATE, not just a status word. *"Universe from Friday"* is
+checkable against something he already knows; *"STALE"* is a claim he must
+trust. The graveyard's lesson — a surface that can be wrong should carry what it
+would be wrong about.
+
+**It must not offer a remedy he cannot perform.** Refreshing the universe is an
+ops action. The honest line names the consequence and its scope and stops.
+
+### What I would NOT do
+
+**No dismissal, and no auto-clear on a timer.** The failure is silent and lasts
+the whole session; a marker that can be dismissed at 06:55 is gone by 07:15 when
+the name he missed is running. It clears when the universe refreshes, and on
+nothing else.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
