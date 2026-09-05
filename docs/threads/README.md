@@ -4604,3 +4604,42 @@ the **tape** — what the name did after the catalyst — which is an outcome ch
 rather than a source check, **and a weak one, because a catalyst can bring demand
 and the price still fall.** Naming the only available instrument, and its
 weakness, is what stops the gap being rediscovered as news every quarter.
+
+## A SUITE THAT VANISHES REPORTS SUCCESS-SHAPED SILENCE
+
+**Ops, 2026-09-05.** A string slice mid-edit removed a whole test from the file.
+**vitest reported "no tests" — not a failure.** The damage was found because the
+output was *shaped wrong*, not because anything went red.
+
+**A deleted test and a passing test are both green.** Every instrument on this
+desk is built to notice a failing assertion; **none of them notice an assertion
+that stopped existing.** It is `failed checks return plausible answers` at the
+level of the suite itself — the check did not fail, it left.
+
+**Watch the COUNT, not the colour.** 1749 → 1756 → 1758 is the reading that would
+have caught it, and it is the one nobody looks at when the line is green.
+
+## REUSING A PREDICATE BUYS NO NEW CLOCK AND SELLS A SHARED DEPENDENCY
+
+`universeRollDue` is `isMarketDataExpected(sessionPhase)` — **reused rather than
+written**, deliberately, because a fresh *"has 22:00 passed"* would have been the
+**fourth clock threshold in a day that produced three defects from exactly that
+move.** The engine stays the only thing reading a clock, and that is right.
+
+**But the alarm is now coupled to a predicate that exists for another reason.**
+Someone changing `isMarketDataExpected` for a session-phase purpose — a
+pre-market boundary, a holiday rule — **silently changes when the desk reports a
+stale universe**, and nothing at either site says so.
+
+**Reuse is correct here and the dependency must be named at BOTH sites**, the way
+the sparkline comment names its dependency on the slot builder. **A shared
+predicate is a coupling whether or not anyone writes it down; writing it down is
+the only part that is optional, and it is the part that decides whether the next
+change meets a reader.**
+
+### And the cost that was named rather than hidden
+
+If the 22:00 roll fails, the signal stays silent until premarket — **it speaks
+from the moment the trader could be looking, and not before.** That was chosen
+over inventing a threshold. **If it needs to be louder the fix is a stricter
+predicate, never a wall-clock constant.**
