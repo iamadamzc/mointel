@@ -8195,13 +8195,40 @@ a finding — a vocabulary the model does not reach for is not a constraint.
    carry no non-SEC catalyst source, and that reason exists for exactly them.
 2. **Supply `OBSERVED` > supply `INFERRED`.** Filings are what the desk sees and
    supply events ARE filings.
-3. **`RULE_DIRECTION_MISMATCH` fires more often than `UNRECOGNISED_RULE`** — with
-   the rules listed in the prompt, misapplying a real one is easier than
-   inventing a name.
-4. **Explicitly NOT predicted: whether `INFERRED` is over-used where `OBSERVED`
+3. **Explicitly NOT predicted: whether `INFERRED` is over-used where `OBSERVED`
    was available.** I can argue it both ways — a rule is easier to name than a
    source is to cite, and the prompt already demands source ids everywhere. **No
    direction, so the result cannot be read to fit.**
 
 **If 1 and 2 both fail, the taxonomy is not describing this desk's evidence and
 the shape is wrong rather than the model.**
+
+### WITHDRAWN AS A PREDICTION — UNPOWERED AT n = 60, AND REPORTED AS A RAW COUNT
+
+I had registered *"`RULE_DIRECTION_MISMATCH` fires more often than
+`UNRECOGNISED_RULE`"*. **Integration: both are expected rare, so at 5% the sample
+holds three of one and one of the other, and 3-versus-1 resolves nothing.**
+
+**A prediction that cannot come out either way at the chosen n is a check that
+cannot fail** — this desk's oldest entry, arriving in an EXPERIMENT DESIGN rather
+than in code. **And left as a prediction it WILL be read as a result the moment
+the numbers exist**, because a number beside a stated expectation reads as a
+test of it.
+
+**So both counts are reported RAW, with no comparison and no direction.**
+
+**And n is NOT raised to fix it** — that spends the whole budget on categories
+already well estimated at 60. **Arm B's top-up is the instrument: enlarge only
+where the rarity binds.**
+
+### THE UNVERIFIED DEMAND AXIS IS PERMANENT AND BOUNDED, NOT OPEN
+
+Ship it `UNVERIFIED` rather than carrying a number nobody can stand behind.
+
+**The only instrument that could ever touch it is the TAPE — what the name did
+after the catalyst — and it is weak, because a catalyst can bring demand and the
+price still fall.** An outcome check, not a source check.
+
+**That sentence is here so the gap is BOUNDED rather than open.** An unbounded
+gap gets proposed as new work by the next person who notices it; a gap with its
+only instrument and that instrument's weakness written down does not.
