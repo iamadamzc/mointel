@@ -5496,6 +5496,57 @@ cherry-pick never happened, and the compound command still printed "pushed".
 **Verify by containment — is the sha an ancestor of `origin/main` — never by
 the word.**
 
+## Fixing an instance does not sweep the file it lives in
+
+**2026-09-05.** `pruneRetention` counted calendar days where the requirement was
+trading dates, and deleted 2,121,548 minute bars. It was fixed that morning.
+**Six hours later `preflight.sh` refused a deploy on a Saturday**, protecting a
+5-minute window around a `STRUCTURAL_REFRESH` that will not run until Monday —
+because its checkpoint list is unconditional and has no trading-day awareness at
+all.
+
+**Same substitution, same directory, opposite consequence: one over-deletes and
+one over-blocks.** The first was fixed without looking at the second.
+
+### The discriminator
+
+**Calendar arithmetic is correct when it FEEDS a calendar lookup and wrong when
+it SUBSTITUTES for one.** Fetch a range by calendar; gate an action by session.
+
+- `runtime.ts:314-315` fetches a calendar range to *learn* which days are
+  sessions — correct.
+- `runtime.ts:341` iterates days to find the next session — correct.
+- `runtime.ts:689-690` takes 60 calendar days for a 20-session baseline —
+  roughly 42 sessions, over-provisioned and safe.
+
+### The pattern to copy already existed
+
+`worker/archive-backfill.ts` names every constant `..._CALENDAR_DAYS` and
+converts explicitly:
+
+```
+SPLIT_LOOKBACK_CALENDAR_DAYS = Math.ceil(SPLIT_LOOKBACK_SESSIONS * 1.6) + 14
+```
+
+**Sessions times a ratio, plus a pad, and the unit in the name.** Somebody in
+this repo understood the distinction before today, in a neighbouring file.
+
+### The third instance, found only by sweeping
+
+`worker/dial.ts:37` — `const WINDOW_START_UTC_HOUR = 8; // 04:00 ET, EDT`, used
+as `Date.UTC(y, m-1, d, WINDOW_START_UTC_HOUR, 0, 0)`.
+
+**A hardcoded UTC hour standing in for an ET wall clock, and the comment names
+the assumption without guarding it.** Under EST, 04:00 ET is 09:00 UTC — so
+from the first Sunday in November the pre-registered premarket window silently
+becomes 03:00–06:00 ET. Analysis rather than a live path, so it produces a wrong
+measurement window rather than a capture failure, and **it fires by calendar
+rather than by anything anyone will notice.**
+
+**When you close a defect, grep the neighbourhood for the same substitution
+before calling it done.** Two of these three were found that way; the third
+found itself, expensively.
+
 ## Before you deploy
 
 ### "Docs-only above production" is a snapshot, not a standing fact
