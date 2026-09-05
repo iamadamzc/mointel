@@ -8086,3 +8086,52 @@ rather than convenient.**
   route. `NOW` for a takedown off a live shelf, and `UNKNOWN` everywhere else.
 - **A rename has no place in it, deliberately.** It is a fact about the desk's
   ability to observe, not about the book.
+
+---
+
+**85. THE ENUMERATION: THREE ITEMS, ONE ALREADY WITHDRAWN — and the register's
+gap is not the count.**
+
+*Integration: enumerate which items were measured against `data/market.db`, on
+paper, not re-run. Done by grepping the register rather than by recall.*
+
+### Measured on the LOCAL split-brain desk
+
+| item | what | status |
+| --- | --- | --- |
+| **58** | close-series coverage — 20.3% tracked, 39.0% top-50, **66.6% / 54.2% top-12**, gap distributions, **36–42% opening with a hole** | **re-take Monday** |
+| **59** | the 23-row coverage-versus-activity read — TGL, AIXC, WEAV, SLE, IPST | **re-take Monday**; the counterexample survives regardless |
+| **82a** | basis-free drawdown, n=12 | **already withdrawn**, for an array-indexing error of my own |
+
+**That is all of them.** Everything else measured came from
+`data/market-prod-2026-08-23.db` — a `VACUUM INTO` of production — or from code
+and git. **The 93% pattern base rate is production's**, as are the float,
+coverage, split, EFFECT and feed findings.
+
+### But the count is not the finding, and two things are worse than it
+
+**1. `data/market.db` is only identifiable as the local desk BY COMPARISON.** It
+carries the same schema, the same table names and a plausible trading date. It
+took a row-count diff against the production snapshot to establish which machine
+wrote it. **Nothing in the file says.**
+
+**2. "Production" is itself dated.** The snapshot is **2026-08-23 — thirteen days
+old.** So the register records neither WHICH machine nor AS OF WHEN, and both
+are provenance. An item measured on an 08-23 snapshot and one measured on
+Monday's live store are not the same claim.
+
+**So the register needs a provenance line per measured item — store AND as-of
+date — not because three items are affected, but because determining it required
+a grep and a diff.** A number whose machine cannot be recovered from the record
+is a number that has to be re-taken to be trusted.
+
+### And 36–42% is quoted in SHIPPED CODE
+
+`lib/market/activity.ts:133`, `lib/dashboard/sparkline.ts:111` and two tests
+carry it as the justification for starting the line at the first traded minute.
+
+**The CONSTRAINT does not depend on the figure** — a leading hole must not be
+drawn from the window edge whether it happens on 36% of rows or 6%. **But the
+sentence asserting the rate does**, and it is now a local-desk number sitting in
+production code. **Not urgent, not wrong yet, and it should be re-taken with the
+rest rather than quietly kept.**
