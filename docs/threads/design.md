@@ -3355,6 +3355,26 @@ would be wrong about.
 **It must not offer a remedy he cannot perform.** Refreshing the universe is an
 ops action. The honest line names the consequence and its scope and stops.
 
+### Prominence is affordable IN PROPORTION TO RARITY
+
+"Do not make it subtle enough to be missed by someone with no reason to look for
+it" reads as a tension with this thread's own rule — a light shows words only
+when it is not nominal, and the header audit spent two rounds reclaiming space.
+
+**It is not a tension, and seeing why sets the level.** The two constraints are
+the same constraint: **a marker that fires rarely can afford to be loud; one
+that fires daily cannot.** STALE is a defect condition and should be rare, so it
+can be prominent. UNKNOWN-before-a-roll-is-due would fire on **every cold
+start** — and spending the prominence budget there is precisely what makes the
+real one ignorable in November.
+
+So the silence rules are not a competing concern to be traded against loudness.
+**They are what PAYS for it.** Every state that correctly says nothing is what
+lets the one that speaks be impossible to miss.
+
+That also gives a test for any future addition to this marker: **if it would
+fire on a normal morning, it does not belong in this channel at any volume.**
+
 ### What I would NOT do
 
 **No dismissal, and no auto-clear on a timer.** The failure is silent and lasts
