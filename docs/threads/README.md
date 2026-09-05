@@ -4923,3 +4923,48 @@ was changed and the general one was left.**
 **A fix is an instance too.** The sweep rule applies to the commit that prompted
 it, and the natural moment to skip that check is exactly when the defect feels
 freshly closed.
+
+## THE ARCHIVE RECORDS HOW MANY BARS THERE WERE, NOT THE BARS
+
+**Ops, 2026-09-05, scoping the backfill and finding the question was the wrong
+size.** `lib/archive/store.ts:183` stores **`minute_bar_count INTEGER`.** A
+count. The archive's own header says it exists because a mode switch can destroy
+`ticker_session`, `minute_bars` and `desk_events` — **and its answer for bars is
+to record how many there were.**
+
+**So minute bars live in exactly one place, for exactly three sessions
+(`MARKET_MINUTE_BAR_RETENTION_DAYS`, default 3), and nowhere else.** Verified in
+`config.ts:85`.
+
+### Which makes the backfill question answer itself
+
+`pruneRetention` runs at every roll and every worker start, so **any session
+pulled beyond the third most recent is deleted hours later by the fix shipped
+that morning, working exactly as designed.** *"How far back is worth pulling"* is
+**three sessions or nothing** — anything else is a request budget spent on rows
+with a scheduled execution date.
+
+**A restore deeper than the retention is not a restore. It is a delayed delete.**
+
+### And it re-explains a limit two threads had accepted as an accident
+
+Research's drawdown work wanted minute bars across more sessions than exist and
+read *"only two sessions retained"* as a store limitation. **It was structural.**
+No measurement over minute bars can span more than three sessions on this desk
+**however the retention behaves** — the weekend bug made it two instead of three
+and hid a ceiling that was there the whole time.
+
+**The defect was the smaller half of what it was concealing.** Fixing it restored
+one session; it did not create the durability nobody had.
+
+### The decision is not "how far back"
+
+**Do minute bars outlive three sessions at all?** Three answers and only the
+first is a backfill: **restore the three** (bounded, ~2.7M bars, ~270+ pages,
+minutes not hours, idempotent by `ON CONFLICT(symbol, ts)`); **raise the
+retention** (one env var, ~900k rows a session, ~+6GB for ten — a storage
+decision); **give bars a durable home in the archive** (schema work, and the only
+one that makes multi-week bar analysis possible).
+
+**The seat that can price it is not the seat that can say whether three is
+enough.** Ops named that boundary itself and refused to choose across it.
