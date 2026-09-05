@@ -8000,3 +8000,89 @@ figures should be re-taken on production's minute bars from Monday.**
 hole under a retention bug that had just been closed and deployed — which would
 have stopped anyone looking at it. **Ops refused the attribution and pressed, and
 the answer turned out to be neither of ours.**
+
+---
+
+**84. THE CATALYST SHAPE, BEFORE BUILDING — and the thing that makes it a
+taxonomy rather than a vocabulary is NOT the axes.**
+
+*Integration: two signed axes plus a basis, reverse-split repeat offenders in the
+label, bring the shape first. Here it is, tested against the 83 accepted
+catalysts of items 53–54.*
+
+### The shape
+
+    interface CatalystEffect {
+      /** + buyers arrive · − buyers leave · none */
+      bringsDemand: Side;
+      /** + shares arrive · − shares leave · none */
+      bringsSupply: Side;
+
+      /** WHY that value, and it is not optional. */
+      demandBasis: EffectBasis;
+      supplyBasis: EffectBasis;
+
+      /** Neither axis is knowable from what was collected. NOT the same as none/none. */
+      sideUndetermined: boolean;
+
+      /** The move is CAPPED — a cash merger ends price discovery. Not a side. */
+      priceCapped: { at: number | null; source: 'ANNOUNCED_TERMS' } | null;
+
+      /** WHEN, which reachability and "a long fuse" are the same field. */
+      timeToEffect: 'NOW' | 'DAYS' | 'WEEKS' | 'UNKNOWN';
+    }
+
+    type Side = 'POSITIVE' | 'NEGATIVE' | 'NONE';
+
+    type EffectBasis =
+      | { kind: 'OBSERVED'; sourceIds: number[] }
+      | { kind: 'INFERRED'; rule: EffectRule; sourceIds: number[] };
+
+### `none/none` is a real verdict and it is why the residue is zero
+
+Against the 83: the twelve both-sides cases are ordinary (two independent axes),
+the eight sign cases place (a buyback is `supply: NEGATIVE`, a failed endpoint is
+`demand: NEGATIVE`), the seven content-unknown cases need `sideUndetermined`, and
+the governance items — a General Counsel replaced, a board election — are
+correctly **`none/none`: a real disclosed event with no book effect.**
+
+**And that should be read as a WARNING, not a result.** Item 53's own rule: a
+taxonomy that classifies everything usually has buckets too vague to be wrong.
+**Two signed axes with a `none` value can absorb anything.**
+
+### So the discriminating constraint is not the axes. It is this
+
+**A non-`NONE` value MUST carry a basis, and an `INFERRED` basis MUST name a
+rule from a closed list.** If `supply: POSITIVE` can be set on a hunch, the axes
+are decorative and the model will fill them the way it fills everything else.
+
+**The rules, closed and each with its own evidence status:**
+
+| rule | direction | measured? |
+| --- | --- | --- |
+| `REVERSE_SPLIT_1ST` / `_REPEAT` | supply POSITIVE | **1.65×, z≈2.2, on a MENTION proxy** |
+| `FILING_FAILURE` | supply POSITIVE, demand NEGATIVE | **no number** |
+| `COMPLIANCE_RESTORED` | demand POSITIVE | **no number** |
+| `STOCK_CONSIDERATION` | supply POSITIVE beside demand POSITIVE | observed from the terms |
+
+**Two of the four have no number and must render as rules rather than as
+findings** — Integration's own condition, and the reason `basis` exists at all.
+
+### The repeat-splitter is in the rule, which is what "not a footnote" means
+
+`REVERSE_SPLIT_REPEAT` is a different rule from `REVERSE_SPLIT_1ST`, so the count
+is part of the label rather than a note beside it. **One split is a company
+solving a compliance problem; three is a business model, and the second reading
+is far stronger evidence.** The count comes from the split census, which is
+unrun — **so until it runs, every reverse split is `_1ST` and that is honest
+rather than convenient.**
+
+### What the shape still does not do
+
+- **It cannot say how MUCH.** `supply: POSITIVE` on a 526,314-share offering and
+  on a 95.7% change of control are the same value. The magnitude lives in the
+  supply bound, and nothing joins them.
+- **`timeToEffect` is only populated for registered resale** — the EFFECT-notice
+  route. `NOW` for a takedown off a live shelf, and `UNKNOWN` everywhere else.
+- **A rename has no place in it, deliberately.** It is a fact about the desk's
+  ability to observe, not about the book.
