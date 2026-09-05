@@ -4555,3 +4555,52 @@ published outside a filing would not have been seen"* — since it was written, 
 **The fact was true, computed, and unreachable.** As a taxonomy value it is
 reachable by construction, and the wrapper reframe and the taxonomy now share a
 vocabulary instead of describing the same absence twice.
+
+## A SAMPLE SIZE IS SET BY THE RAREST THING YOU NEED TO SEE, NOT BY THE BUDGET
+
+**2026-09-05, ruling on the taxonomy calibration census.** Research proposed
+n=60, stated plainly that it was **not derived from a power calculation** — it is
+what makes 6% of a bad day — and asked for it to be set rather than defended
+afterwards. **Saying so is what made the defect findable.**
+
+**The four pre-registered predictions are not all answerable at the same n**, and
+nothing in the design said which were which:
+
+| prediction | at n=60 |
+| --- | --- |
+| `demand: UNDETERMINED` ≥ 40% | **answerable** — ±12pp is far inside the call |
+| supply `OBSERVED` > `INFERRED` | **answerable** — a large expected gap |
+| `RULE_DIRECTION_MISMATCH` > `UNRECOGNISED_RULE` | **NOT ANSWERABLE.** Both are expected rare; at 5% the sample holds three of one and one of the other, and 3-versus-1 resolves nothing |
+
+**A prediction that cannot come out either way at the chosen n is a check that
+cannot fail** — this desk's oldest entry, arriving in an experiment design
+instead of in code. **It must be declared unpowered IN ADVANCE and reported as a
+raw count with no comparison**, or it will be read as a result the moment the
+numbers exist.
+
+### And do not buy resolution on rare events by paying for it on common ones
+
+The instinct is to raise n until the rare category resolves. **That spends the
+whole budget on categories already well estimated at 60.** The right instrument
+is the top-up Research had already designed for arm B — **enlarge only where the
+rarity binds.**
+
+**Its stated trigger is the better finding anyway: fewer than 10 rule-fired
+inferences in 60 means the rules are rare, and A VOCABULARY THE MODEL DOES NOT
+REACH FOR IS NOT A CONSTRAINT.** That result would say the closed list is
+decorative in practice while being perfectly enforced in code.
+
+### UNVERIFIED is the honest state — and name what could ever close it
+
+A rule-fired inference claims a **fact about a document** — a 12b-25, a
+compliance notice, stock consideration in the stated terms — and verifies against
+the filing. **"Buyers arrive" does not.** Research is the model's cousin, not an
+independent judge, so the demand axis ships **UNVERIFIED** rather than carrying a
+number nobody can stand behind.
+
+**Accepted, and it is permanent for document verification.** But the gap must be
+recorded as **bounded, not open**: the one instrument that could ever touch it is
+the **tape** — what the name did after the catalyst — which is an outcome check
+rather than a source check, **and a weak one, because a catalyst can bring demand
+and the price still fall.** Naming the only available instrument, and its
+weakness, is what stops the gap being rediscovered as news every quarter.
