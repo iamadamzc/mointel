@@ -210,22 +210,34 @@ its mechanisms. Verify before acting on any of it.*
 
 ### Production, as of this block
 
-- **`4876ea6`, schema 25.** Deployed 04:30 ET Saturday, migrated 24→25 cleanly,
-  backup `market-v24-2026-09-05T08-32-07-821Z.db` written and integrity-checked.
-- **Market worker restarted 04:33 onto current code.** It had spent 20.6 hours
-  running from a pruned release (`cwd` = `(deleted)`); that exposure is closed.
-- **`SGRX` and `XTND` are in the universe AND in the live subscription.** Both
-  were invisible Friday morning; SGRX moved 53% while the desk could not see it.
-- **Six deploys Thursday night to Saturday.** `0e` fired clean on four of them.
-  Capture was never interrupted by any deploy.
+*Amended 2026-09-05 late (market closed, `tradingDate` 2026-09-08).*
 
-### The one thing with a deadline
+- **`8018b9b`, schema 25, on all four units.** Market worker restarted onto it.
+  Schema 25 against 25, no migration — `0e`'s sixth clean no-op.
+- **`57981ac` (busy-retry) is DEPLOYED. Its Monday-roll deadline is closed.**
+- **`SGRX` and `XTND` are in the universe AND in the live subscription.**
 
-**`57981ac` is pushed, gated, non-migrating, and NOT deployed. It must be live
-before Monday's 02:00 ET session roll.** The roll now refreshes the universe
-unconditionally — a 13,094-row write — and thirteen research writes previously
-died on `SQLITE_BUSY` rather than retrying. Nine crashes since 08-25, all at
-rolls that refetched. **Our own universe fix is what makes it daily.**
+### The retention incident — read this before trusting any minute-grain number
+
+**`minute_bars` held 2,121,548 rows Friday and zero this morning.** The desk
+deleted them. `pruneRetention` counted **calendar** days while `db.ts:8` promised
+**trading dates**, so Saturday's roll to Monday produced a keep-list of
+Mon/Sun/Sat — three days containing no session — and every real one fell outside
+it. **It fired every weekend since the retention was written.**
+
+- **Fixed and live in `8018b9b`.** Keep-list is now `SELECT DISTINCT
+  trading_date` plus the current trading date. Five tests including the incident,
+  a long weekend, and an empty store; mutation-proven against the old loop.
+- **The prune log is now INFO, not DEBUG.** That is why it survived.
+- **NOT backfilled — deliberately.** Alpaca holds the history; this is lost
+  accumulated grain, not lost data. Backfill is scoped as a job that must not
+  compete with Monday's capture. `daily_bars` (253,120) was never affected.
+- **The consequence everyone accepted for a week:** Research's *"the only two
+  sessions with minute bars retained"* was not a window, it was **a cut**. Every
+  minute-grain measurement taken this week ran on the survivors of a weekly
+  deletion. Research owes me which conclusions actually depended on it.
+- **`minute_bars` is empty until Monday's capture. Pre-registered as amnesia —
+  a designed state, not a defect.**
 
 ### What the trader decided
 
@@ -255,15 +267,18 @@ rolls that refetched. **Our own universe fix is what makes it daily.**
 
 ### Built, gated, not yet deployed
 
-`57981ac` busy-retry (deadline above) · Design's close-series render `2b3ddd9` ·
-the price sparkline is data-live and needs capture to populate.
+Design's close-series render `2b3ddd9` · the price sparkline is data-live and
+needs Monday's capture to populate.
 
 ### Scoped, not started
 
 Coverage persistence with its **five-rung** model · the one-sided-search warning
 (blocked on that persistence) · `deactivateSources` wiring for 244 non-canonical
-cluster members · chunking `replaceUniverse` · the split-census over confirmed
-split events · `PATTERNS` read · the (d) re-take on variant A.
+cluster members · `replaceUniverse` never-delete + chunking, scoped WITH the
+minute-bar backfill · the split-census over confirmed split events · the catalyst
+taxonomy (two signed axes, `basis: OBSERVED | INFERRED`, repeat-offender reverse
+splits) · Design's current-activity dial · `PATTERNS` read · the (d) re-take on
+variant A.
 
 ### Live facts a new session will otherwise re-derive
 
