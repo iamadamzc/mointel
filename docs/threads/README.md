@@ -4713,3 +4713,39 @@ DIRECTIONS.**
 This is the same defect as one constant for a fault and an absence, arriving in
 an annotation schema instead of in code — **and it was specified by the seat that
 recorded that rule.**
+
+### Two things a green gate does not prove, hit in one afternoon
+
+**That the tests still exist**, and **that the code is observable.** Neither is
+visible in the colour. The first reports as *"no tests"* rather than red; the
+second reports as a clean build of code no reader consumes. **Both were found by
+reading a count or a reader, never by looking at the result.**
+
+## A NO-OP PUSH PRINTS THE SAME THING AS A SUCCESSFUL ONE
+
+**Ops, 2026-09-05, twice in twenty minutes.** `git pull --ff-only` inside the
+**detached** gate worktree fails, so the cherry-pick never happened — **and the
+compound command then printed "pushed" from a push that had nothing to push.**
+
+**The first occurrence was missed** and caught only by checking whether the sha
+was an ancestor of `origin/main`. The second errored loudly and was fixed at
+once. **The instructive one is the first: the word "pushed" is output, not
+evidence.**
+
+**Verify by CONTAINMENT, not by the report of the operation.** `git merge-base
+--is-ancestor` answers the question the word does not. It is the same shape as
+verifying a reader by reading the reader, and as reading the served API rather
+than the source — **the tool's own success message is the least informative thing
+it emits.**
+
+### And a correction to an Integration discipline note in the same hour
+
+Integration wrote *"deploy the sha you are given"* after `8a77e25` was named and
+`52fa841` shipped. **The rule stands. The named sha was also the defective one** —
+`8a77e25` is the commit where the observable reaches no reader, so deploying
+exactly as instructed would have installed a green, gated, invisible field.
+
+**Both are true and neither excuses the other.** A named sha exists so that what
+ships is what was ruled on; **it does not make what was ruled on correct.** The
+thread that finds a defect in the sha it was handed comes back and says so —
+which is what happened — and the ruling seat says plainly that its sha was wrong.
