@@ -4110,3 +4110,35 @@ carried by the next tick a second later.
 **The bound encodes an assumption about how often the caller gets another
 chance.** Same code, same fault, opposite correct answer. **Ask what the next
 cycle costs before reusing a retry policy, not what the error is.**
+
+## A RE-DERIVED NUMBER CARRIES A FRESHER TIMESTAMP AND THE SAME DEFECT
+
+**Design, 2026-09-05, declining to re-measure.** Three coverage figures in its
+scope may sit inside the unexplained 08-18 hole. The instinct is to recompute
+them. **The boundary of that hole is not located — the retention cut was excluded
+as its cause and nothing has replaced it — so a re-derivation would presume an
+edge nobody can find.**
+
+**The output would be a number with the same problem and a newer date, which is
+strictly worse than the stale one, because it would look checked.** Freshness is
+read as verification. **When the boundary is unknown, marking the number beats
+recomputing it**, and the mark is what was done.
+
+**The conclusion is safe and the numbers are not** — and saying exactly that in
+the document is the whole of the correct action.
+
+### Put the note where the edit happens, and name what the argument rests on
+
+The argument for points over a line went into the **render** layer, not the
+engine: **the person tempted to draw a line is editing the mark, not the slot
+builder.** A correct note in the wrong file is a note nobody proposing the change
+will read.
+
+**And it records its own dependency:** the argument holds only because the slots
+are wall-clock and `activity.ts:261` maps a missing slot to zero rather than
+omitting it. **If that ever changes, the series is indexed by sequence and every
+line of the reasoning collapses** — the same defect withdrawn one module over the
+same day. **A note that names what it depends on gives a future change a reader
+that is already waiting for it.**
+
+**Not a rule someone must remember — a note sitting where the mistake gets made.**
