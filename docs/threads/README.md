@@ -4269,3 +4269,41 @@ Before a process has rolled once there is no `rolledAt`, and **"no roll observed
 yet" is neither fresh nor stale.** FRESH / STALE / UNKNOWN, same discipline as
 `secAvailable`. **A signal that alarms on every cold start gets ignored — and
 then the real one is ignored too.**
+
+## SEPARATE BY DEPENDENCY, NOT BY SUSPICION — AND LEAD A CORRECTION WITH WHAT SURVIVES
+
+**Design, 2026-09-05, twice honest about what actually saved it.**
+
+### The split held because of what it was built on
+
+Two arguments against a coverage threshold were written apart before anyone knew
+either was at risk: a **counterexample** (a name trading 29,379 times in a
+handful of minutes is not a fidelity problem at any coverage figure) and a
+**band argument** that depends on three percentages being right about which band
+each row sits in.
+
+They were separated because **the band argument was the more VIVID and the more
+DEPENDENT, and that combination is what gets quoted.** Not because anyone
+suspected the store. **It then broke in a direction nobody predicted, and the
+split held anyway.**
+
+**You cannot quarantine what you have not thought of. You can quarantine what
+depends on something.** Fragility is visible in an argument's own structure
+before any evidence arrives; suspicion requires already knowing the answer.
+**Separating by fragility is the only version available in advance.**
+
+### A cleared caveat is deleted; a moved caveat is kept
+
+The provenance warning on those figures survived only because the correction
+**arrived split-brain first and clean-window second.** Design's own account: had
+*"180 of 180 minutes, full coverage"* arrived alone, **it would have deleted the
+block** — and the real caveat, that the numbers came from a store frozen since
+08-20, would have gone with it.
+
+**A correction that clears one doubt reads as clearance of the doubt**, and the
+reader discharges the whole caveat rather than the half that was answered.
+
+**So when relaying a correction: lead with what SURVIVES, not with what is
+resolved.** The resolved half is the good news and it is the half that erases the
+warning. Ordering is not presentation here — **it decides whether the caveat is
+still in the document tomorrow.**
