@@ -4188,3 +4188,41 @@ about the wrong desk too, silently, and no query will say so.
 
 **This is the same failure as everything else today at a different scale** —
 `failed checks return plausible answers`, applied to an entire database.
+
+## A CAVEAT IS ONLY AS GOOD AS THE MECHANISM IT NAMES
+
+**Design, 2026-09-05, recorded at `5a1e8f2` and put here because it is the
+mirror of the rule above it.**
+
+Design attached a warning to a coverage figure: *"may overlap the deleted
+hours"*. Research then established the measured window was clean — 180 of 180
+minutes on both dates. **On that answer alone the warning gets deleted.**
+
+**And the real problem would have gone with it, silently.** The figures were
+taken on the LOCAL split-brain store rather than production, which is a larger
+caveat and an unrelated one. **The percentages would then have read as VERIFIED,
+because a question that was never the real one came back negative.**
+
+**A cleared caveat is stronger than no caveat.** That is what makes this
+expensive: eliminating one candidate cause does not eliminate the doubt, but it
+does eliminate the sentence carrying it.
+
+### So where the mechanism is uncertain, state WHAT IS UNVERIFIED, not WHY
+
+| form | can be discharged by |
+| --- | --- |
+| *"may overlap the deleted hours"* | eliminating that one cause — **wrongly** |
+| **"provenance unconfirmed"** | **confirming the provenance, and nothing else** |
+
+### And it pairs with the rule above
+
+**A mechanism that explains the class is not evidence about the instance** —
+believing a mechanism you have not checked against the case. **This is the same
+error pointed at a doubt rather than a claim**: naming a mechanism for why
+something might be wrong, and then treating the mechanism's defeat as the doubt's
+defeat.
+
+**Both attach a claim to a mechanism when the mechanism is not the thing actually
+known.** One over-claims a finding; the other under-claims a risk — **and the
+second is worse, because a discharged caveat leaves no trace that it was ever
+there.**
