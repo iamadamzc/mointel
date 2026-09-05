@@ -2905,6 +2905,12 @@ fixable by choosing better constants; only by making absence representable.
 > second SIP connection is a documented hazard in its own right. So these
 > percentages describe **a desk running alongside the one he trades on.**
 >
+> **And a frozen one.** That store was last written **2026-08-20** — sixteen days
+> stale. In the window where it recorded nine events, production recorded
+> **10,489**. So it is not merely a different desk; it is one that stopped, and
+> the divergence is three orders of magnitude on the one comparison anyone has
+> taken.
+>
 > **Directionally right; not the numbers.** Re-take on production's minute bars
 > once Monday's capture fills, before any of them reaches a rendered figure
 > rather than an argument.
@@ -3369,6 +3375,14 @@ than the shape.
   a wrong finding gets corrected while a deleted warning leaves no trace it was
   ever there.** So when the mechanism behind a doubt is uncertain, write the
   doubt so that clearing one cause cannot delete the sentence.
+- **Put the argument at the point of temptation, and NAME WHAT IT RESTS ON.**
+  The points-not-a-line reasoning sits in `lib/dashboard/sparkline.ts` because
+  that is the file someone edits to draw a line — not beside the engine line it
+  depends on, where no one proposing a mark change is looking. **And it names
+  that dependency explicitly** (`activity.ts:261` maps a missing slot to zero, so
+  the spacing is time rather than sequence), so a future change to the dependency
+  meets a reader instead of silently invalidating an argument two modules away.
+  A rule someone must remember is weaker than a note where the mistake is made.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
