@@ -180,6 +180,75 @@ prose fields it could eventually structure are still prose today.
 
 ---
 
+### R&D — what would have to be WRITTEN tonight, for the 25 moment-bound fields. 2026-09-05.
+
+**Measured against the store, not scoped. Of the 25, ELEVEN ARE ALREADY WRITTEN
+and six need one nullable column each. Nothing needs a new table.**
+
+| | fields | what it costs |
+| --- | --- | --- |
+| **0 — already written** | 11 | **nothing** |
+| **1 — column exists, write path broken** | 5 | a parser fix, **not** a schema change |
+| **2 — derivable from what is written** | 3 | **nothing** |
+| **3 — genuinely unwritten** | 6 | one nullable column each, on a row already inserted |
+
+#### 0 — ALREADY WRITTEN. Measured over the 94 stored dossier versions.
+
+    J,15 Catalyst Grade      catalyst.catalystGrade      94/94  100%
+    K,13 Catalyst Details    catalyst.summary            94/94  100%
+    L,X,14 Catalyst Time     catalyst.eventTimestamp     63/94   67%  (populated when one exists)
+    16 Catalyst Source URL   catalyst.evidenceSourceIds  88/94   94%  -> research_sources.url
+    20 Cycle Reasoning       cycle.reasoning             94/94  100%
+    22 Historical Runner     cycle.formerRunnerStatus    68/94   72%
+    W  PM Catalyst/Update    a new version per refresh, each with generated_at
+
+> **20 CYCLE REASONING IS ONE OF THE SEVEN AND IT IS ALREADY WRITTEN ON EVERY
+> VERSION.** **The count going to him is SIX, not seven.** Flagged before the
+> question is put rather than after.
+
+#### 1 — THE COLUMN EXISTS AND THE WRITE PATH IS BROKEN. All five are float.
+
+    I,9  Float               structure.displayedFloat        1/94   1.1%
+    10   Float Source Date   structure.displayedFloatDate    1/94   1.1%
+    11   Float Source URL    structure.displayedFloatSource  1/94   1.1%
+    35   Float Quality       structure.floatConfidence       1/94   1.1%
+
+**1.1% is 1 in 94, against Integration's report that the Sheet's parser discards
+12 of 13 written floats.** The two figures are the same defect seen from either
+end.
+
+> **Nothing needs to be written tonight to preserve float. The place to put it
+> already exists and has for the whole window.** This is a broken writer against
+> a working schema — **and measuring the broken behaviour as the Sheet's
+> capability is the error the audit was warned about**, arriving here as a
+> storage question instead of a coverage one.
+
+#### 2 — DERIVABLE FROM WHAT IS ALREADY WRITTEN. Nothing to add.
+
+    R,AA Warning Shot        structuralWarnings + cycleWarnings, both 100%
+    36   Overhang / Float    supplyLedger is written; the RATIO needs a float, which is category 1
+
+#### 3 — GENUINELY UNWRITTEN. Six fields, one nullable column each.
+
+    A  Priority        Z  Revised Priority   33 Overall Priority
+    S  Notes           34 Analyst Notes      Y  Confirmation
+
+**`desk_assessment_tickers` already inserts one row per ticker per assessment
+with 33 columns.** `ADDED_COLUMNS` in `lib/market/store/db.ts` applies additive
+columns on open — **one line per column, and the migration machinery is already
+the thing that ships them.**
+
+> **SO THE SCHEMA IS THE CHEAP PART AND IT IS NOT THE COST.**
+>
+> **A column with no writer preserves nothing.** Adding six nullable columns
+> tonight preserves exactly as much as adding none, unless something puts a
+> judgement in them. **The expensive question is not where the Priority goes, it
+> is whose Priority it is** — and that is the question already going to him.
+>
+> **Six empty columns would look like preparation and function as a placebo.**
+
+---
+
 ### Outputs summary
 
 | | TODAY | RESEARCH | total |
