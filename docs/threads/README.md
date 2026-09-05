@@ -4338,6 +4338,29 @@ depends on something.** Fragility is visible in an argument's own structure
 before any evidence arrives; suspicion requires already knowing the answer.
 **Separating by fragility is the only version available in advance.**
 
+**And its author's own limit on it, which is the honest size of the rule:** it
+**does not find the defect — it limits what the defect costs.** Quarantining by
+dependence buys nothing at the moment of writing and everything at the moment of
+discovery. **Recorded at its real value rather than as foresight, because the
+thread that used it said plainly that the ordering saved the block and it did
+not suspect the store.**
+
+### Better than marking: move the fragile number out of the premise position
+
+Told to mark a local-desk figure quoted in shipped code, Design did more. The
+comment had read *"no trade, no point, so there is no line to begin at the window
+edge. 36–42% of top-12 rows open with a hole, and drawing from the edge would
+show flat-then-rising…"* — **the rate sat where a premise sits**, so a reader
+takes the constraint as resting on it.
+
+**Now the structural claim stands alone and the figure is an aside carrying its
+own warning.** If Monday's re-take moves the number, **nothing in the reasoning
+moves with it.**
+
+**A caveat says "this might be wrong". Restructuring says "and it would not
+matter."** Where the second is available it is strictly better, because a warning
+depends on being read and a structure does not.
+
 ### A cleared caveat is deleted; a moved caveat is kept
 
 The provenance warning on those figures survived only because the correction
