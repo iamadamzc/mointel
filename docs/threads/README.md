@@ -5148,3 +5148,32 @@ only what the floor already protects.
 extension that correctly evaluates to nothing on a date with no ranks will let
 the floor delete the bars just restored for it. **Restoring data a predicate
 cannot protect is the same delayed delete wearing a policy.**
+
+## A TRANSIENT STATE FROZEN IN A SNAPSHOT READS AS A PERMANENT ONE
+
+**2026-09-05.** Research reported 2026-08-24 holding **8,653 symbols and zero
+ranks** — the case that shaped the whole ranked-retention predicate. **Live
+production shows 08-24 with 2,830 ranked and a full top-50.**
+
+**Both are true.** Research measured the **08-23 snapshot**, captured while 08-24
+had rolled and ranking had not yet established. **The rankless state is
+transient** — it exists between the 22:00 roll and ranking establishing, every
+night, and it resolves.
+
+**A snapshot is a store with a timestamp, and it preserves a passing state with
+exactly the same fidelity as a settled one.** Nothing in the rows says which it
+was. **Reading a snapshot answers "what was true at that instant", never "what is
+normally true"** — and the two are indistinguishable inside the file.
+
+### The narrowing does not shrink the hazard
+
+The rankless window applies to the **current date**, nightly, not to historical
+dates. **That is narrower than it first read and no less dangerous:** the current
+date is precisely the one whose bars are irreplaceable, and the window is
+precisely when a prune runs at a worker start. **The fixture keeps the date in
+its name so nobody generalises it away.**
+
+**And the check that settled it is the one to copy:** ranks were verified present
+for all ten dates against **live production**, not against the snapshot that
+raised the question. `ticker_session` is untouched by minute-bar retention —
+**confirmed rather than probable.**
