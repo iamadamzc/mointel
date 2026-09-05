@@ -4808,3 +4808,54 @@ from Ops's report of its own near-miss hours earlier.
 **The near-miss was worth more than the feature.** Reporting a defect plainly,
 including the twenty minutes it was live, is what stopped a second thread
 reaching for the same wrong object for the same reason.
+
+## A CORRECT VERIFICATION OF THE WRONG RELEASE
+
+**Ops, 2026-09-05.** A deploy was refused by preflight (exit 3). The output was
+run through a filter grepping for *migrate / release / deployed / FAILED* — **and
+the refusal line, "preflight refused the deployment", matched none of them.** The
+run looked quiet.
+
+**The post-deploy verification then passed in full:** four units active, health
+ok, `universeFreshness` UNKNOWN, `rolledAt` absent. **Every one of those was
+true. Every one was about the release that was already running.**
+
+It was caught on **one field** — the units reported `rel=6022210`, not the new
+sha. **Without that, a successful deploy of something that never shipped would
+have been reported, with a complete set of correct verifications underneath it.**
+
+**Verify a deploy by the SHA THE UNITS REPORT, never by the health of the desk.**
+A healthy desk is evidence that *something* is running. **Nothing in a health
+check knows what it was supposed to be.**
+
+**And a filter that drops the failure makes a failed run look like a quiet one.**
+The reassuring output here was the operator's own grep discarding the only line
+that mattered — **a pattern list is an allowlist, and an allowlist cannot report
+what it excluded.**
+
+### The retention bug's shape, in the same directory, with the opposite consequence
+
+`preflight.sh`'s CHECKPOINTS array is **unconditional** — no calendar, no weekday
+test. It protects 06:10, 06:25, 09:25, the RTH intervals and the close **every
+day of the year**, including weekends and holidays when none of them run. It
+blocked a Saturday deploy to protect a `STRUCTURAL_REFRESH` that the desk's own
+scheduler puts on **Monday**.
+
+**`pruneRetention` counted calendar days where the requirement was trading dates;
+`preflight` protects calendar windows where the requirement is scheduled
+checkpoints.** One over-deletes, one over-blocks — **opposite consequences,
+identical substitution, same directory, and the first was fixed that morning
+without anyone looking at the second.**
+
+**Fixing an instance does not sweep the file it lives in.** When a defect is
+found, grep the neighbourhood for the same substitution before closing it.
+
+### And the override that was not used
+
+The escape hatch takes a free-text reason: *"why this cannot wait"*. **The window
+cleared in seven minutes, so it could wait**, and the true reason would have been
+*"I did not want to"*.
+
+**A justification field only works while every entry in it is true.** One
+plausible-but-false entry makes the whole record unreadable — **and the cost of
+declining to use it was seven minutes.**
