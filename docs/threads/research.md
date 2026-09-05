@@ -7767,3 +7767,70 @@ change what READS the rank, not what is stored.** Fourth time that has been the
 answer in this line of work.
 
 **Not started, per Integration. The close series is done and the five come next.**
+
+---
+
+**82. THE PATTERNS TAB HAS NO DENOMINATOR, AND THE BOARD'S BASE RATE IS 93%.**
+
+*Ops harvested PATTERNS and deliberately did not interpret it. Six patterns,
+each with a spike/fade count, and **not one control group anywhere.***
+
+### Every pattern reports a rate. None reports what it is a rate against
+
+| pattern | spike/fade |
+| --- | --- |
+| P1 extreme low-priced | 35 / 45 = **78%** |
+| P2 fresh PR + PM activity | 13 / 19 = **68%** |
+| P3 no-news revival | 19 / 27 = **70%** |
+| P4 registered supply | 30 / 47 = **64%** |
+| P5 pattern-as-catalyst | 28 / 36 = **78%** |
+| P6 dirty float | 55 / 87 = **63%** |
+
+**Measured on the desk's own store, 2026-08-17 to 08-21 — the tab's own window —
+over board rows at rank ≤ 12 with a usable move (n = 45):**
+
+| giveback of the move | ALL | sub-$2 | $2+ |
+| --- | --- | --- | --- |
+| ≥ 30% | **96%** | 92% | 97% |
+| **≥ 50%** | **93%** | **85%** | **97%** |
+| ≥ 70% | 82% | 77% | 84% |
+
+**Mean giveback 98.4%. The average top-12 name ends the session roughly back
+where its move began.**
+
+### So no pattern selects for fading, and several select mildly AGAINST it
+
+**Every one of the six sits at or below a 93% base rate.** P1's 78% is not
+evidence that low-priced names fade — **it is fifteen points BETTER than the
+board.** And sub-$2 gives back LESS than $2+ at every threshold but one, which is
+the opposite of P1's stated direction.
+
+**The six are measuring a property of the BOARD, not of the patterns.**
+
+### What this does NOT establish, stated plainly
+
+- **The measures are not the same.** Their mean peak gain is 245.9% against my
+  76.1%, so they are measuring the peak from a different base or over a more
+  extreme population. **My giveback is not their giveback**, and the honest
+  comparison needs both recomputed on one definition.
+- **n = 45 board rows over 5 sessions**, 13 of them sub-$2. The sub-$2 versus
+  $2+ gap is not significant at that size and I am not claiming it.
+- **The threshold is mine** — the tab states none — which is why the curve is
+  reported rather than one number.
+
+### The two things worth doing, and one to retire
+
+1. **Give every pattern a control group.** Without it, a count is a description
+   of the board wearing a pattern's name.
+2. **P6 is P4 made falsifiable** — *"at least 1.0× verified public float"* against
+   *"can create misleading squeeze setups"* — and **P6 is the only one the desk
+   can now answer deterministically**: `supplyPair` gives floor and total against
+   split-adjusted shares outstanding, and the float bound gives
+   PROVEN / NOT_PROVEN / BASIS_UNVERIFIABLE. **P6 needs a join to outcome, not a
+   new measurement.**
+3. **Retire P4 into P6.** They are one claim at two thresholds, and only one is
+   testable.
+
+**And the four UNKNOWNs are not a gap, they are a pattern**: P1 and P2 are
+PRICE-defined and carry figures; P3–P6 are STRUCTURE-defined and carry none.
+Whoever filled the tab measured what their definition already named.
