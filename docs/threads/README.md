@@ -4779,3 +4779,32 @@ an artefact verified in isolation and never at the seam.**
 **The fix is the mutation that should have been written first:** drive the real
 call sites against a store whose transaction throws busy, so **unwrapping either
 one fails a test.**
+
+## AN OLD BUILD CANNOT REPORT A FIELD IT NEVER HAD
+
+**Design, 2026-09-05**, adding a state to a signal Ops specified and Integration
+ruled on. FRESH / STALE / UNKNOWN were the three. **The fourth is ABSENT** — the
+field missing entirely, because the desk serving the payload predates it.
+
+**Absent must be SILENT.** Treating it as stale fires on every old build, every
+rollout window, every rollback — **the alarm-fatigue failure that makes the real
+marker ignorable**, arriving through version skew rather than through the clock.
+
+**This is the UNKNOWN argument one level further out, and two seats stopped short
+of it.** Ops reasoned about *"no roll observed yet"*; Integration ruled on when
+UNKNOWN speaks. **Neither asked what a reader does when the field is not there** —
+and during any rolling deploy, the reader and the writer are on different
+versions by construction.
+
+**A new field has a fourth state for as long as an old build can serve the
+payload**, and the enum never names it because the enum ships with the field.
+
+### And the control technique travelled between threads
+
+Before writing anything, Design checked `universeMode` alongside the three new
+fields — **proving "present" before "absent" could mean anything.** It took that
+from Ops's report of its own near-miss hours earlier.
+
+**The near-miss was worth more than the feature.** Reporting a defect plainly,
+including the twenty minutes it was live, is what stopped a second thread
+reaching for the same wrong object for the same reason.
