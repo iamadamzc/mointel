@@ -108,10 +108,16 @@ export function sparklineView(window: number[] | undefined | null): SparklineVie
  * series is indexed by sequence and every argument here collapses.
  *
  * That also makes the first-traded-minute rule STRUCTURAL rather than enforced:
- * no trade, no point, so there is no line to begin at the window edge. 36-42% of
- * top-12 rows open with a hole, and drawing from the edge would show
- * flat-then-rising where the truth is absent-then-rising — on exactly the setup
- * he hunts.
+ * no trade, no point, so there is no line to begin at the window edge. Drawing
+ * from the edge would show flat-then-rising where the truth is
+ * absent-then-rising — on exactly the setup he hunts.
+ *
+ * **The rate is quoted as 36-42% of top-12 rows opening with a hole. That
+ * figure is from `data/market.db`, the LOCAL desk, last written 2026-08-20, and
+ * is to be re-taken on production.** The constraint does not depend on it:
+ * absent-then-rising is not flat-then-rising at 36% or at 6%, and the structural
+ * form above rests on there being no line at all rather than on how often the
+ * hole occurs. **Do not quote the rate as measured on the desk he trades.**
  *
  * **No threshold and no gradient.** Coverage is a FIDELITY measure and it was
  * being recruited to answer a RELEVANCE question; on the rows that matter the
