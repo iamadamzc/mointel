@@ -95,6 +95,18 @@ export function sparklineView(window: number[] | undefined | null): SparklineVie
  * follows the stroke rather than its texture. Discrete marks assert only the
  * minutes that traded, which is all the desk observed.
  *
+ * **And the stronger objection, which is about TRUTH rather than proportion: a
+ * line would draw "not observed" identically to "traded and unchanged".** It
+ * interpolates across a hole, so a stroke between two traded minutes asserts
+ * prices that were never observed — and the two states it flattens are exactly
+ * the ones a trader needs apart. With points, a missing minute is a GAP and a
+ * flat minute is a MARK LEVEL WITH ITS NEIGHBOUR.
+ *
+ * This rests on the slots being wall-clock: `activity.ts:261` maps a missing
+ * slot to zero rather than omitting it, so a hole OCCUPIES its position and the
+ * even spacing is the truth rather than a claim. If that ever changes, this
+ * series is indexed by sequence and every argument here collapses.
+ *
  * That also makes the first-traded-minute rule STRUCTURAL rather than enforced:
  * no trade, no point, so there is no line to begin at the window edge. 36-42% of
  * top-12 rows open with a hole, and drawing from the edge would show
