@@ -7940,3 +7940,63 @@ needs re-measuring on Monday's capture, indexed by TIMESTAMP.
 number smaller than its own configured limit is a question, not a setting —
 which is the same shape as every check that could not fail, arriving in an
 operational figure rather than in code.
+
+**83a. IT IS NOT A CAPTURE GAP AND NOT A PARTIAL COPY — IT IS A DIFFERENT DESK.
+`data/market.db` is the LOCAL split-brain store, not a copy of production.**
+
+*Ops was right that a `DELETE ... WHERE trading_date NOT IN (...)` cannot remove
+hours from a date, so my attribution to the retention bug was wrong. It then
+inferred that my archive is the only surviving copy of production's 08-18 minute
+bars, and pressed on whether the hole is a live capture fault. **The premise is
+the thing to check.***
+
+### The gap is bigger and cleaner than I first reported
+
+Bars stop at **14:14 UTC** and resume at **18:52** — **4h37m**, not three hours.
+And it is not ragged: **2,466–2,646 symbols per minute right up to the last
+minute, 2,285–2,488 from the first minute back**, with `received_at` tracking
+`ts` by about a minute on BOTH sides. **Full throughput to a razor edge and full
+throughput back.**
+
+### But the store is not production's
+
+| | `ticker_session` 08-18 | `desk_events` 08-18 | events INSIDE the bar gap |
+| --- | --- | --- | --- |
+| **LOCAL `data/market.db`** | 8,617 | 18,637 | **9** |
+| **PROD snapshot 08-23** | 8,625 | 28,855 | **10,489** |
+
+**Different row counts, and production wrote 10,489 events in the window where
+the local store wrote 9.** The local desk's EVENT gap matches its BAR gap
+exactly.
+
+**So the local worker was down for 4h37m on 08-18 — AWS has been production
+since 08-17 and the local desk is the split-brain hazard the desk already knows
+about. Nothing in production is implicated, and there is no undiagnosed capture
+fault.**
+
+### Which changes the survival argument for 58 and 59 — Ops was right for a
+### different reason than it gave
+
+They do not survive because *"the cut fell elsewhere"* — there was no cut. **They
+survive on the claim Ops asked for, which needs no theory of cause and is
+checkable directly:**
+
+| session | measured window 11:00–13:59 UTC |
+| --- | --- |
+| 08-17 | **180 of 180 minutes present** |
+| 08-18 | **180 of 180 minutes present** |
+
+**Full coverage on both dates, in the window measured.**
+
+**But the honest caveat is now different and larger: they were measured on the
+LOCAL desk's capture, not production's.** A second SIP connection is exactly what
+this desk documents as a hazard, so the local series may be degraded against
+production for reasons that have nothing to do with the gap. **The coverage
+figures should be re-taken on production's minute bars from Monday.**
+
+### And the rule Ops kept is the one I would keep too
+
+**A real fault attributed to a fixed one is how it survives.** I filed a 4h37m
+hole under a retention bug that had just been closed and deployed — which would
+have stopped anyone looking at it. **Ops refused the attribution and pressed, and
+the answer turned out to be neither of ours.**
