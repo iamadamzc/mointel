@@ -35,75 +35,150 @@ surface renders can still be the only witness to a question nobody has asked yet
 
 | # | Field | Verdict | Desk equivalent | live? | defs | screen |
 | --- | --- | --- | --- | --- | --- | --- |
-| A | Priority | NEW WORK | board rank exists; the A/B/C grade is a judgement nothing produces | | | |
-| B | Ticker | PRODUCED | `ticker_session` | | | |
-| C | Country of Origin | PRODUCED | `issuer_registry.country`, from SEC | | | |
-| D | Cycle | PRODUCED | `computedCycle.current.phase` — arithmetic since `97b4caa` | | ✓ | |
-| E | RTH Close | PRODUCED | `rth_final_close` / `reference_rth_close` | | ✓ | |
-| F | AH Price | PRODUCED | `ticker_session` AH fields | | | |
-| G | AH % | PRODUCED | `ah_percent_change` | | ✓ | |
-| H | AH Volume | PRODUCED | `ah_volume` | | | |
-| I | **Float** | **NEW WORK** | **nothing. Phase C.** Sole source is this column | | ✓ | |
-| J | Catalyst Grade | PRODUCED | `catalyst.catalystGrade` | | ✓ | |
-| K | Catalyst | PRODUCED | `catalyst.summary` | | | |
-| L | Catalyst Time | PRODUCED | `catalyst.eventTimestamp` | | ✓ | |
-| M | Recent Run High | PRODUCED | `computedCycle.current.cycleHigh` — was 12% of dossiers before | | ✓ | |
-| N | Flush From High % | PRODUCED | `retracementPct` (of the move) and `givebackPct` (below the high) | | ✓ | |
-| O | Prior Runner | PRODUCED | `formerRunnerStatus` + `priorCycles[]` | | ✓ | |
-| P | Structure Flags | PRODUCED | `structure.structuralWarnings` + classification | | | |
-| Q | Key Levels | PRODUCIBLE | `priceLevels` / `cycleLevels` derive some; not assembled as one field | | ✓ | |
-| R | Warning Shot | PRODUCIBLE | warnings exist; the Sheet's is prose synthesis over them | | | |
-| S | Notes | NEW WORK | free prose | | | |
-| T | PM Price | PRODUCED | `pm_price` | | | |
-| U | PM % | PRODUCED | `pm_change_pct` | | ✓ | |
-| V | PM Volume | PRODUCED | `pm_volume` | | | |
-| W | PM Catalyst/Update | PRODUCED | catalyst refresh at the premarket checkpoints | | | |
-| X | PM Catalyst Time | PRODUCED | `catalyst.eventTimestamp` | | ✓ | |
-| Y | Confirmation | NEW WORK | a judgement on whether premarket confirmed the thesis | | | |
-| Z | Revised Priority | NEW WORK | as Priority | | | |
-| AA | PM Warning Shot | PRODUCIBLE | as Warning Shot | | | |
+| A | Priority | NEW WORK | board rank exists; the A/B/C grade is a judgement nothing produces | MOMENT | — | |
+| B | Ticker | PRODUCED | `ticker_session` | REFETCH | — | |
+| C | Country of Origin | PRODUCED | `issuer_registry.country`, from SEC | REFETCH | — | |
+| D | Cycle | PRODUCED | `computedCycle.current.phase` — arithmetic since `97b4caa` | REFETCH | ✓ | |
+| E | RTH Close | PRODUCED | `rth_final_close` / `reference_rth_close` | REFETCH | ✓ | |
+| F | AH Price | PRODUCED | `ticker_session` AH fields | REFETCH | **+** | |
+| G | AH % | PRODUCED | `ah_percent_change` | REFETCH | ✓ | |
+| H | AH Volume | PRODUCED | `ah_volume` | REFETCH | **+** | |
+| I | **Float** | **NEW WORK** | **nothing. Phase C.** Sole source is this column | MOMENT\* | ✓ | |
+| J | Catalyst Grade | PRODUCED | `catalyst.catalystGrade` | MOMENT | ✓ | |
+| K | Catalyst | PRODUCED | `catalyst.summary` | MOMENT | — | |
+| L | Catalyst Time | PRODUCED | `catalyst.eventTimestamp` | MOMENT\* | ✓ | |
+| M | Recent Run High | PRODUCED | `computedCycle.current.cycleHigh` — was 12% of dossiers before | REFETCH | ✓ | |
+| N | Flush From High % | PRODUCED | `retracementPct` (of the move) and `givebackPct` (below the high) | REFETCH | ✓ | |
+| O | Prior Runner | PRODUCED | `formerRunnerStatus` + `priorCycles[]` | REFETCH | ✓ | |
+| P | Structure Flags | PRODUCED | `structure.structuralWarnings` + classification | REFETCH | **+** | |
+| Q | Key Levels | PRODUCIBLE | `priceLevels` / `cycleLevels` derive some; not assembled as one field | REFETCH | ✓ | |
+| R | Warning Shot | PRODUCIBLE | warnings exist; the Sheet's is prose synthesis over them | MOMENT | — | |
+| S | Notes | NEW WORK | free prose | MOMENT | — | |
+| T | PM Price | PRODUCED | `pm_price` | REFETCH | **+** | |
+| U | PM % | PRODUCED | `pm_change_pct` | REFETCH | ✓ | |
+| V | PM Volume | PRODUCED | `pm_volume` | REFETCH | **+** | |
+| W | PM Catalyst/Update | PRODUCED | catalyst refresh at the premarket checkpoints | MOMENT | — | |
+| X | PM Catalyst Time | PRODUCED | `catalyst.eventTimestamp` | MOMENT\* | ✓ | |
+| Y | Confirmation | NEW WORK | a judgement on whether premarket confirmed the thesis | MOMENT | — | |
+| Z | Revised Priority | NEW WORK | as Priority | MOMENT | — | |
+| AA | PM Warning Shot | PRODUCIBLE | as Warning Shot | MOMENT | — | |
 
 ## Outputs — RESEARCH!A:AK (37)
 
 | # | Field | Verdict | Desk equivalent | live? | defs | screen |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Report Date | PRODUCED | `generated_at` | | | |
-| 2 | Ticker | PRODUCED | | | | |
-| 3 | Country of Origin | PRODUCED | `issuer_registry` | | | |
-| 4 | Company | PRODUCED | `issuer_registry.company_name` | | | |
-| 5 | RTH Close | PRODUCED | | | ✓ | |
-| 6 | AH Price | PRODUCED | | | | |
-| 7 | AH % | PRODUCED | | | ✓ | |
-| 8 | AH Volume | PRODUCED | | | | |
-| 9 | **Float** | **NEW WORK** | **nothing. Phase C.** | | ✓ | |
-| 10 | Float Source Date | NEW WORK | follows Float | | | |
-| 11 | Float Source URL | NEW WORK | follows Float; today always stockanalysis.com | | | |
-| 12 | Shares Outstanding | PRODUCED | `SEC_COMPANY_FACTS`, surfaced to the model since `55f3e20` | | ✓ | |
-| 13 | Catalyst Details | PRODUCED | `catalyst.summary` | | | |
-| 14 | Catalyst Timestamp | PRODUCED | `catalyst.eventTimestamp` | | ✓ | |
-| 15 | Catalyst Grade | PRODUCED | `catalyst.catalystGrade` | | ✓ | |
-| 16 | Catalyst Source URL | PRODUCED | `evidenceSourceIds` → `research_sources.url` | | | |
-| 17 | Recent Cycle High | PRODUCED | `computedCycle.current.cycleHigh` | | ✓ | |
-| 18 | Flush From High % | PRODUCED | `retracementPct` / `givebackPct` | | ✓ | |
-| 19 | Cycle Classification | PRODUCED | `computedCycle.current.phase` | | ✓ | |
-| 20 | Cycle Reasoning | NEW WORK | prose. The arithmetic gives numbers, not narrative | | | |
-| 21 | Recent Major Runs | PRODUCED | `priorCycles[]` with dates and advances | | ✓ | |
-| 22 | Historical Runner Notes | PRODUCIBLE | status is produced; the notes are prose over it | | | |
-| 23 | Split History | PRODUCIBLE | `reverseSplitHistory` from filings; `daily_bars.adjustment` | | ✓ | |
-| 24 | Daily Resistance | PRODUCIBLE | `priceLevels` | | ✓ | |
-| 25 | Daily Support | PRODUCIBLE | `priceLevels` | | ✓ | |
-| 26 | 8-K / 6-K | PRODUCED | collected; 378 and 225 in the window | | | |
-| 27 | Registration / Prospectus | PRODUCED | S-1/S-3/F-1/F-3/424B/EFFECT all collected | | | |
-| 28 | Offerings / ATM / PIPE | PRODUCED | `supplyLedger` types ATM, PIPE, RECENT_OFFERING | | ✓ | |
-| 29 | Warrants / Convertibles | PRODUCED | `supplyLedger` WARRANTS, CONVERTIBLES | | ✓ | |
-| 30 | Other Share Structure | PRODUCED | `supplyLedger` OTHER_ISSUED_SHARES | | | |
-| 31 | Structure Source URLs | PRODUCED | `evidenceSourceIds` | | | |
-| 32 | Warning Flags | PRODUCED | `structuralWarnings` | | | |
-| 33 | Overall Priority | NEW WORK | as Priority | | | |
-| 34 | Analyst Notes | NEW WORK | free prose | | | |
-| 35 | Float Quality | PRODUCIBLE | `structureClassification` + `supplyBound`; "quality" of a float needs a float | | ✓ | |
-| 36 | Overhang / Float | NEW WORK | the ratio needs a float. `supplyBound` is a **lower bound** substitute, not this | | ✓ | |
-| 37 | Supply Evidence | PRODUCED | `supplyLedger` + cited sources | | | |
+| 1 | Report Date | PRODUCED | `generated_at` | REFETCH | — | |
+| 2 | Ticker | PRODUCED | | REFETCH | — | |
+| 3 | Country of Origin | PRODUCED | `issuer_registry` | REFETCH | — | |
+| 4 | Company | PRODUCED | `issuer_registry.company_name` | REFETCH | — | |
+| 5 | RTH Close | PRODUCED | | REFETCH | ✓ | |
+| 6 | AH Price | PRODUCED | | REFETCH | **+** | |
+| 7 | AH % | PRODUCED | | REFETCH | ✓ | |
+| 8 | AH Volume | PRODUCED | | REFETCH | **+** | |
+| 9 | **Float** | **NEW WORK** | **nothing. Phase C.** | MOMENT\* | ✓ | |
+| 10 | Float Source Date | NEW WORK | follows Float | MOMENT\* | **+** | |
+| 11 | Float Source URL | NEW WORK | follows Float; today always stockanalysis.com | MOMENT\* | — | |
+| 12 | Shares Outstanding | PRODUCED | `SEC_COMPANY_FACTS`, surfaced to the model since `55f3e20` | REFETCH | ✓ | |
+| 13 | Catalyst Details | PRODUCED | `catalyst.summary` | MOMENT | — | |
+| 14 | Catalyst Timestamp | PRODUCED | `catalyst.eventTimestamp` | MOMENT\* | ✓ | |
+| 15 | Catalyst Grade | PRODUCED | `catalyst.catalystGrade` | MOMENT | ✓ | |
+| 16 | Catalyst Source URL | PRODUCED | `evidenceSourceIds` → `research_sources.url` | MOMENT\* | — | |
+| 17 | Recent Cycle High | PRODUCED | `computedCycle.current.cycleHigh` | REFETCH | ✓ | |
+| 18 | Flush From High % | PRODUCED | `retracementPct` / `givebackPct` | REFETCH | ✓ | |
+| 19 | Cycle Classification | PRODUCED | `computedCycle.current.phase` | REFETCH | ✓ | |
+| 20 | Cycle Reasoning | NEW WORK | prose. The arithmetic gives numbers, not narrative | MOMENT | — | |
+| 21 | Recent Major Runs | PRODUCED | `priorCycles[]` with dates and advances | REFETCH | ✓ | |
+| 22 | Historical Runner Notes | PRODUCIBLE | status is produced; the notes are prose over it | MOMENT | — | |
+| 23 | Split History | PRODUCIBLE | `reverseSplitHistory` from filings; `daily_bars.adjustment` | REFETCH | ✓ | |
+| 24 | Daily Resistance | PRODUCIBLE | `priceLevels` | REFETCH | ✓ | |
+| 25 | Daily Support | PRODUCIBLE | `priceLevels` | REFETCH | ✓ | |
+| 26 | 8-K / 6-K | PRODUCED | collected; 378 and 225 in the window | REFETCH | — | |
+| 27 | Registration / Prospectus | PRODUCED | S-1/S-3/F-1/F-3/424B/EFFECT all collected | REFETCH | — | |
+| 28 | Offerings / ATM / PIPE | PRODUCED | `supplyLedger` types ATM, PIPE, RECENT_OFFERING | REFETCH | ✓ | |
+| 29 | Warrants / Convertibles | PRODUCED | `supplyLedger` WARRANTS, CONVERTIBLES | REFETCH | ✓ | |
+| 30 | Other Share Structure | PRODUCED | `supplyLedger` OTHER_ISSUED_SHARES | REFETCH | — | |
+| 31 | Structure Source URLs | PRODUCED | `evidenceSourceIds` | REFETCH | **+** | |
+| 32 | Warning Flags | PRODUCED | `structuralWarnings` | REFETCH | — | |
+| 33 | Overall Priority | NEW WORK | as Priority | MOMENT | — | |
+| 34 | Analyst Notes | NEW WORK | free prose | MOMENT | — | |
+| 35 | Float Quality | PRODUCIBLE | `structureClassification` + `supplyBound`; "quality" of a float needs a float | MOMENT\* | ✓ | |
+| 36 | Overhang / Float | NEW WORK | the ratio needs a float. `supplyBound` is a **lower bound** substitute, not this | MOMENT\* | ✓ | |
+| 37 | Supply Evidence | PRODUCED | `supplyLedger` + cited sources | REFETCH | — | |
+
+### R&D annotation — `live?` and `defs`, filled 2026-09-05
+
+**THE COLUMN ASKED FOR A BINARY AND THE BINARY LIES ON TEN FIELDS.** Three
+values, because they have three different retirement consequences:
+
+| value | meaning | consequence if the Sheet goes |
+| --- | --- | --- |
+| **REFETCH** | a later query recovers the SAME value | drop freely — no history is lost |
+| **MOMENT\*** | the quantity is re-fetchable, **but not as it stood then** | history lost either way; a substitute can be built |
+| **MOMENT** | nothing later recovers it | **those days are blank forever** |
+
+`stockanalysis.com` overwrites its float; the number it showed on 08-17 is gone
+whatever we do now. **That is not the same as irreplaceable and not the same as
+re-fetchable**, and collapsing it into either one gets the retirement order
+wrong in opposite directions.
+
+#### The cross-tab is the answer to the sequencing question
+
+    live?         PRODUCED  PRODUCIBLE  NEW WORK   total
+    REFETCH             35           4         0      39
+    MOMENT*              4           1         5      10
+    MOMENT               5           3         7      15
+
+> **REFETCH x NEW WORK IS EMPTY.** Every re-fetchable field is already PRODUCED
+> or PRODUCIBLE. **Nothing that can be rebuilt later is blocking retirement** —
+> 39 of 64 fields can be dropped the day the desk writes them, in any order, with
+> nothing lost.
+
+#### The seven that actually constrain the order
+
+**MOMENT x NEW WORK** — drop the Sheet before these exist and the observation is
+gone for those days:
+
+    A   Priority          Z   Revised Priority     33  Overall Priority
+    S   Notes             20  Cycle Reasoning      34  Analyst Notes
+    Y   Confirmation
+
+**ALL SEVEN ARE JUDGEMENTS, NOT MEASUREMENTS.** That changes what "build it
+first" means: the desk cannot derive a Priority the way it derives a close.
+**The question for these is not when to build them but whether he wants the
+judgement preserved at all, and whose** — and that is his, not a scoping
+decision.
+
+#### The float ruling empties a cell
+
+**Five of the ten MOMENT\* fields are float** — I, 9, 10, 11, 36. The vendor
+number is MOMENT\* because the page overwrites. **The BOUND is computed from
+shares outstanding and affiliate holdings, both of which are filings, both
+REFETCH.**
+
+> **So the trader's ruling converts float from MOMENT\* to REFETCH.** Once the
+> bound ships, float stops being a capture-clock problem entirely and becomes an
+> ordinary build. **Nothing about float requires writing it now to preserve it** —
+> only the historical vendor values are lost, and they were lost already.
+
+#### `defs` — nine added, twenty-eight confirmed
+
+**Added (`+`):** F, H, P, T, V, 6, 8, 10, 31. The AH and PM price/volume fields
+carry a window definition and a venue definition (consolidated vs primary) that
+nothing states. **10 Float Source Date is the sharpest: the as-of date of the
+count and the date it was retrieved are different dates**, and the Sheet's single
+column cannot say which it holds.
+
+**Confirmed rather than inherited**, per the instruction — all twenty-eight
+existing ticks re-checked against the field, none removed.
+
+#### Scope check before marking anything: the taxonomy is BUILT BUT UNWIRED
+
+`lib/research/effect.ts` (`2128a71`) exists with its two signed axes and mandatory
+basis. **Only its own test imports it** — nothing in `lib`, `worker` or `app`
+produces or consumes it. **So it changes no verdict in this table yet**, and the
+prose fields it could eventually structure are still prose today.
+
+---
 
 ### Outputs summary
 
