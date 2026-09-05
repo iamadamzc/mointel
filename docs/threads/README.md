@@ -4643,3 +4643,73 @@ If the 22:00 roll fails, the signal stays silent until premarket — **it speaks
 from the moment the trader could be looking, and not before.** That was chosen
 over inventing a threshold. **If it needs to be louder the fix is a stricter
 predicate, never a wall-clock constant.**
+
+## THE OBSERVABLE BUILT TO MAKE A SILENT FAILURE VISIBLE WAS ITSELF A SILENT FAILURE
+
+**Ops, 2026-09-05, deployed to production and caught twenty minutes later by
+reading the served API instead of the source.**
+
+The three universe-freshness fields were added to **`DiscoveryState`** and
+documented on **`MarketFeedHealth`**. A one-occurrence string replace anchored on
+`universeMode: UniverseMode;` **took the first of two identical lines** — 484
+instead of 558. The snapshot literal was then populated to match, so **both
+halves agreed with each other and the compiler had nothing to say.**
+
+**It gated clean: 1776 tests, lint, build, typecheck.** It deployed. The worker
+restarted and wrote a fresh snapshot. **And the field reached no reader at all** —
+`readModel` projects the discovery payload field by field and **silently drops
+anything it was not told about**, while `feed_health` is persisted as a whole
+payload, which is why `universeMode` reaches the API and these three reached
+nothing.
+
+### A green gate proves the code is consistent with itself, not that it reaches a reader
+
+**A type that ACCEPTS a field and a projection that CARRIES it are different
+guarantees, and `tsc` checks exactly one of them.** Every field-by-field
+projection is an unchecked allowlist: adding to the type is free, and the
+omission is invisible in both directions.
+
+**Verify a reader by reading the READER.** Everything else built that day was
+checked that way; this one was checked at the source and was wrong on production
+for twenty minutes.
+
+### And the empty result was nearly read as a formatting problem
+
+The grep for the field came back empty while a completion report was being
+composed. **What made the emptiness legible was checking `universeMode` in the
+same object as a CONTROL** — present, in the same payload, where the new fields
+were absent. **When a query returns nothing, look up something you know is
+there.** Without the control, "empty" is indistinguishable from "wrong grep".
+
+### A one-occurrence replace on a non-unique anchor picks silently, and picks first
+
+**The failure is not the replace — it is never asking whether the anchor was
+unique.** Same shape as a grep returning nothing and being read as a finding: **an
+operation that cannot report ambiguity will resolve it for you.**
+
+**Footnote on discipline:** the deploy instruction named `8a77e25`; the sha
+deployed was `52fa841`. The delta was documentation only, so nothing moved — **but
+a named sha exists so that what ships is what was ruled on, and next time the
+delta will not be docs.**
+
+## THE COLUMN ASKED FOR A BINARY AND THE BINARY LIES ON TEN FIELDS
+
+**R&D, 2026-09-05**, filling the `live?` annotation that Integration specified as
+**irreplaceable-or-re-fetchable**. It came back with **three** values, because
+they have three different retirement consequences:
+
+| value | meaning | consequence |
+| --- | --- | --- |
+| **REFETCH** | a later query recovers the SAME value | drop freely |
+| **MOMENT\*** | re-fetchable, **but not as it stood then** | history lost either way; a substitute can be built |
+| **MOMENT** | nothing later recovers it | **those days are blank forever** |
+
+`stockanalysis.com` overwrites its float: the number shown on 08-17 is gone
+whatever anyone does now. **That is neither irreplaceable nor re-fetchable, and
+collapsing it into either gets the retirement order wrong in OPPOSITE
+DIRECTIONS.**
+
+**A two-valued specification is a claim that the world has two states in it.**
+This is the same defect as one constant for a fault and an absence, arriving in
+an annotation schema instead of in code — **and it was specified by the seat that
+recorded that rule.**
