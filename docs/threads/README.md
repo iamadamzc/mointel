@@ -5096,3 +5096,55 @@ The *"~1,300 symbols per session"* figure came from counting distinct symbols in
 **`daily_bars`** on a **partial** 09-04 — **a different table, a partial day,
 generalised to a per-session rate.** It is ~7,800. **The backups state it
 directly.** It cost nothing only because the plan it justified was abandoned.
+
+## START A KEEP-LIST FROM A UNION AND ADD; NEVER FROM EVERYTHING AND SUBTRACT
+
+**Ops, 2026-09-05**, designing the ranked-retention predicate around a hazard
+Research found in the store.
+
+**2026-08-24 has 8,653 symbols seeded and ZERO ranks** — the trading date rolls
+at 22:00 and ranking has not run yet. **That state exists every night.**
+
+**So the obvious predicate deletes the live session.** *"Delete where symbol not
+in the top-50 for that date"* removes everything for today, in the window where
+today's bars are the only ones that matter. **The retention bug deleted past
+dates; this one would delete the present one.**
+
+The shape that cannot:
+
+    keep = floor_dates ∪ ranked_extension
+
+    floor_dates      = the 3 most recent dates PRESENT (absolute)
+    ranked_extension = top-50 per date, dates 4..10 back, ONLY where a rank list evaluates
+
+**A date with no ranks contributes nothing to the extension, so the floor governs
+it and keeps it entirely.** "Retain more, never less" stops being a rule someone
+must remember and becomes **structural**: an extension that cannot evaluate
+extends nothing, and nothing can reduce below the floor.
+
+**A predicate that starts from "everything" and subtracts has the opposite
+failure mode — the one that cost 2.1M rows.** Same policy, same data, and the
+direction of construction decides whether a missing input deletes or preserves.
+
+### And the history to fill the policy was already on the disk
+
+**Nine distinct trading dates sit in `/var/lib/mointel/backups`** across v18–v23:
+08-17 through 08-24, and 09-01 to 09-03. **Only 09-04 is in none of them.** At
+top-50 that is **~145k rows for nine sessions**, from local files — no Alpaca, no
+rate limit, exact rather than refetched.
+
+**The argument for ranked retention stopped being hypothetical when the history
+to fill it turned out to already exist.** A policy justified by what it would
+enable is weaker than one that can be populated the day it ships.
+
+### The ordering that ruling implies, and it is forced
+
+**Restoring nine sessions before the predicate ships is a delayed delete.** The
+current floor keeps the three most recent dates present; six of the nine would be
+pruned at the next roll. **Ship the predicate, then restore** — and restore now
+only what the floor already protects.
+
+**And verify the RANK SOURCE exists for each date before restoring its bars.** An
+extension that correctly evaluates to nothing on a date with no ranks will let
+the floor delete the bars just restored for it. **Restoring data a predicate
+cannot protect is the same delayed delete wearing a policy.**
