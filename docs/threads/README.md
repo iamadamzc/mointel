@@ -4226,3 +4226,46 @@ defeat.
 known.** One over-claims a finding; the other under-claims a risk — **and the
 second is worse, because a discharged caveat leaves no trace that it was ever
 there.**
+
+## I SPECIFIED A CHECK WITH THE DEFECT I HAD RECORDED THAT MORNING
+
+**2026-09-05.** Integration ruled that the missing observable should be:
+*"`universe.updated_at` not carrying the current trading date is a health
+condition."* **On a healthy desk, right now, that condition is true:**
+
+    universe.updated_at = 2026-09-05T02:00Z
+    tradingDate         = 2026-09-08
+
+**Three days apart, and nothing is wrong.** The roll fires at 22:00 ET, sets the
+trading date to the NEXT session, and stamps the fetch with NOW. On a weeknight
+those coincide. **Across a weekend they cannot** — so the check alarms from
+Saturday 02:00 until Monday 02:00, every week.
+
+**That is the retention bug, specified fresh, twelve hours after being written
+up.** `pruneRetention` compared calendar days to trading dates. This compares a
+**wall-clock instant** to a **session label**. Same substitution, different
+seat, same day. **Recording the rule did not stop the author of the rule from
+committing it in the next artefact.**
+
+**An age threshold fails identically:** after Saturday's refresh the stamp ages to
+~48h by Monday, alarming all Sunday while the market is shut.
+
+### Anchor a freshness check to the event that should cause the refresh
+
+    universeUpdatedAt >= tradingDateRolledAt
+
+**No date arithmetic and no wall-clock threshold**, so it cannot false-alarm at a
+weekend or a holiday. And it catches both known causes with one field: Friday's
+cache-stamp guard skipping the fetch, and a busy lock caught at the roll — **two
+distinct causes, one consequence, one reader.**
+
+**A check anchored to the calendar asks "is this old?". A check anchored to the
+event asks "did the thing that was supposed to happen, happen?"** Only the second
+is what anyone actually wanted to know.
+
+### And it needs three states, because UNKNOWN must not degrade
+
+Before a process has rolled once there is no `rolledAt`, and **"no roll observed
+yet" is neither fresh nor stale.** FRESH / STALE / UNKNOWN, same discipline as
+`secAvailable`. **A signal that alarms on every cold start gets ignored — and
+then the real one is ignored too.**
