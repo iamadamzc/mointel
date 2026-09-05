@@ -3307,6 +3307,13 @@ than the shape.
   was already correct — a fix changing nothing while looking like it did.
   Mitigation: `rm tsconfig.tsbuildinfo` before a decisive check; run the full
   build before reporting clean or shipping.
+- **A scope is a claim that something does not exist — check the tree first.**
+  It is the cheapest claim on this desk to test: one `git log`, one `grep`.
+  Integration scoped the activity indicator as unbuilt while it had been
+  shipping since `2b3ddd9`, and the same seat had done it once before in the
+  same week. **Apply this to every hand-off, including ones that arrive with
+  detailed constraints** — the constraints are what make an unbuilt premise
+  convincing.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
