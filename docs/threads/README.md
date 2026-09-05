@@ -4000,3 +4000,48 @@ was never checked against what the desk subscribes to, and it survived two
 reports and a relay. **Before a noun enters a report, open the code that would
 make it true.**
 
+
+## A REAL FAULT DISAPPEARS BY BEING ATTRIBUTED TO ONE THAT IS ALREADY CLOSED
+
+**2026-09-05. The retention defect was found, fixed, deployed and written up in a
+single day. Within hours it had absorbed an unrelated hole in the data and nearly
+buried it.**
+
+Research found 2026-08-18 missing UTC hours 15, 16 and 17 — three RTH hours in
+the middle of the session — and attributed it to the weekend prune. This seat
+relayed that to the trader as established. **Ops excluded the mechanism by
+reading the SQL: `DELETE FROM minute_bars WHERE trading_date NOT IN (...)`
+removes WHOLE TRADING DATES.** There is no path by which it takes three hours out
+of a date and leaves the rest standing.
+
+**And the desk was demonstrably awake through those hours.** On 08-18
+`ticker_session` holds 8,625 rows against 08-17's 8,613, and `desk_events` by UTC
+hour reads 15: 2,243 · 16: 1,871 · 17: 1,294. **Ranking and writing throughout
+the window that `minute_bars` shows empty.**
+
+So the cause is unidentified, and only two candidates remain: the archive copy is
+partial, **or `minute_bars` specifically stopped receiving while the other tables
+kept writing — a separate, undiagnosed capture defect.**
+
+### Why this is the dangerous shape
+
+**A closed cause is a comfortable home for an open one.** The attribution was
+plausible, arrived the same day, and pointed at something already fixed — so the
+natural next step was no step at all. **A fault filed under a fix is a fault
+nobody will look for again**, and it is worse than an unexplained anomaly,
+because an unexplained anomaly still has someone assigned to it.
+
+**The tell is availability, not evidence:** the cause that gets reached for is
+the one discovered most recently, and same-day is the strongest form of that.
+
+### And it moves a conclusion that had been called safe
+
+Items 58 and 59 were argued to survive **"because the deleted region is outside
+the measured window"** — 11:00–14:00 UTC against a cut at 15:00–17:00. **The
+conclusion may hold; the premise does not.** If the hole is not a retention cut,
+its extent is not known, and "outside the cut" was never established.
+
+**Re-argue it positively: the measured window has FULL COVERAGE on both dates.**
+That is checkable, and it does not depend on knowing what caused the hole.
+**A survival argument built on the boundary of a loss inherits every error in
+where you think the loss ends.**
