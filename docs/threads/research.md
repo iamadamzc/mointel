@@ -7886,3 +7886,57 @@ board's base rate is 93% on my definition and 64% on theirs. **The question that
 matches how he trades is "does it fade within minutes of the peak"**, and the
 desk can now measure it: minute bars, the activity window, and the price window
 shipped yesterday all cover that horizon.
+
+---
+
+**83. WHICH MINUTE-BAR CONCLUSIONS SURVIVE THE CUT — TWO DO, ONE DOES NOT, AND
+THE ONE THAT FAILS FAILS TWICE.**
+
+*Integration: `minute_bars` was emptied by a retention rule counting calendar
+days against a docstring promising trading dates, and it has fired every weekend
+since. "The only two sessions retained" was a CUT, not a window. Re-examine, and
+say which conclusions are now unsupported.*
+
+**Checked rather than assumed, because the answer depends on WHERE the cut fell:**
+
+| session | rows | rows by UTC hour |
+| --- | --- | --- |
+| 08-17 | 1,047,109 | every hour 08→22, RTH-heavy. **Complete** |
+| 08-18 | 293,227 | **hours 15, 16 and 17 MISSING ENTIRELY** — 14:00 has 38,558, then nothing until 18:00 |
+
+**08-18 is missing three full RTH hours** — 11:00–13:00 ET, the middle of the
+session — and its `trading_date` carries bars stamped into the 19th.
+
+### Items 58 and 59 SURVIVE, and the reason is checkable
+
+Both measure **11:00–14:00 UTC** — his 07:00–10:00 ET window. On 08-18 those
+hours hold 29,960 / 25,997 / 93,896 rows against 08-17's 18,659 / 19,021 /
+93,151. **Comparable, and two of the three are LARGER.**
+
+**The deleted region is 15:00–17:00 UTC, entirely outside the measured window.**
+So the coverage figures (66.6% and 54.2% top-12, 36–42% starting with a hole) and
+the AIXC-versus-TGL finding stand. **Not because the cut was harmless, but
+because it fell somewhere else — and that had to be looked at rather than
+argued.**
+
+### Item 82a DOES NOT SURVIVE, and half the reason is mine
+
+The basis-free drawdown — 16.0% at ten minutes, 17.2% at thirty, 26.9% at the
+close — used the WHOLE session to locate the peak minute, so on 08-18 the peak
+may sit inside the three missing hours.
+
+**And worse, independently of the cut: I indexed by ARRAY POSITION.**
+`bars[peakIndex + 10]` is ten ROWS later, not ten MINUTES later. **With holes, ten
+rows can be an hour** — and on a sparse board name they usually are. **That number
+would have been wrong on complete data.**
+
+**So 82a is withdrawn.** The claim it supported — that most of the reported fade
+happens after his window — is now **unsupported rather than refuted**, and it
+needs re-measuring on Monday's capture, indexed by TIMESTAMP.
+
+### And the missing question is the one worth keeping
+
+**A three-day retention was showing two days and neither of us asked why.** A
+number smaller than its own configured limit is a question, not a setting —
+which is the same shape as every check that could not fail, arriving in an
+operational figure rather than in code.
