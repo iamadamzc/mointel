@@ -4270,6 +4270,52 @@ yet" is neither fresh nor stale.** FRESH / STALE / UNKNOWN, same discipline as
 `secAvailable`. **A signal that alarms on every cold start gets ignored — and
 then the real one is ignored too.**
 
+### And then I specified UNKNOWN wrong too, in the same hour
+
+*"UNKNOWN must not degrade"* — flat and unconditional. **Design caught it as
+`state === 'LIVE'` in a new costume**, which is the defect the trader
+screenshotted this week.
+
+**UNKNOWN is not one state.** Silent at cold start is right. **UNKNOWN still
+present at 06:55 on a trading day means no roll was recorded when one should
+have been — and that is indistinguishable IN CONSEQUENCE from STALE.** He is
+equally blind either way.
+
+    FRESH    silent always
+    STALE    speaks always
+    UNKNOWN  silent before a roll is due, SPEAKING AFTER
+
+**Three specifications in one day, all mine, all the same substitution:** a
+calendar comparison for an event, a flat rule for a clock-relative one, and a
+freshness check anchored to a date. **Nominality on this desk is almost never
+absolute — it is relative to where the session clock is**, and a predicate that
+does not take the clock as an input is asserting that it never matters.
+
+**The predicate belongs in the engine, not the component.** `isMarketDataExpected`
+is the precedent: the component asks whether a roll is due; it does not compute
+it from a clock it holds locally. **That is exactly how the last one went wrong.**
+
+### A caveat belongs on the thing it qualifies
+
+Design rejected all three placements offered for the stale-universe signal.
+**Not the market light** — that answers "is the feed working", and a stale
+universe has a perfectly healthy feed delivering correct data about the wrong set
+of names; folding it in renders a working feed as degraded and teaches the trader
+to distrust that light for a reason it is not about. **Not diagnostics** — the
+whole property of this failure is that it is undetectable from the board, so a
+signal he must go and look for requires him to suspect first, and there is
+nothing to suspect from.
+
+**It goes on the counts it invalidates.** The Discovery header renders "N
+eligible · N tracked"; a stale universe means those numbers are yesterday's.
+**Same rule as the provenance warning sitting at the figures and the
+interpolation note sitting at the point of temptation.**
+
+**And render the AS-OF DATE, not a status word.** *"Universe from Friday"* is
+checkable against something the trader already knows. *"STALE"* is a claim he
+must take on trust. **A surface that can be wrong should carry what it would be
+wrong about.**
+
 ## SEPARATE BY DEPENDENCY, NOT BY SUSPICION — AND LEAD A CORRECTION WITH WHAT SURVIVES
 
 **Design, 2026-09-05, twice honest about what actually saved it.**
