@@ -62,6 +62,10 @@ describe('it starts at the first traded minute, never at the window edge', () =>
      * 36-42% of top-12 rows begin with a hole. A line drawn from the edge shows
      * FLAT-THEN-RISING where the truth is ABSENT-THEN-RISING — on precisely the
      * setup he hunts, a name that sits silent and then moves.
+     *
+     * 36-42% is from `data/market.db`, the LOCAL desk rather than production,
+     * pending a re-take. This assertion does not rest on the rate — it pins
+     * that a leading hole is trimmed, which holds at any of them.
      */
     const closes = new Map([[SLOTS[2]!, 4.2], [SLOTS[3]!, 4.9]]);
     const window = buildPriceWindow(closes, SLOTS);

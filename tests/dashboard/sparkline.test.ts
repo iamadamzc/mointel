@@ -141,6 +141,10 @@ describe('the price series', () => {
    * there is no line to begin at the window edge. 36-42% of top-12 rows open
    * with a hole, and drawing from the edge would show flat-then-rising where
    * the truth is absent-then-rising.
+   *
+   * 36-42% is from `data/market.db`, the LOCAL desk rather than production,
+   * pending a re-take. The RULE does not rest on it -- absent-then-rising is
+   * not flat-then-rising at any rate.
    */
   it('never emits a point before the first traded minute', () => {
     const v = pricePointsView(win(3, [7, 8]), 5)!;

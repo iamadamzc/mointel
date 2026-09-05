@@ -128,7 +128,13 @@ export function windowSlots(now: number, config: ActivityConfig): string[] {
 /**
  * Closes over the same slots, trimmed to the first minute that TRADED.
  *
- * TWO CONSTRAINTS, both measured rather than chosen.
+ * TWO CONSTRAINTS, both measured rather than chosen — and one of the two
+ * measurements needs its store named.
+ *
+ * **36-42% is from `data/market.db` — the LOCAL desk, not production — measured
+ * on 2026-08-17/18 and pending a re-take on production's bars. The CONSTRAINT
+ * does not depend on it: absent-then-rising is not flat-then-rising at any rate,
+ * and this line would not change if it came back 12%.**
  *
  * It starts at the first traded minute and never at the window edge. 36-42% of
  * top-12 rows begin with a hole, and a line drawn from the edge shows
