@@ -4045,3 +4045,22 @@ its extent is not known, and "outside the cut" was never established.
 That is checkable, and it does not depend on knowing what caused the hole.
 **A survival argument built on the boundary of a loss inherits every error in
 where you think the loss ends.**
+
+### A number waiting on provenance must carry the wait, in the document
+
+Design's scope quotes coverage figures — TGL 3%, AIXC 8%, SLE 46% — whose window
+may overlap the unexplained hole. **Nobody can answer that yet, and the scope is
+readable now.** Its own warning is the rule: they are *"the kind that get quoted
+later as though they were measured on good data."*
+
+**An unverified number in a document becomes a verified number the moment someone
+else reads it**, because provenance lives in the conversation and the conversation
+is not what gets read. **Mark it where it sits, not in the thread that produced
+it** — the mark costs one clause and it is the only thing that travels with the
+figure.
+
+**And note the argument survived the doubt while the numbers did not.** The
+threshold rejection stands on AIXC alone: a name trading 29,379 times inside a
+handful of minutes is not a fidelity problem at any coverage figure. **A
+conclusion resting on a counterexample is robust to the measurement; one resting
+on where a band falls is not.** Separate them before either is doubted, not after.
