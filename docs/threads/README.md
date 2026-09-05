@@ -1306,6 +1306,38 @@ and 158 on Saturday), **one holds the lock too long.** An elegant grouping —
 **and grouping them delays the only one that destroys data.** Shape is how you
 recognise a family; consequence is how you schedule it.
 
+### The same proxy, one layer up: ROW COUNT standing in for ELAPSED TIME
+
+**Research, same day, found the identical substitution in its own analysis.** A
+drawdown measure reached ten minutes past a peak by writing `bars[peakIndex +
+10]` — **ten ROWS later, not ten MINUTES later.** On a continuously traded name
+they agree. **On a sparse board name, ten rows is an hour.**
+
+**That number was wrong independently of the retention bug, and would have been
+wrong on complete data.** The retention cut only made it visible: checking which
+hours the cut removed forced a look at how the index was built.
+
+**Item 82a is WITHDRAWN, not refuted.** The claim it supported — that most of the
+reported fade happens after the trader's window — is now **unsupported**, and
+must be re-measured on Monday's capture **indexed by timestamp**.
+
+**The general form, and it is now three sightings in one day:** a loop that
+counts *positions* while the requirement names *units* is correct exactly when
+the positions are evenly spaced, and silently wrong when they are not. **Gaps are
+the normal case in market data.** Index by the unit the claim is about.
+
+### Check WHERE a loss fell before deciding what it invalidated
+
+Research's other move is the one to copy. Rather than discarding every finding
+touching `minute_bars`, it asked which HOURS the deletion removed: 08-18 lost
+15:00–17:00 UTC entirely, and items 58 and 59 measure 11:00–14:00 UTC. **They
+survive — not because the cut was harmless, but because it fell somewhere else.**
+
+**A data loss invalidates the measurements that overlapped it, not the ones that
+share a table with it.** Establish the overlap before writing anything off; the
+alternative discards good work and, worse, retains bad work that happens to look
+untouched.
+
 ## THE GUARD THAT CAUSED THE DEFECT WAS ALSO PREVENTING A CRASH NOBODY KNEW ABOUT
 
 **2026-09-05, hours after the fix shipped.** The 20-hour universe cache guard
