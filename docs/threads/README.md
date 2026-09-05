@@ -4504,3 +4504,35 @@ must not claim one.**
 **The rule: a timestamp is not "when we noticed", it is whatever makes the
 comparison it feeds mean what it says.** Naming a convenient line to write it on
 is not the same as choosing the instant.
+
+## A CLOSED LIST THAT IS NOT CHECKED AGAINST WHAT IT LICENSES IS STILL DECORATIVE
+
+**Research, 2026-09-05**, extending a ruling past what the ruling said.
+
+The catalyst taxonomy's discriminating constraint is that an `INFERRED` basis
+must name a rule from a **closed list**. Integration ruled the list hard closed
+and stopped there. **That is not enough on its own: the model can name a REAL
+rule against the WRONG AXIS, and the basis validates.** `REVERSE_SPLIT_1ST`
+justifying `demand: POSITIVE` passes every check that only asks whether the rule
+exists.
+
+**So a rule must LICENSE the side it is attached to**, and a mismatch degrades
+that axis to `UNDETERMINED` with the reason recorded.
+
+**The general form: closing a vocabulary constrains WHAT can be said, never
+WHETHER it supports the claim it is attached to.** A validated enum next to an
+unvalidated relationship is the same decorative-constraint failure one level in —
+and it is harder to see, because the enum genuinely is closed.
+
+### And a taxonomy value finally gives a home to a sentence that never rendered
+
+`UNDETERMINED` carries its reason, and one of the four is **`NOT_SEARCHED`** — no
+supply event in the filings, and demand news never looked for. **That is the
+SEC-only coverage gap arriving as a value rather than as prose.**
+
+`bundle.ts:447-451` has composed the finished sentence — *"…and an announcement
+published outside a filing would not have been seen"* — since it was written, and
+**it has never been rendered to anyone**: its only consumer is the model prompt.
+**The fact was true, computed, and unreachable.** As a taxonomy value it is
+reachable by construction, and the wrapper reframe and the taxonomy now share a
+vocabulary instead of describing the same absence twice.
