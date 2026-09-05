@@ -4467,3 +4467,40 @@ only appears at the line where the state is compared.
 the roll-due predicate says"* cannot be flat. *"UNKNOWN must not degrade"* cannot
 be anything else. **The first form makes the dependency a question someone has to
 answer; the second hides that there was one.**
+
+## A MUTATION THAT PASSES MEANS THE MUTANT WAS WRONG, NOT THAT THE TESTS ARE GOOD
+
+**Ops, 2026-09-05, building the universe-freshness observable.** It mutated the
+implementation to a calendar-date comparison expecting the weekend test to fail.
+**All seven passed.**
+
+The mutant compared the stamp to the **rolled** date — which in the weekend case
+share a date — while the defective condition it was imitating compared it to the
+**trading date**, which **the function's signature does not accept.**
+
+**So the signature excludes the bug: the flawed comparison is not expressible.**
+That is a stronger property than any passing test, and **it was only found
+because the mutation did NOT fail the way it was supposed to.** A mutation that
+survives is a question about the mutant first and the suite second — **and here
+the answer was better news than the failure would have been.**
+
+**Design a signature that cannot accept the wrong operand**, and the test suite
+stops being the only thing standing between the desk and the defect.
+
+### And the fourth specification defect of the day, same author
+
+Integration ruled: *write `trading_date_rolled_at` at `:413` where the roll
+already logs success.* **`:413` is where the roll FINISHES.** The universe
+refresh happens **inside** `onSessionRoll`, so a completion timestamp is always
+later than a successful refresh — **`stamp >= rolledAt` would be false for a roll
+that worked perfectly.** The field would have reported STALE on every healthy
+roll and nothing else.
+
+**Record the instant the roll BEGAN, on success only.** A refresh that ran during
+the roll then stamps after it; a skipped one carries a stamp from a previous day.
+**On success only, because a roll that threw did not establish a trading date and
+must not claim one.**
+
+**The rule: a timestamp is not "when we noticed", it is whatever makes the
+comparison it feeds mean what it says.** Naming a convenient line to write it on
+is not the same as choosing the instant.
