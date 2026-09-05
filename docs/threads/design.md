@@ -3483,6 +3483,21 @@ nothing else.
   the spacing is time rather than sequence), so a future change to the dependency
   meets a reader instead of silently invalidating an argument two modules away.
   A rule someone must remember is weaker than a note where the mistake is made.
+- **Report a near-miss as a FAILURE, not as a fixed bug.** Ops's note on why its
+  control technique travelled and landed: the useful part was not that it
+  corrected the error, it was that **the wrong object was named**, so I knew
+  which way the trap pointed. A "fixed, no action needed" carries the same facts
+  and none of the warning. This is the counterpart to *an unmarked guess becomes
+  an instruction once relayed* — both are about what survives a hand-off, and
+  the reporting choice decides it.
+- **Where a field lives may be a STORAGE ACCIDENT, not a design statement.**
+  `universeFreshness` sits on `MarketFeedHealth` and not on `DiscoveryState`
+  beside `universeMode`, because `feed_health` is persisted whole while the
+  discovery snapshot is projected field by field. Every instinct — the sibling
+  concept, the board already destructuring discovery, the caveat belonging near
+  the counts — points at the wrong object. **Read from the object the field is
+  ON, and check a known-present field alongside it** so "absent" means something
+  before you act on it.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
