@@ -8232,3 +8232,69 @@ price still fall.** An outcome check, not a source check.
 **That sentence is here so the gap is BOUNDED rather than open.** An unbounded
 gap gets proposed as new work by the next person who notices it; a gap with its
 only instrument and that instrument's weakness written down does not.
+
+---
+
+**87. THE DEPTH ANSWER: THREE IS ENOUGH FOR EVERYTHING THE DESK RENDERS. TEN,
+BOARD-ONLY, IS WHAT MAKES A RATE QUOTABLE — AT 1.6% OF THE PRICE.**
+
+*Integration: name a depth and what it buys, or neither option goes to the
+trader. And be honest if the answer is three, because a requirement invented to
+justify a capability is worse than the capability we have.*
+
+### For everything the desk RENDERS, three is more than enough
+
+The price window, the activity verdict, the sparkline — **all live, current
+session only. Zero sessions of history.** Nothing on his board reads a bar older
+than today.
+
+**So the requirement is narrow and it is for measurement ABOUT the desk, not for
+the desk's operation.** That distinction is the whole answer.
+
+### The one question that needs more, and the number is derived rather than round
+
+**Whether a coverage or fade figure is STABLE ENOUGH TO QUOTE.**
+
+That is exactly what bit us this week: I reported **66.6% and 54.2%** from two
+sessions and **could not say whether a twelve-point spread was noise or signal.**
+Three sessions gives three points and cannot answer it either.
+
+**~12 board names per session at top-12, so ten sessions is ~120 name-sessions —
+roughly the minimum for a rate at ±5pp.** At top-50 it is ~500 and comfortable.
+**Ten is the floor for a quotable rate, not a preference.**
+
+### And it does not cost what the options assume, because it does not need every symbol
+
+Measured on a full session, 2026-08-17:
+
+| | rows | share of the session |
+| --- | --- | --- |
+| all symbols | 1,047,109 | 100% |
+| **top-50 ranked** | **16,266** | **1.55%** |
+| top-12 ranked | 6,408 | 0.61% |
+
+**Ten sessions of BOARD-ONLY bars ≈ 163k rows, against ≈10.5M for all symbols.
+Same research value at 1.6% of the volume.**
+
+**The questions are about names that reached the board.** A symbol that never
+ranked contributes nothing to a coverage rate for his window, and retaining it is
+paying to store the 98.4% that answers nothing.
+
+### One discrepancy that should be resolved before anything is priced to him
+
+**Ops priced ~900k rows and ~+6GB per ten sessions. One session of all symbols is
+1.05M rows here** — so ten all-symbol sessions is ~10.5M, an order of magnitude
+above that estimate.
+
+**Either production subscribes far fewer symbols than the local desk's 7,783, or
+the estimate is off.** Production's `minute_bars` is empty so I cannot check, and
+**its `ticker_session` for 08-18 is 8,625 against the local 8,617 — a similar
+universe TRACKED, which says nothing about how many are SUBSCRIBED for bars.**
+**Not a correction, a discrepancy — and the selective option is cheap enough that
+it may not need resolving.**
+
+### So the answer, in one line
+
+**Three for the desk. Ten for board-ranked symbols only, to make one class of
+figure quotable — and if that is not worth 163k rows, three is genuinely enough
+and I will stop quoting rates that need more.**
