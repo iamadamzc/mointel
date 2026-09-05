@@ -58,6 +58,7 @@ import {
   sessionPhaseForMinutes,
   etMinutesOfDay,
   RTH_END_MIN,
+  isMarketDataExpected,
 } from '../lib/market/session';
 import { RthCloseCapture } from '../lib/market/rthCloseCapture';
 import {
@@ -1427,6 +1428,12 @@ export class MarketRuntime {
         universeUpdatedAt: universeUpdatedAt(this.db),
         tradingDateRolledAt: getMeta(this.db, TRADING_DATE_ROLLED_AT_KEY),
       }),
+      universeUpdatedAt: universeUpdatedAt(this.db),
+      // A roll is due once the session's data is expected: the roll fires at
+      // 22:00 ET, so by premarket it must already have happened. Reuses the
+      // session predicate rather than inventing a clock threshold, which is the
+      // substitution that has cost this desk three defects in one day.
+      universeRollDue: isMarketDataExpected(this.sessionPhase),
       discoveryRank: this.config.discoveryRank,
       internalRank: this.config.internalRank,
       priceMin: this.config.discoveryPriceMin,

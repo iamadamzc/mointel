@@ -1,16 +1,18 @@
 import { describe, expect, it } from 'vitest';
 
 import { universeFreshness } from '@/lib/market/store/repo';
+import { isMarketDataExpected } from '@/lib/market/session';
 
 /**
- * A stale universe cost a 53% mover on 2026-09-04. SGRX renamed from BTOG
- * overnight, the 02:00 roll found the cache 2.9 hours old, the age guard
- * skipped the fetch, and the desk ran all session on the previous day's
- * universe — reporting `ok` throughout, because nothing read the stamp.
+ * A stale universe cost a 53% mover on 2026-09-04 and nothing saw it. SGRX
+ * renamed from BTOG overnight, the 02:00 roll found the cache 2.9 hours old,
+ * the age guard skipped the fetch, and the desk ran all session on the previous
+ * day's universe — reporting `ok` throughout, because `universeUpdatedAt` had
+ * exactly one reader: the refresh decision itself.
  *
- * Two distinct causes produce that same consequence and neither was visible:
- * the guard skipping the fetch, and the roll's write being caught and logged.
- * This is the one field that sees both.
+ * Two distinct causes produce that consequence and neither was visible: the
+ * guard skipping the fetch, and the roll's write being caught and logged. This
+ * is the one field that sees both.
  */
 describe('universe freshness is anchored to the roll, not the calendar', () => {
   /**
@@ -20,7 +22,7 @@ describe('universe freshness is anchored to the roll, not the calendar', () => {
    * stamps the fetch with NOW. Across a weekend those cannot coincide: on
    * 2026-09-05 a correct desk read stamp 09-05 against trading date 09-08.
    * A stamp-equals-trading-date check alarms from Saturday to Monday, weekly,
-   * on a desk with nothing wrong.
+   * on a desk with nothing wrong. An age threshold fails the same way.
    */
   it('is FRESH when the stamp is three days behind the trading date, over a weekend', () => {
     expect(
@@ -69,7 +71,10 @@ describe('universe freshness is anchored to the roll, not the calendar', () => {
   /** A roll with no universe at all is stale, not unknown: the roll happened. */
   it('is STALE when a roll is recorded but the universe has never been stamped', () => {
     expect(
-      universeFreshness({ universeUpdatedAt: null, tradingDateRolledAt: '2026-09-08T02:00:00.000Z' }),
+      universeFreshness({
+        universeUpdatedAt: null,
+        tradingDateRolledAt: '2026-09-08T02:00:00.000Z',
+      }),
     ).toBe('STALE');
   });
 
@@ -81,7 +86,37 @@ describe('universe freshness is anchored to the roll, not the calendar', () => {
 
   it('is UNKNOWN rather than guessing when a timestamp is unparseable', () => {
     expect(
-      universeFreshness({ universeUpdatedAt: 'not-a-date', tradingDateRolledAt: '2026-09-08T02:00:00.000Z' }),
+      universeFreshness({
+        universeUpdatedAt: 'not-a-date',
+        tradingDateRolledAt: '2026-09-08T02:00:00.000Z',
+      }),
     ).toBe('UNKNOWN');
+  });
+});
+
+/**
+ * UNKNOWN IS NOT ONE STATE, and a flat "never degrade" rule ships the defect it
+ * was meant to avoid.
+ *
+ * Silent at cold start is right. Still UNKNOWN at 06:55 on a trading day means
+ * no roll was recorded when one was due, and the desk is running on an
+ * unverified universe — indistinguishable IN CONSEQUENCE from STALE.
+ *
+ * The predicate is the session clock rather than a wall-clock threshold: the
+ * roll fires at 22:00 ET, so by the time a session's data is expected it must
+ * already have happened. Reusing `isMarketDataExpected` keeps the engine the
+ * only thing reading a clock — a component inferring it from its own is how the
+ * market indicator went wrong.
+ */
+describe('whether UNKNOWN is worth saying is clock-relative', () => {
+  it('is silent overnight and at weekends, when no roll is due yet', () => {
+    expect(isMarketDataExpected('CLOSED')).toBe(false);
+    expect(isMarketDataExpected('NEXT_DAY_PREP')).toBe(false);
+  });
+
+  it('SPEAKS from premarket onward, which is when he is blind to it', () => {
+    expect(isMarketDataExpected('PREMARKET')).toBe(true);
+    expect(isMarketDataExpected('RTH')).toBe(true);
+    expect(isMarketDataExpected('AFTER_HOURS')).toBe(true);
   });
 });

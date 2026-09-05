@@ -493,6 +493,28 @@ export interface DiscoveryState {
    * both cases while running on yesterday's universe.
    */
   universeFreshness?: 'FRESH' | 'STALE' | 'UNKNOWN';
+  /**
+   * When the universe was last refreshed, surfaced rather than only the verdict
+   * derived from it.
+   *
+   * "Universe from Friday" is checkable against something he already knows;
+   * "STALE" is a claim he has to take on trust. A surface that can be wrong
+   * should carry what it would be wrong about.
+   */
+  universeUpdatedAt?: string | null;
+  /**
+   * Whether a roll should have happened by now, for the reader deciding
+   * whether UNKNOWN is worth saying.
+   *
+   * UNKNOWN IS NOT ONE STATE. Silent at cold start is right; still UNKNOWN at
+   * 06:55 on a trading day means no roll was recorded when one was due, and
+   * that is indistinguishable IN CONSEQUENCE from STALE — the desk is running
+   * on an unverified universe either way.
+   *
+   * The engine computes it because it is clock-relative, and a component
+   * inferring it from its own clock is how the market indicator went wrong.
+   */
+  universeRollDue?: boolean;
   /** Symbols with a valid RVOL denominator AND an eligible price (or latched). */
   eligibleCount: number;
   /** Symbols actually ranked this pass. */
