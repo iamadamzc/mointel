@@ -1263,6 +1263,43 @@ read 23. **The failed deploy is the reason that sha is live.**
 something they cannot observe** — the same reasoning as reporting existence
 rather than a rate.
 
+## THE GUARD THAT CAUSED THE DEFECT WAS ALSO PREVENTING A CRASH NOBODY KNEW ABOUT
+
+**2026-09-05, hours after the fix shipped.** The 20-hour universe cache guard
+suppressed the session-roll refresh and left a renamed ticker invisible for a
+morning. We diagnosed it, fixed it to refresh unconditionally on the roll, and
+deployed.
+
+**Then Ops found what the guard had also been doing.** `replaceUniverse` writes
+**13,094 rows in one transaction**, holding the write lock past the research
+worker's 5-second `busy_timeout`. `completeJob` throws `SQLITE_BUSY`, **nothing
+catches it, and the process dies** — nine times since 08-25, every one clustered
+at the 02:00 roll.
+
+**And the crash only happens on rolls that REFETCH.** On the morning SGRX was
+invisible there was no crash, **because the cache was fresh and the roll
+skipped.** The defect and the protection were **one mechanism.**
+
+**So the fix converts an occasional crash into a scheduled one.** From the next
+session the 13,094-row write happens every trading day.
+
+**A guard's side effects are by definition not in its stated purpose**, so
+removing it removes protections nobody enumerated — and the protected thing is
+invisible precisely because the guard was working. **Before removing a guard,
+ask what ELSE has been sitting behind it.**
+
+### And it survived eleven days because it self-heals
+
+**systemd restarts the worker, the orphaned job is recovered, work continues.**
+Nine crashes, no alert, no report, no one looking. **A failure that repairs
+itself produces no evidence anyone reads** — the same reason the given-but-unread
+float count went weeks unnoticed and the same reason a flaky gate teaches
+re-running.
+
+**The downstream fix is the real one:** an unhandled `SQLITE_BUSY` on a
+five-second timeout **is not an exceptional condition on a store with two
+writers. It is Tuesday.**
+
 ## 13 OF 23, THEN 5 OF 13, THEN ZERO — AND EVERY STEP WAS A CORRECT MEASUREMENT
 
 **2026-09-04, the day's longest investigation, resolved.** Company-news
