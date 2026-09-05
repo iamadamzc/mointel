@@ -4064,3 +4064,49 @@ threshold rejection stands on AIXC alone: a name trading 29,379 times inside a
 handful of minutes is not a fidelity problem at any coverage figure. **A
 conclusion resting on a counterexample is robust to the measurement; one resting
 on where a band falls is not.** Separate them before either is doubted, not after.
+
+## THE CATCH TURNS A CRASH INTO A STALE STATE, AND ONLY ONE OF THOSE IS VISIBLE
+
+**Ops, 2026-09-05, correcting its own scope.** *"Capture is unprotected"* was
+wrong, and it was built from `withBusyRetry` not appearing in `repo.ts`.
+**Absence of a retry wrapper is not absence of protection.** Every capture write
+path is inside a `try/catch`: `worker/runtime.ts:410` wraps `resolveSession` and
+`onSessionRoll`, `:1218` wraps the flush. **The 13,094-row universe write is
+inside a catch.** Capture cannot die from a busy lock.
+
+**So the asymmetry was never "one retries and one does not". It is that one
+CATCHES its errors and one did not** — research's `completeJob` threw into a
+top-level `Promise.all` with nothing above it, which is why a busy lock was a
+process death. The retry was the right fix; the account of who was next in line
+was invented.
+
+### And the protection produces the worse failure
+
+**If `replaceUniverse` loses the lock at the 22:00 ET roll, the catch logs and
+capture carries on with YESTERDAY'S UNIVERSE.** That is Friday's SGRX incident
+arriving by a different route — the same consequence, produced by the handler
+rather than by a guard. **The unconditional-refresh fix does not help: it forces
+the refetch to be ATTEMPTED, not to succeed.**
+
+A crash is loud, dated, and someone looks at it. **A caught error on a
+once-per-day job is a silent substitution of yesterday's world for today's.**
+
+**And the observable does not exist.** `universeUpdatedAt` has exactly one
+reader — the refresh decision in `ensureUniverse`. **Nothing in health reads it,
+so the desk reports `ok` while running on a stale universe.** Same shape as
+`secAvailable`: a condition with no reader. **Retrying a write nobody checks the
+outcome of buys less than checking it.**
+
+### A RETRY BOUND IS NOT PORTABLE ACROSS CADENCES
+
+`withBusyRetry` is 5 attempts at 200/500/1000/2000ms over a 5s driver timeout —
+**~33 seconds.** Correct for research, where a job runs once and must complete.
+
+**Copied to the flush loop it would be actively harmful: the flush runs every
+1000ms, so 33 seconds is 33 missed cycles, and a skipped idempotent write becomes
+a STALLED WORKER.** The flush needs nothing — idempotent upserts, already caught,
+carried by the next tick a second later.
+
+**The bound encodes an assumption about how often the caller gets another
+chance.** Same code, same fault, opposite correct answer. **Ask what the next
+cycle costs before reusing a retry policy, not what the error is.**
