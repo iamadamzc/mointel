@@ -3196,6 +3196,39 @@ renders a flat line at zero because there it is TRUE. So the `minute_bars`
 outage does not block the design — it blocks live verification only, and the
 absent case is the one path that is fully exercised without data.
 
+## The x-axis is TIME, not sequence — verified, and it is why points beat a line
+
+The `bars[peakIndex + 10]` trap — ten ROWS read as ten MINUTES — does not reach
+these series. **Both map over the same wall-clock slot array**, built at
+`activity.ts:122-124` as `minuteSlot(now - back * 60_000)`, one entry per minute:
+
+- activity: `slots.map(slot => minuteTrades.get(slot) ?? 0)` (`:261`, whose own
+  comment calls it the most important line in the file)
+- price: `slots.slice(startsAt).map(slot => minuteCloses.get(slot) ?? null)`
+  (`:153`)
+
+**A missing minute OCCUPIES its slot; it is never skipped.** So even horizontal
+spacing is not a claim here — it is the truth, because every position IS one
+minute. `startsAt` is an index into that same array, which is why the two series
+align without reconciliation.
+
+### Gap and flat ARE distinguishable, and only because the mark is points
+
+| On screen | Means |
+| --- | --- |
+| **No mark** at a slot | not observed — the minute did not trade |
+| A mark **level with its neighbour** | traded and unchanged |
+
+**A line could not express this.** It would interpolate across the gap and draw
+the two identically — a stroke between two traded minutes asserts prices that
+were never observed. That is a second, independent reason for points, arrived at
+from a direction I had not considered when I chose them.
+
+**Honest caveat:** at 4px slot pitch and 2px dots, a ONE-minute gap inside an
+otherwise flat run is a small visual difference. It is correct, not
+prominent — worth knowing before anyone reads a single hole off the row rather
+than the shape.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
