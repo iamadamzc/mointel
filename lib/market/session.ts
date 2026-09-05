@@ -207,6 +207,13 @@ export function sessionPhaseAt(
 }
 
 /** True while SIP prints are still expected for this phase. */
+/**
+ * SECOND CONSUMER, NAMED: the market worker also uses this to decide whether a
+ * missing universe refresh is worth reporting (`universeRollDue`). Widening or
+ * narrowing this predicate therefore changes WHEN A STALE UNIVERSE BECOMES
+ * VISIBLE, not only what counts as a live session. Check that reader before
+ * changing this one.
+ */
 export function isMarketDataExpected(phase: SessionPhase): boolean {
   return phase === 'PREMARKET' || phase === 'RTH' || phase === 'AFTER_HOURS';
 }

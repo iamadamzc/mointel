@@ -1455,6 +1455,13 @@ export class MarketRuntime {
     // A roll is due once the session's data is expected: the roll fires at
     // 22:00 ET, so by premarket it must already have happened. Reuses the
     // session predicate rather than inventing a clock threshold.
+    //
+    // COUPLING, NAMED: this borrows isMarketDataExpected, which exists to
+    // answer a different question. Changing that predicate for a session-phase
+    // reason -- a premarket boundary, a holiday rule -- ALSO CHANGES WHEN THE
+    // DESK REPORTS A STALE UNIVERSE. That is the trade for not inventing a
+    // fourth clock threshold, and it is deliberate; if this ever needs to speak
+    // earlier the fix is a stricter predicate, never a wall-clock constant.
     this.health.universeRollDue = isMarketDataExpected(this.sessionPhase);
     this.health.backfill = this.backfill;
     this.health.rejectedSymbols = this.rejectedSymbols;
