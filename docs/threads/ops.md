@@ -5428,6 +5428,74 @@ The load-bearing unknown was named before it ran and came back negative. Hold
 until someone establishes where a renamed ticker's registrant identity is going
 to come from, because for a new ticker it is demonstrably not this file.
 
+## A green gate proves two things, and neither is the one you want
+
+Both of these happened on 2026-09-05, in one afternoon, and **neither was
+visible in the colour of the gate.**
+
+### The gate is not done until the reader is read
+
+`universeFreshness` was built, typechecked, gated at 1776 tests, deployed, and
+**invisible to every reader for twenty minutes on production.**
+
+A one-occurrence string replace anchored on `universeMode: UniverseMode;` took
+the first of **two identical lines** — `DiscoveryState`, not
+`MarketFeedHealth`. The object literal edited to match was the discovery
+snapshot, so both halves agreed with each other and `tsc` had nothing to say.
+
+**`readModel` projects the discovery payload field by field and silently drops
+what it was not told about. `feed_health` is persisted whole.** That is why
+`universeMode` reaches the API and three new fields reached nothing.
+
+**A type that accepts a field and a projection that carries it are different
+guarantees, and tsc checks exactly one of them.** Every field-by-field
+projection is an unchecked allowlist: adding to the type is free, and the
+omission is invisible in both directions.
+
+**So: if a change adds a field a reader must see, VERIFY IT BY READING THE
+READER.** Not the source, not the type, not the test — the served output.
+
+**And the control is the half that nearly did not happen.** The grep came back
+empty and was almost read as a formatting problem. What made the emptiness
+legible was checking `universeMode` *in the same object* — present, same
+payload, where the new fields were absent. **When a query returns nothing, look
+up something you know is there.** Without a control, "empty" and "wrong query"
+are the same result.
+
+### Watch the count, not the colour
+
+A string-slice edit removed a whole test from a suite mid-edit. **vitest
+reported "no tests" rather than a failure.**
+
+**A deleted test and a passing test are both green.** Every instrument here
+notices a failing assertion; none notices one that *stopped existing*. This is
+the failed-checks-return-plausible-answers shape at the level of the suite, and
+it is worse than the field cases because the reassuring answer is the **absence
+of output** rather than a wrong value.
+
+**1749 → 1756 → 1758 is the reading that catches it**, and it is the number
+everyone reports as decoration and nobody reads.
+
+### An operation that cannot report ambiguity will resolve it for you
+
+The replace did not fail. It picked, silently, and picked first. **The failure
+was never asking whether the anchor was unique** — the same move as reading a
+grep that returned nothing as a finding. Three variants of it in one day.
+
+### Deploy the sha you were given
+
+Integration named `8a77e25`; the tip `52fa841` was deployed because it contained
+it plus documentation. **The delta was docs-only and nothing moved — but a
+named sha exists so that what ships is what was ruled on.** Next time the delta
+will not be docs. Deploy the named sha, or come back and say why it should be a
+different one.
+
+**And a no-op push prints exactly what a successful one prints.** A
+`git pull --ff-only` run inside the detached gate worktree failed, the
+cherry-pick never happened, and the compound command still printed "pushed".
+**Verify by containment — is the sha an ancestor of `origin/main` — never by
+the word.**
+
 ## Before you deploy
 
 ### "Docs-only above production" is a snapshot, not a standing fact
