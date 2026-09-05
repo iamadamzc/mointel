@@ -4989,3 +4989,65 @@ and "we asked wrongly" are otherwise indistinguishable.
 **A field dismissed as a weak substitute for the data can be a perfect index to
 it.** The count was judged by what it failed to preserve; its value was in what
 it enumerates.
+
+## A COMPRESSION IN A RELAY BECOMES A DISCREPANCY IN THE RECEIVER
+
+**Integration, 2026-09-05.** Ops priced the retention option as **"~900k rows per
+session on a store already at 1.01GB, so ten sessions is roughly +6GB."** Two
+units, stated clearly.
+
+**Integration relayed it as "~900k rows and ~+6GB per ten sessions"** — the
+per-session figure and the per-ten-session figure collapsed into one phrase
+governed by the wrong denominator.
+
+**Research then measured a full session at 1,047,109 rows and correctly reported
+it as an order-of-magnitude discrepancy against the estimate — flagged, not
+corrected, with the reason it could not check production.** Exactly the right
+behaviour.
+
+**There was no discrepancy.** 900k against 1,047,109 per session is close, and
++6GB for ten sessions is consistent with both. **The disagreement was
+manufactured entirely by the relay**, and it cost the receiving thread a
+measurement and a paragraph of careful hedging about which desk was subscribed.
+
+**A relay that shortens a figure must carry its denominator.** "Per session" and
+"per ten sessions" are four words apart and an order of magnitude apart, and the
+seat that drops one is never the seat that discovers the cost.
+
+**This is the third relay defect from this seat today** — a mechanism passed on
+as established, a sha challenged without checking ancestry, and now a unit
+dropped from a cost. **All three were caught by the receiving thread checking
+rather than believing.**
+
+## SELECTIVE RETENTION BY RANK, NOT DEPTH FOR EVERYTHING
+
+**Research, 2026-09-05**, answering "how many sessions of minute grain do you
+need" with a number, a derivation, and a third option nobody had named.
+
+**Three sessions is enough for everything the desk RENDERS.** The price window,
+the activity verdict and the sparkline are all current-session only — **nothing
+on the board reads a bar older than today.** The requirement is for measurement
+**about** the desk, not for its operation.
+
+**Ten sessions is the floor for one thing: whether a coverage or fade rate is
+stable enough to QUOTE.** ~12 board names a session, so ten sessions is ~120
+name-sessions — roughly the minimum for a rate at ±5pp. **Two sessions produced
+66.6% and 54.2% this week and nobody could say whether twelve points was noise.**
+
+**And it does not cost what either seat assumed, because it does not need every
+symbol.** Measured on 2026-08-17:
+
+| | rows | share |
+| --- | --- | --- |
+| all symbols | 1,047,109 | 100% |
+| **top-50 ranked** | **16,266** | **1.55%** |
+| top-12 ranked | 6,408 | 0.61% |
+
+**Ten sessions of board-only bars ≈163k rows against ≈10.5M for all symbols —
+the same research value at 1.6% of the volume.** A symbol that never ranked
+contributes nothing to a coverage rate for the trader's window; **retaining it is
+paying to store the 98.4% that answers nothing.**
+
+**It needs a predicate in the prune rather than a bigger number, and it does not
+touch the archive schema.** Neither the seat pricing depth nor the seat ruling on
+it had thought past *more* versus *less*.
