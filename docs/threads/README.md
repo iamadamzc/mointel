@@ -4361,6 +4361,16 @@ moves with it.**
 matter."** Where the second is available it is strictly better, because a warning
 depends on being read and a structure does not.
 
+**Research reached the same move independently, on the same figure, in the same
+hour** — and found the sharper half. `activity.ts` opened *"TWO CONSTRAINTS,
+both measured rather than chosen"*. **That is the phrase claiming authority**,
+and appending a caveat beneath it would have left **the strongest claim first and
+the qualification second**. It was corrected in place instead.
+
+**A caveat added under a false sentence does not repair the sentence.** Find the
+clause that asserts more than the evidence supports and fix that one; the note
+underneath is for what remains true and uncertain.
+
 ### A cleared caveat is deleted; a moved caveat is kept
 
 The provenance warning on those figures survived only because the correction
