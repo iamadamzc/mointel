@@ -3887,3 +3887,41 @@ these columns"* must name the population the new column lands on. **A failing
 attempt writes no row, so a column on the results table instruments exactly the
 cases that already work — and the pass comes back "no failures found", which
 reads as good news.**
+
+## ON A DELETE PATH, ABSENT EVIDENCE MUST MEAN DO NOTHING — NEVER KEEP NOTHING
+
+**2026-09-05, found by mutation testing the retention fix, not by the incident
+that prompted it.** The calendar-day keep-list destroyed 2.1M rows every weekend
+because it counted the wrong unit. That was the reported defect. The worse one
+was underneath it.
+
+Restoring the old loop failed three tests, and the third was unasked-for: **on a
+store holding no sessions at all, the calendar version still invents a keep-list
+and issues a DELETE against dates it made up.** The correct behaviour on an empty
+store is to delete nothing. The old code's behaviour was to keep nothing.
+
+**Those two are one character apart in a keep-list and opposite in consequence.**
+A derived keep-list can always produce a value; an observed one cannot. `SELECT
+DISTINCT trading_date` returns an empty set when there is nothing to keep, and
+an empty keep-list must therefore be read as *no instruction*, not as *keep none*.
+
+### The rule
+
+**Before any DELETE driven by a computed inclusion list, ask what the list
+contains when the evidence is empty.** If the answer is "still something", the
+list is generated rather than observed and the delete is unguarded. If the answer
+is "nothing", the delete path must exit rather than run.
+
+**And the reason it survived: the prune logged at DEBUG.** A weekly mass deletion
+that announces itself at the level nobody reads is a deletion nobody can witness.
+**Log level is a claim about how much a line matters — and a mass DELETE is not a
+debug detail.**
+
+### Family by shape is not family by consequence
+
+Three defects sat in the same function family and were proposed as one bundle.
+They shared a shape and did not share a risk: one destroys data weekly, one
+accumulates dead rows at 39 a day, one is latency. **Shape is how you recognise a
+family; consequence is how you schedule it.** Bundling by shape parks the one
+with teeth behind two that can wait — and it is tempting precisely because the
+shape is elegant.
