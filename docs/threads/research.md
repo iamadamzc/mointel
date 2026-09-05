@@ -8280,21 +8280,54 @@ Same research value at 1.6% of the volume.**
 ranked contributes nothing to a coverage rate for his window, and retaining it is
 paying to store the 98.4% that answers nothing.
 
-### One discrepancy that should be resolved before anything is priced to him
+### THE DISCREPANCY WAS NOT REAL — corrected in place
 
-**Ops priced ~900k rows and ~+6GB per ten sessions. One session of all symbols is
-1.05M rows here** — so ten all-symbol sessions is ~10.5M, an order of magnitude
-above that estimate.
+I flagged Ops's estimate as an order of magnitude below my measurement. **There
+was no disagreement.** Ops priced *~900k rows PER SESSION*, and *+6GB for TEN*;
+the relay collapsed the two denominators into one phrase. **900k against my
+measured 1,047,109 per session agrees, and +6GB for ten is consistent with both.**
 
-**Either production subscribes far fewer symbols than the local desk's 7,783, or
-the estimate is off.** Production's `minute_bars` is empty so I cannot check, and
-**its `ticker_session` for 08-18 is 8,625 against the local 8,617 — a similar
-universe TRACKED, which says nothing about how many are SUBSCRIBED for bars.**
-**Not a correction, a discrepancy — and the selective option is cheap enough that
-it may not need resolving.**
+**The paragraph that stood here hedged about whether production subscribes fewer
+symbols than the local desk. It was reasoning about a conflict that the relay
+manufactured**, and it is removed rather than annotated — a caveat under a false
+premise does not repair the premise.
 
 ### So the answer, in one line
 
 **Three for the desk. Ten for board-ranked symbols only, to make one class of
 figure quotable — and if that is not worth 163k rows, three is genuinely enough
 and I will stop quoting rates that need more.**
+
+
+**87a. A SESSION WITH A FULL UNIVERSE AND NO RANKS EXISTS IN THE STORE RIGHT NOW.**
+
+*Integration's second constraint for the ranked-retention build: what does the
+rank list contain when the rank source is empty? If it still yields a set, the
+list is generated rather than observed and the delete is unguarded. **It is not
+hypothetical.***
+
+`ticker_session` in the production snapshot, by date:
+
+| trading_date | rows | ranked | top-50 |
+| --- | --- | --- | --- |
+| 08-14 … 08-21 | 4,165–8,688 | 2,736–2,821 | 50 |
+| **2026-08-24** | **8,653** | **0** | **0** |
+
+**A full universe, zero ranks.** The trading date rolls at 22:00 the evening
+before, so a session exists with every symbol seeded and ranking not yet run.
+**That state occurs every single night.**
+
+### So the failure is concrete, and it is worse than the bug just fixed
+
+**A predicate of the shape `symbol IN (top-50 ranked for that date)` deletes
+EVERY minute bar for the current session**, because the ranked set is empty until
+ranking establishes — **and it does it in the window where the bars are the live
+ones.**
+
+The retention bug deleted whole past dates. **This would delete today.**
+
+**Which is exactly why Integration's first rule is the right one and has to be
+structural rather than remembered: RETAIN MORE, NEVER LESS. An empty ranked set
+must mean KEEP EVERYTHING FOR THAT DATE**, never keep nothing — and the
+three-session floor must apply before the predicate is consulted at all, not
+after.
