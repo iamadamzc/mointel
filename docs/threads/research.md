@@ -8135,3 +8135,73 @@ drawn from the window edge whether it happens on 36% of rows or 6%. **But the
 sentence asserting the rate does**, and it is now a local-desk number sitting in
 production code. **Not urgent, not wrong yet, and it should be re-taken with the
 rest rather than quietly kept.**
+
+---
+
+**86. THE CENSUS DESIGN — two samples, because rate and calibration are
+different questions, and one of them I cannot answer.**
+
+*Integration rejected the premise of my own question: the taxonomy adds a field
+that did not exist, so there is no BEFORE to compare against and it is not an
+A/B arm. **And it caught that I recommended riding the A/B while stating in the
+same message that doing so makes the comparison uninterpretable — those cannot
+both be true.** What it needs is a fill-rate and calibration census. Design only;
+nothing built, nothing before Monday.*
+
+### Integration's line is the whole reason the design has two arms
+
+> **The validator cannot tell you whether the model is right, only whether it is
+> well-formed. A high OBSERVED rate with a wrong direction is the failure that
+> passes every check built today.**
+
+### ARM A — RATES. Unstratified, or the rates mean nothing
+
+**Sample: 60 names drawn at random from board-ranked names**, no filtering by
+catalyst status. **Stratifying would make every rate uninterpretable**, and the
+temptation is real because the interesting cases are rare.
+
+Reports, per axis: **`OBSERVED` / `INFERRED` / `UNDETERMINED` / `NONE`**; the
+`UndeterminedReason` distribution; and the two validator failures —
+`UNRECOGNISED_RULE` and `RULE_DIRECTION_MISMATCH`.
+
+**Cost: 60 interpretations at a measured median of 10,344 input / 2,721 output
+tokens ≈ 0.78M tokens — about 6% of a 12M-token day.** Priced from the archive's
+own metrics rather than estimated.
+
+### ARM B — CALIBRATION. Drawn FROM arm A's output, not guessed in advance
+
+**Which cases matter cannot be known before the run**, so the calibration subset
+is selected by what arm A produced: **every rule-fired `INFERRED` basis, plus
+every `POSITIVE` on either axis.**
+
+**And it checks only what is CHECKABLE, which is the rules.** A rule-fired
+inference makes a FACTUAL claim about a document — is there a 12b-25
+(`FILING_FAILURE`), a compliance notice (`COMPLIANCE_RESTORED`), stock
+consideration in the stated terms (`STOCK_CONSIDERATION`). **Those verify against
+the filing.**
+
+**A demand judgement does not.** *"Buyers arrive"* is not checkable against a
+document, and I am the model's cousin rather than an independent judge — **so the
+demand axis's calibration is UNVERIFIED and the census must say so rather than
+report a number for it.**
+
+**Trigger, stated in advance: if fewer than 10 rule-fired inferences appear in
+the 60, the rules are rare and arm B needs a deliberate top-up.** That is itself
+a finding — a vocabulary the model does not reach for is not a constraint.
+
+### PRE-REGISTERED, BEFORE ANY OF IT RUNS
+
+1. **`demand: UNDETERMINED` ≥ 40%**, dominated by `NOT_SEARCHED` — 62% of names
+   carry no non-SEC catalyst source, and that reason exists for exactly them.
+2. **Supply `OBSERVED` > supply `INFERRED`.** Filings are what the desk sees and
+   supply events ARE filings.
+3. **`RULE_DIRECTION_MISMATCH` fires more often than `UNRECOGNISED_RULE`** — with
+   the rules listed in the prompt, misapplying a real one is easier than
+   inventing a name.
+4. **Explicitly NOT predicted: whether `INFERRED` is over-used where `OBSERVED`
+   was available.** I can argue it both ways — a rule is easier to name than a
+   source is to cite, and the prompt already demands source ids everywhere. **No
+   direction, so the result cannot be read to fit.**
+
+**If 1 and 2 both fail, the taxonomy is not describing this desk's evidence and
+the shape is wrong rather than the model.**
