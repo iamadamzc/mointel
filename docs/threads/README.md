@@ -4859,3 +4859,48 @@ cleared in seven minutes, so it could wait**, and the true reason would have bee
 **A justification field only works while every entry in it is true.** One
 plausible-but-false entry makes the whole record unreadable — **and the cost of
 declining to use it was seven minutes.**
+
+## CALENDAR ARITHMETIC IS CORRECT WHEN IT FEEDS A CALENDAR LOOKUP AND WRONG WHEN IT SUBSTITUTES FOR ONE
+
+**Ops, 2026-09-05**, sweeping the neighbourhood after two instances of the same
+substitution turned up in one directory. **The sweep found a third, and a
+counter-example that matters more.**
+
+**Third instance — `worker/dial.ts:37-38`:**
+
+    const WINDOW_START_UTC_HOUR = 8;  // 04:00 ET, EDT
+    const WINDOW_END_UTC_HOUR = 11;   // 07:00 ET
+
+**A hardcoded UTC hour standing in for an ET wall clock — and the comment says
+"EDT", so the author knew the assumption and did not guard it.** Under EST, 04:00
+ET is 09:00 UTC, so **from the first Sunday in November the pre-registered
+premarket window silently becomes 03:00–06:00 ET**: an hour of pre-premarket
+included, the last hour of premarket dropped. Analysis rather than a live path,
+so it corrupts a **pre-registered measurement** rather than capture — **the kind
+of number that gets quoted later**, firing by calendar rather than by anything
+anyone will notice.
+
+### The counter-example is the useful half
+
+`worker/archive-backfill.ts` names **CALENDAR** in every constant, and converts
+explicitly:
+
+    SPLIT_LOOKBACK_CALENDAR_DAYS = Math.ceil(SPLIT_LOOKBACK_SESSIONS * 1.6) + 14
+
+**The distinction was already understood in this repo, in a neighbouring file,
+before any of today's defects.** The pattern to copy exists: **sessions × ratio +
+pad, and say which unit you are in.**
+
+### The discriminator
+
+**Fetch a range by CALENDAR. Gate an action by SESSION.**
+
+`runtime.ts`'s `addDays` callers are all correct under this test — they take a
+calendar range **in order to learn which days are sessions** (`:314-315`), iterate
+to find the next session (`:341`), or over-provision safely (`:689-690` takes 60
+calendar days for a 20-session baseline). **You must count calendar days to
+discover sessions; you must not count them to decide whether to act.**
+
+**And the sweep is the lesson, not the third bug.** Two instances were already
+known and the third would not have been found by fixing them. **A defect found is
+a query to run, not a line to change.**
