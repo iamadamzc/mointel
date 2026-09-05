@@ -4904,3 +4904,22 @@ discover sessions; you must not count them to decide whether to act.**
 **And the sweep is the lesson, not the third bug.** Two instances were already
 known and the third would not have been found by fixing them. **A defect found is
 a query to run, not a line to change.**
+
+**A sweep by SHAPE finds what a sweep by CALL SITE cannot.** `dial.ts` shares no
+code with `pruneRetention` or `preflight` — only the substitution. Grepping for
+callers, imports or symbols would have found none of it.
+
+### And the sweep caught the morning's own fix, six hours later
+
+`preflight`'s window test is `nearest_diff <= PROTECTED_MINUTES`, so **exactly
+five minutes away still blocks** — the window is ±5 **inclusive**, eleven minutes
+wide rather than ten. Two seats computed the clear gaps from the comment and
+**both were a minute wrong at each edge.**
+
+**That is the same `<=` boundary fixed in the same file that morning** — `d3c56ce`
+made `PROTECTED_MINUTES=0` mean *off*, because `0 <= 0` blocked. **The zero case
+was changed and the general one was left.**
+
+**A fix is an instance too.** The sweep rule applies to the commit that prompted
+it, and the natural moment to skip that check is exactly when the defect feels
+freshly closed.
