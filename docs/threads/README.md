@@ -4307,3 +4307,47 @@ reader discharges the whole caveat rather than the half that was answered.
 resolved.** The resolved half is the good news and it is the half that erases the
 warning. Ordering is not presentation here — **it decides whether the caveat is
 still in the document tomorrow.**
+
+## A NUMBER THAT MIGRATES INTO A COMMENT LEAVES ITS PROVENANCE BEHIND
+
+**2026-09-05, found by enumerating which register items came from the frozen
+local store.** Three did. **But one of the three had already escaped the
+register:** `36-42% of top-12 rows begin with a hole` is quoted in **shipped
+code** — `lib/market/activity.ts:133`, `lib/dashboard/sparkline.ts:111`, and two
+tests.
+
+**And `activity.ts` introduces it as "TWO CONSTRAINTS, both measured rather than
+chosen."** The comment claims measurement authority for a figure taken from a
+desk that stopped writing on 08-20.
+
+**The constraint is fine and must not change.** A leading hole must not be drawn
+from the window edge whether it happens on 36% of rows or 6% — `absent-then-
+rising` is not `flat-then-rising` at any rate. **What is wrong is the sentence
+asserting the rate**, and it now sits in four files with no path back to the
+store that produced it.
+
+**A number in a document has a thread behind it. A number in a comment has
+nothing** — it survives every refactor, gets read as settled, and is quoted by
+the next author as though the measurement were part of the code. **The register
+is where provenance lives, and copying a figure out of it is how a measurement
+becomes a fact.**
+
+### "Production" is itself a date
+
+The register records neither which machine nor as of when. **The production
+snapshot everything else was measured on is `market-prod-2026-08-23.db` —
+thirteen days old.** An item measured on that and one measured on Monday's live
+store **are not the same claim, and nothing today distinguishes them.**
+
+**So the register needs store AND as-of date per measured item** — not because
+three items were affected, but because **establishing that it was three required
+a grep and a row-count diff.** A number whose machine cannot be recovered from
+the record has to be re-taken before it can be trusted, and re-taking is the
+expensive outcome.
+
+### And six of ten stores cannot say what they are
+
+`data/` holds ten `.db` files; **six carry no label** — including four replay
+stores of 112–120MB with identical tables and dates. `market.db` misled three
+threads because it has the **default** name, and a reader who knows nothing
+reaches for the default first. **The next one is already sitting there.**
