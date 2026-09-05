@@ -201,230 +201,85 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-*Refreshed 2026-09-02 21:35Z (17:35 ET Tuesday) by the third Integration
-session, mid-flight, after the trader flagged it near context capacity.
-**Everything below this block that carries a 2026-08-27 frame is the previous
-handover, kept for its mechanisms and superseded by this block wherever they
-conflict. Verify before acting on any of it.***
+*Refreshed 2026-09-05 08:45Z (04:45 ET **Saturday**) by the fourth Integration
+session, after ~40 hours of continuous work across Thursday night, Friday and
+Saturday morning. **This block supersedes the 2026-09-02 handover entirely and
+that block has been removed — not archived, because a superseded LIVE STATE is
+the thing that gets read.** Everything below carrying an older frame is kept for
+its mechanisms. Verify before acting on any of it.*
 
-### State as of 2026-09-02
+### Production, as of this block
 
-- **Production `bc78d49`, schema 22, six days unattended and CLEAN** — Ops's
-  sweep at `1ffb77d`: 19/19 checkpoints every trading day, recaps asked==queued
-  six nights including the Fri→Mon rollover, unbroken capture. `stalledJobs` 16
-  until the retirement ships. Soft spot: research worker self-healed three
-  restarts (two lock timeouts, one OOM); WAL 546MB on an 886MB store; item 0e
-  reframed deploy-independent.
-- **The deploy sequence RAN, 2026-09-03 ~05:00–05:15Z, all verified.** Window 1:
-  0f alone on composed sha `7f4aa91` (branch `ops/0f-only`) — the build cap
-  protected its own installation. Window 2: the full bundle at tip `97f5fbd` —
-  the retirement logged **exactly "retired 16"**, all named, `stalledJobs` now
-  0, confirming the enqueue fix by a refutable check. Production runs
-  `97f5fbd`; schema 22 unchanged (the migrates-the-store premise was wrong
-  twice — nothing waits on a migration). Window 3 (basis backfill, ~462 REST
-  calls) unblocked, parked for an Ops-priced DAYLIGHT window. Stale
-  market-worker pin retires after window 3. Design's chip verification read
-  NULL exactly as pre-registered — unfalsified, not confirmed; the Sheet-
-  retirement flip hazard is recorded in README's retirement block.
-- **Executed 09-02/03:** copy-down done (`data/assessments-prod-2026-09-02.db`,
-  ids 1–227); manual snapshot taken. **Parked:** float extractor (condition in
-  research.md's pending table).
-- **Scoring: RUN, results `3ed04c4`** (`docs/rnd/2026-09-02-prediction-
-  scorecard-results.md`, sent to the trader). Headlines: S3 catalyst separation
-  +14.9pp p=0.00002 (floor; same-session +17.9), S2 time-to-intelligence 15→0
-  min, S1 board timeliness UNCHANGED at 30% (the standing product gap), S5
-  freshness regressed (differential; the just-shipped clock targets it). **The
-  post-fix S3 rise toward +17.9 is pre-registered as mechanical** (`584b734`)
-  — only past it is the market. News one-cell instrument excluded permanently
-  until its capture is built (trader's optional word, no clock).
-- **Board lateness is the desk's live workstream, commissioned 2026-09-03.**
-  Diagnosis complete: RVOL is confirmed cumulative (`lib/market/rvol.ts`) AND a
-  second `latched` flag is never cleared, so board presence is literally a
-  one-time qualification in two independent places; a dead name falls only by
-  being OVERTAKEN. **Windowing RVOL is closed** by a standing backtested
-  instruction in that file, so any continuing condition is ADDITIONAL to the
-  ranking. **Activity = minute trade count is already parsed, persisted and
-  scored on by nothing** — the cheapest available measure. Liquidity cannot be
-  board-wide (≤250 high-res cap, populated BY the latch). Revival answered over
-  13 sessions on trade count: **68% at 1 dead minute, 48% at 5, 34% at 10, 19%
-  at 30, 11% at 60** — the trader's prior holds past ~30 minutes and his stated
-  10x-in-one-minute criterion catches burstiness. **All rates are FLOORS**;
-  his 10-second grain is reachable (trades deep to listing) and unbuilt, with
-  no clock. **Open with him: which persistence.**
-- **0d (`trap start_services EXIT`) is UNBUILT — VERIFIED 2026-09-03 by Ops**,
-  method stated: no `trap` in `push-release.sh` or `deploy.sh` at `7f4aa91`,
-  and none in either file on the live release. **0f touched both files and
-  carried none of 0d** — two unrelated changes in the same files, which is
-  exactly why it could not be inferred from the diff's filenames. Older text
-  below asserting it unbuilt is therefore still true.
-- **DECIDED 2026-09-04: ASSESSMENT CAPTURE STAYS AT 25 RANKS.** *His word, one
-  number, asked whether to widen to 50 or narrow toward the four or five names
-  that become real candidates.* **Narrowing was considered and rejected on the
-  reasoning that it saves nothing it appears to** — the assessment writer makes
-  **zero model calls** (`desk_assessments.model_calls` is 0 on every row ever
-  written), so capture is a database write and not spend; the effort he wanted
-  back lives in research passes and subscriptions, already capped at 12 and 250
-  and freed further by the dead-name gates. **And capturing only the names that
-  became real candidates would be selecting on the outcome**, discarding the
-  control group that every finding this week depended on.
-  **WHAT IT FORECLOSES, recorded so it is not rediscovered as a defect:** the UI
-  offers up to 50 ranked rows, so **if he is viewing 50, ranks 26–50 are on his
-  screen and in no record** — permanently, since the rows are observable-once.
-  **Every board-scoped figure is therefore bounded at ranks 1–25 forever and
-  must say so.** This is an accepted limit, not a gap awaiting a fix.
-- **HELD TRIGGER — item 16a expedites the moment a SECOND READER exists.**
-  *Design, 2026-09-04, declining to expedite its own fix and asking this seat to
-  hold the condition rather than holding it itself.* The board labels another
-  model's output as "human review". **It misleads a reader who does not already
-  know the answer — and the trader is the one reader who does**, since he is the
-  person who told the desk no human reviews the Sheet. So today the only human
-  seeing that string is the only human it cannot deceive, and it ships in the
-  ordinary next deploy (`f228467`, committed, outside `6d368dc`). **The moment a
-  demo, a second login, or a shared review link puts a new reader in front of
-  the desk, the string stops being cosmetic and becomes a false claim to
-  someone who would believe it.**
+- **`4876ea6`, schema 25.** Deployed 04:30 ET Saturday, migrated 24→25 cleanly,
+  backup `market-v24-2026-09-05T08-32-07-821Z.db` written and integrity-checked.
+- **Market worker restarted 04:33 onto current code.** It had spent 20.6 hours
+  running from a pruned release (`cwd` = `(deleted)`); that exposure is closed.
+- **`SGRX` and `XTND` are in the universe AND in the live subscription.** Both
+  were invisible Friday morning; SGRX moved 53% while the desk could not see it.
+- **Six deploys Thursday night to Saturday.** `0e` fired clean on four of them.
+  Capture was never interrupted by any deploy.
 
-  **AND THE TRIGGER MUST NOT DEPEND ON HIM VOLUNTEERING** — Design's addition,
-  and it is what makes this a trigger rather than a note. *A demo or a second
-  login gets arranged and mentioned in passing, and by the time it is mentioned
-  the desk is already in front of the new reader.* So it is attached to
-  something **observable** instead: **a review link created for a label that is
-  not a thread's own diagnostic, or a second `htpasswd` login appearing.**
-  **RE-KEYED 2026-09-04 ON OPS'S MEASURED BASELINE (`de71ea7`), because the
-  trigger as first written could never have fired: there are ALREADY TWO
-  logins** (`adam`, `mointel1` — the second reads as a service account), **and
-  seven unrevoked review tokens of which ZERO are usable, all expired, the
-  newest lapsed 2026-08-24.** A count of unrevoked rows would have reported a
-  live sharing surface that does not exist — presence versus validity again.
-  **The live trigger is therefore: a THIRD login, or ANY USABLE token —
-  INCLUDING ONE LABELLED FOR A MODEL CONSUMER.** *Design's addition: the five
-  expired `chatgpt-*` tokens were routes built so ChatGPT could reach this desk,
-  and ChatGPT is also what WRITES the Sheet — so for one day in August the desk
-  told the Sheet's own author that the Sheet was human-reviewed. A loop rather
-  than a deception, because the one consumer able to know it was false was the
-  thing producing it. But a model ingesting "human-reviewed" as a fact is
-  exactly how a false provenance propagates, and **a model cannot ask a
-  clarifying question** — so a machine reader fires this trigger on its own
-  grounds, separately from any human one.* Both are Ops's to see, and Ops has
-  been asked to raise either the moment it appears.
+### The one thing with a deadline
 
-  **And the decision is TIME-BOUNDED, not principled** — Design's own
-  correction, so it is never cited as *"16a is never urgent"*: it is **"16a is
-  not urgent while readership is one"**, and the trader has said this is a
-  product for a niche of momentum traders, so readership will be more than one
-  again.
+**`57981ac` is pushed, gated, non-migrating, and NOT deployed. It must be live
+before Monday's 02:00 ET session roll.** The roll now refreshes the universe
+unconditionally — a 13,094-row write — and thirteen research writes previously
+died on `SQLITE_BUSY` rather than retrying. Nine crashes since 08-25, all at
+rolls that refetched. **Our own universe fix is what makes it daily.**
 
-  **WHEN WRITING ANY TRIGGER, STATE WHAT THE COUNT IS RIGHT NOW BEFORE CHOOSING
-  THE THRESHOLD.** Two of this thread's triggers in one day were keyed to a
-  state the world was already in, and both were caught by someone measuring the
-  baseline rather than reading the rule. Presence-versus-validity is now four
-  shapes of one failure in two days — expired tokens counted as active,
-  `undefined` versus `'UNKNOWN'`, a 200 on a dead page, a key present with no
-  value. Same family as *a schedule that depends on attention is not a
-  schedule* — a trigger that fires on someone remembering it fires last.
-- **Sessions:** Research successor live (opened 08-27); the three retired
-  sessions archived 2026-09-02. Coaching holds six-day-old uncommitted code in
-  the tree, nudged to commit.
-- **Practices added since the 08-27 handover, all in README/charters:** push
-  rule is the trader's word; a hold is announced or it is a push by whoever
-  moves next; id range PLUS content digest across stores; the capacity
-  doctrine and retirement protocol (documents-current, opening-message expiry
-  audit, archive on retirement); clock read in the same tool call as the claim.
+### What the trader decided
 
-### Reaching the threads — THIS IS THE ONLY MECHANISM THAT WORKS
+- **Build the float bound; do not buy a vendor feed.** His reasoning, and it is
+  better than the case this seat built for it: vendors use no privileged data,
+  and *"we can explain why a float is dirty, with the numbers, instead of just
+  putting N/A."* **The head-to-head argument this seat added was falsified —
+  nine of the ten vendor-blank names are leveraged ETFs, which have no float,
+  and `N/A` was correct.**
+- **Retire the 06:10 ChatGPT task.** Done. The 22:00 task stays until the float
+  question is settled.
+- **Render the supply pair.** Shipped.
+- **The dial must be falsifiable or not built.** Q13 closed: not detectable at
+  n=13, ~31 more sessions would settle it. **A result, not a shrug.**
 
-    directory:  mcp__ccd_session_mgmt__list_sessions   ->  sessionId + title + cwd
-    send:       mcp__ccd_session_mgmt__send_message    ->  session_id + message
+### Waiting on him
 
-**`list_sessions` carries the real titles. Look every address up there, every
-time. Do not cache one and do not accept one asserted in a message — including
-your own.** This thread gave Ops its own session id from its scratchpad path; it
-was wrong, and only Ops using the directory saved the experiment.
+- **The research queue samples a column that overwrites, against a board turning
+  over 4.4× a day** — so 20 of 53 names that touched his top 12 on 09-04 were
+  never picked up. Not broken; that is the mechanism. **Enumerating entries
+  instead would roughly double research volume, and that is his bill.** Three
+  options put to him; no answer yet.
+- **Short interest**: Alpaca provides none — verified against their own docs
+  index. FINRA is the source, free and public, 8–23 days stale by construction.
+  **It is meaningless without a float denominator, so it belongs after the
+  bound.**
 
-**`ListAgents` does NOT work** — opaque handles (`mointel-8c`, `claude-1a`) that
-map to nothing. Neither does `SendMessage` to a name, nor copying a received
-message's `from` attribute as the `to` (the tool's own docs recommend the last one;
-it fails here). **Threads CAN reach this thread unprompted** — proven by Ops.
+### Built, gated, not yet deployed
 
-**Title this session `Integration` immediately.** Peers look for that title in
-`list_sessions`.
+`57981ac` busy-retry (deadline above) · Design's close-series render `2b3ddd9` ·
+the price sparkline is data-live and needs capture to populate.
 
-### The clock, and it has bitten four times in three days
+### Scoped, not started
 
-**This host is UTC+2 (CEST). Every shell and test timestamp is SIX HOURS ahead of
-New York.** `10:45` local is `04:45 ET`. **Read `date -u` or an explicit
-`America/New_York` conversion at the moment you use it** — never extrapolate from
-an earlier reading, and never infer the trading day from tool output.
+Coverage persistence with its **five-rung** model · the one-sided-search warning
+(blocked on that persistence) · `deactivateSources` wiring for 244 non-canonical
+cluster members · chunking `replaceUniverse` · the split-census over confirmed
+split events · `PATTERNS` read · the (d) re-take on variant A.
 
-### Production
+### Live facts a new session will otherwise re-derive
 
-**Live: `bc78d49`.** Nothing non-docs sits above it — **there is nothing to
-deploy.** Schema 22. Market worker untouched across thirteen deploys, pinned at
-`fd9556f` behind `RESTART_MARKET=no`.
-
-**A deploy is NOT fire-and-forget.** `push-release.sh` stops the runtime units,
-migrates, then starts. On 2026-08-25 it stalled between stop and start, an ssh
-timeout killed the remote process tree, **and there is no watchdog** — the desk
-stayed down 3h22m, dark through the first 102 minutes of live premarket. **Ops's
-item 0d (`trap start_services EXIT`) is the fix and is still unbuilt.**
-
-### DECISIONS WAITING ON HIM
-
-1. **Replace the DIRTY FLOAT verdict with an overhang RATIO plus its basis** —
-   **he has said yes**, and it is unstarted. `CLEAN` is in the enum and has been
-   produced **zero times in 1,850 archived assessments**; the label cannot vary
-   because `CLEAN` requires proving a negative. **He asked for this to come with an
-   education**, because float is a core pillar and the change is conceptual, not
-   cosmetic.
-2. **The re-trigger fix** — `queue.ts:167` skips a ranked name whose dossier
-   exists *at any age*, so **a name the desk has ever analysed gets one board job
-   per session and is then frozen out** (238 of 323 ticker-sessions). Cost RCON two
-   hours on a name he was holding. Scoped, not built.
-3. **The rotation fix** — `collector.ts:788` stamps a resolver turn as spent
-   outside the `try`, so **130 of 253 resolver turns spend nothing, learn nothing,
-   and burn a pass.** Real, but **alone it would flatter itself** on the RCON case.
-
-### IN FLIGHT
-
-- **His headline feed.** He supplies ticker + timestamp from his own news service;
-  Research holds ingest and comparison, R&D gets the rate. **First data says the
-  desk is NOT missing news — News Count (4h) was 0 on all nine of his top movers
-  and the desk independently found none.** RCON was the exception.
-- **The comparison is ONE CELL, not a tally**: his window is 4h rolling, the
-  desk's is 36h. **Only "he has a headline inside 4h and the desk found nothing"
-  is a failure.** Anything else is window arithmetic.
-- **Derived float, phase one** — Forms 3/4/5 only, XML and deterministic, 98%
-  coverage. **Store four numbers, never a float**: filed shares, insider holdings,
-  13D blocks, 13G blocks, each with source and date. **He does not know what a
-  passive 13G block means and must not be made to decide it.** `OWNERSHIP
-  maxFetch: 1` is the only gate. **Held pending the items above.**
-- **NEW, and R&D's:** whether float or overhang correlates with performance at
-  all, possibly against RVOL. **His question, registered rather than started.**
-
-### Recently settled, so nobody reopens it
-
-- **The enqueue fix works, with positive evidence** — last night's recap queued 9
-  jobs for the session it *prepares*; `stalledJobs` steady at 16, no fourth row.
-  **The existing 16 are not retired by it and nobody owns retiring them.**
-- **Deep history is live**: full-depth fetch on a top-10 name above its stored
-  ceiling, ~0.4 fetches a morning, split factors derived exactly from price data.
-  **BTCT: $1.80 shallow, $26.58 comparable, $14,249.94 all-history on a bar that
-  traded four shares.**
-- **`VERIFIED BLUE SKY` is gone** — the label now reads `ABOVE PRIOR CEILING $X`.
-- **A newswire is never a company SOURCE, but reading one as evidence was never
-  refused.** The `:250` rejection is about persistence, not newswires.
-- **He trades EVERY session.** The setup is the requirement; **no rule, check or
-  threshold may be keyed to the clock.**
-
-### The four practices that cost this session the most
-
-**Read what a thread SAID, not what it committed.** **Do not bring him decisions
-about work in motion.** **Verify, do not relay — and check the sha against
-production before instructing any deploy** (this thread instructed the same sha
-twice, the second time for work already live). **Name the sha, not the ref, and
-send the DEADLINE and the CONDITIONS — never the minute.** The thread holding the
-checkpoint schedule prices the minute; this one got that wrong and cost him a
-board.
+- **The desk's catalyst collection has NO code defect.** A day-long
+  investigation went 13-of-23 → 5-of-13 → **zero**. Six issuer feeds are
+  abandoned, two are empty, five had addresses resolved during the pass that
+  last collected. **It is a source problem.**
+- **`AKAN`'s newsroom has not published since November** while the company files
+  normally. On that name *"we looked and found nothing"* is TRUE.
+- **Board float coverage: 11 of 11 cells non-empty, 8 parse, 0 silently
+  unknown.** The three misses are refusals with stated reasons. **That is the
+  product working.**
+- **Research reach: 43.4% of names that entered the top 12 on 09-04 had research
+  generated that day**, not the 79.2% a dossier-from-any-date count gives.
+- **Board churn is 4.4×, not 3×.** 70 entry events across 53 names against 12
+  slots.
 
 ## The third delegation: deploy instructions, confirmed directly
 
