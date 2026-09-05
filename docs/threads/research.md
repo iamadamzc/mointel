@@ -7834,3 +7834,55 @@ the opposite of P1's stated direction.
 **And the four UNKNOWNs are not a gap, they are a pattern**: P1 and P2 are
 PRICE-defined and carry figures; P3–P6 are STRUCTURE-defined and carry none.
 Whoever filled the tab measured what their definition already named.
+
+**82a. BOTH DEFINITIONS MEASURE A HOLD HE DOES NOT TAKE — and the basis-free
+number says most of the fade happens after he is out.**
+
+*Ops recovered the tab's definition from OUTCOMES rather than guessing it. Peak
+gain and giveback are both based on the PRIOR RTH CLOSE, so their move includes
+the overnight gap and mine does not. **My sub-$2 direction reverses on their
+base** — 79.0% mean giveback against 58.9% for $2+ — because low-priced names gap
+hardest, which inflates the denominator they are measured against. Accepted: the
+disagreement is a definitional choice with an opposite sign, not an error by
+either of us.*
+
+### But neither base is his, and the reason is the holding period
+
+**Theirs starts too early** — at the prior close, including an overnight gap he
+cannot be in. **Mine starts too late** — at the RTH reference, excluding the
+premarket where he actually trades.
+
+**And both end at the RTH close, while he holds for seconds inside 07:00–10:00.**
+A name that peaks at 09:00 and gives back everything by 16:00 is irrelevant to
+someone out by 09:02. **Giveback-to-close is not his risk.**
+
+### Measured basis-free, which sidesteps the argument entirely
+
+Drawdown from the PEAK PRICE — no move denominator, so prior-close and intraday
+agree on it. Board names with minute bars, 08-17 and 08-18, **n = 12**:
+
+| horizon after the peak minute | drawdown |
+| --- | --- |
+| **10 minutes** | **16.0%** |
+| 30 minutes | 17.2% |
+| **RTH close** | **26.9%** |
+
+**Ten minutes to thirty barely moves — 16.0% to 17.2%. The damage accrues over
+the rest of the session, which is precisely the period he is not in.**
+
+**So most of what every one of the six patterns counts as "spike/fade" happens
+outside his window**, and on either definition.
+
+### Limits, stated
+
+**n = 12 over two sessions** — the only ones with minute bars retained. And the
+peak minute is HINDSIGHT: he cannot enter at the peak, so this is not his
+outcome, only a statement about WHEN the reported fade occurs.
+
+### What it makes the patterns worth asking
+
+Not *"does it fade by the close"* — it does, almost everything does, and the
+board's base rate is 93% on my definition and 64% on theirs. **The question that
+matches how he trades is "does it fade within minutes of the peak"**, and the
+desk can now measure it: minute bars, the activity window, and the price window
+shipped yesterday all cover that horizon.
