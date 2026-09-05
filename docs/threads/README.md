@@ -4142,3 +4142,49 @@ same day. **A note that names what it depends on gives a future change a reader
 that is already waiting for it.**
 
 **Not a rule someone must remember — a note sitting where the mistake gets made.**
+
+## A STORE THAT ANSWERS IS NOT A STORE THAT ANSWERS FOR THE RIGHT DESK
+
+**2026-09-05. Three threads spent an afternoon on a three-hour hole in the middle
+of an RTH session, and the hole is in a database nobody trades on.**
+
+`data/market.db` is the **local split-brain desk**, last written 2026-08-20 —
+sixteen days ago. AWS has been production since 08-17. The two are
+**indistinguishable by filename**, and the local one answers every query with
+plausible rows for the same dates.
+
+| | `ticker_session` 08-18 | `desk_events` 08-18 | **events inside the hole** |
+| --- | --- | --- | --- |
+| local `market.db` | 8,617 | 18,637 | **9** |
+| production | 8,625 | 28,855 | **10,489** |
+
+**Production wrote 10,489 events in the window where the local store wrote
+nine.** The local worker was down 4h37m — razor-clean edges, three separate gaps
+on 08-18, a perfect adjacent date. **The shape a stopped process makes.**
+
+**No production fault. No capture defect. Nothing to file, open or closed.**
+
+### Why it took three threads and an afternoon
+
+**It cannot fail to return rows. It can only return the wrong desk's.** Every
+instrument used to interrogate it worked perfectly. The 8,617-against-8,625
+`ticker_session` counts are close enough to read as the same desk, which is what
+made the local store look like a partial copy of production rather than a
+different machine.
+
+**And the load-bearing error was a sentence nobody questioned:** *"your archive
+is the only copy in existence."* It was not an archive, there was no export, and
+it was not production's. **Both other threads accepted the premise and reasoned
+correctly from it for an afternoon.**
+
+### The rule
+
+**Before comparing two numbers from a store, establish which desk the store
+belongs to.** Not which table, not which date — **which machine wrote it.** On a
+split-brain hazard the filename is the least reliable thing about a file.
+
+**And it removes a class, not an instance:** the next read of that path will be
+about the wrong desk too, silently, and no query will say so.
+
+**This is the same failure as everything else today at a different scale** —
+`failed checks return plausible answers`, applied to an entire database.
