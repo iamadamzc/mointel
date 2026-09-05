@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import { ActivitySparkline } from '@/components/ActivitySparkline';
+import type { UniverseWarning } from '@/lib/dashboard/universe';
 import {
   ChangeMarker,
   HaltBadge,
@@ -84,6 +85,8 @@ interface DiscoveryBoardProps {
   onSelect: (ticker: string) => void;
   selectedTicker: string | null;
   marketOffline: boolean;
+  /** Null when the universe is fresh, or when saying so would fire daily. */
+  universe: UniverseWarning | null;
   isFocused: (ticker: string) => boolean;
   onToggleFocus: (ticker: string) => void;
   changedTickers: Set<string>;
@@ -108,6 +111,7 @@ export function DiscoveryBoard({
   onSelect,
   selectedTicker,
   marketOffline,
+  universe,
   isFocused,
   onToggleFocus,
   changedTickers,
@@ -204,6 +208,40 @@ export function DiscoveryBoard({
               ? `${discovery.eligibleCount.toLocaleString()} eligible · ${discovery.trackedCount.toLocaleString()} tracked`
               : 'counts not loaded'}
           </span>
+
+          {/*
+            * ON THE COUNTS IT INVALIDATES.
+            *
+            * A stale universe makes those numbers YESTERDAY'S, so the caveat
+            * belongs on them rather than in a corner of the chrome — a caveat
+            * belongs on the thing it qualifies.
+            *
+            * Deliberately not folded into the market light: that answers "is
+            * the feed working", and here the feed is healthy and delivering
+            * correct data about the WRONG SET OF NAMES.
+            *
+            * Loud on purpose, and the silent states are what pay for it. This
+            * fires only on a defect, so it can afford weight a daily signal
+            * could not. NO DISMISSAL AND NO TIMER: the failure lasts the whole
+            * session, and a marker dismissed at 06:55 is gone by 07:15 when the
+            * name he missed is running. It clears when the universe refreshes
+            * and on nothing else.
+            */}
+          {universe ? (
+            <span
+              className="inline-flex items-center gap-1.5 rounded-sm border border-neg/45 bg-neg/15 px-1.5 py-px text-[10px] font-semibold tracking-wide text-neg uppercase"
+              title={universe.detail}
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-neg" />
+              {universe.headline}
+              {universe.asOf ? (
+                // The as-of, so the claim is CHECKABLE rather than trusted.
+                <span className="num font-normal normal-case opacity-90">
+                  · universe from {universe.asOf}
+                </span>
+              ) : null}
+            </span>
+          ) : null}
 
           <div className="flex items-center gap-1.5">
             <span className="text-[11px] text-ink-3">Sort</span>

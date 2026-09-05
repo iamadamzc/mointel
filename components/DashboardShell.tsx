@@ -31,6 +31,7 @@ import type { MarketHealthView } from '@/lib/market/health';
 import { emptyAssessmentPanel, type AssessmentPanel } from '@/lib/desk/view';
 import type { ResearchHealthView } from '@/lib/research/health';
 import type { MarketFeedHealth } from '@/lib/market/types';
+import { universeWarning } from '@/lib/dashboard/universe';
 import { useClock } from '@/lib/hooks/useClock';
 import { useDashboard } from '@/lib/hooks/useDashboard';
 import { useFocus } from '@/lib/hooks/useFocus';
@@ -422,6 +423,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             onSelect={setSelectedTicker}
             selectedTicker={selectedTicker}
             marketOffline={health.offline}
+            universe={universeWarning(health)}
             isFocused={focus.isFocused}
             onToggleFocus={focus.toggle}
             changedTickers={feed.changedTickers}
