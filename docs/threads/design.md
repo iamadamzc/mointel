@@ -3361,6 +3361,14 @@ than the shape.
   same week. **Apply this to every hand-off, including ones that arrive with
   detailed constraints** — the constraints are what make an unbuilt premise
   convincing.
+- **A wrong finding stays visible; a discharged caveat does not.** Research's
+  addition to my caveat rule, and it is the half that decides how to write one.
+  Its rule — *a mechanism that explains the class is not evidence about the
+  instance* — and mine are the same error pointed at a CLAIM and at a DOUBT: one
+  over-claims a finding, the other under-claims a risk. **Mine is worse, because
+  a wrong finding gets corrected while a deleted warning leaves no trace it was
+  ever there.** So when the mechanism behind a doubt is uncertain, write the
+  doubt so that clearing one cause cannot delete the sentence.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
