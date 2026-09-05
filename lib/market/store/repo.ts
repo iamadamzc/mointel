@@ -4,6 +4,7 @@
  */
 
 import type { MarketDatabase } from './db';
+import { withBusyRetry } from './busy';
 import { VWAP_LABEL, type SessionVwap, type VwapCoverage, type VwapSession } from '../vwap';
 import type {
   DemandState,
@@ -71,7 +72,25 @@ export function upsertBaselines(
     }
   });
 
-  run(baselines);
+  /*
+   * Retried, because THIS ONE HAS NO NEXT CYCLE.
+   *
+   * The flush path deliberately has no retry: it runs every 1000ms, its writes
+   * are idempotent upserts, and a busy there is carried by the next flush a
+   * second later. Research's bound -- five attempts on top of a 5s driver
+   * timeout, ~33s worst case -- would be actively harmful on that cadence,
+   * turning a skipped write into a stalled worker for 33 cycles.
+   *
+   * A ROLL RUNS ONCE PER TRADING DATE. There is no next cycle, and the roll's
+   * error handler catches, so a lost lock here does not crash anything -- it
+   * silently substitutes yesterday's universe for today's. That is the SGRX
+   * failure by a different route, and waiting 33 seconds is the correct trade
+   * for a job that only happens once.
+   *
+   * A RETRY BOUND IS NOT PORTABLE ACROSS CADENCES: it encodes how soon the
+   * caller gets another chance, not what the error was.
+   */
+  withBusyRetry('upsertBaselines', () => run(baselines));
 }
 
 interface BaselineRow {
@@ -983,7 +1002,25 @@ export function replaceUniverse(db: MarketDatabase, assets: UniverseAsset[]): vo
     }
   });
 
-  run(assets);
+  /*
+   * Retried, because THIS ONE HAS NO NEXT CYCLE.
+   *
+   * The flush path deliberately has no retry: it runs every 1000ms, its writes
+   * are idempotent upserts, and a busy there is carried by the next flush a
+   * second later. Research's bound -- five attempts on top of a 5s driver
+   * timeout, ~33s worst case -- would be actively harmful on that cadence,
+   * turning a skipped write into a stalled worker for 33 cycles.
+   *
+   * A ROLL RUNS ONCE PER TRADING DATE. There is no next cycle, and the roll's
+   * error handler catches, so a lost lock here does not crash anything -- it
+   * silently substitutes yesterday's universe for today's. That is the SGRX
+   * failure by a different route, and waiting 33 seconds is the correct trade
+   * for a job that only happens once.
+   *
+   * A RETRY BOUND IS NOT PORTABLE ACROSS CADENCES: it encodes how soon the
+   * caller gets another chance, not what the error was.
+   */
+  withBusyRetry('replaceUniverse', () => run(assets));
 }
 
 export function readUniverseSymbols(db: MarketDatabase): string[] {
