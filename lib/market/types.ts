@@ -482,6 +482,17 @@ export interface DiscoveryState {
   rthClose: string;
   earlyClose: boolean;
   universeMode: UniverseMode;
+  /**
+   * Whether the universe was refreshed by the roll that set the current trading
+   * date. FRESH / STALE / UNKNOWN, and UNKNOWN is "no roll observed yet" rather
+   * than a default to healthy.
+   *
+   * Two causes produce STALE and neither was visible before: the roll ran and
+   * the cache guard skipped the fetch (2026-09-04, which cost a 53% mover), or
+   * the roll ran and the write was caught and logged. The desk reported ok in
+   * both cases while running on yesterday's universe.
+   */
+  universeFreshness?: 'FRESH' | 'STALE' | 'UNKNOWN';
   /** Symbols with a valid RVOL denominator AND an eligible price (or latched). */
   eligibleCount: number;
   /** Symbols actually ranked this pass. */

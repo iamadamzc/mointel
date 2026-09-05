@@ -27,6 +27,7 @@ import {
   replaceUniverse,
   updateUniverseClassifications,
   universeUpdatedAt,
+  universeFreshness,
   upsertBaselines,
   upsertMinuteBars,
   upsertTickerSessions,
@@ -124,6 +125,8 @@ export function shouldRefreshUniverse(input: {
 /** How long the admission gate reuses its view of the universe. */
 const UNIVERSE_ADMISSION_CACHE_MS = 10 * 60 * 1000;
 const CLASSIFIER_VERSION_KEY = 'classifier_version';
+/** When the roll that established the current trading date began. */
+const TRADING_DATE_ROLLED_AT_KEY = 'trading_date_rolled_at';
 
 export interface RuntimeLogger {
   info: (message: string) => void;
@@ -407,9 +410,25 @@ export class MarketRuntime {
 
     this.rollInFlight = true;
     const from = this.tradingDate;
+
+    /*
+     * The instant the roll BEGAN, not the instant it finished.
+     *
+     * The universe refresh happens INSIDE onSessionRoll below, so a completion
+     * timestamp would always be later than a successful refresh and would read
+     * healthy work as stale. Anchoring to the start makes the comparison say
+     * what it means: a refresh that ran during this roll stamps after it, and a
+     * refresh that was skipped carries a stamp from a previous day.
+     *
+     * Recorded only on SUCCESS: a roll that threw did not establish a trading
+     * date, so it must not claim one was established.
+     */
+    const rolledAt = now.toISOString();
+
     try {
       await this.resolveSession(now);
       if (this.onSessionRoll) await this.onSessionRoll(now);
+      setMeta(this.db, TRADING_DATE_ROLLED_AT_KEY, rolledAt);
       this.logger.info(`[session] trading date rolled ${from} -> ${this.tradingDate}`);
     } catch (error) {
       this.logger.error(`[session] trading-date roll failed: ${this.redactError(error)}`);
@@ -1404,6 +1423,10 @@ export class MarketRuntime {
       baselineCount: this.engine.baselineCount,
       calculatedAt: result.calculatedAt,
       universeMode: this.universeMode,
+      universeFreshness: universeFreshness({
+        universeUpdatedAt: universeUpdatedAt(this.db),
+        tradingDateRolledAt: getMeta(this.db, TRADING_DATE_ROLLED_AT_KEY),
+      }),
       discoveryRank: this.config.discoveryRank,
       internalRank: this.config.internalRank,
       priceMin: this.config.discoveryPriceMin,

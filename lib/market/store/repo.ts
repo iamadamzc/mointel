@@ -1061,6 +1061,49 @@ export function readClassificationCounts(
     .all() as Array<{ classification: string; count: number; eligible: number }>;
 }
 
+/**
+ * Whether the universe was refreshed by the roll that set the current trading
+ * date.
+ *
+ * ANCHORED TO THE EVENT, NOT THE CALENDAR, and that distinction is the whole
+ * point. A calendar check asks "is this old"; this asks "did the thing that was
+ * supposed to happen, happen".
+ *
+ * The obvious version -- compare the stamp's date to the trading date -- fires
+ * every weekend on a healthy desk. The roll runs at 22:00 ET, sets the trading
+ * date to the NEXT SESSION and stamps the fetch with NOW, so on 2026-09-05 a
+ * correct desk read stamp 09-05 against trading date 09-08. Three days apart
+ * and nothing wrong. An age threshold fails the same way: the stamp is ~48h old
+ * by Monday's roll while the market is shut.
+ *
+ * Comparing a wall-clock instant to a session label compares two different
+ * kinds of thing -- the same substitution as counting calendar days for
+ * trading dates.
+ *
+ * It catches BOTH known causes of a stale universe with one field:
+ *   - the roll ran and the cache guard skipped the fetch (2026-09-04, SGRX)
+ *   - the roll ran and the write was caught and logged
+ *
+ * UNKNOWN is a state, not a default. Before a process has rolled once there is
+ * no rolledAt, and "no roll observed" is neither fresh nor stale. A signal that
+ * alarms on every cold start gets ignored, and then the real one is too.
+ */
+export type UniverseFreshness = 'FRESH' | 'STALE' | 'UNKNOWN';
+
+export function universeFreshness(input: {
+  universeUpdatedAt: string | null;
+  tradingDateRolledAt: string | null;
+}): UniverseFreshness {
+  if (input.tradingDateRolledAt === null) return 'UNKNOWN';
+  if (input.universeUpdatedAt === null) return 'STALE';
+
+  const stamped = Date.parse(input.universeUpdatedAt);
+  const rolled = Date.parse(input.tradingDateRolledAt);
+  if (!Number.isFinite(stamped) || !Number.isFinite(rolled)) return 'UNKNOWN';
+
+  return stamped >= rolled ? 'FRESH' : 'STALE';
+}
+
 export function universeUpdatedAt(db: MarketDatabase): string | null {
   const row = db.prepare('SELECT MAX(updated_at) AS updated FROM universe').get() as {
     updated: string | null;
