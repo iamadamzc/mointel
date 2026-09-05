@@ -4968,3 +4968,24 @@ one that makes multi-week bar analysis possible).
 
 **The seat that can price it is not the seat that can say whether three is
 enough.** Ops named that boundary itself and refused to choose across it.
+
+### And the count that "is not the series" is the target list
+
+**`symbol_outcomes` is keyed `PRIMARY KEY (symbol, trading_date)` and carries
+`minute_bar_count` per row.** So the archive cannot restore a single bar — **and
+it knows exactly which symbols had bars on which date, and how many.**
+
+That matters because **the record of which symbols to fetch was itself in the
+deleted rows.** A backfill cannot "restore what was there" from `market.db`; it
+can only fetch for a set someone chooses, and choosing the whole universe is
+13,094 symbols against roughly 1,300 that actually carried bars — **a tenfold
+cost difference, decided by a table nobody thought to consult.**
+
+**It also makes the backfill self-checking.** Fetch, then compare rows written
+per symbol against the count the archive recorded at the time. **A completeness
+test that would not otherwise exist**, on a path where "Alpaca returned nothing"
+and "we asked wrongly" are otherwise indistinguishable.
+
+**A field dismissed as a weak substitute for the data can be a perfect index to
+it.** The count was judged by what it failed to preserve; its value was in what
+it enumerates.
