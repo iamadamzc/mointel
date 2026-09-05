@@ -3146,6 +3146,56 @@ the majority of "durable route, nothing collected" is the issuer, not us. My
 "only state that indicts the desk" framing overstated it by roughly two to one,
 on a population I had not looked at when I wrote it.
 
+## The activity indicator EXISTS — and what he asked for next is a different instrument
+
+**Built and in HEAD:** `3921a50` (activity bars, trades/min, full height = the
+active line) and `2b3ddd9` (minute closes as points above them, same slots).
+Column header **"Now"**, beside RVOL because it is the correction to RVOL.
+`DiscoveryBoard.tsx:508`.
+
+### What is genuinely new: "direction, flat/up/down, colour coded for volume"
+
+That is **a reduction, not a variant**. What is built preserves SHAPE — the eye
+reads the arc. An arrow claims only the SIGN matters. Both are defensible; they
+are not the same claim, and at row height the arrow is legible where a 5-point
+series is small.
+
+**But the colour half has a concrete collision, and it is not a taste
+objection.** On a trading surface red and green already mean DOWN and UP. Encode
+*volume* in colour while *direction* is encoded in the glyph, and **a
+high-volume decline renders green** — the strongest bearish reading on the board
+wearing the bullish colour. He would misread it at a glance, which is the only
+speed this cell is read at.
+
+If colour is used at all it must encode the SAME quantity the glyph does, or the
+two conventions fight. Volume belongs in a non-colour channel — height, weight,
+or the bars that already carry it.
+
+### THE REAL PROBLEM IS THE GRAIN, AND HE SPOTTED IT HIMSELF
+
+*"we already have ticks tho dont we? yes a two minute lag is kind of not good."*
+
+**He is right and the number is exact.** `resolveActivity` judges slots t−6 … t−2:
+`span = max(deadMinutes 5, reviveMinutes 2)`, offset by `settleMinutes = 1`. The
+most recent point is **two minutes old, by construction** — the newest minute is
+excluded because a minute still filling undercounts.
+
+**He holds for seconds.** So no mark drawn from the minute table can answer
+"what is active RIGHT NOW"; it answers "what was active two minutes ago", which
+is still far better than a cumulative figure covering the whole morning but is
+not what he asked for.
+
+**That is a data-grain question, not a mark question**, and changing the mark
+cannot fix it. Routed rather than designed around.
+
+### The empty state is already designed, and already tested
+
+`sparklineView` returns null for a missing window and renders an em dash, never
+a chart; `pricePointsView` returns null and draws NO AXIS. A measured silence
+renders a flat line at zero because there it is TRUE. So the `minute_bars`
+outage does not block the design — it blocks live verification only, and the
+absent case is the one path that is fully exercised without data.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
