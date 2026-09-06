@@ -6806,3 +6806,79 @@ to.
 
 *Both instruments' coverage figures disagreed — 5 one way, 38 the other — and
 **that disagreement is the only reason either ever looked like a measurement.***
+
+## 0, 1, 19 — THE REACH GAP IS A SINGLE-SESSION EVENT WITH NO ESTABLISHED CAUSE
+
+**Research, 2026-09-06.** Fired-but-no-job, measured on production across three
+sessions:
+
+    09-02    0 of 54
+    09-03    1 of 45
+    09-04   19 of 56   <- 34%, and this is the "20 of 53"
+
+**Item 81a explained the miss as sampling against 4.4× churn. That mechanism is a
+property of every session and predicts a consistent rate. 0, 1, 19 is not
+consistent.**
+
+**And the latch defect is ruled out there by the same kind of absence that
+convicted it elsewhere:** 09-04's wiped count is **zero**, its only restart at
+03:48 ET before any latch exists. **One zero cleared a hypothesis after another
+zero convicted one.**
+
+**So "20 of 53 never researched" is a clean measurement of one unusual session,
+carried for days as a standing reach gap.** The earlier bias audit stands and is
+now beside the point: **the figure is not contaminated, it is unrepresentative.**
+
+**No mechanism proposed** — after three instances in two days of reaching for one
+before checking the instance, **the contradiction is the report.**
+
+### And "no job" does not mean "nothing known"
+
+45 names carry source rows while 37 had jobs, **so eight hold evidence collected
+during another session.** That changes how a reach gap may be described at all.
+
+## THE FRESHEST DOCUMENT DOES NOT CLUSTER AT ONE DAY
+
+Age of the freshest pre-session evidence, by session: **median 12, 3 and 9 days**,
+with only a quarter to two-fifths of names carrying anything from the prior
+session.
+
+**If a pre-session catalyst were what these names move on, the freshest document
+should cluster at one day. It does not.**
+
+**That is consistent with the structure break — movers running without a
+catalyst — and it is the first production measurement of it.** The desk exists
+because 50%+ movers were running with nothing found; this is the same phenomenon
+arriving from the evidence side rather than the price side.
+
+**The overnight-pass argument is now weakened from both directions.** The timing
+half holds — selection precedes 07:00 — **and there is less and less sign of
+anything to pre-compute from.**
+
+### A third premise fell the same way as the first two
+
+*"Nine rows in the whole store carry a stated time"* — **710 on production.** The
+local desk again, hours after the 9% went the same way, and `data/README.md`
+exists **because two threads already lost an afternoon to exactly this.**
+
+**The rule is not "check the store" but NAME THE STORE IN THE SENTENCE THAT
+CARRIES THE NUMBER**, so a claim cannot travel without its scope.
+
+**And it moves a conclusion: about a third of same-day rows CAN be placed against
+07:00**, so the blanket refusal was too strong — though synthesised `12:00Z`
+placeholders stay excluded. **Registered before any number exists:** locally every
+stated-time row is NEWSWIRE or COMPANY_IR and SEC filings are date-only, **so if
+that holds, a before-07:00 rate answers when press releases go out rather than
+when evidence arrives.**
+
+## WHEN A PRE-REGISTERED RESULT COMES BACK NULL, DISTRUST THE NEXT NUMBER REACHED FOR
+
+**Ops's rule, and it is about the whole desk.** The pre-registration bound lead
+times. **Coverage had no floor** — so when the registered comparison came back
+unpowered, **the unconstrained number became the consolation finding**, was
+carried to the trader, reversed, and then withdrawn as an artefact.
+
+**A number that survives because nobody wrote a rule for it is not thereby a
+finding.** The absence of a constraint is not evidence of robustness — **it is
+absence of scrutiny, and it is most tempting exactly when the constrained answer
+has just refused to appear.**
