@@ -3382,6 +3382,78 @@ the whole session; a marker that can be dismissed at 06:55 is gone by 07:15 when
 the name he missed is running. It clears when the universe refreshes, and on
 nothing else.
 
+## SCOPE — colour on the activity bars (2026-09-06, not built)
+
+**Checked the tree first:** no colour exists. Bars are `bg-ink-2`, dimmed to
+`bg-ink-3/50` when silent; price dots are `bg-accent`. Nothing to displace.
+
+> **ASSUMPTION, STATED SO IT IS CORRECTABLE IN ONE WORD: COLOUR ENCODES
+> DIRECTION, NOT VOLUME.** Green up, red down, yellow flat. He said "color code
+> it, green, yellow, red" without saying what it encodes. Volume-in-colour is a
+> defect on this surface — red and green already mean DOWN and UP, so a
+> high-volume decline would render GREEN, the strongest bearish reading wearing
+> the bullish colour. If he meant something else this is a one-line change to
+> the mapping, not to the design.
+
+### 3. ONE COLOUR FOR THE ROW — and it is an observation, not a verdict
+
+Integration framed per-row as "a claim you are making" and per-bar as "an
+observation you are showing". **I think that dichotomy is not quite right, and
+the refinement decides the answer.**
+
+The sign of *(last close − first close)* is **arithmetic**, not judgement. **The
+only claim in the whole thing is the flat band** — so if the band is DERIVED
+rather than invented, per-row colour is an observation too.
+
+Per-bar is rejected on four grounds:
+1. **The bars encode ACTIVITY.** Colouring them by DIRECTION puts two
+   independent variables on one 3px glyph — a bivariate encoding at a size that
+   cannot carry one.
+2. **A minute that did not trade has no direction**, so per-bar creates a
+   colourless state that fragments the row.
+3. **The price dots already carry per-minute direction, in position.** Per-bar
+   colour duplicates that in a second channel while the bar's height says
+   something else entirely.
+4. He said "color code **it**" — the mark, singular.
+
+### 1. FLAT = THE MOVE IS INSIDE THE SPREAD
+
+Yellow needs a definition and **any percentage I pick is invented** — a
+threshold that does not declare itself, which is the failure this thread has
+rejected twice.
+
+**`spreadPct` is already on telemetry** (`telemetry.ts:50`, from the live
+quote). So: **flat means the window's move is smaller than the current spread**
+— *a move you could not have captured*. That is:
+- **derived, not chosen.** No number of mine anywhere.
+- **per-name correct.** A $2 and a $40 stock have different spreads, and one
+  fixed percentage would be wrong for both.
+- **meaningful to him** rather than to the engine — it says the move was not
+  tradeable, which is exactly why he would want it dimmed.
+
+**Caveat to carry:** the spread is CURRENT while the move spans t−6…t−2, so a
+spread that widened after the window would misclassify. Directionally right,
+and honest in a way an invented band is not. **If `spreadPct` is null there is
+no band**, and that is the fourth state below.
+
+### 2. A NON-TRADED MINUTE TAKES NO COLOUR — the question dissolves
+
+Per-row means there are no per-bar colours to assign, so an untraded minute
+cannot become a yellow bar. It keeps the measured-zero floor it already draws.
+
+**But the fourth state is real and must not collapse into yellow:** with NO
+price data, or no spread to judge against, there is **no direction to state**.
+The bars stay neutral ink — **not yellow.** Yellow means *measured and flat*;
+neutral means *no price to judge*. Same distinction as not-measured against
+measured-silence, and the one this desk gets wrong most often.
+
+| State | Colour |
+| --- | --- |
+| Move up, beyond the spread | green |
+| Move down, beyond the spread | red |
+| Move within the spread | yellow — measured, and not tradeable |
+| No price window, or no spread | **neutral ink — no claim** |
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
