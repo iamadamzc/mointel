@@ -7300,3 +7300,62 @@ Five in one evening with both seats declaring state. **Not one of them cost a
 wrong action.** That is the measure — **not whether the practice prevents stale
 instructions, but whether a stale instruction now arrives visibly enough to be
 caught before it is acted on.**
+
+## I FORBADE IT IN THE OUTPUT AND REPRODUCED IT IN THE SCOPE
+
+**Research, 2026-09-06**, on Integration's shape for the Why Not Report.
+
+Integration wrote **Constraint 1: the absence of a reason not to is not a reason
+to** — and in the same message told the trader that **"a clean name falls out as
+the absence of every objection rather than as a separate product."**
+
+**If "clean" IS the absence of objections, the report's silence is the buy signal
+STRUCTURALLY, and no wording in the renderer undoes it.** Forbidden in the output
+and rebuilt in the architecture, four paragraphs apart.
+
+### And the asymmetry is evidentiary, not presentational
+
+**An objection needs ONE confirmed fact, from one source. "No objection" needs to
+have looked everywhere.**
+
+**62% of names carry no non-SEC catalyst source; 79 of 118 issuers with a durable
+feed address have never produced a single non-SEC row.** So **the avoid is
+achievable at today's coverage and robust to its gaps. The clean verdict is
+destroyed by them.**
+
+**They cannot be one product with the sign flipped.**
+
+### The better answer to the question actually asked
+
+*"How does this deal with good setups — does it ignore them?"*
+
+**It does not ignore them. It declines to certify them.** What it can honestly say
+about a name it found nothing against is **how hard it looked** — useful on a good
+setup without being approval, because **it tells him which names he would be
+trading blind on.**
+
+### The three-way verdict is the product
+
+    OBJECTION                        a specific structural fact, with its basis
+    NO OBJECTION FOUND, AND WE LOOKED  sources reached, nothing there
+    NOTHING WAS COLLECTED            the desk is deaf on this name
+
+**The third is not a weaker second. It is the opposite of it.** Collapsing them is
+this desk's oldest failure aimed at the trader's money — **and it is the only
+genuinely new thing in the shape: a type, not a system.**
+
+### Severity derived from fields that already exist
+
+**`timeToEffect` × `basis.kind`.** NOW acts on the price he is about to pay; WEEKS
+does not. **A cash merger caps by contract now; a shelf registered in 2024 is a
+fact about the company, not about his next sixty seconds.** OBSERVED outranks
+INFERRED, and `EFFECT_RULES` already records `measured: null` for rules the desk
+believes rather than measures. **Nothing picked, no new scale.**
+
+### And the metric is a precondition, not a proxy
+
+Trades not taken cannot be observed. **What is measurable is whether an objection
+was AVAILABLE before he would have entered** — coverage and timing, not outcome.
+**A report failing that cannot work whatever outcome data would later say; a
+report passing it is not thereby shown to work.** That distinction is what keeps
+it from becoming a proxy.
