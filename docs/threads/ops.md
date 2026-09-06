@@ -5933,6 +5933,89 @@ and only after a restart. **The restart is also what activates the fix** — the
 stamp is written at startup and nowhere else, so deploying this without
 restarting the market worker changes nothing at all.
 
+## Writing production as root is how a two-key repair becomes an outage — 2026-09-06
+
+**The repair itself was three lines.** `trading_date_rolled_at` was absent, so
+the universe marker read UNKNOWN, and `universeRollDue` flips true at premarket
+— the dashboard would have shown **"Board may be missing names"** through all of
+Tuesday's session on a universe that was fine. The roll it needed to observe had
+happened before the field existed.
+
+**Recovered as an observed fact, not computed.** `desk_events` does not carry
+the roll — the roll handler calls `logger.info` and nothing else, so that table
+is empty of it **by construction, not by retention**. journald had it:
+
+```
+2026-09-05T02:00:00Z  [session] trading date 2026-09-08 (NEXT_DAY_PREP, pending)
+2026-09-05T02:00:00Z  [demand] universe: 13094 active US equities
+2026-09-05T02:00:30Z  [demand] 13092 baselines built for 2026-09-08
+2026-09-05T02:02:34Z  [session] trading date rolled 2026-09-04 -> 2026-09-08
+```
+
+**Wrote the roll START (02:00:00), not the success log (02:02:34)**, which
+Integration had named. The field's own docstring forbids the completion time:
+*a completion timestamp would always be later than a successful refresh and
+would read healthy work as stale.* The refresh runs INSIDE the roll. Writing the
+completion time installs the defect the field exists to detect.
+
+### The readonly error, and the reflex that must not follow it
+
+`sqlite3` returned **`attempt to write a readonly database (8)`**. The store is
+`mointel:mointel` mode 640 and we connect as `ubuntu`, which is in the group:
+**read yes, write no.** Every read-only query for weeks worked and gave no hint
+this was coming.
+
+**Write as `sudo -u mointel`. Never as plain `sudo`.** SQLite creates and
+re-creates `-wal` and `-shm` beside the database, and **a root-owned WAL locks
+the worker — which runs as `mointel` — out of its own store.** The easy reflex
+after a permission error converts a two-key repair into an outage on a live
+desk. Verify ownership of all three files after any production write.
+
+### Verify on the served API, never the store
+
+`universeFreshness` read **FRESH** on `/api/market` with `universeMode` carried
+as the control. The store agreeing is not the evidence — **the store agreed the
+last time an observable was invisible for twenty minutes.**
+
+## A bar that moves on every restart belongs to the process — 2026-09-06
+
+**My first fix was worse than the gap it closed, and Integration caught it.**
+
+Stamping the marker at every startup looked like it strictly widened detection.
+It does not. `UNIVERSE_MAX_AGE_MS` is **20 hours**, so a worker restarted at
+10:00 after a 02:00 roll **correctly** skips the refetch — and an unconditional
+stamp then sets the bar at 10:00 above a universe stamped 02:00, reading STALE
+against a universe refreshed exactly when it should have been.
+
+**UNKNOWN speaks only once a roll is due. STALE speaks always.** So the naive
+fix converted a conditional false alarm into an unconditional one, triggerable
+by any restart inside a 20-hour window, **with the outcome depending on what
+time of day someone deployed.**
+
+**Ask what a fix widens INTO.** "It catches more cases" is not a property of a
+signal; catching more true cases and catching more false ones look identical
+from inside the change. The marker now records which trading date its stamp
+belongs to: the roll moves the bar because the date moved, a restart within the
+same date leaves it.
+
+**And the repair had to write both keys.** A store with `rolled_at` set and
+`rolled_for` absent stamps on first startup — right for a cold start, wrong for
+a hand-repaired desk. Writing only the timestamp would have let the next
+deploy+restart re-open exactly what the repair closed.
+
+## Bash blocked mid-session with no explanation — 2026-09-06
+
+**Recorded because it failed silently in the direction that matters.** Partway
+through this session the Bash tool began refusing everything, including a plain
+`git status`, and later resumed on its own. The user confirms they changed
+nothing.
+
+While it held, it blocked **a production write and the reproduction of a build
+failure** — and it presents as a permission denial, which is indistinguishable
+from a deliberate policy refusal. **Do not treat a sudden broad denial as a
+verdict on the action.** Probe once with something benign, and if the whole tool
+is refusing, say so rather than redesigning the work around a phantom rule.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
