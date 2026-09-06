@@ -8853,3 +8853,67 @@ read-only. A keyword scan would have failed the safer file.**
 
 **A PROOF OF SAFETY CAN BE INDISTINGUISHABLE FROM THE HAZARD IT DISPROVES.**
 Filed in `README.md`.
+
+---
+
+**93. THE BEFORE-07:00 TEST CANNOT BE RUN AS POSED, AND I FOUND THAT BEFORE
+RUNNING IT.** — `worker/catalyst-timing.ts`
+
+*Integration made it the main line. The instrument is built and dry-run; the
+production run is Ops's. What follows is what the store CAN answer.*
+
+### THE STORE HAS NO TIME OF DAY
+
+| `published_precision` | rows | carrying a time |
+| --- | ---: | ---: |
+| UNKNOWN | 1,150 | **0** |
+| INFERRED | 251 | **0** |
+| DATE_ONLY | 26 | 26 — all **12:00Z**, synthesised |
+| EXACT | **9** | 9 |
+
+**NINE ROWS IN THE ENTIRE STORE CARRY A TIME THE SOURCE ACTUALLY STATED.** And
+the synthesised stamp is 12:00Z = **08:00 ET — inside his window by placeholder
+rather than by fact.** Splitting same-day evidence at 07:00 would be an absence
+borrowing a value, and borrowing precisely the one that answers the question.
+
+**So same-day evidence is reported INDETERMINATE and never split.**
+
+### AND "HAD A PRIOR DOCUMENT" IS VACUOUS, SO IT IS NOT THE METRIC
+
+Every operating company has old filings. On the dry run **all 25 names with any
+source had one predating the session** — a fact about corporate life, not about
+catalysts. **A test that everything passes measures nothing**, which is the
+same shape as a check that cannot fail.
+
+**No threshold is chosen. The measure is the AGE of the freshest pre-session
+evidence, across its distribution** — the dissolution that replaced a cutoff in
+the lead-time design, reused because the objection is identical.
+
+### THE FUNNEL IS PART OF THE ANSWER, BECAUSE COLLECTION IS JOB-GATED
+
+`collectCatalystEvidence` runs INSIDE job processing. **A fired name with no job
+has no sources — and would score "no evidence" WHEN NOTHING EVER LOOKED.** Every
+stage prints its denominator. On the dry run: **65 fired, 21 with a job.**
+
+### DRY RUN ON 08-17 — LOCAL DESK, SHAPE ONLY, NOT A RESULT
+
+```
+age of freshest pre-session evidence, days
+  n=25   min 3   p25 3   median 5   p75 10   max 77
+  1 day (the prior session)     0 of 25
+  within 3 days                11 of 25
+  within 7 days                18 of 25
+```
+
+**ZERO names whose freshest evidence is from the previous day**, and the minimum
+is three. **If production repeats it, the overnight-pass argument weakens
+sharply: the evidence is not a fresh catalyst, it is older material.**
+
+**I am not reporting that as a finding.** n=25 on the split-brain desk, 202 job
+rows, and a collector whose fetch lag could manufacture the floor on its own.
+**It is the shape the production run has to confirm or kill** — and it is on the
+record now so that a production result matching it cannot be presented as a
+surprise, and one contradicting it cannot be quietly dropped.
+
+**My registered position stands: NO DIRECTION PREDICTED.** Seeing the local
+shape does not create one, and saying so is the point of writing it down here.
