@@ -5487,3 +5487,62 @@ that variation is the finding — and a cutoff would have hidden it.**
 **The metric itself is "arrives before the move it is about", made numeric: what
 fraction of the eventual move was already realised when the trigger first fired.**
 A trigger firing at 5% is early; **one firing at 80% is precise and useless.**
+
+## A REPAIR AND THE FIX THAT FOLLOWS IT MUST BE DESIGNED TOGETHER
+
+**Ops, 2026-09-07.** The approved repair writes one key: `trading_date_rolled_at
+= 2026-09-05T02:00:00Z`. Correct against today's code. **And a store carrying
+that key with `trading_date_rolled_for` ABSENT stamps on first startup** — right
+for a cold start, wrong for a repaired desk.
+
+So: write one key, deploy the fix, restart mid-window, **startup finds no
+recorded date, moves the bar to restart time, and the universe stamp falls behind
+it.** The false STALE, reproduced by the fix, **on the very session the repair
+exists to protect.**
+
+**A manual repair is an input to whatever ships next.** Ask what the code you are
+about to deploy will make of the state you are about to write — **the repair is
+not finished when it is correct today.**
+
+Both keys, and `rolled_for` is not inferred: the journal line states it outright
+(*rolled 2026-09-04 -> 2026-09-08*) and the live store already agrees.
+
+### And the first fix widened the signal into false positives
+
+`UNIVERSE_MAX_AGE_MS` is 20 hours. **Restart at 10:00 after an 02:00 roll: the
+universe is 8 hours old, the guard CORRECTLY skips the refetch, and an
+unconditional stamp sets the bar above a universe refreshed exactly when it
+should have been.**
+
+**UNKNOWN speaks only once a roll is due. STALE speaks always.** So the fix
+converted a *conditional* false alarm into an *unconditional* one, triggerable by
+any restart inside a 20-hour window, **with the outcome depending on what time of
+day someone deployed.** Recording the trading date the stamp belongs to is what
+makes the bar move for the right reason.
+
+**"It widens what the signal can see" is a claim that needs its new firings
+enumerated.** Some of them were false.
+
+## A GREEN GATE IN A WORKTREE THAT CANNOT REPRODUCE THE FAILURE
+
+Ops's gate runs in a separate worktree **with no `data/` directory**, so a build
+break on the primary tree **cannot appear there.** 1814 tests, lint, build and
+typecheck all green — **and structurally incapable of seeing the failure another
+thread is looking at.**
+
+**A gate is evidence only about the environment it ran in.** The fourth thing a
+green gate does not prove, after: that the tests still exist, that the code
+reaches a reader, and that the code compiles at all. **Say which tree a gate ran
+in when reporting it.**
+
+### A roll that throws leaves a FALSE FRESH
+
+`resolveSession` advances `this.tradingDate` **before** `onSessionRoll` runs. A
+roll that throws mid-way leaves the date advanced with **no stamp for it** — and
+because both stamp and universe are from the *previous* session, the comparison
+returns **FRESH for a session nothing established.**
+
+Pre-existing and not a regression. **`rolled_for !== tradingDate` is exactly the
+data that detects it**, available in the store for the first time — but widening
+a deployed signature the day before the session it protects is the shape that has
+bitten this desk twice. **Queued, not taken.**
