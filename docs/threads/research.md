@@ -7756,7 +7756,13 @@ not a failure — which is consistent with FAILED 0 and QUEUED 0.
 
 ### So: a defect only if the desk intends to research everything that touches the board
 
-Nothing is broken. **The reach is a property of the sampling interval against the
+**CORRECTED 2026-09-07 BY ITEM 91 — SOMETHING IS BROKEN, FOR ABOUT 9% OF THEM.**
+A restarted engine writes its empty runtime over the latch fields, which are not
+COALESCEd where the neighbouring `top12_entered_at` is; the row loses its rank
+and stops being a candidate at all. Small, real, and a defect rather than a
+sampling property. The rest of this paragraph stands for the other 91%.
+
+Nothing else is broken. **The reach is a property of the sampling interval against the
 churn rate**, and the queue was built to research what is ranked, reading a
 column designed to hold current state.
 
