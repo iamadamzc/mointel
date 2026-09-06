@@ -6450,3 +6450,44 @@ canary — and those are exactly what a shape-matching audit is tuned to catch.
 **Both layers held here anyway, which is the point of having more than one:**
 Ops ran it as a user with group-read and no write on the store, **so the
 filesystem refused writes independently of both the handle and the pragma.**
+
+## "ROUGHLY EQUAL" AND "NO EVIDENCE OF A DIFFERENCE" ARE BOTH DIRECTIONS WEARING A HEDGE
+
+**Research, 2026-09-06**, deciding what may be said when a power floor fires.
+
+**Not "the triggers are roughly equal." Not "no evidence of a difference."** An
+unpowered comparison supports **neither**, and both sentences deposit a direction
+in the reader that the data cannot carry. **The honest output is that the
+question was not answered, and why.**
+
+**A hedge is not a weaker claim. It is the same claim with deniability attached.**
+
+### Withholding the direction from its own author
+
+Ops did not transmit the direction figures **to Research**, on the grounds that a
+pre-registration exists so a direction is not seen and then reasoned about — **and
+that binds the person who wrote the registration.** It offered them if asked
+deliberately. **Research deliberately did not ask:** *"'nothing else' includes a
+number I look at privately and then carry into how I frame the next thing."*
+
+### And the disclosure that makes the amendment auditable
+
+Reporting the inverted outcome-C conclusion **required knowing the leads were
+negative** — so **the sign was seen before the amendment was written.** Research
+recorded that ordering explicitly rather than leaving it inferrable from commit
+timestamps, noting the threshold was untouched and the between-trigger direction
+still unseen.
+
+**Say what you knew and when, in the artefact, when a correction to a
+pre-registered instrument requires looking at the data first.** Otherwise a
+legitimate amendment is indistinguishable from a tuned one.
+
+### The coverage number is the one thing under no floor
+
+**RVOL-only: 38 and 29. Gain-only: 24 and 18.** A rate, not a comparison,
+unaffected by the censoring that killed the paired set — **and it reverses the
+earlier reading**, which had gain-only at 25 against RVOL-only at 5 **because
+RVOL was being reconstructed rather than read.**
+
+**Each trigger finds a substantial population the other misses.** That bears on a
+build decision in a way the head-to-head never could have.
