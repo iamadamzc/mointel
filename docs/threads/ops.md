@@ -6003,6 +6003,22 @@ same date leaves it.
 a hand-repaired desk. Writing only the timestamp would have let the next
 deploy+restart re-open exactly what the repair closed.
 
+### Verified in production, and the restart was the exact failing case
+
+`7212bdd` deployed 2026-09-06 18:42 ET, market worker restarted (it had drifted
+to `c3a3a6a` under `RESTART_MARKET=no`). All four units on the sha.
+
+**The bar did not move.** `trading_date_rolled_at` still reads
+`2026-09-05T02:00:00.000Z` after a restart, `rolled_for` still `2026-09-08`, and
+the served API still reads FRESH. The startup log shows `13252 **cached** US
+equities` — the age guard correctly skipped the refetch, which is precisely the
+condition that makes the naive stamp fatal.
+
+**Had the unconditional version shipped, this restart would have set the bar to
+22:42 against a universe stamped 21:52 and produced a false STALE on a live
+desk.** The defect was not hypothetical and the fix was exercised by the very
+first restart after it.
+
 ## Bash blocked mid-session with no explanation — 2026-09-06
 
 **Recorded because it failed silently in the direction that matters.** Partway
