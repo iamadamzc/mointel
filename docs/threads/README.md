@@ -5887,3 +5887,32 @@ so the flag was not deleted, and it was not left standing as a defect either.
 route matters more than the verdict: a fix here changes what the board presents,
 which is a proposal through Integration, **never a tidy-up done while already in
 the file.**
+
+## NAMING A SHA IS NOT THE SAME AS KNOWING WHAT IS IN IT
+
+**2026-09-08.** Integration ruled deploys by naming the tip — `da28e17`,
+`b2fa7d1`, `7212bdd` — precisely, one sha and one moment, as the discipline
+requires. **Nobody enumerated what the tip contained.**
+
+Design reported its work as *"gated and queued behind Ops's post-close deploy"*.
+**It is live.** `git merge-base --is-ancestor` says `0090815` (the staleness
+marker), `bf5c2d5` (colour on the activity bars) and `49cf5c7` are all inside
+`7212bdd`, which has been on production since 18:42 ET.
+
+**So a user-visible colour change shipped to the trader's board inside an
+infrastructure deploy, and the thread that wrote it believed it was still
+queued.** It was gated, reviewed and correct. **It was also never announced as
+shipping, and nobody verified it live.**
+
+**A tip deploy carries every thread's work, not the work being discussed.** The
+precision of naming a sha creates the illusion that its contents were chosen —
+and on a shared main, a sha is a timestamp, not a selection.
+
+**Before instructing a deploy: list the commits it carries, by thread.** One
+command. **And the thread whose work rides along must be told it is shipping**,
+because otherwise it holds a stale belief about production and cannot verify what
+it built.
+
+**The "one sha and one moment" rule was written to stop `HEAD` naming whoever
+committed last. It does not stop the named sha from containing whoever committed
+last.**
