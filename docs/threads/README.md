@@ -5546,3 +5546,56 @@ Pre-existing and not a regression. **`rolled_for !== tradingDate` is exactly the
 data that detects it**, available in the store for the first time — but widening
 a deployed signature the day before the session it protects is the shape that has
 bitten this desk twice. **Queued, not taken.**
+
+## ROUTE BY WHAT IT BLOCKS, NOT BY WHOSE SUBSYSTEM IT IS
+
+**Design, 2026-09-07**, on reporting a build break to Ops and not to Integration:
+*"it looked like a data-directory problem and Ops owns data. That was the wrong
+routing test. The question is not whose subsystem it is, it is WHAT IT
+BLOCKS."* **It was then fixed and told to nobody at all.**
+
+**Ownership routes the FIX. Consequence routes the REPORT.** A defect inside one
+thread's subsystem that stops another thread's dated work is the second thread's
+news first.
+
+### The diagnosis is the part to copy
+
+Turbopack's file tracer walks `data/backups` on every build — 2.9GB of migration
+backups, gitignored but still traced — and files there returned
+`ERROR_FILE_CORRUPT` while reading fine byte-wise. A full read of the directory
+cleared it: **2.9GB in 2.6 seconds, no writes, nothing moved.**
+
+**What made it conclusive rather than lucky: after reading the first file, the
+failure MOVED TO THE NEXT FILE.** Two threads had been treating it as one corrupt
+file. **A fix that relocates the symptom in a predictable direction is a
+mechanism; a fix that makes it vanish is a guess that worked.**
+
+**And "reading a file is not a repair" was said plainly** — whatever dehydrates
+those files can do it again, and the next build fails the same way.
+
+## THE TWO GATES WERE BUILDING DIFFERENT TREES, AND THE SHIPPING ONE HAS NO `data/`
+
+Ops's gate worktree has no `data/` directory, so its green build could not
+reproduce a failure that only occurs when one exists. **Design asked whether the
+gate worktree SHOULD have one.**
+
+**No — and the deploy script settles it.** `push-release.sh` ships with `git
+archive`, which carries **tracked files only**, and the build then runs on the
+server (a locally built artefact is refused outright unless the platform
+equivalence has been established). **So the shipping tree never has `data/`, and
+the gate worktree is MORE representative of production than the primary tree
+is.**
+
+**The primary tree's build break was a local-development failure that the
+shipping path cannot hit.**
+
+### Which makes an Integration escalation wrong
+
+Integration told Design the break was urgent **because it blocked a queued deploy
+on a dated window.** It did not. **The claim was asserted from the shape of the
+problem rather than read out of the deploy script** — the same move this seat has
+now corrected in others four times: reasoning about a thing without opening what
+it depends on.
+
+**A green gate is evidence only about the environment it ran in — and the useful
+question is not "do the gates agree" but "which tree is the one that ships".**
