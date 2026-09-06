@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { universeFreshness } from '@/lib/market/store/repo';
 import { isMarketDataExpected } from '@/lib/market/session';
+import { universeWarning } from '@/lib/dashboard/universe';
 
 /**
  * A stale universe cost a 53% mover on 2026-09-04 and nothing saw it. SGRX
@@ -119,4 +120,65 @@ describe('whether UNKNOWN is worth saying is clock-relative', () => {
     expect(isMarketDataExpected('RTH')).toBe(true);
     expect(isMarketDataExpected('AFTER_HOURS')).toBe(true);
   });
+});
+
+/**
+ * THE MARKER HAD ONE WRITER AND THE THING IT DESCRIBES HAS TWO PATHS.
+ *
+ * `trading_date_rolled_at` was stamped only by the roll handler, but a session
+ * is also established at STARTUP — same universe refresh, same baselines, same
+ * prune. A worker that starts after the last roll and before the next one
+ * therefore ran a full establishment and recorded nothing.
+ *
+ * That is the live desk on 2026-09-06: deployed and restarted Sunday evening,
+ * universe stamped 21:52:59Z, trading date already 2026-09-08 because Friday's
+ * 22:00 roll skipped the Labor Day holiday. No roll fires until Tuesday 22:00
+ * ET — AFTER Tuesday's session — so without this the marker stays unset all
+ * through the first session it was built for, and `universeWarning` tells him
+ * the board may be short a name on a universe minutes old.
+ *
+ * `lib/dashboard/universe.ts` states the rule this violates: **if it would fire
+ * on a normal morning it does not belong here at any volume.** A restart is a
+ * normal morning.
+ */
+describe('a session established at startup is a session established', () => {
+  const ESTABLISHED = '2026-09-06T21:52:00.000Z';
+
+  it('reads FRESH when startup refreshed the universe, so premarket stays silent', () => {
+    // The refresh runs INSIDE the attempt, so its stamp lands after it.
+    const state = universeFreshness({
+      universeUpdatedAt: '2026-09-06T21:52:59.058Z',
+      tradingDateRolledAt: ESTABLISHED,
+    });
+    expect(state).toBe('FRESH');
+    expect(universeWarning({ ...state_(state), universeRollDue: true })).toBeNull();
+  });
+
+  /**
+   * Stamping the ATTEMPT, not the outcome, is what stops this being a paper
+   * over. Startup keeps the age guard, so its refresh may legitimately skip —
+   * and a skipped fetch leaves the universe stamp BEHIND the attempt.
+   */
+  it('still reads STALE when startup skipped the fetch behind the age guard', () => {
+    const state = universeFreshness({
+      universeUpdatedAt: '2026-09-03T23:04:52.914Z',
+      tradingDateRolledAt: ESTABLISHED,
+    });
+    expect(state).toBe('STALE');
+    expect(universeWarning({ ...state_(state), universeRollDue: true })).not.toBeNull();
+  });
+
+  /** What the desk would have shown on 2026-09-08 without the startup stamp. */
+  it('warns on an unstamped session once a roll is due, which is the defect this closes', () => {
+    const state = universeFreshness({
+      universeUpdatedAt: '2026-09-06T21:52:59.058Z',
+      tradingDateRolledAt: null,
+    });
+    expect(state).toBe('UNKNOWN');
+    expect(universeWarning({ ...state_(state), universeRollDue: true })).not.toBeNull();
+  });
+
+  function state_(freshness: 'FRESH' | 'STALE' | 'UNKNOWN') {
+    return { universeFreshness: freshness, universeUpdatedAt: '2026-09-06T21:52:59.058Z' };
+  }
 });

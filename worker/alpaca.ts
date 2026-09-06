@@ -67,6 +67,10 @@ async function main(): Promise<void> {
    * 18th — right ranks, right prices, wrong day.
    */
   const bootstrapTradingDate = async (trigger: 'startup' | 'roll') => {
+    // The instant the attempt BEGAN, so a refresh that runs during it stamps
+    // after it and a refresh that is skipped stamps before it.
+    const establishedAt = new Date().toISOString();
+
     // A roll forces the asset refetch: it happens once per trading date, and a
     // universe carried over from yesterday cannot see a ticker that renamed
     // overnight. Startup keeps the age guard so restarts do not hammer Alpaca.
@@ -79,6 +83,17 @@ async function main(): Promise<void> {
     await runtime.bootstrapSession(pinned);
     runtime.pruneRetention();
     runtime.flush();
+
+    /*
+     * The ROLL path is already stamped by the runtime's roll handler, which
+     * wraps this call and records only on success. Stamping again here would
+     * be harmless but would put two instants behind one meaning; startup is
+     * the path that had no writer at all.
+     *
+     * Written last so it records work that finished. A throw at startup takes
+     * the worker down rather than leaving a session marked as established.
+     */
+    if (trigger === 'startup') runtime.markSessionEstablished(establishedAt);
   };
 
   await bootstrapTradingDate('startup');

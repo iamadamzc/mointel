@@ -1618,6 +1618,29 @@ export class MarketRuntime {
 
   /* -------------------------------------------------------------- lifecycle */
 
+  /**
+   * STARTUP ESTABLISHES A SESSION TOO, and until this existed only the roll
+   * said so.
+   *
+   * The marker was written in one place: the roll handler. But the same
+   * session-establishing work — refresh the universe, rebuild baselines, prune
+   * — runs at startup as well, and a worker that starts after the last roll and
+   * before the next one leaves the marker unset for a session it fully
+   * established. The dashboard reads that absence as "no universe refresh has
+   * been recorded for this session" and tells him the board may be short a
+   * name, on a desk whose universe is minutes old.
+   *
+   * Stamping the ATTEMPT rather than the outcome is what keeps this honest.
+   * Startup keeps the age guard, so its refresh may legitimately skip; passing
+   * the instant the attempt began means a skipped fetch still leaves the
+   * universe stamp BEHIND this one and still reads STALE. It widens what the
+   * field can see rather than papering over it: the skipped-fetch case that
+   * cost a 53% mover is now caught at startup as well as at a roll.
+   */
+  markSessionEstablished(at: string): void {
+    setMeta(this.db, TRADING_DATE_ROLLED_AT_KEY, at);
+  }
+
   pruneRetention(): void {
     // Retention is N SESSIONS, not N calendar days. Ask the store which dates
     // are sessions rather than counting backwards from the trading date: on a
