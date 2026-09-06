@@ -66,6 +66,7 @@ interface Args {
   dates: string[];
   dbPath: string;
   topN: number;
+  force: boolean;
 }
 
 function parseArgs(argv: string[]): Args {
@@ -73,14 +74,16 @@ function parseArgs(argv: string[]): Args {
   let dates: string[] = [];
   let dbPath = process.env.MARKET_DB_PATH ?? 'data/market.db';
   let topN = 12;
+  let force = false;
   for (const arg of argv) {
-    if (arg === '--run') mode = 'run';
+    if (arg === '--force') force = true;
+    else if (arg === '--run') mode = 'run';
     else if (arg === '--validate') mode = 'validate';
     else if (arg.startsWith('--dates=')) dates = arg.split('=')[1].split(',').filter(Boolean);
     else if (arg.startsWith('--db=')) dbPath = arg.split('=')[1];
     else if (arg.startsWith('--top=')) topN = Number(arg.split('=')[1]) || topN;
   }
-  return { mode, dates, dbPath, topN };
+  return { mode, dates, dbPath, topN, force };
 }
 
 /** His window, in ET, resolved through the zone rather than a hardcoded offset. */
@@ -99,6 +102,9 @@ function etMinuteOfDay(iso: string): number {
   const minute = Number(parts.find((p) => p.type === 'minute')?.value ?? '0');
   return (hour % 24) * 60 + minute;
 }
+
+const hhmm = (minuteOfDay: number) =>
+  `${String(Math.floor(minuteOfDay / 60)).padStart(2, '0')}:${String(minuteOfDay % 60).padStart(2, '0')}`;
 
 const quantile = (sorted: number[], q: number): number | null => {
   if (!sorted.length) return null;
@@ -519,6 +525,105 @@ function run(db: Database.Database, dates: string[], topN: number): void {
   );
 }
 
+/**
+ * PROOF, NOT ASSERTION, THAT THIS CANNOT WRITE.
+ *
+ * Ops opens a store the desk depends on, and "it only runs SELECTs" is a claim
+ * about every line of a file rather than about the handle.
+ *
+ * THE FIRST PROBE I WROTE WAS `BEGIN IMMEDIATE`, AND IT WAS WRONG: SQLite
+ * GRANTS it on a read-only handle and defers the refusal to the first actual
+ * write, so it aborted a run that was perfectly safe. A check that fails for
+ * the wrong reason is worth no more than one that cannot fail.
+ *
+ * What proves it is a write STATEMENT that MATCHES NO ROWS. `SQLITE_READONLY`
+ * is raised on execution regardless of the row count — measured — so the probe
+ * demands write capability and changes nothing whether or not it is granted.
+ * `query_only` is set first, so even a future edit that added a write would be
+ * refused at the SQL layer rather than by review.
+ */
+function proveReadOnly(db: Database.Database, path: string): void {
+  db.pragma('query_only = 1');
+  const queryOnly = db.pragma('query_only', { simple: true });
+
+  try {
+    db.exec("UPDATE ticker_session SET symbol = symbol WHERE symbol = '__read_only_probe__'");
+  } catch (error) {
+    const code = (error as { code?: string }).code ?? String(error);
+    console.log(`[lead-time] READ-ONLY PROVEN: zero-row write refused (${code}), query_only=${queryOnly}`);
+    return;
+  }
+
+  console.error(
+    `[lead-time] ABORT: ${path} accepted a write statement. This must run on a read-only handle.`,
+  );
+  process.exit(1);
+}
+
+/**
+ * IT MUST NOT COMPETE WITH CAPTURE.
+ *
+ * The desk's session runs 04:00-20:00 ET and this reads every minute bar of a
+ * day. Refused inside those hours rather than discouraged, because a warning
+ * printed above three minutes of output is a warning nobody reads.
+ *
+ * Split out as a pure function so the REFUSING branch can be tested. A guard
+ * whose refusal has never executed is a guard nobody has seen work.
+ */
+export function insideCaptureHours(now: Date): { inside: boolean; label: string } {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    hour: '2-digit',
+    minute: '2-digit',
+    weekday: 'short',
+    hour12: false,
+  }).formatToParts(now);
+  const weekday = parts.find((p) => p.type === 'weekday')?.value ?? '';
+  const minute =
+    (Number(parts.find((p) => p.type === 'hour')?.value ?? '0') % 24) * 60 +
+    Number(parts.find((p) => p.type === 'minute')?.value ?? '0');
+  const tradingDay = !['Sat', 'Sun'].includes(weekday);
+
+  return {
+    inside: tradingDay && minute >= 4 * 60 && minute < 20 * 60,
+    label: `${weekday} ${hhmm(minute)} ET`,
+  };
+}
+
+function refuseDuringCapture(force: boolean): void {
+  const { inside, label } = insideCaptureHours(new Date());
+  if (!inside) return;
+  if (force) {
+    console.log(`[lead-time] --force: running at ${label}, INSIDE capture hours.`);
+    return;
+  }
+  console.error(
+    `[lead-time] REFUSED: ${label} is inside capture hours (04:00-20:00). ` +
+      'Run it while the market is shut, or pass --force if you have decided otherwise.',
+  );
+  process.exit(1);
+}
+
+/** What it read, so the output is interpretable without the rows being visible. */
+function printInputs(db: Database.Database, dates: string[]): void {
+  console.log('[lead-time] inputs:');
+  for (const date of dates) {
+    const counts = ['minute_bars', 'ticker_session', 'desk_events'].map((table) => {
+      const row = db
+        .prepare(`SELECT COUNT(1) AS n FROM ${table} WHERE trading_date = ?`)
+        .get(date) as { n: number };
+      return `${table} ${row.n}`;
+    });
+    const entries = db
+      .prepare(
+        `SELECT COUNT(DISTINCT symbol) AS n FROM desk_events
+          WHERE trading_date = ? AND type = 'RVOL_RANK_ENTRY'`,
+      )
+      .get(date) as { n: number };
+    console.log(`  ${date}: ${counts.join(', ')}, RVOL_RANK_ENTRY names ${entries.n}`);
+  }
+}
+
 function main(): void {
   const args = parseArgs(process.argv.slice(2));
   if (!args.dates.length) {
@@ -526,13 +631,23 @@ function main(): void {
     process.exitCode = 1;
     return;
   }
+  refuseDuringCapture(args.force);
+
   const db = new Database(args.dbPath, { readonly: true });
+  proveReadOnly(db, args.dbPath);
+
   console.log(
     `[lead-time] store ${args.dbPath} (read-only), top ${args.topN}, window ET 07:00-10:00`,
   );
+  printInputs(db, args.dates);
 
-  if (args.mode === 'validate') for (const date of args.dates) validate(db, date, args.topN);
-  else run(db, args.dates, args.topN);
+  /*
+   * THE BOUNDS REPORT IS PART OF THE OUTPUT, NOT A PRECONDITION SOMEONE WAVES
+   * THROUGH. It runs before every comparison and its result travels with the
+   * numbers rather than in a separate invocation that can be skipped.
+   */
+  for (const date of args.dates) validate(db, date, args.topN);
+  if (args.mode === 'run') run(db, args.dates, args.topN);
 
   db.close();
 }
