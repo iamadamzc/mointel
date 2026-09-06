@@ -5342,3 +5342,54 @@ on an event has a blind period equal to the gap until that event recurs — **an
 if the event is weekly or session-bound, the blind period covers a whole session
 of live use.** Ask when the first true reading arrives, not whether the logic is
 right.
+
+## THE SAFETY WAS SUPPLIED BY THE DEFECT, SO THE ORDER OF FIXES IS LOAD-BEARING
+
+**Ops, 2026-09-07**, scoping chunking against a queued delete-pass.
+
+`replaceUniverse` is **safe to chunk only because it never deletes.** It is
+upsert-only, so a partial chunked run leaves unprocessed symbols on their
+previous row: the result is always a **superset** of the prior universe, never a
+subset. **No board can lose a name to a partial run.**
+
+**That safety comes entirely from the bug queued as item (e).** The moment
+`replaceUniverse` starts deleting, a partial chunked run leaves a **half
+universe** — the SGRX failure reached from the other side.
+
+**So (d) must land before (e), and (e) can then never be a chunked delete.** It
+has to be **stage-then-swap**: bulk-load a staging table in chunks, make the
+visible change one small transaction. **Atomicity comes from making the visible
+write small, not from making the whole write one transaction.**
+
+**Before fixing a defect, ask what currently depends on it.** A queue ordered by
+consequence is not enough when one item's remedy removes another item's guard.
+
+## TEST THE PROPERTY, NOT THE CLOCK
+
+Integration ruled that a chunk must complete *"comfortably inside 33 seconds
+under load, demonstrated not assumed"*. **Ops refused the literal form and was
+right.**
+
+**A wall-clock assertion in a test measures the CI box.** It reddens when the
+machine is busy, and a test that fails for reasons unrelated to the code **trains
+people to ignore it** — the inverse of the flaky preflight gate this desk already
+has.
+
+**The property that matters is deterministic and observable: a competing writer
+acquires the lock mid-operation.** Test that, plus maximum rows per transaction.
+**That demonstrates the contract instead of proxying it through a clock.**
+
+### And size for the uncertainty of the basis, not for the throughput
+
+The scratch measurement gave ~150k rows/s — **a ceiling, not a prediction**: no
+contention, no 579MB WAL, no secondary indexes. **The only figure measured under
+real conditions is ~22k rows/s, inferred from the spacing of the four research
+crashes.**
+
+5,000 rows per transaction is ~0.23s at that rate. **The margin is the point, not
+the throughput:** the basis is uncertain, so the chunk must be small enough that
+**being wrong by an order of magnitude still does not matter.** At twenty times
+worse it is 4.5s and still inside the budget.
+
+**A constant chosen for margin must record what it is margin AGAINST**, or the
+next person reads it as a throughput setting and tunes it up.
