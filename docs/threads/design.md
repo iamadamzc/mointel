@@ -3732,6 +3732,12 @@ cost a column by the back door.
   across a holiday Monday, which every thread had got wrong in prose for two
   days while the code had it right. **Report what the failed attempt did
   establish**, rather than only that it failed.
+- **A label's WORDING can disguise which quantity computed it.** `OFF HIGH` is
+  selected by `retracementPct` — fraction of the run surrendered — while sounding
+  like a distance below the high. **Pairing it with the distance figure would
+  make that mismatch invisible rather than resolving it**, because a number
+  beside a word reads as the word's evidence. When deciding what to show beside
+  a label, ask what COMPUTES the label, not what the label sounds like.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
