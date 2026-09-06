@@ -242,7 +242,8 @@ export async function collectSecEvidence(
     sourceType: 'SEC_SUBMISSIONS',
     title: `${profile.name ?? ticker} filing history`,
     url: submissionsUrl(resolution.cik),
-    publishedAt: profile.filings[0]?.filingDate ?? null,
+    publishedAt:
+      profile.filings[0]?.acceptanceDateTime ?? profile.filings[0]?.filingDate ?? null,
     fetchedAt: new Date().toISOString(),
     accession: null,
     secForm: null,
@@ -417,7 +418,26 @@ async function collectFiling(
         sourceType: 'SEC_FILING',
         title: filing.primaryDocDescription ?? `${filing.form} filed ${filing.filingDate}`,
         url,
-        publishedAt: filing.filingDate,
+        /*
+         * ACCEPTANCE OVER FILING DATE, AND NO SYNTHESISED FALLBACK.
+         *
+         * `acceptanceDateTime` is when EDGAR accepted the filing — when the
+         * market could see it — which is what a "was this readable by 07:00"
+         * question asks. `filingDate` is a bare date and answers it for nobody.
+         *
+         * The precision stays UNSET when acceptance is missing, so the row
+         * lands as `UNKNOWN` exactly as before. NOT `DATE_ONLY`: that value
+         * means a date carrying a SYNTHESISED time, and claiming one here would
+         * put a made-up 12:00Z into the field the timing question reads.
+         *
+         * THIS CREATES A DISCONTINUITY. Rows written before 2026-09-07 carry
+         * `UNKNOWN` on a bare date; rows after carry `EXACT` on a timestamp.
+         * `published_precision` IS the discriminator — partition on it, and
+         * never compare a rate across that boundary without doing so, or the
+         * series shows filings acquiring times that they always had.
+         */
+        publishedAt: filing.acceptanceDateTime ?? filing.filingDate,
+        ...(filing.acceptanceDateTime ? { publishedPrecision: 'EXACT' as const } : {}),
         fetchedAt: new Date().toISOString(),
         accession: filing.accession,
         secForm: filing.form,

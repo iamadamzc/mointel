@@ -9204,3 +9204,41 @@ nobody kept, and no amount of querying will recover it.**
 **Five mechanisms eliminated now, none proposed.** The honest position is that
 09-04 may be unexplainable from what was stored, and **saying that early is
 cheaper than three more queries arriving at it.**
+
+**97a. THE PARSER CHANGE SHIPPED, AND THE DISCONTINUITY IS DATED.**
+
+*Integration: build the capture, not the backfill, not the measurement — free
+fidelity on a field we already pay to download is worth having whichever way the
+product question lands.*
+
+**`acceptanceDateTime` is read in `parseSubmissions` and carried to
+`publishedAt` with `publishedPrecision: 'EXACT'`.** The SEC_SUBMISSIONS source
+takes it too.
+
+### THE BOUNDARY IS 2026-09-07 AND `published_precision` IS THE DISCRIMINATOR
+
+**SEC rows written before it carry `UNKNOWN` on a bare date. Rows after carry
+`EXACT` on a timestamp.** Nothing changed in the world on that date; only what
+the desk keeps.
+
+**ANY RATE COMPUTED ACROSS THAT BOUNDARY WITHOUT PARTITIONING ON PRECISION WILL
+SHOW FILINGS ACQUIRING TIMES THEY ALWAYS HAD** — a regime change that is an
+artefact of the collector, appearing exactly where a before-07:00 measurement
+would want to look.
+
+### AND THE FALLBACK STAYS `UNKNOWN` RATHER THAN `DATE_ONLY`, DELIBERATELY
+
+`DATE_ONLY` in this store means **a date carrying a SYNTHESISED 12:00Z**, and
+those placeholders are the reason a third of same-day rows are unusable.
+**Marking a bare filing date `DATE_ONLY` would claim a time that is not there
+and put a made-up 08:00 ET into the field the timing question reads.** One
+transition, not two.
+
+**Tested on the half that would be worse than having nothing: a missing
+acceptance returns null, never the filing date and never a synthesised stamp**,
+and a payload with no acceptance column at all degrades to what the desk had
+before rather than throwing on every issuer.
+
+**No backfill. Stored rows keep their dates**, and the re-fetch only buys a
+measurement that may not survive the product answer — a refusal does not need to
+be early to be right.

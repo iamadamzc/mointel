@@ -41,6 +41,19 @@ export interface Filing {
   accession: string;
   form: string;
   filingDate: string;
+  /**
+   * When EDGAR ACCEPTED the filing — the moment it became publicly observable.
+   *
+   * `filingDate` is a bare date, and for months the desk recorded only that,
+   * which made every same-day timing question unanswerable and looked like a
+   * property of the SOURCE. It is not: this field sits on the same row of
+   * `filings.recent` and was simply never read. Verified against a live payload
+   * 2026-09-07 before the change was made.
+   *
+   * Null where the payload omits it, and callers must not synthesise one —
+   * a made-up time is worse than no time for the only question this answers.
+   */
+  acceptanceDateTime: string | null;
   reportDate: string | null;
   primaryDocument: string | null;
   primaryDocDescription: string | null;
@@ -77,6 +90,7 @@ export function parseSubmissions(response: SubmissionsResponse, cik: string): Is
   const accessions = column(recent, 'accessionNumber');
   const forms = column(recent, 'form');
   const filingDates = column(recent, 'filingDate');
+  const acceptances = column(recent, 'acceptanceDateTime');
   const reportDates = column(recent, 'reportDate');
   const primaryDocuments = column(recent, 'primaryDocument');
   const descriptions = column(recent, 'primaryDocDescription');
@@ -93,6 +107,7 @@ export function parseSubmissions(response: SubmissionsResponse, cik: string): Is
       accession,
       form: normaliseForm(form),
       filingDate,
+      acceptanceDateTime: text(acceptances[i]),
       reportDate: text(reportDates[i]),
       primaryDocument: text(primaryDocuments[i]),
       primaryDocDescription: text(descriptions[i]),
