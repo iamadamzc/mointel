@@ -7359,3 +7359,46 @@ was AVAILABLE before he would have entered** — coverage and timing, not outcom
 **A report failing that cannot work whatever outcome data would later say; a
 report passing it is not thereby shown to work.** That distinction is what keeps
 it from becoming a proxy.
+
+## AN UNDETERMINED AXIS FORCES THE THIRD VERDICT, HOWEVER HEALTHY THE SOURCE COUNT LOOKS
+
+**Research, 2026-09-06**, building the Why Not verdict type — and making the
+decision nobody specified, which is the one the type exists for.
+
+**The SEC-only case is the common one:** forty filings collected, no newswire, so
+**a demand event could not have been seen.** Under a naive rule that name returns
+`NO_OBJECTION_FOUND` **with twelve sources behind it, and reads as cleared.**
+
+**It has not been cleared. The side he needs was never searched.**
+
+So `NO_OBJECTION_FOUND` requires **both axes to have said something.** **That is
+the difference between "we looked" and "we ran"** — and it is the single place
+this type earns its existence.
+
+### The shape enforces what the wording cannot
+
+**Three members of a union, not a boolean with a flag beside it**, so a consumer
+**cannot read the second without having handled the third.** `NO_OBJECTION_FOUND`
+carries `coverage` and **is meaningless without it**; `NOTHING_COLLECTED` carries
+its reasons *and* coverage.
+
+**And nothing returns approval, including by implication.** No CLEAR, no PASS, no
+OK — **tested by regex against the verdict kinds**, which is a check that can fail
+if someone later adds a friendly-sounding member. **A rule enforced by a test that
+fires on future additions outlives the person who wrote it.**
+
+### A horizon nobody established is not a horizon of weeks
+
+`bearing` derives from `timeToEffect` alone: NOW → ON_THIS_TRADE, DAYS/WEEKS →
+ON_THE_COMPANY, **UNKNOWN → UNDETERMINED, sorting last.** Defaulting it either way
+would be **an absence borrowing a value** — the same failure as the synthesised
+`12:00Z`, arriving in a severity scale.
+
+**`priceCapped` outranks everything, because it ends price discovery outright**
+whatever the catalyst's own horizon says.
+
+### Tests committed before the code
+
+Both registered at `48cae33`, **before any implementation existed, so the ordering
+is in the history rather than asserted.** Neither run: objection rate across run
+size, and deaf rate across run size. **No direction on either.**
