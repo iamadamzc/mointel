@@ -6160,3 +6160,71 @@ exists because a board missing names looks exactly like a quiet morning.
 key falls through to the old comparison** — absent means *this store is older*,
 not *this session is wrong*. The rule `universeWarning` already applies to a build
 that never had the field, **reused rather than reinvented.**
+
+## CORRECTION TO "A WARNING ABOUT ONE COLUMN IMMUNISES ONE COLUMN" — THE INSTANCE WAS WRONG
+
+**Research, 2026-09-06, correcting the case that entry was built on.** Appended
+rather than rewritten, because two seats had already built on it.
+
+**The rule stands.** Ops confirmed the mechanism independently on production:
+09-03's four misses are all classified three days after the session, and current
+eligibility is a superset. **The UCL instance was not that.**
+
+**`UCL` holds a `DISCOVERY_QUALIFIED` and an `RVOL_RANK_ENTRY` at 07:35 ET, rank
+4, RVOL 56. The desk ranked it.** Eligibility excluded nothing. What failed is
+that **`ticker_session` lost it** — and it is not one name: **53 names that
+session carry a durable qualification event beside a row reading `latched 0`,
+`qualified_at NULL`, `rvol_rank NULL`.** The validation was run against the
+artefact that forgets.
+
+**A TRUE NEARBY MECHANISM IS THE MOST CONVINCING WRONG ANSWER AVAILABLE.** Every
+part of the diagnosis verified — the column *is* current state, the stamps *are*
+later, the direction *is* toward over-admitting — **and none of it was why that
+name disagreed.** It is *"a mechanism that explains the class is not evidence
+about the instance"*, filed here a day earlier and not applied by its own author.
+
+**Check the mechanism against the instance, not only against the class.** The
+better the mechanism, the less anyone asks.
+
+## END-OF-DAY AGREEMENT IS NOT TIMING AGREEMENT
+
+The instrument was validated by reproducing a **final** top twelve: 12 of 12 on
+09-02. **The entire experiment is about WHEN a trigger fires.** A rebuild can
+land on the right closing set having ordered it wrongly all morning.
+
+**A validation must exercise the property the result depends on.** Matching an
+end state is a strong check on arithmetic and **says nothing about the sequence
+that produced it** — and it is the sequence being measured.
+
+### Which forced a redesign, and an asymmetry stated as a reading rule
+
+**RVOL cannot be reconstructed and does not need to be.** The engine promotes
+symbols as it first sees them, so its ranked field is small and growing — its own
+pre-07:00 payloads carry **top-twelve ranks at RVOL 0.007**, possible only in a
+field of about twelve, **and the promotion history is recorded nowhere.** The
+rebuild reproduced **one of six** in-window entries: not wrong about volume,
+**ranking a different field.**
+
+So RVOL is now **read** from `desk_events.RVOL_RANK_ENTRY` — the firing, already
+timestamped — and only gain is reconstructed, because the desk never ran it.
+
+**That makes the two sides asymmetric, and the asymmetry has a direction.** The
+reconstructed gain field is at least as large as the desk's was — measured 991 to
+2,591 names — **and a larger field is harder to enter. So the bias runs AGAINST
+gain, which is the trader's own pre-registered pick.**
+
+**A gain win is stronger than it looks; a gain loss is confounded.** That is a
+rule for reading the result, not a caveat attached beneath it.
+
+### And two disciplines set before the sample
+
+**A power floor, fixed in advance:** below **20 paired uncensored names**, no
+direction is reported at all — only rates, stratum counts, and that it was
+unpowered. On 08-17, **52 of 65 RVOL entries fired before 07:00**, six inside the
+window, seven after; if production looks like that, the paired set is single
+digits.
+
+**A disclosed peek:** that 52/65 split bears on Research's own registered
+prediction that RVOL fires earlier in clock time. **It was seen before the sample
+ran and is on the record**, so it cannot later be presented as a prediction
+confirmed.
