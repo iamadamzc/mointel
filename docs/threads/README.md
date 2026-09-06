@@ -6299,3 +6299,59 @@ what fraction had an observable filing or catalyst timestamped **before 07:00 ET
 High means an overnight pass reaches them without racing anything; low means the
 catalyst genuinely arrives with the move. **Research can argue both, so it
 predicted neither.**
+
+## THE FIELD IS DESTROYED IN THE ONLY POPULATION IT WAS BUILT TO SERVE
+
+**Research, 2026-09-06.** In the `ticker_session` upsert, `top12_entered_at` is
+`COALESCE`d **with a comment saying exactly why.** The five latch fields beside
+it — `qualified_at`, `qualified_price`, `qualified_rvol`, `qualified_rank`,
+`latched` — take `excluded.*` directly. **A restarted engine's empty runtime
+overwrites what the store had.**
+
+**And the population it destroys is not random. All 53 wiped rows on 08-17 have a
+final price OUTSIDE $1–$20. Not one in-band name is wiped. Zero.**
+
+Because an in-band name **re-latches on the next flush and loses nothing.** An
+out-of-band name cannot. **And the latch exists for exactly one purpose: to keep
+a name ranked after it leaves the band.**
+
+**So the field survives everywhere it is not needed and is destroyed in the only
+case it was written for** — and looks perfectly healthy in the other 98%. **That
+98% is not evidence the latch works. It is 98% of cases where nothing was being
+asked of it.**
+
+**A guard that only fires where it makes no difference will pass every test
+anyone thinks to write.** When a mechanism looks healthy, check it on the
+population it exists for, not on the population it happens to cover.
+
+### The consequence reaches the queue, exactly and small
+
+A wiped row reads `rvol_rank NULL`; the candidate query requires `rank IS NOT
+NULL AND rank <= autoRank`. **So the name is not declined and not deferred — it
+is not a candidate at all**, permanently for that session.
+
+**4 of the 44 no-job names on 08-17 — about 9%.** The bulk remains the sampling
+artefact. **But it means "nothing is broken, the 20 are expected" no longer stands
+unqualified:** something is broken, for a small share, and it is a defect rather
+than a property. **A cause, not an artefact — it does not inflate the figure.**
+
+**Bounded, not sized:** measured on the local desk with 48 job rows against
+production's volume.
+
+## THE INTERVAL BETWEEN WRITING A RULE AND NEEDING IT IS SHORTER THAN THE INTERVAL BETWEEN WRITING ONE AND REMEMBERING IT
+
+**Three seats caught by their own rules inside forty-eight hours**, Integration
+twice: a check specified with the defect it had recorded that morning; a warning
+attached to a column name rather than a shape; *"a mechanism that explains the
+class is not evidence about the instance"* filed one day and violated the next by
+its own author.
+
+**The rules are not failing. Their location is.** A shared file is read once and
+recalled never; the moment of need arrives inside a diff, a query, a comment.
+
+**So the file is the archive and the point of use is the instrument.** The
+practices that have actually held this week all live where the work happens —
+Design's interpolation argument in the render layer, the `top12_entered_at`
+`COALESCE` comment, the provenance clause beside the figure it qualifies. **Every
+rule that fired late was in a document; every one that fired on time was in a
+file someone had to open to do the work.**
