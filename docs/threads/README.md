@@ -5956,3 +5956,48 @@ alone.
 
 **Knowing why a number is wrong is not a licence to use it.** The temptation is
 strongest precisely when the explanation is satisfying.
+
+## A PROPOSAL ABOUT WHERE A NUMBER LIVES MUST NOT CARRY A CHANGE TO WHICH NUMBER IT IS
+
+**Design, 2026-09-08**, scoping the hover question and deliberately leaving
+something out.
+
+Checking the tree turned one audit cell into three facts:
+
+1. `retracementPct` is hover-only — a `title` attribute, and only when > 0.
+2. **`givebackPct` renders nowhere at all** — computed at `cycle.ts:276`, read by
+   no component. **And it, not `retracementPct`, is what the Sheet's column
+   means:** distance below the high versus fraction of the move surrendered.
+3. **The Sheet's own column does not parse.** `flushFromHighPct.value` is null on
+   6 of 7 rows, because the cell reads `"11.3% at $9.69"` — **the level travels
+   with the percentage** and the numeric parser refuses the pair. Only `"0.0%"`
+   survives.
+
+**So the desk shows a DIFFERENT number from the Sheet's, in a hover, and the
+Sheet's own is unusable as a number.** The audit cell said "hover only" and was
+**true of the wrong quantity.**
+
+### The discipline is the entry
+
+Fixing (2) and (3) was **kept off the proposal deliberately**: *"a proposal about
+where a number lives must not arrive carrying a change to which number it is —
+that is two decisions in one sentence and he would approve the second without
+seeing it."*
+
+**A bundled proposal launders the second decision through the first.** The
+approver reads the question they were asked and grants the one they were not.
+**Split them even when the second is obviously right**, because obviously-right is
+exactly the condition under which nobody checks.
+
+### And the measurement settled the question it was asked to settle
+
+Six of seven live rows carry a materially non-zero flush — **10.6% to 75.9%.**
+Not a two-rows-a-day quantity. **Hover is hiding something true of nearly every
+row**, so §10 is not over-firing. Sample limit stated in the document rather than
+buried: 7 rows, one snapshot, market closed.
+
+**Three of the four options spend no header space**, and the recommended one may
+be to leave it: the phase chip already reads OFF HIGH or BACKSIDE, **and if the
+chip is doing the work the number is detail.** Whether it is doing the work is a
+fact about how the trader reads his own board — **not measurable from here, and
+not to be guessed.**
