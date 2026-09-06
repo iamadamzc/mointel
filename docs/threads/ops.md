@@ -6171,6 +6171,77 @@ firing, and if "Run now" counts as the firing, pre-approving would cancel the
 watch it was meant to protect. **A mitigation that can consume the thing it
 protects needs checking before use, not after.**
 
+## Tuesday 2026-09-08 deploy — the checklist, because the session that planned it will not be there
+
+**Written 2026-09-06. Whoever deploys on Tuesday will not be this session, and
+three of these are not recoverable after the fact.**
+
+### Before
+
+1. **Gate at the TIP, not at `ed44d53`.** Main is shared and moving; `ed44d53`
+   was named when it was the tip and is not any more. **A sha on a shared main
+   is a timestamp, not a selection.**
+2. **Compare trees, not shas** — `git rev-parse <sha>^{tree}` — before reusing
+   any gate result. That check has now failed twice and passed twice in one
+   evening. `git cherry-pick` onto a moved main produces a different tree, and
+   "gated at X, cherry-picked cleanly" is true and says nothing.
+3. **Enumerate what ships, by thread**, so nobody discovers their work shipping.
+   As of 2026-09-06 that is Ops (`ed44d53`: latch persistence + the false-FRESH
+   fix), Research (`b1d64b9`: SEC acceptance timestamps), Design (`53ef43d`:
+   the tracer exclusion, still unshipped), plus whatever lands before close.
+4. **Read the clock from the box.** Tuesday's close is 16:00 ET.
+   `TZ=America/New_York date` returns UTC on the local host.
+
+### Order, and it is load-bearing
+
+**DEPLOY FIRST, THEN RESTART THE MARKET WORKER. Never the reverse.** The latch
+wipe fires on the first flush after a restart, so a restart on the OLD code
+destroys that session's out-of-band latches. The fix must be in place before the
+worker comes back. Deploy puts it there; `RESTART_MARKET=no` means the restart
+is a separate, deliberate act afterwards.
+
+**The market-worker restart needs HIS word, not Integration's.** Deploy
+authority is delegated; restarting the single permitted SIP connection is not
+covered by it, and an earlier "and restart" does not stand for the next one.
+
+### After — verify, do not assume
+
+- **All four units by sha**, read from each unit's own cwd
+  (`readlink -f /proc/<MainPID>/cwd`), **not** from the deploy's own output
+  line. Drift has been real: the market worker sat 20 hours on a deleted
+  release, and was still on `c3a3a6a` after `7212bdd` deployed.
+- **The freshness fields on the SERVED API**, not the store, carrying
+  `universeMode` as a control. A field that is missing while the control is
+  present means the observable did not land — that has happened, invisibly, for
+  twenty minutes.
+- Expect `schema v25, quick_check ok, 0 backup(s) written` — the 0e guard as a
+  clean no-op. It has now read that way seven times.
+
+### THE ONE THAT CANNOT BE RECOVERED LATER
+
+**`b1d64b9` creates a data-format boundary in the store, and the instant must be
+recorded as it happens.**
+
+SEC rows written before it carry `UNKNOWN` precision on a bare date; rows after
+carry `EXACT` on a real acceptance timestamp. **Nothing changes in the world —
+only what the desk keeps.** Anyone computing a rate across that line without
+partitioning on `published_precision` will see filings acquiring times they
+always had: **a collector artefact appearing exactly where a real finding would
+look.**
+
+**The boundary is NOT the deploy instant and NOT a date.** The collector runs in
+`worker/research.ts`, so it is **the instant `mointel-research` started on the
+new sha** — read it from the journal, to the second, and convert to ET from the
+box:
+
+```
+journalctl -u mointel-research -o short-iso | grep "Started mointel-research" | tail -1
+```
+
+**Report that datetime in ET and say plainly that it is the boundary.** Research
+had dated it 2026-09-07 from the commit date, which is wrong by up to two days:
+**the store does not change until the code runs.**
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
