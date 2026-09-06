@@ -5393,3 +5393,54 @@ worse it is 4.5s and still inside the budget.
 
 **A constant chosen for margin must record what it is margin AGAINST**, or the
 next person reads it as a throughput setting and tunes it up.
+
+## I SPECIFIED THE TIMESTAMP THE FIELD'S OWN COMMENT FORBIDS — A COMMENT I HAD APPROVED
+
+**2026-09-07.** Integration ruled: recover the roll's timestamp and write it,
+naming **"the success log"** as the source instant. **The field's docstring
+forbids exactly that, and Integration approved that docstring two days earlier:**
+
+> *The instant the roll BEGAN, not the instant it finished. The universe refresh
+> happens INSIDE `onSessionRoll`, so a completion timestamp would always be later
+> than a successful refresh and would read healthy work as stale.*
+
+The journal shows the roll beginning at **02:00:00** and its success line at
+**02:02:34**. **Writing the completion time would install, into the field itself,
+the precise defect the field exists to detect.** It would not have bitten today —
+the universe stamp is later either way — **and it would bite the first time a
+roll's own refresh is the most recent one.**
+
+**Approving a rule does not load it.** Two days, same seat, same field.
+
+### And the source named was empty by construction, not by retention
+
+Integration said *"the roll logs on success"* and named `desk_events`. **The roll
+calls `logger.info` and nothing else** — `desk_events` is written by the
+assessment path, the event flush and the catalyst collector, **and the roll is not
+among them.** The instruction *"if `desk_events` does not carry it, do not compute
+one from the calendar"* was met by finding the event **in journald**, which is an
+observed record with a real timestamp.
+
+**A condition should name the property, not the container.** The requirement was
+*observed rather than computed*; the container was an assumption attached to it,
+and it was wrong.
+
+## STAMPING EVERY PROCESS START REDEFINES THE EVENT THE FIELD IS ABOUT
+
+`markSessionEstablished` writes the marker **unconditionally at startup.** The
+intent is right — startup establishes a session too, and the roll-only writer
+left it unset for sessions it fully established.
+
+**But a restart does not establish a NEW trading date.** 09-08 was established on
+09-05. Advancing the marker on every process start silently redefines it from
+*"when this trading date was established"* to *"when this process started"* — **so
+any restart during a session's life resets the bar and can manufacture STALE
+against a universe that was correctly refreshed for that session.**
+
+**The skipped fetch is a true alarm at a ROLL and a false one at a RESTART**, and
+the two are indistinguishable once the trading date is dropped from the record.
+**Store the date alongside the stamp and write at startup only when it differs
+from the stored one** — then the field means what its name says.
+
+**Widening what a signal can see is not free: every widening is also a new way to
+fire.** Ask which of the new firings are true.
