@@ -6882,3 +6882,43 @@ carried to the trader, reversed, and then withdrawn as an artefact.
 finding.** The absence of a constraint is not evidence of robustness — **it is
 absence of scrutiny, and it is most tempting exactly when the constrained answer
 has just refused to appear.**
+
+## FOUR CHECKS OF ONE KIND ARE ONE CHECK
+
+**Research, 2026-09-06**, on the reach figure surviving four independent audits.
+
+Universe bias, retention divergence, latch amnesia, denominator audit. **All four
+came back clean and all four asked the same question: is this number measuring
+what it claims to measure?**
+
+**Not one asked whether it generalises.**
+
+**Contamination and representativeness are different questions**, and *"checked
+four ways and held"* was true of the measurement and **false of the inference a
+reader would draw from it** — that it is a standing rate. Which is exactly how it
+had been used all week, including by its author.
+
+**A number can be perfectly measured and not be a rate.** Independence of checks
+is not the same as independence of *kinds* of check: **four instruments pointed
+at the same axis leave the other axis untested and feel like corroboration.**
+
+**Before reporting that a figure survived scrutiny, list what the scrutiny was
+about.** If every entry on the list is a variant of *"is it correct"*, the figure
+has not been asked whether it is typical.
+
+### And the difference is the whole of the decision
+
+**A third of names missed every day is a system to rebuild. One bad session is an
+incident to explain.** The same number supports both, and only the question of
+generalisation separates them.
+
+### A slower wrong scope is still wrong
+
+Offered a cadence change, Research declined it as the wrong remedy: **two of the
+day's five errors were local-desk censuses quoted as store-wide facts, and
+slowing down does not fix a scope error.** The change adopted instead is
+**naming the store in the sentence that carries the number**, so a claim cannot
+travel without it.
+
+**And the finding that overturned everything arrived because Ops ran something
+fast** — not because anyone was careful.
