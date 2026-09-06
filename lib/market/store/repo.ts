@@ -692,9 +692,27 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       -- COALESCE: the first crossing is never rewritten by a later flush, so a
       -- name that leaves and re-enters the threshold keeps its original entry.
       top12_entered_at = COALESCE(ticker_session.top12_entered_at, excluded.top12_entered_at),
-      qualified_at = excluded.qualified_at, qualified_price = excluded.qualified_price,
-      qualified_rvol = excluded.qualified_rvol, qualified_rank = excluded.qualified_rank,
-      latched = excluded.latched,
+      -- THE ENGINE DOCUMENTS AN INVARIANT THIS STATEMENT USED TO BREAK.
+      -- "latched" answers "did this name ever qualify today" and engine.ts says
+      -- it "is never cleared -- correctly, since it is what makes re-entry
+      -- possible". Nothing in the engine lowers it: one rise, no fall. But these
+      -- five took excluded.* directly, so the FIRST FLUSH AFTER A RESTART -- whose
+      -- runtime has latched nothing yet -- wrote NULL and 0 over the store.
+      --
+      -- It was invisible because it is harmless everywhere it does not matter.
+      -- An in-band name re-latches on the next flush and loses nothing; an
+      -- out-of-band name cannot, and out-of-band is the ONLY case the latch
+      -- exists to serve. On production 2026-09-03, after a 19:04 ET restart:
+      -- 57 of the 61 out-of-band latches destroyed, all 2,870 in-band ones
+      -- intact. A guard that only fails where it makes no difference passes
+      -- every test anyone thinks to write.
+      qualified_at = COALESCE(ticker_session.qualified_at, excluded.qualified_at),
+      qualified_price = COALESCE(ticker_session.qualified_price, excluded.qualified_price),
+      qualified_rvol = COALESCE(ticker_session.qualified_rvol, excluded.qualified_rvol),
+      qualified_rank = COALESCE(ticker_session.qualified_rank, excluded.qualified_rank),
+      -- MAX rather than COALESCE: 0 is not NULL, so COALESCE would keep a stored
+      -- 0 and block the real latch. A latch may only rise within a session.
+      latched = MAX(ticker_session.latched, excluded.latched),
       ah_volume = excluded.ah_volume, ah_participation = excluded.ah_participation,
       ah_percent_change = excluded.ah_percent_change,
       ah_reference_close = excluded.ah_reference_close,
@@ -705,9 +723,13 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       -- never restarted by a name leaving and re-entering the threshold.
       ah_entered_topn_at = COALESCE(ticker_session.ah_entered_topn_at, excluded.ah_entered_topn_at),
       ah_entered_rank = COALESCE(ticker_session.ah_entered_rank, excluded.ah_entered_rank),
-      ah_qualified_at = excluded.ah_qualified_at,
-      ah_qualification_price = excluded.ah_qualification_price,
-      ah_latched = excluded.ah_latched,
+      -- Same defect, same statement, same shape: "ahLatched" also has one rise
+      -- and no fall. Fixed together because leaving it would knowingly ship half
+      -- a repair to one SQL statement.
+      ah_qualified_at = COALESCE(ticker_session.ah_qualified_at, excluded.ah_qualified_at),
+      ah_qualification_price =
+        COALESCE(ticker_session.ah_qualification_price, excluded.ah_qualification_price),
+      ah_latched = MAX(ticker_session.ah_latched, excluded.ah_latched),
       -- A freeze is a freeze: once the bell's values are on disk, later flushes
       -- may fill a gap but must never overwrite what was actually captured.
       rth_final_close = COALESCE(ticker_session.rth_final_close, excluded.rth_final_close),
