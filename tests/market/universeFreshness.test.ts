@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { universeFreshness } from '@/lib/market/store/repo';
 import { isMarketDataExpected } from '@/lib/market/session';
 import { universeWarning } from '@/lib/dashboard/universe';
+import { shouldStampSessionEstablished } from '@/worker/runtime';
 
 /**
  * A stale universe cost a 53% mover on 2026-09-04 and nothing saw it. SGRX
@@ -181,4 +182,69 @@ describe('a session established at startup is a session established', () => {
   function state_(freshness: 'FRESH' | 'STALE' | 'UNKNOWN') {
     return { universeFreshness: freshness, universeUpdatedAt: '2026-09-06T21:52:59.058Z' };
   }
+});
+
+/**
+ * THE BAR BELONGS TO A SESSION, NOT TO A PROCESS.
+ *
+ * The first version of the startup stamp wrote unconditionally, and Integration
+ * caught that it was worse than the gap it closed. `UNIVERSE_MAX_AGE_MS` is 20
+ * hours, so a worker restarted hours after a correct roll SKIPS the refetch —
+ * correctly — and an unconditional stamp then sets the bar above a universe
+ * that was refreshed exactly when it should have been.
+ *
+ * **UNKNOWN speaks only once a roll is due; STALE speaks always.** So the naive
+ * fix turned a conditional false alarm into an unconditional one, triggerable
+ * by any restart inside a 20-hour window, with the outcome depending on what
+ * time of day someone deployed.
+ */
+describe('a restart inside the same session must not move the bar', () => {
+  const ROLL_AT = '2026-09-08T02:00:00.000Z';
+  const UNIVERSE_AT = '2026-09-08T02:00:12.000Z';
+  const RESTART_AT = '2026-09-08T10:00:00.000Z';
+
+  it('does not stamp when the recorded date is the session already running', () => {
+    expect(
+      shouldStampSessionEstablished({ recordedFor: '2026-09-08', tradingDate: '2026-09-08' }),
+    ).toBe(false);
+  });
+
+  /** The bar stays at the roll, so the roll's own refresh still clears it. */
+  it('leaves the desk FRESH across a mid-session restart', () => {
+    expect(
+      universeFreshness({ universeUpdatedAt: UNIVERSE_AT, tradingDateRolledAt: ROLL_AT }),
+    ).toBe('FRESH');
+  });
+
+  /**
+   * The defect itself, asserted rather than described: had the restart stamped,
+   * the SAME correctly-refreshed universe would have read STALE.
+   */
+  it('would have read STALE had the restart stamped, which is the bug', () => {
+    expect(
+      universeFreshness({ universeUpdatedAt: UNIVERSE_AT, tradingDateRolledAt: RESTART_AT }),
+    ).toBe('STALE');
+  });
+
+  it('stamps when startup establishes a date no roll recorded', () => {
+    expect(
+      shouldStampSessionEstablished({ recordedFor: '2026-09-04', tradingDate: '2026-09-08' }),
+    ).toBe(true);
+  });
+
+  /**
+   * ORDERING CONSTRAINT, NOT AN EDGE CASE.
+   *
+   * A store that has never carried the companion key stamps on first startup —
+   * right for a cold start, and WRONG for the live desk, whose `rolled_at` was
+   * repaired by hand. Deploying this and restarting mid-window against a store
+   * with `rolled_at` set and `rolled_for` absent reproduces the exact false
+   * STALE above. **The repair must write BOTH keys**, or the deploy re-opens
+   * what the repair closed.
+   */
+  it('stamps when no date was ever recorded, which is why the repair writes both keys', () => {
+    expect(
+      shouldStampSessionEstablished({ recordedFor: null, tradingDate: '2026-09-08' }),
+    ).toBe(true);
+  });
 });

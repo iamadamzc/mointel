@@ -111,6 +111,33 @@ const UNIVERSE_MAX_AGE_MS = 20 * 60 * 60 * 1000; // refresh roughly daily
  * Pure and exported so the decision can be tested without a runtime or a REST
  * client -- the failure above is a branch, not an integration.
  */
+/**
+ * WHETHER A SESSION STILL NEEDS ESTABLISHING, which is not the same question as
+ * whether this process has established one.
+ *
+ * The marker is a BAR that the universe stamp must clear. Moving it on every
+ * process start re-asks a question the roll already answered: the age guard is
+ * 20 hours, so a worker restarted at 10:00 after a 02:00 roll correctly SKIPS
+ * the refetch, and an unconditional stamp then leaves the universe stamped
+ * 02:00 behind a bar set at 10:00 — reading STALE against a universe that was
+ * refreshed exactly when it should have been.
+ *
+ * **That is worse than the gap it was meant to close**: UNKNOWN speaks only
+ * once a roll is due, STALE speaks always. It would have turned any restart
+ * inside a 20-hour window into a false alarm during the session, with the
+ * outcome depending on what time of day someone deployed.
+ *
+ * Keying on the trading date is what makes the bar belong to a SESSION rather
+ * than to a process. The roll moves it because the date moved; a restart within
+ * the same date does not, because nothing about that session changed.
+ */
+export function shouldStampSessionEstablished(input: {
+  recordedFor: string | null;
+  tradingDate: string;
+}): boolean {
+  return input.recordedFor !== input.tradingDate;
+}
+
 export function shouldRefreshUniverse(input: {
   cachedCount: number;
   updatedAt: string | null;
@@ -128,6 +155,7 @@ const UNIVERSE_ADMISSION_CACHE_MS = 10 * 60 * 1000;
 const CLASSIFIER_VERSION_KEY = 'classifier_version';
 /** When the roll that established the current trading date began. */
 const TRADING_DATE_ROLLED_AT_KEY = 'trading_date_rolled_at';
+const TRADING_DATE_ROLLED_FOR_KEY = 'trading_date_rolled_for';
 
 export interface RuntimeLogger {
   info: (message: string) => void;
@@ -430,6 +458,9 @@ export class MarketRuntime {
       await this.resolveSession(now);
       if (this.onSessionRoll) await this.onSessionRoll(now);
       setMeta(this.db, TRADING_DATE_ROLLED_AT_KEY, rolledAt);
+      // The date the stamp belongs to, so a later restart can tell that this
+      // session is already established and leave the bar where it is.
+      setMeta(this.db, TRADING_DATE_ROLLED_FOR_KEY, this.tradingDate);
       this.logger.info(`[session] trading date rolled ${from} -> ${this.tradingDate}`);
     } catch (error) {
       this.logger.error(`[session] trading-date roll failed: ${this.redactError(error)}`);
@@ -1638,7 +1669,17 @@ export class MarketRuntime {
    * cost a 53% mover is now caught at startup as well as at a roll.
    */
   markSessionEstablished(at: string): void {
+    if (
+      !shouldStampSessionEstablished({
+        recordedFor: getMeta(this.db, TRADING_DATE_ROLLED_FOR_KEY),
+        tradingDate: this.tradingDate,
+      })
+    ) {
+      return;
+    }
+
     setMeta(this.db, TRADING_DATE_ROLLED_AT_KEY, at);
+    setMeta(this.db, TRADING_DATE_ROLLED_FOR_KEY, this.tradingDate);
   }
 
   pruneRetention(): void {
