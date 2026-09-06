@@ -9138,3 +9138,69 @@ the names in question is one re-fetch each — feasible, and a separate decision
 **NOT BUILT. Reported under the hold, because it is a data-capture gap in
 `lib/research/` rather than anything trigger- or avoid-shaped**, and because the
 measurement Integration just declined to run becomes worth running if it lands.
+
+---
+
+**97. THE CLOSED LIST OF WAYS A RANK-4 NAME GETS NO JOB — AND TWO OF THE THREE
+CANNOT BE TESTED FROM STORED STATE.**
+
+*Ops eliminated four mechanisms for 09-04 and asked for a query rather than a
+theory. `queue.ts` is mine, so the list of paths is enumerable rather than
+guessable — which is not the same as being answerable.*
+
+### First, Ops's open question: what `SECONDARY_DISCOVERY` is
+
+**It is the DEFAULT branch of `sourceTypeForKind` — everything that is not SEC,
+COMPANY_IR, COMPANY_NEWSROOM or NEWSWIRE.** `domainPolicy.ts` records that
+mirror hosts are demoted to SECONDARY and then stored.
+
+**So it is web-search-discovered mirror and aggregator pages, and the caveat
+holds unchanged** — a mirrored press release carries a press release's timing.
+**It also adds a second caveat Ops could not have known to ask for: a mirror's
+timestamp may be when the MIRROR published, not when the issuer released.** For
+a 07:00 question that is a different quantity wearing the same name.
+
+### The closed list, from the code rather than from memory
+
+A name at rank 4 with **no job row at all** can only have been dropped where
+nothing is recorded. There are three such places:
+
+| # | path | testable from the store? |
+| --- | --- | --- |
+| A | `isEligible`: `activity === 'DEAD'` | **NO — current state** |
+| B | `isEligible`: classification outside `{COMMON_EQUITY, ADR_ADS, UNKNOWN}` | **NO — current state** |
+| C | never in the candidate query when it ran (`rvol_rank` had moved) | **NO — current state** |
+
+*(`evaluateRetry` and the re-ask clock record a decision and usually a job id;
+they are not silent, so they are not on this list.)*
+
+### AND THAT TABLE IS THE FINDING
+
+**All three gates read fields that are overwritten in place.** `activity` and
+`rvol_rank` hold their end-of-session values; `classification` holds today's.
+
+**A name DEAD at the close may have been ACTIVE when the queue ran. A name
+classified `ETF_ETP` last week may have read `UNKNOWN` — and therefore
+ELIGIBLE — on the day.** Reading any of them now answers a question about
+tonight, not about 09-04.
+
+**SO THE OBVIOUS QUERY — "what were the 19 names' activity and classification" —
+IS CONTAMINATED IN A KNOWN DIRECTION, and would produce a confident wrong
+answer.** Stated before it is run rather than after, which is the one thing that
+was not done this morning.
+
+### What IS durable, and it is thin
+
+`desk_events` and `research_jobs`. So the answerable questions are: **did the 19
+differ from the 37 in WHEN they entered, how long they held rank, or how many
+entry events they carry** — all reconstructable from `RVOL_RANK_ENTRY`, none
+requiring a current-state read.
+
+**That will not identify the gate. It can only say whether the 19 look like a
+population at all**, and a null there is informative: **if the 19 are
+indistinguishable from the 37 on every durable field, the cause is in state
+nobody kept, and no amount of querying will recover it.**
+
+**Five mechanisms eliminated now, none proposed.** The honest position is that
+09-04 may be unexplainable from what was stored, and **saying that early is
+cheaper than three more queries arriving at it.**
