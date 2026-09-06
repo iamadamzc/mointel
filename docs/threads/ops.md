@@ -6032,6 +6032,86 @@ from a deliberate policy refusal. **Do not treat a sudden broad denial as a
 verdict on the action.** Probe once with something benign, and if the whole tool
 is refusing, say so rather than redesigning the work around a phantom rule.
 
+## A safety audit has to read intent, not tokens — 2026-09-06
+
+**My audit rule for `trigger-lead-time.ts` was "zero mutating SQL". The newer,
+safer version deliberately contains an `UPDATE`.**
+
+It is a zero-row write used to PROVE read-only: `SQLITE_READONLY` is raised on
+execution regardless of row count, so it demands write capability and changes
+nothing either way. Research's first probe was `BEGIN IMMEDIATE`, which SQLite
+**grants** on a read-only handle, deferring refusal to the first real write — it
+aborted a run that was safe. **A check that fails for the wrong reason is worth
+no more than one that cannot fail.**
+
+**A keyword scan would have rejected the safer file and passed the one that only
+claimed to be safe.** Generally: **a proof of a negative usually has to perform
+the forbidden thing under conditions that make it harmless** — a zero-row write,
+a dry run, a canary — **and those are exactly what a shape-matching audit is
+tuned to catch.**
+
+**So read the probe and understand why it is harmless.** The audit is not "does
+this file contain a write", it is "can this handle write".
+
+The layer that held regardless of the file: **run it as `ubuntu`, which has
+group-read and no write on the store, so the filesystem refuses independently of
+both the handle and the pragma.** That guarantee depends on nothing in the file
+under audit. Keep using it — it is why there is more than one.
+
+## Prose inside a template literal is code — 2026-09-06
+
+A SQL comment explaining the latch fix contained `` `latched` `` in backticks.
+The SQL lives in a JS template literal, so **the backtick terminated the string
+and broke `lib/market/store/repo.ts` outright.** Vitest reported **"no tests"**,
+not a failure — the vanishing-test symptom, from a new cause.
+
+Caught by running the file rather than trusting the edit. **Never put a backtick
+in a comment inside `repo.ts`.**
+
+## The tree check has now done both jobs — 2026-09-06
+
+Twice in one evening `git rev-parse <sha>^{tree}` decided whether a gate
+transferred to the sha that actually shipped. Once the trees matched and it let
+a re-run be skipped honestly. **Twice they did not** — main moved between the
+gate base and the cherry-pick — **and the gate did not transfer.** Re-gated at
+the shipping sha both times.
+
+**A verification step that has only ever passed is indistinguishable from one
+that cannot fail.** This one has now passed and failed, which is what makes it
+evidence rather than ceremony. **Sha-matching would have hidden both**, because
+"gated at X, cherry-picked cleanly" is true and says nothing about the tree.
+
+Standing phrasing when reporting a gate: **the count, the tree it ran in, and
+the tree hash.** `A:/mointel-gate` has no `data/` directory — which makes it
+MORE representative of production, since `push-release.sh` ships via
+`git archive` and the shipping tree has no `data/` either — but it also means
+**the gate cannot see a primary-tree build failure.**
+
+## The latch wipe, on the deploy path — 2026-09-06
+
+`ticker_session`'s upsert took `excluded.*` for the eight latch fields while
+`top12_entered_at` beside them was COALESCEd **with a comment explaining why**.
+First flush after a restart wrote NULL and 0 over the store.
+
+**The engine had already written the invariant down.** `engine.ts`: *latched
+answers "did this name ever qualify today" and is never cleared.* One rise, no
+fall. **Two layers disagreed about an invariant one of them had documented** —
+a better description than "a field was unprotected".
+
+**Every deploy that restarts the market worker is a wipe until this ships**,
+which is why it rides the Tuesday-close deploy rather than waiting: a fix that
+misses the restart it could have ridden pays for the gap.
+
+`MAX`, not `COALESCE`, on the flags: **0 is not NULL**, so COALESCE would keep a
+stored 0 and block the real latch — a fix that broke what it protected.
+
+Two production numbers, and **neither travels alone**: **93%** of out-of-band
+latches destroyed (57 of 61, against 2,870 in-band untouched) is the severity
+against the population the latch serves; **1.8%** (50 of 2,847) is its share of
+qualified-but-no-job names. The local desk's 9% does not transfer — **a rate
+measured on one desk does not carry to another merely because the mechanism
+does.**
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
