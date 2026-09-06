@@ -5786,3 +5786,25 @@ instruction to withdraw arrives after the thing it withdraws has landed. **Decid
 before a request goes out, not after** — and when a withdrawal is sent anyway,
 say what should happen if it is already too late, because that is the branch that
 will actually run.
+
+### Three crossings in one evening, each a correct message made stale by flight time
+
+A withdrawal of a relay the recipient had already declined to act on; a wait
+issued on a write that was already done and verified; a hold that arrived after
+the deploy it would have prevented. **None was wrong when written. All three were
+wrong on arrival.**
+
+**The mitigation is Ops's and it is now standing for every seat: no instruction
+about a pending action goes out without naming the state the sender believes
+production is in** — sha and clock. Then a stale ruling is visible as stale in its
+own first line, and the recipient does not have to reconstruct which world it was
+written in.
+
+**Detection is downstream of the crossing; declaring your assumed state is
+upstream of it.** Stating the live sha in every report is what let these be
+caught at all — declaring it in every *instruction* is what stops them being sent.
+
+**And when a ruling does arrive late: the action is complete, so re-rule on the
+state that exists.** A rollback to reach a state that was only ever verified in
+theory, from one verified in production, is a second disturbance bought with
+nothing.
