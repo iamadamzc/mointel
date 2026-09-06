@@ -8771,3 +8771,85 @@ Production's split needs the same query on the box.
 **The fix is `lib/market/store/` — Ops's, not mine.** `COALESCE` for the four
 nullable fields; `latched` needs `MAX(ticker_session.latched, excluded.latched)`
 because 0 is not NULL and a latch may only rise within a session.
+
+---
+
+**92. THE EXPERIMENT IS UNPOWERED BY STRUCTURE, NOT BY BAD LUCK — AND THE
+OUTCOME-C RULE ANNOUNCED ITSELF LOUDEST WHERE IT WAS WRONGEST.**
+
+*Ops re-ran the corrected instrument on production, put the request to the
+trader in its own session rather than absorbing mine, and **honoured the power
+floor by withholding the direction figures from me.** The pre-registration
+exists so a direction is not seen and then reasoned about, **and that applies to
+the person who wrote it.***
+
+### THE FLOOR FIRES. n = 7 AND n = 4, POOLED 11, AGAINST A REGISTERED 20.
+
+| | 09-02 | 09-03 |
+| --- | ---: | ---: |
+| RVOL only | 38 | 29 |
+| GAIN only | 24 | 18 |
+| BOTH, measurable run | 16 | 16 |
+| already firing at 07:00 | 9 | 12 |
+| **BOTH FIRED IN-WINDOW** | **7** | **4** |
+
+**No direction. No winner. No within-name comparison. It was unpowered, and that
+is the whole of what the head-to-head produced.**
+
+**I have not asked Ops for the withheld block and I am not going to.**
+
+### AND MORE SESSIONS WILL NOT FIX IT
+
+| RVOL entries | before 07:00 | in window | after |
+| --- | ---: | ---: | ---: |
+| 09-02 (54) | **29** | 10 | 15 |
+| 09-03 (45) | **31** | 6 | 8 |
+| 08-17 (65) | **52** | 6 | 7 |
+
+**The 08-17 shape holds on production, so it is not an artefact of the local
+store.** Most of the paired set was selected on evidence from before he sat
+down.
+
+**THE UNCENSORED SET IS NOT SMALL BY BAD LUCK. IT IS SMALL BECAUSE THE
+PHENOMENON MOSTLY PRECEDES 07:00.** Seven sessions buy seven more small
+uncensored sets. **This is a finding about the experiment's feasibility, and it
+is the most useful thing the run produced** — Ops's reading, and it is right.
+
+**It also says where the phenomenon lives.** If selection has mostly happened
+before the window opens, then pre-computing a candidate set overnight is not a
+preference over intraday triggering — **it is where the thing being triggered on
+already is.**
+
+### THE INSTRUMENT DEFECT, WHICH IS THE FAMILY AGAIN, INVERTED
+
+The C test was `winnerMedian < PIPELINE_MEDIAN_S` → *"the pipeline is the
+work."* **Both dates printed that with NEGATIVE median leads — a trigger firing
+AFTER the move began, where a zero-latency pipeline still arrives late.**
+
+**IT STATED ITS CONCLUSION MORE CONFIDENTLY THE WORSE THE TRIGGER WAS.** A
+one-sided threshold on a quantity whose sign I never considered.
+
+Now three-way. **The pre-registered threshold is UNCHANGED — what is added is
+the region the rule never covered:**
+
+- **winner median ≤ 0 → C NOT ANSWERED.** No dossier arrives first at any
+  pipeline speed; latency is not what stands in the way.
+- 0 < median < 53s → C fires: ahead of the move, and the pipeline eats the lead.
+- median ≥ 53s → C does not fire.
+
+**DISCLOSURE, BECAUSE THE AMENDMENT'S HONESTY DEPENDS ON IT: reporting the
+defect required Ops to tell me the leads were NEGATIVE, so I knew that sign
+before writing the amendment.** I did not know the direction between triggers,
+and the amendment does not touch the threshold — but **the sign was seen first
+and the rule changed second, and that has to be on the record rather than
+inferred later.** The sign is itself a paired-set statistic at n=11 and is
+**not** reported as a finding.
+
+### OPS'S AUDIT POINT, WHICH IS A RULE
+
+Ops audited the previous version against *"zero mutating SQL"*. **The newer file
+DELIBERATELY ADDS AN `UPDATE` — the zero-row write that PROVES the handle is
+read-only. A keyword scan would have failed the safer file.**
+
+**A PROOF OF SAFETY CAN BE INDISTINGUISHABLE FROM THE HAZARD IT DISPROVES.**
+Filed in `README.md`.

@@ -509,12 +509,26 @@ function run(db: Database.Database, dates: string[], topN: number): void {
     `  clearing ${PIPELINE_P90_S}s:  RVOL ${clears(clean.map((r) => r.rvolLead), PIPELINE_P90_S)}   ` +
       `GAIN ${clears(clean.map((r) => r.gainLead), PIPELINE_P90_S)}`,
   );
+  /*
+   * THE RULE IS THREE-WAY, NOT TWO. Ops caught the two-way version printing
+   * "the pipeline is the work" on NEGATIVE median leads — a trigger firing
+   * AFTER the move began — where a zero-latency pipeline still arrives late.
+   * IT ANNOUNCED ITS CONCLUSION MORE CONFIDENTLY THE WORSE THE TRIGGER WAS.
+   *
+   * The pre-registered threshold is UNCHANGED. What is added is the region the
+   * rule never covered: C asks whether latency is what stands between a trigger
+   * and a useful dossier, and that question is VOID when the trigger is not
+   * ahead of the move at all.
+   */
   console.log(
     clean.length === 0
       ? '  C UNDECIDABLE — no name had both triggers fire inside the window.'
-      : winnerMedian < PIPELINE_MEDIAN_S
-        ? '  C FIRES. The trigger choice is not the binding constraint — the pipeline is the work.'
-        : '  C does not fire. The winner clears the pipeline median.',
+      : winnerMedian <= 0
+        ? '  C NOT ANSWERED. The winner fires AFTER the move begins, so no dossier arrives ' +
+          'first at ANY pipeline speed and latency is not what stands in the way.'
+        : winnerMedian < PIPELINE_MEDIAN_S
+          ? '  C FIRES. The trigger is ahead of the move but the pipeline eats the lead.'
+          : '  C does not fire. The winner clears the pipeline median.',
   );
 
   console.log('\n=== WHAT THIS CANNOT SETTLE');
