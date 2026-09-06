@@ -181,3 +181,70 @@ export function pricePointsView(
       `Range ${lo.toFixed(2)}-${hi.toFixed(2)}. Points mark minutes that traded; gaps did not.`,
   };
 }
+
+/**
+ * Direction over the window, as ONE colour for the whole mark.
+ *
+ * **The sign of (last close − first close) is ARITHMETIC, not judgement.** The
+ * only claim in this mark is the flat band, which is why it is derived below
+ * rather than chosen — and why one colour for the row is an OBSERVATION rather
+ * than a verdict.
+ *
+ * **Per-bar was rejected on one ground: the bars encode ACTIVITY.** Colouring
+ * them by DIRECTION would put two independent variables on a 3px glyph, which
+ * is a bivariate encoding at a size that cannot carry one.
+ *
+ * **Colour encodes DIRECTION, never VOLUME.** Red and green already mean down
+ * and up on this surface, so volume-in-colour would render a high-volume
+ * decline GREEN — the strongest bearish reading wearing the bullish colour.
+ */
+export type DirectionTone = 'pos' | 'neg' | 'warn' | null;
+
+/**
+ * **FLAT MEANS THE MOVE IS SMALLER THAN THE SPREAD** — a move he could not have
+ * captured.
+ *
+ * No number of mine decides this. A fixed percentage would be a threshold that
+ * does not declare itself, and it would be wrong for both a $2 and a $40 name
+ * at once. The spread is the band the instrument already provides, it is
+ * correct per name, and it is meaningful to HIM rather than to the engine:
+ * inside it, the move was not tradeable.
+ *
+ * **DEPENDENCY, and it is the one a future change to the telemetry source has
+ * to meet: `spreadPct` is CURRENT while the move spans t−6…t−2.** A spread that
+ * widened after the window misclassifies a real move as flat. Directionally
+ * right and honest in a way an invented band is not — but if `spreadPct` ever
+ * becomes a window-aligned figure, this comparison gets BETTER rather than
+ * merely different, and if it becomes a daily average it gets silently wrong.
+ *
+ * **Null is NEUTRAL and never YELLOW.** Yellow means MEASURED AND FLAT; neutral
+ * means NO PRICE TO JUDGE. Taking yellow for both would be one constant serving
+ * a fault and an absence, arriving as a palette decision — the failure this
+ * desk finds most often, and yellow is sitting right there looking like the
+ * natural "nothing to report" colour.
+ *
+ * **Two different absences fold into neutral here, deliberately and for now.**
+ * No price window at all, and a price window with no spread to judge it
+ * against. They are not the same fact — the second means the desk had prices
+ * and no band — and if they turn out to occur at different rates they will want
+ * telling apart. **Not a fifth state today.**
+ */
+export function directionTone(
+  price: { closes: (number | null)[] } | undefined | null,
+  spreadPct: number | null | undefined,
+): DirectionTone {
+  if (!price) return null;
+
+  const real = price.closes.filter((c): c is number => c !== null && Number.isFinite(c) && c > 0);
+  // One point is a price, not a move. No direction to state.
+  if (real.length < 2) return null;
+
+  if (spreadPct === null || spreadPct === undefined || !Number.isFinite(spreadPct)) return null;
+
+  const first = real[0]!;
+  const last = real[real.length - 1]!;
+  const movePct = ((last - first) / first) * 100;
+
+  if (Math.abs(movePct) <= Math.abs(spreadPct)) return 'warn';
+  return movePct > 0 ? 'pos' : 'neg';
+}

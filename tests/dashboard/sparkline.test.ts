@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { DEFAULT_ACTIVITY_CONFIG } from '@/lib/market/activity';
 import {
   SPARK_FULL_SCALE,
+  directionTone,
   pricePointsView,
   sparklineSpanLabel,
   sparklineView,
@@ -209,5 +210,108 @@ describe('sparsity is rendered, never gated', () => {
   it('emits discrete marks rather than a path', async () => {
     const source = await read();
     expect(source).not.toMatch(/<svg|polyline|<path/i);
+  });
+});
+
+/*
+ * COLOUR ENCODES DIRECTION, NEVER VOLUME. Red and green already mean down and
+ * up on this surface, so volume-in-colour would render a high-volume decline
+ * GREEN -- the strongest bearish reading wearing the bullish colour.
+ */
+describe('direction tone', () => {
+  const p = (closes: (number | null)[]) => ({ closes });
+
+  it('reads the sign of the move over the window', () => {
+    expect(directionTone(p([4, 5]), 0.1)).toBe('pos');
+    expect(directionTone(p([5, 4]), 0.1)).toBe('neg');
+  });
+
+  it('ignores holes and reads first to last TRADED minute', () => {
+    expect(directionTone(p([4, null, null, 5]), 0.1)).toBe('pos');
+  });
+
+  /*
+   * FLAT IS THE MOVE INSIDE THE SPREAD -- a move he could not have captured.
+   * No invented percentage: the band is the one the instrument already
+   * provides, and it is correct per name where one number is wrong for both a
+   * $2 and a $40 stock.
+   */
+  it('calls a move inside the spread flat', () => {
+    // 4.00 -> 4.01 is 0.25%, inside a 1% spread.
+    expect(directionTone(p([4, 4.01]), 1)).toBe('warn');
+  });
+
+  it('calls the same move real when the spread is tighter', () => {
+    // Identical move, 0.1% spread: now capturable, so it is direction.
+    expect(directionTone(p([4, 4.01]), 0.1)).toBe('pos');
+  });
+
+  it('sits on the band rather than near it', () => {
+    // Exactly at the spread is not beyond it.
+    expect(directionTone(p([100, 101]), 1)).toBe('warn');
+    expect(directionTone(p([100, 101.01]), 1)).toBe('pos');
+  });
+
+  it('treats a negative spread figure by magnitude', () => {
+    expect(directionTone(p([4, 4.01]), -1)).toBe('warn');
+  });
+
+  /*
+   * NEUTRAL IS NOT YELLOW. Yellow means MEASURED AND FLAT; null means NO PRICE
+   * TO JUDGE. One colour serving a fault and an absence is the failure this
+   * desk finds most often, and yellow looks like the natural "nothing to
+   * report" colour.
+   */
+  describe('the two absences, both neutral and neither yellow', () => {
+    it('has no direction without a price window', () => {
+      expect(directionTone(null, 1)).toBeNull();
+      expect(directionTone(undefined, 1)).toBeNull();
+    });
+
+    it('has no direction with prices but NO SPREAD to judge against', () => {
+      // A different absence from the one above -- the desk had prices and no
+      // band. Folded into neutral deliberately; not a fifth state today.
+      expect(directionTone(p([4, 5]), null)).toBeNull();
+      expect(directionTone(p([4, 5]), undefined)).toBeNull();
+    });
+
+    it('has no direction from a single point, because one price is not a move', () => {
+      expect(directionTone(p([4]), 1)).toBeNull();
+      expect(directionTone(p([null, 4, null]), 1)).toBeNull();
+    });
+  });
+});
+
+describe('the mark takes one colour, not one per bar', () => {
+  const read = () =>
+    import('node:fs').then((fs) =>
+      fs.promises.readFile('components/ActivitySparkline.tsx', 'utf8'),
+    );
+
+  /*
+   * The bars encode ACTIVITY. Colouring them by DIRECTION per bar would put two
+   * independent variables on a 3px glyph -- a bivariate encoding at a size that
+   * cannot carry one.
+   */
+  it('resolves one tone outside the bar map', async () => {
+    const source = await read();
+    const toneAt = source.indexOf('const tone = directionTone(');
+    const mapAt = source.indexOf('view.heights.map');
+    expect(toneAt).toBeGreaterThan(-1);
+    expect(mapAt).toBeGreaterThan(-1);
+    expect(toneAt).toBeLessThan(mapAt);
+  });
+
+  it('keeps neutral ink for the no-verdict case rather than a warn colour', async () => {
+    const source = await read();
+    // Sliced FORWARD: the class list follows the map opening, not precedes it.
+    const at = source.indexOf('view.heights.map');
+    expect(at).toBeGreaterThan(-1);
+    const block = source.slice(at, at + 1200);
+    // The instrument can see. Otherwise the assertions below are vacuous.
+    expect(block).toContain('rounded-[1px]');
+
+    expect(block).toContain('bg-ink-2');
+    expect(block).toContain("tone === 'warn'");
   });
 });

@@ -1,9 +1,16 @@
-import { pricePointsView, sparklineSpanLabel, sparklineView } from '@/lib/dashboard/sparkline';
+import {
+  directionTone,
+  pricePointsView,
+  sparklineSpanLabel,
+  sparklineView,
+} from '@/lib/dashboard/sparkline';
 
 interface ActivitySparklineProps {
   window: number[] | undefined;
   /** Minute closes over the same slots, aligned by `startsAt`. */
   price?: { startsAt: number; closes: (number | null)[]; covered: number } | null;
+  /** Live quote spread, which supplies the flat band. Null means no band. */
+  spreadPct?: number | null;
 }
 
 /**
@@ -14,9 +21,10 @@ interface ActivitySparklineProps {
  * moment it grades a name it is making a prediction claim and inherits a bar
  * this has not cleared. Show what happened; do not say whether it is good.
  */
-export function ActivitySparkline({ window, price }: ActivitySparklineProps) {
+export function ActivitySparkline({ window, price, spreadPct }: ActivitySparklineProps) {
   const view = sparklineView(window);
   const prices = pricePointsView(price, window?.length ?? 0);
+  const tone = directionTone(price, spreadPct);
 
   if (!view) {
     return (
@@ -69,7 +77,25 @@ export function ActivitySparkline({ window, price }: ActivitySparklineProps) {
         {view.heights.map((h, i) => (
           <span
             key={i}
-            className={`w-[3px] rounded-[1px] ${view.silent ? 'bg-ink-3/50' : 'bg-ink-2'}`}
+            /*
+             * ONE COLOUR FOR THE ROW, and neutral is not yellow.
+             *
+             * `warn` means MEASURED AND FLAT — the move was inside the spread,
+             * so it was not capturable. `null` means NO PRICE TO JUDGE, and it
+             * keeps the neutral ink. Collapsing the two would put one colour on
+             * a fault and an absence.
+             */
+            className={`w-[3px] rounded-[1px] ${
+              tone === 'pos'
+                ? 'bg-pos'
+                : tone === 'neg'
+                  ? 'bg-neg'
+                  : tone === 'warn'
+                    ? 'bg-warn'
+                    : view.silent
+                      ? 'bg-ink-3/50'
+                      : 'bg-ink-2'
+            }`}
             /*
              * A measured zero still draws a 1px floor, so a silent minute is
              * visibly a MEASUREMENT rather than a gap. Not-measured never reaches

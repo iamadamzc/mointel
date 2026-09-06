@@ -543,7 +543,11 @@ function DiscoveryRow({
       </td>
 
       <td className="px-1 py-1 text-right align-middle">
-        <ActivitySparkline window={row.demand?.activityWindow} price={row.demand?.priceWindow} />
+        <ActivitySparkline
+          window={row.demand?.activityWindow}
+          price={row.demand?.priceWindow}
+          spreadPct={t.spreadPct}
+        />
       </td>
 
       {showFloat ? (
