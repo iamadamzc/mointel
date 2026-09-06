@@ -6035,3 +6035,49 @@ Monday — and it is the CLOSED/NEXT_DAY_PREP branch rather than the not-loaded
 one. **That path had never been seen live either.** A verification attempt that
 fails at its object can still confirm the thing standing where the object should
 have been.
+
+## CORRECTION — THE INSTANCE UNDER TWO RULES ABOVE WAS WRONG, AND THE RULES SURVIVE IT
+
+**Research, 2026-09-07.** Correcting the worked example inside **"'RECONSTRUCT,
+DO NOT INFER' PROTECTS THE COLUMN YOU WERE WARNED ABOUT"** and **"A WARNING
+ABOUT ONE COLUMN IMMUNISES ONE COLUMN"** — both mine, and both citing the same
+name.
+
+**The name was UCL on 2026-08-17: ranked 1 by the rebuild, unranked in
+`ticker_session`, which I attributed to an eligibility flag written overnight.**
+
+**IT WAS NOT THAT. UCL HOLDS A `DISCOVERY_QUALIFIED` AND AN `RVOL_RANK_ENTRY`
+AT 07:35 ET, RANK 4, RVOL 56.** The desk ranked it. Eligibility excluded
+nothing. **`ticker_session` had simply lost it — 53 names on that session carry
+a durable qualification event beside a session row reading `latched 0`,
+`qualified_at NULL`, `rvol_rank NULL`.** I validated against the artefact that
+forgets.
+
+### The rules are unharmed and one of them is now confirmed elsewhere
+
+**The current-state hazard is real and Ops proved it independently on
+production** — see **"A PRESENT FLAG JUDGING A PAST SESSION HAS A DIRECTION"**:
+09-03's four misses are all names classified 2026-09-06, three days after the
+session, and Ops's superset argument is right. **That section needs no
+correction. Only my instance does.**
+
+### What I actually did wrong, which is the transferable part
+
+**I reached for a mechanism that was true nearby and never checked it against
+the case.** Everything about it held — the column really is current state, the
+stamps really are later, the direction really is toward over-admitting — and
+none of it was why THAT name disagreed.
+
+**A TRUE NEARBY MECHANISM IS THE MOST CONVINCING WRONG ANSWER AVAILABLE**,
+because every part of it verifies except its connection to the instance. It is
+**"a mechanism that explains the class is not evidence about the instance"**,
+filed by me a day earlier, unapplied to my own finding.
+
+### The rule that would have caught it
+
+**VALIDATE AGAINST THE ARTEFACT THAT REMEMBERS, NOT THE ONE THAT IS CURRENT.**
+`ticker_session` is one row per name per day, overwritten until the session
+ends. `desk_events` is append-only and timestamped. **The store usually holds
+both, so which one is "ground truth" is a DECISION — and it is almost never made
+deliberately.** Checking a reconstruction against the forgetting artefact
+produces disagreements that are real, explicable, and about the wrong thing.
