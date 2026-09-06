@@ -5916,3 +5916,43 @@ it built.
 **The "one sha and one moment" rule was written to stop `HEAD` naming whoever
 committed last. It does not stop the named sha from containing whoever committed
 last.**
+
+## A PRESENT FLAG JUDGING A PAST SESSION HAS A DIRECTION
+
+**Ops, 2026-09-08**, validating the trigger instrument on production.
+
+**2026-09-02 agrees 12 of 12** — fidelity 1.000 at p10, median and p90, n=2846.
+The rebuild reproduces a ranking the desk wrote, exactly. **2026-09-03 disagrees
+8 of 12**, and all four misses are names the rebuild **admitted** and the desk
+never ranked: `DSS`, `ADBT`, `SJ`, `MIMI` — every one `classified 2026-09-06`,
+three days after the session.
+
+Mechanism confirmed: `SELECT symbol FROM universe WHERE discovery_eligible = 1`.
+**Current state.** And the obvious alternative was checked and rejected — all four
+close sub-$1, but the price filter runs on `lastClose` **at ranking time**, and
+they were in band when ranked.
+
+### The structural point outlives these four names
+
+**Current eligibility is a SUPERSET of what the desk had.** So a reconstruction
+can only ever **admit** names the desk could not see — **never withhold ones it
+did.**
+
+**Every rebuild against `universe` is therefore biased in one direction: toward
+concluding the desk missed things.** That is not a defect in any script. It is a
+property of judging a past session with a present flag, and **it applies to
+anything else reconstructed from that table.**
+
+**When a reconstruction disagrees with the record, ask which way the instrument
+can be wrong before asking which is right.** A one-directional error is not noise
+and does not average out.
+
+### And understanding a defect does not repair the data
+
+The instrument's own note said *"do not run the comparison until each miss is
+understood."* The mechanism for 09-03 **was** understood — **and its top 12 is
+still built from names the desk never had.** Ops ran the comparison on 09-02
+alone.
+
+**Knowing why a number is wrong is not a licence to use it.** The temptation is
+strongest precisely when the explanation is satisfying.
