@@ -5849,3 +5849,41 @@ than a consequence of an audit.
 
 **An audit that finds a defect in the auditor's own work is doing what an audit
 is for.**
+
+## THEY LOOK LIKE CONCLUSIONS BECAUSE THEY ARE SPECIFIC
+
+**Design, 2026-09-08**, on the third document of its own this week that would
+have read as a brief: the provenance block, the quoted coverage figures, and a
+populated `screen` column. **Each time the remedy was the same — say what the
+thing IS, at the point where someone would misread it.**
+
+**A populated column, a quoted number and a marked caveat share one failure mode:
+specificity reads as conclusion.** A precise figure looks measured. A filled cell
+looks like a requirement. A careful caveat looks like a finding. **The more exact
+the artefact, the more authority a reader lends it — and the less likely they are
+to ask what it was for.**
+
+**So the label goes where the misreading happens**, not in a preamble: at the
+figure, in the cell's own annotation, beside the column header that invites the
+wrong reading.
+
+### And the warning had to run in both directions
+
+The `screen` column began with one guard — an empty cell is not an argument for
+**dropping** a field. **It needed the mirror: a full cell is not an argument for
+promoting one.** The column records where a field is presented *today*, hover and
+detail included, and **a field visible on hover is rendered, not pending.**
+
+**A one-directional warning on a two-directional artefact is half a warning**, and
+the missing half is always the direction the author was not worried about.
+
+### Downgraded from finding to open question, rather than deleted or left standing
+
+`Flush From High %` is hover-only, which §10 forbids. **The trader's ruling that
+hover is the right home for commentary does not obviously cover a MEASUREMENT** —
+so the flag was not deleted, and it was not left standing as a defect either.
+
+**Two wrong moves were available and both were tidier than the right one.** The
+route matters more than the verdict: a fix here changes what the board presents,
+which is a proposal through Integration, **never a tidy-up done while already in
+the file.**
