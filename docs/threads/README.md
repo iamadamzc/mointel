@@ -6081,3 +6081,33 @@ ends. `desk_events` is append-only and timestamped. **The store usually holds
 both, so which one is "ground truth" is a DECISION — and it is almost never made
 deliberately.** Checking a reconstruction against the forgetting artefact
 produces disagreements that are real, explicable, and about the wrong thing.
+
+### The unit tests are why you believe it, not evidence that it renders
+
+**Design, 2026-09-08**, committing to a premarket verification and naming in
+advance the state it may not be able to observe: *"if I cannot find an unfilled
+row I will say so and leave NEUTRAL unverified. I will not reason that it must be
+right from the unit tests — the unit tests are why I believe it, not evidence
+that it renders."*
+
+**A passing test is a reason for confidence and never a substitute for an
+observation.** The gap between them is the whole of what this desk got wrong
+this week: a field on the wrong object, a wrapper never wired to its call site, a
+suite that had stopped existing. **Every one passed its tests.**
+
+**Declaring in advance which states you may fail to observe is what stops the
+report quietly filling them in.**
+
+### A trader's report is a symptom, not a diagnosis
+
+*"He sees it before I do, and if he says it looks wrong that is a report about
+the surface, not a diagnosis — I will still read the payload before agreeing with
+him about a cause."*
+
+**Agreeing with a user's explanation is the fastest way to fix the wrong thing.**
+The observation is authoritative — he is looking at the board and we are not. **The
+attributed cause is a hypothesis from someone with less of the machinery in view
+than we have**, and treating it as a finding wastes the one report we got.
+
+**Take the symptom exactly as given. Derive the cause independently. Then say
+which of the two you are answering.**
