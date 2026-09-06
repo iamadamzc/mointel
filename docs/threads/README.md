@@ -5711,3 +5711,32 @@ universe.
 0.833, p90 0.995. A sum of minute bars is not the feed's running total. **The
 shortfall is not uniform, so it can reorder names close in RVOL**, which is the
 ordering the entire comparison rests on. **Report body, not a footnote.**
+
+### Repair ONE instance and re-test — a batched repair hides the mechanism
+
+**Design, 2026-09-07**, on how the relocating symptom was seen at all: *"I only
+saw it because I re-ran the build after fixing ONE file instead of fixing them
+all at once. Batching the repair would have produced a clean build and no
+mechanism."*
+
+**A batch repair and a correct diagnosis are in tension.** Fixing everything at
+once gets you a green build and no information; **fixing one and re-running tells
+you whether the fault moves, stays, or multiplies** — which is the difference
+between knowing the mechanism and having guessed well.
+
+**Take the cheapest single repair first, and re-run before taking the rest.**
+
+### And the limit of what an output can prove about a behaviour
+
+The exclusion was verified by measuring the tracer's **output**: 13 route traces
+and 260 references before, **0 and 0 after — including the middleware trace, the
+case the documentation explicitly does not promise.** Measured rather than cited,
+because the documented caveat said those options do not affect that route type.
+
+**What is NOT proven: that the tracer stopped READING the files, rather than
+merely omitting them from the output.** The inference is from the failing stack —
+the read sat inside the trace-building path — **so the honest statement is that
+the tracer no longer emits them, and the mechanism says that is because it no
+longer hashes them.** Strong, and not a reproduction.
+
+**An absent output is evidence about the output.** Say which one you measured.
