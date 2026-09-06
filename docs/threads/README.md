@@ -5177,3 +5177,43 @@ its name so nobody generalises it away.**
 for all ten dates against **live production**, not against the snapshot that
 raised the question. `ticker_session` is untouched by minute-bar retention —
 **confirmed rather than probable.**
+
+## WHEN YOU NEED A BAND, LOOK FOR ONE THE INSTRUMENT ALREADY PROVIDES
+
+**Design, 2026-09-06**, asked to define "flat" for a direction-coloured mark and
+refusing to pick a percentage.
+
+**Any number chosen would be invented, and an invented band is a threshold that
+does not declare itself** — the failure this desk has now rejected twice.
+`spreadPct` is already on telemetry, from the live quote. **So FLAT means the
+window's move is smaller than the current spread: a move he could not have
+captured.**
+
+**Derived rather than chosen.** Correct per name, where one fixed percentage is
+wrong for both a $2 and a $40 stock. **And meaningful to the trader rather than
+to the engine** — it says the move was not tradeable, which is exactly why he
+would want it dimmed instead of shown as movement.
+
+**The caveat is carried, not hidden:** the spread is CURRENT while the move spans
+t−6…t−2, so a spread that widened after the window misclassifies. **Directionally
+right, and honest in a way an invented band cannot be.**
+
+### And a fourth state that yellow is sitting right next to
+
+**Yellow means MEASURED AND FLAT. Neutral means NO PRICE TO JUDGE.** With no
+price window, or no spread to judge against, there is no direction to state —
+and **yellow is the obvious wrong answer because it looks like the natural
+"nothing to report" colour.** One constant for a fault and an absence, arriving
+as a palette decision.
+
+### A correction to the Integration framing that made the answer possible
+
+Integration framed one colour per row as *"a claim you are making"* and per-bar as
+*"an observation you are showing"*. **The sign of (last close − first close) is
+arithmetic, not judgement.** The only claim in the mark is **the flat band** — so
+once the band is derived, **per-row is an observation too**.
+
+**That refinement is load-bearing rather than pedantic:** it located the single
+judgement in the design, which is what made it answerable from an existing
+quantity instead of from taste. **Find the one place a design actually decides
+something, and the rest stops needing defending.**
