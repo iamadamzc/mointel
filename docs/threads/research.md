@@ -8520,67 +8520,97 @@ trigger would be tuning the wrong stage.
 because it changes what gets built rather than which of two built things gets
 kept.
 
-**89b. THE INSTRUMENT IS BUILT AND VALIDATED. THE VALIDATION FAILED, AND THAT IS
-THE RESULT.** — `worker/trigger-lead-time.ts`
+**89b. THE RVOL TRIGGER CANNOT BE RECONSTRUCTED — AND DOES NOT NEED TO BE,
+BECAUSE THE DESK WROTE IT DOWN.** — `worker/trigger-lead-time.ts`
 
-*Integration: **"RUN IT."** It runs. It cannot yet run on the sample, and the
-dry run found something that changes how the sample must be read.*
+*Integration: **"RUN IT."** It runs. It cannot yet run on the sample, and three
+things found while building it change what the sample can be asked.*
 
-### It reproduces eleven of the desk's twelve ranks
+### CORRECTION FIRST — I published a wrong diagnosis and here is the right one
 
-Validated against `2026-08-17` — the only session with minute bars available off
-the box. The check is not "does it produce a plausible ranking": it is **does it
-reproduce a ranking the desk actually wrote.** That check CAN fail. It did.
+My first pass validated the rebuild against `ticker_session.rvol_rank`, found
+UCL ranked first in the rebuild and unranked by the desk, and blamed
+**`universe.discovery_eligible` being current state, stamped the day after the
+session.** I committed that, wrote a cross-thread rule from it, and sent it to
+Integration.
 
-```
-stored  top12: JFU IVF IPST SLE CRGO TRUG NOMA FSHP MYSZ XOS GRNQ RPGL
-rebuilt top12: UCL JFU IVF IPST SLE CRGO TRUG NOMA FSHP MYSZ XOS GRNQ
-```
+**IT IS WRONG. UCL HOLDS BOTH A `DISCOVERY_QUALIFIED` AND AN `RVOL_RANK_ENTRY`
+EVENT AT 07:35 ET, AT RANK 4, WITH RVOL 56.** The desk did rank it. The
+eligibility flag excluded nothing.
 
-### The twelfth name is the finding
+**What actually happened is that `ticker_session` LOST IT.** That row reads
+`qualified_at NULL`, `latched 0`, `rvol_rank NULL`, and **53 names on that
+session hold a durable qualification event beside a session row that remembers
+none of it.** I validated against the artefact that forgets, and blamed a
+mechanism that was merely nearby and true.
 
-**UCL is rank 1 in the rebuild and unranked by the desk**, and the reason is not
-the reconstruction.
+**A MECHANISM THAT EXPLAINS THE CLASS IS NOT EVIDENCE ABOUT THE INSTANCE** —
+the rule I put in the README on 2026-09-06, applied to nothing. The
+universe-staleness fact is real and still disqualifies that column; **it was not
+the cause of this miss and I did not check the instance before publishing.**
 
-**`universe.classification` and `discovery_eligible` are CURRENT STATE,
-overwritten in place. 13,072 of 13,089 rows carry an `updated_at` of
-2026-08-18 — the day AFTER the session being validated.** So the eligibility
-flag being applied is not the one the desk had; UCL was classified into
-eligibility overnight, and the rebuild admitted a name the desk could not see.
+### THE REAL FINDING: the RVOL trigger is not reconstructable
 
-**The same overwrite trap as `percent_change`, one table over.** Integration
-warned me off that column by name. **This one is worse: `percent_change` can be
-reconstructed from bars, and the flag's history is not recorded anywhere.**
+Against the recorded in-window entries the rebuild reproduced **ONE OF SIX.**
+Not an arithmetic fault — **it is ranking a different field.**
 
-### What it does and does not bias
+**The engine promotes symbols as it first sees them, so its ranked field is
+small and growing through the morning.** Its own pre-07:00 payloads carry
+**top-twelve ranks at RVOL 0.007**, which is only possible in a field of about
+twelve. A rebuild from `minute_bars` has perfect hindsight about which symbols
+existed at 04:00 and ranks hundreds. **The promotion history is recorded
+nowhere.**
 
-**It is applied identically to both triggers, so it is not directional between
-RVOL and gain.** It can still displace a name from a top twelve and move a fire
-time, so it is not harmless either.
+**So the RVOL trigger is READ from `desk_events.RVOL_RANK_ENTRY` — the firing,
+timestamped, as it happened — and only the gain trigger is reconstructed,
+because the desk has never run it.**
 
-**So it is MEASURED on the dates actually compared rather than assumed small.**
-`--validate` prints every miss with the date its classification was written, and
-runs on 09-02 and 09-03 before the comparison does. A bare `DISAGREES` withholds
-the one thing needed to act on it.
+### WHICH MAKES THE TWO SIDES ASYMMETRIC, AND THE DIRECTION IS STATED
 
-### And 08-17 was the wrong session to validate on
+**The reconstructed gain field is at least as large as the desk's was at the
+same minute — measured at 991 to 2,591 names against a desk field that was
+smaller and is unrecorded. A larger field is harder to enter, so THE BIAS RUNS
+AGAINST GAIN**, against the trader's own pick.
 
-**Only 17 universe rows were classified on 08-17 and 13,072 the next day** — the
-classifier was rolling out across that very session. The dry run therefore says
-the instrument is sound and says nothing yet about a settled universe.
+**A GAIN WIN IS THEREFORE STRONGER THAN IT LOOKS AND A GAIN LOSS IS
+CONFOUNDED.** Not a caveat — a rule for reading the result.
+
+### AND A RANKING OVER TWELVE OR FEWER CANDIDATES SELECTED NOBODY
+
+A minute whose eligible field is at most the top-N size admits everyone, so
+membership of it is not a fire. **A check that cannot fail, one layer down in a
+trigger.** Those minutes are counted and excluded rather than recorded as
+selections.
+
+### DISCLOSED: I SAW A NUMBER THAT BEARS ON MY OWN PREDICTION
+
+On 08-17 — not a sample session — **52 of 65 RVOL top-twelve entries happened
+BEFORE 07:00 ET, six inside the window, seven after.** That is consistent with
+my registered "RVOL fires earlier in clock time" and I saw it before the sample
+ran. **On the record so it cannot be presented later as a prediction confirmed.**
+
+### SO A POWER FLOOR IS REGISTERED NOW, BEFORE THE SAMPLE
+
+If the sample resembles 08-17, the paired in-window set is single digits and a
+median difference means nothing — **the census-prediction-3 failure, repeated at
+the top level.**
+
+**BELOW n = 20 PAIRED UNCENSORED NAMES, NO DIRECTION IS REPORTED AT ALL.** Only
+the rates, the stratum counts and the statement that the comparison was
+unpowered. Fixed before looking.
 
 ### The second fidelity number, which has no fix
 
-**Rebuilt cumulative volume is 0.963 of the stored figure at the median, 0.833
-at p10, 0.995 at p90.** A sum of minute bars is not the feed's running total.
-**The shortfall is not uniform, so it can reorder names close in RVOL** — and
-RVOL is the ordering the whole comparison rests on. Reported with the result,
-not filed as a caveat.
+**Rebuilt cumulative volume is 0.954 of the stored figure at the median, 0.790
+at p10.** A sum of minute bars is not the feed's running total. It no longer
+enters the result — RVOL is read, not rebuilt — **but it is why the rebuild was
+never going to reproduce a volume ranking exactly, and it is recorded so the
+next person does not try.**
 
 ### BLOCKED
 
-**Production is the only store holding 09-02 and 09-03.** Local has 08-17 and a
-truncated 08-18 and nothing else. **The SSH read to
-`98.85.49.227:/var/lib/mointel/market.db` was refused by this session's
-permission layer, on both Bash and PowerShell.** Not retried further — a denial
-worked around is a denial ignored.
+**Production is the only store holding 09-02 and 09-03**; locally there is 08-17
+and a truncated 08-18. **The SSH read to `98.85.49.227:/var/lib/mointel/market.db`
+was refused by this session's permission layer on both Bash and PowerShell, and
+again after he approved it — the block is not something a reply in chat lifts.**
+Not routed around, and not handed to another session to run on my behalf.

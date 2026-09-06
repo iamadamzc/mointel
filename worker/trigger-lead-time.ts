@@ -4,47 +4,59 @@
  *   npx tsx worker/trigger-lead-time.ts --validate --dates=2026-08-17
  *   npx tsx worker/trigger-lead-time.ts --run --dates=2026-09-02,2026-09-03
  *
- * Design and pre-registration: `docs/threads/research.md` items 89 and 89a.
+ * Design and pre-registration: `docs/threads/research.md` items 89, 89a, 89b.
  * READ THEM BEFORE READING A NUMBER OUT OF THIS. Both predictions were recorded
  * before the instrument existed, which is the only reason its output means
  * anything.
  *
- * ── WHAT IT MUST NOT DO ───────────────────────────────────────────────────
+ * ── THE TWO SIDES ARE NOT MEASURED THE SAME WAY, AND THEY CANNOT BE ───────
  *
- * IT NEVER READS `percent_change`. That column is overwritten in place, so its
- * value at read time is the LAST one of the session rather than the one that was
- * true at the minute being reconstructed. Gain is rebuilt from `minute_bars`
- * closes against the session's stored `previous_close`.
+ * THE RVOL TRIGGER IS NOT RECONSTRUCTED. IT IS READ. `desk_events` holds a
+ * timestamped `RVOL_RANK_ENTRY` for every entry into the top twelve — the
+ * trigger firing, written down as it happened.
  *
- * RVOL IS THE DESK'S OWN DEFINITION — cumulative session volume over the
- * 20-session average, denominator fixed for the whole session (`lib/market/
- * rvol.ts`). NOT windowed, not time-of-day adjusted. A windowed reconstruction
- * would compare against a trigger the desk does not run.
+ * IT CANNOT BE RECONSTRUCTED, AND THAT WAS MEASURED RATHER THAN ASSUMED. The
+ * engine promotes symbols as it first sees them, so its ranked field is small
+ * and growing through the morning: its own pre-07:00 payloads show TOP-TWELVE
+ * RANKS AT RVOL 0.007, which is only possible in a field of about twelve. That
+ * promotion history is recorded nowhere. A rebuild from `minute_bars` has
+ * perfect hindsight about which symbols existed at 04:00, ranks a field of
+ * hundreds instead, and reproduced ONE of six in-window entries on 2026-08-17.
+ * The rebuild is not wrong about volume — it is ranking a different field.
+ *
+ * THE GAIN TRIGGER HAS NO SUCH RECORD BECAUSE THE DESK HAS NEVER RUN IT, so it
+ * is reconstructed: bar closes against the session's stored `previous_close`.
+ * NEVER from `percent_change`, which is overwritten in place and holds only the
+ * last value of the session.
+ *
+ * ── SO THE RESIDUAL BIAS IS NAMED AND ITS DIRECTION IS STATED ─────────────
+ *
+ * The reconstructed gain field is AT LEAST AS LARGE as the field the desk was
+ * ranking at the same minute, and a larger field is harder to enter. THE BIAS
+ * RUNS AGAINST GAIN — against the trader's own pre-registered pick.
+ *
+ * A GAIN WIN IS THEREFORE STRONGER THAN IT LOOKS AND A GAIN LOSS IS
+ * CONFOUNDED. That asymmetry is a property of the evidence that exists, not a
+ * choice, and it travels with every number below.
  *
  * ── THE REFEREE WAS CHECKED FOR THE BIAS EXCLUDED FROM THE CONTESTANTS ────
  *
  * `DISCOVERY_QUALIFIED` looks like a trigger-independent definition of a
  * qualifying move and is gated on `result.rank` existing (`engine.ts:1295`), so
- * it fires on ENTRY TO THE RVOL-RANKED POPULATION. Using it would have handed
+ * it fires on ENTRY TO THE RVOL-RANKED POPULATION. Using its TIMING would hand
  * the test to RVOL by construction. So there is no threshold here at all: the
  * move is the name's largest run inside the window, and lead time is reported
  * ACROSS THE DISTRIBUTION of run size.
  *
- * ── THE LIMIT THAT CANNOT BE FIXED FROM THE STORE ─────────────────────────
+ * Its MEMBERSHIP is used, and the split is deliberate. *Which names the desk
+ * considered tradable equity in the band that day* is a classification fact
+ * carrying no ranking information; *when* a name qualified is rank-derived and
+ * is excluded. Membership feeds the gain field only.
  *
- * ELIGIBILITY IS READ AS OF NOW, NOT AS OF THE SESSION. `universe` is current
- * state: `classification` and `discovery_eligible` are overwritten in place and
- * `updated_at` keeps only the LAST write, so a session predating a
- * reclassification is judged by a flag the desk did not have. THE SAME
- * OVERWRITE TRAP AS `percent_change`, one table over, and unlike that one there
- * is no reconstruction available — nothing records the flag's history.
- *
- * It is applied identically to both triggers, so it is not directional between
- * them; it can still displace a name from one top N and shift a fire time. The
- * `--validate` pass MEASURES the disagreement on the session being used rather
- * than assuming it is small, and prints every miss with the date its
- * classification was written. RUN IT ON THE COMPARISON DATES, not only on a
- * convenient one.
+ * `universe.classification` and `discovery_eligible` are NOT used: they are
+ * current state, 13,072 of 13,089 rows carry a single `updated_at`, and they
+ * cannot say what the desk believed on an earlier day. The qualified-event set
+ * replaces them, and the fallback to them is loud.
  */
 
 import Database from 'better-sqlite3';
@@ -88,8 +100,15 @@ function etMinuteOfDay(iso: string): number {
   return (hour % 24) * 60 + minute;
 }
 
-const PRICE_MIN = Number(process.env.DISCOVERY_PRICE_MIN ?? 1);
-const PRICE_MAX = Number(process.env.DISCOVERY_PRICE_MAX ?? 20);
+const quantile = (sorted: number[], q: number): number | null => {
+  if (!sorted.length) return null;
+  const pos = (sorted.length - 1) * q;
+  const lo = Math.floor(pos);
+  const hi = Math.ceil(pos);
+  return lo === hi ? sorted[lo]! : sorted[lo]! + (sorted[hi]! - sorted[lo]!) * (pos - lo);
+};
+const fmt = (value: number | null | undefined, digits = 1) =>
+  value === null || value === undefined ? '-' : value.toFixed(digits);
 
 interface Bar {
   symbol: string;
@@ -98,22 +117,13 @@ interface Bar {
   volume: number;
 }
 
-interface SessionMeta {
-  baselineAverage: number | null;
-  previousClose: number | null;
-  storedRank: number | null;
-  storedCumulative: number | null;
-}
-
-/** Per name: what the desk would have had in hand, minute by minute. */
 interface Track {
   symbol: string;
-  cumulativeVolume: number;
   lastClose: number | null;
-  latched: boolean;
-  /** Slot index at which each trigger FIRST put the name in the top N. */
-  firstRvolFire: number | null;
+  /** ET minute at which the reconstructed gain ranking first put it in the top N. */
   firstGainFire: number | null;
+  /** In the gain top N at the first ranked in-window minute: fire time censored. */
+  gainInAtOpen: boolean;
   /** Close series over the window, by slot; null where nothing traded. */
   closes: (number | null)[];
 }
@@ -146,59 +156,68 @@ function largestRun(
   return best && best.ratio > 1 ? best : null;
 }
 
-const quantile = (sorted: number[], q: number): number | null => {
-  if (!sorted.length) return null;
-  const pos = (sorted.length - 1) * q;
-  const lo = Math.floor(pos);
-  const hi = Math.ceil(pos);
-  return lo === hi ? sorted[lo]! : sorted[lo]! + (sorted[hi]! - sorted[lo]!) * (pos - lo);
-};
-const fmt = (value: number | null | undefined, digits = 1) =>
-  value === null || value === undefined ? '-' : value.toFixed(digits);
+/**
+ * The as-of eligible set, from the event stream rather than a current-state flag.
+ *
+ * Every name the desk ranked while in band emitted `DISCOVERY_QUALIFIED`, and
+ * that event is durable. MEMBERSHIP ONLY — the timing is rank-derived.
+ */
+function eligibleAsOf(db: Database.Database, date: string): { set: Set<string>; source: string } {
+  const rows = db
+    .prepare(
+      `SELECT DISTINCT symbol FROM desk_events
+        WHERE trading_date = ? AND type = 'DISCOVERY_QUALIFIED' AND symbol IS NOT NULL`,
+    )
+    .all(date) as Array<{ symbol: string }>;
+
+  if (rows.length > 0) {
+    return { set: new Set(rows.map((row) => row.symbol)), source: 'DISCOVERY_QUALIFIED events' };
+  }
+
+  const fallback = db
+    .prepare('SELECT symbol FROM universe WHERE discovery_eligible = 1')
+    .all() as Array<{ symbol: string }>;
+  console.log(
+    `  !! ${date}: no qualification events. FALLING BACK TO universe.discovery_eligible, ` +
+      'which is CURRENT STATE and cannot say what the desk believed that day.',
+  );
+  return { set: new Set(fallback.map((row) => row.symbol)), source: 'universe (CURRENT STATE)' };
+}
+
+/** The RVOL trigger as the desk recorded it: first top-N entry per name, in ET minutes. */
+function recordedRvolFires(db: Database.Database, date: string): Map<string, number> {
+  const rows = db
+    .prepare(
+      `SELECT symbol, MIN(ts) AS ts FROM desk_events
+        WHERE trading_date = ? AND type = 'RVOL_RANK_ENTRY' AND symbol IS NOT NULL
+        GROUP BY symbol`,
+    )
+    .all(date) as Array<{ symbol: string; ts: string }>;
+  return new Map(rows.map((row) => [row.symbol, etMinuteOfDay(row.ts)]));
+}
 
 interface Reconstruction {
   tracks: Map<string, Track>;
-  meta: Map<string, SessionMeta>;
-  /** The end-of-session RVOL ordering, kept so the validation pass can check it. */
-  finalRvolOrder: string[];
+  eligibleSource: string;
+  eligibleCount: number;
+  /** Eligible names holding a close, per in-window minute — the field gain competed in. */
+  fieldSizes: number[];
+  thinMinutes: number;
 }
 
-function reconstruct(db: Database.Database, date: string, topN: number): Reconstruction {
-  const meta = new Map<string, SessionMeta>();
-  const metaRows = db
+function reconstructGain(db: Database.Database, date: string, topN: number): Reconstruction {
+  const previousCloses = new Map<string, number>();
+  for (const row of db
     .prepare(
-      `SELECT symbol, baseline_average, previous_close, rvol_rank, cumulative_volume
-         FROM ticker_session WHERE trading_date = ?`,
+      `SELECT symbol, previous_close FROM ticker_session
+        WHERE trading_date = ? AND previous_close > 0`,
     )
-    .all(date) as Array<{
-    symbol: string;
-    baseline_average: number | null;
-    previous_close: number | null;
-    rvol_rank: number | null;
-    cumulative_volume: number | null;
-  }>;
-  for (const row of metaRows) {
-    meta.set(row.symbol, {
-      baselineAverage: row.baseline_average,
-      previousClose: row.previous_close,
-      storedRank: row.rvol_rank,
-      storedCumulative: row.cumulative_volume,
-    });
+    .all(date) as Array<{ symbol: string; previous_close: number }>) {
+    previousCloses.set(row.symbol, row.previous_close);
   }
 
-  const eligibleClass = new Set<string>(
-    (
-      db.prepare('SELECT symbol FROM universe WHERE discovery_eligible = 1').all() as Array<{
-        symbol: string;
-      }>
-    ).map((row) => row.symbol),
-  );
+  const { set: eligible, source: eligibleSource } = eligibleAsOf(db, date);
 
-  /*
-   * EVERY bar of the session is accumulated, not only the window's, because
-   * cumulative session volume runs FROM THE SESSION START — an RVOL rebuilt
-   * from 07:00 would be a different and smaller trigger than the live one.
-   */
   const bars = db
     .prepare(
       `SELECT symbol, ts, close, volume FROM minute_bars WHERE trading_date = ? ORDER BY ts ASC`,
@@ -212,11 +231,9 @@ function reconstruct(db: Database.Database, date: string, topN: number): Reconst
     if (!existing) {
       existing = {
         symbol,
-        cumulativeVolume: 0,
         lastClose: null,
-        latched: false,
-        firstRvolFire: null,
         firstGainFire: null,
+        gainInAtOpen: false,
         closes: new Array<number | null>(slotCount).fill(null),
       };
       tracks.set(symbol, existing);
@@ -224,8 +241,6 @@ function reconstruct(db: Database.Database, date: string, topN: number): Reconst
     return existing;
   };
 
-  // Grouped by ET minute so the ranking happens cross-sectionally, per minute,
-  // the way the engine's flush tick does it.
   const byMinute = new Map<number, Bar[]>();
   for (const bar of bars) {
     const minute = etMinuteOfDay(bar.ts);
@@ -233,158 +248,103 @@ function reconstruct(db: Database.Database, date: string, topN: number): Reconst
     if (list) list.push(bar);
     else byMinute.set(minute, [bar]);
   }
-  const orderedMinutes = [...byMinute.keys()].sort((a, b) => a - b);
-  const lastMinute = orderedMinutes[orderedMinutes.length - 1];
 
-  let finalRvolOrder: string[] = [];
+  const fieldSizes: number[] = [];
+  let thinMinutes = 0;
+  let rankedAMinute = false;
 
-  for (const minute of orderedMinutes) {
+  for (const minute of [...byMinute.keys()].sort((a, b) => a - b)) {
     for (const bar of byMinute.get(minute)!) {
       const entry = track(bar.symbol);
-      entry.cumulativeVolume += bar.volume ?? 0;
       if (Number.isFinite(bar.close) && bar.close > 0) entry.lastClose = bar.close;
     }
 
-    const inWindow = minute >= WINDOW_START_MIN && minute < WINDOW_END_MIN;
-    const index = inWindow ? minute - WINDOW_START_MIN : null;
+    const index =
+      minute >= WINDOW_START_MIN && minute < WINDOW_END_MIN ? minute - WINDOW_START_MIN : null;
+    if (index === null) continue;
 
-    const rvolField: Array<{ symbol: string; value: number }> = [];
-    const gainField: Array<{ symbol: string; value: number }> = [];
-
+    const field: Array<{ symbol: string; value: number }> = [];
     for (const entry of tracks.values()) {
-      if (index !== null) entry.closes[index] = entry.lastClose;
+      entry.closes[index] = entry.lastClose;
       if (entry.lastClose === null) continue;
-      if (!eligibleClass.has(entry.symbol)) continue;
-
-      const inBand = entry.lastClose >= PRICE_MIN && entry.lastClose <= PRICE_MAX;
-      if (!inBand && !entry.latched) continue;
-
-      const session = meta.get(entry.symbol);
-      if (session?.baselineAverage && session.baselineAverage > 0) {
-        rvolField.push({
-          symbol: entry.symbol,
-          value: entry.cumulativeVolume / session.baselineAverage,
-        });
-      }
-      if (session?.previousClose && session.previousClose > 0) {
-        gainField.push({
-          symbol: entry.symbol,
-          value: entry.lastClose / session.previousClose - 1,
-        });
-      }
-      if (inBand) entry.latched = true;
+      if (!eligible.has(entry.symbol)) continue;
+      const previousClose = previousCloses.get(entry.symbol);
+      if (previousClose === undefined) continue;
+      field.push({ symbol: entry.symbol, value: entry.lastClose / previousClose - 1 });
     }
+    fieldSizes.push(field.length);
 
-    rvolField.sort((a, b) => b.value - a.value);
-    gainField.sort((a, b) => b.value - a.value);
-
-    if (index !== null) {
-      for (const item of rvolField.slice(0, topN)) {
-        const entry = tracks.get(item.symbol)!;
-        if (entry.firstRvolFire === null) entry.firstRvolFire = index;
-      }
-      for (const item of gainField.slice(0, topN)) {
-        const entry = tracks.get(item.symbol)!;
-        if (entry.firstGainFire === null) entry.firstGainFire = index;
-      }
-    }
-
-    if (minute === lastMinute) finalRvolOrder = rvolField.map((item) => item.symbol);
-  }
-
-  return { tracks, meta, finalRvolOrder };
-}
-
-function validate(db: Database.Database, date: string, topN: number): void {
-  const { tracks, meta, finalRvolOrder } = reconstruct(db, date, topN);
-
-  console.log(`\n=== ${date} — FIDELITY, which decides whether anything else is worth reading`);
-
-  /*
-   * CHECK ONE: reconstructed cumulative volume against what the live desk
-   * stored. They can disagree — a feed's running total need not equal a sum of
-   * minute bars — and if they do, this is measuring a different quantity than
-   * the trigger it claims to reproduce.
-   */
-  const ratios: number[] = [];
-  for (const [symbol, session] of meta) {
-    const entry = tracks.get(symbol);
-    if (!entry || !session.storedCumulative || session.storedCumulative <= 0) continue;
-    if (session.storedRank === null) continue;
-    ratios.push(entry.cumulativeVolume / session.storedCumulative);
-  }
-  ratios.sort((a, b) => a - b);
-  console.log(
-    `cumulative volume, rebuilt / stored   n=${ratios.length}   ` +
-      `p10 ${fmt(quantile(ratios, 0.1), 3)}   median ${fmt(quantile(ratios, 0.5), 3)}   ` +
-      `p90 ${fmt(quantile(ratios, 0.9), 3)}`,
-  );
-
-  /*
-   * CHECK TWO, AND IT CAN FAIL. The reconstructed end-of-session top N against
-   * the ranks the desk actually wrote. A reconstruction that cannot reproduce a
-   * ranking that exists cannot be trusted on the ones that do not.
-   */
-  const storedTop = [...meta.entries()]
-    .filter(([, session]) => session.storedRank !== null && session.storedRank <= topN)
-    .sort((a, b) => (a[1].storedRank ?? 0) - (b[1].storedRank ?? 0))
-    .map(([symbol]) => symbol);
-  const rebuiltTop = finalRvolOrder.slice(0, topN);
-  const overlap = rebuiltTop.filter((symbol) => storedTop.includes(symbol)).length;
-
-  console.log(`stored  top${topN}: ${storedTop.join(' ')}`);
-  console.log(`rebuilt top${topN}: ${rebuiltTop.join(' ')}`);
-  console.log(`overlap: ${overlap} of ${storedTop.length}`);
-  console.log(
-    storedTop.length > 0 && overlap === storedTop.length
-      ? 'AGREES — it reproduces a ranking the desk wrote.'
-      : 'DISAGREES — do not run the comparison until each miss below is understood.',
-  );
-
-  /*
-   * A bare DISAGREES is a check that reports a problem and withholds the one
-   * thing needed to act on it. Every miss is printed with the facts that decide
-   * whether the instrument is wrong or the session is unsuitable — the two look
-   * identical from the overlap count alone.
-   */
-  const misses = rebuiltTop.filter((symbol) => !storedTop.includes(symbol));
-  for (const symbol of misses) {
-    const row = db
-      .prepare(
-        `SELECT t.price, t.rvol, t.rvol_rank, t.latched, u.classification,
-                u.discovery_eligible, u.updated_at
-           FROM ticker_session t LEFT JOIN universe u ON u.symbol = t.symbol
-          WHERE t.trading_date = ? AND t.symbol = ?`,
-      )
-      .get(date, symbol) as
-      | {
-          price: number | null;
-          rvol: number | null;
-          rvol_rank: number | null;
-          latched: number | null;
-          classification: string | null;
-          discovery_eligible: number | null;
-          updated_at: string | null;
-        }
-      | undefined;
-    if (!row) {
-      console.log(`  MISS ${symbol}: no ticker_session row — the desk never tracked it.`);
+    /*
+     * A RANKING OVER N OR FEWER CANDIDATES EXCLUDES NOBODY, so membership of it
+     * is not a selection and must not be recorded as one. The same shape as a
+     * check that cannot fail, one layer down in a trigger.
+     */
+    if (field.length <= topN) {
+      thinMinutes += 1;
       continue;
     }
-    /*
-     * `universe.updated_at` AFTER the session is the tell. That table is
-     * CURRENT STATE and its classification is overwritten in place, so a row
-     * written later cannot say what the desk believed on the day — the same
-     * overwrite trap as `percent_change`, one table over.
-     */
-    const stale = (row.updated_at ?? '') > `${date}T23:59:59Z`;
+
+    field.sort((a, b) => b.value - a.value);
+    const atOpen = !rankedAMinute;
+    rankedAMinute = true;
+
+    for (const item of field.slice(0, topN)) {
+      const entry = tracks.get(item.symbol)!;
+      if (entry.firstGainFire === null) {
+        entry.firstGainFire = minute;
+        entry.gainInAtOpen = atOpen;
+      }
+    }
+  }
+
+  return { tracks, eligibleSource, eligibleCount: eligible.size, fieldSizes, thinMinutes };
+}
+
+/**
+ * What can and cannot be checked, said plainly.
+ *
+ * THE RVOL SIDE NEEDS NO VALIDATION BECAUSE IT IS NOT RECONSTRUCTED. THE GAIN
+ * SIDE CANNOT BE VALIDATED BECAUSE THE DESK NEVER RAN IT — there is no recorded
+ * output to check it against, and saying that is more honest than checking it
+ * against something else and calling the agreement a validation.
+ *
+ * So this reports what BOUNDS the gain side instead: the size of the field it
+ * competed in, the coverage of the inputs it needs, and how much of the
+ * recorded RVOL trigger lands inside the window at all.
+ */
+function validate(db: Database.Database, date: string, topN: number): void {
+  console.log(`\n=== ${date} — WHAT BOUNDS THE COMPARISON`);
+  const { eligibleSource, eligibleCount, fieldSizes, thinMinutes } = reconstructGain(db, date, topN);
+  const fires = recordedRvolFires(db, date);
+
+  console.log(`eligible set: ${eligibleCount} names, from ${eligibleSource}`);
+
+  const sortedFields = [...fieldSizes].sort((a, b) => a - b);
+  console.log(
+    `gain field per in-window minute:  min ${sortedFields[0] ?? '-'}   ` +
+      `median ${fmt(quantile(sortedFields, 0.5), 0)}   max ${sortedFields[sortedFields.length - 1] ?? '-'}`,
+  );
+  console.log(
+    "  THE DESK'S OWN FIELD WAS SMALLER AND IS NOT RECORDED. A larger field is " +
+      'harder to enter, so the residual bias runs AGAINST gain.',
+  );
+  if (thinMinutes > 0) {
     console.log(
-      `  MISS ${symbol}: stored rank ${row.rvol_rank ?? 'none'}, final price ${fmt(row.price, 4)}, ` +
-        `latched ${row.latched ?? '-'}, class ${row.classification ?? '-'} ` +
-        `(eligible ${row.discovery_eligible ?? '-'}, classified ${row.updated_at?.slice(0, 10) ?? '-'}` +
-        `${stale ? ' — AFTER THIS SESSION, so this flag is not what the desk had' : ''})`,
+      `  ${thinMinutes} in-window minutes had a field of ${topN} or fewer — no selection to record`,
     );
   }
+
+  const inWindow = [...fires.values()].filter((m) => m >= WINDOW_START_MIN && m < WINDOW_END_MIN);
+  const before = [...fires.values()].filter((m) => m < WINDOW_START_MIN);
+  console.log(
+    `recorded RVOL top${topN} entries: ${fires.size} names   ` +
+      `(${before.length} before 07:00, ${inWindow.length} inside the window, ` +
+      `${fires.size - before.length - inWindow.length} after)`,
+  );
+  console.log(
+    '  A NAME ALREADY IN AT 07:00 WAS SELECTED ON EVIDENCE HE COULD NOT WATCH ARRIVE. ' +
+      'Its lead time is a lower bound, and it is reported as its own stratum.',
+  );
 }
 
 function run(db: Database.Database, dates: string[], topN: number): void {
@@ -392,30 +352,45 @@ function run(db: Database.Database, dates: string[], topN: number): void {
     date: string;
     symbol: string;
     runRatio: number;
-    startIdx: number;
-    rvolFire: number | null;
-    gainFire: number | null;
-    rvolLead: number | null;
-    gainLead: number | null;
+    rvolLead: number;
+    gainLead: number;
     rvolRealised: number | null;
     gainRealised: number | null;
+    censored: boolean;
   }
   const rows: Row[] = [];
+  let rvolOnly = 0;
+  let gainOnly = 0;
 
   for (const date of dates) {
-    const { tracks } = reconstruct(db, date, topN);
+    const { tracks } = reconstructGain(db, date, topN);
+    const fires = recordedRvolFires(db, date);
+
     for (const entry of tracks.values()) {
-      if (entry.firstRvolFire === null && entry.firstGainFire === null) continue;
+      const rvolFire = fires.get(entry.symbol) ?? null;
+      const gainFire = entry.firstGainFire;
+      if (rvolFire === null && gainFire === null) continue;
+      if (rvolFire !== null && gainFire === null) rvolOnly += 1;
+      if (rvolFire === null && gainFire !== null) gainOnly += 1;
+      if (rvolFire === null || gainFire === null) continue;
+
       const move = largestRun(entry.closes);
       if (!move) continue;
 
       const startClose = entry.closes[move.startIdx]!;
       const peakClose = entry.closes[move.peakIdx]!;
       const span = peakClose - startClose;
+      const moveStartMin = WINDOW_START_MIN + move.startIdx;
 
-      const realised = (fire: number | null): number | null => {
-        if (fire === null || span <= 0) return null;
-        const at = entry.closes[fire];
+      /*
+       * A fire before the move began has realised none of it. 0 is the value,
+       * not null: nothing of the move had happened because the move had not
+       * started, which is a measurement rather than an absence.
+       */
+      const realised = (fire: number): number | null => {
+        if (span <= 0) return null;
+        if (fire <= moveStartMin) return 0;
+        const at = entry.closes[Math.min(fire, WINDOW_END_MIN - 1) - WINDOW_START_MIN];
         if (at === null || at === undefined) return null;
         return Math.min(1, Math.max(0, (at - startClose) / span));
       };
@@ -424,111 +399,124 @@ function run(db: Database.Database, dates: string[], topN: number): void {
         date,
         symbol: entry.symbol,
         runRatio: move.ratio,
-        startIdx: move.startIdx,
-        rvolFire: entry.firstRvolFire,
-        gainFire: entry.firstGainFire,
-        rvolLead: entry.firstRvolFire === null ? null : (move.startIdx - entry.firstRvolFire) * 60,
-        gainLead: entry.firstGainFire === null ? null : (move.startIdx - entry.firstGainFire) * 60,
-        rvolRealised: realised(entry.firstRvolFire),
-        gainRealised: realised(entry.firstGainFire),
+        rvolLead: (moveStartMin - rvolFire) * 60,
+        gainLead: (moveStartMin - gainFire) * 60,
+        rvolRealised: realised(rvolFire),
+        gainRealised: realised(gainFire),
+        censored: rvolFire < WINDOW_START_MIN || entry.gainInAtOpen,
       });
     }
   }
 
-  console.log(`\n=== RATES   (${dates.join(', ')}, top ${topN}, ET 07:00-10:00)`);
-  console.log(`names fired by either trigger with a measurable run: ${rows.length}`);
-  console.log(`  RVOL only  ${rows.filter((r) => r.rvolFire !== null && r.gainFire === null).length}`);
-  console.log(`  GAIN only  ${rows.filter((r) => r.gainFire !== null && r.rvolFire === null).length}`);
-  const paired = rows.filter((r) => r.rvolFire !== null && r.gainFire !== null);
-  console.log(`  BOTH       ${paired.length}   <- the paired comparison runs on these`);
+  console.log(`\n=== RATES   (${dates.join(', ')}, top ${topN}, move measured ET 07:00-10:00)`);
+  console.log(`  RVOL only  ${rvolOnly}`);
+  console.log(`  GAIN only  ${gainOnly}`);
+  console.log(`  BOTH, with a measurable run  ${rows.length}   <- the paired comparison`);
 
-  /*
-   * PRECISION WITHOUT A THRESHOLD: the distribution of run size among the names
-   * each trigger fired on. A trigger whose names run smaller is less precise,
-   * and no cutoff had to be chosen to say it.
-   */
-  console.log('\n=== RUN SIZE AMONG THE NAMES EACH TRIGGER FIRED ON   (peak over trough, in-window)');
-  for (const [label, subset] of [
-    ['RVOL', rows.filter((r) => r.rvolFire !== null)],
-    ['GAIN', rows.filter((r) => r.gainFire !== null)],
-  ] as const) {
-    const sorted = subset.map((r) => r.runRatio).sort((a, b) => a - b);
-    console.log(
-      `  ${label}   n=${sorted.length}   p25 ${fmt(quantile(sorted, 0.25), 2)}x   ` +
-        `median ${fmt(quantile(sorted, 0.5), 2)}x   p75 ${fmt(quantile(sorted, 0.75), 2)}x   ` +
-        `p90 ${fmt(quantile(sorted, 0.9), 2)}x   max ${fmt(sorted[sorted.length - 1], 2)}x`,
-    );
-  }
-
+  const clean = rows.filter((r) => !r.censored);
+  const censored = rows.filter((r) => r.censored);
   console.log(
-    '\n=== PAIRED LEAD TIME, seconds   (move start minus first fire; positive = fired before the move)',
-  );
-  for (const [label, values] of [
-    ['RVOL', paired.map((r) => r.rvolLead!)],
-    ['GAIN', paired.map((r) => r.gainLead!)],
-  ] as const) {
-    const sorted = [...values].sort((a, b) => a - b);
-    console.log(
-      `  ${label}   n=${sorted.length}   p25 ${fmt(quantile(sorted, 0.25), 0)}   ` +
-        `median ${fmt(quantile(sorted, 0.5), 0)}   p75 ${fmt(quantile(sorted, 0.75), 0)}`,
-    );
-  }
-  const deltas = paired.map((r) => r.rvolLead! - r.gainLead!).sort((a, b) => a - b);
-  console.log(
-    `  WITHIN-NAME   RVOL minus GAIN: median ${fmt(quantile(deltas, 0.5), 0)}s   ` +
-      `RVOL earlier on ${deltas.filter((d) => d > 0).length} of ${deltas.length} names`,
+    `\n=== ALREADY FIRING WHEN THE WINDOW OPENED   ${censored.length} of ${rows.length}` +
+      ' — selected on evidence from before he sat down; lead time is a lower bound',
   );
 
-  console.log('\n=== FRACTION OF THE EVENTUAL MOVE ALREADY REALISED WHEN THE TRIGGER FIRED');
-  console.log('    (0 = fired before the move began · 1 = fired at the peak, precise and useless)');
-  for (const [label, values] of [
-    ['RVOL', paired.map((r) => r.rvolRealised).filter((v): v is number => v !== null)],
-    ['GAIN', paired.map((r) => r.gainRealised).filter((v): v is number => v !== null)],
-  ] as const) {
-    const sorted = [...values].sort((a, b) => a - b);
+  const report = (label: string, subset: Row[]) => {
+    if (!subset.length) {
+      console.log(`\n  --- ${label}: no names`);
+      return;
+    }
+    console.log(`\n  --- ${label}   n=${subset.length}`);
+    for (const [name, values] of [
+      ['RVOL (recorded)     ', subset.map((r) => r.rvolLead)],
+      ['GAIN (reconstructed)', subset.map((r) => r.gainLead)],
+    ] as const) {
+      const sorted = [...values].sort((a, b) => a - b);
+      console.log(
+        `    lead ${name}  p25 ${fmt(quantile(sorted, 0.25), 0)}s   ` +
+          `median ${fmt(quantile(sorted, 0.5), 0)}s   p75 ${fmt(quantile(sorted, 0.75), 0)}s`,
+      );
+    }
+    const deltas = subset.map((r) => r.rvolLead - r.gainLead).sort((a, b) => a - b);
     console.log(
-      `  ${label}   n=${sorted.length}   p25 ${fmt(quantile(sorted, 0.25), 2)}   ` +
-        `median ${fmt(quantile(sorted, 0.5), 2)}   p75 ${fmt(quantile(sorted, 0.75), 2)}`,
+      `    WITHIN-NAME RVOL minus GAIN: median ${fmt(quantile(deltas, 0.5), 0)}s, ` +
+        `RVOL earlier on ${deltas.filter((d) => d > 0).length} of ${deltas.length}`,
     );
-  }
+    for (const [name, values] of [
+      ['RVOL', subset.map((r) => r.rvolRealised).filter((v): v is number => v !== null)],
+      ['GAIN', subset.map((r) => r.gainRealised).filter((v): v is number => v !== null)],
+    ] as const) {
+      const sorted = [...values].sort((a, b) => a - b);
+      console.log(
+        `    fraction of move realised at fire, ${name}   p25 ${fmt(quantile(sorted, 0.25), 2)}   ` +
+          `median ${fmt(quantile(sorted, 0.5), 2)}   p75 ${fmt(quantile(sorted, 0.75), 2)}`,
+      );
+    }
+  };
+
+  console.log(
+    '\n=== PAIRED LEAD TIME AND FRACTION REALISED   (lead = move start minus fire; positive = fired first)',
+  );
+  console.log(
+    '    (fraction 0 = fired before the move began · 1 = fired at the peak, precise and useless)',
+  );
+  report('BOTH FIRED INSIDE THE WINDOW', clean);
+  report('EITHER ALREADY FIRING AT OPEN — lower bound only', censored);
+
+  console.log('\n=== RUN SIZE AMONG THE PAIRED NAMES   (peak over trough, in-window)');
+  const sortedRuns = rows.map((r) => r.runRatio).sort((a, b) => a - b);
+  console.log(
+    `  n=${sortedRuns.length}   p25 ${fmt(quantile(sortedRuns, 0.25), 2)}x   ` +
+      `median ${fmt(quantile(sortedRuns, 0.5), 2)}x   p75 ${fmt(quantile(sortedRuns, 0.75), 2)}x   ` +
+      `max ${fmt(sortedRuns[sortedRuns.length - 1], 2)}x`,
+  );
 
   /*
    * OUTCOME C, pre-registered in item 89a with this rule fixed in advance: it
    * fires when the WINNING trigger's median lead time falls below the measured
    * median from queued to completed. It does NOT cancel the A/B — one trigger
    * can still win the paired comparison while both are too late.
+   *
+   * Judged on the uncensored stratum: a name already in the top N at 07:00 was
+   * queued before he sat down, and its lead is a bound rather than a
+   * measurement of a decision made in front of him.
    */
   const PIPELINE_MEDIAN_S = 53;
   const PIPELINE_P90_S = 327;
   const medianOf = (values: number[]) => quantile([...values].sort((a, b) => a - b), 0.5) ?? 0;
   const winnerMedian = Math.max(
-    medianOf(paired.map((r) => r.rvolLead!)),
-    medianOf(paired.map((r) => r.gainLead!)),
+    medianOf(clean.map((r) => r.rvolLead)),
+    medianOf(clean.map((r) => r.gainLead)),
   );
   const clears = (values: number[], bar: number) =>
     `${values.filter((v) => v > bar).length} of ${values.length}`;
 
   console.log('\n=== OUTCOME C — is the winner early enough for a dossier to arrive first?');
+  console.log(`  judged on the ${clean.length} names where both triggers fired inside the window`);
   console.log(
     `  winning trigger median lead ${fmt(winnerMedian, 0)}s   vs pipeline median ${PIPELINE_MEDIAN_S}s`,
   );
   console.log(
-    `  names clearing ${PIPELINE_MEDIAN_S}s:   RVOL ${clears(paired.map((r) => r.rvolLead!), PIPELINE_MEDIAN_S)}   ` +
-      `GAIN ${clears(paired.map((r) => r.gainLead!), PIPELINE_MEDIAN_S)}`,
+    `  clearing ${PIPELINE_MEDIAN_S}s:   RVOL ${clears(clean.map((r) => r.rvolLead), PIPELINE_MEDIAN_S)}   ` +
+      `GAIN ${clears(clean.map((r) => r.gainLead), PIPELINE_MEDIAN_S)}`,
   );
   console.log(
-    `  names clearing ${PIPELINE_P90_S}s:  RVOL ${clears(paired.map((r) => r.rvolLead!), PIPELINE_P90_S)}   ` +
-      `GAIN ${clears(paired.map((r) => r.gainLead!), PIPELINE_P90_S)}`,
+    `  clearing ${PIPELINE_P90_S}s:  RVOL ${clears(clean.map((r) => r.rvolLead), PIPELINE_P90_S)}   ` +
+      `GAIN ${clears(clean.map((r) => r.gainLead), PIPELINE_P90_S)}`,
   );
   console.log(
-    winnerMedian < PIPELINE_MEDIAN_S
-      ? '  C FIRES. The trigger choice is not the binding constraint — the pipeline is the work.'
-      : '  C does not fire. The winner clears the pipeline median.',
+    clean.length === 0
+      ? '  C UNDECIDABLE — no name had both triggers fire inside the window.'
+      : winnerMedian < PIPELINE_MEDIAN_S
+        ? '  C FIRES. The trigger choice is not the binding constraint — the pipeline is the work.'
+        : '  C does not fire. The winner clears the pipeline median.',
   );
 
   console.log('\n=== WHAT THIS CANNOT SETTLE');
   console.log('  session-to-session stability — NO. Needs the seven sessions.');
   console.log('  whether either is worth its cost — NOT A MEASUREMENT AT ALL. His call.');
+  console.log(
+    '  a gain LOSS is confounded by the field-size bias; a gain WIN is stronger than it looks.',
+  );
 }
 
 function main(): void {
@@ -540,7 +528,7 @@ function main(): void {
   }
   const db = new Database(args.dbPath, { readonly: true });
   console.log(
-    `[lead-time] store ${args.dbPath} (read-only), top ${args.topN}, price band ${PRICE_MIN}-${PRICE_MAX}`,
+    `[lead-time] store ${args.dbPath} (read-only), top ${args.topN}, window ET 07:00-10:00`,
   );
 
   if (args.mode === 'validate') for (const date of args.dates) validate(db, date, args.topN);
