@@ -8519,3 +8519,68 @@ trigger would be tuning the wrong stage.
 **If C fires it leads the report.** Not because it is more interesting but
 because it changes what gets built rather than which of two built things gets
 kept.
+
+**89b. THE INSTRUMENT IS BUILT AND VALIDATED. THE VALIDATION FAILED, AND THAT IS
+THE RESULT.** — `worker/trigger-lead-time.ts`
+
+*Integration: **"RUN IT."** It runs. It cannot yet run on the sample, and the
+dry run found something that changes how the sample must be read.*
+
+### It reproduces eleven of the desk's twelve ranks
+
+Validated against `2026-08-17` — the only session with minute bars available off
+the box. The check is not "does it produce a plausible ranking": it is **does it
+reproduce a ranking the desk actually wrote.** That check CAN fail. It did.
+
+```
+stored  top12: JFU IVF IPST SLE CRGO TRUG NOMA FSHP MYSZ XOS GRNQ RPGL
+rebuilt top12: UCL JFU IVF IPST SLE CRGO TRUG NOMA FSHP MYSZ XOS GRNQ
+```
+
+### The twelfth name is the finding
+
+**UCL is rank 1 in the rebuild and unranked by the desk**, and the reason is not
+the reconstruction.
+
+**`universe.classification` and `discovery_eligible` are CURRENT STATE,
+overwritten in place. 13,072 of 13,089 rows carry an `updated_at` of
+2026-08-18 — the day AFTER the session being validated.** So the eligibility
+flag being applied is not the one the desk had; UCL was classified into
+eligibility overnight, and the rebuild admitted a name the desk could not see.
+
+**The same overwrite trap as `percent_change`, one table over.** Integration
+warned me off that column by name. **This one is worse: `percent_change` can be
+reconstructed from bars, and the flag's history is not recorded anywhere.**
+
+### What it does and does not bias
+
+**It is applied identically to both triggers, so it is not directional between
+RVOL and gain.** It can still displace a name from a top twelve and move a fire
+time, so it is not harmless either.
+
+**So it is MEASURED on the dates actually compared rather than assumed small.**
+`--validate` prints every miss with the date its classification was written, and
+runs on 09-02 and 09-03 before the comparison does. A bare `DISAGREES` withholds
+the one thing needed to act on it.
+
+### And 08-17 was the wrong session to validate on
+
+**Only 17 universe rows were classified on 08-17 and 13,072 the next day** — the
+classifier was rolling out across that very session. The dry run therefore says
+the instrument is sound and says nothing yet about a settled universe.
+
+### The second fidelity number, which has no fix
+
+**Rebuilt cumulative volume is 0.963 of the stored figure at the median, 0.833
+at p10, 0.995 at p90.** A sum of minute bars is not the feed's running total.
+**The shortfall is not uniform, so it can reorder names close in RVOL** — and
+RVOL is the ordering the whole comparison rests on. Reported with the result,
+not filed as a caveat.
+
+### BLOCKED
+
+**Production is the only store holding 09-02 and 09-03.** Local has 08-17 and a
+truncated 08-18 and nothing else. **The SSH read to
+`98.85.49.227:/var/lib/mointel/market.db` was refused by this session's
+permission layer, on both Bash and PowerShell.** Not retried further — a denial
+worked around is a denial ignored.
