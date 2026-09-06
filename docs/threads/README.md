@@ -5599,3 +5599,35 @@ it depends on.
 
 **A green gate is evidence only about the environment it ran in — and the useful
 question is not "do the gates agree" but "which tree is the one that ships".**
+
+## WRITE AS THE SERVICE USER, NEVER AS ROOT — SQLITE RE-CREATES THE WAL
+
+**Ops, 2026-09-07**, performing the approved two-key repair on production.
+
+The first attempt failed: **`attempt to write a readonly database (8)`.** The
+store is `mointel:mointel` mode 640 and the shell connects as `ubuntu`, which is
+in the group — **read yes, write no.** Every read-only query all weekend worked
+and gave no hint the account could not write.
+
+**The reflex is `sudo`. The reflex is a trap.** SQLite creates and re-creates
+`-wal` and `-shm` alongside the database, so **a root-owned WAL locks the worker
+— running as `mointel` — out of its own store.** A two-key repair becomes an
+outage on a live desk.
+
+**`sudo -u mointel`, and verify ownership of all three files afterwards**:
+`market.db`, `-wal`, `-shm`. Ops did, and they are unchanged.
+
+**A permission that only manifests on write is invisible to every check that
+reads.** The account looked fine for two days because nothing had asked it to do
+the thing it could not do.
+
+### And the repair closed the alarm with no deploy and no restart
+
+Served payload at 18:36 ET: `universeFreshness: FRESH`, `universeUpdatedAt
+2026-09-06T21:52:59Z`, `universeRollDue false`, with `universeMode` carried as
+the **control** — read from the API, not the store.
+
+`universeWarning` returns null on FRESH **unconditionally**, with no
+`universeRollDue` gate on that branch, **so Tuesday's premarket flipping
+`rollDue` true leaves the marker silent.** The session-length false alarm is
+closed on production without shipping anything.
