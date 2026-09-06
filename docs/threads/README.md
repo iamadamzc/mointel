@@ -5665,3 +5665,49 @@ is only visible against a ranking the desk actually wrote.
 than a plausible one** — and it has to run on the dates being analysed, not on
 whichever session is convenient, because the size of the disagreement is a
 property of the date.
+
+## A WARNING ABOUT ONE COLUMN IMMUNISES ONE COLUMN
+
+**Research, 2026-09-07.** Integration warned, repeatedly, never to derive trigger
+entry from `percent_change` — **an overwriting column, the cause of the original
+queue defect.** Research obeyed it exactly: gain rebuilt from bar closes, RVOL
+rebuilt on the desk's own cumulative-over-20-session-average.
+
+**Then read three CURRENT-STATE flags with the identical property without
+noticing.** `universe.classification` and `discovery_eligible` are overwritten in
+place, and **13,072 of 13,089 rows are stamped the day AFTER the session being
+reconstructed.** So the eligibility being applied is not the eligibility the desk
+had.
+
+**The care did not transfer because the warning was attached to a COLUMN NAME
+rather than to a SHAPE.** And this one is worse than the column it was modelled
+on: `percent_change` is at least reconstructable from bars. **The flag's history
+is recorded nowhere.** The README already said as much about `status` and
+`tradable` in that same table — nobody connected it until the instrument was
+built.
+
+**Name the property when you warn: "overwritten in place, no dated history".
+Naming the column inoculates against exactly one column.**
+
+### The validation could fail, and it did — which is what made it a validation
+
+Not *"does the rebuild produce a plausible ranking"* but **"does it reproduce a
+ranking the desk actually wrote."** Against 2026-08-17 it matched **eleven of
+twelve**, and the twelfth was the finding: a name ranked 1 in the rebuild and
+unranked by the desk, **admitted by an eligibility flag written overnight.**
+
+**A validation that cannot fail is a demonstration.** The disagreement is now
+measured on the dates being compared rather than assumed small, every miss
+printed with the date its classification was written.
+
+**And the dry-run date was the wrong one:** only 17 universe rows were classified
+during 08-17 and 13,072 the next day — **the classifier was rolling out across
+it.** So the run proves the instrument sound and says nothing yet about a settled
+universe.
+
+### A second fidelity number with no fix available
+
+**Rebuilt cumulative volume is 0.963 of the stored figure at the median** — p10
+0.833, p90 0.995. A sum of minute bars is not the feed's running total. **The
+shortfall is not uniform, so it can reorder names close in RVOL**, which is the
+ordering the entire comparison rests on. **Report body, not a footnote.**
