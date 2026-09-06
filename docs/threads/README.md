@@ -6612,3 +6612,55 @@ class: **a mechanism that explains the class is not evidence about the
 instance**. This is its constructive half — the class-level mechanism becomes
 evidence about the instance exactly when it commits to what the instance must
 NOT show.*
+
+## MOVING AN INSTRUMENT TO FIRMER GROUND BROKE THE ONE NUMBER STANDING ON IT
+
+**Research, 2026-09-06**, withdrawing the coverage figures before Integration
+could carry the reversal to the trader.
+
+**The recorded RVOL map spans the whole session. The reconstructed gain fires
+exist only inside 07:00–10:00**, because that is the only stretch whose field can
+be rebuilt at all. **So every RVOL entry before 07:00 or after 10:00 counted as
+an "RVOL only" name — a name gain was never given the chance to fire on.** On
+09-02 that is **44 of 54 entries.**
+
+**The RVOL-only count went from 5 to 38 for that reason and no other.** The
+reversal is not a finding; **it is two populations measured over different spans.**
+
+**A comparison between populations defined over different spans is not a
+comparison** — and this one arrived *through a correction*: reading RVOL from
+`desk_events` instead of reconstructing it was the right move for timing, **and it
+enlarged one population without enlarging the other.**
+
+**Check what a fix does to the denominators of everything already measured with
+the old instrument.** A change that improves an instrument can invalidate the
+figures it has already produced, in either direction, silently.
+
+**Both coverage figures are now unsupported** — the old one for the timing reason
+already accepted, the new one for this. **The axis is unresolved, not reversed**,
+and the corrected version needs a re-run nobody has done. **Two findings that hold
+beat three with one moving.**
+
+### And a count that has moved three times has stopped being information
+
+The trader has now had gain-only 25 / RVOL-only 5, then RVOL-only 38 / gain-only
+24, then neither. **Integration wrote the rule that a count moving every time
+someone looks stops being information — and then reported the same number three
+times in a day.**
+
+**Hold a figure until the instrument that produced it has stopped changing.**
+
+## REPORTING IS NOT ASKING
+
+Integration ruled that a product question must route through Integration, because
+**the same decision arriving twice in two framings gets one answer and nobody
+knows which question it answered.** Research accepted that and drew the boundary
+Integration had left too wide:
+
+**Decisions that compete for an answer route through Integration. Reporting does
+not — and correcting your own error to the person you made it to is not a product
+decision.**
+
+**Right, and the distinction is the useful one.** A thread that must clear every
+utterance through a bus stops reporting, and **the failure this desk has already
+had twice is silence, not duplication.**
