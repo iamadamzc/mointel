@@ -5821,6 +5821,118 @@ project memory. The three that have actually bitten:
   `ADDED_COLUMNS` with a `SCHEMA_VERSION` bump, or the live desk fails at the
   first INSERT.
 
+## (d) chunking, scoped — 2026-09-06
+
+**Integration asked for this scoped before building. The constraint is the
+budget, not a batch size someone picked.**
+
+### The target is lock hold time, not write speed
+
+A bulk write is not slow, it is **exclusive**. One write lock per *database*
+means any other writer spends its `withBusyRetry` budget waiting, and when the
+budget is gone `withBusyRetry` throws — which is what killed research four times
+on 2026-09-06. So the deliverable is **a bound on how long any single
+transaction holds the lock**, and chunking is the only thing that produces one.
+
+### A wall-clock assertion is the wrong demonstration
+
+"Comfortably inside 33 seconds, demonstrated not assumed" cannot honestly be a
+timer in vitest: that measures the CI machine, and a test whose red means "the
+box was busy" trains people to ignore it. **The flaky preflight test was a real
+defect and I do not want to ship its opposite** — a test that goes red for
+reasons that are not the code.
+
+**The property that matters is observable and deterministic: another writer
+acquires the lock while the bulk write is in progress.** The test is a competing
+writer that commits mid-operation without exhausting its retries, plus an
+assertion on **maximum rows per transaction**. That demonstrates the contract
+directly instead of proxying it through a clock.
+
+### Sizing, with the basis stated
+
+| basis | rate | what it is worth |
+| --- | --- | --- |
+| scratch file, 500k rows in 3.24s | ~150k rows/s | **a ceiling, not a prediction** — no contention, no 579MB WAL, no secondary indexes |
+| production, inferred from crash spacing | ~22k rows/s | the only figure measured under real conditions |
+
+Size from the 22k figure: it is ~7x more conservative and it is the one that was
+actually observed. **Recommend 5,000 rows per transaction** — ~0.23s at that
+rate. The margin, not the throughput, is the point: **the sizing basis is
+uncertain, so the chunk must be small enough that being wrong by an order of
+magnitude still does not matter.** At a 20x-degraded rate it is 4.5s, still
+inside. 2.1M rows becomes 420 transactions; the per-transaction overhead is real
+and irrelevant against an operation that runs once. **Do not tune it upward.**
+
+### The safety analysis is different at every site
+
+- **`replaceUniverse` (13,252 rows, every roll) — safe to chunk directly, and
+  the reason is a defect.** It is **upsert-only; there is no DELETE** — which is
+  queued item (e). Every row is an idempotent upsert, so a partial run leaves
+  unprocessed symbols on their previous row: the result is always a **superset**
+  of the prior universe, never a subset. **No board can lose a name to a partial
+  chunked run.** That safety is supplied entirely by (e) being unfixed.
+- **Therefore (d) must land before (e), and (e) cannot then be a chunked
+  delete.** The moment `replaceUniverse` deletes, a partial chunked run can
+  leave a half universe — which is the SGRX failure mode, arrived at from the
+  other direction. (e) must be built as **stage-then-swap**: load a staging
+  table in chunks, make the visible change one small transaction. **Atomicity is
+  preserved by making the visible write small, not by making the whole write
+  one transaction.**
+- **Minute-bar restore (~1M rows per date)** — chunk directly. A partial restore
+  is a short date, caught by the per-date count check Integration already
+  requires as an approval condition.
+- **`pruneMinuteBars` (weekly mass delete)** — chunk directly, and include it.
+  Retention is a **ceiling, not an invariant**, so a partial prune leaving extra
+  old rows is safe. This one fires every week and is currently one transaction.
+- **`upsertBaselines`** — same cardinality as the universe, same roll. Measure
+  before assuming it is small.
+
+### What it does not change
+
+`withBusyRetry` stays. **Chunking reduces how often anyone reaches the budget;
+it does not remove the need for one.** A store with a single write lock still
+needs the retry, and the retry still needs the ceiling.
+
+### Flagged, not built
+
+Whether a chunked bulk write should carry a marker so a crash mid-restore reads
+as *incomplete* rather than as a *short date*. My view: out of scope for (d) —
+the count check covers restore and a marker widens the change. **Integration's
+call, not mine.**
+
+## Two paths establish a session and only one used to say so — 2026-09-06
+
+**`trading_date_rolled_at` had a single writer, the roll handler; the work it
+describes has two paths.** `bootstrapTradingDate` runs the same universe
+refresh, baselines and prune at **startup** as well. A worker that starts after
+the last roll and before the next one establishes a full session and records
+nothing.
+
+**The desk was in exactly that state.** Friday's 22:00 roll set the trading date
+to 2026-09-08, skipping Monday 09-07 — **a market holiday, confirmed absent from
+production's own calendar** (sessions run 09-03, 09-04, 09-08). The deploy
+restart was Sunday 21:52Z. `rolledTradingDate` returns null while the resolved
+date still equals the current one, so **no roll fires until Tuesday 22:00 ET,
+after Tuesday's session.** The marker would have stayed unset through the entire
+first session it was built for, and the dashboard would have told him **"Board
+may be missing names"** during the 7-10am window, on a universe minutes old.
+
+`lib/dashboard/universe.ts` states the rule that breaks: **if it would fire on a
+normal morning it does not belong here at any volume.** A restart is a normal
+morning.
+
+**Stamping the attempt rather than the outcome is what keeps the fix from being
+a silencer.** Startup keeps the age guard, so its refresh may legitimately skip;
+the instant is captured at entry, so a skipped fetch still leaves the universe
+stamp behind it and still reads STALE. **It widens what the field can see** —
+the skipped-fetch case that cost SGRX is now caught at startup too.
+
+**The gate covers the semantics, not the wiring.** There is no worker-wiring
+harness, so `trigger === 'startup'` is ungated; it is verifiable only on the box
+and only after a restart. **The restart is also what activates the fix** — the
+stamp is written at startup and nowhere else, so deploying this without
+restarting the market worker changes nothing at all.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
@@ -5832,8 +5944,10 @@ project memory. The three that have actually bitten:
 > or model-spend work belongs to the Research thread — if you find work there,
 > write it into that charter's Open items and hand it over rather than doing it.
 >
-> Production is `bc78d49`, schema v22. Credentials are in `A:\AWS_creds\` — use
+> Production is `c3a3a6a`, schema v25. Credentials are in `A:\AWS_creds\` — use
 > them non-interactively and never print, log, commit or move a value.
 >
 > Start by confirming the working tree, HEAD, and what production is actually
-> running. Do not deploy anything until I ask.
+> running. **Deploy authority: Integration's word is enough** — a sha they name
+> is the ship order, and a queue line is not. Deploy the named sha or come back
+> and say why.
