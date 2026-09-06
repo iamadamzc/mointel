@@ -8397,3 +8397,79 @@ bottom two slots produced no top-5 name in 83 opportunities.**
 
 **He said "there really isn't a need for a top 25 or more." The data says the
 bottom of TWELVE has not paid for itself either.**
+
+---
+
+**89. THE LEAD-TIME TEST — designed before running, with the threshold dissolved
+rather than chosen and the pipeline offset measured.**
+
+*He asked for a test rather than a decision and pre-registered his own direction:
+**"my guess is gainers."** Integration named the trap — measuring which trigger
+better predicts final gain lets the gain trigger win by construction — and set
+lead time as the discriminator. Design only.*
+
+### The obvious independent definition is NOT independent — checked before proposing
+
+`DISCOVERY_QUALIFIED` looked like a qualifying move defined outside both
+triggers. **It is not.** `engine.ts:1295` gates it on `result.rank` existing, so
+it fires on entry to the RANKED population — **RVOL-derived, and using it would
+favour the RVOL trigger by construction.** The same trap one level over.
+
+### So the threshold is DISSOLVED rather than picked
+
+Integration's constraint was that a qualifying move must be derived, not chosen.
+**The honest answer is not to choose one at all.**
+
+**Per name, take the largest run inside 07:00–10:00 ET, and report lead time
+ACROSS THE DISTRIBUTION of move size rather than above a cutoff.** If the answer
+is stable across sizes, no threshold was needed. **If it varies, that variation
+is the finding** — and a cutoff would have hidden it.
+
+### The metric, which is "arrives before the move it is about" made numeric
+
+**For each trigger: what FRACTION OF THE EVENTUAL MOVE was already realised when
+it first fired.** A trigger firing at 5% of the move is early; one firing at 80%
+is precise and useless.
+
+### THE OFFSET, MEASURED — a trigger's lead is an UPPER BOUND on the dossier's
+
+| | median | p90 |
+| --- | --- | --- |
+| queue wait | 8s | 266s |
+| interpretation | 32s | 51s |
+| **queued → completed** | **53s** | **327s** |
+
+**So a trigger that wins by 40 seconds wins nothing.** The comparison is lead
+time MINUS ~53s, and at p90 the pipeline costs five and a half minutes.
+
+### Sample, and what it cannot answer
+
+**09-02 (1,054,662 rows) and 09-03 (1,061,634), both rankings reconstructed
+minute by minute from `minute_bars` — never from `percent_change`, which
+overwrites.** The RVOL reconstruction must use the desk's own definition —
+cumulative session volume over the 20-session average, **not windowed** — or the
+comparison is against a different trigger than the live one.
+
+**The unit is NAMES, not sessions: ~24–40 a session, so ~50–80 paired
+observations.**
+
+| comparison | answerable at two sessions? |
+| --- | --- |
+| paired lead time, same name both triggers | **YES** — within-name, and only if the effect is large |
+| precision: fires leading to no qualifying move | **AS A RATE, not as a stability claim** |
+| session-to-session stability | **NO. Needs the seven.** |
+| whether either is worth its cost | **NO** — that is a value judgement, not a measurement |
+
+### PRE-REGISTERED, BEFORE ANY OF IT RUNS
+
+- **HIS: gainers more valuable.** On the record before the measurement.
+- **MINE, part one: RVOL fires earlier in CLOCK time.** Volume gets heavy before
+  or as price moves; a gain rank requires the price to have already moved.
+- **MINE, part two: NO DIRECTION on which fires earlier as a FRACTION OF THE
+  MOVE.** In a sub-$5 universe, +20% by 07:30 may already be top-10 by gain while
+  the name runs to +200% — so gain could be early in move terms and late in clock
+  terms. **I can argue it both ways, so I predict neither, and the result cannot
+  be read to fit.**
+
+**Part two is the one that decides his question.** Part one is nearly mechanical
+and would not be worth running alone.
