@@ -112,21 +112,36 @@ surface renders can still be the only witness to a question nobody has asked yet
 and the ambiguous ones traced to the surface that renders them. Two of my own
 assumptions were wrong before I checked, and both are below.
 
-#### The column is NOT an argument for dropping anything
+#### THE COLUMN DESCRIBES THE CURRENT SURFACE. IT DOES NOT PROPOSE A NEW ONE.
 
-Repeating the constraint at the point of use, because a populated column invites
-exactly this reading: **an empty `screen` cell is not a case for retiring a
-field.** A field no surface renders can still be the only witness to a question
-nobody has asked yet, and three of the four empty cells here are quantities the
-board shows LIVE and the Sheet froze. **Nothing in this column outranks `live?`
-in the retirement order.**
+Both directions, because a populated column reads as a design brief and it is
+not one:
 
-#### FOUR CELLS ARE EMPTY AND ONLY ONE IS INTERESTING
+- **An empty cell is not an argument for DROPPING a field.** A field no surface
+  renders can still be the only witness to a question nobody has asked yet, and
+  three of the four empty cells are quantities the board shows LIVE and the
+  Sheet merely froze. **Nothing here outranks `live?` in the retirement order.**
+- **A full cell is not an argument for PROMOTING one.** `screen` records where a
+  field is presented TODAY — **hover and detail included. A field visible on
+  hover is RENDERED**, not pending.
+
+**STANDING CONSTRAINT, from the trader on 2026-09-06: no material change to what
+the board presents.** *"the commentary and analysis was just a hover show… i
+dont want to materially change what is presented. that should stay the same."*
+Commentary and analysis live in the hover, where they already live. **Anything
+that would spend header space goes to Integration and then to him as a proposal
+with a reason — never as a consequence of a retirement decision.**
+
+#### FOUR CELLS ARE EMPTY AND NONE OF THEM ASKS FOR A BUILD
 
 `F`/`6` **AH Price** and `7` **AH %** — no surface renders them. `33` **Overall
-Priority** — no surface, and unlike the others it is one of the six judgement
-fields the trader ruled to KEEP, so it will need somewhere to be seen. **That is
-the only cell in this column that implies work.**
+Priority** — confirmed rendering nowhere; `overallPriorityRaw` and
+`overallPriorityBucket` are parsed and read by no component.
+
+**That is a fact about the surface and NOT a request for one.** Overall Priority
+is one of the six judgement fields the trader ruled to keep, and keeping a
+judgement does not mean giving it chrome. It rides the existing pattern with the
+other five.
 
 #### THE PM AND AH COLUMNS ARE FROZEN COPIES OF WHAT THE BOARD SHOWS LIVE
 
@@ -151,13 +166,17 @@ beside it.** A retirement plan counting these as separate fields to reproduce
 would build six things where three exist — and the pairing is a Sheet-shaped
 distinction, not a desk-shaped one.
 
-#### TWO FIELDS REACH THE TRADER ONLY ON HOVER
+#### TWO FIELDS REACH THE TRADER ONLY ON HOVER — AND THAT IS NOT AUTOMATICALLY A DEFECT
 
-`N` and `18` **Flush From High %** render inside `cycleDetail`, which is a
-`title` attribute. **§10 of the design audit forbids content reachable only by
-hover**, and this is the second time that rule has caught a field I shipped —
-the Move label was the first. Flagged, not fixed: it is a real cell in this
-table and the fix is a separate change.
+`N` and `18` **Flush From High %** render inside `cycleDetail`, a `title`
+attribute. §10 forbids content reachable only by hover, and the Move label was
+caught by that rule before.
+
+**But these are MEASUREMENTS, not commentary**, so the trader's hover ruling —
+which is about commentary and analysis — does not obviously cover them. Recorded
+as an open question rather than a finding. **Either way the fix would be a
+material change to the board and therefore a proposal, not a tidy-up.** Flagged;
+not fixed; not mine to decide.
 
 #### Scope check, per the instruction
 
