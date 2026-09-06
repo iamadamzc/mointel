@@ -8473,3 +8473,49 @@ observations.**
 
 **Part two is the one that decides his question.** Part one is nearly mechanical
 and would not be worth running alone.
+
+**89a. THE THIRD OUTCOME, NAMED BEFORE LOOKING — BOTH TRIGGERS EARLY AND BOTH
+DOSSIERS STILL LATE.**
+
+*Integration, on the offset: **"a trigger that wins by forty seconds wins
+nothing… that outcome must be reportable rather than something we notice
+afterwards — it is the one that changes what we build rather than which of two
+things we build."** Registered before any lead time is computed.*
+
+### The two registered predictions both assume the contest matters
+
+His **gainers** and my **RVOL fires earlier in clock time** are both answers to
+*which trigger wins*. **Neither can express "the winner is still too late",** so
+if that is the truth it arrives as a footnote to a decided A/B rather than as
+the finding — and a footnote is how a result that should stop work gets read as
+a result that ranks two options.
+
+### OUTCOME C, with its decision rule fixed in advance
+
+**C fires when the WINNING trigger's MEDIAN lead time is below 53 seconds** —
+the measured median from queued to completed. That is: for at least half of
+names the dossier lands *after the move it is about has already begun*, whichever
+trigger queued it.
+
+Lead time is **`t(start of the name's largest in-window run) − t(trigger first
+fires)`**. Positive means the trigger fired before the move started.
+
+Reported alongside it, because they are the actionable form:
+
+- **fraction of names with lead time > 53s** (median pipeline)
+- **fraction with lead time > 327s** (p90 pipeline)
+
+Both are **rates**, which my own table says two sessions can carry. **Neither is
+a stability claim.**
+
+### WHAT C IS NOT
+
+**C is not "the triggers are equivalent", and it does not cancel the A/B.** One
+trigger can still win the paired comparison while both are too late — the two
+results are independent and both get reported. C says only that **the difference
+between them is not the binding constraint**, and that a desk optimising the
+trigger would be tuning the wrong stage.
+
+**If C fires it leads the report.** Not because it is more interesting but
+because it changes what gets built rather than which of two built things gets
+kept.
