@@ -3520,6 +3520,77 @@ Fixing (2) or (3) is separate work. **A proposal about where a number lives must
 not arrive carrying a change to which number it is** — that is two decisions in
 one sentence, and he would be approving the second without seeing it.
 
+## DECISION REQUEST — which number goes in the cycle chip (2026-09-06)
+
+He ruled **option B**: the figure goes inside the chip's own text. He has not
+ruled WHICH figure, and the chip must now carry one.
+
+### CONSTRAINT 3 FIRST, BECAUSE IT DECIDED WHETHER THIS SHIPS AT ALL: IT SHIPS
+
+**The chip is fed from the desk's own arithmetic, not the Sheet.**
+`deskRead.ts:528` builds it from `resolveComputedCycle(dossier?.computedCycle)`,
+and both figures live on the `CycleArc` (`cycle.ts:276`, `:282`). **So the
+unparsed Sheet column is irrelevant to this change** — it will not be blank on
+6 of 7 rows, because it never reads that column.
+
+### THE TWO CANDIDATES
+
+- **`retracementPct`** — *fraction of the MOVE surrendered*, `(cycleHigh −
+  close) / advance`. In the hover today.
+- **`givebackPct`** — *distance BELOW THE HIGH*, `(cycleHigh − close) /
+  cycleHigh`. Renders nowhere, and is what his Sheet column means.
+
+### THE ARGUMENT NEITHER OF US HAD MADE, AND I THINK IT DECIDES IT
+
+**`retracementPct` IS WHAT PRODUCES THE LABEL.** `cycle.ts:323` selects
+BACKSIDE from `retracementPct >= backsideRetracement`; the word on the chip is
+computed from that number and from no other.
+
+**So a chip reading `OFF HIGH · 8%` with `givebackPct` shows a number that did
+NOT produce the word beside it** — and the reader will take it as the label's
+evidence, because that is what a number beside a word means. On the names where
+the two diverge most, the giveback figure is the REASSURING one: a name based at
+$1.00 that ran to $1.20 and sits at $1.10 has surrendered **half its move** and
+reads **8% off its high**. That is `cycle.ts:73`'s own warning, and it appears
+on exactly the names that have broken.
+
+**A number that misexplains its own label is worse than either number alone.**
+
+### THE ARGUMENT THE OTHER WAY, WHICH IS ALSO REAL
+
+**His Sheet column is Flush From High and he has read it for months.** "42% off
+its high" is his sentence; "gave back 42% of its run" is ours. **A number that
+is correct and unfamiliar can be misread as the familiar one**, and at chip
+width there is no room to disambiguate — `OFF HIGH · 42%` will read as *42%
+below the high* whichever number is behind it.
+
+**That is the strongest case for giveback and it is not a taste point: it is
+that the label cannot be trusted to carry the distinction at that width.**
+
+### MY RECOMMENDATION
+
+**`retracementPct`, with a word.** `OFF HIGH · 42% back` or similar — the label
+stays honest about its own cause, and one word does the disambiguating the
+percent sign cannot. **If no wording fits, the answer is giveback**, because a
+misread number is worse than an unfamiliar one.
+
+**It is his call and the question in his terms is:** *when the chip says a name
+is off its high, do you want the number to be how far below the high it is, or
+how much of the run it gave back?*
+
+### CONSTRAINTS 1 AND 2, ANSWERED
+
+**1 — the empty state.** Show the figure **only when > 0**, exactly as
+`cycleDetail` already does at `:92`. **The contradiction cannot arise for OFF
+HIGH**: at zero retracement the phase is FRONTSIDE or DAY ONE, never OFF HIGH.
+And **no cycle renders NO NUMBER AT ALL, never `0%`** — zero is a measurement
+and absence is not.
+
+**2 — the width.** No risk. The column is `w-[152px]` and already carries
+**`CYCLE NOT ESTABLISHED` (21 chars)**. The longest label plus a percentage is
+`FRONTSIDE · 42% back` at 20. **The worst case does not move**, so this cannot
+cost a column by the back door.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
