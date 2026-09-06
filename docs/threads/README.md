@@ -7054,3 +7054,42 @@ charter.
 
 **And: an unregistered number does not stay where it was produced.** It was
 relayed onward twice, in opposite directions, within a day.
+
+## A WRONG TIME IS WORSE THAN NO TIME
+
+**Research, 2026-09-06**, shipping the acceptance-timestamp capture and making one
+decision nobody specified.
+
+**The fallback stays `UNKNOWN` rather than becoming `DATE_ONLY`** — which looks
+like the more honest label, since a date *is* known, and is the wrong one.
+**`DATE_ONLY` in this store means a date carrying a synthesised `12:00Z`**, and
+those placeholders are exactly why a third of same-day rows are unusable:
+**12:00Z is 08:00 ET, inside the trader's window by invention.**
+
+**Marking a bare filing date `DATE_ONLY` would put a made-up 08:00 into the field
+the timing question reads.** One transition, not two, and the partition stays
+clean.
+
+**A missing acceptance returns NULL — not the filing date, not a synthesised
+stamp.** And a payload with no acceptance column **degrades to previous behaviour
+rather than throwing on every issuer**, which is what an endpoint change would
+otherwise do to the entire collector.
+
+**A field that exists to say when something was observable answers confidently
+when it is wrong.** For that class of field, absent beats approximate — **and the
+approximation is always the one that makes the question answerable.**
+
+### The boundary is a DEPLOY fact, not a COMMIT fact
+
+The discontinuity was dated **2026-09-07** in the code comment, the register and
+the commit message — *"because the person who trips on it will be reading one of
+those three and not this message."* **Right instinct, wrong date.**
+
+**Nothing changes in the store until the code runs in production**, and this ships
+with the Tuesday-close deploy. Rows keep arriving `UNKNOWN` until then, **so the
+documented boundary is wrong by up to two days** — and it is wrong in the
+direction that makes a rate computed across it look like a real change.
+
+**Date a data-format boundary by when the writer started writing it, not by when
+the change was written.** The two differ by exactly the interval nobody
+remembers afterwards.
