@@ -9080,3 +9080,61 @@ worker was degraded — `research_health`, job timestamps, worker restarts.
 *Also from Ops: 45 names carry source rows while only 37 had jobs, so eight hold
 evidence collected in another session. **"No job" does not mean "nothing
 known".***
+
+---
+
+**96. THE TIME OF DAY IS IN A PAYLOAD WE ALREADY FETCH, ON THE SAME ROW, AND WE
+READ THE DATE-ONLY FIELD NEXT TO IT.**
+
+*Integration declined to run the before-07:00 rate on the placeable third,
+because the caveat I registered made it a measurement of when press releases go
+out. That caveat is now removable.*
+
+### VERIFIED AGAINST THE LIVE API, NOT RECALLED
+
+`https://data.sec.gov/submissions/CIK0000320193.json`, `filings.recent`:
+
+```
+acceptanceDateTime   "2026-09-03T22:30:44.000Z"   "2026-09-01T22:32:04.000Z"
+filingDate           "2026-09-03"                 "2026-09-01"
+```
+
+**`parseSubmissions` reads `filingDate`. It does not read `acceptanceDateTime`.**
+The two live in the same object, on the same index, in a response the desk
+already downloads.
+
+*Checked by fetching rather than remembering, because the last three times I
+asserted a mechanism from recall it was the instance that was wrong.*
+
+### SO THE DATE-ONLY LIMIT IS OURS, NOT THE SOURCE'S
+
+I told Integration **"the store has no time of day"**, and then corrected it to
+*a third of same-day rows can be placed*. **Both were descriptions of a
+collection choice.** SEC sources are 1,401 of 1,437 rows locally, and every one
+of them could carry a stated acceptance time.
+
+**`filings.recent` is typed `Record<string, unknown[]>` and `column()` takes a
+key name, so reading it needs NO TYPE CHANGE — one more `column()` call and the
+field carried through to `published_at` with `published_precision: 'EXACT'`.**
+
+### AND IT IS THE RIGHT TIMESTAMP, NOT MERELY AN AVAILABLE ONE
+
+**`acceptanceDateTime` is when EDGAR ACCEPTED the filing — the moment it became
+publicly observable.** That is precisely what *"was this readable before 07:00"*
+asks. A press release's own stamp says when the issuer released it; the
+acceptance stamp says when the market could see it.
+
+### WHAT IT WOULD AND WOULD NOT FIX
+
+**It removes the selection caveat entirely.** The placeable population goes from
+the press-release-shaped third to essentially all of it, and Integration's
+original question becomes answerable as posed rather than answerable about a
+different population.
+
+**IT IS FORWARD-LOOKING.** Stored rows keep their date-only stamps; the
+submissions endpoint carries ~1,000 recent filings per issuer, so a backfill for
+the names in question is one re-fetch each — feasible, and a separate decision.
+
+**NOT BUILT. Reported under the hold, because it is a data-capture gap in
+`lib/research/` rather than anything trigger- or avoid-shaped**, and because the
+measurement Integration just declined to run becomes worth running if it lands.
