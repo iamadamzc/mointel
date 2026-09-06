@@ -210,34 +210,32 @@ its mechanisms. Verify before acting on any of it.*
 
 ### Production, as of this block
 
-*Amended 2026-09-05 late (market closed, `tradingDate` 2026-09-08).*
+*Rewritten 2026-09-06 ~21:00 ET (Sunday). **Monday 09-07 is Labor Day. The next
+session is TUESDAY 2026-09-08.***
 
-- **`8018b9b`, schema 25, on all four units.** Market worker restarted onto it.
-  Schema 25 against 25, no migration — `0e`'s sixth clean no-op.
-- **`57981ac` (busy-retry) is DEPLOYED. Its Monday-roll deadline is closed.**
-- **`SGRX` and `XTND` are in the universe AND in the live subscription.**
+- **`7212bdd`, schema v25, all four units, verified by each unit's own cwd.**
+  `universeFreshness` reads **FRESH** on the served API, `universeRollDue` false.
+- **`minute_bars`** holds 09-02 (1,054,662) and 09-03 (1,061,634), restored exact
+  from a migration backup. Seven more dates are recoverable the same way.
+- **Nothing deploys before Tuesday's close.** The tip carries Ops's latch +
+  false-FRESH fixes, Research's SEC acceptance-timestamp capture, Design's colour
+  on the activity bars and the tracer exclusion. **Enumerate by thread and gate
+  the TIP, not a named ancestor.**
 
-### The retention incident — read this before trusting any minute-grain number
+### The Tuesday sequence, written down because no session here will exist for it
 
-**`minute_bars` held 2,121,548 rows Friday and zero this morning.** The desk
-deleted them. `pruneRetention` counted **calendar** days while `db.ts:8` promised
-**trading dates**, so Saturday's roll to Monday produced a keep-list of
-Mon/Sun/Sat — three days containing no session — and every real one fell outside
-it. **It fired every weekend since the retention was written.**
+`docs/threads/ops.md` holds the checklist. The parts that are not obvious:
 
-- **Fixed and live in `8018b9b`.** Keep-list is now `SELECT DISTINCT
-  trading_date` plus the current trading date. Five tests including the incident,
-  a long weekend, and an empty store; mutation-proven against the old loop.
-- **The prune log is now INFO, not DEBUG.** That is why it survived.
-- **NOT backfilled — deliberately.** Alpaca holds the history; this is lost
-  accumulated grain, not lost data. Backfill is scoped as a job that must not
-  compete with Monday's capture. `daily_bars` (253,120) was never affected.
-- **The consequence everyone accepted for a week:** Research's *"the only two
-  sessions with minute bars retained"* was not a window, it was **a cut**. Every
-  minute-grain measurement taken this week ran on the survivors of a weekly
-  deletion. Research owes me which conclusions actually depended on it.
-- **`minute_bars` is empty until Monday's capture. Pre-registered as amnesia —
-  a designed state, not a defect.**
+- **DEPLOY FIRST, THEN RESTART. Never the reverse** — the latch wipe fires on the
+  first flush after a restart, so a restart on the old code is the last possible
+  wipe. The instinct to "restart to pick up the fix" is exactly backwards.
+- **The restart needs the trader's word, in Ops's session.** Not Integration's.
+- **After the restart, read the latch pair:** `wiped` must be 0 **and**
+  `out_of_band_surviving` must be > 0, or the check saw no case it could fail on.
+- **Report the instant `mointel-research` STARTS**, not the deploy — that is the
+  `SEC_ACCEPTANCE_BOUNDARY`, currently the token `PENDING` in Research's register.
+- **A scheduled task fires 22:15 ET Tuesday** to watch the roll. It runs only
+  while the app is open, and a permission prompt pauses it with nobody there.
 
 ### What the trader decided
 

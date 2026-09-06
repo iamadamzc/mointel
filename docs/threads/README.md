@@ -7270,3 +7270,33 @@ at 21 characters.** Longest label plus figure is `FRONTSIDE · 42% back` at 20.
 and **the contradiction cannot arise, because at zero retracement the phase is
 FRONTSIDE or DAY ONE, never OFF HIGH.** No cycle renders **no number at all,
 never "0%"**: zero is a measurement and absence is not.
+
+## A ZERO PROVES NOTHING WITHOUT THE COUNT OF CASES IT COULD HAVE FAILED ON
+
+**Ops, 2026-09-06**, taking Integration's post-deploy latch check and adding the
+half that makes it a check at all.
+
+**`wiped = 0` reads zero whenever no name went out of band that session** — which
+is most of the reason the defect survived weeks. **The bare number is the
+defect's own camouflage:** 98% of rows looked healthy because nothing was being
+asked of the latch.
+
+So the query returns both:
+
+    wiped                    must be 0
+    out_of_band_surviving    must be > 0, or the check saw no case it could fail on
+
+**On 2026-09-03 that pair read 57 and 4. A healthy night reads 0 and some tens.**
+Both numbers, always — **otherwise on a quiet Tuesday we read a zero and believe
+it.**
+
+**Prove a check can see a present case before believing its absence.** The rule
+was already on file; **it arrived here as the verification of a fix for a defect
+from the same family**, which is the shape worth noticing.
+
+### And the test for the crossing practice is not whether crossings stopped
+
+Five in one evening with both seats declaring state. **Not one of them cost a
+wrong action.** That is the measure — **not whether the practice prevents stale
+instructions, but whether a stale instruction now arrives visibly enough to be
+caught before it is acted on.**
