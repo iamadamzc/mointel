@@ -6545,3 +6545,37 @@ surprise and a contradicting one cannot be quietly dropped.**
 **When a recommendation rests on convergence, name both lines — because the
 recommendation dies if either does**, and the one that dies is not always the one
 being watched.
+
+## THE VERIFICATION STEP WAS THE TRAP, AND ITS OUTPUT REFUTED ITSELF
+
+**2026-09-06.** Integration wrote *"I verified it myself rather than taking it:
+`TZ=America/New_York date` returns Sunday 22:55."* **That command returns UTC on
+this Windows host.** There is no tzdata, so `TZ` is silently ignored:
+
+    TZ=America/New_York  ->  2026-09-06 23:23
+    TZ=Asia/Tokyo        ->  2026-09-06 23:23
+    date -u              ->  2026-09-06 23:23
+
+**Three zones, one answer.** And the original verification printed **ET and UTC as
+the same instant** — impossible in September, when ET is UTC−4. **The output
+contained its own refutation and was read past**, because it agreed with the
+conclusion being checked.
+
+**The day survived; every interval did not.** Real ET was 19:23, not 23:23, so
+"about 53 hours to Tuesday premarket" was wrong by four hours in the direction
+that felt safe.
+
+### And it is a live operational trap, not a pedantic one
+
+**The capture guard refuses 04:00–20:00 ET on trading days.** Real ET 19:40 is
+**inside** that window; the local clock reports 23:40, which reads as **outside**.
+**On a trading day, someone checking the clock locally would believe they were
+clear and reach for `--force`** — while believing they did not need it.
+
+**Read the clock from the box.** The desk's own host is the only authority on the
+desk's own time, and every guard, window and checkpoint on this desk is expressed
+in ET.
+
+**Sixth recurrence of the date/clock family in four days, and the first one to
+occur inside the act of verifying.** A verification that cannot fail on this host
+is worth exactly nothing, **and it is the most convincing thing anyone can quote.**
