@@ -9483,3 +9483,43 @@ its own author's standard rather than someone else's.**
 **Six mechanisms eliminated, none proposed. Both sharpest tests came back
 against their own hypotheses.** The honest position is that 09-04's cause is in
 state nobody kept, and a seventh query is unlikely to improve on it.
+
+**99b. TWO TESTS REGISTERED BEFORE THE TYPE IS WRITTEN.**
+
+*Integration accepted the shape and added the second test. Committed before any
+code, so the ordering is in the history rather than asserted.*
+
+### TEST ONE — THE OBJECTION RATE ACROSS RUN SIZE
+
+**Rank names by their largest in-window run (`largestRun`, already built).
+Objections must CONCENTRATE at the top of that distribution.**
+
+**IF THE OBJECTION RATE IS FLAT ACROSS RUN SIZE, THE REPORT IS DESCRIBING
+SMALL-CAPS IN GENERAL AND NOT HIS TRADES**, and it has failed its own brief —
+*worth most when the chart looks best* — regardless of how correct any
+individual objection is.
+
+**NO DIRECTION PREDICTED.**
+
+### TEST TWO — THE DEAF RATE ACROSS RUN SIZE *(Integration's)*
+
+**Same axis, applied to `NOTHING_COLLECTED`.**
+
+- **UNIFORM across run size** → telling him how hard we looked is **honest and
+  not actionable**. A field reading *we do not know* on two thirds of names is
+  noise in the way an over-firing marker is noise, **and it will train him to
+  skip the field.** The third verdict then cannot ship as useful.
+- **CONCENTRATED ON THE MOVERS** → **a serious finding about collection that
+  OUTRANKS THE REPORT.** Being deaf specifically on the names that run is a
+  bigger problem than anything the renderer does.
+
+**NO DIRECTION PREDICTED. Either result is worth having and only one of them
+lets the third verdict ship.**
+
+### AND THE METRIC STAYS A PRECONDITION
+
+*"Was an objection available before he would have entered"* is **a precondition
+rather than a proxy**: a report failing it cannot work whatever outcome data
+would later say; **a report passing it is not thereby shown to work.** That
+wording is what stops it quietly becoming a success measure for a thing —
+trades not taken — that cannot be observed at all.
