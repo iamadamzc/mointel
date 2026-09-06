@@ -3454,6 +3454,72 @@ measured-silence, and the one this desk gets wrong most often.
 | Move within the spread | yellow — measured, and not tradeable |
 | No price window, or no spread | **neutral ink — no claim** |
 
+## PROPOSAL — flush from high, for the trader after tonight's close (not built)
+
+**The question in his terms, not ours.** A name 30% off its high is a different
+trade from one at its high. **Today he cannot see which without hovering each
+row, one at a time.** Nothing about §10 needs to enter it.
+
+### THE MEASUREMENT DECIDES IT, AND IT IS NOT RARE
+
+Read live from the desk, 2026-09-06, the current watchlist:
+
+| | ISPC | GNLX | IPEX | ALTI | ATER | SLE | BRNX |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| flush | 0.0% | 10.6% | 11.3% | 13.4% | 26.9% | 42.3% | **75.9%** |
+
+**SIX OF SEVEN ROWS CARRY A MATERIALLY NON-ZERO FLUSH**, spread from 10.6% to
+75.9%. This is not a two-rows-a-day quantity, so hover is hiding something that
+is true of nearly every row he looks at.
+
+**Sample limit, stated: 7 rows, one snapshot, market closed.** Directionally
+strong and small. Re-take at premarket before he decides if the count matters.
+
+### THREE SEPARATE FACTS, AND THE TABLE CELL RECORDED ONLY ONE
+
+1. **The desk's `retracementPct` is hover-only** — `cycleDetail`, a `title`
+   attribute, and only when `> 0`.
+2. **`givebackPct` renders NOWHERE.** It is computed at `cycle.ts:276` and read
+   by no component. And **it, not `retracementPct`, is what the Sheet's column
+   means** — distance below the high, rather than fraction of the move
+   surrendered.
+3. **The Sheet's own column does not parse.** `flushFromHighPct.value` is null on
+   6 of 7 rows because the cell reads `"11.3% at $9.69"` — the level travels with
+   the percentage and the numeric parser refuses the pair. Only `"0.0%"` parses.
+
+**So the desk shows a DIFFERENT number from the Sheet's, in a hover, and the
+Sheet's own is unusable as a number.** My audit cell said "drawer — hover only",
+which was true of the wrong quantity.
+
+### FOUR OPTIONS. THREE SPEND NO HEADER SPACE.
+
+**A — Leave it. Argued honestly, not as a courtesy.** `retracementPct` already
+decides the CYCLE PHASE, and the phase is on the board as a chip. So a name deep
+off its high already reads BACKSIDE or OFF HIGH without a number. **If the chip
+is doing the work, the number is detail and hover is its correct home.** This is
+the strongest option if he reads the chip and not the figure.
+
+**B — Put it in the cycle chip's own text.** `OFF HIGH · 42%`. No new column, no
+new row of chrome — it uses space that is already spent and already his. The
+chip currently carries a word where it could carry a word and a number.
+
+**C — Colour or weight the existing chip by depth.** No text at all. Cheapest in
+space, and the weakest: it re-encodes a number as an intensity, which is the
+gradient-that-does-not-declare-itself I have rejected twice.
+
+**D — A column.** Named for completeness and **not recommended.** He has
+defended that space repeatedly and I have spent two rounds reclaiming it.
+
+**My recommendation is A or B, and the choice between them is his**, because it
+turns on whether he reads the phase chip as sufficient — which is a fact about
+how he uses the board that I cannot measure.
+
+### What must NOT ride this
+
+Fixing (2) or (3) is separate work. **A proposal about where a number lives must
+not arrive carrying a change to which number it is** — that is two decisions in
+one sentence, and he would be approving the second without seeing it.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
