@@ -5217,3 +5217,53 @@ once the band is derived, **per-row is an observation too**.
 judgement in the design, which is what made it answerable from an existing
 quantity instead of from taste. **Find the one place a design actually decides
 something, and the rest stops needing defending.**
+
+## A THRESHOLD ON A RANKING PRICES AS MEMBERSHIP AND BILLS AS ENTRY
+
+**Research, 2026-09-06**, measuring a queue rule before building it.
+
+*"Research anything that enters the top 10"* sounds like ten names. **Measured
+over four sessions it is 24–40 distinct names a day** — because the top ten is a
+membership at an instant and the rule fires on **entry**, and the board churns.
+
+| session | entry events | distinct | rank ≤ 10 |
+| --- | --- | --- | --- |
+| 08-17 | 69 | 65 | **40** |
+| 08-18 | 58 | 50 | **24** |
+| 08-19 | 32 | 29 | **15** |
+| 08-21 | 54 | 50 | **32** |
+
+**And the guard everyone reaches for is not where the cost is.** Once-per-name
+saves **9%** — 19 of 213 events carry `episode > 1`. **Oscillation is mild; first
+entries are the bill.** The constraint was right and it protects almost nothing.
+
+**A rule stated as a rank is priced by the reader as a set size and billed by the
+system as a flow rate.** Ask for the count over a session before agreeing to
+anything phrased as "the top N".
+
+### A second trigger phrased symmetrically was not symmetrical at all
+
+*"…or top 10 by gain"* reads as the same rule on a different column. **There is no
+gain ranking.** `RVOL_RANK_ENTRY` and `AH_RANK_ENTRY` exist as events; **no gain
+rank exists anywhere**, and `ticker_session` carries only `percent_change`, which
+**overwrites**.
+
+**So it is a new ranking, a new entry event and a new episode counter — three
+mechanisms, not a threshold** — and the column it would naturally be derived from
+is **the exact overwriting column that caused the original defect.** Deriving
+entry from it rebuilds the bug with a threshold on top.
+
+**Two clauses of one sentence can differ by an entire subsystem.** Grep for the
+mechanism each half assumes before pricing either.
+
+### And a board finding, with its metric named
+
+**83 names first entered at rank 11 or 12. Not one ever reached rank ≤ 5**, across
+four sessions.
+
+**Two limits stated with it:** `discoveryRank` is 12, so this cannot speak to
+ranks 13+, which are never ranked at all. **And the success metric is RANK, not
+money** — a name can enter at 11, never reach the top 5, and still have been a
+good trade. **The result is "the bottom two slots produce no top-5 names", not
+"the bottom two slots are worthless"**, and only the outcome record could answer
+the second — which does not exist on production.
