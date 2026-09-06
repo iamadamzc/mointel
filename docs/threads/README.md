@@ -6491,3 +6491,57 @@ RVOL was being reconstructed rather than read.**
 
 **Each trigger finds a substantial population the other misses.** That bears on a
 build decision in a way the head-to-head never could have.
+
+## AN ABSENCE BORROWING A VALUE — AND BORROWING PRECISELY THE ONE THAT ANSWERS THE QUESTION
+
+**Research, 2026-09-06**, before running the before-07:00 catalyst test.
+
+    UNKNOWN    1,150 rows   carrying a time: 0
+    INFERRED     251 rows   carrying a time: 0
+    DATE_ONLY     26 rows   all 12:00Z, SYNTHESISED
+    EXACT          9 rows
+
+**Nine rows in the entire store carry a time the source actually stated.** 1,401
+of 1,437 `published_at` values are **bare dates**.
+
+**And the synthesised stamp is 12:00Z = 08:00 ET — inside the trader's window by
+placeholder rather than by fact.** Splitting same-day evidence at 07:00 would be
+an absence borrowing a value, **and borrowing exactly the one that decides the
+question being asked.**
+
+**So same-day evidence is reported INDETERMINATE and never split.** What date
+resolution *can* settle is the half that matters: **evidence published on an
+earlier day was available overnight, no time of day required.**
+
+### The obvious metric was vacuous, and only running it showed that
+
+*"Had a prior document"* — **every operating company has old filings. All 25 names
+in the dry run passed.** A test everything passes measures nothing: **a check that
+cannot fail, wearing a different hat.**
+
+So no threshold was chosen. **The measure is the AGE of the freshest pre-session
+evidence, across its distribution** — mass at one or two days means an overnight
+pass has material; mass at hundreds means it does not. **Same dissolution as the
+lead-time design, reused because the objection was identical.**
+
+**And the funnel is part of the answer:** collection is job-gated, so a fired name
+with no job has no sources and **would score "no evidence" when nothing ever
+looked.** Every stage prints its denominator.
+
+## A CONVERGENCE OF TWO LINES SURVIVES ONLY WHILE BOTH LINES DO
+
+Integration called the censoring result *"the strongest support yet for
+pre-computing overnight"*, on the grounds that two independent lines converged.
+**Research has now separated them: the censoring supports the TIMING half and
+says nothing about the MATERIAL half.** Selection being over before 07:00 is
+established. **Whether there is anything to pre-compute FROM is a different
+question** — and its own dry run leans against.
+
+**Local, n=25, explicitly not a finding: freshest evidence min 3 days, median 5,
+and ZERO names whose freshest evidence is from the previous day.** Put on the
+record before the production run **so a matching result cannot be presented as a
+surprise and a contradicting one cannot be quietly dropped.**
+
+**When a recommendation rests on convergence, name both lines — because the
+recommendation dies if either does**, and the one that dies is not always the one
+being watched.
