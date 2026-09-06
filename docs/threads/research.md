@@ -9326,3 +9326,98 @@ nothing new". IT CAN FALSIFY THE STALL STORY AND CANNOT CONFIRM IT.**
 
 **Which is the useful direction.** If the gaps look like 09-02's, the sampling
 story is dead and the search moves; that is worth more than a weak confirmation.
+
+---
+
+**99. THE WHY NOT REPORT — SHAPE, AND A DISAGREEMENT WITH THE ANSWER ALREADY
+GIVEN TO HIM.**
+
+*His words: **"Research for the avoid. how does this deal with good setups, does
+it ignore that? can it do both? success comes more in what you dont trade than
+what you do. or rather, failure comes in overtrading."***
+
+### FIRST: THE "CAN IT DO BOTH" ANSWER IS HALF WRONG, AND I WAS ASKED TO SAY SO
+
+Integration told him the same dossier can carry both, and that **"a clean name
+falls out as the absence of every objection rather than as a separate
+product."**
+
+**THE SECOND HALF IS CONSTRAINT 1 REPRODUCED AS ARCHITECTURE.** Integration
+wrote *the absence of a reason not to is not a reason to*, and then defined a
+clean setup as exactly that absence. **If "clean" IS the absence of objections,
+the report's silence is the buy signal structurally, and no wording in the UI
+undoes it.**
+
+**And the two are not symmetric in what they cost to establish:**
+
+| | needs |
+| --- | --- |
+| **an objection** | ONE confirmed fact, from one source |
+| **"no objection"** | to have looked EVERYWHERE |
+
+**62% of names carry no non-SEC catalyst source. 79 of 118 issuers holding a
+durable feed address have never produced a single non-SEC row.** So the avoid is
+**achievable at today's coverage and robust to its gaps**; the clean verdict is
+**destroyed by them**. They cannot be one product with the sign flipped.
+
+**MY ANSWER TO HIS QUESTION: it does not ignore good setups — IT DECLINES TO
+CERTIFY THEM.** What it can honestly say about a name it found nothing against
+is *how hard it looked*, which is what constraint 1's three-way split already
+carries. **That is useful on a good setup without being approval: it tells him
+which names he would be trading blind on.**
+
+### THE THREE-WAY OUTPUT, WHICH IS THE WHOLE PRODUCT
+
+| verdict | means |
+| --- | --- |
+| **OBJECTION** | a specific structural fact, with its basis |
+| **NO OBJECTION FOUND — AND WE LOOKED** | sources reached, nothing found |
+| **NOTHING WAS COLLECTED** | the desk is deaf on this name |
+
+**The third is not a weaker version of the second. It is the opposite of it**,
+and collapsing them is this desk's oldest failure pointed at his money.
+
+### SEVERITY IS DERIVED, NOT PICKED — AND BOTH AXES ALREADY EXIST
+
+Integration: *does it bear on the trade he is about to make.* He holds for
+seconds inside 07:00–10:00, so the derivation is already in `effect.ts`:
+
+- **`timeToEffect`** — `NOW` acts on the price he is about to pay; `WEEKS`
+  does not. **A cash merger caps by contract NOW. A shelf registered in 2024 is
+  a fact about the company, not about his next sixty seconds.**
+- **`basis.kind`** — `OBSERVED` outranks `INFERRED`, and `EFFECT_RULES` already
+  records `measured: null` for the rules the desk BELIEVES rather than measures.
+
+**Severity = (timeToEffect × basis), both fields that exist.** Nothing is picked
+and no new scale is invented. **`priceCapped` is already its own field and is
+the strongest output the report can produce.**
+
+### CONSTRAINT 3 IS A TEST, AND IT IS RUNNABLE WITH BUILT CODE
+
+*Worth most when the chart looks best.* **The failure mode is a report that
+objects loudest to names nobody was going to trade.**
+
+`largestRun` in `worker/trigger-lead-time.ts` already ranks names by in-window
+run. **The test is whether objections CONCENTRATE in the top of that
+distribution.** Registered now, before building: **if objection rate is flat
+across run size, the report is describing small-caps in general and not his
+trades.**
+
+### THE SUCCESS METRIC IS UNMEASURABLE AND I AM NOT INVENTING A PROXY
+
+**Trades not taken cannot be observed.** Integration is right to say so rather
+than substitute one.
+
+**What IS measurable is adjacent and honest: whether an objection was AVAILABLE
+before he would have entered.** Coverage and timing, not outcome. **That is not
+a proxy for the thing — it is a precondition for it**, and a report failing it
+cannot possibly work whatever the outcome data would say.
+
+### WHAT THIS COMMISSIONS: NOTHING NEW
+
+**The taxonomy is the avoid engine.** `bringsSupply: POSITIVE` with an
+`OBSERVED` basis IS a why-not; `priceCapped` is already a field; the supply
+pair, the float bound and the reverse-split repeat rule are why-nots wearing
+other names. **This is an ordering and a renderer over what exists**, plus the
+three-way verdict — which is the only genuinely new part, and it is a type
+rather than a system.
