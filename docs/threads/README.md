@@ -5267,3 +5267,46 @@ money** — a name can enter at 11, never reach the top 5, and still have been a
 good trade. **The result is "the bottom two slots produce no top-5 names", not
 "the bottom two slots are worthless"**, and only the outcome record could answer
 the second — which does not exist on production.
+
+## A RETRY BUDGET IS A CEILING ON EVERY OTHER WRITER'S TRANSACTION LENGTH
+
+**Ops, 2026-09-06, restoring 2.1M minute bars and crashing the research worker
+four times doing it.** `SqliteError: database is locked`, unhandled, exit 1, at
+21:54:12, 21:54:44, 21:55:15 and 21:55:47.
+
+**The restore ran as two transactions, one per date.** Each held the write lock
+longer than research's ~33-second retry budget, so `withBusyRetry` **exhausted
+and threw — exactly as designed — and the caller above it dies on a throw.**
+
+**So the bulk write caused precisely the defect that chunking exists to prevent,
+while chunking sat queued behind it.** Integration set that order.
+
+### The inversion
+
+`withBusyRetry` was ruled as protection **for the writer that retries.** It is
+also, and more importantly, **a contract on how long anyone else may hold the
+lock.** 33 seconds is not a patience setting — **it is the maximum transaction
+length the rest of the store is permitted**, and any write exceeding it converts
+a bounded retry somewhere else into a process death.
+
+**Chunking is therefore not an optimisation and not about the writer's own
+speed.** It is the precondition for any bulk write on a store with a single
+write lock. **A few thousand rows per transaction; stay inside the budget the
+readers were given.**
+
+### And the approval conditions covered correctness, not concurrency
+
+Integration set five conditions on the restore: schema identity verified at run
+time, source non-empty, live confirmed empty, counts verified per date after,
+outside the roll window. **All five were met and the restore is exact.**
+
+**Not one of them asked how long a transaction would be held.** Every condition
+addressed *is this the right data* and none addressed *what does writing it do to
+everything else*. **A correctness checklist passes a concurrency defect without
+noticing it.**
+
+**What it cost was nothing, and that was the window's doing rather than
+anyone's judgement** — market shut, no research jobs queued, systemd restarted it
+each time. **At 10:00 on a Monday it would have been four crashes across live
+work.** Choosing the idle window is what made the mistake free, and that choice
+was made for an unrelated reason.
