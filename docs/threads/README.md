@@ -5310,3 +5310,35 @@ anyone's judgement** — market shut, no research jobs queued, systemd restarted
 each time. **At 10:00 on a Monday it would have been four crashes across live
 work.** Choosing the idle window is what made the mistake free, and that choice
 was made for an unrelated reason.
+
+## "MONDAY'S ROLL" DOES NOT EXIST, AND EVERY SEAT PLANNED AROUND IT FOR TWO DAYS
+
+**2026-09-07.** Monday 09-07 is **Labor Day**. The desk's own `tradingDate` has
+read **2026-09-08** since Saturday's roll, which is the desk saying so — and
+every thread, Integration included, kept writing *"before Monday's roll"*,
+*"Monday's premarket"*, *"Monday's capture"*. **The next session is Tuesday.**
+
+**Nobody checked the desk's own answer against their own sentence**, while
+spending the weekend recording that calendar arithmetic must not stand in for
+sessions. **The substitution was in the language, not the code.**
+
+### And it has a dated consequence on the first trading day
+
+`rollTradingDateIfNeeded` returns early when `rolledTradingDate` yields null, so
+**with `tradingDate` already 09-08 no roll fires tonight.** The roll to 09-09
+fires Tuesday 22:00 ET — **after Tuesday's session.**
+
+So on Tuesday: `trading_date_rolled_at` **absent** → `universeFreshness` UNKNOWN,
+and `universeRollDue` **true** from premarket onward. **Per its own specification
+the marker speaks for the whole session, saying the board may be missing names,
+when nothing is wrong.**
+
+**The alarm-fatigue failure that both Ops and Design designed against, arriving
+through DEPLOYMENT TIMING rather than through logic.** The roll it needs to
+observe happened before the field existed, and the field cannot know that.
+
+**A new signal's first reading is not its steady state.** Anything that reports
+on an event has a blind period equal to the gap until that event recurs — **and
+if the event is weekly or session-bound, the blind period covers a whole session
+of live use.** Ask when the first true reading arrives, not whether the logic is
+right.
