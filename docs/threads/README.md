@@ -7177,3 +7177,51 @@ guarantee.** Flagged before use rather than discovered after.
 **Two ways it can silently not happen, both named:** scheduled tasks run only
 while the app is open, and **a permission prompt pauses one with nobody there to
 answer it.**
+
+## AN INSTRUCTION TO REPORT AT AN EVENT, GIVEN TO A SEAT THAT WILL NOT BE THERE
+
+**2026-09-06.** Integration told Ops to *"report the exact deploy datetime at
+deploy time."* **This session will not exist on Tuesday.**
+
+**That is the unowned-watch shape in a different costume** — and unlike the roll
+watch, **a scheduled task cannot cover it, because a deploy is not a moment
+anyone can schedule against.** It is an event someone causes, at a time nobody
+knows in advance.
+
+**So it is written down instead**, as a checklist phrased for whoever is in the
+seat rather than for the seat that wrote it. **An instruction whose addressee is
+"you, later" needs an addressee that exists.**
+
+### And the boundary is the unit restart, not the deploy
+
+**`worker/research.ts` runs the collector, so the boundary is the instant
+`mointel-research` starts on the new sha** — not the deploy, which is a sequence
+with stops, a symlink switch, a migration and staggered starts. **No row written
+before that restart can carry `EXACT`.**
+
+**A deploy is an interval; a format boundary is a point inside it.** Readable
+exactly:
+
+    journalctl -u mointel-research -o short-iso | grep "Started mointel-research" | tail -1
+
+## DEPLOY FIRST, THEN RESTART. NEVER THE REVERSE.
+
+**Ops raised this and Integration had not.** The latch wipe fires on the first
+flush after a restart, so **a restart on the OLD code destroys that session's
+out-of-band latches** — meaning **the last possible wipe is a restart that happens
+just before the fix lands.**
+
+`RESTART_MARKET=no` makes the restart a separate deliberate act, **which gives the
+correct ordering for free — but only if nobody reaches for a restart first to
+"pick up the fix."** That is the natural instinct and it is exactly backwards.
+
+**The wrong order looks identical to the right one until you read the latches
+afterwards**, which is why it goes in the checklist with its reason rather than as
+a step.
+
+### And a limit of the practice, named rather than defended
+
+Fifth crossing of the evening. **Both seats now declare their assumed state in
+every message and the messages still cross.** State declaration **makes a stale
+instruction visible on arrival; it does not stop one being sent.** Worth holding
+as a limit of the practice rather than as evidence against it.
