@@ -7125,3 +7125,55 @@ on the same evening, so a date alone cannot separate them.
 
 **A wrong date is actively misleading; a clearly-marked pending one is not.
 Nobody computes a rate against `PENDING`.**
+
+## A NECESSARY PROPERTY NARROWS THE QUESTION; IT DOES NOT ANSWER IT
+
+**Ops, 2026-09-06**, on the 19 names that fired and got no research on 09-04:
+
+                       09-04          09-02        09-03
+                    no_job/has     no_job/has   no_job/has
+    multi_entry        0 / 12         0 / 5        0 / 10
+    one_entry         19 / 25         0 / 49       1 / 34
+
+**All 19 entered the board exactly once, and a name that re-entered has never
+lacked a job — 0 of 27 across three sessions.** A clean-looking cause.
+
+**And it is necessary, not sufficient.** Single-entry names were caught perfectly
+well elsewhere: **49 of 49 on 09-02, 34 of 35 on 09-03.** So **being a transient
+does not get you dropped; being a transient on 09-04 does.**
+
+**The question narrows rather than closes:** not *"why did 09-04 miss 19 names"*
+but **"why did 09-04 fail to catch transients that adjacent sessions caught"** —
+which is a question about how often the candidate query ran, and a different
+search entirely.
+
+**Sixth mechanism not proposed.** *"I can see a story about restart timing and I
+am not writing it down."* **A property shared by every case in the failing set is
+the most convincing thing available and proves nothing until it is checked against
+the sets that did not fail.**
+
+## WRITE THE TRAP INTO THE ARTEFACT THAT WILL MEET IT
+
+The scheduled roll-watch fires at **22:15 ET Tuesday, expressed as a UTC offset
+rather than converted by hand** — so the broken-`TZ` host never touches the
+arithmetic.
+
+**And the clock trap is written into the task itself**, because a run firing with
+no memory of tonight **would otherwise reach for `TZ=America/New_York date` and
+get UTC.** The rule travels with the thing that will need it, not with the people
+who learned it.
+
+**It also performs the `rolled_for` vs `trading_date` comparison itself rather
+than trusting the served field**, because production may still be on `7212bdd`
+when it fires — **and `7212bdd` cannot detect that case.** A watcher that trusts
+the thing it watches is not a watcher.
+
+### And a mitigation that might consume the thing it protects
+
+The task is a **one-shot that auto-disables after firing**, so *"Run now"* to
+pre-approve the permission prompt would **spend the run it was meant to
+guarantee.** Flagged before use rather than discovered after.
+
+**Two ways it can silently not happen, both named:** scheduled tasks run only
+while the app is open, and **a permission prompt pauses one with nobody there to
+answer it.**
