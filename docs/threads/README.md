@@ -6001,3 +6001,37 @@ be to leave it: the phase chip already reads OFF HIGH or BACKSIDE, **and if the
 chip is doing the work the number is detail.** Whether it is doing the work is a
 fact about how the trader reads his own board — **not measurable from here, and
 not to be guessed.**
+
+## AN ABSENT RENDERER AND AN ABSENT VALUE LOOK IDENTICAL
+
+**Design, 2026-09-08**, asked to verify the colour on the activity bars with the
+market shut — on an Integration premise that a closed market makes the *no-price*
+path the easy one to exercise.
+
+**It does the opposite.** With the market closed there are **zero discovery
+rows**, so the board renders no table at all — only the empty state. **There is no
+`Now` column on screen to inspect.** The sparkline lives on the Discovery board
+and nothing else mounts it.
+
+Searching every cell of every row for the bars returned nothing, **which looked
+like a defect and was not: the component is not mounted.** Same trap as reading an
+SSR page and calling the board empty — **an absent renderer and an absent value
+are indistinguishable from the outside**, and here the absence was structural.
+
+**So "I looked and it was not there" is never a finding on its own.** Establish
+that the thing which would render it is running, the way `universeMode` is
+carried as a control on the payload. **The control for a renderer is a sibling
+element you know should be present.**
+
+**The colour stays unverified until premarket**, when Discovery populates — and
+the no-price case is exercisable then, on any row whose price window has not
+filled yet. **Refusing to claim a verification that could not be performed is the
+report.**
+
+### And the empty state verified itself, unasked
+
+The placeholder names **2026-09-08** — the correct trading date across a holiday
+Monday — and it is the CLOSED/NEXT_DAY_PREP branch rather than the not-loaded
+one. **That path had never been seen live either.** A verification attempt that
+fails at its object can still confirm the thing standing where the object should
+have been.
