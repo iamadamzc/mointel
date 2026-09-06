@@ -5808,3 +5808,44 @@ caught at all — declaring it in every *instruction* is what stops them being s
 state that exists.** A rollback to reach a state that was only ever verified in
 theory, from one verified in production, is a second disturbance bought with
 nothing.
+
+## A FIELD CAN LEAVE THE SPREADSHEET WITHOUT LEAVING THE SCREEN
+
+**Design, 2026-09-08**, filling the `screen` column and expecting the premarket
+and after-hours columns to be empty. **They are not.** During premarket the
+board's live price **is** the PM price, its gap **is** the PM %, its volume **is**
+the PM volume; after the bell the AH % renders as the board's move.
+
+**So nothing leaves the screen when those columns go.** What leaves is the
+**frozen-at-a-moment** property — which `live?` already records as MOMENT\*.
+
+**Read carelessly, the screen column would have double-counted a loss another
+column already carried.** Two annotations describing different properties of the
+same field will silently add up unless someone says they do not. **Said in the
+annotation, not left to the cells to imply.**
+
+### Seven Sheet columns are three desk fields
+
+`rows.ts` already folds Priority + Revised Priority into one field with
+`isRevised`; Catalyst + PM Catalyst into `.original`/`.latest`; Warning Shot + PM
+Warning Shot into `.original`/`.current`/`.source`. The surface renders the
+latest and keeps the original beside it.
+
+**A retirement plan counting these as separate fields would build six things
+where three exist.** The pairing is a **Sheet-shaped distinction, not a
+desk-shaped one** — an artefact of a spreadsheet needing a second column for a
+revision, where a record needs a flag.
+
+**Count the fields the desk would have to produce, not the columns the source
+happens to use.**
+
+### And §10 caught a field its own author shipped, for the second time
+
+`Flush From High %` reaches the trader **only on hover** — it renders inside a
+`title` attribute. §10 forbids content reachable only by hover; the Move label
+was the first catch, this is the second. **Flagged, not fixed:** the remedy is a
+change to what the board presents, and that is the trader's to authorise rather
+than a consequence of an audit.
+
+**An audit that finds a defect in the auditor's own work is doing what an audit
+is for.**
