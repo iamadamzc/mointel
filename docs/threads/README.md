@@ -6778,3 +6778,31 @@ moving.
 form. A finding reaching the TRADER must first survive one check the instrument
 that produced it cannot perform.** Slowing the thread would have cost the desk
 three real findings to prevent three corrections that cost a paragraph each.
+
+## A NUMBER THAT SURVIVES BECAUSE NOBODY WROTE A RULE FOR IT IS NOT THEREBY A FINDING
+
+**Ops, 2026-09-07**, correcting itself rather than the relay.
+
+The lead-time pre-registration covered lead times, a power floor and outcome C.
+It said nothing about coverage counts — and when the timing comparison was ruled
+unpowered, **the coverage number was the one part of the output with no rule
+attached, so it became the consolation finding.** Ops offered it to the trader
+as *"the real difference is coverage, not timing"*.
+
+It was not a comparison at all: **its two sides were measured over different
+spans**, one session-wide and one window-only.
+
+**THE FAILURE IS NOT THAT A BROKEN NUMBER WAS RELAYED. IT IS THAT A CONCLUSION
+WAS FOUND IN THE ONLY PLACE NOBODY HAD REGISTERED A FLOOR FOR.** A
+pre-registration that binds part of an output leaves the rest looking
+unconstrained rather than unexamined, **and the pressure to find something lands
+exactly there** — hardest at the moment the registered comparison comes back
+empty.
+
+**So when a pre-registered result comes back null, the next number reached for
+is the one to distrust most.** It has not passed a weaker test; it has passed no
+test, and it is being asked to carry the weight the registered one was supposed
+to.
+
+*Both instruments' coverage figures disagreed — 5 one way, 38 the other — and
+**that disagreement is the only reason either ever looked like a measurement.***

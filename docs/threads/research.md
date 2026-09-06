@@ -8983,3 +8983,100 @@ looked.
 **`MAX` over `COALESCE` mattered for a reason I had not spelled out**: 0 is not
 NULL, so COALESCE would have preserved a stored 0 and blocked the real latch —
 **a fix that breaks the thing it protects.**
+
+---
+
+**95. TWICE IN ONE DAY I QUOTED A LOCAL CENSUS AS A STORE-WIDE FACT — AND THE
+REACH FINDING TURNS OUT TO BE ONE SESSION, NOT A RATE.**
+
+*Ops ran `catalyst-timing.ts` on production. Two of my premises fall, one
+finding of mine gets much weaker, and one figure the desk has been reasoning
+from stops meaning what it was taken to mean.*
+
+### CORRECTION ONE: nine rows is 710
+
+I wrote **"nine rows in the whole store carry a time the source actually
+stated"**. On production it is **710**, with 1,000 more carrying the synthesised
+12:00Z. **My number was the local desk. Again.**
+
+**This is the same error as the 9%, hours apart.** `data/README.md` exists
+because two threads lost an afternoon to it, I read that file this session, and
+I still wrote a local census as a fact about *the store*. **The rule is not
+"check the store" — it is NAME THE STORE IN THE SENTENCE THAT CARRIES THE
+NUMBER**, so the claim cannot be made without its scope.
+
+### CORRECTION TWO: "the store has no time of day" is too strong, and the
+### difference is the population the question was about
+
+| session | same-day rows | **source-stated** | synthesised | none |
+| --- | ---: | ---: | ---: | ---: |
+| 09-02 | 119 | **37** | 52 | 30 |
+| 09-03 | 47 | **4** | 35 | 8 |
+| 09-04 | 48 | **16** | 16 | 16 |
+
+**About a third of same-day rows CAN be placed against 07:00.** The refusal to
+split the 12:00Z placeholders stands; the blanket refusal does not.
+
+**BUT THE PLACEABLE SUBSET IS SEVERELY SELECTED, AND THAT IS NOT A DETAIL.**
+Locally every `EXACT` row is `NEWSWIRE` or `COMPANY_IR`; **SEC filings carry
+date-only, because the index gives a filing DATE.** So the rows with a real time
+are the press-release-shaped ones. **A before-07:00 rate computed on them
+answers "when do press releases go out", not "when does evidence arrive"** — and
+the answer to the first is known before measuring it.
+
+**Needs checking on production before running: `EXACT` grouped by
+`source_type`.** If it is non-SEC-only there, the subset test is worth running
+and worth nothing as a general rate.
+
+### THE VACUITY PREDICTION HELD, AND MY DRY-RUN SHAPE DID NOT
+
+**Every name with any evidence had pre-session evidence — 100%, all three
+sessions.** As predicted, which is why the age distribution is the output.
+
+| session | n | median age | freshest = 1 day | ≤ 7 days |
+| --- | ---: | ---: | ---: | ---: |
+| 09-02 | 54 | 12d | 14 | 24 |
+| 09-03 | 44 | 3d | 19 | 27 |
+| 09-04 | 45 | 9d | 9 | 20 |
+
+**My local "zero names with prior-day evidence" DID NOT HOLD.** Production has
+14, 19 and 9. **Recorded as not-a-finding at the time, and that was the right
+call** — the local floor was an artefact.
+
+**The substantive reading, and it weakens my own overnight argument further: if
+a pre-session catalyst were what these names move on, the freshest document
+should cluster at ONE DAY. It does not — the median is 3 to 12 days.** Only a
+quarter to two-fifths have anything from the prior session.
+
+**That is consistent with the structure break** — 50%+ movers running without a
+catalyst — and it is the first production measurement of it I have seen.
+
+### AND THE REACH FINDING IS A SESSION, NOT A RATE
+
+| | fired | no job |
+| --- | ---: | ---: |
+| 09-02 | 54 | **0** |
+| 09-03 | 45 | **1** |
+| 09-04 | 56 | **19 (34%)** |
+
+**ITEM 81a EXPLAINED THE MISS AS SAMPLING AGAINST 4.4× CHURN. THAT MECHANISM IS
+A PROPERTY OF EVERY SESSION AND PREDICTS A CONSISTENT RATE. 0, 1, 19 IS NOT
+CONSISTENT.**
+
+So the churn explanation does not account for 09-04 either, and **the latch
+defect is ruled out by the same kind of absence that confirmed it elsewhere:
+09-04's wiped count is ZERO** (its only restart was 03:48 ET, before any latch
+exists).
+
+**"20 of 53 never researched" has been carried as a standing reach gap. On this
+evidence it is a SINGLE-SESSION EVENT with no established cause.** Two adjacent
+sessions lost nothing.
+
+**I AM NOT PROPOSING A MECHANISM.** Three times in two days I have reached for
+one before checking the instance. **The contradiction is the report; the cause
+is an open question**, and what would discriminate is whether 09-04's research
+worker was degraded — `research_health`, job timestamps, worker restarts.
+
+*Also from Ops: 45 names carry source rows while only 37 had jobs, so eight hold
+evidence collected in another session. **"No job" does not mean "nothing
+known".***
