@@ -6664,3 +6664,54 @@ decision.**
 **Right, and the distinction is the useful one.** A thread that must clear every
 utterance through a bus stops reporting, and **the failure this desk has already
 had twice is silence, not duplication.**
+
+## A PATCH THAT WORKS FIRST TIME IS A PATCH WHOSE PREMISE WAS NEVER TESTED
+
+**Research, 2026-09-07**, acting on Integration's rule to check what an
+instrument change does to the denominators of everything already measured.
+
+The audit turned up what looked like a clean hit. `desk_events` held 12
+`RVOL_RANK_ENTRY` and 2,812 `DISCOVERY_QUALIFIED` rows **whose `ts` was
+2026-08-17 and whose `trading_date` said `2026-08-14`.** Eight of the entry
+names appeared nowhere in the 08-17 population. The reading wrote itself: the
+engine had not rolled, the events were misfiled, **every per-session count keyed
+on `trading_date` was understating its population by 11%** — and understating it
+in the direction that makes both the churn and the research miss look smaller
+than they are.
+
+**It was wrong. THERE IS A FULL 2026-08-14 SESSION IN THE STORE** — 8,559
+`ticker_session` rows — and HHS holds rank 1 there at RVOL 370.7, **the exact
+value in the event payload.** The store had been backfilled at 23:52 ET on the
+Sunday, so Friday's session was written late. **The `trading_date` was right and
+the `ts` was right; only my inference was wrong.**
+
+### What actually stopped it, and it was not discipline
+
+**I wrote the correction before testing the premise.** The recovery code went
+into both instruments, with a docstring stating the defect as fact, and I ran it
+expecting the population to rise from 65 to 73.
+
+**IT RECOVERED NOTHING — because my date arithmetic was wrong** (23:52 ET falls
+on the previous ET calendar day). I went to find out why the patch did not fire,
+and that is when the 08-14 session turned up.
+
+**HAD THE PATCH WORKED, IT WOULD HAVE SILENTLY ABSORBED EIGHT NAMES FROM A REAL
+PRIOR SESSION INTO THE POPULATION, AND I WOULD HAVE REPORTED AN 11%
+UNDERSTATEMENT THAT DOES NOT EXIST.** A bug prevented a wrong finding. That is
+luck, and naming it as luck is the only way it stops being relied on.
+
+### The rule
+
+**When a patch confirms the story it was written for, that is not evidence — the
+patch was built to produce that outcome.** The premise has to be tested
+*somewhere the patch is not*: here, one query for whether an 08-14 session
+existed, which cost nothing and would have ended it before a line was written.
+
+**So test the premise where the instrument cannot reach it, and be most
+suspicious when a correction lands exactly as expected.** Reverted; both
+instruments are back to their committed state.
+
+*This is the third instance in two days of reaching for a mechanism before
+checking the instance — see **"a true nearby mechanism is the most convincing
+wrong answer available"**. The first two were caught by other people. This one
+was caught by a bug.*
