@@ -6111,3 +6111,52 @@ than we have**, and treating it as a finding wastes the one report we got.
 
 **Take the symptom exactly as given. Derive the cause independently. Then say
 which of the two you are answering.**
+
+## NAME THE NEXT SESSION DATE, NEVER A RELATIVE INTERVAL
+
+**2026-09-06, ET.** Integration wrote *"premarket opens in roughly twelve hours"*
+and *"premarket ~10h out"*, and told the trader **"good luck this morning."**
+Verified: ET is **Sunday 22:55**. Monday 09-07 is **Labor Day**. The next
+premarket is **Tuesday 09-08 04:00 ET — about 53 hours away.**
+
+**The error was made in the same message that systematised state-declaration**,
+and neither seat caught it from the sentence itself. **A calendar premise does not
+stay fixed by having been corrected once** — this is the fourth recurrence across
+three seats in three days, after the holiday was independently discovered twice.
+
+**A relative interval hides its own arithmetic.** "Twelve hours out" cannot be
+checked without redoing the calculation that produced it; **"Tuesday 2026-09-08
+premarket" is wrong on its face when it is wrong.**
+
+**So the state-declaration rule gains a second field: sha and clock, AND the next
+session date named absolutely.** The sha rule was written because a stale sha is
+invisible in prose. **A stale date is invisible in exactly the same way, and has
+cost more.**
+
+## THE TREE COMPARISON IS NOT A FORMALITY THAT ALWAYS PASSES
+
+**Ops, 2026-09-06.** Cherry-picking a gated commit onto main and comparing trees,
+**expecting a match as with `7212bdd` — and they did not match.** Main had moved
+between the gate base and the cherry-pick, **so the gate result did not
+transfer.** Re-gated at the shipping sha itself.
+
+**Last time the tree check let a re-run be skipped honestly. This time it caught
+a stale gate that sha-matching would have hidden** — the report would have read
+*"gated at `af4e031`, cherry-picked cleanly"* and been wrong about what shipped.
+
+**A verification step that has only ever passed is indistinguishable from one
+that cannot fail.** This one has now done both jobs, which is what makes it
+evidence rather than ceremony.
+
+### And the fix the objection made possible
+
+The false-FRESH path was undetectable until the companion key entered the store —
+**so the fix that was queued became expressible because of the fix that was
+objected to.** `STALE` is a warning, `UNKNOWN` is an admission, **`FRESH` is a
+claim**: the only one of the three that can be confidently wrong, on a field that
+exists because a board missing names looks exactly like a quiet morning.
+
+**Two optional inputs, nine original tests untouched, and a store predating the
+key falls through to the old comparison** — absent means *this store is older*,
+not *this session is wrong*. The rule `universeWarning` already applies to a build
+that never had the field, **reused rather than reinvented.**
