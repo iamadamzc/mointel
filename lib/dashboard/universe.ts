@@ -57,6 +57,18 @@ function asOfLabel(iso: string | null | undefined): string | null {
  * `universeRollDue` is computed by the engine because it is clock-relative. A
  * component reading its own clock is how the market indicator came to announce
  * a shut market at 02:04.
+ *
+ * **DECLINED: suppressing this when the worker started after the last roll.**
+ * `workerStartedAt` sits on the same object, so it is buildable right here — and
+ * it would have hidden the 2026-09-07 defect, where startup established a
+ * session without stamping `trading_date_rolled_at` and this marker would have
+ * fired falsely at its first premarket, on a universe that had just been
+ * refreshed.
+ *
+ * **The fix belongs at the stamp, not at the reader.** Inferring "a session was
+ * established" from a start time puts one fact in two places, agreeing by
+ * discipline until one drifts — and the second copy would live in a component,
+ * which is exactly where the clock-relative reasoning went wrong before.
  */
 export function universeWarning(
   health: Pick<
