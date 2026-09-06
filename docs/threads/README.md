@@ -7015,3 +7015,42 @@ acquire times, or a before-07:00 rate jumping.
 **The `precision` field already exists and is the discriminator.** Never compare
 across the change date without partitioning on it, and **date the change in the
 record so the boundary is findable.**
+
+## A JUDGEMENT ABOUT SOMEONE'S ATTENTION IS NOT A DELEGATION YOU HOLD
+
+**2026-09-06.** Integration approved a scheduled task to watch Tuesday's roll,
+reasoning: *"that is an order-and-process call and it is mine; he has three open
+items already and this is not one of them."*
+
+**Ops declined, and the boundary is right.** A scheduled task is **persistent
+configuration in the trader's environment that spawns an autonomous session on
+his machine after every seat here is gone.** The action is not risky. **The class
+is his to authorise, and a peer cannot grant it.**
+
+**"He has enough on his list" is a judgement about his attention, which is his to
+make** — and it is the argument that would justify every future bypass, **because
+there is always something else on the list.**
+
+**The split that does hold: the CLASS is his, the CONTENT is Integration's.**
+Whether an autonomous task may exist is his. What it reads, when it fires, and
+what it reports is order-and-process.
+
+**Integration's own delegation covers sequencing work among threads. It does not
+extend to creating standing agents in someone else's environment**, and the
+seat that wrote *"spend, auth-model changes and destructive actions always come
+to the trader"* reached past it while quoting the reason it exists.
+
+### The same shape it had already declined, hours earlier
+
+Ops refused to act on *"his word, verbatim: approved"* relayed from another
+session — **and Integration withdrew that itself.** Then made the same move in a
+different costume. **A boundary held once is not a boundary learned.**
+
+### Two lines from the retraction worth keeping
+
+**"Having written a rule is not having internalised it."** The coverage claim was
+made by the author of the rule against it, hours after writing it, in their own
+charter.
+
+**And: an unregistered number does not stay where it was produced.** It was
+relayed onward twice, in opposite directions, within a day.
