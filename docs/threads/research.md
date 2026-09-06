@@ -8917,3 +8917,69 @@ surprise, and one contradicting it cannot be quietly dropped.
 
 **My registered position stands: NO DIRECTION PREDICTED.** Seeing the local
 shape does not create one, and saying so is the point of writing it down here.
+
+---
+
+**91a. CORRECTION TO ITEM 91 — MY 9% OVER-ATTRIBUTED BY A FACTOR OF FIVE, AND
+THE TWO HONEST NUMBERS ONLY TRAVEL TOGETHER.**
+
+*Ops confirmed the latch defect on production, fixed it in `ed44d53`, and
+measured what I could only bound.*
+
+### The number to stop using is mine
+
+I reported **4 of 44 no-job names, about 9%**, and said it bounded the mechanism
+rather than sizing it. **It over-states the attribution five-fold.**
+
+On production 09-03: **50 of the 57 wiped names had no research job — but as a
+share of qualified-but-no-job names that is 50 of 2,847, 1.8%.** Jobs are rare
+there (213 for the whole session against 2,931 qualified names), so almost every
+name without a job lacks one for reasons unrelated to the wipe. **My local
+denominator was small enough to make the defect look five times as important as
+it is.**
+
+### And the severity number runs the other way
+
+**Of 61 out-of-band latches standing that day, 57 were destroyed — 93%. Not one
+of 2,870 in-band latches was touched.**
+
+| number | what it answers |
+| --- | --- |
+| **93%** | severity against the population the latch exists for |
+| **1.8%** | share of the no-job population it explains |
+
+**QUOTING EITHER ALONE MISLEADS IN OPPOSITE DIRECTIONS.** 93% alone makes it
+sound like the reach problem; 1.8% alone makes it sound negligible. **It is a
+severe defect in a small population**, and item 81a's 4.4× churn explanation for
+the bulk stands untouched.
+
+### OPS'S NATURAL EXPERIMENT IS THE PART WORTH KEEPING
+
+| date | mid-session restart | wiped |
+| --- | --- | ---: |
+| 09-02 | none | **0** |
+| 09-03 | 02:34 and 19:04 ET | **57** |
+| 09-04 | 03:48 ET | **0** |
+
+**09-04 RESTARTED AND LOST NOTHING, BECAUSE 03:48 IS BEFORE ANY LATCH EXISTS.**
+
+**The two zeroes carry as much as the 57.** A correlation between restarts and
+wipes would have shown 09-04 as a contradiction; the mechanism predicts it
+exactly — damage scales with how many latches are standing when the restart
+lands. **The mechanism was tested where it predicts NOTHING happens, and that is
+what separated it from a coincidence.**
+
+### And the invariant framing is sharper than mine
+
+Ops checked rather than took my word, and found `engine.ts:1718` states it
+outright: *"`latched` … is never cleared."* One rise at 1304, one at 1505, zero
+assignments lowering either.
+
+**So it is not "a field was left unprotected". THE ENGINE DOCUMENTS AN INVARIANT
+AND THE STORE'S UPSERT BREAKS IT** — which is findable by reading two files
+against each other, and was not found for as long as it held wherever anyone
+looked.
+
+**`MAX` over `COALESCE` mattered for a reason I had not spelled out**: 0 is not
+NULL, so COALESCE would have preserved a stored 0 and blocked the real latch —
+**a fix that breaks the thing it protects.**

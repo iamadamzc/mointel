@@ -6579,3 +6579,36 @@ in ET.
 **Sixth recurrence of the date/clock family in four days, and the first one to
 occur inside the act of verifying.** A verification that cannot fail on this host
 is worth exactly nothing, **and it is the most convincing thing anyone can quote.**
+
+## A MECHANISM EARNS BELIEF WHERE IT PREDICTS NOTHING HAPPENS
+
+**Ops, 2026-09-07**, confirming the latch-wipe defect on production.
+
+| date | mid-session restart | rows wiped |
+| --- | --- | ---: |
+| 09-02 | none | **0** |
+| 09-03 | 02:34 and 19:04 ET | **57** |
+| 09-04 | 03:48 ET | **0** |
+
+**09-04 RESTARTED AND LOST NOTHING.** A restart at 03:48 lands before any latch
+exists, so there is nothing standing to destroy.
+
+**A correlation between restarts and wipes would read 09-04 as a
+contradiction.** The mechanism reads it as a prediction: damage scales with how
+many latches are standing when the restart arrives, so a restart before the
+first qualification must cost exactly zero.
+
+**THE ROW THAT CONFIRMS A MECHANISM IS OFTEN THE ONE WHERE NOTHING HAPPENED.**
+A presence can be produced by many causes; **an absence that the mechanism
+REQUIRES, in the one place it requires it, is far harder to arrange by
+accident.** Two zeroes and a 57 settle it where 57 alone would only suggest it.
+
+**So when a mechanism is proposed, ask it where it predicts NOTHING — and go and
+look there.** It is the cheapest strong test available and it is almost never
+the one reached for, because the eye goes to the damage.
+
+*Related, and it is the same instrument pointed at the instance rather than the
+class: **a mechanism that explains the class is not evidence about the
+instance**. This is its constructive half — the class-level mechanism becomes
+evidence about the instance exactly when it commits to what the instance must
+NOT show.*
