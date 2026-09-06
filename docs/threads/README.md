@@ -6922,3 +6922,49 @@ travel without it.
 
 **And the finding that overturned everything arrived because Ops ran something
 fast** — not because anyone was careful.
+
+## A RANK-4 NAME GOT NO RESEARCH, AND THAT IS THE OPPOSITE OF EVERY EXPLANATION OFFERED
+
+**Ops, 2026-09-06**, eliminating mechanisms for the 09-04 reach gap rather than
+proposing one.
+
+    date      no-job   best rank among no-job   with job   worst rank with job
+    09-02        0            —                    54            12
+    09-03        1           12                    44            12
+    09-04       19            4                    37            12
+
+**On 09-02 and 09-03 every name reaching rank 12 — the bottom of the board — got
+a job. On 09-04 a name at rank 4 did not.** A threshold produces the exact
+opposite shape.
+
+**Four mechanisms eliminated, each by a measurement rather than an argument:**
+churn sampling predicts a consistent rate and 0/1/19 is not one; the latch defect
+is cleared by a **zero** wiped count on a date whose only restart preceded any
+latch; **the research worker was not degraded — seven restarts, none inside the
+ET window, and it queued 51 jobs in-window against 09-02's 46, more not fewer**;
+and the auto-rank threshold is refuted by the table above.
+
+**No fifth mechanism proposed.** Three reached-for explanations in two days from
+one seat, and one from this one in the same hour. **The contradiction is the
+report, and naming a cause tonight would be the same error with a different
+author.**
+
+**Next step is a query, not a theory: what the 19 share that the 37 do not.**
+
+### And the honest account of how the coverage number got out
+
+Ops retracted its own claim that *"the real difference is coverage, not timing"*,
+and named the mechanism precisely: **the pre-registration ruled the timing
+comparison unpowered, so it went looking for something else in the output.
+Coverage was the one number nobody had written a floor for — and it treated that
+absence as licence.**
+
+**The rule was already on file. This is its author arriving at it from inside the
+error**, which is the only way it becomes load-bearing.
+
+### Not opening a substantial build straight after over-reading an output
+
+`(d)` was held deliberately — **rulings all in hand, nothing waiting on it** —
+because **the hour after discovering you have over-read something is the wrong
+hour to start a build that depends on reading carefully.** Judgement about *when*
+to begin, stated as a reason rather than exercised silently.
