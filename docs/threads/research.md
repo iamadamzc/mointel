@@ -9421,3 +9421,65 @@ pair, the float bound and the reverse-split repeat rule are why-nots wearing
 other names. **This is an ordering and a renderer over what exists**, plus the
 three-way verdict — which is the only genuinely new part, and it is a type
 rather than a system.
+
+**99a. THE STALL STORY IS DEAD — BUT NOT FOR THE REASON GIVEN, AND THE
+DIFFERENCE IS WHAT SOMEONE WILL RE-DERIVE FROM.**
+
+*Ops ran the gap query. Conclusion correct, stated reasoning not, and the gap
+between the two is exactly the sort of thing that gets rebuilt into a wrong
+belief three weeks later.*
+
+```
+date     gaps  max gap   >1min  >5min   names missed
+09-02     18   4030.1s     8      6          0
+09-03     16   3835.6s     6      6          1
+09-04     36    630.6s    25     20         19
+```
+
+### The reasoning as given: "09-04's queuing was the most continuous"
+
+**Drawn from the MAX gap, which is the wrong statistic for this mechanism.** A
+sampling miss requires a name's whole visit to fall inside a hole, so what
+matters is **TOTAL DEAD TIME AND THE NUMBER OF HOLES**, not the largest one.
+
+**On those, 09-04 is the MORE interrupted session, not the less:** twenty gaps
+over five minutes against six, and twenty-five over one minute against eight.
+**Its twenty long gaps alone put a floor of ~100 minutes of dead time in a
+180-minute window**; 09-02's known 67-minute hole plus five more over five
+minutes gives a floor near 92. **Comparable in aggregate, opposite in shape.**
+
+**So "the smallest hole missed the most" is not the finding.** It is an artefact
+of comparing maxima.
+
+### THE ACTUAL FALSIFICATION IS 09-02, AND IT IS STRONGER
+
+**09-02 carried comparable total dead time — including one 67-minute in-window
+hole — and MISSED ZERO OF 49 single-entry names.**
+
+**If a transient falling inside a queueing hole were the mechanism, 09-02 should
+have lost several.** It lost none. That kills the story on the session where the
+story had every chance, which is a harder test than 09-04 provides.
+
+**Same conclusion, sixth mechanism still eliminated. But it is eliminated by the
+zero, not by the maximum** — and only the first survives someone re-checking it.
+
+### And that is the same instrument as the two zeroes, pointed the other way
+
+Ops's 09-04 restart proved a mechanism **by finding the absence it required**.
+Here the absence — **zero misses through 67 minutes of silence** — refutes one.
+**The row where nothing happened does both jobs.**
+
+### OPS'S RULE, AND IT RETIRES MY OWN REGISTRATION
+
+*"A pre-registration survives new evidence only if the question it registered
+still exists."*
+
+I registered an IQR criterion for the `first_entry` query **to discriminate the
+sampling story. That story is now dead, so a cluster would no longer mean what
+the rule was written to make it mean.** Ops declined to run it and said to
+re-register rather than inherit. **Correct, and it is my rule being retired by
+its own author's standard rather than someone else's.**
+
+**Six mechanisms eliminated, none proposed. Both sharpest tests came back
+against their own hypotheses.** The honest position is that 09-04's cause is in
+state nobody kept, and a seventh query is unlikely to improve on it.
