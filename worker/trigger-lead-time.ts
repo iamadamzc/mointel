@@ -367,6 +367,7 @@ function run(db: Database.Database, dates: string[], topN: number): void {
   const rows: Row[] = [];
   let rvolOnly = 0;
   let gainOnly = 0;
+  let rvolSessionWide = 0;
 
   for (const date of dates) {
     const { tracks } = reconstructGain(db, date, topN);
@@ -376,8 +377,28 @@ function run(db: Database.Database, dates: string[], topN: number): void {
       const rvolFire = fires.get(entry.symbol) ?? null;
       const gainFire = entry.firstGainFire;
       if (rvolFire === null && gainFire === null) continue;
-      if (rvolFire !== null && gainFire === null) rvolOnly += 1;
-      if (rvolFire === null && gainFire !== null) gainOnly += 1;
+
+      /*
+       * COVERAGE IS COUNTED ON THE WINDOW FOR BOTH SIDES, AND THE FIRST VERSION
+       * WAS NOT.
+       *
+       * The recorded RVOL map spans the WHOLE SESSION; the reconstructed gain
+       * fires exist only inside 07:00-10:00, because that is the only stretch
+       * whose field can be built. Counting one against the other made every
+       * pre-07:00 and post-10:00 RVOL entry an "RVOL only" name — 44 of 54 on
+       * 09-02 — AND THE COVERAGE COMPARISON REVERSED ON THAT ALONE.
+       *
+       * A COMPARISON BETWEEN TWO POPULATIONS DEFINED OVER DIFFERENT SPANS IS
+       * NOT A COMPARISON. The session-wide count is still reported, as context
+       * rather than as a contestant.
+       */
+      const rvolInWindow =
+        rvolFire !== null && rvolFire >= WINDOW_START_MIN && rvolFire < WINDOW_END_MIN
+          ? rvolFire
+          : null;
+      if (rvolFire !== null) rvolSessionWide += 1;
+      if (rvolInWindow !== null && gainFire === null) rvolOnly += 1;
+      if (rvolInWindow === null && gainFire !== null) gainOnly += 1;
       if (rvolFire === null || gainFire === null) continue;
 
       const move = largestRun(entry.closes);
@@ -415,8 +436,12 @@ function run(db: Database.Database, dates: string[], topN: number): void {
   }
 
   console.log(`\n=== RATES   (${dates.join(', ')}, top ${topN}, move measured ET 07:00-10:00)`);
-  console.log(`  RVOL only  ${rvolOnly}`);
-  console.log(`  GAIN only  ${gainOnly}`);
+  console.log(`  RVOL only, both counted IN-WINDOW  ${rvolOnly}`);
+  console.log(`  GAIN only, both counted IN-WINDOW  ${gainOnly}`);
+  console.log(
+    `  (context, not a contestant: ${rvolSessionWide} names entered the RVOL top ${topN} at ` +
+      'ANY time in the session. Gain has no out-of-window count to set against it.)',
+  );
   console.log(`  BOTH, with a measurable run  ${rows.length}   <- the paired comparison`);
 
   const clean = rows.filter((r) => !r.censored);
