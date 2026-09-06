@@ -3648,6 +3648,19 @@ one sentence, and he would be approving the second without seeing it.
   where three exist — **a spreadsheet needs a second column for a revision where
   a record needs a flag.** The pairing is a shape of the source, not of the
   problem.
+- **The control for a RENDERER is a sibling element you know should be present.**
+  On the payload the control is a known field — `universeMode` beside the three
+  new ones. In the DOM it is a neighbouring cell or column. **"I looked and it
+  was not there" is never a finding on its own:** searching every row for the
+  sparkline bars and finding none looked like a defect, and the truth was that
+  the whole table was unmounted because the board had no rows. **An absent
+  renderer and an absent value are indistinguishable without a control.**
+- **A verification that fails at its object can still confirm what stands in the
+  object's place.** Going to read the colour and finding no table instead
+  confirmed the empty state live for the first time — including the trading date
+  across a holiday Monday, which every thread had got wrong in prose for two
+  days while the code had it right. **Report what the failed attempt did
+  establish**, rather than only that it failed.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
