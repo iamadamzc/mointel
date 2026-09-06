@@ -8696,3 +8696,72 @@ earliness buys nothing.
 
 **NO DIRECTION PREDICTED. I can argue both, so the result cannot be read to
 fit.**
+
+---
+
+**91. THE LATCH SURVIVES WHENEVER IT IS NOT NEEDED AND IS LOST WHENEVER IT IS.**
+
+*Integration, on the 53 amnesiac rows: **"tell me whether that reaches the '20 of
+53 never researched' figure."** It does, and the mechanism is smaller and more
+specific than either of us expected.*
+
+### The defect is one line away from its own fix, in the same statement
+
+`repo.ts`, the `ticker_session` upsert:
+
+```sql
+-- COALESCE: the first crossing is never rewritten by a later flush, so a
+top12_entered_at = COALESCE(ticker_session.top12_entered_at, excluded.top12_entered_at),
+qualified_at = excluded.qualified_at, qualified_price = excluded.qualified_price,
+qualified_rvol = excluded.qualified_rvol, qualified_rank = excluded.qualified_rank,
+latched = excluded.latched,
+```
+
+**The neighbouring field is protected, with a comment saying exactly why. The
+five latch fields take `excluded.*` directly.** A flush whose runtime holds no
+latch — a restarted engine — writes NULL and 0 over what the store had.
+
+### AND IT IS INVISIBLE IN EXACTLY THE CASES WHERE IT DOES NOT MATTER
+
+**All 53 wiped rows on 2026-08-17 have a final price OUTSIDE $1–$20. Not one
+in-band name is wiped.** Zero.
+
+Because an in-band name **re-latches on the next flush** and loses nothing. An
+out-of-band name **cannot** — and the latch exists for precisely one purpose: to
+keep a name ranked AFTER it leaves the band.
+
+**SO THE FIELD IS DESTROYED IN THE ONLY POPULATION IT WAS BUILT TO SERVE**, and
+it looks healthy in the other 98%. Another member of the family: a guard that
+works only where it makes no difference.
+
+### It reaches the queue, and the path is exact
+
+A wiped row reads `rvol_rank NULL`. The candidate query requires
+`rank IS NOT NULL AND rank <= autoRank` (`researchRepo.ts`), so **the name is not
+declined and not deferred — it is not a candidate.** Permanently, for that
+session, not until the next pass.
+
+### But it is a MINOR contributor, and the number says so
+
+| 2026-08-17, local desk | |
+| --- | ---: |
+| names that entered the top 12 | 65 |
+| with no research job | 44 |
+| **of those, row wiped** | **4** |
+
+**About 9%. The bulk is still item 81a's sampling against 4.4× churn.**
+
+**AND IT DOES NOT INFLATE THE FIGURE — it is a CAUSE, not an artefact.** The
+reach measurement is unaffected either way, which was Integration's question.
+What changes is item 81a's conclusion that *nothing is broken*: **something is,
+for a small share, and it is a real defect rather than a sampling property.**
+
+### MEASURED ON THE LOCAL DESK, WHICH IS NOT THE ONE HE TRADES
+
+`data/market.db`, 48 job rows against production's very different volume. **The
+9% share is a local number and bounds the mechanism rather than sizing it.**
+Production's split needs the same query on the box.
+
+**The fix is `lib/market/store/` — Ops's, not mine.** `COALESCE` for the four
+nullable fields; `latched` needs `MAX(ticker_session.latched, excluded.latched)`
+because 0 is not NULL and a latch may only rise within a session.
