@@ -5444,3 +5444,46 @@ from the stored one** — then the field means what its name says.
 
 **Widening what a signal can see is not free: every widening is also a new way to
 fire.** Ask which of the new firings are true.
+
+## A TRIGGER'S LEAD TIME IS AN UPPER BOUND, AND THE PIPELINE SPENDS MOST OF IT
+
+**Research, 2026-09-07**, designing the gain-versus-RVOL test and measuring the
+thing neither seat had thought to measure: **how long the desk takes to answer a
+trigger.**
+
+| | median | p90 |
+| --- | --- | --- |
+| queue wait | 8s | 266s |
+| interpretation | 32s | 51s |
+| **queued → completed** | **53s** | **327s** |
+
+**So a trigger that wins by forty seconds wins nothing.** The comparison is lead
+time **minus ~53s**, and at p90 the pipeline alone costs five and a half minutes.
+
+**A selection mechanism cannot be evaluated without the latency of what it
+selects INTO.** Both triggers could be correct, both could be earlier than the
+move, and **both could still deliver after it** — in which case the trigger
+question is the wrong question and the pipeline is the work.
+
+### The independent criterion was not independent, and it was checked first
+
+`DISCOVERY_QUALIFIED` looked like a definition of "a move that mattered" living
+outside both triggers. **It is gated on `result.rank` existing** — so it fires on
+entry to the **ranked** population, which is RVOL-derived. **Using it would have
+handed the test to RVOL by construction:** the same trap Integration named, one
+level over, hiding inside the thing chosen to avoid it.
+
+**Check the referee for the same bias you excluded from the contestants.**
+
+### And the threshold was dissolved rather than chosen
+
+Told a qualifying move must be derived rather than picked, Research declined to
+pick one at all: **take the largest run per name inside 07:00–10:00 ET and report
+lead time ACROSS THE DISTRIBUTION of move size.**
+
+**If the answer is stable across sizes, no threshold was needed. If it varies,
+that variation is the finding — and a cutoff would have hidden it.**
+
+**The metric itself is "arrives before the move it is about", made numeric: what
+fraction of the eventual move was already realised when the trigger first fired.**
+A trigger firing at 5% is early; **one firing at 80% is precise and useless.**
