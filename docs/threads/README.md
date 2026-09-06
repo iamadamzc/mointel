@@ -6408,3 +6408,45 @@ confidently the worse the trigger is.** Needs a guard at lead ≤ 0.
 **A comparison written for one regime silently reverses in another.** Check what
 your conclusion says at the boundary and beyond it, not only where you expected
 to land.
+
+## A PROOF OF SAFETY CAN BE INDISTINGUISHABLE FROM THE HAZARD IT DISPROVES
+
+**Ops, 2026-09-07**, auditing a read-only instrument before running it on
+production — and Research, who wrote the thing that would have failed the audit.
+
+Ops's criterion for the earlier version was **"zero mutating SQL"**, which is
+the obvious audit for a script that must not write. **The newer version
+DELIBERATELY ADDS AN `UPDATE`.** It is a write statement matching no rows,
+executed at startup, whose refusal with `SQLITE_READONLY` is the only conclusive
+evidence the handle cannot write.
+
+**A KEYWORD SCAN WOULD HAVE FAILED THE SAFER FILE AND PASSED THE ONE THAT ONLY
+CLAIMED TO BE SAFE.**
+
+### Why the safer file needs the dangerous-looking line
+
+The version with no `UPDATE` in it asserted read-only-ness: it opened a handle
+with `readonly: true` and every statement in it happened to be a `SELECT`. **That
+is a claim about every line of a file, re-earned on every edit.** The version
+with the `UPDATE` proves it about the HANDLE, once, at startup, before anything
+else runs.
+
+**And the first probe written for that job was itself wrong.** `BEGIN IMMEDIATE`
+demands the write lock and changes nothing, which looked ideal — **SQLite GRANTS
+it on a read-only handle and defers the refusal to the first real write**, so it
+aborted a run that was perfectly safe. *A check that fails for the wrong reason
+is worth no more than one that cannot fail.*
+
+### The transferable part
+
+**An audit that scans for the SHAPE of a hazard will reject the instrument built
+to disprove it.** Proofs of a negative usually have to perform the forbidden
+thing under conditions that make it harmless — a zero-row write, a dry run, a
+canary — and those are exactly what a shape-matching audit is tuned to catch.
+
+**So a safety audit has to read intent, not tokens** — or the file that says
+"trust me" passes and the file that proves itself fails.
+
+**Both layers held here anyway, which is the point of having more than one:**
+Ops ran it as a user with group-read and no write on the store, **so the
+filesystem refused writes independently of both the handle and the pragma.**
