@@ -5631,3 +5631,37 @@ the **control** — read from the API, not the store.
 `universeRollDue` gate on that branch, **so Tuesday's premarket flipping
 `rollDue` true leaves the marker silent.** The session-length false alarm is
 closed on production without shipping anything.
+
+## "RECONSTRUCT, DO NOT INFER" PROTECTS THE COLUMN YOU WERE WARNED ABOUT AND NOTHING ELSE
+
+**Research, 2026-09-07**, validating the trigger lead-time instrument against a
+session the desk had actually ranked.
+
+Integration named the hazard precisely: **never take a minute-by-minute answer
+from `percent_change`, because it is overwritten in place and its value at read
+time is the last one of the session.** The reconstruction obeyed. Gain was
+rebuilt from bar closes, RVOL from cumulative volume over the stored
+denominator, both against the desk's own definitions.
+
+**It then read `universe.discovery_eligible` and `universe.classification` —
+current state, overwritten in place, 13,072 of 13,089 rows stamped the day AFTER
+the session — and judged that session by a flag the desk did not have.** One
+name ranked first in the rebuild that the desk never ranked at all.
+
+**A WARNING ABOUT ONE COLUMN IMMUNISES ONE COLUMN.** The care spent on
+`percent_change` produced no care at all about three others with the same
+property, because the warning was attached to a name rather than to a shape. The
+shape is *this table keeps only the latest write*, and the store is full of it —
+see **"there is no dated record of which symbols were tradable"** above, written
+about `status` and `tradable` in the same table, and not connected to this until
+after the instrument was built.
+
+**The failure mode is that it does not look like one.** A current-state read
+returns a full, plausible, correctly-typed answer for every past date. Nothing
+is missing, nothing throws, and the ranking it produces is the right shape. It
+is only visible against a ranking the desk actually wrote.
+
+**So the check that catches it is the one that reproduces a KNOWN output rather
+than a plausible one** — and it has to run on the dates being analysed, not on
+whichever session is convenient, because the size of the disagreement is a
+property of the date.
