@@ -1482,6 +1482,8 @@ export class MarketRuntime {
     this.health.universeFreshness = universeFreshness({
       universeUpdatedAt: stamped,
       tradingDateRolledAt: getMeta(this.db, TRADING_DATE_ROLLED_AT_KEY),
+      tradingDateRolledFor: getMeta(this.db, TRADING_DATE_ROLLED_FOR_KEY),
+      tradingDate: this.tradingDate,
     });
     // A roll is due once the session's data is expected: the roll fires at
     // 22:00 ET, so by premarket it must already have happened. Reuses the

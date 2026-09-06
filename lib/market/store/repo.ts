@@ -1130,8 +1130,36 @@ export type UniverseFreshness = 'FRESH' | 'STALE' | 'UNKNOWN';
 export function universeFreshness(input: {
   universeUpdatedAt: string | null;
   tradingDateRolledAt: string | null;
+  tradingDateRolledFor?: string | null;
+  tradingDate?: string | null;
 }): UniverseFreshness {
   if (input.tradingDateRolledAt === null) return 'UNKNOWN';
+
+  /*
+   * THE STAMP BELONGS TO A SESSION, AND IT HAS TO BE THIS ONE.
+   *
+   * `resolveSession` advances the trading date BEFORE `onSessionRoll` runs, so
+   * a roll that throws part-way leaves the date moved on with the marker still
+   * describing the previous session. Comparing two timestamps that both belong
+   * to yesterday returns FRESH — a confident, true-looking answer for a session
+   * nothing established, which is the worst thing this field can say.
+   *
+   * Comparing dates catches it where comparing instants cannot: the stamp is
+   * not late, it is for the wrong day.
+   *
+   * Absent means the store predates the companion key, not that the session is
+   * wrong — so it falls through to the timestamp comparison rather than
+   * inventing an alarm, the same way `universeWarning` stays silent on a build
+   * that never had the field.
+   */
+  if (
+    input.tradingDateRolledFor != null &&
+    input.tradingDate != null &&
+    input.tradingDateRolledFor !== input.tradingDate
+  ) {
+    return 'STALE';
+  }
+
   if (input.universeUpdatedAt === null) return 'STALE';
 
   const stamped = Date.parse(input.universeUpdatedAt);

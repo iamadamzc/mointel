@@ -248,3 +248,80 @@ describe('a restart inside the same session must not move the bar', () => {
     ).toBe(true);
   });
 });
+
+/**
+ * A CONFIDENT WRONG ANSWER, WHICH IS THE WORST THING THIS FIELD CAN SAY.
+ *
+ * `resolveSession` advances the trading date BEFORE `onSessionRoll` runs. A
+ * roll that throws part-way therefore leaves the date moved on with the marker
+ * still describing the previous session — and comparing two timestamps that
+ * both belong to yesterday returns FRESH for a session nothing established.
+ *
+ * STALE is a warning and UNKNOWN is an admission. **FRESH is a claim**, and
+ * this was the one path that could make it falsely.
+ *
+ * Comparing dates catches what comparing instants cannot: the stamp is not
+ * late, it is for the wrong day.
+ */
+describe('a stamp from the previous session is not freshness', () => {
+  it('is STALE when the date advanced and the marker did not follow', () => {
+    expect(
+      universeFreshness({
+        universeUpdatedAt: '2026-09-04T02:00:11.000Z',
+        tradingDateRolledAt: '2026-09-04T02:00:00.000Z',
+        tradingDateRolledFor: '2026-09-04',
+        tradingDate: '2026-09-08',
+      }),
+    ).toBe('STALE');
+  });
+
+  /** The same inputs without the companion key are the old, wrong answer. */
+  it('would have read FRESH on timestamps alone, which is the defect', () => {
+    expect(
+      universeFreshness({
+        universeUpdatedAt: '2026-09-04T02:00:11.000Z',
+        tradingDateRolledAt: '2026-09-04T02:00:00.000Z',
+      }),
+    ).toBe('FRESH');
+  });
+
+  it('is FRESH when the marker belongs to the session being served', () => {
+    expect(
+      universeFreshness({
+        universeUpdatedAt: '2026-09-08T02:00:11.000Z',
+        tradingDateRolledAt: '2026-09-08T02:00:00.000Z',
+        tradingDateRolledFor: '2026-09-08',
+        tradingDate: '2026-09-08',
+      }),
+    ).toBe('FRESH');
+  });
+
+  /**
+   * A store written before the companion key existed must not start alarming
+   * the moment this ships. Absent means the store predates the field, not that
+   * the session is wrong — the same rule `universeWarning` already applies to a
+   * build that never had `universeFreshness` at all.
+   */
+  it('falls through to timestamps when the store predates the companion key', () => {
+    expect(
+      universeFreshness({
+        universeUpdatedAt: '2026-09-08T02:00:11.000Z',
+        tradingDateRolledAt: '2026-09-08T02:00:00.000Z',
+        tradingDateRolledFor: null,
+        tradingDate: '2026-09-08',
+      }),
+    ).toBe('FRESH');
+  });
+
+  /** And it still reports the ordinary skipped-fetch case within a session. */
+  it('still reads STALE for a skipped fetch inside the right session', () => {
+    expect(
+      universeFreshness({
+        universeUpdatedAt: '2026-09-07T23:04:52.914Z',
+        tradingDateRolledAt: '2026-09-08T02:00:00.000Z',
+        tradingDateRolledFor: '2026-09-08',
+        tradingDate: '2026-09-08',
+      }),
+    ).toBe('STALE');
+  });
+});
