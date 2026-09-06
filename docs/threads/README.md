@@ -6968,3 +6968,50 @@ error**, which is the only way it becomes load-bearing.
 because **the hour after discovering you have over-read something is the wrong
 hour to start a build that depends on reading carefully.** Judgement about *when*
 to begin, stated as a reason rather than exercised silently.
+
+## "THE DATA DOES NOT HAVE IT" USUALLY MEANS "WE DO NOT COLLECT IT"
+
+**Research, 2026-09-06**, fetching the SEC submissions payload rather than
+recalling it.
+
+    acceptanceDateTime   "2026-09-03T22:30:44.000Z"
+    filingDate           "2026-09-03"
+
+**Same object, same index, same response the desk already downloads.**
+`parseSubmissions` reads `filingDate` and **does not read
+`acceptanceDateTime`.**
+
+So *"the store has no time of day"* — and its correction, *"a third of same-day
+rows can be placed"* — were **both descriptions of a collection choice, not facts
+about the source.** SEC rows are 1,401 of 1,437 locally and **every one of them
+could carry a stated acceptance time.**
+
+**And it is the right stamp rather than merely an available one.**
+`acceptanceDateTime` is when EDGAR accepted the filing — **the moment it became
+publicly observable**, which is exactly what *"was this readable before 07:00"*
+asks. **A press release's own stamp says when the issuer released it; the
+acceptance stamp says when the market could see it.**
+
+### The author's own pattern, named because it predicts the next one
+
+Fourth time in two days a premise turned out to be about the desk's own
+configuration rather than the world: universe eligibility, `ticker_session`
+amnesia, local-versus-production censuses twice, and now this.
+
+**"Any sentence beginning 'the data does not have' should be read as 'we do not
+collect', until I have checked which."**
+
+**That generalises past its author.** Every seat here has reasoned from an absence
+in the store as though it were an absence in the world, and **the store is the
+only thing any of us can see.**
+
+### A fidelity improvement creates a discontinuity in the series
+
+Stored rows keep their date-only stamps, so the store becomes **mixed**: SEC rows
+before the change `DATE_ONLY`, after it `EXACT`. **Any measurement spanning that
+boundary sees a regime change that is not in the world** — filings appearing to
+acquire times, or a before-07:00 rate jumping.
+
+**The `precision` field already exists and is the discriminator.** Never compare
+across the change date without partitioning on it, and **date the change in the
+record so the boundary is findable.**
