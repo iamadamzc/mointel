@@ -9261,3 +9261,68 @@ before rather than throwing on every issuer.
 **No backfill. Stored rows keep their dates**, and the re-fetch only buys a
 measurement that may not survive the product answer — a refusal does not need to
 be early to be right.
+
+---
+
+**98. THE QUEUE PLANNER RUNS EVERY FIVE SECONDS, WHICH MAKES THE ONLY SURVIVING
+MECHANISM MUCH WEAKER THAN "CONSISTENT WITH" SOUNDED.**
+
+*Ops's durable cross-tab: all 19 no-job names on 09-04 are single-entry, and
+across three sessions a multi-entry name never lacked a job — 0 of 27. Read as
+consistent with mechanism C and nothing else on my list.*
+
+### FIRST, A NEAR-MISS OF MY OWN, BECAUSE IT ALMOST BECAME THE FIFTH
+
+I grepped for callers of `queueDiscoveryResearch`, got only test files, and was
+**one message away from telling Ops the closed list came from a module with no
+production caller** — that the gates I had enumerated do not run.
+
+**My grep was broken.** `worker/research.ts:320` calls it, inside the poll loop.
+The planner is the production path and the closed list stands.
+
+**A bad search returns an empty result, and an empty result reads as a finding.**
+It cost one re-run to catch and would have cost Ops a night.
+
+### AND THE CADENCE KILLS MOST OF C
+
+`worker/research.ts` calls `readBoardCandidates` then `queueDiscoveryResearch`
+inside the loop that sleeps `RESEARCH_POLL_MS`, **default 5000**.
+
+**So the candidate query runs about every five seconds. For mechanism C to drop
+a name, that name must hold a top-12 rank for LESS THAN ABOUT FIVE SECONDS.**
+
+**Nineteen names doing that in one session, and zero on either adjacent session,
+is not what a five-second sampler looks like.** C is *consistent with* the
+single-entry pattern and is *implausible at this cadence* — and the second
+matters more, because the pattern is necessary rather than sufficient anyway:
+**single-entry names were caught 49 of 49 on 09-02 and 34 of 35 on 09-03.**
+
+### THE PROPOSED QUERY NEEDS A RULE BEFORE IT RUNS — OPS'S OWN
+
+Ops proposed the `first_entry` distribution for the 19 against the 25
+single-entry names that did get jobs. **It has no decision rule attached, and
+"a number that survives because nobody wrote a rule for it is not thereby a
+finding" is Ops's sentence from four hours ago.**
+
+At n = 19 against n = 25, **a visual cluster is available in almost any
+sample**, and it would be read after two registered questions came back empty —
+the exact pressure that rule describes.
+
+**REGISTERED BEFORE IT RUNS: "clustered" means the 19 occupy an interquartile
+span under HALF that of the 25. Anything else is reported as not clustered.
+Eyeballing a strip plot is not a result. NO DIRECTION PREDICTED.**
+
+### A BETTER QUERY, AND IT IS DURABLE
+
+**The inter-arrival gaps between consecutive `queued_at` on 09-04 against
+09-02.** Job rows only, no current-state read. A five-second loop cannot miss
+19 transients; **a loop with minute-scale holes can.** Counts cannot show this —
+Ops already has 51 against 46 queued in-window, and 51 jobs with a twenty-minute
+hole are still 51 jobs.
+
+**ITS LIMIT, STATED BEFORE IT RUNS: `queued_at` only exists where a job was
+queued, so a gap conflates "the loop did not run" with "the loop ran and found
+nothing new". IT CAN FALSIFY THE STALL STORY AND CANNOT CONFIRM IT.**
+
+**Which is the useful direction.** If the gaps look like 09-02's, the sampling
+story is dead and the search moves; that is worth more than a weak confirmation.
