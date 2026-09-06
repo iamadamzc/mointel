@@ -8614,3 +8614,85 @@ and a truncated 08-18. **The SSH read to `98.85.49.227:/var/lib/mointel/market.d
 was refused by this session's permission layer on both Bash and PowerShell, and
 again after he approved it — the block is not something a reply in chat lifts.**
 Not routed around, and not handed to another session to run on my behalf.
+
+---
+
+**90. THE REACH FINDING SURVIVES THE BIAS AUDIT — AND THE HEAD-TO-HEAD DOES NOT
+SURVIVE ITS OWN POWER FLOOR.**
+
+*Integration, on Ops's superset finding: **"does that bias touch the finding that
+started all of this? The trader has been making a spend decision against it."**
+Not rhetorical, so not answered by assurance.*
+
+### Both figures are clean, and the reason is structural rather than lucky
+
+| figure | source | verdict |
+| --- | --- | --- |
+| 24–40 entries a session | `RVOL_RANK_ENTRY`, rank ≤ 10, frozen 08-23 snapshot | **clean** |
+| 20 of 53 with no job | `RVOL_RANK_ENTRY` names vs `research_jobs` rows | **clean** |
+
+**Ops's bias is a property of REBUILDING A POPULATION — current eligibility is a
+superset, so a rebuild can only ever admit names the desk could not see.
+NEITHER FIGURE REBUILT A POPULATION.** Both count records of what the desk DID.
+There was no field to over-admit into.
+
+### The other way it could have broken, checked because it fails identically
+
+**A retention divergence would overstate the miss just as well**: if job rows
+were pruned faster than events, absent jobs would appear where jobs had run.
+**`DELETE FROM desk_events` and `DELETE FROM research_jobs` are both inside
+`claimStoreForMode` — `db.ts:1112` and `1123`, the same function.** Cleared
+together or not at all. **An absent job row means no job, never a pruned one.**
+
+### And the live path does read `universe` — but it fails open
+
+`isEligible` (`queue.ts:87`) tests `ELIGIBLE_CLASSES.has(classification ??
+'UNKNOWN')`, and **`UNKNOWN` is IN the set**. The `LEFT JOIN universe`
+(`researchRepo.ts:136`) selects a column and is not in the `WHERE`. **So
+classification lag cannot cost a name a job**, and the 20 remain what item 81a
+found: a sampling artefact of `rvol_rank` overwriting against 4.4× churn.
+
+### THE FLOOR BINDS. n = 15.
+
+Registered at `983e41f` before a single paired number existed: **below n = 20
+paired uncensored names, no direction at all.** The run returned 15.
+
+**So "within-name median difference 0 seconds, RVOL earlier on 3 of 15" IS NOT A
+TIE. It is a sample with no answer in it.** Reported as unpowered, exactly as
+census prediction 3 was.
+
+### The metric I proposed has a construct fault, raised before it is leaned on
+
+The move is **the largest run in the WHOLE window**, so a name whose run spans
+the morning shows a high realised fraction for **any** trigger firing after
+08:00, good or bad. **Part of 0.47/0.55 is the window definition rather than the
+triggers.** p75 = 1.00 survives it — that is firing at the peak on any
+definition — but the median is softer than it looks, and the fraction wants
+reporting against run START TIME before it carries weight.
+
+### WHAT THE RESULT KILLS IS OUTCOME C'S PREMISE, NOT ONE OF THE TRIGGERS
+
+**If half the move is gone when either trigger fires, 53 seconds of pipeline is
+not the constraint and no latency work makes the dossier an entry input.** C was
+the wrong worry. **The constraint is that intraday triggering cannot be the
+input at all.**
+
+What research is for instead, ordered by how well the evidence carries it:
+
+1. **THE AVOID IS THE PRODUCT.** A trigger firing at the peak is useless for
+   entry and **maximally useful for refusing one**. *Cash merger, discovery
+   over* is worth most exactly when the move looks best.
+2. **The second leg, not the first.** He trades a name repeatedly in a morning;
+   the dossier is late once and early after that.
+3. **What CAN be early is evidence that existed before the move** — filings, the
+   effect taxonomy, float, the supply pair. Knowable at 04:00, racing nothing.
+
+### PRE-REGISTERED, BEFORE LOOKING
+
+**Of the names that fired either trigger, what fraction had an observable filing
+or catalyst timestamped BEFORE 07:00 ET?** High means an overnight pass reaches
+them without racing anything; low means the catalyst arrives with the move and
+earliness buys nothing.
+
+**NO DIRECTION PREDICTED. I can argue both, so the result cannot be read to
+fit.**
