@@ -3570,6 +3570,18 @@ measured-silence, and the one this desk gets wrong most often.
   the counts — points at the wrong object. **Read from the object the field is
   ON, and check a known-present field alongside it** so "absent" means something
   before you act on it.
+- **Two annotations describing DIFFERENT properties of one field silently add
+  up.** `screen` says nothing leaves the board when the PM columns go; `live?`
+  says the frozen-at-a-moment value is lost. Both true, one loss — and a reader
+  scanning two populated columns counts it twice. **Say explicitly that they do
+  not compose**, because neither column can say it alone and the cells cannot
+  say it at all.
+- **Count the fields the desk must PRODUCE, not the columns the source USES.**
+  `rows.ts` folds Priority+Revised, Catalyst+PM Catalyst and Warning Shot+PM
+  Warning Shot into three fields. A plan counting seven would build six things
+  where three exist — **a spreadsheet needs a second column for a revision where
+  a record needs a flag.** The pairing is a shape of the source, not of the
+  problem.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
