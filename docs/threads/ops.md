@@ -6217,6 +6217,33 @@ covered by it, and an earlier "and restart" does not stand for the next one.
 - Expect `schema v25, quick_check ok, 0 backup(s) written` — the 0e guard as a
   clean no-op. It has now read that way seven times.
 
+### After the restart, read the latch count — WITH ITS DENOMINATOR
+
+**The only evidence the latch fix worked, available in one query on the night it
+ships rather than a week later when someone wonders.**
+
+```sql
+WITH q AS (SELECT DISTINCT symbol FROM desk_events
+           WHERE trading_date = :D AND type = 'DISCOVERY_QUALIFIED' AND symbol IS NOT NULL)
+SELECT
+  (SELECT COUNT(*) FROM q JOIN ticker_session t
+     ON t.symbol = q.symbol AND t.trading_date = :D
+   WHERE t.latched = 0 AND t.qualified_at IS NULL)              AS wiped,
+  (SELECT COUNT(*) FROM ticker_session
+   WHERE trading_date = :D AND latched = 1
+     AND (price IS NULL OR price < 1 OR price > 20))            AS out_of_band_surviving;
+```
+
+**`wiped` must be 0. But `wiped = 0` on its own proves nothing** — it reads zero
+whenever no name went out of band that session, which is most of the reason this
+defect survived weeks. **`out_of_band_surviving` is the denominator: unless it
+is greater than zero, the check saw no case it could have failed on.**
+
+Both numbers, always. On 2026-09-03 the same pair read `57` and `4`. A healthy
+night reads `0` and some tens.
+
+**Prove a check can see a present case before believing its absence.**
+
 ### THE ONE THAT CANNOT BE RECOVERED LATER
 
 **`b1d64b9` creates a data-format boundary in the store, and the instant must be
