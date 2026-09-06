@@ -329,6 +329,58 @@ the thing that ships them.**
 
 ---
 
+### R&D — parse census against the live Sheet. 2026-09-07.
+
+**Pre-registration and full results:
+`docs/rnd/2026-09-07-sheet-parse-census-preregistration.md`. Rates only; no cell
+contents left this desk.**
+
+**A THIRD FIELD REACHES THE DESK AS NOTHING, AND IT WAS NOT ON ANYONE'S LIST.**
+
+    field                          TODAY (n=7)        RESEARCH (n=226)
+    M / 17  Recent Run High         0/7    0.0%        61/190   32.1%   <== NEW
+    N / 18  Flush From High %       1/7   14.3%        77/177   43.5%
+    I / 9   Float                   4/7   57.1%       129/188   68.6%
+            float cell "; N SO"                        10/188    5.3%
+    12      Shares Outstanding                        103/185   55.7%
+    8       AH Volume                                  82/152   53.9%
+    6       AH Price                                  131/192   68.2%
+    7       AH %                                      130/172   75.6%
+    E / 5   RTH Close               7/7  100.0%       221/224   98.7%
+
+**Float first, Flush second, Recent Run High third — three of three are the same
+shape**, a number with a level or date travelling beside it.
+
+**THE RULE IS PREDICTIVE FROM THE PARSER, NO SAMPLING NEEDED.** `parseNumber` is
+a fully anchored regex over a closed vocabulary — digits, `( - + $ , . K M B %`
+and whitespace. **`approx 12M` nulls; so does `~4.0M`, `>12M`, `12M est.`,
+`12.0M*`.** Any field whose natural expression carries anything else is at risk
+**before it is ever observed failing.**
+
+**WHAT THESE NUMBERS DO NOT SAY.** `0 of 7` is not 0% — the 95% upper bound is
+**35.4%**, and every TODAY figure is a seven-row figure. **`recentCycleHigh` at
+32.1% of 190 is what makes the TODAY zero credible**, not the zero itself.
+Explicit `Unknown` cells (34..74 per RESEARCH field) are **separated and not
+counted as failures** — an honest Unknown is the Sheet working. One snapshot,
+market shut.
+
+**AND A CORRECTION TO WHERE THIS LANDS.** The verdict column reads *"the desk
+produces an equivalent today"* — **a statement about the DESK, not about the
+Sheet.** A parse rate cannot move it: `Recent Run High` arriving as nothing says
+nothing about whether the desk can compute a cycle high, and `97b4caa` made that
+arithmetic.
+
+> **So no verdict is amended here.** Two different axes, and collapsing them
+> would repeat the error this census exists to catch. **The finding is stronger
+> kept separate: a field the DESK PRODUCES and the SHEET NULLS is one he is
+> already living without** — the cheapest retirement on the table, and there are
+> at least three of them.
+>
+> **If this belongs as a `parse?` column rather than a section, that is
+> Integration's to add** — the table's structure is not mine to change.
+
+---
+
 ### Outputs summary
 
 | | TODAY | RESEARCH | total |
