@@ -9215,11 +9215,30 @@ product question lands.*
 `publishedAt` with `publishedPrecision: 'EXACT'`.** The SEC_SUBMISSIONS source
 takes it too.
 
-### THE BOUNDARY IS 2026-09-07 AND `published_precision` IS THE DISCRIMINATOR
+### THE BOUNDARY IS THE DEPLOY INSTANT — **`SEC_ACCEPTANCE_BOUNDARY: PENDING`**
+
+*Corrected: I first wrote 2026-09-07, the commit date. **Integration: nothing
+changes in the store until the code RUNS**, and `b1d64b9` ships with the
+Tuesday-close deploy — so the documented boundary was wrong by up to two days,
+**and wrong in the direction that makes a rate across it look like a real
+change.** A collector artefact wearing the shape of the finding.*
+
+**DATE A DATA-FORMAT BOUNDARY BY WHEN THE WRITER STARTED WRITING IT, NOT BY WHEN
+THE CHANGE WAS WRITTEN.**
+
+**To be filled here, as a DATETIME WITH ZONE, once Ops reports the deploy** —
+the roll and the deploy fall on the same evening, so a date alone cannot
+separate them. `SEC_ACCEPTANCE_BOUNDARY` is the greppable token; the code
+comment points here rather than carrying its own copy, **because three prose
+sites is three chances to update two of them.**
 
 **SEC rows written before it carry `UNKNOWN` on a bare date. Rows after carry
-`EXACT` on a timestamp.** Nothing changed in the world on that date; only what
-the desk keeps.
+`EXACT` on a timestamp.** Nothing changes in the world at that instant; only
+what the desk keeps.
+
+*And `b1d64b9`'s own commit message still says 2026-09-07. It is pushed and not
+being rewritten — **this entry is the record and the commit is not**, which is
+itself the argument for one token in one place.*
 
 **ANY RATE COMPUTED ACROSS THAT BOUNDARY WITHOUT PARTITIONING ON PRECISION WILL
 SHOW FILINGS ACQUIRING TIMES THEY ALWAYS HAD** — a regime change that is an

@@ -430,11 +430,22 @@ async function collectFiling(
          * means a date carrying a SYNTHESISED time, and claiming one here would
          * put a made-up 12:00Z into the field the timing question reads.
          *
-         * THIS CREATES A DISCONTINUITY. Rows written before 2026-09-07 carry
-         * `UNKNOWN` on a bare date; rows after carry `EXACT` on a timestamp.
-         * `published_precision` IS the discriminator — partition on it, and
-         * never compare a rate across that boundary without doing so, or the
-         * series shows filings acquiring times that they always had.
+         * THIS CREATES A DISCONTINUITY, AND ITS DATE IS A DEPLOY FACT RATHER
+         * THAN A COMMIT FACT. Nothing in the store changes until this code runs
+         * in production, so the boundary is the DEPLOY INSTANT — not 2026-09-07
+         * when it was written, which would be wrong by up to two days and wrong
+         * in the direction that makes a rate across it look like a real change.
+         *
+         * SEC_ACCEPTANCE_BOUNDARY: PENDING DEPLOY — recorded as a datetime with
+         * zone in `docs/threads/research.md` item 97a once Ops reports it. The
+         * roll and the deploy fall on the same evening, so a date alone cannot
+         * separate them. Grep that token; this comment is not the record.
+         *
+         * Rows written before it carry `UNKNOWN` on a bare date; rows after
+         * carry `EXACT` on a timestamp. `published_precision` IS the
+         * discriminator — partition on it, and never compare a rate across the
+         * boundary without doing so, or the series shows filings acquiring
+         * times that they always had.
          */
         publishedAt: filing.acceptanceDateTime ?? filing.filingDate,
         ...(filing.acceptanceDateTime ? { publishedPrecision: 'EXACT' as const } : {}),
