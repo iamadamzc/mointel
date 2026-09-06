@@ -8331,3 +8331,69 @@ structural rather than remembered: RETAIN MORE, NEVER LESS. An empty ranked set
 must mean KEEP EVERYTHING FOR THAT DATE**, never keep nothing — and the
 three-session floor must apply before the predicate is consulted at all, not
 after.
+
+---
+
+**88. THE BILL IS 24–40 NAMES A DAY FROM ONE LIST, THE SECOND LIST DOES NOT
+EXIST, AND 83 NAMES ENTERED BELOW RANK 10 WITHOUT ONE REACHING TOP 5.**
+
+*Integration: measure before building — how many entered top-10 by RVOL, how many
+by gain, what the union costs. And measure whether a name below rank 10 ever
+reaches his top 5, because he said the board may be too wide.*
+
+**Measured on `market-prod-2026-08-23.db`, four full sessions (08-17, 18, 19,
+21). 09-04 is production and I cannot read it — the queries are handed over
+below.**
+
+### 1. TOP-10 BY RVOL IS NOT TEN NAMES. IT IS 24–40 A DAY
+
+Distinct names whose observed `RVOL_RANK_ENTRY` carried rank ≤ 10:
+
+| session | entries | distinct names | **entered rank ≤ 10** |
+| --- | --- | --- | --- |
+| 08-17 | 69 | 65 | **40** |
+| 08-18 | 58 | 50 | **24** |
+| 08-19 | 32 | 29 | **15** |
+| 08-21 | 54 | 50 | **32** |
+
+**A rule that says "research the top 10" buys 24–40 interpretations a day, not
+10.** That is the churn, and it is the number the rule has to be priced against.
+
+**Once-per-name saves 9%**, not more: 19 of 213 entry events carry `episode > 1`.
+**Oscillation is mild; first entries are the bill.**
+
+### 2. THE GAIN LIST DOES NOT EXIST — NOT AS A COLUMN AND NOT AS AN EVENT
+
+`desk_events` has `RVOL_RANK_ENTRY` (288) and `AH_RANK_ENTRY` (153). **There is no
+gain-rank entry event, and `ticker_session` has no gain rank — only
+`percent_change`, which overwrites.**
+
+**So the second trigger cannot be measured, because the desk does not compute the
+list it names.** It is not a threshold on an existing ranking; **it is a new
+ranking, a new entry event, and a new episode counter** — and Integration's third
+constraint applies before it is built rather than after: **entry must be
+observed, and `percent_change` is exactly the overwriting column that produced
+the original defect.**
+
+**Union, bounded rather than estimated:** of the top-10 names by FINAL gain, only
+**3 of 10** were among the RVOL-entry names on 08-17, and **3 of 10** on 08-21.
+**≈30% overlap**, so if a gain list behaves like the RVOL list, **the union is
+40–70 names a day, not 20.**
+
+**At the archive's measured median of 13k tokens an interpretation, 50 names is
+~650k tokens a day — every day, rather than occasionally.** Final gain against
+session entries is a PROXY for the overlap and not the same measurement; the real
+one needs the list to exist first.
+
+### 3. AND HIS INSTINCT ABOUT THE BOARD IS RIGHT, EMPHATICALLY
+
+**83 names first entered at rank 11 or 12. NOT ONE of them ever reached rank ≤ 5.
+Zero, across four sessions.**
+
+**Limit, stated: `discoveryRank` is 12, so the board does not rank below 12 and
+these are entries at 11–12 specifically** — the measurement cannot speak to
+ranks 13+ because they do not exist. **But within what the board does rank, the
+bottom two slots produced no top-5 name in 83 opportunities.**
+
+**He said "there really isn't a need for a top 25 or more." The data says the
+bottom of TWELVE has not paid for itself either.**
