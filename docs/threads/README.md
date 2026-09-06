@@ -6228,3 +6228,74 @@ digits.
 prediction that RVOL fires earlier in clock time. **It was seen before the sample
 ran and is on the record**, so it cannot later be presented as a prediction
 confirmed.
+
+## THE FIGURES ARE CLEAN BECAUSE NEITHER REBUILT A POPULATION
+
+**Research, 2026-09-06**, answering whether the superset bias reaches the two
+numbers the trader is deciding against.
+
+**Both clean, and the reason is structural rather than lucky.** The 24–40
+entries-per-session came from `desk_events.RVOL_RANK_ENTRY` on a frozen snapshot;
+the 20-of-53 has `RVOL_RANK_ENTRY` names as its population, those same names as
+its denominator, and absence of a `research_jobs` row as its test. **Both sides
+are records of what the desk DID.**
+
+**The superset bias is a property of REBUILDING a population. Neither figure
+rebuilt one — there was no field to over-admit into.**
+
+**And the alternative failure was checked too:** a retention divergence would
+overstate the miss just as effectively. `DELETE FROM desk_events` and `DELETE
+FROM research_jobs` live in the **same function**, so they clear together or not
+at all — **an absent job row means no job, never a pruned one.**
+
+**One live-path fact recorded while there:** the queue does read
+`universe.classification`, and **it fails open** — `UNKNOWN` is an eligible class
+and a null coalesces to it, so an unclassified name keeps its slot. **Classification
+lag cannot cost a name a job.**
+
+## A POWER FLOOR ONLY WORKS IF IT IS OBEYED WHEN IT BINDS
+
+Registered before any paired number was seen: **below 20 paired uncensored names,
+no direction at all.** **n is 15.**
+
+So *"within-name median difference 0 seconds, RVOL earlier on 3 of 15"* **is not
+a tie. It is a sample too small to contain an answer** — and Integration had
+already reported it to the trader as a dead heat. **A null result and an absent
+result read identically in a sentence and mean opposite things.**
+
+### And the headline metric has a construct problem its author raised unprompted
+
+"Fraction of the move already realised" takes the move as **the largest run in the
+whole window.** So a name whose largest run spans the morning shows a high
+realised fraction for **any** trigger firing after 08:00 — good or bad. **Part of
+0.47/0.55 is the window definition, not the trigger.**
+
+**p75 = 1.00 survives any definition** — that is firing at the peak. **The median
+does not, and it was the number carried to the trader.**
+
+## THE AVOID IS THE PRODUCT
+
+**The finding that outlives the experiment.** If roughly half the move is gone
+when a trigger fires, **the dossier is not an entry input and no pipeline work
+makes it one.** Fifty-three seconds is small against a move already half over —
+**so latency was the wrong worry, and outcome C was the wrong question.**
+
+**A trigger that fires at the peak is useless for entry and maximally useful for
+refusing one.** *"Cash merger at a fixed price, discovery over"*, *"offering
+priced, supply arriving"* — **those are worth most precisely when the move looks
+best**, and a refusal does not need to be early to be right. He holds for seconds
+and sizes in R: **one refused chase pays for a great many dossiers.**
+
+**Second: the second leg, not the first.** He trades a name more than once in a
+morning. The dossier is late for the first entry and early for every one after.
+
+**Third, and the real implication: what CAN be early is evidence that existed
+before the move.** Filings, the effect taxonomy, float, the supply pair — **all
+knowable at 04:00 and racing nothing.** The result argues for **pre-computing a
+candidate set overnight rather than triggering on one intraday.**
+
+**Pre-registered, no direction claimed:** of the names that fired either trigger,
+what fraction had an observable filing or catalyst timestamped **before 07:00 ET**.
+High means an overnight pass reaches them without racing anything; low means the
+catalyst genuinely arrives with the move. **Research can argue both, so it
+predicted neither.**
