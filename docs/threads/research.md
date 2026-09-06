@@ -9523,3 +9523,71 @@ rather than a proxy**: a report failing it cannot work whatever outcome data
 would later say; **a report passing it is not thereby shown to work.** That
 wording is what stops it quietly becoming a success measure for a thing —
 trades not taken — that cannot be observed at all.
+
+**99c. I CORRECTED OPS WITH REASONING THAT WAS ALSO WRONG, AND THE GAP METRIC
+CANNOT SETTLE THIS IN EITHER DIRECTION.**
+
+*Ops measured the dead time rather than inheriting my floor. Both my numbers and
+my conclusion need correcting, and the second matters more.*
+
+### First, my arithmetic
+
+| | in holes >1min | longest hole | missed |
+| --- | ---: | ---: | ---: |
+| 09-02 | **146.3** | 67.2 | 0 |
+| 09-03 | 172.6 | 63.9 | 1 |
+| 09-04 | **177.4** | 10.5 | 19 |
+
+I floored them at 92 and 100 and called the result **"comparable in aggregate"**.
+**They are 146 and 177 — both larger, and 09-04 carries about 31 more minutes of
+dead time.** My direction was right and my characterisation understated it.
+
+### AND NOW THE PART THAT MATTERS: MY FALSIFICATION DOES NOT WORK EITHER
+
+I told Ops the story is **"eliminated by the zero, not by the maximum"** — that
+09-02 survived a 67-minute hole with zero misses, so a transient-in-a-hole
+mechanism had every chance and produced nothing.
+
+**IT ONLY WORKS IF NAMES ENTERED THE TOP TWELVE DURING THAT HOLE. NOBODY
+CHECKED.**
+
+`queued_at` exists only where a job was queued, so a 67-minute gap means *no new
+candidate was enqueued* — which is **exactly what a quiet stretch looks like**.
+If no name entered during it, the session had no opportunity to lose one and the
+zero proves nothing.
+
+**I STATED THAT LIMITATION MYSELF BEFORE THE QUERY RAN — "a gap conflates the
+loop not running with the loop finding nothing new" — AND THEN BUILT A
+CONCLUSION THAT DEPENDS ON IT NOT BEING TRUE.** Writing the caveat did not stop
+me reasoning past it one message later.
+
+### So the gap metric is uninformative in BOTH directions
+
+Not merely unable to confirm a stall. **Unable to refute one either**, because
+its silence has two readings and the data does not separate them.
+
+**WHAT ACTUALLY ELIMINATES THE SAMPLING STORY IS THE CADENCE**, and it always
+was: the planner runs inside a five-second loop, so a name must hold rank for
+under five seconds to be dropped — nineteen times on one session and never on
+its neighbours. **That argument stands alone and needs none of the gap data.**
+
+Reinforced by Ops's cross-tab: **single-entry names were caught 49 of 49 and 34
+of 35 on the adjacent sessions.**
+
+### THE ONE QUERY THAT WOULD SETTLE IT, RECORDED SO IT IS NOT RE-DERIVED
+
+**Overlay `RVOL_RANK_ENTRY` timestamps on the `queued_at` gaps.** Both durable,
+no current-state read.
+
+- Names entered during a long gap and still got jobs → the loop was alive and
+  catching late; the sampling story dies properly.
+- Names entered during gaps and were missed → **the story is alive** and six
+  eliminations become five.
+- No names entered during the gaps → the gaps were quiet, and **every
+  gap-based argument on both sides is void**, mine included.
+
+**NOT PROPOSED AS WORK.** Ops and I both hold that the cause is in state nobody
+kept, and one more query is unlikely to change that. **It is written down so
+that whoever revisits this does not re-derive a conclusion from `queued_at` gaps
+without noticing what they cannot say** — which two of us did in one evening,
+after one of us wrote the caveat first.
