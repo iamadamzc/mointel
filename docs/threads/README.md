@@ -6355,3 +6355,56 @@ Design's interpolation argument in the render layer, the `top12_entered_at`
 `COALESCE` comment, the provenance clause beside the figure it qualifies. **Every
 rule that fired late was in a document; every one that fired on time was in a
 file someone had to open to do the work.**
+
+## THE CENSORING IS THE FINDING: MOST OF IT HAPPENS BEFORE HE SITS DOWN
+
+**Ops, 2026-09-06, re-running the corrected trigger instrument on production.**
+
+                            09-02   09-03
+    RVOL only                 38      29
+    GAIN only                 24      18
+    BOTH, measurable run      16      16
+      already firing at 07:00  9      12
+      BOTH FIRED IN-WINDOW     7       4   <- uncensored paired set
+
+**Research pre-registered n=20 before any direction is reported. We have 7 and 4,
+pooled 11. So: no winner, no within-name comparison, nothing about RVOL versus
+GAIN** — and Ops did not transmit the direction figures **even to Research**,
+because a pre-registration exists so the direction is not seen and then reasoned
+about, **and that binds its author too.**
+
+**The censoring is the actual result.** 9 of 16 and 12 of 16 paired names were
+**already firing when the window opened** — selected on evidence from before the
+trader sat down. **The uncensored set is small because the phenomenon largely
+precedes 07:00, not because two sessions is too few.**
+
+**Seven sessions will not repair it.** That is a fact about the experiment's
+feasibility, not about either trigger — and it converges with the local 52-of-65
+split seen earlier. **It is also the strongest support yet for pre-computing a
+candidate set overnight rather than triggering intraday.**
+
+### An audit rule expressed as a syntactic prohibition rejects the safer file
+
+Integration's condition was proven for one version as *"zero mutating SQL."* The
+**newer, safer** instrument **deliberately contains an `UPDATE`** — a zero-row
+write, because `BEGIN IMMEDIATE` is granted on a read-only handle and defers
+refusal to the first real write. **A keyword scan would have rejected it.**
+
+**A check that fails for the wrong reason is worth no more than one that cannot
+fail.** Audit the property — *can this write?* — and prove it by execution:
+`SQLITE_READONLY` raised, `query_only=1`, and run as a user the filesystem denies
+independently.
+
+### And a conclusion that inverts exactly when the news is worst
+
+The outcome-C test reads `winnerMedian < pipelineMedian` → *"C fires, the pipeline
+is the work."* **Both dates produced NEGATIVE leads** — the trigger firing after
+the move began. **When the winner is late the pipeline is not the work: a
+zero-latency pipeline still arrives after the move.**
+
+So the text **asserts the opposite of what the numbers mean, and does so more
+confidently the worse the trigger is.** Needs a guard at lead ≤ 0.
+
+**A comparison written for one regime silently reverses in another.** Check what
+your conclusion says at the boundary and beyond it, not only where you expected
+to land.
