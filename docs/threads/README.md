@@ -7093,3 +7093,35 @@ direction that makes a rate computed across it look like a real change.
 **Date a data-format boundary by when the writer started writing it, not by when
 the change was written.** The two differ by exactly the interval nobody
 remembers afterwards.
+
+## REDUNDANCY IS RIGHT FOR A WARNING AND WRONG FOR A VALUE
+
+**Research, 2026-09-06**, after a boundary date was written into three places and
+then found to be wrong.
+
+**Three copies was reported as the strength** — the person who trips on it reads
+one of the three, not the message. **True, and it is exactly why the error was
+expensive: three copies is three chances to update two of them.**
+
+**And one of the three is a pushed commit message.** `b1d64b9` still carries the
+wrong date and is not being rewritten. **So the artefact most likely to be read by
+someone running `git log` on this change is the one copy that cannot be
+corrected.**
+
+**Fixed by collapsing rather than re-syncing:** the code comment now **points at**
+the register entry instead of carrying its own copy, with a greppable token — one
+place to update, one place to look — and the entry states that the commit message
+is stale.
+
+**A warning should be repeated everywhere someone might land. A value should
+exist once, with pointers to it.** Duplicating a warning costs nothing when it
+drifts; **duplicating a value guarantees that some readers get the old one.**
+
+### And a pending marker beats a wrong one
+
+The instant is recorded as `SEC_ACCEPTANCE_BOUNDARY: PENDING`, to be filled with
+a **datetime and zone** once the deploy reports it — the roll and the deploy fall
+on the same evening, so a date alone cannot separate them.
+
+**A wrong date is actively misleading; a clearly-marked pending one is not.
+Nobody computes a rate against `PENDING`.**
