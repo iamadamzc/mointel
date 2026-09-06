@@ -6715,3 +6715,66 @@ instruments are back to their committed state.
 checking the instance — see **"a true nearby mechanism is the most convincing
 wrong answer available"**. The first two were caught by other people. This one
 was caught by a bug.*
+
+## A PATCH THAT WORKS FIRST TIME IS A PATCH WHOSE PREMISE WAS NEVER TESTED
+
+**Research, 2026-09-06**, auditing its own denominators and nearly producing a
+fourth wrong finding in a day.
+
+The audit turned up 12 rank entries and 2,812 qualification events whose `ts` was
+08-17 while `trading_date` said 08-14, **eight of them names absent from the
+08-17 population.** The reading wrote itself: **the engine had not rolled, every
+per-session count understates its population by 11%** — and in the direction that
+makes the miss look smaller.
+
+**Wrong. There is a full 08-14 session in the store** — 8,559 `ticker_session`
+rows — **and `HHS` holds rank 1 there at RVOL 370.7, the exact value in the event
+payload.** The store was backfilled late on the Sunday. Both fields were correct;
+only the inference was not.
+
+### What stopped it was a bug, and it is named as luck
+
+The correction was written into both instruments **first**, with a docstring
+stating the defect as fact, and run **expecting** the population to grow 65 → 73.
+**It recovered nothing, because the date arithmetic was wrong.** Going to find out
+why is when the 08-14 session turned up.
+
+**Had the patch worked, it would have absorbed eight names from a real prior
+session and the 11% would have shipped.** Research named that as luck rather than
+letting it count as a process working.
+
+**So: when a correction confirms the story it was written for, that is not
+evidence — it was built to produce that outcome.** A patch validated by the
+symptom it was written to explain has tested nothing.
+
+**TEST THE PREMISE SOMEWHERE THE INSTRUMENT CANNOT REACH.** Here that was a single
+query — does an 08-14 session exist — costing nothing and ending it before a line
+was written.
+
+**Third instance in two days of reaching for a mechanism before checking the
+instance. The first two were caught by other people; this one by a bug. None was
+caught by its author noticing.**
+
+### And the back catalogue is clean, recorded rather than assumed
+
+`24–40 entries` self-consistent; `20 of 53` keyed on `trading_date` on **both**
+sides — verified including the case where 9 jobs for 08-17 were queued on 08-18
+and remain keyed to 08-17, **so the comparison is like for like**; censoring
+splits are one population partitioned. **The one real span mismatch was already
+labelled in the file when it was built.**
+
+## THE BUFFER EXISTS AND INTEGRATION STOPPED BUFFERING
+
+Research shipped three findings that needed correcting within hours and offered to
+slow down. **The diagnosis is wrong in one direction:** a thread reporting fast to
+Integration is the bus working — **Integration is the buffer, and that is what the
+seat is for.**
+
+**What failed is that Integration relayed each one onward at the speed it
+arrived.** A figure that has changed once is a figure whose instrument is still
+moving.
+
+**So the cadence rule is asymmetric: findings reach Integration as fast as they
+form. A finding reaching the TRADER must first survive one check the instrument
+that produced it cannot perform.** Slowing the thread would have cost the desk
+three real findings to prevent three corrections that cost a paragraph each.
