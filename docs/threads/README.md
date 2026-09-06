@@ -5740,3 +5740,49 @@ the tracer no longer emits them, and the mechanism says that is because it no
 longer hashes them.** Strong, and not a reproduction.
 
 **An absent output is evidence about the output.** Say which one you measured.
+
+## A GATE TESTS A TREE, NOT A SHA
+
+**Ops, 2026-09-07.** The gate ran at `010b7b0`; the deploy shipped `7212bdd`.
+Rather than re-running or quietly reusing the result, Ops compared **tree
+hashes** — both `4f32abaf39820d8c7058621c91db0e3efb3f5de5`.
+
+**Byte-identical trees, so the gate tested exactly what shipped** — and that is a
+**stronger** claim than sha-matching, because a gate exercises a working tree and
+a sha is only a name for one. Two shas can share a tree; one sha cannot have two.
+
+**Say it explicitly when reusing a gate result.** The quiet version is
+indistinguishable from not having gated.
+
+### The objection was not hypothetical: the first restart WAS the failing case
+
+The rejected version stamped the marker unconditionally at startup. The restart
+that shipped its replacement happened **inside the 20-hour window, on a session
+already established** — exactly the combination that made the rejected version
+fatal.
+
+    BEFORE   rolled_at 2026-09-05T02:00:00Z   rolled_for 2026-09-08
+    AFTER    rolled_at 2026-09-05T02:00:00Z   rolled_for 2026-09-08
+
+**The bar did not move.** Startup found the recorded date equal to the trading
+date and left it. The universe log reads `13252 cached US equities` — **cached,
+not fetched**, the age guard correctly skipping. **Had the first version shipped,
+this restart would have set the bar above a universe stamped fifty minutes
+earlier and produced a false STALE on a live desk that evening.**
+
+**A design objection that the very next real event would have vindicated is worth
+recording as evidence, not just as a fix.** It is the difference between "we
+reasoned it might" and "it did".
+
+## A WITHDRAWAL RACES THE THING IT WITHDRAWS
+
+Integration told Ops to stand down a restart request. **The request had already
+reached the trader**, and he answered it. The deploy Integration had held until
+after the next close therefore happened that evening — **correctly, because his
+word outranks the hold, and the outcome verified the fix.**
+
+**But a stood-down request cannot be un-asked.** On an asynchronous bus, an
+instruction to withdraw arrives after the thing it withdraws has landed. **Decide
+before a request goes out, not after** — and when a withdrawal is sent anyway,
+say what should happen if it is already too late, because that is the branch that
+will actually run.
