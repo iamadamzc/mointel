@@ -7225,3 +7225,48 @@ Fifth crossing of the evening. **Both seats now declare their assumed state in
 every message and the messages still cross.** State declaration **makes a stale
 instruction visible on arrival; it does not stop one being sent.** Worth holding
 as a limit of the practice rather than as evidence against it.
+
+## A NUMBER THAT MISEXPLAINS ITS OWN LABEL IS WORSE THAN EITHER NUMBER ALONE
+
+**Design, 2026-09-06**, arguing against Integration's instinct on which figure the
+phase chip should carry.
+
+**`retracementPct` is what produces the label.** `cycle.ts:323` selects BACKSIDE
+from `retracementPct >= backsideRetracement`. **The word on the chip is computed
+from that number and from no other.**
+
+So *"OFF HIGH · 8%"* fed by `givebackPct` **shows a number that did not produce
+the word beside it** — and a reader takes a number beside a word as that word's
+evidence.
+
+**And on the names where the two diverge most, the giveback figure is the
+reassuring one.** A name based at $1.00 that ran to $1.20 and sits at $1.10 **has
+surrendered half its move and reads 8% off its high.** That is `cycle.ts:73`'s own
+warning, **and it lands on exactly the names that have broken.**
+
+**Integration's instinct was that OFF HIGH beside anything but distance-below-high
+contradicts itself. The reverse is true: the label is already a retracement
+verdict wearing a distance-sounding word**, and pairing it with a distance number
+**makes the mismatch invisible rather than resolving it.**
+
+### The counter-argument, kept rather than dismissed
+
+The Sheet's column is FLUSH FROM HIGH and the trader has read it for months.
+*"42% off its high"* is his sentence. **And at chip width there is no room to
+disambiguate** — `OFF HIGH · 42%` reads as *42% below the high* whichever number
+is behind it. **Not taste: the label cannot carry the distinction at that width.**
+
+**So one word does what a percent sign cannot:** `OFF HIGH · 42% back`. **And if no
+wording fits, the answer is giveback — because a misread number is worse than an
+unfamiliar one.**
+
+### Both other constraints answered by measurement rather than argument
+
+**Width:** the column is `w-[152px]` and **already carries "CYCLE NOT ESTABLISHED"
+at 21 characters.** Longest label plus figure is `FRONTSIDE · 42% back` at 20.
+**The worst case does not move**, so it cannot cost a column by the back door.
+
+**Empty state:** show the figure only when > 0, as `cycleDetail` already does —
+and **the contradiction cannot arise, because at zero retracement the phase is
+FRONTSIDE or DAY ONE, never OFF HIGH.** No cycle renders **no number at all,
+never "0%"**: zero is a measurement and absence is not.
