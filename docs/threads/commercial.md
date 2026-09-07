@@ -56,7 +56,7 @@ the work. It is his call and he has made the strategy clear.**
 - Report on completion or on blocking. **Going idle is a milestone.**
 - No figures from his fills, no P&L, in the repository.
 
-## FIRST TASK
+## FIRST TASK — DELIVERED 2026-09-07, see LIVE STATE below
 
 **The feed-licence landscape, from public documentation only.** For each credible
 vendor: what personal use permits, what redistribution requires, whether the
@@ -65,3 +65,65 @@ are. **Alpaca included and not assumed** — *"maybe alpaca isn't the answer"* i
 his, and it is an open question rather than a lean.
 
 **Deliver the shape of the decision, not a recommendation to sign anything.**
+
+---
+
+## LIVE STATE — 2026-09-07
+
+**If anything above disagrees with this section, this section is right and the
+section above is stale.**
+
+**Delivered, in the commit carrying this section:**
+
+- [`docs/commercial/2026-09-07-feed-licence-landscape.md`](../commercial/2026-09-07-feed-licence-landscape.md)
+  — the feed-licence landscape: where the line is, the desk side from the code,
+  the vendor table, the three vendors with a published path in detail, the
+  exchange layer, the four shapes re-costed, the integration change per move,
+  the shape of the decision, what could not be established, sources.
+- Gate 0 mapped in [`docs/monetization-gates.md`](../monetization-gates.md).
+
+**Method, so the next reader knows what the figures are worth.** Four research
+passes over public pages on 2026-09-07; **every load-bearing quotation and
+figure was then re-read by this seat against the primary page or the PDF's
+extracted text** — VERIFIED 2026-09-07 by re-read, for everything not marked
+otherwise. Figures read only by a pass are labelled *"pass only"* in the
+landscape and are the minor vendors. No vendor was contacted, nothing was
+signed up for, no login-gated page was opened. The extracted agreement texts
+(Alpaca T&C and Customer Agreement, the NYSE and Nasdaq subscriber agreements,
+the CTA and UTP schedules and policies, the IEX policies, the Nasdaq and Cboe
+price lists, the CT Plan filings) live in this session's scratchpad, not the
+repo — they are public documents and re-fetchable.
+
+**The standing facts, one line each; the landscape carries the quotations.**
+
+1. The licence ends at the first person other than the subscriber who sees the
+   output, paid or not. Every instrument read says so.
+2. Alpaca publishes no redistribution path; its multi-user product is a
+   brokerage partnership; its OAuth `data` scope is the published
+   bring-your-own-feed shape. The one-SIP-connection rule is a published
+   property of the subscription class.
+3. Massive ($2,499 + $1,999, SIP) and Databento ($1,500 + fees, annual, direct
+   feeds) are the self-serve paths to display rights; both are a rebuild of
+   `lib/market/alpaca/`.
+4. The exchange layer: $1 per non-pro viewer per network, agreements, reporting,
+   a firm floor of roughly $4,000–$6,000 a month; delayed data has no
+   display-unit fees; RVOL and rank are not-fee-liable derived data under UTP,
+   price/move/VWAP are not.
+5. The CT Plan replaces CTA and UTP on 2027-04-01; migration began 2026-09-01.
+
+**Open items.**
+
+- **The Alpaca plan tier is not in the repo.** Ask him; do not infer it into a
+  document a second time.
+- **The first-viewer decision** — prices, derived facts only, or the user's own
+  feed — is Integration's to put to him with Gate 1. This seat has the
+  costings ready for whichever he picks.
+- **The commercial half of the gates map beyond Gate 0** — pricing, packaging,
+  terms — is unstarted and waits on Gate 1, because the unit sold decides the
+  licensing object.
+- **Watch, no clock:** the new CT Plan agreements at consolidatedtape.com
+  (renders only a header today); a 2026 Nasdaq Basic price list; IEX's $1,000
+  TOPS fee from 2026-10-01; Massive's unpublished exchange-fee amounts.
+
+**Declined, deliberately:** any enquiry to any vendor, and any recommendation
+to sign. Both are his.

@@ -127,3 +127,64 @@ desk has never been operated to a standard where an outsider depended on it.
 The reach finding — research queued on rank ≤ 12, and he trades ahead of the
 ranking — **stops being a fact about one trader and becomes a fact about what
 subscribers would be paying for.**
+
+### GATE 0 — MAPPED 2026-09-07: THE LINE IS THE FIRST EXTERNAL VIEWER
+
+*Commercial, from public documentation only. Full working, every quotation and
+every source:
+[commercial/2026-09-07-feed-licence-landscape.md](commercial/2026-09-07-feed-licence-landscape.md).
+Mapped, not answered — no agreement, no approach, no recommendation to sign.*
+
+**What the published material settles:**
+
+- **The redistribution event is the first person other than the subscriber who
+  sees the output.** Alpaca's terms, Massive's, Databento's, the CTA and UTP
+  schedules and the two exchange agreements Alpaca's paid plan incorporates all
+  draw that line, and **none of them turns on payment or on user count.** So a
+  private beta is exposure, not preparation, on every definition read. The only
+  published construct for a non-paying outside viewer (UTP's trial policy) still
+  requires the subscriber agreement.
+- **Alpaca is the published answer for the build and for bring-your-own-feed,
+  and is not a published answer for any shape in which one subscription's data
+  reaches another person.** Its redistribution statement is one sentence:
+  *"Unfortunately, you cannot redistribute Alpaca API data."* Its only
+  multi-user product is a brokerage partnership at sales pricing. Its OAuth
+  `data` scope and Connect programme are the one documented way a third-party
+  app shows a user their own feed.
+- **Two vendors publish a self-serve path to real-time display rights:**
+  Massive at $2,499 + $1,999 a month plus unpublished exchange fees (SIP), and
+  Databento at $1,500 a month plus pass-through fees on an annual contract
+  (direct feeds and a derived composite, not the SIP). **Both are a rebuild of
+  the market worker.** Everything else with a published price is a partial or
+  derived feed, or a brokerage.
+- **The exchange layer is the bill for the full desk, not the vendor.** $1 per
+  non-professional viewer per network today ($0.90 from April 2027), plus a
+  vendor agreement, an approved system description, monthly reporting and a
+  firm-level floor of roughly $4,000–$6,000 a month in redistribution and
+  access fees. The one vendor-published all-in figure for real-time SIP is
+  *"$10,000–$20,000 per month."*
+- **The middle shape is confirmed as the interesting case, with a boundary.**
+  The Why Not Report contains no tape. Under UTP's published derived-data test,
+  RVOL and rank are in the not-fee-liable class; price, move % and VWAP are
+  not. So a board that withholds its four price-bearing columns is a different
+  licensing object under the exchange schedules — **but not under an individual
+  subscription**, which forbids display to others of anything. The carve-out
+  is a fee fact exercised through a vendor agreement.
+- **Delayed data (15 min) carries no display-unit fees on either plan** and the
+  daily brief is already that shape; a premarket board 15 minutes late is not.
+- **The CT Plan replaces CTA and UTP on 2027-04-01** — new per-viewer rates, a
+  use-based professional test, and derived-data *creation* becoming fee-liable.
+  Account migration started this month. **Any agreement signed before March
+  2027 is signed under a schedule about to be replaced.**
+
+**What it does not settle, and who does:**
+
+- **Whether the first outsider sees prices, derived facts only, or their own
+  feed.** That is Gate 1 wearing a licence, and it is a product decision:
+  Integration, then the trader.
+- **Whether a build intended for sale is still "personal and non-commercial
+  purposes" before anyone else sees it.** No page reads "purpose" that way in
+  either direction. It is his call, his strategy already makes it, and §1 of
+  the landscape states it plainly rather than re-opening it.
+- **Which Alpaca plan the account is on.** Not in the repo; inferred from the
+  feed setting.
