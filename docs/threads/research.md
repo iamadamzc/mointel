@@ -11697,3 +11697,63 @@ money axis — the one the invoice measures.**
 - **"ANPA was 29% of what the desk SPENT that day"** — supported.
 - *"ANPA was 29% of the work done for 09-04's session"* — **not supported**, and
   the two diverge the moment a job crosses a roll, **which happens 100 times.**
+
+**106i. "ABOUT A THIRD" WAS STANDING IN FOR THREE DIFFERENT NUMBERS — AND THE
+FOUR CALL SITES ARE ONE OMISSION PLUS THREE LEGITIMATE ABSENCES.**
+
+### OPS MEASURED WHAT I WAS FITTING
+
+```
+                 input          output
+luna        82,006,144      2,452,247
+terra       11,202,355      2,830,056
+sol          1,436,649        421,474
+
+expensive (terra + sol):  13.4% of input · 57.0% of output · ~78% of COST
+```
+
+**Not "about a third". An EIGHTH of input, over HALF of output, and FOUR FIFTHS
+of the money** — the shape of expensive models interpreting while a cheap one
+does bulk collection.
+
+**I withdrew "37.8% terra" and replaced it with "about a third of tokens on the
+expensive models". That was the same error one step out: A SINGLE FRACTION WITH
+NO AXIS.** Ops: *say which axis or say a range.* **Adopted.**
+
+### AND THE CARD REPRODUCES HIS INVOICE, WHICH BEATS ANY FIT
+
+```
+09-04 modelled  $6.54 (cached separate) / $6.19 (cached subset)
+09-04 invoice   $7.39                    ->  0.88x / 0.84x
+```
+
+**Within 12–16%, UNDER in both readings, and every known omission points the same
+way** — the 86 `unknown`-model calls, the `counts_available = 0` rows, the cache
+WRITE premium, the 272K cliff. **A model that reproduces an independent invoice
+to within 12% with all its gaps in one direction is doing better than a fitted
+parameter can.**
+
+**My back-solve fitted a parameter to the answer. THIS PREDICTS THE ANSWER FROM
+PUBLISHED RATES AND MEASURED TOKENS.** Those are not the same kind of number and
+I should have said so when I produced mine.
+
+### THE FOUR CALL SITES ARE NOT FOUR OMISSIONS
+
+| site | has a job? |
+| --- | --- |
+| `worker/research.ts:543` | **YES — `job.id` is in scope and passed to the COLLECTOR eleven lines earlier** |
+| `research-interpret.ts:156` | no — iterates `symbols` from argv |
+| `research-interpret.ts:186` | no — same loop |
+| `research-replay.ts:238` | no — iterates stored `version` rows |
+
+**ONE OMISSION, ON THE PRODUCTION PATH. THREE LEGITIMATE ABSENCES.**
+
+**And the three are currently INDISTINGUISHABLE from the one**, because all four
+resolve to the same `null`. **That is Integration's sentinel point, and it is the
+whole defect one layer down: a manual script with no job and a production job
+whose id was dropped write the identical row.**
+
+**So the fix is not "pass it at four sites". It is: pass it at the ONE site that
+has it, give the three an explicit sentinel, THEN make the parameter required.**
+`worker/research.ts` is Ops's and it is mid-sequence on the pin removal —
+**not touching it, and not landing anything while the deploy is held.**
