@@ -11872,3 +11872,67 @@ board's width.* **That needs no threshold and is his to rule on.**
 *Third correction tonight of a claim I made confidently about my own work without
 re-reading it. **The other two were caught by Ops and by him.** This one by
 Integration asking me to check something it already had reason to doubt.*
+
+---
+
+**108. THE RANKING IS VOLUME ON BOTH BOARDS. NO GAIN TERM EXISTS ANYWHERE, AND
+`rank` IS TWO DIFFERENT NUMBERS DEPENDING ON THE CLOCK.**
+
+*Him: **"what exactly is the ranking based on. is it not just rvol?"** Integration
+declined to guess and asked for file and line. Three answers, from code.*
+
+### 1. WHAT COMPUTES `rvol_rank` — RVOL ALONE, NO COMPOSITE
+
+**`lib/market/rvol.ts`, `rankByRvol`.** Sorts on `rvol` descending; ties break on
+symbol. **`computeDailyRvol` is `cumulativeVolume / averageFullSessionVolume`
+over the previous 20 eligible sessions**, denominator fixed for the session.
+
+**NO SECOND TERM. NO WEIGHTS. NO PRICE INPUT OF ANY KIND.** He is right: **it is
+just RVOL.**
+
+### 2. THERE ARE TWO RANKS AND ONE WORD
+
+| column | computed by | sorted on |
+| --- | --- | --- |
+| `rvol_rank` | `rvol.ts` `rankByRvol` | **cumulative volume ÷ 20-session average** |
+| `ah_rank` | **`afterHours.ts:107` `rankByAfterHours`** | **AH PARTICIPATION**, descending |
+
+**`researchRepo.ts:116`: `const rankColumn = afterHours ? 'ah_rank' : 'rvol_rank'`.**
+
+**So `candidate.rank` — the number `queue.ts:85` gates on — IS `rvol_rank`
+DURING THE SESSION AND `ah_rank` AFTER IT.** One field name, two orderings,
+switched by which board is active. **That is the "different numbers wearing one
+word" Integration asked about, and it is already live.**
+
+### 3. NO GAIN ORDERING EXISTS, AND THE NEAREST THING IS NOT ONE
+
+**`ah_rank`'s PRIMARY key is participation — `afterHoursVolume /
+averageFullSessionVolume`. VOLUME OVER VOLUME.** It is RVOL's shape applied to
+the after-hours window.
+
+**Gain enters only as a TIE-BREAK, and as an ABSOLUTE value:**
+
+```ts
+const move = Math.abs(b.percentChange ?? 0) - Math.abs(a.percentChange ?? 0);
+```
+
+**So a name down 40% breaks a tie identically to one up 40%.** Even the
+tie-break is not a gain ordering — **it is a magnitude-of-move ordering that
+cannot tell a runner from a collapse.**
+
+**BOTH BOARDS RANK ON VOLUME. NOTHING ON THIS DESK ORDERS BY GAIN.**
+
+### WHAT THAT DOES TO THE MCP RULING
+
+**A fallback to "rank alone" does not inherit RVOL. It inherits RVOL BETWEEN
+04:00 AND 20:00 AND AH-PARTICIPATION OUTSIDE IT** — two different volume
+measures, neither of them price.
+
+**He has ruled the opposite priority twice in his own words: *"gain is where the
+money is made"*, *"my guess is gainers."*** So the fallback would land on the
+axis he ranks second, **and on a different second axis depending on the hour.**
+
+*This is the same finding as item 104 arriving from the other end. There I said
+the desk RECORDS the trigger he cares less about and RECONSTRUCTS the one he
+cares more about. **It is worse than that: it does not order by gain at all,
+anywhere, on either board.***
