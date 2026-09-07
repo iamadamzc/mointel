@@ -9855,3 +9855,42 @@ whoever authored the file.
 
 **"I am not landing a main where the star button 500s" outranks an instruction
 from Integration**, and the sequence gets rebuilt around the seam instead.
+
+## A mechanism tells you a thing can happen; it never tells you how often
+
+Research read `pipeline.ts:190`, found that an unchanged evidence fingerprint
+returns a reused dossier **before any bundle is built and before any model call**,
+and **refused to close on it** — a failed job can call a model and produce no
+version, so counting versions undercounts calls. It named the field that would
+settle it and stopped.
+
+**Integration did not stop.** The relay onward said: *if most jobs are free, the
+fixed cost is roughly versions rather than jobs.* **That sentence converted a
+mechanism into a rate, and nobody had measured a rate.**
+
+The measurement: **67% of 2,642 production jobs reached a model. ANPA's 57 out of
+57 did.** The short-circuit is real and works exactly as read — **it just does not
+fire most of the time.**
+
+**No amount of reading the code could have produced that number**, because the
+code describes a condition and the cost depends on how often the condition holds.
+**"The code says it cannot happen" is a claim about code, and the cheapest test of
+it is one read of the data.**
+
+**Corollary for relays: when a thread hands you a mechanism and explicitly
+declines to state a rate, the decline is part of the finding.** Passing the
+mechanism on without the decline is not compression, it is a different claim.
+
+## The pin was the largest single consumer on the day it ran
+
+`ANPA` — **the only pin the store has ever held** — took **2.39M of 2026-09-04's
+8.15M input tokens: 29% of the day, for one name.** Sixty calls, zero of them
+free.
+
+**Not attributable to the pin:** at rank 2 the name was admissible whenever it was
+alive. **Attributable to the pin:** the ten-hour tail past two deaths.
+
+**The removal stopped being a matter of principle when the number arrived.** The
+trader's *"is it not obvious to remove it. is that not a defect?"* was correct
+before anyone could size it, **and the sizing is what makes it reportable rather
+than merely right.**
