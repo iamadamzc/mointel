@@ -11501,3 +11501,68 @@ an elimination, not a finding, until those orphan rows are seen.*
 different in each. **Ops has grouped on `trading_date` all night, so that is the
 likely field — I have not confirmed it and I am not quoting the range until Ops
 says which.**
+
+**106f. `jobId` IS DECLARED, OPTIONAL, AND PASSED BY NOBODY. EVERY INTERPRETATION
+CALL IS UNATTRIBUTABLE BY CONSTRUCTION.**
+
+*Integration: **"ask why `options.jobId` is ever absent. If every call site has
+one, that fallback is dead and should throw; if some do not, THAT is the
+finding."** It is the finding, and it is larger than an intermittent hole.*
+
+### FOUR CALL SITES. NONE PASSES IT.
+
+`interpretTicker` is called from `worker/research.ts:543`,
+`research-interpret.ts:156` and `:186`, and `research-replay.ts:238`.
+**`jobId` is declared optional at `pipeline.ts:98` and supplied at none of
+them** — including the production path, where `job.id` is in scope and is
+**passed to the COLLECTOR eleven lines earlier** (`research.ts:494`).
+
+**So `noteUsage` writes `jobId: null` on every interpretation, always.**
+
+### WHICH RE-READS EVERY JOB-JOINED NUMBER FROM TONIGHT
+
+**`model_usage` rows carrying a `job_id` come from COLLECTION. Interpretation
+rows are all orphans.**
+
+| figure | what it actually measures |
+| --- | --- |
+| *"1,762 of 2,642 jobs reached a model"* | jobs whose **COLLECTION** spent |
+| *"630 PARTIAL with no model call"* | PARTIAL jobs whose **COLLECTION** did not spend |
+| *"72 COMPLETE, no model call"* | jobs that **collected free and interpreted paid** |
+| *ANPA "57 of 57 reached a model"* | 57 jobs whose collection spent |
+
+**NONE OF THEM SAYS ANYTHING ABOUT INTERPRETATION SPEND**, which is the terra
+half at $2.00/$12.00 against luna's $0.20/$1.20.
+
+**The 72 are not an intermittent accounting hole. They are the visible edge of a
+total one** — the subset where collection happened to be free, so the missing
+interpretation row had nothing to hide behind.
+
+### AND IT VINDICATES ABANDONING THE BACKFILL FAR MORE STRONGLY THAN I ARGUED
+
+I said the rule *"would relabel some paid work as no-work"*. **It is worse: the
+630 are jobs whose collection was free, and an unknown share of them interpreted
+and paid.** The rule was not slightly leaky — **it was measuring a different
+stage from the one it claimed.**
+
+### WHAT SURVIVES UNTOUCHED
+
+**The daily totals.** `7.88M / 11.1M / 8.15M` and the back-solved 37.8% terra are
+**sums over all `model_usage` rows regardless of `job_id`**, so attribution does
+not enter. **~$7–10 a session stands.**
+
+**What does NOT survive is ANPA's $4.92** — if its 60 calls were reached through
+`job_id`, they are collection only and **the name's true cost is higher by its
+interpretation, which is the expensive half.**
+
+### THE FIX, AND IT IS TWO LINES PLUS A DECISION
+
+**Pass `jobId` at all four call sites**, and then **`?? null` is dead and should
+be removed rather than kept as a courtesy** — Integration's own test. The replay
+path may legitimately have no job; **if so it needs an explicit sentinel, not a
+silent null that is indistinguishable from a bug at the other three.**
+
+**AND THE SWALLOWED `catch` STILL NEEDS A LOG.** *A swallowed write is
+indistinguishable from a write that never needed to happen* — but it is now the
+second-order problem, because **the first-order one is that the write happens
+correctly and lands with no owner.**
