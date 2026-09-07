@@ -9661,3 +9661,91 @@ Integration reading past an output showing ET and UTC as one instant.
 correction rate tonight is a property of three seats reading each other, **and
 it does not survive being internalised** — which is worth stating before anyone
 concludes the checks belong inside a single thread.
+
+---
+
+**100. THE PRIOR-FREE REPLAY — PRICING METHOD, SCOPE CORRECTION, AND A
+DIRECTION I CANNOT PREDICT BECAUSE THE DECIDING FACT IS NOT RECORDED.**
+
+*Integration relayed R&D's request, undelivered for days because R&D could not
+send messages at all. Ops's measurement: 29.2% of mover-attached grading
+versions carry a non-null `sheetProvenance` against 7.6% non-mover, **3.8×
+concentrated, and 76% of the contaminated movers are CONFLICT** — the prior
+disagreeing with the derived value and winning.*
+
+### SCOPE CORRECTION FIRST: THE REPLAY DOES NOT RE-COLLECT
+
+*"A replay over 13 sessions"* reads as re-running the pipeline. **It should
+re-run INTERPRETATION ONLY.** Evidence is already stored with fingerprints, and
+prior-free means `priorHumanAnalysis: null` in the bundle — **a change to
+interpretation input, not to collection.**
+
+**That is the difference between the largest model spend anyone has proposed
+here and something near census-sized**, and it is a scope decision rather than
+an optimisation.
+
+### THE PRICING METHOD, AND ITS TWO TRAPS
+
+`model_usage` records `input_tokens`, `cached_input_tokens`, `output_tokens`,
+`calls`, `stage` and `counts_available` per call.
+
+**TRAP ONE — AGGREGATE BY INTERPRETATION, NOT BY CALL.** A version's metrics
+carry `terraCalls`, `escalationCalls` AND `repairCalls`. **A per-call median
+multiplied by N undercounts by however often escalation and repair fire**, which
+is exactly the tail that makes a large run expensive. Sum per job first, then
+take the median of those sums.
+
+**TRAP TWO — `counts_available` IS A COLUMN FOR A REASON.** Rows without counts
+must be partitioned out and reported as a share, never treated as zero. A
+missing token count priced at zero is an absence borrowing the reassuring value,
+in a spend estimate.
+
+**And cached input is a separate rate.** Folding it into input overstates;
+ignoring it understates. Three figures, three rates.
+
+### THE NUMBER MUST COME FROM PRODUCTION AND I CANNOT READ IT
+
+**`model_usage` DOES NOT EXIST IN THE LOCAL STORE** — the table postdates its
+last write. So there is no local median to check the method against, and **any
+figure I produced would be the third time today I quoted a local census as a
+store-wide fact.** The query goes to Ops; the number comes back before the run.
+
+### WHAT THE REPLAY SETTLES BEYOND S3 — AND WHAT IT CANNOT
+
+Integration: *if the desk's grading carries the Sheet's priors, "the desk
+produces this" is partly "the Sheet told it".* Right, and the replay settles
+that: **whether the detection DEPENDS on the prior.**
+
+**IT CANNOT SETTLE WHETHER THE DETECTION IS VALID, AND THE REASON IS A FIELD.**
+
+`SheetPrior.observedAt` **is the FETCH time** — `sheetPrior.ts:96` says so
+outright. **Nothing records when the human made the judgement.** So whether a
+prior encodes hindsight — a note written after the move — **is not recoverable
+from anything stored.**
+
+| result | what it establishes |
+| --- | --- |
+| edge collapses without the prior | the DESK is not producing the detection |
+| edge survives | the desk IS producing it |
+| either | **NOTHING about whether the prior was hindsight** |
+
+**That is a real answer to a real question and it is not the question the
+contamination framing implies.**
+
+### SO I PRE-REGISTER NO DIRECTION, AND THE REASON IS NOT SYMMETRY OF ARGUMENT
+
+**A prior written before the session is genuine human signal and removing it
+should COST accuracy. A prior written after is leakage and removing it should
+REVEAL a smaller edge.** The two predict opposite signs, **and the field that
+would tell them apart records a fetch time instead.**
+
+**I can argue either only because the deciding fact is missing, not because both
+are equally plausible.** Saying which is which is worth more than a coin-flip
+prediction dressed as a hypothesis.
+
+**R&D's registered direction stands on its own; the band spanning zero is a
+bound and not a prediction, and I am not adding a second one.**
+
+**IF ANYONE CAN ESTABLISH WHEN THE SHEET'S ROWS WERE WRITTEN, THAT IS CHEAPER
+THAN THE REPLAY AND IT DECIDES THE SIGN.** It is a question about the sheet
+itself rather than about the store.
