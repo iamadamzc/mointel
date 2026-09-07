@@ -10799,3 +10799,42 @@ and fail for the wrong reason.**
 **Ship them in the same commit as the code they cover.** The atom is not the file
 or the module — **it is every place the behaviour is asserted, exercised or
 displayed.**
+
+## A true sentence that covers less than it appears to
+
+Research reported *"45 insertions, zero deletions, request body untouched"* — **an
+accurate description of one commit, written in the same message that announced a
+second commit containing a deletion.**
+
+Its own account afterwards: *the sentence was true and it covered less than it
+appeared to.*
+
+**This is the hardest failure to catch in a relay, because there is nothing to
+contradict.** A false claim can be disproved. **A true claim with an unstated scope
+survives every check except one: asking what it covers.**
+
+It was caught by **enumeration, not by disbelief** — the gating thread listed what
+the tip actually carried and found a commit the answer had not addressed. **Three
+times in one night the catch was somebody checking rather than somebody telling,
+and twice it was the same thread doing the checking.**
+
+**So the discipline is on both sides.** The speaker names the scope: *this is true
+of X, and here is why it still holds for Y.* **The reader never lets a scope be
+implied by proximity** — an answer and a change arriving in one message are two
+things, and the message's own coherence is what makes them look like one.
+
+## Standing permission to stop
+
+A thread holding a deploy should not have to ask before refusing it.
+
+**"If the box stutters, if `ssh` fails to spawn, if the stream looks wrong, or if
+the tip has moved and the new commit is not docs — stop and tell me. That is always
+the right call and it never needs my agreement first."**
+
+Given in advance, this costs nothing and removes the only reason to push through a
+bad signal: **not wanting to reopen a decision someone else has already made.**
+Without it, the thread with the best view of the failure is the one least
+empowered to act on it, **and the window becomes an argument for proceeding.**
+
+**Say explicitly that missing the window is acceptable.** A deadline nobody has
+disclaimed is a deadline everybody optimises toward.
