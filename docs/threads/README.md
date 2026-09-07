@@ -10469,3 +10469,57 @@ reach a feeling about one.
 at 03:30 with no prior registration has no principled reading available, **and the
 reading that gets chosen at the board is the one that fits what the observer
 already expected.**
+
+## Name the axis a defect breaks, not the property it belongs to
+
+Every interpretation row in `model_usage` carries a null `job_id`. Ops reported
+that as broken **attribution**; Integration relayed it to the trader as *"every
+per-name and per-job figure is a floor."*
+
+**Both were too wide, and the relay was wider than the original.**
+
+```
+ticker NULL        0
+trading_date NULL  0
+job_id NULL     1335      <- lost the JOB key, kept the NAME key
+```
+
+**The orphans are fully attributable by ticker and date. They lost one axis, not
+attribution.** So per-job figures are floors; **per-name, per-day and per-model
+figures are exact and stand unqualified** — including the 29.3% that had already
+been quoted, un-quoted and re-quoted.
+
+**A relay that generalises is worse than the error it carries, because the
+original had a boundary and the relay does not.** When a defect is described by
+the property it damages — "attribution", "freshness", "provenance" — **ask which
+key, which column, which axis.** The answer is almost always narrower, and the
+narrow version is the one that keeps a number usable.
+
+## A correction toward more confidence deserves more scrutiny, not less
+
+Ops sent the 29% correction with its own warning attached: **this moves in the
+unusual direction, so check it rather than accept it.**
+
+**Corrections that take something away are self-checking** — nobody talks
+themselves into less. **A correction that restores confidence is the one that
+flatters everybody in the room**, and it arrives when a desk that has been wrong
+all night wants to be right about something.
+
+It held. **But it held because it was checked**, and the check was two lines:
+`ticker NULL = 0`, and the day total sums every row regardless of join.
+
+## Present is not correct
+
+`ticker NOT NULL` on 3,334 rows is not `ticker CORRECT` on 3,334 rows.
+
+The 29.3% is exact **conditional on interpretation rows carrying their own name
+rather than an inherited or default one** — and nothing checked so far
+distinguishes those.
+
+**`sheetPriorOmitted` was populated across 903 rows and never once true.** A
+null-check establishes that a field was written. **It says nothing about what was
+written**, and the two get conflated at exactly the moment a number is about to be
+published.
+
+**"I checked for nulls" and "I checked the values" are different sentences.** Say
+which one you did.
