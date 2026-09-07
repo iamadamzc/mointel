@@ -6340,6 +6340,48 @@ here, and that is a finding about the desk rather than about 09-04.
 question about tonight and would implicate a gate that may not have been closed
 on the day.
 
+## A flag that has never labelled anything — 2026-09-06
+
+**`sheetPriorOmitted` is wired, written 903 times, and its TRUE path has never
+executed.**
+
+```
+research_analysis_versions   1228 versions, 691 tickers, 2026-08-17 to 2026-09-05
+  sheetProvenance present     188   (94 distinct tickers)
+  sheetPriorOmitted = 1         0
+  sheetPriorOmitted = 0       903
+
+names with a prior             94
+names with a withheld version   0
+names with BOTH                 0
+```
+
+It records that a sheet prior was **available and deliberately withheld** — the
+treatment arm a replay would compare against. **The field exists; the arm does
+not.**
+
+**Found by validating the fields a query depends on rather than by running the
+query.** Research annotated each proposed query with its dependent field so it
+could be refused on sight; the first outing of that rule killed a premise that
+had already been reported as settled. **Cheaper than discovering it after a
+replay was scoped.**
+
+### It belongs beside the latch, not beside the experiment
+
+**An instrumented flag whose positive branch has never run is a defect whether
+or not anything downstream ever needs it.** Nothing has exercised the code that
+sets it, so nobody knows whether it works — and it will be believed the first
+time it matters, because 903 written rows look exactly like a working field.
+
+**Same family as the latch across 2,870 in-band rows, and as `secAvailable`
+reporting configuration as reachability.** A field that is present, populated,
+and has never once recorded a positive case reads identically to one that
+works.
+
+**Prove a check can see a present case before believing its absence** — and here
+the check is *"does the treatment arm have members"*, which nobody asked until
+the field was needed.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
