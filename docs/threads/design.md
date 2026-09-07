@@ -3874,6 +3874,25 @@ already in front of him.
 
 **THE REPO IS THE STATE.** Land it here first, then message the sha.
 
+**AFTER EVERY PUSH, CHECK THE OUTCOME, NOT THE MESSAGE.**
+
+    git merge-base --is-ancestor HEAD origin/main && echo ON ORIGIN || echo NOT ON ORIGIN
+
+**A failed push can report the wrong cause.** A memory spike killed the git
+credential helper, git fell back to an interactive prompt no unattended session
+can answer, and it surfaced as `could not read Username for github.com` — which
+reads as an auth problem and is not one.
+
+**The outcome check does not care what the error said.** It is immune to the
+misdirection where a check on the message is not. And the exposure here is
+precisely the thing this protocol exists to prevent: **a failed charter push
+leaves the file and the message disagreeing**, which is worse than a failed
+deploy, because a failed deploy merely leaves production on the old sha.
+
+*(Verified: `deploy/aws/push-release.sh` uses only `git archive` and states at
+`:12` that the server never needs a credential — so this failure has no path
+into a deploy at all.)*
+
 **EVERY MESSAGE: SHA · WHAT CHANGED · WHAT I NEED.** If it needs a paragraph,
 **the paragraph goes in this file** and the message points at it.
 
