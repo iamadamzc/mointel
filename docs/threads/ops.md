@@ -6477,6 +6477,69 @@ it goes to the reader-side seat BEFORE their next observation, not after it.**
 Otherwise the observation is made against a surface nobody knows is dark, and it
 produces a written pass rather than a silent one.
 
+## c84e0df deployed 2026-09-07 01:59 ET, and what the verification could not show
+
+**Deploy then restart, in that order.** `schema v25, quick_check ok, 0 backup(s)
+written` — the 0e guard's seventh clean no-op. All four units read `c84e0df`
+from their own cwd; the market worker had drifted to `7212bdd` and the restart
+closed it.
+
+**The bar did not move across the restart** — `rolled_at` still
+`2026-09-05T02:00:00.000Z`, `rolled_for` still `2026-09-08`. Second production
+exercise of the session-keyed guard. Served API `universeFreshness: FRESH`,
+`universeMode: FULL` carried as the control.
+
+**SEC ACCEPTANCE BOUNDARY: `2026-09-07T05:59:30Z` = 2026-09-07 01:59:30 ET.**
+The instant `mointel-research` started on the new sha — not the deploy instant.
+SEC rows before it carry `UNKNOWN` on a bare date; rows after may carry `EXACT`.
+**Partition on `published_precision` across that line or filings appear to
+acquire times they always had.**
+
+### The latch check could not fire, and it is not verified
+
+```
+2026-09-08   wiped 0   out_of_band_surviving 0    <- nothing was at risk
+2026-09-04             out_of_band_surviving 45   <- the query does see cases
+```
+
+Tuesday's session has not happened, so there were no latches to destroy.
+**`wiped = 0` here means the check saw no case it could fail on.** The denominator
+rule written into this file hours earlier, applying to its own author's
+verification. **The real check is after Tuesday's session.**
+
+## A long weekend puts the establishing roll three days before the session
+
+**Found while verifying the deploy, and it is live for Tuesday.**
+
+`universeUpdatedAt` is `2026-09-06T21:52:59Z`. The restart correctly skipped the
+refetch — 8 hours old against a 20-hour guard. But nothing refreshes it before
+Tuesday's session:
+
+- **The trading date is already `2026-09-08`.** Friday's 22:00 ET roll jumped the
+  holiday, so the next roll is Tuesday 22:00 ET — **after** Tuesday's session.
+- **`ensureUniverse` is called only from `bootstrapTradingDate`** in
+  `worker/alpaca.ts`, at startup or on a roll. `worker/baseline.ts` also calls it
+  but is a standalone script, not a systemd unit — the four units run
+  `alpaca.ts`, `research.ts`, `desk-assessments.ts` and Next.
+
+**So at Tuesday premarket the universe is ~37 hours old and nothing is scheduled
+to refresh it.**
+
+### And the marker reads FRESH throughout, correctly
+
+`universeFreshness` asks *"was the universe refreshed since this session was
+established"* — and it was, at Sunday's restart, after Friday's roll. **It does
+not ask "was it refreshed recently."**
+
+**The semantic assumes the establishing roll is the night before the session.**
+A holiday weekend breaks that assumption: the roll is three days out, the
+comparison still passes, and a name that renamed or listed in between is missed
+exactly as SGRX was — **with the marker green the whole time.**
+
+**A restart before premarket forces the refetch** (37h > 20h guard) and is the
+cheapest remedy, but it is a decision rather than a fix. The fix is that
+freshness should be relative to the SESSION, not to the last establishment.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
@@ -6488,7 +6551,7 @@ produces a written pass rather than a silent one.
 > or model-spend work belongs to the Research thread — if you find work there,
 > write it into that charter's Open items and hand it over rather than doing it.
 >
-> Production is `c3a3a6a`, schema v25. Credentials are in `A:\AWS_creds\` — use
+> Production is `c84e0df`, schema v25. Credentials are in `A:\AWS_creds\` — use
 > them non-interactively and never print, log, commit or move a value.
 >
 > Start by confirming the working tree, HEAD, and what production is actually
