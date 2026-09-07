@@ -9694,3 +9694,36 @@ Commercial"* is either already sent — in which case it is *"asked Commercial"*
 
 **A resolution to remember is not a fix.** The ordering is the fix, because it
 removes the moment where the intent can be written down instead of executed.
+
+## "ONE COLUMN AND A KEY CHANGE" IS A TABLE REBUILD
+
+**Ops, 2026-09-07**, checking before Integration's phrasing became a scope.
+
+**SQLite cannot alter a PRIMARY KEY.** Adding an owner to `focus_tickers` means
+**create-new, copy, drop, rename** — and **`ADDED_COLUMNS` is `ALTER TABLE ... ADD
+COLUMN` only.** No `DROP TABLE`, no `RENAME TO`, **no rebuild machinery anywhere
+in `db.ts`. A kind of migration this desk has never performed.**
+
+**And existing rows have no owner**, so the backfill is a decision rather than a
+default — trivial with one user, **still a decision.**
+
+**None of that makes it hard. It makes it not-one-column** — and it is the
+argument for deciding **before** the first user rather than the argument for it
+being trivial.
+
+**A phrase that understates a job is how the job gets scheduled wrongly**, and
+the person who wrote it is rarely the one who finds out.
+
+### And the table is defined twice, with boot order deciding which wins
+
+`focus_tickers` is created in **both** `db.ts` and `focusRepo.ensureFocusTable`.
+**Byte-identical today — Ops diffed them.** The duplication is deliberate and
+documented: the web process creates it so Focus works without waiting for a
+worker restart onto a new schema.
+
+**Both are `CREATE TABLE IF NOT EXISTS`. So on a fresh store the first process to
+start wins** — and **the moment the two drift, the schema depends on boot order.**
+
+**Two definitions that agree are one definition with a hidden dependency on
+timing.** They cannot disagree loudly; they can only disagree silently, and only
+on a store nobody has yet created.
