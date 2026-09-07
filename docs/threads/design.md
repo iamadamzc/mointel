@@ -4102,6 +4102,22 @@ into a deploy at all.)*
   without a spread rather than guessing a band. So losing the quote makes the
   board say less, never something false. That is worth knowing when costing it:
   **the downside of the cheap feed is two dark features, not two wrong ones.**
+- **NEVER CONVERT UTC TO ET BY ARITHMETIC — AND `TZ=` DOES NOT WORK ON THIS
+  HOST.** Minus four is EDT; **EST is minus five and DST ends 2026-11-01**, so
+  the habit of reading `date -u` and subtracting starts producing a
+  wrong-by-one-hour reading in eight weeks, silently, looking exactly as
+  authoritative as it does today.
+  **And the obvious fix fails here in a worse way.** `TZ=America/New_York date`
+  on this box returns **GMT** — it ignores the variable and hands back UTC *with
+  a timezone label attached*, which reads as converted. **Tested, not assumed.**
+  **Use Python's `zoneinfo`, which is correct on this host** — verified across
+  the transition: `2026-10-30 13:00Z → 09:00 EDT`, `2026-11-02 13:00Z → 08:00
+  EST`.
+
+      python -c "from zoneinfo import ZoneInfo; from datetime import datetime,timezone;         print(datetime.now(timezone.utc).astimezone(ZoneInfo('America/New_York')))"
+
+  **A conversion constant with an expiry date is a defect with a start date.**
+  Every `04:00 ET = 08:00 UTC` I have reasoned with becomes wrong on 11-01.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
