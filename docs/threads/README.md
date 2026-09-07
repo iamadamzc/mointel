@@ -7663,3 +7663,39 @@ more broadly would put NEW HIGH on names he did not describe.**
 Raised unprompted: otherwise **NEW HIGH renders in the negative colour of the
 stale BACKSIDE verdict underneath it.** The label-and-number mismatch again, **one
 layer up** — a word saying one thing while its colour says the opposite.
+
+## A DEFECT REMOVED BY CONSTRUCTION RATHER THAN BY A BRANCH
+
+**Design, 2026-09-06.** `reference = max(cycleHigh, sessionHigh)` **makes "price
+now above the high" structurally impossible.** The contradiction the desk spent an
+evening designing around — a live price above the high its label was computed
+from — **cannot occur at all, rather than occurring and being handled.**
+
+**And it was not aimed at.** It falls out of taking the maximum. **The fix that
+removes a case is better than the fix that catches it**, and the difference is
+usually one operator rather than one more branch.
+
+## A DERIVED BAND COMPARED IN FLOATING POINT HAS A NOISE FLOOR
+
+`1.5 − 1.49` is **`0.010000000000000009`**, which reads as **outside** a one-cent
+spread. **So a name exactly one spread off its high would have flipped to OFF
+HIGH on the arithmetic rather than on the price.**
+
+**Caught by its author's own "sits on the band rather than near it" test** — the
+test written for exactly this, **firing on its writer for the first time.**
+
+**Fixed in the code rather than in the test**, compared at six decimals: **quotes
+are never finer than four, so the rounding cannot change a real decision** and it
+removes the noise that would otherwise flip a label on an exact-boundary print.
+
+**The general form: compare at the precision of the INPUTS, not at the precision
+of the type.** A threshold derived from measured quantities inherits their
+resolution, **and the gap between that and the float's is pure noise sitting
+exactly on the boundary where the decision is closest.**
+
+### And no spread means no override, not a guess
+
+**The prices still render — they are observations and need no band. Only the
+verdict does.** A missing spread suppresses the label and leaves the evidence
+standing, **because the thing that required a threshold is the claim, not the
+measurement.**
