@@ -7443,3 +7443,45 @@ found quiet.**
 
 **A field with two readings is reported, not acted on**, and the limitation lives
 on the type where the reading happens.
+
+## WRITE A TEST FOR THE CLAIM, NOT ONLY FOR THE CODE
+
+**Research, 2026-09-07**, building `buildCoverage`. **Named by Integration as
+the only mechanism that caught its own author all day.**
+
+The docstring said the session scoping errs toward understating today's
+coverage, **because a fetch at the 02:00 ET roll would land on the previous ET
+date and be missed.** Plausible, load-bearing, and written with confidence.
+
+Then a test was written **to demonstrate that claim** — and it failed. **02:00
+ET is the trading date's own ET day.** The conclusion survived for a different
+reason (work running past midnight ET), but the stated mechanism was wrong and
+would have sat in the file being quoted.
+
+### Why this one worked when the rules did not
+
+**A test written to COVER CODE asks whether the code does what it does.** It
+passes on correct code with a wrong explanation above it, every time.
+
+**A test written to DEMONSTRATE A CLAIM runs the claim against reality**, and
+reality is the thing the author does not have access to by thinking harder. The
+claim was about timezone arithmetic; the author's belief about timezone
+arithmetic was the error; **no amount of care applied to the sentence would have
+found it, and one assertion did.**
+
+### The trigger
+
+**Any docstring or comment stating WHY something behaves as it does — a
+direction of error, an edge case, a bound, a mechanism — is a claim, and a claim
+is testable.** Those sentences are exactly the ones nobody tests, because the
+code they sit above is already covered.
+
+**They are also the ones that get quoted years later**, long after anyone can
+check them, and they are load-bearing precisely because they explain rather than
+describe.
+
+*Same evening, four errors of the identical kind — each seat reasoning past a
+rule it had written, one within the hour. **Every one caught by a different seat,
+none by its author, except this.** The correction rate is a property of three
+seats reading each other and does not survive being internalised — but this
+mechanism does, because it does not rely on the author noticing anything.*
