@@ -6771,6 +6771,63 @@ directly on top of the coupling rather than near it.
 **Not a reason to skip the item. It is the reason to scope it with Integration
 first**, which was already the ruling.
 
+## When a safeguard becomes the failure it was built to prevent — 2026-09-07
+
+**Three instances in one weekend, each where the protective mechanism was the
+thing that misled.**
+
+### 1. Skipping a gate: name what replaced it, or it erodes
+
+`a801921` landed un-re-gated after main moved. Accepted, **and the reason is the
+rule**: I filtered the diff for non-comment additions and proved the change was
+comment-only. **Re-running a full gate on a comment is ritual; proving it is a
+comment is verification.**
+
+**But "it's only a comment" is exactly how the tree check erodes.** It survives
+here *only because something specific took its place.* Integration's condition,
+and it is now standing:
+
+> **If you skip a verification step, say what replaced it.** A skip with a
+> named substitute is a judgement. A skip with a reason is the beginning of not
+> doing it.
+
+The tree check has now **failed twice and passed twice** this weekend, which is
+what makes it evidence rather than ceremony. That is the thing being protected.
+
+### 2. A staleness header that is itself stale
+
+I read the clock from the box — the right source — and then **quoted that
+reading for six hours**, signing messages 03:10–03:40 ET while the box read
+09:36. **Reading from the right place is not the same as reading it now.**
+
+**And it compounded**: Integration stopped producing their own reading and began
+quoting mine, so my staleness became theirs. **A header that exists to make
+staleness visible is worse than useless when the header itself is stale** — it
+converts an unmarked guess into a marked, sourced, wrong fact.
+
+The protocol was adopted to make a stale instruction visible on arrival. It made
+this one invisible instead, because the freshness marker and the content came
+from the same stale read.
+
+### 3. An enumeration that rots like the invariant it replaced
+
+Integration's instruction was to enumerate the Alpaca coupling **with line
+numbers, in `engine.ts`**. Declined, for their own stated reason: **a list that
+names positions in the file it lives in goes stale on the next insertion above
+it, and then misleads exactly as the false invariant did** — reintroducing the
+failure the fix was for.
+
+**Identifiers in the file; the dated line-number snapshot in this charter, which
+does not move when `engine.ts` is edited; the docstring pointing here. Three
+locations, each holding the thing that is stable there.**
+
+### The shape
+
+**Every one of these is a safeguard that inherited the property it was built to
+catch.** A gate that becomes ritual, a freshness stamp that is stale, a map that
+rots. **Ask of any safeguard: what happens when this itself goes wrong, and
+would anyone notice?**
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
