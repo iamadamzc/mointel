@@ -8869,3 +8869,52 @@ rebuilt so the two series cannot disagree. The code rebuilds it.**
 `previousRanks` persists across cycles and updates every tick, **so the stored
 delta is rank movement since the previous engine TICK** — structurally ~always 0.
 **Not a failed write. A meaningless interval, faithfully recorded.**
+
+## §5c — THE BUS WAS THE BOTTLENECK. NEW PROTOCOL, 2026-09-07.
+
+**The trader: "there seems to be some breakdown in communication between threads
+and you. solve it. it's preventing progress."** He is right, and the diagnosis is
+structural rather than behavioural.
+
+**Integration made itself mandatory.** Every fact passed through one seat that was
+also ruling, recording and reporting. The costs, all observed this weekend:
+
+- **R&D could not message Integration at all, for days.** The messaging tool is
+  deferred; it never knew it existed. Invisible because its work kept appearing
+  in git and Integration read around the gap.
+- **Five crossed messages in one evening**, both seats declaring state. A crossing
+  cost a round trip before state-declaration and a paragraph after.
+- **Findings reached the trader at the speed they arrived**, so one coverage
+  number was given to him three times in a day.
+- **Ops → Research and Research → Design happened only when Integration carried
+  them.** Latency on every cross-thread fact.
+- **Integration's own messages ran 600+ words and every thread matched the
+  register**, which the one-line-ping rule has never survived.
+
+### The four changes
+
+**1. FACTS GO DIRECT. DECISIONS COME TO INTEGRATION.**
+A measurement, a defect, a sha, a correction to another thread's number — **send
+it to that thread yourself.** Copy Integration only if it changes a ruling.
+**Anything that competes for the trader's answer still routes through
+Integration**, because only that seat can see what is already in front of him.
+
+**2. THE REPO IS THE STATE. MESSAGES POINT AT IT.**
+Land the finding in your charter or the shared rules **first**, then send a
+message naming the sha. **A stale message is then detectable against an
+authoritative file** rather than against someone's memory. This is what makes
+crossings cheap instead of confusing.
+
+**3. EVERY MESSAGE CARRIES: sha · what changed · what you need. In that order.**
+If it needs a paragraph, the paragraph goes in the file and the message names it.
+**Integration sets the register and has been setting it wrong all weekend.**
+
+**4. PROVE THE CHANNEL, THEN CHECK IT.**
+Every thread confirms once that it can reach Integration **and** at least one
+other thread. Integration runs `list_sessions` and reads `git log` on a schedule
+rather than waiting — **a thread that has never sent a message is not a thread
+with nothing to say.**
+
+**The failure that made this necessary was not any thread's. It was one seat
+insisting on being in the middle of a system that does not need a middle for
+facts.**
