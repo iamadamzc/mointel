@@ -8544,3 +8544,59 @@ killed a query's premise outright** — from the field names alone.
 
 **And what it caught was a claim its author had made confidently enough to
 declare the instrumentation question closed.**
+
+## REUSE A FLOOR SET IN IGNORANCE RATHER THAN PICK ONE NOW
+
+**Research, 2026-09-07**, after Integration pointed out that *"set the floor
+against the n's when they arrive"* **is not a floor.**
+
+**The ceiling is already known — 94 prior-bearing names. So any floor chosen
+tonight would be chosen with the room above it in view**, which is threshold
+selection with partial sight of the answer.
+
+**So it reuses `n >= 20` in the smaller cell — the lead-time paired floor,
+registered in a different line of work before any of this existed, for the same
+reason.** A floor **set in ignorance of this data cannot be tuned to it.**
+
+**Below 20: unpowered and nothing else.** No direction, no *"suggestive"*, no
+ratio quoted with a caveat.
+
+## A RATIO OF RATIOS HAS NO NATURAL DECISION POINT
+
+**The tempting form** compares the prior-attachment ratio (3.8×) against the
+sheet-membership ratio and calls it explained if they are close. **Every value
+between 1 and 3.8 is arguable — which is how a null becomes a negotiation.**
+
+**The clean form conditions on membership:** among names with a RESEARCH row for
+that session, **is prior attachment still concentrated on movers?**
+
+    vanishes within sheet-listed names -> SELECTION. Both readings dissolve.
+    survives within sheet-listed names -> about the prior, not about membership.
+
+**A within-stratum comparison has a decision point by construction** — the same
+move as the within-subset constraint on the replay, for the same reason.
+
+## EXERCISED CONSTANTLY WHERE IT COULD NOT FAIL, NEVER ONCE WHERE IT COULD
+
+**The shape the week's three defects share, and it is the sharpest statement of
+it yet:**
+
+    the latch        looked healthy on 2,870 IN-BAND rows
+    secAvailable     looked healthy on every CONFIGURED start
+    sheetPriorOmitted looks healthy on 903 FALSE ones
+
+**Each was exercised constantly in the population where it could not fail, and
+never once in the one where it could.**
+
+### And the smoke run is a test of the desk, not a precondition of the replay
+
+**A treatment flag that has never labelled anything is a defect whether or not
+the replay ever runs**, and proving the path works costs a handful of names
+either way. **It stands on its own merits and does not wait on a decision about
+the replay.**
+
+### Two movements in one evening, from field validation and no analysis
+
+**Expected value went DOWN** — full value only on the surviving-edge outcome —
+**and price went UP**, from re-run to build. **The case is weaker on both sides
+than it was at midnight, and not one measurement was run to establish that.**
