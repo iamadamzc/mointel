@@ -65,14 +65,20 @@ pages developers.openai.com/api/docs/models/gpt-5.6-terra and
 …/gpt-5.6-luna. No login was required for any of them. **The pricing page
 carries no date of its own**; the dating below is from OpenAI's changelog.
 
-| model | context | input | cached input (reads) | cache writes | output |
-| --- | --- | ---: | ---: | ---: | ---: |
-| **gpt-5.6-sol** | short (≤ 272K input) | **$4.00** | **$0.40** | $5.00 | **$20.00** |
-| gpt-5.6-sol | long (> 272K input) | $8.00 | $0.80 | $10.00 | $30.00 |
-| **gpt-5.6-terra** | short (≤ 272K input) | **$2.00** | **$0.20** | $2.50 | **$12.00** |
-| gpt-5.6-terra | long (> 272K input) | $4.00 | $0.40 | $5.00 | $18.00 |
-| **gpt-5.6-luna** | short | **$0.20** | **$0.02** | $0.25 | **$1.20** |
-| gpt-5.6-luna | long | $0.40 | $0.04 | $0.50 | $1.80 |
+**Each row carries its own age and its own expiry.** This document is dated
+2026-09-07; the prices are not. Terra and luna date from OpenAI's 2026-07-30
+cut, sol from its 2026-08-21 cut, and sol alone has a published expiry. A
+date on the document would hide that, and a code rate card would need an
+expiry field per model for the same reason — Research's point, `e135a22`.
+
+| model | context | input | cached input (reads) | cache writes | output | rate dated from (changelog) | published expiry |
+| --- | --- | ---: | ---: | ---: | ---: | --- | --- |
+| **gpt-5.6-sol** | short (≤ 272K input) | **$4.00** | **$0.40** | $5.00 | **$20.00** | 2026-08-21 | **promotional "at least through November 21, 2026"; no successor rate published** |
+| gpt-5.6-sol | long (> 272K input) | $8.00 | $0.80 | $10.00 | $30.00 | 2026-08-21 | same |
+| **gpt-5.6-terra** | short (≤ 272K input) | **$2.00** | **$0.20** | $2.50 | **$12.00** | 2026-07-30 | none published |
+| gpt-5.6-terra | long (> 272K input) | $4.00 | $0.40 | $5.00 | $18.00 | 2026-07-30 | none published |
+| **gpt-5.6-luna** | short | **$0.20** | **$0.02** | $0.25 | **$1.20** | 2026-07-30 | none published |
+| gpt-5.6-luna | long | $0.40 | $0.04 | $0.50 | $1.80 | 2026-07-30 | none published |
 
 **`gpt-5.6-sol` added 2026-09-08**, after Integration found it in the store —
 116 calls, the third model actually running, and one that neither the request
