@@ -3631,9 +3631,17 @@ own elaborate design; the severity means it cannot render as OFF HIGH.
 
 - **Local frozen store.** Daily bars are REFETCH data so the split-brain concern
   is weaker here than for vendor figures — but it is one store and 75 symbols.
-- **The daily bar's high may be RTH-only.** If so, premarket-only spikes are
-  invisible to this measurement and **the true rate is HIGHER than 2.7%**, on the
-  session he actually trades. Not resolved; flagged.
+- **RESOLVED, AND IT IS A BOUND RATHER THAN A CAVEAT.** `types.ts:62-68`, already
+  verified against minute bars by this desk: *"Alpaca's daily bar carries
+  full-session VOLUME but regular-session OHLC."* **So the high is RTH-only and
+  premarket highs do not appear in it at all.**
+
+  **2.7% IS A FLOOR**, measured on the part of the session he does not trade.
+  The true rate across 07:00–10:00 is higher and CANNOT BE LOWER.
+
+  **A caveat that can only move a number in one direction is not a caveat, it is
+  a bound** — and it should be reported as one, because a reader discounts a
+  caveat symmetrically and a bound is not symmetric.
 
 ### RECOMMENDATION
 
@@ -3806,6 +3814,13 @@ having just been corrected for counting characters and calling it a measurement.
   make that mismatch invisible rather than resolving it**, because a number
   beside a word reads as the word's evidence. When deciding what to show beside
   a label, ask what COMPUTES the label, not what the label sounds like.
+- **A caveat that can only move a number ONE WAY is a BOUND, and must be
+  reported as one.** "The true rate may be higher" reads as uncertainty and gets
+  discounted symmetrically; "2.7% is a floor" cannot be. I flagged the RTH-only
+  question as unresolved rather than estimating it, which was right — but the
+  answer was already in the repo at `types.ts:62-68`, verified against minute
+  bars by someone who checked it precisely because it matters. **Search the repo
+  for the answer before recording a question as open.**
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
