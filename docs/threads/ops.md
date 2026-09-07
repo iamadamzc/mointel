@@ -7135,6 +7135,35 @@ and prune path. **Copy the shape, not the location.**
 cheaper before the first user than after, which is the argument for deciding it
 now rather than the argument for it being trivial.
 
+## Two arguments for the same decision are not redundancy — Integration, 2026-09-07
+
+**Both of us reached "identity does not belong in the market store." The reasons
+were not equivalent and only one survives an adversary.**
+
+- **Operational:** a restore reverts accounts; a failback swaps the file. **True,
+  and it collapses the moment someone says "then we will not restore."**
+- **Structural:** `createSchemaBackup` is `VACUUM INTO`, so **every market backup
+  is production entire** — identities there make **every backup a PII backup**,
+  nine dates of verified emails and provider subject ids in
+  `/var/lib/mointel/backups`, restorable by anyone who can restore the desk.
+  **Nothing defeats this except not storing them there.**
+
+Integration's words, striking their own: *"That is not a stronger version of my
+reason. It is a different and much worse failure, and mine would have justified
+the same decision for a reason that would not have survived someone arguing the
+operational case away."*
+
+**THE RULE: when two arguments support the same decision, check which one an
+adversary can defeat.** The decision is only as durable as its weakest *stated*
+justification, because that is the one a future reader will find and answer.
+**Record the argument that survives and strike the other — carrying both makes
+the decision look better supported than it is, and hands the next person the
+easier target.**
+
+This is the same family as the false invariant in `engine.ts` and the
+half-documented pair in `dial.ts`: **a record that reads as stronger than it is,
+where the weak part inherits the credibility of the strong one.**
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
