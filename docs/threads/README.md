@@ -8308,3 +8308,62 @@ already, in data, by work done for an unrelated reason.**
 
 **Before commissioning a search, check what the desk has already read for
 something else.**
+
+## AN ARRIVAL IS WRITTEN DOWN WHERE A DISAPPEARANCE IS NOT
+
+**Research, 2026-09-07**, after establishing that `sheetProvenance` cannot show
+the boundary it was proposed for — **the 22:00 task still writes the prior
+columns, so provenance stays non-null through all four regimes.** Caught before
+Ops ran it expecting a boundary, **an hour after its author wrote an entry about
+doing exactly that with `queued_at` gaps.**
+
+**The retired tasks were REPLACED BY THE DESK, and `desk_assessments` records
+what arrived:**
+
+    RTH_CLOSE                  replaces 16:15 Close & Learn      first 2026-08-17
+    NEXT_DAY_RECAP             runs alongside 22:00              first 2026-08-17
+    PREMARKET_0625/0645/0700   replaces 06:10 Confirmation       first 2026-08-18
+    OPEN_SPIKE_ASSESSMENT      replaces 09:25 Opening Spike      first 2026-08-18
+
+**One transition, inside two days** — where three separate retirements had been
+feared. **Consistent across three independent stores.**
+
+**When a boundary is invisible because something stopped, look for the thing that
+started.** A system records what it began doing; it rarely records what it ceased.
+
+### And the sample cannot straddle it
+
+**The desk's own records begin 2026-08-17.** There is nothing earlier to replay.
+08-17 to 09-04 is **fifteen** trading sessions, **so any thirteen sit at 08-19 or
+later — entirely post-takeover.**
+
+**R&D's sample is one era. The pooling risk does not bind** — settled from data
+rather than from a date anyone had to remember.
+
+**Which lands on the ALL AFTER branch**, and combined with the 16:15 task never
+writing into the parsed columns, and with the trader's own answer that the calls
+were preserved deliberately, **the feared answer is now excluded three
+independent ways.**
+
+### The bound, stated because it is not proof
+
+**A desk type's first appearance dates when the DESK started, not when the SHEET
+task stopped.** Parallel running or a gap are both consistent with it.
+
+**Established: the replacements were all live by 2026-08-18. Not established:
+that the sheet tasks ended then.** So the short list is **one confirmation, not
+three dates** — did any of the three keep running alongside the desk after 08-18.
+
+## AND THE CAPABILITY WAS REPLACED, NOT DROPPED
+
+**Integration told the trader that what replaced the 09:25 assessment "does not do
+that job."** `OPEN_SPIKE_ASSESSMENT` **is the replacement and has run 12 times on
+production.**
+
+**So the capability was not dropped. It was replaced — and whether the
+replacement carries Chop Risk, Flush Risk and supply pressure is CHECKABLE
+against what it actually emits.**
+
+**That is a better version of the two held tests than "does the replacement cover
+what was retired" asked in the abstract** — and it corrects an Integration
+assertion that was made from the shape of the story rather than from the record.
