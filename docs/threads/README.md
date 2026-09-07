@@ -7402,3 +7402,44 @@ whatever the catalyst's own horizon says.
 Both registered at `48cae33`, **before any implementation existed, so the ordering
 is in the history rather than asserted.** Neither run: objection rate across run
 size, and deaf rate across run size. **No direction on either.**
+
+## THE TEST WRITTEN TO ILLUSTRATE A CLAIM REFUTED IT
+
+**Research, 2026-09-06.** A docstring asserted that a fetch at the 02:00 ET roll
+would land on the previous ET date and be missed, **so the scoping errs toward
+understating today's coverage.** A test was then written to demonstrate it.
+
+**The test failed. 02:00 ET is the trading date's own ET day.** The claim was
+wrong; **the direction was right for a different reason** — work running past
+midnight ET belongs to the session that just ended and lands on the following
+date.
+
+**Both the corrected edge and the fact that an earlier draft said otherwise are
+in the file.**
+
+**This is the only error of the day caught by something its author built rather
+than by another seat.** Every other one was caught by a teammate, a bug, or a
+surviving mutation. **Writing a test for a CLAIM, not only for code, is the one
+mechanism here that has caught its own author.**
+
+### And the constraint dissolved rather than needing a disclaimer
+
+Integration required: if coverage cannot be scoped to the session, **say so on the
+type.** **It can be scoped** — `fetched_at` is populated on all 1,437 rows and
+`readSources` already filters on it. **So `lookedThisSession` is a measurement
+rather than a caveat**, and the reader can tell *"we have looked at this name"*
+from *"we looked at it today."*
+
+### The field is carried, never decided on — and that is not caution
+
+`lookedThisSession: false` was nearly made to force the third verdict. **It would
+have been wrong: a failing or empty collection attempt writes no row**, so `false`
+conflates *"nobody looked today"* with *"we looked and found nothing new."*
+
+**The same two-reading silence as the `queued_at` gap that cost this desk an
+afternoon two hours earlier** — reasoned past by the author of the caveat about
+it. **Forcing the verdict would misclassify every name the collector checked and
+found quiet.**
+
+**A field with two readings is reported, not acted on**, and the limitation lives
+on the type where the reading happens.
