@@ -10174,3 +10174,67 @@ you would prefer.** This desk has gone the uncomfortable way twice in one night 
 54 "free" jobs were 54 paid calls that stored nothing, and a measured zero was a
 test that could not reach the only instance. **Preferring a branch is a reason to
 check it harder, not a reason to lead with it.**
+
+## "Upper bound" is a label, not a method
+
+Research priced the desk assuming every call used the expensive model — a 10x
+assumption — **labelled it an upper bound, and published the number.** Integration
+had already named model mix as the verification that mattered most, in writing,
+before the pricing ran.
+
+The vendor's own usage chart came in at **$7.39 for a day priced at
+$16.79–20.39. Overstated 2.3x.**
+
+**A range with an unverified 10x assumption inside it is not conservative. It is a
+wrong number wearing a safety word** — and the word does not travel. The figure
+gets quoted; the caveat stays in the message it was written in.
+
+**Where this bites: a caveat protects the author, not the reader.** If an
+assumption can move the answer by more than the range you are quoting, **the range
+is not a range, it is a guess with error bars drawn around the wrong centre.**
+Verify it or do not publish.
+
+## Ground truth from outside beat a careful internal read, twice in one night
+
+**Once:** two threads reasoned from `research_jobs` about what the desk spends.
+Both got the sign backwards. **`model_usage` — a different table, written by a
+different path — settled it in one query.**
+
+**Twice:** a priced estimate built from the desk's own token counters was
+corrected 2.3x by the vendor's usage chart.
+
+**The pattern is worth more than either instance. When a system is asked to
+account for itself, its own records share every assumption its code does.** An
+independent record — a second table written by a different path, a vendor's
+invoice, a broker statement — is not merely additional evidence. **It is the only
+kind that can disagree.**
+
+**So for any number that matters, ask what outside source could contradict it, and
+get that source before publishing the internal one.**
+
+## Accounting must not take the work down with it, and must not vanish either
+
+```
+try { recordModelUsage(db, { ..., jobId: options.jobId ?? null, ... }); }
+catch {
+  // Accounting must never take an interpretation down with it.
+}
+```
+
+**The comment's intent is right and the implementation produces the standing
+failure: a caught error silently substitutes a different world.** Here the
+substituted world is one where the call never happened — **and 72 jobs wore it for
+three weeks.**
+
+Two defects in three lines. **`?? null` writes a row that exists and cannot be
+joined. The bare catch writes nothing at all**, and a swallowed write leaves
+nothing to count, so it is the harder of the two to detect: **the first is a
+visible orphan, the second is an absence.**
+
+**Log the catch.** Not failing and not recording are different outcomes and must
+not look the same.
+
+**And a `?? null` on an identifier is a claim that the id is sometimes legitimately
+absent.** If every call site supplies one, the fallback is dead and should throw.
+**If some do not, that is the finding** — and it was written as a convenience so
+that nobody would have to answer the question.
