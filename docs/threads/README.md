@@ -9133,3 +9133,23 @@ reason they seemed acceptable.
 **A checker with no stake in the conclusion inherits none of the reasons to stop
 looking.** That is the whole mechanism, and it is why the check has to be read by
 someone who did not do the work — **not by someone who knows the subject better.**
+
+### A rename leaves a row to be wrong. A new listing leaves nothing.
+
+**Ops, sharpening the stale-universe case, 2026-09-07.**
+
+The rename argument: a name that renamed since Sunday **is stale in the
+universe.** The stronger one: **a name that LISTED since Sunday is not in the
+universe at all.**
+
+**Not mis-ranked. Invisible.** No row, so nothing to track, rank, qualify or
+research — **and no marker anywhere reads FRESH or otherwise about a symbol that
+was never fetched.**
+
+**A wrong row can be detected. An absent row cannot**, because every instrument
+that would report on it is keyed by the thing that is missing.
+
+**And Research handed back the half that was not Ops's:** `isEligible` fails open,
+so **a stale universe cannot cost a name a research job.** The exposure is
+narrower than it looked and **the part that survives is the part with no detector
+at all.**
