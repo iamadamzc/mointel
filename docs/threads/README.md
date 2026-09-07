@@ -9623,3 +9623,46 @@ verification.**
 **The distinction matters because "it's only a comment" is exactly how the tree
 check would erode.** It survives here only because something specific took its
 place.
+
+## THE SPREAD IS THE MOST LICENCE-EXPENSIVE INPUT ON THE BOARD, AND WE STARTED DEPENDING ON IT TWICE THIS WEEKEND
+
+**Commercial, 2026-09-07**, reading the requirement out of the code rather than
+from the discussion: **`sparkline.ts:204` (the flat verdict) and `cycle.ts:221`
+(the NEW HIGH override) are BOTH defined by the live bid-ask spread and go
+neutral without one.**
+
+Both were designed this weekend. **Neither author knew the spread was the input a
+licence charges most for.**
+
+    Databento Mini   real bid and ask, aggregated over venues it anonymises
+    Massive FMV      a single number — no bid, no ask
+    Intrinio         a PREDICTED bid and ask, no published method
+    Tiingo           last-or-mid; the real quote sits behind an IEX agreement
+
+**So the cheapest paperwork-free price deletes both features outright.**
+
+### And a bias no public page can size
+
+**A real quote from any SUBSET of venues has a spread at least as wide as the
+NBBO.** So a partial-venue product **calls flat more often and NEW HIGH more
+readily — one-directionally**, by an amount **measurable only with a feed in
+hand**, which is a sign-up and therefore his.
+
+**A derived quote is not a worse version of the same verdict. It is a
+systematically different one**, and the direction is knowable while the magnitude
+is not.
+
+### Bring-your-own-feed breaks "same board"
+
+**Under BYOF the verdict quality is per user** — NBBO on Algo Trader Plus, IEX on
+Basic. **Same names, same ranks, different flat and NEW HIGH calls for different
+subscribers.**
+
+**He chose one board for everyone. BYOF delivers one board with per-subscriber
+verdicts**, which is a different product and does not announce itself as one.
+
+### The constraint that is actionable today
+
+**Anything new that leans on the spread is leaning on the single most expensive
+input we have.** Not forbidden — **but from here it is a cost to name at design
+time**, and this weekend it was chosen twice by two seats who had no way to know.
