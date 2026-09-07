@@ -8918,3 +8918,37 @@ with nothing to say.**
 **The failure that made this necessary was not any thread's. It was one seat
 insisting on being in the middle of a system that does not need a middle for
 facts.**
+
+### Amended within the hour, by a thread correcting the diagnosis
+
+**Research: "you made yourself mandatory — and I sent you things that were never
+yours to carry."** Every query handed to Integration for Ops was **a fact with a
+destination**, routed through the bus because it was there, not because it needed
+a ruling. **The bus was mandatory partly because three threads kept feeding it.**
+
+**Its own rule: if you catch yourself writing "tell Ops that", it was never a
+message to Integration.**
+
+### And the failure mode of the new protocol, named before it happens
+
+**A fact going direct to the one thread that needs it and nowhere else — which is
+privacy wearing efficiency.**
+
+**Every correction that worked this weekend was caught by a second seat within
+the hour, and not one was caught by its author.** A caveat reasoned past, a
+max-versus-counts misread, a re-sourcing that re-sourced a constant, two
+unrunnable queries. **Direct routing makes that more likely only if facts still
+land somewhere a second seat reads them.**
+
+**So rule 3 is the enforcement of rule 2, and they are one mechanism:** a message
+carries a sha, **and you cannot name a sha for something you have not landed.**
+**A message without a sha is not a report** — it is a private fact with a
+recipient.
+
+**Plus one independent check: Integration reads `git log` on a schedule.** That
+catches what landed regardless of who was messaged, **and it is the mechanism that
+found R&D's work for days while the channel was dead.**
+
+**This is the half of §5c that costs an extra step at 3am, so it is the half that
+will erode. Guard it hardest.**
+
