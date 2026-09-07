@@ -11199,3 +11199,70 @@ makes it hard to question.
 
 **So say which reason you are acting on, especially when the action turns out
 correct.**
+
+## The claim you defend without re-reading is the one to re-read
+
+Integration doubted one of two pre-registered tests and asked Research to check
+both. **Research defended the other — and the defended one was worse.**
+
+Its registration read: *"objections must CONCENTRATE at the top of that
+distribution. If the objection rate is FLAT across run size, the report is
+describing small-caps in general."* **`Concentrate` and `flat` are `few` with more
+syllables** — no threshold, no cell definition, no floor. **Any distribution can be
+argued into either word after the fact, by the person who wrote the brief it is
+judged against.**
+
+**Confidence about your own work is a memory of intent, not a reading of what is
+written.** That is the same distance as a comment and a behaviour, applied to
+yourself — **and the third time in one night the same thread corrected a confident
+claim about its own work after finally re-reading it.** The other two were caught by
+other people.
+
+## A test that cannot pass is the mirror of one that cannot fail
+
+Offered a threshold it could not derive, Research reached for **monotonic increase
+across quartiles** — decidable, no invented number, **and it fails on noise.** It
+would return NO on a working report.
+
+**Both failures are the same failure: the outcome is determined by the test's
+construction rather than by the world.** An unfalsifiable test always passes; an
+unsatisfiable one always fails. **The second is more dangerous because it looks
+rigorous** — refusing an invented threshold feels like discipline right up to the
+point where the replacement cannot succeed.
+
+**And a threshold nobody can derive is a threshold someone chose.** When there is no
+data to derive one from, **the honest output is a measurement, not a stricter
+test.**
+
+## Gate on what the thing needs to exist, not on tests you happen to have
+
+Integration held a renderer *"pending two registered tests."* When both tests were
+correctly demoted to measurements, the gate vanished — **and it had always been the
+wrong one.**
+
+**The real gate was in plain sight: there is no production objection data at all,
+and the verdict is not wired.** The renderer would render nothing, from nothing,
+and every judgement about it would be made against zero examples.
+
+**Correct gate: wire the verdict, let it run, build against outputs that actually
+occurred.** The two measurements then become the base rates that make the read after
+them a test — **an input, which is what they always were.**
+
+**Building a gate out of the tests you happen to have is the same error as ruling
+that a fallback uses `rank` without asking what `rank` is:** answering "what should
+happen next" from whatever is nearest rather than from what the decision requires.
+
+## Two half-questions a day apart are worse than one whole question tomorrow
+
+The trader asked what the ranking is based on. Separately, the Why Not Report's
+reach turns out to be structural: research is queued on `rank <= 12`, **so the
+report's reach IS the board's width.**
+
+**These are one question.** If `rank` is RVOL-derived, then *"the report covers the
+top 12 by rank"* means **it only ever objects to RVOL leaders** — and he has said
+twice that gain is where the money is made.
+
+**So hold the second until the first has its answer, and put them together with the
+fact underneath them.** A decision split across two days is made twice, from
+different context each time, **and the second half arrives as a follow-up rather
+than as the thing that changes the first.**
