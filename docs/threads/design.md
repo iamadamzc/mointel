@@ -4185,6 +4185,28 @@ working feature; only the payload separates them from the failure.**
   if you take it wrong; **an ambient date is wrong for everyone downstream at
   once**, and it arrives with the confidence of an observation. Every thread on
   this desk runs in a non-ET environment, so this recurs by default.
+- **NEVER `cat >` A PATH WITHOUT KNOWING IT IS NEW.** This destroyed 18 test
+  cases at `4110599` — not pruned, OVERWRITTEN, so no judgement was made and
+  none could be defended. `Write` and `cat >` are silent on an existing file.
+  **Check first, or append.** Sibling of *reverse the edit, never the file*:
+  both are a destructive operation aimed at a target I had not looked at.
+- **THE COLLATERAL IS ADJACENT TO THE FILE, NOT TO THE FEATURE.** Twelve of the
+  eighteen had nothing to do with pins — they covered `selectFocusRows`,
+  `retentionNote` and `buildDeskRead`, and `retentionNote` is code I had changed
+  myself two days earlier. **I deleted the tests for my own recent change.**
+  When reasoning about blast radius, the unit is the FILE the operation touches,
+  not the concept I have in mind.
+- **A GATE IN THE SHARED TREE GATES A MOMENT, NOT A SHA.** My run read
+  `lib/research/interpret/` while another thread was mid-edit and produced a
+  failure that was not reproducible. **Before trusting or reporting a gate,
+  check `git status` for other threads' uncommitted files and say so.** The
+  structural fix is a pinned worktree (Ops uses `A:/mointel-gate`); the cheap
+  discipline is the status check, and it is what caught it tonight.
+- **A COUNT IS A DETECTOR, NOT A MEASURE.** The suite total went UP to 1871
+  while the coverage of pin/unpin/limit went DOWN — those moved from exercised
+  (against the repo) to source-asserted (against the hook), and no total can
+  show that. **The file count is the control for the test count**: a real
+  deletion moves the test count alone, a torn-down worker moves both.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
