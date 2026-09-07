@@ -9991,3 +9991,59 @@ question — whether the DESK'S detection depends on him — and those are diffe
 **BEFORE PRICING A THIRTEEN-SESSION MODEL RUN, ASK WHETHER THE OUTCOME AND
 PATTERN-LEARNING RECORDS STILL EXIST.** Same move that has worked twice tonight:
 the fact may already be written down by someone who was there.
+
+**101d. THE BOUNDARY IS IN THE DATA AND IT IS ONE TRANSITION, NOT THREE — AND
+`sheetProvenance` COULD NEVER HAVE SHOWN IT.**
+
+*Integration: do not ask him for three dates a memory cannot supply; find what is
+detectable first. And my proposed provenance query answers a different question
+than the one I proposed it for.*
+
+### FIRST, INTEGRATION'S CORRECTION, WHICH IS RIGHT
+
+**`sheetProvenance` STAYS NON-NULL THROUGH ALL FOUR REGIMES**, because the 22:00
+task still writes the prior columns and the prior is read from them. **The
+boundary I said would "show itself in a durable append-only record" is invisible
+to that field.** Caught before Ops ran it expecting a boundary.
+
+### AND THE DESK RECORDS ITS OWN TAKEOVER, WHICH IS BETTER THAN THE SHEET'S ABSENCE
+
+`desk_assessments` carries `assessment_type` and `trading_date`. **The retired
+tasks were replaced BY THE DESK, so the desk's first assessment of each type
+dates the transition** — and unlike a task's disappearance, **an arrival is
+written down.**
+
+Consistent across three independent stores:
+
+| desk type | replaces | first seen |
+| --- | --- | --- |
+| `RTH_CLOSE` | **16:15 Close & Learn** | **2026-08-17** |
+| `NEXT_DAY_RECAP` | 22:00 (runs alongside it) | 2026-08-17 |
+| `PREMARKET_0625 / 0645 / 0700` | **06:10 Confirmation** | **2026-08-18** |
+| `OPEN_SPIKE_ASSESSMENT` | **09:25 Opening Spike** | **2026-08-18** |
+
+**ONE TRANSITION, INSIDE TWO DAYS. NOT THREE SCATTERED DATES.** I told
+Integration ACROSS was the likeliest state; **it is nearly ALL AFTER.**
+
+### AND THE 13 SESSIONS CANNOT STRADDLE IT
+
+**The desk's own records begin 2026-08-17** — `desk_assessments` earliest, and
+the production snapshot's `ticker_session` starts 08-14 with seven dates.
+
+**There is no earlier desk data to replay.** 08-17 to 09-04 is fifteen trading
+sessions, so **any thirteen sit at 08-19 or later — entirely post-takeover.**
+
+**SO R&D'S SAMPLE IS ONE ERA. The pooling risk I raised does not bind**, and it
+is settled from the data rather than from a remembered date.
+
+### THE BOUND, STATED, BECAUSE IT IS NOT PROOF
+
+**A desk type's first appearance dates when the DESK STARTED, not when the SHEET
+TASK STOPPED.** They could have run in parallel, or a gap could have opened
+before the replacement. **What is established is that the replacements were all
+live by 2026-08-18** — which is enough to place the sample, and not enough to
+say the sheet tasks ended that day.
+
+**That is the short list to put to him: not three dates, but one question — did
+any of the three keep running alongside the desk after 2026-08-18.** A
+confirmation rather than a memory test, which is what Integration asked for.
