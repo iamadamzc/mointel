@@ -7751,6 +7751,54 @@ you know to look.** It is: **a date that arrives unbidden is a claim about the
 machine you are sitting at, never about the desk.** The desk's date has exactly
 one source and it is not the environment.
 
+## A right answer from a broken instrument is still a broken instrument — 2026-09-07
+
+**Research proposed a third mechanism for the 46 unexplained jobs: the usage
+row's `trading_date` is the WORKER'S LOOP date, not the job's, so a job crossing
+a roll writes its usage one session away and the join never looks there.**
+
+**Tested. It does not explain them.**
+
+```
+the 46 (no orphan at their own trading_date)
+  orphan at NEXT or PREVIOUS SESSION:   0
+  orphan anywhere on their ticker:     11
+  nothing anywhere:                    35
+```
+
+**The mechanism is real — 100 jobs in the store were queued after their own
+`trading_date` — it simply produces none of these.**
+
+### THE PART WORTH KEEPING IS THAT MY FIRST TEST WAS WRONG AND AGREED ANYWAY
+
+I first measured adjacency as **±1 CALENDAR DAY**. **The most recent roll on this
+desk is Friday 09-04 → Tuesday 09-08, a four-day gap** — a weekend or holiday
+crossing would have been invisible to it. **It returned 0. The correct test also
+returns 0.**
+
+*Fetch a range by calendar, gate an action by session* is in this file, written
+by me, and I did the other thing. **The agreement is what makes it dangerous: a
+broken instrument that happens to be right teaches nothing and leaves itself in
+place.** Had the answer been non-zero I would have reported a finding the test
+could not support.
+
+The valid form measures adjacency in **sessions**, verified against the store's
+own ordering: `2026-09-04` is rank 16 and `2026-09-08` is rank 17 — **one session
+apart, so the measure spans the holiday.**
+
+### And the date basis sharpens the 29% rather than weakening it
+
+`model_usage.trading_date` is the worker's loop date, so the daily totals are
+**"tokens spent while the worker believed it was date X"**. Both sides of the
+ANPA ratio use that same basis, so **29.3% is exact on the MONEY axis — the one
+the invoice measures.**
+
+**Supported:** *"ANPA was 29% of what the desk spent that day."*
+**Not supported:** *"ANPA was 29% of the work done for 09-04's session."**
+
+**They diverge the moment a job crosses a roll, which happens 100 times in this
+store.** Use the first phrasing.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
