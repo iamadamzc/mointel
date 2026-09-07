@@ -3732,6 +3732,54 @@ one layer up.
 
 ## THE TWO WINDOWS FAIL DIFFERENTLY, AND THAT IS WHY ONLY ONE FAILURE IS VISIBLE
 
+### THE POSITIVE CONTROL: THE CODE AND THE KEYS BOTH WORK. ONLY THE CLOCK IS LEFT.
+
+**Ran the real functions against stored bars in the pinned worktree** (scratch
+file, run, deleted — the worktree is clean). 2026-08-17, the three busiest names:
+
+    IPST bars=897  rawKeys===normKeys: true  slots=5 hits=5  window=[1053,1256,951,672,718] ACTIVE
+    TRUG bars=894  rawKeys===normKeys: true  slots=5 hits=5  window=[135,92,104,282,226]
+    IVF  bars=889  rawKeys===normKeys: true  slots=5 hits=5  window=[338,243,106,89,113]
+
+**FIVE OF FIVE SLOTS HIT, AND THE WINDOWS ARE FULL OF REAL COUNTS.** So
+`windowSlots`, `minuteSlot` and `resolveActivity` are **not** the defect.
+
+**AND THE KEY QUESTION IS NOW SETTLED BY DATA RATHER THAN BY READING TWO
+FUNCTIONS.** The engine keys `minuteTrades` by the **raw `bar.ts`**
+(`engine.ts:959`); the replay re-keys through `minuteSlot` (`dead-while-ranked
+.ts:371`). **Those two key sets are IDENTICAL** — and every one of the
+**1,340,336** stored bars is `len=24`, tail `0.000Z`, across all three sources
+(`historical`, `live-bar`, `live-updated-bar`). **The replay's re-keying is
+idempotent, not a correction.**
+
+**THE ONE VARIABLE LEFT IS `now`.** The replay drives it **from the bar
+timeline** (`dead-while-ranked.ts:242`, `now: ms`); the engine drives it from
+**the wall clock** (`windowSlots(this.now(), …)`). Same code, same keys, same
+data — **the only thing that differs is where the time comes from.**
+
+**WHICH IS ALSO WHY RESEARCH'S RECONSTRUCTION IS GENUINELY INDEPENDENT OF MY
+ARTEFACT, AND I CHECKED THAT RATHER THAN ACCEPTING IT.** Its `now` cannot drift
+from its bars, because it takes one from the other. **My artefact lives on
+exactly the axis its instrument does not have.** So both readings can stand: the
+deaths it reconstructs are real, **and** the live DEAD flag may still be firing
+on names that traded.
+
+**THE MECHANISM THIS POINTS AT, NAMED BUT NOT VERIFIED:** `windowSlots` asks for
+**t−6…t−2**. **If live bars arrive later than the settle margin, those slots are
+empty at read time** — activity zero-fills and reads DEAD, price returns null.
+That is bar latency against `settleMinutes`, it is in the worker, and it is
+Ops's. **I have not measured it and I am not claiming it.**
+
+### 39 OF 65 ENTRANTS WERE NEVER ACTIVE — AND NEITHER OPTION HE IS WEIGHING TOUCHES IT
+
+Research's number, and it is a **display** problem sitting behind the one being
+decided. **Vanish-or-show is about names that go QUIET. These were never LOUD.**
+So a board that marks corpses correctly would **still** show a majority of rows
+admitted without ever being active. **Nobody has scoped this and I am not
+designing for it.** Recorded so that whichever way he rules, **the rule does not
+arrive looking like it solved this too.**
+
+
 **Not a hypothesis. A deduction from the code plus Ops's sweep, and it says a
 number about to go in front of the trader may be an artefact.**
 
