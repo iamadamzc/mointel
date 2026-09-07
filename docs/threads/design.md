@@ -3730,6 +3730,44 @@ second line then measures from the new high, which is "just move that spread".
 `neg` colour of a stale BACKSIDE verdict — the label-and-number mismatch again,
 one layer up.
 
+## The 04:00 method, settled at 18:30 the night before
+
+**I tried to pre-check read 1's premise on production tonight and COULD NOT.
+The attempt was still worth it, for the method it settled and not the answer.**
+
+**THE API PATH IS SCOPED TO THE TOKEN, AND THE OBVIOUS URL IS A 401.**
+
+    /api/market                     -> 401, nginx, Basic Auth   <- NOT this
+    /review/<token>/api/market      -> 200, the payload          <- this
+
+The cookie jar comes back **empty** — the review capability is **path-scoped,
+not cookie-scoped**, so `-c/-b` buys nothing and the token has to be in the URL
+of every request. **Discovering that at 04:00 costs minutes against a board that
+is changing while I read it.** Now it is written down.
+
+**WHAT THE PRE-CHECK ESTABLISHED (18:28 ET Mon, production, `38e7d4b` live):**
+
+| field | value |
+| --- | --- |
+| `discovery.sessionPhase` | `CLOSED` |
+| `discovery.ranked` | **`[]` — 0 rows** |
+| `discovery.tradingDate` | **`2026-09-08`** — already rolled past ET Monday |
+| `health.universeFreshness` | `FRESH` |
+| `health.universeRollDue` | `false` |
+
+**THE MARKER READ IS PROVISIONALLY DISCHARGED**: `FRESH` with `rollDue: false`
+means `universeWarning` returns null, the roll happened, and the date is
+tomorrow's. **Provisionally, because a marker that is correctly silent on an
+empty board has not been shown to fire on a full one.**
+
+**AND READ 1 IS UNTOUCHED BY THIS, WHICH IS THE POINT.** `priceWindow`,
+`activityWindow`, `spreadPct` and `sessionHigh` occur **zero times in the whole
+payload** — not because they were dropped, **because there are no rows to carry
+them.** An empty board cannot falsify a claim about row rendering. **I set out
+to test the premise a night early and the honest result is that the premise is
+still untested**, which is a different sentence from "checked and fine" and I am
+recording it as the first one.
+
 ## Tuesday's fourth read — "FEW" IS NOT A PREDICTION, AND I ALMOST REPORTED IT AS ONE
 
 **I had "expect FEW NEW HIGH rows" on record and it is worthless.** Few has no
