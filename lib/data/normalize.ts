@@ -308,9 +308,43 @@ export function catalystGradeBucket(raw: string): CatalystGradeBucket {
  * warning is NOT evidence of a clean structure, so the fallback is
  * UNCLASSIFIED rather than CLEAN.
  */
+/**
+ * Negators that turn a mention of dirty float into its opposite.
+ *
+ * Deliberately tiny and deliberately adjacent-only. A wider list, or a search
+ * anywhere in the text, would start suppressing real warnings — and suppressing
+ * an avoid is the failure this whole function has to avoid in BOTH directions.
+ */
+const NOT_DIRTY =
+  /\b(?:NO|NOT|NON|NEVER|WITHOUT)\s+(?:A\s+|ANY\s+)?(?:APPARENT\s+|OBVIOUS\s+)?DIRTY\s+FLOAT/;
+
+/**
+ * The structure verdict from free text.
+ *
+ * `DIRTY_FLOAT` IS AN AVOID, AND ITS FALSE POSITIVE COSTS HIM A TRADE HE SHOULD
+ * HAVE TAKEN — the opposite direction from most of this desk's failures, and
+ * the direction a bare `.includes` fails in.
+ *
+ * THE DEFAULT WAS ALREADY SAFE: an unrecognised phrase falls to `UNCLASSIFIED`
+ * and never to the avoid. **The danger was one step further in.** `sources` are
+ * JOINED before matching, and the avoid was tested FIRST by bare substring, so
+ * *"clean float, no dirty float risk"* returned `DIRTY_FLOAT` — a warning
+ * manufactured out of its own denial, from two fields that individually said
+ * the opposite.
+ *
+ * So a negated mention no longer fires it. **This is a NARROWING, which is the
+ * safe direction for an avoid** — *every widening is a new way to fire*, and
+ * that rule cuts the other way here.
+ *
+ * NOTHING IS DONE ABOUT THE VOCABULARY, deliberately. `floatQualityState`
+ * classifies about half of what arrives, and the rest resolving to
+ * `UNCLASSIFIED` is correct rather than a gap: **a request for the real strings
+ * to make this exhaustive is a request to avoid choosing a safe default.**
+ * Widen it only if a vocabulary arrives through a channel already open.
+ */
 export function structureState(...sources: string[]): StructureState {
   const value = sources.join(' ').toUpperCase();
-  if (value.includes('DIRTY FLOAT')) return 'DIRTY_FLOAT';
+  if (value.includes('DIRTY FLOAT') && !NOT_DIRTY.test(value)) return 'DIRTY_FLOAT';
   if (value.includes('UNKNOWN')) return 'UNKNOWN_STRUCTURE';
   if (value.includes('CLEAN')) return 'CLEAN';
   return 'UNCLASSIFIED';
