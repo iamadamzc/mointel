@@ -76,7 +76,7 @@ export type DeafReason =
 
 /** What the desk actually reached, so "we looked" is a measurement not a claim. */
 export interface Coverage {
-  /** Every active source row for the name. */
+  /** Every active source row for the name, from ANY session's collection. */
   sourceCount: number;
   /**
    * Non-SEC sources specifically.
@@ -86,8 +86,91 @@ export interface Coverage {
    * been half-looked-at, and the number says which half.
    */
   nonSecSourceCount: number;
-  /** Newest source date, ISO, or null. Old coverage is not coverage. */
-  newestSourceAt: string | null;
+  /** Newest source PUBLICATION date, ISO, or null. Old coverage is not coverage. */
+  newestPublishedAt: string | null;
+  /** When the desk last FETCHED anything for this name, ISO, or null. */
+  lastFetchedAt: string | null;
+  /**
+   * WHETHER ANYTHING WAS FETCHED FOR THIS NAME DURING THIS SESSION.
+   *
+   * `research_sources` carries no trading date, so a name holds rows collected
+   * during ANY session's job — which would let a name read freshly covered when
+   * nothing looked at it today, and the third verdict would inherit the exact
+   * ambiguity it exists to remove.
+   *
+   * `fetched_at` is populated on every row, so the scope is recoverable rather
+   * than merely disclaimable. THIS FIELD IS THE DIFFERENCE BETWEEN "WE HAVE
+   * LOOKED AT THIS NAME" AND "WE LOOKED AT IT TODAY".
+   *
+   * IT IS CARRIED AND NEVER DECIDED ON, AND THAT IS NOT CAUTION. A failing or
+   * empty collection attempt WRITES NO ROW, so `false` conflates *nobody
+   * looked today* with *we looked and found nothing new* — the same two-reading
+   * silence as a gap in `queued_at`, which cost this desk an afternoon. Forcing
+   * the third verdict on it would misclassify every name the collector checked
+   * and found quiet.
+   */
+  lookedThisSession: boolean;
+}
+
+/** The minimum a source must carry to be counted. Structural on purpose: this
+ * function must be testable without a store, since its whole job is to stop a
+ * verdict resting on rows nobody scoped. */
+export interface CoverageSource {
+  sourceType: string;
+  publishedAt: string | null;
+  fetchedAt: string;
+}
+
+const ET_DATE = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' });
+
+/**
+ * Assembles coverage from the rows the caller already read.
+ *
+ * PURE, AND IT TAKES ROWS RATHER THAN A DATABASE. `lib/market/store/` is not
+ * mine, `readSources` already exists there and already filters on `fetched_at`,
+ * and a reader in this file would duplicate it while crossing an ownership
+ * line for no gain.
+ *
+ * THE SESSION TEST IS THE ET CALENDAR DATE, WHICH COVERS THE WHOLE SESSION.
+ * The desk rolls at 02:00 ET and trades to about 20:00 ET, so every fetch in
+ * that span shares the trading date's ET day and is counted.
+ *
+ * THE ONE EDGE IS WORK THAT RUNS PAST MIDNIGHT ET — a fetch at 00:30 belongs to
+ * the session that has just ended and lands on the following date, so it is not
+ * counted for it. **That error can only push a name from `NO_OBJECTION_FOUND`
+ * toward `NOTHING_COLLECTED`, never the reverse**, which for a verdict about
+ * whether anyone looked is the only safe direction to be wrong in.
+ *
+ * *(An earlier draft of this comment cited the 02:00 roll as the edge. 02:00 ET
+ * is on the trading date's own ET day; the test below is what said so.)*
+ */
+export function buildCoverage(sources: CoverageSource[], tradingDate: string): Coverage {
+  let nonSec = 0;
+  let newestPublishedAt: string | null = null;
+  let lastFetchedAt: string | null = null;
+  let lookedThisSession = false;
+
+  for (const source of sources) {
+    if (!source.sourceType.startsWith('SEC_')) nonSec += 1;
+
+    if (source.publishedAt && (!newestPublishedAt || source.publishedAt > newestPublishedAt)) {
+      newestPublishedAt = source.publishedAt;
+    }
+    if (!lastFetchedAt || source.fetchedAt > lastFetchedAt) lastFetchedAt = source.fetchedAt;
+
+    const fetchedOn = Number.isNaN(Date.parse(source.fetchedAt))
+      ? null
+      : ET_DATE.format(new Date(source.fetchedAt));
+    if (fetchedOn === tradingDate) lookedThisSession = true;
+  }
+
+  return {
+    sourceCount: sources.length,
+    nonSecSourceCount: nonSec,
+    newestPublishedAt,
+    lastFetchedAt,
+    lookedThisSession,
+  };
 }
 
 export interface Objection {

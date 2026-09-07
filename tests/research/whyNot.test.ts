@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
 
 import { validateCatalystEffect, type CatalystEffect } from '@/lib/research/effect';
-import { whyNot, orderObjections, type Coverage, type Objection } from '@/lib/research/whyNot';
+import {
+  buildCoverage,
+  orderObjections,
+  whyNot,
+  type Coverage,
+  type CoverageSource,
+  type Objection,
+} from '@/lib/research/whyNot';
 
 /**
  * The Why Not Report's verdict.
@@ -22,8 +29,20 @@ const effect = (over: Partial<Record<keyof CatalystEffect, unknown>> = {}) =>
     ...over,
   });
 
-const covered: Coverage = { sourceCount: 12, nonSecSourceCount: 4, newestSourceAt: '2026-09-04' };
-const deaf: Coverage = { sourceCount: 0, nonSecSourceCount: 0, newestSourceAt: null };
+const covered: Coverage = {
+  sourceCount: 12,
+  nonSecSourceCount: 4,
+  newestPublishedAt: '2026-09-04',
+  lastFetchedAt: '2026-09-04T12:00:00Z',
+  lookedThisSession: true,
+};
+const deaf: Coverage = {
+  sourceCount: 0,
+  nonSecSourceCount: 0,
+  newestPublishedAt: null,
+  lastFetchedAt: null,
+  lookedThisSession: false,
+};
 
 describe('the third verdict is the opposite of the second, not a weaker one', () => {
   it('separates a name that came back clean from a name nobody looked at', () => {
@@ -200,5 +219,88 @@ describe('the cap outranks everything, because it ends price discovery', () => {
     const observed: Objection = { ...believed, believed: false };
 
     expect(orderObjections([believed, observed])[0]).toBe(observed);
+  });
+});
+
+describe('coverage is scoped to the session, because otherwise the verdict is not', () => {
+  const source = (over: Partial<CoverageSource> = {}): CoverageSource => ({
+    sourceType: 'SEC_FILING',
+    publishedAt: '2026-09-01',
+    fetchedAt: '2026-09-04T15:00:00Z',
+    ...over,
+  });
+
+  it('separates a name looked at today from one carrying an older collection', () => {
+    /*
+     * `research_sources` has NO TRADING DATE, so a name holds rows from any
+     * session's job. Without this the third verdict inherits the exact
+     * ambiguity it exists to remove: a name reads freshly covered when nothing
+     * looked at it today.
+     */
+    const today = buildCoverage([source()], '2026-09-04');
+    const stale = buildCoverage([source({ fetchedAt: '2026-08-20T15:00:00Z' })], '2026-09-04');
+
+    expect(today.lookedThisSession).toBe(true);
+    expect(stale.lookedThisSession).toBe(false);
+    // Both still count as coverage. The question is WHEN, not WHETHER.
+    expect(stale.sourceCount).toBe(1);
+  });
+
+  it('counts the whole session, including the 02:00 ET roll', () => {
+    /*
+     * WRITTEN THE OTHER WAY ROUND FIRST, AND THIS TEST CORRECTED IT. I claimed
+     * a roll-time fetch would land on the previous ET date and be missed;
+     * 06:00Z is 02:00 ET on the SAME day, so it counts. The docstring said
+     * otherwise until this assertion ran.
+     */
+    const roll = buildCoverage([source({ fetchedAt: '2026-09-04T06:00:00Z' })], '2026-09-04');
+    expect(roll.lookedThisSession).toBe(true);
+  });
+
+  it('misses only work running past midnight ET, and that direction is safe', () => {
+    /*
+     * 00:30 ET on the following day belongs to the session that just ended and
+     * is not counted for it. THE ERROR CAN ONLY PUSH A NAME TOWARD
+     * NOTHING_COLLECTED, never toward looking cleared — the only safe direction
+     * for a verdict about whether anyone looked.
+     */
+    const after = buildCoverage([source({ fetchedAt: '2026-09-05T04:30:00Z' })], '2026-09-04');
+    expect(after.lookedThisSession).toBe(false);
+  });
+
+  it('counts non-SEC sources separately, because SEC-only is blind to a release', () => {
+    const coverage = buildCoverage(
+      [source(), source({ sourceType: 'SEC_EXHIBIT' }), source({ sourceType: 'NEWSWIRE' })],
+      '2026-09-04',
+    );
+
+    expect(coverage.sourceCount).toBe(3);
+    expect(coverage.nonSecSourceCount).toBe(1);
+  });
+
+  it('takes the newest publication and the newest fetch independently', () => {
+    // Old evidence fetched today, and fresh evidence fetched long ago, are
+    // different situations and neither number stands for the other.
+    const coverage = buildCoverage(
+      [
+        source({ publishedAt: '2024-01-05', fetchedAt: '2026-09-04T15:00:00Z' }),
+        source({ publishedAt: '2026-09-03', fetchedAt: '2026-08-01T15:00:00Z' }),
+      ],
+      '2026-09-04',
+    );
+
+    expect(coverage.newestPublishedAt).toBe('2026-09-03');
+    expect(coverage.lastFetchedAt).toBe('2026-09-04T15:00:00Z');
+  });
+
+  it('reports nothing rather than throwing on an empty set', () => {
+    const coverage = buildCoverage([], '2026-09-04');
+    expect(coverage).toEqual({
+      sourceCount: 0,
+      nonSecSourceCount: 0,
+      newestPublishedAt: null,
+      lastFetchedAt: null,
+      lookedThisSession: false,
+    });
   });
 });
