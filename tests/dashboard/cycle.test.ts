@@ -4,6 +4,8 @@ import {
   CYCLE_PHASE_LABEL,
   countCyclePhases,
   cycleDetail,
+  formatHighPair,
+  highReading,
   cyclePhaseOf,
   cyclePhaseTone,
   resolveComputedCycle,
@@ -247,5 +249,96 @@ describe('cycle segment counts match what the filter returns', () => {
     // merged.rows is the union; the filter's population is `tickers`.
     expect(source).not.toContain('countCyclePhases(merged.rows.values())');
     expect(source).toMatch(/countCyclePhases\(\s*\n?\s*tickers\.map/);
+  });
+});
+
+/*
+ * TWO PRICES, NOT A PERCENTAGE. His ruling: "dont do a percentage - it's
+ * deceptive... OFF HIGH - $1.20→ $1.00". A ratio hides its denominator; two
+ * prices carry theirs.
+ */
+describe('the high reading', () => {
+  const withHigh = (cycleHigh: number) =>
+    ({ phase: 'PULLBACK', cycleHigh }) as unknown as Parameters<typeof highReading>[0];
+
+  /*
+   * THE CONTRADICTION IS GONE BY CONSTRUCTION, not by luck. cycleHigh is
+   * settled-only, so a gapper could sit above it and render "OFF HIGH · $1.20
+   * -> $1.80". Taking max(cycleHigh, sessionHigh) makes now > high impossible.
+   */
+  it('never reports a price above its own reference high', () => {
+    const r = highReading(withHigh(1.2), 1.8, 1.8, 0.01)!;
+    expect(r.high).toBe(1.8);
+    expect(r.now).toBeLessThanOrEqual(r.high);
+  });
+
+  it('keeps the cycle high when today has not beaten it', () => {
+    const r = highReading(withHigh(1.2), 1.05, 1.0, 0.01)!;
+    expect(r.high).toBe(1.2);
+    expect(r.label).toBeNull();
+  });
+
+  /*
+   * READ LITERALLY: "change to NEW HIGH if the high is new". A name sitting at
+   * its OLD cycle high keeps its phase word -- that high is not new, and a
+   * broader reading would label names he did not describe.
+   */
+  it('does not say NEW HIGH for a name at its old cycle high', () => {
+    const r = highReading(withHigh(1.2), 1.2, 1.2, 0.01)!;
+    expect(r.label).toBeNull();
+  });
+
+  /*
+   * THE BAND IS NOT OPTIONAL, and not because of a downtick. The reference is a
+   * MAXIMUM, so price can never exceed it: equality holds for one print and is
+   * false immediately after. Without a band NEW HIGH appears and vanishes on
+   * the same tick.
+   */
+  it('says NEW HIGH within a spread of a high that beat the arc', () => {
+    expect(highReading(withHigh(1.2), 1.5, 1.5, 0.01)!.label).toBe('NEW HIGH');
+    expect(highReading(withHigh(1.2), 1.5, 1.495, 0.01)!.label).toBe('NEW HIGH');
+  });
+
+  it('says OFF HIGH once it has drifted beyond the spread, measured from the NEW high', () => {
+    const r = highReading(withHigh(1.2), 1.5, 1.4, 0.01)!;
+    expect(r.label).toBe('OFF HIGH');
+    expect(r.high).toBe(1.5);
+  });
+
+  it('sits on the band rather than near it', () => {
+    expect(highReading(withHigh(1.2), 1.5, 1.49, 0.01)!.label).toBe('NEW HIGH');
+    expect(highReading(withHigh(1.2), 1.5, 1.4899, 0.01)!.label).toBe('OFF HIGH');
+  });
+
+  /*
+   * TONE FOLLOWS THE LABEL. Otherwise NEW HIGH renders in the neg colour of the
+   * stale BACKSIDE verdict underneath -- a word saying one thing while its
+   * colour says the opposite.
+   */
+  it('carries a tone that matches the word', () => {
+    expect(highReading(withHigh(1.2), 1.5, 1.5, 0.01)!.tone).toBe('pos');
+    expect(highReading(withHigh(1.2), 1.5, 1.4, 0.01)!.tone).toBe('warn');
+  });
+
+  /*
+   * No band means no verdict, not a guess. The prices still render: they are
+   * observations and need no band, only the label does.
+   */
+  it('shows the prices but no override when there is no spread', () => {
+    const r = highReading(withHigh(1.2), 1.5, 1.4, null)!;
+    expect(r.label).toBeNull();
+    expect(r.high).toBe(1.5);
+    expect(r.now).toBe(1.4);
+  });
+
+  it('returns nothing without a cycle or without a price', () => {
+    expect(highReading(null, 1.5, 1.4, 0.01)).toBeNull();
+    expect(highReading({ phase: 'NO_CYCLE' } as never, 1.5, 1.4, 0.01)).toBeNull();
+    expect(highReading(withHigh(1.2), 1.5, null, 0.01)).toBeNull();
+  });
+
+  it('formats as he wrote it: dollars, four decimals under $1', () => {
+    expect(formatHighPair(highReading(withHigh(1.2), 1.5, 1.4, 0.01)!)).toBe('$1.50 → $1.40');
+    expect(formatHighPair(highReading(withHigh(0.4), 0.421, 0.389, 0.001)!)).toBe('$0.4210 → $0.3890');
   });
 });

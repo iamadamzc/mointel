@@ -17,6 +17,7 @@ import {
 import { rowKeyboardProps } from '@/components/tableKeyboard';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
+import { formatHighPair, highReading } from '@/lib/dashboard/cycle';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
 import {
@@ -457,6 +458,20 @@ function DiscoveryRow({
   // ticker, this row shows the same numbers from the same object.
   const t = row.telemetry;
   const conclusions = resolveConclusions(row);
+
+  /*
+   * The high the label is measured from, and the live price beside it.
+   *
+   * `max(cycleHigh, sessionHigh)` makes "now above high" structurally
+   * impossible — the contradiction that started this. The label override fires
+   * only when today's high actually beat the arc.
+   */
+  const high = highReading(
+    row.intelligence?.analysis?.dossier?.computedCycle?.current ?? null,
+    t.sessionHigh,
+    t.price,
+    t.spread,
+  );
   const risk = resolveRisk(row);
   const why = resolveWhy(row);
   const ah = demand?.afterHours ?? null;
@@ -608,11 +623,30 @@ function DiscoveryRow({
       <td className="px-2 py-1 align-middle">
         <span className="flex flex-col items-start gap-0.5">
           <StatusBadge
-            label={conclusions.cycle.label}
-            tone={conclusions.cycle.tone as Tone}
+            label={high?.label ?? conclusions.cycle.label}
+            tone={(high?.tone ?? conclusions.cycle.tone) as Tone}
             title={conclusions.cycle.title ?? conclusions.cycle.label}
             className="max-w-full"
           />
+          {/*
+            * TWO PRICES, NOT A PERCENTAGE — his ruling: "dont do a percentage,
+            * it's deceptive". A ratio hides its denominator; two prices carry
+            * theirs, and he does the arithmetic he trades on.
+            *
+            * ON A SECOND LINE because it does not fit in the chip: measured
+            * against the real font, "OFF HIGH · $0.4210 → $0.3890" is 156px
+            * against a 122px badge budget, and the badge TRUNCATES rather than
+            * pushing — it would have silently cut the prices. Here the budget is
+            * the full 136px and the worst realistic case measures 109.5px.
+            *
+            * COSTS NO ROW HEIGHT: the row is 65px, this cell used 19, and the
+            * Risk cell beside it already uses 56.
+            */}
+          {high ? (
+            <span className="num text-[10px] leading-none font-semibold text-ink-3">
+              {formatHighPair(high)}
+            </span>
+          ) : null}
           <HaltBadge state={t.haltState} raw={t.haltRaw} />
         </span>
       </td>

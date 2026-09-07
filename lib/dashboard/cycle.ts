@@ -176,3 +176,98 @@ export function countCyclePhases(rows: Iterable<DeskRow>): Record<CyclePhase, nu
   }
   return counts;
 }
+
+/**
+ * The chip's high reference and the two prices beneath it.
+ *
+ * He asked for prices rather than a percentage: *"dont do a percentage - it's
+ * deceptive… OFF HIGH - $1.20→ $1.00"*. **A ratio hides its denominator; two
+ * prices carry theirs**, and he does the arithmetic he actually trades on.
+ *
+ * **The reference is `max(cycleHigh, sessionHigh)`, and that alone removes the
+ * contradiction this began with.** `cycleHigh` is settled-only, so a name that
+ * gapped overnight could sit ABOVE it — printing "OFF HIGH · $1.20 → $1.80", a
+ * price above the high beside a word saying it is off it. Taking the maximum
+ * makes `now > high` STRUCTURALLY IMPOSSIBLE rather than merely unlikely.
+ */
+export interface HighReading {
+  /**
+   * Label override, or null to keep the arc's phase word.
+   *
+   * Fires ONLY when today's high has actually beaten the arc — read literally
+   * from *"change to NEW HIGH if the high is new"*. A name sitting at its OLD
+   * cycle high keeps its phase word, because that high is not new and reading
+   * the instruction more broadly would label names he did not describe.
+   */
+  label: 'NEW HIGH' | 'OFF HIGH' | null;
+  /**
+   * Tone for the override.
+   *
+   * **Must follow the label.** Without it NEW HIGH renders in the `neg` colour
+   * of the stale BACKSIDE verdict underneath — a word saying one thing while
+   * its colour says the opposite, which is the label-and-number mismatch one
+   * layer up.
+   */
+  tone: ReadTone | null;
+  /** The reference high, for the left of the pair. */
+  high: number;
+  /** Live price, for the right. Matches his screen; `latestClose` would not. */
+  now: number;
+}
+
+/**
+ * Null when there is nothing to show — no cycle, or no live price.
+ *
+ * **The band is the SPREAD, and it is not optional for the reason it looks
+ * like.** `reference` is a MAXIMUM, so price can never exceed it: `price ===
+ * reference` holds for one print and is false immediately after. Without a
+ * band NEW HIGH would appear and vanish on the same tick. Off by less than the
+ * spread is not off — the difference was not sellable — and it is the same
+ * instrument the colour on this row already uses, rather than a second invented
+ * band.
+ *
+ * **No spread means no override**, not a guess. The prices still render, because
+ * they are observations and need no band; only the verdict does.
+ */
+export function highReading(
+  arc: CycleResult | null | undefined,
+  sessionHigh: number | null | undefined,
+  price: number | null | undefined,
+  spread: number | null | undefined,
+): HighReading | null {
+  if (!arc || arc.phase === 'NO_CYCLE') return null;
+  if (price === null || price === undefined || !Number.isFinite(price)) return null;
+
+  const cycleHigh = arc.cycleHigh;
+  const beat =
+    sessionHigh !== null &&
+    sessionHigh !== undefined &&
+    Number.isFinite(sessionHigh) &&
+    sessionHigh > cycleHigh;
+  const high = beat ? (sessionHigh as number) : cycleHigh;
+
+  if (!beat) return { label: null, tone: null, high, now: price };
+
+  if (spread === null || spread === undefined || !Number.isFinite(spread)) {
+    return { label: null, tone: null, high, now: price };
+  }
+
+  /*
+   * Compared at six decimals, because the raw subtraction is not stable at the
+   * boundary: `1.5 - 1.49` is 0.010000000000000009 and would read as OUTSIDE a
+   * one-cent spread. Quotes are never finer than four decimals, so rounding at
+   * six cannot change a real decision and removes the float noise that would
+   * otherwise flip the label on an exact-boundary print.
+   */
+  const scaled = (v: number) => Math.round(v * 1e6);
+  const atHigh = scaled(high - price) <= scaled(Math.abs(spread));
+  return atHigh
+    ? { label: 'NEW HIGH', tone: 'pos', high, now: price }
+    : { label: 'OFF HIGH', tone: 'warn', high, now: price };
+}
+
+/** Prices as he wrote them: dollar signs, four decimals under $1, two above. */
+export function formatHighPair(reading: HighReading): string {
+  const fmt = (v: number) => `$${v.toFixed(v < 1 ? 4 : 2)}`;
+  return `${fmt(reading.high)} → ${fmt(reading.now)}`;
+}
