@@ -8600,3 +8600,46 @@ the replay.**
 **Expected value went DOWN** — full value only on the surviving-edge outcome —
 **and price went UP**, from re-run to build. **The case is weaker on both sides
 than it was at midnight, and not one measurement was run to establish that.**
+
+## COUNT THE DISTINCT VALUES A FIELD HAS EVER TAKEN
+
+**The general form of every defect this desk found in the week to 2026-09-07,
+and it reduces to one query.**
+
+| field | looked healthy on | never once |
+| --- | --- | --- |
+| `latched` | **2,870 in-band rows** | an out-of-band row surviving a restart |
+| `secAvailable` | every configured start | an unreachable SEC |
+| `sheetPriorOmitted` | **903 written rows, all `false`** | a single `true` |
+
+**EACH WAS EXERCISED CONSTANTLY IN THE POPULATION WHERE IT COULD NOT FAIL AND
+NEVER ONCE IN THE ONE WHERE IT COULD.** *(Named by Integration from Research's
+line; filed because it is the shape rather than three incidents.)*
+
+### Why none of them looked broken
+
+**A populated row count is the evidence everyone reaches for, and it is
+evidence about the wrong thing.** 903 rows is a field that is wired, reached,
+written and covered by its callers. **It says nothing about whether the branch
+that sets the other value has ever executed.**
+
+**A schema cannot show it. A grep cannot show it. A test can pass on the path
+that runs and never touch the one that does not.**
+
+### The check, and it is one query
+
+**FOR ANY FIELD LOAD-BEARING ENOUGH TO BE BELIEVED: `SELECT <field>, COUNT(1)
+GROUP BY <field>`.**
+
+**A boolean that has only ever been one value, or an enum that has only ever
+taken one member, IS NOT A WORKING FIELD — IT IS AN UNTESTED PATH WEARING A
+POPULATED COLUMN.** All three above return a single row from that query, and
+all three were found by other means, at a cost of days.
+
+**Run it before believing a field, not after doubting one.** The question is not
+*is this populated* but **HAS THIS FIELD EVER SAID THE THING IT EXISTS TO SAY.**
+
+*Corollary: this is the constructive half of "prove a check can see a present
+case before believing its absence". That rule asks for a positive case to be
+demonstrated; **this one finds, cheaply and in bulk, every place where none has
+ever occurred.***
