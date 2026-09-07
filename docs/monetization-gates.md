@@ -188,3 +188,45 @@ Mapped, not answered — no agreement, no approach, no recommendation to sign.*
   the landscape states it plainly rather than re-opening it.
 - **Which Alpaca plan the account is on.** Not in the repo; inferred from the
   feed setting.
+
+### GATE 0 — MAPPED 2026-09-07 BY COMMERCIAL. THREE FACTS THAT DECIDE THE SHAPE.
+
+**1. ALPACA PUBLISHES NO REDISTRIBUTION PATH.** Not expensive — **absent.** Its
+only multi-user product is a brokerage partnership; its OAuth data scope is the
+bring-your-own-feed shape. **So the current vendor cannot become the commercial
+answer at any price**, and "build now, comply on traction" implies **a vendor
+migration at the moment of compliance.**
+
+**2. THE EXCHANGE LAYER IS THE BILL, NOT THE VENDOR** — and it is avoidable.
+Intrinio publishes real-time SIP exchange fees at **$10,000–$20,000/mo.** But
+**Massive's Stocks Business at $2,499/mo states "No Exchange Fees or Approvals"**
+on a proprietary derived price, and **Databento's Mini "carries no exchange
+licence fees for personal or commercial use."**
+
+**An order of magnitude sits between the real tape and a derived real-time
+price.**
+
+**3. THE BOARD SPLITS CLEANLY ALONG THAT LINE.** Under UTP, **RVOL, rank and
+volume-derived fields are not fee-liable. Price, VWAP and the trades/quotes
+stream are.** Float, catalyst, structure and the Why Not verdicts are **filings
+and research — ours outright.**
+
+**So most of the desk is already on the cheap side of the line.**
+
+### THE ENGINEERING CONSEQUENCE, AVAILABLE NOW AND COSTING NOTHING
+
+Both published routes with display rights — **Massive and Databento — are a
+rebuild of `lib/market/alpaca/`.** One layer, bounded.
+
+**Nobody needs to switch vendors today. But every line written from here that
+assumes Alpaca raises the price of compliance later**, and the migration is the
+one certain item in the plan.
+
+**The cheapest thing that can be done before there are any users is to stop
+widening the integration surface.**
+
+### And a dated regime change
+
+**The CT Plan replaces CTA and UTP on 2027-04-01.** Any agreement signed now
+lands inside a changing regime — **an argument for his own stance rather than
+against it.**
