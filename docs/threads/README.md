@@ -9936,3 +9936,50 @@ reader can see.**
 thread must say so in words. **Inferring another thread's state from a sha in the
 log has been wrong twice this weekend** — a commit can carry a ruling about a
 change rather than the change.
+
+## One status for spending nothing and for spending and falling short
+
+`worker/research.ts:559`:
+
+```
+const status =
+  report.outcome === 'ACCEPTED' ? 'COMPLETE'
+  : report.outcome === 'PARTIAL' || report.outcome === 'REUSED_UNCHANGED' ? 'PARTIAL'
+  : 'FAILED';
+```
+
+`REUSED_UNCHANGED` is **the short-circuit that builds no bundle and makes no
+call.** `PARTIAL` is **a real interpretation that spent and returned half an
+answer.** Both land as job status `PARTIAL`.
+
+**1,902 jobs wear that status. 1,272 of them spent. ~630 did no work at all.
+Nothing in the job table separates them** — which is why two threads reasoned
+carefully from `research_jobs` and both got the cost backwards, and why
+`model_usage` was not the better source but **the only one.**
+
+**The rule this belongs to is the one already on file:** `SELECT <field>,
+COUNT(1) GROUP BY <field>`. **A field that collapses the distinction the question
+turns on is a populated field that answers nothing** — worse than a missing field,
+because a missing field prompts a query and a populated one ends it.
+
+**Where to look for the next instance: any enum that maps an outcome type onto a
+smaller status type.** The narrowing is where the distinction dies, and it is
+always written as a convenience.
+
+## Splitting an enum without backfilling builds the field you just removed
+
+Adding a terminal value going forward only means the old value means **two
+things above a date and one below it, with nothing at the boundary** — the
+misread-backwards shape, arriving in a second field on the same night the first
+was removed.
+
+**Backfill, or date the boundary in the record. Silence is not a third option.**
+
+And **test the backfill rule before trusting it.** "No `model_usage` row therefore
+it did no work" holds only if a genuine spender cannot fail before its first call.
+If it can, **the rule relabels paid jobs as free — and in the direction that makes
+the cost look smaller**, which is the direction the desk has already been wrong in
+once.
+
+**A backfill rule that can only err downward is not conservative. It is the error
+nobody checks.**
