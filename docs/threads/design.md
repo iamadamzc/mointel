@@ -3591,6 +3591,74 @@ and absence is not.
 `FRONTSIDE · 42% back` at 20. **The worst case does not move**, so this cannot
 cost a column by the back door.
 
+## MEASURED — how often a live price exceeds the cycle high (2026-09-06)
+
+Integration asked for a rate rather than an estimate before spending his
+attention on a third option. **Measured with the desk's own `resolveCycle` over
+the local daily bars — 75 symbols, 2026-03-26 to 2026-08-18, 1,152 symbol-days
+carrying a cycle.**
+
+For each symbol-day the cycle is resolved over bars SETTLED THROUGH THE PRIOR
+DAY, then the next day's high is compared against that `cycleHigh` — which is
+exactly the live-price-versus-stale-arc relationship.
+
+| | count | rate |
+| --- | --- | --- |
+| symbol-days with a cycle | 1,152 | — |
+| next high above `cycleHigh` (any phase) | 63 | 5.5% |
+| **labelled OFF HIGH / BACKSIDE** | **876** | — |
+| **…and next high above `cycleHigh`** | **24** | **2.7%** |
+
+**So the contradiction is an EDGE CASE at 2.7%.**
+
+### BUT THE RATE AND THE SEVERITY POINT OPPOSITE WAYS
+
+The 24 are not marginal overshoots:
+
+    CDTG  BACKSIDE  high 10.00 → 15.12   +51%
+    CXAI  BACKSIDE  high 12.50 → 16.74   +34%
+    CNET  BACKSIDE  high  1.42 →  1.70   +20%
+
+**When it fires, it fires on a name up 20–50% through its own cycle high — and
+labels it BACKSIDE.** That is the desk telling him a runner is finished on the
+morning it runs. Rare, and wrong in the direction that costs him a trade rather
+than merely confusing him.
+
+**So rarity is not an argument for leaving it.** 2.7% means it does not need its
+own elaborate design; the severity means it cannot render as OFF HIGH.
+
+### LIMITS, STATED
+
+- **Local frozen store.** Daily bars are REFETCH data so the split-brain concern
+  is weaker here than for vendor figures — but it is one store and 75 symbols.
+- **The daily bar's high may be RTH-only.** If so, premarket-only spikes are
+  invisible to this measurement and **the true rate is HIGHER than 2.7%**, on the
+  session he actually trades. Not resolved; flagged.
+
+### RECOMMENDATION
+
+**Integration's third option, in its plainest form.** When `telemetry.price >
+cycleHigh` the arc no longer describes the name, so the chip should not assert a
+retracement verdict. The condition is DERIVED — a live price above the high the
+label was computed from — not a threshold anyone chose.
+
+**What it must not say:** anything that reads as a defect in the new feature, or
+as a verdict about the name. It is a statement about the ARC being out of date,
+not about the stock.
+
+**It goes to him as a proposal**, because it changes when OFF HIGH appears and
+that is a material change to what the board presents.
+
+## Separately — a live truncation defect, NOT part of this change
+
+**`CYCLE NOT ESTABLISHED` is 128.2px against a 122px badge budget. It truncates
+on his board today** and has done since it shipped. Found incidentally while
+measuring; it is its own defect on its own merits.
+
+**What it currently renders as is not yet measured** — the exact cut needs the
+board up, and I will take it at the premarket read rather than estimate it,
+having just been corrected for counting characters and calling it a measurement.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
