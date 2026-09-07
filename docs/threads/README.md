@@ -11266,3 +11266,82 @@ twice that gain is where the money is made.
 fact underneath them.** A decision split across two days is made twice, from
 different context each time, **and the second half arrives as a follow-up rather
 than as the thing that changes the first.**
+
+## A pattern narrow enough to be precise is blind to the carrier; wide enough to catch it is blind with noise
+
+Ops needed to count which tests a removal would take. **A per-test scan matching the
+obvious symbols reported 16 and was blind twice** — one suite reached the table
+through a one-line local `focus()` helper, another reached the display layer
+through `selectFocusRows`.
+
+**Widening to a substring match gave 121:** "stri**ppin**g", "**pin**ned schema
+version", "s**pin** loop".
+
+**Neither number is an enumeration.** The narrow pattern misses every hop the value
+takes under a new name; the wide one matches text that has nothing to do with the
+value at all.
+
+**The method that worked: classify each unit by the symbols it actually resolves,
+with the layers separated.** Twelve, by name, split into the ten that drive the
+store and the two that drive the display.
+
+**Fifth instance tonight of the same rule** — the enumeration unit is the carrier,
+and a search over names is not a search over meaning.
+
+**And check name collisions rather than assuming them.** `focusCount` derived from
+`internalRank*4`, and an archived `focus_any` that stays and simply stops
+advancing, both share the word and neither shares the thing. **A shared word is not
+a shared thing** — in either direction.
+
+## A read tool that can only return empty is the never-true field as an API
+
+With pins client-side, the server cannot know a pin — so an MCP `get_focus` tool
+would return a **structurally always-empty list, forever, plausibly.**
+
+**Worse than a dead column: a dead column is inert, and a documented capability
+answers.** Anyone building against it gets a valid, empty, permanently wrong
+result, and nothing in the response says so.
+
+**It goes, and the documented surface drops from eight tools to seven** — named in
+the change, named in the docs. **A capability leaving an external surface is a
+decision someone makes, not something that happens as a side effect of a
+deletion.**
+
+## Orphan-and-label beats stop-creating, when production already has the table
+
+Two instructions pulled apart: *stop creating the table in both definitions*, and
+*orphan and label, no DROP.*
+
+**Orphan-and-label wins.** Production has the table and is not dropping it, so
+**removing the `CREATE` makes a fresh store diverge from production — new installs
+lacking a table prod has.** That is two schema shapes in the wild **with no
+migration between them**, and the next writer touching it hits an untested path on
+one of the two.
+
+**The module's own `ensureFocusTable` goes with the module.** The base schema's
+`CREATE` **stays, with a comment naming it orphaned, dated, and saying nothing
+writes it** — because an undated boundary in a schema is the same failure as an
+undated boundary in data.
+
+**And it keeps the guards that INSERT into the table to prove a pin is ignored.** A
+test that stopped inserting would pass for the wrong reason.
+
+## Say which premise changed, not just which way you now rule
+
+Integration took three positions on one question: remove the pin-driven ordering;
+then hold it; then proceed.
+
+**That is only defensible with the premises attached.** The first was made without
+knowing what the fallback ordering was. The second was correct — a fallback had
+been ruled without being read. **The third came when the hold's premise turned out
+to be false: keeping the pin seed was never an option, because pins are
+client-side and the server cannot know a pin.**
+
+**A hold that forecloses nothing is not caution, it is delay** — and the open
+question it was protecting (volume-only versus gain) is answered by building a new
+ordering with a new source either way. **Deleting dead plumbing neither helps nor
+hinders it.**
+
+**When reversing yourself, name the fact that moved.** Three rulings with three
+reasons is a sequence; three rulings without them is noise, and nobody downstream
+can tell which one to build against.
