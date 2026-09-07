@@ -10321,3 +10321,71 @@ on top of a build cost rather than a re-run cost.**
 
 **Expected value moved down and price moved up, in the same evening, from two
 field validations and no analysis.**
+
+---
+
+**102. READING R&D'S DENOMINATORS — THREE PROBLEMS WITH THE CASE FOR THE SPEND,
+AND A VOCABULARY GAP THAT IS MINE.**
+
+*R&D's channel opened after days dead, and it delivered finished work nobody had
+seen. This is the measurement read I agreed with Integration to do: denominators,
+spans, scopes and floors. Not direction, not priorities, not conclusions.*
+
+```
+cohort      versions   with_provenance
+mover          171          50           29.2%
+non_mover      435          33            7.6%     3.8x
+```
+
+### 1. THE RATE IS PER-VERSION AND THE CLAIM IS ABOUT NAMES
+
+R&D flagged this and stopped. **There is a mechanism that would make it bite:
+`escalated` and `repairCount` are per-version, and 76% of the contaminated
+movers are CONFLICT.** If a sheet conflict makes escalation or repair more
+likely, **contaminated names generate more versions and the per-version rate
+overstates the per-name rate by the ratio of their version counts.**
+
+**One group-by settles it: versions-per-name, split on whether the name ever
+carried provenance.** Depends on `research_analysis_versions.ticker` and
+`metadata.sheetProvenance`, both confirmed present.
+
+### 2. TWENTY VERSIONS IN BOTH COHORTS IS NOT A CAVEAT
+
+3.3% double-counted, **and not symmetrically: a version in both cohorts inflates
+the mover numerator AND the non-mover denominator, pushing the ratio up from both
+ends.** Unsizeable without knowing how those 20 split on provenance — **and if
+they are disproportionately provenance-bearing, 3.8× moves materially on 20
+rows.**
+
+### 3. THE WORST CASE MAY NOT RESPECT ITS OWN MEASURED CEILING
+
+*"Every positive mover contaminated → −14.7pp, sign reverses."* **The measured
+attachment rate is 29.2%.** That corner requires every positive to sit inside
+the contaminated 29.2% — arithmetically possible, **and an extreme corner rather
+than a bound the evidence supports.**
+
+**"The band spans zero" is the sentence justifying the largest spend on this
+desk.** Constrain the worst case by the rate that produced it and **the band may
+not span zero at all.**
+
+### AND A VOCABULARY GAP THAT IS MINE, WITH ITS PREREQUISITE NAMED
+
+R&D's parse census: **`floatQualityState` classifies 51%** because
+`structureState` (`normalize.ts:311`) tests three phrases — `DIRTY FLOAT`,
+`UNKNOWN`, `CLEAN` — and returns `UNCLASSIFIED` otherwise.
+
+**It is worse than a display gap. `structure.floatRaw` IS ONE OF THE SIX FIELDS
+`toSheetPrior` READS.** So a float-quality judgement he wrote **reaches the
+interpreter as raw text AND the desk's own classifier as UNCLASSIFIED, half the
+time. The same cell is both used and not understood.**
+
+**I AM NOT WIDENING THE MATCHER BLIND.** *Every widening is a new way to fire* is
+already in `README.md`, and this one fires an AVOID: **a false `DIRTY_FLOAT`
+costs him a trade he should have taken.** That is the opposite direction from
+most of this desk's failures and it is the direction a `.includes` chain fails
+in.
+
+**PREREQUISITE: the actual unclassified strings from the `Float Quality`
+column.** They are not in the store — `desk_assessment_tickers.structure` holds
+the DOSSIER's classification, not the sheet's raw text. **R&D has the snapshot
+loaded from the census, so it is a re-read there rather than a new read.**
