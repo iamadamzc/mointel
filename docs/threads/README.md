@@ -10359,3 +10359,71 @@ number quoted three times and moved three times.
 
 **Mark the affected figures as floors. Do not re-report them as new values.** A
 caveat applied once beats a number that keeps moving.
+
+## A carried reading decays; a taken reading cannot
+
+Three clock errors in two days, and Design found the shape under all three:
+**nobody has been wrong about how to read a clock. Every instance is carrying a
+reading rather than taking one.**
+
+Ops signed `03:xx` for six hours after reading the clock once. Design derived
+`03:42` by adding elapsed time by feel when it was `03:25`. Integration and Ops
+both repeated an environment's date announcement from a non-ET zone.
+
+**The error grows with the length of the conversation rather than being a fixed
+offset** — which is why it keeps happening to careful people, and why it will keep
+happening. **A carried reading decays and nothing in a conversation signals the
+decay.** There is no moment where the number visibly goes stale.
+
+**Take it at the moment of use, from `zoneinfo`:**
+
+```
+python -c "from zoneinfo import ZoneInfo; from datetime import datetime,timezone; \
+  print(datetime.now(timezone.utc).astimezone(ZoneInfo('America/New_York')))"
+```
+
+**Not `date -u` minus four** — that is EDT arithmetic and breaks on 2026-11-01 —
+**and not `TZ=America/New_York`, which silently returns GMT on this host.**
+
+**And the calendar is not the clock.** Monday 2026-09-07 was Labor Day: the desk
+had the right date and still assumed a session that did not exist. **Fetch a range
+by calendar, gate an action by session** — and know which one you are reasoning
+about.
+
+## An unpriced model was not between the two known ones; it was above both
+
+`gpt-5.6-sol` priced at **$4.00 / $0.40 / $20.00 — more expensive than `terra`,
+not less.**
+
+**The intuition that a third member of a family sits between the two you know is
+worth nothing.** In this family two models differ by 10x, and the unknown third
+came in above the top. **That is why an unpriced term is unbounded rather than
+small** — 2.6% of calls at an unknown rate has an unknown contribution, and
+"small" was a conclusion that required the price it lacked.
+
+**And a promotional price is a dated input.** `sol`'s rate is promotional through
+at least 2026-11-21; the monetization case runs past November. **A cost line with a
+scheduled change in it must carry the date, or the model silently assumes a price
+that has already expired.**
+
+## Proving a search was complete is not proving a claim about the system
+
+Commercial concluded Standard tier from a grep. Challenged, it **widened the search
+to every channel named — SDK defaults, env vars, wrappers — found the calls are
+hand-built fetch bodies with no such field, and then still refused to call it
+verified.**
+
+Absent from the wire means `auto`; `auto` means a Project setting in a console
+nobody here can open. **So the code cannot settle it, however complete the search.**
+
+The rate card now reads *"Standard, absent from the wire, defaulting to the
+project setting, verified by nobody yet."*
+
+**A completed search establishes what the code does not contain. It says nothing
+about what the system does** when the behaviour is decided elsewhere. **Most
+writers convert the first into the second at exactly this point**, and the honest
+field is the one that names who has verified it: nobody.
+
+**The fix was to find a mechanism that could answer** — the response object's own
+`service_tier`, settled from one logged response. **Same move `model_usage` made on
+the cost question: convert an unanswerable question into a one-line observation.**
