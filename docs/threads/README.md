@@ -9490,3 +9490,28 @@ gain ranking is computed over a wider field than the promoted one RVOL uses,
 **Building the instrument is not the fix. Settling what field it measures against
 is.** The event would otherwise **launder the asymmetry into the record**, where
 it becomes much harder to see and much easier to quote.
+
+## STANDING: DO NOT WIDEN THE ALPACA SURFACE
+
+**From Commercial's Gate 0 landscape, 2026-09-07.** **Alpaca publishes no
+redistribution path** — not expensive, absent. So **a vendor migration is the one
+certain item in the monetization plan**, whenever compliance is pursued.
+
+**Both published routes with display rights — Massive and Databento — are a
+rebuild of `lib/market/alpaca/`.** One layer, bounded **today.**
+
+**So, binding on every thread touching market code:**
+
+- **New vendor-specific behaviour goes behind the existing client interface**, not
+  beside it. If a change needs an Alpaca concept above `lib/market/alpaca/`, that
+  is the moment to say so rather than the moment to do it.
+- **Derived fields stay derived.** RVOL, rank and volume-derived values are
+  computed from bars we already hold and **are not fee-liable under UTP.**
+  Anything that starts reading vendor-shaped price or quote structures higher up
+  moves work across the licence line **and across the migration line at once.**
+
+**Nobody is switching vendors today. This costs nothing and it is the only thing
+available before there are users that reduces the price of compliance later.**
+
+**A migration that is certain and undated is the one everybody widens the surface
+against.**
