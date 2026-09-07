@@ -71,6 +71,31 @@ or the ones that happened to be on screen? That is bucket 2, the
 missed-opportunity set, and no journal can answer it — it is about names that
 were never seen.
 
+**And that join is where this thread will be lied to.** *Added 2026-09-07, after
+a claim about which names the desk held was measured against a snapshot whose
+filename — `assessments-prod-2026-09-02.db` — said in plain text that it stopped
+before the session being asked about. The query returned zero. Zero read as "the
+desk did not have it" when it meant "this file does not go that far."*
+
+Every bucket-1 and bucket-2 question is a join between **his fills, which are
+current**, and **a desk extract, which is not**. The fills advance every session
+he trades; the extract only advances when someone pulls a new one. So the gap
+grows on its own, always in one direction, and every question asked across it
+comes back as a confident zero that reads like a finding.
+
+Two rules, and the first is not "be careful":
+
+- **Establish the overlap window of both sources before asking anything, and
+  print it beside the result.** A habit failed here — the filename was typed
+  repeatedly and never read. An instrument that states its own coverage makes an
+  out-of-range zero visibly out of range. The general form is in
+  [README.md](README.md) beside the credentials rule; this is the thread most
+  likely to need it, because this is the thread that owns the join.
+- **Reducing a claim to remove one dependency does not make it clean.** The claim
+  above was narrowed to whole-day membership specifically to remove the timing
+  dependency — which it did, and that is exactly what stopped anyone looking for
+  the coverage dependency underneath.
+
 ## What is built
 
 As of 2026-08-24, the whole loop runs:
