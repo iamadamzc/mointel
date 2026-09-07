@@ -7557,6 +7557,98 @@ top-level tree hash excluding docs -> 33b67f8176d15c3f == 33b67f8176d15c3f
 check first.** I nearly re-gated and redeployed on the word of a pipeline I had
 written thirty seconds earlier.
 
+## AUTH SCOPE — Google + email magic link, both from the start
+
+**Scoped 2026-09-07 at Integration's request. Not designed, not built.**
+
+### THE BLOCKING PREREQUISITE NOBODY HAS NAMED: THERE IS NO DOMAIN
+
+```
+server_name        98-85-49-227.sslip.io      (Let's Encrypt cert matches)
+nginx template     server_name __DOMAIN__     <- substituted at deploy
+MTA on the box     NONE
+BASE_URL / APP_URL anywhere in the tree      NONE
+```
+
+**`sslip.io` resolves any IP-shaped hostname to that IP. It is not a domain we
+control, so we cannot publish SPF, DKIM or DMARC records under it.** Those are
+not optional for magic-link mail — **without them the message is unauthenticated
+and lands in spam or is rejected outright.**
+
+**And a magic link is a URL a human is asked to trust.** A login link pointing at
+`https://98-85-49-227.sslip.io/...` reads as phishing to filters and to people,
+which is the correct reaction to it.
+
+**So email magic link has a hard dependency on owning a domain.** That is a
+purchase and a DNS decision, not engineering, and **it gates the email half
+entirely.** Google sign-in does not need it — an OAuth redirect URI on sslip.io
+works — so **the two providers are not equally ready, which the "both from the
+start" ruling assumes they are.**
+
+### The seam: what is Ops and what is Design
+
+**Mine — the carriage.** Session issue and verification, cookie attributes,
+OAuth callback routes, `state` and `nonce`, the identity store, CSRF, and
+whatever makes identity reach the app. **`nginx` forwards no `$remote_user`, so
+today nothing carries identity past the proxy** — that gap is the work.
+
+**Design's — the surface.** The sign-in screen, provider buttons, the
+"check your email" state, error and expiry copy, and the signed-in affordance.
+
+**Neither of us owns the domain decision. It is his.**
+
+### What has to exist that does not today
+
+**There is NO auth code in this application.** No auth packages, no session
+library, no `cookies()`, no `middleware.ts`. So this is greenfield rather than a
+swap:
+
+- session issue/verify + cookie attributes (`HttpOnly`, `Secure`, `SameSite`)
+- OAuth callback route, `state` and `nonce` handling, and their storage
+- magic-link token issue, single-use redemption, and expiry
+- `identity.db` — **separate store, ruled 2026-09-07**: every market backup is
+  `VACUUM INTO` of production entire, so identities there make **every backup a
+  PII backup**
+- **users keyed by an internal id; provider identities linked, unique on
+  `(provider, subject)`.** Key it on the Google id and a second provider becomes
+  a migration.
+- **link-from-session, never link-on-signin** — link a provider to an existing
+  user only on a provider-asserted verified email, otherwise require the person
+  to be signed in and add it from there. The unverified case needs an
+  authenticated actor, not a refusal.
+
+### CSRF is smaller than it was an hour ago
+
+Cookie sessions make POST endpoints CSRF-reachable for the first time; today's
+Basic auth has no session and the codebase has nothing to build a defence on.
+**But `POST /api/focus` is being removed, leaving `POST /api/research/retry` as
+the only write endpoint on the desk.** One endpoint to protect, not two.
+
+### The email sender is the only piece that is a running service
+
+Everything else is code that ships with a deploy. **A sender is an account, a
+domain verification, DNS records, a reputation, and a bill.**
+
+- **It cannot be the box.** No MTA is installed, and a self-hosted sender on a
+  Lightsail IP has effectively no deliverability — that is what the domain and
+  DKIM exist to fix, and the IP reputation problem survives them.
+- **A hosted sender is the realistic shape** (SES, Postmark, Resend and similar).
+  All require **domain verification via DNS**, which returns to the same
+  prerequisite. SES additionally starts sandboxed and must be released before it
+  can mail arbitrary addresses.
+- **The failure mode is quiet**: a magic link that lands in spam is
+  indistinguishable to the user from a login that does not work, and nothing on
+  the desk would show it. **Whatever is chosen needs delivery telemetry, not just
+  a send call that returned 200.**
+
+### What defers, per Integration
+
+Billing, onboarding, terms, per-user state. **The minimum to test the framework
+is identity carriage plus a user record** — and the three cheap proofs: a
+dormant second account (access not single-tenant), a second provider on one
+account (identity not single-provider), and one POST from a second session
+(the write model not single-writer).
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
