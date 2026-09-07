@@ -11365,3 +11365,69 @@ that name's true share needs the same split.
 
 *The number the monetisation case carries is less than half what I gave it, and
 it took him pasting a chart to find that out.*
+
+**106d. THE 72 ARE NOT A FREE PATH — THEY ARE LOST ATTRIBUTION, AND THAT KILLS
+THE BACKFILL.**
+
+*Integration ordered (4) before (2), on the grounds that a violable assumption in
+the same mapping would settle the other. **It did.***
+
+### (4) `ACCEPTED` CANNOT BE REACHED WITHOUT A CALL
+
+`pipeline.ts:453` — `outcome: downgraded || bundle.coverage.incomplete ?
+'PARTIAL' : 'ACCEPTED'` — **sits unconditionally downstream of line 218,
+`await interpreter.interpret(bundle)`.**
+
+**The one interpreter that does not call out cannot reach it:** `NoopInterpreter`
+declares `available = false`, so line 197 returns `UNAVAILABLE` **before a bundle
+is built**, and `UNAVAILABLE` maps to `FAILED`, not `COMPLETE`.
+
+**SO THERE IS NO SECOND FREE PATH AND NO ACCEPTED-WITHOUT-WORK. The cost model
+has no hole in the cheap direction.**
+
+### THE 72 ARE THE JOIN LOSING CALLS, AND `noteUsage` SHOWS BOTH WAYS
+
+```ts
+const noteUsage = (…) => {
+  try {
+    recordModelUsage(db, { …, jobId: options.jobId ?? null, … });
+  } catch {
+    // Accounting must never take an interpretation down with it.
+  }
+};
+```
+
+- **`jobId ?? null`** — a null job id writes a row that **exists and cannot be
+  joined to its job.**
+- **the swallowed `catch`** — a write failure leaves **no row at all**, silently.
+
+**Both are ACCOUNTING defects rather than correctness ones**, and both produce
+exactly the observed shape: a job that spent, with no attributable spend.
+
+**`SELECT COUNT(1) FROM model_usage WHERE job_id IS NULL` separates them.**
+
+### (2) THE LOGICAL PREMISE HOLDS AND THE EVIDENTIAL ONE DOES NOT
+
+**No pre-call path returns outcome `PARTIAL`.** Both `PARTIAL` returns —
+line 335 via `stillRejected`, line 453 via `downgraded` — require a validated
+dossier, which requires the call. **Verified from code, as asked.**
+
+**BUT THAT IS NOT WHAT BREAKS THE RULE.** If the join loses calls for 72
+`COMPLETE` jobs, **it loses them for `PARTIAL` jobs too — and there is no way to
+tell which of the 630 are short-circuits and which are interpretations whose
+usage row lost its job id.**
+
+**SO THE BACKFILL WOULD RELABEL PAID WORK AS NO-WORK, WHICH IS THE EXACT FAILURE
+INTEGRATION'S CONDITION 1 NAMED.**
+
+**RULING I AM TAKING: DO NOT BACKFILL. Leave history as `PARTIAL` and date the
+boundary in the record**, which Integration explicitly permitted. **Split the
+status going forward; the past stays honestly ambiguous rather than confidently
+wrong.**
+
+### AND INTEGRATION'S POINT ABOUT MY ~630 STANDS
+
+**My ~630 and Ops's 630 are the same subtraction over the same two tables.**
+Agreement between two computations sharing an assumption is not corroboration —
+**the match confirms the arithmetic and says nothing about whether those rows are
+short-circuits.** They are now known NOT all to be.
