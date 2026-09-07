@@ -6665,10 +6665,27 @@ fix, so **"get a second connection" is not an available remedy** — not for the
 local desk running beside production, not for a parallel worker, not for a
 migration that wants both old and new streaming at once.
 
-**Every design that needs two simultaneous SIP consumers is off the table until
-the plan changes**, and that is a commercial decision rather than an engineering
-one. A second connection does not degrade or share; the newer one takes the slot
-and the older is dropped with a 406.
+**Every design that needs two simultaneous SIP consumers is a commercial
+decision rather than an engineering one.** A second connection does not degrade
+or share; the newer one takes the slot and the older is dropped with a 406.
+
+**But do not overstate it, which is what this entry first did.** Alpaca's wording
+is *"in many subscriptions (or without one) this limit is 1"* — **that leaves a
+higher individual limit UNPUBLISHED, not ruled out.** Commercial marks two things
+as unverified rather than closed:
+
+- whether a higher individual tier exists at all (no page states one)
+- **whether a second Alpaca account in the same name with its own subscription is
+  permitted — no page read addresses it**
+
+Published alternatives that do exist: **Broker API partner plans** (5–10 streams,
+but brokerage) and **Massive Business** (three connections, but a rebuild).
+
+**So the correct statement is "not available on this account as configured, and
+the alternatives are known and costly", NOT "impossible".** The operational
+consequences below hold either way, because none of them waits on that question.
+Full option set and the unverified hole in `docs/threads/commercial.md` LIVE
+STATE.
 
 **So the orphaned-worker hazard is permanent, not a bug to be fixed.** A stray
 `worker/alpaca.ts` anywhere — a forgotten local desk, a session-launched process
