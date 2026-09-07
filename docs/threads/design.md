@@ -4069,6 +4069,20 @@ already in front of him.
   Ops's sweep arrived before I read the board; had I looked first I would have
   seen grey, confirmed it against an empty payload, and written a partial pass.
   **That ordering was luck. Make it a rule.**
+- **THE SPREAD IS THE MOST LICENCE-EXPENSIVE INPUT ON THE BOARD. Name it at
+  design time.** Two verdicts lean on it — the flat band (`sparkline.ts:204`)
+  and the NEW HIGH override (`cycle.ts:221`) — and both were chosen this
+  weekend, independently, with no way to know. Not forbidden: **a cost to state
+  in the scope**, like a width measurement or an empty state.
+  **And a derived quote is not a worse verdict, it is a DIFFERENT one.** A real
+  quote from any venue subset has a spread AT LEAST AS WIDE as the NBBO, so a
+  partial-venue feed calls FLAT more often and NEW HIGH more readily —
+  **one-directionally.** Direction knowable, magnitude not: a bound, not a
+  caveat.
+  **The failure mode is silence, not error** — both features return neutral
+  without a spread rather than guessing a band. So losing the quote makes the
+  board say less, never something false. That is worth knowing when costing it:
+  **the downside of the cheap feed is two dark features, not two wrong ones.**
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
