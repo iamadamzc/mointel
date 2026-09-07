@@ -11056,3 +11056,54 @@ no; `model_usage.job_id` says so or doesn't.
 
 *Noted without a claim: PARTIAL is 53% of local jobs. That is a different
 question and I am not opening it.*
+
+**105a. CORRECTION — "NAMES HE ENTERS BEFORE THEY RANK" IS ABOUT TIMING, NOT
+MEMBERSHIP, AND I WROTE IT AS MEMBERSHIP.**
+
+*Him, catching a contradiction in two things I sent him an hour apart: **"all the
+names i enter do rank, so i'm not sure i understand? ... you even said 79% of
+your name-days in the top quartile. what am i missing here?"***
+
+**Nothing. THE TWO STATEMENTS CONTRADICT AND THE FAULT IS MINE.**
+
+### What each figure is conditional on
+
+**The 79% is conditional on board membership.** Coaching's join runs through
+`desk_assessment_tickers`, so a name-day has to be ON the board to be placed in
+the board's move-size distribution at all. **It is a statement about names that
+rank.**
+
+**The 41% is a statement about WHEN.** The name ranks that day — that is why it
+appears in the 79% — **it ranks AFTER he is already in it.**
+
+**I wrote "can't speak at all about names you enter before they rank", which
+reads as NAMES THAT DO NOT RANK. THE ACCURATE SENTENCE IS: the report cannot
+speak AT THE MOMENT HE ENTERS, for names that rank LATER.**
+
+**And the genuinely never-ranked bucket is 3%** — which is exactly what his
+intuition said it should be.
+
+### AND THE TIMING NUMBER IS PROVISIONAL, WHICH MAKES IT WORSE THAN A WORDING SLIP
+
+**Both 33% and 41% are measured against ASSESSMENT SNAPSHOTS.** Snapshots start
+at `PREMARKET_0625`; **the desk's ranking starts at 04:00:00** on three of five
+production sessions.
+
+**So an unknown share of that 41% is names that HAD ranked when he entered and
+had not yet been photographed.** Coaching marked both buckets provisional for
+this reason and I carried the conclusion anyway.
+
+**THE ONLY SOLID COVERAGE FIGURE IS THE 3%.** Everything about timing is
+currently unmeasured, and the instrument that would measure it —
+`RVOL_RANK_ENTRY` timestamps — is blocked on an extract nobody has commissioned.
+
+### SO THE SCOPE QUESTION I PUT TO HIM WAS WRONG
+
+I asked *is a report that speaks about a third of his trades worth building.*
+**THAT NUMBER IS NOT ESTABLISHED.** The question is *how often would it have had
+something to say at the moment he entered* — **and the answer is unknown, not a
+third.**
+
+**Fifth overstatement tonight in the pessimistic direction.** The others were
+caught by other seats; **this one he caught himself, from two of my own sentences
+an hour apart.**
