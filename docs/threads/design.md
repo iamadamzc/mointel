@@ -3667,6 +3667,69 @@ measuring; it is its own defect on its own merits.
 board up, and I will take it at the premarket read rather than estimate it,
 having just been corrected for counting characters and calling it a measurement.
 
+## NEW HIGH — answers to 2 and 3 before building (2026-09-06)
+
+He ruled: *"change to NEW HIGH if the high is new, then as it drifts OFF just
+move that spread."*
+
+### 1 — WHAT TRACKS THE RUNNING HIGH: it already exists
+
+`demand.sessionHigh` (`types.ts:325`) is the running session high, and
+`telemetry.ts:127` carries it through **unmodified**. The premarket nulling I
+found earlier happens only inside `buildLevelMap`, not on telemetry — checked,
+because that trap has caught this desk once already.
+
+So `runningHigh = max(cycleHigh, sessionHigh)`. **Nothing to hold, nothing to
+add.**
+
+### 3 — NEW HIGH IS A LABEL, NOT A PHASE. This is the one that had to be decided.
+
+**Integration's two readings describe nearly the same set**, and the reason is
+structural: **`cycleHigh` is settled-only, so the arc is stale with respect to
+today for EVERY name.** Any name genuinely printing a new high today exceeds it.
+"Repair label" and "real phase" are not two populations.
+
+**But making it a `CyclePhase` would change behaviour he did not approve:**
+
+- `view.ts:25-28` maps the filter directly onto `CyclePhase`. **A name at a new
+  high would silently LEAVE the FRONTSIDE filter.**
+- `countCyclePhases` feeds the segment counts at `DashboardShell.tsx:266`, so
+  the header counts would move too.
+
+**So the phase underneath is untouched and only the CHIP'S LABEL changes.**
+Filters, counts and segmentation keep working off the arc exactly as today. That
+is the difference between a display state and a taxonomy change, and only one of
+them was approved.
+
+### 2 — THE BAND, DERIVED: within a spread of the running high
+
+**A band is genuinely required, and not for the reason it looks like.**
+`runningHigh` is a MAXIMUM, so price can never exceed it — `price ===
+runningHigh` is true only at the instant of the print and false immediately
+after. **Without a band, NEW HIGH would appear for one tick and vanish.**
+
+**The spread is the instrument, and it is the same one the colour uses:** off by
+less than the spread is not off, because you could not have sold the difference.
+Derived, per-name, and already precedent on this surface.
+
+    newHigh   = sessionHigh !== null && sessionHigh > cycleHigh
+    reference = newHigh ? sessionHigh : cycleHigh
+    atHigh    = price !== null && (reference − price) <= spread
+
+    label = newHigh ? (atHigh ? 'NEW HIGH' : 'OFF HIGH') : <the arc's phase word>
+
+**Deliberately literal on "if the high is new":** the override fires only when
+today's high has actually beaten the arc. A name merely sitting at its old cycle
+high keeps its phase word — that high is not new, and reading his sentence more
+broadly would put NEW HIGH on names he did not describe.
+
+**And when it has drifted off, OFF HIGH supersedes a stale BACKSIDE** — the
+second line then measures from the new high, which is "just move that spread".
+
+**Tone follows the label when it overrides**, or NEW HIGH would render in the
+`neg` colour of a stale BACKSIDE verdict — the label-and-number mismatch again,
+one layer up.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
