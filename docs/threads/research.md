@@ -10207,3 +10207,61 @@ is real; **the instrumentation question is not, and nobody had checked.**
 | 2 | OUTCOMES extent | sheet `OUTCOMES` tab: row dates, grade fields populated vs header-only | a populated header is not a populated corpus |
 | 3 | 22:00 vs 06:10 | **`generated_at`**, not `observedAt` | before 06:10 ET is DEFINITE; at or after is only POSSIBLY revised |
 | 4 | replay | `sheetPriorOmitted`, `promptVariant` — **already recorded** | within prior-bearing subset only |
+
+**101h. THE FIELD EXISTS AND THE ARM HAS NEVER HAD A MEMBER — SO MY
+"INSTRUMENTATION IS NOT THE QUESTION" WAS BACKWARDS.**
+
+*Ops validated the fields rather than running the analyses, which is what the
+annotations were for.*
+
+```
+research_analysis_versions   1228 versions, 691 tickers, 2026-08-17 to 2026-09-05
+  sheetProvenance present     188   (94 distinct tickers)
+  sheetPriorOmitted = 1         0
+  sheetPriorOmitted = 0       903
+
+names with a prior             94
+names with a withheld version   0
+names with BOTH                 0
+```
+
+**I wrote "the pricing question is real and the instrumentation question is
+not". IT IS THE OTHER WAY ROUND.** The field is wired and written on 903
+versions — **every one false. A prior has never been deliberately withheld in
+production.**
+
+**So the within-subset constraint I set is currently UNSATISFIABLE. There is no
+withheld arm on stored data; the replay would have to CREATE it.**
+
+### AND THE SHARPER VERSION, WHICH IS MINE TO ADD
+
+**`sheetPriorOmitted = true` HAS NEVER BEEN WRITTEN, SO THE CODE PATH THAT SETS
+IT HAS NEVER RUN IN PRODUCTION.**
+
+It is not *instrumented and proven*. It is **instrumented and never exercised** —
+and the two look identical from a schema, from a grep, and from 903 populated
+rows. **That is what the latch looked like across 2,870 in-band rows, and what
+`secAvailable` looked like reporting configuration as reachability.**
+
+**SO THE REPLAY'S FIRST RUN WOULD ALSO BE THE FIRST EXERCISE OF ITS OWN ARM
+LABELLING**, and a diff between arms is worthless if the labels are wrong.
+
+**DESIGN CONSTRAINT, ADDED BEFORE PRICING: a smoke run on a handful of names
+must confirm `sheetPriorOmitted = 1` ACTUALLY LANDS, before the thirteen-session
+spend.** *Prove a check can see a present case before believing its absence* —
+here the check is **does the treatment arm have members**, and the answer today
+is no.
+
+### AND QUERY 1'S CEILING IS 94 NAMES
+
+Not 188 versions. **That bounds the falsifier regardless of what the sheet says,
+and it should be checked against a power floor BEFORE the sheet read** — the
+same discipline that made the lead-time comparison report unpowered rather than
+reporting a direction from eleven paired names.
+
+### What field validation bought
+
+**Ops did not run one analysis and killed one query's premise outright.** That
+came from the annotations rather than from the work — **naming the field a query
+depends on let it be refused on sight, which is the rule Integration adopted two
+messages ago and its first return.**
