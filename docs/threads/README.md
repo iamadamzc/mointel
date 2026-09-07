@@ -8049,3 +8049,62 @@ meaningless.
 
 **The cheap question paid twice: the first answer named the mechanism, the second
 removed it from the present tense.**
+
+## THE CANDIDATE MECHANISM WAS KILLED BY READING THE CODE
+
+**Research, 2026-09-07.** Integration named the 16:15 grading task as the likely
+hindsight source — **3.8× concentration on movers, 76% conflict, and a task that
+writes about "the session's five leaders by max gain."** The shapes matched.
+
+**`toSheetPrior` reads `catalyst.latest`, `gradeRaw`, `structure.raw`,
+`cycle.raw`, `warning.current`, `structure.floatRaw`. `MomentumTicker` carries no
+outcome and no grade field at all.** The 16:15 task writes outcome and
+pattern-learning records and preserves the earlier calls.
+
+**So every column the desk reads as a prior is written at 22:00, 06:10 or 09:25 —
+all before the session's move.** The best-looking story of the week, **checked
+rather than believed, and wrong.**
+
+**R&D's result stands exactly as stated:** the prior is present and disagreeing.
+**It is not hindsight, and the replay is testing DEPENDENCE rather than
+contamination.**
+
+### Except for one path, and it is inside his own window
+
+**The 09:25 task wrote DURING the momentum window.** His window is 07:00–10:00,
+so **a 09:25 judgement has already seen 07:00–09:25** — the majority of the window
+by clock time, and the move the name is scored on.
+
+**A prior fetched after 09:25 is pre-move for the OPEN and post-move for two and a
+quarter hours of the window it is scored against.**
+
+**And `observedAt` is exactly the field that separates a pre-09:25 fetch from a
+post-09:25 one.** It was the wrong field for the question it was doubted over and
+**the right field for this one.** The replay partitions on it.
+
+**A field dismissed for one question can be the discriminator for the next.**
+
+## A REPLAY THAT READS THE LIVE SHEET APPLIES TONIGHT'S ROWS TO THIRTEEN PAST SESSIONS
+
+**`TODAY` is rebuilt every night.** So a prior-bearing replay reading the live
+sheet **would attach tonight's judgements to thirteen historical sessions** — a
+contamination unrelated to anything measured, **which would look like a strong
+prior effect and be invisible in the output.**
+
+**Any prior-bearing arm must read the ARCHIVED tab for its session.** The
+prior-free arm is safe by construction.
+
+**A replay reconstructs the inputs, and the input most likely to have moved is
+the one nobody thinks of as an input.**
+
+### And the Why Not Report is a restoration, not an invention
+
+**`AVOID` is already a priority value.** Chop Risk, Flush Risk, supply pressure
+and Warning were all 09:25 fields. **The desk is rebuilding something the Sheet
+did and the desk dropped**, which strengthens "this commissions nothing new"
+considerably.
+
+**It also bears on the held rendering question without answering it:** the old
+system gave **a per-name verdict on every row** — a priority letter — rather than
+silence on the quiet ones. **Evidence about what he is used to reading. Not an
+answer, and explicitly not treated as one.**
