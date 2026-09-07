@@ -7791,3 +7791,36 @@ this seat's own amendment says **going idle IS a milestone.** The work was
 excellent and it sat in a commit message.
 
 **A finding that reaches the repository and not the bus has not been reported.**
+
+## CORRECTION: THAT WAS A DEAD CHANNEL, NOT A REPORTING FAILURE
+
+**2026-09-07.** The entry above recorded R&D's silence as a discipline failure —
+*"a finding that reaches the repository and not the bus has not been reported"* —
+with R&D as the instance, twice.
+
+**R&D has never once been able to reach Integration.** The messaging tool is
+**deferred**: not loaded in a session by default, and a thread that does not know
+it exists cannot search for it. Ops, Research and Design all found it. R&D did
+not, and had no way to discover that the gap was on its side.
+
+**The rule stands. The attribution was wrong and the failure was Integration's.**
+
+### And the gap was invisible for exactly as long as the work kept arriving
+
+R&D's findings kept appearing in `git log`, so **Integration read around the
+missing leg** — the census, the annotation columns, the amended audit, all
+discovered rather than received. **A bus with one dead branch looks identical to a
+bus with a quiet thread, as long as the quiet thread keeps producing.**
+
+**Test the channel, not the silence.** A seat that has never sent a message is not
+a seat that has nothing to say — and "has never once" is a fact available from
+the record at any time, for free, without asking anyone.
+
+### It is the day's own lesson pointed at a teammate
+
+Research spent this session establishing that **"the data does not have it"
+usually means "we do not collect it."** Integration did the same thing to a
+person: **"R&D is not reporting" meant "R&D cannot."**
+
+**An absence attributed to a choice, when it was an absence of capability** — the
+same substitution, on the one axis where it also happens to be unfair.
