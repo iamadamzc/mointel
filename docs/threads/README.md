@@ -9727,3 +9727,55 @@ start wins** — and **the moment the two drift, the schema depends on boot orde
 **Two definitions that agree are one definition with a hidden dependency on
 timing.** They cannot disagree loudly; they can only disagree silently, and only
 on a store nobody has yet created.
+
+## A PIN IS AN OVERRIDE ON THE SELECTION GATE, NOT A DECORATION
+
+**Ops, 2026-09-07.** The trader believed pins were cosmetic. **Three non-display
+consumers share one clause:**
+
+    WHERE (rank IS NOT NULL AND rank <= @autoRank)
+       OR EXISTS (SELECT 1 FROM focus_tickers f WHERE f.ticker = symbol ...)
+
+`researchRepo.ts:133,139` — **a pinned ticker becomes a research candidate
+regardless of rank.** `desk-assessments.ts:192` — the same clause in assessment
+capture. `desk-assessments.ts:362` — focus tickers added directly to assessment
+targets.
+
+**It does not decorate the board. It causes a name to be researched and assessed
+that otherwise would not be.**
+
+### And a GET seeds it
+
+`getFocus()` seeds when candidates are supplied, and **the only caller that
+supplies them is `GET /api/focus`** — the dashboard path. **So loading the desk
+writes focus rows once per trading date, and those rows hit the same admission
+clause.**
+
+**A read that writes, and the write costs model spend.** What `'SEED'` drives is
+**exactly what `'USER'` drives.**
+
+**Correct as built:** review links and the MCP tools call `getFocus()` with no
+candidates, **so neither can seed.**
+
+### Which makes it a spend problem, not a UX one
+
+**Integration framed the exposure as a write collision — B unpins A's ticker.**
+That is real and it is the smaller half.
+
+**A pin causes research jobs and desk assessments, which cost model spend. On one
+shared board, one viewer's pin spends on behalf of every subscriber, and nothing
+records who pinned it.**
+
+**So "make pins client-side" is not the strictly-better option it appeared to
+be** — it removes an admission path the desk relies on, **including the automatic
+seeding that populates focus every session.**
+
+### The principle already on file decides it
+
+**Mutations that change the shared board may stay shared; mutations that express
+personal attention must be per-user.**
+
+**Forcing a name into research IS a mutation of the shared board** — it changes
+what every subscriber's desk contains. **So the two halves of "pin" fall on
+opposite sides of the line and have to be separated: watching is personal and
+free; admitting is shared, attributable, and costs money.**
