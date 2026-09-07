@@ -8952,3 +8952,39 @@ found R&D's work for days while the channel was dead.**
 **This is the half of §5c that costs an extra step at 3am, so it is the half that
 will erode. Guard it hardest.**
 
+
+## THE MARKER IS CORRECT AND DOES NOT CATCH THIS
+
+**Ops, 2026-09-07, after deploying `c84e0df` at 01:59 ET.**
+
+**The universe will be ~37 hours old at Tuesday's premarket, with nothing
+scheduled to refresh it.** The trading date is already 09-08, so **no roll fires
+before the session**; the next is Tuesday 22:00, *after* it. And `ensureUniverse`
+is reached **only from bootstrap** — `worker/baseline.ts` calls it and is not a
+unit.
+
+**The freshness marker reads FRESH throughout, and it is right.** It asks whether
+the universe was refreshed **since the session was established** — Saturday's roll
+— not whether it was refreshed **recently.** Both are true and only one is the
+question a trader has at 07:00.
+
+**A field can be correct on its own definition and silent on the failure it was
+built to prevent.** SGRX renamed overnight and cost a day; a 37-hour-old universe
+is that failure with a longer fuse, **and the instrument built after it does not
+fire.**
+
+### And it is not a one-off — it is every holiday
+
+**The universe refreshes at a roll or at a restart, and a holiday means no roll.**
+So **every long weekend produces a stale universe on the next session** unless
+somebody restarts a worker for unrelated reasons. Thanksgiving, Christmas, every
+Monday holiday. **Nothing announces it and the marker says FRESH.**
+
+### The latch check could not fire, and that was reported rather than passed
+
+`wiped 0 / out_of_band_surviving 0` on 09-08 — **no session yet, so nothing was at
+risk.** The same query returns **45** for 09-04.
+
+**Reported as NOT VERIFIED rather than as a pass**, which is the denominator rule
+holding on its first real outing: **a zero means nothing without the count of
+cases it could have failed on.**
