@@ -9383,3 +9383,28 @@ reason — this is the general case of that.)*
 ASK WHICH WINDOW IT COVERS.** Same failure, different axis: **a store that
 answers is not a store that answers for the right desk — or for the right
 dates.**
+
+## THE BEFORE-07:00 SPLIT IS RVOL-ONLY, AND GAIN WAS NEVER MEASURED THERE
+
+**The trader, 2026-09-07: "is this 'most' based on RVOL or gain? Gain would be
+most relevant. RVOL is important, but gain is where the money is made. When the
+price goes up is when you have the opportunity to trade."**
+
+**RVOL only.** The 29-of-54 and 31-of-45 splits are `RVOL_RANK_ENTRY` events read
+from `desk_events` — the desk's own recorded trigger.
+
+**The gain side has never been measured in that window, and not because nobody
+looked.** There is **no gain ranking** — no entry event, no rank column, only
+`percent_change`, which overwrites. **The gain trigger had to be reconstructed
+from bar closes, and the reconstruction only existed inside 07:00–10:00.**
+
+**So "most of it happens before 07:00" is a statement about volume arriving, and
+the quantity he actually trades on was never in the measurement.**
+
+**A name can carry heavy premarket volume and go nowhere. RVOL rising is
+participation; gain rising is the opportunity.** They are not interchangeable and
+the desk has only ever measured the first one early.
+
+**When a claim is made about "the trigger", ask which trigger. The desk has one
+that is recorded and one that has to be rebuilt, and only the recorded one can be
+measured outside the window.**
