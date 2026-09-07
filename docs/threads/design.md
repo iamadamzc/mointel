@@ -3750,6 +3750,51 @@ stale-arc condition is `sessionHigh > cycleHigh`, and that is readable from
 screen is not evidence of anything, and it is exactly what a working fix and a
 broken check both look like.
 
+## TWO SURFACES READING CONSTANTS (2026-09-06, Ops's sweep — not built on yet)
+
+### 1. THE COLOUR ON THE BARS IS INERT, AND HAS BEEN SINCE IT SHIPPED
+
+`ticker_session.price_window` is **NULL on all 143,142 rows** — Ops's sweep, with
+the sibling contrast that settles it: on 2026-09-04, **7,757 `activity_window`
+writes and zero `price_window` writes on the same rows, by the same statement.**
+The writer is `worker/runtime.ts` and it is Ops's; I am not touching it.
+
+**The consequence for my surface, which Ops did not spell out and I must not
+discover at 04:00:** `directionTone` returns null the moment `price` is absent,
+so **the bars have rendered NEUTRAL INK on every row since `bf5c2d5` shipped.**
+Green, red and yellow have never appeared.
+
+**That reframes Tuesday's colour read entirely.** I was going to check four
+states. **Three are unreachable, and I now know why BEFORE looking** — without
+this I would have observed neutral, found it correct, and reported a partial
+pass on a feature that is wholly inert.
+
+**Report it as: one state observed, three unobservable, cause known and upstream.**
+Not as a pass.
+
+### 2. `Rank Change` IN THE DRAWER RENDERS "0" ON EVERY NAME, ALWAYS
+
+`rvol_rank_change` and `ah_rank_change` are **always 0** across 45,249 and 36,113
+non-null rows, while ranks demonstrably move. Two of my surfaces read it:
+
+**`DiscoveryBoard.tsx:496-520` fails safe.** The arrow is gated `{rankChange ?
+…}` and **0 is falsy**, so nothing renders. A dead feature, silently — he never
+sees rank movement — but it states nothing false.
+
+**`TickerDrawer.tsx:444-451` does NOT.** The ternary tests `=== null` for "New"
+and otherwise prints the number, so **it renders "0" on every name, every
+time.** That is not an absence: **"0" is a MEASUREMENT**, and the drawer is
+asserting *this name's rank has not moved* about names whose rank is moving.
+
+**Same class as the masked risk chip** — a field that cannot vary rendering as
+though it had been measured. And the same distinction I have applied four times
+this week: zero and unknown must not collapse, and here they have.
+
+**The fix is not mine alone.** If the writer is repaired the drawer becomes
+correct with no change; if it is not, the drawer should say what it does not
+know rather than print a zero. **Which one depends on Ops's finding**, so this
+is flagged, not fixed.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
