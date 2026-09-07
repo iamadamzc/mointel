@@ -9447,3 +9447,46 @@ makes the sessions already gone comparable.**
 **When a question cannot be answered fairly, the useful output is what would have
 to be recorded for it to become answerable — not a number built the only way that
 remains.**
+
+## A LATE RESTART IS WORSE THAN NO RESTART
+
+**Ops, 2026-09-07**, arming the universe-refresh task after the trader ruled
+Tuesday pre-premarket rather than late Monday.
+
+**03:15 ET rather than "pre-premarket" literally** — the desk captures from 04:00,
+so a restart at 05:30 would be **inside capture**, dropping the SIP connection
+during premarket accumulation **on the session it exists to protect.** 03:15 is
+before capture, ~3.75h before his window, and the universe still clears the 20h
+guard.
+
+**And the task aborts unless the SERVER clock reads 2026-09-08 and before 04:00
+ET.** A scheduled task runs on **next app launch** if the app was closed when due
+— **for a read that is a late report; for a restart it would put a production
+restart inside the trading session.**
+
+**The guard is written into the task rather than assumed.** A deferred read is
+merely stale. **A deferred action can be catastrophic**, and the same scheduler
+delivers both.
+
+### And silence is not success
+
+**Both tasks run only while the app is open, and neither failure announces
+itself.** **If no report appears Tuesday, assume neither ran.**
+
+**The denominator rule, pointed at task execution:** an absent report and a
+successful quiet run are indistinguishable **unless one of them is required to
+speak.**
+
+## A SYMMETRIC EVENT OVER AN ASYMMETRIC FIELD REPRODUCES THE BIAS IN A NEW COLUMN
+
+**Ops, on the queued gain-rank entry event** and why the third scoping condition
+is the one that bites.
+
+**Recording a gain-rank entry does not make gain and RVOL comparable.** If the
+gain ranking is computed over a wider field than the promoted one RVOL uses,
+**the same "a field of twelve admits almost anyone" bias is simply written down**
+— and a recorded number **looks measured in a way a reconstruction never does.**
+
+**Building the instrument is not the fix. Settling what field it measures against
+is.** The event would otherwise **launder the asymmetry into the record**, where
+it becomes much harder to see and much easier to quote.
