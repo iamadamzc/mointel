@@ -20,6 +20,19 @@ export interface InterpretResult {
   model: string;
   usage: InterpretUsage;
   durationMs: number;
+  /**
+   * The tier that ACTUALLY served the request, when the response says.
+   *
+   * The desk sends no `service_tier`, has no SDK client, no constructor default
+   * and no wrapper, so the documented chain is `auto` -> project setting ->
+   * `default`. THAT IS AN INFERENCE FROM AN ABSENCE, and the tiers span a
+   * factor of four: Batch and Flex are half, Fast is double.
+   *
+   * OpenAI returns the tier that served the request. Reading it turns the
+   * inference into a measurement, and the project setting is on a console
+   * nobody here can see.
+   */
+  serviceTier: string | null;
   /** Populated when interpretation could not produce a dossier. */
   error: string | null;
 }
@@ -74,6 +87,7 @@ export class NoopInterpreter implements ResearchInterpreter {
       model: 'none',
       usage: { inputTokens: null, outputTokens: null, cachedInputTokens: null },
       durationMs: 0,
+      serviceTier: null,
       // Not an error condition: sources are still collected and stored, and
       // interpretation simply remains unavailable rather than fabricated.
       error: 'no interpreter configured',

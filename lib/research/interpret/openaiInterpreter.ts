@@ -40,6 +40,18 @@ export interface OpenAiInterpreterOptions {
 
 interface ResponsesPayload {
   output?: Array<{ type?: string; content?: Array<{ type?: string; text?: string }> }>;
+  /**
+   * The tier that ACTUALLY served the request, per OpenAI's reference.
+   *
+   * The desk sends no `service_tier`, has no SDK client and no wrapper, so the
+   * documented chain is `auto` -> project setting -> `default`. THAT IS AN
+   * INFERENCE FROM AN ABSENCE, and pricing is a factor of four across the
+   * tiers: Batch and Flex are half, Fast is double.
+   *
+   * The response says which. Reading it turns the inference into a measurement
+   * for the cost of one field, and nothing on the console is visible from here.
+   */
+  service_tier?: string;
   usage?: {
     input_tokens?: number;
     output_tokens?: number;
@@ -254,6 +266,7 @@ export class OpenAiInterpreter implements ResearchInterpreter {
         dossier: null,
         model: this.model,
         usage: empty,
+        serviceTier: null,
         durationMs: 0,
         error: 'OPENAI_API_KEY not set',
       };
@@ -302,6 +315,7 @@ export class OpenAiInterpreter implements ResearchInterpreter {
           dossier: null,
           model: this.model,
           usage: empty,
+        serviceTier: null,
           durationMs: Date.now() - startedAt,
           error: describeFailure(failure),
         };
@@ -312,10 +326,13 @@ export class OpenAiInterpreter implements ResearchInterpreter {
         dossier: null,
         model: this.model,
         usage: empty,
+        serviceTier: null,
         durationMs: Date.now() - startedAt,
         error: error instanceof Error ? error.name : 'request failed',
       };
     }
+
+    const serviceTier = payload.service_tier ?? null;
 
     const usage = {
       inputTokens: payload.usage?.input_tokens ?? null,
@@ -335,6 +352,7 @@ export class OpenAiInterpreter implements ResearchInterpreter {
         model: this.model,
         usage,
         durationMs: Date.now() - startedAt,
+        serviceTier,
         error: 'no content returned',
       };
     }
@@ -345,6 +363,7 @@ export class OpenAiInterpreter implements ResearchInterpreter {
         model: this.model,
         usage,
         durationMs: Date.now() - startedAt,
+        serviceTier,
         error: null,
       };
     } catch {
@@ -353,6 +372,7 @@ export class OpenAiInterpreter implements ResearchInterpreter {
         model: this.model,
         usage,
         durationMs: Date.now() - startedAt,
+        serviceTier,
         error: 'unparseable JSON',
       };
     }

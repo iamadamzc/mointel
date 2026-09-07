@@ -216,6 +216,16 @@ export async function interpretTicker(
   log(`[interpret] ${ticker} started evidence=${bundle.sources.length} sources`);
 
   const first = await interpreter.interpret(bundle);
+  /*
+   * THE TIER THE REQUEST WAS ACTUALLY SERVED AT, LOGGED THE FIRST TIME IT IS SEEN.
+   *
+   * The desk sends no `service_tier` and has no SDK client, so the tier was an
+   * INFERENCE FROM AN ABSENCE — and the tiers span a factor of four in price.
+   * OpenAI returns the tier that served the request; this turns the inference
+   * into a journal line, which is where the polling cadence was settled from
+   * too.
+   */
+  if (first.serviceTier) log(`[interpret] ${ticker} served at tier ${first.serviceTier}`);
   metrics.terraCalls += 1;
   addUsage(metrics, first.usage);
   noteUsage('INTERPRETATION', first.model, first.usage);

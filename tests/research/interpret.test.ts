@@ -644,6 +644,7 @@ class ScriptedInterpreter implements ResearchInterpreter {
       model: this.model,
       usage: { inputTokens: 1000, outputTokens: 200, cachedInputTokens: 0 },
       durationMs: 5,
+      serviceTier: null,
       error: value ? null : 'no content returned',
     };
   }
