@@ -10799,3 +10799,73 @@ the board** — the cleanest fact either side has produced about his selection.
 row becoming 49% weighted by name-day over his six sessions. Same partition,
 different unit and scope. **I declined to assume it; Coaching held both sides and
 did it properly.***
+
+**103d. THE COVERAGE FIGURE IS MEASURED AGAINST SNAPSHOTS, AND THE DESK RANKS
+FROM 04:00:00 ET.**
+
+*Coaching retracted its 93% coverage figure — a whole-day measure — and replaced
+it with a point-in-time one. **The replacement is the right question and the
+wrong instrument.***
+
+```
+on the board right then                33%
+board found it later that day          41%
+never on the board that day             3%
+traded before the day's first board    22%
+snapshot gap                            1%
+```
+
+### `desk_assessments` IS NOT THE BOARD. IT IS A SNAPSHOT OF IT.
+
+**First `RVOL_RANK_ENTRY` per session, production, ET:**
+
+| date | first top-12 entry |
+| --- | --- |
+| 08-18 | **04:00:00** |
+| 08-20 | **04:00:00** |
+| 08-21 | **04:00:00** |
+| 08-17 | 05:10 *(Sunday-night restart)* |
+| 08-19 | **07:28** |
+
+**On three of five sessions the desk's first top-12 entry lands at the exact
+instant the session opens.** The ASSESSMENT SNAPSHOTS start at `PREMARKET_0625`;
+**the RANKING starts at 04:00.**
+
+**SO THE 22% "TRADED BEFORE THE DAY'S FIRST BOARD" IS PROBABLY AN ARTEFACT OF
+THE PROXY.** The desk had a ranked board while he was trading; it had not yet
+taken a picture of it.
+
+*08-19's 07:28 is a real late start and a genuine hole — an ops fact rather than
+a product one, and worth Ops seeing.*
+
+### THE INSTRUMENT THAT ANSWERS IT EXACTLY
+
+**`RVOL_RANK_ENTRY` carries the minute each name entered the top twelve.** So the
+question *"was this name on the board when he traded it"* is answerable **to the
+minute, from a durable append-only record, with no snapshot cadence in the way.**
+
+**I predict nothing about how the numbers move.** The 41% may improve, worsen or
+hold; **the point is that 22% and 41% are currently measuring snapshot timing as
+well as board membership, and the two can be separated.**
+
+### BUT THE 41% IS PROBABLY REAL, AND IT IS NOT NEW
+
+**Research is queued on rank ≤ 12.** So the report can only ever speak about
+names the queue reached, and **the queue's reach is the board's width.**
+
+**That is the same constraint as "20 of 53 never researched" — measured from the
+fills side for the first time.** He is not trading outside the desk's universe;
+**he is trading ahead of its ranking**, and a name that reaches the board after
+he is already in it was never available to speak about.
+
+### AND THE SHARPEST FACT SURVIVES ANY INSTRUMENT
+
+**On his two most disciplined sessions — the two smallest days, inside his own
+rules — the board held ONE of the names he traded, then NONE.**
+
+**The report would have had nothing to say on the two days he traded best.**
+Worth re-checking against entry events, and I do not expect it to move much:
+**a board that held one name will not hold many more at minute resolution.**
+
+*And the one thing needing no instrument at all still stands: **79% of his
+name-days in the board's top move-size quartile, 10% below the median.***
