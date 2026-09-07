@@ -9515,3 +9515,43 @@ available before there are users that reduces the price of compliance later.**
 
 **A migration that is certain and undated is the one everybody widens the surface
 against.**
+
+### The boundary was already crossed, and the inventory is the deliverable
+
+**Ops, 2026-09-07, checking before building rather than after.**
+
+    lib/market/store/repo.ts   0 mentions of alpaca   <- chunking: CLEAN
+    lib/market/engine.ts       7 mentions             <- gain-rank event: NOT
+
+`engine.ts` imports an Alpaca transport normaliser and **branches on
+vendor-named provenance strings inside its own logic** — `'alpaca-daily-bar'`,
+`'alpaca-daily-bar-rth-close'`, `'alpaca-snapshot'`.
+
+**Those are not labels. They encode precedence** — *Alpaca's previous close
+outranks a sheet-sourced one* — **so a migration has to find every comparison and
+decide what the new vendor's equivalent outranks.**
+
+**And line 8 says the file "knows nothing about SQLite, Alpaca transport, or
+Google Sheets." Broken on line 33.** Third documented invariant broken by its own
+file this weekend, after the retention docstring and the latch comment.
+
+**RULING — the coupling is NOT in scope to remove.** Removing it means deciding
+what an **unchosen** vendor's equivalent outranks, **which invents an abstraction
+against a successor nobody has picked** — the reliable way to build the wrong
+one.
+
+**The enumeration IS the artefact.** A migration that knows exactly where the
+coupling lives costs a fraction of one that has to discover it, **and Ops has now
+produced that inventory for free while checking whether it could build something
+else.**
+
+**When a migration is certain and undated: enumerate the coupling, do not remove
+it.**
+
+**RULING — the docstring is corrected now, on its own.** Zero behaviour, zero
+risk, and **a false invariant is the mechanism by which the coupling persists** —
+it tells every next reader the file is clean.
+
+**RULING — the gain-rank event uses the RESOLVED previous close, never the source
+tag.** The precedence question is about which source wins; **the event needs the
+value, not the provenance.** That builds it without widening anything.
