@@ -7039,6 +7039,52 @@ the natural template, **and copying its location repeats the mistake.**
 **Recommend a separate store, e.g. `/var/lib/mointel/identity.db`**, outside the
 trading store's migration, backup, VACUUM and prune path.
 
+### 3b. Multi-provider identity — the addition, and what it costs here
+
+**There is NO auth code in this application at all.** No auth packages in
+`package.json`, no `next-auth`, no session library, no `cookies()`, no
+`middleware.ts`. **Authentication is 100% nginx-side and per-request.**
+
+**So moving to OAuth is not swapping an auth layer — it RELOCATES
+authentication from the proxy into an app that currently has none.** Sessions,
+cookies, callback routes, state/nonce handling: all new surface. That is the
+real shape of the work, and it is why "auth plus a user record" understates it
+while the absolute size stays small.
+
+**And it makes CSRF live for the first time.** Neither `POST /api/focus` nor
+`POST /api/research/retry` checks `Origin`, `Referer` or a token. Under Basic
+auth that is thin — browsers do auto-send credentials — but the desk is one
+shared password behind `X-Frame-Options DENY`. **Cookie sessions make those two
+endpoints genuinely CSRF-reachable, and there is nothing in the codebase to
+build the defence on.** Two endpoints is a small job; noticing it after the
+first user is not.
+
+**Identity resolution, one line as asked:** *resolve on a PROVIDER-ASSERTED
+verified email; link a new provider to an existing user only when the provider
+asserts that address is verified, and otherwise require the person to be signed
+in on the existing account and add the provider from there —* **link-from-
+session, never link-on-signin.** The unverified case does not need rejecting, it
+needs an authenticated actor: that converts an account-takeover path into a
+deliberate action.
+
+**Keying: an internal user id, with provider identities linked to it** —
+`google:sub`, `apple:sub`, `email:verified-address` — each unique on
+`(provider, subject)`. **If the key is the Google id, a second provider is a
+migration rather than a feature.**
+
+### AND THE PII ARGUMENT IS STRONGER THAN THE RESTORE ONE
+
+Linked identities mean the store holds **verified email addresses and provider
+subject ids**. **`createSchemaBackup` is `VACUUM INTO` — every market backup is
+production entire at that instant**, and I copy those around and restore from
+them.
+
+**Put identities in the market store and every market backup becomes a PII
+backup**, sitting in `/var/lib/mointel/backups/` with nine dates of history,
+restorable by anyone who can restore the desk. That is a much stronger reason to
+separate it than "a restore would revert accounts" — which is merely
+operational.
+
 ### On the dormant second account
 
 Integration's point that a second account costs nothing at design time and
