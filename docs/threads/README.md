@@ -8108,3 +8108,46 @@ considerably.
 system gave **a per-name verdict on every row** — a priority letter — rather than
 silence on the quiet ones. **Evidence about what he is used to reading. Not an
 answer, and explicitly not treated as one.**
+
+### The kill is confirmed, and the finding it explained is still unexplained
+
+**The desk reads `TODAY!A1:AA` and `RESEARCH!A1:AK` and nothing else.** Neither
+carries an outcome column, a realised-gain column or a grade-of-prediction
+column. **The 16:15 records are not in the parsed set.**
+
+**So the shape-match was a coincidence of shape — and the 3.8× concentration and
+76% CONFLICT remain unexplained.** Killing a mechanism does not close the finding
+it was invented for, **and the temptation is to file both together.**
+
+### Research narrowed its own 09:25 path immediately after sending it
+
+`rows.ts` records, from a live measurement on 21 August, that **the 09:25
+assessment is a SECOND TABLE on the TODAY tab** — and `TODAY_TABLE_SIGNATURE`
+**exists to avoid matching it.** The desk reads the watchlist table and
+deliberately not that one.
+
+**So the partial-hindsight path survives only if 09:25 also edits the watchlist
+rows** — which is the one question still with the trader.
+
+### And it corrected its own replay hazard the same way
+
+It had said any prior-bearing arm must read an archived tab, because `TODAY` is
+rebuilt nightly. **`RESEARCH_COLUMNS[0]` is `Report Date`** — so RESEARCH rows
+carry their own date and **can be scoped to a session on the live tab.** `TODAY`
+has no date, so that half stands.
+
+**A prior-bearing arm is feasible on RESEARCH and not on TODAY** — narrower than
+the warning, and it matters because it means such an arm is not automatically off
+the table.
+
+### A boundary that can show itself in the data
+
+The 16:15 retirement date decides whether S3 is necessary, meaningless or pooling
+two eras. **It is also checkable without asking:** if `sheetProvenance` on
+production's grading versions goes non-null before some date and null after,
+**the boundary is visible in a durable append-only record** — and it can
+corroborate or contradict whatever date is given.
+
+**Ask AND verify.** The first answer that came back from asking has now failed its
+own check; the second removed a whole class from the present tense. **Neither was
+recoverable by measurement at any price, and one of them was wrong.**
