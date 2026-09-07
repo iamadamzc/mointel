@@ -7699,3 +7699,42 @@ exactly on the boundary where the decision is closest.**
 verdict does.** A missing spread suppresses the label and leaves the evidence
 standing, **because the thing that required a threshold is the claim, not the
 measurement.**
+
+## THE DISCRIMINATOR IS THE PRECONDITION, NOT THE RENDERING
+
+**Design, 2026-09-06**, settling before Tuesday how to read a check that may have
+nothing left to observe.
+
+`max(cycleHigh, sessionHigh)` may have made the stale-arc case unobservable —
+**and an absent case and an absent renderer look identical.** Deciding which
+**while standing in front of the board** is how it gets decided badly.
+
+**`sessionHigh > cycleHigh` is readable from the payload whatever the screen
+does:**
+
+    preconditions > 0, no contradiction on screen  -> THE FIX WORKS
+    preconditions > 0, a contradiction on screen   -> DEFECT, report immediately
+    preconditions = 0                              -> INCONCLUSIVE
+
+**The third row is the one to be honest about.** Zero preconditions with a clean
+screen **is exactly what a working fix and a dead check both look like** — and it
+is the row anyone would be tempted to report as a pass.
+
+**Settle how a result will be read before the result exists.** A method chosen
+afterwards is chosen knowing the answer.
+
+## A TEST CAN KNOW SOMETHING ABOUT A BOUNDARY THAT ITS AUTHOR DOES NOT
+
+**Two instruments fired on their own builders today** — a mutation that survived,
+and a band test that caught floating-point arithmetic its author *"had not thought
+about at all."*
+
+**That is different in kind from a rule someone remembers to apply.** The test was
+written for a threshold that had been derived carefully; **it then failed for a
+reason outside the reasoning that produced it.** A rule can only catch what its
+holder is already looking for. **An instrument checks the property, including the
+parts of the property nobody considered.**
+
+**Every other error on this desk today was caught by another seat.** These two
+were caught by something the author built — **which is the argument for
+instruments over rules, made by the record rather than by assertion.**
