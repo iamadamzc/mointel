@@ -6577,6 +6577,38 @@ by us, before the error it would have caught. **All three were caught by another
 seat within the hour, and none by its author.** That is a property of three
 seats reading each other and it does not survive being internalised.
 
+## QUEUED: a recorded gain-rank entry event — Integration's ruling, 2026-09-07
+
+**Behind everything currently queued. Not Tuesday, not before chunking. Scope it
+before building — it is a write path in the engine and this weekend has had
+enough of those.**
+
+**The gap:** `RVOL_RANK_ENTRY` is recorded and timestamped. **There is no gain
+equivalent** — no entry event, no rank column, only `percent_change`, which
+overwrites. So the gain side of every trigger comparison is *reconstructed*, and
+only ever inside 07:00-10:00.
+
+**Why "most triggering happens before 07:00" cannot currently be answered
+fairly:** at 05:00 the desk's real RVOL field is ~12 names; the reconstructed
+gain field is ~206. **A larger field is harder to enter, so a pre-07:00
+comparison is biased toward "RVOL fires earlier" — the exact conclusion it would
+be cited for.** The bias does not travel alongside the result, **it produces
+it.**
+
+And the desk's real early field is **unrecoverable**: the engine promotes
+symbols as it first sees them and that history is written nowhere. **So this is
+a capture gap, not a measurement gap** — no reconstruction makes the sessions
+already gone comparable, and the cost of not building it is paid once per week
+forever.
+
+**Scope must answer three things before any code:**
+1. **What defines entry** — the gain analogue of crossing into the top twelve.
+2. **What field it is measured against**, given `percent_change` overwrites.
+3. **What it writes when the field is thin.** This is the one that will bite:
+   **a field of twelve admits almost anyone, which is precisely why the RVOL side
+   reads as early.** A symmetric event over an asymmetric field reproduces the
+   bias in a new column and makes it look measured.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
