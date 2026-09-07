@@ -7612,3 +7612,54 @@ close — **no false BACKSIDE, and a number that does not match his screen.**
 **That cost is stated in the question rather than discovered afterwards.** An
 option presented as "leave it as it is" reads as free; **naming what it costs is
 what makes it a decision rather than an absence of one.**
+
+## A DISPLAY STATE AND A TAXONOMY CHANGE ARE DIFFERENT THINGS, AND ONLY ONE WAS APPROVED
+
+**Design, 2026-09-06**, deciding whether NEW HIGH is a label or a phase.
+
+**Making it a `CyclePhase` would change behaviour nobody agreed to:** `view.ts:25`
+maps the cycle filter **directly onto `CyclePhase`**, so a name at a new high
+would **silently leave the FRONTSIDE filter**; and `countCyclePhases` feeds the
+header segment counts, so **the counts would move too.**
+
+**So the phase underneath is untouched and only the chip's label changes.**
+Filters, counts and segmentation keep working off the arc exactly as today.
+
+**A trader approved a word on a chip. He did not approve a name disappearing from
+a filter** — and the two are one type declaration apart.
+
+### And the question it was asked dissolved
+
+Integration asked whether NEW HIGH appears only where the arc was stale, or on
+every name printing a new high — *"repair label or real phase."* **`cycleHigh` is
+settled-only, so the arc is stale with respect to today for EVERY name.** Anything
+printing a genuinely new high today exceeds it. **The two readings were the same
+set.**
+
+## THE BAND IS REQUIRED FOR A SHARPER REASON THAN OSCILLATION
+
+Integration argued a band was needed or the label would flip on a one-cent
+downtick. **The real reason is stronger: the running high is a MAXIMUM, so price
+can never exceed it.** `price === runningHigh` is true for **one print** and false
+immediately after — **so without a band, NEW HIGH would appear and vanish on the
+same tick.**
+
+**The instrument is the spread, already used by the colour on the same surface:
+off by less than the spread is not off, because the difference was not sellable.**
+Derived, per-name, and consistent with what the row already does.
+
+    newHigh   = sessionHigh !== null && sessionHigh > cycleHigh
+    reference = newHigh ? sessionHigh : cycleHigh
+    atHigh    = price !== null && (reference − price) <= spread
+    label     = newHigh ? (atHigh ? 'NEW HIGH' : 'OFF HIGH') : arc phase word
+
+**Deliberately literal on "if the high is new":** the override fires only when
+today's high has actually beaten the arc. **A name merely sitting at its old cycle
+high keeps its phase word** — that high is not new, **and reading the instruction
+more broadly would put NEW HIGH on names he did not describe.**
+
+### And the tone must follow the label when it overrides
+
+Raised unprompted: otherwise **NEW HIGH renders in the negative colour of the
+stale BACKSIDE verdict underneath it.** The label-and-number mismatch again, **one
+layer up** — a word saying one thing while its colour says the opposite.
