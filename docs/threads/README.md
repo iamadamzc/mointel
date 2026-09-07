@@ -8643,3 +8643,51 @@ all three were found by other means, at a cost of days.
 case before believing its absence". That rule asks for a positive case to be
 demonstrated; **this one finds, cheaply and in bulk, every place where none has
 ever occurred.***
+
+## HAS THIS FIELD EVER SAID THE THING IT EXISTS TO SAY?
+
+**Research, 2026-09-07, turning the week's recurring defect into one query:**
+
+    SELECT <field>, COUNT(1) GROUP BY <field>
+
+**A boolean that has only ever been one value, or an enum that has only ever
+taken one member, is not a working field. It is an untested path wearing a
+populated column.**
+
+    latched            healthy on 2,870 in-band rows   never an out-of-band survivor
+    secAvailable       healthy on every configured start never an unreachable SEC
+    sheetPriorOmitted  healthy on 903 written rows      never a single true
+
+**All three return a single row from that query. All three were found by other
+means, at a cost of days.**
+
+**And the reason none of them looked broken:** a populated row count is **the
+evidence everyone reaches for and it is evidence about the wrong thing.** 903 rows
+proves a field is wired, reached, written and covered by its callers. **It says
+nothing about whether the branch setting the other value has ever executed.**
+
+**Run it before believing a field, not after doubting one.** The question is not
+*"is this populated"* — it is **"has this field ever said the thing it exists to
+say."**
+
+**Filed as the constructive half of "prove a check can see a present case before
+believing its absence":** that rule asks for one positive case to be
+demonstrated. **This one finds, cheaply and in bulk, every place where none has
+ever occurred.**
+
+### And the narrower half of the floor rule, which is the applicable one
+
+*"A floor set in ignorance of the data cannot be tuned to it"* is easy to agree
+with and hard to apply. **The test is not whether you have seen the ANSWER — it is
+whether you have seen anything that BOUNDS it.** Research had not seen the split
+and had been told the ceiling was 94; **the ceiling alone is enough to make a
+chosen number suspect.**
+
+### The evening's accounting, stated plainly
+
+**Cost: four messages. Saved: a build, a thirteen-session spend, and a week of
+arguing about whether two ratios were close.**
+
+**The same discipline killed a query of Research's, a query of Integration's, and
+a mechanism Integration had already put in front of the trader** — all in one
+evening, all before anything ran.
