@@ -10134,3 +10134,43 @@ writing time has to be written down or it is not carried.
 does not run and there is NO report** — not an abort, not an error, silence.
 **Absence of a report is not evidence the state is good.** Where a scheduled check
 is the only thing closing a gap, its silence must be read as "did not run."
+
+## Fifteen dates is a path; one afternoon is an incident
+
+72 research jobs reached `accepted_at` having made **no model call.** The obvious
+explanation — another job on the same ticker and fingerprint already paid, and
+this one reused it — **covers four of them.** The other 68 have no paid sibling.
+
+**What settled that it was not a one-off was the date spread: 15 distinct dates
+across three weeks, ending at the current trading date.** A steady trickle over
+weeks is a code path. A cluster in one afternoon is an incident with a cause you
+can date.
+
+**So the first question about any anomalous population is its distribution in
+time, before its mechanism.** It separates "something broke once" from "this has
+always been true and nobody looked", and the two lead to completely different
+searches.
+
+**And check the boring explanation numerically rather than accepting it.** "Another
+job already did the work" was plausible for all 72 and true for 4. **A plausible
+mechanism that covers 6% of a population is not an explanation, it is a
+distraction wearing one.**
+
+## Two outcomes that share a symptom can differ enormously in consequence
+
+The 72 are either **a legitimate free path** — something deterministic that needs
+no model, meaning the cost model has a hole in the *cheap* direction — or
+**`ACCEPTED` reachable without the work**, meaning dossiers on the trader's screen
+were accepted with nothing having produced them.
+
+**Same row, same query, same symptom. One is an accounting correction and the
+other is a correctness defect live for three weeks.**
+
+`accepted_at` being set on all 72 is what keeps the second alive: **something did
+not merely land in a status, something accepted a result.**
+
+**The rule is to name both branches before investigating, and to notice which one
+you would prefer.** This desk has gone the uncomfortable way twice in one night —
+54 "free" jobs were 54 paid calls that stored nothing, and a measured zero was a
+test that could not reach the only instance. **Preferring a branch is a reason to
+check it harder, not a reason to lead with it.**
