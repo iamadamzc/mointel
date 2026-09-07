@@ -436,10 +436,11 @@ async function collectFiling(
          * when it was written, which would be wrong by up to two days and wrong
          * in the direction that makes a rate across it look like a real change.
          *
-         * SEC_ACCEPTANCE_BOUNDARY: PENDING DEPLOY — recorded as a datetime with
-         * zone in `docs/threads/research.md` item 97a once Ops reports it. The
-         * roll and the deploy fall on the same evening, so a date alone cannot
-         * separate them. Grep that token; this comment is not the record.
+         * SEC_ACCEPTANCE_BOUNDARY: 2026-09-07 01:59:30 ET — the instant
+         * `mointel-research` STARTED on `c84e0df`, which is not the deploy
+         * instant and is the one that matters: nothing is written differently
+         * until the process carrying the change is running. Recorded in
+         * `docs/threads/research.md` item 97a; grep the token.
          *
          * Rows written before it carry `UNKNOWN` on a bare date; rows after
          * carry `EXACT` on a timestamp. `published_precision` IS the

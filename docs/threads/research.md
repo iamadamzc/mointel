@@ -9215,7 +9215,13 @@ product question lands.*
 `publishedAt` with `publishedPrecision: 'EXACT'`.** The SEC_SUBMISSIONS source
 takes it too.
 
-### THE BOUNDARY IS THE DEPLOY INSTANT — **`SEC_ACCEPTANCE_BOUNDARY: PENDING`**
+### THE BOUNDARY IS **`SEC_ACCEPTANCE_BOUNDARY: 2026-09-07 01:59:30 ET`**
+
+*Filled from Ops, `317a483`. **The instant `mointel-research` STARTED on
+`c84e0df` — not the deploy instant**, and Ops drew that distinction rather than
+reporting the deploy time. It is the right one: nothing is written differently
+until the process carrying the change is running, and a deploy that fails to
+restart a unit moves no boundary at all.*
 
 *Corrected: I first wrote 2026-09-07, the commit date. **Integration: nothing
 changes in the store until the code RUNS**, and `b1d64b9` ships with the
