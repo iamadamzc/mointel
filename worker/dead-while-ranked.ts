@@ -213,6 +213,21 @@ interface Outcome extends Entry {
   everActive: boolean;
   /** Busiest minute after entry, so "never active" is visible and not inferred. */
   peakTrades: number;
+  /**
+   * Busiest minute anywhere in the session before the close.
+   *
+   * SEPARATE FROM `everActive`, AND REPORTING ONLY THE FIRST WAS AN ERROR I
+   * SHIPPED. `everActive` is the desk's rule — TWO CONSECUTIVE settled minutes
+   * at or above the active line, counted only after entry. A name can fail that
+   * and still have been loud: its loud minutes came before it entered, or they
+   * never landed two in a row.
+   *
+   * On 2026-08-17 the two disagree by twenty names — 39 were never ACTIVE by the
+   * rule, but only **19 never reached the active line at all**. I published the
+   * 39 as "admitted without ever being loud", **and for twenty of them that is
+   * false.** Both numbers are now printed with what each one means.
+   */
+  sessionPeakTrades: number;
 }
 
 /**
@@ -223,7 +238,12 @@ interface Outcome extends Entry {
  * `previous: 'UNKNOWN'` would defeat the hysteresis that makes the rule fire
  * less often than "no bar in five minutes".
  */
-function walk(entry: Entry, trades: Map<string, number>, sessionEndMs: number): Outcome {
+function walk(
+  entry: Entry,
+  trades: Map<string, number>,
+  sessionEndMs: number,
+  sessionPeakTrades: number,
+): Outcome {
   const entryMs = Date.parse(entry.ts);
   let state: ActivityState = 'UNKNOWN';
   let deadSince: string | null = null;
@@ -275,6 +295,7 @@ function walk(entry: Entry, trades: Map<string, number>, sessionEndMs: number): 
     finalState: state,
     everActive,
     peakTrades,
+    sessionPeakTrades,
   };
 }
 
@@ -370,7 +391,11 @@ function main(): void {
       if (row.trade_count === null) continue;
       trades.set(minuteSlot(Date.parse(row.ts)), row.trade_count);
     }
-    outcomes.push(walk(entry, trades, sessionEndMs));
+    let sessionPeak = 0;
+    for (const [slot, count] of trades) {
+      if (Date.parse(slot) <= sessionEndMs) sessionPeak = Math.max(sessionPeak, count);
+    }
+    outcomes.push(walk(entry, trades, sessionEndMs, sessionPeak));
   }
 
   const neverActive = outcomes.filter((o) => !o.everActive);
@@ -384,12 +409,23 @@ function main(): void {
       `${DEFAULT_ACTIVITY_CONFIG.reviveMinutes}\n`,
   );
   console.log(`${entries.size} names entered the top twelve (first entry each).`);
+  const neverLoud = outcomes.filter(
+    (o) => o.sessionPeakTrades < DEFAULT_ACTIVITY_CONFIG.activeTradesPerMinute,
+  );
+
   console.log(
-    `\n  ${neverActive.length} WERE NEVER ACTIVE after entering — never once reached ` +
-      `${DEFAULT_ACTIVITY_CONFIG.activeTradesPerMinute} trades/min.\n` +
-      '    A DIFFERENT PROBLEM AND NOT THE ONE HE DESCRIBED: these did not go\n' +
-      '    quiet, they were admitted without ever being loud. Counted, named, and\n' +
-      '    kept out of every death figure below.',
+    `\n  ${neverActive.length} were never ACTIVE after entering, by the desk's rule — two\n` +
+      `    consecutive settled minutes at or above ` +
+      `${DEFAULT_ACTIVITY_CONFIG.activeTradesPerMinute} trades/min, counted only after\n` +
+      '    entry. They are kept out of every death figure below.',
+  );
+  console.log(
+    `\n  ${neverLoud.length} NEVER REACHED ${DEFAULT_ACTIVITY_CONFIG.activeTradesPerMinute}` +
+      ' TRADES/MIN AT ALL, anywhere in the session.\n' +
+      '    THIS IS THE ONE THAT MEANS "ADMITTED WITHOUT EVER BEING LOUD", and it is\n' +
+      `    the smaller number. The other ${neverActive.length - neverLoud.length} WERE loud — before they entered, or\n` +
+      '    never twice in a row. The first figure was published as though it were\n' +
+      '    this one, and for those names that was false.',
   );
   console.log(
     `\n  ${lived.length} were ACTIVE at some point after entering. Of those, ` +

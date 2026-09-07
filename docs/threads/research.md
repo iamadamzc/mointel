@@ -12464,3 +12464,82 @@ looking at the strongest case rather than the aggregate.**
 - **THE 39 NEVER-ACTIVE ARE THE LARGER COUNT AND A DIFFERENT PROBLEM.** They were
   admitted without ever being loud. Whatever is decided about names that go
   quiet does not address them.
+
+**115. CORRECTING MY OWN 39, AND CLEARING MY INSTRUMENT OF THE DEFECT DESIGN
+SUSPECTS — WHICH MAKES IT THE INDEPENDENT CHECK ON IT.**
+
+### FIRST: MY WINDOWS ARE ALIGNED, PROVEN NOT ASSUMED
+
+*Design deduced that the engine's live `activityWindow` may be ZERO-FILLED
+because `this.now()` disagrees with bar time, so `windowSlots` asks for minutes
+the maps do not hold — and `activity.ts:267`'s `?? 0` converts "I looked in the
+wrong place" into "nothing traded". **That hypothesis lands on item 114 too,
+because I call the same `resolveActivity`.***
+
+**Probed it rather than reasoned about it.** Two names from the item 114 list,
+evaluated with a deliberately non-aligned offset exactly as the walk does from an
+event timestamp:
+
+```
+JFU   now 10:10:10.571Z  slots 10:04..10:08  found 3315 1929 2680 2087 960  -> ACTIVE
+NSPR  now 11:21:10.571Z  slots 11:15..11:19  found   24   17   11   11  15  -> DEAD
+```
+
+**ZERO MISSES. EVERY SLOT HIT A REAL BAR WITH A REAL COUNT.** The reason is
+structural: the walk builds its map from the same bars it steps over, and
+`minuteSlot` floors both sides, so the keys cannot drift. **`this.now()` never
+enters it.**
+
+**SO ITEM 114 IS NOT SUBJECT TO THE SUSPECTED DEFECT, AND ITS DEAD VERDICTS ARE
+REAL TRANSITIONS.** NSPR's `[24,17,11,11,15]` are genuine counts genuinely below
+the 30 line, after a 618-trade minute. It really did stop.
+
+### AND THE PHENOMENON SURVIVES A COMPUTATION THAT CANNOT HAVE THE BUG
+
+**Every one of the 65 entrants has real bars — `no bars at all: 0`.** The
+never-loud names carry hundreds of them: **NPWR 341 bars, 284 of them under 30
+trades/min, peak 257.** *That is not an empty map. It is a quiet stock.*
+
+**This does not refute Design's hypothesis about the ENGINE's readings** — a
+different sample, a different date, a different computation. **But the shape it
+is suspected of manufacturing appears in a computation that provably does not
+have it.**
+
+### SECOND, AND THIS ONE IS MINE TO CORRECT: THE 39 IS NOT WHAT I SAID IT WAS
+
+I published **"39 were admitted without ever being loud."** Checking peak trades
+per minute directly:
+
+| | |
+| --- | --- |
+| entrants with **no bars** before the close | **0** |
+| peak **< 30** (below the dead line) | **6** |
+| peak **30–299** (never reached the active line) | **13** |
+| peak **>= 300** (genuinely loud at some point) | **46** |
+
+**NINETEEN never reached 300 trades/min. NOT thirty-nine.**
+
+The 39 is `everActive` — the desk's rule: **two consecutive settled minutes at or
+above the active line, counted only AFTER entry.** The 20-name gap is names that
+were loud **before** they entered, or never twice in a row. **Both definitions are
+defensible; they are not the same statement, and I gave the strict one the loose
+one's words.**
+
+*The same failure as the 46 in item 113, two hours apart: **a number reported in
+the register of a claim it does not support.** There I had not decomposed it;
+here I had not cross-checked it against the simpler measure sitting in the same
+table.*
+
+**The instrument now prints both, each with what it means**, so the next reader
+cannot take one for the other.
+
+### WHAT CHANGES AND WHAT DOES NOT
+
+**UNCHANGED — the finding that matters.** 26 were active after entering; **15 of
+those went dead before the close**; **6 of 10 above RVOL 5**. JFU held rank 1 all
+session having stopped at 07:41 ET. NSPR died nine minutes after a 07:12 entry.
+*None of that touches the 39/19 distinction.*
+
+**CHANGED — the size of the second population.** "Admitted without ever being
+loud" is **19 of 65, not 39**, and it is still a real and separate problem that
+neither VANISH nor SHOW-AS-DROPPED addresses.
