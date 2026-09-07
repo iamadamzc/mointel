@@ -8490,3 +8490,57 @@ count.**
 **If sheet membership explains the 3.8×, the concentration is the base rate of
 the Sheet's own population — and both the contamination reading and the
 human-is-right reading dissolve together.**
+
+## INSTRUMENTED AND NEVER EXERCISED IS INDISTINGUISHABLE FROM INSTRUMENTED AND PROVEN
+
+**Ops validated the FIELDS instead of running the analyses, 2026-09-07:**
+
+    sheetProvenance present    188 versions, 94 distinct tickers
+    sheetPriorOmitted = 1        0
+    sheetPriorOmitted = 0      903
+
+    names with a prior             94
+    names with a withheld version   0
+    names with BOTH                 0
+
+**The field is wired and written on 903 versions, every one false. A prior has
+never been deliberately withheld in production.**
+
+**So the within-subset constraint — the same names with and without — is
+currently UNSATISFIABLE.** There is no withheld arm on stored data. **The replay
+would have to CREATE one**, which is different work, a different cost and a
+different approval than *"re-run interpretation over stored evidence"* implied.
+
+### And the sharper half
+
+**`sheetPriorOmitted = true` has never been written, so the code path that sets it
+has never run in production.**
+
+**It is not instrumented and proven. It is instrumented and never exercised — and
+those are indistinguishable from a schema, from a grep, and from 903 populated
+rows.** That is what the latch looked like across 2,870 in-band rows, and what
+`secAvailable` looked like reporting configuration as reachability.
+
+**So the replay's first run would also be the first exercise of its own arm
+labelling — and a diff between arms is worthless if the labels are wrong.**
+
+**Constraint added before pricing: a smoke run on a handful of names must confirm
+`sheetPriorOmitted = 1` actually lands, before the thirteen-session spend.** Prove
+a check can see a present case before believing its absence — **here the check is
+"does the treatment arm have members", and today the answer is no.**
+
+### A ceiling that belongs before the read, not after it
+
+**Query 1's usable n is 94 NAMES, not 188 versions.** That bounds the falsifier
+whatever the sheet says, **and it should meet a power floor BEFORE the sheet
+read** — the same discipline that made the lead-time comparison report unpowered
+rather than report a direction from eleven paired names.
+
+### The annotation rule paid on its first outing
+
+*"Name the field a query depends on, so the dependency can be checked without
+running it"* was adopted two messages earlier. **Ops ran not one analysis and
+killed a query's premise outright** — from the field names alone.
+
+**And what it caught was a claim its author had made confidently enough to
+declare the instrumentation question closed.**
