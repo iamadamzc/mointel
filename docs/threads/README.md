@@ -9666,3 +9666,31 @@ verdicts**, which is a different product and does not announce itself as one.
 **Anything new that leans on the spread is leaning on the single most expensive
 input we have.** Not forbidden — **but from here it is a cost to name at design
 time**, and this weekend it was chosen twice by two seats who had no way to know.
+
+## §5d — DISPATCH BEFORE REPORTING. NEVER WRITE "I WILL ASK X".
+
+**Twice the trader has caught Integration stating an intent and not acting on
+it** — *"you have not done anything"*, and then *"multiple times you have said
+you're going to go do something and you do not activate."*
+
+**The cause is ordering, not diligence.** The report to him is the artefact being
+composed. **A stated intention inside it satisfies the same impulse as taking the
+action**, the message reads as complete, and the turn ends with the tool call
+never made.
+
+**It is this desk's own failure in the most visible place: a description of a
+thing standing in for the thing.** The same shape as *"a message without a sha is
+a private fact with a recipient"* and *"the docstring named the requirement; the
+loop named a proxy for it."*
+
+### The rule
+
+**Dispatch first. Report second. The report is written AFTER the action, so it
+cannot contain an unfulfilled intent.**
+
+**Future tense about Integration's own actions is the tell.** *"I'll ask
+Commercial"* is either already sent — in which case it is *"asked Commercial"* —
+**or it is a decision not to, which must be said as one.**
+
+**A resolution to remember is not a fix.** The ordering is the fix, because it
+removes the moment where the intent can be written down instead of executed.
