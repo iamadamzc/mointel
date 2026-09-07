@@ -4150,6 +4150,16 @@ prevents the field being false on screen for even one session.
 
   **A conversion constant with an expiry date is a defect with a start date.**
   Every `04:00 ET = 08:00 UTC` I have reasoned with becomes wrong on 11-01.
+- **A removed SOURCE goes false FORWARDS; a removed MEANING goes misread
+  BACKWARDS.** Same family, opposite directions — and only the first is visible
+  in new data. **The backwards one is worse for exactly that reason: nothing
+  about an old row looks wrong later.** The `focus` badge was the second kind.
+- **"RENDER FIRST" MEANS RENDER *LIVE* FIRST, NOT RENDER *COMMITTED* FIRST.**
+  A ruling in the charter is a decision, not a deployed change — the badge is
+  still serving while `e609139` sits in the log. **A downstream thread waiting on
+  "the render is gone" is waiting on a DEPLOY, and must never read my sha as the
+  green light.** Same root as *a sha is a timestamp, not a selection*: I control
+  what I push, not what is live, so I say which one I mean.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
