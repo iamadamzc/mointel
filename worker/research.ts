@@ -541,6 +541,25 @@ async function main(): Promise<void> {
           markJobStage(db, job.id, 'ANALYZING', new Date().toISOString());
           const prior = sheetPriors.get(job.ticker) ?? null;
           const report = await interpretTicker(db, interpreter, escalation, {
+            /*
+             * THE OWNER OF THE SPEND, AND THE REASON FOR IT.
+             *
+             * Both were declared on `InterpretOptions` and passed by nobody, so
+             * every interpretation wrote a row with a null owner: 1,335 of
+             * 3,334 `model_usage` rows unjoinable to a job, and they are the
+             * INTERPRETATION half -- terra and sol, ~78% of cost by measurement
+             * on 2026-09-07. The collector eleven lines above has always passed
+             * `jobId`, which is why the cheap half joins and the expensive half
+             * does not.
+             *
+             * `trigger` is the same omission in the adjacent field: 1,433 rows
+             * carry no purpose, so spend could not be grouped by why the job
+             * existed either. Fixed together because leaving it would repair
+             * the join and leave the grouping, and the next reader would have
+             * to rediscover that the type declares both.
+             */
+            jobId: job.id,
+            trigger: job.trigger,
             ticker: job.ticker,
             tradingDate,
             // Arm control: the snapshot is deliberately still supplied, so the
