@@ -9749,3 +9749,67 @@ bound and not a prediction, and I am not adding a second one.**
 **IF ANYONE CAN ESTABLISH WHEN THE SHEET'S ROWS WERE WRITTEN, THAT IS CHEAPER
 THAN THE REPLAY AND IT DECIDES THE SIGN.** It is a question about the sheet
 itself rather than about the store.
+
+---
+
+**101. THE SHEET'S AUTHORSHIP, ANSWERED BY HIM — AND THE PRIOR IS MOSTLY
+PRE-MOVE, WITH ONE SPECIFIC HINDSIGHT PATH NOBODY HAD NAMED.**
+
+*He described the four scheduled tasks that wrote the sheet. That is the fact
+`observedAt` could not supply, and it decides the replay's sign.*
+
+| task | writes |
+| --- | --- |
+| **22:00 ET** | catalysts, structure / Dirty Float, momentum cycle, former-runner history, levels, warnings, priority. Archives yesterday, creates the new `TODAY`. |
+| **06:10 ET** | rechecks every name, confirms / qualifies / downgrades / rejects the 22:00 thesis, re-sorts |
+| **09:25 ET** | opening-spike potential, triggers, invalidation, liquidity, supply pressure, Chop Risk, Flush Risk |
+| **16:15 ET** | the session's five leaders by max gain, **grades the earlier calls**, updates outcome and pattern-learning records |
+
+### THE PRIOR READS ONLY FORWARD-LOOKING COLUMNS — CHECKED, NOT ASSUMED
+
+`toSheetPrior` takes `catalyst.latest`, `catalyst.gradeRaw`, `structure.raw`,
+`cycle.raw`, `warning.current`, `structure.floatRaw`. **`MomentumTicker` carries
+no outcome and no grade field at all** — priority, cycle, catalyst, structure,
+warning, and market data, and nothing else.
+
+**The 16:15 grading writes to outcome and pattern-learning records, and he says
+it PRESERVES the earlier calls. So the columns the desk reads as a prior are
+written at 22:00, 06:10 and 09:25 — ALL BEFORE THE SESSION'S MOVE.**
+
+**That decides the sign: removing the prior should COST accuracy rather than
+shrink a leaked edge.** R&D's contamination framing is about the prior being
+PRESENT and DISAGREEING, which is a real finding; it is not hindsight.
+
+### BUT ONE PATH IS PARTIAL HINDSIGHT AND IT IS INSIDE HIS OWN WINDOW
+
+**THE 09:25 TASK WRITES DURING THE MOMENTUM WINDOW.** His window is
+07:00–10:00 ET, so a 09:25 judgement HAS ALREADY SEEN 07:00–09:25 — including
+the exact move the desk grades a name on.
+
+**A prior fetched after 09:25 is pre-move for the open and POST-MOVE for two and
+a quarter hours of the window it is being scored against.** Not the whole
+contamination R&D feared, and not nothing: **it is hindsight over the majority
+of the window by clock time.**
+
+**`observedAt` — the fetch time — is exactly the field that would separate a
+pre-09:25 fetch from a post-09:25 one.** It is the wrong field for the question
+it was doubted over and the right one for this. The replay can and should
+partition on it.
+
+### AND A REPLAY HAZARD THAT WOULD HAVE BEEN INVISIBLE
+
+**`TODAY` IS REBUILT EVERY NIGHT.** A replay over 13 sessions that reads the
+live sheet applies **TONIGHT'S ROWS TO THIRTEEN PAST SESSIONS** — a
+contamination unrelated to anything measured, and one that would look like a
+strong prior effect.
+
+**The replay must read the ARCHIVED tab for each session or not read the sheet
+at all.** Prior-free removes the question; any prior-bearing arm does not.
+
+### AND THE AVOID WAS ALREADY THERE
+
+`AVOID` is a **priority value**. Chop Risk, Flush Risk, supply pressure and
+Warning are 09:25 fields. **THE WHY NOT REPORT IS A RESTORATION, NOT AN
+INVENTION** — and the old system gave him a per-name verdict on every row rather
+than silence on the quiet ones, which is evidence about the held rendering
+question though not an answer to it.
