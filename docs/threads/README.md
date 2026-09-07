@@ -7931,3 +7931,52 @@ estimate.**
 **And no number was given, because `model_usage` does not exist in the local
 store** — the table postdates its last write. **Any figure would have been the
 third local census quoted as a store-wide fact in one day.**
+
+## WHEN A MEASUREMENT CANNOT RECOVER A FACT, ASK WHETHER ANYONE SIMPLY KNOWS IT
+
+**Research and Integration, 2026-09-07**, designing the prior-free replay.
+
+The replay's result changes meaning depending on whether a Sheet prior was
+written before its session or after it — **signal in one case, hindsight leakage
+in the other, opposite signs.** `SheetPrior.observedAt` records the FETCH time,
+so the store cannot separate them.
+
+**The reflex was to design a better measurement.** The cheap path was to notice
+that **the sheet is a human artefact and a human knows when its rows were
+written.** One question, answerable in a sentence, decides the interpretation of
+a thirteen-session replay — and if the answer is "never after", the replay
+becomes a much smaller question.
+
+### THE DAY THIS RULE COMES FROM HAD FIVE CASES AND FOUR WERE TREATED AS DEAD ENDS
+
+| the fact | why the store could not say | knowable? |
+| --- | --- | --- |
+| what the desk believed on 08-17 | `universe` classification overwritten | **no** |
+| whether a name latched | `ticker_session` overwrote it | no — but `desk_events` had it |
+| when a filing became visible | `filingDate` is a bare date | **YES — the SEC serves the timestamp** |
+| the effective planner period | no per-cycle log line | **YES — it is our own code and our own deploy** |
+| when a Sheet row was written | `observedAt` is a fetch time | **YES — ask him** |
+
+**Three of five were answerable and were nearly filed as unrecoverable.** In two
+of them the desk was already downloading or already emitting the answer.
+
+### The distinction that decides it
+
+**A fact about the MARKET at an instant is gone if nobody wrote it down.** A
+fact about **OUR OWN CONFIGURATION, OUR OWN CODE, A THIRD-PARTY API, OR A HUMAN
+ARTEFACT** is not — it is merely not in this table.
+
+*"The data does not have it" and "we do not collect it" are different
+sentences,* and the second has a further split: **not collected, versus not
+collected but freely available.**
+
+### The trigger
+
+**Whenever a design says a question is unanswerable, name the OWNER of the fact
+before accepting it.** If the owner is the market, accept it. **If the owner is
+a vendor, our own code, or a person in the room, the measurement was the wrong
+instrument and a question is the right one.**
+
+*Corollary, from the same day: asking WHAT WOULD DECIDE THE SIGN found this,
+where asking HOW TO MEASURE BETTER would not have. **The cheap path opens at the
+question about the conclusion, not at the question about the method.***
