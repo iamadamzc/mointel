@@ -7476,6 +7476,52 @@ code.** The cheapest test of it is one read — the same move that found
 **Model economics belong to Research. The measurement is mine; the pricing is
 theirs.**
 
+## The backfill discriminator does not exist in the job table — 2026-09-07
+
+**Integration flagged the trap: "no `model_usage` row" identifies a short-circuit
+only if a genuine interpretation cannot fail before reaching a model. Measured.**
+
+```
+status     jobs   analysis_started_at set   started AND no model call
+PARTIAL    1902           1902                        630
+COMPLETE    505            505                         72
+FAILED      219            218                        161
+STALE        16              0                          0
+
+jobs with a model call but no analysis_started_at: 0
+```
+
+**`analysis_started_at` is set on 100% of PARTIAL jobs, so it cannot separate a
+short-circuit from a real interpretation.** The `REUSED_UNCHANGED` path stamps it
+too. **The discriminator Research hoped for is not in this table.**
+
+**And "no `model_usage` row" spans more than one meaning across the table: 161
+FAILED jobs have no model call.** Those are failures, not short-circuits. So the
+rule is only defensible **scoped to `status='PARTIAL'`** — and even then it rests
+on the assumption that a pre-call failure never lands as PARTIAL rather than
+FAILED. **That assumption is about the mapping at `worker/research.ts:559` and it
+is Research's to prove from the code, not mine to infer from counts.**
+
+**The 630 matches Integration's estimate exactly**, which is reassuring about the
+size and says nothing about the safety of the rule that produces it.
+
+## A homemade check that disagreed with the authoritative one, and was wrong
+
+Verifying `dd3bca0..570f077` was docs-only, I built an ad-hoc digest —
+`ls-tree | grep -v docs | xargs git rev-parse | md5sum` — and it reported
+**DIFFER** while `git diff --name-only` reported docs only.
+
+**The homemade instrument was wrong.** The authoritative forms agree:
+
+```
+git diff --stat dd3bca0 570f077 -- . ':(exclude)docs'   -> empty
+top-level tree hash excluding docs -> 33b67f8176d15c3f == 33b67f8176d15c3f
+```
+
+**When an improvised check contradicts a built-in one, suspect the improvised
+check first.** I nearly re-gated and redeployed on the word of a pipeline I had
+written thirty seconds earlier.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
