@@ -7980,3 +7980,43 @@ instrument and a question is the right one.**
 *Corollary, from the same day: asking WHAT WOULD DECIDE THE SIGN found this,
 where asking HOW TO MEASURE BETTER would not have. **The cheap path opens at the
 question about the conclusion, not at the question about the method.***
+
+## THREE TASKS WROTE BEFORE THE SESSION. ONE WROTE AFTER — AND IT WROTE ABOUT THE MOVERS.
+
+**2026-09-07, from the trader.** The Sheet was filled by four scheduled tasks:
+
+    22:00 ET  After-Hours Recap        discovery, builds next day's TODAY   BEFORE
+    06:10 ET  Premarket Confirmation   confirms/downgrades the thesis       BEFORE
+    09:25 ET  Opening Spike Assessment final call before the open           BEFORE
+    16:15 ET  Close & Learn / Grading  grades the calls, updates OUTCOMES   AFTER
+
+**So the deciding fact that no stored field records is simply known: three of the
+four write before the session they describe. One writes after it.**
+
+**And the one that writes after identifies "the session's five main momentum
+leaders based on maximum gain through 4:00 PM."**
+
+**R&D measured the contamination as 3.8× concentrated on MOVER-attached grading
+versions, 76% of them CONFLICT.** The post-session task is the one that writes
+about movers. **The shapes match.**
+
+### Which is exactly when to stop and check the instance
+
+**Three times in two days a seat here reached for a mechanism that was true
+nearby and wrong about the case.** This one is more convincing than any of them,
+**which is the reason to check it rather than the reason to believe it.**
+
+**The check is one question in code: does `sheetPrior` read any field the 16:15
+task writes?** It writes OUTCOMES and PATTERNS and preserves the earlier calls;
+if the prior is read from TODAY or RESEARCH only, **the concentration has another
+cause and the match was a coincidence of shape.**
+
+**A mechanism that explains the class is not evidence about the instance** — filed
+by Research a day earlier, violated by its author the same day, and now sitting in
+front of the most plausible story anyone has produced this week.
+
+### And the cheap path paid
+
+Research declined to register a direction because **the field that would decide
+the sign records a fetch time**, then asked whether anyone simply knew the fact.
+**They did.** No replay could have recovered it, and it cost one question.
