@@ -12194,3 +12194,119 @@ built for.
 **NEITHER IS A REASON NOT TO. Both are reasons the change is a desk decision and
 not a prompt edit** — which is what `effect.ts`'s own docstring already says
 about adding a rule.
+
+**112. THE FOUR ADMISSION FACTS. THE DESK ALREADY BUILT THE MECHANISM HE IS
+DESCRIBING, MEASURED IT WITH HIS OWN NUMBERS, AND STOPPED ONE DECISION SHORT ON
+PURPOSE — THE DECISION IT STOPPED AT IS THE ONE HE IS NOW MAKING.**
+
+### 1. ADMISSION IS NOT RVOL. RVOL ORDERS AN ALREADY-ADMITTED FIELD.
+
+`engine.ts:1287` — three conjunctive conditions, and only the first mentions
+RVOL:
+
+```ts
+const priceEligible =
+  runtime.price !== null && (this.inPriceRange(runtime.price) || runtime.latched);
+
+if (runtime.rvol !== null && priceEligible && this.isRankEligible(runtime.symbol)) {
+  eligible.push({ symbol: runtime.symbol, rvol: runtime.rvol });
+}
+
+const ranks = rankByRvol(eligible, this.previousRanks);
+```
+
+- **`rvol !== null`** — a baseline exists. Not a threshold; a *known value*.
+- **`priceEligible`** — inside `[priceMin, priceMax]` **OR LATCHED**
+  (`engine.ts:1247`). *The latch is already a "does not fall off" mechanism —
+  on price.*
+- **`isRankEligible`** — `engine.ts:1252`, delegating to `runtime.ts:508` →
+  `securities.ts:48` `isDiscoveryEligibleClass`. **Operating-company equity
+  only.** Fails open: *"No classification evidence at all means no filtering, so
+  a missing universe table can never silently empty the discovery board."*
+
+**Then, and only then, `rvol_rank <= 12` selects the RESEARCH population**
+(`researchRepo.ts:136`, `autoRank`).
+
+*So his "that's currently based on rvol, correct?" is **half right, and the half
+that is wrong is the useful half**: volume decides ORDER and the twelve-name cut;
+PRICE BAND and CLASSIFICATION decide who is in the field at all.*
+
+### 2. RVOL IS NON-DECREASING WITHIN A SESSION. HIS CONCERN IS NOT A RISK — IT IS THE CURRENT MECHANISM.
+
+`engine.ts:1129` — `runtime.cumulativeVolume = runtime.volumeBase +
+runtime.minuteSum`, monotone. `rvol.ts` docstring — *"The denominator is fixed
+for the whole session, so Daily RVOL rises naturally as cumulative volume
+accumulates."*
+
+**A name that spiked at 04:30 and died at 05:00 keeps its RVOL, and its rank, all
+day. IT CANNOT FALL OFF ON RVOL ALONE.**
+
+*Integration named this arithmetic and asked me to confirm or kill it. Confirmed
+— and the engine says it in its own words at `engine.ts:1717`:* **"Rank alone put
+corpses here: RVOL is cumulative so a dead name keeps the rank its morning
+earned."**
+
+### 3. THE REASSESSMENT EXISTS, IT IS BUILT ON HIS OWN NUMBERS, AND IT IS WIRED TO EVERYTHING EXCEPT THE RANK.
+
+`lib/market/activity.ts` — a wall-clock window over minute slots, where **a
+missing minute counts as zero trades** because a dead minute produces no bar.
+
+- **ACTIVE / DEAD / UNKNOWN**, where *UNKNOWN is not DEAD and must stay so*.
+- **His 300 trades/min, his 10x ratio** (dead line DERIVED, never configured
+  separately), **his 5 dead minutes**. Revival at **2** — and that 2 is R&D's
+  measurement, not a guess.
+- Persisted whole: `activity`, `dead_since`, `dead_at_rank`,
+  `dead_at_peak_trades`, `dead_at_price`, `death_count`, `activity_config`,
+  `activity_window` (`db.ts:765`, `repo.ts:627/651/757`).
+
+**WHO READS IT:** the subscription selector (`engine.ts:1707` — *"a dead name at
+rank 3 held a trades/quotes slot that a live name at rank 251 was waiting for"*)
+and the research queue (`queue.ts:83`, fail-open: only a positive `DEAD`
+refuses).
+
+**WHO DOES NOT: THE RANK.** `engine.ts:1133`, verbatim:
+
+> *"COMPUTED AND REPORTED, DELIBERATELY NOT ACTED ON: nothing below reads
+> `runtime.activity`… The trader has decided the rule (5 minutes, minute trade
+> count, his 10x ratio) **but not yet whether a dropped name VANISHES or SHOWS as
+> dropped**, and those want opposite implementations — nulling the rank versus
+> keeping it beside a flag. **Wiring either now would answer his question for
+> him**, so the state ships visible and inert."*
+
+**THE DESK ANTICIPATED THIS EXACT QUESTION AND LEFT HIM THE LAST DECISION. HE IS
+NOW MAKING IT.**
+
+### 4. SO "CONSTANTLY REASSESSED" IS ALREADY SCOPED, AND IT IS A TWO-WAY CHOICE, NOT A BUILD
+
+The engine framed the options before he asked:
+
+| option | what changes | what it costs |
+| --- | --- | --- |
+| **VANISH** | null `rvol_rank` while DEAD | the name leaves the board *and* the research queue; the graveyard row keeps the history |
+| **SHOW AS DROPPED** | rank stays, a flag travels beside it | he sees the corpse and its rank; nothing downstream changes behaviour unless it opts in |
+
+**A third option — a windowed or decaying RVOL — IS NOT AVAILABLE WITHOUT
+REVERSING A STANDING RULE.** `rvol.ts` opens: *"THE DEFINITION IS FIXED. It comes
+from completed backtesting and must not be replaced with a time-of-day adjusted
+formula… explicitly NOT volume-at-this-minute over average-volume-at-this-minute,
+not a rolling intraday comparison."* **That is a desk decision he would have to
+take knowingly, not a tuning change.**
+
+### WHAT I CANNOT ESTABLISH, SAID PLAINLY
+
+**HOW OFTEN `DEAD` ACTUALLY FIRES ON THE BOARD — I DO NOT KNOW.**
+`ticker_session` has **no `activity` column** in `data/market-prod-2026-08-23.db`
+(nor in the local db): the migration landed after that snapshot. **So I cannot
+measure it from anything I hold, and I am not estimating it.** It needs a
+production query — Ops's, or approval.
+
+*One live reading is quoted in `Graveyard.tsx:91` and is worth carrying anyway:*
+**of 71 names the engine marked DEAD, 60 had a busiest minute below the dead line
+— they did not go quiet, THEY WERE NEVER ACTIVE.** *That is a different
+population from the one he is worried about, and conflating them would overstate
+the problem badly.*
+
+**FLAG, NOT AN EDIT (Design's file):** `Graveyard.tsx:106` says *"the store has
+no column for it yet"*. The migration at `db.ts:765` and the write path at
+`repo.ts:757` both exist now, so that comment is stale and the component may be
+showing "not recording yet" against a column that records.
