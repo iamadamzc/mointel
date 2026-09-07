@@ -8020,3 +8020,32 @@ front of the most plausible story anyone has produced this week.
 Research declined to register a direction because **the field that would decide
 the sign records a fetch time**, then asked whether anyone simply knew the fact.
 **They did.** No replay could have recovered it, and it cost one question.
+
+### And three of the four are retired — so the hindsight source is HISTORICAL
+
+**Only the 22:00 after-hours task still runs.** The 06:10 confirmation, the 09:25
+opening assessment and **the 16:15 grading task** have all been retired and
+replaced by the desk.
+
+**So the one writer that could produce hindsight no longer exists**, and the
+surviving task writes **before** the session it describes. **There is no ongoing
+contamination path — the question is entirely about a historical era.**
+
+**Which turns S3's problem into a boundary question, not a validity one:** were
+the 13 measured sessions **before** the 16:15 task was retired, **after** it, or
+**across** the retirement?
+
+- **All before** — the contamination is real for that measurement and the replay
+  is the way to size it.
+- **All after** — there was no hindsight writer and every prior is pre-session.
+  **The replay answers a question that cannot have the feared answer.**
+- **Across** — S3 pools two eras, **which is the exact error class its author has
+  already made twice today** (10.5% across a live and a dead era, 19.8% across a
+  working and a broken pipeline).
+
+**Establish the retirement date before pricing anything.** It is one date, it is
+known to someone, and it decides whether the replay is necessary, sufficient or
+meaningless.
+
+**The cheap question paid twice: the first answer named the mechanism, the second
+removed it from the present tense.**
