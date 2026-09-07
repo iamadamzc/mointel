@@ -9917,6 +9917,17 @@ it was a research lever.
 looks wrong.** The forwards case announces itself in the next day's data; the
 backwards case only ever looks like history.
 
+**Which means it has no natural discovery moment.** A field that goes false
+forwards gets found by whoever next looks at the data. A field that drifts in
+meaning is found **by someone reasoning about it, or not at all** — so it must be
+caught at the moment the write path is removed, because that is the only moment
+anyone will be thinking about it.
+
+**Corollary on arguments: an argument that fails on SUCCESS is worse than one
+that fails on TIME.** "Nobody reads this panel" is sound until the product works,
+and then it is wrong exactly when the stakes rise. **Prefer the reason that
+survives the outcome you are working toward.**
+
 **And the two arguments for removal age in opposite directions.** "The audience is
 small, nobody will read it" is overturned the moment the audience grows —
 **which is the thing being built for.** "The token means something else now" does
