@@ -5,9 +5,36 @@
  * cross-sectional Daily RVOL ranking, latches discovery qualification, and
  * emits deterministic desk events.
  *
- * It knows nothing about SQLite, Alpaca transport, or Google Sheets: the worker
- * feeds it observations and persists what it produces. That is what makes it
- * testable and what keeps demand detection separate from structural research.
+ * It knows nothing about SQLite or Google Sheets: the worker feeds it
+ * observations and persists what it produces. That is what makes it testable
+ * and what keeps demand detection separate from structural research.
+ *
+ * IT IS NOT FREE OF ALPACA, AND THIS LINE USED TO CLAIM IT WAS. A vendor
+ * migration is certain and undated -- Alpaca publishes no redistribution path,
+ * so the published routes with display rights are a rebuild of
+ * `lib/market/alpaca/`. The coupling here is ENUMERATED RATHER THAN REMOVED:
+ * deciding what an unchosen vendor's equivalent outranks would invent an
+ * abstraction against a successor nobody has picked.
+ *
+ * What crosses the line, by identifier rather than line number, because a list
+ * that names positions in the file it lives in is the thing that rots:
+ *
+ *   - `normalizeHaltState`, imported from `./alpaca/messages` -- a transport
+ *     normaliser used directly by the engine.
+ *   - Four vendor-named provenance tags compared and assigned in engine logic:
+ *     `'alpaca-daily-bar'`, `'alpaca-daily-bar-rth-close'`, `'alpaca-snapshot'`,
+ *     and `previousCloseSource` / `priorRthClose.source` branching on them.
+ *     These ENCODE PRECEDENCE -- Alpaca's previous close outranks a
+ *     sheet-sourced one -- so a migration must decide what replaces each
+ *     comparison, not merely rename a string.
+ *
+ * `docs/threads/ops.md` holds the dated snapshot with line numbers.
+ *
+ * NEW WORK MUST NOT WIDEN THIS. Anything needing a vendor concept above
+ * `lib/market/alpaca/` is a conversation before it is a commit, and derived
+ * values -- RVOL, rank, volume-derived fields -- stay derived. Read the
+ * RESOLVED value, never the source tag: a consumer that needs the previous
+ * close does not care which source won.
  *
  * IMPORTANT: RVOL rank means "abnormal participation deserves investigation".
  * It is not a signal, not a rating, and says nothing about structure.
