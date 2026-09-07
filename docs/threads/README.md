@@ -9028,3 +9028,38 @@ already cost three retracted figures.
 
 **A README beside it names it. A file opened directly does not read its
 neighbour.**
+
+## TWO THREADS ARRIVING AT THE SAME BEHAVIOUR MUST LAND AS ONE MESSAGE
+
+**Coaching, 2026-09-07, raising a reconciliation nobody had asked for.**
+
+**The Why Not Report and the coaching seat now point at the same behaviour from
+opposite ends** — one says *do not chase this name*, the other says *the marginal
+trade is where it goes.* **Same finding, two grains.**
+
+**"The product telling him what not to chase and the coaching telling him he
+traded too much are the same message arriving twice. That is good if it lands as
+one idea and bad if it lands as two people telling him he trades badly."**
+
+**He has had two sessions inside his own rules and was visibly proud of the
+second.** So the framing is not incidental: **the desk is catching up to a change
+he has already made**, not correcting a habit he still has. **That is true, and it
+is the only version that is both accurate and usable.**
+
+**Owning the framing before both halves ship is Integration's**, because it is the
+seam and nobody else can see both. **A reconciliation raised by the thread that
+would benefit from being loudest is worth taking seriously.**
+
+### And two refusals worth recording
+
+**Coaching declined to propose a trade-count ceiling** — the exact best cap on six
+days is overfitting, **and the honest finding is the shape, not the number.** It
+named that the number is his.
+
+**And it declined to build toward measuring refused trades**, because the marginal
+curve reaches the same behaviour **from data that already exists**, without asking
+him to log anything mid-session. **A measurement that requires the trader to work
+during the window is a cost on the thing being measured.**
+
+**Figures deliberately absent from this file.** They are his fills, and P&L
+belongs in report output rather than in the repository.
