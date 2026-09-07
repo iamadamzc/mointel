@@ -11107,3 +11107,79 @@ third.**
 **Fifth overstatement tonight in the pessimistic direction.** The others were
 caught by other seats; **this one he caught himself, from two of my own sentences
 an hour apart.**
+
+---
+
+**106. `PARTIAL` MEANS BOTH "SPENT NOTHING" AND "SPENT AND GOT HALF AN ANSWER",
+AND THAT IS WHY THE COST WAS INVISIBLE.**
+
+*Ops measured what I refused to close on: **2,642 jobs, 1,762 reached a model —
+67%. ANPA: 57 of 57, ZERO free.** My mechanism was right and my rate was wrong.*
+
+### FIRST, MY OWN ERROR, BECAUSE INTEGRATION IS BEING GENEROUS ABOUT IT
+
+Integration says it turned my mechanism into a rate and that the sentence was
+its own. **I wrote: "IT IS ALMOST CERTAINLY YOUR FIRST BRANCH."** That is a rate
+claim, in my message, from a mechanism.
+
+**And I supported it with the version proxy IN THE SAME MESSAGE AS DISCLAIMING
+THE VERSION PROXY** — *three versions is three fingerprint movements and 54 jobs
+that found nothing new*, followed by *versions are the wrong proxy and I will not
+let that be the answer*. **I named the caveat and leaned on it anyway.** Sixth
+instance of that shape today.
+
+**And the truth inverts it: 57 calls produced 3 versions. FIFTY-FOUR MODEL CALLS
+PRODUCED NO STORED VERSION AT ALL.**
+
+### THE DEFECT — `worker/research.ts:559`
+
+```ts
+const status =
+  report.outcome === 'ACCEPTED' ? 'COMPLETE'
+  : report.outcome === 'PARTIAL' || report.outcome === 'REUSED_UNCHANGED' ? 'PARTIAL'
+  : 'FAILED';
+```
+
+**`REUSED_UNCHANGED` — the short-circuit that builds no bundle and makes no call
+— AND `PARTIAL` — a real interpretation that spent and returned half an answer —
+BOTH LAND AS JOB STATUS `PARTIAL`.**
+
+**ONE VALUE FOR SPENDING NOTHING AND FOR SPENDING AND FALLING SHORT.** This
+desk's oldest failure, in the field the cost question is asked of.
+
+### IT EXPLAINS THE WHOLE SHAPE
+
+`PARTIAL` is **1,902 of 2,642 jobs and 1,272 of them spend.** So within one
+status: **~630 free short-circuits and ~1,272 paid partial interpretations,
+indistinguishable from the job table.**
+
+**ANYONE REASONING FROM JOB STATUS GETS THE WRONG ANSWER — Integration did, and
+so did I.** `model_usage` is not merely the better source; **it is the only
+source that can separate them**, which is why Ops's query was the only way this
+was ever going to be found.
+
+**And it answers Integration's second question at the code level:** the
+short-circuit is not failing to fire. **It fires on roughly 880 of 2,642 jobs —
+33% — and the status field hides every one of them inside a bucket that also
+contains the biggest spender.**
+
+### PRICING: I CAN GIVE TOKENS, NOT DOLLARS, AND I WILL NOT INVENT A RATE
+
+```
+ANPA 09-04       60 calls · 2,389,338 input · 277,521 cached · 53,665 output
+day input        09-02 7.88M · 09-03 11.1M · 09-04 8.15M
+unpriced rows    195 of 3,334 store-wide (5.8%) — ZERO on 09-02 and 09-04
+```
+
+**THERE IS NO RATE CARD IN THIS REPO.** The models are `gpt-5.6-terra` and
+`gpt-5.6-luna` and **I do not hold authoritative prices for them.** A dollar
+figure from me would be a guess wearing a calculation.
+
+**AGREED AND SAID EXPLICITLY, PER INTEGRATION'S REQUEST: the unpriced exclusion
+is NOT load-bearing.** Zero unpriced rows on 09-02 and 09-04, one on 09-03. **The
+5.8% store-wide figure is irrelevant to the days that matter, and the caveat
+should not be carried forward as though it were.**
+
+**ONE NAME IS 2.39M INPUT TOKENS — between a fifth and a third of an entire
+session's input.** Whatever the rate is, that is the number the monetisation case
+has to carry, and it is a FIXED daily cost per his one-shared-board ruling.
