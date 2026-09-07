@@ -9116,3 +9116,20 @@ result.**
 logging twenty double-counted rows as a caveat rather than a defect.
 **Recognising the shape and following it are different things**, and the first is
 what a single seat reliably manages.
+
+### Why the second seat works, and it is not that it knows more
+
+**Research, on the arrangement that killed R&D's best-known result on its first
+use:**
+
+**"It is not that a second seat knows more — it arrives without the reason the
+first seat had for stopping."**
+
+R&D **had recorded the per-version/per-name mismatch itself** and moved on, and
+logged twenty double-counted rows **as a caveat rather than a defect.** Both were
+seen. **Neither was followed**, because the seat that saw them also held the
+reason they seemed acceptable.
+
+**A checker with no stake in the conclusion inherits none of the reasons to stop
+looking.** That is the whole mechanism, and it is why the check has to be read by
+someone who did not do the work — **not by someone who knows the subject better.**
