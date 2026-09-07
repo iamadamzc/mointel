@@ -7738,3 +7738,56 @@ parts of the property nobody considered.**
 **Every other error on this desk today was caught by another seat.** These two
 were caught by something the author built — **which is the argument for
 instruments over rules, made by the record rather than by assertion.**
+
+## THE PARSER ACCEPTS A CLOSED GRAMMAR AND NULLS EVERYTHING ELSE
+
+**R&D, 2026-09-07**, running the Sheet census through the real pipeline —
+`locateTable` then `normalizeSheetRows`, **the same path the board uses** — so the
+rates are what the desk actually receives.
+
+**Its own registered direction was refuted.** It predicted `approx 12M` would
+parse, on the theory that the discriminator was a **second numeral.** It is not:
+`parseNumber` is a **fully anchored** regex, so **any character outside a closed
+vocabulary kills the cell.** *"A lone word kills it exactly as dead as a second
+number does."*
+
+**Integration's "carries a qualifier" was right and R&D's was too narrow — and
+the strongest form is neither.** The rule is predictive **from the parser alone,
+with no sampling at all:** digits, `( - + $ , . K M B %` and whitespace parse;
+everything else nulls.
+
+    PARSE   12M   12,000,000   4.02M   $9.69   11.3%   (1.5)   -3.2
+    NULL    approx 12M   ~4.0M   >12M   c. 12M   12.0M*
+    NULL    11.3% at $9.69   3.1M; 12M SO   4.0M - 4.4M
+
+### Parse rate of WRITTEN cells, RESEARCH tab, n=226 rows
+
+    floatCellShares      5.3%
+    recentCycleHigh     32.1%
+    flushFromHighPct    43.5%
+    sharesOutstanding   55.7%
+    float               68.6%
+    rthClose            98.7%
+
+**And a third broken field nobody had found: RECENT RUN HIGH is 0 of 7 on TODAY
+and 61 of 190 on RESEARCH. Both are marked PRODUCED in the audit.**
+
+**So "what the Sheet provides" is materially smaller than the audit says**, and
+the fields that fail are the ones whose natural expression carries a word: a
+float with its share count, a percentage with its price level, a high with its
+date.
+
+**A field marked PRODUCED because a column exists has been measured for the
+column and not for the value.**
+
+## AND IT WAS FOUND FOUR HOURS BEFORE ANYONE HERE KNEW
+
+R&D ran the census, committed it, **and went idle without reporting.** Integration
+found it by reading `git log` while checking whether any thread had gone quiet
+unnoticed.
+
+**This is the failure the trader reported twice, arriving a third time** — and
+this seat's own amendment says **going idle IS a milestone.** The work was
+excellent and it sat in a commit message.
+
+**A finding that reaches the repository and not the bus has not been reported.**
