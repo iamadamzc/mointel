@@ -6269,6 +6269,77 @@ journalctl -u mointel-research -o short-iso | grep "Started mointel-research" | 
 had dated it 2026-09-07 from the commit date, which is wrong by up to two days:
 **the store does not change until the code runs.**
 
+## 2026-09-04: a top-five name went unresearched, and the desk cannot say why
+
+**State as of 2026-09-06. Five mechanisms eliminated, ONE STILL STANDING, and
+the honest summary is not "unexplainable" — it is "one specific mechanism
+survives and cannot currently be tested."**
+
+```
+date      fired RVOL   no job     multi-entry no-job   one-entry no-job
+09-02         54          0              0 of 5              0 of 49
+09-03         45          1              0 of 10             1 of 34
+09-04         56         19              0 of 12            19 of 44
+```
+
+**All 19 entered the board exactly once; a name that re-entered has never
+lacked a job.** One of the 19 reached **rank 4** — while on the other two
+sessions every name reaching rank 12, the bottom of the board, got one.
+
+### Eliminated by measurement
+
+- **Churn sampling** — predicts a consistent rate. 0, 1, 19 is not one.
+- **The latch wipe** — 09-04's wiped count is **0**; its only restart was 03:48
+  ET, before any latch existed.
+- **Research worker degraded** — seven restarts, **none inside the ET window**,
+  and it queued **51 in-window jobs against 09-02's 46**. More, not fewer.
+- **The auto-rank threshold** — a threshold drops the low-ranked. A rank-4 name
+  was dropped while rank-12 names were kept elsewhere. Exactly inverted.
+- **Queueing stalls** — see below; eliminated, but NOT by either argument first
+  offered for it.
+
+### STILL STANDING: the candidate query missing a short visit
+
+`worker/research.ts` polls, and **`RESEARCH_POLL_MS = 5000` IS THE SLEEP, NOT
+THE PERIOD.** The cycle awaits `loadSheetPriors()`, then the planner, then
+claims and processes jobs — collection and interpretation inline, interpretation
+measuring a 32s median and 187s max. **The period is unbounded above by anything
+recorded.**
+
+**A VARIABLE period predicts the cross-tab exactly**: short cycles on 09-02 and
+09-03 catch transients, a longer cycle on 09-04 does not. So the cross-tab
+**restates the puzzle rather than excluding a cause.**
+
+**Dead, and recorded so nobody re-derives it**: *more jobs → longer cycles →
+more misses.* **09-03 carried the most jobs, 213, and missed one.**
+
+### Two arguments that looked like eliminations and are not
+
+- **"09-04's queuing was the most continuous"** — from comparing MAXIMA. On
+  measured dead time 09-04 is the MOST interrupted (177.4 min in-window against
+  09-02's 146.3). The refuting counts were in the same table.
+- **"09-02 survived a 67-minute hole and missed zero"** — only holds if names
+  entered during it. **Nobody checked.** `queued_at` gaps conflate "the loop did
+  not run" with "the loop found nothing new", so **they are uninformative in
+  BOTH directions.**
+
+### The instrument has to be built before the follow-up can run
+
+**There is no per-cycle log line, so the planner's effective period is not
+measurable from what is recorded.** That single small line is the difference
+between this question being closed by an ANSWER and closed by EXHAUSTION.
+
+It also names the deeper defect: **every gate reads a field that is overwritten**
+— `activity` and `rvol_rank` hold end-of-session values, `classification` holds
+tonight's — so a name's state when the queue ran is unrecoverable.
+`queueDiscoveryResearch` already builds a `reason` for every skip **and discards
+it for names that never become candidates.** The desk cannot explain itself
+here, and that is a finding about the desk rather than about 09-04.
+
+**Do not query `activity` or `classification` for the 19.** It answers a
+question about tonight and would implicate a gate that may not have been closed
+on the day.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
