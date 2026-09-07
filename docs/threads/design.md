@@ -3730,6 +3730,55 @@ second line then measures from the new high, which is "just move that spread".
 `neg` colour of a stale BACKSIDE verdict — the label-and-number mismatch again,
 one layer up.
 
+## THE TWO WINDOWS FAIL DIFFERENTLY, AND THAT IS WHY ONLY ONE FAILURE IS VISIBLE
+
+**Not a hypothesis. A deduction from the code plus Ops's sweep, and it says a
+number about to go in front of the trader may be an artefact.**
+
+`runtime.activityWindow` and `runtime.priceWindow` are assigned **six lines
+apart, in one block, on one code path** (`engine.ts:1176` and `:1182`), from the
+same `this.now()`, and are carried by **one** DemandState builder on adjacent
+lines (`:1863-1864`) into **one** INSERT with **one** COALESCE upsert. There is
+no branch anywhere between them. **So nothing about the plumbing can explain one
+populating and the other not.** What differs is what each does when the window
+misses:
+
+    activity.ts:267   window = slots.map((slot) => minuteTrades.get(slot) ?? 0)
+                      -> MISSING SLOT IS ZERO. Length is always 5. NEVER null.
+    activity.ts:156   startsAt = slots.findIndex((slot) => minuteCloses.has(slot))
+                      if (startsAt === -1) return null;
+                      -> MISSING SLOT IS NULL. The whole reading is withheld.
+
+**`activity_window` WRITING PROVES ONLY THAT `minuteTrades.size > 0`. It does not
+prove a single slot matched.** `price_window` being NULL proves **no slot
+matched `minuteCloses`** — and `minuteCloses` is set **unconditionally** at
+`engine.ts:962` while `minuteTrades` is set only `if (tradeCount != null)`
+(`:958`), so **`minuteCloses`'s keys are a SUPERSET.** No slot matched the
+superset, therefore **no slot matched `minuteTrades` either.**
+
+**THEREFORE THOSE ACTIVITY WINDOWS ARE ALL ZEROS, AND EVERY NAME CARRYING ONE
+READS DEAD** — five zero slots are five slots under any dead line.
+
+**AND THAT IS THE SHAPE OF THE 60-OF-71.** *"Of 71 names marked DEAD, 60 had a
+busiest minute below the dead line"* is being carried to him as a fact about the
+market. **A zero-filled window produces exactly that reading, on names that
+traded.** It may be evidence of a defect rather than evidence about names that
+spike and die — **which is the population he is asking about.**
+
+**WHAT I REFUTED ON THE WAY, BECAUSE IT WAS THE ATTRACTIVE ANSWER:** a key-format
+mismatch. `minuteSlot` is `new Date(...).toISOString()` (`activity.ts:209`) and
+the stream's `normalizeTimestamp` is `new Date(parsed).toISOString()`
+(`alpaca/messages.ts:55-61`) — **the same construction. The keys match.** So the
+misalignment is in the WINDOW, not the KEY: `windowSlots` is asking for minutes
+the maps do not hold, which points at `this.now()` versus bar time.
+
+**THE ONE INPUT I HAVE NOT VERIFIED MYSELF — AND I SAY SO HAVING JUST BEEN WRONG
+FOR EXACTLY THIS REASON:** the 7,757-versus-zero sibling contrast is **Ops's
+sweep, taken on report.** The deduction needs those to be the SAME ROWS. **The
+query that settles it is `activity_window IS NOT NULL AND price_window IS NULL`
+on one day, in production, with `activity` beside it.** Not mine to run, and I
+am not building on it further until someone has.
+
 ## The 04:00 method, settled at 18:30 the night before
 
 **I tried to pre-check read 1's premise on production tonight and COULD NOT.
