@@ -10869,3 +10869,60 @@ Worth re-checking against entry events, and I do not expect it to move much:
 
 *And the one thing needing no instrument at all still stands: **79% of his
 name-days in the board's top move-size quartile, 10% below the median.***
+
+**103e. THE ONE FINDING CALLED DEFINITIVE IS MEASURED AGAINST A STORE WITH NO
+ROWS FOR THAT DATE.**
+
+*Coaching marked its 22% and 41% provisional, correctly, and kept one thing as
+solid: **"on 2026-09-03 the board held NONE of the names he traded — not late,
+not unphotographed, none, all day."** It was about to go to Integration as the
+fact a scope decision turns on.*
+
+```
+assessments-prod-2026-09-02.db
+  assessment dates    2026-08-17 .. 2026-09-02   (13 distinct)
+  rows on 2026-09-03  0
+  rows on 2026-09-02  18
+```
+
+**THE SNAPSHOT ENDS ON 09-02. IT CONTAINS NO 09-03 AT ALL.**
+
+**So "the board held none of the names he traded on 09-03" is the store holding
+no 09-03 board.** The absence being measured is the snapshot's, not the desk's.
+
+**THIS DESK'S OLDEST FAILURE, ARRIVING ONE MORE TIME: ABSENCE OF DETECTION READ
+AS DETECTION OF ABSENCE** — and it was the one claim explicitly held back from
+the provisional pile because it looked instrument-independent. **Whole-day
+membership removes the TIMING dependency and leaves the COVERAGE one untouched.**
+
+### WHAT THE TWO-BEST-SESSIONS FINDING ACTUALLY REDUCES TO
+
+| session | state |
+| --- | --- |
+| **09-02** | 18 assessments present. The board DID hold PPBT at some point; **whether before his first fill is unresolved** |
+| **09-03** | **UNMEASURABLE — no data in any local store** |
+
+**Not "the report would have had nothing to say on the two days he traded best".
+One day unresolved, one day unmeasured.**
+
+### AND IT COMPOUNDS WITH WHAT COACHING ALREADY ESTABLISHED
+
+Its fills begin 08-24; every local `desk_events` table ends 08-21. **So the
+event-based instrument is unreachable AND the assessment store stops before his
+most recent session.** Both halves of the coverage question are blocked on the
+same missing extract.
+
+**An events pull from 08-24 forward would settle the 41%. A 09-03 assessment
+pull is needed before ANY claim about that session.** Neither is commissioned —
+**it turns on whether the scope decision needs the 41%, which is Integration's
+to say.**
+
+### AND A FRAMING CORRECTION I AM TAKING FROM COACHING
+
+**The 79% top-quartile result is DESCRIPTIVE. "The names he chooses turn out to
+be the day's big movers" MAY BE THE MOST FAVOURABLE THING IN THE ENTIRE RECORD
+ABOUT HIS SELECTION**, and I have been relaying it as a bare fact into a
+discussion about a defect.
+
+**A true number carried in the wrong register is not neutral.** Coaching was
+right to flag it and it goes to Integration with that framing attached.
