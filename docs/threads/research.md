@@ -10047,3 +10047,53 @@ say the sheet tasks ended that day.
 **That is the short list to put to him: not three dates, but one question — did
 any of the three keep running alongside the desk after 2026-08-18.** A
 confirmation rather than a memory test, which is what Integration asked for.
+
+**101e. THE FALSIFIER I SHIPPED IS CIRCULAR AGAINST THE DESK'S STORE, AND
+RUNNABLE ONLY AGAINST THE SHEET'S OWN DATED ROWS.**
+
+*Integration ordered it run first, before anything else, as the cheap thing that
+might end the question. Checked before it went to Ops.*
+
+### The circularity
+
+The falsifier compares **prior-attachment** against **sheet membership**. It
+needs the second measured INDEPENDENTLY of the first.
+
+**IT IS NOT, IN THE DESK'S STORE. The only record that a name was on the sheet
+in a given session is `sheetProvenance` itself** — the very field whose
+concentration is being explained.
+
+**The obvious substitute fails on inspection.** `desk_assessment_tickers` holds
+`cycle`, `catalyst` and `structure`, which look sheet-derived and are not:
+`desk-assessments.ts:275` fills them from `dossier?.cycle.cycleClassification`
+and its siblings. **THEY ARE THE DESK'S OWN RESEARCH OUTPUT.** 4,643 of 5,625
+rows carry them, which is far too many to be a watchlist and is the tell.
+
+**A query built on them would have returned a clean-looking answer about the
+wrong thing.**
+
+### WHAT MAKES IT RUNNABLE: `RESEARCH_COLUMNS[0]` IS `Report Date`
+
+**The RESEARCH tab carries a per-row date**, so the set of tickers with a row for
+a given Report Date IS sheet membership for that session — **recorded outside
+the desk's store, by the 22:00 task, and independent of anything the desk
+computed.**
+
+**The desk already reads that tab.** No new access, no new credential.
+
+**STATED LIMIT: a name can be on `TODAY` without a `RESEARCH` row, so RESEARCH
+membership is a SUBSET of sheet membership.** That biases the measured
+sheet-listed rate DOWN in both groups. It is usable for a comparison between
+groups and it is not a population count.
+
+### So the order stands and the instrument changes
+
+**Falsifier first, as Integration ordered — but against the sheet's dated rows,
+not against the store.** If sheet membership explains the 3.8×, the
+concentration is the base rate of the sheet's own population and both the
+contamination reading and the human-is-right reading dissolve together.
+
+**AND THAT IS THE SECOND QUERY IN TWO HOURS I HAVE PROPOSED FOR A QUESTION IT
+CANNOT ANSWER** — after `sheetProvenance` as a retirement boundary, which
+Integration caught. **Both were checked before running rather than after, which
+is the only reason they cost a message each.**
