@@ -10926,3 +10926,72 @@ discussion about a defect.
 
 **A true number carried in the wrong register is not neutral.** Coaching was
 right to flag it and it goes to Integration with that framing attached.
+
+---
+
+**104. HIS QUESTION IS THE RIGHT ONE. THE MEASUREMENT IS RUNNABLE, CHEAP, AND
+BIASED TOWARD THE CONCLUSION IT WOULD BE USED TO SUPPORT.**
+
+*Him: **"is this 'most' based on RVOL or gain? Gain would be most relevant. RVOL
+is important, but gain is where the money is made."** It is RVOL only — 29 of 54
+and 31 of 45 are `RVOL_RANK_ENTRY` events. **The gain side was never measured
+before 07:00; it was structurally absent from the measurement.***
+
+### RUNNABLE. THE WINDOW WAS A CHOICE IN MY CODE, NOT A DATA LIMIT.
+
+`reconstructGain` **already accumulates every bar from session start** — it must,
+because cumulative volume runs from 04:00. The restriction is two lines:
+
+```ts
+const index = minute >= WINDOW_START_MIN && minute < WINDOW_END_MIN ? … : null;
+if (index === null) continue;
+```
+
+**Bars exist from 04:00. `previous_close` is a per-session constant.
+`DISCOVERY_QUALIFIED` membership is session-wide.** Nothing the gain
+reconstruction needs is unavailable earlier.
+
+**And the thin-field guard already handles the early degradation:** a minute
+whose eligible field is ≤ N selects nobody and is counted, not recorded as a
+fire. **Cost is a few lines plus one Ops query in the window already queued.**
+
+### AND HERE IS WHY I WOULD NOT USE THE RESULT
+
+**The two sides are not measured the same way, and extending earlier makes that
+worse exactly where the question lives.**
+
+| | at 05:00 | at 08:00 |
+| --- | --- | --- |
+| RVOL side — **the desk's REAL field**, read from events | **~12 names** | large |
+| gain side — **my RECONSTRUCTED field** | **~206 names** | ~1,000 |
+
+*(Field sizes measured on the LOCAL desk, 08-17. Production will differ; the
+shape will not.)*
+
+**A larger field is harder to enter, so gain fires LATER. A field of twelve
+admits almost anyone, so RVOL fires EASILY.**
+
+**SO A PRE-07:00 COMPARISON IS BIASED TOWARD "RVOL FIRES EARLIER" — WHICH IS
+PRECISELY THE CONCLUSION IT WOULD BE CITED FOR.** Not a caveat on the result;
+**the result would be manufactured by the instrument.**
+
+**In-window the asymmetry is modest — both fields are large — which is why the
+07:00–10:00 comparison was worth running and this one is not.**
+
+### THE ASYMMETRY CANNOT BE FIXED, AND THAT IS ITSELF THE ANSWER
+
+The desk's real early field is unrecoverable — **the engine promotes symbols as
+it first sees them and that history is recorded nowhere.**
+
+**So the honest answer to him is the one Integration named as a possible
+outcome: THE DESK RECORDS THE TRIGGER HE CARES LESS ABOUT AND RECONSTRUCTS THE
+ONE HE CARES MORE ABOUT.** There is no gain ranking, there never was, and the
+pre-07:00 question cannot be answered fairly with what is kept.
+
+**HIS QUESTION EXPOSES A CAPTURE GAP RATHER THAN A MEASUREMENT GAP.** A recorded
+gain-rank entry event would make it answerable from the next session onward,
+**and no amount of reconstruction makes the two sessions already gone
+comparable.**
+
+*The three legs of "the desk is behind him" all weakened tonight. **This would
+have been a fourth leg made of the same wood as the instrument holding it up.***
