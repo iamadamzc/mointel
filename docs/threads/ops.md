@@ -6931,6 +6931,17 @@ a careful reader notices when expecting `EDT`. **My earlier format string omitte
 detectability was not a property of the bug; it was a property of my format
 string.
 
+**And the commit recording this was itself truncated by the same class of
+fault.** `git commit -m "$(printf ...)"` with `%Z` in the text: printf treats it
+as a format specifier, dies with *"invalid format character"*, the `$(...)`
+substitution yields **partial output**, and **git accepts a half-message without
+complaint** — `394f71d` ends mid-sentence at "With ". Already pushed to a shared
+main, so not rewritten for a message.
+
+**Use `git commit -F <file>` with a heredoc, never `-m "$(printf ...)"`.** A
+command substitution that fails mid-way produces a shorter string, not an error,
+and every consumer downstream treats it as the intended value.
+
 ### Use `zoneinfo`, not ssh, not arithmetic
 
 Tested locally across the transition — **no network, no remembered offset, no
