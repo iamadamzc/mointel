@@ -7649,6 +7649,53 @@ dormant second account (access not single-tenant), a second provider on one
 account (identity not single-provider), and one POST from a second session
 (the write model not single-writer).
 
+## The 72 split 26/46, and the 46 are the ones that matter — 2026-09-07
+
+**Research excluded accepted-without-work and a legitimate free path from the
+code, leaving one survivor: the calls happened and their usage rows are not
+joinable. Tested.**
+
+```
+the 72 COMPLETE jobs with no joinable usage row
+  orphan (job_id NULL) rows at their exact ticker+trading_date:  26
+  none at all:                                                    46
+
+orphan rows matching those pairs:  78  (876,916 input · 224,736 output · 2 models)
+orphan rows store-wide:          1,335 of 3,334  (40%)
+```
+
+**The survivor is two survivors, and stored data cannot separate them:**
+
+- **26 — `jobId: options.jobId ?? null`.** The row exists, the id was dropped.
+  Countable and tractable.
+- **46 — nothing to find**, which is exactly what the `catch {}` around the
+  usage write looks like. **A swallowed write leaves no row, so absence is
+  consistent with it AND with no call having happened.** Indistinguishable.
+
+**The 26 are weaker than they look.** The join is `(ticker, trading_date)`, which
+is not unique — ANPA alone had 57 jobs on one ticker-date. **So an orphan row at
+a matching pair may belong to a different job for the same day.** It is evidence
+the mechanism operates there, not proof those jobs' calls are those rows. **No
+field ties an orphan row to a job; that is what makes it an orphan.**
+
+### The consequence that outlives the 72
+
+**40% of all `model_usage` rows carry a null `job_id`.** So **no cost figure keyed
+on `job_id` can be trusted — including my own "67% of jobs reached a model",
+which is a FLOOR, not a rate.** I reported it as a rate.
+
+**Size, so it is not overstated:** 78 rows and 877k input tokens against ~94.6M
+store-wide. **A visibility defect at the scale found, not money** — but the
+reason it matters is that it makes the money unmeasurable by job.
+
+### Why the answer was usable at all
+
+Research flagged its own comfort before asking: *"treat (c) as the survivor of an
+elimination, not a finding, until the orphan rows are actually seen."* **They were
+seen for 26 of 72.** Had it been presented as settled, **the 46 would have been
+rounded into it — and the 46 are the population where the desk cannot tell a
+swallowed write from work that never happened.**
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
