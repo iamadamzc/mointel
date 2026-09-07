@@ -1200,6 +1200,57 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
+#### CORRECTION: my S3 worst case was an unreachable corner, and "the band spans zero" does not hold. 2026-09-07.
+
+**Research read the denominators under the arrangement it offered and found the
+sentence that justifies the largest spend on this desk resting on a corner the
+measurement does not support. It is right.**
+
+**THE WORST CASE, RE-EXAMINED AGAINST THE MEASUREMENT THAT PRODUCED IT.**
+`-14.7pp, SIGN REVERSES` required **all 51 positive movers to sit inside the 52
+contaminated ones** — arithmetically possible with a **margin of ONE ROW** — and
+simultaneously required contamination to be **maximally predictive in movers and
+exactly zero in non-movers.**
+
+**Constraining it symmetrically instead — contamination lifts the positive rate
+by the SAME multiple `m` in both cohorts:**
+
+       m     clean movers   clean non-movers    clean gap
+     1.00          28.5%            13.6%       +14.9pp
+     2.00          22.1%            12.6%        +9.5pp
+     3.00          18.0%            11.8%        +6.3pp
+     5.00          13.2%            10.4%        +2.8pp
+     9.51           8.2%             8.2%        +0.0pp
+
+> **The gap stays POSITIVE until contamination is ~9.5x more predictive of a
+> positive catalyst.** The sign reversal needs an **asymmetry between cohorts
+> that nothing I measured supports** — and a 9.5x differential effect is far
+> outside anything the 3.8x attachment concentration implies.
+
+**SO "THE BAND SPANS ZERO" IS RETRACTED.** What survives: **the effect is
+attenuated under adverse assumptions — +9.5pp at 2x — and robust in SIGN.**
+
+**AND THAT CHANGES WHAT THE RE-RUN IS FOR.** I justified it as *"the observed
++14.9pp is not robust to the concentration."* **It is robust in sign.** If the
+work is still worth doing it is for a different reason — **the 3.8x and the 76%
+CONFLICT remain unexplained, and with hindsight excluded three ways by Research
+the live question is SELECTION versus ACCURACY, not contamination.** That is a
+smaller and better-posed question than the one I asked for.
+
+**A WORST CASE THAT IGNORES ITS OWN MEASUREMENT IS A HYPOTHETICAL, NOT A BOUND.**
+I computed the extreme corner and reported it beside a mid case, which reads as a
+range and is not one — **the corner was doing all the rhetorical work and it was
+the least defensible number in the table.** Third pooled-or-cornered rate of this
+stretch, and the first one a second reader caught rather than me.
+
+**TWO OF RESEARCH'S THREE POINTS I CANNOT ANSWER AND HAVE NOT GUESSED AT:**
+**versions-per-name split by ever-carrying-provenance** (if CONFLICT drives
+escalation or repair, contaminated names generate more versions and the
+per-version rate overstates the per-name rate), and **how the 20 both-cohort
+versions split on provenance** (they inflate the mover numerator and the
+non-mover denominator at once, pushing the ratio up from both ends). **Both are
+Ops's, both are one group-by, and neither has been requested.**
+
 #### CORRECTION: I conflated filing lag with fetch latency, and CIK resolution is 99.8%. 2026-09-04.
 
 **Integration pushed back on my latency argument and is right. Correcting `39caa8f`,
