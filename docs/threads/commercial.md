@@ -106,6 +106,17 @@ section above is stale.**
   packages both below the tape; Nasdaq Basic with NLS Plus is the one exchange
   product carrying both. The delay interval and Intrinio Startup's volume
   basis are settled only by a sign-up, which is his.
+- [`docs/commercial/2026-09-07-model-rate-card.md`](../commercial/2026-09-07-model-rate-card.md)
+  — Integration's rate-card task: OpenAI's published Standard-tier rates for
+  gpt-5.6-terra ($2.00 input / $0.20 cached / $12.00 output per 1M) and
+  gpt-5.6-luna ($0.20 / $0.02 / $1.20), from developers.openai.com, verified
+  in a rendered browser, dated by the changelog to the 2026-07-30 price cut.
+  Two lines the desk's counters cannot see: cache writes at 1.25x the input
+  rate (the API usage object records reads only), and a whole-request 2x/1.5x
+  multiplier past 272K input tokens. So a cost from the desk's own counters
+  is a band between $2.00 and $2.50 per million on uncached input, not a
+  number, until the console dashboard — his to open — supplies the write
+  count.
 
 **Method, so the next reader knows what the figures are worth.** Four research
 passes over public pages on 2026-09-07; **every load-bearing quotation and
