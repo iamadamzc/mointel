@@ -164,15 +164,22 @@ repo — they are public documents and re-fetchable.
 5. The CT Plan replaces CTA and UTP on 2027-04-01; migration began 2026-09-01.
 
 - [`docs/commercial/2026-09-08-product-name.md`](../commercial/2026-09-08-product-name.md)
-  — the naming research he asked for, routed by Integration: eight names
-  across the avoid and momentum angles, each with registry RDAP checks on
-  `.com` and five alternatives (timestamped 2026-09-07 22:28–22:32 UTC, with
-  positive controls), a web-search collision flag, and a say-it-aloud note.
-  **Pick: The Avoid** (theavoid.com and every alternative not in the registry
-  at the check, no collision found, his own word). Momentum alternative: Early
-  Tape. His-phrase alternative: WhyNot Desk. Correction carried: "Algo Trader
-  Plus" is Alpaca's plan name, not a working name. Nothing registered; the
-  purchase and any registrar enquiry are his.
+  — the naming research he asked for. **Reframed by him directly on
+  2026-09-08:** *"this is a depth tool. its intelligence. its not a scanner
+  but a smart desk. an assistant that give you depth on the moving market"*
+  — so the first pass on the avoid angle is kept as a record and The Avoid is
+  withdrawn as the pick. Second pass: eight names on the depth / intelligence
+  / smart-desk angle, registry RDAP checks on `.com` and five alternatives
+  (timestamped 2026-09-07 22:52–22:55 UTC, with positive controls), web-search
+  collision flags, say-it-aloud notes. **Pick: Desk Read** (the product's own
+  vocabulary; `.com` held since 2014 with no site, every alternative clear;
+  no collision). His-name alternative: Mointel (Madrid firm flag, spelling
+  tax). Story alternative: Why It Moves (MarketReader occupies the idea).
+  Landscape fact found on the way: **MarketReader** is a positioned occupant
+  of "intelligence, not a scanner" for investors at large. Corrections
+  carried: "Algo Trader Plus" is Alpaca's plan name; no name may borrow from
+  a data vendor. Nothing registered; the purchase and any registrar enquiry
+  are his.
 
 **Open items.**
 
