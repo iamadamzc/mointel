@@ -6669,14 +6669,22 @@ migration that wants both old and new streaming at once.
 decision rather than an engineering one.** A second connection does not degrade
 or share; the newer one takes the slot and the older is dropped with a 406.
 
-**But do not overstate it, which is what this entry first did.** Alpaca's wording
-is *"in many subscriptions (or without one) this limit is 1"* — **that leaves a
-higher individual limit UNPUBLISHED, not ruled out.** Commercial marks two things
-as unverified rather than closed:
+**This entry has now been wrong in both directions.** It first hardened
+*"in many subscriptions ... 1"* into *"not available"*; then it over-hedged to
+*"unpublished, not ruled out"*. Commercial has since searched both holes and one
+is closed:
 
-- whether a higher individual tier exists at all (no page states one)
-- **whether a second Alpaca account in the same name with its own subscription is
-  permitted — no page read addresses it**
+- **A higher individual tier: CLOSED.** None is published anywhere. Alpaca staff,
+  forum 2021-07-23, on the paid plan — *"a single websocket connection"*; and
+  2022-10-25 — *"Only one active real-time connection is allowed now."* The
+  Broker API is the only published multi-stream product. **Treat one connection
+  as the ceiling for any individual plan, including ours.**
+- **A second account in the same name with its own subscription: STILL OPEN, and
+  unresolvable from public pages.** No Alpaca page states a rule either way; the
+  Customer Agreement's "Multiple Accounts" clause covers only
+  securities-versus-crypto; a 2021 staff reply treated one user's two accounts as
+  a support matter. **Only an approach to Alpaca closes it — that is his call,
+  and Integration is sequencing it.**
 
 Published alternatives that do exist: **Broker API partner plans** (5–10 streams,
 but brokerage) and **Massive Business** (three connections, but a rebuild).
