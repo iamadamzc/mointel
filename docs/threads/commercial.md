@@ -116,7 +116,15 @@ section above is stale.**
   multiplier past 272K input tokens. So a cost from the desk's own counters
   is a band between $2.00 and $2.50 per million on uncached input, not a
   number, until the console dashboard — his to open — supplies the write
-  count.
+  count. **Corrected 2026-09-08:** the first version inferred the Standard
+  tier from a grep, which Integration rightly called a search standing in for
+  a value. The widened check: the request bodies are hand-built `fetch` calls
+  with no tier field, no SDK, no env var, no wrapper — the field is absent
+  from the wire — and OpenAI's reference says an absent field means *'auto'*,
+  which means *"the service tier configured in the Project settings"*,
+  *'default'* unless changed. So: Standard unless the console says otherwise,
+  and the response object's `service_tier` field would settle it from one
+  logged response — Research's path, sent to Research.
 
 **Method, so the next reader knows what the figures are worth.** Four research
 passes over public pages on 2026-09-07; **every load-bearing quotation and

@@ -7,11 +7,45 @@ only. No account, no console, no login-gated page, no contact.
 
 **Which models, from the repo:** `lib/research/config.ts:22` sets
 `DEFAULT_RESEARCH_MODEL = 'gpt-5.6-terra'`. `gpt-5.6-luna` appears only in the
-Research charter. Nothing in `lib/research/` sets a `service_tier`, so the
-desk's calls are billed at **Standard**. The counters the desk records are
-`usage.input_tokens` and `usage.input_tokens_details.cached_tokens`
-(`openaiInterpreter.ts:323`, `openaiDiscovery.ts:75`) — the second is **cache
-reads**, and the usage object carries no cache-write count.
+Research charter. The counters the desk records are `usage.input_tokens` and
+`usage.input_tokens_details.cached_tokens` (`openaiInterpreter.ts:323`,
+`openaiDiscovery.ts:75`) — the second is **cache reads**, and the usage object
+carries no cache-write count.
+
+**Which tier — corrected 2026-09-08 after Integration flagged the first
+version as a grep standing in for a fact.** The first version said *"nothing
+in `lib/research/` sets a `service_tier`, so the desk's calls are billed at
+Standard."* That was a search result presented as a value, and the tiers
+span 4x. The widened check, and what it does and does not prove:
+
+- **The request bodies are hand-built and carry no tier field.** Both callers
+  POST directly to `https://api.openai.com/v1/responses` with `fetch`
+  (`openaiInterpreter.ts:30,248-292`; `openaiDiscovery.ts:32,151-187`); the
+  interpreter's body is `model`, `instructions`, `input`, `tools: []`, `text`,
+  `store: false`, `metadata`. There is no SDK client, no constructor default,
+  no wrapper, and no environment variable read for a tier anywhere in the
+  repo. So the channels a grep of one directory could have missed do not
+  exist here. **The field is absent from the wire.**
+- **What OpenAI does when it is absent, from the API reference (chat
+  completions `create`, `service_tier`), verbatim:** *"When not set, the
+  default behavior is 'auto'."* *"If set to 'auto', then the request will be
+  processed with the service tier configured in the Project settings. Unless
+  otherwise configured, the Project will use 'default'."* *"If set to
+  'default', then the request will be processed with the standard pricing and
+  performance for the selected model."* And the Fast-mode guide: a project can
+  be configured so that *"Requests that don't specify a `service_tier` then
+  default to Fast mode."*
+- **So the tier is Standard unless the Project setting in the console says
+  otherwise, and the console is his.** The code cannot settle it and this seat
+  cannot open it. **What can settle it without the console:** the reference
+  says the response *"will include the `service_tier` value based on the
+  processing mode actually used to serve the request"*, and the Fast-mode
+  guide says that field *"identifies the tier used to process the request."*
+  One logged response answers it. That is Research's request path and
+  Research's to read.
+
+Everything below quotes the **Standard** column on that basis: absent from the
+wire, defaulting to the project setting, verified by nobody yet.
 
 ## THE CARD — Standard tier, USD per 1M tokens, verified 2026-09-07
 
@@ -93,6 +127,10 @@ OpenAI's changelog (developers.openai.com/api/docs/changelog):
 - Any volume discount or negotiated rate: none is published on the pricing
   page; the ChatGPT business pricing page offers *"volume discounts"* only
   under Enterprise, contact sales.
+- **The Project's configured default tier.** The bodies omit the field, so
+  OpenAI applies the Project setting; that setting lives in the console. The
+  response object's `service_tier` field reports the tier actually used, and
+  a single logged response would close this — Research's path.
 
 ## SOURCES
 
