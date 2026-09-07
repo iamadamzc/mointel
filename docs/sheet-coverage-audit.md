@@ -21,6 +21,17 @@ parser does not read, that is itself an answer worth recording.
 | **PRODUCIBLE** | The inputs exist; nothing assembles them yet. |
 | **NEW WORK** | Needs collection or capability the desk does not have. |
 
+**Verdict cells now carry the Sheet's PARSE RATE beside the desk verdict, added
+by R&D 2026-09-07.** They are two axes: **the verdict is what the DESK can
+produce; the rate is what the SHEET actually delivers.** A cell reading
+`PRODUCED (desk) · SHEET NULLS IT` means the desk can compute it and the Sheet's
+value never arrives — **the cheapest thing on this table to retire, because he is
+already living without it.**
+
+**TODAY rates are n=7 on ONE SNAPSHOT of a SHUT MARKET and are INDICATIVE.** The
+RESEARCH rates at n=226 are the ones that carry weight. `0 of 7` has a 95% upper
+bound of **35.4%**.
+
 Annotation columns are deliberately empty. **`live?`** is R&D's — irreplaceable if
 not captured in the moment, versus re-fetchable later. **`defs`** flags a field
 with more than one possible definition, which per R&D's rule ships with its basis
@@ -39,24 +50,24 @@ surface renders can still be the only witness to a question nobody has asked yet
 | B | Ticker | PRODUCED | `ticker_session` | REFETCH | — | board + drawer |
 | C | Country of Origin | PRODUCED | `issuer_registry.country`, from SEC | REFETCH | — | drawer |
 | D | Cycle | PRODUCED | `computedCycle.current.phase` — arithmetic since `97b4caa` | REFETCH | ✓ | board + drawer — cycle chip |
-| E | RTH Close | PRODUCED | `rth_final_close` / `reference_rth_close` | REFETCH | ✓ | drawer |
-| F | AH Price | PRODUCED | `ticker_session` AH fields | REFETCH | **+** | **—** |
-| G | AH % | PRODUCED | `ah_percent_change` | REFETCH | ✓ | board — as *Move*, after hours |
-| H | AH Volume | PRODUCED | `ah_volume` | REFETCH | **+** | history |
-| I | **Float** | **NEW WORK** | **nothing. Phase C.** Sole source is this column | MOMENT\* | ✓ | board (float sort only) + drawer |
+| E | RTH Close | PRODUCED · Sheet parses 100% of 7 | `rth_final_close` / `reference_rth_close` | REFETCH | ✓ | drawer |
+| F | AH Price | PRODUCED · Sheet parses 100% of 7 | `ticker_session` AH fields | REFETCH | **+** | **—** |
+| G | AH % | PRODUCED · Sheet parses 100% of 7 | `ah_percent_change` | REFETCH | ✓ | board — as *Move*, after hours |
+| H | AH Volume | PRODUCED · Sheet parses 100% of 7 | `ah_volume` | REFETCH | **+** | history |
+| I | **Float** | **NEW WORK** · Sheet parses 57% of 7 | **nothing. Phase C.** Sole source is this column | MOMENT\* | ✓ | board (float sort only) + drawer |
 | J | Catalyst Grade | PRODUCED | `catalyst.catalystGrade` | MOMENT | ✓ | drawer |
 | K | Catalyst | PRODUCED | `catalyst.summary` | MOMENT | — | board — *Why* cell; drawer |
 | L | Catalyst Time | PRODUCED | `catalyst.eventTimestamp` | MOMENT\* | ✓ | drawer |
-| M | Recent Run High | PRODUCED | `computedCycle.current.cycleHigh` — was 12% of dossiers before | REFETCH | ✓ | drawer — via `cycleLevels` |
-| N | Flush From High % | PRODUCED | `retracementPct` (of the move) and `givebackPct` (below the high) | REFETCH | ✓ | drawer — **hover only** |
+| M | Recent Run High | **PRODUCED (desk)** · **SHEET NULLS IT** — Sheet parses **0% of 7** | `computedCycle.current.cycleHigh` — was 12% of dossiers before | REFETCH | ✓ | drawer — via `cycleLevels` |
+| N | Flush From High % | **PRODUCED (desk)** · **SHEET NULLS IT** — Sheet parses **14% of 7** | `retracementPct` (of the move) and `givebackPct` (below the high) | REFETCH | ✓ | drawer — **hover only** |
 | O | Prior Runner | PRODUCED | `formerRunnerStatus` + `priorCycles[]` | REFETCH | ✓ | drawer |
 | P | Structure Flags | PRODUCED | `structure.structuralWarnings` + classification | REFETCH | **+** | board — risk chip; drawer |
 | Q | Key Levels | PRODUCIBLE | `priceLevels` / `cycleLevels` derive some; not assembled as one field | REFETCH | ✓ | drawer |
 | R | Warning Shot | PRODUCIBLE | warnings exist; the Sheet's is prose synthesis over them | MOMENT | — | board — risk chip; drawer |
 | S | Notes | NEW WORK | free prose | MOMENT | — | drawer |
-| T | PM Price | PRODUCED | `pm_price` | REFETCH | **+** | board — as the live price, premarket |
-| U | PM % | PRODUCED | `pm_change_pct` | REFETCH | ✓ | board — as *Gap*, premarket |
-| V | PM Volume | PRODUCED | `pm_volume` | REFETCH | **+** | board — as Volume, premarket |
+| T | PM Price | PRODUCED · Sheet parses not written | `pm_price` | REFETCH | **+** | board — as the live price, premarket |
+| U | PM % | PRODUCED · Sheet parses not written | `pm_change_pct` | REFETCH | ✓ | board — as *Gap*, premarket |
+| V | PM Volume | PRODUCED · Sheet parses not written | `pm_volume` | REFETCH | **+** | board — as Volume, premarket |
 | W | PM Catalyst/Update | PRODUCED | catalyst refresh at the premarket checkpoints | MOMENT | — | drawer — folded into `catalyst.latest` |
 | X | PM Catalyst Time | PRODUCED | `catalyst.eventTimestamp` | MOMENT\* | ✓ | drawer — with W |
 | Y | Confirmation | NEW WORK | a judgement on whether premarket confirmed the thesis | MOMENT | — | drawer |
@@ -71,20 +82,20 @@ surface renders can still be the only witness to a question nobody has asked yet
 | 2 | Ticker | PRODUCED | | REFETCH | — | board + drawer |
 | 3 | Country of Origin | PRODUCED | `issuer_registry` | REFETCH | — | drawer |
 | 4 | Company | PRODUCED | `issuer_registry.company_name` | REFETCH | — | drawer |
-| 5 | RTH Close | PRODUCED | | REFETCH | ✓ | drawer |
-| 6 | AH Price | PRODUCED | | REFETCH | **+** | **—** |
-| 7 | AH % | PRODUCED | | REFETCH | ✓ | **—** |
-| 8 | AH Volume | PRODUCED | | REFETCH | **+** | history |
-| 9 | **Float** | **NEW WORK** | **nothing. Phase C.** | MOMENT\* | ✓ | board (float sort only) + drawer |
+| 5 | RTH Close | PRODUCED · Sheet parses 99% of 224 | | REFETCH | ✓ | drawer |
+| 6 | AH Price | PRODUCED · Sheet parses 68% of 192 | | REFETCH | **+** | **—** |
+| 7 | AH % | PRODUCED · Sheet parses 76% of 172 | | REFETCH | ✓ | **—** |
+| 8 | AH Volume | PRODUCED · Sheet parses 54% of 152 | | REFETCH | **+** | history |
+| 9 | **Float** | **NEW WORK** · Sheet parses 69% of 188 | **nothing. Phase C.** | MOMENT\* | ✓ | board (float sort only) + drawer |
 | 10 | Float Source Date | NEW WORK | follows Float | MOMENT\* | **+** | drawer |
 | 11 | Float Source URL | NEW WORK | follows Float; today always stockanalysis.com | MOMENT\* | — | drawer — link list |
-| 12 | Shares Outstanding | PRODUCED | `SEC_COMPANY_FACTS`, surfaced to the model since `55f3e20` | REFETCH | ✓ | drawer |
+| 12 | Shares Outstanding | PRODUCED · Sheet parses 56% of 185 | `SEC_COMPANY_FACTS`, surfaced to the model since `55f3e20` | REFETCH | ✓ | drawer |
 | 13 | Catalyst Details | PRODUCED | `catalyst.summary` | MOMENT | — | drawer |
 | 14 | Catalyst Timestamp | PRODUCED | `catalyst.eventTimestamp` | MOMENT\* | ✓ | drawer |
 | 15 | Catalyst Grade | PRODUCED | `catalyst.catalystGrade` | MOMENT | ✓ | drawer |
 | 16 | Catalyst Source URL | PRODUCED | `evidenceSourceIds` → `research_sources.url` | MOMENT\* | — | drawer — link list |
-| 17 | Recent Cycle High | PRODUCED | `computedCycle.current.cycleHigh` | REFETCH | ✓ | drawer — via `cycleLevels` |
-| 18 | Flush From High % | PRODUCED | `retracementPct` / `givebackPct` | REFETCH | ✓ | drawer — **hover only** |
+| 17 | Recent Cycle High | **PRODUCED (desk)** · **SHEET NULLS IT** — Sheet parses **32% of 190** | `computedCycle.current.cycleHigh` | REFETCH | ✓ | drawer — via `cycleLevels` |
+| 18 | Flush From High % | **PRODUCED (desk)** · **SHEET NULLS IT** — Sheet parses **44% of 177** | `retracementPct` / `givebackPct` | REFETCH | ✓ | drawer — **hover only** |
 | 19 | Cycle Classification | PRODUCED | `computedCycle.current.phase` | REFETCH | ✓ | drawer |
 | 20 | Cycle Reasoning | NEW WORK | prose. The arithmetic gives numbers, not narrative | MOMENT | — | drawer |
 | 21 | Recent Major Runs | PRODUCED | `priorCycles[]` with dates and advances | REFETCH | ✓ | drawer |
@@ -328,6 +339,50 @@ the thing that ships them.**
 > **Six empty columns would look like preparation and function as a placebo.**
 
 ---
+
+### R&D — the closed-grammar rule applied to all 64, derived from the code. 2026-09-07.
+
+**Integration asked which OTHER fields are at risk by their semantics. Measured
+against the parsers instead, and the answer is narrower than a semantic guess:
+ONLY THE NUMERIC ONES CAN FAIL THIS WAY.**
+
+**`parseNumber` is the only fully anchored parser on this path.** Every other
+one is a SUBSTRING or PREFIX matcher and is **deliberately narration-tolerant:**
+
+    parseNumber        ^...$  closed grammar          <- THE ONLY ANCHORED ONE
+    parseDateValue     .match(/\d{4}-\d{2}-\d{2}/) anywhere, then Date.parse
+    cycleState         .includes('BACKSIDE') etc
+    structureState     .includes('DIRTY FLOAT') etc
+    priorityBucket     /^([ABC])/ — prefix-anchored, tolerates a trailing clause
+    proseCell          text, cannot fail
+
+**CONFIRMED RATHER THAN ASSERTED — the non-numeric census, same live snapshot:**
+
+    catalystTimestamp / reportDateValue / floatSourceDate     226/226   100%
+    all prose and URL fields (notes, analystNotes, ...)       226/226   100%
+    overallPriorityBucket                                     216/226    96%
+    cycleState                                                193/226    85%
+
+> **So the at-risk set is EXACTLY the nine numeric fields, and there is no
+> unmeasured tail to predict over.** The narration that kills a number is
+> invisible to a substring matcher — **the Sheet's model narrating everything is
+> only a defect where the parser is anchored.**
+
+**THE THREE UNMEASURED NUMERIC FIELDS ARE THE PM SET — T, U, V.** Not written
+tonight because the market is shut. **By the rule they carry identical risk to
+the AH set, which measures 54..76%**, and they are the fields he reads at 07:00.
+**Predicted at risk, unmeasured, and named so nobody reads a blank as a pass.**
+
+**A SECOND-ORDER FINDING THAT IS NOT THIS DEFECT AND MUST NOT BE FILED AS IT.**
+
+    floatQualityRaw    211/226 present   100% carries text
+    floatQualityState  226/226 present    51% classified
+
+**`structureState` recognises exactly three phrases** — `DIRTY FLOAT`, `UNKNOWN`,
+`CLEAN` — so 111 of 226 written float-quality cells classify as `UNCLASSIFIED`
+**with their text intact.** That is a **vocabulary gap in a tolerant matcher**,
+not an anchored-grammar null: **the value reaches the desk and is not
+understood**, which is a different failure with a different fix. Field 35.
 
 ### R&D — parse census against the live Sheet. 2026-09-07.
 
