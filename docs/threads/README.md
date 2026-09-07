@@ -8403,6 +8403,49 @@ amount of care inside the sample would have surfaced it.**
 
 **A sample can be free of pooling and still be about a world that has ended.**
 
+**And the half that makes it usable, from Research: it is a boundary in the
+SOURCE rather than in the MEASUREMENT, so every internal consistency check
+passes.** Homogeneity tests, era partitions, pooling checks — **all of them look
+inside the sample, and the thing that invalidates it happened outside.**
+
+**The author had written the bound that predicted this** — *"a desk type's first
+appearance dates when the DESK started, not when the SHEET TASK stopped"* —
+**called it not-proof, and then drew a conclusion that required it not to bind.**
+Stating a limitation is not the same as carrying it into the next inference.
+
+### Which makes the replay's value asymmetric, and that is worth knowing before paying
+
+**Today's prior is a strict subset of the sample era's** — 22:00 only, no 06:10
+revision — **so today's dependence is at most the sample's.** The two outcomes are
+not equal purchases:
+
+    edge SURVIVES without the prior -> DECISIVE for today. Today's prior is
+                                       weaker still, so today cannot depend on it.
+    edge COLLAPSES                  -> A BOUND, not a measurement. Today's
+                                       dependence is AT MOST that.
+
+**Full value for the result that would close the question, partial for the one
+that would open it. If a collapse is the expected outcome, it buys less than its
+price suggests.**
+
+**Not an argument against running it — an argument for knowing which outcome you
+are buying before you pay.**
+
+### And the partition query turned out to be runnable, checked rather than assumed
+
+`observedAt` was expected to be degenerate here: every prior fetched during a
+session is post-06:10, so one bucket. **`worker/research.ts:203` says otherwise —
+the 22:00 recap queues for the NEXT session, so the worker processes overnight
+and priors are fetched between 22:00 and 06:10.**
+
+    observedAt BEFORE 06:10 ET  -> definitely the 22:00 write, un-revised
+    observedAt AT OR AFTER      -> possibly revised, and unknowable which
+
+**Asymmetric and real — and it carries the discriminating question:** if the 3.8×
+sits on pre-06:10 priors the effect is in the **surviving** task and the replay
+transfers; if it sits on post-06:10 priors it may be the **retired** revision,
+**and the replay prices a capability already lost.**
+
 ## A PROPOSED QUERY SHOULD ARRIVE WITH THE FIELD IT DEPENDS ON NAMED
 
 **Research, 2026-09-07**, catching its own falsifier before it reached Ops.
