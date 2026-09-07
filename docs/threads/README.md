@@ -8247,3 +8247,64 @@ only for the historical ones.
 
 **A much less alarming finding and a truer one** — and it goes **with** the
 result rather than after it.
+
+## REMOVING THE PRIOR CHANGES THE POPULATION, NOT ONLY THE CONTENT
+
+**Research, 2026-09-07, correcting an Integration design before it was approved.**
+
+*"Edge collapses → his judgement is producing it; edge survives → the desk is"*
+**assumes the only thing removing the prior changes is the prior's content.**
+
+**It also changes the population.** The prior is on **29.2%** of mover-attached
+versions and absent on **70.8%**. **A collapse in the POOLED edge is consistent
+with the prior carrying the detection AND with the prior-bearing names simply
+being different names.**
+
+**So the replay must compare WITHIN the prior-bearing subset — the same names,
+with and without.** A pooled before-and-after **cannot separate content from
+composition.**
+
+**Same class as the coverage span mismatch caught hours earlier**, arriving in the
+design of the experiment meant to settle it.
+
+## HAVING A PRIOR AT ALL IS A SELECTION, NOT A JUDGEMENT
+
+**A candidate for the unexplained 3.8×, shipped with its own falsifier.**
+
+**The Sheet only contains names he researched at 22:00 — names that were already
+after-hours movers the night before.** If last night's after-hours movers are more
+likely to be today's movers — **which is the entire premise of the 22:00 task** —
+then mover-attached versions carry priors more often **for reasons that say
+nothing about the prior's content.**
+
+**The check that kills it:** compare the prior-attachment rate against the rate at
+which **sheet-listed** names appear in each group. **If sheet membership explains
+it, 3.8× is the base rate of the Sheet's own population and there is nothing to
+explain.**
+
+**Offered as a candidate with its falsifier attached, explicitly because it is
+attractive for the same reason the last two were.**
+
+## THE MEASUREMENT RAN DAILY FOR MONTHS AND WAS RETIRED
+
+**The 16:15 task graded his calls against outcomes** — and he preserved the
+earlier columns **specifically so it could do that without hindsight.**
+
+**That is the measurement.** It ran every session, it was built for exactly the
+question a thirteen-session model run was being proposed to answer, **and it
+predates the replay by months.**
+
+**And the replay answers something narrower** — whether the *desk's* detection
+depends on him, not whether his judgement is right. **Both are worth having and
+they are not the same question**, so the design must say which one it is buying.
+
+**Third time in three hours that a question was cheaper than a measurement.**
+
+### And one of the three boundary dates may already be in hand
+
+**Ops harvested PATTERNS on 2026-09-05 and reported the tab stale at
+2026-08-21.** That is a candidate boundary for the 16:15 retirement, **found
+already, in data, by work done for an unrelated reason.**
+
+**Before commissioning a search, check what the desk has already read for
+something else.**
