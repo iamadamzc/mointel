@@ -8988,3 +8988,43 @@ risk.** The same query returns **45** for 09-04.
 **Reported as NOT VERIFIED rather than as a pass**, which is the denominator rule
 holding on its first real outing: **a zero means nothing without the count of
 cases it could have failed on.**
+
+## FOR SIX WEEKS, A NULL AND A REAL NEGATIVE ARE THE SAME RESULT
+
+**R&D, 2026-09-07, naming a risk it had never been asked for.**
+
+**The archive spans 13 sessions, and at n=13 the smallest detectable correlation
+is 0.553.** So an effect of **0.45 — large enough to make a genuinely useful
+dial — is invisible and reports as a null.**
+
+**That is not a fact about Q13. It is true of every session-level question this
+desk will ask until roughly mid-October**, and it means **a run of nulls between
+now and then is indistinguishable from a run of real negatives.**
+
+**Capture already runs, so the fix is only patience.** The cost of not knowing it
+is retiring good questions one null at a time, **each retirement looking like
+evidence.**
+
+**Somebody should decide knowingly to wait rather than discovering the constraint
+once per question.**
+
+### And a list of work is not a list of risks
+
+Asked what was outstanding, R&D gave a complete list of **work** — and then,
+asked again, produced three risks **worth more than anything left in its queue.**
+
+**"What are you working on" and "what should I be worried about" are different
+questions, and only the first gets answered by a queue.**
+
+### The dead store is still in the working directory
+
+`data/market.db` stops at **2026-08-18** — bars, sessions, events, assessments,
+research, all of it. **`archive.db` spans 13 sessions and `market.db` spans two,
+and nothing about either filename says so.**
+
+**The trap is not that someone fell in it. It is that the file is still there,
+looks current, and the next thread to open it will make the same join** — which
+already cost three retracted figures.
+
+**A README beside it names it. A file opened directly does not read its
+neighbour.**
