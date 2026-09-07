@@ -11431,3 +11431,73 @@ wrong.**
 Agreement between two computations sharing an assumption is not corroboration —
 **the match confirms the arithmetic and says nothing about whether those rows are
 short-circuits.** They are now known NOT all to be.
+
+**106e. THE DICHOTOMY IS A TRICHOTOMY, AND BOTH OF INTEGRATION'S BRANCHES ARE
+EXCLUDED FROM CODE. THE SURVIVOR IS THE ONE NOBODY HAS TESTED.**
+
+*Ops characterised the 72: **15 distinct dates, 08-17 → 09-08, `accepted_at` set
+on all, `evidence_fingerprint` present on all, and only 4 have a paid sibling on
+the same fingerprint.** Integration ruled it ahead of pricing and the backfill.*
+
+### (b) — `ACCEPTED` WITHOUT THE WORK — IS EXCLUDED
+
+**`interpret()` is two lines: `return this.call(buildInput(bundle))`.**
+`call()` returns early only on `!this.available`, and **that branch returns
+`dossier: null`**, which reaches `outcome: 'FAILED'` at line 228 — not
+`ACCEPTED`.
+
+**And there are exactly two implementations of `ResearchInterpreter` in the
+repo** — `NoopInterpreter` (`available = false`, cannot produce a dossier) and
+`OpenAiInterpreter`. **No third, no stub, no cache in the path.**
+
+**So a dossier requires a real HTTP call, and `ACCEPTED` at line 453 requires a
+dossier.** *The correctness defect Integration was right to fear is not there.*
+
+### (a) — A LEGITIMATE FREE PATH — IS EXCLUDED BY THE SAME READING
+
+**There is no route to `ACCEPTED` that bypasses `interpret()`.** Line 453 sits
+unconditionally downstream of line 218. **A deterministic no-model path would
+have to exist as a third branch and it does not exist.**
+
+### SO THE SURVIVOR IS (c): THE CALLS HAPPENED AND THE ROWS ARE NOT JOINABLE
+
+```ts
+recordModelUsage(db, { …, jobId: options.jobId ?? null, … });
+```
+**wrapped in a `catch {}` that swallows the write.**
+
+**AND OPS'S SIBLING TEST DOES NOT TOUCH IT.** *"Another job paid for it"* is a
+different hypothesis from *"this job paid and the row lost its job id"* — **a
+lost `job_id` needs no sibling, so 68-of-72 having none excludes the first and
+says nothing about the second.**
+
+**INTEGRATION'S TWO OUTCOMES ARE THREE, AND THE THIRD IS THE ONLY ONE STILL
+STANDING — and it is the one I named two messages ago and nobody has run.**
+
+### THE DECISIVE QUERY, BETTER THAN THE COUNT I GAVE EARLIER
+
+**For the 72 `(ticker, trading_date)` pairs, are there `model_usage` rows with
+`job_id IS NULL`?**
+
+- **Matching orphan rows exist** → (c) confirmed. **An ACCOUNTING defect, live
+  three weeks, costing visibility rather than money.**
+- **No orphan rows at all** → **(c) dies too, my code reading is wrong somewhere,
+  and this becomes the most serious open item on the desk.**
+
+**A bare `COUNT(*) WHERE job_id IS NULL` is weaker — it would show orphans exist
+without tying them to these jobs.**
+
+### AND I AM FLAGGING MY OWN COMFORT
+
+**(c) is the reassuring branch in correctness terms, and I arrived at it by
+excluding the other two rather than by evidence for it.** Integration's warning
+applies to me: **tonight has twice gone the other way.** *(c) is the survivor of
+an elimination, not a finding, until those orphan rows are seen.*
+
+### THE DATE FIELD, PER INTEGRATION'S REQUEST
+
+**`research_jobs` carries `trading_date` AND wall-clock `queued_at`,
+`started_at`, `completed_at`.** *"15 dates ending 09-08"* means something
+different in each. **Ops has grouped on `trading_date` all night, so that is the
+likely field — I have not confirmed it and I am not quoting the range until Ops
+says which.**
