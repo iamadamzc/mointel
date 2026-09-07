@@ -11009,3 +11009,63 @@ of lucky.**
 a list of checks can share an axis. This says two ANSWERS can share an input,
 **and the second is harder to see because agreement feels like evidence in a way
 a list does not.***
+
+## A prediction with no threshold is a story wearing the shape of one
+
+Design had pre-registered read 4 as **"expect FEW NEW HIGH rows."**
+
+**"Few" has no threshold, so every possible observation confirms it** — one is few,
+twelve is arguably few, zero is few. **It would have been read at the board, matched
+against nothing, and reported as a pass.**
+
+**That is worse than no prediction, because it has the form of one and none of the
+content**, and it satisfies whoever wrote it that a test exists.
+
+**The test for a pre-registration is the same test as for an explanation: could the
+observation have come out failing?** If no threshold, no interval and no direction
+is stated, the answer is no.
+
+**And when the data cannot produce a prior, do not invent one.** Picking a number
+to feel pre-registered is the generator exactly — answering from evidence that
+cannot answer — **and it is tempting precisely because a number looks more rigorous
+than no number.**
+
+**The honest move is to demote the read: MEASURE first, TEST second, and say in the
+report which one is being done.** Design's read 4 now reports NEW HIGH count, OFF
+HIGH count and `sessionHigh > cycleHigh` rows, raw, over the board denominator —
+**it establishes the base rate and does not test one.** It becomes a test on the
+read after it.
+
+## The local store is frozen, and a frozen store answers confidently
+
+```
+ticker_session    LOCAL 25,789 rows      PRODUCTION 143,142
+```
+
+**Every local table is frozen at 2026-08-18** — three weeks stale at the time of
+writing. Local `PARTIAL` at 53% against production's actual 72% is the size of the
+gap.
+
+**What makes it dangerous rather than merely limited: a figure computed locally
+looks completely normal** — right shape, right columns, plausible magnitude, and
+wrong. **There is no marker on a stale store.** Second time this has caught the
+desk.
+
+**Any number from the local store is a shape. Production figures come through the
+thread that can query production.**
+
+## Overwritten is not merely unrecorded
+
+`ticker_session` has PK `(symbol, trading_date)` — **25,789 rows, 25,789 distinct
+pairs.** It is a snapshot updated in place.
+
+**So there is no intraday state stored at ANY date, and unfreezing the local store
+would not help.** The history was never written; it was **overwritten**.
+
+**Before planning a query that reconstructs how a value changed during a session,
+check whether the source has one row per state or one row per entity.** A table
+with one row per name per day cannot say what a field looked like at 07:00 —
+**not because the data is old, but because that shape has never existed.**
+
+**"We have the data, it is just stale" and "the data was never kept" require
+completely different responses**, and only the first is fixable by refreshing.
