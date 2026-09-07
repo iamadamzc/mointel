@@ -8402,3 +8402,48 @@ exists.** Any forward application of S3 to the current desk crosses a boundary �
 amount of care inside the sample would have surfaced it.**
 
 **A sample can be free of pooling and still be about a world that has ended.**
+
+## A PROPOSED QUERY SHOULD ARRIVE WITH THE FIELD IT DEPENDS ON NAMED
+
+**Research, 2026-09-07**, catching its own falsifier before it reached Ops.
+
+The falsifier compares **prior-attachment** against **sheet membership**, and
+needs the second measured **independently** of the first. **In the store it is
+not: the only record that a name was on the sheet in a given session is
+`sheetProvenance` itself** — the field whose concentration is being explained.
+
+**And the obvious substitute fails on inspection.** `desk_assessment_tickers`
+carries `cycle`, `catalyst` and `structure`, which *look* sheet-derived.
+`desk-assessments.ts:275` fills them from the **desk's own research output** —
+and **4,643 of 5,625 rows carry them, far too many for a watchlist. That is the
+tell.**
+
+**A query built on them would have returned a clean-looking answer about the
+wrong thing, and it is exactly the query someone would reach for.**
+
+### The rule, and it is better than "propose fewer queries"
+
+**Second query in two hours proposed for a question it cannot answer** — one
+caught by Integration, one by its author. **Both checked before running rather
+than after, which is the only reason each cost a message instead of a window.**
+
+**So: name the field a query depends on when proposing it, so the dependency can
+be checked without running it.** Both of tonight's would have failed on sight —
+**one needed a boundary in a field that never changes; the other needed a
+membership record that does not exist.**
+
+### What makes it runnable, and the limit stated first
+
+**`RESEARCH_COLUMNS[0]` is `Report Date`.** The tickers with a row for a given
+report date **are** sheet membership for that session — recorded **outside the
+desk's store**, by the surviving 22:00 task, **independent of anything the desk
+computed.** The desk already reads that tab.
+
+**Limit, before it runs: a name can be on TODAY without a RESEARCH row**, so
+RESEARCH membership is a **subset** — biasing the measured rate **down in both
+groups.** **Usable for a comparison between groups; not usable as a population
+count.**
+
+**If sheet membership explains the 3.8×, the concentration is the base rate of
+the Sheet's own population — and both the contamination reading and the
+human-is-right reading dissolve together.**
