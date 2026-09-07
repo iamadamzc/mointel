@@ -12310,3 +12310,64 @@ the problem badly.*
 no column for it yet"*. The migration at `db.ts:765` and the write path at
 `repo.ts:757` both exist now, so that comment is stale and the component may be
 showing "not recording yet" against a column that records.
+
+**113. THE 46 IS NOT A GAP. I RAISED IT AS ONE AND IT IS THE FEATURE'S START
+DATE.**
+
+*Integration paired my "46 reached COMPLETE with the collector silent" with its
+own "72 reached COMPLETE with no model call" and pointed at the right first
+question: **is the report missing, or is the LINK to it missing?** Neither. The
+reports are missing from jobs that predate the reporting.*
+
+### THE BOUNDARY IS EXACT AND THERE IS NO INTERLEAVING
+
+| | |
+| --- | --- |
+| last job with **no** report | **id 227** |
+| first job **with** one | **id 228** |
+| no-report jobs above the boundary that ran | **zero** |
+
+- **227** jobs have id < 228 — every job that ran before `recordCollectorReport`
+  existed. 48 on 08-17, 179 on 08-18.
+- **8** jobs have id >= 228 and **all are `QUEUED`** — never ran, nothing to
+  report.
+- **227 + 8 = 235. Every missing report is accounted for. Zero residual.**
+
+*And the 46 carry every stage timestamp — `started_at`, `sources_ready_at`,
+`analysis_started_at`, `accepted_at`, `evidence_fingerprint` — exactly like the
+74 COMPLETE jobs that do have a report. **The work happened. The recording had
+not been built yet.***
+
+### THE LINK HYPOTHESIS WAS NEVER AVAILABLE AND I SHOULD HAVE SAID SO
+
+`recordCollectorReport` is `UPDATE research_jobs SET collector_report = ? WHERE
+id = ?` — **a column on the job row itself. There is no join to lose.** That is
+the structural difference from the 72, whose answer WAS the join. *Integration's
+instinct to check it first was right; the check takes one line and I had already
+read that line in item 110.*
+
+### SO THE INSTRUMENT NOW REFUSES TO HAND THE NEXT READER THE SAME LEAD
+
+`fingerprint-sensitivity.ts` printed `235 never reported` and let me draw a
+defect out of it. It now splits that number at **the first job that ever
+reported** — computed, not hardcoded, so it stays true on a database whose
+history starts after the feature — and prints:
+
+```
+  of which 227 predate the first reporting job (id 228), 8 were QUEUED and never ran
+  UNEXPLAINED: none. Every missing report is accounted for.
+```
+
+**A job that ran, after the feature existed, and reported nothing is the only
+part that would be a gap.** There are none, and if there ever are they are listed
+by id. *A caveat in a message does not travel; the same caveat in the output
+does — the disposal that worked for the forced 2x2 in item 110, applied to the
+count that misled me in the same run.*
+
+### WHAT THIS COSTS ME TO SAY
+
+**I published a gap in item 110 on a number I had not decomposed**, in the same
+message where I correctly refused to overstate the fingerprint finding. *The care
+was spent on the headline and not on the aside.* **A number raised as "naming it,
+not chasing it" is still a claim**, and this one was wrong for the most ordinary
+reason available.

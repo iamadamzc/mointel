@@ -200,12 +200,30 @@ function main(): void {
   /* A job with no report is not one fact. Broken out by status so a job that
    * never ran is not counted beside one that ran and reported nothing. */
   const silentByStatus = new Map<string, number>();
+  const silentJobs: JobRow[] = [];
+
+  /*
+   * THE FIRST JOB THAT EVER REPORTED, WHICH IS WHERE THE FEATURE BEGINS.
+   *
+   * Reported because the raw count is a false lead and handed me one: 46 jobs
+   * reached COMPLETE with no collector report, which reads as a stage that
+   * silently produced nothing. Every one of them predates
+   * `recordCollectorReport`. Job ids below this boundary could not have
+   * reported; the absence is the feature's start date, not a gap.
+   *
+   * Left as a computed boundary rather than a hardcoded id so it stays true on
+   * any database, including one whose history starts after the feature.
+   */
+  const firstReportingId = jobs.find((job) => job.collector_report !== null)?.id ?? null;
 
   for (const job of jobs) {
     const report = parseReport(job.collector_report);
     if (!report) {
       if (job.collector_report) unparseable += 1;
-      else silentByStatus.set(job.status, (silentByStatus.get(job.status) ?? 0) + 1);
+      else {
+        silentByStatus.set(job.status, (silentByStatus.get(job.status) ?? 0) + 1);
+        silentJobs.push(job);
+      }
       continue;
     }
 
@@ -248,6 +266,42 @@ function main(): void {
       .map(([status, count]) => `${status}=${count}`)
       .join('  ');
     console.log(`  never reported, by job status: ${shape}`);
+
+    /*
+     * AND WHAT THE COUNT ABOVE IS ACTUALLY MADE OF, BECAUSE IT IS A FALSE LEAD.
+     *
+     * Split at the first job that ever reported. Below it the feature did not
+     * exist; above it a QUEUED job never ran and had nothing to report. What
+     * remains — a job that ran, after the feature existed, and reported nothing
+     * — is the only part that is a gap, and it is named separately so nobody
+     * else chases the whole number.
+     */
+    const preFeature = firstReportingId === null ? 0 : silentJobs.filter((j) => j.id < firstReportingId).length;
+    const neverRan = silentJobs.filter(
+      (j) => (firstReportingId === null || j.id >= firstReportingId) && j.status === 'QUEUED',
+    ).length;
+    const unexplained = silentJobs.filter(
+      (j) => firstReportingId !== null && j.id >= firstReportingId && j.status !== 'QUEUED',
+    );
+
+    console.log(
+      `  of which ${preFeature} predate the first reporting job (id ${firstReportingId ?? 'none'}), ` +
+        `${neverRan} were QUEUED and never ran`,
+    );
+    if (unexplained.length === 0) {
+      console.log('  UNEXPLAINED: none. Every missing report is accounted for.');
+    } else {
+      console.log(
+        `  **UNEXPLAINED: ${unexplained.length}** — ran after the feature existed and ` +
+          'reported nothing. This is the only part that is a gap:',
+      );
+      for (const job of unexplained.slice(0, args.limit)) {
+        console.log(`    job ${job.id}  ${pad(job.ticker, 7)} ${job.trading_date}  ${job.status}`);
+      }
+      if (unexplained.length > args.limit) {
+        console.log(`    ... and ${unexplained.length - args.limit} more`);
+      }
+    }
   }
 
   if (decided === 0) {
