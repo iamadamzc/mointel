@@ -44,6 +44,17 @@ be re-checked at the registrar before he buys, not assumed.
 is a **flag**, not a clearance; no trademark register was searched, and a real
 clearance is a lawyer's job. Social handles were not checked.
 
+**No borrowing from a data vendor — Integration's addition, 2026-09-08, after
+the plan-name confusion.** Nothing in the name may borrow from Alpaca or any
+data vendor: not a plan name, not a model name, nothing that reads as an
+official association. He builds on a personal licence today and pursues
+commercial compliance on traction; **a name implying a vendor relationship
+that does not exist is a problem he does not have and should not acquire.**
+Checked against the eight below and the set-aside list: none borrows from
+Alpaca, Massive, Databento, Intrinio, Tiingo, IEX, Nasdaq, Cboe, or any model
+name. The one that did — Algo Trader Plus — is the collision at the top of
+this document.
+
 **Registration details for taken `.com`s** come from the same RDAP record
 (registration date, registrar), which says how long and by whom a name has
 been held; a domain-investor registrar with a decade-old registration usually
