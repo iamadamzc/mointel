@@ -92,3 +92,38 @@ desk has never been operated to a standard where an outsider depended on it.
 - **Tenancy.** Nothing is keyed by user. Everything is keyed by trading date.
 - **Billing, onboarding, support, terms.**
 - **A commercial seat.** No thread owns any of the above.
+
+### GATE 2 — ANSWERED 2026-09-07: SAME BOARD
+
+> *"same board to start. we're serving this same market for now."*
+
+**What it settles, and it is the good news:**
+
+- **Research is a SHARED cost.** ~13k tokens a name across 24–40 names a session
+  is a **fixed daily figure regardless of subscriber count.** The intelligence
+  layer does not scale with users.
+- **Tenancy is ACCESS, not isolation.** No per-user partitioning, no per-user
+  universe, no per-user store. **The architecture already is this** — one store,
+  one universe, one board, everything keyed by trading date.
+- **The market is defined rather than assumed:** $1–$20 small-cap momentum,
+  07:00–10:00 ET. The audience is **people who trade the way he does.**
+
+**What it does NOT settle, and two of these get worse:**
+
+- **Gate 0 is unchanged and arguably harder.** One board displayed to N users is
+  **textbook redistribution.** "Same board" is the shape a licence cares most
+  about.
+- **The reliability bar rises.** Everyone sees the same defect at the same
+  instant. A dark price line is one trader's annoyance or **N simultaneous
+  support tickets.**
+- **"To start" is deferral, not never.** Watchlists, dismissals and per-user
+  state arrive the moment there are users, and **the first one is the expensive
+  one**, because nothing today is keyed by user.
+
+### And one consequence that is now a product question
+
+**If everyone sees the same board, the board's width IS the product's width.**
+
+The reach finding — research queued on rank ≤ 12, and he trades ahead of the
+ranking — **stops being a fact about one trader and becomes a fact about what
+subscribers would be paying for.**
