@@ -7312,6 +7312,74 @@ intended result. **But it leaves a live-looking bypass that can never fire**,
 which is the exact pattern this desk has spent the weekend finding. It goes with
 the others.
 
+## READ 1: can we stay on Lightsail — measured, 2026-09-07
+
+**Short answer: nothing breaks at any near-term number, and the thing that would
+eventually force a move is not viewers.**
+
+### What the box is
+
+```
+t3.medium   2 vCPU   3.7 GiB RAM   77 GB disk (18% used)   NO SWAP
+load 0.16 / 0.18 / 0.14 against 2 vCPU   -> idle
+services: market 197 MB · research 89 MB · web 69 MB · assess 49 MB  = 404 MB
+total in use ~1.0 GiB, 2.8 GiB available
+nginx: worker_processes auto (2) x worker_connections 768  = ~1,536 concurrent
+network since boot (11d 12h): rx 21.7 GB, tx 28.2 GB -> ~4.3 GB/day, ~130 GB/month
+```
+
+**Caveat on the plan:** the instance shape is read from the box (`t3.medium`).
+**I have not confirmed the Lightsail plan from the AWS side**, so the transfer
+allowance below is the published 4GB-plan figure applied to that shape, not a
+verified account fact.
+
+### What a viewer costs — measured, not assumed
+
+```
+/api/market   8,082 bytes   ~5 ms      10 concurrent in 90 ms (does not serialise)
+poll rates    market 1s · dashboard 4s · focus 15s
+```
+
+**All three polls skip while the tab is hidden** (`visibilityState === 'hidden'`),
+so a background tab costs nothing. That matters more than it sounds: without it
+every abandoned tab would bill like an active viewer.
+
+**Per ACTIVE viewer:** ~10 KB/s and ~0.6% of one core → **~250 MB per 7-hour
+trading day, ~5.3 GB per viewer-month.**
+
+### What breaks first, and roughly when
+
+| constraint | headroom | binding? |
+| --- | --- | --- |
+| **CPU** | ~0.6% of a core each; reserve half the box for the worker and OS | **first — low hundreds of concurrent viewers** |
+| Transfer | 3,870 GB spare ÷ 5.3 GB → **~700 viewers** | second |
+| nginx connections | 1,536, and polls complete in <10 ms so concurrency stays tiny | not binding |
+| Memory | 2.8 GiB free against 404 MB of services | not binding |
+| Disk | 64 GB free | not binding |
+
+**Honest limit on all of that: it is extrapolated from a ten-request sample, not
+a load test.** The shape is right; the number is an estimate. **The defensible
+statement is "nothing breaks until the low hundreds of concurrent viewers, and
+we have not measured the knee."**
+
+### Does multi-tenancy require moving off? No — and here is what would
+
+**The one SIP connection is not the constraint people assume.** More viewers need
+no more workers: **the read side scales with viewers, the worker is fixed
+regardless.** Multi-tenancy needs the *web tier* to scale, not the feed.
+
+**But the web tier cannot move to a second box, and the reason is SQLite.** The
+store is a local file. Splitting web from worker means either a shared
+filesystem — which is how SQLite corrupts — or a different data path entirely.
+
+**So the forcing move is not a viewer count. It is the first moment you need a
+second web box.** Everything before that is vertical: a bigger instance buys CPU
+and transfer without touching the architecture.
+
+**Other genuine forcers, none of them imminent:** failover (one instance is one
+point of failure and cannot be multi-AZ), and managed backups if snapshot-level
+recovery ever needs to beat the current `VACUUM INTO` files.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
