@@ -9408,3 +9408,42 @@ the desk has only ever measured the first one early.
 **When a claim is made about "the trigger", ask which trigger. The desk has one
 that is recorded and one that has to be rebuilt, and only the recorded one can be
 measured outside the window.**
+
+## THE ASYMMETRY DOES NOT TRAVEL WITH THIS RESULT — IT PRODUCES IT
+
+**Research, 2026-09-07**, answering whether the gain field can be rebuilt from
+04:00. **Yes, cheaply — the window was a choice in its own code, two lines, not a
+data limit.** And it declined to use the result.
+
+                            at 05:00      at 08:00
+    RVOL — the desk's REAL field   ~12 names      large
+    GAIN — the RECONSTRUCTED field  ~206 names    ~1,000
+
+**A larger field is harder to enter, so gain fires later. A field of twelve
+admits almost anyone, so RVOL fires easily.**
+
+**So a pre-07:00 comparison is biased toward "RVOL fires earlier" — which is
+exactly the conclusion it would be cited for.** In-window the asymmetry is modest
+because both fields are large; **that is why the 07:00–10:00 comparison was worth
+running and this one is not.**
+
+**A caveat that travels with a result weakens it. A caveat that PRODUCES the
+result invalidates it** — and the distinction is whether the bias points at the
+conclusion or away from it.
+
+### And it cannot be fixed, which is the answer
+
+**The desk's real early field is unrecoverable** — the engine promotes symbols as
+it first sees them and that history is recorded nowhere.
+
+**So the trader's question exposes a CAPTURE gap rather than a MEASUREMENT gap.**
+There is no gain ranking, there never was, and **the pre-07:00 question cannot be
+answered fairly with what is kept.**
+
+**A recorded gain-rank entry event, symmetric with `RVOL_RANK_ENTRY`, would make
+it answerable from the next session onward** — and **no amount of reconstruction
+makes the sessions already gone comparable.**
+
+**When a question cannot be answered fairly, the useful output is what would have
+to be recorded for it to become answerable — not a number built the only way that
+remains.**
