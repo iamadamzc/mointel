@@ -8151,3 +8151,48 @@ corroborate or contradict whatever date is given.
 **Ask AND verify.** The first answer that came back from asking has now failed its
 own check; the second removed a whole class from the present tense. **Neither was
 recoverable by measurement at any price, and one of them was wrong.**
+
+## NO HINDSIGHT PATH EXISTS, AND THE CONTAMINATION FRAMING MAY HAVE BEEN BACKWARDS
+
+**2026-09-07, from the trader, closing the last ambiguity.**
+
+**The 09:25 pass did not rewrite the catalyst, cycle, structure, Dirty Float or
+warning columns.** It added its own **separate 16-column section below the main
+table** — opening-spike decision, must-hold level, invalidation, spread, supply
+risk, plan. It refreshed the dated tab by **copying the completed working view**,
+preserving the earlier calls exactly.
+
+**And the reason is the part worth keeping: those assessments were preserved
+deliberately so the 16:15 grading could compare the original calls against the
+outcome WITHOUT HINDSIGHT.** The workflow was designed against the exact failure
+we were hunting.
+
+**So both paths are dead.** The 16:15 records are not in the parsed set — checked
+in code. The 09:25 fields are a separate table the desk's own
+`TODAY_TABLE_SIGNATURE` exists to avoid matching — and it does not touch the
+columns the prior is read from anyway.
+
+**Every column the desk reads as a prior was written before the session's move.**
+
+### Which inverts what the open finding might mean
+
+**The 3.8× concentration and 76% CONFLICT are still unexplained** — and they are
+now a **pre-session human judgement that disagrees with the derived value,
+concentrated on the names that go on to move.**
+
+**That is not contamination. That is a candidate for the human being right.**
+
+**Stated as a candidate and not a finding**, because three reached-for mechanisms
+have failed their checks in two days and this one is attractive for the same
+reason the last one was.
+
+### And it raises the stake on the replay rather than lowering it
+
+    edge collapses without the prior  -> the DESK is not producing the detection.
+                                         The trader's own judgement is.
+    edge survives                     -> the desk is.
+
+**That is the retirement question in its sharpest form.** A Sheet whose human
+judgement carries a detection cannot be retired by reproducing its columns —
+**and no audit of what the desk "can produce" would have found that, because the
+column exists and parses.**
