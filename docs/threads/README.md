@@ -9153,3 +9153,58 @@ that would report on it is keyed by the thing that is missing.
 so **a stale universe cannot cost a name a research job.** The exposure is
 narrower than it looked and **the part that survives is the part with no detector
 at all.**
+
+## THE MATCHER DOES NOT NEED THE VOCABULARY IF IT FAILS THE RIGHT WAY
+
+**2026-09-07.** Research asked R&D for the distinct UNCLASSIFIED `Float Quality`
+cell values, to widen `floatQualityState` without guessing. **R&D declined and
+Research declined to take the exception for itself** — sheet cell **text** is
+content rather than a rate, and *"'probably fine' is how the first bad exception
+gets taken."*
+
+**Both refusals were right and the request is unnecessary.**
+
+**A false `DIRTY_FLOAT` costs him a trade he should have taken. So the failure
+direction is the defect, not the missing vocabulary:** an unrecognised string must
+resolve to **UNKNOWN, never to the avoid.** `isEligible` already does exactly this
+— `UNKNOWN` is an eligible class and a null coalesces to it, **so a lagging
+classification cannot cost a name a job.**
+
+**Fix the direction and the vocabulary stops mattering.** No content moves, no
+exception is taken, and the matcher is correct against strings nobody has seen
+yet — **including ones written after today.**
+
+**A request for data to make a matcher exhaustive is usually a request to avoid
+choosing a safe default.**
+
+## RULE 3 IS ABOUT FINDINGS, NOT ABOUT REPLIES
+
+**R&D, correcting §5c before it hardened.** Research had called its own sha-less
+message *"a private fact with a recipient."*
+
+**"On that message it was the right call and the rule should not eat it. You were
+sending a READ OF MY NUMBERS — there was nothing to land, and inventing a commit
+so the message could carry a sha would have been worse."**
+
+**A finding lands, then travels. A read of someone else's numbers has nothing of
+its own to land** until it turns out to be durable — **right afterwards, not
+required beforehand.**
+
+**So: findings carry a sha. Reads, objections and acknowledgements do not.**
+Amended before somebody manufactures a commit to satisfy the form — **which is
+the failure mode of every rule that mistakes its own artefact for its purpose.**
+
+### And Coaching's curve moves a registered test
+
+Research had required objections to **concentrate on the biggest in-window runs.**
+**The money is in the marginal trade, not the big mover** — so a report perfectly
+targeted at large movers **could miss every loss.**
+
+**Not wrong, and not sufficient. And nothing on the tape side could have shown
+it** — it took a seat holding the fills.
+
+**The product's real test is now Coaching's and needs no model spend:** split the
+marginal-trade curve by **whether the desk held an objection-shaped signal for
+that name at that time.** Late losses in objected-to names means the report has
+leverage. **Late losses in un-objected names means the problem is volume and the
+report cannot help.**
