@@ -11936,3 +11936,52 @@ axis he ranks second, **and on a different second axis depending on the hour.**
 the desk RECORDS the trigger he cares less about and RECONSTRUCTS the one he
 cares more about. **It is worse than that: it does not order by gain at all,
 anywhere, on either board.***
+
+**108a. THE REACH QUESTION AND THE RANK QUESTION ARE ONE QUESTION, AND THE
+ANSWER IS SHARPER THAN "THE TOP 12".**
+
+*Integration is holding the reach question a round so he gets it whole: **"if
+`rank` is RVOL-derived, then 'the report reaches the top 12 by rank' means THE
+WHY NOT REPORT ONLY EVER OBJECTS TO RVOL LEADERS."** Correct, and item 108 makes
+it more specific than that.*
+
+### THE POPULATION SWITCHES AT THE CLOSE
+
+`board.ts:35` `boardForPhase`: **`AFTER_HOURS` and `POST_MARKET` select
+`ah_rank` and the label *"AH Participation"*; every other phase selects
+`rvol_rank` and *"Daily RVOL"*.** `research.ts` resolves the active board each
+cycle and `readBoardCandidates` takes its `rankColumn`.
+
+**So the research queue — and therefore everything the Why Not Report can ever
+speak about — is:**
+
+| when | the top 12 by |
+| --- | --- |
+| **04:00–close** | **cumulative volume ÷ 20-session average** |
+| **after the close** | **after-hours volume ÷ 20-session average** |
+
+**TWO VOLUME MEASURES. NEITHER IS PRICE. The population changes at the close and
+the word `rank` does not.**
+
+### WHICH MAKES THE REACH QUESTION HIS, NOT A TECHNICAL ONE
+
+*"Is a report bounded by the top-12 board worth building"* was the wrong framing
+and mine. **The question he is actually being asked is:**
+
+> **The Why Not Report can only ever object to names the desk ranked by VOLUME.
+> He has said twice that GAIN is where the money is made. Is a report that speaks
+> only about volume leaders the report he wants?**
+
+**That is answerable by him and by nobody else, and it needs no threshold, no
+power floor and none of tonight's numbers.**
+
+### AND IT IS NOT AN ARGUMENT FOR A GAIN BOARD
+
+**A gain board is a build nobody has scoped, and item 104 already established
+that the two sessions already gone cannot be made comparable.** *The point is
+that he should be told what the report's population IS before ruling on whether
+it is worth having — not that the population should change first.*
+
+**If the answer is that volume leaders are the wrong population, the finding is
+about the BOARD and not about the report**, and the report is then a well-built
+instrument pointed at the wrong list.
