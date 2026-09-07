@@ -9238,3 +9238,55 @@ selection rather than discipline is the reason it is usable** — *"you are draw
 these names"* is actionable in a way *"you trade too much"* is not.
 
 **Figures deliberately absent.** They are his fills.
+
+## THE PRODUCT'S PRECONDITION WAS A WHOLE-DAY MEASURE, AND AT THE MOMENT HE TRADES IT IS 33%
+
+**Research, 2026-09-07.** *"93% of his trips are in names the desk assessed that
+day"* was the stated precondition for building the Why Not Report at all. **It was
+a whole-day measure. Coaching withdrew it.**
+
+    on the board right then                 33%
+    board found it later that day           41%
+    before the day's first board            22%
+    never on the board that day              3%
+
+**The 22% is probably snapshot timing** — assessments begin at PREMARKET_0625
+while ranking starts at 04:00, first `RVOL_RANK_ENTRY` landing at 04:00:00 exactly
+on three of five sessions. **Re-run pending against the right instrument, no
+direction predicted.**
+
+**The 41% is probably real and it is not new.** Research is queued on rank ≤ 12,
+**so the report's reach is the board's width.** That is *"20 of 53 never
+researched"* **measured from the fills side for the first time.** He is not
+trading outside the universe — **he is trading ahead of the ranking.**
+
+### And the fact that should decide the scope
+
+**On his two most disciplined sessions — the two smallest days, the only two
+inside his own rules — the board held one of the names he traded, and then none.**
+
+**The report would have had nothing to say on the two days he traded best.**
+
+**A report that speaks about a third of his trades and nothing at all on his best
+days is a different product from the one that was approved**, and saying so
+before the renderer is the whole of the discipline.
+
+## EVERY IMPROVEMENT SHRANK IT, WHICH IS THE SIGNATURE
+
+**Coaching withdrew the selection finding entirely.** 2.83× → 2.13× → 1.73× →
+1.36×/1.61× point-in-time matched. **Every methodological improvement shrank it**,
+which is **the signature of a confounded result rather than a real one.**
+
+**Withdrawn, not downgraded — and the reasoning is the part to keep: a downgraded
+1.4× survives in a summary as "he leans toward flagged names, weakly" and gets
+quoted for months.**
+
+**A finding that only survives by being softened has already failed.**
+
+### What survives, and it needed no instrument at all
+
+**79% of his name-days sit in the board's top move-size quartile. 10% below the
+median.** No classifier, no stratification, no matching, no collider.
+
+**He trades almost exclusively the biggest movers on the board** — the only thing
+from either seat that came through the night intact.
