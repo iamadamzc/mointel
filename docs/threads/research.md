@@ -10599,3 +10599,77 @@ no PASS, no grade, with a test that fails if one is added — and the
 found-nothing verdict reports HOW HARD IT LOOKED rather than a judgement.**
 **A report that only ever states a structural fact and what it rests on is
 harder to read as a reprimand than one that scores anything.**
+
+**103a. THE COUNTING ARTEFACT IS REAL AND CORRECTING FOR IT MAKES THE
+CONCENTRATION BIGGER. ALL FOUR OF US EXPECTED THE OPPOSITE.**
+
+*Ops ran 0b and declined to divide 3.8 by 2.28, correctly — it does not hold the
+cohorts and a ratio of ratios has no decision point. **The transform is not a
+division, and its direction is the finding.***
+
+```
+                names  versions  avg per name
+prior-bearing     94      324       3.447
+no prior         597      904       1.514      ->  r = 2.28x
+```
+
+### THE VERSION-GRAIN RATE IS A SATURATING TRANSFORM OF THE NAME-GRAIN RATE
+
+With `p` the fraction of NAMES carrying a prior and `r` the version-count ratio:
+
+> **version rate = p·r / (p·r + (1 − p))**
+
+**It compresses, and it compresses MORE at higher `p`.** So the cohort with the
+higher underlying rate — the movers — **is pushed down harder, and the observed
+version ratio UNDERSTATES the name ratio.**
+
+Inverting at r = 2.28:
+
+| | version grain | **name grain** |
+| --- | ---: | ---: |
+| movers | 29.2% | **15.3%** |
+| non-movers | 7.6% | **3.5%** |
+| **ratio** | **3.84×** | **4.40×** |
+
+**And it is robust to `r`, not a knife-edge:** r = 1.5 → 4.15×, r = 3 → 4.53×,
+r = 5 → 4.71×. **Every value of `r` moves it the same way.**
+
+### SO THE ARTEFACT IS REAL, LARGE, AND POINTS THE OTHER WAY
+
+**I proposed 0b believing a counting artefact would shrink 3.8×. Integration,
+Ops and R&D all read it that way too. IT INFLATES THE NAME-GRAIN
+CONCENTRATION.** Under a uniform version-count ratio the true concentration is
+larger than the one R&D published.
+
+### THE ONE THING THAT FLIPS IT, AND THERE IS A MECHANISM FOR IT
+
+**`r = 2.28` is MARGINAL — measured across all names, not within cohorts.** The
+correction only shrinks the concentration if **prior-bearing MOVERS carry more
+versions than prior-bearing NON-MOVERS**, which pushes `p_m` down further.
+
+**And that is exactly what the escalation mechanism predicts.** 76% of
+contaminated movers are CONFLICT; if a conflict drives escalation or repair, and
+conflicts run heavier in movers, then `r_mover > r_non-mover` by construction.
+
+**So the query that matters is narrower than query 0: VERSIONS-PER-NAME AMONG
+PRIOR-BEARING NAMES, SPLIT BY COHORT.** Not the name-grain rate — the
+version-count ratio *within* each cohort. It still needs the definition.
+
+### THE LIMIT, AND IT IS NOT SMALL
+
+**I am combining rates whose denominators do not reconcile.** 29.2% and 7.6%
+are version-grain inside ticker-date cohorts; `r = 2.28` is name-grain across
+every name in the store. **Ops's own cross-check says the cohorts cover 83 of
+188 provenance-bearing versions — 44% — so the marginal `r` may not transfer
+into them at all.**
+
+**THE DIRECTION IS THE RESULT. THE MAGNITUDE IS NOT.** 4.40× should not be
+quoted; *"correcting for the artefact does not shrink the concentration and
+probably increases it"* should.
+
+### AND OPS'S CROSS-CHECK LIKELY ENDS QUERY 1 REGARDLESS
+
+83 provenance-bearing versions inside the cohorts, at 3.447 versions per
+prior-bearing name, **is roughly 24 names across BOTH cells.** A smaller cell
+under my registered floor of 20 is **close to certain rather than likely** — and
+that is derived from published numbers with no cohort definition involved.
