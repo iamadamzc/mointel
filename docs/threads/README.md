@@ -10573,3 +10573,51 @@ to prompt a second look.
 **When the population a defect removes correlates with the quantity being measured,
 the broken result looks CLEANER than the correct one.** Ask what a defect
 excludes, not just how much.
+
+## An environment fault fabricates diagnoses inside the domain of the tool it breaks
+
+One machine under memory pressure produced four failures in one evening, **and not
+one of them named memory:**
+
+```
+git push       -> GCM "paging file too small", then a FALSE CREDENTIAL ERROR
+npm run build  -> "Error evaluating Node.js code / EINVAL" from tailwind
+ssh            -> EUNKNOWN uv_spawn
+vitest         -> "This is a bug in Vitest", 9 files unrun, 9 spurious failures
+```
+
+**Each named a plausible wrong cause inside its own domain** — which is exactly
+where it will be believed. The credential one would have sent someone toward the
+credentials directory hunting a problem that does not exist. **The vitest one is
+worse in practice: a red gate with a plausible failure list is the one everybody
+acts on.**
+
+The gate read **1734 tests / 116 files against 1866 / 125** — indistinguishable
+from 132 deleted tests, on a change that had just deleted 373 lines of tests.
+**The six failing files were all untouched by the change, and the two test files
+it did touch both passed.** The 132 were files that never executed.
+
+**So: when a failure arrives, check whether the tools around it are also failing
+before believing what it says about itself.** A single tool's error is evidence
+about that tool. **Four tools failing differently at once is evidence about the
+machine, and none of the four will say so.**
+
+**And the corroboration rule cuts the other way here:** these four could not have
+agreed — they share no code and no domain — **so their simultaneity IS the
+finding.**
+
+## Do not deploy from a box that is failing to spawn
+
+`push-release.sh` streams `git archive` into `tar -x` over a live ssh connection:
+no tarball on either disk, **nothing to clean up if the connection drops half
+way.** That is a virtue on a sound connection.
+
+**On a box that has already failed to spawn `ssh` twice, it means a mid-stream
+failure leaves a partially extracted release directory on production** — and
+`deploy.sh` then runs against it.
+
+**A half-extracted release is worse than a delayed one.** A green gate is not
+sufficient: **green gate AND a quiet machine, both.**
+
+**And a deploy window that would close a version split for free is a convenience,
+never a reason.** When the only cost of waiting is tidiness, wait.
