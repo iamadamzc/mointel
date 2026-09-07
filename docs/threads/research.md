@@ -10265,3 +10265,59 @@ reporting a direction from eleven paired names.
 came from the annotations rather than from the work — **naming the field a query
 depends on let it be refused on sight, which is the rule Integration adopted two
 messages ago and its first return.**
+
+**101i. THE FALSIFIER'S FLOOR, REGISTERED BEFORE THE READ — AND REUSED RATHER
+THAN CHOSEN.**
+
+*Integration: register it before query 1 runs, not after the split arrives. **"A
+floor set after the numbers arrive is not a floor."** Correct, and my "set it
+against R&D's n's" would have been exactly that.*
+
+### THE TEST, STATED AS A CONDITIONAL RATHER THAN A RATIO OF RATIOS
+
+The temptation is to compare **prior-attachment ratio (3.8×)** against
+**sheet-membership ratio** and call it explained if they are close. **A
+ratio-of-ratios has no natural decision point and every value between 1 and 3.8
+is arguable.**
+
+**The clean form conditions on membership: AMONG NAMES WITH A `RESEARCH` ROW FOR
+THAT SESSION, is prior attachment still concentrated on movers?**
+
+- **Concentration vanishes within sheet-listed names** → it was SELECTION. The
+  3.8× is the base rate of the sheet's own population and both readings dissolve.
+- **Concentration survives within sheet-listed names** → it is about the prior
+  and not about who is on the sheet.
+
+**A within-stratum comparison, not a ratio of ratios, and it has a decision point
+by construction.**
+
+### THE FLOOR: n ≥ 20 IN THE SMALLER CELL, AND IT IS THE ONE ALREADY ON RECORD
+
+**Reused from the lead-time paired comparison** — registered at `983e41f` before
+any of this existed, in a different line of work, for the same reason: **a rate
+difference computed from single digits is not a rate difference.**
+
+**REUSING BEATS INVENTING HERE, AND THE REASON IS SPECIFIC.** The ceiling is
+known — **94 prior-bearing names**. **Any floor picked tonight would be chosen
+with the ceiling in view**, which is choosing a threshold knowing how much room
+there is above it. **A floor set in ignorance of this data, in another context,
+cannot be tuned to it.**
+
+**BELOW 20 IN THE SMALLER CELL: REPORT UNPOWERED AND NOTHING ELSE.** No
+direction, no "suggestive", no ratio quoted with a caveat. **The same discipline
+that made the lead-time comparison return nothing from eleven paired names.**
+
+**NO DIRECTION PREDICTED.** I can argue the sheet explains it — the 22:00 task
+selects overnight movers and overnight movers repeat — and I can argue it does
+not, since 76% CONFLICT is about content rather than membership.
+
+### And the replay is now a BUILD, which changes who approves it
+
+Integration's ruling: **it does not get priced as a re-run.** With no withheld
+arm in existence, **"replay what we already have" was never the shape** — the
+treatment arm must be created, the smoke run must prove the label can land, and
+**the asymmetry I found (full value only on the surviving-edge outcome) now sits
+on top of a build cost rather than a re-run cost.**
+
+**Expected value moved down and price moved up, in the same evening, from two
+field validations and no analysis.**
