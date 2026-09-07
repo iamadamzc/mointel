@@ -6714,6 +6714,55 @@ STATE.
 this, and so does the rule never to launch desk processes from inside a chat
 session.
 
+## STANDING CONSTRAINT on market code — Integration, 2026-09-07
+
+**Alpaca publishes no redistribution path — absent, not expensive. Its only
+multi-user product is a brokerage partnership.** So **a vendor migration is the
+one certain item** in any monetisation plan, and both published routes with
+display rights (Massive, Databento) are a rebuild of `lib/market/alpaca/`.
+
+**The rule:** new vendor-specific behaviour goes **behind** the existing client
+interface, not beside it. **Derived fields stay derived** — RVOL, rank and
+volume-derived values are computed from bars already held and are not fee-liable
+under UTP. Anything reading vendor-shaped price or quote structures higher up
+**crosses the licence line and the migration line at once.**
+
+**A migration that is certain and undated is the one everybody widens the
+surface against.**
+
+### CHECKED AGAINST MY QUEUE, AND THE BOUNDARY IS ALREADY CROSSED
+
+```
+lib/market/store/repo.ts    0 mentions of alpaca   <- chunking (d): clean
+lib/market/engine.ts        7 mentions             <- gain-rank event: NOT clean
+```
+
+**(d) chunking is entirely below the line.** Transaction sizing in the store
+layer, no vendor concept anywhere near it.
+
+**The gain-rank entry event is not.** `engine.ts` already:
+
+- **imports a transport normaliser** — `import { normalizeHaltState } from
+  './alpaca/messages'` (line 33)
+- **branches on vendor-named provenance strings** in its own logic — line 571
+  `if (runtime.previousCloseSource !== 'alpaca-daily-bar')`, and
+  `'alpaca-daily-bar-rth-close'`, `'alpaca-snapshot'` at 582, 814-822. These
+  encode **precedence rules**: *"Alpaca's previous close always wins over a
+  sheet-sourced close."*
+
+**And `engine.ts` line 8 says it "knows nothing about SQLite, Alpaca transport,
+or Google Sheets."** A documented invariant the file breaks — the same shape as
+the engine documenting that `latched` is never cleared while the store's upsert
+cleared it.
+
+**Why it matters for the gain-rank work specifically:** gain would be measured
+against `percent_change`, computed from `previousClose` / `priorRthClose` —
+**exactly the fields carrying those vendor-named tags.** The work would sit
+directly on top of the coupling rather than near it.
+
+**Not a reason to skip the item. It is the reason to scope it with Integration
+first**, which was already the ruling.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
