@@ -111,6 +111,12 @@ section above is stale.**
   gpt-5.6-terra ($2.00 input / $0.20 cached / $12.00 output per 1M) and
   gpt-5.6-luna ($0.20 / $0.02 / $1.20), from developers.openai.com, verified
   in a rendered browser, dated by the changelog to the 2026-07-30 price cut.
+  **gpt-5.6-sol added 2026-09-08** after Integration found it running in the
+  store: $4.00 / $0.40 / $20.00, same 272K whole-request cliff, same 1.25x
+  cache-write rule, dated by the changelog to 2026-08-21 and **published as
+  promotional "at least through November 21, 2026"** with no successor rate.
+  Three models run; three are priced; the lesson is Integration's — enumerate
+  by what the store contains, not by the names handed over.
   Two lines the desk's counters cannot see: cache writes at 1.25x the input
   rate (the API usage object records reads only), and a whole-request 2x/1.5x
   multiplier past 272K input tokens. So a cost from the desk's own counters

@@ -57,10 +57,36 @@ carries no date of its own**; the dating below is from OpenAI's changelog.
 
 | model | context | input | cached input (reads) | cache writes | output |
 | --- | --- | ---: | ---: | ---: | ---: |
+| **gpt-5.6-sol** | short (≤ 272K input) | **$4.00** | **$0.40** | $5.00 | **$20.00** |
+| gpt-5.6-sol | long (> 272K input) | $8.00 | $0.80 | $10.00 | $30.00 |
 | **gpt-5.6-terra** | short (≤ 272K input) | **$2.00** | **$0.20** | $2.50 | **$12.00** |
 | gpt-5.6-terra | long (> 272K input) | $4.00 | $0.40 | $5.00 | $18.00 |
 | **gpt-5.6-luna** | short | **$0.20** | **$0.02** | $0.25 | **$1.20** |
 | gpt-5.6-luna | long | $0.40 | $0.04 | $0.50 | $1.80 |
+
+**`gpt-5.6-sol` added 2026-09-08**, after Integration found it in the store —
+116 calls, the third model actually running, and one that neither the request
+nor the code's default named. Its row was read from the same pricing page and
+from developers.openai.com/api/docs/models/gpt-5.6-sol on 2026-09-08, no
+login. **Two things are specific to sol:** the pricing page states *"GPT-5.6
+Sol's promotional pricing is available at least through November 21, 2026"*
+— so the $4.00 / $0.40 / $20.00 card has a published expiry floor and no
+published successor rate; and the changelog dates the current card to
+**2026-08-21**: *"GPT-5.6 Sol now costs $4 per million input tokens and $20
+per million output tokens, representing 20% lower input pricing and 33% lower
+output pricing"* — which by its own arithmetic implies $5.00 / $30.00 before
+that date, implied rather than read. **The cliff is the same:** sol's model
+page carries the identical sentence, *"Prompts with >272K input tokens are
+priced at 2x input and 1.5x output for the full request"*, and the identical
+cache-write rule, *"Cache writes are billed at 1.25x the uncached input token
+rate."* Sol's other tiers, read by fetch on 2026-09-08: Batch and Flex
+$2.00 / $0.20 / $10.00, Fast mode $8.00 / $0.80 / $40.00.
+
+**Enumerate by what the store contains, not by the names handed over.** The
+code's only model constant is terra (`config.ts:22`); luna and sol reach
+production through runtime configuration this seat did not trace. Three
+models are running; three are priced here. If a fourth appears in the store,
+this card is incomplete again.
 
 **Four lines from the pages that change the arithmetic, verbatim:**
 
