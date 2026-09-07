@@ -11345,3 +11345,68 @@ hinders it.**
 **When reversing yourself, name the fact that moved.** Three rulings with three
 reasons is a sequence; three rulings without them is noise, and nobody downstream
 can tell which one to build against.
+
+## A tautology does not agree with you; it cannot see you
+
+```
+[ "$(git rev-parse HEAD)" = "$(git rev-parse HEAD)" ]    ->  "SAME as main"
+```
+
+Confident, plausible, **and structurally incapable of ever printing anything
+else.**
+
+**Worse than a wrong answer.** A check that returns a wrong result once is caught
+by the next case. **A tautology is permanently, silently correct — and it
+accumulates a record of passes that reads as evidence.** It would have passed every
+future run too.
+
+**Third instance in one night**, with the calendar-adjacency test and the focus
+regex — **and the exact mirror of a test that cannot pass.** Both have their answer
+written into their construction rather than taken from the world.
+
+**The check on any check: name the input that would make it fail, and confirm that
+input is reachable.** If you cannot name one, you have written an assertion about
+your own code, not a measurement of anything.
+
+## Measure drift in code, not in commits
+
+*"Production is twenty commits behind main"* is the wrong unit, and it frightens
+people into deploying or reassures them into not.
+
+**Most of those twenty were documentation.** The question is always:
+
+```
+git diff --stat <deployed> main -- . ':(exclude)docs'
+```
+
+**A hundred commits of docs is zero drift. One commit touching a spend path is
+all of it.** Commit count measures how talkative the desk has been; **the code
+delta measures what is actually not running in production.**
+
+## A number can be right, from the wrong baseline, by coincidence
+
+Ops registered `1871` as the baseline for an atom built on main — **quoting it from
+the DEPLOYED sha, which was twenty commits behind, while gating in a worktree five
+behind main on top of that.** The number was from neither tree.
+
+**It was correct, because the intervening commits happened to net zero.**
+
+*"It was right for a reason I had not checked."*
+
+**Second instance in one night of a correct call resting on a wrong model** — the
+first was local figures flagged as shapes for the wrong reason. **A right answer
+does not validate the method that produced it**, and the coincidence is what
+prevents anyone looking again.
+
+## The thread with a pre-registered number lands first
+
+Two threads had uncommitted work in the shared tree. **One had registered a
+predicted test delta before building; the other had not.**
+
+**Whoever lands second inherits the other's shift** — and a registration spent on
+someone else's change is destroyed as an instrument, not merely inconvenienced.
+
+**So: registered work lands first.** The delta (`−9`) belongs to the change and is
+invariant. **The absolute (`1862`) is true only if it lands first**, which is why a
+prediction should be stated as a delta wherever a shared tree can move underneath
+it.
