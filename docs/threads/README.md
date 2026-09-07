@@ -8799,3 +8799,73 @@ uninformative rather than negative.**
 
 **An uninformative observation reported as uninformative** is worth more than a
 reasoned answer, **and Tuesday settles it with rows present.**
+
+## THE CHECK COULD HAVE COME BACK BENIGN AND DID NOT
+
+    windows stored on 2026-09-04                 7757
+      of which a bar actually landed (non-zero)  2369
+      of those, price_window stored                 0
+
+**5,388 of the 7,757 are genuinely all-zero** — the population that would have
+dissolved the finding, **real and large.** Two independent methods agree on
+2,369: `json_each` over the array, and a `GLOB '*[1-9]*'` text scan **sharing no
+code path with the JSON parser.**
+
+**A discriminating measurement is only worth running if its benign branch is
+populated. This one's was, by a factor of two, and the defect survived anyway.**
+
+### And the first attempt reported the opposite, from a failed check
+
+`json_extract(j,'$.counts')` against a **bare array** — `[3,6,0,11,0]` — returned
+NULL, so the EXISTS was false for every row. **It printed
+`with_a_nonzero_count: 0`, which reads exactly like "all zeros, no defect, stand
+down."**
+
+**The sample rows two lines above in the same output contained 3, 6 and 11.**
+
+**Caught by its own author, immediately** — the first time that happened all
+evening — **and only because the sample and the aggregate were in the same
+block.** **Printing the raw shape beside the aggregate is what made it
+self-refuting.**
+
+## THE TWO PATHS ARE ONE FIELD, SO THE RETRACTION WAS OVER-CAUTIOUS
+
+    engine.ts:1155     runtime.priceWindow = buildPriceWindow(...)    <- one assignment
+    engine.ts:1837     priceWindow: runtime.priceWindow ?? undefined  <- live serve
+    worker/runtime.ts  price_window: state.priceWindow                <- store write
+
+**Both consumers read the same field, set in one place.** A column null across
+**2,369 rows where bars landed** means `runtime.priceWindow` was null at every
+flush — **so the live serve returned undefined at those same moments.**
+
+**The line has been dark. Integration's retraction of that claim is itself
+withdrawn**, and what remains unestablished is only the exact overlap in time
+between flushes and serves — **there is no path by which one is populated and the
+other is not.**
+
+**Independence has to be shown, not assumed from two call sites.**
+
+### A candidate mechanism, and the comment above it forbids what the code does
+
+    runtime.activityWindow = activity.window.length > 0 ? activity.window : null;
+    runtime.priceWindow = buildPriceWindow(
+      runtime.minuteCloses,
+      windowSlots(this.now(), DEFAULT_ACTIVITY_CONFIG),   // <- rebuilt, DEFAULT config
+    );
+
+**The activity series uses the engine's own configured slots. The price series
+REBUILDS them from the default.** If the live config differs, the slot sets do not
+line up, `minuteCloses` is keyed by the engine's slots, and `buildPriceWindow`
+finds no close in any slot it asks for — **returning null on exactly the rows
+where bars landed.**
+
+**And the comment directly above says `windowSlots` is exported rather than
+rebuilt so the two series cannot disagree. The code rebuilds it.**
+
+**Third time this week a comment states the invariant its own code breaks.**
+
+### And the rank deltas are a wrong interval, not a broken write
+
+`previousRanks` persists across cycles and updates every tick, **so the stored
+delta is rank movement since the previous engine TICK** — structurally ~always 0.
+**Not a failed write. A meaningless interval, faithfully recorded.**
