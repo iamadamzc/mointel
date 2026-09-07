@@ -6382,6 +6382,101 @@ works.
 the check is *"does the treatment arm have members"*, which nobody asked until
 the field was needed.
 
+## price_window is never persisted, and the price dots have never rendered — 2026-09-06
+
+**Found by the single-distinct-value sweep, confirmed by a measurement that
+could have come back benign.**
+
+```
+windows stored 2026-09-04                       7757
+  of which a bar actually landed (non-zero)     2369
+  of those, price_window stored                    0
+  genuinely all-zero (nothing traded)           5388
+```
+
+**The 5,388 matter as much as the 2,369.** The first evidence offered — "7,757
+activity writes against zero price writes" — **did not discriminate**, because
+`activityWindow` is stored whenever the slot array is non-empty and fills
+missing minutes with zero, so it is written even when no bar landed.
+`priceWindow` returns null unless a slot carries a close. **Both Design and
+Integration caught that independently within minutes.**
+
+Two methods sharing no code path agree on 2,369: `json_each` over the array and
+a text `GLOB '*[1-9]*'`.
+
+### TWO READ SITES ARE NOT TWO SOURCES
+
+`runtime.priceWindow` is assigned in **exactly one place**, `engine.ts:1155`.
+The live serve (`engine.ts:1837`) and the store write
+(`worker/runtime.ts:1846`) are **two consumers of one producer.**
+
+That was briefly read as two independent paths, which would have meant the live
+board could draw while persistence failed silently. It cannot. **A column null
+where bars landed proves the field was null at that flush, so the serve returned
+undefined at the same moments.** The price dots have never rendered, and the
+activity bars' colour has been inert since it shipped — `directionTone` returns
+null without a price.
+
+**Follow a field to its producer and count THOSE.** Two mentions of a name are
+not two origins.
+
+### Candidate mechanism — FLAGGED, NOT CONFIRMED
+
+```ts
+runtime.activityWindow = activity.window.length > 0 ? activity.window : null;
+runtime.priceWindow = buildPriceWindow(
+  runtime.minuteCloses,
+  windowSlots(this.now(), DEFAULT_ACTIVITY_CONFIG),   // rebuilt, DEFAULT config
+);
+```
+
+The activity series uses `activity.window` — **the engine's own configured
+slots**. The price series **rebuilds** them from `DEFAULT_ACTIVITY_CONFIG`. If
+the live config differs from the default the slot sets do not align,
+`minuteCloses` is keyed by the engine's slots, and `buildPriceWindow` finds no
+close in any slot it asks for — returning null **precisely on the rows where
+bars landed**.
+
+**The comment directly above that code says `windowSlots` is exported rather
+than rebuilt so the two series cannot disagree. The code rebuilds it.**
+
+One read settles it: `ticker_session.activity_config` is single-valued at
+`{"activeTradesPerMinute":300…}`, so the live config is comparable to the
+default directly. **Already excluded by Design: `minuteCloses.set` is
+unconditional at `engine.ts:935`, so it is not a missing write in that block.**
+
+## Print the shape next to the number — 2026-09-06
+
+**The most dangerous failed check of the night, because it agreed with the
+person who asked for it.**
+
+The discriminating query above was first written as
+`json_extract(j,'$.counts')`. The stored shape is a **bare array** —
+`[3,6,0,11,0]` — so the path matched nothing, the test was false for every row,
+and it printed `0`. **Which reads exactly as "all zeros, the caveat was right,
+no defect, stand down."**
+
+**The sample rows two lines above it contained 3, 6 and 11.** It refuted itself
+in one glance *only because the raw shape was printed beside the aggregate.*
+
+**So: print the shape next to the number.** An aggregate over a path that cannot
+match is indistinguishable from an aggregate over a path that matches nothing —
+and the version that confirms the requester's hypothesis is the one that
+survives review.
+
+## A writer-side finding must reach the reader-side seat before their next observation
+
+Design was about to read the board on Tuesday and check four colour states.
+**Three are unreachable.** Had they looked first they would have seen neutral,
+checked it against a payload with no `priceWindow`, concluded the no-price path
+works, and **written a partial pass on a wholly inert feature.**
+
+The finding arrived first **by luck, not arrangement** — they simply had not
+looked yet. The durable form is the rule: **when a writer-side defect is found,
+it goes to the reader-side seat BEFORE their next observation, not after it.**
+Otherwise the observation is made against a surface nobody knows is dark, and it
+produces a written pass rather than a silent one.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
