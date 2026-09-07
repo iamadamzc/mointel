@@ -6971,6 +6971,81 @@ line inherits the credibility of the commented one."** `:37` names its EDT
 assumption, `:38` does not — and `:38` is the one that reads as authoritative.
 **Annotating one of a pair transfers trust to the other.**
 
+## Access model as it stands — scoping read for Integration, 2026-09-07
+
+**Read, not designed, not built.**
+
+### 1. What authentication exists today
+
+**nginx HTTP Basic at the server level**, `auth_basic_user_file
+/etc/nginx/mointel.htpasswd`. Next binds `127.0.0.1:3000`; nginx on 80/443 is the
+only public path. **One shared credential. No per-user identity anywhere.**
+
+Five locations turn it off, each deliberate and documented in
+`deploy/aws/nginx-locations.conf`:
+
+| location | how it is protected instead |
+| --- | --- |
+| `/.well-known/acme-challenge/` | certbot only |
+| `/api/health` | `satisfy any; allow 127.0.0.1; deny all` — localhost only |
+| `/review/` | capability token in the path, `access_log off` |
+| `/mcp/` | capability token in path; POST allowed, read-only by **tool-registry design, not by method** |
+| `/_next/static/` | open; audited 2026-08-23 — zero `NEXT_PUBLIC_*`, chunks scanned clean, content-hashed names |
+
+### THE FINDING: THE PROXY DISCARDS THE IDENTITY
+
+**nginx forwards `Host`, `X-Real-IP`, `X-Forwarded-For`, `X-Forwarded-Proto`,
+`Connection` — and no `$remote_user`.**
+
+So **the application cannot know which Basic-auth user made a request.** Adding
+accounts to `htpasswd` today buys access control with **zero identity
+downstream**: every request arrives anonymous-but-authorised. **Auth and a user
+record are not two independent halves here — the auth half currently throws away
+the thing the user record would key on.**
+
+### 2. What is accidentally single-tenant
+
+**Module-level mutable state in the web path: none found.** The only module
+scope caches are `const` Sets of literals (`ACTIVITY_STATES`, `BUSY_CODES`).
+Nothing per-process to leak between viewers.
+
+**The whole viewer-mutable surface is two endpoints.** Everything else is GET:
+
+- **`POST /api/focus`** → `pinTicker` / unpin → `focus_tickers`, whose PRIMARY
+  KEY is **`(ticker, trading_date)` — no user column.** `source` is
+  `'USER' | 'SEED'` and records **how a row arrived, not whose it is.**
+- **`POST /api/research/retry`** → requeues a ticker; the effect is global and
+  nothing records who asked.
+
+**The precise problem is NOT isolation — it is WRITE COLLISION.** One board for
+every subscriber makes a shared *view* intended. But pinning is a viewer
+*mutation* of that shared view: **B unpins A's ticker and A has no idea why.**
+Nothing leaks; the two viewers contend. And with no `$remote_user`, **neither
+action could be attributed even if we wanted to.**
+
+### 3. Where a user record belongs — not the market store
+
+**Evidence rather than instinct: I restored 09-02 and 09-03 into
+`/var/lib/mointel/market.db` from a backup this weekend**, and
+`docs/AWS_DEPLOYMENT.md` documents a failback that swaps that file wholesale. **A
+users table there is reverted by a restore and lost in a swap** — accounts
+created after a backup vanish, and revoked ones come back.
+
+**And the precedent is already in the wrong place: `review_tokens` lives in the
+market store.** It is otherwise well-shaped — `token_hash` not plaintext,
+`expires_at`, `revoked_at`, `last_used_at` throttled to once a minute — so it is
+the natural template, **and copying its location repeats the mistake.**
+
+**Recommend a separate store, e.g. `/var/lib/mointel/identity.db`**, outside the
+trading store's migration, backup, VACUUM and prune path.
+
+### On the dormant second account
+
+Integration's point that a second account costs nothing at design time and
+reveals what one cannot: **the specific thing it would reveal here is the
+`$remote_user` gap.** With one account nobody ever notices the app cannot tell
+who is asking, because there is only one possible answer.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
