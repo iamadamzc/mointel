@@ -3730,6 +3730,26 @@ second line then measures from the new high, which is "just move that spread".
 `neg` colour of a stale BACKSIDE verdict — the label-and-number mismatch again,
 one layer up.
 
+## Tuesday's third read — how to tell a working fix from a check that did not fire
+
+The stale-arc read may now be UNOBSERVABLE, because `max()` removes the case. An
+absent case and an absent renderer look identical, so the method has to be
+settled before the board is up rather than at 04:00.
+
+**Measure the PRECONDITION in the payload, separately from the rendering.** The
+stale-arc condition is `sessionHigh > cycleHigh`, and that is readable from
+`/api/market` whatever the screen does:
+
+| precondition rows | on screen | conclusion |
+| --- | --- | --- |
+| **> 0** | no contradiction anywhere | **the fix works** — the case arose and was handled |
+| **> 0** | a contradiction | **defect**, and it goes up immediately |
+| **0** | nothing | **INCONCLUSIVE** — the case did not arise; say so, do not claim a pass |
+
+**The third row is the one to be honest about.** Zero preconditions with a clean
+screen is not evidence of anything, and it is exactly what a working fix and a
+broken check both look like.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
@@ -3884,6 +3904,18 @@ one layer up.
   answer was already in the repo at `types.ts:62-68`, verified against minute
   bars by someone who checked it precisely because it matters. **Search the repo
   for the answer before recording a question as open.**
+- **Compare at the precision of the INPUTS, not the precision of the type.**
+  `1.5 - 1.49` is `0.010000000000000009` and reads as outside a one-cent spread,
+  so a name exactly one spread off its high would have flipped on the arithmetic
+  rather than on the price. Quotes are never finer than four decimals, so
+  rounding at six cannot change a real decision. **A threshold derived from
+  measured quantities inherits their resolution, and the gap between that and
+  the float's is pure noise sitting exactly where the decision is closest.**
+- **A defect removed BY CONSTRUCTION beats one caught by a branch.**
+  `max(cycleHigh, sessionHigh)` makes "price above its own reference high"
+  impossible rather than handled — one operator instead of one more condition.
+  It fell out of the shape he asked for; **saying it fell out rather than
+  claiming it as design is what makes it usable as a rule.**
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
