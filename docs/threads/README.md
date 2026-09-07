@@ -9335,3 +9335,51 @@ he picks turn out to be the day's biggest movers.
 **A finding does not carry its own tone. It inherits the tone of the message it
 travels in**, and a compliment delivered inside a list of failures reads as
 neither.
+
+## A JOIN ACROSS TWO REFRESH CADENCES PRODUCES CONFIDENT ZEROS, AND THE BOUNDARY MOVES
+
+**Coaching and Research, 2026-09-07.** Coaching holds his fills, which advance
+every session. The desk-side extracts are snapshots, pulled once.
+
+**A join between them returned "the board held none of the names he traded that
+day". THE STORE WAS `assessments-prod-2026-09-02.db` AND THE DAY WAS 09-03.**
+Zero assessments, zero ticker rows, **and the answer written in the filename**.
+
+### Why it got through two careful readers
+
+**The query returned a zero rather than an error.** A missing date is
+indistinguishable from an empty result: same type, same shape, no exception, and
+**the zero arrives looking like a measurement.**
+
+**And the reading was careful about the wrong dependency.** The claim had been
+deliberately reduced to WHOLE-DAY membership to remove the snapshot-TIMING
+problem — which it does. **It leaves the COVERAGE problem untouched, and being
+careful about one dependency is what stopped either of us looking for the
+other.**
+
+### IT IS A STANDING HAZARD, NOT AN INCIDENT, AND THAT IS COACHING'S POINT
+
+**THE LIVE SIDE ADVANCES AND THE EXTRACT DOES NOT. So the gap grows every
+session, the boundary moves, and the join keeps producing confident zeros —
+more of them each week, all in the same direction.**
+
+**Every one reads as "the desk did not have it".** A failure that is silent,
+directional and self-renewing.
+
+### The check, and it belongs in the output rather than in a habit
+
+**ESTABLISH THE OVERLAP WINDOW OF BOTH SOURCES FIRST, AND REPORT ONLY INSIDE
+IT.** One line: *what is the min and max date each side actually holds.*
+
+**Better, because a habit is what failed here: MAKE THE INSTRUMENT PRINT ITS OWN
+COVERAGE WINDOW ALONGSIDE ITS RESULTS**, so a zero outside the range is visibly
+out of range rather than silently absent. *(`worker/catalyst-timing.ts` and
+`worker/trigger-lead-time.ts` print their inputs and row counts for exactly this
+reason — this is the general case of that.)*
+
+### And it is the temporal half of a rule already here
+
+**`data/README.md` says ASK WHICH DESK WROTE IT before quoting a number. This is
+ASK WHICH WINDOW IT COVERS.** Same failure, different axis: **a store that
+answers is not a store that answers for the right desk — or for the right
+dates.**
