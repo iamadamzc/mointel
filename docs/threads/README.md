@@ -8746,3 +8746,56 @@ knowing rather than a defect.**
 **`id`, timestamps, symbols, URLs, hashes and payload blobs were excluded by
 name.** So the sweep **is not exhaustive**, and a single-valued column with one of
 those names would not appear.
+
+## THE SIBLING CONTRAST DOES NOT DISCRIMINATE, AND THE COLUMN DOES NOT SETTLE THE SCREEN
+
+**Design, 2026-09-07**, on the sweep's headline finding. **Two corrections, both
+load-bearing.**
+
+### A null column does not establish that the feature never rendered
+
+`priceWindow` reaches the row by **two** paths: `repo.ts:556` parses the column
+Ops swept, and **`engine.ts:1837` serves `runtime.priceWindow` LIVE, without
+touching the store.**
+
+**So a column null on all 143,142 rows does not establish that the dots never
+drew.** The live board can serve the series straight from the runtime **while
+persistence fails silently.** Persistence and rendering are two questions and the
+sweep answers one.
+
+**Integration reported the stronger claim to the trader. It was not established.**
+
+### And the sibling contrast is consistent with both explanations
+
+**The two fields fail differently on the same absence.** `activityWindow` is
+`slots.map(slot => minuteTrades.get(slot) ?? 0)` and is stored whenever the array
+is non-empty — **so it is written even when no bar landed in the window.**
+`priceWindow` returns **null** unless at least one slot has a close.
+
+**So "7,757 activity writes, zero price writes" is exactly what NO BARS IN THE
+WINDOW would also produce.** The contrast is consistent with a write failure
+**and** with nothing having traded in those windows, **and it does not separate
+them.**
+
+**The measurement that can fail: are those 7,757 activity windows all zeros?**
+Real counts mean bars landed and the price path is broken. **Zeros mean nothing
+landed and both fields are behaving correctly.**
+
+**Start from a measurement that can fail rather than from a contrast that
+cannot** — the sweep's own principle, turned on the sweep's own result.
+
+### And the obvious mechanism was checked and excluded
+
+`minuteCloses.set` is **unconditional** at `engine.ts:935`, immediately beside the
+guarded `minuteTrades.set`. **Both are written on every bar. So the asymmetry is
+not a missing write in that block.**
+
+### Refusing to answer from memory
+
+Asked whether the dots have ever drawn, Design checked and **said it cannot
+tell** — the 09-04 read looked at other fields, and the 09-06 read had **zero
+demand rows** because the market was shut, **so its "priceWindow: 0" count is
+uninformative rather than negative.**
+
+**An uninformative observation reported as uninformative** is worth more than a
+reasoned answer, **and Tuesday settles it with rows present.**
