@@ -3795,6 +3795,54 @@ correct with no change; if it is not, the drawer should say what it does not
 know rather than print a zero. **Which one depends on Ops's finding**, so this
 is flagged, not fixed.
 
+## "When did the price dots last render?" — I CANNOT TELL, and the store cannot settle it
+
+### The component has TWO sources, and the sweep saw one
+
+`row.demand?.priceWindow` is populated from **either**:
+
+- `repo.ts:556` — `parsePriceWindow(row.price_window)`, the store column, and
+- `engine.ts:1837` — `runtime.priceWindow`, served **live from the engine
+  without touching the store**.
+
+**So a column that is null on all 143,142 rows does not establish that the dots
+never drew.** The live board can serve the series straight from runtime while
+persistence fails silently. That is a persistence question and a rendering
+question, and the sweep answers only the first.
+
+### And I have no observation either way
+
+I have never checked `priceWindow` on a live payload with rows present. The
+2026-09-04 premarket read looked at cycle titles, supply and the header; the
+2026-09-06 read had **zero demand rows** because the market was shut, so its
+`priceWindow: 0` count is uninformative.
+
+**So the answer is: I cannot tell, and I am not going to reason my way to one.**
+Tuesday settles it — `priceWindow` on the live payload with demand rows present.
+
+### THE SIBLING CONTRAST MAY NOT DISCRIMINATE
+
+Ops's evidence is 7,757 `activity_window` writes against zero `price_window`
+writes on the same rows. **The two fields fail DIFFERENTLY on the same absence:**
+
+- `activityWindow` is `slots.map(slot => minuteTrades.get(slot) ?? 0)` and is
+  stored whenever the array is non-empty — **so it is written even when NO bar
+  landed in the window.** An all-zero array is indistinguishable from a busy one
+  at the point of the write.
+- `priceWindow` returns null unless at least one slot is present in
+  `minuteCloses` (`activity.ts:150`).
+
+**So "activity written, price null" is exactly what NO BARS IN THE WINDOW would
+also produce.** The contrast is consistent with a write failure and equally
+consistent with an empty window, and it does not separate them.
+
+**What would separate them:** whether those 7,757 `activity_window` values are
+all zeros. If they carry real counts, bars landed and the price path is broken.
+If they are zeros, nothing landed and both fields are behaving correctly.
+
+**Ops's, not mine** — flagged so the diagnosis starts from a discriminating
+measurement rather than from a contrast that cannot fail.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
