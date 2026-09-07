@@ -10964,3 +10964,48 @@ gets the whole class ignored.**
 the first was a homemade tree digest reporting DIFFER on identical trees.
 **Establish what a check says on a case you already know is good, and enumerate its
 expected exceptions, before it is allowed to block anything.**
+
+## THIS DESK PRODUCED ONE REAL CORROBORATION IN A WEEKEND, AND IT HAPPENED BY ACCIDENT
+
+**Integration, 2026-09-08**, counting the weekend's agreements.
+
+**Three that looked like corroboration and were ONE COMPUTATION RUN TWICE:**
+
+| the "agreement" | what it actually was |
+| --- | --- |
+| a back-solved model mix cross-checked against its own fit | the fit, restated |
+| token sums checked against the ratio derived from them | the ratio, restated |
+| Research's ~630 free jobs against Ops's measured 630 | **the same subtraction over the same two tables** |
+
+**The third is the instructive one: the match was EXACT, which made it feel like
+confirmation, and exactness is what arithmetic reproducing itself looks like.**
+
+**And one that was real:** two threads read the same commit minutes apart,
+**neither aware the other was reading it**, and converged on the same single
+substantive line out of nineteen changed.
+
+### What made the real one real
+
+**NOT independence of METHOD. Independence of KNOWLEDGE.** Neither reader could
+be anchored by the other's answer, **because neither had one.**
+
+**Two computations sharing an input are not two observations, however different
+the arithmetic on top.** The test is not *did they agree* but **could they have
+disagreed, and did each have its own path to a wrong answer.**
+
+### THE PART THAT SHOULD NOT SURVIVE AS A HAPPY STORY
+
+**IT HAPPENED BECAUSE MESSAGES CROSSED.** Nobody arranged it. **In a weekend of
+deliberate checking, the only genuine corroboration was an accident of
+timing** — which means the deliberate checking was producing something else, and
+producing it confidently.
+
+**So arrange it: hand the same artefact to two readers without telling either
+what the other found.** Ops now gates from a pinned worktree rather than
+confirming a number it was given, **which is that principle made routine instead
+of lucky.**
+
+*Counterpart to **"four checks of one kind are one check"** above. That one says
+a list of checks can share an axis. This says two ANSWERS can share an input,
+**and the second is harder to see because agreement feels like evidence in a way
+a list does not.***
