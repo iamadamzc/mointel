@@ -9894,3 +9894,45 @@ alive. **Attributable to the pin:** the ten-hour tail past two deaths.
 trader's *"is it not obvious to remove it. is that not a defect?"* was correct
 before anyone could size it, **and the sizing is what makes it reportable rather
 than merely right.**
+
+## False forwards and misread backwards are the same family from opposite ends
+
+Two failures follow from removing a write path, and **only one of them is visible
+in new data.**
+
+**FALSE FORWARDS:** the source is gone, so every new row carries the empty value.
+Integration caught this on the persisted `focus` field. It shows up immediately —
+a field that used to vary and now never does.
+
+**MISREAD BACKWARDS:** the source is gone, so the *meaning* of the old rows
+changes underneath them. Design caught this one. `focus` today means **he pinned
+this and it therefore got research it would not otherwise have had.** Once pinning
+is display only, a reader in November sees `focus` on a September row and reads
+**a display preference** — which is what pins will be by then — and never learns
+it was a research lever.
+
+**Keeping it preserves a token rather than a fact.**
+
+**The backwards case is the worse of the two, because nothing about the old row
+looks wrong.** The forwards case announces itself in the next day's data; the
+backwards case only ever looks like history.
+
+**And the two arguments for removal age in opposite directions.** "The audience is
+small, nobody will read it" is overturned the moment the audience grows —
+**which is the thing being built for.** "The token means something else now" does
+not weaken with time; **every month adds rows that read wrong.** Prefer the
+argument that gets stronger.
+
+## Render first means render LIVE first
+
+A sequence written as *render, then stop writing, then orphan the column* is not
+satisfied by the render change existing. **A commit is not a deploy.**
+
+Stop writing while the old render is still serving and you get exactly the window
+the ordering exists to prevent: **the field absent from new rows, for a reason no
+reader can see.**
+
+**So a cross-thread ordering step completes when it is LIVE**, and the upstream
+thread must say so in words. **Inferring another thread's state from a sha in the
+log has been wrong twice this weekend** — a commit can carry a ruling about a
+change rather than the change.
