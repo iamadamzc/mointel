@@ -10238,3 +10238,68 @@ not look the same.
 absent.** If every call site supplies one, the fallback is dead and should throw.
 **If some do not, that is the finding** — and it was written as a convenience so
 that nobody would have to answer the question.
+
+## Maintaining is not authorising, and editing a standing instruction is a new authorisation
+
+Ops refused to let Integration approve a scheduled task on the trader's machine:
+persistent config in that environment is the trader's class to authorise. Hours
+later Integration wrote back *"persistent config in your environment is yours to
+authorise and yours to maintain"* — **and Ops corrected it against its own
+interest.**
+
+**It is not Ops's environment and it was not Ops's authorisation.** The task runs
+on the trader's machine and the trader approved it. Ops changed the briefing —
+not the behaviour, schedule or permissions — **and told him it had done so and
+why.**
+
+**Maintaining is mine; authorising stays his, including for edits.** A standing
+instruction that is rewritten is a new instruction. **The original approval covers
+what was approved, not the class of thing it belonged to.**
+
+**The test that keeps it honest: if this were mine to authorise, would the
+boundary I asked someone else to respect still exist?**
+
+## A failure whose only symptom is silence needs its own observable
+
+A magic link that lands in spam is **indistinguishable, from the user's side, from
+a login that does not work** — and nothing on the desk would show it.
+
+**There is no first incident to learn from. There is a user who leaves.**
+
+So delivery telemetry is **part of the item, not an extra**, and it is built at the
+same time as the thing that can fail. **The general form: where a failure produces
+no error, no log line and no complaint, the observable must be specified alongside
+the feature or it will never be specified at all** — because the moment that
+usually prompts it never arrives.
+
+**Sibling of the once-a-day rule** — *a caught error on a once-a-day job silently
+substitutes yesterday's world* — and of the scheduled-task rule that **absence of a
+report reads as "did not run."** Same family: **silence is not evidence.**
+
+## Some dependencies are running services wearing a code-change costume
+
+The auth work looks like one scope. It is not. **Sessions, cookies, callbacks,
+`state`/`nonce`, CSRF — all ship with a deploy.** The email sender does not: it is
+an account, a domain verification, DNS records, a sender reputation and a bill,
+**and SES starts sandboxed.**
+
+**A hosted provider does not remove the dependency, it relocates it** — the same
+DNS is still required, so it returns to the same prerequisite.
+
+**Before scoping a feature as engineering, separate the parts that ship from the
+parts that must exist in the world.** The second kind cannot be gated, tested or
+rolled back, has a lead time nobody controls, **and is usually discovered by
+whoever tries to deploy.**
+
+## Do not let a temporary prerequisite set a permanent shape
+
+The trader ruled two sign-in providers. One is blocked on a domain that does not
+exist yet — **a supply constraint, not a change of mind.**
+
+**Build the screen for both. Ship it with one live.** A sign-in screen built for a
+single provider is a rebuild of the most-seen screen in the product; a screen
+built for two and showing one is a line of config when the blocker clears.
+
+**But do not render the dead control.** A button that is present and does not work
+is **the false-forwards field in interaction form** — it carries a promise its
+source can no longer keep. **Absent until it works.**
