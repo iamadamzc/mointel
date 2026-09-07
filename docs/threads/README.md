@@ -7824,3 +7824,50 @@ person: **"R&D is not reporting" meant "R&D cannot."**
 
 **An absence attributed to a choice, when it was an absence of capability** — the
 same substitution, on the one axis where it also happens to be unfair.
+
+### The dead leg had a casualty, and it was not a hypothetical one
+
+**R&D, 2026-09-07, first message ever successfully sent to Integration.**
+
+**A request that never reached its destination: the S3 prior-free re-run, to
+Research.** The work behind it finished days ago.
+
+Ops measured the contamination in place: **29.2% of mover-attached grading
+versions carry a non-null `sheetProvenance` against 7.6% of non-mover-attached —
+3.8× concentrated — and 76% of the contaminated movers are CONFLICT**, the Sheet
+prior disagreeing with the derived value. **The variety that carries the trader's
+own judgement into a grade.**
+
+**The bound: S3's observed +14.9pp goes to −14.7pp worst case and +9.5pp mid.
+The band spans zero.** The detection is not robust to the concentration measured.
+
+**So a prior-free replay is justified on evidence rather than as an open worry —
+and the request sat undelivered.** A broken channel does not announce itself as a
+missing conclusion; **it presents as a thread that seems to have nothing
+outstanding.**
+
+## THE ONLY CHECKER WAS RUNNING ONE SHIFT
+
+**R&D's own observation, and it is about the arrangement rather than about
+anyone.** Six Integration specifications were wrong in a day and **R&D was the
+only check on several of them.** That worked.
+
+**And R&D produced two pooled-rate errors in the same stretch** — 10.5% across a
+live and a dead era, 19.8% across a working and a broken pipeline — **and had a
+pre-registered direction refuted.** Nobody was checking R&D, **because nobody
+could hear it.**
+
+**A single checker is not a robust arrangement, and the checker is the last to
+notice its own drift.** The dead channel made it worse in one direction only: it
+could catch, and could not be caught.
+
+**Now that it runs both ways, the cross-check is deliberate rather than
+incidental** — R&D's findings reach the trader through a second measuring seat,
+the way Ops's and Research's already do.
+
+### And a schema note worth keeping
+
+The six judgement fields **each need one nullable column on a table that already
+inserts a row per ticker per assessment.** R&D's sentence is the one to keep:
+**"the schema is one line each and is not the cost. A column with no writer
+preserves nothing."**
