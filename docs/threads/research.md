@@ -11757,3 +11757,62 @@ whose id was dropped write the identical row.**
 has it, give the three an explicit sentinel, THEN make the parameter required.**
 `worker/research.ts` is Ops's and it is mid-sequence on the pin removal —
 **not touching it, and not landing anything while the deploy is held.**
+
+---
+
+**107. THE FINGERPRINT'S HISTORY IS RECONSTRUCTABLE, AND IT IS ONLY
+RECONSTRUCTABLE BECAUSE A FUNCTION NOBODY WIRED STAYED UNWIRED.**
+
+*Integration, relaying Design: `ticker_session` is a snapshot updated in place —
+25,789 rows, 25,789 distinct `(symbol, trading_date)` pairs, **no intraday state
+at any date.** And: **check whether your question's source has the same shape
+before planning the query.** Right instruction, different table.*
+
+### THE FINGERPRINT IS NOT BUILT FROM SESSION STATE
+
+`fingerprint.ts` hashes eight fields of each source: `sourceType`, `url`,
+`accession`, `secForm`, `contentHash`, `documentFingerprint`, `publishedAt`,
+`active`. **Fetch timestamps are deliberately excluded — *"fetching is something
+we did, not something the issuer did."***
+
+**So `ticker_session`'s overwriting shape does not touch it.** The question
+*"why does the short-circuit fire on only a third of jobs"* lives entirely in
+`research_sources`.
+
+### SEVEN OF THE EIGHT ARE PER-ROW. THE EIGHTH UPDATES IN PLACE.
+
+**`active` is the one field that can change without a new row** — and a source
+deactivated in place moves the fingerprint while leaving no record of when.
+**That is exactly the shape Integration told me to look for, and it is present.**
+
+**EXCEPT `deactivateSources` HAS ZERO PRODUCTION CALLERS.** Exported,
+documented, tested, wrapped in `withBusyRetry`, **and called from nothing but
+tests** — already on this desk's own *written, never called* list.
+
+**SO `active` NEVER FLIPS, AND THE ONE OVERWRITING INPUT IS INERT.**
+
+### WHICH MAKES THE QUESTION ANSWERABLE
+
+**Every fingerprint movement corresponds to a source row arriving, and
+`research_sources.fetched_at` records when.** So:
+
+> **Per `(ticker, trading_date)`, how many distinct `fetched_at` moments brought
+> new source rows?** That is how many times the fingerprint COULD have moved,
+> against how many times the job was asked.
+
+**Durable, append-only, no snapshot cadence, no current-state read.** It answers
+whether the short-circuit fires a third of the time because **evidence genuinely
+arrives that often**, or because **something is moving that nobody would call
+evidence.**
+
+### AND THE IRONY IS WORTH RECORDING RATHER THAN ENJOYED
+
+**A defect — a written, never-called function — is the only reason this history
+survives.** Wire `deactivateSources` for the 244 non-canonical cluster members,
+as approved, **and every fingerprint movement it causes becomes unreconstructable
+from that moment on.**
+
+**Not an argument against wiring it.** An argument for **recording the
+deactivation rather than only performing it** — a timestamp, or a row, so the
+thing that moved the fingerprint leaves a trace. **The alternative is to fix one
+defect and lose an axis, and to find that out later.**
