@@ -10621,3 +10621,59 @@ sufficient: **green gate AND a quiet machine, both.**
 
 **And a deploy window that would close a version split for free is a convenience,
 never a reason.** When the only cost of waiting is tidiness, wait.
+
+## Take the environment's state at the moment of use, in every field
+
+Three instances tonight, one rule:
+
+```
+CLOCK   a date read once, or announced by a non-ET environment, carried onward
+SHA     a tip read once, named for deploy, moved twice before shipping
+BOX     a machine proved quiet by a gate, assumed quiet for the deploy that follows
+```
+
+**A gate proves the box CAN be quiet. It does not prove the box IS quiet** when
+`git archive` starts streaming into `tar -x` twenty minutes later.
+
+**Every one of these is the same failure: a reading that was true when taken,
+carried into a moment where nothing re-checked it, and nothing about carrying it
+signals the decay.**
+
+**So the general form: any fact about the environment — time, tip, memory,
+freshness, who is on call — is taken at the moment it is used, never carried from
+the moment it was convenient to read.**
+
+## Thirteen removed and thirteen that mattered are different facts
+
+The clean gate showed **1866 → 1853: thirteen tests, file count unchanged.** Small
+enough that "expected" stops being a hope and becomes a checkable claim — 373
+removed lines yielding thirteen fewer cases is consistent with deleting fixtures
+and assertions rather than cases.
+
+**But the count cannot answer the question that matters: is there still a test
+that FAILS if the removed behaviour is reinstated?**
+
+Ops kept one that **writes a pin before asserting it is ignored**, because a test
+that stopped pinning would pass for the wrong reason. **If a change removes the
+last test that would notice a regression, the total moves by a number that looks
+fine.**
+
+**Watch the count to detect deletion. Watch the coverage to detect what deletion
+cost.** They are different checks and only the first is cheap.
+
+## The first agreement of the night, and what makes it worth more than its precision
+
+The rate card reproduced the trader's own invoice for 2026-09-04 **to within 12%.**
+
+**Every previous comparison this weekend had the outside source overturning the
+internal one** — the invoice correcting a priced estimate by 2.3x, `model_usage`
+correcting two threads' reading of `research_jobs`, the whole job axis. **This is
+the first time an internal computation and an independent source agreed.**
+
+**12% closes the question as well as it can be closed from this side**, and the
+residual sits exactly where Commercial predicted: **cache writes, billed at 1.25x,
+unlabelled inside `input_tokens`.**
+
+**Do not tighten it further from our own counters.** The remaining spread is not
+measurable here, and a narrower figure produced from the same inputs would be
+precision without information.
