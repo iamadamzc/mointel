@@ -7248,6 +7248,59 @@ pin**, and the only thing that could hide history is a manual unpin.
 *(That the mode-wipe skips it is a small stale-row hazard in its own right — a
 focus row surviving a wiped session — and it disappears with the table.)*
 
+### CORRECTION: MY "ZERO" MEASURED ONE OF TWO BYPASSES
+
+**Found before building on it, not after.** `isEligible` reads `focused`
+**twice**:
+
+```ts
+if (candidate.rank > autoRank && !candidate.focused) return false;   // rank gate
+if (candidate.activity === 'DEAD' && !candidate.focused) return false;   // DEAD gate
+```
+
+**My test — a job with no `RVOL_RANK_ENTRY` — can only see the RANK bypass.** A
+focused ticker *inside* autoRank but marked DEAD has a rank entry and was still
+rescued by focus. **That population is invisible to the measurement I reported as
+covering the question.**
+
+**And it is not hypothetical for the one pin that exists:**
+
+```
+ANPA  2026-09-04  activity DEAD  rvol_rank 2  death_count 2  jobs 57
+```
+
+**The only pin in the store's history was DEAD, at rank 2, with 57 jobs.** The
+DEAD exemption is exactly the branch that applied to it.
+
+**Nor is the gate rare:**
+
+```
+trading_date   in_top12   top12_and_DEAD
+2026-09-02       12             0
+2026-09-03       12            12
+2026-09-04       12            12
+```
+
+**`activity` is end-of-session state and `isEligible` runs against the live
+value**, so this cannot establish that any of ANPA's 57 jobs were admitted
+*because* it was focused — that is the reconstruction wall again. **What it
+establishes is that the DEAD bypass is a live path, and that the one pin ever
+made sat squarely in it.**
+
+### So the removal is not free — it removes a deliberate override
+
+The docstring states the intent: *"A focused name is exempt for the same reason
+it is exempt from the rank test — the trader has said he is still watching it,
+and that outranks the desk's opinion about whether it is interesting."*
+
+**Removing focus removes the trader's ability to keep a name researched after the
+desk decides it is dead.** That is consistent with his ruling — he wants pins to
+cause nothing — **but it is a second thing being removed, and he ruled on the
+first.**
+
+**Standing correction: "the focus clause has never admitted anything" is true of
+the RANK gate only. Do not quote it unqualified.**
+
 ### A FOURTH CONSUMER, not in Integration's list of three
 
 `lib/research/queue.ts:85` — `if (candidate.rank > autoRank && !candidate.focused) return false;`
