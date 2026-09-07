@@ -11069,3 +11069,76 @@ with one row per name per day cannot say what a field looked like at 07:00 —
 
 **"We have the data, it is just stale" and "the data was never kept" require
 completely different responses**, and only the first is fixable by refreshing.
+
+## An answer without its question attaches itself to whatever the reader is holding
+
+The trader wrote *"i told commercial its : Algo Trader Plus."* Integration read it
+as the product's chosen name and repeated it onward — into a naming brief and back
+to the trader as though it were his own choice.
+
+**It was the answer to Commercial's question about which Alpaca market-data plan
+the account is on.** It is the data vendor's subscription tier — **the one string
+the app cannot be called.**
+
+**A quoted fragment carries no question with it**, and a reader supplies the one
+they happen to be holding. **Same shape as reading an answer about one commit as
+covering two: the message was true and its scope was invisible.**
+
+**So relay the question with the answer, or quote neither.** And when a fragment
+arrives without context, **the safe reading is "answer to something I cannot see",
+not "answer to what I am working on."**
+
+**Caught by the thread that had asked the original question** — which is the only
+place it could have been caught, and an argument for facts going direct rather than
+being relayed at all.
+
+## A vestigial input is not kept alive because removing it needs a decision
+
+`lib/mcp/tools.ts:335` fed pinned tickers into event prioritisation as the
+`primary` set. Removing the pin store is therefore **not a deletion there — it is a
+decision about how MCP ranks with no primary set.**
+
+**The measurement settled it: `focus_tickers` has held exactly one row in its
+entire history.** So `primary` has been empty or single-valued for effectively the
+whole life of the feature. **"Keep it and give it a new source" would mean
+designing a fresh input for something that has never once operated on more than one
+name.**
+
+**If the capability is wanted later it is a new feature with a reason.** The failure
+mode is keeping a dead input because its removal requires someone to decide, and a
+decision is more expensive than a shrug.
+
+**And it was already dead, silently.** Pins went client-side, nothing writes the
+store, the date filter excludes the one historical row — **so the primary set
+emptied at deploy with no error and no log, and the ranking simply fell back.**
+**The never-true field, in an ORDERING rather than a column** — worse than the
+badge it followed, because a badge is visible and an ordering is not.
+
+## Re-register the number when the scope widens
+
+`−6` was pre-registered for a `focusRepo` removal. The atom then grew to include
+`focusStore`, two MCP consumers and a review-token route.
+
+**A prediction inherited from a smaller scope is worse than no prediction.** It will
+be met or missed for reasons unrelated to the work, **and either outcome teaches
+nothing** — a miss looks like a defect, a match looks like confirmation, and
+neither is.
+
+**When scope changes, the prediction is re-made before the work, with its
+composition stated:** six plus whatever the new consumers carry, enumerated by name.
+
+## Fourth for fourth: the carrier reaches further than the store
+
+```
+candidate.focused        past  focus_tickers          2 sites missed
+two isEligible branches  past  the SQL clause
+six focusRepo tests      past  the code they cover
+two MCP consumers        past  two API routes
+```
+
+**Four enumerations in one night, four times short, always in the same direction.**
+Every miss was found by searching for **what carries the value onward** rather than
+**where the value is stored.**
+
+**The table is never the boundary.** Neither is the module, the route, or the
+thread. **The boundary is wherever the last reader stops reading it.**
