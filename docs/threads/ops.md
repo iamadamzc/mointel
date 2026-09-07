@@ -7696,6 +7696,61 @@ seen for 26 of 72.** Had it been presented as settled, **the 46 would have been
 rounded into it — and the 46 are the population where the desk cannot tell a
 swallowed write from work that never happened.**
 
+## Which axis the 40% actually breaks — 2026-09-07
+
+**I said "no cost figure keyed on `job_id` can be trusted" and Integration
+generalised it to per-name figures. Both of us were wrong in the same direction —
+overstating the damage.**
+
+```
+model_usage       rows 3334
+  ticker NULL        0
+  trading_date NULL  0
+  job_id NULL     1335    <- lost the JOB key, kept the NAME key
+```
+
+**All 1,335 orphans are attributable by ticker and date.** They lost the job, not
+the name.
+
+```
+2026-09-04   273 rows  (85 null-job + 188 with-job)
+  input_all   8,151,606     <- every row, joinable or not
+  ANPA        2,389,338     -> 29.3%
+```
+
+**So the ANPA share is EXACT, not a floor.** Neither side of it touched
+`job_id`.
+
+**The rule:**
+- **Per-JOB figures are floors** — *"67% of jobs reached a model"* keys on
+  `job_id` and 40% cannot join.
+- **Per-NAME, per-DAY and per-MODEL figures are exact** — ticker, date and model
+  are never null.
+
+**The JOB axis is broken. Attribution generally is not.**
+
+### The direction is what makes it worth recording
+
+**Every other correction tonight moved a number toward less confidence.** This one
+moves it toward more, which is exactly why it needed checking rather than
+accepting — **a caveat is not automatically the safe choice.** Marking a
+measured 29% as "a floor with an unknown ceiling" would have discarded a fact,
+and a number moved four times is worse than one caveat applied once.
+
+## The clock error has changed shape — 2026-09-07
+
+**Two threads, in two different non-ET zones, independently announced Tuesday on
+Monday evening ET, and both repeated it as fact.**
+
+**Nobody misread a clock. A date changed underneath us in a zone that is not the
+desk's, and the environment announced it.** The desk runs on ET; a local
+midnight is 18:00 the previous day there.
+
+**So the countermeasure is no longer "read the clock from the box" — that assumes
+you know to look.** It is: **a date that arrives unbidden is a claim about the
+machine you are sitting at, never about the desk.** The desk's date has exactly
+one source and it is not the environment.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
