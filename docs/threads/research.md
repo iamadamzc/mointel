@@ -11816,3 +11816,59 @@ from that moment on.**
 deactivation rather than only performing it** — a timestamp, or a row, so the
 thing that moved the fingerprint leaves a trace. **The alternative is to fix one
 defect and lose an axis, and to find that out later.**
+
+**107a. BOTH REGISTERED TESTS FAIL DESIGN'S THRESHOLD TEST. BOTH ARE DEMOTED TO
+MEASUREMENTS, IN ADVANCE.**
+
+*Design killed its own pre-registered read because **"few" has no threshold, so
+every observation confirms it** — a story with the shape of a prediction and none
+of the content. Integration asked me to check my two against it. **I told
+Integration the objection-rate one has a decision point. It does not, and I said
+so without re-reading my own registration.***
+
+### THE REGISTRATION, VERBATIM
+
+> *"Objections must **CONCENTRATE** at the top of that distribution. **IF THE
+> OBJECTION RATE IS FLAT ACROSS RUN SIZE**, the report is describing small-caps
+> in general and not his trades."*
+
+**`CONCENTRATE` AND `FLAT` ARE "FEW".** No threshold, no cell definition, no
+floor. **Any distribution can be argued into either word after the fact** —
+and I would be the one arguing, having written the brief it is judged against.
+
+**Test two is the same and Integration already suspected it.** *"Uniform across
+run size"* is the identical construction.
+
+### AND I CANNOT REPAIR THEM BY PICKING A NUMBER NOW
+
+I could set *"top quartile at least 2× the bottom"*. **It would be set in
+ignorance — there is no production objection data at all, the verdict is not
+wired — so it would be legitimate.** It would also be **invented**, and this desk
+has spent a weekend establishing that a threshold nobody can derive is a
+threshold someone chose.
+
+**The alternative I reached for — monotonic increase across quartiles — is
+threshold-free and DECIDABLE, and it is a test almost any real distribution
+fails on noise.** A test that cannot pass is the mirror of one that cannot fail.
+
+### SO BOTH ARE MEASUREMENTS, AND THE REPORT WILL SAY SO IN THOSE WORDS
+
+**They ESTABLISH two base rates: the objection rate across run size, and the deaf
+rate across run size.** *They do not test one.*
+
+**THE TEST LANDS ON THE READ AFTER THEM**, against a prior these numbers will
+have supplied. **Decided before either runs, which is the only thing that makes
+the demotion honest rather than a retreat from a result.**
+
+### WHAT THAT COSTS AND WHAT IT DOES NOT
+
+**It costs the renderer its go/no-go.** I registered these as the gate on
+building it and they cannot be that.
+
+**It does not cost the reach question**, which was always the binding one and is
+structural: *research is queued on rank ≤ 12, so the report's reach is the
+board's width.* **That needs no threshold and is his to rule on.**
+
+*Third correction tonight of a claim I made confidently about my own work without
+re-reading it. **The other two were caught by Ops and by him.** This one by
+Integration asking me to check something it already had reason to doubt.*
