@@ -11183,3 +11183,67 @@ should not be carried forward as though it were.**
 **ONE NAME IS 2.39M INPUT TOKENS — between a fifth and a third of an entire
 session's input.** Whatever the rate is, that is the number the monetisation case
 has to carry, and it is a FIXED daily cost per his one-shared-board ruling.
+
+**106a. PRICED. ~$19 A SESSION, ~$4,700 A YEAR — AND ONE DEFECTIVE NAME WAS 29%
+OF A DAY.**
+
+*Him: **"dont be lazy, find out the model and the cost and calculate."** Fair. I
+checked the repo for a rate card, did not find one, and stopped — **without
+looking up models whose ids were sitting in the config.***
+
+### THE RATES, FETCHED RATHER THAN RECALLED
+
+`OPENAI_RESEARCH_MODEL`, default `gpt-5.6-terra`; discovery on `gpt-5.6-luna`.
+**Both are on OpenAI's published price list**, per million tokens:
+
+| model | input | cached input | output |
+| --- | ---: | ---: | ---: |
+| `gpt-5.6-terra` | **$2.00** | $0.20 | **$12.00** |
+| `gpt-5.6-luna` | $0.20 | $0.02 | $1.20 |
+
+**Cached is a SUBSET of input, not an addition** — `openaiInterpreter.ts:323`
+reads `input_tokens_details.cached_tokens` out of `input_tokens`. So billable is
+`(input − cached) × in-rate + cached × cache-rate`, and treating them as
+additive would overstate.
+
+### ANPA, 2026-09-04 — the only name with a full breakdown
+
+```
+60 calls · 2,389,338 input · 277,521 cached · 53,665 output
+  uncached input  2,111,817 × $2.00   = $4.22
+  cached input      277,521 × $0.20   = $0.06
+  output             53,665 × $12.00  = $0.64
+                                        -----
+                                        $4.92
+```
+
+### THE SESSION, WITH ITS ASSUMPTIONS ON THE FACE OF IT
+
+Only day INPUT totals exist. **Cached and output are scaled from ANPA's ratios —
+11.6% and 2.25% — which is ONE NAME standing in for a session.**
+
+| session | input | cost |
+| --- | ---: | ---: |
+| 09-02 | 7.88M | **$16.24** |
+| 09-03 | 11.10M | **$22.87** |
+| 09-04 | 8.15M | **$16.79** |
+
+**~$18.63 a session. ~$4,700 a year at 252 sessions.**
+
+**THIS IS AN UPPER BOUND. It prices everything at terra**, and discovery runs on
+luna at a tenth. **The true figure is lower by whatever share is luna, which I do
+not hold** — `model_usage.model` splits it in one group-by.
+
+### AND THE FINDING INSIDE THE NUMBER
+
+**ANPA WAS 29.3% OF 09-04's INPUT TOKENS. ONE NAME, WITH A DEFECT ALREADY BEING
+REMOVED.**
+
+**So the pin removal Ops is mid-sequence on is not only a correctness fix — it is
+plausibly a quarter to a third off a session's research cost.** Nobody costed it
+that way because the cost was invisible in the job table, which is the same
+`PARTIAL` collapse from 106.
+
+*Per his one-shared-board ruling this is a FIXED daily cost, not per-user. **~$19
+a day is the number the monetisation case carries, and it is smaller than "8–11M
+tokens" sounds.***
