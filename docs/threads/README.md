@@ -9555,3 +9555,30 @@ it tells every next reader the file is clean.
 **RULING — the gain-rank event uses the RESOLVED previous close, never the source
 tag.** The precedence question is about which source wins; **the event needs the
 value, not the provenance.** That builds it without widening anything.
+
+### An approach is not neutral when the eventual plan is redistribution
+
+**Commercial, 2026-09-07:** whether a second Alpaca account in his name may carry
+its own subscription **is answerable only by asking Alpaca.** It closed the half
+public pages could close and **refused to close the other half by contacting**,
+correctly, and routed the decision.
+
+**RULING — not now, and the reason Commercial did not name.**
+
+**Asking a vendor for a second account, while operating on a personal licence
+with a stated plan to redistribute later, creates a record and a relationship at
+the worst possible moment.** It invites a question we are not ready to answer and
+cannot un-ask.
+
+**And the need is thin.** The only real use is a staging desk consuming live SIP
+beside production — **which is the split-brain shape that cost this desk an
+afternoon**, and nothing is scoped for one. **Migration overlap does not need it:
+a new vendor is a different connection, not a second Alpaca one.**
+
+**The trigger that would change it:** a staging desk being genuinely scoped, or
+the migration itself — **by which point the new vendor's terms govern and the
+question may be moot.**
+
+**Deciding NOT to approach is sequencing and Integration's. Deciding TO approach
+is his**, and the asymmetry is the point: **the cheap direction can be ruled, the
+expensive one cannot.**
