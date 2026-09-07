@@ -10427,3 +10427,45 @@ field is the one that names who has verified it: nobody.
 **The fix was to find a mechanism that could answer** — the response object's own
 `service_tier`, settled from one logged response. **Same move `model_usage` made on
 the cost question: convert an unanswerable question into a one-line observation.**
+
+## An ambient date is wrong for everyone downstream at once
+
+Design catalogued three clock errors as one shape — **carrying a reading rather
+than taking one** — and then separated a fourth that is worse:
+
+**A reading you take is wrong only if YOU take it wrong. An ambient date is wrong
+for every thread downstream at once, and it arrives with the confidence of an
+observation.**
+
+*Nobody misread a clock; nobody read one.*
+
+**And every thread on this desk runs in a non-ET environment**, so an environment
+that announces midnight announces it hours before the desk's day turns. **This
+recurs by default rather than by accident** — which is why the other three were
+worth a habit and this one is worth a rule.
+
+**Rule: an announced date is not a reading, and it is never the desk's.** Take ET
+from `zoneinfo` at the moment of use before any sentence that names a day.
+
+## Two states that differ only in a payload field are one state on screen
+
+The universe-freshness marker has three cases before tomorrow's refetch:
+
+```
+BEFORE 03:15, marker fires              -> EXPECTED. Not a defect.
+AFTER  03:15, universe restamped, silent -> correct
+AFTER  03:15, universe still 09-06, fires -> REAL, and the case the marker exists for
+```
+
+**The second and third are indistinguishable on screen.** A silent marker and a
+fired-but-expected marker are both consistent with a working feature, **and only
+`universeUpdatedAt` separates either from the failure.**
+
+**So the observable is not the marker. It is the marker plus the timestamp**, and a
+read that takes one without the other cannot reach a conclusion — it can only
+reach a feeling about one.
+
+**Pre-register which case you are in before looking**, not after. A firing marker
+at 03:30 with no prior registration has no principled reading available, **and the
+reading that gets chosen at the board is the one that fits what the observer
+already expected.**
