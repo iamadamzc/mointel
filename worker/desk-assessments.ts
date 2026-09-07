@@ -188,9 +188,7 @@ function captureAssessment(
               rth_final_close, halt_state
          FROM ticker_session
         WHERE trading_date = @tradingDate
-          AND ((${rankColumn} IS NOT NULL AND ${rankColumn} <= @limit)
-               OR EXISTS (SELECT 1 FROM focus_tickers f
-                           WHERE f.ticker = symbol AND f.trading_date = @tradingDate))
+          AND ${rankColumn} IS NOT NULL AND ${rankColumn} <= @limit
         ORDER BY ${rankColumn} IS NULL, ${rankColumn} ASC`,
     )
     .all({ tradingDate: scheduled.tradingDate, limit: captureCount }) as TickerRow[];
@@ -357,11 +355,6 @@ function structuralRefreshTargets(
       .all(options.previousDate, options.breadth) as Array<{ ticker: string }>;
     for (const row of recap) targets.add(row.ticker);
   }
-
-  const focus = db
-    .prepare('SELECT ticker FROM focus_tickers WHERE trading_date = ?')
-    .all(options.tradingDate) as Array<{ ticker: string }>;
-  for (const row of focus) targets.add(row.ticker);
 
   const premarket = db
     .prepare(

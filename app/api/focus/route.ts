@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 
-import { getDashboardState } from '@/lib/data';
 import { getFocus, pinTicker, unpinTicker } from '@/lib/market/focusStore';
 
 // A user preference, read and written per request. Never cached.
@@ -9,34 +8,15 @@ export const runtime = 'nodejs';
 
 const NO_STORE = { 'Cache-Control': 'no-store, max-age=0' };
 
-/**
- * The desk's current A-priority names.
- *
- * Resolved on the server so the one-time seed cannot depend on which browser
- * happened to load first, or race between two open tabs.
+
+/*
+ * A READ THAT WROTE. This used to supply `seedCandidates`, and `getFocus`
+ * would then INSERT into `focus_tickers` once per trading date -- so loading
+ * the desk created rows, and those rows admitted names into research. Both the
+ * seeding and the admission are gone; the read is now a read.
  */
-async function seedCandidates(): Promise<string[]> {
-  try {
-    const state = await getDashboardState();
-    const seen = new Set<string>();
-    const candidates: string[] = [];
-
-    for (const ticker of state.tickers) {
-      if (ticker.priority.bucket !== 'A') continue;
-      if (seen.has(ticker.ticker)) continue;
-      seen.add(ticker.ticker);
-      candidates.push(ticker.ticker);
-    }
-    return candidates;
-  } catch {
-    // A sheet outage must not block the Focus list; it just cannot seed it.
-    return [];
-  }
-}
-
 export async function GET() {
-  const focus = getFocus({ seedCandidates: await seedCandidates() });
-  return NextResponse.json(focus, { headers: NO_STORE });
+  return NextResponse.json(getFocus(), { headers: NO_STORE });
 }
 
 function normalise(value: unknown): string | null {

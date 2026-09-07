@@ -26,14 +26,6 @@ export interface QueueCandidate {
   ticker: string;
   /** Rank on the ACTIVE session board — Daily RVOL by day, AH after the bell. */
   rank: number;
-  /**
-   * On the trader's Focus list.
-   *
-   * A focused name stays research-relevant after it falls off the board: a
-   * stock sliding from #3 to #80 is when its structure matters most, and the
-   * trader has explicitly said they are still watching it.
-   */
-  focused?: boolean;
   rvol: number | null;
   percentChange: number | null;
   cumulativeVolume: number | null;
@@ -77,13 +69,18 @@ const ELIGIBLE_CLASSES = new Set(['COMMON_EQUITY', 'ADR_ADS', 'UNKNOWN']);
  *
  * FAIL OPEN. Only `'DEAD'` refuses; `undefined` and `'UNKNOWN'` both keep the
  * name, so research is denied only when the desk POSITIVELY KNOWS the name is
- * silent. A focused name is exempt for the same reason it is exempt from the
- * rank test — the trader has said he is still watching it, and that outranks
- * the desk's opinion about whether it is interesting.
+ * silent.
+ *
+ * A PIN NO LONGER EXEMPTS A NAME FROM EITHER GATE. Both branches used to read
+ * `focused`, and the docstring called the exemption deliberate — the trader
+ * saying he is still watching a name outranking the desk's opinion of it.
+ * Measured on 2026-09-07, that exemption had kept one name under research for
+ * TEN HOURS past two deaths for a single dossier. Ruled a defect rather than a
+ * capability: a pin follows research, it does not cause or prolong it.
  */
 export function isEligible(candidate: QueueCandidate, autoRank: number): boolean {
-  if (candidate.rank > autoRank && !candidate.focused) return false;
-  if (candidate.activity === 'DEAD' && !candidate.focused) return false;
+  if (candidate.rank > autoRank) return false;
+  if (candidate.activity === 'DEAD') return false;
   return ELIGIBLE_CLASSES.has(candidate.classification ?? 'UNKNOWN');
 }
 
@@ -119,10 +116,6 @@ export function priorityScore(candidate: QueueCandidate, autoRank: number): numb
 
   // A latched name has already proven it belongs on the board.
   if (candidate.latched) score += 4;
-
-  // Explicitly watched by the trader. Enough to jump a queue, never enough to
-  // decide whether anything else runs.
-  if (candidate.focused) score += 8;
 
   return Math.round(score * 100) / 100;
 }
@@ -335,9 +328,7 @@ export function queueDiscoveryResearch(
       ticker: candidate.ticker,
       tradingDate: options.tradingDate,
       priority,
-      reason: candidate.focused && candidate.rank > options.autoRank
-        ? 'focus list'
-        : `${options.board ?? 'top'} ${options.autoRank} at rank ${candidate.rank}`,
+      reason: `${options.board ?? 'top'} ${options.autoRank} at rank ${candidate.rank}`,
       queuedAt,
       /*
        * Board entry is the origin for time-to-intelligence.

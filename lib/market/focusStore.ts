@@ -16,7 +16,6 @@
 import 'server-only';
 
 import { loadMarketConfig } from './config';
-import { isMarketDataExpected, resolveSessionPhase } from './session';
 import { databaseExists, getMeta, openDatabase, type MarketDatabase } from './store/db';
 import {
   ensureFocusTable,
@@ -24,7 +23,6 @@ import {
   isFocusSeeded,
   pinFocus,
   readFocus,
-  seedFocus,
   unpinFocus,
   type FocusEntry,
 } from './store/focusRepo';
@@ -94,42 +92,13 @@ function view(db: MarketDatabase, tradingDate: string, limit: number): FocusView
  * consulted the first time a trading date is seen; after that the list belongs
  * to the user.
  */
-export function getFocus(options: { seedCandidates?: string[] } = {}): FocusView {
+export function getFocus(): FocusView {
   const config = loadMarketConfig();
   const db = connection(config.dbPath);
   if (!db) return unavailable('Market state store is not available yet.', config.focusMaxTickers);
 
   try {
     const tradingDate = resolveTradingDate(db);
-
-    // Seeding outside a session would stamp the marker on a date the desk has
-    // not started working, consuming the one seed the day is allowed.
-    const phase = resolveSessionPhase({
-      now: new Date(),
-      tradingDate,
-      isTradingDay: true,
-    });
-
-    /*
-     * `isMarketDataExpected`, not `phase !== 'CLOSED'`.
-     *
-     * POST_MARKET and NEXT_DAY_PREP are no longer CLOSED, and at 22:30 the
-     * trading date has already rolled to the next session — so the looser
-     * check would seed tomorrow's Focus from tonight's board and consume the
-     * one seed that day is allowed before anyone had seen it.
-     */
-    if (
-      options.seedCandidates &&
-      !isFocusSeeded(db, tradingDate) &&
-      isMarketDataExpected(phase)
-    ) {
-      seedFocus(db, {
-        tradingDate,
-        candidates: options.seedCandidates,
-        limit: config.focusMaxTickers,
-      });
-    }
-
     return view(db, tradingDate, config.focusMaxTickers);
   } catch (error) {
     return unavailable(`Focus unavailable: ${(error as Error).message}`, config.focusMaxTickers);

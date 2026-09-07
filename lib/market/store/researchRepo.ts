@@ -129,15 +129,11 @@ export function readBoardCandidates(
               s.qualified_at AS qualifiedAt,
               s.ah_qualified_at AS ahQualifiedAt,
               s.activity,
-              u.classification,
-              (SELECT COUNT(*) FROM focus_tickers f
-                WHERE f.ticker = s.symbol AND f.trading_date = s.trading_date) AS focused
+              u.classification
          FROM ticker_session s
          LEFT JOIN universe u ON u.symbol = s.symbol
         WHERE s.trading_date = @tradingDate
-          AND ((s.${rankColumn} IS NOT NULL AND s.${rankColumn} <= @autoRank)
-               OR EXISTS (SELECT 1 FROM focus_tickers f
-                           WHERE f.ticker = s.symbol AND f.trading_date = s.trading_date))
+          AND s.${rankColumn} IS NOT NULL AND s.${rankColumn} <= @autoRank
         ORDER BY s.${rankColumn} IS NULL, s.${rankColumn} ASC`,
     )
     .all({ tradingDate: options.tradingDate, autoRank: options.autoRank });
@@ -153,10 +149,7 @@ export function readBoardCandidates(
 
     return {
       ticker: String(r.ticker),
-      // A focused name outside the board still queues; it simply waits behind
-      // the board, which is what a rank just past the threshold does.
       rank: rank ?? options.autoRank + 1,
-      focused: Number(r.focused ?? 0) > 0,
       rvol: numeric(r.rvol),
       // On the after-hours board the move and the volume that matter are the
       // evening's, not the day's.

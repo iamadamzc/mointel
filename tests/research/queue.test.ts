@@ -189,14 +189,21 @@ describe('research eligibility', () => {
     expect(isEligible(candidate({ activity: 'ACTIVE' }), 12)).toBe(true);
   });
 
-  it('still researches a DEAD name the trader has focused', () => {
-    /*
-     * Focus is the trader saying he is watching it, and that outranks the
-     * desk's opinion about whether the name is interesting -- the same reason
-     * focus already exempts a name from the rank window. A focused name going
-     * quiet is arguably when its structure matters most.
-     */
-    expect(isEligible(candidate({ activity: 'DEAD', focused: true }), 12)).toBe(true);
+  /**
+   * THE PIN NO LONGER RESCUES A DEAD NAME, and this test exists to fail if
+   * anyone puts the exemption back.
+   *
+   * It used to. The docstring called it deliberate -- the trader saying he is
+   * watching a name outranking the desk's opinion of it. Measured on
+   * 2026-09-07 against the only pin the store has ever held: it kept ONE name
+   * under research from 08:27 to 18:28, past two deaths, for a single dossier.
+   *
+   * Ruled a defect rather than a capability. A pin FOLLOWS research -- four
+   * jobs had already run before that name was pinned -- so it has nothing to
+   * cause and nothing to prolong.
+   */
+  it('refuses a DEAD name, and no longer has any way to be told otherwise', () => {
+    expect(isEligible(candidate({ activity: 'DEAD' }), 12)).toBe(false);
   });
 });
 

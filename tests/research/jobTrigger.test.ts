@@ -94,12 +94,18 @@ describe('the trigger recorded on a research job', () => {
     expect(jobs[0].trigger).toBe(INTERVAL_RECHECK);
   });
 
-  it('marks a focus-list refresh below the board as a re-look', () => {
-    queue([candidate({ top12EnteredAt: null, rank: 80, focused: true })], 12);
+  /**
+   * THERE IS NO LONGER A FOCUS-LIST REFRESH BELOW THE BOARD.
+   *
+   * This used to assert that a pinned name at rank 80 queued as a re-look. The
+   * pin exemption was removed on 2026-09-07 after it was measured keeping one
+   * name under research for ten hours past two deaths. A name below the board
+   * now produces NO JOB, whatever the trader has pinned.
+   */
+  it('creates no job at all for a name below the board', () => {
+    queue([candidate({ top12EnteredAt: null, rank: 80 })], 12);
 
-    const jobs = readJobsForDate(db, DATE);
-    expect(jobs).toHaveLength(1);
-    expect(jobs[0].trigger).toBe(INTERVAL_RECHECK);
+    expect(readJobsForDate(db, DATE)).toHaveLength(0);
   });
 
   it('never lets a re-look pass for a material demand event', () => {

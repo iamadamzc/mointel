@@ -234,16 +234,20 @@ describe('Focus survives the session transition (requirement 16)', () => {
       board: 'AFTER_HOURS',
     });
 
-    const pinned = candidates.find((candidate) => candidate.ticker === 'PINNED');
-    expect(pinned).toBeDefined();
-    expect(pinned?.focused).toBe(true);
-    // Eligible despite being past the rank threshold...
-    expect(isEligible(pinned!, 12)).toBe(true);
-    // ...but it queues behind the board rather than ahead of it.
-    expect(pinned?.rank).toBeGreaterThan(12);
+    /*
+     * PINNED IS STILL PINNED IN THE STORE AND IS NOT A CANDIDATE ANYWAY.
+     *
+     * The row is written above, so this proves the admission clause is gone
+     * rather than that the pin failed to save -- a test that stopped pinning
+     * would pass for the wrong reason.
+     */
+    expect(candidates.find((candidate) => candidate.ticker === 'PINNED')).toBeUndefined();
 
+    // The board name is unaffected: rank still admits, exactly as before.
     const onBoard = candidates.find((candidate) => candidate.ticker === 'EVENING');
-    expect(priorityScore(onBoard!, 12)).toBeGreaterThan(priorityScore(pinned!, 12));
+    expect(onBoard).toBeDefined();
+    expect(isEligible(onBoard!, 12)).toBe(true);
+    expect(priorityScore(onBoard!, 12)).toBeGreaterThan(0);
   });
 
   it('still excludes an unfocused name outside the board', () => {
