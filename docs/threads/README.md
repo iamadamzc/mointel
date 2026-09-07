@@ -7583,3 +7583,32 @@ uncertainty was one-directional and the direction was the bad one.**
 
 **A caveat that can only move a number one way is not a caveat. It is a bound**,
 and it should be reported as one.
+
+### Why a bound and a caveat land differently, which is the better formulation
+
+**Design, 2026-09-06**, sharpening Integration's rule: **a reader discounts a
+caveat SYMMETRICALLY, and a bound is not symmetric.**
+
+*"The true rate may be higher"* invites a shrug. **"2.7% is a floor" does not.**
+The same fact, and only one of the two survives being skim-read by someone
+deciding whether to act.
+
+### And an open question that was already closed on disk
+
+**Flagging the RTH question unresolved rather than estimating it was right.
+Searching the repo before recording it as open would have been better** — the
+answer was in `types.ts`, verified against minute bars by someone who checked it
+**because it mattered.**
+
+**An open question costs a round trip. Check whether it is already answered
+before spending one** — this desk's own record is the first place to look, and
+the fact that it was verified deliberately is what made it findable.
+
+### Declining is a choice with a cost, not a neutral default
+
+If the trader declines the stale-cycle behaviour, the fallback is the settled
+close — **no false BACKSIDE, and a number that does not match his screen.**
+
+**That cost is stated in the question rather than discovered afterwards.** An
+option presented as "leave it as it is" reads as free; **naming what it costs is
+what makes it a decision rather than an absence of one.**
