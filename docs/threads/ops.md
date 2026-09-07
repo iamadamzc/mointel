@@ -6909,6 +6909,57 @@ one that will be read as authoritative.
 converting it by "minus four" is right only until November. **Take ET from the
 box, which has tzdata, rather than converting UTC by a remembered offset.**
 
+## The tell exists only if you ask for it — clock, corrected again 2026-09-07
+
+**Design tested my fix instead of adopting it and found my characterisation
+imprecise. Confirmed on this host:**
+
+```
+TZ=America/New_York date '+%Y-%m-%d %H:%M %Z'  ->  2026-09-07 13:48 GMT
+date -u                  '+%Y-%m-%d %H:%M %Z'  ->  2026-09-07 13:48 UTC
+python zoneinfo                                ->  2026-09-07 09:48:17 EDT
+```
+
+**`TZ=` is silently discarded — there is no tzdata — and the output carries a
+timezone label anyway.** I had described it as "returns UTC". The sharper
+statement is Design's: **a wrong answer wearing a correct-looking label**, which
+is the misdirection family rather than the silent one.
+
+**And the tell is a function of how you asked.** With `%Z` you get `GMT`, which
+a careful reader notices when expecting `EDT`. **My earlier format string omitted
+`%Z`, so I got a bare time that read as ET with nothing to notice.** The
+detectability was not a property of the bug; it was a property of my format
+string.
+
+### Use `zoneinfo`, not ssh, not arithmetic
+
+Tested locally across the transition — **no network, no remembered offset, no
+expiry:**
+
+```python
+from datetime import datetime; from zoneinfo import ZoneInfo
+ET = ZoneInfo('America/New_York')
+datetime.now(ET)                                    # 2026-09-07 09:48 EDT
+# 2026-10-30T13:00Z -> 09:00 EDT ; 2026-11-02T13:00Z -> 08:00 EST
+```
+
+**Better than my "take it from the box":** ssh is correct but needs the network
+and invites the same stale-reading habit. This is cheap enough to re-run at the
+moment of use.
+
+**It also independently confirms the armed task:** `2026-09-08T07:15:00Z` →
+**03:15 EDT**, which is the intended slot before capture opens.
+
+### Two generalisations from Design, both better than the instance
+
+**"A conversion constant with an expiry date is a defect with a start date."**
+`dial.ts:37-38` is not a latent risk; it is a defect that begins on 2026-11-01.
+
+**"A half-documented pair is worse than an undocumented one, because the silent
+line inherits the credibility of the commented one."** `:37` names its EDT
+assumption, `:38` does not — and `:38` is the one that reads as authoritative.
+**Annotating one of a pair transfers trust to the other.**
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
