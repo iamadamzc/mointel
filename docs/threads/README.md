@@ -8691,3 +8691,58 @@ arguing about whether two ratios were close.**
 **The same discipline killed a query of Research's, a query of Integration's, and
 a mechanism Integration had already put in front of the trader** — all in one
 evening, all before anything ran.
+
+## THE SWEEP FOUND A DARK FEATURE ON ITS FIRST OUTING
+
+**Ops, 2026-09-07, one query.** **`ticker_session.price_window` is NULL across all
+143,142 rows.** It has a writer at `worker/runtime.ts:1846` and the upsert
+COALESCEs it like its siblings. **The wiring is complete and the value is always
+null.**
+
+**Its sibling settles it** — both columns written by the same statement on the
+same rows:
+
+    trading_date   rows   activity_window   price_window
+    2026-09-04     8772        7757              0
+
+**7,757 sibling writes and zero price_window writes, through the same upsert.**
+So `state.priceWindow` is always null while `state.activityWindow` is not — **the
+series is never built in the runtime.**
+
+**That is the board's price line with no data behind it**, shipped and rendering
+nothing for two days.
+
+**Limit stated: n = 1 session** — 09-04 is the only completed session since schema
+25. **7,757 opportunities within one day, not a pattern across days.** Enough to
+act on; not enough to call it a regression from something that once worked.
+
+**And the row count was the trap exactly as predicted:** `activity_window` at
+7,757 **is what "this pathway works" looks like — and it is a fact about the
+neighbouring column.**
+
+### What else it returned, unfiltered
+
+    rvol_rank_change / ah_rank_change   ALWAYS 0, while RVOL_RANK_ENTRY payloads
+                                        carry previousRank 13 against rank 12
+    volume_base ALWAYS 0 · volume_base_through NEVER WRITTEN
+    issuer_registry.ir_url NEVER WRITTEN, on 707 rows, while COMPANY_IR
+                                        carries 299 EXACT-precision rows
+    research_sources.active ALWAYS 1    nothing has ever been deactivated
+    desk_assessments.failure NEVER WRITTEN — the error-enum-with-no-errors case
+
+**`research_sources.active` independently confirms a finding from days earlier:
+`deactivateSources` is exported, documented and has zero callers.** Two
+instruments, arrived at separately, agreeing.
+
+**And one structural result with a consequence:** `universe.tradable` is always 1
+and `status` always `"active"`, **by construction** — the fetch filters to them.
+**So the store cannot represent a name going inactive.** A delisted or renamed
+symbol does not become inactive; **it simply stops appearing.** Given SGRX renamed
+overnight and the desk ran a day on a stale universe, **that is a property worth
+knowing rather than a defect.**
+
+### The exclusion, stated because it will otherwise be quoted as complete
+
+**`id`, timestamps, symbols, URLs, hashes and payload blobs were excluded by
+name.** So the sweep **is not exhaustive**, and a single-valued column with one of
+those names would not appear.
