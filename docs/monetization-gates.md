@@ -190,11 +190,18 @@ Mapped, not answered — no agreement, no approach, no recommendation to sign.*
   Tiingo's display tier is IEX-only intraday by its own field description and
   cannot run it. Intrinio Startup's volume basis is stated nowhere. Massive
   Business carries consolidated real-time aggregates by its own knowledge base.
-  Databento's Standard tier's only live dataset is a venue subset; its
-  consolidated volume sits in a Summary dataset its blog calls delayed, on a
-  tier the pricing matrix shows only as an icon. **The verified floor for RVOL
-  as defined is Massive Business at $2,499/mo; the two cheaper floors exist only
-  if something unstated is true, and each is settled only by a sign-up.**
+  Databento's Mini is a venue subset, but its consolidated-volume Summary
+  dataset is *"included with any Databento US Equities subscription"* — and
+  Databento's own pages disagree on whether that volume is delayed, with no
+  interval published anywhere. **So the verified floor for real-time RVOL as
+  defined is Massive Business at $2,499/mo with no bid and ask; Databento Plus
+  at $1,500/mo carries both a real bid and ask and consolidated volume of
+  unstated delay. Neither published option gives today's board: one buys a
+  lateness defect in the ranking, the other buys two dead spread features.**
+  The cheapest published completion of Massive with a live spread is its $499
+  IEX expansion, a one-venue book. No vendor with a published price packages
+  both below the real tape; the one exchange product that carries both is
+  Nasdaq Basic with NLS Plus, at $1 per non-pro viewer.
 - **The CT Plan replaces CTA and UTP on 2027-04-01** — new per-viewer rates, a
   use-based professional test, and derived-data *creation* becoming fee-liable.
   Account migration started this month. **Any agreement signed before March

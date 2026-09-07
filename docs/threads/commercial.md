@@ -94,10 +94,18 @@ section above is stale.**
   cheap display tiers carry consolidated volume, which RVOL needs in both its
   numerator and its denominator. Tiingo: no, IEX-only intraday. Intrinio
   Startup: not stated anywhere. Massive Business: yes, real-time, by its own
-  knowledge base. Databento Standard: venue subset; its consolidated volume is
-  in a separate, blog-described-as-delayed Summary dataset on an unreadable
-  tier. **Verified floor for RVOL as defined: Massive Business, $2,499/mo.**
-  The two cheaper floors are settled only by a sign-up, which is his.
+  knowledge base. Databento: Mini is a venue subset; its consolidated-volume
+  Summary dataset is on every tier (catalog panel, read after the first
+  version of this line said the tier was unreadable — corrected the same day)
+  and Databento's own pages disagree on whether it is delayed. **Verified floor
+  for REAL-TIME RVOL as defined: Massive Business, $2,499/mo, with no bid and
+  ask. Databento Plus, $1,500/mo annual, carries both a real bid and ask and
+  consolidated volume of unstated delay.** §7–8 of the document answer
+  Integration's completion and fifth-vendor questions: the cheapest live
+  spread on Massive is the $499 IEX expansion; nobody with a published price
+  packages both below the tape; Nasdaq Basic with NLS Plus is the one exchange
+  product carrying both. The delay interval and Intrinio Startup's volume
+  basis are settled only by a sign-up, which is his.
 
 **Method, so the next reader knows what the figures are worth.** Four research
 passes over public pages on 2026-09-07; **every load-bearing quotation and

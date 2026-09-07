@@ -15,14 +15,22 @@ tier's derived feed populates it; Intrinio's consolidated volume is verified
 only on the Enterprise delayed-SIP feed, 15 minutes late. **Massive Business:
 yes, real-time** — by Massive's own knowledge base its aggregates exist only for
 the consolidated feed, dark-pool prints included, and Business streams them
-live. **Databento: the Standard tier's only live dataset is Mini, whose volume
-is a venue subset**; Databento's consolidated intraday volume lives in a
-separate Summary dataset that its blog calls delayed and whose tier the pricing
-matrix does not state in text. **So the lowest published tier with verified
-real-time consolidated volume and display rights is Massive Business at
-$2,499 a month. The "$1,500 Databento floor" is not supported for RVOL as this
-board defines it.** Two cheaper floors exist only if something no page states
-turns out to be true, and each can be settled only by a sign-up.
+live. **Databento: Mini's volume is a venue subset, but its consolidated-volume
+dataset, Summary, is *"included with any Databento US Equities
+subscription"*** — established from the catalog's own dataset panel after the
+first version of this paragraph said the tier was unreadable — **and
+Databento's pages disagree with each other on whether that volume is
+delayed**: the panel's description says *"100% daily volume on a delayed
+basis"*, its access table says *"Live — Real-time"*, and no page gives an
+interval. **So the lowest published tier with verified REAL-TIME consolidated
+volume and display rights is Massive Business at $2,499 a month, with no bid
+and ask; Databento Plus at $1,500 a month plus zero licence fees on these two
+datasets carries consolidated volume of unstated delay AND a real bid and ask
+— both features, one ambiguity.** Correction: the first version of this
+document said the $1,500 floor was not supported. It is supported for a
+consolidated numerator whose delay Databento does not publish; whether that
+delay is acceptable is a product decision, and the interval can be settled
+only with a feed in hand.
 
 ---
 
@@ -52,7 +60,7 @@ turns out to be true, and each can be settled only by a sign-up.
 | **Tiingo** — EOD + IEX Redistribution, $250 / $500 | yes, *"Display Redistribution"* | **IEX only** | *"Volume will be IEX Volume throughout the day, but once the official closing price comes in, volume will reflect the volume done on the entire day across all exchanges."* Intraday history: *"The number of shares traded on IEX only."* | **nowhere intraday, at any tier.** After the close only. The end-of-day endpoint's volume is *"The number of shares traded for the asset"* with no source stated |
 | **Intrinio** — Startup, $333 → $666 → $999, EquitiesEdge | yes, *"Commercial Use and Display Rights"* | **not established** | the real-time API defines `exchange_volume` — *"The number of shares exchanged during the trading day on the exchange"* — and `market_volume` — *"The number of shares exchanged during the trading day for the whole market"*; the docs say nothing about which sources populate `market_volume`; the EquitiesEdge page lists *"Volume, Pre-Market Volume, Post-Market Volume"* with no basis | **Enterprise, $1,250/mo+, delayed SIP:** *"100% of US exchange volume"*, *"Dark pool data included"*, *"The data updates continuously but with a 15-minute delay"* — the page does not separate volume from the quote delay |
 | **Massive** — Stocks Business, $2,499 | yes | **consolidated, real-time** | knowledge base: *"Massive currently only offers aggregates for the 'consolidated' feed (meaning trades from all exchanges)."* Dark-pool prints carry *"exchange ID of 4"* and a `trf_id`. Coverage *"19 US Exchanges + Dark Pools."* The minute-aggregate websocket lists *Stocks Business — Real-time*; its fields are `v` *"The tick volume"* and `av` *"Today's accumulated volume"* | **on Business itself.** Massive's own statement is *"No Exchange Fees or Approvals"* on that tier; end-of-day SIP for the denominator is also on Business (*"the full SIP end-of-day"*) |
-| **Databento** — Standard $199; external distribution on Plus $1,500 + licence fees, annual | Plus only | **Mini: venue subset.** Standard's live coverage in the feature matrix is *"Databento US Equities Mini"* alone; Mini's OHLCV *"aggregate prices and volume across all the component venues"*, venues anonymised, share of volume unpublished | Summary dataset (EQUS.SUMMARY): *"Databento normalizes the consolidated volume provided by the Nasdaq NLS+ feed on every trade into the statistics schema. This volume is consolidated across all US exchanges."* Blog: *"100% intraday volume on a delayed basis and consolidated end-of-day prices (OHLCV) across all NMS exchanges and ATSs."* | **in Summary — delayed by the blog's account, silent in the spec — and on a tier the matrix shows only as an icon.** Not established which plan carries it live |
+| **Databento** — Standard $199; external distribution on Plus $1,500 + licence fees, annual | Plus only | **Mini: venue subset.** Standard's live coverage in the feature matrix is *"Databento US Equities Mini"* alone; Mini's OHLCV *"aggregate prices and volume across all the component venues"*, venues anonymised, share of volume unpublished | Summary dataset (EQUS.SUMMARY): *"Databento normalizes the consolidated volume provided by the Nasdaq NLS+ feed on every trade into the statistics schema. This volume is consolidated across all US exchanges."* Blog: *"100% intraday volume on a delayed basis and consolidated end-of-day prices (OHLCV) across all NMS exchanges and ATSs."* | **in Summary, on every tier:** the catalog's dataset panel says *"This dataset is available for usage-based rates and is included with any Databento US Equities subscription"*, venue *"All US equities exchanges and ATSs"*, schemas OHLCV-1d, Definition, Statistics. **Delay: contradictory.** The same panel's description says *"100% daily volume on a delayed basis"*; its access table says *"Live — Real-time"*; the spec says the consolidated volume is normalised *"on every trade"*; the blog says *"on a delayed basis"*. **No page states an interval.** |
 
 **The baseline for comparison — Alpaca Algo Trader Plus, $99:** consolidated,
 real-time, both halves, on a plan with no display rights.
@@ -85,23 +93,33 @@ SIP does, delayed; Tiingo does not; Intrinio Startup is unstated.**
 
 | floor | monthly | what it rests on | status |
 | --- | --- | --- | --- |
-| **Massive Business** | $2,499 | consolidated real-time aggregates on the display tier, by Massive's own documentation | **verified on public pages** |
-| Databento Plus with Summary live | $1,500 + licence fees, annual | Summary's consolidated volume being on Plus, and "delayed" being acceptable for RVOL | **not established** — tier unreadable, delay stated in the blog |
+| **Massive Business** | $2,499 | consolidated real-time aggregates on the display tier, by Massive's own documentation; **no bid and ask** without an expansion | **verified on public pages** — RVOL as defined, two spread features dead |
+| **Databento Plus with Mini and Summary** | $1,500, annual; licence fees on these two datasets: none | Summary on every tier (catalog panel), consolidated volume of **unstated delay**; Mini's real aggregated bid and ask | **established as to tier and content; the delay is contradicted across Databento's own pages and its interval is published nowhere** |
 | Intrinio Startup | $333 → $999 | `market_volume` being populated for EquitiesEdge | **not established** — no page says |
 | Tiingo | $250 / $500 | — | **ruled out** by Tiingo's own field description |
 
-**The two cheaper floors can be settled only with a feed in hand or an
-enquiry, and both are sign-ups or approaches — his, under the standing rule.**
-Until then the verified floor for RVOL as this board defines it is Massive
-Business, and it is a rebuild of the market worker.
+**Which defect each floor buys, stated so the choice is visible:** Massive
+Business buys a real-time consolidated RVOL and loses the flat verdict and
+the NEW HIGH override for every name. Databento Plus buys both features and a
+consolidated numerator that is late by an interval nobody publishes — a
+**lateness** defect in the ranking — or, if the desk instead computed RVOL from
+Mini's own live trades and Mini's own daily history (Mini history runs from
+2023-03-28), a **bias** defect: a consistent subset RVOL, live, reading low by
+the unpublished share of volume outside Mini's venues. Neither is today's
+RVOL. **The cheaper of the two remaining unknowns — Intrinio Startup — and the
+delay interval can be settled only with a feed in hand or an enquiry, and
+both are sign-ups or approaches: his, under the standing rule.**
 
 ## 5. WHAT COULD NOT BE ESTABLISHED
 
 - Intrinio: whether `market_volume` is populated on the EquitiesEdge source;
   whether Enterprise delayed-SIP volume is delayed with the quotes or live.
-- Databento: which plan carries the Summary dataset live; whether Summary's
-  per-trade consolidated volume is delayed (blog) or immediate (spec); Mini's
-  share of consolidated volume.
+- Databento: ~~which plan carries the Summary dataset live~~ — **established
+  2026-09-07 from the catalog panel: every subscription.** Still open: whether
+  Summary's live consolidated volume is delayed (description, blog) or
+  real-time (access table, spec), and by how much; Mini's share of
+  consolidated volume; what the "License required" column of the panel says
+  (its cells did not render as text).
 - Tiingo: the source of end-of-day volume.
 - Massive: any exchange-side view of its "no exchange fees" claim on
   real-time consolidated aggregates; the Business page does not name the SIP
@@ -109,9 +127,83 @@ Business, and it is a rebuild of the market worker.
 - Nasdaq's own NLS Plus specification (the nasdaqtrader link returns "Page Not
   Available"); the consolidated-volume attribution here is Databento's.
 
+## 7. COMPLETING EITHER OPTION — Integration's first question, 2026-09-07
+
+The collision Integration named: Massive Business has consolidated real-time
+volume and no bid and ask; Databento has a real bid and ask and, until the
+Summary cell was read, no established consolidated volume. Published ways to
+complete each:
+
+**Massive Business, adding a live bid and ask.** Every Massive expansion
+carries *"Additional exchange fees apply to these products"*; the amounts are
+not published. The published expansion prices, cheapest first:
+
+| add to Business $2,499 | +$/month | what the quote is | the exchange's own published fee for it |
+| --- | --- | --- | --- |
+| **IEX Exchange** | $499 | *"Add real-time trades and BBO quotes from the IEX exchange"* — IEX's book, one venue, 2–3% of volume by Intrinio's figure | IEX schedule: real-time TOPS $500/mo flat ($1,000 from 2026-10-01), *"not proposing … external distribution fees, non-display fees, or user fees"*; written IEX approval before real-time reaches an external subscriber; whether the flat fee lands on Massive's customer is unpublished |
+| Full Market Delayed | $499 | 15-minute-delayed NBBO | display-unit fees do not apply to delayed data — **but the flat verdict requires a CURRENT spread** (`sparkline.ts:214`: a spread from outside the window *"misclassifies a real move as flat"*), so this completes the price column and not the feature |
+| Nasdaq Basic | $1,999 | Nasdaq's book (one exchange's BBO), plus NLS Plus trades from Nasdaq's venues and both FINRA/Nasdaq TRFs | Nasdaq 2025 list: $1.00 per non-pro subscriber, external distributor $2,080/firm |
+| Full Market | $1,999 | the NBBO | CTA + UTP: $3.00 per non-pro viewer, redistribution and access fees — the full tape |
+
+So the cheapest published completion of Massive with a real live spread is
+**$2,998 a month plus IEX's flat fee, for a one-venue spread** — the thinnest
+book of the four for a $1–$20 name in premarket, and a subset spread with the
+one-directional bias §3 of the which-price document describes.
+
+**Databento Plus, adding consolidated volume.** Already inside the plan: Summary
+is *"included with any Databento US Equities subscription"*, with the delay
+ambiguity above. So Databento Plus is **$1,500 a month, annual contract, zero
+licence fees on Mini and Summary, for a real aggregated bid and ask plus
+consolidated volume of unstated delay.** If the delay proves unacceptable,
+the published upgrade is Nasdaq Basic with NLS Plus on the same plan
+(commercial only: $1,680/firm + $14.10 per internal user, distribution $2,140
++ $0.50 per personal user), which carries Nasdaq's real-time consolidated
+volume field and Nasdaq's book as the quote — roughly $5,320 a month plus
+per-user, before the annual Plus fee.
+
+## 8. IS THERE A FIFTH VENDOR — Integration's second question
+
+**On the pages read, no vendor with a published price packages a real live
+bid and ask AND real-time consolidated volume on a display tier below the
+real tape.** What exists:
+
+- **Databento** is the closest, and it packages both only with the delay
+  ambiguity on the volume half (§7).
+- **Nasdaq Basic with NLS Plus** is the one *exchange product* that carries
+  both in one feed — a real quote (Nasdaq's book alone) and a consolidated
+  volume field — at exchange fees below the tape ($1.00 per non-pro against
+  $3.00; external distributor $2,080 against roughly $3,000 plus access). It
+  is sold by Massive ($1,999 expansion on Business), Databento (Plus,
+  commercial only), Intrinio (Enterprise, $1,250+), dxFeed (quote only), and
+  by Nasdaq itself through its Cloud Data Service, whose own price is not
+  published.
+- **Cboe One** carries a real Cboe-only quote; whether it carries a
+  consolidated volume field is stated on no page read.
+- **Alpaca's Broker API** standard tiers carry real IEX quotes with IEX-only
+  volume, or 15-minute-delayed SIP with consolidated volume 15 minutes late —
+  never both live, and at unpublished base pricing inside a brokerage
+  partnership.
+- **Finnhub** titles a "Full SIP" websocket and publishes neither a readable
+  price nor a commercial path beyond written approval.
+- **QuoteMedia, QUODD, dxFeed, Barchart, Bloomberg, LSEG, ICE, FactSet** sell
+  both, at no published price.
+
+**The finding, stated as one:** below the real tape, the published market
+sells a real quote or consolidated real-time volume, and the only published
+package of both is Databento's, whose volume half Databento itself describes
+two ways. Everything else that has both is either the tape, an exchange
+product with per-viewer fees, or unpriced.
+
+**And Integration's exchange point holds and is worth leading with:** the
+exchanges charge nothing per viewer for real-time consolidated volume (§3), so
+the $2,499 is vendor packaging rather than a regulatory floor, and vendor
+packaging is the part of this landscape that changes.
+
 ## 6. SOURCES
 
-Code: `lib/market/rvol.ts`, `lib/market/types.ts` at `6c6b067`. Tiingo:
+Code: `lib/market/rvol.ts`, `lib/market/types.ts` at `6c6b067`.
+Databento catalog dataset panel for EQUS.SUMMARY (databento.com/catalog/us-equities,
+Details → Databento US Equities Summary), read 2026-09-07. Tiingo:
 tiingo.com/documentation/iex · tiingo.com/documentation/end-of-day ·
 tiingo.com/products/iex-api. Intrinio:
 docs.intrinio.com/documentation/web_api/get_security_realtime_price_v2 ·
