@@ -9994,3 +9994,53 @@ once.
 
 **A backfill rule that can only err downward is not conservative. It is the error
 nobody checks.**
+
+## Absence of a setting is not proof of the default
+
+`service_tier` appears nowhere in `lib/research`, so the calls bill at Standard.
+**That is a grep, and the tiers span 4x** — Batch and Flex are half, Fast is
+double. **A default set in a client constructor, an env var, or a wrapper would
+not appear in that search.**
+
+**The grep proves the search found nothing. It does not prove the value is
+unset**, and it says nothing at all about what the vendor does when it is.
+
+**Same shape as the enumeration rule and the same night:** searching for the name
+you know, and treating its absence as an answer about a system.
+
+**Where it bites hardest: any inference that turns on a value NOT being present.**
+Those read like verification and are the weakest form of it, because the one
+observation — nothing found — is consistent with every explanation including a
+bad search.
+
+## The mean is not a test of the tail
+
+Long-context pricing is a **cliff on the whole request**, not a marginal rate on
+the excess: cross the threshold and the multiplier applies to every token, not the
+ones past it.
+
+ANPA's 2.39M input over 60 calls averages ~40K, far under the 272K line. **That
+clears it on the average and the average is the wrong instrument** — a mean of
+40K is entirely consistent with a distribution containing several 300K requests,
+each paying double on all 300K.
+
+**When a rate has a cliff, the question is always about the maximum**, and a
+summary statistic that cannot see the tail is not a check, it is a check-shaped
+reassurance. **Four checks of one kind are one check.**
+
+## A rate card is not permission to produce a number
+
+The desk records `cached_tokens`, which is cache **reads**. Cache **writes** bill
+at 1.25x uncached input and **the usage object has no field for them** — they sit
+inside `input_tokens`, unlabelled.
+
+**So from the desk's own counters, uncached input is $2.00–$2.50 per million and
+cannot be made a point.** The split exists only on a vendor dashboard behind a
+login, which is the trader's to open.
+
+**Report the band.** A rate card arriving does not convert an unmeasurable
+quantity into a measured one, **and the temptation is strongest right after the
+missing input turns up** — the shape of the work suddenly looks complete.
+
+**A number with a false decimal point is worse than an honest range**, because the
+range invites the question that would find the gap and the number closes it.
