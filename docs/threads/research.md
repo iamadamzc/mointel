@@ -11300,3 +11300,68 @@ login, **which is his to open and nobody else's.**
 *Commercial's framing is better than mine: **a dollar figure from these counters
 is a band on uncached input rather than a number.** I priced it as a number with
 assumptions listed underneath, which is the weaker form of the same honesty.*
+
+**106c. GROUND TRUTH: $7.39 ON 09-04. I OVERSTATED BY 2.3×, ON THE EXACT
+ASSUMPTION INTEGRATION FLAGGED.**
+
+*He sent OpenAI's own usage chart. **Sep 4 $7.39, Sep 3 $10.32 (the labelled
+peak).** My band said $16.79–$20.39 and $22.87–$27.78.*
+
+| | estimated | **actual** | overstated |
+| --- | ---: | ---: | ---: |
+| 09-03 | $22.87 | **$10.32** | **2.22×** |
+| 09-04 | $16.79 | **$7.39** | **2.27×** |
+
+### THE CAUSE IS THE ASSUMPTION I LABELLED AND SHIPPED ANYWAY
+
+Integration wrote, before I priced: ***"Terra is TEN TIMES luna on every line…
+the mix is measurable and must not be assumed. A blended guess here is worth
+more than the entire cached/uncached question."***
+
+**I called all-terra an upper bound, wrote it into the table, and published the
+number.** Seventh instance today of naming a caveat and reasoning past it —
+**and the first one caught by reality rather than by a teammate.**
+
+**The cache-write band I spent a whole entry on moves the figure 21%. THE MODEL
+MIX MOVES IT 127%.** I priced the small unknown carefully and let the large one
+travel as a footnote.
+
+### BACK-SOLVING GIVES A CONSISTENT ANSWER, AND THAT IS THE INTERESTING PART
+
+The terra share reproducing each day independently: **39.0% for 09-03, 37.8% for
+09-04.** One shared mix of **37.8%** predicts:
+
+```
+09-03  $10.07   actual $10.32
+09-04  $ 7.39   actual $ 7.39
+```
+
+**Two days, one parameter, 2.5% error on the day it was not fitted to.** That is
+a real consistency check rather than a curve pulled through two points.
+
+### BUT IT IS NOT THE ONLY EXPLANATION, AND I CANNOT SEPARATE THEM
+
+**A half-price tier — Batch or Flex — with an all-terra mix predicts $11.44 and
+$8.39 against $10.32 and $7.39.** Worse than the mix explanation and **not
+excluded by two days.**
+
+| explanation | 09-03 | 09-04 |
+| --- | ---: | ---: |
+| **mix 37.8% terra, Standard** | $10.07 | $7.39 |
+| **all-terra, half-price tier** | $11.44 | $8.39 |
+| actual | **$10.32** | **$7.39** |
+
+**`model_usage.model` SEPARATES THEM IN ONE GROUP-BY** — mostly luna means the
+mix, mostly terra means the tier. **It was already Integration's verification #2
+and it is now the only open question in the pricing.**
+
+### WHAT THE DESK SHOULD CARRY
+
+**~$7–10 A SESSION. ~$2,200 A YEAR at 252 sessions** — against my $4,700–5,700.
+
+**Fixed, not per-user, per his one-shared-board ruling.** And **ANPA at $4.92
+all-terra is itself overstated by the same factor if its calls were mixed** —
+that name's true share needs the same split.
+
+*The number the monetisation case carries is less than half what I gave it, and
+it took him pasting a chart to find that out.*
