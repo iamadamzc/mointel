@@ -9290,3 +9290,48 @@ median.** No classifier, no stratification, no matching, no collider.
 
 **He trades almost exclusively the biggest movers on the board** — the only thing
 from either seat that came through the night intact.
+
+### The deciding fact was half unmeasured, and it reached the trader
+
+**Research, correcting itself within the hour.** *"The board held none of the
+names he traded on 09-03"* — **the assessment snapshot ends on 09-02 and contains
+no 09-03 at all.**
+
+    assessments-prod-2026-09-02.db
+      dates              2026-08-17 .. 2026-09-02
+      rows on 2026-09-03  0
+
+**So "the board held none" is the store holding no board.** And on 09-02 the
+board **did** hold one of the names; whether before his first fill is
+**unresolved.**
+
+**One day unresolved, one day unmeasured. Not two days with nothing to say.**
+
+**Absence of detection read as detection of absence, one more time** — and it
+reached Integration and then the trader **because a relay did not check the
+store's date range, which was one query.**
+
+**Coaching had marked its other buckets provisional and kept this one back as
+instrument-independent**, on the correct ground that whole-day membership removes
+the **timing** dependency. **It does. It leaves the COVERAGE dependency
+untouched.**
+
+### What survives is structural and needs none of the disputed numbers
+
+**Research is queued on rank ≤ 12, so the report's reach is the board's width —
+and he trades AHEAD of the ranking rather than outside the universe.** That is
+*"20 of 53 never researched"* seen from the fills side.
+
+**Rule on the structural argument, not on a two-session anecdote nobody could
+support.**
+
+## A TRUE NUMBER CARRIED IN THE WRONG REGISTER IS NOT NEUTRAL
+
+The 79% top-quartile figure was relayed three times **as a bare fact inside a
+discussion about defects.** Coaching flagged that it is **descriptive, and may be
+the most favourable thing in the entire record about his selection** — the names
+he picks turn out to be the day's biggest movers.
+
+**A finding does not carry its own tone. It inherits the tone of the message it
+travels in**, and a compliment delivered inside a list of failures reads as
+neither.
