@@ -10162,3 +10162,48 @@ result that would close the question, partial for the one that would open it.
 
 **Two reads before the largest model spend anyone has proposed, and the second
 one changes what the spend is worth rather than merely whether it is safe.**
+
+**101g. THE DEPENDENCY CHECK PAID OFF ON MY OWN HANDOFF — ONE QUERY NEEDED A
+DIFFERENT FIELD, AND THE REPLAY IS ALREADY INSTRUMENTED.**
+
+*Integration adopted "name the field a query depends on when proposing it", so I
+applied it to the four I was about to hand Ops. Two findings.*
+
+### `observedAt` IS NOT PERSISTED — THE PARTITION NEEDS `generated_at`
+
+The 22:00-versus-06:10 partition was specified on `observedAt`. **The metadata
+written per analysis version carries `promptVariant`, `sheetPriorOmitted`,
+`repaired`, `repairCount`, `escalated`, `escalationReason`, `sheetProvenance`,
+`sheetConflicts`, `violations`, `coverageIncomplete`, `metrics`. NO
+`observedAt`.** The prior's fetch time is not stored per version.
+
+**`research_analysis_versions.generated_at` replaces it, and is TIGHTER.** The
+sheet prior TTL is 60 seconds, so a version generated before 06:10 ET used a
+prior fetched within a minute of it — **definitely the un-revised 22:00 write.**
+
+**A stored field beats a derived one, and the check found it before the query
+was sent rather than after it came back empty.**
+
+### AND THE PRIOR-FREE ARM IS ALREADY BUILT
+
+**`sheetPriorOmitted: options.priorHumanAnalysis === null && options.sheetSnapshot
+!= null`** — recorded per row, meaning *a prior was available and was
+deliberately withheld*. **That is exactly the replay's treatment arm, and it is
+already instrumented.**
+
+**`promptVariant` sits beside it**, with a docstring recording why: *"variant B
+changes the instructions without changing the schema, so both variants report
+version 1 and three replay arms would land as indistinguishable rows
+distinguished only by the order someone ran them in."*
+
+**SOMEBODY ALREADY BUILT THE ARM-LABELLING FOR A REPLAY.** The pricing question
+is real; **the instrumentation question is not, and nobody had checked.**
+
+### THE FOUR QUERIES WITH THEIR FIELDS NAMED
+
+| # | query | depends on | limit stated first |
+| --- | --- | --- | --- |
+| 1 | membership falsifier | `RESEARCH` tab `Report Date` + Ticker; `metadata.sheetProvenance` | RESEARCH ⊂ TODAY, so the rate is biased DOWN in both groups — usable between groups, not as a count |
+| 2 | OUTCOMES extent | sheet `OUTCOMES` tab: row dates, grade fields populated vs header-only | a populated header is not a populated corpus |
+| 3 | 22:00 vs 06:10 | **`generated_at`**, not `observedAt` | before 06:10 ET is DEFINITE; at or after is only POSSIBLY revised |
+| 4 | replay | `sheetPriorOmitted`, `promptVariant` — **already recorded** | within prior-bearing subset only |
