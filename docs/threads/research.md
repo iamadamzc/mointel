@@ -11566,3 +11566,65 @@ silent null that is indistinguishable from a bug at the other three.**
 indistinguishable from a write that never needed to happen* — but it is now the
 second-order problem, because **the first-order one is that the write happens
 correctly and lands with no owner.**
+
+**106g. THE 46 MAY NOT BE SWALLOWED WRITES. THE USAGE ROW'S `trading_date` COMES
+FROM THE WORKER'S LOOP, NOT FROM THE JOB.**
+
+*Ops: 26 of the 72 have orphan rows at their exact `ticker + trading_date`, 46
+have none, and absence is consistent with `catch {}`. **There is a third
+mechanism and it is more ordinary than a swallowed exception.***
+
+### THE MISMATCH
+
+`worker/research.ts:543` calls `interpretTicker` with **`tradingDate` — the
+worker's loop variable, read from `MAX(trading_date) FROM ticker_session`** — and
+`noteUsage` stamps the usage row with it.
+
+**The JOB carries its own `trading_date` (`researchRepo.ts:81`). Nothing ties the
+two together.**
+
+**So a job queued for date D and processed after the store rolls writes its usage
+under D+1 while its job row still says D — and a join on `(ticker,
+trading_date)` finds nothing.**
+
+**This is not hypothetical: jobs legitimately outlive the roll.** The store
+already shows 9 jobs at `trading_date` 08-17 queued on 08-18 and 7 at 08-18
+queued on 08-19, and `research.ts:203` records that *"the 22:00 recap queues for
+the NEXT session, so from 22:00 until the roll there are legitimately-queued jobs
+on a date that is not this one."*
+
+### WHY IT IS THE BETTER CANDIDATE FOR THE 46
+
+**A swallowed `catch` requires an INSERT on a local SQLite file to throw. THE
+DATE MISMATCH REQUIRES ONLY THAT A JOB CROSS A ROLL**, which the desk's own
+design makes routine.
+
+**And it explains the SPLIT rather than only the absence.** 26 processed inside
+their own trading date and orphaned visibly; **46 crossed a boundary and orphaned
+INVISIBLY, at a date the join never looks at.**
+
+### THE TEST, AND IT IS ONE CHANGED PREDICATE
+
+**For the 46: look for orphan rows at their TICKER on ANY date, not only their
+job's `trading_date`.**
+
+- **Orphans found at a neighbouring date** → the mechanism is the date stamp,
+  **`catch {}` need not be invoked at all, and "cannot be distinguished from work
+  that never happened" collapses.**
+- **Still nothing anywhere** → the swallowed write stands as the remaining
+  candidate and Ops's reading holds.
+
+### AND IT TOUCHES THE DAILY TOTALS I PRICED
+
+`7.88M / 11.1M / 8.15M` are grouped on `model_usage.trading_date` — **the
+worker's loop date.** So they are *"tokens spent while the worker believed it was
+date X"* rather than *"tokens spent on date X's names"*.
+
+**For a daily COST figure that is arguably the right basis** — it tracks when the
+money left. **It is not the right basis for attributing spend to a session's
+work**, and I did not distinguish them when I priced.
+
+*Ops weakened its own 26 before anyone leaned on them — the `(ticker,
+trading_date)` join is not unique and ANPA alone had 57 jobs on one pair.
+**That caveat applies to this test too: a matching orphan at a neighbouring date
+shows the mechanism operates, not that a particular job's call is that row.***
