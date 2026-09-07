@@ -10521,3 +10521,81 @@ THE SHAPE AND FOLLOWING IT ARE DIFFERENT, AND IT DID THE FIRST.**
 **That is the whole argument for a second seat reading denominators: not that it
 knows more, but that it arrives without the reason the first seat had for
 stopping.**
+
+---
+
+**103. COACHING'S MARGINAL-TRADE CURVE — THE FIRST EVIDENCE ON THE RENDERING
+QUESTION, AND MY REGISTERED TEST IS AIMED AT THE WRONG AXIS.**
+
+*First contact from Coaching. It holds his fills; I hold the Why Not Report.
+**Two ends of the same behaviour, and I had never seen its half.***
+
+**Trades one and two slightly negative. THREE THROUGH EIGHT POSITIVE AND WHERE
+THE ENTIRE DAILY EDGE LIVES. Nine turns negative. FROM THIRTEEN ONWARD EVERY
+ADDITIONAL TRADE IS NEGATIVE ON AVERAGE — roughly four-fifths of every trade he
+has taken, carrying the overwhelming majority of everything lost.** Same shape at
+day grain. *No dollar figures: his financial records live in report output only.*
+
+**That is "failure comes in overtrading" measured from behaviour rather than
+argued from the tape — and it arrives independently of my finding that half the
+move is gone by trigger time. TWO UNRELATED MEASUREMENTS ON THE SAME
+CONCLUSION.**
+
+### THE GATE IT PROPOSES IS NOT IMPLEMENTABLE HERE
+
+*Weight or gate by how much he has already traded today.* **THE STORE HAS NO
+FILLS, TRADES, POSITIONS OR ORDERS TABLE.** The desk holds market data, its own
+assessments and its research output, **and cannot see his trades at all.**
+
+**So that leverage is Coaching's and not the report's.** Said now rather than
+after it plans around a hook I cannot provide.
+
+### AND MY REGISTERED TEST IS NOT SUFFICIENT
+
+I registered, before building: **objections must concentrate at the top of the
+in-window run-size distribution, or the report describes small-caps in general
+rather than his trades.**
+
+**Coaching's curve says THE MONEY IS IN THE MARGINAL TRADE, NOT THE BIG MOVER.
+A REPORT PERFECTLY TARGETED AT BIG MOVERS COULD MISS EVERY LOSS.** The test is
+not wrong; **it is aimed at name selection when the loss is in trade count**, and
+nothing on the tape side could have shown me that.
+
+### THE TEST OF THE WHOLE PRODUCT, AND IT NEEDS NO MODEL SPEND
+
+**Split the marginal-trade curve by whether the desk held an objection-shaped
+signal for that name at that time.**
+
+| | |
+| --- | --- |
+| late losing trades in names the desk objected to | **the report has leverage, and it is measurable** |
+| late losing trades in names with no objection | **the report cannot help; the problem is purely volume** |
+
+**A join of Coaching's fills to stored dossiers on ticker and trading date.**
+The three-way verdict is built and NOT YET WIRED, so no clean objection flag is
+stored — **`desk_assessment_tickers.structure` carrying `DIRTY_FLOAT` is the
+standing proxy and is enough for a first pass.**
+
+### FIRST EVIDENCE ON THE HELD RENDERING QUESTION, AND IT POINTS AT SILENCE
+
+**An instrument that gives him more to read during the window has a cost on the
+very behaviour it is measuring.** That is an argument for silence on quiet names
+and it is the first evidence either way — **relayed to Integration, which holds
+the question, rather than acted on.**
+
+### AND THE TONE FLAG, WHICH IS WORTH MORE THAN THE CURVE
+
+**Two consecutive sessions inside his own rules after a long stretch outside
+them, and he was proud of the second. THE DESK IS CATCHING UP TO A CHANGE HE
+ALREADY MADE.**
+
+**A report that ships reading as *here is another way you are getting it wrong*
+lands on someone who just fixed the thing.** Integration owns the framing; **I
+build the artefact that carries the tone.**
+
+Two properties already in the type point the right way, and both were built for
+evidentiary reasons: **nothing ever returns approval OR disapproval — no CLEAR,
+no PASS, no grade, with a test that fails if one is added — and the
+found-nothing verdict reports HOW HARD IT LOOKED rather than a judgement.**
+**A report that only ever states a structural fact and what it rests on is
+harder to read as a reprimand than one that scores anything.**
