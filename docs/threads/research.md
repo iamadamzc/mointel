@@ -12046,3 +12046,92 @@ place the same optionality lives.** `lib/market/store/` is Ops's; flagged, not
 touched.
 
 *108 tests green, typecheck clean.*
+
+**110. THE CATALYST FINGERPRINT CANNOT DETECT WHAT ITS DOCSTRING SAYS IT
+DETECTS, AND THE INSTRUMENT THAT FOUND IT WAS POINTED AT THE WRONG FUNCTION
+FIRST.**
+
+*Built `worker/fingerprint-sensitivity.ts` to answer the queued
+fingerprint-sensitivity question. Ran it against `data/market-prod-2026-08-23.db`
+— a real production snapshot, 964 jobs — and then checked the mechanism before
+publishing the number. The check changed the finding.*
+
+### WHAT THE INSTRUMENT SAID
+
+```
+                       ADDED NONE   ADDED SOME
+  FINGERPRINT MOVED    0            218
+  FINGERPRINT SAME     511          0
+  (denominator 729 jobs that reported both fields)
+```
+
+**A perfect 2x2 diagonal: `fingerprintChanged` and `sourcesAdded > 0` agree on
+729 of 729 jobs.** My first draft read that as *the other hashed fields have
+never fired in production*.
+
+### TWO THINGS WERE WRONG WITH THAT READING
+
+**FIRST, I NAMED THE WRONG FUNCTION.** `collector_report.fingerprintChanged` is
+**`computeCatalystFingerprint`** (`collector.ts:977`) — FIVE fields: url,
+contentHash, publishedAt, clusterId, canonical. **NOT
+`computeEvidenceFingerprint`**, the eight-field-plus-facts hash gating
+interpretation at `pipeline.ts:182`, which is what my docstring described at
+length. *Same module, same idea, adjacent purpose, and the wrong one is the more
+important one. Nothing in the output would have looked wrong.* **A true nearby
+mechanism is the most convincing wrong answer available**, and this is the
+second time it has been that exact pair of functions.
+
+**SECOND, AND THE ACTUAL FINDING: THE CELL COULD NOT HAVE BEEN NON-ZERO.**
+
+- `research_sources` is written by **one** statement that adds a row:
+  `INSERT OR IGNORE` against `UNIQUE (ticker, document_fingerprint)`.
+- The only `UPDATE`s in the codebase are `cluster_id`/`canonical`
+  (`researchRepo.ts:710`) and `active` (`:732`, still zero callers).
+- **So `content_hash` and `published_at` of a stored row NEVER CHANGE**, and a
+  re-read carrying new text under a known identity is **dropped in silence**.
+- All six `CATALYST_TYPES` are written under an **identity-only** document
+  fingerprint: `hash(accession|exhibit)`, `hash(company|url)`,
+  `hash(discovery|url)`. The one content-bearing derivation
+  (`sec/collector.ts:461`, body hashed into the identity) writes `SEC_FILING`,
+  **which is not a catalyst type**.
+
+**`computeCatalystFingerprint`'s docstring claims `contentHash` catches a
+document amended in place. THAT IS UNREACHABLE THROUGH THE ONLY WRITE PATH THE
+TABLE HAS.** The other cell is forced too: a new url adds a new hashed part, so
+`SAME / ADDED SOME` cannot be non-zero either. **Both cells of my 2x2 were
+structurally determined. I built a check that could not fail, and the code told
+me rather than the data.**
+
+### HOW BIG IT ACTUALLY IS — SMALL, AND SAID AT ITS TRUE SIZE
+
+The catalyst urls in the snapshot are **specific press-release pages**
+(`beamforall.com/beam-global-reports-second-quarter-2026-operating-results/`),
+not newsroom indexes. **A published release does not usually change**, so the
+unreachable branch is not silently costing the desk detections today.
+
+- 1,161 catalyst rows of 4,882 total.
+- **14 (ticker, url) pairs carry more than one row** — every one in the
+  content-bearing `SEC_FILING` path, which is where re-landing works.
+- SEC amendments arrive under a **new accession** (8-K/A), so they land as new
+  rows regardless.
+
+**The exposure is the day something collects an INDEX page at a stable url.
+That page is read exactly once, forever, and nothing anywhere reports it.**
+
+### SO THE INSTRUMENT WAS REBUILT AS A TRIPWIRE, NOT A MEASUREMENT
+
+It now names `computeCatalystFingerprint`, states that a zero in either cell is
+**forced and not a passed check**, and treats a **non-zero** cell as the signal —
+it would mean a catalyst source gained a content-bearing identity, or something
+began updating stored rows. *Run after any change to source identity or to
+`CATALYST_TYPES`.* Both guards were seen to fire: read-only proven by refused
+zero-row write, and the missing-column abort exits 1 on the local db rather than
+answering zero to everything.
+
+### AND ONE GAP IT SURFACED, NAMED NOT CHASED
+
+**235 of 964 jobs never wrote a collector report at all** — and by status they
+are `PARTIAL=155  COMPLETE=46  FAILED=24  QUEUED=10`. **Forty-six jobs reached
+COMPLETE with the collector silent.** Broken out by status rather than folded
+into "did not move it", because a job that never ran and a job that ran and
+reported nothing are different facts.
