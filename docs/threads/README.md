@@ -10838,3 +10838,76 @@ empowered to act on it, **and the window becomes an argument for proceeding.**
 
 **Say explicitly that missing the window is acceptable.** A deadline nobody has
 disclaimed is a deadline everybody optimises toward.
+
+## The generator, not the flavour: answering from evidence that cannot answer
+
+Integration produced two wrong explanations in one night and named the pattern as
+*"comforting, and false in the same direction."* **That is a description of the
+output, which is why naming it did not stop it recurring in the very next
+message.**
+
+Design found the mechanism:
+
+**"Answer a question the evidence in front of me cannot answer, from the evidence
+in front of me."**
+
+- *373 removed lines are probably setup and fixtures, not cases.* **373 lines
+  cannot distinguish those.**
+- *Research owes half the thirteen.* **Two threads touching test files cannot
+  distinguish who owed what.**
+
+**Neither guess was reached by looking at anything.** Both were a number plus a
+story that fits it — **and a number under-determines its own cause, so a story that
+fits is guaranteed to exist.** Producing one feels like reasoning, costs nothing,
+and is always available. **That is what makes it a reflex rather than a lapse.**
+
+**Comforting is what the story is. Unfalsifiable-from-the-data-at-hand is what
+makes it available.** Watch for the second; the first is a symptom.
+
+**THE TEST, AND IT IS CHEAP: could this answer have come out different, from what I
+am looking at?** If no, the honest output is **"I don't know, and here is the
+command that would tell us."**
+
+## An aggregate detects; an enumeration decides
+
+Four instances in one night, one rule:
+
+```
+test count 1853         detected a change     the 18 case NAMES decided what
+file count 116 vs 125   detected contamination
+research_jobs           detected a shape      model_usage decided the cost
+date -u minus four      detected a day        zoneinfo decided the hour
+```
+
+Of the three git commands that settled the destroyed tests, **only
+`git show <sha>^:<path>` — which lists the cases by name — could ever have
+answered it.** The other two established that something moved.
+
+**A total tells you to look. It cannot tell you what you are looking at**, and
+every hour lost tonight went on treating a total as an answer.
+
+## Predict the number before the change, or you will explain it afterwards
+
+Design has written down that Ops's `focusRepo` removal should drop the test count
+by **exactly six** — the six restored tests that become legitimately obsolete when
+that code goes. **Any other number is a new question, not a rounding.**
+
+**A number predicted before a change is a test. The same number explained
+afterwards is a story** — and this desk produced two plausible, wrong stories in
+one evening for a count nobody had predicted.
+
+**It costs one sentence, written before the work, by whoever knows what the change
+should do.**
+
+## A worktree pins source, not dependencies
+
+Gating from a detached worktree stops a suite reading another thread's uncommitted
+edit — the fault that produced one unreproducible failure tonight.
+
+**It does not pin `node_modules`.** `npm ci` from the lockfile closes most of the
+gap.
+
+**If a gate result ever fails to transfer between two threads on identical trees,
+look there first.** It presents as a code difference and is not one — which is the
+same shape as every environment fault tonight: **the symptom appears in the domain
+of the tool, not the domain of the cause.**
