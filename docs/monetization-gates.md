@@ -182,6 +182,19 @@ Mapped, not answered — no agreement, no approach, no recommendation to sign.*
   with the real quote behind an IEX agreement. A real quote from a subset of
   venues has a spread at least as wide as the NBBO, so those products bias the
   flat verdict one way, by an amount measurable only with a feed in hand.
+- **Which tiers carry consolidated volume — mapped 2026-09-07 after
+  bring-your-own-feed was ruled out:**
+  [commercial/2026-09-07-volume-basis.md](commercial/2026-09-07-volume-basis.md).
+  RVOL is cumulative consolidated session volume over a consolidated
+  twenty-session average, and both halves are consolidated on Alpaca today.
+  Tiingo's display tier is IEX-only intraday by its own field description and
+  cannot run it. Intrinio Startup's volume basis is stated nowhere. Massive
+  Business carries consolidated real-time aggregates by its own knowledge base.
+  Databento's Standard tier's only live dataset is a venue subset; its
+  consolidated volume sits in a Summary dataset its blog calls delayed, on a
+  tier the pricing matrix shows only as an icon. **The verified floor for RVOL
+  as defined is Massive Business at $2,499/mo; the two cheaper floors exist only
+  if something unstated is true, and each is settled only by a sign-up.**
 - **The CT Plan replaces CTA and UTP on 2027-04-01** — new per-viewer rates, a
   use-based professional test, and derived-data *creation* becoming fee-liable.
   Account migration started this month. **Any agreement signed before March

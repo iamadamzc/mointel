@@ -89,6 +89,15 @@ section above is stale.**
   one); the answer is that only Databento's Mini carries a real bid and ask,
   FMV carries none, EquitiesEdge's is modelled, Tiingo's is gated — and any
   subset quote widens the band one way, by an amount no public page gives.
+- [`docs/commercial/2026-09-07-volume-basis.md`](../commercial/2026-09-07-volume-basis.md)
+  — Integration's question after bring-your-own-feed was ruled out: do the
+  cheap display tiers carry consolidated volume, which RVOL needs in both its
+  numerator and its denominator. Tiingo: no, IEX-only intraday. Intrinio
+  Startup: not stated anywhere. Massive Business: yes, real-time, by its own
+  knowledge base. Databento Standard: venue subset; its consolidated volume is
+  in a separate, blog-described-as-delayed Summary dataset on an unreadable
+  tier. **Verified floor for RVOL as defined: Massive Business, $2,499/mo.**
+  The two cheaper floors are settled only by a sign-up, which is his.
 
 **Method, so the next reader knows what the figures are worth.** Four research
 passes over public pages on 2026-09-07; **every load-bearing quotation and
