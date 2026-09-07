@@ -332,7 +332,17 @@ export class OpenAiInterpreter implements ResearchInterpreter {
       };
     }
 
-    const serviceTier = payload.service_tier ?? null;
+    /*
+     * `UNREPORTED` RATHER THAN `null`, AND THE DISTINCTION IS THE WHOLE POINT.
+     *
+     * `null` means NOTHING WAS SERVED — no response to read a tier from.
+     * `UNREPORTED` means a response CAME BACK AND DID NOT SAY.
+     *
+     * Collapsing them would make this the second instance of the defect it was
+     * built to observe: tonight's entire cost problem is one status meaning
+     * both "spent nothing" and "spent and fell short".
+     */
+    const serviceTier = payload.service_tier ?? 'UNREPORTED';
 
     const usage = {
       inputTokens: payload.usage?.input_tokens ?? null,

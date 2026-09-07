@@ -31,6 +31,14 @@ export interface InterpretResult {
    * OpenAI returns the tier that served the request. Reading it turns the
    * inference into a measurement, and the project setting is on a console
    * nobody here can see.
+   *
+   * THREE FACTS, THREE VALUES, DELIBERATELY:
+   *   `null`         nothing was served — no response to read a tier from
+   *   `'UNREPORTED'` a response came back and did not carry the field
+   *   anything else  the tier that served it, as the vendor named it
+   *
+   * A single value for the first two would be the defect this field exists to
+   * observe, rebuilt in the observability for it.
    */
   serviceTier: string | null;
   /** Populated when interpretation could not produce a dossier. */
