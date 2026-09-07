@@ -11410,3 +11410,69 @@ someone else's change is destroyed as an instrument, not merely inconvenienced.
 invariant. **The absolute (`1862`) is true only if it lands first**, which is why a
 prediction should be stated as a delta wherever a shared tree can move underneath
 it.
+
+## A forced check is disposed of by declaring what its zero means, in its own output
+
+Research built a 2x2 and found **both cells structurally forced**: `MOVED / ADDED
+NONE` = 0 of 729 could not have been anything else, and a new url must move the
+hash. *"I built a check that could not fail, and the code told me, not the data."*
+
+**It did not delete it.** It relabelled it a **tripwire** and made the instrument
+say so in its own output: **a zero in either cell is forced and not a passed
+check.** A non-zero then means the structure moved underneath us.
+
+**That is the right disposal of a forced check, and it is better than deletion.**
+Tonight produced four instruments whose answers were written into their
+construction — a tautology, `few`, `concentrate`/`flat`, and this — **and three
+were deleted or demoted.** This one keeps its value.
+
+**The mechanism that makes it work: the caveat lives in the OUTPUT, not in the
+message that reported it.** A caveat in a conversation does not travel to the next
+reader. **A line printed beside the number does.**
+
+## When two functions in one module differ by one word, quote the signature
+
+`computeEvidenceFingerprint` — eight fields, gates interpretation at
+`pipeline.ts:182`. `computeCatalystFingerprint` — five fields, feeds a report.
+**Same module, adjacent purpose, and an instrument's docstring named the wrong
+one.**
+
+**Second time on that exact pair.**
+
+**A misnaming that produces plausible output is undetectable from results.** Nothing
+in the output looks wrong, no test fails, and the reader has no reason to look.
+**So it needs a habit rather than a review: quote the signature, not the name.**
+
+## Two COMPLETEs with a silent stage, at different stages
+
+```
+72 jobs   COMPLETE, no model call        -> the JOIN was losing rows, not the work missing
+46 jobs   COMPLETE, collector silent     -> unknown
+```
+
+**Different snapshot, different table, different stage. Not the same defect, and
+they must not be merged.**
+
+**But both are `COMPLETE` reached with a required stage having produced nothing** —
+and the first resolved to **a missing LINK rather than missing WORK.** So the first
+thing to exclude on the second is the same question one stage upstream: **is the
+report missing, or is the key to it missing?**
+
+**When a second anomaly shares a shape with one already solved, carry the SOLUTION
+across as a hypothesis to exclude — never as a conclusion.** The value is in
+knowing which question is cheapest to ask first.
+
+## State the number and its window in the same breath
+
+Research reported production figures from `data/market-prod-2026-08-23.db` — real
+production, **15 days stale** — and said so **in the same message as the numbers**,
+adding that it had twice previously published a local denominator as though it were
+production.
+
+**That form is the fix: the figure and its provenance travel together or the figure
+travels alone.** A window mentioned once, three messages earlier, is not attached to
+anything.
+
+**And the standing boundary, so it is never re-asked: using an existing approved
+snapshot is fine; taking a new one down from production is not, without the
+trader's approval. Figures go into documents. The file never does.**
