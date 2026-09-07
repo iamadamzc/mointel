@@ -163,6 +163,17 @@ repo — they are public documents and re-fetchable.
    price/move/VWAP are not.
 5. The CT Plan replaces CTA and UTP on 2027-04-01; migration began 2026-09-01.
 
+- [`docs/commercial/2026-09-08-product-name.md`](../commercial/2026-09-08-product-name.md)
+  — the naming research he asked for, routed by Integration: eight names
+  across the avoid and momentum angles, each with registry RDAP checks on
+  `.com` and five alternatives (timestamped 2026-09-07 22:28–22:32 UTC, with
+  positive controls), a web-search collision flag, and a say-it-aloud note.
+  **Pick: The Avoid** (theavoid.com and every alternative not in the registry
+  at the check, no collision found, his own word). Momentum alternative: Early
+  Tape. His-phrase alternative: WhyNot Desk. Correction carried: "Algo Trader
+  Plus" is Alpaca's plan name, not a working name. Nothing registered; the
+  purchase and any registrar enquiry are his.
+
 **Open items.**
 
 - ~~**The Alpaca plan tier is not in the repo.** Ask him; do not infer it into a
