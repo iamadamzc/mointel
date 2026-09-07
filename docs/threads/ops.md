@@ -7164,6 +7164,55 @@ This is the same family as the false invariant in `engine.ts` and the
 half-documented pair in `dial.ts`: **a record that reads as stronger than it is,
 where the weak part inherits the credibility of the strong one.**
 
+## PINS ARE NOT COSMETIC — a pin admits a ticker to the research queue
+
+**Read 2 for Integration, 2026-09-07. He believes pins are a display function
+that is not saved. They are saved, and they change what the desk researches.**
+
+**Three non-display consumers**, all using the same admission clause:
+
+```sql
+WHERE (rank IS NOT NULL AND rank <= @autoRank)
+   OR EXISTS (SELECT 1 FROM focus_tickers f
+               WHERE f.ticker = symbol AND f.trading_date = ...)
+```
+
+| where | effect |
+| --- | --- |
+| `researchRepo.ts:133,139` | `readBoardCandidates` — a pinned ticker becomes a **research candidate regardless of rank**, and `focused` is selected as a column |
+| `desk-assessments.ts:192` | same clause in the **assessment capture query** |
+| `desk-assessments.ts:362` | focus tickers added directly to assessment `targets` |
+
+**So a pin is an OVERRIDE ON THE SELECTION GATE.** It does not decorate the
+board; it causes a name to be researched and assessed that otherwise would not
+be.
+
+### And SEED rows come from a GET
+
+`focusStore.getFocus()` seeds when `seedCandidates` is supplied, the date is not
+already seeded, and `isMarketDataExpected(phase)`. **Only one caller supplies
+candidates: `GET /api/focus`, the authenticated dashboard path.** So **loading
+the desk seeds focus once per trading date**, and those SEED rows hit the same
+admission clause.
+
+`/review/[token]/api/focus` and both MCP tools call `getFocus()` with no
+candidates — **review links and MCP cannot seed.** That is correct and worth not
+breaking.
+
+### The consequence is larger than the write collision
+
+The collision — B unpins A's ticker — is a UX problem. **This is a spend
+problem: a pin causes research jobs and desk assessments, which cost model
+spend.** On one shared board, **one viewer's pin spends on behalf of every
+subscriber**, and nothing records who pinned it.
+
+**So "make pins client-side" is not a cleanup — it would remove an admission
+path the desk currently relies on**, including the automatic seeding. That is a
+product decision, not a tidy-up.
+
+**Model spend is the Research thread's area. Flagged to them rather than sized
+here.**
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
