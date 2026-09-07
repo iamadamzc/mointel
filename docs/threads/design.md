@@ -3939,6 +3939,23 @@ the store, dated, not on a surface he reads at speed.
 then the column is orphaned and labelled. The render going first is what
 prevents the field being false on screen for even one session.
 
+## Premarket read #2 — the marker's expected state is NOT simply "silent"
+
+The universe is stamped **2026-09-06T21:52:59Z** and the refetch task fires
+**03:15 ET Tuesday**, before premarket opens at 04:00. So the reading depends on
+WHEN I look, and pre-registering it now stops me deciding at the board:
+
+| when | marker | conclusion |
+| --- | --- | --- |
+| **before 03:15 ET** | fires | **EXPECTED, NOT A DEFECT** — no refetch has run yet |
+| **after 03:15, universe restamped** | silent | correct |
+| **after 03:15, universe still 09-06** | fires | **REAL** — the refetch did not run, and this is the case the marker exists for |
+
+**The middle and bottom rows differ only in a payload field**, not on screen, so
+`universeUpdatedAt` has to be read before concluding anything from the marker.
+**A silent marker and a fired-but-expected marker are both consistent with a
+working feature; only the payload separates them from the failure.**
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
@@ -4160,6 +4177,14 @@ prevents the field being false on screen for even one session.
   "the render is gone" is waiting on a DEPLOY, and must never read my sha as the
   green light.** Same root as *a sha is a timestamp, not a selection*: I control
   what I push, not what is live, so I say which one I mean.
+- **AN ANNOUNCED DATE CARRIES NO ZONE.** Three clock errors here were the same
+  shape — carrying a reading rather than taking one. **The fourth is different
+  and worse:** two threads in non-ET zones both rolled to Tuesday and announced
+  it on Monday evening ET, independently, and a third repeated it as fact.
+  **Nobody misread a clock; nobody read one.** A reading you take is wrong only
+  if you take it wrong; **an ambient date is wrong for everyone downstream at
+  once**, and it arrives with the confidence of an observation. Every thread on
+  this desk runs in a non-ET environment, so this recurs by default.
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
