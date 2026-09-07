@@ -12135,3 +12135,62 @@ are `PARTIAL=155  COMPLETE=46  FAILED=24  QUEUED=10`. **Forty-six jobs reached
 COMPLETE with the collector silent.** Broken out by status rather than folded
 into "did not move it", because a job that never ran and a job that ran and
 reported nothing are different facts.
+
+**111. THE WHY NOT REPORT HAS NO PRODUCER FOR ITS CENTRAL INPUT, AND THAT — NOT
+THE REACH QUESTION — IS WHAT GATES IT.**
+
+*Went to run the two measurements demoted from tests in `45ac890` (objection
+rate and deaf rate across run size). They cannot be run. There is no input.*
+
+### WHAT EXISTS
+
+| piece | file | role |
+| --- | --- | --- |
+| `CatalystEffect`, closed rule list, validator | `lib/research/effect.ts` | **consumes** model output |
+| `whyNot()`, `buildCoverage()`, `orderObjections()` | `lib/research/whyNot.ts` | **consumes** a `CatalystEffect` |
+| 15 tests | `tests/research/whyNot.test.ts` | construct effects **by hand** |
+
+### WHAT DOES NOT EXIST
+
+**`grep validateCatalystEffect` outside the tests returns nothing. NOTHING ON
+THE DESK PRODUCES A `CatalystEffect`.**
+
+`AUTOMATIC_DOSSIER_SCHEMA` has no effect block. Neither `SYSTEM_PROMPT_A` nor
+`SYSTEM_PROMPT_B` names `bringsDemand`, `bringsSupply`, `priceCapped` or
+`timeToEffect`. **The validator's own error vocabulary — `UNRECOGNISED_RULE`,
+`RULE_DIRECTION_MISMATCH`, "the model named a rule that is not on the list" —
+says plainly that the design is for the INTERPRETER to emit the block. It has
+never been asked to.**
+
+*So the Why Not Report today is a consumer, a validator and a test suite. The
+report is real; the thing it reports on is constructed in test files.*
+
+### WHICH REORDERS WHAT THE USER SHOULD BE TOLD
+
+The reach question — *should a report that can only object to volume leaders
+exist* — is still his and still worth asking. **But it must not arrive alongside
+an impression that the report is nearly finished.** It is not gated on a
+renderer or a threshold; **it is gated on an interpreter change.**
+
+### THE ROUTE IS ALREADY BUILT, AND IT NEEDS NO DEPLOY
+
+`promptVariant: 'A' | 'B'` (`config.ts:60`, env `RESEARCH_PROMPT_VARIANT`) plus
+`worker/research-replay.ts` replays stored versions offline with `asOf` and
+`force`. **An effect-producing variant can be measured against evidence already
+collected without touching production.** That is exactly what the replay was
+built for.
+
+**TWO CONSTRAINTS, BOTH REAL:**
+
+1. **THE VARIANT SLOT IS OCCUPIED.** `B` already means *"adds a positive
+   criterion for CLEAN and a definition for CAUTION — under test, not adopted."*
+   An effect variant is a third arm or it waits.
+2. **THE SCHEMA IS `additionalProperties: false` WITH EVERY KEY REQUIRED.** An
+   effect block would be **required on every dossier, including names with no
+   catalyst at all**, and output tokens are the expensive half — 57.0% of output
+   spend is terra by Ops's measurement. *A block the model must fill for a name
+   with nothing to say is where a taxonomy starts inventing.*
+
+**NEITHER IS A REASON NOT TO. Both are reasons the change is a desk decision and
+not a prompt edit** — which is what `effect.ts`'s own docstring already says
+about adding a rule.
