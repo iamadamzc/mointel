@@ -10093,3 +10093,44 @@ interpreted and fell short.
 <field>` returning one row means the field has never discriminated anything.
 **A field that is always set and a field that is never set are the same amount of
 information: none.**
+
+## A measurement that misses the only instance reads as clearance
+
+Ops measured focus-only admissions with a rank-entry test and reported **ZERO**.
+The test covered one of two bypass branches, **and the only pin the store has ever
+held sat in the branch it did not cover.**
+
+**That is worse than an unverified assertion, because it arrives with evidence
+attached.** An assertion invites "did you check?" A zero closes the question.
+
+**So the check on any zero is: could this test have seen a positive?** Name the
+population, name the instances in it, and confirm the test's path reaches them.
+**Four checks of one kind are one check** — and one check that cannot reach the
+only known case is worse than none, because it converts an open question into a
+settled one.
+
+**Sibling of the standing rule:** *exercised constantly where it could not fail,
+never once where it could.* This is the same shape read from the other end — the
+population was one, and the test missed it.
+
+## An instruction addressed to "you, later" must carry the state it will find
+
+The 03:15 task read all four units from their own cwd and said *"all four should
+read the same release."* **It was written when all four matched, so the line had no
+teeth** — and the state moved under it four hours later, when a deploy left the
+market worker one sha behind on purpose.
+
+Rewritten, it now states the split it expects to see (`market c84e0df` against
+`web/research/assess dd3bca0`), reports the market sha **first**, records the
+pre-restart value so the report reads `c84e0df → ?` rather than a bare string, and
+says in the abort branch that aborting leaves **both** purposes unmet.
+
+**A scheduled instruction is read by someone who was not in the conversation** —
+including the author, weeks later. **It must describe the world it will arrive in,
+not the world it was composed in**, and every assumption that was ambient at
+writing time has to be written down or it is not carried.
+
+**And the failure that no task text can fix: if the host is closed at the hour, it
+does not run and there is NO report** — not an abort, not an error, silence.
+**Absence of a report is not evidence the state is good.** Where a scheduled check
+is the only thing closing a gap, its silence must be read as "did not run."
