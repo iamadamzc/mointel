@@ -4200,8 +4200,23 @@ working feature; only the payload separates them from the failure.**
   `lib/research/interpret/` while another thread was mid-edit and produced a
   failure that was not reproducible. **Before trusting or reporting a gate,
   check `git status` for other threads' uncommitted files and say so.** The
-  structural fix is a pinned worktree (Ops uses `A:/mointel-gate`); the cheap
-  discipline is the status check, and it is what caught it tonight.
+  structural fix is a pinned worktree; the cheap discipline is the status check,
+  and it is what caught it tonight. **Taken: `A:/mointel-design` is a detached
+  worktree** (`git worktree add A:/mointel-design --detach origin/main`) — it
+  shares the object store, so it cannot see another thread's uncommitted edits.
+  Verified at `38e7d4b`: **125 files / 1871 tests, matching the shared tree**,
+  and the worktree stayed clean through the run.
+  - **BUT A WORKTREE PINS SOURCE AND DOES NOT PIN `node_modules`.** It arrives
+    empty; `npm ci` from the committed lockfile (17s, 461 packages) closes most
+    of the gap, `npm install` would not. **If a gate result ever fails to
+    transfer between two threads on identical trees, look there first.**
+- **THE SIX `focusRepo` TESTS ARE EXPECTED TO GO.** `seedFocus`,
+  `isFocusSeeded`, `pinFocus`, `unpinFocus`, `readFocus` — Ops removes the repo
+  in step 3 and they leave with the code, not before it. They were **not**
+  obsolete when restored. **The number to check when it lands is whether the
+  count drops by exactly six**; any other number is a new question, not a
+  rounding, and this note exists so nobody re-runs the hour it cost to find that
+  out the first time.
 - **A COUNT IS A DETECTOR, NOT A MEASURE.** The suite total went UP to 1871
   while the coverage of pin/unpin/limit went DOWN — those moved from exercised
   (against the repo) to source-asserted (against the hook), and no total can
