@@ -3730,6 +3730,43 @@ second line then measures from the new high, which is "just move that spread".
 `neg` colour of a stale BACKSIDE verdict — the label-and-number mismatch again,
 one layer up.
 
+## Tuesday's fourth read — "FEW" IS NOT A PREDICTION, AND I ALMOST REPORTED IT AS ONE
+
+**I had "expect FEW NEW HIGH rows" on record and it is worthless.** Few has no
+threshold, so **every possible observation confirms it** — one row is few, twelve
+is arguably few, zero is few. Integration's form of this is exact: **a number
+predicted before a change is a test; the same number explained afterwards is a
+story.** "Few" is a story pre-registered, which is the worst of both — it has the
+*shape* of a prediction and none of the content, so it would have let me report a
+pass at 04:00 without anything having been checked.
+
+**I tried to replace it with a measured base rate and the data cannot produce
+one. Both reasons matter and neither is "the file was missing".**
+
+1. **The local store is frozen.** `data/market.db` stops at **2026-08-18** across
+   every table — `ticker_session`, `daily_bars`, `minute_bars`,
+   `desk_assessments`. Three weeks stale. Ops's sweep quoted 143,142
+   `ticker_session` rows; this file holds **25,789**. Ops swept production; this
+   is not it, and **a base rate computed here would have looked completely
+   normal.**
+2. **`ticker_session` COULD NOT ANSWER IT EVEN UNFROZEN.** Primary key is
+   `(symbol, trading_date)` — 25,789 rows, 25,789 distinct pairs. **It is a
+   snapshot updated in place, not a time series.** There is no premarket-hour
+   state in it at any date, so "was price within a spread of the session high at
+   07:00" is not reconstructible from stored columns, for tomorrow or for August.
+
+**SO THE FOURTH READ HAS NO PRIOR AND I AM NOT INVENTING ONE.** Picking a number
+now to feel pre-registered would be the exact generator Integration and I just
+named: *answering a question the evidence cannot answer, from the evidence.*
+
+**What it becomes instead — an instrument rather than a prediction:**
+
+    report:  NEW HIGH count / OFF HIGH count / rows where sessionHigh > cycleHigh
+             ALL RAW, ALL OVER THE BOARD-ROW DENOMINATOR
+
+**Tomorrow's read ESTABLISHES the base rate; it does not test one.** Say that in
+the report. The number becomes a test on the read after it, and only then.
+
 ## Tuesday's third read — how to tell a working fix from a check that did not fire
 
 The stale-arc read may now be UNOBSERVABLE, because `max()` removes the case. An
