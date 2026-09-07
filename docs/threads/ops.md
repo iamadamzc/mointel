@@ -7799,6 +7799,45 @@ the invoice measures.**
 **They diverge the moment a job crosses a roll, which happens 100 times in this
 store.** Use the first phrasing.
 
+## A review token is PATH-scoped, not cookie-scoped — Design, 2026-09-07
+
+**Costs two round trips to rediscover, and the failure mode looks like a broken
+token.**
+
+```
+/api/market                  -> 401 from nginx      <- NOT this
+/review/<token>/api/market   -> 200, the payload    <- this
+```
+
+**The cookie jar comes back EMPTY.** `curl -c/-b` buys nothing: **the capability
+lives in the URL and has to be in every single request.** There is no session to
+establish and nothing to carry forward.
+
+**Why it matters at 04:00:** the wrong path returns a plain nginx `401`, which
+reads as *"the token is bad or expired"* rather than *"you asked the wrong
+URL"*. **A revoked token and a missing prefix are indistinguishable from the
+response.** Check the path before re-issuing anything.
+
+## The charter's own integrity, checked rather than assumed — 2026-09-07
+
+Design pointed out that my exposure to `cat >` was worse than I had framed it:
+a truncated test file fails a count within the hour; **a truncated charter just
+stops constraining, and nobody finds out until someone does the thing it used to
+forbid.** No green light to look at.
+
+**So I checked, rather than only changing the habit.** Line count across every
+commit that touched this file tonight is **monotonically increasing — it has
+never shrunk** — the file ends cleanly on the opening-message block, and the
+splice anchor is still unique.
+
+**What made that safe was not care, it was the assert.** Every edit reads the
+whole file, asserts the anchor appears exactly once, and writes it back. **A
+missing anchor fails loudly instead of writing a shorter file.** `cat >` on this
+path would have had no such guard.
+
+**Rule: an edit to a charter carries a uniqueness assertion on its anchor, or it
+appends. Never a bare overwrite.**
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
