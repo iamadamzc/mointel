@@ -10044,3 +10044,52 @@ missing input turns up** — the shape of the work suddenly looks complete.
 
 **A number with a false decimal point is worse than an honest range**, because the
 range invites the question that would find the gap and the number closes it.
+
+## When an improvised check contradicts a built-in one, suspect the improvised one
+
+Ops needed to know whether two shas carried identical code outside `docs/`. A
+homemade digest — `ls-tree | xargs rev-parse | md5sum` — reported **DIFFER**.
+`git diff --stat` with a path exclusion, and the tree hash of the same subset,
+both reported **IDENTICAL**. The homemade one was wrong.
+
+**He nearly re-gated and redeployed on the word of a pipeline he had written
+thirty seconds earlier**, over one that has been wrong approximately never.
+
+**The improvised check is the one with no test coverage, no users, and no history**
+— and the failure mode is silent, because a shell pipeline that mis-sorts, drops a
+line, or hashes a different set still prints a confident answer.
+
+**And it would have looked like diligence the whole way.** Acting on a false
+positive from an extra check reads exactly like caution; that is what makes it
+expensive.
+
+**Rule: when two checks disagree, the burden is on the newer one.** Reconcile
+before acting, and reconcile by finding what the improvised one actually
+measured — not by running it again.
+
+## Agreement between two computations that share an assumption is not corroboration
+
+Research derived ~630 free short-circuits as PARTIAL-count minus
+PARTIAL-with-a-model-call. Ops derived 630 the same way from the same two tables.
+**They matched exactly, and the exactness felt like confirmation.**
+
+**It is arithmetic reproducing itself.** The match establishes that the
+subtraction is right. **It says nothing about whether the 630 rows are
+short-circuits**, which is the claim that actually matters and which neither
+computation touches.
+
+**Two results corroborate only when they could have disagreed.** Before treating a
+match as evidence, name the assumption each side would have had to get wrong
+independently. **If there is no such assumption, there is one result, reported
+twice.**
+
+## A field set on every row of the population is not a test
+
+`analysis_started_at` is set on **100% of PARTIAL jobs** — the short-circuit path
+stamps it too — so it cannot separate a job that made no call from one that
+interpreted and fell short.
+
+**Same family as the single-valued column:** `SELECT <field>, COUNT(1) GROUP BY
+<field>` returning one row means the field has never discriminated anything.
+**A field that is always set and a field that is never set are the same amount of
+information: none.**
