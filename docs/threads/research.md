@@ -9871,3 +9871,66 @@ scheduled tasks"*, *"the daily loop was"*. Integration relays that **only the
 **Those are not the same claim**, and the difference decides whether the 22:00
 discovery task is a live input or a historical one. **I am not choosing between
 them from tone.**
+
+**101b. ONE TASK SURVIVES, THREE RETIRED DURING THE BUILD — SO THE BOUNDARY IS
+UP TO THREE DATES, NOT ONE, AND THE PRIOR IS NOW UNAMBIGUOUSLY PRE-MOVE.**
+
+*Him, on which of the four still run: **"the after hours momentum report is the
+only one that still runs that has not been retired at some point during the
+process of building this app."***
+
+### My tense concern was unfounded and Integration's relay was right
+
+The past tense covered the LOOP, which is retired but for the 22:00 task. **I
+was right to ask rather than infer and wrong about which way it would land** —
+recorded because the asking was cheap and the inference would have been free and
+wrong.
+
+### THE CURRENT ERA HAS NO HINDSIGHT PATH AT ALL
+
+**06:10, 09:25 and 16:15 are all retired, replaced by the desk.**
+
+- The **16:15 hindsight writer no longer exists** — and item 101a already showed
+  it never had a path into the parsed columns.
+- The **09:25 intraday writer no longer exists**, which closes the partial-
+  hindsight path I raised, in the present tense entirely.
+- **`TODAY` rows are now written once at 22:00 and never touched again.**
+
+**SO A PRIOR FETCHED AT ANY HOUR OF THE CURRENT SESSION IS THE 22:00 WRITE.
+CLEANLY PRE-MOVE, ALWAYS, WITH NO FETCH-TIME PARTITION NEEDED.** The question
+`observedAt` could not answer has been dissolved rather than measured.
+
+### AND THE SIGN IS DECIDED — THE PRIOR IS SIGNAL, NOT LEAKAGE
+
+**Removing it should COST accuracy if the human judgement carries information.**
+R&D's 76% CONFLICT means the prior disagrees with the derived value and wins;
+with hindsight excluded, **that is the desk DEFERRING TO A HUMAN PRIOR, not the
+desk cheating.**
+
+**THAT CHANGES WHAT A COLLAPSE WOULD MEAN.** If the edge dies without the prior,
+the finding is *the desk depends on him* — not *the detection was contaminated*.
+**A different sentence to put in front of him, and a much less alarming one.**
+
+*I still register no direction on the replay's magnitude: whether the human or
+the derivation is more accurate is the thing being measured.*
+
+### BUT THE ERA STRUCTURE IS WORSE THAN A SINGLE BOUNDARY
+
+Integration framed it as **the 16:15 retirement date**. **THERE WERE THREE
+RETIREMENTS**, and nothing says they coincided.
+
+**So R&D's 13 sessions may span up to FOUR REGIMES of what wrote the sheet** —
+all three writers live, then two, then one, then none but 22:00. **Pooling
+across them is the exact error class R&D has already made twice today: 10.5%
+across a live and a dead era, 19.8% across a working and a broken pipeline.**
+
+**ESTABLISH THREE DATES, NOT ONE.** And they are corroborable without him:
+`sheetProvenance` on production's grading versions is append-only, so **a
+boundary shows itself in the data** and can confirm or contradict any date given.
+
+### AND ONE THING THE 09:25 RETIREMENT COSTS
+
+Chop Risk, Flush Risk, supply pressure and the opening-spike Decision **went away
+with it.** The Why Not Report is not merely a restoration of the AVOID priority —
+**it is the restoration of an entire retired table**, and that is a stronger
+argument for it than "the machinery already exists".
