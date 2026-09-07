@@ -196,11 +196,31 @@ export function AssessmentSnapshotBoard({ id }: { id: number }) {
                 </td>
                 <td className="px-2 py-1.5">
                   <span className="text-[13px] font-bold text-ink">{row.ticker}</span>
-                  {row.focus ? (
-                    <span className="ml-1 text-[9px] font-semibold text-accent uppercase">
-                      focus
-                    </span>
-                  ) : null}
+                  {/*
+                    * THE `focus` BADGE WAS REMOVED HERE, AND IT SHOULD NOT COME
+                    * BACK ON THE STRENGTH OF THE COLUMN STILL EXISTING.
+                    *
+                    * It meant *he pinned this, AND it therefore received
+                    * research it would not otherwise have had* — a pin used to
+                    * admit a ticker past the rank gate. Pins are cosmetic from
+                    * `dd3bca0`, so the server can never set it true again.
+                    *
+                    * **The problem is not that it dies, it is that its meaning
+                    * drifts.** A reader months from now seeing `focus` on a
+                    * September row reads it as a display preference — which is
+                    * what pins are now — and misses that it was a research
+                    * lever. Keeping it would preserve a TOKEN, not a fact.
+                    *
+                    * That is the mirror of a field whose source is removed: one
+                    * goes FALSE FORWARDS, this one goes MISREAD BACKWARDS — and
+                    * only the first is visible in new data, which is what makes
+                    * this the harder one to notice.
+                    *
+                    * **Nothing is lost.** The column is orphaned and labelled
+                    * rather than dropped, so the record survives in the store,
+                    * dated — off a surface read at speed. One pin was ever made
+                    * (ANPA, 2026-09-04).
+                    */}
                 </td>
                 <td className="num px-2 py-1.5 text-right text-ink">{formatPrice(row.price)}</td>
                 <td className="num px-2 py-1.5 text-right text-ink-2">
