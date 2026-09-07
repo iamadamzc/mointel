@@ -10995,3 +10995,64 @@ comparable.**
 
 *The three legs of "the desk is behind him" all weakened tonight. **This would
 have been a fourth leg made of the same wood as the instrument holding it up.***
+
+---
+
+**105. 57 JOBS TO 1 DOSSIER — THE MECHANISM THAT MAKES IT CHEAP IS IN THE CODE,
+AND ONE FIELD SETTLES IT.**
+
+*Integration, on ANPA 09-04: 57 research jobs, 1 dossier, 3 analysis versions,
+22 sources. The ten hours is explained by a pin exempting the name from the DEAD
+gate. **Is 57:1 a second defect, or an artefact of how attempts are recorded?***
+
+### THE SHORT-CIRCUIT IS REAL AND I CHECKED IT RATHER THAN QUOTING MY OWN NOTE
+
+`pipeline.ts:190`:
+
+```ts
+// Unchanged evidence: reuse. No bundle is even built.
+if (!fingerprintChanged && existing && !options.force) {
+  return { ...base, outcome: 'REUSED_UNCHANGED', dossier: existing.dossier };
+}
+```
+
+**A job whose evidence fingerprint has not moved returns a reused dossier
+BEFORE A BUNDLE IS BUILT AND BEFORE ANY MODEL CALL.** That was the point of the
+clock fix — *model spend needs no bound at the queue* — and it is the mechanism
+that would make 57:1 free.
+
+### ANPA'S OWN NUMBERS ALREADY POINT THAT WAY
+
+**57 jobs, THREE analysis versions.** If every job interpreted, there would be
+roughly 57. **Three versions is three fingerprint movements** — 22 sources
+arriving in three usable batches — **and 54 jobs that found nothing new and
+returned.**
+
+### BUT VERSIONS ARE THE WRONG PROXY, AND THE RIGHT FIELD EXISTS
+
+**A FAILED job can make a call and produce no version.** Locally 47 of 202 jobs
+are FAILED, so counting versions UNDERCOUNTS calls.
+
+**`model_usage.job_id` RECORDS THE ACTUAL CALL PER JOB.** So the question is
+exactly:
+
+> **How many of those 57 job ids appear in `model_usage`?** And across
+> production: **distinct `research_jobs.id` against distinct
+> `model_usage.job_id`.**
+
+**Jobs absent from `model_usage` cost nothing.** One query, one field, no
+inference.
+
+### AND 57:1 IS NOT THE NORMAL RATIO
+
+**Local: 202 jobs, 94 versions — 2.15:1.** Terminal states PARTIAL 108, FAILED
+47, COMPLETE 40, QUEUED 7. *(Local desk. Production will differ and I have been
+wrong twice today quoting a local census as store-wide — this is a shape, not a
+figure.)*
+
+**So ANPA is extreme, its extremeness is already explained by the pin, and the
+open question is only whether the extra attempts SPENT anything.** The code says
+no; `model_usage.job_id` says so or doesn't.
+
+*Noted without a claim: PARTIAL is 53% of local jobs. That is a different
+question and I am not opening it.*
