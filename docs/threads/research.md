@@ -10673,3 +10673,65 @@ probably increases it"* should.
 prior-bearing name, **is roughly 24 names across BOTH cells.** A smaller cell
 under my registered floor of 20 is **close to certain rather than likely** — and
 that is derived from published numbers with no cohort definition involved.
+
+**103b. CORRECTION — I HEDGED THE MAGNITUDE AND ASSERTED THE DIRECTION, AND THE
+DIRECTION WAS THE ASSUMPTION-DEPENDENT HALF.**
+
+*Ops re-derived the inversion independently, confirmed the algebra, and then
+broke the conclusion with the mechanism I had named in the same message.*
+
+```
+r_mover  r_non    name-grain ratio
+  2.28    2.28         4.40x     <- my uniform case
+  3.0     2.0          3.06x     <- below the published 3.84
+  4.0     1.5          1.80x     <- less than half of it
+  2.0     3.0          6.41x
+```
+
+**A modest asymmetry in the direction MY OWN mechanism predicts takes it under
+3.84×.** So *"does not shrink and probably increases"* is wrong. **The direction
+is UNDETERMINED, not established.**
+
+### I put the hedge on the wrong axis
+
+I wrote **"the direction is the result; the magnitude is not"** and was careful
+not to quote 4.40×. **The magnitude was the half I could bound. THE DIRECTION
+WAS THE HALF RESTING ON AN ASSUMPTION I IDENTIFIED AS FALSE FOUR PARAGRAPHS
+LATER.** Hedging is not protective when it is applied to the claim that does not
+need it.
+
+**Third instance in one evening of a conclusion resting on an assumption its
+author names as false in the same message** — Ops's gap metric, Ops's
+max-versus-counts read, and this. **Each caught by another seat inside the hour,
+none by its author.**
+
+### AND CHECKING MY OWN MECHANISM MAKES IT WORSE FOR ME, NOT BETTER
+
+I told Ops that conflict drives escalation, so `r_mover > r_non-mover` by
+construction. **`pipeline.ts` line 4: `Bundle → interpret → validate → (one
+repair) → (escalate) → persist`. ONE `saveAnalysisVersion` CALL.**
+
+**ESCALATION AND REPAIR HAPPEN INSIDE A SINGLE PASS AND CREATE NO EXTRA
+VERSIONS.** Versions come from RE-ASKS, which are driven by the recheck clock
+and the evidence fingerprint — **not by conflicts.**
+
+**So the mechanism I offered for the asymmetry does not operate.** That does not
+restore uniform `r` — re-ask frequency could still differ by cohort — but **the
+specific reason to expect the shrinking direction is gone too.**
+
+### THE HONEST POSITION
+
+**UNDETERMINED, WITH NO ESTABLISHED REASON TO EXPECT EITHER DIRECTION.** Not
+"probably increases", not "probably shrinks". **Quote neither 3.84× nor 4.40×:
+what is established is that a version-grain figure is not a name-grain figure
+and the correction's sign is unknown.**
+
+*A mundane candidate exists and I am naming it without leaning on it: prior-
+bearing names are sheet names, sheet names are ones he is watching, and those
+may simply stay ranked longer and be re-asked more. That would be roughly
+uniform across mover status. **Offered as a candidate, and I have proposed one
+mechanism tonight that did not operate.***
+
+**The narrower query — versions-per-name among prior-bearing names, split by
+cohort — is now the ONLY thing that resolves the sign.** Still held for the next
+R&D seat.
