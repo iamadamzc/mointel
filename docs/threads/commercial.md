@@ -130,7 +130,9 @@ section above is stale.**
   which means *"the service tier configured in the Project settings"*,
   *'default'* unless changed. So: Standard unless the console says otherwise,
   and the response object's `service_tier` field would settle it from one
-  logged response — Research's path, sent to Research.
+  logged response — Research's path, sent to Research. **Research built it
+  the same day (`40ee093`): the served tier is logged as "served at tier X";
+  the value is unobserved until the next interpretation runs after deploy.**
 
 **Method, so the next reader knows what the figures are worth.** Four research
 passes over public pages on 2026-09-07; **every load-bearing quotation and

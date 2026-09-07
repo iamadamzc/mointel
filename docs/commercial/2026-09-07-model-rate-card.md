@@ -47,6 +47,16 @@ span 4x. The widened check, and what it does and does not prove:
 Everything below quotes the **Standard** column on that basis: absent from the
 wire, defaulting to the project setting, verified by nobody yet.
 
+**Instrument built, value not yet observed — Research, `40ee093`,
+2026-09-08.** `InterpretResult` now carries `serviceTier`, read from the
+response's `service_tier` field and logged by the pipeline as *"served at
+tier X"*; returns that never reached a response keep `null` deliberately, so
+the field cannot manufacture the inference it exists to replace. Research
+chose not to send `service_tier: 'auto'` explicitly, so the desk observes the
+default rather than asserting it. **The first interpretation after that
+deploy writes the answer into the journal.** Until a journal line has been
+read, the tier is still the assumption above.
+
 ## THE CARD — Standard tier, USD per 1M tokens, verified 2026-09-07
 
 Source: **developers.openai.com/api/docs/pricing**, "Flagship models" table,
