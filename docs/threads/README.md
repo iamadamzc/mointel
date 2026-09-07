@@ -7542,3 +7542,44 @@ is.**
 
 **When every available answer is defective, the defect is usually one level up
 from the question being asked.**
+
+## THE DESK TELLS HIM A RUNNER IS FINISHED ON THE MORNING IT RUNS
+
+**Design, 2026-09-06**, measuring how often a live price exceeds the cycle high
+the label was computed from.
+
+    symbol-days with a cycle                 1,152
+    next high above cycleHigh, any phase        63    5.5%
+    labelled OFF HIGH / BACKSIDE               876
+    ...and next high above cycleHigh            24    2.7%
+
+**2.7%. An edge case, needing no elaborate design.**
+
+**And the rate and the severity point opposite ways, which is the finding.** The
+24 are not marginal overshoots:
+
+    CDTG  BACKSIDE  high 10.00 -> 15.12   +51%
+    CXAI  BACKSIDE  high 12.50 -> 16.74   +34%
+    CNET  BACKSIDE  high  1.42 ->  1.70   +20%
+
+**When it fires, it fires on a name up 20–50% through its own cycle high and
+calls it BACKSIDE.** Rare — and wrong **in the direction that costs him a trade**
+rather than merely confusing him.
+
+**So rarity is not an argument for leaving it. The 2.7% says it needs no heavy
+design; the severity says it cannot render as OFF HIGH.**
+
+### And the caveat resolves in the direction that raises the number
+
+Design flagged, without resolving: **if the daily bar's high is RTH-only,
+premarket spikes are invisible to this measurement and the true rate is higher.**
+
+**`lib/market/types.ts:65` already answers it, verified against minute bars:
+"Alpaca's daily bar carries full-session VOLUME but regular-session OHLC."**
+
+**So the high is RTH-only, premarket highs do not appear in it at all, and 2.7%
+is a FLOOR** — measured on the part of the session he does not trade. **The
+uncertainty was one-directional and the direction was the bad one.**
+
+**A caveat that can only move a number one way is not a caveat. It is a bound**,
+and it should be reported as one.
