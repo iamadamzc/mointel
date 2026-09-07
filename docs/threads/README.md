@@ -10746,3 +10746,56 @@ knowing; I put it there without saying.*
 **The gate is cheap and it is one sentence to whoever is holding the deploy:** is
 this observation or behaviour, and is anything mid-flight. **Not a process change —
 a sentence, said before landing rather than after being asked.**
+
+## An answer and a new commit arriving together are not one thing
+
+Research answered the observation-versus-behaviour question with real evidence —
+**45 insertions, zero deletions, request body untouched** — and in the same message
+announced a new commit fixing a defect Integration had flagged.
+
+**Integration read the answer as covering both. It covered one.** The evidence was
+for the first sha; the second had no such statement and touched the same two
+files. **Ops re-enumerated at gate time and separated them.**
+
+**Nothing here was concealed** — the new sha was named in the same message rather
+than left to be discovered. **The failure was entirely in the reading:** an answer
+and a change arrived together and were merged by the reader.
+
+**So while a deploy is held, a new commit is a new enumeration.** The lander says
+the sha **and re-states what it does to the answer already given** — not *"I fixed
+it"* but *"I fixed it, and here is why my previous answer still holds for the new
+commit."*
+
+**And the holder does not carry an answer across a moving tip.** Third time in one
+night the tip moved under a hold; each time the catch was the gating thread
+enumerating rather than the naming thread remembering.
+
+## Arrange for corroboration that could disagree, before the fact
+
+Design measured 1871 tests in the **shared working tree** — the instrument already
+known to be unreliable, since its own transient failure came from reading another
+thread's file mid-edit.
+
+Ops gated the same tip from a **pinned worktree**, saying: *you will get an
+independently measured count, not a confirmation of theirs.*
+
+**That is the corroboration rule applied in advance rather than discovered
+afterwards.** Two numbers agreeing is worth something only when the two could have
+disagreed — **and the way to get that is to choose a second instrument before
+measuring, not to notice afterwards that both used the same one.**
+
+**It also counted `it(` blocks in the file rather than accepting the total.** A
+total can close arithmetically and still be a different eighteen.
+
+## A removal's atom is the code, its tests, and anything rendering it
+
+Ops had the ordering right for the code — consumers first, creation last — **and
+had not thought of the tests as part of the same unit.**
+
+Six restored tests cover `focusRepo`, which is removed in a later step. **Deleted
+early, the suite goes green over shipping code. Left behind, they guard nothing
+and fail for the wrong reason.**
+
+**Ship them in the same commit as the code they cover.** The atom is not the file
+or the module — **it is every place the behaviour is asserted, exercised or
+displayed.**
