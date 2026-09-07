@@ -11142,3 +11142,60 @@ Every miss was found by searching for **what carries the value onward** rather t
 
 **The table is never the boundary.** Neither is the module, the route, or the
 thread. **The boundary is wherever the last reader stops reading it.**
+
+## A defect can be the only reason a measurement is possible
+
+Already on file: *a defect can be the only reason a change is safe, so the order is
+load-bearing.* **This is its second instance and it widens the rule.**
+
+`research_sources` holds eight fingerprint inputs. **Seven are per-row. `active`
+updates in place** — so deactivating a source moves the evidence fingerprint and
+**leaves no record of when.** The overwriting shape, in the one table that is
+otherwise durable append-only history.
+
+**It is inert only because `deactivateSources` has zero production callers** —
+exported, documented, tested, `withBusyRetry`-wrapped, called from nothing but
+tests. Already on the desk's own *written, never called* list.
+
+**So one defect is neutralised by a second, and fixing the second destroys an
+axis** — from that commit forward, permanently, with nothing marking the boundary.
+
+**Ruled: it does not get wired without recording the deactivation, in the same
+change.** A timestamp or a row; the requirement is that the thing which moved the
+fingerprint leaves a trace. **`ALTER TABLE ADD COLUMN` is supported here, so the
+cost is one field on a write already being added** — against a re-derivation
+afterwards, plus an undated boundary in the data.
+
+**The general form: before fixing a defect, ask what currently depends on it.** Not
+only what it endangers.
+
+## Exclude from a fingerprint the things you did, keep the things they did
+
+`fingerprint.ts` deliberately excludes fetch timestamps: **"fetching is something we
+did, not something the issuer did."**
+
+**That single decision is why "did the evidence change?" is a meaningful question
+at all.** A fingerprint that moved when we fetched would make every job look like
+new evidence, and the short-circuit built on it would never fire — **which is a
+version of the failure the desk spent a whole night chasing in a different table.**
+
+**When hashing state to detect change, include only what the external world
+controls.** Anything the system does to itself — timestamps, retries, cache state,
+worker identity — belongs outside the hash, or the hash measures activity instead
+of change.
+
+## A correct call resting on a wrong model will eventually be made in the wrong case
+
+Research flagged its local figures as *shapes rather than figures* and was right to.
+**It believed the local store was a different desk. It was a three-week-frozen copy
+of the same one.**
+
+*"The instinct was right for a weaker reason than the real one."*
+
+**A conclusion that happens to be right does not validate the model that produced
+it.** The same model applied one case over — where the two explanations diverge —
+produces a wrong answer with the same confidence, and the earlier success is what
+makes it hard to question.
+
+**So say which reason you are acting on, especially when the action turns out
+correct.**
