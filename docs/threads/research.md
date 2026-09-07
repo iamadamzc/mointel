@@ -11247,3 +11247,56 @@ that way because the cost was invisible in the job table, which is the same
 *Per his one-shared-board ruling this is a FIXED daily cost, not per-user. **~$19
 a day is the number the monetisation case carries, and it is smaller than "8–11M
 tokens" sounds.***
+
+**106b. TWO CORRECTIONS FROM COMMERCIAL, AND THEY RUN IN OPPOSITE DIRECTIONS.**
+
+*`a56cd80`, `docs/commercial/2026-09-07-model-rate-card.md`. Rates confirmed
+identical to what I fetched. **Two things about the counters that I did not
+know.***
+
+### 1. CACHE WRITES ARE INVISIBLE AND COST MORE
+
+**`cached_tokens` is cache READS. Cache WRITES bill at 1.25× the uncached input
+rate — $2.50 for terra — and the usage object carries NO write count.**
+
+**So writes sit inside `input_tokens` at $2.50 while I priced every uncached
+token at $2.00, with nothing in the data to tell them apart.**
+
+### 2. A CLIFF AT 272K INPUT TOKENS
+
+*"Prompts with >272K input tokens are priced at 2× input and 1.5× output for the
+full request."* **The full request, not the excess.**
+
+**ANPA's mean is 39,822 input tokens per call across 60 calls** — comfortably
+under. **But a mean does not clear a cliff: it takes one call at 7× the mean.**
+`SELECT MAX(input_tokens) FROM model_usage` settles it in one number, and nobody
+has looked.
+
+### THE CORRECTED FIGURE IS A BAND
+
+| | low — no writes | high — every uncached token a write |
+| --- | ---: | ---: |
+| ANPA 09-04 | $4.92 | **$5.98** |
+| 09-02 | $16.24 | $19.72 |
+| 09-03 | $22.87 | $27.78 |
+| 09-04 | $16.79 | $20.39 |
+| **session** | **$18.63** | **$22.63** |
+| **annual, 252** | **$4,696** | **$5,703** |
+
+### AND MY TWO ASSUMPTIONS PUSH OPPOSITE WAYS, WHICH IS THE USEFUL PART
+
+**ALL-TERRA OVERSTATES** — discovery runs on luna at a tenth.
+**NO-CACHE-WRITES UNDERSTATES** — writes are 25% dearer than I charged them.
+
+**They partially offset and I CANNOT SAY BY HOW MUCH.** So the honest figure is
+**"roughly $20 a session, inside a band whose width is two unmeasured splits"** —
+not a point estimate with a caveat attached.
+
+**Both splits are one group-by each:** `model_usage.model` for the mix,
+`MAX(input_tokens)` for the cliff. **The write share is NOT in the data at all**
+— Commercial says it lives on the console's Prompt Caching dashboard, behind
+login, **which is his to open and nobody else's.**
+
+*Commercial's framing is better than mine: **a dollar figure from these counters
+is a band on uncached input rather than a number.** I priced it as a number with
+assumptions listed underneath, which is the weaker form of the same honesty.*
