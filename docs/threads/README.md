@@ -10303,3 +10303,59 @@ built for two and showing one is a line of config when the blocker clears.
 **But do not render the dead control.** A button that is present and does not work
 is **the false-forwards field in interaction form** — it carries a promise its
 source can no longer keep. **Absent until it works.**
+
+## The clock error now arrives as an announcement, not as a reading
+
+Two threads, in two different non-ET zones, **both announced Tuesday on Monday
+evening ET, independently, and Integration repeated it onward as fact.** The desk
+box read `ET 2026-09-07 18:02 Mon` the whole time.
+
+**Nobody misread a clock. Nobody read one.** The date arrived as an ambient
+environment notice — *"the date has changed"* — **and an announcement does not
+carry a zone with it.**
+
+The standing rule was *read the clock from the box, and read it now.* **This
+breaks it in a new way: not a stale reading, but no reading at all**, with an
+authoritative-sounding statement substituting for one.
+
+**So the rule extends: a date or time you did not obtain from the desk's own clock
+is not a reading, whatever announced it** — a runtime notice, a peer's message, a
+file header, your own earlier sentence. **Especially your own earlier sentence.**
+
+**Eighth instance in this family.** The previous seven were stale readings, ignored
+`TZ`, and a verification that was itself the trap. **This one required no error of
+perception at all**, which is why it propagated to three threads before anyone
+checked.
+
+## An unpriced term is unbounded, not small
+
+`gpt-5.6-sol` was in production — 116 calls, 1.44M input tokens — **and was not on
+the rate card, because the rate card was built from the two model names someone
+handed over rather than from what the store contains.**
+
+The query that would have shown three models existed the whole time.
+
+**2.6% of calls sounds small and is not a bound.** Until it has a price, its
+contribution to the total is unknown, and in this family **two models one letter
+apart differ by 10x** — so a neighbouring name is not an estimate, it is a guess.
+
+**Rule: enumerate priced things from what the system actually ran, never from the
+list you were given.** And **do not describe an unpriced component as small.**
+Small is a conclusion that requires the price.
+
+## Broken attribution does not move the total
+
+40% of `model_usage` rows carry a null `job_id`. That makes every **per-job** and
+**per-name** figure a floor with an unknown ceiling — including the widely quoted
+"one name was 29% of the day's input."
+
+**It does not move the money.** The vendor's invoice is per-account, not per-job,
+so the daily total stands at ~$7–10 a session regardless.
+
+**Separate the two before withdrawing anything.** A defect in attribution
+invalidates the breakdown and leaves the aggregate untouched; **treating it as
+though it invalidated both is its own error**, and it is the one that produces a
+number quoted three times and moved three times.
+
+**Mark the affected figures as floors. Do not re-report them as new values.** A
+caveat applied once beats a number that keeps moving.
