@@ -9813,3 +9813,61 @@ Warning are 09:25 fields. **THE WHY NOT REPORT IS A RESTORATION, NOT AN
 INVENTION** — and the old system gave him a per-name verdict on every row rather
 than silence on the quiet ones, which is evidence about the held rendering
 question though not an answer to it.
+
+**101a. THE HINDSIGHT WRITER HAS NO PATH INTO THE PRIOR — CHECKED BECAUSE IT WAS
+THE BEST-LOOKING STORY, NOT BELIEVED BECAUSE IT WAS.**
+
+*Integration named the 16:15 grading task as a candidate mechanism for R&D's
+3.8× mover concentration and 76% CONFLICT, and asked for it to be checked rather
+than adopted. It does not survive.*
+
+### The desk reads two tabs, and neither carries an outcome
+
+`googleSheets.ts`: **`TODAY!A1:AA` and `RESEARCH!A1:AK`. Nothing else.**
+
+- **`TODAY_COLUMNS`** — Priority, Ticker, Country, Cycle, RTH Close, AH Price/%/
+  Volume, Float, Catalyst Grade, Catalyst, Catalyst Time, Recent Run High, Flush
+  From High %…
+- **`RESEARCH_COLUMNS`** — 37 columns ending Warning Flags, Overall Priority,
+  Analyst Notes, Float Quality, Overhang / Float, Supply Evidence.
+
+**NO OUTCOME COLUMN. NO REALISED-GAIN COLUMN. NO GRADE-OF-PREDICTION COLUMN. In
+either tab.** `MomentumTicker` carries none either, and `toSheetPrior` reads six
+forward-looking fields.
+
+**THE 16:15 TASK'S OUTCOME AND PATTERN-LEARNING RECORDS ARE NOT IN THE PARSED
+SET.** The shape-match between a hindsight writer and a mover concentration is a
+coincidence of shape. **The concentration has another cause and it is still
+unexplained.**
+
+### AND THE 09:25 CONCERN IS NARROWER THAN I PUT IT
+
+`rows.ts` records, from a live measurement on 21 August: **the 09:25
+opening-spike assessment is a SECOND TABLE ON THE TODAY TAB**, headed `Rank,
+Ticker, Decision, Current PM Price, PM Change %, PM Volume, PM High, Off PM
+High %, Catalyst Grade, Cycle, …`.
+
+**`TODAY_TABLE_SIGNATURE` exists to avoid matching it.** So the desk reads the
+watchlist table and deliberately not the 09:25 table — **and my partial-hindsight
+path only survives if 09:25 also EDITS the watchlist rows**, which is the one
+question left with him.
+
+### AND I OVERSTATED THE REPLAY HAZARD — `RESEARCH` IS DATABLE
+
+I said any prior-bearing arm must read an archived tab because `TODAY` is
+rebuilt nightly. **`RESEARCH_COLUMNS[0]` IS `Report Date`** — RESEARCH rows
+carry their own date and can be scoped to a session on the live tab.
+
+**`TODAY_COLUMNS` has no date**, so that half of the hazard stands. **A
+prior-bearing arm is feasible on RESEARCH and not on TODAY**, which is a
+narrower and more useful statement than the one I sent.
+
+### A DISCREPANCY I AM NOT RESOLVING
+
+He described the loop to me **entirely in the past tense** — *"There were four
+scheduled tasks"*, *"the daily loop was"*. Integration relays that **only the
+22:00 task still runs.**
+
+**Those are not the same claim**, and the difference decides whether the 22:00
+discovery task is a live input or a historical one. **I am not choosing between
+them from tone.**
