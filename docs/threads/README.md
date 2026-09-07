@@ -10523,3 +10523,53 @@ published.
 
 **"I checked for nulls" and "I checked the values" are different sentences.** Say
 which one you did.
+
+## A named sha is a carried reading
+
+Integration named `fad5de6` for deploy. By the time Ops gated, the tip was
+`40ee093` and carried a second thread's change to `pipeline.ts` — **the research
+spend path** — in the same deploy as a UI change it had nothing to do with.
+**Second time in one night the tip moved under a named ancestor.**
+
+**A hash is correct at the instant it is read and decays silently while the
+conversation continues.** That is the clock failure in a different field: *nobody
+is wrong about how to read a sha; the error is carrying one rather than taking
+one.*
+
+**So the approval is not a hash. The approval is an ENUMERATION.**
+
+The gating thread enumerates at gate time and reports **what the tip carries, by
+thread.** Integration approves that enumeration. **If the tip moves between the
+enumeration and the deploy, it is a new enumeration and a new approval** — not a
+detail to reconcile afterwards.
+
+**The tell that this rule is needed: the person who names the sha is never the
+person who discovers it moved.**
+
+## Observation ships tonight; behaviour ships in daylight
+
+A change that only reads a field back off a response is **observation**. A change
+that alters what is sent is **behaviour** — and on a path that spends real money,
+behaviour ships when someone is watching, not at 18:05 on a public holiday.
+
+**The deploy window is not a reason.** A refetch that would close a version split
+for free is a convenience; **a hold costs one day of a split that is already
+harmless, which is the cheapest thing available.** Convenience must not be allowed
+to set the risk tolerance.
+
+**And the honest test for how hard to ask: would I have shipped this without
+knowing it was in there?** If yes, ask properly.
+
+## When a defect aligns with the data it hides, the wrong query is not noisy
+
+Every `terra` and `sol` row in `model_usage` is an orphan; every `luna` row joins.
+So a per-name figure computed through `job_id` **would have dropped precisely the
+expensive models.**
+
+**Not a sampling error — a systematic one pointing the same way every time.** The
+result would have been consistently, invisibly low, with nothing ragged about it
+to prompt a second look.
+
+**When the population a defect removes correlates with the quantity being measured,
+the broken result looks CLEANER than the correct one.** Ask what a defect
+excludes, not just how much.
