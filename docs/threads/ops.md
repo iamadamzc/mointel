@@ -6866,6 +6866,49 @@ a push that failed for a misleading reason still reports `NOT ON ORIGIN`.
 **Keep running it after every push** — it is the reason a misleading error is an
 inconvenience here rather than a silent loss.
 
+## A failure that misdirects is worse than one that is silent — Design, 2026-09-07
+
+**Design's refinement to the failed-check family, and it is the sharpest cut in
+it.**
+
+The family so far: a vacuous assertion, a JSON path that could not match, a
+gate that cannot fail, a flag whose true branch never ran. **All of those go
+QUIET — they return a plausible answer and let the reader move on.**
+
+The credential-manager case is different: *"could not read Username for
+github.com"* when the cause was a memory spike. **It does not merely fail to
+warn — it actively points somewhere else, and recruits the reader into the wrong
+search.** Someone spends an hour on GitHub auth for a transient that already
+passed.
+
+**The defence is the same shape and worth stating generally: when an error names
+the wrong subsystem, a check on the OUTCOME is immune to the misdirection and a
+check on the MESSAGE is not.** `git merge-base --is-ancestor HEAD origin/main`
+does not care what the error said; it tests whether the commit is there.
+
+**Run an outcome check after any step whose failure mode you have not
+enumerated.** That is most of them.
+
+## `worker/dial.ts` breaks on 2026-11-01 — dated, queued
+
+```
+37: const WINDOW_START_UTC_HOUR = 8;   // 04:00 ET, EDT
+38: const WINDOW_END_UTC_HOUR   = 11;  // 07:00 ET
+87-88: Date.UTC(y, m-1, d, WINDOW_START_UTC_HOUR, ...)
+```
+
+**EDT is UTC−4; EST is UTC−5.** At the DST end on **2026-11-01** those constants
+still say 8 and 11, so the window silently becomes 03:00–06:00 ET. **No error, no
+log line — the analysis just measures the wrong hours.**
+
+Line 37 names the assumption in its comment. **Line 38 does not**, which is the
+one that will be read as authoritative.
+
+**And the same trap is now a habit risk across the desk:** the local host's
+`TZ=America/New_York` returns UTC, so the correct workaround is `date -u` — but
+converting it by "minus four" is right only until November. **Take ET from the
+box, which has tzdata, rather than converting UTC by a remembered offset.**
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
