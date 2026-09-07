@@ -6681,6 +6681,27 @@ as unverified rather than closed:
 Published alternatives that do exist: **Broker API partner plans** (5–10 streams,
 but brokerage) and **Massive Business** (three connections, but a rebuild).
 
+**The tier is `Algo Trader Plus`** (his word to Commercial, 2026-09-07). That is
+the configuration every statement here is measured against, and the baseline any
+future "if the plan changes" is measured from.
+
+### AND THIS DESK HAS NEVER OBSERVED THE LIMIT — checked, not assumed
+
+`journalctl -u mointel-market | grep -icE "406|sessions allowed|already have the
+number"` returns **0**. Journal retention floors at **2026-08-25**, and the
+local-desk-beside-production period was 08-17 to 08-20 — **before the floor.**
+
+So the one-connection rule on this desk rests on **Alpaca's published docs plus
+operational lore, and on no log we still hold.** A different client wording would
+also not match that grep, so absence here is weak evidence either way.
+
+**Treat it as real anyway, and the reason is the point: the experiment that would
+verify it is "start a second consumer and see whether production loses its
+feed."** The test costs the thing it is testing. **A constraint you cannot safely
+falsify is one you design around rather than confirm** — which is a legitimate
+basis, but it is not evidence, and it should not be written up as though a 406
+had been seen.
+
 **So the correct statement is "not available on this account as configured, and
 the alternatives are known and costly", NOT "impossible".** The operational
 consequences below hold either way, because none of them waits on that question.
