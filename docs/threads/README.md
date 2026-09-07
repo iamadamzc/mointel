@@ -8367,3 +8367,38 @@ against what it actually emits.**
 **That is a better version of the two held tests than "does the replacement cover
 what was retired" asked in the abstract** — and it corrects an Integration
 assertion that was made from the shape of the story rather than from the record.
+
+### Confirmed from documentation: the sheet tasks ran in PARALLEL with the desk
+
+**The trader asked Integration to confirm from the record, and the record has it.**
+
+    2026-08-17/18   the desk's replacements first run
+    ~2026-09-03     task 4 (16:15) retired — R&D's "do not delete the corpus"
+                    condition is recorded against that retirement
+    2026-09-05      LIVE STATE records "Retire the 06:10 ChatGPT task. Done"
+
+**So the desk's arrival and the sheet tasks' departure are TWO AND A HALF WEEKS
+APART, and Research's own bound was the right one:** a desk type's first
+appearance dates when the **desk** started, not when the **sheet task** stopped.
+
+**The 13 sessions — 08-19 to 09-04 — sit entirely inside the PARALLEL era**, with
+all four sheet tasks and the desk running together. Research read "post-takeover"
+as "current regime"; **it is post-takeover and pre-retirement, which is a third
+thing.**
+
+### Which matters in the opposite direction to the one feared
+
+**The hindsight exclusion does not depend on this** — it was established
+structurally: the 16:15 task never wrote into the parsed columns, and the 09:25
+task did not rewrite the prior columns. **Those hold in any era.**
+
+**What changes is transferability.** During the sample, priors could be written at
+22:00 **or revised at 06:10** — both pre-move, both fine. **Today the 06:10 task
+is gone and every prior is the 22:00 write.**
+
+**So the sample is internally consistent and describes a regime that no longer
+exists.** Any forward application of S3 to the current desk crosses a boundary —
+**and it is a boundary in the SOURCE, not in the measurement, which is why no
+amount of care inside the sample would have surfaced it.**
+
+**A sample can be free of pooling and still be about a world that has ended.**
