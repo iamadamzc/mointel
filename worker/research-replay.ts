@@ -236,6 +236,10 @@ async function main(): Promise<void> {
        */
       for (let run = 0; run < args.draws; run += 1) {
         const report = await interpretTicker(db, interpreter, null, {
+          // No job exists for a manual run. Written explicitly rather than
+          // omitted: an absent `jobId` and a deliberate one produced the same
+          // orphan row, which is how every interpretation lost its owner.
+          jobId: null,
           ticker: version.ticker,
           tradingDate: version.generated_at.slice(0, 10),
           // The whole point: prior-free, and blind to anything collected later.
