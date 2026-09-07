@@ -9208,3 +9208,33 @@ marginal-trade curve by **whether the desk held an objection-shaped signal for
 that name at that time.** Late losses in objected-to names means the report has
 leverage. **Late losses in un-objected names means the problem is volume and the
 report cannot help.**
+
+## THE SECOND LINE ARRIVED FROM SELECTION RATHER THAN FROM VOLUME
+
+**Coaching, 2026-09-07**, joining the trader's fills to
+`desk_assessment_tickers.structure` — the split Research asked for, run by the
+only seat that can see both.
+
+**He selects into the desk's objection-flagged names at roughly three times the
+rate the board offers them, and into clean names at about a quarter of it** —
+measured per name-day **against the board's own mix on the same days**, so it is
+not a description of small-caps. **Late trades concentrate in the flagged names.**
+
+**That is the second independent line for the avoid framing, and it is a
+different one.** The first was **volume** — the marginal trade turning negative.
+This is **selection** — which names get chosen at all.
+
+**And it changes what the Why Not Report is aimed at.** Not a filter over an
+undifferentiated board: **a counterweight to a measured pull toward the names the
+desk already objects to.**
+
+**Three caveats and one alternative explanation Coaching could not rule out went
+to Research directly**, with a request to check it — **the obvious confound being
+that flagged names may simply move more, which the board-mix control does not
+address.**
+
+**Two lines converging is the reason to weight it. One of them being about
+selection rather than discipline is the reason it is usable** — *"you are drawn to
+these names"* is actionable in a way *"you trade too much"* is not.
+
+**Figures deliberately absent.** They are his fills.
