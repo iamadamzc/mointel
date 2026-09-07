@@ -9779,3 +9779,79 @@ personal attention must be per-user.**
 what every subscriber's desk contains. **So the two halves of "pin" fall on
 opposite sides of the line and have to be separated: watching is personal and
 free; admitting is shared, attributable, and costs money.**
+
+---
+
+## Enumerate by the field that travels, not the table that stores it
+
+**Three enumerations came up short this weekend, and all three failed the same
+way: the search was for the thing we knew about rather than for what carried it
+onward.**
+
+The pin removal was scoped at four consumers. **Six went.** The two nobody had
+read `candidate.focused` — the in-memory carrier — while the grep that built the
+list searched `focus_tickers`, the table. **The table search found the SQL and
+stopped one hop short**, at exactly the point where the value leaves storage and
+becomes a field on an object that other code branches on.
+
+The two missed sites were **a priority score `+= 8`** and **a reason string**.
+Neither mentions the table. Both change what gets researched.
+
+**So the unit of enumeration is the field, not the store.** Grep the column name,
+then grep every name the column is read INTO, and keep going until a hop adds
+nothing. A store has one name; **the value it holds acquires a new name at every
+boundary it crosses**, and consumers bind to the last name, not the first.
+
+**Corollary: "I grepped for it" is not a completeness claim until you say WHAT you
+grepped for.** Four sites and six sites were the same search, run against
+different words.
+
+## Stated intent is evidence someone meant it, not evidence it works
+
+The pin exemption was documented as deliberate. **Integration ranked that
+docstring above the measurement** — ten hours, 57 jobs, past two deaths, one
+dossier — and asked the trader twice whether to remove a lever the numbers had
+already convicted. His answer: *"is it not obvious to remove it. is that not a
+defect?"*
+
+**A comment records what someone believed at the time it was written. It is
+evidence about an intention, never about a behaviour.** When a comment and a
+measurement disagree, **the measurement is the only one of the two that observed
+the running system.**
+
+**Third instance this weekend of the comment winning until something measured
+it** — with the engine docstring that claimed no Alpaca knowledge (broken 25
+lines below by an import), and with `sheetPriorOmitted`, wired and written across
+903 rows and never once true.
+
+## A field whose source is removed does not go dead — it starts lying
+
+Removing the pin's admission path leaves `focus` persisted and rendered on
+assessment rows, **with nothing left that can ever set it true.**
+
+The failure is not that the field is dead. **It is that historic rows keep their
+values, so one column means "he pinned this" above a date and "nothing" below it,
+with no marker at the boundary.** A reader comparing two periods sees a behaviour
+change that never happened.
+
+**So when a write path is removed, the rendered field it fed is part of the
+change, not a follow-up.** Either the render goes, or the boundary is dated in
+the UI. **Leaving it is the `sheetPriorOmitted` shape arriving on its own** — a
+populated field standing in for a path that no longer runs.
+
+**Order, when the field crosses threads: render first, then the write, then
+orphan and label the column. Never DROP.**
+
+## A scope boundary is not a reason to stop; a consequence crossing it is
+
+Integration ordered `POST /api/focus` removed inside Ops's scope. **Ops built
+everything else and refused that one**, because removing the endpoint 500s
+Design's star button until Design's hook moves in-memory.
+
+**That refusal was correct and the order was wrong.** The test is not whether the
+change is in your files. **It is whether the CONSEQUENCE lands in someone else's**
+— and a main where another thread's control is broken is not a landable main,
+whoever authored the file.
+
+**"I am not landing a main where the star button 500s" outranks an instruction
+from Integration**, and the sequence gets rebuilt around the seam instead.
