@@ -11503,3 +11503,50 @@ surface, a stage — **before letting it set the frame for anything larger.**
 and not the worker's error.** The method survives the angle: proven lookups,
 timestamped checks, travelling caveats, the set-aside list with its reasons. **Only
 the axis is re-run.**
+
+## An aside raised as "naming it, not chasing it" is still a claim
+
+Research refused to overstate a fingerprint finding — sized it honestly, gave the
+denominator, flagged the snapshot's age — **and in the same message published an
+undecomposed gap as an aside: 46 jobs COMPLETE with the collector silent.**
+
+**The care went to the headline and the aside travelled free.** Integration relayed
+it onward within minutes, which is the proof.
+
+**Asides travel further than headlines precisely because nobody expects to have to
+check them.** They arrive pre-hedged — *naming it, not chasing it* — and the hedge
+is read as modesty rather than as "unverified".
+
+**Decompose before mentioning, or say the number is undecomposed in the same
+breath.**
+
+The decomposition, when it came, was total: **last job without a report is 227,
+first with one is 228, zero interleaving; 227 + 8 queued = 235, nothing left
+over.** The 46 carry every stage timestamp identically to the 74 that do report.
+**The work happened; the recording had not been built yet.**
+
+**A clean boundary with no residue is the strongest form this answer takes — there
+is nothing left for a story to attach to.**
+
+## A shape match is not a mechanism match
+
+Two anomalies shared a shape: `COMPLETE` reached with a required stage silent.
+Integration suggested carrying the solved one's answer across as a hypothesis —
+*"if the collector report is keyed the way `model_usage` is keyed, you already know
+how this ends."*
+
+**It is not keyed at all.** `recordCollectorReport` is `UPDATE research_jobs SET
+collector_report = ? WHERE id = ?` — **a column on the job row. There is no join to
+lose.** One line, already read by the thread receiving the suggestion.
+
+**Offering a mechanism without checking it is structurally available steers a
+search.** Hedging it as a hypothesis does not undo that.
+
+**Ask "what could this be" before "what is this like."** The cost of checking
+availability first is one grep; the cost of not is somebody else's hour, spent
+inside your framing.
+
+**And un-pair them in the record once the answer lands.** The first was a join
+losing rows; the second was a feature that did not exist yet. **Two anomalies that
+were never related should not keep travelling together because they were once
+mentioned in the same sentence.**
