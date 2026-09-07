@@ -6648,6 +6648,34 @@ equals the trading date.
 and the restart aborts by design. **Neither failure announces itself** — if no
 report appears Tuesday, assume neither ran.
 
+## The single SIP connection is a subscription class, not an account quirk
+
+**Commercial, 2026-09-07, sourced to Alpaca's published streaming docs**
+(`docs/commercial/2026-09-07-feed-licence-landscape.md` §4).
+
+> *"The number of connections to a single endpoint from a user is limited based
+> on the user's subscription, but in many subscriptions (or without one) this
+> limit is 1"* — and error **406**: *"You already have the number of sessions
+> allowed by your subscription."*
+
+**Only Broker API partner plans publish more (5–10 stream connections).**
+
+**What this changes operationally:** the constraint is not a setting anyone can
+fix, so **"get a second connection" is not an available remedy** — not for the
+local desk running beside production, not for a parallel worker, not for a
+migration that wants both old and new streaming at once.
+
+**Every design that needs two simultaneous SIP consumers is off the table until
+the plan changes**, and that is a commercial decision rather than an engineering
+one. A second connection does not degrade or share; the newer one takes the slot
+and the older is dropped with a 406.
+
+**So the orphaned-worker hazard is permanent, not a bug to be fixed.** A stray
+`worker/alpaca.ts` anywhere — a forgotten local desk, a session-launched process
+— silently costs production its feed. `RESTART_MARKET=no` exists because of
+this, and so does the rule never to launch desk processes from inside a chat
+session.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
