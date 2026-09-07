@@ -9934,3 +9934,60 @@ Chop Risk, Flush Risk, supply pressure and the opening-spike Decision **went awa
 with it.** The Why Not Report is not merely a restoration of the AVOID priority —
 **it is the restoration of an entire retired table**, and that is a stronger
 argument for it than "the machinery already exists".
+
+**101c. THREE THINGS BEFORE THE REPLAY IS DESIGNED AS "IS HE RIGHT" — A
+CONFOUND, A CANDIDATE FOR THE 3.8×, AND A MEASUREMENT THAT ALREADY EXISTED.**
+
+*Integration: the prior is a pre-session human judgement disagreeing with the
+derived value and concentrated on names that move, so it is a candidate for the
+human being right. Named as a candidate rather than a finding, correctly. Here
+is what has to hold before it can be measured.*
+
+### 1. THE DICHOTOMY HAS A THIRD BRANCH, AND IT IS A COMPOSITION EFFECT
+
+Integration's split — *edge collapses → his judgement is producing it; edge
+survives → the desk is* — assumes the only thing removing the prior changes is
+the prior's CONTENT.
+
+**It also changes the POPULATION.** The prior is present on 29.2% of
+mover-attached versions and absent on 70.8%. **A collapse in the POOLED edge is
+consistent with the prior carrying the detection AND with the prior-bearing
+names simply being different names.**
+
+**SO THE REPLAY MUST COMPARE WITHIN THE PRIOR-BEARING SUBSET — the same names,
+with and without.** A pooled before-and-after cannot separate content from
+composition, **and that is the same error class as the coverage span mismatch I
+made this evening.**
+
+### 2. A CANDIDATE FOR THE UNEXPLAINED 3.8×, WITH ITS CHECK ATTACHED
+
+**THE SHEET ONLY CONTAINS NAMES HE RESEARCHED AT 22:00 — that is, NAMES THAT
+WERE ALREADY AFTER-HOURS MOVERS THE NIGHT BEFORE.**
+
+So a name having a prior at all is a **selection**, not a judgement. **If
+last night's after-hours movers are more likely to be today's movers — which is
+the entire premise of the 22:00 task — then mover-attached versions carry priors
+more often FOR REASONS THAT SAY NOTHING ABOUT THE PRIOR'S CONTENT.**
+
+**THE CHECK: compare the prior-attachment rate against the rate at which
+SHEET-LISTED names appear in each group.** If sheet membership explains the
+concentration, 3.8× is the base rate of the sheet's own population.
+
+**CANDIDATE, NOT FINDING.** It is attractive for the same reason the last two
+were, and it is offered with the query that would kill it.
+
+### 3. "IS HE RIGHT" WAS ALREADY BEING MEASURED DAILY, BY DESIGN
+
+**The retired 16:15 task graded his calls against outcomes — and he preserved
+the earlier columns specifically so it could do that WITHOUT HINDSIGHT.**
+
+**THAT IS THE MEASUREMENT. It ran every session, it was built for exactly this
+question, and it predates the replay by months.**
+
+**IF ITS RECORDS SURVIVE, THEY ANSWER "IS HIS JUDGEMENT RIGHT" DIRECTLY, FOR
+FREE, OVER FAR MORE THAN THIRTEEN SESSIONS.** The replay answers a narrower
+question — whether the DESK'S detection depends on him — and those are different.
+
+**BEFORE PRICING A THIRTEEN-SESSION MODEL RUN, ASK WHETHER THE OUTCOME AND
+PATTERN-LEARNING RECORDS STILL EXIST.** Same move that has worked twice tonight:
+the fact may already be written down by someone who was there.
