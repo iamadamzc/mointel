@@ -11628,3 +11628,72 @@ work**, and I did not distinguish them when I priced.
 trading_date)` join is not unique and ANPA alone had 57 jobs on one pair.
 **That caveat applies to this test too: a matching orphan at a neighbouring date
 shows the mechanism operates, not that a particular job's call is that row.***
+
+**106h. MY THIRD MECHANISM IS DEAD, THE MODEL MAPPING IS CONFIRMED, AND MY
+"37.8% TERRA" OVER-SPECIFIES WHAT THE BACK-SOLVE COULD SAY.**
+
+### THE ROLL-CROSSING EXPLANATION IS KILLED, PROPERLY
+
+**Ops: of the 46, ZERO have an orphan at the next or previous SESSION.** A
+roll-crossing writes usage exactly one session away and **not one of them has
+that.** The mechanism is real — **100 jobs in the store were queued after their
+own `trading_date`** — and it produces none of these.
+
+**And Ops caught its own instrument before reporting the agreement.** Its first
+adjacency test used **±1 CALENDAR day**, which would have been blind to a
+Friday→Tuesday roll — *the store's most recent roll is exactly that*. Redone on
+session ordering it still returns 0. **A right answer from a broken instrument is
+still a broken instrument**, and it said so itself.
+
+**11 of the 46 have orphans at distant dates, which under a date-free join means
+almost nothing — my own caveat, applied to my own test.** For **35 there is
+nothing anywhere**, and the swallowed write stays indistinguishable from no call
+at all.
+
+### THE MODEL MAPPING, CONFIRMED FROM CONFIG AS INTEGRATION ASKED
+
+`config.ts:177-178` — **`escalationModel` and `changeDetectModel` default to
+`researchModel` and are env-overridable.** Production sets one to `sol`.
+
+| model | stage | side of the join |
+| --- | --- | --- |
+| `terra` 1219 | interpretation | **orphaned** |
+| `sol` 116 | escalation / change-detect | **orphaned** |
+| `luna` 1913 | discovery / collection | joinable |
+| `unknown` 86 | collector's `?? 'unknown'` | joinable |
+
+**CONFIRMED, NOT KILLED. Interpretation-side models are exactly the orphaned
+1,335; collection-side are exactly the joinable 1,999.** Two partitions on
+different columns agreeing to the row, **and they could have disagreed.**
+
+### AND IT BREAKS MY BACK-SOLVE'S FRAMING
+
+**I fitted a TWO-model mix — terra and luna — and reported "37.8% terra".**
+`sol` is a third model at **$4.00/$0.40/$20.00, TWICE terra** (Commercial,
+`90fd212`).
+
+**The fit was to an EFFECTIVE BLENDED RATE against his invoice, so the COST
+CONCLUSION survives** — the invoice does not care how I decomposed it. **What
+does not survive is calling that fraction a terra share.** With sol at 2×,
+roughly a third of tokens on the expensive models reproduces the same bill.
+
+**RESTATED: the observed cost is consistent with ABOUT A THIRD OF TOKENS ON THE
+EXPENSIVE MODELS.** Not "37.8% terra". **A two-parameter fit cannot name a
+three-way split**, and I named one.
+
+### A PUBLISHED EXPIRY ON THE ANNUAL FIGURE
+
+Commercial: *"GPT-5.6 Sol's promotional pricing is available at least through
+November 21, 2026"* **with no published successor rate.**
+
+**So ~$2,200/yr carries a price with a stated expiry two months out**, on the
+most expensive model in the mix. **That belongs beside the number, not under it.**
+
+### AND OPS'S PHRASING DISTINCTION, ADOPTED
+
+Both sides of the 29.3% use the worker's loop date, **so it is exact for the
+money axis — the one the invoice measures.**
+
+- **"ANPA was 29% of what the desk SPENT that day"** — supported.
+- *"ANPA was 29% of the work done for 09-04's session"* — **not supported**, and
+  the two diverge the moment a job crosses a roll, **which happens 100 times.**
