@@ -7505,6 +7505,41 @@ is Research's to prove from the code, not mine to infer from counts.**
 **The 630 matches Integration's estimate exactly**, which is reassuring about the
 size and says nothing about the safety of the rule that produces it.
 
+## Acceptance without spend, 72 times — Integration found it in my own table
+
+**It was a small number beside large ones and I printed it without looking at
+it.** `COMPLETE` jobs with no `model_usage` row: 72. `COMPLETE` is outcome
+`ACCEPTED`, and the `REUSED_UNCHANGED` short-circuit maps to `PARTIAL` — **so
+these are not the free path.**
+
+```
+72 jobs · 15 DISTINCT DATES · 2026-08-17 to 2026-09-08 (the current trading date)
+all 72 have accepted_at        all 72 have an evidence_fingerprint
+only 1 is a retry
+triggers: 45 null · 23 INTERVAL_RECHECK · 4 ENTERED_TOP_N
+
+sibling job, same ticker + fingerprint, that DID spend:  4 of 72
+```
+
+**The "another job already paid for it" explanation covers four.** The other 68
+have no paid sibling. **And it is not an incident — fifteen dates across three
+weeks, still open.**
+
+**Why it matters beyond itself:** the proposed `PARTIAL`/`REUSED_UNCHANGED`
+backfill rests on *acceptance implies spend*. **Here is acceptance without spend,
+72 times, in the same file's mapping.** The assumption is not merely unproven —
+it is **demonstrably violable adjacent to the code that would rely on it.**
+
+**Not proposing a mechanism.** Which path sets `accepted_at`, emits no
+`model_usage` row, and needs no sibling is a code read and it is Research's.
+The narrowing: reachable from at least `INTERVAL_RECHECK` and `ENTERED_TOP_N`.
+
+**THE LESSON IS THE COLUMN, NOT THE FINDING.** 1902 and 630 were the numbers I
+was looking at; 72 was in the same table and I did not read it. **`sheetPriorOmitted`
+survived 903 rows the same way — a figure large enough to look like evidence
+sitting beside the one that mattered.** Read every cell of a table you print,
+especially the small ones.
+
 ## A homemade check that disagreed with the authoritative one, and was wrong
 
 Verifying `dd3bca0..570f077` was docs-only, I built an ad-hoc digest —
