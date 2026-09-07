@@ -4288,10 +4288,27 @@ working feature; only the payload separates them from the failure.**
 - **THE SIX `focusRepo` TESTS ARE EXPECTED TO GO.** `seedFocus`,
   `isFocusSeeded`, `pinFocus`, `unpinFocus`, `readFocus` — Ops removes the repo
   in step 3 and they leave with the code, not before it. They were **not**
-  obsolete when restored. **The number to check when it lands is whether the
-  count drops by exactly six**; any other number is a new question, not a
-  rounding, and this note exists so nobody re-runs the hour it cost to find that
-  out the first time.
+  obsolete when restored.
+  - **CORRECTION — IT IS ELEVEN, NOT SIX, AND I TOOK SIX FROM OPS WITHOUT
+    OPENING THE FILE.** That is the same generator: **a number accepted rather
+    than looked at.** The enumeration, by name:
+    **`focus persistence` is 10 cases and every one of them touches the repo**
+    (`seedFocus`, `isFocusSeeded`, `pinFocus`, `unpinFocus`, `readFocus`), plus
+    **`renders one card per pinned name, in pin order`** in `focus cards`, which
+    calls `focusRepo` directly. **11.** The other 7 `focus cards` cases touch no
+    repo function and must survive.
+  - **THE MCP SIDE CONTRIBUTES ZERO.** `get_focus` appears in `readOnly.test.ts`
+    and `sideEffects.test.ts` **inside arrays and call lists within existing
+    cases**, never as an `it()` of its own. Removing the tool changes assertions
+    **inside** cases and **does not move the count.** So Ops's `−9` cannot be
+    reached by adding an MCP contribution to six.
+  - **AND THE FILE'S MODULE-LEVEL IMPORT OF `focusRepo` BREAKS ON REMOVAL**, so
+    the file must be edited regardless — which is the mechanism by which a
+    careless fix takes the other 7 with it. **That is precisely how the original
+    eighteen died.**
+  - **SO THE NUMBER TO CHECK IS −11, AND `−9` OR `−18` ARE BOTH DIAGNOSTIC:**
+    `−9` means two repo-coupled cases survived that should not have, **`−18`
+    means the whole file went again.**
 - **A COUNT IS A DETECTOR, NOT A MEASURE.** The suite total went UP to 1871
   while the coverage of pin/unpin/limit went DOWN — those moved from exercised
   (against the repo) to source-asserted (against the hook), and no total can
