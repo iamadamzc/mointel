@@ -3864,6 +3864,30 @@ If they are zeros, nothing landed and both fields are behaving correctly.
 **Ops's, not mine** — flagged so the diagnosis starts from a discriminating
 measurement rather than from a contrast that cannot fail.
 
+## Messaging protocol §5c (2026-09-06, Integration `1c3738a`)
+
+**FACTS GO DIRECT. DECISIONS COME TO INTEGRATION.** A measurement, a defect, or
+a correction to another thread's number goes to that thread MYSELF. Copy
+Integration only when it changes a ruling. Anything competing for the trader's
+answer still routes through Integration, because only that seat can see what is
+already in front of him.
+
+**THE REPO IS THE STATE.** Land it here first, then message the sha.
+
+**EVERY MESSAGE: SHA · WHAT CHANGED · WHAT I NEED.** If it needs a paragraph,
+**the paragraph goes in this file** and the message points at it.
+
+### What it changes for me, concretely
+
+- **Renderer-side findings go to Ops directly.** My catch that Ops's sibling
+  contrast could not discriminate was a fact about ITS evidence and it went
+  through Integration — costing a round trip while a defect sat unconfirmed.
+- **A payload field that looks wrong at premarket goes to Ops as I find it**,
+  not after routing.
+
+**Channel proven:** I have reached Ops (`local_c4fc69df`) and Research
+(`local_caa55786`) directly this session, and Integration throughout.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
