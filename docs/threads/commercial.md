@@ -124,6 +124,21 @@ repo — they are public documents and re-fetchable.
 - **Watch, no clock:** the new CT Plan agreements at consolidatedtape.com
   (renders only a header today); a 2026 Nasdaq Basic price list; IEX's $1,000
   TOPS fee from 2026-10-01; Massive's unpublished exchange-fee amounts.
+- **A second concurrent SIP consumer is a commercial decision, not an
+  engineering one.** *Ops's reading of the connection fact, `d6ffec3`, and it
+  is sharper than the fact as sent: "get a second connection" stops being an
+  available remedy for a local desk beside production, a parallel worker, or a
+  migration streaming old and new at once.* The published option set, for
+  whenever that decision is wanted: Alpaca's Broker API partner plans publish
+  5–10 stream connections, but that is a brokerage partnership at sales
+  pricing; Massive Business publishes up to three websocket connections at
+  $2,499/mo and is a rebuild; Alpaca's docs say the limit is 1 *"in many
+  subscriptions"*, so a higher individual limit may exist and is published
+  nowhere. **UNVERIFIED 2026-09-07:** whether a second Alpaca account in the
+  same name, carrying its own paid subscription, is permitted — no page read
+  addresses it, the exchange agreements price per subscriber and device rather
+  than forbidding it, and Alpaca's account rules were not read for this
+  question. Not a recommendation; an option set with one hole named.
 
 **Declined, deliberately:** any enquiry to any vendor, and any recommendation
 to sign. Both are his.
