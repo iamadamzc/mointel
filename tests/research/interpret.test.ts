@@ -14,13 +14,32 @@ import { buildEvidenceBundle, summariseHistory, type ResearchEvidenceBundle } fr
 import { validateDossier } from '@/lib/research/interpret/guardrails';
 import { EMPTY_HISTORY_SUMMARY, upsertDailyBars } from '@/lib/research/history';
 import { shouldEscalate } from '@/lib/research/interpret/escalation';
-import { interpretTicker } from '@/lib/research/interpret/pipeline';
+import { interpretTicker, type InterpretOptions } from '@/lib/research/interpret/pipeline';
 import { OpenAiInterpreter, SYSTEM_PROMPT, SYSTEM_PROMPT_A, SYSTEM_PROMPT_B, systemPromptFor } from '@/lib/research/interpret/openaiInterpreter';
 import { readResearchConfig } from '@/lib/research/config';
 import { NoopInterpreter, type InterpretResult, type ResearchInterpreter } from '@/lib/research/interpret/interpreter';
 import { AUTOMATIC_DOSSIER_SCHEMA } from '@/lib/research/interpret/schema';
 import { compareSheetAndAuto } from '@/lib/research/merge/sheetAuto';
 import type { ResearchDossier, SupplyBlock } from '@/lib/research/types';
+
+/**
+ * Every test in this file exercises the pipeline, not attribution: there is no
+ * job behind any of them and no trigger. `jobId` and `trigger` are required on
+ * `InterpretOptions` precisely so a caller cannot leave them unsaid -- but
+ * saying it twenty-one times would bury what each test is actually about, so it
+ * is said once, here.
+ *
+ * A test that ever wants to assert attribution calls `interpretTicker`
+ * directly, and reads differently for it.
+ */
+function interpretPipeline(
+  db: Parameters<typeof interpretTicker>[0],
+  interpreter: Parameters<typeof interpretTicker>[1],
+  escalation: Parameters<typeof interpretTicker>[2],
+  options: Omit<InterpretOptions, 'jobId' | 'trigger'>,
+) {
+  return interpretTicker(db, interpreter, escalation, { ...options, jobId: null, trigger: null });
+}
 
 const temporaryFiles: string[] = [];
 
@@ -727,7 +746,7 @@ describe('interpretation pipeline', () => {
     good.cycle.evidenceSourceIds = [ids[0]];
 
     const interpreter = new ScriptedInterpreter([good]);
-    const report = await interpretTicker(db, interpreter, null, {
+    const report = await interpretPipeline(db, interpreter, null, {
       ticker: 'ACME', tradingDate: DATE,
     });
 
@@ -746,8 +765,8 @@ describe('interpretation pipeline', () => {
     good.cycle.evidenceSourceIds = [ids[0]];
 
     const interpreter = new ScriptedInterpreter([good, good]);
-    await interpretTicker(db, interpreter, null, { ticker: 'ACME', tradingDate: DATE });
-    const second = await interpretTicker(db, interpreter, null, { ticker: 'ACME', tradingDate: DATE });
+    await interpretPipeline(db, interpreter, null, { ticker: 'ACME', tradingDate: DATE });
+    const second = await interpretPipeline(db, interpreter, null, { ticker: 'ACME', tradingDate: DATE });
 
     expect(second.outcome).toBe('REUSED_UNCHANGED');
     // The single most important cost control in the system.
@@ -770,7 +789,7 @@ describe('interpretation pipeline', () => {
     fixed.cycle.evidenceSourceIds = [ids[0]];
 
     const interpreter = new ScriptedInterpreter([broken, fixed]);
-    const report = await interpretTicker(db, interpreter, null, { ticker: 'ACME', tradingDate: DATE });
+    const report = await interpretPipeline(db, interpreter, null, { ticker: 'ACME', tradingDate: DATE });
 
     expect(report.repaired).toBe(true);
     expect(interpreter.repairCalls).toBe(1);
@@ -784,7 +803,7 @@ describe('interpretation pipeline', () => {
     broken.catalyst.evidenceSourceIds = [4242];
 
     const interpreter = new ScriptedInterpreter([broken, broken]);
-    const report = await interpretTicker(db, interpreter, null, { ticker: 'ACME', tradingDate: DATE });
+    const report = await interpretPipeline(db, interpreter, null, { ticker: 'ACME', tradingDate: DATE });
 
     expect(interpreter.repairCalls).toBe(1);
     expect(report.outcome).toBe('PARTIAL');
@@ -798,7 +817,7 @@ describe('interpretation pipeline', () => {
     good.structure.evidenceSourceIds = [ids[0]];
     good.cycle.evidenceSourceIds = [ids[0]];
 
-    await interpretTicker(db, new ScriptedInterpreter([good]), null, { ticker: 'ACME', tradingDate: DATE });
+    await interpretPipeline(db, new ScriptedInterpreter([good]), null, { ticker: 'ACME', tradingDate: DATE });
 
     // Evidence moves, then the model fails outright.
     insertResearchSources(db, [
@@ -811,7 +830,7 @@ describe('interpretation pipeline', () => {
       },
     ]);
 
-    const report = await interpretTicker(db, new ScriptedInterpreter([null, null]), null, {
+    const report = await interpretPipeline(db, new ScriptedInterpreter([null, null]), null, {
       ticker: 'ACME', tradingDate: DATE,
     });
 
@@ -828,7 +847,7 @@ describe('interpretation pipeline', () => {
     first.structure.evidenceSourceIds = [ids[0]];
     first.cycle.evidenceSourceIds = [ids[0]];
 
-    const v1 = await interpretTicker(db, new ScriptedInterpreter([first]), null, {
+    const v1 = await interpretPipeline(db, new ScriptedInterpreter([first]), null, {
       ticker: 'ACME', tradingDate: DATE,
     });
 
@@ -848,7 +867,7 @@ describe('interpretation pipeline', () => {
     revised.cycle.evidenceSourceIds = [ids[0]];
     revised.structure.structureClassification = 'DIRTY_FLOAT';
 
-    const v2 = await interpretTicker(db, new ScriptedInterpreter([revised]), null, {
+    const v2 = await interpretPipeline(db, new ScriptedInterpreter([revised]), null, {
       ticker: 'ACME', tradingDate: DATE,
     });
 
@@ -864,7 +883,7 @@ describe('interpretation pipeline', () => {
     good.structure.evidenceSourceIds = [ids[0]];
     good.cycle.evidenceSourceIds = [ids[0]];
 
-    await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+    await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
       ticker: 'ACME', tradingDate: DATE,
     });
 
@@ -892,7 +911,7 @@ describe('interpretation pipeline', () => {
     const terra = new ScriptedInterpreter([cautious]);
     const sol = new ScriptedInterpreter([cautious]);
 
-    const report = await interpretTicker(db, terra, sol, {
+    const report = await interpretPipeline(db, terra, sol, {
       ticker: 'ACME',
       tradingDate: DATE,
       sheetSnapshot: {
@@ -928,7 +947,7 @@ describe('interpretation pipeline', () => {
     good.structure.structureClassification = 'DIRTY_FLOAT';
 
     const sol = new ScriptedInterpreter([good]);
-    const report = await interpretTicker(db, new ScriptedInterpreter([good]), sol, {
+    const report = await interpretPipeline(db, new ScriptedInterpreter([good]), sol, {
       ticker: 'ACME',
       tradingDate: DATE,
       sheetSnapshot: {
@@ -950,7 +969,7 @@ describe('interpretation pipeline', () => {
   it('leaves prior analysis untouched when no interpreter is configured', async () => {
     const db = temporaryDb();
     seed(db);
-    const report = await interpretTicker(db, new NoopInterpreter(), null, {
+    const report = await interpretPipeline(db, new NoopInterpreter(), null, {
       ticker: 'ACME', tradingDate: DATE,
     });
     expect(report.outcome).toBe('UNAVAILABLE');
@@ -1528,7 +1547,7 @@ describe('computed cycle on the dossier', () => {
     good.structure.evidenceSourceIds = [ids[0]];
     good.cycle.evidenceSourceIds = [ids[0]];
 
-    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+    const report = await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
       ticker: 'ACME', tradingDate: DATE,
     });
 
@@ -1549,7 +1568,7 @@ describe('computed cycle on the dossier', () => {
     good.structure.evidenceSourceIds = [ids[0]];
     good.cycle.evidenceSourceIds = [ids[0]];
 
-    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+    const report = await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
       ticker: 'ACME', tradingDate: DATE,
     });
     expect(report.dossier?.computedCycle ?? null).toBeNull();
@@ -1577,7 +1596,7 @@ describe('computed cycle on the dossier', () => {
     good.structure.evidenceSourceIds = [ids[0]];
     good.cycle.evidenceSourceIds = [ids[0]];
 
-    const withHindsight = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+    const withHindsight = await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
       ticker: 'ACME', tradingDate: DATE, force: true,
     });
     expect((withHindsight.dossier?.computedCycle?.current as { cycleHigh: number }).cycleHigh)
@@ -1587,7 +1606,7 @@ describe('computed cycle on the dossier', () => {
     // cutoff applies to sources too, so it has to sit after 17 August or the
     // interpretation fails for want of citable evidence rather than for want
     // of bars.
-    const asOf = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+    const asOf = await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
       ticker: 'ACME', tradingDate: DATE, asOf: '2026-08-18T00:00:00Z', force: true,
     });
     const computed = asOf.dossier?.computedCycle;
@@ -1635,7 +1654,7 @@ describe('filed shares on the dossier', () => {
     good.structure.evidenceSourceIds = [ids[0]];
     good.cycle.evidenceSourceIds = [ids[0]];
 
-    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+    const report = await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
       ticker: 'ACME', tradingDate: DATE,
     });
 
@@ -1666,7 +1685,7 @@ describe('filed shares on the dossier', () => {
     good.cycle.evidenceSourceIds = [ids[0]];
     good.structure.sharesOutstanding = 999;
 
-    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+    const report = await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
       ticker: 'ACME', tradingDate: DATE,
     });
 
@@ -1682,7 +1701,7 @@ describe('filed shares on the dossier', () => {
     good.structure.evidenceSourceIds = [ids[0]];
     good.cycle.evidenceSourceIds = [ids[0]];
 
-    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+    const report = await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
       ticker: 'ACME', tradingDate: DATE,
     });
 
@@ -1706,7 +1725,7 @@ describe('filed shares on the dossier', () => {
     good.structure.evidenceSourceIds = [ids[0]];
     good.cycle.evidenceSourceIds = [ids[0]];
 
-    const report = await interpretTicker(db, new ScriptedInterpreter([good]), null, {
+    const report = await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
       ticker: 'ACME', tradingDate: DATE,
     });
 

@@ -236,10 +236,12 @@ async function main(): Promise<void> {
        */
       for (let run = 0; run < args.draws; run += 1) {
         const report = await interpretTicker(db, interpreter, null, {
-          // No job exists for a manual run. Written explicitly rather than
-          // omitted: an absent `jobId` and a deliberate one produced the same
-          // orphan row, which is how every interpretation lost its owner.
+          // No job exists for a replay draw, so the owner is genuinely absent --
+          // but the PURPOSE is not, and writing null there would put this
+          // spend in the same bucket as the 1,433 rows whose purpose was
+          // lost. Absence and a deliberate value must not read alike.
           jobId: null,
+          trigger: 'REPLAY',
           ticker: version.ticker,
           tradingDate: version.generated_at.slice(0, 10),
           // The whole point: prior-free, and blind to anything collected later.

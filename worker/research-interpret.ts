@@ -154,10 +154,12 @@ async function main(): Promise<void> {
 
       const prior = sheetPriors.get(symbol) ?? null;
       const report = await interpretTicker(db, interpreter, escalation, {
-        // No job exists for a manual run. Written explicitly rather than
-        // omitted: an absent `jobId` and a deliberate one produced the same
-        // orphan row, which is how every interpretation lost its owner.
+        // No job exists for a hand-run interpretation, so the owner is genuinely absent --
+        // but the PURPOSE is not, and writing null there would put this
+        // spend in the same bucket as the 1,433 rows whose purpose was
+        // lost. Absence and a deliberate value must not read alike.
         jobId: null,
+        trigger: 'MANUAL',
         ticker: symbol,
         tradingDate,
         // Snapshot still supplied; only the model's exposure to the prior varies.
@@ -188,10 +190,12 @@ async function main(): Promise<void> {
 
     for (const symbol of symbols) {
       const report = await interpretTicker(db, interpreter, escalation, {
-        // No job exists for a manual run. Written explicitly rather than
-        // omitted: an absent `jobId` and a deliberate one produced the same
-        // orphan row, which is how every interpretation lost its owner.
+        // No job exists for a hand-run interpretation, so the owner is genuinely absent --
+        // but the PURPOSE is not, and writing null there would put this
+        // spend in the same bucket as the 1,433 rows whose purpose was
+        // lost. Absence and a deliberate value must not read alike.
         jobId: null,
+        trigger: 'MANUAL',
         ticker: symbol,
         tradingDate,
       });

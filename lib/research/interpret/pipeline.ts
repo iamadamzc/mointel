@@ -94,10 +94,23 @@ function addUsage(metrics: InterpretationMetrics, usage: InterpretUsage): void {
 export interface InterpretOptions {
   ticker: string;
   tradingDate: string;
-  /** The job this interpretation belongs to, for token attribution. */
-  jobId?: number | null;
-  /** Why the job existed, carried through so spend can be grouped by purpose. */
-  trigger?: string | null;
+  /**
+   * The job this interpretation belongs to, and why it existed.
+   *
+   * REQUIRED, AND THAT IS THE WHOLE GUARD. Both were declared optional and
+   * passed by nobody: the worker omitted them, `?? null` supplied the default,
+   * and 1,335 of 3,334 `model_usage` rows -- the interpretation half, ~78% of
+   * cost -- were written with no owner and no purpose. Nothing failed. Every
+   * job-keyed cost figure silently measured collection spend alone.
+   *
+   * No runtime test can catch that recurring, because the omission happens in
+   * a worker script's job loop rather than in anything a test calls. The
+   * compiler can, so the fields are required and a caller with no job says so:
+   * `jobId: null, trigger: 'MANUAL'`. An absent value and a deliberate one are
+   * no longer the same keystroke.
+   */
+  jobId: number | null;
+  trigger: string | null;
   priorHumanAnalysis?: SheetPriorAnalysis | null;
   /** Recorded on the stored analysis so replay arms are self-labelling. */
   promptVariant?: 'A' | 'B';
@@ -149,11 +162,11 @@ export async function interpretTicker(
       recordModelUsage(db, {
         tradingDate: options.tradingDate,
         at: new Date().toISOString(),
-        jobId: options.jobId ?? null,
+        jobId: options.jobId,
         ticker: options.ticker.trim().toUpperCase(),
         model,
         stage,
-        trigger: options.trigger ?? null,
+        trigger: options.trigger,
         inputTokens: usage.inputTokens,
         cachedInputTokens: usage.cachedInputTokens,
         outputTokens: usage.outputTokens,

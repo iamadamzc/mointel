@@ -11985,3 +11985,64 @@ it is worth having — not that the population should change first.*
 **If the answer is that volume leaders are the wrong population, the finding is
 about the BOARD and not about the report**, and the report is then a well-built
 instrument pointed at the wrong list.
+
+**109. THE SECOND HALF OF THE ATTRIBUTION FIX, AND WHY IT IS A TYPE CHANGE AND
+NOT A TEST.**
+
+*Ops landed the call site (`08cf1d2`): `jobId: job.id, trigger: job.trigger` at
+`research.ts:561`. Ordered that way deliberately — call site first, type
+tightened last, so the tree never stopped compiling.*
+
+### `jobId` AND `trigger` ARE NOW REQUIRED ON `InterpretOptions`
+
+`pipeline.ts:98`, and both `?? null` defaults at the write are gone. **A caller
+with no job now has to say so.**
+
+### I LOOKED FOR A TEST FIRST AND THERE ISN'T AN HONEST ONE
+
+**No test in the repo asserts `model_usage.job_id` — `grep job_id tests/`
+returns nothing.** So the obvious move was a test driving `interpretTicker` with
+a job id and reading the row back.
+
+**THAT TEST WOULD HAVE PASSED BEFORE THE FIX.** The pipeline always forwarded
+`options.jobId`; the link that was broken is the *worker's* — `research.ts`
+never passed one. A test at the `interpretTicker` boundary exercises a link that
+never failed, which is this desk's oldest defect: **a check that cannot fail
+isn't a check**, and I nearly wrote one because it would have looked like
+coverage.
+
+Reaching the real link means driving `worker/research.ts`'s job loop, which is a
+script. **The compiler reaches it for free: with the fields required, the
+omission that caused this is a build error.** So the guard is the type, stated
+as such, and no runtime test is claimed.
+
+### AND THE MANUAL CALL SITES GOT A PURPOSE, NOT A NULL
+
+`research-interpret.ts` (×2) and `research-replay.ts` now pass
+**`trigger: 'MANUAL'`** and **`trigger: 'REPLAY'`** beside their `jobId: null`.
+
+*`jobId: null` is honest — no job exists for a hand-run. `trigger: null` would
+not have been: it would file that spend with the 1,433 rows whose purpose was
+LOST.* **The same collapse Integration caught on `serviceTier` last night —
+absence and a deliberate value must not read alike** — and replay draws are not
+cheap, so "what did replay cost" becomes answerable rather than buried.
+
+Neither value touches `MATERIAL_TRIGGERS`: that set gates the queue's
+ahead-of-interval branch on `research_jobs.trigger`, a different column in a
+different table, and no manual run passes through the queue.
+
+### THE 21 TEST CALL SITES GO THROUGH ONE WRAPPER
+
+`interpretPipeline()` in `interpret.test.ts` states `jobId: null, trigger: null`
+once. **Every test there exercises the pipeline, not attribution; saying it
+twenty-one times would bury what each test is about.** A test that ever asserts
+attribution calls `interpretTicker` directly and reads differently for it.
+
+### STILL OPS'S TO RULE ON
+
+`researchRepo.ts:1277` still has `jobId: usage.jobId ?? null` on
+`ModelUsageRecord`. **Harmless now that no caller omits it, and it is the second
+place the same optionality lives.** `lib/market/store/` is Ops's; flagged, not
+touched.
+
+*108 tests green, typecheck clean.*
