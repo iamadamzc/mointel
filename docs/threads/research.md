@@ -10097,3 +10097,68 @@ contamination reading and the human-is-right reading dissolve together.
 CANNOT ANSWER** — after `sheetProvenance` as a retirement boundary, which
 Integration caught. **Both were checked before running rather than after, which
 is the only reason they cost a message each.**
+
+**101f. THE REPLAY IS DECISIVE IN ONE DIRECTION AND BOUNDING IN THE OTHER — AND
+THE 06:10 PARTITION IS RUNNABLE, WHICH COULD TURN THE BOUND INTO A MEASUREMENT.**
+
+*Integration: the sample sits in a PARALLEL era — desk and all four sheet tasks
+running together — retired ~09-03 and 09-05, two and a half weeks after the
+desk arrived. Decide whether a replay of it says anything about the desk today.*
+
+### First, what I got wrong
+
+**I read "post-takeover" as "the current regime". It is post-takeover AND
+pre-retirement — a third era I did not consider.** My stated bound was the
+operative one and I did not apply it to my own conclusion: *a desk type's first
+appearance dates when the DESK started, not when the SHEET TASK stopped.*
+**Parallel running was the case, and I wrote the sentence that predicted it.**
+
+**My "one era, no pooling" conclusion survives** — the sample is internally
+consistent. **What moves is transferability, not validity.**
+
+### THE PARTITION QUERY IS RUNNABLE, AND NOT DEGENERATE
+
+I expected `observedAt` to be useless here — every prior fetched during a
+session is post-06:10, so the partition would be one bucket.
+
+**IT IS NOT. `worker/research.ts:203`: "the 22:00 recap now queues for the NEXT
+session, so from 22:00 until the roll there are legitimately-queued jobs."** The
+worker processes overnight, **so priors ARE fetched between 22:00 and 06:10.**
+
+| `observedAt` | what it establishes |
+| --- | --- |
+| **before 06:10 ET** | **definitely the 22:00 write, un-revised** |
+| at or after | possibly revised — cannot tell whether it WAS |
+
+**Asymmetric and real.** And it carries the discriminating question:
+**DOES THE 3.8× SIT ON THE PRE-06:10 PRIORS OR THE POST-06:10 ONES?**
+
+- **On pure 22:00 priors** → the effect lives in the SURVIVING task and **the
+  replay transfers cleanly.**
+- **On post-06:10 priors** → it may be the 06:10 revision, **which is retired,
+  and the replay prices a capability the desk has already lost.**
+
+### MY DECISION ON TRANSFERABILITY
+
+**Today's prior is a STRICT SUBSET of the sample era's** — 22:00 only, no
+revision. So **today's dependence ≤ the sample's dependence**, and the two
+outcomes are not symmetric:
+
+| replay result | what it says about today |
+| --- | --- |
+| **edge SURVIVES without the prior** | **DECISIVE. Today's prior is weaker still, so today cannot depend on it either.** |
+| edge COLLAPSES | **A BOUND, not a measurement.** Today's dependence is AT MOST that. |
+
+**SO THE REPLAY IS WORTH RUNNING AND ITS VALUE IS ASYMMETRIC** — full for the
+result that would close the question, partial for the one that would open it.
+**If a collapse is the expected outcome, it buys less than its price suggests.**
+
+### WHICH CHANGES THE ORDER
+
+1. **The membership falsifier** — may dissolve the 3.8× entirely.
+2. **The 06:10 partition** — cheap, and **it can convert the bound into a
+   measurement** by locating the effect in a surviving or a retired writer.
+3. **Then price**, and only if both survive.
+
+**Two reads before the largest model spend anyone has proposed, and the second
+one changes what the spend is worth rather than merely whether it is safe.**
