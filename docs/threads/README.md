@@ -11476,3 +11476,30 @@ anything.
 **And the standing boundary, so it is never re-asked: using an existing approved
 snapshot is fine; taking a new one down from production is not, without the
 trader's approval. Figures go into documents. The file never does.**
+
+## A feature's positioning is not the product's positioning
+
+The trader ruled that research is for the avoid, named it **the Why Not Report**,
+and said *"success comes more in what you dont trade than what you do."* **All true
+of that report.**
+
+Integration wrote it into a naming brief as **the identity of the whole desk** —
+*"the avoid positioning is the real asset... that is the thing a name can carry
+that nobody else's can."* Commercial worked the angle it was handed, well, **and
+the axis was wrong before it started.**
+
+His correction: *"you're over indexing on the avoid/why not concept. the idea here
+is this is a depth tool. its intelligence. its not a scanner but a smart desk. an
+assistant that gives you depth on the moving market."*
+
+**The avoid is one expression of depth. It is not the category.**
+
+**The failure is a specific kind of relay error: a strong, quotable ruling about
+ONE PART gets carried as a ruling about THE WHOLE**, and it travels well precisely
+because it is quotable. **Ask what the ruling was a ruling ABOUT** — a report, a
+surface, a stage — **before letting it set the frame for anything larger.**
+
+**And when a brief turns out to be wrong, the work done against it is not wasted
+and not the worker's error.** The method survives the angle: proven lookups,
+timestamped checks, travelling caveats, the set-aside list with its reasons. **Only
+the axis is re-run.**
