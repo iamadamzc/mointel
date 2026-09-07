@@ -10451,3 +10451,67 @@ powered, and the name-grain count is now a prerequisite rather than a nicety.**
 broken one* — **both the shape it had caught in someone else's number an hour
 earlier.** Reciprocal reading accepted on the same terms: **denominators only,
 in both directions.**
+
+**102b. THE REPLAY'S JUSTIFICATION IS WITHDRAWN BY ITS AUTHOR — THE EFFECT IS
+ROBUST IN SIGN.**
+
+*R&D checked my third objection rather than conceding it, and produced a number
+worse for its own request than the one I argued for.*
+
+```
+   m     clean movers   clean non-movers   clean gap
+ 1.00          28.5%            13.6%      +14.9pp
+ 2.00          22.1%            12.6%       +9.5pp
+ 5.00          13.2%            10.4%       +2.8pp
+ 9.51           8.2%             8.2%       +0.0pp
+```
+
+**Constraining contamination to lift the positive rate by the same multiple in
+BOTH cohorts, THE GAP DOES NOT REACH ZERO UNTIL 9.51×.**
+
+**And the published corner needed all 51 positive movers inside the 52
+contaminated ones — A MARGIN OF ONE ROW — plus contamination maximally
+predictive in movers and EXACTLY ZERO in non-movers.** R&D: *"that asymmetry is
+not something I measured; it is something I assumed to make the worst case
+worst."*
+
+**SO THE EFFECT IS ATTENUATED UNDER ADVERSE ASSUMPTIONS AND ROBUST IN SIGN, AND
+"THE BAND SPANS ZERO" WAS THE LOAD-BEARING SENTENCE.**
+
+### THE REQUEST IS WITHDRAWN, NOT RE-SCOPED
+
+The replay was asked for because *"the observed +14.9pp is not robust to the
+concentration."* **It is robust.** With no treatment arm, a retired sample era
+and the hindsight mechanism excluded, **four independent things now say the same
+thing and none of them is a measurement of the effect itself.**
+
+**I raised the objection; R&D did the work and got a stronger answer than the one
+I argued for.** Worth recording which half was which.
+
+### WHAT IS LIVE IS SMALLER, BETTER POSED, AND MINE
+
+**SELECTION VERSUS ACCURACY.** Does prior PRESENCE track what was knowable at
+the 22:00 write — RVOL, rank, the after-hours move — or the outcome? **It needs
+no withheld arm, no build, and no model spend.**
+
+### BUT ONE THING GOES BEFORE IT, AND R&D IS RIGHT ABOUT THE ORDER
+
+**VERSIONS-PER-NAME, SPLIT BY EVER-CARRYING-PROVENANCE.** If a sheet CONFLICT
+raises escalation or repair — and 76% of contaminated movers are conflicts —
+**contaminated names carry more versions and 3.8× is partly a counting
+artefact.**
+
+**IF THERE IS NO CONCENTRATION, THERE IS NOTHING FOR THE SELECTION STUDY TO
+EXPLAIN.** Designing it first would be designing against a number that may not
+survive one group-by. Both that and the 20 both-cohort rows are Ops's, **and
+neither had been asked for by anyone.**
+
+### THE ARRANGEMENT'S FIRST USE COST R&D ITS BEST-KNOWN RESULT
+
+It had recorded the per-version/per-name mismatch **itself** and moved on, and
+the twenty double-counted rows as a caveat rather than a defect. **RECOGNISING
+THE SHAPE AND FOLLOWING IT ARE DIFFERENT, AND IT DID THE FIRST.**
+
+**That is the whole argument for a second seat reading denominators: not that it
+knows more, but that it arrives without the reason the first seat had for
+stopping.**
