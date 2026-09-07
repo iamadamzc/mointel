@@ -3797,7 +3797,28 @@ is flagged, not fixed.
 
 ## "When did the price dots last render?" — I CANNOT TELL, and the store cannot settle it
 
-### The component has TWO sources, and the sweep saw one
+### RETRACTED 2026-09-06 — they were not two sources, and the dots HAVE never rendered
+
+**I was wrong.** `runtime.priceWindow` is assigned in **exactly one place**
+(`engine.ts:1155`). The live serve (`:1837`) and the store write
+(`worker/runtime.ts:1846`) both READ that same field — they are two CONSUMERS of
+one producer, not two paths.
+
+**So a column null where bars landed proves the field was null at that flush,
+and the serve returned undefined too.** The store sweep does settle it: **the
+price dots have never rendered.**
+
+**The error was reading two call sites as two sources.** Both mentioned
+`priceWindow`, both were plausible origins, and I did not trace either back to
+where it is written. **Two READ sites are not two sources — follow them to the
+producer and count THOSE.**
+
+And Ops confirmed the defect against my own caveat: of 7,757 stored windows,
+**2,369 had a bar actually land, and not one carries a price series.** 5,388
+genuinely all-zero — the population my caveat predicted, real and the majority.
+**The check could have come back benign and did not.**
+
+### The superseded reasoning, kept because the caveat was right
 
 `row.demand?.priceWindow` is populated from **either**:
 
@@ -4009,6 +4030,21 @@ measurement rather than from a contrast that cannot fail.
   impossible rather than handled — one operator instead of one more condition.
   It fell out of the shape he asked for; **saying it fell out rather than
   claiming it as design is what makes it usable as a rule.**
+- **Two READ sites are not two sources.** I read `repo.ts` and `engine.ts` as
+  independent origins for `priceWindow` and concluded a store sweep could not
+  settle whether it ever rendered. They are two consumers of ONE producer
+  (`engine.ts:1155`), so the sweep settled it completely. **Trace to where a
+  value is WRITTEN and count those.**
+- **Print the shape next to the number** (Ops's). Its aggregate query used a
+  JSON path that could not match the stored shape, returned NULL for every row,
+  and printed `0` — which read exactly as "no defect". It caught itself only
+  because the raw rows were printed two lines above and contained 3, 6 and 11.
+  **A block that shows its input refutes itself in one glance.**
+- **A writer-side finding must reach the reader-side seat BEFORE their next
+  observation, not after it.** The colour being inert was only findable because
+  Ops's sweep arrived before I read the board; had I looked first I would have
+  seen grey, confirmed it against an empty payload, and written a partial pass.
+  **That ordering was luck. Make it a rule.**
 - **Terminology is trader-facing.** Labels that describe engine internals get
   rejected — `LATCH` was removed for exactly this. Say it in the language of the
   stock, not the pipeline.
