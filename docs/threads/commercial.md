@@ -113,8 +113,10 @@ repo — they are public documents and re-fetchable.
 
 **Open items.**
 
-- **The Alpaca plan tier is not in the repo.** Ask him; do not infer it into a
-  document a second time.
+- ~~**The Alpaca plan tier is not in the repo.** Ask him; do not infer it into a
+  document a second time.~~ **ANSWERED 2026-09-07, his word: Algo Trader
+  Plus.** Recorded in the landscape §2 and the gates map; the inference is
+  retired.
 - **The first-viewer decision** — prices, derived facts only, or the user's own
   feed — is Integration's to put to him with Gate 1. This seat has the
   costings ready for whichever he picks.

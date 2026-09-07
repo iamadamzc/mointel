@@ -95,10 +95,9 @@ the line is the same whether that viewer pays or not.**
 
 - **Exactly one long-lived socket per worker.** `feed` is `'sip' | 'iex'`,
   defaulting to `sip`; an IEX stream URL exists as a fallback.
-- **The plan tier is recorded nowhere in the repo.** SIP access is what the feed
-  setting asserts and the desk runs on; that Alpaca's paid individual plan is
-  what supplies it is inferred from Alpaca's own plan table, not read from an
-  account page.
+- **The account is on Algo Trader Plus — his word, 2026-09-07.** Until he said
+  so the tier was recorded nowhere in the repo and was inferred from the feed
+  setting and Alpaca's plan table; it is now stated rather than inferred.
 - **Nothing else in `lib/`, `app/`, `worker/` or `scripts/` calls a market-data
   vendor.** The other inputs are SEC EDGAR, the Google Sheet written by two
   ChatGPT tasks, and OpenAI for interpretation. None of those is market data.
@@ -640,8 +639,7 @@ Ordered the way the gates map is ordered — by what each answer would waste.
 
 ## 9. WHAT COULD NOT BE ESTABLISHED FROM PUBLIC PAGES
 
-- **Alpaca:** which plan the desk's account is on (not in the repo; inferred
-  from the feed); the connection count for Algo Trader Plus (docs say "in many
+- **Alpaca:** the connection count for Algo Trader Plus (docs say "in many
   subscriptions … 1"); whether an OAuth `data`-scope token inherits the user's
   plan; whether a Connect app that only displays data needs Compliance approval;
   the Connect registration form's fields; Broker API base pricing and whether

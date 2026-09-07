@@ -186,8 +186,8 @@ Mapped, not answered — no agreement, no approach, no recommendation to sign.*
   purposes" before anyone else sees it.** No page reads "purpose" that way in
   either direction. It is his call, his strategy already makes it, and §1 of
   the landscape states it plainly rather than re-opening it.
-- **Which Alpaca plan the account is on.** Not in the repo; inferred from the
-  feed setting.
+- ~~**Which Alpaca plan the account is on.** Not in the repo; inferred from the
+  feed setting.~~ **ANSWERED 2026-09-07, his word: Algo Trader Plus.**
 
 ### GATE 0 — MAPPED 2026-09-07 BY COMMERCIAL. THREE FACTS THAT DECIDE THE SHAPE.
 
