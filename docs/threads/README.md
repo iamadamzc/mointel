@@ -8196,3 +8196,54 @@ reason the last one was.
 judgement carries a detection cannot be retired by reproducing its columns —
 **and no audit of what the desk "can produce" would have found that, because the
 column exists and parses.**
+
+## THE 09:25 RETIREMENT TOOK THE AVOID PRODUCT WITH IT
+
+**Research, 2026-09-07.** The 09:25 opening-spike assessment carried **Chop Risk,
+Flush Risk, supply pressure, the opening-spike decision, must-hold, invalidation
+and spread/liquidity.** It was retired, and **the desk replaced it with something
+that does not do that job.**
+
+**So the Why Not Report is not a restoration of the `AVOID` priority value. It is
+the restoration of an entire retired table** — and the 09:25 assessment *was* the
+avoid-shaped product.
+
+**Which reframes the two held tests.** They are not asking whether a new field
+earns its place. **They are asking whether the replacement covers what was
+retired** — a much easier question to answer honestly, and a much harder one to
+wave through.
+
+**Before building a capability, check whether the desk already had it and dropped
+it.** The strongest argument for a piece of work is often that its absence was
+created rather than inherited.
+
+## THREE RETIREMENTS, NOT ONE — AND "ACROSS" IS NOW THE LIKELIEST STATE
+
+Integration asked for **the 16:15 retirement date.** There were **three
+retirements** — 06:10, 09:25 and 16:15 — **and nothing says they coincided.**
+
+**So R&D's 13 sessions may span up to four regimes** of what wrote the sheet: all
+three writers live, then two, then one, then none but 22:00. **Pooling across
+them is the exact error class its author has made twice today.**
+
+**A boundary question with one date is a check. With three it is a design
+constraint**, and the answer decides which sessions can be pooled at all rather
+than merely whether the measurement is contaminated.
+
+### And the current era needs no partition at all
+
+**TODAY rows are now written once at 22:00 and never touched again.** So a prior
+fetched at any hour of the current session **is the 22:00 write — cleanly
+pre-move, always.**
+
+**The question `observedAt` could not answer has been dissolved rather than
+measured.** No fetch-time partition is needed in the current regime; it is needed
+only for the historical ones.
+
+### Which changes the sentence a collapse would produce
+
+    edge dies without the prior -> "THE DESK DEPENDS ON HIM"
+                                   not "the detection was contaminated"
+
+**A much less alarming finding and a truer one** — and it goes **with** the
+result rather than after it.
