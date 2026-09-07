@@ -7287,6 +7287,42 @@ value**, so this cannot establish that any of ANPA's 57 jobs were admitted
 establishes is that the DEAD bypass is a live path, and that the one pin ever
 made sat squarely in it.**
 
+### WHAT THE ONE PIN ACTUALLY DID — measured, and it confirms his model
+
+```
+ANPA, 2026-09-04
+  jobs 57 · COMPLETE 1 · dossiers 1 · analysis versions 3 · assessment rows 19 · sources 22
+  first job 08:27:00Z   PIN 09:05:54Z   last job 18:28:47Z
+  before the pin:  4 jobs        after the pin: 53 jobs
+```
+
+**His stated model is right and the data says so.** He said *"you only pin
+something that looks interesting and it only looks interesting because it has
+research done already."* **Four jobs ran before he pinned it.** Research came
+first; the pin followed.
+
+**The lever was invisible but its effect was not.** Design checked the renderer:
+`graveyard.ts` and `Graveyard.tsx` contain no reference to focus, so a pinned
+DEAD name renders identically to an abandoned one — **the 57 jobs happened where
+nothing showed them as pin-driven.** But the *output* rendered: a dossier, three
+versions, nineteen assessment rows. **He saw the results with no way to know the
+pin was keeping them coming.**
+
+*(The board does mark a pinned row — `DiscoveryBoard.tsx:377` — so pinning is
+visible while a name is ON the board. It is the board-to-graveyard transition
+where the marking stops.)*
+
+**Not attributable:** how many of the 53 post-pin jobs existed *only* because of
+the pin. At rank 2 the name was rank-admissible whenever alive; only during its
+DEAD stretches did the pin do the work, and `death_count` is 2 so there were
+such stretches. `activity` is end-of-session state and `isEligible` reads it
+live — **the reconstruction wall.**
+
+**Attributable, and it is the number that matters:** the desk researched one name
+**from 08:27 to 18:28 — ten hours, 57 jobs, one completion** — well past the
+07:00–10:00 window and past two deaths. **That is the spend profile the removal
+eliminates**, whatever share of it the pin specifically caused.
+
 ### So the removal is not free — it removes a deliberate override
 
 The docstring states the intent: *"A focused name is exempt for the same reason
