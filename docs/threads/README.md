@@ -10677,3 +10677,72 @@ unlabelled inside `input_tokens`.**
 **Do not tighten it further from our own counters.** The remaining spread is not
 measurable here, and a narrower figure produced from the same inputs would be
 precision without information.
+
+## Do not supply the expected answer in the message that asks for verification
+
+Integration asked Design to account for 373 deleted test lines **and wrote the
+expected answer twice in the same message**: *"a pin that lives in memory has no
+persistence to test — I expect that to be the answer."*
+
+It added *"I am not going to accept it without you saying it"*, **which is worth
+nothing.** It asks for the words, and the words were already on the page.
+**A caveat attached to a leading question does not un-lead it.**
+
+The answer supplied was **available, plausible and wrong.** Design's own sentence:
+*it is the answer I would have given you if I had reasoned instead of looked.*
+
+**What was actually there: 18 cases destroyed by `cat >` on an existing path, zero
+obsolete.** Six covered `focusRepo`, **which still exists** — its removal is a
+later step, so those tests were covering shipped code. **Twelve were never about
+pins at all**, covering card selection, retention bands and the desk read — and
+one of those covered a change Design itself had made two days earlier.
+
+**Ask the question. Do not draft the answer.** If you already know what you expect,
+that is exactly the case where saying it destroys the check.
+
+## The file count is the control for the test count
+
+A contaminated run and a real deletion **both move the test count.** Only the
+contaminated one moves the **file count.**
+
+```
+contaminated   1734 tests / 116 files    <- nine files never executed
+clean          1853 tests / 125 files
+after restore  1871 tests / 125 files
+```
+
+**Report the pair, always.** The total alone cannot distinguish "tests were
+removed" from "tests did not run", and those lead to opposite investigations —
+one at a colleague's change, one at the machine.
+
+**And the arithmetic closing exactly is a second control:** 1866 − 18 + 5 = 1853,
+1853 + 18 = 1871. **A restore landing on 1869 or 1873 would have been a new
+question.** Exact closure also certifies the baseline: a contaminated 1866 would
+not have reconciled to a delta counted by name.
+
+## A test deleted ahead of the code it covers is a green suite lying about the present
+
+Six of the destroyed tests covered `focusRepo`, which is removed in a **later**
+step. **They will be obsolete then. They were not obsolete when they were
+deleted.**
+
+The usual worry about deleting a test early is that it stops guarding a future
+regression. **The sharper one is that the suite goes green over code that is still
+shipping, right now**, with nothing marking the gap.
+
+**So obsolete tests leave in the same commit as the code they cover** — never
+ahead of it, and never left behind covering something that no longer exists.
+
+## Apply the observation/behaviour gate to yourself before landing
+
+Research landed a change to the research spend path at 18:05 on a public holiday
+**knowing another thread was mid-deploy-sequence — it had said so in three
+messages — and did not connect that to its own commit.**
+
+Integration would have shipped it without knowing it was there. **Both halves are
+the same failure seen from opposite ends:** *you would have shipped it without
+knowing; I put it there without saying.*
+
+**The gate is cheap and it is one sentence to whoever is holding the deploy:** is
+this observation or behaviour, and is anything mid-flight. **Not a process change —
+a sentence, said before landing rather than after being asked.**
