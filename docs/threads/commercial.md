@@ -135,12 +135,21 @@ repo — they are public documents and re-fetchable.
   5–10 stream connections, but that is a brokerage partnership at sales
   pricing; Massive Business publishes up to three websocket connections at
   $2,499/mo and is a rebuild; Alpaca's docs say the limit is 1 *"in many
-  subscriptions"*, so a higher individual limit may exist and is published
-  nowhere. **UNVERIFIED 2026-09-07:** whether a second Alpaca account in the
-  same name, carrying its own paid subscription, is permitted — no page read
-  addresses it, the exchange agreements price per subscriber and device rather
-  than forbidding it, and Alpaca's account rules were not read for this
-  question. Not a recommendation; an option set with one hole named.
+  subscriptions"*. **Searched 2026-09-07, after Ops made both holes
+  load-bearing (`bb00ad7`: the desk has never observed the limit, and the test
+  that would costs production its feed):** (a) **a higher individual tier —
+  CLOSED as far as public pages go.** None is published; Alpaca staff on the
+  forum in 2021 said the paid plan carries *"a single websocket connection"*
+  and in 2022 *"Only one active real-time connection is allowed now"*; the
+  Broker API is the only published multi-stream product. (b) **A second
+  account in the same name with its own subscription — still UNVERIFIED, and
+  now known to be unresolvable from public pages.** No Alpaca page states a
+  rule either way; the Customer Agreement's "Multiple Accounts" clause governs
+  only securities-versus-crypto; the IRA page sets no limit on IRA accounts; a
+  2021 staff reply treated a user's two accounts as a support matter. **The
+  only way to close it is to ask Alpaca, and an enquiry is an approach — his,
+  not this seat's.** Not a recommendation; an option set with one hole that
+  public documentation cannot fill.
 
 **Declined, deliberately:** any enquiry to any vendor, and any recommendation
 to sign. Both are his.

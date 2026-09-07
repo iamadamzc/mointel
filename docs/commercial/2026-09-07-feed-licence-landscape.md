@@ -217,13 +217,33 @@ SIP), `v1beta1/boats`, `v1beta1/overnight`. **A delayed SIP feed exists on the
 API the desk already speaks.** Nothing on an individual-plan page says it may be
 shown to anyone else.
 
-**Connections.** Streaming docs: *"The number of connections to a single
-endpoint from a user is limited based on the user's subscription, but in many
-subscriptions (or without one) this limit is 1."* Error 406: *"You already have
-the number of sessions allowed by your subscription."* The plan table publishes
-no connection count for Algo Trader Plus. **The desk's one-SIP-connection rule
-is a published property of the subscription class, not an accident of the
-account.**
+**Connections — and the evidentiary state of the one-connection rule,
+corrected 2026-09-07 after Ops checked the logs.** Streaming docs: *"The number
+of connections to a single endpoint from a user is limited based on the user's
+subscription, but in many subscriptions (or without one) this limit is 1."*
+Error 406: *"You already have the number of sessions allowed by your
+subscription."* The plan table publishes no connection count for Algo Trader
+Plus. Alpaca staff on the public forum, asked on 2021-07-23 whether any plan
+allows multiple connections on one account: *"The unlimited plan will allow for
+multiple calls, but a single websocket connection"* — Unlimited being the name
+Alpaca's data-provider support page still uses for the SIP plan. Staff again,
+2022-10-25: *"Only one active real-time connection is allowed now."* Users were
+still reporting the limit in February 2025. **No higher individual tier is
+published anywhere; the only published plans with more than one stream are the
+Broker API partner plans (5–10).**
+
+**What the desk itself holds: nothing.** *Ops, `bb00ad7`:* the production
+journal within its retention floor (2026-08-25) contains no 406 and no
+"sessions allowed", and the one period with a second consumer beside
+production (2026-08-17 to 08-20) predates that floor. **So the desk's
+one-SIP-connection rule rests on the published text, two staff statements and
+operating lore — and on no observation the desk can still show.** The
+experiment that would verify it, starting a second consumer to see whether
+production loses its feed, costs the thing it tests. That is a legitimate basis
+for designing around the constraint and it is not evidence. An earlier version
+of this paragraph read as if the desk's rule and the published text
+corroborated each other; they do not, and this document is the strongest link
+in that chain.
 
 **The only published shape in which people other than the account holder
 receive Alpaca data is the Broker API**, and it is a brokerage partnership
@@ -639,8 +659,17 @@ Ordered the way the gates map is ordered — by what each answer would waste.
 
 ## 9. WHAT COULD NOT BE ESTABLISHED FROM PUBLIC PAGES
 
-- **Alpaca:** the connection count for Algo Trader Plus (docs say "in many
-  subscriptions … 1"); whether an OAuth `data`-scope token inherits the user's
+- **Alpaca:** the connection count for Algo Trader Plus as a published number
+  (docs: "in many subscriptions … 1"; staff, 2021: a single websocket
+  connection on the paid plan; no higher individual tier published anywhere —
+  searched 2026-09-07, closed as far as public pages go); **whether a second
+  brokerage account in the same name, carrying its own subscription, is
+  permitted** — no page states a rule either way, the Customer Agreement's
+  "Multiple Accounts" clause (§12a) governs only the securities-versus-crypto
+  pairing, the IRA support page sets no limit on IRA accounts, and a 2021 staff
+  reply treated a user's two accounts as a support matter rather than a
+  breach; third-party blogs assert "one live account per person" and are not
+  Alpaca's voice — **resolvable only by asking Alpaca, which is an approach;** whether an OAuth `data`-scope token inherits the user's
   plan; whether a Connect app that only displays data needs Compliance approval;
   the Connect registration form's fields; Broker API base pricing and whether
   real-time SIP is offered to partners' end users at all; any date or version
