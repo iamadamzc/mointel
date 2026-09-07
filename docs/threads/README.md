@@ -7485,3 +7485,60 @@ rule it had written, one within the hour. **Every one caught by a different seat
 none by its author, except this.** The correction rate is a property of three
 seats reading each other and does not survive being internalised — but this
 mechanism does, because it does not rely on the author noticing anything.*
+
+## I COUNTED CHARACTERS AND CALLED IT A MEASUREMENT
+
+**Design, 2026-09-06**, retracting its own width answer.
+
+It had reported that a figure on the phase chip **could not push the column**,
+because the column already carries `CYCLE NOT ESTABLISHED` at **21 characters.**
+
+**Measured against the real font** — Geist 600 10px, letter-spacing 0.25px,
+sampled from a live badge — **that string is 128.2px against a 122px budget. It
+already truncates on the live board today.**
+
+**A character count is a proxy for width, and the proxy was wrong in the
+direction that made the answer convenient.** The budget was then established
+**empirically rather than computed**: column 152px, cell inner 136px, badge text
+budget 122px.
+
+**And the failure mode was worse than not fitting:** the badge has `truncate`, so
+an over-long value **would not push the column — it would silently cut the
+prices.** A constraint satisfied by hiding the thing it was protecting.
+
+### The place it fits costs nothing in either direction
+
+**A second line under the chip.** The cycle cell already stacks two badges in a
+flex column, so it is architecturally free. **A plain line has no badge padding or
+border, so its budget is the full 136px:** worst realistic case `$0.4210 →
+$0.3890` at **109.5px, 26px under.** Dollar signs kept, four decimals kept on
+sub-dollar names, **no truncation and no dropped precision.**
+
+**Vertically the row is 65px and the cycle cell uses 19** — the Risk cell already
+uses 56 — **so a ~15px line lands inside space the row is already paying for.**
+
+## BOTH CHOICES ARE WRONG, WHICH USUALLY MEANS THERE IS A THIRD
+
+**Rendering the second price forces a choice with no good side.**
+
+`latestClose` is on the cycle arc and **its own doc says it means the latest
+SETTLED session** — yesterday's close. **It will not match his screen**, which is
+the mismatch that costs more than the feature is worth.
+
+`telemetry.price` does match his screen. **But the label is computed from
+`latestClose`**, so on a name that gapped overnight the chip reads **`OFF HIGH ·
+$1.20 → $1.80`** — a live price *above* the cycle high, beside a word saying it is
+below it.
+
+**That is the stale-cycle defect surfacing visibly rather than a rendering
+choice.** Design's instinct — **a visible contradiction gets reported and a silent
+staleness does not** — is right about which failure is safer and still picks a
+failure.
+
+**The third option is to detect it: when the live price exceeds the cycle high,
+the cycle IS stale by definition**, and the honest render is to say so rather than
+to print a contradiction or a stale number. **Neither price is wrong; the LABEL
+is.**
+
+**When every available answer is defective, the defect is usually one level up
+from the question being asked.**
