@@ -442,12 +442,49 @@ function Demand({ row }: { row: DeskRow | null }) {
         />
         <Field
           label="Rank Change"
+          /*
+           * ZERO IS NOT RENDERED AS A MEASUREMENT, because here it is not one.
+           *
+           * `rankChange` is movement since the PREVIOUS ENGINE TICK
+           * (`rvol.ts:154`, `engine.ts:1265`), and the engine re-ranks
+           * continuously — so between two consecutive ticks a name's rank
+           * almost never differs and the flush stores 0. Measured: **45,249
+           * non-null rows and not one non-zero**, while ranks demonstrably
+           * move.
+           *
+           * This printed "0" on every name, every time — asserting *this name's
+           * rank has not moved* about names whose rank is moving. **Zero is a
+           * measurement and this one was an artifact of the interval.**
+           *
+           * The board already renders nothing here (its arrow is gated on
+           * falsiness), so THE BOARD WAS CORRECT AND THE DRAWER WAS THE ONE
+           * MAKING A CLAIM. This brings the two into agreement that nothing is
+           * known — which is a different act from hiding a writer defect behind
+           * a reader.
+           *
+           * **Not waiting for the writer**, because "repair it" is not a bug
+           * fix: making the field mean rank movement requires deciding over what
+           * interval — since session start, since board entry, since last flush
+           * — and that is an unmade design decision. Waiting means printing a
+           * false measurement indefinitely.
+           *
+           * **WHEN THE INTERVAL IS SETTLED, BOTH SURFACES NEED REVISITING
+           * TOGETHER** — this suppression AND the board's falsiness gate, which
+           * would also swallow a legitimate 0.
+           */
           value={
             demand.rvolRankChange === null
               ? 'New'
-              : demand.rvolRankChange > 0
-                ? `+${demand.rvolRankChange}`
-                : String(demand.rvolRankChange)
+              : demand.rvolRankChange === 0
+                ? '—'
+                : demand.rvolRankChange > 0
+                  ? `+${demand.rvolRankChange}`
+                  : String(demand.rvolRankChange)
+          }
+          title={
+            demand.rvolRankChange === 0
+              ? 'Not shown: rank change is measured since the previous engine tick, an interval over which it is always zero. Not a reading that this name has not moved.'
+              : undefined
           }
           numeric
         />
@@ -852,11 +889,23 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Field({ label, value, numeric = false }: { label: string; value: string; numeric?: boolean }) {
+function Field({
+  label,
+  value,
+  numeric = false,
+  title,
+}: {
+  label: string;
+  value: string;
+  numeric?: boolean;
+  /** Why a value is absent, for the cases where the absence is the finding. */
+  title?: string;
+}) {
   return (
     <div className="min-w-0">
       <FieldLabel>{label}</FieldLabel>
       <div
+        title={title}
         className={`mt-1 text-[12px] leading-snug break-words ${numeric ? 'num' : ''} ${
           value ? 'text-ink' : 'text-ink-3'
         }`}
