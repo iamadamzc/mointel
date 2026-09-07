@@ -10389,3 +10389,65 @@ in.
 column.** They are not in the store — `desk_assessment_tickers.structure` holds
 the DOSSIER's classification, not the sheet's raw text. **R&D has the snapshot
 loaded from the census, so it is a re-read there rather than a new read.**
+
+**102a. R&D'S THIRD EXPLANATION — SELECTION ON THE WRITING SIDE — AND MY FLOOR
+CLEARS ON THE WRONG GRAIN.**
+
+*R&D closing at its user's direction, everything landed. Two things it produced
+in its last message, both of which outlive the seat.*
+
+### THE THIRD READING, AND IT IS NOT MINE OR INTEGRATION'S
+
+| reading | status |
+| --- | --- |
+| **LEAKAGE** — the prior carries judgement into the grade | **mechanism excluded** — 101a, 101b |
+| **HE IS RIGHT** — the prior is more accurate on names that run | Integration's candidate |
+| **SELECTION ON THE WRITING SIDE** — he WRITES a prior more often on names that already look like movers at writing time | **NOT EXCLUDED** |
+
+**It would produce 3.8× WITH NO ACCURACY AND NO LEAKAGE AT ALL.**
+
+**And it is distinct from the membership selection I raised.** Mine was *the
+sheet only contains overnight movers*. **R&D's is sharper: EVEN WITHIN THE
+SHEET, the names he chooses to write a prior on are the ones already looking
+strongest.** The concentration would then be his CHOICE OF WHAT TO RESEARCH,
+not his judgement.
+
+### AND IT IS TESTABLE FROM THE STORE, WITH NO SHEET READ
+
+R&D framed it as *does prior presence correlate with what was knowable at the
+22:00 write rather than with the outcome*. **The 22:00 write happens after the
+close, so everything knowable then is in `ticker_session` for the PRIOR trading
+date:** `rvol`, `rvol_rank`, `ah_percent_change`, `ah_volume`, `ah_rank`.
+
+**So: for names with and without a prior on session D, compare their D−1
+end-of-day RVOL, rank and after-hours move.** If presence tracks those,
+**the concentration is written-side selection.** If it tracks outcome after
+controlling for them, **Integration's reading gets much stronger.**
+
+**Cheap, durable, and it is a confound on a build rather than on a measurement —
+so it costs a query now and a re-design later.**
+
+### MY FLOOR CLEARS ON THE WRONG GRAIN
+
+```
+smaller cell, VERSION grain    33      clears n >= 20
+smaller cell, NAME grain       UNKNOWN, and against Ops's
+                               ceiling of 94 could be under 20
+```
+
+**R&D never held the name split** — Ops counted versions, R&D applied the rate to
+ticker-date cohorts and recorded the approximation as unmeasured at the time.
+
+**MY FLOOR IS REGISTERED ON NAMES. IT CLEARS ON THE NUMBER THAT EXISTS AND IS
+UNKNOWN ON THE NUMBER IT WAS WRITTEN FOR.** R&D said plainly that this is not a
+reassurance and should not be read as one. **So query 1 CANNOT be declared
+powered, and the name-grain count is now a prerequisite rather than a nicety.**
+
+**Nobody had asked for it.** Added to Ops's list.
+
+### And R&D's own account of its two errors is the class it agreed to be read for
+
+*10.5% pooled a live era with a dead one; 19.8% pooled a working pipeline with a
+broken one* — **both the shape it had caught in someone else's number an hour
+earlier.** Reciprocal reading accepted on the same terms: **denominators only,
+in both directions.**
