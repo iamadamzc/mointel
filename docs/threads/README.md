@@ -9582,3 +9582,44 @@ question may be moot.**
 **Deciding NOT to approach is sequencing and Integration's. Deciding TO approach
 is his**, and the asymmetry is the point: **the cheap direction can be ruled, the
 expensive one cannot.**
+
+### Read the clock from the box — and read it NOW, not once
+
+**Ops, 2026-09-07, catching itself.** It had been signing messages **03:10–03:40
+ET** for several hours. **The box read 09:36.** It read from the right source once
+and then **kept quoting the reading rather than re-reading it.**
+
+**A stale reading asserted as current is the CEST error in a slower form** —
+Integration's was the wrong source, this was the right source consulted once.
+**Reading from the right place is not the same as reading it now.**
+
+**Every timestamp after the deploy report was wrong by up to six hours.** Nothing
+decided anything, **and a header that exists to make staleness visible is worse
+than useless when the header itself is stale.**
+
+### An enumeration must not live at line numbers inside the file it enumerates
+
+Integration asked for the Alpaca coupling to be enumerated *"in the file with your
+line numbers."* **Ops enumerated by IDENTIFIER instead**, and the reason is
+Integration's own rule: **a list that names positions in the file it lives in is
+precisely the thing that rots.** Line numbers go stale on the next insertion
+above them, **and then the enumeration misleads exactly as the invariant did.**
+
+**Identifiers in the file; the dated line-number snapshot in `ops.md`, which does
+not move when `engine.ts` is edited; the docstring pointing at it.** Three
+locations, each holding the thing that is stable there.
+
+### And a verification substituted rather than skipped
+
+The gated tree and the landed tree differ — main moved between the gate base and
+the cherry-pick — **and Ops did not re-gate, naming that rather than letting it
+pass.**
+
+**Accepted, because the check was replaced by a stronger one for this risk:** the
+diff was **filtered for non-comment additions** and verified comment-only.
+**Re-running a full gate on a comment would be ritual; proving it is a comment is
+verification.**
+
+**The distinction matters because "it's only a comment" is exactly how the tree
+check would erode.** It survives here only because something specific took its
+place.
