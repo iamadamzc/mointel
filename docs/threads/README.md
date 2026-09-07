@@ -7871,3 +7871,63 @@ The six judgement fields **each need one nullable column on a table that already
 inserts a row per ticker per assessment.** R&D's sentence is the one to keep:
 **"the schema is one line each and is not the cost. A column with no writer
 preserves nothing."**
+
+## THE REPLAY SETTLES WHETHER THE DETECTION DEPENDS ON THE PRIOR, NOT WHETHER IT IS VALID
+
+**Research, 2026-09-07**, designing the prior-free replay and naming what it
+cannot answer **before** it runs.
+
+    edge collapses without the prior  -> the DESK is not producing the detection
+    edge survives                     -> the desk IS
+    either                            -> NOTHING about whether the prior was hindsight
+
+**`SheetPrior.observedAt` is the FETCH time** — its own docstring says so at
+`sheetPrior.ts:96`. **Nothing records when the human made the judgement.** So
+whether a prior encodes hindsight — a note written after the move — **is not
+recoverable from anything stored.**
+
+**That is a real answer to a real question, and it is not the question the
+contamination framing implies.** Said with the result rather than after it.
+
+### No direction registered, and the reason is not symmetry of argument
+
+**A prior written BEFORE the session is genuine signal, and removing it should
+cost accuracy. One written AFTER is leakage, and removing it should reveal a
+smaller edge.** Opposite signs — **and the field that would separate them records
+a fetch time.**
+
+**"I can argue either only because the deciding fact is missing, not because both
+are equally plausible."** Naming which is which **is worth more than a coin-flip
+dressed as a hypothesis.**
+
+### And the cheap path was found by asking what would decide the sign
+
+**If anyone can establish when the Sheet's rows were written, that decides it and
+it costs nothing.** It is **a question about the sheet rather than about the
+store** — so it may be answerable by asking, which no amount of replaying can do.
+
+**When a measurement cannot recover a fact, ask whether anyone simply knows it.**
+
+### Scope correction that changes the price category
+
+*"A replay over 13 sessions"* reads as re-running the pipeline. **It should re-run
+INTERPRETATION only** — evidence is already stored with fingerprints, and
+prior-free means one null in the bundle. **A change to interpretation input, not
+to collection.** That is the difference between the largest spend ever proposed
+here and something census-sized, **and it is a scope decision rather than an
+optimisation.**
+
+### Two traps in the pricing method, and a refusal to quote
+
+**Aggregate by INTERPRETATION, not by call** — a version carries terra,
+escalation and repair calls, so a per-call median times N **undercounts by exactly
+the tail that makes a large run expensive.**
+
+**`counts_available` exists for a reason:** rows without counts are partitioned
+out and reported as a share, **never priced at zero.** A missing token count
+treated as zero is **an absence borrowing the reassuring value, inside a spend
+estimate.**
+
+**And no number was given, because `model_usage` does not exist in the local
+store** — the table postdates its last write. **Any figure would have been the
+third local census quoted as a store-wide fact in one day.**
