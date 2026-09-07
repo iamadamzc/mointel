@@ -6828,6 +6828,44 @@ catch.** A gate that becomes ritual, a freshness stamp that is stale, a map that
 rots. **Ask of any safeguard: what happens when this itself goes wrong, and
 would anyone notice?**
 
+## A memory spike that presents as a credential failure — Design, 2026-09-07
+
+**Signature, so nobody debugs the wrong thing:**
+
+```
+Win32Exception: The paging file is too small for this operation to complete
+  at GitCredentialManager.Trace2.Initialize
+/dev/tty: No such device
+fatal: could not read Username for 'https://github.com'
+```
+
+**The second error is not an auth problem.** A transient memory spike kills the
+credential manager, git falls back to an **interactive prompt**, and no
+unattended session can answer one. **So a memory blip presents as a credential
+failure**, and the message names the wrong subsystem. Self-resolved on retry;
+8.0GB free of 32GB immediately after.
+
+### It cannot break a deploy, and that correction matters
+
+`deploy/aws/push-release.sh` contains **no `git push`, `fetch`, `pull` or
+`clone`** — only `git archive`, and its own header says *"the server never needs
+a git credential."* **A GCM failure cannot reach the deploy path.**
+
+**What it can break is landing the charter** — the `git push origin main` in the
+"repo is the state" workflow. That is the exposure, and it is a smaller and
+different one than "mid-deploy".
+
+### The existing check already catches it
+
+```
+git merge-base --is-ancestor HEAD origin/main && echo "ON ORIGIN: ..." || echo "NOT ON ORIGIN"
+```
+
+**That check does not care what the error text said.** It tests the outcome, so
+a push that failed for a misleading reason still reports `NOT ON ORIGIN`.
+**Keep running it after every push** — it is the reason a misleading error is an
+inconvenience here rather than a silent loss.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
