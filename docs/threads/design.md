@@ -3907,6 +3907,38 @@ into a deploy at all.)*
 **Channel proven:** I have reached Ops (`local_c4fc69df`) and Research
 (`local_caa55786`) directly this session, and Integration throughout.
 
+## RULED — the `focus` badge in assessment history GOES (2026-09-07)
+
+`AssessmentHistory.tsx:199` renders `focus` as an **inline badge beside the
+ticker**, not a column — so removing it costs no header, no layout and no
+structural change. That makes the call light.
+
+**GO. And the reason is not that its audience is small.**
+
+Integration's reason was that he did not know pins did anything, so a history of
+an unknown lever is not history he will read. True, and weaker than the real
+argument:
+
+**THE BADGE'S MEANING CHANGES, SO KEEPING IT PRESERVES A TOKEN RATHER THAN A
+FACT.** Today `focus` means *he pinned this AND it therefore got research it
+would not otherwise have had*. After the change, pinning is display only — so a
+reader in November seeing `focus` on a September row reads it as **a display
+preference**, which is what pins will be by then, and misses that it was a
+research lever.
+
+**That is not a dead badge, it is one whose meaning drifts under the reader.**
+Same family as the field about to start lying, arriving from the other
+direction: one will be false going forward, this one becomes misread backwards.
+
+**And nothing is lost, which is what makes it easy.** Removing the RENDER does
+not remove the record — Integration's sequence orphans and labels the column
+rather than dropping it. The fact survives where a one-pin curiosity belongs: in
+the store, dated, not on a surface he reads at speed.
+
+**Order confirmed as Integration has it:** render first, then Ops stops writing,
+then the column is orphaned and labelled. The render going first is what
+prevents the field being false on screen for even one session.
+
 ## Working rules
 
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
