@@ -12371,3 +12371,96 @@ message where I correctly refused to overstate the fingerprint finding. *The car
 was spent on the headline and not on the aside.* **A number raised as "naming it,
 not chasing it" is still a claim**, and this one was wrong for the most ordinary
 reason available.
+
+**114. HIS CONCERN, SIZED ON ONE SESSION. A NAME AT RANK 1 WITH RVOL 75 STOPPED
+TRADING 94 MINUTES AFTER ENTERING AND HELD ITS PLACE FOR THE REST OF THE DAY.**
+
+*Built `worker/dead-while-ranked.ts`. Told Ops and Integration I could not
+measure how often DEAD fires; that is still true of production. This measures
+something adjacent that I CAN see, and it answers the same question.*
+
+### THE MEASUREMENT, AND WHY IT IS ANSWERABLE WHEN THE OTHERS WERE NOT
+
+**ENTRY IS READ. DEATH IS RECONSTRUCTED. NO RANKED FIELD IS REBUILT ANYWHERE.**
+
+- `desk_events.RVOL_RANK_ENTRY` — the trigger firing, written down as it
+  happened, carrying rank and RVOL at entry.
+- Death from `minute_bars.trade_count` through the desk's own `resolveActivity`
+  at his own settings: **300 trades/min active, dead line derived at 10x, five
+  dead minutes, revival at two.**
+
+*Item 89 killed the trigger head-to-head because the ranked field cannot be
+rebuilt. **That finding does not touch this**: entry comes from the event log and
+death is a property of one symbol's own tape. For the same reason this **cannot**
+say what rank a name held when it died — `deadAtRank` is recorded live and is not
+in this store.*
+
+### 2026-08-17 ONLY, AND THE OTHER DAY WAS REFUSED BY THE INSTRUMENT
+
+**08-17: 899 minutes spanned, 899 present. No gap.**
+**08-18: 1,704 minutes spanned, 545 present — a THREE-HOUR HOLE across the middle
+of RTH.** *A capture gap reads as death in every symbol at once, and that error
+runs entirely toward the finding.* The coverage check refuses the day rather than
+footnoting it.
+
+### THE RESULT
+
+```
+65 names entered the top twelve.
+
+  39 WERE NEVER ACTIVE after entering — never once reached 300 trades/min.
+  26 were ACTIVE at some point.  Of those, 15 then went DEAD before the close.
+
+  band                       entered  died  median min to death  median dead min
+  RVOL < 0.5  (thin field)   12       6     161                  482
+  RVOL 0.5 - 2               3        2     253                  519
+  RVOL 2 - 5                 1        1     464                  185
+  RVOL >= 5                  10       6     94                   378
+```
+
+**THE CASES THAT ARE HIS, NOT ARTEFACTS:**
+
+| | rank | RVOL at entry | entered ET | dead after | stayed dead |
+| --- | --- | --- | --- | --- | --- |
+| **JFU** | **1** | **75.4** | 06:07 | **94 min** | **499 min** |
+| UCL | 4 | 56.1 | 07:35 | 329 min | 176 min |
+| RPGL | 11 | 22.8 | 11:54 | 58 min | 188 min |
+| NNNN | 12 | 10.5 | 09:59 | 71 min | 290 min |
+| ARTL | 4 | 7.5 | 05:13 | 43 min | 604 min |
+| **NSPR** | 11 | 1.6 | **07:12** | **9 min** | 519 min |
+
+**JFU held RANK 1 for the entire regular session having stopped trading at 07:41
+ET. NSPR entered at 07:12 — the middle of his window — and was dead nine minutes
+later.** *Six of ten entrants above RVOL 5 went quiet before the close.*
+
+### TWO THINGS THE FIRST VERSION GOT WRONG, BOTH CAUGHT BEFORE PUBLICATION
+
+**1. IT CONFLATED THE TWO POPULATIONS I HAD JUST WARNED INTEGRATION NOT TO
+CONFLATE.** The first run said **62 of 65 died**. Its strongest case was **FSHP,
+RVOL 121.9 at rank 6 — which held ONE minute bar all day: a single 85,000-share
+print.** It did not go quiet; it never traded again because it had barely traded
+at all. *`Graveyard.tsx:91` already says this — 60 of 71 names marked DEAD had a
+busiest minute below the dead line — and **I sent that sentence to Integration as
+a caution hours before building an instrument that ignored it.*** A death is now
+only recorded after the name has been seen ACTIVE.
+
+**2. ITS LARGEST SIGNAL WAS THE CLOSING BELL.** Running to the end of capture put
+the thin band's median death at minute ~598 with ~172 dead minutes after it.
+Those names entered around 10:09Z; 598 minutes later is **16:07 ET**. *They were
+not dying, the market was closing, and every name does that at the same minute.*
+The walk now stops at the RTH close, derived through the ET zone rather than by
+subtracting four hours, and the exclusion is printed rather than trimmed quietly.
+
+**Both corrections moved the number DOWN — 62 to 15 — and both were found by
+looking at the strongest case rather than the aggregate.**
+
+### WHAT IT DOES NOT SETTLE
+
+- **ONE SESSION.** `n = 10` in the band that matters. This sizes the problem; it
+  does not establish a rate.
+- **LOCAL DESK STORE, NOT PRODUCTION.** Same status and the same label as
+  `activity.ts:134`, whose 36-42% figure is from this store and marked pending a
+  re-take on production's bars.
+- **THE 39 NEVER-ACTIVE ARE THE LARGER COUNT AND A DIFFERENT PROBLEM.** They were
+  admitted without ever being loud. Whatever is decided about names that go
+  quiet does not address them.
