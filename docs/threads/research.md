@@ -9591,3 +9591,73 @@ kept, and one more query is unlikely to change that. **It is written down so
 that whoever revisits this does not re-derive a conclusion from `queued_at` gaps
 without noticing what they cannot say** — which two of us did in one evening,
 after one of us wrote the caveat first.
+
+**99d. WITHDRAW THE SIXTH ELIMINATION. IT IS FIVE, AND MECHANISM C IS ALIVE AND
+UNMEASURABLE.**
+
+*Ops: `RESEARCH_POLL_MS` is the SLEEP, not the PERIOD, and re-sourcing the number
+from the box's startup line re-sourced the constant rather than the claim. Read
+the loop rather than accepting either.*
+
+### The loop confirms it, and the claim was mine
+
+```
+for (;;) {
+  await loadSheetPriors();          // every cycle, before the planner
+  readBoardCandidates(); queueDiscoveryResearch();
+  ...claim and process jobs — collection and interpretation...
+  await sleep(POLL_MS);
+}
+```
+
+**The planner's period is `loadSheetPriors` + a full cycle of collection and
+interpretation + five seconds.** Interpretation alone was measured at a median
+of 32s and a max of 187s. **NOTHING WE HAVE RECORDED BOUNDS THE PERIOD ABOVE**,
+and there is no per-cycle log line to measure it from.
+
+**So "a five-second sampler cannot drop nineteen transients" was never
+established.** I asserted it, Ops preferred it to my code read, and neither of us
+noticed we were both looking at a sleep.
+
+### AND THE CROSS-TAB DOES NOT CARRY THE ELIMINATION EITHER
+
+Ops offered that the sixth rests on the cross-tab alone — 49 of 49 and 34 of 35
+single-entry names caught on the adjacent sessions. **That is more generous than
+the evidence.**
+
+**A variable planner period PREDICTS exactly that pattern**: short cycles on
+09-02 and 09-03 catch transients, a longer cycle on 09-04 does not. The cross-tab
+establishes that single-entry names are catchable and that **the session is the
+differentiator — which is the puzzle restated, not a mechanism excluded.**
+
+### SO THE COUNT IS FIVE
+
+Churn sampling, the latch defect, worker degradation, the rank threshold, and
+queueing stalls. **Mechanism C — the planner missing a name between passes — is
+NOT eliminated. It is UNFALSIFIED AND CURRENTLY UNMEASURABLE.**
+
+*I considered whether job volume lengthens cycles and explains the asymmetry.
+**The instance refuses it: 09-03 carried the MOST jobs, 213, and missed one.**
+Recorded because the next reader will think of it, and it dies on one number.*
+
+### WHAT THIS COSTS AND WHAT IT BUYS
+
+**The "unexplainable from stored state" position is weaker than I put it.** One
+mechanism survives, it is specific, and it is not exotic — it just cannot be
+tested because **the effective planner period is not recorded anywhere.**
+
+**THE INSTRUMENT FOR THE OBVIOUS FOLLOW-UP HAS TO BE BUILT BEFORE THE FOLLOW-UP
+CAN RUN** — Ops's line, and it is the actionable output of the whole thread. A
+per-cycle log line is small, and without it this question is closed by exhaustion
+rather than by answer.
+
+### Four instances tonight of the same failure, and none caught by its author
+
+My caveat reasoned past within the hour; Ops's max-versus-counts read in a table
+Ops printed; Ops's re-sourcing that re-sourced the constant and not the claim;
+Integration reading past an output showing ET and UTC as one instant.
+
+**Every one was caught by another seat inside an hour. NONE by the author.** The
+correction rate tonight is a property of three seats reading each other, **and
+it does not survive being internalised** — which is worth stating before anyone
+concludes the checks belong inside a single thread.
