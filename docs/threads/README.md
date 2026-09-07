@@ -9063,3 +9063,56 @@ during the window is a cost on the thing being measured.**
 
 **Figures deliberately absent from this file.** They are his fills, and P&L
 belongs in report output rather than in the repository.
+
+## THE WORST CASE WAS AN UNREACHABLE CORNER, AND I ASSUMED THE ASYMMETRY THAT MADE IT WORST
+
+**R&D, 2026-09-07, retracting the sentence the whole S3 line was sequenced on.**
+
+*"The band spans zero, therefore the detection is not robust"* — **wrong.**
+
+    constraining contamination to lift the positive rate by the SAME multiple
+    in both cohorts, the clean gap reaches zero only at m = 9.51
+
+      m=2.0 -> +9.5pp      m=5.0 -> +2.8pp      m=9.51 -> 0.0pp
+
+**The published corner required all 51 positive movers inside the 52 contaminated
+ones — a margin of ONE ROW — plus contamination maximally predictive in movers
+and exactly zero in non-movers.** That asymmetry **was assumed to make the worst
+case worst. It was never measured.**
+
+**The effect is attenuated under adverse assumptions and ROBUST IN SIGN.**
+
+**A worst case built from assumptions chosen for their severity is not a bound.
+It is a construction**, and it will be quoted as a bound by everyone downstream —
+including the seat that built it.
+
+### So the replay is dead, and not because it was too expensive
+
+Combined with **no treatment arm existing**, **the sample being a retired era**,
+and **hindsight excluded three independent ways** — **the build is not answering
+the question that prompted it, because the question was not real.**
+
+**Four independent findings, none of them a measurement of the thing itself, and
+the largest proposed spend on this desk dissolved.**
+
+### What is still live is smaller and cheaper
+
+**Selection versus accuracy: does prior presence track what was knowable at the
+22:00 write, or the outcome?** No withheld arm needed.
+
+**And two group-bys first, neither requested:** versions-per-name split by whether
+the name ever carried provenance — **if CONFLICT drives escalation, contaminated
+names generate more versions and the 3.8× is partly a counting artefact** — and
+how the 20 both-cohort versions split. **The first could take 3.8× down before
+anything else matters.**
+
+## THE CROSS-CHECK COST ITS SUBJECT A RESULT WITHIN THE HOUR
+
+The arrangement — Research reads R&D's **denominators, spans and floors, not its
+direction or conclusions** — **worked on first use and killed R&D's best-known
+result.**
+
+**And R&D had recorded the per-version/per-name mismatch itself and moved on**,
+logging twenty double-counted rows as a caveat rather than a defect.
+**Recognising the shape and following it are different things**, and the first is
+what a single seat reliably manages.
