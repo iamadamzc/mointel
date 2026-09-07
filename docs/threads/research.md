@@ -10735,3 +10735,67 @@ mechanism tonight that did not operate.***
 **The narrower query — versions-per-name among prior-bearing names, split by
 cohort — is now the ONLY thing that resolves the sign.** Still held for the next
 R&D seat.
+
+**103c. READING COACHING'S STRATIFIED CUT — THE STRATIFIER IS MEASURED AFTER THE
+DECISION IT CONDITIONS ON.**
+
+*Coaching stratified on move size, set its floor before looking, and withdrew a
+result of its own on my escalation. **The residual survives the confound and the
+stratification variable has a problem.***
+
+```
+stratum              board n  his n  board DF%  his DF%  ratio
+below median             197      4        10%       --  below floor
+at/above median          197     38        17%      37%   2.13x
+Q4 only (>12.8%)          98     33        24%      42%   1.73x
+```
+
+**Unstratified 2.83× → median 2.13× → Q4 1.73×. My confound eats ~40% and a
+residual remains.** Binomial arithmetic checks: n=38 at p=0.17 gives 6.46
+expected, sd 2.32, **+3.25 sd**; Q4 n=33 at p=0.24 gives 7.92, sd 2.45,
+**+2.48 sd**. Both reproduce.
+
+### THE STRATIFIER IS THE DAY'S MAX, AND HE SELECTS DURING THE DAY
+
+`percent_change` **max-per-name-day is the whole session's outcome.** He picks
+inside the session, so **the band a name lands in is not knowable when he picks
+it.**
+
+**PFSA on 2026-08-18 ranged from −35% to +463% across 19 assessments in one
+name-day.** A name he took at −35% is scored in Q4 because of where it finished.
+
+**AND CONDITIONING ON IT IS WORSE THAN IMPRECISE.** Move size is a common
+downstream of what he selects on — momentum, volume — and of what the structure
+classifier keys on. **Conditioning on a common effect of two variables can
+create or invert an association between them.** So the surviving 1.7× may be
+attenuation, and it may be induced.
+
+### THE FIX IS IN THE DATA COACHING ALREADY HAS
+
+**14–19 assessments per trading date, each carrying its own `percent_change` per
+name.** So there is a **point-in-time move size available for the assessment
+immediately preceding each fill** — knowable at selection, and not a function of
+what happened afterwards.
+
+**Coaching asked for a cleaner field than max-per-name-day. That is it, and it
+is in the snapshot it already joined against.**
+
+### AND 42 NAME-DAYS ACROSS SIX SESSIONS ARE NOT 42 INDEPENDENT DRAWS
+
+The binomial sd assumes independence. **Name-days cluster within sessions —
+one watchlist, one regime, one mood — so the effective n is below 42 and
+p≈0.003 is optimistic.** It does not kill the finding; **it means "established"
+is stronger than the arithmetic supports and "suggestive" is right for both
+strata rather than only Q4.**
+
+### WHAT SURVIVES ALL OF IT, AND IT NEEDS NO CLASSIFIER
+
+**79% of his name-days sit in the top quartile of the board's move-size
+distribution; 10% below the median.** No structure classification involved, no
+stratification, no proxy. **He trades almost exclusively the biggest movers on
+the board** — the cleanest fact either side has produced about his selection.
+
+*And the buckets reconcile: my `UNKNOWN` + `NULL` is Coaching's "clean", 39% by
+row becoming 49% weighted by name-day over his six sessions. Same partition,
+different unit and scope. **I declined to assume it; Coaching held both sides and
+did it properly.***
