@@ -7213,6 +7213,52 @@ product decision, not a tidy-up.
 **Model spend is the Research thread's area. Flagged to them rather than sized
 here.**
 
+## THE FOCUS REMOVAL IS FREE — measured before deleting, 2026-09-07
+
+**Integration's condition: how many research jobs or assessment targets were
+admitted ONLY by the focus clause? Answer: zero.**
+
+`autoRank` is **12** on production (`RESEARCH_AUTO_RANK=12`, matching
+`DEFAULT_AUTO_RANK`). **That is exactly the top-twelve threshold that emits
+`RVOL_RANK_ENTRY`** — so the test needs no reconstruction from overwritten rank
+state: **a focus-only admission is a ticker with a job and NO rank-entry event
+for that date.**
+
+**`focus_tickers` contains ONE ROW in the entire store:**
+
+```
+ticker  trading_date  source  pinned_at                 rvol_entries  ah_entries  final_rank  jobs
+ANPA    2026-09-04    USER    2026-09-04T09:05:54.445Z       1            1            2       57
+```
+
+**The one pin that has ever existed was on a name the rank gate admitted anyway
+— it reached rank 2.** The focus clause has never admitted anything rank did not.
+
+**And no `SEED` row exists at all**, so the seeding path has never produced a
+surviving row.
+
+### The caveat, checked rather than waved
+
+**Is the table pruned?** No. The only `DELETE FROM focus_tickers` is
+`unpinFocus`, an explicit user action. **It is not in `pruneRetention` and not in
+the mode-wipe** — which clears `ticker_session`, `minute_bars`, `desk_events`
+and `feed_health` but leaves focus rows behind. So one row means **one surviving
+pin**, and the only thing that could hide history is a manual unpin.
+
+*(That the mode-wipe skips it is a small stale-row hazard in its own right — a
+focus row surviving a wiped session — and it disappears with the table.)*
+
+### A FOURTH CONSUMER, not in Integration's list of three
+
+`lib/research/queue.ts:85` — `if (candidate.rank > autoRank && !candidate.focused) return false;`
+
+It reads `focused`, which `readBoardCandidates` selects as a column. **Leaving it
+after the SQL clause goes is not a behaviour bug** — `focused` becomes
+permanently 0, so the condition collapses to `rank > autoRank`, which is the
+intended result. **But it leaves a live-looking bypass that can never fire**,
+which is the exact pattern this desk has spent the weekend finding. It goes with
+the others.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
