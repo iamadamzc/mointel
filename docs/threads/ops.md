@@ -6540,6 +6540,43 @@ exactly as SGRX was — **with the marker green the whole time.**
 cheapest remedy, but it is a decision rather than a fix. The fix is that
 freshness should be relative to the SESSION, not to the last establishment.
 
+## A conclusion resting on an assumption its author names as false, in the same message
+
+**Three instances in one evening. Two were mine.**
+
+- I stated that `queued_at` gaps conflate "the loop did not run" with "the loop
+  found nothing new" — then built an elimination on 09-02's 67-minute hole,
+  which requires that they do not.
+- I compared **maxima** and concluded 09-04's queuing was the most continuous,
+  with the **count** columns already refuting it in the table I had printed.
+- Research bounded the magnitude of a correction carefully, declined to quote
+  the figure — and published the **direction**, which rested on a uniform-r
+  assumption their own escalation mechanism contradicted four paragraphs later.
+
+**Research's account of why it is hard to self-catch is the useful part:** the
+caveat and the conclusion **feel like different registers while writing.** One
+is the careful part and one is the finding, and **the careful part reads as
+protecting the finding rather than as contradicting it.** It only looks
+contradictory from outside.
+
+### What actually caught it
+
+Not a rule. **Re-deriving rather than accepting.** The algebra was correct; had
+I checked the arithmetic and stopped, the conclusion would have stood. What
+broke it was testing the *assumption underneath* a result that had already
+verified — `r_mover 3.0 / r_non 2.0` gives 3.06x against a published 3.84x, and
+`4.0 / 1.5` gives 1.80x.
+
+**Verify the assumption, not the arithmetic.** A correct derivation from a
+premise nobody tested is the most convincing wrong answer available.
+
+### And the register itself
+
+Every rule that would have prevented tonight's errors was already written down,
+by us, before the error it would have caught. **All three were caught by another
+seat within the hour, and none by its author.** That is a property of three
+seats reading each other and it does not survive being internalised.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
