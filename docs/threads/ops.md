@@ -7416,6 +7416,66 @@ and transfer without touching the architecture.
 point of failure and cannot be multi-AZ), and managed backups if snapshot-level
 recovery ever needs to beat the current `VACUUM INTO` files.
 
+## MOST JOBS ARE NOT FREE, AND ONE PINNED NAME WAS 29% OF A DAY — 2026-09-07
+
+**Integration's premise, from reading `pipeline.ts:190`: an unchanged evidence
+fingerprint short-circuits before any model call, so most jobs should cost
+nothing, and ANPA's 57 jobs against 3 analysis versions means 54 free attempts.**
+
+**Measured. It is wrong in both parts.**
+
+```
+ANPA 2026-09-04    57 jobs    57 reached a model    0 free
+production        2642 jobs  1762 distinct in model_usage   -> 67% reached a model
+
+by status          jobs   reached a model
+  PARTIAL          1902        1272
+  COMPLETE          505         433
+  FAILED            219          57      <- Research was right that failures cost
+  STALE              16           0
+```
+
+**The gap between 57 jobs and 3 versions is not 54 free jobs. It is 54 jobs that
+called a model and produced no new version.**
+
+### The token figures, unpriced rows reported rather than zeroed
+
+```
+ANPA 09-04 alone      60 calls   2,389,338 input   277,521 cached   53,665 output
+09-02   278 rows   7.88M input     09-03   338 rows  11.1M input
+09-04   273 rows   8.15M input
+unpriced store-wide: 195 of 3,334 rows = 5.8%; zero on 09-02 and 09-04, one on 09-03
+```
+
+**ANPA's 2.39M input tokens are 29% of 2026-09-04's entire 8.15M.** One name —
+**the only pin the store has ever held** — took nearly a third of that day's
+model input.
+
+### What this does to the economics
+
+**"The fixed daily cost is roughly versions rather than jobs" is the opposite of
+true.** Two thirds of jobs reach a model, so the fixed cost tracks **jobs**, and
+a day runs 8–11M input tokens.
+
+**Not attributable:** how much of ANPA's 2.39M the pin specifically caused. At
+rank 2 it was admissible whenever alive. **Attributable:** the ten-hour tail past
+two deaths existed only because of the pin, and the removal deletes that whole
+profile.
+
+**So the removal is not merely correct on principle — it eliminates what was
+measurably the single largest consumer on the day it ran.** His *"is that not a
+defect?"* now has a number behind it.
+
+### The rule the read demonstrates
+
+Integration's own framing, and it is why this was worth a query when the code
+already "said" the answer: **"the code says it cannot happen" is a claim about
+code.** The cheapest test of it is one read — the same move that found
+`sheetPriorOmitted` wired, written 903 times, and never once true.
+
+**Model economics belong to Research. The measurement is mine; the pricing is
+theirs.**
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
