@@ -6609,6 +6609,45 @@ forever.
    reads as early.** A symmetric event over an asymmetric field reproduces the
    bias in a new column and makes it look measured.
 
+## TWO ARMED SCHEDULED TASKS FOR TUESDAY 2026-09-08
+
+**Both approved by the trader. Both act on production without a person present.**
+
+```
+2026-09-08T07:15:00Z  = 03:15 ET Tue   mointel-tuesday-universe-refetch   RESTARTS the market worker
+        Tuesday's session
+2026-09-09T02:15:00Z  = 22:15 ET Tue   mointel-tuesday-roll-watch          reads only
+```
+
+**Times set with a UTC offset rather than converted by hand**, so the
+broken-`TZ` host never touches the arithmetic.
+
+### The restart task, and why it aborts rather than fires late
+
+It restarts `mointel-market` to force a universe refetch — the universe would
+otherwise be ~37 hours old at premarket with nothing scheduled to refresh it.
+
+**A scheduled task runs on next app launch if the app was closed when due.** For
+a read that is a late report. **For this one it would put a production restart
+inside the trading session**, dropping the SIP connection during capture on the
+session it exists to protect.
+
+**So it aborts unless the SERVER clock reads 2026-09-08 and before 04:00 ET.**
+A late restart is worse than no restart, and the guard is written into the task
+rather than assumed.
+
+**What it must show:** `max(updated_at)` on `universe` MOVED FORWARD. If the
+startup log says `cached US equities` rather than `active`, the age guard
+skipped the fetch and the whole point was missed — report at length. The meta
+pair must be UNCHANGED, because startup does not stamp when `rolled_for` already
+equals the trading date.
+
+### Both can silently not happen
+
+**They only run while the app is open.** If it is closed, the read arrives late
+and the restart aborts by design. **Neither failure announces itself** — if no
+report appears Tuesday, assume neither ran.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
