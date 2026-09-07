@@ -81,6 +81,14 @@ section above is stale.**
   exchange layer, the four shapes re-costed, the integration change per move,
   the shape of the decision, what could not be established, sources.
 - Gate 0 mapped in [`docs/monetization-gates.md`](../monetization-gates.md).
+- [`docs/commercial/2026-09-07-which-price.md`](../commercial/2026-09-07-which-price.md)
+  — Integration's follow-on task after Gate 1 closed: for each derived
+  real-time price, is there a real bid and ask, whose spread is it, and what is
+  the method. The requirement is read from the code (the flat verdict and the
+  NEW HIGH override are both defined by the live spread and go neutral without
+  one); the answer is that only Databento's Mini carries a real bid and ask,
+  FMV carries none, EquitiesEdge's is modelled, Tiingo's is gated — and any
+  subset quote widens the band one way, by an amount no public page gives.
 
 **Method, so the next reader knows what the figures are worth.** Four research
 passes over public pages on 2026-09-07; **every load-bearing quotation and
@@ -127,10 +135,21 @@ repo — they are public documents and re-fetchable.
   (renders only a header today); a 2026 Nasdaq Basic price list; IEX's $1,000
   TOPS fee from 2026-10-01; Massive's unpublished exchange-fee amounts.
 - **A second concurrent SIP consumer is a commercial decision, not an
-  engineering one.** *Ops's reading of the connection fact, `d6ffec3`, and it
-  is sharper than the fact as sent: "get a second connection" stops being an
-  available remedy for a local desk beside production, a parallel worker, or a
-  migration streaming old and new at once.* The published option set, for
+  engineering one — RULED NOT NOW by Integration, `1c0c0a6`, and not put to
+  him.** *Ops's reading of the connection fact, `d6ffec3`: "get a second
+  connection" stops being an available remedy for a local desk beside
+  production or a parallel worker.* **Corrected by Integration: a migration
+  does not need it** — a new vendor is a different connection, not a second
+  Alpaca one — so the only genuine need is a staging desk consuming live SIP
+  beside production, which is the split-brain shape and is scoped nowhere.
+  **The reason this seat did not name and Integration did: an approach to a
+  vendor is not neutral when the eventual plan is redistribution on a personal
+  licence.** Asking Alpaca for a second account creates a record and a
+  relationship, invites a question the desk is not ready to answer, and cannot
+  be un-asked. Deferred, not dropped — triggers: a staging desk genuinely
+  scoped, or the migration itself, by which point the new vendor's terms
+  govern. **The principle, now in the shared rules: deciding NOT to approach is
+  sequencing and Integration's; deciding TO approach is his.** The published option set, for
   whenever that decision is wanted: Alpaca's Broker API partner plans publish
   5–10 stream connections, but that is a brokerage partnership at sales
   pricing; Massive Business publishes up to three websocket connections at

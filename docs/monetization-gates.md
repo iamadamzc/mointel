@@ -172,6 +172,16 @@ Mapped, not answered — no agreement, no approach, no recommendation to sign.*
   is a fee fact exercised through a vendor agreement.
 - **Delayed data (15 min) carries no display-unit fees on either plan** and the
   daily brief is already that shape; a premarket board 15 minutes late is not.
+- **Which price, if not the tape — mapped 2026-09-07 after Gate 1 closed:**
+  [commercial/2026-09-07-which-price.md](commercial/2026-09-07-which-price.md).
+  The board's flat verdict and NEW HIGH override are both defined by the live
+  bid-ask spread and go neutral without one. Of the derived real-time prices,
+  only Databento's Mini carries a real bid and ask (an aggregate over venues it
+  does not name); Massive's FMV is a single number with no spread; Intrinio's is
+  a predicted bid and ask with no published method; Tiingo's is a last-or-mid
+  with the real quote behind an IEX agreement. A real quote from a subset of
+  venues has a spread at least as wide as the NBBO, so those products bias the
+  flat verdict one way, by an amount measurable only with a feed in hand.
 - **The CT Plan replaces CTA and UTP on 2027-04-01** — new per-viewer rates, a
   use-based professional test, and derived-data *creation* becoming fee-liable.
   Account migration started this month. **Any agreement signed before March
