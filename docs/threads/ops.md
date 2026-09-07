@@ -7092,6 +7092,49 @@ reveals what one cannot: **the specific thing it would reveal here is the
 `$remote_user` gap.** With one account nobody ever notices the app cannot tell
 who is asking, because there is only one possible answer.
 
+## `review_tokens` IS IN THE WRONG STORE — do not cite it as precedent
+
+**Recorded so nobody finds it and copies its location.** It lives in
+`/var/lib/mointel/market.db`, the trading store.
+
+**Its SHAPE is right and worth copying**: `token_hash` rather than plaintext,
+`expires_at`, `revoked_at`, `last_used_at` written at most once a minute so a
+polling inspector does not turn a read into a write storm.
+
+**Its LOCATION is wrong.** The market store is restored from backups — I restored
+two dates into it on 2026-09-06 — and `AWS_DEPLOYMENT.md` documents a failback
+that swaps the file wholesale. **Tokens there are reverted by a restore: revoked
+ones come back live, and ones issued since the backup stop working.** Every
+`createSchemaBackup` is `VACUUM INTO`, so each backup carries the token table
+entire.
+
+**Anything identity-shaped belongs in `/var/lib/mointel/identity.db`** (ruled by
+Integration 2026-09-07), outside the trading store's migration, backup, VACUUM
+and prune path. **Copy the shape, not the location.**
+
+## Making pins per-user is a table rebuild, not "one column"
+
+**Checked before it gets scoped as small.** If `focus_tickers` gains a user key:
+
+- **`ADDED_COLUMNS` is `ALTER TABLE ... ADD COLUMN` only.** There is no
+  `DROP TABLE`, no `RENAME TO`, no rebuild machinery anywhere in
+  `lib/market/store/db.ts`.
+- **SQLite cannot alter a PRIMARY KEY.** Moving from `(ticker, trading_date)` to
+  something user-keyed needs create-new, copy, drop, rename — **a kind of
+  migration this desk has never performed.**
+- **Existing rows have no owner.** Backfilling means deciding whose they are.
+  Trivial with one user, but it is a decision rather than a default.
+- **The table is defined TWICE and both must change together** —
+  `db.ts` and `focusRepo.ts:ensureFocusTable`. They are byte-identical today
+  (checked), and the duplication is deliberate: the web process creates the table
+  so Focus works without waiting for the worker to restart onto a new schema.
+  **Both are `CREATE TABLE IF NOT EXISTS`, so on a fresh store the first process
+  to start wins** — the moment they disagree, the shape depends on boot order.
+
+**None of this makes it hard. It makes it not-one-column**, and it is much
+cheaper before the first user than after, which is the argument for deciding it
+now rather than the argument for it being trivial.
+
 ## Opening message for a new chat
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
