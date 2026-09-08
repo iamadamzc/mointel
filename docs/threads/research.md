@@ -13525,3 +13525,101 @@ breaks it without a deploy, which is the cheapest way through.*
 AND CLEANER THAN I HANDED IT OVER:** not *"is a mandatory block worth $0.20/day"*
 but ***"will the model say NONE when there is nothing, and are we willing to run
 one replay arm to find out before shipping it."***
+
+**128. "GOES SILENT" MEANS 30 TRADES A MINUTE, NOT 300. THE TRADE-COUNT-VERSUS-
+VOLUME DIVERGENCE IS REAL, IS 70% CLOSING AUCTION, AND IS 0.03% OF MINUTES IN
+HIS WINDOW. AND THE PROVENANCE IS NAMED IN THE FILE BUT NOT CARRIED BY IT.**
+
+### 1. THE THRESHOLDS, THEIR UNITS, AND THE DERIVATION
+
+```
+activeTradesPerMinute  300     TRADES per minute -- a count of prints, not shares
+deadRatio               10     the dead line is DERIVED: 300 / 10 = 30 trades/min
+```
+
+**Neither is separately configurable, deliberately.** `activity.ts:44`:
+
+> *"The dead line is DERIVED as `active / deadRatio`, never configured
+> separately, because the 10x is the trader's and a second number could drift
+> away from the ratio he actually chose."*
+
+**And `DEFAULT_ACTIVITY_CONFIG` is a hardcoded constant with no environment
+override anywhere** — `resolveActivity` accepts a `config` parameter and nothing
+in production passes one.
+
+### 2. WHICH LINE DOES WHAT — AND "SILENT" WAS THE WRONG WORD
+
+| verdict | rule |
+| --- | --- |
+| **DEAD** | **5 consecutive** minutes **at or below 30** trades/min |
+| **ACTIVE** | **2 consecutive** minutes **at or above 300** trades/min |
+| between 30 and 300 | **NEITHER. The previous state persists.** |
+
+`activity.ts:325`:
+
+> *"The band between the dead line and the active line is neither: it neither
+> confirms death nor earns a return, so the previous state persists. That is
+> what the trader's 10x ratio buys — **it is a hysteresis band rather than two
+> unrelated numbers**, which is also why the dead line is derived from it."*
+
+**⇒ "GOES SILENT" MEANS FELL TO 30 OR BELOW, NOT 300.** *A name doing 200
+trades a minute is not silent, is not dead, and does not lose its badge.*
+
+### 3. TRADE COUNT OVER SHARE VOLUME — DELIBERATE, AND THE EVIDENCE IS NOT IN THIS REPO
+
+`activity.ts:15`, verbatim:
+
+> *"The measure is minute TRADE COUNT — **the one the viscosity research
+> confirmed as meaningful**, already parsed off every wildcard bar and already
+> persisted, and until now scored on by nothing."*
+
+**SO THE CHOICE IS RECORDED AS DELIBERATE AND ATTRIBUTED TO A PRIOR STUDY. THE
+STUDY IS NOT HERE.** It lives at `A:\trade_research\momentum\viscosity`, named
+only in `docs/DATA-ARCHIVE.md:205`. **A reader of `activity.ts` is told the
+conclusion and cannot check it.**
+
+*That is stronger than folklore — a real programme is named — and weaker than a
+citation. **He is entitled to know which it is before defending the number.***
+
+### 4. NOTHING ELSE USES SHARE VOLUME FOR LIVENESS
+
+`minuteVolumes` **is** collected and **is** used — after-hours volume sums, the
+cumulative volume base, VWAP accumulation (`engine.ts:739/761/816/945/951`).
+**Never for liveness. `trade_count` is the only liveness input anywhere on the
+desk.**
+
+### AND THE MEASUREMENT THAT ANSWERS WHAT HE ACTUALLY ASKED
+
+*His case: **"a name could print 50 trades of 10,000 shares and read as dead."**
+Measured on 2026-08-17, 1,047,109 bars:*
+
+```
+at or below the 30-trade dead line          709,738   67.8% of all bars
+  of those, >= 10,000 shares                 19,024    2.68%
+  of those, >= 50,000 shares                  2,047    0.29%
+  of those, >= 100,000 shares                   930    0.13%
+  of those, >= 500,000 shares                   128    0.02%
+```
+
+**THE CASE IS REAL. IT IS ALSO OVERWHELMINGLY THE CLOSING AUCTION.**
+
+```
+the 930, by hour:   16:00 ET  652   <- 70% in ONE hour
+                    every other hour  <= 44
+worst three:  T     7 trades / 3,751,177 shares   16:06 ET
+              FRMI 27 trades / 3,567,059 shares   16:00 ET
+              GERN 16 trades / 2,709,743 shares   16:00 ET
+```
+
+**A single auction cross is one print with enormous size — a structural artefact,
+not a momentum signal.**
+
+> **IN HIS 07:00–10:00 ET WINDOW: 39 OF 130,831 BARS. 0.03%. ABOUT THREE MINUTES
+> IN TEN THOUSAND.**
+
+**SO TRADE COUNT IS DEFENSIBLE WHERE HE TRADES, AND NOW MEASURED RATHER THAN
+ASSERTED.** *A volume threshold would change the verdict on three minutes in ten
+thousand of his window, and on 70% of a phenomenon that lives at the bell.*
+
+*One session, local desk store. The shape is structural — auction crosses are
+auction crosses — but the rate is one day.*
