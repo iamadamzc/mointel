@@ -13623,3 +13623,96 @@ thousand of his window, and on 70% of a phenomenon that lives at the bell.*
 
 *One session, local desk store. The shape is structural — auction crosses are
 auction crosses — but the rate is one day.*
+
+**129. `settleMinutes: 1` MARKS A RECOVERING NAME DEAD, AND HYSTERESIS THEN HOLDS
+IT THERE. NOT A PRODUCT DECISION — A DEFECT, AND IT BITES THE WAKE-UP TRANSITION
+HE TRADES.**
+
+*Integration asked what actually differs between 1 and 0 under hysteresis, and to
+name situations rather than rules. **Run, not reasoned** — six cases through the
+real `resolveActivity` at both settings.*
+
+```
+A. busy name, newest minute ABSENT, acquiring from UNKNOWN   (the reverting test)
+     settle=1 -> ACTIVE   [900,900,900,900,900]
+     settle=0 -> UNKNOWN  [900,900,900,900,0]
+
+B. busy name, newest minute ABSENT, already ACTIVE
+     settle=1 -> ACTIVE   settle=0 -> ACTIVE      <- no difference
+
+C. four quiet minutes, busy t-1 that has NOT arrived
+     settle=1 -> DEAD     settle=0 -> DEAD        <- no difference
+
+D. four quiet minutes, busy t-1 that DID arrive
+     settle=1 -> DEAD     [5,5,5,5,5]
+     settle=0 -> ACTIVE   [5,5,5,5,900]           <- OPPOSITE VERDICTS
+
+E. genuinely dead across the span
+     settle=1 -> DEAD     settle=0 -> DEAD        <- no difference
+
+F. revival, two busy minutes at the end, previous DEAD
+     settle=1 -> ACTIVE   settle=0 -> ACTIVE      <- no difference
+```
+
+### 1. WHAT ACTUALLY DIFFERS — AND IT IS NOT "EVERY TRANSITION A MINUTE EARLIER"
+
+**Four of the six cases are IDENTICAL.** Steady state, genuine death, revival and
+the missing-bar case all agree. **The margin does nothing in the situations it
+was written for.**
+
+**THE TWO THAT DIFFER:**
+
+- **A — first acquisition.** From `UNKNOWN`, settle=1 earns ACTIVE a minute
+  sooner. *It "wins" only because it is judging older data that happens to be
+  complete.*
+- **D — AND THIS IS THE FINDING. A name quiet for four minutes whose fifth
+  minute is busy, with that bar ARRIVED: settle=1 returns DEAD. settle=0 returns
+  ACTIVE.** *Not a minute apart. **Opposite**, at the same instant, and the
+  stale one is wrong.*
+
+**AND UNDER HYSTERESIS THAT WRONG DEAD IS STICKY.** Once DEAD, revival needs
+**two consecutive minutes at or above 300**. A name trading in the 30–300 band
+after waking up **never earns it back** and sits falsely DEAD indefinitely.
+
+**⇒ THE PARAMETER COSTS A WRONG VERDICT ON EXACTLY THE QUIET-THEN-LOUD
+TRANSITION HE TRADES**, and everything downstream reads it: the subscription
+selector drops the name, `queue.ts:83` declines research on it, the badge says
+dead.
+
+### 2. WHAT THE REVERTING TEST RETURNS AT 0 — `UNKNOWN`, NOT `DEAD`
+
+**Integration's suspicion is confirmed: it does not manufacture death.** The
+busy slots keep the dead run from completing; the zero merely stops ACTIVE being
+*earned*, so the previous state persists — `UNKNOWN` in the fixture.
+
+**The test guards ONE MINUTE OF DELAY IN FIRST ACQUISITION. Nothing more.**
+
+### 3. IS THE ASSERTION STILL WANTED? NO — AND THE TRADE RUNS THE WRONG WAY
+
+Its docstring defends against *"manufacture death every minute on every name"*.
+**Case C is that scenario and both settings agree — it cannot happen.** What the
+test actually buys is case A: acquiring a badge sixty seconds sooner **on a name
+whose most recent minute nobody has looked at.**
+
+**Against that, case D gives a WRONG DEAD on a recovering name, and hysteresis
+makes it stick.**
+
+> **SO THIS IS NOT A PRODUCT DECISION AND SHOULD NOT GO TO HIM AS ONE.** A
+> parameter costing a minute of freshness, defended by a comment that is false
+> and a test guarding an impossibility, **whose only measurable behavioural
+> effect is to mislabel the transition the desk exists to catch.**
+
+### WHAT I AM NOT CLAIMING
+
+**Case D needs the wake-up minute's bar to have arrived before the evaluation** —
+0.005–0.200s premarket, ≤0.673s all day, so it usually has. **I have not measured
+how often the four-quiet-then-loud pattern occurs**, only that when it does the
+two settings disagree and 1 is wrong.
+
+*And case A is a real if small loss: a name acquiring ACTIVE from UNKNOWN takes
+one minute longer at 0. **That is the honest cost of the change** and it is worth
+naming beside the benefit rather than after it.*
+
+**The change is one constant plus nine test expectations, five of which are
+Design's. Case D belongs in `activity.test.ts` whichever way it goes** — nothing
+currently asserts it, which is why the parameter survived.
