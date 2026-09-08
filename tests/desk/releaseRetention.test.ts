@@ -159,6 +159,40 @@ describe('pruning', () => {
     expect(releaseNames()).toContain('oldest');
   });
 
+  it('never removes a release a running unit is still executing', () => {
+    /*
+     * THE 2026-09-08 INCIDENT, AS A TEST. `RESTART_MARKET=no` deliberately
+     * leaves the market worker on the previous release, and prune protected
+     * only the active and pinned ones -- so a deploy deleted the tree out from
+     * under a running unit. It stayed `active` and STREAMING with a 1s
+     * heartbeat and its cwd read `/ (deleted)`; nothing failed loudly, because
+     * a process keeps its open files. ExecStart is `tsx worker/alpaca.ts`,
+     * which transpiles from disk on demand, so the first not-yet-loaded module
+     * would have failed to read -- during capture, silently.
+     *
+     * `old` is the oldest and neither active nor pinned, so every other rule
+     * says remove it. Only the in-use rule saves it.
+     */
+    makeRelease('old');
+    for (const sha of ['b2', 'c3', 'd4', 'e5']) makeRelease(sha);
+
+    const out = sh(PRUNE_SH, ['e5'], { KEEP_RELEASES: '2', IN_USE_SHAS: 'old' });
+
+    expect(releaseNames(), 'a running unit lost its release').toContain('old');
+    expect(out).toContain('IN USE by a running unit');
+  });
+
+  it('prunes normally when no unit reports a release', () => {
+    // Set-but-empty means "no units", not "skip the rule" -- otherwise the
+    // probe failing would silently restore the old behaviour and the test
+    // above would pass for the wrong reason.
+    for (const sha of ['a1', 'b2', 'c3', 'd4']) makeRelease(sha);
+
+    sh(PRUNE_SH, ['d4'], { KEEP_RELEASES: '2', IN_USE_SHAS: '' });
+
+    expect(releaseNames()).not.toContain('a1');
+  });
+
   it('reports what it would do without doing it', () => {
     for (const sha of ['a1', 'b2', 'c3', 'd4']) makeRelease(sha);
 

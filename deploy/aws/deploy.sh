@@ -229,7 +229,9 @@ echo
 # ---------------------------------------------------------------- retention ---
 
 # Retention. The decision lives in prune.sh so it can be exercised without
-# deploying; the active release and every pinned release are never candidates.
+# deploying; the active release, every pinned release, and the release any
+# RUNNING UNIT is executing are never candidates. That last rule exists
+# because RESTART_MARKET=no deliberately leaves a unit on an older release.
 KEEP_RELEASES="$KEEP_RELEASES" RELEASES="$RELEASES"   bash "$RELEASE/deploy/aws/prune.sh" "$(basename "$(readlink -f "$CURRENT")")" || true
 
 bash "$RELEASE/deploy/aws/pins.sh" check || log "WARNING: a pinned release or its backup is missing"
