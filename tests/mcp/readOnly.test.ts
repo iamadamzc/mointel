@@ -29,14 +29,13 @@ describe('every tool is read-only', () => {
     }
   });
 
-  it('exposes exactly the eight documented read tools and nothing else', () => {
+  it('exposes exactly the seven documented read tools and nothing else', () => {
     expect(TOOLS.map((tool) => tool.name).sort()).toEqual([
       'get_assessment',
       'get_assessment_status',
       'get_desk_status',
       'get_diagnostics',
       'get_discovery',
-      'get_focus',
       'get_recent_events',
       'get_ticker',
     ]);
@@ -88,11 +87,21 @@ describe('every tool is read-only', () => {
     }
   });
 
-  it('passes no seed candidates when reading Focus', () => {
-    // getFocus({ seedCandidates: [] }) is truthy and would spend the trading
-    // date's single Focus seed on a tool call, emptying the real desk's strip.
+  it('prioritises events on rank alone, seeded by no pin', () => {
+    /*
+     * REPLACES a test that asserted this surface passed no seed candidates when
+     * reading Focus. That one would now pass for the wrong reason -- there is no
+     * Focus here to seed -- and a test that cannot fail is not a guard.
+     *
+     * A pin is cosmetic and browser-held by his ruling, so the server cannot
+     * know one. If somebody reinstates a server-side Focus and wires it back
+     * into `primary`, a pin would silently start changing what this surface
+     * prioritises, which is the class of thing he ruled out.
+     */
     const source = fs.readFileSync(path.join(MCP_DIR, 'tools.ts'), 'utf8');
-    expect(source).not.toMatch(/seedCandidates/);
+
+    expect(source).not.toMatch(/getFocus|focusStore|focusRepo/);
+    expect(source).toMatch(/primary: new Set<string>\(\)/);
   });
 
   it('opens no second connection to Alpaca, OpenAI or the SEC', () => {

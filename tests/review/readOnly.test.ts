@@ -123,11 +123,23 @@ describe('the review namespace itself', () => {
     }
   });
 
-  it('never seeds Focus from a review read', () => {
-    // getFocus({ seedCandidates: [] }) would look harmless and would spend the
-    // trading date's single Focus seed on a reviewer's page load, leaving the
-    // owner's strip empty for the rest of the session.
-    const source = fs.readFileSync(path.join(REVIEW_ROUTES, '[token]/api/focus/route.ts'), 'utf8');
-    expect(source).not.toMatch(/seedCandidates/);
+  it('exposes no Focus route in the review namespace at all', () => {
+    /*
+     * REPLACES a test that read `[token]/api/focus/route.ts` and asserted it
+     * passed no seed candidates. That route is gone, so the old test threw on
+     * readFileSync rather than failing on an assertion -- and the guard it was
+     * providing is better stated as absence than as a property of a file.
+     *
+     * A pin is cosmetic and browser-held by his ruling, so there is nothing on
+     * the server for a reviewer to read. The proxy still refuses POST here (see
+     * above); this asserts there is no GET to reinstate it around either.
+     */
+    expect(fs.existsSync(path.join(REVIEW_ROUTES, '[token]/api/focus'))).toBe(false);
+    for (const file of routeFiles(REVIEW_ROUTES)) {
+      const source = fs.readFileSync(file, 'utf8');
+      expect(source, `${path.relative(REVIEW_ROUTES, file)} reaches Focus`).not.toMatch(
+        /getFocus|focusStore|focusRepo/,
+      );
+    }
   });
 });

@@ -29,7 +29,6 @@ import type { AutoIntelligence } from '../research/view';
 import { mergeDesk } from '../dashboard/merge';
 import { buildDeskRead, buildStructureSummary } from '../dashboard/deskRead';
 import { prioritizeEvents, relevantEvents } from '../dashboard/events';
-import { getFocus } from '../market/focusStore';
 import {
   getAssessmentSnapshot,
   getMarketSnapshot,
@@ -225,39 +224,6 @@ export const TOOLS: McpTool[] = [
   },
 
   {
-    name: 'get_focus',
-    title: 'Focus list',
-    description:
-      "The trader's Focus names for the current session, with the same normalized card state the " +
-      'Focus strip renders. Read-only: this cannot pin or unpin anything.',
-    inputSchema: NO_ARGS,
-    outputSchema: OBJECT({ tradingDate: { type: 'string' }, tickers: { type: 'array' } }),
-    async handler() {
-      const { merged } = await deskContext();
-      // No seed candidates: the owner's GET seeds an empty list once per trading
-      // date, and spending that on a tool call would leave the real desk's strip
-      // empty for the rest of the session.
-      const focus = getFocus();
-
-      return {
-        tradingDate: focus.tradingDate,
-        limit: focus.limit,
-        tickers: focus.tickers,
-        entries: focus.entries,
-        rows: focus.tickers
-          .map((ticker) => merged.rows.get(ticker))
-          .filter((row): row is NonNullable<typeof row> => Boolean(row))
-          .map((row) => ({
-            ticker: row.ticker,
-            telemetry: row.telemetry,
-            intelligenceState: row.intelligenceState,
-            deskRead: buildDeskRead(row),
-          })),
-      };
-    },
-  },
-
-  {
     name: 'get_ticker',
     title: 'Ticker drawer',
     description:
@@ -332,10 +298,16 @@ export const TOOLS: McpTool[] = [
       const limit = limitOf(args, 30, 200);
       const relevantOnly = args.relevantOnly === undefined ? true : Boolean(args.relevantOnly);
 
-      const focus = getFocus();
       const rank = snapshot.discovery.discoveryRank || 12;
       const ranked = prioritizeEvents(snapshot.events, {
-        primary: new Set(focus.tickers),
+        // NO PRIMARY TIER HERE, DELIBERATELY. A pin is cosmetic and lives in the
+        // trader's browser -- "you only pin something that looks interesting and
+        // it only looks interesting because it has research done already" -- so
+        // the server cannot know one and must not invent one. The dashboard
+        // still passes a real `primary` from the in-memory hook; this surface
+        // orders on rank alone. Re-seeding it from the store would be the pin
+        // changing what the system prioritises, which is what he ruled out.
+        primary: new Set<string>(),
         topRanked: new Set(merged.discovery.slice(0, rank).map((row) => row.ticker)),
         tracked: new Set(merged.rows.keys()),
       });

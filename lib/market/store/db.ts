@@ -467,16 +467,28 @@ CREATE TABLE IF NOT EXISTS research_retry_state (
   PRIMARY KEY (ticker, trading_date)
 );
 
--- The trader's own attention list, scoped to a trading date.
+-- ORPHANED 2026-09-08. NOTHING READS OR WRITES THIS TABLE. THE ROWS ARE HISTORY.
 --
--- Deliberately separate from every system-generated ranking. Discovery says
--- what the market thinks matters and Desk Priority says what the research desk
--- concluded; this table says what THIS person wants kept in front of them, and
--- nothing may overwrite it but them. Momentum focus does not survive the
--- session, so rows are keyed by trading date and today starts clean.
+-- WHAT IT WAS, IN THE PAST TENSE, BECAUSE ALL OF IT IS NOW FALSE: the trader's
+-- own attention list, scoped to a trading date, deliberately separate from every
+-- system-generated ranking -- and the one table the Next.js process wrote,
+-- because it recorded a user action the market worker had no way to observe.
 --
--- This is the one table the Next.js process writes: it records a user action,
--- which the market worker has no way to observe.
+-- Pins became cosmetic and browser-held by his ruling -- "make it cosmetic, and
+-- remove the auto research on pin... you only pin something that looks
+-- interesting and it only looks interesting because it has research done
+-- already" -- so focusRepo, focusStore, both HTTP routes and the MCP tool
+-- were removed. The last writer went with them.
+--
+-- KEPT, NOT DROPPED, AND THE REASON IS NOT SENTIMENT: production already holds
+-- this table and we do not DROP. Removing the CREATE would leave a fresh store
+-- without a table production has -- two schema shapes in the wild with no
+-- migration between them, and the next person to touch it hits an untested path
+-- on one of the two. The rows that exist are history and stay readable.
+--
+-- If you are here because you want to write a pin server-side again: that is a
+-- product decision that was made deliberately, not an omission. Read the
+-- docstring on lib/hooks/useFocus.ts before you reinstate anything.
 CREATE TABLE IF NOT EXISTS focus_tickers (
   ticker        TEXT NOT NULL,
   trading_date  TEXT NOT NULL,

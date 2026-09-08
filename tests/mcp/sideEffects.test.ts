@@ -97,7 +97,6 @@ describe('calling every tool changes nothing', () => {
     // Every tool, including the ones that take arguments.
     await callTool('get_desk_status');
     await callTool('get_discovery', { limit: 5 });
-    await callTool('get_focus');
     await callTool('get_ticker', { ticker: 'XOS' });
     await callTool('get_recent_events', { limit: 10, relevantOnly: true });
     await callTool('get_recent_events', { limit: 10, relevantOnly: false });
@@ -181,7 +180,6 @@ describe('what the tools return', () => {
     for (const name of [
       'get_desk_status',
       'get_discovery',
-      'get_focus',
       'get_recent_events',
       'get_assessment_status',
       'get_diagnostics',

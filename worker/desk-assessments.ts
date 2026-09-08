@@ -193,14 +193,6 @@ function captureAssessment(
     )
     .all({ tradingDate: scheduled.tradingDate, limit: captureCount }) as TickerRow[];
 
-  const focused = new Set(
-    (
-      db
-        .prepare('SELECT ticker FROM focus_tickers WHERE trading_date = ?')
-        .all(scheduled.tradingDate) as Array<{ ticker: string }>
-    ).map((row) => row.ticker),
-  );
-
   const tickers = rows.map((row) => row.symbol);
   const analyses = readCurrentAnalyses(db, tickers);
 
@@ -300,7 +292,16 @@ function captureAssessment(
         }`,
       }),
       haltState: row.halt_state,
-      focus: focused.has(row.symbol),
+      // ALWAYS FALSE, AND THE COLUMN IS KEPT RATHER THAN DROPPED. A pin is
+      // cosmetic and browser-held, so the worker cannot observe one: the old pin
+      // table is orphaned and nothing writes it any more. The column stays
+      // because assessments are history and a stored true from before the ruling
+      // is a fact about that day, not a bug to erase.
+      //
+      // The table's name is deliberately not written here: the guard in
+      // tests/desk/assessmentStore.test.ts greps this file for it, and a comment
+      // naming it would trip a check meant to catch a query.
+      focus: false,
       warnings: [
         ...(dossier?.structure.structuralWarnings ?? []),
         ...(dossier?.cycle.cycleWarnings ?? []),

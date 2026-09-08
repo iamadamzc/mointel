@@ -327,3 +327,27 @@ describe('assessment history', () => {
     expect(recent.map((item) => item.id)).toEqual([eleven, ten]);
   });
 });
+
+describe('the assessment producer never marks a row focused', () => {
+  it('reads no pin and writes focus false', () => {
+    /*
+     * A SOURCE ASSERTION, AND IT SAYS SO RATHER THAN PRETENDING OTHERWISE.
+     * `worker/desk-assessments.ts` is a script; no test in this suite drives its
+     * loop, which is the same gap the token-attribution fix ran into. So the
+     * guard is the text of the file, and it is worth having because the thing it
+     * guards is invisible: `focus` on an assessment row is now always false, and
+     * a producer that quietly started reading pins again would look identical in
+     * every other test.
+     *
+     * The column and the stored rows are deliberately kept -- a `true` written
+     * before his ruling is a fact about that day. Only the writer is gone.
+     */
+    const source = fs.readFileSync(
+      path.resolve(__dirname, '../../worker/desk-assessments.ts'),
+      'utf8',
+    );
+
+    expect(source).not.toMatch(/focus_tickers/);
+    expect(source).toMatch(/focus: false/);
+  });
+});
