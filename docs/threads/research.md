@@ -13716,3 +13716,77 @@ naming beside the benefit rather than after it.*
 **The change is one constant plus nine test expectations, five of which are
 Design's. Case D belongs in `activity.test.ts` whichever way it goes** — nothing
 currently asserts it, which is why the parameter survived.
+
+**130. CASE G EXISTS. A FEED STALL MARKS THE ENTIRE BOARD DEAD AT ONCE, NEITHER
+SETTING PROTECTS AGAINST IT, AND IT WEAKENS AN INFERENCE I MADE IN ITEM 117.**
+
+*Integration asked whether a delivery gap long enough to empty the window
+produces death at both settings — "the actual scenario the original comment
+feared, arriving through a door the parameter never covered." **Run, not
+reasoned.***
+
+```
+G.  FEED STALL   busy name @1,500/min, map populated from 10-20 min ago,
+                 nothing in the judged window
+                 settle=1 -> DEAD   [0,0,0,0,0]  map size 11
+                 settle=0 -> DEAD   [0,0,0,0,0]  map size 11
+
+G2. RESTART      map entirely empty
+                 settle=1 -> UNKNOWN            settle=0 -> UNKNOWN
+
+G3. SHORT GAP    busy through t-7, nothing after
+                 settle=1 -> DEAD   settle=0 -> DEAD   map size 4
+```
+
+### THE DESK IS PROTECTED AGAINST A RESTART AND UNPROTECTED AGAINST A STALL
+
+**`activity.ts:259` guards `minuteTrades.size === 0` → UNKNOWN**, and its comment
+says why: *"after a restart the maps are empty, and empty must never read as
+silent."*
+
+**A STALL DOES NOT EMPTY THE MAP. IT LEAVES IT POPULATED FROM BEFORE THE STALL**,
+so the window fills with `?? 0` and the name reads DEAD. **A name trading 1,500
+times a minute goes DEAD because the feed stopped, not because it did.**
+
+**AND G3 SHOWS HOW LITTLE IT TAKES: a gap of about six or seven minutes is
+enough.** *Every name simultaneously, and under hysteresis each then needs two
+consecutive minutes at or above 300 to recover.*
+
+> **THIS IS THE SCENARIO THE ORIGINAL COMMENT FEARED — "manufacture death every
+> minute, on every name" — ARRIVING THROUGH A DOOR `settleMinutes` NEVER
+> COVERED.** *The margin insures a sub-second delivery delay. It does nothing
+> about a six-minute one, at either value.*
+
+**SEPARATE FROM THE 1-VS-0 CHANGE AND IT MUST NOT RIDE IT.** Case D is a wrong
+verdict at one setting; **case G is a wrong verdict at both**, and fixing it
+means telling a stall from silence — which the store cannot currently do,
+because a missing bar is the death signal.
+
+### AND IT WEAKENS MY OWN ITEM 117
+
+I wrote: ***"`DEAD 7,757` MEANS 7,757 SYMBOLS HAD A NON-EMPTY `minuteTrades` MAP
+IN MEMORY ⇒ bars were arriving ⇒ 09-04 was a WRITE failure, not a FEED
+failure."***
+
+**CASE G BREAKS THE MIDDLE STEP.** A stalled feed leaves a populated map and
+still yields DEAD. **So `DEAD` proves the map was non-empty AT SOME POINT IN THE
+SESSION — not that bars were arriving at the moment of evaluation.**
+
+**INTEGRATION'S EVIDENCE WAS THE RIGHT ONE AND THIS IS WHY.** Its proof was the
+**values**: `activity_window` holding `[160,184,257,365,14]` — *real counts, on a
+date that persisted no bars.* **A stall would have written `[0,0,0,0,0]`. Values
+prove delivery; the DEAD verdict does not.** *It said its proof was stronger than
+mine and did not know this was the reason; it is.*
+
+**THE CONCLUSION SURVIVES ON ITS EVIDENCE, NOT ON MINE.** 09-04 was still
+receiving and not storing — **2,369 of 7,757 windows carry real counts, which no
+stall produces.**
+
+### WHAT THIS DOES NOT SAY
+
+**No stall has been observed.** Ops measured 920,000 bars across a full session
+with **no gap and no reconnect**, and flagged that itself: *observed-absent is
+weaker than cannot-occur.* **Case G is a latent failure demonstrated in the
+rule, not an incident.** *It becomes urgent the first time the feed drops for
+six minutes during a session, and nothing today would distinguish that from the
+whole board going quiet.*
