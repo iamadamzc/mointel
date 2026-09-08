@@ -217,6 +217,17 @@ repo — they are public documents and re-fetchable.
   a data vendor. Nothing registered; the purchase and any registrar enquiry
   are his.
 
+- **RULED 2026-09-08 — the first-outside-viewer question, the one this seat
+  named as never having been put to him.** His words via Integration: *"accept
+  exposure. not going to pay for something i'm not sure is going to be used.
+  my call. the moment we have something moving, i'll sign up. let's talk about
+  the risk after we settle the other items."* Recorded at the top of the gates
+  map with all four parts. What it means for this seat: the vendor decision is
+  not due; the two floors and their defects stay ready in the volume-basis
+  document for the moment the trigger fires; **the trigger — "something
+  moving" — is undefined and this seat will not invent a threshold for it**;
+  the risk conversation is Integration's to reopen.
+
 **Open items.**
 
 - ~~**The Alpaca plan tier is not in the repo.** Ask him; do not infer it into a

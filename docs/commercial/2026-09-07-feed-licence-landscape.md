@@ -78,6 +78,16 @@ licence, comply on traction — makes it. This document does not re-open it. It
 records that **the line it depends on is the first external viewer, and that
 the line is the same whether that viewer pays or not.**
 
+**RULED 2026-09-08, his words relayed verbatim by Integration:** *"accept
+exposure. not going to pay for something i'm not sure is going to be used. my
+call. the moment we have something moving, i'll sign up. let's talk about the
+risk after we settle the other items."* So the first outside viewer proceeds
+without an agreement, by his explicit call; the trigger for signing —
+*"something moving"* — exists and is **undefined, deliberately, and no seat is
+to invent a threshold for it**; and the risk conversation is **deferred, not
+declined**, held by Integration to reopen. The full record is at the top of
+[../monetization-gates.md](../monetization-gates.md).
+
 ---
 
 ## 2. THE DESK SIDE, FROM THE CODE

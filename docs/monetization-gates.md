@@ -6,6 +6,57 @@ they would waste rather than by effort.
 
 ---
 
+## RULED 2026-09-08 — GATE 0 IS ANSWERED BY ACCEPTING THE EXPOSURE, UNTIL "SOMETHING MOVING"
+
+*Recorded by Commercial from the trader's ruling, relayed verbatim by
+Integration the same day. The question it answers is the one Commercial
+named as never having been put to him: every published instrument makes the
+first person other than him who sees the board the licensing event, paid or
+not, and Gate 1 makes that viewer a full-desk redistribution — so before the
+first outside viewer, does he sign, or accept the exposure?*
+
+**His words, verbatim:**
+
+> *"accept exposure. not going to pay for something i'm not sure is going to
+> be used. my call. the moment we have something moving, i'll sign up. let's
+> talk about the risk after we settle the other items."*
+
+**Four parts, and the last two are the ones that will be forgotten:**
+
+1. **Accept the exposure.** The first outside viewer proceeds without a vendor
+   agreement and without an exchange agreement.
+2. **The reason:** not paying for something that may not be used. Consistent
+   with his stance from the charter — build on the personal licence, comply
+   on traction.
+3. **"My call."** Taken explicitly. Not an omission, not a default, not a
+   position anyone talked him into. The line it accepts is documented in
+   [commercial/2026-09-07-feed-licence-landscape.md](commercial/2026-09-07-feed-licence-landscape.md)
+   §1, so the exposure is a known quantity rather than an unread one.
+4. **"The moment we have something moving, I'll sign up."** **The trigger
+   exists and it is undefined.** *"Something moving"* is his phrase and it is
+   not a threshold. **No seat is to invent one** — this desk has spent a
+   weekend on numbers that were chosen rather than derived. It is recorded
+   here as an **UNDEFINED TRIGGER**, not as a settled position, because *"we
+   accepted the exposure"* will be remembered and *"until traction"* will not.
+   When it fires, the vendor decision is due: the two published floors and the
+   defect each buys are in
+   [commercial/2026-09-07-volume-basis.md](commercial/2026-09-07-volume-basis.md)
+   §4 and §7.
+
+**And he deferred the risk conversation; he did not decline it.** *"Let's talk
+about the risk after we settle the other items"* is a **scheduled item held
+by Integration**, which will reopen it. Recorded so it cannot quietly become
+a decision that was never revisited.
+
+| state | item |
+| --- | --- |
+| CLOSED | the vendor decision is not due now — no Massive, no Databento, no spend |
+| CLOSED | the two floors below Massive that only a sign-up can verify stay dormant, by his own rule |
+| OPEN | what *"something moving"* means — undefined, and deliberately so |
+| OPEN | the risk conversation — deferred by him, Integration's to reopen |
+
+---
+
 ## GATE 0 — CAN WE REDISTRIBUTE THE DATA AT ALL?
 
 **The desk runs on Alpaca SIP.** Market-data agreements distinguish *internal
