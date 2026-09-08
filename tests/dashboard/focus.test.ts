@@ -172,14 +172,19 @@ describe('focus cards', () => {
 /* ------------------------------------------------------------------------- *
  * IN-MEMORY PINS (2026-09-07)
  *
- * Everything ABOVE this line covers `focusRepo` and the focus CARDS, and none
- * of it was affected by pins becoming cosmetic. I deleted all of it with a
- * `cat >` that overwrote this file instead of appending, and restored it here.
+ * Everything ABOVE this line covers the focus CARDS. I deleted it, and ten
+ * `focusRepo` cases beside it, with a `cat >` that overwrote this file instead
+ * of appending, and restored all eighteen here.
  *
- * `focusRepo` is still live -- Ops removes it in a later step -- so those tests
- * were covering shipped code at the moment they were destroyed. The card tests
- * cover `selectFocusRows`, `retentionNote` and `buildDeskRead`, which have
- * nothing to do with pins at all.
+ * `focusRepo` WAS still live when they were destroyed, so they were covering
+ * shipped code at that moment -- which is why restoring them was right even
+ * though Ops removed the repo, and the ten with it, hours later. UPDATED
+ * BECAUSE THE ORIGINAL SENTENCE SAID "Ops removes it in a LATER STEP" AND THAT
+ * STEP HAS NOW HAPPENED: a comment written in the future tense goes stale the
+ * moment the future arrives, and nothing fails when it does.
+ *
+ * The card tests that remain cover `selectFocusRows`, `retentionNote` and
+ * `buildDeskRead`, which have nothing to do with pins at all.
  * ------------------------------------------------------------------------- */
 
 /*
