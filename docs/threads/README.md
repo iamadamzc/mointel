@@ -11926,3 +11926,45 @@ that the feed probe's User-Agent is never pasted anywhere it could travel, and
 reached independently.
 
 **A privacy boundary you observe only when reminded is not one.**
+
+## A fix closes the future; it says nothing about what has already been destroyed
+
+The minute-bar retention defect — `8018b9b`, *"The prose said trading dates; the
+loop counted calendar days"* — was found, fixed and deployed. **09-02 and 09-03
+were restored from a migration backup, row-for-row. Everyone moved on.**
+
+**Nobody enumerated what the defect had already taken.**
+
+Three days later the desk spent a night deciding that minute bars had stopped
+being **written** — building write-path hypotheses, eliminating gates, filters,
+locks, disks, schemas and clocks. **The insert never failed. The rows were removed
+afterwards, by the defect that was already fixed.**
+
+```
+09-04 07:29Z   v23 backup      minute_bars 2,116,296
+09-04 08:00Z   session opens, runs normally, writes bars
+09-05 08:32Z   v24 backup      minute_bars 0   -- ticker_session +8,668, desk_events +36,357
+09-05 09:03Z   8018b9b fixes it
+09-06 ~21:54Z  restore from the 07:29 backup -- which PREDATES the 09-04 session
+```
+
+**`minute_bars` went to zero while the other two tables grew normally through the
+same session** — which excludes any all-tables wipe and leaves the one deleter
+scoped to that table alone.
+
+**Two rules, and the second is the expensive one.**
+
+**When a defect is fixed, enumerate what it did before the fix.** A repair changes
+what happens next. **The damage is a separate question and it is never asked,
+because the fix feels like the end of the incident.**
+
+**And when you restore from a backup, state what the backup does NOT contain.** The
+restore was verified by row count — 1,054,662 and 1,061,634, exactly right — **and
+the verification could not see that a third date was missing entirely, because a
+count confirms what is there and is blind to what is absent.** The backup predated
+a session nobody thought to look for.
+
+**The strongest argument of the night pointed at the truth and was read backwards.**
+Research established that two independent writers would both have had to fail
+leaving no trace, and concluded no single write bug could do it. **That was
+correct — because it was not a write bug at all.**
