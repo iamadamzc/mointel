@@ -235,7 +235,15 @@ repo — they are public documents and re-fetchable.
   subscriber and anything beyond that is unpublished; and detection is
   through the public product, not the data pipe, so it scales with publicity
   rather than viewers. What it means for him in practice is a lawyer's
-  question and the conversation Integration holds.
+  question and the conversation Integration holds. **Integration then asked
+  whether the 30-day "User Application" notice is a free compliant path that
+  would make his choice a false one. From the Terms: it is a notice, it costs
+  nothing, and it licenses nothing — Content including market data stays
+  "exclusively for personal and noncommercial" use without Alpaca's "express
+  prior written consent", §30 of the Customer Agreement says the same, the
+  published answer to that consent is no, and the exchange agreements forbid
+  furnishing the data regardless. The choice was not false. The notice is
+  free and not neutral: it converts a quiet exposure into a disclosed one.**
 
 **Open items.**
 

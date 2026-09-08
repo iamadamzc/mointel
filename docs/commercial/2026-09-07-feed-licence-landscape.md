@@ -166,6 +166,70 @@ agreements his account is under, read in full.
   decision not to give that notice. Stated so the ruling is honest about what
   it accepts.
 
+**The "User Application" notice — what it is and what it is not.** *Added
+2026-09-08 after Integration asked whether the 30-day notice is a free
+compliant path that would make the afternoon's choice a false one. From the
+Terms, read in full.*
+
+1. **What it is.** The Terms define it in passing — *"making the Services and
+   Content available to others through your own application (a "User
+   Application")"* — and attach one obligation: *"you shall provide Alpaca
+   with 30 days advance written notice prior to making such User Application
+   available to others."* It is a **notice**. Not an approval, not an
+   agreement, not a fee schedule, not a plan. Alpaca's only stated right in
+   return is to *"restrict your User Application's connectivity to the Service
+   and Content, and may disallow any connectivity entirely … as may be
+   determined in Alpaca's sole discretion."*
+2. **What it costs.** Nothing is named: no fee, no rate, no tier. **But it
+   licenses nothing either.** The same Terms, two sections later: *"Content is
+   provided exclusively for personal and noncommercial access and use. No
+   part of the Service or Content may be copied, reproduced, republished,
+   uploaded, posted, publicly displayed … or distributed in any way … for
+   publication or distribution or for any commercial enterprise, without
+   Alpaca's express prior written consent."* Content is defined to include
+   *"(3) market data such as quotations for securities transactions and/or
+   last sale information."* And the Customer Agreement §30: *"I agree not to
+   reproduce, distribute, sell or commercially exploit the market data in any
+   manner without written consent from Alpaca."* **So the notice covers the
+   application's connection to Alpaca; showing Alpaca's market data through
+   it to other people still requires Alpaca's written consent, which the
+   notice does not grant — and Alpaca's published answer to that request is
+   the support page: "Unfortunately, you cannot redistribute Alpaca API
+   data."** Above Alpaca, the exchange agreements he signed forbid it
+   outright — NYSE §5 *"Subscriber shall not furnish Market Data to any other
+   person or entity"*, Nasdaq §1 *"may not sell, lease, furnish or otherwise
+   permit or provide access to the Information to any other Person"* — and a
+   notice to Alpaca reaches neither.
+3. **Reclassification.** The notice has no classification language and
+   triggers nothing by itself. Classification lives in the exchange
+   agreements and turns on the facts: a non-professional is a person who
+   receives data *"solely for his or her personal, non-business use"*
+   (NYSE §11), and *"All subscribers are deemed Professional or Business
+   unless they are qualified as Non-Professional"* (Nasdaq §12). Using the
+   data for a product is not personal, non-business use whether or not a
+   form is sent. And reclassification changes only the rate: NYSE §5, *"If
+   Subscriber receives Market Data other than as a Nonprofessional
+   Subscriber, it shall use Market Data only for its individual use in its
+   business."* **Professional status still does not permit furnishing the
+   data to others.**
+4. **What it commits him to.** Nothing beyond having said it: no fee, no
+   clock beyond thirty days' lead, no stated change to his rate, nothing to
+   revoke — except that Alpaca then knows, in writing, what the application
+   is for, and holds a stated right to cut its connectivity at will (a right
+   the termination clause already gives it without a reason). **The notice
+   is free and it is not neutral: it converts a quiet exposure into a
+   disclosed one, on Alpaca's file, thirty days before launch.**
+
+**So the afternoon's choice was not a false one.** There is no free compliant
+path on this account to show Alpaca's market data to other people. The
+compliant paths are the ones already costed: a vendor with display rights
+(Massive Business, Databento Plus) or a brokerage partnership (Alpaca's
+Broker API), each carrying an exchange-recognised agreement that a notice
+cannot substitute. The one genuinely free action the Terms describe is an
+**approach** — giving the notice and asking for the written consent §30
+requires — which is his to make, whose published answer is no, and which
+creates the record that a quiet beta does not.
+
 **What this gives the deferred conversation, without inventing his
 threshold.** The exposure has two parts of different sizes: a **revocation
 risk** that exists from the first viewer and is structural — one account,
