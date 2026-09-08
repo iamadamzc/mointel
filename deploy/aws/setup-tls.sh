@@ -70,8 +70,11 @@ echo "$DOMAIN" > /etc/mointel/tls-domain
 chmod 0644 /etc/mointel/tls-domain
 
 RELEASE="$(readlink -f /opt/mointel/current)"
-sed "s|__DOMAIN__|$DOMAIN|g" "$RELEASE/deploy/aws/nginx-tls.conf" \
-  > /etc/nginx/sites-available/mointel-tls
+TLS_NAMES="$DOMAIN"
+[ -f /etc/mointel/tls-extra-names ] && TLS_NAMES="$DOMAIN $(tr '\n' ' ' < /etc/mointel/tls-extra-names)"
+log "server_name    : $TLS_NAMES"
+sed -e "s|__DOMAIN__|$DOMAIN|g" -e "s|__SERVER_NAMES__|$TLS_NAMES|g" \
+  "$RELEASE/deploy/aws/nginx-tls.conf" > /etc/nginx/sites-available/mointel-tls
 ln -sfn /etc/nginx/sites-available/mointel-tls /etc/nginx/sites-enabled/mointel-tls
 
 nginx -t || fail "the TLS server block is invalid"
