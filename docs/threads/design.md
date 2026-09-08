@@ -3916,6 +3916,68 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE LIVE TRADE COUNTER SHOULD NOT EXIST AS A MIXED COLUMN — AND THE REASON IS NOT DESIGN
+
+**Asked: how does two-tier freshness look on one column at speed? Answered from
+this morning's payload rather than from a hypothesis.** 04:00, production, the
+read I had already taken:
+
+    ranked rows            50
+    highRes TRUE            2      ISPC (rank 4), IPEX (rank 18)
+    highRes FALSE, top 12  11      INCLUDING RANKS 1, 2 AND 3
+    rows carrying a quote   2      the same two -- trades/quotes follow highRes
+    activity values       {'DEAD'} on all 50
+    latched                50      every row qualified today
+
+**A live counter this morning would have been live on TWO rows and two minutes
+old on the other seventeen rendered — with the three loudest names in the stale
+tier.** That is not a corner case; **it is the state of the board at the moment
+his window opened.**
+
+**REASON 1 — THE TIER IS DECIDED BY A SIGNAL WE DO NOT CURRENTLY TRUST.**
+`applyHighResSelection` gates membership on `alive(runtime)` — `activity !==
+'DEAD'`. **Every row was DEAD, and all 50 were `latched`, so the
+latched-and-alive path would have covered the whole board had the verdict been
+different.** **A freshness tier derived from the DEAD verdict inherits every
+defect of the DEAD verdict**, and that verdict is the thing under investigation.
+**No display treatment can repair a tier assigned by a signal that is wrong.**
+
+**REASON 2 — THE COVERAGE IS ANTI-CORRELATED WITH WHAT HE IS LOOKING FOR.** It
+is not an arbitrary 250-of-N. **It excludes names the desk has judged quiet —
+and a name that wakes up is quiet-then-loud, which is the transition he trades.**
+So **the rows most likely to be stale are the rows about to matter.** This
+morning that was literally ranks 1, 2 and 3.
+
+**REASON 3 — §10, TWICE OVER, AND WORSE THAN THE HEADER I JUST FIXED.** A
+column-level lag can be stated once on the header, which is what `−2m` does.
+**Per-row freshness cannot: a header states ONE fact about a column.** Putting it
+in a tooltip means **discovering it on one row tells him nothing about the next
+row** — the hover-only defect, multiplied by the number of rows.
+
+**⇒ RECOMMENDATION: DO NOT SHIP A MIXED COLUMN. THE COUNTER COVERS EVERY ROW OR
+NO ROW.** A cheaper feature that is uniformly honest beats a better one that
+requires the reader to remember which rows are which **at the speed he reads.**
+
+**THE THREE UNIFORM OPTIONS, HONESTLY PRICED:**
+
+1. **UNIFORM LIVE** — needs trades wildcarded whole-market. `stream.ts:288-290`
+   rules that out deliberately: *"whole-market tick data would be bandwidth we
+   have no use for."* **Not my call, and it is the only thing that makes the
+   column uniform.**
+2. **UNIFORM DELAYED** — what ships tonight, now labelled `−2m`. **Honest, and
+   the cost is already stated on screen.**
+3. **THE SCOPE THAT ACTUALLY FITS: ONE NAME, NOT A COLUMN.** A live count is
+   uniformly true on the **dossier drawer**, where the subject is a single name
+   he has opened — and opening it is exactly the act that would justify
+   subscribing it. **"This name, live" is a complete statement; "some of these
+   names, live" is not.** The feature's value survives the constraint if it
+   stops being a column.
+
+**NOT DESIGNED, NOT BUILT.** Whether the counter is buildable, what
+`ingestTrade`'s early returns cost, and whether it moots `settleMinutes` are
+Research's. **I am answering only the half that was asked, and the answer is
+that the mixed column is the one shape it must not take.**
+
 ## STANDING RULING: NO CLIENT-SIDE PERSISTENCE OF BOARD STATE
 
 > **"sort does not survive. names change too much anyway. no need for
