@@ -3916,6 +3916,84 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE FIVE PREMARKET READS — 2026-09-08, 04:00-04:03 ET. TAKEN, TOKEN REVOKED.
+
+**MY INSTRUMENT WAS POINTED AT THE WRONG ENDPOINT AND THE RENDER CAUGHT IT.**
+The script read `/api/market` and reported `activityWindow`, `priceWindow` and
+`spreadPct` **FIELD ABSENT on all rows**. The board renders those windows. Both
+market routes return `getMarketSnapshot` verbatim, so it is **not** a projection
+— **the board is served by a different endpoint.** Had the script printed a
+plausible `0` instead of ABSENT I would have concluded the bars were dead.
+**"Absent is not zero" is the only reason this was caught, and it caught me.**
+
+**1 — COLOUR. OBSERVED: ONE STATE OF FOUR. PREDICTION CONFIRMED.**
+
+    BNC [0,0,0,0,1473] 1,1,1,1,14px   GMEX [...,5940]   ISPC [...,2503]
+    BXBL [...,265] 12px   BATL [...,166] 8px   ATXG [...,8] 1px
+    all 60 bars bg-ink-2.  bg-pos 0, bg-neg 0, bg-warn 0, bg-ink-3/50 0.
+
+**Non-zero, as registered before looking.** The `—` branch fired on no row.
+Heights track counts against the 300/min line — 8 renders 1px, 1473 renders full.
+**Green, red and yellow remain UNOBSERVED**: `priceWindow` absent, so
+`directionTone` returns null before it can colour anything.
+
+**2 — UNIVERSE MARKER. INCONCLUSIVE, AND IT EXPOSED A GAP.**
+`universeUpdatedAt=2026-09-08T05:28:07Z`, `freshness=FRESH`, **`rollDue=TRUE`**,
+marker silent. FRESH + silent is INCONCLUSIVE by my own table, not a pass. **But
+`universeWarning` returns null on FRESH before it ever consults `rollDue`
+(`universe.ts:81` precedes `:86`) — so A ROLL BEING DUE IS STRUCTURALLY INVISIBLE
+ON THIS SURFACE.** That is a finding, not a pass.
+
+**3 — STALE ARC. INCONCLUSIVE, EXACTLY AS PRE-REGISTERED.** One row carries a
+cycle: ISPC `BACKSIDE $6.77 → $1.93`, sessionHigh **2.10** < cycleHigh **6.77**.
+**Zero preconditions board-wide.** Zero preconditions with a clean screen is
+evidence of nothing.
+
+**4 — NEW HIGH / OFF HIGH. BASE RATE ESTABLISHED, NOT TESTED.** Over 12 rendered
+cycle cells: **NEW HIGH 0, OFF HIGH 0**, BACKSIDE 1, NO RUN 3, NOT ANALYZED 8.
+**0/12.** This is the prior. It becomes a test on the next read.
+
+**5 — TRUNCATION. OBSERVED, NOTHING CUT.** Every cycle cell `clientWidth 152 ===
+scrollWidth 152`; every label line `136 === 136`; **`TRUNC false` on all twelve**,
+the browser's verdict rather than my arithmetic. `BACKSIDE$6.77 → $1.93` fits.
+**`CYCLE NOT ESTABLISHED` did not render at all — the string I measured at
+128.2px is STILL UNOBSERVED**, and I am not converting "nothing truncated today"
+into "that string is safe."
+
+**OUTSIDE THE FIVE:** all 50 rows `activity='DEAD'`, `deadSince` identical to the
+second — `07:55:00.000Z` = **03:55 ET, five minutes before the open** — while the
+feed streamed (`lastBarAt` 12s old). **Correct: nothing had traded yet.** It is
+also the state **vanish would act on, and at 03:55 vanish empties the board.**
+Observed now, not inferred.
+
+## "WHY IS IT 2 MINUTES OLD?" — HE ASKED IT BY HOVERING, WHICH IS THE FINDING
+
+**The lag is correct and I am not proposing to change it.** `settleMinutes: 1`
+plus the minute in progress, so the newest slot is always `t−2`. The comment
+states the cost outright: a just-closed minute may not have delivered its bar and
+`?? 0` **"would manufacture death every minute, on every name."** Lowering it
+increases exposure to the zero-fill. **The VERDICT tolerates this** — DEAD needs
+five dead minutes ending two minutes ago, so a dead name has been quiet ~7
+minutes, proportionate on a 5-minute rule.
+
+**THE DISPLAY IS WHERE IT FAILS, AND I CAN NAME IT FROM MEASUREMENT RATHER THAN
+TASTE:**
+
+    header text                     "Now"                DiscoveryBoard.tsx:357
+    what the column actually shows  a window ending t-2
+    where that is stated            the `title` attribute. HOVER ONLY.
+    desk rule against hover-only    audit §10, cited at DiscoveryBoard.tsx:59
+
+**I APPLIED §10 TO THE MOVE LABEL TWO COLUMNS TO THE LEFT AND NOT TO THIS ONE.**
+That comment says the session wording *"reachable only by hover"* was **"live for
+one deploy"** before the audit ruled it out. **The same defect is live here now,
+under a header that says `Now` — the most confident currency claim available —
+in front of a trader whose holds are seconds.**
+
+**HELD, NOT DESIGNED.** He has not ruled and Integration has not asked. **What I
+am recording is that this is not a matter of preference: there is an existing
+desk rule, I applied it once, and this column is on the wrong side of it.**
+
 ## WITHDRAWN: THE FLOOR WAS CERTIFYING A MEASUREMENT THAT DID HAPPEN
 
 **`f598564` is wrong and I am withdrawing its headline.** Ops read the stored
