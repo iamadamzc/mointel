@@ -3732,6 +3732,41 @@ one layer up.
 
 ## THE TWO WINDOWS FAIL DIFFERENTLY, AND THAT IS WHY ONLY ONE FAILURE IS VISIBLE
 
+### HIS CONDITION IS NOT DEFEATED BY CONSTRUCTION. THE RISK IS IN THE IMPLEMENTATION.
+
+He ruled **VANISH**, keeping the graveyard *"as long as resurrections remain
+possible."* **I was told that condition may defeat itself — that a vanished name
+loses its subscription, produces no bars, and so revival-at-two can never fire.
+I checked, and that is not what the code does.**
+
+**`applyHighResSelection` DRIVES `trades`, `quotes` AND `lulds`. IT DOES NOT
+DRIVE BARS.** The `Subscription` interface holds exactly those three sets
+(`stream.ts:51-55`). **Bars are WILDCARDED WHOLE-MARKET** (`stream.ts:292-303`),
+and the comment says why: *"Quotes and trades are deliberately NOT wildcarded:
+minute bars are the discovery input."*
+
+**So a DEAD name that loses its high-res slot still receives minute bars, still
+accumulates `minuteTrades` from `bar.tradeCount`, and revival CAN fire.**
+
+**AND IT SURVIVES THE DEGRADED PATH, WHICH IS WHERE I EXPECTED IT TO BREAK.**
+When wildcards are denied, `worker/alpaca.ts:145` subscribes bars for
+`engine.trackedSymbols()` — and that is `[...this.tickers.keys()]`
+(`engine.ts:1786-1788`), **with no activity gate at all.** Both modes keep a
+corpse receiving bars.
+
+**THE ACTUAL RISK IS FORWARD-LOOKING AND IT IS IN HOW VANISH GETS BUILT.**
+Nothing today removes a name from `this.tickers`. **If vanish is implemented by
+deleting the runtime rather than by filtering the view, THEN the condition dies**
+— the runtime holding `minuteTrades` goes with it and there is nothing left to
+revive, and the same removal drops it from `trackedSymbols()` and ends its bars
+in degraded mode.
+
+**SO THE RULE, BEFORE ANYONE WRITES IT: VANISH IS A VIEW FILTER, NOT A
+DELETION.** The row stays whole — the same reason the ranked-and-alive block
+already says *"The rank itself is untouched, because the graveyard needs the row
+whole; only this reader changed."* **The pattern is in the file: one flag, many
+readers, and only the reader changes.**
+
 ### THE POSITIVE CONTROL: THE CODE AND THE KEYS BOTH WORK. ONLY THE CLOCK IS LEFT.
 
 **Ran the real functions against stored bars in the pinned worktree** (scratch
@@ -3770,7 +3805,9 @@ empty at read time** — activity zero-fills and reads DEAD, price returns null.
 That is bar latency against `settleMinutes`, it is in the worker, and it is
 Ops's. **I have not measured it and I am not claiming it.**
 
-### 39 OF 65 ENTRANTS WERE NEVER ACTIVE — AND NEITHER OPTION HE IS WEIGHING TOUCHES IT
+### 19 OF 65 ENTRANTS WERE NEVER ACTIVE — AND NEITHER OPTION HE IS WEIGHING TOUCHES IT
+
+**Corrected from 39 by Research at `94be242`.**
 
 Research's number, and it is a **display** problem sitting behind the one being
 decided. **Vanish-or-show is about names that go QUIET. These were never LOUD.**
