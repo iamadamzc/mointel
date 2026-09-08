@@ -191,10 +191,15 @@ repo — they are public documents and re-fetchable.
   Move Intelligence / tmitrader.com / "What your scanner doesn't tell you."**
   His words on the letters: a chart indicator with a few hundred followers, a
   colloquial expression, *"i think we're good. let's move ahead."* The
-  registration is his and time-sensitive (clear at 05:45 UTC that day); DNS,
-  mail authentication and email sign-in are Ops's and Integration's once the
-  domain is his. This seat's naming work is closed unless he asks for a
-  re-check before buying. Corrections
+  registration: his instruction later that day, *"ops can do that. register
+  with amazon"* — relayed verbatim to Ops (Route 53, his AWS account) with
+  Integration copied as a purchase; this seat registers nothing. DNS, mail
+  authentication and email sign-in are Ops's and Integration's once the
+  domain is his. **Tagline under review at his prompting** (§2c): the
+  original reads as "instead of a scanner" and the product is a supplement;
+  pick offered, *"Your scanner finds it. TMI explains it."*, with the case
+  against; "the story behind the move" is occupied (ExplainThisMove, Benzinga
+  WIIM) and both are now in the landscape section. His call on the line. Corrections
   carried: "Algo Trader Plus" is Alpaca's plan name; no name may borrow from
   a data vendor. Nothing registered; the purchase and any registrar enquiry
   are his.

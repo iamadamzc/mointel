@@ -21,10 +21,18 @@ closer look at the indicator:
 > … and TMI has some public use context as a colloquial expression. i think
 > we're good. let's move ahead"*
 
-**What moves ahead, and whose it is.** The domain registration is his and
-only his — this seat registers nothing, and the availability reading decays
-from 05:45 UTC, so the registrar's checkout is the next step and it is
-time-sensitive. The lawyer's look at the letters is his to commission or to
+**What moves ahead, and whose it is.** The domain registration: his
+instruction, verbatim, later the same day — *"as far as registering...ops
+can do that. register with amazon."* So **Ops registers tmitrader.com via
+Amazon (Route 53) on his instruction**; this seat registers nothing and holds
+no credentials; relayed to Ops direct with Integration copied because it is
+a purchase. The availability reading decays from 05:45 UTC, so the
+registrar's checkout is the next step and it is time-sensitive.
+
+**The tagline is under review, at his own prompting, same day.** His words:
+*"should we move away from 'what your scanner doesn't tell you' because TMI
+doesnt tell plenty that scanners do...however it is a supplement to a
+scanner."* This seat's answer and the alternatives are in §2c. The lawyer's look at the letters is his to commission or to
 waive; he has weighed both occupants and said so. Once the domain is his,
 DNS, mail authentication and the email sign-in that was waiting on a domain
 are Ops's and Integration's, not this seat's. Everything below this line is
@@ -204,6 +212,40 @@ look before a logo is TMi Markets, because it is a financial-services brand
 on the same letters — and that "not in registry" still needs the registrar's
 checkout to confirm the price.
 
+## 2c. THE TAGLINE — should it move away from "What your scanner doesn't tell you"?
+
+**Yes, as the primary line, for the reason he gives.** The line works as a
+category contrast — not a scanner — but a reader hears *instead of* as
+readily as *in addition to*, and the product is a supplement: it does not
+give the filtered universe, the custom criteria or the alert stream a
+scanner gives, and it does give depth on the names a scanner surfaces. A
+tagline that can be read as "replace your scanner" over-claims by omission,
+and it is the kind of claim a subscriber tests on day one. Kept as a
+secondary line, in copy where the relationship to the scanner is already
+stated, it is fine.
+
+Alternatives, positioned as a supplement, with collision checks by web
+search on 2026-09-08 (a hit is a flag, not a clearance):
+
+| line | what it says | collision check | notes |
+| --- | --- | --- | --- |
+| **"Your scanner finds it. TMI explains it."** | the relationship, in order: the scanner's job, then this one | none found | two sentences; names the product; "explains" must hold on every name — where the desk found nothing it says so, which is still an explanation of a kind |
+| **"Depth on what's moving."** | the product in four words | none found | carries the Level 2 flag: to this audience "depth" can mean the order book |
+| **"After the scan."** | the next step | none found | short and a little cryptic on its own; strong under the name |
+| **"True Move Intelligence."** | the expansion as the line | none found for the phrase | says nothing about scanners at all, which is the safest and the flattest |
+| "The story behind the move." | the Why column | **occupied:** ExplainThisMove uses *"the story behind the move: the catalyst, the news, and the chart context"* as its line, and Benzinga Pro's "Why Is It Moving" (WIIM) is the same promise | do not use |
+| "Runs alongside your scanner." | the relationship, plainly | not searched | functional rather than a line |
+
+**This seat's pick: "Your scanner finds it. TMI explains it."** It answers his
+concern exactly — it is a supplement and it says so — it keeps the contrast
+the original had, and it puts the product's name in the reader's mouth. The
+case against it: it is two sentences where a tagline is usually one, and
+"explains" is a promise the product must keep on the names where it found
+nothing, which the desk's own three-way verdict (objection / no objection
+found / nothing collected) does keep, honestly, but not always
+satisfyingly. If he wants one short line: **"After the scan."** under the
+name, or the expansion itself. His call.
+
 ## 3. RECOMMENDATION
 
 **Pick: Desk Read.** It is the thing he described — a smart desk that has
@@ -238,6 +280,15 @@ WHY"*, and a strategic investment from Acuity Trading. It is aimed at
 investors broadly rather than small-cap premarket momentum traders, and it
 says nothing about the avoid. It is the nearest thing to this product's
 promise found tonight, and it is a fact for positioning, not a naming flag.
+
+**Two more occupants of the "why it moved" idea, found while checking
+taglines on 2026-09-08:** **ExplainThisMove** (explainthismove.com — *"type a
+ticker and get the story behind the move: the catalyst, the news, and the
+chart context, all in seconds"*), a per-ticker explainer; and **Benzinga
+Pro's "Why Is It Moving" (WIIM)** feed. Both explain a move after the fact
+for any ticker; neither ranks a premarket board, carries float or structure,
+or holds a desk's view over a session. They are what the Why column competes
+with, not what the desk competes with.
 
 ## 5. FIRST PASS, SUPERSEDED — the avoid angle, kept as the record
 
