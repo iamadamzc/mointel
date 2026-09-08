@@ -13236,3 +13236,75 @@ already ignoring it for this purpose.
 
 *Sizing, scope and whether it is worth the message-rate cost are Design's and
 Ops's. **Nothing here is built and nothing should be until he has that.***
+
+**125. THE MECHANISM WAS RIGHT AND THE QUANTITY WAS NEVER MEASURED. 200
+MILLISECONDS, NOT A MINUTE — BUT THE GRAIN MEANS THE ONLY ALTERNATIVE IS ZERO,
+AND TODAY'S SAMPLE DOES NOT BOUND THE TAIL THAT MATTERS.**
+
+*Ops, on today's 20,498 bars: **live bars land 0.005s–0.200s after their minute
+closes; the only later arrivals are 15 `updated-bar` corrections at ~30s.** Two
+populations, no overlap.*
+
+### WHAT I GOT WRONG, AND IT WAS THE NUMBER
+
+I told him: ***"Absent at six minutes = dead. Absent at one minute = maybe in
+flight."*** **The logic holds; the quantity was invented.** *Absence at one
+SECOND already means dead on today's data.* **`settleMinutes: 1` spends 60
+seconds to cover 0.2 — three hundred times the worst case that exists**, and
+nobody had ever measured it.
+
+*That is this desk's pattern in its cheapest form: **a parameter defended by the
+soundness of the mechanism around it.** The comment at `activity.ts:89` explains
+why a margin is needed and never says why it is one.*
+
+### BUT THE MEASUREMENT DOES NOT UNLOCK A MIDDLE VALUE
+
+**The window is minute-grained. `settleMinutes` is a count of SLOTS, so the
+options are 1 (60s) or 0. There is no 1-second setting.** *So this does not tune
+the margin down to fit the evidence — it changes the question to whether ZERO is
+safe.*
+
+### AND ON THAT, TWO THINGS PULL IN OPPOSITE DIRECTIONS
+
+**FOR ZERO — the harm is bounded by the rule itself.** `deadMinutes: 5` requires
+**five consecutive** slots at or below the dead line. **A single late bar read as
+zero cannot manufacture death; it would take five consecutive late minutes.**
+*What one late slot CAN do is block a revival — `reviveMinutes: 2` needs two in a
+row — so the realistic cost of zero is a delayed revival, not a false death.*
+**That is a much smaller exposure than `activity.ts:89` implies, and the comment
+does not mention the consecutiveness that protects it.**
+
+**AGAINST ZERO — today's sample does not bound the tail that matters.**
+
+1. **It is a PREMARKET sample.** The highest message rate of the day is 09:30,
+   and `received_at` is stamped when the desk PROCESSES the message, not when the
+   wire delivered it. **A busy event loop lengthens exactly this number, and
+   premarket is when it is shortest.**
+2. **It does not cover a reconnect or a stall.** *A dropped socket delivers a
+   burst on resume, arbitrarily late.* **The desk spent tonight on a session
+   where the feed's behaviour was anomalous; steady-state latency says nothing
+   about that day.**
+3. **15 corrections at 30s are a second population, and Ops is right that a dead
+   minute never gets one** — a correction revises a bar that exists. *It does not
+   bear on death detection. It does bear on the displayed COUNT being revised
+   under the reader, which is a display question and Design's.*
+
+### SO THE REVISED ANSWER, AND WHAT DOES NOT CHANGE
+
+**CHANGED: I said the margin was the right size. I did not know its size, and it
+is roughly 300x the observed need. Anyone reading my earlier answer as an
+endorsement of `1` should not.**
+
+**UNCHANGED — the refutation of the `null`-slot candidate.** *A dead minute has no
+bar; absence is the death signal; `?? 0` reads the only signal the feed provides;
+UNKNOWN slots would leave every dead name unknown forever.* **None of that
+depends on the latency figure.**
+
+**UNCHANGED — and now stronger — the trade-counter route.** *A count taken from
+the trade stream has no margin question at all, at any latency, because the trade
+IS the event.* **The latency measurement argues for it rather than against it.**
+
+**THE MEASUREMENT THAT WOULD SETTLE `settleMinutes: 0`: the same `received_at`
+distribution at the 09:30 open and across a reconnect, as a p99 and a max rather
+than a range.** *Not premarket steady state. **The margin exists for the tail,
+so the tail is the only part worth measuring.***
