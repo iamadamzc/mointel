@@ -13443,3 +13443,85 @@ mandatory on **every dossier — including the majority with no catalyst at all*
 than discarding it, which is the right design and also means the invented answer
 is RECORDED rather than refused.** *That is the cost, and it does not appear in a
 token count.*
+
+**127. THE SENTINEL ALREADY EXISTS, THE DECLINED/UNRECOGNISED SPLIT IS ALREADY
+IMPLEMENTED, AND "THE MAJORITY HAVE NO CATALYST" WAS MINE AND WRONG — IT IS 29%.**
+
+*Integration refused to accept "the schema requires it" as a constraint of
+nature. Right to refuse: the schema is ours. But the thing it proposed adding is
+already there.*
+
+### 1. THE "NO CATALYST" SENTINEL IS ALREADY THE CANONICAL EMPTY VALUE
+
+`effect.ts:53` — `Side` includes **`'NONE'`**. `validateAxis`:
+
+```ts
+// `NONE` is the one side that needs no basis: nothing was claimed.
+if (typed === 'NONE') return { side: 'NONE', basis: null };
+```
+
+**`NONE` / `NONE` with null bases, `priceCapped: null`, `timeToEffect: 'UNKNOWN'`
+IS "there is no catalyst effect here"** — no basis, no source ids, no reasoning
+demanded. *It is exactly the default fixture in `whyNot.test.ts`.*
+
+**SO THE BLOCK IS REQUIRED AND ITS CONTENT IS NOT.** *I wrote "a model asked six
+questions about a name with no event answers them anyway." **The schema gives it
+a one-word way to decline on both axes, and I turned a schema constraint into an
+inevitability.***
+
+### 2. AND THE POPULATION IS SMALLER THAN I SAID — MEASURED, 325 STORED VERSIONS
+
+```
+catalystStatus     FRESH_FOUND       138  42%
+                   SECONDARY_STALE    91  28%
+                   UNKNOWN            78  24%
+                   NONE_FOUND         17   5%
+                   CONFLICTING         1   0%
+```
+
+**NO USABLE CATALYST = `UNKNOWN` + `NONE_FOUND` = 29%. NOT "the majority", WHICH
+IS WHAT I TOLD INTEGRATION.** *70% carry a real catalyst, and for those the six
+questions are legitimate rather than invented.*
+
+**⇒ THE INVENTION RISK IS CONFINED TO ABOUT A THIRD OF THE CORPUS — and it is
+precisely the third where an honest answer already exists and costs nothing.**
+
+### 3. THE COST BARELY MOVES, WHICH CONFIRMS COST WAS NEVER THE QUESTION
+
+Empty form ≈ **25–30 output tokens** against ≈140 populated. Blended at 29/71 ≈
+**108 vs 140** → **~$0.18/day instead of ~$0.20.**
+
+**A SENTINEL DOES NOT DISSOLVE THIS DECISION. It was never a money decision.**
+
+### 4. DECLINED vs UNRECOGNISED: ALREADY DISTINGUISHED, AND ROUTED DIFFERENTLY
+
+*Integration was right that these must not collapse — it is the night's lesson
+arriving in a new field. **It has not collapsed.***
+
+- **`NONE`** → `basis: null`. A deliberate "nothing claimed".
+- **Unrecognised** → `UNDETERMINED` with a **named reason**:
+  `UNRECOGNISED_RULE`, `RULE_DIRECTION_MISMATCH`, `CONTENT_NOT_IN_EVIDENCE`,
+  `NOT_SEARCHED`.
+
+**And `whyNot()` routes them to DIFFERENT VERDICTS:** `NONE` with coverage gives
+`NO_OBJECTION_FOUND`; **any UNDETERMINED axis forces `NOTHING_COLLECTED`**, even
+with a healthy source count. *The distinction is not merely recorded — it changes
+what the report says.*
+
+### THE RESIDUAL RISK, AND IT IS A PROMPT PROPERTY RATHER THAN A SCHEMA ONE
+
+**`NONE` BEING AVAILABLE IS NOT `NONE` BEING USED.** *Whether the model declines
+honestly on the 29% is a property of the instructions, and it is measurable —
+run the arm in replay and count how often it returns `NONE`/`NONE` on names whose
+catalyst status is `UNKNOWN` or `NONE_FOUND`.*
+
+**AND THAT MEASUREMENT IS EXACTLY THE TWO DEMOTED ONES (item 111), WHICH CANNOT
+RUN BECAUSE NOTHING PRODUCES A `CatalystEffect`.** **The thing that would de-risk
+the build requires the build.** *That circularity is the real sequencing
+constraint, and it is not resolved by anything in this item — but a replay arm
+breaks it without a deploy, which is the cheapest way through.*
+
+**SO THE ANSWER TO "IS IT GENUINELY FORCED" IS NO — AND THE DECISION IS SMALLER
+AND CLEANER THAN I HANDED IT OVER:** not *"is a mandatory block worth $0.20/day"*
+but ***"will the model say NONE when there is nothing, and are we willing to run
+one replay arm to find out before shipping it."***
