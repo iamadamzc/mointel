@@ -226,7 +226,16 @@ repo — they are public documents and re-fetchable.
   not due; the two floors and their defects stay ready in the volume-basis
   document for the moment the trigger fires; **the trigger — "something
   moving" — is undefined and this seat will not invent a threshold for it**;
-  the risk conversation is Integration's to reopen.
+  the risk conversation is Integration's to reopen. **He then asked what the
+  risk really is and how it would be traced; answered from the contract
+  text in the landscape §1b:** the switch is Alpaca's without cause at any
+  time (structural, from the first viewer, no integrated fallback); the
+  exchanges are third-party beneficiaries who may enforce against him and
+  anyone he supplied; reclassification and retroactive fees are small at one
+  subscriber and anything beyond that is unpublished; and detection is
+  through the public product, not the data pipe, so it scales with publicity
+  rather than viewers. What it means for him in practice is a lawyer's
+  question and the conversation Integration holds.
 
 **Open items.**
 

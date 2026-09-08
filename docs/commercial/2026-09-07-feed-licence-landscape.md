@@ -88,6 +88,92 @@ to invent a threshold for it**; and the risk conversation is **deferred, not
 declined**, held by Integration to reopen. The full record is at the top of
 [../monetization-gates.md](../monetization-gates.md).
 
+### 1b. THE EXPOSURE, AS THE INSTRUMENTS DESCRIBE IT — what happens, and how anyone would know
+
+*Written 2026-09-08 in answer to his question — "so what's the potential risk,
+really? how would they trace it?" — and as the fact base for the risk
+conversation he deferred and Integration holds. Contract text only; what it
+means for him in practice is a lawyer's question, not this seat's.*
+
+**What the texts name as consequences.** Every quotation is from the
+agreements his account is under, read in full.
+
+1. **The switch is Alpaca's, and it needs no reason.** Terms and Conditions:
+   *"You agree that, without notice, Alpaca may terminate these Terms and
+   Conditions, or suspend your access to the Service or the Content, with or
+   without cause at any time and effective immediately."* And: *"Alpaca shall
+   not be liable to you or any third party for the termination or suspension
+   of the Service or the Content."* **This is the risk that exists whether or
+   not anyone ever traces anything:** the product's entire feed is one
+   account the counterparty may close at will, every subscriber goes dark at
+   the same instant, and the fallback is a rebuild of the market worker on a
+   vendor not yet integrated.
+2. **The exchanges can act against him directly, and against anyone he
+   supplied.** NYSE agreement §3: *"the Authorizing SROs are third-party
+   beneficiaries under this Agreement and … may enforce this Agreement, by
+   legal proceedings or otherwise, against Subscriber or any person that
+   obtains Market Data that is made available pursuant to this Agreement
+   other than as this Agreement contemplates."* Nasdaq agreement §10: Nasdaq
+   *"may by notice to Distributor unilaterally limit or terminate the right of
+   any or all Persons to receive or use the Information and … Distributor
+   will immediately comply."*
+3. **He can be asked, and must answer.** Nasdaq §1(a): *"A Non-Professional
+   or Private Subscriber shall comply promptly with any reasonable request
+   from NASDAQ OMX for information regarding the Non-Professional
+   Subscriber's receipt, processing, display and redistribution of the
+   Information."*
+4. **Money, as published.** NYSE's vendor guide: *"If NYSE finds that the
+   vendor has incorrectly qualified a professional subscriber as
+   nonprofessional, the vendor will be liable for retroactive fees billed by
+   NYSE for the subscriber at the professional rate."* The bill lands on
+   Alpaca; Alpaca's Customer Agreement §33 has him *"indemnify, defend and
+   hold harmless"* Alpaca *"from all Losses that result from: (i) My or My
+   agent's misrepresentation or alleged misrepresentation, or act or
+   omission."* UTP data policies: *"Failure to comply with the policies may
+   result in the charging of penalties, interest and/or the termination of
+   service."* At one subscriber the published professional rates are small
+   money — $45, $23 and $24 a month against $3 across the three networks —
+   and back-billing runs to the three-year record the vendor must keep. What
+   an exchange would assess against an individual found redistributing, over
+   and above reclassification, is **not published**, and that is the part a
+   lawyer prices.
+5. **What none of it is.** These are contracts. What they name is
+   termination, reclassification with retroactive fees, penalties and
+   interest, and enforcement "by legal proceedings or otherwise". Nothing on
+   any page read is criminal, and this seat does not opine beyond the text.
+
+**How anyone would know — what is visible and what is not.**
+
+- **Not through the data pipe.** The desk pulls one stream on one account and
+  serves every viewer from its own server. Alpaca sees exactly what it sees
+  today: one connection, the same wildcard subscriptions, one non-professional
+  subscriber. **Viewer count leaves no trace in the feed.** The exchanges see
+  only what Alpaca reports, which is that one subscriber.
+- **Through the product itself.** The evidence of redistribution is the
+  public surface: a site at tmitrader.com showing live prices, a sign-up, a
+  payment processor, marketing under the name, screenshots, app listings.
+  Domain privacy hides the registrant; the operator of a business that takes
+  payments is not hidden. The instruments do not publish how discovery
+  happens; what they establish is that once it has happened, the vendor's
+  records are auditable for three years and the subscriber must answer
+  questions. **So detection is a function of visibility, not of volume:** a
+  handful of invited viewers with no marketing has almost no public surface;
+  a public launch with search presence, payments and social posts is the
+  evidence in full view.
+- **Through his own disclosure.** Registering a Connect app, asking Alpaca
+  support about the product, or giving the 30-day "User Application" notice
+  the Terms ask for — the ruling to accept exposure is, in plain words, a
+  decision not to give that notice. Stated so the ruling is honest about what
+  it accepts.
+
+**What this gives the deferred conversation, without inventing his
+threshold.** The exposure has two parts of different sizes: a **revocation
+risk** that exists from the first viewer and is structural — one account,
+revocable without cause, no integrated fallback — and a **detection risk**
+that scales with publicity rather than with users. *"Something moving"* is
+his to define; the fact that bears on it is that the step from a quiet beta
+to a public launch is the step that creates the evidence.
+
 ---
 
 ## 2. THE DESK SIDE, FROM THE CODE
