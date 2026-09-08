@@ -12626,3 +12626,58 @@ A Design commit swept four of Ops's staged deletions; `git add` constrains what
 goes *in* to the index, not what is *already* there. **I audited my nine commits
 tonight — all clean, and only because nobody else's work happened to be staged.
 That is luck, not method.**
+
+**117. SCOPING MY OWN DEMONSTRATION TO WHAT IT ACTUALLY COVERS — AND ONE LINE OF
+`activity.ts` SAYS 09-04's STREAM WAS DELIVERING WHILE NOTHING REACHED DISK.**
+
+*Integration: **do not stretch one mechanism across two opposite failures.***
+```
+09-03   bars 1.06M persisted   activity_window written on ZERO rows
+09-04   bars ZERO persisted    activity_window written on 7,757 rows
+```
+*Right, and the honest answer is narrower than picking a day.*
+
+### MY DEMONSTRATION SPEAKS TO NEITHER DAY. IT SPEAKS TO EVERY DAY.
+
+**What item 116 shows is that the `activity` VALUE can never be `ACTIVE` when the
+clock is `this.now()`. `ACTIVE` is zero on EVERY date, ever — before 09-03,
+between, and after.** That is a **standing** defect, not an event.
+
+**IT SAYS NOTHING ABOUT PERSISTENCE.** Not why 09-03 wrote no windows while
+storing 1.06M bars; not why 09-04 stored none while writing 7,757 windows.
+*Those are two more failures and my walk is silent on both.* **Claiming it
+explained 09-04 would be the shape-match trap Integration walked into with the
+46 — a mechanism offered because it is adjacent, not because it applies.**
+
+### BUT ONE LINE I OWN DOES BEAR ON 09-04, AND IT NARROWS OPS'S QUESTION
+
+`activity.ts:259`:
+
+```ts
+if (options.minuteTrades.size === 0) {
+  return { state: 'UNKNOWN', deadSince: null, window: [], reason: 'no minute bars observed' };
+}
+```
+
+**AN EMPTY MAP RETURNS `UNKNOWN`. IT CANNOT RETURN `DEAD`.** The comment says why
+it was written that way: *"after a restart the maps are empty, and empty must
+never read as silent."*
+
+**SO ON 09-04, `DEAD 7,757` MEANS 7,757 SYMBOLS HAD A NON-EMPTY `minuteTrades`
+MAP IN MEMORY.** Minute bars were arriving from the stream and being counted.
+The 1,015 `UNKNOWN` are exactly the symbols whose maps were empty.
+
+**THEREFORE 09-04'S ZERO PERSISTED BARS IS A WRITE FAILURE, NOT A FEED FAILURE.**
+*The desk was receiving its discovery input and not storing it.* **That is a
+different repair from a dead subscription, and it is the one Ops's 04:30 query
+should be read against.**
+
+*The inference is from the branch, not from the counts: **any** DEAD row is proof
+of a non-empty map for that symbol. It would hold at 7,757 or at 3.*
+
+### AND IT DOES NOT TOUCH 09-03
+
+09-03 persisted 1.06M bars and wrote **zero** `activity_window` values. **A map
+that produced no window at all is the opposite shape**, and neither the clock
+demonstration nor the branch above says anything about it. **Named as unexplained
+rather than folded in.**
