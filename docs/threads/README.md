@@ -12087,3 +12087,47 @@ nobody looked* — **and only the first survives someone changing it next month.
 **It also converted an incidental into a ruling:** `size`, the row count, was never
 asked about and now falls under the same answer. **A standing ruling should be swept
 across the class immediately, while the reasoning is present.**
+
+## Config rendered from the release means an out-of-band change is silently reverted
+
+`tmitrader.com` went live by hand-rendering nginx from a new template. **`deploy.sh`
+overwrites `/etc/nginx/sites-available/mointel-tls` from THE RELEASE'S template on
+every deploy** — verified against the deployed sha, which contains the old
+single-name form.
+
+**So any deploy of a release without the template change re-renders `server_name`
+as the old host alone and drops the new domain.**
+
+**And it degrades SAFELY: nginx starts, the old name works, the certificate is
+untouched.** That was deliberate — **and it is exactly what makes it dangerous.**
+Nothing fails, nothing logs, and **the first person to notice is the one who asked
+for the name.**
+
+**So the template commit is not an item to weigh against the others. It is a
+prerequisite of not undoing something**, and its absence from a tip is a hold
+condition in the same class as an unwanted change being present.
+
+**General form: after any manual change to a file the deploy renders, the commit
+that makes it permanent is part of the change, not a follow-up.** Until it lands,
+**every subsequent deploy is a silent revert.**
+
+## Do not use someone else's measurement past its warrant
+
+Integration weighed a cost against Ops's latency figures and called it *"a
+sub-second window, negligible."* Ops corrected the framing of its own number:
+
+> **"0.005–0.673s across 920,000 bars including the open, with no reconnect
+> observed. A reconnect did not occur, which is weaker than it cannot occur — and
+> that case's cost is exactly the one a reconnect would lengthen."**
+
+**The measurement bounded normal operation. It was used to bound the failure case,
+which it never sampled.**
+
+**The person who took a measurement knows its warrant; the person who quotes it
+usually does not** — and the quoting is where the bound gets widened, silently,
+into a claim the data never made.
+
+**And when a false comment is being replaced, the replacement must not inherit a
+claim stronger than the evidence.** The parameter this concerned survived three
+months behind a comment nobody looked past. **Writing a new confident sentence in
+its place would be the same failure with a different value.**
