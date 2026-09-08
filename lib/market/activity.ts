@@ -88,12 +88,35 @@ export interface ActivityConfig {
   /**
    * Most recent minutes excluded as still arriving.
    *
-   * A minute in progress is not a dead minute, and a just-closed minute may
-   * not have delivered its bar yet — either read as zero trades would
-   * manufacture death every minute, on every name. This is the same rule as
-   * `lastSettledTradingDate` at a different grain: judge only what is
-   * finished. It costs one minute of detection latency, so a five-minute rule
-   * decides at six, and that is stated rather than hidden.
+   * A minute in progress is not a dead minute, and a just-closed minute may not
+   * have delivered its bar yet. Either read as zero trades is a slot the feed
+   * never spoke for, so the rule judges only what is finished — the same
+   * principle as `lastSettledTradingDate` at a different grain. It costs one
+   * minute of detection latency, so a five-minute rule decides at six, and that
+   * is stated rather than hidden.
+   *
+   * THE VALUE 1 HAS NEVER BEEN MEASURED AND THE EARLIER VERSION OF THIS COMMENT
+   * IS WHY. It claimed a late bar "would manufacture death every minute, on
+   * every name". IT WOULD NOT: `deadMinutes` requires FIVE CONSECUTIVE slots at
+   * or below the dead line, so one late bar cannot produce a death. What it can
+   * do is break a revival run, which needs `reviveMinutes` consecutive — so the
+   * real cost of a late slot is a DELAYED REVIVAL, not a false death.
+   *
+   * That overstatement is the mechanism by which the size went unexamined:
+   * anyone opening this comment read a catastrophic risk and stopped. On
+   * 2026-09-08, 20,498 production bars landed 0.005s-0.200s after their minute
+   * closed, with the only later arrivals being 15 corrections to bars that
+   * already existed. **A ONE-MINUTE MARGIN COVERING A 0.2-SECOND WORST CASE.**
+   *
+   * It is not lowered here, for two reasons that are about evidence rather than
+   * caution. That sample is PREMARKET and `received_at` is stamped when this
+   * process handles the message, so it measures the quietest event loop of the
+   * day rather than the 09:30 one. And it says nothing about a reconnect, where
+   * a resumed socket delivers a burst arbitrarily late. The tail is what a
+   * margin exists for, and the tail is the part not yet measured.
+   *
+   * A count of SLOTS, so the only alternative to 1 is 0. There is no
+   * sub-minute setting, and no measurement can produce one.
    */
   settleMinutes: number;
 }
@@ -132,9 +155,21 @@ export function windowSlots(now: number, config: ActivityConfig): string[] {
  * measurements needs its store named.
  *
  * **36-42% is from `data/market.db` — the LOCAL desk, not production — measured
- * on 2026-08-17/18 and pending a re-take on production's bars. The CONSTRAINT
- * does not depend on it: absent-then-rising is not flat-then-rising at any rate,
- * and this line would not change if it came back 12%.**
+ * on 2026-08-17/18. The CONSTRAINT does not depend on it: absent-then-rising is
+ * not flat-then-rising at any rate, and this line would not change if it came
+ * back 12%.**
+ *
+ * IT SAID "PENDING A RE-TAKE ON PRODUCTION'S BARS" AND THAT PROMISE CANNOT BE
+ * KEPT AS WRITTEN. Production's `minute_bars` holds 2026-09-02 and 2026-09-03
+ * and nothing else — the two dates restored on 09-06 — because the table has
+ * been empty from 09-04 onward. So a re-take can only ever run on those two
+ * sessions, and only if they carry `RVOL_RANK_ENTRY` events with complete
+ * minute coverage. **If they do not, this figure is a local-desk number
+ * permanently, and that is the honest status rather than a queue item.**
+ *
+ * Left as a local figure with its store named, which is what it always was.
+ * "Pending" read as work someone would get to, and a caveat that cannot be
+ * discharged has to say so or it decays into a promise.
  *
  * It starts at the first traded minute and never at the window edge. 36-42% of
  * top-12 rows begin with a hole, and a line drawn from the edge shows
