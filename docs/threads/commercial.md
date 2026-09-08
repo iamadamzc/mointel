@@ -199,7 +199,14 @@ repo — they are public documents and re-fetchable.
   original reads as "instead of a scanner" and the product is a supplement;
   pick offered, *"Your scanner finds it. TMI explains it."*, with the case
   against; "the story behind the move" is occupied (ExplainThisMove, Benzinga
-  WIIM) and both are now in the landscape section. His call on the line. Corrections
+  WIIM) and both are now in the landscape section. **Second pass (§2d), held
+  to his own standard after Integration named it — the line must name the
+  product without naming a competitor, and must not imply completeness:**
+  pick *"Intelligence on what's moving."*, plainer alternative *"What's
+  moving, and what it is."*, six phrases searched exactly with no occupant
+  found and the limits of a tagline search stated. Registration constraints
+  recorded: stop on a price surprise, domain only, no tagline. His call on
+  the line. Corrections
   carried: "Algo Trader Plus" is Alpaca's plan name; no name may borrow from
   a data vendor. Nothing registered; the purchase and any registrar enquiry
   are his.

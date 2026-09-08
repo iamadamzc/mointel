@@ -246,6 +246,55 @@ found / nothing collected) does keep, honestly, but not always
 satisfyingly. If he wants one short line: **"After the scan."** under the
 name, or the expansion itself. His call.
 
+## 2d. THE TAGLINE, SECOND PASS — held to his standard, not to a competitor
+
+Integration's reading of his objection, and it is right: this is the second
+time he has corrected the same axis. First *not the avoid — a depth tool*;
+now *not a replacement — a supplement*. Both times the product had been
+positioned by contrast with something else, and both times he pulled it back
+to what it is. **The standard for the line is his own sentence — "an
+assistant that gives you depth on the moving market" — which names the
+product without naming a competitor.** A line that needs a scanner in the
+room to make sense is borrowing another category to describe itself; and his
+constraint that it *does not tell you plenty that scanners do* is an asset,
+because a line that implies completeness is found false by the first user
+who expects it to scan.
+
+**What a tagline collision check can and cannot see.** Each line below was
+searched as an exact phrase on 2026-09-08, with "trading", "stocks",
+"tagline", "app". That sees indexed web copy. **It does not see trademark
+registers, where a slogan can be registered as a mark; app-store listings
+and social bios that are not indexed; print and video advertising; or
+anything unindexed since the crawl.** So the honest state for every line is
+*"no occupant found"*, never *"unused"*.
+
+| line | names the product without a competitor? | implies completeness? | exact-phrase search, 2026-09-08 | the case against |
+| --- | --- | --- | --- | --- |
+| **"Intelligence on what's moving."** | yes — his word for it, scoped to the moving market | no — "on what's moving" is a scope, not a promise to find everything | no occupant found | "intelligence" is the category word MarketReader trades under for investors at large; it promises depth without saying how; and it invites *how good?*, which the desk's own measured judgement fields answer only partly |
+| **"What's moving, and what it is."** | yes — the board, then the dossier | no | no occupant found | flat: no verb of value, and "what it is" is vague to a stranger; needs the product beside it to land |
+| "Depth on the moving market." | yes — his sentence, nearly | no | no occupant found | "depth" reads as the order book to this audience; the Level 2 flag |
+| "Read the move." | yes — the desk's read | no | no occupant found | terse to the point of cryptic; "read the tape" is the audience's own phrase and this may be heard as a variant of it |
+| "Every mover, explained." | yes | **yes — "every"**: the desk researches the top of its ranking, not every mover, and some names return *nothing collected* | no occupant found; "market movers" is CNBC's, Bloomberg's and Benzinga's generic category | over-claims by one word; drop |
+| "The smart desk for the moving market." | yes — his words | no | no occupant found; "TradeSmart" and "Smart Trader" are adjacent app names | long, and "smart" is the most borrowed word in the app stores |
+| "After the scan." (from §2c) | **no** — the scanner is in the room | no | no occupant found | fails his standard; keep for copy, not the line |
+| "Your scanner finds it. TMI explains it." (from §2c) | **no** — the scanner is the subject of the first sentence | no | no occupant found | the honest supplement sentence for the website's second paragraph, not the tagline |
+
+**This seat's pick under his standard: "Intelligence on what's moving."** It
+is his word, scoped to his market, with no competitor in the room and no
+claim to completeness; it says what the product is rather than what it is
+not. **The case against it, stated so he can overrule it on taste:** it is a
+description more than a hook, "intelligence" is the word the nearest
+positioned competitor already uses for a broader audience, and it puts a
+quality claim in the reader's mouth that the product must keep every
+morning. If he wants plainer, **"What's moving, and what it is."** says the
+same two halves in words nobody else is using.
+
+**Registration, constraints from Integration's sequencing with Ops,
+2026-09-08:** stop if the price surprises at checkout — his authorisation
+was for a domain registration, not for whatever a premium listing puts up;
+and register the domain only, no tagline anywhere, because the line is
+moving.
+
 ## 3. RECOMMENDATION
 
 **Pick: Desk Read.** It is the thing he described — a smart desk that has
