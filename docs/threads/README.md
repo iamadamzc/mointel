@@ -11645,23 +11645,57 @@ action with no reason and the same side effects.**
 re-read, not left.** Rewritten read-only here, carrying the pre-registered outcomes
 to check rather than a restart to perform.
 
-## A superseded instrument's output can outlive its supersession
+## Two quick scans, written independently, blind in different places
 
-Ops built a narrow regex scan, found it blind, replaced it with a classification by
-resolved symbols, and moved on. **Design had already taken one entry from the
-discarded scan's output** — and returned it later as part of an independent
-enumeration.
+Ops built a narrow regex scan over test files, found it blind to the carrier, and
+replaced it with a classification by resolved symbols. Design, separately, wrote a
+python walk mapping repo symbols to the last-seen `it()` block — **with no
+block-end tracking**, so the word `focusRepo` in a **restoration comment sitting
+below the final case** was attributed to that case.
 
-**Integration called that disagreement the first genuinely independent one of the
-night. It was not.** It was **a superseded output coming back wearing another
-thread's name**, and it reads as corroboration or as conflict depending on which
-way it lands.
+**Integration concluded Design had inherited the entry from Ops's discarded scan.
+It had not. It had never seen that output.**
 
-**Worse than a shared assumption**, because a shared assumption is at least still
-believed by both parties. **This one had already been rejected by its author.**
+**Two instruments, written independently, failing the same way** — one blind to the
+carrier, one blind to the block boundary. **That is worse news than contamination,
+not better: the failure is available to anyone who writes a quick scan**, rather
+than being a one-off that travelled.
 
-**And the author's half is sharper: his two instruments disagreed with each other
-on exactly that entry, and he took the newer one without noticing the conflict.**
-**"The newer method won" is not the same as "the conflict was resolved"** — the
-conflict is evidence about one of the instruments, and discarding it discards the
-evidence.
+**And it is the fourth time in one night a comment was read as code — the first
+where the comment belonged to the person reading it.**
+
+**The meta-lesson is the one Design named: a wrong mechanism attached to a correct
+conclusion is the thing this desk has chased all weekend.** The warning about
+inherited inputs is sound and is not what happened here. **The conclusion — that
+the entry was wrong — survived; the explanation had to be replaced entirely.**
+
+**Ops's half stands unchanged and is the sharpest line of the night: his two
+instruments disagreed with each other on exactly that entry and he took the newer
+one without noticing the conflict.** *"The newer method won" is not the same as
+"the conflict was resolved"* — the disagreement is evidence about one of the
+instruments, and discarding it discards the evidence.
+
+## Silence with no precondition is inconclusive, including your own marker's
+
+Design's pre-registered read said the universe-freshness marker should be **silent**
+at premarket. Checking a live baseline first:
+
+```
+universeUpdatedAt : 2026-09-06T21:52:59Z    <- ~45 HOURS OLD
+universeFreshness : FRESH
+universeRollDue   : false
+-> universeWarning() returns null. SILENT.
+```
+
+**The marker was silent on a 45-hour-old universe, correctly** — it speaks on
+`STALE`, or on `UNKNOWN` with `rollDue`. **It reports the engine's verdict and
+cannot contradict it.** If the engine calls a two-day-old universe FRESH, the
+surface is silent by construction.
+
+**So "silent at 04:00" is not evidence the marker works.** The precondition —
+`universeFreshness !== 'FRESH'`, read from the payload rather than from the screen
+— has to hold before silence means anything.
+
+**A surface that reports another component's verdict can only ever be tested
+against a case where that verdict is adverse.** Testing it on a healthy day tests
+nothing, however green it looks.
