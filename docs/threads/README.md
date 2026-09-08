@@ -11598,3 +11598,70 @@ have been merely desirable for the other.
 
 **When a ruling changes which failures are observable, re-derive the build order
 from the new observability, not from the old queue.**
+
+## Two mechanisms, one deliberately producing the state the other deliberately deletes
+
+`RESTART_MARKET=no` exists so a deploy can leave one unit running on the previous
+release. **Prune protects `current` and pinned releases. Nothing protects the
+release a running unit is actually using.**
+
+So a deploy removed the tree `mointel-market` was executing from:
+
+```
+[prune] remove  c84e0df...          <- the live release of a running unit
+/proc/99025/cwd -> / (deleted)
+```
+
+**The unit stayed `active`, `STREAMING`, heartbeat 1s.** The failure is invisible at
+every level anyone looks at. And `ExecStart` is `tsx worker/alpaca.ts` —
+**transpiled from disk on demand**, so any module not yet loaded would have failed
+to read. Not a binary holding its own inode.
+
+**Every branch self-corrected** — `Restart=always`, `WorkingDirectory` pointing at
+`current` — **which is exactly why it would never have been found.**
+
+**Standing rule until prune is fixed: a deploy with `RESTART_MARKET=no` is not
+complete until the old release directory is confirmed to still exist.** One
+`test -d`. If prune has taken it, restart the unit rather than leave it running on
+a deleted tree.
+
+**The general form: when one feature's purpose is to create a state, check every
+janitor that decides what states are garbage.** Neither mechanism is wrong alone.
+
+## A scheduled instruction whose purpose is met does not become inert
+
+The 03:15 task's two purposes were both satisfied early — the refetch had run at
+01:28, the version split was closed.
+
+**It would still have dropped the SIP connection 45 minutes before capture**, then
+expected `max(updated_at)` to move, **which it would not**, because a 2-hour-old
+universe correctly skips the 20-hour guard. **A finding reported at 03:15 about a
+desk that was fine, and a real cost paid to produce it.**
+
+**A scheduled action does not stop acting when its reason expires. It becomes an
+action with no reason and the same side effects.**
+
+**So when the thing a scheduled task was written for happens early, the task is
+re-read, not left.** Rewritten read-only here, carrying the pre-registered outcomes
+to check rather than a restart to perform.
+
+## A superseded instrument's output can outlive its supersession
+
+Ops built a narrow regex scan, found it blind, replaced it with a classification by
+resolved symbols, and moved on. **Design had already taken one entry from the
+discarded scan's output** — and returned it later as part of an independent
+enumeration.
+
+**Integration called that disagreement the first genuinely independent one of the
+night. It was not.** It was **a superseded output coming back wearing another
+thread's name**, and it reads as corroboration or as conflict depending on which
+way it lands.
+
+**Worse than a shared assumption**, because a shared assumption is at least still
+believed by both parties. **This one had already been rejected by its author.**
+
+**And the author's half is sharper: his two instruments disagreed with each other
+on exactly that entry, and he took the newer one without noticing the conflict.**
+**"The newer method won" is not the same as "the conflict was resolved"** — the
+conflict is evidence about one of the instruments, and discarding it discards the
+evidence.
