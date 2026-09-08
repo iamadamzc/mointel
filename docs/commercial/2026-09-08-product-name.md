@@ -115,6 +115,33 @@ Trader"; three on its parts, all in or near the audience:**
 2. **TMI, the Trend Momentum Indicator** — a paid TradingView indicator at
    trendmomentumindicator.com, and a separate "True Momentum Index"
    TradingView script. Same acronym, same audience, momentum in the name.
+
+   **Looked at more closely on 2026-09-08 at his request.** From its own
+   site: *"The Ultimate Trend & Momentum Indicator"*, branded "TMI"
+   throughout with no ™ or ® shown; a TradingView indicator giving *"entry
+   and exit signals"* — an adaptive trend engine, a momentum strength scanner,
+   *"non-repainting arrows"* and alerts — for *"Forex | Crypto | Stocks"* and
+   commodities and indices, on charts from one minute to four hours. Priced
+   $29.99 a month, $59.99 a quarter, $99.99 a year, every plan with *"God
+   Mode"* and *"Access to Private Telegram Trading Community."* Footer:
+   *"RISING EXPRESS INC"*, © 2024; no founder or location named; support by
+   email only. Social handles TikTok **@tmi_indicator**, Instagram
+   @trendmomentumindicator, Facebook. **Following, from the public TikTok
+   profile rendered 2026-09-08: 637 followers, 628 likes, bio "TMI — God Mode
+   for market clarity."** The site's own claim is *"1000+ traders
+   worldwide"*; a Facebook marketing video surfaced by search claims 188K
+   views. The separate **True Momentum Index** is a protected TradingView
+   community script by a user called Trading_Tomm, also abbreviated TMI.
+
+   **What it is, against what the desk is:** a chart-signal product — buy and
+   sell arrows on a TradingView chart, sold by subscription to retail forex
+   and crypto traders with a Telegram room. It has no catalysts, no filings,
+   no float, no ranking, no research and no board; it is the signal platform
+   the desk's own rules define themselves against. **So the collision is on
+   the three letters and the audience, not on the product.** His read on the
+   broker, TMi Markets — not worried, a broker with little following — is
+   his call and is recorded as such. Trademark registers were not searched
+   for either; that remains a lawyer's job.
 3. **TrueMove** — TrueMove H, Thailand's second-largest mobile operator (True
    Corporation, Charoen Pokphand Group). A large brand on the expansion's
    first two words, in another sector and another country. "True Move

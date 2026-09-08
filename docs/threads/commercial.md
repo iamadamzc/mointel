@@ -181,8 +181,12 @@ repo — they are public documents and re-fetchable.
   Intelligence / tmitrader.com / "What your scanner doesn't tell you."**
   tmitrader.com and every alternative clear — the only name tonight clear
   everywhere at once; no occupant on the exact name; flags on the parts:
-  TMi Markets (a retail CFD broker), TMI the Trend Momentum Indicator
-  (TradingView), TrueMove (a Thai telecom); tagline unclaimed and the
+  TMi Markets (a retail CFD broker — his read: not worried), TMI the Trend
+  Momentum Indicator (looked at closer at his request: a $29.99/mo
+  TradingView buy/sell-arrow indicator by "Rising Express Inc", branded TMI
+  with no ™, TikTok @tmi_indicator at 637 followers on 2026-09-08 — a signal
+  product, not what the desk does; collision on the letters and the audience,
+  not the product), TrueMove (a Thai telecom); tagline unclaimed and the
   strongest line produced. The decision is his. Corrections
   carried: "Algo Trader Plus" is Alpaca's plan name; no name may borrow from
   a data vendor. Nothing registered; the purchase and any registrar enquiry
