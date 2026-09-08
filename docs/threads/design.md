@@ -4440,9 +4440,33 @@ working feature; only the payload separates them from the failure.**
     the file must be edited regardless — which is the mechanism by which a
     careless fix takes the other 7 with it. **That is precisely how the original
     eighteen died.**
-  - **SO THE NUMBER TO CHECK IS −11, AND `−9` OR `−18` ARE BOTH DIAGNOSTIC:**
-    `−9` means two repo-coupled cases survived that should not have, **`−18`
-    means the whole file went again.**
+  - **CORRECTION AGAIN — IT IS TEN, AND MY DETECTOR READ MY OWN COMMENT AS CODE.**
+    Ops opened the eleventh; `renders one card per pinned name, in pin order`
+    uses a **literal array**, `buildDeskRow` and `selectFocusRows`, and **no repo
+    symbol at all** — `selectFocusRows` takes the ticker list as an argument, it
+    does not fetch one. **My script appended every matching token to the
+    last-seen `it()` with no block-end tracking**, so the word `focusRepo` in the
+    restoration comment BELOW that case was attributed to it. **THE FOURTH TIME
+    TONIGHT A COMMENT HAS BEEN READ AS CODE, AND THE FIRST TIME IT WAS A COMMENT
+    I WROTE MYSELF.**
+  - **AND `MCP CONTRIBUTES ZERO` WAS WRONG TOO, FOR A DIFFERENT REASON: I
+    SEARCHED FOR THE WRONG TOKEN.** I grepped `get_focus`, found it only inside
+    arrays, and generalised to the whole surface. **Two real cases exist under
+    other names** — `passes no seed candidates when reading Focus`
+    (`tests/mcp/readOnly.test.ts:91`) and `never seeds Focus from a review read`
+    (`tests/review/readOnly.test.ts:126`), the second a **hard delete**: it
+    `readFileSync`s `[token]/api/focus/route.ts`, which the atom removes, so it
+    throws rather than passing vacuously. **A negative from one token is not a
+    negative for the subject.**
+  - **THE RECONCILED ARITHMETIC: removed 12 (10 + 2), added 3 guards, NET −9.**
+    Ops's number is right. **I will not dress this up as a scope difference —
+    my removals-only figure for that file should have been 10, and the MCP claim
+    was an error of search term rather than of boundary.** What IS a genuine
+    scope point is worth keeping: **a shared number that means two things is its
+    own failure**, so the pre-registration now reads **net over the atom**.
+  - **THE ALARM STILL STANDS AND IS THE PART THAT MATTERED:** **`−18` means the
+    file went again.** Ops is removing the 10 plus the module-scope import and
+    keeping 13, and is **reporting the actual rather than the expected.**
 - **A COUNT IS A DETECTOR, NOT A MEASURE.** The suite total went UP to 1871
   while the coverage of pin/unpin/limit went DOWN — those moved from exercised
   (against the repo) to source-asserted (against the hook), and no total can
