@@ -3916,6 +3916,49 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## READ 1 IS NOW A REAL PREDICTION WITH A THRESHOLD, AND 04:00 SETTLES IT
+
+**Research's clock-skew scan refuted the clock cause: no offset from ±1 minute to
++600 produces zero ever-ACTIVE. A constant skew shifts WHICH minute is read; over
+an 899-minute walk a loud name still finds two consecutive loud minutes.**
+
+**MY ASYMMETRY DEDUCTION SURVIVES INTACT. THE CAUSE I ATTACHED TO IT DOES NOT,
+AND I SHOULD OWN THE PART I OVERSTATED.** I wrote *"the only remaining variable
+is where `now` comes from"* and pointed at clock skew. **The real answer is that
+`ticker_session` is one row per `(symbol, trading_date)` and `repo.ts:757` is a
+plain overwrite — THE STORED VALUE IS THE LAST STATE WRITTEN, NOT A HISTORY.** At
+the final write the window looks at t−6…t−2, which are post-close minutes with no
+bars, so **price withholds → NULL and the zero-fill still returns length 5 →
+`activity_window` WRITTEN.** `WHERE activity = 'ACTIVE'` asks a current-state
+table whether a name's FINAL state was active. **Zero is what a WORKING mechanism
+returns.**
+
+**AND THE FACT THAT MAKES 04:00 DECISIVE IS IN MY OWN LANE: THE BOARD READS THE
+STORE, NOT THE LIVE ENGINE.** `readModel.ts:461` — `readDemandStates(db, …)`. So
+the trader's board always renders **the last-written row**, whenever it was
+written.
+
+**⇒ A PRE-REGISTERED PREDICTION WITH A THRESHOLD, WHICH `few` NEVER HAD:**
+
+| what the bars show at 04:00 | conclusion |
+| --- | --- |
+| **non-zero counts on most rows** | **final-write artefact.** My *"every row since 09-03"* is TOO BROAD and must be narrowed to stored post-close rows. **The render is honest during a session.** |
+| **all-zero on rows whose `updated_at` is minutes old** | **real fault mid-session.** My finding stands exactly as reported. |
+| no rows / stale `updated_at` | **INCONCLUSIVE** — say so |
+
+**I AM PREDICTING NON-ZERO.** If the mechanism is last-write-wins, a row written
+at 04:0x has a live `now` and its slots hold bars. **Recorded before the read, so
+it is a test rather than a story — and if it comes back zeros, I was wrong and my
+original report was right for the wrong reason.**
+
+**THE READ MUST CARRY `updated_at`, OR IT DECIDES NOTHING.** All-zero bars on a
+row last written yesterday is the artefact, not a fault. **The precondition is a
+FRESH `updated_at`, read from the payload, separately from the screen** — the
+read-3 rule again, third surface tonight.
+
+**AND IT ANSWERS INTEGRATION'S OPEN QUESTION WITHOUT OPS'S WRITE-TIME QUERY**,
+because the board renders stored rows and at 04:00 those rows are minutes old.
+
 ## READ 2 IS IN ITS THIRD CASE NOW, AND THE MARKER CANNOT FAIL THE WAY I IMPLIED
 
 **The universe refetched EARLY — 01:28 ET Tuesday**, `2026-09-06T21:52:59Z` →
