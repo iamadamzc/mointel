@@ -11866,3 +11866,63 @@ being used, and nobody schedules the moment it comes back.**
 plainness, no hedge, no "pending" — **and it must be repeated as many times as the
 original claim was made.** A caveat cannot retire an instruction; only an
 instruction can.
+
+## A relayed instruction is not an authorisation; the same words direct are
+
+The trader told Commercial *"ops can do that. register with amazon."* Integration
+read that as authorising Ops and wrote it a sequencing plan.
+
+**It did not.** Ops put the question to him directly and **he answered in Ops's own
+session**, naming the account to use and where to find the existing registrations.
+**Then it was authorised.**
+
+**The difference is the channel, not the act.** A relay carries a fact about what
+someone said. **It does not carry the decision to the thread that must perform it** —
+and the performing thread is the one that has to be able to refuse.
+
+**Integration was wrong twice in one message: wrong that a relay could authorise,
+and wrong that the act was unavailable at all.**
+
+## Know where a colleague's hard line actually falls before defending it for them
+
+Integration attributed to Ops a boundary against **purchases**. Ops's line is
+narrower and sharper: **entering payment or credential details.**
+
+A charge against an account whose payment method is already configured, through an
+authenticated API call, on the owner's explicit direct word, **involves no card
+being seen, typed or handled.** That is a different act from standing at a
+checkout.
+
+**Widening someone else's constraint on their behalf looks like respect and is a
+second error** — it blocks work nobody objected to, and it obscures the real line,
+which then goes undefended when it actually matters.
+
+**And the real line, stated by the thread that holds it:** *"entering a password to
+authenticate is the actual hard line."*
+
+## The credentials on this desk are console passwords, not API keys
+
+`A:\AWS_creds` holds **username, password and sign-in URL. Nothing else.**
+
+**No thread here can use them, and none will** — authenticating by typing a
+password is the hard line. **Programmatic access comes from a configured profile,
+which is a different mechanism entirely.**
+
+**Anyone planning work on the assumption those files are usable by a thread is
+planning a handoff that ends at a login form** — and it would surface mid-incident,
+with someone assuming a credential was available.
+
+## Personal contact details that pass through a conversation are in it forever
+
+Registering a domain needs registrant, admin and technical contacts: a real name,
+address, email and phone.
+
+**Ops copied them machine-to-machine — from an existing domain via the API into a
+scratch file, used them, deleted them.** They never entered a chat transcript.
+
+**Details that move through a conversation are in the transcript permanently.
+Details that move between systems and are deleted are not.** Same class as the rule
+that the feed probe's User-Agent is never pasted anywhere it could travel, and
+reached independently.
+
+**A privacy boundary you observe only when reminded is not one.**
