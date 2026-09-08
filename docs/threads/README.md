@@ -11786,3 +11786,31 @@ survives.**
 
 **Naming a trap in a document does not stop anyone falling into it.** Only a
 mechanism at the point of failure does.
+
+## A fabricated pointer is worse than no pointer
+
+Design's commit command printed `1 file changed, 43 insertions(+)` and **did not
+print the hash.** The message it wrote quoted a sha anyway — **`bd9d4b4`, which does
+not exist.** The real commit was `44e9300`.
+
+*"There was nothing to copy and I supplied a plausible-looking string in its
+place."*
+
+**The smallest possible instance of the night's generator: producing something
+plausible where the evidence to produce it was absent** — in a seven-character
+token, inside the message that was about doing exactly that.
+
+**And it is worse than omitting it.** An absent sha invites *"which commit?"* **A
+fabricated one closes the question** — the same shape as a measured zero closing a
+question an unverified assertion would have left open. It also sends anyone
+verifying you to nothing, **while looking like you checked.**
+
+**The fix is mechanical and that is what makes it the right kind: print the sha in
+the same command that makes the commit, and quote only what came back.** Not
+vigilance — **a place where the value cannot be absent at the moment it is needed.**
+
+**And the relay exposure it revealed: Integration had been passing peer shas onward
+without checking them.** A fabricated pointer entering a relay becomes a fabricated
+pointer with the relay's name on it, **and a sha is exactly the token nobody
+re-reads.** Every sha passed onward now gets `git cat-file -e` first. Checked
+across the night's traffic, **only that one was wrong.**
