@@ -3864,6 +3864,44 @@ query that settles it is `activity_window IS NOT NULL AND price_window IS NULL`
 on one day, in production, with `activity` beside it.** Not mine to run, and I
 am not building on it further until someone has.
 
+## READ 2 IS IN ITS THIRD CASE NOW, AND THE MARKER CANNOT FAIL THE WAY I IMPLIED
+
+**The universe refetched EARLY — 01:28 ET Tuesday**, `2026-09-06T21:52:59Z` →
+`2026-09-08T05:28:07Z`, 13,103 **ACTIVE** US equities (Ops, from the box). So at
+04:00 the universe is ~2h old. **My pre-registration's three-way read now sits in
+its third branch: a marker FIRING at 04:00 is the REAL case, not the expected
+one.** Check `universeUpdatedAt` before concluding — the field exists in the
+payload and `universeWarning` reads it (`universe.ts:88`), so the read is
+executable as written. **Verified tonight, not at 04:00.**
+
+**AND THE BASELINE I CAPTURED AT 18:28 MONDAY EXPOSES THE LIMIT OF MY OWN
+INSTRUMENT, WHICH I WOULD OTHERWISE HAVE REPORTED AS A PASS.**
+
+    universeUpdatedAt : 2026-09-06T21:52:59.058Z     <- ~45 HOURS OLD
+    universeFreshness : FRESH
+    universeRollDue   : false
+    -> universeWarning() returns null. THE MARKER IS SILENT.
+
+**A 45-hour-old universe, and my marker says nothing.** That is not a defect —
+`universeWarning` speaks on `STALE`, or on `UNKNOWN` **with** `universeRollDue`
+— **so it reports the ENGINE'S VERDICT, and cannot contradict it.** If the engine
+calls a two-day-old universe FRESH, my surface is silent by construction.
+
+**WHICH MEANS "SILENT AT 04:00" IS NOT EVIDENCE THE MARKER WORKS.** It is the
+read-3 rule arriving at read 2: **silent with no precondition is INCONCLUSIVE.**
+The precondition here is `universeFreshness !== 'FRESH'`, read from the payload,
+**separately from what the screen does.**
+
+| freshness in payload | marker on screen | conclusion |
+| --- | --- | --- |
+| `STALE`, or `UNKNOWN` + `rollDue` | fires | **works** |
+| `STALE`, or `UNKNOWN` + `rollDue` | silent | **defect, goes up immediately** |
+| `FRESH` | silent | **INCONCLUSIVE** — the case did not arise |
+| `FRESH` | fires | **defect** — and this is the case Ops's early refetch makes possible |
+
+**I am recording the fourth row because it is the one the early refetch created,
+and it did not exist in my original three-way read.**
+
 ## The 04:00 method, settled at 18:30 the night before
 
 **I tried to pre-check read 1's premise on production tonight and COULD NOT.
