@@ -11717,9 +11717,38 @@ own account is why:
 > *"Leaving a peer's work alone only protects it if every peer does — and none of
 > us has a rule."*
 
-**THE RULE: stage nothing you are not about to commit. Commit by explicit path —
-`git commit -- <paths>`, or `git add <path>` immediately before. Never `git add -A`
-or `git add .`.**
+**THE RULE — AND THE FIRST VERSION OF IT CONTAINED THE FAILING CASE:**
+
+> **`git commit --only <paths>` (equivalently `git commit -- <paths>`). NEVER a
+> bare `git commit` in a shared tree, even after staging one file. NEVER
+> `git add -A` or `git add .`.**
+
+**The clause that had to be removed was *"or `git add <path>` immediately
+before"* — because that is exactly what produced `f598564`:**
+
+```
+git add docs/threads/design.md && git commit -q -F- <<'MSG'
+```
+
+**One file. Explicit path. Staged immediately before.** It swept four of a peer's
+files anyway, **because `git add` only ADDS to the index and `git commit` then
+commits the WHOLE index** — including everything a peer staged before you arrived.
+
+**Staging by explicit path constrains what you PUT IN. It does nothing about what
+is ALREADY THERE.**
+
+**And that is why the older rule was insufficient rather than wrong: *never
+`git add -A`* guards the ADD, and the exposure is in the COMMIT.** A rule aimed at
+staging cannot see this, because staging was never where the risk lived.
+
+**Verified rather than argued: three commits under `--only` came back
+`1 file changed` with the peer's work still sitting staged behind them.** An audit
+of ten earlier commits was also `1 file changed` — **which is why it looked safe
+for a whole night. It needs a peer's staged work to coincide with your commit, so
+it is rare, and it is not going to stop being possible.**
+
+**A rule that only appears to work is worse than none, because everyone believes
+they are covered.**
 
 **A discipline that only works when universally practised is not a habit, it is a
 protocol** — and one thread observing it while the others do not produces exactly
