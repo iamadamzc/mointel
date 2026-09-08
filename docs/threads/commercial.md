@@ -193,7 +193,10 @@ repo — they are public documents and re-fetchable.
   colloquial expression, *"i think we're good. let's move ahead."* The
   registration: his instruction later that day, *"ops can do that. register
   with amazon"* — relayed verbatim to Ops (Route 53, his AWS account) with
-  Integration copied as a purchase; this seat registers nothing. DNS, mail
+  Integration copied as a purchase; this seat registers nothing. **Registered
+  by Ops 2026-09-08 ~08:27 UTC on his direct answer to Ops, $16 standard, no
+  premium, expires 2027-09-08, privacy on, DNS at Route 53; nothing deployed,
+  no tagline anywhere.** DNS, mail
   authentication and email sign-in are Ops's and Integration's once the
   domain is his. **Tagline under review at his prompting** (§2c): the
   original reads as "instead of a scanner" and the product is a supplement;

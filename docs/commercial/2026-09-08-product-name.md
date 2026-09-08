@@ -29,6 +29,19 @@ no credentials; relayed to Ops direct with Integration copied because it is
 a purchase. The availability reading decays from 05:45 UTC, so the
 registrar's checkout is the next step and it is time-sensitive.
 
+**REGISTERED — Ops, 2026-09-08 at about 08:27 UTC.** tmitrader.com, on his
+direct authorisation to Ops (a relayed approval does not clear a purchase in
+another seat's session, so Ops put it to him and he answered it himself),
+via Route 53 on his AWS account. Standard price, $16.00 registration and
+$16.00 renewal, no premium listing; expires 2027-09-08, auto-renew on,
+registrant privacy on. Ops re-checked availability and price at the
+registrar at the moment of purchase rather than trusting this document's
+05:45 UTC reading — which is the right use of a decaying number. Route 53
+holds both the registration and the DNS, so the A record, the certificate
+and the mail-authentication records will land in one place when that work
+starts; **none of it has started, nothing from this document is deployed
+anywhere, and the site still answers on the sslip.io hostname.**
+
 **The tagline is under review, at his own prompting, same day.** His words:
 *"should we move away from 'what your scanner doesn't tell you' because TMI
 doesnt tell plenty that scanners do...however it is a supplement to a
