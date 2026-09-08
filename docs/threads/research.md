@@ -13148,3 +13148,91 @@ into a live table. **Ops ran it and knows; nobody has asked.**
 **AND IT IS FALSIFIABLE IN ONE STEP:** if the restore inserted rows rather than
 replacing the table, **and** the backfill log for 09-04 shows a large `N`, then
 the restore is excluded and the write failure is real and below the call sites.
+
+**124. `?? 0` IS NOT A CONFLATION TO BE FIXED — IT IS THE FILE'S CORE MECHANIC,
+AND MAKING A MISSING SLOT UNKNOWN WOULD DESTROY DEATH DETECTION ENTIRELY. THE
+LIVE ANSWER IS THE TRADE STREAM, WHICH ALREADY ARRIVES AND IS ALREADY IGNORED.**
+
+*He asked: **"we're cutting off a whole minute because of a 'maybe'? how can we
+make this element more live? this is valuable."** Integration proposed that the
+settle margin papers over `?? 0` conflating "no bar arrived" with "zero trades",
+and that a `null` slot would remove the need for it.*
+
+### THAT CANDIDATE INVERTS THE MECHANIC THE FILE IS BUILT ON
+
+`activity.ts:20`, and it is the file's own emphasis:
+
+> ***"A DEAD MINUTE HAS NO BAR.** Alpaca emits no minute bar for a minute with no
+> trades — measured, not assumed: BTCT on 2025-06-03 returns bars at 13:30, 13:32
+> and 13:33 with `limit=3`, so 13:31 was not displaced by the limit, it does not
+> exist. **Death therefore arrives as an ABSENT ROW rather than a low count.**"*
+
+**ABSENCE IS THE DEATH SIGNAL.** *`?? 0` is not throwing information away — it is
+reading the only signal the feed provides.* **If a missing slot became UNKNOWN,
+every genuinely dead name would read UNKNOWN forever and the rule would detect
+nothing.**
+
+### THE REAL DISTINCTION IS NOT ABSENT-VS-PRESENT. IT IS HOW OLD THE SLOT IS.
+
+**An absent slot from six minutes ago is dead. An absent slot from one minute ago
+may be in flight. Nothing in the bar itself separates them — the discriminator is
+ELAPSED TIME, and `settleMinutes` IS that discriminator.**
+
+**So the margin is not a workaround for a defect. It is the mechanism doing
+exactly the job the candidate wanted done**, and removing it removes the only
+thing standing between "in flight" and "dead". *`activity.ts:156` withholding the
+price window is a different case: there, withholding costs a line on a chart. Here
+it would cost the verdict.*
+
+**AND THE MARGIN CANNOT BE MADE FRACTIONAL.** The window is minute-grained, so
+the smallest non-zero settle is one minute. **Measuring `received_at` is still
+worth doing — it sizes the risk of `settleMinutes: 0` — but it cannot buy a
+smaller margin, only the choice between one and none.**
+
+### THE LIVE ANSWER IS ROUTE 2, AND IT IS SMALLER THAN IT LOOKS
+
+**THE DESK ALREADY RECEIVES INDIVIDUAL TRADES.** `engine.ts:906` dispatches
+`case 'trade'` to `ingestTrade` for every subscribed name.
+
+**`ingestTrade` (`:1086`) COUNTS NOTHING.** It sets price, `priceAt`,
+`priceSource`, session high/low and the after-hours extremes. **The messages
+arrive, are parsed, are used for price, and are then discarded as an activity
+signal** — the same shape as the sentence at the top of this file about trade
+counts *"already parsed off every wildcard bar and until now scored on by
+nothing."*
+
+**A per-minute counter incremented in `ingestTrade` has NO SETTLE MARGIN AT ALL,
+because a trade message IS the event. There is nothing in flight to wait for.**
+The minute in progress becomes countable in real time.
+
+**FOUR THINGS THAT ARE TRUE OF IT AND MUST TRAVEL WITH IT:**
+
+1. **IT COVERS ONLY THE HIGH-RES SET — up to 250 names.** The wildcard BAR stream
+   covers everything; trades cover only what is subscribed. **A trade-derived
+   counter is live for board names and blank for the rest — a two-tier signal,
+   and the tiers must be visibly different.**
+2. **`ingestTrade` RETURNS EARLY THREE TIMES BEFORE IT DOES ANY WORK** —
+   `price === null || price <= 0`, `!inSessionWindow`, and
+   **`!isNewerObservation(runtime.priceAt, observation.ts)`**. *A counter placed
+   after those guards would silently undercount every out-of-order print.* **It
+   has to increment before the ordering guard, which means it is not a one-line
+   change to an existing block.**
+3. **IT IS NOT THE SAME NUMBER AS THE BAR COUNT.** Bars come from the consolidated
+   tape with corrections; a live print stream includes trades that may later be
+   cancelled or revised. **The live counter approximates and converges. The two
+   series must never be rendered as one continuous line.**
+4. **COST IS A MAP WRITE PER TRADE MESSAGE, NO NEW SUBSCRIPTION AND NO SECOND SIP
+   CONNECTION.** *Cheap per message, and there are a great many messages in an
+   active premarket.* **The map needs the same pruning `minuteTrades` has.**
+
+### SO THE HONEST ANSWER TO HIM
+
+**The "maybe" is real and the margin is the right response to it — for a
+BAR-DERIVED count. It is not a workaround and it should not be shortened.**
+
+**What makes the element live is not removing the wait. It is counting a source
+that does not have one**, and the desk is already receiving that source and
+already ignoring it for this purpose.
+
+*Sizing, scope and whether it is worth the message-rate cost are Design's and
+Ops's. **Nothing here is built and nothing should be until he has that.***
