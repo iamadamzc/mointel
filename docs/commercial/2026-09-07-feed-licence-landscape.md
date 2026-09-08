@@ -230,6 +230,126 @@ cannot substitute. The one genuinely free action the Terms describe is an
 requires — which is his to make, whose published answer is no, and which
 creates the record that a quiet beta does not.
 
+### 1c. "How do they know it's their data?" — four answers, each marked STATED or NOT DESCRIBED
+
+*His question, 2026-09-08, relayed by Integration with four sub-questions.
+Searched: Alpaca's Terms and Customer Agreement; the NYSE and Nasdaq
+subscriber agreements Alpaca incorporates; the UTP data policies; the NYSE
+vendor guide and vendor agreement; the CTA fee schedule, delayed-data,
+non-display and click-on documents; the IEX policies and subscriber
+agreement. Thirteen documents, every one read as text.*
+
+**1. Is any technical identification mechanism described? — NOT DESCRIBED.**
+Zero occurrences of watermark, fingerprint, tracer, seeded or dummy symbol,
+steganography or forensic marking in any of the thirteen. *Not described is
+not the same as does not exist*; it is what the published instruments say,
+which is nothing. What they describe instead is the opposite of a hidden
+mark: **display requirements a compliant display must carry visibly.** UTP:
+*"Vendors must display a Prominent Delay Message on all Delayed Data
+Products"*; *"Vendors must display the Consolidated Volume Message for
+displays of Consolidated Volume … alongside non-UTP information"*; the
+Financial Status Indicator on intraday single-security quotes. Nasdaq's
+subscriber agreement: *"Subscriber will attribute source as appropriate
+under all the circumstances."* IEX: *"Data Subscriber must provide a
+prominent attribution message."* **A compliant display is labelled; an
+unlicensed one shows itself by the absence of the labels. That is a tell,
+not a trace.**
+
+**2. Audit and inquiry rights — STATED, and they run at two levels.**
+
+- *Against him, as a non-professional* — Nasdaq §1(a): *"A Non-Professional
+  or Private Subscriber shall comply promptly with any reasonable request
+  from NASDAQ OMX for information regarding the Non-Professional Subscriber's
+  receipt, processing, display and redistribution of the Information."*
+  **Trigger: "any reasonable request." No suspicion threshold, no period,
+  no cause stated. Invoked by the exchange directly, not through Alpaca.**
+- *Against him, once a product makes him a business subscriber* — Nasdaq
+  §1(b): *"Upon request, Professional or Business Subscribers shall make its
+  premises available to NASDAQ OMX for physical inspection … (including
+  review of any records regarding use of or access to the Information and
+  the number and locations of all devices that receive Information), all at
+  reasonable times, upon reasonable notice."*
+- *Against anyone he supplied* — Nasdaq §2: *"In the event of any
+  misappropriation or misuse by Subscriber or anyone who accesses the
+  Information through Subscriber, NASDAQ OMX … shall have the right to
+  obtain injunctive relief."* NYSE §3: the SROs *"may enforce this
+  Agreement, by legal proceedings or otherwise, against Subscriber or any
+  person that obtains Market Data … other than as this Agreement
+  contemplates."*
+- *Against the vendor, about him* — NYSE Vendor Agreement §11: NYSE may
+  *"examine Customer's books and records relating to the Services"* during
+  the term *"and for three years thereafter"*, and inspect premises *"to
+  monitor compliance"*; UTP runs Market Data Reviews of vendors and requires
+  *"Vendor entitlement files … accessible/archived for at least three (3)
+  years."* **So the exchanges audit Alpaca, and Alpaca's records are where
+  his name is.**
+- *Alpaca itself* — no audit or inquiry right over him is described beyond
+  termination or suspension at will and *"if Alpaca finds that your usage
+  violates these Terms."* How it finds is not described.
+
+**3. Is he already under a reporting obligation? — STATED, in three parts.**
+
+- **He affirmed his status.** Nasdaq §1(a): by taking the non-professional
+  rate *"Subscriber is affirming to Distributor and to NASDAQ OMX that
+  Subscriber meets the definition of Non-Professional."*
+- **He must report the change himself.** NYSE questionnaire: *"Subscriber
+  shall notify Vendor promptly in writing of any change in his or her
+  circumstances that may cause him or her to cease to qualify as a
+  Nonprofessional Subscriber or that may change his or her response to any
+  of the preceding questions"* — and the questions include *"Do you receive
+  Market Data for your business or any other entity?"* **Operating a product
+  on the data is a change he is contractually obliged to report to Alpaca
+  in writing, whether or not anyone asks.**
+- **The counts are Alpaca's to report, not his — and they carry his name.**
+  UTP: *"Vendors of Real-Time UTP Information are required to submit usage
+  reports. The usage reports must list the total number of Subscribers"*;
+  and *"A Nonprofessional Subscriber that does not have name attribution is
+  incorrectly misclassified and billable at the Professional rates"*, so a
+  non-professional is reported with a name. NYSE's vendor guide lists what a
+  vendor must furnish to NYSE for each non-professional: *"Subscriber's name
+  and address; Subscriber's occupations; Name(s) and address(es) of
+  Subscriber's employer(s); Subscriber's title(s) and/or position(s)."*
+  **The exchange side already holds who he is, where he lives and what he
+  does, from the day he took the non-professional rate.** Under the
+  compliant path — a vendor with display
+  rights — the monthly per-subscriber reporting would be his product's own,
+  which is Integration's point: they would know because he would have told
+  them.
+
+**4. Is the link simply the account? — STATED, as far as the text goes, and
+it is the answer.** No forensic property of the data is described. What is
+described is: his identity already on the exchange side of the ledger
+through Alpaca's subscriber records and his own affirmation; a standing duty
+to report the change of circumstances himself; an open-ended right to ask
+him about his *"receipt, processing, display and redistribution"*; and
+enforcement against *"any person that obtains Market Data"* through him.
+**The connection is made by inference and inquiry, and the honest answer to
+the inquiry is the admission.** Integration's model is the one the text
+supports: what protects a quiet beta is not obscurity of source but the
+absence of a reason to ask.
+
+**One sharpening of "a price is a fact."** True of a single print. A public
+display of consolidated last sale, NBBO quotes with sizes, LULD bands and
+halt statuses updating in real time is evidence that *some* licensed
+real-time source exists, because those fields exist nowhere else; the
+question "which one" is answered by asking, and his answer is the account.
+**A delayed display or a derived-only display never raises the question**,
+and that is where the answer differs by field.
+
+**By field — STATED, from the UTP derived-data policy already in §5.**
+Real-time volume-only derived data and multi-security derived data are
+*"NOT FEE LIABLE"*, and *"Distribution of non-fee liable Derived Data does
+not require the Recipient to sign the applicable Agreements."* Single-
+security data *"that contains price data"* is *"generally fee liable at the
+underlying product rates,"* and last sale and quotes are the data the
+agreements govern outright. So **a surface of rank, RVOL, catalyst, float,
+structure and the Why Not verdict displays nothing that is "their data" in
+the sense any instrument polices; a surface with Price, Move %, VWAP and
+quotes displays exactly the fields they do.** The caveat that does not move:
+the account that computes either surface is still under Alpaca's personal
+terms for the Content it pulls; the display question and the licence
+question are separate, and this answers only the first.
+
 **What this gives the deferred conversation, without inventing his
 threshold.** The exposure has two parts of different sizes: a **revocation
 risk** that exists from the first viewer and is structural — one account,

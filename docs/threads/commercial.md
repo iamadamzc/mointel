@@ -244,6 +244,18 @@ repo — they are public documents and re-fetchable.
   published answer to that consent is no, and the exchange agreements forbid
   furnishing the data regardless. The choice was not false. The notice is
   free and not neutral: it converts a quiet exposure into a disclosed one.**
+  **Then his mechanical question, "how do they know it's their data?" —
+  answered in §1c from thirteen documents, each of four parts marked STATED
+  or NOT DESCRIBED:** no identification mechanism in the data is described
+  anywhere (what is described is visible attribution a compliant display
+  must carry); the inquiry right is Nasdaq's "any reasonable request …
+  regarding … receipt, processing, display and redistribution", no threshold;
+  he is already obliged to report the change of circumstances himself, and
+  the exchange side holds his name, address, occupation and employer from
+  Alpaca's non-professional records; so the link is the account, made by
+  inference and inquiry, and the honest answer is the admission. By field:
+  a derived-only surface displays nothing any instrument polices; a price
+  surface displays exactly what they do.
 
 **Open items.**
 
