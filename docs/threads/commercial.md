@@ -208,8 +208,11 @@ repo — they are public documents and re-fetchable.
   pick *"Intelligence on what's moving."*, plainer alternative *"What's
   moving, and what it is."*, six phrases searched exactly with no occupant
   found and the limits of a tagline search stated. Registration constraints
-  recorded: stop on a price surprise, domain only, no tagline. His call on
-  the line. Corrections
+  recorded: stop on a price surprise, domain only, no tagline. **DECIDED BY
+  HIM 2026-09-08: "Intelligence on what's moving."** The name is complete —
+  TMI Trader · True Move Intelligence · tmitrader.com · the line — and this
+  seat's naming work is closed. Where the line appears is Design's surface
+  and Integration's sequencing. Corrections
   carried: "Algo Trader Plus" is Alpaca's plan name; no name may borrow from
   a data vendor. Nothing registered; the purchase and any registrar enquiry
   are his.

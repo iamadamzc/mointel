@@ -42,10 +42,24 @@ and the mail-authentication records will land in one place when that work
 starts; **none of it has started, nothing from this document is deployed
 anywhere, and the site still answers on the sslip.io hostname.**
 
-**The tagline is under review, at his own prompting, same day.** His words:
-*"should we move away from 'what your scanner doesn't tell you' because TMI
-doesnt tell plenty that scanners do...however it is a supplement to a
-scanner."* This seat's answer and the alternatives are in §2c. The lawyer's look at the letters is his to commission or to
+**TAGLINE DECIDED BY HIM, 2026-09-08: "Intelligence on what's moving."**
+He had questioned the original himself — *"should we move away from 'what
+your scanner doesn't tell you' because TMI doesnt tell plenty that scanners
+do...however it is a supplement to a scanner"* — and the second-pass drafts
+(§2d) were held to his own sentence, *"an assistant that gives you depth on
+the moving market"*: name the product, no competitor in the room, no implied
+completeness. He picked the line this seat offered first. The case against
+it stands on file in §2d so nobody rediscovers it: a description more than
+a hook, "intelligence" is the word the nearest positioned competitor uses
+for a broader audience, and it is a quality claim the product must keep
+every morning. "What your scanner doesn't tell you" survives as copy where
+the supplement relationship is already stated, never as the line. Whether
+and where the line appears is a product decision — Design's surface,
+Integration's sequencing; nothing is deployed by this decision.
+
+**So the name is complete: TMI Trader · True Move Intelligence ·
+tmitrader.com (registered) · "Intelligence on what's moving."** This seat's
+naming work is closed. The lawyer's look at the letters is his to commission or to
 waive; he has weighed both occupants and said so. Once the domain is his,
 DNS, mail authentication and the email sign-in that was waiting on a domain
 are Ops's and Integration's, not this seat's. Everything below this line is
