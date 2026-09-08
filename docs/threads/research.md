@@ -13308,3 +13308,138 @@ IS the event.* **The latency measurement argues for it rather than against it.**
 distribution at the 09:30 open and across a reconnect, as a p99 and a max rather
 than a range.** *Not premarket steady state. **The margin exists for the tail,
 so the tail is the only part worth measuring.***
+
+**126. BOTH SCOPES PRICED. THE FRESHNESS TIER IS THE `DEAD` VERDICT WEARING
+DIFFERENT CLOTHES — CONFIRMED IN MY FILE — AND THE WHY NOT BLOCK IS UNDER 5% OF
+THE BILL, WHICH IS NOT THE COST THAT MATTERS.**
+
+### THE COUPLING, VERIFIED RATHER THAN RELAYED
+
+`engine.ts:1707`, inside `applyHighResSelection`:
+
+```ts
+const alive = (runtime: TickerRuntime): boolean => runtime.activity !== 'DEAD';
+```
+
+**CONFIRMED. THE HIGH-RES SET IS GATED ON THE `DEAD` VERDICT, SO ANY
+TRADE-DERIVED SIGNAL INHERITS EVERY OPEN QUESTION ABOUT THAT VERDICT.** *It fails
+open — only a positive DEAD demotes — which is why Design saw `highRes` true on 2
+of 50 while all 50 read DEAD.* **A live-data tier built on this is a live tier
+gated by the thing under investigation, and Integration is right that nobody had
+named it.**
+
+**AND THE COVERAGE IS ANTI-CORRELATED WITH THE TRADE.** The gate excludes names
+judged quiet; **a name that wakes up is quiet-then-loud.** *The rows most likely
+to be stale are the rows about to matter — this morning, ranks 1, 2 and 3.*
+
+### OPTION (3), ONE NAME IN THE DRAWER — PRICED
+
+**MEASURED, 2026-08-17, the 65 top-twelve entrants:**
+
+| | |
+| --- | --- |
+| busiest single name | **IPST — 1,308,065 trades**, 1,458/min average over 897 minutes |
+| median entrant | **20,582 trades/session** ≈ 23/min |
+| all 65 together | 6.53M trades/session |
+
+**THE MAP DOES NOT GROW WITH TRADES. IT IS KEYED BY MINUTE SLOT**, so a session
+holds at most ~900 entries per symbol whether the name trades 20,000 times or
+1.3 million. *I told Integration this "needs the same pruning `minuteTrades`
+has" — **`minuteTrades` has no pruning and needs none**, for exactly this
+reason. Correcting my own estimate.*
+
+**⇒ THE COST OF (3) IS NOT CPU AND NOT MEMORY. IT IS ONE SUBSCRIPTION.** Opening
+a drawer subscribes one symbol to trades; closing it unsubscribes. **At the
+busiest name observed that is ~1,458 messages/minute into a `Map.set` — nothing.**
+
+### THE `ingestTrade` SURGERY — SMALLER THAN I IMPLIED, AND THE SIZE IS A
+### PLACEMENT DECISION RATHER THAN A VOLUME OF CODE
+
+```ts
+const price = observation.price ?? null;
+if (price === null || price <= 0) return;                          // 1
+if (!this.inSessionWindow(observation.ts)) return;                 // 2
+if (!isNewerObservation(runtime.priceAt, observation.ts)) return;  // 3  <-- must count BEFORE
+```
+
+**The counter goes BETWEEN 2 AND 3, and that is the whole difficulty.**
+- **After 1** — a null or non-positive price is a malformed print, not a trade.
+- **After 2** — an out-of-session print must not land in a session minute.
+- **BEFORE 3** — **an out-of-order print is a real trade in its own minute.**
+  Counting after the ordering guard silently undercounts exactly the busy names.
+
+**SIZE: two lines at the call site, one field on `TickerRuntime`, one
+initialiser. No pruning.** *"Not a one-line change" was right about the reasoning
+and overstated the code.*
+
+### DOES IT MAKE `settleMinutes` MOOT? NO — CONFIRMED, AND THEY ARE TWO PIECES OF WORK
+
+**A drawer-scoped live count never feeds `resolveActivity`.** The board's verdict
+still comes from `minuteTrades`, which is bar-derived, which is what the margin
+exists for. **The 1-vs-0 decision stays real, stays separate, and is unaffected
+by (3).** *Sequence them independently.*
+
+*The only version that WOULD make it moot is uniform live — option (1) — which
+`stream.ts:288-290` rules out deliberately. **Flagging, not assuming**: that is a
+bandwidth decision, not mine to reopen.*
+
+### THE WHY NOT BUDGET — A BAND, WITH ITS ASSUMPTIONS NAMED
+
+**THE DENOMINATOR, WHICH MATTERS MORE THAN THE RATE. Dossiers, not jobs:**
+
+```
+2026-08-17  48      2026-08-20  89
+2026-08-18  72      2026-08-21  59        mean ~65/day, range 48-89
+2026-08-19  57                            325 versions over 231 tickers, 5 sessions
+```
+
+**THE MODEL MIX, VERIFIED NOT ASSUMED — read from `research_analysis_versions.model`:**
+
+```
+gpt-5.6-terra   299   (92%)
+gpt-5.6-sol      26   ( 8%)
+```
+
+**This is the expensive half and it is where the block lands.** *The last two
+estimates on this desk were 2.3x and 7.7x high for assuming a mix that was not
+there; this one is read off the stored versions.*
+
+**THE MARGINAL BLOCK.** Six fields, a closed six-rule list and four undetermined
+reasons: **~400–800 added input tokens on every call** (schema + instructions),
+**~80–200 output tokens** for the block itself.
+
+```
+terra  600 in x $2.00/M + 140 out x $12.00/M   = $0.0029 / dossier
+sol    600 in x $4.00/M + 140 out x $20.00/M   = $0.0052 / dossier
+at 92/8                                        = $0.0031 / dossier
+x 65 dossiers/day                              ~ $0.20 / day
+
+BAND:  $0.10/day  (48 dossiers, 400 in / 80 out)
+       $0.35/day  (89 dossiers, 800 in / 200 out)
+```
+
+**AGAINST A ~$7–10 SESSION BASELINE: UNDER 5%, AND PLAUSIBLY UNDER 2%.**
+
+**THREE THINGS THAT COULD MOVE IT, STATED:**
+1. **REPAIRS ARE THE REAL RISK.** A repair re-sends the whole bundle. **A block
+   the model fills badly multiplies the call, not the block** — and the repair
+   path is where a new required field with a closed vocabulary would bite.
+2. **CACHED INPUT CUTS IT.** The schema is byte-identical every call, so
+   `cached_tokens` at $0.20/M terra could drop the input side ~10x. **Would push
+   the band toward $0.10.**
+3. **THE DOSSIER COUNT IS FROM AUGUST**, five sessions in the 08-23 snapshot.
+   **Not verified against current volume.**
+
+### AND THE COST THE NUMBER DOES NOT PRICE
+
+***A block the model must fill for a name with nothing to say is where a taxonomy
+starts inventing.***
+
+**Twenty cents a day is not the decision.** The schema is
+`additionalProperties: false` with **every key required**, so the block is
+mandatory on **every dossier — including the majority with no catalyst at all**.
+*A model asked six questions about a name with no event answers them anyway.*
+**`validateCatalystEffect` degrades an unrecognised rule to UNDETERMINED rather
+than discarding it, which is the right design and also means the invented answer
+is RECORDED rather than refused.** *That is the cost, and it does not appear in a
+token count.*
