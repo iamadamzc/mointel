@@ -13790,3 +13790,68 @@ weaker than cannot-occur.* **Case G is a latent failure demonstrated in the
 rule, not an incident.** *It becomes urgent the first time the feed drops for
 six minutes during a session, and nothing today would distinguish that from the
 whole board going quiet.*
+
+**131. RETRACTING "CANNOT". BOTH DISCRIMINATORS ARE LIVE — ONE IS A FIELD THAT
+ALREADY EXISTS ON THE WRONG SIDE OF ONE BOUNDARY.**
+
+*I wrote that fixing case G "means telling a stall from silence, which the store
+cannot currently do, because a missing bar IS the death signal." **Integration
+refused to record `cannot` on two unchecked candidates. Right to refuse — both
+are live.***
+
+### DISCRIMINATOR 1: `lastBarAt` EXISTS, IS SERVED, AND THE VERDICT CANNOT SEE IT
+
+**`worker/runtime.ts:1221` — `this.health.lastBarAt = now`, set on every `bar`
+and `updatedBar` observation, DESK-WIDE.** It reaches `types.ts:515`,
+`readModel.ts:108` and `diagnostics.ts:340`, and Design read it off the 04:00
+payload as *"feed streaming, `lastBarAt` 12s old."*
+
+**IT LIVES ON THE WORKER'S `health`. `resolveActivity` is called from
+`engine.ts:1142` inside `refreshDerived`, and the engine holds no reference to
+it.**
+
+> **THE FIELD IS NOT MISSING. IT IS ON THE WRONG SIDE OF ONE BOUNDARY, and the
+> worker owns both sides.**
+
+**AND IT IS THE RIGHT SHAPE FOR THE JOB: it answers "when did ANY bar last
+arrive."** *A six-minute-old `lastBarAt` is a stalled feed. It cannot be confused
+with a quiet market, because in a real market some name always prints.*
+
+### DISCRIMINATOR 2: THE POPULATION, AND THE ENGINE ALREADY VISITS EVERY NAME
+
+`recompute()` loops `this.tickers` and calls `refreshDerived` per runtime, **so
+the count of names with a non-empty window is available in the pass that is
+already happening.**
+
+**ONE ORDERING PROBLEM, AND IT IS NOT FATAL:** the verdict for the first name is
+computed before the count exists. **Two options, both cheap** — `recompute()`
+already runs more than one loop over `this.tickers`, so a counting pass costs a
+second iteration; or carry the previous cycle's count, **which is one cycle stale
+against a stall that lasts six minutes and spans many.**
+
+**Integration's framing is the argument: a market in which every name stops in
+the same minute does not happen. 09-04 is the proof — 2,369 windows with real
+counts against 5,388 zero. THAT DISTRIBUTION IS A MARKET. ALL-ZERO IS A STALL.**
+
+### SO `CANNOT` WAS WRONG AND IT WAS THE DANGEROUS KIND OF WRONG
+
+*It is the word that stops the next reader looking, which is the same mechanism
+as the false comment that protected `settleMinutes` for three months.* **I wrote
+it about a field that is already computed, already served, and already on
+screen.**
+
+### THE LIMIT WORTH NAMING BEFORE ANYONE BUILDS EITHER
+
+**A MARKET-WIDE HALT LOOKS EXACTLY LIKE A STALL TO BOTH.** During a LULD
+market-wide circuit breaker no bars arrive, `lastBarAt` ages, and every window
+empties. **Whatever is built must decide what it does then** — *"the feed is
+fine and nothing is trading" is a third state, and neither discriminator
+distinguishes it from a stall.*
+
+*Marking every name DEAD during a halt is arguably as wrong as doing it during a
+stall, and the desk already tracks halt state per symbol (`halt_state`,
+`HALT`/`RESUME` events), so the input for that exists too.* **Not scoped, named.**
+
+**NO DESIGN PROPOSED AND NONE ASKED FOR. The finding is that `cannot` is
+unearned and there are two candidates, one of which is a single value crossing a
+single boundary.**
