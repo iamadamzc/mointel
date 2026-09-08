@@ -12543,3 +12543,86 @@ session having stopped at 07:41 ET. NSPR died nine minutes after a 07:12 entry.
 **CHANGED — the size of the second population.** "Admitted without ever being
 loud" is **19 of 65, not 39**, and it is still a real and separate problem that
 neither VANISH nor SHOW-AS-DROPPED addresses.
+
+**116. `ACTIVE` IS NOT UNREACHABLE. IT IS UNREACHABLE FROM `this.now()`. AND THE
+19 SURVIVES BECAUSE IT NEVER READ `activity` AT ALL.**
+
+*Ops's production query: **`activity = 'ACTIVE'` → 0 rows, every date, ever.**
+`price_window IS NOT NULL` → 0 rows, ever. 2026-09-04: DEAD 7,757 · UNKNOWN 1,015
+· ACTIVE 0 · top-12: 12 of 12 DEAD. Integration is withdrawing every "N were
+never active" figure on the strength of it.*
+
+### THE WITHDRAWAL IS RIGHT FOR THE ENGINE'S NUMBERS AND WRONG FOR ONE OF MINE
+
+**The 19 is `MAX(trade_count) < 300` over `minute_bars`.** A direct aggregate.
+**No window. No `resolveActivity`. No `windowSlots`. No clock. No `activity`
+column.** It says nineteen of sixty-five never had a single minute with three
+hundred trades in it — *a statement about the tape, and the artefact cannot
+reach it.*
+
+**Withdrawing it would be withdrawing a true statement because a neighbouring one
+was false.** The Graveyard's 60-of-71 is the engine's and goes. The 39 is my
+walk's `everActive` and stands as computed, though it means the two-consecutive-
+minute rule rather than "never loud". **The 19 is the only never-active figure in
+the thread that touches none of the suspect machinery, and it is the one to keep.**
+
+### AND THE SAME PROBE THAT CLEARED MY WINDOWS ISOLATES THE CAUSE
+
+**MY OFFLINE WALK PRODUCES `ACTIVE`. TWENTY-SIX OF THE SIXTY-FIVE READ ACTIVE AT
+SOME POINT.** Verbatim:
+
+```
+JFU  now 10:10:10.571Z  slots 10:04..10:08  found 3315 1929 2680 2087 960
+     -> ACTIVE  "2 consecutive settled minute(s) at or above 300 trades/min"
+```
+
+| | engine, production | this walk |
+| --- | --- | --- |
+| function | `resolveActivity` | `resolveActivity` |
+| config | `DEFAULT_ACTIVITY_CONFIG` | `DEFAULT_ACTIVITY_CONFIG` |
+| bars | Alpaca minute bars | the same bars, stored |
+| **clock** | **`this.now()`** | **the bar timeline** |
+| `ACTIVE` ever | **never, on any date** | **26 of 65 names** |
+
+**ONE VARIABLE DIFFERS AND IT IS THE CLOCK.** So the alternatives are removed:
+not the rule, not the thresholds, not the config, not the market, not the
+key format — *Design had already killed that one*. **It is where `now` comes
+from.**
+
+*Design deduced it and stopped at the edge of its ground, correctly. This is the
+same claim with the competing explanations eliminated, which is the difference
+between a hypothesis and a located defect.*
+
+### WHAT IT COSTS, STATED AT FULL SIZE
+
+**Two inert mechanisms were cancelling.** `activity` has never been ACTIVE, and
+`queue.ts:83` — the gate that refuses a DEAD candidate — **admitted anyway**:
+research volume held at 193 and 213 jobs against a 149–191 baseline. **A gate
+that has never refused anything, in front of a signal that has never been
+reachable.** *Either working alone would have been obvious within a day: a live
+`ACTIVE` would have made the gate bite, and a working gate would have emptied the
+queue.*
+
+**And the subscription selector reads the same value** (`engine.ts:1707`), where
+`alive()` is `activity !== 'DEAD'`. **If every name reads DEAD, that filter keeps
+nobody** — the fail-open direction, so it has been leaking slots rather than
+dropping live names. **The safe direction, by luck rather than design.**
+
+### WHAT DOES NOT MOVE
+
+**Item 114's death verdicts stand.** That walk takes its clock from the bar
+timeline and never reads `activity`, which is exactly why the artefact cannot
+touch it: 26 active after entering, **15 went dead before the close**, 6 of 10
+above RVOL 5. **JFU held rank 1 all session having stopped at 07:41 ET.**
+
+*And `VANISH` versus `SHOW AS DROPPED` is off the queue until `ACTIVE` is
+reachable — wiring a board to a signal that has never fired once would be the
+purest form of the thing this desk keeps catching.*
+
+### PROCESS, ADOPTED
+
+**`git commit --only <paths>`. Never a bare `git commit` in the shared tree.**
+A Design commit swept four of Ops's staged deletions; `git add` constrains what
+goes *in* to the index, not what is *already* there. **I audited my nine commits
+tonight — all clean, and only because nobody else's work happened to be staged.
+That is luck, not method.**
