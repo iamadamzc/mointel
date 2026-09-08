@@ -12045,3 +12045,45 @@ pass, for the wrong reason.**
 empty input must mean DO NOTHING, never KEEP NOTHING.* **It is now written into the
 code that deletes releases as well as the code that deletes bars** — and the second
 instance was found by someone applying the first rather than by another incident.
+
+## A standing ruling needs its boundary written at the same moment as the ruling
+
+He ruled: *"sort does not survive. names change too much anyway. no need for
+persistence of any kind really."*
+
+**Design took it as standing for a whole class** — filters, collapsed sections,
+column choices, remembered tabs — **and then wrote down where it stops, unprompted:**
+
+> **"No need for persistence of any kind" must not reach auth. A sign-in that did
+> not persist would be unusable. A session cookie is not board state.**
+
+**The class is "state describing names on a board whose population turns over."
+It is not "anything stored in a browser."**
+
+**The reason to write the boundary NOW is that the ruling will be quoted later by
+someone with none of this context — quite possibly its own author.** A
+correct-sounding sentence with no stated edge is the most over-appliable artefact a
+desk produces, **and the relay is the mechanism by which it spreads.**
+
+**And his reason is the durable half, not the verdict:** *names change too much
+anyway.* **A preference carried across a reload is a preference about names that
+are gone.** That is a product fact about this board, not a taste — **and it is why
+the override semantics were right before anyone asked.**
+
+## Verify that the ruling asks for no change, rather than assuming it
+
+Design's surface already complied — `useState` only, and a grep across
+`components/`, `lib/hooks/`, `lib/dashboard/` and `app/` for `localStorage`,
+`sessionStorage`, `indexedDB` and `document.cookie` returned **one hit, a comment
+saying there is none.**
+
+**It checked instead of concluding, and said so.**
+
+**A ruling that retroactively justifies decisions already made is the best available
+outcome and the easiest to mistake for luck.** Recording that it was verified is
+what separates *the surface complies* from *the surface happens to comply and
+nobody looked* — **and only the first survives someone changing it next month.**
+
+**It also converted an incidental into a ruling:** `size`, the row count, was never
+asked about and now falls under the same answer. **A standing ruling should be swept
+across the class immediately, while the reasoning is present.**
