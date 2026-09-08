@@ -12749,3 +12749,91 @@ retire something still running.
 
 **And there is exactly ONE persistence failure, starting 09-04.** 09-03 never had
 a second.
+
+**119. NO CLOCK OFFSET REPRODUCES THE PRODUCTION SHAPE. `ticker_session` STORES
+THE LAST STATE WRITTEN, AND AT SESSION END EVERYTHING IS QUIET — WHICH EXPLAINS
+THE WHOLE THING WITHOUT A DEFECT.**
+
+**RETRACTING THE CAUSE IN ITEM 116. THE DEMONSTRATION STANDS; THE EXPLANATION I
+ATTACHED TO IT DOES NOT.**
+
+### I BUILT THE OTHER HALF OF MY OWN ARGUMENT AND IT REFUTED ME
+
+`worker/clock-skew-scan.ts` walks the same 65 names with the clock deliberately
+offset and counts verdicts. **If a skewed clock produced production's shape, the
+mechanism was demonstrated end to end.**
+
+```
+  clock offset   names ever ACTIVE      clock offset   names ever ACTIVE
+  0 (aligned)    38                     +60 min        36
+  +/-1 min       38                     +240 min       29
+  +/-5 min       38                     +600 min       22
+```
+
+**NO OFFSET DESTROYS `ACTIVE`. NOT ONE MINUTE, NOT TEN HOURS.** *A constant
+offset only shifts which minute the window reads; across a 899-minute walk a
+loud name still finds two consecutive loud minutes somewhere.* **A constant clock
+skew CANNOT produce "zero ACTIVE across 8,772 rows", so it is not the cause.**
+
+### AND THE SCAN'S OTHER COLUMN IS THE ACTUAL ANSWER
+
+| aligned run | |
+| --- | --- |
+| names **ever** ACTIVE | **38 of 65** |
+| names whose **FINAL** state is ACTIVE | **4 of 65** |
+| names whose **FINAL** state is DEAD | **61 of 65** |
+
+**`ticker_session` HOLDS ONE ROW PER `(symbol, trading_date)` AND `repo.ts:757`
+IS A PLAIN OVERWRITE — `activity = excluded.activity`.** Verified: zero
+`(symbol, date)` pairs carry more than one row. **The stored value is the LAST
+STATE WRITTEN, not a history.**
+
+*So `SELECT ... WHERE activity = 'ACTIVE'` asks a current-state table whether any
+name's FINAL recorded state was ACTIVE. **At the end of a session almost nothing
+is still trading.** My own aligned walk gives 4 of 65 at 18:58 ET; production
+reads the whole 8,772-name universe, later. **Zero is the expected answer from a
+mechanism that works perfectly.***
+
+### IT EXPLAINS THE REST OF THE SHAPE TOO, INCLUDING DESIGN'S OBSERVATION
+
+Design's deduction — *`price_window` NULL ⇒ no slot matched ⇒ the activity window
+is all zeros ⇒ reads DEAD* — **is correct as mechanism.** But at the final write:
+
+- `activity.ts:156` withholds the price window entirely when no slot matched →
+  **`price_window` NULL.**
+- `runtime.activityWindow = window.length > 0 ? window : null` — a zero-filled
+  window has length 5 → **`activity_window` WRITTEN.**
+
+**That is exactly Ops's 09-04 pattern: 7,757 activity windows, 0 price windows.**
+*Same mechanism, and the cause is "we are reading the end-of-session state"
+rather than a clock fault.*
+
+### THE DECISIVE TEST, AND IT IS ONE COLUMN
+
+**`ticker_session.updated_at` exists.** So:
+
+1. **What time were the `DEAD` rows last written?** If after the close, the
+   final-state explanation is confirmed and there is no clock defect to fix.
+2. **What do the stored `activity_window` arrays contain?** All zeros at a
+   post-close write is the working mechanism; all zeros at a mid-session write is
+   a real fault.
+
+**Neither needs new code and both are one query.**
+
+### WHAT I GOT WRONG, PRECISELY
+
+**The demonstration in item 116 is intact**: the walk produces `ACTIVE`,
+production's stored column never does. **What I added was a CAUSE — "it is
+unreachable from `this.now()`" — and I called it isolated because I had removed
+the rule, the config, the thresholds and the market.**
+
+**I HAD NOT REMOVED THE QUERY.** *I compared a walk that observes every minute
+against a table that keeps only the last one, and attributed the difference to
+the clock.* **The two sides were never measuring the same thing, and no amount of
+eliminating other variables would have shown that — because the flaw was in the
+comparison, not in the alternatives.**
+
+*Fourth time tonight, and the worst of the four: the first three were counts
+given too broad a register. **This was a mechanism asserted on a comparison that
+did not hold**, relayed to Ops as a located defect, and it would have sent
+someone into `this.now()` looking for a bug that may not exist.*
