@@ -11814,3 +11814,55 @@ without checking them.** A fabricated pointer entering a relay becomes a fabrica
 pointer with the relay's name on it, **and a sha is exactly the token nobody
 re-reads.** Every sha passed onward now gets `git cat-file -e` first. Checked
 across the night's traffic, **only that one was wrong.**
+
+## Auditing the instrument is not auditing the experiment
+
+Design flagged one input as unverified **twice**, and asked the right-sounding
+question: *"is this one predicate or two separate counts?"*
+
+**It was one predicate. The answer was correct and completely useless.**
+
+The comparison was `activity_window SET` against `price_window NULL` on the same
+rows — **and one of the two columns did not exist during the session being
+measured.** `activity_window` was committed 2026-09-04 02:37 ET, before that
+session; `price_window` at 13:09 ET, deployed after it.
+
+**The question never asked was whether the two arms had the same OPPORTUNITY to be
+written.**
+
+*"I audited the instrument and not the experiment — and I did it while
+congratulating myself for auditing the instrument."*
+
+**This is a distinct failure from everything else on this file.** The others are
+*not checking*. **This was checking, thoroughly, at the wrong level** — and the
+thoroughness is what closed the question. **A diligence that produces confidence
+about the wrong property is worse than no check**, for exactly the reason a
+measured zero beats an unverified assertion at ending a conversation.
+
+**Underneath it, the usual absent value carrying two meanings:** `NULL` meant *the
+column did not exist yet*; it was read as *computed and withheld*. **Same absence,
+opposite implications, four commits built on the wrong one.**
+
+**And the discipline at the end: git shows when CODE was written, not when
+production MIGRATED.** The commit dates are *consistent with* the migration stamp
+and do not *establish* it. **Declining to treat corroboration as proof, in the
+direction that would have made you more right, is the check nobody applies at the
+end of an argument they have just lost.**
+
+## Telling someone to distrust a working instrument is the more expensive error
+
+Integration told the trader to disregard the activity sparklines, on a finding that
+was later withdrawn. The bars were correct; the guard was never bypassed; the
+comment on the component was accurate.
+
+> **"An instruction to distrust a working instrument is more expensive than the
+> instrument being broken, because it costs him the reading every morning until
+> someone remembers to take it back."**
+
+**A broken instrument gets fixed by someone. A distrusted working one quietly stops
+being used, and nobody schedules the moment it comes back.**
+
+**So a withdrawal must be issued in the same register as the original** — same
+plainness, no hedge, no "pending" — **and it must be repeated as many times as the
+original claim was made.** A caveat cannot retire an instruction; only an
+instruction can.
