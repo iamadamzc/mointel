@@ -12979,3 +12979,90 @@ passes: zero rows is zero rows.* **One job in eight was asked about a name and
 stored nothing new for it**, which is the fingerprint short-circuit doing exactly
 what it exists to do, and the only part of the original question this snapshot
 can answer.
+
+**122. `trading_date` IS WRITER-ASSIGNED AND DEMONSTRABLY WRONG. "ZERO BARS FOR
+09-04" WAS ASKED WITH IT, SO IT MAY BE THE SAME CLASS OF ERROR AS MY OWN `ACTIVE`
+RETRACTION — A FLAW IN THE QUERY, NOT IN THE WORLD.**
+
+### FIRST, THE CORRECTION I OWE: `repo.ts:163` — AND THE GUARDS ARE PASSED, NOT SKIPPED
+
+*Integration corrected my "`repo.ts:163` is where to look", pointing out two
+guards upstream: `runtime.ts:1426`'s `isTracked` filter and `repo.ts:160`'s
+`bars.length === 0`. **Right that I sent a fixer downstream of both exits. Wrong
+that line 163 may never have run**, and the chain says so.*
+
+```ts
+// runtime.ts:1209 — ONE handler, three lines apart
+const events = this.engine.ingest(observation);   // fills runtime.minuteTrades
+if (observation.bar) this.pendingBars.push(observation.bar);
+```
+
+1. **`activity_window` holds real counts ⇒ `minuteTrades` was populated ⇒ the
+   observation carried a bar ⇒ `pendingBars` WAS pushed.** Same handler, no
+   branch between them but `if (observation.bar)`.
+2. **`activity` is computed by iterating `this.tickers`** (`recompute()`), and
+   `isTracked` is `this.tickers.has(symbol)`. **A symbol with a written activity
+   value was in the map, so the filter kept it.**
+3. **`upsertTickerSessions` (`runtime.ts:1435`) runs LATER IN THE SAME `flush()`
+   than the bar block (`:1421`).** 09-04's `ticker_session` rows exist, **so
+   `flush()` ran to completion — and the bar block executed first.**
+
+**BOTH GUARDS PASSED. THE INSERT RAN.** *So the search is not "did it run" but
+"where did the rows go" — and item 120 already eliminated both deletion paths.*
+
+### AND THE REMAINING EXIT IS THE LABEL, WHICH IS NOT DERIVED FROM THE DATA
+
+```sql
+PRIMARY KEY (symbol, ts)                      -- trading_date is NOT in the key
+ON CONFLICT(symbol, ts) DO UPDATE SET ...     -- and DO UPDATE never sets it
+```
+
+**`trading_date` comes from `this.tradingDate` — the WRITER'S idea of the
+session — never from `ts`.** *A stale or wrong `tradingDate` files a real bar
+under the wrong day, and a query by `trading_date` then reports it missing.*
+
+**THIS IS NOT HYPOTHETICAL. MEASURED ON `data/market.db`:**
+
+```
+rows whose trading_date != the ET date of their own ts:  19,915 of 1,340,336  (1.49%)
+  2026-08-18 -> 2026-08-19    19,915
+```
+
+**Bars timestamped 09:23 ET on 08-19 are filed under `trading_date = 2026-08-18`.
+The writer's session had not rolled.**
+
+### SO THE 09-04 QUESTION HAS TO BE RE-ASKED
+
+**"Zero bars for 09-04" was established with `WHERE trading_date = '2026-09-04'`.
+That is the writer's label, not the bars' timestamps.** *The right question is
+whether any bar's **`ts` falls on 09-04**, regardless of what it is labelled.*
+
+**ONE QUERY, AND IT CAN DISSOLVE THE FINDING OR HARDEN IT:**
+
+```sql
+SELECT trading_date, COUNT(*), MIN(ts), MAX(ts)
+  FROM minute_bars GROUP BY trading_date;
+-- and the decisive one: bucket by the ET date of ts, not by trading_date.
+```
+
+**If 09-04's bars are sitting under another label, they were never missing.** *If
+every row's label matches its own timestamp, the labelling hazard is excluded and
+the write failure hardens — which is worth as much.*
+
+**A CAUTION AGAINST MY OWN LEAD: the local mismatch runs FORWARD — new bars under
+an OLD date. That direction would put 09-04's bars under 09-03, and 09-03 holds
+1.06M, about ONE session rather than two.** *So the specific instance I measured
+does not explain 09-04, and I am not claiming it does. **What it establishes is
+that the mechanism exists and the query cannot see past it.***
+
+### WHY THIS IS WORTH SAYING AT ALL
+
+**It is the same shape as my own retraction four hours ago.** I concluded `ACTIVE`
+was unreachable from a query against a current-state table, and the flaw was in
+the comparison rather than in the world. **"Zero bars for 09-04" is a conclusion
+drawn through a column that is assigned rather than derived, and nobody has
+checked that column against the data it describes.**
+
+*Item 114 is unaffected: every mismatch in the local store is `08-18 -> 08-19`,
+and no 08-17 row is misfiled in either direction, so the session that measurement
+walked is intact.*
