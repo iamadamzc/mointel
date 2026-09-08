@@ -41,8 +41,25 @@ function read(entries: Array<[string, number]>, over: Partial<{
   });
 }
 
-/** Minutes 2..6 back are the judged window: 5 dead minutes after 1 settle. */
-const JUDGED = [2, 3, 4, 5, 6];
+/**
+ * The judged window, DERIVED from the config rather than restated as [2..6].
+ *
+ * It was hardcoded, and that is why `settleMinutes` survived three months of
+ * being 300x larger than the delay it covers: **every test in this file agreed
+ * with the constant because both had been written down separately and neither
+ * could disagree.** Tuning the constant broke nine tests that were asserting
+ * the fixture rather than the rule. `sparkline.test.ts` already learned this
+ * one function away — *"the previous version read the live config and asserted
+ * the result against it, which passes just as well for a hardcoded string."*
+ *
+ * Now the fixtures follow the rule. A change to `settleMinutes` moves this
+ * window and the suite still tests what it says it tests.
+ */
+const SPAN = Math.max(DEFAULT_ACTIVITY_CONFIG.deadMinutes, DEFAULT_ACTIVITY_CONFIG.reviveMinutes);
+const JUDGED = Array.from(
+  { length: SPAN },
+  (_, index) => DEFAULT_ACTIVITY_CONFIG.settleMinutes + 1 + index,
+);
 
 describe('the dead line is derived, never configured twice', () => {
   it('is the active line over the trader\'s ratio', () => {
@@ -69,15 +86,21 @@ describe('resolveActivity — refusing to call a name dead', () => {
     expect(reading.reason).toContain('no minute bars observed');
   });
 
-  it('does not judge the in-flight minute, or the one still arriving', () => {
+  it('never judges the minute in progress, at any settle', () => {
     /*
-     * A minute in progress is not a dead minute, and a just-closed minute may
-     * not have delivered its bar yet. Counting either as zero would
-     * manufacture death every minute on every name. Here the name is busy
-     * across the whole judged window and silent only in the two most recent
-     * minutes -- which is what a healthy name looks like at any instant.
+     * A minute in progress is not a dead minute: `windowSlots` starts at
+     * `settleMinutes + 1`, so t-0 is unreachable at every setting. Asserted
+     * against the DERIVED window so it stays true if the constant moves.
+     *
+     * IT USED TO CLAIM MORE THAN THIS. The previous version also silenced the
+     * just-closed minute and said counting it "would manufacture death every
+     * minute on every name". **That is false and it was measured false:** a
+     * dead run needs `deadMinutes` CONSECUTIVE slots, so one zero cannot
+     * produce a death -- and the scenario it described returns DEAD at both
+     * settle=1 and settle=0, because the other four slots are already quiet.
+     * The sentence defended a parameter nobody then re-examined.
      */
-    const reading = read([...JUDGED.map((back) => at(back, 900)), at(1, 0), at(0, 0)]);
+    const reading = read([...JUDGED.map((back) => at(back, 900)), at(0, 0)]);
     expect(reading.state).toBe('ACTIVE');
 
     /*
