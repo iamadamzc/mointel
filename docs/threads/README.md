@@ -12008,3 +12008,40 @@ opens once a year.**
 
 **Derive anything on a surface that restates a value held elsewhere.** The
 alternative is a second source of truth whose divergence nothing can detect.
+
+## A negative control needs its own positive control
+
+Ops proved a new guard by removing the protection line and re-running: the new test
+should fail, the rest should pass. **Its first attempt silently did not modify the
+file** and reported a clean suite.
+
+*"I nearly filed '17 passed' as evidence the guard worked when nothing had been
+broken to test against."*
+
+**Every vacuous instrument on this desk has been a test that could not fail. This is
+the MUTATION failing to happen** — the check on the check, silently a no-op.
+
+**And its output is indistinguishable from success.** A green suite after a mutation
+that never landed looks exactly like a green suite after a mutation the code
+survived, **and only one of those is evidence.**
+
+**So: mutate, and confirm the mutation landed.** Read the diff, or check the file's
+mtime, or assert the mutated value from the test itself. **Fifth instrument to fail
+on this desk in three days, and the first failure of the thing that was catching
+them.**
+
+## Set-but-empty means "none", not "skip the rule"
+
+The new prune guard asks a probe which releases running units are executing from.
+**If that probe returns nothing, the guard treats it as "no units are running" —
+not as "the rule does not apply."**
+
+The alternative is worse than it looks: **a failing probe would silently restore
+the old, dangerous behaviour**, and it would do so **exactly when the environment is
+degraded** — which is when the protection matters most. **The new test would also
+pass, for the wrong reason.**
+
+**This is the empty-keep-list rule arriving in a second place.** *A delete path's
+empty input must mean DO NOTHING, never KEEP NOTHING.* **It is now written into the
+code that deletes releases as well as the code that deletes bars** — and the second
+instance was found by someone applying the first rather than by another incident.
