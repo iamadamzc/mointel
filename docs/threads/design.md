@@ -4495,6 +4495,27 @@ working feature; only the payload separates them from the failure.**
   myself two days earlier. **I deleted the tests for my own recent change.**
   When reasoning about blast radius, the unit is the FILE the operation touches,
   not the concept I have in mind.
+- **`git add <path>` GUARDS THE ADD. THE EXPOSURE IS IN THE COMMIT.** I staged
+  one file by explicit path — obeying the rule — and `f598564` still landed with
+  **four of Ops's `git rm`'d files in it**, 444 deletions under a message about
+  a sparkline. **`git commit` commits THE INDEX, and in a shared working tree
+  the index is not mine.** The rule I had was written against `git add -A`, and
+  **it named the wrong step**: staging was never where the risk lived.
+  - **THE FIX IS ONE FLAG: `git commit --only <paths>`.** It commits exactly
+    those paths and leaves the rest of the index untouched. Verified — the very
+    next commit came back `1 file changed` with a peer's work still staged.
+  - **AUDITED RATHER THAN ASSUMED:** all ten of my other commits that night are
+    `1 file changed`. **One occurrence, not a pattern** — because it needed a
+    peer's staged work to coincide with my commit, which is exactly why it will
+    recur and why the flag is not optional.
+  - **AND IT IS THE MIRROR OF A COURTESY.** Ops left Research's uncommitted
+    files alone an hour earlier. **Leaving a peer's work alone only works if the
+    peer also does not sweep yours** — one-sided care in a shared index is not
+    care, it is luck.
+  - **THE DAMAGE IS ATTRIBUTION, NOT CORRECTNESS.** The deletions were right and
+    intended; **anyone searching history for where `POST /api/focus` went will
+    not find it under a message about the `Now` column.** Not rewritten — it is
+    on `origin/main` — and Ops recorded the pointer from the other end.
 - **A GATE IN THE SHARED TREE GATES A MOMENT, NOT A SHA.** My run read
   `lib/research/interpret/` while another thread was mid-edit and produced a
   failure that was not reproducible. **Before trusting or reporting a gate,
