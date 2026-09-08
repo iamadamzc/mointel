@@ -11968,3 +11968,43 @@ a session nobody thought to look for.
 Research established that two independent writers would both have had to fail
 leaving no trace, and concluded no single write bug could do it. **That was
 correct — because it was not a write bug at all.**
+
+## Varying one input at a time leaves the combining function untested
+
+`sparklineSpanLabel` returns `Math.max(deadMinutes, reviveMinutes)` minutes. The
+shipped values are **5 and 2** — the first is always larger.
+
+**So a test that varies one field at a time can never exercise the branch where the
+second wins.** Design's fix added the case the shipped configuration cannot
+produce:
+
+```
+at({ deadMinutes: 3, reviveMinutes: 7 })  ->  '7 minutes ending 2 min ago'
+```
+
+**Two mutants, both caught, one failure each:**
+```
+A  body -> a hardcoded string                    caught by the original intent
+B  Math.max(dead, revive) -> deadMinutes         CAUGHT ONLY BY THE NEW CASE
+```
+
+**Mutant B is the realistic edit** — someone simplifying a `max()` they believe is
+redundant, because in every value the system has ever run, it is.
+
+**When a function combines inputs, the shipped values usually make one of them
+dominant.** Test the ordering the product has never produced, or the combination is
+decoration.
+
+## A header that restates a constant is a comment that restates a constant
+
+The activity column's header was going to read `−2m`. It now reads
+`sparklineLagLabel(config)` → `−${settleMinutes + 1}m`.
+
+**A typed `−2m` would have been correct on the day it shipped and silently wrong
+the moment the parameter moved** — and a measurement that may move it was already
+scheduled. **Same defect as a comment asserting a value the code no longer holds,
+except it is on the surface a trader reads at speed rather than in a file someone
+opens once a year.**
+
+**Derive anything on a surface that restates a value held elsewhere.** The
+alternative is a second source of truth whose divergence nothing can detect.
