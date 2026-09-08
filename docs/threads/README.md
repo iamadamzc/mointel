@@ -12215,3 +12215,46 @@ broken instrument can still produce.
 **And the biased sample was named before it was used** — an alphabetical head is
 ETFs and preferreds, which is why there are five strata and not one. **Naming a
 sample's bias before relying on it is cheaper than discovering it in the result.**
+
+## "Cannot" is the word that stops the next reader looking
+
+Research recorded that the store **cannot** tell a feed stall from genuine silence,
+because a missing bar is the death signal. Integration refused to file it.
+
+**Both discriminators turned out to exist already.**
+
+**`lastBarAt` is set on every bar and every updated bar, desk-wide, and served all
+the way to the payload** — Design read it off the screen at 04:00. **It answers
+exactly the right question: when did ANY bar last arrive**, and a six-minute-old
+value cannot be confused with a quiet market, because in a real market some name
+always prints.
+
+> **The field is not missing. It is on the wrong side of one boundary — and the
+> worker owns both sides.**
+
+**And the population check is free:** the engine already visits every name in
+`recompute()`. **2,369 real windows against 5,388 zero is a market. All-zero is a
+stall.**
+
+**So `cannot` was written about a value that is already computed, already served
+and already on screen.** *It is the same mechanism as the false comment that
+protected a parameter for three months: a confident sentence that ends the enquiry
+rather than a claim anyone re-checks.*
+
+**Refuse "cannot" until it is earned.** The cost of refusing it is one question; the
+cost of accepting it is that nobody looks again.
+
+## A third state that neither discriminator separates
+
+**A market-wide halt looks exactly like a stall to both checks.** LULD circuit
+breaker: no bars arrive, `lastBarAt` ages, every window empties.
+
+***"The feed is fine and nothing is trading"* is a third state**, and neither the
+timestamp nor the population separates it from *"the feed is broken."*
+
+**The input exists** — the desk already tracks `halt_state` and `HALT`/`RESUME`
+events per symbol. **Named before either discriminator is built, so that neither
+ships claiming to detect something it cannot.**
+
+**A discriminator that separates two states is not a discriminator when there are
+three.**
