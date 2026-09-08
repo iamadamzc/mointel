@@ -12837,3 +12837,71 @@ comparison, not in the alternatives.**
 given too broad a register. **This was a mechanism asserted on a comparison that
 did not hold**, relayed to Ops as a located defect, and it would have sent
 someone into `this.now()` looking for a bug that may not exist.*
+
+**120. BOTH DELETION PATHS FOR `minute_bars` ARE REFUTED FROM CODE, SO THE 09-04
+BARS WERE NEVER WRITTEN. A NEGATIVE RESULT, WHICH IS THE ONLY KIND I SHOULD BE
+OFFERING ON THIS AFTER TONIGHT.**
+
+*The missing bars are the last finding standing. There are exactly **two** places
+in the codebase that remove a `minute_bars` row — enumerated, not sampled:*
+
+```
+lib/market/store/repo.ts:281   DELETE FROM minute_bars WHERE trading_date NOT IN (...)
+lib/market/store/db.ts:1124    DELETE FROM ticker_session; DELETE FROM minute_bars; DELETE FROM desk_events;
+```
+
+*Every other mention is a `SELECT`, the `CREATE TABLE`, the index, or one
+`INSERT` at `repo.ts:163`.*
+
+### 1. RETENTION CANNOT REMOVE 09-04 WHILE KEEPING 09-02 AND 09-03
+
+`pruneRetention` (`runtime.ts:1687`) builds its keep-list from
+`retainedMinuteBarDates` → `recentMinuteBarDates(db, N)`:
+
+```sql
+SELECT DISTINCT trading_date FROM minute_bars ORDER BY trading_date DESC LIMIT ?
+```
+
+**The keep-list is the N MOST RECENT dates PRESENT, plus `this.tradingDate`
+added explicitly** — the comment says why: *"so a live session's incoming bars
+are never the thing being deleted."*
+
+**09-04 IS MORE RECENT THAN 09-03 AND 09-02.** Any pass that saw 09-04 rows would
+have ranked them **first** in the keep-list. **Retention deletes the OLDEST; this
+is the wrong direction**, and it would have taken 09-02 before it touched 09-04.
+*It also guards `keep.length === 0` → delete nothing, so an empty table cannot
+cascade.*
+
+### 2. THE MODE-SWITCH WIPE CANNOT BE IT EITHER, AND `ticker_session` PROVES IT
+
+`claimStoreForMode` deletes `ticker_session`, `minute_bars` and `desk_events`
+**in one transaction**, when the store's recorded `market_mode` differs from the
+one claiming it.
+
+**09-04's `ticker_session` ROWS SURVIVE — 7,757 DEAD plus 1,015 UNKNOWN.** *A wipe
+would have taken them in the same transaction as the bars.* **So this path did
+not run after those rows were written, and it cannot explain bars missing from
+the same date.**
+
+### SO: NO DELETION PATH EXPLAINS IT. THE ROWS WERE NEVER INSERTED.
+
+**That converges with the two independent readings already on the table:**
+
+- **Ops's**, from the backups: one persistence failure, starting 09-04.
+- **Mine**, from `activity.ts:259` — an empty map returns `UNKNOWN` and cannot
+  return `DEAD`, so **`DEAD 7,757` proves the feed was delivering.**
+
+**FEED ALIVE + NO DELETION PATH ⇒ THE WRITE AT `repo.ts:163` IS WHERE TO LOOK.**
+*Not the retention job, not a mode switch, not the vendor.*
+
+### WHAT THIS IS NOT
+
+**IT IS NOT A MECHANISM AND I AM NOT OFFERING ONE.** *Four hours ago I asserted a
+cause on a comparison that did not hold, and it took building the instrument that
+could refute me to kill it.* **Two eliminations and a narrowed search is what I
+can defend from code tonight; the write path itself is Ops's file and Ops's
+call.**
+
+**AND THE ELIMINATIONS ARE FALSIFIABLE IN ONE STEP EACH:** a retention pass that
+deleted 09-04 would have logged `[store] pruned N minute bars`, and a mode switch
+would have left no 09-04 `ticker_session` rows at all.
