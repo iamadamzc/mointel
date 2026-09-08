@@ -13066,3 +13066,85 @@ checked that column against the data it describes.**
 *Item 114 is unaffected: every mismatch in the local store is `08-18 -> 08-19`,
 and no 08-17 row is misfiled in either direction, so the session that measurement
 walked is intact.*
+
+**123. BOTH PATHS THAT FILL THE MINUTE-TRADE MAP ALSO PERSIST MINUTE BARS. SO
+09-04 IS NOT "A WRITE THAT FAILED" — IT IS TWO INDEPENDENT WRITERS THAT BOTH
+FAILED WHILE THEIR SHARED SIDE-EFFECT SUCCEEDED. AND THE ONE OPERATION KNOWN TO
+HAVE TOUCHED THAT TABLE IS NOT ON THE ELIMINATED LIST.**
+
+*Ops ran the `trading_date` query on production: **zero mislabelled rows across
+2,116,296**, both groupings identical, the total leaving no room under any label
+for a missing session. **My challenge failed and the write failure hardens.** It
+was worth the slot because it could have dissolved the finding; it did not.*
+
+### I WENT LOOKING FOR THE HOLE IN MY OWN ARGUMENT AND FOUND THE OPPOSITE
+
+*My `activity.ts:259` inference — a populated map proves the feed delivered —
+would break if some path filled `minuteTrades` **without** persisting bars. **A
+startup reconstruction is exactly the shape that would do it**, so I checked.*
+
+**THERE ARE EXACTLY TWO CALLERS OF `engine.ingest`:**
+
+| | | persists? |
+| --- | --- | --- |
+| `runtime.ts:1209` | live handler | `pendingBars.push` → `:1426` filter → `upsertMinuteBars` |
+| `runtime.ts:964` | startup backfill | **`upsertMinuteBars(this.db, this.tradingDate, normalized)` at `:975`, direct, bypassing the filter** |
+
+**BOTH PERSIST.** *The backfill does not even go through the tracked-set gate —
+it writes what it reconstructed.* **So my inference survives, and it is now
+stronger than when I made it: every path that can populate `minuteTrades` also
+writes `minute_bars`.**
+
+### WHICH MAKES 09-04 SHARPER, NOT SOFTER
+
+**`activity_window` on 09-04 holds real minute trade counts. Those can only come
+from `minuteTrades`. Both writers of `minuteTrades` also write `minute_bars`. And
+`minute_bars` holds nothing for that date.**
+
+*So this is not one write path failing. **It is two independent writers — one
+filtered and flush-driven, one direct and startup-driven — both failing to leave
+a row, while the in-memory state they share arrived intact.*** **A single bug in
+either call site cannot produce that.**
+
+### ONE CHECK THAT SEPARATES THEM, ALREADY IN THE LOGS
+
+`runtime.ts:999` logs on every startup:
+
+```
+[demand] startup backfill complete through <end> (<N> minute bars, <M> snapshots)
+```
+
+**`N` is `summary.minuteBarsIngested` — the exact count the backfill handed to
+`upsertMinuteBars` at `:975`.** *On 09-04 that line says whether the direct
+writer ran and what it thought it wrote.* **No query needed; it is already
+written down.**
+
+- **`N` large, table empty** ⇒ the write was attempted and did not land. **Points
+  below the call sites, at the connection or the file.**
+- **`N` zero or the line absent** ⇒ the backfill never ran, and only the live
+  writer is in question.
+
+### AND THE OPERATION THAT IS NOT ON THE ELIMINATED LIST
+
+**Eliminated so far: prune, mode-wipe, lock, disk, schema, permissions,
+`trading_date`, the tracked-set gate, the swallowed exception.**
+
+**NOT ELIMINATED: THE 09-06 RESTORE ITSELF.** *It is the one operation known to
+have written `minute_bars` deliberately, it produced **exactly** the two dates
+that survive, and Ops found **fifteen `[demand] flush failed` on 09-06 and on no
+other day**.*
+
+**IF THE RESTORE REPLACED THE TABLE FROM A BACKUP TAKEN BEFORE 09-04, EVERY
+OBSERVATION FITS WITHOUT ANY WRITE HAVING FAILED:** 09-02 and 09-03 present and
+correctly labelled because they came from the backup; 09-04 absent because the
+backup predates it; **09-04's `ticker_session` rows intact because the restore
+touched a different table.**
+
+**THIS IS A CANDIDATE, NOT A MECHANISM, AND THE DISTINCTION IS THE POINT.** *I
+asserted a cause twice tonight and both were wrong.* **What settles it is what
+the restore actually executed** — a table replace, or an insert of two dates
+into a live table. **Ops ran it and knows; nobody has asked.**
+
+**AND IT IS FALSIFIABLE IN ONE STEP:** if the restore inserted rows rather than
+replacing the table, **and** the backfill log for 09-04 shows a large `N`, then
+the restore is excluded and the write failure is real and below the call sites.
