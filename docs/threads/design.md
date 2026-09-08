@@ -3916,6 +3916,50 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## STANDING RULING: NO CLIENT-SIDE PERSISTENCE OF BOARD STATE
+
+> **"sort does not survive. names change too much anyway. no need for
+> persistence of any kind really."**
+
+**Two rulings, and the second is wider than the question I asked.**
+
+**1. SORT DOES NOT PERSIST.** The override semantics stand as built — explicit,
+visible while active, `rank` returns to the session's own order. **Nothing to
+build.**
+
+**2. HIS REASON IS THE PRODUCT FACT, NOT A PREFERENCE: *"names change too much
+anyway."*** The board's population turns over within a session, **so a
+preference carried across a reload is a preference about names that are gone.**
+That is why the override semantics were right in the first place, and **it
+generalises past sort.** Treat *"no need for persistence of any kind"* as the
+DEFAULT ANSWER for filters, collapsed sections, column choices, remembered tabs
+— **the same argument kills all of them, and I do not need to ask him again
+about a member of this class.**
+
+**VERIFIED RATHER THAN ASSUMED — THE SURFACE ALREADY COMPLIES, IN FULL:**
+
+    grep localStorage|sessionStorage|indexedDB|document.cookie
+      across components/ lib/hooks/ lib/dashboard/ app/
+    -> ONE hit, and it is a COMMENT in useFocus.ts saying there is none.
+
+Board state is `useState` only: `size` (`:121`) and `sort` (`:122`). **`size`
+falls under the same ruling and is now ruled rather than incidental.** The
+ruling does not ask for a change — **it retroactively justifies decisions
+already made, which is the best possible outcome and also the easiest one to
+mistake for luck.**
+
+**IT DOES NOT REACH PINS.** In-memory and cosmetic by his earlier ruling; they
+do not survive a reload either, **which is now CONSISTENT rather than a
+limitation I have been apologising for.**
+
+**AND IT MUST NOT REACH AUTH — RECORDING THE BOUNDARY BEFORE SOMEONE ELSE
+APPLIES IT WRONGLY.** A sign-in that did not persist would be unusable: **a
+session cookie is not board state.** The ruling is about *preferences over a
+population that turns over*; **authentication is about identity, which does
+not.** Whoever builds the auth surface — me — must not read this ruling as
+forbidding a session. **The class is "state describing names on the board",
+not "anything stored in a browser".**
+
 ## THE FIVE PREMARKET READS — 2026-09-08, 04:00-04:03 ET. TAKEN, TOKEN REVOKED.
 
 **MY INSTRUMENT WAS POINTED AT THE WRONG ENDPOINT AND THE RENDER CAUGHT IT.**
