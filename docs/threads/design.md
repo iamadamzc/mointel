@@ -3916,6 +3916,57 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## WITHDRAWN: THE FLOOR WAS CERTIFYING A MEASUREMENT THAT DID HAPPEN
+
+**`f598564` is wrong and I am withdrawing its headline.** Ops read the stored
+windows: **2,369 of 7,757 carry real counts** — `[0,0,79,180,6]`,
+`[160,184,257,365,14]`, `[66,100,119,305,18]`. **They are measurements.** The
+5,388 all-zero rows are post-close rows for names that had genuinely stopped, and
+**every 09-04 row was last written at or after 20:00:02Z — 16:00:02 ET. Not one
+mid-session.** **My 1px floor was doing exactly the job its comment claims.**
+
+**MY CHAIN WAS VALID AND MY PREMISE WAS FALSE.** `price_window` NULL ⇒ no slot
+matched `minuteCloses` ⇒ (superset) none matched `minuteTrades` ⇒ zero-filled
+window. **Every step holds. The premise does not: the column had never had an
+opportunity to be written.**
+
+**FROM GIT, AND THE TWO DATES ARE THE WHOLE STORY:**
+
+    activity_window   fce254c  2026-09-04 08:37 +0200  = 02:37 ET, BEFORE that session
+    price_window      cb64c2e  2026-09-04 19:09 +0200  = 13:09 ET, and deployed AFTER it
+
+**⇒ THE SIBLING CONTRAST THAT STARTED ALL OF THIS COMPARED A COLUMN THAT EXISTED
+DURING THE SESSION WITH ONE THAT DID NOT.** 7,757 versus 0, same rows, same
+statement — **and one arm could not have been written at all.**
+
+**I FLAGGED THAT INPUT AS UNVERIFIED AND I CHECKED THE WRONG PROPERTY.** I asked
+*"is it one predicate or two counts?"* — it was one predicate, and that answer
+was correct and useless. **I never asked whether both arms had the same
+OPPORTUNITY to be written.** A controlled comparison needs both arms to have
+existed; **checking that a query is well-formed says nothing about whether its
+terms are comparable.**
+
+**AND THE ABSENT VALUE CARRIED TWO MEANINGS, WHICH IS THE FAMILY I HAVE BEEN
+NAMING ALL NIGHT, ARRIVING UNDERNEATH MY OWN REASONING.** `NULL` meant *"the
+column did not exist yet"*; I read it as *"computed and withheld."* **Same
+absence, opposite implications** — and I built four commits on the second.
+
+**WHAT I CAN AND CANNOT CONFIRM MYSELF, SAID PRECISELY:** git shows when the CODE
+was written. **It does not show when production MIGRATED.** The 2026-09-05T08:32Z
+migration timestamp is Ops's, from the box, and I have not seen it. **The commit
+dates are consistent with it and do not establish it.**
+
+**WHAT SURVIVES:** the asymmetry itself — a missing slot zero-fills in one path
+and withholds in the other — **is still real code and still the reason one
+failure would be invisible.** It was not firing. **And `DEAD 7,757` still proves
+the feed was alive, because an empty map returns UNKNOWN, never DEAD.**
+
+**04:00 IS THE FIRST MID-SESSION READING OF THIS TABLE ANYONE HAS TAKEN.**
+Every prior observation is an after-the-close snapshot. **So `ACTIVE` appearing is
+not a fix and its absence is not the old behaviour — it is the mechanism seen at
+a time of day never observed. READ IT AS NEW, NOT AS RECOVERED.** My non-zero
+prediction stands and is better motivated, not worse.
+
 ## READ 1 IS NOW A REAL PREDICTION WITH A THRESHOLD, AND 04:00 SETTLES IT
 
 **Research's clock-skew scan refuted the clock cause: no offset from ±1 minute to
