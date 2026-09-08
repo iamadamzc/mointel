@@ -3864,6 +3864,58 @@ query that settles it is `activity_window IS NOT NULL AND price_window IS NULL`
 on one day, in production, with `activity` beside it.** Not mine to run, and I
 am not building on it further until someone has.
 
+## THE ZERO-FILL DEFEATS MY OWN NOT-MEASURED GUARD, AND THE DEFENCE IS WHAT MAKES IT CONVINCING
+
+**Ops confirmed it at row level, one predicate, `trading_date=2026-09-04`:
+`aw SET | pw NULL` = 7,757, `aw NULL | pw NULL` = 1,015, and NO other bucket.
+Same rows. And production-wide, ever: `price_window IS NOT NULL` → 0 rows,
+`activity = 'ACTIVE'` → 0 rows. 12 of 12 top-by-rank DEAD.**
+
+**THE CONSEQUENCE IS ON MY SURFACE AND IT IS MINE TO REPORT.**
+
+`sparklineView` returns null **only** on `!window || window.length === 0`
+(`sparkline.ts:73`). **A zero-filled window has length 5.** So:
+
+    values  = [0,0,0,0,0]      peak = 0      silent = true
+    heights = [0,0,0,0,0]      -> Math.max(1, ...) -> a 1px floor bar, five times
+    title   = "Trades per minute over the ...: 0, 0, 0, 0, 0."
+
+**THE `—` BRANCH NEVER FIRES.** `ActivitySparkline.tsx:29-37` returns *"No minute
+activity recorded — not measured, which is different from silent"* **only when
+the array is absent.** The engine hands it a present array of zeros, so the
+component takes the other path and states the opposite.
+
+**AND THE 1px FLOOR IS THE PART THAT STINGS.** My own comment at
+`ActivitySparkline.tsx:100-103`: *"A measured zero still draws a 1px floor, so a
+silent minute is visibly a MEASUREMENT rather than a gap. Not-measured never
+reaches here — it returned above."* **That floor exists precisely so a reader can
+tell a measurement from a gap. It has been certifying a measurement that never
+happened, on every row, since 09-03.**
+
+**I BUILT TWO DEFENCES AGAINST EXACTLY THIS AND BOTH ARE BYPASSED BY THE SAME
+FACT.** `activityWindow: NULL means NOT MEASURED, never []` — the writer honours
+it; the zero-fill produces a **non-empty** array upstream of the writer, so the
+distinction is destroyed before my guard can see it. **A guard on the shape of
+the value cannot catch a value of the right shape and the wrong provenance.**
+
+**⇒ READ 1 IS ANSWERED BEFORE 04:00, AND WORSE THAN I PRE-REGISTERED.** I was
+going to report *one colour observed, three unobservable*. **The truth is that
+the entire `Now` column has been asserting a measurement it never took** —
+`ACTIVE` and a populated `price_window` have a **zero denominator across the
+whole life of the feature.** I will still take the read at 04:00 and report the
+RENDERED state, because a payload fact is not an observation of a screen.
+
+**AND THE VANISH GATE IS NOW ARITHMETIC, NOT JUDGEMENT.** He ruled vanish on a
+signal that is **100% DEAD and has never once been ACTIVE**. **Shipping vanish
+against today's signal empties the board.** Not "risks hiding a good name" —
+**every row, every day.** Gate 1 was right and it is now quantified.
+
+**Research admission did not collapse on the affected days** (Ops: 193 and 213
+jobs, at or above baseline), **so the DEAD gate at `queue.ts:83` is reading DEAD
+and admitting anyway** — a gate that has never refused anything, in front of a
+signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
+why nobody saw it.**
+
 ## READ 2 IS IN ITS THIRD CASE NOW, AND THE MARKER CANNOT FAIL THE WAY I IMPLIED
 
 **The universe refetched EARLY — 01:28 ET Tuesday**, `2026-09-06T21:52:59Z` →
