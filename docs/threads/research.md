@@ -12681,3 +12681,71 @@ of a non-empty map for that symbol. It would hold at 7,757 or at 3.*
 that produced no window at all is the opposite shape**, and neither the clock
 demonstration nor the branch above says anything about it. **Named as unexplained
 rather than folded in.**
+
+**118. THE COLUMN'S BIRTHDAY RETIRES MY 09-03 ITEM, STRENGTHENS THE ISOLATION —
+AND EXPOSES THAT I WROTE "EVERY DATE, EVER" ABOUT WHAT MAY BE ONE SESSION.**
+
+*Ops established `activity_window` was added **2026-09-04T07:29Z, thirty-one
+minutes before that session opened at 08:00Z** — checking against its own earlier
+claim that it might have landed mid-session, and finding it did not.*
+
+### WHAT IT RETIRES OF MINE
+
+**Item 117's 09-03 paragraph is dead, and cleanly.** I wrote that 09-03 persisted
+1.06M bars while writing zero `activity_window` values, called it "the opposite
+shape", and **named it unexplained rather than inventing a mechanism for it**.
+There was no mechanism to find: **no column existed on 09-03.** *A zero from a
+column that does not exist is not a defect, and naming it as unexplained rather
+than explaining it is the only reason it retires without leaving a wrong story
+behind.*
+
+**Also dead as input: 09-03's `activity` values** (`DEAD 1563 / UNKNOWN 7243`).
+Written after that session ended. **Not observations of that tape.** Ops's
+finding, on Ops's table; I hold no contrary evidence.
+
+### WHAT IT STRENGTHENS
+
+**09-04 is a COMPLETE session with the column live from before the open, the
+in-memory map populated throughout — `DEAD 7,757` requires a non-empty map by
+`activity.ts:259` — and ZERO `ACTIVE` across 8,772 rows.**
+
+*Not a sample. Not a partial day. **No branch left for "the column was not there
+yet."*** Against my walk producing `ACTIVE` from the same function, the same
+`DEFAULT_ACTIVITY_CONFIG` and the same bars, that is a clean denominator.
+
+### AND WHAT IT CORRECTS IN ITEM 116, WHICH IS MINE
+
+I wrote: ***"`ACTIVE` is zero on EVERY date, ever — before 09-03, between, and
+after. That is a standing defect, not an event."***
+
+**THE COLUMN DID NOT EXIST BEFORE 2026-09-04T07:29Z. SO EVERY ZERO BEFORE THAT
+DATE IS VACUOUS — THERE WAS NOWHERE TO RECORD AN `ACTIVE`, SO FINDING NONE IS NOT
+EVIDENCE OF ANYTHING.**
+
+The real evidence base is **09-04 onward**, and 09-04 is described as the last
+live session. **So the isolation may rest on ONE session rather than on the whole
+history, and I stated it as the whole history.**
+
+*The demonstration is not weakened — 8,772 rows with both inputs present all day
+is a strong denominator, and stronger than the sample I had. **What is weakened
+is the breadth I claimed for it.*** "Zero on every date, ever" reads as many
+sessions agreeing. It is one session, plus a stretch of dates that could not have
+disagreed.
+
+**THE SAME ERROR AS THE 39 AND THE 46, FOR THE THIRD TIME TONIGHT: A TRUE COUNT
+GIVEN THE REGISTER OF A BROADER CLAIM.** *Here it was handed to me by a fact that
+arrived afterwards, rather than caught — which is the difference between the
+first two and this one.*
+
+### THE SPLIT, RESTATED SO NOTHING FOLDS
+
+| | why `ACTIVE` never appears | fixable |
+| --- | --- | --- |
+| before 2026-09-04T07:29Z | **no column to record it in** | n/a — nothing to repair |
+| 09-04 onward | **the clock asks for minutes the map does not hold** | **yes, and it is live** |
+
+**Two causes, one outcome. Only the second is a defect.** Folding them would
+retire something still running.
+
+**And there is exactly ONE persistence failure, starting 09-04.** 09-03 never had
+a second.
