@@ -187,7 +187,14 @@ repo — they are public documents and re-fetchable.
   with no ™, TikTok @tmi_indicator at 637 followers on 2026-09-08 — a signal
   product, not what the desk does; collision on the letters and the audience,
   not the product), TrueMove (a Thai telecom); tagline unclaimed and the
-  strongest line produced. The decision is his. Corrections
+  strongest line produced. **DECIDED BY HIM 2026-09-08: TMI Trader / True
+  Move Intelligence / tmitrader.com / "What your scanner doesn't tell you."**
+  His words on the letters: a chart indicator with a few hundred followers, a
+  colloquial expression, *"i think we're good. let's move ahead."* The
+  registration is his and time-sensitive (clear at 05:45 UTC that day); DNS,
+  mail authentication and email sign-in are Ops's and Integration's once the
+  domain is his. This seat's naming work is closed unless he asks for a
+  re-check before buying. Corrections
   carried: "Algo Trader Plus" is Alpaca's plan name; no name may borrow from
   a data vendor. Nothing registered; the purchase and any registrar enquiry
   are his.

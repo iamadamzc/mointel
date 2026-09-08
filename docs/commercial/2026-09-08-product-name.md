@@ -9,6 +9,28 @@ and typed without a hyphen. Public sources only. **Nothing was registered, no
 account was created, no registrar or vendor was contacted.** The purchase is
 his.
 
+## DECIDED BY THE TRADER, 2026-09-08 — TMI TRADER
+
+**Brand: TMI Trader. Meaning: True Move Intelligence. Domain: tmitrader.com.
+Tagline: "What your scanner doesn't tell you."** His candidate (§2b), checked
+by this seat at 2026-09-08 05:45 UTC and clear on `.com` and every
+alternative at that moment. His ruling on the collisions, verbatim, after the
+closer look at the indicator:
+
+> *"the two that use "TMI" are a chart indicator with a few hundred followers
+> … and TMI has some public use context as a colloquial expression. i think
+> we're good. let's move ahead"*
+
+**What moves ahead, and whose it is.** The domain registration is his and
+only his — this seat registers nothing, and the availability reading decays
+from 05:45 UTC, so the registrar's checkout is the next step and it is
+time-sensitive. The lawyer's look at the letters is his to commission or to
+waive; he has weighed both occupants and said so. Once the domain is his,
+DNS, mail authentication and the email sign-in that was waiting on a domain
+are Ops's and Integration's, not this seat's. Everything below this line is
+the record of how the name was reached; §3's recommendation is superseded by
+his decision.
+
 ## 0. REFRAMED BY THE TRADER, 2026-09-08 — THIS SUPERSEDES THE FIRST PASS
 
 The first pass took the avoid positioning as the axis. His correction,
