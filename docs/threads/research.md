@@ -12905,3 +12905,77 @@ call.**
 **AND THE ELIMINATIONS ARE FALSIFIABLE IN ONE STEP EACH:** a retention pass that
 deleted 09-04 would have logged `[store] pruned N minute bars`, and a mode switch
 would have left no 09-04 `ticker_session` rows at all.
+
+**121. THE FINGERPRINT-MOVEMENT QUERY IS UNANSWERABLE, AND THE REASON IS THAT
+`fetched_at` IDENTIFIES A ROW RATHER THAN A PASS. CLOSING IT AS A NEGATIVE.**
+
+*My last genuinely open item: **per `(ticker, trading_date)`, distinct `fetched_at`
+moments bringing new source rows against the number of times the job was asked.***
+
+### THE FIRST RUN LOOKED LIKE AN ANSWER AND WAS BACKWARDS
+
+```
+(ticker, trading_date) pairs with at least one job : 323
+jobs asked                                         : 964
+distinct fetched_at values on those pairs          : 3,960
+```
+
+**FOUR "FETCH MOMENTS" PER JOB.** *A number that says collection ran four times
+for every time it was asked is not a finding, it is a broken denominator* — so I
+checked the numerator before writing it down.
+
+### `fetched_at` IS MINTED PER ROW FOR THE DOMINANT SOURCE TYPE
+
+| source_type | rows | distinct `fetched_at` | ratio |
+| --- | --- | --- | --- |
+| **SEC_FILING** | **3,253** | **3,247** | **1.00** |
+| SEC_SUBMISSIONS | 257 | 257 | 1.00 |
+| SEC_COMPANY_FACTS | 211 | 211 | 1.00 |
+| SEC_EXHIBIT | 878 | 256 | 0.29 |
+| COMPANY_NEWSROOM | 105 | 35 | 0.33 |
+| COMPANY_IR | 93 | 34 | 0.37 |
+
+**`sec/collector.ts:453` calls `new Date().toISOString()` PER FILING**, so every
+`SEC_FILING` row gets its own millisecond. **`catalyst/collector.ts:412` uses a
+single `now` for the pass**, so exhibits and company sources share one.
+
+**SO THE COLUMN MEANS DIFFERENT THINGS IN DIFFERENT ROWS OF THE SAME TABLE**, and
+for the two-thirds of rows that are `SEC_FILING` it means *"when this row was
+made"*, not *"when the pass ran"*.
+
+**TRUNCATION DOES NOT RESCUE IT.** 4,882 rows carry 1,329 distinct seconds and
+283 distinct minutes. Rounding to the minute would merge genuinely separate
+passes and still split any pass that straddled a boundary. **A pass has no
+identifier at all.**
+
+### SO THE QUESTION FAILS TWICE OVER, INDEPENDENTLY
+
+1. **Item 110:** a pass that added nothing writes no row and leaves no timestamp,
+   **so unproductive passes are invisible.**
+2. **This:** a pass that DID add rows cannot be recognised as one pass, **because
+   its rows do not share a timestamp.**
+
+**THE DESK CANNOT COUNT ITS OWN COLLECTION PASSES IN EITHER DIRECTION.** *I have
+been carrying this query on the open list for days as though it were work
+waiting to be done. It was never runnable.*
+
+### THE ANSWERABLE SUBSET, NAMED SO THE ITEM CLOSES CLEANLY RATHER THAN VANISHING
+
+**`research_jobs.sources_ready_at` is one timestamp per job, set by
+`markJobStage`.** *Job-driven collection passes ARE countable — one per job with
+that column non-null.* **What stays uncountable is the 60-second source polling
+and the 10/30-minute discovery re-looks**, which is most of the volume and all of
+the cheap tier.
+
+**A `pass_id` on `research_sources` would settle it.** That is a schema change in
+`lib/market/store/` — **Ops's file, Ops's call, and I am not proposing it on the
+strength of a query nobody has asked for since.**
+
+### ONE FIGURE FROM THE RUN THAT SURVIVES ITS OWN DENOMINATOR
+
+**43 of 323 `(ticker, trading_date)` pairs with at least one job — 13.3% — had NO
+source row fetched that day at all.** *That does not depend on identifying
+passes: zero rows is zero rows.* **One job in eight was asked about a name and
+stored nothing new for it**, which is the fingerprint short-circuit doing exactly
+what it exists to do, and the only part of the original question this snapshot
+can answer.
