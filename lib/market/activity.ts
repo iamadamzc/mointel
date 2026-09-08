@@ -95,28 +95,68 @@ export interface ActivityConfig {
    * minute of detection latency, so a five-minute rule decides at six, and that
    * is stated rather than hidden.
    *
-   * THE VALUE 1 HAS NEVER BEEN MEASURED AND THE EARLIER VERSION OF THIS COMMENT
-   * IS WHY. It claimed a late bar "would manufacture death every minute, on
-   * every name". IT WOULD NOT: `deadMinutes` requires FIVE CONSECUTIVE slots at
-   * or below the dead line, so one late bar cannot produce a death. What it can
-   * do is break a revival run, which needs `reviveMinutes` consecutive — so the
-   * real cost of a late slot is a DELAYED REVIVAL, not a false death.
+   * WAS 1 UNTIL 2026-09-08, ON NO MEASUREMENT AT ALL, AND THE EARLIER VERSION
+   * OF THIS COMMENT IS WHY IT SURVIVED. It claimed a late bar "would manufacture
+   * death every minute, on every name". IT WOULD NOT, and that is still the
+   * load-bearing argument here rather than any latency figure: `deadMinutes`
+   * requires FIVE CONSECUTIVE slots at or below the dead line, so one late slot
+   * read as zero cannot produce a death on a live name — one of five is not
+   * five of five. It can only break a revival run, which needs `reviveMinutes`
+   * consecutive. **THE COST OF A LATE SLOT IS A DELAYED REVIVAL, NOT A FALSE
+   * DEATH**, and it self-corrects on the next evaluation.
    *
-   * That overstatement is the mechanism by which the size went unexamined:
-   * anyone opening this comment read a catastrophic risk and stopped. On
-   * 2026-09-08, 20,498 production bars landed 0.005s-0.200s after their minute
-   * closed, with the only later arrivals being 15 corrections to bars that
-   * already existed. **A ONE-MINUTE MARGIN COVERING A 0.2-SECOND WORST CASE.**
+   * Then measured, across a full session including the open — original bars,
+   * delay after their own minute closes:
    *
-   * It is not lowered here, for two reasons that are about evidence rather than
-   * caution. That sample is PREMARKET and `received_at` is stamped when this
-   * process handles the message, so it measures the quietest event loop of the
-   * day rather than the 09:30 one. And it says nothing about a reconnect, where
-   * a resumed socket delivers a burst arbitrarily late. The tail is what a
-   * margin exists for, and the tail is the part not yet measured.
+   *     premarket        74,833     p99 0.216s    max 0.413s
+   *     first ten RTH    30,961     p99 0.549s    max 0.575s
+   *     regular 6.5h    814,999     p99 0.498s    max 0.673s
    *
-   * A count of SLOTS, so the only alternative to 1 is 0. There is no
-   * sub-minute setting, and no measurement can produce one.
+   * **THE LOOP DOES NOT DEGRADE UNDER LOAD.** The objection that premarket was
+   * the easy case was worth raising and is answered: the open is 0.575s against
+   * premarket's 0.413s, and the worst minute of the day is 0.673s. A 60-second
+   * margin was covering a 0.673-second event — about ninety times over.
+   *
+   * SO THE MARGIN ONLY EVER COVERED THE BAND 0.673s..60s, AND NO ORIGINAL BAR
+   * WAS EVER OBSERVED IN IT. A reconnect gap longer than 60s defeats 1 and 0
+   * equally, so the setting was never buying reconnect protection either.
+   *
+   * WHAT LOWERING IT COSTS, STATED RATHER THAN WAVED PAST. Corrections land at
+   * 30.004s-30.195s — a second population, cleanly separated, present all day.
+   * At 1 the newest slot was read after any correction; at 0 it may be read
+   * before one. **The newest bar is therefore PROVISIONAL for up to 30 seconds
+   * and can revise under the reader.** Immaterial to the verdict — a correction
+   * does not move a count across the dead line — but visible on the sparkline,
+   * which is why Design owns how that is shown.
+   *
+   * AND WHAT IS NOT BOUNDED: no reconnect occurred on the measured day. That is
+   * observed-absent, not ruled out, and it is weaker evidence than a clean
+   * number looks.
+   *
+   * A count of SLOTS, so 0 is the floor: the minute in progress is never
+   * judged, because it has not finished. There is no sub-minute setting and no
+   * measurement could produce one.
+   *
+   * ── STILL 1, AND THE REASON IS A REGISTERED TEST RATHER THAN THE EVIDENCE ──
+   *
+   * Setting this to 0 was tried on 2026-09-08 and reverted the same hour. It
+   * fails nine tests, and the one that matters is not a stale fixture:
+   * `activity.test.ts` — *"does not judge the in-flight minute, or the one
+   * still arriving"* — seeds a busy window with the just-closed minute at ZERO
+   * and asserts ACTIVE. **THAT TEST REGISTERS THE TWO-MINUTE POLICY AS A
+   * DECISION.** Editing its fixture to pass would be overwriting a recorded
+   * choice with an unrecorded one.
+   *
+   * ITS STATED REASON IS THE SENTENCE DISPROVED ABOVE — *"counting either as
+   * zero would manufacture death every minute on every name"* — so the test's
+   * JUSTIFICATION is false while its ASSERTION may still be wanted: a name that
+   * traded hard through t−2 and had one silent minute at t−1 reads ACTIVE at 1
+   * and does not at 0. **Which of those the desk wants is a product call, not
+   * an arithmetic one.**
+   *
+   * Five of the nine failures are `sparkline.test.ts` — Design's surface, whose
+   * labels derive from this value and would follow correctly, but whose
+   * expectations are Design's to move.
    */
   settleMinutes: number;
 }
@@ -128,6 +168,20 @@ export const DEFAULT_ACTIVITY_CONFIG: ActivityConfig = {
   reviveMinutes: 2,
   settleMinutes: 1,
 };
+
+/**
+ * What the verdict excluded, phrased so it stays true at zero.
+ *
+ * `(most recent 0 excluded as still arriving)` would claim an exclusion that is
+ * not happening. The minute in progress is never judged at any setting — it has
+ * not finished — so that floor is stated rather than counted. Written now so
+ * the value can move without the verdict string starting to lie.
+ */
+function settleNote(config: ActivityConfig): string {
+  return config.settleMinutes > 0
+    ? ` (most recent ${config.settleMinutes} excluded as still arriving)`
+    : ' (the minute in progress is never judged; nothing beyond it is excluded)';
+}
 
 /** The derived dead line. Exported so a surface can state it with a verdict. */
 /**
@@ -313,7 +367,7 @@ export function resolveActivity(options: {
       window,
       reason:
         `${config.deadMinutes} consecutive settled minute(s) at or below ${deadLine} trades/min` +
-        ` (most recent ${config.settleMinutes} excluded as still arriving)`,
+        settleNote(config),
     };
   }
 
@@ -328,7 +382,7 @@ export function resolveActivity(options: {
       window,
       reason:
         `${config.reviveMinutes} consecutive settled minute(s) at or above ${config.activeTradesPerMinute} trades/min` +
-        ` (most recent ${config.settleMinutes} excluded as still arriving)`,
+        settleNote(config),
     };
   }
 
