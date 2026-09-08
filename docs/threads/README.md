@@ -11550,3 +11550,51 @@ inside your framing.
 losing rows; the second was a feature that did not exist yet. **Two anomalies that
 were never related should not keep travelling together because they were once
 mentioned in the same sentence.**
+
+## A ruling's stated condition can be destroyed by the implementation of the ruling
+
+He ruled **VANISH — "keep the graveyard, as long as resurrections remain
+possible."** One clause, and it is the whole safety of the change.
+
+**Integration guessed the wrong threat.** It saw `activity` read by the
+subscription selector and concluded a vanished name would lose its data and never
+revive. **`applyHighResSelection` drives `trades`, `quotes` and `lulds`. It does not
+drive bars** — bars are wildcarded whole-market, deliberately: *"minute bars are
+the discovery input."* A corpse keeps receiving them in both subscription modes.
+**A coupling asserted from shape, again.**
+
+**The real threat is one step later and it is in the implementation, not the
+design.** Nothing today removes a name from `this.tickers`. **If vanish deletes the
+runtime instead of filtering the view, the runtime holding `minuteTrades` goes with
+it — nothing is left to revive — and the same removal ends the name's bars in the
+degraded path.**
+
+**His one stated condition would be destroyed by the building of his own ruling,
+silently, in the option he chose precisely because it removes things quietly.**
+
+**THE RULE: VANISH IS A VIEW FILTER, NOT A DELETION. THE ROW STAYS WHOLE.** Already
+the file's own pattern: *"The rank itself is untouched, because the graveyard needs
+the row whole; only this reader changed."* **One flag, many readers, and only the
+reader changes.**
+
+**The general form: when a decision carries a condition, trace the condition
+through the IMPLEMENTATION, not just the design.** A design can satisfy a condition
+that its obvious implementation violates — and the person who stated the condition
+will never see it fail.
+
+## Order is load-bearing when the chosen option removes the witness
+
+Given VANISH and SHOW-AS-DROPPED, he chose vanish. **Show-as-dropped would have
+made a misfiring `DEAD` flag visible on the board. Vanish removes the name with no
+witness.**
+
+And the `DEAD` flag is currently under suspicion: a missed window zero-fills to five
+zero slots, and five zeros are below any dead line.
+
+**Wiring a silent remover to a flag believed to be misfiring is the worst
+combination available** — not because the ruling is wrong, but because **the order
+is.** A confirmed-clean signal is a **precondition** for that option, where it would
+have been merely desirable for the other.
+
+**When a ruling changes which failures are observable, re-derive the build order
+from the new observability, not from the old queue.**
