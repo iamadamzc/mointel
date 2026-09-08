@@ -18,6 +18,7 @@ import { rowKeyboardProps } from '@/components/tableKeyboard';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
 import { formatHighPair, highReading } from '@/lib/dashboard/cycle';
+import { sparklineLagLabel } from '@/lib/dashboard/sparkline';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
 import {
@@ -355,6 +356,18 @@ export function DiscoveryBoard({
                */}
               <Th className="w-[36px]" align="right">
                 Now
+                {/*
+                  * The lag, on the header rather than in the tooltip alone.
+                  * `Now` is the strongest currency claim available and the
+                  * newest slot is two minutes old; he discovered that by
+                  * hovering. §10 rules out hover-only, and this column was on
+                  * the wrong side of a rule already enforced on the Move
+                  * control. The span stays in the title -- this is the offset,
+                  * which is the part that changes how the bars are read.
+                  */}
+                <span className="block text-[9px] font-normal tracking-normal normal-case text-ink-3">
+                  {sparklineLagLabel()}
+                </span>
               </Th>
               {showFloat ? (
                 <Th className="w-[84px]" align="right">

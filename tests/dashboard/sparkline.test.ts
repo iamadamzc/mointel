@@ -5,6 +5,7 @@ import {
   SPARK_FULL_SCALE,
   directionTone,
   pricePointsView,
+  sparklineLagLabel,
   sparklineSpanLabel,
   sparklineView,
 } from '@/lib/dashboard/sparkline';
@@ -80,9 +81,25 @@ describe('the window says what it covers', () => {
   });
 
   it('derives both from the engine config rather than restating them', () => {
-    const { settleMinutes, deadMinutes, reviveMinutes } = DEFAULT_ACTIVITY_CONFIG;
-    const span = Math.max(deadMinutes, reviveMinutes);
-    expect(sparklineSpanLabel()).toBe(`${span} minutes ending ${settleMinutes + 1} min ago`);
+    /*
+     * REWRITTEN. The previous version read the live config and asserted the
+     * result against it, which passes just as well for a hardcoded string --
+     * the test and the code shared the only values that could have told them
+     * apart. Caught while fixing the sibling label one function away, and
+     * mutation-verified rather than reasoned about.
+     *
+     * `deadMinutes` and `reviveMinutes` are varied INDEPENDENTLY because the
+     * span is a `max()` of the two: holding one fixed cannot show that the
+     * larger wins, and the shipped values (5 and 2) never exercise the branch
+     * where the second is bigger.
+     */
+    const at = (over: Partial<typeof DEFAULT_ACTIVITY_CONFIG>) =>
+      sparklineSpanLabel({ ...DEFAULT_ACTIVITY_CONFIG, ...over });
+
+    expect(at({ settleMinutes: 4 })).toBe('5 minutes ending 5 min ago');
+    expect(at({ deadMinutes: 9 })).toBe('9 minutes ending 2 min ago');
+    expect(at({ reviveMinutes: 11 })).toBe('11 minutes ending 2 min ago');
+    expect(at({ deadMinutes: 3, reviveMinutes: 7 })).toBe('7 minutes ending 2 min ago');
   });
 
   it('puts the span and the raw numbers in the hover', () => {
@@ -97,6 +114,44 @@ describe('the window says what it covers', () => {
  * Description, never a verdict. The moment it grades a name it claims
  * prediction and inherits a bar this has not cleared.
  */
+describe('the header states the lag, not only the tooltip', () => {
+  /*
+   * He found the two-minute offset by HOVERING and asked about it. The audit's
+   * §10 rules out a fact that lives only in a `title`, and this column was on
+   * the wrong side of a rule already enforced on the Move control.
+   */
+  it('names how far behind now the newest slot sits', () => {
+    expect(sparklineLagLabel()).toBe('−2m');
+  });
+
+  /*
+   * THE POINT OF THE TEST, and the reason it is not just an equality: the label
+   * is DERIVED. Tune `settleMinutes` and the header must move with it, or the
+   * column silently goes back to claiming a currency it does not have.
+   */
+  it('follows settleMinutes rather than restating a literal', () => {
+    /*
+     * THE CONFIG IS INJECTED, and that is the whole test. Asserting against
+     * DEFAULT_ACTIVITY_CONFIG passes just as well for a hardcoded '−2m',
+     * because settleMinutes IS 1 -- a test that cannot fail when the code is
+     * replaced by a literal is not testing the derivation. Four vacuous tests
+     * on this desk were caught by mutation rather than by reading, so this one
+     * varies the input instead.
+     */
+    expect(sparklineLagLabel({ ...DEFAULT_ACTIVITY_CONFIG, settleMinutes: 4 })).toBe('−5m');
+    expect(sparklineLagLabel({ ...DEFAULT_ACTIVITY_CONFIG, settleMinutes: 0 })).toBe('−1m');
+  });
+
+  /*
+   * The two labels answer different questions and must not collapse into one:
+   * the header carries the OFFSET, the tooltip carries the SPAN.
+   */
+  it('is not the span label', () => {
+    expect(sparklineLagLabel()).not.toBe(sparklineSpanLabel());
+    expect(sparklineSpanLabel()).toContain('ending 2 min ago');
+  });
+});
+
 describe('it describes and does not grade', () => {
   it('carries no verdict vocabulary in the hover', () => {
     const view = sparklineView([500, 400, 300, 10, 0])!;

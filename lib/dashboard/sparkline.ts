@@ -12,7 +12,7 @@
  * one cannot, structurally.
  */
 
-import { DEFAULT_ACTIVITY_CONFIG } from '@/lib/market/activity';
+import { DEFAULT_ACTIVITY_CONFIG, type ActivityConfig } from '@/lib/market/activity';
 
 /**
  * Full height means "at the active line", not "the busiest bar in this row".
@@ -55,10 +55,34 @@ export interface SparklineView {
  * deliberately, because a minute still filling undercounts. He holds for
  * seconds, so the lag is not a detail.
  */
-export function sparklineSpanLabel(): string {
-  const { settleMinutes, deadMinutes, reviveMinutes } = DEFAULT_ACTIVITY_CONFIG;
+export function sparklineSpanLabel(config: ActivityConfig = DEFAULT_ACTIVITY_CONFIG): string {
+  const { settleMinutes, deadMinutes, reviveMinutes } = config;
   const span = Math.max(deadMinutes, reviveMinutes);
   return `${span} minutes ending ${settleMinutes + 1} min ago`;
+}
+
+/**
+ * How far behind `now` the newest slot sits — for the COLUMN HEADER, not the
+ * tooltip.
+ *
+ * The SPAN belongs in the title, where a reader who wants the detail can get
+ * it. The LAG belongs on the header, because the header is the part a scanning
+ * eye actually reads, and **`Now` over a window ending two minutes ago is a
+ * currency claim the data does not support.** He found the offset by hovering
+ * and asked about it, which is the definition of discoverable-but-not-visible.
+ *
+ * **The audit's §10 rules out stating a thing in a `title` and nowhere else** —
+ * the same finding that moved the session wording onto the Move control after
+ * it had been live for one deploy. That rule was applied two columns to the
+ * left of this one and not here.
+ *
+ * Abbreviated because the column is 36px and the bars are 20px of it; the long
+ * form is one hover away and always was. **Derived from the config and never
+ * typed as a literal: if `settleMinutes` moves, this moves with it, or the
+ * header goes back to lying the moment someone tunes the engine.**
+ */
+export function sparklineLagLabel(config: ActivityConfig = DEFAULT_ACTIVITY_CONFIG): string {
+  return `−${config.settleMinutes + 1}m`;
 }
 
 /**
