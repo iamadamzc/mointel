@@ -12172,3 +12172,46 @@ confident defence of a parameter has nothing to recognise.**
 
 **A defect's cause is documentation. Its removal should not remove the reason it
 survived.**
+
+## The obvious success criterion was the wrong one
+
+Recovering 09-04's minute bars, the natural check is *"does it come back like its
+neighbours"* — 09-02 at 1,054,662 and 09-03 at 1,061,634.
+
+**It should not.** The stored days were written **through the `isTracked` filter at
+`runtime.ts:1426`; a vendor refetch is not filtered at all.** So a faithful recovery
+should land **slightly above** a live-captured day.
+
+**Registered before the run: 1.03M–1.15M, point estimate 1.09M, from five 50-symbol
+strata across the alphabet — 124.0 bars per symbol, with real variance of 98.9 to
+147.1 between strata.** A band that can be defended rather than a number that
+cannot.
+
+> **"If it comes back at exactly 1.06M I will say so rather than call it a match."**
+
+**A success criterion inherited from the nearest similar thing is not derived — it
+is borrowed**, and it would have made the one suspicious outcome look like the best
+possible one.
+
+**And the failure it guards is the one that looks like success:** *200,000 rows
+arriving looks exactly like data arriving.*
+
+## Two zeros that meant "my instrument broke"
+
+**A page-token parse used `cut -f2-` instead of `-f2`, so the terminator was never
+recognised and the fetch loop ran to its cap.** It reported `pages: 12` — **the
+output of a broken parse is indistinguishable from a large paginated fetch.** The
+count was right and the instrument was not. Corrected: one page, `ended=complete`.
+
+**And a sampling query returned zero symbols** because `%%` survived into SQLite as
+a syntax error. The probe dutifully reported `bars=0`. **A zero that meant "my query
+failed" and read as "no data exists."**
+
+**Third instance this weekend of a zero from a broken instrument reading as a
+finding about the world.** The habit that follows: **check the denominator and the
+terminator on every probe, never the total alone.** A total is the one number a
+broken instrument can still produce.
+
+**And the biased sample was named before it was used** — an alphabetical head is
+ETFs and preferreds, which is why there are five strata and not one. **Naming a
+sample's bias before relying on it is cheaper than discovering it in the result.**
