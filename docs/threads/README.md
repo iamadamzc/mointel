@@ -11699,3 +11699,61 @@ surface is silent by construction.
 **A surface that reports another component's verdict can only ever be tested
 against a case where that verdict is adverse.** Testing it on a healthy day tests
 nothing, however green it looks.
+
+## Stage nothing you are not about to commit
+
+Four of Ops's staged deletions from the pin removal were swept into `f598564`, a
+Design commit about sparkline floors. **A commit in a shared working tree takes
+whatever a peer left in the index, and the author's message describes none of it.**
+
+Already pushed and the deletions were correct, so the misattribution was **recorded
+in the next commit rather than rewritten** — the trail is findable from the other
+end.
+
+**Ops had avoided this in the other direction an hour earlier**, by leaving
+Research's four uncommitted files alone. **That restraint bought nothing**, and its
+own account is why:
+
+> *"Leaving a peer's work alone only protects it if every peer does — and none of
+> us has a rule."*
+
+**THE RULE: stage nothing you are not about to commit. Commit by explicit path —
+`git commit -- <paths>`, or `git add <path>` immediately before. Never `git add -A`
+or `git add .`.**
+
+**A discipline that only works when universally practised is not a habit, it is a
+protocol** — and one thread observing it while the others do not produces exactly
+the false sense of safety that made this surprising.
+
+## An exit code is a claim about a process, not about the artefact
+
+A build reported `BUILD_EXIT=0` and was not a build. Above the code, in text
+nothing was reading, it said **"a previous build that didn't exit cleanly"** — the
+background gate was still running.
+
+**Two of that session's four self-caught failures came from reading OUTPUT the
+suite never looks at.** A green exit, a passing count and a clean lint are all
+claims about processes completing; **none of them is a claim that the thing was
+produced.**
+
+**Re-run it alone and confirm the artefact directly** — here, that `/api/focus` and
+`/review/[token]/api/focus` were absent from the route table. **The route table is
+evidence. The exit code is a rumour.**
+
+## Knowing a trap by name is not the same as not walking into it
+
+Backticks in a SQL comment inside a template literal broke `db.ts` entirely, and
+surfaced as **"Transform failed" in an MCP test file that had not been touched.**
+**Second time in one night, same mechanism** — the first was `repo.ts`.
+
+And a grep-based guard fired on its author's own new comment, because the comment
+**named the table it was explaining nothing reads.** **Fourth comment-read-as-code
+of the night, second where the comment belonged to its reader.**
+
+**The repair is the useful part: the comment now states that the name is
+deliberately absent because a grep depends on it.** A constraint that lives only in
+a guard will be innocently violated by the next person; **written at the site, it
+survives.**
+
+**Naming a trap in a document does not stop anyone falling into it.** Only a
+mechanism at the point of failure does.
