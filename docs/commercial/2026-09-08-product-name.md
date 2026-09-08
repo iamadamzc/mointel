@@ -90,6 +90,71 @@ assistant angle produced nothing usable: deskhand.com is registered through
 2031 with .app/.io/.ai/.net held; deskmate, deskbrief, deskwise, smartdesk,
 thesmartdesk, deskintel, insightdesk are all held.
 
+## 2b. THE TRADER'S OWN CANDIDATE — TMI Trader, checked the same way
+
+Proposed by him on 2026-09-08: **brand "TMI Trader", meaning "True Move
+Intelligence", domain tmitrader.com, tagline "What your scanner doesn't tell
+you."** Checked at 2026-09-08 05:45 UTC with the same servers and the same
+positive controls (all five returned 200 at the run).
+
+| item | result |
+| --- | --- |
+| **tmitrader.com** | **not in registry** — and tmitrader.net, .trade, .app, .io, .ai all not in registry. **The only name checked tonight that was clear on `.com` and every alternative at once.** |
+| truemoveintelligence.com and all five alternatives | not in registry |
+| tmi.com / .net / .app / .io / .ai | all registered; tmi.com since 1997 via MarkMonitor, a corporate brand-protection registrar — a company guards the short form. He is not asking for it. |
+| truemove.com / .net / .app / .io | registered (truemove.com since 2000); .trade and .ai clear |
+| tmitrading.com | registered 2006 — TMI Trading Corp, a New York food manufacturer (Bloomberg profile) |
+
+**Collision flags, web search 2026-09-08 — none on the exact name "TMI
+Trader"; three on its parts, all in or near the audience:**
+
+1. **TMi Markets** — a retail forex/CFD broker trading as "TMi" (broker
+   reviews on FastBull and WikiFX). A broker, not an intelligence product,
+   but the same three letters in front of the same kind of customer. The
+   nearest collision on the list.
+2. **TMI, the Trend Momentum Indicator** — a paid TradingView indicator at
+   trendmomentumindicator.com, and a separate "True Momentum Index"
+   TradingView script. Same acronym, same audience, momentum in the name.
+3. **TrueMove** — TrueMove H, Thailand's second-largest mobile operator (True
+   Corporation, Charoen Pokphand Group). A large brand on the expansion's
+   first two words, in another sector and another country. "True Move
+   Intelligence" as a phrase has no occupant found.
+
+Also present on the acronym and not in the audience: Treasury Management
+International (a treasury publisher), a venture fund called TMI, and the
+everyday reading of the letters — **"too much information" is what most
+people will hear first**, which is either the joke against a depth tool or
+the joke it owns; that is taste, and his.
+
+**Tagline.** No one was found using *"What your scanner doesn't tell you"*
+or the "show you" variant; the idea that scanners surface candidates and do
+not tell you what to do is common content on scanner vendors' own blogs
+(Centerpoint, TradingSim, Trade Ideas). The line is unclaimed and it does the
+positioning work his reframing asks for: it names the category by contrast —
+not a scanner — and promises depth on what is already moving.
+
+**Said aloud.** "T-M-I Trader": three letters and a word, spelled from
+hearing, typed `tmitrader` with no hyphen. The expansion is not derivable
+from the letters, which is true of every acronym brand; it has to be told
+once. "Trader" says who it is for rather than what it does; the tagline says
+what it does.
+
+**Vendor borrowing:** none. **Level 2 flag:** does not apply — no "depth" in
+the name.
+
+**This seat's read, since he will want it stated rather than implied.** On
+availability it beats every name in §2: clear on `.com` and on every
+alternative, which no other candidate managed. On collision it carries more
+than Desk Read: a broker and an indicator already answer to the three
+letters in front of this audience, and a Thai telecom owns the two words
+behind them, though none of the three is a market-intelligence product and
+none uses "TMI Trader". On positioning the tagline is the strongest single
+line produced tonight, by him or by this seat. The decision is his; what
+this seat can add is that if he takes it, the collision worth a lawyer's
+look before a logo is TMi Markets, because it is a financial-services brand
+on the same letters — and that "not in registry" still needs the registrar's
+checkout to confirm the price.
+
 ## 3. RECOMMENDATION
 
 **Pick: Desk Read.** It is the thing he described — a smart desk that has

@@ -176,7 +176,14 @@ repo — they are public documents and re-fetchable.
   no collision). His-name alternative: Mointel (Madrid firm flag, spelling
   tax). Story alternative: Why It Moves (MarketReader occupies the idea).
   Landscape fact found on the way: **MarketReader** is a positioned occupant
-  of "intelligence, not a scanner" for investors at large. Corrections
+  of "intelligence, not a scanner" for investors at large. **His own
+  candidate, checked 2026-09-08 05:45 UTC (§2b): TMI Trader / True Move
+  Intelligence / tmitrader.com / "What your scanner doesn't tell you."**
+  tmitrader.com and every alternative clear — the only name tonight clear
+  everywhere at once; no occupant on the exact name; flags on the parts:
+  TMi Markets (a retail CFD broker), TMI the Trend Momentum Indicator
+  (TradingView), TrueMove (a Thai telecom); tagline unclaimed and the
+  strongest line produced. The decision is his. Corrections
   carried: "Algo Trader Plus" is Alpaca's plan name; no name may borrow from
   a data vendor. Nothing registered; the purchase and any registrar enquiry
   are his.
