@@ -12131,3 +12131,44 @@ into a claim the data never made.
 claim stronger than the evidence.** The parameter this concerned survived three
 months behind a comment nobody looked past. **Writing a new confident sentence in
 its place would be the same failure with a different value.**
+
+## A fixture written beside a constant cannot contradict it
+
+`activity.test.ts` held `JUDGED = [2,3,4,5,6]` as a literal, beside a
+`settleMinutes` of **1**. **Both numbers were written down separately, and neither
+could disagree with the other.**
+
+**So every test in the file agreed with the parameter by construction.** Tuning the
+constant broke nine tests **that were asserting the fixture rather than the rule** —
+and that breakage read as *"the change is wrong"* rather than *"the fixtures are
+literals."*
+
+**That is why a 300x over-provisioned parameter survived three months: the suite
+appeared to defend it and was only ever agreeing with itself.**
+
+`sparkline.test.ts` had already learned the identical lesson one function away —
+*"the previous version read the live config and asserted the result against it,
+which passes just as well for a hardcoded string."* **Same defect, same file tree,
+found twice in one day by two threads who did not know the other had found it.**
+
+**Derive fixtures from the thing under test, or the suite is a second copy of the
+answer.**
+
+**And deriving it fixed ONE of the nine.** The other three in that file carried their
+own hardcoded offsets beyond `JUDGED`. **A single derivation looks like it should
+fix the class and does not — measure after, not before.**
+
+## Recording a false sentence as false beats deleting it
+
+The comment defending `settleMinutes: 1` claimed a late bar *"would manufacture
+death every minute, on every name."* **It is disproven — the same case returns the
+same verdict at either setting.**
+
+**It was rewritten to record the sentence AS FALSE rather than removed.**
+
+**The sentence is why nobody looked for three months.** Deleting it leaves a
+correct file with no memory of why it was wrong, **and the next person to write a
+confident defence of a parameter has nothing to recognise.**
+
+**A defect's cause is documentation. Its removal should not remove the reason it
+survived.**
