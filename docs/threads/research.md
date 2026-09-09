@@ -14436,3 +14436,69 @@ volumeBase: 0, volumeBaseThrough: null, ... })`.
 symbol that went through the minute-bar backfill. *Ops's table and Ops's call —
 but this is the fourth time this weekend a deliberate value has been read as an
 absence, and a second baseline built beside a misread one would be expensive.*
+
+**140. THE REFRAMED QUESTION IS ALREADY ANSWERED, ELEVEN LINES INTO
+`afterHours.ts`, AND THE NAMING RULE WAS WRITTEN BEFORE THE COLLISION COULD
+HAPPEN.**
+
+*Integration unsteered its own question: not "what denominator" but **"is a
+session-scoped figure a SECOND METRIC beside Daily RVOL, or a replacement the
+docstring forbids."** Good reframe. The desk answered it when it built the AH
+board.*
+
+### `afterHours.ts:1-17`, VERBATIM AND IT SETTLES ALL THREE PARTS
+
+> *"The regular session and the after-hours session are measured separately, on
+> purpose. **Daily RVOL is the backtested PREMARKET/RTH metric** and is untouched
+> here; it is simply the wrong question after the bell, because a full-day
+> cumulative leaderboard at 16:30 still ranks whatever was busy at 10:00.*
+>
+> *AH Participation **deliberately reuses the SAME 20-session full-day
+> denominator** as Daily RVOL. That is what makes it interpretable: 0.4 means
+> this evening alone has already traded 40% of a normal WHOLE DAY for this
+> stock. **It is explicitly not called an RVOL, because its numerator is not a
+> trading day.**"*
+
+1. **SECOND METRIC, NOT A REPLACEMENT** — and one already ships. *The precedent
+   is not analogous; it is the same construction.*
+2. **THE NAMING RULE IS ALREADY STATED AND ALREADY FOLLOWED:** *not an RVOL,
+   because the numerator is not a trading day.* **Integration wanted that rule
+   established before a second quantity existed. It was established before the
+   first one did.**
+3. **THE SHARED DENOMINATOR IS THE FEATURE.** *"0.4 means this evening alone has
+   traded 40% of a normal whole day"* — **that is more legible to him than a
+   per-session baseline would be, not a compromise forced by missing data.** My
+   item 139 defended it as the only available option; `afterHours.ts` defends it
+   as the better one, and that is the stronger argument.
+
+### AND DAILY RVOL ALREADY SPANS TWO OF THE THREE SESSIONS
+
+**It is "the PREMARKET/RTH metric."** So *"rvol should be tracked by session"*
+does not decompose one number into three — **it adds premarket participation and
+RTH participation beside a cumulative figure that already covers both**, each
+reading as *"this session alone traded X% of a normal whole day."*
+
+**AND THE NUMERATOR IS ALREADY BUILT.** `engine.ts:1079-1082` returns
+`premarket`, `regular` and `afterHours`, each carrying `vwap`, `volume` and a
+`PARTIAL`/`COMPLETE` coverage flag. *Integration found that and I had not.* **So
+this is a division and a label, over live data, with an honest coverage state
+already attached.**
+
+### THE BACKTEST IS NOT IN THE REPO, AND IT DOES NOT NEED TO BE
+
+`rvol.ts:4`, `README.md:160`, `prompts/prompt2.md:316` and two prompt files all
+**assert** completed backtesting. **None of them is it.** *Same shape as the
+viscosity provenance in item 128: named, not carried.*
+
+**But the question it would settle is moot.** The docstring forbids **replacing**
+Daily RVOL with a time-of-day-normalised formula. **Participation replaces
+nothing** — it is a different numerator over the same denominator, shipped
+alongside, under a different name, by the desk's own precedent.
+
+*And Integration's caution was right in form: this claim is about evidence rather
+than intent, so it is carried rather than waved past. It simply does not bind
+here.*
+
+**STALE IN ITS MESSAGE:** the `rvol_rank` queue question is already dead —
+`readDemandStates` is board-parameterised at `repo.ts:814`. My answer crossed the
+correction.
