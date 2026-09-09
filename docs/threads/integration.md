@@ -2967,3 +2967,65 @@ carried reading.*
 > **Start by reading LIVE STATE, then check all six threads — what they said, not
 > what they committed — and tell me what is outstanding and what is stale.** Do not
 > assume anything in LIVE STATE is still true.
+## HE IS ASKING FOR A SESSION SELECTOR, AND A TWO-VALUE ONE ALREADY EXISTS
+
+**2026-09-09, from the trader**, after trading RTH for the first time on a desk
+scoped to premarket:
+
+> *"the rankings are for the whole day, but rvol and gap/gains should be tracked
+> by session. i see there is an AH MOVE tab, but nothing for RH. im wondering if
+> we should have a single dropdown to select session that owns the data?"*
+
+**CHECKED IN THE TREE BEFORE ROUTING, because this seat has twice scoped a
+feature that was already shipping.** *It is not a new capability. It is the
+generalisation of a switch that already has two values:*
+
+    lib/market/types.ts:31   DiscoveryBoard = 'DAILY_RVOL' | 'AFTER_HOURS'
+    lib/market/board.ts:22   rankColumn: 'rvol_rank' | 'ah_rank'
+    engine.ts                ahRank, ahRankChange, ahRankEpisode, AH_RANK_ENTRY
+
+**A board is ALREADY parameterised by which rank column owns it, and after-hours
+already has its own session-scoped rank, its own episode counter and its own
+entry event.** **His question is why that exists for one session and not the
+others** — and the primary board's own type name, **`DAILY_RVOL`, states the
+complaint.**
+
+### FOUR FACTS THE BUILDING THREADS MUST NOT REDISCOVER
+
+- **A SESSION DROPDOWN MAY NOT BE A DISPLAY CONTROL.** The research queue gates
+  on `rank <= autoRank` and `readDemandStates` selects `WHERE rvol_rank IS NOT
+  NULL`. **If the selector changes which rank column owns the board, it changes
+  what is researched and therefore what is SPENT** — *the pin lesson exactly: a
+  pin is an override on the selection gate, not a decoration.* **On one shared
+  board, one viewer's dropdown would spend on behalf of every subscriber.**
+- **SESSION-SCOPED GAIN HAS NO STORED BASIS.** `percent_change` **overwrites in
+  place**, there is **no gain ranking anywhere**, and the queued gain-rank entry
+  event carries its own warning: *a symmetric event over an asymmetric field
+  reproduces the bias in a new column.* **This is a CAPTURE gap, not a display
+  gap** — no reconstruction makes the sessions already gone comparable.
+- **THE DAILY BAR CANNOT ANSWER IT.** `lib/market/types.ts:65`, verified against
+  minute bars: **Alpaca's daily bar carries full-session VOLUME but
+  regular-session OHLC.** So **premarket highs are absent from it entirely**, and
+  any session gain derived from daily bars is already inconsistent with its own
+  volume. **Minute bars are the only source, and they retain three sessions.**
+- **RVOL IS A RATIO AND ONLY THE NUMERATOR IS SESSION-SHAPED.** A per-session
+  RVOL needs a **per-session denominator** — an average premarket, RTH and AH
+  volume per name. **`volume_base` is 0 on every row and `volume_base_through`
+  has never been written**, so the baseline infrastructure exists and is dark.
+  *Name the denominator: without one, three session RVOLs are three numerators
+  over one whole-day average, which is not a session-scoped figure at all.*
+
+### AND THE SCOPE INSTRUCTION THIS SITS AGAINST, WHICH IS HIS ALONE
+
+**The desk's market-side scope is PREMARKET by his own instruction of
+2026-09-03** — *"let's keep everything to premarket"* — recorded as a product
+scope decision that re-scoped the revival study and put Q6's verdict out of
+window rather than wrong.
+
+**He has now traded RTH and is asking for RTH data. That is evidence the
+instruction is being revised and it is NOT a revision anyone here may infer.**
+**Put to him as one question rather than assumed in either direction.**
+
+**What does NOT move either way:** *a scope decision elsewhere on the desk does
+not reach Coaching's grading of his own fills.* **Grading covers every fill in
+every session and only he can narrow it, explicitly.**
