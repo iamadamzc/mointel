@@ -12350,3 +12350,59 @@ says what is missing.
 
 **Which is why the enumeration is the control, not the gate.** A gate proves what
 is in the tip works. **Only an enumeration proves what needs to be in the tip is.**
+
+## A capability is not a path
+
+Ops reported that recovering a past date's minute bars was *"invoking a job that
+already exists rather than writing a fetcher."* **It is not.**
+
+**Both halves of the belief were true and neither implied the conclusion.**
+`rest.ts:197` genuinely batches, pools and paginates. The vendor genuinely serves
+09-04 — probed, not assumed. **But thirty-one scripts in `worker/` and thirty-six
+npm entry points contain nothing that writes `minute_bars` for a chosen date.** The
+startup backfill is bound to the current session's window and writes what it just
+ingested.
+
+> **"I checked that the capability existed and inferred that a path to it
+> existed."**
+
+**A capability is a thing the code CAN do. A path is a caller that does it.**
+Reading the machinery tells you the first and says nothing about the second — and
+the gap between them is the difference between an invocation and a new script that
+makes a million-row production write.
+
+**When scoping work as "just call the existing thing", find the caller, not the
+function.**
+
+## Make a pre-registered count checkable before the write, not after
+
+The expected row count for a recovery — 1.03M–1.15M — **was only checkable once
+1.09M rows were in the table.** A result of 400,000 would have meant 400,000 rows
+already written into production and a recovery that is now the thing to undo.
+
+**So: a count-only mode that fetches and counts without writing, run first.**
+```
+count-only -> inside the band  -> write
+           -> outside the band -> STOP and report
+```
+
+**It costs one extra pass over free data and converts the pre-registration from a
+verdict on a completed write into a gate on an uncompleted one.**
+
+**A registered number that can only be checked afterwards is a post-mortem with
+good manners.** Where the action is expensive or hard to reverse, **find the cheap
+observation that produces the same number first.**
+
+## A requirement belongs in a gated script, not in the care of whoever runs it
+
+A partial recovery looks identical to a complete one in every future query — **so
+all-or-nothing is a requirement, not a preference.**
+
+Ops's framing: **requirements belong in the script and are gated; care belongs to
+people and is not.** The existing writer has no transaction around its inserts
+because it writes what one session just produced. **A recovery writing a million
+historical rows needs one, and needing it is a property of the job rather than of
+the operator's attention.**
+
+**The test of whether something is a requirement: would it still have to hold if
+the person running it were distracted, or different, or a schedule?**
