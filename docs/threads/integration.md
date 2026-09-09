@@ -313,6 +313,15 @@ not on it at all.*
   2026-09-06 — **without first reading Ops's session, where he had already
   answered.*** **The escalation was redundant and the miss is recorded below.**
 
+- **2026-09-09, on cost allocation tags: `"yes."`** Answering a direct question
+  that named the action, said it **writes to his account**, and said it **cannot
+  be backdated.** **A narrow WRITE authorisation: tagging and tag activation,
+  nothing else.** **Scope is mointel's own resources** — MEO and the
+  containerised app belong to other projects with their own threads, and he
+  answered a question about this desk. **Two payer accounts means two
+  activations**, and if activation is console-only the job stops there: **that is
+  a password login and the line does not move.**
+
 ### The mechanism a scheduled task solves, kept because it will recur
 
 **Ops: *"be awake for the close is not something I can do by deciding to."***
