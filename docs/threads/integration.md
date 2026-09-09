@@ -3152,3 +3152,47 @@ one.** **Withdrawn: they are not the same quantity.** `volume_base` is an
 the RVOL denominator is an **average full-session volume over twenty prior
 sessions.** **No relationship, no half-finished predecessor, nothing to build
 beside.**
+
+## HE KEPT THE UNIT, AND THE ARGUMENT THAT WON WAS IN OUR OWN FILE UNMADE
+
+**2026-09-09.** Design found that `RVOL`'s `x` invites comparison to *1.0 =
+normal*, while **"normal" is a FULL DAY and the numerator is however much of the
+day has elapsed** — so the same intensity **reads low early and high late, and
+early is when he trades.** On its own 04:00 payload, a name that had already
+traded **61% of a normal full day showed `0.6x`**, and another had done **1.2
+full days before 4am.**
+
+It offered three units and refused to guess between them. **His answer:
+`"keep it as is with X."`**
+
+### The boundary, written at the same moment as the ruling
+
+**CLOSED:** the unit on that column. **NOT closed, and all three will be needed
+when a future reader quotes five words with none of this context:**
+
+- **It does not answer the fraction-versus-rate finding.** He ruled on the
+  **label**; he was never asked whether the number reads right. **Design's
+  observation stands unrefuted.**
+- **It does not forbid the surface stating the window elsewhere.** `−2m` is the
+  precedent — **a header carrying the scope while the cell keeps its familiar
+  unit is untouched by this.**
+- **It does not close his original request.** Scoping the **numerator** is still
+  live; only the **relabelling** is dead.
+
+### The part worth more than the ruling
+
+**He has read `x` for months, at speed, on the column he looks at first.**
+**Changing the unit costs him an intuition he already has, and the replacement is
+only better once he has re-learned it.**
+
+**Design had made exactly that argument before, about him, on `OFF HIGH`:** *"the
+trader has read it for months — '42% off its high' is his sentence."* **There,
+familiarity was weighed against correctness and allowed to decide the wording.
+Here neither seat weighed it at all, and he supplied it in five words.**
+
+> **A correct unit he misreads is not better than a familiar one he reads right,
+> and the only person who can weigh that is the one who has been reading it.**
+
+**The argument was available, it was in this desk's own file, written by the seat
+that needed it, and it was not made.** *The rule you already wrote is the one you
+are least likely to apply — and this is its second appearance today.*
