@@ -1732,3 +1732,136 @@ describe('filed shares on the dossier', () => {
     expect(report.dossier).not.toHaveProperty('floatAssessment');
   });
 });
+
+describe('the supply overhang verdict on the dossier', () => {
+  /**
+   * THE WIRING, NOT THE ARITHMETIC.
+   *
+   * `tests/research/supplyOverhang.test.ts` pins what the verdict decides.
+   * NOTHING pinned that it ever reaches a dossier — which is the sixth time
+   * this desk has found a value computed and read by nobody, and the first
+   * where the field was mine. `supplyPair` sits one line above it in the same
+   * function with the same problem.
+   */
+  function seedFacts(db: ReturnType<typeof temporaryDb>, metadata: Record<string, unknown>) {
+    return insertResearchSources(db, [
+      {
+        ticker: 'ACME', sourceType: 'SEC_COMPANY_FACTS', title: 'Reported shares outstanding',
+        url: 'https://data.sec.gov/api/xbrl/companyfacts/CIK0000000123.json',
+        publishedAt: '2026-08-10T00:00:00Z', fetchedAt: '2026-08-17T12:00:00Z',
+        accession: null, secForm: '10-Q', authority: 'SEC',
+        contentHash: 'ovfacts', documentFingerprint: 'ovdfacts', excerpt: null,
+        metadata, active: true,
+      },
+    ]);
+  }
+
+  /*
+   * SPLIT FACTORS ARE NOT DECORATION HERE, AND THE FIRST VERSION OF THIS BLOCK
+   * OMITTED THEM AND READ NOT_PROVEN.
+   *
+   * `computeSupplyPair` refuses a block whose split basis cannot be compared to
+   * the denominator's: both sides must resolve a factor, and a date no price
+   * history reaches resolves nothing. So a store with no `daily_bars` coverage
+   * over the filing date excludes EVERY block as BASIS_UNVERIFIABLE and the
+   * bound can never prove anything -- which is a real constraint on its reach
+   * and not a fixture detail. Filing dates routinely sit months back.
+   */
+  function seedFactors(db: ReturnType<typeof temporaryDb>) {
+    upsertDailyBars(db, ['2026-08-13', '2026-08-14', '2026-08-15', '2026-08-16', '2026-08-17'].map(
+      (tradingDate) => ({
+        symbol: 'ACME', tradingDate, open: 4, high: 5, low: 3.5, close: 4.5,
+        volume: 1_000_000, tradeCount: null, vwap: null, adjustment: 'split' as const,
+        splitFactor: 1, source: 'test', fetchedAt: '2026-08-17T12:00:00Z',
+      }),
+    ));
+  }
+
+  async function run(db: ReturnType<typeof temporaryDb>, ledger: SupplyBlock[]) {
+    const ids = seed(db);
+    seedFactors(db);
+    seedFacts(db, {
+      sharesOutstanding: 1_000_000,
+      asOf: '2026-08-15',
+      concept: 'dei:EntityCommonStockSharesOutstanding',
+    });
+    const good = dossier();
+    good.catalyst.evidenceSourceIds = [ids[0]];
+    good.structure.evidenceSourceIds = [ids[0]];
+    good.cycle.evidenceSourceIds = [ids[0]];
+    /*
+     * THE BLOCK CITES A FILING THAT SAYS SHARES WERE SOLD, AND IT HAS TO.
+     *
+     * `guardrails.ts:135` downgrades a REGISTERED_RESALE marked KNOWN_ACTIVE to
+     * POSSIBLY_ACTIVE unless the cited excerpt carries actual selling language —
+     * REGISTRATION_IS_NOT_SELLING. The floor counts only KNOWN_ACTIVE, so that
+     * rule sits directly under this verdict: **the bound fires on supply a
+     * filing says is BEING SOLD, not on supply that is merely registered.**
+     * The first version of this fixture cited the ordinary seed source, the
+     * validator demoted the block, and the pair reported totalRatio 2.5 with
+     * floorBlocks 0 — a stricter and better bar than the one I described.
+     */
+    const [soldId] = insertResearchSources(db, [
+      {
+        ticker: 'ACME', sourceType: 'SEC_FILING', title: '424B3 prospectus supplement',
+        url: 'https://www.sec.gov/Archives/edgar/data/123/424b3-sold.htm',
+        publishedAt: '2026-08-14T00:00:00Z', fetchedAt: '2026-08-17T12:00:00Z',
+        accession: '0000000123-26-000009', secForm: '424B3', authority: 'SEC',
+        contentHash: 'sold', documentFingerprint: 'dsold',
+        excerpt: 'The selling stockholder has sold 2,500,000 shares under the registration statement.',
+        metadata: {}, active: true,
+      },
+    ]);
+    good.structure.supplyLedger = ledger.map((block) => ({
+      ...block,
+      evidenceSourceIds: [soldId],
+    }));
+    await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
+      ticker: 'ACME', tradingDate: DATE,
+    });
+    return readCurrentAnalysis(db, 'ACME')?.dossier.structure.supplyOverhang;
+  }
+
+  const block = (over: Partial<SupplyBlock> = {}): SupplyBlock => ({
+    type: 'REGISTERED_RESALE',
+    amountShares: 2_500_000,
+    dollarCapacity: null,
+    sourceFiling: 'S-3 333-000001',
+    registrationStatus: 'EFFECTIVE',
+    effectiveDate: '2026-08-14',
+    terms: null,
+    holderRestrictions: null,
+    status: 'KNOWN_ACTIVE',
+    eligibilityAssessment: null,
+    evidenceSourceIds: [],
+    confidence: 'HIGH',
+    ...over,
+  });
+
+  it('reaches the stored dossier at all, which nothing asserted before', async () => {
+    const verdict = await run(temporaryDb(), [block()]);
+    // The field exists on the round-tripped record. Not undefined, which is
+    // what a wired-but-never-exercised derivation looks like.
+    expect(verdict).toBeDefined();
+    expect(verdict?.verdict).toBeTruthy();
+  });
+
+  it('proves the overhang when established supply exceeds the share count', async () => {
+    const verdict = await run(temporaryDb(), [block()]);
+    expect(verdict?.verdict).toBe('PROVEN_AT_OR_ABOVE_FLOAT');
+    // And it carries what proves it, through the round trip rather than only
+    // out of the pure function.
+    expect(verdict?.sharesOutstanding).toBe(1_000_000);
+    expect(verdict?.floorShares).toBe(2_500_000);
+    expect(verdict?.sharesOutstandingAsOf).toBe('2026-08-15');
+  });
+
+  it('does not prove it from supply that is merely possible', async () => {
+    /*
+     * The floor counts only KNOWN_ACTIVE. A possible block is exactly the
+     * over-count that would turn the bound from a guarantee into an estimate.
+     */
+    const verdict = await run(temporaryDb(), [block({ status: 'POSSIBLY_ACTIVE' })]);
+    expect(verdict?.verdict).not.toBe('PROVEN_AT_OR_ABOVE_FLOAT');
+  });
+});
