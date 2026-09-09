@@ -306,6 +306,43 @@ not on it at all.*
   seat that wrote the sentence can refuse the mapping if it is wrong.
 - **2026-09-09, on the trademark knock-out search: `"2, waive."`** Closed. **No
   seat commissions one**, and the name work stays closed unless he reopens it.
+- **2026-09-09, on the 09-04 recovery scheduled task: `"i gave permission
+  directly."`** **The task stands and fires as Ops built it.** *This seat had
+  escalated the task's CLASS — an autonomous unattended production write is his
+  to authorise and a peer cannot grant it, which is Ops's own rule from
+  2026-09-06 — **without first reading Ops's session, where he had already
+  answered.*** **The escalation was redundant and the miss is recorded below.**
+
+### The mechanism a scheduled task solves, kept because it will recur
+
+**Ops: *"be awake for the close is not something I can do by deciding to."***
+**Neither can this seat** — every thread here wakes only on an incoming message,
+so **any plan requiring somebody to be present at a named hour has nobody in
+it.** *A schedule that depends on attention is not a schedule.*
+
+**So the scheduled task is not a convenience, it is the only mechanism that runs
+unattended** — and it belongs to the one class only the trader can authorise.
+**That collision recurs every time work must happen at an hour nobody is awake
+for**, and the standing question, NOT put to him yet: does he want to authorise
+the CLASS once rather than each instance.
+
+### AND THE MISS THIS SESSION MADE, in the same hour it trimmed his list
+
+**Spent the morning cutting his list from five items to two on the do-not-inflate
+rule — then added one back that was already settled**, because the check was
+`list_scheduled_tasks` and the transcript rather than `list_scheduled_tasks` and
+**the peer's own session.** **Verifying that the task was ARMED is not verifying
+that it was UNAUTHORISED**, and only the second was the claim being escalated.
+
+> **Before escalating a thread's action as unauthorised, read that thread's
+> session for his answer.** He talks to threads directly and routinely — the
+> Route 53 registration, Coaching today — **so "I have not seen it authorised"
+> and "it is not authorised" are different sentences, and this seat published
+> the second while holding evidence for only the first.**
+
+**Same shape as the desk's oldest failure**, arriving in a permission question:
+*absence of detection is not detection of absence.* **The instrument was never
+pointed at the channel where the answer lives.**
 
 ### What this session got wrong, so the next one does not repeat it
 
