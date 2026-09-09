@@ -3916,6 +3916,74 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## PREMARKET PARTICIPATION ALREADY SHIPS. IT IS CALLED `RVOL` AND IT IS WEARING THE WRONG UNIT.
+
+**Verified both new facts before designing against either.** `afterHours.ts:50`
+is as quoted — **AH volume ÷ average full-session volume (20)**, null-not-zero on
+an unknown denominator. `minuteBarRetentionDays` **is 3** (`config.ts:85`), so a
+true per-session BASELINE is data acquisition, not display. **Both stand.**
+
+**BUT THE THIRD FACT IS FROM MY OWN 04:00 PAYLOAD AND NOBODY HAS SAID IT:**
+
+    tick     rvol     cumVol      baseline      -> cumVol / baseline
+    GMEX    1.211     680,157     561,533          1.21 of a normal DAY, at 04:00
+    BNC     0.607     178,901     294,644          0.61 of a normal DAY, at 04:00
+    WDH     0.327      80,817     246,905
+    ISPC    0.214     184,463     863,892
+
+**At 04:00 the cumulative volume IS the premarket volume, and the denominator is
+the average FULL SESSION. So `RVOL` during premarket is ALREADY
+`premarket volume ÷ average full day` — WHICH IS EXACTLY THE PARTICIPATION FIGURE
+HE IS ASKING FOR.** It is not missing. **It is shipped, under another name, in a
+unit that hides what it means.**
+
+**⇒ ALL THREE ARE ONE FORMULA OVER ONE DENOMINATOR.** PM participation = today's
+`rvol` before 09:30. AH participation = `computeAhParticipation`. RTH
+participation = the same quotient with the premarket volume subtracted from the
+numerator. **One quantity, three windows — not three quantities.** *Research is
+right that three things must not be called RVOL; the sharper statement is that
+there are not three things.*
+
+**=== THE DEFECT IS THE `x`, AND IT IS TRADER-FACING TODAY ===**
+
+**`x` invites a comparison to 1.0 = normal. But "normal" here is a FULL DAY,
+while the numerator is however much of the day has elapsed.** So the same
+intensity reads LOW early and HIGH late, **and the board's own vocabulary tells
+him the opposite of the truth at the hour he trades.**
+
+**BNC had traded 61% of a normal FULL DAY by 04:00 and the column says `0.6x`.**
+A number that reads *below average* describes a name doing something
+extraordinary. **GMEX had already done 1.2 normal days before 4am.** *The
+numbers are observed; that `0.6x` reads as "quiet" to him is my inference — and
+it is the inference his own question makes, because he asked for exactly this to
+be session-scoped.*
+
+**⇒ HIS REQUEST IS RIGHT AND HIS DIAGNOSIS IS ONE STEP SHORT.** Session-scoping
+the numerator helps. **But the reason the number misleads is that a
+fraction-of-a-day-completed is being presented as a RATE**, and that is true of
+the premarket figure even after it is correctly scoped.
+
+**=== SO THE DELIVERABLE IS THE UNIT, NOT THE LAYOUT ===**
+
+**A label that survives being read fast has to carry its own denominator.**
+`0.6x` does not. **`0.6 days` or `61% of a day` does** — the word *day* is the
+denominator, in the reading, at speed.
+
+**AND I AM FLAGGING A TENSION RATHER THAN RESOLVING IT: he ruled against a
+percentage once** — *"dont do a percentage - it's deceptive"* — **on the OFF HIGH
+spread.** That was a percentage stading in for **two prices he needed to see**.
+**This is different: here the percentage IS the quantity and the ratio is what he
+asked for.** **I am not treating that ruling as transferable, and I am not
+assuming it is not. It is a question for him, in one line, when this is put.**
+
+**§10 REACHES IT UNCHANGED:** which window each figure covers goes **on the
+face**, never a tooltip — the `−2m` precedent, and the Move control that already
+relabels itself per session.
+
+**AND THE PRIOR RECOMMENDATION IS UNCHANGED AND NOW BETTER SUPPORTED: the roster
+stays whole-day, the NUMBERS get scoped.** Nothing here needs the board switch,
+which changes the population.
+
 ## THE SESSION DROPDOWN HE WANTS IS NOT THE BOARD SWITCH THAT EXISTS
 
 > **"the rankings are for the whole day, but rvol and gap/gains should be
