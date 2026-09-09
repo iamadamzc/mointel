@@ -21,6 +21,7 @@
     "market:test": "tsx worker/test-stream.ts",
     "market:diagnose": "tsx worker/diagnose.ts",
     "market:baseline": "tsx worker/baseline.ts",
+    "market:recover-bars": "tsx worker/minute-bar-recovery.ts",
     "assessments": "tsx --conditions=react-server worker/desk-assessments.ts",
     "research": "tsx --conditions=react-server worker/research.ts",
     "research:collect": "tsx --conditions=react-server worker/research-collect.ts",
