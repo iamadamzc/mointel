@@ -13910,3 +13910,68 @@ measures how much the desk's automatic grade is anchored to HIS judgement. If it
 is another model's output, it measures machine-to-machine contamination.*
 **Those are different findings and the same flag would produce both.** Worth
 settling before anyone runs it, and not settleable from this repo.
+
+**133. HE REVIEWS NOTHING, AND 46% OF ALL ESCALATIONS TO THE EXPENSIVE MODEL
+FIRE ON DISAGREEING WITH "HUMAN REVIEW". THE DESK ONLY READS THAT SHEET AND
+NOBODY IN THIS REPO KNOWS WHAT WRITES IT.**
+
+*He corrected my item 132 framing: **"I don't review ANYTHING."** So the block
+labelled `HUMAN_REVIEWED_PRIOR_ANALYSIS` is not human-reviewed, and the question
+becomes what it actually is.*
+
+### THE DESK NEVER WRITES THE SHEET — SO IT IS NOT ITS OWN OUTPUT LOOPING BACK
+
+`googleSheets.ts:22` — scopes are **`spreadsheets.readonly`** and
+`drive.metadata.readonly`. `sheetPrior.ts:9` — *"Read-only is enforced by
+construction — nothing here writes, and the provider is only ever asked to
+fetch."* **Nothing in the repo writes to it.**
+
+**⇒ NOT A FEEDBACK LOOP FROM THE DESK. The Sheet is populated by something
+OUTSIDE this repo, and the repo cannot say what.**
+
+### AND THE PREMISE IS LOad-BEARING, NOT DECORATIVE
+
+`escalation.ts:170` escalates to **`sol` — the expensive tier** — on a material
+Sheet-vs-automatic disagreement, and the recorded reason reads verbatim:
+
+> **`"${dispute.field}: human review says ${dispute.sheet}, automatic analysis
+> says ${dispute.auto}"`**
+
+**MEASURED, 325 stored versions, escalation reasons from `metadata`:**
+
+```
+SHEET_AUTO_CONFLICT                12    <- 46% of all escalations
+SUPPLY_RECONCILIATION_INCONSISTENT   7
+COMPETING_SUPPLY_INSTRUMENTS         5
+ELIGIBILITY_CONTRADICTION            2
+                                    26   = exactly the 26 sol versions
+```
+
+**THE LARGEST SINGLE DRIVER OF EXPENSIVE-TIER SPEND IS DISAGREEMENT WITH A
+SOURCE THE DESK CALLS HUMAN REVIEW AND HE HAS NEVER REVIEWED.** *`sol` is
+$4.00/$20.00 against terra's $2.00/$12.00.*
+
+### WHAT THIS DOES AND DOES NOT SAY
+
+**IT DOES NOT SAY THE ESCALATIONS WERE WRONG.** *Disagreement with an
+independent source may genuinely warrant a second opinion — that is a defensible
+design.* **What is not defensible is that nobody chose it**: the criterion was
+built on *"evidence that a human disagreed"* (`sheetPrior.ts:5` — *"the worker
+had no way to know a human had disagreed"*), and that is false.
+
+**AND IT CONTAMINATES ITEM 132.** The 96%-decline base rate I measured yesterday
+came from dossiers produced **with** this prior in the bundle. *If the Sheet
+carries another model's conclusion, the decline may be INHERITED rather than
+independent* — **which is exactly what `omitSheetPrior` would separate, and is
+the strongest argument yet for running it.** *I recommended against it hours ago
+on the assumption the prior was his own judgement. That assumption is dead.*
+
+### THE ONE QUESTION THE REPO CANNOT ANSWER
+
+**WHAT WRITES THAT SHEET?** *A previous tool, an older model, a one-off
+historical fill, or a process nobody here has seen.* **Until that is known:**
+
+- the escalation reason string is false and should not say "human review";
+- **46% of expensive-tier spend rests on an unknown source's opinion**;
+- and every "automatic" grade in the corpus was formed with that opinion in the
+  bundle.
