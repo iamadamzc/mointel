@@ -323,8 +323,32 @@ export function computeSupplyPair(options: {
  * in one column where no later reader could separate them.
  */
 export type SupplyOverhangVerdict =
-  /** Proven-live supply is at least the entire float. Conclusive. */
+  /** Proven-live supply EXCEEDS the entire float. Conclusive. */
   | 'PROVEN_AT_OR_ABOVE_FLOAT'
+  /**
+   * Supply equals the share count EXACTLY, which is a transcription signature
+   * rather than a finding.
+   *
+   * R&D argued for `>=` on sound arithmetic — at exactly 1.0 supply equals the
+   * float's upper bound, so supply >= float still holds — and I built it that
+   * way. **THE DATA REVERSED IT.** Replaying the rule over 325 stored dossiers,
+   * seven would have fired and FOUR were exact identities: TONT 28,750,000 on
+   * 28,750,000; FLWS 64,098,483 on 64,098,483; GYGY 14,388,000 on 14,388,000;
+   * BZ 943,697,002 on 943,697,002.
+   *
+   * A registered resale of precisely every outstanding share, to the share,
+   * four times independently, is not the ordinary explanation. The model
+   * putting the share count into a supply block is. **And strict `>` leaves
+   * exactly the three that `sol` independently confirmed as real overhangs —
+   * NERV 2.16, GYGY 1.12, ISPC 2.53.**
+   *
+   * So equality gets its own state instead of a verdict. It is not PROVEN,
+   * because the likeliest cause is a copied number; it is not NOT_PROVEN,
+   * because the arithmetic genuinely would prove it if the numbers are
+   * independent. Naming it keeps R&D's reasoning visible and stops a false
+   * AVOID, which is the error that costs him a trade he should have taken.
+   */
+  | 'EQUALS_SHARE_COUNT'
   /** Not proven from established supply alone. NOT a clean bill. */
   | 'NOT_PROVEN'
   /** The ratio clears the bar but its denominator is too old to bound today. */
@@ -407,6 +431,18 @@ export function assessSupplyOverhang(
 
   if (pair.floorRatio === null || pair.floorRatio < 1) {
     return { verdict: 'NOT_PROVEN', ...carried };
+  }
+
+  /*
+   * Exact identity is tested on the INTEGERS, not the ratio.
+   *
+   * `floorShares / sharesOutstanding` can land on 1 through rounding for two
+   * numbers that are merely close, and can miss an identity that division
+   * perturbs. The question is whether the same number appears on both sides,
+   * so it is asked of the counts themselves.
+   */
+  if (pair.floorShares !== null && pair.floorShares === pair.sharesOutstanding) {
+    return { verdict: 'EQUALS_SHARE_COUNT', ...carried };
   }
 
   // An unknown age cannot be shown current, and "unverifiable" is not "fresh".

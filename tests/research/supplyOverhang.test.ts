@@ -47,15 +47,40 @@ describe('it proves supply >= float without ever knowing a float', () => {
     expect(assessSupplyOverhang(pair(), ASOF).verdict).toBe('PROVEN_AT_OR_ABOVE_FLOAT');
   });
 
-  it('fires at EXACTLY 1.0, because equality still proves the claim', () => {
+  it('refuses to prove anything from an EXACT identity, because that is a copy', () => {
     /*
-     * `escalation.ts` uses a strict `>` for its own question and is right to:
-     * equality is not a contradiction. It is wrong for THIS question, where
-     * supply equal to the float's upper bound still establishes supply >=
-     * float. The two thresholds are deliberately not shared.
+     * BUILT THE OTHER WAY FIRST, ON SOUND ARITHMETIC, AND THE DATA REVERSED IT.
+     * At exactly 1.0 supply equals the float's upper bound, so supply >= float
+     * genuinely holds — but replaying the rule over 325 stored dossiers, four
+     * of the seven that would have fired were exact identities: 28,750,000 on
+     * 28,750,000, 64,098,483 on 64,098,483, and two more. A resale of precisely
+     * every outstanding share, to the share, four times independently, is not
+     * the ordinary explanation for that.
+     *
+     * Strict `>` leaves exactly the three sol independently confirmed.
      */
     const exact = assessSupplyOverhang(pair({ floorShares: 1_000_000, floorRatio: 1 }), ASOF);
-    expect(exact.verdict).toBe('PROVEN_AT_OR_ABOVE_FLOAT');
+    expect(exact.verdict).toBe('EQUALS_SHARE_COUNT');
+    expect(exact.verdict).not.toBe('PROVEN_AT_OR_ABOVE_FLOAT');
+  });
+
+  it('still proves it one share above the count', () => {
+    // The boundary is identity, not magnitude: a single share of genuine
+    // excess is a different fact from two numbers being the same number.
+    const over = assessSupplyOverhang(
+      pair({ floorShares: 1_000_001, floorRatio: 1.000001 }),
+      ASOF,
+    );
+    expect(over.verdict).toBe('PROVEN_AT_OR_ABOVE_FLOAT');
+  });
+
+  it('tests identity on the counts, not on a divided ratio', () => {
+    // Two close-but-distinct counts must not be collapsed by rounding.
+    const close = assessSupplyOverhang(
+      pair({ floorShares: 3_000_000_001, sharesOutstanding: 3_000_000_000, floorRatio: 1 }),
+      ASOF,
+    );
+    expect(close.verdict).toBe('PROVEN_AT_OR_ABOVE_FLOAT');
   });
 
   it('carries the number, the date, the basis and the citation with the verdict', () => {
