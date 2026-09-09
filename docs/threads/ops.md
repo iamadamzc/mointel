@@ -7886,11 +7886,30 @@ cost overstates it roughly tenfold; reading `239732580473`'s total as the desk's
 cost overstates it fourfold, because that account also carries MEO
 (`meo-cluster`, `meo-db`, an ELB, two Elastic IPs, `meo-cloudfront-acl`).
 
-**Nothing carries cost-allocation tags.** mointel was separable only because it
-is one named Lightsail instance matching an IP already known. Per-project
-attribution for anything else **is not in the data because nobody collected it**,
-and it cannot be recovered retrospectively — a finding, not a gap to estimate
-around.
+**CORRECTED 2026-09-09, and the correction matters: THE RESOURCES ARE TAGGED.
+THE TAGS ARE NOT ACTIVATED.** I first reported that nothing carried
+cost-allocation tags. That reads as "the resources are untagged" and they are
+not: `mointel-prod` already carries
+`Project=MomentumIntelligence`, `Environment=prototype`, `Application=mointel`,
+and MEO's VPC, subnets, ECS task definitions and target groups all carry
+`Project=` as well.
+
+**What is missing is one account-level billing setting.** A tag key does nothing
+for cost reporting until it is ACTIVATED as a cost allocation tag, and `Project`
+is `Inactive` in **both** accounts. So the reason per-project spend could not be
+read was never a data-collection failure — **the data was collected and the
+reader was switched off.** That is a much cheaper fix than re-tagging an estate,
+and mistaking one for the other would have sent somebody to tag resources that
+were already tagged.
+
+**Still genuinely untagged, and only these:** the Lightsail snapshot
+`mointel-prod-manual-20260902-2142`, and the Route 53 hosted zone for
+`tmitrader.com` (empty tag set).
+
+**Activation does not backdate.** Whenever it is switched on, the series has a
+boundary: tagged spend after it, none before. **Date that boundary here when it
+lands**, or the next person computing a monthly trend across it reads a step
+that is not in the world.
 
 **Credentials: the CSVs in `A:\AWS_creds` are CONSOLE PASSWORDS, not API keys.**
 No thread here can use them and none should try; the programmatic path is the
