@@ -3095,3 +3095,60 @@ bars on every row for the exact period he was looking at it**, because
 > **A feature requested because an existing one was untrustworthy is the most
 > expensive kind to build.** **Ask whether the repaired one now does the job
 > before scoping its replacement.**
+
+## A CORRECTION CAN FAIL IN THE SAME WAY AS THE THING IT CORRECTS
+
+**2026-09-09, a three-hop chain that ended somewhere none of the three hops
+predicted.** Ops's dark-field sweep reported **`volume_base` always 0,
+`volume_base_through` never written.** Research corrected it: `runtime.ts:941`
+sets exactly that **on purpose**, so zero is a chosen value rather than an
+unwritten one. **This seat relayed the correction to Ops. Ops checked it instead
+of accepting it.**
+
+**The deliberate reset is real and covers 854 rows of 151,864.** Production
+carries `volume_base = 0` across **all five distinct `volume_base_source`
+values**, including **36,962 rows sourced purely from the daily bar — where a
+zero base is a contradiction rather than a reset**, because that bar carries the
+whole session's volume in one number.
+
+**The cause is `worker/runtime.ts:1752`: the row builder hardcodes both value
+columns as literals and writes the SOURCE column honestly from state.** So each
+row asserts *a base was seeded* and *the base is zero* simultaneously — **which
+is precisely why the source varies and the values never do.**
+
+> **A real deliberate value, found on one path, attributed to the population.**
+> *Ops's phrasing: the same shape as reading one path's behaviour as the
+> population's.* **The sweep could not separate a chosen zero from a hardcoded
+> one — and neither could the correction, because both are one row from `SELECT
+> <field>, COUNT(1)`.**
+
+**THE ENTRY IS NOT THAT ANYONE WAS CARELESS. It is that a correction is a claim
+with a population too**, and this desk audits claims far harder than it audits
+the corrections to them. *A correction arrives sounding like the end of an
+enquiry.*
+
+### What made it cheap, and it was the flag rather than the check
+
+**This seat relayed Research's correction without verifying it.** It cost nothing
+**only because it went over as Research's reading with the row named as Ops's
+call** — so Ops checked. **An asserted correction would have closed the row and
+left a write-only column filled with a constant standing as intended behaviour.**
+
+### And the real finding was underneath all three readings
+
+**Nothing SELECTs `volume_base` back.** It appears in the schema, the insert and
+the row builder, and **nowhere else outside tests.** The in-memory base is live
+and load-bearing — `engine.ts:943` skips minutes already inside it, `:815` drops
+them from the VWAP set — **and `toRow()` discards it on the way to disk.** **The
+base cannot survive a restart, and not because the reload is broken: there is no
+reload.** Queued by Ops, not shipped, and deliberately not riding `settleMinutes`.
+
+### A red herring this seat introduced, withdrawn
+
+I carried the dark column to Research as *baseline infrastructure started and
+never finished*, warning it against **building a second baseline beside a misread
+one.** **Withdrawn: they are not the same quantity.** `volume_base` is an
+**intra-session snapshot offset** so arriving minute bars are not double-counted;
+the RVOL denominator is an **average full-session volume over twenty prior
+sessions.** **No relationship, no half-finished predecessor, nothing to build
+beside.**
