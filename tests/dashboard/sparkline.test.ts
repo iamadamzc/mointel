@@ -77,7 +77,7 @@ describe('the scale is shared across rows', () => {
  */
 describe('the window says what it covers', () => {
   it('states the span and the lag', () => {
-    expect(sparklineSpanLabel()).toBe('5 minutes ending 2 min ago');
+    expect(sparklineSpanLabel()).toBe('5 minutes ending 1 min ago');
   });
 
   it('derives both from the engine config rather than restating them', () => {
@@ -97,14 +97,14 @@ describe('the window says what it covers', () => {
       sparklineSpanLabel({ ...DEFAULT_ACTIVITY_CONFIG, ...over });
 
     expect(at({ settleMinutes: 4 })).toBe('5 minutes ending 5 min ago');
-    expect(at({ deadMinutes: 9 })).toBe('9 minutes ending 2 min ago');
-    expect(at({ reviveMinutes: 11 })).toBe('11 minutes ending 2 min ago');
-    expect(at({ deadMinutes: 3, reviveMinutes: 7 })).toBe('7 minutes ending 2 min ago');
+    expect(at({ deadMinutes: 9 })).toBe('9 minutes ending 1 min ago');
+    expect(at({ reviveMinutes: 11 })).toBe('11 minutes ending 1 min ago');
+    expect(at({ deadMinutes: 3, reviveMinutes: 7 })).toBe('7 minutes ending 1 min ago');
   });
 
   it('puts the span and the raw numbers in the hover', () => {
     const view = sparklineView([1, 2, 3])!;
-    expect(view.title).toContain('5 minutes ending 2 min ago');
+    expect(view.title).toContain('5 minutes ending 1 min ago');
     expect(view.title).toContain('1, 2, 3');
     expect(view.title).toContain(String(SPARK_FULL_SCALE));
   });
@@ -121,7 +121,7 @@ describe('the header states the lag, not only the tooltip', () => {
    * the wrong side of a rule already enforced on the Move control.
    */
   it('names how far behind now the newest slot sits', () => {
-    expect(sparklineLagLabel()).toBe('−2m');
+    expect(sparklineLagLabel()).toBe('−1m');
   });
 
   /*
@@ -148,7 +148,7 @@ describe('the header states the lag, not only the tooltip', () => {
    */
   it('is not the span label', () => {
     expect(sparklineLagLabel()).not.toBe(sparklineSpanLabel());
-    expect(sparklineSpanLabel()).toContain('ending 2 min ago');
+    expect(sparklineSpanLabel()).toContain('ending 1 min ago');
   });
 });
 

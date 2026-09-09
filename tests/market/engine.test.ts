@@ -692,6 +692,9 @@ describe('high-resolution interest set', () => {
     // which is how death actually arrives -- absent rows, not low counts.
     engine.ingest(bar('LIVE', ts(17), { c: 5, v: 500_000, n: 900 }));
     engine.ingest(bar('LIVE', ts(18), { c: 5, v: 500_000, n: 900 }));
+    // Through the NEWEST judged minute, so the fixture covers the window at
+    // any settle rather than stopping where a one-minute settle used to end.
+    engine.ingest(bar('LIVE', ts(19), { c: 5, v: 500_000, n: 900 }));
 
     engine.recompute();
 

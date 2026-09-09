@@ -147,7 +147,14 @@ describe('resolveActivity — the removal it exists for', () => {
      */
     expect(reading.reason).toContain('5 consecutive settled minute(s)');
     expect(reading.reason).toContain('at or below 30 trades/min');
-    expect(reading.reason).toContain('excluded as still arriving');
+    /*
+     * The settle clause is asserted by SHAPE rather than by its exact words,
+     * because the words legitimately differ at `settleMinutes: 0` — there is
+     * nothing excluded beyond the minute in progress, and saying "most recent 0
+     * excluded" would claim an exclusion that is not happening. A dropped
+     * clause still fails this; a re-worded one does not.
+     */
+    expect(reading.reason).toMatch(/excluded as still arriving|never judged/);
   });
 
   it('treats a MISSING minute as zero trades, which is how death arrives', () => {
@@ -229,12 +236,35 @@ describe('resolveActivity — hysteresis, because a third of deaths revive', () 
   });
 
   it('returns once activity is sustained, and clears the clock', () => {
-    const reading = read([at(2, 900), at(3, 900), at(4, 0), at(5, 0), at(6, 0)], {
-      previous: 'DEAD',
-      deadSince: '2026-09-03T14:20:00.000Z',
-    });
+    // Offsets DERIVED: the two most recent judged minutes are busy, the rest
+    // silent. JUDGED is newest-first, so [0] and [1] are the revival run.
+    const reading = read(
+      JUDGED.map((back, index) => at(back, index < DEFAULT_ACTIVITY_CONFIG.reviveMinutes ? 900 : 0)),
+      { previous: 'DEAD', deadSince: '2026-09-03T14:20:00.000Z' },
+    );
     expect(reading.state).toBe('ACTIVE');
     expect(reading.deadSince).toBeNull();
+  });
+
+  it('keeps a name that woke up, instead of burying it a minute late', () => {
+    /*
+     * CASE D, AND IT IS WHY `settleMinutes` IS 0. Nothing asserted this before,
+     * which is exactly why the parameter survived: four quiet minutes and a
+     * BUSY most-recent one whose bar has arrived.
+     *
+     * At `settleMinutes: 1` the busy minute sat outside the window and this
+     * returned DEAD — and under hysteresis that DEAD is STICKY, because
+     * revival then needs `reviveMinutes` consecutive minutes at or above the
+     * active line. A name waking into the band between the lines never earned
+     * it back. The quiet-then-loud transition is the one the desk exists to
+     * catch, so mislabelling it is the expensive direction.
+     */
+    const reading = read(
+      JUDGED.map((back, index) => at(back, index === 0 ? 900 : 5)),
+      { previous: 'ACTIVE' },
+    );
+    expect(reading.state).not.toBe('DEAD');
+    expect(reading.window[reading.window.length - 1]).toBe(900);
   });
 
   it('is asymmetric: leaving takes five minutes, returning takes two', () => {

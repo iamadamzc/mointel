@@ -137,26 +137,37 @@ export interface ActivityConfig {
    * judged, because it has not finished. There is no sub-minute setting and no
    * measurement could produce one.
    *
-   * ── STILL 1, AND THE REASON IS A REGISTERED TEST RATHER THAN THE EVIDENCE ──
+   * ── WHY IT IS NOW 0 ─────────────────────────────────────────────────────
    *
-   * Setting this to 0 was tried on 2026-09-08 and reverted the same hour. It
-   * fails nine tests, and the one that matters is not a stale fixture:
-   * `activity.test.ts` — *"does not judge the in-flight minute, or the one
-   * still arriving"* — seeds a busy window with the just-closed minute at ZERO
-   * and asserts ACTIVE. **THAT TEST REGISTERS THE TWO-MINUTE POLICY AS A
-   * DECISION.** Editing its fixture to pass would be overwriting a recorded
-   * choice with an unrecorded one.
+   * **THE MARGIN DID NOTHING IN THE SITUATION IT WAS WRITTEN FOR.** Six cases
+   * run through this function at both settings: steady state, genuine death,
+   * revival, AND the missing-bar case all returned identical verdicts. Two
+   * differed, and only one mattered:
    *
-   * ITS STATED REASON IS THE SENTENCE DISPROVED ABOVE — *"counting either as
-   * zero would manufacture death every minute on every name"* — so the test's
-   * JUSTIFICATION is false while its ASSERTION may still be wanted: a name that
-   * traded hard through t−2 and had one silent minute at t−1 reads ACTIVE at 1
-   * and does not at 0. **Which of those the desk wants is a product call, not
-   * an arithmetic one.**
+   *     a name quiet for four minutes whose fifth minute is BUSY, bar arrived
+   *       settle=1 -> DEAD      settle=0 -> ACTIVE
    *
-   * Five of the nine failures are `sparkline.test.ts` — Design's surface, whose
-   * labels derive from this value and would follow correctly, but whose
-   * expectations are Design's to move.
+   * **NOT A MINUTE APART — OPPOSITE, AT THE SAME INSTANT, AND THE STALE ONE IS
+   * WRONG.** And under hysteresis that wrong DEAD is STICKY: revival needs
+   * `reviveMinutes` consecutive minutes at or above the active line, so a name
+   * waking into the band between the lines never earns it back. **The only
+   * measurable effect of the margin was to mislabel the quiet-then-loud
+   * transition the desk exists to catch** — and everything downstream reads it,
+   * including the high-res subscription gate at `engine.ts:1707`.
+   *
+   * ── WHAT IT COSTS, SIZED TO THE EVIDENCE AND NO FURTHER ──────────────────
+   *
+   * A name acquiring ACTIVE from UNKNOWN for the FIRST time waits one extra
+   * evaluation when the newest bar has not landed. **In normal operation that
+   * is one cycle — original bars were measured landing 0.005s–0.673s after
+   * their own minute closes, across a full session including the open.**
+   *
+   * **DURING A DELIVERY GAP IT COSTS THE LENGTH OF THE GAP, AND THAT IS NOT
+   * BOUNDED.** No reconnect occurred on the measured day; observed-absent is
+   * weaker than cannot-occur, and this is the one case a stall makes worse.
+   * *Stated this way deliberately: the comment that defended `1` for three
+   * months was false, and the replacement must not inherit a claim stronger
+   * than the measurement.*
    */
   settleMinutes: number;
 }
@@ -166,7 +177,7 @@ export const DEFAULT_ACTIVITY_CONFIG: ActivityConfig = {
   deadRatio: 10,
   deadMinutes: 5,
   reviveMinutes: 2,
-  settleMinutes: 1,
+  settleMinutes: 0,
 };
 
 /**
