@@ -60,7 +60,10 @@ Integration's sequencing; nothing is deployed by this decision.
 **So the name is complete: TMI Trader · True Move Intelligence ·
 tmitrader.com (registered) · "Intelligence on what's moving."** This seat's
 naming work is closed. The lawyer's look at the letters is his to commission or to
-waive; he has weighed both occupants and said so. Once the domain is his,
+waive; he has weighed both occupants and said so. **WAIVED 2026-09-09 — his
+word, *"2, waive."*, recorded by Integration at `902c8aa`.** No seat
+commissions one. The flags in §2b stay on file as flags; nothing about them
+was cleared, and that is the state he chose. Once the domain is his,
 DNS, mail authentication and the email sign-in that was waiting on a domain
 are Ops's and Integration's, not this seat's. Everything below this line is
 the record of how the name was reached; §3's recommendation is superseded by

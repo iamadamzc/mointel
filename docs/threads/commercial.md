@@ -212,7 +212,10 @@ repo — they are public documents and re-fetchable.
   HIM 2026-09-08: "Intelligence on what's moving."** The name is complete —
   TMI Trader · True Move Intelligence · tmitrader.com · the line — and this
   seat's naming work is closed. Where the line appears is Design's surface
-  and Integration's sequencing. Corrections
+  and Integration's sequencing. **The trademark knock-out search is WAIVED
+  by him, 2026-09-09 (*"2, waive."*, Integration `902c8aa`); the §2b flags
+  stay on file uncleared, which is the state he chose. Nothing on this seat
+  was ever blocked on it.** Corrections
   carried: "Algo Trader Plus" is Alpaca's plan name; no name may borrow from
   a data vendor. Nothing registered; the purchase and any registrar enquiry
   are his.
