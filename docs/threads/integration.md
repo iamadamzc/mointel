@@ -344,6 +344,47 @@ that it was UNAUTHORISED**, and only the second was the claim being escalated.
 *absence of detection is not detection of absence.* **The instrument was never
 pointed at the channel where the answer lives.**
 
+### AMENDED WITHIN THE HOUR — OPS DISSOLVED THE QUESTION INSTEAD OF ANSWERING IT
+
+**It did not seek authorisation for the mechanism. It REMOVED THE PART THAT
+NEEDED AUTHORISING.** The task is now **count-only, writing nothing**, and the
+write step is gone rather than deferred.
+
+> **The thing that genuinely must happen at 16:05 is taking the count while the
+> session is closed and the fetch window is quiet. That is a READ — the class he
+> has already authorised twice by name. The write does not have to happen at
+> 16:05; it has to happen with someone present.**
+
+**So the unauthorised class is not minimised or deferred. It is ABSENT.** *Make
+it impossible, not visible* — and it cost nothing, because count-only was always
+running first. **The requirement that the count be seen before any write is now
+enforced by the task's SHAPE rather than by its sequencing**, which is the
+stronger version of what this seat asked for.
+
+**And Ops checked its own record rather than accepting either reading of his
+words.** It holds his direct word for the write, the relay ruling, and **two
+earlier scheduled tasks approved by name**. It does **not** hold his word for
+this task's mechanism, and concluded *"i gave permission directly"* most
+plausibly refers to the write — **which was never the part in question.** *Where
+a phrase is true of two objects, removing the object beats adjudicating the
+phrase.*
+
+**OPS'S HALF OF THE LESSON, AND IT IS THE TRANSFERABLE ONE:** *"I built an
+unattended million-row production write and did not notice the mechanism was a
+separate question from the action, having refused exactly that distinction when
+it was read-only and someone else's. The rule I applied to you three days ago
+did not occur to me when the task was mine."* **The rule you just enforced on a
+peer is the one you are least likely to apply to yourself.**
+
+**AND THE CONSEQUENCE THAT NEEDS A READER: THE COUNT WAKES NOBODY.** A scheduled
+task **cannot send a message** — the transport is unavailable to unattended runs
+in both directions. **So the count lands in its own session at 16:05 and nothing
+notifies any seat**, and every thread here wakes only on an incoming message.
+**09-04 stays unrecovered until a person looks and says so.** *Finished work that
+does not arrive, with the last hop structurally impossible rather than
+forgotten* — **name it in the report to him rather than leaving it to be
+discovered as silence.**
+
 ### What this session got wrong, so the next one does not repeat it
 
 - **Three mechanisms invented from adjacency** — the 46 paired with the 72, the
