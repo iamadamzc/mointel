@@ -3029,3 +3029,69 @@ instruction is being revised and it is NOT a revision anyone here may infer.**
 **What does NOT move either way:** *a scope decision elsewhere on the desk does
 not reach Coaching's grading of his own fills.* **Grading covers every fill in
 every session and only he can narrow it, explicitly.**
+
+## TWO CONTROLS THAT LOOK IDENTICAL: ONE SCOPES THE ROSTER, ONE SCOPES THE COLUMN
+
+**Design, 2026-09-09, `9e2e288`, reversing a shape this seat had given two threads
+as settled.** I checked the tree before routing — the right move — **and read the
+wrong artefact off it.**
+
+**WHAT I ASSERTED:** his `AH MOVE` tab is a second session-scoped board, and he
+is asking to generalise the existing `DiscoveryBoard = 'DAILY_RVOL' |
+'AFTER_HOURS'` switch.
+
+**BOTH HALVES WRONG.**
+
+- **`AH MOVE` IS NOT IN THE REPO AND IT IS NOT A TAB.** It is
+  `DiscoveryBoard.tsx:77` — **the Move SORT BUTTON relabelling itself per
+  session**, `{ label: 'AH move', title: "Change from today's regular-session
+  close" }`. **He had found the one field on the desk that is ALREADY
+  session-scoped and asked why RVOL and gain are not.** *A better question than
+  either seat read, and I answered the one I had invented.*
+- **GENERALISING THE EXISTING SWITCH WOULD DO THE OPPOSITE OF WHAT HE ASKED.**
+
+```sql
+WHERE trading_date = ? AND ${rankColumn} IS NOT NULL      -- repo.ts:818
+ORDER BY ${rankColumn} ASC LIMIT ?
+```
+
+**The rank column is in the WHERE, not only the ORDER BY** — so the two boards
+fetch **different populations.** **The existing switch scopes the ROSTER.** His
+words were *"the rankings are for the whole day"*: **he wants the roster left
+whole-day and the NUMBERS scoped.**
+
+> **SESSION OWNS THE NUMBERS, NOT THE ROSTER.** *"Select the session that owns
+> the data" is a COLUMN-SCOPE control. The one that exists is a ROSTER control.
+> They are one word apart in description and opposite in effect.*
+
+### The tell, and why "check the tree" did not save me
+
+**I checked that a session switch EXISTED. I did not check WHAT IT SCOPED.**
+*Verifying a thing is present is not verifying what it does* — the same distance
+as verifying the recovery task was armed rather than unauthorised, **twice in one
+day, by this seat.**
+
+**And the name helped it along:** `DiscoveryBoard` sounds like a view and selects
+a population. **A type name that describes the control rather than its effect is
+where this hides.**
+
+### The coupling is false today and one wiring decision from true
+
+`worker/research.ts:309` derives its board from `activeBoard(db, tradingDate)`
+**off its own clock, with no request input anywhere in the chain**, so a
+read-side selector cannot reach spend. **My pin warning was wrong about today and
+right about the shape.** **The constraint that must ride with any build: the
+selector parameterises the READ ONLY.** `extraSymbols` is the precedent for a
+request shaping a read without touching the queue.
+
+### And the question that may dissolve the feature
+
+**`Now` is already the desk's correction to whole-day RVOL** — *RVOL is
+cumulative and never decays within a session, so at 10:00 a name that ran at
+07:15 and died still carries a large number.* **And `Now` rendered five floor
+bars on every row for the exact period he was looking at it**, because
+`price_window` was never persisted.
+
+> **A feature requested because an existing one was untrustworthy is the most
+> expensive kind to build.** **Ask whether the repaired one now does the job
+> before scoping its replacement.**
