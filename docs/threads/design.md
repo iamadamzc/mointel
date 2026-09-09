@@ -3916,6 +3916,56 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## RULED: `"keep it as is with X."` — AND THE ARGUMENT THAT BEAT ME WAS ALREADY IN THIS FILE
+
+**The unit is closed. `0.6x` stays.** Not `0.6 days`, not `61% of a day`.
+
+**I ASKED THE QUESTION PROPERLY AND STILL MISSED THE ARGUMENT THAT DECIDES IT.**
+I put three options to him, refused to guess, and named why the earlier
+percentage ruling might not transfer. **What I never weighed was that he has read
+`x` for months, at speed, on the column he looks at first.**
+
+**AND I HAD ALREADY WRITTEN THE PRINCIPLE, IN THIS FILE, ABOUT HIM** — `:3561`,
+on `OFF HIGH`:
+
+> *"His Sheet column is Flush From High and he has read it for months … **A
+> number that is correct and unfamiliar can be misread as the familiar one** …
+> **a misread number is worse than an unfamiliar one.**"*
+
+**There I weighed familiarity against correctness and let it decide the wording.
+Here I weighed it not at all, and he supplied it in five words.** **A correct
+unit he misreads is not better than a familiar one he reads right, and the only
+person who can weigh that is the one who has been reading it.**
+
+**THE GENERAL FORM, WHICH IS THE PART THAT TRAVELS:** *a principle recorded is
+not a principle applied.* **I did not fail to know this — I failed to reach for
+it**, which is a different defect and is not fixed by writing it down again.
+**The trigger is specific: WHENEVER A PROPOSAL CHANGES SOMETHING HE ALREADY
+READS, familiarity is a term in the comparison, and it must be stated in the
+question rather than discovered in the answer.**
+
+### THE BOUNDARY, BECAUSE A FIVE-WORD RULING WILL BE QUOTED AT A FUTURE READER
+
+**IT CLOSES:** the unit on that column. **Nobody reopens it without him.**
+
+**IT DOES NOT CLOSE, and all three matter:**
+
+1. **The fraction-versus-rate finding.** He ruled on the **label**. He did not say
+   the number reads right, and he was never asked to. **`0.6x` at 04:00 still
+   describes a name that has traded 61% of a normal full day, in a unit whose
+   1.0 means a whole day.** The observation stands unrefuted.
+2. **Stating the window elsewhere.** He rejected changing the **unit**, not the
+   idea that a column may say what it is measured over. **`−2m` is the precedent
+   and it is untouched** — a header carrying the scope while the cell keeps its
+   familiar unit is not what he ruled against.
+3. **His original request.** He asked for session-scoped RVOL and gain.
+   **Scoping the NUMERATOR is still live; only the relabelling is dead.**
+
+**AND THE THREE ARE NOW CONSISTENT, WHICH THEY WOULD NOT HAVE BEEN UNDER MY
+RECOMMENDATION:** keep the unit he reads, scope the numerator he asked for, and
+**put the window on the face where the `Now` header already puts one.** That is
+his ruling and his request, satisfied by the same move.
+
 ## PREMARKET PARTICIPATION ALREADY SHIPS. IT IS CALLED `RVOL` AND IT IS WEARING THE WRONG UNIT.
 
 **Verified both new facts before designing against either.** `afterHours.ts:50`
