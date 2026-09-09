@@ -14365,3 +14365,74 @@ handed to me.***
 **And R&D's own framing of the resolution is better than mine: I called it "both
 readings right about different dossiers" — it is that the collision was never a
 SIDE, it was a STAGE.**
+
+**139. THERE IS ONE DENOMINATOR AND IT IS FULL-SESSION. THE DESK ALREADY SOLVED
+THIS ONCE AND SOLVED IT BY NOT CALLING IT RVOL.**
+
+*Integration asked me to rule on what a session-scoped RVOL would be, and named
+one query to kill on sight if the field was wrong. **The field is wrong; the
+ruling is not what it expected.***
+
+### FIRST, THE QUERY: NO HOLE. `readDemandStates` IS ALREADY BOARD-PARAMETERISED.
+
+`repo.ts:814`:
+
+```ts
+const rankColumn = board === 'AFTER_HOURS' ? 'ah_rank' : 'rvol_rank';
+... WHERE trading_date = ? AND ${rankColumn} IS NOT NULL
+```
+
+**Same pattern as `readBoardCandidates`.** An `ah_rank`-only name IS selected when
+the board is AFTER_HOURS, and the queue's `rank` comes from the active board's
+column. **The after-hours population is researched. An RTH board would inherit no
+such hole because there is none.** *Killed, as invited.*
+
+### THE RULING: A PER-SESSION RVOL NEEDS A DENOMINATOR THAT DOES NOT EXIST
+
+**There is exactly one denominator on this desk.** `buildBaseline` averages
+`bar.volume` from daily bars over 20 eligible sessions — **one number per name,
+full-session.**
+
+**AND IT CANNOT BE REBUILT PER SESSION FROM WHAT IS RETAINED.** A 20-session
+per-session baseline needs 20 sessions of intraday volume; **`minuteBarRetentionDays`
+is 3.** The only historical volume the desk keeps beyond that is the daily bar's,
+which is full-session by construction.
+
+> **So three session RVOLs over one full-day average would be three numerators
+> wearing a ratio's name.** Integration spotted that precisely, and the desk has
+> already written the answer down.
+
+### THE ANSWER IS SHIPPED, AND IT IS IN THE NAME
+
+`afterHours.ts:50`, verbatim:
+
+> ***"After-hours participation: AH volume ÷ average full-session volume (20)."***
+
+**A SESSION NUMERATOR OVER THE FULL-DAY DENOMINATOR, CALLED PARTICIPATION AND NOT
+RVOL.** *That is exactly the quantity he is asking for, it is honest about its
+own denominator, and it costs nothing new.*
+
+**⇒ EXTEND THE PARTICIPATION PATTERN TO PREMARKET AND RTH. DO NOT SHIP THREE
+THINGS CALLED RVOL.** The AH board is the precedent and the label is the load-
+bearing part of it: *`ah_participation` and `rvol` are different quantities that
+would otherwise share a column heading, and item 108 already showed what happens
+when one word covers two orderings.*
+
+**A TRUE per-session RVOL is a data-acquisition project, not a display change:**
+retention from 3 sessions to 20, or 20 sessions of intraday aggregates fetched
+per name. **Participation is available today for free. They are not the same
+number and the choice between them is his.**
+
+### AND ONE READING OF OPS'S SWEEP I WOULD CHECK BEFORE BUILDING BESIDE IT
+
+*Ops found `volume_base` 0 on every row and `volume_base_through` never written,
+and Integration carried it as dark infrastructure.* **The startup backfill sets
+it that way ON PURPOSE** — `runtime.ts:941`, verbatim: *"Minute bars are
+canonical for this set: **reset the snapshot base** so volume is derived purely
+from bars we can correct later"* — followed by `seedSession(symbol, {
+volumeBase: 0, volumeBaseThrough: null, ... })`.
+
+**SO ZERO MAY BE THE CORRECT VALUE RATHER THAN AN UNWRITTEN ONE**, for every
+symbol that went through the minute-bar backfill. *Ops's table and Ops's call —
+but this is the fourth time this weekend a deliberate value has been read as an
+absence, and a second baseline built beside a misread one would be expensive.*
