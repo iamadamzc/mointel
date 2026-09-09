@@ -13855,3 +13855,58 @@ stall, and the desk already tracks halt state per symbol (`halt_state`,
 **NO DESIGN PROPOSED AND NONE ASKED FOR. The finding is that `cannot` is
 unearned and there are two candidates, one of which is a single value crossing a
 single boundary.**
+
+**132. THE MODEL ALREADY DECLINES 96% OF THE TIME WHEN IT HAS NOTHING. THE
+INVENTION RISK IS SMALLER THAN EITHER OF US FRAMED IT, AND THE EVIDENCE WAS
+ALREADY STORED.**
+
+*Before recommending the `omitSheetPrior` control, asked the cheaper question:
+**what does the model already do on the no-catalyst population, in the required
+fields it already fills?** 325 stored versions, 95 with `catalystStatus` of
+`UNKNOWN` or `NONE_FOUND`.*
+
+```
+catalystGrade            UNKNOWN 76 · NONE 15 · MODERATE_MIXED_SECONDARY 4
+plausiblyExplainsMove    null 74 · false 18 · true 3
+confidence               LOW 76 · MEDIUM 17 · HIGH 2
+unknowns[] populated     95 of 95   (100%)
+```
+
+**91 OF 95 DECLINE A GRADE. IT CLAIMS THE MOVE IS EXPLAINED THREE TIMES IN
+NINETY-FIVE. IT NAMES WHAT IT DOES NOT KNOW EVERY SINGLE TIME.**
+
+### AND `plausiblyExplainsMove` IS THE EXISTING ANALOGUE OF THE EFFECT BLOCK
+
+*A required judgement field with an honest opt-out — and **the model takes the
+opt-out 74 times in 95**.* **That is the closest thing the schema already has to
+`NONE`/`NONE`, on the same population, from the same model under the same prompt
+discipline.**
+
+**⇒ THE DESIGN LESSON RATHER THAN THE BUDGET ONE: give the effect block an
+opt-out as visible as `plausiblyExplainsMove: null` and it will be used.** *The
+risk was never that the schema forced invention — item 127 already killed that —
+it is that a block written without a prominent decline would invite it.*
+
+### SO I AM RECOMMENDING AGAINST RUNNING `omitSheetPrior` FIRST
+
+**It is a proxy for a proxy.** It measures how much the prior moves the fields
+that exist **today**; the effect block does not exist, so it cannot measure the
+prior's influence on it. **It would spend money to reduce uncertainty about a
+number the stored dossiers have largely answered.**
+
+*It stays worth running for its own sake — the automatic grade not being
+independent of the prior is a real question — **but it is not a gate on this
+build and I was wrong to sequence it as one.***
+
+### AND A LABELLING CONFLICT THAT WOULD CHANGE WHAT THE CONTROL MEASURES
+
+`bundle.ts:94` types the prior as **`label: 'HUMAN_REVIEWED_PRIOR_ANALYSIS'`** —
+catalyst, grade, structure, cycle, warnings, float quality, notes.
+
+`config.ts:63` describes the same thing as ***"another model's conclusion"***.
+
+**ONE OF THOSE IS WRONG.** *If the Sheet is his own written analysis, the control
+measures how much the desk's automatic grade is anchored to HIS judgement. If it
+is another model's output, it measures machine-to-machine contamination.*
+**Those are different findings and the same flag would produce both.** Worth
+settling before anyone runs it, and not settleable from this repo.
