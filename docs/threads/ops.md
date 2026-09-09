@@ -7856,3 +7856,42 @@ appends. Never a bare overwrite.**
 > running. **Deploy authority: Integration's word is enough** — a sha they name
 > is the ship order, and a queue line is not. Deploy the named sha or come back
 > and say why.
+
+## THE DESK'S SERVER IS IN AN ACCOUNT THAT IS NOT IN THE ORGANISATION
+
+**Two AWS accounts, separately billed, and the obvious one is the wrong one.**
+
+```
+239732580473   magellan_admin profile   NOT a member of any organisation
+               Lightsail "mointel-prod" medium_3_0 at 98.85.49.227  -- THE DESK
+               ~$100-116/month total, of which mointel itself is ~$28
+
+528131355234   management-admin profile  Organizations MANAGEMENT account,
+               org o-9nzuw0r5bh, TEN accounts
+               holds the Route 53 zones and the domain registrations
+               ~$186-191/month CONSOLIDATED = ten projects, not one
+```
+
+**A consolidated figure from the management account is ten projects and does not
+contain the desk at all.** `239732580473` returns
+`AWSOrganizationsNotInUseException`, so it is in no consolidated view, under no
+organisation-level control, and invisible to anyone who reads the org total and
+believes they have read the bill. Established 2026-09-09 by locating
+`98.85.49.227` rather than by assuming the account that holds the domain also
+holds the server — **it does not.**
+
+**The two numbers are different populations and will be quoted against each
+other the moment they are seen together.** Reading the org total as the desk's
+cost overstates it roughly tenfold; reading `239732580473`'s total as the desk's
+cost overstates it fourfold, because that account also carries MEO
+(`meo-cluster`, `meo-db`, an ELB, two Elastic IPs, `meo-cloudfront-acl`).
+
+**Nothing carries cost-allocation tags.** mointel was separable only because it
+is one named Lightsail instance matching an IP already known. Per-project
+attribution for anything else **is not in the data because nobody collected it**,
+and it cannot be recovered retrospectively — a finding, not a gap to estimate
+around.
+
+**Credentials: the CSVs in `A:\AWS_creds` are CONSOLE PASSWORDS, not API keys.**
+No thread here can use them and none should try; the programmatic path is the
+`management-admin` and `magellan_admin` profiles. See [[aws-access-paths]].
