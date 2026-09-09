@@ -64,3 +64,36 @@ describe('what the recovery must never get wrong', () => {
     expect(SOURCE).not.toMatch(/new MarketRuntime/);
   });
 });
+
+describe('the registered band gates the write rather than judging it', () => {
+  it('refuses and writes nothing when the fetch lands outside the band', () => {
+    /*
+     * A SHORT FETCH IS THE FAILURE THAT LOOKS LIKE SUCCESS. 400,000 rows
+     * arriving reads exactly like data arriving, and once written it is the
+     * recovery that has to be undone rather than retried. So the check runs
+     * BEFORE the transaction, not after it.
+     */
+    const refusal = SOURCE.indexOf('REFUSING');
+    const write = SOURCE.indexOf('db.transaction(');
+
+    expect(refusal).toBeGreaterThan(-1);
+    expect(write).toBeGreaterThan(-1);
+    expect(refusal, 'the band is checked after the write, which makes it a post-mortem').toBeLessThan(
+      write,
+    );
+  });
+
+  it('returns before writing under --count-only', () => {
+    const countOnly = SOURCE.indexOf("'[recover] --count-only: nothing written.'");
+    const write = SOURCE.indexOf('db.transaction(');
+
+    expect(countOnly).toBeGreaterThan(-1);
+    expect(countOnly).toBeLessThan(write);
+  });
+
+  it('leaves the band unenforced when none is registered', () => {
+    // Optional by design: enforcing a made-up band on an unregistered date
+    // would be worse than reporting the count and letting a person look.
+    expect(SOURCE).toMatch(/if \(expect && \(rows\.length < expect\.min/);
+  });
+});

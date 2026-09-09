@@ -23,6 +23,21 @@
  * complete one to every future query and nothing distinguishes them. Every row
  * is written inside a single transaction, so the date is either wholly present
  * or wholly absent.
+ *
+ * THE EXPECTED COUNT GATES THE WRITE RATHER THAN JUDGING IT. Pass --expect
+ * MIN-MAX and a fetch landing outside that range writes nothing. Registered for
+ * 2026-09-04 before any of this existed: 1,030,000-1,150,000, point estimate
+ * 1,090,000, derived from five 50-symbol strata across the alphabet and later
+ * corroborated by 09-08's live capture at 1,083,516.
+ *
+ *   npm run market:recover-bars -- 2026-09-04 --count-only
+ *   npm run market:recover-bars -- 2026-09-04 --expect 1030000-1150000
+ *
+ * Without --expect the count is reported and not enforced, which is the right
+ * default for a date nobody has pre-registered -- but for a planned recovery,
+ * a band checked BEFORE the write is the difference between a gate and a
+ * post-mortem. A count that can only be checked after 1.09M rows are in the
+ * table makes the recovery the thing you then have to undo.
  */
 
 import { pathToFileURL } from 'node:url';
@@ -51,9 +66,23 @@ export function sessionWindow(tradingDate: string): { start: string; end: string
 }
 
 async function main(): Promise<void> {
-  const tradingDate = process.argv[2];
+  const args = process.argv.slice(2);
+  const tradingDate = args[0];
   if (!tradingDate || !/^\d{4}-\d{2}-\d{2}$/.test(tradingDate)) {
-    console.error('usage: npm run market:recover-bars -- <YYYY-MM-DD>');
+    console.error(
+      'usage: npm run market:recover-bars -- <YYYY-MM-DD> [--count-only] [--expect MIN-MAX]',
+    );
+    process.exit(2);
+  }
+
+  const countOnly = args.includes('--count-only');
+  const expectRaw = args[args.indexOf('--expect') + 1];
+  const expect =
+    args.includes('--expect') && /^\d+-\d+$/.test(expectRaw ?? '')
+      ? { min: Number(expectRaw.split('-')[0]), max: Number(expectRaw.split('-')[1]) }
+      : null;
+  if (args.includes('--expect') && !expect) {
+    console.error('[recover] --expect needs MIN-MAX, e.g. --expect 1030000-1150000');
     process.exit(2);
   }
 
@@ -156,6 +185,33 @@ async function main(): Promise<void> {
     console.error('[recover] the vendor returned nothing — writing nothing.');
     db.close();
     process.exit(1);
+  }
+
+  /*
+   * THE REGISTERED BAND, CHECKED BEFORE ANYTHING IS WRITTEN. A short fetch is
+   * the failure that looks like success: 400,000 rows arriving reads exactly
+   * like data arriving, and once written it is the recovery that has to be
+   * undone rather than retried.
+   */
+  if (expect && (rows.length < expect.min || rows.length > expect.max)) {
+    console.error(
+      `[recover] REFUSING: ${rows.length.toLocaleString()} bars is outside the registered ` +
+        `band ${expect.min.toLocaleString()}-${expect.max.toLocaleString()}.`,
+    );
+    console.error('[recover] Nothing was written. Establish why before widening the band.');
+    db.close();
+    process.exit(1);
+  }
+  if (expect) {
+    console.log(
+      `[recover] inside the registered band ${expect.min.toLocaleString()}-${expect.max.toLocaleString()}`,
+    );
+  }
+
+  if (countOnly) {
+    console.log('[recover] --count-only: nothing written.');
+    db.close();
+    return;
   }
 
   /*
