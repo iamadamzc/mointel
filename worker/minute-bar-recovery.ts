@@ -90,6 +90,38 @@ async function main(): Promise<void> {
   const db = openDatabase(config.dbPath);
 
   /*
+   * SAY WHICH STORE, AND REFUSE AN OBVIOUSLY WRONG ONE.
+   *
+   * `dbPath` defaults to ./data/market.db when MARKET_DB_PATH is unset, so
+   * running this from a development checkout opens the LOCAL desk rather than
+   * production -- and the local desk is a split-brain copy that stopped
+   * advancing weeks ago. On 2026-09-09 a scheduled run did exactly that. It
+   * exited on the "no ticker_session rows" guard, which was luck: had the local
+   * store held rows for the date, it would have fetched a million bars, written
+   * them to the wrong database, reported a count inside the registered band,
+   * and recovered nothing. A plausible number from the wrong store is the
+   * failure this whole script was shaped to avoid.
+   *
+   * So the path is printed before anything else, and a store whose newest
+   * session predates the date being recovered is refused: recovering 09-04
+   * against a store that stops at 08-18 is not a thing anyone means to do.
+   */
+  console.log(`[recover] store: ${config.dbPath}`);
+  const newest = db
+    .prepare('SELECT MAX(trading_date) AS d FROM ticker_session')
+    .get() as { d: string | null };
+  if (!newest.d || newest.d < tradingDate) {
+    console.error(
+      `[recover] REFUSING: this store's newest session is ${newest.d ?? '(none)'}, ` +
+        `older than ${tradingDate}.`,
+    );
+    console.error(`[recover] That is almost certainly the wrong database. Path: ${config.dbPath}`);
+    console.error('[recover] Set MARKET_DB_PATH, or run this on the machine that holds the store.');
+    db.close();
+    process.exit(1);
+  }
+
+  /*
    * REFUSE RATHER THAN MERGE. `upsertMinuteBars` is an upsert on
    * (symbol, ts), so re-running would silently rewrite rows and report a
    * plausible count. If the date already holds bars, the operator needs to

@@ -97,3 +97,33 @@ describe('the registered band gates the write rather than judging it', () => {
     expect(SOURCE).toMatch(/if \(expect && \(rows\.length < expect\.min/);
   });
 });
+
+describe('which database it is pointed at', () => {
+  it('refuses a store whose newest session predates the date being recovered', () => {
+    /*
+     * THE 2026-09-09 NEAR MISS. dbPath defaults to ./data/market.db when
+     * MARKET_DB_PATH is unset, so a scheduled run from a development checkout
+     * opened the local split-brain desk instead of production. It exited on the
+     * "no ticker_session rows" guard, which was luck rather than design: had
+     * that store held rows for the date, it would have fetched a million bars,
+     * written them to the wrong database, and reported a count INSIDE the
+     * registered band. A plausible number from the wrong store defeats every
+     * other guard in this file.
+     */
+    const refusal = SOURCE.indexOf("REFUSING: this store's newest session");
+    const fetch = SOURCE.indexOf('client.getBars(');
+
+    expect(refusal).toBeGreaterThan(-1);
+    expect(refusal, 'the store check runs after the fetch, so a wrong store still costs the fetch').toBeLessThan(
+      fetch,
+    );
+  });
+
+  it('prints the store path before doing anything', () => {
+    const path_ = SOURCE.indexOf('[recover] store:');
+    const fetch = SOURCE.indexOf('client.getBars(');
+
+    expect(path_).toBeGreaterThan(-1);
+    expect(path_).toBeLessThan(fetch);
+  });
+});
