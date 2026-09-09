@@ -13975,3 +13975,82 @@ historical fill, or a process nobody here has seen.* **Until that is known:**
 - **46% of expensive-tier spend rests on an unknown source's opinion**;
 - and every "automatic" grade in the corpus was formed with that opinion in the
   bundle.
+
+**134. THREE MODELS ON THE SAME QUESTION, ONE OF THEM LABELLED AS HIM. THE SHEET
+IS WRITTEN BY THE 22:00 CHATGPT TASK, AND 42% OF THE DISAGREEMENTS ARE ONE
+SYSTEMATIC DIFFERENCE ABOUT DIRTY FLOAT.**
+
+*He supplied what the repo could not: **the Sheet is written by the After-Hours
+Momentum Recap — a ChatGPT scheduled task**, the last surviving of the four
+original tasks. So `config.ts:63` was right — "another model's conclusion" — and
+`bundle.ts:94`'s `HUMAN_REVIEWED_PRIOR_ANALYSIS` is wrong.*
+
+### THE ACTUAL PIPELINE
+
+```
+22:00  ChatGPT task researches the universe and writes verdicts to the Sheet
+       -- catalyst grade, cycle, float quality, overhang/float, structure flags
+  ->   the desk READS them (spreadsheets.readonly) and puts them in the bundle
+       labelled HUMAN_REVIEWED_PRIOR_ANALYSIS
+  ->   gpt-5.6-terra forms its own verdict WITH that in front of it
+  ->   on a material dirty-float disagreement, escalate to gpt-5.6-sol
+       recorded as "human review says X, automatic analysis says Y"
+```
+
+**THREE MODELS ON THE SAME QUESTION AND THE EXPENSIVE ONE IS PAID TO ARBITRATE
+BETWEEN THE OTHER TWO.**
+
+### MEASURED, 325 STORED VERSIONS
+
+```
+compared against the Sheet          310 of 325   (95%)
+at least one conflict                35 of 310   (11.3%)  -> ~89% AGREEMENT
+total conflicts                              53
+escalated to sol                             12   = 46% of all escalations
+```
+
+**THE 53, AS `sheet/auto`:**
+
+```
+22   structure  DIRTY_FLOAT / CAUTION          <- 42% of all disagreement
+ 7   cycle      RED_BACKSIDE / YELLOW_FRONTSIDE_WARNING
+ 6   structure  UNKNOWN / CAUTION
+ 4   catalyst   MIXED / POSITIVE
+ 4   catalyst   NEGATIVE / MIXED
+ 3   catalyst   NEGATIVE / POSITIVE            <- direct contradiction on direction
+ 2   catalyst   POSITIVE / MIXED
+ 1   structure  UNKNOWN / DIRTY_FLOAT
+ 1   catalyst   NEGATIVE / NONE
+ 1   cycle      GREEN_FRESH_FRONTSIDE / YELLOW_FRONTSIDE_WARNING
+```
+
+**THE DISAGREEMENT IS NOT NOISE. 22 OF 53 ARE THE SAME DISAGREEMENT: CHATGPT
+CALLS DIRTY FLOAT WHERE THE DESK CALLS CAUTION.** *Systematic, one-directional,
+and on pillar five.* **Either ChatGPT over-calls it or the desk under-calls it,
+and the desk pays sol to arbitrate 12 of those.**
+
+### 89% AGREEMENT MEANS NOTHING UNTIL THE PRIOR IS REMOVED
+
+*Two independent analysts agreeing 89% of the time and one analyst reading the
+other's answer first are indistinguishable from this data.* **`omitSheetPrior`
+separates them and `sheetPriorOmitted` is ABSENT on all 325 versions — it has
+never been run, on any name, ever.**
+
+**BOTH OUTCOMES ARE ACTIONABLE, WHICH IS WHY IT IS NOW THE FIRST THING TO DO:**
+- **grades move materially without the prior** ⇒ the desk's "automatic" analysis
+  is substantially echoing ChatGPT, and item 132's 96% decline rate is inherited;
+- **grades barely move** ⇒ the desk is genuinely independent, **the prior is
+  redundant, and 46% of expensive-tier spend is arbitrating a disagreement with
+  something the desk did not need to be shown.**
+
+### AND THE DUPLICATION IS VISIBLE IN THE TASK INSTRUCTIONS THEMSELVES
+
+*Structure check, float quality CLEAN/DIRTY/UNKNOWN, overhang ÷ float, catalyst
+grade, cycle classification, priority.* **That is substantially what the desk's
+own interpreter produces** — `structureState`, `catalystGrade`,
+`supplyToFloatFloor`, the cycle blocks. **The same research is bought twice from
+two providers, and then a third time when they differ.**
+
+*Not a recommendation to retire either. **A statement that nobody chose this
+shape** — it is what remains after three of four tasks were retired around a desk
+that grew into the same job.*
