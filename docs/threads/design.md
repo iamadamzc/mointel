@@ -3916,6 +3916,78 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE SESSION DROPDOWN HE WANTS IS NOT THE BOARD SWITCH THAT EXISTS
+
+> **"the rankings are for the whole day, but rvol and gap/gains should be
+> tracked by session… a single dropdown to select session that owns the data?"**
+
+**THREE THINGS CHECKED IN CODE BEFORE ANY OF THIS IS DESIGN.**
+
+**1 — "HIS AH MOVE TAB" IS NOT A TAB, AND `AH MOVE` DOES NOT EXIST.** Grepped
+the repo: no such string. What exists is **`DiscoveryBoard.tsx:77` —
+`{ label: 'AH move', title: "Change from today's regular-session close" }`** —
+the **Move SORT BUTTON relabelling itself per session.** Board titles are
+`Discovery` / `After-Hours Discovery`, rankings `Daily RVOL` / `AH
+Participation`. **So he has spotted the ONE field that is already session-scoped
+and is asking why the others are not. That is a much better question than a
+request for a tab, and scoping from the description would have missed it.**
+
+**2 — IT IS A DISPLAY CONTROL. VERIFIED, NOT ASSERTED — AND THE WARNING I WAS
+GIVEN LOCATES THE COUPLING IN THE WRONG PLACE.** The spend path never consults
+the read path:
+
+    worker/research.ts:309   const board = activeBoard(db, tradingDate)
+    board.ts:64              resolveActiveBoard({ now: new Date(), facts })
+                             -> boardForPhase(phase).  NO REQUEST INPUT ANYWHERE.
+
+**The worker derives its own board from its own clock, in its own loop, and
+`queueDiscoveryResearch` takes `autoRank` and `board` from THAT.** A dropdown on
+the HTTP read cannot reach it. **`extraSymbols` is already a request parameter
+into `readDemandStates` and is bounded at 200 — precedent that the request may
+shape the read without touching the queue.**
+**THE CONSTRAINT ON ANY BUILD, THEREFORE: the selector parameterises the READ
+ONLY. If anyone ever wires it through to the worker, or feeds the queue from the
+read model, it becomes a spend control on a shared board — and that is the
+moment the warning becomes true.**
+
+**3 — BUT THE BOARD SWITCH CHANGES THE POPULATION, WHICH IS THE OPPOSITE OF WHAT
+HE ASKED FOR.** `repo.ts:818` interpolates the rank column into the WHERE, not
+just the ORDER BY:
+
+    SELECT * FROM ticker_session
+    WHERE trading_date = ? AND ${rankColumn} IS NOT NULL
+    ORDER BY ${rankColumn} ASC LIMIT ?
+
+**`DAILY_RVOL` fetches rvol-ranked rows; `AFTER_HOURS` fetches ah-ranked UNION
+rvol-ranked. Different rosters.** He said **"the rankings are for the whole
+day"** — he wants the roster to stay whole-day and the NUMBERS to be
+session-scoped.
+
+**⇒ GENERALISING `DAILY_RVOL | AFTER_HOURS` WOULD DO THE ONE THING HE RULED
+OUT.** *"Select the session that owns the data"* is a **column-scope** switch.
+The existing two-value switch is a **roster** switch. **They look like the same
+control and they are not, and the existing machinery is the wrong lever.**
+
+**SESSION SHOULD OWN THE NUMBERS, NOT THE ROSTER.**
+
+**AND §10 REACHES IT ALREADY:** if RVOL is session-scoped, **which session a
+number belongs to cannot live in a tooltip** — same rule as the `−2m` header,
+same rule as *every row or no row* on the mixed column. **The precedent is
+built: the Move control already states its own scope on its face.**
+
+**THE PART ONLY THIS SEAT CAN SEE, AND IT SHOULD GO TO HIM BEFORE ANY BUILD.**
+**The problem he is naming already has an answer on the board, and that answer
+was broken for exactly the period he was looking at it.** `DiscoveryBoard.tsx`
+beside RVOL: *"this is the CORRECTION to it. RVOL is cumulative and never decays
+within a session, so at 10:00 a name that ran at 07:15 and died still carries a
+large number."* **That is the `Now` column, and it is the desk's existing answer
+to "RVOL is for the whole day".** **He is asking for a second answer to a
+question the first one was built for — and the first one rendered five floor
+bars on every row for days.** **Before building a dropdown, he should be asked
+whether `Now` reads right to him NOW that it is labelled and the data is
+flowing.** A feature requested because an existing one was untrustworthy is the
+most expensive kind to build.
+
 ## THE LIVE TRADE COUNTER SHOULD NOT EXIST AS A MIXED COLUMN — AND THE REASON IS NOT DESIGN
 
 **Asked: how does two-tier freshness look on one column at speed? Answered from
