@@ -14200,3 +14200,65 @@ guarantee rather than an estimate.*
 ratio no participant in the bundle can compute. Give the interpreter the bound
 and the disagreement either resolves on filings or is honestly declared
 unprovable — **either way nothing needs a third model.***
+
+**137. CORRECTING ITEM 136: THE BOUND IS ALREADY WIRED INTO THE INTERPRETER. IT
+LANDED FOUR DAYS AFTER MY SNAPSHOT, AND NOTHING READS IT.**
+
+*He said **"yes, wire the supply bound into the interpreter."** It is already
+there. Two errors of mine, and the second is one I made four hours ago and
+repeated.*
+
+### ERROR 1: MY GREP WAS TRUNCATED AND I PUBLISHED THE RESULT
+
+Item 136 said `computeSupplyPair` had **"`dashboard/supply.ts` ONLY"** as a
+caller. **`pipeline.ts:422` calls it too** — computed after validation, bounded
+by `asOf`, attached to `accepted.structure.supplyPair`. *I ran the grep with
+`head -8`, the pipeline hit fell off the end, and I wrote "dashboard only" from
+a list I had cut short myself.*
+
+### ERROR 2: I NEARLY CALLED A FEATURE'S START DATE A DEFECT. AGAIN.
+
+**0 of 325 dossiers carry a `supplyPair`.** *That is the shape I published as a
+gap in item 113 and then retracted, and I walked into it again four hours later.*
+
+```
+55f3e20   2026-08-23   reportedSharesOutstanding enters the bundle
+bc15588   2026-08-27   computeSupplyPair enters pipeline.ts
+snapshot  2026-08-23   market-prod-2026-08-23.db
+```
+
+**THE SNAPSHOT PREDATES THE CODE BY FOUR DAYS.** *The zero is not a defect and
+carries no information about whether the pair populates today. **I checked the
+commit date before publishing this time, which is the only reason it is here as
+a correction rather than as a finding.***
+
+### WHAT IS ACTUALLY MISSING, AND IT IS SMALLER AND SHARPER
+
+**`supplyPair` HAS EXACTLY TWO REFERENCES OUTSIDE ITS OWN MODULE:**
+
+```
+lib/research/interpret/pipeline.ts:422   accepted.structure.supplyPair = ...   WRITE
+lib/research/types.ts:516                supplyPair?: SupplyPair | null;       TYPE
+```
+
+**IT IS WRITTEN AND READ BY NOTHING.** Not the dashboard, not the risk layer,
+not the verdict. **`effect.ts:28` said so and I read past it: *"magnitude lives
+in `SupplyPair` and its bound, and nothing joins them yet."***
+
+**AND `structureClassification` IS THE MODEL'S OPINION ALONE.** It is set inside
+the dossier and read only by `dashboard/`. **Nothing converts a proven bound into
+a verdict** — so a `floorRatio >= 1.0`, which the module's own docstring says
+*"settles the question without a float ever being known"*, changes nothing.
+
+### SO THE WORK HE APPROVED IS REAL, JUST NOT WHAT I DESCRIBED
+
+**NOT** *"compute the bound in the interpreter"* — **done, 2026-08-27**.
+**BUT** *"let a proven bound decide the classification the model is guessing."*
+
+**That is a behaviour change to the verdict rather than a wiring change**, and he
+approved it under the wrong description. **Confirming before building.**
+
+*And what I cannot tell him: whether the pair populates in production today. My
+snapshot is older than the feature, and the module's own estimate — **null for
+61% of researched names, "the binding constraint on coverage and not something
+more filings would fix"** — is the code's claim rather than my measurement.*
