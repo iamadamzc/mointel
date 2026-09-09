@@ -1200,6 +1200,57 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
+#### RETRACTION: the fault reading was right on 4 of 7, and the resolution is a STAGE, not a side. 2026-09-09.
+
+**Correcting `3385cba` the same day. I wrote that the fault reading was "wrong
+rather than merely inconvenient" and that the escalation "fires on exactly the
+names where the finding matters most, and marks them suspect instead of
+informative." Research checked the cases. Both sentences are wrong.**
+
+    NERV   94,600,000 / 43,841,998 = 2.16   REGISTERED_RESALE      real
+    ISPC    3,846,154 /  1,522,359 = 2.53   OFFERING + WARRANTS    real
+    GYGY   16,072,730 / 14,388,000 = 1.12   REGISTERED_RESALE      real
+    MYSZ / BTCS / PURR / HYPD           all store 0 after review   FAULT
+
+**4 of 7 are the data fault the criterion was written for.** `sol` removed or
+downgraded those blocks and got all seven right.
+
+> **MY OWN DOUBLE-COUNTING GATE WAS NOT HYPOTHETICAL — IT WAS THE MAJORITY CASE,
+> AND I LISTED IT AS A THEORETICAL RISK IN THE SAME MESSAGE WHERE I CALLED THE
+> FAULT READING WRONG.** An independent AVOID on `>=1.0` fired against the
+> PRE-escalation dossier would have been false more often than not, **in the
+> direction we both said to fear: a false positive costs him a trade he should
+> have taken.**
+
+**THE RESOLUTION IS BETTER THAN EITHER OF OUR READINGS AND NEITHER OF US HAD IT.
+Both are right, about DIFFERENT DOSSIERS.** The condition is **ambiguous before
+escalation and resolved after** — so the answer to his question is *yes, against
+the POST-escalation pair.* **I framed it as fault-versus-finding when it was
+never a side; it was a STAGE.**
+
+**AND IT REVALUES THE ESCALATION I WAS ABOUT TO CALL MISDIRECTED.** At 27% of
+`sol` spend: 4 faults caught, 3 overhangs confirmed. **It is earning it.**
+
+**THE NUMBER WITH ITS LIMIT, because "false more than half the time" will get
+quoted:**
+
+    data fault    4/7 = 57.1%   95% [25, 84]
+    real overhang 3/7 = 42.9%   95% [16, 75]
+
+**It is a CENSUS of every case that ever fired, not a sample — exact for the
+observed history, wide for the next one.** The verdict does not turn on the rate:
+**at ANY rate above zero, firing pre-escalation is unsafe in the AVOID
+direction.** The interval is stated so the 57% is not carried as a property of
+the mechanism.
+
+**WHAT SURVIVES OF `3385cba`:** the collision itself, the arithmetic
+(`SO >= float` so `>=1.0` proves supply `>= float`), independent-not-override,
+monotone-toward-AVOID, not the `DIRTY_FLOAT` label, `>=` over `>`, and the
+staleness asymmetry. **What does not survive is my reading of what the escalation
+was doing** — and I reached it by arguing from what the code SAID rather than
+from what it had CAUGHT. **The docstring called it a contradiction; I decided the
+docstring was wrong; seven rows decided I was.**
+
 #### The supply-bound collision: one condition, two opposite verdicts, and the one in the tree is wrong. 2026-09-09.
 
 **He asked whether a supply bound proving >=1.0 from filings should override the
