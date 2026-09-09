@@ -305,7 +305,29 @@ async function main(): Promise<void> {
     const sheetLoad = await loadSheetPriors();
     const sheetPriors = sheetLoad.priors;
 
-    // ---------------------------------------------------------- queue
+    /* ---------------------------------------------------------- queue
+     *
+     * THE BOARD IS DERIVED HERE AND MUST NEVER ARRIVE FROM A REQUEST.
+     *
+     * `activeBoard(db, tradingDate)` reads the clock. Nothing in this chain
+     * takes a caller's choice, and that is the property to preserve rather
+     * than a description of today: **this call feeds `readBoardCandidates`,
+     * which feeds `queueDiscoveryResearch`, which SPENDS.**
+     *
+     * The board is not an ordering. `repo.ts:818` and `researchRepo.ts` both
+     * put the rank column in the WHERE — `AND ${rankColumn} IS NOT NULL` — so
+     * switching it changes the ROSTER, not the sort. A viewer choosing a
+     * session on screen is choosing which numbers to read; wiring that same
+     * choice to this line would make every viewer's dropdown queue research
+     * for a different population, once per subscriber.
+     *
+     * A session selector belongs to the READ MODEL only. `extraSymbols` is the
+     * precedent: a request shapes what is returned without touching the queue.
+     *
+     * Falsifiable by inspection in one step — if `activeBoard` ever gains a
+     * parameter that is not `db` or `tradingDate`, or if a board reaches this
+     * scope from anywhere but this line, the guarantee is gone.
+     */
     const board = activeBoard(db, tradingDate);
     if (board.board !== lastBoard) {
       log(`[research] following the ${board.title.toUpperCase()} board (${board.rankingLabel})`);
