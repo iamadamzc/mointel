@@ -19,7 +19,7 @@ import {
 import { computeEvidenceFingerprint } from '../fingerprint';
 import { resolveCycleHistory } from '../../market/cycle';
 import { readDailyBars, readSplitFactors } from '../history';
-import { computeSupplyPair } from '../supply';
+import { assessSupplyOverhang, computeSupplyPair } from '../supply';
 import type { ResearchDossier } from '../types';
 import { buildEvidenceBundle, type ResearchEvidenceBundle, type SheetPriorAnalysis } from './bundle';
 import { describeViolations, validateDossier, type Violation } from './guardrails';
@@ -429,6 +429,27 @@ export async function interpretTicker(
         factors: readSplitFactors(db, ticker, options.asOf?.slice(0, 10)),
       })
     : null;
+
+  /*
+   * The overhang verdict, from the pair just computed.
+   *
+   * HERE and not earlier, deliberately: `accepted` is the POST-ESCALATION
+   * dossier (reassigned at the escalation branch above), and this same
+   * numerator over this same denominator is what `escalation.ts` reads as a
+   * data fault. Of the seven escalations that ever fired, sol confirmed a real
+   * overhang on three and reconciled the blocks away on four -- so the
+   * condition is ambiguous before adjudication and settled after it. Running
+   * this on the pre-escalation dossier would have published an AVOID that was
+   * wrong on the majority of the observed history.
+   *
+   * Dated by `asOf` when replaying, like the cycle and the pair, so a replay
+   * cannot judge a share count current against a date the original run had not
+   * reached.
+   */
+  accepted.structure.supplyOverhang = assessSupplyOverhang(
+    accepted.structure.supplyPair,
+    (options.asOf ?? generatedAt).slice(0, 10),
+  );
 
   const version = saveAnalysisVersion(db, {
     ticker,

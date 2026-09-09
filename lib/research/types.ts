@@ -12,7 +12,7 @@
  */
 
 import type { FloatBasis } from './float';
-import type { SupplyPair } from './supply';
+import type { SupplyOverhangAssessment, SupplyPair } from './supply';
 import type { CycleHistory } from '../market/cycle';
 import type { TimePrecision } from './time';
 
@@ -514,6 +514,15 @@ export interface StructureFindings {
    * here and absent from AUTOMATIC_DOSSIER_SCHEMA -- see `lib/research/supply.ts`.
    */
   supplyPair?: SupplyPair | null;
+  /**
+   * Whether proven-live supply is at least the entire float, from filings alone.
+   *
+   * Derived beside `structureClassification` and never into it: that field is
+   * the model's reading of a whole structure, this is arithmetic on a share
+   * count, and a proof and a prose judgement must not share a column. Monotone
+   * toward AVOID — nothing here can produce CLEAN or soften anything.
+   */
+  supplyOverhang?: SupplyOverhangAssessment | null;
   structuralWarnings: string[];
   reverseSplitHistory: string[];
   knownRegistrationStatus: string | null;

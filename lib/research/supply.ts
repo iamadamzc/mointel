@@ -36,7 +36,7 @@
  * `blueSky.ts` uses for a deep ceiling, for the same reason.
  */
 
-import type { FloatBasis } from './float';
+import { FILED_SHARES_CURRENT_DAYS, type FloatBasis } from './float';
 import { splitFactorAt } from '../market/splits';
 import type { SupplyBlock } from './types';
 
@@ -275,4 +275,144 @@ export function computeSupplyPair(options: {
       'floor counts only proven-live supply; total counts every filed block on ' +
       'the same split basis as the share count; excluded blocks are in neither',
   };
+}
+
+/**
+ * Whether proven-live supply is at least the whole float — WITHOUT A FLOAT.
+ *
+ * The arithmetic the desk has and the Sheet's vendor does not need:
+ *
+ *     floorShares / sharesOutstanding >= 1.0
+ *     sharesOutstanding >= float                (an upper bound, always)
+ *     => floorShares >= float
+ *
+ * So a floor ratio at or above one settles pillar five's supply question on
+ * filings alone. It is conclusive-when-HIGH in the same way the float bound is
+ * conclusive-when-LOW, and it is the only route to that answer the desk owns:
+ * `displayedFloat` is null on effectively every dossier, and the float that
+ * reaches the board comes from the ChatGPT task's Sheet — a vendor number
+ * measured arithmetically impossible on one name in six.
+ *
+ * ── IT MUST BE READ ON THE POST-ESCALATION DOSSIER, AND THAT IS MEASURED ──
+ *
+ * `escalation.ts` fires `SUPPLY_RECONCILIATION_INCONSISTENT` on this same
+ * numerator over this same denominator, reading it as a data fault. **Both
+ * readings are right about different dossiers.** Of the seven escalations that
+ * ever fired, `sol` confirmed a real overhang on three (NERV 2.16, ISPC 2.53,
+ * GYGY 1.12) and reconciled the blocks away on four. So the condition is
+ * genuinely ambiguous BEFORE adjudication and settled AFTER it, and this must
+ * only ever run on an accepted dossier.
+ *
+ * *4 of 7 is a census of every case that ever fired, not a rate: its interval
+ * is 25%–84% and it does not predict the eighth. The design does not rest on
+ * the number — at any rate above zero, firing pre-escalation is unsafe in the
+ * AVOID direction.*
+ *
+ * ── MONOTONE, AND ONLY TOWARD AVOID ──────────────────────────────────────
+ *
+ * Nothing here can produce CLEAN, soften a verdict, or contradict the model.
+ * `NOT_PROVEN` means *not proven from established supply alone* and never
+ * *clean* — the floor deliberately under-counts, excluding warrants that may
+ * never be exercised, dollar shelf capacity and every possible-but-unproven
+ * block, because that under-counting is what makes the bound a guarantee.
+ *
+ * It publishes beside `structureClassification` rather than into it. That field
+ * is the model's reading of a whole structure from evidence it weighed; this is
+ * arithmetic on a filing. They do not measure the same thing, so neither
+ * overrules the other, and merging them would put a proof and a prose judgement
+ * in one column where no later reader could separate them.
+ */
+export type SupplyOverhangVerdict =
+  /** Proven-live supply is at least the entire float. Conclusive. */
+  | 'PROVEN_AT_OR_ABOVE_FLOAT'
+  /** Not proven from established supply alone. NOT a clean bill. */
+  | 'NOT_PROVEN'
+  /** The ratio clears the bar but its denominator is too old to bound today. */
+  | 'BASIS_STALE'
+  /** No share count, so no denominator. 61% of researched names. */
+  | 'NO_DENOMINATOR';
+
+export interface SupplyOverhangAssessment {
+  verdict: SupplyOverhangVerdict;
+  /** Everything a reader needs to check the claim, carried with the verdict. */
+  floorRatio: number | null;
+  floorShares: number | null;
+  floorBlocks: number;
+  sharesOutstanding: number | null;
+  sharesOutstandingAsOf: string | null;
+  ageDays: number | null;
+  concept: string | null;
+  sourceId: number | null;
+  basis: FloatBasis | null;
+}
+
+/** Whole days between two ISO dates, or null when either is unusable. */
+function ageInDays(from: string | null, to: string): number | null {
+  if (!from) return null;
+  const start = Date.parse(`${from.slice(0, 10)}T00:00:00Z`);
+  const end = Date.parse(`${to.slice(0, 10)}T00:00:00Z`);
+  if (Number.isNaN(start) || Number.isNaN(end)) return null;
+  return Math.round((end - start) / 86_400_000);
+}
+
+/**
+ * The verdict, from an already-computed pair on an accepted dossier.
+ *
+ * `>=` AND NOT `>`. At exactly 1.0 the proven supply equals the float's upper
+ * bound, which still establishes supply >= float. The escalation's strict `>`
+ * is right for its own question — equality is not a contradiction — and wrong
+ * for this one, which is why the two thresholds are not shared.
+ *
+ * STALENESS IS INHERITED, NOT MEASURED. `FILED_SHARES_CURRENT_DAYS` was
+ * measured on 211 issuers for the FLOAT bound's question. This asks the same
+ * question of the same field, but the failure lands on the other side of the
+ * fraction: a too-low share count makes a float bound too LOW — it passes
+ * pillar five and he takes the trade — and makes this ratio too HIGH, firing an
+ * avoid he should not have had. One field, opposite consequences, and there is
+ * no evidence the valley in that age distribution sits in the same place for
+ * both. Named here rather than re-justified.
+ */
+export function assessSupplyOverhang(
+  pair: SupplyPair | null | undefined,
+  asOfDate: string,
+  currentWithinDays: number = FILED_SHARES_CURRENT_DAYS,
+): SupplyOverhangAssessment {
+  if (!pair) {
+    return {
+      verdict: 'NO_DENOMINATOR',
+      floorRatio: null,
+      floorShares: null,
+      floorBlocks: 0,
+      sharesOutstanding: null,
+      sharesOutstandingAsOf: null,
+      ageDays: null,
+      concept: null,
+      sourceId: null,
+      basis: null,
+    };
+  }
+
+  const ageDays = ageInDays(pair.sharesOutstandingAsOf, asOfDate);
+  const carried = {
+    floorRatio: pair.floorRatio,
+    floorShares: pair.floorShares,
+    floorBlocks: pair.floorBlocks,
+    sharesOutstanding: pair.sharesOutstanding,
+    sharesOutstandingAsOf: pair.sharesOutstandingAsOf,
+    ageDays,
+    concept: pair.concept,
+    sourceId: pair.sourceId,
+    basis: pair.basis,
+  };
+
+  if (pair.floorRatio === null || pair.floorRatio < 1) {
+    return { verdict: 'NOT_PROVEN', ...carried };
+  }
+
+  // An unknown age cannot be shown current, and "unverifiable" is not "fresh".
+  if (ageDays === null || ageDays < 0 || ageDays > currentWithinDays) {
+    return { verdict: 'BASIS_STALE', ...carried };
+  }
+
+  return { verdict: 'PROVEN_AT_OR_ABOVE_FLOAT', ...carried };
 }
