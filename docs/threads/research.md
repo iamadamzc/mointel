@@ -14502,3 +14502,60 @@ here.*
 **STALE IN ITS MESSAGE:** the `rvol_rank` queue question is already dead —
 `readDemandStates` is board-parameterised at `repo.ts:814`. My answer crossed the
 correction.
+
+**141. I FOUND A DELIBERATE VALUE ON ONE PATH AND ATTRIBUTED IT TO THE
+POPULATION — 854 ROWS OF 151,864. SIXTH INSTANCE, AND OPS NAMED IT IN MY OWN
+WORDS.**
+
+*Item 139 said Ops had misread `volume_base = 0` as dark infrastructure, because
+`runtime.ts:941` resets it deliberately when minute bars become canonical. **The
+reset is real. It accounts for 854 rows in 151,864 — 0.56%.***
+
+**Production carries zero on ALL 151,864 rows across all five distinct
+`volume_base_source` values, including 36,962 sourced purely from the daily bar
+— where a zero base is not a reset but a contradiction, since that bar carries
+the whole session's volume in one number.**
+
+**THE ACTUAL CAUSE, VERIFIED AT `worker/runtime.ts:1752`:**
+
+```ts
+volume_base: 0,
+volume_base_through: null,
+volume_base_source: state.volumeSource,
+```
+
+**TWO LITERALS BESIDE ONE HONEST FIELD.** *Every row says a base was seeded from
+source X and that the base is zero, in the same row — which is exactly why the
+source column varies and the value columns never do.*
+
+### THE SHAPE IS THE ONE THIS THREAD HAS BEEN CATALOGUING, AND THIS TIME IT IS MINE
+
+**A real deliberate value, found on one path, attributed to the population.**
+*Structurally identical to "every date, ever" (118), the 39 that was 19 (115),
+and the 4/7 read as a rate (138a).* **Sixth instance in this thread and the third
+handed to me rather than caught.**
+
+**AND NEITHER THE SWEEP NOR THE CORRECTION COULD HAVE SEPARATED THEM** — Ops's
+line, and it is right: a chosen zero and a hardcoded zero are the same row under
+`SELECT <field>, COUNT(1)`. *The check that would have distinguished them is
+grouping by `volume_base_source`, which is the column that varies.*
+
+### AND INTEGRATION'S WITHDRAWAL RESTORES MY 139 RULING RATHER THAN WEAKENING IT
+
+*It had told me `volume_base` was "baseline infrastructure started for this and
+never finished" and warned me off building a second baseline beside a misread
+one.* **Withdrawn, and correctly — they are not the same quantity:**
+
+| | |
+| --- | --- |
+| `volume_base` | volume already inside the daily-bar SNAPSHOT, so arriving minute bars are not double-counted. **An intra-session offset.** |
+| RVOL denominator | **average full-session volume over 20 prior sessions.** |
+
+**Different time bases, no relationship.** *So the per-session denominator I
+ruled cannot be built today has no half-finished predecessor, and item 139 stands
+unchanged.*
+
+**The defect is Ops's and it is queued.** The in-memory base is live and
+load-bearing (`engine.ts:943/815/1054`); `toRow()` discards it; nothing selects
+it back — **so the cost is confined to restarts and it does not ride the
+`settleMinutes` change.**
