@@ -1200,6 +1200,76 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
+#### The supply-bound collision: one condition, two opposite verdicts, and the one in the tree is wrong. 2026-09-09.
+
+**He asked whether a supply bound proving >=1.0 from filings should override the
+model's CAUTION. It should — but the same test ALREADY EXISTS and reads the
+opposite way, and that has to be settled first.**
+
+`lib/research/interpret/escalation.ts:153`:
+
+    // 4. Supply arithmetic contradicts itself: known active supply exceeds the
+    //    share count it is supposedly drawn from.
+    reason: 'SUPPLY_RECONCILIATION_INCONSISTENT'
+
+> **The desk currently reads `knownActive > sharesOutstanding` as a DATA FAULT.
+> He is asking to read it as a FINDING. One condition cannot produce both.**
+
+**AND THE FAULT READING IS WRONG, not merely inconvenient.** Warrants, ATM
+capacity and convertibles are **shares NOT YET ISSUED**. Known active supply
+exceeding shares outstanding is **not a contradiction — it is the definition of
+an overhang**, and it is ordinary on this universe. **So the escalation most
+likely fires on exactly the names where the finding matters most**, and treats
+them as suspect rather than as informative. `lib/research/` is Research's; handed
+over rather than touched.
+
+**WHY THE ARITHMETIC IS SOUND.** `SupplyBound.sharesOutstanding` is documented as
+*"Denominator, and an upper bound on the float."* So
+
+    activeSupply / SO >= 1.0   =>   activeSupply >= SO >= float
+
+**proves supply >= float WITHOUT A FLOAT.** Conclusive-when-high, same family as
+the volume bound conclusive-when-low, and it is why this reaches pillar 5 when
+nothing else does.
+
+**NOT AN OVERRIDE, AND THE WORD COSTS SOMETHING.** CAUTION is the model's read of
+the whole structure from the evidence it weighed; the bound is arithmetic on
+filings. **They do not measure the same thing, so neither wins** — and >=1.0 does
+not make the model wrong about anything. **Independent verdict, and MONOTONE: it
+may only move toward AVOID, never soften a DIRTY_FLOAT to CLEAN.**
+
+**NOT THE LABEL `DIRTY_FLOAT`.** That is the Sheet's vocabulary for something a
+human wrote, and `structureState` recognises three phrases while Research is
+mid-fix on it. **Routing an arithmetic proof into a bucket built for model prose
+merges two definitions into one column** — the seam this desk keeps paying for.
+Its own value, with `supply_basis` adjacent.
+
+**TWO FALSE-POSITIVE PATHS, BOTH GATEABLE, AND THE DIRECTION MATTERS BECAUSE
+THIS FIRES AN AVOID** — a false positive costs him a trade he should have taken:
+
+- **Double-counted ledger blocks** — warrants counted once as a warrant block and
+  again in the S-3 registering them. **`blocksWithoutShareCount` guards THINNESS,
+  not DISTINCTNESS**, and nothing currently guards the second.
+- **Stale `sharesOutstanding` before a dilution** — SO too low, ratio inflated.
+  Reuse `FILED_SHARES_CURRENT_DAYS = 45` from `float.ts`; already measured,
+  already justified. **A denominator too old to bound today must not fire an
+  AVOID.**
+
+> **THE SAME STALENESS IS DANGEROUS FOR ONE BOUND AND MERELY COSTLY FOR THE
+> OTHER.** Too-low SO makes a FLOAT bound too low — passes pillar 5, he TAKES —
+> and makes a SUPPLY ratio too high — fires AVOID, he SKIPS. **One field,
+> opposite consequences, decided by which side of the fraction it lands on.**
+> That is a reason the basis must travel with it rather than being inferred at
+> the use site.
+
+**`>` VERSUS `>=`.** The escalation uses strict `>`. At exactly 1.0 supply equals
+float's upper bound, **which still proves supply >= float**. `>=` is correct for
+the claim and `>` under-fires by one boundary case.
+
+**CITING THE FILINGS AND THE COUNT IS THE PRODUCT, not decoration** — his own
+ruling on float: *information with context, explain why a float is dirty with the
+numbers instead of putting NA.*
+
 #### CORRECTION: my S3 worst case was an unreachable corner, and "the band spans zero" does not hold. 2026-09-07.
 
 **Research read the denominators under the arrangement it offered and found the
