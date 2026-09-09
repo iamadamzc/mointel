@@ -14130,3 +14130,73 @@ CHATGPT'S REASONING.** *It has a denominator; the desk does not.*
 **THE CHOICE IS HIS AND IT IS SHARPER THAN "WHO IS RIGHT":** *does the desk want
 a float it did not verify, or does it want to keep saying UNKNOWN and stop
 paying `sol` to arbitrate a ratio nobody in the bundle can compute?*
+
+**136. INDEPENDENCE DOES NOT NEED A FLOAT. THE DESK ALREADY HAS TWO FLOAT-FREE
+INSTRUMENTS THAT SETTLE BOTH FLOAT QUESTIONS, AND BOTH ARE WIRED ONLY TO THE
+DASHBOARD.**
+
+*His direction: **"ultimately we want to get away from the tasks and have the
+desk be fully independent."** That settles the dirty-float question — do NOT feed
+it ChatGPT's float — and it makes the real question "what does independence
+actually cost."*
+
+### IT COSTS LESS THAN A FLOAT SOURCE, BECAUSE THE DESK ALREADY DECIDED NOT TO WANT ONE
+
+`lib/research/float.ts`, opening, and it is a decision rather than a gap:
+
+> *"deriving a true free float needs Section 16 and 13D holdings, and that is
+> **unstarted on purpose** — the supply bound may answer the trading question
+> often enough that an estimated float is not worth its error bars… Subtract
+> them and float is understated across the board, which is **a false positive on
+> pillar 5 and the dangerous direction**."*
+
+**And it already measured the thing he would otherwise be tempted to import:
+*"58 hand-pulled names showed that number is arithmetically impossible on one
+name in six."*** **The Sheet's float is detectably wrong 17% of the time.**
+*Importing it would not buy independence, and it would not even buy accuracy.*
+
+### TWO INSTRUMENTS, BOTH BUILT, BOTH DASHBOARD-ONLY
+
+| | answers | verdicts | callers |
+| --- | --- | --- | --- |
+| **`assessFloatBound`** (`float.ts:464`) | *is the float under 10M* — **pillar 5** | PROVEN / NOT_PROVEN / BASIS_UNVERIFIABLE | **`dashboard/supply.ts` ONLY** |
+| **`computeSupplyPair`** (`research/supply.ts`) | *supply ÷ float*, as a **lower bound** | NEGLIGIBLE / PRESENT / HEAVY / SEVERE | **`dashboard/supply.ts` ONLY** |
+
+**AND THE SECOND ONE SETTLES DIRTY FLOAT WITHOUT A FLOAT. Its own docstring:**
+
+> *"float can never exceed shares outstanding, so dividing established live
+> supply by the share count can only UNDERSTATE the true supply-to-float ratio…
+> **a lower bound at or above 1.0 settles the question without a float ever being
+> known** — supply equals or exceeds every share in existence, so it necessarily
+> equals or exceeds the float."*
+
+**`effect.ts:28` already records the gap: *"magnitude lives in `SupplyPair` and
+its bound, and NOTHING JOINS THEM YET."***
+
+### SO THE 22 DISAGREEMENTS HAVE A FLOAT-FREE ANSWER THAT IS NOT BEING ASKED FOR
+
+The interpreter says *"there is no disclosed float"* and lands on CAUTION
+**while a deterministic lower bound on the very ratio it is declining to compute
+runs on the same evidence, one layer away, for display only.**
+
+**⇒ INDEPENDENCE ON THIS AXIS IS A WIRING PROBLEM, NOT A RESEARCH PROBLEM.**
+
+### WHAT IT WOULD AND WOULD NOT DO — STATED BEFORE ANYONE BUILDS IT
+
+**The bound deliberately UNDER-counts:** only `KNOWN_ACTIVE` blocks with a real
+share count. Warrants that may never be exercised, dollar shelf capacity and
+possible-but-unproven supply are all excluded, *because that is what makes it a
+guarantee rather than an estimate.*
+
+- **It would convert SOME of the 22 into a PROVEN dirty float, citing filings** —
+  and those would be **stronger than ChatGPT's**, which rests on a vendor float
+  wrong one time in six.
+- **It would leave the rest honestly unproven** — which is what CAUTION already
+  means, only for a stated reason instead of a missing input.
+- **`NEGLIGIBLE` never licenses CLEAN.** *"1% of shares outstanding could be 5%
+  of a float that is a fifth of the share count."*
+
+**AND IT REMOVES THE ESCALATION'S PREMISE.** *Twelve `sol` calls arbitrate a
+ratio no participant in the bundle can compute. Give the interpreter the bound
+and the disagreement either resolves on filings or is honestly declared
+unprovable — **either way nothing needs a third model.***
