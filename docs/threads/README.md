@@ -12258,3 +12258,52 @@ ships claiming to detect something it cannot.**
 
 **A discriminator that separates two states is not a discriminator when there are
 three.**
+
+## A summary line that cannot disagree with the evidence above it
+
+Ops's hold-check script printed **"(empty above = no settleMinutes change)"
+unconditionally**, on a line after the grep, **regardless of what the grep found.**
+
+**The grep had found nine matches. The summary line said there were none.**
+
+**Not a wrong threshold and not a broken parse — a sentence hardcoded beside the
+evidence**, exactly like a test fixture written beside the constant it is supposed
+to check. **The same defect in a shell script and in a test file, twelve hours
+apart, found by two different threads.**
+
+**And it would have produced the right answer for the wrong reason** — the nine
+matches were all in comments and an unrelated file, so *"no settleMinutes work in
+the tip"* was true. **A right answer from an instrument that could not have said
+otherwise is the outcome nobody ever investigates.**
+
+**It was caught only because the matches printed directly above the sentence
+contradicting them.**
+
+> **Put the evidence next to the conclusion, and the conclusion has to survive
+> being read beside it.**
+
+**That layout is worth more than the fix.** A summary printed on its own, or above
+its evidence, or in a different message, is never checked against it.
+
+## An unmoved count is a prediction too
+
+Two threads' work landed between two gates and the test count did not change —
+**1867 at both.** That looked wrong.
+
+**It was explained rather than accepted:**
+```
+sparkline.test.ts    33 -> 33     activity.test.ts  16 -> 16
+releaseRetention     17 -> 17     no case added or removed anywhere
+```
+**The line changes were assertions rewritten INSIDE existing cases** — a vacuity
+fix, not a new test — **and one thread's tests were already inside the earlier gate
+because its commit was an ancestor.**
+
+**Re-registered as: 1867, delta ZERO, composed as "no cases added or removed;
+assertion-level changes only."**
+
+**Every registration on this desk has been about a number that moves.** A number
+that stays the same across two threads' work **looks like nothing happened** —
+which is exactly when the composition goes unstated and the coincidence goes
+unnoticed. **Register the zero with its reason, or a genuine collision between an
+addition and a deletion will read as "unchanged, fine."**
