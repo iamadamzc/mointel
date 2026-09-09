@@ -230,19 +230,51 @@ its facts. **Verify before acting on any of it.***
   count-only mode and all-or-nothing before it runs; runs after a close, never
   before a session.
 
-### The five things that are HIS and open
+### What is HIS and open — TWO, and the list arrived at five
 
-1. **Trademark knock-out search** on `TMI Trader` — commission or waive.
-2. **Scope the feed-stall defect (case G)?** A stall marks every name DEAD at
-   once, at any `settleMinutes`. Both discriminators exist — `lastBarAt`, and
-   the population — and a market-wide halt is a third state neither separates.
-3. **The Why Not effect producer** — HELD by him. `omitSheetPrior` runs first to
-   size the replay-vs-live gap.
-4. **The derived-only field option** — rank/RVOL/catalyst/float display nothing
-   any exchange polices; price/Move %/VWAP/quotes do. **The only option that
-   changes the licensing risk rather than accepting it.**
-5. **The dirty-float prompt rewrite** — his edit, Research's analysis. The prompt
-   lives outside this repo.
+*Trimmed 2026-09-09 13:48 ET by the sixth session, on the do-not-inflate rule.
+**Two of the five were never his**, one carried a precondition its own owner had
+withdrawn, and two he has now answered. **Every item on his list costs attention
+and hides the real ones** — and the item that was actually blocking a thread was
+not on it at all.*
+
+1. **The Why Not effect producer** — HELD by him, and **the gate is gone.** The
+   list said `omitSheetPrior` runs first to size the replay-vs-live gap.
+   **Research withdrew that sequencing in its own charter (item 132): *"it is
+   not a gate on this build and I was wrong to sequence it as one."*** It is a
+   proxy for a proxy — it measures the prior's pull on the fields that exist
+   today, and the effect block does not exist. **Nothing precedes his release.**
+   *It stays worth running for its own sake and is not a precondition.*
+2. **The dirty-float prompt rewrite** — his edit, Research's analysis. The prompt
+   lives outside this repo. **Nothing is blocked on it**; the supply bound is
+   the independent path and is proceeding.
+
+**ANSWERED 2026-09-09, and both are closed:**
+
+- **Trademark knock-out search on `TMI Trader` — WAIVED.** His word: `"waive."`
+  **It appeared in this file and nowhere else** — Commercial had already closed
+  its naming work and was waiting on nothing. *A decision this seat was carrying
+  alone, presented to him as a thread's ask.*
+- **The supply-bound sentence — CONFIRMED, in the narrow post-escalation form.**
+  See the rulings below.
+
+**TAKEN OFF HIS LIST, because they were never his:**
+
+- **Scoping the feed-stall defect (case G) is order-and-process and therefore
+  MINE.** *Asking him to sequence work is the delegation handed back — the
+  failure recorded under "WHAT I NEED FROM YOU IS FOR HIS JUDGEMENT, NOT FOR MY
+  SEQUENCING".* **Research's position, `research.md` items 130 and 131:** case G
+  is a wrong verdict at **both** `settleMinutes` values, so **it must not ride
+  the 1-to-0 change**; both discriminators are live rather than absent
+  (`lastBarAt`, and the all-zero-versus-mixed population); and a market-wide
+  halt is a **third state neither separates**, with `halt_state` already tracked.
+  **No stall has ever been observed** — Ops measured ~920,000 bars with no gap
+  and no reconnect. **Latent, demonstrated in the rule rather than in an
+  incident. Queued behind `settleMinutes: 0`, not blocking it.**
+- **The derived-only field option is inside the licensing risk conversation he
+  DEFERRED**, and that conversation is **Integration's to reopen** by his own
+  ruling below. **Holding it on his list asks him to re-decide something he
+  explicitly parked.**
 
 ### Rulings he made this session, in his words
 
@@ -258,6 +290,22 @@ its facts. **Verify before acting on any of it.***
   reach auth — a session cookie is not board state.**
 - **The product is `TMI Trader` / `True Move Intelligence` / `tmitrader.com` /
   `"Intelligence on what's moving."`**
+- **2026-09-09, on the supply bound: `"1, i prefer caution...follow suit."`**
+  **Answering the NARROW sentence: the bound publishes its own verdict only on
+  the POST-escalation dossier, monotone toward AVOID, never softening, under its
+  own field rather than the `DIRTY_FLOAT` label, carrying share count, date and
+  filing citation.** *The pre-escalation version he had approved earlier under a
+  wrong description would have fired a false AVOID on **four of the seven cases
+  that have ever fired** — a census, not a rate, and R&D's interval on it is 25%
+  to 84%. **The verdict never needed the rate: at any rate above zero, firing
+  pre-escalation is unsafe in the AVOID direction**, which is the direction that
+  costs him a trade he should have taken.* **Caution and the narrow form are the
+  same choice here, and that is why the reading is safe** — the narrow version
+  fires strictly less often, on resolved evidence only. **Relayed to Research
+  with his words verbatim and this reading flagged rather than asserted**, so the
+  seat that wrote the sentence can refuse the mapping if it is wrong.
+- **2026-09-09, on the trademark knock-out search: `"2, waive."`** Closed. **No
+  seat commissions one**, and the name work stays closed unless he reopens it.
 
 ### What this session got wrong, so the next one does not repeat it
 
