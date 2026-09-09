@@ -14262,3 +14262,76 @@ approved it under the wrong description. **Confirming before building.**
 snapshot is older than the feature, and the module's own estimate — **null for
 61% of researched names, "the binding constraint on coverage and not something
 more filings would fix"** — is the code's claim rather than my measurement.*
+
+**138. THE COLLISION IS REAL AND BOTH READINGS ARE WRONG. THE ESCALATION ALREADY
+RESOLVES THE AMBIGUITY — 3 OF 7 CONFIRMED, 4 OF 7 RECONCILED AWAY — AND ITS
+ANSWER IS THEN DISCARDED.**
+
+*R&D found that `escalation.ts:153` and `computeSupplyPair` share a numerator and
+a denominator and read them oppositely. **Verified: same filter
+(`KNOWN_ACTIVE && amountShares !== null`), same divisor (`sharesOutstanding`).**
+One calls it proof of overhang; the other calls it "supply arithmetic contradicts
+itself" and buys a `sol` opinion.*
+
+### R&D SAID THE FAULT READING IS WRONG. THE SEVEN CASES SAY IT IS NOT.
+
+*Its argument — warrants and ATM capacity are shares not yet issued, so supply
+exceeding outstanding is the definition of an overhang — is sound in principle.
+**So I looked at what the escalations actually found**, rather than deciding by
+argument.*
+
+```
+ticker  knownActive    SO           ratio   blocks in the STORED (post-sol) dossier
+NERV     94,600,000    43,841,998   2.16    REGISTERED_RESALE:94,600,000
+ISPC      3,846,154     1,522,359   2.53    RECENT_OFFERING:996,231 WARRANTS:2,849,923
+GYGY     16,072,730    14,388,000   1.12    REGISTERED_RESALE:16,072,730
+MYSZ              0       728,482   0.00    (none)
+BTCS              0    49,775,371   0.00    (none)
+PURR              0   124,220,108   0.00    (none)
+HYPD              0    15,299,832   0.00    (none)
+```
+
+**THE ESCALATION FIRES ONLY WHEN `knownActive > SO`, SO ALL SEVEN EXCEEDED IT AT
+THE CHECK. FOUR STORE ZERO.** *`sol` removed or downgraded those blocks.* **3 of
+7 were real overhangs; 4 of 7 were the data fault the criterion was written for.**
+
+**⇒ R&D'S DOUBLE-COUNTING CONCERN IS NOT HYPOTHETICAL. IT IS 4 OF 7, MEASURED.**
+*Had `>=1.0` fired an independent AVOID on the pre-escalation dossier, more than
+half would have been false — and a false positive here costs him a trade he
+should have taken, which is the direction his own rule says to fear.*
+
+### SO THE COLLISION IS NOT "WHICH READING WINS"
+
+**BOTH ARE RIGHT, ABOUT DIFFERENT DOSSIERS.** Before escalation the condition is
+genuinely ambiguous. **After escalation it is not — `sol` has been paid to
+resolve exactly this, and it resolved it correctly on all seven.**
+
+> **THE DEFECT IS THAT THE ANSWER IS THROWN AWAY.** `supplyPair` is computed on
+> the accepted dossier at `pipeline.ts:422` and **read by nothing**. The
+> escalation's whole output — real overhang or reconciled artefact — reaches no
+> verdict, no risk layer, no screen.
+
+**THAT ALSO REVALUES THE ESCALATION.** `SUPPLY_RECONCILIATION_INCONSISTENT` is
+27% of `sol` spend and it is **doing real work**: 4 genuine faults caught, 3
+overhangs confirmed. *It is not the waste the sheet-conflict escalations are.*
+
+### WHAT I AM BUILDING, AND WHAT I AM NOT
+
+**NOT** an independent verdict on `floorRatio >= 1.0` — **measured 4/7 false.**
+**YES** the post-escalation pair driving a verdict, because by then the
+ambiguity has been paid for.
+
+**R&D's three design points survive intact and I am taking all three:**
+1. **Not an override.** Independent, and **monotone toward AVOID only** — never
+   softening anything to CLEAN.
+2. **Not the `DIRTY_FLOAT` label.** Its own value with the basis adjacent;
+   arithmetic proof must not share a bucket built for model prose.
+3. **`>=` not `>`.** At exactly 1.0 supply equals float's upper bound, which
+   still proves supply >= float. *The current strict `>` under-fires by one
+   boundary case.*
+
+**And its staleness asymmetry is the sharpest thing in the message:** *the same
+too-low `sharesOutstanding` makes a FLOAT bound too low — passes pillar 5, he
+TAKES — and a SUPPLY ratio too high — fires AVOID, he SKIPS.* **One field,
+opposite consequences, decided by which side of the fraction it lands on.**
+`FILED_SHARES_CURRENT_DAYS = 45` applies to both and was measured for neither.
