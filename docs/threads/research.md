@@ -14335,3 +14335,33 @@ too-low `sharesOutstanding` makes a FLOAT bound too low — passes pillar 5, he
 TAKES — and a SUPPLY ratio too high — fires AVOID, he SKIPS.* **One field,
 opposite consequences, decided by which side of the fraction it lands on.**
 `FILED_SHARES_CURRENT_DAYS = 45` applies to both and was measured for neither.
+
+**138a. THE 4/7 IS A CENSUS, NOT A RATE, AND I QUOTED IT AS ONE.**
+
+*R&D retracted its reading and added the guard I should have put on my own
+number:*
+
+```
+data fault     4/7 = 57.1%   95% [25, 84]
+real overhang  3/7 = 42.9%   95% [16, 75]
+```
+
+**I wrote "measurably wrong 4 times in 7" and "false more than half the time".
+The first is exact. The second is a RATE, and 57% carries an interval from 25 to
+84.** *It is a census of every case that ever fired — exact for the observed
+history, near-useless for the next one — and "more than half the time" is
+precisely the kind of sentence that outlives its denominator.*
+
+**AND THE CONCLUSION DOES NOT REST ON IT.** *At any rate above zero, firing
+pre-escalation is unsafe in the AVOID direction.* **So the interval changes
+nothing about the design and everything about how the number may be quoted** —
+which is why it is recorded before the eighth case lands and moves the point
+estimate.
+
+*Fifth time in this thread that a true count was given the register of a broader
+claim. **The first four I caught; this one and the "every date, ever" one were
+handed to me.***
+
+**And R&D's own framing of the resolution is better than mine: I called it "both
+readings right about different dossiers" — it is that the collision was never a
+SIDE, it was a STAGE.**
