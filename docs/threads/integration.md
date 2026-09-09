@@ -201,98 +201,93 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-*Refreshed 2026-09-05 08:45Z (04:45 ET **Saturday**) by the fourth Integration
-session, after ~40 hours of continuous work across Thursday night, Friday and
-Saturday morning. **This block supersedes the 2026-09-02 handover entirely and
-that block has been removed — not archived, because a superseded LIVE STATE is
-the thing that gets read.** Everything below carrying an older frame is kept for
-its mechanisms. Verify before acting on any of it.*
+*Refreshed 2026-09-09 ~01:00 ET (Wednesday) by the fifth Integration session,
+retiring after ~24 hours. **This block supersedes the 2026-09-05/06 handover
+entirely and that block has been removed** — a superseded LIVE STATE is the thing
+that gets read. Everything below it in this file is kept for its mechanisms, not
+its facts. **Verify before acting on any of it.***
 
 ### Production, as of this block
 
-*Rewritten 2026-09-06 ~21:00 ET (Sunday). **Monday 09-07 is Labor Day. The next
-session is TUESDAY 2026-09-08.***
+- **`a127c00` on web / research / assess. `mointel-market` is on `f5aaa167`** —
+  a deliberate `RESTART_MARKET=no` split, and **its release directory was
+  confirmed present on disk after the deploy.** Deployed 2026-09-09 00:34 ET.
+- **`quick_check ok`, schema v25, four units verified from each unit's own
+  `/proc/<pid>/cwd`.**
+- **`tmitrader.com`, `www.tmitrader.com` and `98-85-49-227.sslip.io` all answer.**
+  The domain went live 2026-09-08 15:25 ET. **The old name was ADDED to, never
+  replaced** — every bookmark still works.
+- **`minute_bars` holds 09-02, 09-03 and 09-08 (1,083,516, a full live day).**
+  **09-04 through 09-07 are absent and 09-04 is a known hole** — the retention
+  defect deleted the table and the restore came from a backup taken 31 minutes
+  before that session opened.
 
-- **`7212bdd`, schema v25, all four units, verified by each unit's own cwd.**
-  `universeFreshness` reads **FRESH** on the served API, `universeRollDue` false.
-- **`minute_bars`** holds 09-02 (1,054,662) and 09-03 (1,061,634), restored exact
-  from a migration backup. Seven more dates are recoverable the same way.
-- **Nothing deploys before Tuesday's close.** The tip carries Ops's latch +
-  false-FRESH fixes, Research's SEC acceptance-timestamp capture, Design's colour
-  on the activity bars and the tracer exclusion. **Enumerate by thread and gate
-  the TIP, not a named ancestor.**
+### What is live and undeployed
 
-### The Tuesday sequence, written down because no session here will exist for it
+- **`settleMinutes: 0`** — `e1f64ec`, gated by Research, **not deployed.** He
+  ruled it directly. Ships as its own named change, never inside a cleanup.
+- **The 09-04 recovery script** — approved, **not written.** Ops establishes
+  count-only mode and all-or-nothing before it runs; runs after a close, never
+  before a session.
 
-`docs/threads/ops.md` holds the checklist. The parts that are not obvious:
+### The five things that are HIS and open
 
-- **DEPLOY FIRST, THEN RESTART. Never the reverse** — the latch wipe fires on the
-  first flush after a restart, so a restart on the old code is the last possible
-  wipe. The instinct to "restart to pick up the fix" is exactly backwards.
-- **The restart needs the trader's word, in Ops's session.** Not Integration's.
-- **After the restart, read the latch pair:** `wiped` must be 0 **and**
-  `out_of_band_surviving` must be > 0, or the check saw no case it could fail on.
-- **Report the instant `mointel-research` STARTS**, not the deploy — that is the
-  `SEC_ACCEPTANCE_BOUNDARY`, currently the token `PENDING` in Research's register.
-- **A scheduled task fires 22:15 ET Tuesday** to watch the roll. It runs only
-  while the app is open, and a permission prompt pauses it with nobody there.
+1. **Trademark knock-out search** on `TMI Trader` — commission or waive.
+2. **Scope the feed-stall defect (case G)?** A stall marks every name DEAD at
+   once, at any `settleMinutes`. Both discriminators exist — `lastBarAt`, and
+   the population — and a market-wide halt is a third state neither separates.
+3. **The Why Not effect producer** — HELD by him. `omitSheetPrior` runs first to
+   size the replay-vs-live gap.
+4. **The derived-only field option** — rank/RVOL/catalyst/float display nothing
+   any exchange polices; price/Move %/VWAP/quotes do. **The only option that
+   changes the licensing risk rather than accepting it.**
+5. **The dirty-float prompt rewrite** — his edit, Research's analysis. The prompt
+   lives outside this repo.
 
-### What the trader decided
+### Rulings he made this session, in his words
 
-- **Build the float bound; do not buy a vendor feed.** His reasoning, and it is
-  better than the case this seat built for it: vendors use no privileged data,
-  and *"we can explain why a float is dirty, with the numbers, instead of just
-  putting N/A."* **The head-to-head argument this seat added was falsified —
-  nine of the ten vendor-blank names are leveraged ETFs, which have no float,
-  and `N/A` was correct.**
-- **Retire the 06:10 ChatGPT task.** Done. The 22:00 task stays until the float
-  question is settled.
-- **Render the supply pair.** Shipped.
-- **The dial must be falsifiable or not built.** Q13 closed: not detectable at
-  n=13, ~31 more sessions would settle it. **A result, not a shrug.**
+- **`"accept exposure. not going to pay for something i'm not sure is going to be
+  used. my call. the moment we have something moving, i'll sign up."`** The
+  trigger is UNDEFINED and no seat is to invent one. **The risk conversation is
+  DEFERRED, not declined, and it is Integration's to reopen.**
+- **`"integtation can relay my yes for production writes. yes."`** **Production
+  writes ONLY** — not a `mointel-market` restart, and not payment or credential
+  entry, which was never his to waive.
+- **`"sort does not survive. names change too much anyway. no need for
+  persistence of any kind really."`** Standing for board state. **It does NOT
+  reach auth — a session cookie is not board state.**
+- **The product is `TMI Trader` / `True Move Intelligence` / `tmitrader.com` /
+  `"Intelligence on what's moving."`**
 
-### Waiting on him
+### What this session got wrong, so the next one does not repeat it
 
-- **The research queue samples a column that overwrites, against a board turning
-  over 4.4× a day** — so 20 of 53 names that touched his top 12 on 09-04 were
-  never picked up. Not broken; that is the mechanism. **Enumerating entries
-  instead would roughly double research volume, and that is his bill.** Three
-  options put to him; no answer yet.
-- **Short interest**: Alpaca provides none — verified against their own docs
-  index. FINRA is the source, free and public, 8–23 days stale by construction.
-  **It is meaningless without a float denominator, so it belongs after the
-  bound.**
+- **Three mechanisms invented from adjacency** — the 46 paired with the 72, the
+  subscription coupling on vanish, the `?? 0` conflation. **Each was a true
+  claim joined to another true claim by an assertion nobody had checked**, and a
+  thread refused each one.
+- **A relayed instruction taken as an authorisation.** `"ops can do that"` said to
+  Commercial did not authorise Ops. **The same words to Ops did.** The channel is
+  the thing.
+- **A measurement used past its warrant.** Ops's 0.005–0.673s bounded normal
+  operation and was quoted to bound a failure case it never sampled.
+- **A hold condition written as a proxy** — *"hold if `settleMinutes` work is in
+  the tip"* — which fired on a comment refactor. **Rule on the thing, not the
+  proxy.**
+- **A decision list inflated with items that were not his.** Design trimmed four
+  to one. **Inflating his list costs attention and hides the real items.**
 
-### Built, gated, not yet deployed
+### The standing sequence, which nothing this session changed
 
-Design's close-series render `2b3ddd9` · the price sparkline is data-live and
-needs Monday's capture to populate.
+- **DEPLOY, THEN RESTART. Never the reverse.**
+- **Gate and ship the TIP, enumerated BY THREAD at the moment of shipping.**
+  Integration approves **the enumeration, not a sha** — a hash is a carried
+  reading and it decayed three times in one night.
+- **`git commit --only <paths>`. Never `git add -A`, and `git add <path>` first
+  does NOT save you** — the commit takes the whole index.
+- **Take the clock from `zoneinfo` at the moment of use.** Nine failures in three
+  days, and the newest arrives as an *environment announcement* in a non-ET zone
+  rather than as a misreading.
 
-### Scoped, not started
-
-Coverage persistence with its **five-rung** model · the one-sided-search warning
-(blocked on that persistence) · `deactivateSources` wiring for 244 non-canonical
-cluster members · `replaceUniverse` never-delete + chunking, scoped WITH the
-minute-bar backfill · the split-census over confirmed split events · the catalyst
-taxonomy (two signed axes, `basis: OBSERVED | INFERRED`, repeat-offender reverse
-splits) · Design's current-activity dial · `PATTERNS` read · the (d) re-take on
-variant A.
-
-### Live facts a new session will otherwise re-derive
-
-- **The desk's catalyst collection has NO code defect.** A day-long
-  investigation went 13-of-23 → 5-of-13 → **zero**. Six issuer feeds are
-  abandoned, two are empty, five had addresses resolved during the pass that
-  last collected. **It is a source problem.**
-- **`AKAN`'s newsroom has not published since November** while the company files
-  normally. On that name *"we looked and found nothing"* is TRUE.
-- **Board float coverage: 11 of 11 cells non-empty, 8 parse, 0 silently
-  unknown.** The three misses are refusals with stated reasons. **That is the
-  product working.**
-- **Research reach: 43.4% of names that entered the top 12 on 09-04 had research
-  generated that day**, not the 79.2% a dossier-from-any-date count gives.
-- **Board churn is 4.4×, not 3×.** 70 entry events across 53 names against 12
-  slots.
 
 ## The third delegation: deploy instructions, confirmed directly
 
