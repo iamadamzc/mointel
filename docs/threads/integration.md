@@ -3196,3 +3196,47 @@ Here neither seat weighed it at all, and he supplied it in five words.**
 **The argument was available, it was in this desk's own file, written by the seat
 that needed it, and it was not made.** *The rule you already wrote is the one you
 are least likely to apply — and this is its second appearance today.*
+
+## THE WRONG-DESK TRAP REACHED A PRODUCTION WRITE PATH, AND A GUARD CAUGHT IT BY LUCK
+
+**2026-09-09, ~17:08 ET.** The 09-04 recovery's count-only pass **opened the
+LOCAL split-brain desk instead of production.** `dbPath` defaults to
+`./data/market.db` when `MARKET_DB_PATH` is unset, and **a scheduled task runs
+`npm run` from the checkout.**
+
+**It exited on the no-`ticker_session`-rows guard — luck rather than design.**
+Ops's own words in the fix: *had the local store held rows for that date, it
+would have fetched a million bars, written them to the wrong database, and
+reported a count INSIDE the registered band.*
+
+**AND IT WOULD HAVE DEFEATED THIS SEAT'S OWN CHECK.** I required the count beside
+the band so the conclusion had to survive being read next to its evidence.
+**The band would have been satisfied.** *A plausible number from the wrong store
+passes every guard shaped to catch a wrong number.*
+
+### The distinction, and it is not a property of the task
+
+**Every earlier scheduled task reached production by `ssh` and `sqlite3
+-readonly` ON THE BOX. This one ran `npm` LOCALLY.**
+
+> **A task that ssh's to production reads production. A task that runs from the
+> checkout reads whatever `MARKET_DB_PATH` happens to be — and unset is the dead
+> local desk.**
+
+**The earlier tasks were not safer by design. They were read-only over ssh and
+never had the chance to be wrong.** *So the file-level fix protects this script,
+and the class is protected by nothing.*
+
+### Fifth instance, and the first to reach a WRITE
+
+Three threads on a three-hour hole; a schema confirmed for a store that existed
+on no production box; two local censuses quoted as store-wide; and now this.
+**`data/README.md` exists because of the earlier ones and did not stop it** —
+**a file opened by a DEFAULT PATH never reads its neighbour.**
+
+### What it does to tonight
+
+**The count has not been validly taken.** The number that came back was about a
+store frozen weeks ago, **so nothing may be written on it** and the pass has to
+run again against production. **Reported to him as a correction rather than left
+to look like a delay.**
