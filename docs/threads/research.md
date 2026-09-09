@@ -14054,3 +14054,79 @@ two providers, and then a third time when they differ.**
 *Not a recommendation to retire either. **A statement that nobody chose this
 shape** — it is what remains after three of four tasks were retired around a desk
 that grew into the same job.*
+
+**135. THE 22 DISAGREEMENTS ARE ONE MISSING DENOMINATOR, NOT TWO OPINIONS. THE
+FLOAT IS IN THE SHEET, IS PARSED, AND IS DROPPED ONE LINE BEFORE IT WOULD BE
+USED.**
+
+*He asked whether ChatGPT is right about dirty float, said he has no way of
+knowing, and proposed rewriting the prompt to handle the conflicting notions.
+**Went through the 22 cases individually first. They are not a difference of
+opinion.***
+
+### THE DESK FOUND THE SAME SUPPLY IN ALL 22
+
+Every one carries a populated ledger — `EQUITY_PURCHASE_AGREEMENT/KNOWN_ACTIVE`,
+`REGISTERED_RESALE/POSSIBLY_ACTIVE`, `ATM`, `PIPE`, `WARRANTS`,
+`SHELF_CAPACITY`, `ACQUISITION_SHARES`. **The desk sees exactly what ChatGPT
+sees.**
+
+**IT REFUSES THE LABEL FOR ONE REASON, AND IT SAYS SO. IVF, verbatim:**
+
+> *"CAUTION is better supported than DIRTY_FLOAT on this bundle… **However,
+> there is no disclosed float**, no quantified issuance under the facility, and
+> no current warrant exercise or remaining-balance information. Those unresolved
+> facts prevent treating all registered capacity as confirmed live float."*
+
+**`displayedFloat` IS NULL, AND IT IS NULL EVERYWHERE: 0 OF 325 DOSSIERS CARRY A
+PUBLIC FLOAT.** *125 carry shares outstanding.*
+
+### AND CHATGPT'S THRESHOLD IS A RATIO THE DESK CANNOT COMPUTE
+
+The task instructions: ***"Use DIRTY FLOAT when … create at least 1.0x verified
+public float of latent/available supply."*** **A ratio with float as the
+denominator.**
+
+> **THE DESK HAS NO FLOAT, SO IT CAN NEVER REACH THE THRESHOLD, SO IT ALWAYS
+> LANDS ON CAUTION. THE DISAGREEMENT IS STRUCTURAL AND GUARANTEED.**
+
+**AND ESCALATION CANNOT RESOLVE IT.** `sol` receives the same bundle with the
+same missing float. **12 escalations — 46% of expensive-tier spend — arbitrating
+a question the expensive model also cannot answer, because what is missing is
+DATA, not reasoning.**
+
+### THE NUMBER IS ALREADY THERE
+
+`MomentumTicker` carries **`float: NumericField`** — parsed from the Sheet's
+Float column, which the ChatGPT task researches and writes on every run.
+
+`toSheetPrior` (`sheetPrior.ts:50`) builds the bundle's prior and maps:
+
+```ts
+floatQuality: ticker.structure.floatRaw || null,   // the QUALITY TEXT
+```
+
+**IT PASSES THE LABEL AND DROPS THE NUMBER.** *One line before the interpreter
+says "there is no disclosed float."*
+
+### SO THE ANSWER IS NOT A PROMPT REWRITE — BUT IT IS NOT FREE EITHER
+
+**HIS INSTINCT WAS TO MAKE CHATGPT MORE CAREFUL. NOTHING IS WRONG WITH
+CHATGPT'S REASONING.** *It has a denominator; the desk does not.*
+
+**AND PASSING THE FLOAT IS A REAL TRADE, NOT AN OBVIOUS FIX:**
+
+1. **It makes the desk's float verdict DEPENDENT ON CHATGPT'S FLOAT RESEARCH** —
+   deepening exactly the contamination `omitSheetPrior` is being run to measure.
+   **These two decisions are coupled and should be taken together.**
+2. **`supplyToFloatFloor` already exists as the float-free path** — supply over
+   shares outstanding, a genuine lower bound, and **125 of 325 have that
+   denominator. It produced CAUTION anyway**, so the bound is not reaching 1.0x
+   either. *Worth knowing whether that is because the bound is honest or because
+   nothing consumes it.*
+3. **`floatConfidence: 'UNKNOWN'` is already the honest state.** Filling it from
+   another model's research changes what the field MEANS.
+
+**THE CHOICE IS HIS AND IT IS SHARPER THAN "WHO IS RIGHT":** *does the desk want
+a float it did not verify, or does it want to keep saying UNKNOWN and stop
+paying `sol` to arbitrate a ratio nobody in the bundle can compute?*
