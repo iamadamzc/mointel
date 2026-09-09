@@ -3240,3 +3240,59 @@ on no production box; two local censuses quoted as store-wide; and now this.
 store frozen weeks ago, **so nothing may be written on it** and the pass has to
 run again against production. **Reported to him as a correction rather than left
 to look like a delay.**
+
+## A CONFIG VALUE READ BY TWO PROCESSES WITH DIFFERENT RESTART POLICIES IS NOT ONE DEPLOYABLE
+
+**Ops, 2026-09-09, named from `systemctl show ExecStart` on the box rather than
+reasoned from the file.** I asked whether `settleMinutes: 0` would ship **inert**
+without a market-worker restart, on the strength of the third inert-ship entry.
+**The answer is worse than inert: IT SHIPS HALF.**
+
+    engine.ts:1184     windowSlots(...)        MARKET WORKER  computes the verdict
+    runtime.ts:1838    activity_config stamp   MARKET WORKER  writes it on the row
+    sparkline.ts:84    sparklineLagLabel       WEB            the "−2m" header
+    sparkline.ts:58    sparklineSpanLabel      WEB            the tooltip
+
+**`mointel-web` restarts on every deploy. `mointel-market` does not.** So a
+`RESTART_MARKET=no` deploy produces:
+
+    header on his screen        −1m                    (web, new config)
+    engine judging behind it    settleMinutes: 1       (worker, unchanged)
+
+> **THE DISPLAY WOULD CLAIM FRESHER DATA THAN THE VERDICT ACTUALLY USES.**
+
+**And Design derived that label from the config PRECISELY so the header could not
+lie** — `sparklineLagLabel` returning `−${settleMinutes + 1}m` **is the guard**.
+**A deploy without the restart defeats it by the exact mechanism it was built to
+prevent**, because *the derivation is only sound while both processes read the
+same config.*
+
+### The rule is sharper than the one it extends
+
+**The third inert ship gave: a deploy's process list is derived from what the
+change WRITES, not from what it RISKS.** *This change writes to TWO processes
+with DIFFERENT restart policies.* **It is not one deployable — it is two halves
+that agree only if both restart.**
+
+> **Before shipping a config change, enumerate every process that READS the
+> value, not every process that writes the feature.** A shared constant is a
+> coupling across restart boundaries, and the boundary is invisible in the file.
+
+### And there is a tell if it ever ships half
+
+`runtime.ts:1838` stamps `activity_config` onto each `ticker_session` row **from
+the worker's own constant.** So a row written after such a deploy carries
+**`settleMinutes: 1` while the screen above it reads `−1m`.** *Readable after the
+fact by anyone who suspects it, which is more than most of this desk's silent
+failures offer.*
+
+### Which makes the restart HIS, and not an optimisation
+
+**A `mointel-market` restart breaks the single permitted SIP connection and is
+his word every time.** *Ops said it would not take it from me if I relayed it,
+which is the channel rule holding in the direction where it costs something.*
+
+**Ops's line, and it is the one that belongs in front of him:** **the restart is
+not an optimisation of the change — it is the difference between shipping it and
+shipping a lie on the header.** **Without it, the thing he reads at speed becomes
+wrong in the direction of looking fresher.**
