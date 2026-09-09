@@ -12307,3 +12307,46 @@ that stays the same across two threads' work **looks like nothing happened** —
 which is exactly when the composition goes unstated and the coincidence goes
 unnoticed. **Register the zero with its reason, or a genuine collision between an
 addition and a deletion will read as "unchanged, fine."**
+
+## A clean log line from a new guard is the most persuasive and least informative thing a deploy produces
+
+The prune guard shipped and its first run printed:
+```
+[prune] in use f5aaa167... a127c00... a127c00... a127c00...
+[prune] retained a127c00 f5aaa167 38e7d4b 372f5eb   1 release(s) removed
+```
+**It read as a save. Ops said plainly that it was not:**
+
+> **"It was not load-bearing tonight. `f5aaa167` was second-newest and would have
+> survived the keep-3 rule anyway. The in-use rule did not save it; it merely also
+> protected it."**
+
+**The first deploy where that rule is the only thing standing between a running
+worker and a deleted tree is three deploys away** — and that is now written down
+rather than discovered when it matters.
+
+**A new guard's first clean run proves it does not crash. It does not prove it
+fired, and it certainly does not prove it was needed.** *The log line is
+indistinguishable in both cases.*
+
+**Ask what would have happened WITHOUT the guard, on this specific run.** If the
+answer is "the same thing", say so — **otherwise the next reader inherits a save
+that never happened, and the guard's real first test passes unwatched.**
+
+## An absent prerequisite is only ever caught by enumerating
+
+`101b46b` had to be in the release or the deploy would re-render `server_name` from
+the old template and **silently drop the new domain** — nginx starts, the old name
+works, nothing logs.
+
+**It was present, so the hold condition never fired.** The deploy printed
+`serving TLS for: 98-85-49-227.sslip.io tmitrader.com www.tmitrader.com` and the
+question closed.
+
+**But nothing would have failed if it had been absent.** **A hold condition on
+something's PRESENCE is only ever satisfied by someone listing what is there** —
+there is no failure mode to catch it, no test that goes red, and no log line that
+says what is missing.
+
+**Which is why the enumeration is the control, not the gate.** A gate proves what
+is in the tip works. **Only an enumeration proves what needs to be in the tip is.**
