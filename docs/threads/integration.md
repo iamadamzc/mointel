@@ -1766,6 +1766,42 @@ is the one that separates them.**
 it will be "fixed"** — except here the trap runs the other way: **it will not be
 fixed, because it does not look broken.**
 
+## A PROOF THAT CANNOT GO STALE BEATS A READING THAT WAS TRUE THIS MORNING
+
+**Three instances in one day, from three seats, each choosing the durable form over
+the available one.**
+
+```
+Ops     grepped a refused review page for desk data      -> clean TODAY
+Design  read the ORDERING: getDashboardState() is called
+        AFTER the guard                                   -> cannot be otherwise
+Design  checked DeskRisk.label is `string`, not
+        `string | null`                                   -> cannot be otherwise
+Ops     curl instead of a browser, for a page whose
+        401 no cached browser here can see                -> asks as the user asks
+```
+
+**THE RULE: when a claim can be established either by observing the value or by
+naming the constraint that produces it, TAKE THE CONSTRAINT.** *A live read proves
+the board was right this morning. A total return type proves it cannot be
+otherwise, and it survives every future edit that a re-read would have to catch.*
+
+- **Design chose the code over the live board DELIBERATELY and said so**, which is
+  the part that makes it a method rather than a convenience.
+- **It also changes who can quietly break it.** *A convention is broken by
+  forgetting; a type is broken by editing an interface, which is visible in a
+  diff.* **"We could simplify that to a blank" stopped being a tidy-up and became a
+  change.**
+- **AND IT IS THE SAME MOVE AS `make it impossible, not visible`, pointed at
+  EVIDENCE instead of at behaviour.** *One makes the failure unreachable; this makes
+  the proof unfalsifiable by drift.*
+
+**WHERE IT DOES NOT APPLY: when the question is whether the world matches the
+code.** *The `:80` redirect, the DNS record, the SIP reconnect — those need the
+live read, because the constraint lives outside the repo and the code cannot speak
+for it.* **Constraint for what the code guarantees; measurement for what the world
+is doing.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
