@@ -381,9 +381,25 @@ at NOTHING and it was true when written.*
     **HIS "yes" IS STANDING: when the value exists, Ops writes it without returning
     to him.** *The value comes from Search Console to a signed-in Google account
     that owns or edits a GCP project — which does not exist, and creating it is his.*
-    **EXECUTE ADDITIVELY: read the apex TXT set, append, UPSERT the union.** *A bare
-    UPSERT deletes the verification. See the charter section on standing
-    authorisations.*
+    **WRITTEN 2026-09-10.** `google-site-verification=LGNNdGMAC2WGhfeVSkbCUZhtLmOtS4MMJqV8e-26btA`,
+    TXT at `tmitrader.com.`, TTL 300, zone `Z05508241VIT62AXLR7KN`, change
+    `/change/C02179542M721IKEZV4BU`. **Verified in THREE places — Route 53
+    read-back, a public recursive resolver, and the zone's own authoritative NS
+    `ns-1952.awsdns-52.co.uk` — all agreeing.**
+    - **GOOGLE SAYS TWO OR THREE DAYS. IT WAS LIVE IMMEDIATELY.** *Not a
+      contradiction of their page — a reason to CHECK rather than assume, in either
+      direction.* **He can click verify now rather than waiting.**
+    - **THE ADDITIVE SHAPE IS NOW A SCRIPT, NOT A PROMISE:**
+      `deploy/aws/route53-txt-add.mjs` — reads the set, appends, upserts the UNION,
+      reads back, **and fails if any pre-existing value is missing afterwards.**
+      *Ran `--dry-run` first.* **It is what writes SPF and DMARC when their turn
+      comes.** *Third time today structure beat remembering: the `:80` redirect into
+      the repo, the count-only task deleting its own write step, and this.*
+    - **The hazard had ZERO mentions in `ops.md` before today — it existed only in
+      messages.** Now at `aee29fc` beside the record, **with the chain spelled out:
+      removing it un-verifies the domain → un-verifies the authorized domain on the
+      consent screen → breaks Sign in with Google, and NO STEP IN THAT CHAIN REPORTS
+      ANYTHING.**
   - **CAPS:** 100 test users in Testing, **identity-only apps stated exempt**; 100
     new users lifetime for unverified apps **using sensitive or restricted
     scopes** — *neither stated to apply to identity-only.* **Both are totals, not
