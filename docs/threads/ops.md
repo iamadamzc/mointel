@@ -8267,3 +8267,44 @@ rather than trusting the confirmation, which echoes in local time:
 deploy   2026-09-11T00:15:00Z -> 9/10/2026,  8:15 PM ET
 extract  2026-09-11T02:30:00Z -> 9/10/2026, 10:30 PM ET
 ```
+
+## Schema backups are never pruned, and that is a clock — 2026-09-10
+
+**Found while pricing a retention change. It is not about retention.**
+
+**Every schema migration writes a full `VACUUM INTO` copy of the store**
+(`db.ts:createSchemaBackup`) **and nothing ever deletes it.** `prune.sh` handles
+release directories; **no code path touches `/var/lib/mointel/backups`.**
+
+```
+11 files, 4.96 GB, v14 (2026-08-18) .. v24 (2026-09-05)
+11 migrations in 23 days  ~=  one every two days
+tonight's 25 -> 26 adds ~1.2 GB, the largest yet
+volume: 77G total, 63G available
+```
+
+**At the current rate that is roughly 17 GB/month against 63 GB free — three to
+four months.** **This exists whether or not anyone changes retention**, and it is
+a slow failure: the box is at 18% today, so nothing looks wrong, and the first
+symptom would be a migration failing mid-deploy for want of space — **the same
+failure shape as 2026-09-04, arriving from a different direction.**
+
+**WHY IT MATTERS TO THE RETENTION QUESTION: it is a multiplier, not a term.**
+One trading date of `minute_bars` costs **~216 MB** measured via `dbstat` (484.32
+MB table + 155.46 MB autoindex + 77.28 MB date index = 717.06 MB for 3,716,494
+rows ≈ 202 bytes/row). So raising retention 3 → 20 costs **~3.7 GB of live
+store**, which against 63 GB free is nothing. **But it also makes every future
+backup ~4.9 GB instead of ~1.2 GB, permanently, at one every two days.**
+**Disk stops being irrelevant immediately.**
+
+**⇒ Prune the backups first and retention is cheap. Raise retention first and it
+accelerates a clock that is already running.** Keeping the three most recent
+frees ~3.5 GB now and turns unbounded growth into a bound.
+
+**A note on the framing this arrived in.** It was put to me that the desk *"has
+already lost a full session permanently to this exact mechanism"*. **It has not.
+09-04 was lost to the retention DEFECT fixed in `8018b9b`**, plus a restore taken
+31 minutes before that session opened. **The default of 3 working correctly is
+what deletes 09-03 tonight; a bug is what deleted 09-04.** Whether 3 is the right
+number is a real question and **does not need the defect behind it** — borrowing
+one makes the working case look like it has a victim.
