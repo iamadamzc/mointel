@@ -357,9 +357,28 @@ https://tmitrader.com/         401 -- nginx's own page, 188 bytes, not the app
 - **FIVE EXEMPTIONS, each tested:** `/.well-known/acme-challenge/` 404,
   `/api/health` **401 from outside** (`satisfy any` + allow localhost + deny all),
   `/review/` and `/mcp/` token-gated by `lib/review/`, `/_next/static/` public.
-- **AN INVALID REVIEW TOKEN RETURNS HTTP 200** with `forbidden`/`unauthorized` copy
-  and **no desk data in the body** — Ops grepped for ticker and table names.
-  **Not a leak; 200-for-denied is poor hygiene. Design's, not urgent.**
+- **AN INVALID REVIEW TOKEN RETURNS HTTP 200** with `forbidden`/`unauthorized`
+  copy. **Not a leak; 200-for-denied is poor hygiene. Design's, not urgent.**
+  - **STATE IT AS ORDERING, NOT AS A GREP.** *Ops grepped the body for ticker and
+    table names and found none. Design read the code: `app/review/[token]/page.tsx:29`
+    returns `<ReviewRefusal>` and **`getDashboardState()` is called on the line
+    AFTER the guard** — so a refused token never reads the desk at all.*
+    **A grep proves the body is clean TODAY; the ordering proves it CANNOT BE
+    OTHERWISE.** *The grep result goes stale on the next render change. The
+    ordering does not.* **Same family as *make it impossible, not visible*, applied
+    to how a finding is WRITTEN rather than to how a system is built.**
+  - **AND THE FIX IS NOT A ONE-LINER, WHICH IS WHY IT IS NOT ON TONIGHT'S TIP.**
+    `unauthorized()` renders 401 and injects `<meta robots noindex>`, **works by
+    THROWING** so it must be in the render path, and **REQUIRES
+    `experimental.authInterrupts: true` in `next.config.ts` — not enabled here.**
+    **Three parts, one of which turns on an EXPERIMENTAL FLAG in the build config of
+    a live trading desk. Its own window and its own decision.**
+  - **DESIGN RULED 401, NOT 404, and the reasoning is the point.** *The token IS
+    the credential, so an invalid one is a bad credential, and `check.reason`
+    already separates expired from revoked from malformed.* **404 would avoid
+    confirming a token ever existed — and would defeat the instrumentability the
+    fix exists for, because a monitor still could not tell a refused capability
+    from a dead link.**
 - **THE ONE REAL FINDING: `:80` OFFERS BASIC AUTH WITH NO HTTPS REDIRECT.**
   **His desk password base64-encoded on the wire.** **Fix instructed by this seat
   under order-and-process — it hardens transport and changes nothing about who may
