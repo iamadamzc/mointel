@@ -138,7 +138,37 @@ row 3.** None was invented to look complete.
 
 ---
 
-## 4. Fixed after a review pass, recorded so they are not reintroduced
+## 4. THE HERO IS REGISTERED TEXT, AND IT HAS A DEPENDENCY OUTSIDE THIS THREAD
+
+**The landing hero is the registered plain statement, verbatim** — Commercial's,
+`docs/commercial/2026-09-08-product-name.md` §2e item 2, registered at `eb0eb7b`.
+Web wrote it from the three registered sentences; Commercial owns it now.
+
+**Do not reflow it into two paragraphs to suit the layout.** The colon is part of
+the text, and splitting there would change punctuation in registered copy. It
+renders as one paragraph on both viewports.
+
+> **THE DEPENDENCY, recorded by Commercial and it is this thread's to carry:**
+> *"puts everything the desk knows about **each one**"* is honest **only because
+> the board renders a name it has not researched as a STATE** — `NOT RESEARCHED`
+> / `NOTHING COLLECTED` — **rather than as a blank.** The desk researches the top
+> of its ranking, not every mover. **The day that rendering becomes a blank, the
+> public statement becomes an over-claim**, and nothing in this repo connects the
+> two. *It is a board behaviour, so it is Design's; the sentence that depends on
+> it is public, so the cost lands here.* **Handed to Design directly.**
+
+**One word of his was dropped and it is recorded as a judgement, not a fact:**
+his sentence says *"an assistant that give you depth on the moving market"*, and
+"assistant" is not in the paragraph — it reads as a chatbot in 2026, which is the
+opposite of the claim. **He can restore it with one word if he disagrees.**
+
+**The scanner line is retired everywhere**, carve-out withdrawn (`d68b60c`). The
+**Not a scanner** card's own sentence is now the registered answer to *"is this a
+scanner?"*.
+
+---
+
+## 5. Fixed after a review pass, recorded so they are not reintroduced
 
 - **"That is the entire list"** appeared on both landing pages beside the three
   Google scopes. **It was false against this repo's own policy**, which also
