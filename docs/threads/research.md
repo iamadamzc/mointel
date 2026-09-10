@@ -14699,3 +14699,69 @@ neither number says that alone.* **The shape is `prior close → session open �
 now`: what carried in, and what has happened since. Two segments of one move,
 and building it as a pair of independent percentages loses exactly the reading he
 asked for.**
+
+**144. HE CONFIRMED FIRST PRINT WITH THE TRADE COUNT — AND ONE RULE UN-COLLAPSES
+AFTER-HOURS, WHICH CONTRADICTS ITEM 143.**
+
+*My VWAP recommendation was wrong and he caught it in four words: **"why would
+you do vwap?"** **A VWAP is an average over a window; an open is a point.** A name
+that moves 10% inside its first minute has a VWAP in the middle of that, so "move
+since the open" would read ~5% before anything happened — a bias of half the
+first minute's range, built into the origin.*
+
+**AND IT DOES NOT EVEN SOLVE WHAT I INVOKED IT FOR.** *With one odd-lot print the
+volume-weighted average of one print IS that print.* **The robustness only
+appears when there are many prints, and with many prints the plain open was
+already fine. It fails exactly in the case it was for.** *I reached for a
+robustness technique without checking it preserved the quantity's meaning.*
+
+### THE RULE HE CONFIRMED
+
+> **Session open = the FIRST PRINT of that session. One rule, all three sessions.
+> The anchoring minute's TRADE COUNT travels with it, so a thin anchor is legible
+> rather than smoothed away.**
+
+*The desk's own pattern rather than a substitute number — the same shape as
+`coverage: 'PARTIAL'` on the session VWAPs and `floatConfidence: 'UNKNOWN'` on
+the structure block.* **A minute bar's `open` IS the first print of that minute,
+so the first bar of the session supplies it directly.**
+
+### AND THE CONSEQUENCE I OWE INTEGRATION: ITEM 143'S COLLAPSE IS WRONG NOW
+
+**Item 143 said after-hours collapses to one figure because "its session open IS
+today's 16:00 close, which IS its relevant last."** *That held while the session
+open was DEFINED as the prior close. Under a uniform first-print rule it does
+not:*
+
+```
+AH relevant last  = today's RTH close     (the closing print, 16:00)
+AH session open   = the FIRST AH PRINT    (a different print, after 16:00)
+```
+
+**THEY ARE TWO DIFFERENT PRINTS, SO AFTER-HOURS GETS TWO DISTINCT FIGURES LIKE
+THE OTHER SESSIONS** — and the difference between them is itself the after-hours
+gap. *Which is the same decomposition as premarket: gapped in, then moved.*
+
+**⇒ MORE CONSISTENT THAN WHAT I TOLD INTEGRATION, AND I TOLD INTEGRATION THE
+OPPOSITE.** *The collapse was an artefact of my definition, not a property of the
+session, and the one-rule answer removes it.*
+
+### SCOPE, NOT BUILT — AND TWO TRAPS
+
+1. **"FIRST" MUST MEAN EARLIEST TIMESTAMP, NOT FIRST RECEIVED.** *Bars arrive out
+   of order — `isNewerObservation` guards exist across the engine for exactly
+   that.* **A naive `if (open === null) open = bar.open` anchors on whichever bar
+   the socket delivered first**, so a 04:01 bar ahead of the 04:00 bar would
+   silently become the open.
+2. **A CORRECTED BAR MUST MOVE THE ANCHOR.** `updatedBar` revises a minute, and
+   `ingestBar` already threads `previous` for volume; the open needs the same
+   treatment or a revised first minute leaves a stale origin.
+
+**Where it goes: beside `accumulateVwap`, which already classifies every bar with
+`vwapSessionForTs(bar.ts, this.tradingDate, this.rthCloseMinutes)`** — live,
+tested, and already handling an early close. **Not a minute-bar query, and not a
+third implementation of the session boundary.**
+
+**HELD until after tonight's deploy.** *The supply bound ships tonight as its own
+named change; a second one in the same window is the attribution failure I have
+been holding everyone else to.*
