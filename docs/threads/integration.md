@@ -378,6 +378,12 @@ at NOTHING and it was true when written.*
   - **THE LONG POLE IS FREE AND CAN START NOW: domain ownership via Google Search
     Console = a DNS TXT record at `@` in Route 53, which Ops holds.** **Providers
     may take "up to two or three days" to serve it, and it MUST NEVER BE REMOVED.**
+    **HIS "yes" IS STANDING: when the value exists, Ops writes it without returning
+    to him.** *The value comes from Search Console to a signed-in Google account
+    that owns or edits a GCP project — which does not exist, and creating it is his.*
+    **EXECUTE ADDITIVELY: read the apex TXT set, append, UPSERT the union.** *A bare
+    UPSERT deletes the verification. See the charter section on standing
+    authorisations.*
   - **CAPS:** 100 test users in Testing, **identity-only apps stated exempt**; 100
     new users lifetime for unverified apps **using sensitive or restricted
     scopes** — *neither stated to apply to identity-only.* **Both are totals, not
@@ -1317,6 +1323,33 @@ carries only the words.*
   instruction being executed as written.
 - **This does not license a thread to reinterpret him.** Ops did not decide the
   timing was wrong — **it asked him, and he chose again.**
+
+## A STANDING AUTHORISATION PLUS A DESTRUCTIVE DEFAULT IS FOUND BY THE SEAT THAT WAS NOT WARNED
+
+**Ops, 2026-09-10, flagged before the value it concerns even exists.** He authorised
+one Search Console TXT record at the apex of `tmitrader.com`, and this seat recorded
+the authorisation as **standing** — so a future seat writes it without returning to
+anyone. **That was correct and it is exactly what makes the hazard reachable.**
+
+**THE MECHANISM:** Route 53 groups records by `(name, type)`. **Every apex TXT value
+lives in ONE record set.** `ChangeResourceRecordSets` with `UPSERT` on `TXT` at the
+apex **replaces the whole set.** So the Search Console token and any future SPF
+record share one object, and **writing SPF later as a fresh UPSERT silently deletes
+the verification** — *the one thing Google's own page says must never be removed.*
+
+**THE EXECUTION RULE: read the existing set, append, UPSERT the union. Never a bare
+UPSERT.** *And say so in the result, so the next seat sees the shape rather than
+being told the rule.*
+
+**THE TRANSFERABLE HALF, AND IT IS OPS'S:** **a hazard behind a standing
+authorisation is not found by the seat that was warned. It is found by the one that
+was not.** *A standing yes removes the conversation in which a warning would have
+been repeated — which is the point of it, and the cost of it.*
+
+- **So a standing authorisation obliges this seat to write the hazard DOWN**, not to
+  relay it. **A warning that lives in a message dies with the session.**
+- **Same shape as the false sentence in `minute-bar-recovery.ts`:** *the artefact
+  the next actor actually reads is the only place a caution survives.*
 
 ## Reading other threads
 
