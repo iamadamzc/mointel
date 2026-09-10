@@ -3916,6 +3916,73 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THREE COLUMNS DO NOT FIT, AND NEITHER SHOULD THE DROPDOWN. MEASURED AT HIS FLOOR.
+
+> **"so it would be three separate windows in the UI, or is it a single window
+> changed with the dropdown?"**
+
+**MEASURED ON THE LIVE BOARD AT 04:08 ET, NOT ESTIMATED — I got a character count
+wrong on this table once and will not reason from declared widths again.**
+
+    at 1024px (his floor)          at 1920px
+    Changed  24                    24
+    Rank     44                    44
+    Ticker  112                   112
+    Price·Move·VWAP 172           172
+    RVOL     68                    68
+    Now−1m   36                    36
+    Why     187                   635      <- flexible
+    Risk    187                   635      <- flexible
+    Cycle   152                   152
+    table   982 / container 1014, no horizontal scroll
+
+**`Why` AND `Risk` ARE THE ONLY FLEXIBLE COLUMNS — they absorb every pixel of
+slack.** So two more RVOL-width columns do not come out of whitespace. **They
+cost 136px taken directly from Why and Risk: 187 → 119 each, a 36% cut**, at the
+width he actually works at. **Those two carry the research verdict — the thing
+the whole desk exists to produce — and they already truncate at 187.**
+
+**⇒ THREE COLUMNS IS NOT A LAYOUT PREFERENCE. IT IS PAYING FOR VOLUME FIGURES
+WITH THE CATALYST AND THE RISK.**
+
+**AND THE DROPDOWN SHOULD NOT EXIST EITHER, ON RULES ALREADY MADE:**
+
+- **Persistence is ruled out for board state** — *"no need for persistence of any
+  kind really"* — so **a selection does not survive a reload and he re-picks it
+  every time.**
+- **His holds are seconds.** A control that hides two-thirds of the data behind
+  an interaction **costs a scan he does not have.**
+
+**⇒ NEITHER. THE ANSWER IS ONE COLUMN THAT FOLLOWS THE CLOCK** — which is what
+the Move sort button already does one column over, and what `Now−1m` now does for
+its own window. **He asked for "rvol and gap/gains tracked by session"; the
+session he trades is the one happening. He never asked to look at a session that
+is not the current one.**
+
+**THE REAL WANT A DROPDOWN WOULD SERVE, NAMED HONESTLY:** *"how big was the
+premarket?"* at 10:00. **That is a genuine question and it is HISTORY, not
+now.** It belongs where the scope is one name — **the dossier drawer** — for the
+same reason the live trade counter did: *"this name, this session" is a complete
+statement; "some of these columns, some of these sessions" is not.*
+
+### AND THE HEADER MOVED ON ITS OWN, WHICH IS THE DERIVATION PAYING OFF
+
+**Production reads `Now−1m`, not `−2m`.** The tooltip agrees: *"5 minutes ending
+**1 min ago**"*. **`settleMinutes` is 0 in production** — the tail decision was
+taken, and `sparklineLagLabel()` = `−(settleMinutes + 1)m` followed it **without
+anyone touching the component.**
+
+**A typed `−2m` would now be wrong on his screen**, hours after a config change
+in a different file, with nothing connecting the two. **That is the exact failure
+the derivation was built to prevent, and it has now actually occurred.**
+
+**ONE CONSEQUENCE I AM FLAGGING AND NOT ADJUDICATING:** `settleMinutes: 0` means
+the window includes a just-closed minute that may not have delivered its bar, and
+`?? 0` reads that as zero trades — **the case `activity.ts` warned "would
+manufacture death every minute, on every name."** Ops and Research own that call
+and presumably made it against the tail measurement. **The header at least tells
+him the window moved.**
+
 ## RULED: `"keep it as is with X."` — AND THE ARGUMENT THAT BEAT ME WAS ALREADY IN THIS FILE
 
 **The unit is closed. `0.6x` stays.** Not `0.6 days`, not `61% of a day`.
