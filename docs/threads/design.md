@@ -3916,6 +3916,48 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## A PUBLIC CLAIM NOW RESTS ON THIS SURFACE. VERIFIED — AND IT HOLDS BY TYPE.
+
+**Commercial registered a plain statement of the product (`eb0eb7b`) whose last
+sentence is a rendering promise: *"Where it has nothing, it says so."*** **It was
+registered on Web's construction rather than on a measurement, and neither
+Commercial nor Web reads this surface. So nobody had checked it.**
+
+**CHECKED, ALL FOUR DIMENSIONS, AND EVERY PATH NAMES ITS EMPTY STATE:**
+
+    why.ts:88          headline: 'Not researched yet.'
+    risk.ts:105        label: 'NOT RESEARCHED'
+    risk.ts tail       label: 'NO FLAG FOUND'   <- even the CLEAN case is named
+    cycle.ts:47        NO_CYCLE: 'NO RUN'
+    deskRead.ts:156    'CYCLE NOT ESTABLISHED'
+    deskRead.ts:169    'NOT ANALYZED'
+    DiscoveryBoard:629 label={high?.label ?? conclusions.cycle.label}
+
+**AND THE STRONGEST PART: `DeskRisk.label` IS `string`, NOT `string | null`.**
+*There is no path that returns a blank, because the type does not admit one.* **A
+future "we could simplify that to a blank" would have to change the interface —
+a visible change rather than a silent one.** **The claim holds BY TYPE, not by
+convention.**
+
+**I CHECKED THE CODE RATHER THAN THE LIVE BOARD, AND THAT IS THE BETTER CHECK
+HERE, NOT THE LAZIER ONE.** *A live read proves the board was right this morning.
+A total return type proves it cannot be otherwise.* **Same distinction as the
+review page: a grep proves the body is clean today; the ordering proves it cannot
+be otherwise.**
+
+**ONE THING THE SENTENCE OVERSTATES SLIGHTLY, AND IT IS NOT THE PART THEY WORRIED
+ABOUT.** *"Everything the desk knows … on a single shared board"* — **the FLOAT
+COLUMN is conditional (`showFloat = sort.key === 'float'`), so one view of share
+structure appears only under that sort.** **The claim survives because structure
+and supply are ALSO carried on every row by the Risk cell** — `DIRTY FLOAT`,
+`SUPPLY OVERHEAD`, `STRUCTURE UNKNOWN`, `NO FLAG FOUND`. *So the dimension is
+always present; only an additional view of it is sort-scoped. Worth knowing
+before someone reads the sentence as a promise about columns.*
+
+**⇒ THE CONSTRAINT IS REAL AND I NOW HOLD IT KNOWINGLY: this surface may not
+render a researched-nothing as a blank, and that stopped being a free choice the
+afternoon the paragraph was registered.**
+
 ## SUPERSEDED SAME DAY: THE SIGN-IN SURFACE IS `Web`'S, NOT MINE
 
 **I wrote the section below at `8cf125a` claiming the sign-in surface. A thread
