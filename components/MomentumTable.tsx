@@ -17,6 +17,8 @@ import { buildDeskRow, type DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
+import { baselineLabel } from '@/lib/dashboard/view';
+import type { SessionPhase } from '@/lib/market/types';
 import type { SortKey, SortState } from '@/lib/dashboard/view';
 import type { MomentumTicker } from '@/lib/data/types';
 
@@ -33,6 +35,8 @@ interface MomentumTableProps {
   onToggleFocus: (ticker: string) => void;
   /** Opened by default when Discovery has nothing to show. */
   defaultOpen?: boolean;
+  /** Names the baseline the move is measured from, so both lists say one word. */
+  sessionPhase?: SessionPhase | null;
 }
 
 interface ColumnDefinition {
@@ -54,16 +58,28 @@ interface ColumnDefinition {
  * in the drawer or, in Confirmation's case, gone: it was `—` on every row and
  * reserved 170px of a table that had none to spare.
  */
-const COLUMNS: ColumnDefinition[] = [
+/*
+ * A FUNCTION OF THE SESSION, NOT A CONSTANT, AND THE REASON IS FOUR LINES UP.
+ *
+ * This file already promised that "a trader reading both lists reads one
+ * grammar". A hand-typed `Price · Move · VWAP` here while Discovery derived its
+ * own word broke exactly that promise the moment the other table started saying
+ * `PM Gap` -- two words for one quantity, on one screen, live. The literal was
+ * the second copy and the first one's regression guard only read the other
+ * file, so the guard matched a FILE where the invariant was about a SURFACE.
+ */
+function columnsFor(phase: SessionPhase | null): ColumnDefinition[] {
+  return [
   { key: 'changed', label: 'Changed', className: 'w-[24px]', srOnly: true },
   { key: 'priority', label: 'Pri', sortKey: 'priority', className: 'w-[62px]' },
   { key: 'ticker', label: 'Ticker', sortKey: 'ticker', className: 'w-[112px]' },
-  { key: 'price', label: 'Price · Move · VWAP', sortKey: 'price', className: 'w-[172px]' },
+  { key: 'price', label: `Price · ${baselineLabel(phase).label} · VWAP`, sortKey: 'price', className: 'w-[172px]' },
   { key: 'rvol', label: 'RVOL', className: 'w-[68px]', align: 'right' },
   { key: 'why', label: 'Why', className: '' },
   { key: 'risk', label: 'Risk', className: '' },
   { key: 'cycle', label: 'Cycle', className: 'w-[152px]' },
-];
+  ];
+}
 
 export function MomentumTable({
   tickers,
@@ -76,8 +92,10 @@ export function MomentumTable({
   isFocused,
   onToggleFocus,
   defaultOpen = false,
+  sessionPhase = null,
 }: MomentumTableProps) {
   const [open, setOpen] = useState(defaultOpen);
+  const columns = columnsFor(sessionPhase);
 
   return (
     <section className="flex flex-col border-t border-line">
@@ -110,7 +128,7 @@ export function MomentumTable({
           </caption>
           <thead className="sticky top-0 z-10 bg-panel-2">
             <tr>
-              {COLUMNS.map((column) => {
+              {columns.map((column) => {
                 const isSorted = column.sortKey && sort.key === column.sortKey;
                 return (
                   <th
@@ -149,7 +167,7 @@ export function MomentumTable({
             {tickers.length === 0 ? (
               <tr>
                 <td
-                  colSpan={COLUMNS.length}
+                  colSpan={columns.length}
                   className="px-4 py-8 text-center text-[12px] text-ink-2"
                 >
                   No names match the current filters.

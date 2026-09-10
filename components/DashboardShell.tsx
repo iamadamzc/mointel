@@ -450,6 +450,9 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           selectedTicker={selectedTicker}
           changedTickers={feed.changedTickers}
           deskRows={merged.rows}
+          // One grammar across both lists: this table names the same baseline
+          // Discovery does, from the same source, rather than a typed word.
+          sessionPhase={discovery?.sessionPhase ?? null}
           // Premarket before 04:00, after 20:00, at the weekend: Discovery has
           // nothing to rank and this is the only list worth reading. Making the
           // trader click to reveal it is what left the desk showing a screen of

@@ -248,12 +248,43 @@ describe('the move label names what the percent is measured against', () => {
    * computed `Gap` from the same phase. Two words for one quantity, already
    * drifted on his live board.
    */
-  it('is the single source for both the header and the sort control', async () => {
+  it('is the single source for every surface that names the baseline', async () => {
+    /*
+     * EVERY COMPONENT, NOT ONE FILE. This read only `DiscoveryBoard.tsx` and
+     * passed while `MomentumTable.tsx` carried a second, hand-typed
+     * `Price · Move · VWAP`. So when Discovery started deriving `PM Gap`, the
+     * two lists said different words for one quantity on one screen -- and the
+     * guard was green, because it matched a FILE where the invariant is about a
+     * SURFACE. `MomentumTable` states that invariant itself: "a trader reading
+     * both lists reads one grammar."
+     */
     const fs = await import('node:fs');
-    const source = fs.readFileSync('components/DiscoveryBoard.tsx', 'utf8');
-    expect(source).not.toContain('Price · Move · VWAP');
-    expect(source).toContain('Price · {move.label} · VWAP');
-    expect(source).not.toMatch(/^function moveLabel\(/m);
+    const dir = 'components';
+    const files = fs.readdirSync(dir).filter((f) => f.endsWith('.tsx'));
+    expect(files.length).toBeGreaterThan(5);
+
+    /*
+     * COMMENTS STRIPPED FIRST, AND THIS GUARD TRIPPED ON ITS OWN PROSE BEFORE
+     * THEY WERE. The fix in `MomentumTable` explains the defect it fixes, and
+     * quoting the literal made the file look like an offender while the code
+     * was clean. A source-scanning guard that does not strip comments is
+     * testing prose -- which is the same confusion, one level up, as the reader
+     * this whole family of defects is about.
+     */
+    const code = (f: string) =>
+      fs
+        .readFileSync(`${dir}/${f}`, 'utf8')
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/^\s*\/\/.*$/gm, '');
+
+    const offenders = files.filter((f) =>
+      /Price · (Move|Gap|Day|AH move|AH Gap|PM Gap|RTH Gap) · VWAP/.test(code(f)),
+    );
+    expect(offenders).toEqual([]);
+
+    const board = fs.readFileSync(`${dir}/DiscoveryBoard.tsx`, 'utf8');
+    expect(board).toContain('Price · {move.label} · VWAP');
+    expect(board).not.toMatch(/^function moveLabel\(/m);
   });
 });
 
