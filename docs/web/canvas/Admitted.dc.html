@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; background: #06080b; color: #e9edf3;
+           font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+           -webkit-font-smoothing: antialiased; }
+    a { color: #4d93ff; text-decoration: none; }
+    a:hover { color: #7fb0ff; text-decoration: underline; }
+    a:focus-visible { outline: 2px solid #4d93ff; outline-offset: 3px; border-radius: 2px; }
+    .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, monospace; }
+    h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+    p { margin: 0; text-wrap: pretty; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; background: #06080b;">
+
+  <div style="padding: 40px 48px 28px;">
+    <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 14px;">SIGNED IN, NOT ADMITTED &mdash; A STATE THAT EXISTS THE DAY ENFORCEMENT SHIPS</p>
+    <h2 style="font-size: 28px; line-height: 1.15; margin-bottom: 14px;">Authenticated and refused is not the same as refused.</h2>
+    <p style="font-size: 16px; line-height: 1.6; color: #97a1b0; max-width: 92ch;">
+      A person here has a session, an account row and an identity. They are not a stranger and the page
+      must not treat them as one. Three conditions share this screen and only the middle block changes.
+      <span class="mono" style="color: #c7cedb;">403</span> in every case &mdash; authenticated, not permitted.
+    </p>
+  </div>
+
+  <!-- ── The full screen: WAITING, the common case ───────── -->
+  <div style="border-top: 1px solid #29313d; border-bottom: 1px solid #29313d;">
+    <div style="padding: 10px 48px; background: #11151c; display: flex; justify-content: space-between; align-items: center;">
+      <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #8792a3;">CONDITION 1 &mdash; WAITING ON A DECISION</span>
+      <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #e8ac33;">403</span>
+    </div>
+
+    <header style="display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 20px 48px; border-bottom: 1px solid #1b212a;">
+      <div style="display: flex; align-items: baseline; gap: 12px;">
+        <span class="mono" style="font-size: 15px; font-weight: 500; letter-spacing: 0.14em; color: #e9edf3;">TMI TRADER</span>
+        <span style="font-size: 13px; color: #8792a3;">True Move Intelligence</span>
+      </div>
+      <!-- SEAM: the signed-in account affordance is Design's vocabulary, not Web's.
+           Drawn dashed because it is a placeholder for Design's component. -->
+      <div style="display: flex; align-items: center; gap: 14px; padding: 6px 14px 6px 8px; border: 1px dashed #29313d; border-radius: 4px;">
+        <span style="width: 28px; height: 28px; border-radius: 50%; background: #29313d; display: inline-block;"></span>
+        <span class="mono" style="font-size: 13px; color: #c7cedb;">[you@example.com]</span>
+        <a href="/auth/signout" style="font-size: 13px; color: #8792a3;">Sign out</a>
+      </div>
+    </header>
+
+    <main style="display: flex; align-items: center; justify-content: center; padding: 88px 48px;">
+      <div style="width: 560px; display: flex; flex-direction: column; gap: 28px;">
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #e8ac33;">ACCOUNT STATUS</span>
+          <h1 style="font-size: 34px; line-height: 1.14;">You're signed in. You're not on the desk yet.</h1>
+          <p style="font-size: 17px; line-height: 1.65; color: #c7cedb;">
+            Access is by invite. Your account exists and is waiting on a decision. There is nothing
+            further for you to do here, and nothing to sign in to again.
+          </p>
+          <p style="font-size: 17px; line-height: 1.65; color: #97a1b0;">
+            When it changes we will write to
+            <span class="mono" style="color: #c7cedb;">[you@example.com]</span>.
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #1b212a; padding-top: 24px;">
+          <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+            Invited on a different address? Sign out and come back on the one the invite went to &mdash;
+            an invite is attached to an address, not to a person.
+          </p>
+          <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+            <a href="mailto:info@andromedagenius.com?subject=Access%20%E2%80%94%20TMI%20Trader">Ask about it</a>
+            &nbsp;&middot;&nbsp; <a href="/">What the desk is</a>
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer style="display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 20px 48px; border-top: 1px solid #1b212a;">
+      <p style="font-size: 13px; color: #8792a3;">An information service. Not a broker-dealer, not an investment adviser.</p>
+      <nav style="display: flex; gap: 28px;">
+        <a href="/privacy" style="font-size: 13px; color: #8792a3;">Privacy</a>
+        <a href="/terms" style="font-size: 13px; color: #8792a3;">Terms</a>
+      </nav>
+    </footer>
+  </div>
+
+  <!-- ── The two variants: only the middle block differs ── -->
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; padding: 40px 48px 48px;">
+
+    <div style="border: 1px solid #29313d; border-radius: 4px; background: #0c0f14;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #29313d; background: #11151c;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #8792a3;">CONDITION 2 &mdash; ANSWERED, AND THE ANSWER WAS NO</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #e8ac33;">403</span>
+      </div>
+      <div style="padding: 32px 36px; display: flex; flex-direction: column; gap: 14px;">
+        <h3 style="font-size: 22px; line-height: 1.2;">This account doesn't have access.</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          A decision was made on
+          <span class="mono" style="color: #c7cedb;">[you@example.com]</span> and it was no. Signing in
+          again reaches the same answer, so nothing here will change it.
+        </p>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          If that looks wrong,
+          <a href="mailto:info@andromedagenius.com?subject=Access%20%E2%80%94%20TMI%20Trader">say so</a>.
+        </p>
+        <p style="font-size: 13px; line-height: 1.6; color: #8792a3; margin-top: 4px;">
+          Told plainly rather than left as a permanent wait &mdash; a person refreshing a "waiting"
+          screen that will never move is worse than a no.
+        </p>
+      </div>
+    </div>
+
+    <div style="border: 1px solid #29313d; border-radius: 4px; background: #0c0f14;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #29313d; background: #11151c;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #8792a3;">CONDITION 3 &mdash; HAD ACCESS, DOES NOT NOW</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #e8ac33;">403</span>
+      </div>
+      <div style="padding: 32px 36px; display: flex; flex-direction: column; gap: 14px;">
+        <h3 style="font-size: 22px; line-height: 1.2;">Your access to the desk has ended.</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          <span class="mono" style="color: #c7cedb;">[you@example.com]</span> was active until
+          <span class="mono" style="color: #c7cedb;">[DATE]</span>. Your account still exists; it no
+          longer opens the board.
+        </p>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          <a href="mailto:info@andromedagenius.com?subject=Access%20%E2%80%94%20TMI%20Trader">Ask about it</a>.
+        </p>
+        <p style="font-size: 13px; line-height: 1.6; color: #8792a3; margin-top: 4px;">
+          A separate condition because the surprise is different: this one can land at 07:30 on a
+          morning someone planned around the desk.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── The fork Web cannot decide ──────────────────────── -->
+  <div style="margin: 0 48px 48px; border: 1px solid #e8ac33; border-radius: 4px; padding: 28px 32px; display: flex; gap: 24px; align-items: flex-start;">
+    <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #e8ac33; padding-top: 3px; white-space: nowrap;">OPEN</span>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <h3 style="font-size: 20px;">Where refusal happens decides which screen exists</h3>
+      <p style="font-size: 15px; line-height: 1.65; color: #c7cedb; max-width: 96ch;">
+        <span class="mono">lib/auth/store.ts:57</span> says it plainly: the column exists, nothing reads
+        it, and where it gets read is not decided. That is not an implementation detail &mdash; it
+        decides which of two screens a refused person ever sees.
+      </p>
+      <p style="font-size: 15px; line-height: 1.65; color: #97a1b0; max-width: 96ch;">
+        <strong style="color: #e9edf3;">Refuse at the callback</strong> and no session is issued: the
+        person lands back on the sign-in flow, and every later visit re-runs Google to be refused again.
+        <strong style="color: #e9edf3;">Refuse at the point of use</strong> and they hold a session, so
+        this screen can tell them where they stand without making them authenticate to hear it.
+      </p>
+      <p style="font-size: 15px; line-height: 1.65; color: #c7cedb; max-width: 96ch;">
+        <strong style="color: #e9edf3;">Web's recommendation: refuse at the point of use.</strong> A
+        pending person needs somewhere to come back to, and doing both means two screens for one
+        condition, which will drift.
+      </p>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

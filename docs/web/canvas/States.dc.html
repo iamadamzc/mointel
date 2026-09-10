@@ -74,22 +74,21 @@
     <!-- 3. Refused -->
     <div style="border: 1px solid #29313d; border-radius: 4px; background: #0c0f14;">
       <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #29313d; background: #11151c;">
-        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #e8ac33;">ACCOUNT NOT ADMITTED</span>
-        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #e8ac33;">403</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #e8ac33;">NOT A SIGN-IN STATE &mdash; SUPERSEDED</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #8792a3;">&mdash;</span>
       </div>
       <div style="padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; min-height: 190px;">
-        <h3 style="font-size: 21px;">This account isn't on the desk</h3>
+        <h3 style="font-size: 21px;">Refusal does not happen here</h3>
         <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
-          Google confirmed you are <span class="mono" style="color: #c7cedb;">[you@example.com]</span>,
-          and that address does not have access. Signing in again will reach the same answer, so here is
-          the one that works:
+          This card drew an "account not admitted" screen as a sign-in outcome. It was drawn on an
+          assumption, and the assumption was wrong: sign-in creates the account row with
+          <span class="mono" style="color: #c7cedb;">status 'pending'</span> and succeeds
+          (<span class="mono">lib/auth/store.ts:57</span>).
         </p>
-        <p style="font-size: 15px; line-height: 1.6; color: #c7cedb; margin-top: 6px;">
-          <a href="mailto:info@andromedagenius.com">Ask for access</a> &mdash; say which address you used.
-        </p>
-        <p style="font-size: 13px; line-height: 1.6; color: #8792a3; margin-top: 6px;">
-          No account was created. We kept your email address so we can answer an access request.
-          <a href="/privacy">Everything we hold, and for how long</a>.
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          A refused person is <em>signed in</em>, so the screen belongs after the session, not inside the
+          sign-in flow. It is on the <span class="mono" style="color: #c7cedb;">Signed in, not
+          admitted</span> artboard, in three conditions.
         </p>
       </div>
     </div>

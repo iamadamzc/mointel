@@ -1,33 +1,100 @@
 {
   "artboards": [
-    { "file": "Main.dc.html",          "x": 0,    "y": 0,    "w": 1440, "h": 4300, "title": "Landing — desktop" },
-    { "file": "LandingMobile.dc.html", "x": 1560, "y": 0,    "w": 390,  "h": 3800, "title": "Landing — phone" },
-    { "file": "SignIn.dc.html",        "x": 2070, "y": 0,    "w": 1440, "h": 900,  "title": "Sign in" },
-    { "file": "States.dc.html",        "x": 2070, "y": 1020, "w": 1440, "h": 1450, "title": "Sign in — every state" },
-    { "file": "Privacy.dc.html",       "x": 2070, "y": 2590, "w": 1440, "h": 1450, "title": "Privacy — DRAFT" },
-    { "file": "System.dc.html",        "x": 3630, "y": 0,    "w": 1200, "h": 2200, "title": "The system" }
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 4300,
+      "title": "Landing \u2014 desktop"
+    },
+    {
+      "file": "LandingMobile.dc.html",
+      "x": 1560,
+      "y": 0,
+      "w": 390,
+      "h": 3800,
+      "title": "Landing \u2014 phone"
+    },
+    {
+      "file": "SignIn.dc.html",
+      "x": 2070,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "Sign in"
+    },
+    {
+      "file": "States.dc.html",
+      "x": 2070,
+      "y": 1020,
+      "w": 1440,
+      "h": 1450,
+      "title": "Sign in \u2014 every state"
+    },
+    {
+      "file": "Privacy.dc.html",
+      "x": 2070,
+      "y": 2590,
+      "w": 1440,
+      "h": 1450,
+      "title": "Privacy \u2014 DRAFT"
+    },
+    {
+      "file": "System.dc.html",
+      "x": 3630,
+      "y": 0,
+      "w": 1200,
+      "h": 2200,
+      "title": "The system"
+    },
+    {
+      "file": "Admitted.dc.html",
+      "x": 2070,
+      "y": 4160,
+      "w": 1440,
+      "h": 1560,
+      "title": "Signed in, not admitted"
+    }
   ],
   "annotations": [
     {
       "id": "note-direction",
-      "x": 0, "y": -300, "w": 700,
-      "text": "DIRECTION: the desk's own palette and typefaces, at prose scale.\nA stranger sees the instrument they will actually get, not a bright marketing page followed by a black terminal.\n\nBracketed text is a fact I do not have — operator name, access terms, contact, entity."
+      "x": 0,
+      "y": -300,
+      "w": 700,
+      "text": "DIRECTION: the desk's own palette and typefaces, at prose scale.\nA stranger sees the instrument they will actually get, not a bright marketing page followed by a black terminal.\n\nBracketed text is a fact I do not have \u2014 operator name, access terms, contact, entity."
     },
     {
       "id": "note-blocked",
-      "x": 800, "y": -300, "w": 700,
+      "x": 800,
+      "y": -300,
+      "w": 700,
       "text": "THIS PAGE IS THE ONE PIECE THAT CANNOT SHIP YET.\n/ is the trader's board and Basic Auth is the only thing holding it.\n\nSign-in, states, privacy and terms can all ship now behind their own exempted prefixes, with the desk still locked."
     },
     {
       "id": "note-signin",
-      "x": 1600, "y": -300, "w": 700,
-      "text": "A LIST OF ONE, not one button centred.\nThe group, its label and the stack all survive a second provider arriving; the second row is not drawn.\n\nGoogle's button is used to Google's spec and not restyled to the desk — a restyled one is a verification risk and reads as a fake."
+      "x": 1600,
+      "y": -300,
+      "w": 700,
+      "text": "A LIST OF ONE, not one button centred.\nThe group, its label and the stack all survive a second provider arriving; the second row is not drawn.\n\nGoogle's button is used to Google's spec and not restyled to the desk \u2014 a restyled one is a verification risk and reads as a fake."
     },
     {
       "id": "note-states",
-      "x": 2400, "y": -300, "w": 700,
+      "x": 2400,
+      "y": -300,
+      "w": 700,
       "text": "SIX STATES, EACH WITH THE STATUS CODE IT MUST SEND.\nNone of them says 'try again': with one provider that is a wall dressed as a door.\n\nThe refusal is a 403 that looks like a refusal. A denial rendering 200 has already happened here once."
+    },
+    {
+      "id": "note-admitted",
+      "x": 3200,
+      "y": -300,
+      "w": 700,
+      "text": "SIGNED IN, NOT ADMITTED.\nInvite-only makes this a real reachable state the day enforcement ships. A person here has a session and an account row - not a stranger.\n\nThe sign-in 403 card is superseded: sign-in succeeds and creates the row as pending. Refusal lands after the session, not inside the flow."
     }
   ],
-  "launch": { "view": "canvas" }
+  "launch": {
+    "view": "canvas"
+  }
 }
