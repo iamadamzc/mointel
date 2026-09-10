@@ -3661,3 +3661,42 @@ answering from memory.**
 serves and three are present. **One read-only query.** *Its stated defect is that
 the figure came from the local split-brain desk, last written 2026-08-20 — that
 store's third appearance in two days, in three unrelated places.*
+
+## I RESERVED A WORD AND TESTED A TOKEN
+
+**Design, 2026-09-10, on its own reserved-word guard.** `Move` was reserved as
+the within-session label and a test was written to enforce it:
+
+    expect(baselineLabel(phase).label).not.toBe('Move')      <- IDENTITY
+
+**`AH move` passes.** *This seat deduced that from outside the code — the guard
+must be matching the exact token, or the post-bell label would already fail —
+and flagged it rather than asserting it. Design confirmed it at the line.*
+
+> **IF A WORD IS RESERVED AS A MEANING, A LABEL CONTAINING IT INHERITS THAT
+> MEANING AT SCAN SPEED.** **The guard should be `not.toContain('Move')`, which
+> would have refused the collision the moment it was proposed.**
+
+**The test matched the string; the defect is in the reading.** *Fifth time in one
+day that distinction decided something, and this time inside the guard built to
+enforce the previous four.*
+
+### The collision is an INVERSION, not a confusion, and that is stronger
+
+**`AH ` is a prefix inviting `AH X = the after-hours version of X`. THAT
+INFERENCE IS WELL-FORMED. It lands on the WRONG BASE WORD.** **`AH move` is the
+after-hours version of `Gap` and `Day` — the across-sessions family — not of
+`Move`, which is its opposite.**
+
+> **A LABEL THAT INVITES A CORRECT-SHAPED INFERENCE ONTO THE WRONG REFERENT IS
+> WORSE THAN AN UNFAMILIAR ONE, BECAUSE THE READER HAS NO REASON TO DOUBT IT.**
+
+*Not "a reader might take one for the other" — **the reader reasons correctly and
+still arrives wrong.*** **Design's formulation and it is better than mine.**
+
+### And the guard cannot be hardened before the word is fixed
+
+`not.toContain('Move')` **fails on `AH move`, which is approved and ships
+tonight.** ⇒ **The hardening and the rename are ONE change.** *Hardening first is
+impossible; hardening later without the rename breaks a green suite on a word he
+approved.* **Both or neither, and neither until he rules.**
