@@ -806,6 +806,23 @@ simply never completes and nothing reports why.* **A security setting chosen by
 which name sounds stricter is not a decision, and this one would have been
 defended in review.**
 
+**AND THE SESSION RECORDS `issued_status` — THE STATUS AT THE MOMENT IT WAS ISSUED.**
+*Ops, `f5a8eb7`, finding a defect underneath both of this seat's readings.*
+
+> **`users.status` is CURRENT STATE. A session row is a HISTORICAL FACT.** **Asking
+> "was this person entitled on the day this session existed" by joining to
+> `users.status` means admitting someone on Tuesday RETROACTIVELY REWRITES every
+> session they ever had — Monday included, when they could not use the product at
+> all.** *Every past day silently changes what it says, and nothing reports it.*
+
+**Read INSIDE `createSession`, not passed in** — *a caller could pass a value that
+was true a moment ago, and a row recording something that was never the case is
+worse than one recording nothing, because it looks like evidence.* **The test: issue
+while pending, admit the user, assert the ROW still says `pending` while the LIVE
+SESSION resolves as `active`.** *Two questions that must not share an answer.*
+**Enforcement unmoved, still point-of-use. Fourth application of build-what-is-
+expensive-to-add-later.**
+
 **AND OPS DISSOLVED THE `users.status` ESCALATION INSTEAD OF ANSWERING IT — SECOND
 TIME IN FIVE DAYS, SAME MOVE.** *This seat escalated "who may sign in at all" as
 blocking, because it lands in the first table.*
@@ -1872,6 +1889,40 @@ the answer is "the source told me and I did not repeat it", that is the defect.*
 from code" is a claim about provenance, not a substitute for reading the code.**
 *Web checked a sentence it had every reason to trust, because it was about to
 publish it somewhere a reader could hold him to it.*
+
+## NAMING A PATTERN IS A CLAIM, AND OPS REFUSED ONE OF MINE
+
+**2026-09-10. I called the flow-cookie-name relay "the third time today I handled a
+string whose source had not been created", grouping it with the Search Console
+token and the SPF values. Ops refused the grouping and is right.**
+
+```
+Search Console token   no property existed      -> the SOURCE had not been created
+SPF / DKIM values      no sender chosen         -> the SOURCE had not been created
+flow cookie name       Ops existed and answered -> the source WAS there
+                       I relayed a DESIGN ANSWER as a SHIPPED FACT
+```
+
+**The first two are invention problems: nothing could have produced the value yet.**
+**The third is a HANDOFF problem: a real answer to a real question, relayed without
+its status.** **Different fix.** *The first two need the source to exist before
+anyone asks; the third needs the answer to carry whether it is INTENDED or
+AS-SHIPPED — which Ops has adopted unprompted.*
+
+**THE LESSON IS ABOUT MY OWN OUTPUT, NOT ABOUT THE COOKIE.** *This charter is
+largely a record of patterns — "same family", "same shape", "the third instance".*
+**A pattern is a CLAIM. It asserts that two things share a cause, and it is exactly
+the true-claim-joined-to-true-claim shape this seat has been catching in itself all
+day, wearing the clothes of a lesson.**
+
+- **A named pattern is more durable than the facts in it** — *it gets quoted, and
+  the instances stop being re-read.*
+- **The test is the same as any other: what would make this grouping FALSE?** *Here:
+  "could the value have existed when I asked for it?" Yes for the cookie, no for the
+  other two. One question, and I did not ask it.*
+- **Counting instances is the tell.** *"Third time today" is a number, and this
+  seat retracted a fabricated tally to Ops earlier the same day.* **The urge to
+  reach a count is the urge to have found a pattern.**
 
 ## Reading other threads
 
