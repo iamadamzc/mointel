@@ -3950,6 +3950,22 @@ the header I shipped today is correct under either scheme only because the two
 still coincide, and that is luck rather than design.** Recording it so the next
 person to touch the reference knows the label does not follow it.
 
+**THE EFFECT IS MEASURED, NOT MARGINAL — OPS FROM THE TAPE, INDEPENDENTLY:**
+
+    CULP  regular session   51,093 shares    range 3.41-3.57
+          after hours    1,102,028 shares    range 3.49-4.18
+          -> the after-hours session carried 21.6x the regular session's volume,
+             and the whole move happened after the bell.
+
+**So the `+18.1%` on his PREMARKET board was an AFTER-HOURS move, by volume
+almost entirely.** *"Roughly flat this morning"* was the true premarket reading.
+**My label ships honest about that — `Gap`, titled "including after hours" — and
+honest is the MINIMUM here, not the fix.** A header that correctly names a
+baseline is still a header whose number is dominated by a session the board is
+not showing. **That is the same family as the two-tier column: provenance
+differing from the column it sits in.** Not mine to decide, and worth having the
+magnitude on record so nobody prices this as an edge case: **21.6x.**
+
 **AND HIS OWN PRINCIPLE ALREADY SPLITS THE THREE SESSIONS:** `AH move` measures
 from today's RTH close — **his rule, already obeyed.** Premarket reaches back
 past after-hours to yesterday's 16:00 — **his rule, violated.** RTH-from-open —
