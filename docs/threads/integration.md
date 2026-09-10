@@ -3527,3 +3527,51 @@ caught by the thread that owned the code rather than by me.
 
 **THE CHEAP CHECK I SKIPPED IS ONE GREP: how many things reference the field.**
 *Two, and one of them is its own type.*
+
+## DELIBERATELY DARK FIELDS — RECORDED AT CREATION, BECAUSE THE SWEEP CANNOT TELL THEM FROM ABANDONED ONES
+
+**Opened 2026-09-10 at Ops's suggestion, before the first entry could be found by
+accident.**
+
+| field | since | deliberately unread, awaiting |
+| --- | --- | --- |
+| `structure.supplyOverhang` | 2026-09-10 | a risk-layer / surface consumer. Written unconditionally at `pipeline.ts:449` on every accepted dossier; `types.ts:525` declares it OPTIONAL; **nothing in `lib/`, `worker/`, `app/` or `components/` reads it.** Verified by two threads independently. |
+
+### Why the register exists at all
+
+**The dark-field sweep is this desk's best instrument** — *`SELECT <field>,
+COUNT(1) GROUP BY <field>`, and a field that has only ever taken one value is an
+untested path wearing a populated column.* **It found the latch, `secAvailable`
+and `sheetPriorOmitted` that way.**
+
+**AND IT CANNOT TELL A STAGED FIELD FROM AN ABANDONED ONE.** *Ops's phrasing, and
+it is the whole point:* **the difference is PROVENANCE, not SHAPE.**
+
+    volume_base       write-only BY ACCIDENT      one row from the sweep
+    supplyOverhang    write-only ON PURPOSE       one row from the sweep
+
+**`volume_base` cost an hour yesterday and produced a correction that was itself
+wrong before it was right.** **A field labelled at the moment it is created costs
+one sentence.**
+
+### The copy that does the work is in the SWEEP'S OUTPUT, not here
+
+**This table is read by whoever thinks to look. The sweep's output is read by
+whoever is holding the false finding.** *A caveat in a document does not travel;
+a line printed beside the number does* — **Ops's own tripwire discipline, from
+the forced 2x2 it relabelled rather than deleted.**
+
+**So the exclusion is printed BY the sweep and duplicated here.** *Redundancy is
+right for a WARNING and wrong for a VALUE, and this is a warning.*
+
+### And the rule underneath, in Ops's words rather than mine
+
+I had called it **two kinds of inert**. **Ops's version is sharper and it is one
+test, not two:**
+
+> ***"I applied the restart test to `settleMinutes` and it was the right test
+> THERE, because the engine genuinely consumes it. Same test, opposite verdict,
+> because the consumption question had a different answer."***
+
+**Not two tests. One test whose answer depends on a second question — WILL
+ANYTHING CONSUME IT — that I did not ask.**
