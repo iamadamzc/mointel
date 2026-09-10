@@ -5,7 +5,14 @@
 
 import type { MarketDatabase } from './db';
 import { withBusyRetry } from './busy';
-import { VWAP_LABEL, type SessionVwap, type VwapCoverage, type VwapSession } from '../vwap';
+import {
+  VWAP_LABEL,
+  type SessionOpen,
+  type SessionOpenSet,
+  type SessionVwap,
+  type VwapCoverage,
+  type VwapSession,
+} from '../vwap';
 import type {
   DemandState,
   DeskEvent,
@@ -15,6 +22,7 @@ import type {
   RvolBaseline,
   SecurityClassification,
 } from '../types';
+import { computePercentChange } from '../derive';
 import type { ActivityState, PriceWindow } from '../activity';
 
 /** The only three values the engine writes. Anything else is not a verdict. */
@@ -376,6 +384,15 @@ export interface TickerSessionRow {
   death_count: number | null;
   activity_config: string | null;
   activity_window: string | null;
+  pm_open_price: number | null;
+  pm_open_at: string | null;
+  pm_open_trades: number | null;
+  rth_open_price: number | null;
+  rth_open_at: string | null;
+  rth_open_trades: number | null;
+  ah_open_price: number | null;
+  ah_open_at: string | null;
+  ah_open_trades: number | null;
   price_window: string | null;
   feed: string;
   last_event_at: string | null;
@@ -416,6 +433,42 @@ function readSessionVwap(
  * nothing constrains its contents, and a chart given a string renders
  * something rather than failing.
  */
+/**
+ * Rebuilds the session opens a row carries, or undefined when it carries none.
+ *
+ * `move` is recomputed here from the row's OWN price rather than stored: it is
+ * a live comparison, and freezing it into a column would make a row assert a
+ * percentage against a price that has since moved. Recomputing against
+ * `row.price` keeps the snapshot internally consistent -- the move is the one
+ * that was true at the instant the row was written.
+ */
+function sessionOpensFromRow(row: TickerSessionRow): SessionOpenSet | undefined {
+  const columns = [
+    ['PREMARKET', row.pm_open_price, row.pm_open_at, row.pm_open_trades],
+    ['RTH', row.rth_open_price, row.rth_open_at, row.rth_open_trades],
+    ['AFTER_HOURS', row.ah_open_price, row.ah_open_at, row.ah_open_trades],
+  ] as const;
+
+  if (columns.every(([, price, at, trades]) => price === null && at === null && trades === null)) {
+    return undefined;
+  }
+
+  const build = (session: VwapSession, price: number | null, at: string | null, trades: number | null): SessionOpen => ({
+    session,
+    label: VWAP_LABEL[session],
+    price,
+    at,
+    tradeCount: trades,
+    move: computePercentChange(row.price, price),
+  });
+
+  return {
+    premarket: build('PREMARKET', row.pm_open_price, row.pm_open_at, row.pm_open_trades),
+    regular: build('RTH', row.rth_open_price, row.rth_open_at, row.rth_open_trades),
+    afterHours: build('AFTER_HOURS', row.ah_open_price, row.ah_open_at, row.ah_open_trades),
+  };
+}
+
 function parseActivityWindow(raw: string | null): number[] | undefined {
   if (raw === null) return undefined;
   try {
@@ -554,6 +607,22 @@ export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandSt
      */
     activityWindow: parseActivityWindow(row.activity_window),
     priceWindow: parsePriceWindow(row.price_window),
+    /*
+     * ALL NINE NULL BECOMES undefined, NOT A SET OF NULLS.
+     *
+     * Same rule as `activity` above and for the same reason: a row written
+     * before these columns existed did not fail to observe an open, it was
+     * never asked. `sessionOpens` is optional on DemandState precisely so this
+     * read can say "not measured" instead of inventing three empty opens --
+     * and an empty set renders as a session that has not traded, which is a
+     * confident-looking claim about a thing nobody looked at.
+     *
+     * A PARTIAL SET IS REAL AND IS KEPT. At 09:00 the regular session
+     * genuinely has no open yet, so premarket populated and regular null is a
+     * measurement rather than a gap. Only ALL nine being null is the
+     * predates-the-column case.
+     */
+    sessionOpens: sessionOpensFromRow(row),
     top12EnteredAt: row.top12_entered_at,
     qualified: row.qualified_at
       ? {
@@ -626,6 +695,9 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       rth_final_rank, rth_final_frozen_at,
       activity, dead_since, dead_at_rank, dead_at_peak_trades, dead_at_price,
       death_count, activity_config, activity_window, price_window,
+      pm_open_price, pm_open_at, pm_open_trades,
+      rth_open_price, rth_open_at, rth_open_trades,
+      ah_open_price, ah_open_at, ah_open_trades,
       feed, last_event_at, updated_at
     ) VALUES (
       @symbol, @trading_date, @price, @price_source, @price_at, @bar_close, @bar_at,
@@ -650,6 +722,9 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       @rth_final_rank, @rth_final_frozen_at,
       @activity, @dead_since, @dead_at_rank, @dead_at_peak_trades, @dead_at_price,
       @death_count, @activity_config, @activity_window, @price_window,
+      @pm_open_price, @pm_open_at, @pm_open_trades,
+      @rth_open_price, @rth_open_at, @rth_open_trades,
+      @ah_open_price, @ah_open_at, @ah_open_trades,
       @feed, @last_event_at, @updated_at
     )
     ON CONFLICT(symbol, trading_date) DO UPDATE SET
@@ -779,6 +854,15 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
        * the state would have wrongly discarded.
        */
       activity_window = COALESCE(excluded.activity_window, ticker_session.activity_window),
+      pm_open_price = COALESCE(excluded.pm_open_price, ticker_session.pm_open_price),
+      pm_open_at = COALESCE(excluded.pm_open_at, ticker_session.pm_open_at),
+      pm_open_trades = COALESCE(excluded.pm_open_trades, ticker_session.pm_open_trades),
+      rth_open_price = COALESCE(excluded.rth_open_price, ticker_session.rth_open_price),
+      rth_open_at = COALESCE(excluded.rth_open_at, ticker_session.rth_open_at),
+      rth_open_trades = COALESCE(excluded.rth_open_trades, ticker_session.rth_open_trades),
+      ah_open_price = COALESCE(excluded.ah_open_price, ticker_session.ah_open_price),
+      ah_open_at = COALESCE(excluded.ah_open_at, ticker_session.ah_open_at),
+      ah_open_trades = COALESCE(excluded.ah_open_trades, ticker_session.ah_open_trades),
       -- COALESCE for the same reason as the window beside it: after a restart
       -- the engine's minute maps are empty and it writes NULL, which is amnesia
       -- rather than a measurement.

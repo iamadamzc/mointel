@@ -1839,6 +1839,26 @@ export function toRow(state: DemandState): TickerSessionRow {
     /* NULL is "not measured". Never [] -- see DemandState.activityWindow. */
     activity_window: state.activityWindow ? JSON.stringify(state.activityWindow) : null,
     /*
+     * READ FROM STATE, NOT WRITTEN AS LITERALS.
+     *
+     * volume_base and volume_base_through below are hardcoded 0 and null, and
+     * that is why every row in production carries a zero base under a source
+     * column claiming a base was seeded. These must not join them: state with
+     * a nullish fallback reaches the column, a literal never can.
+     *
+     * move is deliberately not written -- it is a live comparison, recomputed
+     * on read against the row's own price.
+     */
+    pm_open_price: state.sessionOpens?.premarket.price ?? null,
+    pm_open_at: state.sessionOpens?.premarket.at ?? null,
+    pm_open_trades: state.sessionOpens?.premarket.tradeCount ?? null,
+    rth_open_price: state.sessionOpens?.regular.price ?? null,
+    rth_open_at: state.sessionOpens?.regular.at ?? null,
+    rth_open_trades: state.sessionOpens?.regular.tradeCount ?? null,
+    ah_open_price: state.sessionOpens?.afterHours.price ?? null,
+    ah_open_at: state.sessionOpens?.afterHours.at ?? null,
+    ah_open_trades: state.sessionOpens?.afterHours.tradeCount ?? null,
+    /*
      * `startsAt` and `closes` only. `covered` is derived on read rather than
      * stored, so a count cannot drift from the array it counts -- and that is
      * the field a surface decides whether to draw on.

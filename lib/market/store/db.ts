@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 25;
+export const SCHEMA_VERSION = 26;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -193,6 +193,38 @@ CREATE TABLE IF NOT EXISTS ticker_session (
    * measurement -- so the two must not share a representation.
    */
   activity_window        TEXT,
+
+  -- The first print of each session, and how many trades made that minute.
+  --
+  -- NINE COLUMNS RATHER THAN ONE JSON BLOB PER SESSION, deliberately. The
+  -- single-distinct-value sweep reads SELECT col, COUNT(DISTINCT col); a blob
+  -- hides nine values behind one opaque TEXT and the desk's best instrument
+  -- goes blind on it. activity_window already showed the cost -- answering
+  -- "did a bar actually land" needed activity_window NOT LIKE '[0,0,0,0,0]',
+  -- a string match standing in for a value.
+  --
+  -- ALL NULLABLE, NO DEFAULTS. A row written before these existed must read
+  -- back as "not measured", and a DEFAULT would make every historical row claim
+  -- an open it never had.
+  --
+  -- _trades is nullable INDEPENDENTLY of _price: a bar with no reported
+  -- trade count is not a bar with one trade. The count is the honesty flag on a
+  -- thin anchor -- a premarket open resting on 3 trades has to stay
+  -- distinguishable from one resting on 400, which is why he asked for the
+  -- first print WITH its count rather than the price alone.
+  --
+  -- move is deliberately absent: it is derived at read time from the stored
+  -- price against the LIVE price. Storing it would freeze a live comparison
+  -- into a row, which is the error the cycle resolution already made once.
+  pm_open_price          REAL,
+  pm_open_at             TEXT,
+  pm_open_trades         INTEGER,
+  rth_open_price         REAL,
+  rth_open_at            TEXT,
+  rth_open_trades        INTEGER,
+  ah_open_price          REAL,
+  ah_open_at             TEXT,
+  ah_open_trades         INTEGER,
   price_window           TEXT,
   PRIMARY KEY (symbol, trading_date)
 );
@@ -782,6 +814,15 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'ticker_session', column: 'death_count', definition: 'INTEGER' },
   { table: 'ticker_session', column: 'activity_config', definition: 'TEXT' },
   { table: 'ticker_session', column: 'activity_window', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'pm_open_price', definition: 'REAL' },
+  { table: 'ticker_session', column: 'pm_open_at', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'pm_open_trades', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'rth_open_price', definition: 'REAL' },
+  { table: 'ticker_session', column: 'rth_open_at', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'rth_open_trades', definition: 'INTEGER' },
+  { table: 'ticker_session', column: 'ah_open_price', definition: 'REAL' },
+  { table: 'ticker_session', column: 'ah_open_at', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'ah_open_trades', definition: 'INTEGER' },
   { table: 'ticker_session', column: 'price_window', definition: 'TEXT' },
 ];
 
