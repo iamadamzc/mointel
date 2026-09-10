@@ -3916,6 +3916,69 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## SHOW BOTH: IT FITS THE ORDINARY ROWS AND BREAKS THE ONES HE IS LOOKING FOR
+
+> **"intelligence: let's show both. current session gap and gap from the relevant
+> last."**
+
+**MEASURED, REAL FONT, HIS 1,024px FLOOR. Line 1 has 156px.**
+
+    E  typical   4.12  +0.0%  +18.1%                    134.4px   FITS, 21.6 spare
+    A  worst, both at 13px                              184.2px   OVER by 28.2
+    B  worst, prior dimmed to 11px                      175.8px   OVER by 19.8
+    C  worst, prior dimmed to 10px                      171.6px   OVER by 15.6
+    D  worst, 10px AND no decimal (+123%)               159.6px   OVER by 3.6
+
+**EVERY WORST CASE IS OVER — INCLUDING THE ONE ALREADY SHRUNK TO 10px AND
+STRIPPED OF A DECIMAL.** *"Worst case"* here is a 4-digit price with a 3-digit
+move: `15.4297` and `+123.4%`.
+
+**⇒ THAT IS A NAME WITH A HIGH PRICE HAVING A HUGE DAY. THE ROW THAT BREAKS IS
+THE ROW HE IS SCANNING FOR.** Same shape as the two-tier column: *the failure is
+correlated with the thing being looked for*, so it will look fine every day it
+does not matter.
+
+**AND LINE 2 HAS NEGATIVE SLACK ALREADY.** Widest live text today
+`PM VWAP −$0.433 / -16.5%` = **158.4px against 156px — it truncates now**, before
+anything is added.
+
+**A THIRD LINE COSTS ~30% OF ROW HEIGHT** (46px today for two lines, ×12 rows)
+**and `DecisionCells.tsx` already carries the rule against it**: *"A wrapped VWAP
+line made the whole row taller for every ticker whose distance happened to be
+wide, which is not a property of the stock."*
+
+### THE DECOMPOSITION READING IS RIGHT, AND IT IS WHY TWO TOTALS ARE THE WRONG OBJECT
+
+**The two figures are not independent. `A` (from the prior close) and `B` (from
+this session's open) differ by exactly what carried in overnight.** CULP: **A =
++18.1%, B ≈ 0** — *"this ran overnight and has done nothing since."* **Neither
+number says that alone; the PAIR does.**
+
+**So the object is one thing with two parts. Two totals side by side make the
+reader compute the relationship that IS the answer** — and at 34px of spare width
+there is no room to label which is which.
+
+### THE TRADE NOBODY HAS NAMED, AND IT IS THE ONE THAT DECIDES THIS
+
+**The row ALREADY carries a within-session reading: the VWAP distance.** Add a
+session gap and the row holds **two within-session percentages that can disagree
+in sign** — a name that opens 3.50, runs to 4.50 and settles at 4.00 is
+**+14% on the session gap and NEGATIVE against its session VWAP.** Both correct,
+both within-session, opposite signs, adjacent on one row.
+
+**That is the 04:00 failure with a third instance and a sign flip.** Two unnamed
+denominators stopped him dead; three, with two of them describing the same
+window differently, is worse and not by a little.
+
+**⇒ SOMETHING LEAVES THE ROW, OR THE PAIR IS NOT ON THE ROW.** Those are the
+only two honest options at this width. **The candidates for leaving are the VWAP
+line (overlapping question) or the pair itself (to the drawer, where the last two
+of these landed).** **His ruling stands either way — "show both" does not say
+"on that row", and I am not treating it as if it did.**
+
+**NOT DESIGNED, NOT BUILT. The header shipped today is unaffected and correct
+under either outcome.**
+
 ## APPROVED: `"yes to the header change."` — AND THE LABEL IS COUPLED TO A PROXY, NOT ITS REFERENT
 
 **Shipped as `1e9f7d2`, gated 127 files / 1900 tests, awaiting the after-close
