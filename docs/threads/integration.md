@@ -3443,3 +3443,41 @@ resting entirely on him ever using that sort. He never has.**
 **No measurement could have produced that.** *When a design turns on how a person
 works, the person is the instrument* — the second time in one morning the cheap
 question beat the expensive analysis, after the colour-before-text answer.
+
+## TWO STORED COLUMNS WITH THE WRONG ONE PICKED IS NOT THE SAME DEFECT AS ONE FIELD WHOSE REFERENCE MOVES
+
+**Design, 2026-09-10, after finding the same defect twice and going looking for a
+third.** The sort read `rvol_rank` on a board ranked by `ah_rank`; a row-counting
+shortcut asserted an invariant true of one board on both. **Two instances, one
+shape.**
+
+**`changePct` looked like the third.** `discoveryValueFor:339` returns
+`row.telemetry.percentChange` **unconditionally**, and
+`AssessmentHistory.tsx:227` does `afterHours ? row.ahPercentChange :
+row.percentChange` — **so a board-aware convention for that exact field already
+exists elsewhere in the codebase.** *Every surface feature of the pattern is
+present.*
+
+**IT IS NOT AN INSTANCE, AND THE DISCRIMINATOR IS STRUCTURAL:**
+
+    rank           TWO STORED COLUMNS, and the reader picked the wrong one
+    percentChange  ONE FIELD whose reference MOVES WITH THE SESSION
+
+**`percentChange` is already session-aware by construction** — prior close in
+premarket and RTH, today's close after the bell — **so re-deriving it would
+produce a second, different number under the same name.** *The fix for the first
+shape is the defect in the second.*
+
+**Design's own account is the entry: it would have reported a third instance if
+it had matched on SHAPE instead of READING the field.** *A shape match is not a
+mechanism match* — **and here the shape match was unusually convincing, because a
+sibling file genuinely does the board-aware thing this one correctly does not.**
+
+### And the limit on his ruling is written into the field, not judged
+
+He ruled the default sort should be the session's move. It lands as
+`{ key: 'changePct', desc }` — **and `percentChange` in premarket and RTH is
+measured from the PRIOR CLOSE, across sessions.** **So "sorted by the session's
+move" would today sort by the across-session number.** *The two-step framing is
+not caution; the limit is in the field's own definition and can be read rather
+than argued.*
