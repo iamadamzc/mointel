@@ -8,7 +8,7 @@
 
 import type { ActivityState, PriceWindow } from './activity';
 import type { BlueSkyState } from './blueSky';
-import type { SessionVwapSet } from './vwap';
+import type { SessionOpenSet, SessionVwapSet } from './vwap';
 
 export type MarketFeed = 'sip' | 'iex' | 'simulator' | 'test';
 
@@ -334,6 +334,28 @@ export interface DemandState {
    * states its own coverage. See lib/market/vwap.ts.
    */
   vwap: SessionVwapSet;
+  /**
+   * Each session's opening print, its thinness, and the Move measured from it.
+   *
+   * The origin is the FIRST PRINT of the session — one rule for all three — and
+   * the anchoring minute's trade count travels with it so a thin anchor is
+   * visible rather than smoothed. `Move` is the settled word for a
+   * within-session figure; `Gap` and `AH move` reach back to the previous
+   * session's close and are separate quantities that already ship.
+   *
+   * See lib/market/vwap.ts for why this is a print and not an average.
+   */
+  /*
+   * OPTIONAL, and the reason is the store rather than convenience.
+   *
+   * ticker_session has no session-open columns, so a state round-tripped from
+   * the store genuinely does not have these. Making the field required would
+   * force that read to invent an empty set, and an empty set is a measurement
+   * nobody took -- the same failure as a NULL activity read as UNKNOWN. Absent
+   * here means the engine did not supply it, and a surface must say so rather
+   * than render a Move of zero.
+   */
+  sessionOpens?: SessionOpenSet;
 
   rvol: number | null;
   rvolRank: number | null;

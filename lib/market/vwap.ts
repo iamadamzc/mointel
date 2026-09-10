@@ -214,3 +214,67 @@ export function vwapDistance(
   const absolute = price - vwap;
   return { absolute, percent: (absolute / vwap) * 100 };
 }
+
+/**
+ * The first print of a session, and how thin that print was.
+ *
+ * The origin for a within-session Move. He ruled it: the FIRST PRINT, one rule
+ * for all three sessions, with the anchoring minute's trade count travelling
+ * beside it.
+ *
+ * A VWAP was proposed for this and refused, and the reason is worth keeping.
+ * A VWAP is an average over a window; an origin is a point. A name that moves
+ * 10% inside its first minute has its VWAP in the middle of that, so the Move
+ * would read about 5% before anything had happened -- a bias of half the first
+ * minute's range, welded into the reference. And it would not even buy the
+ * robustness it was proposed for: with a single odd-lot print, the
+ * volume-weighted average of one print is that print.
+ *
+ * So the thin-anchor risk is EXPOSED rather than smoothed. A premarket open
+ * anchored on three trades and one anchored on four hundred are different
+ * facts, and the count says which. That is the same choice as PARTIAL coverage
+ * on the session averages and UNKNOWN confidence on a float: the desk states
+ * the weakness instead of substituting a steadier-looking number.
+ */
+export interface SessionOpen {
+  session: VwapSession;
+  label: string;
+  /** The opening print of the session, or null before the session has traded. */
+  price: number | null;
+  /** Minute the anchor came from, so a reader can see WHICH print it was. */
+  at: string | null;
+  /**
+   * Trades in the anchoring minute. Null when the feed did not report one.
+   *
+   * NULL AND NOT ZERO: a bar with no trade count is unreported, and a minute
+   * with no trades has no bar at all. Neither is "one trade".
+   */
+  tradeCount: number | null;
+  /** Percent change from the open to the current price; null without both. */
+  move: number | null;
+}
+
+export interface SessionOpenSet {
+  premarket: SessionOpen;
+  regular: SessionOpen;
+  afterHours: SessionOpen;
+}
+
+export function emptySessionOpen(session: VwapSession): SessionOpen {
+  return {
+    session,
+    label: VWAP_LABEL[session],
+    price: null,
+    at: null,
+    tradeCount: null,
+    move: null,
+  };
+}
+
+export function emptySessionOpenSet(): SessionOpenSet {
+  return {
+    premarket: emptySessionOpen('PREMARKET'),
+    regular: emptySessionOpen('RTH'),
+    afterHours: emptySessionOpen('AFTER_HOURS'),
+  };
+}

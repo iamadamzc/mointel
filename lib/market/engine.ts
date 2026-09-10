@@ -67,6 +67,8 @@ import {
   vwapSessionForTs,
   vwapSessionStartMs,
   type SessionVwap,
+  type SessionOpen,
+  type SessionOpenSet,
   type SessionVwapSet,
   type VwapSession,
 } from './vwap';
@@ -220,6 +222,10 @@ interface TickerRuntime {
   vwapNotional: Record<keyof SessionVwapSet, number>;
   vwapVolume: Record<keyof SessionVwapSet, number>;
   vwapMinutes: Record<keyof SessionVwapSet, number>;
+  /* Session opens: a POINT observation per session, not an accumulator. */
+  sessionOpenPrice: Record<keyof SessionVwapSet, number | null>;
+  sessionOpenAt: Record<keyof SessionVwapSet, string | null>;
+  sessionOpenTrades: Record<keyof SessionVwapSet, number | null>;
 
   sessionHigh: number | null;
   sessionLow: number | null;
@@ -489,6 +495,9 @@ export class DemandEngine {
       vwapNotional: { premarket: 0, regular: 0, afterHours: 0 },
       vwapVolume: { premarket: 0, regular: 0, afterHours: 0 },
       vwapMinutes: { premarket: 0, regular: 0, afterHours: 0 },
+      sessionOpenPrice: { premarket: null, regular: null, afterHours: null },
+      sessionOpenAt: { premarket: null, regular: null, afterHours: null },
+      sessionOpenTrades: { premarket: null, regular: null, afterHours: null },
       sessionHigh: null,
       sessionLow: null,
       price: null,
@@ -961,6 +970,7 @@ export class DemandEngine {
     // Unconditional: every bar carries a close, and a minute with a bar traded.
     runtime.minuteCloses.set(bar.ts, bar.close);
     this.accumulateVwap(runtime, bar, previous);
+    this.captureSessionOpen(runtime, bar);
 
     // The same minute, counted a second time against the after-hours window.
     // A bar at or after the bell belongs to both the day and the evening; one
@@ -1024,6 +1034,76 @@ export class DemandEngine {
     }
 
     runtime.minuteNotional.set(bar.ts, notional);
+  }
+
+  /**
+   * The first print of each session, anchored on the EARLIEST minute seen.
+   *
+   * TWO TRAPS, AND BOTH ARE HANDLED BY THE ONE COMPARISON.
+   *
+   * "First" MUST mean earliest TIMESTAMP, never first RECEIVED. Bars arrive out
+   * of order — every price field in this engine is guarded by
+   * `isNewerObservation` for exactly that reason — so `if (open === null)` would
+   * anchor on whichever bar the socket happened to deliver first, and a 04:01
+   * bar ahead of the 04:00 bar would silently become the open.
+   *
+   * And a CORRECTED bar must move the anchor. `updatedBar` revises a minute in
+   * place, so the anchoring minute's own revision has to replace the stored
+   * price rather than be discarded as "not earlier".
+   *
+   * `bar.ts <= held` covers both: strictly earlier wins, and an equal timestamp
+   * overwrites, which is precisely a correction to the anchoring minute.
+   *
+   * DELIBERATELY NOT UNDONE BY `dropVwapMinute`. That exists so a reconstructed
+   * volume base is not double-counted, which is an ACCUMULATOR concern. The
+   * first print of a session stays the first print whether or not its volume is
+   * still inside an average — clearing it there would move the origin later,
+   * which understates the Move, and understating it is not the safe direction
+   * on a number he reads to decide whether a name has already run.
+   */
+  private captureSessionOpen(
+    runtime: TickerRuntime,
+    bar: NonNullable<MarketObservation['bar']>,
+  ): void {
+    const session = vwapSessionForTs(bar.ts, this.tradingDate, this.rthCloseMinutes);
+    if (!session) return;
+
+    const key = VWAP_SESSION_KEY[session];
+    const held = runtime.sessionOpenAt[key];
+    if (held !== null && bar.ts > held) return;
+
+    runtime.sessionOpenPrice[key] = bar.open;
+    runtime.sessionOpenAt[key] = bar.ts;
+    runtime.sessionOpenTrades[key] = bar.tradeCount ?? null;
+  }
+
+  /**
+   * The three session opens with the Move already computed against each.
+   *
+   * Derived here rather than by a caller, so every surface divides the same two
+   * numbers. A second computation for display is how a figure and its own
+   * verdict drift apart — the sparkline reads the array the ACTIVE/DEAD verdict
+   * was made from for the same reason.
+   */
+  private sessionOpensOf(runtime: TickerRuntime): SessionOpenSet {
+    const read = (session: VwapSession): SessionOpen => {
+      const key = VWAP_SESSION_KEY[session];
+      const price = runtime.sessionOpenPrice[key];
+      return {
+        session,
+        label: VWAP_LABEL[session],
+        price,
+        at: runtime.sessionOpenAt[key],
+        tradeCount: runtime.sessionOpenTrades[key],
+        move: computePercentChange(runtime.price, price),
+      };
+    };
+
+    return {
+      premarket: read('PREMARKET'),
+      regular: read('RTH'),
+      afterHours: read('AFTER_HOURS'),
+    };
   }
 
   /** Removes a minute from whichever VWAP bucket owns it. */
@@ -1829,6 +1909,7 @@ export class DemandEngine {
       sessionHigh: runtime.sessionHigh,
       sessionLow: runtime.sessionLow,
       vwap: this.vwapStateOf(runtime),
+      sessionOpens: this.sessionOpensOf(runtime),
       rvol: runtime.rvol,
       rvolRank: runtime.rvolRank,
       previousRvolRank: runtime.previousRvolRank,
