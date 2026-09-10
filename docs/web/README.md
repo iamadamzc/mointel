@@ -153,7 +153,7 @@ backstop for someone who signs in without an invite.*
 
 | # | still open | who |
 | --- | --- | --- |
-| ~~1~~ | **WITHDRAWN, not answered.** The "why he built it" sentence was cut in the de-pitch pass — **that sentence was the pitch.** The block is now headed *"Who runs it."* and states the operator. *Nothing is owed here.* | closed |
+| 1 | **UN-WITHDRAWN, and it was this seat's error to withdraw it.** The "why it exists" section is back and written; **what he owes is not a bracket but a CHECK on two claims made about him** — that the desk is traded *"between 07:00 and 10:00"*, and *"built by someone trading it, on the desk he trades it from."* **Both were asserted from context rather than from him.** | the trader |
 | 2 | Whether any mailing list exists; access-log fields; retention periods for account, logs, email and backups; hosting region; email provider | Ops |
 | ~~2b~~ | **SATISFIED, and built stronger than asked.** Ops made it structural rather than two calls: the callback has **no bare `return`** — every exit goes through one helper that attaches the cleared flow cookie, so a failure mode added later inherits it. Tests assert the header **on the failure paths by name**, not only on success. *That is the assertion the sentence actually needed.* | closed |
 | 3 | **Session cookie LIFETIME — with him, not with Ops.** Ops recommends **30 days** and routed it rather than settling it. Its argument: sessions are server-side and revocable, so length is not the same object as a long-lived stateless token, and a short lifetime would make him re-authenticate inside the 07:00–10:00 premarket for no gain the cookie attributes are not already giving. **Nothing is published until he rules.** | the trader |

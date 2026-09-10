@@ -294,6 +294,25 @@ the handover spec) and `docs/legal/privacy-policy.md`. **Nothing under `app/`,
   too** — a reviewer landing on a password prompt fails.* **Nobody has confirmed
   whether a home page elsewhere on the domain satisfies it, and nobody should
   guess.**
+- **THE COPY IS CO-OWNED WITH A MARKETING THREAD, BY HIS RULING** — *"no, let's
+  have them both own it."* **Integration proposed Marketing writes and Web
+  places; he refused that split.** *Nothing is taken off this thread and
+  Marketing is not arriving to correct it; the brief is the same one Web was
+  just handed.* **Integration is defining the mechanics before it opens** —
+  one git index and two threads editing one file is a failure this desk
+  already knows.
+- **HIS VERDICT ON THE COPY, 2026-09-10, AND IT IS THE STANDARD NOW:** *"it just
+  misses the mark. any scoped professional will see. it's flat and distant."*
+  **The de-pitch of that same morning overshot.** *Removing persuasion is not
+  the same as having a voice, and the fix is never to put the pitch back.*
+  **Integration's diagnosis, kept because it generalises: the page was precise
+  about what was cheap to be precise about — scopes, cookies, boundaries — and
+  distant about what it is for. Accuracy migrated to where it was cheap.**
+- **AUTH SCOPES DO NOT BELONG ON THE LANDING PAGE.** *A stranger deciding
+  whether the product is for them does not need an OAuth scope list; a stranger
+  deciding whether to trust a sign-in does, and that is a different page at a
+  later moment.* **Move it, never delete it** — it lives on `/signin` and in
+  the policy.
 - **THE SIGN-IN SCREEN'S OWNERSHIP IS THE TRADER'S CALL AND IS NOT SETTLED.**
   `ops.md`'s auth scope of 2026-09-07 assigns the sign-in surface to Design,
   written before this thread existed. **Integration has put the question to him
