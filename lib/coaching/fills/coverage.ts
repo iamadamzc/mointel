@@ -1,51 +1,60 @@
 /**
  * Coverage windows for cross-store joins.
  *
- * This exists because of a specific failure, and the failure is the argument
- * for the shape of the fix.
+ * This exists because of a specific failure, and then survived a second one
+ * that was hiding inside the fix for the first.
  *
- * On 2026-09-07 a claim about which names the desk held was measured against
- * `assessments-prod-2026-09-02.db` -- a snapshot that stops before the session
- * being asked about. The query returned zero rows and the zero was read as
- * "the desk did not hold them". The file's own name said 09-02 and had been
- * typed repeatedly. **A filename does not travel into a query result**, so the
- * warning was present and useless at the moment it was needed.
+ * **The original.** On 2026-09-07 a claim about which names the desk held was
+ * measured against `assessments-prod-2026-09-02.db` -- a snapshot that stops
+ * before the session being asked about. The query returned zero rows and the
+ * zero was read as "the desk did not hold them". The file's own name said
+ * 09-02 and had been typed repeatedly. **A filename does not travel into a
+ * query result**, so the warning was present and useless where it was needed.
  *
- * Every bucket-1 and bucket-2 question is a join between the trader's fills,
- * which advance every session he trades, and a desk extract, which advances
- * only when someone pulls one. The gap therefore grows on its own, always in
- * one direction, and every question asked across it comes back as a confident
- * zero that reads like a finding. Silent, directional, self-renewing.
+ * **The one hiding in the fix.** The first version of this file gated on the
+ * newest `trading_date` in the extract. Ops caught it before the refresh ran:
+ * a trading date is not whole until roughly six hours after the bell, so an
+ * extract taken mid-session carries a newest date holding a handful of rows
+ * out of a full day's checkpoints. Gating on the max would have reported
+ * coverage through today and **permitted the join most worth running, on the
+ * one date guaranteed to be partial.** The newest date is always the likeliest
+ * to be incomplete. A max is no more a guard than a filename was: both
+ * describe the file rather than what is answerable from it.
  *
- * So the rule here is *make it impossible, not visible*: `assertCovers` throws
- * rather than returning a flag, and `describe` produces the line that belongs
- * beside any result computed across two stores.
+ * So the gate is `completeThrough` -- the newest date carrying a full day's
+ * assessments -- and `lastDate` survives only as an observation. The invariant
+ * that makes this checkable is that a complete date holds a fixed number of
+ * assessments (19 in production at time of writing); an extract should record
+ * that as `expected_per_date`, and where it does not, the mode of the per-date
+ * counts is a sound inference from the file itself.
  *
- * On `asOf` and why the fallback is marked weaker: an extract SHOULD carry
- * `meta.extract_as_of`, the moment the read against production ran. Where it
- * does not, the best available substitute is the newest `trading_date` in the
- * file -- but that is a strictly weaker fact. It says when the data ends, not
- * when the file was made, and those differ precisely when collection has
- * stopped, which is the case most worth detecting. `basis` records which one
- * was available so a caller can say so out loud.
+ * Partial dates inside the window are reported as `partial`, never silently
+ * excluded. Production has two genuinely incomplete early dates; a rule that
+ * flags them is working, and they must not be special-cased away.
  */
 
 import Database from 'better-sqlite3';
 
 export type CoverageBasis = 'extract_as_of' | 'max_trading_date';
+export type ExpectedBasis = 'declared' | 'inferred_mode' | 'unknown';
 
 export interface Coverage {
-  /** The file the window was read from. */
   source: string;
-  /** Earliest trading date present. */
   firstDate: string | null;
-  /** Latest trading date present. */
+  /** Newest date present. An observation -- NEVER the gate. See the note above. */
   lastDate: string | null;
+  /** Newest date carrying a full day's assessments. This is the gate. */
+  completeThrough: string | null;
   /** When the extract was taken, if the file records it. */
   asOf: string | null;
-  /** Which fact `asOf` rests on -- see the note above on why it matters. */
   basis: CoverageBasis;
-  /** Distinct trading dates present, ascending. */
+  /** Assessments expected on a whole trading date. */
+  expectedPerDate: number | null;
+  expectedBasis: ExpectedBasis;
+  /** Every date present, with how many assessments it holds. */
+  perDate: { date: string; count: number }[];
+  /** Dates present but short of `expectedPerDate`. */
+  partialDates: string[];
   dates: string[];
 }
 
@@ -57,12 +66,32 @@ function tableExists(db: Database.Database, name: string): boolean {
   );
 }
 
-/**
- * Read a store's coverage window.
- *
- * `dateTable`/`dateColumn` name where trading dates live; the defaults suit a
- * desk assessments extract. Works on any store that has a date column.
- */
+function readMeta(db: Database.Database, key: string): string | null {
+  if (!tableExists(db, 'meta')) return null;
+  const row = db.prepare('SELECT value FROM meta WHERE key = ?').get(key) as
+    | { value: string }
+    | undefined;
+  return row?.value ?? null;
+}
+
+/** The most common per-date count, which is what a whole date looks like. */
+function modeCount(counts: readonly number[]): number | null {
+  if (counts.length === 0) return null;
+  const tally = new Map<number, number>();
+  for (const c of counts) tally.set(c, (tally.get(c) ?? 0) + 1);
+  let best: number | null = null;
+  let bestN = 0;
+  for (const [value, n] of tally) {
+    // Ties break toward the larger count: a full date is never smaller than a
+    // partial one, so the bigger of two equally-common values is the whole one.
+    if (n > bestN || (n === bestN && best !== null && value > best)) {
+      best = value;
+      bestN = n;
+    }
+  }
+  return best;
+}
+
 export function readCoverage(
   dbPath: string,
   dateTable = 'desk_assessments',
@@ -74,28 +103,50 @@ export function readCoverage(
       throw new Error(`${dbPath} has no ${dateTable} table -- wrong store for this question?`);
     }
 
-    const dates = (
+    const perDate = (
       db
-        .prepare(`SELECT DISTINCT ${dateColumn} AS d FROM ${dateTable} ORDER BY d`)
-        .all() as { d: string }[]
-    )
-      .map((row) => row.d)
-      .filter(Boolean);
+        .prepare(
+          `SELECT ${dateColumn} AS date, COUNT(*) AS count
+             FROM ${dateTable} WHERE ${dateColumn} IS NOT NULL
+            GROUP BY ${dateColumn} ORDER BY ${dateColumn}`,
+        )
+        .all() as { date: string; count: number }[]
+    ).filter((row) => row.date);
 
-    let asOf: string | null = null;
-    if (tableExists(db, 'meta')) {
-      const row = db.prepare('SELECT value FROM meta WHERE key = ?').get('extract_as_of') as
-        | { value: string }
-        | undefined;
-      asOf = row?.value ?? null;
-    }
+    const dates = perDate.map((row) => row.date);
+
+    const declared = readMeta(db, 'expected_per_date');
+    const declaredN = declared !== null && Number.isFinite(Number(declared)) ? Number(declared) : null;
+    const inferred = modeCount(perDate.map((row) => row.count));
+    const expectedPerDate = declaredN ?? inferred;
+    const expectedBasis: ExpectedBasis =
+      declaredN !== null ? 'declared' : inferred !== null ? 'inferred_mode' : 'unknown';
+
+    const partialDates =
+      expectedPerDate === null
+        ? []
+        : perDate.filter((row) => row.count < expectedPerDate).map((row) => row.date);
+
+    const whole =
+      expectedPerDate === null ? dates : perDate.filter((r) => r.count >= expectedPerDate).map((r) => r.date);
+
+    // A declared complete_through overrides what the counts imply -- the
+    // producer knows things the row counts cannot show.
+    const declaredThrough = readMeta(db, 'complete_through');
+
+    const asOf = readMeta(db, 'extract_as_of');
 
     return {
       source: dbPath,
       firstDate: dates[0] ?? null,
       lastDate: dates[dates.length - 1] ?? null,
+      completeThrough: declaredThrough ?? whole[whole.length - 1] ?? null,
       asOf: asOf ?? dates[dates.length - 1] ?? null,
       basis: asOf ? 'extract_as_of' : 'max_trading_date',
+      expectedPerDate,
+      expectedBasis,
+      perDate,
+      partialDates,
       dates,
     };
   } finally {
@@ -113,41 +164,38 @@ export function describe(coverage: Coverage): string {
     coverage.basis === 'extract_as_of'
       ? `as-of ${coverage.asOf}`
       : `as-of UNKNOWN (file records none; newest data is ${coverage.lastDate})`;
-  return `${coverage.source}  covers ${range}  ${stamp}`;
-}
-
-/** Trading dates inside the window that are missing from it -- a real hole. */
-export function gaps(coverage: Coverage, expected: readonly string[]): string[] {
-  const have = new Set(coverage.dates);
-  return expected
-    .filter((d) => coverage.firstDate !== null && d >= coverage.firstDate)
-    .filter((d) => coverage.lastDate !== null && d <= coverage.lastDate)
-    .filter((d) => !have.has(d));
+  const gate = `answerable through ${coverage.completeThrough ?? 'NOTHING'}`;
+  return `${coverage.source}  holds ${range}  ${gate}  ${stamp}`;
 }
 
 export interface CoverageVerdict {
+  /** Present and whole. */
   covered: string[];
-  /** Requested dates after the window ends -- the self-renewing failure. */
+  /** Present but short of a full day -- refused, and the reason differs from beyond. */
+  partial: string[];
+  /** After the last complete date. */
   beyond: string[];
-  /** Requested dates before the window starts. */
   before: string[];
-  /** Requested dates inside the window but absent -- a genuine hole. */
+  /** Inside the range but absent entirely -- a real hole. */
   missing: string[];
 }
 
 export function classify(coverage: Coverage, requested: readonly string[]): CoverageVerdict {
   const have = new Set(coverage.dates);
-  const verdict: CoverageVerdict = { covered: [], beyond: [], before: [], missing: [] };
+  const partialSet = new Set(coverage.partialDates);
+  const verdict: CoverageVerdict = { covered: [], partial: [], beyond: [], before: [], missing: [] };
 
   for (const date of requested) {
-    if (coverage.lastDate === null || coverage.firstDate === null) {
-      verdict.beyond.push(date);
-    } else if (date > coverage.lastDate) {
+    if (coverage.firstDate === null || coverage.completeThrough === null) {
       verdict.beyond.push(date);
     } else if (date < coverage.firstDate) {
       verdict.before.push(date);
-    } else if (!have.has(date)) {
+    } else if (partialSet.has(date)) {
+      verdict.partial.push(date);
+    } else if (!have.has(date) && date <= (coverage.lastDate ?? '')) {
       verdict.missing.push(date);
+    } else if (date > coverage.completeThrough) {
+      verdict.beyond.push(date);
     } else {
       verdict.covered.push(date);
     }
@@ -156,37 +204,47 @@ export function classify(coverage: Coverage, requested: readonly string[]): Cove
   return verdict;
 }
 
+export function gaps(coverage: Coverage, expected: readonly string[]): string[] {
+  const have = new Set(coverage.dates);
+  return expected
+    .filter((d) => coverage.firstDate !== null && d >= coverage.firstDate)
+    .filter((d) => coverage.lastDate !== null && d <= coverage.lastDate)
+    .filter((d) => !have.has(d));
+}
+
 /**
- * Refuse the join rather than let it answer from silence.
+ * Refuse the join rather than let it answer from silence or from half a day.
  *
- * Throws when any requested date falls outside the window. That is deliberate:
- * a boolean would be checked at the call site by the same discipline that
- * already failed once, so this raises instead. A caller that genuinely wants
- * the partial answer calls `classify` and says which dates it dropped.
+ * Throws rather than returning a flag: a boolean would be checked at the call
+ * site by the same discipline that already failed once.
  */
 export function assertCovers(coverage: Coverage, requested: readonly string[]): void {
-  const verdict = classify(coverage, requested);
-  const outside = [...verdict.beyond, ...verdict.before, ...verdict.missing];
-  if (outside.length === 0) return;
+  const v = classify(coverage, requested);
+  if (v.beyond.length + v.before.length + v.missing.length + v.partial.length === 0) return;
 
   const detail: string[] = [];
-  if (verdict.beyond.length > 0) {
+  if (v.beyond.length > 0) {
     detail.push(
-      `${verdict.beyond.length} date(s) AFTER the extract ends (${verdict.beyond.join(', ')}) ` +
-        '-- a query for these returns zero rows, which is the extract\'s silence and not a finding',
+      `${v.beyond.length} date(s) PAST the last complete date (${v.beyond.join(', ')}) ` +
+        "-- a query for these returns zero rows, which is the extract's silence and not a finding",
     );
   }
-  if (verdict.before.length > 0) {
-    detail.push(`${verdict.before.length} date(s) before it starts (${verdict.before.join(', ')})`);
-  }
-  if (verdict.missing.length > 0) {
+  if (v.partial.length > 0) {
     detail.push(
-      `${verdict.missing.length} date(s) inside the window but absent (${verdict.missing.join(', ')}) ` +
+      `${v.partial.length} date(s) PRESENT BUT PARTIAL (${v.partial.join(', ')}) ` +
+        `-- fewer than ${coverage.expectedPerDate ?? '?'} assessments, so a query answers from ` +
+        'part of a session and looks complete',
+    );
+  }
+  if (v.before.length > 0) {
+    detail.push(`${v.before.length} date(s) before the window starts (${v.before.join(', ')})`);
+  }
+  if (v.missing.length > 0) {
+    detail.push(
+      `${v.missing.length} date(s) inside the window but absent (${v.missing.join(', ')}) ` +
         '-- a real hole, unlike the above',
     );
   }
 
-  throw new Error(
-    `Refusing the join: ${describe(coverage)}\n  ` + detail.join('\n  '),
-  );
+  throw new Error(`Refusing the join: ${describe(coverage)}\n  ` + detail.join('\n  '));
 }

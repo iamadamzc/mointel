@@ -462,17 +462,30 @@ describe('personal session rules', () => {
 describe('coverage windows', () => {
   let dir: string;
 
-  function makeExtract(name: string, dates: string[], asOf?: string): string {
+  /**
+   * `dates` maps a trading date to how many assessments it holds, so a test
+   * can build a mid-session extract whose newest date is deliberately short.
+   */
+  function makeExtract(
+    name: string,
+    dates: Record<string, number>,
+    meta: Record<string, string> = {},
+  ): string {
     const file = path.join(dir, name);
     const db = new Database(file);
     db.exec('CREATE TABLE desk_assessments (id INTEGER PRIMARY KEY, trading_date TEXT)');
     db.exec('CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT)');
     const ins = db.prepare('INSERT INTO desk_assessments (trading_date) VALUES (?)');
-    for (const d of dates) ins.run(d);
-    if (asOf) db.prepare('INSERT INTO meta (key,value) VALUES (?,?)').run('extract_as_of', asOf);
+    for (const [d, n] of Object.entries(dates)) for (let i = 0; i < n; i += 1) ins.run(d);
+    const m = db.prepare('INSERT INTO meta (key,value) VALUES (?,?)');
+    for (const [k, v] of Object.entries(meta)) m.run(k, v);
     db.close();
     return file;
   }
+
+  const WHOLE = 19;
+  const full = (...ds: string[]): Record<string, number> =>
+    Object.fromEntries(ds.map((d) => [d, WHOLE]));
 
   beforeEach(() => {
     dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-cov-'));
@@ -483,7 +496,9 @@ describe('coverage windows', () => {
   });
 
   it('prefers a recorded as-of over the newest trading date', () => {
-    const file = makeExtract('a.db', ['2026-09-01', '2026-09-02'], '2026-09-10T08:00:00Z');
+    const file = makeExtract('a.db', full('2026-09-01', '2026-09-02'), {
+      extract_as_of: '2026-09-10T08:00:00Z',
+    });
     const c = readCoverage(file);
     expect(c.asOf).toBe('2026-09-10T08:00:00Z');
     expect(c.basis).toBe('extract_as_of');
@@ -492,39 +507,92 @@ describe('coverage windows', () => {
   });
 
   it('falls back to the newest trading date and marks the basis as weaker', () => {
-    const file = makeExtract('b.db', ['2026-09-01', '2026-09-02']);
+    const file = makeExtract('b.db', full('2026-09-01', '2026-09-02'));
     const c = readCoverage(file);
     expect(c.basis).toBe('max_trading_date');
-    expect(c.asOf).toBe('2026-09-02');
     expect(describeCoverage(c)).toMatch(/as-of UNKNOWN/);
   });
 
-  it('separates "after the window" from "a real hole inside it"', () => {
-    const file = makeExtract('c.db', ['2026-09-01', '2026-09-03']);
-    const v = classify(readCoverage(file), ['2026-08-31', '2026-09-01', '2026-09-02', '2026-09-09']);
+  it('THE 09-10 TRAP: gates on the last COMPLETE date, not the newest one', () => {
+    // An extract taken mid-session. 09-10 exists but holds 4 of 19 -- a trading
+    // date is not whole until hours after the bell. Gating on max would permit
+    // the one join guaranteed to answer from part of a day.
+    const file = makeExtract('mid.db', { ...full('2026-09-08', '2026-09-09'), '2026-09-10': 4 });
+    const c = readCoverage(file);
+    expect(c.lastDate).toBe('2026-09-10');
+    expect(c.completeThrough).toBe('2026-09-09');
+    expect(c.expectedPerDate).toBe(WHOLE);
+    expect(c.partialDates).toEqual(['2026-09-10']);
+    expect(() => assertCovers(c, ['2026-09-10'])).toThrow(/PRESENT BUT PARTIAL/);
+    expect(() => assertCovers(c, ['2026-09-09'])).not.toThrow();
+  });
+
+  it('a declared expected_per_date beats the inferred mode', () => {
+    // Mostly-partial extract: the mode would call 4 a whole day.
+    const file = makeExtract(
+      'declared.db',
+      { '2026-09-08': 4, '2026-09-09': 4, '2026-09-10': WHOLE },
+      { expected_per_date: String(WHOLE) },
+    );
+    const c = readCoverage(file);
+    expect(c.expectedBasis).toBe('declared');
+    expect(c.expectedPerDate).toBe(WHOLE);
+    expect(c.partialDates).toEqual(['2026-09-08', '2026-09-09']);
+  });
+
+  it('a declared complete_through overrides what the counts imply', () => {
+    const file = makeExtract('ct.db', full('2026-09-08', '2026-09-09'), {
+      complete_through: '2026-09-08',
+    });
+    expect(readCoverage(file).completeThrough).toBe('2026-09-08');
+  });
+
+  it('flags genuinely short early dates rather than special-casing them', () => {
+    // Production really does hold 08-17 n=2 and 08-19 n=16. A rule that flags
+    // them is working; they must not be excluded.
+    const file = makeExtract('early.db', {
+      '2026-08-17': 2,
+      '2026-08-18': WHOLE,
+      '2026-08-19': 16,
+      '2026-08-20': WHOLE,
+    });
+    const c = readCoverage(file);
+    expect(c.partialDates).toEqual(['2026-08-17', '2026-08-19']);
+    expect(c.completeThrough).toBe('2026-08-20');
+    expect(() => assertCovers(c, ['2026-08-19'])).toThrow(/PRESENT BUT PARTIAL/);
+  });
+
+  it('separates past-the-end, partial, hole and before-the-start', () => {
+    const file = makeExtract('c.db', { ...full('2026-09-01', '2026-09-03'), '2026-09-04': 3 });
+    const v = classify(readCoverage(file), [
+      '2026-08-31',
+      '2026-09-01',
+      '2026-09-02',
+      '2026-09-04',
+      '2026-09-09',
+    ]);
     expect(v.covered).toEqual(['2026-09-01']);
     expect(v.before).toEqual(['2026-08-31']);
     expect(v.missing).toEqual(['2026-09-02']);
+    expect(v.partial).toEqual(['2026-09-04']);
     expect(v.beyond).toEqual(['2026-09-09']);
   });
 
   it('THE 09-07 FAILURE: refuses a session the extract stops before', () => {
-    // assessments-prod-2026-09-02.db asked about 2026-09-03. The query returned
-    // zero and the zero was read as a fact about the desk.
-    const file = makeExtract('prod-2026-09-02.db', ['2026-09-01', '2026-09-02']);
+    const file = makeExtract('prod-2026-09-02.db', full('2026-09-01', '2026-09-02'));
     const c = readCoverage(file);
     expect(() => assertCovers(c, ['2026-09-03'])).toThrow(/Refusing the join/);
-    expect(() => assertCovers(c, ['2026-09-03'])).toThrow(/AFTER the extract ends/);
+    expect(() => assertCovers(c, ['2026-09-03'])).toThrow(/PAST the last complete date/);
     expect(() => assertCovers(c, ['2026-09-03'])).toThrow(/not a finding/);
   });
 
-  it('stays silent when every requested date is inside the window', () => {
-    const file = makeExtract('d.db', ['2026-09-01', '2026-09-02']);
+  it('stays silent when every requested date is whole and inside', () => {
+    const file = makeExtract('d.db', full('2026-09-01', '2026-09-02'));
     expect(() => assertCovers(readCoverage(file), ['2026-09-01', '2026-09-02'])).not.toThrow();
   });
 
   it('gaps() reports only holes inside the window, never the ends', () => {
-    const file = makeExtract('e.db', ['2026-09-01', '2026-09-03']);
+    const file = makeExtract('e.db', full('2026-09-01', '2026-09-03'));
     const c = readCoverage(file);
     expect(gaps(c, ['2026-08-28', '2026-09-01', '2026-09-02', '2026-09-03', '2026-09-04'])).toEqual([
       '2026-09-02',

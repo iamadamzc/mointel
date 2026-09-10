@@ -55,17 +55,22 @@ function main(): void {
   const coverage = readCoverage(extract);
   console.log('');
   console.log(`  desk     ${describe(coverage)}`);
+  console.log(
+    `           a whole date holds ${coverage.expectedPerDate ?? '?'} assessments` +
+      ` (${coverage.expectedBasis.replace('_', ' ')})`,
+  );
 
   const verdict = classify(coverage, sessions);
   console.log('');
   console.log(`  ANSWERABLE   ${verdict.covered.length} session(s)  ${verdict.covered.join(' ') || '-'}`);
+  if (verdict.partial.length > 0) {
+    console.log(`  PARTIAL      ${verdict.partial.length} session(s)  ${verdict.partial.join(' ')}`);
+    console.log('               present but short of a full day -- a join answers from part of');
+    console.log('               a session and looks complete, which is worse than empty');
+  }
   if (verdict.beyond.length > 0) {
-    console.log(
-      `  BEYOND IT    ${verdict.beyond.length} session(s)  ${verdict.beyond.join(' ')}`,
-    );
-    console.log(
-      '               a join over these returns zero rows -- that is the extract\'s',
-    );
+    console.log(`  BEYOND IT    ${verdict.beyond.length} session(s)  ${verdict.beyond.join(' ')}`);
+    console.log("               a join over these returns zero rows -- that is the extract's");
     console.log('               silence, not a finding about the desk');
   }
   if (verdict.before.length > 0) {
@@ -78,12 +83,26 @@ function main(): void {
     );
   }
 
+  if (coverage.partialDates.length > 0) {
+    console.log('');
+    console.log('  short dates in the extract (all of them, traded or not):');
+    for (const row of coverage.perDate.filter((r) => coverage.partialDates.includes(r.date))) {
+      console.log(`    ${row.date}  ${row.count} of ${coverage.expectedPerDate}`);
+    }
+  }
+
   if (coverage.basis === 'max_trading_date') {
     console.log('');
     console.log('  NOTE  this extract records no `meta.extract_as_of`, so the as-of above is');
     console.log('        inferred from its newest trading date. That is weaker: it says when');
     console.log('        the DATA ends, not when the FILE was made, and the two differ exactly');
     console.log('        when collection has stopped -- the case most worth detecting.');
+  }
+  if (coverage.expectedBasis === 'inferred_mode') {
+    console.log('');
+    console.log('  NOTE  `expected_per_date` was inferred from the commonest per-date count');
+    console.log('        rather than declared by the producer. Sound, but an extract that is');
+    console.log('        mostly partial would infer a partial day as whole.');
   }
   console.log('');
 }
