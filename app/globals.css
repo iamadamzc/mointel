@@ -37,7 +37,22 @@
   --color-warn: #e8ac33;
   --color-neg: #f4574e;
   --color-accent: #4d93ff;
-  --color-muted: #6d788a;
+  /*
+   * `--color-muted` (#6d788a) REMOVED: it failed AA as text on every surface
+   * this desk paints — 4.49:1 on `desk`, 4.30 on `panel`, 4.10 on `panel-2`,
+   * against the 4.5 floor. It was referenced by nothing, so this changes no
+   * render; what it removes is a trap. The next person reaching for a "muted"
+   * colour would have got the worst-contrast token in the file.
+   *
+   * `ink-3` was raised to #8792a3 for exactly this reason — see the note above
+   * it — and `muted` was not in that sweep. Caught by Web, measured
+   * independently here before acting.
+   *
+   * Deleting rather than annotating, because `ink-4` keeps its annotation for a
+   * real use (hairlines, disabled glyphs) and this had none. And the deletion
+   * enforces itself: with `@theme`, no token means no `text-muted` utility, so
+   * a future use renders unstyled and VISIBLE rather than quietly unreadable.
+   */
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
