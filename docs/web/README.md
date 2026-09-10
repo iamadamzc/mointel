@@ -148,14 +148,27 @@ Web wrote it from the three registered sentences; Commercial owns it now.
 the text, and splitting there would change punctuation in registered copy. It
 renders as one paragraph on both viewports.
 
-> **THE DEPENDENCY, recorded by Commercial and it is this thread's to carry:**
-> *"puts everything the desk knows about **each one**"* is honest **only because
-> the board renders a name it has not researched as a STATE** — `NOT RESEARCHED`
-> / `NOTHING COLLECTED` — **rather than as a blank.** The desk researches the top
-> of its ranking, not every mover. **The day that rendering becomes a blank, the
-> public statement becomes an over-claim**, and nothing in this repo connects the
-> two. *It is a board behaviour, so it is Design's; the sentence that depends on
-> it is public, so the cost lands here.* **Handed to Design directly.**
+> **THE DEPENDENCY, recorded by Commercial:** *"puts everything the desk knows
+> about **each one**"* is honest **only because the board renders a name it has
+> not researched as a STATE** — `NOT RESEARCHED` / `NOTHING COLLECTED` — rather
+> than as a blank. The desk researches the top of its ranking, not every mover.
+
+**VERIFIED BY DESIGN, `ba13d79` and `2f6c912`, before this thread had handed it
+over.** All four dimensions checked, and every path names its empty state.
+**The load-bearing part is that the risk label is typed as `string` rather than
+nullable — so no path can return a blank, because the type does not admit one.**
+*Design checked the code rather than the live board, deliberately: a live read
+proves the board was right this morning; a total return type proves it cannot be
+otherwise.*
+
+**AND DESIGN FOUND A THIRD DEPENDENCY THAT NEITHER WEB NOR COMMERCIAL LOOKED
+FOR.** The **Float column is conditional on the float sort**, so one view of
+share structure is sort-scoped. **The claim survives** because structure and
+supply are carried on every row by the Risk cell. *Its own formulation, and Web
+has checked the hero against it:* **a reader taking the sentence as a promise
+about COLUMNS would be wrong; as a promise about what the board knows PER ROW it
+is kept** — and the hero says *"about each one"*, which is per-row. **No copy
+change needed; checked rather than assumed.**
 
 **One word of his was dropped and it is recorded as a judgement, not a fact:**
 his sentence says *"an assistant that give you depth on the moving market"*, and
