@@ -4,6 +4,7 @@ import type { DeskRow } from '@/lib/dashboard/merge';
 import {
   DISCOVERY_DEFAULT_SORT,
   discoveryMissingCount,
+  moveLabel,
   sortDiscoveryRows,
 } from '@/lib/dashboard/view';
 
@@ -143,11 +144,69 @@ describe('move label', () => {
     // Visible button text, not a title: the label lives on the returned object
     // and is rendered as {resolved.label}.
     expect(source).toContain('{resolved.label}');
-    expect(source).toMatch(/case 'PREMARKET':\s*\n\s*return \{ label: 'Gap'/);
-    expect(source).toMatch(/case 'RTH':\s*\n\s*return \{ label: 'Move'/);
-    expect(source).toContain("label: 'AH move'");
 
     // The old defect: a single-string moveLabel consumed only by `title=`.
     expect(source).not.toMatch(/title=\{\s*entry\.key === 'changePct' \? moveLabel/);
+
+    /*
+     * THE PER-SESSION WORDS ARE NO LONGER ASSERTED BY REGEX HERE.
+     *
+     * This test used to match the switch cases inside this component. That
+     * pinned the words to a FILE rather than to a BEHAVIOUR, and it failed the
+     * moment the function moved somewhere better -- a test reporting a
+     * relocation as a defect. `moveLabel` is exported now and the words are
+     * asserted by CALLING it, below, including the two phases that must share
+     * one label. What stays here is the only part genuinely about this
+     * component: that the label reaches VISIBLE TEXT rather than a tooltip.
+     */
+  });
+});
+
+/* ------------------------------------------------------------------------- *
+ * THE WORD ABOVE THE PERCENT
+ *
+ * He questioned a live row -- "it says up 19%, please verify, math not mathing
+ * for me" -- and BOTH numbers on it were correct. `+18.1%` is measured against
+ * YESTERDAY'S CLOSE; the `+0.0%` directly beneath it is against TODAY'S PM
+ * VWAP. Two percentages, two denominators, and the row named neither, so read
+ * down at speed they contradict each other.
+ *
+ * The second line already names its own reference (`PM VWAP`). The first did
+ * not -- and the desk already had the right word, on the sort button one
+ * control away, while the column header over the same number said `Move`.
+ * ------------------------------------------------------------------------- */
+describe('the move label names what the percent is measured against', () => {
+  it('calls the premarket move a Gap, which is the denominator in one word', () => {
+    expect(moveLabel('PREMARKET').label).toBe('Gap');
+    expect(moveLabel('PREMARKET').title).toContain('prior session close');
+  });
+
+  it('changes the word when the reference changes, which is why it is not a constant', () => {
+    expect(moveLabel('RTH').label).toBe('Move');
+    expect(moveLabel('AFTER_HOURS').label).toBe('AH move');
+    expect(moveLabel('POST_MARKET').label).toBe('AH move');
+    // Four phases, THREE distinct words -- AH and POST_MARKET share a reference
+    // and must not drift apart into two labels for one denominator.
+    expect(moveLabel('AFTER_HOURS')).toEqual(moveLabel('POST_MARKET'));
+  });
+
+  it('falls back to a reference it can actually defend when the phase is unknown', () => {
+    // Not `Gap`: an unknown phase must not assert the PRIOR close specifically.
+    expect(moveLabel(null).label).toBe('Move');
+    expect(moveLabel(null).title).toContain('most recent session close');
+  });
+
+  /*
+   * THE REGRESSION ITSELF, and it is a source assertion because this suite has
+   * no renderer. The header held a hand-typed "Move" while the sort control
+   * computed `Gap` from the same phase. Two words for one quantity, already
+   * drifted on his live board.
+   */
+  it('is the single source for both the header and the sort control', async () => {
+    const fs = await import('node:fs');
+    const source = fs.readFileSync('components/DiscoveryBoard.tsx', 'utf8');
+    expect(source).not.toContain('Price · Move · VWAP');
+    expect(source).toContain('Price · {move.label} · VWAP');
+    expect(source).not.toMatch(/^function moveLabel\(/m);
   });
 });

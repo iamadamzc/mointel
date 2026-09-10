@@ -6,6 +6,7 @@
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { CyclePhase } from '@/lib/market/cycle';
 import type { MomentumTicker, PriorityBucket } from '@/lib/data/types';
+import type { SessionPhase } from '@/lib/market/types';
 
 export type PriorityFilter = 'ALL' | 'A' | 'B' | 'C';
 /*
@@ -366,4 +367,41 @@ export function sortDiscoveryRows(rows: DeskRow[], sort: DiscoverySortState): De
   });
 
   return sorted;
+}
+
+/* --------------------------------------------------------------- move label */
+
+/**
+ * What the percent change is measured AGAINST, in one word, resolved per
+ * session.
+ *
+ * One field means three things across a day — the prior session's close through
+ * premarket and RTH, today's close after the bell — so a fixed word is wrong
+ * twice a day.
+ *
+ * **LIVES HERE BECAUSE TWO SURFACES NEED THE SAME WORD AND DISAGREED.** The
+ * sort control read `Gap` during premarket while the column header above the
+ * same number read `Move`, hand-typed. He questioned a row — *"it says up 19%,
+ * please verify, math not mathing"* — and both numbers on it were correct: the
+ * `+18.1%` is against YESTERDAY'S CLOSE and the `+0.0%` beneath it is against
+ * TODAY'S PM VWAP. **Two percentages, two denominators, and the row named
+ * neither.** One exported source is what stops the two halves drifting again.
+ *
+ * `Gap` is the desk's own vocabulary for the prior-close-to-premarket move and
+ * is what a momentum trader calls it — **it carries its own denominator, which
+ * is the whole job.** Short on purpose: this sits both in a five-button row and
+ * in a 172px header that has to survive the 1,024px floor.
+ */
+export function moveLabel(phase: SessionPhase | null): { label: string; title: string } {
+  switch (phase) {
+    case 'PREMARKET':
+      return { label: 'Gap', title: 'Change from the prior session close, including after hours' };
+    case 'RTH':
+      return { label: 'Move', title: "Change from the prior session's close" };
+    case 'AFTER_HOURS':
+    case 'POST_MARKET':
+      return { label: 'AH move', title: "Change from today's regular-session close" };
+    default:
+      return { label: 'Move', title: 'Change from the most recent session close' };
+  }
 }

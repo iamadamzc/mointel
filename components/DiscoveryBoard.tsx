@@ -24,6 +24,7 @@ import { resolveWhy } from '@/lib/dashboard/why';
 import {
   DISCOVERY_DEFAULT_SORT,
   discoveryMissingCount,
+  moveLabel,
   retentionNote,
   sortDiscoveryRows,
   type DiscoverySortKey,
@@ -39,7 +40,8 @@ type ViewSize = (typeof VIEW_SIZES)[number];
  * The sortable keys, in the order a trader reaches for them.
  *
  * `changePct` carries no fixed label here: it is resolved per session by
- * `moveLabel` below.
+ * `moveLabel`, which now lives in `lib/dashboard/view` because the column
+ * header needs the same word and the two had drifted apart.
  */
 const SORT_KEYS: ReadonlyArray<{ key: DiscoverySortKey; label: string; title: string }> = [
   { key: 'rank', label: 'Rank', title: "The board's own ranking for this session" },
@@ -48,37 +50,6 @@ const SORT_KEYS: ReadonlyArray<{ key: DiscoverySortKey; label: string; title: st
   { key: 'price', label: 'Price', title: 'Last price' },
   { key: 'float', label: 'Float', title: 'Displayed float. Not known for every name.' },
 ];
-
-/**
- * What the percent change is measured from, right now.
- *
- * One field means three things across a day — the prior session's close through
- * premarket and RTH, today's close after the bell — so a fixed label is wrong
- * twice a day. The word is **visible on the control**, not in a tooltip: an
- * earlier version of this put the session wording in a `title` and nowhere
- * else, which made the one thing the trader asked for by name reachable only by
- * hover. The audit's §10 rules that out, and it was live for one deploy.
- *
- * Short on purpose. This sits in a five-button row that has to survive the
- * 1,024 px floor, and "Move vs prior close" on a button does not. `Gap` is the
- * desk's own vocabulary for the prior-close-to-premarket move, and it is what a
- * momentum trader calls it.
- */
-function moveLabel(
-  phase: DiscoveryState['sessionPhase'] | null,
-): { label: string; title: string } {
-  switch (phase) {
-    case 'PREMARKET':
-      return { label: 'Gap', title: 'Change from the prior session close, including after hours' };
-    case 'RTH':
-      return { label: 'Move', title: "Change from the prior session's close" };
-    case 'AFTER_HOURS':
-    case 'POST_MARKET':
-      return { label: 'AH move', title: "Change from today's regular-session close" };
-    default:
-      return { label: 'Move', title: 'Change from the most recent session close' };
-  }
-}
 
 interface DiscoveryBoardProps {
   /** Null until the first market payload arrives — not a fabricated state. */
@@ -342,7 +313,19 @@ export function DiscoveryBoard({
                 Rank
               </Th>
               <Th className="w-[112px]">Ticker</Th>
-              <Th className="w-[172px]">Price · Move · VWAP</Th>
+              {/*
+                 * `move.label`, NOT a typed "Move".
+                 *
+                 * The sort control read `Gap` in premarket while this header,
+                 * over the same number, read `Move` -- two hand-written words
+                 * for one quantity, and they had already drifted apart on his
+                 * live board. He questioned a row and both numbers on it were
+                 * correct: `+18.1%` against YESTERDAY'S CLOSE, `+0.0%` beneath
+                 * it against TODAY'S PM VWAP. Two denominators, and the row
+                 * named neither. `Gap` names one of them in the desk's own
+                 * word, at zero width -- it is shorter than `Move`.
+                 */}
+              <Th className="w-[172px]">Price · {move.label} · VWAP</Th>
               <Th className="w-[68px]" align="right">
                 RVOL
               </Th>
