@@ -95,12 +95,23 @@ async function main(): Promise<void> {
    * `dbPath` defaults to ./data/market.db when MARKET_DB_PATH is unset, so
    * running this from a development checkout opens the LOCAL desk rather than
    * production -- and the local desk is a split-brain copy that stopped
-   * advancing weeks ago. On 2026-09-09 a scheduled run did exactly that. It
-   * exited on the "no ticker_session rows" guard, which was luck: had the local
-   * store held rows for the date, it would have fetched a million bars, written
-   * them to the wrong database, reported a count inside the registered band,
-   * and recovered nothing. A plausible number from the wrong store is the
-   * failure this whole script was shaped to avoid.
+   * advancing weeks ago. A run that reached that store while it held rows for
+   * the date would fetch a million bars, write them to the wrong database,
+   * report a count inside the registered band, and recover nothing. A
+   * plausible number from the wrong store is the failure this whole script was
+   * shaped to avoid.
+   *
+   * THIS GUARD IS REASONED, NOT PROVEN, and the distinction is the point.
+   * An earlier version of this comment said a scheduled run on 2026-09-09 hit
+   * the local store and escaped on the "no ticker_session rows" guard below,
+   * calling that luck. It did not happen. That task lived 6.1 seconds and
+   * never reached a count, a guard, or a database -- the claim was an
+   * inference about what a dead job would have done, written as an
+   * observation. The hazard survives the correction untouched, because it is a
+   * property of the default path and is true of this code either way. What
+   * does not survive is the evidence: the near-miss was never exercised, so a
+   * negative control is the whole of it. Nothing here has been tested in
+   * anger, and the paragraph above is not a war story.
    *
    * So the path is printed before anything else, and a store whose newest
    * session predates the date being recovered is refused: recovering 09-04

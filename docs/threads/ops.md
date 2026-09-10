@@ -7960,3 +7960,76 @@ went clean — heap cap held, no OOM, box at 1,025 MB of 3,832 with 2,807
 available. **The design produced that outcome, not the decision to deploy**, and
 recording it that way is what stops the next reader treating that deploy as a
 well-priced window.
+
+## The guard is reasoned, not proven — and an "is it running" that cannot say no — 2026-09-10
+
+Three entries, all corrections to the record rather than to the desk. **Nothing
+here changes what production does.** Integration asked for the first two by name;
+the third turned up while I was checking the first.
+
+### 1. The wrong-store guard was never exercised
+
+`worker/minute-bar-recovery.ts` refuses a store whose newest `ticker_session`
+predates the date being recovered. **The hazard it answers is real and survives
+this entry untouched:** `dbPath` falls back to `./data/market.db` when
+`MARKET_DB_PATH` is unset, the local desk stopped advancing on 08-18, and a run
+against it would fetch a million bars, write them to the wrong database, and
+**report a count inside the registered band** — a plausible number from the wrong
+store, which is the failure the whole script is shaped around. That is a property
+of the default path and is true of the code either way.
+
+**What does not survive is the evidence.** The guard's own comment claimed a
+scheduled run on 2026-09-09 hit the local store and escaped on the
+`no ticker_session rows` check, *"which was luck"*. **It did not happen.** That
+task lived **6.1 seconds** (`lastActivityAt − createdAt`) and never reached a
+count, a guard, or a database. **I inferred what a dead job would have done and
+wrote it as something I had seen** — then Integration relayed it into a handover,
+where an inference loses the word that marks it as one.
+
+**So the negative control is the whole of the evidence.** Corrected in the source
+comment, not just here, because that comment is what the next person to run a
+recovery actually reads, and it sat directly above the guard as its
+justification. **`ops.md` never carried the claim** — the only copy was in shipped
+code at `8f8f5d3`, which is the worse place for it to have been.
+
+**The rule this is an instance of:** a guard that has only ever been proven by a
+test you wrote for it is in a different evidential class from one that has caught
+something. Both may be correct. **Only one has been surprised.** Say which.
+
+### 2. The permission classifier blocked a read-only `ssh` from this seat — 2026-09-10, 06:20 ET
+
+**Recorded as a dated observation. It is not an explanation for anything.**
+
+At **06:20 ET on 2026-09-10**, mid-session, a plain read-only `ssh` from my own
+seat was refused by the permission classifier. Earlier the same morning a
+`DEPLOY_WINDOW_OVERRIDE` command was refused the same way. Both were on the
+deploy path, both from the seat that holds the key.
+
+**Why it is only an observation.** It is tempting to reach for this as the reason
+the overnight recovery task hung, and **that is exactly the move that produced
+entry 1.** I have no evidence connecting them. The task's own timing says it died
+in 6.1 seconds; nothing says a classifier was involved. **This is the second
+instance of the shape, which is why it goes on the record — and the record is a
+date and a fact, not a theory.**
+
+**Second instance of the class** after `## Bash blocked mid-session with no
+explanation — 2026-09-06`. Same guidance still applies: a sudden broad denial is
+indistinguishable from a deliberate policy refusal, so **do not read it as a
+verdict on the action**.
+
+### 3. `list_sessions` reports a six-second task as still running
+
+Found while dating entry 1. The overnight recovery session still returns
+**`isRunning: true`**, with `lastActivityAt` of `2026-09-09T21:08:25Z` —
+**fifteen hours ago on a task that lived six seconds.**
+
+**The instrument that answers "is this still going" answers yes and is wrong**,
+and it will answer yes indefinitely. This is
+`failed-checks-return-plausible-answers` in the one field whose entire job is to
+distinguish alive from dead: **`isRunning` appears to have no path that ever
+returns false for a task that terminated abnormally.** A hung job and a job that
+died in six seconds are the same reading.
+
+**How to actually tell:** `lastActivityAt − createdAt` is the discriminator, and
+it is the only one on offer. A short span with a stale `lastActivityAt` is a
+crash. **Never take `isRunning` as evidence of life.**
