@@ -527,8 +527,7 @@ describe('coverage windows', () => {
     expect(() => assertCovers(c, ['2026-09-09'])).not.toThrow();
   });
 
-  it('a declared expected_per_date beats the inferred mode', () => {
-    // Mostly-partial extract: the mode would call 4 a whole day.
+  it('a declared expected_per_date beats any inference', () => {
     const file = makeExtract(
       'declared.db',
       { '2026-09-08': 4, '2026-09-09': 4, '2026-09-10': WHOLE },
@@ -538,6 +537,28 @@ describe('coverage windows', () => {
     expect(c.expectedBasis).toBe('declared');
     expect(c.expectedPerDate).toBe(WHOLE);
     expect(c.partialDates).toEqual(['2026-09-08', '2026-09-09']);
+  });
+
+  it('THE MODE TRAP: a mostly-partial extract must not infer a partial day as whole', () => {
+    // Ops named this one. Commonest count here is 4, which would pass every
+    // join it should refuse. Inference takes the largest instead.
+    const file = makeExtract('mostly-partial.db', {
+      '2026-09-08': 4,
+      '2026-09-09': 4,
+      '2026-09-10': WHOLE,
+    });
+    const c = readCoverage(file);
+    expect(c.expectedPerDate).toBe(WHOLE);
+    expect(c.expectedBasis).toBe('inferred_max');
+    expect(c.countsDisagree).toBe(true);
+    expect(c.partialDates).toEqual(['2026-09-08', '2026-09-09']);
+    expect(() => assertCovers(c, ['2026-09-08'])).toThrow(/PRESENT BUT PARTIAL/);
+  });
+
+  it('does not flag a disagreement when every date agrees', () => {
+    const c = readCoverage(makeExtract('agree.db', full('2026-09-08', '2026-09-09')));
+    expect(c.countsDisagree).toBe(false);
+    expect(c.expectedPerDate).toBe(WHOLE);
   });
 
   it('a declared complete_through overrides what the counts imply', () => {

@@ -98,11 +98,19 @@ function main(): void {
     console.log('        the DATA ends, not when the FILE was made, and the two differ exactly');
     console.log('        when collection has stopped -- the case most worth detecting.');
   }
-  if (coverage.expectedBasis === 'inferred_mode') {
+  if (coverage.expectedBasis === 'inferred_max') {
     console.log('');
-    console.log('  NOTE  `expected_per_date` was inferred from the commonest per-date count');
-    console.log('        rather than declared by the producer. Sound, but an extract that is');
-    console.log('        mostly partial would infer a partial day as whole.');
+    console.log('  NOTE  `expected_per_date` was inferred from the LARGEST per-date count, not');
+    console.log('        declared by the producer. The largest rather than the commonest on');
+    console.log('        purpose: the commonest count in a mostly-partial extract IS a partial');
+    console.log('        day, and would pass every join it should refuse. This errs toward');
+    console.log('        refusing instead.');
+  }
+  if (coverage.countsDisagree) {
+    console.log('');
+    console.log('  CHECK the largest per-date count exceeds the commonest one. Either a retried');
+    console.log('        checkpoint inflated a single date, or most dates here are short. Worth');
+    console.log('        a look before trusting the gate.');
   }
   console.log('');
 }

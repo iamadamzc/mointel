@@ -25,8 +25,10 @@
  * assessments -- and `lastDate` survives only as an observation. The invariant
  * that makes this checkable is that a complete date holds a fixed number of
  * assessments (19 in production at time of writing); an extract should record
- * that as `expected_per_date`, and where it does not, the mode of the per-date
- * counts is a sound inference from the file itself.
+ * that as `expected_per_date`, and where it does not it is inferred from the
+ * LARGEST per-date count in the file -- not the commonest, because the
+ * commonest count in a mostly-partial extract is itself a partial day. See
+ * `maxCount` for why a guard should fail toward refusing.
  *
  * Partial dates inside the window are reported as `partial`, never silently
  * excluded. Production has two genuinely incomplete early dates; a rule that
@@ -36,7 +38,7 @@
 import Database from 'better-sqlite3';
 
 export type CoverageBasis = 'extract_as_of' | 'max_trading_date';
-export type ExpectedBasis = 'declared' | 'inferred_mode' | 'unknown';
+export type ExpectedBasis = 'declared' | 'inferred_max' | 'unknown';
 
 export interface Coverage {
   source: string;
@@ -51,6 +53,12 @@ export interface Coverage {
   /** Assessments expected on a whole trading date. */
   expectedPerDate: number | null;
   expectedBasis: ExpectedBasis;
+  /**
+   * Set when the inferred ceiling exceeds the commonest count -- either a
+   * retried checkpoint inflating one date, or most dates genuinely short.
+   * Either way the inference deserves a second look.
+   */
+  countsDisagree: boolean;
   /** Every date present, with how many assessments it holds. */
   perDate: { date: string; count: number }[];
   /** Dates present but short of `expectedPerDate`. */
@@ -74,7 +82,24 @@ function readMeta(db: Database.Database, key: string): string | null {
   return row?.value ?? null;
 }
 
-/** The most common per-date count, which is what a whole date looks like. */
+/**
+ * What a whole date looks like, inferred from the file when nobody declares it.
+ *
+ * **The largest observed count, not the commonest.** Ops named the failure the
+ * mode cannot see: the mode of a mostly-partial extract IS a partial day, and
+ * it would be labelled "inferred" while being confidently wrong -- permitting
+ * every join it should refuse. The max fails the other way: an anomalous
+ * over-count (a retried checkpoint, say) makes it flag whole dates as short.
+ *
+ * A guard should fail toward refusing, so the max is correct here even though
+ * it is noisier. `modeCount` is kept only to detect the disagreement and say
+ * so, because max > mode is exactly the anomaly signature.
+ */
+function maxCount(counts: readonly number[]): number | null {
+  return counts.length === 0 ? null : Math.max(...counts);
+}
+
+/** Commonest count -- used ONLY to notice that it disagrees with the max. */
 function modeCount(counts: readonly number[]): number | null {
   if (counts.length === 0) return null;
   const tally = new Map<number, number>();
@@ -82,8 +107,6 @@ function modeCount(counts: readonly number[]): number | null {
   let best: number | null = null;
   let bestN = 0;
   for (const [value, n] of tally) {
-    // Ties break toward the larger count: a full date is never smaller than a
-    // partial one, so the bigger of two equally-common values is the whole one.
     if (n > bestN || (n === bestN && best !== null && value > best)) {
       best = value;
       bestN = n;
@@ -117,10 +140,13 @@ export function readCoverage(
 
     const declared = readMeta(db, 'expected_per_date');
     const declaredN = declared !== null && Number.isFinite(Number(declared)) ? Number(declared) : null;
-    const inferred = modeCount(perDate.map((row) => row.count));
+    const counts = perDate.map((row) => row.count);
+    const inferred = maxCount(counts);
+    const mode = modeCount(counts);
     const expectedPerDate = declaredN ?? inferred;
     const expectedBasis: ExpectedBasis =
-      declaredN !== null ? 'declared' : inferred !== null ? 'inferred_mode' : 'unknown';
+      declaredN !== null ? 'declared' : inferred !== null ? 'inferred_max' : 'unknown';
+    const countsDisagree = declaredN === null && inferred !== null && mode !== null && inferred !== mode;
 
     const partialDates =
       expectedPerDate === null
@@ -145,6 +171,7 @@ export function readCoverage(
       basis: asOf ? 'extract_as_of' : 'max_trading_date',
       expectedPerDate,
       expectedBasis,
+      countsDisagree,
       perDate,
       partialDates,
       dates,
