@@ -324,6 +324,32 @@ at NOTHING and it was true when written.*
   Nothing is blocked either way; what it decides is whether *"what was the board
   showing when I traded"* is answerable past 09-02.
 
+### THE PUBLIC PAGE IS THE EVIDENCE SURFACE — REOPEN THE RISK BEFORE IT GOES LIVE
+
+**Commercial raised it unasked, 2026-09-10, `770dfc3`, and it is this seat's file.**
+
+**His ruling stands: `"accept exposure. not going to pay for something i'm not sure
+is going to be used. my call."`** *The trigger is undefined, no seat invents one,
+and the conversation is DEFERRED rather than declined — **Integration's to
+reopen.***
+
+> **WHAT CHANGED TODAY: the desk stopped being private.** *Until now it was one man
+> behind a shared password with no public trace.* **A named product, an owned
+> domain and a landing page describing what it does are DISCOVERABLE EVIDENCE of
+> what is being served and to whom.**
+
+- **THE POSITIONING BOUNDARY, Commercial's, and it is not copy:** **the page says
+  intelligence on what's moving. It must NOT sell real-time prices, quotes or the
+  tape as a feature.** *Already relayed to Web by Commercial directly.*
+- **THIS SEAT'S TRIGGER, SET NOW SO IT IS NOT A JUDGEMENT LATER: reopen the risk
+  conversation with him BEFORE the public page goes live — not now.** *Now it is a
+  draft in a canvas and reopening would spend his attention on a state that has not
+  arrived.* **The moment it is reachable by a stranger, the facts underneath his
+  ruling have changed and he should get to re-decide with that in front of him.**
+- **NOT A NEW TRIGGER FOR THE VENDOR DECISION.** *He forbade inventing one and this
+  is not one.* **It is the same accepted-exposure question asked again on changed
+  facts, which is what "deferred, not declined" means.**
+
 ### AUTH — HIS RULINGS, 2026-09-10 afternoon
 
 - **`"this will be a productized app, we need to do authentication, we have
