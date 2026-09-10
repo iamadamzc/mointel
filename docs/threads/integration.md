@@ -492,6 +492,92 @@ they disagree, the disagreement is the finding.*
   at any time. **Never use it for billing or recovery without recording that it is
   a relay.**
 
+### SCHEMA BACKUPS ARE NEVER PRUNED — A DISK-EXHAUSTION PATH NOBODY OWNS
+
+**Ops, 2026-09-10, measured. It exists whether or not anyone touches retention.**
+
+```
+/var/lib/mointel/backups   4.96 GB, 11 files, v14 (08-18) .. v24 (09-05)
+prune.sh                   handles RELEASES; no code path removes a schema backup
+every migration            VACUUM INTO, full copy of the store, KEPT FOREVER
+11 migrations in 23 days   ~one every two days
+tonight's 25 -> 26         adds ~1.2 GB, the largest yet
+=> ~17 GB/month against 63 GB free  ->  THREE TO FOUR MONTHS
+```
+
+- **This seat flagged the slower-migration cost and understated it.** *A bigger
+  store is a slower migration, yes — and also **a permanent artefact per migration,
+  sized to the store.***
+- **IT IS THE MULTIPLIER ON RETENTION.** *Raising retention to 20 makes every
+  future backup ~4.9 GB instead of ~1.2 GB, permanently, at one every two days.*
+  **Disk stops being irrelevant immediately.**
+- **ORDER: PRUNE FIRST, THEN RETENTION IS CHEAP.** Keep the 3 most recent, free
+  ~3.5 GB now, growth capped rather than linear. **Then 3 → 20 costs 3.7 GB once
+  and a bounded backup.** *Deleting backups is DESTRUCTIVE and his.*
+- **Disk today is NOT the constraint:** 77 G total, 14 G used, **63 G available**.
+  **One full session ≈ 216 MB**, measured via `dbstat` — `minute_bars` 484.32 MB +
+  autoindex 155.46 MB + `idx_minute_bars_date` 77.28 MB = 717.06 MB over 3,716,494
+  rows across four dates, **~202 bytes/row including indexes.**
+- **`market.db` is 1,294,450,688 bytes = 1.29 GB decimal, 1.21 GiB.** *Ops pinned
+  the unit against its own earlier "1.29 GB", which was ÷10⁹ said as GB. WAL
+  579,201,992 bytes.*
+
+### AND I TOLD HIM 09-04 WAS LOST TO THIS MECHANISM. IT WAS NOT.
+
+**Ops's correction, and I had already written the sentence to him.**
+
+> **What I wrote:** *"this desk has already lost 09-04 permanently to the same
+> mechanism."*
+> **What is true:** **09-04 was lost to the RETENTION DEFECT fixed in `8018b9b`,
+> plus a restore taken 31 minutes before that session opened.** *The default of 3
+> behaving CORRECTLY is what deletes 09-03 tonight. A BUG is what deleted 09-04.*
+
+**Both live on the retention path, and "the desk has lost a session" is fair. "Lost
+to this exact mechanism" is not** — it reads as though the working default has
+already cost him one, and **it has not.**
+
+**THE TELL: I reached for the defect to make the case.** *The question "is 3 the
+right number" is legitimate on its own and needed no incident behind it.* **A true
+claim joined to another true claim by a link nobody checked — fifth today, and the
+first where the link was recruited to add WEIGHT rather than to explain.**
+
+### THE RESTRICTIVE MAIL RECORDS NEED NO SENDER — MY SEQUENCING WAS HALF RIGHT
+
+**Ops, 2026-09-10.** This seat told it not to publish SPF/DKIM because the values
+come from a sender that does not exist. **Correct for the PERMISSIVE direction and
+wrong for the restrictive one.**
+
+- **`v=spf1 -all` — nothing is authorised to send as this domain. TRUE TODAY, not a
+  guess.** Same for `_dmarc v=DMARC1; p=reject;` and **a null MX (`0 .`, RFC 7505).**
+- **The window between registering a domain and publishing a policy is exactly when
+  a domain is worth spoofing and cheapest to spoof** — and `tmitrader.com` now
+  carries his product name and points at a live board.
+- **THE OBLIGATION, WHICH BELONGS IN THE SAME ITEM AS CHOOSING A SENDER:** these
+  must be RELAXED when one is chosen, **and forgetting means the first real mail
+  fails — loudly, as a bounce, not into a spam folder.** *Failing closed is the
+  right direction; it is still a real obligation and not a separate one to be
+  found later.*
+- **HELD, NOT INSTRUCTED.** *A DNS write on his account. His "do the needful"
+  concerned enabling mail; this is locking it down, and the two are not the same
+  sentence.* **Nothing written.**
+
+### ROUTE 53 — WRITE ACCESS PROVEN WITHOUT WRITING
+
+```
+zone       tmitrader.com.  Z05508241VIT62AXLR7KN   4 records: A apex, A www, NS, SOA
+profile    management-admin, account 528131355234
+simulate-principal-policy against the zone ARN:
+  ChangeResourceRecordSets ALLOWED · ListResourceRecordSets ALLOWED · GetHostedZone ALLOWED
+```
+
+**`simulate-principal-policy` evaluates the policy and changes nothing** — the
+dry-run equivalent. **Positive control: `magellan_admin` returns zero zones,
+`management-admin` lists nine.**
+
+**AND DNS AND COMPUTE ARE IN DIFFERENT ACCOUNTS.** *The zone is in `management-admin`;
+the EC2 box is in a third account neither profile can see.* **"We have AWS access"
+is two different answers depending on which thing you mean.**
+
 ### The vocabulary he settled, 2026-09-10
 
 ```
