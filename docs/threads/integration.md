@@ -607,6 +607,53 @@ dry-run equivalent. **Positive control: `magellan_admin` returns zero zones,
 the EC2 box is in a third account neither profile can see.* **"We have AWS access"
 is two different answers depending on which thing you mean.**
 
+### GCP `mointel` EXISTS, AND THE CLI INSTRUCTION IS HAZARDOUS RATHER THAN LIMITED
+
+**He created the project and said: `"have ops work on the oauth client config via
+CLI."` Ops investigated and created nothing. 2026-09-10.**
+
+**THE WALL THIS SEAT EXPECTED IS NOT THERE.** *Predicted: "`gcloud` needs his
+browser sign-in and no seat can perform it."* **Wrong — `gcloud` SDK 508.0.0 is
+installed and the ACTIVE account is `iamadamzc@gmail.com`, his own.** *Proven live
+rather than listed: `gcloud projects describe mointel` returns `LIFECYCLE_STATE:
+ACTIVE` — a listed account can hold a dead refresh token.*
+
+> **⇒ AND THAT IS A STANDING HAZARD, NOT A CONVENIENCE. EVERY `gcloud` COMMAND ANY
+> SEAT RUNS HERE EXECUTES AS HIM, WITH HIS PROJECT RIGHTS, WITH NO PROMPT.** *The
+> credential entry already happened, so the guard that normally stops a seat — "you
+> would have to sign in and you cannot" — is absent on this surface.* **Treat
+> `gcloud` as a production write path from the first character.**
+
+**THE ACTUAL WALL, SOURCED FROM GOOGLE'S CURRENT DOCS AND THE SHIPPED SDK HELP,
+VERBATIM AND AGREEING:**
+
+```
+"The brand is 'internal only', meaning OAuth clients created under it only accept
+ requests from users who belong to the same G Suite account as the project."
+"the 'internal only' setting can be manually changed in Google Cloud Platform Console"
+"A project can only have one brand."
+"The brand is created in unreviewed status."
+oauth-brands update / delete   DO NOT EXIST  -- on iap or alpha iap. create/describe/list only
+```
+
+- **TMI Trader is a public consumer product; its users are not in his Workspace.**
+  **So the brand the CLI creates is the WRONG KIND, a project holds only ONE, and
+  there is no CLI path to change or remove it.**
+- **⇒ FOLLOWING THE INSTRUCTION LITERALLY CREATES A UNIQUE, WRONG, UN-DELETABLE
+  BRAND WHOSE ONLY REPAIR IS THE CONSOLE.** *The opposite of what the instruction is
+  for.*
+- **CONSOLE-ONLY, specifically: internal→external, starting the verification review,
+  and EDITING ANY CONSENT-SCREEN FIELD AT ALL — there is no `update` verb.**
+- **NOT ASSERTED:** `gcloud alpha iap oauth-clients create` exists, **but it creates
+  a client under an IAP brand, for IAP.** *Whether that is the same object as a "Web
+  application" client used for Sign in with Google is unverified and Ops refused to
+  claim it either way.*
+- **SECONDARY: the IAP API is not enabled on `mointel`**, and enabling it is a
+  create-type action Ops did not take. **The error names a PERMISSION problem —
+  *"does not have permission to access projects instance [mointel] (or it may not
+  exist)"* — BEFORE naming the real cause, which is that the API is off.** *Read as
+  written it points at the wrong problem entirely. Sixth today.*
+
 ### The vocabulary he settled, 2026-09-10
 
 ```
