@@ -276,30 +276,60 @@ function main(): void {
      * — is the only part that is a gap, and it is named separately so nobody
      * else chases the whole number.
      */
-    const preFeature = firstReportingId === null ? 0 : silentJobs.filter((j) => j.id < firstReportingId).length;
-    const neverRan = silentJobs.filter(
-      (j) => (firstReportingId === null || j.id >= firstReportingId) && j.status === 'QUEUED',
-    ).length;
-    const unexplained = silentJobs.filter(
-      (j) => firstReportingId !== null && j.id >= firstReportingId && j.status !== 'QUEUED',
-    );
-
-    console.log(
-      `  of which ${preFeature} predate the first reporting job (id ${firstReportingId ?? 'none'}), ` +
-        `${neverRan} were QUEUED and never ran`,
-    );
-    if (unexplained.length === 0) {
-      console.log('  UNEXPLAINED: none. Every missing report is accounted for.');
-    } else {
+    /*
+     * A NULL BOUNDARY IS AN EXPLICIT BRANCH, NEVER A PREDICATE.
+     *
+     * THIS FILE SHIPPED THE OPPOSITE AND IT IS THE FAMILY THE FILE EXISTS TO
+     * CATCH. When no job has ever reported, `firstReportingId` is null, and the
+     * `unexplained` filter carried `firstReportingId !== null &&` — so it
+     * selected nothing and the report printed "UNEXPLAINED: none. Every missing
+     * report is accounted for."
+     *
+     * **NO JOB EVER REPORTING IS THE STRONGEST POSSIBLE EVIDENCE THE FEATURE IS
+     * DARK, AND THE INSTRUMENT ANNOUNCED IT AS A CLEAN BILL.** A scope
+     * predicate whose own failure returns the reassuring answer.
+     *
+     * Ops found this shape in a boundary I proposed for its audit sweep —
+     * `MIN(updated_at) WHERE <column> IS NOT NULL` returns null on a fully dark
+     * column, and `updated_at >= NULL` matches no rows, so the sweep would have
+     * examined zero rows for the one column that was 100% dark. It demonstrated
+     * it on production against `volume_base_through`: 160,586 rows, 0 populated,
+     * boundary null, 0 rows selected. **I then found the same defect already
+     * shipped here.**
+     */
+    if (firstReportingId === null) {
       console.log(
-        `  **UNEXPLAINED: ${unexplained.length}** — ran after the feature existed and ` +
-          'reported nothing. This is the only part that is a gap:',
+        `  **NO JOB HAS EVER REPORTED. All ${silent} are unaccounted for, and this is\n` +
+          '  the loudest reading this instrument has: there is no boundary because the\n' +
+          '  collector has produced nothing on any job in this store. Do NOT read the\n' +
+          '  decomposition below — there is none to make.**',
       );
-      for (const job of unexplained.slice(0, args.limit)) {
-        console.log(`    job ${job.id}  ${pad(job.ticker, 7)} ${job.trading_date}  ${job.status}`);
-      }
-      if (unexplained.length > args.limit) {
-        console.log(`    ... and ${unexplained.length - args.limit} more`);
+    } else {
+      const preFeature = silentJobs.filter((j) => j.id < firstReportingId).length;
+      const neverRan = silentJobs.filter(
+        (j) => j.id >= firstReportingId && j.status === 'QUEUED',
+      ).length;
+      const unexplained = silentJobs.filter(
+        (j) => j.id >= firstReportingId && j.status !== 'QUEUED',
+      );
+
+      console.log(
+        `  of which ${preFeature} predate the first reporting job (id ${firstReportingId}), ` +
+          `${neverRan} were QUEUED and never ran`,
+      );
+      if (unexplained.length === 0) {
+        console.log('  UNEXPLAINED: none. Every missing report is accounted for.');
+      } else {
+        console.log(
+          `  **UNEXPLAINED: ${unexplained.length}** — ran after the feature existed and ` +
+            'reported nothing. This is the only part that is a gap:',
+        );
+        for (const job of unexplained.slice(0, args.limit)) {
+          console.log(`    job ${job.id}  ${pad(job.ticker, 7)} ${job.trading_date}  ${job.status}`);
+        }
+        if (unexplained.length > args.limit) {
+          console.log(`    ... and ${unexplained.length - args.limit} more`);
+        }
       }
     }
   }
