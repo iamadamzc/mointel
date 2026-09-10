@@ -435,9 +435,10 @@ fifty.* **Six seconds cannot have reached a count, a guard, or a database.**
 **AND OPS RETRACTED ITS OWN ACCOUNT OF THE EVENT.** It had reported *"it exited on
 the 'no `ticker_session` rows for 09-04' guard — that was luck, not design"*, having
 never seen the output. **It reasoned about what the script WOULD do and recorded it
-as what it DID.** *Checked: that sentence reached no document — it lived in a
-transcript and in the sixth session's handover chat, which is why the handover sent
-this seat looking for a report that was never written.* **What survives is the
+as what it DID.** *This seat checked and reported that the sentence reached no document. **WRONG — the
+search was `docs/` only.** Ops found it in the shipped source at
+`worker/minute-bar-recovery.ts:99`, in the guard's own comment, live at `8f8f5d3`,
+and is fixing it there.* **What survives is the
 wrong-store hazard, which is true of the code either way. What does not survive is
 the guard being PROVEN: it was never exercised, so its only evidence is its negative
 control.** *That correction is Ops's to land in `ops.md`; flagged, not written here.*
@@ -865,6 +866,40 @@ arrived in.**
 
 **And the correction ran the right way.** I set the condition, the thread that
 would suffer the failure improved it, and it told me why rather than just doing it.
+
+## I SEARCHED `docs/` AND REPORTED THAT THE FALSE SENTENCE HAD REACHED NO DOCUMENT
+
+**2026-09-10. Ops found it in the shipped source an hour after I closed the
+question.** Ops had retracted its own account of the hung 09-04 task — *"it exited
+on the 'no `ticker_session` rows' guard, which was luck"* — of an event that lasted
+**6.1 seconds** and reached no guard, no count and no database.
+
+**I went looking for where that sentence had propagated, found nothing, and said
+so.** *I grepped `docs/`.* **The sentence was in `worker/minute-bar-recovery.ts:99`,
+inside the guard's own comment, live on the box at `8f8f5d3`** — and it is the
+load-bearing justification for the guard sitting directly beneath it, **in the file
+most likely to be read by whoever next runs a recovery.**
+
+- **A CODE COMMENT IS A DOCUMENT AND IT IS THE ONE WITH THE NARROWEST, MOST
+  MOTIVATED READERSHIP.** *The next person to run that script reads it; nobody
+  reads `docs/threads/` before running a script.*
+- **"It reached no document" was a claim about the repo and I checked one
+  directory.** The right scope for a retraction is **every artefact that asserts
+  the event**, and source files assert events constantly — in comments, in test
+  names, in error strings.
+- **The reassuring answer suppressed the second look.** *"Good, it never got out"*
+  is the finding you stop searching after. **Had the grep found something, I would
+  have widened it.**
+
+**This is the desk's oldest failure — absence of detection is not detection of
+absence — committed inside the very rule that exists to catch it,** *a retraction
+only reaches the sentence it edits.* **I applied the rule and then under-scoped the
+search it depends on, which is worse than not applying it: it produced a written
+all-clear.**
+
+**THE FIX IS THE SCOPE, NOT THE DILIGENCE.** A retraction search is
+`grep -rn` across **source, tests and docs**, and the ONE thing that must never be
+searched alone is the directory the retraction was written in.
 
 ## Reading other threads
 
