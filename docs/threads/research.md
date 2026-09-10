@@ -14626,3 +14626,76 @@ overwrites in place and minute bars retain three sessions, **so nobody can ever
 ask what premarket gain was on 2026-08-24.** *That is the true statement, and
 "the data does not have it" said without "backward" is the failure — the same
 shape as reading one path's deliberate value as the population's.*
+
+**143. "RELEVANT LAST" IS THE MOST RECENT RTH CLOSE — ONE RULE, THREE CORRECT
+ANSWERS, AND THE ENUM ALREADY RECORDS WHICH. AFTER-HOURS COLLAPSES TO ONE NUMBER
+AND ONLY ONE FIGURE IS ACTUALLY NEW.**
+
+*He ruled `"let's show both. current session gap and gap from the relevant last."`
+Integration asked me to confirm or correct its per-session table rather than
+adopt it. **One row is wrong, one collapses, and the phrase needs no new
+definition.***
+
+### THE PHRASE IS ALREADY IMPLEMENTED
+
+**"Relevant last" = THE MOST RECENT COMPLETED RTH CLOSE.** That single rule
+produces the desk's existing behaviour on all three sessions, and
+`types.ts:92`'s `basis: 'PRIOR_SESSION' | 'CURRENT_SESSION'` already records
+which one was used.
+
+| session | current session gap | gap from relevant last | distinct? |
+| --- | --- | --- | --- |
+| **premarket** | vs first premarket print | **prior RTH close** — the Gap, shipping | **yes** |
+| **RTH** | **vs the 09:30 open — NEW** | **prior RTH close** — shipping as `percentChange` | **yes** |
+| **after-hours** | vs today's 16:00 close | **today's 16:00 close** — the AH move, shipping | **NO** |
+
+**CORRECTING INTEGRATION'S RTH ROW: the relevant last is the PRIOR RTH CLOSE, not
+the premarket close.** *The anchor is the last completed REGULAR session, which is
+what the shipping convention uses and what his own CULP example anchors on —
+"+18.1% from yesterday's 16:00 close".*
+
+**AND AFTER-HOURS COLLAPSES BY CONSTRUCTION.** *Its session open IS today's 16:00
+close, which IS its relevant last — the same instant, not two close values.*
+**One figure, and Integration is right that two identical numbers side by side is
+worse than one.**
+
+**⇒ EXACTLY ONE NEW NUMBER: PRICE VS THE 09:30 OPEN.** *Everything else on the
+table already ships. The premarket pair needs a premarket open too — see the
+hazard below — but the "relevant last" half of all three is done.*
+
+### AND THE SESSION OPEN MUST NOT COME FROM A QUERY
+
+*Integration suspected the 09:30 bar's open from stored minute bars, live.
+Available — `repo.ts:208` reads them ordered by `ts` — **and it is the wrong
+source.***
+
+**`accumulateVwap` already classifies every bar with
+`vwapSessionForTs(bar.ts, this.tradingDate, this.rthCloseMinutes)`.** *That
+partitioner is live, already tested, and already handles an early close.*
+**Capture each session's FIRST price there, beside the VWAP accumulators it
+already feeds** — no DB read per row per refresh, and no second answer to "which
+session is this bar in."
+
+**`lib/archive/outcomes.ts` ALREADY HOLDS A SECOND IMPLEMENTATION of that
+boundary** (`RTH_START_MIN`, `closeMinutes`, its own loop). **A third would be
+the two-objects-one-word failure this desk has paid for five times, arriving in
+the session boundary itself.**
+
+### THE HAZARD, NAMED BEFORE IT IS BUILT
+
+**BOTH NEW SESSION OPENS ARE SINGLE-PRINT REFERENCES, AND PREMARKET IS THE WORSE
+ONE.** *A first print at 04:00 on a $2 name can be one odd lot; item 128 measured
+the same shape at the other end of the day, where an auction cross is 7 trades
+and 3,751,177 shares.* **A poisoned open misstates the "since" half for the rest
+of the session, and it is his call whether that is answered with the first print,
+the first minute's close, or the first minute's VWAP** — *the per-session VWAP
+machinery is already there for the third.*
+
+### CULP IS ONE DECOMPOSITION, NOT TWO FIGURES
+
+**+18.1% from yesterday's close, essentially all of it in yesterday's
+after-hours, roughly nothing since premarket opened.** *Integration is right that
+neither number says that alone.* **The shape is `prior close → session open →
+now`: what carried in, and what has happened since. Two segments of one move,
+and building it as a pair of independent percentages loses exactly the reading he
+asked for.**
