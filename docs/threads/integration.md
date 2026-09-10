@@ -3481,3 +3481,49 @@ measured from the PRIOR CLOSE, across sessions.** **So "sorted by the session's
 move" would today sort by the across-session number.** *The two-step framing is
 not caution; the limit is in the field's own definition and can be read rather
 than argued.*
+
+## THERE ARE TWO KINDS OF INERT, AND I APPLIED THE TEST FOR THE WRONG ONE
+
+**2026-09-10.** Briefing Ops on the supply-bound verdict, this seat wrote that it
+ships **"live and immediate rather than inert"**, reasoning from Ops's own
+finding that `mointel-research` restarts on every deploy.
+
+**Research corrected it: true of the COMPUTATION, false of the EFFECT.**
+
+    supplyOverhang -- exactly two references in the codebase
+      pipeline.ts:449   the write
+      types.ts:525      the type
+    NOTHING READS IT
+
+> **The deploy changes no number and no verdict he can see. A new field
+> populates on every dossier and a pure function runs beside two that already
+> do.** **The exposure is a crash in a new path, not a wrong verdict on his
+> screen** — and every input branch is null-safe and tested.
+
+### The distinction, because this desk has the mirror recorded three times
+
+**Three separate features shipped INERT because the writing PROCESS was not
+restarted** — the entry from the third is *"a deploy's process list is derived
+from what the change WRITES, not from what it RISKS."* **That is the test I
+reached for, and here it PASSES: the process does restart and the code does
+run.**
+
+> **THERE IS A SECOND KIND OF INERT — THE CODE RUNS AND NOTHING READS THE
+> OUTPUT.** **"Will the process restart" and "will anything consume it" are
+> different questions, and only the second decides whether he sees a change.**
+
+**I applied the first test and reported its answer to the second question.**
+*And the desk already knows the second one under another name — `FINISHED WORK
+THAT DOES NOT ARRIVE`, four instances, where the builder sees it built and the
+reader sees a blank.* **I had both halves on file and used neither.**
+
+### It is the invented-link shape, and it was aimed at a risk assessment
+
+**Two true claims — the worker restarts; it is a verdict change — joined by an
+assertion nobody checked.** *The charter records three of these in one night,
+each refused by the thread that received it.* **This one would have had Ops
+weighing a deploy window against a danger that does not exist**, and it was
+caught by the thread that owned the code rather than by me.
+
+**THE CHEAP CHECK I SKIPPED IS ONE GREP: how many things reference the field.**
+*Two, and one of them is its own type.*
