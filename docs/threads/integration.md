@@ -1351,6 +1351,59 @@ been repeated — which is the point of it, and the cost of it.*
 - **Same shape as the false sentence in `minute-bar-recovery.ts`:** *the artefact
   the next actor actually reads is the only place a caution survives.*
 
+## THREE INSTRUMENTS IN ONE DAY THAT COULD NOT PRODUCE THE FAILING ANSWER
+
+**2026-09-10. Found by three different seats, none of them looking for a pattern.**
+
+```
+isRunning: true          on a session that lived 6.1 seconds
+                         a status field with no path to "died"
+max(trading_date)        as a coverage gate, on a partial newest date
+                         the newest date is ALWAYS the likeliest to be partial
+feed_health.connection   read from a STORED row a dead worker leaves behind
+                         it cannot show DISCONNECTED
+```
+
+**Each returns a plausible answer. None can return the one that matters.** *And each
+was believed by a competent seat until somebody read the mechanism rather than the
+value.*
+
+- **THE SHARED FIX: read the thing that would GO SILENT, not the thing that would GO
+  STALE.** *A worker's own log stops. A stored health row does not. A session's
+  lifespan is arithmetic on two timestamps; its running flag is a claim.*
+- **THE TELL IS ALWAYS THE SAME QUESTION: could this check have produced the failing
+  answer, ever?** *Not "is this value right" — "is this instrument capable of being
+  wrong in the direction I care about."*
+- **This is the desk's oldest rule, `absence of detection is not detection of
+  absence`, and it arrived three times in one day in three different shapes**: a
+  process supervisor, a SQL aggregate, and a health endpoint. **The rule was known;
+  the instruments were not audited against it.**
+
+**AND THE REASON THEY SURVIVE: each is the REASSURING answer.** *"Still running",
+"coverage through today", "connected".* **A check that cannot fail also never
+interrupts anyone, which is exactly why nobody re-reads it.**
+
+## A SEAT ESCALATING DIRECTLY TELLS THIS SEAT IT HAS DONE SO
+
+**2026-09-10. He was asked the same class question twice within the hour, by Ops and
+by this seat, neither knowing the other was asking.**
+
+**Ops proposed the rule as "when a class question is already in flight from another
+seat, the second seat waits." That is the wrong rule and it was generous to
+this seat.**
+
+- **Ops could not wait for something it did not know existed.** *It escalated
+  directly, which is correct and which he encourages — he talks to threads
+  routinely.*
+- **A rule that says WAIT makes every seat dependent on this one being awake**,
+  which is the failure this desk keeps finding in every other form.
+- **⇒ THE RULE IS NOTIFY, NOT WAIT. One line to this seat, before or after, never
+  instead.** *It does not route the escalation through here and it slows nothing.*
+
+**WHY IT IS THIS SEAT'S PROBLEM RATHER THAN A COURTESY:** the charter requires **not
+inflating what is pending on him**, and today this seat could not have known whether
+it was. **You cannot keep a list short while blind to half the additions.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
