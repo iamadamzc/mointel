@@ -201,8 +201,10 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-*Refreshed 2026-09-10 ~06:20 ET (Thursday) by the sixth Integration session,
-retiring after ~17 hours. **Supersedes the 2026-09-09 block entirely; that block
+*Opened by the SEVENTH Integration session 2026-09-10 ~07:50 ET (Thursday), which
+re-read all six threads and corrected four blocks below in place; corrections are
+marked where they sit. Base block refreshed 2026-09-10 ~06:20 ET by the sixth
+session, retiring after ~17 hours. **Supersedes the 2026-09-09 block entirely; that block
 has been removed.** Everything below LIVE STATE is kept for its mechanisms, not
 its facts. **Verify before acting on any of it.***
 
@@ -257,7 +259,12 @@ load-bearing to the thread that found it. To him it is background.**
 
 ### What is HIS and open
 
-**NOTHING.** Everything put to him this session was answered.
+*Rewritten 2026-09-10 ~07:55 ET by the seventh session. The sixth session left this
+at NOTHING and it was true when written.*
+
+- **Coaching's desk-extract refresh.** Leave it, one refresh, or a standing cadence.
+  Nothing is blocked either way; what it decides is whether *"what was the board
+  showing when I traded"* is answerable past 09-02.
 
 ### The vocabulary he settled, 2026-09-10
 
@@ -289,16 +296,26 @@ WITHIN this session, from its own first print       NOT BUILT
   is already on the row. Behaviour change, not a rename.
 - **Coaching's desk extract stops at 09-02** and the gap grows every session.
 
-### Where the six threads stand, 2026-09-10 ~06:20 ET
+### Where the six threads stand, re-read 2026-09-10 ~07:50 ET
 
-- **Ops** — shipped `57e3265`. **Queued: the dark-field sweep as a gated script;
-  the artefact/platform composition.** Holds the box and the only deploy seat.
+- **Ops** — shipped `8f8f5d3`. *Corrected from `57e3265`, which this block still
+  named here after the Production block above had already been fixed.* **Queued:
+  the dark-field sweep as a gated script; the artefact/platform composition; the
+  579 MB WAL.** Holds the box and the only deploy seat.
 - **Design** — four commits live, **verifying they render now the sha is named.**
   Holds the Move family surface and the `baselineLabel` proxy item.
-- **Research** — supply verdict live. **Holds the Move compute and the RTH-open
-  reference.** Holding the build until after a deploy, correctly.
+- **Research** — supply verdict live. **The Move compute is BUILT and committed at
+  `9a090e5`, 1,914 tests pass — undeployed, and it has no reader.** *First print of
+  the session, one rule for all three, anchoring minute's trade count travelling
+  beside it; both traps handled by one `bar.ts <= held` comparison.* **Blocked on
+  `ticker_session` store columns, which is Ops's file** — without them Move is
+  live-only and vanishes on any path that reads from the store, the same shape as
+  the sparkline reading `activity_window`.
 - **Coaching** — **its desk extract stops at 09-02 and the gap grows every
-  session.** Declined a fresh extract for a small question and was right to.
+  session.** It established that production has written assessments every trading
+  date with no gap, so **the 09-02 wall is a stale local copy, not a hole**, and
+  `symbol_outcomes` has never existed on production at all. **It has put a
+  three-way choice to him: leave it, one refresh, or a standing cadence.**
 - **Commercial** — idle since 09-08. Naming closed, trademark waived, **vendor
   decision not due and the risk conversation still Integration's to reopen.**
 - **R&D** — idle since 09-09. Retracted its escalation reading; nothing
@@ -306,11 +323,22 @@ WITHIN this session, from its own first print       NOT BUILT
 
 **No scheduled task is armed. Nothing is watching anything.**
 
-**ONE STALE SESSION TO CLEAR:** `local_870499f5`, *"Mointel: 09-04 recovery
-COUNT-ONLY after the close"*, **still `isRunning: true` fourteen hours after its
-last activity.** *That is the task that fired an hour late and opened the local
-split-brain desk.* **A task session that never terminates is the thing that made
-its report unreachable in the first place, and it is still in that state.**
+**ONE STALE SESSION TO CLEAR, AND IT IS WORSE THAN THIS BLOCK SAID.** Read by the
+seventh session 2026-09-10 07:5x ET. `local_870499f5`, *"Mointel: 09-04 recovery
+COUNT-ONLY after the close"*, is `isRunning: true` **fifteen hours** after its last
+activity — **and its transcript is eight messages that end on an unreturned `Bash`
+call.** *It never got past the first pre-flight ssh.*
+
+> **THE COUNT WAS NEVER TAKEN.** The previous block recorded the count as finished
+> work that could not reach a reader. **It is not finished work. There is no
+> number.** *The distinction matters because "nobody has read it" invites someone
+> to go and read it; "it does not exist" means the 16:05-quiet-window pass has to
+> be run again.*
+
+**Same failure family as the last hop being structurally impossible — but one step
+earlier, and it is the more dangerous one: a task that hangs looks exactly like a
+task whose report nobody collected.** *Kill the session from the sidebar; the count
+has to be retaken in a quiet window with a seat present.*
 
 
 ### Rulings he made this session, in his words
