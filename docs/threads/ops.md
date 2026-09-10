@@ -7914,3 +7914,49 @@ that is not in the world.
 **Credentials: the CSVs in `A:\AWS_creds` are CONSOLE PASSWORDS, not API keys.**
 No thread here can use them and none should try; the programmatic path is the
 `management-admin` and `magellan_admin` profiles. See [[aws-access-paths]].
+
+## Two correct guards, and one disables the other — 2026-09-10
+
+**The preferred defence against the capacity incident is unreachable from the
+only seat that deploys.**
+
+`deploy.sh` builds on the box when the release carries no `.next`. That build
+took the instance down on 2026-08-27 and cost ~54 minutes of premarket, so two
+defences were written:
+
+```
+deploy.sh:85    if [ -d "$RELEASE/.next" ]  -> skip the on-box build entirely   PREFERRED
+deploy.sh:82    else heap capped 1536MB, niced, run BEFORE services stop        FALLBACK
+```
+
+**And `push-release.sh:109` refuses to ship an artefact built on a non-Linux
+host**, because Next.js build output is not guaranteed portable and
+Windows-to-Linux has never been verified here.
+
+**Ops deploys from `MINGW64_NT-10.0-26200`.** So `ARTIFACT_NEXT` exits 5 every
+time, and **every deploy from this seat takes the fallback — indefinitely.** The
+irony is exact: `push-release.sh:98` says *"the gate already builds at the
+shipping sha in a pinned worktree, so that build is the one to point at."* **It
+is the right artefact, at the right sha, on the wrong platform.**
+
+**NEITHER GUARD IS WRONG AND NEITHER SHOULD BE WEAKENED.** The platform refusal
+trades a known capacity problem for an unverified correctness one, which is the
+wrong trade. **What is wrong is their composition, and neither author could have
+seen it — the capacity fix was written on the box's side, the platform refusal on
+the shipper's.** This is not the familiar *finished work that never arrives*
+shape, which is a missing hop; here both hops work and one closes the other.
+
+**Two routes, neither taken, no deadline:**
+- **build the artefact ON the box, in a scratch directory, before the release
+  stops anything** — needs no equivalence claim and no new trust. Integration's
+  preference and probably right.
+- **establish the platform equivalence and set `ARTIFACT_PLATFORM_OK=yes`** —
+  `tests/desk/releaseBootstrap.test.ts` already carries *"ships the artefact once
+  the platform equivalence is asserted"*, so this was anticipated.
+
+**Found because `57e3265` was deployed at 06:06 ET, inside the same premarket
+window as the original incident, without the capacity risk being priced.** It
+went clean — heap cap held, no OOM, box at 1,025 MB of 3,832 with 2,807
+available. **The design produced that outcome, not the decision to deploy**, and
+recording it that way is what stops the next reader treating that deploy as a
+well-priced window.
