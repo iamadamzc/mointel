@@ -153,8 +153,8 @@ backstop for someone who signs in without an invite.*
 
 | # | still open | who |
 | --- | --- | --- |
-| 1 | One sentence on **why** he built it, for the "who built it" block | the trader |
-| 2 | **Session cookie LIFETIME** (`ttlSeconds` is a parameter, not a constant), the **OAuth flow cookie's NAME** (passed into `flowCookie()`), whether any mailing list exists, access-log fields, retention periods for account/logs/email/backups, hosting region, email provider | Ops |
+| ~~1~~ | **WITHDRAWN, not answered.** The "why he built it" sentence was cut in the de-pitch pass — **that sentence was the pitch.** The block is now headed *"Who runs it."* and states the operator. *Nothing is owed here.* | closed |
+| 2 | Whether any mailing list exists; access-log fields; retention periods for account, logs, email and backups; hosting region; email provider | Ops |
 | ~~2b~~ | **SATISFIED, and built stronger than asked.** Ops made it structural rather than two calls: the callback has **no bare `return`** — every exit goes through one helper that attaches the cleared flow cookie, so a failure mode added later inherits it. Tests assert the header **on the failure paths by name**, not only on success. *That is the assertion the sentence actually needed.* | closed |
 | 3 | **Session cookie LIFETIME — with him, not with Ops.** Ops recommends **30 days** and routed it rather than settling it. Its argument: sessions are server-side and revocable, so length is not the same object as a long-lived stateless token, and a short lifetime would make him re-authenticate inside the 07:00–10:00 premarket for no gain the cookie attributes are not already giving. **Nothing is published until he rules.** | the trader |
 | 4 | **The flow cookie's NAME is not established.** Relayed to Web as `mointel_oauth` carrying `<state>.<nonce>`; **the only occurrence in the tree is `mointel_oauth_state`, in `tests/auth/cookie.test.ts`, passed as an argument** — and `1e120ac` asserts no name at all. *A policy that names a cookie is one of the few claims a user can check in their own browser inspector.* **Not published on a relay the code disagrees with.** | Ops |
