@@ -343,6 +343,16 @@ WITHIN this session, from its own first print       NOT BUILT
 - **`baselineLabel` reads a PHASE and names a BASELINE.** `referenceRthCloseBasis`
   is already on the row. Behaviour change, not a rename.
 - **Coaching's desk extract stops at 09-02** and the gap grows every session.
+  **He authorised ONE refresh 2026-09-10, not a cadence. Request is with Ops to
+  price; Coaching reports the as-of date back here.** *`assessments` +
+  `assessment_tickers` from 09-03 onward.*
+- **`symbol_outcomes` ALSO stops at 09-02 in Coaching's copy, and today's refresh
+  does NOT cover it.** *It has never existed on production — it is built offline.*
+  **It is NOT unowned: `lib/archive/`, `worker/archive-backfill.ts` and
+  `npm run archive:backfill` are R&D's, named in `rnd.md`.** *Coaching flagged it
+  as possibly nobody's job; checked, and it has an owner.* **Nobody is asking for
+  it and nothing is blocked. The trap is someone assuming today's pull covered
+  it.**
 
 ### Where the six threads stand, re-read 2026-09-10 ~07:50 ET
 
@@ -798,6 +808,30 @@ what it DID, and **the retiring seat carried that into a handover, where it beca
 the reason to look in the wrong place.** **A relayed inference loses the word that
 marked it as one** — which is the whole argument for FLAG, DO NOT ASSERT, arriving
 from the receiving end for once.
+
+## A STAMP IN THE FILENAME DID NOT TRAVEL; A STAMP IN THE DATA DOES
+
+**Coaching's strengthening of a condition this seat set, 2026-09-10.** I said the
+refreshed desk extract must record its as-of date **in the file**. Coaching asked
+Ops for a **`meta` row** — `extract_as_of` plus the max `trading_date` — instead.
+
+**The reason is that the 09-02 wall was ALREADY in the filename.** It read
+`assessments-prod-2026-09-02.db`, Coaching typed that name repeatedly, **and still
+read the store's zero as a fact about the desk rather than a fact about the copy.**
+
+- **A filename does not travel into a query result. A meta row does.**
+- With it, the coverage window prints beside every answer, and **a question falling
+  outside it is REFUSED rather than answered wrongly.**
+- **Coaching also asked for the filename to COLLIDE with the old one rather than be
+  self-describing**, so the check cannot be skipped by reading the name.
+
+**This is *make it impossible, not visible* applied to provenance**, and it is the
+sharper version of the desk's own rule that a stored value carries its basis: the
+basis has to be in the same object the reader reads, **not in the container it
+arrived in.**
+
+**And the correction ran the right way.** I set the condition, the thread that
+would suffer the failure improved it, and it told me why rather than just doing it.
 
 ## Reading other threads
 
