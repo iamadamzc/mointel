@@ -56,17 +56,34 @@
     </div>
 
     <div style="border: 1px solid #e8ac33; border-radius: 4px; padding: 20px 24px; display: flex; gap: 20px; align-items: flex-start;">
-      <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #e8ac33; padding-top: 2px; white-space: nowrap;">EXCLUDED</span>
-      <div style="display: flex; flex-direction: column; gap: 6px;">
+      <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #e8ac33; padding-top: 2px; white-space: nowrap;">DELETED</span>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
         <p style="font-size: 15px; line-height: 1.6; color: #e9edf3;">
           <span class="mono">--color-muted</span> <span class="mono" style="color: #8792a3;">#6d788a</span>
-          is not used for text on the public pages.
+          is gone from the token file, not merely avoided here.
         </p>
         <p style="font-size: 15px; line-height: 1.6; color: #97a1b0; max-width: 88ch;">
-          It measures 4.49:1 on the desk ground and 4.30:1 on a panel &mdash; under the 4.5:1 floor for
-          normal text, either way. It was in the first draft of these pages, on the footer's legal
-          paragraph, which is the worst place on the site to put text a person cannot read.
-          <span class="mono" style="color: #8792a3;">#8792a3</span> replaces it everywhere.
+          It fails AA for normal text on every surface the desk has:
+          <span class="mono" style="color: #c7cedb;">4.49</span> on the ground,
+          <span class="mono" style="color: #c7cedb;">4.30</span> on a panel,
+          <span class="mono" style="color: #c7cedb;">4.10</span> on the striped header surface. It was
+          in the first draft of these pages, on the footer's legal paragraph.
+        </p>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0; max-width: 88ch;">
+          Web found it and handed it to Design rather than asserting it, because whether it carried text
+          on the board was not Web's to answer. <strong style="color: #e9edf3;">The answer was that it
+          carried nothing at all &mdash; zero references</strong>, so the defect was latent rather than
+          live and no text on the desk was ever unreadable because of it.
+          <strong style="color: #e9edf3;">Design deleted it rather than annotating it</strong>, and the
+          deletion enforces itself: with <span class="mono">@theme</span>, no token means no
+          <span class="mono">text-muted</span> utility, so a future use renders unstyled and visible
+          instead of quietly unreadable. <span class="mono" style="color: #8792a3;">#8792a3</span> is
+          the dimmest text on these pages.
+        </p>
+        <p style="font-size: 14px; line-height: 1.6; color: #8792a3; max-width: 88ch;">
+          <span class="mono">--color-ink-4</span> <span class="mono">#646d7c</span> keeps its annotation
+          instead, because it has a real use &mdash; hairlines and disabled glyphs. An unused token that
+          fails AA is a trap with no upside; a used one is a rule.
         </p>
       </div>
     </div>
@@ -168,6 +185,16 @@
           <span>Sign in with Google</span>
         </span>
         <span style="font-size: 13px; color: #8792a3; max-width: 30ch;">The ring sits outside the white surface, on the ground, where it reads 6.62:1.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span class="mono" style="font-size: 11px; color: #8792a3;">PRIMARY ACTION &mdash; SHARED WITH THE DESK</span>
+        <span style="display: inline-flex; align-items: center; height: 48px; padding: 0 26px; background: #e9edf3; color: #06080b; border-radius: 4px; font-size: 16px; font-weight: 600;">Ask for an invite</span>
+        <span style="font-size: 13px; color: #8792a3; max-width: 32ch;">
+          Inverted ink. There was no filled-button token on the desk, because a board never needed one
+          &mdash; this was invented here and Design has taken it as the desk's treatment rather than
+          growing a second one. One primary action per page.
+        </span>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 12px;">

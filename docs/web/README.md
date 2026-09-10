@@ -6,6 +6,32 @@ file: **Web**. Design canvas:
 
 ---
 
+## 0. HOW TO ACTUALLY LOOK AT THE CANVAS
+
+**An artifact `read` on a design canvas returns the EDITOR BUNDLE, not the
+drawing.** *Design tried it 2026-09-10 and correctly refused to review a
+drawing it could not see; the next seat that tries will reach the same wrong
+conclusion — that the artboards are unreadable.*
+
+**They are not. Every artboard renders standalone in any browser:**
+
+```
+file:///A:/mointel/docs/web/canvas/Main.dc.html
+```
+
+**Checked rather than assumed.** `<x-dc>` and `<helmet>` are unknown elements, so
+the browser renders their children; the inline `<style>` inside `<helmet>` still
+applies, because a `<style>` element applies wherever it sits. **The layout,
+palette and type are faithful.** *What does not work is anything needing the
+canvas runtime — tweak chips, `{{ holes }}`, `<dc-import>` — and none of these
+artboards use them, by choice.*
+
+**The editable canvas is the published artifact; the readable source is the
+file.** Reach for the file when someone needs to *see* it and the artifact when
+someone needs to *change* it.
+
+---
+
 ## 1. The design decisions, and why
 
 **Palette and type are the desk's own** (`app/globals.css`) — `#06080b` ground,
