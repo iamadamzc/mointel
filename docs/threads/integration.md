@@ -1351,9 +1351,11 @@ been repeated — which is the point of it, and the cost of it.*
 - **Same shape as the false sentence in `minute-bar-recovery.ts`:** *the artefact
   the next actor actually reads is the only place a caution survives.*
 
-## THREE INSTRUMENTS IN ONE DAY THAT COULD NOT PRODUCE THE FAILING ANSWER
+## FIVE INSTRUMENTS IN ONE DAY THAT COULD NOT PRODUCE THE FAILING ANSWER
 
 **2026-09-10. Found by three different seats, none of them looking for a pattern.**
+*Started as three; Ops added two more from its own shell work, both caught by
+accident.*
 
 ```
 isRunning: true          on a session that lived 6.1 seconds
@@ -1362,15 +1364,28 @@ max(trading_date)        as a coverage gate, on a partial newest date
                          the newest date is ALWAYS the likeliest to be partial
 feed_health.connection   read from a STORED row a dead worker leaves behind
                          it cannot show DISCONNECTED
+set -a; . mointel.env    EXIT 0 while line 29 failed -- `.` returns the status
+                         of the LAST line, so a mid-file failure is invisible
+sudo cat /proc/PID/environ  the REDIRECT ran unprivileged -> permission denied,
+                         and the script rendered that as `<not set>`
+                         -- a failed READ printed as a finding about the VALUE
 ```
+
+**The last two are not session tooling. They are shell**, which means this is not a
+quirk of one instrument family — **it is a habit in how checks get written.**
 
 **Each returns a plausible answer. None can return the one that matters.** *And each
 was believed by a competent seat until somebody read the mechanism rather than the
 value.*
 
-- **THE SHARED FIX: read the thing that would GO SILENT, not the thing that would GO
+- **THE SHARED FIX: READ THE THING THAT WOULD GO SILENT, NOT THE THING THAT WOULD GO
   STALE.** *A worker's own log stops. A stored health row does not. A session's
   lifespan is arithmetic on two timestamps; its running flag is a claim.*
+  **Ops's sharpening, which is the operative half: CHOOSING AN INSTRUMENT IS
+  CHOOSING WHICH WAY IT FAILS — and the useless one keeps repeating its subject's
+  last word.** *A stored value, a status flag, a cached max: each survives the death
+  of what it describes, and survives it LOOKING HEALTHY. A log line, a heartbeat, a
+  timestamp delta stop.*
 - **THE TELL IS ALWAYS THE SAME QUESTION: could this check have produced the failing
   answer, ever?** *Not "is this value right" — "is this instrument capable of being
   wrong in the direction I care about."*
