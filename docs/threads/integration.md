@@ -654,6 +654,61 @@ oauth-brands update / delete   DO NOT EXIST  -- on iap or alpha iap. create/desc
   exist)"* — BEFORE naming the real cause, which is that the API is off.** *Read as
   written it points at the wrong problem entirely. Sixth today.*
 
+### THE OAUTH CALLBACK: `/auth/`, NOT `/api/auth/` — AND THE FAILURE IS INVISIBLE HERE
+
+**Ops, 2026-09-10, deciding the redirect URI he registers.**
+
+```
+https://tmitrader.com/auth/callback/google
+https://www.tmitrader.com/auth/callback/google      <- Integration's call, see below
+http://localhost:3000/auth/callback/google          <- http, not https: Google permits loopback
+```
+
+**`location /api/` carries NO `auth_basic off`, so it inherits server-level Basic
+Auth.** Google's redirect arrives as **a fresh browser navigation from
+accounts.google.com.**
+
+> **A user who already has the desk password cached sails through and it looks
+> fine. A NEW user — the entire point of Sign in with Google — gets a 401 from
+> nginx and never reaches the app.** **THAT FAILURE IS INVISIBLE TO EVERYONE ON
+> THIS DESK, because everyone here has the credential cached.**
+
+- **AND THE SHAPE MATTERS, NOT JUST THE EXEMPTION.** *`/api/auth/…` means carving
+  `location ^~ /api/auth/` out of an otherwise uniform prefix — **and that hole then
+  covers every future `/api/auth/*` route, including ones nobody has thought of
+  yet.*** **A top-level `/auth/` takes its own narrow exemption and `/api/` stays
+  one rule.**
+- **It matches what the desk already does:** `/review/` and `/mcp/` are each a
+  top-level prefix with `auth_basic off`, **not holes inside another surface.**
+- **THE OBLIGATION: the string he types today works only when
+  `location ^~ /auth/ { auth_basic off; }` ships WITH
+  `app/auth/callback/google/route.ts`. Both in one change or neither.**
+- **`sslip.io` IS EXCLUDED AND IT IS NOT CLOSE.** *It can never be a verified
+  authorized domain — we do not control `sslip.io`, it resolves any IP-shaped
+  hostname for anyone, and there is no Search Console property to be had.* **Serving
+  a name and trusting it as an OAuth origin are different things.**
+- **Port 3000 verified both ways:** nginx upstream `server 127.0.0.1:3000`, and
+  `.env.local` has **zero** `^PORT=` lines against 13 assignments, so `next dev`
+  takes its default. **Same port local and deployed.**
+
+**`www` — INTEGRATION'S CALL, AND I TOOK THE ONE OPS DID NOT RECOMMEND.**
+
+*Ops preferred apex-only plus a `www` → apex canonicalisation it would ship, on the
+correct ground that one identity origin is the better invariant. It offered the
+third entry as harmless and left the call here.*
+
+**Registering all three, AND Ops still ships the canonicalisation.** *Not because
+the invariant is wrong — it is right — but because **the apex-only version depends
+on a session surviving long enough to keep a commitment**, and sessions here retire
+daily. R&D is already a stale address by its own account.* **The third entry costs
+one exact-match line, is editable, and cannot be forgotten.** **When the
+canonicalisation ships the `www` entry goes dead and harmless, which is the right
+end state for a belt.**
+
+> **THE RULE: prefer the version that does not depend on a future actor
+> remembering.** *Same move as the `:80` redirect shipping in the repo instead of
+> being hand-applied, and Ops made that argument itself this morning.*
+
 ### The vocabulary he settled, 2026-09-10
 
 ```
