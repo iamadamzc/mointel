@@ -3916,6 +3916,62 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE SIGN-IN SURFACE: SCOPE, RECORDED BEFORE IT IS BUILT
+
+**This scope has been carried in conversation and never written down, which is
+the shape that loses things.** Writing it now, unblocked but unbuilt.
+
+### WHAT HE HAS RULED
+
+    providers    GOOGLE ALONE, FIRST.  Apple is PHASE TWO -- "1, phase 2."
+    consent      Google OAuth consent screen -- "2, yes, oath consent."
+                 whether VERIFICATION is required is open, with Commercial
+    email link   "maybe" -- moved from "both from the start" by his own sentence,
+                 and it is the half gated on DNS, SPF, DKIM and a hosted sender
+    earlier      NO DEAD EMAIL BUTTON. check-your-email is a REAL SCREEN with a
+                 REAL FAILURE STORY, not a dead end
+
+**Google is the only provider needing none of the mail infrastructure, which is
+why it is first — that is a sequencing fact, not a preference.**
+
+### THE SPLIT, AND WHY A CODE READ NEVER FOUND A GUARD
+
+**There is NO APPLICATION AUTH TODAY.** The desk sits behind **nginx Basic
+Auth**, in front of everything. **Ops holds the carriage; I hold the surface**,
+and that split is written in `ops.md`. *I had recorded the auth surface as "mine,
+scoped, not started" without knowing why nothing in the codebase gated anything —
+the answer is that the guard is not in the codebase.*
+
+**⇒ I WILL NOT BUILD A SIGN-IN SCREEN AGAINST A CARRIAGE THAT DOES NOT EXIST.**
+*The last time I built to an assumed shape it was a payload, and that one at
+least failed loudly. A sign-in screen wired to nothing fails quietly and looks
+finished.*
+
+### THE DESIGN CONSTRAINTS I HOLD
+
+**LEAVE ROOM; DO NOT BUILD THE ROOM.** He deferred Apple, he did not drop it. **A
+single-provider screen that cannot grow a second button is the surface equivalent
+of keying users on the Google id** — the migration Ops's own scope named. *Compose
+it as a list of one, not as one thing centred.*
+
+**AND A SINGLE-PROVIDER SCREEN HAS A FAILURE MODE THE MULTI-PROVIDER ONE DOES
+NOT, WHICH IS MINE TO SOLVE:** if Google is down, or the account is refused,
+**there is no second path.** *So the failure copy cannot be "try again" — with
+one provider that is a wall, not a retry. It has to say what actually happened
+and what he can do, and that screen is as real as the sign-in itself.* **This is
+the check-your-email ruling generalising: a failure screen is a screen.**
+
+**IT CARRIES THE IDENTITY.** `tmitrader.com` answers now, and **the sign-in
+screen is the first thing anyone he shows this to will ever see** — the tagline
+has its home here, and the browser bar and the screen change together.
+
+### WHAT WOULD UNBLOCK BUILDING
+
+**The carriage: what a signed-in session actually is, and what the surface is
+handed.** *Until that exists, the honest deliverable is a picture he can rule on
+rather than a component wired to nothing — and a picture is what worked on the
+flat line, where he rejected the same reasoning in prose.*
+
 ## AN INVALID REVIEW TOKEN RETURNS 200, AND THE FIX IS A BUILD-LEVEL CHANGE
 
 **Ops's finding, verified in the code rather than taken.** `app/review/[token]/
