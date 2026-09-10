@@ -3916,6 +3916,54 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## AN INVALID REVIEW TOKEN RETURNS 200, AND THE FIX IS A BUILD-LEVEL CHANGE
+
+**Ops's finding, verified in the code rather than taken.** `app/review/[token]/
+page.tsx:29` — `if (!check.ok) return <ReviewRefusal reason={check.reason} />;`
+**A normal component return, so Next serves it 200.**
+
+**ONE DETAIL BETTER THAN REPORTED: THE ABSENCE OF DESK DATA IS STRUCTURAL, NOT
+INCIDENTAL.** `getDashboardState()` is called on the line AFTER the guard, so a
+refused token **never reads the desk at all.** *Ops grepped the body and found no
+tickers; the stronger statement is that there is nothing to find, because the
+fetch does not happen. A grep proves the body is clean today; the ordering proves
+it cannot be otherwise.*
+
+**⇒ NOT A LEAK. POOR HYGIENE, AND THE COST IS INSTRUMENTABILITY:** anything
+reading status codes — a monitor, a crawler, a link checker, a future client —
+**cannot tell a refused capability from a served page.** *The desk's own rule
+arriving in HTTP: a tool that reports "not found" the same way it reports "none"
+is not an instrument, and here the instrument is the status line.*
+
+### THE FIX, SPECIFIED SO NOBODY RE-DERIVES IT — AND IT IS NOT A ONE-LINER
+
+**Read from `node_modules/next/dist/docs/`, because this fork's APIs differ from
+training data and the repo says so:**
+
+    unauthorized()   renders a 401 page, injects <meta robots noindex>
+                     throws NEXT_HTTP_ERROR_FALLBACK;401 -- must be called IN
+                     the render path, never inside an un-awaited promise
+    forbidden()      the 403 sibling
+    REQUIRES         experimental.authInterrupts: true in next.config.ts
+                     -- NOT currently enabled here (grepped)
+    UI               app/review/[token]/unauthorized.tsx, so `ReviewRefusal`
+                     renders unchanged and the copy he has seen does not move
+
+**⇒ THREE PARTS: A CONFIG FLAG, A THROW, AND A FILE-CONVENTION COMPONENT.**
+
+**AND THE STATUS ITSELF IS A DECISION, NOT A DETAIL.** A review token **is** the
+credential, so an invalid or expired one is a bad credential — **401**, and
+`check.reason` already separates expired from revoked from malformed. *404 would
+be defensible on the grounds of not confirming a token ever existed, but it
+defeats the instrumentability this fix is for: a monitor cannot distinguish a
+refused capability from a dead link.*
+
+**WHY IT SHOULD NOT RIDE A COSMETIC ENUMERATION: it turns on an EXPERIMENTAL
+flag in `next.config.ts` on a live trading desk.** *That is a build-level change
+and deserves its own decision and its own window, not a seat on a tip priced for
+a colour fix.* **Recorded, not built, and not tonight — Integration's call and I
+agree with it.**
+
 ## THE MOVE SURFACE: THE 0.1px ITEM IS MOOT, AND THE THIN-PRINT FLAG IS THE REAL CONSTRAINT
 
 **The within-session figure labels itself INLINE, the way `PM VWAP` already
