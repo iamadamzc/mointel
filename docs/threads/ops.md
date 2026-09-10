@@ -7703,10 +7703,62 @@ OAuth callback routes, `state` and `nonce`, the identity store, CSRF, and
 whatever makes identity reach the app. **`nginx` forwards no `$remote_user`, so
 today nothing carries identity past the proxy** — that gap is the work.
 
-**Design's — the surface.** The sign-in screen, provider buttons, the
-"check your email" state, error and expiry copy, and the signed-in affordance.
+**CORRECTED 2026-09-10 — the surface half was reassigned when the `Web` thread
+was created.** The line below said Design. It was written 09-07, before `Web`
+existed.
+
+**Web's — everything a stranger sees.** The signed-out landing page, `/privacy`,
+`/terms`, and **the sign-in screen** with its provider buttons, "check your
+email" state, and error and expiry copy.
+
+**Design's — everything a signed-in trader sees.** The board, and the signed-in
+affordance.
+
+**The boundary is authentication, not the file tree.** His ruling on the seam,
+verbatim: *"its fine as long as they are communcating and you are
+collaborating."* **He made coordination the condition rather than drawing the
+line.**
+
+**My half is untouched and unchanged by any of this** — carriage, sessions,
+cookies, callbacks, `state` and `nonce`, the identity store.
 
 **Neither of us owns the domain decision. It is his.**
+
+### ⇒ THE CONFLICT THIS CREATES AT `/`, AND THE ORDERING THAT DEFUSES IT
+
+**Web owns the signed-out landing page. It lives at `/`. And `/` is currently
+the trader's board behind Basic Auth** — `location /` in
+`nginx-locations.conf:183` carries **no `auth_basic off`**, so the server-level
+password is the only thing protecting the desk.
+
+**There is no in-app auth. None.** No auth packages, no session library, no
+`cookies()`, no `middleware.ts`. **So nginx Basic Auth is not one layer of two.
+It is the whole of it.**
+
+**⇒ THE MOMENT `auth_basic off` REACHES `location /`, THE BOARD IS PROTECTED BY
+NOTHING.** Not degraded — nothing. **A landing page shipped at `/` before
+in-app session auth gates the board publishes the desk.**
+
+**THE SEQUENCE THAT LETS WEB BUILD ALMOST EVERYTHING IMMEDIATELY, at no
+exposure:**
+
+1. **Public prefixes get their own locations, each exempted individually** —
+   `/privacy`, `/terms`, `/signin`, `/auth/`. **`/` stays protected.** Web can
+   design and ship its entire surface except the landing page with the desk
+   fully behind the password the whole time.
+2. **In-app session auth gates the board, proven against a session with no
+   cached credential.**
+3. **Only then does `/` become public**, and Basic Auth comes off last.
+
+**Steps 2 and 3 are not the same change and must not be.** *Basic Auth is a
+crude control and it is currently a load-bearing one; it comes off when
+something else is demonstrably holding the weight, not when its replacement is
+written.*
+
+**AND EACH EXEMPTION IN STEP 1 IS A HOLE IN A UNIFORM RULE.** Same argument as
+`/api/auth/`: **granted once and spent forever.** Each public prefix is a
+separate decision with a separate blast radius, and **"Web needs a public page"
+is not by itself an argument for which prefix.** Mine to hold.
 
 ### What has to exist that does not today
 
