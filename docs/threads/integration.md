@@ -1959,6 +1959,34 @@ prohibitions were written because nothing in the repo can check this thread's
 output.* **The check that actually ran was the thread applying them to itself and
 routing the hard case to the seat that owns the answer.**
 
+## A PUBLISHED CANVAS CONTAINS ITS OWN EDITOR, AND I COUNTED THE TOOL AS CONTENT
+
+**2026-09-10. I read the published artifact to verify the copy before sending him
+the link — right instinct — then reported EIGHT artboards. There are seven.**
+
+*I ran `grep -o '[A-Za-z]*\.dc\.html'` over the 2.5 MB published file and got
+`Child.dc.html`. Marketing checked the disk and refused it.* **The string is here:**
+
+```
+// (/appifact/Child.dc.html) — map back to the project-relative key.
+```
+
+**A COMMENT IN THE CANVAS EDITOR'S OWN JAVASCRIPT.** *The published page carries
+BOTH the document and the tool that renders it, in one file.* **I grepped the
+haystack without separating the two and reported a tool string as a page.**
+
+- **The verification itself was right and found real things** — the struck line
+  absent, both boundary phrases gone, the header on both artboards. **The error was
+  in a count I added on the way past.**
+- **AND IT IS THE SECOND BAD READING IN ONE CHECK:** *the pass before it used
+  `grep -c`, which counts LINES not MATCHES, and would have had me tell him the
+  phone artboard was missing its header.* **Two instrument errors inside one
+  verification, both in the reassuring-looking direction of a tidy number.**
+- **THE RULE: when a file contains an artefact AND the machinery that renders it,
+  a grep answers about the file, not about the artefact.** *Ask the source of
+  record — here, `ls docs/web/canvas/`, which is what Marketing did and what
+  settled it in one command.*
+
 ## THE REVIEWED SURFACE AND THE DELIVERED SURFACE ARE DIFFERENT OBJECTS
 
 **Web, 2026-09-10, `56394fe`, laying in Marketing's first copy pass.**
