@@ -394,6 +394,31 @@ Integration. Answers, each a sentence, with the reason.*
    his word *"assistant"* on the ground that it now reads as a chatbot; that
    is a Web judgement on a word of his, recorded here so he can restore it
    with one word if he wants it.
+
+   **Verified by Design, 2026-09-10 (`ba13d79`), by reading the code rather
+   than the live board — a live read proves the board was right this
+   morning; a total return type proves it cannot be otherwise.** The first
+   dependency holds by type, not by convention: every path names its empty
+   state — *Not researched yet*, *NOT RESEARCHED*, *NO RUN*, *CYCLE NOT
+   ESTABLISHED*, *NOT ANALYZED* — and the clean case is named too, *NO FLAG
+   FOUND*; the risk label's type is `string`, not `string | null`, so no
+   path can return a blank without a visible interface change. **The
+   registered sentence rests on a promise rather than a habit.**
+
+   **And a third dependency, found by Design where neither Web nor this
+   seat had looked.** The sentence says *"everything the desk knows about
+   each one on a single shared board."* The Float **column** is conditional
+   — it appears only when the board is sorted by float — so one *view* of
+   share structure is sort-scoped. **The claim survives** because structure
+   and supply are carried on every row by the Risk cell — *DIRTY FLOAT*,
+   *SUPPLY OVERHEAD*, *STRUCTURE UNKNOWN*, *NO FLAG FOUND*: the dimension is
+   always present, only an additional view of it is sort-scoped. **A reader
+   taking the sentence as a promise about columns would be wrong; as a
+   promise about what the board knows and shows per row, it is kept.** The
+   chain that got here is the reason to record it: the sentence was
+   registered on Web's construction, neither Web nor this seat reads that
+   surface, Integration flagged it as unverified, and the thread that owns
+   the code proved it by type within the hour.
 3. **An invite request asks for an email address and nothing else.** An
    invite is his to grant and needs only a way to reach the person; a
    free-text "how do you trade" is qualification pitch on the way in and
