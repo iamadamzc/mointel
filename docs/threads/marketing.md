@@ -278,7 +278,9 @@ subject to every prohibition above.*
   LandingMobile, SignIn, Admitted, States, Privacy, System. **All seven swept
   against the not-list 2026-09-10 evening, by vocabulary and by reading: clean.**
   Every hit was a registered boundary sentence or footer legal. Integration's
-  list named an eighth, `Child.dc.html`; it does not exist in the tree. Every
+  list named an eighth, `Child.dc.html`; it is a string in the canvas editor's
+  own JavaScript, not an artboard. The published file holds the page AND the
+  tool that renders it, so a grep over it answers about the file, not the page. Every
   future pass sweeps the whole directory, and the published artifact is checked
   separately because editing sources does not update it.
 - **Protocol held:** Web placed, Marketing added the cleared lines after
