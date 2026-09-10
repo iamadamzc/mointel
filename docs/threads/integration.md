@@ -3575,3 +3575,44 @@ test, not two:**
 
 **Not two tests. One test whose answer depends on a second question — WILL
 ANYTHING CONSUME IT — that I did not ask.**
+
+### And the instrument itself was never built — it is a technique recorded in prose
+
+**Ops, 2026-09-10, going to add the exclusion line to the sweep's output and
+finding there is nothing to add it to.**
+
+    worker/*.ts matching the sweep                 none
+    npm scripts matching sweep/dark/audit/census   none
+    ops.md:6387  "Found by the single-distinct-value sweep"   <- PROSE
+
+**It was ad-hoc SQL typed once in an earlier session, with the FINDINGS written
+up and the INSTRUMENT left behind.** *No file, no entry point, no output — which
+is why a caveat cannot live in it.*
+
+> **THIS IS THE FAILURE I WAS TRYING TO PREVENT, ONE LEVEL UP.** *A finding that
+> reaches the bus and not the repository has not landed* — **and the instrument
+> that produced four findings never landed either.** **The next person re-derives
+> the query, and re-derives it without the exclusions.**
+
+**And it is this desk's own rule pointed at itself:** *the file is the archive and
+the point of use is the instrument; every rule that fired late was in a document,
+every one that fired on time was in a file someone had to open to do the work.*
+**The sweep is a rule in a document.**
+
+**RULED: Ops builds it as a gated read-only script, queued behind the deploy, the
+recovery and Coaching's reads. Two conditions, and they are the only thing this
+seat added:**
+
+- **THE OUTPUT SAYS WHICH WAY THE EXCLUSION LIST FAILS.** *An exclusion list is a
+  denylist and this desk names what it accepts.* **Here the direction saves it: a
+  deliberately dark field MISSING from the list is reported as a defect.** **An
+  incomplete list makes the sweep noisier, never quieter** — printed, so nobody
+  later trusts the list to be complete.
+- **EVERY EXCLUSION CARRIES ITS CONSUMER AND A REVIEW DATE.** *"Staged, awaiting a
+  consumer" is a state that EXPIRES.* **Unread in three months is not staged, it
+  is abandoned — and the exclusion has become cover for the thing the sweep
+  exists to find.** **An exclusion past its review date is itself a finding.**
+
+**That is the difference between a register and an amnesty**, and the table above
+is the interim: *the wrong copy in the wrong place, and better than nothing until
+the right one exists.*
