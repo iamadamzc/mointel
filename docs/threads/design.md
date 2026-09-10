@@ -3916,6 +3916,77 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE RANK COLUMN IS THE ONLY VISIBLE EVIDENCE OF A REAL ORDERING DEFECT
+
+> **"i actually never sort by rank. its not been clear what it was and it just
+> looks like rvol … i actually think could remove rank altogether."**
+
+**My strongest keep-argument turned on a behaviour only he could report, and he
+reports the opposite. The column goes.** *That argument was correctly formed and
+correctly lost — the right way for one to die.*
+
+### CHECK 1 — THE ENUMERATION, AND IT POINTS THE OPPOSITE WAY FROM EXPECTED
+
+**Three readers, and the third is a defect:**
+
+    DiscoveryBoard.tsx:491   const rank = (afterHours ? ah?.rank : t.rvolRank)   <- CELL, AH-AWARE
+    view.ts:316              case 'rank': return row.telemetry.rvolRank          <- SORT, NOT AH-AWARE
+    view.ts:364              tie-break on a.telemetry.rvolRank                    <- also not
+
+**THE CELL KNOWS ABOUT THE AFTER-HOURS BOARD. THE SORT DOES NOT.** And
+`sortDiscoveryRows(rows, sort)` runs unconditionally with
+`DISCOVERY_DEFAULT_SORT = { key: 'rank' }`.
+
+**⇒ AFTER THE BELL, THE SERVER ORDERS BY `afterHours.rank` AND THE CLIENT
+RE-SORTS BY `rvolRank`.** The board titled **After-Hours Discovery / AH
+Participation** is displayed in **Daily RVOL order**, while the Rank column
+prints **AH ranks** — so that column reads out of sequence.
+
+**AND THAT EXPLAINS BOTH HALVES OF HIS SENTENCE FROM THE CODE:**
+*"it just looks like rvol"* — on Discovery, rank order **is** rvol order,
+confirmed. *"it's not been clear what it was"* — after the bell the same column
+shows numbers that do not match the order they are printed in.
+
+**⇒ THE COLUMN HE WANTS REMOVED IS CURRENTLY THE ONLY VISIBLE EVIDENCE OF THAT
+ORDERING DEFECT. REMOVE IT AND THE DEFECT BECOMES INVISIBLE, NOT FIXED.** *This
+is the "carrier reaches further than the store" shape, pointing the unexpected
+way: the thing being deleted is the alarm, not the cause.* **The sort must be
+made board-aware WITH the removal or the after-hours board silently ships in the
+wrong order.**
+
+### CHECK 2 — THE DEFAULT SORT
+
+`DISCOVERY_DEFAULT_SORT = { key: 'rank', direction: 'asc' }`. **Delete the column
+and the board is still ordered by a key with nothing on screen explaining it** —
+and on the AH board, ordered wrongly. **`rank` is also the escape hatch back to
+the session's own ordering, which is deliberate and documented; that role does
+not disappear with the column.** *Whether the default becomes `rvol` — identical
+order on Discovery, the concept he says he understands — or whether* **"leave
+sorting to the user"** *means no imposed default at all, is his and should be
+asked, not inferred from five words.*
+
+### AND INTEGRATION'S FLAG, CHECKED RATHER THAN TAKEN
+
+**The rank column is NOT the only visible sign of the research threshold.**
+`risk.ts:105` renders `NOT RESEARCHED` on the row itself, and a researched name
+shows content in `Why` and `Risk`. **The effect is visible without the cause.**
+*Their guess was right and it cost one grep to stop it being a guess.*
+
+### THE FINDING UNDER THE RULING, WHICH IS WORTH MORE THAN 44px
+
+**A column sat on the board he looks at first, for weeks, and he did not know
+what it was showing.** Not a preference — **a surface that failed to explain
+itself and was never asked about.** *Today has been spent measuring pixels for
+numbers he could not read; this is a whole column, and the only reason it
+surfaced is that he volunteered it.*
+
+**BOUNDARY: he ruled on the COLUMN. `rvol_rank` the MECHANISM stays** — it
+selects who is on the board (`WHERE rvol_rank IS NOT NULL`), it gates research at
+`rank <= 12` which is **model spend**, and it is keyed into
+`desk_assessment_tickers`, `dead_at_rank` and `RVOL_RANK_ENTRY`. **A display
+removal that reached any of those would change what gets spent, on a sentence
+about sorting.**
+
 ## RANK AND RVOL: HE IS RIGHT, AND THE 44px DOES NOT GO WHERE IT IS WANTED
 
 **HIS OBSERVATION IS CORRECT AND I CONFIRMED IT IN THE CODE.** `rankByRvol`
