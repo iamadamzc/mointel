@@ -340,8 +340,17 @@ Integration. Answers, each a sentence, with the reason.*
    competitor in the room and a promise ("tells you what it is") the product
    keeps on every name only in the three-way sense. The supplement
    relationship belongs in the plain statement, said once, without a
-   scanner as the subject. The line stays available for the one place the
-   question is genuinely in the room: an answer to "is this a scanner?"
+   scanner as the subject. ~~The line stays available for the one place the
+   question is genuinely in the room: an answer to "is this a scanner?"~~
+   **Carve-out withdrawn 2026-09-10.** Web declined the line even in that
+   slot, with a reason rather than silence: it survives his pitch objection
+   only barely, and the card's plainer sentence says the same thing with no
+   competitor as the subject — *"It does not run your filters or replace a
+   scanner. It ranks names that are already moving and reports what is
+   underneath them."* Accepted: that sentence is the registered answer to
+   "is this a scanner?", and *"Your scanner finds it. This tells you what it
+   is."* is retired everywhere. Web's words, Web's card; the positioning
+   fact registered here is only that the answer is a boundary, not a hook.
 2. **A settled one-paragraph plain statement does not exist.** None is
    registered anywhere in the commercial documents, and this seat will not
    invent one in a message. What is registered, and what any statement Web
