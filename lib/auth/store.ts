@@ -138,6 +138,27 @@ CREATE TABLE IF NOT EXISTS sessions (
    */
   et_date    TEXT    NOT NULL,
 
+  /*
+   * The user's status AT THE MOMENT THIS SESSION WAS ISSUED.
+   *
+   * Not a duplicate of users.status. That column is CURRENT STATE and this row
+   * is a HISTORICAL FACT, and joining one to the other is the bug: a user who
+   * was pending on Monday and active on Tuesday would, read later, appear to
+   * have been active on Monday too. Every session they ever had would
+   * retroactively change what it says.
+   *
+   * That matters because a session row is the artefact proving a charged day.
+   * "Was this person entitled to use the product on the day this session
+   * existed" is a question about Monday, and only a value written on Monday can
+   * answer it.
+   *
+   * THIS IS NOT AN ENFORCEMENT DECISION AND DOES NOT MAKE ONE. Whether a
+   * pending user is refused before a session is issued, or issued one and shown
+   * a screen, is his call and Web's argument. This column costs nothing under
+   * either answer and is unreconstructable if it is missing under the second.
+   */
+  issued_status TEXT NOT NULL,
+
   expires_at TEXT    NOT NULL,
   revoked_at TEXT
 );
@@ -298,9 +319,22 @@ export function createSession(
 ): IssuedSession {
   const id = crypto.randomBytes(32).toString('base64url');
   const expiresAt = expiry.expiresAt.toISOString();
+
+  /*
+   * Read the status here rather than take it as a parameter. A caller passing
+   * it could pass one that was true a moment ago, or a wrong one, and the row
+   * would record something that was never the case -- which is worse than not
+   * recording it, because it looks like evidence.
+   */
+  const user = db.prepare('SELECT status FROM users WHERE id = ?').get(userId) as
+    | { status: string }
+    | undefined;
+  if (!user) throw new Error(`cannot issue a session for unknown user ${userId}`);
+
   db.prepare(
-    'INSERT INTO sessions (id_hash, user_id, created_at, et_date, expires_at) VALUES (?, ?, ?, ?, ?)',
-  ).run(hashSessionId(id), userId, now.toISOString(), expiry.etDate, expiresAt);
+    `INSERT INTO sessions (id_hash, user_id, created_at, et_date, issued_status, expires_at)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+  ).run(hashSessionId(id), userId, now.toISOString(), expiry.etDate, user.status, expiresAt);
   return { id, expiresAt };
 }
 

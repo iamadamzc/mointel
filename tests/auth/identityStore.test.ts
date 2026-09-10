@@ -195,3 +195,37 @@ describe('schema guard', () => {
     expect(() => openIdentityStore(file)).toThrow(/newer than this build/);
   });
 });
+
+describe('what a session records about entitlement', () => {
+  /*
+   * users.status is CURRENT state; a session row is a HISTORICAL fact. If the
+   * billing question "was this person entitled on the day this session
+   * existed" were answered by joining to users.status, admitting someone on
+   * Tuesday would retroactively rewrite every session they ever had -- Monday
+   * included, when they could not use the product at all.
+   */
+  it('keeps the status it was issued under after the user is admitted', () => {
+    const db = temporaryStore();
+    const user = linkIdentity(db, { provider: 'google', subject: 'sub-1' });
+    expect(user.status).toBe('pending');
+
+    const session = createSession(db, user.userId, sessionExpiry());
+
+    db.prepare("UPDATE users SET status = 'active' WHERE id = ?").run(user.userId);
+
+    const row = db
+      .prepare('SELECT issued_status AS issued FROM sessions WHERE id_hash IS NOT NULL')
+      .get() as { issued: string };
+
+    expect(row.issued).toBe('pending');
+    expect(resolveSession(db, session.id)?.status).toBe('active');
+
+    db.close();
+  });
+
+  it('refuses to issue a session for a user that does not exist', () => {
+    const db = temporaryStore();
+    expect(() => createSession(db, 9999, sessionExpiry())).toThrow(/unknown user/);
+    db.close();
+  });
+});
