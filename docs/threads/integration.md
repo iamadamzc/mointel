@@ -1723,6 +1723,49 @@ hand.**
 *This desk keeps building positive controls deliberately. This one was free and was
 nearly walked past.*
 
+## A CONFIG WRITTEN FOR AN ARCHITECTURE THAT HAS NOT ARRIVED READS AS CORRECT
+
+**Ops, 2026-09-10, `c40c26b`, found while building the auth cookie.**
+
+```
+deploy/aws/nginx.conf:26
+map $http_x_forwarded_proto $mointel_forwarded_proto {
+    ""      $scheme;
+    default $http_x_forwarded_proto;
+}
+```
+
+**It passes a CLIENT-SUPPLIED value through, using `$scheme` only when the header is
+absent — and nginx is the edge here, with 80 and 443 facing the internet
+directly.** **So a client can send `X-Forwarded-Proto: http` over TLS and be
+believed.**
+
+- **NOT A LIVE FAULT: nothing reads it.** *Ops searched every `.ts`/`.tsx`.*
+  **It is a trap with no consumer — and `cookie.ts` would have been the first**,
+  because deciding a session cookie's `Secure` flag is the obvious first use, **and
+  it would have taken the attacker's word for whether the connection was
+  encrypted.**
+- **THE FIX IS ELSEWHERE: `Secure` comes from the DEPLOYMENT, not the request.**
+  *The deployment knows whether it is behind TLS; a request header only knows what
+  it was told.* **Fails closed.**
+- **AND OPS DID NOT "FIX" THE NGINX LINE, DELIBERATELY.** *`$scheme` is right today
+  and wrong the day a CDN lands — which the line's own comment anticipates in those
+  words.* **The durable answer is trusting the header only from a known proxy
+  address, and that address does not exist yet.** **Changing it unilaterally would
+  silently break a stated future intent. Whoever adds a distribution owns that
+  line.**
+
+**THE GENERALISATION, AND IT IS THE REASON THIS IS HERE RATHER THAN IN `ops.md`
+ALONE:** **a config written for an architecture that has not arrived is
+indistinguishable from one written for the architecture you have.** *This one reads
+as correct precisely because it IS correct — later.* **So "is this line right" is
+the wrong question; "right under which topology, and is that the one we are running"
+is the one that separates them.**
+
+**Same family as a deliberate inconsistency needing to be recorded as deliberate, or
+it will be "fixed"** — except here the trap runs the other way: **it will not be
+fixed, because it does not look broken.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
