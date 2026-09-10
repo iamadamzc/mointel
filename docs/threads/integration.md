@@ -332,14 +332,37 @@ WITHIN this session, from its own first print       NOT BUILT
       the family, not after it.*
 - **The dark-field sweep, as a gated script**, with the exclusion list printed in
   its own output.
-  - **IT WILL REPORT RESEARCH'S NINE SESSION-OPEN COLUMNS AS DARK, AND BE RIGHT
-    TO.** *Ops verified the columns are correct end to end —
+  - **RESEARCH'S NINE SESSION-OPEN COLUMNS: NO EXCLUSION AND NO REVIEW DATE.**
+    `25bb0e1`. *Ops verified the columns are correct end to end —
     `worker/runtime.ts:1852-1860` reads from state, against the hardcoded
-    `volume_base: 0` a hundred lines above at `1752`.* **All nine are NULL on every
-    pre-migration row, which is correct.** **They need an exclusion carrying
-    `field · since · consumer awaited · review by`** — Design's surface is the
-    consumer, **and the review date is what stops the exclusion outliving it.**
-    *Ops's, queued behind the sweep, and it holds up nothing.*
+    `volume_base: 0` a hundred lines above at `1752`.*
+    - **SUPERSEDED — THIS SEAT RECORDED A DATED EXCLUSION AND WROTE "the review
+      date is the part I would not let anyone drop." THE BUILT DESIGN HAS NEITHER,
+      DELIBERATELY.** *Left visible because the next seat would otherwise check the
+      sweep for a review date, find none, and file a defect against the thing that
+      removed the need for one.*
+    - **The sweep is scoped on `updated_at` instead.** Research's proposal, Ops
+      verified three hops: **`engine.ts:1962` writes `updatedAt` from a WALL CLOCK,
+      not a market timestamp**, `runtime.ts:1869` carries it, `repo.ts:870`
+      preserves it unconditionally on every upsert. **So a pre-migration row
+      CANNOT have been asked, and a post-migration row still all-null is a real
+      finding. The scope dissolves as the population turns over.**
+    - **The principle survives and is satisfied harder.** *An exclusion without a
+      review date is how a deliberate gap becomes permanent — that is `volume_base`
+      end to end.* **A dated exclusion answers it by depending on somebody reading a
+      calendar. This one cannot outlive its own condition, so there is nothing to
+      read.** **Where an exclusion genuinely survives, the four fields and the
+      review date stand as written.** *The instance is removed, not the rule.*
+    - **AND THE FLAW OPS FOUND IN THE PROPOSAL, WHICH IS THE TRANSFERABLE HALF:
+      the migration instant is recorded NOWHERE** — `SCHEMA_VERSION` moved to 26,
+      no `migrated_at` — **so the boundary is derived, and the natural derivation
+      returns NULL when no row has ever carried a value. `updated_at >= NULL`
+      matches nothing.** Tested on production against `volume_base_through`, which
+      already has the shape: **160,586 rows, 0 populated, boundary NULL, predicate
+      selects 0 rows.** *The sweep would examine nothing for the one column that is
+      entirely dark and report nothing.* **A NULL BOUNDARY IS AN EXPLICIT BRANCH,
+      NEVER A PREDICATE — "no row has ever carried a value" is the STRONGEST
+      evidence of a dark field, not the weakest.**
 - **Every deploy builds on the box**, because the artefact path is refused from
   the only deploying seat. Two correct guards; behind the sweep.
 - **POST-DEPLOY VERIFICATION ON THE REVIEW PAGE MUST RE-READ AFTER HYDRATION.**
@@ -649,8 +672,16 @@ holding the code, in minutes.
   *Ops, 2026-09-10, `a7f9694`.* **A cron written for 22:00 ET fires at 16:00 ET —
   mid-session.** **`fireAt` with an explicit offset is immune; use it.** *Ops
   caught it only because the tool echoed a time back in a zone it had not asked
-  for.* **Tenth clock failure in four days, and the first one that would have run
-  production work inside his session.**
+  for.* **It is the first clock failure that would have run production work inside
+  his session.**
+
+  > **RETRACTED, SAME DAY, BY THIS SEAT: I called this "the tenth clock failure in
+  > four days."** *I took "nine failures in three days" from the line above,
+  > added one, and added a day.* **I do not know that the nine ended yesterday and
+  > I never checked.** **Ops refused to carry the number and was right to** — *"I
+  > have no way to verify the count from here and I am not repeating it as mine."*
+  > **The UTC+2 cron fact stands; the tally was arithmetic on an undated
+  > premise.**
 
 
 ## The third delegation: deploy instructions, confirmed directly
