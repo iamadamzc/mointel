@@ -3700,3 +3700,62 @@ still arrives wrong.*** **Design's formulation and it is better than mine.**
 tonight.** ⇒ **The hardening and the rename are ONE change.** *Hardening first is
 impossible; hardening later without the rename breaks a green suite on a word he
 approved.* **Both or neither, and neither until he rules.**
+
+## RIGHT CONCLUSION, WRONG REASON, TWICE IN ONE EXCHANGE — AND MUTATION FOUND WHAT TWO READINGS DID NOT
+
+**2026-09-10, closing the label vocabulary.**
+
+### Mine: I compared a FLOOR to a CEILING
+
+I challenged `vs close` at **2.2px spare** on the grounds that Design had rejected
+`+18.1% gap` at **3.2px**, calling that *"a coin flip, not a margin."*
+
+**The two numbers are not comparable.** *3.2px was the WORST CASE of a VARIABLE
+string* — cell content moving with the price digits and the move magnitude, **plus
+a source badge that can appear and spend the rest.** *2.2px is a FIXED string that
+never varies.* **A fixed string at 2.2px always fits; a variable one at 3.2px
+fails the moment its worst case arrives.**
+
+> **I compared a floor against a ceiling and called it less room.** *Same shape as
+> auditing the instrument instead of the experiment — a real number, a real
+> comparison, and the wrong two quantities.*
+
+**AND THE CHALLENGE WAS STILL RIGHT, FOR A REASON NEITHER OF US HAD:** the stack
+is `600 11px Geist, "Geist Fallback", system-ui`. **The fallback is there by
+design, and 2% of a 153.8px string is ~3px.** ⇒ **A FIXED string with 2.2px spare
+is one font fallback from truncating — and unlike a variable one it would
+truncate on EVERY row, permanently.** *The instinct held; the argument for it was
+the font, not the arithmetic.*
+
+**And the answer came from inside the scheme rather than from a better word:**
+**the default arm takes the family noun and OMITS the prefix — plain `Gap`,
+118.5px, the roomiest string on the row.** *Every other arm names a session
+because it HAS one; this one says so by absence rather than inventing a word
+outside the family.* **`vs close` is gone: Design's own, the odd one out, and the
+tightest thing measured. Three reasons and it needed one.**
+
+### Design's: the HARDENED guard was still vacuous, and this is the third refinement
+
+    'AH move'.includes('Move')   ->   FALSE
+
+**`not.toContain('Move')` PASSES `'AH move'` — the exact string the guard exists
+to reject.** *Identity was fixed to containment and CASE SENSITIVITY was left, so
+the guard remained blind to its own motivating case.*
+
+> **THREE REFINEMENTS OF ONE GUARD, AND MUTATION FOUND THE THIRD. READING IT
+> TWICE DID NOT.** *Reverting the AH arm failed only the word test and not the
+> guard — the mutation that should have killed two killed one, and the survivor
+> was the check.*
+
+**Now `label.toLowerCase()).not.toContain('move')`, and re-mutation fails both.**
+**The reservation is finally enforced by something that would have caught the
+collision this seat spotted by eye.**
+
+### And the mirror guard is owed rather than written
+
+**The within-session labels must never contain `Gap`. Agreed and correct** — **and
+`PM Move / RTH Move / AH Move` do not exist yet.** **A guard over labels nothing
+produces is a test with no subject: it passes forever and proves nothing.**
+*Which is the vacuity that has now caught this one function three times.*
+**Recorded as owed WITH the Move family, in the same commit, rather than written
+early to look thorough.**
