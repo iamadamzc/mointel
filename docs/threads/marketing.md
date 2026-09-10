@@ -75,11 +75,49 @@ so.**
 
 ---
 
-## What the product is NOT — write this list before you write anything else
+## THE METHOD: READ THE SOURCE. THE BEST COPY ON THIS DESK IS ALREADY WRITTEN.
 
-**This does not exist yet on this desk and it is the highest-value thing you can
-produce first.** *"Who this is for" is written down. The negative is not, and the
-negative is what makes copy sharp and what stops it overclaiming.*
+**Added 2026-09-10, hours after this charter was created, because Web found it and
+it changes how this thread should work.**
+
+**He told Web *"there is so much about this that hasn't been mentioned."* He was
+right — and the strongest line on the rewritten page had been sitting in code,
+unused, for eleven days:**
+
+> **`lib/dashboard/risk.ts:154` — *"The displayed float understates the shares that
+> can reach the market."***
+
+**That is the float argument in the product's own voice, and no marketing pass
+would have produced it.** *Same for `risk.ts:161`, which refuses to say "selling"
+because a filing establishes capacity and nothing more* — **that restraint is
+itself a differentiator and it was sitting in a comment.**
+
+**⇒ WHERE THE COPY WAS FLAT, THE FIX WAS NOT BETTER ADJECTIVES. IT WAS READING THE
+SOURCE.** **The four differentiators now leading the page are all lifted from code
+rather than invented:** cohort ENTRY rather than a leaderboard (cross-sectional
+RVOL plus the discovery latch), filings read unprompted before the premarket,
+capacity-never-intent, and `DIRTY FLOAT`.
+
+**This is the single most useful working method available to this thread.** *The
+people who built this product wrote down exactly what it does, in the place where
+being wrong had consequences.* **Comments, type names, refusal strings and test
+names are a voice that has already been checked. Start there, not with a blank
+page.**
+
+## What the product is NOT — an instrument, NEVER the lead
+
+**HIS RULING, 2026-09-10, and it corrects the first version of this charter:**
+
+> ***"dont lead with 1-20, dont lead with what its not. lead with the
+> differentiators, what it has that no one else does."***
+
+**So the not-list is an INTERNAL instrument. It sharpens what you write and it
+keeps you from overclaiming. It does not go at the top of a page and it is not the
+opening move.** *A page that opens by denying things sounds defensive, and he has
+now said so directly.*
+
+*"Who this is for" is written down. The negative is not, and it is worth having —
+as a tool, not as a headline.*
 
 Starting points, each of which you should confirm rather than inherit:
 
@@ -227,8 +265,23 @@ subject to every prohibition above.*
 
 **Opened 2026-09-10. Nothing written.**
 
-- **First task: the what-it-is-NOT list, then a copy pass on the landing page
-  jointly with Web.**
+- **FIRST TASK: READ THE SOURCE FOR VOICE** — `lib/dashboard/risk.ts`,
+  `lib/market/`, the refusal strings, the type names. **The differentiators are
+  already written down by the people who had to be right about them.**
+- **Then a copy pass on the landing page jointly with Web.** *The not-list is an
+  instrument you build for yourself, not a deliverable and never a lead.*
+- **HIS DIRECTION ON THE LEAD, 2026-09-10:** *"lead with the differentiators, what
+  it has that no one else does."* **Not the audience, not the negations.**
+- **THE REGISTERED STATEMENT IS NO LONGER THE HERO** — unchanged, still on the page
+  verbatim, now introducing the two-engines section. *It opens with the audience
+  and then two negations, which is exactly what he ruled the page must not lead
+  with.* **It is an excellent description and a poor opening, and those came apart
+  the moment he asked for a lead.**
+- **HIS INTERNATIONAL RULING:** *"anyone that trades US market i suppose, but i
+  dont want any overhang on international regs."* **US market. The UK/EU brackets
+  are out of the privacy policy.** *Access is by invitation, so the scope is a fact
+  rather than a sentence — he chooses who is invited.* **Do not write copy that
+  markets into other jurisdictions.**
 - **OPEN AND WITH HIM: a voice reference.** *Integration asked him for anything he
   has read whose voice he would want — a site, a newsletter, a trader who writes
   well. **He has not answered.** A reference is worth more to this thread than any
