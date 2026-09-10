@@ -3916,6 +3916,64 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE DISAGREEMENT IS THE INTELLIGENCE. THE HAZARD IS THE ENCODING, NOT THE NUMBERS.
+
+**I raised the sign flip as decisive, then the width answer arrived and I went
+quiet on it. That is a solved constraint standing in for an unsolved one, and it
+took Integration to notice.** A third line fixes the cramming and **does not
+touch** the objection: both readings are still on the row, still about the same
+window, still able to disagree.
+
+**AND THEIR COUNTER-READING IS BETTER THAN MY OBJECTION, SO I AM WITHDRAWING IT.**
+
+> *"Up 14% this session and 4.8% below where the volume actually traded"* is a
+> name that **ran and is fading off its own volume.** Neither number says that
+> alone.
+
+**They are not two accounts of one quantity. One measures displacement from a
+MOMENT (the session open); the other from a DISTRIBUTION (the volume-weighted
+average of the whole session).** *Same shape as the supply pair I refused a
+provenance label for: naming the denominator makes them visibly
+non-substitutable rather than merely different.* **So the disagreement is signal,
+and my "third instance of the 04:00 failure" framing was wrong.**
+
+### WHAT SURVIVES THE WITHDRAWAL, AND IT IS NARROWER AND SHARPER
+
+**The hazard is not that the numbers disagree. It is that they are ENCODED
+IDENTICALLY, so a reader meets them expecting agreement before reading a word.**
+Observed in the code, both:
+
+    line 1 move        `num text-[13px] font-semibold ${changeTone}`   -> text-pos / text-neg
+    line 2 vwap dist   <span className={above ? 'text-pos' : 'text-neg'}>
+
+**TWO SIGNED PERCENTAGES, BOTH RED/GREEN, ADJACENT, ABOUT THE SAME WINDOW.
+COLOUR IS READ BEFORE TEXT** — at scan speed a green `+14%` above a red `−4.8%`
+reads as a contradiction **no matter what the labels say**, because the labels
+are read second and only if the colour did not already answer.
+
+**⇒ SO THE FIX IS NOT MORE LABELLING. IT IS THAT THE TWO MUST NOT SHARE AN
+ENCODING.** One of them is subordinate, or differently encoded, or the pair is
+rendered as one object the way `OFF HIGH $1.20 → $1.00` is. **Labels cure a
+reader who is reading; encoding cures one who is scanning, and he is scanning.**
+
+### AND THE ORDERING IS PART OF THE ANSWER
+
+Three lines, three baselines — **group them by baseline FAMILY rather than
+interleaving:**
+
+    line 1   price + gap from the relevant last     ACROSS sessions
+    line 2   current-session gap                    WITHIN this session
+    line 3   session VWAP distance                  WITHIN this session
+
+**Separate lines imply independence. The two within-session readings are
+companions and should sit together**, so the row reads *"this is what carried in;
+these two are what has happened since."* **Putting the new figure between price
+and VWAP would split the family and is the arrangement to avoid.**
+
+**JUDGEMENT, NOT MEASUREMENT, AND LABELLED AS SUCH:** the encoding claim rests on
+colour being read before text, which I have not tested on him. **The two tone
+assignments are observed in the code; the scanning claim is mine.**
+
 ## TWO MEASUREMENTS: THE RVOL HEADER TAKES IT, AND MY "30% OF ROW HEIGHT" WAS WRONG
 
 ### 1. THE `x` RULING DOES NOT NEED REOPENING. THE HEADER HAS ROOM.
