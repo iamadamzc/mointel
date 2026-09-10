@@ -8395,8 +8395,35 @@ correction, and right. The set was re-read **immediately before** writing, not
 trusted from a reading taken hours earlier, because the gap between the two is
 precisely when a Search Console property gets created.
 
-**NEXT STEP IS HIS, NOT OURS: he clicks verify in Search Console.** Do not poll
-for it and do not schedule a task to.
+### VERIFICATION PASSED THE SAME DAY — this entry moved from precaution to load-bearing
+
+**He clicked verify and it passed. `tmitrader.com` is a verified domain**, so
+the consent screen can now carry it as an authorized domain, and the ordering
+constraint that held that field back is **satisfied rather than pending**.
+
+**THE CONSEQUENCE IS THAT THE DO-NOT-DELETE IS NOW REAL.** Until verification
+passed, removing the record would have broken **something that did not exist
+yet**. From this point it breaks **Sign in with Google**, and it breaks it
+**silently at every step**: DNS reports nothing, AWS reports nothing, Google
+reports nothing, and the desk would keep serving normally while sign-in failed
+for users only.
+
+**⇒ THE STRUCTURAL FIX, QUEUED AND NOT YET BUILT: this record's presence belongs
+in the post-deploy checks**, beside the ACME probe. One resolver query per
+deploy is enough to turn a silent, permanent break into a loud one at the next
+deploy:
+
+```
+dig +short TXT tmitrader.com | grep -q google-site-verification
+```
+
+**Not added to tonight's task** — that prompt is settled and reviewed, and
+6 hours before it fires is the wrong moment to widen it. **It goes in with the
+`/auth/` change**, which is already the change that must touch the deploy
+checks.
+
+**Not polled for and no task armed to watch it.** That was his click and it is
+done.
 
 ## THREE REDIRECT URIs ARE REGISTERED AND THE NGINX RULE THAT MAKES THEM WORK DOES NOT EXIST — 2026-09-10
 
