@@ -3616,3 +3616,48 @@ seat added:**
 **That is the difference between a register and an amnesty**, and the table above
 is the interim: *the wrong copy in the wrong place, and better than nothing until
 the right one exists.*
+
+## I ASKED A THREAD TO CONFIRM A FACT I HAD GIVEN IT
+
+**2026-09-10, found by Ops going to source a phrase we had both been using.**
+
+I wrote to Ops on 09-08: **"Research's `activity.ts:134` re-take, the 36–42%
+figure marked pending a re-take on production's bars."** **Ops repeated it back
+three times.** Doubting it two days later, **I asked Ops whose it was.**
+
+> **ITS ANSWER COULD ONLY EVER HAVE BEEN MY OWN CLAIM RETURNING WITH A SECOND
+> NAME ATTACHED.** **A thread that can only answer from what you told it is not a
+> second source — it is your own sentence with better provenance than it earned.**
+
+**Wrong in both halves.** `activity.ts:134` is Research's `settleMinutes`
+rationale; **the figure is DESIGN'S, at `sparkline.ts:139-144`.**
+
+**And it was never a task.** The comment says so itself: *"THE CONSTRAINT DOES
+NOT DEPEND ON IT — absent-then-rising is not flat-then-rising at 36% or at 6%."*
+**Design had already moved the fragile figure out of the premise position, which
+is why nothing was ever blocked on it.** *I carried it as queued work for two days
+on the strength of a phrase I had written myself, and it reached a deferral
+decision as the one thing that could reverse it.*
+
+### The check, and it is one question
+
+**BEFORE ASKING A THREAD TO CONFIRM SOMETHING, ASK WHETHER YOU WERE ITS SOURCE.**
+
+**This is *two computations sharing an input are not two observations*, arriving
+in a CITATION rather than in arithmetic** — **and it is worse in one respect:
+arithmetic that agrees is at least visibly the same arithmetic, while a NAME
+attached to a claim looks like sourcing.**
+
+*The desk already knows to look an address up rather than accept one asserted in
+prose, including from the thread whose address it is. This is the same rule about
+a FACT rather than an address, and the asserting party was me.*
+
+**Ops broke it the only way it could be broken: by opening the file instead of
+answering from memory.**
+
+### And the correction is cheaper than the thing it was blocking
+
+**The re-take never needed `09-04` and never needed a write.** Any production date
+serves and three are present. **One read-only query.** *Its stated defect is that
+the figure came from the local split-brain desk, last written 2026-08-20 — that
+store's third appearance in two days, in three unrelated places.*
