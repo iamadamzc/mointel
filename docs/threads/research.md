@@ -14559,3 +14559,70 @@ unchanged.*
 load-bearing (`engine.ts:943/815/1054`); `toRow()` discards it; nothing selects
 it back — **so the cost is confined to restarts and it does not ride the
 `settleMinutes` change.**
+
+**142. THE RETENTION WALL WAS MINE AND IT DOES NOT BIND SESSION GAIN. THE RTH
+OPEN IS ALREADY DERIVED — IN THE ARCHIVE LAYER, NOT IN `lib/market/`.**
+
+*Integration corrected itself for carrying my retention wall onto the gain half.
+**The sentence it carried was mine:** "Minute bars at 3 sessions are the only
+source. Capture gap, not display gap, and **it is the same retention wall as the
+denominator.**" It is not. Integration relayed my conflation and then caught it.*
+
+**A per-session RVOL baseline needs 20 sessions of intraday volume, which
+3-session retention forbids. A session GAIN needs ONE reference price from the
+CURRENT session. Retention is irrelevant to it — forward.**
+
+### TWO OF THE THREE ALREADY SHIP — CONFIRMED
+
+| | reference | line |
+| --- | --- | --- |
+| **the gap** | prior close | `engine.ts:1196` — `computePercentChange(price, reference.close)` |
+| **the AH move** | today's RTH close | `engine.ts:1490` — `computeAhPercentChange(price, todayRthClose.close)` |
+| **the RTH move** | **absent** | — |
+
+**And `types.ts:92` already carries `basis: 'PRIOR_SESSION' | 'CURRENT_SESSION'`,
+so the desk already switches its gain reference by session and already records
+which one it used.** *He was asking why the middle session is missing, again.*
+
+### AND CLAIM 4 IS WRONG IN A USEFUL DIRECTION: `rthOpen` EXISTS
+
+*Integration said there is no `rthOpen` anywhere in `lib/market/`. True, and
+incomplete —* **`lib/archive/outcomes.ts` derives one already:**
+
+```ts
+if (minute < RTH_START_MIN) { ...premarket...; continue; }
+if (minute < closeMinutes) {
+  if (rthOpen === null) rthOpen = bar.o;      // :260
+```
+
+**The first minute bar at or after 09:30 contributes its open, bounded by the
+desk's own `closeMinutes` so an early close is handled.** *`premarketHigh` and
+`premarketHighAt` sit in the same loop.* **So the derivation is not hypothetical
+and does not need inventing — it needs lifting.**
+
+### BUT THE REFERENCE CHOICE IS NOT SETTLED BY THE DERIVATION EXISTING
+
+**`bar.o` OF THE FIRST RTH MINUTE HAS NO GUARD AGAINST A BAD PRINT**, and item
+128 measured exactly that hazard at the other end of the day: **an auction cross
+is one print with enormous size — AT&T, 7 trades, 3,751,177 shares.** *For a
+retrospective outcome row a poisoned open is a bad cell. For a live number he
+reads at 09:45 it misstates the move for the rest of the session.*
+
+**THREE DEFENSIBLE VARIANTS, EACH WITH ITS OWN FAILURE:**
+- **first RTH minute's OPEN** — matches "since the bell" exactly; one bad print poisons it all session.
+- **first RTH minute's CLOSE** — one minute of settling; loses the actual opening level, which is a level he trades off.
+- **first RTH minute's VWAP** — robust within that minute, and the desk already computes per-session VWAP (`rth_vwap`, `pm_vwap`), so the machinery exists.
+
+**AND THE PRODUCT QUESTION IS UPSTREAM OF ALL THREE.** *"RTH move" could mean
+since the bell, or vs the premarket high — has it broken out or failed — or
+whether it is holding the gap.* **Those are different numbers and the desk should
+not pick one for him.** `AH VWAP +$0.027 / +1.0%` already ships on his screen,
+so price-vs-VWAP is a fourth thing he already has and it answers none of them.
+
+### THE BACKWARD LINE, DRAWN WHERE INTEGRATION PUT IT
+
+**FORWARD: buildable, one reference price. BACKWARD: gone.** `percent_change`
+overwrites in place and minute bars retain three sessions, **so nobody can ever
+ask what premarket gain was on 2026-08-24.** *That is the true statement, and
+"the data does not have it" said without "backward" is the failure — the same
+shape as reading one path's deliberate value as the population's.*
