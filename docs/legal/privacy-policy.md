@@ -30,10 +30,11 @@ survived.
 
 ## 1. Who runs this service
 
-TMI Trader is operated by [LEGAL ENTITY NAME] of [REGISTERED ADDRESS], and you
-can reach a person at [CONTACT EMAIL]. In this policy, "we" means that
-operator; "you" means the person signing in; and "the desk" means the
-signed-in service at tmitrader.com.
+TMI Trader is operated by **Andromeda Genius, Inc**, of 5460 Babcock Rd,
+Suite 120 PMB 95234, San Antonio, TX 78240, United States. You can reach a
+person at info@andromedagenius.com. In this policy, "we" means that operator;
+"you" means the person signing in; and "the desk" means the signed-in service
+at tmitrader.com.
 
 This policy covers tmitrader.com and the desk behind it. It does not cover
 what Google does with your Google account, which is governed by Google's own
@@ -137,14 +138,16 @@ Whoever and wherever you are, you can:
 - **Take it with you.** Ask, and we will send it in a machine-readable file.
 - **Object, or ask us to restrict what we do.** Ask, and we will answer.
 
-Write to [CONTACT EMAIL]. We answer within [PERIOD] and we do not charge for
-it.
+Write to info@andromedagenius.com. We answer within [PERIOD] and we do not
+charge for it.
+
+**We do not sell your personal information, and we do not share it for
+cross-context behavioural advertising** — including as California defines
+those terms. Nobody is refused access, charged differently, or given a worse
+service for exercising any right on this list.
 
 [IF THE UK OR EU APPLIES: name the supervisory authority a complaint can be
 made to, and say a complaint can be made without going through us first.]
-[IF CALIFORNIA APPLIES: state plainly that we do not sell or share personal
-information as those terms are defined there, and that nobody is treated
-differently for exercising a right.]
 
 ## 8. Where the data lives
 
@@ -171,5 +174,9 @@ history of this file is kept.
 
 ## 11. Contact
 
-[CONTACT EMAIL] reaches a person, not a queue.
-[POSTAL ADDRESS, IF ONE IS REQUIRED IN THE OPERATING JURISDICTION.]
+info@andromedagenius.com reaches a person, not a queue.
+
+Andromeda Genius, Inc
+5460 Babcock Rd, Suite 120 PMB 95234
+San Antonio, TX 78240
+United States

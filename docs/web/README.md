@@ -111,13 +111,61 @@ renders HTTP 200 has already happened on this desk once.**
 
 ## 3. Open questions, with who can answer each
 
-| # | question | who |
+**ANSWERED BY THE TRADER 2026-09-10:** operator is **Andromeda Genius, Inc**,
+5460 Babcock Rd, Suite 120 PMB 95234, San Antonio, TX 78240; contact
+**info@andromedagenius.com**; access is **invite only, and a stranger may ask
+for one**. Substituted into the artboards and into
+`docs/legal/privacy-policy.md`.
+
+**THE ACCESS ANSWER CHANGED THE PAGE, not just a placeholder.** Invite only
+means the primary action for almost every visitor is *not* "Sign in with
+Google" — a stranger clicking it would hand over their identity in order to be
+refused. **The hero's primary action is now "Ask for an invite"** (a `mailto:`,
+which needs no route and ships today), with sign-in demoted to a secondary link
+for people who already have access. *The 403 refusal screen stays as the
+backstop for someone who signs in without an invite.*
+
+| # | still open | who |
 | --- | --- | --- |
-| 1 | Operator name, registered address, contact email, legal entity, jurisdiction | the trader |
-| 2 | Access terms — invite only, waiting list, open, or a price | the trader |
-| 3 | Session cookie name and lifetime; whether any mailing list exists; log fields and retention; hosting region | Ops |
+| 1 | One sentence on **why** he built it, for the "who built it" block | the trader |
+| 2 | Session cookie name and lifetime; whether any mailing list exists; access-log fields; retention periods for account, logs, email and backups; hosting region; email provider | Ops |
+| 3 | Whether an EU/UK audience is in scope — it decides whether the policy needs a lawful-basis section and a supervisory authority | the trader |
 | 4 | Whether Google's "home page" must be `tmitrader.com` itself, or whether a page elsewhere on the domain satisfies it | nobody has confirmed; **do not guess** |
 | 5 | Terms of service — not yet drafted | Web, next |
 
-**Every `[BRACKET]` in `docs/legal/privacy-policy.md` maps to one of rows 1–3.**
-None of them was invented to look complete.
+**Every remaining `[BRACKET]` in `docs/legal/privacy-policy.md` maps to row 2 or
+row 3.** None was invented to look complete.
+
+---
+
+## 4. Fixed after a review pass, recorded so they are not reintroduced
+
+- **"That is the entire list"** appeared on both landing pages beside the three
+  Google scopes. **It was false against this repo's own policy**, which also
+  receives Google's permanent account identifier, plus IP, user-agent and a
+  session cookie. Copy now names the identifier as a fourth item and drops the
+  absolute.
+- **"The smallest set Google offers"** — Google offers `openid` alone. Now "the
+  smallest set that lets anyone sign in at all," matching the policy's wording.
+- **"It does not filter the universe"** sat on the same page as a `DISCOVERY`
+  panel and a live ranking. **Ranking a universe is scanning**; the boundary
+  claim was over-drawn and is now "doesn't run your filters or replace the scan
+  you already trust."
+- **The 403 said "we kept your email and nothing else"** directly against the
+  policy's own logging, and the 500 said "nothing was saved" directly above a
+  saved error reference. Both corrected.
+- **The privacy page's contents listed 8 sections; the source file has 11** —
+  on a page whose own callout claims the two "cannot disagree." Six of its eight
+  links pointed at anchors that did not exist. Both fixed.
+- **The phone page dropped "Market data may be delayed, incomplete or wrong"**
+  that the desktop page carried. A material disclaimer on one viewport and not
+  the other is indefensible; restored.
+- **Phone footer links were ~23px tall** against the system's own stated 44px
+  floor. Now 48px rows.
+- **The example board was a CSS grid of spans** — a screen reader got an
+  unlabelled run of numbers. It is now a real `table` with `th scope`.
+- **The artboards load Geist from Google's font CDN**, because that is the only
+  font host the canvas sandbox permits. **The shipped pages self-host it**
+  (`next/font` already does, so the files exist). *Do not copy the artboard's
+  font link into a page* — it would hand a visitor's IP to Google before they
+  agreed to anything, on the page arguing the opposite.

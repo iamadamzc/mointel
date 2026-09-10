@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <script src="./support.js"></script>
@@ -40,18 +40,11 @@
       Your scanner finds it. This tells you what it is.
     </p>
 
-    <a href="/auth/google" style="display: flex; align-items: center; justify-content: center; gap: 12px; height: 48px; background: #ffffff; color: #1f1f1f; border-radius: 4px; font-size: 16px; font-weight: 500; margin-bottom: 14px;">
-      <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-      </svg>
-      <span>Sign in with Google</span>
-    </a>
+    <a href="mailto:info@andromedagenius.com?subject=Invite%20request%20%E2%80%94%20TMI%20Trader" style="display: flex; align-items: center; justify-content: center; height: 52px; background: #e9edf3; color: #06080b; border-radius: 4px; font-size: 17px; font-weight: 600; margin-bottom: 12px;">Ask for an invite</a>
+    <a href="/signin" style="display: flex; align-items: center; justify-content: center; height: 48px; border: 1px solid #29313d; border-radius: 4px; font-size: 16px; font-weight: 500; color: #e9edf3; margin-bottom: 14px;">Already have access? Sign in</a>
     <p style="font-size: 14px; line-height: 1.55; color: #8792a3;">
-      Name, email address and profile picture. That is the entire list &mdash;
-      <a href="#identity">what happens to it</a>.
+      Invite only. Signing in is done with Google, which hands us your name, email address and profile
+      picture &mdash; and nothing more. <a href="#identity">What happens to it</a>.
     </p>
   </section>
 
@@ -132,7 +125,7 @@
     <div style="display: flex; flex-direction: column;">
       <div style="display: flex; flex-direction: column; gap: 8px; padding: 18px 0; border-top: 1px solid #29313d;">
         <h3 style="font-size: 17px;">Not a scanner</h3>
-        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">It works on the names a scan already surfaced, and goes further than one can.</p>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">It doesn't run your filters or replace the scan you already trust. It ranks what is already moving.</p>
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px; padding: 18px 0; border-top: 1px solid #29313d;">
         <h3 style="font-size: 17px;">Not a broker</h3>
@@ -153,7 +146,8 @@
     <p class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 16px;">SIGNING IN</p>
     <h2 style="font-size: 28px; line-height: 1.14; margin-bottom: 20px;">What we ask Google for.</h2>
     <p style="font-size: 16px; line-height: 1.65; color: #c7cedb; margin-bottom: 24px;">
-      Three things and nothing else. It is the smallest set Google offers.
+      Three things about you, plus the identifier Google uses to tell one person from another. It is the
+      smallest set that lets anyone sign in at all.
     </p>
 
     <div style="display: flex; flex-direction: column; margin-bottom: 28px;">
@@ -165,9 +159,13 @@
         <span class="mono" style="font-size: 16px; color: #2fc46f; width: 18px;">+</span>
         <span style="font-size: 16px; color: #e9edf3;">Your email address</span>
       </div>
-      <div style="display: flex; align-items: center; gap: 14px; padding: 15px 0; border-top: 1px solid #1b212a; border-bottom: 1px solid #29313d;">
+      <div style="display: flex; align-items: center; gap: 14px; padding: 15px 0; border-top: 1px solid #1b212a;">
         <span class="mono" style="font-size: 16px; color: #2fc46f; width: 18px;">+</span>
         <span style="font-size: 16px; color: #e9edf3;">Your profile picture</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px; padding: 15px 0; border-top: 1px solid #1b212a; border-bottom: 1px solid #29313d;">
+        <span class="mono" style="font-size: 16px; color: #2fc46f; width: 18px;">+</span>
+        <span style="font-size: 16px; color: #e9edf3;">The identifier Google gives us for you</span>
       </div>
       <div style="display: flex; align-items: center; gap: 14px; padding: 15px 0; border-top: 1px solid #1b212a; margin-top: 12px;">
         <span class="mono" style="font-size: 16px; color: #8792a3; width: 18px;">&minus;</span>
@@ -183,24 +181,20 @@
       </div>
     </div>
 
-    <a href="/privacy" style="font-size: 15px; font-weight: 500;">Read the privacy policy &rarr;</a>
+    <a href="/privacy" style="display: inline-flex; align-items: center; min-height: 48px; font-size: 16px; font-weight: 500;">Read the privacy policy &rarr;</a>
   </section>
 
   <section style="padding: 40px 20px; border-top: 1px solid #1b212a;">
     <p class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 16px;">ACCESS</p>
-    <h2 style="font-size: 26px; line-height: 1.18; margin-bottom: 18px;">[ACCESS TERMS]</h2>
-    <p style="font-size: 16px; line-height: 1.65; color: #97a1b0; margin-bottom: 28px;">
-      [WHO CAN SIGN IN TODAY AND WHAT IT COSTS. One short paragraph.]
+    <h2 style="font-size: 26px; line-height: 1.18; margin-bottom: 18px;">Invite only.</h2>
+    <p style="font-size: 16px; line-height: 1.65; color: #97a1b0; margin-bottom: 20px;">
+      The desk is not open to sign-ups. If you trade small-cap momentum, ask &mdash; tell us how you
+      trade and we will tell you honestly whether it is any use to you.
     </p>
-    <a href="/auth/google" style="display: flex; align-items: center; justify-content: center; gap: 12px; height: 48px; background: #ffffff; color: #1f1f1f; border-radius: 4px; font-size: 16px; font-weight: 500;">
-      <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-      </svg>
-      <span>Sign in with Google</span>
-    </a>
+    <p style="font-size: 16px; line-height: 1.65; color: #97a1b0; margin-bottom: 28px;">
+      Run by Andromeda Genius, Inc, in San Antonio, Texas.
+    </p>
+    <a href="mailto:info@andromedagenius.com?subject=Invite%20request%20%E2%80%94%20TMI%20Trader" style="display: flex; align-items: center; justify-content: center; height: 52px; background: #e9edf3; color: #06080b; border-radius: 4px; font-size: 17px; font-weight: 600;">Ask for an invite</a>
   </section>
 
   <footer style="padding: 36px 20px 48px; border-top: 1px solid #1b212a; background: #0c0f14;">
@@ -208,18 +202,20 @@
       <span class="mono" style="font-size: 13px; font-weight: 500; letter-spacing: 0.14em; color: #e9edf3;">TMI TRADER</span>
       <span style="font-size: 13px; color: #8792a3;">True Move Intelligence</span>
     </div>
-    <nav style="display: flex; flex-wrap: wrap; gap: 20px 28px; margin-bottom: 28px;">
-      <a href="/privacy" style="font-size: 15px; color: #c7cedb;">Privacy</a>
-      <a href="/terms" style="font-size: 15px; color: #c7cedb;">Terms</a>
-      <a href="mailto:[CONTACT EMAIL]" style="font-size: 15px; color: #c7cedb;">Contact</a>
-      <a href="/signin" style="font-size: 15px; color: #c7cedb;">Sign in</a>
+    <nav style="display: flex; flex-direction: column; margin-bottom: 24px;">
+      <a href="/privacy" style="display: flex; align-items: center; min-height: 48px; font-size: 16px; color: #c7cedb; border-top: 1px solid #1b212a;">Privacy</a>
+      <a href="/terms" style="display: flex; align-items: center; min-height: 48px; font-size: 16px; color: #c7cedb; border-top: 1px solid #1b212a;">Terms</a>
+      <a href="mailto:info@andromedagenius.com" style="display: flex; align-items: center; min-height: 48px; font-size: 16px; color: #c7cedb; border-top: 1px solid #1b212a;">Contact</a>
+      <a href="/signin" style="display: flex; align-items: center; min-height: 48px; font-size: 16px; color: #c7cedb; border-top: 1px solid #1b212a; border-bottom: 1px solid #1b212a;">Sign in</a>
     </nav>
     <p style="font-size: 13px; line-height: 1.7; color: #8792a3; margin-bottom: 14px;">
       TMI Trader is an information service covering publicly traded US equities. It is not a
       broker-dealer, not an investment adviser, and nothing it displays is a recommendation to buy or
-      sell any security. Trading low-float small-cap equities carries a substantial risk of loss.
+      sell any security. Market data may be delayed, incomplete or wrong. Trading low-float small-cap
+      equities carries a substantial risk of loss, and past movement indicates nothing about what
+      happens next.
     </p>
-    <p style="font-size: 13px; color: #8792a3;">&copy; [YEAR] [LEGAL ENTITY NAME].</p>
+    <p style="font-size: 13px; color: #8792a3;">&copy; 2026 Andromeda Genius, Inc.</p>
   </footer>
 
 </div>

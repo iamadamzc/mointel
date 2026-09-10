@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <script src="./support.js"></script>
@@ -49,19 +49,15 @@
         Your scanner finds it. This tells you what it is.
       </p>
 
-      <div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
-        <a href="/auth/google" style="display: inline-flex; align-items: center; gap: 12px; height: 44px; padding: 0 20px 0 14px; background: #ffffff; color: #1f1f1f; border-radius: 4px; font-size: 15px; font-weight: 500;">
-          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          </svg>
-          <span>Sign in with Google</span>
-        </a>
-        <p style="font-size: 14px; line-height: 1.55; color: #8792a3; max-width: 46ch;">
-          We ask Google for your name, email address and profile picture. That is the entire list &mdash;
-          <a href="#identity">here is what happens to it</a>.
+      <div style="display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
+        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+          <a href="mailto:info@andromedagenius.com?subject=Invite%20request%20%E2%80%94%20TMI%20Trader" style="display: inline-flex; align-items: center; height: 48px; padding: 0 26px; background: #e9edf3; color: #06080b; border-radius: 4px; font-size: 16px; font-weight: 600;">Ask for an invite</a>
+          <a href="/signin" style="font-size: 15px; color: #c7cedb;">Already have access? Sign in &rarr;</a>
+        </div>
+        <p style="font-size: 14px; line-height: 1.55; color: #8792a3; max-width: 52ch;">
+          The desk is invite only. Signing in is done with Google, which hands us your name, email
+          address and profile picture &mdash; and nothing more.
+          <a href="#identity">What happens to it</a>.
         </p>
       </div>
     </div>
@@ -73,37 +69,41 @@
           <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #2fc46f;">TAPE LIVE</span>
         </div>
 
-        <div style="display: grid; grid-template-columns: 60px 62px 68px 50px 1fr; gap: 10px; padding: 10px 16px; border-bottom: 1px solid #1b212a;">
-          <span class="mono" style="font-size: 10px; letter-spacing: 0.12em; color: #8792a3;">SYM</span>
-          <span class="mono" style="font-size: 10px; letter-spacing: 0.12em; color: #8792a3; text-align: right;">LAST</span>
-          <span class="mono" style="font-size: 10px; letter-spacing: 0.12em; color: #8792a3; text-align: right;">CHG</span>
-          <span class="mono" style="font-size: 10px; letter-spacing: 0.12em; color: #8792a3; text-align: right;">RVOL</span>
-          <span class="mono" style="font-size: 10px; letter-spacing: 0.12em; color: #8792a3;">STRUCTURE</span>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 60px 62px 68px 50px 1fr; gap: 10px; padding: 14px 16px; border-bottom: 1px solid #1b212a;">
-          <span class="mono" style="font-size: 14px; font-weight: 500; color: #e9edf3;">ABCD</span>
-          <span class="mono" style="font-size: 14px; color: #c7cedb; text-align: right;">4.87</span>
-          <span class="mono" style="font-size: 14px; color: #2fc46f; text-align: right;">+62.4%</span>
-          <span class="mono" style="font-size: 14px; color: #c7cedb; text-align: right;">41x</span>
-          <span style="font-size: 13px; line-height: 1.45; color: #c7cedb;">
-            Float 3.2M, verified &nbsp;&middot;&nbsp; <span style="color: #e8ac33;">$50M ATM live</span><br>
-            <span style="color: #8792a3;">Frontside, day 1 &mdash; readout 06:12</span>
-          </span>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 60px 62px 68px 50px 1fr; gap: 10px; padding: 14px 16px;">
-          <span class="mono" style="font-size: 14px; font-weight: 500; color: #e9edf3;">WXYZ</span>
-          <span class="mono" style="font-size: 14px; color: #c7cedb; text-align: right;">1.94</span>
-          <span class="mono" style="font-size: 14px; color: #2fc46f; text-align: right;">+38.1%</span>
-          <span class="mono" style="font-size: 14px; color: #c7cedb; text-align: right;">22x</span>
-          <span style="font-size: 13px; line-height: 1.45;">
-            <span class="mono" style="font-size: 11px; letter-spacing: 0.1em; color: #2fc46f;">DEMAND DETECTED</span><br>
-            <span class="mono" style="font-size: 11px; letter-spacing: 0.1em; color: #8792a3;">NO STRUCTURAL ANALYSIS AVAILABLE</span>
-          </span>
-        </div>
+        <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+          <caption style="caption-side: bottom; text-align: left; padding: 10px 16px 12px; font-size: 12px; color: #8792a3;">Example board. Sample values, not live market data.</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="mono" style="width: 60px; padding: 10px 0 10px 16px; text-align: left; font-size: 10px; font-weight: 400; letter-spacing: 0.12em; color: #8792a3; border-bottom: 1px solid #1b212a;">SYM</th>
+              <th scope="col" class="mono" style="width: 62px; padding: 10px 0; text-align: right; font-size: 10px; font-weight: 400; letter-spacing: 0.12em; color: #8792a3; border-bottom: 1px solid #1b212a;">LAST</th>
+              <th scope="col" class="mono" style="width: 68px; padding: 10px 0; text-align: right; font-size: 10px; font-weight: 400; letter-spacing: 0.12em; color: #8792a3; border-bottom: 1px solid #1b212a;">CHG</th>
+              <th scope="col" class="mono" style="width: 54px; padding: 10px 0; text-align: right; font-size: 10px; font-weight: 400; letter-spacing: 0.12em; color: #8792a3; border-bottom: 1px solid #1b212a;">RVOL</th>
+              <th scope="col" class="mono" style="padding: 10px 16px 10px 12px; text-align: left; font-size: 10px; font-weight: 400; letter-spacing: 0.12em; color: #8792a3; border-bottom: 1px solid #1b212a;">STRUCTURE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" class="mono" style="padding: 14px 0 14px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #e9edf3; border-bottom: 1px solid #1b212a; vertical-align: top;">ABCD</th>
+              <td class="mono" style="padding: 14px 0; text-align: right; font-size: 14px; color: #c7cedb; border-bottom: 1px solid #1b212a; vertical-align: top;">4.87</td>
+              <td class="mono" style="padding: 14px 0; text-align: right; font-size: 14px; color: #2fc46f; border-bottom: 1px solid #1b212a; vertical-align: top;">+62.4%</td>
+              <td class="mono" style="padding: 14px 0; text-align: right; font-size: 14px; color: #c7cedb; border-bottom: 1px solid #1b212a; vertical-align: top;">41x</td>
+              <td style="padding: 14px 16px 14px 12px; font-size: 13px; line-height: 1.45; color: #c7cedb; border-bottom: 1px solid #1b212a; vertical-align: top;">
+                Float 3.2M, verified &nbsp;&middot;&nbsp; <span style="color: #e8ac33;">$50M ATM live</span><br>
+                <span style="color: #8792a3;">Frontside, day 1 &mdash; readout 06:12</span>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="mono" style="padding: 14px 0 14px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #e9edf3; vertical-align: top;">WXYZ</th>
+              <td class="mono" style="padding: 14px 0; text-align: right; font-size: 14px; color: #c7cedb; vertical-align: top;">1.94</td>
+              <td class="mono" style="padding: 14px 0; text-align: right; font-size: 14px; color: #2fc46f; vertical-align: top;">+38.1%</td>
+              <td class="mono" style="padding: 14px 0; text-align: right; font-size: 14px; color: #c7cedb; vertical-align: top;">22x</td>
+              <td style="padding: 14px 16px 14px 12px; font-size: 13px; line-height: 1.45; vertical-align: top;">
+                <span class="mono" style="font-size: 11px; letter-spacing: 0.1em; color: #2fc46f;">DEMAND DETECTED</span><br>
+                <span class="mono" style="font-size: 11px; letter-spacing: 0.1em; color: #8792a3;">NO STRUCTURAL ANALYSIS AVAILABLE</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <p style="font-size: 12px; color: #8792a3;">Example board. Sample values, not live market data.</p>
     </div>
   </section>
 
@@ -204,7 +204,7 @@
     <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px;">
       <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #29313d;">
         <h3 style="font-size: 18px;">Not a scanner</h3>
-        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">It does not filter the universe or replace the one you run. It works on the names a scan has already surfaced, and goes further than one can.</p>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">It doesn't run your filters or replace the scan you already trust. It ranks what is already moving, and then tells you what is underneath it.</p>
       </div>
       <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #29313d;">
         <h3 style="font-size: 18px;">Not a broker</h3>
@@ -212,7 +212,7 @@
       </div>
       <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #29313d;">
         <h3 style="font-size: 18px;">Not signals</h3>
-        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">No entry arrows, no exit alerts, no chat room. It gives you what a decision needs; the decision stays yours.</p>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">No entry arrows, no exit alerts, no chat room. It puts the facts in front of you; the decision stays yours.</p>
       </div>
       <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #29313d;">
         <h3 style="font-size: 18px;">Not advice</h3>
@@ -227,13 +227,14 @@
         <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 20px;">SIGNING IN</p>
         <h2 style="font-size: 38px; line-height: 1.14; margin-bottom: 24px;">What we ask Google for, and what we don't.</h2>
         <p style="font-size: 17px; line-height: 1.65; color: #c7cedb; margin-bottom: 20px;">
-          Signing in with Google hands this site three things and nothing else: your name, your email
-          address, and your profile picture. It is the smallest set Google offers.
+          Signing in with Google hands this site your name, your email address and your profile picture,
+          plus the account identifier Google uses to tell one person from another. It is the smallest set
+          that lets anyone sign in at all.
         </p>
         <p style="font-size: 17px; line-height: 1.65; color: #97a1b0; margin-bottom: 32px;">
           The email is how the desk knows which account is yours and how we reach you about the service.
-          We do not sell it and we do not hand it to advertisers. Ask and the account and everything in
-          it is deleted. The full terms are in the policy.
+          We do not sell it and we do not hand it to advertisers. Ask, and we close the account and
+          delete the record &mdash; the policy says how, and how long it takes.
         </p>
         <a href="/privacy" style="font-size: 15px; font-weight: 500;">Read the privacy policy &rarr;</a>
       </div>
@@ -247,9 +248,13 @@
           <span class="mono" style="font-size: 16px; color: #2fc46f; width: 20px;">+</span>
           <span style="font-size: 16px; color: #e9edf3;">Your email address</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #1b212a; border-bottom: 1px solid #29313d;">
+        <div style="display: flex; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #1b212a;">
           <span class="mono" style="font-size: 16px; color: #2fc46f; width: 20px;">+</span>
           <span style="font-size: 16px; color: #e9edf3;">Your profile picture</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #1b212a; border-bottom: 1px solid #29313d;">
+          <span class="mono" style="font-size: 16px; color: #2fc46f; width: 20px;">+</span>
+          <span style="font-size: 16px; color: #e9edf3;">The account identifier Google gives us for you</span>
         </div>
         <div style="display: flex; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #1b212a; margin-top: 14px;">
           <span class="mono" style="font-size: 16px; color: #8792a3; width: 20px;">&minus;</span>
@@ -273,27 +278,20 @@
         <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 20px;">WHO BUILT IT</p>
         <h2 style="font-size: 30px; line-height: 1.18; margin-bottom: 24px;">Built for one desk, by the person sitting at it.</h2>
         <p style="font-size: 17px; line-height: 1.65; color: #97a1b0;">
-          TMI Trader is run by [YOUR NAME OR TRADING ENTITY], [CITY, COUNTRY]. It was built for a working
+          TMI Trader is run by Andromeda Genius, Inc, in San Antonio, Texas. It was built for a working
           small-cap momentum desk and it is still used on one every morning. [ONE SENTENCE ON WHY YOU
           BUILT IT.]
         </p>
       </div>
       <div style="grid-column: span 6;">
         <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 20px;">ACCESS</p>
-        <h2 style="font-size: 30px; line-height: 1.18; margin-bottom: 24px;">[ACCESS TERMS]</h2>
+        <h2 style="font-size: 30px; line-height: 1.18; margin-bottom: 24px;">Invite only.</h2>
         <p style="font-size: 17px; line-height: 1.65; color: #97a1b0; margin-bottom: 32px;">
-          [WHO CAN SIGN IN TODAY AND WHAT IT COSTS &mdash; invite only, a waiting list, open, or a price.
-          One short paragraph. This is the question a stranger asks immediately after "what is it".]
+          The desk is not open to sign-ups. If you trade small-cap momentum and this is the instrument
+          you have been missing, ask &mdash; tell us how you trade and we will tell you honestly whether
+          it is any use to you.
         </p>
-        <a href="/auth/google" style="display: inline-flex; align-items: center; gap: 12px; height: 44px; padding: 0 20px 0 14px; background: #ffffff; color: #1f1f1f; border-radius: 4px; font-size: 15px; font-weight: 500;">
-          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          </svg>
-          <span>Sign in with Google</span>
-        </a>
+        <a href="mailto:info@andromedagenius.com?subject=Invite%20request%20%E2%80%94%20TMI%20Trader" style="display: inline-flex; align-items: center; height: 48px; padding: 0 26px; background: #e9edf3; color: #06080b; border-radius: 4px; font-size: 16px; font-weight: 600;">Ask for an invite</a>
       </div>
     </div>
   </section>
@@ -307,7 +305,7 @@
       <nav style="display: flex; gap: 40px;">
         <a href="/privacy" style="font-size: 14px; color: #c7cedb;">Privacy</a>
         <a href="/terms" style="font-size: 14px; color: #c7cedb;">Terms</a>
-        <a href="mailto:[CONTACT EMAIL]" style="font-size: 14px; color: #c7cedb;">Contact</a>
+        <a href="mailto:info@andromedagenius.com" style="font-size: 14px; color: #c7cedb;">Contact</a>
         <a href="/signin" style="font-size: 14px; color: #c7cedb;">Sign in</a>
       </nav>
     </div>
@@ -318,7 +316,7 @@
       equities carries a substantial risk of loss, and past movement indicates nothing about what
       happens next.
     </p>
-    <p style="font-size: 13px; color: #8792a3;">&copy; [YEAR] [LEGAL ENTITY NAME]. All rights reserved.</p>
+    <p style="font-size: 13px; color: #8792a3;">&copy; 2026 Andromeda Genius, Inc. All rights reserved.</p>
   </footer>
 
 </div>
