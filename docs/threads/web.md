@@ -112,6 +112,42 @@ hand it over — and specify it as a string Ops can implement, not as an intenti
   curl -s -o /dev/null -w "%{http_code}" https://tmitrader.com/<path>
   ```
 
+- **THE LANDING PAGE AND THE TRADER'S BOARD ARE THE SAME URL, AND `/` IS THE
+  BOARD.** *Ops, 2026-09-10, `a352d49`.* **`location /` in
+  `nginx-locations.conf:183` carries no `auth_basic off`, and there is NO in-app
+  auth — no auth packages, no session library, no `cookies()`, no `middleware.ts`.**
+  **So nginx Basic Auth is not one layer of two. It is the whole of it.**
+
+  > **THE MOMENT `auth_basic off` REACHES `location /`, THE BOARD IS PROTECTED BY
+  > NOTHING.** *Not weakened — nothing.* **A landing page shipped at `/` before
+  > in-app session auth gates the board publishes the desk, to exactly the audience
+  > a landing page is built to attract.**
+
+  **THE SEQUENCE, AND ITS POINT IS THAT YOU ARE NOT BLOCKED:**
+  1. **Public prefixes get their own individually-exempted locations** —
+     `/privacy`, `/terms`, `/signin`, `/auth/`. **`/` stays protected.** **You can
+     design and ship your entire surface EXCEPT the landing page, with the desk
+     behind the password the whole time.** *That is most of this charter,
+     available immediately.*
+  2. **In-app session auth gates the board, proven against a client with NO cached
+     credential.**
+  3. **Only then does `/` go public, and Basic Auth comes off LAST.**
+
+  **STEPS 2 AND 3 ARE NOT THE SAME CHANGE AND MUST NOT BE.** *Basic Auth is a
+  crude control and it is currently load-bearing.* **It comes off when something
+  else is demonstrably holding the weight — not when its replacement is written.**
+
+  **AND THE TESTING TRAP APPLIES TO STEP 2 SPECIFICALLY:** *"in-app auth works"
+  verified from a browser on this desk proves nothing* — **everyone here still has
+  the Basic Auth credential cached and would pass the outer gate regardless.**
+  *Same instrument problem as the callback, one layer up.*
+- **SEND OPS YOUR FULL LIST OF PUBLIC PREFIXES AT ONCE, NOT ONE AT A TIME.**
+  *Ops's request and its reasoning: each exemption is a hole in a uniform rule,
+  granted once and spent forever.* **"Web needs a public page" is not an argument
+  for WHICH prefix** — each is a separate decision with a separate blast radius.
+  **A batch is a decision; a trickle is a precedent.** *Ops would rather give four
+  narrow prefixes than one broad one, and would rather you ask for a fifth than
+  have the fourth quietly cover it.*
 - **THE PRIVACY POLICY HAS ONE SOURCE OF TRUTH.** *Imported from `web-tldw`, whose
   version renders `docs/legal/privacy-policy.md` at request time.* **Never copy
   legal text into a template.** Two copies of a policy is two policies, and the one
@@ -210,6 +246,15 @@ that as a rejection.**
 - **Not blocked on:** the domain (verified), the redirect URIs (registered), the
   scopes (set), the OAuth client (his, in the console).
 - **Blocked ON Ops for:** every route and nginx location a public page needs.
+- **THE LANDING PAGE AT `/` IS BLOCKED ON IN-APP AUTH EXISTING**, because `/` is
+  the board and Basic Auth is the only thing holding it. **Everything else on this
+  thread's surface is not.**
+- **INTEGRATION'S READING, FLAGGED NOT ASSERTED:** *Google's brand verification
+  wants "a public home page that is not only a login page". If that home page must
+  be `tmitrader.com` itself, then **Google publishing is blocked on in-app auth
+  too** — a reviewer landing on a password prompt fails.* **Nobody has confirmed
+  whether a home page elsewhere on the domain satisfies it, and nobody should
+  guess.**
 - **THE SIGN-IN SCREEN'S OWNERSHIP IS THE TRADER'S CALL AND IS NOT SETTLED.**
   `ops.md`'s auth scope of 2026-09-07 assigns the sign-in surface to Design,
   written before this thread existed. **Integration has put the question to him
