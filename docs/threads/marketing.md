@@ -274,9 +274,13 @@ subject to every prohibition above.*
   Header now "the one nobody prints"; hero opens on 07:15 with no percentage;
   the August 50% line is on the page as a fact about the market and loses its
   place the moment a "you" or a trade attaches to it.
-- **THE PAGE IS TWO FILES.** `Main.dc.html` and `LandingMobile.dc.html`. A pass
-  on one leaves the other saying the forbidden thing and nobody sees it. Every
-  pass covers both.
+- **THE UNIT IS THE CANVAS, NOT A PAIR.** Seven artboards on disk: Main,
+  LandingMobile, SignIn, Admitted, States, Privacy, System. **All seven swept
+  against the not-list 2026-09-10 evening, by vocabulary and by reading: clean.**
+  Every hit was a registered boundary sentence or footer legal. Integration's
+  list named an eighth, `Child.dc.html`; it does not exist in the tree. Every
+  future pass sweeps the whole directory, and the published artifact is checked
+  separately because editing sources does not update it.
 - **Protocol held:** Web placed, Marketing added the cleared lines after
   Integration declared the files clear. Nobody committed over anyone.
 - **OPEN WITH HIM:** the 07:00–10:00 window is off the page; a voice reference
