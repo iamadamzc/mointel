@@ -3346,3 +3346,54 @@ knows it*, arriving in a rendering decision rather than in a data one.
 **What made it answerable was Design refusing to fold its assumption into its
 finding.** *An assertion would have been acted on; a flagged claim cost one
 question and came back confirmed.*
+
+## TWO REAL MEASUREMENTS, BOTH CORRECT, COMBINED INTO A FALSE CONCLUSION — IN PIXELS
+
+**2026-09-10.** He spotted that Rank and RVOL sort identically on the Discovery
+board. **True, confirmed at `rvol.ts:134`.** This seat then wrote, to him:
+
+> ~~*"44 pixels come free, which is more than the entire session-gap problem
+> needs."*~~
+
+**WRONG, AND CAUGHT BY DESIGN AT `82b7a92`.** `<table className="w-full
+table-fixed">` — **under `table-fixed`, explicit widths are taken and the
+REMAINDER goes to the columns WITHOUT one.** Those are `Why` and `Risk`.
+
+    delete the 44px Rank column   ->  44px to Why and Risk
+    the price cell                ->  w-[172px], unchanged, gains NOTHING
+
+**AND THE PRICE COLUMN CAN BE WIDENED WITHOUT TOUCHING RANK. The two decisions
+were never connected.**
+
+> **I compared 44px of column against 34.4px of line-1 slack. Both figures were
+> real, both were measured, and they live in different layout regimes — so the
+> comparison was arithmetic between two quantities that never meet.**
+
+**This desk's oldest failure, arriving in pixels rather than in rates.** *A number
+crossing a boundary carries its unit in the same sentence as the number* — and
+here the "unit" is **which layout the width belongs to**. **Design's own phrasing
+is the one to keep: it would rather say so than let a good measurement of its own
+get spent on the wrong purchase.**
+
+### What it cost and what it bought
+
+**It reached him before it was caught**, so he briefly held a trade-off between
+the rank column and the session-gap work **that does not exist.** *Second time
+today I have handed him a trade-off that was not real* — the first was
+*"what leaves the row"*, on a row-height figure that was also wrong.
+
+**Both were corrected by the thread that owned the measurement, not by me.**
+
+### And the question that survives is cleaner for it
+
+**Rank's redundancy is now a STANDALONE question** — is that column worth 44px of
+`Why` and `Risk` — **rather than a payment for something else.** *Design's third
+reason is the strongest and is its own:* `DiscoveryBoard.tsx:124-132` sorts **the
+whole tracked set and then takes the top N**, so **a Gap-sorted board's visible
+twelve are not the top twelve by rank**, and rank is **not inferable from row
+position under any non-rank sort.**
+
+**One dead thing named so it is not counted on either side:** the Rank cell
+renders a change arrow, and `rvol_rank_change` is **0 on all 45,249 production
+rows.** *It has never rendered.* **Not value preserved by keeping the column, and
+not a reason to remove it.**
