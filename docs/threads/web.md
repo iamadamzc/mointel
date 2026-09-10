@@ -136,6 +136,16 @@ hand it over — and specify it as a string Ops can implement, not as an intenti
 - **APPLE IS DEFERRED AND MAY BE UNAVAILABLE.** *Sign in with Apple for the web
   requires an app already on the App Store, in Apple's own words.* **Leave room for
   a second provider button; do not draw one.**
+  - **Design's formulation, handed over 2026-09-10 at `4053de0`: LEAVE ROOM; DO
+    NOT BUILD THE ROOM.** **Compose it as a LIST OF ONE, not one thing centred.**
+    *A screen that cannot grow a second button is the surface equivalent of keying
+    users on the Google id — the migration is paid later by someone who did not
+    make the choice.*
+- **A SINGLE-PROVIDER SCREEN HAS A FAILURE MODE THE MULTI-PROVIDER ONE DOES NOT,
+  AND IT LANDS IN THE COPY.** *Design's, and it is not obvious until you notice
+  there is no fallback.* **If Google is down or the account is refused, there is no
+  second path — so the failure copy CANNOT say "try again", because with one
+  provider that is a wall rather than a retry.** **A failure screen is a screen.**
 
 ---
 
@@ -165,7 +175,29 @@ hand it over — and specify it as a string Ops can implement, not as an intenti
 | **the trader** | a direction; adoption of the legal text | the canvas iterates without him; the DRAFT banner renders until adopted |
 | **Ops** | public routes, an nginx exemption for each public prefix, the sign-in POST target, session issue | `nginx.conf`, `app/` and the identity store are Ops's carriage; you design and specify |
 | **Commercial** | the positioning sentence and anything published about who this is for | its file, already settled, and re-deriving it is how two products appear |
-| **Design** | the desk's existing tokens and type scale | reuse where they serve; say where they do not |
+| **Design** | the desk's existing tokens and type scale — **already handed over, see below** | reuse where they serve; say where they do not |
+
+**DESIGN HAS ALREADY ANSWERED THE TOKEN SEAM, 2026-09-10, unprompted and before
+this thread opened:**
+
+```
+app/globals.css     --color-desk #06080b  ..  --color-ink #e9edf3
+                    plus pos / warn / neg / accent
+type                Geist + Geist Mono
+```
+
+**AND IT SAID THE THING THAT MATTERS MORE THAN THE VALUES:** *"a dark instrument
+palette built for a 1,024px floor and tabular numerals is not obviously right for
+an argument aimed at someone who has never seen the product."* **Saying where they
+do not serve is the instruction, and Design has said in advance it will not read
+that as a rejection.**
+
+> **AGREED IN ADVANCE, AT DESIGN'S REQUEST, BEFORE THERE IS ANYTHING TO DISAGREE
+> ABOUT: if Web and Design disagree about density or restraint, THE FIRST
+> HYPOTHESIS IS THAT BOTH ARE RIGHT ABOUT DIFFERENT READERS** — not that one has
+> the craft wrong. *The board is a dense instrument for someone who already trusts
+> it; a landing page is an argument for someone who does not.* **Design asked for
+> this written down before the disagreement rather than after it.**
 
 ---
 
