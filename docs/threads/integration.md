@@ -1959,6 +1959,40 @@ prohibitions were written because nothing in the repo can check this thread's
 output.* **The check that actually ran was the thread applying them to itself and
 routing the hard case to the seat that owns the answer.**
 
+## THE REVIEWED SURFACE AND THE DELIVERED SURFACE ARE DIFFERENT OBJECTS
+
+**Web, 2026-09-10, `56394fe`, laying in Marketing's first copy pass.**
+
+**The pass was written against `Main.dc.html` alone. `LandingMobile.dc.html`
+existed and Marketing did not know it did.** **The phone artboard still carried
+every phrase the pass removed — INCLUDING BOTH LICENCE-BOUNDARY VIOLATIONS.**
+
+> **A copy pass on one viewport leaves the other saying the forbidden thing, and
+> nobody sees it, because the desktop is what gets reviewed.**
+
+- **THE GAP IS INVISIBLE BY CONSTRUCTION.** *Not "someone forgot to check" — the
+  review happens on one artefact and the delivery happens on another, so no amount
+  of care on the reviewed one reaches the other.*
+- **AND THE UNREVIEWED ONE IS THE MORE LIKELY TO BE SEEN.** *A stranger reading a
+  landing page is more likely holding a phone.*
+- **Same shape as the desk's own recurring find, one level up from code:** *the
+  instrument is pointed at the wrong copy of the thing.* **`/api/health` reading a
+  stored row rather than the worker; a browser with the password cached rather than
+  `curl`; a grep of `docs/` rather than the repo.** **Here it is a design review of
+  the desktop rather than the surface.**
+
+**THE FIX IS NOT VIGILANCE, IT IS NAMING THE UNIT.** *"Treat the two as one
+surface" is a rule about what the object IS, not a reminder to check twice.*
+**Wherever a deliverable has two representations — two viewports, two artboards, a
+canvas and a template — the pair is the unit and either alone is a partial edit.**
+
+**AND THE OTHER HALF OF THE SAME LAY-IN IS WORTH RECORDING BESIDE IT: Marketing's
+`what-it-is-not.md` caught TWO OF WEB'S OWN LINES, and one was a regression** — *"a
+continuous read of the market, held open all session", written AFTER Commercial
+ruled the page must not sell the tape.* **A thread built an instrument for its own
+writing and it turned out to check someone else's**, which is the cheapest kind of
+guard this desk gets.
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
