@@ -8397,3 +8397,63 @@ precisely when a Search Console property gets created.
 
 **NEXT STEP IS HIS, NOT OURS: he clicks verify in Search Console.** Do not poll
 for it and do not schedule a task to.
+
+## THREE REDIRECT URIs ARE REGISTERED AND THE NGINX RULE THAT MAKES THEM WORK DOES NOT EXIST — 2026-09-10
+
+**He registers these in the Google OAuth client today. The route may be weeks
+away. Until both halves ship, all three are a silent 401.**
+
+```
+https://tmitrader.com/auth/callback/google
+https://www.tmitrader.com/auth/callback/google
+http://localhost:3000/auth/callback/google
+```
+
+**THE OBLIGATION, AND IT IS OPS'S:** these work only when
+**`location ^~ /auth/ { auth_basic off; … }`** ships **in the same change** as
+`app/auth/callback/google/route.ts`. **Both or neither.** A route with no nginx
+rule is a callback that 401s; an nginx rule with no route is a hole with no
+occupant. Neither half is useful alone.
+
+### WHY `/auth/` AND NOT `/api/auth/` — two reasons, and the second is the load-bearing one
+
+**`location /api/` carries no `auth_basic off`, so it inherits the server-level
+Basic Auth.** Google's redirect arrives as a **fresh navigation from
+accounts.google.com**, so the callback would be challenged.
+
+**AND THE FAILURE IS INVISIBLE TO EVERYONE WHO COULD TEST IT.** Every person on
+this desk has the desk password cached, so the flow would look correct to all of
+them. **The only people who would ever see the 401 are the users Sign in with
+Google exists for** — a new user has no Basic Auth credential by definition.
+**A bug nobody on the team can reproduce is a different class from a bug.**
+
+**The second reason is shape.** Putting the callback under `/api/` means carving
+`location ^~ /api/auth/` out of an otherwise uniform prefix — **and that is not
+one exemption, it is an exemption that pre-approves every future `/api/auth/*`
+route, including ones nobody has designed.** *A hole in a uniform prefix is
+granted once and spent forever.* `/review/` and `/mcp/` are already top-level
+prefixes rather than holes; `/auth/` matches the desk's own shape.
+
+### THE CHECK THAT PROVES IT IS WIRED — run it, do not believe it
+
+```
+curl -s -o /dev/null -w "%{http_code}" https://tmitrader.com/auth/callback/google
+```
+
+**Expect anything that is NOT 401.** A 404 means nginx let it through and Next
+has no route yet — **correct, and the state to expect between the two halves
+landing.** **A 401 means the exemption is missing** and the callback is dead for
+real users while looking fine to everyone here. **Once the route ships, this
+belongs in the post-deploy checks.**
+
+### WHY `www` IS REGISTERED THOUGH ONE ORIGIN IS BETTER
+
+**I recommended apex-only plus a commitment to canonicalise `www` → apex.
+Integration overrode it and was right.** Apex-only **depends on a session
+surviving long enough to keep a commitment, and sessions here retire daily.**
+The third entry costs one exact-match line and **cannot be forgotten.**
+
+**Same principle as putting the `:80` redirect in `deploy/aws/nginx.conf` rather
+than hand-applying it to the box: prefer the version that does not depend on a
+future actor remembering.** When the canonicalisation lands, the `www` entry
+goes dead and harmless — **which is the correct end state for a belt.**
