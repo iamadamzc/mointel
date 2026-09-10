@@ -370,3 +370,58 @@ describe('the mark takes one colour, not one per bar', () => {
     expect(block).toContain("tone === 'warn'");
   });
 });
+
+/* ------------------------------------------------------------------------- *
+ * A SILENT ROW IS NOT A FADED ROW
+ *
+ * He looked at the after-hours board and said there were no sparklines. They
+ * were there: HCAI at rank 1 and 107x RVOL was drawing a flat line, which is
+ * the column doing the one job it exists for -- RVOL is cumulative and never
+ * decays, so a flat line beside a huge number means "it ran, and it is over".
+ *
+ * It read as absence because a fully silent row dropped to `ink-3/50`, the
+ * faintest ink on the desk, on top of a 1px floor. The encoding said IGNORE ME
+ * exactly where the data said LOOK AT ME.
+ * ------------------------------------------------------------------------- */
+describe('the quiet end of the scale is legible', () => {
+  const code = async () => {
+    const fs = await import('node:fs');
+    return fs
+      .readFileSync('components/ActivitySparkline.tsx', 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '');
+  };
+
+  /*
+   * COMMENTS STRIPPED, because the fix explains the defect it fixes and quotes
+   * the old class while doing so. A source guard that reads prose reports its
+   * own explanation as the thing it forbids -- which happened, in another guard,
+   * earlier today.
+   */
+  it('never renders a measured-silent row in faded ink', async () => {
+    expect(await code()).not.toContain('ink-3/50');
+  });
+
+  it('draws every bar in the same opacity as an ordinary row', async () => {
+    const source = await code();
+    // No opacity suffix on any bar colour: `bg-ink-3/50`, `bg-ink-2/40`, etc.
+    expect(source).not.toMatch(/bg-(ink|pos|neg|warn)[\w-]*\/\d+/);
+  });
+
+  it('gives the bars a baseline, so a floor rests on something', async () => {
+    expect(await code()).toMatch(/items-end[^"]*border-b/);
+  });
+
+  /*
+   * The distinction the whole column rests on, and the reason the fix is safe:
+   * silence is still a MEASUREMENT and absence is still absence. Undimming the
+   * one must not collapse it into the other.
+   */
+  it('still separates measured-silent from never-measured', () => {
+    const silent = sparklineView([0, 0, 0, 0, 0]);
+    expect(silent).not.toBeNull();
+    expect(silent!.silent).toBe(true);
+    expect(sparklineView(undefined)).toBeNull();
+    expect(sparklineView([])).toBeNull();
+  });
+});

@@ -70,8 +70,19 @@ export function ActivitySparkline({ window, price, spreadPct }: ActivitySparklin
         </span>
       ) : null}
 
+      {/*
+        * A BASELINE, so a zero rests ON something instead of on nothing.
+        *
+        * Full height is the ACTIVE line (300/min). The DEAD line is 30. On a
+        * 14px band that puts everything from 0 to 30 inside the bottom 1.4px --
+        * so dead, nearly dead and silent all render as one hairline, and a
+        * hairline floating in an empty cell is indistinguishable from an empty
+        * cell. The scale is set by the loud end and leaves the quiet end no room
+        * to be legible; the rule gives the floor something to be measured
+        * against.
+        */}
       <span
-        className="inline-flex h-[14px] items-end gap-px"
+        className="inline-flex h-[15px] items-end gap-px border-b border-line-2 pb-px"
         aria-label={`Activity: ${view.values.join(', ')} trades per minute over the ${sparklineSpanLabel()}`}
       >
         {view.heights.map((h, i) => (
@@ -93,13 +104,21 @@ export function ActivitySparkline({ window, price, spreadPct }: ActivitySparklin
                   : tone === 'warn'
                     ? 'bg-warn'
                     : view.silent
-                      ? 'bg-ink-3/50'
+                      ? 'bg-ink-3'
                       : 'bg-ink-2'
             }`}
             /*
              * A measured zero still draws a 1px floor, so a silent minute is
              * visibly a MEASUREMENT rather than a gap. Not-measured never reaches
              * here — it returned above.
+             *
+             * AND THE FLOOR IS NOT DIMMED. It used to drop to `ink-3/50`, the
+             * faintest ink on the desk, so that a quiet minute would not shout.
+             * The effect was the opposite of the intent: the row where this
+             * fires hardest is a name at 107x RVOL that has STOPPED — the most
+             * useful row on the board — and it was drawn to disappear. He read
+             * the whole column as missing in after-hours because of it. The
+             * encoding said IGNORE ME where the data said LOOK AT ME.
              */
             style={{ height: `${Math.max(1, Math.round(h * 14))}px` }}
           />
