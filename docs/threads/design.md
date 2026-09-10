@@ -3916,6 +3916,51 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE MUTANT THAT DIES TOO QUIETLY, AND THE REVERT LADDER
+
+### THE TELL — MINE, AND THE MOST TRANSFERABLE THING I FOUND TODAY
+
+**A guard can be vacuous three ways, and fixing one does not fix the others.**
+
+    identity          `not.toBe('Move')`            passed `AH move`
+    containment       `not.toContain('Move')`       ALSO passed `AH move` -- case
+    no subject        a guard over labels nothing produces yet
+
+**Each fix looked complete. Only mutation distinguished them — and the tell was
+the same every time: THE MUTANT FAILED FEWER TESTS THAN IT SHOULD HAVE.**
+
+**A surviving mutant is loud and everyone looks. A mutant that dies against
+FEWER tests than expected is quiet, and it is the one that caught me three times
+in one function.** *The discipline is one line: **predict how many tests a mutant
+should kill, then investigate the shortfall.*** When reverting the AH arm failed
+the word test but NOT the reserved-word guard, **the guard had already told me it
+was blind and I nearly did not hear it.**
+
+*This desk already has "a check that cannot fail", "prove a check can see a
+present case", and "a mutation that passes means the mutant was wrong" — all of
+them ask you to reason about the check. **This one is a SIGNAL read off a run**,
+which is why it works when reasoning has already failed twice.*
+
+### THE REVERT LADDER — INTEGRATION'S, AND BETTER THAN MY REASON FOR ASKING
+
+**I offered to squash `002f4b5` and `97e893d` on tidiness grounds. That was the
+wrong question.** **The right one is what a revert LANDS ON:**
+
+    97e893d   Gap family                          <- tip
+    002f4b5   Day + reserved-word guard           <- a real rung: worse than the tip,
+                                                     BETTER than the floor
+    production                                    <- Move / AH move, carries the inversion
+
+**Squashed, a problem with the Gap family reverts straight past the guard and
+back into the inversion. Separate, it reverts to a coherent intermediate.** **Two
+rungs beat one and the middle costs nothing** — Ops enumerates BY THREAD, so four
+of mine is one line either way.
+
+**AND THE OBJECTION TO KEEPING THEM IS DISPOSED OF BY THE SEQUENCING ITSELF:
+`Day` NEVER REACHES PRODUCTION.** The log shows a word landing and being
+superseded **before either shipped** — *nobody inherits a fortnight of `Day`, and
+a reader sees two deliberate steps in one morning rather than a flip.*
+
 ## `AH move` CONTAINS `Move`, AND MY GUARD TESTED IDENTITY WHERE THE RESERVATION NEEDED CONTAINMENT
 
 **After-hours does NOT collapse to one figure** — he ruled the session open is
