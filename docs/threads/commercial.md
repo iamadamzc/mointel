@@ -271,8 +271,18 @@ repo — they are public documents and re-fetchable.
   resolved; brand verification takes minutes to 2–3 business days and needs
   a public home page, privacy policy and terms on the owned domain and
   Search Console domain ownership by DNS TXT record, which sits in Route 53;
-  no page states a price or "free". Apple section follows when its pass is
-  re-read.
+  no page states a price or "free". **Apple section landed the same day,
+  re-read through the browser:** the deciding fact for phase two is Apple's
+  own sentence, *"you must have an existing app in the App Store that uses
+  Sign in with Apple"* — a web-only product with no iOS app is outside what
+  the pages offer, and whether an unshipped App ID is accepted in practice
+  is stated nowhere; the Program is $99 USD a year, individual enrolment is
+  fine, organizations need a legal entity and a D-U-N-S number; `sub` is
+  stable per team, a relay address is asserted verified but never matches a
+  Google user's address, so Ops's link-from-session model already accepts
+  Apple without a migration; the relay domain moves to private.icloud.com
+  per Apple's 2026-08-24 update, and sending to a relay address needs the
+  domain registered with Apple and SPF/DKIM.
 
 **Open items.**
 
