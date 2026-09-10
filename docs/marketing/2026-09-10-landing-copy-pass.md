@@ -1,9 +1,13 @@
 # Landing page copy pass — words, not descriptions of words
 
 **Marketing, 2026-09-10 17:25 ET, against `Main.dc.html` at `70198bb`.**
-Co-owned with Web. Web places; the second seat into the file merges. I did not
-open the canvas file; these are finished words for Web to lay in, or for me to
-lay in once Integration says the file is clear.
+Co-owned with Web. **Laid in by Web at `56394fe`, both artboards.** The two
+cleared lines were added by Marketing afterwards, both artboards.
+
+**The page is two files, `Main.dc.html` and `LandingMobile.dc.html`, and every
+pass covers both.** This pass was written against the desktop alone and the
+phone kept every phrase it removed, including two boundary violations, until
+Web mirrored it. The phone is the one a stranger is more likely to be holding.
 
 Standard: a working trader reads it and cannot tell it was not written by one.
 Rule for the pass: change only where a trader would notice. Web's four
@@ -52,6 +56,8 @@ Why: a sentence about money changing hands is an outcome claim whatever its sign
 
 ### 03 — current: IT SEPARATES CAPACITY FROM INTENT / It says capacity, never selling
 **Proposed:** IT SAYS CAPACITY. IT NEVER SAYS SELLING.
+
+Web split it at the full stop: eyebrow `IT SAYS CAPACITY.`, heading `It never says selling.` The break is right and stands.
 
 > A resale registration, a warrant, a convertible: each is labelled as what it is, shares that can come to market. Not shares that are coming. A filing tells you capacity and nothing else. Anything that tells you someone is selling is guessing, and you find out which on the day it matters.
 

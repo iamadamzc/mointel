@@ -263,25 +263,22 @@ subject to every prohibition above.*
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**2026-09-10 17:25 ET. Two documents written, nothing placed on the page yet.**
+**2026-09-10 evening ET. The copy pass is on both artboards.**
 
 - **`docs/marketing/what-it-is-not.md`** — thirteen negations, each confirmed
-  against source or a registered document, each with the copy it forbids.
-  *Internal instrument, never a lead, per his ruling.* Confirmed by grep: the
-  Alpaca client reaches `/v2/assets`, `/v2/calendar`, `/v2/stocks` only; no
-  order, webhook, mail or push code anywhere in `lib`, `worker`, `app`.
-- **`docs/marketing/2026-09-10-landing-copy-pass.md`** — finished words for
-  `Main.dc.html` at `70198bb`, section by section, current beside proposed.
-  **Not laid into the canvas.** Web's four differentiators stand; what changes
-  is engine vocabulary ("momentum cohort", "discovery list"), two sentences that
-  described the feed as a feature, and the 07:00–10:00 window, which is
-  Cameron's and not his. **The August 07:15 story is on the page for the first
-  time.**
-- **WITH INTEGRATION:** which seat lays the words into `Main.dc.html` and
-  `LandingMobile.dc.html`. I have not opened either file. Two flags are with
-  Commercial: "costs people money" as a loss statement, and illustrative
-  percentages in prose.
-- **OPEN AND WITH HIM: a voice reference.** Still unanswered. Less urgent than
-  it was: the voice on the page is now his own August, not an adjective.
-- **The landing page lives in `docs/web/canvas/*.dc.html`** and is not
-  published; `tmitrader.com` still returns 401 to everyone.
+  against source, each with the copy it forbids. *Internal instrument, never a
+  lead.* **On its first outing it caught two of Web's lines, one a licence
+  regression ("a continuous read of the market, held open all session").**
+- **`docs/marketing/2026-09-10-landing-copy-pass.md`** — laid in by Web at
+  `56394fe`; Commercial's two rulings (`e1f9f9f`) applied by Marketing after.
+  Header now "the one nobody prints"; hero opens on 07:15 with no percentage;
+  the August 50% line is on the page as a fact about the market and loses its
+  place the moment a "you" or a trade attaches to it.
+- **THE PAGE IS TWO FILES.** `Main.dc.html` and `LandingMobile.dc.html`. A pass
+  on one leaves the other saying the forbidden thing and nobody sees it. Every
+  pass covers both.
+- **Protocol held:** Web placed, Marketing added the cleared lines after
+  Integration declared the files clear. Nobody committed over anyone.
+- **OPEN WITH HIM:** the 07:00–10:00 window is off the page; a voice reference
+  is still unanswered.
+- **Not published;** `tmitrader.com` still returns 401 to everyone.
