@@ -15,7 +15,15 @@ then paste that charter's opening message.
 | **Research Pipeline** | The interpreter, evidence collection, model spend | [research.md](research.md) |
 | **R&D** | Standing analysis capability — the question register, the archive, the tape research | [rnd.md](rnd.md) |
 | **Coaching** | Daily fills, execution against the playbook | [coaching.md](coaching.md) |
+| **Commercial** | Naming, vendors, licensing, the commercial risk register | [commercial.md](commercial.md) |
+| **Web** | Everything a stranger sees — the public site, the legal pages, the sign-in screen | [web.md](web.md) |
 | **Integration** | The charters, the seams, cross-thread decisions | [integration.md](integration.md) |
+
+**THIS TABLE LISTED SIX WHILE `commercial.md` EXISTED AND WAS BEING WORKED IN.**
+*Found and fixed 2026-09-10 by Integration while adding Web.* **A thread reading
+this file to learn who exists would not have learned that Commercial does** — and
+the section below still explains "why six" for what is now eight. **The count in a
+heading is a fact with a shelf life; the table is the register.**
 
 ## Why six
 
@@ -46,6 +54,16 @@ Coaching was added the same day. It is the only thread about the trader rather
 than the market, it runs daily rather than by project, and it is the one
 carrying personal financial records — which need handling the others never think
 about. It shares exactly one thing with R&D: tier C of the archive.
+
+**Web was added 2026-09-10**, and it is the first thread whose users are not the
+trader. Every other thread here serves one man at a desk. **Web serves a stranger
+who has never heard of this product and is deciding, in seconds, whether to sign
+in** — a different reader, a different device, and a different definition of good.
+It was split from Design rather than given to it for exactly that reason: **the
+board is a dense instrument for someone who already trusts it, and a landing page
+is an argument for someone who does not.** *The same craft judgement produces
+opposite answers on those two surfaces.* Patterned on `web-tldw` in the TLDW repo
+at his direction.
 
 Integration was added 2026-08-23 and does **no product work**. It exists because
 three problems in two days belonged to no thread: a working-tree collision, a
