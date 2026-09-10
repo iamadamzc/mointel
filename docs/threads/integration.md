@@ -365,6 +365,24 @@ WITHIN this session, from its own first print       NOT BUILT
     does not settle Q13 — the partial, 0.356, needs about 31.* **Every
     session-level question this thread asks returns an underpowered null, and the
     window closes by WAITING rather than by building.**
+  - **CLOSED FREE, 2026-09-10. IT IS THE SAME PULL, NOT A SHAPED ONE.** *Coaching
+    traced `worker/archive-backfill.ts` → `lib/archive/coverage.ts` from the repo
+    rather than asking the stale R&D address.* The rollup reads
+    `desk_assessment_tickers JOIN desk_assessments WHERE status = 'COMPLETE'` —
+    **exactly the two tables already in the extract request, no third table.**
+    **`npm run archive:export` copies each table's `sql` from `sqlite_master`
+    verbatim and inserts `SELECT *` with explicit column names, so `id` and
+    `assessment_id` SURVIVE UNCHANGED** — load-bearing, because **an extract that
+    renumbered them would join to the wrong rows and answer confidently instead of
+    failing.**
+  - **One change, inside the boundary: the `--from 09-03` bound is DROPPED and the
+    export takes everything.** Same two tables, same command, one fewer flag —
+    Coaching's own original message had already offered a full re-pull, so this is
+    choosing an option already on the table, not widening one. **If Ops says
+    unbounded is materially more work, it goes to him rather than being argued.**
+  - **THE EXTRACT LANDING IS NOT A BACKFILL.** Somebody still has to run
+    `archive:backfill` against it. **Nobody has asked for that and no seat is to
+    start it off the back of the extract approval.**
   - **NOT REQUESTED.** R&D recorded the number so it exists when someone asks.
 
 ### Where the six threads stand, re-read 2026-09-10 ~07:50 ET
