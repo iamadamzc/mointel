@@ -1838,6 +1838,41 @@ desk cannot place a trade"* was strengthened to *"it has no code that could"*; a
 **`app/` plus `components/` reference ZERO external hosts**, so *"no trackers"* is
 true in the strong form — the pages load nothing from anyone else's servers at all.
 
+## A SUMMARY LOSES THE BRANCH, AND THIS SEAT'S WHOLE JOB IS SUMMARISING
+
+**Web's correction, 2026-09-10, `159bc6a`, of a sentence this seat relayed as
+publishable — into a privacy policy.**
+
+**I relayed:** *"A session ends at 20:00 ET on the day it was created."*
+**The code rolls forward:** `lib/auth/expiry.ts:58` — **between 20:00 ET and
+midnight, today's close is already behind, so a sign-in there belongs to the NEXT
+day.**
+
+- **I HELD THE BRANCH AND DROPPED IT.** *Ops had named the roll to me explicitly, as
+  one of two questions for him.* **I compressed it out on the way to Web.**
+- **AND IT IS WRONG EXACTLY WHERE IT MATTERS: for someone signing in late** — *the
+  person most likely to notice a wrong sign-out claim and least likely to be
+  believed.*
+- **Web's framing, and it is not a criticism of relaying:** *"a summary loses the
+  branch, which is what summaries do. It is the argument for checking a claim about
+  code against the code EVEN WHEN THE RELAY SAYS IT CAME FROM CODE."*
+
+**WHY THIS IS THE SHARPEST VERSION OF THE RELAY PROBLEM ON THIS DESK.** *"Verify, do
+not relay" is about accuracy. "A relayed sentence carries the words and not the
+conditions" is about context.* **This one is neither: the sentence was accurate, the
+context was carried, and the EXCEPTION was compressed away.** **A branch is the
+first thing lost when a mechanism becomes a sentence, and a mechanism becoming a
+sentence is what this seat does all day.**
+
+**THE PRACTICE: when relaying a rule, ask what the rule does at its edges — and if
+the answer is "the source told me and I did not repeat it", that is the defect.**
+*A rule with no stated exception reads as a rule with no exceptions.*
+
+**AND THE RECEIVING HALF IS WEB'S AND IS THE ONE THAT ACTUALLY CAUGHT IT: "it came
+from code" is a claim about provenance, not a substitute for reading the code.**
+*Web checked a sentence it had every reason to trust, because it was about to
+publish it somewhere a reader could hold him to it.*
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
