@@ -16,6 +16,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
+import Database from 'better-sqlite3';
+
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import {
@@ -23,6 +25,13 @@ import {
   redStopCheck,
   winRitualCheck,
 } from '../../lib/coaching/fills/checks';
+import {
+  assertCovers,
+  classify,
+  describe as describeCoverage,
+  gaps,
+  readCoverage,
+} from '../../lib/coaching/fills/coverage';
 import { buildRoundTrips, type FillRow } from '../../lib/coaching/fills/roundtrips';
 import type { RoundTrip } from '../../lib/coaching/fills/roundtrips';
 import {
@@ -448,3 +457,85 @@ describe('personal session rules', () => {
   });
 });
 
+
+
+describe('coverage windows', () => {
+  let dir: string;
+
+  function makeExtract(name: string, dates: string[], asOf?: string): string {
+    const file = path.join(dir, name);
+    const db = new Database(file);
+    db.exec('CREATE TABLE desk_assessments (id INTEGER PRIMARY KEY, trading_date TEXT)');
+    db.exec('CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT)');
+    const ins = db.prepare('INSERT INTO desk_assessments (trading_date) VALUES (?)');
+    for (const d of dates) ins.run(d);
+    if (asOf) db.prepare('INSERT INTO meta (key,value) VALUES (?,?)').run('extract_as_of', asOf);
+    db.close();
+    return file;
+  }
+
+  beforeEach(() => {
+    dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-cov-'));
+  });
+
+  afterEach(() => {
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  it('prefers a recorded as-of over the newest trading date', () => {
+    const file = makeExtract('a.db', ['2026-09-01', '2026-09-02'], '2026-09-10T08:00:00Z');
+    const c = readCoverage(file);
+    expect(c.asOf).toBe('2026-09-10T08:00:00Z');
+    expect(c.basis).toBe('extract_as_of');
+    expect(c.firstDate).toBe('2026-09-01');
+    expect(c.lastDate).toBe('2026-09-02');
+  });
+
+  it('falls back to the newest trading date and marks the basis as weaker', () => {
+    const file = makeExtract('b.db', ['2026-09-01', '2026-09-02']);
+    const c = readCoverage(file);
+    expect(c.basis).toBe('max_trading_date');
+    expect(c.asOf).toBe('2026-09-02');
+    expect(describeCoverage(c)).toMatch(/as-of UNKNOWN/);
+  });
+
+  it('separates "after the window" from "a real hole inside it"', () => {
+    const file = makeExtract('c.db', ['2026-09-01', '2026-09-03']);
+    const v = classify(readCoverage(file), ['2026-08-31', '2026-09-01', '2026-09-02', '2026-09-09']);
+    expect(v.covered).toEqual(['2026-09-01']);
+    expect(v.before).toEqual(['2026-08-31']);
+    expect(v.missing).toEqual(['2026-09-02']);
+    expect(v.beyond).toEqual(['2026-09-09']);
+  });
+
+  it('THE 09-07 FAILURE: refuses a session the extract stops before', () => {
+    // assessments-prod-2026-09-02.db asked about 2026-09-03. The query returned
+    // zero and the zero was read as a fact about the desk.
+    const file = makeExtract('prod-2026-09-02.db', ['2026-09-01', '2026-09-02']);
+    const c = readCoverage(file);
+    expect(() => assertCovers(c, ['2026-09-03'])).toThrow(/Refusing the join/);
+    expect(() => assertCovers(c, ['2026-09-03'])).toThrow(/AFTER the extract ends/);
+    expect(() => assertCovers(c, ['2026-09-03'])).toThrow(/not a finding/);
+  });
+
+  it('stays silent when every requested date is inside the window', () => {
+    const file = makeExtract('d.db', ['2026-09-01', '2026-09-02']);
+    expect(() => assertCovers(readCoverage(file), ['2026-09-01', '2026-09-02'])).not.toThrow();
+  });
+
+  it('gaps() reports only holes inside the window, never the ends', () => {
+    const file = makeExtract('e.db', ['2026-09-01', '2026-09-03']);
+    const c = readCoverage(file);
+    expect(gaps(c, ['2026-08-28', '2026-09-01', '2026-09-02', '2026-09-03', '2026-09-04'])).toEqual([
+      '2026-09-02',
+    ]);
+  });
+
+  it('refuses a store that has no date table rather than reporting empty coverage', () => {
+    const file = path.join(dir, 'wrong.db');
+    const db = new Database(file);
+    db.exec('CREATE TABLE something_else (x INTEGER)');
+    db.close();
+    expect(() => readCoverage(file)).toThrow(/no desk_assessments table/);
+  });
+});
