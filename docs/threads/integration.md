@@ -688,6 +688,22 @@ accounts.google.com.**
 > fine. A NEW user — the entire point of Sign in with Google — gets a 401 from
 > nginx and never reaches the app.** **THAT FAILURE IS INVISIBLE TO EVERYONE ON
 > THIS DESK, because everyone here has the credential cached.**
+>
+> **A BUG NOBODY ON THE TEAM CAN REPRODUCE IS A DIFFERENT CLASS FROM A BUG. The
+> only people who would ever see it are the users the feature exists for.**
+
+**AND THE INSTRUMENT FOR IT IS AN ACTOR WITH NO CACHED STATE.** *Ops added the check
+rather than a note — "a note is a thing to remember and a check is a thing to run":*
+
+```
+curl -s -o /dev/null -w "%{http_code}" https://tmitrader.com/auth/callback/google
+   404 = CORRECT intermediate -- nginx let it through, Next has no route yet
+   401 = the exemption is missing
+```
+
+**`curl` carries no cached credential, which is the entire point.** *A browser on
+this desk cannot produce the failing answer — sixth instrument today in that family,
+and the first where the fix was to change WHO ASKS rather than WHAT IS ASKED.*
 
 - **AND THE SHAPE MATTERS, NOT JUST THE EXEMPTION.** *`/api/auth/…` means carving
   `location ^~ /api/auth/` out of an otherwise uniform prefix — **and that hole then
