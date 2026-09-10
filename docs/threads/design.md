@@ -3916,6 +3916,47 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## SUPERSEDED SAME DAY: THE SIGN-IN SURFACE IS `Web`'S, NOT MINE
+
+**I wrote the section below at `8cf125a` claiming the sign-in surface. A thread
+called `Web` was created the same afternoon and it holds that surface — his
+call.** `docs/threads/web.md`, `381f917` / `f21fdea`.
+
+**SO THIS IS MY OWN DOCUMENT MAKING A CLAIM THAT STOPPED BEING TRUE, HOURS AFTER
+I WROTE IT, WITH NOTHING FAILING.** *That is the shape I have spent the day
+finding in other people's files and in my own comments. It is faster than I
+expected: not a fortnight, an afternoon.* **Integration told me rather than
+letting me act on it, which is the only reason it did not become a second thread
+building the same screen.**
+
+**WHAT MOVED:** the signed-out landing page, `/privacy`, `/terms`, **and the
+sign-in screen — its provider buttons, its error and refusal copy.**
+
+**WHAT DID NOT:** the board, Discovery, Researched Names, the Move family,
+sparklines, `components/`, **and the signed-in affordance.** **THE BOUNDARY IS
+AUTHENTICATION, NOT THE FILE TREE** — so "is this file mine" is the wrong
+question and "is this before or after sign-in" is the right one.
+
+**`ops.md`'s auth scope of 2026-09-07 still assigns this to me. It is stale and
+it is not my file to edit — flagged to Integration rather than corrected here.**
+
+### WHAT IS STILL MINE, AND IT IS THE SEAM
+
+**What the surface HANDS the board once signed in.** *A signed-in affordance with
+nothing behind it is the same defect as a sign-in screen wired to nothing, one
+step later.* **That is a conversation with `Web` and not an assumption, which is
+his ruling: "its fine as long as they are communcating and you are
+collaborating."** The seam is not a wall.
+
+### AND THE TWO CONSTRAINTS BELOW ARE HANDOVER MATERIAL, NOT DELETIONS
+
+**They were reasoned for a surface I no longer hold and they are still true.**
+*Deleting them would make this thread tidy and cost `Web` the reasoning — the
+failure-screen one in particular is not obvious until you notice there is no
+second path.* **Kept, marked as theirs.**
+
+### THE ORIGINAL ENTRY, PRESERVED BECAUSE THE RULINGS IN IT ARE HIS
+
 ## THE SIGN-IN SURFACE: SCOPE, RECORDED BEFORE IT IS BUILT
 
 **This scope has been carried in conversation and never written down, which is
