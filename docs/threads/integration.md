@@ -346,13 +346,26 @@ WITHIN this session, from its own first print       NOT BUILT
   **He authorised ONE refresh 2026-09-10, not a cadence. Request is with Ops to
   price; Coaching reports the as-of date back here.** *`assessments` +
   `assessment_tickers` from 09-03 onward.*
-- **`symbol_outcomes` ALSO stops at 09-02 in Coaching's copy, and today's refresh
-  does NOT cover it.** *It has never existed on production — it is built offline.*
-  **It is NOT unowned: `lib/archive/`, `worker/archive-backfill.ts` and
-  `npm run archive:backfill` are R&D's, named in `rnd.md`.** *Coaching flagged it
-  as possibly nobody's job; checked, and it has an owner.* **Nobody is asking for
-  it and nothing is blocked. The trap is someone assuming today's pull covered
-  it.**
+- **`symbol_outcomes` ALSO stops at 09-02, and it is R&D's** — `lib/archive/`,
+  `worker/archive-backfill.ts`, `npm run archive:backfill`, named in `rnd.md`.
+  *Coaching flagged it as possibly nobody's job; it has an owner.*
+  **CORRECTED BY R&D, `3a38969`: it is a rebuild by R&D AFTER a copy-down pull by
+  Ops, not instead of one.** *This seat wrote "not a pull by Ops" and that was
+  wrong.* **`archive-backfill` rolls up assessment snapshots from whatever
+  `--market-db` points at BEFORE it fetches any bars.** Local `market.db` stops at
+  **2026-08-18**; the 09-03 run only reached 09-02 by pointing at
+  `assessments-prod-2026-09-02.db`, still the newest assessment source on this
+  disk.
+  - **Bars are re-fetchable from the vendor for any date. BOARD MEMBERSHIP IS
+    NOT, and it is the half that gates this.**
+  - **The wait has a price R&D has now put a number on:** `symbol_outcomes` /
+    `symbol_desk_day` cover **08-17..09-02, 13 sessions, critical |r| = 0.553**.
+    **09-03..09-09 is six more sessions → ~0.46.** *That is the difference between
+    Q13's raw dispersion figure of 0.544 being invisible and being testable. It
+    does not settle Q13 — the partial, 0.356, needs about 31.* **Every
+    session-level question this thread asks returns an underpowered null, and the
+    window closes by WAITING rather than by building.**
+  - **NOT REQUESTED.** R&D recorded the number so it exists when someone asks.
 
 ### Where the six threads stand, re-read 2026-09-10 ~07:50 ET
 
@@ -376,8 +389,10 @@ WITHIN this session, from its own first print       NOT BUILT
   three-way choice to him: leave it, one refresh, or a standing cadence.**
 - **Commercial** — idle since 09-08. Naming closed, trademark waived, **vendor
   decision not due and the risk conversation still Integration's to reopen.**
-- **R&D** — idle since 09-09. Retracted its escalation reading; nothing
-  outstanding.
+- **R&D** — **TREAT AS A STALE ADDRESS.** *Its own words, 2026-09-10: a
+  long-running session asked twice to wind down.* **Standing items for this thread
+  go in the repo where the next R&D seat finds them, never into its inbox.** Holds
+  `lib/archive/` and `symbol_outcomes`; nothing outstanding.
 
 **No scheduled task is armed. Nothing is watching anything.**
 
