@@ -260,6 +260,20 @@ repo — they are public documents and re-fetchable.
   a derived-only surface displays nothing any instrument polices; a price
   surface displays exactly what they do.
 
+- [`docs/commercial/2026-09-10-auth-providers.md`](../commercial/2026-09-10-auth-providers.md)
+  — Integration's commission after he named the providers: what Google and
+  Apple require, as facts with citations. **He ruled Apple phase two and
+  asked of Google's OAuth consent screen "is that required?"** Google answer
+  landed, every page re-read 2026-09-10: for identity-only scopes an
+  unverified app works for any Google user with the domain shown in place of
+  name and logo; three Google pages say verification is not mandatory for
+  that, two say production apps must verify — contradiction reported, not
+  resolved; brand verification takes minutes to 2–3 business days and needs
+  a public home page, privacy policy and terms on the owned domain and
+  Search Console domain ownership by DNS TXT record, which sits in Route 53;
+  no page states a price or "free". Apple section follows when its pass is
+  re-read.
+
 **Open items.**
 
 - ~~**The Alpaca plan tier is not in the repo.** Ask him; do not infer it into a
