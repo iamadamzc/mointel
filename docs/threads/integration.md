@@ -3296,3 +3296,53 @@ which is the channel rule holding in the direction where it costs something.*
 not an optimisation of the change — it is the difference between shipping it and
 shipping a lie on the header.** **Without it, the thing he reads at speed becomes
 wrong in the direction of looking fresher.**
+
+## HE READS COLOUR BEFORE TEXT — SO A LABEL IS A FIX FOR A READER WHO IS READING
+
+**Established 2026-09-10 by asking him, after Design separated what it had
+OBSERVED from what it had ASSUMED and named him as the only source.** *The tone
+assignments were read off the code. The claim that colour lands first was
+Design's own, untested, and it said so.* **His answer: `"color"`.**
+
+> **A LABEL IS A FIX FOR A READER WHO IS READING. HE IS SCANNING.**
+
+**Two adjacent signed percentages sharing `text-pos` / `text-neg` assert a
+contradiction the label cannot retract**, because the label is read **second**,
+and only if the colour has not already answered. **So where the two must be
+allowed to disagree, the fix is ENCODING, not wording.**
+
+### The boundary, written now, because the next reader will over-apply it
+
+**THIS DESK ANSWERED A READABILITY PROBLEM WITH A LABEL THREE TIMES IN ONE DAY
+AND ALL THREE ARE STILL RIGHT:** the `Gap` header, the denominator moving onto
+the RVOL header, and Design's refusal of my provenance label on the supply pair.
+
+**None of them competes with a colour.** *A header naming a denominator has no
+signed tone arguing against it.*
+
+> **THE INSUFFICIENCY IS SPECIFIC: where two elements share a SIGNED COLOUR and
+> can legitimately disagree, colour is the message and the label is a footnote.**
+> **Everywhere else, naming the denominator is still the fix.**
+
+**Recorded with its boundary because *"labels are not the fix"* quoted bare would
+undo three correct decisions** — the exact failure this seat spent the day
+trimming out of his list.
+
+### Design had already ruled it once, before anyone knew it was true
+
+**Unprompted, on the `NEW HIGH` override: the tone must follow the label when it
+overrides**, or the word renders in the negative colour of the stale verdict
+underneath it — *"a word saying one thing while its colour says the opposite."*
+**It put colour above the word before there was any evidence he read that way.**
+**A correct call resting on an unverified model, now resting on a verified one.**
+
+### And the method is the reusable half
+
+**The question cost one word and no measurement could have produced it.** *When a
+design turns on how a person reads, the person is the instrument* — this desk's
+own rule, *when a measurement cannot recover a fact, ask whether anyone simply
+knows it*, arriving in a rendering decision rather than in a data one.
+
+**What made it answerable was Design refusing to fold its assumption into its
+finding.** *An assertion would have been acted on; a flagged claim cost one
+question and came back confirmed.*
