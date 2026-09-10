@@ -334,8 +334,43 @@ at NOTHING and it was true when written.*
   deferred.* **Build so a third provider is an addition, not a migration — the
   `(provider, subject)` key already does that and it is now load-bearing rather
   than tidy.**
-- **`"2, yes, oath consent. is that required?"`** — **he meant Google's OAuth
-  consent screen. OPEN QUESTION, with Commercial, public docs and citations.**
+- **`"2, yes, oath consent. is that required?"`** — **ANSWERED by Commercial,
+  `404cfad`, `docs/commercial/2026-09-10-auth-providers.md` §1. Eleven Google
+  pages, each re-read the same day.**
+  - **GATE A, to run sign-in at all: YES.** A Cloud project, an OAuth client and
+    the consent screen. **Identity scopes only** — *"default scope (email, profile,
+    openid) is sufficient, you don't need to add any sensitive scopes."*
+  - **GATE B, to publish: GOOGLE'S OWN DOCS CONTRADICT THEMSELVES AND COMMERCIAL
+    DID NOT RESOLVE IT.** *Three pages against two.* **Verification hub: "not
+    mandatory" for non-sensitive scopes.** **OAuth Policies (2026-08-05): "For
+    production apps, brand information must be verified."** **Get Started: "All
+    production apps … must complete Google's OAuth app verification."** *The pages
+    agree on the mechanics and disagree on the policy.* **Reported as a
+    contradiction, not adjudicated — correct.**
+  - **THE PRACTICAL GAP IS BIGGER THAN THE VERIFICATION QUESTION.** Brand
+    verification demands **a public home page that is NOT only a login page, plus a
+    privacy policy and terms on the same domain.** **`tmitrader.com` today serves a
+    401 Basic Auth wall and nothing else.** *No public page, no policy, no terms —
+    and that is scoped by nobody.*
+  - **THE LONG POLE IS FREE AND CAN START NOW: domain ownership via Google Search
+    Console = a DNS TXT record at `@` in Route 53, which Ops holds.** **Providers
+    may take "up to two or three days" to serve it, and it MUST NEVER BE REMOVED.**
+  - **CAPS:** 100 test users in Testing, **identity-only apps stated exempt**; 100
+    new users lifetime for unverified apps **using sensitive or restricted
+    scopes** — *neither stated to apply to identity-only.* **Both are totals, not
+    concurrent.**
+  - **TIME, dated 2026-09-10:** automated brand verification *"usually completes in
+    a few minutes"*, manual review **2-3 business days**, result **valid for 7
+    days** — so publish inside the window.
+  - **COST: NOT STATED, WHICH IS NOT THE SAME AS FREE.** *No Google page states a
+    price or the word "free". The only fee sentence concerns third-party security
+    assessors for restricted scopes. A billing account is "recommended".*
+    **Commercial refused to write "free" and that refusal is the finding.**
+  - **ONE MORE CONTRADICTION, SMALLER:** Testing-mode identity-only users
+    *"will not see a warning message"* on one page; the overview says such users
+    *"see a warning UI indicating the app is in testing."*
+  - **AND IT CONFIRMS OPS'S MODEL FROM GOOGLE'S SIDE:** `sub` is *"unique among all
+    Google Accounts and never reused"*, and **"Always use the sub field."**
 
 **WHAT THE DESK ACTUALLY HAS TODAY, MEASURED BY OPS FROM OUTSIDE:**
 
