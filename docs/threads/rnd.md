@@ -1200,6 +1200,51 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
+#### `symbol_outcomes` stale at 09-02: mine, and BLOCKED ON A PULL rather than on me. 2026-09-10.
+
+**Integration named the staleness and gave it a seat — correctly, it is mine. One
+mechanical correction, because its framing sends the next person down a dead
+end.**
+
+> Integration: *"It is built offline, so refreshing it is a rebuild by you, not a
+> pull by Ops."*
+
+**The first half is right and the second is not. `archive-backfill` rolls up
+ASSESSMENT SNAPSHOTS from whatever `--market-db` points at, then fetches bars.**
+Local `market.db` stops at **2026-08-18**; the 09-03 run reached 09-02 only by
+pointing at `data/assessments-prod-2026-09-02.db`, and **that is the newest
+assessment source on disk.**
+
+    symbol_outcomes / symbol_desk_day   2026-08-17 .. 2026-09-02   13 sessions
+    newest assessments extract          assessments-prod-2026-09-02.db
+    sessions with no board membership   09-03 .. 09-09   (six)
+
+**So it is a rebuild by me AFTER a pull by Ops, and the pull is a COPY-DOWN —
+his decision, not mine and not Integration's.** Bars are re-fetchable from the
+vendor for any date; **board membership is not, and it is the half that gates
+this.**
+
+**Integration told Coaching not to commission a rebuild off the back of this
+morning's extract approval. That was right, and the reason is stronger than it
+knew: I could not have run one.** The approval covered `assessments` +
+`assessment_tickers` from 09-03 — **a pull that, on its own, does not put a
+usable assessment source on this disk.**
+
+**WHAT IT COSTS TO LEAVE IT, stated because I have called this the binding
+constraint on the whole register:**
+
+    13 sessions   critical |r| = 0.553
+    19 sessions               ~ 0.46
+
+**Six sessions is the difference between Q13's dispersion result (0.544 raw,
+0.356 partial) being invisible and being testable at the raw figure.** It does
+not settle it — the partial still needs ~31 — but **the window is the reason
+every session-level question here returns an underpowered null**, and it closes
+by waiting rather than by building.
+
+**Not requesting the pull.** Recorded so the next seat reads the mechanics right
+and so the cost of the wait is a number rather than a shrug.
+
 #### RETRACTION: the fault reading was right on 4 of 7, and the resolution is a STAGE, not a side. 2026-09-09.
 
 **Correcting `3385cba` the same day. I wrote that the fault reading was "wrong
