@@ -3916,6 +3916,50 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## RULED: `"color"` — AND THE BOUNDARY MATTERS MORE THAN THE RULING
+
+**He was asked which lands first, colour or the number. `"color"`.** So the one
+claim I had labelled as **mine and unmeasured** is now established by the only
+source that could establish it.
+
+**⇒ TWO ADJACENT SIGNED PERCENTAGES SHARING `text-pos` / `text-neg` ASSERT A
+CONTRADICTION THE LABEL CANNOT RETRACT**, because the label is read second and
+only if the colour has not already answered. **More labelling does not fix it.
+The two must not share an encoding.** Ordering stands with it: **what carried in
+on line 1, the two within-session companions beneath.**
+
+**I HAD ALREADY RULED THIS ONCE, UNPROMPTED, AND THE ENTRY IS AT `:3729`:**
+
+> *"Tone follows the label when it overrides, or NEW HIGH would render in the
+> `neg` colour of a stale BACKSIDE verdict — the label-and-number mismatch again,
+> one layer up."*
+
+**That put colour above the word before anyone had established he reads it that
+way. He has now established it** — so the earlier ruling was right for a reason
+it did not have, which is the same shape as the `−2m` derivation being right for
+a reason I did not have. **Twice now. Worth noticing that the reasons arrive
+after the rulings, not before.**
+
+### THE BOUNDARY, AND IT IS THE PART THAT WILL BE MISQUOTED
+
+**"Labels are not the fix" IS FALSE AS A GENERAL STATEMENT AND WOULD UNDO THREE
+CORRECT DECISIONS MADE TODAY:**
+
+    Price · Gap · VWAP        a header naming a denominator
+    RVOL · <denominator>      the same, and the reason his `x` ruling survives
+    the supply pair           where I REFUSED a provenance label
+
+**None of those competes with a colour.** **A header naming a denominator has no
+signed tone arguing with it.** *The insufficiency is specific and narrow:*
+
+> **WHERE TWO ELEMENTS SHARE A SIGNED COLOUR AND CAN LEGITIMATELY DISAGREE, THE
+> COLOUR IS THE MESSAGE AND THE LABEL IS A FOOTNOTE.**
+
+**Everywhere else on this surface, the label is still the answer — and three of
+today's decisions depend on that.** *A ruling quoted without its boundary is the
+failure this desk has spent the day trimming, and this one is unusually easy to
+over-apply because it sounds like a principle.*
+
 ## THE DISAGREEMENT IS THE INTELLIGENCE. THE HAZARD IS THE ENCODING, NOT THE NUMBERS.
 
 **I raised the sign flip as decisive, then the width answer arrived and I went
