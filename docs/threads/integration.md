@@ -264,6 +264,46 @@ comprehension problem — it is that this seat writes the argument it just had.*
 - **09-04 is the ENTIRE permanent loss** from the retention defect, established on
   two independent records.
 
+### UNDEPLOYED AND WAITING FOR TONIGHT, 2026-09-10 08:43 ET
+
+**NOTHING SHIPS INSIDE 07:00-10:00 ET.** *Not a capacity rule — he is reading the
+board.*
+
+- **`24e388f` — Design's flat-line fix. HAS A READER AND FIXES A DEFECT HE
+  REPORTED.** *He said there were no sparklines in after-hours; they were there,
+  and a rank-1 name at 107x RVOL was drawing a flat line — the column doing the one
+  job it exists for.* **Two encoding causes, both fixed: a fully silent row dropped
+  to `ink-3/50`, the faintest ink on the desk, and the 0-30 dead range renders
+  inside the bottom 1.4px of a 14px band.** *Same data, same scale, same geometry.*
+  129 files / 1,941 tests / typecheck 0.
+- **`9a090e5` — Research's session-open compute. NO READER YET.** Waiting on
+  Design's surface. **Ops's nine columns landed at `3a0f8a8`.**
+
+**AND THE ENUMERATION IS NOT AN ACCUMULATING BASKET, WHICH IS HOW DESIGN ASKED FOR
+IT.** *"Add it to the held enumeration."* **A bundle is a POINT, not a set** —
+already this charter's rule. **Ops enumerates the tip BY THREAD at the moment of
+shipping and this seat approves THAT.** *There is no basket sitting somewhere
+filling up; there is a moment tonight and whatever the tip holds then.*
+
+**A DEFECT FIX IS NOT HELD BEHIND AN UNFINISHED FEATURE.** `24e388f` waits for the
+close, not for the Move family. **If the Move surface is not ready tonight,
+`24e388f` still goes.**
+
+### THE MANUAL IS A SECOND COPY OF NUMBERS THAT LIVE IN CODE
+
+**Design, `00af5e8`, `docs/manual/reading-the-flat-line.html`, at his request:**
+*"what you have described is important for later for a manual. with the images.
+preserve it."* **Figures drawn in CSS from the desk's own tokens at the desk's own
+scale — no linked assets to re-export.**
+
+**THE REGISTER ITEM: if `activeTradesPerMinute`, `deadRatio`, `deadMinutes`,
+`settleMinutes` or the palette move, THE PAGE IS WRONG AND NOTHING FAILS.**
+*It is listed in that folder's README, and **a list is not a guard.*** **Design
+flagged it rather than carrying it alone, and it is this seat's** — it is the
+`ARCHITECTURE.md` §4 shape exactly: **a document proven stale in part, still being
+read as authority.** *One page is a note. A manual growing on top of these
+constants is a second source of truth for the desk's own numbers.*
+
 ### What shipped and what did not
 
 - **Design's four, separate commits, each reverts alone**: the baseline header,
