@@ -335,6 +335,22 @@ call.** *It never got past the first pre-flight ssh.*
 > to go and read it; "it does not exist" means the 16:05-quiet-window pass has to
 > be run again.*
 
+**Ops corroborated it independently within the hour, from the metadata rather than
+the transcript:** `createdAt 21:08:19.702Z`, `lastActivityAt 21:08:25.847Z` —
+**6.1 seconds of life, then fourteen hours of `isRunning: true`.** *A count-only
+pass fetches 8,772 symbols in batches; Ops's own five-strata probe took seconds per
+fifty.* **Six seconds cannot have reached a count, a guard, or a database.**
+
+**AND OPS RETRACTED ITS OWN ACCOUNT OF THE EVENT.** It had reported *"it exited on
+the 'no `ticker_session` rows for 09-04' guard — that was luck, not design"*, having
+never seen the output. **It reasoned about what the script WOULD do and recorded it
+as what it DID.** *Checked: that sentence reached no document — it lived in a
+transcript and in the sixth session's handover chat, which is why the handover sent
+this seat looking for a report that was never written.* **What survives is the
+wrong-store hazard, which is true of the code either way. What does not survive is
+the guard being PROVEN: it was never exercised, so its only evidence is its negative
+control.** *That correction is Ops's to land in `ops.md`; flagged, not written here.*
+
 **Same failure family as the last hop being structurally impossible — but one step
 earlier, and it is the more dangerous one: a task that hangs looks exactly like a
 task whose report nobody collected.** *Kill the session from the sidebar; the count
@@ -693,6 +709,47 @@ quietly â€” probably an improvement, but a behaviour change rather than a n
 whether a migration runs is exactly what *"it is only one line"* has been wrong
 about before, **and the store is the one place where being wrong is
 unrecoverable.**
+
+## A SESSION'S LIFESPAN SEPARATES A CRASH FROM A SILENCE, AND IT IS FREE
+
+**Found 2026-09-10 by this seat and sharpened by Ops within the hour into the
+usable form.** The seventh session opened the hung 09-04 task and found eight
+messages ending on a `Bash` call that never returned. **The right catch, by the
+expensive route.**
+
+**Ops's version is the instrument:**
+
+```
+lastActivityAt - createdAt
+  6.1 seconds, then isRunning: true for fourteen hours
+```
+
+**A task that ran for six seconds did not finish quietly. It never started.**
+
+- **From outside, a hung session and a finished-but-unread session are identical:**
+  `isRunning: true` and silence. **The flag cannot tell them apart and this seat
+  reads that flag constantly.**
+- **The lifespan can.** It is in the same `list_sessions` row, beside the flag, and
+  **both of us read the flag and neither read the duration.**
+- **The two states need opposite actions.** Unread finished work needs someone to
+  go and read it. A crash needs the work re-run. **The sixth session's handover
+  recorded the first and the truth was the second**, which is what sent this seat
+  hunting for a number that did not exist.
+
+**Compare the lifespan against what the task had to do.** Six seconds against an
+8,772-symbol batched fetch is not a close call — it is three orders of magnitude,
+and no transcript was needed to see it.
+
+**Same family as *a tool that reports "not found" the same way it reports "none" is
+not an instrument*, one level up: here the instrument was adequate and we read the
+wrong field off it.** *The answer was always in the row.*
+
+**AND THE PART THAT IS THIS SEAT'S, NOT OPS'S:** *a plausible reading reported as an
+observation.* Ops wrote down what the script WOULD do against the local store as
+what it DID, and **the retiring seat carried that into a handover, where it became
+the reason to look in the wrong place.** **A relayed inference loses the word that
+marked it as one** — which is the whole argument for FLAG, DO NOT ASSERT, arriving
+from the receiving end for once.
 
 ## Reading other threads
 
