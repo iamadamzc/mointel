@@ -1924,6 +1924,41 @@ day, wearing the clothes of a lesson.**
   seat retracted a fabricated tally to Ops earlier the same day.* **The urge to
   reach a count is the urge to have found a pattern.**
 
+## A NUMBER ABOUT THE MARKET IS A FACT; THE SAME NUMBER ABOUT A READER IS A CLAIM
+
+**Commercial's ruling, 2026-09-10, `e1f9f9f`, on two lines Marketing flagged against
+itself on its first task.**
+
+```
+"50% movers in August"     CLEARED  -- describes the market's behaviour, and it is
+                                      in the desk's own record
+"up 40% at 07:15"          STRUCK   -- a number attached to a name, a time and a
+                                      reader
+"costs people money"       STRUCK as written -- an outcome claim with the sign
+                                      flipped, and unsupported either way
+```
+
+> **THE PRINCIPLE, AND IT IS THE REUSABLE PART: a percentage describing the
+> MARKET'S behaviour is a fact of record. One attached to a name, a time and a
+> READER is an outcome.**
+
+- **The prohibition on this desk is against outcome claims, not against numbers**,
+  and those are easy to confuse because they look identical in isolation. **What
+  separates them is whether there is a second party in the sentence.**
+- **"Costs people money" is the trap worth naming:** *describing a loss reads as
+  the opposite of promising a gain, and it is the same claim with the sign
+  flipped.* **Cleared only on condition it says what the missing information IS and
+  why nobody prints it — with no money on either sign.**
+- **AND THE CAVEAT DOES NOT SAVE IT.** *"Illustrative" is a word the writer knows
+  and the reader does not* — **the desk's own rule that a caveated wrong number
+  anchors exactly as hard as an uncaveated one, arriving in marketing copy.**
+
+**WHAT THIS SEAT SHOULD KEEP FROM HOW IT WENT: Marketing flagged its own two lines
+rather than shipping them, on its first task, unprompted.** *The charter's
+prohibitions were written because nothing in the repo can check this thread's
+output.* **The check that actually ran was the thread applying them to itself and
+routing the hard case to the seat that owns the answer.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
