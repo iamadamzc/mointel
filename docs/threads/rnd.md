@@ -1200,6 +1200,72 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
+#### STANDING ITEM FOR THE NEXT R&D SEAT: the archive window is unblocked. 2026-09-10.
+
+**Read this before planning any session-level question. It supersedes the entry
+below, which said the rebuild was blocked on a copy-down decision.**
+
+**IT IS NOT BLOCKED. Coaching's request to Ops already covers it, unchanged.**
+The rollup at `lib/archive/coverage.ts:201` reads:
+
+    FROM desk_assessment_tickers t
+    JOIN desk_assessments a ON a.id = t.assessment_id
+   WHERE a.status = 'COMPLETE'
+
+**Two tables, and they are exactly the two already in that request. No third
+table, no shaped export, no new exception.** Coaching dropped its `--from 09-03`
+bound, so the extract takes everything production holds.
+
+**VERIFIED IN THE SOURCE, NOT TAKEN FROM THE RELAY.** Coaching traced it and
+Integration relayed it — two hops — and the id claim below is the kind that fails
+silently, so both were re-read here.
+
+**THE PROPERTY THAT MAKES THE EXTRACT USABLE AT ALL — `lib/archive/export.ts`:**
+
+    :154  SELECT sql FROM sqlite_master WHERE type='table' AND name=?  ->  to.exec(schema.sql)
+    :161  SELECT * FROM desk_assessments        /  SELECT t.* FROM desk_assessment_tickers t
+    :169  const columns = Object.keys(rows[0])
+    :171  INSERT INTO <table> (<columns...>) VALUES (@...)
+
+**The schema is copied verbatim, so the destination keeps
+`INTEGER PRIMARY KEY AUTOINCREMENT` — but `id` and `assessment_id` are supplied
+EXPLICITLY in the insert, so AUTOINCREMENT never fires and the values survive.**
+
+> **This desk's own rule is that AUTOINCREMENT ids are per-store sequence
+> positions, not identities. The export is the deliberate exception, and the
+> rollup's join depends on it.** Simplify that insert to omit `id` and the
+> extract renumbers, the join binds to the WRONG ROWS, and **it answers
+> confidently instead of failing** — a silent-wrong-answer defect living in a
+> file-copy tool. **Do not touch it without reading this paragraph.**
+
+**THE ARITHMETIC, AND I HAD IT WRONG BY TWO SESSIONS IN `3a38969`:**
+
+    complete sessions after 09-02 through 09-09:  FOUR
+      09-03, 09-04, 09-08, 09-09
+      (09-05/06 weekend; 09-07 LABOR DAY, market closed)
+
+    13 sessions   critical |r| = 0.553
+    17 sessions               = 0.482      <- what the extract buys
+    19 sessions               = 0.456      <- what I claimed, WRONG
+    30 sessions               = 0.361
+
+**I counted calendar weekdays and forgot a market holiday** — naming the
+condition *weekday* when the requirement is *trading session*, on a desk whose
+own memory file is about exactly that. **13 -> 17, and 0.553 -> 0.482.**
+
+**Q13's raw dispersion figure is 0.544, so 17 sessions makes it testable at the
+raw and NOT at the partial (0.356, needs ~31).** Any re-test must still be
+pre-registered as a test of **dispersion specifically** — it is a candidate
+selected for looking best on 13 points.
+
+**STATE, AS OF THIS WRITING:**
+
+- **the extract is unrun**, and its source is the **new unbounded** one — NOT
+  `data/assessments-prod-2026-09-02.db`, which stops at 09-02;
+- **`npm run archive:backfill` is unrun and UNREQUESTED.** The extract landing is
+  not a rollup; somebody still has to run the backfill against it;
+- **nobody has asked for either, and I have not asked him.**
+
 #### `symbol_outcomes` stale at 09-02: mine, and BLOCKED ON A PULL rather than on me. 2026-09-10.
 
 **Integration named the staleness and gave it a seat — correctly, it is mine. One
