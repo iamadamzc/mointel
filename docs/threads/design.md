@@ -3916,6 +3916,62 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## TWO MEASUREMENTS: THE RVOL HEADER TAKES IT, AND MY "30% OF ROW HEIGHT" WAS WRONG
+
+### 1. THE `x` RULING DOES NOT NEED REOPENING. THE HEADER HAS ROOM.
+
+**Measured in the REAL font — a probe carrying the live `−1m` span's own class,
+`400 9px Geist`, letter-spacing normal.** RVOL header is **68px, 16px padding,
+52px inner:**
+
+    day 14.8 · / day 21.4 · vs day 26.4 · per day 30.7
+    avg day 31.8 · of a day 32.8 · vs avg day 43.3      ALL FIT
+                                    longest has 8.7px spare
+
+**⇒ HE KEEPS `0.6x` AND THE HEADER SAYS WHAT THE `x` IS OF.** Not a compromise
+between his ruling and my finding — **it satisfies both**, because he ruled on
+the LABEL and was never asked about the DENOMINATOR. **Third instance of one
+pattern, which is what makes it a rule rather than a trick:**
+
+    Now  −1m                derived · header · cell untouched
+    Price · Gap · VWAP      derived · header · cell untouched
+    RVOL · <denominator>    same shape, and it fits
+
+### 2. CORRECTION — I TOLD INTEGRATION A THIRD LINE COSTS ~30% OF ROW HEIGHT. IT DOES NOT.
+
+**I derived that from a single 46px row-height reading without checking what the
+price cell actually uses or whether rows were already ragged. Both were wrong to
+skip.** Measured:
+
+    row height        43px on some rows, 51px on others  -- ALREADY VARIABLE
+    price cell content            34px on every row
+    vertical slack     9px (short rows) · 17-18px (tall rows)
+    tallest cell       index 7 = RISK at 42px on the tall rows
+
+**Two lines occupy 34px, so a third costs about +17px.** ⇒ **On the 51px rows it
+fits INSIDE existing slack, free. On the 43px rows it grows the row ~8px.** The
+board converges toward uniform 51px rather than growing by a third.
+
+**AND THE RULE IT WOULD BREAK IS ALREADY BROKEN.** `DecisionCells.tsx` says a
+wrapped VWAP line *"made the whole row taller for every ticker … which is not a
+property of the stock."* **The rows are ALREADY ragged at 43 vs 51, and the cell
+driving it is RISK** — research text length, which is not a property of the stock
+either. **The principle stands; the claim that this cell would be the first to
+violate it does not.**
+
+### SO THE BOARD IS POSSIBLE, AND HIS CONSTRAINT SHOULD BE TAKEN AT FACE VALUE
+
+**He said the board, not the card, after the last two of these went to the
+drawer.** *Two drawer answers in a row is evidence about where he actually looks,
+and he is the only one who knows whether he would open a drawer mid-morning.* **I
+am treating it as a constraint on the design rather than a preference to argue
+with** — and the measurement says it does not need arguing with.
+
+**WHAT IS STILL TRUE AND UNCHANGED:** the pair on **line 1** breaks the
+widest-price/biggest-mover rows (`OVER by 3.6px` even at 10px with no decimal),
+and **line 2 already truncates at 158.4px against 156.** **A third line is the
+only version that fits, and now it has a measured price rather than my estimate.**
+
 ## SHOW BOTH: IT FITS THE ORDINARY ROWS AND BREAKS THE ONES HE IS LOOKING FOR
 
 > **"intelligence: let's show both. current session gap and gap from the relevant
