@@ -3916,6 +3916,53 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE MOVE SURFACE: THE 0.1px ITEM IS MOOT, AND THE THIN-PRINT FLAG IS THE REAL CONSTRAINT
+
+**The within-session figure labels itself INLINE, the way `PM VWAP` already
+does — so the header measurement never applies to it.** Measured against the
+live VWAP line's own class, 156px available:
+
+    RTH Move +123.4%              103.8px   FITS  (52.2 spare)
+    PM Move  +123.4%               97.4px   FITS  (58.6 spare)
+    RTH Move +18.1%                97.4px   FITS  (58.6 spare)
+
+**⇒ `RTH Move` AT 156.1px WAS A HEADER NUMBER AND THE LABEL IS NOT GOING IN THE
+HEADER. Inline it has 52px of room. THE ITEM IS CLOSED — no header change is
+needed for this family.** *Recording the closure as loudly as the risk, because
+a carried item that quietly stops mattering is how a false constraint survives.*
+
+### THE REAL CONSTRAINT IS THE HONESTY FLAG, AND IT DOES NOT FIT AS A COUNT
+
+`tradeCount` is nullable **independently** of `price`, deliberately — *a
+premarket open anchored on 3 trades must not look like one anchored on 400, and
+a zero default would erase exactly that.* **So the surface owes three states, not
+two.** Measured:
+
+    RTH Move +18.1% · 3 prints    168.8px   OVER by 12.8
+    RTH Move +18.1% · ? prints    168.8px   OVER by 12.8
+    RTH Move +18.1% · thin        142.8px   FITS  (13.2 spare)
+
+**⇒ THE COUNT CANNOT GO ON THAT LINE. A COMPACT MARKER CAN.** *The number belongs
+in the title where a reader who wants it gets it; the line carries whether the
+anchor is trustworthy.*
+
+**AND THE THREE STATES MUST BE VISUALLY DISTINCT, WHICH IS THE `activityWindow`
+RULE ARRIVING IN A NEW COLUMN:**
+
+    tradeCount = 400    anchor is solid          no marker
+    tradeCount = 3      anchor is THIN           marker, and it must be loud
+    tradeCount = null   WE DO NOT KNOW           its OWN state, never silence
+
+**`null` RENDERING AS ABSENCE-AND-SILENCE IS THE DEFECT, because silence is what
+a SOLID anchor also looks like.** *That is `NULL means NOT MEASURED, never `[]``
+one column over — and it is the guard I owe with this family, so it ships in the
+same commit rather than after.*
+
+**NOT BUILT: the store columns are undeployed and `move` is derived at read time
+rather than stored, so there is no payload to build against yet.** *What is
+settled is the shape and the constraint; what is not is anything that needs a
+field to exist.*
+
 ## THE MUTANT THAT DIES TOO QUIETLY, AND THE REVERT LADDER
 
 ### THE TELL — MINE, AND THE MOST TRANSFERABLE THING I FOUND TODAY
