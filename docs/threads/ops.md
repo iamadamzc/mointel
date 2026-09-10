@@ -7557,23 +7557,98 @@ top-level tree hash excluding docs -> 33b67f8176d15c3f == 33b67f8176d15c3f
 check first.** I nearly re-gated and redeployed on the word of a pipeline I had
 written thirty seconds earlier.
 
-## AUTH SCOPE — Google + email magic link, both from the start
+## AUTH SCOPE — scoped 09-07 as Google + magic link, and the input changed 09-10
 
 **Scoped 2026-09-07 at Integration's request. Not designed, not built.**
 
-### THE BLOCKING PREREQUISITE NOBODY HAS NAMED: THERE IS NO DOMAIN
+**THE SCOPE IN THIS HEADING IS SUPERSEDED AND NOT YET REPLACED.** On 2026-09-10
+he said: *"this will be a productized app, we need to do authentication, we have
+previously discussed doing google and apple for authentication and maybe email
+link."* **That is a different set** — Apple was never in this section, and email
+moved from *"from the start"* to *"maybe"*. **Re-scoping waits on his answer
+about Apple; nothing below has been rewritten to match, so read the rest as the
+09-07 scope with a known gap.**
+
+### DOES THE IDENTITY MODEL HOLD WITH APPLE? — yes, and Apple is its best argument
+
+**Integration flagged this as a question against the `unique on (provider,
+subject)` and *link-from-session, never link-on-signin* rulings, which were
+written for two providers.**
+
+**FLAGGED AS REASONING, NOT MEASUREMENT.** The DNS facts above were probed today.
+**The Apple behaviours below are from knowledge, not from a test**, and must be
+checked against Apple's current documentation before anything is built on them.
+
+- **`unique on (provider, subject)` gets stronger, not weaker.** Apple's `sub` is
+  stable per developer team and is **the only stable identifier Apple
+  guarantees** — the email is not, because it may be a relay and may be withheld
+  entirely. **A model keyed on email would break on Apple specifically.** This
+  one does not.
+- **The operational trap: Apple returns the email only on the FIRST
+  authorization.** Later sign-ins omit email and name. **Persist it on first
+  contact or lose it permanently**, recoverable only if the user revokes the app
+  in their Apple ID settings and authorises again.
+- **"Provider-asserted verified email" means something different under a private
+  relay.** `…@privaterelay.appleid.com` arrives verified and *is* deliverable,
+  but it is **not the user's address and is unique per app.** So auto-linking a
+  Google identity to an Apple one by matching verified email **simply never
+  matches** for relay users. **That fails safe** — no link, rather than a wrong
+  one — but it makes behaviour vary per user according to a choice made once at
+  signup and invisible afterwards.
+- **⇒ THIS IS THE CASE THAT EARNS *link-from-session, never link-on-signin*.**
+  Link-on-signin must infer identity from what the provider asserts at that
+  moment, and **with Apple that assertion varies**: email present or absent, real
+  or relayed. Link-from-session asks an already-authenticated user to add a
+  provider, so **the decision is the user's and is made once**, with nothing
+  inferred from a changing assertion.
+- **One addition the two-provider rulings did not need: a relay address is not a
+  durable contact address.** The user can disable forwarding at any time. Do not
+  use it for anything that must arrive — billing, recovery — without recording
+  that it is a relay.
+
+### CORRECTED 2026-09-10: THE DOMAIN EXISTS. THE MAIL PREREQUISITE DOES NOT.
+
+**The "there is no domain" heading below was true when scoped on 09-07 and was
+made false on 09-08 by this seat**, which registered `tmitrader.com` through
+Route 53. Integration caught the stale line; the measurements are mine, taken
+2026-09-10, because *"the domain half is finished"* would have been just as
+wrong as *"there is no domain"*.
+
+**WHAT IS ACTUALLY DONE — all four verified today, not assumed:**
 
 ```
-server_name        98-85-49-227.sslip.io      (Let's Encrypt cert matches)
-nginx template     server_name __DOMAIN__     <- substituted at deploy
-MTA on the box     NONE
-BASE_URL / APP_URL anywhere in the tree      NONE
+tmitrader.com  A          -> 98.85.49.227          (points at the box)
+nginx server_name         -> 98-85-49-227.sslip.io tmitrader.com www.tmitrader.com
+certificate SANs          -> all three names, one lineage (98-85-49-227.sslip.io)
+https://tmitrader.com/    -> 401 from nginx, no TLS error, so the cert validates
 ```
 
-**`sslip.io` resolves any IP-shaped hostname to that IP. It is not a domain we
-control, so we cannot publish SPF, DKIM or DMARC records under it.** Those are
-not optional for magic-link mail — **without them the message is unauthenticated
-and lands in spam or is rejected outright.**
+**The sslip.io name is still served, deliberately** — it is the same
+`server_name` line, and the lineage is still named after it. That is the
+separation built at `101b46b`: **what is served is not the same question as what
+the certificate lineage is called.**
+
+**WHAT IS NOT DONE, AND IT IS THE WHOLE MAIL SIDE:**
+
+```
+TXT on the apex (SPF)     -> 0 records          ABSENT
+_dmarc.tmitrader.com      -> NXDOMAIN           ABSENT
+MX on the apex            -> 0 records          ABSENT
+MTA on the box            -> NONE
+BASE_URL / APP_URL        -> NONE anywhere in the tree
+```
+
+**Checked with a positive control rather than believing an empty answer** — the
+same three probes against `google.com` returned 7 TXT records, a `p=reject`
+DMARC and an MX, so the prober can see a present case. **DKIM is unverifiable
+without a selector and is moot: with no TXT and no MX, the mail side is not
+partially configured, it is unstarted.**
+
+**So the original argument survives with its subject changed.** SPF, DKIM and
+DMARC are not optional for magic-link mail — **without them the message is
+unauthenticated and lands in spam or is rejected outright.** What has changed is
+that this is now a **domain we control and can publish under**, so it is work
+rather than an impossibility.
 
 **And a magic link is a URL a human is asked to trust.** A login link pointing at
 `https://98-85-49-227.sslip.io/...` reads as phishing to filters and to people,
