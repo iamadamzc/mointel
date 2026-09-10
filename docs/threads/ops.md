@@ -8058,3 +8058,57 @@ in a timezone you did not specify is not a confirmation.**
 Windows host returns UTC with an ET label; the box is the only clock to trust for
 "now"; and now scheduling reads wall-clock times in a third zone again. **The
 desk has never once been on the same clock as the seat operating it.**
+
+## The dark-field sweep's scope rule, and the null that would silence it — 2026-09-10
+
+**Settled design, not yet built.** Research proposed replacing a calendar-reviewed
+exclusion with a self-expiring one, and it is the better instrument. Recording it
+with the flaw already found, so the build is mechanical.
+
+**THE PROBLEM.** When Research's nine session-open columns deploy, **every
+pre-migration row is NULL in all nine** and the sweep will report nine dark
+fields — correctly. The obvious answer is an exclusion carrying
+`field · since · consumer awaited · review by`. **The obvious answer depends on
+somebody reading a calendar**, and an exclusion nobody reviews is precisely how
+`volume_base` became permanent.
+
+**THE BETTER ANSWER: scope on `updated_at`, which cannot outlive its own
+condition.** `lib/market/engine.ts:1962` writes `updatedAt: new Date(this.now())`
+— **a wall-clock write time, not a market timestamp** — carried through
+`worker/runtime.ts:1869` and preserved on every upsert by
+`updated_at = excluded.updated_at` at `lib/market/store/repo.ts:870`. So a row
+whose `updated_at` predates the migration **cannot** have been asked; the columns
+did not exist when it was written. A row written after it, still all-null, is a
+real finding. **The exclusion dissolves as the population turns over, with no
+date for anyone to maintain.**
+
+**AND THE FLAW, WHICH IS IN THE BOUNDARY AND NOT THE IDEA.** The migration
+instant is **recorded nowhere** — `SCHEMA_VERSION` moved to 26 and no
+`migrated_at` exists — so the boundary has to be derived, and the natural
+derivation is `MIN(updated_at) WHERE <any of the nine> IS NOT NULL`. **That
+derivation returns NULL when no row has ever carried a value, and
+`updated_at >= NULL` matches nothing.**
+
+**Demonstrated on production today rather than argued.** `volume_base_through`
+already has the shape — it exists and is written as a literal null:
+
+```
+total ticker_session rows        : 160586
+rows with volume_base_through    : 0
+derived boundary MIN(updated_at) : NULL
+rows a >= NULL predicate selects : 0
+```
+
+**The sweep would examine zero rows for the one column that is 100% dark, and
+report nothing.** An empty result reading as "nothing to report" when it means
+"cannot vouch" — `failed-checks-return-plausible-answers`, in the instrument
+built to catch that family.
+
+**SO THE RULE FOR THE BUILD: a null boundary is an explicit branch, never a
+predicate.** No row has ever carried a value ⇒ **report the column as dark with
+maximum prominence**, because that is the strongest possible evidence of a dark
+field, not the weakest. The scoped comparison applies only once a boundary
+exists. Integration's two conditions stand unchanged: the output states that an
+incomplete exclusion list makes the sweep **noisier, never quieter**, and any
+surviving exclusion carries `field · since · consumer awaited · review by` with
+an out-of-date review reported as a finding.
