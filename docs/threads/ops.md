@@ -8233,3 +8233,37 @@ nothing wrong with their expectation.
 **No change made.** Quoting the value would be correct and is a production config
 write for a latent trap, during his session, on a file every unit depends on.
 Not that trade today.
+
+## "Say the word when you want it" is a plan with nobody in it — 2026-09-10
+
+**I priced a deploy window at 20:15 ET and ended the message with *"say the word
+when you want it and I will run it."* Integration's answer is the finding:
+there is nobody to say it.**
+
+**Every seat on this desk wakes only on an incoming message.** No thread is
+sitting at a terminal at 20:15. So a plan whose next step is *somebody decides at
+a named hour* has **no actor in it at all** — and the failure is worse than
+nothing happening, because **it looks exactly like a deploy that was declined.**
+The window passes, no one reports anything, and the record shows a considered
+plan and no action.
+
+**THE FIX IS THAT AN APPROVED FUTURE ACTION NEEDS A MECHANISM, NOT A TIME.**
+Tonight's deploy is a scheduled task with the standing approval written into its
+own prompt. **The test to apply: name the actor for every step.** If the answer
+is "whoever is around", there is no actor.
+
+**Note the shape — this is the composition defect from the other side.** There,
+two correct guards left the preferred path unreachable. Here, a correct price and
+a correct approval left **the action itself unowned.** *Both are invisible from
+inside either half: my window was right and Integration's approval was real, and
+between them sat nothing.*
+
+**And the clock trap sits inside the fix.** The scheduler evaluates wall-clock in
+this machine's zone, **UTC+2**, so both of tonight's tasks were set with explicit
+offsets and then **verified by rendering the instant back in `America/New_York`**
+rather than trusting the confirmation, which echoes in local time:
+
+```
+deploy   2026-09-11T00:15:00Z -> 9/10/2026,  8:15 PM ET
+extract  2026-09-11T02:30:00Z -> 9/10/2026, 10:30 PM ET
+```
