@@ -157,9 +157,25 @@
         this screen can tell them where they stand without making them authenticate to hear it.
       </p>
       <p style="font-size: 15px; line-height: 1.65; color: #c7cedb; max-width: 96ch;">
-        <strong style="color: #e9edf3;">Web's recommendation: refuse at the point of use.</strong> A
-        pending person needs somewhere to come back to, and doing both means two screens for one
-        condition, which will drift.
+        <strong style="color: #e9edf3;">Joint recommendation, Web and Design, 2026-09-10: refuse at the
+        point of use &mdash; provided the status check lives in ONE place that every point of use passes
+        through.</strong> One session-resolution function, or one middleware. <strong style="color: #e9edf3;">Scattered
+        per-route checks and the callback gate is the safer choice instead:</strong> point-of-use
+        multiplies the places that must refuse, and missing one hands a pending user the board. That
+        condition is Design's and it is load-bearing &mdash; without it the recommendation flips.
+      </p>
+      <p style="font-size: 15px; line-height: 1.65; color: #97a1b0; max-width: 96ch;">
+        <strong style="color: #e9edf3;">The price, stated because it is real and Design has accepted
+        it:</strong> point-of-use makes the mid-session downgrade <em>common</em> rather than rare, since
+        every refused person holds a live session. <strong style="color: #e9edf3;">So the board's
+        downgrade behaviour has to exist before enforcement ships, not after.</strong>
+      </p>
+      <p style="font-size: 15px; line-height: 1.65; color: #97a1b0; max-width: 96ch;">
+        <span class="mono" style="color: #8792a3;">DESIGN'S, NOT DRAWN HERE:</span> a session revoked
+        mid-morning is a <em>freshness</em> fault, not an access fault. The board does not blank and does
+        not silently freeze &mdash; at 07:30 he may be in a position, and taking away the only thing
+        telling him what he is in is worse than what the revocation was protecting. Every number carries
+        its staleness loudly, and the way back is offered. Never a redirect, never a modal.
       </p>
     </div>
   </div>
