@@ -68,11 +68,11 @@ user-agent string, and the time. [CONFIRM WHETHER ANY OTHER FIELD IS LOGGED.]
 
 - `mointel_session` — set when you sign in, and how the desk recognises you on
   your next request. It lasts [DURATION].
-- A short-lived cookie set when sign-in *starts*, before you have approved
-  anything at Google. It holds two single-use values that let us check the
-  reply coming back from Google belongs to the request you actually made. It
-  lasts at most ten minutes and is discarded when the sign-in finishes, whether
-  it succeeded or not.
+- `[FLOW COOKIE NAME]` — set when sign-in *starts*, before you have approved
+  anything at Google. It holds two single-use random values that let us check
+  that the reply coming back from Google belongs to the request you actually
+  made. It lasts at most ten minutes, and it is discarded when the sign-in
+  finishes, whether that sign-in succeeded or not.
 
 Both are marked `HttpOnly` and `Secure`: no script on the page can read either,
 and they are only ever sent over an encrypted connection.

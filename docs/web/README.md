@@ -155,10 +155,12 @@ backstop for someone who signs in without an invite.*
 | --- | --- | --- |
 | 1 | One sentence on **why** he built it, for the "who built it" block | the trader |
 | 2 | **Session cookie LIFETIME** (`ttlSeconds` is a parameter, not a constant), the **OAuth flow cookie's NAME** (passed into `flowCookie()`), whether any mailing list exists, access-log fields, retention periods for account/logs/email/backups, hosting region, email provider | Ops |
-| 2b | **The policy now asserts the OAuth flow cookie is discarded when sign-in finishes.** `clearedFlowCookie()` exists at `lib/auth/cookie.ts:131` and **nothing calls it yet** — `app/auth/` does not exist. **The callback route must actually call it, or that sentence is false.** | Ops |
-| 3 | Whether an EU/UK audience is in scope — it decides whether the policy needs a lawful-basis section and a supervisory authority | the trader |
-| 4 | Whether Google's "home page" must be `tmitrader.com` itself, or whether a page elsewhere on the domain satisfies it | nobody has confirmed; **do not guess** |
-| 5 | Terms of service — not yet drafted | Web, next |
+| ~~2b~~ | **SATISFIED, and built stronger than asked.** Ops made it structural rather than two calls: the callback has **no bare `return`** — every exit goes through one helper that attaches the cleared flow cookie, so a failure mode added later inherits it. Tests assert the header **on the failure paths by name**, not only on success. *That is the assertion the sentence actually needed.* | closed |
+| 3 | **Session cookie LIFETIME — with him, not with Ops.** Ops recommends **30 days** and routed it rather than settling it. Its argument: sessions are server-side and revocable, so length is not the same object as a long-lived stateless token, and a short lifetime would make him re-authenticate inside the 07:00–10:00 premarket for no gain the cookie attributes are not already giving. **Nothing is published until he rules.** | the trader |
+| 4 | **The flow cookie's NAME is not established.** Relayed to Web as `mointel_oauth` carrying `<state>.<nonce>`; **the only occurrence in the tree is `mointel_oauth_state`, in `tests/auth/cookie.test.ts`, passed as an argument** — and `1e120ac` asserts no name at all. *A policy that names a cookie is one of the few claims a user can check in their own browser inspector.* **Not published on a relay the code disagrees with.** | Ops |
+| 5 | Whether an EU/UK audience is in scope — it decides whether the policy needs a lawful-basis section and a supervisory authority | the trader |
+| 6 | Whether Google's "home page" must be `tmitrader.com` itself, or whether a page elsewhere on the domain satisfies it | nobody has confirmed; **do not guess** |
+| 7 | Terms of service — not yet drafted | Web, next |
 
 **Every remaining `[BRACKET]` in `docs/legal/privacy-policy.md` maps to row 2 or
 row 3.** None was invented to look complete.
