@@ -3916,6 +3916,45 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## APPROVED: `"yes to the header change."` — AND THE LABEL IS COUPLED TO A PROXY, NOT ITS REFERENT
+
+**Shipped as `1e9f7d2`, gated 127 files / 1900 tests, awaiting the after-close
+deploy. Boundary: he approved THE HEADER FOLLOWING THE SESSION.** Not the number,
+not the unit, not the cell, not the second line. **`x` stays and that ruling is
+untouched by this one.**
+
+**AND THE OPEN DISCUSSION EXPOSES A WEAKNESS IN WHAT I JUST SHIPPED, WHICH I
+WOULD RATHER NAME NOW THAN DISCOVER LATER.**
+
+His proposition: measure each session's move **from that session's own start** —
+RTH from the 09:30 open, *"skipping after hours"*. **CULP is the worked example:
+this morning's `+18.1%` was largely an AFTER-HOURS move from yesterday, rendered
+as a premarket gap.** The sort control's own title admits the baseline — *"change
+from the prior session close, **including after hours**"*.
+
+**`moveLabel` DERIVES THE WORD FROM THE SESSION PHASE. THE WORD DESCRIBES THE
+BASELINE. THOSE TWO COINCIDE TODAY AND HIS PROPOSAL SEPARATES THEM.**
+
+    sparklineLagLabel(config)  -> reads settleMinutes, WHICH IS THE THING IT NAMES
+    moveLabel(phase)           -> reads the phase, and names THE BASELINE
+
+**The first is coupled to its referent and survived a config change untouched —
+production went `−2m` → `−1m` on its own.** **The second is coupled to a PROXY.**
+If the RTH baseline moved to the 09:30 open, `Move` would still render — **and
+"Move from the prior close" would be silently false, on a header, at speed.**
+**A derived label is only safe when it derives from the thing it describes.**
+
+**⇒ IF THE REFERENCE MOVES, `moveLabel` MUST TAKE THE BASELINE, NOT THE PHASE.**
+Not a change to make now — nothing is decided and it is not mine to decide. **But
+the header I shipped today is correct under either scheme only because the two
+still coincide, and that is luck rather than design.** Recording it so the next
+person to touch the reference knows the label does not follow it.
+
+**AND HIS OWN PRINCIPLE ALREADY SPLITS THE THREE SESSIONS:** `AH move` measures
+from today's RTH close — **his rule, already obeyed.** Premarket reaches back
+past after-hours to yesterday's 16:00 — **his rule, violated.** RTH-from-open —
+**does not exist.** *One of three follows it, one contradicts it, one is missing.*
+
 ## THREE COLUMNS DO NOT FIT, AND NEITHER SHOULD THE DROPDOWN. MEASURED AT HIS FLOOR.
 
 > **"so it would be three separate windows in the UI, or is it a single window
