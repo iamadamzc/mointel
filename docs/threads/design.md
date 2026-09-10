@@ -3916,6 +3916,65 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## `AH move` CONTAINS `Move`, AND MY GUARD TESTED IDENTITY WHERE THE RESERVATION NEEDED CONTAINMENT
+
+**After-hours does NOT collapse to one figure** — he ruled the session open is
+**the first print of that session**, so the AH open is a different print from the
+16:00 close and the two figures are distinct. **Same decomposition as premarket:
+gapped in, then moved.** *The collapse was an artefact of an earlier definition,
+not a property of the session.*
+
+**⇒ SO AFTER THE BELL THE ROW CARRIES BOTH `AH move` AND `Move`, ADJACENT.**
+
+### MY GUARD DOES NOT CATCH IT, AND THE REASON IS THE DAY'S OWN PATTERN
+
+    tests/dashboard/discoverySort.test.ts:229
+    expect(baselineLabel(phase).label).not.toBe('Move')      <- IDENTITY
+
+**`AH move` passes.** Integration deduced that from the outside without reading
+it, and they are right. **I reserved a WORD and tested a TOKEN.** *If `Move` is
+reserved as a MEANING, a label containing it inherits that meaning at scan speed
+— so the guard should be `not.toContain('Move')`, which would have caught this
+collision the moment it was proposed.* **The test matched the string; the defect
+is in the reading. Fifth time today that distinction has decided something.**
+
+### AND THE COLLISION IS NOT "CONFUSABLE". IT IS A PRECISE INVERSION.
+
+**`AH ` is a prefix that invites `AH X = the after-hours version of X`. That
+inference is WELL-FORMED and lands on the WRONG base word.** `AH move` is the
+after-hours version of **`Gap`/`Day`** — the across-sessions family — **not of
+`Move`, which is its opposite.** *A label that invites a correct-shaped inference
+onto the wrong referent is worse than one that is merely unfamiliar, because the
+reader has no reason to doubt it.*
+
+**⇒ `AH gap` MAKES THE INFERENCE TRUE.**
+
+    ACROSS sessions, from the last relevant close    Gap · Day · AH gap
+    WITHIN this session, from its own first print    Move
+
+**Then `AH gap` genuinely IS "the after-hours version of `Gap`" — the same
+quantity, one session over — and the prefix points at the right base word.**
+
+**WIDTH IS NOT A CONSTRAINT: `AH gap` is one character SHORTER than `AH move`,
+which renders today.** *This one is free, which is rare on this row.*
+
+**THE HONEST COUNTER, NAMED RATHER THAN HIDDEN:** *"gap" conventionally means the
+overnight jump seen at an open, and after-hours is a continuous tape from 16:00.*
+**But the desk's own premarket `Gap` is titled *"including after hours"*** — so
+`Gap` here already means *"the move from the last relevant close, before this
+session's own trading"*, **not the strict overnight jump. Under the meaning this
+desk already uses, `AH gap` is exact.**
+
+**AND IT IS THE ONE WORD OF THE THREE HE NEVER CHOSE.** It rode in on the
+sentence he approved and survived the `Move`→`Day` amendment untouched. **Asking
+costs nothing.**
+
+**ONE SEQUENCING POINT: THE GUARD CHANGE AND THE RENAME ARE ONE CHANGE, NOT
+TWO.** Strengthening the guard to `toContain` **fails on `AH move`, which is
+currently approved and shipping tonight.** *So the guard cannot be hardened
+first, and hardening it later without the rename would break a green suite on a
+word he had approved.* **Both or neither, and neither until he rules.**
+
 ## THE RANK COLUMN IS THE ONLY VISIBLE EVIDENCE OF A REAL ORDERING DEFECT
 
 > **"i actually never sort by rank. its not been clear what it was and it just
