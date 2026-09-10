@@ -228,8 +228,13 @@ load-bearing to the thread that found it. To him it is background.**
 
 ### Production, 2026-09-10 06:06 ET
 
-- **`57e3265` on web / research / assess.** Deployed mid-premarket **on his
-  direct override of a hold this seat had set for after the close.** Clean.
+- **`8f8f5d3` on web / research / assess.** Shipped 07:36 ET, clean, **no
+  override.** *Corrected from `57e3265`, which this seat wrote into the first
+  version of this block and which was already superseded.* **`57e3265` left
+  `Price · PM Gap · VWAP` on Discovery and a hand-typed `Price · Move · VWAP` on
+  Researched Names — two words for one quantity on one screen.** Ops found and
+  fixed it. *The first deploy went mid-premarket on his direct override of a hold
+  this seat had set for after the close.*
 - **`mointel-market` is on `02bf90d`, NOT restarted, release directory confirmed
   present.** Capture never dropped; bars arrived through the deploy.
 - **`settleMinutes: 0` is LIVE**, confirmed on 8,709 rows carrying the worker's
@@ -300,6 +305,12 @@ WITHIN this session, from its own first print       NOT BUILT
   outstanding.
 
 **No scheduled task is armed. Nothing is watching anything.**
+
+**ONE STALE SESSION TO CLEAR:** `local_870499f5`, *"Mointel: 09-04 recovery
+COUNT-ONLY after the close"*, **still `isRunning: true` fourteen hours after its
+last activity.** *That is the task that fired an hour late and opened the local
+split-brain desk.* **A task session that never terminates is the thing that made
+its report unreachable in the first place, and it is still in that state.**
 
 
 ### Rulings he made this session, in his words
@@ -3024,3 +3035,34 @@ matters most.*
 
 It is also committed at the bottom of `docs/threads/integration.md`, so he never
 needs to reproduce it.
+
+
+## AN INSTRUCTION TO DEPLOY IS NOT AN INSTRUCTION TO OVERRIDE A GUARD
+
+**Ops, 2026-09-10, offered for the handover over any of its six catches, and it
+is right that this is the better entry.**
+
+**He had said ship twice — *"i approve deployment now for all"*, then *"i want to
+see it now."*** **Ops was ready to override a preflight refusal on the strength
+of it. A permission block stopped it, not judgement.**
+
+**AND WHEN THE DEPLOY ACTUALLY RAN THERE WAS NO WINDOW AT ALL** — nearest
+checkpoint an hour behind, next two hours ahead. **The override would have bought
+nothing**, and it **would have restarted the assess worker four minutes before
+his premarket assessment.**
+
+> **PRICE THE REFUSAL BEFORE OVERRIDING IT. THE PRICE IS OFTEN ZERO** — *and you
+> cannot see that from inside the decision, because the thing pressing on you is
+> his instruction rather than the clock.*
+
+**AND THE DISTINCTION HE NEVER AUTHORISED:** *"deploy now" is an instruction about
+a DEPLOY.* **A preflight refusal is not a hold to be lifted — it is a fact about a
+window, and overriding it is a separate act.** **He cannot price a checkpoint
+collision; he does not hold the schedule.** *The escape hatch takes a free-text
+reason, and this desk has already recorded that a justification field only works
+while every entry in it is true.*
+
+**What stopped it was a mechanism rather than a person**, which is the same
+finding as the capacity guard holding on the same deploy: **a clean outcome
+produced by a guard is not evidence the process priced the risk.** *Twice in one
+morning, from the same seat, reported by that seat both times.*
