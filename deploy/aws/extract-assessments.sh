@@ -148,6 +148,6 @@ if [ "$DUMP_BYTES" -lt 1000 ]; then
   exit 1
 fi
 
-node deploy/aws/build-extract.js   "$DUMP" "$OUT" "$COVER"   "$EXTRACT_AS_OF" "$EXPECT_PER_DATE" "$COMPLETE_THROUGH" "$MAX_DATE"   "$HOST" "$EXCLUDE_TAIL"
+node deploy/aws/build-extract.mjs   "$DUMP" "$OUT" "$COVER"   "$EXTRACT_AS_OF" "$EXPECT_PER_DATE" "$COMPLETE_THROUGH" "$MAX_DATE"   "$HOST" "$EXCLUDE_TAIL"
 
 echo "[extract] done. Gate joins on complete_through, or JOIN extract_date_coverage."

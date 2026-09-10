@@ -2,7 +2,7 @@
  * Rebuilds a production assessment extract into a local SQLite file and stamps
  * its coverage INSIDE the file.
  *
- *   node deploy/aws/build-extract.js <dump.sql> <out.db> <coverage.tsv> \
+ *   node deploy/aws/build-extract.mjs <dump.sql> <out.db> <coverage.tsv> \
  *        <extract_as_of> <expect_per_date> <complete_through> <max_date> \
  *        <source_host> [exclude_date]
  *
@@ -34,10 +34,9 @@
  * The 09-02 wall was invisible for days behind a filename that named its own
  * date, because a filename does not travel into a query result.
  */
-'use strict';
+import fs from 'node:fs';
 
-const fs = require('node:fs');
-const Database = require('better-sqlite3');
+import Database from 'better-sqlite3';
 
 const [
   dumpPath, outPath, coveragePath, extractAsOf, expectRaw,
