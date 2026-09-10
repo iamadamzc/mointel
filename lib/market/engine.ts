@@ -1054,12 +1054,18 @@ export class DemandEngine {
    * `bar.ts <= held` covers both: strictly earlier wins, and an equal timestamp
    * overwrites, which is precisely a correction to the anchoring minute.
    *
-   * DELIBERATELY NOT UNDONE BY `dropVwapMinute`. That exists so a reconstructed
-   * volume base is not double-counted, which is an ACCUMULATOR concern. The
-   * first print of a session stays the first print whether or not its volume is
-   * still inside an average — clearing it there would move the origin later,
-   * which understates the Move, and understating it is not the safe direction
-   * on a number he reads to decide whether a name has already run.
+   * DELIBERATELY NOT UNDONE BY `dropVwapMinute`, AND NOT AS A COST TRADE.
+   * That function exists so a reconstructed volume base is not double-counted,
+   * which is an ACCUMULATOR concern and says nothing about whether a print
+   * occurred. The first print of a session stays the first print whether or not
+   * its volume is still inside an average — keeping it is simply correct, not
+   * the cheaper of two defensible answers.
+   *
+   * *The direction is a CHECK on that answer rather than the basis for it, and
+   * it agrees: clearing the anchor would move the origin later and understate
+   * the Move, which makes an extended name read fresher than it is. On a number
+   * he uses to decide whether something has already run, that is the dangerous
+   * direction — it invites the entry rather than costing him one.*
    */
   private captureSessionOpen(
     runtime: TickerRuntime,
