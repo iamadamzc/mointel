@@ -7606,6 +7606,42 @@ checked against Apple's current documentation before anything is built on them.
   use it for anything that must arrive — billing, recovery — without recording
   that it is a relay.
 
+### CONFIRMED INDEPENDENTLY 2026-09-10, and one rule replaced
+
+**Commercial read Apple's current pages without being shown the above, and the
+two readings agree**: `sub` stable and the only durable identifier, email
+delivered **once** on first authorization, relay verified but not the user's
+address. **I marked mine as reasoning rather than measurement and it has now been
+measured. No disagreement, so there is no finding in the comparison** — which is
+the outcome that costs nothing and is why the readings were kept apart.
+
+**Three facts only the documentation had:**
+
+- **Apple instructs, in its own words, never to use the email as an identifier.**
+  So `(provider, subject)` is the provider's own instruction, not only our
+  inference from it.
+- **`real_user_status` is not present or supported for web apps.** Not a signal
+  here, whatever it may be elsewhere.
+- **THE RELAY DOMAIN IS CHANGING.** Apple's 2026-08-24 update moves new addresses
+  to **`private.icloud.com`** later this year; existing
+  `privaterelay.appleid.com` addresses keep working.
+- **And Apple's web configuration requires an app ALREADY IN THE APP STORE.** TMI
+  Trader is web-only, so **phase two is not "add Apple later", it is "ship an iOS
+  app, then add Apple."** Whether a registered-but-unshipped App ID suffices is
+  stated on no public page and was not guessed at.
+
+**⇒ THE RELAY CHANGE REPLACES MY EARLIER RULE RATHER THAN EXTENDING IT.** The
+obvious response is an allowlist accepting both domains. **Do not write one.** A
+two-domain check is **a hardcoded assumption with a delivery date on it** — wrong
+the moment Apple adds a third, and wrong QUIETLY, because a relay address that
+fails a relay check reads as an ordinary address.
+
+**The rule that does not expire: durability is not a property you can read off an
+address.** Never detect a relay by its domain. **Treat every provider-supplied
+address as non-durable** — the user may have hidden it, may revoke forwarding,
+and the provider may reshape it without telling us. If durability matters for a
+use, that is a question for the user, not for a regex.
+
 ### CORRECTED 2026-09-10: THE DOMAIN EXISTS. THE MAIL PREREQUISITE DOES NOT.
 
 **The "there is no domain" heading below was true when scoped on 09-07 and was
