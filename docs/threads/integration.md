@@ -3759,3 +3759,41 @@ produces is a test with no subject: it passes forever and proves nothing.**
 *Which is the vacuity that has now caught this one function three times.*
 **Recorded as owed WITH the Move family, in the same commit, rather than written
 early to look thorough.**
+
+## A GUARD CAN BE VACUOUS THREE WAYS, AND THE TELL IS A MUTANT THAT FAILS TOO FEW TESTS
+
+**Design, 2026-09-10, after refining one guard three times in a morning. Its
+formulation, filed here at its request because it outgrew its own charter.**
+
+    1  IDENTITY where CONTAINMENT was needed        not.toBe('Move')   passes 'AH move'
+    2  CONTAINMENT where CASE-INSENSITIVITY was     'AH move'.includes('Move') === FALSE
+    3  A SUBJECT THAT DOES NOT EXIST YET            a guard over labels nothing produces
+
+**EACH FIX LOOKED COMPLETE. Only mutation distinguished them.**
+
+> **AND THE TELL WAS THE SAME EVERY TIME: THE MUTANT FAILED FEWER TESTS THAN IT
+> SHOULD HAVE.**
+
+**That is the part this desk did not have.** *It already holds "a check that cannot
+fail", "prove a check can see a present case before believing its absence", and
+"a mutation that passes means the mutant was wrong rather than the tests good" —
+**all three ask you to reason about the check.*** **Design's is a SIGNAL read off
+a run: predict how many tests the mutant should kill, and investigate the
+shortfall.**
+
+**A SURVIVING MUTANT IS LOUD. A MUTANT THAT DIES AGAINST FEWER TESTS THAN IT
+SHOULD IS QUIET** — it goes red, the run looks like a pass for the mutation, and
+nobody counts. **That quiet one caught the same function three times in one
+morning, and reading the guard twice caught none of them.**
+
+*Sibling of "an unmoved count is a prediction too": there, predicting a test total
+that does not move; here, predicting a kill count that does. **Both convert a
+number nobody looks at into a check that can fail.***
+
+### And the third kind is the one a careful person writes deliberately
+
+**Kinds 1 and 2 are mistakes. Kind 3 — a guard over something that does not exist
+yet — is written on purpose, to look thorough**, and it passes forever. *Design
+refused to write the mirror guard early for exactly this reason and recorded it
+as owed instead.* **Which is the same discipline as declining to widen a matcher
+blind: the version that looks more complete is the one that proves less.**
