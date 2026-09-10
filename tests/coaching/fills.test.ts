@@ -28,6 +28,7 @@ import {
 import {
   assertCovers,
   classify,
+  crossCheck,
   describe as describeCoverage,
   gaps,
   readCoverage,
@@ -618,6 +619,72 @@ describe('coverage windows', () => {
     expect(gaps(c, ['2026-08-28', '2026-09-01', '2026-09-02', '2026-09-03', '2026-09-04'])).toEqual([
       '2026-09-02',
     ]);
+  });
+
+  it('cross-check agrees when the producer\'s counts match the rows that arrived', () => {
+    const file = makeExtract('agreed.db', full('2026-09-09', '2026-09-10'));
+    const db = new Database(file);
+    db.exec('CREATE TABLE extract_date_coverage (trading_date TEXT, is_complete INTEGER, assessment_count INTEGER)');
+    const ins = db.prepare('INSERT INTO extract_date_coverage VALUES (?,?,?)');
+    ins.run('2026-09-09', 1, WHOLE);
+    ins.run('2026-09-10', 1, WHOLE);
+    db.close();
+    const c = crossCheck(readCoverage(file), file);
+    expect(c.status).toBe('agreed');
+    expect(c.checked).toBe(2);
+    expect(c.conflicts).toHaveLength(0);
+  });
+
+  it('THE TRUNCATED STREAM: producer says whole, the rows that arrived say otherwise', () => {
+    // The one failure neither side can see alone. The dump dropped rows; the
+    // producer's table, written on the box beforehand, still says 19.
+    const file = makeExtract('truncated.db', { '2026-09-09': WHOLE, '2026-09-10': 12 });
+    const db = new Database(file);
+    db.exec('CREATE TABLE extract_date_coverage (trading_date TEXT, is_complete INTEGER, assessment_count INTEGER)');
+    const ins = db.prepare('INSERT INTO extract_date_coverage VALUES (?,?,?)');
+    ins.run('2026-09-09', 1, WHOLE);
+    ins.run('2026-09-10', 1, WHOLE);
+    db.close();
+    const c = crossCheck(readCoverage(file), file);
+    expect(c.status).toBe('disagreed');
+    expect(c.conflicts).toHaveLength(1);
+    expect(c.conflicts[0]).toMatchObject({
+      date: '2026-09-10',
+      declaredComplete: true,
+      declaredCount: WHOLE,
+      observedCount: 12,
+      observedComplete: false,
+    });
+  });
+
+  it('cross-check flags a date the producer declared but the file does not contain', () => {
+    const file = makeExtract('lost.db', full('2026-09-09'));
+    const db = new Database(file);
+    db.exec('CREATE TABLE extract_date_coverage (trading_date TEXT, is_complete INTEGER)');
+    const ins = db.prepare('INSERT INTO extract_date_coverage VALUES (?,?)');
+    ins.run('2026-09-09', 1);
+    ins.run('2026-09-10', 1);
+    db.close();
+    const c = crossCheck(readCoverage(file), file);
+    expect(c.status).toBe('disagreed');
+    expect(c.missingFromFile).toEqual(['2026-09-10']);
+  });
+
+  it('cross-check reports absent rather than agreed when there is no table', () => {
+    const file = makeExtract('nocov.db', full('2026-09-09'));
+    const c = crossCheck(readCoverage(file), file);
+    expect(c.status).toBe('absent');
+    expect(c.reason).toMatch(/declares no `extract_date_coverage`/);
+  });
+
+  it('cross-check refuses an unexpected schema rather than guessing a column', () => {
+    const file = makeExtract('oddshape.db', full('2026-09-09'));
+    const db = new Database(file);
+    db.exec('CREATE TABLE extract_date_coverage (whenever TEXT, okayish INTEGER)');
+    db.close();
+    const c = crossCheck(readCoverage(file), file);
+    expect(c.status).toBe('unreadable');
+    expect(c.reason).toMatch(/Refusing to guess/);
   });
 
   it('refuses a store that has no date table rather than reporting empty coverage', () => {

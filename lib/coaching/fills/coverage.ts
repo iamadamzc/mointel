@@ -275,3 +275,145 @@ export function assertCovers(coverage: Coverage, requested: readonly string[]): 
 
   throw new Error(`Refusing the join: ${describe(coverage)}\n  ` + detail.join('\n  '));
 }
+
+/**
+ * The producer's own per-date completeness, as recorded in the extract.
+ *
+ * Ops writes `extract_date_coverage` from counts taken **on the box, before
+ * the dump**. `readCoverage` computes the same property **from the rows in the
+ * file, after it lands**. Two computations of one fact, on opposite sides of
+ * the transfer, sharing no step.
+ *
+ * That makes their agreement a positive control on the transfer itself, which
+ * is the one property neither side can establish alone: a dump that dropped
+ * rows leaves the producer's table saying a date is whole while the rows in
+ * the file say otherwise. **A disagreement is the only signal that catches a
+ * truncated stream that still parsed.**
+ */
+export interface DeclaredDate {
+  date: string;
+  isComplete: boolean;
+  count: number | null;
+}
+
+export type CrossCheckStatus = 'agreed' | 'disagreed' | 'absent' | 'unreadable';
+
+export interface CrossCheck {
+  status: CrossCheckStatus;
+  /** Why the check could not run, when status is absent or unreadable. */
+  reason: string | null;
+  checked: number;
+  /** Dates where producer and file disagree -- each one a transfer finding. */
+  conflicts: {
+    date: string;
+    declaredComplete: boolean;
+    declaredCount: number | null;
+    observedCount: number;
+    observedComplete: boolean;
+  }[];
+  /** Dates the producer declared that are not in the file at all. */
+  missingFromFile: string[];
+  /** Dates in the file the producer never declared. */
+  undeclared: string[];
+}
+
+/**
+ * Compare the producer's declared completeness against the rows that arrived.
+ *
+ * Deliberately strict about shape: an unexpected schema reports `unreadable`
+ * rather than guessing which column meant what. A cross-check that quietly
+ * read the wrong column would be worse than none, because its agreement would
+ * be meaningless while looking like corroboration.
+ */
+export function crossCheck(coverage: Coverage, dbPath: string): CrossCheck {
+  const empty: CrossCheck = {
+    status: 'absent',
+    reason: null,
+    checked: 0,
+    conflicts: [],
+    missingFromFile: [],
+    undeclared: [],
+  };
+
+  const db = new Database(dbPath, { readonly: true, fileMustExist: true });
+  try {
+    if (!tableExists(db, 'extract_date_coverage')) {
+      return {
+        ...empty,
+        reason: 'the extract declares no `extract_date_coverage` table, so only this side counted',
+      };
+    }
+
+    const columns = (
+      db.prepare('PRAGMA table_info(extract_date_coverage)').all() as { name: string }[]
+    ).map((c) => c.name);
+
+    const dateCol = ['trading_date', 'date'].find((c) => columns.includes(c));
+    const completeCol = ['is_complete', 'complete'].find((c) => columns.includes(c));
+    if (!dateCol || !completeCol) {
+      return {
+        ...empty,
+        status: 'unreadable',
+        reason:
+          `extract_date_coverage has columns [${columns.join(', ')}] -- expected a date column ` +
+          'and an is_complete column. Refusing to guess which is which.',
+      };
+    }
+    const countCol = ['assessment_count', 'count', 'n', 'rows'].find((c) => columns.includes(c));
+
+    const declared = (
+      db
+        .prepare(
+          `SELECT ${dateCol} AS date, ${completeCol} AS isComplete` +
+            (countCol ? `, ${countCol} AS count` : ', NULL AS count') +
+            ' FROM extract_date_coverage',
+        )
+        .all() as { date: string; isComplete: unknown; count: number | null }[]
+    ).map((row) => ({
+      date: row.date,
+      // SQLite has no boolean; 1/0, 'true'/'false' and 't'/'f' all appear.
+      isComplete: row.isComplete === 1 || row.isComplete === true ||
+        String(row.isComplete).toLowerCase() === 'true' || String(row.isComplete).toLowerCase() === 't',
+      count: row.count ?? null,
+    }));
+
+    const observed = new Map(coverage.perDate.map((r) => [r.date, r.count]));
+    const partial = new Set(coverage.partialDates);
+
+    const conflicts: CrossCheck['conflicts'] = [];
+    const missingFromFile: string[] = [];
+
+    for (const d of declared) {
+      const observedCount = observed.get(d.date);
+      if (observedCount === undefined) {
+        missingFromFile.push(d.date);
+        continue;
+      }
+      const observedComplete = !partial.has(d.date);
+      const countMismatch = d.count !== null && d.count !== observedCount;
+      if (d.isComplete !== observedComplete || countMismatch) {
+        conflicts.push({
+          date: d.date,
+          declaredComplete: d.isComplete,
+          declaredCount: d.count,
+          observedCount,
+          observedComplete,
+        });
+      }
+    }
+
+    const declaredDates = new Set(declared.map((d) => d.date));
+    const undeclared = coverage.dates.filter((d) => !declaredDates.has(d));
+
+    return {
+      status: conflicts.length + missingFromFile.length > 0 ? 'disagreed' : 'agreed',
+      reason: null,
+      checked: declared.length,
+      conflicts,
+      missingFromFile,
+      undeclared,
+    };
+  } finally {
+    db.close();
+  }
+}

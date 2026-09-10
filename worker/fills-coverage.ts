@@ -18,7 +18,7 @@
 
 import { pathToFileURL } from 'node:url';
 
-import { classify, describe, readCoverage } from '../lib/coaching/fills/coverage';
+import { classify, crossCheck, describe, readCoverage } from '../lib/coaching/fills/coverage';
 import { openFillsStore, resolveFillsPath } from '../lib/coaching/fills/store';
 
 function main(): void {
@@ -89,6 +89,37 @@ function main(): void {
     for (const row of coverage.perDate.filter((r) => coverage.partialDates.includes(r.date))) {
       console.log(`    ${row.date}  ${row.count} of ${coverage.expectedPerDate}`);
     }
+  }
+
+  const cross = crossCheck(coverage, extract);
+  console.log('');
+  if (cross.status === 'agreed') {
+    console.log(
+      `  CROSS-CHECK  agreed on ${cross.checked} date(s) with the producer's own count,`,
+    );
+    console.log("               taken on the box before the dump. Nothing was lost in transfer.");
+  } else if (cross.status === 'disagreed') {
+    console.log(`  CROSS-CHECK  DISAGREED on ${cross.conflicts.length} date(s)`);
+    console.log('               the producer counted these on the box; this side counted the');
+    console.log('               rows that arrived. A difference means the transfer lost rows.');
+    for (const c of cross.conflicts) {
+      console.log(
+        `                 ${c.date}  declared ${c.declaredComplete ? 'complete' : 'partial'}` +
+          `${c.declaredCount !== null ? ` n=${c.declaredCount}` : ''}` +
+          `  ->  arrived n=${c.observedCount} (${c.observedComplete ? 'complete' : 'partial'})`,
+      );
+    }
+    for (const d of cross.missingFromFile) {
+      console.log(`                 ${d}  declared by the producer, ABSENT from the file`);
+    }
+  } else {
+    console.log(`  CROSS-CHECK  not available -- ${cross.reason}`);
+  }
+  if (cross.undeclared.length > 0) {
+    console.log(
+      `               ${cross.undeclared.length} date(s) in the file the producer never declared: ` +
+        cross.undeclared.join(' '),
+    );
   }
 
   if (coverage.basis === 'max_trading_date') {
