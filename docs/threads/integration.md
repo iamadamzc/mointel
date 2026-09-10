@@ -1404,6 +1404,46 @@ this seat.**
 inflating what is pending on him**, and today this seat could not have known whether
 it was. **You cannot keep a list short while blind to half the additions.**
 
+## EVERY COMMIT HAS THE SAME AUTHOR — THE CHARTER FILE IS THE ONLY DISCRIMINATOR
+
+**Ops, 2026-09-10, after this seat corrected a misattributed pin.** Ops labelled
+`c8b5168` as Commercial's because **its subject line carries Commercial's finding.**
+*The subject was Commercial's; the commit was Integration's — 24 insertions,
+`docs/threads/integration.md` and nothing else.*
+
+**AND IT IS STRUCTURAL, NOT CARELESSNESS.** *`git log --format=%an` cannot separate
+the threads at all — six seats, one author.* **The charter file a commit touches is
+the only discriminator this repo has.**
+
+- **So "which thread made this" is answered by `--name-only`, never by the author
+  and never by the subject.** *A subject line records what a commit is ABOUT, and on
+  this desk that is routinely another thread's finding.*
+- **This seat used the discriminator and Ops used the subject**, which is why the
+  correction went that way rather than the other. **Neither of us was reading
+  carelessly; one of us was reading a field that carries the answer.**
+- **A misattributed sha is a carried reading and it gets quoted.** *Same family as
+  naming a sha at all: the label decays faster than the hash.*
+
+## THE TWO INSTRUMENTS DISAGREED, AND THAT NARROWED THE DEFECT FOR FREE
+
+**Ops, 2026-09-10, on the hung 09-04 task.**
+
+```
+scheduler       mointel-0904-bar-recovery   enabled: false   CORRECT -- it fired and finished
+list_sessions   local_870499f5              isRunning: true  WRONG  -- it died after 6.1s
+```
+
+**A finished task with a correct flag, beside a dead session with a live flag.**
+**⇒ The defect is in SESSION state, not in the scheduler.**
+
+**THE POINT IS THE METHOD, NOT THE LOCATION.** *Two instruments over one event, one
+of them right, is a positive control nobody had to construct* — **and it converts
+"one of these is broken" into "this one is broken", at no cost, from data already on
+hand.**
+
+*This desk keeps building positive controls deliberately. This one was free and was
+nearly walked past.*
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
