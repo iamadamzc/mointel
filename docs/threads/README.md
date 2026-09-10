@@ -17,6 +17,7 @@ then paste that charter's opening message.
 | **Coaching** | Daily fills, execution against the playbook | [coaching.md](coaching.md) |
 | **Commercial** | Naming, vendors, licensing, the commercial risk register | [commercial.md](commercial.md) |
 | **Web** | Everything a stranger sees — the public site, the legal pages, the sign-in screen | [web.md](web.md) |
+| **Marketing** | Copy, content and voice; socials when he says so | [marketing.md](marketing.md) |
 | **Integration** | The charters, the seams, cross-thread decisions | [integration.md](integration.md) |
 
 **THIS TABLE LISTED SIX WHILE `commercial.md` EXISTED AND WAS BEING WORKED IN.**
@@ -64,6 +65,15 @@ board is a dense instrument for someone who already trusts it, and a landing pag
 is an argument for someone who does not.** *The same craft judgement produces
 opposite answers on those two surfaces.* Patterned on `web-tldw` in the TLDW repo
 at his direction.
+
+**Marketing was added 2026-09-10**, the same day as Web and for a reason Web's own
+work produced: **he rejected the sales pitch in the morning and rejected the result
+as "flat and distant" in the evening.** *Both verdicts were right and neither is a
+craft failure* — **clarity and persuasion are different jobs, and a thread holding
+both will produce the one it is currently being corrected toward.** **It is the only
+thread here whose output is claims that nothing in the repo can check**, which is
+why its charter is mostly prohibitions. *He ruled that Marketing and Web own the
+page copy jointly rather than one proposing to the other.*
 
 Integration was added 2026-08-23 and does **no product work**. It exists because
 three problems in two days belonged to no thread: a working-tree collision, a
