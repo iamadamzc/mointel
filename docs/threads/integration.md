@@ -316,11 +316,30 @@ WITHIN this session, from its own first print       NOT BUILT
     `readBoardCandidates` already holds for `activity`), and **`tradeCount`
     nullable independently of `price`, because a zero default erases the honesty
     flag he asked for.**
-  - **Surface — Design.** **`RTH Move` will not fit that header — 0.1px over.**
+  - **Surface — Design. Nothing built, deliberately: no deployed columns, no
+    payload, and it will not build against a guessed shape.** Shape and
+    constraints settled, `3223166`.
+    - **RETRACTED: "`RTH Move` will not fit that header — 0.1px over."** *That was
+      a HEADER measurement and the label is not going in the header.* **It labels
+      itself inline like `PM VWAP` on line 2 of the same cell: 103.8px against
+      156px available, 52px spare. No header change is needed for this family.**
+    - **THE REAL CONSTRAINT IS THE TRADE COUNT.** `RTH Move +18.1% · 3 prints` is
+      **168.8px, over by 12.8.** **The number cannot go on that line; a compact
+      marker can**, with the count in the title.
+    - **Three states, not two.** `400` = solid, no marker. `3` = thin, loud
+      marker. **`null` = NOT MEASURED and gets its OWN state, never silence —
+      silence is what a SOLID anchor looks like.** *Ships in the same commit as
+      the family, not after it.*
 - **The dark-field sweep, as a gated script**, with the exclusion list printed in
   its own output.
 - **Every deploy builds on the box**, because the artefact path is refused from
   the only deploying seat. Two correct guards; behind the sweep.
+- **POST-DEPLOY VERIFICATION ON THE REVIEW PAGE MUST RE-READ AFTER HYDRATION.**
+  *Design, 2026-09-10.* **The page renders before its first `/api/market` poll
+  lands, and in that window it shows one table and a bare `Gap`.** Design nearly
+  filed that as a second defect on `8f8f5d3`. **A check run in that window
+  reports a transient as a regression** — and it is the same surface every deploy
+  is verified on.
 - **`baselineLabel` reads a PHASE and names a BASELINE.** `referenceRthCloseBasis`
   is already on the row. Behaviour change, not a rename.
 - **Coaching's desk extract stops at 09-02** and the gap grows every session.
