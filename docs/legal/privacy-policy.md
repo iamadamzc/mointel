@@ -111,10 +111,6 @@ which is why you were not asked to dismiss a banner.
   material changes to this policy, or the end of the service. We do not send
   marketing email. [CONFIRM: is there any mailing list at all?]
 
-[IF THE UK OR EU APPLIES: state the lawful basis — contract for the first two,
-legitimate interests for security logging, and say so plainly rather than
-listing article numbers.]
-
 ## 5. Who else sees it
 
 Nobody buys this data, because we do not sell it, rent it or trade it. It is
@@ -164,14 +160,19 @@ cross-context behavioural advertising** — including as California defines
 those terms. Nobody is refused access, charged differently, or given a worse
 service for exercising any right on this list.
 
-[IF THE UK OR EU APPLIES: name the supervisory authority a complaint can be
-made to, and say a complaint can be made without going through us first.]
+## 8. Where the service is, and who it is for
 
-## 8. Where the data lives
+TMI Trader is operated from the United States, by a US company, for people
+trading the US market. It runs on servers in [REGION] and your data is stored
+there.
 
-The service runs on servers in [REGION], and your data is stored there.
-[IF THE UK OR EU APPLIES AND THE REGION IS NOT IN IT: say which transfer
-mechanism is relied on.]
+**We do not offer it to the public anywhere.** Access is by invitation, which is
+how the scope above stays a fact rather than a sentence: we choose who is
+invited.
+
+If you are outside the United States and your own country's law gives you rights
+over your data, write to us and we will honour them. We would rather do that
+than argue about which law applies.
 
 ## 9. Security, stated without boasting
 
