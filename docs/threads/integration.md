@@ -3397,3 +3397,49 @@ position under any non-rank sort.**
 renders a change arrow, and `rvol_rank_change` is **0 on all 45,249 production
 rows.** *It has never rendered.* **Not value preserved by keeping the column, and
 not a reason to remove it.**
+
+## A COLUMN SAT ON HIS BOARD FOR WEEKS AND HE DID NOT KNOW WHAT IT WAS
+
+**2026-09-10.** Asked how often he sorts by Rank — a question Design's own
+measurement had made decisive — he answered:
+
+> ***"i actually never sort by rank. its not been clear what it was and it just
+> looks like rvol. i sort by rvol and gap only."***
+
+**The ruling is that the column goes. The REPORT is worth more than the ruling.**
+
+> **A whole column, on the board he looks at first, failed to explain itself for
+> weeks — and nobody asked.**
+
+**Today this desk measured pixels to the tenth for numbers he could not read, and
+built three header labels to name denominators.** **All of that was found by him
+stopping on a row and saying so.** *Every readability defect this week has been
+reported by the reader rather than found by the builders*, and the instrument for
+finding them is **asking him what a thing on his screen means**, which costs one
+question and has now paid twice in a day.
+
+### The boundary, written at the same moment as the ruling
+
+**"REMOVE RANK ALTOGETHER" IS ABOUT THE COLUMN.** He was answering a question
+about **sorting** and screen space. **RANK THE MECHANISM STAYS AND HE WAS NOT
+ASKED ABOUT IT:**
+
+    rvol_rank    selects who is on the board at all
+    rank <= 12   gates RESEARCH, which is MODEL SPEND
+    rank         keyed into desk_assessment_tickers, dead_at_rank, RVOL_RANK_ENTRY
+
+**A display removal that reached any of those would change what is researched and
+what is spent, on the strength of a sentence about sorting.** *Five words with
+money behind them, and the phrase "altogether" is exactly the part that will be
+quoted without its question.*
+
+### And the argument for keeping it was correct and died on a fact only he held
+
+Design's strongest reason was real: **the board sorts the whole tracked set and
+then takes the top N, so under a Gap sort the visible rows are not the top rows
+by rank** — rank is genuinely not inferable from position. **A sound argument,
+resting entirely on him ever using that sort. He never has.**
+
+**No measurement could have produced that.** *When a design turns on how a person
+works, the person is the instrument* — the second time in one morning the cheap
+question beat the expensive analysis, after the colour-before-text answer.
