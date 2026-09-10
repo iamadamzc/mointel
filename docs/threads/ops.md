@@ -8112,3 +8112,49 @@ exists. Integration's two conditions stand unchanged: the output states that an
 incomplete exclusion list makes the sweep **noisier, never quieter**, and any
 surviving exclusion carries `field · since · consumer awaited · review by` with
 an out-of-date review reported as a finding.
+
+## The unquoted env value is a latent trap, not a live defect — and my first check said it was fine — 2026-09-10
+
+**Correcting my own earlier note, which read as though something was broken.**
+`SEC_USER_AGENT` in `/etc/mointel/mointel.env` is unquoted and contains spaces —
+the only such value in the file. **Production is unaffected and correct.**
+
+**Because the real consumer is systemd, not bash.** Every unit takes
+`EnvironmentFile=/etc/mointel/mointel.env`, and systemd's parser takes the whole
+line as the value. Verified against the running processes: `mointel-web` and
+`mointel-market` both hold the **full 54 characters**. **Nothing on the box
+sources the file in bash** — the deploy scripts name the path, they do not
+`. ` it.
+
+**So the defect is a trap for the next operator who sources it by hand, which is
+exactly what I did while checking, and it is worth recording for how it fails.**
+
+**IT FAILS SILENTLY AND MY FIRST CHECK REPORTED SUCCESS.** I ran
+`set -a; . mointel.env` and got **exit 0**, and wrote down "sources cleanly".
+**That check cannot detect the failure**: `.` returns the status of the LAST line
+in the file, so a line failing in the middle is invisible to the exit code. The
+error existed the whole time, on stderr only:
+
+```
+/etc/mointel/mointel.env: line 29: Intelligence: command not found
+```
+
+**AND THE VARIABLE DOES NOT ARRIVE TRUNCATED — IT DOES NOT ARRIVE AT ALL.**
+`VAR=word rest` is not a broken assignment; it is a **command-prefix
+assignment**, scoped to the command `rest`. So `SEC_USER_AGENT` is set only for
+the duration of a command that does not exist, and afterwards is **unset**,
+length **0**. A reader expecting truncation would check the first word and find
+nothing wrong with their expectation.
+
+**Two lessons, both instances of the desk's oldest shape:**
+- **`. file` exiting 0 does not mean the file parsed.** Check the variable, not
+  the exit code.
+- **Same session, same hour:** reading `/proc/<pid>/environ` under `sudo` with a
+  shell redirect returned *permission denied* and my script rendered it as
+  `<not set>` — **a failed read presented as a finding about the value.** Fixed
+  with `sudo cat` and a positive control proving the read could see `NODE_ENV`
+  and `MARKET_DB_PATH` before I believed anything it said about absence.
+
+**No change made.** Quoting the value would be correct and is a production config
+write for a latent trap, during his session, on a file every unit depends on.
+Not that trade today.
