@@ -99,11 +99,45 @@ CREATE TABLE IF NOT EXISTS identities (
  * it is the user. Storing it raw would make a readable copy of this file a set
  * of working logins, so only the sha256 of the id is kept and the id itself
  * exists in the cookie and nowhere else.
+ *
+ * NOTHING DELETES A ROW FROM THIS TABLE, AND THAT ABSENCE IS LOAD-BEARING.
+ *
+ * He ruled on 2026-09-10 that pricing will be per day of use, with use defined
+ * by signing in: "each day the product is used is charged". That makes a
+ * session row the artefact proving a charged day, and days nobody recorded
+ * cannot be reconstructed afterwards.
+ *
+ * So sign-out sets revoked_at and expiry is a comparison, never a delete, and
+ * THERE IS NO REAPER. Adding one -- as a tidy-up, a cron, a "clean expired
+ * sessions" chore -- would destroy the billing history before anyone realises
+ * that is what it was. If this table ever needs trimming, that is a decision
+ * about records he is charging against, not maintenance.
+ *
+ * NO PRICE, NO COUNTER, NO INVOICE. This records that a session existed on a
+ * date. Anything that turns rows into money is a different piece of work and
+ * deliberately not here.
  */
 CREATE TABLE IF NOT EXISTS sessions (
   id_hash    TEXT    PRIMARY KEY,
   user_id    INTEGER NOT NULL REFERENCES users(id),
   created_at TEXT    NOT NULL,
+
+  /*
+   * The ET CALENDAR date this session belongs to, assigned at write time and
+   * never derived afterwards.
+   *
+   * Deliberately not called trading_date: a session can be created on a
+   * Saturday, and a column named for a trading date that holds one would be
+   * lying. This is the ET date the session was created on and expires at the
+   * end of.
+   *
+   * Assigned rather than computed later for the reason the recovery script
+   * assigns trading_date rather than deriving it from ts: every re-
+   * derivation is another chance to do the zone conversion in the wrong one,
+   * and this desk has lost four days to exactly that.
+   */
+  et_date    TEXT    NOT NULL,
+
   expires_at TEXT    NOT NULL,
   revoked_at TEXT
 );
@@ -244,17 +278,29 @@ export interface IssuedSession {
   expiresAt: string;
 }
 
+/**
+ * TAKES AN ABSOLUTE EXPIRY, NOT A DURATION, and that is his ruling rather than
+ * a preference.
+ *
+ * "a session should persist all day until the close of after hours" is a
+ * boundary, not a length: signing in at 04:00 ET buys sixteen hours and signing
+ * in at 19:00 buys one. A `ttlSeconds` parameter would let a caller express
+ * something that is not the rule, so the type refuses it.
+ *
+ * `lib/auth/expiry.ts` computes the boundary. It is not computed here because
+ * the store should not know what a trading day is.
+ */
 export function createSession(
   db: IdentityDatabase,
   userId: number,
-  ttlSeconds: number,
+  expiry: { etDate: string; expiresAt: Date },
   now: Date = new Date(),
 ): IssuedSession {
   const id = crypto.randomBytes(32).toString('base64url');
-  const expiresAt = new Date(now.getTime() + ttlSeconds * 1000).toISOString();
+  const expiresAt = expiry.expiresAt.toISOString();
   db.prepare(
-    'INSERT INTO sessions (id_hash, user_id, created_at, expires_at) VALUES (?, ?, ?, ?)',
-  ).run(hashSessionId(id), userId, now.toISOString(), expiresAt);
+    'INSERT INTO sessions (id_hash, user_id, created_at, et_date, expires_at) VALUES (?, ?, ?, ?, ?)',
+  ).run(hashSessionId(id), userId, now.toISOString(), expiry.etDate, expiresAt);
   return { id, expiresAt };
 }
 

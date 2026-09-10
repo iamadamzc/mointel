@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
+import { sessionExpiry } from '@/lib/auth/expiry';
 import {
   IDENTITY_SCHEMA_VERSION,
   createSession,
@@ -112,7 +113,7 @@ describe('sessions', () => {
     const db = temporaryStore();
     const user = linkIdentity(db, { provider: 'google', subject: 'sub-1' });
 
-    const session = createSession(db, user.userId, 3600);
+    const session = createSession(db, user.userId, sessionExpiry());
     const resolved = resolveSession(db, session.id);
 
     expect(resolved?.userId).toBe(user.userId);
@@ -129,7 +130,7 @@ describe('sessions', () => {
     const db = temporaryStore();
     const user = linkIdentity(db, { provider: 'google', subject: 'sub-1' });
 
-    const session = createSession(db, user.userId, 3600);
+    const session = createSession(db, user.userId, sessionExpiry());
     const stored = db.prepare('SELECT id_hash AS hash FROM sessions').get() as { hash: string };
 
     expect(stored.hash).not.toBe(session.id);
@@ -143,7 +144,12 @@ describe('sessions', () => {
     const user = linkIdentity(db, { provider: 'google', subject: 'sub-1' });
 
     const issuedAt = new Date('2026-09-10T12:00:00.000Z');
-    const session = createSession(db, user.userId, 60, issuedAt);
+    const session = createSession(
+      db,
+      user.userId,
+      { etDate: '2026-09-10', expiresAt: new Date('2026-09-10T12:01:00.000Z') },
+      issuedAt,
+    );
 
     expect(resolveSession(db, session.id, new Date('2026-09-10T12:00:30.000Z'))).not.toBeNull();
     expect(resolveSession(db, session.id, new Date('2026-09-10T12:01:00.000Z'))).toBeNull();
@@ -155,7 +161,7 @@ describe('sessions', () => {
     const db = temporaryStore();
     const user = linkIdentity(db, { provider: 'google', subject: 'sub-1' });
 
-    const session = createSession(db, user.userId, 3600);
+    const session = createSession(db, user.userId, sessionExpiry());
     expect(resolveSession(db, session.id)).not.toBeNull();
 
     revokeSession(db, session.id);
