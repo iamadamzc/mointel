@@ -201,80 +201,88 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-*Refreshed 2026-09-09 ~01:00 ET (Wednesday) by the fifth Integration session,
-retiring after ~24 hours. **This block supersedes the 2026-09-05/06 handover
-entirely and that block has been removed** — a superseded LIVE STATE is the thing
-that gets read. Everything below it in this file is kept for its mechanisms, not
+*Refreshed 2026-09-10 ~06:20 ET (Thursday) by the sixth Integration session,
+retiring after ~17 hours. **Supersedes the 2026-09-09 block entirely; that block
+has been removed.** Everything below LIVE STATE is kept for its mechanisms, not
 its facts. **Verify before acting on any of it.***
 
-### Production, as of this block
+### HOW HE WANTS TO BE WRITTEN TO — his correction, 2026-09-10, and the sixth session earned it
 
-- **`a127c00` on web / research / assess. `mointel-market` is on `f5aaa167`** —
-  a deliberate `RESTART_MARKET=no` split, and **its release directory was
-  confirmed present on disk after the deploy.** Deployed 2026-09-09 00:34 ET.
-- **`quick_check ok`, schema v25, four units verified from each unit's own
-  `/proc/<pid>/cwd`.**
-- **`tmitrader.com`, `www.tmitrader.com` and `98-85-49-227.sslip.io` all answer.**
-  The domain went live 2026-09-08 15:25 ET. **The old name was ADDED to, never
-  replaced** — every bookmark still works.
-- **`minute_bars` holds 09-02, 09-03 and 09-08 (1,083,516, a full live day).**
-  **09-04 through 09-07 are absent and 09-04 is a known hole** — the retention
-  defect deleted the table and the restore came from a backup taken 31 minutes
-  before that session opened.
+> ***"you explain too much here. i need fine points in plain language, not
+> background."***
 
-### What is live and undeployed
+**THE FAILURE IS NOT LENGTH. IT IS REPORTING THE DERIVATION INSTEAD OF THE
+POINT.** Every finding was arriving with the mechanism that produced it, because
+this seat was holding the mechanism and it felt load-bearing. **It is
+load-bearing to the thread that found it. To him it is background.**
 
-- **`settleMinutes: 0`** — `e1f64ec`, gated by Research, **not deployed.** He
-  ruled it directly. Ships as its own named change, never inside a cleanup.
-- **The 09-04 recovery script** — approved, **not written.** Ops establishes
-  count-only mode and all-or-nothing before it runs; runs after a close, never
-  before a session.
+- **The fine point is what changes his decision or his picture. The background is
+  why it is true.** *He trusts the desk to have got the why right. He is asking
+  for the what.*
+- **THE TEST, PER SENTENCE: delete it. Does anything he would do change?** If
+  not, it was background. **Most of what this seat wrote today fails that test.**
+- **Plain language.** No desk vocabulary he did not coin, no clause stacking, no
+  formal constructions. **Say it the way you would say it out loud.**
+- **The charter already said HEADLINES, NOT EXPLANATIONS and this seat quoted it
+  while breaking it all day.** *The rule was not missing; it was unenforced.*
 
-### What is HIS and open — TWO, and the list arrived at five
+### Production, 2026-09-10 06:06 ET
 
-*Trimmed 2026-09-09 13:48 ET by the sixth session, on the do-not-inflate rule.
-**Two of the five were never his**, one carried a precondition its own owner had
-withdrawn, and two he has now answered. **Every item on his list costs attention
-and hides the real ones** — and the item that was actually blocking a thread was
-not on it at all.*
+- **`57e3265` on web / research / assess.** Deployed mid-premarket **on his
+  direct override of a hold this seat had set for after the close.** Clean.
+- **`mointel-market` is on `02bf90d`, NOT restarted, release directory confirmed
+  present.** Capture never dropped; bars arrived through the deploy.
+- **`settleMinutes: 0` is LIVE**, confirmed on 8,709 rows carrying the worker's
+  own `activity_config` stamp. **Header and engine agree.**
+- **`minute_bars` holds 09-03, 09-08, 09-09, 09-10. Retention is 3** (env unset).
+  **09-03 goes on the next market-worker restart regardless of anything.**
+- **09-04 is the ENTIRE permanent loss** from the retention defect, established on
+  two independent records.
 
-1. **The Why Not effect producer** — HELD by him, and **the gate is gone.** The
-   list said `omitSheetPrior` runs first to size the replay-vs-live gap.
-   **Research withdrew that sequencing in its own charter (item 132): *"it is
-   not a gate on this build and I was wrong to sequence it as one."*** It is a
-   proxy for a proxy — it measures the prior's pull on the fields that exist
-   today, and the effect block does not exist. **Nothing precedes his release.**
-   *It stays worth running for its own sake and is not a precondition.*
-2. **The dirty-float prompt rewrite** — his edit, Research's analysis. The prompt
-   lives outside this repo. **Nothing is blocked on it**; the supply bound is
-   the independent path and is proceeding.
+### What shipped and what did not
 
-**ANSWERED 2026-09-09, and both are closed:**
+- **Design's four, separate commits, each reverts alone**: the baseline header,
+  the board-aware sort, the `baselineLabel` rename, the Gap family with a
+  case-insensitive reserved-word guard.
+- **Research's supply-bound verdict shipped and HAS NO READERS** — write-only on
+  purpose, in the deliberately-dark register below.
+- **The 09-04 recovery script is on the box WITH its wrong-store guard, NOT RUN,
+  and DEFERRED.** *The bars are re-fetchable from the vendor, so the write buys
+  nothing until a consumer exists. There is none.*
 
-- **Trademark knock-out search on `TMI Trader` — WAIVED.** His word: `"waive."`
-  **It appeared in this file and nowhere else** — Commercial had already closed
-  its naming work and was waiting on nothing. *A decision this seat was carrying
-  alone, presented to him as a thread's ask.*
-- **The supply-bound sentence — CONFIRMED, in the narrow post-escalation form.**
-  See the rulings below.
+### What is HIS and open
 
-**TAKEN OFF HIS LIST, because they were never his:**
+**NOTHING.** Everything put to him this session was answered.
 
-- **Scoping the feed-stall defect (case G) is order-and-process and therefore
-  MINE.** *Asking him to sequence work is the delegation handed back — the
-  failure recorded under "WHAT I NEED FROM YOU IS FOR HIS JUDGEMENT, NOT FOR MY
-  SEQUENCING".* **Research's position, `research.md` items 130 and 131:** case G
-  is a wrong verdict at **both** `settleMinutes` values, so **it must not ride
-  the 1-to-0 change**; both discriminators are live rather than absent
-  (`lastBarAt`, and the all-zero-versus-mixed population); and a market-wide
-  halt is a **third state neither separates**, with `halt_state` already tracked.
-  **No stall has ever been observed** — Ops measured ~920,000 bars with no gap
-  and no reconnect. **Latent, demonstrated in the rule rather than in an
-  incident. Queued behind `settleMinutes: 0`, not blocking it.**
-- **The derived-only field option is inside the licensing risk conversation he
-  DEFERRED**, and that conversation is **Integration's to reopen** by his own
-  ruling below. **Holding it on his list asks him to re-decide something he
-  explicitly parked.**
+### The vocabulary he settled, 2026-09-10
+
+```
+ACROSS sessions, from the last relevant close
+  PM Gap · RTH Gap · AH Gap · plain Gap overnight and at weekends
+WITHIN this session, from its own first print       NOT BUILT
+  PM Move · RTH Move · AH Move
+```
+
+- **Session open = the FIRST PRINT.** One rule, all three sessions, with the
+  anchoring minute's trade count travelling beside it.
+- **`Move` = price NOW versus the session open, signed.** *He chose the quantity,
+  not just the word.*
+- **`Gain` is REFUSED and stays free** — it already means an excursion to a HIGH
+  here, and **the mover definition rests on it.**
+
+### Queued, nothing dated, nothing blocked
+
+- **The Move family.** Research has the compute, Design the surface. **Two traps
+  recorded: "first" means earliest TIMESTAMP not first RECEIVED, and a corrected
+  bar must move the anchor.** **`RTH Move` will not fit that header — 0.1px
+  over.**
+- **The dark-field sweep, as a gated script**, with the exclusion list printed in
+  its own output.
+- **Every deploy builds on the box**, because the artefact path is refused from
+  the only deploying seat. Two correct guards; behind the sweep.
+- **`baselineLabel` reads a PHASE and names a BASELINE.** `referenceRthCloseBasis`
+  is already on the row. Behaviour change, not a rename.
+- **Coaching's desk extract stops at 09-02** and the gap grows every session.
 
 ### Rulings he made this session, in his words
 
@@ -394,22 +402,46 @@ does not arrive, with the last hop structurally impossible rather than
 forgotten* — **name it in the report to him rather than leaving it to be
 discovered as silence.**
 
+- **2026-09-10, the session vocabulary: `"why not do PM Gap, RH Gap and AH Gap?"`
+  then `"where it is now vs session open. use Move."`** **His scheme, and it
+  matched the desk's own `PM VWAP / RTH VWAP / AH VWAP` convention on the line
+  below it, unprompted.** *`RH` corrected to `RTH` for that reason.* **He chose
+  the QUANTITY as well as the word: current versus the session open, signed.**
+- **2026-09-10, `"yes, use Day"`, then superseded by his own Gap scheme before
+  either shipped.** **`Day` never rendered on his board.**
+- **2026-09-10, `"i approve deployment now for all"` then `"i want to see it now.
+  do all deployments now."`** **The second overrode a hold this seat had set for
+  after the close and had told him he could override in one word.** *He spent his
+  own board time knowingly. The call was right and the reversal was his.*
+- **2026-09-10, on cost allocation tags: `"yes."`** Narrow: tagging and
+  activation, mointel's own resources, nothing else.
+- **2026-09-10, on the recovery task's mechanism: `"i gave permission directly."`**
+
+
 ### What this session got wrong, so the next one does not repeat it
 
-- **Three mechanisms invented from adjacency** — the 46 paired with the 72, the
-  subscription coupling on vanish, the `?? 0` conflation. **Each was a true
-  claim joined to another true claim by an assertion nobody had checked**, and a
-  thread refused each one.
-- **A relayed instruction taken as an authorisation.** `"ops can do that"` said to
-  Commercial did not authorise Ops. **The same words to Ops did.** The channel is
-  the thing.
-- **A measurement used past its warrant.** Ops's 0.005–0.673s bounded normal
-  operation and was quoted to bound a failure case it never sampled.
-- **A hold condition written as a proxy** — *"hold if `settleMinutes` work is in
-  the tip"* — which fired on a comment refactor. **Rule on the thing, not the
-  proxy.**
-- **A decision list inflated with items that were not his.** Design trimmed four
-  to one. **Inflating his list costs attention and hides the real items.**
+*Sixth session, 2026-09-10. Every one was caught by the thread that owned the
+thing, never by this seat.*
+
+- **EXPLAINED TOO MUCH TO HIM, ALL DAY.** His correction is at the top of LIVE
+  STATE. **The reporting rule was in this charter and quoted while being broken.**
+- **Handed him two trade-offs that did not exist** — *"what leaves the row"* on a
+  wrong row-height figure, and *"44px frees the session-gap problem"* comparing a
+  column width to a line's slack **in two different layout regimes.**
+- **Told Ops a shipping change was a live verdict change.** *The worker restarts,
+  and it is a verdict change* — **two true claims, an invented link, and nothing
+  reads the field.**
+- **Asked a thread to confirm a fact I had given it.** **A citation loop, wrong in
+  both halves, carried for two days.**
+- **Compared a fixed string's spare width against a variable string's worst
+  case** — a floor against a ceiling. **Right conclusion, wrong reason.**
+- **Over-specified an enumeration** and forced Ops to construct a sha that history
+  did not contain. **A natural point existed; my sentence hid it.**
+
+**THE PATTERN, AND IT IS ONE PATTERN:** *a true claim joined to another true claim
+by a link nobody checked.* **Six instances in one session.** **What made every one
+of them cheap was flagging rather than asserting** — each was refused by the seat
+holding the code, in minutes.
 
 ### The standing sequence, which nothing this session changed
 
@@ -2931,9 +2963,14 @@ carried reading.*
 > needing my judgement goes at the END of your reply under
 > `## What I need from you`, with nothing after it.
 >
-> **Keep it short. Headlines, not explanations. Never paste another thread's
-> message to me** — I want the state of the desk, not the conversation that
-> produced it.
+> **Fine points in plain language, not background.** I said this to the sixth
+> session and it is the correction it needed most: *you explain too much.* **Give
+> me the point, not the derivation that produced it.** The reasoning is
+> load-bearing for the thread that found it and it is background to me — I trust
+> you got the why right, I need the what. **Test every sentence by deleting it: if
+> nothing I would do changes, it was background.** Say it the way you would say
+> it out loud. **Never paste another thread's message to me** — I want the state
+> of the desk, not the conversation that produced it.
 >
 > **Six practices, each recorded in your charter with the incident that produced
 > it:**
