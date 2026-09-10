@@ -160,6 +160,18 @@ hand it over — and specify it as a string Ops can implement, not as an intenti
   authorized domain on the consent screen, which breaks Sign in with Google — and
   no step in that chain reports anything.* **You will not touch DNS; know why
   nobody else should either.**
+- **`/auth/` IS MACHINERY, NOT SURFACE. YOU WILL NOT WANT ANYTHING IN THERE.**
+  *Ops renamed its own route before it existed so the word "signin" appears exactly
+  once in the URL space and belongs to you:*
+
+  ```
+  /auth/start/google      begin the flow           Ops
+  /auth/callback/google   return from Google       Ops, registered with Google, FIXED
+  /signin                 the screen a person sees  YOURS
+  ```
+
+  **It renamed rather than documenting the distinction, because a note saying
+  "these are different" depends on someone reading it.**
 - **THE REGISTERED REDIRECT URIS ARE EXACT-MATCH AND ALREADY FIXED.**
   `https://tmitrader.com/auth/callback/google`,
   `https://www.tmitrader.com/auth/callback/google`,

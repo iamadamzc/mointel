@@ -780,6 +780,28 @@ simply never completes and nothing reports why.* **A security setting chosen by
 which name sounds stricter is not a decision, and this one would have been
 defended in review.**
 
+**AND OPS DISSOLVED THE `users.status` ESCALATION INSTEAD OF ANSWERING IT — SECOND
+TIME IN FIVE DAYS, SAME MOVE.** *This seat escalated "who may sign in at all" as
+blocking, because it lands in the first table.*
+
+> **THE COLUMN IS NOT THE POLICY.** `users.status TEXT NOT NULL DEFAULT 'pending'`
+> is built now and **NOT ENFORCED.** *The expensive thing was never the column — it
+> is the DEFAULT APPLIED TO ROWS THAT ALREADY EXIST.* **A `status` added later must
+> decide what every pre-existing user is, and the wrong answer is silent
+> grandfathering: everyone who signed in before the allowlist existed is quietly
+> approved forever.** **That is a data decision disguised as a migration, made by
+> whoever runs the migration rather than by him.**
+
+- **With the column present from row one, every user has a truthful value from the
+  moment they exist**, and *"may this person sign in"* becomes **a one-line policy
+  change with no migration and no backfill.**
+- **Default `pending`, not `active`, deliberately.** *Nothing is granted by
+  accident. Making someone re-approve is recoverable; grandfathering by accident is
+  not.* **Nothing enforces it yet, so it blocks no testing.**
+- **⇒ HIS DECISION IS UNCHANGED AND NO LONGER URGENT. Ops made both answers
+  cheap.** *Build the thing that is expensive to add later; defer the thing that is
+  cheap to change* — **the same argument as `(provider, subject)`, one table over.**
+
 **THE SECRET: `.env.local` → `deploy/aws/sync-env.sh` → `/etc/mointel/mointel.env`,
 root-owned 0640.** *`sync-env.sh:35` is a pass-through, so a new key is carried with
 no code change.* **The tool was built for this handover — its own header: no value
