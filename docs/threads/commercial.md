@@ -293,7 +293,12 @@ repo — they are public documents and re-fetchable.
   three registered sentences and hands it here; an invite request asks for
   an email address and nothing else. Raised unasked: the public page is the
   evidence surface under accepted exposure, so it should say intelligence on
-  what's moving and not sell the tape.
+  what's moving and not sell the tape. **Web acted on that the same day
+  (`7d81bae`): the tape is off the page. And the plain statement is now
+  REGISTERED (§2e item 2), written by Web from the three sentences and
+  accepted here, with two dependencies recorded: "each one" rests on the
+  board rendering not-researched as a state, and his word "assistant" was
+  dropped by Web's judgement and can be restored with one word.**
 
 **Open items.**
 

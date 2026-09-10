@@ -354,6 +354,37 @@ Integration. Answers, each a sentence, with the reason.*
    trade $1–$20 small-cap momentum in the premarket the way he does. Web
    writes from those and hands the paragraph here; it is then the registered
    statement and this section points at it.
+
+   **REGISTERED 2026-09-10, written by Web (`7d81bae`) from the three
+   sentences above and accepted by this seat as the plain statement of the
+   product:**
+
+   > **TMI Trader is an intelligence desk for people who trade $1–$20
+   > small-cap momentum in the premarket. It is not a scanner and it is not
+   > a signal service: it takes the names that are already moving and puts
+   > everything the desk knows about each one on a single shared board — why
+   > it is moving, where it sits in the cycle, what the share structure is,
+   > and what supply stands behind it. Where it has nothing, it says so.**
+
+   **Why it passes.** *"Intelligence desk"* carries his *"not a scanner but a
+   smart desk"* and the H1's word. *"Not a scanner … not a signal service"*
+   are the desk's own registered boundaries — his sentence and the README's
+   principle — not a competitor's sentence, so §2e item 1 is satisfied. *"A
+   single shared board"* is Gate 2's ruling. The four things it lists — why,
+   cycle, structure, supply — are the Why column, the cycle read, the
+   structural analysis and the supply bound: derived and filings outputs,
+   with no price, quote or tape named, which is the licence boundary. *"Where
+   it has nothing, it says so"* is the three-way verdict as a sentence and is
+   what keeps *"everything the desk knows"* from being a completeness claim.
+
+   **Two dependencies it rests on, recorded so they are not lost.** First,
+   *"each one"* is honest only because the board renders a name it has not
+   researched as a state — NOT RESEARCHED, NOTHING COLLECTED — rather than as
+   a blank; the desk researches the top of its ranking, not every mover, and
+   the sentence over-claims the day that rendering goes. Second, Web dropped
+   his word *"assistant"* on the ground that it now reads as a chatbot; that
+   is a Web judgement on a word of his, recorded here so he can restore it
+   with one word if he wants it.
 3. **An invite request asks for an email address and nothing else.** An
    invite is his to grant and needs only a way to reach the person; a
    free-text "how do you trade" is qualification pitch on the way in and
@@ -372,6 +403,20 @@ personal licence forbids showing to others. **Intelligence on what's moving
 is the product and is what the page should say; the page should not sell
 the tape.** Invite-only keeps the public surface small; the words on it
 decide what the surface shows.
+
+**Acted on by Web the same day (`7d81bae`).** The example board on the page
+had carried `LAST`, `CHG`, `RVOL` and a `TAPE LIVE` badge — real-time prices
+as a feature, in public. All removed; the consolidated feed is named
+nowhere; the engine card describes the derived outputs, not the input; the
+caption reads *"Illustration only — no market data"*; the *demand detected*
+versus *no structural analysis available* contrast, which was the reason to
+show a board at all, survives. Web flagged the cost rather than letting it
+be discovered: with the tape gone the board fragment no longer looks like a
+live instrument, and if he later finds the page thin, that is where the
+weight went — and the answer is more of what the desk concludes, never a
+price. Integration has set its own trigger to reopen the exposure
+conversation with him before the page goes live (`c7ada4f`); his ruling
+stands and no seat invents a threshold.
 
 ## 3. RECOMMENDATION
 
