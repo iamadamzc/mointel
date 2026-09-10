@@ -392,11 +392,70 @@ https://tmitrader.com/         401 -- nginx's own page, 188 bytes, not the app
   control rather than read an empty result as "no rules".* **The port evidence is
   direct measurement from outside and is the stronger fact anyway.**
 
+**THE DOMAIN, MEASURED BY OPS 2026-09-10 AFTERNOON, `a71e535`:**
+
+```
+tmitrader.com A            -> 98.85.49.227          POINTS AT THE BOX
+server_name                98-85-49-227.sslip.io tmitrader.com www.tmitrader.com
+cert SANs                  all three; lineage still NAMED 98-85-49-227.sslip.io
+https://tmitrader.com/     401 from nginx, no TLS error -> the cert validates
+SPF (apex TXT)             0 records      ABSENT
+_dmarc                     NXDOMAIN       ABSENT
+MX (apex)                  0 records      ABSENT
+MTA on the box             NONE
+BASE_URL / APP_URL         NONE in the tree
+```
+
+- **What is SERVED and what the cert lineage is CALLED are separate questions.**
+  *The lineage keeping the old sslip.io name is `101b46b` working as designed, not
+  a leftover.*
+- **THE MAIL SIDE IS UNSTARTED, NOT PARTIAL.** *Checked with a positive control —
+  the same probes against `google.com` returned 7 TXT records, a `p=reject` DMARC
+  and an MX, so the prober can see a present case.* **An empty DNS answer and a
+  failed lookup are the same shape, and this desk's oldest rule arrived in a
+  resolver.** **DKIM is unverifiable without a selector and moot: with no TXT and
+  no MX there is nothing partially configured.**
+- **THE HONEST MIDDLE: the original argument survives with its SUBJECT changed.**
+  SPF/DKIM/DMARC are still not optional for magic-link mail. **What changed is that
+  this is a domain we control and can publish under — so it is WORK, not an
+  impossibility.**
+
 **AND `ops.md:7562` IS STALE: "THE BLOCKING PREREQUISITE NOBODY HAS NAMED: THERE IS
 NO DOMAIN".** *Scoped 09-07; `tmitrader.com` was registered by Ops 09-08 ~08:27
-UTC, $16.00, expires 2027-09-08, privacy on, DNS at Route 53.* **Flagged to Ops,
-whose file it is.** **NOT claimed: that the domain half is finished** — nothing is
-known here about what points at the box, or whether SPF, DKIM or DMARC exist.
+UTC, $16.00, expires 2027-09-08, privacy on, DNS at Route 53.* **CORRECTED BY OPS AT `a71e535`.** *Both framings this seat refused were wrong —
+"no domain" and "the domain half is finished".* **The section heading was stale
+too — "Google + email magic link, both from the start" is a scope he has since
+contradicted. Ops marked it SUPERSEDED AND DID NOT REPLACE IT**, so the rest reads
+as the 09-07 scope with a known gap rather than as current. *It did not re-scope on
+this seat's say-so and did not re-scope on its own.*
+
+**APPLE, FROM OPS — MARKED AS REASONING, NOT MEASUREMENT, AND KEPT THAT WAY.**
+*Commercial is answering the same questions from Apple's current docs and **has
+deliberately NOT been given these**, so two independent readings meet later. If
+they disagree, the disagreement is the finding.*
+
+- **`unique on (provider, subject)` gets STRONGER.** Apple's `sub` is stable per
+  developer team and is **the only stable identifier Apple guarantees. The email is
+  not** — it may be relayed and it may be withheld. **A model keyed on email breaks
+  on Apple specifically.**
+- **APPLE RETURNS THE EMAIL ONLY ON THE FIRST AUTHORIZATION.** *Later sign-ins omit
+  email and name entirely.* **Persist it on first contact or lose it permanently**,
+  recoverable only if the user revokes the app in their Apple ID settings and
+  authorises again. **This is the one to confirm first: it is expensive exactly
+  once.**
+- **A relay address is verified and deliverable but is NOT the user's address and
+  is unique per app.** So auto-linking Google to Apple by matching verified email
+  **never matches for relay users. That fails safe** — no link rather than a wrong
+  one — **but behaviour then varies per user, by a choice made once at signup and
+  invisible afterwards.**
+- **⇒ THIS IS THE CASE THAT EARNS `link-from-session, never link-on-signin`.**
+  *Link-on-signin infers identity from what the provider asserts at that moment,
+  and with Apple that assertion varies.* **Link-from-session asks an
+  already-authenticated user, so the decision is the user's, made once, inferred
+  from nothing.**
+- **A relay address is NOT a durable contact address** — forwarding can be disabled
+  at any time. **Never use it for billing or recovery without recording that it is
+  a relay.**
 
 ### The vocabulary he settled, 2026-09-10
 
