@@ -8033,3 +8033,28 @@ died in six seconds are the same reading.
 **How to actually tell:** `lastActivityAt − createdAt` is the discriminator, and
 it is the only one on offer. A short span with a stale `lastActivityAt` is a
 crash. **Never take `isRunning` as evidence of life.**
+
+## Scheduled tasks are evaluated in UTC+2 on this machine, and the desk runs on ET — 2026-09-10
+
+**A cron expression written for the desk fires six hours off.** `cronExpression`
+on the scheduling tool is evaluated in **the scheduling machine's local
+timezone**, and that machine is **UTC+2**, not ET. Every time the desk cares
+about is an ET time: the 04:00 premarket boundary, the 09:30 open, the ~22:00
+last assessment of a trading date. **Write `0 22 * * *` meaning 22:00 ET and it
+runs at 16:00 ET, inside the session.**
+
+**Use `fireAt` with an explicit offset instead** — `2026-09-10T22:30:00-04:00` —
+which names an instant rather than a wall-clock reading, and is therefore
+immune to which machine interprets it.
+
+**Caught because the confirmation disagreed with me.** I asked for 22:30 ET and
+the tool replied *"Will run once at: 9/11/2026, 4:30:00 AM"*. That is the same
+instant rendered in UTC+2, so nothing was wrong — but **the only reason I know
+that is that I checked, and the check was one line**: the target rendered in
+`America/New_York` reads back `9/10/2026, 10:30:00 PM`. **A confirmation echoed
+in a timezone you did not specify is not a confirmation.**
+
+**This is the third shape of the same fault.** `TZ=America/New_York date` on this
+Windows host returns UTC with an ET label; the box is the only clock to trust for
+"now"; and now scheduling reads wall-clock times in a third zone again. **The
+desk has never once been on the same clock as the seat operating it.**
