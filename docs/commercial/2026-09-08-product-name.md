@@ -481,6 +481,46 @@ price. Integration has set its own trigger to reopen the exposure
 conversation with him before the page goes live (`c7ada4f`); his ruling
 stands and no seat invents a threshold.
 
+## 2f. WHAT MAY BE CLAIMED — two rulings for Marketing, 2026-09-10
+
+*Marketing opened 2026-09-10 and flagged both itself rather than letting
+them through, in `docs/marketing/2026-09-10-landing-copy-pass.md`. This
+seat holds what may be claimed; Marketing holds the words. Rulings, not
+rewrites.*
+
+1. **"Four things, and the fourth is the one that costs people money." —
+   STRUCK as written.** The prohibition is on outcome claims in any form,
+   and a sentence about money changing hands is an outcome claim whatever
+   its sign: "you are losing money without this" is the oldest performance
+   claim there is, and flipping the sign does not take it outside the line.
+   It is also unsupported — invite-only, one user, no track record — so if
+   anyone asks whose money, there is no answer. The fact underneath it is
+   true and claimable: the fourth pillar, float, is the one vendors print
+   N/A for and the one the desk bounds from filings. **Cleared with
+   condition: say what the fourth thing is and why nobody prints it; no
+   money, no cost, no loss, no saving, on either sign.** Same family as the
+   standing rule that a number the market gave him never enters the repo.
+2. **"up 40% at 07:15" in the hero — STRUCK. "In August it was 50% movers …
+   on nothing anyone could name" — CLEARED with a condition.** The two are
+   different animals. A percentage attached to a hypothetical name at a time
+   is an outcome example in the first sentence a stranger reads;
+   "illustrative" is a word the writer knows and the reader does not, this
+   desk has already learned that a caveated number anchors exactly as hard
+   as an uncaveated one, and nothing on the desk supports the figure. It is
+   also a price move — the fee-liable, single-security class — described on
+   the evidence surface. The hero opens on "at 07:15" alone, as Marketing
+   proposed. The August sentence is a description of a market phenomenon
+   that is in the desk's own record — the catalyst structure break, movers
+   of fifty percent and more on nothing anyone could name — not a promise
+   about a user's trade. **Condition: it stays a statement about what the
+   market did, never an example of what a user caught; the moment a "you"
+   or a trade attaches to it, it becomes item 2's first half and goes.**
+
+**The principle both rulings apply, for the next one:** a percentage that
+describes the market's behaviour is a fact of record and may be claimed as
+such; a percentage attached to a name, a time and a reader is an outcome,
+and outcomes are not claimed in any form.
+
 ## 3. RECOMMENDATION
 
 **Pick: Desk Read.** It is the thing he described — a smart desk that has
