@@ -325,6 +325,54 @@ was for a domain registration, not for whatever a premium listing puts up;
 and register the domain only, no tagline anywhere, because the line is
 moving.
 
+## 2e. POSITIONING ON THE PUBLIC PAGE — three answers for Web, 2026-09-10
+
+*Web opened 2026-09-10 and owns every word a stranger sees; this seat owns
+the positioning. He has seen a first landing page and ruled, verbatim, "i
+like the layout, i dont like the sales pitch", and separately ruled access
+"invite only, can ask for invite." Web asked three things through
+Integration. Answers, each a sentence, with the reason.*
+
+1. **"Your scanner finds it. This tells you what it is." — retire it from
+   the page.** §2d kept scanner-in-the-room lines only as copy where the
+   supplement relationship was already stated; his objection to the pitch
+   retires that carve-out, because the line is a hook by construction — a
+   competitor in the room and a promise ("tells you what it is") the product
+   keeps on every name only in the three-way sense. The supplement
+   relationship belongs in the plain statement, said once, without a
+   scanner as the subject. The line stays available for the one place the
+   question is genuinely in the room: an answer to "is this a scanner?"
+2. **A settled one-paragraph plain statement does not exist.** None is
+   registered anywhere in the commercial documents, and this seat will not
+   invent one in a message. What is registered, and what any statement Web
+   writes must not contradict, is three sentences: his own — *"a depth tool.
+   its intelligence. its not a scanner but a smart desk. an assistant that
+   give you depth on the moving market"*; the desk's standing principle —
+   *"an intelligence platform, not a signal platform — give the user as much
+   of the story as we can that is useful"*; and the unit and audience from
+   the gates map — everything together on one shared board, for people who
+   trade $1–$20 small-cap momentum in the premarket the way he does. Web
+   writes from those and hands the paragraph here; it is then the registered
+   statement and this section points at it.
+3. **An invite request asks for an email address and nothing else.** An
+   invite is his to grant and needs only a way to reach the person; a
+   free-text "how do you trade" is qualification pitch on the way in and
+   personal data with a retention question on the way out, and the desk
+   already holds verified email addresses in exactly one place, the identity
+   store, by design. A sign-in that yields a verified address is a
+   sufficient request; a form that collects more is data held without a
+   purpose.
+
+**And one consequence neither thread raised, which is this seat's to
+raise.** Under the ruling to accept exposure, the public page is the
+evidence surface — detection is through the product, not the data pipe
+(landscape §1b). A landing page that advertises real-time prices, quotes or
+the consolidated tape as a feature describes, in public, the thing the
+personal licence forbids showing to others. **Intelligence on what's moving
+is the product and is what the page should say; the page should not sell
+the tape.** Invite-only keeps the public surface small; the words on it
+decide what the surface shows.
+
 ## 3. RECOMMENDATION
 
 **Pick: Desk Read.** It is the thing he described — a smart desk that has

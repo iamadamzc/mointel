@@ -284,6 +284,17 @@ repo — they are public documents and re-fetchable.
   per Apple's 2026-08-24 update, and sending to a relay address needs the
   domain registered with Apple and SPF/DKIM.
 
+- **Positioning on the public page, 2026-09-10 (naming document §2e), for
+  Web, a new thread that owns every word a stranger sees.** He ruled "i like
+  the layout, i dont like the sales pitch" and "invite only, can ask for
+  invite." Answers: the scanner line is retired from the page (a hook by
+  construction; the supplement relationship belongs in the plain statement);
+  no one-paragraph plain statement is registered — Web writes it from the
+  three registered sentences and hands it here; an invite request asks for
+  an email address and nothing else. Raised unasked: the public page is the
+  evidence surface under accepted exposure, so it should say intelligence on
+  what's moving and not sell the tape.
+
 **Open items.**
 
 - ~~**The Alpaca plan tier is not in the repo.** Ask him; do not infer it into a
