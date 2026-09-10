@@ -284,10 +284,21 @@ WITHIN this session, from its own first print       NOT BUILT
 
 ### Queued, nothing dated, nothing blocked
 
-- **The Move family.** Research has the compute, Design the surface. **Two traps
-  recorded: "first" means earliest TIMESTAMP not first RECEIVED, and a corrected
-  bar must move the anchor.** **`RTH Move` will not fit that header — 0.1px
-  over.**
+- **The Move family. THREE PARTS, ONE ENUMERATION, and this seat is holding the
+  deploy until all three exist.** *No reader, no board time spent on the
+  invisible.*
+  - **Compute — DONE, `9a090e5`, 1,914 tests pass, undeployed.** Two traps
+    handled by one `bar.ts <= held` comparison: **"first" means earliest
+    TIMESTAMP not first RECEIVED**, and **a corrected bar must move the anchor.**
+  - **Store columns — with Ops, requested direct 2026-09-10.** Three sessions ×
+    `price` / `at` / `tradeCount`. **`move` gets NO column — it is derived at
+    read time from the open and the live price, and storing it would freeze a
+    live comparison into a row.** Two properties asked for: **a row of NULLs must
+    produce `sessionOpens: undefined`, never a populated set of nulls** (the rule
+    `readBoardCandidates` already holds for `activity`), and **`tradeCount`
+    nullable independently of `price`, because a zero default erases the honesty
+    flag he asked for.**
+  - **Surface — Design.** **`RTH Move` will not fit that header — 0.1px over.**
 - **The dark-field sweep, as a gated script**, with the exclusion list printed in
   its own output.
 - **Every deploy builds on the box**, because the artefact path is refused from
@@ -2592,6 +2603,48 @@ thread holding the file answers it in minutes.**
 losing its provenance on the way.** Flagging does not make the claim truer. It
 makes the claim *cost the receiver a check instead of a night*, which is the only
 part that was ever available to the sender.
+
+## AN ERROR-DIRECTION ARGUMENT IS A BASIS OR A CHECK, AND THE TWO LOOK IDENTICAL
+
+**Research's refusal, 2026-09-10, `5940a66`, of a link this seat flagged rather
+than asserted — the fourth time flagging has paid for itself in minutes.**
+
+I put it to Research that its *"the first print stays the first print, even when
+that minute leaves the VWAP bucket"* was the **same asymmetry** as the supply
+bound: pick the direction where being wrong costs less. **It refused, and the
+refusal is sharper than the flag.**
+
+**THE TEST IS WHETHER A SECOND DEFENSIBLE ANSWER EXISTS.**
+
+- **Supply bound: genuinely ambiguous.** `knownActive > SO` reads as proof or as
+  a fault, and the seven cases split 3/4. **There are two defensible answers, so
+  the cost asymmetry DECIDES it. That is a basis.**
+- **Session open: not ambiguous.** `dropVwapMinute` exists so a reconstructed
+  volume base is not double-counted — **an accumulator concern that says nothing
+  about whether a print occurred.** **One correct answer, so the cost asymmetry
+  only CONFIRMS it. That is a check.**
+
+**AND THE POLARITY RUNS OPPOSITE, WHICH IS WHY "SAME ASYMMETRY" WAS WRONG TWICE.**
+
+```
+supply bound    expensive error = false AVOID     costs him a trade he should have taken
+session open    expensive error = understated Move   makes an extended name read FRESHER
+                                                     -> INVITES an entry
+```
+
+**On his book those are not the same cost.** A skipped trade costs an
+opportunity; an extended entry costs an R. **I called them the same because both
+were asymmetries, which is a shape, not a direction.**
+
+**WHY THIS SECTION EXISTS RATHER THAN A CORRECTION IN A TRANSCRIPT:** *"we picked
+the cheaper error" invites a later reader to reopen a trade-off.* **Where no
+trade-off exists, that sentence manufactures one** — and Research's own comment
+was what suggested it, so the reading was correct and the comment was the defect.
+**It reordered the comment to put the reason first and the direction second.**
+
+**The limit on [AN UNSETTLED QUESTION CAN BE RESOLVED BY ERROR DIRECTION](#an-unsettled-question-can-be-resolved-by-error-direction-instead-of-by-answering-it):
+that move is available only while the question is genuinely unsettled.** Applied
+to a settled one it does not resolve anything — **it unsettles it.**
 
 ## AN UNSETTLED QUESTION CAN BE RESOLVED BY ERROR DIRECTION INSTEAD OF BY ANSWERING IT
 
