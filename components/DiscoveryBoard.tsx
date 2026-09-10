@@ -24,7 +24,7 @@ import { resolveWhy } from '@/lib/dashboard/why';
 import {
   DISCOVERY_DEFAULT_SORT,
   discoveryMissingCount,
-  moveLabel,
+  baselineLabel,
   retentionNote,
   sortDiscoveryRows,
   type DiscoverySortKey,
@@ -40,7 +40,7 @@ type ViewSize = (typeof VIEW_SIZES)[number];
  * The sortable keys, in the order a trader reaches for them.
  *
  * `changePct` carries no fixed label here: it is resolved per session by
- * `moveLabel`, which now lives in `lib/dashboard/view` because the column
+ * `baselineLabel`, which lives in `lib/dashboard/view` because the column
  * header needs the same word and the two had drifted apart.
  */
 const SORT_KEYS: ReadonlyArray<{ key: DiscoverySortKey; label: string; title: string }> = [
@@ -115,7 +115,7 @@ export function DiscoveryBoard({
   // Resolved once: the button, the active marker and the tooltip must never
   // disagree about what the percent change is measured from.
   // Null phase falls to the neutral label rather than guessing a session.
-  const move = moveLabel(discovery?.sessionPhase ?? null);
+  const move = baselineLabel(discovery?.sessionPhase ?? null);
   const activeLabel =
     sort.key === 'changePct'
       ? move.label

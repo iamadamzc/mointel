@@ -4,7 +4,7 @@ import type { DeskRow } from '@/lib/dashboard/merge';
 import {
   DISCOVERY_DEFAULT_SORT,
   discoveryMissingCount,
-  moveLabel,
+  baselineLabel,
   sortDiscoveryRows,
 } from '@/lib/dashboard/view';
 
@@ -159,7 +159,7 @@ describe('move label', () => {
     // and is rendered as {resolved.label}.
     expect(source).toContain('{resolved.label}');
 
-    // The old defect: a single-string moveLabel consumed only by `title=`.
+    // The old defect: a single-string label consumed only by `title=`.
     expect(source).not.toMatch(/title=\{\s*entry\.key === 'changePct' \? moveLabel/);
 
     /*
@@ -168,7 +168,7 @@ describe('move label', () => {
      * This test used to match the switch cases inside this component. That
      * pinned the words to a FILE rather than to a BEHAVIOUR, and it failed the
      * moment the function moved somewhere better -- a test reporting a
-     * relocation as a defect. `moveLabel` is exported now and the words are
+     * relocation as a defect. `baselineLabel` is exported now and the words are
      * asserted by CALLING it, below, including the two phases that must share
      * one label. What stays here is the only part genuinely about this
      * component: that the label reaches VISIBLE TEXT rather than a tooltip.
@@ -191,23 +191,42 @@ describe('move label', () => {
  * ------------------------------------------------------------------------- */
 describe('the move label names what the percent is measured against', () => {
   it('calls the premarket move a Gap, which is the denominator in one word', () => {
-    expect(moveLabel('PREMARKET').label).toBe('Gap');
-    expect(moveLabel('PREMARKET').title).toContain('prior session close');
+    expect(baselineLabel('PREMARKET').label).toBe('Gap');
+    expect(baselineLabel('PREMARKET').title).toContain('prior session close');
   });
 
   it('changes the word when the reference changes, which is why it is not a constant', () => {
-    expect(moveLabel('RTH').label).toBe('Move');
-    expect(moveLabel('AFTER_HOURS').label).toBe('AH move');
-    expect(moveLabel('POST_MARKET').label).toBe('AH move');
+    expect(baselineLabel('RTH').label).toBe('Day');
+    expect(baselineLabel('AFTER_HOURS').label).toBe('AH move');
+    expect(baselineLabel('POST_MARKET').label).toBe('AH move');
     // Four phases, THREE distinct words -- AH and POST_MARKET share a reference
     // and must not drift apart into two labels for one denominator.
-    expect(moveLabel('AFTER_HOURS')).toEqual(moveLabel('POST_MARKET'));
+    expect(baselineLabel('AFTER_HOURS')).toEqual(baselineLabel('POST_MARKET'));
   });
 
-  it('falls back to a reference it can actually defend when the phase is unknown', () => {
-    // Not `Gap`: an unknown phase must not assert the PRIOR close specifically.
-    expect(moveLabel(null).label).toBe('Move');
-    expect(moveLabel(null).title).toContain('most recent session close');
+  it('names a baseline it can defend when the phase does not determine one', () => {
+    /*
+     * `CLOSED` and `NEXT_DAY_PREP` land here and are NOT rare -- overnight and
+     * weekends. And they do not share a baseline: before the trading date rolls
+     * the reference is today's close, after it rolls it is the prior one. So
+     * this arm must not claim a session, and must not use `Move`, which is now
+     * reserved for the within-session number that does not exist yet.
+     */
+    for (const phase of [null, 'CLOSED', 'NEXT_DAY_PREP'] as const) {
+      expect(baselineLabel(phase).label).toBe('vs close');
+      expect(baselineLabel(phase).title).toContain('most recent session close');
+    }
+  });
+
+  /*
+   * `Move` IS RESERVED AND MUST NOT APPEAR. He approved `Day` for RTH exactly
+   * so the within-session number can own the word `Move` from the day it ships,
+   * with no fortnight where it meant something else and nothing recording the
+   * turn.
+   */
+  it('never returns the reserved word', () => {
+    const phases = [null, 'CLOSED', 'PREMARKET', 'RTH', 'AFTER_HOURS', 'POST_MARKET', 'NEXT_DAY_PREP'] as const;
+    for (const phase of phases) expect(baselineLabel(phase).label).not.toBe('Move');
   });
 
   /*

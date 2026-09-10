@@ -439,16 +439,38 @@ export function sortDiscoveryRows(
  * is the whole job.** Short on purpose: this sits both in a five-button row and
  * in a 172px header that has to survive the 1,024px floor.
  */
-export function moveLabel(phase: SessionPhase | null): { label: string; title: string } {
+export function baselineLabel(phase: SessionPhase | null): { label: string; title: string } {
   switch (phase) {
     case 'PREMARKET':
       return { label: 'Gap', title: 'Change from the prior session close, including after hours' };
     case 'RTH':
-      return { label: 'Move', title: "Change from the prior session's close" };
+      return { label: 'Day', title: "Change from the prior session's close" };
     case 'AFTER_HOURS':
     case 'POST_MARKET':
       return { label: 'AH move', title: "Change from today's regular-session close" };
     default:
-      return { label: 'Move', title: 'Change from the most recent session close' };
+      /*
+       * `CLOSED` AND `NEXT_DAY_PREP` LAND HERE, AND THEY ARE NOT RARE -- they
+       * are the overnight and weekend states, observed live in production. This
+       * arm was written as an unknown-phase guard and has been doing nightly
+       * work under a word that is now reserved.
+       *
+       * IT CANNOT BE GIVEN ONE SESSION WORD, AND THAT IS THE INTERESTING PART.
+       * `resolveReferenceRthClose` returns basis `CURRENT_SESSION` while today's
+       * close is usable and `PRIOR_SESSION` otherwise -- so `CLOSED` before the
+       * trading date rolls measures from TODAY'S close (an `AH move` baseline),
+       * and after it rolls measures from the PRIOR one (a `Gap` baseline). One
+       * phase, two baselines.
+       *
+       * Which is the proof, rather than the suspicion, that this function reads
+       * a PROXY: it takes the phase and names the BASELINE. The row already
+       * carries `referenceRthCloseBasis`, so the real fix is to read that. Not
+       * made here -- that is a behaviour change and this is a rename.
+       *
+       * `vs close` is MY choice and not his: it is the only wording that names
+       * the baseline without claiming a session, and `Close` alone would read as
+       * the closing price in a column that already starts with `Price`.
+       */
+      return { label: 'vs close', title: 'Change from the most recent session close' };
   }
 }
