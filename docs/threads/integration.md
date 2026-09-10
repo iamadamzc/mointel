@@ -802,6 +802,38 @@ blocking, because it lands in the first table.*
   cheap.** *Build the thing that is expensive to add later; defer the thing that is
   cheap to change* — **the same argument as `(provider, subject)`, one table over.**
 
+**ACCESS IS INVITE-ONLY — his ruling 2026-09-10, to Web: `"invite only, can ask for
+invite."`** *Which makes `DEFAULT 'pending'` the policy rather than the safe
+default, and enforcement a requirement rather than a deferred question.*
+
+- **`pending` → `active` is a SCRIPT, run by ops on his word, not a hand-edit and
+  not an admin surface.** `npm run auth:admit -- --list` / `-- <user-id>`. **~60
+  lines.** *"He does it by hand" means him over `ssh` with `sqlite3` against a live
+  production store — the class of thing this desk has spent a fortnight guarding
+  against. A script gets the guards for free.*
+- **IT TAKES A USER ID, NEVER AN EMAIL.** *`--list` prints the email so a person can
+  be RECOGNISED, never SELECTED.* **Admitting by email puts the identifier back
+  where both providers say it must not be, one layer above the store that refuses
+  it.**
+- **A `pending` user's screen is Web's and Design's, and it must exist BEFORE
+  enforcement ships.** *Signed-in-but-not-admitted becomes reachable the moment
+  enforcement lands; a user in it with no screen gets whatever the board does when
+  it refuses them, which is not a decision anyone made.*
+
+**AND I ASSERTED A CSRF PROBLEM THAT DOES NOT EXIST. OPS'S CORRECTION:**
+
+> **CSRF requires something to FORGE — a session the attacker's request can ride.
+> An endpoint accepting anonymous input has no session to ride and nothing to
+> escalate.** **The risk on a public write is ABUSE: spam, volume, and stored
+> stranger-supplied input.** *Different problem, different mitigations, and mixing
+> them means solving the wrong one.*
+
+**I reached for the named threat that fit the words "public write endpoint" rather
+than the one that fits the mechanism.** *Where CSRF does matter is the
+authenticated side — and `SameSite=Lax` already withholds the cookie on cross-site
+POST, which is a SECOND reason `Lax` is right on top of being the only value where
+the callback works at all.*
+
 **THE SECRET: `.env.local` → `deploy/aws/sync-env.sh` → `/etc/mointel/mointel.env`,
 root-owned 0640.** *`sync-env.sh:35` is a pass-through, so a new key is carried with
 no code change.* **The tool was built for this handover — its own header: no value
