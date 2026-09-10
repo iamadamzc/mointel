@@ -380,6 +380,21 @@ WITHIN this session, from its own first print       NOT BUILT
     Coaching's own original message had already offered a full re-pull, so this is
     choosing an option already on the table, not widening one. **If Ops says
     unbounded is materially more work, it goes to him rather than being argued.**
+  - **WINDOW: AFTER 02:00Z TONIGHT, AND NOT ON CAPACITY GROUNDS.** *Ops, and it
+    said so plainly to stop "after the close" reading as caution.* The read is
+    trivial — **307 assessments, 7,650 ticker rows, no `minute_bars`, load 0.76.**
+    **It is a DATA boundary: `2026-09-10` holds 4 assessments where every complete
+    date holds 19, and the last assessment of 09-09 was scheduled
+    `2026-09-10T02:00:00Z` — 22:00 ET, six hours past the bell.** *"After the
+    close" is the wrong boundary.*
+  - **AND THE META ROW AS SPECIFIED REBUILT THE 09-02 WALL INSIDE THE FIX FOR IT.**
+    *Ops's catch.* Coaching asked for `extract_as_of` plus **the max
+    `trading_date` in the file.** **Pulled now, that field reads `2026-09-10` — 4
+    rows of 19 — and the guard would license the exact join it was built to
+    refuse.** **The newest date is always the likeliest to be partial, so `max` is
+    the worst possible coverage gate.** **Ops sent `complete_through` as the gate,
+    checked against n=19/date, with `max` demoted to an observation.** *08-17
+    (n=2) and 08-19 (n=16) are genuinely incomplete in production.*
   - **THE EXTRACT LANDING IS NOT A BACKFILL.** Somebody still has to run
     `archive:backfill` against it. **Nobody has asked for that and no seat is to
     start it off the back of the extract approval.**
