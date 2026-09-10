@@ -741,6 +741,56 @@ end state for a belt.**
 > remembering.** *Same move as the `:80` redirect shipping in the repo instead of
 > being hand-applied, and Ops made that argument itself this morning.*
 
+### AUTH BUILD STARTED 2026-09-10 ON HIS WORD — `"yes, tell ops to start"`
+
+**Ops's plan, sized before code. ~900 lines including tests, one to two sessions.**
+*Order: `lib/auth/store.ts` + `identity.db` first, because it is testable with no
+network and the identity model is the ruling hardest to change later.* Then
+`session.ts`, `oauth.ts`, the two routes, `location ^~ /auth/`, tests.
+
+- **NO NEW DEPENDENCY, and that is what kept the size down.** *Google's own page:
+  **"since you are communicating directly with Google over an intermediary-free
+  HTTPS channel and using your client secret to authenticate yourself to Google,
+  you can be confident that the token you receive really comes from Google and is
+  valid."*** **So no JWT library, no JWKS fetch, no RS256 — `package.json` stays
+  as it is and `npm ci` on the box is unaffected.** *The exemption rests on a
+  condition that goes in the code: "if your server passes the ID token to other
+  components, it is extremely important that the other components validate the
+  token." We read `sub` and discard it.* **`iss`, `aud`, `exp` and `nonce` are
+  still checked.**
+- **SERVER-SIDE SESSIONS IN `identity.db`, NOT A STATELESS TOKEN.** *A stateless
+  token cannot be revoked before it expires, and this desk is one box — the safer
+  option is also the cheaper one here.*
+
+**TWO COOKIE TRAPS, OPPOSITE DIRECTIONS, BOTH SILENT:**
+
+```
+SameSite=Strict   the return from accounts.google.com is a TOP-LEVEL CROSS-SITE
+                  navigation, so a Strict cookie is NOT SENT -- the callback cannot
+                  read the state it set. Must be Lax.
+Secure            not set over plain HTTP, so http://localhost:3000 never gets a
+                  session and local dev dies. Unconditional breaks dev; never
+                  breaks production. Conditional on HTTPS, and the condition needs
+                  its own test.
+```
+
+**THE FIRST ONE IS THE SHARPER LESSON: THE MORE-SECURE-LOOKING VALUE IS THE BROKEN
+ONE, AND IT FAILS WITH NO ERROR.** *`Strict` reads as the careful choice. The flow
+simply never completes and nothing reports why.* **A security setting chosen by
+which name sounds stricter is not a decision, and this one would have been
+defended in review.**
+
+**THE SECRET: `.env.local` → `deploy/aws/sync-env.sh` → `/etc/mointel/mointel.env`,
+root-owned 0640.** *`sync-env.sh:35` is a pass-through, so a new key is carried with
+no code change.* **The tool was built for this handover — its own header: no value
+is printed, echoed, passed as an argument or written to a temp file; the document
+goes over stdin and is placed by `install` from `/dev/stdin`, so only key names
+appear and it can be run in front of somebody.**
+
+> **HE ADDS THE LINE HIMSELF. The secret is not in the repo, not in any thread's
+> conversation, and Ops has not read it.** **A future seat looking for it in git
+> will not find it and should not look.**
+
 ### The vocabulary he settled, 2026-09-10
 
 ```
