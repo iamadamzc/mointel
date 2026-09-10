@@ -634,6 +634,12 @@ holding the code, in minutes.
 - **Take the clock from `zoneinfo` at the moment of use.** Nine failures in three
   days, and the newest arrives as an *environment announcement* in a non-ET zone
   rather than as a misreading.
+- **SCHEDULED-TASK CRON IS EVALUATED IN THIS MACHINE'S LOCAL ZONE, UTC+2, NOT ET.**
+  *Ops, 2026-09-10, `a7f9694`.* **A cron written for 22:00 ET fires at 16:00 ET —
+  mid-session.** **`fireAt` with an explicit offset is immune; use it.** *Ops
+  caught it only because the tool echoed a time back in a zone it had not asked
+  for.* **Tenth clock failure in four days, and the first one that would have run
+  production work inside his session.**
 
 
 ## The third delegation: deploy instructions, confirmed directly
@@ -915,6 +921,43 @@ all-clear.**
 **THE FIX IS THE SCOPE, NOT THE DILIGENCE.** A retraction search is
 `grep -rn` across **source, tests and docs**, and the ONE thing that must never be
 searched alone is the directory the retraction was written in.
+
+## A RELAYED SENTENCE CARRIES THE WORDS AND NOT THE CONDITIONS THEY WERE TRUE UNDER
+
+**Ops's formulation, 2026-09-10, and it is the sharpest thing this desk has said
+about relaying.** He answered Coaching's three-way extract question with **"one
+refresh now, and kill the session."** I carried that verbatim. **Ops asked him
+anyway and he changed it to "tonight after 22:00 ET".**
+
+**I was right about the object and Ops was right to ask, and those are not in
+tension.**
+
+- **My correction stands:** his direct answer carried is not the production-write
+  delegation widened. It is the same shape as Ops taking *"deploy"* from him
+  through this seat and then confirming it. **Ops accepted that read.**
+- **AND THE VERBATIM RELAY WAS STILL WRONG, ABOUT THE `now`.** Pulling at 08:15
+  hands Coaching a `2026-09-10` holding **4 assessments of 19** — *the partial-tail
+  failure, delivered inside the fix built for it.*
+- **He was correct about the WHAT and wrong about the WHEN, and only a fresh look
+  at the data could show that.** He answered from his picture of the desk; the
+  desk had a condition his picture did not carry.
+
+**THIS IS NOT "VERIFY, DO NOT RELAY", AND IT IS NARROWER AND MORE USEFUL.** That
+rule is about whether the sentence is accurate. **This one is about the sentence
+being accurate and the world having a fact it does not mention.** *An instruction
+is true under conditions, the conditions are not in the words, and the relay
+carries only the words.*
+
+**WHAT IT CHANGES FOR THIS SEAT, WHICH IS THE ONLY SEAT THAT RELAYS:**
+
+- **When his answer contains a WHEN — "now", "today", "after the close" — the
+  receiving thread checks the data before acting on the timing.** *He is choosing
+  from a picture, not from a query.*
+- **Say so in the relay.** *"His words; check the conditions before you act on the
+  timing"* costs one line and is what makes the check happen rather than the
+  instruction being executed as written.
+- **This does not license a thread to reinterpret him.** Ops did not decide the
+  timing was wrong — **it asked him, and he chose again.**
 
 ## Reading other threads
 
