@@ -329,7 +329,30 @@ at NOTHING and it was true when written.*
 - **`"this will be a productized app, we need to do authentication, we have
   previously discussed doing google and apple for authentication and maybe email
   link."`** *The desk is becoming a product with users. Preparation, not build.*
-- **`"1, phase 2."`** — **APPLE IS PHASE TWO.** *Ops's scope said "Google + email
+- **`"1, phase 2."`** — **APPLE IS PHASE TWO, AND IT MAY NOT BE AVAILABLE TO US AT
+  ALL.** *Commercial, `5d0a9a2`, §2, every page re-read through a rendered browser.*
+  **Apple's web-configuration page: *"For users to authenticate with your web
+  service, you must have an existing app in the App Store that uses Sign in with
+  Apple."*** **Usage guidelines: *"An app on the App Store is required in order to
+  use this API."*** *The mechanics agree — a Services ID must be associated with an
+  existing primary iOS/macOS/tvOS/watchOS App ID.*
+  - **TMI Trader IS WEB-ONLY. On the pages as written, a web-only product with no
+    iOS app is outside what Sign in with Apple is offered for.**
+  - **Whether Apple accepts a registered-but-unshipped App ID in practice is stated
+    on NO public page.** *Commercial did not guess, and neither will this seat.*
+  - **⇒ PHASE TWO IS NOT "ADD APPLE LATER". IT IS "SHIP AN iOS APP, THEN ADD
+    APPLE".** *That is a product decision he has never been asked, and it is the
+    kind of prerequisite that is discovered at the wrong end.*
+  - **COST, dated 2026-09-10: Apple Developer Program `"annual fee is 99 USD"`,
+    auto-renewing.** Individual/sole-proprietor enrolment under his own name is
+    fine; an **organization** needs a legal entity (no DBAs), a **D-U-N-S number**
+    (free in most jurisdictions, up to 5 + 2 business days), binding authority, a
+    work email on its domain and a public website. **Membership is required for the
+    web integration** — everything is created in Certificates, Identifiers &
+    Profiles, which is members-only.
+  - **What a LAPSED membership does to live web sign-ins is stated nowhere.**
+    *An auto-renewing fee that silently gates production sign-in is a dependency
+    worth naming before it is taken.* *Ops's scope said "Google + email
   magic link, both from the start"; email has moved to "maybe" and Apple is
   deferred.* **Build so a third provider is an addition, not a migration — the
   `(provider, subject)` key already does that and it is now load-bearing rather
