@@ -1,0 +1,224 @@
+<title>Reading the Flat Line</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600&display=swap">
+<style>
+  /* The desk's own tokens, lifted from app/globals.css so this reads as the
+     surface it depicts rather than a drawing of it. Single-theme on purpose:
+     the board is dark-only, and a light variant would depict nothing real. */
+  :root {
+    --desk:    #06080b;
+    --panel:   #0c0f14;
+    --panel-2: #11151c;
+    --line:    #1b212a;
+    --line-2:  #29313d;
+    --ink:     #e9edf3;
+    --ink-2:   #97a1b0;
+    --ink-3:   #8792a3;
+    --ink-4:   #646d7c;
+    --pos:     #2fc46f;
+    --warn:    #e8ac33;
+    --accent:  #4d93ff;
+    --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --sans: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--desk);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 40px 24px 72px; }
+
+  header { border-bottom: 1px solid var(--line-2); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-4); margin: 0 0 10px;
+  }
+  h1 { font-size: 26px; font-weight: 600; margin: 0 0 10px; letter-spacing: -0.01em; text-wrap: balance; }
+  .lede { margin: 0; color: var(--ink-2); max-width: 62ch; }
+  .lede strong { color: var(--ink); font-weight: 500; }
+
+  h2 {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.11em;
+    text-transform: uppercase; color: var(--ink-3);
+    margin: 36px 0 12px; font-weight: 600;
+  }
+  p { max-width: 66ch; color: var(--ink-2); }
+  p strong { color: var(--ink); font-weight: 500; }
+
+  /* ---- the board fragment ------------------------------------------- */
+  .board { background: var(--panel); border: 1px solid var(--line-2); border-radius: 3px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3); font-weight: 600;
+    text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line-2);
+    background: var(--panel-2); white-space: nowrap;
+  }
+  thead th .sub {
+    display: block; font-size: 9px; letter-spacing: 0; text-transform: none;
+    color: var(--ink-4); font-weight: 400;
+  }
+  tbody td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: 0; }
+  .tick { font-family: var(--mono); font-weight: 600; color: var(--ink); }
+  .rvol { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; color: var(--ink); }
+  .note { color: var(--ink-4); font-size: 12px; }
+
+  /* ---- sparkline, drawn to the real scale ---------------------------- */
+  /* Full height = 300 trades/min, the active line. 14px band. A measured
+     zero draws a 1px floor. Both columns below use the identical geometry;
+     only the ink weight and the baseline differ. */
+  .spark { display: inline-flex; align-items: flex-end; gap: 1px; height: 14px; }
+  .spark i { display: block; width: 3px; border-radius: 1px; }
+  .now  i { background: var(--ink-2); }
+  .now.silent i { background: color-mix(in srgb, var(--ink-3) 50%, transparent); }
+
+  .prop { position: relative; padding-bottom: 2px; }
+  .prop::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 1px; background: var(--line-2);
+  }
+  .prop i { background: var(--ink-2); }
+  .prop.silent i { background: var(--ink-3); }
+
+  .dash { font-family: var(--mono); color: var(--ink-4); }
+
+  /* ---- state legend --------------------------------------------------- */
+  .states { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line-2); border-radius: 3px; }
+  .state { background: var(--panel); padding: 12px 14px; display: grid; grid-template-columns: 74px 1fr; gap: 14px; align-items: center; }
+  .state .what { font-family: var(--mono); font-size: 11px; color: var(--ink); }
+  .state .means { color: var(--ink-2); font-size: 13px; }
+  .state .means b { color: var(--ink); font-weight: 500; }
+
+  .callout {
+    border-left: 2px solid var(--warn); background: var(--panel);
+    padding: 14px 16px; margin: 20px 0; border-radius: 0 3px 3px 0;
+  }
+  .callout p { margin: 0; color: var(--ink-2); max-width: none; }
+  .callout p + p { margin-top: 8px; }
+  .callout b { color: var(--ink); font-weight: 500; }
+
+  .scale { font-family: var(--mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .scale td { padding: 4px 14px 4px 0; }
+  .scale .px { color: var(--accent); }
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--ink-4); font-size: 12px; font-family: var(--mono); }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Now column · after-hours board</p>
+    <h1>Reading the Flat Line</h1>
+    <p class="lede">You said there are no sparklines in after-hours. <strong>They are there</strong> — HCAI at rank 1 and 107&times; RVOL is drawing a flat line, and that flat line is the column doing the one job it exists for. <strong>It reads as absence because I encoded it that way.</strong></p>
+  </header>
+
+  <h2>Your rows, as they render now and as I propose</h2>
+
+  <div class="board">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:78px">Ticker</th>
+          <th style="width:74px; text-align:right">RVOL</th>
+          <th style="width:104px">Now <span class="sub">as it renders</span></th>
+          <th style="width:104px">Now <span class="sub">proposed</span></th>
+          <th>Trades per minute, last 5 minutes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tick">FTFT</td>
+          <td class="rvol">78.6&times;</td>
+          <td><span class="spark now"><i style="height:14px"></i><i style="height:14px"></i><i style="height:14px"></i><i style="height:14px"></i><i style="height:14px"></i></span></td>
+          <td><span class="spark prop"><i style="height:14px"></i><i style="height:14px"></i><i style="height:14px"></i><i style="height:14px"></i><i style="height:14px"></i></span></td>
+          <td class="note">1153, 1049, 465, 331, 377 — all above the 300 active line</td>
+        </tr>
+        <tr>
+          <td class="tick">HCAI</td>
+          <td class="rvol">107&times;</td>
+          <td><span class="spark now silent"><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i></span></td>
+          <td><span class="spark prop silent"><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i></span></td>
+          <td class="note">0, 0, 0, 0, 0 — rank 1 all session, not trading now</td>
+        </tr>
+        <tr>
+          <td class="tick">CULP</td>
+          <td class="rvol">58.8&times;</td>
+          <td><span class="spark now silent"><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i></span></td>
+          <td><span class="spark prop silent"><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i></span></td>
+          <td class="note">0, 0, 0, 0, 0 — ran overnight, done since</td>
+        </tr>
+        <tr>
+          <td class="tick">GWAV</td>
+          <td class="rvol">1.3&times;</td>
+          <td><span class="spark now silent"><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i></span></td>
+          <td><span class="spark prop silent"><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i></span></td>
+          <td class="note">0, 0, 0, 0, 0 — quiet, and was never loud</td>
+        </tr>
+        <tr>
+          <td class="tick">—</td>
+          <td class="rvol">180&times;</td>
+          <td><span class="spark now"><i style="height:10px"></i><i style="height:8px"></i><i style="height:7px"></i><i style="height:4px"></i><i style="height:3px"></i></span></td>
+          <td><span class="spark prop"><i style="height:10px"></i><i style="height:8px"></i><i style="height:7px"></i><i style="height:4px"></i><i style="height:3px"></i></span></td>
+          <td class="note">210, 180, 140, 95, 60 — fading, and neither active nor dead</td>
+        </tr>
+        <tr>
+          <td class="tick">—</td>
+          <td class="rvol">—</td>
+          <td><span class="dash">—</span></td>
+          <td><span class="dash">—</span></td>
+          <td class="note">no minute data at all — a different state, and already correct</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Why it reads as nothing</h2>
+
+  <p>Two things stack up, and both are mine.</p>
+
+  <div class="callout">
+    <p><b>1. A silent row is drawn in the faintest ink on the desk.</b> When every minute in the window is zero, the bars switch to <span class="scale">ink-3 at 50% opacity</span> — dimmer than an ordinary row. I did that so a quiet minute would not shout. The effect is that the encoding says <i>ignore me</i> at exactly the moment the data says <i>look at me</i>: a name that did 107&times; normal volume and has now stopped.</p>
+    <p><b>2. The whole dead range is one and a half pixels tall.</b> Full height is the active line at 300 trades/min. The dead line is 30. On a 14px band that puts every value from 0 to 30 inside the bottom <span class="scale px">1.4px</span> — so <i>dead</i> and <i>nearly dead</i> and <i>zero</i> all render as the same hairline. The scale is set by the loud end, and it leaves the quiet end no room to be legible.</p>
+  </div>
+
+  <p>The proposed column changes one thing and adds one: <strong>silent rows keep normal ink weight</strong> instead of being dimmed, and <strong>the bars sit on a visible baseline</strong>. Zero then reads as a value resting on a floor rather than as an empty cell. Same data, same scale, same geometry — only the encoding.</p>
+
+  <h2>What each state means</h2>
+
+  <div class="states">
+    <div class="state">
+      <span class="what"><span class="spark prop"><i style="height:14px"></i><i style="height:14px"></i><i style="height:12px"></i><i style="height:14px"></i><i style="height:14px"></i></span></span>
+      <span class="means"><b>Trading now.</b> At or above 300/min, your active line.</span>
+    </div>
+    <div class="state">
+      <span class="what"><span class="spark prop"><i style="height:10px"></i><i style="height:8px"></i><i style="height:7px"></i><i style="height:4px"></i><i style="height:3px"></i></span></span>
+      <span class="means"><b>Fading.</b> Between the dead line and the active line — the verdict holds rather than flipping, so this is the band where a name is on its way somewhere.</span>
+    </div>
+    <div class="state">
+      <span class="what"><span class="spark prop silent"><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i><i style="height:1px"></i></span></span>
+      <span class="means"><b>Measured, and quiet.</b> Every minute counted, every minute zero. Beside a large RVOL this is the most useful row on the board: it ran, and it is over.</span>
+    </div>
+    <div class="state">
+      <span class="what"><span class="dash">—</span></span>
+      <span class="means"><b>Not measured.</b> No minute data reached the desk. Never drawn as zero, because a measurement of nothing and no measurement are different facts.</span>
+    </div>
+  </div>
+
+  <h2>The scale, if you want to check it</h2>
+
+  <table class="scale">
+    <tr><td>300 / min</td><td>active line</td><td class="px">14 px — full height</td></tr>
+    <tr><td>150 / min</td><td>—</td><td class="px">7 px</td></tr>
+    <tr><td>30 / min</td><td>dead line</td><td class="px">1.4 px</td></tr>
+    <tr><td>0 / min</td><td>silent</td><td class="px">1 px — the floor</td></tr>
+  </table>
+
+  <p>The window is the five minutes ending one minute ago. The header carries that offset so it is visible without hovering.</p>
+
+  <footer>Mockup · not deployed · Design</footer>
+</div>
