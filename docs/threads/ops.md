@@ -8536,3 +8536,40 @@ The third entry costs one exact-match line and **cannot be forgotten.**
 than hand-applying it to the box: prefer the version that does not depend on a
 future actor remembering.** When the canonicalisation lands, the `www` entry
 goes dead and harmless — **which is the correct end state for a belt.**
+
+## `X-Forwarded-Proto` is client-supplied today — a trap with no consumer yet — 2026-09-10
+
+**`deploy/aws/nginx.conf:26`:**
+
+```
+map $http_x_forwarded_proto $mointel_forwarded_proto {
+    ""      $scheme;
+    default $http_x_forwarded_proto;
+}
+```
+
+**It passes a CLIENT-SUPPLIED value straight through**, falling back to
+`$scheme` only when the header is absent. **nginx is the edge today** — ports 80
+and 443 face the internet directly — **so that header arrives from the caller.**
+A client can send `X-Forwarded-Proto: http` over TLS and be believed.
+
+**The shape is not wrong, it is early.** Its own comment says *"The distribution
+terminates TLS and tells us so"* — correct **once a CDN or load balancer is in
+front**. There isn't one.
+
+**NOT A LIVE FAULT: nothing in the application reads that header.** Confirmed by
+search across all `.ts`/`.tsx`. **It is a trap waiting for its first consumer,
+and `lib/auth/cookie.ts` would have been it** — deciding a session cookie's
+`Secure` flag is exactly the natural first use, and it would have taken the
+attacker's word for whether the connection was encrypted.
+
+**So the session cookie takes `Secure` from the deployment instead: the
+deployment knows whether it is behind TLS; a request header only knows what it
+was told.** Fails closed — `Secure` unless `AUTH_COOKIE_INSECURE=1`.
+
+**THE FIX IS NOT OBVIOUSLY `$scheme`, WHICH IS WHY IT IS NOT DONE.** Hardcoding
+`$scheme` is right today and wrong the day a distribution lands. The durable
+answer is **trusting the header only from a known proxy address**, and that
+address does not exist yet. **Left as recorded rather than changed**, because a
+unilateral fix here would silently break a future intent the comment already
+states. **Whoever adds a CDN owns this line.**
