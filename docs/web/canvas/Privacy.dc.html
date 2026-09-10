@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; background: #06080b; color: #e9edf3;
+           font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+           -webkit-font-smoothing: antialiased; }
+    a { color: #4d93ff; text-decoration: none; }
+    a:hover { color: #7fb0ff; text-decoration: underline; }
+    a:focus-visible { outline: 2px solid #4d93ff; outline-offset: 3px; border-radius: 2px; }
+    .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, monospace; }
+    h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+    p { margin: 0; text-wrap: pretty; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; background: #06080b;">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 20px 96px; border-bottom: 1px solid #1b212a;">
+    <div style="display: flex; align-items: baseline; gap: 12px;">
+      <span class="mono" style="font-size: 15px; font-weight: 500; letter-spacing: 0.14em; color: #e9edf3;">TMI TRADER</span>
+      <span style="font-size: 13px; color: #8792a3;">True Move Intelligence</span>
+    </div>
+    <nav style="display: flex; align-items: center; gap: 32px;">
+      <a href="/privacy" style="font-size: 14px; color: #e9edf3;">Privacy</a>
+      <a href="/terms" style="font-size: 14px; color: #c7cedb;">Terms</a>
+      <a href="/signin" style="display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border: 1px solid #29313d; border-radius: 4px; font-size: 14px; font-weight: 500; color: #e9edf3;">Sign in</a>
+    </nav>
+  </header>
+
+  <!-- The DRAFT banner. Rendered by the page, driven by a flag in the source file,
+       and it disappears only when he adopts the text. -->
+  <div role="status" style="border-bottom: 1px solid #e8ac33; background: #1a1408; padding: 20px 96px; display: flex; gap: 20px; align-items: flex-start;">
+    <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #e8ac33; padding: 4px 10px; border: 1px solid #e8ac33; border-radius: 3px; white-space: nowrap;">DRAFT</span>
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <p style="font-size: 15px; line-height: 1.6; color: #e9edf3; font-weight: 500;">
+        This policy is a draft and has not been adopted.
+      </p>
+      <p style="font-size: 15px; line-height: 1.6; color: #c7cedb; max-width: 92ch;">
+        It describes what the service intends to do with your information, and it is not yet in force.
+        Do not rely on it. This banner is removed by the operator when the text is adopted, and the
+        adoption date is recorded below.
+      </p>
+    </div>
+  </div>
+
+  <main style="display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 80px; padding: 64px 96px 96px;">
+
+    <nav aria-label="Sections" style="display: flex; flex-direction: column; gap: 0; position: sticky; top: 32px; align-self: start;">
+      <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #8792a3; padding-bottom: 14px;">ON THIS PAGE</span>
+      <a href="#s1" style="font-size: 14px; line-height: 1.5; color: #c7cedb; padding: 9px 0; border-top: 1px solid #1b212a;">1. Who runs this service</a>
+      <a href="#s2" style="font-size: 14px; line-height: 1.5; color: #c7cedb; padding: 9px 0; border-top: 1px solid #1b212a;">2. What we collect</a>
+      <a href="#s3" style="font-size: 14px; line-height: 1.5; color: #c7cedb; padding: 9px 0; border-top: 1px solid #1b212a;">3. What we do not collect</a>
+      <a href="#s4" style="font-size: 14px; line-height: 1.5; color: #c7cedb; padding: 9px 0; border-top: 1px solid #1b212a;">4. Why we hold it</a>
+      <a href="#s5" style="font-size: 14px; line-height: 1.5; color: #c7cedb; padding: 9px 0; border-top: 1px solid #1b212a;">5. Who else sees it</a>
+      <a href="#s6" style="font-size: 14px; line-height: 1.5; color: #c7cedb; padding: 9px 0; border-top: 1px solid #1b212a;">6. How long we keep it</a>
+      <a href="#s7" style="font-size: 14px; line-height: 1.5; color: #c7cedb; padding: 9px 0; border-top: 1px solid #1b212a;">7. Your rights</a>
+      <a href="#s8" style="font-size: 14px; line-height: 1.5; color: #c7cedb; padding: 9px 0; border-top: 1px solid #1b212a; border-bottom: 1px solid #1b212a;">8. Contact</a>
+    </nav>
+
+    <article style="max-width: 68ch;">
+      <h1 style="font-size: 44px; line-height: 1.1; margin-bottom: 20px;">Privacy policy</h1>
+      <p class="mono" style="font-size: 13px; color: #8792a3; margin-bottom: 48px;">
+        DRAFTED [DATE] &nbsp;&middot;&nbsp; ADOPTED &mdash; &nbsp;&middot;&nbsp; LAST CHANGED [DATE]
+      </p>
+
+      <!-- Everything below renders from docs/legal/privacy-policy.md at request time.
+           Shown here as a type specimen so the reading experience can be judged;
+           the words are edited in the markdown file and nowhere else. -->
+      <h2 id="s1" style="font-size: 24px; line-height: 1.25; margin-bottom: 16px;">1. Who runs this service</h2>
+      <p style="font-size: 17px; line-height: 1.7; color: #c7cedb; margin-bottom: 20px;">
+        TMI Trader is operated by [LEGAL ENTITY NAME] of [ADDRESS], reachable at
+        <a href="mailto:[CONTACT EMAIL]">[CONTACT EMAIL]</a>. In this policy "we" means that operator
+        and "you" means the person signed in to the service.
+      </p>
+      <p style="font-size: 17px; line-height: 1.7; color: #c7cedb; margin-bottom: 40px;">
+        This policy covers the website at tmitrader.com and the desk behind it. It does not cover
+        anything Google does with your Google account, which is governed by Google's own policy.
+      </p>
+
+      <h2 id="s2" style="font-size: 24px; line-height: 1.25; margin-bottom: 16px;">2. What we collect</h2>
+      <p style="font-size: 17px; line-height: 1.7; color: #c7cedb; margin-bottom: 20px;">
+        When you sign in with Google, Google gives us three things about you and one identifier:
+      </p>
+      <ul style="margin: 0 0 24px; padding-left: 24px; display: flex; flex-direction: column; gap: 10px;">
+        <li style="font-size: 17px; line-height: 1.7; color: #c7cedb;">Your name, as it appears on your Google account.</li>
+        <li style="font-size: 17px; line-height: 1.7; color: #c7cedb;">Your email address, and whether Google has verified it.</li>
+        <li style="font-size: 17px; line-height: 1.7; color: #c7cedb;">The web address of your Google profile picture.</li>
+        <li style="font-size: 17px; line-height: 1.7; color: #c7cedb;">A permanent account identifier that Google uses for you and reuses for nobody else.</li>
+      </ul>
+      <p style="font-size: 17px; line-height: 1.7; color: #97a1b0; margin-bottom: 40px;">
+        [&hellip; the remaining sections render from the same source file &hellip;]
+      </p>
+
+      <div style="border: 1px solid #1b212a; border-radius: 4px; padding: 24px 28px; background: #0c0f14; display: flex; flex-direction: column; gap: 8px;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #8792a3;">ONE SOURCE</span>
+        <p style="font-size: 14px; line-height: 1.6; color: #97a1b0;">
+          This page renders <span class="mono" style="color: #c7cedb;">docs/legal/privacy-policy.md</span>
+          at request time. The words are edited there and nowhere else, so the page you are reading and
+          the file under review cannot disagree.
+        </p>
+      </div>
+    </article>
+
+  </main>
+
+  <footer style="padding: 40px 96px 56px; border-top: 1px solid #1b212a; background: #0c0f14; display: flex; align-items: center; justify-content: space-between; gap: 40px;">
+    <p style="font-size: 13px; color: #8792a3;">&copy; [YEAR] [LEGAL ENTITY NAME].</p>
+    <nav style="display: flex; gap: 32px;">
+      <a href="/" style="font-size: 14px; color: #c7cedb;">Home</a>
+      <a href="/terms" style="font-size: 14px; color: #c7cedb;">Terms</a>
+      <a href="mailto:[CONTACT EMAIL]" style="font-size: 14px; color: #c7cedb;">Contact</a>
+    </nav>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>

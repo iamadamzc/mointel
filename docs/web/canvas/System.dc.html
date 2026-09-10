@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; background: #06080b; color: #e9edf3;
+           font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+           -webkit-font-smoothing: antialiased; }
+    a { color: #4d93ff; text-decoration: none; }
+    a:hover { color: #7fb0ff; text-decoration: underline; }
+    a:focus-visible { outline: 2px solid #4d93ff; outline-offset: 3px; border-radius: 2px; }
+    .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, monospace; }
+    h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.02em; }
+    p { margin: 0; text-wrap: pretty; }
+  </style>
+</helmet>
+
+<div style="width: 1200px; background: #06080b; padding: 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 56px;">
+
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3;">PUBLIC SURFACE &mdash; THE SYSTEM</p>
+    <h2 style="font-size: 28px; line-height: 1.15;">Same tokens as the desk. Different scale, different density.</h2>
+    <p style="font-size: 16px; line-height: 1.6; color: #97a1b0; max-width: 84ch;">
+      The public pages inherit the desk's palette and typefaces so the product a stranger is shown is
+      the product they get. What does not carry over is the density: the desk is a 12&ndash;13px
+      instrument for someone who already trusts it, and this is 17px prose for someone who does not.
+    </p>
+  </div>
+
+  <!-- Palette, with measured ratios -->
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #8792a3;">TEXT ON THE DESK GROUND &mdash; MEASURED, NOT ASSUMED</span>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+      <div style="border: 1px solid #1b212a; border-radius: 4px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 17px; color: #e9edf3;">Headings and emphasis</span>
+        <span class="mono" style="font-size: 12px; color: #8792a3;">#e9edf3 &nbsp;&middot;&nbsp; 17.07:1</span>
+      </div>
+      <div style="border: 1px solid #1b212a; border-radius: 4px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 17px; color: #c7cedb;">Body copy</span>
+        <span class="mono" style="font-size: 12px; color: #8792a3;">#c7cedb &nbsp;&middot;&nbsp; 12.68:1</span>
+      </div>
+      <div style="border: 1px solid #1b212a; border-radius: 4px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 17px; color: #97a1b0;">Secondary copy</span>
+        <span class="mono" style="font-size: 12px; color: #8792a3;">#97a1b0 &nbsp;&middot;&nbsp; 7.68:1</span>
+      </div>
+      <div style="border: 1px solid #1b212a; border-radius: 4px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 17px; color: #8792a3;">Labels, captions, legal</span>
+        <span class="mono" style="font-size: 12px; color: #8792a3;">#8792a3 &nbsp;&middot;&nbsp; 6.37:1</span>
+      </div>
+    </div>
+
+    <div style="border: 1px solid #e8ac33; border-radius: 4px; padding: 20px 24px; display: flex; gap: 20px; align-items: flex-start;">
+      <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #e8ac33; padding-top: 2px; white-space: nowrap;">EXCLUDED</span>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <p style="font-size: 15px; line-height: 1.6; color: #e9edf3;">
+          <span class="mono">--color-muted</span> <span class="mono" style="color: #8792a3;">#6d788a</span>
+          is not used for text on the public pages.
+        </p>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0; max-width: 88ch;">
+          It measures 4.49:1 on the desk ground and 4.30:1 on a panel &mdash; under the 4.5:1 floor for
+          normal text, either way. It was in the first draft of these pages, on the footer's legal
+          paragraph, which is the worst place on the site to put text a person cannot read.
+          <span class="mono" style="color: #8792a3;">#8792a3</span> replaces it everywhere.
+        </p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+      <div style="border: 1px solid #1b212a; border-radius: 4px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 17px; color: #4d93ff;">Links and focus</span>
+        <span class="mono" style="font-size: 12px; color: #8792a3;">#4d93ff &nbsp;&middot;&nbsp; 6.62:1</span>
+      </div>
+      <div style="border: 1px solid #1b212a; border-radius: 4px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 17px; color: #2fc46f;">Present, confirmed</span>
+        <span class="mono" style="font-size: 12px; color: #8792a3;">#2fc46f &nbsp;&middot;&nbsp; 8.83:1</span>
+      </div>
+      <div style="border: 1px solid #1b212a; border-radius: 4px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 17px; color: #e8ac33;">Caution, draft</span>
+        <span class="mono" style="font-size: 12px; color: #8792a3;">#e8ac33 &nbsp;&middot;&nbsp; 9.91:1</span>
+      </div>
+      <div style="border: 1px solid #1b212a; border-radius: 4px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 17px; color: #f4574e;">Fault</span>
+        <span class="mono" style="font-size: 12px; color: #8792a3;">#f4574e &nbsp;&middot;&nbsp; 6.03:1</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Type -->
+  <div style="display: flex; flex-direction: column; gap: 20px; border-top: 1px solid #1b212a; padding-top: 40px;">
+    <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #8792a3;">TYPE SCALE &mdash; GEIST, GEIST MONO</span>
+    <div style="display: flex; flex-direction: column;">
+      <div style="display: flex; align-items: baseline; gap: 32px; padding: 16px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; width: 190px;">display / 60 / 1.04</span>
+        <span style="font-size: 60px; line-height: 1.04;">Intelligence on what's moving.</span>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 32px; padding: 16px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; width: 190px;">section / 38 / 1.14</span>
+        <span style="font-size: 38px; line-height: 1.14;">Two engines, never merged</span>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 32px; padding: 16px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; width: 190px;">card / 22 / 1.25</span>
+        <span style="font-size: 22px; line-height: 1.25;">What that move is standing on</span>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 32px; padding: 16px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; width: 190px;">lead / 19 / 1.6</span>
+        <span style="font-size: 19px; line-height: 1.6; color: #c7cedb;">The sentence that has to land in three seconds.</span>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 32px; padding: 16px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; width: 190px;">body / 17 / 1.7</span>
+        <span style="font-size: 17px; line-height: 1.7; color: #c7cedb;">Reading copy and every line of the legal pages, set to a 68-character measure.</span>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 32px; padding: 16px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; width: 190px;">small / 14 / 1.6</span>
+        <span style="font-size: 14px; line-height: 1.6; color: #97a1b0;">Micro-copy under a control, and footer navigation.</span>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 32px; padding: 16px 0; border-top: 1px solid #1b212a; border-bottom: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; width: 190px;">label / mono 11 / .16em</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #8792a3;">EYEBROWS, STATUS, COLUMN HEADS</span>
+      </div>
+    </div>
+    <p style="font-size: 15px; line-height: 1.6; color: #97a1b0; max-width: 84ch;">
+      Mono is not decoration here. It marks anything the machine asserted &mdash; a symbol, a price, a
+      timestamp, a state, a status code &mdash; which is the same rule the desk already follows. Prose is
+      never mono.
+    </p>
+  </div>
+
+  <!-- Controls and states -->
+  <div style="display: flex; flex-direction: column; gap: 20px; border-top: 1px solid #1b212a; padding-top: 40px;">
+    <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #8792a3;">CONTROLS &mdash; INCLUDING THE ONE EVERYONE SKIPS</span>
+    <div style="display: flex; align-items: flex-start; gap: 48px; flex-wrap: wrap;">
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span class="mono" style="font-size: 11px; color: #8792a3;">PRIMARY &mdash; GOOGLE'S SPEC, UNRESTYLED</span>
+        <span style="display: inline-flex; align-items: center; gap: 12px; height: 44px; padding: 0 20px 0 14px; background: #ffffff; color: #1f1f1f; border-radius: 4px; font-size: 15px; font-weight: 500;">
+          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          <span>Sign in with Google</span>
+        </span>
+        <span style="font-size: 13px; color: #8792a3; max-width: 30ch;">44px tall, 48px on phones.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span class="mono" style="font-size: 11px; color: #8792a3;">SAME BUTTON, KEYBOARD FOCUS</span>
+        <span style="display: inline-flex; align-items: center; gap: 12px; height: 44px; padding: 0 20px 0 14px; background: #ffffff; color: #1f1f1f; border-radius: 4px; font-size: 15px; font-weight: 500; outline: 2px solid #4d93ff; outline-offset: 3px;">
+          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          <span>Sign in with Google</span>
+        </span>
+        <span style="font-size: 13px; color: #8792a3; max-width: 30ch;">The ring sits outside the white surface, on the ground, where it reads 6.62:1.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span class="mono" style="font-size: 11px; color: #8792a3;">SECONDARY</span>
+        <span style="display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border: 1px solid #29313d; border-radius: 4px; font-size: 15px; font-weight: 500; color: #e9edf3;">Sign in</span>
+        <span style="font-size: 13px; color: #8792a3; max-width: 30ch;">Chrome only. Never competes with the primary action.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span class="mono" style="font-size: 11px; color: #8792a3;">LINK &mdash; REST / HOVER / FOCUS</span>
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
+          <span style="font-size: 16px; color: #4d93ff;">Read the privacy policy</span>
+          <span style="font-size: 16px; color: #7fb0ff; text-decoration: underline;">Read the privacy policy</span>
+          <span style="font-size: 16px; color: #4d93ff; outline: 2px solid #4d93ff; outline-offset: 3px; border-radius: 2px;">Read the privacy policy</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- What is deliberately absent -->
+  <div style="display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #1b212a; padding-top: 40px;">
+    <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #8792a3;">WHAT THESE PAGES DO NOT LOAD</span>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <h3 style="font-size: 17px;">No client JavaScript</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">Nothing on the public pages moves, so nothing needs to hydrate. The argument renders on the first paint or it does not render.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <h3 style="font-size: 17px;">No third-party requests</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">No analytics, no tag manager, no font CDN. A page whose argument is "we take three things from you" cannot open by calling four other companies.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <h3 style="font-size: 17px;">No cookie banner</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">Because there is nothing to consent to: the only cookie is the session, and it is set after you sign in, not before.</p>
+      </div>
+    </div>
+    <p style="font-size: 14px; line-height: 1.6; color: #8792a3; max-width: 92ch;">
+      These are a routing decision as much as a design one. <span class="mono">/_next/static/</span> is
+      already public, but <span class="mono">/_next/image</span> and <span class="mono">/_next/data</span>
+      are deliberately not &mdash; so a public page using <span class="mono">next/image</span>, or a
+      favicon served from <span class="mono">/</span>, renders broken to a stranger and perfectly to
+      everyone on this desk. Every mark on these pages is inline SVG, which sidesteps the whole class.
+    </p>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

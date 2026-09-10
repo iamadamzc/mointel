@@ -239,13 +239,40 @@ that as a rejection.**
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**Opened 2026-09-10. NOTHING BUILT. NOTHING OWNED IN THE FILE TREE YET.**
+**Opened 2026-09-10. FIRST PASS DRAFTED 2026-09-10 17:00 ET, NOTHING DEPLOYED.**
 
-- **Blocking Google publishing:** public home page, privacy policy, terms — all
-  three absent, all three this thread's.
+**Owned in the file tree as of `927641c`+:** `docs/web/` (the design canvas and
+the handover spec) and `docs/legal/privacy-policy.md`. **Nothing under `app/`,
+`components/` or `deploy/` — no route exists yet and none was written.**
+
+- **Drafted:** landing page (desktop and phone), sign-in screen, six sign-in
+  states with their status codes, the privacy page's DRAFT chrome, and the
+  public design system. Canvas published for him to edit directly; the artboard
+  sources are `docs/web/canvas/*.dc.html` and the canvas re-seeds from them.
+- **Privacy policy drafted** as one file with `adopted: null` in frontmatter —
+  **that null is what renders the DRAFT banner.** Every unknown fact is a
+  `[BRACKET]`, and `docs/web/README.md` §3 says who answers each.
+- **Blocking Google publishing:** the public home page and terms. **The privacy
+  policy is drafted but not adopted and not routed.**
 - **Not blocked on:** the domain (verified), the redirect URIs (registered), the
   scopes (set), the OAuth client (his, in the console).
-- **Blocked ON Ops for:** every route and nginx location a public page needs.
+- **Blocked ON Ops for:** every route and nginx location. **The full prefix list
+  is batched and specified in `docs/web/README.md` §2** — `/privacy`, `/terms`,
+  `/signin`, `/auth/`, `/favicon.ico`. **`/` is deliberately not on it.**
+- **CHECKED, NOT A REQUEST: `^~ /_next/static/` is ALREADY public**
+  (`nginx-locations.conf:143`, opened 2026-08-23 with the bundle scanned). **The
+  live trap is that `/_next/image` and `/_next/data` are deliberately NOT** — a
+  public page using `next/image`, or any raster asset served from `/`, renders
+  broken to a stranger and perfectly to everyone here. *These designs use inline
+  SVG only. An Open Graph image will need its own public path.*
+- **A DEFECT FOUND IN THIS THREAD'S OWN FIRST DRAFT, kept here because the
+  next person will reach for the same token:** `--color-muted` `#6d788a`
+  measures **4.49:1** on `#06080b` and **4.30:1** on a panel — **under AA for
+  normal text**, and it was on the footer's legal paragraph. **The public pages
+  use `#8792a3` (6.37:1) as the dimmest text and exclude `--color-muted`
+  entirely.** *The desk's own `ink-3` was raised for exactly this reason once
+  already; `muted` was not in that sweep. Whether it is used for text on the
+  board is Design's to check, not this thread's to assert.*
 - **THE LANDING PAGE AT `/` IS BLOCKED ON IN-APP AUTH EXISTING**, because `/` is
   the board and Basic Auth is the only thing holding it. **Everything else on this
   thread's surface is not.**

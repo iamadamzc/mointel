@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; background: #06080b; color: #e9edf3;
+           font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+           -webkit-font-smoothing: antialiased; }
+    a { color: #4d93ff; text-decoration: none; }
+    a:hover { color: #7fb0ff; text-decoration: underline; }
+    a:focus-visible { outline: 2px solid #4d93ff; outline-offset: 3px; border-radius: 2px; }
+    .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, monospace; }
+    h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+    p { margin: 0; text-wrap: pretty; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; background: #06080b; padding: 48px; box-sizing: border-box;">
+
+  <div style="margin-bottom: 40px;">
+    <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 14px;">SIGN-IN &mdash; EVERY STATE, WITH THE STATUS CODE IT MUST SEND</p>
+    <h2 style="font-size: 28px; line-height: 1.15; margin-bottom: 14px;">A refusal is a screen, and it is not a 200.</h2>
+    <p style="font-size: 16px; line-height: 1.6; color: #97a1b0; max-width: 86ch;">
+      With one provider there is no second path, so none of these say "try again" as the resolution.
+      Each one says what happened, whether anything was shared, and the single next move that is
+      actually available.
+    </p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px;">
+
+    <!-- 1. Working -->
+    <div style="border: 1px solid #1b212a; border-radius: 4px; background: #0c0f14;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #1b212a; background: #11151c;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #8792a3;">SENDING YOU TO GOOGLE</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #4d93ff;">302</span>
+      </div>
+      <div style="padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; min-height: 190px;">
+        <h3 style="font-size: 21px;">Taking you to Google&hellip;</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          You will come back here once Google confirms who you are. Nothing has been shared yet.
+        </p>
+        <p style="font-size: 14px; line-height: 1.6; color: #8792a3; margin-top: 6px;">
+          Not moving? <a href="/auth/google">Go to Google directly</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- 2. Cancelled -->
+    <div style="border: 1px solid #1b212a; border-radius: 4px; background: #0c0f14;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #1b212a; background: #11151c;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #8792a3;">YOU STOPPED AT GOOGLE</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #4d93ff;">200</span>
+      </div>
+      <div style="padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; min-height: 190px;">
+        <h3 style="font-size: 21px;">Sign-in wasn't completed</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          You closed Google's screen before approving it, so nothing was shared and no account was
+          created. That is a normal thing to do.
+        </p>
+        <div style="display: flex; gap: 20px; align-items: center; margin-top: 8px;">
+          <a href="/auth/google" style="font-size: 15px; font-weight: 500;">Sign in with Google</a>
+          <a href="/" style="font-size: 15px; color: #8792a3;">Read what this is first</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Refused -->
+    <div style="border: 1px solid #29313d; border-radius: 4px; background: #0c0f14;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #29313d; background: #11151c;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #e8ac33;">ACCOUNT NOT ADMITTED</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #e8ac33;">403</span>
+      </div>
+      <div style="padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; min-height: 190px;">
+        <h3 style="font-size: 21px;">This account isn't on the desk</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          Google confirmed you are <span class="mono" style="color: #c7cedb;">[you@example.com]</span>,
+          and that address does not have access. Signing in again will reach the same answer, so here is
+          the one that works:
+        </p>
+        <p style="font-size: 15px; line-height: 1.6; color: #c7cedb; margin-top: 6px;">
+          <a href="mailto:[CONTACT EMAIL]">Ask for access</a> &mdash; say which address you used.
+        </p>
+        <p style="font-size: 13px; line-height: 1.6; color: #8792a3; margin-top: 6px;">
+          We kept your email address so we can answer that request, and nothing else.
+          <a href="/privacy">What we hold</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- 4. Google unavailable -->
+    <div style="border: 1px solid #29313d; border-radius: 4px; background: #0c0f14;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #29313d; background: #11151c;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #f4574e;">PROVIDER NOT ANSWERING</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #f4574e;">503</span>
+      </div>
+      <div style="padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; min-height: 190px;">
+        <h3 style="font-size: 21px;">Google sign-in isn't responding</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          The fault is at Google's end, not yours, and Google is currently the only way into the desk &mdash;
+          so there is nothing here that will get you in until it comes back.
+        </p>
+        <p style="font-size: 14px; line-height: 1.6; color: #8792a3; margin-top: 6px;">
+          Blocked and it matters this morning? <a href="mailto:[CONTACT EMAIL]">Tell us</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- 5. Our fault -->
+    <div style="border: 1px solid #29313d; border-radius: 4px; background: #0c0f14;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #29313d; background: #11151c;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #f4574e;">OUR FAULT</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #f4574e;">500</span>
+      </div>
+      <div style="padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; min-height: 190px;">
+        <h3 style="font-size: 21px;">Something broke on our side</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          Google confirmed you, and we failed to finish. You are not signed in and nothing was saved.
+        </p>
+        <p style="font-size: 14px; line-height: 1.6; color: #8792a3; margin-top: 6px;">
+          <span class="mono" style="color: #8792a3;">[REF a1b2c3] &middot; [2026-09-10 07:41 ET]</span><br>
+          Quote that reference if you <a href="mailto:[CONTACT EMAIL]">tell us about it</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- 6. Signed out -->
+    <div style="border: 1px solid #1b212a; border-radius: 4px; background: #0c0f14;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #1b212a; background: #11151c;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #8792a3;">SIGNED OUT</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #2fc46f;">200</span>
+      </div>
+      <div style="padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; min-height: 190px;">
+        <h3 style="font-size: 21px;">You're signed out</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          This browser no longer holds a session. You are still signed in to Google itself &mdash; sign out
+          there too if you are on a shared machine.
+        </p>
+        <div style="display: flex; gap: 20px; align-items: center; margin-top: 8px;">
+          <a href="/auth/google" style="font-size: 15px; font-weight: 500;">Sign back in</a>
+          <a href="/" style="font-size: 15px; color: #8792a3;">Back to the site</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 40px; border-top: 1px solid #1b212a; padding-top: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #8792a3;">WHY NO "TRY AGAIN"</span>
+      <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+        With a single provider, retry is a wall dressed as a door. Each screen offers the one action
+        that can actually change the outcome &mdash; and for a refusal, that is a person, not a button.
+      </p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #8792a3;">WHY THE STATUS CODES ARE ON THE MOCKUP</span>
+      <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+        A denial that returns 200 has already happened on this desk once. The code is part of the
+        design, not an implementation detail, so it is specified here where it can be reviewed.
+      </p>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; background: #06080b; color: #e9edf3;
+           font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+           -webkit-font-smoothing: antialiased; }
+    a { color: #4d93ff; text-decoration: none; }
+    a:hover { color: #7fb0ff; text-decoration: underline; }
+    a:focus-visible { outline: 2px solid #4d93ff; outline-offset: 3px; border-radius: 2px; }
+    .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, monospace; }
+    h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+    p { margin: 0; text-wrap: pretty; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; background: #06080b;">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 20px 96px; border-bottom: 1px solid #1b212a;">
+    <div style="display: flex; align-items: baseline; gap: 12px;">
+      <span class="mono" style="font-size: 15px; font-weight: 500; letter-spacing: 0.14em; color: #e9edf3;">TMI TRADER</span>
+      <span style="font-size: 13px; color: #8792a3;">True Move Intelligence</span>
+    </div>
+    <nav style="display: flex; align-items: center; gap: 32px;">
+      <a href="#engines" style="font-size: 14px; color: #c7cedb;">How it works</a>
+      <a href="#not" style="font-size: 14px; color: #c7cedb;">What it isn't</a>
+      <a href="#identity" style="font-size: 14px; color: #c7cedb;">Your data</a>
+      <a href="/signin" style="display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border: 1px solid #29313d; border-radius: 4px; font-size: 14px; font-weight: 500; color: #e9edf3;">Sign in</a>
+    </nav>
+  </header>
+
+  <section style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; padding: 88px 96px 72px;">
+    <div style="grid-column: span 7;">
+      <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 24px;">US SMALL CAPS &nbsp;&middot;&nbsp; 04:00 ET ONWARD</p>
+      <h1 style="font-size: 60px; line-height: 1.04; margin-bottom: 28px;">Intelligence on what's moving.</h1>
+      <p style="font-size: 19px; line-height: 1.6; color: #c7cedb; max-width: 60ch; margin-bottom: 18px;">
+        A momentum desk for US small caps. From four in the morning it reads the live tape and the
+        paperwork underneath it, and tells you which names actually matter today &mdash; what is moving,
+        why, where it sits in the cycle, and what the move is standing on.
+      </p>
+      <p style="font-size: 17px; line-height: 1.6; color: #97a1b0; max-width: 60ch; margin-bottom: 40px;">
+        Your scanner finds it. This tells you what it is.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+        <a href="/auth/google" style="display: inline-flex; align-items: center; gap: 12px; height: 44px; padding: 0 20px 0 14px; background: #ffffff; color: #1f1f1f; border-radius: 4px; font-size: 15px; font-weight: 500;">
+          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          <span>Sign in with Google</span>
+        </a>
+        <p style="font-size: 14px; line-height: 1.55; color: #8792a3; max-width: 46ch;">
+          We ask Google for your name, email address and profile picture. That is the entire list &mdash;
+          <a href="#identity">here is what happens to it</a>.
+        </p>
+      </div>
+    </div>
+
+    <div style="grid-column: span 5; display: flex; flex-direction: column; gap: 10px;">
+      <div style="border: 1px solid #1b212a; border-radius: 4px; background: #0c0f14; overflow: hidden;">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #1b212a; background: #11151c;">
+          <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #8792a3;">DISCOVERY &nbsp;&middot;&nbsp; 07:41 ET</span>
+          <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #2fc46f;">TAPE LIVE</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 60px 62px 68px 50px 1fr; gap: 10px; padding: 10px 16px; border-bottom: 1px solid #1b212a;">
+          <span class="mono" style="font-size: 10px; letter-spacing: 0.12em; color: #8792a3;">SYM</span>
+          <span class="mono" style="font-size: 10px; letter-spacing: 0.12em; color: #8792a3; text-align: right;">LAST</span>
+          <span class="mono" style="font-size: 10px; letter-spacing: 0.12em; color: #8792a3; text-align: right;">CHG</span>
+          <span class="mono" style="font-size: 10px; letter-spacing: 0.12em; color: #8792a3; text-align: right;">RVOL</span>
+          <span class="mono" style="font-size: 10px; letter-spacing: 0.12em; color: #8792a3;">STRUCTURE</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 60px 62px 68px 50px 1fr; gap: 10px; padding: 14px 16px; border-bottom: 1px solid #1b212a;">
+          <span class="mono" style="font-size: 14px; font-weight: 500; color: #e9edf3;">ABCD</span>
+          <span class="mono" style="font-size: 14px; color: #c7cedb; text-align: right;">4.87</span>
+          <span class="mono" style="font-size: 14px; color: #2fc46f; text-align: right;">+62.4%</span>
+          <span class="mono" style="font-size: 14px; color: #c7cedb; text-align: right;">41x</span>
+          <span style="font-size: 13px; line-height: 1.45; color: #c7cedb;">
+            Float 3.2M, verified &nbsp;&middot;&nbsp; <span style="color: #e8ac33;">$50M ATM live</span><br>
+            <span style="color: #8792a3;">Frontside, day 1 &mdash; readout 06:12</span>
+          </span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 60px 62px 68px 50px 1fr; gap: 10px; padding: 14px 16px;">
+          <span class="mono" style="font-size: 14px; font-weight: 500; color: #e9edf3;">WXYZ</span>
+          <span class="mono" style="font-size: 14px; color: #c7cedb; text-align: right;">1.94</span>
+          <span class="mono" style="font-size: 14px; color: #2fc46f; text-align: right;">+38.1%</span>
+          <span class="mono" style="font-size: 14px; color: #c7cedb; text-align: right;">22x</span>
+          <span style="font-size: 13px; line-height: 1.45;">
+            <span class="mono" style="font-size: 11px; letter-spacing: 0.1em; color: #2fc46f;">DEMAND DETECTED</span><br>
+            <span class="mono" style="font-size: 11px; letter-spacing: 0.1em; color: #8792a3;">NO STRUCTURAL ANALYSIS AVAILABLE</span>
+          </span>
+        </div>
+      </div>
+      <p style="font-size: 12px; color: #8792a3;">Example board. Sample values, not live market data.</p>
+    </div>
+  </section>
+
+  <section id="engines" style="padding: 80px 96px; border-top: 1px solid #1b212a;">
+    <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 20px;">HOW IT WORKS</p>
+    <h2 style="font-size: 38px; line-height: 1.14; margin-bottom: 20px;">Two engines. Deliberately never merged.</h2>
+    <p style="font-size: 17px; line-height: 1.65; color: #97a1b0; max-width: 68ch; margin-bottom: 48px;">
+      One reads the tape. One reads the filings. They answer different questions, they disagree often,
+      and the desk shows you both rather than averaging them into a score.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px;">
+      <div style="border: 1px solid #1b212a; border-radius: 4px; padding: 32px; background: #0c0f14; display: flex; flex-direction: column; gap: 16px;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #2fc46f;">DEMAND &mdash; THE TAPE</span>
+        <h3 style="font-size: 22px;">What the market is doing</h3>
+        <p style="font-size: 16px; line-height: 1.65; color: #c7cedb;">
+          One long-lived connection to the consolidated feed, held open all session. Cumulative volume,
+          relative volume against a twenty-session baseline, live ranking, and the moment a name crosses
+          into the day's discovery list.
+        </p>
+      </div>
+      <div style="border: 1px solid #1b212a; border-radius: 4px; padding: 32px; background: #0c0f14; display: flex; flex-direction: column; gap: 16px;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #4d93ff;">STRUCTURE &mdash; THE PAPERWORK</span>
+        <h3 style="font-size: 22px;">What that move is standing on</h3>
+        <p style="font-size: 16px; line-height: 1.65; color: #c7cedb;">
+          Float, and whether the float can be trusted. Supply waiting in the wings: warrants,
+          convertibles, PIPEs, ATMs, resale shelves, reverse-split distortion. The levels that matter and
+          the warnings attached to them.
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top: 32px; border: 1px solid #29313d; border-radius: 4px; padding: 32px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; align-items: center;">
+      <div style="grid-column: span 7; display: flex; flex-direction: column; gap: 14px;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #e8ac33;">THE RULE THAT MATTERS MOST</span>
+        <h3 style="font-size: 22px;">Unknown stays unknown</h3>
+        <p style="font-size: 16px; line-height: 1.65; color: #c7cedb;">
+          No missing value is quietly rounded to zero, and no classification is asserted that the source
+          did not state. When the tape has found something and the research has nothing to say about it,
+          the desk prints exactly that and leaves the column empty.
+        </p>
+      </div>
+      <div style="grid-column: span 5; border-left: 1px solid #1b212a; padding-left: 32px; display: flex; flex-direction: column; gap: 6px;">
+        <span class="mono" style="font-size: 12px; letter-spacing: 0.1em; color: #2fc46f;">DEMAND DETECTED</span>
+        <span class="mono" style="font-size: 12px; letter-spacing: 0.1em; color: #8792a3;">NO STRUCTURAL ANALYSIS AVAILABLE</span>
+        <p style="font-size: 13px; color: #8792a3; margin-top: 10px;">A real state on the board, not an error.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 80px 96px; border-top: 1px solid #1b212a;">
+    <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 20px;">WHAT IT ANSWERS</p>
+    <h2 style="font-size: 38px; line-height: 1.14; margin-bottom: 44px;">Seven questions, at a glance, before the bell.</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 64px;">
+      <div style="display: flex; gap: 20px; padding: 18px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; padding-top: 4px;">01</span>
+        <span style="font-size: 17px; line-height: 1.5; color: #e9edf3;">Which names actually matter right now</span>
+      </div>
+      <div style="display: flex; gap: 20px; padding: 18px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; padding-top: 4px;">02</span>
+        <span style="font-size: 17px; line-height: 1.5; color: #e9edf3;">Why each one is moving</span>
+      </div>
+      <div style="display: flex; gap: 20px; padding: 18px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; padding-top: 4px;">03</span>
+        <span style="font-size: 17px; line-height: 1.5; color: #e9edf3;">Where it sits in the momentum cycle</span>
+      </div>
+      <div style="display: flex; gap: 20px; padding: 18px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; padding-top: 4px;">04</span>
+        <span style="font-size: 17px; line-height: 1.5; color: #e9edf3;">What the share structure actually looks like</span>
+      </div>
+      <div style="display: flex; gap: 20px; padding: 18px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; padding-top: 4px;">05</span>
+        <span style="font-size: 17px; line-height: 1.5; color: #e9edf3;">Whether the displayed float can be trusted</span>
+      </div>
+      <div style="display: flex; gap: 20px; padding: 18px 0; border-top: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; padding-top: 4px;">06</span>
+        <span style="font-size: 17px; line-height: 1.5; color: #e9edf3;">Whether there is supply waiting behind the move</span>
+      </div>
+      <div style="display: flex; gap: 20px; padding: 18px 0; border-top: 1px solid #1b212a; border-bottom: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; padding-top: 4px;">07</span>
+        <span style="font-size: 17px; line-height: 1.5; color: #e9edf3;">The levels, and the warnings attached to them</span>
+      </div>
+      <div style="display: flex; gap: 20px; padding: 18px 0; border-top: 1px solid #1b212a; border-bottom: 1px solid #1b212a;">
+        <span class="mono" style="font-size: 12px; color: #8792a3; padding-top: 4px;">&mdash;</span>
+        <span style="font-size: 17px; line-height: 1.5; color: #8792a3;">And, plainly, when it does not know</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="not" style="padding: 80px 96px; border-top: 1px solid #1b212a; background: #0c0f14;">
+    <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 20px;">BOUNDARIES</p>
+    <h2 style="font-size: 38px; line-height: 1.14; margin-bottom: 20px;">What it is not.</h2>
+    <p style="font-size: 17px; line-height: 1.65; color: #97a1b0; max-width: 68ch; margin-bottom: 44px;">
+      Four things this product does not do, stated here rather than discovered on day one.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px;">
+      <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #29313d;">
+        <h3 style="font-size: 18px;">Not a scanner</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">It does not filter the universe or replace the one you run. It works on the names a scan has already surfaced, and goes further than one can.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #29313d;">
+        <h3 style="font-size: 18px;">Not a broker</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">No account, no orders, no positions, no connection of any kind to your brokerage. It cannot place a trade and never asks for permission to.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #29313d;">
+        <h3 style="font-size: 18px;">Not signals</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">No entry arrows, no exit alerts, no chat room. It gives you what a decision needs; the decision stays yours.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #29313d;">
+        <h3 style="font-size: 18px;">Not advice</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">An information service about publicly traded securities. Not a broker-dealer, not an investment adviser, and not a recommendation to buy or sell anything.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="identity" style="padding: 80px 96px; border-top: 1px solid #1b212a;">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 64px;">
+      <div style="grid-column: span 6;">
+        <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 20px;">SIGNING IN</p>
+        <h2 style="font-size: 38px; line-height: 1.14; margin-bottom: 24px;">What we ask Google for, and what we don't.</h2>
+        <p style="font-size: 17px; line-height: 1.65; color: #c7cedb; margin-bottom: 20px;">
+          Signing in with Google hands this site three things and nothing else: your name, your email
+          address, and your profile picture. It is the smallest set Google offers.
+        </p>
+        <p style="font-size: 17px; line-height: 1.65; color: #97a1b0; margin-bottom: 32px;">
+          The email is how the desk knows which account is yours and how we reach you about the service.
+          We do not sell it and we do not hand it to advertisers. Ask and the account and everything in
+          it is deleted. The full terms are in the policy.
+        </p>
+        <a href="/privacy" style="font-size: 15px; font-weight: 500;">Read the privacy policy &rarr;</a>
+      </div>
+
+      <div style="grid-column: span 6; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #1b212a;">
+          <span class="mono" style="font-size: 16px; color: #2fc46f; width: 20px;">+</span>
+          <span style="font-size: 16px; color: #e9edf3;">Your name</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #1b212a;">
+          <span class="mono" style="font-size: 16px; color: #2fc46f; width: 20px;">+</span>
+          <span style="font-size: 16px; color: #e9edf3;">Your email address</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #1b212a; border-bottom: 1px solid #29313d;">
+          <span class="mono" style="font-size: 16px; color: #2fc46f; width: 20px;">+</span>
+          <span style="font-size: 16px; color: #e9edf3;">Your profile picture</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #1b212a; margin-top: 14px;">
+          <span class="mono" style="font-size: 16px; color: #8792a3; width: 20px;">&minus;</span>
+          <span style="font-size: 16px; color: #8792a3;">Your Gmail, Drive, Calendar or Contacts</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #1b212a;">
+          <span class="mono" style="font-size: 16px; color: #8792a3; width: 20px;">&minus;</span>
+          <span style="font-size: 16px; color: #8792a3;">Your brokerage, positions or orders</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #1b212a; border-bottom: 1px solid #1b212a;">
+          <span class="mono" style="font-size: 16px; color: #8792a3; width: 20px;">&minus;</span>
+          <span style="font-size: 16px; color: #8792a3;">Permission to post or send anything as you</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 80px 96px; border-top: 1px solid #1b212a;">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 64px; align-items: start;">
+      <div style="grid-column: span 6;">
+        <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 20px;">WHO BUILT IT</p>
+        <h2 style="font-size: 30px; line-height: 1.18; margin-bottom: 24px;">Built for one desk, by the person sitting at it.</h2>
+        <p style="font-size: 17px; line-height: 1.65; color: #97a1b0;">
+          TMI Trader is run by [YOUR NAME OR TRADING ENTITY], [CITY, COUNTRY]. It was built for a working
+          small-cap momentum desk and it is still used on one every morning. [ONE SENTENCE ON WHY YOU
+          BUILT IT.]
+        </p>
+      </div>
+      <div style="grid-column: span 6;">
+        <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 20px;">ACCESS</p>
+        <h2 style="font-size: 30px; line-height: 1.18; margin-bottom: 24px;">[ACCESS TERMS]</h2>
+        <p style="font-size: 17px; line-height: 1.65; color: #97a1b0; margin-bottom: 32px;">
+          [WHO CAN SIGN IN TODAY AND WHAT IT COSTS &mdash; invite only, a waiting list, open, or a price.
+          One short paragraph. This is the question a stranger asks immediately after "what is it".]
+        </p>
+        <a href="/auth/google" style="display: inline-flex; align-items: center; gap: 12px; height: 44px; padding: 0 20px 0 14px; background: #ffffff; color: #1f1f1f; border-radius: 4px; font-size: 15px; font-weight: 500;">
+          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          <span>Sign in with Google</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="padding: 56px 96px 72px; border-top: 1px solid #1b212a; background: #0c0f14;">
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 64px; margin-bottom: 40px;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span class="mono" style="font-size: 14px; font-weight: 500; letter-spacing: 0.14em; color: #e9edf3;">TMI TRADER</span>
+        <span style="font-size: 13px; color: #8792a3;">True Move Intelligence</span>
+      </div>
+      <nav style="display: flex; gap: 40px;">
+        <a href="/privacy" style="font-size: 14px; color: #c7cedb;">Privacy</a>
+        <a href="/terms" style="font-size: 14px; color: #c7cedb;">Terms</a>
+        <a href="mailto:[CONTACT EMAIL]" style="font-size: 14px; color: #c7cedb;">Contact</a>
+        <a href="/signin" style="font-size: 14px; color: #c7cedb;">Sign in</a>
+      </nav>
+    </div>
+    <p style="font-size: 13px; line-height: 1.7; color: #8792a3; max-width: 90ch; margin-bottom: 16px;">
+      TMI Trader is an information service covering publicly traded US equities. It is not a
+      broker-dealer, not an investment adviser, and nothing it displays is a recommendation to buy or
+      sell any security. Market data may be delayed, incomplete or wrong. Trading low-float small-cap
+      equities carries a substantial risk of loss, and past movement indicates nothing about what
+      happens next.
+    </p>
+    <p style="font-size: 13px; color: #8792a3;">&copy; [YEAR] [LEGAL ENTITY NAME]. All rights reserved.</p>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>
