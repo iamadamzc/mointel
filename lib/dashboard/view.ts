@@ -442,12 +442,12 @@ export function sortDiscoveryRows(
 export function baselineLabel(phase: SessionPhase | null): { label: string; title: string } {
   switch (phase) {
     case 'PREMARKET':
-      return { label: 'Gap', title: 'Change from the prior session close, including after hours' };
+      return { label: 'PM Gap', title: 'Change from the prior session close, including after hours' };
     case 'RTH':
-      return { label: 'Day', title: "Change from the prior session's close" };
+      return { label: 'RTH Gap', title: "Change from the prior session's close" };
     case 'AFTER_HOURS':
     case 'POST_MARKET':
-      return { label: 'AH move', title: "Change from today's regular-session close" };
+      return { label: 'AH Gap', title: "Change from today's regular-session close" };
     default:
       /*
        * `CLOSED` AND `NEXT_DAY_PREP` LAND HERE, AND THEY ARE NOT RARE -- they
@@ -467,10 +467,17 @@ export function baselineLabel(phase: SessionPhase | null): { label: string; titl
        * carries `referenceRthCloseBasis`, so the real fix is to read that. Not
        * made here -- that is a behaviour change and this is a rename.
        *
-       * `vs close` is MY choice and not his: it is the only wording that names
-       * the baseline without claiming a session, and `Close` alone would read as
-       * the closing price in a column that already starts with `Price`.
+       * SO IT CARRIES THE FAMILY NOUN AND OMITS THE PREFIX, which is exactly
+       * what it can defend: the quantity IS the across-session gap, and the
+       * only thing unknown is which session's open it precedes. Every other arm
+       * names a session because it has one; this arm does not, and says so by
+       * absence rather than by inventing a word outside the family.
+       *
+       * It replaces `vs close`, which was mine rather than his and was the
+       * tightest string on this header at 2.2px spare -- one font fallback from
+       * truncating on a FIXED string. Bare `Gap` measures 118.5px against 156,
+       * the roomiest option on the row.
        */
-      return { label: 'vs close', title: 'Change from the most recent session close' };
+      return { label: 'Gap', title: 'Change from the most recent session close' };
   }
 }

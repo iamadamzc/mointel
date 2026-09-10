@@ -191,14 +191,14 @@ describe('move label', () => {
  * ------------------------------------------------------------------------- */
 describe('the move label names what the percent is measured against', () => {
   it('calls the premarket move a Gap, which is the denominator in one word', () => {
-    expect(baselineLabel('PREMARKET').label).toBe('Gap');
+    expect(baselineLabel('PREMARKET').label).toBe('PM Gap');
     expect(baselineLabel('PREMARKET').title).toContain('prior session close');
   });
 
   it('changes the word when the reference changes, which is why it is not a constant', () => {
-    expect(baselineLabel('RTH').label).toBe('Day');
-    expect(baselineLabel('AFTER_HOURS').label).toBe('AH move');
-    expect(baselineLabel('POST_MARKET').label).toBe('AH move');
+    expect(baselineLabel('RTH').label).toBe('RTH Gap');
+    expect(baselineLabel('AFTER_HOURS').label).toBe('AH Gap');
+    expect(baselineLabel('POST_MARKET').label).toBe('AH Gap');
     // Four phases, THREE distinct words -- AH and POST_MARKET share a reference
     // and must not drift apart into two labels for one denominator.
     expect(baselineLabel('AFTER_HOURS')).toEqual(baselineLabel('POST_MARKET'));
@@ -213,7 +213,7 @@ describe('the move label names what the percent is measured against', () => {
      * reserved for the within-session number that does not exist yet.
      */
     for (const phase of [null, 'CLOSED', 'NEXT_DAY_PREP'] as const) {
-      expect(baselineLabel(phase).label).toBe('vs close');
+      expect(baselineLabel(phase).label).toBe('Gap');
       expect(baselineLabel(phase).title).toContain('most recent session close');
     }
   });
@@ -226,7 +226,20 @@ describe('the move label names what the percent is measured against', () => {
    */
   it('never returns the reserved word', () => {
     const phases = [null, 'CLOSED', 'PREMARKET', 'RTH', 'AFTER_HOURS', 'POST_MARKET', 'NEXT_DAY_PREP'] as const;
-    for (const phase of phases) expect(baselineLabel(phase).label).not.toBe('Move');
+    /*
+     * CONTAINMENT, NOT IDENTITY. `not.toBe('Move')` passed `AH move` -- a word
+     * reserved as a MEANING is inherited by any label containing it, at scan
+     * speed, whatever the test matched. This was blocked while `AH move`
+     * shipped; his rename to `AH Gap` removed the last string that would fail
+     * it, so the guard and the rename ride together.
+     */
+    for (const phase of phases) {
+      // CASE-INSENSITIVE, and that is not fussiness: `'AH move'.includes('Move')`
+      // is FALSE, so the containment guard still passed the exact string it
+      // exists to reject. Identity -> containment fixed one half and left the
+      // other. Mutation found it; reading it twice did not.
+      expect(baselineLabel(phase).label.toLowerCase()).not.toContain('move');
+    }
   });
 
   /*
