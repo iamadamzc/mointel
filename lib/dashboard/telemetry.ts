@@ -28,6 +28,7 @@ import {
   type SessionVwap,
   type VwapDistance,
 } from '@/lib/market/vwap';
+import { sessionMoveReading, type SessionMoveReading } from '@/lib/dashboard/sessionMove';
 
 export type TelemetrySource = 'ALPACA' | 'SHEET' | 'NONE';
 
@@ -62,6 +63,16 @@ export interface MarketTelemetry {
    */
   vwap: SessionVwap | null;
   vwapDistance: VwapDistance | null;
+
+  /*
+   * The move WITHIN the current session, from that session's own first print.
+   *
+   * Selected here rather than in each component for the same reason `vwap` is:
+   * the board, the Primary strip and the drawer must not resolve three
+   * different sessions for one ticker at one moment. Null outside a session, and
+   * null before the session has traded — never a label with nothing behind it.
+   */
+  sessionMove: SessionMoveReading | null;
 
   haltState: HaltState;
   haltRaw: string | null;
@@ -120,6 +131,11 @@ export function buildTelemetry(input: TelemetryInput): MarketTelemetry {
   if (demand !== null && demand.price !== null) {
     return {
       ...resolveVwap(demand, input.sessionPhase, demand.price),
+      sessionMove: sessionMoveReading(
+        demand.sessionOpens,
+        input.sessionPhase ?? null,
+        demand.price,
+      ),
       ticker: input.ticker,
       price: demand.price,
       percentChange: demand.percentChange,
@@ -154,9 +170,11 @@ export function buildTelemetry(input: TelemetryInput): MarketTelemetry {
   if (sheet) {
     return {
       // A sheet price is not a live print, so it is never placed against a
-      // live session average.
+      // live session average -- nor against a live session OPEN, for the same
+      // reason: the comparison would pair a stale number with a current one.
       vwap: null,
       vwapDistance: null,
+      sessionMove: null,
       ticker: input.ticker,
       price: sheet.price.value,
       percentChange: sheet.changePct.value,
@@ -188,6 +206,7 @@ export function buildTelemetry(input: TelemetryInput): MarketTelemetry {
   return {
     vwap: null,
     vwapDistance: null,
+    sessionMove: null,
     ticker: input.ticker,
     price: null,
     percentChange: null,

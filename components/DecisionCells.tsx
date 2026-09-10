@@ -97,7 +97,64 @@ export function PriceMoveCell({
       ) : (
         <VwapLine telemetry={telemetry} />
       )}
+
+      {/*
+        * THIRD LINE, AND IT SITS WITH THE VWAP RATHER THAN ABOVE IT.
+        *
+        * Line 1 is the ACROSS-session figure; these two are both WITHIN this
+        * session. Grouping them by baseline family means the row reads "this is
+        * what carried in, and these two are what has happened since" -- putting
+        * the move between price and VWAP would split the family and imply the
+        * three are independent readings of one thing.
+        */}
+      <SessionMoveLine telemetry={telemetry} />
     </div>
+  );
+}
+
+/**
+ * The move within this session, from its own opening print.
+ *
+ * THE ANCHOR'S TRUSTWORTHINESS IS ON THE LINE; THE COUNT IS IN THE TITLE.
+ * Measured at his 1,024px floor in the real font, the line has 156px and
+ * `RTH Move +123.4%` uses 103.8 of it -- but appending the count
+ * (`· 3 prints`) needs 168.8 and is 12.8px over. A compact marker fits with
+ * room to spare. So the number goes where a reader who wants it can get it,
+ * and the line carries whether the anchor can be trusted at all.
+ *
+ * THREE STATES, AND `UNKNOWN` IS NOT SILENCE. A solid anchor shows no marker.
+ * A thin one shows `thin`. An unreported count shows `?` -- because silence is
+ * exactly what a SOLID anchor looks like, and collapsing the two would say
+ * "measured, and fine" about a minute nobody counted. Same rule as NULL meaning
+ * NOT MEASURED on the activity window, one column over.
+ */
+function SessionMoveLine({ telemetry }: { telemetry: MarketTelemetry }) {
+  const reading = telemetry.sessionMove;
+  if (!reading) return null;
+
+  const up = reading.move >= 0;
+  const anchor =
+    reading.trust === 'THIN' ? 'thin' : reading.trust === 'UNKNOWN' ? '?' : null;
+
+  return (
+    <span
+      className="num truncate text-[11px] whitespace-nowrap"
+      title={
+        `${reading.label} from ${formatPrice(reading.openPrice)}` +
+        (reading.at ? ` at ${reading.at.slice(11, 16)}` : '') +
+        (reading.tradeCount === null
+          ? ' — the feed reported no trade count for that minute, so how thin the anchor is cannot be said'
+          : ` on ${reading.tradeCount} trades in the anchoring minute`)
+      }
+    >
+      <span className="text-ink-3">{reading.label}</span>{' '}
+      <span className={up ? 'text-pos' : 'text-neg'}>
+        {formatSignedPercent(reading.move)}
+      </span>
+      {anchor ? (
+        <span className="ml-1 text-[9px] tracking-wide text-warn uppercase">{anchor}</span>
+      ) : null}
+    </span>
   );
 }
 
