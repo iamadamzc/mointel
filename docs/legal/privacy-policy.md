@@ -67,7 +67,12 @@ user-agent string, and the time. [CONFIRM WHETHER ANY OTHER FIELD IS LOGGED.]
 **Cookies.** Two, and neither of them follows you anywhere else.
 
 - `mointel_session` — set when you sign in, and how the desk recognises you on
-  your next request. It lasts [DURATION].
+  your next request. **It ends at 20:00 New York time, the close of after-hours
+  trading, rather than lasting a fixed number of days.** Sign in at 04:00 and it
+  covers the whole session; sign in at 19:00 and it covers an hour. A sign-in
+  after 20:00 runs until 20:00 the following day, because a session that has
+  already expired is not a session. It follows the calendar day rather than the
+  trading day, so a Saturday sign-in ends at 20:00 that Saturday.
 - `[FLOW COOKIE NAME]` — set when sign-in *starts*, before you have approved
   anything at Google. It holds two single-use random values that let us check
   that the reply coming back from Google belongs to the request you actually
