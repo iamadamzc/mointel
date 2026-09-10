@@ -228,6 +228,24 @@ load-bearing to the thread that found it. To him it is background.**
 - **The charter already said HEADLINES, NOT EXPLANATIONS and this seat quoted it
   while breaking it all day.** *The rule was not missing; it was unenforced.*
 
+**HE SHARPENED IT AGAIN ON THE SEVENTH SESSION, WITHIN ONE HOUR OF IT STARTING:**
+
+> ***"you are overexplaining. i need details."***
+
+**DETAILS ARE NOT THE SAME THING AS EXPLANATION, AND THIS SEAT WAS SUBSTITUTING
+ONE FOR THE OTHER.** *It reported four peer exchanges by re-deriving each
+finding's argument, and called that detail.*
+
+```
+DETAIL       shas, counts, dates, what is now true, what is now blocked
+EXPLANATION  why it is true, what it resembles, what it teaches
+```
+
+**He wants the first and none of the second.** *Two sessions running have now
+broken this rule while holding it open in front of them, so it is not a
+comprehension problem — it is that this seat writes the argument it just had.*
+**The peer exchange is the charter's material. His report gets its result.**
+
 ### Production, 2026-09-10 06:06 ET
 
 - **`8f8f5d3` on web / research / assess.** Shipped 07:36 ET, clean, **no
