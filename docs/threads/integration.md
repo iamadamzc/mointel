@@ -3797,3 +3797,55 @@ yet — is written on purpose, to look thorough**, and it passes forever. *Desig
 refused to write the mirror guard early for exactly this reason and recorded it
 as owed instead.* **Which is the same discipline as declining to widen a matcher
 blind: the version that looks more complete is the one that proves less.**
+
+## TWO CORRECT GUARDS, AND ONE DISABLES THE OTHER
+
+**Ops, 2026-09-10, found while answering a capacity question that arrived after
+the deploy it was about.**
+
+**The preferred defence against an on-box build is to ship a prebuilt artefact.**
+`deploy.sh:85` skips the build when one is present, and `push-release.sh:98` says
+the gate's own pinned-worktree build **is the one to point at.**
+
+    uname -s on the deploying seat   MINGW64_NT-10.0-26200
+    push-release.sh:109              REFUSING to ship a MINGW64-built artefact
+                                     to a Linux server -- exit 5
+
+> **IT IS THE RIGHT ARTEFACT, AT THE RIGHT SHA, ON THE WRONG PLATFORM.** **So
+> every deploy from the only seat that deploys builds on the box, indefinitely —
+> and the mitigation exists, is preferred, and is documented as preferred.**
+
+### It is NOT "finished work that does not arrive", which is what I first read it as
+
+**That class is a MISSING HOP** — built, wired, and nobody consumes it. **This is
+two guards that are each correct and whose COMPOSITION is not.** *The capacity fix
+was written on the box's side; the platform refusal on the shipper's. Neither
+author could see the other's half.*
+
+**And the refusal should NOT be weakened**: `.next` portability across those
+platforms has never been established here, and **trading a known capacity problem
+for an unverified correctness one is the wrong trade.** *Which is what makes it a
+composition problem rather than a bug — there is no line to fix.*
+
+**Sibling of *the safety was supplied by the defect, so the order of fixes is
+load-bearing*, and of *two fixes that each look right alone and destroy each
+other in one row*.** **Here neither destroys the other's correctness — one simply
+makes the other unusable, silently, forever, at the only place it would be used.**
+
+### And the honest account of the deploy is worth more than the outcome
+
+**`57e3265` went clean. Ops did not price the capacity risk before running it** —
+it checked capture, load, the tip, the enumeration and the gate, **and not the
+thing that took the box down last time.** Its own words: **"the design saved me,
+not my judgement."**
+
+**The exposure was bounded by construction** — heap-capped at 1536MB, niced, and
+run BEFORE the services stop, so a failed build leaves the previous release
+serving. *My question was calibrated to the UNCAPPED build that cost 54 minutes of
+premarket, and 0f had already shipped both halves.* **I asked whether it had
+shipped rather than asserting it had not, which is why it cost a grep and not a
+window.**
+
+> **A clean outcome produced by a guard is not evidence the process priced the
+> risk**, and recording that is what stops the next reader taking this deploy as
+> a well-judged window.
