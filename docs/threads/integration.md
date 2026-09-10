@@ -332,6 +332,14 @@ WITHIN this session, from its own first print       NOT BUILT
       the family, not after it.*
 - **The dark-field sweep, as a gated script**, with the exclusion list printed in
   its own output.
+  - **IT WILL REPORT RESEARCH'S NINE SESSION-OPEN COLUMNS AS DARK, AND BE RIGHT
+    TO.** *Ops verified the columns are correct end to end —
+    `worker/runtime.ts:1852-1860` reads from state, against the hardcoded
+    `volume_base: 0` a hundred lines above at `1752`.* **All nine are NULL on every
+    pre-migration row, which is correct.** **They need an exclusion carrying
+    `field · since · consumer awaited · review by`** — Design's surface is the
+    consumer, **and the review date is what stops the exclusion outliving it.**
+    *Ops's, queued behind the sweep, and it holds up nothing.*
 - **Every deploy builds on the box**, because the artefact path is refused from
   the only deploying seat. Two correct guards; behind the sweep.
 - **POST-DEPLOY VERIFICATION ON THE REVIEW PAGE MUST RE-READ AFTER HYDRATION.**
@@ -380,6 +388,9 @@ WITHIN this session, from its own first print       NOT BUILT
     Coaching's own original message had already offered a full re-pull, so this is
     choosing an option already on the table, not widening one. **If Ops says
     unbounded is materially more work, it goes to him rather than being argued.**
+  - **HE CHOSE THE TIME HIMSELF, ASKED BY OPS: "tonight after 22:00 ET",** over
+    pulling now. **His earlier "one refresh now" is SUPERSEDED by his own second
+    answer — do not quote the first.**
   - **WINDOW: AFTER 02:00Z TONIGHT, AND NOT ON CAPACITY GROUNDS.** *Ops, and it
     said so plainly to stop "after the close" reading as caution.* The read is
     trivial — **307 assessments, 7,650 ticker rows, no `minute_bars`, load 0.76.**
