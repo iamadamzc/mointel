@@ -100,10 +100,17 @@ export function DiscoveryBoard({
    * means Top 25 by float really is the twenty-five tightest floats on the
    * board, which is what the control appears to promise.
    */
-  const sorted = sortDiscoveryRows(rows, sort);
+  /*
+   * The board is passed, not assumed. `discoveryValueFor`'s `rank` case used to
+   * read the DAILY rank on every board, so after the bell the server's AH
+   * ordering was silently replaced by a Daily RVOL ordering while the rank cell
+   * kept printing AH ranks.
+   */
+  const sortBoard = discovery?.board ?? 'DAILY_RVOL';
+  const sorted = sortDiscoveryRows(rows, sort, sortBoard);
   const visible = sorted.slice(0, size);
   const sortActive = sort.key !== DISCOVERY_DEFAULT_SORT.key;
-  const missing = discoveryMissingCount(rows, sort.key);
+  const missing = discoveryMissingCount(rows, sort.key, sortBoard);
   const showFloat = sort.key === 'float';
   // Resolved once: the button, the active marker and the tooltip must never
   // disagree about what the percent change is measured from.

@@ -21,11 +21,14 @@ function row(
     percentChange?: number | null;
     price?: number | null;
     float?: number | null;
+    /** After-hours rank, which is what the AH board orders on. */
+    ahRank?: number | null;
   },
 ): DeskRow {
   return {
     ticker,
     displayedFloat: fields.float ?? null,
+    demand: fields.ahRank === undefined ? null : { afterHours: { rank: fields.ahRank } },
     telemetry: {
       ticker,
       rvolRank: fields.rvolRank ?? null,
@@ -43,7 +46,7 @@ describe('discovery sort', () => {
     expect(DISCOVERY_DEFAULT_SORT).toEqual({ key: 'rank', direction: 'asc' });
 
     const rows = [row('CCC', { rvolRank: 3 }), row('AAA', { rvolRank: 1 }), row('BBB', { rvolRank: 2 })];
-    expect(tickers(sortDiscoveryRows(rows, DISCOVERY_DEFAULT_SORT))).toEqual(['AAA', 'BBB', 'CCC']);
+    expect(tickers(sortDiscoveryRows(rows, DISCOVERY_DEFAULT_SORT, 'DAILY_RVOL'))).toEqual(['AAA', 'BBB', 'CCC']);
   });
 
   it('sorts floats ascending with the tightest first', () => {
@@ -52,7 +55,7 @@ describe('discovery sort', () => {
       row('TINY', { float: 700_000, rvolRank: 2 }),
       row('MID', { float: 9_000_000, rvolRank: 3 }),
     ];
-    const sorted = sortDiscoveryRows(rows, { key: 'float', direction: 'asc' });
+    const sorted = sortDiscoveryRows(rows, { key: 'float', direction: 'asc' }, 'DAILY_RVOL');
     expect(tickers(sorted)).toEqual(['TINY', 'MID', 'BIG']);
   });
 
@@ -69,12 +72,12 @@ describe('discovery sort', () => {
       row('BIG', { float: 40_000_000, rvolRank: 3 }),
     ];
 
-    expect(tickers(sortDiscoveryRows(rows, { key: 'float', direction: 'asc' }))).toEqual([
+    expect(tickers(sortDiscoveryRows(rows, { key: 'float', direction: 'asc' }, 'DAILY_RVOL'))).toEqual([
       'TINY',
       'BIG',
       'NOFLOAT',
     ]);
-    expect(tickers(sortDiscoveryRows(rows, { key: 'float', direction: 'desc' }))).toEqual([
+    expect(tickers(sortDiscoveryRows(rows, { key: 'float', direction: 'desc' }, 'DAILY_RVOL'))).toEqual([
       'BIG',
       'TINY',
       'NOFLOAT',
@@ -82,16 +85,27 @@ describe('discovery sort', () => {
   });
 
   it('counts the rows a sort cannot place, so absence is stated not implied', () => {
+    /*
+     * THE RANKS ARE ON THE FIXTURE NOW, AND THEY HAVE TO BE.
+     *
+     * This case used to omit them and still assert 0 missing ranks -- which
+     * passed only because `discoveryMissingCount` short-circuited `rank` to 0
+     * before looking. Removing that shortcut exposed the assertion as green for
+     * the wrong reason: it claimed "rank is never missing" using rows where
+     * every rank WAS missing. A Discovery row always carries `rvol_rank`
+     * (`WHERE rvol_rank IS NOT NULL`), so the fixture now says so.
+     */
     const rows = [
-      row('A', { float: null, percentChange: 12 }),
-      row('B', { float: 700_000, percentChange: null }),
-      row('C', { float: null, percentChange: 4 }),
+      row('A', { rvolRank: 1, float: null, percentChange: 12 }),
+      row('B', { rvolRank: 2, float: 700_000, percentChange: null }),
+      row('C', { rvolRank: 3, float: null, percentChange: 4 }),
     ];
 
-    expect(discoveryMissingCount(rows, 'float')).toBe(2);
-    expect(discoveryMissingCount(rows, 'changePct')).toBe(1);
-    // Rank is the board's own order; there is nothing to declare missing.
-    expect(discoveryMissingCount(rows, 'rank')).toBe(0);
+    expect(discoveryMissingCount(rows, 'float', 'DAILY_RVOL')).toBe(2);
+    expect(discoveryMissingCount(rows, 'changePct', 'DAILY_RVOL')).toBe(1);
+    // Every Discovery row is ranked by construction, so nothing is missing --
+    // and this now checks that rather than assuming it.
+    expect(discoveryMissingCount(rows, 'rank', 'DAILY_RVOL')).toBe(0);
   });
 
   it('breaks ties on rank then ticker, so the order does not shuffle between polls', () => {
@@ -100,8 +114,8 @@ describe('discovery sort', () => {
       row('AAA', { price: 5, rvolRank: 2 }),
       row('MMM', { price: 5, rvolRank: 2 }),
     ];
-    const first = tickers(sortDiscoveryRows(rows, { key: 'price', direction: 'desc' }));
-    const second = tickers(sortDiscoveryRows([...rows].reverse(), { key: 'price', direction: 'desc' }));
+    const first = tickers(sortDiscoveryRows(rows, { key: 'price', direction: 'desc' }, 'DAILY_RVOL'));
+    const second = tickers(sortDiscoveryRows([...rows].reverse(), { key: 'price', direction: 'desc' }, 'DAILY_RVOL'));
 
     expect(first).toEqual(['AAA', 'MMM', 'ZZZ']);
     expect(second).toEqual(first);
@@ -109,7 +123,7 @@ describe('discovery sort', () => {
 
   it('does not mutate the caller’s array', () => {
     const rows = [row('B', { rvol: 1 }), row('A', { rvol: 9 })];
-    sortDiscoveryRows(rows, { key: 'rvol', direction: 'desc' });
+    sortDiscoveryRows(rows, { key: 'rvol', direction: 'desc' }, 'DAILY_RVOL');
     expect(tickers(rows)).toEqual(['B', 'A']);
   });
 
@@ -119,7 +133,7 @@ describe('discovery sort', () => {
       row('GAPPER', { percentChange: 64.8, rvolRank: 2 }),
       row('DOWN', { percentChange: -8.4, rvolRank: 3 }),
     ];
-    expect(tickers(sortDiscoveryRows(rows, { key: 'changePct', direction: 'desc' }))).toEqual([
+    expect(tickers(sortDiscoveryRows(rows, { key: 'changePct', direction: 'desc' }, 'DAILY_RVOL'))).toEqual([
       'GAPPER',
       'FLAT',
       'DOWN',
@@ -208,5 +222,68 @@ describe('the move label names what the percent is measured against', () => {
     expect(source).not.toContain('Price · Move · VWAP');
     expect(source).toContain('Price · {move.label} · VWAP');
     expect(source).not.toMatch(/^function moveLabel\(/m);
+  });
+});
+
+/* ------------------------------------------------------------------------- *
+ * THE BOARD OWNS THE RANK
+ *
+ * The rank CELL already picked `afterHours.rank` after the bell while the SORT
+ * read the daily rank on every board. So the server ordered the AH board by AH
+ * rank, the client re-sorted it by DAILY rank, and the column printed AH ranks
+ * out of sequence -- a board whose title claims one ordering while it displays
+ * another. He reported the symptom without knowing it was one: "it's not been
+ * clear what it was."
+ * ------------------------------------------------------------------------- */
+describe('the rank sort follows the board, not the day', () => {
+  const rows = [
+    row('AAA', { rvolRank: 1, ahRank: 3 }),
+    row('BBB', { rvolRank: 2, ahRank: 1 }),
+    row('CCC', { rvolRank: 3, ahRank: 2 }),
+  ];
+
+  it('orders the Discovery board by the daily rank', () => {
+    expect(tickers(sortDiscoveryRows(rows, DISCOVERY_DEFAULT_SORT, 'DAILY_RVOL'))).toEqual([
+      'AAA',
+      'BBB',
+      'CCC',
+    ]);
+  });
+
+  /*
+   * THE REGRESSION. The fixture is built so the two orders CANNOT coincide:
+   * daily 1,2,3 maps to AH 3,1,2. Before the fix this returned the daily order
+   * on the AH board, which is the defect, and a fixture where the two agreed
+   * would have passed either way.
+   */
+  it('orders the after-hours board by the after-hours rank', () => {
+    expect(tickers(sortDiscoveryRows(rows, DISCOVERY_DEFAULT_SORT, 'AFTER_HOURS'))).toEqual([
+      'BBB',
+      'CCC',
+      'AAA',
+    ]);
+  });
+
+  it('counts a missing rank against the board being shown', () => {
+    const partial = [row('AAA', { rvolRank: 1, ahRank: 1 }), row('BBB', { rvolRank: 2 })];
+    // BBB has a daily rank and no AH rank: nothing missing by day, one by evening.
+    expect(discoveryMissingCount(partial, 'rank', 'DAILY_RVOL')).toBe(0);
+    expect(discoveryMissingCount(partial, 'rank', 'AFTER_HOURS')).toBe(1);
+  });
+
+  /*
+   * The tie-break reads the same board. Falling back to the daily rank here
+   * would reintroduce the defect one layer down, where it shows only on ties
+   * and is far harder to see -- so the fixture ties the sorted field on purpose.
+   */
+  it('breaks ties on the board’s own rank, not the daily one', () => {
+    const tied = [
+      row('AAA', { rvol: 5, rvolRank: 1, ahRank: 3 }),
+      row('BBB', { rvol: 5, rvolRank: 2, ahRank: 1 }),
+    ];
+    expect(tickers(sortDiscoveryRows(tied, { key: 'rvol', direction: 'desc' }, 'AFTER_HOURS'))).toEqual([
+      'BBB',
+      'AAA',
+    ]);
   });
 });

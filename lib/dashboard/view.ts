@@ -5,6 +5,7 @@
 
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { CyclePhase } from '@/lib/market/cycle';
+import type { DiscoveryBoard } from '@/lib/market/types';
 import type { MomentumTicker, PriorityBucket } from '@/lib/data/types';
 import type { SessionPhase } from '@/lib/market/types';
 
@@ -310,10 +311,29 @@ export const DISCOVERY_DEFAULT_SORT: DiscoverySortState = { key: 'rank', directi
  * regular session has ended (see `MarketTelemetry.percentChange`). Re-deriving
  * it would produce a second, different number under the same name.
  */
-export function discoveryValueFor(row: DeskRow, key: DiscoverySortKey): number | null {
+export function discoveryValueFor(
+  row: DeskRow,
+  key: DiscoverySortKey,
+  board: DiscoveryBoard,
+): number | null {
   switch (key) {
     case 'rank':
-      return row.telemetry.rvolRank;
+      /*
+       * THE BOARD'S OWN RANK, NOT ALWAYS THE DAILY ONE.
+       *
+       * This read `row.telemetry.rvolRank` unconditionally while the rank CELL
+       * already picked `afterHours.rank` after the bell. So the server ordered
+       * the AH board by AH rank, the client re-sorted it by DAILY rank, and the
+       * column printed AH ranks out of sequence -- a board whose title says one
+       * ordering while it displays another.
+       *
+       * `board` is REQUIRED rather than defaulted. A default is what let one
+       * reader disagree with the other for as long as it did: every call site
+       * now has to say which board it means.
+       */
+      return board === 'AFTER_HOURS'
+        ? (row.demand?.afterHours?.rank ?? null)
+        : row.telemetry.rvolRank;
     case 'rvol':
       return row.telemetry.rvol;
     case 'changePct':
@@ -336,9 +356,25 @@ export function discoveryValueFor(row: DeskRow, key: DiscoverySortKey): number |
  * ascending to find the tightest names otherwise shows a clean top of list that
  * is really "the ones we know about", and nothing on screen says so.
  */
-export function discoveryMissingCount(rows: DeskRow[], key: DiscoverySortKey): number {
-  if (key === 'rank') return 0;
-  return rows.reduce((count, row) => (discoveryValueFor(row, key) === null ? count + 1 : count), 0);
+export function discoveryMissingCount(
+  rows: DeskRow[],
+  key: DiscoverySortKey,
+  board: DiscoveryBoard,
+): number {
+  /*
+   * NO SHORTCUT FOR `rank`, AND THAT IS THE POINT.
+   *
+   * This returned 0 immediately for `rank`, encoding an invariant that is only
+   * true on ONE board: every Discovery row has an `rvol_rank` by construction,
+   * because the read selects `WHERE rvol_rank IS NOT NULL`. The after-hours
+   * read ALSO appends daytime rows, which can carry no `ah_rank` at all -- so
+   * on that board the count is not zero and the shortcut said it was.
+   *
+   * Second instance of the same defect as the sort itself: an assumption true
+   * of the daily board, generalised to both. Counting costs one pass over ~50
+   * rows; the shortcut cost a wrong answer on the board nobody checked.
+   */
+  return rows.reduce((count, row) => (discoveryValueFor(row, key, board) === null ? count + 1 : count), 0);
 }
 
 /**
@@ -349,19 +385,30 @@ export function discoveryMissingCount(rows: DeskRow[], key: DiscoverySortKey): n
  * promote absence to the top of the list. `discoveryMissingCount` is what makes
  * that honest on screen.
  */
-export function sortDiscoveryRows(rows: DeskRow[], sort: DiscoverySortState): DeskRow[] {
+export function sortDiscoveryRows(
+  rows: DeskRow[],
+  sort: DiscoverySortState,
+  board: DiscoveryBoard,
+): DeskRow[] {
   const sorted = [...rows];
 
   sorted.sort((a, b) => {
     const primary = compareNumeric(
-      discoveryValueFor(a, sort.key),
-      discoveryValueFor(b, sort.key),
+      discoveryValueFor(a, sort.key, board),
+      discoveryValueFor(b, sort.key, board),
       sort.direction,
     );
     if (primary !== 0) return primary;
     // Ties fall back to the board's own ranking, then to the ticker, so the
     // order is total and does not shuffle between polls.
-    const byRank = compareNumeric(a.telemetry.rvolRank, b.telemetry.rvolRank, 'asc');
+    // The tie-break follows the same board. Falling back to the DAILY rank on
+    // the AH board would reintroduce the defect one layer down, where it would
+    // only show on ties and be far harder to see.
+    const byRank = compareNumeric(
+      discoveryValueFor(a, 'rank', board),
+      discoveryValueFor(b, 'rank', board),
+      'asc',
+    );
     if (byRank !== 0) return byRank;
     return a.ticker.localeCompare(b.ticker);
   });
