@@ -64,20 +64,33 @@ service works and so that we can tell a fault from an attack.
 contains your IP address, the address of the page requested, your browser's
 user-agent string, and the time. [CONFIRM WHETHER ANY OTHER FIELD IS LOGGED.]
 
-**Cookies.** One cookie, set after you sign in, which keeps you signed in.
-It is [COOKIE NAME], it lasts [DURATION], and it is not used to track you
-anywhere else. There are no advertising cookies and no analytics cookies on
-this site, which is why you were not asked to dismiss a banner.
+**Cookies.** Two, and neither of them follows you anywhere else.
+
+- `mointel_session` — set when you sign in, and how the desk recognises you on
+  your next request. It lasts [DURATION].
+- A short-lived cookie set when sign-in *starts*, before you have approved
+  anything at Google. It holds two single-use values that let us check the
+  reply coming back from Google belongs to the request you actually made. It
+  lasts at most ten minutes and is discarded when the sign-in finishes, whether
+  it succeeded or not.
+
+Both are marked `HttpOnly` and `Secure`: no script on the page can read either,
+and they are only ever sent over an encrypted connection.
+
+**There are no advertising cookies and no analytics cookies on this site**,
+which is why you were not asked to dismiss a banner.
 
 ## 3. What we do not collect
 
 - We do not ask Google for access to your Gmail, Drive, Calendar, Contacts,
   photos or any other Google service, and we could not read them if we tried.
 - We have no connection to your brokerage. We do not see your account, your
-  positions, your orders or your balance, and the desk cannot place a trade.
+  positions, your orders or your balance, and the desk cannot place a trade —
+  it has no code that could.
 - We do not ask for permission to post, send or publish anything as you.
 - We do not run advertising trackers, analytics scripts or third-party tag
-  managers on this site.
+  managers on this site. The pages load nothing from anyone else's servers —
+  no fonts, no scripts, no images.
 - We do not ask for your date of birth, your address, your phone number, or
   any government identifier.
 - We do not knowingly collect anything from anyone under 18. The desk is not

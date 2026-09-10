@@ -128,7 +128,8 @@ backstop for someone who signs in without an invite.*
 | # | still open | who |
 | --- | --- | --- |
 | 1 | One sentence on **why** he built it, for the "who built it" block | the trader |
-| 2 | Session cookie name and lifetime; whether any mailing list exists; access-log fields; retention periods for account, logs, email and backups; hosting region; email provider | Ops |
+| 2 | **Session cookie LIFETIME** (`ttlSeconds` is a parameter, not a constant), the **OAuth flow cookie's NAME** (passed into `flowCookie()`), whether any mailing list exists, access-log fields, retention periods for account/logs/email/backups, hosting region, email provider | Ops |
+| 2b | **The policy now asserts the OAuth flow cookie is discarded when sign-in finishes.** `clearedFlowCookie()` exists at `lib/auth/cookie.ts:131` and **nothing calls it yet** — `app/auth/` does not exist. **The callback route must actually call it, or that sentence is false.** | Ops |
 | 3 | Whether an EU/UK audience is in scope — it decides whether the policy needs a lawful-basis section and a supervisory authority | the trader |
 | 4 | Whether Google's "home page" must be `tmitrader.com` itself, or whether a page elsewhere on the domain satisfies it | nobody has confirmed; **do not guess** |
 | 5 | Terms of service — not yet drafted | Web, next |
