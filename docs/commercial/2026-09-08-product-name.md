@@ -419,6 +419,35 @@ Integration. Answers, each a sentence, with the reason.*
    registered on Web's construction, neither Web nor this seat reads that
    surface, Integration flagged it as unverified, and the thread that owns
    the code proved it by type within the hour.
+
+   **Position on the page changed, not a word of it — Web `70198bb`,
+   2026-09-10, on his direction:** *"dont lead with 1-20, dont lead with
+   what its not. lead with the differentiators, what it has that no one else
+   does."* The paragraph opens with the audience and then two negations,
+   which is exactly what he ruled the page must not lead with, so it now
+   introduces the two-engines section, where a plain wholesale description
+   belongs. Still on the page, still verbatim, still the registered
+   statement. Web's note, kept: it is an excellent description and a poor
+   opening, and the two came apart the moment he asked for a lead — it was
+   built to be true, not to be first. Position is Web's; the hero position
+   is a question for him, not for Web.
+
+   **Two rulings of his recorded here because they bound what may be
+   claimed.** *"anyone that trades US market i suppose, but i dont want any
+   overhang on international regs"* — the UK/EU brackets are out of the
+   privacy policy; the service states where it is and who it is for, and
+   the lever is that access is by invitation, so scope is a fact he controls
+   rather than a sentence. It claims no foreign law fails to apply and
+   commits to honouring rights rather than arguing jurisdiction; certainty
+   beyond that posture is a lawyer's opinion and his to commission. And a
+   **Marketing thread** exists as of 2026-09-10 (`docs/threads/marketing.md`,
+   not yet opened): it owns copy and voice, this seat keeps positioning of
+   record and what may be claimed, the tape-and-quotes boundary is written
+   into its charter as a prohibition, and **no competitive landscape study
+   exists** — what this seat holds is tagline-collision work naming
+   ExplainThisMove and Benzinga's WIIM, two rivals for one column, not a
+   study of how anyone positions or prices. If Marketing needs one, it is
+   commissioned through Integration, not assumed to exist.
 3. **An invite request asks for an email address and nothing else.** An
    invite is his to grant and needs only a way to reach the person; a
    free-text "how do you trade" is qualification pitch on the way in and
