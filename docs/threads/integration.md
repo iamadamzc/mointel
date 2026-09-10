@@ -324,6 +324,61 @@ at NOTHING and it was true when written.*
   Nothing is blocked either way; what it decides is whether *"what was the board
   showing when I traded"* is answerable past 09-02.
 
+### AUTH — HIS RULINGS, 2026-09-10 afternoon
+
+- **`"this will be a productized app, we need to do authentication, we have
+  previously discussed doing google and apple for authentication and maybe email
+  link."`** *The desk is becoming a product with users. Preparation, not build.*
+- **`"1, phase 2."`** — **APPLE IS PHASE TWO.** *Ops's scope said "Google + email
+  magic link, both from the start"; email has moved to "maybe" and Apple is
+  deferred.* **Build so a third provider is an addition, not a migration — the
+  `(provider, subject)` key already does that and it is now load-bearing rather
+  than tidy.**
+- **`"2, yes, oath consent. is that required?"`** — **he meant Google's OAuth
+  consent screen. OPEN QUESTION, with Commercial, public docs and citations.**
+
+**WHAT THE DESK ACTUALLY HAS TODAY, MEASURED BY OPS FROM OUTSIDE:**
+
+```
+ports open to the internet     22, 80, 443 -- and nothing else
+app listens on                 127.0.0.1:3000  (not a public interface)
+the guard                      nginx auth_basic, /etc/nginx/mointel-locations.conf
+                               against /etc/nginx/mointel.htpasswd, SERVER level
+http://98.85.49.227:3000/      no response
+https://tmitrader.com/         401 -- nginx's own page, 188 bytes, not the app
+```
+
+- **THE GUARD IS NOT IN THE REPO.** *This seat read `app/page.tsx` and the four API
+  routes, found no guard, and was right — they are covered from outside the
+  checkout.* **A composition you cannot see from a checkout, which is this desk's
+  named shape.**
+- **So auth is not replacing a login system. It is the FIRST one.** One shared
+  Basic Auth password today.
+- **FIVE EXEMPTIONS, each tested:** `/.well-known/acme-challenge/` 404,
+  `/api/health` **401 from outside** (`satisfy any` + allow localhost + deny all),
+  `/review/` and `/mcp/` token-gated by `lib/review/`, `/_next/static/` public.
+- **AN INVALID REVIEW TOKEN RETURNS HTTP 200** with `forbidden`/`unauthorized` copy
+  and **no desk data in the body** — Ops grepped for ticker and table names.
+  **Not a leak; 200-for-denied is poor hygiene. Design's, not urgent.**
+- **THE ONE REAL FINDING: `:80` OFFERS BASIC AUTH WITH NO HTTPS REDIRECT.**
+  **His desk password base64-encoded on the wire.** **Fix instructed by this seat
+  under order-and-process — it hardens transport and changes nothing about who may
+  reach what** — `return 301 https://$host$request_uri`, ACME location exempted,
+  **verified to still answer over `:80` AFTER the change**, in tonight's nginx
+  reload. *Breaking cert renewal to fix a header would be the mirror-guard failure
+  exactly.*
+- **THE SECURITY GROUP IS UNREADABLE: the box is in a THIRD AWS account.**
+  `magellan_admin` is `239732580473`, `management-admin` is `528131355234`, and
+  **both authenticate and see ZERO instances in us-east-1.** *Ops ran the positive
+  control rather than read an empty result as "no rules".* **The port evidence is
+  direct measurement from outside and is the stronger fact anyway.**
+
+**AND `ops.md:7562` IS STALE: "THE BLOCKING PREREQUISITE NOBODY HAS NAMED: THERE IS
+NO DOMAIN".** *Scoped 09-07; `tmitrader.com` was registered by Ops 09-08 ~08:27
+UTC, $16.00, expires 2027-09-08, privacy on, DNS at Route 53.* **Flagged to Ops,
+whose file it is.** **NOT claimed: that the domain half is finished** — nothing is
+known here about what points at the box, or whether SPF, DKIM or DMARC exist.
+
 ### The vocabulary he settled, 2026-09-10
 
 ```
