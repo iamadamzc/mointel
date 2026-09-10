@@ -1802,6 +1802,42 @@ live read, because the constraint lives outside the repo and the code cannot spe
 for it.* **Constraint for what the code guarantees; measurement for what the world
 is doing.**
 
+## A PUBLISHED LEGAL CLAIM IS A REQUIREMENT ON THE CODE, NOT A DESCRIPTION OF IT
+
+**Web, 2026-09-10, `db0b02a`, after auditing its own privacy policy against Ops's
+code rather than agreeing with a compliment.**
+
+**It found its own sentence false.** *The policy said "One cookie, set after you
+sign in."* **There are two, and one is set BEFORE sign-in completes** —
+`lib/auth/cookie.ts:112`, the OAuth `state`/`nonce` cookie, 600 seconds. **A privacy
+policy that under-declares cookies is a defect in the document.**
+
+> **AND THE CORRECTED SENTENCE CREATED AN OBLIGATION ON CODE THAT DOES NOT EXIST
+> YET.** The policy now says the flow cookie **is discarded when sign-in finishes,
+> whether it succeeded or not.** **`clearedFlowCookie()` exists and nothing calls
+> it.** **If the callback route ships without calling it on BOTH paths, the sentence
+> is false in a published legal document.**
+
+**THE INVERSION IS THE POINT.** *Normally a document describes code, and it goes
+stale when the code moves — that is most of this charter.* **A published policy runs
+the other way: the code must satisfy the sentence, and the sentence has a reader
+who can hold him to it.**
+
+- **So the dependency rows in `docs/web/README.md` are a SPEC, not notes.**
+- **The failure path is the one to watch.** *Success is the path anyone tests; a
+  `state` mismatch, a refused consent, an expired code all exit early* — **and an
+  early return that skips the clear passes every test written for the happy case.**
+- **It arrived while the route was being written rather than after**, which is the
+  entire value of it. *A correction to a shipped route is a deploy; a note to a
+  route being written is a line.*
+
+**AND THE THREE CLAIMS THAT HELD ARE WORTH AS MUCH AS THE ONE THAT DID NOT**, because
+Web checked rather than asserted: **no order-placement code exists anywhere** — the
+only Alpaca paths called are `/v2/assets`, `/v2/calendar` and market data, so *"the
+desk cannot place a trade"* was strengthened to *"it has no code that could"*; and
+**`app/` plus `components/` reference ZERO external hosts**, so *"no trackers"* is
+true in the strong form — the pages load nothing from anyone else's servers at all.
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
