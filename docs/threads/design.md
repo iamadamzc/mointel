@@ -3916,6 +3916,58 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## RANK AND RVOL: HE IS RIGHT, AND THE 44px DOES NOT GO WHERE IT IS WANTED
+
+**HIS OBSERVATION IS CORRECT AND I CONFIRMED IT IN THE CODE.** `rankByRvol`
+(`rvol.ts:134`) sorts by `rvol` DESC with a symbol tie-break, so **on the
+Discovery board, sorting by Rank and sorting by RVOL produce the same order.**
+
+### THE WIDTH PREMISE IS WRONG, AND IT IS THE THING THAT MAKES REMOVAL TEMPTING
+
+**`<table className="w-full table-fixed …">` (`:301`).** Under `table-fixed`,
+columns with explicit widths take them and **the remainder goes to the columns
+WITHOUT one — which are `Why` and `Risk`, the two I measured expanding 187 → 635
+between 1024 and 1920.**
+
+**⇒ DELETING THE 44px RANK COLUMN GIVES 44px TO `Why` AND `Risk`. IT GIVES THE
+PRICE CELL NOTHING.** That cell is `w-[172px]` and stays 172px.
+
+**AND THE PRICE COLUMN CAN BE WIDENED WITHOUT TOUCHING RANK — the two decisions
+are unconnected.** So *"44px, which is more than the 34.4px of slack"* compares
+two numbers that do not meet. **The 44px is real and worth having; it is just not
+payment for the thing that needed paying.**
+
+### THREE REASONS THE COLUMN IS NOT REDUNDANT, ONE OF WHICH IS MINE
+
+**1. A DIFFERENT BOARD USES A DIFFERENT RANKING.** `engine.ts:1496` calls
+`rankByAfterHours` on AH participation. **On that board rank has no relationship
+to the RVOL beside it**, so removing the column on Discovery's evidence takes a
+live signal off the other board.
+
+**2. SAME ORDER IS NOT SAME INFORMATION.** Rank is **ordinal**, RVOL is
+**magnitude**. *Rank 1 vs rank 2 does not say 63.9 vs 1.47*, and that gap is what
+this morning's row turned on.
+
+**3. AND THE ONE FROM MY OWN CODE: UNDER A NON-RANK SORT, RANK IS NOT INFERABLE
+FROM POSITION AT ALL.** `DiscoveryBoard.tsx:124-132` sorts **the whole tracked
+set and then takes the top N** — deliberately, so that sorting by Gap does not
+merely reshuffle whoever RVOL admitted. **So a Gap-sorted board's visible twelve
+are NOT the top twelve by rank, and the rank column is the only thing separating
+rank 3 from rank 47 in that list.** *On a rank-sorted board the column restates
+the row's own position; under any other sort it carries information nothing else
+on the row does.*
+
+**⇒ SO THE QUESTION IS NOT WHETHER THEY ARE REDUNDANT. IT IS HOW OFTEN HE SORTS
+BY SOMETHING OTHER THAN RANK — and only he knows.** Integration is right to put
+that to him rather than guess it.
+
+**ONE FLAG SO NOBODY PRICES THE COLUMN WRONG IN EITHER DIRECTION:** the Rank cell
+also renders a **change arrow** (`:511-516`, red/green). **`rvol_rank_change` is
+0 on all 45,249 production rows and `ah_rank_change` on all 36,113** — Ops's
+sweep. **That arrow has never rendered.** It is not value being preserved by
+keeping the column, and it is not a reason to remove it either; **it is a dead
+field on a live column, and it belongs in neither side of the argument.**
+
 ## RULED: `"color"` — AND THE BOUNDARY MATTERS MORE THAN THE RULING
 
 **He was asked which lands first, colour or the number. `"color"`.** So the one
