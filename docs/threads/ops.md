@@ -8344,3 +8344,56 @@ already lost a full session permanently to this exact mechanism"*. **It has not.
 what deletes 09-03 tonight; a bug is what deleted 09-04.** Whether 3 is the right
 number is a real question and **does not need the defect behind it** — borrowing
 one makes the working case look like it has a victim.
+
+## THE APEX TXT RECORD MUST NEVER BE DELETED — 2026-09-10
+
+**Written today, authorised directly by him, and it carries a permanent
+do-not-delete that nothing in the infrastructure enforces.**
+
+```
+zone      Z05508241VIT62AXLR7KN   (tmitrader.com, account 528131355234)
+name      tmitrader.com.          TXT, TTL 300
+value     "google-site-verification=LGNNdGMAC2WGhfeVSkbCUZhtLmOtS4MMJqV8e-26btA"
+change    /change/C02179542M721IKEZV4BU
+```
+
+**Google's own wording: *"To stay verified, don't remove the DNS record from
+your provider, even after verification succeeds."*** Removing it un-verifies the
+domain, which un-verifies the **authorized domain on the OAuth consent screen**,
+which breaks **Sign in with Google**. **Nothing reports that chain.** A future
+seat tidying an unexplained TXT record would take the whole thing down and see
+no error anywhere.
+
+**Verified in three places rather than one:** the Route 53 API read-back
+(byte-identical to what was asked for), a public recursive resolver, and the
+zone's own authoritative nameserver `ns-1952.awsdns-52.co.uk`. **All three
+return the same string.** Google warns propagation can take two or three days;
+it was live immediately, **which is a reason to check rather than to assume
+either way.**
+
+### THE HAZARD THIS RECORD NOW SITS INSIDE, AND WHY THERE IS A SCRIPT
+
+**Route 53 groups records by (name, type), so EVERY TXT value at a name lives in
+ONE record set, and `UPSERT` replaces that set entire.** The obvious command —
+upsert TXT with the value you want — **silently deletes every other TXT value at
+that name.**
+
+**At the apex that is not hypothetical.** The verification token and a future
+SPF record are both apex TXT. **Publishing SPF later with a bare `UPSERT`
+removes the verification**, and neither DNS nor Google nor AWS raises anything.
+
+**THE FIRST WRITE IS THE ONLY ONE THAT IS SAFE BY ACCIDENT.** On an empty set a
+bare upsert and a union are identical — **which is exactly why writing the bare
+version first is how the destructive version gets reused.** So today's write
+used read-append-union against an empty set deliberately, and it is a script
+rather than a command: `deploy/aws/route53-txt-add.mjs`. **It reads the current
+set, appends, upserts the union, reads back, and fails if any pre-existing value
+is missing afterwards.** Use it for SPF, for DMARC, for anything at the apex.
+
+**And "it was empty when I checked" is a fact with a shelf life** — Integration's
+correction, and right. The set was re-read **immediately before** writing, not
+trusted from a reading taken hours earlier, because the gap between the two is
+precisely when a Search Console property gets created.
+
+**NEXT STEP IS HIS, NOT OURS: he clicks verify in Search Console.** Do not poll
+for it and do not schedule a task to.
