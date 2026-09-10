@@ -25,9 +25,9 @@ Every proposed line was checked against `what-it-is-not.md`.
 > It watches the whole small-cap tape and tells you the moment a name joins the day's momentum cohort — while it is joining, not after it has run. Then it goes and reads the filings underneath it, without being asked: what the float actually is, whether the number on your screen can be trusted, and how many shares can reach the market that the float does not count.
 
 **Sub, proposed:**
-> A name is up 40% at 07:15 and nothing you can find explains it. This tells you what the move is standing on. Whether there is a catalyst and how old it is. Where it sits in the run. What the float actually is, and how many shares can reach the market that the float does not count. Before you have to decide. Where it has nothing, it says so.
+> A name is running at 07:15 and nothing you can find explains it. This tells you what the move is standing on. Whether there is a catalyst and how old it is. Where it sits in the run. What the float actually is, and how many shares can reach the market that the float does not count. Before you have to decide. Where it has nothing, it says so.
 
-Why: "watches the whole small-cap tape" sells the tape. "Momentum cohort" is the engine's word; nobody at a desk says it. The 07:15 line is the product's origin and a reader who has lived it recognises it in the first sentence.
+Why: "watches the whole small-cap tape" sells the tape. No percentage in the hero: a move attached to a name, a time and a reader is an outcome, per Commercial. "Momentum cohort" is the engine's word; nobody at a desk says it. The 07:15 line is the product's origin and a reader who has lived it recognises it in the first sentence.
 
 **Hero microcopy, keep:** Access is by invite, and sign-in is handled by Google. / What we hold, and what we never ask for.
 
@@ -35,7 +35,10 @@ Why: "watches the whole small-cap tape" sells the tape. "Momentum cohort" is the
 
 ## 2. Section: what it does that a chart does not
 
-**Header, keep:** Four things, and the fourth is the one that costs people money.
+**Header, current:** Four things, and the fourth is the one that costs people money.
+**Proposed, per Commercial's ruling `e1f9f9f`:** Four things, and the fourth is the one nobody prints.
+
+Why: a sentence about money changing hands is an outcome claim whatever its sign. The float is the number vendors print N/A for and the desk bounds from filings, so that is what the header says.
 
 ### 01 — current: IT FINDS THEM JOINING / Cohort entry, not a leaderboard
 **Proposed:** IT CATCHES THEM COMING INTO PLAY / As it happens, not once it tops a list
@@ -138,7 +141,9 @@ Why: "a working small-cap momentum desk" is a company describing a market. The t
 - The Boundaries sentences. Registered answers.
 - The footer paragraph. Legal text; his to adopt.
 
-## Two flags for Commercial, not changes
+## Commercial's rulings, `e1f9f9f`, applied above
 
-- "Four things, and the fourth is the one that costs people money." A loss statement, not a return claim. I read it as inside the line. Commercial should say so or strike it.
-- "up 40%" and "50% movers" are illustrative moves in prose, not data. If Commercial reads any percentage on the page as a quote, both go and the hero opens on "at 07:15" alone.
+- "costs people money": struck. Replaced with what the fourth thing is and why nobody prints it.
+- "up 40% at 07:15": struck. The hero opens on the time alone.
+- "In August it was 50% movers on nothing anyone could name": cleared, as a statement about what the market did. The moment a "you" or a trade attaches to it, it goes.
+- The principle, kept for the next line: a percentage describing the market's behaviour is a fact of record; one attached to a name, a time and a reader is an outcome.
