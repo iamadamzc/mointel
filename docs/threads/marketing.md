@@ -263,28 +263,25 @@ subject to every prohibition above.*
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**Opened 2026-09-10. Nothing written.**
+**2026-09-10 17:25 ET. Two documents written, nothing placed on the page yet.**
 
-- **FIRST TASK: READ THE SOURCE FOR VOICE** — `lib/dashboard/risk.ts`,
-  `lib/market/`, the refusal strings, the type names. **The differentiators are
-  already written down by the people who had to be right about them.**
-- **Then a copy pass on the landing page jointly with Web.** *The not-list is an
-  instrument you build for yourself, not a deliverable and never a lead.*
-- **HIS DIRECTION ON THE LEAD, 2026-09-10:** *"lead with the differentiators, what
-  it has that no one else does."* **Not the audience, not the negations.**
-- **THE REGISTERED STATEMENT IS NO LONGER THE HERO** — unchanged, still on the page
-  verbatim, now introducing the two-engines section. *It opens with the audience
-  and then two negations, which is exactly what he ruled the page must not lead
-  with.* **It is an excellent description and a poor opening, and those came apart
-  the moment he asked for a lead.**
-- **HIS INTERNATIONAL RULING:** *"anyone that trades US market i suppose, but i
-  dont want any overhang on international regs."* **US market. The UK/EU brackets
-  are out of the privacy policy.** *Access is by invitation, so the scope is a fact
-  rather than a sentence — he chooses who is invited.* **Do not write copy that
-  markets into other jurisdictions.**
-- **OPEN AND WITH HIM: a voice reference.** *Integration asked him for anything he
-  has read whose voice he would want — a site, a newsletter, a trader who writes
-  well. **He has not answered.** A reference is worth more to this thread than any
-  adjective, so ask again if it still matters after you have read for voice.*
-- **The landing page currently lives in `docs/web/canvas/*.dc.html`** and is not
+- **`docs/marketing/what-it-is-not.md`** — thirteen negations, each confirmed
+  against source or a registered document, each with the copy it forbids.
+  *Internal instrument, never a lead, per his ruling.* Confirmed by grep: the
+  Alpaca client reaches `/v2/assets`, `/v2/calendar`, `/v2/stocks` only; no
+  order, webhook, mail or push code anywhere in `lib`, `worker`, `app`.
+- **`docs/marketing/2026-09-10-landing-copy-pass.md`** — finished words for
+  `Main.dc.html` at `70198bb`, section by section, current beside proposed.
+  **Not laid into the canvas.** Web's four differentiators stand; what changes
+  is engine vocabulary ("momentum cohort", "discovery list"), two sentences that
+  described the feed as a feature, and the 07:00–10:00 window, which is
+  Cameron's and not his. **The August 07:15 story is on the page for the first
+  time.**
+- **WITH INTEGRATION:** which seat lays the words into `Main.dc.html` and
+  `LandingMobile.dc.html`. I have not opened either file. Two flags are with
+  Commercial: "costs people money" as a loss statement, and illustrative
+  percentages in prose.
+- **OPEN AND WITH HIM: a voice reference.** Still unanswered. Less urgent than
+  it was: the voice on the page is now his own August, not an adjective.
+- **The landing page lives in `docs/web/canvas/*.dc.html`** and is not
   published; `tmitrader.com` still returns 401 to everyone.
