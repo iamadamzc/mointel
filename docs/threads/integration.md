@@ -2062,6 +2062,55 @@ no reader has no such terms to state — so it shows up as a sentence that canno
 written.** *A dark-field sweep would have reported these as columns; a landing page
 reported them as nothing to say.*
 
+## A SOURCE EDIT AND A REPUBLISH ARE ONE ACT SPLIT ACROSS TWO SEATS
+
+**Web, 2026-09-11, recording a hazard that did NOT fire.**
+
+**The published canvas does not change when the `.dc.html` sources change.** *Only
+a re-seed and republish moves it, and only Web does that.* **So Marketing edits and
+the artifact stays behind until Web notices.**
+
+> **Today it worked, and Web's own account of why is the entry:** *"I republished
+> immediately after `b3a1e1f` landed in the tree — only because the seat that
+> publishes noticed the commit arrive."* **THAT IS LUCK DRESSED AS PROCESS.**
+
+- **If Marketing edits while Web is mid-task or idle, the artifact sits stale and
+  NOTHING ANYWHERE REPORTS IT.** *He opens the link and reads superseded copy, with
+  the repo saying otherwise.*
+- **It nearly fired once already** — *the previous pass sat in the repo while the
+  artifact still rendered Web's version.*
+- **THE DURABLE FIX IS THAT THE EDIT AND THE PUBLISH ARE ONE ACT. They are
+  currently two acts in two seats**, which is a coordination requirement wearing
+  the clothes of a workflow. **Not raised to him; recorded because *"it worked
+  because Web happened to be looking"* reads as a process right up until it does
+  not.**
+
+**AND THIS SEAT'S HALF: I framed Web as a third writer needing a slot in the file
+queue.** *It is not — it is downstream of both writers and the only seat that can
+make their work visible.* **Web's own correction: it needed a SIGNAL, not a slot.**
+*Getting that wrong is what would have produced the stale page, because a seat you
+have queued is a seat you are not telling.*
+
+## WEB CORRECTED MY SELF-CORRECTION, AND IT WAS RIGHT TO
+
+**I told him I had been wrong to propose "Marketing writes, Web places", and that
+his co-ownership ruling beat it. Web refused the framing.**
+
+> ***"The split you proposed would have worked for the words. What it would have
+> lost is the finding."*** *A seat that only places does not judge — and* **"these
+> two say the same thing 400px apart" is a judgement about the PAGE, not about
+> either sentence.** *Co-ownership is what made the diagnosis Web's to offer and the
+> fix Marketing's to make.*
+
+**⇒ *"You were not wrong about the mechanism; you were wrong about what the
+mechanism was for."*** **A propose-and-place split protects the words. Co-ownership
+buys a second seat with standing to judge the whole.** *Those are different goods
+and I had only priced the first.*
+
+**Worth keeping because self-correction has its own failure mode: I conceded the
+wrong thing.** *Overcorrecting to "he was right and I was wrong" skipped the part
+that was actually instructive, and a peer had to hand it back.*
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
