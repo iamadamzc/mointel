@@ -14765,3 +14765,77 @@ third implementation of the session boundary.**
 **HELD until after tonight's deploy.** *The supply bound ships tonight as its own
 named change; a second one in the same window is the attribution failure I have
 been holding everyone else to.*
+
+**145. THE COMPETITOR'S LEVELS ARE MOSTLY ALREADY COMPUTED. AND THE FACT/PROXY
+QUESTION IS NOT DECIDED BY THE FIELD — IT IS DECIDED BY WHETHER THE DESK CARRIES
+THE COMPARISON.**
+
+*Commissioned read, not a build. He said "track the same thing on our watch
+list"; Integration split it and he authorised the levels and continuity half
+only — **no entries, triggers, confirmation rules, targets or chase zones.***
+
+### 1. WHAT EXISTS
+
+| the competitor's field | desk status |
+| --- | --- |
+| **VWAP** | **SHIPS.** Three per session, each with volume and a coverage flag. The board already renders `AH VWAP +$0.027 / +1.0%`. |
+| **today's high / low** | **COMPUTED AND STORED, NOT SHOWN.** `session_high`, `session_low`, `ah_high`, `ah_low`, `rth_final_high`, `rth_final_low`. *No high column on his board.* |
+| **prior session's high** | **AVAILABLE, NOT SURFACED.** `daily_bars` carries OHLC per symbol per date — 24,429 rows over 256 symbols in the 08-23 snapshot. **No fetch needed.** |
+| **premarket high** | **ARCHIVE ONLY.** `outcomes.ts` computes `premarketHigh`/`premarketHighAt` retrospectively. **Not live, not on `ticker_session`.** |
+| **"a familiar face this week"** | **COMPUTED.** `CycleHistory` carries `priorCycles`, `formerRunnerStatus`, `largestPriorAdvancePct` and `asOfTradingDate`, attached to the dossier as `computedCycle`. |
+| **triggers, targets, chase zones** | **NOTHING, DELIBERATELY.** |
+
+**⇒ ONE GENUINE GAP: A LIVE PER-SESSION HIGH.** *`sessionHigh` is whole-day; the
+premarket high exists only in the archive.*
+
+### 2. WHAT THE GAP COSTS
+
+**A per-session high mirrors the session OPEN exactly** — captured in the same
+pass, from the same `vwapSessionForTs` classifier, three more values beside the
+three I just built. *Same traps, same answers: earliest timestamp, corrections
+move it.* **It is the cheapest item on this list and it needs no new data.**
+
+**Prior-session high costs nothing at all** — it is a `daily_bars` read the desk
+already performs for the cycle.
+
+### 3. THE JUDGEMENT, AND IT IS NOT FACT-VERSUS-PROXY
+
+**A prior high IS a fact. Carrying it does not make the desk a signal product.**
+
+> **BUT RENDERING IT AS A DISTANCE FROM LIVE PRICE DOES — because that
+> subtraction has exactly one use.**
+
+*"Prior high 4.80" is an observation. **"Price 4.79 · prior high 4.80" on one row
+is a trigger, rendered as two facts with the reader doing the arithmetic.**
+Nobody has to label anything; proximity does it.*
+
+**AND THE SHAPE IS ALREADY ON HIS BOARD: `AH VWAP +$0.027 / +1.0%` is a level
+expressed as a distance from price.** *So the question is not hypothetical — it
+has a shipped precedent.*
+
+**THE PRECEDENT DOES NOT LICENSE IT, AND THE DIFFERENCE IS REAL. A VWAP IS AN
+AVERAGE — where trading has been, which is context. A HIGH IS A LEVEL SOMEONE
+DEFENDS** — where stops and resting orders cluster, **which is precisely why
+"over the high" is a strategy and "over VWAP" is not.** *An extreme is actionable
+in a way a mean is not.*
+
+**AND THE DESK IS CLOSER THAN IT LOOKS: `NEW_HOD` ALREADY FIRES.** *So "has it
+taken out the high" is already computed. Add a prior-session high and render
+proximity, and the board is one join from "1c from the level, and it just broke a
+prior high" — a trigger with no label on it and nobody having decided to build
+one.*
+
+### SO THE RECOMMENDATION SPLITS THE AUTHORISED HALF IN TWO
+
+**CONTINUITY IS SAFE AND IS THE BETTER HALF.** *`priorCycles` and
+`formerRunnerStatus` cannot be turned into an entry — a familiar face is context
+with no threshold in it. It is also already computed and currently unrendered.*
+
+**LEVELS ARE SAFE AS LEVELS AND NOT AS DISTANCES.** **Carry a number with its
+window named; refuse the gap-to-price rendering.**
+
+**AND THE HONEST LIMIT: THAT IS A RENDERING CONSTRAINT AND RENDERING IS NOT
+MINE.** *I cannot enforce it from the compute — a surface can subtract two
+fields I publish.* **So if the desk wants the guarantee it has to be a stated
+rule on the surface, not a property of the data, and someone other than me has
+to hold it.**
