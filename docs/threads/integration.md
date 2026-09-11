@@ -201,10 +201,10 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-*Opened by the SEVENTH Integration session 2026-09-10 ~07:50 ET (Thursday), which
-re-read all six threads and corrected four blocks below in place; corrections are
-marked where they sit. Base block refreshed 2026-09-10 ~06:20 ET by the sixth
-session, retiring after ~17 hours. **Supersedes the 2026-09-09 block entirely; that block
+*REWRITTEN 2026-09-11 ~05:15 ET (Friday) by the seventh Integration session, after
+~22 hours. **Everything dated 2026-09-10 below is superseded where it conflicts
+with this block.** Sections further down are kept for their mechanisms, not their
+facts. **Supersedes the 2026-09-09 block entirely; that block
 has been removed.** Everything below LIVE STATE is kept for its mechanisms, not
 its facts. **Verify before acting on any of it.***
 
@@ -246,63 +246,47 @@ broken this rule while holding it open in front of them, so it is not a
 comprehension problem — it is that this seat writes the argument it just had.*
 **The peer exchange is the charter's material. His report gets its result.**
 
-### Production, 2026-09-10 06:06 ET
+### PRODUCTION, 2026-09-11 05:15 ET
 
-- **`8f8f5d3` on web / research / assess.** Shipped 07:36 ET, clean, **no
-  override.** *Corrected from `57e3265`, which this seat wrote into the first
-  version of this block and which was already superseded.* **`57e3265` left
-  `Price · PM Gap · VWAP` on Discovery and a hand-typed `Price · Move · VWAP` on
-  Researched Names — two words for one quantity on one screen.** Ops found and
-  fixed it. *The first deploy went mid-premarket on his direct override of a hold
-  this seat had set for after the close.*
-- **`mointel-market` is on `02bf90d`, NOT restarted, release directory confirmed
-  present.** Capture never dropped; bars arrived through the deploy.
-- **`settleMinutes: 0` is LIVE**, confirmed on 8,709 rows carrying the worker's
-  own `activity_config` stamp. **Header and engine agree.**
-- **`minute_bars` holds 09-03, 09-08, 09-09, 09-10. Retention is 3** (env unset).
-  **09-03 goes on the next market-worker restart regardless of anything.**
-- **09-04 is the ENTIRE permanent loss** from the retention defect, established on
-  two independent records.
+```
+web / research / assess    b0610fee
+mointel-market             b0610fee   RESTARTED 08:33Z on his instruction
+user_version               27 pending; 26 LIVE and resolved
+minute_bars                09-08, 09-09, 09-10, 09-11   (09-03 left at the 22:00 roll)
+backups                    12 files, 6.0 GB, NOTHING PRUNES THEM.  62 G free
+```
 
-### UNDEPLOYED AND WAITING FOR TONIGHT, 2026-09-10 08:43 ET
+**TWO DEPLOYS THIS MORNING, BOTH ON HIS WORD.** *`03d9a19` at 08:18Z carried the
+25 → 26 migration; `b0610fe` followed with the health-gate fix.* **The market worker
+restarted at 08:33Z and came back in THREE SECONDS, not seventy** — *Ops had quoted
+a reconnect figure for a restart event and corrected itself.* **Tape gap: ~137 bars
+inside one minute.**
 
-**NOTHING SHIPS INSIDE 07:00-10:00 ET.** *Not a capacity rule — he is reading the
-board.*
+**THE MIGRATION NUMBER THIS DESK HAD NEVER HAD: ~2 minutes at a 1.06 GB store, 260s
+end to end, and the BACKUP is nearly all of it.** **It scales with store size — that
+is the retention multiplier, now measured.**
 
-- **`24e388f` — Design's flat-line fix. HAS A READER AND FIXES A DEFECT HE
-  REPORTED.** *He said there were no sparklines in after-hours; they were there,
-  and a rank-1 name at 107x RVOL was drawing a flat line — the column doing the one
-  job it exists for.* **Two encoding causes, both fixed: a fully silent row dropped
-  to `ink-3/50`, the faintest ink on the desk, and the 0-30 dead range renders
-  inside the bottom 1.4px of a 14px band.** *Same data, same scale, same geometry.*
-  129 files / 1,941 tests / typecheck 0.
-- **`9a090e5` — Research's session-open compute. NO READER YET.** Waiting on
-  Design's surface. **Ops's nine columns landed at `3a0f8a8`.**
+**THE NINE SESSION-OPEN COLUMNS ARE FILLING.** *`pm_open_price` went 0 → 49 within
+minutes, against a control of 8,875 rows written since the restart.* **`rth`/`ah` at
+zero is honest, not a failure — neither session had opened.** **Research's compute
+was DARK for the twelve minutes between the schema landing and the writer arriving,
+and nobody had connected those two facts until Ops measured it.**
 
-**AND THE ENUMERATION IS NOT AN ACCUMULATING BASKET, WHICH IS HOW DESIGN ASKED FOR
-IT.** *"Add it to the held enumeration."* **A bundle is a POINT, not a set** —
-already this charter's rule. **Ops enumerates the tip BY THREAD at the moment of
-shipping and this seat approves THAT.** *There is no basket sitting somewhere
-filling up; there is a moment tonight and whatever the tip holds then.*
+### EVERY SCHEDULED TASK THIS DESK HAS ARMED HAS DIED IN UNDER ELEVEN SECONDS
 
-**A DEFECT FIX IS NOT HELD BEHIND AN UNFINISHED FEATURE.** `24e388f` waits for the
-close, not for the Move family. **If the Move surface is not ready tonight,
-`24e388f` still goes.**
+```
+09-04 recovery       6.1s   reported "running" 14h
+deploy c8b5168       6.0s   reported "running"  8h     -- did NOT deploy
+Coaching extract    10.5s   reported "running"  8h     -- did NOT extract
+```
 
-### THE MANUAL IS A SECOND COPY OF NUMBERS THAT LIVE IN CODE
+**THREE FOR THREE, and each reported `running` indefinitely.** **THE MECHANISM IS
+WITHDRAWN — my call, order-and-process — and is not to be re-armed or taken back to
+him for re-authorisation until somebody understands why they die.** *Asking him to
+re-authorise a 0-for-3 mechanism would be asking for the wrong thing.*
 
-**Design, `00af5e8`, `docs/manual/reading-the-flat-line.html`, at his request:**
-*"what you have described is important for later for a manual. with the images.
-preserve it."* **Figures drawn in CSS from the desk's own tokens at the desk's own
-scale — no linked assets to re-export.**
-
-**THE REGISTER ITEM: if `activeTradesPerMinute`, `deadRatio`, `deadMinutes`,
-`settleMinutes` or the palette move, THE PAGE IS WRONG AND NOTHING FAILS.**
-*It is listed in that folder's README, and **a list is not a guard.*** **Design
-flagged it rather than carrying it alone, and it is this seat's** — it is the
-`ARCHITECTURE.md` §4 shape exactly: **a document proven stale in part, still being
-read as authority.** *One page is a note. A manual growing on top of these
-constants is a second source of truth for the desk's own numbers.*
+**Both pieces of work were done by a present seat instead, this morning, and both
+succeeded.**
 
 ### What shipped and what did not
 
@@ -1038,69 +1022,54 @@ WITHIN this session, from its own first print       NOT BUILT
     start it off the back of the extract approval.**
   - **NOT REQUESTED.** R&D recorded the number so it exists when someone asks.
 
-### Where the six threads stand, re-read 2026-09-10 ~07:50 ET
+### WHERE THE EIGHT THREADS STAND, 2026-09-11 ~05:15 ET
 
-- **Ops** — shipped `8f8f5d3`. *Corrected from `57e3265`, which this block still
-  named here after the Production block above had already been fixed.* **Queued:
-  the dark-field sweep as a gated script; the artefact/platform composition; the
-  579 MB WAL.** Holds the box and the only deploy seat.
-- **Design** — four commits live, **verifying they render now the sha is named.**
-  Holds the Move family surface and the `baselineLabel` proxy item.
-- **Research** — supply verdict live. **The Move compute is BUILT and committed at
-  `9a090e5`, 1,914 tests pass — undeployed, and it has no reader.** *First print of
-  the session, one rule for all three, anchoring minute's trade count travelling
-  beside it; both traps handled by one `bar.ts <= held` comparison.* **Blocked on
-  `ticker_session` store columns, which is Ops's file** — without them Move is
-  live-only and vanishes on any path that reads from the store, the same shape as
-  the sparkline reading `activity_window`.
-- **Coaching** — **its desk extract stops at 09-02 and the gap grows every
-  session.** It established that production has written assessments every trading
-  date with no gap, so **the 09-02 wall is a stale local copy, not a hole**, and
-  `symbol_outcomes` has never existed on production at all. **It has put a
-  three-way choice to him: leave it, one refresh, or a standing cadence.**
-- **Commercial** — idle since 09-08. Naming closed, trademark waived, **vendor
-  decision not due and the risk conversation still Integration's to reopen.**
-- **R&D** — **TREAT AS A STALE ADDRESS.** *Its own words, 2026-09-10: a
-  long-running session asked twice to wind down.* **Standing items for this thread
-  go in the repo where the next R&D seat finds them, never into its inbox.** Holds
-  `lib/archive/` and `symbol_outcomes`; nothing outstanding.
+**EIGHT, not six. Web and Marketing were both created 2026-09-10 at his direction.**
+*The `README.md` table listed six while `commercial.md` existed and was being worked
+in daily — fixed the same day.*
 
-**No scheduled task is armed. Nothing is watching anything.**
+- **Ops** — holds the box and the only deploy seat. **Shipped `03d9a19` and
+  `b0610fe` this morning; `db502fe` (schema 27 + the guard fix) is BUILT AND NOT
+  SHIPPED, awaiting the close.** Queued: the dark-field sweep, the artefact/platform
+  composition, the 579 MB WAL, a backup reaper in `db.ts` so a migration cleans up
+  after itself.
+- **Research** — the Move compute and `SessionOpenState` are live. **Holds the
+  levels/continuity commission (parked) and the 09-09 premarket anomaly.**
+- **Design** — the board. **`b7145fc`, the four-state render, is ON ORIGIN AND NOT IN
+  THE RELEASE** — it rides schema 27's enumeration. Holds the thin-anchor question.
+- **Web** — everything a stranger sees. **The canvas is current and carries a build
+  stamp naming the sha it was seeded from.** Nothing is published to `tmitrader.com`;
+  it still returns 401 to everyone.
+- **Marketing** — copy and voice. **Swept all seven artboards clean against its own
+  not-list.** Co-owns the page copy with Web, his ruling.
+- **Commercial** — positioning, claims, the risk register. **Delivered the competitor
+  read; ruled on three claim questions.** Idle.
+- **Coaching** — **its extract is FRESH for the first time in nine days:** 322
+  assessments, 8,025 ticker rows, `complete_through 2026-09-10`, with its as-of
+  stamp in a `meta` row rather than a filename.
+- **Integration** — this seat.
 
-**ONE STALE SESSION TO CLEAR, AND IT IS WORSE THAN THIS BLOCK SAID.** Read by the
-seventh session 2026-09-10 07:5x ET. `local_870499f5`, *"Mointel: 09-04 recovery
-COUNT-ONLY after the close"*, is `isRunning: true` **fifteen hours** after its last
-activity — **and its transcript is eight messages that end on an unreturned `Bash`
-call.** *It never got past the first pre-flight ssh.*
+### WHAT IS HIS AND OPEN
 
-> **THE COUNT WAS NEVER TAKEN.** The previous block recorded the count as finished
-> work that could not reach a reader. **It is not finished work. There is no
-> number.** *The distinction matters because "nobody has read it" invites someone
-> to go and read it; "it does not exist" means the 16:05-quiet-window pass has to
-> be run again.*
+- **NOTHING IS BLOCKING.** *Everything put to him today was answered, and two items
+  were taken off his list rather than left to sit.*
+- **NOT ASKED YET, AND IT IS ONE CONVERSATION:** **the backups are 6.0 GB across 12
+  files and nothing prunes them.** *His yes to prune was for last night's run, which
+  did not happen.* **It goes with the measured migration cost attached — ~2 minutes
+  per schema deploy, scaling with store size — because retention, pruning and
+  migration time are the same decision.**
 
-**Ops corroborated it independently within the hour, from the metadata rather than
-the transcript:** `createdAt 21:08:19.702Z`, `lastActivityAt 21:08:25.847Z` —
-**6.1 seconds of life, then fourteen hours of `isRunning: true`.** *A count-only
-pass fetches 8,772 symbols in batches; Ops's own five-strata probe took seconds per
-fifty.* **Six seconds cannot have reached a count, a guard, or a database.**
+### THE STANDING SEQUENCE FOR THE NEXT DEPLOY
 
-**AND OPS RETRACTED ITS OWN ACCOUNT OF THE EVENT.** It had reported *"it exited on
-the 'no `ticker_session` rows for 09-04' guard — that was luck, not design"*, having
-never seen the output. **It reasoned about what the script WOULD do and recorded it
-as what it DID.** *This seat checked and reported that the sentence reached no document. **WRONG — the
-search was `docs/` only.** Ops found it in the shipped source at
-`worker/minute-bar-recovery.ts:99`, in the guard's own comment, live at `8f8f5d3`,
-and is fixing it there.* **What survives is the
-wrong-store hazard, which is true of the code either way. What does not survive is
-the guard being PROVEN: it was never exercised, so its only evidence is its negative
-control.** *That correction is Ops's to land in `ops.md`; flagged, not written here.*
+**After 20:00 ET. Ops enumerates and pins; Integration approves the enumeration, not
+a sha.** **If no Integration seat exists at that hour, Ops takes it to him directly
+rather than holding a gated deploy overnight.** *Carrying: schema 27 + the guard fix
+(`db502fe`), Design's four-state render (`b7145fc`), and whatever else has landed.*
 
-**Same failure family as the last hop being structurally impossible — but one step
-earlier, and it is the more dangerous one: a task that hangs looks exactly like a
-task whose report nobody collected.** *Kill the session from the sidebar; the count
-has to be retaken in a quiet window with a seat present.*
-
+**QUOTE THE 20% FIGURE AS "UP TO ~20%", NEVER "20%".** *`pm_vwap_coverage` conflates
+did-not-trade, bars-never-arrived and row-predates-v21 into one value.* **The
+qualifier is the first thing that falls off a number and this desk has paid for that
+twice.**
 
 ### Rulings he made this session, in his words
 
