@@ -2323,6 +2323,48 @@ wrong answer.**
   seats hold real numbers and disagree, ask what exists outside both queries —
   here, what was actually on the screen.**
 
+## THE PROXY OUTLIVES THE FACT IT PROXIES — RETENTION IS A THREE-DAY ANSWER WINDOW
+
+**Ops, 2026-09-11, after nearly reporting a vacuous 100%.**
+
+**It tightened the ~20% figure by checking minute-bar presence instead of the
+coverage field — and its first pass returned 100% for 09-04 and 09-08.**
+**`minute_bars` holds only 09-09, 09-10 and 09-11. Retention is 3.** *So "no
+premarket bar" was measuring the absence of RETAINED BARS, not the absence of
+prints. A query that could only return 100%.*
+
+> **`pm_vwap_coverage` survives in `ticker_session` for EIGHTEEN dates. The bars that
+> would validate it survive for THREE.** **THE PROXY OUTLIVES THE FACT IT PROXIES.**
+
+- **⇒ ANY CHECK OF A DERIVED FIELD AGAINST THE TAPE HAS A THREE-DAY WINDOW, AND A
+  QUESTION DEFERRED PAST IT IS PERMANENTLY UNANSWERABLE.** *Not "harder" — gone.*
+- **AND IT CHANGES THE RETENTION TRADE HE HAS NOT YET BEEN ASKED.** *It was "more
+  retention makes every future migration longer" — measured at ~2 minutes per schema
+  deploy, backup-dominated.* **It is now that against "less retention closes
+  questions about the desk's own derived data."** **Both arms are real and neither
+  was in view yesterday.**
+
+## THREE VACUOUS RESULTS IN ONE INVESTIGATION, ALL CAUGHT BY BEING EXTREME
+
+```
+Research   volume = 0 never occurs in the table        -> 0%     caught
+Ops        board rows with no premarket print          -> 0.0%   caught
+Ops        no retained bars mistaken for no prints     -> 100%   caught
+```
+
+**Every one announced itself by returning an extreme value, and that is the ONLY
+reason any was caught.**
+
+> **THE DANGEROUS VERSION OF EACH OF THESE QUERIES IS THE ONE THAT RETURNS A
+> PLAUSIBLE MIDDLE NUMBER.** *Nobody interrogates 23%.*
+
+- **So "the result looked wrong" is not a method — it is luck that scaled with how
+  broken the query was.**
+- **THE METHOD IS THE ONE RESEARCH USED BEFORE RELAY: could this query have returned
+  a different answer?** *Asked of the query, not of the result, and therefore
+  available at any value it returns.*
+- **Three seats, one morning, and the check that works costs one sentence.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
