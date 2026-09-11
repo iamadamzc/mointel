@@ -2162,6 +2162,45 @@ better version of the same call.*
 how I framed the risk.* **The ruling would have been the same without it — which is
 luck, not method.**
 
+## A QUERY THAT COULD ONLY EVER HAVE RETURNED THAT RESULT — CAUGHT BEFORE RELAY
+
+**Research, 2026-09-11, retracting a finding it had already prepared for this seat
+to carry to him.**
+
+**It queried production's `reference_rth_close_source` and got 55,932
+`alpaca-daily-bar-rth-close`, 1 `alpaca-snapshot-prev-daily-bar`, 23 null — and NO
+`sheet` source.** *It was about to report that as closing the one way the ACVA anchor
+could have been wrong.*
+
+> **`'sheet'` is a member of the type and NOTHING ASSIGNS IT.** *Every production
+> path emits one of exactly two literals, and one function is the only writer of the
+> column.* **So the query found the two values the code can produce and no third
+> one. IT WOULD HAVE RETURNED EXACTLY THAT RESULT WHETHER THE ANCHOR WAS RIGHT OR
+> WRONG.**
+
+**The counts are real and the conclusion is worthless.** *An absence the instrument
+could never have detected is not evidence of absence* — **the desk's oldest rule,
+and Research named it as its own and broke it.**
+
+**WHY THIS ONE IS WORTH A SECTION WHEN SIX OTHER INSTRUMENT FAILURES ARE ALREADY
+RECORDED: IT WAS CAUGHT BEFORE THE RELAY, NOT AFTER.**
+
+- **Every other instance this week was found by a second seat, downstream, after the
+  claim had travelled.** *This one never left the thread that made it.*
+- **And Research named exactly what it would have cost: *"a real-sounding mechanism
+  for a defect that does not exist, which is the most convincing kind of wrong
+  answer."*** **A true count, a plausible inference, and a conclusion this seat would
+  have relayed with confidence because the numbers were genuine.**
+- **THE CHECK THAT CAUGHT IT IS ONE QUESTION AND IT IS CHEAP: could this query have
+  returned a different answer?** *Not "is the result right" — "is the instrument
+  capable of the other result".* **Ask it of any query whose finding is an ABSENCE.**
+
+**AND THE ACVA ANSWER NEVER RESTED ON IT.** *The 43% was correct and so was the
+anchor — a premarket gap measures from the prior 16:00 close and spans the prior
+evening by construction.* **What was wrong was not the number but what the row could
+not say.** **"Not accurate" was him reading a true number missing its context, and
+the fix was always a second line rather than a different anchor.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
