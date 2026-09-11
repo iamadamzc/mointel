@@ -42,3 +42,11 @@ traced to source; nothing describes what might be built.
   what you dont trade than what you do."* The report it names is not rendered,
   so the line stays off the page for now. When the report ships, that sentence
   is the section header.
+
+## Card 02 after the section landed
+
+Web found the section and card 02 said the same thing 400px apart. Ruled: the
+card loses the shared headline and keeps the one line the section does not say.
+Card 02 is now *"IT READS THE FILINGS. YOU DON'T HAVE TO. / Nobody is typing a
+ticker into EDGAR at 07:15"*, three sentences, pointing down. The section is the
+film; the card is one frame of it, not the trailer.
