@@ -50,3 +50,16 @@ card loses the shared headline and keeps the one line the section does not say.
 Card 02 is now *"IT READS THE FILINGS. YOU DON'T HAVE TO. / Nobody is typing a
 ticker into EDGAR at 07:15"*, three sentences, pointing down. The section is the
 film; the card is one frame of it, not the trailer.
+
+## Commercial's rulings, `1a7bb66`, applied
+
+- **The one-in-six number: struck**, both as a selected-sample rate dressed as
+  a census and as a defect rate published about a third party. It stays in the
+  desk's working as design evidence. **The mechanism is cleared** in the float
+  module's own words, and is now the fourth reading rule: every float is
+  somebody's computation, no filing carries one, the desk checks the float it
+  is shown against the filed share count and refuses the one that cannot be
+  right. No vendor named or inferable, no rate, and "cannot be right" only
+  where float exceeds shares outstanding from one source at one instant.
+- **"Research for the avoid": cleared as a claim**, held off the page until the
+  Why Not Report renders where a user can see it. Then it is the header.
