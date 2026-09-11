@@ -3916,6 +3916,54 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## CORRECTION: THE ROW DOES NOT READ `UNKNOWN` TODAY, AND MY BRANCH HAS NEVER RUN
+
+**I told Integration and him that the ACVA row *"today reads UNKNOWN, and UNKNOWN
+renders as nothing — correctly."* The outcome is right and the mechanism is
+wrong, and the difference matters the day the writer lands.**
+
+**Verified at `repo.ts:624`:** *"ALL NINE NULL BECOMES undefined, NOT A SET OF
+NULLS … an empty set renders as a session that has not traded, which is a
+confident-looking claim about a thing nobody looked at."* **With every column
+null, `sessionOpens` is `undefined`, `sessionMoveReading` returns null, and the
+Move line is ABSENT ENTIRELY — it never reaches my `UNKNOWN` branch.**
+
+**⇒ THE `UNKNOWN` BRANCH I COMMITTED AT `b7145fc` IS MUTATION-TESTED, CORRECT,
+AND HAS NEVER EXECUTED IN PRODUCTION.** *It cannot until the market worker
+restarts: the schema shipped and the writer did not, so `worker/runtime.ts`'s
+open-writing lines have never run and **zero of 8,875 rows carry a session-open
+price.*** **My own sentence — "the store's silence predates the question" — turns
+out to describe the entire current state of the column rather than an edge case.**
+
+**AND THE THREE-STATE RULE IS ALREADY THERE ONE LEVEL UP, WHICH I HAD NOT SEEN:**
+*the set was never written* and *this session could not be classified* are
+different facts, and Ops's guard keeps them apart. **I was applying the rule at
+the field while the row already applied it at the set.**
+
+### MY MEASUREMENT QUESTION WAS SELF-ANSWERING, AND THE REAL POPULATION IS UNOBSERVABLE
+
+**I asked for the share of board-visible names in 07:00–10:00 with no premarket
+print. Research ran it: 800 visible rows, 0 untraded — and it is worthless.**
+**`volume = 0` occurs 0 times in 8,025 rows; the minimum is 400.** *Board
+visibility REQUIRES volume — RVOL ranks a name in, and during premarket the
+cumulative volume IS the premarket volume — so "visible AND untraded" is empty by
+construction.* **I asked for a rate whose denominator excludes its own numerator.**
+
+**AND THE REFINEMENT THAT IS MINE, BECAUSE IT IS MY SURFACE:** *Research reads
+the ACVA case as cross-session — ranked by one session, silent in another. True,
+and the mechanism is narrower.* **ACVA sat at RANK 70 with RVOL 0.0x. The board's
+own ranking would never have shown it. He saw it because HE SORTED BY GAP** — and
+`DiscoveryBoard.tsx:124-132` sorts **the whole tracked set and then takes the top
+N**, deliberately, so a user sort decouples visibility from the ranking metric.
+
+**⇒ THE POPULATION WHERE `NO_PRINT` FIRES IS DEFINED BY A CLIENT-SIDE SORT THAT,
+BY HIS OWN RULING, DOES NOT PERSIST.** *"No need for persistence of any kind
+really."* **So no stored query can identify those rows retrospectively — not
+because the query was confounded, but because we deliberately chose not to record
+the thing that defines the population.** *A design ruling made in one week closed
+a measurement in the next, and neither of us noticed the connection until the
+number came back empty.*
+
 ## A PUBLIC CLAIM NOW RESTS ON THIS SURFACE. VERIFIED — AND IT HOLDS BY TYPE.
 
 **Commercial registered a plain statement of the product (`eb0eb7b`) whose last
