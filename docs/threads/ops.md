@@ -8573,3 +8573,114 @@ answer is **trusting the header only from a known proxy address**, and that
 address does not exist yet. **Left as recorded rather than changed**, because a
 unilateral fix here would silently break a future intent the comment already
 states. **Whoever adds a CDN owns this line.**
+
+## A schema deploy costs ~2 minutes and a permanent gigabyte — measured — 2026-09-11
+
+**First real figure. Every previous number was an estimate or a failure.**
+
+```
+08:18:43Z  deploy starts          03d9a19, SCHEMA_VERSION 25 -> 26
+08:20:00Z  backup begins          VACUUM INTO, 1,059,438,592 bytes
+~08:22Z    user_version reads 26
+08:23:03Z  deploy exits           260s total
+```
+
+**The backup is nearly all of it, and it is a full copy of the store.** So the
+cost scales with store size, and **nothing prunes the copies** — 11 files and
+5.0 GB yesterday, **12 and 6.0 GB after this one.**
+
+**⇒ THAT IS THE RETENTION MULTIPLIER WITH A REAL NUMBER UNDER IT.** One trading
+date of `minute_bars` is ~216 MB, so raising retention from 3 sessions to 20
+costs ~3.7 GB of live store — **and makes every future schema deploy copy that
+much more, permanently, forever.** *Disk is 62G free at 20%; the constraint is
+not today, it is the slope.*
+
+**A second deploy the same morning with the schema already current wrote
+`0 backup(s)` and took a fraction of the time** — `db.ts:1128` early-returns.
+**So the cost is per schema BUMP, not per deploy.**
+
+## The health gate could not fail, and I built it that way — 2026-09-11
+
+**`deploy.sh` gates on `curl -fsS http://127.0.0.1/api/health`. Yesterday's `:80`
+redirect turned that into a 301 — and `curl -f` fails only on 4xx/5xx, so A
+REDIRECT EXITS 0.**
+
+**Measured rather than reasoned:**
+```
+curl -fsS http://127.0.0.1/api/health   EXIT 0     (deploy reads: healthy)
+status actually received                301
+the app itself, direct on :3000         200
+```
+**The deploy was healthy and the check proving it was not.** *A gate that cannot
+fail is worse than no gate, because it is believed* — and every subsequent
+deploy would have inherited it silently.
+
+**BOTH HALVES WERE MINE AND BOTH ARE CORRECT.** The redirect: never offer Basic
+Auth over cleartext. The health endpoint: **deliberately built to answer over
+loopback on `:80`**, its own comment naming *"the deploy script, a post-reboot
+probe"*. **Each right, the second broken by the first, neither visible from
+inside the other.** *The composition family again, twice in two days, same seat.*
+
+**HOW IT WAS CAUGHT MATTERS MORE THAN THE FIX: the exit code said 0 and the LOG
+said otherwise** — a 301 body sitting where the health response should have
+been. **Reading the output of a check that had already reported success is the
+opposite of what anyone does with a green gate.**
+
+**Fixed at `b0610fe`: `location = /api/health` restored on `:80` above the
+catch-all, loopback-allowed, `deny all` from outside.** Verified live — **200
+with real JSON from loopback, 403 from the internet.**
+
+## The schema arrives with the deploy; the WRITER arrives with the restart — 2026-09-11
+
+**`RESTART_MARKET=no` is a deploy-safety default and it is correct. It also
+makes a writer-side feature a silent no-op.**
+
+**Research shipped nine session-open columns. They deployed. And:**
+```
+rows in ticker_session today   8,875
+with pm_open_price             0
+POSITIVE CONTROL, rows with a price  1,356, newest updated_at 30s old
+```
+**The writer was alive and writing nothing into them**, because `mointel-market`
+still ran the previous release — **code that has never seen the lines that
+populate those columns.**
+
+**⇒ THE RESTART WAS PRICED AS HOUSEKEEPING AND IT WAS THE FEATURE SWITCH.** *I
+told Integration it "costs nothing extra and stops the marker oscillating" —
+true, and I never asked what it BUYS.* **An action's cost and an action's
+purpose are different questions and I answered only the first.**
+
+**After the restart: `pm_open_price` 0 → 49, same control, 8,875 rows written.**
+**`rth` and `ah` at zero are the honest answer — neither session had opened —
+and only the control makes that distinguishable from "nothing works".**
+
+**AND THE COST WAS WRONG BY TWENTY TIMES.** I quoted ~70 seconds of lost capture
+from a **reconnect** measurement taken on 09-08. **A clean restart re-established
+SIP in 3 seconds**; the tape gap was **one minute — 3 bars in 08:33 against ~140
+either side.** *A number measured under one condition, quoted under another. He
+authorised a cost twenty times larger than the real one; it did not change his
+answer and it could have.*
+
+## Vacuous queries announce themselves by returning 0% or 100% — 2026-09-11
+
+**Three in one morning, across two seats, none of them careless.**
+
+- **Research: `volume = 0` occurs 0 times in 8,025 board rows.** Board visibility
+  requires volume, because RVOL is what ranks a name in — **"visible and
+  untraded" is empty by construction.**
+- **Mine: 0 untraded in 2,075 premarket board rows, every rank band, 0.0%.**
+  Same table, same confound, found independently within the hour.
+- **Mine: 100% of top-N with no premarket bar on 09-04 and 09-08.** **`minute_bars`
+  retains three sessions.** Those dates had been evicted — **the query measured
+  the absence of RETAINED BARS, not the absence of prints.**
+
+**All three were caught because the value was extreme.** *"0 of 2,075" reads like
+a strong finding and I nearly sent it as one.* **⇒ The dangerous version of this
+query is the one that returns a plausible middle number, and nothing in the
+result distinguishes it from a measurement.**
+
+**The structural half is worth more than the three instances: `minute_bars`
+keeps 3 sessions and `ticker_session` keeps 18, so `pm_vwap_coverage` OUTLIVES
+the bars that could verify it.** **A proxy that survives its own referent cannot
+be audited after three days** — and every question of the form *"was this
+coverage value right"* has a shelf life nobody set deliberately.
