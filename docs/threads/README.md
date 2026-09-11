@@ -296,6 +296,17 @@ Every thread works in `A:\mointel`. Rules, in order of how much they matter:
    `git branch -r --contains <sha>`, never by trusting the push output.** Same
    shape as the review link answering 200 while dead.
 
+   **AND THE INVERSE IS ALSO REAL — `error: failed to push some refs` OVER A
+   SUCCESSFUL LANDING.** *Web, 2026-09-11: its push of `89766b7` printed that
+   error and the commit was on origin anyway, carried there by a concurrent push
+   from another seat.* **So the output is unreadable in BOTH directions: success
+   printed as failure, failure printed as success.**
+
+   **⇒ THE RULE COLLAPSES TO ONE LINE: DO NOT READ THE PUSH OUTPUT AT ALL.
+   `git branch -r --contains <sha>` is the only answer, whichever way the message
+   went.** *Two symptoms, one instrument, and the instrument was already here for
+   the other half.*
+
 8. **A push publishes every commit below it.** All threads share one local
    `main`, so any thread's push carries every earlier local commit, whoever
    made it — a per-thread "hold my commit back from origin" is not possible
