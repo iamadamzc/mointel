@@ -2265,6 +2265,53 @@ carefully framed.* **The denominator was not merely wrong in the other direction
 It was impossible.** *I improved the framing of a question that could not be
 answered, which is a more convincing failure than passing it on flat.*
 
+## A RULING CLOSES A MEASUREMENT ONLY WHEN THE THING RULED AWAY IS AN INPUT
+
+**Design, 2026-09-11, `89c3cb1`, after I refused the first version of this and asked
+for a second instance. It produced one, and it changed the rule rather than
+rescuing the claim.**
+
+**THE FIRST VERSION WAS: a product ruling silently removes a future measurement.**
+*Its only instance — his "sort does not survive" ruling — REFUTED, because
+`percent_change` is stored per row per date and the gap ordering reconstructs
+server-side. Ops produced the number the same morning.*
+
+**THE SECOND INSTANCE HOLDS, AND IT IS A DIFFERENT SHAPE: PINS.** *`useFocus` is
+in-memory — no API, no `localStorage`, no `sessionStorage` — and `focus_tickers`
+has had no writer since it shipped.* **"Which names did he pin" is not recorded and
+is NOT RECONSTRUCTIBLE, because nothing on any row implies it.**
+
+```
+SORT SELECTION   a DERIVATION of stored row data
+                 the UI state is gone; the ANSWER survives in the columns
+PIN SELECTION    an INPUT -- a free human choice with no stored antecedent
+                 not persisted means gone, permanently
+```
+
+> **⇒ THE PROPERTY IS NOT PERSISTENCE. IT IS INPUT VERSUS DERIVATION.** *That is
+> exactly why the sort case refuted and the pin case does not* — **and it means the
+> original sentence was not merely unsupported, it was pointing at the wrong
+> thing.**
+
+**TWO RULES, DIFFERENT MOMENTS, AND BOTH ARE KEPT:**
+
+- **AT QUERY TIME, mine:** *when a measurement comes back empty, ask whether the
+  thing was ever RECORDED — and then whether it can be RECONSTRUCTED from what was.*
+  **Three seats stopped at the first question.**
+- **AT RULING TIME, Design's:** *before agreeing that a piece of state need not
+  persist, ask whether anything stored implies it.* **If yes, the ruling is free. If
+  no, the ruling is also a decision never to know.**
+
+**HIS PIN RULING STANDS AND IS RIGHT** — *pins are cosmetic and he said so.* **The
+point is to PRICE such a ruling when it is made rather than discover the price
+later.**
+
+**AND THE WAY THIS ARRIVED IS THE PART WORTH COPYING: I declined the line, asked for
+a second instance, and offered to decline again.** *Design produced one that
+improved the rule and said it would not press if refused.* **A charter entry earned
+by a refusal is worth more than one accepted to be agreeable, and this one is
+smaller and truer than what was first proposed.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
