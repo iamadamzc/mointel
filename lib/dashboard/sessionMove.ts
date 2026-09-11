@@ -24,6 +24,7 @@ import {
   vwapSessionForPhase,
   type SessionOpen,
   type SessionOpenSet,
+  type SessionOpenState,
   type VwapSession,
 } from '@/lib/market/vwap';
 
@@ -47,10 +48,20 @@ export type AnchorTrust = 'SOLID' | 'THIN' | 'UNKNOWN';
 export interface SessionMoveReading {
   /** `PM Move` / `RTH Move` / `AH Move`. Never contains `Gap`. */
   label: string;
-  /** Signed percent, price now against the session's opening print. */
-  move: number;
-  /** The opening print itself, so a reader can see what it is measured from. */
-  openPrice: number;
+  /**
+   * WHICH KIND OF ABSENCE, when there is one.
+   *
+   * This used to return `null` for a session that had not begun AND for one
+   * running with nothing traded, so the most informative state on the board --
+   * *this name is not trading in a live session* -- rendered as nothing. That
+   * is the flat-line defect, one field over: two causes, one null, and it said
+   * neither.
+   */
+  state: SessionOpenState;
+  /** Signed percent against the opening print. Null unless `state` is OPEN. */
+  move: number | null;
+  /** The opening print itself. Null unless `state` is OPEN. */
+  openPrice: number | null;
   /** Minute the anchor came from — WHICH print, not just that there was one. */
   at: string | null;
   trust: AnchorTrust;
@@ -123,14 +134,36 @@ export function sessionMoveReading(
   if (price === null || !Number.isFinite(price)) return null;
 
   const open = opens[VWAP_SESSION_KEY[vwapSessionForPhase(phase)]];
-  if (!open || open.price === null || !Number.isFinite(open.price) || open.price <= 0) {
-    return null;
+  if (!open) return null;
+
+  const traded =
+    open.price !== null && Number.isFinite(open.price) && open.price > 0 && open.state === 'OPEN';
+
+  if (!traded) {
+    /*
+     * A READING WITHOUT A NUMBER, so the surface can tell the absences apart.
+     * `NO_PRINT` is a measurement and belongs on screen; `UNKNOWN` is the
+     * store admitting it cannot say and must NOT be drawn as `NO_PRINT` --
+     * that would put "not trading in a live session" on a name where nobody
+     * looked, which is the same error in the other direction.
+     */
+    return {
+      label: sessionMoveLabel(phase),
+      state: open.state,
+      move: null,
+      openPrice: null,
+      at: open.at,
+      trust: 'UNKNOWN',
+      tradeCount: open.tradeCount,
+    };
   }
 
+  const openPrice = open.price as number;
   return {
     label: sessionMoveLabel(phase),
-    move: ((price - open.price) / open.price) * 100,
-    openPrice: open.price,
+    state: 'OPEN',
+    move: ((price - openPrice) / openPrice) * 100,
+    openPrice,
     at: open.at,
     trust: trustOf(open, config),
     tradeCount: open.tradeCount,

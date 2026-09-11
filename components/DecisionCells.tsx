@@ -132,6 +132,37 @@ function SessionMoveLine({ telemetry }: { telemetry: MarketTelemetry }) {
   const reading = telemetry.sessionMove;
   if (!reading) return null;
 
+  /*
+   * FOUR STATES IN, TWO LINES OUT, AND THE SPLIT IS THE POINT.
+   *
+   *   OPEN         a number, with its anchor's trustworthiness beside it
+   *   NO_PRINT     "not traded" -- a MEASUREMENT, and the one he asked for:
+   *                a large Gap over this says the move is already over
+   *   NOT_STARTED  nothing. The session has not begun; there is nothing to say
+   *   UNKNOWN      nothing. The STORE cannot tell NOT_STARTED from NO_PRINT
+   *
+   * `UNKNOWN` AND `NO_PRINT` TAKE DIFFERENT BRANCHES ON PURPOSE. Rendering
+   * UNKNOWN as "not traded" would assert a market fact from a storage gap --
+   * the same error as the one this whole reading exists to fix, pointed the
+   * other way. The board cannot receive NO_PRINT yet: `sessionOpensFromRow`
+   * rebuilds from nine columns and none is a state, so a row proves OPEN from
+   * a price and says UNKNOWN for the rest. Three more columns close it, and
+   * this code starts telling the truth that day with no further change.
+   */
+  if (reading.state === 'NOT_STARTED' || reading.state === 'UNKNOWN') return null;
+
+  if (reading.state === 'NO_PRINT' || reading.move === null) {
+    return (
+      <span
+        className="num truncate text-[11px] whitespace-nowrap"
+        title={`${reading.label}: this session has produced no print, so there is no move within it to measure. Any change on the row happened before it opened.`}
+      >
+        <span className="text-ink-3">{reading.label}</span>{' '}
+        <span className="text-warn">not traded</span>
+      </span>
+    );
+  }
+
   const up = reading.move >= 0;
   const anchor =
     reading.trust === 'THIN' ? 'thin' : reading.trust === 'UNKNOWN' ? '?' : null;

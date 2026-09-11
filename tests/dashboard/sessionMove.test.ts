@@ -117,12 +117,60 @@ describe('the move is measured from the session’s own first print', () => {
    * looks like a broken number; showing nothing reads as what it is. Same
    * choice `resolveVwap` makes one field over.
    */
-  it('returns nothing when there is no session to measure within', () => {
+  it('returns nothing when there is no session context at all', () => {
+    // No opens, no phase, no price: nothing to name and nothing to measure.
     expect(sessionMoveReading(null, 'PREMARKET', 4)).toBeNull();
     expect(sessionMoveReading(set(), null, 4)).toBeNull();
     expect(sessionMoveReading(set(), 'PREMARKET', null)).toBeNull();
-    expect(sessionMoveReading(set({ premarket: open({ price: null }) }), 'PREMARKET', 4)).toBeNull();
-    expect(sessionMoveReading(set({ premarket: open({ price: 0 }) }), 'PREMARKET', 4)).toBeNull();
+  });
+
+  /*
+   * THE CASE THAT PROMPTED ALL OF THIS, AND IT USED TO RETURN NULL.
+   *
+   * He questioned a row showing +43.4% labelled PM Gap on a name whose PM VWAP
+   * and RVOL both said nothing had traded in premarket. The number was right --
+   * the gap spans the prior close and includes after hours by construction --
+   * and the row could not tell him the move was already over. The second line
+   * is what tells him, and it only tells him if an untraded session SAYS SO.
+   */
+  it('reports an untraded session as a measurement, not as nothing', () => {
+    const reading = sessionMoveReading(
+      set({ premarket: open({ price: null }) }),
+      'PREMARKET',
+      4,
+    );
+    expect(reading).not.toBeNull();
+    expect(reading!.state).toBe('NO_PRINT');
+    expect(reading!.move).toBeNull();
+    expect(reading!.openPrice).toBeNull();
+    expect(reading!.label).toBe('PM Move');
+  });
+
+  /*
+   * AND THE OTHER DIRECTION, WHICH IS THE ERROR THIS MUST NOT MAKE. A store
+   * that cannot tell NOT_STARTED from NO_PRINT says UNKNOWN, and UNKNOWN must
+   * never become "not traded" -- that asserts a market fact from a storage gap.
+   */
+  it('keeps UNKNOWN distinct from NO_PRINT all the way through', () => {
+    const unknown = sessionMoveReading(
+      set({ premarket: open({ price: null, state: 'UNKNOWN' }) }),
+      'PREMARKET',
+      4,
+    )!;
+    expect(unknown.state).toBe('UNKNOWN');
+    expect(unknown.state).not.toBe('NO_PRINT');
+
+    const notStarted = sessionMoveReading(
+      set({ premarket: open({ price: null, state: 'NOT_STARTED' }) }),
+      'PREMARKET',
+      4,
+    )!;
+    expect(notStarted.state).toBe('NOT_STARTED');
+  });
+
+  it('treats a zero or negative open as no usable print rather than a move', () => {
+    const zero = sessionMoveReading(set({ premarket: open({ price: 0 }) }), 'PREMARKET', 4)!;
+    expect(zero.move).toBeNull();
   });
 });
 
@@ -221,5 +269,41 @@ describe('the surface renders the anchor state, not just the number', () => {
     const move = source.indexOf('<SessionMoveLine');
     expect(vwap).toBeGreaterThan(-1);
     expect(move).toBeGreaterThan(vwap);
+  });
+});
+
+/* ------------------------------------------------------------------------- *
+ * THE RENDER SPLIT, WHICH IS THE WHOLE SAFETY ARGUMENT
+ * ------------------------------------------------------------------------- */
+describe('the surface tells the two absences apart', () => {
+  const code = async () => {
+    const fs = await import('node:fs');
+    return fs
+      .readFileSync('components/DecisionCells.tsx', 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '');
+  };
+
+  it('renders nothing for UNKNOWN and NOT_STARTED', async () => {
+    expect(await code()).toMatch(
+      /state === 'NOT_STARTED' \|\| reading\.state === 'UNKNOWN'\) return null/,
+    );
+  });
+
+  it('renders NO_PRINT as words on the row', async () => {
+    const source = await code();
+    expect(source).toContain("reading.state === 'NO_PRINT'");
+    expect(source).toContain('not traded');
+  });
+
+  /*
+   * The two must not share a branch. If a future edit folds UNKNOWN into the
+   * NO_PRINT arm, the board asserts "not trading in a live session" for names
+   * where nothing was ever stored -- comments stripped, because the code above
+   * explains that exact hazard and quotes both state names while doing it.
+   */
+  it('never lets UNKNOWN reach the not-traded copy', async () => {
+    const source = await code();
+    expect(source).not.toMatch(/state === 'UNKNOWN'[\s\S]{0,120}not traded/);
   });
 });
