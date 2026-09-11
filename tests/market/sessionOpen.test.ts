@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
+import { DEFAULT_ACTIVITY_CONFIG, deadLineFor } from '@/lib/market/activity';
 import { DemandEngine } from '@/lib/market/engine';
 import type { MarketObservation, RvolBaseline } from '@/lib/market/types';
+import { anchorThickness } from '@/lib/market/vwap';
 
 /**
  * The origin for a within-session Move.
@@ -282,5 +284,82 @@ describe('a null open says WHICH null it is', () => {
     const fourHoursIn = BELL + 4 * 60 * 60_000;
     expect(opens(engineAt(fourHoursIn))?.afterHours.state).toBe('NOT_STARTED');
     expect(opens(engineAt(fourHoursIn, 13 * 60))?.afterHours.state).toBe('NO_PRINT');
+  });
+});
+
+/**
+ * Thick or thin, and he ruled it binary.
+ *
+ * The threshold is the DEAD line and not the ACTIVE line. Measured against real
+ * anchors, a 300-trade cut marks 84% of board rows and 98.6% of the universe as
+ * thin -- a flag that fires on almost everything. The dead line asks whether
+ * the anchoring minute was a real trading minute, which is the question.
+ */
+describe('the anchor says whether it is worth measuring from', () => {
+  const DEAD = deadLineFor(DEFAULT_ACTIVITY_CONFIG); // 300 / 10 = 30
+
+  it('derives the line from his numbers rather than carrying its own', () => {
+    expect(DEAD).toBe(30);
+  });
+
+  it('calls a minute above the dead line THICK', () => {
+    expect(anchorThickness(31, DEAD)).toBe('THICK');
+    expect(anchorThickness(400, DEAD)).toBe('THICK');
+  });
+
+  it('calls a minute AT the dead line THIN, not thick', () => {
+    // The dead line is the boundary of a minute that does not count as living.
+    // At it is not above it.
+    expect(anchorThickness(30, DEAD)).toBe('THIN');
+  });
+
+  it('calls the one-odd-lot case THIN', () => {
+    // p25 of board anchors is 3 trades and p10 is 1. This is the case the flag
+    // exists for, not an edge.
+    expect(anchorThickness(1, DEAD)).toBe('THIN');
+    expect(anchorThickness(3, DEAD)).toBe('THIN');
+  });
+
+  it('measures a real zero as THIN rather than refusing to answer', () => {
+    // Zero trades in a bar that exists is a measurement. Distinct from null.
+    expect(anchorThickness(0, DEAD)).toBe('THIN');
+  });
+
+  it('refuses to call an UNREPORTED count thin', () => {
+    /*
+     * THE ONE THAT MATTERS. A bar with no trade count is a gap in the feed, and
+     * "thin" is a claim about the market. Calling null THIN is the same error as
+     * a NO_PRINT produced by a restart: a process fact rendered as a market fact.
+     */
+    expect(anchorThickness(null, DEAD)).toBe('UNKNOWN');
+    expect(anchorThickness(undefined, DEAD)).toBe('UNKNOWN');
+    expect(anchorThickness(Number.NaN, DEAD)).toBe('UNKNOWN');
+  });
+
+  it('moves with the config rather than pinning 30', () => {
+    // If he retunes the active line, the anchor line follows. A hardcoded 30
+    // would silently keep the old calibration.
+    const retuned = deadLineFor({ ...DEFAULT_ACTIVITY_CONFIG, activeTradesPerMinute: 600 });
+    expect(retuned).toBe(60);
+    expect(anchorThickness(45, retuned)).toBe('THIN');
+    expect(anchorThickness(45, DEAD)).toBe('THICK');
+  });
+
+  it('reads the thickness of an open the engine actually produced', () => {
+    const engine = engineAt(BELL + 5 * 60_000);
+    engine.ingest(bar('ABCD', at(0), { o: 5, c: 5.1, v: 50_000, n: 3 }));
+    const open = opens(engine)?.regular;
+    expect(open?.state).toBe('OPEN');
+    expect(anchorThickness(open?.tradeCount ?? null, DEAD)).toBe('THIN');
+  });
+
+  it('leaves an OPEN with an unreported count as UNKNOWN thickness', () => {
+    // The open is real -- there is a price -- and its trustworthiness is not
+    // known. Two different fields, two different three-state answers.
+    const engine = engineAt(BELL + 5 * 60_000);
+    engine.ingest(bar('ABCD', at(0), { o: 5, c: 5.1, v: 50_000, n: null }));
+    const open = opens(engine)?.regular;
+    expect(open?.state).toBe('OPEN');
+    expect(anchorThickness(open?.tradeCount ?? null, DEAD)).toBe('UNKNOWN');
   });
 });

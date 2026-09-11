@@ -302,6 +302,48 @@ export function sessionOpenStateFor(
     : 'NO_PRINT';
 }
 
+/**
+ * Whether the minute an open was anchored on is worth measuring from.
+ *
+ * He asked for this binary -- thick or thin, no middle band -- because it is
+ * read at a glance at 07:30 and a third label costs more than it says.
+ *
+ * THE THRESHOLD IS THE DEAD LINE, NOT THE ACTIVE LINE, and picking the wrong
+ * one of his two numbers was the first thing I got wrong here. The active
+ * ~300/min answers *is this name running*; measured against real anchors it
+ * marks 84% of board rows thin and 98.6% of the whole universe, which is a flag
+ * that fires on almost everything and therefore says nothing. The dead line --
+ * `active / deadRatio`, his 10x -- answers *is this a real trading minute*,
+ * which is the question actually being asked of an anchor. A minute at or below
+ * it would not count as living anywhere else on this desk, so a percentage
+ * measured from it should not look as confident as one measured from a real one.
+ *
+ * Both numbers are his and neither was invented here; `deadLineFor` derives it,
+ * so moving the 300 moves this with it.
+ */
+export type AnchorThickness =
+  /** Above the dead line. A real minute to measure from. */
+  | 'THICK'
+  /** At or below the dead line. One odd lot can produce this. */
+  | 'THIN'
+  /**
+   * The feed reported a bar with no trade count.
+   *
+   * NOT A THIRD BAND -- he ruled the bands binary and this is not a band, it is
+   * the absence of the measurement the bands are made of. Calling an unreported
+   * count THIN would assert something about the market from a gap in the feed,
+   * which is the same error as a stored NO_PRINT produced by a restart.
+   */
+  | 'UNKNOWN';
+
+export function anchorThickness(
+  tradeCount: number | null | undefined,
+  deadLine: number,
+): AnchorThickness {
+  if (typeof tradeCount !== 'number' || !Number.isFinite(tradeCount)) return 'UNKNOWN';
+  return tradeCount > deadLine ? 'THICK' : 'THIN';
+}
+
 export interface SessionOpen {
   session: VwapSession;
   label: string;
