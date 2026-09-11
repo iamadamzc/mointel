@@ -300,6 +300,22 @@ repo — they are public documents and re-fetchable.
   board rendering not-researched as a state, and his word "assistant" was
   dropped by Web's judgement and can be restored with one word.**
 
+- [`docs/commercial/2026-09-11-competitor-trademomentum.md`](../commercial/2026-09-11-competitor-trademomentum.md)
+  — his commission: the transcript of a competitor's "END of the free watch
+  list" Short, what that channel publishes item by item, and the commercial
+  read. Transcript got from YouTube's public panel in the in-app browser
+  (auto-generated captions, consent declined). **The premise is stale: the
+  free series did not end** — the same afternoon's list was posted, and the
+  channel carries a "TOP 3 STOCKS" Short for every trading day through
+  2026-09-11; the video names no price or date and funnels to an existing
+  $147/mo chatroom. Per name he gives a five-part game plan — trigger,
+  confirmation, targets, chase zone, "no break, no trade" — and no catalyst,
+  float, structure or supply. It is a signal product with a personality, the
+  opposite of the registered boundary; "track the same thing" splits into the
+  levels and continuity the desk already computes and the entries it has
+  ruled out. First published price in the desk's own audience: $147/mo.
+  What to build is Integration's to route; nothing names him on the page.
+
 **Open items.**
 
 - ~~**The Alpaca plan tier is not in the repo.** Ask him; do not infer it into a
