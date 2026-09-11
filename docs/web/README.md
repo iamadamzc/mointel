@@ -2,7 +2,7 @@
 
 **Written by Web, 2026-09-10 (17:00 ET), against `927641c`.** Owner of this
 file: **Web**. Design canvas:
-[`canvas/`](canvas/) — six artboards, published for the trader to edit directly.
+[`canvas/`](canvas/) — seven artboards, published for the trader to edit directly.
 
 ---
 
@@ -207,6 +207,31 @@ opposite of the claim. **He can restore it with one word if he disagrees.**
 **The scanner line is retired everywhere**, carve-out withdrawn (`d68b60c`). The
 **Not a scanner** card's own sentence is now the registered answer to *"is this a
 scanner?"*.
+
+---
+
+## 4b. A DEPENDENCY THAT DOES NOT BITE YET, AND THE DAY IT WILL
+
+**Marketing found two capabilities nothing renders — the why-not report and the
+book-effect axis — and left them off the page. Correct.** *Checked here because
+the public copy rests on what the desk knows:* `lib/research/effect.ts` is
+imported **only** by `lib/research/whyNot.ts`, and `whyNot.ts` is imported
+**only** by `tests/research/whyNot.test.ts`. **One dead subtree, not two dark
+features** — no component, no route, no worker.
+
+**THE COPY IS SAFE, AND THE REASON IS PRECISE RATHER THAN COMFORTABLE.** The
+registered statement says the board carries *"everything the desk knows about
+each one."* **Unexecuted code produces no knowledge**: nothing calls `whyNot`,
+so the desk never computes a why-not verdict, so there is nothing it knows and
+withholds. *The sentence is not over-claiming today.*
+
+> **THE DAY `whyNot` GETS A PRODUCTION CALLER, THE REGISTERED SENTENCE NEEDS
+> RE-CHECKING** — because from that moment the desk *does* know something, and
+> whether the board shows it decides whether the public statement is still
+> true. **Wiring it up is a research or board decision; nobody would think to
+> tell the public page.** *Same shape as the `NOT RESEARCHED` dependency in §4,
+> and the same reason it is written down: the cost lands on a sentence
+> published somewhere else.*
 
 ---
 
