@@ -26,6 +26,23 @@ palette and type are faithful.** *What does not work is anything needing the
 canvas runtime — tweak chips, `{{ holes }}`, `<dc-import>` — and none of these
 artboards use them, by choice.*
 
+**THE CANVAS CARRIES A BUILD STAMP, and it exists because of a hazard that has
+now been survived three times by luck.** *Editing a `.dc.html` does not update
+the published artifact; a re-seed and republish is a separate act, performed by
+whoever holds the files.* **Three passes in a row, the canvas stayed current
+only because the publishing seat happened to notice the commit land.**
+
+**A stale canvas cannot announce itself, so the `note-build` annotation makes it
+able to:** it names the sha the artboards were seeded from and the time.
+**If `git log -1 --format=%h` is ahead of that sha, what the reader is looking
+at is superseded** — a check that takes one line and needs nobody to remember
+anything. *It does not fix the split; it converts silent staleness into visible
+staleness, which is the difference between a wrong page and a page that says it
+might be.*
+
+**Re-stamp on every seed.** The stamp is written into `canvas.json` from
+`git rev-parse --short HEAD` immediately before seeding.
+
 **The editable canvas is the published artifact; the readable source is the
 file.** Reach for the file when someone needs to *see* it and the artifact when
 someone needs to *change* it.
