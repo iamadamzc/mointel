@@ -263,28 +263,26 @@ subject to every prohibition above.*
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**2026-09-10 evening ET. The copy pass is on both artboards.**
+**2026-09-11. A pre-session research section is in both landing artboards,
+committed, NOT yet republished to the canvas.**
 
-- **`docs/marketing/what-it-is-not.md`** — thirteen negations, each confirmed
-  against source, each with the copy it forbids. *Internal instrument, never a
-  lead.* **On its first outing it caught two of Web's lines, one a licence
-  regression ("a continuous read of the market, held open all session").**
-- **`docs/marketing/2026-09-10-landing-copy-pass.md`** — laid in by Web at
-  `56394fe`; Commercial's two rulings (`e1f9f9f`) applied by Marketing after.
-  Header now "the one nobody prints"; hero opens on 07:15 with no percentage;
-  the August 50% line is on the page as a fact about the market and loses its
-  place the moment a "you" or a trade attaches to it.
-- **THE UNIT IS THE CANVAS, NOT A PAIR.** Seven artboards on disk: Main,
-  LandingMobile, SignIn, Admitted, States, Privacy, System. **All seven swept
-  against the not-list 2026-09-10 evening, by vocabulary and by reading: clean.**
-  Every hit was a registered boundary sentence or footer legal. Integration's
-  list named an eighth, `Child.dc.html`; it is a string in the canvas editor's
-  own JavaScript, not an artboard. The published file holds the page AND the
-  tool that renders it, so a grep over it answers about the file, not the page. Every
-  future pass sweeps the whole directory, and the published artifact is checked
-  separately because editing sources does not update it.
-- **Protocol held:** Web placed, Marketing added the cleared lines after
-  Integration declared the files clear. Nobody committed over anyone.
+- **His instruction, via Integration:** *"make a bigger deal out of our
+  pre-session research."* Done as one section between the four cards and Why
+  it exists, both artboards. Every sentence traced to source in
+  `docs/marketing/2026-09-11-pre-session-research.md`. The why-not report and
+  the book-effect axis are NOT on the page: no component renders them.
+- **Republishing the canvas is Web's.** Editing the artboards does not update
+  the artifact he opens. `canvas.json` gives the landing artboards 5200px and
+  the desktop grew by roughly a screen; Web to check the height.
+- **Held for Commercial:** the one-in-six vendor-float measurement from
+  `float.ts`, and his own "research for the avoid" line, which waits for the
+  report it names to ship.
+- **Instruments:** `docs/marketing/what-it-is-not.md` (thirteen negations, all
+  seven artboards swept clean 2026-09-10). `docs/marketing/2026-09-10-landing-copy-pass.md`
+  (laid in at `56394fe`; Commercial's rulings `e1f9f9f` applied).
+- **The unit is the canvas**, seven artboards, and the published artifact is
+  checked separately from the source.
 - **OPEN WITH HIM:** the 07:00–10:00 window is off the page; a voice reference
-  is still unanswered.
+  is still unanswered. **His "maybe enhance it" is Research's and is held by
+  Integration until Commercial reports.**
 - **Not published;** `tmitrader.com` still returns 401 to everyone.
