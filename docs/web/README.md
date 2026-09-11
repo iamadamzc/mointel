@@ -228,10 +228,16 @@ withholds. *The sentence is not over-claiming today.*
 > **THE DAY `whyNot` GETS A PRODUCTION CALLER, THE REGISTERED SENTENCE NEEDS
 > RE-CHECKING** — because from that moment the desk *does* know something, and
 > whether the board shows it decides whether the public statement is still
-> true. **Wiring it up is a research or board decision; nobody would think to
-> tell the public page.** *Same shape as the `NOT RESEARCHED` dependency in §4,
-> and the same reason it is written down: the cost lands on a sentence
-> published somewhere else.*
+> true.
+
+**AND THIS ENTRY IS NOT THE WARNING. IT IS A COPY OF IT.** *Integration's
+correction, and it is right: the caution was filed where the WARNER lives, not
+where the ACTOR does.* **Whoever wires up `whyNot` will be working in
+`lib/research/` and will never open this file** — so a dependency recorded only
+here protects nothing. *Same shape as a caution that survived only in messages.*
+**Relayed to Research by Integration so it sits where the trigger is pulled;
+this section is kept because it is the reason Web cares, not because it is the
+record that will be read in time.**
 
 ---
 
