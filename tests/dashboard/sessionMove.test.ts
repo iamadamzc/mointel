@@ -3,10 +3,9 @@ import { describe, expect, it } from 'vitest';
 import {
   sessionMoveLabel,
   sessionMoveReading,
-  thinAnchorLine,
 } from '@/lib/dashboard/sessionMove';
 import { baselineLabel } from '@/lib/dashboard/view';
-import { DEFAULT_ACTIVITY_CONFIG } from '@/lib/market/activity';
+import { DEFAULT_ACTIVITY_CONFIG, deadLineFor } from '@/lib/market/activity';
 import type { SessionOpen, SessionOpenSet } from '@/lib/market/vwap';
 
 function open(fields: Partial<SessionOpen> = {}): SessionOpen {
@@ -185,7 +184,7 @@ describe('the move is measured from the session’s own first print', () => {
 describe('the anchor states its own trustworthiness', () => {
   it('separates a solid anchor from a thin one', () => {
     expect(sessionMoveReading(set({ premarket: open({ tradeCount: 400 }) }), 'PREMARKET', 4)!.trust)
-      .toBe('SOLID');
+      .toBe('THICK');
     expect(sessionMoveReading(set({ premarket: open({ tradeCount: 3 }) }), 'PREMARKET', 4)!.trust)
       .toBe('THIN');
   });
@@ -202,7 +201,7 @@ describe('the anchor states its own trustworthiness', () => {
       4,
     )!;
     expect(reading.trust).toBe('UNKNOWN');
-    expect(reading.trust).not.toBe('SOLID');
+    expect(reading.trust).not.toBe('THICK');
     expect(reading.tradeCount).toBeNull();
   });
 
@@ -214,13 +213,19 @@ describe('the anchor states its own trustworthiness', () => {
    * hardcoded 30.
    */
   it('follows the dead line rather than restating a number', () => {
-    expect(thinAnchorLine()).toBe(30);
+    /*
+     * The classifier now lives in `vwap.ts` and this file passes it
+     * `deadLineFor(config)`. What is still worth pinning HERE is that the
+     * threshold travels with the config rather than being frozen at 30 — the
+     * reading is the caller that decides which line to use.
+     */
+    expect(deadLineFor(DEFAULT_ACTIVITY_CONFIG)).toBe(30);
 
     const loose = { ...DEFAULT_ACTIVITY_CONFIG, deadRatio: 2 }; // 300 / 2 = 150
-    expect(thinAnchorLine(loose)).toBe(150);
+    expect(deadLineFor(loose)).toBe(150);
 
     const at100 = set({ premarket: open({ tradeCount: 100 }) });
-    expect(sessionMoveReading(at100, 'PREMARKET', 4)!.trust).toBe('SOLID');
+    expect(sessionMoveReading(at100, 'PREMARKET', 4)!.trust).toBe('THICK');
     expect(sessionMoveReading(at100, 'PREMARKET', 4, loose)!.trust).toBe('THIN');
   });
 
@@ -305,5 +310,64 @@ describe('the surface tells the two absences apart', () => {
   it('never lets UNKNOWN reach the not-traded copy', async () => {
     const source = await code();
     expect(source).not.toMatch(/state === 'UNKNOWN'[\s\S]{0,120}not traded/);
+  });
+});
+
+/* ------------------------------------------------------------------------- *
+ * WHICH SIDE CARRIES THE MARK
+ *
+ * He ruled the flag binary -- thick or thin, no middle band. Research measured
+ * the board and about HALF of it sits at or under the dead line: median 22
+ * trades in the anchoring minute, p25 of 3. So the mark fires on roughly every
+ * other row, and it asked whether marking the TRUSTWORTHY half would read
+ * better than marking the weak one.
+ *
+ * MARKING THE THIN SIDE, AND THE REASON IS NOT FREQUENCY. Mark THICK and the
+ * absence of a mark would mean THIN *or* UNKNOWN *or* no line at all -- three
+ * facts in one silence, which is the collapse two commits just undid on
+ * `state`. A warning must sit on the thing that warrants caution; the absence
+ * of a warning must not BE the warning.
+ *
+ * The ~50% rate is not noise, it is the finding: half the Move numbers on his
+ * board rest on a minute this desk would not call alive.
+ * ------------------------------------------------------------------------- */
+describe('the mark goes on the side that warrants caution', () => {
+  const code = async () => {
+    const fs = await import('node:fs');
+    return fs
+      .readFileSync('components/DecisionCells.tsx', 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '');
+  };
+
+  it('marks THIN and leaves THICK unmarked', async () => {
+    const source = await code();
+    expect(source).toContain("reading.trust === 'THIN'");
+    // THICK must not carry a mark: if it did, an unmarked row would be
+    // ambiguous between thin, unknown, and no reading at all.
+    expect(source).not.toContain("reading.trust === 'THICK'");
+  });
+
+  it('keeps UNKNOWN out of the thin branch', async () => {
+    // Not a band. `tradeCount` null is the ABSENCE of the measurement the
+    // bands are made of, and calling it thin asserts a market fact from a gap
+    // in the feed -- the same error as UNKNOWN-vs-NO_PRINT one field over.
+    const unknown = sessionMoveReading(
+      set({ premarket: open({ tradeCount: null }) }),
+      'PREMARKET',
+      4,
+    )!;
+    expect(unknown.trust).toBe('UNKNOWN');
+    expect(unknown.trust).not.toBe('THIN');
+  });
+
+  it('puts the boundary at the dead line, exclusive', () => {
+    const at = (n: number) =>
+      sessionMoveReading(set({ premarket: open({ tradeCount: n }) }), 'PREMARKET', 4)!.trust;
+    // 30 is NOT alive anywhere else on this desk, so 30 is thin and 31 is not.
+    expect(at(30)).toBe('THIN');
+    expect(at(31)).toBe('THICK');
+    // The measured board median sits on the thin side, which is the finding.
+    expect(at(22)).toBe('THIN');
   });
 });

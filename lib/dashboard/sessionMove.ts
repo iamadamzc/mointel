@@ -20,8 +20,10 @@
 import { DEFAULT_ACTIVITY_CONFIG, deadLineFor } from '@/lib/market/activity';
 import type { SessionPhase } from '@/lib/market/types';
 import {
+  anchorThickness,
   VWAP_SESSION_KEY,
   vwapSessionForPhase,
+  type AnchorThickness,
   type SessionOpen,
   type SessionOpenSet,
   type SessionOpenState,
@@ -43,7 +45,7 @@ import {
  * defect, one column over, as a zero-fill certifying a measurement that never
  * happened.
  */
-export type AnchorTrust = 'SOLID' | 'THIN' | 'UNKNOWN';
+export type AnchorTrust = AnchorThickness;
 
 export interface SessionMoveReading {
   /** `PM Move` / `RTH Move` / `AH Move`. Never contains `Gap`. */
@@ -90,25 +92,19 @@ export function sessionMoveLabel(phase: SessionPhase): string {
   return MOVE_LABEL[vwapSessionForPhase(phase)];
 }
 
-/**
- * How thin an anchoring minute has to be before the surface says so.
+/*
+ * THE CLASSIFIER LIVES IN `vwap.ts` AND THIS FILE NO LONGER HAS ONE.
  *
- * THE DEAD LINE, NOT A NEW NUMBER. `deadRatio` already defines the point below
- * which this desk does not consider a minute active — 30/min at his 300 and
- * 10x. Inventing a second threshold would put two definitions of "thin" in one
- * product, and the desk has paid for that shape repeatedly.
+ * There were briefly two: mine said SOLID/THIN/UNKNOWN, Research's says
+ * THICK/THIN/UNKNOWN, and both cut at the dead line — the same boundary under
+ * two vocabularies, which is one word typed in two places and exactly how the
+ * column header and the sort control drifted apart. Deleted mine.
  *
- * Derived from the config so tuning the engine moves it, rather than leaving a
- * typed constant behind to go quietly wrong.
+ * The dead line is still passed rather than hardcoded: `deadLineFor(config)`,
+ * so retuning his 300 moves the anchor line with it. `anchorThickness` takes
+ * the number rather than reading the config itself, which keeps the threshold
+ * one caller's decision instead of a second place that knows about 300.
  */
-export function thinAnchorLine(config = DEFAULT_ACTIVITY_CONFIG): number {
-  return deadLineFor(config);
-}
-
-function trustOf(open: SessionOpen, config = DEFAULT_ACTIVITY_CONFIG): AnchorTrust {
-  if (open.tradeCount === null || !Number.isFinite(open.tradeCount)) return 'UNKNOWN';
-  return open.tradeCount <= thinAnchorLine(config) ? 'THIN' : 'SOLID';
-}
 
 /**
  * The reading for the session the desk is actually in, or null.
@@ -165,7 +161,7 @@ export function sessionMoveReading(
     move: ((price - openPrice) / openPrice) * 100,
     openPrice,
     at: open.at,
-    trust: trustOf(open, config),
+    trust: anchorThickness(open.tradeCount, deadLineFor(config)),
     tradeCount: open.tradeCount,
   };
 }
