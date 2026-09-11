@@ -2201,6 +2201,53 @@ evening by construction.* **What was wrong was not the number but what the row c
 not say.** **"Not accurate" was him reading a true number missing its context, and
 the fix was always a second line rather than a different anchor.**
 
+## A PRODUCT RULING CLOSED A MEASUREMENT A WEEK LATER, AND NOBODY CONNECTED THEM
+
+**2026-09-11. Design asked for a number to price a schema migration. Research ran
+it and it came back empty for a reason nobody had in view.**
+
+**THE QUESTION: of the rows visible in his top-N sorted by Gap, what share have no
+premarket print?**
+
+```
+Research ran it   800 visible rows, 16 dates, 0 untraded
+volume = 0        occurs 0 times in 8,025 rows; the MINIMUM is 400
+```
+
+- **BOARD VISIBILITY REQUIRES VOLUME, so "visible AND untraded" is empty by
+  construction.** *Design's own words: a rate whose denominator excludes its
+  numerator.*
+- **AND ACVA SAT AT RANK 70 WITH RVOL 0.0x — the board's own ranking would NEVER
+  have shown it.** **He saw it because HE SORTED BY GAP, and the sort runs over the
+  whole tracked set before taking the top N.**
+
+> **⇒ THE POPULATION WHERE THIS FEATURE MATTERS IS DEFINED BY A CLIENT-SIDE SORT
+> THAT, BY HIS OWN RULING, DOES NOT PERSIST.** *"Sort does not survive. Names change
+> too much anyway. No need for persistence of any kind really."* — **2026-09-10.**
+> **No stored query can identify those rows retrospectively.** *Not because the
+> query was confounded, but because the desk chose not to record the thing that
+> defines the population.*
+
+**THE SHAPE, AND IT IS THIS SEAT'S TO HOLD: a ruling about how something LOOKS or
+BEHAVES silently decides what can later be MEASURED.** *The desk already has one of
+these — a rendering decision about dropped names that also set what the research
+queue and the subscription cap could see, because one field carried both.* **This is
+the same failure with a week between the two halves, which is why nobody felt it.**
+
+- **A no-persistence ruling is cheap, correct, and reads as purely a preference.**
+  **It is also a decision to have no record of a state.**
+- **The tell is not available at ruling time.** *Nobody could have asked "what will
+  we want to measure about sort state in a week".* **What IS available: when a
+  measurement comes back empty, ask whether the thing being measured was ever
+  recorded — before concluding the rate is zero.**
+
+**AND MY OWN HALF: I RELAYED THE COMMISSION AND SHARPENED THE WRONG SIDE OF IT.**
+*I added emphasis that a population rate would UNDERSTATE the figure, because the
+untraded rows systematically sort high — true, and it made the question look
+carefully framed.* **The denominator was not merely wrong in the other direction.
+It was impossible.** *I improved the framing of a question that could not be
+answered, which is a more convincing failure than passing it on flat.*
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
