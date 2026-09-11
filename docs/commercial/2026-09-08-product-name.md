@@ -521,6 +521,49 @@ describes the market's behaviour is a fact of record and may be claimed as
 such; a percentage attached to a name, a time and a reader is an outcome,
 and outcomes are not claimed in any form.
 
+**Two more, 2026-09-11, held by Marketing in
+`docs/marketing/2026-09-11-pre-session-research.md`; neither was on the
+page.**
+
+3. **"On 58 hand-pulled names the vendor float was arithmetically
+   impossible on one name in six" — STRUCK as a published number about a
+   vendor, in both directions Integration named.** The provenance, from the
+   shared rules' own float section: a manual Scanz pull on 2026-08-24, 58
+   board names — a selected sample of names already being watched, not a
+   census — one vendor, one instant; the check fires on 8 or 9 of 46
+   non-ADR names, the ambiguity being one name over by a single share; "one
+   in six" is 8 of 46 rounded. **And "arithmetically impossible" is the
+   framing the shared rules corrected the same day:** from one source at one
+   instant it proves the vendor's pair is inconsistent, not that the company
+   is impossible; across sources with different as-of dates it proves
+   nothing without the dates. The rule the desk already runs: a caveated
+   rate anchors as hard as an uncaveated one, and a rate with a selected
+   sample and a judgement inside it does not go on a public page. The
+   second direction: it is a factual claim about a third party's product,
+   with his name on it, and the subject can answer. The vendor is Scanz,
+   relayed through the Sheet — not the desk's feed licensor, so the licence
+   file is not the exposure — but "vendor" on a page reads as every float
+   vendor, and the desk has no agreement with any of them under which it
+   may publish a defect rate. **Cleared form, with conditions:** the
+   mechanism, without a vendor and without a number, in the float module's
+   own registered sentence — every float is somebody's computation, no
+   filing carries one, the desk checks the float it is shown against the
+   filed share count and refuses the one that cannot be right, because
+   *"the rules are visible and a failure is detectable."* Conditions: no
+   vendor named or inferable; no rate, ratio or count; "cannot be right"
+   only where the check is float exceeding shares outstanding from the same
+   source at the same instant. The number stays where it is useful — the
+   desk's own working and code — as design evidence, not as copy.
+4. **"Research for the avoid. success comes more in what you dont trade
+   than what you do." — CLEARED as a claim, on Marketing's own condition.**
+   It is his phrase, a statement of what the research is for and a rule he
+   set, not an outcome claimed for the product; a rule he set may be written
+   down. The condition is the one Marketing applied itself and it is the
+   right one: a page may not say a thing the product cannot show, so the
+   line stays off the page until the Why Not Report renders where a user
+   can see it, and then it is that section's header. Nothing about the
+   claim changes when the report ships; only the showing does.
+
 ## 3. RECOMMENDATION
 
 **Pick: Desk Read.** It is the thing he described — a smart desk that has
