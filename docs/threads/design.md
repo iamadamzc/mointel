@@ -3916,6 +3916,54 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE BOARD'S STALENESS IS SERVER-BAKED, SO IT FREEZES WITH THE FEED
+
+**Scoping the mid-session downgrade he ruled me into, and the finding is bigger
+than the thing I was scoping. THIS IS LIVE TODAY AND HAS NOTHING TO DO WITH
+AUTH.**
+
+**What happens now when a poll fails (`useMarket.ts:43-53`):**
+
+    !response.ok  ->  throw  ->  setTransportError(message)
+    THE SNAPSHOT IS NOT CLEARED -- the board keeps its last numbers. GOOD.
+    DataFreshness: degraded = meta.stale || Boolean(transportError)   -- HEADER
+    DashboardHeader: "Research API unreachable: ..."                  -- HEADER
+
+**So the header degrades and the rows do not — and the rows are what he reads.**
+
+**THE MECHANISM, AND IT IS THE DAY'S OWN PATTERN:** `telemetry.stale` is
+`demand.freshness.stale` (`telemetry.ts:159`) — **computed by the ENGINE and
+baked into the snapshot.** *When the poll stops, the snapshot stops, and the flag
+inside it stops with it.* **A frozen board renders every actively-trading name in
+full ink, exactly as it did when the data was live.**
+
+**⇒ THE STALENESS INDICATOR IS CARRIED BY THE THING THAT GOES STALE.** *It cannot
+report its own absence. That is `?? 0` on a missing minute, `NULL` meaning two
+things, and a label deriving from a proxy — the same defect, now at the level of
+the whole surface.*
+
+**AND IT IS NOT AN AUTH PROBLEM. IT FIRES ON ANY FEED STOPPAGE:** a worker crash,
+a network partition, **a deploy restart during his window.** *If the market
+worker dies at 07:30 his board keeps showing the last prices, in live ink, and
+only the header says otherwise.*
+
+### WHAT THE OWED WORK ACTUALLY IS
+
+    1. ROWS GO STALE ON THE CLIENT'S CLOCK, not on a flag inside a frozen
+       payload. The input already exists -- `DataFreshness` computes
+       `secondsSince(meta.fetchedAt, now)` against `useClock`. Nothing new is
+       needed to know the board is old; it is simply not reaching the rows.
+    2. AN AUTH REFUSAL IS NOT A TRANSPORT FAULT. Both become `transportError`
+       today, so a revoked session reads "Research API unreachable", which is
+       true and useless -- the way back is different and the copy must say so.
+    3. NEVER BLANK. `DashboardShell:316` renders a full-screen "Dashboard
+       unavailable" when `data` is absent. Mid-session `data` is already there,
+       but that path needs checking rather than assuming.
+
+**HIS RULING MADE (2) AND (3) OWED. (1) IS OWED ANYWAY AND WAS BEFORE ANY OF
+THIS** — *I went looking for a future defect and found a present one, which is
+the only good reason to scope before building.*
+
 ## MY "RULINGS CLOSE MEASUREMENTS" WAS WRONG. THE RULE IS INPUT VERSUS DERIVATION.
 
 **I claimed a product ruling — *"no persistence of any kind"* — silently removed
