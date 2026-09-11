@@ -4,6 +4,37 @@
  * *"Research for the avoid. success comes more in what you dont trade than what
  * you do. or rather, failure comes in overtrading."*
  *
+ * ═══ BEFORE YOU GIVE THIS A PRODUCTION CALLER, READ THIS ═════════════════
+ *
+ * **THIS SUBTREE HAS NO CALLER.** `whyNot.ts` is imported only by its own test;
+ * `effect.ts` only by this file and two tests. Nothing on the desk produces a
+ * `CatalystEffect` — the interpreter has never been asked for one, the dossier
+ * schema has no effect block, and neither system prompt names `bringsDemand`,
+ * `bringsSupply`, `priceCapped` or `timeToEffect`. **So this never runs.**
+ *
+ * **AND A PUBLISHED SENTENCE DEPENDS ON THAT.** The landing page tells readers
+ * the board carries *"everything the desk knows about each one."* That claim is
+ * true today ONLY because this code is dark: **unexecuted code produces no
+ * knowledge, so there is no why-not verdict for the board to be withholding.**
+ *
+ * > **THE DAY THIS GETS A PRODUCTION CALLER, THE DESK BEGINS TO KNOW
+ * > SOMETHING — and whether the board renders it decides whether a published
+ * > claim is still true.**
+ *
+ * So wiring this up is not only a research change. **Say so before it ships**,
+ * so the public sentence gets re-checked at that moment. *Not permission —
+ * this file is Research's. A notification, to a seat that would otherwise have
+ * no reason to think a marketing page hangs off an import.*
+ *
+ * *Recorded HERE rather than in `docs/web/README.md`, where Web correctly filed
+ * it for itself. **A warning filed where the warner lives is not read by the
+ * actor**, and this desk has paid for that twice: a false sentence left in
+ * `minute-bar-recovery.ts` where only the next recovery operator would meet it,
+ * and a DNS hazard that lived in messages until it was written beside the record
+ * it protected. The caution has to sit where the trigger is pulled.*
+ *
+ * ═════════════════════════════════════════════════════════════════════════
+ *
  * Everything that produces an objection already exists: `effect.ts` carries the
  * axes and `priceCapped`, the supply pair carries magnitude, the float bound
  * carries the low-float pillar. **This file adds one thing — the verdict — and
