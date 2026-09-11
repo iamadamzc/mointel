@@ -3,10 +3,35 @@
  *
  * The desk has never had a float source of its own. Every float on the board
  * comes from the Sheet, which takes it from a vendor that publishes no rules,
- * and 58 hand-pulled names showed that number is arithmetically impossible on
- * one name in six. So this module does not produce a float. It produces the
- * **filed share count**, which the desk can derive and cite, and a **verdict**
- * on whatever float it is shown.
+ * and a hand pull showed that number **contradicting itself** often enough that
+ * it cannot be anchored on. So this module does not produce a float. It produces
+ * the **filed share count**, which the desk can derive and cite, and a
+ * **verdict** on whatever float it is shown.
+ *
+ * THE MEASUREMENT, AT ITS REAL SHAPE, BECAUSE THIS COMMENT PREVIOUSLY CARRIED A
+ * RETRACTED ONE. It said *"58 hand-pulled names showed that number is
+ * arithmetically impossible on one name in six"*, and that sentence travelled —
+ * Marketing quoted it as a candidate published claim and Commercial struck it.
+ * What the pull actually establishes:
+ *
+ *   - **A manual Scanz pull, 2026-08-24, 58 board names** — a SELECTED sample of
+ *     names already being watched, **not a census**, one vendor, one instant.
+ *   - **`float > SO` fires on 8 or 9 of 46 NON-ADR names** — 17% or 20%. The
+ *     ambiguity is a judgement and not a count: **SGLY exceeds shares
+ *     outstanding by exactly one share.** *"One in six" was 8 of 46 rounded, and
+ *     58 was never its denominator.*
+ *   - **"IMPOSSIBLE" IS THE RETRACTED WORD**, corrected in the shared rules the
+ *     same day. From one source at one instant it proves **the vendor's pair is
+ *     inconsistent and one of its two numbers is wrong** — not that the company
+ *     is impossible. *Across sources with different as-of dates it proves
+ *     nothing without the dates: a company that has issued shares since its last
+ *     filing legitimately exceeds the filed count.*
+ *
+ * **THE MODULE'S DECISION DOES NOT REST ON THE RATE.** A vendor that contradicts
+ * itself within one panel at one instant is not a base to anchor a pillar-five
+ * verdict on, and that holds at 8 of 46 or at 9. *Stated here because a caveated
+ * rate anchors as hard as an uncaveated one, and this one had already been
+ * quoted onward twice before anyone checked it.*
  *
  * That is the whole of Phase C by decision rather than by shortfall: deriving a
  * true free float needs Section 16 and 13D holdings, and that is unstarted on

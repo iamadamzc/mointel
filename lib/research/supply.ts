@@ -291,7 +291,9 @@ export function computeSupplyPair(options: {
  * conclusive-when-LOW, and it is the only route to that answer the desk owns:
  * `displayedFloat` is null on effectively every dossier, and the float that
  * reaches the board comes from the ChatGPT task's Sheet — a vendor number
- * measured arithmetically impossible on one name in six.
+ * that contradicts its own share count on 8 or 9 of 46 non-ADR names in a
+ * watched sample -- see `float.ts` for why "impossible" is the retracted word
+ * and why 58 was never that rate's denominator.
  *
  * ── IT MUST BE READ ON THE POST-ESCALATION DOSSIER, AND THAT IS MEASURED ──
  *

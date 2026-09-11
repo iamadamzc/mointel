@@ -8,7 +8,8 @@ import { assessSupplyOverhang, type SupplyPair } from '@/lib/research/supply';
  *
  * `displayedFloat` is null on effectively every dossier and the float that
  * reaches the board comes from the ChatGPT task's Sheet — a vendor number
- * measured arithmetically impossible on one name in six. This is the answer
+ * that contradicts its own share count on 8 or 9 of 46 non-ADR names in a
+ * watched sample, not a census. This is the answer
  * that needs no float at all: proven-live supply over shares outstanding, where
  * the denominator is an upper bound on the float, so a ratio at or above one
  * proves supply >= float on filings alone.
