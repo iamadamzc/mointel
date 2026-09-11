@@ -251,21 +251,46 @@ that as a rejection.**
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**Opened 2026-09-10. FIRST PASS DRAFTED 2026-09-10 17:00 ET, NOTHING DEPLOYED.**
+**Opened 2026-09-10. As of 2026-09-11 10:00 ET: SEVEN ARTBOARDS AND BOTH LEGAL
+TEXTS DRAFTED. NOTHING DEPLOYED, NO ROUTE EXISTS.**
 
 **Owned in the file tree as of `927641c`+:** `docs/web/` (the design canvas and
 the handover spec) and `docs/legal/privacy-policy.md`. **Nothing under `app/`,
 `components/` or `deploy/` — no route exists yet and none was written.**
 
-- **Drafted:** landing page (desktop and phone), sign-in screen, six sign-in
-  states with their status codes, the privacy page's DRAFT chrome, and the
-  public design system. Canvas published for him to edit directly; the artboard
-  sources are `docs/web/canvas/*.dc.html` and the canvas re-seeds from them.
+- **Drafted, seven artboards:** landing (desktop and phone), sign-in, the
+  sign-in states, **signed-in-not-admitted in three conditions**, the privacy
+  page's DRAFT chrome, and the public design system. Sources are
+  `docs/web/canvas/*.dc.html`.
+- **THE PUBLISHED CANVAS DOES NOT UPDATE WHEN THE SOURCES CHANGE.** *Editing a
+  `.dc.html` leaves the artifact he opens showing the previous version, and
+  nothing reports the difference.* **Re-seed and republish is a separate act,
+  and it belongs to whoever holds the files.** *It has already nearly shown him
+  superseded copy twice.*
+- **Frame heights are MEASURED, never estimated.** *Marketing added a section
+  and both landing artboards clipped — desktop by 414px, phone by 1952px, which
+  looks like a short page rather than a broken one.*
+  `document.querySelector('x-dc > div').getBoundingClientRect()` against the
+  `file://` render answers it exactly.
+- **THE COPY IS MARKETING'S AND WEB'S TOGETHER.** *Web laid in its pass; the
+  words are Marketing's and placement findings go back rather than getting
+  trimmed.* **Never two seats in one file at once — Integration signals.**
 - **Privacy policy drafted** as one file with `adopted: null` in frontmatter —
   **that null is what renders the DRAFT banner.** Every unknown fact is a
   `[BRACKET]`, and `docs/web/README.md` §3 says who answers each.
-- **Blocking Google publishing:** the public home page and terms. **The privacy
-  policy is drafted but not adopted and not routed.**
+- **Blocking Google publishing:** the public home page. **Both legal texts are
+  now drafted and NEITHER IS ADOPTED** — `docs/legal/privacy-policy.md` and
+  `docs/legal/terms.md`, each with `adopted: null` rendering its DRAFT banner.
+  *Adoption is his and no thread does it for him.*
+- **THE SESSION RULE IS PUBLISHABLE AND IS NOT A DURATION.** *A session ends at
+  20:00 ET — the close of after-hours — and a sign-in after 20:00 runs to 20:00
+  the next day.* **`createSession` takes an absolute expiry, so a caller cannot
+  express "30 days" at all**, and `expiry.ts` reuses `sessionEndUtc` rather than
+  defining 20:00 ET twice.
+- **THE POLICY UNDER-DECLARED THE COOKIES AND WEB WROTE IT FROM HABIT.** *It said
+  one cookie set after sign-in; there are two, and the OAuth `state`/`nonce`
+  cookie is set BEFORE sign-in completes.* **A claim about another thread's
+  surface is a question until that thread's code answers it.**
 - **Not blocked on:** the domain (verified), the redirect URIs (registered), the
   scopes (set), the OAuth client (his, in the console).
 - **Blocked ON Ops for:** every route and nginx location. **The full prefix list
@@ -283,8 +308,11 @@ the handover spec) and `docs/legal/privacy-policy.md`. **Nothing under `app/`,
   normal text**, and it was on the footer's legal paragraph. **The public pages
   use `#8792a3` (6.37:1) as the dimmest text and exclude `--color-muted`
   entirely.** *The desk's own `ink-3` was raised for exactly this reason once
-  already; `muted` was not in that sweep. Whether it is used for text on the
-  board is Design's to check, not this thread's to assert.*
+  already; `muted` was not in that sweep.* **DESIGN CHECKED AND DELETED IT:
+  referenced by zero files, so the defect was latent rather than live, and it
+  measures worse again — 4.10:1 — on the striped header surface.** *Removed
+  rather than annotated, because with `@theme` a missing token renders unstyled
+  and visible instead of quietly unreadable.*
 - **THE LANDING PAGE AT `/` IS BLOCKED ON IN-APP AUTH EXISTING**, because `/` is
   the board and Basic Auth is the only thing holding it. **Everything else on this
   thread's surface is not.**

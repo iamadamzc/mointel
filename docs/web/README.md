@@ -81,7 +81,7 @@ demonstrably holding the weight.
 | prefix | what serves it | why it must be public |
 | --- | --- | --- |
 | `/privacy` | renders `docs/legal/privacy-policy.md` | Google requires it reachable and linked from the home page and the consent screen |
-| `/terms` | renders `docs/legal/terms.md` *(not yet drafted)* | same requirement |
+| `/terms` | renders `docs/legal/terms.md` | same requirement |
 | `/signin` | the sign-in screen | the page a signed-out visitor is sent to |
 | `/auth/` | the OAuth start and callback | `/auth/callback/google` is a registered exact-match redirect URI; `/api/auth/` would inherit Basic Auth |
 | `/favicon.ico` | static | falls under `location /` today, so a public page's tab icon 401s — invisible from any browser on this desk |
@@ -160,7 +160,7 @@ backstop for someone who signs in without an invite.*
 | 4 | **The flow cookie's NAME is not established.** Relayed to Web as `mointel_oauth` carrying `<state>.<nonce>`; **the only occurrence in the tree is `mointel_oauth_state`, in `tests/auth/cookie.test.ts`, passed as an argument** — and `1e120ac` asserts no name at all. *A policy that names a cookie is one of the few claims a user can check in their own browser inspector.* **Not published on a relay the code disagrees with.** | Ops |
 | 5 | Whether an EU/UK audience is in scope — it decides whether the policy needs a lawful-basis section and a supervisory authority | the trader |
 | 6 | Whether Google's "home page" must be `tmitrader.com` itself, or whether a page elsewhere on the domain satisfies it | nobody has confirmed; **do not guess** |
-| 7 | Terms of service — not yet drafted | Web, next |
+| 7 | **Terms of service DRAFTED** `docs/legal/terms.md`, `adopted: null`. **Two decisions inside it are deliberately not drafted and are his:** the **liability cap** (§10), and **whether to require arbitration and waive class actions** instead of the Texas courts clause (§12) — *the normal choice for a US consumer service, a real trade-off rather than a formality, and not a thread's to insert.* | the trader |
 
 **Every remaining `[BRACKET]` in `docs/legal/privacy-policy.md` maps to row 2 or
 row 3.** None was invented to look complete.
