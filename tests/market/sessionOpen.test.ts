@@ -68,7 +68,7 @@ function baseline(symbol: string): RvolBaseline {
   };
 }
 
-function engineAt(nowMs: number) {
+function engineAt(nowMs: number, rthCloseMinutes?: number) {
   const engine = new DemandEngine({
     tradingDate: TRADING_DATE,
     feed: 'sip',
@@ -77,6 +77,7 @@ function engineAt(nowMs: number) {
     priceMin: 1,
     priceMax: 20,
     baselineSessions: 20,
+    rthCloseMinutes,
     now: () => nowMs,
   });
   engine.setBaselines(new Map([['ABCD', baseline('ABCD')]]));
@@ -198,5 +199,88 @@ describe('the Move is derived here, so no surface divides its own numbers', () =
     const engine = engineAt(BELL - 200 * 60_000);
     expect(opens(engine)?.regular.move).toBeNull();
     expect(opens(engine)?.regular.price).toBeNull();
+  });
+});
+
+/**
+ * Why there is no open, when there is none.
+ *
+ * Design found the defect at the surface: a Move reading returned null both for
+ * a session that had not begun and for one that was running with no print, so
+ * the more informative of the two -- THIS NAME IS NOT TRADING IN A LIVE SESSION
+ * -- rendered as nothing. Both causes produce `price === null`; only a holder of
+ * the clock can separate them.
+ */
+describe('a null open says WHICH null it is', () => {
+  it('is NOT_STARTED before the session begins', () => {
+    const engine = engineAt(BELL - 60 * 60_000);
+    expect(opens(engine)?.regular.state).toBe('NOT_STARTED');
+    expect(opens(engine)?.regular.price).toBeNull();
+  });
+
+  it('is NO_PRINT once the session is running and nothing has traded', () => {
+    const engine = engineAt(BELL + 30 * 60_000);
+    expect(opens(engine)?.regular.state).toBe('NO_PRINT');
+    expect(opens(engine)?.regular.price).toBeNull();
+  });
+
+  it('separates the two states that used to render identically', () => {
+    /* THE DEFECT, PINNED. Same null price, different states. */
+    const before = opens(engineAt(BELL - 60 * 60_000))?.regular;
+    const during = opens(engineAt(BELL + 30 * 60_000))?.regular;
+
+    expect(before?.price).toBeNull();
+    expect(during?.price).toBeNull();
+    expect(before?.state).not.toBe(during?.state);
+  });
+
+  it('is OPEN as soon as a print exists', () => {
+    const engine = engineAt(BELL + 5 * 60_000);
+    engine.ingest(bar('ABCD', at(0), { o: 5, c: 5.1, v: 50_000 }));
+    expect(opens(engine)?.regular.state).toBe('OPEN');
+  });
+
+  it('calls a FINISHED session with no print NO_PRINT, not a fourth state', () => {
+    /*
+     * "It ran and never traded" and "it is running and has not traded yet" are
+     * the same measurement about the same name, and the phase is on the header
+     * already. Premarket is over by the time RTH is 30 minutes old.
+     */
+    const engine = engineAt(BELL + 30 * 60_000);
+    expect(opens(engine)?.premarket.state).toBe('NO_PRINT');
+  });
+
+  it('flips exactly at the boundary the VWAP coverage flag uses', () => {
+    /* One millisecond either side of 09:30, so the two fields cannot disagree. */
+    expect(opens(engineAt(BELL - 1))?.regular.state).toBe('NOT_STARTED');
+    expect(opens(engineAt(BELL))?.regular.state).toBe('NO_PRINT');
+  });
+
+  it('never emits UNKNOWN, because this side holds the clock', () => {
+    /*
+     * UNKNOWN exists for `sessionOpensFromRow`, which rebuilds opens from
+     * stored columns and has no clock. A compute that emitted it would be
+     * declining to answer a question it can answer.
+     */
+    for (const nowMs of [BELL - 300 * 60_000, BELL, BELL + 30 * 60_000, BELL + 400 * 60_000]) {
+      const set = opens(engineAt(nowMs));
+      for (const open of [set?.premarket, set?.regular, set?.afterHours]) {
+        expect(open?.state).not.toBe('UNKNOWN');
+      }
+    }
+  });
+
+  it('moves the after-hours boundary on an early close', () => {
+    /*
+     * WHY THE STORE CANNOT DERIVE THIS. 13:30 ET is before after-hours on a
+     * normal day and inside it on a half day, and the only thing that
+     * distinguishes them is an INJECTED `rthCloseMinutes` -- not the trading
+     * date, and nothing a `ticker_session` row carries. A read-side derivation
+     * that assumed 16:00 would be right most days and silently wrong on the
+     * days the desk trades a half session, which is why a row says UNKNOWN.
+     */
+    const fourHoursIn = BELL + 4 * 60 * 60_000;
+    expect(opens(engineAt(fourHoursIn))?.afterHours.state).toBe('NOT_STARTED');
+    expect(opens(engineAt(fourHoursIn, 13 * 60))?.afterHours.state).toBe('NO_PRINT');
   });
 });

@@ -236,9 +236,77 @@ export function vwapDistance(
  * on the session averages and UNKNOWN confidence on a float: the desk states
  * the weakness instead of substituting a steadier-looking number.
  */
+/**
+ * Why there is no open, when there is none.
+ *
+ * `price: null` had two causes and said neither. Design found it at the surface:
+ * a Move reading returned null for a session that HAS NOT BEGUN and for one that
+ * has begun and seen no print, so the most informative state -- **this session is
+ * running and the name has not traded in it** -- rendered as nothing.
+ *
+ * The sibling type already had the answer. `SessionVwap` carries
+ * `coverage: 'UNAVAILABLE' | 'PARTIAL' | 'COMPLETE'` for exactly this reason,
+ * and `SessionOpen` shipped without an equivalent. **The three-state rule
+ * applies to `price`, not only to `tradeCount`.**
+ */
+export type SessionOpenState =
+  /** `now` is before this session begins. Nothing could have traded yet. */
+  | 'NOT_STARTED'
+  /** The session has begun or finished and no print arrived. A measurement. */
+  | 'NO_PRINT'
+  /** A first print exists and `price` carries it. */
+  | 'OPEN'
+  /**
+   * The producer could not tell NOT_STARTED from NO_PRINT.
+   *
+   * THIS IS NOT A PLACEHOLDER, it is the honest answer from a reader with no
+   * clock. `sessionOpensFromRow` rebuilds opens from nine stored columns and
+   * none of them is a state; deriving one would need the after-hours boundary,
+   * which moves on an early-close day and is an injected option
+   * (`rthCloseMinutes`) rather than anything a trading date implies. A store
+   * read that guessed 16:00 would be right most days and silently wrong on the
+   * days the desk trades a half session.
+   *
+   * The sibling field shows the fix: `coverage` is not derived at read time
+   * either, it is COMPUTED BY THE ENGINE AND STORED (`pm_vwap_coverage` and
+   * its two siblings). The opens shipped with nine columns and needed twelve.
+   * Until the missing three exist, a row can prove OPEN from a non-null price
+   * and must say UNKNOWN for the rest.
+   *
+   * A surface may render UNKNOWN as nothing. The difference from the defect
+   * Design found is that this nothing is COUNTABLE.
+   */
+  | 'UNKNOWN';
+
+/**
+ * The state an open is in, from a price and a clock.
+ *
+ * ONE RULE, TWO CALLERS. Any producer holding a clock answers this the same
+ * way, and answers it against `vwapSessionStartMs` -- the boundary the VWAP
+ * coverage flag already uses -- so two fields on one row cannot disagree about
+ * when a session started.
+ *
+ * `at` is deliberately not consulted: a price that arrived without a minute is
+ * still a print, and the open is the price.
+ */
+export function sessionOpenStateFor(
+  session: VwapSession,
+  price: number | null,
+  asOfMs: number,
+  tradingDate: string,
+  closeMinutes?: number,
+): SessionOpenState {
+  if (price !== null) return 'OPEN';
+  return asOfMs < vwapSessionStartMs(session, tradingDate, closeMinutes)
+    ? 'NOT_STARTED'
+    : 'NO_PRINT';
+}
+
 export interface SessionOpen {
   session: VwapSession;
   label: string;
+  /** Why `price` is null, when it is. See `SessionOpenState`. */
+  state: SessionOpenState;
   /** The opening print of the session, or null before the session has traded. */
   price: number | null;
   /** Minute the anchor came from, so a reader can see WHICH print it was. */
@@ -264,6 +332,7 @@ export function emptySessionOpen(session: VwapSession): SessionOpen {
   return {
     session,
     label: VWAP_LABEL[session],
+    state: 'NOT_STARTED',
     price: null,
     at: null,
     tradeCount: null,

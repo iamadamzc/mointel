@@ -10,10 +10,15 @@ import { DEFAULT_ACTIVITY_CONFIG } from '@/lib/market/activity';
 import type { SessionOpen, SessionOpenSet } from '@/lib/market/vwap';
 
 function open(fields: Partial<SessionOpen> = {}): SessionOpen {
+  // The default state follows the price so the fixture cannot build an open
+  // that production could not produce -- OPEN with no price. An explicit
+  // `state` in `fields` still wins, which is how NOT_STARTED gets tested.
+  const price = 'price' in fields ? (fields.price ?? null) : 4.0;
   return {
     session: 'PREMARKET',
     label: 'PM VWAP',
-    price: 4.0,
+    state: price !== null ? 'OPEN' : 'NO_PRINT',
+    price,
     at: '2026-09-10T08:00:00.000Z',
     tradeCount: 400,
     move: null,

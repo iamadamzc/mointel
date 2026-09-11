@@ -453,9 +453,22 @@ function sessionOpensFromRow(row: TickerSessionRow): SessionOpenSet | undefined 
     return undefined;
   }
 
+  /*
+   * `state` is proven, not derived. A non-null price IS an open, so OPEN needs
+   * no clock. The null case splits into NOT_STARTED and NO_PRINT on the
+   * after-hours boundary, which moves on an early-close day and reaches this
+   * codebase as an injected `rthCloseMinutes` -- nothing a row carries. So the
+   * row says UNKNOWN rather than assuming 16:00 and being quietly wrong on the
+   * half days.
+   *
+   * The fix is three more columns, the way `coverage` is already stored rather
+   * than recomputed here. Until then this is the honest answer, and UNKNOWN is
+   * countable in a way that the null price it replaces was not.
+   */
   const build = (session: VwapSession, price: number | null, at: string | null, trades: number | null): SessionOpen => ({
     session,
     label: VWAP_LABEL[session],
+    state: price !== null ? 'OPEN' : 'UNKNOWN',
     price,
     at,
     tradeCount: trades,

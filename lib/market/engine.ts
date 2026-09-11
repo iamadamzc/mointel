@@ -65,9 +65,11 @@ import {
   barNotional,
   computeVwap,
   vwapSessionForTs,
+  sessionOpenStateFor,
   vwapSessionStartMs,
   type SessionVwap,
   type SessionOpen,
+  type SessionOpenState,
   type SessionOpenSet,
   type SessionVwapSet,
   type VwapSession,
@@ -1095,9 +1097,34 @@ export class DemandEngine {
     const read = (session: VwapSession): SessionOpen => {
       const key = VWAP_SESSION_KEY[session];
       const price = runtime.sessionOpenPrice[key];
+
+      /*
+       * WHY THERE IS NO OPEN, WHEN THERE IS NONE — and the compute is the only
+       * place that can say.
+       *
+       * A surface sees `price: null` and cannot tell a session that has not
+       * begun from one that is running with no print. Only this side holds the
+       * clock. `vwapSessionStartMs` is the same boundary the VWAP coverage flag
+       * already uses, so the two answers cannot disagree about when a session
+       * started.
+       *
+       * A FINISHED session with no print is `NO_PRINT` and not a fourth state:
+       * "it ran and never traded" and "it is running and has not traded yet"
+       * are the same measurement about the same name, and the phase is on the
+       * header already.
+       */
+      const state: SessionOpenState = sessionOpenStateFor(
+        session,
+        price,
+        this.now(),
+        this.tradingDate,
+        this.rthCloseMinutes,
+      );
+
       return {
         session,
         label: VWAP_LABEL[session],
+        state,
         price,
         at: runtime.sessionOpenAt[key],
         tradeCount: runtime.sessionOpenTrades[key],
