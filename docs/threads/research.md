@@ -14839,3 +14839,65 @@ MINE.** *I cannot enforce it from the compute — a surface can subtract two
 fields I publish.* **So if the desk wants the guarantee it has to be a stated
 rule on the surface, not a property of the data, and someone other than me has
 to hold it.**
+
+**146. THE ACVA GAP IS ANCHORED CORRECTLY. BUT THE ROW CARRIES A SECOND READING
+INTEGRATION ASKED ME TO LOOK FOR, AND ITS DISCRIMINATOR IS ALREADY STORED.**
+
+*He said `PM GAP +43.4%` is "not accurate — it's up 43% INCLUDING AH." Integration
+read it as right-number-wrong-label and asked me to check the compute rather than
+assume it.*
+
+### THE ANCHOR IS THE PRIOR RTH CLOSE, AND THAT IS CORRECT
+
+`derive.ts:24` `resolveReferenceRthClose`:
+
+```
+rthHasClosed && usable(today)  ->  CURRENT_SESSION   (today's 16:00 close)
+usable(prior)                  ->  PRIOR_SESSION     (yesterday's 16:00 close)
+otherwise                      ->  null
+```
+
+**In premarket `rthHasClosed` is false, so it resolves to `PRIOR_SESSION`** and
+`percentChange` is measured from **yesterday's official close**. *An after-hours
+move from yesterday evening is inside that number by construction — the price now
+reflects everything since 16:00 and the anchor predates it.* **Integration's
+reading holds: the number is right, the word `PM` is wrong, and the fix is a
+label.**
+
+### BUT `PM VWAP +$0.000 / +0.0%` HAS TWO READINGS AND THEY ARE NOT THE SAME ROW
+
+**Integration asked for a reading where something IS wrong that also produces all
+three numbers. There is one.**
+
+| | what happened | `+$0.000` is | `RVOL 0.0x` is |
+| --- | --- | --- | --- |
+| **(a)** | **no premarket prints at all** | **a NULL rendered as a measurement** | true |
+| **(b)** | **one or two premarket prints** | true — VWAP equals the only print, which is the price | true, rounds from a tiny number |
+
+**Under (a) the desk computes `vwap: null, volume: null, coverage: 'UNAVAILABLE'`
+(`engine.ts:1149`) and a surface showing `+$0.000` has turned an absence into a
+zero** — *this desk's oldest failure, on his live board, in the row he was
+already looking at.*
+
+**THE DISCRIMINATOR IS ALREADY STORED AND IT IS ONE COLUMN.**
+**`pm_vwap_coverage`** — `UNAVAILABLE` means (a) and the delta is fabricated;
+`PARTIAL`/`COMPLETE` with `pm_vwap_volume > 0` means (b) and every number on the
+row is honest. *`pm_vwap_volume` is the same check from the other side.*
+
+**I cannot query production, so I am naming the test rather than the answer.**
+
+### AND IT IS THE EXACT FAILURE THE MOVE FAMILY MUST NOT REPEAT
+
+*Integration asked what `Move` does with a row that has no premarket prints.*
+**Nothing, correctly: no first print means `sessionOpenPrice.premarket` stays
+null, so `price: null` and `move: null`.** *It cannot render 0% because it has no
+origin to divide by.*
+
+> **BUT THAT IS ONLY HALF THE GUARANTEE.** *`sessionOpens` being optional and its
+> fields nullable stops the COMPUTE from inventing a zero. It does not stop a
+> surface rendering `null` as `+0.0%` — which is what reading (a) would mean is
+> already happening one column to the left.*
+
+**So if (a) is true it is not only a live defect, it is a demonstration of the
+failure mode the Move family is walking into, on the same row, before Move has
+shipped.** *That is worth more than the label fix.*
