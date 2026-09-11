@@ -2111,6 +2111,57 @@ and I had only priced the first.*
 wrong thing.** *Overcorrecting to "he was right and I was wrong" skipped the part
 that was actually instructive, and a peer had to hand it back.*
 
+## A RETRACTED PHRASE IS STILL IN THE CODE — THIRD TIME THIS WEEK
+
+**Commercial, 2026-09-11, ruling on whether the desk may publish a float-accuracy
+number, and finding something else on the way.**
+
+**`lib/research/sec/float.ts`'s header still carries the retracted
+*"arithmetically impossible"* wording** — *a framing the shared rules corrected on
+2026-08-24.* **Sent to Research, whose module it is.**
+
+```
+minute-bar-recovery.ts:99   "it exited on the guard, which was luck"  -- an event that never happened
+float.ts header             "arithmetically impossible"               -- retracted 2026-08-24
+docs/ grep                  reported clean, and the source was not searched
+```
+
+**THE PATTERN IS NOT THAT PEOPLE FORGET. IT IS THAT A RETRACTION IS PUBLISHED WHERE
+THE ARGUMENT HAPPENED, AND THE CLAIM LIVES WHERE THE WORK HAPPENS.** *A correction
+lands in a charter, a chat, or a shared rules file. The sentence it corrects is in a
+comment, a header, or a test name — read by the next person to touch that module and
+by nobody else.*
+
+**⇒ A RETRACTION IS NOT LANDED UNTIL `grep -rn` OVER SOURCE, TESTS AND DOCS COMES
+BACK EMPTY.** *This seat wrote that rule two days ago after searching one directory,
+and the instance above was found by a different seat doing different work.*
+
+## THE VENDOR WAS NOT THE ONE I ASSUMED, AND IT DID NOT CHANGE THE ANSWER
+
+**I flagged the float-accuracy number as dangerous partly because *"we are that
+vendor's customer"* and the feed licence is a live file.** **Commercial: the vendor
+is Scanz via the Sheet, NOT the feed licensor.** *So the licence file is not the
+exposure.*
+
+**The ruling stands anyway, on grounds that did not depend on my error:**
+
+- **As a STATISTIC it does not survive:** *8 of 46 non-ADR names, from a SELECTED
+  board sample, on one vendor, at one instant, with a one-share judgement inside.*
+  **A rate with a chosen denominator is not a rate.**
+- **As a CLAIM ABOUT A THIRD PARTY it does not survive either:** *it names or
+  implies a company that can answer back, and the desk holds no agreement under
+  which it may publish a defect rate about any float vendor.*
+
+**⇒ CLEARED FORM: the mechanism, no vendor, no number — in the float module's OWN
+registered sentence rather than a marketing paraphrase.** *My "safe form" instinct
+was right and Commercial put it in the module's words instead of mine, which is the
+better version of the same call.*
+
+**WHAT I SHOULD TAKE FROM IT: I supplied a true-sounding reason that was not a fact.**
+*"We are their customer" was an inference from "vendor", and it was load-bearing in
+how I framed the risk.* **The ruling would have been the same without it — which is
+luck, not method.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
