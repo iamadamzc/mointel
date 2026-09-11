@@ -3916,6 +3916,38 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE THIN MARK RESTS ON AN ASSUMPTION NOTHING ENFORCES
+
+**Research's finding, verified here rather than taken: `activity_config` is
+WRITE-ONLY.** It appears in the row type (`repo.ts:385`), the INSERT list
+(`:743`), the VALUES (`:771`) and the upsert COALESCE (`:896`) — **and
+`activityConfig` has zero references anywhere in `lib/` or `worker/`.** *The
+column that records which config produced a row is never read back.*
+
+**WHAT THAT MEANS FOR MY MARK.** The thin/thick line comes from
+`deadLineFor(DEFAULT_ACTIVITY_CONFIG)` **in the client**, while the row's
+ACTIVE/DEAD verdict came from whatever config **the engine** was running.
+**They agree today because there is one config in play — so the mark is correct
+BY DEFAULT rather than BY CONSTRUCTION, and nothing can detect a divergence,
+because the surface cannot see the stored config.**
+
+**AND THE COLUMN'S EXISTENCE IS THE DESK'S OWN ADMISSION THAT THE CONFIG CAN
+VARY** — there would be no reason to store a per-row config if it never could.
+
+**THE SHARP VERSION, WHICH IS THE PART WORTH CARRYING: A WRITE-ONLY COLUMN IS
+WORSE THAN A MISSING ONE.** *A missing column prompts the question "how would we
+know?". A present one looks like the answer is already recorded.* **Anyone
+auditing this schema would see `activity_config` and conclude the provenance is
+captured. It is captured and never consulted.** *Same family as the nine dark
+columns this morning, inverted: written and never read, rather than read and
+never written — and this one is the harder direction to notice, because the
+write side looks healthy.*
+
+**NOT MINE TO FIX AND NOT A BLOCKER.** *The fix is to surface the config on
+`DemandState` so the mark and the verdict derive from ONE value instead of two
+that happen to match — Research's, and only if it ever matters.* **Recorded
+because it is MY mark that inherits the assumption.**
+
 ## THE BOARD'S STALENESS IS SERVER-BAKED, SO IT FREEZES WITH THE FEED
 
 **Scoping the mid-session downgrade he ruled me into, and the finding is bigger
