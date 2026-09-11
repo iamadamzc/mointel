@@ -158,3 +158,101 @@ describe('the migration reaches a store that already exists', () => {
     reopened.close();
   });
 });
+
+describe('the three state columns, schema 27', () => {
+  /*
+   * THE CASE THE COLUMNS EXIST FOR, and the one the store could not express
+   * before. A name that has not traded in premarket has a null price -- and a
+   * null price alone cannot say whether the session had not begun or ran with
+   * nothing printed. Measured on production: ~20% of the names at the top of a
+   * gap-sorted board in premarket are in exactly this state.
+   */
+  it('keeps a session open with a state but no price, rather than dropping the set', () => {
+    const db = store();
+    insert(db, 'NOPRINT', {
+      pm_open_state: 'NO_PRINT',
+      rth_open_state: 'NOT_STARTED',
+      ah_open_state: 'NOT_STARTED',
+    });
+
+    const opens = read(db, 'NOPRINT')?.sessionOpens;
+
+    expect(opens).toBeDefined();
+    expect(opens?.premarket.state).toBe('NO_PRINT');
+    expect(opens?.premarket.price).toBeNull();
+    expect(opens?.regular.state).toBe('NOT_STARTED');
+
+    db.close();
+  });
+
+  it('round-trips a state beside a real open', () => {
+    const db = store();
+    insert(db, 'TRADED', {
+      pm_open_state: 'OPEN',
+      pm_open_price: 3.9,
+      pm_open_at: '2026-09-10T08:31:00.000Z',
+      pm_open_trades: 14,
+    });
+
+    const open = read(db, 'TRADED')?.sessionOpens?.premarket;
+
+    expect(open?.state).toBe('OPEN');
+    expect(open?.price).toBe(3.9);
+    expect(open?.tradeCount).toBe(14);
+
+    db.close();
+  });
+
+  /*
+   * Rows written before this migration carry values and no state. UNKNOWN is a
+   * member of the type rather than an optional field exactly so those rows keep
+   * an honest answer instead of being described by a guess.
+   */
+  it('falls back to UNKNOWN for a pre-27 row that has a price but no state', () => {
+    const db = store();
+    insert(db, 'LEGACY', { pm_open_price: 2.5, pm_open_at: '2026-09-10T08:30:00.000Z' });
+
+    const open = read(db, 'LEGACY')?.sessionOpens?.premarket;
+
+    expect(open?.price).toBe(2.5);
+    expect(open?.state).toBe('UNKNOWN');
+
+    db.close();
+  });
+
+  /* A row with neither values nor states is still the never-asked case. */
+  it('still reads a row with no opens and no states as undefined', () => {
+    const db = store();
+    insert(db, 'EMPTY');
+    expect(read(db, 'EMPTY')?.sessionOpens).toBeUndefined();
+    db.close();
+  });
+
+  /*
+   * The migration half. A column added to CREATE TABLE but not to ADDED_COLUMNS
+   * reaches every fresh store and no existing one -- which is the failure that
+   * would look like "works on my machine" forever.
+   */
+  it('adds the three columns to a store that predates them', () => {
+    const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-open-state-')), 'market.db');
+    files.push(file);
+
+    const older = openDatabase(file);
+    for (const column of ['pm_open_state', 'rth_open_state', 'ah_open_state']) {
+      older.exec(`ALTER TABLE ticker_session DROP COLUMN ${column}`);
+    }
+    older.pragma('user_version = 26');
+    older.close();
+
+    const upgraded = openDatabase(file);
+    const names = (
+      upgraded.prepare('PRAGMA table_info(ticker_session)').all() as Array<{ name: string }>
+    ).map((c) => c.name);
+
+    expect(names).toContain('pm_open_state');
+    expect(names).toContain('rth_open_state');
+    expect(names).toContain('ah_open_state');
+
+    upgraded.close();
+  });
+});

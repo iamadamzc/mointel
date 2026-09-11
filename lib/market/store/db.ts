@@ -15,7 +15,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 26;
+export const SCHEMA_VERSION = 27;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -216,6 +216,29 @@ CREATE TABLE IF NOT EXISTS ticker_session (
   -- move is deliberately absent: it is derived at read time from the stored
   -- price against the LIVE price. Storing it would freeze a live comparison
   -- into a row, which is the error the cycle resolution already made once.
+  /*
+   * The three _state columns answer a question the nine value columns cannot.
+   *
+   * A null price has two causes -- the session has not begun, and the session
+   * ran with nothing traded -- and they are different facts to a trader
+   * scanning for something to trade. Measured on the live store: ~20% of the
+   * names at the top of a gap-sorted board in premarket have no premarket
+   * print, and today every one of them renders as nothing at all.
+   *
+   * THE STORE CANNOT DERIVE THIS, which is why it is stored. Separating the two
+   * causes needs the after-hours boundary, which moves on an early-close day
+   * and arrives as an injected rthCloseMinutes rather than anything a trading
+   * date implies. A read-side rule assuming 16:00 would be right most days and
+   * silently wrong on exactly the half sessions -- the same trap
+   * lib/market/session.ts already documents for RTH.
+   *
+   * So the engine, which holds the clock, computes it once and the store keeps
+   * it. Same shape and same reason as pm_vwap_coverage and its two siblings.
+   */
+  pm_open_state          TEXT,
+  rth_open_state         TEXT,
+  ah_open_state          TEXT,
+
   pm_open_price          REAL,
   pm_open_at             TEXT,
   pm_open_trades         INTEGER,
@@ -814,6 +837,9 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'ticker_session', column: 'death_count', definition: 'INTEGER' },
   { table: 'ticker_session', column: 'activity_config', definition: 'TEXT' },
   { table: 'ticker_session', column: 'activity_window', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'pm_open_state', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'rth_open_state', definition: 'TEXT' },
+  { table: 'ticker_session', column: 'ah_open_state', definition: 'TEXT' },
   { table: 'ticker_session', column: 'pm_open_price', definition: 'REAL' },
   { table: 'ticker_session', column: 'pm_open_at', definition: 'TEXT' },
   { table: 'ticker_session', column: 'pm_open_trades', definition: 'INTEGER' },
@@ -1100,6 +1126,41 @@ export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketD
         expected.length > 0 && expected.every((name) => present.has(name));
 
       if (fromVersion === SCHEMA_VERSION && complete) return;
+
+      /*
+       * A STORE NEWER THAN THIS CODE. Proceed, but DO NOT TOUCH THE MARKER.
+       *
+       * Before this branch existed, the condition fell through to upgrade()
+       * below and ended at `user_version = SCHEMA_VERSION` -- writing the
+       * marker BACKWARDS. Neither guard above catches it: the equality fails
+       * (26 !== 25) and the backup range fails (26 < 25 is false), so a store
+       * ahead of the code took no backup and was silently relabelled as behind
+       * it. The one condition meaning "your writer and your schema have
+       * diverged" was the one condition nothing tested for, and it landed in
+       * the reassuring branch.
+       *
+       * Observed on 2026-09-10/11: the desk deploys the web tier with
+       * RESTART_MARKET=no, so the market worker keeps running older code while
+       * the store migrates ahead of it. Every restart of that worker wrote the
+       * marker back, and the next deploy then re-migrated and took another
+       * full VACUUM INTO copy -- ~1 GB, permanently, per cycle.
+       *
+       * PROCEEDING IS CORRECT AND REFUSING WOULD BE WORSE. The migrations here
+       * are additive, so older code operating against a newer store simply
+       * ignores columns it does not know. Refusing to open would take the desk
+       * down on a legitimate rollback, which is a real operation this box
+       * performs. The fault was never that it continued -- it was that it then
+       * claimed the store was older than it is.
+       */
+      if (fromVersion > SCHEMA_VERSION) {
+        console.warn(
+          `[store] ${dbPath} is schema v${fromVersion}, newer than this build's ` +
+            `v${SCHEMA_VERSION}. Proceeding read/write on the additive schema and ` +
+            `leaving user_version untouched. Restart this process onto a build at ` +
+            `v${fromVersion} or later.`,
+        );
+        return;
+      }
 
       // Back up only a real upgrade of an existing store. A brand-new database
       // reports 0 and has nothing to lose; a current one reports SCHEMA_VERSION

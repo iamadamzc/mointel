@@ -62,6 +62,7 @@ const COLUMNS = [
   'rth_final_rvol', 'rth_final_rank', 'rth_final_frozen_at', 'activity', 'dead_since',
   'dead_at_rank', 'dead_at_peak_trades', 'dead_at_price', 'death_count', 'activity_config',
   'activity_window', 'price_window', 'last_event_at',
+  'pm_open_state', 'rth_open_state', 'ah_open_state',
   'pm_open_price', 'pm_open_at', 'pm_open_trades',
   'rth_open_price', 'rth_open_at', 'rth_open_trades',
   'ah_open_price', 'ah_open_at', 'ah_open_trades',

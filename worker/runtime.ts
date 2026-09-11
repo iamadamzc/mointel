@@ -1849,6 +1849,16 @@ export function toRow(state: DemandState): TickerSessionRow {
      * move is deliberately not written -- it is a live comparison, recomputed
      * on read against the row's own price.
      */
+    /*
+     * The three states are written from the engine and never inferred here.
+     * They are the reason a null price can be read as a measurement rather than
+     * an absence -- see the columns' note in db.ts. `?? null` only covers the
+     * case where the engine supplied no session opens at all.
+     */
+    pm_open_state: state.sessionOpens?.premarket.state ?? null,
+    rth_open_state: state.sessionOpens?.regular.state ?? null,
+    ah_open_state: state.sessionOpens?.afterHours.state ?? null,
+
     pm_open_price: state.sessionOpens?.premarket.price ?? null,
     pm_open_at: state.sessionOpens?.premarket.at ?? null,
     pm_open_trades: state.sessionOpens?.premarket.tradeCount ?? null,

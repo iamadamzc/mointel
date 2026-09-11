@@ -384,6 +384,9 @@ export interface TickerSessionRow {
   death_count: number | null;
   activity_config: string | null;
   activity_window: string | null;
+  pm_open_state: string | null;
+  rth_open_state: string | null;
+  ah_open_state: string | null;
   pm_open_price: number | null;
   pm_open_at: string | null;
   pm_open_trades: number | null;
@@ -449,8 +452,20 @@ function sessionOpensFromRow(row: TickerSessionRow): SessionOpenSet | undefined 
     ['AFTER_HOURS', row.ah_open_price, row.ah_open_at, row.ah_open_trades],
   ] as const;
 
+  /*
+   * The emptiness test keys on the VALUE columns only, deliberately -- not on
+   * the three _state columns beside them.
+   *
+   * A row written before schema 27 has null states and null values, and is
+   * genuinely "the engine never supplied this". A row written after carries a
+   * state even where the price is null, because NO_PRINT is a measurement. If
+   * state joined this test, the first kind would stay undefined (right) and the
+   * second would too (wrong) the moment every price happened to be null -- 
+   * which is precisely the untraded name this whole change exists to describe.
+   */
   if (columns.every(([, price, at, trades]) => price === null && at === null && trades === null)) {
-    return undefined;
+    const states = [row.pm_open_state, row.rth_open_state, row.ah_open_state];
+    if (states.every((state) => state === null)) return undefined;
   }
 
   /*
@@ -465,10 +480,28 @@ function sessionOpensFromRow(row: TickerSessionRow): SessionOpenSet | undefined 
    * than recomputed here. Until then this is the honest answer, and UNKNOWN is
    * countable in a way that the null price it replaces was not.
    */
-  const build = (session: VwapSession, price: number | null, at: string | null, trades: number | null): SessionOpen => ({
+  /*
+   * STORED STATE FIRST, and UNKNOWN only when there is none.
+   *
+   * `state ?? 'UNKNOWN'` rather than a derivation: a row written before schema
+   * 27 has no state and genuinely cannot say, which is what UNKNOWN is for.
+   * That branch is why UNKNOWN is a member of the type rather than an optional
+   * field -- it survives this change as the honest answer for old rows, and it
+   * stops being the answer for every new one.
+   *
+   * The stored value is trusted over the price even where they could both
+   * speak, because the engine had the clock and this reader does not.
+   */
+  const build = (
+    session: VwapSession,
+    state: string | null,
+    price: number | null,
+    at: string | null,
+    trades: number | null,
+  ): SessionOpen => ({
     session,
     label: VWAP_LABEL[session],
-    state: price !== null ? 'OPEN' : 'UNKNOWN',
+    state: (state as SessionOpen['state'] | null) ?? 'UNKNOWN',
     price,
     at,
     tradeCount: trades,
@@ -476,9 +509,9 @@ function sessionOpensFromRow(row: TickerSessionRow): SessionOpenSet | undefined 
   });
 
   return {
-    premarket: build('PREMARKET', row.pm_open_price, row.pm_open_at, row.pm_open_trades),
-    regular: build('RTH', row.rth_open_price, row.rth_open_at, row.rth_open_trades),
-    afterHours: build('AFTER_HOURS', row.ah_open_price, row.ah_open_at, row.ah_open_trades),
+    premarket: build('PREMARKET', row.pm_open_state, row.pm_open_price, row.pm_open_at, row.pm_open_trades),
+    regular: build('RTH', row.rth_open_state, row.rth_open_price, row.rth_open_at, row.rth_open_trades),
+    afterHours: build('AFTER_HOURS', row.ah_open_state, row.ah_open_price, row.ah_open_at, row.ah_open_trades),
   };
 }
 
@@ -708,6 +741,7 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       rth_final_rank, rth_final_frozen_at,
       activity, dead_since, dead_at_rank, dead_at_peak_trades, dead_at_price,
       death_count, activity_config, activity_window, price_window,
+      pm_open_state, rth_open_state, ah_open_state,
       pm_open_price, pm_open_at, pm_open_trades,
       rth_open_price, rth_open_at, rth_open_trades,
       ah_open_price, ah_open_at, ah_open_trades,
@@ -735,6 +769,7 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
       @rth_final_rank, @rth_final_frozen_at,
       @activity, @dead_since, @dead_at_rank, @dead_at_peak_trades, @dead_at_price,
       @death_count, @activity_config, @activity_window, @price_window,
+      @pm_open_state, @rth_open_state, @ah_open_state,
       @pm_open_price, @pm_open_at, @pm_open_trades,
       @rth_open_price, @rth_open_at, @rth_open_trades,
       @ah_open_price, @ah_open_at, @ah_open_trades,
@@ -867,6 +902,9 @@ export function upsertTickerSessions(db: MarketDatabase, rows: TickerSessionRow[
        * the state would have wrongly discarded.
        */
       activity_window = COALESCE(excluded.activity_window, ticker_session.activity_window),
+      pm_open_state = COALESCE(excluded.pm_open_state, ticker_session.pm_open_state),
+      rth_open_state = COALESCE(excluded.rth_open_state, ticker_session.rth_open_state),
+      ah_open_state = COALESCE(excluded.ah_open_state, ticker_session.ah_open_state),
       pm_open_price = COALESCE(excluded.pm_open_price, ticker_session.pm_open_price),
       pm_open_at = COALESCE(excluded.pm_open_at, ticker_session.pm_open_at),
       pm_open_trades = COALESCE(excluded.pm_open_trades, ticker_session.pm_open_trades),
