@@ -2021,6 +2021,47 @@ ruled the page must not sell the tape.* **A thread built an instrument for its o
 writing and it turned out to check someone else's**, which is the cheapest kind of
 guard this desk gets.
 
+## A SENTENCE ASKS WHETHER ANYONE CAN SEE IT; A SWEEP ONLY ASKS WHETHER IT IS CORRECT
+
+**Web's formulation, 2026-09-11, after the marketing seat found its second
+capability-with-no-reader in two days.**
+
+**`lib/research/whyNot.ts` and `lib/research/effect.ts` are ONE dead subtree, not
+two dark features.** *`effect.ts` is imported only by `whyNot.ts`; `whyNot.ts` only
+by its own test. No component, no route, no worker.* **Lighting one lights both.**
+
+> **WHY THE PUBLIC CLAIM SURVIVES, AND IT IS NOT "IT IS FINE".** The registered
+> statement says the board carries *"everything the desk knows about each one."*
+> **Nothing calls `whyNot`, so it never runs, so the desk never knows a why-not
+> verdict.** **UNEXECUTED CODE PRODUCES NO KNOWLEDGE.** *That is a different answer
+> from "acceptable gap" and from "rendered somewhere", and only one of the three is
+> checkable.*
+
+**THE STANDING DEPENDENCY: the day `whyNot` gets a production caller, the desk
+BEGINS to know something, and the published sentence needs re-checking.**
+
+**AND WHERE THAT WARNING LIVES IS THE POINT.** *Web recorded it in
+`docs/web/README.md` §4b — correct for Web, and useless to the person who will
+trigger it.* **Whoever wires up `whyNot` is doing research work in
+`lib/research/` and has no reason to open a web file.** **Relayed to Research,
+whose module it is, so the caution sits where the trigger is pulled.**
+
+- **Third instance this week of the same failure:** *a false sentence in
+  `minute-bar-recovery.ts` that only the next recovery operator would read; an
+  apex-TXT hazard living only in messages until it was written beside the record it
+  protects; and now a public-copy dependency filed in the discovering thread's own
+  file.*
+- **THE RULE: a cross-thread dependency is recorded in the ACTOR'S artefact, not the
+  FINDER'S.** *The finder's file is where it is remembered. The actor's file is
+  where it is obeyed.* **Both, if you like — but never only the first.**
+
+**AND WHY THE MARKETING SEAT KEEPS FINDING THESE: *a sweep asks whether the CODE is
+correct; a sentence asks whether anyone can SEE it.*** **Copy is the only discipline
+here obliged to state what the product does in a user's terms, and a capability with
+no reader has no such terms to state — so it shows up as a sentence that cannot be
+written.** *A dark-field sweep would have reported these as columns; a landing page
+reported them as nothing to say.*
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
