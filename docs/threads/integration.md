@@ -2224,9 +2224,26 @@ volume = 0        occurs 0 times in 8,025 rows; the MINIMUM is 400
 > **⇒ THE POPULATION WHERE THIS FEATURE MATTERS IS DEFINED BY A CLIENT-SIDE SORT
 > THAT, BY HIS OWN RULING, DOES NOT PERSIST.** *"Sort does not survive. Names change
 > too much anyway. No need for persistence of any kind really."* — **2026-09-10.**
-> **No stored query can identify those rows retrospectively.** *Not because the
-> query was confounded, but because the desk chose not to record the thing that
-> defines the population.*
+
+> ### RETRACTED WITHIN THE HOUR — OPS GOT THE NUMBER
+>
+> **I wrote "no stored query can identify those rows retrospectively" and it is
+> FALSE.** *Ops queried production and produced the figure the same morning.*
+> **`percent_change` is STORED PER ROW PER DATE, so the gap sort is RECONSTRUCTABLE
+> server-side for any past day.** **What does not persist is which sort HE had
+> selected — and the question was about the gap sort specifically, which is
+> reproducible without it.**
+>
+> **THE CONFUSION WAS BETWEEN A SORT'S STATE AND A SORT'S KEY.** *The state is UI
+> and it is gone by his ruling. The key is a stored column and it is not.* **Design
+> said unobtainable, I recorded it as a lesson, and neither of us asked whether the
+> ordering could be rebuilt from data we already keep.**
+>
+> **AND RESEARCH'S EMPTY RESULT WAS A DIFFERENT FAULT ENTIRELY:** *it measured
+> "visible AND untraded", which is empty because board VISIBILITY requires volume.*
+> **That confound is real and stands. It was never evidence that the population was
+> unmeasurable — only that one query was wrong.** *I generalised a bad query into an
+> impossibility.*
 
 **THE SHAPE, AND IT IS THIS SEAT'S TO HOLD: a ruling about how something LOOKS or
 BEHAVES silently decides what can later be MEASURED.** *The desk already has one of
