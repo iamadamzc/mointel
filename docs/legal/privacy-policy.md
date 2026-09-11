@@ -1,9 +1,9 @@
 ---
 title: Privacy policy
-status: draft
-adopted: null
+status: adopted
+adopted: 2026-09-11
 drafted: 2026-09-10
-last_changed: 2026-09-10
+last_changed: 2026-09-11
 ---
 
 <!--
@@ -13,9 +13,13 @@ last_changed: 2026-09-10
   template, a component or a second page: two copies of a policy is two
   policies, and the one that renders is not necessarily the one anyone edited.
 
-  `adopted: null` is what makes the page render its DRAFT banner. The banner
-  disappears when, and only when, the trader sets an adoption date here.
-  No thread sets it on his behalf.
+  ADOPTED BY THE TRADER 2026-09-11, his word: "1, approved." Recorded by Web on
+  his instruction -- the adoption is his act, this line is only its record.
+  `adopted:` now carries a date, so the page renders NO draft banner.
+
+  IF THIS TEXT IS MATERIALLY REDRAFTED, `adopted` GOES BACK TO null AND THE
+  BANNER RETURNS until he adopts again. A draft that renders as adopted is the
+  failure this field exists to prevent.
 
   Every [BRACKET] below is a fact this seat does not hold. They are listed,
   with who can answer each, in docs/web/README.md.

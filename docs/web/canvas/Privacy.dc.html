@@ -35,20 +35,12 @@
     </nav>
   </header>
 
-  <!-- The DRAFT banner. Rendered by the page, driven by a flag in the source file,
-       and it disappears only when he adopts the text. -->
-  <div role="status" style="border-bottom: 1px solid #e8ac33; background: #1a1408; padding: 20px 96px; display: flex; gap: 20px; align-items: flex-start;">
-    <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #e8ac33; padding: 4px 10px; border: 1px solid #e8ac33; border-radius: 3px; white-space: nowrap;">DRAFT</span>
-    <div style="display: flex; flex-direction: column; gap: 6px;">
-      <p style="font-size: 15px; line-height: 1.6; color: #e9edf3; font-weight: 500;">
-        This policy is a draft and has not been adopted.
-      </p>
-      <p style="font-size: 15px; line-height: 1.6; color: #c7cedb; max-width: 92ch;">
-        It describes what the service intends to do with your information, and it is not yet in force.
-        Do not rely on it. This banner is removed by the operator when the text is adopted, and the
-        adoption date is recorded below.
-      </p>
-    </div>
+  <!-- ADOPTED 2026-09-11, so the live page renders NO banner. The draft banner
+       below is kept as the design for the state this page returns to whenever
+       the text is materially redrafted and `adopted` goes back to null. -->
+  <div style="border-bottom: 1px solid #1b212a; background: #0c0f14; padding: 14px 96px; display: flex; gap: 16px; align-items: center;">
+    <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #2fc46f;">IN FORCE</span>
+    <span style="font-size: 14px; color: #97a1b0;">Adopted 11 September 2026. This is the policy the service operates under.</span>
   </div>
 
   <main style="display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 80px; padding: 64px 96px 96px;">
@@ -71,7 +63,7 @@
     <article style="max-width: 68ch;">
       <h1 style="font-size: 44px; line-height: 1.1; margin-bottom: 20px;">Privacy policy</h1>
       <p class="mono" style="font-size: 13px; color: #8792a3; margin-bottom: 48px;">
-        DRAFTED [DATE] &nbsp;&middot;&nbsp; ADOPTED &mdash; &nbsp;&middot;&nbsp; LAST CHANGED [DATE]
+        DRAFTED 2026-09-10 &nbsp;&middot;&nbsp; ADOPTED 2026-09-11 &nbsp;&middot;&nbsp; LAST CHANGED 2026-09-11
       </p>
 
       <!-- Everything below renders from docs/legal/privacy-policy.md at request time.

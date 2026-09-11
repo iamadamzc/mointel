@@ -140,42 +140,30 @@
     </div>
   </div>
 
-  <!-- ── The fork Web cannot decide ──────────────────────── -->
-  <div style="margin: 0 48px 48px; border: 1px solid #e8ac33; border-radius: 4px; padding: 28px 32px; display: flex; gap: 24px; align-items: flex-start;">
-    <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #e8ac33; padding-top: 3px; white-space: nowrap;">OPEN</span>
+  <!-- SETTLED by the trader, 2026-09-11: "3, point of use." -->
+  <div style="margin: 0 48px 48px; border: 1px solid #2fc46f; border-radius: 4px; padding: 28px 32px; display: flex; gap: 24px; align-items: flex-start;">
+    <span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #2fc46f; padding-top: 3px; white-space: nowrap;">SETTLED</span>
     <div style="display: flex; flex-direction: column; gap: 12px;">
-      <h3 style="font-size: 20px;">Where refusal happens decides which screen exists</h3>
+      <h3 style="font-size: 20px;">Refusal happens at the point of use</h3>
       <p style="font-size: 15px; line-height: 1.65; color: #c7cedb; max-width: 96ch;">
-        <span class="mono">lib/auth/store.ts:57</span> says it plainly: the column exists, nothing reads
-        it, and where it gets read is not decided. That is not an implementation detail &mdash; it
-        decides which of two screens a refused person ever sees.
+        His ruling, 2026-09-11. <strong style="color: #e9edf3;">A refused person holds a session</strong>,
+        so these three screens are reachable and are the whole of what they see. The sign-in flow does
+        not refuse anyone; it creates the row and succeeds.
       </p>
       <p style="font-size: 15px; line-height: 1.65; color: #97a1b0; max-width: 96ch;">
-        <strong style="color: #e9edf3;">Refuse at the callback</strong> and no session is issued: the
-        person lands back on the sign-in flow, and every later visit re-runs Google to be refused again.
-        <strong style="color: #e9edf3;">Refuse at the point of use</strong> and they hold a session, so
-        this screen can tell them where they stand without making them authenticate to hear it.
-      </p>
-      <p style="font-size: 15px; line-height: 1.65; color: #c7cedb; max-width: 96ch;">
-        <strong style="color: #e9edf3;">Joint recommendation, Web and Design, 2026-09-10: refuse at the
-        point of use &mdash; provided the status check lives in ONE place that every point of use passes
-        through.</strong> One session-resolution function, or one middleware. <strong style="color: #e9edf3;">Scattered
-        per-route checks and the callback gate is the safer choice instead:</strong> point-of-use
-        multiplies the places that must refuse, and missing one hands a pending user the board. That
-        condition is Design's and it is load-bearing &mdash; without it the recommendation flips.
+        <strong style="color: #e9edf3;">The condition Design attached is part of the ruling, not a
+        footnote:</strong> the status check lives in ONE place every point of use passes through &mdash;
+        one session-resolution function, or one middleware. <em>Point-of-use multiplies the places that
+        must refuse; a scattered check hands a pending user the board, and that defect is invisible from
+        inside any single route.</em>
       </p>
       <p style="font-size: 15px; line-height: 1.65; color: #97a1b0; max-width: 96ch;">
-        <strong style="color: #e9edf3;">The price, stated because it is real and Design has accepted
-        it:</strong> point-of-use makes the mid-session downgrade <em>common</em> rather than rare, since
-        every refused person holds a live session. <strong style="color: #e9edf3;">So the board's
-        downgrade behaviour has to exist before enforcement ships, not after.</strong>
-      </p>
-      <p style="font-size: 15px; line-height: 1.65; color: #97a1b0; max-width: 96ch;">
-        <span class="mono" style="color: #8792a3;">DESIGN'S, NOT DRAWN HERE:</span> a session revoked
-        mid-morning is a <em>freshness</em> fault, not an access fault. The board does not blank and does
-        not silently freeze &mdash; at 07:30 he may be in a position, and taking away the only thing
-        telling him what he is in is worse than what the revocation was protecting. Every number carries
-        its staleness loudly, and the way back is offered. Never a redirect, never a modal.
+        <strong style="color: #e9edf3;">And the price is now owed:</strong> every refused person holds a
+        live session, so the mid-session downgrade is common rather than rare. <span class="mono" style="color: #8792a3;">DESIGN'S,
+        AND NOW OBLIGATORY BEFORE ENFORCEMENT SHIPS:</span> a revoked session is a <em>freshness</em>
+        fault, not an access fault. The board does not blank and does not silently freeze &mdash; at 07:30
+        he may be in a position, and taking away the only thing telling him what he is in is worse than
+        what the revocation was protecting.
       </p>
     </div>
   </div>

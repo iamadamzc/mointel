@@ -1,7 +1,7 @@
 ---
 title: Terms of service
-status: draft
-adopted: null
+status: adopted
+adopted: 2026-09-11
 drafted: 2026-09-11
 last_changed: 2026-09-11
 ---
@@ -12,9 +12,13 @@ last_changed: 2026-09-11
   /terms renders THIS FILE at request time, exactly as /privacy renders
   privacy-policy.md. Do not copy any of it into a template or a second page.
 
-  `adopted: null` is what makes the page render its DRAFT banner. It disappears
-  when, and only when, the trader sets an adoption date here. No thread sets it
-  on his behalf.
+  ADOPTED BY THE TRADER 2026-09-11, his word: "1, approved." The two decisions
+  left open in the draft -- the liability cap and arbitration -- he returned
+  with "2, your rec.", so both are Web's recommendation adopted by him, and the
+  reasoning for each is recorded in docs/web/README.md rather than here.
+
+  IF THIS TEXT IS MATERIALLY REDRAFTED, `adopted` GOES BACK TO null AND THE
+  BANNER RETURNS until he adopts again.
 
   Checked against docs/marketing/what-it-is-not.md so the terms cannot promise
   something the copy is forbidden to claim, and against
@@ -144,9 +148,8 @@ Subject to that: **we are not liable for trading losses.** Not for a decision
 you made using the desk, not for data that was wrong or late, not for the desk
 being unavailable when you wanted it. **To the fullest extent the law allows,
 our total liability to you for anything arising out of the desk is limited to
-[LIABILITY CAP — the greater of what you have paid us in the last 12 months, or
-a stated figure. His decision, and it should be stated as a number rather than
-left to a formula.]**
+the greater of (a) what you have paid us in the twelve months before the claim,
+and (b) US$100.**
 
 ## 11. Changes to these terms
 
@@ -163,11 +166,9 @@ States, without regard to conflict-of-laws rules. Disputes go to the state or
 federal courts located in **Bexar County, Texas**, and you and we both agree to
 those courts.
 
-**[DECISION FOR HIM, DELIBERATELY NOT DRAFTED: whether to require arbitration
-and waive class actions instead of the paragraph above.** *It is the normal
-choice for a US consumer service and it is a real trade-off, not a formality —
-it is cheaper to defend and it is the clause users most often object to.
-Nothing should be inserted here on a thread's initiative.*]
+**There is no arbitration clause and no class-action waiver**, which is a
+deliberate choice rather than an omission. If you have a dispute with us, you
+can take it to a court.
 
 ## 13. Contact
 
