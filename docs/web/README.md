@@ -152,6 +152,39 @@ renders HTTP 200 has already happened on this desk once.**
 
 ---
 
+## 2b. THE THREE RULINGS OF 2026-09-11, AND THE REASONING HE DELEGATED
+
+*His words: "1, approved. 2, your rec. 3, point of use."*
+
+**ADOPTED.** Both legal texts carry `adopted: 2026-09-11`. **Neither page renders
+a DRAFT banner any more**, and both files now also carry the reverse rule —
+*materially redraft the text and `adopted` goes back to `null`, because the
+field only works in one direction unless someone writes the other down.*
+
+**THE LIABILITY CAP — the greater of fees paid in the preceding twelve months,
+or US$100.** *A stated number rather than a formula, which is what a cap is for,
+and it holds whether or not he ever charges.*
+
+**NO ARBITRATION CLAUSE AND NO CLASS-ACTION WAIVER, stated on the page as a
+choice rather than left as an absence.** The reasoning, since he asked for a
+recommendation rather than a menu:
+
+> **Arbitration exists to manage class-action exposure, and an invite-only desk
+> with a handful of users has none to manage.** *What it would cost is real and
+> immediate: it is the clause users object to most, on a page whose whole
+> argument is restraint.* **REVISIT WHEN THE USER BASE REACHES THE POINT WHERE A
+> CLASS IS POSSIBLE** — that is the condition, and it is deliberately not a date.
+
+**REFUSAL HAPPENS AT THE POINT OF USE**, with Design's condition carried as part
+of the ruling: **the status check lives in ONE place every point of use passes
+through.** *Scattered per-route checks were the case where both seats preferred
+the callback gate; that option is closed.* **The price is now owed rather than
+hypothetical — every refused person holds a live session, so the mid-session
+downgrade is common, and the board behaviour Design specified is obligatory
+before enforcement ships.** *Told to Design directly.*
+
+---
+
 ## 3. Open questions, with who can answer each
 
 **ANSWERED BY THE TRADER 2026-09-10:** operator is **Andromeda Genius, Inc**,
@@ -177,7 +210,7 @@ backstop for someone who signs in without an invite.*
 | 4 | **The flow cookie's NAME is not established.** Relayed to Web as `mointel_oauth` carrying `<state>.<nonce>`; **the only occurrence in the tree is `mointel_oauth_state`, in `tests/auth/cookie.test.ts`, passed as an argument** — and `1e120ac` asserts no name at all. *A policy that names a cookie is one of the few claims a user can check in their own browser inspector.* **Not published on a relay the code disagrees with.** | Ops |
 | 5 | Whether an EU/UK audience is in scope — it decides whether the policy needs a lawful-basis section and a supervisory authority | the trader |
 | 6 | Whether Google's "home page" must be `tmitrader.com` itself, or whether a page elsewhere on the domain satisfies it | nobody has confirmed; **do not guess** |
-| 7 | **Terms of service DRAFTED** `docs/legal/terms.md`, `adopted: null`. **Two decisions inside it are deliberately not drafted and are his:** the **liability cap** (§10), and **whether to require arbitration and waive class actions** instead of the Texas courts clause (§12) — *the normal choice for a US consumer service, a real trade-off rather than a formality, and not a thread's to insert.* | the trader |
+| ~~7~~ | **DRAFTED AND ADOPTED**, both decisions settled on his "your rec." — see §2b. | closed |
 
 **Every remaining `[BRACKET]` in `docs/legal/privacy-policy.md` maps to row 2 or
 row 3.** None was invented to look complete.
