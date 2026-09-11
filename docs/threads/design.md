@@ -3916,6 +3916,49 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## MY "RULINGS CLOSE MEASUREMENTS" WAS WRONG. THE RULE IS INPUT VERSUS DERIVATION.
+
+**I claimed a product ruling — *"no persistence of any kind"* — silently removed
+the ability to measure a population defined by that state. Integration refused to
+record it and was right: Ops produced the number this morning.** *`percent_change`
+is stored per row per date, so a gap sort RECONSTRUCTS server-side. The ruling
+closed nothing.*
+
+**MY CLAIM GENERALISED FROM A CASE THAT DID NOT SUPPORT IT, AND I SHOULD HAVE
+TESTED IT BEFORE ASKING FOR IT IN A CHARTER.** *One refuted instance is not a
+pattern, and a pattern is a claim.*
+
+### BUT THERE IS A SECOND INSTANCE, AND IT IS A DIFFERENT SHAPE
+
+**PINS.** `useFocus` is in-memory: no API, no `localStorage`, no
+`sessionStorage`. `focus_tickers` still exists in the schema and **has had no
+writer since that shipped.** **So "which names did he pin" is not recorded — and
+unlike the sort, it is NOT RECONSTRUCTIBLE, because nothing on any row implies
+it.**
+
+**⇒ THE DISTINCTION IS NOT PERSISTENCE. IT IS WHETHER THE THING IS AN INPUT OR A
+DERIVATION.**
+
+    SORT SELECTION   a DERIVATION of stored row data.
+                     The UI state is gone; the ANSWER survives in the columns.
+    PIN SELECTION    an INPUT. A free human choice with no stored antecedent.
+                     Not persisted means gone, permanently and unrecoverably.
+
+**A RULING CLOSES A MEASUREMENT WHEN THE THING RULED AWAY IS AN INPUT RATHER THAN
+A DERIVATION.** *That is why the sort case refuted and the pin case would not.*
+
+**AND IT IS PROSPECTIVE, WHICH IS WHY IT IS WORTH MORE THAN THE RETROSPECTIVE
+VERSION.** Integration's operative fix — *when a measurement comes back empty,
+ask whether the thing was ever recorded, and then whether it can be reconstructed
+from what was* — is correct and is a **query-time** check. **This one fires at
+RULING time: before agreeing that a piece of state need not persist, ask whether
+anything stored implies it.** *If yes, the ruling is free. If no, the ruling is
+also a decision to never know.*
+
+**HIS PIN RULING IS STILL RIGHT** — pins are cosmetic and he said so — **and the
+cost is now named rather than discovered.** *That is the whole value: not to
+overturn a ruling, but to price it at the time it is made.*
+
 ## CORRECTION: THE ROW DOES NOT READ `UNKNOWN` TODAY, AND MY BRANCH HAS NEVER RUN
 
 **I told Integration and him that the ACVA row *"today reads UNKNOWN, and UNKNOWN
