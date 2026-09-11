@@ -2312,6 +2312,48 @@ improved the rule and said it would not press if refused.* **A charter entry ear
 by a refusal is worth more than one accepted to be agreeable, and this one is
 smaller and truer than what was first proposed.**
 
+## VERIFIED THE QUERY, INFERRED THE SCREEN — AND A PHOTOGRAPH SETTLED IT
+
+**2026-09-11. Ops measured ~20%, Research measured 0%, on the same question, both
+from real production data. Resolved in favour of Ops, and neither query misread
+anything.**
+
+**THE DISPUTE: what share of the rows visible in his top-N by Gap have no premarket
+print.** *Research argued the roster is rank-selected before the sort, so a Gap sort
+re-orders twelve names and cannot introduce a thirteenth — which would make Ops's
+population one the board never renders.*
+
+**WHAT SETTLED IT WAS OUTSIDE BOTH DATASETS: his screenshot.** *A row at `RANK 70`,
+on screen, with `TOP 12` selected.* **Impossible under Research's mechanism.** *And
+I could kill the pinned-row explanation from the same image — the focus strip was
+showing its empty-state instruction, so nothing was pinned.*
+
+**THE CODE, `DiscoveryBoard.tsx:111`: `sortDiscoveryRows(...)` then `.slice(0, size)`
+— SORT FIRST, SLICE SECOND**, with a deliberate design comment arguing for that
+order. **So `TOP 12` slices the sorted set and a rank-70 row at position one is the
+control working as designed.**
+
+**RESEARCH'S OWN ACCOUNT OF THE FAILURE IS THE ENTRY:**
+
+> ***"I verified the query and INFERRED the screen."*** *It read `repo.ts:916-917`,
+> confirmed `ORDER BY rvol_rank ASC LIMIT ?`, and then asserted a client behaviour
+> without opening the file.*
+
+**AND THE COMPOUNDING PART: what it over-extended was TRUE — about a different
+control.** *"The rank sits in the WHERE, so the board switch changes the roster
+rather than the sort" is correct about `boardForPhase`.* **The top-N control is a
+separate control with the OPPOSITE design, and a correct finding was carried across
+a boundary it did not cross.** **A true nearby mechanism is the most convincing
+wrong answer.**
+
+- **THE OUTCOME THIS SEAT SHOULD EXPECT WHEN TWO THREADS DISAGREE ON REAL DATA: not
+  that one is careless, but that one is POINTED AT THE WRONG OBJECT.** *Second
+  instance on this desk, and both times the resolution came from outside the data.*
+- **AND THE ARTEFACT THAT SETTLED IT WAS A PICTURE HE SENT IN PASSING.** *Neither
+  thread could have produced it; I could not have produced it either.* **When two
+  seats hold real numbers and disagree, ask what exists outside both queries —
+  here, what was actually on the screen.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
