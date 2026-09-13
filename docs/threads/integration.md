@@ -1278,6 +1278,67 @@ wanted.*
 **TYPE SHAPE SETTLED: Design took Research's third axis, `AnchorProvenance`, with no
 counter.** *`anchorThickness()` untouched, his binary ruling on it untouched.*
 
+### A HARDCODED ZERO IS WORSE THAN A MISSING VALUE — THE THREE-STATE RULE DOES NOT COVER IT
+
+**Research, 2026-09-12, walking into its own repaired rule and catching it.**
+
+*Its provenance rule reads `volumeBase = 0` ⇒ nothing traded before the anchor ⇒
+`PROVEN`.*
+
+```
+worker/runtime.ts:1752-1753   volume_base: 0,  volume_base_through: null   HARDCODED LITERALS
+measured 2026-08-18           volume_base = 0 on all 8,617 rows, seam NULL on all
+volume_base_source            meaningfully populated -- three distinct values
+```
+
+> **⇒ ANYONE IMPLEMENTING THAT RULE AT READ TIME GETS `PROVEN` FOR EVERY ROW IN
+> PRODUCTION, FOREVER.** *Not `UNKNOWN` — **PROVEN**.* **A check that cannot fail,
+> certifying every anchor as trustworthy including the ones Friday's restart
+> destroyed.**
+
+**THE GENERALISATION, AND IT IS NEW: THE THREE-STATE DISCIPLINE PROTECTS AGAINST A
+MISSING VALUE AND DOES NOTHING ABOUT A CONSTANT ONE.** *A null degrades to "cannot
+say". **A hardcoded zero degrades to a confident lie** — and it wears the source
+column's authority while doing it.* **Ops's own note at `runtime.ts:1841` already
+said it: every row carries a zero base under a source column claiming a base was
+seeded.**
+
+**⇒ BINDING ON THE SCOPE I HOLD: provenance MUST be computed at WRITE time from
+engine state and stored, like the three `*_open_state` columns. It must NEVER be
+derived from `volume_base`.** *The natural instinct — derive it at read time the way
+`sessionOpensFromRow` derives `state` — is the one that produces the silent lie.*
+**Recorded at the type's definition, not only here.**
+
+**Design found this class three times today by asking CAN THE CONSUMER SEE IT rather
+than DOES IT EXIST. This is the fourth, and the only one where the answer is "yes,
+and what it sees is false."**
+
+### A QUESTION WITH A HARD EXPIRY — ~TWO TRADING DAYS, FOLDED INTO SUNDAY
+
+**Design needs to know whether `NOT_FIRST` arrives SPARSE or BOARD-WIDE.** *It
+declined to invent the threshold, correctly.* **The seam cannot answer it —
+hardcoded null everywhere, including production. Do not send anyone after it.**
+
+**THE ONLY PROXY IS FRIDAY'S COHORT: symbols with a `minute_bars` row between
+04:00 ET and 08:33Z on 2026-09-11** — how many names had already traded when the
+restart landed.
+
+> **`minute_bars` retention is 3. 09-11 ages out once Monday and Tuesday land, and
+> the question becomes PERMANENTLY unanswerable.** *"The proxy outlives the fact it
+> proxies", running the other way.*
+
+**⇒ HANDLED, NOT ESCALATED: it is a read on the box and Sunday's session opens the
+box anyway. It goes in the sequence beside the deploy, not on his list.** **THE
+TRIPWIRE: if Sunday slips past Tuesday, this expires — and that is the only reason
+he was told a date exists at all.**
+
+**RESEARCH'S PRIOR, WHICH THE NUMBER WOULD CONFIRM OR KILL:** *a mid-session restart
+hits every tracked symbol at once, so the cohort is everything that had traded by
+then* — **board-wide BY CONSTRUCTION rather than by threshold.** **If that holds, the
+threshold never needs choosing: restart-caused is always board-wide, and anything
+sparse has a different cause entirely.** *A better answer than a number, and Friday
+is the only day left that can test it.*
+
 ### AUTHORISATIONS THAT ARE **NOT** LIVE — Ops's handover recorded these and it is the better half
 
 - **THE BACKUP PRUNE.** *His yes was for Friday's run, which did not happen.* **It
