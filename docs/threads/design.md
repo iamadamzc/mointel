@@ -3916,6 +3916,61 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## BURSTY CHANGES THE CARRIER, NOT THE VOLUME — AND THE NEW DISCRIMINATOR IS A THIRD WRITE-ONLY COLUMN
+
+**Research retracted its engine-start reason: *"ran continuously"* is not knowable
+because a SIP disconnect loses bars with no restart, and `feed_health` is a single
+overwritten row. **It had proposed proving a MARKET claim from a PROCESS fact** —
+the same class as a `NO_PRINT` produced by a restart. **The repair is better: the
+bootstrap's `volumeBase` records volume preceding the seam, and `volumeBase = 0`
+is a positive measurement rather than an absence.**
+
+**BUT I CHECKED WHETHER IT REACHES ME, AND IT DOES NOT:**
+
+    volumeBase / volumeBaseThrough   engine.ts:126-150   ON THE RUNTIME
+    volume_base + 2 siblings         repo.ts INSERT/upsert   WRITTEN
+    DemandState                      types.ts   ZERO REFERENCES   NEVER READ BACK
+
+**THIRD WRITE-ONLY COLUMN TODAY** — after `activity_config`, and after nine
+session-open columns that were read and never written. *All three found by asking
+**can the consumer see it**, rather than **does it exist**.*
+
+**NOT A BLOCKER, BECAUSE PROVENANCE IS COMPUTED IN THE ENGINE AND EMITTED ON
+`SessionOpen`, WHICH I DO READ.** **But it corrects the framing: *"available now,
+per symbol, today"* is true AT THE ENGINE and false at the store read.**
+
+**AND THE TRAP IS ALREADY ON RECORD ONE FIELD OVER: `state` hit exactly this.**
+*`sessionOpensFromRow` could not derive it — no clock in a row — so it returns
+`UNKNOWN` and needs three stored columns to say more.* **Provenance would hit the
+identical wall for the identical reason if anyone tried to derive it at read
+time. It must be computed at WRITE time and stored, or it is `UNKNOWN` forever.**
+*That is the schema-27 lesson arriving before the mistake instead of after it.*
+
+### THE DISTRIBUTION IS BURSTY, AND THAT CHANGES THE CARRIER
+
+**Research's correction to my "rare, so it can be loud": it is ZERO on an
+ordinary day and covers a LARGE PART OF THE BOARD on a restart day.** *Friday was
+one — Ops restarted at 08:33Z, mid-premarket.*
+
+**A BOARD-WIDE CONDITION STATED THREE HUNDRED TIMES IS NOT THREE HUNDRED FACTS.
+IT IS ONE FACT REPEATED**, and per-row is the wrong carrier for it. **The desk
+already has the right one: `universeWarning` says *"Board may be missing names"*
+ONCE, at the board, for exactly this kind of systemic condition.**
+
+    SPARSE      a handful NOT_FIRST among PROVEN rows
+                -> per-row mark, loud. Genuinely per-row information.
+    BOARD-WIDE  the anchors were lost at 08:33
+                -> ONE statement at the board. The per-row marks become noise
+                   repeating a fact already stated.
+
+**⇒ SO RARE-VERSUS-BURSTY IS NOT A CHOICE BETWEEN LOUD AND QUIET. IT IS TWO
+CARRIERS FOR ONE FACT, SELECTED BY EXTENT** — and Research is right that a
+board-wide misplaced-anchor day is exactly when he should be told loudly, which
+the board-level statement does better than the per-row mark does.
+
+**I AM NOT PICKING THE THRESHOLD THAT SEPARATES THEM.** *Same discipline as the
+dead line: it wants measuring or ruling, not inventing.*
+
 ## AND NOT THAT AXIS EITHER: TWO INDEPENDENT FACTS CANNOT SHARE ONE ENUM
 
 **Research accepted "not a state" and countered that it is not an
