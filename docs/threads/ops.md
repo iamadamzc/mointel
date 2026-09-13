@@ -9128,3 +9128,22 @@ at 3 destroys a session the change exists to keep — Monday's would drop 09-09.
 **Never during premarket or RTH: a restart in session is the anchor data
 event.** If nothing else is ready by Monday afternoon, retention ships alone
 after the close, on a fresh enumeration and his word for the restart.
+
+## Port 22: hotel out, new network in — 2026-09-13 18:22 ET Sunday
+
+**On his word relayed by Integration ("i am on a new wifi 46.26.37.254").** *Egress
+from this machine read `46.26.37.254` before the change — the address he gave and
+the address the box sees are the same, no NAT between.* **One net change,
+replace not accumulate:** `77.75.180.192/32` (the hotel) removed,
+`46.26.37.254/32` added, the two pre-existing `/32`s kept, 80 and 443 resent
+unchanged. **Read back after:** port 22 admits exactly `46.26.37.254/32`,
+`70.17.101.27/32`, `95.17.57.244/32`. SSH confirmed from here; all four units
+still on `9370ab3`, schema 27, three sessions retained.
+
+**Second network change in two days, and each shuts the desk until the one
+person who is travelling approves a rule edit.** *Integration's
+recommendation, recorded for him to scope in daylight, not built:* **AWS can
+reach an instance with no inbound SSH port at all** — the Lightsail console's
+browser SSH already does not depend on this rule, and Systems Manager Session
+Manager on the instance would give a keyless, allowlist-free path from any
+network. **An access-model change, his to authorise.**
