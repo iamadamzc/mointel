@@ -8880,3 +8880,41 @@ sitting directly above the guard it justified.*
 
 **⇒ Distrust the note. Re-run the two-line comparison. It costs a minute and it
 is the only thing that tells you the header is still true.**
+
+## A BARE-SECOND TIME BOUND IS WRONG AT BOTH ENDS OF THIS STORE — 2026-09-13
+
+**`minute_bars.ts` is stored with milliseconds: `2026-09-11T08:00:00.000Z`. A
+bound written without `.000Z` is compared as a STRING, and at index 19 that is
+`.` (0x2E) against `Z` (0x5A).**
+
+```
+'...T08:00:00.000Z' >= '...T08:00:00Z'   ->  FALSE   lower bound DROPS the minute
+'...T13:30:00.000Z' <  '...T13:30:00Z'   ->  TRUE    upper bound ADMITS one past the end
+```
+
+**Same character comparison, opposite errors.** *A lower bound silently loses the
+first minute of the window; an upper bound silently gains one beyond it.*
+
+**⇒ THE UPPER-BOUND ERROR IS THE MORE DANGEROUS BECAUSE IT ADDS DATA.** A missing
+minute makes a count too small and may look wrong. **An extra minute makes it too
+large and looks like evidence** — and the minute it admits at `13:30` is the
+OPENING BELL, one of the busiest of the day.
+
+**Measured, twice, independently.** *Ops on 09-10: 78,692 bars inside the window
+as written against 79,482 with no lower bound — 790 lost, all of them the 08:00
+session-open minute. Research on 08-18, its own store: 86,373 against 87,341 —
+968 lost.*
+
+**AND IT HAD ALREADY CONTAMINATED A REPORTED NUMBER.** Research re-audited its
+premarket-anchor counts on finding this: **5,652 anchors reported, 3,451 with the
+bounds corrected.** *About 2,200 names that never traded in premarket were
+counted as having an anchor, with the OPENING BELL's trade count standing in as
+their anchor thickness — and a bell minute is thick, so the contamination biased
+the distribution toward trustworthy.* **The board-level figure survived because
+ranked names almost all trade in premarket anyway; the universe-level one did
+not.**
+
+**THE RULE: always `.000Z` on both ends, on every query against `minute_bars`.**
+*And when a window's edge coincides with a session boundary — 04:00, 09:30,
+16:00, 20:00 — check which side the boundary minute landed on before believing
+the count, because that is the minute the bug moves.*
