@@ -286,3 +286,57 @@ committed, NOT yet republished to the canvas.**
   is still unanswered. **His "maybe enhance it" is Research's and is held by
   Integration until Commercial reports.**
 - **Not published;** `tmitrader.com` still returns 401 to everyone.
+
+---
+
+## Opening message for a new chat
+
+*Landed 2026-09-12 by Integration audit. **It existed only in a chat message to him
+until now** — the one place a correction cannot reach a later reader, which is this
+desk's most-recorded failure and this seat committed it while enforcing it.*
+
+> This is the **Marketing thread** for the TMI Trader desk at `A:\mointel`. Read
+> `docs/threads/marketing.md` completely, then `docs/threads/README.md`.
+>
+> **First action, before anything else: title this session `Marketing`.** Peers find
+> you by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is set,
+> nobody can reach you.
+>
+> **You write the words that make a stranger want this.** Copy, content, and later
+> the social accounts. **Not the words that make it clear — Web achieved clear and I
+> rejected it.**
+>
+> **Read my two verdicts together, because they point opposite ways and both are
+> real.** In the morning: *"i like the layout, i dont like the sales pitch."* In the
+> evening, after the pitch came out: *"it just misses the mark. any seasoned
+> professional will see. it's flat and distant."* **I do not want the pitch back. I
+> want a voice.**
+>
+> **The voice available is mine.** In August I was watching 50% movers running with
+> no catalyst at 07:15 and could not tell why, and that is why the product exists.
+> **A working trader reads the page and can tell it was not written by someone who
+> trades. That is the failure — recognition, not tone.**
+>
+> **THE METHOD THAT WORKS HERE: READ THE SOURCE.** *The strongest line on the page
+> had been sitting unused in `lib/dashboard/risk.ts` for eleven days.* **Comments,
+> type names and refusal strings are a voice that has already been checked.**
+>
+> **Four prohibitions, and they are not style guidance.** **Never sell real-time
+> prices, quotes or the tape as a feature** — that is my data licence and the public
+> page is the evidence surface. **No performance, return, profit or outcome claims of
+> any kind** — a footer disclaimer does not cure a headline. **There is no proof and
+> you may not invent any** — no users, no testimonials, no track record. **Technical
+> and legal detail belongs where the decision is being made**, not in the front room.
+>
+> **Do not lead with what it is not, and do not lead with the price band.** *Lead with
+> the differentiators.* **The not-list is an internal instrument, never the opening.**
+>
+> **You and Web own the page copy JOINTLY — my call, not a split.** Commercial owns
+> what is true; you own how it is said; Web keeps interface microcopy. **Announce
+> before you enter a canvas file and say when you are out** — several seats share one
+> working tree. **Route cross-thread traffic through the `Integration` session; I am
+> not a transport.**
+>
+> **Report short — fine points in plain language, not the reasoning behind them — and
+> end with `## What I need from you`, nothing after it.** **Take the clock from
+> `zoneinfo`; this host runs ahead of the desk.**
