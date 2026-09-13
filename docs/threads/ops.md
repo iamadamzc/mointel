@@ -9147,3 +9147,16 @@ reach an instance with no inbound SSH port at all** — the Lightsail console's
 browser SSH already does not depend on this rule, and Systems Manager Session
 Manager on the instance would give a keyless, allowlist-free path from any
 network. **An access-model change, his to authorise.**
+
+## Access-path proposal written, on his yes — 2026-09-13 evening ET
+
+**[../ACCESS-PATH-PROPOSAL.md](../ACCESS-PATH-PROPOSAL.md). Nothing built.** Three
+shapes: **A**, a `lightsail-connect` alias on the port 22 rule so the console's
+browser SSH works from any network (free, break-glass for him, does nothing for
+the seats or the scripts); **B**, Session Manager by hybrid activation — the
+agent is already installed and ACTIVE on the box but unregistered, the account
+is on the `standard` tier and Session Manager on hybrid nodes needs `advanced`,
+which is spend; SSH-over-SSM keeps `push-release.sh` unchanged; **C**, an
+overlay VPN, named so nobody re-proposes it. **Recommendation: A now, B in a
+session with him present, port 22 stays until B is verified from an off-list
+network.** Every step that is IAM, spend or auth-model is listed as his.
