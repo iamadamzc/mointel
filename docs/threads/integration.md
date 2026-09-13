@@ -2793,26 +2793,32 @@ concurrent building is rare.
 
 ## Open items
 
-**1. `docs/ARCHITECTURE.md` §4 is stale, and part of it is still being cited as
-authority.** *Handed over from Design, 2026-08-23.*
+**CLOSED 2026-09-12 BY AUDIT, AND IT WAS CLOSED THE DAY IT WAS OPENED.**
 
-[`../ARCHITECTURE.md:207`](../ARCHITECTURE.md:207), under "Deliberate non-goals
-in this milestone", lists as out of scope: *OpenAI analysis, automated SEC
-research, IR/newswire scraping, Dirty Float reclassification, overhang
-absorption conclusions, Effective Float Turnover, automated Chop/Flush Risk,*
-and more.
+*This section carried one item since 2026-08-23: `docs/ARCHITECTURE.md` §4 listing
+as out-of-scope things that had shipped, handed over by Design after the UI audit.*
 
-The first two are **shipped**. The 2026-08-21 UI audit observed OpenAI-backed
-interpretation and automated SEC research running live in production — EDGAR
-links, accession numbers, the `STRUCTURAL INTELLIGENCE — AUTOMATIC` card.
+**`ARCHITECTURE.md` §4 now reads: *"This section was written for an early milestone
+and said 'in this milestone' without naming one. Three of its entries have since
+shipped, so it is split here rather than left as a single sentence that is part
+true. Corrected 2026-08-23, handed over by Design after the UI audit."*** **Design
+fixed it the same day it was handed over. This seat never checked and carried it as
+open for twenty days.**
 
-Why it matters beyond tidiness: the same sentence carries the only written
-answer to audit §11 item 3 — whether Chop Risk, Flush Risk, Overhang Absorption
-and Effective Float Turnover are wanted. That written default is "no", and it may
-well still be right, but it now sits in a paragraph proven stale in part, so it
-cannot be cited on its own. Design has flagged this rather than editing a shared
-document; the fix is either to date-scope the section to the milestone it
-described or to split the still-true entries out of it.
+> **AN OPEN-ITEMS LIST IS AN INSTRUMENT AND NOBODY AUDITS IT.** *Every other claim on
+> this desk gets re-read when someone acts on it. An open item is read by somebody
+> deciding what to work on, who then works on something else and never touches it
+> again* — **so a closed item sitting in the list is invisible by construction, and
+> it costs whoever eventually picks it up the whole investigation.**
+>
+> **AND IT WAS QUOTED: I told him tonight that §4 had been unfixed for three weeks,
+> as evidence the desk had drift. The evidence was itself the drift.**
+
+**THE RULE: an open item carries the date it was last VERIFIED open, not the date it
+was raised.** *Raised-dates age silently; verified-dates make staleness visible on
+the face of the entry.*
+
+**No open items.**
 
 ## A queued-message receipt is a reading of the recipient, not a delivery note
 
