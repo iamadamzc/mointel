@@ -125,6 +125,25 @@ with him present** (the real fix, and an auth-model change he has to see made).
 Keep the port 22 `/32` rule until B is verified from an off-list network; only
 then decide whether to close it.
 
+**Three gates added by Integration, 2026-09-13, taken as conditions:**
+
+1. **The off-list verification is the test, not a step.** A session from an
+   allowlisted address proves nothing, because SSH would have worked anyway.
+   If no off-list network is available when the time comes, wait; do not
+   substitute a reachable one.
+2. **Do not close port 22 on the first success.** Run both paths in parallel
+   until the new one has carried real work — a deploy, a restart verification,
+   a read — not a handshake. Session Manager depends on an agent process, an
+   activation that can expire, and an IAM role, each of which can fail quietly
+   on a Tuesday morning.
+3. **Say the trade in his words before the second yes:** today a bad network
+   locks HIM out and the desk keeps serving; after closure an agent problem
+   locks EVERYONE out, Ops included, with no fallback. Acceptable, not free.
+
+**The spend is recurring per node, priced from AWS's own page with the date
+attached, before he commits.** This is the first spend decision through the
+infrastructure seat.
+
 Neither is done. Nothing in this file is authorisation for anything.
 
 ## What each step needs from him
