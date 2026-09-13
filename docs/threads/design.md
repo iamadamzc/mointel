@@ -3916,6 +3916,60 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## NOT A FIFTH STATE. IT IS THE OTHER AXIS.
+
+**The residual separates two things that looked identical: an anchor that is late
+because the name started late, and one that is late because we were not
+watching.** *`minute_bars` records CAPTURE, not the market.* **The new fact is:
+we have prints, but not the FIRST one.**
+
+**ASKED: does a fourth state stretch, or is there a fifth? NEITHER.**
+
+    OPEN         "a first print exists and `price` carries it"
+                 -> FALSE here. Putting it in OPEN makes the state's own
+                    definition a lie.
+    UNKNOWN      "could not tell NOT_STARTED from NO_PRINT"
+                 -> this case KNOWS the session traded. Widening it to mean
+                    "some unknown thing" is the collapse, and Research was
+                    right to refuse it.
+    NO_PRINT / NOT_STARTED
+                 -> plainly false. Prints exist.
+
+**So nothing stretches honestly — and the conclusion is NOT a fifth state,
+because it is not a state question.**
+
+**THE STATE AXIS ANSWERS *IS THERE AN OPEN*. THIS ANSWERS *IS THE OPEN THE RIGHT
+ONE*.** *That is the axis `AnchorThickness` already occupies: THICK/THIN/UNKNOWN
+qualifies a price that exists.* **A misplaced anchor is a second way the same
+price can be untrustworthy — wrong minute, rather than right minute weakly
+measured.** *Integration's own line settles it: a fifth state is a surface
+decision wearing a data-model costume, and this one is wearing the wrong costume.*
+
+### THE RENDER: SHOW IT, MARKED — AND THE MARK MUST NAME WHAT IS WRONG
+
+**Refusing it creates an absence, and I have ruled twice that an ambiguous
+absence sends him to investigate the row he was trying to discard.** *Showing a
+usable reading beats withholding it.*
+
+**BUT A MARK THAT ONLY WARNS IS NOT ENOUGH HERE, AND THIS IS THE PART THAT IS
+DIFFERENT FROM `thin`.** *`PM Move +2.3%` asserts "up 2.3% since the premarket
+open". If the anchor is not the open, **the LABEL is false** — and that is the
+ACVA defect exactly: a label naming a baseline it does not measure from.* **A
+generic caution leaves the false label standing and merely disputes it. The mark
+has to say the baseline is not the open**, on the face, not in a title — §10.
+
+**ONE MARK SLOT, SO PRECEDENCE IS REQUIRED.** *Measured: `RTH Move +18.1% ·
+thin` is 142.8px against 156, leaving 13.2 — a second word does not fit.*
+**MISPLACED BEATS THIN: a wrong minute is worse than a right minute weakly
+measured**, and a row carrying both is describing the wrong minute's trade count.
+
+### AND IT REPAIRS NOTHING ALREADY ON THE BOARD
+
+**540 of 668 Friday anchors stay permanently wrong; Gap is unaffected; no replay
+fixes the past.** *Whatever the state set becomes, it changes what the board SAYS
+about future rows and nothing about what it already said.* **Worth stating so the
+fifth-state question is not mistaken for a repair.**
+
 ## THE THIN MARK RESTS ON AN ASSUMPTION NOTHING ENFORCES
 
 **Research's finding, verified here rather than taken: `activity_config` is
