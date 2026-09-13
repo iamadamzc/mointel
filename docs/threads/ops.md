@@ -9160,3 +9160,20 @@ which is spend; SSH-over-SSM keeps `push-release.sh` unchanged; **C**, an
 overlay VPN, named so nobody re-proposes it. **Recommendation: A now, B in a
 session with him present, port 22 stays until B is verified from an off-list
 network.** Every step that is IAM, spend or auth-model is listed as his.
+
+## B handed to Infra-Ops on his instruction — 2026-09-13 evening ET
+
+**His words: "do B, but report to claude-infra-agent/infra-ops for clearance and
+execution."** Sent to the `Infra-Ops` session directly, with the live facts and
+the exact account-side ask: an IAM role (`AmazonSSMManagedInstanceCore` only),
+ONE hybrid activation with registration limit 1, and the managed-instance tier
+`standard → advanced` as spend to be priced and cited before execution.
+**Nothing else in the account; no firewall change; no change to the human
+user's IAM.** *The activation code is a one-time secret and goes in no repo
+file.*
+
+**Ops keeps the box side:** register the agent (already installed and active),
+confirm `mi-*`, laptop plugin, `ProxyCommand` so `ssh`/`scp`/`push-release.sh`
+are unchanged, verify from an off-list network, record. **Port 22 stays until
+that verification; closing it is a separate yes from him.** Integration
+informed, no action asked of it.
