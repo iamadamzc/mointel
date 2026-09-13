@@ -1188,6 +1188,54 @@ carrying both would be describing the wrong minute's trade count.
 **IT REPAIRS NOTHING. Friday's 540 of 668 stay wrong.** *Design said so unprompted,
 so the design argument could not be mistaken for a fix.*
 
+### `feed_health` IS THE THIRD INSTRUMENT THAT GOES STALE WHERE IT NEEDED TO GO SILENT
+
+**Research, 2026-09-12, retracting its own "available today" claim within the hour.**
+
+*It had proposed: the engine knows its own start time, so if it started before the
+session and ran continuously, every bar was seen live — `PROVEN`, no replay needed.*
+**"RAN CONTINUOUSLY" IS NOT KNOWABLE.** **A feed disconnect loses bars WITHOUT a
+restart, and `feed_health` is a SINGLE OVERWRITTEN ROW (`db.ts:270-273`) — current
+state, no transition history.** *Nothing records a gap, so nothing can prove its
+absence.*
+
+**Its own account: it proposed proving a MARKET claim from a PROCESS fact, two
+messages after writing that exact failure down for someone else.**
+
+```
+/api/health connection   a stored row a dead worker leaves behind
+isRunning                a flag on a session that lived 6.1 seconds
+feed_health              a single row overwritten in place, no transitions
+```
+
+**THREE IN TWO DAYS, ALL THE SAME TABLE SHAPE: state kept as a CURRENT VALUE where
+the question is about a TRANSITION.** *Each answers "what is true now" and is asked
+"was there ever a gap", and each returns the reassuring answer because the
+disconnect left nothing behind.*
+
+**THE REPAIR IS BETTER AND IT SIMPLIFIED THE WORK:** *the discriminator is already
+stored per symbol by the bootstrap —* **`volumeBase = 0` at a set seam is a POSITIVE
+MEASUREMENT (Alpaca stating the name had not traded), not an absence.** **So it is
+the SAME arithmetic as the residual, not a second cheap mechanism: one rule, one
+place, and the replay wiring extends its reach.** *Research's two-piece split is
+withdrawn; there is no early half.*
+
+**AND THE HOLE THAT NOBODY CAN CLOSE FROM HERE — CARRIED FOR THE NEXT OPS:**
+
+> **`UNPROVEN` is not a rare edge case. It is the honest answer whenever there is no
+> seam, because a disconnect during a session leaves NO TRACE AT ALL.** *Replay does
+> not fix it either — replaying bars we never received recovers nothing.*
+
+**Closing it needs feed connection TRANSITIONS written as durable events rather than
+one overwritten row. That is Ops's territory and Ops retires tonight, so it is
+recorded here rather than allowed to leave with the seat.**
+
+**FREQUENCY, FOR DESIGN'S MARK: `NOT_FIRST` IS BURSTY, NOT RARE.** *Zero on an
+ordinary day; on a mid-session restart day it fires on every name that had already
+traded — **Friday was 540 of 668**.* **A mark sized for "rare" is wrong in both
+directions: too quiet to be seen on the one day it matters, or screaming across two
+thirds of the board at once.**
+
 ### AUTHORISATIONS THAT ARE **NOT** LIVE — Ops's handover recorded these and it is the better half
 
 - **THE BACKUP PRUNE.** *His yes was for Friday's run, which did not happen.* **It
