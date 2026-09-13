@@ -9082,3 +9082,10 @@ and was not run.* **Retention can now be raised to 20; separate commit, his
 number, after he has seen this journal line.**
 
 **Firewall reminder: the hotel's `77.75.180.192/32` is still in port 22.**
+
+**Distribution read at 05:57 ET: all 8,741 written rows read `NOT_STARTED` on
+all three columns; the 2 unwritten rows are NULL.** *That is the correct value
+on a closed Sunday and it is also a constant — a check that cannot fail today.*
+**The first value that could be anything else arrives at 04:00 ET Monday, when
+`pm_open_state` should move for names that print in premarket.** Read it then,
+with the count of names that traded as the denominator.
