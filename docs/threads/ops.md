@@ -9114,3 +9114,17 @@ calendar    09-11 -> next session 09-14   (Alpaca, fetched 09:59Z today)
 date.** `rolledTradingDate` is a pure function of the calendar and returns null
 when the resolved date has not changed, which is why Saturday's 22:00 wrote
 nothing.
+
+**COMMITTED IS NOT IN FORCE, and a future seat will misread `default 20`.**
+*Integration's point, recorded because it is the shape of claim that reads as
+true and is not.* **The value in `config.ts` does nothing until a market-worker
+restart carries it, and that restart needs his word.** Until then the store
+keeps 3 sessions, whatever the code says. **Read `minute_bars` dates on the box
+to know what retention is in force; never the repo.**
+
+**Plan, from Integration: retention 20 rides the next enumeration, which must
+land AFTER Monday's 16:00 ET close and BEFORE the 22:00 ET roll.** *Each roll
+at 3 destroys a session the change exists to keep — Monday's would drop 09-09.*
+**Never during premarket or RTH: a restart in session is the anchor data
+event.** If nothing else is ready by Monday afternoon, retention ships alone
+after the close, on a fresh enumeration and his word for the restart.
