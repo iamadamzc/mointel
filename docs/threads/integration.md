@@ -1236,6 +1236,48 @@ traded — **Friday was 540 of 668**.* **A mark sized for "rare" is wrong in bot
 directions: too quiet to be seen on the one day it matters, or screaming across two
 thirds of the board at once.**
 
+### CARRIED AS ONE ITEM, NOT TWO: THE ROW MARK AND THE BOARD STATEMENT SHIP TOGETHER
+
+**Design's coupling, 2026-09-12, `1461adf`. It asked me to hold this as a coupling
+because a future seat building the smaller piece alone would be building the
+defect.**
+
+```
+NOT_FIRST   the anchor is the wrong minute      per-row, marked
+thin        right minute, weakly measured       per-row, ~half the board
+UNPROVEN    cannot say whether it is right      COMMON, and NOT per-row
+```
+
+> **With `NOT_FIRST` marked and both `PROVEN` and `UNPROVEN` unmarked, THE ABSENCE OF
+> A MARK MEANS "fine" OR "cannot say".** *Weaker than `thin`, where absence genuinely
+> means thick because the unknown count is separately marked.*
+
+**IT IS ACCEPTABLE ONLY IF A BOARD-LEVEL STATEMENT CARRIES THE UNPROVEN CASE.**
+**If that statement is not built, the absence quietly means two things — the exact
+collapse Design has spent three days removing from `state`, `tradeCount` and the
+sparkline.** *So the board statement is not decoration beside the row mark. It is
+what keeps the row mark honest.*
+
+**⇒ ONE ITEM. Neither half ships alone, and "just the row mark" is not the smaller
+version of this work — it is the defect.**
+
+**AND THE CARRIER RULE THAT PRODUCED IT IS THE REUSABLE PART:** *a board-wide
+condition stated three hundred times is one fact repeated, not three hundred facts.*
+**`universeWarning` is the precedent.** **The slot carries PER-ROW facts; SYSTEMIC
+conditions go to the board.** *That resolves three-into-one mark slot without
+inventing a precedence — the same rule applied twice rather than a special case, and
+it also answers the bursty `NOT_FIRST` day.*
+
+**THE OPEN ITEM FOR THE NEXT OPS NOW HAS A NAMED CONSUMER.** *A durable record of
+feed gaps is what would make `UNPROVEN` RARE instead of common* — **and rare is what
+would let the row mark stand alone without the board statement.** **So it is not
+hygiene: it is the thing that eventually simplifies the surface.** *Worth the next
+Ops knowing somebody is waiting on it, rather than reading it as a loose end nobody
+wanted.*
+
+**TYPE SHAPE SETTLED: Design took Research's third axis, `AnchorProvenance`, with no
+counter.** *`anchorThickness()` untouched, his binary ruling on it untouched.*
+
 ### AUTHORISATIONS THAT ARE **NOT** LIVE — Ops's handover recorded these and it is the better half
 
 - **THE BACKUP PRUNE.** *His yes was for Friday's run, which did not happen.* **It
