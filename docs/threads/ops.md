@@ -8764,3 +8764,63 @@ from the 08:33Z restart. **Gap is unaffected** (it reads a loaded reference
 close). **Those rows are permanently wrong and no replay fixes the past** —
 only the store's three retained sessions could even measure it, and that window
 has probably closed.
+
+## TWO THINGS ABOUT METHOD, FOR WHOEVER HOLDS THIS SEAT NEXT — 2026-09-13
+
+**These are not findings. They are how the findings above were caught, and they
+are here rather than in a message because a successor opens this file and will
+not open anyone's transcript.**
+
+### 1. PREDICT THE SHORTFALL BEFORE YOU RUN THE MUTATION, AND FORCE THE VALUES OUT AFTERWARDS
+
+**Three of my own claims died in one evening and the same method killed all
+three.**
+
+- *"Per-symbol time ordering is needed for the session-open anchor."* **Wrong.**
+  Predicted two test failures, got one. `captureSessionOpen` keeps the earliest
+  `ts`, not the first arrival (`engine.ts:1081`).
+- *"Then it must be needed for the current price."* **Wrong again.** Predicted
+  two, got one. Price is guarded by `isNewerObservation`. **I asserted
+  arrival-order sensitivity twice without reading the code that decides it.**
+- *"A double replay double-counts VWAP."* **Half unfounded.** Volume is
+  verifiably idempotent — two replays of three 1,000-share bars leave 3,000.
+  **The VWAP half was a green assertion comparing `undefined` to `undefined`**,
+  because the fixture never produced a session VWAP.
+
+**THE PREDICTION IS THE INSTRUMENT.** A mutation that kills fewer tests than
+expected is telling you a guard is weaker, or a claim is wronger, than you
+thought — **and without a number written down first there is no shortfall to
+notice.** *"One test failed" is unreadable; "I predicted two and got one" is a
+finding.*
+
+**AND A PASSING EQUALITY PROVES NOTHING UNTIL YOU HAVE SEEN BOTH SIDES.**
+`expect(a).toBe(b)` is satisfied by `undefined === undefined`, and a green suite
+looks identical either way. **Print the values. Throw them in an error if that
+is the only way to see them.** *That is how the fourth vacuous check of the week
+was caught, and every one of the previous three announced itself only by being
+an extreme number.*
+
+### 2. RE-RUN THE COMPARISON. DO NOT TRUST THE HEADER I WROTE
+
+**`lib/market/replay.ts` carries a long warning that calling it after
+`bootstrapSession` is a silent no-op.** *I believe it, I measured it, and it is
+the reason the module is unwired.*
+
+**Measure it again anyway before you wire it:**
+```
+SEEDED-THEN-REPLAYED:  fed=3 bars   anchor=null   vol=50000
+REPLAY-ALONE:          fed=3 bars   anchor=1      vol=3000
+```
+
+**Two lines, and without them I would have shipped a module that returns
+`bars: 1070000` and changes nothing.** *A caller checking the return value sees
+a large honest number; the board keeps showing wrong anchors.*
+
+**The reason to re-run it rather than trust me: `volumeBaseThrough` is set in
+one place and consumed in another, and either can move.** **A comment is a claim
+about code as it was on the day it was written.** *This desk has already found
+one comment that asserted an event which never happened, shipped to production,
+sitting directly above the guard it justified.*
+
+**⇒ Distrust the note. Re-run the two-line comparison. It costs a minute and it
+is the only thing that tells you the header is still true.**
