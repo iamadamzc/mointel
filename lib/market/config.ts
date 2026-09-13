@@ -82,7 +82,12 @@ export function loadMarketConfig(env: NodeJS.ProcessEnv = process.env): MarketCo
     marketDataStaleSeconds: num(env.MARKET_DATA_STALE_SECONDS, 240),
     tickerStaleSeconds: num(env.MARKET_TICKER_STALE_SECONDS, 300),
     focusMaxTickers: num(env.FOCUS_MAX_TICKERS, 6),
-    minuteBarRetentionDays: num(env.MARKET_MINUTE_BAR_RETENTION_DAYS, 3),
+    // 20 sessions, one trading month: his number, 2026-09-12. minute_bars is an
+    // operational buffer, not an archive -- replay needs a day, post-hoc
+    // diagnosis wants weeks, tape research lives in R&D's offline store. Past a
+    // month you are building an archive inside the hot store, where every
+    // migration copies it. Raised only after the schema-backup reaper existed.
+    minuteBarRetentionDays: num(env.MARKET_MINUTE_BAR_RETENTION_DAYS, 20),
     debug: bool(env.ALPACA_DEBUG),
     tradingDateOverride: override && /^\d{4}-\d{2}-\d{2}$/.test(override) ? override : null,
   };

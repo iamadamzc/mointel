@@ -6,7 +6,8 @@
  * only persistence system in the project — do not add a second one.
  *
  * Retention: minute bars are pruned to `minuteBarRetentionDays` trading dates
- * (default 3). This is a live desk, not a tick warehouse.
+ * (default 20 sessions, one trading month). This is a live desk, not a tick
+ * warehouse: an operational buffer, not an archive.
  */
 
 import fs from 'node:fs';
