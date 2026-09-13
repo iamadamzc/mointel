@@ -3916,6 +3916,56 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## A CONSTANT DEGRADES TO A CONFIDENT LIE WHERE AN ABSENCE DEGRADES TO UNKNOWN
+
+**Research went one step deeper than my write-only warning and the truth is
+worse. Verified here:**
+
+    worker/runtime.ts:1752   volume_base: 0,            HARDCODED
+    worker/runtime.ts:1753   volume_base_through: null, HARDCODED
+    worker/runtime.ts:1754   volume_base_source: state.volumeSource,   REAL
+
+**The engine HAS the true value — `engine.ts:818` sets `runtime.volumeBase` from
+the seed — and the writer throws it away and writes a literal.** *The SOURCE
+column faithfully records which mechanism produced a base that was never stored.*
+
+**⇒ AND THE CONSEQUENCE IS THE SHARPEST VERSION OF THIS FAMILY I HAVE SEEN.**
+Under the rule `volumeBase = 0 -> PROVEN`, **a read-time implementation would
+return `PROVEN` for every row in production, forever** — not `UNKNOWN`. **A check
+that cannot fail, silently certifying every anchor as trustworthy, including the
+540 lost to Friday's restart.**
+
+> **ABSENT DEGRADES TO UNKNOWN. A CONSTANT DEGRADES TO A CONFIDENT LIE.**
+
+**The three-state discipline protects against a MISSING value and does nothing
+about a CONSTANT one.** *Research's formulation, and it is a real addition —
+everything I have caught this week has been an absence wearing a value's clothes.
+This is a value with no measurement behind it, which the same guards wave
+through.*
+
+### AND ITS "RESTART-CAUSED IS ALWAYS BOARD-WIDE" MAY MISS A ROUTINE SPARSE CASE
+
+**Research's closing hypothesis is that the sparse/board-wide threshold may not
+need choosing: a restart hits every tracked symbol at once, so the cohort is
+board-wide by construction, and anything sparse has a different cause.**
+
+**THE DIFFERENT CAUSE MAY EXIST AND BE ROUTINE.** `seedSession(symbol, seed)` is
+**per symbol** — *"reconstructed session state from the historical bootstrap"* —
+and it sets a `volumeBase` describing volume that PRECEDED that symbol's seam.
+**A name that qualifies onto the board at 07:00 has been trading since 04:00, so
+its seam carries `volumeBase > 0` — which is `NOT_FIRST` by Research's own rule,
+every day, for every mid-session admission.**
+
+**IF THAT HOLDS, THE FREQUENCY IS NOT ZERO-THEN-BURSTY. It is a STEADY SPARSE
+BASELINE PLUS BURSTS** — and the sparse baseline lands on **newly-admitted
+names, which are precisely the ones he is scanning.**
+
+**I AM RAISING IT AS A QUESTION, NOT A REFUTATION. WHAT WOULD SETTLE IT:** *does
+`SessionSeed` carry a session-open price, and is a mid-session admission seeded
+the same way a startup bootstrap is?* **Research's code and Research's call. But
+if it holds, the per-row mark fires routinely on the most interesting rows on the
+board, and "loud" needs deciding a third time.**
+
 ## BURSTY CHANGES THE CARRIER, NOT THE VOLUME — AND THE NEW DISCRIMINATOR IS A THIRD WRITE-ONLY COLUMN
 
 **Research retracted its engine-start reason: *"ran continuously"* is not knowable
