@@ -51,6 +51,15 @@ async function main(): Promise<void> {
       if (info.integrity === 'ok') log(line);
       else console.error(`[migrate] ${line}`);
     },
+    onSchemaBackupReap: (reap) => {
+      // Every file this migration removed, by name, so the journal is the
+      // record of what left the directory and not just that something did.
+      for (const file of reap.removed) log(`removed old schema backup ${file}`);
+      for (const file of reap.pinned) log(`kept pinned schema backup ${file}`);
+      for (const f of reap.failed) console.error(`[migrate] could not remove ${f.path}: ${f.error}`);
+      log(`schema backups: ${reap.kept.length} kept, ${reap.removed.length} removed, ` +
+        `${reap.pinned.length} pinned, ${reap.failed.length} failed`);
+    },
   });
 
   try {

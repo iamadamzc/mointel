@@ -514,7 +514,14 @@ Two independent layers, deliberately.
 
 - **Schema backups.** `VACUUM INTO` before any schema upgrade, into
   `/var/lib/mointel/backups`. Taken by whichever process migrates — which, on
-  the server, is always `mointel-migrate`.
+  the server, is always `mointel-migrate`. **The migration that takes one also
+  reaps: after its upgrade commits it keeps the newest 3 `market-v<N>-<stamp>.db`
+  files and removes the rest** (`reapSchemaBackups` in `lib/market/store/db.ts`,
+  `SCHEMA_BACKUPS_KEPT`). It never touches a backup a pin under
+  `/opt/mointel/pins` names, and never touches anything else in the directory —
+  `manual-*.db`, `failback.db`, snapshots and `cutover-final.db` are not its
+  files. Every removal is logged by name in the `mointel-migrate` journal. An
+  ordinary start, or a brand-new store, reaps nothing.
 - **Instance snapshots.** Lightsail automatic snapshots at **08:00 UTC / 04:00 ET**
   — after the 22:00 recap, before the 06:10 structural refresh, and nowhere near
   RTH. Lightsail keeps the last 7 automatic snapshots and rotates them itself.

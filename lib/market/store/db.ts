@@ -946,6 +946,135 @@ function createSchemaBackup(
   return { path: target, integrity };
 }
 
+/**
+ * Schema backups kept after a migration, beyond any a pin names.
+ *
+ * Three is the number Sunday's manual prune was authorised to leave; the
+ * retention rise to 20 sessions is sequenced AFTER this exists, because a
+ * bigger store makes every backup bigger and nothing removed them.
+ */
+export const SCHEMA_BACKUPS_KEPT = 3;
+
+/** Where `pins.sh` keeps its pin files. Read only; absent means "no pins". */
+export const DEFAULT_PINS_DIRECTORY = '/opt/mointel/pins';
+
+/**
+ * Only files THIS store's own migrations wrote, by exact name shape:
+ * `<base>-v<version>-<iso stamp with : and . as ->.db`. The backups directory
+ * also holds manual copies, pre-deploy snapshots, `failback.db` and
+ * `cutover-final.db`, none of which this code created and none of which it may
+ * remove. The stamp sorts lexically in time order, which is what "newest" means
+ * here -- not mtime, which a restore or a copy rewrites.
+ */
+function schemaBackupPattern(base: string): RegExp {
+  const escaped = base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(
+    `^${escaped}-v(\\d+)-(\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}-\\d{3}Z)\\.db$`,
+  );
+}
+
+/** This store's schema backups, newest first, as absolute paths. */
+export function listSchemaBackups(dbPath: string): string[] {
+  const directory = schemaBackupDirectory(dbPath);
+  const pattern = schemaBackupPattern(path.basename(dbPath, path.extname(dbPath)));
+  let names: string[];
+  try {
+    names = fs.readdirSync(directory);
+  } catch {
+    return [];
+  }
+  return names
+    .filter((name) => pattern.test(name))
+    .sort((a, b) => (a < b ? 1 : a > b ? -1 : 0))
+    .map((name) => path.join(directory, name));
+}
+
+/**
+ * Backups that `pins.sh` has bound to a pinned release, by basename.
+ *
+ * A pin records the newest backup an older build can open, and rolling code
+ * back across a schema change without it is not a rollback. Deleting one
+ * would make `pins.sh check` fail on the next deploy, after the damage. A
+ * pins directory that cannot be read protects nothing, which is honest: there
+ * is nothing there to protect.
+ */
+export function pinnedBackupNames(pinsDirectory: string): Set<string> {
+  const names = new Set<string>();
+  let files: string[];
+  try {
+    files = fs.readdirSync(pinsDirectory).filter((f) => f.endsWith('.pin'));
+  } catch {
+    return names;
+  }
+  for (const file of files) {
+    let text: string;
+    try {
+      text = fs.readFileSync(path.join(pinsDirectory, file), 'utf8');
+    } catch {
+      continue;
+    }
+    const line = text.split(/\r?\n/).find((l) => l.startsWith('backup='));
+    const value = line?.slice('backup='.length).trim();
+    if (value) names.add(path.basename(value));
+  }
+  return names;
+}
+
+export interface SchemaBackupReap {
+  kept: string[];
+  removed: string[];
+  /** Beyond the keep window but named by a pin, so left alone. */
+  pinned: string[];
+  failed: Array<{ path: string; error: string }>;
+}
+
+export interface ReapOptions {
+  keep?: number;
+  pinsDirectory?: string;
+  /** Never removed regardless of position -- the backup just written. */
+  protect?: string[];
+}
+
+/**
+ * Removes this store's schema backups beyond the newest `keep`.
+ *
+ * Every migration writes a full `VACUUM INTO` copy and until this existed
+ * nothing deleted one: 12 files and 6.0 GB on 2026-09-12, growing ~17 GB a
+ * month, with the first symptom a migration failing mid-deploy for want of
+ * space. This runs inside the migration that just took a backup, after the
+ * upgrade committed -- so a failed upgrade still has every copy it had.
+ *
+ * `unlinkSync`, not `rmSync`: it refuses a directory, and the one thing this
+ * desk has already lost to a recursive delete was a directory nobody meant.
+ */
+export function reapSchemaBackups(dbPath: string, options: ReapOptions = {}): SchemaBackupReap {
+  const keep = options.keep ?? SCHEMA_BACKUPS_KEPT;
+  const pinned = pinnedBackupNames(options.pinsDirectory ?? DEFAULT_PINS_DIRECTORY);
+  const protect = new Set((options.protect ?? []).map((p) => path.resolve(p)));
+
+  const result: SchemaBackupReap = { kept: [], removed: [], pinned: [], failed: [] };
+  const backups = listSchemaBackups(dbPath);
+
+  backups.forEach((file, index) => {
+    if (index < keep || protect.has(path.resolve(file))) {
+      result.kept.push(file);
+      return;
+    }
+    if (pinned.has(path.basename(file))) {
+      result.pinned.push(file);
+      return;
+    }
+    try {
+      fs.unlinkSync(file);
+      result.removed.push(file);
+    } catch (error) {
+      result.failed.push({ path: file, error: (error as Error).message });
+    }
+  });
+
+  return result;
+}
+
 /** How long a process waits for another one's migration before giving up. */
 const MIGRATION_LOCK_WAIT_MS = 120_000;
 /** A lock older than this belonged to a process that died holding it. */
@@ -1039,6 +1168,16 @@ export interface OpenOptions {
     /** `integrity_check` on the copy: 'ok', or what went wrong. */
     integrity: string;
   }) => void;
+  /**
+   * Called after a migration has removed old schema backups. Absent, removals
+   * and failures are logged to the console instead: a file deleted in silence
+   * is a safety action nobody can see.
+   */
+  onSchemaBackupReap?: (result: SchemaBackupReap) => void;
+  /** Schema backups kept after a migration. Defaults to SCHEMA_BACKUPS_KEPT. */
+  schemaBackupsKept?: number;
+  /** Where pin files live. Defaults to DEFAULT_PINS_DIRECTORY. */
+  pinsDirectory?: string;
 }
 
 export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketDatabase {
@@ -1165,8 +1304,10 @@ export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketD
       // Back up only a real upgrade of an existing store. A brand-new database
       // reports 0 and has nothing to lose; a current one reports SCHEMA_VERSION
       // and is left alone, so ordinary startups do not accumulate copies.
+      let backupTaken: string | null = null;
       if (fromVersion > 0 && fromVersion < SCHEMA_VERSION) {
         const backup = createSchemaBackup(db, dbPath, fromVersion);
+        backupTaken = backup.path;
         options.onSchemaBackup?.({
           path: backup.path,
           integrity: backup.integrity,
@@ -1183,6 +1324,37 @@ export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketD
         db.pragma(`user_version = ${SCHEMA_VERSION}`);
       });
       upgrade();
+
+      // Only a migration that just took a backup reaps, and only after the
+      // upgrade committed. An ordinary startup never touches the directory,
+      // and a failed upgrade throws before reaching here with every copy intact.
+      if (backupTaken) {
+        let reap: SchemaBackupReap;
+        try {
+          reap = reapSchemaBackups(dbPath, {
+            keep: options.schemaBackupsKept,
+            pinsDirectory: options.pinsDirectory,
+            protect: [backupTaken],
+          });
+        } catch (error) {
+          reap = {
+            kept: [],
+            removed: [],
+            pinned: [],
+            failed: [{ path: schemaBackupDirectory(dbPath), error: (error as Error).message }],
+          };
+        }
+        if (options.onSchemaBackupReap) {
+          options.onSchemaBackupReap(reap);
+        } else {
+          for (const file of reap.removed) {
+            console.log(`[store] removed old schema backup ${file}`);
+          }
+          for (const f of reap.failed) {
+            console.error(`[store] could not remove ${f.path}: ${f.error}`);
+          }
+        }
+      }
     });
   }
 
