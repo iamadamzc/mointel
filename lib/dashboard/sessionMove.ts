@@ -33,17 +33,20 @@ import {
 /**
  * How much to trust the anchor this move is measured from.
  *
- * THREE STATES, NOT TWO, and the third is the one that costs something to get
- * wrong. `tradeCount` is nullable INDEPENDENTLY of `price` on purpose — a bar
- * with no trade count is unreported, and a minute with no trades has no bar at
- * all. Neither is "one trade", and a zero default would erase exactly the
- * honesty he asked for.
+ * TWO BANDS AND A NON-BAND, which is his ruling — *"leave it binary."* THICK or
+ * THIN, no middle. `UNKNOWN` is NOT a third band: it is the ABSENCE of the
+ * measurement the bands are made of. `tradeCount` is nullable independently of
+ * `price` on purpose — a bar with no trade count is unreported, a minute with no
+ * trades has no bar at all, and neither is "one trade".
  *
- * `UNKNOWN` must therefore render as its own state and never as silence,
- * because silence is what a SOLID anchor also looks like. That is the same rule
- * as `NULL means NOT MEASURED, never []` on the activity window — and the same
- * defect, one column over, as a zero-fill certifying a measurement that never
- * happened.
+ * So `UNKNOWN` must never be drawn as THIN. That would assert something about
+ * the market from a gap in the feed, which is the same error as `NULL meaning
+ * NOT MEASURED` being rendered as a zero-filled window.
+ *
+ * THE DEFINITION LIVES IN `vwap.ts`; this alias exists so the field name on the
+ * reading still reads as what it is for. *An earlier version of this comment
+ * said "three states, not two" — written for a classifier this file no longer
+ * owns, and against a ruling that had already made the bands binary.*
  */
 export type AnchorTrust = AnchorThickness;
 
