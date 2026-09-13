@@ -1146,6 +1146,48 @@ unproven anchor — Design and HIM.*
 the first one.*** **Research raised it rather than widening an existing state
 quietly; with Design for a read before it reaches him.**
 
+### RESOLVED WITHOUT HIM: NOT A FIFTH STATE — IT IS THE WRONG AXIS
+
+**Design, 2026-09-12, `887958c`. I had told him this question would reach him. It
+does not.**
+
+**None of the four stretches, and Design agreed with Research's refusal to widen
+one:** *`OPEN` would be a lie by its own definition; `NO_PRINT` and `NOT_STARTED`
+are plainly false because prints exist; widening `UNKNOWN` makes it "some unknown
+thing", which is the collapse.*
+
+```
+the STATE axis   answers   IS THERE AN OPEN
+this question    answers   IS THE OPEN THE RIGHT ONE
+```
+
+**⇒ THE SECOND AXIS ALREADY EXISTS — `AnchorThickness`, which qualifies a price that
+DOES exist.** *A misplaced anchor is a second way the same price is untrustworthy:
+wrong minute, rather than right minute weakly measured.* **Putting it on the state
+axis would make that axis answer two questions, which is how every collapse in this
+thread began.**
+
+**THE RULE, AND IT GENERALISES PAST THIS FEATURE: before adding a value to a set,
+ask WHICH QUESTION THE SET ANSWERS.** *A new case that does not fit is not
+automatically a new member — it is often a different question that already has an
+axis.* **I said a fifth state would be a surface decision wearing a data-model
+costume; Design took it literally and found it was wearing the wrong one.**
+
+**AND THE RENDER CONSTRAINT IS A CORRECTNESS CALL, NOT A LAYOUT ONE:**
+
+> **`PM Move +2.3%` asserts "up 2.3% since the premarket open". If the anchor is not
+> the open, THE LABEL IS FALSE.** *A generic caution leaves the false label standing
+> and merely disputes it.* **The mark must say the baseline is not the open, on the
+> face.**
+
+**That is the ACVA defect — a label naming a baseline it does not measure from —
+arriving from the FIX rather than from the bug.** **One mark slot, measured at
+142.8px against 156, so precedence is forced: MISPLACED BEATS THIN**, because a row
+carrying both would be describing the wrong minute's trade count.
+
+**IT REPAIRS NOTHING. Friday's 540 of 668 stay wrong.** *Design said so unprompted,
+so the design argument could not be mistaken for a fix.*
+
 ### AUTHORISATIONS THAT ARE **NOT** LIVE — Ops's handover recorded these and it is the better half
 
 - **THE BACKUP PRUNE.** *His yes was for Friday's run, which did not happen.* **It
