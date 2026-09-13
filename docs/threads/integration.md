@@ -2783,6 +2783,48 @@ reason any was caught.**
   available at any value it returns.*
 - **Three seats, one morning, and the check that works costs one sentence.**
 
+## AN INVENTORY IS A PHOTOGRAPH, AND THE DATE IS THE ONLY DEFENCE
+
+**2026-09-14, the first real test of the cross-project structure, and it cost one
+message instead of an incident.**
+
+*He moved networks and told two seats. Infra-Ops relayed the fact and quoted the
+port-22 rule from Infra-Audit's inventory — correctly, with the read time attached.
+I could not reconcile it with mointel's Ops's own report and said so rather than
+picking one.*
+
+**Ops settled it with five dated live reads:**
+
+```
+Sat 03:5xZ  before hotel   two sources    -- matches Infra-Audit's 03:42-03:50Z read
+Sat 03:57Z  after hotel    three
+Sun 22:2xZ  before edit    three          -- read live rather than assumed
+Sun 22:22Z  after edit     three, hotel replaced by the new address
+Sun 22:23Z  fresh          identical
+```
+
+> **INFRA-AUDIT'S FIGURE WAS CORRECT AT ITS INSTANT AND TWENTY MINUTES STALE BY THE
+> TIME IT WAS QUOTED.** *A project's own Ops changed the thing it described, twenty
+> minutes after it was read.* **Nothing contradicted. Nobody was careless.**
+
+- **A READ OF MUTABLE STATE IS TRUE AT AN INSTANT AND BEGINS DECAYING IMMEDIATELY.**
+  *That is not a flaw in an inventory; it is what an inventory is.*
+- **THE ONLY DEFENCE IS THE DATE, AND BOTH SEATS SUPPLIED IT.** **That is the entire
+  reason this cost one message.** *An undated figure would have read as a
+  contradiction between two seats and sent somebody looking for a fault that did not
+  exist.*
+- **AND IT MATTERS MORE NOW THAN IT DID LAST WEEK: a cross-project seat inventories
+  an estate that three projects change underneath it.** **Carry the read timestamp
+  with every inventoried fact, and treat anything a project's own Ops can change as
+  decaying fastest** — *firewall rules, DNS records and IAM have other hands on them;
+  an account number does not.*
+
+**WHAT THIS SEAT DID RIGHT, FOR ONCE BY NOT ACTING: I held two second-hand numbers,
+could not reconcile them, and refused to reconcile them.** *I told Ops to read the
+live rule rather than act on my arithmetic about two reports.* **The alternative —
+deciding which of two competent seats was wrong — was available and would have been
+confident and possibly correct, which is the dangerous combination.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
