@@ -1049,6 +1049,25 @@ in daily — fixed the same day.*
   stamp in a `meta` row rather than a filename.
 - **Integration** — this seat.
 
+### GOOGLE VERIFICATION HAS **NOT** PASSED FOR MOINTEL — corrected 2026-09-12
+
+**He said "we are officially verified" and corrected it within the hour: that was
+ANOTHER PROJECT.** *This seat had already told him it unblocked the public page.*
+**It does not. Nothing about the publishing path has moved.**
+
+- **Checked before recording: no document on this desk ever claimed it.** *The false
+  belief existed only in one chat message, which is the one place a correction
+  cannot reach later — hence this line.*
+- **THE PUBLISHING CHAIN IS EXACTLY WHERE IT WAS:** *brand verification wants a
+  public home page that is not only a login page; the home page is `/`; `/` is the
+  board; the board is held by Basic Auth alone until in-app auth exists; and
+  `app/auth/` does not exist.* **Four links, none of them cut.**
+- **AND WHETHER VERIFICATION IS EVEN REQUIRED IS STILL UNRESOLVED** — *Commercial
+  found Google's own pages contradicting each other, three saying not mandatory for
+  non-sensitive scopes and two saying all production apps must verify, and refused
+  to adjudicate.* **That contradiction is still open and no seat has been asked to
+  close it.**
+
 ### WHAT IS HIS AND OPEN
 
 - **NOTHING IS BLOCKING.** *Everything put to him today was answered, and two items
