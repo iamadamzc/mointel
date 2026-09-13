@@ -1088,6 +1088,64 @@ stopped everything; the scheduled tasks were the first.*
   `location ^~ /auth/`.* **Stopped deliberately: they cannot deploy with the door
   shut, and auth is written once.**
 
+### THE REPLAY WIRING IS SCOPED — AND SEED-AFTER-REPLAY DESTROYS DATA, IT DOES NOT NO-OP
+
+**Research, 2026-09-12, scoping Ops's module. It corrected the framing and found
+something worse than the no-op.**
+
+**THEY ARE NOT ALTERNATIVES. THEY MEASURE DIFFERENT THINGS:**
+
+```
+snapshot volumeBase   Alpaca's cumulative session volume   WHAT THE MARKET DID
+replay minuteSum      sum of the bars we retained          WHAT THE DESK CAPTURED
+```
+
+**They differ by exactly the amount the desk was absent — which is the restart case
+the fix exists for.** *`cumulativeVolume = volumeBase + minuteSum` with
+`volumeBaseThrough` as the seam: the composition was designed in, and the bootstrap
+collapses it by setting the seam to "now".*
+
+> **THE HAZARD, WORSE THAN THE NO-OP OPS FOUND: `seedSession:826-834` EVICTS minutes
+> inside the seam AND THEIR VWAP CONTRIBUTIONS.** **So seed-after-replay does not
+> merely fail to help — it actively destroys the replayed history.** *That eviction
+> is correct for today's order and wrong for the proposed one.*
+
+**THE SHAPE: replay first with the seam null, then seed volume as the RESIDUAL —
+`volumeBase = max(0, snapshotVolume − minuteSum)`.** *`volumeBase` stops meaning
+"everything up to now" and starts meaning **the volume the market did that our bars
+do not explain**, which is the honest definition and the one that composes.*
+
+**AND THE RESIDUAL IS FREE ANCHOR-TRUST DETECTION, WHICH IS THE BEST PART:**
+
+```
+earliest retained bar late  AND  residual ~ 0   -> genuinely started late.  ANCHOR RIGHT.
+earliest retained bar late  AND  residual > 0   -> volume we cannot explain. ANCHOR IS NOT THE FIRST PRINT.
+```
+
+*`minute_bars` is a record of CAPTURE, not of the market, so "no early bars" means
+either the name did not trade or we were not watching — identical until the residual
+separates them.* **Nothing new stored, nothing guessed.**
+
+- **"REPLAY ONLY" IS AN UNDERCOUNT, NOT A SIMPLIFICATION.** *It loses volume in
+  minutes that never reached `minute_bars`* — **and that is RVOL's numerator, which
+  is rank, which is the board.**
+- **A NEGATIVE RESIDUAL MUST BE SURFACED, NOT CLAMPED.** *Our bars exceeding the
+  snapshot means two sources that both claim to know the volume disagree — a stale
+  snapshot or a double count.* **Silently clamping it turns that into an
+  unexplained RVOL.**
+- **AT 04:00 WITH NO BARS IT DEGRADES EXACTLY TO TODAY'S BEHAVIOUR** — *replay empty,
+  residual equals the snapshot, identical seeding.* **That is correctness, not
+  coincidence.**
+
+**OWNERSHIP, SETTLED:** *`seedSession` residual mode + the trust signal — Research,
+`engine.ts`. Call order at bootstrap — Ops, `runtime.ts`. What the board shows for an
+unproven anchor — Design and HIM.*
+
+**AND IT MAY NEED A FIFTH STATE.** *`UNKNOWN` today means "could not tell
+`NOT_STARTED` from `NO_PRINT`". This is a different unknown: **we have prints but not
+the first one.*** **Research raised it rather than widening an existing state
+quietly; with Design for a read before it reaches him.**
+
 ### AUTHORISATIONS THAT ARE **NOT** LIVE — Ops's handover recorded these and it is the better half
 
 - **THE BACKUP PRUNE.** *His yes was for Friday's run, which did not happen.* **It
