@@ -3971,6 +3971,39 @@ the board-level statement does better than the per-row mark does.
 **I AM NOT PICKING THE THRESHOLD THAT SEPARATES THEM.** *Same discipline as the
 dead line: it wants measuring or ruling, not inventing.*
 
+### AND `UNPROVEN` IS COMMON, WHICH PUTS THREE FACTS IN ONE SLOT
+
+**Integration's point, and nobody had connected it to the render: `UNPROVEN` is
+not an edge case.** *It is the honest answer whenever there is no seam, and a
+disconnect mid-session leaves no trace at all — replay does not fix it, because
+replaying bars we never received recovers nothing.* **Closing it needs a durable
+record of feed gaps, which is Ops's, and Ops retired tonight.**
+
+**SO THE ONE MARK SLOT IS NOW CONTESTED BY THREE FACTS:**
+
+    NOT_FIRST   the anchor is the wrong minute        per-row
+    thin        the right minute, weakly measured     per-row, ~half the board
+    UNPROVEN    we cannot say whether it is right     COMMON, and not per-row
+
+**AND THE THIRD IS NOT A PRECEDENCE PROBLEM — IT IS THE CARRIER ARGUMENT AGAIN.**
+*"The desk cannot prove its anchors today" is one fact about the desk, not three
+hundred facts about three hundred names.* **It goes to the board, exactly as a
+board-wide `NOT_FIRST` day does, and for the same reason.**
+
+**⇒ THE SLOT CARRIES PER-ROW FACTS; SYSTEMIC CONDITIONS GO TO THE BOARD.** That
+resolves three-into-one without inventing a precedence, and it is the same rule
+twice rather than a special case.
+
+**ONE THING IT DOES NOT RESOLVE, AND I AM NAMING IT RATHER THAN GLOSSING IT:
+absence of a mark would mean PROVEN *or* UNPROVEN — "fine" or "cannot say".**
+*That is weaker than `thin`, where absence means THICK because `UNKNOWN` is
+separately marked `?`.* **It is acceptable ONLY IF the board-level statement is
+carrying the unproven case; if that statement is not built, the absence quietly
+means two things and I will have shipped the collapse I have spent three days
+removing.** *The board statement is not decoration — it is what keeps the row
+mark honest.*
+
+
 ## AND NOT THAT AXIS EITHER: TWO INDEPENDENT FACTS CANNOT SHARE ONE ENUM
 
 **Research accepted "not a state" and countered that it is not an
