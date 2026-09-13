@@ -592,8 +592,16 @@ both directions: **the writers run in one place at a time.**
 ## Firewall
 
 ```
-22/tcp  → a single admin IP
+22/tcp  → admin IPs only (three /32s as of 2026-09-12; read the live set, do not trust this line)
 80/tcp  → 0.0.0.0/0   (the distribution's origin; Basic Auth is the gate)
+443/tcp → 0.0.0.0/0
+```
+
+Read the live set before changing it — `put-instance-public-ports` replaces
+every rule, so the three rules above must all be resent:
+
+```bash
+aws lightsail get-instance-port-states --profile magellan_admin --region us-east-1   --instance-name mointel-prod --query 'portStates[].{port:fromPort,cidrs:cidrs}'
 ```
 
 Port 3000 is not open. Neither is anything else. SSH is key-only —

@@ -8988,3 +8988,50 @@ to choose.*
 
 **Retention stays at 3 sessions.** *The reaper is the precondition; the rise to
 20 is a separate commit for after he has seen the first reap in a journal.*
+
+## THE DOOR OPENED AT 23:57 ET, NOTHING MOVED, AND THE EXPIRING READ IS TAKEN — 2026-09-12
+
+**"No seat can see the account that holds the box" was wrong tonight.**
+`magellan_admin` in `us-east-1` returned the instance and its firewall on the
+first call. *Whatever the seven-region sweep saw on Saturday afternoon, it was
+not a standing condition, and the brief carried it as one.* **Recorded so the
+next shut door is diagnosed by a fresh call, not by this sentence.**
+
+**On his instruction, 03:57Z: port 22 now admits three /32s — the two that were
+there plus the hotel's `77.75.180.192`.** *Egress confirmed from this machine
+before the change; the full rule set was read first and resent whole, because
+`put-instance-public-ports` replaces everything; 80 and 443 unchanged;
+re-read after.* **Shared hotel egress is a wider rule than Integration advised
+and it is his call, made. Remove it when he leaves.**
+
+**CONFIRMED FROM THE BOX at 03:57Z, the measurement the brief asked for:**
+```
+user_version (PRAGMA)   26
+market   pid 147581  cwd b0610fee  since Fri 08:33:19Z  NRestarts 0
+research pid 147773  cwd b0610fee  since Fri 08:34:09Z  NRestarts 2
+assess   pid 147251  cwd b0610fee  since Fri 08:31:33Z  NRestarts 0
+web      pid 147122  cwd b0610fee  since Fri 08:31:32Z  NRestarts 0
+symlink  b0610fee (comparison only)   health ok, schema 26/26, STREAMING
+backups  12 files, 6.0 GB, 62G free   pin rollback-baseline -> market-v18
+minute_bars retained: 09-09, 09-10, 09-11
+```
+**Nothing moved since Friday.** *The research unit's two restarts predate the
+Friday deploy window — its ActiveEnter is 08:34:09Z Friday, inside the deploy.*
+
+**THE EXPIRING READ, taken 03:58Z Saturday night rather than Monday — the door
+was open and may not be on Monday.** Run on the box from a scratch directory
+borrowing the live release's `node_modules`, read-only proven, scratch removed
+after. **Control line passed: 1,392 symbols before the restart, 2,987 from it
+on.**
+```
+A  universe, traded before restart      1392
+B  universe, traded from restart on     2987
+C  RANKED (<=50) before restart           17
+D  RANKED (<=50) premarket, any time      32
+C/D = 17/32 = 53.1% of the names he could see lost their anchor
+```
+**⇒ BOARD-WIDE.** *The script's own verdict: one statement at the board,
+universeWarning-style; a per-row mark would repeat one fact a hundred times.*
+**That is Design's decision to make and Research's number; routed via
+Integration.** The 09-11 bars are still retained and this number can be re-run
+until roughly Wednesday 22:00 ET, and not after.
