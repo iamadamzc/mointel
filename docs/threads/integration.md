@@ -1066,12 +1066,22 @@ group opens port 22 to everyone on that network, and hotel addresses rotate.*
 **THE WINDOW IS THE WEEKEND, NOT THE NIGHT — a schema deploy and a worker restart
 need "no session in progress", and Sunday satisfies that identically.**
 
-**THE STANDING SINGLE POINT OF FAILURE, recorded as such rather than as tonight's
-anecdote:** **one operating door, and NO SEAT CAN SEE THE ACCOUNT THAT CONTROLS
-IT** — *instance not found across seven regions on both profiles.* **When SSH
-closes, nobody here can diagnose or reopen it, and the only person who can is
-sometimes offline for two days.** *Second time this week one unreachable thing
-stopped everything; the scheduled tasks were the first.*
+**RETRACTED 2026-09-13. I RECORDED "NO SEAT CAN SEE THE ACCOUNT" AS A STANDING
+SINGLE POINT OF FAILURE AND IT IS FALSE.** *The successor Ops reports `magellan_admin`
+in `us-east-1` sees the instance.* **The retiring seat searched seven regions on both
+profiles, found nothing, and I promoted one search into a structural property of the
+estate — then propagated it into two charters and a new project's README.**
+
+- **FLAGGED, NOT ESTABLISHED: the box is LIGHTSAIL.** *`ec2 describe-instances` does
+  not return Lightsail instances, so a search of the wrong service returns a real
+  empty result and a positive control on EC2 would still have passed.* **That would
+  explain both readings without either seat misreading anything.**
+- **WHAT SURVIVES: only the SECURITY-GROUP RULE is his.** *SSH was shut because he was
+  on hotel wifi; he has since added the hotel `/32` alongside the two existing
+  addresses and the door is open.*
+- **THE LESSON IS MINE AND IT IS THE ONE I KEEP RECORDING: an absence is evidence
+  about the INSTRUMENT until somebody points a different instrument at it.** *Ops
+  gave me a search result; I wrote down a property of the world.*
 
 ### UNDEPLOYED AND WAITING FOR SUNDAY
 

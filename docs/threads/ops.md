@@ -8045,8 +8045,13 @@ successor's brief, and are fixed here.*
 > - **SSH may be shut.** *Port 22 filtered at the box; 443 and 80 serve correctly.
 >   He is travelling and the rule appears source-scoped.* **The desk is fine and the
 >   door is closed — do not read "unreachable" as "down".**
-> - **NO SEAT CAN SEE THE ACCOUNT THAT HOLDS THE BOX.** *Instance not found across
->   seven regions on both profiles.* **When the door shuts, only he can open it.**
+> - **CORRECTED 2026-09-13: `magellan_admin` in `us-east-1` DOES see the instance.**
+>   *The retiring seat searched seven regions on both profiles, found nothing, and
+>   Integration wrote that up as a standing property of the estate. It was one search,
+>   not a property.* **Flagged, not established: the box is LIGHTSAIL, and
+>   `ec2 describe-instances` does not return Lightsail instances — the wrong service
+>   returns a real empty result and an EC2 positive control still passes.** **Only
+>   the security-group rule is his; the account is readable.**
 > - **EVERY SCHEDULED TASK THIS DESK HAS ARMED HAS A LIFESPAN OF THREE TO ELEVEN
 >   SECONDS — INCLUDING TWO THAT REPORT `succeeded`.** *Three reported `running` for
 >   hours; two reported `succeeded` after 3.4s and 3.6s.* **"Died" is established
@@ -8741,7 +8746,12 @@ the bars that could verify it.** **A proxy that survives its own referent cannot
 be audited after three days** — and every question of the form *"was this
 coverage value right"* has a shelf life nobody set deliberately.
 
-## ONE DOOR, AND NO SEAT CAN SEE THE LOCK — 2026-09-12
+## ONE DOOR, AND NO SEAT CAN SEE THE LOCK — 2026-09-12, HALF RETRACTED 2026-09-13
+
+**THE SECOND HALF IS FALSE. `magellan_admin` in `us-east-1` sees the instance.**
+*Likely cause, flagged not established: the box is Lightsail and the search used the
+EC2 API.* **What survives: the security-group rule is his, and SSH was shut because
+he was on hotel wifi. He has since added the hotel `/32` and the door is open.**
 
 **Named as a standing single point of failure, not as tonight's anecdote.**
 
