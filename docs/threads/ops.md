@@ -8003,9 +8003,11 @@ appends. Never a bare overwrite.**
 
 ## Opening message for a new chat
 
-*Rewritten 2026-09-12 by Integration for the successor seat, on his authorisation to
-retire the session that ran 09-10 to 09-12. **The previous version named a sha as the
-ship order and a production state three weeks stale; both are corrected below.***
+*Rewritten 2026-09-12 ET by Integration for the successor seat, on his authorisation
+to retire the session running through 2026-09-12. **The previous version named a sha
+as the ship order and a production state three weeks stale; both are corrected
+below.** Three further errors were caught by the retiring seat reading its own
+successor's brief, and are fixed here.*
 
 > This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
 > Read `docs/threads/ops.md` — **starting with the handover at the top** — then
@@ -8030,10 +8032,13 @@ ship order and a production state three weeks stale; both are corrected below.**
 > are HIS, every time.** *A relay does not clear a restart — that is this thread's
 > own rule and it has been right twice.*
 >
-> **Start by confirming what production is ACTUALLY running** — the release from
-> each unit's `/proc/<pid>/cwd`, not the symlink; `user_version` from the box, not
-> from the repo. **The last session's inference was `b0610fee` at schema 26 and it
-> could not verify it, because SSH is filtered.**
+> **PRODUCTION WAS VERIFIED AS `b0610fee` AT SCHEMA 26 ON FRIDAY 2026-09-11, FROM
+> THE BOX** — `user_version` by `PRAGMA` over ssh, the release read from each unit's
+> own `/proc/<pid>/cwd`, all four units named. **That is a measurement, not an
+> inference.** **It has not been re-confirmed since SSH closed on Saturday evening.**
+> **So your first action is to confirm NOTHING MOVED, not to find out what is
+> there** — *and confirm it the same way: `/proc/<pid>/cwd`, never the symlink;
+> `user_version` from the box, never the repo.*
 >
 > **Four things that will otherwise cost you a day:**
 >
@@ -8042,9 +8047,14 @@ ship order and a production state three weeks stale; both are corrected below.**
 >   door is closed — do not read "unreachable" as "down".**
 > - **NO SEAT CAN SEE THE ACCOUNT THAT HOLDS THE BOX.** *Instance not found across
 >   seven regions on both profiles.* **When the door shuts, only he can open it.**
-> - **EVERY SCHEDULED TASK THIS DESK HAS ARMED DIED INSIDE ELEVEN SECONDS WHILE
->   REPORTING `running` FOR HOURS. Three for three.** **The mechanism is withdrawn.
->   Do not re-arm one and do not take it back to him for re-authorisation.**
+> - **EVERY SCHEDULED TASK THIS DESK HAS ARMED HAS A LIFESPAN OF THREE TO ELEVEN
+>   SECONDS — INCLUDING TWO THAT REPORT `succeeded`.** *Three reported `running` for
+>   hours; two reported `succeeded` after 3.4s and 3.6s.* **"Died" is established
+>   only for the three, and only the deploy has an independent check — it verifiably
+>   did nothing.** **A TASK'S OWN STATUS IS NOT AN INSTRUMENT HERE.
+>   `lastActivityAt − startedAt` IS.** *A successor told "three died" will trust a
+>   fourth that says `succeeded`.* **The mechanism is withdrawn: do not re-arm one,
+>   and do not take it back to him for re-authorisation.**
 > - **A MID-SESSION MARKET-WORKER RESTART IS A DATA EVENT, NOT A GAP.** *It resets
 >   session anchors in memory and nothing rebuilds them.* **Friday cost 540 of 668
 >   anchors. Record the restart time every time — it is the only thing that makes
