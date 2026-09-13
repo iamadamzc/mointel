@@ -9177,3 +9177,35 @@ confirm `mi-*`, laptop plugin, `ProxyCommand` so `ssh`/`scp`/`push-release.sh`
 are unchanged, verify from an off-list network, record. **Port 22 stays until
 that verification; closing it is a separate yes from him.** Integration
 informed, no action asked of it.
+
+## The box is a managed node: `mi-0a647a08fcc7366b7`, and ssh reaches it with no inbound port — 2026-09-13 18:54 ET
+
+**His word to Infra-Ops directly ("go ahead, infra-ops gets it"). Infra-Ops
+created `SSMServiceRole` (`AmazonSSMManagedInstanceCore` only) and ONE hybrid
+activation, registration limit 1, 24h expiry. The tier setting was never
+touched: AWS removed the advanced tier 2026-06-30, read from the pricing page
+by both seats; cost is $0.05/session from 2026-09-30.**
+
+**Box side, Ops:** activation read before use (limit 1, registered 0, not
+expired); agent stopped, registered, started — `Successfully registered ...
+mi-0a647a08fcc7366b7` at 22:54:45Z; `describe-instance-information`: Online,
+agent 3.3.4793.0, name mointel-prod. **The activation code was consumed over
+ssh and is in no file.** Registration count now 1; the activation is spent.
+
+**Laptop side:** Session Manager plugin was already installed (1.2.764.0).
+`~/.ssh/config` gained `Host mointel-ssm` — same key, same user, `ProxyCommand
+aws ssm start-session ... AWS-StartSSHSession`. **`ssh mointel-ssm` works.**
+*Proof it did not use port 22 inbound, read on the box during the session:*
+```
+ss -tn established sport :22  ->  127.0.0.1:22  <-  127.0.0.1:57558
+```
+**sshd's peer is loopback: the connection arrived through the agent's tunnel.**
+A port-22 connection from this laptop would show `46.26.37.254`.
+
+**GATES STILL OPEN, per Integration:** (1) the off-list-network test — this
+laptop is on the list; the loopback peer is strong evidence but it is not that
+test, and I am not substituting it; (2) both paths run in parallel until SSM
+has carried real work — a deploy, a restart verification; (3) the inverted
+failure mode goes to him in words before any port-22 closure. **Port 22
+unchanged.** `push-release.sh` takes a host argument, so `mointel-ssm` can be
+passed in place of the IP once (2) is being exercised deliberately.
