@@ -26,6 +26,39 @@
  * THE FIX IS NOT NEW MACHINERY. The bars are already on disk and the ingest
  * path already knows how to accumulate them. This replays one through the
  * other.
+ *
+ * ============================================================================
+ * IT CANNOT BE CALLED FROM THE OBVIOUS PLACE. READ THIS BEFORE WIRING IT.
+ * ============================================================================
+ *
+ * `bootstrapSession` seeds each symbol from an Alpaca SNAPSHOT -- a cumulative
+ * volume total attributed to the CURRENT minute (`worker/runtime.ts:885`,
+ * `volumeBaseThrough: belongsToSession ? snapshotMinute : null`). And
+ * `engine.ts:954` drops every bar at or before that mark:
+ *
+ *     if (runtime.volumeBaseThrough && bar.ts <= runtime.volumeBaseThrough) return;
+ *
+ * So a replay running AFTER the seed feeds the whole session and has every bar
+ * discarded. Measured, not reasoned:
+ *
+ *     SEEDED-THEN-REPLAYED:  fed=3 bars   anchor=null   vol=50000
+ *     REPLAY-ALONE:          fed=3 bars   anchor=1      vol=3000
+ *
+ * **It reports the bars it fed and changes nothing.** A caller checking the
+ * return value sees a healthy `bars: 1070000` and a board still showing wrong
+ * anchors -- the same silent-no-op shape this desk keeps finding, and this
+ * module would have been the next instance.
+ *
+ * THE TWO MECHANISMS ARE ALTERNATIVES, NOT LAYERS. The snapshot gives volume
+ * as a lump with no minute history, so it can never produce an anchor or a
+ * VWAP. The replay gives the minute history, and volume falls out by summing
+ * it. Applying both to one symbol either double-counts or discards, depending
+ * on order.
+ *
+ * ⇒ WIRING THIS IS A DECISION ABOUT WHICH MECHANISM OWNS A SYMBOL'S VOLUME,
+ * not a function call. The shape that looks right: replay first from local
+ * bars, and fall back to the snapshot seed only for symbols with none. That
+ * touches volume accounting and is deliberately NOT done here.
  */
 
 import type { MarketDatabase } from './store/db';
