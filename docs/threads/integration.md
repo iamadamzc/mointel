@@ -246,31 +246,61 @@ broken this rule while holding it open in front of them, so it is not a
 comprehension problem — it is that this seat writes the argument it just had.*
 **The peer exchange is the charter's material. His report gets its result.**
 
-### PRODUCTION, 2026-09-11 05:15 ET
+### PRODUCTION, 2026-09-13 06:10 ET (Sunday)
 
 ```
-web / research / assess    b0610fee
-mointel-market             b0610fee   RESTARTED 08:33Z on his instruction
-user_version               27 pending; 26 LIVE and resolved
-minute_bars                09-08, 09-09, 09-10, 09-11   (09-03 left at the 22:00 roll)
-backups                    12 files, 6.0 GB, NOTHING PRUNES THEM.  62 G free
+web / research / assess    9370ab3     verified by /proc/<pid>/cwd
+mointel-market             9370ab3     RESTARTED 09:56:29Z on his direct word
+user_version               27          read by PRAGMA after the restart
+SIP                        re-authenticated 09:56:35Z, worker's own log
+backups                    4 files, 3.1 GB   (was 12 / 6.0)      65 G free
 ```
 
-**TWO DEPLOYS THIS MORNING, BOTH ON HIS WORD.** *`03d9a19` at 08:18Z carried the
-25 → 26 migration; `b0610fe` followed with the health-gate fix.* **The market worker
-restarted at 08:33Z and came back in THREE SECONDS, not seventy** — *Ops had quoted
-a reconnect figure for a restart event and corrected itself.* **Tape gap: ~137 bars
-inside one minute.**
+**SHIPPED SUNDAY 05:50 ET, PREFLIGHT CLEARED WITH 20 MINUTES BEFORE THE 06:10
+`STRUCTURAL_REFRESH`.** *Enumeration `9370ab3`, verified at the pin by this seat:
+nine named commits all ancestors, fifteen non-doc files all attributable, and
+`lib/market/replay.ts` confirmed to have no importer outside `lib/market`.*
 
-**THE MIGRATION NUMBER THIS DESK HAD NEVER HAD: ~2 minutes at a 1.06 GB store, 260s
-end to end, and the BACKUP is nearly all of it.** **It scales with store size — that
-is the retention multiplier, now measured.**
+**THE REAPER RAN LIVE AND SUNDAY'S THIRD STEP DID ITSELF.** *3 kept, 9 removed, the
+pinned v18 protected, 0 failed.* **The manual prune he authorised was never needed —
+a migration now cleans up after itself, so the destructive step stopped being a
+decision.**
 
-**THE NINE SESSION-OPEN COLUMNS ARE FILLING.** *`pm_open_price` went 0 → 49 within
-minutes, against a control of 8,875 rows written since the restart.* **`rth`/`ah` at
-zero is honest, not a failure — neither session had opened.** **Research's compute
-was DARK for the twelve minutes between the schema landing and the writer arriving,
-and nobody had connected those two facts until Ops measured it.**
+**THE THREE STATE COLUMNS ARE WRITTEN BY A LIVE WORKER: 8,741 of 8,743 rows, five
+seconds after the restart.** **AND OPS NAMED WHAT IT DOES NOT SHOW: a value produced
+by a SESSION IN PROGRESS.** *That was the startup reconstruction. Monday's premarket
+is the first observation of the thing the columns exist for.*
+
+**THE RESTART WAS FREE BECAUSE THE MARKET WAS CLOSED.** *No session in progress, so
+the anchor defect that cost 540 of 668 anchors on Friday could not fire.* **That is
+the whole reason it waited for the weekend.**
+
+### RETENTION 20 IS COMMITTED AND NOT IN FORCE
+
+**`config.ts` default 3 → 20, committed.** **IT DOES NOTHING UNTIL A MARKET-WORKER
+RESTART CARRIES IT** — *the prune runs in the worker on the roll, and production does
+not pin the value.*
+
+> **A future seat will read `default 20` and believe the store keeps 20 sessions.**
+> **Read `minute_bars` dates ON THE BOX for what retention actually is.** *Recorded in
+> `ops.md` as well as here, because that is the file the next Ops opens.*
+
+**THE PLAN, AND ITS DEADLINE IS NOT ARBITRARY: it rides Monday's enumeration, landing
+AFTER the 16:00 ET close and BEFORE the 22:00 roll. Never in session.** *Every roll at
+retention 3 destroys a session that cannot be recovered — so each roll the change
+misses is the failure it exists to prevent, happening once more.* **His word is needed
+for that restart.**
+
+### THE ANCHOR QUESTION IS ANSWERED AND IT IS BOARD-WIDE
+
+**2026-09-11, restart 08:33Z: 17 of 32 ranked premarket names lost their anchor —
+53.1%. Control passed (1,392 before / 2,987 after).** **VERDICT: BOARD-WIDE — one
+statement at the board, `universeWarning`-style, not a per-row mark.**
+
+*So Design's carrier rule decides it and the threshold it declined to invent never
+needs choosing: a restart hits every tracked symbol at once, so restart-caused is
+board-wide by construction and anything sparse has a different cause.* **Re-runnable
+until ~22:00 ET Wednesday and not after.**
 
 ### EVERY SCHEDULED TASK THIS DESK HAS ARMED HAS DIED IN UNDER ELEVEN SECONDS
 
