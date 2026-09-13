@@ -9209,3 +9209,33 @@ has carried real work — a deploy, a restart verification; (3) the inverted
 failure mode goes to him in words before any port-22 closure. **Port 22
 unchanged.** `push-release.sh` takes a host argument, so `mointel-ssm` can be
 passed in place of the IP once (2) is being exercised deliberately.
+
+## A dropped transport mid-deploy is a partial deploy, so Monday's deploy stays on port 22 — 2026-09-13 evening ET
+
+**Integration asked what happens if the SSM session drops mid-`push-release.sh`.
+Read from the script rather than assumed:** `deploy.sh` runs in the FOREGROUND
+of one ssh session — no `nohup`, `setsid`, `systemd-run` or trap. A dropped
+connection SIGHUPs it. The `git archive | tar` step is safe (nothing is
+`current` yet); **the window from "stopping runtime services" through migrate
+to "starting services" is not — a drop there leaves stopped units and a
+half-applied release.** True of port 22 too, but SSM adds a second transport
+that can fail differently, and a test should not add risk to the thing it
+tests.
+
+**⇒ Monday's deploy and restart go over port 22 as before. The Session Manager
+path carries the VERIFICATION READS** — `/proc/<pid>/cwd` per unit, `PRAGMA
+user_version`, the worker's own log, the `pm_open_state` count — which is real
+work over the same tunnel where a drop costs a retry and nothing else. That is
+gate 2's first exercise.
+
+**Gate 1 sharpened by Integration, recorded as the truer statement:** the box
+half is proven by the loopback peer; what remains is whether a given LAPTOP
+network allows outbound 443 to the SSM endpoints. **A pass on one off-list
+network proves that network, not the next one.** That is an argument for
+keeping port 22 longer, and it is the sentence that goes to him with gate 3:
+*the second yes is not "SSM works", it is "a network that blocks SSM now locks
+me out completely."*
+
+**Making `deploy.sh` survive a dropped transport (`systemd-run` or a detached
+unit with a log to tail) is a real improvement and a separate piece of work;
+noted, not started.**
