@@ -8684,3 +8684,83 @@ keeps 3 sessions and `ticker_session` keeps 18, so `pm_vwap_coverage` OUTLIVES
 the bars that could verify it.** **A proxy that survives its own referent cannot
 be audited after three days** — and every question of the form *"was this
 coverage value right"* has a shelf life nobody set deliberately.
+
+## ONE DOOR, AND NO SEAT CAN SEE THE LOCK — 2026-09-13
+
+**Named as a standing single point of failure, not as tonight's anecdote.**
+
+**SSH went dark on Saturday evening and every stage of an approved, authorised
+sequence stopped.** Deploy, market restart and backup prune all reach the box the
+same way. **Nothing was broken** — 443 and 80 served normally, `https://` gave
+its 401 and `http://` its 301 — **only port 22 was filtered.**
+
+**Established rather than assumed:**
+- **Timeout, not refusal** ⇒ packets dropped, not `sshd` down.
+- **POSITIVE CONTROL: `github.com:22` and `gitlab.com:22` both answered** ⇒ not
+  this machine's outbound.
+- **443 answered on the same address** ⇒ routing to the box was fine.
+
+**⇒ AND NO SEAT COULD DIAGNOSE IT.** The instance was not found in **seven
+regions across both AWS profiles** — consistent with the standing finding that
+the box lives in a third account neither profile reaches. **So the security
+group could not be read, let alone changed.**
+
+**The cause turned out to be prosaic: hotel wifi, a changed outbound address,
+and a source-scoped rule.** *Integration advised him NOT to allowlist a shared
+hotel egress, which is right — the fix is a network he trusts, not a wider rule.*
+
+**WHAT MAKES IT STRUCTURAL: the only person who can reopen the door is the one
+who is sometimes offline for two days.** **Second time this week a single
+unreachable thing stopped everything** — the scheduled tasks were the first, all
+three dying inside eleven seconds while reporting `running`. *Different
+mechanism, same shape: one path, no alternate, and no seat able to see why.*
+
+**Not proposing a fix inside the incident.** *A second access path is an
+auth-model change and has always been his.*
+
+## HANDOVER — Ops, end of a three-day session, 2026-09-13 22:40 ET
+
+### PRODUCTION, verified this evening
+```
+release        b0610fee          schema user_version 26
+units          all four active, market worker restarted Fri 08:33:19Z onto b0610fee
+serving        https 401, http 301, ACME 404 -- all correct
+SSH            CLOSED (port 22 filtered). 443/80 fine.
+backups        12 files, 6.0 GB, nothing prunes them. Disk 62G free.
+minute_bars    3 sessions retained -- 09-09, 09-10, 09-11 at last look
+```
+
+### BUILT AND UNDEPLOYED, in the order it should go
+- **`db502fe` — schema 27** (`pm/rth/ah_open_state`) **plus the newer-store
+  guard, batched deliberately**: 27 without it recreates the version
+  oscillation the moment a `RESTART_MARKET=no` deploy puts a v27 store under a
+  v26 worker. **Integration approved; enumerate, pin, ship after a close.**
+- **`b7145fc`** — Design's four-state render. **Rides the same enumeration.**
+- **`188188c` + `c7d41b9` — the anchor replay.** **BUILT, TESTED, NOT WIRED, and
+  it must not be wired naively** — see its own header. Calling it after
+  `bootstrapSession` is a silent no-op that returns a large honest-looking
+  number. **Wiring it is a decision about which mechanism owns a symbol's
+  volume; routed to Research.**
+- **`lib/auth/{store,cookie,oauth,expiry}.ts`** — four modules, 49 tests,
+  **inert: nothing imports them.** **The routes and
+  `location ^~ /auth/ { auth_basic off; }` do NOT exist and ship together or
+  neither.**
+
+### AUTHORISATIONS — what is live and what is NOT
+- **Market restart: his word EACH TIME.** *A relay does not clear it; his own
+  scoping. Confirmed directly every time this session.*
+- **Backup prune: authorised for a run that did not happen.** *Integration
+  correctly refused to carry that yes forward to a different night. Re-ask.*
+- **Retention: NOT authorised.** *He answered "yes" to a list whose item was a
+  CHOICE between 3 and more. A yes is not a number. It stays at 3.*
+- **SSH widening: his.** *Advised against allowlisting hotel egress.*
+- **Google verification has NOT passed for mointel** — he corrected that
+  himself; it was another project. **Nothing on the publishing path has moved.**
+
+### THE ONE THING A SUCCESSOR SHOULD NOT REDISCOVER
+**Friday 2026-09-11's `ticker_session` rows carry wrong premarket anchors** —
+540 of 668 later than the name's own first bar, 798 names falsely without one,
+from the 08:33Z restart. **Gap is unaffected** (it reads a loaded reference
+close). **Those rows are permanently wrong and no replay fixes the past** —
+only the store's three retained sessions could even measure it, and that window
+has probably closed.
