@@ -1343,8 +1343,20 @@ is the only day left that can test it.*
 
 - **THE BACKUP PRUNE.** *His yes was for Friday's run, which did not happen.* **It
   does not carry forward.**
-- **RETENTION.** *He answered "yes" to a list whose third item was a CHOICE between
-  3 and more.* **A yes is not a number. It stays at 3 until he names one.**
+- **RETENTION — SETTLED 2026-09-12 ET. HIS NUMBER: 20 sessions, one trading month,
+  SEQUENCED REAPER-FIRST.** *"20 is good."* **Keep 3 until a backup reaper exists in
+  `db.ts` so a migration cleans up after itself; then raise.** *Raising it first
+  multiplies an unbounded growth path instead of a bounded one — 12 backups and 6.0
+  GB today with nothing removing them.*
+  - **THE REASONING, SO NOBODY RE-DERIVES IT AS A BIGGER NUMBER: `minute_bars` is an
+    OPERATIONAL BUFFER, NOT AN ARCHIVE.** *Replay needs one day; post-hoc diagnosis
+    is the binding case and wants weeks; tape research belongs in R&D's separate
+    offline archive and should stay there.* **Past a month you are building an
+    archive inside the hot store, where every migration copies it.**
+  - **AND THE COST THAT SURVIVES EVEN UNLIMITED DISK: a bigger operational store
+    makes every backup, migration and recovery slower** — *a reliability cost, not a
+    resource one, paid at the moment you most want to move fast.* **Measured: ~2 min
+    per migration at 1.06 GB, backup-dominated.**
 - **NOTHING AUTHORISES REMOVING BASIC AUTH OR TOUCHING `location /`.**
 
 *A handover listing what is permitted is ordinary. One listing what has QUIETLY
