@@ -1049,6 +1049,70 @@ in daily — fixed the same day.*
   stamp in a `meta` row rather than a filename.
 - **Integration** — this seat.
 
+### SATURDAY NIGHT 2026-09-12 22:45 ET — THE DOOR IS SHUT, THE DESK IS FINE
+
+**SSH TO THE BOX IS FILTERED. Nothing has deployed since `b0610fee` on Friday
+morning.** *He is on hotel wifi; Ops runs on his machine, so its outbound address
+is his, and the port-22 rule is scoped to an address he is no longer behind.*
+
+```
+443 / 80   OPEN, serving 401 and 301 as designed     the desk is NOT down
+22         TIMES OUT (dropped, not refused)
+control    github.com:22 and gitlab.com:22 both open from the same machine
+```
+
+**ADVISED HIM NOT TO ALLOWLIST THE HOTEL EGRESS.** *A shared NAT in a security
+group opens port 22 to everyone on that network, and hotel addresses rotate.*
+**THE WINDOW IS THE WEEKEND, NOT THE NIGHT — a schema deploy and a worker restart
+need "no session in progress", and Sunday satisfies that identically.**
+
+**THE STANDING SINGLE POINT OF FAILURE, recorded as such rather than as tonight's
+anecdote:** **one operating door, and NO SEAT CAN SEE THE ACCOUNT THAT CONTROLS
+IT** — *instance not found across seven regions on both profiles.* **When SSH
+closes, nobody here can diagnose or reopen it, and the only person who can is
+sometimes offline for two days.** *Second time this week one unreachable thing
+stopped everything; the scheduled tasks were the first.*
+
+### UNDEPLOYED AND WAITING FOR SUNDAY
+
+- **Schema 27 + the guard fix (`db502fe`)** and **Design's four-state render
+  (`b7145fc`)** — both on `main`, neither on the box.
+- **`lib/market/replay.ts` (`c7d41b9`)** — the anchor fix, built and tested,
+  **DELIBERATELY NOT WIRED.** *Calling it after `bootstrapSession` is a COMPLETE
+  NO-OP: the snapshot sets `volumeBaseThrough` to the current minute and the engine
+  drops every bar at or before it.* **It would report `bars: 1070000` and change
+  nothing — a correct-looking proof of work over a silent failure.** **Snapshot and
+  replay are ALTERNATIVES, NOT LAYERS; wiring it decides which owns a symbol's
+  volume, and that is with Research.**
+- **The auth routes are NOT started.** *`app/auth/` does not exist and there is no
+  `location ^~ /auth/`.* **Stopped deliberately: they cannot deploy with the door
+  shut, and auth is written once.**
+
+### AUTHORISATIONS THAT ARE **NOT** LIVE — Ops's handover recorded these and it is the better half
+
+- **THE BACKUP PRUNE.** *His yes was for Friday's run, which did not happen.* **It
+  does not carry forward.**
+- **RETENTION.** *He answered "yes" to a list whose third item was a CHOICE between
+  3 and more.* **A yes is not a number. It stays at 3 until he names one.**
+- **NOTHING AUTHORISES REMOVING BASIC AUTH OR TOUCHING `location /`.**
+
+*A handover listing what is permitted is ordinary. One listing what has QUIETLY
+STOPPED BEING PERMITTED is what stops a successor acting reasonably on a stale
+grant.*
+
+### FRIDAY'S ANCHORS ARE PERMANENTLY WRONG
+
+**540 of 668 names carry a premarket anchor later than their first real bar; 798
+more have none.** **Gap is unaffected.** *No replay fixes the past, and only the
+three retained sessions could ever have measured it — that window has probably
+closed.* **A successor must not trust those rows and must not re-derive this.**
+
+### OPS RETIREMENT — RAISE IN DAYLIGHT
+
+**Running since Thursday, past 9,500 messages, handover landed at `a6aafc0`, tree
+clean.** *It asked to be retired by his decision rather than by a session quietly
+getting worse.* **It goes when he says, and the auth build should start fresh.**
+
 ### GOOGLE VERIFICATION HAS **NOT** PASSED FOR MOINTEL — corrected 2026-09-12
 
 **He said "we are officially verified" and corrected it within the hour: that was
