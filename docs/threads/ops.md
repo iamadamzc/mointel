@@ -9045,3 +9045,40 @@ universeWarning-style; a per-row mark would repeat one fact a hundred times.*
 **That is Design's decision to make and Research's number; routed via
 Integration.** The 09-11 bars are still retained and this number can be re-run
 until roughly Wednesday 22:00 ET, and not after.
+
+## State: production is `9370ab3`, schema **v27**, deployed 2026-09-13 05:54 ET Sunday — market worker restarted 05:56:29 ET
+
+**Enumeration approved by Integration at the pin, verified independently on its
+side. Preflight cleared at 05:50 ET with STRUCTURAL_REFRESH 20 minutes out.
+Gate at the sha: 2046 tests / 136 files, lint 0 errors, tsc, build.**
+
+```
+deploy         9370ab3   RESTART_MARKET=no   current -> 9370ab3 at 09:54Z
+migrate        v26 -> v27, backup market-v26-2026-09-13T09-53-04-628Z.db integrity ok
+               quick_check ok
+FIRST LIVE REAP: 3 kept, 9 removed, 1 pinned (market-v18), 0 failed
+               backups 12 files / 6.0 GB  ->  4 files / 3.1 GB; 65G free
+web/research/assess   on 9370ab3 by /proc/<pid>/cwd, NRestarts 0
+market         left on b0610fee through the deploy (pid 147581 unchanged)
+RESTART        mointel-market at 2026-09-13T09:56:29Z = 05:56:29 ET Sunday,
+               his word given directly. Market closed; no session in progress,
+               so the anchor defect could not fire.
+after restart  market pid 273261 cwd 9370ab3; worker's own log: connected,
+               authenticated SIP, whole-market bars subscribed at 09:56:35Z
+user_version   27, read after the restart
+release prune  removed 8f8f5d3; kept 9370ab3, b0610fee (rollback), 03d9a19, 372f5eb (pinned)
+```
+
+**The three new state columns were written by a live worker within five seconds
+of the restart: 8,741 of 8,743 rows for 2026-09-14 carry non-null
+`pm_open_state`, `rth_open_state` and `ah_open_state`, last write 09:56:34Z.**
+*Control: the write time is the restart's startup reconstruction, not a quiet
+market. Distribution recorded below in the same entry once read.* **What this
+does NOT show: a value produced by a session in progress. Monday's premarket is
+the first observation of that.**
+
+**Sunday's step three is done by step one.** *The manual prune is unnecessary
+and was not run.* **Retention can now be raised to 20; separate commit, his
+number, after he has seen this journal line.**
+
+**Firewall reminder: the hotel's `77.75.180.192/32` is still in port 22.**
