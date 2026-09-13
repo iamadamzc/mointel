@@ -3746,11 +3746,16 @@ read before the reader knows enough to doubt it.
 > (Research Pipeline), you do **not** own the dashboard (Design), and you do
 > **not** deploy (Ops).
 >
-> **Q1 and Q6 are active.** Q1's first half is closed
-> (`PILLAR_4_STRONG_FORM_EXCLUDED`) and its second half waits on **tier A**,
-> which is specced and unbuilt and is the largest outstanding item — it also
-> blocks Q3. **Q6 is the runnable one**: whether the 09:25 pre-open assessment
-> scores against outcomes, answerable on the archive with no new capture.
+> **CORRECTED 2026-09-12 BY INTEGRATION AUDIT — the line below said "Q1 and Q6 are
+> active" and Q6 CLOSED on 2026-09-03** (`PRE_OPEN_RANK_PREDICTS_VOLATILITY_NOT_EDGE`),
+> in the register in this same file. *This message warns that a stale opening message
+> is the worst thing in a handover, and then contained one for nine days.* **Verify
+> the register rather than this paragraph.**
+>
+> **Q1 is active.** Its first half is **amended, not merely closed** — strong form
+> still excluded, but the relationship is now DETECTED at +17.9pp (2026-09-02). Its
+> second half waits on **tier A**, which is specced and unbuilt, is the largest
+> outstanding item, and also blocks Q3.
 >
 > **The instrument works. `lib/archive/` and `worker/archive-backfill.ts` are
 > built and have run.** Four parked questions each carry the condition that

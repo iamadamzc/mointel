@@ -60,8 +60,15 @@ is not here it is not anywhere: I am not available to be asked.*
 
 ### Built and pushed — the first two rows are now LIVE
 
-**Production is `97f5fbd`, deployed 2026-09-03 05:10 UTC** (Ops's record, its
-own charter). **`3379809` and `268e438` are in it**, verified by ancestry here
+**STALE — CORRECTED BY INTEGRATION AUDIT 2026-09-12. Production is `b0610fee` at
+schema 26**, verified from the box by Ops on 2026-09-11 (`user_version` by `PRAGMA`,
+each unit's release from `/proc/<pid>/cwd`) and not re-confirmed since SSH closed on
+2026-09-12. **This whole LIVE STATE section is dated 2026-08-27 and is sixteen days
+old on the desk's most active thread — treat every fact in it as unverified until its
+owner rewrites it.**
+
+*The original line, kept so the correction has a subject:* **"Production is `97f5fbd`,
+deployed 2026-09-03 05:10 UTC" (Ops's record, its own charter).** **`3379809` and `268e438` are in it**, verified by ancestry here
 rather than taken from the message. The table's old heading said *none are
 deployed*; that was true when written on 08-27 and is the exact shape of a
 stale opening line, so it is corrected rather than annotated.
