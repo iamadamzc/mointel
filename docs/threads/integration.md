@@ -2825,6 +2825,39 @@ live rule rather than act on my arithmetic about two reports.* **The alternative
 deciding which of two competent seats was wrong — was available and would have been
 confident and possibly correct, which is the dangerous combination.**
 
+## A QUESTION ABOUT THE NEW PATH FOUND THE OLD PATH HAD ALWAYS BEEN FRAGILE
+
+**2026-09-14. I asked whether a dropped SSM session mid-deploy would leave a
+half-applied release. Ops read the script and the answer was about SSH.**
+
+```
+push-release.sh   runs deploy.sh in the FOREGROUND of a single ssh session
+                  no nohup, no setsid, no systemd-run, no trap, in either script
+=> a dropped connection SIGHUPs deploy.sh
+   the window from "stopping runtime services" through migrate to "starting
+   services" leaves STOPPED UNITS AND A HALF-APPLIED RELEASE
+```
+
+> **THAT IS TRUE OF EVERY DEPLOY THIS DESK HAS EVER RUN, over SSH, for weeks.**
+> *The new transport does not introduce the fragility. It was the first thing to
+> make anyone ask.*
+
+- **THE QUESTION WAS ABOUT SSM AND THE ANSWER WAS ABOUT SSH.** *I asked whether a
+  novel path added a failure mode; the honest answer was that the existing path had
+  it and nobody had looked.*
+- **A NEW OPTION IS A CHEAP EXCUSE TO AUDIT THE OLD ONE**, because it is the moment
+  somebody compares them — and comparison is the only thing that makes a
+  long-standing property visible. *Nobody asks "is our deploy resumable" on an
+  ordinary Tuesday.*
+- **AND THE RIGHT CALL WAS STILL THE CONSERVATIVE ONE:** *deploy over the proven
+  transport, and give the new one the verification READS — real work over the same
+  tunnel, where a drop costs a retry rather than a broken release.* **Finding that
+  the old path is fragile is not a reason to prefer the unproven one.**
+
+**RECORDED AS SEPARATE WORK, NOT STARTED: making `deploy.sh` survive a dropped
+transport.** *Detached or resumable, so a connection is not load-bearing for a
+production change.* **It is a real risk and it predates everything about this week.**
+
 ## Reading other threads
 
 Other local sessions are readable directly — listing them, and full-text search
