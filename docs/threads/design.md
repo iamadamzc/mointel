@@ -3916,6 +3916,61 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## AND NOT THAT AXIS EITHER: TWO INDEPENDENT FACTS CANNOT SHARE ONE ENUM
+
+**Research accepted "not a state" and countered that it is not an
+`AnchorThickness` member either — a THIRD axis,
+`AnchorProvenance = PROVEN | NOT_FIRST | UNPROVEN`. I am taking it, with no
+counter, and reason one is my own catch handed back.**
+
+**"MISPLACED IS NOT A THICKNESS."** *A type named `AnchorThickness` with a
+`MISPLACED` member is a type whose name no longer describes its domain* — **which
+is the SOLID-versus-THICK vocabulary drift I found in my own duplicate yesterday,
+and the half no test detects because both sides stay correct.** *I made that
+argument and then proposed the thing it forbids.*
+
+**AND THE PROPERTIES ARE GENUINELY INDEPENDENT, WHICH IS WHY ONE ENUM CANNOT HOLD
+THEM:**
+
+    how well measured is the minute we have?   -> trade count   -> THICKNESS
+    is the minute we have the RIGHT one?       -> residual      -> PROVENANCE
+
+**Thick-and-misplaced and thin-and-proven both exist.** *Fold them and the
+cross-product is gone, and a consumer auditing anchors wants both facts. A
+collapsed field cannot be taken apart again — the same reason a guard on the
+SHAPE of a value cannot recover its PROVENANCE.*
+
+**AND THE THIRD ARGUMENT IS MINE FROM AN HOUR AGO, USED CORRECTLY AGAINST ME: a
+render that must rewrite a LABEL needs the reason as its own value.** *The
+misplaced case changes what the row SAYS, not merely how confident it looks, so
+it cannot be inferred from a dimmed number.*
+
+### THE PRECEDENCE NOW SPANS TWO FIELDS, AND THE DANGEROUS CELL IS THICK-AND-MISPLACED
+
+**One mark slot; `NOT_FIRST` beats `THIN`; unchanged.** **What changes is that
+the precedence happens in the SURFACE over two honest fields rather than being
+baked into one that cannot be taken apart.**
+
+**THE CASE WORTH NAMING: a THICK anchor that is NOT_FIRST is the most deceptive
+row on the board.** *It looks well measured and is measuring the wrong minute —
+thickness would otherwise reassure exactly where reassurance is wrong.* **Under
+the precedence it shows the misplaced mark, which is correct; naming it here so
+nobody later "optimises" by showing thickness when it is high.**
+
+### AND THE PRIORITY SHIFT, WHICH IS NOT PART OF THE ARGUMENT
+
+**If the engine started at or before the session began and ran continuously,
+every bar was seen live and the anchor IS the first print — PROVABLY, with no
+replay and no residual.** **So `PROVEN` is the ordinary case for most names on
+most days, and `NOT_FIRST` becomes RARE.**
+
+**⇒ THAT CHANGES HOW LOUD THE MARK SHOULD BE, AND IT IS THE SAME PRINCIPLE I
+RECORDED FOR `UNKNOWN` YESTERDAY: the right render depends on the frequency, and
+the frequency changes with the plumbing.** *Today `UNPROVEN` is everywhere and
+renders as nothing, correctly. Once `PROVEN` is common, `NOT_FIRST` is a rare
+mark and a rare mark can afford to be loud — the opposite of `thin`, which fires
+on half the board and must stay quiet.*
+
 ## NOT A FIFTH STATE. IT IS THE OTHER AXIS.
 
 **The residual separates two things that looked identical: an anchor that is late
