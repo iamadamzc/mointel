@@ -8941,3 +8941,50 @@ breath, and the only thing that catches that is another seat.**
 the clock from `zoneinfo` at the moment of use, because this host runs ahead of
 the desk.** *Knowing a rule and applying it are different acts, and the gap
 between them is where this desk's oldest failure lives.*
+
+## THE BACKUP REAPER EXISTS, AND IT MOVES SUNDAY'S PRUNE INTO STEP ONE — 2026-09-12 23:30 ET
+
+**Door still shut at 23:19 ET Saturday: port 22 times out, 443 answers 401,
+80 answers 301.** *So the standing instruction — confirm `b0610fee` at schema 26
+from `/proc/<pid>/cwd` and `PRAGMA user_version` on the box — could not be
+carried out tonight.* **Production is unconfirmed since Saturday evening, and
+"serving correctly" is not the same measurement.**
+
+**Built while the door was shut: `reapSchemaBackups` in `lib/market/store/db.ts`,
+the thing retention was sequenced behind.** A migration that takes a backup now
+keeps the newest `SCHEMA_BACKUPS_KEPT = 3` of this store's own
+`market-v<N>-<stamp>.db` files and unlinks the rest, after its upgrade commits.
+Scope, which matters more than the count:
+
+- **Only files a migration wrote**, by exact name shape. `manual-*.db`,
+  `failback.db`, snapshots, `cutover-final.db` and any other store's backups are
+  not candidates.
+- **A backup a pin names survives regardless of age.** Deleting one would make
+  `pins.sh check` fail on the next deploy, after the damage.
+- **`unlinkSync`, never `rmSync`.** A directory wearing a backup's name is
+  reported as a failure and left alone.
+- **A failed removal cannot fail the open.** Reported, logged by name in the
+  `mointel-migrate` journal, and the desk starts.
+- **An ordinary start reaps nothing. A brand-new store reaps nothing.** The
+  second case is not covered by the current-version early return; only the gate
+  covers it, and it has its own test.
+
+**Gate at the sha: 2046 tests / 136 files, lint 0 errors, typecheck clean.**
+**Mutation-proven with predictions written first: four mutations, predicted one
+kill each, got one each, each by the intended test** — pin check removed,
+pattern loosened to `*.db`, gate opened to new stores, unlink swapped for a
+recursive rm.
+
+**⇒ THE SEQUENCING CONSEQUENCE HE HAS TO RULE ON.** *Sunday's sequence is
+deploy, then restart, then prune to 3, each gated on the last.* **If the reaper
+ships in Sunday's enumeration, the 26 → 27 migration inside the deploy performs
+the prune itself, in step one, before the restart** — 12 existing files plus the
+new v26 copy, minus everything past the newest three, minus whatever the
+`market-v21` pin names. *Same outcome as the manual prune, different step, and
+the v26 backup a rollback to `b0610fee` would need is the newest and is kept.*
+**Two honest options: ship it in the enumeration and drop step three, or hold
+this commit out of the enumeration and keep his sequence exactly.** *Not mine
+to choose.*
+
+**Retention stays at 3 sessions.** *The reaper is the precondition; the rise to
+20 is a separate commit for after he has seen the first reap in a journal.*
