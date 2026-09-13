@@ -1323,9 +1323,41 @@ hardcoded null everywhere, including production. Do not send anyone after it.**
 04:00 ET and 08:33Z on 2026-09-11** — how many names had already traded when the
 restart landed.
 
-> **`minute_bars` retention is 3. 09-11 ages out once Monday and Tuesday land, and
-> the question becomes PERMANENTLY unanswerable.** *"The proxy outlives the fact it
-> proxies", running the other way.*
+> **EXPIRES ~22:00 ET WEDNESDAY 2026-09-16.** *Research verified it against
+> `retainedMinuteBarDates` (`repo.ts:273`) rather than taking my walk-through: it
+> keeps the N most recent dates PRESENT plus today — **not an age queue**, which is
+> why my "Monday and Tuesday" was close and wrong.* **After that the question is
+> PERMANENTLY unanswerable** — *"the proxy outlives the fact it proxies", running the
+> other way.*
+
+**AND IT NO LONGER DEPENDS ON A HANDOVER LANDING.** *Ops retires with the read
+unrun, so Research committed it as one command at `55d51e7`:*
+
+```
+npx tsx worker/anchor-loss-cohort.ts --date=2026-09-11 --restart=08:33
+```
+
+*Read-only, proven by a refused zero-row UPDATE before it reads anything.* **The
+traps are in the file header rather than in a thread: every bound is `.000Z`,
+because against a millisecond column a bare-second `>=` drops its own minute and a
+bare-second `<` admits one past the end.** **The control runs FIRST and REFUSES TO
+REPORT if symbols print before the restart and none after — that means the window
+filter is wrong, not the market.** **And the cohort always prints over its
+denominator.**
+
+**IT CAUGHT ITS AUTHOR, WHICH IS WHY IT WAS RUN RATHER THAN ONLY WRITTEN.**
+*`--restart=08:00` returned "0.0% — SPARSE, the board-wide prior is WRONG and should
+be recorded as killed."* **Nothing trades before the session opens, so the cohort was
+empty by construction and the instrument confidently killed a prior on it.** *A
+degenerate input producing a plausible verdict, inside the tool written to avoid
+exactly that.* **Now an explicit branch rather than a predicate folded into a count.**
+
+*Validated on 2026-08-18 with a synthetic 11:00Z restart: **28 of 39 ranked names,
+71.8%, board-wide**. Different date and an invented time, so it is NOT the answer —
+but it exercises both arms and is consistent with the prior.*
+
+**HAND TO THE NEXT OPS: take it Monday. The Wednesday margin is not budget. Read the
+control line before the number.**
 
 **⇒ HANDLED, NOT ESCALATED: it is a read on the box and Sunday's session opens the
 box anyway. It goes in the sequence beside the deploy, not on his list.** **THE
