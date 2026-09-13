@@ -76,18 +76,27 @@ Then port 22 can be closed to the internet entirely, or left as a second path.
   2. On the box, once: `sudo snap stop amazon-ssm-agent` →
      `amazon-ssm-agent -register -code ... -id ... -region us-east-1` →
      `sudo snap start amazon-ssm-agent`. The node appears as `mi-…`.
-  3. Raise the account's managed-instance tier from `standard` to
-     `advanced` — **Session Manager on hybrid nodes requires it.**
+  3. ~~Raise the managed-instance tier to `advanced`~~ **MOOT: the tier was
+     removed by AWS on 2026-06-30 (see Cost).** Nothing to change.
   4. On the laptop: install the Session Manager plugin for the AWS CLI; add
      the `ProxyCommand` stanza; point `push-release.sh` (or its caller) at
      the alias.
   5. Verify: a session from a network NOT in the port 22 rule. Then decide
      whether port 22 stays.
-- **Cost:** the advanced tier is priced per managed node per hour, on the
-  order of $5/month for one node. **Read the current price on the Systems
-  Manager pricing page before saying yes; that figure is from memory and is
-  the kind of number this desk does not carry.** Session Manager itself has
-  no charge. Spend is his.
+- **Cost, CORRECTED 2026-09-14 from AWS's own pages (Infra-Ops read it first;
+  Ops re-read both pages the same day):** *"On June 30, 2026 we removed the
+  Advanced Instances Tier, and you can now register any number of ... hybrid
+  and multicloud nodes ... at no registration or per-instance charge."* And:
+  *"Starting September 30, 2026 ... Session Manager $0.05 per session"* on
+  hybrid nodes; no charge on EC2. **So step 3 below is moot — there is no tier
+  to raise — and the recurring cost is five cents per session from
+  2026-09-30, zero before.** The Session Manager prerequisites page no longer
+  mentions a tier; it requires agent ≥ 3.0.222.0 for SSH sessions (the box
+  has 3.3.4793.0), outbound 443 to `ssm`, `ssmmessages` and `ec2messages`
+  endpoints, and `AmazonSSMManagedInstanceCore` on the activation's role.
+  *The "$5/month" figure in the first draft was from memory and was wrong by
+  the time it was written — the exact failure this desk records: a number
+  carried instead of read.*
 - **Changes the auth model:** yes, and this is the part to look at in
   daylight. Today the gate is *key AND address*. Under B the gate is *IAM
   identity* — whoever holds `magellan_admin` credentials, or any principal
@@ -152,6 +161,7 @@ Neither is done. Nothing in this file is authorisation for anything.
 | --- | --- |
 | A: add `lightsail-connect` alias to port 22 | his yes; one firewall write; read-back |
 | B1: IAM role + activation | his yes to an IAM change in 239732580473 |
-| B3: advanced tier | his yes to spend, after he reads the price |
+| B3: advanced tier | ~~moot~~ — tier removed 2026-06-30; cost is $0.05/session from 2026-09-30 |
+| B2 activation | `ssm:CreateActivation` is DENIED to the InfraOps role (simulated 2026-09-14); needs either his IAM grant to that role, or `magellan_admin` — his call which |
 | B2, B4, B5 | Ops, once B1 and B3 exist |
 | closing port 22 | a separate yes, after B5 |
