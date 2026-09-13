@@ -3916,6 +3916,63 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE NUMBER IS IN, IT IS BOARD-WIDE, AND IT ANSWERS ONE CAUSE OF TWO
+
+**Ops ran the expiring measurement Saturday (`80158db`). 2026-09-11, restart
+08:33Z, control PASSED — 1,392 names printing before and 2,987 after.**
+
+    ranked <= 50    17 of 32 premarket names lost their anchor    53.1%
+
+**⇒ BOARD-WIDE. ONE STATEMENT AT THE BOARD, `universeWarning`-STYLE, NOT A PER-ROW
+MARK.** *Half the ranked board at once is systemic by construction, so `NOT_FIRST`
+never competes with `thin` for the mark slot on the day it fires, and the
+precedence question I was holding open never arises.* **The coupling is unchanged
+and now simpler: the board statement is not decoration beside the row mark, it IS
+the carrier. Both halves still ship together. "Just the row mark" is still the
+defect.**
+
+### BUT THE COHORT WAS SELECTED BY ONE CAUSE, SO IT CAN ONLY SPEAK ABOUT THAT CAUSE
+
+**Integration read "the threshold never needs choosing" off this. That follows
+only if a restart is the ONLY thing that misplaces an anchor.** *Their own
+sentence is the reason to doubt it — "anything sparse has a different cause
+entirely and would be a different finding."* **I think the different cause is
+`drainPromotions`, and I think it fires every day.**
+
+    worker/runtime.ts:1153   seedSession on MID-SESSION ADMISSION
+                             volumeBase: dailyBar.v       POSITIVE LUMP
+                             volumeBaseThrough: now       SEAM AT ADMISSION
+                             ...and no getBars. Ever.
+    engine.ts:954            bars at or before the seam are DROPPED
+
+**A name qualifying at 07:40 loses its 04:00-07:40 bars and takes 07:40 as its
+`pm_open_at`.** *Friday's defect, with no restart, on every mid-session promotion
+— which is most of what he trades, because a name that just qualified is the
+interesting one.* **The `volumeBase: 0` reset at :943 is bootstrap-only and
+promotions never reach it.**
+
+**⇒ IF IT HOLDS, `NOT_FIRST` IS A STEADY SPARSE BASELINE UNDER THE RESTART BURSTS,
+AND THE RARE CASE IS THE BOARD-WIDE ONE — THE REVERSE OF WHAT I WAS BUILDING.**
+
+### WHAT DISCRIMINATES THEM, AND IT IS ONE COLUMN ON A QUERY THAT ALREADY RAN
+
+**Requested before the Wednesday expiry: the distribution of `pm_open_at` across
+the 17 misplaced names.** *A restart stamps ONE SHARED INSTANT. All 17 at 08:33Z
+means purely restart-caused and I drop this; a scatter through the morning means
+promotions.* **The OFFSETS cannot tell them apart — "worst offset 3,119s" is a
+spread in FIRST-BAR times, not in anchor times. Only the anchor timestamps
+separate the mechanisms.**
+
+*Not a second date. The short window is better spent on the question that
+discriminates than on a repeat of the question already answered.*
+
+**AND A FLAG FOR THE REPLAY WIRING:** `drainPromotions` is the exact shape
+`c7d41b9` proved makes `replaySession` a silent no-op — snapshot seed with the
+seam at the current minute. **So "replay first, snapshot fallback" has a SECOND
+call site, currently scoped to startup, and a freshly promoted name has no local
+bars, which is the fallback arm, which reproduces the anchor problem unless the
+bars get fetched.**
+
 ## A CONSTANT DEGRADES TO A CONFIDENT LIE WHERE AN ABSENCE DEGRADES TO UNKNOWN
 
 **Research went one step deeper than my write-only warning and the truth is
