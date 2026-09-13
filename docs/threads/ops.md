@@ -9089,3 +9089,28 @@ on a closed Sunday and it is also a constant — a check that cannot fail today.
 **The first value that could be anything else arrives at 04:00 ET Monday, when
 `pm_open_state` should move for names that print in premarket.** Read it then,
 with the count of names that traded as the denominator.
+
+## Retention 20 committed; the Sunday trading date is Monday, confirmed from the box — 2026-09-13 06:05 ET
+
+**Retention default 3 → 20** in `lib/market/config.ts`, released by Integration
+on his standing ruling now that the reaper has run live. **Not yet in
+production:** it is applied by the market worker on the roll, so it lands when
+that worker next restarts onto a build carrying it — a deploy plus his word.
+Production env does not pin the value. **Nothing is deleted by raising it;
+pruning stops until 20 sessions exist.** The 09-11 bars, and the anchor-loss
+number, now survive past Wednesday once it ships.
+
+**Integration asked whether 8,743 rows on `trading_date 2026-09-14`, written on
+Sunday, were right. They are, and it was read rather than reasoned:**
+```
+meta trading_date_rolled_at   2026-09-12T02:00:00.867Z   (Fri 22:00 ET)
+meta trading_date_rolled_for  2026-09-14
+worker log  Fri 22:00:55 ET   trading date rolled 2026-09-11 -> 2026-09-14
+worker log  Sat 22:00 ET      NO roll line -- one roll, not two
+worker log  Sun 05:56 ET      trading date 2026-09-14 (CLOSED, pending)
+calendar    09-11 -> next session 09-14   (Alpaca, fetched 09:59Z today)
+```
+**One roll, on Friday night, straight to Monday. Sunday was never a trading
+date.** `rolledTradingDate` is a pure function of the calendar and returns null
+when the resolved date has not changed, which is why Saturday's 22:00 wrote
+nothing.
