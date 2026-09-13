@@ -8741,7 +8741,7 @@ the bars that could verify it.** **A proxy that survives its own referent cannot
 be audited after three days** — and every question of the form *"was this
 coverage value right"* has a shelf life nobody set deliberately.
 
-## ONE DOOR, AND NO SEAT CAN SEE THE LOCK — 2026-09-13
+## ONE DOOR, AND NO SEAT CAN SEE THE LOCK — 2026-09-12
 
 **Named as a standing single point of failure, not as tonight's anecdote.**
 
@@ -8774,7 +8774,7 @@ mechanism, same shape: one path, no alternate, and no seat able to see why.*
 **Not proposing a fix inside the incident.** *A second access path is an
 auth-model change and has always been his.*
 
-## HANDOVER — Ops, end of a three-day session, 2026-09-13 22:40 ET
+## HANDOVER — Ops, end of a long session, 2026-09-12 22:40 ET
 
 ### PRODUCTION, verified this evening
 ```
@@ -8821,7 +8821,7 @@ close). **Those rows are permanently wrong and no replay fixes the past** —
 only the store's three retained sessions could even measure it, and that window
 has probably closed.
 
-## TWO THINGS ABOUT METHOD, FOR WHOEVER HOLDS THIS SEAT NEXT — 2026-09-13
+## TWO THINGS ABOUT METHOD, FOR WHOEVER HOLDS THIS SEAT NEXT — 2026-09-12
 
 **These are not findings. They are how the findings above were caught, and they
 are here rather than in a message because a successor opens this file and will
@@ -8881,7 +8881,7 @@ sitting directly above the guard it justified.*
 **⇒ Distrust the note. Re-run the two-line comparison. It costs a minute and it
 is the only thing that tells you the header is still true.**
 
-## A BARE-SECOND TIME BOUND IS WRONG AT BOTH ENDS OF THIS STORE — 2026-09-13
+## A BARE-SECOND TIME BOUND IS WRONG AT BOTH ENDS OF THIS STORE — 2026-09-12
 
 **`minute_bars.ts` is stored with milliseconds: `2026-09-11T08:00:00.000Z`. A
 bound written without `.000Z` is compared as a STRING, and at index 19 that is
@@ -8918,3 +8918,26 @@ not.**
 *And when a window's edge coincides with a session boundary — 04:00, 09:30,
 16:00, 20:00 — check which side the boundary minute landed on before believing
 the count, because that is the minute the bug moves.*
+
+### Correction to the four entries above — dated on the wrong clock
+
+**All four were first written `2026-09-13`. On the desk's clock it was
+`2026-09-12`, Saturday, 22:40–23:00 ET.** *I read this host, which runs UTC+2
+and had already turned over; ET was still Saturday.*
+
+```
+host  Sun 2026-09-13 05:01 +02      <- what I used
+UTC       2026-09-13 03:01Z
+ET    Sat 2026-09-12 23:01 EDT      <- the desk
+```
+
+**Recorded rather than quietly fixed, because of WHEN it happened: I committed
+it inside the same message in which I corrected two provenance errors in the
+successor's brief.** *Being right about the instrument does not make you right
+about the reading.* **A seat can be the corrector and the corrected in one
+breath, and the only thing that catches that is another seat.**
+
+**The rule was already in this file and in the brief I had just reviewed: take
+the clock from `zoneinfo` at the moment of use, because this host runs ahead of
+the desk.** *Knowing a rule and applying it are different acts, and the gap
+between them is where this desk's oldest failure lives.*
