@@ -502,42 +502,63 @@ RULING ON. 53.1% and 40.6% fall on opposite sides.**
   predicate is per PROCESS.* **Research: its denominator objection killed Design's
   POPULATION, not Design's PREDICATE, and it had conflated the two.**
 
-- **I REVERSED MYSELF TWICE ON THIS IN FORTY MINUTES AND THE SECOND REVERSAL IS THE
-  ENTRY.** *I put the false-positive finding to both threads; it was RIGHT. I then
-  withdrew it as an invented link; the WITHDRAWAL was the error.*
+- **THE FINDING STOOD ALL ALONG. I SUPPORTED IT WITH THE WRONG REASON TWICE, AND BOTH
+  TIMES THE WRONG REASON WAS THE SAME SUBSTITUTION.** *Verified at the lines by this
+  seat, not taken on report:*
+  ```
+  config.ts:70      internalRank = 50
+  runtime.ts:916    focusCount = max(50*4, 100) = 200      the REPAIR slice
+  readModel.ts:462  readDemandStates(limit: internalRank) = 50   the BOARD
+  ```
+  **The slice is FOUR TIMES the board, so every row on his board today was repaired,
+  and `observingSinceMs > sessionStartMs` fired TRUE on sound anchors.** *The original
+  finding, on Research's reason.*
 
-  > **WHAT MADE THE WITHDRAWAL FEEL RIGOROUS IS THAT IT WAS A SELF-CRITICISM.** *I had
-  > already made two invented links today, so a third fitted a pattern I was primed to
-  > find - and "I was wrong again" is the conclusion nobody audits, the same way a
-  > reassuring number is.* **Ops's "RTH anchors before that instant reset for names
-  > outside the backfill" made the wrong reading plausible, and I stopped there rather
-  > than asking which population the BOARD reads.**
+  > **THREE POSITIONS IN NINETY MINUTES, AND EVERY ERROR WAS THE TRACKED UNIVERSE
+  > STANDING IN FOR THE BOARD** - *~8,800 tracked against 50 displayed.* **Inside a
+  > question that is entirely about which population you mean.** *The desk's oldest
+  > failure, committed three times while arbitrating a dispute about it.*
   >
-  > **THE SCOPING IS RESEARCH'S AND IT IS THE WHOLE OF IT:** *~208 focused names
-  > backfilled with the seam cleared, ~8,667 others seamed at 13:16 with no bars.*
-  > **The board reads top-50 by `rvol_rank`, so HIS BOARD WAS SOUND TODAY AND THE
-  > TRACKED UNIVERSE WAS NOT** - *and "today's anchors are fine" was true of the first
-  > and false as a general claim.*
+  > **AND THE RETRACTION GOT NONE OF THE CHECKING THE FINDING GOT.** *I verified before
+  > sending the finding and did not verify before sending the withdrawal.* **Withdrawing
+  > feels free because it only removes something** - *and a self-criticism is the
+  > conclusion nobody audits, the same way a reassuring number is.* **Research's
+  > version, arriving from the other side the same hour: a retraction that restores your
+  > own proposal deserves MORE scrutiny than the criticism did, not less.**
+
+- **WHERE IT LANDED: BOTH EARLIER PREDICATES WITHDRAWN BY THEIR OWN AUTHORS, AND A
+  THIRD IS LIVE.** *Design's `hasSeam` - does this name still carry the BOOTSTRAP's
+  `snapshotMinute`, one value computed once at `runtime.ts:822`.* **Backfilled names
+  have it cleared (`943-947`); promotions compute their own at `1143`, so they are
+  excluded BY IDENTITY rather than by threshold; a normal pre-session start seams
+  nothing.** *And it is evaluated at RENDER time against the row, which matters because
+  Friday's thirteen were damaged at 08:33 OUTSIDE the focused set and reached the board
+  later:* **damage surfaces when a damaged name QUALIFIES, not at restart, so "fine
+  now" is not "fine today".** *Design's, and this seat had it wrong twice.*
+
+- **AND THE ONE THING AGAINST IT IS THAT THE SEAM IS GATED BY THE FLAG THAT CAUSED
+  FRIDAY.** *`runtime.ts:851`: `belongsToSession` gates `volume` at 854 AND
+  `volumeBaseThrough` at 885 - one flag, both.*
+  > **If Research's premise holds and the daily bar had not rolled at 04:33, then on
+  > Friday the seam was NULL on every name and the detector is SILENT ON THE INCIDENT
+  > IT EXISTS FOR.** *The condition that produces the damage erases the evidence of it.*
   >
-  > **THE HABIT THIS COSTS: a retraction is a claim and gets the same check as the
-  > thing it retracts.** *I verified the finding before sending it and did NOT verify
-  > the withdrawal before sending that. The asymmetry is the defect - withdrawing feels
-  > free because it only removes something.*
+  > **⇒ THE UNVERIFIED PREMISE IS NOW LOAD-BEARING IN TWO PLACES IN OPPOSITE
+  > DIRECTIONS.** *Research's two `worker/runtime.ts` scope items are correct either
+  > way, deliberately. This predicate is not: it works if the bar had rolled and fails
+  > if it had not.* **So Ops's one read-only REST snapshot between 04:00 and 06:00 ET
+  > stopped being a tidy-up. Raised with Ops.** *Flagged to both threads, settled by
+  > neither, and not mine to settle.*
 
-- **TWO THINGS FLAGGED TO RESEARCH, UNVERIFIED BY THIS SEAT, NEITHER CARRIED FURTHER:**
-  *`engine.ts:1166-1168` makes `baseThroughMs` non-null only when `volumeBase > 0`, so
-  a promoted name whose daily bar carries zero volume may hold a seam the predicate
-  cannot see - the exact name whose anchor is about to be set late.* **And "top-50 by
-  `rvol_rank` sits inside the focused top-200" is load-bearing and rests on two
-  rankings computed at different instants.**
+- **DESIGN'S OWN TWO LIMITS, STATED BY DESIGN BEFORE ANYONE ASKED:** *how often it
+  fires is unmeasured, and a promotion drain landing in the same clock MINUTE as the
+  bootstrap produces an identical seam string.* **Both Research's to price.**
 
-- **WHAT IS ACTUALLY OPEN IS A PRODUCT QUESTION, NOT A CORRECTNESS ONE, AND IT IS
-  DESIGN'S.** *A promoted name's seam is a TRUE POSITIVE - its anchor really is late,
-  every day, by design.* **So the field is true every morning on the HONEST answer, and
-  the budget rule fails without anything misfiring.** *Does the board statement cover
-  incident-caused late anchors only, or all of them? The first needs a separator; the
-  second fires daily.* **Not put to him: Design scopes it and asks for his ruling if it
-  wants one. This seat does not decide what the board is for.**
+- **STILL OPEN AND STILL A PRODUCT QUESTION: a promoted name's seam is a TRUE
+  POSITIVE.** *Its anchor really is late, every day, by design.* **So the field is true
+  daily on honest arithmetic and the budget rule fails with nothing misfiring.** *Does
+  the board report incidents only, or every late anchor? Design scopes it and asks him
+  if it wants a ruling. This seat does not decide what the board is for.*
 
 - **THE AUTH CARRIAGE.** *`lib/auth/{store,cookie,oauth,expiry}.ts` exist and are
   INERT - no importer outside `lib/auth`.* **`app/auth/` does not exist and there is
