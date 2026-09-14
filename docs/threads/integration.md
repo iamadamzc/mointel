@@ -473,13 +473,38 @@ RULING ON. 53.1% and 40.6% fall on opposite sides.**
   for free.* **`seedSession` currently EVICTS minutes inside the seam and their VWAP
   contributions, so the proposed order destroys the replayed history until that
   changes.**
-- **`AnchorProvenance = PROVEN | NOT_FIRST | UNPROVEN`** - *a third axis, not a state
-  and not a thickness.* **Computed at WRITE time and stored. NEVER derived from
-  `volume_base`, which is a hardcoded `0` on every row in production - deriving it at
-  read time returns `PROVEN` for everything forever.**
-- **THE ROW MARK AND THE BOARD STATEMENT ARE ONE ITEM.** *With `NOT_FIRST` marked and
-  both others unmarked, an absent mark means "fine" OR "cannot say".* **"Just the row
-  mark" is not the smaller version of this work; it is the defect.**
+- **THE ANCHOR FIELD IS SETTLED AS OF 2026-09-14 14:10 ET. NOT BUILT, NOT BLOCKED.**
+  *Design specified it (`7df7d17`), Research owns the engine side, and the two of them
+  closed the predicate between themselves.*
+  ```
+  anchorsEstablishedAfterSessionStart = observingSinceMs > sessionStartMs
+  boolean | null   three states; null is "this build cannot say" and renders SILENT
+  ```
+  **ONE BOARD STATEMENT, NO PER-ROW MARK.** *Design withdrew its own per-symbol
+  population on Research's objection: after a mid-session restart the engine has no
+  memory of what it tracked at 04:00, so the denominator disappears in the field's own
+  firing condition.* **Field and render ship together; a render reading a field the
+  engine never writes is the mirror of a check that cannot fail.**
+  **`false` means "the anchors established at session start are sound", NEVER "every
+  anchor is sound"** - promotions are invisible by construction, and a feed gap is
+  UNRECORDED rather than undetectable (*Research's correction of its own word;
+  `desk_events` is append-only and could carry it, but `symbol` is `TEXT NOT NULL` and
+  a stall is not a disconnect*).
+- **~~Its firing on today's 13:16 restart is a false positive~~ - RETRACTED BY THIS
+  SEAT WITHIN THE HOUR, AND THE RETRACTION IS THE ENTRY.** *I put it to both threads
+  that the predicate reads TRUE today while Research had said today's anchors are
+  fine.* **Research's sentence was about the DEFECT not firing. Ops said the other half
+  in the same hour — "RTH anchors before that instant reset for names outside the
+  backfill" — and I had both and joined the wrong two.**
+  **The code settles it: `worker/runtime.ts:916`, `focusCount = max(internalRank * 4,
+  100)`, `focused` = pins ∪ that slice, against ~8,800 tracked symbols.**
+  > **AND WHAT SURVIVES IS WORTH MORE THAN WHAT I WITHDREW: the backfill is bounded to
+  > a focused slice BY CONSTRUCTION, so it can never repair the board-wide anchor set,
+  > so the field cannot fire on a session the repair fixed.** *Structural, not tuned -
+  > which is the property both seats were trying to buy.*
+  **Third invented link from this seat today** - *two true sentences from two threads,
+  joined by an assertion nobody checked.* **The first two were caught by the threads;
+  this one I caught by opening the file.**
 - **THE AUTH CARRIAGE.** *`lib/auth/{store,cookie,oauth,expiry}.ts` exist and are
   INERT - no importer outside `lib/auth`.* **`app/auth/` does not exist and there is
   no `location ^~ /auth/`. Sign-in cannot work.** *Google client and consent screen
