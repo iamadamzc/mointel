@@ -281,6 +281,43 @@ print and recovered could read larger.**
   adjective and he cannot act on it.* **"ITHA, rank 16, measuring from 13:31" is a name
   on his screen.**
 
+### THE `volume_base*` COLUMN FAMILY IS ONE REAL VALUE AND THREE PROMISES
+
+**Found 2026-09-14 checking a query Research warned me I had written wrongly. It was
+wrong, it never ran, and the reason it was wrong is bigger than the query.**
+
+```
+worker/runtime.ts:1752   volume_base:         0                  HARDCODED
+worker/runtime.ts:1753   volume_base_through: null                HARDCODED
+worker/runtime.ts:1754   volume_base_source:  state.volumeSource  THE MUTATED FIELD
+worker/runtime.ts:1756   volume_source:       state.volumeSource  THE SAME FIELD
+```
+
+**`volume_base_source` is a DUPLICATE of `volume_source` under a name that promises the
+base**, and `engine.ts:1003` rewrites `volumeSource` to `${volumeBaseSource}+minute-bars`
+on the first live bar. *So every repaired name reads
+`alpaca-historical-minute-bars+minute-bars` and an `= 'alpaca-historical-minute-bars'`
+test finds none of them.*
+
+- **A LITERAL COMPARISON RETURNS NEAR-TOTAL DAMAGE ON A DAY THE REPAIR WORKED
+  PERFECTLY.** *It is the reassuring shape inverted: a finding-shaped number from a
+  working system.* **`NOT LIKE 'alpaca-historical-minute-bars%'` is the only correct
+  form.**
+- **IT DID NOT REACH HIM, AND NOT BECAUSE I CAUGHT IT.** *I commissioned the bad
+  predicate; Ops read the value DISTRIBUTION instead of running it, and classified the
+  suffixed form correctly.* **The instrument was saved by the operator declining to use
+  the instruction.**
+- **RESEARCH'S OWN MORNING RECONSTRUCTION SURVIVED FOR THE SAME KIND OF REASON** -
+  *it happened to use `LIKE ...%`.* **"I used LIKE" reads as style and was the whole
+  defence.**
+- **THE SHAPE, AND IT IS NOT THE ONE I FIRST FILED.** *Research called it my own
+  flag committed three paragraphs later. It is not: my flag was about the runtime
+  FIELD and the query about the stored COLUMN, and nobody knew the column reads the
+  field.* **"He made the same error twice" and "the column silently carries the other
+  field" have different fixes and only the second is actionable** - *worth being exact,
+  because accepting the more self-critical reading would have closed the investigation
+  at my own carelessness and left the store hazard unrecorded.*
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
