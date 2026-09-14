@@ -3916,6 +3916,77 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE START-TIME PREDICATE FIRES WHEN THE BACKFILL WORKED — THE SEAM DOES NOT
+
+**Integration found it and it breaks the ruled default: Ops restarted mid-session
+at 13:16:23 ET today, TODAY'S ANCHORS ARE FINE, and
+`observingSinceMs > sessionStartMs` reads TRUE on that.** *A field that fires
+when the backfill WORKED is the same defect as one that fires every morning,
+arriving by a different route.*
+
+**WHY TODAY WAS FINE, which nobody had established:** `runtime.ts:963-973` does
+not merely STORE the historical bars — **it feeds every one through
+`engine.ingest`, which rebuilds the session open.** *A restart whose backfill
+reached a name reconstructs that name's anchor. The start-time predicate fires
+anyway, because it asks WHEN THE ENGINE STARTED rather than WHETHER THE
+RECONSTRUCTION SUCCEEDED.*
+
+### THE SEAM IS THE FACT THAT SEPARATES THEM, AND IT IS ALREADY IN RUNTIME STATE
+
+    runtime.ts:822   const snapshotMinute = minuteKey(new Date())   ONCE per bootstrap
+    runtime.ts:885   volumeBaseThrough: belongsToSession ? snapshotMinute : null
+    runtime.ts:943   focused set WITH bars  ->  volumeBaseThrough: NULL
+    runtime.ts:1143  each promotion drain computes its OWN snapshotMinute
+
+**Covered by the backfill: NO SEAM. Missed by it: still carrying THE BOOTSTRAP'S
+seam — ONE SHARED VALUE, computed once, identical across every name the backfill
+failed to reach.**
+
+**⇒ THE PREDICATE IS "DOES THIS ROW STILL CARRY THE BOOTSTRAP'S SEAM", and the
+board statement fires when a row ON THE BOARD carries it.**
+
+### IT SURVIVES BOTH OBJECTIONS THAT KILLED MY LAST PROPOSAL
+
+**"No population survives a restart"** — *none is needed.* **This is the IDENTITY
+of a single value the engine already holds, not a set it must remember across the
+process boundary.**
+
+**"Aggregating per-symbol facts imports promotion contamination"** — *promotions
+carry a DIFFERENT seam by construction; each drain computes its own minute at
+1143.* **Excluded by identity, not by threshold, so there is still no threshold
+to choose.**
+
+**AND IT IS THIS MORNING'S DISCRIMINATOR, ONE LAYER UP.** *The ANCHOR scatters —
+each name stamped at its own next print — which is what Ops measured and what
+refuted me. The SEAM DOES NOT SCATTER. One value, set once, before any of that.*
+**I was measuring downstream of the fact that carries the signal.**
+
+### AND AN OBSERVATION THAT MAY MATTER MORE THAN THE PREDICATE
+
+**"Today's anchors are fine" is about the names ON THE BOARD NOW.** *The backfill
+fetches bars only for a focused set — roughly top hundred plus pinned,
+`runtime.ts:936` — and a name outside it keeps the seam silently.* **Friday's
+thirteen were RANKED names: damaged at 08:33 while outside the focused set, and
+they ranked onto the board LATER.**
+
+> **DAMAGE DOES NOT SURFACE AT RESTART. IT SURFACES WHEN A DAMAGED NAME
+> QUALIFIES. So "fine now" is not "fine today".**
+
+**⇒ ANY FIELD EVALUATED ONCE AT BOOTSTRAP MISSES IT.** *That is the argument for
+evaluating against the ROW at render time, which the seam predicate does and the
+start-time one structurally cannot — it has one answer for the whole process
+lifetime while the population it describes changes underneath it all morning.*
+
+### WHAT I HAVE NOT VERIFIED, SENT WITH IT RATHER THAN LEFT TO BE FOUND
+
+**Whether the bootstrap's seam is distinguishable from a drain's BY VALUE** —
+*both are minute strings, and a drain landing in the bootstrap's clock minute
+collides.* **Narrow; I do not know how narrow.** *If not narrow enough, the engine
+must hold the bootstrap minute explicitly rather than infer it.*
+
+**And the firing rate: how many tracked names fall outside the focused set on a
+typical restart. A number, not a judgement, and Research's.**
+
 ## THE STALL HAS A DISCRIMINATOR, AND IT IS A RULE THIS DESK ALREADY WROTE
 
 **Research sharpened the feed hole and was right to: a DISCONNECT announces
