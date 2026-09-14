@@ -9364,3 +9364,43 @@ nine never received the bars the seam would have dropped.
 *Correction to Research's note: `anchor-loss-cohort.ts` WAS run, Saturday
 2026-09-12 23:58 ET over ssh, control passed, 17/32 — see the entry above
 dated 2026-09-12.*
+
+## The four were the pinned sheet tickers; the direct number is 13 moved, 19 correct — 2026-09-14 10:32 ET
+
+**Research named the code (`worker/runtime.ts:916-948`): `bootstrapSession`
+backfills historical minute bars for `focused` = TODAY-sheet pins ∪ top
+`focusCount` (≥100) by RVOL preview, and that one branch both delivers the
+early bars and clears the seam.** It asked two things the box can see.
+
+**1. The Friday 08:33Z bootstrap log, read from the journal:**
+```
+08:33:19  Started mointel-market
+08:33:20  TODAY sheet tickers pinned: ACVA, XRTX, TPET, LBGJ, TNON, NCRA, SURG, SNYR
+08:33:20  13283 baselines loaded for 2026-09-11, 2 to build
+08:33:21  reconstructing session for 8875 candidate symbols
+08:33:22  startup backfill complete (346 minute bars, 8875 snapshots)
+08:34:13  high-res interest set: 250 symbols
+```
+**The four survivors are the four pinned names that were also in the ranked
+cohort.** *The other four pins (TPET, NCRA, SURG, SNYR) were not ranked ≤50 or
+had not printed before 08:33.* **346 backfilled bars is about eight names'
+worth — `focused` collapsed to the pinned set.** *And it did so with 13,283
+baselines loaded, so Research's "baselines not ready" reading is not the
+mechanism; the RVOL preview was empty for some other reason at that instant.*
+**A ≥100-name backfill delivered 8. That is the defect, and it is Research's:
+the repair exists, is wired, runs at every bootstrap, and mis-fires to the pins.**
+
+**2. Research's revised script (`274b3c9`), run read-only over Session
+Manager 14:31Z — the direct measurement, a different code path from my
+table:**
+```
+C  ranked, traded before restart        17   (upper bound, not the harm)
+D  ranked premarket, any time           32
+DIRECT  anchor MOVED 13   correct 19   no stored anchor 0
+13/32 = 40.6%   -- the proxy said 53.1%
+4 traded before the restart and kept a correct anchor: the backfill repaired them
+```
+**13 by my table, 13 by the script's own path. The chain holds independently.**
+*The proxy's 53.1% and the direct 40.6% sit on opposite sides of the 50% line
+the old instrument ruled on; the instrument no longer rules, on Research's own
+correction. Sparse-versus-board-wide is Design's to decide from the number.*
