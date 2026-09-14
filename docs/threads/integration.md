@@ -255,6 +255,32 @@ preflight gap after.**
 - **NOT RAISED TO HIM AS A DECISION. Recorded because the next instance is not
   predictable from anything inside this repo.**
 
+### ONE NAME ON HIS BOARD MEASURES MOVE FROM THE WRONG OPEN - LIVE, 2026-09-14
+
+**Ops, read 13:35 ET over SSM, read-only.** *Top 50 by `rvol_rank` for 2026-09-14:*
+
+```
+49   alpaca-historical-minute-bars+minute-bars     repaired by the 13:16 backfill
+ 1   alpaca-snapshot-daily-bar+minute-bars         ITHA, rank 16
+     rth_open_at 2026-09-14T17:31:00Z = 13:31 ET   fifteen minutes after the restart
+```
+
+**ITHA's Move is measured from a 13:31 open rather than 09:30.** *For a name that has
+run since the open that reads SMALLER than the truth - an extended name looking
+fresher than it is, which is the expensive direction on his book rather than the cheap
+one.* **Not universal and given to him as such: a name that dipped below its 09:30
+print and recovered could read larger.**
+
+- **THE COUNT IS 1 OF 50 AT AN INSTANT AND CAN ONLY GROW.** *The 13:16 backfill
+  repaired the focused 200; every name that ranks in from outside it carries a late
+  anchor.* **Ops reruns before the close and after it; the query is the instrument.**
+- **AND THIS IS WHAT THE WHOLE PREDICATE ARGUMENT WAS ABOUT, ARRIVING AS A ROW.**
+  *Research's containment claim held at the bootstrap instant and not afterwards, which
+  is why "today's board is sound" was true at 13:16 and one name old by 13:35.*
+- **THE NUMBER IS WHY IT WENT TO HIM AT ALL.** *"Some rows may carry late anchors" is an
+  adjective and he cannot act on it.* **"ITHA, rank 16, measuring from 13:31" is a name
+  on his screen.**
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
