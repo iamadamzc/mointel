@@ -9549,3 +9549,11 @@ doing. **The snapshot now only confirms why the sort had no signal. Nothing
 ships on it.** The probe stays the better instrument; the urgency is
 withdrawn. It waits for a premarket turn that happens anyway unless he
 prefers the timer.
+
+**ITHA, signed rather than hedged (13:36 ET):** two bars all day, 13:02 ET
+and 13:31 ET, both flat at 10.06; stored open 10.06 at 13:31; true RTH open
+10.06 at 13:02; price 10.06. **Wrong minute, right price, Move 0.0% either
+way — zero-magnitude error today.** A no-tape name ranked on two block prints.
+Integration's general direction holds for a runner (a late anchor understates
+Move, the expensive direction); it does not apply to ITHA. Reruns due ~15:45
+ET and after the close if turns land.
