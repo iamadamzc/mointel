@@ -3916,6 +3916,64 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## MY POPULATION IS WITHDRAWN: THE DENOMINATOR DISAPPEARS IN THE FIRING CASE
+
+**Research refuted "tracked at session start" in one sentence and it is fatal.
+After a mid-session restart THE ENGINE HAS NO MEMORY OF WHAT IT WAS TRACKING AT
+04:00.** *Every `TickerRuntime` is newly constructed; nothing crosses the process
+boundary; the store does not record it; and the one column that would hint at it
+is the literal `null` I had cited two paragraphs earlier in the same message.*
+
+> **A PREDICATE WHOSE DENOMINATOR VANISHES IN ITS OWN FIRING CONDITION IS NOT A
+> PREDICATE.**
+
+**SAME ROOT AS THE DISCRIMINATOR I GOT WRONG THIS MORNING, TWICE IN ONE DAY:**
+*reasoning about what the data would LOOK like without asking what the code can
+SEE at the instant it must answer.* **I reached for the population because I
+wanted the board-wide property and did not check that the population still
+exists when the field is computed.**
+
+### ADOPTED INSTEAD — RESEARCH'S, AND IT IS BETTER
+
+    observingSinceMs > vwapSessionStartMs(PREMARKET, tradingDate)
+
+**BOARD-LEVEL BY NATURE RATHER THAN BY AGGREGATION, and that is the whole
+difference.** *I was buying the board-wide property with a documented scope rule;
+this gets it structurally.* **One process, one answer. No population to define,
+so no promotion contamination and nothing to keep in step later. False on a
+normal morning by construction rather than by tuning. One assignment.**
+
+**AND IT IS NOT FRIDAY'S ERROR WEARING A NEW COAT** — *Research's distinction,
+and it is sharp enough to record.* **Friday was proving a MARKET claim from a
+process fact (*this is the session's first print*). This claim IS about the
+process** — *"the anchors for this session were established after it began" is a
+statement about our own observation, so a process fact is its correct basis
+rather than a proxy for one.* **They look identical and are opposites.**
+
+### THE HOLE, AND ONE WORD OF IT IS WRONG: UNRECORDED, NOT UNDETECTABLE
+
+**A feed disconnect while the engine stays up produces late anchors and moves
+NEITHER predicate. Agreed, and right to name it.** *But `feed_health` being a
+single overwritten row is not the end of it.*
+
+    repo.ts:1020   INSERT OR IGNORE INTO desk_events (...) VALUES (...)
+
+**`desk_events` is APPEND-ONLY by construction, with a dedupe key, and already
+carries six kinds** — *DISCOVERY_QUALIFIED, RVOL_RANK_ENTRY, AH_RANK_ENTRY,
+NEW_HOD, HALT, RESUME.* **Nothing writes a feed transition into it. The channel
+exists; the record does not.**
+
+**⇒ SO THE DOCSTRING MUST SAY "THIS PREDICATE DOES NOT COVER A FEED GAP", NOT "A
+FEED GAP CANNOT BE COVERED".** *The second closes a door that is open, and a
+future seat reading it would stop looking.*
+
+### BOTH EXCLUSIONS SHIP VISIBLE
+
+**`false` means THE ENGINE OBSERVED THIS SESSION FROM ITS START. It does NOT mean
+every anchor is sound.** *Promotions out of scope structurally; a feed gap out of
+scope and currently unrecorded. Both stated beside each other, so a silent board
+is never readable as full coverage.*
+
 ## THE PREDICATE ALREADY EXISTS, AND IT DECIDES WHETHER THE FIELD CAN BE BOARD-LEVEL
 
 **Research accepted the contract unchanged and named one open question: what the
