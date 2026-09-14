@@ -274,18 +274,47 @@ when next opened.*
 > **CHECK `cwd` BEFORE EVERY SEND.** **The title is a claim; the working directory is
 > a fact.**
 
-### THE ANCHOR WORK - ONE READ OUTSTANDING, EXPIRES WEDNESDAY
+### THE ANCHOR WORK - ANSWERED 2026-09-14 14:23Z. ONE CAUSE, AND MY NUMBER WAS WRONG.
 
-**Friday's restart cost 540 of 668 anchors. 17 of 32 ranked premarket names, 53.1%,
-BOARD-WIDE.** *So Design's carrier rule decides the render - one statement at the
-board, not a per-row mark.*
+**Ops took the expiring read. Full table in the `ops.md` tail.**
 
-**OUTSTANDING, OPS TAKES IT AFTER 10:00 ET TODAY: the distribution of `pm_open_at`
-across those 17 names.** *All at `08:33Z` means purely restart-caused. Scattered means
-PROMOTIONS - a name admitted mid-session is seeded with its pre-admission bars
-discarded, so its anchor is its admission minute - and the per-row mark becomes common
-rather than rare, inverting Design's render.* **`minute_bars` for 09-11 ages out at
-Wednesday's roll and then this is permanently unanswerable.**
+```
+17 named "misplaced" by the earlier pass
+ 4 of those KEPT an 08:00 anchor -- they were never misplaced
+13 genuinely misplaced, spread 08:33-10:04
+ 0 show the promotion signature (post-restart bars BEFORE the anchor)
+
+13/17 = 76.5% of the eligible cohort
+13/32 = 40.6% of premarket-ranked names
+```
+
+**⇒ ONE CAUSE. THE RESTART. And every misplaced anchor equals that name's OWN FIRST
+POST-RESTART BAR.**
+
+**I TOLD HIM 53.1% AND IT WAS 40.6%.** *The 17 was a count of candidates, not of
+confirmed misplacements, and I published it as the latter.* **Retracted here because
+he holds the wrong figure.**
+
+> **AND MY DISCRIMINATOR WAS WRONG, WHICH IS THE WORSE ERROR.** *I told Ops: "all at
+> `08:33Z` means restart-caused; scattered through the morning means promotions."*
+> **A RESTART PRODUCES A SCATTER.** *Names do not all print in the same minute
+> afterwards — each anchors whenever it next trades.* **The spread 08:33-10:04 is the
+> restart's own shape, and on my test it would have read as a second cause that does
+> not exist.**
+
+**THE TEST THAT ACTUALLY SEPARATES THEM, AND IT IS OPS'S:**
+
+```
+anchor == the name's own first post-restart bar        -> RESTART
+post-restart bars exist BEFORE the anchor              -> PROMOTION (bars discarded at admission)
+```
+
+*Mine compared a distribution against an expectation I had invented. Ops's compares
+each row against its own tape.* **A per-row test beat a population test, and the
+population test would have been confidently wrong.**
+
+**FOR DESIGN: board-wide stands, one cause, and the per-row mark stays rare.** *Sent
+to Design-tmi directly.* **OPEN, ROUTED TO RESEARCH: why four rows survived.**
 
 ### BUILT, SCOPED, NOT STARTED
 
