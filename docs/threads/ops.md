@@ -9518,3 +9518,16 @@ the SIP socket) and writes `dailyBar.t` raw plus its ET date to a file under
 app's scheduled sessions dying in seconds; a systemd timer on the box is the
 same machinery the migrate unit runs on.* Uses the worker's own keys from the
 env file, so it is his to authorise.
+
+**The timer ask, sharpened by Integration before it goes to him:**
+- **Who reads the file, and when:** the next Ops turn after 04:30 ET, and it
+  is in this file. The script ALSO logs its result to the journal under
+  `SyslogIdentifier=mointel-snapshot-probe`, so the box's own log carries it
+  even if the file is never opened.
+- **Absent must differ from empty:** the script writes a header line with its
+  start time BEFORE the REST call. No file = the unit never ran (a reboot
+  kills a transient unit); file with header only = it ran and the call failed;
+  file with `dailyBar.t` = the answer. Three states, three shapes.
+- **2026-09-15 is a trading day** per the calendar in `meta`.
+- **Symbols:** three from tonight's ranked board, read at creation time, so at
+  least one will have printed by 04:30.
