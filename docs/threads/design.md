@@ -6588,12 +6588,44 @@ working feature; only the payload separates them from the failure.**
   of them: `ListAgents` names are opaque handles (`mointel-8c`, `claude-1a`) that
   map to no thread; `SendMessage` to a bare name works only while a session
   happens to surface in `ListAgents`, then fails *"No agent named … is
-  reachable"*; copying a received message's `from` attribute as the `to` fails on
-  this machine despite the tool's own docs; and **as of 2026-08-27 a bare name
+  reachable"*; copying a received message's `from` attribute as the `to` **WORKED ON
+  2026-09-14** and this file was wrong to call it broken -- two sends by `from`
+  address were answered substantively the same hour (`SendMessage` reported
+  *"delivered; its turn has started"*), so it is the one route here proven by a
+  reply rather than by a status code; and **as of 2026-08-27 a bare name
   can fail a fourth way — *"matches 2 agents by prefix"*, because retired
   sessions keep their titles (`Integration-retired1`, `Integration-retired2`) and
   the LIVE session does not win its own name.** Retirements accumulate, so this
   one gets worse with time rather than better.
+
+  **A FIFTH ROUTE THAT FAILS SILENTLY, AND IT IS THE ONE THAT ACTUALLY BIT
+  (2026-09-14): A CACHED NAME THAT RESOLVES TO A DORMANT SESSION.** *Three
+  messages went to the seat titled `R&D` — the field spec, the constant-vs-lie
+  finding, and the histogram request. `R&D` has been dormant since 2026-09-10.
+  The live thread is `Research-tmi`.*
+
+  **THE TOOL REPORTED SUCCESS EVERY TIME** — *`success: true`, "queued until that
+  machine reconnects"* — **so nothing surfaced as a failure and I reported the
+  messages as sent.** *That is not a broken tool; it is a queue to a seat that
+  never comes back, and it is indistinguishable from delivery unless the caveat
+  in the result is read as the finding rather than as boilerplate.*
+
+  **THE CAUSE WAS CACHING THE NAME, WHICH THIS FILE WARNS ABOUT TWO LINES
+  ABOVE.** *I carried `R&D` forward from a context summary instead of opening
+  `list_sessions`, where `Research-tmi` sat one row away with a `cwd` of
+  `A:\mointel` and activity twenty minutes old.* **The constellation renamed to
+  `-tmi` suffixes and my address book did not.**
+
+  **NOTHING WAS LOST, AND THE REASON IS THE METHOD RATHER THAN LUCK: every one of
+  those three messages was COMMITTED TO THIS FILE BEFORE IT WAS SENT.** *Research
+  read the spec off `7df7d17` and is building the engine half. A message is a
+  courtesy; the file is the channel.*
+
+  **Integration-tmi's redirect was right in substance — look the seat up in
+  `list_sessions` and send by `sessionId` — and too broad in its claim that
+  `SendMessage` fails on this machine.** *It does not: it delivered to two live
+  local seats the same hour and both replied. What fails is addressing a seat
+  that is not there, by any tool.*
 
   **This file previously said to address it by name and listed the `ListAgents`
   entries. That was verified true on 2026-08-23 and had drifted by 2026-08-24** —
