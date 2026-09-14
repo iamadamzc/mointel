@@ -9531,3 +9531,10 @@ env file, so it is his to authorise.
 - **2026-09-15 is a trading day** per the calendar in `meta`.
 - **Symbols:** three from tonight's ranked board, read at creation time, so at
   least one will have printed by 04:30.
+
+**Live caveat measured, 13:35 ET, on Integration's ask:** of the top 50 by
+`rvol_rank` today, 49 carry `alpaca-historical-minute-bars` and ONE —
+**ITHA, rank 16, `rth_open_at` 13:31 ET** — carries the snapshot source: it
+ranked in after the 13:16 restart and its Move measures from a 13:31 open.
+*1 of 50 at that instant; can only grow during the session.* The query is
+the instrument; it is in the read above.
