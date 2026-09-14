@@ -9442,3 +9442,26 @@ the box with the worker's own keys, REST not the SIP socket — answers whether
   pins only"*. It would have answered this in the journal two days ago.
 Both items are with Integration as one scope for `worker/runtime.ts`; neither
 rides tonight.
+
+## GATE 1 CLOSED FOR ONE NETWORK, BY ACCIDENT OF HIS TRAVEL — 2026-09-14 13:00 ET
+
+**Egress from this laptop read `95.17.58.175` at 13:00 ET; port 22 admits
+`46.26.37.254/32`, `70.17.101.27/32`, `95.17.57.244/32`. Port 22 timed out.
+`ssh mointel-ssm` succeeded, ran preflight on the box, and returned.** That is
+the off-list test as Integration specified it: a session from a network NOT in
+the rule. **Passed for this network; proves this network, not the next.**
+
+**Consequence seen in the same hour: `push-release.sh`'s preflight probe over
+port 22 timed out and the script reported "preflight refused; nothing was
+shipped" — a transport failure wearing a gate's words.** Nothing shipped, which
+is the safe outcome, but the log line is wrong about why. *Noted for the
+script: distinguish "the gate said no" from "could not reach the gate".*
+
+**Also: `TZ=America/New_York date` returns UTC on this host, as ops.md already
+says, and I used it in a wait loop anyway.** The loop started at once. Read
+the clock from `zoneinfo` in Python, every time, including in shell loops.
+
+**Deploy state: gate green at `997d231`, nothing shipped, market worker
+unrestarted, his 10:47 instruction (deploy and restart mid-session) standing.
+Transport is the open question: port 22 needs a new /32 on his word, or the
+deploy goes over Session Manager against Integration's gate 2.**
