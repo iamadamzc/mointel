@@ -258,6 +258,28 @@ own, what the thread learned the hard way — points at LIVE STATE for every
 live fact, and **states its own precedence: if the two disagree, LIVE STATE
 is right and the opening message is stale.**
 
+## Close what you opened — a browser tab outlives the seat that opened it
+
+**Commercial, 2026-09-11, and recorded here on 2026-09-14 because it was promised
+to the shared rules and landed only in `commercial.md`.**
+
+A YouTube watch page opened to read a competitor transcript stayed loaded in
+Commercial's browser pane, hidden, after the seat went idle. **The pane is per
+session and nothing in a transcript shows a tab is open**, so the only evidence
+was audio playing at the trader.
+
+- **A thread that opens a browser tab closes it before it goes idle.**
+  `tabs_context` then `tabs_close`; verify the pane is empty rather than
+  assuming the close landed.
+- **Same shape as an orphaned worker:** a process left running by a seat that
+  finished, discoverable only by the person it bothers.
+
+**AND THE REASON THIS SECTION EXISTS AT ALL IS THE LESSON.** *Commercial was
+told Integration would put it in the shared rules. Integration wrote it into
+Commercial's own charter — the finder's file — and the promise sat undischarged
+for three days.* **A caution recorded where it was found is a caution the next
+actor never reads.**
+
 ## Sharing one working tree
 
 Every thread works in `A:\mointel`. Rules, in order of how much they matter:
@@ -2792,11 +2814,17 @@ strips the reasoning down to whatever fits in his relay.
 - **Send it to Integration and say who it is for.** It relays, adds whatever
   context the receiving thread is missing, and records anything durable in the
   charters rather than leaving it in two transcripts.
-- **To reach Integration, send to the NAME `Integration` from `ListAgents`.**
-  *Corrected 2026-08-23 after Design tried the instruction below and it failed.*
-  It appears there as `Integration [0338b5]`. **Do not send to the `from=` id
-  on a cross-session message — that is unreachable**, which is the opposite of
-  what this document said for its first hour.
+- **To reach Integration — or any thread — look the `sessionId` up in
+  `mcp__ccd_session_mgmt__list_sessions` and send with
+  `mcp__ccd_session_mgmt__send_message`.** *That is the only channel that works;
+  see "How threads reach each other" below for the three that do not.*
+  **RETRACTED 2026-09-14: this bullet previously said to send to the NAME
+  `Integration` from `ListAgents`.** *That instruction was already retracted
+  further down this same file on 2026-08-24 and left standing here for three
+  weeks — and on 2026-09-14 Design followed it and its field spec to Research
+  never arrived.* **The spec survived only because Design had also committed it
+  (`7df7d17`).** *A retraction that reaches one section of a file does not reach
+  the file: the desk's own rule, committed inside the document that states it.*
 - **This is for handovers, findings and corrections — not for decisions.**
   Anything needing the trader's judgement still goes to him, at the end, under
   `## What I need from you`. Integration relays; it does not decide, and routing

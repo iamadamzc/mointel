@@ -287,6 +287,26 @@ committed, NOT yet republished to the canvas.**
   Integration until Commercial reports.**
 - **Not published;** `tmitrader.com` still returns 401 to everyone.
 
+> **TWO BULLETS ABOVE ARE STALE — Integration, 2026-09-14 13:20 ET. Verified,
+> not inferred; this thread rewrites the section.**
+>
+> - **"NOT yet republished to the canvas" is FALSE.** *Web republished at
+>   `e0d6523` on 2026-09-11 04:53 ET, 52 minutes after your `0ec51ad`, which is
+>   an ancestor of it. `git log e0d6523..HEAD -- docs/web/canvas/` returns only
+>   `fc21509`, which changes the stamp text and no artboard.* **The pre-session
+>   research section and the fourth reading rule are on the published canvas and
+>   have been for three days.**
+> - **"Held for Commercial" is CLOSED.** *Commercial ruled both lines at
+>   `1a7bb66` and you applied the ruling at `0ec51ad`, the same morning.*
+> - **⇒ Your `## What I need from you` has been answerable since 2026-09-11 and
+>   nobody told you.** *Both asks stand: read the research section, and the voice
+>   reference.*
+>
+> **The mechanism, for the record: a source edit and a republish are one act
+> split across two seats, and this desk already has that entry.** *What it did
+> not have is the return leg — Web republished and never told the seat waiting
+> on it, so the wait was invisible from both ends.*
+
 ---
 
 ## Opening message for a new chat
