@@ -15,6 +15,7 @@ import { humanise } from '@/lib/dashboard/language';
 import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
 import { floatBoundReading, noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
 import { etTimestamp, relativeAge } from '@/lib/dashboard/why';
+import { formatEtDay } from '@/lib/format';
 import type { SheetAutoComparison } from '@/lib/research/merge/sheetAuto';
 import {
   CATALYST_GRADE_LABEL,
@@ -580,7 +581,17 @@ export function AutomaticIntelligence({
           <div className="mt-3">
             <FieldLabel>Sources</FieldLabel>
             <ul className="mt-1 space-y-1">
-              {intel.evidence.map((source) => (
+              {intel.evidence.map((source) => {
+                /*
+                 * ET, NOT THE UTC SLICE THIS USED TO RENDER. `publishedAt` is an
+                 * ISO instant, and an announcement at 21:00 ET is already
+                 * tomorrow in UTC -- so an after-hours catalyst, which is when
+                 * small-cap news actually breaks, cited itself one day late.
+                 * `why.ts` already stated the rule this violated: "ET wall
+                 * clock for the tooltip and the drawer. Never a UTC ISO string."
+                 */
+                const publishedDay = formatEtDay(source.publishedAt);
+                return (
                 <li key={source.id} className="text-[11px]">
                   {/* noopener is implied by noreferrer in current browsers, but
                       stated anyway: this opens an SEC page from a desk that may be
@@ -598,11 +609,12 @@ export function AutomaticIntelligence({
                   </a>
                   <span className="ml-1 text-ink-3">
                     {humanise(source.authority)}
-                    {source.publishedAt ? ` · ${source.publishedAt.slice(0, 10)}` : ''}
+                    {publishedDay ? ` · ${publishedDay}` : ''}
                     {source.publishedPrecision === 'DATE_ONLY' ? ' (date only)' : ''}
                   </span>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </div>
         ) : null}

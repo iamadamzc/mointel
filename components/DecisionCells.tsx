@@ -21,7 +21,12 @@ import type { DeskRisk } from '@/lib/dashboard/risk';
 import type { DeskWhy } from '@/lib/dashboard/why';
 import type { MarketTelemetry } from '@/lib/dashboard/telemetry';
 import type { BlueSkyState } from '@/lib/market/blueSky';
-import { formatPrice, formatMultiple, formatSignedPercent } from '@/lib/format';
+import {
+  formatEtMinute,
+  formatPrice,
+  formatMultiple,
+  formatSignedPercent,
+} from '@/lib/format';
 
 /* ------------------------------------------------------------------- price */
 
@@ -164,6 +169,14 @@ function SessionMoveLine({ telemetry }: { telemetry: MarketTelemetry }) {
   }
 
   const up = reading.move >= 0;
+  /*
+   * ET, VIA THE SHARED FORMATTER, BECAUSE THIS RENDERED RAW UTC ON HIS BOARD.
+   * `reading.at.slice(11, 16)` took the characters out of an ISO string, so a
+   * 04:55 ET anchor displayed as 08:55 -- a time that had not happened yet at
+   * 07:49 ET. He read it as a broken row. Slicing a timestamp is not formatting
+   * it; the frame has to be converted and then NAMED.
+   */
+  const anchorAt = formatEtMinute(reading.at);
   const anchor =
     reading.trust === 'THIN' ? 'thin' : reading.trust === 'UNKNOWN' ? '?' : null;
 
@@ -172,7 +185,7 @@ function SessionMoveLine({ telemetry }: { telemetry: MarketTelemetry }) {
       className="num truncate text-[11px] whitespace-nowrap"
       title={
         `${reading.label} from ${formatPrice(reading.openPrice)}` +
-        (reading.at ? ` at ${reading.at.slice(11, 16)}` : '') +
+        (anchorAt ? ` at ${anchorAt}` : '') +
         (reading.tradeCount === null
           ? ' — the feed reported no trade count for that minute, so how thin the anchor is cannot be said'
           : ` on ${reading.tradeCount} trades in the anchoring minute`)

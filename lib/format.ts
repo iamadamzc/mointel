@@ -18,6 +18,64 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
 });
 
+const minuteFormatter = new Intl.DateTimeFormat('en-US', {
+  timeZone: MARKET_TIME_ZONE,
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+});
+
+/**
+ * "HH:MM ET" for an ISO timestamp; null when unparseable.
+ *
+ * MINUTE GRAIN BECAUSE THE THING BEING NAMED IS A MINUTE. An anchoring minute
+ * is a bar, so rendering `:00` seconds onto it asserts a precision the value
+ * does not carry -- the same error as a zero standing in for a missing sample.
+ *
+ * AND THE `ET` IS NOT DECORATION. This exists because a tooltip rendered
+ * `reading.at.slice(11, 16)` -- the characters of a UTC string, shown to a
+ * trader on an ET clock. He read `08:55` at 07:49 ET, concluded the row was
+ * broken, and discarded it. The number was RIGHT; the missing frame destroyed
+ * its credibility. An unlabelled time is a value whose units are guessed, so
+ * the suffix travels with the conversion and neither is optional.
+ *
+ * Null rather than a fallback string: a caller omits the clause and says
+ * nothing, which is the honest rendering of a time that could not be read.
+ */
+export function formatEtMinute(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return null;
+  return `${minuteFormatter.format(date)} ET`;
+}
+
+const dayFormatter = new Intl.DateTimeFormat('en-CA', {
+  timeZone: MARKET_TIME_ZONE,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
+/**
+ * "YYYY-MM-DD" for an ISO timestamp, on the ET calendar; null when unparseable.
+ *
+ * `publishedAt.slice(0, 10)` reads the UTC day, and an announcement at 21:00 ET
+ * is already tomorrow in UTC -- so an after-hours catalyst cited its own date
+ * one day late, which is the window small-cap news actually breaks in.
+ *
+ * NO PRECISION BRANCH, AND THAT IS NOT AN OVERSIGHT. A date-only page is stored
+ * at NOON UTC so it lands on the right calendar day (`citationDates.test.ts`
+ * states this), and noon UTC is 07:00 or 08:00 ET -- the same day. So one ET
+ * conversion is right for an exact stamp AND for a date-only one, and a branch
+ * on `publishedPrecision` would be a second thing to keep in step for no gain.
+ */
+export function formatEtDay(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return null;
+  return dayFormatter.format(date);
+}
+
 export function formatEtClock(date: Date): string {
   return clockFormatter.format(date);
 }
