@@ -230,12 +230,13 @@ function main(): void {
     return;
   }
 
-  const { moved, correct, missing } = misplaced;
+  const { moved, correct, missing, unverifiable } = misplaced;
   const measured = moved + correct;
   console.log('  DIRECT -- pm_open_at against the earliest retained premarket bar:');
   console.log(`    anchor MOVED (misplaced)   ${moved}`);
   console.log(`    anchor correct             ${correct}`);
   console.log(`    no stored anchor           ${missing}`);
+  console.log(`    UNVERIFIABLE (circular)    ${unverifiable}`);
 
   if (measured === 0) {
     console.log('\n[anchor] No ranked name has both a stored anchor and a retained bar.');
@@ -277,7 +278,7 @@ function anchorsMisplaced(
   open: string,
   bell: string,
   maxRank: number,
-): { moved: number; correct: number; missing: number } | null {
+): { moved: number; correct: number; missing: number; unverifiable: number } | null {
   /*
    * THE COLUMN MAY NOT EXIST AT ALL, which is a THIRD case and not the same as
    * unpopulated. A store written before schema 26 has no `pm_open_at`, and
@@ -298,7 +299,7 @@ function anchorsMisplaced(
 
   const rows = db
     .prepare(
-      `SELECT s.symbol, s.pm_open_at AS anchor,
+      `SELECT s.symbol, s.pm_open_at AS anchor, s.qualified_at AS admitted,
               (SELECT MIN(b.ts) FROM minute_bars b
                 WHERE b.symbol = s.symbol AND b.trading_date = s.trading_date
                   AND b.ts >= ? AND b.ts < ? AND b.volume > 0) AS earliest
@@ -308,20 +309,53 @@ function anchorsMisplaced(
     .all(open, bell, date, maxRank) as Array<{
     symbol: string;
     anchor: string | null;
+    admitted: string | null;
     earliest: string | null;
   }>;
 
   let moved = 0;
   let correct = 0;
   let missing = 0;
+  let unverifiable = 0;
   for (const row of rows) {
     // No retained bar means the comparison cannot be made -- not that it passed.
     if (row.earliest === null) continue;
-    if (row.anchor === null) missing += 1;
-    else if (row.anchor === row.earliest) correct += 1;
+    if (row.anchor === null) {
+      missing += 1;
+      continue;
+    }
+
+    /*
+     * THE COMPARISON IS CIRCULAR FOR A PROMOTED NAME, AND USED TO REPORT
+     * "CORRECT".
+     *
+     * Design-tmi routed this and it is right. `drainPromotions`
+     * (`worker/runtime.ts:1151-1153`) seeds a promoted symbol with a volume LUMP
+     * and the seam at the CURRENT minute, and fetches NO intraday bars. The
+     * worker also only stores bars for symbols already tracked
+     * (`runtime.ts:1426`). So a promoted name's earliest STORED bar and its
+     * stamped anchor are the same value BY CONSTRUCTION -- whatever its real
+     * first print was.
+     *
+     * Comparing them therefore proves nothing, and this instrument was counting
+     * it as proof. **The defect discards the evidence that would detect it**, so
+     * no query over our own bars answers it at any N.
+     *
+     * Detected, not repaired: if the symbol's bars begin at or after its
+     * admission, tracking and recording started together and the check is a
+     * tautology. That is a FLOOR on the blind spot, not a count of misplaced
+     * promotions -- the real instrument is Alpaca historical minutes against the
+     * stamped anchor, a live per-symbol REST call nobody has asked for.
+     */
+    if (row.admitted !== null && row.earliest >= row.admitted) {
+      unverifiable += 1;
+      continue;
+    }
+
+    if (row.anchor === row.earliest) correct += 1;
     else moved += 1;
   }
-  return { moved, correct, missing };
+  return { moved, correct, missing, unverifiable };
 }
 
 main();
