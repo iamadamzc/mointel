@@ -282,6 +282,14 @@ Stored `rth_open_price` 10.06 at 13:31; the true RTH open is the 13:02 bar at 10
 > wrong about.* **The 15:45 and post-close reruns say whether any name with a real tape
 > has joined it.**
 
+**AND THE CORRECTION HAD TO BE MADE TWICE, TO TWO SEATS, FORTY MINUTES APART.**
+*Research's message crossed Ops's tape read and carried the same reach I had made —
+calling ITHA "a specific wrong number on a specific row" and the best argument yet for
+the two scope items.* **An instance of the DEFECT is not an instance of the HARM, which
+is the distinction this entire day was spent separating.** *Corrected in the message:
+the two `worker/runtime.ts` items are right on their own reasoning, and resting them on
+a wrong number is how a correct fix acquires a premise someone later refutes.*
+
 **AND A LOOSE END NOBODY OWNS: ITHA RANKED 16TH ON TWO BLOCK PRINTS.** *A name with no
 tape reaching rank 16 is the ranking behaving as specified and surfacing a row he
 cannot trade.* **One instance, offered to Research as a question rather than filed as a
@@ -315,6 +323,17 @@ on the first live bar. *So every repaired name reads
 `alpaca-historical-minute-bars+minute-bars` and an `= 'alpaca-historical-minute-bars'`
 test finds none of them.*
 
+- **CONFIRMED IN DATA BY RESEARCH, 2026-08-18: `volume_base_source IS volume_source`
+  on 8,617 OF 8,617 ROWS. Zero differ.** *Not "usually the same" — the identical
+  expression, so identical by construction.* **And its sharpening, which is why the
+  duplicate is the worst of the three: a CONSTANT ANNOUNCES ITSELF ON INSPECTION AND A
+  PLAUSIBLE-LOOKING COPY DOES NOT.**
+- **THE RULE RESEARCH PUT IN PLACE OF THE CREDIT I OFFERED IT, AND IT IS BETTER:**
+  *I said its morning reconstruction survived because it used `LIKE ...%`. It refused
+  that as foresight — it had run `SELECT volume_base_source, COUNT(*) GROUP BY 1` an
+  hour earlier and SEEN the suffixed forms.* **⇒ "Use `LIKE`" is style. "Read the
+  distinct values before you compare against one, because looking is cheap" is the
+  rule, and it generalises to the next column.**
 - **A LITERAL COMPARISON RETURNS NEAR-TOTAL DAMAGE ON A DAY THE REPAIR WORKED
   PERFECTLY.** *It is the reassuring shape inverted: a finding-shaped number from a
   working system.* **`NOT LIKE 'alpaca-historical-minute-bars%'` is the only correct
