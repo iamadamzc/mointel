@@ -231,12 +231,21 @@ function main(): void {
   }
 
   const { moved, correct, missing, unverifiable } = misplaced;
+  const { movedZeroMagnitude, movedWithMagnitude, movedMagnitudeUnknown, worstDelta } = misplaced;
   const measured = moved + correct;
   console.log('  DIRECT -- pm_open_at against the earliest retained premarket bar:');
   console.log(`    anchor MOVED (misplaced)   ${moved}`);
   console.log(`    anchor correct             ${correct}`);
   console.log(`    no stored anchor           ${missing}`);
   console.log(`    UNVERIFIABLE (circular)    ${unverifiable}`);
+  console.log('');
+  console.log('  OF THE MOVED -- misplacement is the DEFECT, a price delta is the HARM:');
+  console.log(`    wrong minute, SAME price   ${movedZeroMagnitude}   defect, no harm`);
+  console.log(`    wrong minute, WRONG price  ${movedWithMagnitude}   a wrong Move on the board`);
+  console.log(`    magnitude unknown          ${movedMagnitudeUnknown}`);
+  if (movedWithMagnitude > 0) {
+    console.log(`    worst anchor error         ${worstDelta.toFixed(2)}%`);
+  }
 
   if (measured === 0) {
     console.log('\n[anchor] No ranked name has both a stored anchor and a retained bar.');
@@ -278,7 +287,16 @@ function anchorsMisplaced(
   open: string,
   bell: string,
   maxRank: number,
-): { moved: number; correct: number; missing: number; unverifiable: number } | null {
+): {
+  moved: number;
+  correct: number;
+  missing: number;
+  unverifiable: number;
+  movedZeroMagnitude: number;
+  movedWithMagnitude: number;
+  movedMagnitudeUnknown: number;
+  worstDelta: number;
+} | null {
   /*
    * THE COLUMN MAY NOT EXIST AT ALL, which is a THIRD case and not the same as
    * unpopulated. A store written before schema 26 has no `pm_open_at`, and
@@ -300,23 +318,34 @@ function anchorsMisplaced(
   const rows = db
     .prepare(
       `SELECT s.symbol, s.pm_open_at AS anchor, s.qualified_at AS admitted,
+              s.pm_open_price AS anchorPrice,
               (SELECT MIN(b.ts) FROM minute_bars b
                 WHERE b.symbol = s.symbol AND b.trading_date = s.trading_date
-                  AND b.ts >= ? AND b.ts < ? AND b.volume > 0) AS earliest
+                  AND b.ts >= ? AND b.ts < ? AND b.volume > 0) AS earliest,
+              (SELECT b.open FROM minute_bars b
+                WHERE b.symbol = s.symbol AND b.trading_date = s.trading_date
+                  AND b.ts >= ? AND b.ts < ? AND b.volume > 0
+                ORDER BY b.ts LIMIT 1) AS truePrice
          FROM ticker_session s
         WHERE s.trading_date = ? AND s.rvol_rank IS NOT NULL AND s.rvol_rank <= ?`,
     )
-    .all(open, bell, date, maxRank) as Array<{
+    .all(open, bell, open, bell, date, maxRank) as Array<{
     symbol: string;
     anchor: string | null;
     admitted: string | null;
     earliest: string | null;
+    anchorPrice: number | null;
+    truePrice: number | null;
   }>;
 
   let moved = 0;
   let correct = 0;
   let missing = 0;
   let unverifiable = 0;
+  let movedZeroMagnitude = 0;
+  let movedWithMagnitude = 0;
+  let movedMagnitudeUnknown = 0;
+  let worstDelta = 0;
   for (const row of rows) {
     // No retained bar means the comparison cannot be made -- not that it passed.
     if (row.earliest === null) continue;
@@ -352,10 +381,49 @@ function anchorsMisplaced(
       continue;
     }
 
-    if (row.anchor === row.earliest) correct += 1;
-    else moved += 1;
+    if (row.anchor === row.earliest) {
+      correct += 1;
+      continue;
+    }
+
+    moved += 1;
+
+    /*
+     * A MISPLACED ANCHOR IS NOT AUTOMATICALLY A WRONG NUMBER, AND I REPORTED
+     * ONE AS IF IT WERE.
+     *
+     * 2026-09-14, ITHA: anchor stamped 13:31 when its first print was 13:02 --
+     * a real misplacement. Both bars closed at 10.06, so the Move read the same
+     * from either origin. **The anchor was at the wrong minute and the right
+     * price, and the displayed percentage was correct.** I had already told him
+     * it was a wrong number on his board; Integration and Ops's read of the
+     * tape corrected it.
+     *
+     * The defect and the harm need separate counts. A Move is only wrong if the
+     * price MOVED between the true open and the stamped one, so that delta is
+     * the harm and the misplacement is only its precondition.
+     */
+    if (row.anchorPrice === null || row.truePrice === null || row.truePrice <= 0) {
+      movedMagnitudeUnknown += 1;
+    } else {
+      const delta = Math.abs((row.anchorPrice - row.truePrice) / row.truePrice) * 100;
+      if (delta === 0) movedZeroMagnitude += 1;
+      else {
+        movedWithMagnitude += 1;
+        worstDelta = Math.max(worstDelta, delta);
+      }
+    }
   }
-  return { moved, correct, missing, unverifiable };
+  return {
+    moved,
+    correct,
+    missing,
+    unverifiable,
+    movedZeroMagnitude,
+    movedWithMagnitude,
+    movedMagnitudeUnknown,
+    worstDelta,
+  };
 }
 
 main();
