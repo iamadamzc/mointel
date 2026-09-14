@@ -9557,3 +9557,21 @@ way — zero-magnitude error today.** A no-tape name ranked on two block prints.
 Integration's general direction holds for a runner (a late anchor understates
 Move, the expensive direction); it does not apply to ITHA. Reruns due ~15:45
 ET and after the close if turns land.
+
+## `volume_base_source` is `volume_source` under a name that promises the base — reading hazard, 2026-09-14
+
+**Integration's find, confirmed in code:** `worker/runtime.ts:1752-1756` writes
+`volume_base: 0` and `volume_base_through: null` as literals, and
+`volume_base_source` AND `volume_source` from the SAME field,
+`state.volumeSource` — which `engine.ts:1004` rewrites to
+`${volumeBaseSource}+minute-bars` on the first live bar. **So every repaired
+name carries the suffix, and a query comparing `volume_base_source` to the
+bare literal `'alpaca-historical-minute-bars'` with `=` or `!=` matches
+nothing on a day the backfill worked perfectly — near-50 "late anchors" that
+are not.** *Today's 49+1 was right because it read the distribution; the
+rerun must use `NOT LIKE 'alpaca-historical-minute-bars%'`.*
+
+**Not a fix, not a deploy: a hazard in a store this seat owns.** The next
+person reconstructing anything from `volume_base*` columns will believe they
+hold base state; two of them are constants and the third is a duplicate.
+Research's Monday reconstruction survived only because it used `LIKE`.
