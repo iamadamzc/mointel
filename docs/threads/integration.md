@@ -490,21 +490,55 @@ RULING ON. 53.1% and 40.6% fall on opposite sides.**
   UNRECORDED rather than undetectable (*Research's correction of its own word;
   `desk_events` is append-only and could carry it, but `symbol` is `TEXT NOT NULL` and
   a stall is not a disconnect*).
-- **~~Its firing on today's 13:16 restart is a false positive~~ - RETRACTED BY THIS
-  SEAT WITHIN THE HOUR, AND THE RETRACTION IS THE ENTRY.** *I put it to both threads
-  that the predicate reads TRUE today while Research had said today's anchors are
-  fine.* **Research's sentence was about the DEFECT not firing. Ops said the other half
-  in the same hour — "RTH anchors before that instant reset for names outside the
-  backfill" — and I had both and joined the wrong two.**
-  **The code settles it: `worker/runtime.ts:916`, `focusCount = max(internalRank * 4,
-  100)`, `focused` = pins ∪ that slice, against ~8,800 tracked symbols.**
-  > **AND WHAT SURVIVES IS WORTH MORE THAN WHAT I WITHDREW: the backfill is bounded to
-  > a focused slice BY CONSTRUCTION, so it can never repair the board-wide anchor set,
-  > so the field cannot fire on a session the repair fixed.** *Structural, not tuned -
-  > which is the property both seats were trying to buy.*
-  **Third invented link from this seat today** - *two true sentences from two threads,
-  joined by an assertion nobody checked.* **The first two were caught by the threads;
-  this one I caught by opening the file.**
+- **THE PREDICATE ABOVE IS WITHDRAWN BY ITS OWN AUTHOR. DESIGN'S SEAM PREDICATE IS
+  WHAT IS BEING BUILT.** *Read at the lines by this seat rather than taken on report:*
+  ```
+  runtime.ts:943-947   backfill   volumeBaseThrough: null          SEAM CLEARED
+  runtime.ts:1153-1156 promotion  volumeBaseThrough: snapshotMinute SEAM SET
+  ```
+  **THE SEAM IS THE REPAIR RECORD, so `hasSeam` already means LATE AND UNREPAIRED.**
+  *Design's per-symbol predicate carries both halves; `observingSinceMs >
+  sessionStartMs` carries only the first, because the repair is per SYMBOL and the
+  predicate is per PROCESS.* **Research: its denominator objection killed Design's
+  POPULATION, not Design's PREDICATE, and it had conflated the two.**
+
+- **I REVERSED MYSELF TWICE ON THIS IN FORTY MINUTES AND THE SECOND REVERSAL IS THE
+  ENTRY.** *I put the false-positive finding to both threads; it was RIGHT. I then
+  withdrew it as an invented link; the WITHDRAWAL was the error.*
+
+  > **WHAT MADE THE WITHDRAWAL FEEL RIGOROUS IS THAT IT WAS A SELF-CRITICISM.** *I had
+  > already made two invented links today, so a third fitted a pattern I was primed to
+  > find - and "I was wrong again" is the conclusion nobody audits, the same way a
+  > reassuring number is.* **Ops's "RTH anchors before that instant reset for names
+  > outside the backfill" made the wrong reading plausible, and I stopped there rather
+  > than asking which population the BOARD reads.**
+  >
+  > **THE SCOPING IS RESEARCH'S AND IT IS THE WHOLE OF IT:** *~208 focused names
+  > backfilled with the seam cleared, ~8,667 others seamed at 13:16 with no bars.*
+  > **The board reads top-50 by `rvol_rank`, so HIS BOARD WAS SOUND TODAY AND THE
+  > TRACKED UNIVERSE WAS NOT** - *and "today's anchors are fine" was true of the first
+  > and false as a general claim.*
+  >
+  > **THE HABIT THIS COSTS: a retraction is a claim and gets the same check as the
+  > thing it retracts.** *I verified the finding before sending it and did NOT verify
+  > the withdrawal before sending that. The asymmetry is the defect - withdrawing feels
+  > free because it only removes something.*
+
+- **TWO THINGS FLAGGED TO RESEARCH, UNVERIFIED BY THIS SEAT, NEITHER CARRIED FURTHER:**
+  *`engine.ts:1166-1168` makes `baseThroughMs` non-null only when `volumeBase > 0`, so
+  a promoted name whose daily bar carries zero volume may hold a seam the predicate
+  cannot see - the exact name whose anchor is about to be set late.* **And "top-50 by
+  `rvol_rank` sits inside the focused top-200" is load-bearing and rests on two
+  rankings computed at different instants.**
+
+- **WHAT IS ACTUALLY OPEN IS A PRODUCT QUESTION, NOT A CORRECTNESS ONE, AND IT IS
+  DESIGN'S.** *A promoted name's seam is a TRUE POSITIVE - its anchor really is late,
+  every day, by design.* **So the field is true every morning on the HONEST answer, and
+  the budget rule fails without anything misfiring.** *Does the board statement cover
+  incident-caused late anchors only, or all of them? The first needs a separator; the
+  second fires daily.* **Not put to him: Design scopes it and asks for his ruling if it
+  wants one. This seat does not decide what the board is for.**
+
 - **THE AUTH CARRIAGE.** *`lib/auth/{store,cookie,oauth,expiry}.ts` exist and are
   INERT - no importer outside `lib/auth`.* **`app/auth/` does not exist and there is
   no `location ^~ /auth/`. Sign-in cannot work.** *Google client and consent screen
