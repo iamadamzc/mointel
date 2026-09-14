@@ -265,11 +265,27 @@ preflight gap after.**
      rth_open_at 2026-09-14T17:31:00Z = 13:31 ET   fifteen minutes after the restart
 ```
 
-**ITHA's Move is measured from a 13:31 open rather than 09:30.** *For a name that has
-run since the open that reads SMALLER than the truth - an extended name looking
-fresher than it is, which is the expensive direction on his book rather than the cheap
-one.* **Not universal and given to him as such: a name that dipped below its 09:30
-print and recovered could read larger.**
+**ITHA's anchor is at the wrong MINUTE and the right PRICE, and the error has ZERO
+MAGNITUDE today.** *Ops, 13:36 ET: ITHA never printed at 09:30. It has TWO bars all
+day — 13:02 ET (25,000 shares) and 13:31 ET (131,465), both open=high=low=close=10.06.
+Stored `rth_open_price` 10.06 at 13:31; the true RTH open is the 13:02 bar at 10.06.*
+**Move reads 0.0% either way.**
+
+> **I TOLD HIM A NAME ON HIS BOARD WAS MEASURING FROM THE WRONG OPEN IN THE EXPENSIVE
+> DIRECTION. THE CLASS CLAIM IS RIGHT AND THIS INSTANCE COSTS NOTHING.** *The correct
+> sentence is "one name, ITHA, is anchored late; for ITHA that changes nothing today."*
+> **I had the mechanism and reached for the consequence before anyone had read the
+> name's tape** — *and the tape was one query away, which is where it came from.*
+>
+> **THE DIRECTION ARGUMENT SURVIVES AND IS NOW WAITING ON A CASE.** *Understated Move
+> on a runner is still the expensive error; ITHA is not a runner and has no tape to be
+> wrong about.* **The 15:45 and post-close reruns say whether any name with a real tape
+> has joined it.**
+
+**AND A LOOSE END NOBODY OWNS: ITHA RANKED 16TH ON TWO BLOCK PRINTS.** *A name with no
+tape reaching rank 16 is the ranking behaving as specified and surfacing a row he
+cannot trade.* **One instance, offered to Research as a question rather than filed as a
+finding** — *counting instances is this seat's recorded tell.*
 
 - **THE COUNT IS 1 OF 50 AT AN INSTANT AND CAN ONLY GROW.** *The 13:16 backfill
   repaired the focused 200; every name that ranks in from outside it carries a late
