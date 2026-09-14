@@ -9538,3 +9538,14 @@ env file, so it is his to authorise.
 ranked in after the 13:16 restart and its Move measures from a 13:31 open.
 *1 of 50 at that instant; can only grow during the session.* The query is
 the instrument; it is in the read above.
+
+**RE-PRICED, same afternoon: the premarket snapshot read is diagnosis, not a
+shipping gate.** Design's seam predicate is dead on other grounds (blind on
+Friday for the same `belongsToSession` reason); the replacement reads the
+repair record — `observingSinceMs > sessionStartMs AND volumeBaseSource !==
+'alpaca-historical-minute-bars'` — and `volumeBaseSource` is set ungated at
+`runtime.ts:886`, so it reports what happened whatever the daily bar was
+doing. **The snapshot now only confirms why the sort had no signal. Nothing
+ships on it.** The probe stays the better instrument; the urgency is
+withdrawn. It waits for a premarket turn that happens anyway unless he
+prefers the timer.
