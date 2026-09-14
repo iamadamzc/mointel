@@ -9300,3 +9300,21 @@ query reproduces the table.
 was the cohort that COULD have lost it. The number that did is **13 of 17
 (76.5%)**; over the 32 premarket-ranked names, 13/32 = 40.6%. Both stated
 with denominators.
+
+**CORRECTION, same day, from Design-tmi and accepted: "no promotion case in this
+cohort" is true BY CONSTRUCTION and says nothing about promotions.** The cohort
+requires bars before 08:33Z. A promoted name has no stored bars before its
+admission minute — `drainPromotions` fetches daily bars only, no intraday —
+so a promotion-misplaced anchor EQUALS its first stored bar, passes the
+"post-restart bars before the anchor" test, and would sit among the survivors,
+invisible. **The store cannot see promotion damage at any N on any date,
+because the discarded bars are the evidence.** *That question needs Alpaca's
+historical minute bars for a promoted name against its stored anchor — a REST
+call per symbol, Research's instrument, not run.* **Read the table above as:
+restart damage measured and singular in shape; promotion damage unmeasured
+and unmeasurable from this store.**
+
+*On the four survivors: premarket opens 08:00Z, so "first bar 08:00" is the
+session's first minute for all thirteen names that show it; the four kept the
+earliest possible anchor and nine with the same first minute lost it. The
+asymmetry is real and stays with Research.*
