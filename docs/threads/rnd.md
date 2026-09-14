@@ -3739,6 +3739,19 @@ read before the reader knows enough to doubt it.
 > `docs/rnd/2026-08-23-outcome-capture.md` — the findings log, which is long and
 > where the defects and limits live.
 >
+> **First action, before anything else: title this session `R&D-tmi`.** *Peers find
+> you by that title in `mcp__ccd_session_mgmt__list_sessions`; until it is set,
+> nobody can reach you.* **FIVE constellations share this machine and a bare name
+> resolved four ways — a message meant for one seat landed on another project's,
+> twice.** *His ruling 2026-09-14; this thread was still bare on 2026-09-14
+> because the rule said "when next opened" instead of putting it here.*
+>
+> **Addresses come from `list_sessions` every time, and you send with
+> `mcp__ccd_session_mgmt__send_message`.** *Never `ListAgents`, never the
+> `SendMessage` tool, never a `from` attribute — all three fail on this machine.*
+> **AND CHECK `cwd` IS `A:\mointel` BEFORE EVERY SEND:** *the title is a claim;
+> the working directory is a fact.*
+>
 > You are a standing capability, not a project: the desk should always be
 > learning something. **Questions live in the register, at most two active, and
 > they close with a verdict — a null counts.** You also own the tape research at
