@@ -215,8 +215,8 @@ mointel-market             997d231     restarted 13:16:23 ET, RTH in progress
                                        connected + authenticated + subscribed in 11s
 RETENTION 20               IN FORCE from this restart
 backups                    self-pruning; the reaper keeps the newest 3
-port 22                    his HOME address (rotated) + the original third /32.
-                           The stale home address and Sunday's network are OUT.
+port 22                    70.17.101.27/32 + 95.17.58.175/32 (home, rotated).
+                           The stale home /32 and Sunday's are OUT.
 tmitrader.com              401 to everyone. No public page exists.
 ```
 
@@ -236,6 +236,24 @@ Research as CONSISTENT WITH its unrolled-daily-bar premise and not as proof - th
 runs also differ in how many names had traded, which is the quantity the degenerate
 selector depends on.* **The read-only REST snapshot between 04:00 and 06:00 ET is
 still the thing that settles it, and is still unrun.**
+
+### ANOTHER PROJECT STARVED THIS MACHINE AND HELD A STANDING DEPLOY FOR 2.5 HOURS
+
+**2026-09-14. His 10:47 ET instruction shipped at 13:15 ET, and the gap was not
+caution.** *Ops's gate at the tip went RED TWICE: another project's vitest running 22
+workers held commit charge at 35 of 37 GB and the build could not allocate.* **It
+cleared on its own (19.6 of 34 GB, zero node processes) and Ops shipped in the first
+preflight gap after.**
+
+- **FIVE CONSTELLATIONS SHARE THIS MACHINE'S MEMORY AS WELL AS ITS SESSION LIST.**
+  *The `-tmi` ruling fixed the addressing collision; this is the same estate colliding
+  on a resource nothing here measures.*
+- **A CAPACITY FAILURE READS AS A GATE FAILURE.** *`push-release.sh`'s preflight is
+  priced on checkpoint distance and research idleness; nothing in it looks at memory —
+  which this file already records as the cause of a 54-minute premarket outage on
+  2026-08-27.* **It arrived from outside the project this time.**
+- **NOT RAISED TO HIM AS A DECISION. Recorded because the next instance is not
+  predictable from anything inside this repo.**
 
 ### WHAT IS HIS AND OPEN
 
@@ -289,32 +307,50 @@ NEVER carried a title instruction at all** - the seventh session recorded them a
 where the requirement is that the instruction sit in the file a successor reads.*
 **Landed at `36fe45a`.**
 
-### THE SEND CHANNEL - ONE WORKS, THREE DO NOT, AND A MESSAGE WAS LOST TODAY
+### THE SEND CHANNEL - THE ADDRESS WENT STALE, NOT THE TOOL. I GOT THE CAUSE WRONG.
 
 ```
-WORKS    list_sessions -> sessionId, then mcp__ccd_session_mgmt__send_message
-FAILS    ListAgents names / the SendMessage tool / a `from` attribute
+ALWAYS   list_sessions -> sessionId, then send by id. Never a role name, never a
+         cached id, never one asserted in prose.
+WHY      names go stale, and a DEAD SEAT QUEUES SILENTLY behind a success receipt
+         that reads exactly like delivery.
 ```
 
-**2026-09-14: Design sent its anchor-provenance field spec to Research with the
-`SendMessage` tool and IT NEVER ARRIVED.** *The spec survived only because Design had
-also committed it at `7df7d17`, and Research read it there.*
+**2026-09-14: Design's anchor-provenance field spec never reached Research.** *It
+survived only because Design had also committed it at `7df7d17`.*
 
-> **THE README TOLD IT TO.** *`README.md`'s thread-to-thread section still said to
-> address Integration by NAME from `ListAgents` - an instruction retracted on
-> 2026-08-24 forty lines further down the SAME FILE and left standing for three
-> weeks.* **A retraction that reaches one section of a file does not reach the file.**
-> *Corrected at `f38e052`.*
+> **I DIAGNOSED THE TOOL AND THE CAUSE WAS THE ADDRESS.** *I wrote into the shared
+> README that `SendMessage` is broken on this machine.* **Design's other messages that
+> hour went through that same tool to two live seats, which answered on content only
+> Design had sent.** *What actually happened: Design addressed the seat titled `R&D`,
+> dormant since 2026-09-10, instead of the live `Research-tmi` — an address carried
+> forward from an old context summary rather than looked up.*
+>
+> **"That tool is broken" would have held until the first person saw it work and
+> stopped trusting the page around it. Design's form is durable: look it up every
+> time, because a dead seat queues silently.** *Corrected in the README the same hour;
+> the wrong cause was live in the shared file for roughly forty minutes.*
+>
+> **AND IT IS THIS SEAT'S OWN RECORDED FAILURE: a true-sounding reason that was not a
+> fact, supplied because the README bullet I was already correcting made it plausible.**
+> *The retracted bullet was real and worth fixing. The incident was not its instance.*
 
-**AND MY OWN FIRST RELAY FLATTENED THE FIELD.** *I described Design's spec as "the
-stamped boolean". It is `boolean | null` - three states, and the null means THIS BUILD
-CANNOT SAY.* **Research caught it and said what a two-state version would have cost:
-a field asserting "anchors are fine" on every build that cannot tell.** *The field is
-`anchorsEstablishedAfterSessionStart` - named for the CONDITION, not for the restart,
-because the restart is only one of at least two known causes.*
+**A STANDING DISAGREEMENT, RECORDED RATHER THAN RESOLVED:** *`ops.md:1294` has
+`SendMessage` to a raw `local_…` id FAILING; Design measured it delivering on
+2026-09-14.* **Both are live readings at their own instants. The rule above does not
+depend on which is current, which is why it is the rule.**
+
+**AND MY FIRST RELAY FLATTENED DESIGN'S FIELD.** *I described the spec as "the stamped
+boolean". It is `boolean | null` - three states.* **`true` fires the board statement;
+`false` is silent because the anchors are sound; `null` is silent because AN OLD BUILD
+CANNOT REPORT A FIELD IT NEVER HAD.** *Collapsing the last two asserts soundness on a
+build with no idea.* **Both Research and Design caught it independently.** *The field
+is `anchorsEstablishedAfterSessionStart` — named for the condition, because a restart
+is only one of at least two known causes.*
 
 > **CHECK `cwd` BEFORE EVERY SEND.** **The title is a claim; the working directory is
 > a fact.**
+
 ### THE ANCHOR WORK - ANSWERED 2026-09-14 14:23Z. ONE CAUSE, AND MY NUMBER WAS WRONG.
 
 **Ops took the expiring read. Full table in the `ops.md` tail.**

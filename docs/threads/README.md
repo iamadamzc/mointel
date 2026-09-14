@@ -2814,17 +2814,31 @@ strips the reasoning down to whatever fits in his relay.
 - **Send it to Integration and say who it is for.** It relays, adds whatever
   context the receiving thread is missing, and records anything durable in the
   charters rather than leaving it in two transcripts.
-- **To reach Integration — or any thread — look the `sessionId` up in
-  `mcp__ccd_session_mgmt__list_sessions` and send with
-  `mcp__ccd_session_mgmt__send_message`.** *That is the only channel that works;
-  see "How threads reach each other" below for the three that do not.*
+- **LOOK THE SEAT UP IN `mcp__ccd_session_mgmt__list_sessions` AND SEND BY
+  `sessionId`, EVERY TIME.** *Never a role name, never a cached id, never one
+  asserted in prose.* **The reason is not which tool you use — it is that NAMES GO
+  STALE AND A DEAD SEAT QUEUES SILENTLY**, returning a success receipt that reads
+  exactly like delivery.
   **RETRACTED 2026-09-14: this bullet previously said to send to the NAME
-  `Integration` from `ListAgents`.** *That instruction was already retracted
-  further down this same file on 2026-08-24 and left standing here for three
-  weeks — and on 2026-09-14 Design followed it and its field spec to Research
-  never arrived.* **The spec survived only because Design had also committed it
-  (`7df7d17`).** *A retraction that reaches one section of a file does not reach
-  the file: the desk's own rule, committed inside the document that states it.*
+  `Integration` from `ListAgents`** — *an instruction already retracted further
+  down this same file on 2026-08-24 and left standing here for three weeks.* **A
+  retraction that reaches one section of a file does not reach the file.**
+  **AND THE CAUSE I FIRST WROTE HERE WAS WRONG, corrected by Design the same
+  hour.** *I recorded that Design's field spec failed to reach Research because
+  the `SendMessage` tool is broken on this machine.* **It is not: Design's other
+  messages went through it to two live seats that hour and answered on content
+  only Design had sent.** *What actually happened is that Design addressed the
+  seat titled `R&D`, dormant since 2026-09-10, instead of the live `Research-tmi`
+  — a stale address carried forward from an old context summary.* **The spec
+  survived only because Design had also committed it (`7df7d17`).**
+  **⇒ "That tool is broken" would have held until the first person saw it work
+  and stopped trusting this page. "Look it up every time, because a dead seat
+  queues silently" is true of both tools and survives contact.** *Design's
+  formulation, and it is better than mine.*
+  **NOTE A STANDING DISAGREEMENT RATHER THAN A WINNER:** *`ops.md:1294` records
+  `SendMessage` to a raw `local_…` id as FAILING; Design measured it delivering
+  on 2026-09-14.* **Both are live readings at their own instants and the rule
+  above does not depend on which is current.*
 - **This is for handovers, findings and corrections — not for decisions.**
   Anything needing the trader's judgement still goes to him, at the end, under
   `## What I need from you`. Integration relays; it does not decide, and routing
