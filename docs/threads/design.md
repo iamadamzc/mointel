@@ -3916,6 +3916,64 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE ANCHOR WARNING IS SPECIFIED AND DELIBERATELY NOT BUILT
+
+**The render question is settled — board-wide, one statement. So I went to build
+it, and `universe.ts` had already declined my approach in writing.**
+
+**I was going to derive "the worker started mid-session, so the anchors are
+suspect" from `workerStartedAt`, which sits on the health object the board
+already reads.** *`universe.ts:63-71` declines exactly that inference, for
+reasons that transfer without modification:*
+
+> **"The fix belongs at the stamp, not at the reader."** *Inferring a session
+> fact from a start time puts ONE FACT IN TWO PLACES, agreeing by discipline
+> until one drifts — and the second copy would live in a component, which is
+> exactly where the clock-relative reasoning went wrong before.*
+
+**AND IT CITES A REAL DEFECT THAT THE SHORTCUT WOULD HAVE MASKED:** *2026-09-07,
+where startup established a session without stamping `trading_date_rolled_at`.*
+**So this is not a style preference; it is a mechanism that has already failed
+once here.**
+
+### THE FIELD, WHICH THE ENGINE OWNS
+
+    anchorsEstablishedAfterSessionStart: boolean | null
+
+**NAMES THE CONDITION, NOT THE EVENT.** *Not `workerRestarted`. A restart is one
+way to get here; what the board needs to say is that the anchors for THIS session
+were established after it had already begun — which is the thing that makes a
+Move untrustworthy, whatever caused it.* **`null` is "this build cannot say",
+and it renders SILENT, because an old build cannot report on a field it never
+had — `universeWarning`'s own rule.**
+
+**IT MUST BE STAMPED, NOT DERIVED.** *A read-time rule over `volume_base` cannot
+supply it: `worker/runtime.ts:1752` writes a hardcoded `0`, so such a rule
+returns `PROVEN` for every row forever. An absence degrades to UNKNOWN; a
+constant degrades to a confident lie.*
+
+### AND IT MUST PASS THE BUDGET TEST THAT MODULE SETS
+
+> **"If it would fire on a normal morning it does not belong here at any volume."**
+
+**A restart is rare, so this qualifies — but only if the condition is
+`established after session start` and not `worker started today`, which is true
+every single morning.** *That distinction is the whole difference between a
+marker he reads and a marker he learns to ignore.*
+
+### THE ROW CONSTRAINT, FROM OPS, WHICH THE CURRENT CODE ALREADY SATISFIES
+
+**If a row ever shows its anchor time it must be THE NAME'S OWN VALUE, never a
+shared session-level one.** *The Move tooltip renders `reading.at`, which comes
+from that row's own `SessionOpen` — correct today.* **Recorded because the
+tempting "helpful" edit, once a board statement exists, is to substitute the
+session's restart minute into the rows, and thirteen different anchors labelled
+with one shared time is the frame lie again.**
+
+**NOT BUILT, AND THE HALF IS THE DEFECT. A component reading a field the engine
+never sends is a warning that CANNOT FIRE — the mirror of the check that cannot
+fail, and the same family. The field and the render ship together.**
+
 ## THE ANCHOR TIMES CAME BACK AND MY DISCRIMINATOR WAS WRONG
 
 **Ops read them 14:23Z Monday, read-only, full table in `ops.md`. 13 of 17
