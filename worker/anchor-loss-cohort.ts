@@ -205,19 +205,123 @@ function main(): void {
 
   const share = (cohort / eligible) * 100;
   console.log(`\n  C/D  ${cohort}/${eligible} = ${share.toFixed(1)}% of the names he could see`);
-  console.log('       lost their anchor to the restart.\n');
+  console.log('       had traded before the restart -- AN UPPER BOUND, not the harm.\n');
 
   /*
-   * The verdict is stated, not left to the reader, because the number exists to
-   * settle one question and a bare percentage invites re-litigating it.
+   * C IS A PROXY AND IT OVERCOUNTS. THE DIRECT MEASUREMENT IS BELOW.
+   *
+   * The first version of this instrument reported C/D as "lost their anchor"
+   * and ruled on it. Ops-tmi's read of 2026-09-11 showed why that is wrong:
+   * of 17 names in the cohort, FOUR had their true 08:00 anchor RESTORED by a
+   * historical minute-bar backfill delivered three seconds after the worker
+   * came up. Trading before a restart is necessary for anchor loss, not
+   * sufficient -- the bootstrap can repair it.
+   *
+   * On that date the proxy said 17/32 = 53.1% and the truth was 13/32 = 40.6%,
+   * WHICH FALLS ON THE OTHER SIDE OF THE 50% LINE THIS INSTRUMENT USED TO RULE
+   * ON. A proxy that overcounts is survivable; a proxy that overcounts across
+   * the threshold you are deciding at is not.
    */
-  if (share >= 50) {
-    console.log('[anchor] BOARD-WIDE. One statement at the board, universeWarning-style.');
-    console.log('[anchor] A per-row mark would repeat one fact a hundred times.');
-  } else {
-    console.log('[anchor] SPARSE. Per-row information, so a per-row mark is right.');
-    console.log('[anchor] The board-wide prior is WRONG and should be recorded as killed.');
+  const misplaced = anchorsMisplaced(db, args.date, open, bell, args.rank);
+  if (misplaced === null) {
+    console.log('[anchor] pm_open_at is not populated on this date, so the DIRECT');
+    console.log('[anchor] measurement is unavailable and C/D above is the best there is.');
+    console.log('[anchor] Treat it as an upper bound and say so wherever it is quoted.');
+    return;
   }
+
+  const { moved, correct, missing } = misplaced;
+  const measured = moved + correct;
+  console.log('  DIRECT -- pm_open_at against the earliest retained premarket bar:');
+  console.log(`    anchor MOVED (misplaced)   ${moved}`);
+  console.log(`    anchor correct             ${correct}`);
+  console.log(`    no stored anchor           ${missing}`);
+
+  if (measured === 0) {
+    console.log('\n[anchor] No ranked name has both a stored anchor and a retained bar.');
+    return;
+  }
+
+  const harm = (moved / measured) * 100;
+  console.log(`\n  ${moved}/${measured} = ${harm.toFixed(1)}% of measurable ranked names carry a`);
+  console.log(`  MISPLACED anchor. The cohort proxy said ${share.toFixed(1)}%.`);
+
+  /*
+   * REPORTED, NOT RULED. The 50% line this used to rule on was mine -- Design
+   * declined to invent a threshold for exactly this decision and I invented one
+   * anyway, inside the instrument, where it looked like a finding. The numbers
+   * and the composition are the deliverable; the sparse-versus-board-wide call
+   * belongs to the seat that owns the surface.
+   */
+  console.log('\n[anchor] Reported, not ruled. Sparse-versus-board-wide is Design\'s call;');
+  console.log('[anchor] what this settles is the SIZE and that repair already happens.');
+  if (cohort > moved) {
+    console.log(`[anchor] NOTE: ${cohort - moved} name(s) traded before the restart and kept a`);
+    console.log('[anchor] correct anchor -- the bootstrap backfill repaired them. That path');
+    console.log('[anchor] already exists and works; see worker/runtime.ts:916-948.');
+  }
+}
+
+/**
+ * Anchors that do not match the earliest premarket bar the store still holds.
+ *
+ * The DIRECT measurement of the thing the cohort only proxies, and it needs no
+ * restart time: a misplaced anchor is misplaced whatever moved it. Returns null
+ * when `pm_open_at` is unpopulated for the date, because a column that was not
+ * being written yet must read as "cannot say" rather than as "all correct" --
+ * every row would otherwise compare equal-to-nothing and vanish from `moved`.
+ */
+function anchorsMisplaced(
+  db: Database.Database,
+  date: string,
+  open: string,
+  bell: string,
+  maxRank: number,
+): { moved: number; correct: number; missing: number } | null {
+  /*
+   * THE COLUMN MAY NOT EXIST AT ALL, which is a THIRD case and not the same as
+   * unpopulated. A store written before schema 26 has no `pm_open_at`, and
+   * querying it throws SQLITE_ERROR rather than returning nothing -- so this is
+   * checked before the read rather than caught after it. Both "no column" and
+   * "no values" answer "cannot say"; neither may answer "all anchors correct".
+   */
+  const columns = db.prepare('PRAGMA table_info(ticker_session)').all() as Array<{ name: string }>;
+  if (!columns.some((column) => column.name === 'pm_open_at')) return null;
+
+  const populated = db
+    .prepare(
+      `SELECT COUNT(*) AS n FROM ticker_session
+        WHERE trading_date = ? AND pm_open_at IS NOT NULL`,
+    )
+    .get(date) as { n: number };
+  if (populated.n === 0) return null;
+
+  const rows = db
+    .prepare(
+      `SELECT s.symbol, s.pm_open_at AS anchor,
+              (SELECT MIN(b.ts) FROM minute_bars b
+                WHERE b.symbol = s.symbol AND b.trading_date = s.trading_date
+                  AND b.ts >= ? AND b.ts < ? AND b.volume > 0) AS earliest
+         FROM ticker_session s
+        WHERE s.trading_date = ? AND s.rvol_rank IS NOT NULL AND s.rvol_rank <= ?`,
+    )
+    .all(open, bell, date, maxRank) as Array<{
+    symbol: string;
+    anchor: string | null;
+    earliest: string | null;
+  }>;
+
+  let moved = 0;
+  let correct = 0;
+  let missing = 0;
+  for (const row of rows) {
+    // No retained bar means the comparison cannot be made -- not that it passed.
+    if (row.earliest === null) continue;
+    if (row.anchor === null) missing += 1;
+    else if (row.anchor === row.earliest) correct += 1;
+    else moved += 1;
+  }
+  return { moved, correct, missing };
 }
 
 main();
