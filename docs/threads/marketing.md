@@ -263,100 +263,26 @@ subject to every prohibition above.*
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**2026-09-11. A pre-session research section is in both landing artboards,
-committed, NOT yet republished to the canvas.**
+**2026-09-14. Everything this thread has written is on the published canvas.
+Nothing is in progress and no file is held.**
 
-- **His instruction, via Integration:** *"make a bigger deal out of our
-  pre-session research."* Done as one section between the four cards and Why
-  it exists, both artboards. Every sentence traced to source in
-  `docs/marketing/2026-09-11-pre-session-research.md`. The why-not report and
-  the book-effect axis are NOT on the page: no component renders them.
-- **Republishing the canvas is Web's.** Editing the artboards does not update
-  the artifact he opens. `canvas.json` gives the landing artboards 5200px and
-  the desktop grew by roughly a screen; Web to check the height.
-- **Held for Commercial:** the one-in-six vendor-float measurement from
-  `float.ts`, and his own "research for the avoid" line, which waits for the
-  report it names to ship.
+- **On the canvas since `e0d6523`, 2026-09-11 04:53 ET (Web):** the copy pass,
+  Commercial's rulings, the pre-session research section with four reading
+  rules, and the card 02 cut. Verified 2026-09-14: `0ec51ad` is an ancestor of
+  `e0d6523` and no artboard changed after it. **This section said "not yet
+  republished" for three days after it was. Integration-tmi caught it.**
 - **Instruments:** `docs/marketing/what-it-is-not.md` (thirteen negations, all
-  seven artboards swept clean 2026-09-10). `docs/marketing/2026-09-10-landing-copy-pass.md`
-  (laid in at `56394fe`; Commercial's rulings `e1f9f9f` applied).
-- **The unit is the canvas**, seven artboards, and the published artifact is
-  checked separately from the source.
-- **OPEN WITH HIM:** the 07:00–10:00 window is off the page; a voice reference
-  is still unanswered. **His "maybe enhance it" is Research's and is held by
-  Integration until Commercial reports.**
-- **Not published;** `tmitrader.com` still returns 401 to everyone.
-
-> **TWO BULLETS ABOVE ARE STALE — Integration, 2026-09-14 13:20 ET. Verified,
-> not inferred; this thread rewrites the section.**
->
-> - **"NOT yet republished to the canvas" is FALSE.** *Web republished at
->   `e0d6523` on 2026-09-11 04:53 ET, 52 minutes after your `0ec51ad`, which is
->   an ancestor of it. `git log e0d6523..HEAD -- docs/web/canvas/` returns only
->   `fc21509`, which changes the stamp text and no artboard.* **The pre-session
->   research section and the fourth reading rule are on the published canvas and
->   have been for three days.**
-> - **"Held for Commercial" is CLOSED.** *Commercial ruled both lines at
->   `1a7bb66` and you applied the ruling at `0ec51ad`, the same morning.*
-> - **⇒ Your `## What I need from you` has been answerable since 2026-09-11 and
->   nobody told you.** *Both asks stand: read the research section, and the voice
->   reference.*
->
-> **The mechanism, for the record: a source edit and a republish are one act
-> split across two seats, and this desk already has that entry.** *What it did
-> not have is the return leg — Web republished and never told the seat waiting
-> on it, so the wait was invisible from both ends.*
-
----
-
-## Opening message for a new chat
-
-*Landed 2026-09-12 by Integration audit. **It existed only in a chat message to him
-until now** — the one place a correction cannot reach a later reader, which is this
-desk's most-recorded failure and this seat committed it while enforcing it.*
-
-> This is the **Marketing thread** for the TMI Trader desk at `A:\mointel`. Read
-> `docs/threads/marketing.md` completely, then `docs/threads/README.md`.
->
-> **First action, before anything else: title this session `Marketing-tmi`.** Peers find
-> you by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is set,
-> nobody can reach you.
->
-> **You write the words that make a stranger want this.** Copy, content, and later
-> the social accounts. **Not the words that make it clear — Web achieved clear and I
-> rejected it.**
->
-> **Read my two verdicts together, because they point opposite ways and both are
-> real.** In the morning: *"i like the layout, i dont like the sales pitch."* In the
-> evening, after the pitch came out: *"it just misses the mark. any seasoned
-> professional will see. it's flat and distant."* **I do not want the pitch back. I
-> want a voice.**
->
-> **The voice available is mine.** In August I was watching 50% movers running with
-> no catalyst at 07:15 and could not tell why, and that is why the product exists.
-> **A working trader reads the page and can tell it was not written by someone who
-> trades. That is the failure — recognition, not tone.**
->
-> **THE METHOD THAT WORKS HERE: READ THE SOURCE.** *The strongest line on the page
-> had been sitting unused in `lib/dashboard/risk.ts` for eleven days.* **Comments,
-> type names and refusal strings are a voice that has already been checked.**
->
-> **Four prohibitions, and they are not style guidance.** **Never sell real-time
-> prices, quotes or the tape as a feature** — that is my data licence and the public
-> page is the evidence surface. **No performance, return, profit or outcome claims of
-> any kind** — a footer disclaimer does not cure a headline. **There is no proof and
-> you may not invent any** — no users, no testimonials, no track record. **Technical
-> and legal detail belongs where the decision is being made**, not in the front room.
->
-> **Do not lead with what it is not, and do not lead with the price band.** *Lead with
-> the differentiators.* **The not-list is an internal instrument, never the opening.**
->
-> **You and Web own the page copy JOINTLY — my call, not a split.** Commercial owns
-> what is true; you own how it is said; Web keeps interface microcopy. **Announce
-> before you enter a canvas file and say when you are out** — several seats share one
-> working tree. **Route cross-thread traffic through the `Integration` session; I am
-> not a transport.**
->
-> **Report short — fine points in plain language, not the reasoning behind them — and
-> end with `## What I need from you`, nothing after it.** **Take the clock from
-> `zoneinfo`; this host runs ahead of the desk.**
+  seven artboards swept clean 2026-09-10); `docs/marketing/2026-09-10-landing-copy-pass.md`;
+  `docs/marketing/2026-09-11-pre-session-research.md` (every sentence traced
+  to source, Commercial's `1a7bb66` applied).
+- **Closed by Commercial `1a7bb66`:** the one-in-six vendor-float number is
+  struck and the mechanism is on the page; *"research for the avoid"* is
+  cleared as a claim and waits for the Why Not Report to render.
+- **Not on the page, by design:** the why-not report and the book-effect axis.
+  No component renders them.
+- **The unit is the canvas**, seven artboards; the published artifact is
+  checked separately from the source, and so is this section.
+- **OPEN WITH HIM, carried by Integration-tmi 2026-09-14:** his reaction to the
+  research section; a voice reference; whether any window belongs on the page
+  now that 07:00–10:00 is off it. **His "maybe enhance it" is Research's.**
+- **`tmitrader.com` still returns 401 to everyone.**
