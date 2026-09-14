@@ -9501,3 +9501,20 @@ afterwards** (at 3 it would have been pruned). Read it after the roll; if
 bars" says how many.
 
 **Gate 2 exercised: post-restart verification read over Session Manager.**
+
+**The 04:00–06:00 ET snapshot read has changed priority — Integration,
+2026-09-14 afternoon.** `runtime.ts:851` gates both `volume` (854) and the
+seam `volumeBaseThrough` (885) on the same `belongsToSession` flag. If the
+daily bar had not rolled at 04:33 Friday, no name had a seam, and a
+seam-based anchor detector would be silent on the very incident it is for.
+**The premise now decides whether the detector works, not just why the
+defect fired. First action on any turn landing in that window.**
+
+**Proposed to him, not done: a one-shot transient timer ON THE BOX** —
+`systemd-run --on-calendar` for 04:30 ET tomorrow running a read-only script
+as `mointel` that requests the Alpaca snapshot for three symbols (REST, not
+the SIP socket) and writes `dailyBar.t` raw plus its ET date to a file under
+`/var/lib/mointel/`. *This is not the withdrawn mechanism: that was the
+app's scheduled sessions dying in seconds; a systemd timer on the box is the
+same machinery the migrate unit runs on.* Uses the worker's own keys from the
+env file, so it is his to authorise.
