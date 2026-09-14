@@ -9424,3 +9424,21 @@ long rolled, so a log line would not see it. **One read-only REST snapshot
 for a handful of symbols between 04:00 and 06:00 ET on a trading day — from
 the box with the worker's own keys, REST not the SIP socket — answers whether
 `dailyBar.t` is today or yesterday.** Reproduces every morning; does not expire.
+
+**Three refinements from Research, recorded beside the defect:**
+- **The snapshot test is one predicate:** `etDateString(new Date(dailyBar.t))
+  === tradingDate`. Record `dailyBar.t` raw AND the ET conversion; a timezone
+  slip in the check reproduces the bug inside its own test. Three symbols;
+  one that has printed is enough.
+- **Blast radius:** a worker that starts before 04:00 ET and runs through sees
+  every bar live; the degenerate selector bites only on a bootstrap landing
+  between the premarket open and the daily-bar roll. **Friday's 04:33 ET
+  restart was his authorised exception to the no-premarket-restart rule, and
+  the only known instance.** Latent, and it fires exactly when someone is
+  already handling an incident — which is the true description of its
+  priority, not "rare".
+- **Self-report, smaller than the fix:** if the preview's max rvol is 0, log
+  *"backfill selector has no signal: N symbols, all rvol 0; focused set is
+  pins only"*. It would have answered this in the journal two days ago.
+Both items are with Integration as one scope for `worker/runtime.ts`; neither
+rides tonight.
