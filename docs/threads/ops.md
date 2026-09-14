@@ -9318,3 +9318,49 @@ and unmeasurable from this store.**
 session's first minute for all thirteen names that show it; the four kept the
 earliest possible anchor and nine with the same first minute lost it. The
 asymmetry is real and stays with Research.*
+
+## The four survivors were the four that got a historical minute-bar backfill — 2026-09-14 10:26 ET
+
+**Research's decisive query, run read-only over Session Manager, bounds `.000Z`
+at both ends:** late-delivered early bars (`ts < 08:33`, `received_at >= 08:33`)
+per name, plus `volume_base_source` on all 17.
+
+```
+                late_early_bars  earliest_ts  first_receipt   volume_base_source
+ACVA  kept 08:00      25          08:00        08:33:22.143Z   alpaca-historical-minute-bars+minute-bars
+XRTX  kept 08:00      33          08:00        08:33:22.143Z   alpaca-historical-minute-bars+minute-bars
+TNON  kept 08:00      33          08:00        08:33:22.143Z   alpaca-historical-minute-bars+minute-bars
+LBGJ  kept 08:00      33          08:00        08:33:22.143Z   alpaca-historical-minute-bars+minute-bars
+BDRX  lost            1           08:32        08:33:00.013Z   alpaca-snapshot-daily-bar+minute-bars
+FTFT  lost            1           08:32        08:33:00.036Z   alpaca-snapshot-daily-bar+minute-bars
+PCLA  lost            1           08:32        08:33:00.013Z   alpaca-snapshot-daily-bar+minute-bars
+SXTC  lost            1           08:32        08:33:00.013Z   alpaca-snapshot-daily-bar+minute-bars
+the other 9 lost      0           —            —               alpaca-snapshot-daily-bar+minute-bars
+```
+
+**H1, delivery, and the source column splits 4/13 exactly along it.** The four
+survivors each received a full run of 08:00-onward minute bars at 08:33:22Z —
+three seconds after the new worker started at 08:33:19Z — from the
+`alpaca-historical-minute-bars` path. **None of the thirteen received any.**
+The single "late" 08:32 bar on four of the lost names arrived at 08:33:00.0xZ,
+which is the OLD process's final flush before SIGTERM, not a late delivery;
+it is query noise and it did not restore anything because 08:32 is not earlier
+than nothing.
+
+**⇒ The anchor guard worked as documented in all seventeen cases.** A name
+that was given its history got its anchor back (an earlier bar wins); a name
+that was not kept the first bar it saw. **The discriminator is which names
+receive a historical minute-bar backfill at bootstrap, and that is a set of
+four here** — the code that chooses it is Research's to name. *The Sunday
+restart logged "high-res interest set: 7 symbols"; whether that set and this
+one are the same mechanism is the next question, and it is a code read, not a
+store read.*
+
+**The general fix stays where Research put it: `lib/market/replay.ts`, built,
+tested, unwired, and not callable after `bootstrapSession` for the seam reason
+Research describes.** This diagnosis says the seam did not bite here — the
+nine never received the bars the seam would have dropped.
+
+*Correction to Research's note: `anchor-loss-cohort.ts` WAS run, Saturday
+2026-09-12 23:58 ET over ssh, control passed, 17/32 — see the entry above
+dated 2026-09-12.*
