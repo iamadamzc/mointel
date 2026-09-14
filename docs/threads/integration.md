@@ -316,6 +316,77 @@ population test would have been confidently wrong.**
 **FOR DESIGN: board-wide stands, one cause, and the per-row mark stays rare.** *Sent
 to Design-tmi directly.* **OPEN, ROUTED TO RESEARCH: why four rows survived.**
 
+### THE CAUSE OF FRIDAY'S ANCHOR LOSS: A SORT THAT CANNOT SORT
+
+**Research, 2026-09-14, `274b3c9`. The number is confirmed at 40.6% by two
+independent paths and the mechanism is found.**
+
+**THE STARTUP BACKFILL ALREADY REPAIRS LOST ANCHORS** — *it re-fetches the session's
+early bars AND clears the seam that would discard them, both from one branch at
+`worker/runtime.ts:916-948`.* **It is sized for 100+ names. On Friday it delivered
+8.**
+
+```ts
+const volume = belongsToSession ? dailyBar.v : 0;
+const rvol   = computeDailyRvol(volume, baseline.averageVolume);   // 0, NOT null
+rvolPreview.sort((a, b) => b.rvol - a.rvol).slice(0, focusCount);
+```
+
+> **Every entry scores 0, so the comparator returns 0 for every pair, and the slice
+> takes an ARBITRARY 200 in iteration order.** *Alpaca returned bars only for names
+> that had already traded — the 8 sheet pins.* **The thirteen were not ranked too
+> low. NOTHING WAS RANKED AT ALL.**
+
+**AND WHY "13,283 baselines loaded" DID NOT SAVE IT: the numerator was zero, so a
+correct denominator produced a correct, useless zero.** **A selector that is right
+about every individual value and IDENTICAL ACROSS ALL OF THEM CANNOT SELECT.**
+
+**TWO SCOPE ITEMS, BOTH `worker/runtime.ts`, BOTH OPS'S, NEITHER TONIGHT:**
+
+```
+1. SELF-REPORT   if the preview's max rvol is 0, the selector has no signal.
+                 ONE LOG LINE. Independent of item 2 and smaller.
+                 It would have answered this in the journal instead of needing a
+                 forensic reconstruction two days later.
+2. RESEED        seed `focused` from ticker_session.rvol_rank (the cycle BEFORE the
+                 restart) and let the snapshot preview ADD to it rather than BE it.
+                 On Friday that puts all thirteen in the backfill: zero anchor loss.
+```
+
+**ITEM 1 FIRST IF ONLY ONE HAPPENS.**
+
+**THE PRIORITY ARGUMENT IS NOT "RARE", AND THE HONEST FRAMING IS RESEARCH'S:** *the
+defect fires only on a bootstrap between the premarket open and the daily-bar roll —
+which is rare, and is **exactly when someone is already handling an incident**.*
+**The repair is unavailable precisely in the window it exists for.** *"Rare" and
+"fires only during incidents" argue for different priorities and the second is true.*
+
+**ONE PREMISE UNVERIFIED AND IT DOES NOT GATE THE FIX:** *that Alpaca's snapshot
+`dailyBar` at 04:33 ET still carries the previous day's date.* **The evidence demands
+it; code cannot confirm it.** *Ops takes one read-only REST snapshot the first
+premarket a turn falls in that window.* **Both scope items are correct either way.**
+
+### A THRESHOLD INSIDE AN INSTRUMENT READS AS A FINDING RATHER THAN AN OPINION
+
+**Research's own correction, and it is the sharpest thing in a week of them.**
+
+*Its cohort instrument counted "traded before the restart" as "lost its anchor". Four
+names had their true 08:00 anchor RESTORED three seconds after the worker came up, so
+the proxy overcounted* — **and it overcounted ACROSS THE 50% LINE THE INSTRUMENT WAS
+RULING ON. 53.1% and 40.6% fall on opposite sides.**
+
+> **THAT 50% THRESHOLD WAS RESEARCH'S OWN, AND DESIGN HAD DELIBERATELY DECLINED TO
+> INVENT ONE FOR THIS DECISION.** **A threshold placed inside a measuring tool stops
+> being an opinion and starts being output.** *Nobody re-litigates a number the
+> instrument printed.*
+
+- **The instrument printed a CONFIDENT WRONG VERDICT FROM CORRECT DATA.** *Every
+  value it read was accurate; the ruling was not.*
+- **THE FIX WAS TO REMOVE THE RULING, NOT TO MOVE THE LINE.** *It measures directly
+  now and no longer rules.* **40.6% is the INPUT to Design's call, not the answer.**
+- **THE SEAM THIS SEAT SHOULD WATCH: a measuring seat and a deciding seat are
+  different seats, and a threshold is where one quietly becomes the other.**
+
 ### BUILT, SCOPED, NOT STARTED
 
 - **`lib/market/replay.ts` - the anchor fix. DELIBERATELY UNWIRED.** *Calling it after
