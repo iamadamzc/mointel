@@ -3916,6 +3916,55 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE ANCHOR TIMES CAME BACK AND MY DISCRIMINATOR WAS WRONG
+
+**Ops read them 14:23Z Monday, read-only, full table in `ops.md`. 13 of 17
+misplaced, not 17 — and EVERY ONE equals that name's own FIRST BAR AFTER THE
+RESTART:**
+
+    08:33  08:34 x5  08:35  08:37  08:44  09:06  09:32  09:39  10:04
+
+**⇒ A RESTART DOES NOT STAMP ONE SHARED INSTANT. IT STAMPS EACH NAME AT ITS OWN
+NEXT PRINT.** *I collapsed the CAUSE instant into the DAMAGE instant. The cause is
+singular; the damage lands wherever each name next trades, so scatter is what
+restart damage looks like and "scattered" separates nothing.* **Wrong model of
+the mechanism, not a close call.**
+
+**Ops's discriminator is better because it observes rather than infers:** *do
+post-restart bars exist BEFORE the anchor?* **Zero of 17. One cause.**
+
+### THE RENDER, AND A CONSTRAINT I HAD NOT WRITTEN DOWN
+
+**BOARD-WIDE. ONE STATEMENT. Unchanged.** *And Ops's closing line is a real
+addition: if a row ever shows its anchor time, it must be THE NAME'S OWN VALUE,
+never the restart minute.* **Thirteen rows whose anchors are thirteen different
+minutes, labelled "since 08:33", would be a second false frame one day after
+fixing the first.**
+
+### WHAT THE TEST CANNOT SEE, WHICH IS A DIFFERENT CLAIM FROM MY REFUTED ONE
+
+**This cohort cannot contain a promotion case, and the REASON is the finding.**
+
+    drainPromotions -> buildBaselinesFor   1Day bars, ending tradingDate-1
+                    -> getSnapshots        a daily lump
+                                           NO INTRADAY FETCH ON THIS PATH
+
+**So a promoted name's `minute_bars` BEGIN at its admission minute** — *and a
+promotion-caused misplaced anchor therefore has `pm_open_at` EQUAL to its first
+stored bar.* **It passes Ops's test. It would sit among the four survivors, not
+the thirteen.**
+
+> **THE DEFECT DESTROYS THE EVIDENCE THAT WOULD DETECT IT.** *"Anchor later than
+> the name's own first bar" cannot see it at any N, on any date, because the
+> discarded bars are the ones that would prove the anchor late.*
+
+**NOT A CRITICISM OF THE QUERY — it is the right query for restart damage and it
+answered that cleanly. It is a statement that the store CANNOT answer the
+promotion question, because comparing against our own bars compares the defect
+to itself.** *The instrument has to be Alpaca's historical minutes against the
+stored anchor. Filed as an open question rather than asserted, and not requested:
+a per-symbol REST call on a live worker in his window is Research's call.*
+
 ## THE NUMBER IS IN, IT IS BOARD-WIDE, AND IT ANSWERS ONE CAUSE OF TWO
 
 **Ops ran the expiring measurement Saturday (`80158db`). 2026-09-11, restart
