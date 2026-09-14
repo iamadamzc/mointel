@@ -9465,3 +9465,39 @@ the clock from `zoneinfo` in Python, every time, including in shell loops.
 unrestarted, his 10:47 instruction (deploy and restart mid-session) standing.
 Transport is the open question: port 22 needs a new /32 on his word, or the
 deploy goes over Session Manager against Integration's gate 2.**
+
+## State: production is `997d231`, schema v27, deployed 2026-09-14 13:15 ET — market worker restarted 13:16:23 ET, MID-SESSION ON HIS DECISION
+
+**His choice at 10:47 ET, made with the costs stated: deploy and restart
+mid-session rather than wait for the close.** Port 22 was reopened on his
+"back at home on regular wifi": rule now `70.17.101.27/32`, `95.17.58.175/32`
+(home's rotated address in; stale `95.17.57.244` and Sunday's `46.26.37.254`
+out), read back, ssh confirmed. Preflight cleared in the 13:05–13:25 gap.
+
+```
+gate           997d231: tsc, lint 0 errors, 2068 tests, build -- after two red runs
+               caused by another project's vitest pinning commit charge at 35/37 GB
+ships          a225317 retention 20 | cf2cf0a Design ET timestamps | 274b3c9 Research cohort script
+migrate        schema v27, quick_check ok, 0 backups written  (newer-store guard, clean no-op)
+web/research/assess   on 997d231 by /proc cwd
+RESTART        mointel-market 2026-09-14T17:16:23Z = 13:16:23 ET, RTH in progress
+after          pid 355632 cwd 997d231; connected, authenticated SIP, subscribed 17:16:34Z
+user_version   27 after restart
+release prune  removed 03d9a19; kept 997d231, 9370ab3 (rollback), b0610fee, 372f5eb (pinned)
+```
+
+**THE DATA EVENT, recorded as the rule requires: restart at 13:16:23 ET with
+RTH in progress.** Every in-memory RTH anchor established before that instant
+is reset for names not covered by the startup backfill. **Corroboration for
+Research's premise, free:** this bootstrap's backfill delivered **16,465
+minute bars** for 8,786 snapshots — against Friday's 346 at 04:33 ET. With the
+daily bar rolled, the selector had signal and covered the top set; before the
+roll it collapsed to the pins. *Same code, two numbers, one variable.*
+
+**Retention 20 is IN FORCE from this restart** — the worker carries the build.
+**Observable at tonight's 22:00 ET roll: `minute_bars` must still hold 09-09
+afterwards** (at 3 it would have been pruned). Read it after the roll; if
+09-09 is gone, the change did not take and the log line "pruned N minute
+bars" says how many.
+
+**Gate 2 exercised: post-restart verification read over Session Manager.**
