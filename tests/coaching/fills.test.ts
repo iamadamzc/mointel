@@ -687,6 +687,37 @@ describe('coverage windows', () => {
     expect(c.reason).toMatch(/Refusing to guess/);
   });
 
+  it('reads declarations from `extract_meta` as well as `meta`', () => {
+    // Ops's builder writes extract_meta. The first run against the real file
+    // found no `meta`, fell back to inference, reported "the file records
+    // none" -- and landed on the right answer by agreement, which is not the
+    // same as having read it.
+    const file = makeExtract('em.db', { '2026-09-09': WHOLE, '2026-09-10': 4 });
+    const db = new Database(file);
+    db.exec('ALTER TABLE meta RENAME TO extract_meta');
+    const ins = db.prepare('INSERT INTO extract_meta VALUES (?,?)');
+    ins.run('extract_as_of', '2026-09-11T08:18:27Z');
+    ins.run('expected_per_date', String(WHOLE));
+    ins.run('complete_through', '2026-09-09');
+    db.close();
+    const c = readCoverage(file);
+    expect(c.metaTable).toBe('extract_meta');
+    expect(c.asOf).toBe('2026-09-11T08:18:27Z');
+    expect(c.basis).toBe('extract_as_of');
+    expect(c.expectedBasis).toBe('declared');
+    expect(c.completeThrough).toBe('2026-09-09');
+  });
+
+  it('reports having no key/value table at all, distinctly from an empty one', () => {
+    const file = makeExtract('nometa.db', full('2026-09-09'));
+    const db = new Database(file);
+    db.exec('DROP TABLE meta');
+    db.close();
+    const c = readCoverage(file);
+    expect(c.metaTable).toBeNull();
+    expect(c.basis).toBe('max_trading_date');
+  });
+
   it('refuses a store that has no date table rather than reporting empty coverage', () => {
     const file = path.join(dir, 'wrong.db');
     const db = new Database(file);

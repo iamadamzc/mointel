@@ -59,6 +59,8 @@ export interface Coverage {
    * Either way the inference deserves a second look.
    */
   countsDisagree: boolean;
+  /** Which key/value table the declarations came from, if any. */
+  metaTable: string | null;
   /** Every date present, with how many assessments it holds. */
   perDate: { date: string; count: number }[];
   /** Dates present but short of `expectedPerDate`. */
@@ -74,9 +76,27 @@ function tableExists(db: Database.Database, name: string): boolean {
   );
 }
 
+/**
+ * Producers name their key/value table differently -- Ops's extract builder
+ * writes `extract_meta`, the desk's own stores use `meta`. Both are checked,
+ * `extract_meta` first because it is the one an extract author writes
+ * deliberately for a consumer.
+ *
+ * Getting this wrong is quiet in the worst way: the guard falls back to
+ * inference, reports "the file records none", and can still land on the right
+ * answer by agreement -- which is not the same as having read it. The first
+ * run against the real extract did exactly that.
+ */
+const META_TABLES = ['extract_meta', 'meta'] as const;
+
+function metaTable(db: Database.Database): string | null {
+  return META_TABLES.find((t) => tableExists(db, t)) ?? null;
+}
+
 function readMeta(db: Database.Database, key: string): string | null {
-  if (!tableExists(db, 'meta')) return null;
-  const row = db.prepare('SELECT value FROM meta WHERE key = ?').get(key) as
+  const table = metaTable(db);
+  if (!table) return null;
+  const row = db.prepare(`SELECT value FROM ${table} WHERE key = ?`).get(key) as
     | { value: string }
     | undefined;
   return row?.value ?? null;
@@ -172,6 +192,7 @@ export function readCoverage(
       expectedPerDate,
       expectedBasis,
       countsDisagree,
+      metaTable: metaTable(db),
       perDate,
       partialDates,
       dates,

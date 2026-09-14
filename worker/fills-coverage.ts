@@ -56,6 +56,9 @@ function main(): void {
   console.log('');
   console.log(`  desk     ${describe(coverage)}`);
   console.log(
+    `           declarations read from ${coverage.metaTable ? '`' + coverage.metaTable + '`' : 'NO key/value table'}`,
+  );
+  console.log(
     `           a whole date holds ${coverage.expectedPerDate ?? '?'} assessments` +
       ` (${coverage.expectedBasis.replace('_', ' ')})`,
   );
@@ -124,7 +127,9 @@ function main(): void {
 
   if (coverage.basis === 'max_trading_date') {
     console.log('');
-    console.log('  NOTE  this extract records no `meta.extract_as_of`, so the as-of above is');
+    console.log(
+      `  NOTE  this extract records no extract_as_of${coverage.metaTable ? ` in \`${coverage.metaTable}\`` : ' and has no key/value table'}, so the as-of above is`,
+    );
     console.log('        inferred from its newest trading date. That is weaker: it says when');
     console.log('        the DATA ends, not when the FILE was made, and the two differ exactly');
     console.log('        when collection has stopped -- the case most worth detecting.');
