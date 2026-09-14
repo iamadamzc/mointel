@@ -201,79 +201,120 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
-*REWRITTEN WHOLE 2026-09-14 10:20 ET (Monday) by the seventh Integration session,
-retiring after four days. **The previous block and every dated correction inside it
-are gone, not annotated.** Everything below LIVE STATE is kept for its MECHANISMS,
-not its facts. **Verify before acting on any of it.***
+*Sections below REWRITTEN 2026-09-14 13:35 ET by the eighth session, three hours after
+the seventh wrote them. **The previous PRODUCTION, UNDEPLOYED, WHAT IS HIS AND OPEN,
+ACCESS PATH and SESSION TITLES blocks are gone, not annotated.** Everything below
+LIVE STATE is kept for its MECHANISMS, not its facts. **Verify before acting on any
+of it.***
 
-### PRODUCTION
+### PRODUCTION - SHIPPED AND RESTARTED 2026-09-14 13:15/13:16 ET
 
 ```
-web / research / assess    9370ab3     schema 27
-mointel-market             9370ab3     restarted 2026-09-13 09:56:29Z
+web / research / assess    997d231     schema 27, verified by each unit's own cwd
+mointel-market             997d231     restarted 13:16:23 ET, RTH in progress
+                                       connected + authenticated + subscribed in 11s
+RETENTION 20               IN FORCE from this restart
 backups                    self-pruning; the reaper keeps the newest 3
-port 22                    46.26.37.254/32, 70.17.101.27/32, 95.17.57.244/32
+port 22                    his HOME address (rotated) + the original third /32.
+                           The stale home address and Sunday's network are OUT.
 tmitrader.com              401 to everyone. No public page exists.
 ```
 
-### UNDEPLOYED AND RIDING THIS AFTERNOON'S ENUMERATION
+**Ops's report is `aee63a7`. HIS 10:47 ET INSTRUCTION - deploy and restart
+mid-session - IS DISCHARGED.** *He gave the restart word with the costs stated; the
+seventh session's LIVE STATE still listed it as open and it was not.*
 
-**Tip is `cf2cf0a`. Ops enumerates after the 16:00 close and ships before the 22:00
-roll. HIS WORD IS NEEDED FOR THE RESTART.**
+**THE ONE OPEN OBSERVABLE: tonight's 22:00 ET roll must leave the 09-09 bars
+alive.** *At retention 3 they would be pruned. Ops reads it after the roll if a turn
+lands, otherwise first thing tomorrow.* **That is the only proof retention 20 is
+actually in force; until then it is a claim about a config the store has not yet been
+asked about.**
 
-- **`lib/market/config.ts` - RETENTION 20, COMMITTED AND NOT IN FORCE.** *The prune
-  runs in the market worker on the roll; production does not pin the value, so it
-  lands only when that worker restarts onto a build carrying it.* **A future seat will
-  read `default 20` and believe the store keeps 20 sessions. READ `minute_bars` DATES
-  ON THE BOX for what retention actually is.** **Every roll it misses destroys a
-  session permanently.**
-- **`cf2cf0a` - TWO UTC TIMESTAMPS RENDERED AS IF LOCAL.** *`DecisionCells.tsx`
-  sliced an ISO string for the anchor tooltip, so 08:55Z read as 08:55 at 07:49 ET.*
-  **And the worse one, found by scanning rather than reported: catalyst citations
-  sliced `publishedAt`, so an announcement at 21:00 ET cited itself as the FOLLOWING
-  DAY** - *the window small-cap news breaks in, and catalyst age is one of his
-  pillars.*
+**A free corroboration Ops produced and did not have to:** this bootstrap backfilled
+**16,465** minute bars against Friday 04:33 ET's **346**, same code. *Relayed to
+Research as CONSISTENT WITH its unrolled-daily-bar premise and not as proof - the two
+runs also differ in how many names had traded, which is the quantity the degenerate
+selector depends on.* **The read-only REST snapshot between 04:00 and 06:00 ET is
+still the thing that settles it, and is still unrun.**
 
 ### WHAT IS HIS AND OPEN
 
-1. **THE RESTART WORD**, this afternoon, for retention 20 and `cf2cf0a`.
-2. **THE SECOND YES ON CLOSING PORT 22** - *and it is not "SSM works". It is
-   accepting that a network blocking SSM locks EVERYONE out with no fallback.* **Not
-   yet asked; gate 1 is not met.**
+1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
+   on the published canvas and say whether it is the deal he meant; and a voice
+   reference.* **Both have been answerable since 2026-09-11 and nobody told Marketing
+   its blocker had cleared** - see the correction in `marketing.md`.
+2. **OPS'S MODEL AND EFFORT ARE NOT THE DESK'S DEFAULT AND ONLY HE SETS THEM.**
+   *`Ops-tmi` runs `claude-fable-5-1` at effort `low`; `Design-tmi` is `claude-opus-5`
+   at medium, `Research-tmi` at max.* **Flagged, not asserted as a fault: Ops ran a
+   clean deploy and restart today and caught its own clock error while doing it.**
 
-### THE ACCESS PATH - ENROLLED, GATES OPEN, NOTHING CLOSED
+**NOT ASKED, DELIBERATELY: the second yes on closing port 22.** *Gate 1 passed for ONE
+network today by accident of his travel, and gate 2 was exercised on verification
+reads only.* **One pass proves one network, not the next, which is this seat's own
+recorded argument for keeping port 22 LONGER.** *Asking now would spend his attention
+on a question the evidence does not yet support.*
 
-**Session Manager hybrid activation is live.** *Managed node `mi-0a647a08fcc7366b7`,
-`ssh mointel-ssm` works, and the box side is PROVEN: `sshd`'s established peer reads
-`127.0.0.1` where a port-22 connection would show his address.*
+### THE ACCESS PATH - BOTH GATES MOVED TODAY, NOTHING CLOSED
 
-- **GATE 1 NOT MET.** *The test laptop is on the allowlist.* **And it proves less than
-  it sounds: the box half is done, so what remains is whether a GIVEN network permits
-  outbound 443 to the SSM endpoints.** **One pass proves one network, not the next -
-  which is an argument for keeping port 22 LONGER.**
-- **GATE 2: both paths in parallel until SSM has carried real work.**
-- **AND THE REASON: `push-release.sh` RUNS `deploy.sh` IN THE FOREGROUND OF ONE SSH
-  SESSION.** *No `nohup`, no `setsid`, no trap.* **A drop between stopping and
+**Managed node `mi-0a647a08fcc7366b7`; `ssh mointel-ssm` works.**
+
+- **GATE 1 PASSED FOR ONE NETWORK, BY ACCIDENT.** *His laptop's egress read
+  `95.17.58.175` at 13:00 ET, which was not on the port-22 rule; port 22 timed out and
+  Session Manager carried preflight on the box and returned.* **The off-list test this
+  seat specified, run for free by his travel. It proves that network.**
+- **GATE 2 EXERCISED, NOT SATISFIED:** *SSM carried the post-restart verification
+  reads.* **It has still never carried a deploy.**
+- **A LIVE DEFECT IN THE DEPLOY SCRIPT, FOUND THE SAME HOUR:** *`push-release.sh`'s
+  preflight probe went over port 22, timed out, and the script reported **"preflight
+  refused; nothing was shipped"** - a TRANSPORT failure wearing a GATE's words.*
+  **Nothing shipped, which is the safe outcome, and the log line is wrong about why.**
+  *Distinguishing "the gate said no" from "could not reach the gate" is Ops's, noted,
+  not started.*
+- **AND THE OLDER ONE STANDS: `push-release.sh` RUNS `deploy.sh` IN THE FOREGROUND OF
+  ONE SSH SESSION.** *No `nohup`, no `setsid`, no trap.* **A drop between stopping and
   starting the units leaves stopped units and a half-applied release - TRUE OF EVERY
-  DEPLOY THIS DESK HAS EVER RUN.** *Fixing that is real work, noted, not started.*
+  DEPLOY THIS DESK HAS EVER RUN, and the transport does not change it.**
 - **Spend answered: AWS removed the advanced tier 2026-06-30. $0.05/session from
   2026-09-30.** *Read from the pricing page by two seats independently.*
 
-### SESSION TITLES CARRY `-tmi`. THE BARE NAME WAS AMBIGUOUS.
+### SESSION TITLES CARRY `-tmi`, AND THE RULE IS NOW IN EVERY OPENING MESSAGE
 
 **His ruling 2026-09-14, after a message from Design to Integration landed on MEO's
-Integration and then resolved to TL;DW's.** **FIVE constellations share this machine.**
+Integration and then resolved to TL;DW's. FIVE constellations share this machine.**
 
-**Renamed:** `Integration-tmi`, `Ops-tmi`, `Design-tmi`, `Research-tmi`, `Web-tmi`,
-`Commercial-tmi`, `Marketing-tmi`. **Every opening message updated in the same pass,
-because renaming alone is undone by the first fresh session reading its charter.**
+**All eight threads plus this one now carry the suffix.** *`R&D` renamed to `R&D-tmi`
+2026-09-14; `Coaching` takes it on its next turn.* **`coaching.md` and `rnd.md` had
+NEVER carried a title instruction at all** - the seventh session recorded them as
+"still bare, they take the suffix when next opened", *which is a rule naming an EVENT
+where the requirement is that the instruction sit in the file a successor reads.*
+**Landed at `36fe45a`.**
 
-**STILL BARE: Coaching and R&D.** *Older than the visible list; they take the suffix
-when next opened.*
+### THE SEND CHANNEL - ONE WORKS, THREE DO NOT, AND A MESSAGE WAS LOST TODAY
+
+```
+WORKS    list_sessions -> sessionId, then mcp__ccd_session_mgmt__send_message
+FAILS    ListAgents names / the SendMessage tool / a `from` attribute
+```
+
+**2026-09-14: Design sent its anchor-provenance field spec to Research with the
+`SendMessage` tool and IT NEVER ARRIVED.** *The spec survived only because Design had
+also committed it at `7df7d17`, and Research read it there.*
+
+> **THE README TOLD IT TO.** *`README.md`'s thread-to-thread section still said to
+> address Integration by NAME from `ListAgents` - an instruction retracted on
+> 2026-08-24 forty lines further down the SAME FILE and left standing for three
+> weeks.* **A retraction that reaches one section of a file does not reach the file.**
+> *Corrected at `f38e052`.*
+
+**AND MY OWN FIRST RELAY FLATTENED THE FIELD.** *I described Design's spec as "the
+stamped boolean". It is `boolean | null` - three states, and the null means THIS BUILD
+CANNOT SAY.* **Research caught it and said what a two-state version would have cost:
+a field asserting "anchors are fine" on every build that cannot tell.** *The field is
+`anchorsEstablishedAfterSessionStart` - named for the CONDITION, not for the restart,
+because the restart is only one of at least two known causes.*
 
 > **CHECK `cwd` BEFORE EVERY SEND.** **The title is a claim; the working directory is
 > a fact.**
-
 ### THE ANCHOR WORK - ANSWERED 2026-09-14 14:23Z. ONE CAUSE, AND MY NUMBER WAS WRONG.
 
 **Ops took the expiring read. Full table in the `ops.md` tail.**
@@ -411,17 +452,45 @@ RULING ON. 53.1% and 40.6% fall on opposite sides.**
   page cannot go live at `/` until in-app auth gates the board, proven from a client
   with no cached credential.* **Basic Auth comes off LAST, as a separate change.**
 
-### THE OTHER SEATS
+### THE OTHER SEATS - CHECKED 2026-09-14 13:35 ET, BY WHAT THEY SAID
 
-- **Ops-tmi** - successor to the seat retired 2026-09-12. The only deploy seat.
+- **Ops-tmi** - the only deploy seat. Shipped and restarted today. **Runs
+  `claude-fable-5-1` at effort `low`** - see WHAT IS HIS AND OPEN.
 - **Research-tmi** - **ITS LIVE STATE IS DATED 2026-08-27, EIGHTEEN DAYS STALE**, on
-  the most active thread. *Marked unverified by audit; only its owner can rewrite it.*
+  the most active thread. *Only its owner can rewrite it.* Nothing pending on him.
+- **Design-tmi** - the clock fix `cf2cf0a` is now live inside `997d231`. The anchor
+  warning is **specified and deliberately not built**, blocked on Research's engine
+  field. Nothing pending on him.
+- **Web-tmi** - everything done or waiting on Ops: the flow cookie name until
+  `app/auth/` lands, and the four public route prefixes. Nothing pending on him.
 - **Commercial-tmi** - **LIVE STATE dated 2026-09-07**, predates the auth research and
-  three claim rulings.
-- **Design-tmi**, **Web-tmi**, **Marketing-tmi** - current.
-- **Coaching, R&D** - idle, titles still bare.
+  three claim rulings. Nothing pending on him.
+- **Marketing-tmi** - **ITS OWN LIVE STATE WAS FALSE IN TWO PLACES AND THAT IS WHY ITS
+  TWO ASKS WENT COLD FOR THREE DAYS.** *Corrected at `f38e052`; the section is
+  Marketing's to rewrite.*
+- **Coaching** - **IDLE SINCE 2026-09-10, WAITING ON A FILE THAT ARRIVED WITHOUT IT.**
+  *`data/assessments-prod.db` carries `extract_as_of` 2026-09-11T08:18:27Z,
+  `complete_through` 2026-09-10, 322 assessments, 8,025 ticker rows.* **The scheduled
+  run of 2026-09-11 02:30Z DIED 3.9 SECONDS IN** - *created 02:30:28.787Z, last
+  activity 02:30:32.669Z* - **and something re-ran it six hours later and told nobody.**
+  *`coaching.md` last committed 2026-09-07.* **The cut is now three sessions behind;
+  09-11 and 09-12 have traded.**
+- **R&D-tmi** - idle since 2026-09-10. Extract and backfill unrun and **unrequested by
+  its own choice**, recorded in `rnd.md` so a successor finds it.
 - **`A:\claude-infra-agent`** - `Infra-Audit` and `Infra-Ops`, created 2026-09-12.
   **Account-level only; project resources stay with each project's Ops.**
+
+> **THE LIFESPAN TEST IS ALREADY IN THIS FILE AND NOBODY RAN IT FOR THREE DAYS.**
+> *`lastActivityAt - createdAt` against what the task had to do: 3.9 seconds against an
+> ssh extract of 322 assessments and 8,025 rows is three orders of magnitude.* **Second
+> instance; the first cost a forensic reconstruction.** *It is one subtraction on a row
+> `list_sessions` already returns, and this seat reads that row constantly.*
+>
+> **AND THE INFERENCE FROM IT WOULD HAVE BEEN WRONG.** *"The task died, so the extract
+> never ran" is well-formed and false - the file is on disk and correct.* **The session
+> shape said the SCHEDULED RUN failed; only opening `extract_meta` said whether the
+> WORK did.**
+
 
 ### WHAT THE AUDIT OF 2026-09-12 DID NOT COVER
 
