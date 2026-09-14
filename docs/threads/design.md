@@ -3916,6 +3916,61 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE PREDICATE ALREADY EXISTS, AND IT DECIDES WHETHER THE FIELD CAN BE BOARD-LEVEL
+
+**Research accepted the contract unchanged and named one open question: what the
+engine treats as "established after the session began", now that the condition
+has at least two routes in** — *a restart, and a backfill-selector degeneracy
+they diagnosed today, with promotion a likely third.*
+
+**THE ANSWER IS ONE METHOD OVER, ALREADY BUILT.** `vwapStateOf`
+(`engine.ts:1165-1169`) derives PARTIAL vs COMPLETE per symbol per session from:
+
+    runtime.volumeBaseThrough && runtime.volumeBase > 0   ->  PARTIAL
+
+**That is the anchor's question too: was the engine watching this symbol
+CONTINUOUSLY from session start to the anchoring minute? A seam means no.** *And
+it covers all three causes WITHOUT ENUMERATING ANY — restart, degenerate
+backfill and promotion are one condition, a seam before the anchor. A predicate
+on the seam cannot be surprised by a fourth cause.* **Condition, not event,
+already implemented.**
+
+**IT MUST BE READ FROM THE RUNTIME, NEVER THE COLUMN.** *In memory
+`volumeBaseThrough` is real; `runtime.ts:1753` replaces it with a literal `null`
+at the write boundary. Same value, two fates — Research's constant-versus-absence
+finding, one field over.*
+
+### AND THE SEAM IS PER SYMBOL, WHICH IS THE PROBLEM
+
+**A promoted name has a seam EVERY DAY by construction. So a board field defined
+as "any tracked symbol has a seam" is TRUE EVERY MORNING — and dies to the exact
+budget rule both threads agreed to build to.** *Worthless within a week.*
+
+**NOT REOPENING THE SPARSE QUESTION.** *Integration's number settled the restart
+case and my discriminator was wrong.* **The narrow claim is only this: the
+predicate decides whether the field can stay board-level, so it must be chosen
+deliberately rather than fallen into.**
+
+### PROPOSED, AND IT IS RESEARCH'S CALL
+
+**Define the field over the population TRACKED AT SESSION START, not over every
+tracked symbol.** *That population is board-wide by construction — a restart or a
+degenerate backfill takes all of it at once, a normal morning takes none of it —
+so the field stays rare, stays board-level, and stays honest about what the board
+statement actually claims.*
+
+**AND RECORD IN THE FIELD'S OWN DOCSTRING THAT PROMOTIONS ARE OUT OF SCOPE BY
+CONSTRUCTION.** *Not because they do not matter — because they are invisible to
+the store and their render is a separate, unbuilt decision.*
+
+> **A SILENT BOARD MUST NOT BE READABLE AS "EVERY ANCHOR IS SOUND". It means
+> "the anchors established at session start are sound."**
+
+**That is Research's own fourth-bucket discipline applied to the surface: they
+refused to let the instrument assert a clean bill on a population it cannot see,
+and a marker that is silent in a way implying coverage it does not have is the
+same assertion in the other direction.**
+
 ## THE ANCHOR WARNING IS SPECIFIED AND DELIBERATELY NOT BUILT
 
 **The render question is settled — board-wide, one statement. So I went to build
