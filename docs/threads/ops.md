@@ -9239,3 +9239,64 @@ me out completely."*
 **Making `deploy.sh` survive a dropped transport (`systemd-run` or a detached
 unit with a log to tail) is a real improvement and a separate piece of work;
 noted, not started.**
+
+## THE ANCHOR-TIME READ: 13 of 17 misplaced, every one stamped at its own first post-restart bar — 2026-09-14 10:23 ET
+
+**Design's question via Integration: are the 17 ranked≤50 names' anchors all
+at 08:33Z (restart) or scattered through the morning (mid-session
+promotions)?** *Taken 14:23Z over the Session Manager path, read-only, the
+cohort defined exactly as `anchor-loss-cohort.ts` defines it — ranked ≤50,
+printed with volume in a minute that completed before 08:33Z. Every name's
+own first bar and first post-restart bar read beside its anchor as controls.*
+
+```
+symbol rank  pm_open_at   first_bar  first_after_restart
+ACVA   12    08:00        08:00      08:35     CORRECT
+XRTX   14    08:00        08:00      08:33     CORRECT
+TNON   30    08:00        08:00      08:34     CORRECT
+LBGJ   42    08:00        08:00      08:34     CORRECT
+AENT    2    08:33        08:06      08:33     = first post-restart bar
+BDRX    4    08:34        08:00      08:34     =
+FTFT   34    08:34        08:00      08:34     =
+PCLA   38    08:34        08:00      08:34     =
+SXTC   41    08:34        08:00      08:34     =
+FGL    45    08:34        08:00      08:34     =
+SWRD   25    08:35        08:00      08:35     =
+MKDW    5    08:37        08:00      08:37     =
+RENT   31    08:44        08:29      08:44     =
+CRMT   43    09:06        08:00      09:06     =
+CVV    39    09:32        08:19      09:32     =
+RWT    36    09:39        08:00      09:39     =
+BENF    1    10:04        08:17      10:04     =
+```
+
+**THE ANSWER IS NEITHER SHAPE DESIGN OFFERED, AND THE CONTROL COLUMN IS WHAT
+SHOWS IT.** *13 of 17 are misplaced, not 17 — four rows kept a correct 08:00
+anchor through the restart.* **All 13 misplaced anchors equal, to the minute,
+the name's own FIRST BAR AFTER THE RESTART.** *That spread — 08:33 to 10:04 —
+is the spread of when each name next printed, not of when it was admitted.*
+**A restart does not stamp one shared instant; it stamps each name at its next
+print.** So "scattered through the morning" is what restart damage looks like
+too, and the scatter cannot, on its own, distinguish restart from promotion.
+
+**What DOES distinguish them here: a promotion-caused anchor would sit at the
+admission minute with post-restart bars existing BEFORE it** —
+`first_after_restart < pm_open_at`. **Zero of 17 show that.** Every misplaced
+anchor is the first post-restart print. **One cause, the restart. No
+promotion case in this cohort.**
+
+**⇒ For Design: board-wide, one statement, as the cohort script already said —
+and the per-row time is NOT 08:33; it is per-name.** *If a row ever shows its
+anchor, it should show the name's own value, not the restart minute.*
+
+**Open, and not mine: why did four rows survive?** *ACVA, XRTX, TNON, LBGJ all
+have first bar exactly 08:00 — but so do BDRX, FTFT, PCLA and others that did
+not survive.* **Something preserved a persisted 08:00 anchor for four names
+and overwrote it for nine with the same first bar.** That is a writer-path
+question for Research; the rows are retained until Wednesday's roll and this
+query reproduces the table.
+
+**Correction to the count carried since Saturday:** "17 lost their anchor"
+was the cohort that COULD have lost it. The number that did is **13 of 17
+(76.5%)**; over the 32 premarket-ranked names, 13/32 = 40.6%. Both stated
+with denominators.
