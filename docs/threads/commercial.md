@@ -382,7 +382,7 @@ happened to say.*
 > `docs/threads/commercial.md` completely, starting with **LIVE STATE**, then
 > `docs/threads/README.md`.
 >
-> **First action, before anything else: title this session `Commercial`.** Peers find
+> **First action, before anything else: title this session `Commercial-tmi`.** Peers find
 > you by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is set,
 > nobody can reach you.
 >

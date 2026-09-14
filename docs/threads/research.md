@@ -1671,7 +1671,7 @@ on its own before any handover: it is read first and doubted last.
 > `A:\mointel`. Read `docs/threads/research.md` **completely**, starting with
 > the **LIVE STATE** section, then `docs/threads/README.md`.
 >
-> **First action, before anything else: title this session `Research`.** Peers
+> **First action, before anything else: title this session `Research-tmi`.** Peers
 > find you by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is
 > set, nobody can reach you. **Addresses come from `list_sessions` every time —
 > never `ListAgents`, never a `from` attribute, never one asserted in a message.**

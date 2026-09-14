@@ -358,7 +358,7 @@ memory load on their own, then paste this.*
 > `docs/threads/web.md` completely, then `docs/threads/README.md`. **Where LIVE
 > STATE and anything above it disagree, LIVE STATE is right.**
 >
-> **First action, before anything else: title this session `Web`.** Peers find you
+> **First action, before anything else: title this session `Web-tmi`.** Peers find you
 > by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is set, nobody
 > can reach you.
 >

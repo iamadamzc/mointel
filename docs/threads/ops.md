@@ -8013,7 +8013,7 @@ successor's brief, and are fixed here.*
 > Read `docs/threads/ops.md` — **starting with the handover at the top** — then
 > `docs/threads/README.md`. Everything else is on disk and linked from those two.
 >
-> **First action, before anything else: title this session `Ops`.** Peers find you
+> **First action, before anything else: title this session `Ops-tmi`.** Peers find you
 > by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is set, nobody
 > can reach you.
 >

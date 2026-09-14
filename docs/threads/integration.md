@@ -5209,7 +5209,7 @@ matters most.*
 > linked from those two. **Where LIVE STATE and anything above it disagree, LIVE
 > STATE is right and the rest is stale.**
 >
-> **First action, before anything else: title this session `Integration`.** Peers
+> **First action, before anything else: title this session `Integration-tmi`.** Peers
 > find you by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is
 > set, nobody can reach you.
 >

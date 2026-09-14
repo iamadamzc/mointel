@@ -298,7 +298,7 @@ desk's most-recorded failure and this seat committed it while enforcing it.*
 > This is the **Marketing thread** for the TMI Trader desk at `A:\mointel`. Read
 > `docs/threads/marketing.md` completely, then `docs/threads/README.md`.
 >
-> **First action, before anything else: title this session `Marketing`.** Peers find
+> **First action, before anything else: title this session `Marketing-tmi`.** Peers find
 > you by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is set,
 > nobody can reach you.
 >

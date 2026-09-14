@@ -26,6 +26,37 @@ this file to learn who exists would not have learned that Commercial does** — 
 the section below still explains "why six" for what is now eight. **The count in a
 heading is a fact with a shelf life; the table is the register.**
 
+## SESSION TITLES CARRY A `-tmi` SUFFIX. THE BARE NAME IS AMBIGUOUS.
+
+**His ruling 2026-09-14, after a message from Design to Integration landed on MEO's
+Integration, then resolved to TL;DW's on a retry.**
+
+```
+A:\mointel                      -tmi      Ops-tmi, Design-tmi, Research-tmi, Web-tmi,
+                                           Commercial-tmi, Marketing-tmi, Integration-tmi
+A:pp.myesteticaonline.com   -meo      suffixed 2026-09-04 for this exact reason
+A:\TLDW                         -tldw
+A:\claude-infra-agent           Infra-    Infra-Audit, Infra-Ops
+A:\corporate-office             CEO, CRO, Legal, Integration-corp
+```
+
+**FIVE CONSTELLATIONS ON ONE MACHINE, AND `list_sessions` SHOWS THEM ALL.** *Until
+today mointel's were the only bare ones, so "Integration" and "Ops" each resolved
+several ways.*
+
+> **A RULING ADDRESSED TO "Ops" CAN LAND ON ANOTHER PROJECT'S OPS AND BE ACTED ON** —
+> *by a seat behaving correctly on an instruction that was never for it.* **That is
+> not a near miss; it happened twice in one exchange.**
+
+- **The title is the address, so it must be unique across every project on the
+  machine, not within this one.**
+- **AND CHECK `cwd` BEFORE EVERY SEND. `list_sessions` returns it.** *The title is a
+  claim; the working directory is a fact, and it disambiguates even if a suffix is
+  ever missed.*
+- **Live sessions renamed 2026-09-14; every opening message updated so a new seat
+  does not re-take the bare name.** *Renaming alone would have been undone by the
+  first fresh session reading its charter.*
+
 ## Why six
 
 Ops and Design are obviously different jobs. Research is split out because it is
