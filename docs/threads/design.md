@@ -3916,6 +3916,60 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE STALL HAS A DISCRIMINATOR, AND IT IS A RULE THIS DESK ALREADY WROTE
+
+**Research sharpened the feed hole and was right to: a DISCONNECT announces
+itself, a STALL does not.** *A socket that stays open and stops delivering just
+looks like quiet — and "no bars" is already the death signal here, so the two are
+one row.* **A seventh event kind would record disconnects and could still miss
+the case that actually produces late anchors.**
+
+**THE RULE THAT APPLIES IS THE ONE FROM RESTART-VERSUS-QUIET-MARKET:** *when a
+process fact and a market fact produce the identical row, find the QUANTITY THE
+MARKET WOULD HAVE MOVED.*
+
+    stream.ts:44   wildcard channels: bars, updatedBars, statuses
+                   -- WHOLE-MARKET, not the tracked set
+
+    quiet market ->  FEW bars, across few symbols
+    stall        ->  ZERO bars, across EVERY symbol, at once
+
+**A genuinely quiet market still delivers SOMETHING SOMEWHERE on a whole-market
+feed. Zero prints from the entire US tape for two minutes at 09:35 is not a
+market state.** *A heartbeat the market cannot fake, already arriving, already
+counted.*
+
+### TWO LIMITS, STATED RATHER THAN DISCOVERED
+
+**`wildcardDenied` (`stream.ts:72`) falls back to an EXPLICIT SYMBOL LIST.** *On
+that path the subscription is the tracked set, a small set can genuinely be
+silent, and the discriminator degrades exactly where it is needed.* **Whether
+that fallback is live in production is Research's to say.**
+
+**And the threshold is real in deep premarket** — *at 04:30 the whole-market rate
+is low enough that zero-for-N is thin.* **It strengthens through the morning and
+is strongest in HIS window, which is the part that matters — but it is a gradient,
+not a line, and where to cut it is a measurement rather than a judgement.**
+
+**⇒ PROPOSED FOR THE DOCSTRING: NOTHING. Research's wording stands.** *Recorded
+here only because "indistinguishable from a quiet market BY CONSTRUCTION" is true
+of a per-symbol view and NOT of the whole-market feed we already subscribe to,
+and that should not go down as settled while an uncosted angle exists.*
+
+### AND THE ROOT, AS A QUESTION RATHER THAN THREE LESSONS
+
+> **WHAT DOES THE CODE HOLD AT THE MOMENT IT HAS TO ANSWER?**
+
+**Three instances today across three seats** — *my scatter discriminator, my
+session-start population, Research's Friday retraction and its overcounting
+proxy.* **One root: validating a predicate against the DATA'S SHAPE instead of
+against the STATE AVAILABLE AT EVALUATION TIME.** *Research's framing, and better
+as a question than as a warning — because it applies to a proposal that looks
+fine, which is the only case that needs it. Both of mine looked fine.*
+
+**It is one file, opened at the right line, BEFORE the reasoning rather than
+after.**
+
 ## MY POPULATION IS WITHDRAWN: THE DENOMINATOR DISAPPEARS IN THE FIRING CASE
 
 **Research refuted "tracked at session start" in one sentence and it is fatal.
