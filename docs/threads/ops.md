@@ -9404,3 +9404,23 @@ DIRECT  anchor MOVED 13   correct 19   no stored anchor 0
 *The proxy's 53.1% and the direct 40.6% sit on opposite sides of the 50% line
 the old instrument ruled on; the instrument no longer rules, on Research's own
 correction. Sparse-versus-board-wide is Design's to decide from the number.*
+
+**Research's code read closes the mechanism, one premise short.** The RVOL
+preview at bootstrap was not empty but DEGENERATE: with `belongsToSession`
+false the volume is 0, `computeDailyRvol(0, avg)` returns 0 rather than null,
+every entry sorts equal, and `.slice(0, 200)` takes 200 names in snapshot
+iteration order. Backfill requested ~208, Alpaca had bars for the 8 pins —
+346 bars. **The thirteen were never in the set because nothing was ranked.**
+*Unverified premise: that Alpaca's snapshot daily bar had not yet rolled to
+09-11 at 04:33 ET. The data favours it; code cannot settle it.* **Research's
+fix scope, to Integration: seed `focused` from the previous cycle's
+`ticker_session.rvol_rank`, which survives a restart, and let the preview ADD
+to it.** `worker/runtime.ts` is Ops's file; that is a scoped change for a
+later enumeration, not tonight's.
+
+**How the premise gets settled, for whoever is awake:** a bootstrap only runs
+at process start, and tonight's restart is after the close when the bar has
+long rolled, so a log line would not see it. **One read-only REST snapshot
+for a handful of symbols between 04:00 and 06:00 ET on a trading day — from
+the box with the worker's own keys, REST not the SIP socket — answers whether
+`dailyBar.t` is today or yesterday.** Reproduces every morning; does not expire.
