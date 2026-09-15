@@ -9664,3 +9664,15 @@ log line (item 1) the thing that says when it did not.
 **Enumeration of the 56 commits above `997d231`, including the Move sort:
 AFTER the 16:00 close, per Integration. Agreed** — two premarket outages on
 deploys already, and yesterday's memory failure was the same shape.
+
+**Process-start read for Integration, 04:39 ET:** `mointel-market` MainPID
+355632, ExecMainStart **2026-09-14 17:16:23Z = 13:16:23 ET Monday**,
+NRestarts 0, cwd `997d231`, and no Started/Stopped/SIGTERM line in the
+journal since. **The worker predates today's 04:00 ET session open.** So the
+NO_PRINT composition defect Research found (a name that traded earlier in the
+session and went quiet after a mid-session restart renders "not traded") is
+**LATENT today, not firing.** It fires only after a restart inside a session,
+which adds to that restart's price: yesterday's cost 10 wrong Moves of 50; the
+next also costs false "not traded" sentences on exactly the spiked-early-then-
+died names he tracks. *`DecisionCells.tsx:152` still says the board cannot
+receive NO_PRINT; it can, via `repo.ts:504`. Stale comment, Design's file.*
