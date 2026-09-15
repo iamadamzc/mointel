@@ -207,18 +207,33 @@ ACCESS PATH and SESSION TITLES blocks are gone, not annotated.** Everything belo
 LIVE STATE is kept for its MECHANISMS, not its facts. **Verify before acting on any
 of it.***
 
-### PRODUCTION - SHIPPED AND RESTARTED 2026-09-14 13:15/13:16 ET
+### PRODUCTION - 4cbd58f SHIPPED 2026-09-15 17:58 ET. MARKET WORKER DELIBERATELY NOT RESTARTED.
 
 ```
-web / research / assess    997d231     schema 27, verified by each unit's own cwd
-mointel-market             997d231     restarted 13:16:23 ET, RTH in progress
-                                       connected + authenticated + subscribed in 11s
-RETENTION 20               IN FORCE from this restart
-backups                    self-pruning; the reaper keeps the newest 3
-port 22                    70.17.101.27/32 + 95.17.58.175/32 (home, rotated).
-                           The stale home /32 and Sunday's are OUT.
-tmitrader.com              401 to everyone. No public page exists.
+web / research / assess   4cbd58f   since 21:58:32Z, NRestarts 0, verified by /proc cwd over SSM
+mointel-market            997d231   pid 355632, since Mon 17:16:23Z, UNTOUCHED
+schema                    27        migrate took 0 backups, newer-store guard no-op
+health                    ok        market LIVE STREAMING
+rollback                  997d231   release prune removed b0610fee
 ```
+
+**HIS IN-SESSION MOVE SORT IS LIVE** — *`528a99e` is `components/` and `lib/dashboard/`, served by web, which restarted.*
+
+> **AND THE FALSE "not traded" SENTENCE IS NOT FIXED BY THIS SHIP.** *`7b32e82` is
+> `engine.ts` — market-worker code — and the market worker is still on `997d231`.*
+> **Ops listed it as "DecisionCells NO_PRINT rendering + interim"; I opened `9ae4aa2`
+> and it is a COMMENT REWRITE whose own text says "nothing here changed".** *The whole
+> fix is `engine.ts:1151`'s `anchorObservable`.* **Correction taken and reported that
+> way in `ops.md`.**
+>
+> **EXPOSURE IN BETWEEN IS NIL AND THAT IS WHY IT WAS A LABELLING POINT RATHER THAN A
+> HOLD:** *the defect needs a mid-session restart to fire, and the running worker
+> predates today's session open.* **Restart and the fix arrives with it; do not restart
+> and the defect stays latent. No window either way.**
+
+**THE RESTART IS HIS AND OPS ASKED HIM DIRECTLY.** *Not relayed by this seat.*
+**Either way the 22:00 roll must still find 09-09 present** — *retention 20 is in force
+on the OLD worker, so the roll is the same observable it was last night.*
 
 **Ops's report is `aee63a7`. HIS 10:47 ET INSTRUCTION - deploy and restart
 mid-session - IS DISCHARGED.** *He gave the restart word with the costs stated; the
