@@ -483,18 +483,66 @@ would have left the count resting on an argument that does not support it.**
 **Design, verified here at the lines.** *`anchorLateScope`'s `NAME` arm is set from
 `engine.ts:903`'s no-baseline branch, which calls `onPromotionCandidate`.*
 
+**IT TAKES TWO REASONS AND I RECORDED ONE. Both verified here at the lines.**
+
 ```
-worker/alpaca.ts:81-82   baselineSymbols = universe.length > 0 ? universe : pinned
-                         await runtime.ensureBaselines(baselineSymbols)
+SNAPSHOT-SET NAMES      runtime.ts:849-875 has NO `continue` before seedSession, and
+                        engine.ts:816 seedSession -> ensure(). So a runtime EXISTS,
+                        `if (!runtime)` at 899 is false, and 903 is NEVER REACHED.
+                        The baseline fact is true and does no work.   -- RESEARCH'S
+
+SUB-FLOOR / HIGH        runtime.ts:806-812 candidates = pinned + prior close within
+GAPPERS                 [discoveryPriceMin*0.4, discoveryPriceMax*2]. Outside that
+                        band there is no snapshot and no bootstrap runtime, so 899
+                        AND 903 ARE REACHED -- and alpaca.ts:81-82 seeded a baseline
+                        for the whole universe, so no event fires and it falls
+                        through to ensure().                          -- MINE
 ```
 
-**THE WHOLE UNIVERSE GETS A BASELINE AT STARTUP, so `!this.baselines.has(symbol)` never
-fires for a universe name, so `onPromotionCandidate` never fires for one.** **⇒ The arm
-carrying HIS RULING is defined on an event that does not occur for the population it
-describes.**
+**⇒ Either way the arm carrying HIS RULING is defined on an event that does not occur
+for a universe name. Neither reason covers both populations alone.** *A reader holding
+only the runtime-exists reason tests it against a gapper, finds the branch IS reached,
+and may conclude the arm works.*
+
+*(Design's message swapped the attribution on that last sentence — it reads as a test
+of the baseline reason and it is a test of the runtime one. Substance unaffected;
+noted because the whole point of the pair is that a reason gets tested and discarded
+when it is filed against the wrong claim.)*
 
 *His ruling stands and is unaffected; the trigger does not exist. Reported by its own
 author as unbuildable rather than defended.*
+
+### I PRICED "THE ANCHOR FIELD" AS ONE OBJECT AND IT IS TWO
+
+**I told him six predicates had died and that if a seventh went the same way the
+question was whether THE BOARD STATEMENT is worth it. Design's decomposition, and it is
+correct:**
+
+```
+SESSION -- the board statement    verified EARLY, survived every argument including
+                                  two that killed everything around it, still
+                                  standing. COST ZERO PREDICATES. `SOUND` and `null`
+                                  came with it.
+THE ROW MARK -- the fourth arm    SIX deaths, four of them Design's.
+```
+
+**So the churn I priced belongs entirely to the arm his ruling created, and the thing I
+proposed re-opening had already been finished for hours.** *I bundled two objects under
+one name and priced the whole — the same failure this file has recorded on four seats
+today, committed inside my own assessment of that failure's cost.*
+
+**AND DESIGN'S DECISION ANSWERS THE ESCALATION WITHOUT ONE: NO SEVENTH PREDICATE UNTIL
+THE POPULATION IS MEASURED.** *`anchor-loss-cohort.ts` on a NON-RESTART date separates
+Research's reading (the case barely occurs outside a restart) from Design's (it occurs
+for names gapping in from outside the band), using fields it already loads.* **If the
+case is rare the honest render is the tooltip he already has and no fourth arm is built
+at all.**
+
+> **THE RIGHT QUESTION TO PUT TO HIM WAS NEVER MINE AND DESIGN HAS ALREADY PUT IT: the
+> row mark he chose rests on a number nobody has measured** — *including that Design put
+> an unverified premise into the question he ruled on, and said so.* **Designing a
+> detector for a population whose size is unknown and CHEAPLY KNOWABLE is what produced
+> tonight.**
 
 ### I REPORTED AN ABSENCE FROM A SEARCH NARROWER THAN THE CLAIM. SO DID DESIGN, IN THE SAME EXCHANGE.
 
