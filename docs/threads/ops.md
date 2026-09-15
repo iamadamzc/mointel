@@ -9848,3 +9848,24 @@ the markdown renderer for `/privacy` and `/terms`, the `/signin` page, the
 board at its own path, Web's recommendation, or (B).** Under (A) the five
 strings above are unchanged and `location = /` is added later; the board's
 new path keeps `auth_basic`.
+
+**RULING SHARPENED, his words: "make it user based authority, and the only
+user with that authority right now is me. im the admin."** *Supersedes "the
+check must identify him."* The authority is a property of the USER: the check
+asks whether THIS user holds it, his identity appears nowhere in code, and a
+second admin later is a data change. **Two axes, two columns:** `users.status`
+answers MAY THIS PERSON IN; authority answers WHAT MAY THEY DO. Approved-and-
+not-admin and admin-and-suspended are both real states; folding admin into
+`status` puts two questions in one column, this desk's most-repeated defect.
+**Default: no authority, as `status` defaults to `pending` — nothing granted by
+accident; re-granting is recoverable, grandfathering is not.**
+
+**THE BOOTSTRAP IS A TRAPDOOR, named before anyone builds it:** "first user to
+sign in becomes admin" is dangerous HERE because `/signin` goes public in this
+batch and a stranger can reach it before he does — the first person through
+the door would take the authority to spend his money. **The first admin row is
+an explicit one-time grant against a KNOWN identity (his email, by a command
+he runs, or a seed he authorises), never an implicit grant against an
+ordinal.** Shape of the column is mine with Web; the separation is the
+ruling's consequence. Nothing here is tonight's; `/api/` keeps Basic Auth in
+the public batch, so the retry gate stays a condition on the later step.
