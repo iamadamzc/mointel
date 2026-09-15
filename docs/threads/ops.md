@@ -9929,3 +9929,21 @@ renderers are written after that check, so "nothing assumes the root" becomes
 a property the new code must not break, and it is mine to hold: the batch
 gets a test that asserts every fetch and href in the three new pages is
 absolute or relative-to-nothing.**
+
+**SUPERSEDING ORDER for the public batch — Web §3d at `ce298cd`, ruled by
+Integration: TWO releases, not one.**
+```
+RELEASE 1  app only, nginx untouched: the move to /desk, the landing page, both renderers.
+           `/` serves the landing page and is STILL behind Basic Auth.
+VERIFY     WITH the desk password: landing at /, board at /desk, /privacy and /terms render.
+           (Existence, not reachability -- a held credential does not distort "does it exist".)
+RELEASE 2  the four exact exemptions; then §2's verification credential-free, negative
+           control FIRST: /desk -> 401 is the line whose failure means the desk is public;
+           then /api/market 401, /privacy-x 401; then the four 200s.
+THEN       he submits to Google.
+```
+*Why two: one release closes the 404 hazard correctly but has no moment
+between "present" and "public"; two has a checkpoint where a throwing
+renderer is a 500 seen with the password, not by a stranger.* **Neither
+release goes out 07:00–10:00 ET. Release 1 changes what `/` serves HIM;
+Integration tells him before it lands.**
