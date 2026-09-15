@@ -182,12 +182,27 @@ function SessionMoveLine({ telemetry }: { telemetry: MarketTelemetry }) {
    * deliberately. A name still printing after a restart gets an anchor from its
    * next bar: a wrong percentage, not a false sentence.
    *
-   * THIS BRANCH MUST BE GATED ON `anchorLateScope` WHEN THAT FIELD EXISTS --
-   * `SESSION` means the engine observed this session late and this symbol was
-   * not replayed, and under it `NO_PRINT` is not trustworthy and must fall to
-   * the silent arm. There is no cheaper interim: ruling the case out without
-   * that field would mean never saying "not traded" at all, which throws away
-   * the state he asked for to avoid a rare wrong one.
+   * CLOSED UPSTREAM, AND IT COST NOTHING. `engine.ts:1151` now asks
+   * `anchorObservable` -- were we watching at this session's open, OR was this
+   * symbol replayed by the bootstrap -- per symbol, per session. When the answer
+   * is no, an observed `NO_PRINT` is emitted as `UNKNOWN` instead.
+   *
+   * WHICH IS NOT A WORKAROUND: `UNKNOWN` means THE PRODUCER COULD NOT TELL, and
+   * after a restart it genuinely cannot separate "did not trade" from "we were
+   * not watching". So the false sentence is unreachable, this branch is right as
+   * written, and nothing here changed.
+   *
+   * I HAD WRITTEN THAT THERE WAS NO CHEAPER INTERIM. There was, and it was free
+   * -- no column, no schema, no render change. I looked for the fix in this file
+   * and concluded none existed, which was true and useless: the question is
+   * "could the producer observe it", and only the producer can answer. A gate
+   * searched for at the wrong layer reads as absent.
+   *
+   * WHAT IS DELIBERATELY STILL UNGATED: a late anchor WITH a price yields `OPEN`
+   * and a wrong percentage. Suppressing that would discard a number he asked for
+   * to avoid a rare wrong one. So the false SENTENCE is closed; the wrong NUMBER
+   * still wants `anchorLateScope` and the `LATE` mark, which is the informative
+   * half rather than a correctness gate.
    */
   if (reading.state === 'NOT_STARTED' || reading.state === 'UNKNOWN') return null;
 
