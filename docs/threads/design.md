@@ -3978,14 +3978,25 @@ engine never sends is a warning that CANNOT FIRE.*
 
 **AND THE OBVIOUS NAME IS TAKEN, IN THIS CODEBASE, FOR THE OPPOSITE THING:**
 
-    lib/market/symbolAdmission.ts:26   firstSeenAt   RejectedSymbolRecord
-    lib/market/types.ts:611            firstSeenAt   RejectedSymbol
+    lib/market/symbolAdmission.ts:26   RejectedSymbolRecord   an INVALID symbol
+    lib/market/types.ts:611            RejectedSymbol         same
+    lib/archive/coverage.ts:237-242    SymbolDeskDay          per symbol PER DATE
+    lib/archive/repo.ts:113              persisted with it
 
-**Both real, both persisted, and both record when an INVALID symbol was first
-REJECTED by the provider** — *the `OBSERVED PM` spreadsheet-label incident.* **A
-future reader greps `firstSeenAt` expecting a tracking stamp and lands in a
-rejection log for symbols that do not exist.** *Integration's narrower grep
-reached the right conclusion; widening it found the collision.*
+**THREE MEANINGS, NONE OF THEM "WHEN THE ENGINE FIRST OBSERVED THIS SYMBOL".**
+*The first two record when an INVALID symbol was first REJECTED by the provider —
+the `OBSERVED PM` incident — and they announce themselves as wrong the moment the
+interface is read.*
+
+**THE ARCHIVE ONE DOES NOT, AND IT IS THE TRAP.** `SymbolDeskDay.firstSeenAt` is
+per symbol per DATE and reads as exactly the field anyone here would be looking
+for. **The name is not merely spent twice; it is booby-trapped once.**
+
+**AND MY OWN REPORTING OF THIS WAS THE DAY'S WORST SEARCH FAILURE, WORSE THAN A
+NARROW ONE: THE GREP WAS WIDE AND I FILTERED THE RESULT.** *Four hits in my own
+output, I opened two, and reported an absence with the other two on screen.*
+**Integration scoped a search too tightly and reported honestly from it; I had the
+evidence and did not follow it.**
 
 ## RETRACTING MY OWN ACCEPTED FIX, AND NAMING THE FIELD
 
