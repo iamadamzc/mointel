@@ -9699,3 +9699,14 @@ alarm, or the first reader treats a normal premarket restart as an incident.**
 **Restart runbook addition:** the NO_PRINT "not traded" false sentence is now
 a rendered consequence of any in-session restart; gate is Research's SESSION
 field, un-withdrawn.
+
+## The installed nginx file is current; review links get their assets — 2026-09-15 14:11 ET
+
+Integration's question before test users: is `/etc/nginx/mointel-locations.conf`
+the file in the repo? **Read on the box: byte-identical to the `997d231`
+release copy; installed 2026-09-14 17:13:32Z by the deploy; nginx workers
+re-spawned 17:15:45Z (the reload); `nginx -T` shows `location ^~
+/_next/static/ { auth_basic off; ... }` live.** Behaviour, no credentials,
+HTTPS on the box: a real chunk from the live `.next` → **200**; `/` → **401**;
+`/review/notatoken/api/dashboard` → **403**. *Review sessions receive JS and
+CSS. The click test is Design's.*
