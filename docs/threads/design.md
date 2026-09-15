@@ -3916,6 +3916,42 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE TEST IS BUILT, AND ITS BAND IS HARDCODED ONE LEVEL UP
+
+**Research built the three-way split (`418b084`) and it is the right shape — it
+can say BOTH of us are wrong, which a count could not.** *But the safeguard they
+described does not hold, and the failure lands on the population the test exists
+to isolate.*
+
+    anchor-loss-cohort.ts:71-72   let priceMin = 1;  let priceMax = 20;   LITERALS
+    :66                           reads process.env.MARKET_DB_PATH
+    config.ts:71-72               num(env.DISCOVERY_PRICE_MIN, 1), num(env.DISCOVERY_PRICE_MAX, 20)
+
+**The tool reads the DB path from the environment and does NOT read the discovery
+prices. Config appears only in a comment.** *So the defaults are literals that
+currently EQUAL the config defaults — which is the state in which a duplicated
+threshold is invisible.*
+
+**⇒ RETUNE `DISCOVERY_PRICE_MIN=2` AND THE WORKER'S BAND BECOMES [0.80, 40.00]
+WHILE THE TOOL STILL REPORTS [0.40, 40.00].** *Every name closing between 0.40 and
+0.80 is then bucketed INSIDE by the tool and treated as OUTSIDE by the worker —
+and those are precisely the sub-floor gappers the split was added to isolate.*
+
+**AND IT FAILS IN THE WORST DIRECTION: toward "moved inside the band too", which
+is outcome three — the one meaning neither reading is right.** *A stale literal
+would send both threads back to the drawing board and look like evidence.*
+
+**The dead-line trap, moved from the band expression into the default. Reported;
+theirs to apply.**
+
+### THE BAND, VERIFIED, AND WHY I AM NOT GIVING HIM A THIRD NUMBER
+
+**Config defaults 1 and 20, so [0.40, 40.00] is correct today.** *Which makes the
+uncovered population narrower still: a sub-$0.40 name running into range, or a
+$40-plus name falling in. The first is a real pattern; the second is rare
+intraday.* **Holding that until the test runs rather than adding a third estimate
+to the two he has already been given.**
+
 ## STOPPING THE DESIGN UNTIL THE NUMBER EXISTS
 
 **Integration asked, correctly, whether the board statement is worth what tonight
