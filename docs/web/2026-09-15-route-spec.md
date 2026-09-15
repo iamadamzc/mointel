@@ -295,6 +295,75 @@ control, and a control is Design's surface rather than a Web state.*
 
 ---
 
+## 3d. RELEASE ORDER — Design found the hazard, this is the order that avoids it
+
+**THE HAZARD, and it is the inverse of the one this thread has been guarding.**
+*Moving `app/page.tsx` to `app/desk/page.tsx` leaves the app with **no page at
+`/`**, so Next 404s there.*
+
+> **Board moved + `location = /` exempted + landing page not shipped
+> = the bare domain serves a PUBLIC 404.**
+>
+> **Harmless to the desk and fatal to the thing this is for.** *Google arrives at
+> a publicly reachable 404 instead of a home page, and **a failed verification
+> attempt is worse than an unattempted one** — it burns the retry, and calendar
+> time is the scarce resource here.*
+
+**Design's rule, and it is the one to hold on to: a `401` at `/` is the status
+quo; a public `404` is a regression.**
+
+### The order
+
+**RELEASE 1 — the app, all in one release. nginx untouched.**
+
+1. `app/page.tsx` → `app/desk/page.tsx` *(pure rename; everything it touches is
+   an alias import)*.
+2. New `app/page.tsx` renders the landing page.
+3. `/privacy` and `/terms` renderers.
+
+**At the end of Release 1, `/` serves the landing page and is STILL BEHIND BASIC
+AUTH.** *Nothing is public. The dangerous window never opens, because the app
+can only 404 at `/` in the gap between steps 1 and 2 — and there is no gap if
+they ship together.*
+
+**VERIFY BEFORE EXEMPTING, and note which question this asks:**
+
+```bash
+curl -su '<desk user>:<desk pass>' https://tmitrader.com/ | grep -c "Intelligence on what's moving"   # expect 1
+curl -su '<desk user>:<desk pass>' -o /dev/null -w '%{http_code}
+' https://tmitrader.com/desk        # expect 200
+```
+
+> **Using the desk password here is correct and is not a violation of this
+> thread's own rule.** *That rule is about REACHABILITY — whether a stranger can
+> get in — and a cached credential makes that question untestable. This asks
+> whether the content EXISTS at the path, which the credential does not
+> distort.* **Two different questions; only one of them is poisoned by having
+> the password.**
+
+**RELEASE 2 — nginx. The four exemptions, then §2's verification including the
+negative control.**
+
+**Only after Release 2's `200`s and `401`s both pass does he submit for
+verification.**
+
+### Two things about when
+
+- **Release 1 changes what `/` serves HIM** — the landing page, not the board.
+  **He needs to know before it lands, and his bookmark becomes `/desk`.**
+  *Trivial, and infuriating if discovered at 07:02 on a Tuesday.*
+- **Neither release goes out between 07:00 and 10:00 ET.** *Ops's window rules
+  already say this; it is restated because "it is only a rename" is exactly the
+  reasoning that puts a deploy inside the one window that matters.*
+
+### If the landing page is not ready
+
+**Moving the board early is still safe, provided `location = /` is NOT
+exempted.** *A 401 at `/` is what is there today.* **What must never happen is
+the exemption landing before the page exists.**
+
+---
+
 ## 4. A GATE ON STEP 3 THAT IS NOT IN THE BATCH — the only write endpoint
 
 **Verified, not relayed** — `app/api/research/retry/route.ts` at `dd98782`:
