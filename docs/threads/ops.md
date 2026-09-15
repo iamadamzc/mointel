@@ -9592,3 +9592,42 @@ AHL.PRE 15, EDHL 16, ITHA 22, QTRX 25, SPHL 27, KFII 28, HITI 38, RLGT 41,
 PTN 43, JBDI 45, STIM 46, NICM 47, PMTR 48. *For the record; the session is
 over. The number to carry: a mid-session restart's late-anchor share on the
 board grew from 2% to 28% by the close.*
+
+## The fourteen, priced: ten wrong Moves, one sign flip, four of zero magnitude — 2026-09-15 01:40 ET
+
+**Integration's point: "14 late-anchored" is a count of the defect, not of
+wrong Moves. He prices a restart on how wrong the Moves were.** Read on the
+box: stored `rth_open_price` against the true RTH open (first bar with volume
+at or after 13:30:00.000Z), Move as shown vs Move as it should have read, at
+the day's stored price. Error in percentage points, shown minus true.
+
+```
+          anchor  true-open  stored  true   price  shown%  true%   err
+SPHL  27  14:05   09:48      2.475   2.32   2.35   -5.1    +1.3   -6.3   SIGN FLIP
+PTN   43  13:24   09:30     12.22   11.72  13.92   13.9    18.8   -4.9   a runner, understated
+QTRX  25  13:17   09:30      2.625   2.50   2.43   -7.4    -2.8   -4.6
+NICM  47  15:33   11:28      6.255   6.50   5.91   -5.5    -9.1   +3.6   overstated
+RLGT  41  13:17   09:30      8.35    8.09   9.03    8.1    11.6   -3.5   runner, understated
+STIM  46  13:18   09:30      3.14    3.03   2.90   -7.6    -4.3   -3.4
+HITI  38  13:19   09:30      2.565   2.53   2.65    3.3     4.7   -1.4
+JBDI  45  13:52   10:24      1.21    1.20   1.2269  1.4     2.2   -0.8
+EDHL  16  13:17   09:30      4.40    4.37   4.60    4.5     5.3   -0.7
+AHL.PRE 15 14:10  09:30     18.38   18.44  18.26   -0.7    -1.0   +0.3
+SAC   14  15:26   15:26     10.10   10.10  10.10    0.0     0.0    0.0   no tape before anchor
+ITHA  22  13:31   13:02     10.06   10.06  10.06    0.0     0.0    0.0   two flat bars
+KFII  28  15:42   15:42     10.66   10.66  10.66    0.0     0.0    0.0   no tape before anchor
+PMTR  48  15:03   15:03     10.42   10.42  10.415   0.0     0.0    0.0   no tape before anchor
+(times ET)
+```
+
+**The quantity he decides on: of 14 late anchors, 10 showed a wrong Move, 4
+showed the right one.** Nine of the ten were UNDERSTATED — Integration's
+direction holds — and one overstated. **Worst single row: SPHL, shown -5.1%
+when the truth was +1.3%, a sign flip on a rank-27 name.** Two genuine
+runners, PTN and RLGT, read 4.9 and 3.5 points smaller than they were. The
+four zero rows are names whose first RTH print WAS the anchor — no tape
+before it, nothing to be wrong about.
+
+**⇒ For the next mid-session restart decision: about 20% of the closing board
+(10 of 50) carried a wrong Move, median error ~3.5 points, worst 6.3 with a
+flipped sign.** Measured, not estimated; the query is above.
