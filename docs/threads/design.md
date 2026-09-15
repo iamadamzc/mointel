@@ -3916,6 +3916,25 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## NONE OF THIS EXISTS YET, AND `firstSeenAt` IS ALREADY SPENT
+
+**Stated outright because the spec only implied it and Integration had to grep to
+find out: `anchorLateScope` DOES NOT EXIST. Neither does any observed-since
+stamp.** *Nobody should go looking for either. The coupling applies to it exactly
+as written — field and render ship together, and a surface reading a field the
+engine never sends is a warning that CANNOT FIRE.*
+
+**AND THE OBVIOUS NAME IS TAKEN, IN THIS CODEBASE, FOR THE OPPOSITE THING:**
+
+    lib/market/symbolAdmission.ts:26   firstSeenAt   RejectedSymbolRecord
+    lib/market/types.ts:611            firstSeenAt   RejectedSymbol
+
+**Both real, both persisted, and both record when an INVALID symbol was first
+REJECTED by the provider** — *the `OBSERVED PM` spreadsheet-label incident.* **A
+future reader greps `firstSeenAt` expecting a tracking stamp and lands in a
+rejection log for symbols that do not exist.** *Integration's narrower grep
+reached the right conclusion; widening it found the collision.*
+
 ## RETRACTING MY OWN ACCEPTED FIX, AND NAMING THE FIELD
 
 **Research took the per-symbol predicate partly on my word. Checking the code to
