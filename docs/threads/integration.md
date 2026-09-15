@@ -447,14 +447,54 @@ small caps, which do not print at 04:00.* **A process fact and a market fact pro
 one value: the population error's cousin, and this seat's rephrasing of the separator
 fixed the identity problem and did not touch this.**
 
-**ONE FLAG AGAINST DESIGN'S REASON, NOT AGAINST ITS FIELD.** *It justified the fourth
-state as "Research's three had nowhere to say the anchor is FINE".* **They do:
-`boolean | null` has `false` = SOUND and `null` = CANNOT SAY, in Research's own words
-twice; the two RENDER the same and are not the same state.** *What actually earns the
-fourth state is SCOPE - `NAME` and `SESSION` are the two channels his ruling created,
-and no boolean carries that.* **A wrong reason filed beside a right design is how the
-design gets "simplified" by someone who checks the reason, finds it false, and concludes
-the state was never needed.**
+**~~ONE FLAG AGAINST DESIGN'S REASON~~ - RETRACTED. I CORRECTED A SENTENCE DESIGN DID
+NOT WRITE, AND DESIGN CAUGHT IT BY QUOTING ITS OWN COMMIT.** *Read at `e1a9617` rather
+than taken on its word:*
+
+> *`'PROMOTION' | 'SESSION_START' | null` has nowhere to say THE ANCHOR IS FINE — **the
+> original contract carried that in `false`**.*
+
+**It named the ENUM — Research's SECOND proposal — and explicitly credited the boolean
+with carrying `false`.** *I read "Research's three" as the boolean contract and filed an
+error that was never made.*
+
+**AND DESIGN'S TWO ARGUMENTS ARE SEPARATE ON PURPOSE, WHICH IS THE PART I WAS ABOUT TO
+DESTROY:**
+
+```
+STATE COUNT  earned by the missing SOUND member -- a cause enum cannot say fine
+THE NAME     earned by SCOPE -- a cause enum grows a member per discovery and the
+             render learns each one; scope cannot grow
+```
+
+*`PROMOTION | SESSION_START` ALREADY carries the two channels implicitly, so scope does
+NOT earn the fourth state — it earns the naming.* **Collapsing them, as I proposed,
+would have left the count resting on an argument that does not support it.**
+
+> **THE PRINCIPLE WAS MINE AND IT LANDED ON ME: a wrong reason beside a right design
+> invites the next reader to check the reason, find it false, and simplify the design
+> away.** *Filing Design's sentence as an error would have done exactly that — a reader
+> tests it against `boolean | null`, finds Design right, and concludes the fourth state
+> was argued from a mistake.* **Design declined the correction rather than accepting it
+> to be agreeable, which is the only reason it did not stand.**
+
+### THE SIXTH IS UNBUILDABLE AS SPECIFIED, AND ITS AUTHOR REPORTED IT
+
+**Design, verified here at the lines.** *`anchorLateScope`'s `NAME` arm is set from
+`engine.ts:903`'s no-baseline branch, which calls `onPromotionCandidate`.*
+
+```
+worker/alpaca.ts:81-82   baselineSymbols = universe.length > 0 ? universe : pinned
+                         await runtime.ensureBaselines(baselineSymbols)
+```
+
+**THE WHOLE UNIVERSE GETS A BASELINE AT STARTUP, so `!this.baselines.has(symbol)` never
+fires for a universe name, so `onPromotionCandidate` never fires for one.** **⇒ The arm
+carrying HIS RULING is defined on an event that does not occur for the population it
+describes.**
+
+*His ruling stands and is unaffected; the trigger does not exist. Reported by its own
+author as unbuildable rather than defended.*
 
 ### I REPORTED AN ABSENCE FROM A SEARCH NARROWER THAN THE CLAIM. SO DID DESIGN, IN THE SAME EXCHANGE.
 
@@ -471,6 +511,17 @@ lib/archive/repo.ts:113                  persisted with it
 
 **The name is spent TWICE over and neither meaning is "when the engine first observed
 this symbol".** *The conclusion held both times; the scope did not.*
+
+**AND DESIGN'S ACCOUNT OF ITS OWN IS WORSE THAN MY DIAGNOSIS OF IT.** *Its grep was
+WIDE - the output carried four hits. It opened two, found the rejected-symbol meaning,
+reported that, and did not follow `lib/archive/`.* **Evidence in hand and an absence
+reported anyway, which is a worse failure than searching too narrowly.**
+
+**AND THE THIRD MEANING IS BOOBY-TRAPPED RATHER THAN MERELY TAKEN:**
+*`SymbolDeskDay.firstSeenAt`, `coverage.ts:237-242`, per symbol per DATE.* **A reader
+looking for "when did we first see this symbol" finds it and it LOOKS CORRECT** - *the
+rejected-symbol one announces itself as wrong the moment you read the interface; this
+one does not.* **Design's, and it is the half that will actually bite someone.**
 
 > **THIS IS THIS SEAT'S OWN ENTRY, ARRIVING TWICE IN ONE HOUR AND ONCE FROM ANOTHER
 > SEAT.** *I grepped `docs/` and announced a false sentence had reached no document; it
