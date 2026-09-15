@@ -9798,3 +9798,36 @@ Never a browser on this desk.
 ```
 *Every one of the five is a 401 today. The batch is measured against this
 line; a 401 after it ships is the failure nobody on this desk can see.*
+
+## HIS RULING: "users cannot initiate spend. so only me." — and the MCP surface enumerated, 2026-09-15
+
+*Relayed by Integration under the production-write delegation, his words.*
+
+**What it means beyond hiding a button:** (1) the check on
+`POST /api/research/retry` must identify HIM server-side, not "an approved
+user" — the client flag is not the boundary; (2) `users.status` cannot express
+it (pending-versus-approved is a different axis from owner-versus-user), so an
+owner/role distinction is needed, schema-adjacent, mine with Web; (3) the rule
+is about SPEND, so it is enforced only once every spend path is enumerated.
+
+**Spend-path enumeration, read from code, not grepped for names:**
+```
+app/api/research/retry/route.ts   POST   the one user-reachable path to retryResearch     FOUND, behind Basic Auth on location / only
+lib/research/queue.ts             worker-internal, not a request path                    NOT A PATH
+app/mcp/[token]/route.ts          GET 405, DELETE 405, POST -> handleMcpMessage           TRANSPORT ONLY
+lib/mcp/protocol.ts               tools/call resolves ONLY from TOOLS_BY_NAME              REGISTRY-BOUND
+lib/mcp/tools.ts                  7 tools, all get_*: desk_status, discovery, ticker,
+                                  recent_events, assessment_status, assessment, diagnostics
+                                  imports: readModel (opens the store READONLY, readModel.ts:83),
+                                  dashboard/*, research/time, review/diagnostics — no queue,
+                                  no retryResearch, no setMeta, no model client            NO SPEND PATH
+tests/mcp/readOnly.test.ts + sideEffects.test.ts   walk the registry / prove no writes     EXIST
+```
+**The MCP endpoint cannot initiate spend: structurally, by imports, not by
+annotation.** Integration's grep-found-nothing is now a read-found-nothing
+with the surface listed. *The `DELETE` that worried it is a 405 with
+`Allow: POST` — session termination on a server with no sessions.*
+
+**So "only me" has exactly one path to guard today, `/api/research/retry`,
+and it is guarded today by Basic Auth alone.** The owner check belongs to the
+auth batch, before Basic Auth leaves `/`; not tonight.
