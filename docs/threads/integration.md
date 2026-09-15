@@ -650,6 +650,78 @@ null` under `NO_PRINT`.* **`discoveryMissingCount` already exists — and it mat
 on this key than on any existing one, because it is the count of names THE SORT IS
 SILENTLY OMITTING.**
 
+### A FALSE MARKET STATEMENT FROM TWO CORRECT COMPONENTS - LIVE CODE, LATENT TODAY
+
+**Research, 2026-09-15. All four links verified HERE, and all four are in production
+`997d231`.**
+
+```
+repo.ts:504               reads the state column -> the board CAN receive NO_PRINT
+DecisionCells.tsx:158-167 renders NO_PRINT as the words "not traded", in WARN colour
+DecisionCells.tsx:152     still says "The board cannot receive NO_PRINT yet"  -- STALE,
+                          and it is the guard a reader would trust
+a fresh runtime           sessionOpenPrice null, and the live stream does NOT re-deliver
+                          bars from before it started
+```
+
+**THE CONDITION, ALL THREE REQUIRED:** *a mid-session restart happened; the name traded
+in the CURRENT session before it; the name has not traded since.* **Then the anchor is
+null, the engine computes `NO_PRINT` correctly from what it can see, and the board
+asserts a name did not trade in a session it traded in.**
+
+> **THAT POPULATION IS "SPIKED EARLY, THEN DIED" — the shape item 112 established and
+> `dead-while-ranked` measured, and one he tracks deliberately.** *It is also the shape
+> most likely to satisfy all three conditions at once.*
+
+**WHY IT OUTRANKS THE WRONG MOVE:**
+
+```
+a late anchor   -> a wrong PERCENTAGE on a row he can read and doubt
+NO_PRINT        -> the WORDS "not traded", in warn colour, about a name that traded
+```
+
+**The first is a number he can distrust. The second is the desk stating a market fact
+that is false, in the vocabulary built to stop exactly that.** *Both components are
+correct in isolation — the `state` field is right about what the engine can SEE, the
+restart behaviour is right about what it HAS.* **The composition is the defect: the
+two-correct-guards family, and this time the product is a SENTENCE rather than a
+silence.**
+
+**LATENT RATHER THAN FIRING, SUBJECT TO ONE FACT THIS SEAT DOES NOT OWN.** *The
+condition needs a mid-session restart; today's session opened 04:00 ET with the worker
+believed up since 2026-09-14 13:16:23.* **Put to Ops as a process-start READ rather
+than asserted** — *this seat has reported a process state from a plausible reading
+before.*
+
+**⇒ AND IT RE-PRICES THE NEXT MID-SESSION RESTART AGAIN.** *Yesterday's cost was 10
+wrong Moves of 50. It now also costs FALSE "not traded" SENTENCES on the spiked-early
+population.* **The `SESSION` scope field stops being an annotation and becomes a GATE:
+if the engine started late and this symbol was not replayed, `NO_PRINT` is not
+trustworthy and must not render as "not traded".**
+
+### RESEARCH UN-WITHDREW ITS `SESSION` PREDICATE, AND MY FINDING KILLED THE WRONG VERSION
+
+**My false positive landed on the ONE-conjunct version. Research had proposed TWO.**
+
+```
+A   observingSinceMs > sessionStartMs                                    <- what I tested
+B   A  AND  volumeBaseSource !== 'alpaca-historical-minute-bars'         <- what it proposed
+```
+
+*Yesterday's board rows were inside the focused 200, so they WERE replayed, so B's second
+conjunct is false, so B returns FALSE — correctly.* **My finding is fatal to A and does
+not touch B.**
+
+> **RESEARCH WITHDREW BOTH BECAUSE IT HAD STOPPED DISTINGUISHING ITS OWN TWO VERSIONS**
+> — *its words, and it found this while re-reading its own withdrawal.* **AND THIS SEAT
+> RECORDED THE WITHDRAWAL AS GENERAL.** *I wrote "both earlier predicates withdrawn by
+> their own authors" and carried that for hours.*
+>
+> **A WITHDRAWAL IS A CLAIM AND INHERITS THE SCOPE OF WHAT IT WITHDRAWS.** *I already
+> have the entry that a retraction gets none of the checking the finding got; this is
+> the same rule about its BREADTH rather than its truth.* **B is buildable and verified
+> across Friday, today, a normal morning and a normal-day promotion.**
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
