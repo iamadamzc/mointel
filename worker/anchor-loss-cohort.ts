@@ -58,6 +58,9 @@ interface Args {
   restart: string;
   /** Highest `rvol_rank` treated as "he could have seen it". */
   rank: number;
+  /** Discovery band, which sets the candidate band at 0.4x and 2x. */
+  priceMin: number;
+  priceMax: number;
 }
 
 function parseArgs(argv: string[]): Args {
@@ -65,15 +68,19 @@ function parseArgs(argv: string[]): Args {
   let date: string | null = null;
   let restart = '08:33';
   let rank = 50;
+  let priceMin = 1;
+  let priceMax = 20;
 
   for (const arg of argv) {
     if (arg.startsWith('--db=')) dbPath = arg.slice('--db='.length);
     if (arg.startsWith('--date=')) date = arg.slice('--date='.length);
     if (arg.startsWith('--restart=')) restart = arg.slice('--restart='.length);
     if (arg.startsWith('--rank=')) rank = Number(arg.slice('--rank='.length));
+    if (arg.startsWith('--price-min=')) priceMin = Number(arg.slice('--price-min='.length));
+    if (arg.startsWith('--price-max=')) priceMax = Number(arg.slice('--price-max='.length));
   }
 
-  return { dbPath, date, restart, rank };
+  return { dbPath, date, restart, rank, priceMin, priceMax };
 }
 
 function proveReadOnly(db: Database.Database, path: string): void {
@@ -222,7 +229,7 @@ function main(): void {
    * ON. A proxy that overcounts is survivable; a proxy that overcounts across
    * the threshold you are deciding at is not.
    */
-  const misplaced = anchorsMisplaced(db, args.date, open, bell, args.rank);
+  const misplaced = anchorsMisplaced(db, args.date, open, bell, args.rank, args.priceMin * 0.4, args.priceMax * 2);
   if (misplaced === null) {
     console.log('[anchor] pm_open_at is not populated on this date, so the DIRECT');
     console.log('[anchor] measurement is unavailable and C/D above is the best there is.');
@@ -232,6 +239,7 @@ function main(): void {
 
   const { moved, correct, missing, unverifiable } = misplaced;
   const { movedZeroMagnitude, movedWithMagnitude, movedMagnitudeUnknown, worstDelta } = misplaced;
+  const { movedOutsideBand, movedInsideBand, correctOutsideBand, correctInsideBand } = misplaced;
   const measured = moved + correct;
   console.log('  DIRECT -- pm_open_at against the earliest retained premarket bar:');
   console.log(`    anchor MOVED (misplaced)   ${moved}`);
@@ -245,6 +253,22 @@ function main(): void {
   console.log(`    magnitude unknown          ${movedMagnitudeUnknown}`);
   if (movedWithMagnitude > 0) {
     console.log(`    worst anchor error         ${worstDelta.toFixed(2)}%`);
+  }
+  console.log('');
+  console.log(`  BY CANDIDATE BAND [${(args.priceMin * 0.4).toFixed(2)}, ${(args.priceMax * 2).toFixed(2)}]`);
+  console.log('  -- a name OUTSIDE it gets no bootstrap runtime, so the price gate applies:');
+  console.log(`    OUTSIDE band   moved ${movedOutsideBand}   correct ${correctOutsideBand}`);
+  console.log(`    INSIDE band    moved ${movedInsideBand}   correct ${correctInsideBand}`);
+  console.log('');
+  if (movedOutsideBand > 0 && movedInsideBand === 0) {
+    console.log('[anchor] CONCENTRATED OUTSIDE the band -- the candidate-band mechanism');
+    console.log('[anchor] explains it, and the size of the case is that population.');
+  } else if (movedInsideBand > 0) {
+    console.log('[anchor] SCATTERED INSIDE the band too -- the band does not explain it');
+    console.log('[anchor] and the mechanism is one nobody has found. Do not assume either.');
+  } else if (moved === 0) {
+    console.log('[anchor] NO misplaced anchors at all. On a non-restart date that means');
+    console.log('[anchor] anchors are sound outside a restart and the premise was wrong.');
   }
 
   if (measured === 0) {
@@ -287,6 +311,8 @@ function anchorsMisplaced(
   open: string,
   bell: string,
   maxRank: number,
+  bandMin: number,
+  bandMax: number,
 ): {
   moved: number;
   correct: number;
@@ -296,6 +322,10 @@ function anchorsMisplaced(
   movedWithMagnitude: number;
   movedMagnitudeUnknown: number;
   worstDelta: number;
+  movedOutsideBand: number;
+  movedInsideBand: number;
+  correctOutsideBand: number;
+  correctInsideBand: number;
 } | null {
   /*
    * THE COLUMN MAY NOT EXIST AT ALL, which is a THIRD case and not the same as
@@ -318,7 +348,7 @@ function anchorsMisplaced(
   const rows = db
     .prepare(
       `SELECT s.symbol, s.pm_open_at AS anchor, s.qualified_at AS admitted,
-              s.pm_open_price AS anchorPrice,
+              s.pm_open_price AS anchorPrice, s.previous_close AS priorClose,
               (SELECT MIN(b.ts) FROM minute_bars b
                 WHERE b.symbol = s.symbol AND b.trading_date = s.trading_date
                   AND b.ts >= ? AND b.ts < ? AND b.volume > 0) AS earliest,
@@ -336,6 +366,7 @@ function anchorsMisplaced(
     earliest: string | null;
     anchorPrice: number | null;
     truePrice: number | null;
+    priorClose: number | null;
   }>;
 
   let moved = 0;
@@ -346,6 +377,10 @@ function anchorsMisplaced(
   let movedWithMagnitude = 0;
   let movedMagnitudeUnknown = 0;
   let worstDelta = 0;
+  let movedOutsideBand = 0;
+  let movedInsideBand = 0;
+  let correctOutsideBand = 0;
+  let correctInsideBand = 0;
   for (const row of rows) {
     // No retained bar means the comparison cannot be made -- not that it passed.
     if (row.earliest === null) continue;
@@ -381,12 +416,35 @@ function anchorsMisplaced(
       continue;
     }
 
+    /*
+     * THE CANDIDATE BAND, which decides whether a bootstrap runtime existed.
+     *
+     * `worker/runtime.ts:805-812` builds the snapshot set from names whose PRIOR
+     * CLOSE sits in [discoveryPriceMin * 0.4, discoveryPriceMax * 2] -- widened
+     * deliberately "so a gapping name is not missed just because it closed below
+     * the floor". A name OUTSIDE it gets no runtime at bootstrap, so
+     * `engine.ts:902`'s price gate applies to it, its sub-band prints are
+     * discarded before any runtime exists, and its anchor is its first IN-BAND
+     * print. Late.
+     *
+     * Design-tmi's prediction, and this split is the whole test: on a date with
+     * no mid-session restart, misplaced anchors should CONCENTRATE outside the
+     * band and be near-absent inside it. Scattered inside too means the
+     * mechanism is something neither of us has found.
+     */
+    const insideBand =
+      row.priorClose !== null && row.priorClose >= bandMin && row.priorClose <= bandMax;
+
     if (row.anchor === row.earliest) {
       correct += 1;
+      if (insideBand) correctInsideBand += 1;
+      else correctOutsideBand += 1;
       continue;
     }
 
     moved += 1;
+    if (insideBand) movedInsideBand += 1;
+    else movedOutsideBand += 1;
 
     /*
      * A MISPLACED ANCHOR IS NOT AUTOMATICALLY A WRONG NUMBER, AND I REPORTED
@@ -423,6 +481,10 @@ function anchorsMisplaced(
     movedWithMagnitude,
     movedMagnitudeUnknown,
     worstDelta,
+    movedOutsideBand,
+    movedInsideBand,
+    correctOutsideBand,
+    correctInsideBand,
   };
 }
 
