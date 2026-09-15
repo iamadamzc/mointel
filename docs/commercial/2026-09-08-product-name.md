@@ -481,6 +481,57 @@ price. Integration has set its own trigger to reopen the exposure
 conversation with him before the page goes live (`c7ada4f`); his ruling
 stands and no seat invents a threshold.
 
+## 2e-bis. MAY A COMPETITOR BE NAMED? — Warrior Trading, 2026-09-15
+
+*His words, answering Marketing's request for a voice reference:
+"https://www.warriortrading.com/ this is the most successful and actually the
+trading style this app is patterned after. they offer scanners and charts. i
+would like tmi to be complementary." Recorded by Marketing in
+`docs/marketing/voice-reference-warrior-trading.md`. Integration corrected
+the relay before it reached this seat: §2e retired the LINE, not the
+relationship; the relationship is registered and live in Web's card. What
+his sentence reaches is a question §2e never faced — whether a competitor
+may be named.*
+
+**Ruling: the relationship stays as registered; Warrior Trading is not
+named on the page or in any public copy.** Three reasons, in order of
+weight.
+
+1. **A positioning fact he states is not an instruction to publish it.** He
+   said what the product is patterned after and what he wants it to be, in a
+   message about *voice* — who the reader is. Nothing in it asks for the
+   name on the page, and Marketing's own reading of the reference says the
+   same: the reference is their reader, not their register.
+2. **His two statements do not conflict, so nothing here overrides the
+   earlier taste.** §2e's retirement rested on his own objection to the
+   pitch: a competitor as the subject of the sentence. "Complementary" is
+   a position, and a position is stated without a subject in the room — the
+   registered card already does it: *"It does not run your filters or
+   replace a scanner. It ranks names that are already moving and reports
+   what is underneath them."* Naming Warrior would put a competitor back in
+   the subject position, which is a larger step than the retired line ever
+   took, and it would do so against the objection that retired it.
+3. **Naming a third party is the class of claim this seat has already
+   struck once.** §2f item 3 struck a defect rate about a named vendor
+   because the subject can answer and the desk holds no agreement under
+   which it may say it. "Complementary to Warrior Trading" is a softer claim
+   in the same class: an association Warrior has not agreed to, on a page
+   whose licence posture already depends on a small evidence surface, and
+   which implies a relationship the desk does not have — the vendor
+   exclusion in §0 was written for exactly that shape. It also invites the
+   reader to compare, and their home page carries the member profit figures
+   this desk cannot answer in kind.
+
+**What the sentence does license, and it is Marketing's to use.** The
+*reader* is a Warrior student; the *vocabulary* may be theirs — the five
+pillars, gappers, the window, float rotation, VWAP reclaim — used correctly
+and without attribution, because it is the trade's vocabulary and not their
+mark; and the *relation* may be stated as it already is, in the desk's own
+words, as a boundary. **Complementary is shown by fitting beside their
+morning, not by saying their name.** If he ever wants the name on the page,
+that is his call to make explicitly, and the seat's advice against it is
+the three reasons above.
+
 ## 2f. WHAT MAY BE CLAIMED — two rulings for Marketing, 2026-09-10
 
 *Marketing opened 2026-09-10 and flagged both itself rather than letting

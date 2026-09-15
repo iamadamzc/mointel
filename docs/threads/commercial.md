@@ -68,7 +68,7 @@ his, and it is an open question rather than a lean.
 
 ---
 
-## LIVE STATE — 2026-09-07
+## LIVE STATE — as of 2026-09-15 (opened 2026-09-07; every entry below carries its own date)
 
 **If anything above disagrees with this section, this section is right and the
 section above is stale.**
@@ -315,6 +315,19 @@ repo — they are public documents and re-fetchable.
   levels and continuity the desk already computes and the entries it has
   ruled out. First published price in the desk's own audience: $147/mo.
   What to build is Integration's to route; nothing names him on the page.
+
+- **May a competitor be named? — ruled 2026-09-15, naming document §2e-bis.**
+  His voice-reference answer to Marketing named Warrior Trading as the style
+  the app is patterned after and said he wants TMI to be complementary.
+  Integration corrected the relay: §2e retired the line, not the
+  relationship, which is registered and live in Web's card. Ruling: the
+  relationship stays as registered; Warrior is not named in public copy — a
+  positioning fact he states is not an instruction to publish it, naming
+  puts a competitor back in the subject position against his own objection
+  that retired the line, and an unagreed association with a named third
+  party is the class this seat struck in §2f. What it licenses is the
+  reader and the vocabulary, Marketing's to use. His call if he ever wants
+  the name on the page.
 
 **Open items.**
 
