@@ -687,15 +687,33 @@ restart behaviour is right about what it HAS.* **The composition is the defect: 
 two-correct-guards family, and this time the product is a SENTENCE rather than a
 silence.**
 
-**LATENT RATHER THAN FIRING, SUBJECT TO ONE FACT THIS SEAT DOES NOT OWN.** *The
-condition needs a mid-session restart; today's session opened 04:00 ET with the worker
-believed up since 2026-09-14 13:16:23.* **Put to Ops as a process-start READ rather
-than asserted** — *this seat has reported a process state from a plausible reading
-before.*
+**LATENT TODAY, CONFIRMED BY A READ RATHER THAN BY MY BELIEF.** *Ops, 04:39 ET:*
 
-**⇒ AND IT RE-PRICES THE NEXT MID-SESSION RESTART AGAIN.** *Yesterday's cost was 10
-wrong Moves of 50. It now also costs FALSE "not traded" SENTENCES on the spiked-early
-population.* **The `SESSION` scope field stops being an annotation and becomes a GATE:
+```
+mointel-market   MainPID 355632   ExecMainStartTimestamp 2026-09-14 17:16:23Z (13:16:23 ET)
+                 NRestarts 0      cwd 997d231
+                 no Started / Stopped / SIGTERM journal line since 17:17Z yesterday
+```
+
+**The worker predates today's 04:00 open, so nothing can be falsely reading "not traded"
+right now.** *I believed that and put it to Ops as a READ rather than asserting it —
+this seat has reported a process state from a plausible reading before, and the belief
+being correct is not the reason it is now a fact.*
+
+**⇒ THE PRICE OF THE NEXT MID-SESSION RESTART, CONSOLIDATED — THREE ITEMS, AND HE
+APPROVED THE LAST ONE ON A QUALITATIVE COST:**
+
+```
+1  MEASURED   10 of the closing 50 carry a wrong Move; median ~3.5 points
+              understated; worst SPHL at -5.1% shown against +1.3% true, a SIGN FLIP
+2  MECHANISM  names that traded early and went quiet read the WORDS "not traded" --
+              CONFIRMED  a false market statement, not a wrong number
+3  NEW        under the Move sort he asked for, a wrong anchor decides WHICH ROWS
+              EXIST rather than how one row reads -- and nine of ten errors push
+              names DOWN, out of view, where nothing invites a check
+```
+
+*Items 2 and 3 did not exist when he priced Monday's restart.* **The `SESSION` scope field stops being an annotation and becomes a GATE:
 if the engine started late and this symbol was not replayed, `NO_PRINT` is not
 trustworthy and must not render as "not traded".**
 
