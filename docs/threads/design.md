@@ -3916,6 +3916,50 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## HIS RULING: MARK THE ROW. `LATE`.
+
+**Put to him directly rather than relayed, because it is a question about what the
+board is FOR and both threads had escalated it to him.** *The framing: a name that
+qualifies at 07:40 shows "+43%" meaning since 07:40, not since the premarket open,
+and this happens to nearly every newly-qualified name every day.*
+
+    PM Move +43.6%  LATE
+    tooltip: PM Move from 16.24 at 07:40 ET on 5 trades in the anchoring minute
+
+**He chose the row mark over leaving it to the tooltip and over relabelling the
+cell.** *Which is the right call for the reason the relabel was tempting and
+wrong: one row reading `Move from 07:40` while its neighbours read `PM Move` is
+two words for one quantity on one screen — the exact drift the mirror guards
+exist to catch.* **A mark is a third word in a slot that already holds `thin` and
+`?`; a relabel is a second vocabulary.**
+
+### PRECEDENCE: `LATE` TAKES THE SLOT FROM `thin`
+
+**A row can be both. `thin` says the anchor rests on few trades; `LATE` says the
+anchor IS NOT THE SESSION OPEN AT ALL.** *If the minute is wrong, its thickness
+is not the reader's problem — a precise measurement of the wrong thing.*
+**`LATE` wins, and `UNKNOWN`/`?` stays below both because it is an absence rather
+than a finding.**
+
+### AND THE RULING MAKES RESEARCH'S SEPARATOR NECESSARY, NOT OPTIONAL
+
+**Both causes now render, and they render DIFFERENTLY:**
+
+    PROMOTION   structural, daily, one name at a time   ->  ROW MARK
+    RESTART     an incident, board-wide at once         ->  BOARD STATEMENT
+
+**One predicate, two causes, two channels — so the render must tell them apart,
+and a board-wide condition stated three hundred times is still one fact
+repeated.** *Research held their separator back until the product question was
+answered, which was the right order. It is answered, so it is now in order:*
+
+> **A promoted name's seam EQUALS its own `qualified_at`. A name already tracked
+> and caught by a bootstrap has an admission EARLIER than its seam.**
+
+**⇒ NO THRESHOLD. The two causes are distinguished by identity, the same way
+promotions were kept out of the board field — which is the third time today that
+comparing two stored moments has replaced a number somebody had to choose.**
+
 ## THE START-TIME PREDICATE FIRES WHEN THE BACKFILL WORKED — THE SEAM DOES NOT
 
 **Integration found it and it breaks the ruled default: Ops restarted mid-session
