@@ -292,7 +292,16 @@ at `fe26b0a`. Nothing is in progress and no file is held.**
   No component renders them.
 - **The unit is the canvas**, seven artboards; the published artifact is
   checked separately from the source, and so is this section.
-- **OPEN WITH HIM, carried by Integration-tmi 2026-09-14:** his reaction to the
-  research section; a voice reference; whether any window belongs on the page
-  now that 07:00–10:00 is off it. **His "maybe enhance it" is Research's.**
+- **THE VOICE REFERENCE IS ANSWERED, 2026-09-15: Warrior Trading.** *"the
+  trading style this app is patterned after. they offer scanners and charts. i
+  would like tmi to be complementary."* Read and recorded in
+  `docs/marketing/voice-reference-warrior-trading.md`. **It is a reader, not a
+  prose style: the home page is the sales register he rejected.** The reader is
+  a Warrior student; recognition is their vocabulary used correctly.
+- **WITH COMMERCIAL via Integration-tmi:** *"complementary"* is a positioning
+  fact stated by him, and it restates the supplement relationship the desk
+  retired as a hook. Whether and how it goes on the page is Commercial's.
+- **OPEN WITH HIM:** now that the reader is Cameron's student, the 07:00–10:00
+  window is *their* window; whether it returns to the page is his call.
+  **His "maybe enhance it" is Research's.**
 - **`tmitrader.com` still returns 401 to everyone.**
