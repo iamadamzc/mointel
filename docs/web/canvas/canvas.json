@@ -38,7 +38,7 @@
       "y": 2590,
       "w": 1440,
       "h": 1450,
-      "title": "Privacy \u2014 DRAFT"
+      "title": "Privacy \u2014 adopted"
     },
     {
       "file": "System.dc.html",
@@ -63,7 +63,7 @@
       "x": 0,
       "y": -300,
       "w": 700,
-      "text": "DIRECTION: the desk's own palette and typefaces, at prose scale.\nA stranger sees the instrument they will actually get, not a bright marketing page followed by a black terminal.\n\nBracketed text is a fact I do not have \u2014 operator name, access terms, contact, entity."
+      "text": "DIRECTION: the desk's own palette and typefaces, at prose scale.\nA stranger sees the instrument they will actually get, not a bright marketing page followed by a black terminal.\n\nCopy is co-owned with Marketing. Placement findings go back to it rather than getting trimmed in place, and never two seats in one file at once."
     },
     {
       "id": "note-blocked",
@@ -84,21 +84,21 @@
       "x": 2400,
       "y": -300,
       "w": 700,
-      "text": "SIX STATES, EACH WITH THE STATUS CODE IT MUST SEND.\nNone of them says 'try again': with one provider that is a wall dressed as a door.\n\nThe refusal is a 403 that looks like a refusal. A denial rendering 200 has already happened here once."
+      "text": "FIVE SIGN-IN STATES, EACH WITH THE STATUS CODE IT MUST SEND.\nNone says 'try again': with one provider that is a wall dressed as a door.\n\nThe sixth card is kept deliberately - it drew refusal as a sign-in outcome, which was wrong, and the wrong assumption is the useful part."
     },
     {
       "id": "note-admitted",
       "x": 3200,
       "y": -300,
       "w": 700,
-      "text": "SIGNED IN, NOT ADMITTED.\nInvite-only makes this a real reachable state the day enforcement ships. A person here has a session and an account row - not a stranger.\n\nThe sign-in 403 card is superseded: sign-in succeeds and creates the row as pending. Refusal lands after the session, not inside the flow."
+      "text": "SIGNED IN, NOT ADMITTED.\nInvite-only makes this reachable the day enforcement ships. A person here has a session and an account row - not a stranger.\n\nSETTLED 2026-09-11: refusal happens at the point of use, so sign-in refuses nobody - it creates the row as pending and succeeds. The status check must live in ONE place every point of use passes through."
     },
     {
       "id": "note-build",
       "x": 4000,
       "y": -300,
       "w": 700,
-      "text": "SEEDED FROM e0d6523 at 2026-09-11 04:53 ET.\n\nEditing a .dc.html does NOT update this canvas - someone must re-seed and republish. If the repo is ahead of this sha, what you are reading is superseded.\n\nCompare against: git log -1 --format=%h"
+      "text": "SEEDED FROM fe26b0a at 2026-09-15 04:37 ET.\n\nEditing a .dc.html does NOT update this canvas - someone must re-seed and republish. If the repo is ahead of this sha, what you are reading is superseded.\n\nCompare against: git log -1 --format=%h"
     }
   ],
   "launch": {
