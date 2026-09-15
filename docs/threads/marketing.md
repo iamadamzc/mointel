@@ -298,9 +298,10 @@ at `fe26b0a`. Nothing is in progress and no file is held.**
   `docs/marketing/voice-reference-warrior-trading.md`. **It is a reader, not a
   prose style: the home page is the sales register he rejected.** The reader is
   a Warrior student; recognition is their vocabulary used correctly.
-- **WITH COMMERCIAL via Integration-tmi:** *"complementary"* is a positioning
-  fact stated by him, and it restates the supplement relationship the desk
-  retired as a hook. Whether and how it goes on the page is Commercial's.
+- **RULED BY COMMERCIAL `d93f0ba`:** the relationship is already on the page
+  in the Boundaries card; **Warrior Trading is not named in any public copy.**
+  The trade's vocabulary is usable without attribution. Complementary is shown
+  by fitting beside their morning, not by saying their name.
 - **OPEN WITH HIM:** now that the reader is Cameron's student, the 07:00–10:00
   window is *their* window; whether it returns to the page is his call.
   **His "maybe enhance it" is Research's.**

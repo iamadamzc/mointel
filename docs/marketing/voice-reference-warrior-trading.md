@@ -60,3 +60,19 @@ replace a scanner."*
 A Warrior student reads the page and thinks: this was written by someone in the
 same chat at 07:15, looking at the same gapper list, who went and read the
 filing.
+
+## Commercial's ruling, `d93f0ba`, 2026-09-15
+
+- **§2e retired the line, not the relationship.** The relationship is already
+  on the page as a position, in the Boundaries card. Nothing to add.
+- **Warrior Trading is not named** on the page or in any public copy. A
+  positioning fact he states is not an instruction to publish it; naming a
+  competitor puts one back as the subject of a sentence, which is what his own
+  objection retired; and an unagreed association with a named third party is
+  the same class as the struck vendor-float number, and invites a comparison
+  against profit figures this desk cannot answer.
+- **What it licenses:** the reader is a Warrior student; the trade's vocabulary
+  is usable without attribution because it is the trade's, not their mark; the
+  relation is shown by fitting beside their morning, not by saying their name.
+- If he ever wants the name on the page, that is his to say explicitly, and
+  this is the advice against it.
