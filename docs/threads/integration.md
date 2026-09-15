@@ -722,6 +722,57 @@ not touch B.**
 > the same rule about its BREADTH rather than its truth.* **B is buildable and verified
 > across Friday, today, a normal morning and a normal-day promotion.**
 
+### THE PREMISE IS CLOSED. A PREMARKET RESTART PROVABLY CANNOT REPAIR ITS OWN ANCHORS.
+
+**Ops, read 2026-09-15 04:38 ET, in the window, read-only, worker's keys over REST,
+never printed.**
+
+```
+AAPL RLGT QTRX PTN    dailyBar.t RAW = 2026-09-14T04:00:00Z   ET date 09-14
+                      carrying YESTERDAY'S FULL VOLUME
+meanwhile             AAPL and RLGT had already printed today's premarket
+                      minutes -- 04:33 and 04:37 ET
+```
+
+**⇒ `belongsToSession` is FALSE FOR EVERY NAME in early premarket.** *So `volume` is 0
+for all, the rvol preview is degenerate, the sort cannot sort, and the backfill can
+reach only the pins.* **Friday's mechanism is confirmed rather than inferred, and it
+took one read.**
+
+- **NOT SETTLED: WHEN the bar rolls.** *Only that it had not by 04:38.* **Ops recorded
+  raw and ET side by side, as Research asked, so a timezone slip could not reproduce the
+  bug inside its own test.**
+- **AND IT CONFIRMS THE FLAG THIS SEAT RAISED AGAINST DESIGN'S SEAM PREDICATE**, which
+  was conditional on exactly this: *with `belongsToSession` false, `volumeBaseThrough` is
+  null too, so Friday carried NO SEAM and a seam-based detector is silent on the incident
+  it exists for.* **Conditional then, established now.**
+- **THE OPERATIONAL SENTENCE, AND IT IS HIS:** *ordering a restart in early premarket
+  means the repair provably cannot run.* **Friday was his authorised exception; this is
+  the measurement that says what that exception costs.**
+
+**THE ESCALATION THAT DID NOT HAPPEN IS THE PART TO KEEP.** *This seat raised the read's
+priority on a bad reading, re-priced it down when two threads independently showed the
+detector no longer depended on it, and declined to ask him for a scheduled task or an
+alarm clock.* **It was then taken for free by a turn that happened to land in the
+window, which is what Ops said would happen and what this seat had proposed spending his
+sleep on.**
+
+### THE OLD CANVAS LINK IS FINE, AND I CHECKED RATHER THAN RELAYING IT
+
+**Web republished at `dd98782` and reported that the artifact URL changed FORM** —
+*`claude.ai/artifact/MydyXGM4MpDZtwixpUXjvs` now, `claude.ai/code/artifact/a9df35ee-…`
+in every older message* — **and that the old address is the same artifact.**
+
+*I read the old URL: it carries "None of this is on the chart." and does NOT carry the
+struck header.* **Same artifact, new address, current content. An old link in a message
+or a bookmark shows the live canvas.**
+
+> **THE HAZARD I WAS CHECKING FOR IS THE ONE WORTH NAMING EVEN THOUGH IT DID NOT EXIST:
+> a link that still RESOLVES but serves SUPERSEDED content is indistinguishable from a
+> working one.** *Web's instinct to flag the URL change was right; the thing that
+> settled it was opening the old address rather than accepting that it was the same
+> artifact.* **One read, and it is the difference between a caveat and a fact.**
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
