@@ -224,11 +224,34 @@ tmitrader.com              401 to everyone. No public page exists.
 mid-session - IS DISCHARGED.** *He gave the restart word with the costs stated; the
 seventh session's LIVE STATE still listed it as open and it was not.*
 
-**THE ONE OPEN OBSERVABLE: tonight's 22:00 ET roll must leave the 09-09 bars
-alive.** *At retention 3 they would be pruned. Ops reads it after the roll if a turn
-lands, otherwise first thing tomorrow.* **That is the only proof retention 20 is
-actually in force; until then it is a claim about a config the store has not yet been
-asked about.**
+**RETENTION 20 IS PROVEN IN FORCE — Ops, read on the box 2026-09-15 01:30 ET.**
+*`minute_bars` holds 09-09, 09-10, 09-11 and 09-14 after the roll (marker
+02:00:00.704Z, rolled 22:00:23 ET, no prune line). At retention 3 the 09-09 bars would
+be gone.* **Closed by a READ, not by the restart having happened — which is the whole
+reason the observable was written down.**
+
+**AND THE CLOSING COUNT IS THE NUMBER THAT PRICES THE NEXT MID-SESSION RESTART:**
+
+```
+13:35 ET   1 of 50 late-anchored
+16:00 ET  14 of 50   SAC AHL.PRE EDHL ITHA QTRX SPHL KFII HITI RLGT PTN JBDI STIM
+                     NICM PMTR      anchors 13:17-15:42 ET
+```
+
+*Every name ranking in from outside the repaired 200 arrives late-anchored, so the
+count only grows through a session.*
+
+> **BUT 14 IS A COUNT OF THE DEFECT AND NOT OF THE HARM, AND ITHA IS IN IT.** *Its
+> error has zero magnitude — wrong minute, right price, Move 0.0% either way.* **"14 of
+> 50 late-anchored" and "14 of 50 showed him a wrong Move" are different sentences and
+> only the first is measured.** *Commissioned from Ops: stored `rth_open_price` against
+> the true 09:30 bar for each of the fourteen, in points and percent, by name.* **He
+> approved the restart on costs stated qualitatively; he will price the NEXT one on how
+> wrong the Moves were, not on how many anchors moved.**
+>
+> **THIS IS THE THIRD TIME IN A DAY THIS SEAT HAS HAD TO STOP AT THE COUNT.** *Twice it
+> did not and Ops's query corrected it.* **The distinction is cheap to state and has not
+> once been free to skip.**
 
 **A free corroboration Ops produced and did not have to:** this bootstrap backfilled
 **16,465** minute bars against Friday 04:33 ET's **346**, same code. *Relayed to
