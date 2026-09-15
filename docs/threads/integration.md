@@ -887,6 +887,34 @@ ADOPTED and neither is reachable; `tmitrader.com` returns 401 to everyone.* **No
 to him as a blocker until he says which kind of tester he means** — *for a handful of
 invited people it is Commercial's ruling, not a wall.*
 
+### "STILL AWAITING YOUR ANSWER" IS A READING OF A MESSAGE, NOT OF THEIR STATE
+
+**2026-09-15/16. I sent the same approval THREE TIMES because Ops kept reporting it
+open.** *It had landed the first time.*
+
+```
+Ops writes "still open" at the END of a turn
+my queued message then runs as the NEXT turn
+so every "still open" was written BEFORE the approval it asked for arrived
+```
+
+**I read a sentence composed minutes earlier as a statement about now** — *which is
+this seat's oldest failure, arriving inside the bus itself rather than in a charter.*
+**Same shape as `isRunning`: a claim about a moment, read as a claim about the
+present.**
+
+- **WHAT SETTLED IT COST ONE CALL AND NO MESSAGE.** *`list_events` on Ops showed its
+  current turn opening with "Approved. Before it ships, Integration's two cautions go
+  where the next actor reads them."* **The state answered a question the messages could
+  not.**
+- **⇒ WHEN A THREAD SAYS IT IS STILL WAITING ON YOU, READ ITS STATE BEFORE RE-SENDING.**
+  *The README already says to read the repo before re-stating a ruling; this is the same
+  rule pointed at the session rather than the tree, and re-sending is not free — three
+  copies of one approval is three chances for a later one to contradict an earlier.*
+- **AND THE SECOND AND THIRD COPIES WERE THE RISKY ONES.** *The third explicitly
+  superseded the second.* **Had I refined the conditions while re-sending, Ops would
+  have acted on whichever arrived first and I would not have known which.**
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
