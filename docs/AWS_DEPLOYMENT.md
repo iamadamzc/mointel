@@ -23,8 +23,25 @@ done the first time.
 Everything is tagged `Project=MomentumIntelligence`, `Application=mointel`,
 `Environment=prototype`.
 
-The public URL is the AWS-provided distribution hostname. There is no custom
-domain and none is needed.
+**Two public hostnames, and they do NOT share a path** (measured 2026-09-15;
+this paragraph previously said there was no custom domain, and a seat reasoned
+a whole route argument from that false premise):
+
+```
+tmitrader.com, www.tmitrader.com  -> 98.85.49.227   the Lightsail static IP, nginx DIRECT
+dwwep02jje2ag.cloudfront.net       -> 13.33.244.x   the distribution, which fronts the
+                                                    same origin but is NOT in the custom
+                                                    domain's path
+curl -sI https://tmitrader.com/   -> Server: nginx; no Via, no X-Cache, no X-Amz-Cf-*
+```
+
+**Every public-route verification in `docs/web/` is a `curl` against
+`tmitrader.com`, and it is a valid proof ONLY BECAUSE nothing caches in front
+of that hostname.** A `200` means the nginx exemption works and a `401` means
+it does not. **If a distribution is ever put in front of `tmitrader.com`, a
+cached response can return either code for the wrong reason and that proof
+silently stops proving anything while still passing.** Whoever adds a CDN to
+the custom domain must re-derive the verification against the origin.
 
 ```
 Browser
