@@ -15,7 +15,23 @@
  *
  * Read at request time rather than at build time so that editing the file on
  * the box, or shipping a release that changes it, changes the page without a
- * rebuild. `push-release.sh` ships the whole committed tree, docs included.
+ * rebuild. `push-release.sh` ships the whole committed tree, docs included
+ * (`git archive` with no exclusions; `.gitattributes` has no export-ignore).
+ *
+ * TWO THINGS THIS RESTS ON, stated so nobody removes them by accident:
+ *
+ * 1. The path is resolved from the PROCESS'S cwd, which is the release
+ *    directory. That is safe only because the web process restarts on every
+ *    deploy, so its cwd tracks `current`. This desk has one process that
+ *    deliberately does NOT restart across deploys, and `prune.sh` has already
+ *    once deleted the directory a surviving process was running from. If
+ *    these pages are ever served by a process that survives a deploy, they
+ *    read a pruned path and 500. Keep them on the web tier.
+ *
+ * 2. `marked` renders into a PUBLIC page, and that is safe because its input
+ *    is our own committed files and nothing a visitor supplies. The day
+ *    anything user-supplied goes through this renderer, that reasoning is
+ *    gone and the output needs sanitising before it is HTML.
  */
 
 import 'server-only';
