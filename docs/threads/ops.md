@@ -9676,3 +9676,26 @@ which adds to that restart's price: yesterday's cost 10 wrong Moves of 50; the
 next also costs false "not traded" sentences on exactly the spiked-early-then-
 died names he tracks. *`DecisionCells.tsx:152` still says the board cannot
 receive NO_PRINT; it can, via `repo.ts:504`. Stale comment, Design's file.*
+
+**THE HAZARD IN THE OBVIOUS FIX — Research, recorded beside the scope so the
+next reader does not reach for it.** The stale premarket daily bar carries
+YESTERDAY'S FULL-SESSION VOLUME. `belongsToSession` is the only thing keeping
+that out of today's RVOL numerator. **"Fix" the premarket case by accepting
+the daily bar and every name seeds `volumeBase` = yesterday's whole day
+against a 20-session average: every RVOL reads ≈1.0x, plausible and
+universally wrong, and with the Move sort live his board is selected on
+yesterday's volume.** *A sort that ranks nothing is visibly broken; a sort
+that ranks yesterday is not.* **`belongsToSession` stays exactly as it is.
+The only safe shape is item 2: seed `focused` from the previous cycle's
+stored `rvol_rank` and let the preview ADD to it.**
+
+**Also from the read:** the roll is a boundary, not a first-trade event — two
+names had printed and the bar had not rolled — so treat the whole pre-bell
+window as degenerate until someone measures where it flips (bounded: not by
+04:38; had flipped by 13:16 Monday). **And item 1's log line will fire on EVERY
+premarket bootstrap by construction: write it as a confirmation, not an
+alarm, or the first reader treats a normal premarket restart as an incident.**
+
+**Restart runbook addition:** the NO_PRINT "not traded" false sentence is now
+a rendered consequence of any in-session restart; gate is Research's SESSION
+field, un-withdrawn.
