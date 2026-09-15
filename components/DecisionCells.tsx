@@ -149,10 +149,45 @@ function SessionMoveLine({ telemetry }: { telemetry: MarketTelemetry }) {
    * `UNKNOWN` AND `NO_PRINT` TAKE DIFFERENT BRANCHES ON PURPOSE. Rendering
    * UNKNOWN as "not traded" would assert a market fact from a storage gap --
    * the same error as the one this whole reading exists to fix, pointed the
-   * other way. The board cannot receive NO_PRINT yet: `sessionOpensFromRow`
-   * rebuilds from nine columns and none is a state, so a row proves OPEN from
-   * a price and says UNKNOWN for the rest. Three more columns close it, and
-   * this code starts telling the truth that day with no further change.
+   * other way.
+   *
+   * THIS COMMENT USED TO SAY THE BOARD COULD NOT RECEIVE `NO_PRINT` YET, AND
+   * THAT DAY HAS HAPPENED. Schema 27 landed the three state columns and
+   * `repo.ts:504` reads them (`state ?? 'UNKNOWN'`), so the branch below is
+   * LIVE. The old sentence ended "this code starts telling the truth that day
+   * with no further change" -- which was right, and left behind the one line a
+   * reader would trust before touching this branch, still saying it is dormant.
+   *
+   * AND THE LIVE BRANCH CAN NOW ASSERT SOMETHING FALSE. Three conditions, all
+   * required:
+   *
+   *     a mid-session restart happened
+   *     AND this name traded in the CURRENT session BEFORE it
+   *     AND it has gone quiet since
+   *
+   * Then the fresh runtime has no anchor, the live stream does not re-deliver
+   * pre-restart bars, the engine computes `NO_PRINT` CORRECTLY from what it can
+   * see -- and this line states that a name did not trade in a session it
+   * traded in. A market claim from a process fact, which is the defect this
+   * whole reading exists to remove, arriving through the branch that removes it.
+   *
+   * NEITHER SIDE IS WRONG, WHICH IS WHY IT SHIPPED: the engine's `state` is
+   * correct about what it can see, and this branch is correct about what
+   * `NO_PRINT` means. The COMPOSITION is the defect, and a composition defect is
+   * invisible from inside either half.
+   *
+   * The population is "spiked early, then died" -- a name that runs at 04:30 and
+   * stops keeps the rank its morning earned, so it stays ON the board all day.
+   * That is the shape most likely to meet all three at once, and one he watches
+   * deliberately. A name still printing after a restart gets an anchor from its
+   * next bar: a wrong percentage, not a false sentence.
+   *
+   * THIS BRANCH MUST BE GATED ON `anchorLateScope` WHEN THAT FIELD EXISTS --
+   * `SESSION` means the engine observed this session late and this symbol was
+   * not replayed, and under it `NO_PRINT` is not trustworthy and must fall to
+   * the silent arm. There is no cheaper interim: ruling the case out without
+   * that field would mean never saying "not traded" at all, which throws away
+   * the state he asked for to avoid a rare wrong one.
    */
   if (reading.state === 'NOT_STARTED' || reading.state === 'UNKNOWN') return null;
 
