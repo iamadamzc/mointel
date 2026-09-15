@@ -577,6 +577,79 @@ one does not.* **Design's, and it is the half that will actually bite someone.**
 > "it does not exist" is the most reassuring answer a grep returns.** *Two careful seats
 > in one exchange makes it structural rather than haste.*
 
+### IN-SESSION MOVE AS A SORT KEY - HIS INSTRUCTION 2026-09-15, AND IT CHANGES THE ANCHOR'S PRICE
+
+**"i want in session move as a sortable option."** *Routed to Design; Research has
+nothing to build and said so.* **Nothing blocked, nothing deploys.**
+
+**IT IS A NEW QUANTITY, NOT A RESTORED WORD.** *`Move` was removed at `97e893d`
+because it was a SECOND WORD FOR THE SAME QUANTITY as `Gap` - across-session, from the
+prior close. This one measures from THIS session's open.* **A different denominator
+earns a different noun, so the word returning is the rename's own logic rather than a
+reversal of it** - *and unrecorded, the next reader sees `Move` back three weeks after
+the commit that killed it and "fixes" it.*
+
+**THE INTERACTION NEITHER THREAD HAD IN VIEW, AND IT IS THE REASON THIS SECTION
+EXISTS:** *`DiscoveryBoard.tsx:110` SORTS AND THEN SLICES.*
+
+```
+today           a bad anchor MISLABELS a row he can see   -> he looks, it reads oddly, he checks
+under the sort  a bad anchor DECIDES WHICH ROWS EXIST     -> there is nothing on screen to check
+```
+
+**AND THE DIRECTION MAKES IT WORSE RATHER THAN SYMMETRIC.** *Of yesterday's 10 wrong
+Moves, NINE were UNDERSTATED and one overstated.* **Understated names sort DOWN and out
+of the top-N; the single overstated name rises IN — and that is the only one he could
+have sanity-checked.** *The desk's own asymmetry landing on watchlist SELECTION: an
+over-warning is corrected by a user who looks, an under-warning never is.*
+
+**RESEARCH'S RE-PRICING, ITS OWN CALL AND NOT ASSERTED FROM HERE** - *I flagged and
+explicitly declined to re-prioritise, having raised an urgency on a bad reading once
+already tonight:*
+
+- **The pending non-restart cohort run moves from INFORMATIVE to a PRECONDITION** —
+  *nobody has measured whether anchors are right on an ordinary morning.*
+- **Item 2 (reseed `focused` from stored `rvol_rank`) moves from "nice" to required
+  before the sort is trusted in any session where a restart happened.**
+- **Item 1 (self-report when the selector cannot rank) is the difference between a bad
+  morning and a bad morning he knows about.**
+- **AND THE `SESSION` BOARD STATEMENT IS RE-PRICED HARDEST.** *"The anchors for this
+  session were established late" was an annotation on some numbers.* **Under a Move sort
+  it says THE ORDERING OF THIS BOARD IS UNTRUSTWORTHY** — *a materially stronger
+  sentence and a much better reason to ship the field Design paused.*
+
+### I GREPPED THE INPUT'S NAME AND CONCLUDED ABOUT THE OUTPUT
+
+**Third wrong absence from this seat in one day, and a new face.** *I searched
+`sessionOpens`, found it on the demand state and in `telemetry.ts` and nowhere in
+`view.ts`, and told two threads the quantity does not reach the surface that sorts.*
+
+**THE DERIVED VALUE HAS A DIFFERENT NAME AND ALREADY ARRIVES:** *`telemetry.ts:75`
+declares `sessionMove: SessionMoveReading | null`; `:134` builds it from
+`demand.sessionOpens`, the phase and the price — in the SAME OBJECT LITERAL as
+`percentChange`.* **`row.telemetry.sessionMove` is on the row, phase-resolved, and the
+sort key is one case arm.**
+
+- **I told Design that Research held a compute half. There was none, and Design could
+  have waited on a hand-off that was never coming.** *Corrected in the message rather
+  than only here.*
+- **THE THREE FACES OF THE SAME FAILURE IN ONE DAY:** *searched too few FILES
+  (`observedSince`); had the hits and did not OPEN them (Design's `firstSeenAt`);
+  searched the INPUT and concluded about the OUTPUT (this one).* **Each returned "it is
+  not there", which is the most reassuring answer a grep gives and the one that stops
+  the second look.**
+- **AND THE FILE HAD ALREADY DECIDED THE DESIGN QUESTION I WAS ROUTING.**
+  *`view.ts:303-314` forbids re-resolving `percentChange` per session inside
+  `discoveryValueFor`, because re-deriving produces a second different number under one
+  name.* **The right shape was chosen before anyone asked for the feature, and reading
+  the file would have answered what I was routing as an open question.**
+
+**RESEARCH'S SHARPEST POINT, KEPT AS ITS OWN:** *`sessionMove` is null in two of three
+`buildTelemetry` branches and the reading carries `state`, so a row can hold `move:
+null` under `NO_PRINT`.* **`discoveryMissingCount` already exists — and it matters more
+on this key than on any existing one, because it is the count of names THE SORT IS
+SILENTLY OMITTING.**
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
