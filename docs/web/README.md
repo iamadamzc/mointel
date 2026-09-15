@@ -90,6 +90,18 @@ other companies.
 
 ## 2. WHAT OPS NEEDS TO LAND — the full prefix list, batched
 
+> **COMMISSIONED 2026-09-15 on his go, and SPECIFIED IN FULL in
+> [`2026-09-15-route-spec.md`](2026-09-15-route-spec.md)** — exact nginx
+> strings, the verification with its negative control, the `/` architecture
+> question, and the write-endpoint gate. **That file supersedes the table below
+> for anything an implementer needs.**
+>
+> **Two things changed in the specifying.** Four of the five are now
+> **exact-match `=`, not prefix** — `^~ /privacy` would also match
+> `/privacy-internal`, so a future path starting with those letters would be
+> born public. And **`/auth/` carries its trailing slash**, so bare `/auth`
+> matches nothing.
+
 **All of it at once, per Ops's request, because each exemption is a hole in a
 uniform rule granted once and spent forever.** `/` is deliberately absent: it
 is the board, and it stays behind Basic Auth until in-app session auth is
@@ -97,11 +109,11 @@ demonstrably holding the weight.
 
 | prefix | what serves it | why it must be public |
 | --- | --- | --- |
-| `/privacy` | renders `docs/legal/privacy-policy.md` | Google requires it reachable and linked from the home page and the consent screen |
-| `/terms` | renders `docs/legal/terms.md` | same requirement |
-| `/signin` | the sign-in screen | the page a signed-out visitor is sent to |
-| `/auth/` | the OAuth start and callback | `/auth/callback/google` is a registered exact-match redirect URI; `/api/auth/` would inherit Basic Auth |
-| `/favicon.ico` | static | falls under `location /` today, so a public page's tab icon 401s — invisible from any browser on this desk |
+| `= /privacy` | renders `docs/legal/privacy-policy.md` | Google requires it reachable and linked from the home page and the consent screen |
+| `= /terms` | renders `docs/legal/terms.md` | same requirement |
+| `= /signin` | the sign-in screen | the page a signed-out visitor is sent to |
+| `^~ /auth/` | the OAuth start, callback and sign-out | `/auth/callback/google` is a registered exact-match redirect URI; `/api/auth/` would inherit Basic Auth |
+| `= /favicon.ico` | static | falls under `location /` today, so a public page's tab icon 401s — invisible from any browser on this desk |
 
 **Already public and NOT being asked for again:** `^~ /_next/static/`
 (`nginx-locations.conf:143`, opened 2026-08-23 with the bundle scanned).
