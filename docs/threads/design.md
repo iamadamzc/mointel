@@ -3916,6 +3916,72 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## RETRACTING MY OWN ACCEPTED FIX, AND NAMING THE FIELD
+
+**Research took the per-symbol predicate partly on my word. Checking the code to
+answer a different question, I found a false-positive class I had not seen.
+Retracted before it is built.**
+
+    engine.ts:899-907   a runtime is created at the symbol's FIRST IN-RANGE BAR
+                        WITH A BASELINE -- not when it is "picked up late"
+
+    engine up 03:00, printing at 04:00              observedSince 04:00   CORRECT
+    engine up 03:00, first print of session 06:00   observedSince 06:00   CORRECT
+    engine up 03:00, enters range at 07:40          observedSince 07:41   LATE
+
+**⇒ THE SECOND AND THIRD SHARE ONE STAMP, AND THE SECOND IS MOST SMALL CAPS —
+they do not print at 04:00.** *So `observedSince > sessionStart` marks LATE on
+every name that merely started trading after the open, whose anchor is its own
+genuine first print.*
+
+**THE RULE THIS BREAKS IS ALREADY ON THE DESK: a process fact and a market fact
+producing the identical value.** *A late PICKUP and a late FIRST PRINT give the
+same stamp; the quantity separating them is whether the name traded before we
+picked it up, which is the evidence the promotion path discards.*
+
+**THE PREMARKET-PROMOTION FIND STANDS; THE REMEDY I OFFERED FOR IT DOES NOT.**
+*Both predicates were blind to the case — that part is real and is the best thing
+to come out of the exchange — but the fix I proposed is blind to it too.*
+
+### AND THE KNOWLEDGE IS ALREADY EXPLICIT, ONE LINE ABOVE `ensure`
+
+    engine.ts:903   if (!this.baselines.has(symbol)) { onPromotionCandidate(...); return []; }
+
+**A symbol entering by that path is KNOWN to be a promotion at the moment it
+happens, by the code doing it, with no inference.** *Research's "set the bit where
+the knowledge exists" — already emitted, since the promotion queue is built from
+it.*
+
+### ALSO RETRACTED: MY `volumeBase > 0` HAZARD WAS BACKWARDS
+
+**A seam with NOTHING behind it dropped nothing, so the anchor is the first print
+and is CORRECT. The condition is not a VWAP leftover.** *Research measured it:
+1,716 of 8,617 tracked names sit at zero volume and NONE is ever on the board —
+so the false positives my version created would have been INVISIBLE, and nothing
+would ever have contradicted them.*
+
+### THE NAME, WHICH IS MINE, AND THE STATE THEIR ENUM WAS MISSING
+
+    anchorLateScope: 'NAME' | 'SESSION' | 'SOUND' | null
+
+**FOUR STATES, NOT THREE.** *`'PROMOTION' | 'SESSION_START' | null` has nowhere to
+say THE ANCHOR IS FINE — the original contract carried that in `false`. Dropping
+it collapses "sound" into "cannot say": both silent, for reasons that must not be
+the same.* **Which is the flat-line defect, inside the field we are adding to
+prevent it.**
+
+    NAME     this row's anchor is late     ->  ROW MARK
+    SESSION  late across the session       ->  BOARD STATEMENT
+    SOUND    established at session start  ->  silent, A MEASUREMENT
+    null     this build cannot say         ->  silent, AN ABSENCE
+
+**SCOPE RATHER THAN CAUSE, DELIBERATELY.** *`anchorLateCause` invites a new enum
+member every time a cause is found, and the render must learn each one.* **Scope
+cannot grow: a feed stall, a backfill degeneracy, anything later is STILL either a
+property of one name or of the whole session, and lands in an existing arm with
+the surface unchanged.** *Same reason the condition beat the event two days ago —
+name what the reader needs to know, not what happened.*
+
 ## THE SEAM PREDICATE IS BLIND ON FRIDAY. WITHDRAWN.
 
 **Research broke it and I verified the break rather than accepting it.**
