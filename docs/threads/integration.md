@@ -791,6 +791,47 @@ or a bookmark shows the live canvas.**
 > settled it was opening the old address rather than accepting that it was the same
 > artifact.* **One read, and it is the difference between a caveat and a fact.**
 
+### A SUMMARY SAID THE RELATIONSHIP WAS RETIRED; THE DOCUMENT SAID THE CONSTRUCTION WAS
+
+**2026-09-15. He answered Marketing's voice-reference ask with Warrior Trading and
+"i would like tmi to be complementary". Marketing routed it to Commercial through this
+seat, framed as restating "the supplement relationship the desk retired as a hook in
+§2e".**
+
+**I opened §2e instead of carrying that, and it says the opposite of the summary:**
+
+```
+RETIRED      the LINE -- "Your scanner finds it. This tells you what it is." --
+             everywhere, carve-out withdrawn 2026-09-10, because it puts a
+             competitor in the SUBJECT position and failed his own pitch objection
+KEPT         the RELATIONSHIP: "belongs in the plain statement, said once, without
+             a scanner as the subject" -- registered in Web's card and live
+```
+
+**⇒ So he was not reopening anything, and the question his sentence actually reaches is
+one §2e NEVER FACED: whether a competitor may be NAMED.** *The retired line had a
+generic scanner in the room; naming Warrior is a larger step, and the ruling that killed
+the line does not decide it either way.*
+
+**COMMERCIAL RULED FROM THE CORRECTION** (`d93f0ba`, §2e-bis): *relationship stays as
+registered, competitor not named in public copy.* **Two of its three grounds are the
+distinction the summary had collapsed** — *that naming puts a competitor back in the
+subject position against his own objection, so HIS TWO STATEMENTS DO NOT CONFLICT.*
+**Under the summary's version they would have, and the ruling would have been about
+overriding him.**
+
+- **AND MARKETING'S OWN LINE IS THE ONE THAT SURVIVED INTO THE RULING: a positioning
+  fact he STATES is not an instruction to PUBLISH it.** *He answered a question about
+  VOICE.* **Marketing drew that itself and changed nothing on the page.**
+- **THE COST OF NOT LOOKING WOULD HAVE BEEN A RULING, NOT A SENTENCE.** *This seat's
+  whole job is turning documents into summaries, and the one thing a summary reliably
+  loses is which of two adjacent things was decided.*
+- **Housekeeping flag taken in the durable shape:** *Commercial re-dated its LIVE STATE
+  header to* **"as of 2026-09-15 (opened 2026-09-07; every entry below carries its own
+  date)"** *rather than stamping the block fresh.* **A re-dated stale block is worse than
+  an openly stale one — it makes old facts look verified — and this one says "as of"
+  instead.**
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
