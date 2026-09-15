@@ -7,48 +7,61 @@ own request that exemptions arrive as a decision rather than a trickle.**
 
 ---
 
-## 0. WHAT THIS BATCH DOES NOT DO — read this first
+## 0. WHAT THIS BATCH DOES AND DOES NOT DO — read this first
 
-**Nothing here exposes the board, and nothing here requires Basic Auth to come
-off `location /`.** *The five locations below are individually exempted; `/`,
-`/api/` and every other path keep the server-level `auth_basic` they have
-today.*
+**This section said "the five locations below are individually exempted; `/`,
+`/api/` and every other path keep the server-level `auth_basic`" until
+2026-09-15.** *Both halves went stale in the same edit: the batch is four, and
+`/` is now one of them.* **Corrected rather than annotated.**
 
-**So this is step 1 of the charter's three-step sequence and it can land
-without step 2 existing.** *In-app session auth is not a precondition for any
-line in this document.*
+**WHAT GOES PUBLIC: `/`, `/privacy`, `/terms`, `/favicon.ico`.** *Four
+exact-match locations and nothing else.*
+
+**WHAT THE BOARD'S PROTECTION BECOMES, and it is a real change worth stating
+plainly:** *until now the board was protected by `location /` denying by
+default.* **After this batch the board is at `/desk` and is protected by the
+server-level `auth_basic` still applying there** — *the default did not move,
+the board did.* **`/desk`, `/api/` and every unlisted path keep the password.**
+
+> **THAT IS WHY `curl /desk` EXPECTING `401` IS THE FIRST LINE OF THE NEGATIVE
+> CONTROL.** *The board's entire protection after the move is an assumption
+> about nginx's default, and an assumption is not a control until something
+> tests it.*
+
+**Nothing here requires in-app session auth, a status check or a session.** *This
+is step 1 of the charter's three-step sequence and it lands without step 2
+existing.* **Basic Auth does not come off the board in this batch or the next
+one.**
 
 ---
 
-## 1. THE FIVE LOCATIONS, AS STRINGS
+## 1. THE FOUR LOCATIONS THAT SHIP, AS STRINGS
 
-**Four are EXACT-MATCH (`=`), not prefix.** *This is narrower than
-`docs/web/README.md` §2 implied and it is deliberate:* `^~ /privacy` would also
-match `/privacy-internal` and `/privacyexport`, so a future path that merely
-starts with those letters would be born public. **Exact match cannot do that.**
+**This section was headed "the five locations" until 2026-09-15 and listed
+`/signin` and `/auth/` among them.** *The split in §2b deferred those two, and
+this section kept standing beside the newer ruling.* **Rewritten rather than
+annotated, because a spec with a superseded half is a spec with two answers and
+Ops builds from this file.**
+
+**All four are EXACT-MATCH (`=`), never prefix.** *`^~ /privacy` would also match
+`/privacy-internal` and `/privacyexport`, so a future path that merely starts
+with those letters would be born public.*
 
 ```nginx
-# The adopted privacy policy. Google requires it reachable and linked from
-# both the home page and the consent screen, as the same URL in both places.
-location = /privacy { auth_basic off; <proxy block>; }
+# The landing page. The ONLY public document at the root, exact-match, so the
+# server keeps denying by default for everything else.
+location = /            { auth_basic off; <proxy block>; }
+
+# The adopted privacy policy. Google requires it reachable and linked from the
+# home page and the consent screen, as the same URL in both places.
+location = /privacy     { auth_basic off; <proxy block>; }
 
 # The adopted terms of service.
-location = /terms   { auth_basic off; <proxy block>; }
-
-# The sign-in screen. The word appears once in the URL space, deliberately.
-location = /signin  { auth_basic off; <proxy block>; }
+location = /terms       { auth_basic off; <proxy block>; }
 
 # Tab icon. Falls under `location /` today, so a public page's favicon 401s —
 # and that is invisible from every browser on this desk.
 location = /favicon.ico { auth_basic off; <proxy block>; }
-
-# THE ONLY PREFIX IN THE BATCH, and it needs to be one: the OAuth start, the
-# callback and sign-out are separate paths under it.
-#   /auth/google            start
-#   /auth/callback/google   REGISTERED EXACT-MATCH REDIRECT URI — cannot move
-#   /auth/signout           end a session
-# `/auth/` with the trailing slash, so bare `/auth` matches nothing.
-location ^~ /auth/  { auth_basic off; <proxy block>; }
 ```
 
 `<proxy block>` is the existing one, copied verbatim from
@@ -56,17 +69,30 @@ location ^~ /auth/  { auth_basic off; <proxy block>; }
 four `proxy_set_header` lines, `Connection ""`, `proxy_buffering off`, and the
 three timeouts. **Nothing about it changes.**
 
-**`/auth/`, not `/api/auth/`** — the latter inherits Basic Auth from
-`location /api/` and the callback would 401 with no visible cause.
+### DO NOT ADD THESE TWO IN THIS BATCH
+
+> **`location = /signin` and `location ^~ /auth/` are DEFERRED, and deferring
+> them is load-bearing rather than tidy.**
+>
+> **`/signin` must NOT be publicly reachable in this batch.** *The first-admin
+> bootstrap (§5) is only safe while a stranger cannot reach the sign-in flow
+> before he does.* **Opening `/signin` early is how the authority to spend his
+> money goes to whoever knocks first.**
+>
+> **When they do ship**, `/signin` is exact-match and `/auth/` is the one prefix
+> in the surface — *it needs to be, because `/auth/google`, the registered
+> exact-match callback `/auth/callback/google`, and `/auth/signout` are separate
+> paths under it* — **with the trailing slash, so bare `/auth` matches nothing.**
+> **`/auth/`, not `/api/auth/`**: the latter inherits Basic Auth from
+> `location /api/` and the callback would 401 with no visible cause.
 
 ### What Ops also has to build, because a location with nothing behind it 404s
 
 | path | serves |
 | --- | --- |
-| `/privacy` | renders `docs/legal/privacy-policy.md` **at request time**, DRAFT banner driven by `adopted:` — §2 of the README is the contract |
+| `/` | the landing artboard — **must exist before the exemption lands, see §3d** |
+| `/privacy` | renders `docs/legal/privacy-policy.md` **at request time**, banner driven by `adopted:` |
 | `/terms` | renders `docs/legal/terms.md`, same renderer |
-| `/signin` | the `SignIn` artboard |
-| `/auth/*` | Ops's own machinery; Web specifies no internals |
 
 ---
 
@@ -75,7 +101,7 @@ three timeouts. **Nothing about it changes.**
 **From an actor with no cached state. Not from a browser on this desk.**
 
 ```bash
-for p in /privacy /terms /signin /favicon.ico; do
+for p in / /privacy /terms /favicon.ico; do
   printf "%-16s %s\n" "$p" "$(curl -s -o /dev/null -w '%{http_code}' https://tmitrader.com$p)"
 done
 ```
@@ -84,22 +110,35 @@ done
 
 > **AND THE NEGATIVE CONTROL, WHICH IS NOT OPTIONAL:**
 > ```bash
-> curl -s -o /dev/null -w '%{http_code}\n' https://tmitrader.com/          # expect 401
+> curl -s -o /dev/null -w '%{http_code}\n' https://tmitrader.com/desk       # expect 401
+> curl -s -o /dev/null -w '%{http_code}\n' https://tmitrader.com/signin     # expect 401
 > curl -s -o /dev/null -w '%{http_code}\n' https://tmitrader.com/api/market # expect 401
 > curl -s -o /dev/null -w '%{http_code}\n' https://tmitrader.com/privacy-x  # expect 401
 > ```
-> **`/` HAS TWO VALID ANSWERS AND ONE THAT IS ALWAYS A FAILURE.** *Integration's
-> catch, and it is the right shape:* **`401` before Release 2, `200` after, and
-> `404` at either point means the board moved without the landing page.** *A
-> check with two acceptable answers gets read as pass/fail against whichever one
-> the reader had in mind — so the third value is named rather than left to be
-> inferred.*
+>
+> **`/desk` IS THE FIRST LINE BECAUSE IT IS THE ONE WHOSE FAILURE MEANS THE DESK
+> IS PUBLIC.** *After the move the board's entire protection is that it is no
+> longer at `/` and the server default still denies — an assumption until
+> something tests it.*
+>
+> **`/signin` IS IN THE NEGATIVE CONTROL, NOT THE POSITIVE ONE, AND THAT IS THE
+> WHOLE POINT.** *It was in the expect-`200` loop until 2026-09-15.* **Run that
+> version in Release 2 and it fails — and the obvious repair for a failing
+> reachability check is to make the thing reachable, which is pasting the
+> `= /signin` exemption that was sitting four lines above it.** *A stale check
+> does not merely fail; **it proposes a fix**, and that fix opens the door §5
+> depends on being shut.* **Now the check enforces the trap instead of
+> undermining it: `/signin` returning `200` in this batch is a FAILURE.**
+>
+> **`/` HAS TWO VALID ANSWERS AND ONE THAT IS ALWAYS A FAILURE.** *`401` before
+> Release 2, `200` after, and `404` at either point means the board moved
+> without the landing page.* **A check with two acceptable answers gets read as
+> pass/fail against whichever the reader had in mind, so the failing value is
+> named rather than inferred.**
 >
 > **A batch of exemptions that accidentally opened everything would pass the
-> first check and fail all three of these.** *Four `200`s prove the holes exist;
-> only the `401`s prove they are holes rather than a missing wall.* The third
-> line is what distinguishes exact-match from prefix, and it is the one that
-> would have caught the `^~` version silently.
+> positive loop completely and fail every line here.** *Four `200`s prove the
+> holes exist; only the `401`s prove they are holes rather than a missing wall.*
 
 ---
 
@@ -292,9 +331,8 @@ and not admin.**
 approved, non-admin user sees the whole board. What they do not get is a
 control, and a control is Design's surface rather than a Web state.*
 
-> **THE BOOTSTRAP TRAP, and it is mine because `/signin` goes public in this
-> batch:** the convenient first-admin rule is *"first user to sign in becomes
-> admin"*. **Public sign-in means a stranger can reach `/signin` before he ever
+> **THE BOOTSTRAP TRAP, and deferring `/signin` is what keeps it shut:** the convenient first-admin rule is *"first user to sign in becomes
+> admin"*. **The day `/signin` goes public, a stranger can reach it before he ever
 > does — and under that rule the first person through the door takes the
 > authority to spend his money.** *The first admin is an explicit one-time grant
 > against a known identity. Nothing in the sign-in flow infers authority from
