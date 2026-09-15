@@ -9911,3 +9911,21 @@ gate green (2084 tests / 138 files). Thirteen code commits: Design 5,
 Research 7 (one in `lib/market/engine.ts`, worker code, live only after the
 restart), Coaching 1, Ops 0.** Awaiting Integration's approval and his word
 for the restart.
+
+**ORDERING CONSTRAINT ON THE PUBLIC BATCH — Design via Integration, held by
+Ops:** moving `app/page.tsx` to `app/desk/page.tsx` leaves Next with no route
+at `/`. **If `location = /` is exempted before the landing page exists, the
+bare domain serves a PUBLIC 404, Google arrives at a reachable 404 and burns a
+verification attempt.** Order: the landing page exists in the SAME release as
+the move or earlier; never exempt `= /` without it. A 401 at `/` is the status
+quo and costs nothing; a public 404 is worse than not shipping. **The nginx
+`= /` exemption and the landing page are one commit, or the exemption waits.**
+
+**Design's root check is a measurement of TODAY'S tree** — no basePath,
+assetPrefix, rewrites, redirects, trailingSlash; no relative fetch in app/,
+components/ or lib/; `apiBase` absolute; one root link in
+`ReviewRefusal.tsx:39`; no test pins the route. **The landing page and two
+renderers are written after that check, so "nothing assumes the root" becomes
+a property the new code must not break, and it is mine to hold: the batch
+gets a test that asserts every fetch and href in the three new pages is
+absolute or relative-to-nothing.**
