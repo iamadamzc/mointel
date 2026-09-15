@@ -241,42 +241,37 @@ reason the observable was written down.**
 *Every name ranking in from outside the repaired 200 arrives late-anchored, so the
 count only grows through a session.*
 
-> **BUT 14 IS A COUNT OF THE DEFECT AND NOT OF THE HARM, AND ITHA IS IN IT.** *Its
-> error has zero magnitude — wrong minute, right price, Move 0.0% either way.* **"14 of
-> 50 late-anchored" and "14 of 50 showed him a wrong Move" are different sentences and
-> only the first is measured.** *Commissioned from Ops: stored `rth_open_price` against
-> the true 09:30 bar for each of the fourteen, in points and percent, by name.* **He
-> approved the restart on costs stated qualitatively; he will price the NEXT one on how
-> wrong the Moves were, not on how many anchors moved.**
+> **AND THE HARM IS NOW PRICED — Ops, 01:40 ET, full table in the `ops.md` tail.**
+> *Measured against the true 09:30-onward first bar at the day's stored price, so only
+> the anchor varies.*
 >
-> **THIS IS THE THIRD TIME IN A DAY THIS SEAT HAS HAD TO STOP AT THE COUNT.** *Twice it
-> did not and Ops's query corrected it.* **The distinction is cheap to state and has not
-> once been free to skip.**
-
-**A free corroboration Ops produced and did not have to:** this bootstrap backfilled
-**16,465** minute bars against Friday 04:33 ET's **346**, same code. *Relayed to
-Research as CONSISTENT WITH its unrolled-daily-bar premise and not as proof - the two
-runs also differ in how many names had traded, which is the quantity the degenerate
-selector depends on.* **The read-only REST snapshot between 04:00 and 06:00 ET is
-still the thing that settles it, and is still unrun.**
-
-### ANOTHER PROJECT STARVED THIS MACHINE AND HELD A STANDING DEPLOY FOR 2.5 HOURS
-
-**2026-09-14. His 10:47 ET instruction shipped at 13:15 ET, and the gap was not
-caution.** *Ops's gate at the tip went RED TWICE: another project's vitest running 22
-workers held commit charge at 35 of 37 GB and the build could not allocate.* **It
-cleared on its own (19.6 of 34 GB, zero node processes) and Ops shipped in the first
-preflight gap after.**
-
-- **FIVE CONSTELLATIONS SHARE THIS MACHINE'S MEMORY AS WELL AS ITS SESSION LIST.**
-  *The `-tmi` ruling fixed the addressing collision; this is the same estate colliding
-  on a resource nothing here measures.*
-- **A CAPACITY FAILURE READS AS A GATE FAILURE.** *`push-release.sh`'s preflight is
-  priced on checkpoint distance and research idleness; nothing in it looks at memory —
-  which this file already records as the cause of a 54-minute premarket outage on
-  2026-08-27.* **It arrived from outside the project this time.**
-- **NOT RAISED TO HIM AS A DECISION. Recorded because the next instance is not
-  predictable from anything inside this repo.**
+> ```
+> 14 late-anchored
+> 10 showed a WRONG Move
+>  4 harmless: SAC ITHA KFII PMTR -- first RTH print WAS the anchor, nothing before it
+>
+>  9 of 10 UNDERSTATED      PTN 13.9 vs 18.8 (-4.9)   RLGT 8.1 vs 11.6 (-3.5)
+>                           QTRX -4.6  STIM -3.4  HITI -1.4  JBDI -0.8  EDHL -0.7
+>  1 OVERSTATED             NICM +3.6
+>  WORST                    SPHL rank 27, shown -5.1% vs true +1.3% -- A SIGN FLIP
+>  median                   ~3.5 points understated
+> ```
+>
+> **THE TWO ERRORS RUN IN OPPOSITE DIRECTIONS ON HIS BOOK AND THE COMMON ONE IS THE
+> EXPENSIVE ONE.** *Nine understated Moves make an extended name read FRESHER, which
+> invites an entry and costs an R.* **The sign flip runs the other way — SPHL showed as
+> a loser while it was a winner, so he skips it: an opportunity, not a loss.** *The
+> biggest single number is in the cheap direction and the pattern is in the expensive
+> one, and only naming both keeps that straight.*
+>
+> **⇒ THE SENTENCE FOR THE NEXT RESTART DECISION: a mid-session restart cost 10 of his
+> closing 50 a wrong Move, median ~3.5 points understated, worst 6.3 with the sign
+> flipped.** *He approved this one on costs stated QUALITATIVELY. That is the last time
+> that should be the only thing available.*
+>
+> **AND 14 WAS NEVER THE ANSWER.** *Four of the fourteen were thin names whose first RTH
+> print WAS the anchor.* **Counting the defect would have overstated the harm by 40%,
+> and this seat had to be stopped at the count three times in one day.**
 
 ### ONE NAME ON HIS BOARD MEASURES MOVE FROM THE WRONG OPEN - LIVE, 2026-09-14
 
