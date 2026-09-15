@@ -9996,3 +9996,34 @@ table shows `○ /` static, `ƒ /desk`, `ƒ /privacy`, `ƒ /terms`.**
 for existence.** Not 07:00–10:00 ET. Integration tells him before it lands
 that the bare domain now shows him the landing page and his bookmark is
 `/desk`. **Release 2 (four `=` exemptions) follows a separate enumeration.**
+
+**Two standing notes from Integration, 2026-09-15 evening, neither for tonight:**
+
+**1. Read `docs/web/2026-09-15-route-spec.md` at HEAD, never at a sha.** It
+moved four times after I was handed `b956c96`. At `476dbe5` the negative
+control is `/desk` 401 FIRST, `/signin` 401 (moved from the positive loop —
+`/signin` returning 200 in this batch is a FAILURE, because the stale check
+would have proposed pasting the `= /signin` exemption), `/api/market` 401,
+`/privacy-x` 401; and `/` has three values: 401 before Release 2, 200 after,
+404 never. Release 1's check with the credential: `/` landing, `/desk`
+board, `/privacy` and `/terms` render; and `/` → 401 to a stranger.
+*Method worth copying: Web rewrote the wrong sections rather than annotating
+them, each carrying one line naming what it used to claim. The
+`AWS_DEPLOYMENT.md` fix at `4cbd58f` was done the same way.*
+
+**2. The authority field, for whenever it is built (after the public batch),
+schema is mine:** the field does not exist (`lib/auth/*.ts` has no
+admin/authority/role; `ResolvedSession` is `{ userId, status, expiresAt }`).
+**The shortcut to refuse: gating spend on `status === 'APPROVED'` makes every
+approved user an admin — his ruling inverted.** Properties: one resolution
+point answering two questions (status and authority resolved where every
+point of use passes through); authority within a resolved session is THREE
+states — may spend, may not, cannot say — and "cannot say" must not collapse
+into `null`, or a signed-in person is bounced to sign-in holding a valid
+session. **Current for the CHECK, issued for the RECORD:** `resolveSession`
+joins `users` and reads the CURRENT `u.status`; `issued_status` is audit,
+not an input. Authority follows that join. **Do not add `issued_authority`
+beside `issued_status` and read it — a revoked admin would spend until the
+after-hours close.** First admin: explicit one-time grant against a known
+identity. Sequence: Ops lands the field, Design builds the predicate and the
+control; no screen for Web.
