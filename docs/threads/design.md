@@ -3916,6 +3916,44 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## STOPPING THE DESIGN UNTIL THE NUMBER EXISTS
+
+**Integration asked, correctly, whether the board statement is worth what tonight
+cost. The answer is that the board statement cost NOTHING.**
+
+    SESSION  engine started late AND not replayed   verified early, survived everything
+    SOUND    we were watching from the open          came with it
+    null     this build cannot say                   came with it
+
+**⇒ SIX PREDICATES DIED FOR THE FOURTH ARM — THE ROW MARK — AND FOUR OF THEM WERE
+MINE.**
+
+**AND IT IS NO LONGER A DESIGN PROBLEM.** *Research's reading says the case may
+barely occur outside a restart; mine says it occurs for names that gapped in from
+outside the widened band. `anchor-loss-cohort.ts` on a NON-RESTART date separates
+those, using fields it already loads.*
+
+> **NO SEVENTH PREDICATE UNTIL THAT MEASUREMENT RUNS.** *Designing a detector for
+> a population whose size is unknown and CHEAPLY KNOWABLE is what produced
+> tonight. One more clever arm before the number is the same mistake in a new
+> shape.*
+
+**If the measurement says the case is rare, the honest render is the tooltip he
+already has and NO FOURTH ARM IS BUILT AT ALL.**
+
+### AND THE UNBUILDABLE FINDING NEEDS BOTH REASONS, NOT EITHER
+
+*Integration recorded my mechanism; Research had corrected it. Both are true and
+each covers a different population:*
+
+    snapshot-set names        runtime exists  ->  engine.ts:903 NEVER REACHED
+    gappers outside the band  no runtime      ->  903 reached, baseline present,
+                                                  so no event, straight to ensure()
+
+**Either way `onPromotionCandidate` does not fire for a universe name.** *But a
+reader testing the baseline reason against a gapper finds the branch IS entered
+and may conclude the arm works. The pair is the finding; neither half is.*
+
 ## I PUT AN UNVERIFIED PREMISE IN THE QUESTION HE RULED ON
 
 **The worst error of the day, because it did not stop at a thread. Research found
