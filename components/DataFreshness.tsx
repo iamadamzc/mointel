@@ -1,5 +1,6 @@
 'use client';
 
+import { feedFailureLine, type FeedFailure } from '@/lib/dashboard/feedFailure';
 import { StatusBadge } from '@/components/StatusBadge';
 import type { DataSourceMeta } from '@/lib/data/types';
 import { formatEtTimestamp, secondsSince } from '@/lib/format';
@@ -10,14 +11,15 @@ interface DataFreshnessProps {
   now: number;
   /** False during server render, when no wall clock is available. */
   mounted: boolean;
-  transportError: string | null;
+  failure: FeedFailure | null;
 }
 
-export function DataFreshness({ meta, now, mounted, transportError }: DataFreshnessProps) {
+export function DataFreshness({ meta, now, mounted, failure }: DataFreshnessProps) {
   const isMock = meta.provider === 'mock';
   const syncedAt = formatEtTimestamp(meta.fetchedAt) ?? '—';
   const age = mounted ? secondsSince(meta.fetchedAt, now) : null;
-  const degraded = meta.stale || Boolean(transportError);
+  const line = failure ? feedFailureLine(failure, 'Research') : null;
+  const degraded = meta.stale || Boolean(failure);
 
   return (
     <div className="flex items-center gap-3">
@@ -35,7 +37,7 @@ export function DataFreshness({ meta, now, mounted, transportError }: DataFreshn
             }`}
             title={
               degraded
-                ? (transportError ?? meta.error ?? 'Sheet read failed; showing last good data')
+                ? (line?.text ?? meta.error ?? 'Sheet read failed; showing last good data')
                 : 'Google Sheet research is current'
             }
           >

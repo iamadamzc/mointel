@@ -1,5 +1,6 @@
 'use client';
 
+import { feedFailureLine } from '@/lib/dashboard/feedFailure';
 import { useCallback, useMemo, useState } from 'react';
 
 import { AssessmentSelector, AssessmentSnapshotBoard } from '@/components/AssessmentHistory';
@@ -317,7 +318,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
     return (
       <div className="flex h-screen items-center justify-center bg-desk">
         <p className="text-[12px] tracking-[0.14em] text-ink-3 uppercase">
-          {feed.transportError ? `Dashboard unavailable: ${feed.transportError}` : 'Loading desk…'}
+          {feed.failure ? feedFailureLine(feed.failure, 'The desk').text : 'Loading desk…'}
         </p>
       </div>
     );
@@ -359,7 +360,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         now={now}
         mounted={mounted}
         refreshing={feed.refreshing}
-        transportError={feed.transportError}
+        failure={feed.failure}
         onRefresh={feed.refresh}
       />
 

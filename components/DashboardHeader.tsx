@@ -1,5 +1,6 @@
 'use client';
 
+import { feedFailureLine, type FeedFailure } from '@/lib/dashboard/feedFailure';
 import { DataFreshness } from '@/components/DataFreshness';
 import { DeskAssessmentStatus } from '@/components/DeskAssessmentStatus';
 import { MarketStatus } from '@/components/MarketStatus';
@@ -25,7 +26,7 @@ interface DashboardHeaderProps {
   now: number;
   mounted: boolean;
   refreshing: boolean;
-  transportError: string | null;
+  failure: FeedFailure | null;
   onRefresh: () => void;
 }
 
@@ -39,7 +40,7 @@ export function DashboardHeader({
   now,
   mounted,
   refreshing,
-  transportError,
+  failure,
   onRefresh,
 }: DashboardHeaderProps) {
   const clock = mounted ? formatEtClock(new Date(now)) : '--:--:--';
@@ -86,7 +87,7 @@ export function DashboardHeader({
             mounted={mounted}
           />
           <ResearchEngineStatus health={researchHealth} mounted={mounted} />
-          <DataFreshness meta={meta} now={now} mounted={mounted} transportError={transportError} />
+          <DataFreshness meta={meta} now={now} mounted={mounted} failure={failure} />
           <button
             type="button"
             onClick={onRefresh}
@@ -98,9 +99,9 @@ export function DashboardHeader({
         </div>
       </div>
 
-      {meta.error || transportError ? (
+      {meta.error || failure ? (
         <div className="border-t border-neg/25 bg-neg/8 px-4 py-1 text-[11px] text-neg">
-          {transportError ? `Research API unreachable: ${transportError}` : meta.error}
+          {failure ? feedFailureLine(failure, 'Research').text : meta.error}
         </div>
       ) : null}
 

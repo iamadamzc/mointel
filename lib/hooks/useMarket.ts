@@ -2,6 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import {
+  classifyResponse,
+  classifyThrown,
+  type FeedFailure,
+} from '@/lib/dashboard/feedFailure';
+
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 import type { MarketSnapshot } from '@/lib/market/types';
 
@@ -14,14 +20,14 @@ export const MARKET_POLL_INTERVAL_MS = 1000;
 
 export interface MarketFeedState {
   snapshot: MarketSnapshot | null;
-  transportError: string | null;
+  failure: FeedFailure | null;
   loading: boolean;
 }
 
 export function useMarket(extraSymbols: string[]): MarketFeedState {
   const { apiBase } = useDeskMode();
   const [snapshot, setSnapshot] = useState<MarketSnapshot | null>(null);
-  const [transportError, setTransportError] = useState<string | null>(null);
+  const [failure, setFailure] = useState<FeedFailure | null>(null);
   const [loading, setLoading] = useState(true);
 
   const symbolsKey = extraSymbols.join(',');
@@ -40,17 +46,26 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
         signal: controller.signal,
         cache: 'no-store',
       });
-      if (!response.ok) throw new Error(`API responded ${response.status}`);
+      /*
+       * CLASSIFIED, NOT THROWN. Throwing folded a refusal into the catch beside
+       * a dead socket, and the header then told him the feed was unreachable
+       * when the truth was that he was signed out.
+       */
+      const refusal = classifyResponse(response.status);
+      if (refusal) {
+        if (mountedRef.current) setFailure(refusal);
+        return;
+      }
 
       const payload = (await response.json()) as MarketSnapshot;
       if (!mountedRef.current) return;
 
       setSnapshot(payload);
-      setTransportError(null);
+      setFailure(null);
     } catch (error) {
       if ((error as Error).name === 'AbortError') return;
       if (!mountedRef.current) return;
-      setTransportError((error as Error).message);
+      setFailure(classifyThrown(error));
     } finally {
       if (mountedRef.current) setLoading(false);
     }
@@ -81,5 +96,5 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
     };
   }, [load, symbolsKey]);
 
-  return { snapshot, transportError, loading };
+  return { snapshot, failure, loading };
 }

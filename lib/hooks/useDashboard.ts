@@ -2,6 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import {
+  classifyResponse,
+  classifyThrown,
+  type FeedFailure,
+} from '@/lib/dashboard/feedFailure';
+
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 import type { DashboardState, MomentumTicker } from '@/lib/data/types';
 
@@ -18,7 +24,7 @@ export interface DashboardFeed {
   /** True while a manual refresh is in flight. */
   refreshing: boolean;
   /** Transport-level error (the API itself unreachable), separate from meta.error. */
-  transportError: string | null;
+  failure: FeedFailure | null;
   /** Tickers whose displayed values changed on the most recent poll. */
   changedTickers: Set<string>;
   refresh: () => void;
@@ -41,7 +47,7 @@ export function useDashboard(openTickers: readonly string[] = []): DashboardFeed
   const [data, setData] = useState<DashboardState | null>(null);
   const [initialLoading, setInitialLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [transportError, setTransportError] = useState<string | null>(null);
+  const [failure, setFailure] = useState<FeedFailure | null>(null);
   const [changedTickers, setChangedTickers] = useState<Set<string>>(new Set());
 
   const signaturesRef = useRef<Map<string, string>>(new Map());
@@ -96,10 +102,15 @@ export function useDashboard(openTickers: readonly string[] = []): DashboardFeed
               : current,
           );
         }
-        setTransportError(null);
+        setFailure(null);
         return;
       }
-      if (!response.ok) throw new Error(`API responded ${response.status}`);
+      // Classified rather than thrown -- a refusal is not a dead socket.
+      const refusal = classifyResponse(response.status);
+      if (refusal) {
+        if (mountedRef.current) setFailure(refusal);
+        return;
+      }
 
       etagRef.current = response.headers.get('etag');
       const payload = (await response.json()) as DashboardState;
@@ -117,7 +128,7 @@ export function useDashboard(openTickers: readonly string[] = []): DashboardFeed
       signaturesRef.current = next;
 
       setData(payload);
-      setTransportError(null);
+      setFailure(null);
 
       if (changed.size > 0) {
         setChangedTickers(changed);
@@ -129,7 +140,7 @@ export function useDashboard(openTickers: readonly string[] = []): DashboardFeed
     } catch (error) {
       if ((error as Error).name === 'AbortError') return;
       if (!mountedRef.current) return;
-      setTransportError((error as Error).message);
+      setFailure(classifyThrown(error));
     } finally {
       if (mountedRef.current) {
         setInitialLoading(false);
@@ -169,5 +180,5 @@ export function useDashboard(openTickers: readonly string[] = []): DashboardFeed
     void load({ force: true });
   }, [load]);
 
-  return { data, initialLoading, refreshing, transportError, changedTickers, refresh };
+  return { data, initialLoading, refreshing, failure, changedTickers, refresh };
 }
