@@ -9973,3 +9973,26 @@ in-session restart to fire and the running worker predates today's open.**
 
 **Retention-20 observable at 22:00 ET tonight: 09-09 must still be present
 after the roll. Read, not assumed.**
+
+## RELEASE 1 OF THE PUBLIC BATCH IS BUILT AND GATED, NOT SHIPPED — 2026-09-15 evening
+
+**Four commits, app only, nginx untouched:** `d560748` the board moves to
+`app/desk/page.tsx` (pure rename) and `app/page.tsx` becomes the landing page
+(both Landing artboards, Web's words verbatim, static, no data, no session);
+`96f6eea` `/privacy` and `/terms` render `docs/legal/*.md` at request time
+through `lib/legal/document.ts` + `components/LegalPage.tsx`, banner decided
+by `adopted` alone, `marked` added as the one new dependency; `1815dc0`
+source-level tests — board at `/desk` not `/`, public pages fetch nothing,
+every href absolute/fragment/mailto, both banner states rendered and seen;
+and a fourth scoping the file path statically after the build warned it
+would trace the whole project (the 2026-09-07 failure shape) — warnings 2→0.
+
+**Gate at the tip: tsc, lint 0 errors, 2107 tests / 141 files, build; route
+table shows `○ /` static, `ƒ /desk`, `ƒ /privacy`, `ƒ /terms`.**
+
+**What it does when deployed: `/` serves the landing page BEHIND Basic Auth
+(status quo for a stranger: 401), the board is at `/desk`, `/privacy` and
+`/terms` exist behind the password. Verification WITH the desk credential
+for existence.** Not 07:00–10:00 ET. Integration tells him before it lands
+that the bare domain now shows him the landing page and his bookmark is
+`/desk`. **Release 2 (four `=` exemptions) follows a separate enumeration.**
