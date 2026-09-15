@@ -263,8 +263,18 @@ subject to every prohibition above.*
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**2026-09-14. Everything this thread has written is on the published canvas.
-Nothing is in progress and no file is held.**
+**2026-09-15. Everything this thread has written is on the published canvas
+at `fe26b0a`. Nothing is in progress and no file is held.**
+
+- **The canvas URL changed form: https://claude.ai/artifact/MydyXGM4MpDZtwixpUXjvs**
+  (older messages carry `claude.ai/code/artifact/a9df35ee-…`). **It carries a
+  `note-build` stamp with the seeding sha.** Check `git log -1 --format=%h --
+  docs/web/canvas/` against the stamp before believing the canvas is current;
+  never ask Web and never assume. Web now pings on every republish.
+- **His verdicts 2026-09-15:** research section *"fine"*. Section header *"and
+  the fourth is the one nobody prints"* — *"SCREAMS AI"*. Replaced with **"None
+  of this is on the chart."**; same shape cut from card 03. Rule in the copy
+  pass: no sentence whose second clause exists to land the first.
 
 - **On the canvas since `e0d6523`, 2026-09-11 04:53 ET (Web):** the copy pass,
   Commercial's rulings, the pre-session research section with four reading
