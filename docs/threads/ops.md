@@ -9831,3 +9831,20 @@ with the surface listed. *The `DELETE` that worried it is a 405 with
 **So "only me" has exactly one path to guard today, `/api/research/retry`,
 and it is guarded today by Basic Auth alone.** The owner check belongs to the
 auth batch, before Basic Auth leaves `/`; not tonight.
+
+**Web's spec received: `docs/web/2026-09-15-route-spec.md` at `b956c96`.**
+Narrower than the batch above and better: `location = /privacy`, `= /terms`,
+`= /signin`, `= /favicon.ico` (exact, so `/privacy-x` stays behind the wall),
+and `^~ /auth/` as the ONLY prefix, trailing slash so bare `/auth` matches
+nothing; `<proxy block>` verbatim from the `_next/static` exemption. **The
+draft block earlier in this file is superseded by the spec's strings.**
+**Proof: four 200s AND three 401s (`/`, `/api/market`, `/privacy-x`) from a
+stateless actor — the third line is what distinguishes exact from prefix.
+Two actors, one expectation: Web runs it from outside, Ops runs it from the
+box side.** Web's §1 also lists what has to exist behind the locations —
+the markdown renderer for `/privacy` and `/terms`, the `/signin` page, the
+`/auth/*` machinery — and a location with nothing behind it is a public 404.
+**HOLD STANDS: nothing is cut until Design answers (A) `/` landing with the
+board at its own path, Web's recommendation, or (B).** Under (A) the five
+strings above are unchanged and `location = /` is added later; the board's
+new path keeps `auth_basic`.
