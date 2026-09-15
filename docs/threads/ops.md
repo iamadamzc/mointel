@@ -9882,3 +9882,32 @@ Web owns the states and status codes; `/auth/*` — Ops, it is session issue.
 SignIn artboard.** This is the `lib/review/` exception again — operational
 machinery written in TypeScript — and the charter's convention that Ops
 otherwise deploys rather than writes application code still holds outside it.
+
+## Hold lifted; the public batch is the board move, the landing page, two renderers and four exemptions — 2026-09-15 17:5x ET
+
+**Settled by Design and Web at `878be84`, spec §3b–3c: (A), board at `/desk`,
+no redirect, `/` static and cacheable.** `/signin` and `/auth/` are NOT in
+this batch — Google's requirement is a public home page that describes the app
+and links both documents, "not only a login page"; nothing about signing in.
+**So the batch is: move the board to `/desk` (keeps `auth_basic`), landing
+page at `location = /` (public), `/privacy` and `/terms` renderers, and four
+exact-match exemptions (`= /`, `= /privacy`, `= /terms`, `= /favicon.ico`).
+Proof from the box side: the four 200s and the three 401s (`/desk`,
+`/api/market`, `/privacy-x`); Web verifies from outside.** Nothing on the
+board assumes the root (Design checked); one `href="/"` in
+`ReviewRefusal.tsx:39` improves under (A).
+
+**Sequencing: it builds AFTER tonight's deploy ships, so nothing untested
+rides the enumeration already sent.** Commits on main before an enumeration
+are in it; there is no branch in a five-session worktree.
+
+**`docs/AWS_DEPLOYMENT.md` corrected at `4cbd58f`:** the custom domain exists,
+resolves to the Lightsail IP direct, and bypasses the distribution; the curl
+proof is valid only because nothing caches in front of `tmitrader.com`, and
+that dependency is now written where the next CDN-adder will read it.
+
+**Tonight's enumeration sent to Integration at 17:5x ET from tip `4cbd58f`,
+gate green (2084 tests / 138 files). Thirteen code commits: Design 5,
+Research 7 (one in `lib/market/engine.ts`, worker code, live only after the
+restart), Coaching 1, Ops 0.** Awaiting Integration's approval and his word
+for the restart.
