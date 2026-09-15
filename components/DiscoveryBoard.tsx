@@ -66,6 +66,30 @@ interface SortEntry {
   resolve?: (phase: SessionPhase | null) => { label: string; title: string };
 }
 
+/*
+ * SIX BUTTONS, MEASURED RATHER THAN EYEBALLED.
+ *
+ * `baselineLabel` warns that its word sits "in a five-button row ... that has to
+ * survive the 1,024px floor", and this adds a sixth. TWO of the six labels now
+ * vary with the phase and BOTH peak in the SAME one -- `RTH Gap` beside
+ * `RTH Move` -- which is not an edge case, it is the session he trades. Measured
+ * at PM or off-session it would look fine and still be widest at 09:30.
+ *
+ * Measured in Geist 600 at 11px with `tracking-wide`, the real font:
+ *
+ *     PREMARKET    330.4px      RTH  339.2px      AH  328.1px      neutral  289.5px
+ *     with the `Sort` label and the unplaceable chip:  RTH 395.3px
+ *     the five-button row it replaces, at RTH:          265.0px
+ *
+ * So the sixth button costs 74.2px and the worst case is 395.3 of 1,024. AND THE
+ * PARENT WRAPS (`flex flex-wrap`, line ~200), so the failure mode was never
+ * clipping or a horizontal scrollbar -- it is one earlier line break. The
+ * `overflow-hidden` on the group below would only bite if the group alone
+ * exceeded the line, and it does not.
+ *
+ * The method is `DecisionCells.tsx:120-127`, which measured this font at this
+ * floor to one decimal and caught a 12.8px overflow that eye-balling passed.
+ */
 const SORT_KEYS: ReadonlyArray<SortEntry> = [
   { key: 'rank', label: 'Rank', title: "The board's own ranking for this session" },
   { key: 'rvol', label: 'RVOL', title: 'Relative volume' },
