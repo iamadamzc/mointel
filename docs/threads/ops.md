@@ -9710,3 +9710,30 @@ re-spawned 17:15:45Z (the reload); `nginx -T` shows `location ^~
 HTTPS on the box: a real chunk from the live `.next` → **200**; `/` → **401**;
 `/review/notatoken/api/dashboard` → **403**. *Review sessions receive JS and
 CSS. The click test is Design's.*
+
+## Two `lib/review/` items scoped, neither shipped — 2026-09-15 afternoon
+
+*Found by Design reading the code, routed by Integration, confirmed by
+opening the files.*
+
+1. **The token lifetime names a duration where the requirement is a
+   condition.** `tokens.ts:139`: `expiresAt = now + hours * 3_600_000`,
+   default `DEFAULT_REVIEW_HOURS`. That is the mechanism that expired
+   session 13 four minutes before the premarket it was issued for, on
+   2026-08-23. `access.ts` already checks on every request and revocation is
+   immediate, so "until revoked" needs no new mechanism — only the issuing
+   rule is wrong. **Scope: an `--until-revoked` (or `--through=<date>`)
+   option in `worker/review.ts` that writes a far `expires_at`, with the
+   operator rule already in this file: revoke when the work is finished, not
+   when a sitting ends.** Interim, before any tester link: issue with a long
+   `--hours` and revoke on completion.
+2. **`diagnostics.ts:sanitize` does not redact filesystem paths.** Four rules
+   (AWS-style ids, `sk-` keys, PEM blocks, ≥40-char base64-ish) then a 240
+   cut. `ENOENT ... '/home/<user>/mointel/data/market.db'` passes intact:
+   reconnaissance, not a credential. **Scope: one more rule replacing
+   absolute POSIX/Windows paths with `[path]`, with a test that feeds an
+   ENOENT string and asserts the user and layout are gone.**
+
+Neither rides tonight unless he says so. **A review token for Design's
+end-to-end click is a production write; it is issued here on his yes and
+routed through Integration; Design revokes it after.**
