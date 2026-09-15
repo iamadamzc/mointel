@@ -197,6 +197,39 @@ hand it over — and specify it as a string Ops can implement, not as an intenti
 
 ---
 
+## WHEN THE SHAPE OF THE SYSTEM CHANGES, EVERYTHING THAT DESCRIBES IT IS STALE UNTIL PROVEN OTHERWISE
+
+**Three instances in one afternoon, from three seats, 2026-09-15** — and they
+are the same failure wearing different clothes:
+
+- **A DEPLOYMENT DOC.** `docs/AWS_DEPLOYMENT.md` says the public URL is the
+  distribution hostname and there is no custom domain. **`tmitrader.com`
+  resolves straight to the static IP and bypasses the distribution entirely.**
+  *Design read the file, stated it as live architecture, and built a correct
+  objection on a false premise.*
+- **A CHECKLIST.** This thread's own negative control did not include `/desk`,
+  **because it was written before `/desk` existed** — and after the move, `curl
+  /desk` expecting `401` is the one line whose failure means the desk is public.
+- **A COMMENT** that was true when written, predicted its own obsolescence, and
+  was then read as current.
+
+> **THE TWO FAILURE DIRECTIONS ARE NOT EQUALLY DANGEROUS.** *Design's form
+> reported an ABSENCE — a red result, and red gets investigated.* **This
+> thread's form reported a PASS.** *A checklist that passes against a map one
+> change out of date is the worse of the two, because nothing about a green
+> result invites a second look.*
+
+**AND THE AUTHOR IS THE WORST-PLACED PERSON TO NOTICE.** *I wrote the negative
+control, so nobody else was going to re-read it — and I could not see the gap
+because I was checking against the same map I had drawn it from.*
+
+**THE RULE: a change to the SHAPE of the system — a new path, a moved route, a
+different hostname — expires every document, comment and checklist that
+describes the shape.** *Not eventually. At the moment of the change.* **List
+what describes it before changing it, the way a deletion is a list of readers.**
+
+---
+
 ## How it reports
 
 - **`git commit --only <explicit paths>`. Never `git add -A`, and `git add <path>`

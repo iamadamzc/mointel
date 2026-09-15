@@ -354,6 +354,30 @@ negative control.**
 **Only after Release 2's `200`s and `401`s both pass does he submit for
 verification.**
 
+### The gap between the releases is itself a decision
+
+**Design flagged the transitional window and it is real: in Release 1, `/` serves
+the landing page and is still behind Basic Auth.** *He types the domain, meets
+the password, and arrives at a landing page rather than his board.* **Correct,
+safe, and the worst version of his morning — password first, then the wrong
+page.**
+
+**The desk link is already in Release 1 by construction** — *it is part of the
+landing page, which ships in that release; it is not a separate item that could
+be forgotten.* **And Basic Auth is per-realm, so he enters the password once and
+the click through to `/desk` does not prompt again.** *One extra click, not two
+passwords.*
+
+> **THE REAL MITIGATION IS THE LENGTH OF THE WINDOW, NOT ITS CONTENT.** *The two
+> releases are one sitting, not one sprint:* **deploy Release 1, run the
+> password-authenticated verification, deploy Release 2, run the public
+> verification.** **Minutes.**
+>
+> *Splitting them across days buys nothing — the verification between them takes
+> seconds — and it spends the whole window on his morning.* **If they cannot be
+> done in one sitting, Release 1 should wait, because the board working at `/`
+> is a better place to pause than the board working nowhere he would look.**
+
 ### Two things about when
 
 - **Release 1 changes what `/` serves HIM** — the landing page, not the board.
