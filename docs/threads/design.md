@@ -3916,6 +3916,63 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## I PUT AN UNVERIFIED PREMISE IN THE QUESTION HE RULED ON
+
+**The worst error of the day, because it did not stop at a thread. Research found
+the mechanism and it is not the one I recorded below.**
+
+    engine.ts:816        seedSession() calls this.ensure(symbol)
+    runtime.ts:849-873   the bootstrap loop has NO `continue` before seedSession
+
+**⇒ A RUNTIME EXISTS FOR EVERY SNAPSHOT SYMBOL FROM BOOTSTRAP.** *So the
+`if (!runtime)` block is never entered for them — and the PRICE GATE AT 902 LIVES
+INSIDE IT.* **The band gates FIRST ADMISSION, not ingestion. A name with a runtime
+has its 04:00 bars ingested whatever it is trading at, and its anchor is its true
+first print.** *My baselines mechanism was wrong; the conclusion about the NAME
+arm survives on Research's.*
+
+### BUT THE SNAPSHOT SET IS NOT THE UNIVERSE, AND THAT PUTS THE CASE BACK
+
+    runtime.ts:805-812   bandMin = discoveryPriceMin * 0.4
+                         bandMax = discoveryPriceMax * 2
+                         candidates = pinned + names whose PRIOR CLOSE is in that band
+
+**Deliberately widened, and the comment says why: *"so a gapping name is not
+missed just because it closed below the floor."* Someone has already thought about
+this exact case.** *So the population with no bootstrap runtime is:*
+
+    prior close < 0.4 x min    a SUB-FLOOR NAME THAT RUNS INTO THE BAND
+    prior close > 2 x max      a high name that falls in
+    no baseline / no previousClose
+
+**The first is not exotic — a name closing under $0.40 against a $1 floor and
+running to $3 is the shape he trades.** *For those there is no runtime, the price
+gate DOES apply, sub-band prints are discarded, and the anchor is the first
+in-band print. Late.*
+
+### SO THE PREMISE WAS OVERSTATED, NOT FALSE — AND HE RULED ON IT
+
+**I told him it happens to "nearly every newly-qualified name, every day."** *It
+does not. Most qualify from inside the widened band and keep a correct anchor.*
+**It happens to names that closed outside a band drawn to catch gappers: a much
+smaller set, and not zero.**
+
+> **I READ A CODE PATH SAYING ANCHORS SHOULD BE LATE AND PUT IT TO HIM AS A FACT
+> ABOUT HIS BOARD, WITHOUT MEASURING IT.** *Research's own rule, sign-flipped: a
+> path that says anchors should be correct is not evidence that they are.*
+
+**MINE TO CARRY TO HIM, since I wrote the premise into the question.**
+
+### THE TEST, SHARPENED BY THE BAND
+
+**`anchor-loss-cohort.ts` on a NON-RESTART date already has `pm_open_at`, the
+earliest retained bar, and `previousClose` on the baseline it loads. So it can
+distinguish THREE outcomes rather than two:**
+
+    moved concentrated OUTSIDE the band   both readings right; the case is that population
+    moved scattered INSIDE it too         a mechanism neither of us has found
+    moved ~ 0 everywhere                  Research complete, my premise simply wrong
+
 ## THE ARM THAT CARRIES HIS RULING CANNOT FIRE
 
 **Verified three calls deep, and it is the worst finding of the exchange:**
