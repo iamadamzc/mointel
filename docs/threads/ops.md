@@ -9575,3 +9575,20 @@ rerun must use `NOT LIKE 'alpaca-historical-minute-bars%'`.*
 person reconstructing anything from `volume_base*` columns will believe they
 hold base state; two of them are constants and the third is a duplicate.
 Research's Monday reconstruction survived only because it used `LIKE`.
+
+## RETENTION 20 IS IN FORCE: 09-09 survived the roll — 2026-09-15 01:30 ET
+
+**Read on the box, not the config.** After the 22:00 ET roll (marker
+`2026-09-15T02:00:00.704Z`, log "trading date rolled 2026-09-14 -> 2026-09-15"
+at 22:00:23 ET, no "pruned" line): `minute_bars` holds **09-09, 09-10, 09-11,
+09-14** — four dates. At retention 3 the roll would have deleted 09-09.
+**Committed became in force at the 13:16 ET restart, and this is the proof.**
+The 09-11 bars and the anchor-loss evidence now outlive Wednesday. All four
+units active.
+
+**Closing top-50 count, prefix match:** 36 backfilled, **14 of 50 late-
+anchored** — up from 1 of 50 at 13:35. Anchors from 13:17 to 15:42 ET: SAC 14,
+AHL.PRE 15, EDHL 16, ITHA 22, QTRX 25, SPHL 27, KFII 28, HITI 38, RLGT 41,
+PTN 43, JBDI 45, STIM 46, NICM 47, PMTR 48. *For the record; the session is
+over. The number to carry: a mid-session restart's late-anchor share on the
+board grew from 2% to 28% by the close.*
