@@ -3916,6 +3916,77 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE SEAM PREDICATE IS BLIND ON FRIDAY. WITHDRAWN.
+
+**Research broke it and I verified the break rather than accepting it.**
+
+    runtime.ts:851-854   belongsToSession gates VOLUME
+    runtime.ts:885       belongsToSession gates VOLUMEBASETHROUGH
+
+**⇒ ON A PREMARKET RESTART THE DAILY BAR HAS NOT ROLLED, SO THERE IS NO SEAM AT
+ALL.** *Friday's thirteen carried none. "Does this row still carry the bootstrap's
+seam" is FALSE for every one of them, on the morning their anchors were
+destroyed.*
+
+**AND THE DAMAGE NEVER CAME FROM A SEAM.** *With no seam, `ingestBar`'s guard
+never fired and nothing was dropped. The anchors were late because NOTHING WAS
+REPLAYED — the engine started empty and only live bars arrived.* **Absence of
+replay, not presence of a seam. I built a detector for the wrong mechanism.**
+
+### RESEARCH'S REPAIR RECORD IS THE HALF THAT SURVIVES
+
+    runtime.ts:946   volumeBaseSource: 'alpaca-historical-minute-bars'   the replayed set
+    engine.ts:1003   writes volumeSource, NOT volumeBaseSource           so it stays pure
+
+**Not gated by `belongsToSession`, last-write-wins, never overwritten. A genuine
+record of WHICH PATH established this symbol's anchor.**
+
+### BUT THEIR PROCESS HALF CONTRADICTS HIS RULING, WHICH LANDED AFTER THEY STARTED
+
+**`observingSinceMs > sessionStartMs` is FALSE for a promotion on a normal
+morning — so the structural daily case he explicitly ruled IN reads clean.**
+*Research flagged this as "the product answer incidents-only" and asked for
+sign-off. It cannot be given: the product answer is incidents-PLUS-structural and
+it came from him.*
+
+**AND IT IS WORSE IN HIS OWN WINDOW, which neither thread had found:**
+
+    runtime.ts:1150   if (!dailyBar || etDateString(...) !== tradingDate) continue;
+
+**`drainPromotions` SKIPS ENTIRELY while the daily bar has not rolled. A name
+promoted during PREMARKET is never seeded at all** — *`ensure()` leaves
+`volumeBaseSource: null`, its anchor is its first live bar after admission, and it
+is late.* **Both predicates read FALSE on it. That is the commonest late anchor on
+the board and it sits inside 07:00-10:00.**
+
+### THE CHANGE: MAKE THE PROCESS HALF PER-SYMBOL
+
+    anchorsEstablishedAfterSessionStart =
+          symbolObservedSinceMs > sessionStartMs                  THIS NAME picked up late
+      AND volumeBaseSource !== 'alpaca-historical-minute-bars'    and not replayed
+
+**`ensure()` (`engine.ts:473-489`) constructs the runtime lazily and carries NO
+creation stamp — checked, there is no `observingSince` anywhere in the file.** *So
+this is one assignment where the symbol first becomes known: the same cost as the
+process-level field, in the same file.*
+
+    Friday premarket, the 13     picked up 08:33 > 08:00, not replayed   TRUE   correct
+    Friday, the 4 pins           replayed                                FALSE  correct
+    Today 13:16, top-200         replayed                                FALSE  correct
+    Today, the ~8,600            picked up 13:16, not replayed           TRUE   correct
+    Normal morning from 04:00    picked up at/before start               FALSE  fires zero
+    Premarket promotion 07:40    picked up 11:40Z, not replayed          TRUE   HIS RULING
+
+**It degrades to Research's exactly when every symbol was picked up at process
+start, which IS the restart case — so nothing they verified is lost.**
+
+### AND THE CHANNEL SEPARATOR FALLS OUT FREE
+
+**Every tracked symbol sharing one observed-since is a RESTART -> board statement.
+A symbol observed later than the process started is a PROMOTION -> row mark.**
+*No minute-string identity test, so the collision question I created disappears.
+No threshold. No second field.*
+
 ## HIS RULING: MARK THE ROW. `LATE`.
 
 **Put to him directly rather than relayed, because it is a question about what the
@@ -4043,7 +4114,7 @@ the case that actually produces late anchors.**
 process fact and a market fact produce the identical row, find the QUANTITY THE
 MARKET WOULD HAVE MOVED.*
 
-    stream.ts:44   wildcard channels: bars, updatedBars, statuses
+    lib/market/alpaca/stream.ts:44   wildcard channels: bars, updatedBars, statuses
                    -- WHOLE-MARKET, not the tracked set
 
     quiet market ->  FEW bars, across few symbols
@@ -4056,7 +4127,7 @@ counted.*
 
 ### TWO LIMITS, STATED RATHER THAN DISCOVERED
 
-**`wildcardDenied` (`stream.ts:72`) falls back to an EXPLICIT SYMBOL LIST.** *On
+**`wildcardDenied` (`lib/market/alpaca/stream.ts:72`) falls back to an EXPLICIT SYMBOL LIST.** *On
 that path the subscription is the tracked set, a small set can genuinely be
 silent, and the discriminator degrades exactly where it is needed.* **Whether
 that fallback is live in production is Research's to say.**
