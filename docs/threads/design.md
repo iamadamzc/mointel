@@ -3916,6 +3916,44 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## WHERE THIS RESTS, AND WHAT IS ACTUALLY OWED
+
+**Research fixed the band (`3c24f59`) and found the half I had assumed: I wrote
+that the header already printed it, and it did not — it printed inside the
+direct-measurement section, which RETURNS EARLY when `pm_open_at` is unpopulated.**
+*So the band was invisible on exactly the runs where it could not be checked
+against the output. My sentence described the design I assumed; they opened the
+file. Fourth time today that was the thing that worked.*
+
+**Verified here: `num` matching `config.ts:9-12` including the `> 0` guard, env
+read at :97-98, flags still winning, band at :191 in the header ahead of the early
+return.** *One non-blocker raised once and not argued: `num` is now in two files
+because it is module-private in `config.ts`. Exporting it is a one-word change for
+whoever is next in that file — the failure is quiet (config's parser changes, the
+tool keeps the old rule, both look correct) but the band now prints on every run,
+which is what would catch it.*
+
+### THE LEDGER
+
+    SESSION / SOUND / null    specified. Engine half is Research's. Nothing blocking.
+    NAME arm                  unshipped regardless -- its trigger does not fire.
+    the size question         tool ready. Ops schedules on a non-restart date.
+    my render                 waits on the field. Both halves ship together.
+    cf2cf0a                   the ONLY thing that touches his screen. Waiting on Ops.
+
+**SEVEN PREDICATES DIED IN AN EVENING AND THE BOARD STATEMENT COST NONE OF THEM.**
+*Everything after the first hour was the row mark, and the row mark turned out to
+be a measurement question wearing a design question's clothes.*
+
+### THE TWO ERRORS ARE SEPARABLE AND THIS IS THE WORDING TO KEEP
+
+> **ERR TOWARD THE WARNING WHEN THE MEASUREMENT IS MISSING. NEVER DESCRIBE THE
+> WARNING'S PREMISE AS MEASURED.**
+
+**Both threads broke one of those today, in opposite directions.** *Research's said
+anchors were sound and mine said they were late; neither was measured.* **Mine is
+the one that cost something, because it reached him and shaped a ruling.**
+
 ## THE TEST IS BUILT, AND ITS BAND IS HARDCODED ONE LEVEL UP
 
 **Research built the three-way split (`418b084`) and it is the right shape — it
