@@ -9631,3 +9631,36 @@ before it, nothing to be wrong about.
 **⇒ For the next mid-session restart decision: about 20% of the closing board
 (10 of 50) carried a wrong Move, median error ~3.5 points, worst 6.3 with a
 flipped sign.** Measured, not estimated; the query is above.
+
+## THE PREMISE IS A FACT: at 04:38 ET the snapshot daily bar is still yesterday's — 2026-09-15
+
+**Read-only REST snapshot from the box with the worker's keys, 08:38:36Z on
+trading day 2026-09-15 (`meta.trading_date` = 2026-09-15), four symbols,
+`dailyBar.t` RAW beside its ET conversion:**
+```
+AAPL  dailyBar.t RAW=2026-09-14T04:00:00Z  ET=2026-09-14   v=39,566,506   minuteBar.t=2026-09-15T08:33:00Z v=305
+RLGT  dailyBar.t RAW=2026-09-14T04:00:00Z  ET=2026-09-14   v=955,952      minuteBar.t=2026-09-15T08:37:00Z v=1061
+QTRX  dailyBar.t RAW=2026-09-14T04:00:00Z  ET=2026-09-14   v=6,064,990    minuteBar.t=2026-09-14T23:12:00Z
+PTN   dailyBar.t RAW=2026-09-14T04:00:00Z  ET=2026-09-14   v=699,562      minuteBar.t=2026-09-14T23:55:00Z
+prevDailyBar.t = 2026-09-11 on all four
+```
+**Two names had already printed TODAY's premarket minutes (AAPL 04:33 ET,
+RLGT 04:37 ET) and their daily bar was still yesterday's, carrying
+yesterday's full volume.** So `etDateString(dailyBar.t) === tradingDate` is
+FALSE for every name in early premarket; `belongsToSession` is false; volume
+is 0; `computeDailyRvol(0, avg)` = 0 for all; the sort has no signal;
+`.slice(0, 200)` is arbitrary. **Friday's 04:33 ET bootstrap could only ever
+have backfilled the pins.** Research's diagnosis is confirmed by observation,
+not inference. *When the daily bar rolls to today is NOT settled by this read
+— only that it has not by 04:38.*
+
+**Re-priced up again, by Research via Integration:** Design shipped
+in-session Move as a SORT KEY at `528a99e`; a sort decides which rows are on
+his screen. Sound anchors on an ordinary morning are now a precondition for
+trusting the sort, which makes the `rvol_rank`-seeded backfill (Research's
+scope item 2) the fix that protects the sort, and the "selector has no signal"
+log line (item 1) the thing that says when it did not.
+
+**Enumeration of the 56 commits above `997d231`, including the Move sort:
+AFTER the 16:00 close, per Integration. Agreed** — two premarket outages on
+deploys already, and yesterday's memory failure was the same shape.
