@@ -3916,6 +3916,58 @@ and admitting anyway** — a gate that has never refused anything, in front of a
 signal that has never been ACTIVE. **Two inert mechanisms cancelling, which is
 why nobody saw it.**
 
+## THE ARM THAT CARRIES HIS RULING CANNOT FIRE
+
+**Verified three calls deep, and it is the worst finding of the exchange:**
+
+    worker/alpaca.ts:81-82   baselineSymbols = universe.length > 0 ? universe : pinned
+    worker/baseline.ts:37    ensureBaselines(universe)
+    runtime.ts:692-709       loads persisted, builds missing, setBaselines(ALL)
+
+**THE WHOLE UNIVERSE GETS A BASELINE AT STARTUP, IRRESPECTIVE OF PRICE.** *So at
+`engine.ts:903` the `!this.baselines.has(symbol)` branch is FALSE for essentially
+every universe name, and `onPromotionCandidate` NEVER FIRES for them* — **only for
+a listing too new for historical bars, or a sheet symbol outside the universe.**
+
+**⇒ THE `NAME` ARM IS DEFINED ON AN EVENT THAT, FOR THE POPULATION IT DESCRIBES,
+DOES NOT OCCUR. The mirror of the check that cannot fail** — *the family we have
+been chasing since yesterday, arriving inside the fix for it.*
+
+### AND IT INVERTS THE FALSE-NEGATIVE NOTE: THE GAP IS THE WHOLE CASE
+
+**Research filed range-entry as a bounded gap, least visible on the board. It is
+not a class ALONGSIDE the promotion case. IT IS THE PROMOTION CASE.** *A name
+qualifying at 07:40 is in the universe, so it has a baseline, so it skips the
+branch, so it is tracked with no event.* **`drainPromotions` describes itself as
+handling symbols that entered the price range mid-session — and its queue is fed
+by an event those symbols never reach.**
+
+**THAT IS THE CASE HE RULED IN THIS MORNING.**
+
+### AND IT MAY NOT BE DETECTABLE FROM CURRENT STATE AT ALL
+
+**Before 07:40 that name's bars arrive on the wildcard feed and are DISCARDED at
+`engine.ts:902` on the price gate, before any runtime exists.** *Not a value
+discarded at a boundary this time — a value NEVER TAKEN.* **And
+`engine.ts:893` says why remembering them is not free: "growing memory without
+bound."**
+
+    SOUND    buildable, provable
+    SESSION  buildable, VERIFIED -- the restart arm, the one thing that survived today
+    null     buildable
+    NAME     NOT BUILDABLE from what the engine holds
+
+### SO THE ASK IS THE OPPOSITE OF A FIX: HE HAS TO BE TOLD
+
+**He ruled that case IN this morning, on my question. A mark he was promised and
+never sees is WORSE than the tooltip he already had** — *he would read a clean row
+as CHECKED rather than as UNEXAMINED.* **That is the silence-implying-coverage
+defect both exclusions exist to prevent, arriving through a render he approved.**
+
+**⇒ SESSION, SOUND and null ship. The row mark does not. And he is told WHICH OF
+HIS TWO ANSWERS HE ACTUALLY GOT.** *Mine to put to him, since the question was
+mine.*
+
 ## NONE OF THIS EXISTS YET, AND `firstSeenAt` IS ALREADY SPENT
 
 **Stated outright because the spec only implied it and Integration had to grep to
