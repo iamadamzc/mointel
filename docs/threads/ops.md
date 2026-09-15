@@ -9869,3 +9869,16 @@ he runs, or a seed he authorises), never an implicit grant against an
 ordinal.** Shape of the column is mine with Web; the separation is the
 ruling's consequence. Nothing here is tonight's; `/api/` keeps Basic Auth in
 the public batch, so the retry gate stays a condition on the later step.
+
+**Build split for the public batch, confirmed against `web.md` SEAMS (read,
+not relayed): Ops holds public routes, the nginx exemption per prefix, the
+sign-in POST target and session issue — `nginx.conf`, `app/` and the identity
+store are Ops's carriage; Web designs and specifies.** Not stale; it matches
+who writes where. So: `/privacy` and `/terms` — Ops builds the markdown
+renderer against Web's rendering contract, content adopted in
+`docs/legal/`; `/signin` — Ops builds the route, Design owns the artboard,
+Web owns the states and status codes; `/auth/*` — Ops, it is session issue.
+**Design is on the critical path twice: the (A)/(B) layout answer and the
+SignIn artboard.** This is the `lib/review/` exception again — operational
+machinery written in TypeScript — and the charter's convention that Ops
+otherwise deploys rather than writes application code still holds outside it.
