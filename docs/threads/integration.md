@@ -353,6 +353,54 @@ test finds none of them.*
   because accepting the more self-critical reading would have closed the investigation
   at my own carelessness and left the store hazard unrecorded.*
 
+### HIS RULING 2026-09-14: MARK THE ROW. THE PRODUCT QUESTION IS CLOSED.
+
+**Design put it to him directly and told this seat it had — the notify-not-wait rule
+working, and the reason his list did not carry it twice.** *Recorded at `08004ef`.*
+
+```
+PM Move +43.6%  LATE
+```
+
+**AND IT CLOSED IN THE DIRECTION THAT MAKES BOTH CHANNELS NECESSARY RATHER THAN EITHER
+SUFFICIENT:**
+
+```
+PROMOTION   structural, daily, one name at a time   ->  ROW MARK
+RESTART     an incident, board-wide at once         ->  BOARD STATEMENT
+```
+
+**Design's precedence, its own and set: `LATE` takes the mark slot from `thin`.** *A row
+can be both — `thin` says the anchor rests on few trades, `LATE` says the anchor is not
+the session open at all.* **A precise measurement of the wrong minute is not a
+thickness problem.**
+
+**⇒ AND THE TWO SURVIVING PREDICATES MAP ONTO THE TWO CHANNELS WITH NO OVERLAP, WHICH
+RESOLVES THE FRIDAY-BLINDNESS THIS SEAT RAISED:**
+
+- **ROW MARK / promotions → the SEAM predicate, and it is sound here.** *Verified at
+  `runtime.ts:1151-1152`: the drain `continue`s unless the daily bar is today's, so any
+  promoted name that gets seeded ALWAYS receives `volumeBaseThrough: snapshotMinute`.*
+  **The seam's blindness on a premarket bootstrap does not reach this channel, because
+  the channel is not about bootstraps.**
+- **BOARD STATEMENT / restarts → the SOURCE predicate**, *which is premise-independent.*
+- **So my "the seam is blind on Friday" objection killed the seam as a BOARD predicate
+  and left it correct as a ROW one.** *An objection that is fatal in one channel and
+  irrelevant in the other — which is only visible once the channels exist, and they
+  exist because he ruled.*
+
+**DESIGN'S CORRECTION OF MY FIRST FLAG, ACCEPTED:** *`engine.ts:1166-1168`'s
+`volumeBaseThrough && volumeBase > 0` is correct FOR VWAP and wrong to reuse; Design's
+predicate is `volumeBaseThrough !== null`, full stop.* **So it is an implementation
+hazard rather than a flaw in the predicate — real, and a different object from what I
+filed.**
+
+**AND DESIGN RECORDED THE SAME FAILURE ON ITS OWN SEAT:** *it took "today's anchors are
+fine" from my message, built a false-positive argument on it without opening the code,
+and passed it to Research as established.* **My retraction reached it mid-verification.**
+*Four seats, one day, one shape: a true sentence from a reliable seat, applied to a
+question it was not about.*
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
