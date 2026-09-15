@@ -29,13 +29,13 @@
       "x": 2070,
       "y": 1020,
       "w": 1440,
-      "h": 1450,
+      "h": 1980,
       "title": "Sign in \u2014 every state"
     },
     {
       "file": "Privacy.dc.html",
       "x": 2070,
-      "y": 2590,
+      "y": 3120,
       "w": 1440,
       "h": 1450,
       "title": "Privacy \u2014 adopted"
@@ -51,7 +51,7 @@
     {
       "file": "Admitted.dc.html",
       "x": 2070,
-      "y": 4160,
+      "y": 4690,
       "w": 1440,
       "h": 1780,
       "title": "Signed in, not admitted"
@@ -84,7 +84,7 @@
       "x": 2400,
       "y": -300,
       "w": 700,
-      "text": "FIVE SIGN-IN STATES, EACH WITH THE STATUS CODE IT MUST SEND.\nNone says 'try again': with one provider that is a wall dressed as a door.\n\nThe sixth card is kept deliberately - it drew refusal as a sign-in outcome, which was wrong, and the wrong assumption is the useful part."
+      "text": "SIX SIGN-IN STATES, EACH WITH THE STATUS CODE IT MUST SEND.\nOnly one offers 'try again', and only because its wall is a clock rather than a decision.\n\nThe seventh card is kept deliberately - it drew refusal as a sign-in outcome, which was wrong, and the wrong assumption is the useful part."
     },
     {
       "id": "note-admitted",
@@ -98,7 +98,7 @@
       "x": 4000,
       "y": -300,
       "w": 700,
-      "text": "SEEDED FROM fe26b0a at 2026-09-15 04:37 ET.\n\nEditing a .dc.html does NOT update this canvas - someone must re-seed and republish. If the repo is ahead of this sha, what you are reading is superseded.\n\nCompare against: git log -1 --format=%h"
+      "text": "SEEDED FROM 4cbd58f at 2026-09-15 17:50 ET.\n\nEditing a .dc.html does NOT update this canvas - someone must re-seed and republish. If the repo is ahead of this sha, what you are reading is superseded.\n\nCompare against: git log -1 --format=%h"
     }
   ],
   "launch": {

@@ -88,6 +88,13 @@ done
 > curl -s -o /dev/null -w '%{http_code}\n' https://tmitrader.com/api/market # expect 401
 > curl -s -o /dev/null -w '%{http_code}\n' https://tmitrader.com/privacy-x  # expect 401
 > ```
+> **`/` HAS TWO VALID ANSWERS AND ONE THAT IS ALWAYS A FAILURE.** *Integration's
+> catch, and it is the right shape:* **`401` before Release 2, `200` after, and
+> `404` at either point means the board moved without the landing page.** *A
+> check with two acceptable answers gets read as pass/fail against whichever one
+> the reader had in mind — so the third value is named rather than left to be
+> inferred.*
+>
 > **A batch of exemptions that accidentally opened everything would pass the
 > first check and fail all three of these.** *Four `200`s prove the holes exist;
 > only the `401`s prove they are holes rather than a missing wall.* The third

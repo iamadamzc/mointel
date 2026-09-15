@@ -27,9 +27,10 @@
     <p class="mono" style="font-size: 12px; letter-spacing: 0.16em; color: #8792a3; margin-bottom: 14px;">SIGN-IN &mdash; EVERY STATE, WITH THE STATUS CODE IT MUST SEND</p>
     <h2 style="font-size: 28px; line-height: 1.15; margin-bottom: 14px;">A refusal is a screen, and it is not a 200.</h2>
     <p style="font-size: 16px; line-height: 1.6; color: #97a1b0; max-width: 86ch;">
-      With one provider there is no second path, so none of these say "try again" as the resolution.
-      Each one says what happened, whether anything was shared, and the single next move that is
-      actually available.
+      With one provider there is no second path, so none of these offers "try again" as the resolution
+      &mdash; <strong style="color: #c7cedb;">except the one where the wall is a clock</strong>, where
+      starting again genuinely is the fix. Each screen says what happened, whether anything was shared,
+      and the single next move that is actually available.
     </p>
   </div>
 
@@ -68,6 +69,34 @@
           <a href="/auth/google" style="font-size: 15px; font-weight: 500;">Sign in with Google</a>
           <a href="/" style="font-size: 15px; color: #8792a3;">Read what this is first</a>
         </div>
+      </div>
+    </div>
+
+    <!-- 3. The flow could not be verified. ADDED after reading the auth code:
+         OAUTH_FLOW_COOKIE_SECONDS is 600, so this is reachable by a person who
+         simply took eleven minutes choosing an account. -->
+    <div style="border: 1px solid #29313d; border-radius: 4px; background: #0c0f14;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #29313d; background: #11151c;">
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #e8ac33;">THE FLOW COULD NOT BE VERIFIED</span>
+        <span class="mono" style="font-size: 11px; letter-spacing: 0.14em; color: #e8ac33;">400</span>
+      </div>
+      <div style="padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; min-height: 190px;">
+        <h3 style="font-size: 21px;">That sign-in took too long</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #97a1b0;">
+          A sign-in has ten minutes to finish, and that one did not. Nothing was shared and no account
+          was created. <strong style="color: #e9edf3;">Starting again works</strong> &mdash; this is the
+          one screen here where that is true, because the wall is a clock rather than a decision.
+        </p>
+        <div style="display: flex; gap: 20px; align-items: center; margin-top: 4px;">
+          <a href="/auth/google" style="font-size: 15px; font-weight: 500;">Sign in with Google</a>
+        </div>
+        <p style="font-size: 13px; line-height: 1.6; color: #8792a3; margin-top: 4px;">
+          <strong style="color: #c7cedb;">ONE SCREEN, TWO CAUSES, DELIBERATELY.</strong> The flow cookie
+          expired, or the reply did not match the request that started it. <em>The second is what a
+          forged callback looks like</em> &mdash; and telling the two apart on screen would confirm to
+          whoever sent it whether their state value was well-formed. <strong style="color: #c7cedb;">The
+          log distinguishes them; the page does not.</strong>
+        </p>
       </div>
     </div>
 
