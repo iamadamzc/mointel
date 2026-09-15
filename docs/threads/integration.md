@@ -832,6 +832,46 @@ overriding him.**
   an openly stale one — it makes old facts look verified — and this one says "as of"
   instead.**
 
+### THE TEST-USER PATH ALREADY EXISTS, IS LIVE, AND NEEDS NO DEPLOY
+
+**He said 2026-09-15 that he is ready for test users.** *Two different asks hide under
+that phrase and only one is close.*
+
+```
+PEOPLE LOOKING AT HIS DESK    /review/<token> -- per-user, revocable, auth_basic off,
+                              access_log off (the token is IN the path). NO coaching or
+                              fills code touches ANY route, so his P&L is not reachable.
+                              LIVE NOW. NO DEPLOY REQUIRED.
+PEOPLE WITH THEIR OWN DESKS   app/auth/ does not exist; lib/auth has NO importer outside
+                              itself; no nginx /auth/ location; Google verification not
+                              passed. And every float is his SINGLE-TENANT Sheet's.
+```
+
+**OPS PROVED THE TRANSPORT BEHAVIOURALLY, NOT BY DIFFING A FILE — 2026-09-15 14:11 ET:**
+
+```
+/etc/nginx/mointel-locations.conf   byte-identical to the 997d231 release copy
+                                    installed 17:13:32Z, workers re-spawned 17:15:45Z
+a real build chunk from live .next  200      <- assets reach a review session
+/                                   401      <- the board is still protected
+/review/notatoken/api/dashboard     403      <- a bad token is refused
+```
+
+**THREE CASES WITH THREE DIFFERENT EXPECTED ANSWERS, which is what makes it a check.**
+*This desk's own burn was a revoked review token tested BY STATUS CODE returning 200,
+where only the bodies separated the cases.* **Ops did not repeat it.**
+
+**⇒ The defect Design found — review sessions served HTML with no JS and no CSS, every
+control inert SINCE PHASE 1 because nobody had ever clicked one — is fixed and the fix
+is live.** *Remaining and asked of Design: the live click test, whether the page
+hydrates, and whether the diagnostics surface and the review API subset are fit for a
+stranger.*
+
+**WHAT NO TESTER CAN DO ON EITHER PATH: read a privacy policy or terms.** *Web has both
+ADOPTED and neither is reachable; `tmitrader.com` returns 401 to everyone.* **Not raised
+to him as a blocker until he says which kind of tester he means** — *for a handful of
+invited people it is Commercial's ruling, not a wall.*
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
