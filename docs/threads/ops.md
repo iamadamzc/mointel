@@ -9737,3 +9737,55 @@ opening the files.*
 Neither rides tonight unless he says so. **A review token for Design's
 end-to-end click is a production write; it is issued here on his yes and
 routed through Integration; Design revokes it after.**
+
+## The public-site batch: commissioned on his go, HELD on one question — 2026-09-15
+
+**His go, via Integration: the five prefixes in `docs/web/README.md` §2 —
+`/privacy`, `/terms`, `/signin`, `/auth/`, `/favicon.ico` — plus the carriage
+behind them, as one batch. Google verification is his own task and needs
+`/privacy` publicly reachable, so this blocks him, not us.** `^~ /_next/static/`
+is already open and is not re-requested.
+
+**HELD until Web and Design answer "where does the app live"** — his words:
+*"yall need to coordinate the login and where the app lives."* If `/` stays
+the board, the list is the five above. If `/` becomes the landing page and
+the desk moves, the list changes. **Each exemption is a hole in a uniform
+rule, granted once and spent forever; cut once, correctly.**
+
+**State of the tree at 14:3x ET: none of `app/privacy`, `app/terms`,
+`app/signin`, `app/auth` exist yet; only `app/favicon.ico` (Next's app icon).**
+So the nginx side has nothing to serve until Web lands the routes; an
+exemption on a missing route is a public 404, harmless but pointless. **Nginx
+and routes land in the same release.**
+
+**The nginx block, ready to paste into `nginx-locations.conf` beside the
+`_next/static` exemption once the list is final** (exact-match for pages,
+prefix for the OAuth pair; same proxy stanza as the others):
+```
+location = /privacy      { auth_basic off; <proxy stanza> }
+location = /terms        { auth_basic off; <proxy stanza> }
+location = /signin       { auth_basic off; <proxy stanza> }
+location ^~ /auth/       { auth_basic off; <proxy stanza> }   # /auth/callback/google is a registered exact redirect URI
+location = /favicon.ico  { auth_basic off; <proxy stanza> }
+```
+**Proof standard, Web's:** `curl -s -o /dev/null -w '%{http_code}'
+https://tmitrader.com/privacy` from an actor with no cached state → `200`.
+Never a browser on this desk.
+
+**Three things the batch must think about before it ships, none new:**
+1. **`POST /api/research/retry` is the desk's only write endpoint, exposed by
+   `components/RetryAnalysis.tsx`, protected today by Basic Auth on
+   `location /` and nothing else.** The five prefixes do not touch `/api/`,
+   so this batch does not expose it. **The day Basic Auth comes off `/`, it
+   needs its own session-and-status check or any signed-in person spends
+   model budget on the shared board.** Auth-model, his.
+2. **`users.status` is written and never read** (`lib/auth/store.ts:17`). It
+   must be read BEFORE the first real sign-in; enforcement landing after
+   silently approves everyone who signed in early, unrecoverably. Not this
+   batch's code, but this batch is what makes the first sign-in possible.
+3. **`/_next/image` and `/_next/data` stay outside the exemptions.** A public
+   page using `next/image` or any raster from `/` renders broken to a
+   stranger and perfect from here. Current designs are inline SVG only. An OG
+   image later needs its own public path.
+
+**Baseline from this laptop, no credentials, 14:3x ET — see the read below.**
