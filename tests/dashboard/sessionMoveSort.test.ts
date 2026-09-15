@@ -137,6 +137,43 @@ describe('the sort label', () => {
 });
 
 /* ------------------------------------------------------------------------- *
+ * THE OMITTED ROWS ARE NOT "UNKNOWN"
+ * ------------------------------------------------------------------------- */
+
+describe('the unplaceable-rows chip', () => {
+  it('does not call a not-traded name unknown', async () => {
+    /*
+     * The chip said `N unknown` for every key. On `float` that is right -- the
+     * desk cannot say. On this key the set MIXES a measurement (`NO_PRINT`: this
+     * name has not traded) with a genuine absence, and calling the first
+     * "unknown" collapses a measurement into an absence -- the defect the
+     * reading's `state` field exists to prevent, arriving in the chip that
+     * exists to keep the sort honest.
+     */
+    const fs = await import('node:fs');
+    const src = fs
+      .readFileSync('components/DiscoveryBoard.tsx', 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '');
+
+    expect(src).not.toMatch(/\{missing\} unknown/);
+    expect(src).toContain("MISSING_NOUN[sort.key] ?? 'unknown'");
+    expect(src).toMatch(/sessionMove: 'no move'/);
+  });
+
+  it('says the board also slices, because last may mean off screen', async () => {
+    /*
+     * Sorting then slicing means an unplaceable row is not merely at the bottom
+     * -- it can be absent from the rows he reads. The count is the only thing
+     * that says so.
+     */
+    const fs = await import('node:fs');
+    const src = fs.readFileSync('components/DiscoveryBoard.tsx', 'utf8');
+    expect(src).toContain('may not be on screen at all');
+  });
+});
+
+/* ------------------------------------------------------------------------- *
  * ONE RESOLVER, NOT TWO IF-CHAINS
  * ------------------------------------------------------------------------- */
 

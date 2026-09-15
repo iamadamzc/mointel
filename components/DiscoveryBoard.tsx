@@ -75,6 +75,29 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
   { key: 'float', label: 'Float', title: 'Displayed float. Not known for every name.' },
 ];
 
+/**
+ * What the rows a sort cannot place ARE, per key.
+ *
+ * `unknown` is the honest default: a null float, price or RVOL is the desk
+ * admitting it cannot say. IT IS WRONG FOR `sessionMove`, and wrong in the
+ * direction this desk keeps paying for.
+ *
+ * That key's unplaceable set MIXES TWO THINGS. A `NO_PRINT` row is a
+ * MEASUREMENT -- this name has not traded this session, which is one of the more
+ * informative states on the board -- and a row with no reading at all is a
+ * genuine absence. Calling the first "unknown" collapses a measurement into an
+ * absence, which is the defect the `state` field on the reading exists to
+ * prevent.
+ *
+ * So the word has to be true of BOTH WITHOUT ASSERTING WHICH: neither has a
+ * within-session move to sort on. The distinction still renders where it belongs
+ * -- on the row, where `SessionMoveLine` prints `not traded` for `NO_PRINT` and
+ * nothing for an absence.
+ */
+const MISSING_NOUN: Partial<Record<DiscoverySortKey, string>> = {
+  sessionMove: 'no move',
+};
+
 /** One reader for every place a sort key's name appears. */
 function resolveSortEntry(
   entry: SortEntry,
@@ -289,9 +312,9 @@ export function DiscoveryBoard({
               // about". Absence is stated, never implied by position.
               <span
                 className="num text-[11px] text-warn"
-                title={`${missing} of ${rows.length} rows have no value for this sort and are listed last, in both directions.`}
+                title={`${missing} of ${rows.length} rows have no value for this sort and are listed last, in both directions. The board shows the first ${size}, so a row listed last may not be on screen at all.`}
               >
-                {missing} unknown
+                {missing} {MISSING_NOUN[sort.key] ?? 'unknown'}
               </span>
             ) : null}
           </div>
