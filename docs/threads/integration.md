@@ -419,59 +419,64 @@ and passed it to Research as established.* **My retraction reached it mid-verifi
 *Four seats, one day, one shape: a true sentence from a reliable seat, applied to a
 question it was not about.*
 
-### THE PREDICATE, FIFTH AND PER-SYMBOL - AND THE FIELD IT NEEDS DOES NOT EXIST
+### THE ANCHOR FIELD AS OF 2026-09-15 02:00 ET. FIVE PREDICATES HAVE DIED IN ONE EVENING.
 
-**Design, after his row-mark ruling forced it per-symbol.** *Research's process-level
-half returns FALSE for a promotion on a normal morning, so it answered "incidents
-only" - the option he did NOT choose.*
+**NOTHING IS BUILT. NOTHING DEPLOYS. NOBODY IS BLOCKED.** *Stated as of a timestamp
+rather than as settled, because this seat recorded the FIFTH as live twenty minutes
+after Design had withdrawn it.*
+
+**CURRENT, Design's `e1a9617`:**
 
 ```
-anchorsEstablishedAfterSessionStart =
-      symbolObservedSinceMs > sessionStartMs                   this NAME picked up late
-  AND volumeBaseSource !== 'alpaca-historical-minute-bars'     and not replayed
+anchorLateScope: 'NAME' | 'SESSION' | 'SOUND' | null
+set where the knowledge already is: engine.ts:903, the no-baseline branch, which
+CALLS onPromotionCandidate -- so the code entering that path KNOWS it is a promotion.
+No timestamps, no inference, nothing to rot.
 ```
 
-**Neither half is gated by `belongsToSession`, so it works on Friday, on a mid-session
-restart, and on a premarket promotion** - *and it degrades to Research's exactly in the
-restart case, so nothing they verified is lost.*
+**WHY THE TIMESTAMP VERSIONS ALL DIED, AND THE LAST ONE IS THE INSTRUCTIVE DEATH:**
+*`engine.ts:899-907` creates a runtime only on a BAR, IN PRICE RANGE, WITH A BASELINE.*
 
-**TWO THINGS THIS SEAT CHECKED BEFORE AGREEING:**
+```
+engine up 03:00, first print of the session at 06:00   observedSince 06:00   anchor CORRECT
+engine up 03:00, enters the price range at 07:40       observedSince 07:41   anchor LATE
+```
 
-- **THE FIELD DOES NOT EXIST.** *`grep` for `observedSince|observingSince|firstSeen|
-  knownSince` over `engine.ts` and `worker/runtime.ts` returns NOTHING.* **Both this
-  version and Research's rest on a field nobody has written.** *`ensure()` at
-  `engine.ts:473` is the obvious home and it is one line - but Research called its
-  version "one assignment in the constructor" and this is a different assignment in a
-  different place.* **Said so rather than letting it be found in implementation.**
-- **THE SEPARATOR WAS STATED AS AN IDENTITY AND CANNOT BE ONE.** *Design: "every symbol
-  sharing one observed-since is a restart."* **Stamped in `ensure()` per symbol, a
-  bootstrap's symbols are milliseconds apart - near-identical, never equal, and an
-  equality test fails silently in the direction that reads as NO RESTART.**
-  > **The second half of Design's own sentence needs no identity and is the whole
-  > discriminator: `symbolObservedSinceMs > processStartMs` is a promotion, `≈
-  > processStartMs` was present at bootstrap.** *One comparison per symbol against one
-  > process-level value. No cross-symbol equality, no minute-string matching.*
+**A LATE PICKUP AND A LATE FIRST PRINT ARE THE SAME NUMBER** - *and the first is most
+small caps, which do not print at 04:00.* **A process fact and a market fact producing
+one value: the population error's cousin, and this seat's rephrasing of the separator
+fixed the identity problem and did not touch this.**
 
-**⇒ AND IT CLOSES THE SEPARATOR THIS SEAT HAD BEEN CARRYING SINCE RESEARCH OFFERED A
-`qualified_at` TEST.** *No threshold, no identity on minute strings, no second field.*
+**ONE FLAG AGAINST DESIGN'S REASON, NOT AGAINST ITS FIELD.** *It justified the fourth
+state as "Research's three had nowhere to say the anchor is FINE".* **They do:
+`boolean | null` has `false` = SOUND and `null` = CANNOT SAY, in Research's own words
+twice; the two RENDER the same and are not the same state.** *What actually earns the
+fourth state is SCOPE - `NAME` and `SESSION` are the two channels his ruling created,
+and no boolean carries that.* **A wrong reason filed beside a right design is how the
+design gets "simplified" by someone who checks the reason, finds it false, and concludes
+the state was never needed.**
 
-**THE ESCALATION CAME DOWN FROM THREE DIRECTIONS INDEPENDENTLY.** *Research, then
-Design, then this seat had already re-priced it with Ops.* **The premarket snapshot now
-answers HISTORY - Friday's sort degeneracy - rather than unblocking a build.** *Both
-threads removed their own half of the urgency without being asked.*
+### I REPORTED AN ABSENCE FROM A SEARCH NARROWER THAN THE CLAIM. SO DID DESIGN, IN THE SAME EXCHANGE.
 
-**AND THE POPULATION ERROR IS ON FOUR SEATS, NOT ONE.** *Design spent the morning
-arguing Ops's cohort could not contain a promotion case - true, and about the TRACKED
-SET, while the thing being decided was what a ROW ON THE BOARD should say.* **Research
-did it twice, this seat three times, all inside one discussion in one hour.**
-*Research's reading is the one kept: that question is built to produce it.* **Filed
-across all four rather than as this seat's, because a shape three careful seats hit
-independently is structural and filing it as one seat's makes it look fixable by being
-more careful.**
+**I grepped `engine.ts` and `worker/runtime.ts` for an observed-since field and reported
+it did not exist. Design widened it and found `firstSeenAt` taken. Design's widening was
+ALSO short.**
 
-**DESIGN'S MECHANISM SENTENCE, KEPT AS ITS OWN:** *with no seam, nothing was DROPPED -
-the anchors were late because nothing was REPLAYED.* **It built a detector for the
-wrong mechanism and said so.**
+```
+lib/market/symbolAdmission.ts:26,131   rejected-symbol record        Design found
+lib/market/types.ts:611                RejectedSymbol                Design found
+lib/archive/coverage.ts:242,331,367    per-symbol-per-day coverage   A THIRD MEANING
+lib/archive/repo.ts:113                  persisted with it
+```
+
+**The name is spent TWICE over and neither meaning is "when the engine first observed
+this symbol".** *The conclusion held both times; the scope did not.*
+
+> **THIS IS THIS SEAT'S OWN ENTRY, ARRIVING TWICE IN ONE HOUR AND ONCE FROM ANOTHER
+> SEAT.** *I grepped `docs/` and announced a false sentence had reached no document; it
+> was in shipped source.* **A reassuring answer suppresses the second look, and
+> "it does not exist" is the most reassuring answer a grep returns.** *Two careful seats
+> in one exchange makes it structural rather than haste.*
 
 ### WHAT IS HIS AND OPEN
 
