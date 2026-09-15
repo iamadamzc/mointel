@@ -59,6 +59,20 @@ import {
 } from './derive';
 import { normalizeHaltState } from './alpaca/messages';
 import { afterHoursStartUtc, RTH_END_MIN, sessionEndUtc, sessionStartUtc } from './session';
+
+/**
+ * The `volumeBaseSource` the bootstrap's historical backfill stamps on a symbol
+ * whose session was actually replayed through `ingest`.
+ *
+ * DUPLICATED, DELIBERATELY AND UNDER PROTEST. The writer is
+ * `worker/runtime.ts:946`, which is not this seat's file, and a literal in two
+ * places that must agree is the exact defect this desk spent 2026-09-14
+ * chasing. Exported so the writer can import it rather than keep its own copy;
+ * until it does, changing the string on one side silently stops the anchor gate
+ * below from recognising a repaired symbol -- and it would fail SILENT, marking
+ * a sound anchor untrustworthy rather than the reverse.
+ */
+export const REPLAYED_VOLUME_BASE_SOURCE = 'alpaca-historical-minute-bars';
 import {
   VWAP_LABEL,
   VWAP_SESSION_KEY,
@@ -330,6 +344,15 @@ export interface EngineOptions {
    * or the after-hours session starts hours late.
    */
   rthCloseMinutes?: number;
+  /**
+   * When this process began observing, if not the moment of construction.
+   *
+   * EXPLICIT BECAUSE IT IS AN INPUT, not a side effect of when `new` was
+   * called. A test that constructs an engine "at 09:35" and feeds it 09:30 bars
+   * is describing a backfill, not a late start, and without this it could not
+   * say which it meant. Production leaves it unset and gets the process start.
+   */
+  observingSince?: number;
   /** Hard cap on high-resolution subscriptions. */
   highResMax?: number;
   /**
@@ -376,6 +399,15 @@ export class DemandEngine {
   private ahStartMs: number;
   private ahStartIso: string;
   private rthCloseMinutes: number;
+  /**
+   * When THIS process began observing. Not a market fact and not used as one.
+   *
+   * The claim it supports is about our own coverage -- "were we watching when
+   * this session opened" -- so a process fact is the correct basis. That is the
+   * opposite of proving a MARKET claim from one, which is a separate and real
+   * error; the two look identical and are not.
+   */
+  private readonly observingSinceMs: number;
 
   tradingDate: string;
 
@@ -383,6 +415,7 @@ export class DemandEngine {
     this.options = options;
     this.tradingDate = options.tradingDate;
     this.rthCloseMinutes = options.rthCloseMinutes ?? RTH_END_MIN;
+    this.observingSinceMs = options.observingSince ?? this.now();
     this.sessionStartMs = sessionStartUtc(options.tradingDate).getTime();
     this.sessionEndMs = sessionEndUtc(options.tradingDate).getTime();
     const ahStart = afterHoursStartUtc(options.tradingDate, this.rthCloseMinutes);
@@ -1093,6 +1126,38 @@ export class DemandEngine {
    * verdict drift apart — the sparkline reads the array the ACTIVE/DEAD verdict
    * was made from for the same reason.
    */
+  /**
+   * Whether this engine could have seen this session's first print for this
+   * symbol.
+   *
+   * TRUE when we were already observing before the session opened -- whatever
+   * arrived first then genuinely was first -- OR when the bootstrap replayed
+   * this symbol's session through `ingest`, which reconstructs the anchor from
+   * bars and clears the seam that would have dropped them.
+   *
+   * The replay check is PER SYMBOL, which is the half a process-level test
+   * cannot carry: a mid-session restart that repaired the focused set left
+   * those anchors sound and every other symbol's late, and one flag for the
+   * process cannot say which.
+   *
+   * WHAT THIS DOES NOT COVER, and it is documented rather than implied: a
+   * symbol picked up mid-session while the engine was already running -- a
+   * promotion, or a name crossing into the price band -- has a late anchor and
+   * returns TRUE here. Its bars before pickup were discarded before any runtime
+   * existed, so nothing in this process can detect it. `SOUND` therefore means
+   * "the anchors established at session start are sound", never "every anchor
+   * is sound".
+   */
+  private anchorObservable(runtime: TickerRuntime, session: VwapSession): boolean {
+    if (
+      this.observingSinceMs <=
+      vwapSessionStartMs(session, this.tradingDate, this.rthCloseMinutes)
+    ) {
+      return true;
+    }
+    return runtime.volumeBaseSource === REPLAYED_VOLUME_BASE_SOURCE;
+  }
+
   private sessionOpensOf(runtime: TickerRuntime): SessionOpenSet {
     const read = (session: VwapSession): SessionOpen => {
       const key = VWAP_SESSION_KEY[session];
@@ -1113,13 +1178,50 @@ export class DemandEngine {
        * are the same measurement about the same name, and the phase is on the
        * header already.
        */
-      const state: SessionOpenState = sessionOpenStateFor(
+      const observed: SessionOpenState = sessionOpenStateFor(
         session,
         price,
         this.now(),
         this.tradingDate,
         this.rthCloseMinutes,
       );
+
+      /*
+       * AND `NO_PRINT` IS A CLAIM THIS ENGINE IS SOMETIMES NOT ENTITLED TO MAKE.
+       *
+       * `NO_PRINT` renders as the words "not traded" on his board
+       * (`DecisionCells.tsx:158-167`, warn colour). That is a statement about
+       * the MARKET, and after a mid-session restart it can be false: the
+       * accumulators are in memory only, the live stream does not re-deliver
+       * bars from before the process started, so a name that traded earlier in
+       * the session and has since gone quiet has no anchor here and reads as
+       * never having traded.
+       *
+       * The population that meets it is "spiked early, then died" -- which
+       * keeps the rank its morning earned all day (item 112), sits on the board
+       * all day, and is a shape he watches on purpose.
+       *
+       * NEITHER COMPONENT IS WRONG. `sessionOpenStateFor` is right about what
+       * this engine can see; the render is right about what `NO_PRINT` means.
+       * The composition is the defect, and the product is a false sentence
+       * rather than a silence.
+       *
+       * So when the anchor is not observable here, the honest state is
+       * `UNKNOWN` -- "the producer could not tell" -- which is exactly what is
+       * true: we cannot distinguish "did not trade" from "we were not
+       * watching". It already renders as nothing and already round-trips
+       * through `pm_open_state`, so this needs no column and no surface change.
+       *
+       * ONLY THE NULL-PRICE CASE. A late anchor WITH a price still yields
+       * `OPEN` and a wrong percentage, and suppressing that would discard a
+       * number he asked for to avoid a rare wrong one. That half wants the
+       * `LATE` row mark Design specified, which does need a stored scope.
+       * This gate is the correctness half and it is free.
+       */
+      const state: SessionOpenState =
+        observed === 'NO_PRINT' && !this.anchorObservable(runtime, session)
+          ? 'UNKNOWN'
+          : observed;
 
       return {
         session,

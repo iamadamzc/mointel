@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { DEFAULT_ACTIVITY_CONFIG, deadLineFor } from '@/lib/market/activity';
 import { DemandEngine } from '@/lib/market/engine';
 import type { MarketObservation, RvolBaseline } from '@/lib/market/types';
+import { REPLAYED_VOLUME_BASE_SOURCE } from '@/lib/market/engine';
 import { anchorThickness } from '@/lib/market/vwap';
 
 /**
@@ -80,6 +81,10 @@ function engineAt(nowMs: number, rthCloseMinutes?: number) {
     priceMax: 20,
     baselineSessions: 20,
     rthCloseMinutes,
+    // Watching since well before premarket, which is the production shape: the
+    // worker is up before 04:00. Stated rather than inherited from `now`, so a
+    // test that moves the clock is not silently also describing a late start.
+    observingSince: BELL - 400 * 60_000,
     now: () => nowMs,
   });
   engine.setBaselines(new Map([['ABCD', baseline('ABCD')]]));
@@ -258,11 +263,17 @@ describe('a null open says WHICH null it is', () => {
     expect(opens(engineAt(BELL))?.regular.state).toBe('NO_PRINT');
   });
 
-  it('never emits UNKNOWN, because this side holds the clock', () => {
+  it('never emits UNKNOWN while it was watching from before the session', () => {
     /*
-     * UNKNOWN exists for `sessionOpensFromRow`, which rebuilds opens from
-     * stored columns and has no clock. A compute that emitted it would be
-     * declining to answer a question it can answer.
+     * NARROWED, AND THE OLD CLAIM WAS TOO STRONG. This asserted the compute
+     * NEVER emits UNKNOWN, on the reasoning that this side holds the clock and
+     * would be declining to answer a question it can answer.
+     *
+     * That is true only while the engine was watching at the open. A restart
+     * makes "did it trade" genuinely unanswerable here, and UNKNOWN is then the
+     * honest value rather than a refusal -- see the restart describe block
+     * below. `engineAt` states `observingSince` before premarket, so this guard
+     * still covers the case it was written for.
      */
     for (const nowMs of [BELL - 300 * 60_000, BELL, BELL + 30 * 60_000, BELL + 400 * 60_000]) {
       const set = opens(engineAt(nowMs));
@@ -361,5 +372,101 @@ describe('the anchor says whether it is worth measuring from', () => {
     const open = opens(engine)?.regular;
     expect(open?.state).toBe('OPEN');
     expect(anchorThickness(open?.tradeCount ?? null, DEAD)).toBe('UNKNOWN');
+  });
+});
+
+/**
+ * `NO_PRINT` is a claim the engine is not always entitled to make.
+ *
+ * It renders as the words "not traded" in warn colour. After a mid-session
+ * restart the accumulators are empty and the live stream does not re-deliver
+ * earlier bars, so a name that traded and then went quiet has no anchor here --
+ * and saying "not traded" about it is a false statement about the market.
+ *
+ * Neither component is wrong: the state is right about what the engine can see,
+ * the render is right about what NO_PRINT means. The composition is the defect.
+ */
+describe('a restart cannot make the engine say a traded name did not trade', () => {
+  /** An engine that came up mid-premarket, as Ops's 08:33Z restart did. */
+  function engineStartedLate(nowMs: number) {
+    const engine = new DemandEngine({
+      tradingDate: TRADING_DATE,
+      feed: 'sip',
+      discoveryRank: 12,
+      internalRank: 50,
+      priceMin: 1,
+      priceMax: 20,
+      baselineSessions: 20,
+      // Began observing mid-session: the whole point. Left to default from
+      // `now`, which is exactly what a restart does.
+      now: () => nowMs,
+    });
+    engine.setBaselines(new Map([['ABCD', baseline('ABCD')]]));
+    engine.track('ABCD');
+    return engine;
+  }
+
+  const MID_PREMARKET = BELL - 60 * 60_000;
+
+  it('says UNKNOWN, not NO_PRINT, when it was not watching at the open', () => {
+    const engine = engineStartedLate(MID_PREMARKET);
+    const open = opens(engine)?.premarket;
+    expect(open?.price).toBeNull();
+    // The honest answer: we cannot tell "did not trade" from "we were not here".
+    expect(open?.state).toBe('UNKNOWN');
+    expect(open?.state).not.toBe('NO_PRINT');
+  });
+
+  it('still says NO_PRINT when it WAS watching at the open', () => {
+    /*
+     * THE ARM THAT KEEPS THE GATE FROM SWALLOWING THE FEATURE. An engine up
+     * before 04:00 saw every bar, so a null price IS a measurement and the
+     * board should say so -- that is the state he asked for.
+     */
+    const engine = engineAt(MID_PREMARKET);
+    expect(opens(engine)?.premarket.state).toBe('NO_PRINT');
+  });
+
+  it('trusts a session that had not begun when the engine started', () => {
+    // Up at 08:30, an hour before the bell: RTH's own open is still ahead of us,
+    // so whatever prints first in RTH genuinely will be first.
+    const engine = engineStartedLate(MID_PREMARKET);
+    expect(opens(engine)?.regular.state).toBe('NOT_STARTED');
+  });
+
+  it('trusts an anchor the bootstrap replayed, per symbol', () => {
+    /*
+     * A mid-session restart repairs the focused set and leaves every other
+     * symbol late. One flag for the process cannot say which, so the replay
+     * record is read per symbol -- and `alpaca-historical-minute-bars` is the
+     * source the backfill stamps after feeding the session's bars through
+     * `ingest`.
+     */
+    const engine = engineStartedLate(MID_PREMARKET);
+    engine.seedSession('ABCD', {
+      volumeBase: 0,
+      volumeBaseThrough: null,
+      volumeBaseSource: REPLAYED_VOLUME_BASE_SOURCE,
+    });
+    expect(opens(engine)?.premarket.state).toBe('NO_PRINT');
+  });
+
+  it('does not trust a snapshot-seeded symbol after a late start', () => {
+    // The ~8,600 names a bootstrap does NOT reach: seeded, not replayed.
+    const engine = engineStartedLate(MID_PREMARKET);
+    engine.seedSession('ABCD', {
+      volumeBase: 1_000,
+      volumeBaseThrough: null,
+      volumeBaseSource: 'alpaca-snapshot-daily-bar',
+    });
+    expect(opens(engine)?.premarket.state).toBe('UNKNOWN');
+  });
+
+  it('leaves OPEN alone, because suppressing a number is the other error', () => {
+    // A late anchor WITH a price is a wrong percentage, not a false sentence.
+    // That half wants the LATE row mark, not silence.
+    const engine = engineStartedLate(MID_PREMARKET);
+    engine.ingest(bar('ABCD', at(-30), { o: 5, c: 5.1, v: 50_000 }));
+    expect(opens(engine)?.premarket.state).toBe('OPEN');
   });
 });
