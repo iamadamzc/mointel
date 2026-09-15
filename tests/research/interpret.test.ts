@@ -1556,7 +1556,9 @@ describe('computed cycle on the dossier', () => {
     expect(computed!.current.phase).toBe('DAY_ONE');
     // The number the model established in 12% of dossiers, present here.
     expect((computed!.current as { cycleHigh: number }).cycleHigh).toBe(3.4);
-    // And the model's own block is untouched, because this is additive.
+    // The model's own block is untouched EXCEPT for formerRunnerStatus, which is
+    // now overwritten by the measurement -- see the two tests below. Everything
+    // else the model judged stands.
     expect(report.dossier?.cycle.cycleClassification).toBe(good.cycle.cycleClassification);
   });
 
@@ -1572,6 +1574,61 @@ describe('computed cycle on the dossier', () => {
       ticker: 'ACME', tradingDate: DATE,
     });
     expect(report.dossier?.computedCycle ?? null).toBeNull();
+  });
+
+  /*
+   * A PRIOR RUN IS A FACT ABOUT BARS, SO THE MODEL STOPS BEING ASKED.
+   *
+   * `resolveCycleHistory` was written to replace `formerRunnerStatus`, which the
+   * interpreter was being asked to judge from an evidence bundle carrying no
+   * price history. The replacement was built and never completed: only
+   * `current.phase` was consumed, and the field the intelligence panel renders
+   * stayed the guess.
+   */
+  it('overwrites the model formerRunnerStatus with the measured one', async () => {
+    const db = temporaryDb();
+    const ids = seed(db);
+    seedBars(db);
+    const good = dossier();
+    good.catalyst.evidenceSourceIds = [ids[0]];
+    good.structure.evidenceSourceIds = [ids[0]];
+    good.cycle.evidenceSourceIds = [ids[0]];
+    // What the model said, and the value the panel used to render.
+    expect(good.cycle.formerRunnerStatus).toBe('UNKNOWN');
+
+    const report = await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
+      ticker: 'ACME', tradingDate: DATE,
+    });
+
+    const computed = report.dossier?.computedCycle;
+    expect(computed).toBeTruthy();
+    // Asserted against the computed value rather than a literal, so the fixture
+    // can change its bars without this test quietly asserting the wrong thing.
+    expect(report.dossier?.cycle.formerRunnerStatus).toBe(computed!.formerRunnerStatus);
+    expect(report.dossier?.cycle.formerRunnerStatus).not.toBe('UNKNOWN');
+  });
+
+  it('leaves the model judgement alone when there are no bars to measure', async () => {
+    /*
+     * THE ARM THAT MATTERS. `NONE` from the detector means "bars were read and
+     * no prior cycle is in them". Null `computedCycle` means "there were no
+     * bars". Writing NONE here would turn an absence into a measurement, which
+     * is the failure this desk keeps paying for -- so the guess survives,
+     * labelled as a guess by its own UNKNOWN.
+     */
+    const db = temporaryDb();
+    const ids = seed(db);
+    const good = dossier();
+    good.catalyst.evidenceSourceIds = [ids[0]];
+    good.structure.evidenceSourceIds = [ids[0]];
+    good.cycle.evidenceSourceIds = [ids[0]];
+
+    const report = await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
+      ticker: 'ACME', tradingDate: DATE,
+    });
+
+    expect(report.dossier?.computedCycle ?? null).toBeNull();
+    expect(report.dossier?.cycle.formerRunnerStatus).toBe('UNKNOWN');
   });
 
   it('respects asOf, so a replay cannot see how the move turned out', async () => {

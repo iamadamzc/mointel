@@ -389,6 +389,37 @@ export async function interpretTicker(
   accepted.computedCycle = cycleBars.length > 1 ? resolveCycleHistory(cycleBars) : null;
 
   /*
+   * A PRIOR RUN IS A FACT ABOUT BARS, SO THE MODEL STOPS BEING ASKED TO REMEMBER IT.
+   *
+   * `resolveCycleHistory` says in its own header that it "replaces
+   * `formerRunnerStatus` and `recentMajorRuns`, which the interpreter was also
+   * being asked to judge from an evidence bundle that does not contain price
+   * history." The replacement was built and never completed: the computed value
+   * reached the dossier as `computedCycle`, only `current.phase` was consumed
+   * downstream, and `cycle.formerRunnerStatus` -- the field the intelligence
+   * panel actually renders -- stayed the model's guess.
+   *
+   * So the guess is overwritten by the measurement, the same way `supplyPair`
+   * and `supplyOverhang` are attached below: after escalation, on the accepted
+   * dossier, from data the desk already holds.
+   *
+   * ONLY WHEN THERE ARE BARS TO MEASURE. `computedCycle` is null for a series of
+   * one bar or none, and in that case the model's judgement is left alone rather
+   * than replaced with a fabricated NONE -- an absence must not become a
+   * measurement, which is the failure this desk keeps paying for. `NONE` from
+   * the detector means "bars were read and no prior cycle is in them"; null
+   * means "there were no bars", and those are different sentences.
+   *
+   * The two `FormerRunnerStatus` types are NOT the same type: the model-facing
+   * one (`lib/research/types.ts:536`) carries a fourth member `UNKNOWN` that the
+   * computed one (`lib/market/cycle.ts:369`) does not, so the assignment is a
+   * widening and cannot lose a value.
+   */
+  if (accepted.computedCycle) {
+    accepted.cycle.formerRunnerStatus = accepted.computedCycle.formerRunnerStatus;
+  }
+
+  /*
    * The filed share count, stored deterministically rather than transcribed.
    *
    * Already in the bundle and already shown to the model since `55f3e20`; what
