@@ -63,13 +63,39 @@ interface Args {
   priceMax: number;
 }
 
+/** `lib/market/config.ts:9-12`, verbatim, so the band cannot be parsed differently. */
+function num(value: string | undefined, fallback: number): number {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
 function parseArgs(argv: string[]): Args {
   let dbPath = process.env.MARKET_DB_PATH ?? 'data/market.db';
   let date: string | null = null;
   let restart = '08:33';
   let rank = 50;
-  let priceMin = 1;
-  let priceMax = 20;
+  /*
+   * READ FROM THE SAME ENVIRONMENT THE WORKER READS, WITH THE WORKER'S OWN
+   * PARSING -- not a literal that happens to equal today's config.
+   *
+   * Design-tmi caught this as the trap I had invoked one paragraph earlier as my
+   * reason for making the band an argument, reproduced one level up in the
+   * default. `DISCOVERY_PRICE_MIN=2` moves the worker's candidate band to
+   * [0.80, 40.00] while a hardcoded default keeps reporting [0.40, 40.00], so
+   * every prior close between 0.40 and 0.80 is bucketed INSIDE by this tool and
+   * treated as OUTSIDE by the worker.
+   *
+   * Those are exactly the sub-floor gappers the split exists to isolate, and the
+   * mis-bucketing reads as "moved inside the band too" -- the one outcome that
+   * means nobody understands the mechanism. A stale literal would send the whole
+   * question back to the start.
+   *
+   * `num()` is copied from `lib/market/config.ts:9-12` deliberately: the job is
+   * to compute the band the worker computes, so a DIFFERENT parse of the same
+   * variable is its own defect, garbage-handling included.
+   */
+  let priceMin = num(process.env.DISCOVERY_PRICE_MIN, 1);
+  let priceMax = num(process.env.DISCOVERY_PRICE_MAX, 20);
 
   for (const arg of argv) {
     if (arg.startsWith('--db=')) dbPath = arg.slice('--db='.length);
@@ -154,7 +180,18 @@ function main(): void {
   const bell = stamp(args.date, `${String(openHour + 5).padStart(2, '0')}:30`);
 
   console.log(`[anchor] ${args.date}  premarket ${open} -> restart ${restart} -> bell ${bell}`);
-  console.log(`[anchor] cohort = printed in a minute that COMPLETED before the restart\n`);
+  console.log(`[anchor] cohort = printed in a minute that COMPLETED before the restart`);
+  /*
+   * THE BAND PRINTS UNCONDITIONALLY, in the header, not inside the section that
+   * uses it. The direct measurement returns early whenever `pm_open_at` is
+   * unpopulated, so a band printed only there is invisible on exactly the runs
+   * where the band could not be checked against the output.
+   */
+  console.log(
+    `[anchor] candidate band [${(args.priceMin * 0.4).toFixed(2)}, ${(args.priceMax * 2).toFixed(2)}]` +
+      ` from DISCOVERY_PRICE_MIN/MAX = ${args.priceMin}/${args.priceMax}
+`,
+  );
 
   /*
    * THE RESTART MUST BE INSIDE THE SESSION, AND THIS IS AN EXPLICIT BRANCH
