@@ -51,10 +51,22 @@ export interface LegalDocument {
   sections: LegalSection[];
 }
 
+/**
+ * Basenames only, joined under a statically scoped `docs/legal`: Turbopack
+ * traces a dynamic filesystem path across the WHOLE project into the server
+ * output, and walking the tree is what broke every thread's build on
+ * 2026-09-07 when it reached the local backups. Scoping the join keeps the
+ * trace to this one folder.
+ */
 const FILES: Record<LegalDocumentName, string> = {
-  'privacy-policy': 'docs/legal/privacy-policy.md',
-  terms: 'docs/legal/terms.md',
+  'privacy-policy': 'privacy-policy.md',
+  terms: 'terms.md',
 };
+
+/** Repo-relative, for display on the page. */
+function sourcePathOf(name: LegalDocumentName): string {
+  return `docs/legal/${FILES[name]}`;
+}
 
 /**
  * The frontmatter is a flat `key: value` block between `---` fences. Only the
@@ -118,11 +130,11 @@ export function renderLegalMarkdown(source: string): Omit<LegalDocument, 'name' 
 }
 
 export function legalDocumentPath(name: LegalDocumentName, root = process.cwd()): string {
-  return path.join(root, FILES[name]);
+  return path.join(root, 'docs', 'legal', FILES[name]);
 }
 
 /** Reads and renders the file now. Throws if the file is missing: a legal page with no text is not a page. */
 export function loadLegalDocument(name: LegalDocumentName, root = process.cwd()): LegalDocument {
   const source = fs.readFileSync(legalDocumentPath(name, root), 'utf8');
-  return { name, sourcePath: FILES[name], ...renderLegalMarkdown(source) };
+  return { name, sourcePath: sourcePathOf(name), ...renderLegalMarkdown(source) };
 }
