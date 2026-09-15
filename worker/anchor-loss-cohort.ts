@@ -51,6 +51,8 @@
 
 import Database from 'better-sqlite3';
 
+import { loadMarketConfig } from '../lib/market/config';
+
 interface Args {
   dbPath: string;
   date: string | null;
@@ -63,39 +65,34 @@ interface Args {
   priceMax: number;
 }
 
-/** `lib/market/config.ts:9-12`, verbatim, so the band cannot be parsed differently. */
-function num(value: string | undefined, fallback: number): number {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
-}
-
 function parseArgs(argv: string[]): Args {
-  let dbPath = process.env.MARKET_DB_PATH ?? 'data/market.db';
   let date: string | null = null;
   let restart = '08:33';
   let rank = 50;
   /*
-   * READ FROM THE SAME ENVIRONMENT THE WORKER READS, WITH THE WORKER'S OWN
-   * PARSING -- not a literal that happens to equal today's config.
+   * THE BAND COMES FROM THE WORKER'S OWN CONFIG OBJECT, not from a copy of its
+   * parse rule and not from a copy of its defaults.
    *
-   * Design-tmi caught this as the trap I had invoked one paragraph earlier as my
-   * reason for making the band an argument, reproduced one level up in the
-   * default. `DISCOVERY_PRICE_MIN=2` moves the worker's candidate band to
-   * [0.80, 40.00] while a hardcoded default keeps reporting [0.40, 40.00], so
-   * every prior close between 0.40 and 0.80 is bucketed INSIDE by this tool and
-   * treated as OUTSIDE by the worker.
+   * Design-tmi caught a hardcoded 1/20 here as the trap I had invoked one
+   * message earlier as the reason for parameterising the band at all, and then
+   * offered the smaller fix: export config's module-private `num` and copy the
+   * call. `loadMarketConfig` is already exported and has NO import-time side
+   * effects -- it is a function, and config.ts's only module-level exports are
+   * constants -- so reading the config object removes BOTH duplications instead
+   * of one. No copied parse, no copied defaults, one source of truth.
    *
-   * Those are exactly the sub-floor gappers the split exists to isolate, and the
-   * mis-bucketing reads as "moved inside the band too" -- the one outcome that
-   * means nobody understands the mechanism. A stale literal would send the whole
-   * question back to the start.
-   *
-   * `num()` is copied from `lib/market/config.ts:9-12` deliberately: the job is
-   * to compute the band the worker computes, so a DIFFERENT parse of the same
-   * variable is its own defect, garbage-handling included.
+   * Why it mattered: DISCOVERY_PRICE_MIN=2 moves the worker's candidate band to
+   * [0.80, 40.00] while a stale default keeps reporting [0.40, 40.00], so every
+   * prior close between 0.40 and 0.80 is bucketed INSIDE by this tool and
+   * treated as OUTSIDE by the worker. Those are exactly the sub-floor gappers
+   * the split exists to isolate, and the mis-bucketing reads as "moved inside
+   * the band too" -- the one outcome that means nobody understands the
+   * mechanism.
    */
-  let priceMin = num(process.env.DISCOVERY_PRICE_MIN, 1);
-  let priceMax = num(process.env.DISCOVERY_PRICE_MAX, 20);
+  const config = loadMarketConfig();
+  let dbPath = config.dbPath;
+  let priceMin = config.discoveryPriceMin;
+  let priceMax = config.discoveryPriceMax;
 
   for (const arg of argv) {
     if (arg.startsWith('--db=')) dbPath = arg.slice('--db='.length);
