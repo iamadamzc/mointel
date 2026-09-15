@@ -210,6 +210,91 @@ URL is an architecture that cannot be taken back.*
 
 ---
 
+## 3b. SETTLED WITH DESIGN — (A), `/desk`, and NO redirect
+
+**Design agreed (A) on the argument rather than as a preference, answered the
+root question with facts, and attacked the redirect. It was right to.**
+
+**THE BOARD'S PATH IS `/desk`**, and the codebase picked it already: `DeskRow`,
+`DeskModeProvider`, `deskRead`, `bg-desk`, `useDeskMode`, and "this desk"
+throughout the prose. *`DiscoveryBoard` is one surface inside `DashboardShell` —
+routing to `/board` would name the whole thing after one of its parts.*
+
+**NOTHING ON THE BOARD ASSUMES THE ROOT** — Design checked rather than guessed:
+no `basePath`, no `assetPrefix`, every fetch absolute, `apiBase` defaults to
+`/api`. **One `href="/"`, in `ReviewRefusal.tsx:39`, and it IMPROVES under (A):**
+*it is the link shown to a reviewer whose token expired, so today it sends a
+stranger to a password prompt and under (A) it sends them to the landing page.*
+
+### The redirect is dropped, and Design's reasoning beats mine
+
+**`/` will not be conditional on a session.** *One URL that means two things is
+the defect family this desk has spent a week clearing, and a conditional at the
+edge fails silently and looks like a login bug.* **A static, cacheable `/` with
+no cookie logic; he reaches the desk by the bookmark he will have within a day.**
+
+**If typing the bare domain irritates him, a client-side bounce goes on the
+landing page THEN — not in anticipation.** *It keeps `/` cacheable because the
+conditional runs in his browser rather than at the edge.*
+
+### Its premise was wrong and the conclusion survives — stronger
+
+**Design argued from CloudFront being in the path. It is not, for the domain
+this site will use.** *Measured 2026-09-15:*
+
+```
+tmitrader.com      -> 98.85.49.227   (the Lightsail static IP)
+www.tmitrader.com  -> 98.85.49.227
+dwwep02jje2ag.cloudfront.net -> 13.33.244.x   (a different address entirely)
+
+curl -sI https://tmitrader.com/  ->  Server: nginx/1.24.0 (Ubuntu)
+                                     no Via, no X-Cache, no X-Amz-Cf-*
+```
+
+**The distribution exists and the custom domain bypasses it.** *`docs/AWS_DEPLOYMENT.md`
+still says "The public URL is the AWS-provided distribution hostname. There is
+no custom domain and none is needed" — which is how Design reached a true
+conclusion from a false premise. **Handed to Ops; it is their file.***
+
+> **AND THE CORRECTED VERSION IS A BETTER ARGUMENT THAN THE ORIGINAL.** *The
+> problem is not that the CDN will break a conditional `/`.* **It is that a
+> conditional `/` forecloses ever putting the domain behind the CDN** — which is
+> the obvious next step for a public landing page, and the whole reason a
+> distribution was provisioned. **That is the same shape as (A) versus (B):
+> a behaviour can be added later, an architecture cannot be taken back.**
+
+**One consequence for my own verification, checked rather than assumed: the
+curl proof in §2 hits nginx directly.** *No cache sits between it and the wall,
+so a `200` means the exemption works and a `401` means it does not. Had the
+domain been behind the distribution, a cached response could have shown either
+answer for the wrong reason.*
+
+---
+
+## 3c. AUTHORITY IS A SECOND AXIS, AND NO SCREEN OF MINE SHOWS IT
+
+**His ruling, via Integration:** *"make it user based authority, and the only
+user with that authority right now is me. im the admin."*
+
+**Two axes, and they must not collapse into one column:** `status` answers *may
+this person in*; authority answers *what may they do*. **A user can be approved
+and not admin.**
+
+**So the three conditions on the `Signed in, not admitted` artboard are about
+`status` ONLY, and there is no "not an admin" screen** — *a signed-in,
+approved, non-admin user sees the whole board. What they do not get is a
+control, and a control is Design's surface rather than a Web state.*
+
+> **THE BOOTSTRAP TRAP, and it is mine because `/signin` goes public in this
+> batch:** the convenient first-admin rule is *"first user to sign in becomes
+> admin"*. **Public sign-in means a stranger can reach `/signin` before he ever
+> does — and under that rule the first person through the door takes the
+> authority to spend his money.** *The first admin is an explicit one-time grant
+> against a known identity. Nothing in the sign-in flow infers authority from
+> being early.*
+
+---
+
 ## 4. A GATE ON STEP 3 THAT IS NOT IN THE BATCH — the only write endpoint
 
 **Verified, not relayed** — `app/api/research/retry/route.ts` at `dd98782`:
