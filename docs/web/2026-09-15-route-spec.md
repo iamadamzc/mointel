@@ -426,3 +426,31 @@ This batch does not touch that, so nothing changes today.**
 **Ops's and Web's jointly, not his.** *He asked whether he was missing anything
 about everyone getting the same screen; this is the answer, and it is a
 precondition for a later step rather than a defect in the current one.*
+
+---
+
+## 5. THE AUTHORITY FIELD — shape requirements, for whoever writes the schema
+
+**Verified 2026-09-15: it does not exist.** `grep -niE "admin|authority|role|permission" lib/auth/*.ts` returns nothing, and `ResolvedSession` is `{ userId, status, expiresAt }`. **So his ruling — *"user based authority, and the only user with that authority right now is me"* — currently has nowhere to live.**
+
+**Design has refused to build the control gate until it does, and it is right to.** *The only field within reach is `status`, and gating on `status === 'APPROVED'` makes every approved user an admin — his ruling inverted rather than implemented.* **That is the obvious shortcut for whoever reaches it first under time pressure, which is why it is written down here.**
+
+### Four properties, and the first two are the ones that bite
+
+**1. ONE RESOLUTION POINT, TWO ANSWERS — not two resolution points.**
+*The point-of-use ruling put the status check in one place every point of use passes through. **Resolving authority somewhere else recreates exactly the defect that ruling closed**: a route resolves the session correctly and never asks the second question.* **Authority rides on `ResolvedSession`, answered at the same moment by the same call.**
+
+**2. "CANNOT SAY" MUST NOT COLLAPSE INTO `null`.**
+*`resolveSession` already returns `null` for absent, expired and revoked alike — deliberately, and its docstring says why.* **If authority-unknown also becomes `null`, a signed-in person whose authority cannot be determined presents as not signed in, and gets bounced to sign-in with a valid session in their hand.**
+
+> **Session resolution stays binary — `null` or resolved. Authority WITHIN a resolved session is three states: may spend, may not spend, cannot say.** *N states, not a value and an absence.* **A build predating the field, or a row written before authority was recorded, is `cannot say` — hidden control, and distinguishable in the log from a confident no.** *Design's requirement, and it is the same rule as the `400` screen: one thing on the page, two in the log.*
+
+**3. THE FIRST ADMIN IS AN EXPLICIT ONE-TIME GRANT AGAINST A KNOWN IDENTITY.**
+*"First user to sign in becomes admin" was safe only while the door was locked.* **`/signin` goes public in the later batch, so under that rule the first stranger through the door takes the authority to spend his money.** *Nothing in the sign-in flow infers authority from being early.*
+
+**4. THE ENDPOINT CHECKS INDEPENDENTLY.** *`RetryAnalysis.tsx` hiding the button is presentation.* **`POST /api/research/retry` is one `curl` from anyone who can reach the origin, and the check there is the actual boundary.**
+
+### No Web surface comes out of this
+
+**Authority produces no screen on this thread's side.** *A signed-in, approved, non-admin user sees the whole board and simply lacks a control.* **The three `Signed in, not admitted` conditions are about `status` only and stay that way** — so nobody needs to wait on Web for this.
+
