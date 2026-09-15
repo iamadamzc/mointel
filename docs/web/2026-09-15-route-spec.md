@@ -96,6 +96,68 @@ done
 
 ---
 
+## 2b. THE BATCH SPLITS — just not where Integration looked
+
+**Integration tried to split this batch and concluded the home-page link killed
+it. The link requirement is real; the conclusion does not follow.**
+
+**Google's requirement, quoted rather than paraphrased** — *Commercial's
+transcription of Google's OAuth policies, read 2026-09-10,
+`docs/commercial/2026-09-10-auth-providers.md:121`:*
+
+> *"Every production app that uses OAuth 2.0 must have a publicly accessible
+> home page. The homepage must include a description of the app's
+> functionality, as well as links to terms of service and a privacy policy."*
+> — and *"Your homepage can not be only a login page."*
+
+**So my §2 wording was accurate and the softer reading is not available: the
+home page itself must carry the links; a consent-screen link does not
+substitute.** *Stated as second-hand: this is a direct quotation inside a
+research document, not this seat's own read of Google's live pages. Re-reading
+those is Commercial's remit and tooling, not Web's.*
+
+**BUT NOTHING IN THAT LIST IS ABOUT SIGNING IN.** *Verification wants a public
+home page that describes the app and links to two documents, all on the verified
+domain. It does not want a working sign-in flow — the OAuth client already
+exists.*
+
+> ### ⇒ THE SPLIT IS `/signin` AND `/auth/`, NOT `/privacy` AND `/terms`
+>
+> | needed for his verification | can wait |
+> | --- | --- |
+> | `= /` — the landing page | `= /signin` |
+> | `= /privacy` | `^~ /auth/` |
+> | `= /terms` | |
+> | `= /favicon.ico` | |
+>
+> **And Integration's own scoping says those two are the real build.** *The
+> other three are renderers over text already written and adopted, plus a file
+> that exists.* **So the expensive half of this batch is not on his critical
+> path at all.**
+
+### And the unblock does not need in-app auth either
+
+**The board moves to its own path and keeps the server-level `auth_basic` it has
+today. `location = /` then serves the landing page publicly.**
+
+1. `app/page.tsx` → `app/desk/page.tsx`. **The board changes address and keeps
+   its password**, because it is no longer at `/` and the server default still
+   denies.
+2. A new `app/page.tsx` renders the landing artboard.
+3. `/privacy` and `/terms` renderers over the two adopted files.
+4. The four exemptions above.
+
+**Nothing in that list requires a session, a status check or in-app auth.** *The
+desk stays behind the shared password throughout, exactly as the charter's step
+1 intends — and he can submit for verification at the end of it.*
+
+**THIS IS THE STRONGEST ARGUMENT FOR (A) AND IT IS NOT AESTHETIC.** *Under (B) —
+one URL serving both — there is no public home page until `auth_basic` comes off
+`location /`, which needs in-app auth proven first.* **(B) puts his verification
+behind the whole auth build. (A) puts it behind a route move.**
+
+---
+
 ## 3. THE QUESTION THAT MUST BE SETTLED BEFORE THE ROUTES ARE CUT
 
 *His words: "yall need to coordinate the login and where the app lives."*
