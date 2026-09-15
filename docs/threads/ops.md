@@ -9947,3 +9947,29 @@ between "present" and "public"; two has a checkpoint where a throwing
 renderer is a 500 seen with the password, not by a stranger.* **Neither
 release goes out 07:00–10:00 ET. Release 1 changes what `/` serves HIM;
 Integration tells him before it lands.**
+
+## State: production is `4cbd58f`, schema v27, deployed 2026-09-15 17:58 ET — market worker NOT restarted (his word pending)
+
+**Integration approved the content of the enumeration (13 code commits;
+Design 5, Research 7, Coaching 1), not a sha; gated at `4cbd58f`: tsc, lint
+0 errors, 2084 tests / 138 files, build. Preflight clear. Migrate: v27,
+quick_check ok, 0 backups (guard no-op).**
+
+```
+web/research/assess   on 4cbd58f by /proc cwd, since 21:58:32Z, NRestarts 0
+market                STILL pid 355632 on 997d231 since Mon 17:16:23Z -- untouched
+user_version          27      health ok, market LIVE STREAMING, research WORKING
+release prune         removed b0610fee; kept 4cbd58f, 997d231 (rollback), 9370ab3, 372f5eb (pinned)
+```
+
+**Live on this deploy:** the Move sort (`528a99e`), the DecisionCells
+rendering, the interpret-pipeline change, the fills coverage. **NOT live
+until the market restart: `7b32e82` `engine.ts:1151 anchorObservable`, the
+whole of the "board cannot say a traded name did not trade" fix — worker
+code.** *Integration's correction taken: `9ae4aa2` is a comment rewrite, not
+an interim; there is no surface-side fix.* **That defect closes on the
+restart or not at all, and its exposure meanwhile is nil: it needs an
+in-session restart to fire and the running worker predates today's open.**
+
+**Retention-20 observable at 22:00 ET tonight: 09-09 must still be present
+after the roll. Read, not assumed.**
