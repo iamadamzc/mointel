@@ -153,3 +153,15 @@ Why: "a working small-cap momentum desk" is a company describing a market. The t
 - "up 40% at 07:15": struck. The hero opens on the time alone.
 - "In August it was 50% movers on nothing anyone could name": cleared, as a statement about what the market did. The moment a "you" or a trade attaches to it, it goes.
 - The principle, kept for the next line: a percentage describing the market's behaviour is a fact of record; one attached to a name, a time and a reader is an outcome.
+
+## His verdict on the section header, 2026-09-15
+
+*"'Four things, and the fourth is the one nobody prints.' SCREAMS AI. 'and the
+fourth one' is something you say all the time."* He is right. The shape is a
+setup and a payoff in one sentence, and it is a tic, not a voice. Replaced with
+**"None of this is on the chart."** The same shape was in card 03, *"and you
+find out which on the day it matters"*: cut.
+
+**Rule, added to the not-list's test:** no sentence whose second clause exists
+to land the first. If a line has "and the last one", "and that is the one",
+"which is where", it is the tic. Say the thing.
