@@ -14,6 +14,8 @@ import {
   TickerCell,
   WhyCell,
 } from '@/components/DecisionCells';
+import { sessionMoveSortLabel } from '@/lib/dashboard/sessionMove';
+import type { SessionPhase } from '@/lib/market/types';
 import { rowKeyboardProps } from '@/components/tableKeyboard';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
@@ -43,13 +45,43 @@ type ViewSize = (typeof VIEW_SIZES)[number];
  * `baselineLabel`, which lives in `lib/dashboard/view` because the column
  * header needs the same word and the two had drifted apart.
  */
-const SORT_KEYS: ReadonlyArray<{ key: DiscoverySortKey; label: string; title: string }> = [
+interface SortEntry {
+  key: DiscoverySortKey;
+  label: string;
+  title: string;
+  /**
+   * Set when the quantity's NAME depends on the session, so the button, the
+   * active marker and the tooltip resolve it from one place.
+   *
+   * `changePct` used to be special-cased in two spots -- once for the button and
+   * once for the active label -- and adding a second phase-dependent key would
+   * have made that two if-chains to keep in step. That is the shape that let the
+   * sort control read `Gap` while the header above the same number read `Move`.
+   * A resolver on the entry cannot drift from itself.
+   *
+   * The static `label` stays as the value a resolver-less entry uses; for a
+   * resolved entry it is never read, so it is left as the family's neutral word
+   * rather than a second spelling of a phase label.
+   */
+  resolve?: (phase: SessionPhase | null) => { label: string; title: string };
+}
+
+const SORT_KEYS: ReadonlyArray<SortEntry> = [
   { key: 'rank', label: 'Rank', title: "The board's own ranking for this session" },
   { key: 'rvol', label: 'RVOL', title: 'Relative volume' },
-  { key: 'changePct', label: 'Move', title: '' },
+  { key: 'changePct', label: 'Gap', title: '', resolve: baselineLabel },
+  { key: 'sessionMove', label: 'Move', title: '', resolve: sessionMoveSortLabel },
   { key: 'price', label: 'Price', title: 'Last price' },
   { key: 'float', label: 'Float', title: 'Displayed float. Not known for every name.' },
 ];
+
+/** One reader for every place a sort key's name appears. */
+function resolveSortEntry(
+  entry: SortEntry,
+  phase: SessionPhase | null,
+): { label: string; title: string } {
+  return entry.resolve ? entry.resolve(phase) : entry;
+}
 
 interface DiscoveryBoardProps {
   /** Null until the first market payload arrives — not a fabricated state. */
@@ -115,11 +147,10 @@ export function DiscoveryBoard({
   // Resolved once: the button, the active marker and the tooltip must never
   // disagree about what the percent change is measured from.
   // Null phase falls to the neutral label rather than guessing a session.
-  const move = baselineLabel(discovery?.sessionPhase ?? null);
-  const activeLabel =
-    sort.key === 'changePct'
-      ? move.label
-      : (SORT_KEYS.find((entry) => entry.key === sort.key)?.label ?? 'rank');
+  const phase = discovery?.sessionPhase ?? null;
+  const move = baselineLabel(phase);
+  const activeEntry = SORT_KEYS.find((entry) => entry.key === sort.key);
+  const activeLabel = activeEntry ? resolveSortEntry(activeEntry, phase).label : 'rank';
 
   function changeSort(key: DiscoverySortKey) {
     setSort((current) =>
@@ -228,7 +259,7 @@ export function DiscoveryBoard({
             <div className="flex overflow-hidden rounded-sm border border-line-2">
               {SORT_KEYS.map((entry) => {
                 const active = entry.key === sort.key;
-                const resolved = entry.key === 'changePct' ? move : entry;
+                const resolved = resolveSortEntry(entry, phase);
                 return (
                   <button
                     key={entry.key}

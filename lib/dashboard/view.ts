@@ -292,7 +292,13 @@ export function retentionNote(options: {
  * ordering.
  * ------------------------------------------------------------------------- */
 
-export type DiscoverySortKey = 'rank' | 'rvol' | 'changePct' | 'price' | 'float';
+export type DiscoverySortKey =
+  | 'rank'
+  | 'rvol'
+  | 'changePct'
+  | 'sessionMove'
+  | 'price'
+  | 'float';
 
 export interface DiscoverySortState {
   key: DiscoverySortKey;
@@ -338,6 +344,24 @@ export function discoveryValueFor(
       return row.telemetry.rvol;
     case 'changePct':
       return row.telemetry.percentChange;
+    case 'sessionMove':
+      /*
+       * THE SAME OBJECT THE CELL RENDERS, NOT A SECOND COMPUTATION.
+       *
+       * `buildTelemetry` calls `sessionMoveReading` once, where the session
+       * phase lives, and `SessionMoveLine` reads that reading. Sorting reads it
+       * too, so the order and the number on the row cannot disagree -- and the
+       * move is recomputed from the live price rather than stored, so a sort
+       * that re-derived it from a column would order the board by a comparison
+       * that has since moved.
+       *
+       * NULL FOR EVERY NON-OPEN STATE, and that is the honest answer rather
+       * than the convenient one. `NO_PRINT` is a name that has not traded this
+       * session: its within-session move is not zero, it does not exist, and a
+       * zero would place it in the middle of the board among names that really
+       * did not move. `discoveryMissingCount` is what puts that on screen.
+       */
+      return row.telemetry.sessionMove?.move ?? null;
     case 'price':
       return row.telemetry.price;
     case 'float':

@@ -24,7 +24,6 @@ import {
   VWAP_SESSION_KEY,
   vwapSessionForPhase,
   type AnchorThickness,
-  type SessionOpen,
   type SessionOpenSet,
   type SessionOpenState,
   type VwapSession,
@@ -94,6 +93,48 @@ const MOVE_LABEL: Record<VwapSession, string> = {
 export function sessionMoveLabel(phase: SessionPhase): string {
   return MOVE_LABEL[vwapSessionForPhase(phase)];
 }
+
+/**
+ * The same word, plus a title, for a control that is ALWAYS on screen.
+ *
+ * `sessionMoveLabel` deliberately has no unknown-phase arm: outside a session
+ * there is no within-session move to name, and nothing renders. THE SORT BUTTON
+ * IS DIFFERENT -- it sits in the control row at 02:00 on a Sunday like every
+ * other button, so it needs a word even when `sessionMoveReading` would return
+ * null for every row.
+ *
+ * `Move` bare is that neutral, and it mirrors `baselineLabel`'s bare `Gap`. The
+ * two families stay apart at every phase AND at the neutral:
+ *
+ *     ACROSS sessions   PM Gap  · RTH Gap  · AH Gap  · Gap
+ *     WITHIN a session   PM Move · RTH Move · AH Move · Move
+ *
+ * DERIVED FROM `MOVE_LABEL`, not typed again. The header, the cell and now the
+ * sort control are three readers of one quantity, and the last time two of them
+ * were typed separately he asked why a row said 19% twice with two meanings.
+ */
+export function sessionMoveSortLabel(phase: SessionPhase | null): {
+  label: string;
+  title: string;
+} {
+  if (phase === null) {
+    return {
+      label: 'Move',
+      title: 'Change within the current session, from its own opening print',
+    };
+  }
+  const session = vwapSessionForPhase(phase);
+  return {
+    label: MOVE_LABEL[session],
+    title: MOVE_TITLE[session],
+  };
+}
+
+const MOVE_TITLE: Record<VwapSession, string> = {
+  PREMARKET: "Change since this premarket session's first print",
+  RTH: "Change since the regular session's opening print",
+  AFTER_HOURS: "Change since the after-hours session's first print",
+};
 
 /*
  * THE CLASSIFIER LIVES IN `vwap.ts` AND THIS FILE NO LONGER HAS ONE.
