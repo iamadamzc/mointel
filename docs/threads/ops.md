@@ -9789,3 +9789,12 @@ Never a browser on this desk.
    image later needs its own public path.
 
 **Baseline from this laptop, no credentials, 14:3x ET — see the read below.**
+
+**Baseline, this laptop, no credentials, no cached state, 14:3x ET 2026-09-15:**
+```
+/                       401      /privacy   401      /terms   401
+/signin                 401      /auth/callback/google   401
+/favicon.ico            401      /_next/static/x   404 (exemption live; no such chunk)
+```
+*Every one of the five is a 401 today. The batch is measured against this
+line; a 401 after it ships is the failure nobody on this desk can see.*
