@@ -10151,3 +10151,38 @@ success without checking.** Fixed at the commit above: reset-failed before
 restart, health-check the rollback, and print `ROLLBACK FAILED ... THIS IS AN
 OUTAGE` when it is one. **Rides the next enumeration; until then, a rollback
 after a crash-loop needs a manual `systemctl reset-failed` first.**
+
+## `tmitrader.com` SERVES A PUBLIC PAGE TO ANYONE FOR THE FIRST TIME — Release 2 live, production `6f8894b`, 2026-09-16 02:34 ET
+
+**Integration approved the content at 02:3x ET. Shipped via the NEW
+push-release (detached `systemd-run` unit `mointel-deploy-6f8894b-063112`,
+followed by polling) — the first deploy on the fixed tooling, and `deploy.sh`
+ran from the new release's own copy, so both deploy fixes were live for the
+deploy that carried them.** Build 17.4s, `nginx -t` ok, `current -> 6f8894b`,
+schema v27 no backup, prune removed `997d231`, kept `1c23322` as rollback.
+
+**VERIFIED FROM A STATELESS ACTOR (this laptop, no credentials), NEGATIVE
+CONTROL FIRST:**
+```
+/desk 401   /signin 401   /api/market 401   /privacy-x 401
+/auth/callback/google 401   /desk/ 401   /_next/image 401
+/ 200   /privacy 200   /terms 200   /favicon.ico 200   www.tmitrader.com/ 200
+landing carries href="/privacy" and href="/terms"; both pages render IN FORCE
+```
+**The board is NOT public: `/desk` denied by the server default, tested first.**
+**Box side:** web/research/assess on `6f8894b` by `/proc cwd` since 06:34:28Z;
+installed nginx file identical to the release copy; `nginx -T` shows five
+`location = /…` blocks (the four plus `/api/health`); health ok; market worker
+untouched on `1c23322` since 06:15:02Z.
+
+**THE STATE CHANGE, said plainly: the domain now serves a public landing page
+that describes the app and links the adopted privacy policy and terms.
+Everything else — the board at `/desk`, every API, `/signin`, `/auth/` — is
+still behind Basic Auth.** He can submit to Google. Web verifies from
+outside independently.
+
+**Open, not a hold: `/robots.txt` is not in the four and answers 401.** Fine
+for a human reviewer; a decision to make with Web rather than inherit.
+**The four deploy-tooling fixes are in production: BUILD_ID check, incomplete-
+`.next` removal, reset-failed-before-rollback with an honest outage line, and
+the detached deploy.**
