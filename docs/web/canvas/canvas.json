@@ -70,7 +70,7 @@
       "x": 800,
       "y": -300,
       "w": 700,
-      "text": "THIS PAGE IS THE ONE PIECE THAT CANNOT SHIP YET.\n/ is the trader's board and Basic Auth is the only thing holding it.\n\nSign-in, states, privacy and terms can all ship now behind their own exempted prefixes, with the desk still locked."
+      "text": "THIS PAGE SHIPS FIRST NOW - the split reversed it.\n\nGoogle needs a public home page that describes the app and links to privacy and terms. So / becomes the landing page and the board moves to /desk, keeping the password it has because the server default still denies there.\n\nDeferred instead: /signin and /auth/. Opening /signin early is how the first stranger through the door takes the authority to spend his money."
     },
     {
       "id": "note-signin",
@@ -98,7 +98,7 @@
       "x": 4000,
       "y": -300,
       "w": 700,
-      "text": "SEEDED FROM 4cbd58f at 2026-09-15 17:50 ET.\n\nEditing a .dc.html does NOT update this canvas - someone must re-seed and republish. If the repo is ahead of this sha, what you are reading is superseded.\n\nCompare against: git log -1 --format=%h"
+      "text": "SEEDED FROM c353cbd at 2026-09-16 02:14 ET.\n\nEditing a .dc.html does NOT update this canvas - someone must re-seed and republish. If the repo is ahead of this sha, what you are reading is superseded.\n\nCompare against: git log -1 --format=%h"
     }
   ],
   "launch": {
