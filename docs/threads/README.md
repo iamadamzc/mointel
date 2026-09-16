@@ -2724,6 +2724,54 @@ seat approving it.
 answered, relayed onward with the context the receiver is missing, or declined
 with the reason said back. Never silence.
 
+## A STATUS CODE PROVES REACHABILITY; IT DOES NOT PROVE A STRANGER SEES A PAGE
+
+**Web, 2026-09-16, on the first release that made anything here publicly reachable.
+Two seats had already verified the same routes and both stopped at the status code.**
+
+```
+Ops       negative control first, wider than the spec         8/8 correct
+Integration  same eight from a third machine                  8/8 correct
+Web       THE ELEVEN SUBRESOURCES THE SERVED HTML ASKS FOR    the check neither ran
+```
+
+**A `401` on any chunk, stylesheet or font renders the page BROKEN to a stranger and
+PERFECT from this desk** — *the founding hazard of the Web thread, one layer below the
+routes, and it could not be asked until the pages went public.* **Nine chunks and two
+`woff2` fonts, each fetched with no credential: all 200.**
+
+> **AND ONE STRING THE SPEC COULD NOT HAVE COVERED: the markup requests
+> `/favicon.ico?favicon.<hash>.ico` while the exemption is `location = /favicon.ico`.**
+> *nginx matches on the path and ignores the query, so it serves — **checked on the wire
+> rather than reasoned about**, because "the exact match I wrote" and "the URL the page
+> actually requests" are two different strings.*
+
+**⇒ FOR ANY PAGE MADE PUBLIC: enumerate the subresources the SERVED HTML asks for and
+fetch each as a stranger.** *The route list is what you intended to publish; the
+subresource list is what the page needs in order to exist.*
+
+**AND THE PUBLIC CLAIMS BECAME CHECKABLE IN THE SAME MOMENT AND WERE CHECKED:** *zero
+external hosts in the served HTML — the page calls nobody — and both legal pages render
+the adopted source at request time rather than a copy.*
+
+### TWO INSTRUMENT ERRORS IN THAT RUN, AND THE DISAGREEMENT WAS THE INSTRUMENT
+
+**`grep -ci DRAFT` returned 2 on an adopted page** — *matching `DRAFTED` in the dateline
+`DRAFTED … · ADOPTED …`, not a banner.* **A failed check returning a plausible-looking
+DEFECT, on the field this desk has been most careful about.** *Integration hit the same
+false positive independently and both caught it the same way: by reading the context
+around the match rather than the count.*
+
+**And `grep -c 'href="/privacy"'` returned 1 against Integration's 2.** *`-c` counts
+matching LINES; both links sit on one line. `grep -o` piped to `uniq -c` counts
+OCCURRENCES, which is the instrument the question needed.* **This desk has now been
+bitten by `grep -c` three times.**
+
+> **WEB'S POINT IS THE ONE TO KEEP: the two passes did not agree by accident — they
+> DISAGREED, and the disagreement is what forced a re-measure.** *Two independent
+> verifications that match tell you little; two that conflict tell you exactly where to
+> look.*
+
 ## VERIFYING THE EVIDENCE OFFERED FOR A CLAIM IS NOT VERIFYING THE CLAIM
 
 **Design's formulation, 2026-09-16, after three seats carried one false sentence between
