@@ -2772,6 +2772,42 @@ bitten by `grep -c` three times.**
 > verifications that match tell you little; two that conflict tell you exactly where to
 > look.*
 
+## A MID-SESSION RESTART IS ONE CAUSE WITH FOUR SEPARATELY-DISCOVERED CONSEQUENCES
+
+**2026-09-14 to 09-16. Four defects, found by four routes, over three days. One event.**
+
+```
+1  THE ANCHOR      a restart re-anchors names the backfill did not reach.
+                   MEASURED: 10 of his closing 50 carried a wrong Move, median ~3.5
+                   points understated, one SIGN FLIP.
+2  THE SENTENCE    a name that traded earlier and went quiet reads "not traded" --
+                   a false market statement, not a wrong number.
+3  THE LATCH       `session_high` is in-memory, so a restart can lose a cycle
+                   supersession and restore a four-month-old BACKSIDE badge.
+4  THE GUARD       `session_high` reseeds from the daily bar while its companion
+                   series does not, so a bad-print check would reject a GENUINE high
+                   on exactly the names the fix exists for.
+```
+
+**EACH WAS FOUND ON ITS OWN, BY SOMEBODY LOOKING AT SOMETHING ELSE.** *None was found by
+looking for restart consequences, and nobody enumerated them until the fourth.*
+
+> **THE PROPERTY IS THE RESTART, NOT THE FOUR FIELDS. Every in-memory accumulator on
+> this desk inherits it BY DEFAULT**, and the next one somebody adds will inherit it
+> silently — because the defect is not in the field, it is in what a fresh process does
+> not know.
+
+- **WRITE IT ONCE AS A PROPERTY OF THE RESTART, never four times as a property of four
+  fields.** *Four entries read as four bugs; one entry reads as a class with an open
+  membership.*
+- **AND THE ENUMERATION IS THE CHEAP PART NOBODY RAN.** *The question — "what else is
+  rebuilt from nothing when a process starts" — is answerable by grepping the runtime's
+  own initialiser, and it would have produced all four before any of them fired.*
+- **THE REPAIRS DIVERGE, WHICH IS WHY THE CLASS MATTERS MORE THAN THE INSTANCES.** *One
+  wants a reseed, one wants a three-state field, one wants a latch, and the fourth wants
+  its two inputs CAPTURED TOGETHER so no reseed can separate them* — **the only one that
+  removes the coupling instead of documenting it.**
+
 ## "UNMEASURABLE" IS USUALLY "NOT THAT NUMBER — THIS ONE"
 
 **Research's diagnosis of its own work, 2026-09-16.** *It reported that the rate at which
