@@ -2724,6 +2724,41 @@ seat approving it.
 answered, relayed onward with the context the receiver is missing, or declined
 with the reason said back. Never silence.
 
+## A GREP OF THE TREE ANSWERS ABOUT THE TREE, NEVER ABOUT THE HISTORY
+
+**Coaching, 2026-09-16, correcting itself after telling two seats a feature "was never
+wired".** It had been wired, it recorded on four dates, and **the trader ruled it off**
+at `d9215f7`, which hardcoded the field and removed the routes, the store, the repo and
+the MCP tool.
+
+> **A FEATURE THAT WAS BUILT, USED AND REMOVED LEAVES A TREE INDISTINGUISHABLE FROM ONE
+> WHERE IT NEVER EXISTED** — *and the search returns a clean, confident answer either
+> way.* **Coaching's words, and it is the mechanism rather than the apology.**
+
+**AND THE SIMPLER HALF UNDERNEATH IT: it checked the WRITER and never the WRITTEN.** *It
+queried `focus_tickers` — a different table, zero rows, in a stale store — and never ran
+`SELECT COUNT(*) WHERE focus = 1` on the table the rows were actually in.* **One query
+would have settled it before any grep.**
+
+**THE RULE, AND IT IS COACHING'S:**
+
+> **For any claim containing "never" or "was not", QUERY THE DATA AND THE LOG BEFORE
+> READING THE TREE.**
+
+**WHY IT IS HERE RATHER THAN IN `coaching.md`: the consequence was a claim about HIM.**
+*"The desk cannot say which names you watched" is true, and it reads as a shortcoming of
+the desk.* **It is his ruling, with his reason attached — a pin adds nothing, because
+what gets pinned already has research, which the desk already knows.** *So a feature
+built on that reading must not lament the absence, must not work around it, and nobody
+should propose restoring the mechanism to enrich anything.* **A tree-shaped absence
+became a sentence that quietly criticised a decision he made on good grounds.**
+
+**ADJACENT AND NOT THE SAME CAUSE, recorded separately so the grouping is not
+overclaimed:** *searching too few FILES is a scope error; searching for the INPUT's name
+and concluding about the derived VALUE is a target error.* **This one is neither — the
+search was correctly scoped and correctly targeted, and the tree simply does not carry
+the answer.**
+
 ## Absence of detection is not detection of absence
 
 **Promoted to top level 2026-08-24 at R&D's request, after three instances in one
