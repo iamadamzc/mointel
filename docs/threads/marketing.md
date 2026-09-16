@@ -299,7 +299,7 @@ at `fe26b0a`. Nothing is in progress and no file is held.**
   prose style: the home page is the sales register he rejected.** The reader is
   a Warrior student; recognition is their vocabulary used correctly.
 - **RULED BY COMMERCIAL `d93f0ba`:** the relationship is already on the page
-  in the Boundaries card; **Warrior Trading is not named in any public copy.**
+  in the Boundaries card; **Warrior Trading is not named in any public copy. HIS RULING 2026-09-16: *"do not want warrior mentioned."***
   The trade's vocabulary is usable without attribution. Complementary is shown
   by fitting beside their morning, not by saying their name.
 - **OPEN WITH HIM:** now that the reader is Cameron's student, the 07:00–10:00

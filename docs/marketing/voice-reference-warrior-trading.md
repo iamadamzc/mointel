@@ -74,5 +74,6 @@ filing.
 - **What it licenses:** the reader is a Warrior student; the trade's vocabulary
   is usable without attribution because it is the trade's, not their mark; the
   relation is shown by fitting beside their morning, not by saying their name.
-- If he ever wants the name on the page, that is his to say explicitly, and
-  this is the advice against it.
+- ~~If he ever wants the name on the page, that is his to say explicitly.~~
+  **HIS RULING, 2026-09-16, verbatim: *"do not want warrior mentioned."*** Not
+  on the page, not in copy, not in any public artefact. Commercial `fbb1d89`.
