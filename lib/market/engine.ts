@@ -853,9 +853,25 @@ export class DemandEngine {
     runtime.volumeBaseSource = seed.volumeBaseSource;
     runtime.volumeSource = seed.volumeBaseSource;
 
-    // Drop any live minutes already covered by the new base. The VWAP buckets
-    // follow the same minutes out, or the average would keep counting notional
-    // whose volume has just been handed back to the reconstructed base.
+    /*
+     * Drop any live minutes already covered by the new base. The VWAP buckets
+     * follow the same minutes out, or the average would keep counting notional
+     * whose volume has just been handed back to the reconstructed base.
+     *
+     * AND `minuteCloses` AND `minuteTrades` ARE DELIBERATELY SPARED. Do not add
+     * them here for consistency: this eviction exists ONLY to stop volume being
+     * counted twice, and a minute's close and its trade count are not volume.
+     * The minute happened; what traded in it is still true after its shares have
+     * been handed to a reconstructed base.
+     *
+     * They are also the two series that must stay in lockstep -- `minuteCloses`
+     * "mirrors `minuteTrades` exactly" by the note at their declaration, and
+     * they feed the price window and the activity verdict respectively. Evicting
+     * either would silently shorten his sparkline and change a liveness verdict,
+     * and evicting one would break the mirror. Sparing BOTH is what keeps the
+     * two series agreeing; the volume maps are a different pair and are the only
+     * pair this loop is about.
+     */
     if (seed.volumeBaseThrough) {
       for (const [ts, volume] of runtime.minuteVolumes) {
         if (ts <= seed.volumeBaseThrough) {
