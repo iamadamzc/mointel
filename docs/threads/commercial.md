@@ -340,7 +340,14 @@ repo — they are public documents and re-fetchable.
   report may state what happened as record, never as what the reader could
   have done; coverage stated, not implied); and single-tenancy as a shipping
   gate (a report narrating a Sheet-sourced field has no second customer;
-  Research to trace which fields touch the Sheet). Pricing and packaging of
+  Research to trace which fields touch the Sheet). **Research traced one
+  layer the same day: every narrated field resolves to the dossier or the
+  ticker session store, and the assessment table has no float column, so
+  the gate is cleared for the reports as scoped; whether the dossier's own
+  structure classification was shaped by Sheet input upstream is untraced
+  and Research's next. Research also found prices are the least
+  load-bearing and most exposed content in the report, so the tape
+  exposure there is optional, not structural.** Pricing and packaging of
   the report is open and waits on him.
 
 **Open items.**

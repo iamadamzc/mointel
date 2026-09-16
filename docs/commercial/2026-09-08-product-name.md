@@ -674,6 +674,39 @@ the Sheet is Research's to trace; that it must be traced before the report
 is called shippable is recorded here so it is not discovered after a schema
 exists.
 
+**Traced by Research the same day, one layer, with the stop named.** The
+assessment writer imports no Sheet module: every narrated field resolves to
+the desk's own dossier (cycle, catalyst, structure, warnings) or to the
+ticker session store (price, change, RVOL, rank, high, spread, volume, halt).
+And the known Sheet-contaminated field is structurally absent: the
+assessment table has no float column at all — displayed float and its
+source live on the board's merge and never reach an assessment row — so a
+report narrated from assessment snapshots cannot narrate a Sheet-sourced
+float. **Gate cleared for the reports as scoped, at that layer.** The layer
+Research has not traced, and said so rather than implying it: whether the
+dossier's own structure classification was shaped by Sheet input further
+upstream in the research pipeline. Until that is answered the honest
+sentence is *"the report's fields do not come from the Sheet; whether one
+of the dossier's classifications was shaped by Sheet input upstream is
+untraced"* — not "Sheet-free end to end." Research owns the next layer.
+
+**And the exposure in item 1 is optional, not structural — Research's
+finding, and worth his knowing.** The reports' measured value came from the
+change summary (97% at 22:00), catalyst, structure and cycle — all derived
+and unpoliced. **Prices are the least load-bearing content in the feature
+and the most exposed.** Dropping them costs the report very little, so if
+the accepted-exposure ruling is ever revisited, the report is the surface
+where the tape can leave without the product changing.
+
+**The two tests converge from opposite ends.** Research's entitlement
+already requires the report to cite the assessment rows it read and claim
+nothing outside them; a report confined to cited rows cannot imply a
+capture it does not have, because its whole basis is enumerable. That is
+"record yes, implied capture no" arrived at from availability, and the
+coverage sentence — four or five of twenty-five rows with no research —
+is, for a paying stranger, the difference between a record and a claim
+about the market.
+
 **Settled elsewhere and not reopened:** his execution is out (Coaching: no
 coherent product form even in principle, since the desk holds fills for
 nobody else); Design's no-flashing, never-auto-open; Research's two reports
