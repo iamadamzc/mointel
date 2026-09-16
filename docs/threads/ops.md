@@ -10094,3 +10094,43 @@ Window closes 07:00 ET. **After it lands, verify from a stateless actor,
 negative control FIRST: `/desk` 401, `/signin` 401, `/api/market` 401,
 `/privacy-x` 401; then `/`, `/privacy`, `/terms`, `/favicon.ico` 200. Then he
 submits to Google.**
+
+## THE ROLLBACK DID NOT ROLL BACK — 2026-09-16 02:08 ET, its own entry
+
+**Every deploy decision on this desk is priced on "we can roll back". On
+2026-09-16 at 02:08 ET the safety net did not restore service.** `deploy.sh`
+detected that web could not start on the new release, said "rolling back to
+4cbd58f", switched `current` back — **and the rollback's web start ALSO
+failed** ("Job for mointel-web.service failed"). `mointel-web` sat FAILED and
+`/api/health` answered 502 for four minutes until a THIRD deploy attempt,
+not the rollback, brought service back. *Why the old release's web would not
+start after the switch is NOT yet established — the same `.next` had served
+minutes earlier — and until it is, "rollback works" is an assumption, not a
+guarantee.* **Anyone weighing a risky window must price this in.**
+
+**The cause chain of the incident was two hazards this file already carried,
+one of them for weeks unfixed:** (1) `push-release.sh` ran `deploy.sh` in the
+foreground of one ssh session — recorded here 2026-09-13 as true of every
+deploy this desk has run — and it fired as attempt 1 when the transport
+reset; (2) `deploy.sh` read a `.next` with 403 files and no `BUILD_ID` as
+"already built". **Both fixed in the tree at `14d1204` and `4c9ab33`;
+neither is in production until the next ship.** *The first was known and left
+for weeks. Recorded plainly.*
+
+**STANDING METHOD, ruled by Integration under order-and-process: deploys run
+DETACHED on the box (`systemd-run`) from now on. The transport carries the
+command, never the process.**
+
+**Scope of the operating rule "to test a review link, request its API, never
+the page" (2026-08-23, above):** it is a rule about DEAD-LINK DETECTION —
+the page returns 200 for revoked and garbage alike, the API returns 403. It
+answers "is this link alive". **It does not answer "does the page hydrate",
+and Design's 02:23 ET click test — the API would have said 200 either way —
+is what found two session words side by side in the sort row, fixed at
+`101c0b3`.** A rule applied to a question it was not written for.
+
+**Review session 37 revoked 02:3x ET on Design's report of DONE for the whole
+test; API from outside → 403 after.** Design's outsider assessment: the board
+is fit for a stranger — no account data, positions or P&L; diagnostics is
+honest, leaks no paths or keys, and is an operator surface not handed out by
+default.
