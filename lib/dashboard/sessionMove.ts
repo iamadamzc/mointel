@@ -117,7 +117,26 @@ export function sessionMoveSortLabel(phase: SessionPhase | null): {
   label: string;
   title: string;
 } {
-  if (phase === null) {
+  /*
+   * `CLOSED` AND `NEXT_DAY_PREP` FALL TO THE NEUTRAL, AND THIS COST HIM A WRONG
+   * WORD ON A LIVE BOARD.
+   *
+   * `vwapSessionForPhase` ends `return 'AFTER_HOURS'` -- a catch-all, correct
+   * for picking WHICH VWAP ACCUMULATOR to read, wrong for naming a session on
+   * screen. Routing through it printed `AH MOVE` on the sort control at 02:23 ET
+   * with `sessionPhase: NEXT_DAY_PREP`, hours after after-hours ended, beside a
+   * `GAP` button that had correctly fallen to its own neutral.
+   *
+   * Two words for the same phase, on one screen, from the two families that were
+   * built to mirror each other -- and found by clicking the board rather than by
+   * any test, because every test asserted the phases a session actually has.
+   *
+   * `baselineLabel` already handles these two explicitly and says why: they are
+   * the overnight and weekend states and they are NOT RARE. This switches on the
+   * phase for the same reason rather than deriving through a mapping whose
+   * default arm answers a different question.
+   */
+  if (phase === null || phase === 'CLOSED' || phase === 'NEXT_DAY_PREP') {
     return {
       label: 'Move',
       title: 'Change within the current session, from its own opening print',

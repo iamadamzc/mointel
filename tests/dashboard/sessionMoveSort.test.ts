@@ -129,6 +129,36 @@ describe('the sort label', () => {
     expect(sessionMoveSortLabel(null).label).toBe('Move');
   });
 
+  it('does not name a session that has ended', () => {
+    /*
+     * FOUND ON THE LIVE BOARD, NOT HERE. At 02:23 ET with
+     * `sessionPhase: NEXT_DAY_PREP` the control read `AH MOVE` beside a `GAP`
+     * button that had correctly fallen to its own neutral -- two words for one
+     * phase, on one screen, from the two families built to mirror each other.
+     *
+     * The cause was routing through `vwapSessionForPhase`, whose catch-all
+     * `return 'AFTER_HOURS'` is right for choosing an accumulator and wrong for
+     * naming a session. Every test here asserted the phases a session actually
+     * has, so none of them could see it.
+     */
+    expect(sessionMoveSortLabel('NEXT_DAY_PREP').label).toBe('Move');
+    expect(sessionMoveSortLabel('CLOSED').label).toBe('Move');
+  });
+
+  it('mirrors the Gap family at EVERY phase, including the dead ones', () => {
+    /*
+     * The invariant that actually failed: the two controls sit side by side, so
+     * a phase where one names a session and the other does not is a
+     * disagreement the reader has to resolve. Asserted as a pair rather than
+     * per family, because both were individually defensible.
+     */
+    for (const phase of PHASES) {
+      const gapNamesSession = baselineLabel(phase).label !== 'Gap';
+      const moveNamesSession = sessionMoveSortLabel(phase).label !== 'Move';
+      expect(moveNamesSession, `phase ${phase}`).toBe(gapNamesSession);
+    }
+  });
+
   it('carries a title on every arm, because the denominator is the whole job', () => {
     for (const phase of PHASES) {
       expect(sessionMoveSortLabel(phase).title.length).toBeGreaterThan(0);
