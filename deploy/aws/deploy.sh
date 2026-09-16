@@ -244,8 +244,11 @@ if [ "$healthy" != "yes" ]; then
       systemctl reset-failed "$unit" 2>/dev/null || true
       systemctl restart "$unit" || echo "[deploy] ROLLBACK: $unit did not restart" >&2
     done
-    # Say what is true, not what was intended. The rollback is verified the
-    # same way the deploy was; a failure here is an OUTAGE and is named as one.
+    # THIS CHECK IS THE LOAD-BEARING LINE, NOT THE reset-failed ABOVE. The
+    # reset makes the restart possible; the check makes the report honest. On
+    # 2026-09-16 the old build was intact, the restart was refused, and this
+    # script said "rolled back" -- an ACTION, not an OUTCOME -- over a 502.
+    # Remove this check and that failure returns, silently. Say what is true.
     if curl -fsS --max-time 10 http://127.0.0.1/api/health >/dev/null 2>&1; then
       echo "[deploy] rolled back to $(basename "$PREVIOUS"); dashboard answering." >&2
     else
