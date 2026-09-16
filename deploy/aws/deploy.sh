@@ -82,9 +82,19 @@ sudo -u "$SERVICE_USER" env -C "$RELEASE" npm ci --no-audit --no-fund
 # build takes the instance, which is not.
 BUILD_HEAP_MB="${BUILD_HEAP_MB:-1536}"
 
-if [ -d "$RELEASE/.next" ]; then
-  log "prebuilt artefact present; skipping the on-box build"
+# A complete Next build carries .next/BUILD_ID. A directory without it is a
+# build that was interrupted -- on 2026-09-16 a deploy whose ssh transport
+# dropped mid-`npm ci` left 403 files and no BUILD_ID, this check read that as
+# "prebuilt", skipped the build, and web could not start; the rollback then
+# left web FAILED for four minutes. The presence of a directory is not the
+# presence of a build.
+if [ -f "$RELEASE/.next/BUILD_ID" ]; then
+  log "prebuilt artefact present (BUILD_ID $(cat "$RELEASE/.next/BUILD_ID")); skipping the on-box build"
 else
+  if [ -d "$RELEASE/.next" ]; then
+    log "removing an incomplete .next (no BUILD_ID) left by an interrupted build"
+    rm -rf "$RELEASE/.next"
+  fi
   log "building (heap capped at ${BUILD_HEAP_MB}MB, niced)"
   sudo -u "$SERVICE_USER" env -C "$RELEASE" \
     NODE_ENV=production \
