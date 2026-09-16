@@ -45,6 +45,41 @@ export interface IntelligenceState {
   coverageIncomplete: boolean;
 }
 
+/**
+ * THE TWO READS ARE NOT INDEPENDENT, AND THE BADGE USED TO IMPLY THEY WERE.
+ *
+ * `research-interpret.ts:166` passes the Sheet's prior human analysis into the
+ * interpreter unless `omitSheetPrior` is set, and `config.ts:182` leaves that
+ * OFF by default. The config says it plainly: *"the automatic catalyst grade is
+ * not independent of it."*
+ *
+ * SO THE EVIDENTIAL WEIGHTS RUN THE OPPOSITE WAY TO THE DESIGN'S ASSUMPTION.
+ * Agreement may be the model restating a conclusion it was shown; disagreement
+ * happened DESPITE being shown it. `SHEET + AUTO` reads as two sources adding
+ * up, and that is the case the dependency weakens.
+ *
+ * `normally` rather than a per-row fact, and that is not a hedge: the setting is
+ * WRITTEN TO THE RUN LOG (`research-interpret.ts:143`) and NOT STORED ON THE
+ * DOSSIER, so a row cannot say which way it was produced. Saying "may have been"
+ * where the record is silent is the honest form.
+ *
+ * NOT restating the magnitude, which is unmeasured. The mechanism is stated and
+ * he weighs it; `RESEARCH_OMIT_SHEET_PRIOR=1` is the control arm that would
+ * measure it and it has never been run.
+ */
+/*
+ * ON BOTH ARMS OF `SHEET_AUTO`, INCLUDING THE INCOMPLETE ONE.
+ *
+ * The incomplete arm makes no agreement claim in its text -- it reports a
+ * coverage gap. But the BADGE WORD is `SHEET + AUTO` either way, and the word is
+ * what implies two sources adding up. Disclosing only on the arm whose sentence
+ * happens to mention agreement would leave the implication standing wherever the
+ * reader took it from the badge rather than the tooltip, which on a board he
+ * scans is most of the time.
+ */
+const DEPENDENCE_NOTE =
+  'The desk read is normally produced with the outside one in evidence.';
+
 export const INTELLIGENCE_LABEL: Record<IntelligenceStatus, string> = {
   NOT_ANALYZED: 'NOT YET ANALYZED',
   ANALYSIS_PENDING: 'ANALYSIS PENDING',
@@ -155,7 +190,7 @@ export function resolveIntelligenceState(input: IntelligenceInput): Intelligence
   if (isMaterialConflict(comparison)) {
     return build(
       'CONFLICT',
-      `The outside research and the desk research disagree (${comparison?.conflictReasons.join(', ')}). Both conclusions are kept.`,
+      `The outside research and the desk research disagree (${comparison?.conflictReasons.join(', ')}). Both conclusions are kept. ${DEPENDENCE_NOTE} So this is a disagreement reached despite seeing it.`,
     );
   }
 
@@ -163,8 +198,8 @@ export function resolveIntelligenceState(input: IntelligenceInput): Intelligence
     return build(
       'SHEET_AUTO',
       autoComplete
-        ? 'Outside and desk research both present and not in material disagreement'
-        : `Outside research present; desk research did not establish ${missingAutoFields.join(', ') || 'complete coverage'}`,
+        ? `Outside and desk research both present and not in material disagreement. ${DEPENDENCE_NOTE} So this is not two independent sources agreeing.`
+        : `Outside research present; desk research did not establish ${missingAutoFields.join(', ') || 'complete coverage'}. ${DEPENDENCE_NOTE}`,
     );
   }
 

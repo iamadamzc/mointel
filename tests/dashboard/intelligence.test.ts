@@ -294,6 +294,114 @@ describe('normalized intelligence status', () => {
     expect(conflicting.intelligenceState.status).toBe('CONFLICT');
   });
 
+  /* ----------------------------------------------------------------------- *
+   * THE TWO READS ARE NOT INDEPENDENT
+   * ----------------------------------------------------------------------- */
+
+  it('discloses that the desk read normally saw the outside one', () => {
+    /*
+     * `research-interpret.ts:166` passes the Sheet's prior human analysis into
+     * the interpreter unless `omitSheetPrior` is set, and `config.ts:182` leaves
+     * that OFF. The config says it outright: "the automatic catalyst grade is
+     * not independent of it."
+     *
+     * SO THE WEIGHTS RUN OPPOSITE TO WHAT THE BADGE IMPLIES. Agreement may be
+     * the model restating a conclusion it was shown; a conflict happened DESPITE
+     * being shown it. `SHEET + AUTO` reads as two sources adding up, and that is
+     * the case the dependency weakens.
+     */
+    const NOTE = 'normally produced with the outside one in evidence';
+
+    /*
+     * BOTH ARMS OF `SHEET_AUTO`, because the badge word is the same on each and
+     * the word is what implies two sources. Only the arm that actually asserts
+     * agreement carries the second clause.
+     */
+    const partial = buildDeskRow(
+      'PART',
+      sheet('PART'),
+      null,
+      demand('PART'),
+      intelligence({
+        ticker: 'PART',
+        dossier: dossier({ catalyst: { ...dossier().catalyst, catalystGrade: 'STRONG' } }),
+      }),
+    );
+    expect(partial.intelligenceState.status).toBe('SHEET_AUTO');
+    expect(partial.intelligenceState.detail).toContain(NOTE);
+    expect(partial.intelligenceState.detail).not.toContain('not two independent sources');
+
+    const agreeing = buildDeskRow(
+      'PART',
+      sheet('PART'),
+      null,
+      demand('PART'),
+      intelligence({
+        ticker: 'PART',
+        dossier: dossier({
+          catalyst: { ...dossier().catalyst, catalystGrade: 'STRONG' },
+          cycle: { ...dossier().cycle, cycleClassification: 'GREEN_FRESH_FRONTSIDE' },
+        }),
+      }),
+    );
+    expect(agreeing.intelligenceState.status).toBe('SHEET_AUTO');
+    expect(agreeing.intelligenceState.detail).toContain(NOTE);
+    expect(agreeing.intelligenceState.detail).toContain('not two independent sources');
+
+    const conflicting = buildDeskRow(
+      'PART',
+      sheet('PART', '🔴 BACKSIDE'),
+      null,
+      demand('PART'),
+      intelligence({
+        ticker: 'PART',
+        dossier: dossier({
+          cycle: { ...dossier().cycle, cycleClassification: 'GREEN_FRESH_FRONTSIDE' },
+        }),
+      }),
+    );
+    expect(conflicting.intelligenceState.status).toBe('CONFLICT');
+    expect(conflicting.intelligenceState.detail).toContain(NOTE);
+    expect(conflicting.intelligenceState.detail).toContain('despite');
+  });
+
+  it('never claims corroboration, and never sizes what nobody measured', () => {
+    /*
+     * The failure here is a WORD rather than a branch, and it arrives when
+     * someone shortens the sentence. `corroborates` and `confirms` put the false
+     * frame back; a magnitude word would state as measured a thing whose control
+     * arm (`RESEARCH_OMIT_SHEET_PRIOR=1`) has never been run.
+     */
+    /*
+     * THE COMPLETE ARM, deliberately. The first version of this guard used a
+     * partial dossier -- the arm that reports a coverage gap and never asserts
+     * agreement at all -- so corroboration language could have been added to the
+     * agreeing arm without it firing. Caught by mutation: rewording that arm to
+     * "corroborates" killed a different test and left this one green.
+     */
+    const agreeing = buildDeskRow(
+      'PART',
+      sheet('PART'),
+      null,
+      demand('PART'),
+      intelligence({
+        ticker: 'PART',
+        dossier: dossier({
+          catalyst: { ...dossier().catalyst, catalystGrade: 'STRONG' },
+          cycle: { ...dossier().cycle, cycleClassification: 'GREEN_FRESH_FRONTSIDE' },
+        }),
+      }),
+    );
+    expect(agreeing.intelligenceState.status).toBe('SHEET_AUTO');
+    const text = agreeing.intelligenceState.detail.toLowerCase();
+
+    expect(text).not.toContain('corroborat');
+    expect(text).not.toContain('confirms');
+    for (const sized of ['usually', 'often', 'rarely', 'mostly', 'largely', 'slightly']) {
+      expect(text, sized).not.toContain(sized);
+    }
+  });
+
   it('does not turn incomplete automatic coverage into a conflict', () => {
     /*
      * The automatic layer reaching a weaker conclusion because it saw less is
