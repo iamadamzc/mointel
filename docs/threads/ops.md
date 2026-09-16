@@ -10134,3 +10134,20 @@ test; API from outside → 403 after.** Design's outsider assessment: the board
 is fit for a stranger — no account data, positions or P&L; diagnostics is
 honest, leaks no paths or keys, and is an operator surface not handed out by
 default.
+
+**WHY THE ROLLBACK DID NOT ROLL BACK — established from the journal, 02:40 ET:**
+```
+06:06:39Z  current -> 1c23322 (no BUILD_ID)          web starts, dies: "Could not find a production build"
+06:08:09Z..06:08:52Z  systemd Restart=always relaunches web every 10s: 5 failures
+06:09:03Z  "Start request repeated too quickly"      StartLimitBurst=5 in 5min HIT
+06:10:11Z  deploy.sh health check gives up; "rolling back to 4cbd58f"; ln -sfn; daemon-reload
+06:10:12Z  systemctl restart mointel-web -> REFUSED: "Start request repeated too quickly"
+06:10:12Z  deploy.sh prints "rolled back."           web FAILED; 502 until 06:13:58Z
+```
+**The old release's build was intact the whole time (`4cbd58f/.next/BUILD_ID`
+present since 21:55Z). The rollback failed because it restarted a
+rate-limited unit without `systemctl reset-failed`, and then reported
+success without checking.** Fixed at the commit above: reset-failed before
+restart, health-check the rollback, and print `ROLLBACK FAILED ... THIS IS AN
+OUTAGE` when it is one. **Rides the next enumeration; until then, a rollback
+after a crash-loop needs a manual `systemctl reset-failed` first.**
