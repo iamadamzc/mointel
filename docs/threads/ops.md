@@ -10085,3 +10085,12 @@ path from the env file; the bare tsx call throws on `server-only`.*
 
 **Retention after Tuesday's 22:00 roll (marker 02:00:00.955Z): five dates
 retained, 09-09 through 09-15. In force.**
+
+**Release 2 built and gated at `283496f`, awaiting Integration's approval
+(02:27 ET Wed):** `283496f` the four `=` exemptions; `14d1204` `push-release.sh`
+runs `deploy.sh` detached on the box and follows it by polling (stub-tested);
+`4c9ab33` the `BUILD_ID` check. Rides with Design's `101c0b3` and a test.
+Window closes 07:00 ET. **After it lands, verify from a stateless actor,
+negative control FIRST: `/desk` 401, `/signin` 401, `/api/market` 401,
+`/privacy-x` 401; then `/`, `/privacy`, `/terms`, `/favicon.ico` 200. Then he
+submits to Google.**
