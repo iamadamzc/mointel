@@ -492,3 +492,50 @@ precondition for a later step rather than a defect in the current one.*
 
 **Authority produces no screen on this thread's side.** *A signed-in, approved, non-admin user sees the whole board and simply lacks a control.* **The three `Signed in, not admitted` conditions are about `status` only and stay that way** — so nobody needs to wait on Web for this.
 
+---
+
+## 6. THE "BEFORE" MEASUREMENT, AND EXACTLY WHAT IT CANNOT SEE
+
+**Taken 2026-09-16, from an actor with no cached state, before any route work:**
+
+```
+/  /privacy  /terms  /favicon.ico  /desk  /signin  /api/market   ->  401, all seven
+```
+
+**That is the clean baseline for §2's verification.** *Taken at the time rather
+than reconstructed afterwards, which is the only way a baseline is worth
+anything.*
+
+> **AND IT CANNOT DISTINGUISH "RELEASE 1 SHIPPED" FROM "NOTHING SHIPPED".**
+> *Integration's catch.* **Release 1 is app-only with nginx untouched, so a
+> stranger sees `401` either way.** *A reader meeting seven `401`s at a
+> timestamp would reasonably conclude nothing had shipped, and the measurement
+> does not support that.*
+
+**PROVED, not assumed — the responses are byte-identical:**
+
+```
+/                       401 · Content-Length: 188 · realm "Momentum Intelligence Trading Desk"
+/desk                   401 · Content-Length: 188 · same realm
+/nonexistent-path-xyz   401 · Content-Length: 188 · same realm
+```
+
+**A path that has never existed is indistinguishable from the site's root.**
+*So this is not a weakness in the probe that a cleverer one would fix — **no
+unauthenticated observation can see the app's route table at all**, because
+server-level `auth_basic` answers before nginx ever consults Next.*
+
+> **THE AMBIGUITY AND THE PROTECTION ARE THE SAME PROPERTY.** *The reason the
+> measurement cannot tell the two states apart is the reason a stranger cannot
+> enumerate the desk.* **Working as intended; worth knowing rather than fixing.**
+
+**THE DISCRIMINATOR IS §3d STEP 2 — the credentialed existence check** — *and
+this is the first moment that distinction has been load-bearing rather than
+theoretical.* **It belongs to whoever performs the release, because it needs the
+desk credential and this seat neither holds nor handles it.**
+
+*The two questions one more time, because this is where they come apart:*
+**REACHABILITY** — *can a stranger get in* — **is poisoned by holding the
+password and must be asked by `curl` with no credential.** **EXISTENCE** — *is
+the content at the path* — **requires the password and is not distorted by it.**
+
