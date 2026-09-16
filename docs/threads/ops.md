@@ -10220,3 +10220,30 @@ deploy whose authorisation exists only in a message that has not arrived.
 *Integration recorded it on its side and told him; he delegated deploy
 approval to that seat so a check sits between his desk and production, and
 this was a small erosion of it.*
+
+## INCIDENT 2026-09-16 12:22 ET: QCLS up 270% today, board says BACKSIDE of a run from May — diagnosed, routed to Research and Design
+
+**His report, with a screenshot: CYCLE column "BACKSIDE $5.49 → $1.35 HALTED"
+on QCLS while the stock is up 270% today.** Read from the store at 12:22 ET:
+rank 3, price 1.635, reference close 0.4413 (09-15), `percent_change` 270.5,
+session_high 1.76, halted LUDP 16:20Z. **The $5.49 high is from
+2026-05-14 — four months ago.**
+
+**Mechanism, from code and store:** the cycle phase is computed by
+`lib/market/cycle.ts` from `daily_bars`, which hold SETTLED sessions only
+(`ensureDailyHistory` writes nothing before 20:00 ET; `readDailyBars`
+defaults to EXCLUDE unfinished bars). QCLS's latest bar is 09-15. The settled
+arc 5.49 → 0.44 IS backside as of yesterday's close, and today's +270% is not
+in the phase input at all. The badge's right price is live; its left is
+`max(cycleHigh, sessionHigh)` = 5.49. **So the board prints a live price
+against a dead run, in red, on the name ranked third.** `lib/dashboard/
+cycle.ts:100-125` names exactly this limitation for the OFF HIGH case and
+says dating the reading does not fix the phase. **The BACKSIDE case is worse:
+a new run reads as the backside of the old one.**
+
+**Fix shape, theirs:** a provisional TODAY bar (from `ticker_session`'s live
+anchors, session high, price, cumulative volume) in the cycle input during
+the session, so a name up 270% from yesterday's close classifies as a new
+run and the badge shows today's arc. **Research owns `cycle.ts`/`history.ts`;
+Design owns the badge. Routed via Integration 12:2x ET. Nothing Ops until it
+comes to deploy.**
