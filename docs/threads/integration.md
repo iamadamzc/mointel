@@ -915,6 +915,51 @@ present.**
   superseded the second.* **Had I refined the conditions while re-sending, Ops would
   have acted on whichever arrived first and I would not have known which.**
 
+### A FILE TOUCHED BY ONE KIND OF EDIT STAYS CORRECT ONLY ABOUT THAT KIND OF THING
+
+**Web's formulation, after the FOURTH instance in one week. Recorded as its own.**
+
+```
+canvas.json      note-direction, note-admitted, note-states   four stale claims at once
+AWS_DEPLOYMENT.md  "no custom domain" while tmitrader.com bypasses the distribution
+route spec       three lines describing a five-prefix batch its own §2b superseded
+canvas.json      note-blocked: "THIS PAGE IS THE ONE PIECE THAT CANNOT SHIP YET"
+```
+
+**THE FOURTH HAD THE WORST RATIO OF ATTENTION TO AUDIENCE: it is the first thing a
+reader meets on the canvas, and it was reversed by the split its own author proposed.**
+
+- **The artboards stay current because seats EDIT them.** *The frame around them goes
+  stale because nothing touches it except a height change.* **A spec is worse still —
+  everyone downstream treats it as the answer rather than as something that moved.**
+- **AND EACH WAS FOUND BY SOMEONE ARRIVING FOR A DIFFERENT REASON**, never by a sweep:
+  Design read the deployment doc to price a redirect; I read the spec to route a build;
+  Web re-read `canvas.json` only because it was already republishing.
+- **THE COST IS NOT CONFUSION, IT IS CONFIDENT WRONG REASONING.** *Design built a
+  correct objection on the deployment doc's false premise; the spec's stale
+  verification loop would have proposed opening `/signin`, the one door its own §295
+  says must stay shut.*
+
+### A CHECK THAT CANNOT SEE THE STATE IT IS BEING READ AS EVIDENCE OF
+
+**2026-09-16. Web swept seven paths from an actor with no cached state and got 401 on
+all seven, correctly calling it the clean "before" half of the Release 2 verification.**
+
+> **IT SAYS NOTHING ABOUT RELEASE 1.** *Release 1 is app-only with nginx untouched, so a
+> stranger receives 401 whether it shipped or not.* **The check cannot produce a
+> different answer for the two states — the question this desk asks of every
+> instrument.**
+
+**Web's sentence was exactly bounded. The hazard is the READER a week later** who meets
+seven 401s at a timestamp and concludes nothing had shipped. *Flagged for that reason
+rather than as a correction.*
+
+**THE DISCRIMINATOR IS THE CREDENTIALED EXISTENCE CHECK** — *Web's own §3d step 2,
+which separates REACHABILITY (poisoned by a held credential) from EXISTENCE (not).*
+**The first moment that distinction has been load-bearing rather than theoretical, and
+it was written down before it was needed.** *I asked Ops which state production is in
+rather than inferring it.*
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
