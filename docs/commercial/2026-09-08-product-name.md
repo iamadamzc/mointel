@@ -690,6 +690,40 @@ sentence is *"the report's fields do not come from the Sheet; whether one
 of the dossier's classifications was shaped by Sheet input upstream is
 untraced"* — not "Sheet-free end to end." Research owns the next layer.
 
+**AMENDED THE SAME DAY: the dossier layer is traced and it does NOT
+clear.** Research read the interpreter's evidence bundle: the Sheet's prior
+human analysis is an input to the model by default — a config switch
+(`RESEARCH_OMIT_SHEET_PRIOR=1`) omits it, its default is off, and the
+pipeline logs `prior=included` per run. **So the three narrated dossier
+fields — structure, catalyst and cycle — were produced by a model that was
+shown his personal Sheet's analysis.** Three consequences, each a
+different size:
+
+- **For future dossiers the fix is a switch, not a build** — approved
+  earlier and never run — and it is not free: the model loses his prior
+  analysis as evidence, so dossier quality is the price. Whether that trade
+  is worth a second customer is his call, not Research's and not this
+  seat's.
+- **The stored history cannot be retrofitted.** Every one of the 6,512
+  automatic dossiers already stored was produced with the prior available.
+  Flipping the switch cleans new rows and does nothing for those. **So a
+  report that narrates history is exposed even after the switch flips:
+  either it narrates only dossiers produced after the flag, or the
+  exposure is accepted for the back catalogue.** A sequencing decision, his,
+  and it has to be made before the report is called shippable.
+- **The attribution wording changes.** "The desk's own judgement" implies an
+  independence the classification does not have. Research's amended form,
+  adopted here: *"the desk's automatic classification, produced with his
+  prior analysis available as evidence"* — until the flag is on, when the
+  shorter form becomes true.
+
+**What still clears, unchanged and narrower than the original gate.** The
+intelligence source column takes exactly two values across 8,025 rows,
+AUTO and NONE, never SHEET; so no Sheet-sourced *verdict* enters an
+assessment row, and the no-float finding stands. The Sheet's contribution is
+upstream in the evidence, not downstream in the merge — a different and
+narrower exposure than a Sheet field narrated directly, and filed as that.
+
 **And the exposure in item 1 is optional, not structural — Research's
 finding, and worth his knowing.** The reports' measured value came from the
 change summary (97% at 22:00), catalyst, structure and cycle — all derived

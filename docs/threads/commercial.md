@@ -343,9 +343,16 @@ repo — they are public documents and re-fetchable.
   Research to trace which fields touch the Sheet). **Research traced one
   layer the same day: every narrated field resolves to the dossier or the
   ticker session store, and the assessment table has no float column, so
-  the gate is cleared for the reports as scoped; whether the dossier's own
-  structure classification was shaped by Sheet input upstream is untraced
-  and Research's next. Research also found prices are the least
+  the gate is cleared at that layer; **then traced one layer further and it
+  does NOT clear: the Sheet's prior analysis is an input to the interpreter
+  by default, so structure, catalyst and cycle in every stored dossier were
+  produced with it available. Future rows: a switch, approved and never
+  run, costing dossier quality — his call. The 6,512 stored dossiers cannot
+  be retrofitted, so a report narrating history either narrates only
+  post-switch dossiers or accepts the exposure for the back catalogue — a
+  sequencing decision, his, before the report is called shippable.
+  Attribution wording amended to say the classification was produced with
+  his prior analysis available.** Research also found prices are the least
   load-bearing and most exposed content in the report, so the tape
   exposure there is optional, not structural.** Pricing and packaging of
   the report is open and waits on him.
