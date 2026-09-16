@@ -528,9 +528,12 @@ pillars, gappers, the window, float rotation, VWAP reclaim — used correctly
 and without attribution, because it is the trade's vocabulary and not their
 mark; and the *relation* may be stated as it already is, in the desk's own
 words, as a boundary. **Complementary is shown by fitting beside their
-morning, not by saying their name.** If he ever wants the name on the page,
-that is his call to make explicitly, and the seat's advice against it is
-the three reasons above.
+morning, not by saying their name.**
+
+**RULED BY HIM, 2026-09-16, verbatim: *"do not want warrior mentioned."***
+The ruling above was this seat's advice; it is now his instruction, and the
+"if he ever wants the name" clause is withdrawn. Warrior Trading is not
+named on the page, in copy, or in any public artefact, by his word.
 
 ## 2f. WHAT MAY BE CLAIMED — two rulings for Marketing, 2026-09-10
 

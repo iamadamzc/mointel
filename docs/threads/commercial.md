@@ -326,8 +326,9 @@ repo — they are public documents and re-fetchable.
   puts a competitor back in the subject position against his own objection
   that retired the line, and an unagreed association with a named third
   party is the class this seat struck in §2f. What it licenses is the
-  reader and the vocabulary, Marketing's to use. His call if he ever wants
-  the name on the page.
+  reader and the vocabulary, Marketing's to use. **Ruled by him 2026-09-16:
+  "do not want warrior mentioned." His instruction now, not this seat's
+  advice.**
 
 **Open items.**
 
