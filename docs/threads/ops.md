@@ -10027,3 +10027,51 @@ beside `issued_status` and read it — a revoked admin would spend until the
 after-hours close.** First admin: explicit one-time grant against a known
 identity. Sequence: Ops lands the field, Design builds the predicate and the
 control; no screen for Web.
+
+## State: production is `1c23322` — Release 1 live behind the password, market worker restarted 02:15:02 ET Wed 2026-09-16
+
+**His word, 2026-09-16 ~02:00 ET: "restart. approved on all."**
+
+**RELEASE 1 TOOK THREE ATTEMPTS AND THE MIDDLE ONE CAUSED A FOUR-MINUTE
+DASHBOARD OUTAGE, market closed:**
+1. **18:14 ET Tue, over port 22:** preflight clear, tree landed, then the ssh
+   transport reset mid-`npm ci` ("connection reset by peer") — the dropped-
+   transport case named on Monday, on port 22 rather than SSM. `deploy.sh`
+   died with its session; `current` untouched; a release dir left with a
+   partial `node_modules` and a `.next` of 403 files and NO `BUILD_ID`.
+2. **02:06 ET Wed, detached as a transient systemd unit on the box
+   (`systemd-run`, so no transport can kill it):** `deploy.sh` saw the
+   leftover `.next`, read "directory exists" as "prebuilt artefact", SKIPPED
+   the build, switched `current`, and web could not start ("Could not find a
+   production build"). **It rolled back to `4cbd58f` but the rollback's web
+   start also failed: `mointel-web` FAILED and `/api/health` answered 502
+   from 02:08:09 to 02:13:58 ET.** research/assess stayed up; the market
+   worker was never touched. *Nobody trading; recorded as an outage anyway.*
+3. **02:10 ET Wed, detached again after `rm -rf` of the partial `.next`:**
+   real build (18.9s), `current -> 1c23322`, schema v27 no backup, services
+   up 06:13:58Z, prune removed `9370ab3`, kept `4cbd58f` as rollback.
+
+**`deploy.sh` FIXED (this tree, next enumeration): prebuilt means
+`.next/BUILD_ID` exists; an incomplete `.next` is removed before building.**
+*The detached `systemd-run` method worked twice and is how deploys should
+run from now: the transport carries the command, not the process.* Noted for
+`push-release.sh`.
+
+**VERIFIED 02:14 ET:** web/research/assess on `1c23322` by `/proc cwd`;
+schema 27; health ok. **Existence at the app (127.0.0.1:3000, no nginx, no
+credential — answers "does it exist" without handling the password):** `/`
+200 (landing: "Intelligence on what's moving", "Ask for an invite", three
+`/desk` links), `/desk` 200 (board), `/privacy` 200 (IN FORCE, section 1,
+source path shown), `/terms` 200 (IN FORCE), `/signin` 404 (not in this
+release). **Stranger through nginx: `/`, `/desk`, `/privacy`, `/terms`,
+`/signin`, `/api/market`, `/privacy-x` ALL 401** — the status quo, no 404
+anywhere. **His bookmark is now `/desk`.**
+
+**RESTART: `mointel-market` 2026-09-16T06:15:02Z = 02:15:02 ET, market
+closed, trading_date 09-16, no session in progress.** After: pid 456092, cwd
+`1c23322`, NRestarts 0; worker log: pinned 7, 13,174 baselines loaded,
+backfill 0 bars / 8,902 snapshots (closed market), connected, authenticated
+SIP, subscribed 06:15:10Z; user_version 27. **`anchorObservable` (`7b32e82`)
+is in the running release: the false "not traded" sentence is CLOSED as of
+this restart.** *The premarket selector defect is unchanged and will fire on
+any premarket bootstrap until Research's reseed ships.*
