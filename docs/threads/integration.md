@@ -960,6 +960,39 @@ which separates REACHABILITY (poisoned by a held credential) from EXISTENCE (not
 it was written down before it was needed.** *I asked Ops which state production is in
 rather than inferring it.*
 
+### AN APPROVAL IN FLIGHT IS NOT AN APPROVAL RECEIVED - THE MIRROR OF A RULE WE ALREADY HAD
+
+**2026-09-16, 02:34 ET. Release 2 shipped carrying `364619a` before my approval of it
+arrived.** *Ops sent the addendum, I approved it, and the approval crossed the ship.*
+
+**THE OUTCOME WAS RIGHT AND THE MECHANISM WAS NOT.** *I did approve it, the content
+matched exactly, and it closed a live gap — a rollback after a crash-loop needing a
+manual `systemctl reset-failed`.* **But at 02:34, from the shipper's side, an approval
+in flight and an approval never sent are indistinguishable.**
+
+> **THIS DESK WROTE THE RULE POINTED THE OTHER WAY AND NEVER WROTE THE MIRROR.** *An
+> instruction in flight is not an instruction received* — recorded after a HOLD crossed
+> a deploy and cost something, with the repair that a hold must say **HOLD AND
+> ACKNOWLEDGE.** **The approval direction has no such rule.**
+>
+> **AND THE ASYMMETRY IS WHY IT WILL RECUR: a missed hold is visible immediately; a
+> missed approval is invisible whenever the approver would have said yes** — which is
+> most of the time.
+
+**THE FIX IS THE SAME SHAPE AND COSTS NOTHING:** *ship the content you HAVE approval
+for and leave the addendum for the next release, or say "shipping at HH:MM unless
+refused" so silence is a decision rather than an assumption.*
+
+**AND I WOULD HAVE DONE THE SAME IN ITS POSITION, which is why this is the protocol and
+not the judgement.** *Live gap, closing window, green gate, and an addendum that was a
+pure improvement on a defect that had already caused an outage that night.* **Holding
+for a message that might not arrive before 07:00 was the worse call on every axis but
+this one.**
+
+**HE IS TOLD, because he delegated deploy approval to this seat so there is a check
+between his desk and production.** *A release going out with content the check had not
+yet passed is a small erosion of that, and it is his to know rather than his to act on.*
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
