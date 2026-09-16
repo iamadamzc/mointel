@@ -10075,3 +10075,13 @@ SIP, subscribed 06:15:10Z; user_version 27. **`anchorObservable` (`7b32e82`)
 is in the running release: the false "not traded" sentence is CLOSED as of
 this restart.** *The premarket selector defect is unchanged and will fire on
 any premarket bootstrap until Research's reseed ships.*
+
+**Review session 37 issued 02:17 ET Wed on his "approved on all", label
+`design-click-test-2026-09-16`, 12h (expires 14:17 ET), routed to Design via
+Integration. Revoke on Design's report that the WHOLE test is done — not a
+sitting of it — or at expiry, whichever first: `npm run review:revoke -- 37`.**
+*Issuing it needed the npm script's `--conditions=react-server` and the store
+path from the env file; the bare tsx call throws on `server-only`.*
+
+**Retention after Tuesday's 22:00 roll (marker 02:00:00.955Z): five dates
+retained, 09-09 through 09-15. In force.**
