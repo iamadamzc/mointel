@@ -10196,3 +10196,27 @@ for a human reviewer; a decision to make with Web rather than inherit.
 **The four deploy-tooling fixes are in production: BUILD_ID check, incomplete-
 `.next` removal, reset-failed-before-rollback with an honest outage line, and
 the detached deploy.**
+
+## AN APPROVAL IN FLIGHT IS NOT AN APPROVAL RECEIVED — 2026-09-16 02:34 ET, my own miss
+
+**Release 2 shipped at 02:34 ET carrying `364619a`, whose addendum I had sent
+to Integration minutes earlier and whose approval had not arrived.** It
+arrived afterwards and matched exactly; the content was a pure improvement
+closing a live gap; the window was closing; the gate was green. **None of
+that changes the fact: from my seat at 02:34, an approval in flight and an
+approval never sent were the same thing, and I shipped as though I held one.**
+
+**This desk already has the rule pointed the other way — "an instruction in
+flight is not an instruction received", written after a hold crossed a
+deploy. The mirror was unstated and is now stated.** The asymmetry is why it
+will recur: a missed hold is visible at once; a missed approval is invisible
+whenever the approver would have said yes, which is most of the time.
+
+**The rule, cost-free:** when approval has been asked for and the window is
+closing, EITHER ship only the content already approved and leave the
+addendum for the next release, OR say "shipping at HH:MM unless refused" so
+silence is a decision the approver made, not an assumption I made. Never a
+deploy whose authorisation exists only in a message that has not arrived.
+*Integration recorded it on its side and told him; he delegated deploy
+approval to that seat so a check sits between his desk and production, and
+this was a small erosion of it.*
