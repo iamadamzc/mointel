@@ -993,6 +993,66 @@ this one.**
 between his desk and production.** *A release going out with content the check had not
 yet passed is a small erosion of that, and it is his to know rather than his to act on.*
 
+### THE SESSION REPORT - SCOPED ACROSS FIVE SEATS, NOTHING BUILT, TWO GATES BEFORE SHIPPABLE
+
+**He asked 2026-09-15 for a narrative report at each session seam and said he could be
+convinced otherwise. He was, on almost every parameter, by measurement rather than
+argument.**
+
+```
+SHAPE     two reports, 22:00 and 07:00 -- not three. The close has the least to
+          narrate and CANNOT DESCRIBE THE AFTER-HOURS IT IS MEANT TO PREP FOR.
+CONTENT   the market only. Execution is OUT.
+SURFACE   unread dot, never a flash; never auto-opens; gated out of review mode.
+STORAGE   cites the assessment ids it was computed from.
+```
+
+**WHAT DECIDED EACH, and none of it was taste:**
+
+- **TWO NOT THREE — Research, 7,575 rows over 16 dates.** *Change narration runs 100% at
+  06:10, 97% at 22:00, 91% at 09:25 and **34% at the close**, because change tracks
+  RESEARCH REFRESH rather than market activity.* **And `ah_percent_change` is 0% at
+  16:00 — the after-hours prep cannot describe after-hours.**
+- **07:00 NOT 09:25 — the capture already exists.** *`PREMARKET_0700`, labelled "Late-mover
+  scan", 60-minute validity, with the schedule's own comment that nothing else runs until
+  09:25.* **Built to stay useful through his window before anyone asked for this.**
+- **EXECUTION OUT — his ruling, and Coaching's reason is better than the technical ones.**
+  *"the report is for monetization, coaching (what you do) is just for me."* **A future
+  customer's report would need to describe THEIR execution and the desk holds fills for
+  nobody, so the section has no coherent product form EVEN IN PRINCIPLE** — not merely no
+  data today.
+- **NO FLASH — Design.** *Motion is his trade signal; chrome competing in that channel
+  costs on every glance rather than three times a day.*
+
+**THE ENTITLEMENT, RESEARCH'S, AND IT IS A TRUTH STANDARD:** *may state what the desk SAW
+at a cited snapshot and its own JUDGEMENT attributed as such; may not narrate a session's
+shape, and may not be silent about what it does not cover* — **research judgement is 82%,
+so four or five of twenty-five names have none.** *Capture gaps are where he cares most:
+04:00-06:10, 07:00-09:25 INSIDE HIS WINDOW, the bell, and all of after-hours while it
+happens.*
+
+**COMMERCIAL'S IS A DIFFERENT STANDARD ON THE SAME LIST, and that is the finding:** *record
+never outcome — "XYZ ran 40% from 07:10 and the catalyst read NOTHING COLLECTED" ships;
+"XYZ was the trade" does not.* **And the SAME field list is also the LICENCE posture:**
+*prices and quotes at cited times are single-security price data in a persistent,
+forwardable document with his name on it; RVOL, rank, catalyst, cycle, structure and
+supply are derived content no instrument polices.* **So whether prices go in is HIS call
+under accepted exposure, not Research's under a truth standard.**
+
+**TWO GATES BEFORE IT IS SHIPPABLE, NEITHER A DESIGN QUESTION:**
+
+```
+1  WHICH NARRATED FIELDS TOUCH THE SHEET.  The Sheet is single-tenant, so a monetized
+   report narrating a Sheet-sourced field is a product whose SECOND CUSTOMER CANNOT
+   EXIST. Research to trace.
+2  WHETHER PRICES GO IN.  His call, under a ruling he has already made.
+```
+
+**AND THE ONE THING THAT CANNOT BE RETROFITTED:** *`desk_assessments` is never pruned —
+only `minute_bars` is — so a report CONFINED TO ITS CITED ROWS stays checkable forever.*
+**With the citation a PM-prep narrative is a forecast recorded before its outcome, which
+is the capability given up when the two ChatGPT tasks were paused. Without it, a diary.**
+
 ### WHAT IS HIS AND OPEN
 
 1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
