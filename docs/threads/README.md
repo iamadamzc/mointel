@@ -2724,6 +2724,35 @@ seat approving it.
 answered, relayed onward with the context the receiver is missing, or declined
 with the reason said back. Never silence.
 
+## VERIFYING THE EVIDENCE OFFERED FOR A CLAIM IS NOT VERIFYING THE CLAIM
+
+**Design's formulation, 2026-09-16, after three seats carried one false sentence between
+them.** *Coaching asserted "the pin mechanism was never wired" from present-tense
+evidence. Integration relayed it — WITH attribution and WITHOUT checking it. Design
+received it, verified the two facts underneath it, and shipped a conclusion on top.*
+
+> **A peer hands you the facts they reasoned FROM. The reasoning is still yours to
+> check.**
+
+**EVERY FACT IN THE CHAIN WAS TRUE.** *`focus: false` is hardcoded; no production route
+inserts; `focus_tickers` is empty.* **The claim they were offered as evidence for was
+false** — the mechanism was wired, recorded 51 rows across four dates, and the trader
+ruled it off at `d9215f7`.
+
+- **ATTRIBUTING A CLAIM IS NOT FLAGGING IT.** *"Coaching verified" carries provenance
+  and still presents the thing as established.* **A relayed claim arrives PRE-TRUSTED,
+  which is this desk's oldest recorded relay failure, and the attribution is what makes
+  it feel checked.**
+- **IT LANDS HARDEST ON WHOEVER RELAYS FOR A LIVING.** *The middle link had the same
+  `git log` available as the other two and ran it least.*
+- **AND THE COST WAS A SENTENCE THAT CRITICISED ONE OF HIS OWN DECISIONS.** *"The desk
+  cannot say which names you watched" reads as a shortcoming; it is his ruling with his
+  reasoning attached.*
+
+**THE PRACTICAL FORM: when a peer's claim is about to become a premise, ask what would
+make the CLAIM false — not whether the facts under it are true.** *Those are different
+questions and only the second is usually asked.*
+
 ## A GREP OF THE TREE ANSWERS ABOUT THE TREE, NEVER ABOUT THE HISTORY
 
 **Coaching, 2026-09-16, correcting itself after telling two seats a feature "was never
@@ -2758,6 +2787,12 @@ overclaimed:** *searching too few FILES is a scope error; searching for the INPU
 and concluding about the derived VALUE is a target error.* **This one is neither — the
 search was correctly scoped and correctly targeted, and the tree simply does not carry
 the answer.**
+
+**AND DESIGN NAMED THE AXIS, having hit it independently the same hour:** *the other
+versions are searches whose SCOPE did not match the claim. This is a search whose TIME
+did not match it.* **It verified the PRESENT and concluded about the PAST** — `focus:
+false` is hardcoded today and no route inserts today, *both true, both checked, and
+neither evidence about whether it once worked.* **`git log` was two seconds away.**
 
 ## Absence of detection is not detection of absence
 
