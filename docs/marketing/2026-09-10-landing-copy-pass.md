@@ -165,3 +165,18 @@ find out which on the day it matters"*: cut.
 **Rule, added to the not-list's test:** no sentence whose second clause exists
 to land the first. If a line has "and the last one", "and that is the one",
 "which is where", it is the tic. Say the thing.
+
+## The window, answered 2026-09-16
+
+Asked whether 07:00–10:00 goes back. His answer: *"no, in fact you should
+mention whether you trade PM, AH or RTH TMI Trader is a valuable tool."*
+Checked against `lib/market/session.ts` (04:00 through 20:00 ET, three
+sessions) and `lib/market/board.ts` (an after-hours board exists). Added as
+the last paragraph of Why it exists, both artboards:
+
+> Premarket, regular hours or after the close, the question is the same: what
+> is this move standing on? The board runs from 04:00 through the after-hours
+> session, and a float does not get cleaner at 09:30.
+
+"Valuable" is not on the page; the paragraph says what the product does in
+each session, never what the reader gets.
