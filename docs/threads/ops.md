@@ -324,6 +324,16 @@ Current state is nowhere near it: `NRestarts` is 0 or 1 on every unit. Recorded
 because the margin Integration called luck has a floor, and the floor is 50
 seconds rather than 5 minutes.
 
+**THIS FIRED — 2026-09-16, against a trigger this entry did not name.** Not
+the snapshot race, which is self-limiting, but a release with no `BUILD_ID`:
+web failed identically on every start, 06:08:09Z to 06:08:52Z, five in 43
+seconds, budget exhausted at 06:09:03Z ("Start request repeated too quickly"),
+and the deploy's own rollback restart at 06:10:12Z was refused by the same
+latch. **Described correctly here weeks earlier and filed against the wrong
+cause.** The permanent cost was a four-minute dashboard outage, market closed.
+Fix and full account: the 2026-09-16 entries below ("The rollback did not roll
+back").
+
 ### The observable that caught it was not the one I built
 
 **The stop was clean on that deploy — fourth in a row.** The failure was on
