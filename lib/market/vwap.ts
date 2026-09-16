@@ -382,6 +382,54 @@ export function emptySessionOpen(session: VwapSession): SessionOpen {
   };
 }
 
+/**
+ * One session's own high and low, live.
+ *
+ * He asked for the competitor's levels and this is the single genuine gap: the
+ * desk already stores a WHOLE-DAY `sessionHigh`, an after-hours `ahHigh`, and an
+ * `rthFinal` frozen at the bell -- so the premarket high exists only in the
+ * archive, computed after the fact, and the regular session's own high is not
+ * live anywhere.
+ *
+ * SAME CLASSIFIER AS THE OPENS, deliberately. `vwapSessionForTs` decides which
+ * session a bar belongs to from the bar's own timestamp, so a level and the open
+ * it is measured against can never disagree about which session they describe --
+ * and an early close is already handled there rather than twice.
+ *
+ * A LEVEL IS CARRIED, NOT A DISTANCE. Nothing here subtracts from the live
+ * price. "Prior high 4.80" is an observation; "price 4.79 -- prior high 4.80" on
+ * one row is an entry trigger with the reader doing the arithmetic, and that
+ * rendering is a surface rule this compute cannot enforce. Publishing the level
+ * is the whole of what was authorised.
+ */
+export interface SessionExtremes {
+  session: VwapSession;
+  /** 'PM VWAP' | 'RTH VWAP' | 'AH VWAP' -- the session's own name. */
+  label: string;
+  /** Highest bar high inside this session, or null before it has traded. */
+  high: number | null;
+  /** Lowest bar low inside this session, or null before it has traded. */
+  low: number | null;
+}
+
+export interface SessionExtremesSet {
+  premarket: SessionExtremes;
+  regular: SessionExtremes;
+  afterHours: SessionExtremes;
+}
+
+export function emptySessionExtremes(session: VwapSession): SessionExtremes {
+  return { session, label: VWAP_LABEL[session], high: null, low: null };
+}
+
+export function emptySessionExtremesSet(): SessionExtremesSet {
+  return {
+    premarket: emptySessionExtremes('PREMARKET'),
+    regular: emptySessionExtremes('RTH'),
+    afterHours: emptySessionExtremes('AFTER_HOURS'),
+  };
+}
+
 export function emptySessionOpenSet(): SessionOpenSet {
   return {
     premarket: emptySessionOpen('PREMARKET'),

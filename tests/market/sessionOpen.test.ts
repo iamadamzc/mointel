@@ -470,3 +470,80 @@ describe('a restart cannot make the engine say a traded name did not trade', () 
     expect(opens(engine)?.premarket.state).toBe('OPEN');
   });
 });
+
+/**
+ * Each session's own high and low, live.
+ *
+ * The desk stored a WHOLE-DAY high, an after-hours high, and an `rthFinal`
+ * frozen at the bell -- so the premarket high existed only in the archive and
+ * the regular session's own high was not live anywhere. He authorised the
+ * competitor's levels; this is the single genuine gap.
+ */
+describe("each session carries its own high and low", () => {
+  const extremes = (engine: DemandEngine) =>
+    engine.getDemandState('ABCD')?.sessionExtremes;
+
+  it('keeps the three sessions apart', () => {
+    const engine = engineAt(BELL + 400 * 60_000);
+    engine.ingest(bar('ABCD', at(-90), { o: 3, c: 3.2, v: 5_000 }));   // premarket
+    engine.ingest(bar('ABCD', at(5), { o: 5, c: 5.4, v: 50_000 }));    // RTH
+    engine.ingest(bar('ABCD', at(395), { o: 8, c: 8.9, v: 30_000 }));  // after hours
+
+    const set = extremes(engine);
+    expect(set?.premarket.high).toBe(3.2);
+    expect(set?.regular.high).toBe(5.4);
+    expect(set?.afterHours.high).toBe(8.9);
+    // The premarket high must not leak into RTH when the bell rings -- the same
+    // failure the session VWAPs exist to avoid.
+    expect(set?.regular.high).not.toBe(set?.premarket.high);
+  });
+
+  /*
+   * THE ORDERING TRAP, AND THE REASON THE CAPTURE SITS WHERE IT DOES.
+   *
+   * The anchor returns early for any bar later than the one it holds, because
+   * only the earliest bar can be the open. A high is the opposite: the bars that
+   * matter most arrive LAST. If the extremes were captured after that return the
+   * session high would freeze at the opening minute and nothing would say so.
+   */
+  it('lets a LATER bar raise the high, which the anchor refuses', () => {
+    const engine = engineAt(BELL + 10 * 60_000);
+    engine.ingest(bar('ABCD', at(0), { o: 5, c: 5.1, v: 50_000 }));
+    engine.ingest(bar('ABCD', at(6), { o: 6, c: 7.5, v: 20_000 }));
+
+    // The anchor is unmoved by the later bar...
+    expect(opens(engine)?.regular.price).toBe(5);
+    // ...and the high is not.
+    expect(extremes(engine)?.regular.high).toBe(7.5);
+  });
+
+  it('is null before the session has traded, never zero', () => {
+    const engine = engineAt(BELL + 5 * 60_000);
+    engine.ingest(bar('ABCD', at(0), { o: 5, c: 5.1, v: 50_000 }));
+
+    const set = extremes(engine);
+    expect(set?.afterHours.high).toBeNull();
+    expect(set?.afterHours.low).toBeNull();
+  });
+
+  it('takes the extreme regardless of arrival order', () => {
+    // A max needs no `isNewerObservation` guard, unlike the anchor.
+    const engine = engineAt(BELL + 10 * 60_000);
+    engine.ingest(bar('ABCD', at(6), { o: 6, c: 7.5, v: 20_000 }));
+    engine.ingest(bar('ABCD', at(0), { o: 5, c: 5.1, v: 50_000 }));
+
+    expect(extremes(engine)?.regular.high).toBe(7.5);
+    expect(extremes(engine)?.regular.low).toBe(5);
+  });
+
+  it('does not disturb the whole-day pair, which is a different quantity', () => {
+    const engine = engineAt(BELL + 400 * 60_000);
+    engine.ingest(bar('ABCD', at(-90), { o: 3, c: 3.2, v: 5_000 }));
+    engine.ingest(bar('ABCD', at(395), { o: 8, c: 8.9, v: 30_000 }));
+
+    const state = engine.getDemandState('ABCD');
+    // Whole day spans every session; each session's own high does not.
+    expect(state?.sessionHigh).toBe(8.9);
+    expect(state?.sessionExtremes?.premarket.high).toBe(3.2);
+  });
+});

@@ -84,6 +84,8 @@ import {
   type SessionVwap,
   type SessionOpen,
   type SessionOpenState,
+  type SessionExtremes,
+  type SessionExtremesSet,
   type SessionOpenSet,
   type SessionVwapSet,
   type VwapSession,
@@ -240,6 +242,9 @@ interface TickerRuntime {
   vwapMinutes: Record<keyof SessionVwapSet, number>;
   /* Session opens: a POINT observation per session, not an accumulator. */
   sessionOpenPrice: Record<keyof SessionVwapSet, number | null>;
+  /** Per-session high and low, live. The whole-day pair is separate. */
+  sessionHighs: Record<keyof SessionVwapSet, number | null>;
+  sessionLows: Record<keyof SessionVwapSet, number | null>;
   sessionOpenAt: Record<keyof SessionVwapSet, string | null>;
   sessionOpenTrades: Record<keyof SessionVwapSet, number | null>;
 
@@ -531,6 +536,8 @@ export class DemandEngine {
       vwapVolume: { premarket: 0, regular: 0, afterHours: 0 },
       vwapMinutes: { premarket: 0, regular: 0, afterHours: 0 },
       sessionOpenPrice: { premarket: null, regular: null, afterHours: null },
+      sessionHighs: { premarket: null, regular: null, afterHours: null },
+      sessionLows: { premarket: null, regular: null, afterHours: null },
       sessionOpenAt: { premarket: null, regular: null, afterHours: null },
       sessionOpenTrades: { premarket: null, regular: null, afterHours: null },
       sessionHigh: null,
@@ -1126,6 +1133,25 @@ export class DemandEngine {
     if (!session) return;
 
     const key = VWAP_SESSION_KEY[session];
+
+    /*
+     * THE EXTREMES GO FIRST, AND THE ORDER IS THE WHOLE REASON THIS IS ONE
+     * METHOD RATHER THAN TWO.
+     *
+     * The anchor below returns early for any bar later than the one it already
+     * holds -- correctly, because only the earliest bar can be the open. A high
+     * is the opposite: every bar in the session is a candidate, and the ones
+     * that matter most arrive LAST. Putting these two lines after that return
+     * would freeze the session high at the opening minute and nothing would say
+     * so.
+     *
+     * They share `vwapSessionForTs` deliberately, so a level and the open it
+     * will be measured against can never disagree about which session they
+     * describe, and an early close is handled once.
+     */
+    runtime.sessionHighs[key] = maxOrValue(runtime.sessionHighs[key], bar.high);
+    runtime.sessionLows[key] = minOrValue(runtime.sessionLows[key], bar.low);
+
     const held = runtime.sessionOpenAt[key];
     if (held !== null && bar.ts > held) return;
 
@@ -1172,6 +1198,25 @@ export class DemandEngine {
       return true;
     }
     return runtime.volumeBaseSource === REPLAYED_VOLUME_BASE_SOURCE;
+  }
+
+  /** The three sessions' own highs and lows, each from its own bars. */
+  private sessionExtremesOf(runtime: TickerRuntime): SessionExtremesSet {
+    const read = (session: VwapSession): SessionExtremes => {
+      const key = VWAP_SESSION_KEY[session];
+      return {
+        session,
+        label: VWAP_LABEL[session],
+        high: runtime.sessionHighs[key],
+        low: runtime.sessionLows[key],
+      };
+    };
+
+    return {
+      premarket: read('PREMARKET'),
+      regular: read('RTH'),
+      afterHours: read('AFTER_HOURS'),
+    };
   }
 
   private sessionOpensOf(runtime: TickerRuntime): SessionOpenSet {
@@ -2061,6 +2106,7 @@ export class DemandEngine {
       sessionLow: runtime.sessionLow,
       vwap: this.vwapStateOf(runtime),
       sessionOpens: this.sessionOpensOf(runtime),
+      sessionExtremes: this.sessionExtremesOf(runtime),
       rvol: runtime.rvol,
       rvolRank: runtime.rvolRank,
       previousRvolRank: runtime.previousRvolRank,

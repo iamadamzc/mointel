@@ -8,7 +8,7 @@
 
 import type { ActivityState, PriceWindow } from './activity';
 import type { BlueSkyState } from './blueSky';
-import type { SessionOpenSet, SessionVwapSet } from './vwap';
+import type { SessionExtremesSet, SessionOpenSet, SessionVwapSet } from './vwap';
 
 export type MarketFeed = 'sip' | 'iex' | 'simulator' | 'test';
 
@@ -356,6 +356,15 @@ export interface DemandState {
    * than render a Move of zero.
    */
   sessionOpens?: SessionOpenSet;
+  /**
+   * Each session's own high and low, live.
+   *
+   * OPTIONAL FOR THE SAME REASON `sessionOpens` IS: `ticker_session` has no
+   * columns for these, so a store read must say "not measured" rather than
+   * invent three empty sessions. An empty set would render as a name that has
+   * traded in no session at all.
+   */
+  sessionExtremes?: SessionExtremesSet;
 
   rvol: number | null;
   rvolRank: number | null;
