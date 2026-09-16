@@ -51,6 +51,22 @@ case "\$remote" in
   *preflight.sh*)
     exit ${options.preflightExit}
     ;;
+  *"systemd-run"*)
+    # The deploy now runs detached on the box; the stub accepts the launch.
+    echo "Running as unit: stub.service"
+    exit 0
+    ;;
+  *"systemctl show"*"ActiveState"*)
+    echo "inactive"
+    ;;
+  *"systemctl show"*"Result"*)
+    printf 'success
+0
+'
+    ;;
+  *journalctl*)
+    echo "[deploy] deployed abc1234def (stub journal)"
+    ;;
   *)
     # Real ssh reads stdin, and one of these calls is the receiving end of
     # \`git archive | ssh ... tar -x\`. A stub that exits without draining wins
@@ -101,7 +117,15 @@ function run(extraEnv: Record<string, string> = {}): { status: number; output: s
 
   try {
     const output = execFileSync('bash', ['-c', command], {
-      env: { ...process.env, ...extraEnv, PATH: `${stubs}${path.delimiter}${process.env.PATH}` },
+      env: {
+        ...process.env,
+        // The detached deploy is followed by polling; against the stub it is
+        // answered on the first poll, so no real waiting is wanted.
+        DEPLOY_POLL_SECONDS: '0',
+        DEPLOY_FOLLOW_SECONDS: '5',
+        ...extraEnv,
+        PATH: `${stubs}${path.delimiter}${process.env.PATH}`,
+      },
       encoding: 'utf8',
       cwd: ROOT,
       stdio: ['ignore', 'pipe', 'pipe'],

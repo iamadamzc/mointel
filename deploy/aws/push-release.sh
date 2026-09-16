@@ -119,6 +119,46 @@ else
   echo "[release] no prebuilt artefact; the server will build with a capped heap" >&2
 fi
 
-"${SSH[@]}" "sudo RESTART_MARKET=${RESTART_MARKET:-no} bash /opt/mointel/releases/$SHA/deploy/aws/deploy.sh $SHA"
+# ------------------------------------------------------------ deploy ---
+#
+# deploy.sh runs DETACHED from this connection, as a transient systemd unit on
+# the box, and this script only follows it. Before 2026-09-16 it ran in the
+# foreground of the ssh session, so a dropped transport killed it wherever it
+# happened to be: that night a reset mid-`npm ci` left a half-built release,
+# and the rerun's mis-read of that leftover cost a four-minute dashboard outage.
+# A deploy's process must not share the fate of the laptop's wifi.
+#
+# The unit name carries the short sha and a stamp so two deploys never collide
+# and the journal is findable afterwards: `journalctl -u <unit>`.
+UNIT="mointel-deploy-$SHORT-$(date -u +%H%M%S)"
+echo "[release] launching deploy.sh as $UNIT (detached; follows the journal)"
+"${SSH[@]}" "sudo systemd-run --unit=$UNIT --collect --setenv=RESTART_MARKET=${RESTART_MARKET:-no}   -p StandardOutput=journal -p StandardError=journal   bash /opt/mointel/releases/$SHA/deploy/aws/deploy.sh $SHA"   || { echo "[release] could not launch the deploy unit" >&2; exit 6; }
+
+# Poll rather than `journalctl -f`: a follow stream dies with the connection,
+# and reconnecting to poll is what makes a dropped transport recoverable.
+# Each poll is its own short ssh; a failed poll is retried, not fatal.
+# DEPLOY_FOLLOW_SECONDS bounds the wait; DEPLOY_POLL_SECONDS is the interval.
+# Both exist so the suite can drive this path in milliseconds against a stub.
+DEADLINE=$(( $(date +%s) + ${DEPLOY_FOLLOW_SECONDS:-900} ))
+STATE=activating
+while [ "$(date +%s)" -lt "$DEADLINE" ]; do
+  sleep "${DEPLOY_POLL_SECONDS:-6}"
+  STATE="$("${SSH[@]}" "systemctl show $UNIT -p ActiveState --value" 2>/dev/null || echo unreachable)"
+  case "$STATE" in
+    inactive|failed) break ;;
+  esac
+done
+
+"${SSH[@]}" "sudo journalctl -u $UNIT --no-pager -o cat" 2>/dev/null | grep -v -E '^\s*(added|npm warn|>|$)'
+
+RESULT="$("${SSH[@]}" "systemctl show $UNIT -p Result -p ExecMainStatus --value" 2>/dev/null | tr '\n' ' ')"
+case "$RESULT" in
+  "success 0 "*) ;;
+  *)
+    echo "[release] deploy unit $UNIT ended with: ${RESULT:-unknown (state $STATE)}" >&2
+    echo "[release] deploy.sh rolls back on its own failures; read the journal above before acting." >&2
+    exit 7
+    ;;
+esac
 
 echo "[release] $SHORT is live on $HOST"
