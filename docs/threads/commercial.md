@@ -330,6 +330,19 @@ repo — they are public documents and re-fetchable.
   "do not want warrior mentioned." His instruction now, not this seat's
   advice.**
 
+- **The session report is a product surface — scoped under standing rulings
+  2026-09-16, naming document §2g.** His word: "the report is for
+  monetization, coaching (what you do) is just for me." Three rulings already
+  on this seat apply before it hardens: the licence line (a delivered report
+  is the first-viewer event, covered by accepted exposure; prices in it put
+  the tape in a persistent document, derived fields do not — the field list
+  is the licence posture and the choice is his); the §2f claims principle (a
+  report may state what happened as record, never as what the reader could
+  have done; coverage stated, not implied); and single-tenancy as a shipping
+  gate (a report narrating a Sheet-sourced field has no second customer;
+  Research to trace which fields touch the Sheet). Pricing and packaging of
+  the report is open and waits on him.
+
 **Open items.**
 
 - ~~**The Alpaca plan tier is not in the repo.** Ask him; do not infer it into a

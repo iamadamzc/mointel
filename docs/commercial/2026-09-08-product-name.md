@@ -618,6 +618,73 @@ page.**
    can see it, and then it is that section's header. Nothing about the
    claim changes when the report ships; only the showing does.
 
+## 2g. THE SESSION REPORT IS A PRODUCT SURFACE — three standing rulings apply before it hardens, 2026-09-16
+
+*His word on the audience, verbatim via Integration: "the report is for
+monetization, coaching (what you do) is just for me." Scoped so far by
+Research, Design and Coaching as an internal feature with a truth standard
+— the report may state what the desk saw at a cited snapshot and its own
+judgement attributed as such, must not narrate a session's shape, must
+state its coverage (Research judgement on 82% of rows). Integration routed
+it here because a paid reader makes every sentence a published claim. This
+section is scoping under rulings already made, not a new ruling, and it
+does not touch what is built.*
+
+**1. The licence line reaches it first, and it is the same line as the
+board.** A session report delivered to a paying reader is the first-viewer
+event of the landscape §1 — redistribution, whether the reader pays or
+not — and it is covered by his ruling to accept the exposure until
+"something moving" (gates map, top). What the report *contains* decides
+what kind of exposure it is, by the same field split as the board (§1c and
+landscape §5): a report that narrates **prices, moves and quotes** at cited
+times is single-security price data, the fee-liable class, put in writing
+and delivered — a harder evidentiary object than a live board, because it
+persists and forwards. A report of **RVOL, rank, catalyst, cycle, structure
+and supply, with the desk's judgement attributed**, is derived and filings
+content that no instrument polices. **So the field list Research writes is
+also the licence posture.** Nothing here forbids prices in the report; it
+says that including them is the choice that puts the tape in a document
+with his name on it, and that choice is his under the accepted-exposure
+ruling, not Research's under a truth standard.
+
+**2. The claims principle of §2f applies verbatim, and it is not the same
+as Research's entitlement.** Research's test is *can the desk support this
+sentence*; this seat's is *may the desk publish it to someone who paid*.
+The rule already on file: a percentage describing the market's behaviour is
+a fact of record; one attached to a name, a time and a reader is an
+outcome. A session report is percentages attached to names and times,
+delivered to a reader — **so the report may state what happened as record
+and may not present any of it as what the reader could have done.**
+Concretely: "XYZ ran 40% from 07:10 and the desk's catalyst read was
+NOTHING COLLECTED" is record; "XYZ was the trade" or any sentence that
+implies a captured move is an outcome claim and does not ship. "Where it
+has nothing, it says so" — the registered statement — is the report's
+coverage sentence, and Research's own rule that it must state its 82%
+rather than imply completeness is the same requirement from the other side.
+
+**3. Single-tenancy is a shipping gate, not a schema detail.** The gates map
+and this seat's own record say the Sheet is single-tenant — his personal
+Google account, written by tasks in his personal ChatGPT account — and that
+*"the product cannot have a second user while any of it is on that path."*
+Integration has flagged that structure verdicts, one of the fields a report
+would narrate, can render the Sheet's DIRTY_FLOAT ahead of the dossier's
+CAUTION. **A monetized report that narrates a Sheet-sourced field is a
+product whose second customer cannot exist.** Which narrated fields touch
+the Sheet is Research's to trace; that it must be traced before the report
+is called shippable is recorded here so it is not discovered after a schema
+exists.
+
+**Settled elsewhere and not reopened:** his execution is out (Coaching: no
+coherent product form even in principle, since the desk holds fills for
+nobody else); Design's no-flashing, never-auto-open; Research's two reports
+at 22:00 and 07:00 rather than three.
+
+**What this seat holds open on it.** Pricing and packaging of the report —
+whether it is the product, a tier, or the daily brief the gates map named as
+the lowest-exposure unit — waits on Gate 1's "everything together" and is
+not scoped until he asks. And the sentence that decides the licence posture
+is the field list, which is not yet written.
+
 ## 3. RECOMMENDATION
 
 **Pick: Desk Read.** It is the thing he described — a smart desk that has
