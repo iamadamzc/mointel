@@ -233,8 +233,27 @@ if [ "$healthy" != "yes" ]; then
     echo "[deploy] rolling back to $(basename "$PREVIOUS")" >&2
     ln -sfn "$PREVIOUS" "$CURRENT"
     systemctl daemon-reload
-    for unit in "${RUNTIME_UNITS[@]}"; do systemctl restart "$unit" || true; done
-    echo "[deploy] rolled back. The schema was already migrated: if this" >&2
+    # reset-failed FIRST. A unit that crash-looped against the bad release has
+    # hit its start rate limit (StartLimitBurst=5 in 5min), and systemd then
+    # refuses `restart` with "Start request repeated too quickly" -- which is
+    # exactly what happened on 2026-09-16 02:10 ET: the old build was fine,
+    # the restart was refused, and this script printed "rolled back" over a
+    # dashboard that stayed down for four minutes. Clearing the counter is
+    # what makes the rollback a rollback.
+    for unit in "${RUNTIME_UNITS[@]}"; do
+      systemctl reset-failed "$unit" 2>/dev/null || true
+      systemctl restart "$unit" || echo "[deploy] ROLLBACK: $unit did not restart" >&2
+    done
+    # Say what is true, not what was intended. The rollback is verified the
+    # same way the deploy was; a failure here is an OUTAGE and is named as one.
+    if curl -fsS --max-time 10 http://127.0.0.1/api/health >/dev/null 2>&1; then
+      echo "[deploy] rolled back to $(basename "$PREVIOUS"); dashboard answering." >&2
+    else
+      echo "[deploy] ROLLBACK FAILED: the dashboard is NOT answering on $(basename "$PREVIOUS")." >&2
+      echo "[deploy] THIS IS AN OUTAGE. Check: systemctl status ${RUNTIME_UNITS[*]}" >&2
+      journalctl -u mointel-web -n 20 --no-pager >&2 || true
+    fi
+    echo "[deploy] The schema was already migrated: if this" >&2
     echo "[deploy] release changed it, restore a backup from" >&2
     echo "[deploy] /var/lib/mointel/backups before trusting the old code." >&2
   fi
