@@ -263,8 +263,18 @@ subject to every prohibition above.*
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**2026-09-15. Everything this thread has written is on the published canvas
-at `fe26b0a`. Nothing is in progress and no file is held.**
+**2026-09-16. Everything this thread has written is on the published canvas
+at `c353cbd`. Nothing is in progress and no file is held.**
+
+- **The window, answered by him 2026-09-16:** no 07:00–10:00. Instead the page
+  says the question is the same in premarket, regular hours and after hours.
+  Last paragraph of Why it exists, both artboards. **Two seats derived the
+  claim from code independently** (Marketing from `session.ts` and `board.ts`;
+  Web from `view.ts:469` and `board.ts:22`) and agree.
+- **Warrior Trading is never named**, his ruling 2026-09-16. Swept: no public
+  artboard or legal text carries it.
+- **Nothing is public yet.** Canvas is current; every route on `tmitrader.com`
+  still returns 401 to a stranger. Release 2 has not landed.
 
 - **The canvas URL changed form: https://claude.ai/artifact/MydyXGM4MpDZtwixpUXjvs**
   (older messages carry `claude.ai/code/artifact/a9df35ee-…`). **It carries a
