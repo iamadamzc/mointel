@@ -539,3 +539,58 @@ desk credential and this seat neither holds nor handles it.**
 password and must be asked by `curl` with no credential.** **EXISTENCE** — *is
 the content at the path* — **requires the password and is not distorted by it.**
 
+---
+
+## 7. VERIFIED ON THE WIRE — Release 2, production `6f8894b`
+
+**Web's run, 2026-09-16 02:40 ET, from an actor with no cached state. Third independent pass after Ops and Integration.**
+
+```
+POSITIVE   /  /privacy  /terms  /favicon.ico          ->  200, 200, 200, 200
+NEGATIVE   /desk  /signin  /api/market  /privacy-x    ->  401, 401, 401, 401
+ALSO       www.tmitrader.com/                          ->  200
+```
+
+**Eight for eight against the expectation as written. `tmitrader.com` serves a
+public page for the first time in this desk's life, and the board is still
+refused.**
+
+### The check that could not be asked until the pages were public
+
+**Status codes prove reachability. They do not prove a stranger sees a page.**
+*So the page's OWN subresources were enumerated from the served HTML and each
+fetched with no credential — the browser will request them and any `401` renders
+the page broken to strangers while looking perfect from this desk.*
+
+```
+11 assets referenced: 9 chunks (js/css), 2 woff2 fonts   ->  all 200
+/favicon.ico?favicon.<hash>.ico                          ->  200
+```
+
+> **`location = /favicon.ico` matches a request carrying a query string** —
+> nginx matches on the URI path and ignores the query. **Checked on the wire
+> rather than assumed, because the served markup asks for the hashed form and
+> the exemption does not mention it.**
+
+**The only non-200 in that sweep is `/desk`, which is a navigation link rather
+than a subresource and is refusing exactly as designed.**
+
+### Claims this thread made, now publicly checkable and checked
+
+- **"No third-party requests."** *Zero external hosts in the served HTML.* **The
+  page calls nobody** — fonts are the two self-hosted `woff2` under
+  `/_next/static/media/`, as designed.
+- **Google's stated requirement:** home page describes the app (the registered
+  statement is present) and carries **2 × `/privacy` and 1 × `/terms`**.
+- **Both legal pages render the adopted source at request time**, not a copy —
+  `20:00 New York time`, `mointel_session`, `it has no code that could`, the
+  redistribution clause, `US$100`, `Bexar County` all present.
+- **NO DRAFT BANNER.** *The dateline reads `DRAFTED … · ADOPTED …`.*
+
+> **TWO INSTRUMENT ERRORS IN THIS RUN, BOTH MINE, BOTH CAUGHT BY LOOKING.**
+> **`grep -ci DRAFT` returned `2` on an adopted page** — it was matching
+> `DRAFTED` in the dateline, not a banner. **And `grep -c 'href="/privacy"'`
+> returned `1` where Integration had counted `2`** — `-c` counts matching LINES,
+> not occurrences, and both links sit on one line. *A disagreement with a peer
+> is what made me re-measure instead of concluding one of us was wrong.*
+
