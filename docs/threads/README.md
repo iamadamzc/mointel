@@ -2772,6 +2772,42 @@ bitten by `grep -c` three times.**
 > verifications that match tell you little; two that conflict tell you exactly where to
 > look.*
 
+## "UNMEASURABLE" IS USUALLY "NOT THAT NUMBER — THIS ONE"
+
+**Research's diagnosis of its own work, 2026-09-16.** *It reported that the rate at which
+the desk's automatic verdict disagrees with his Sheet's human one cannot be computed.*
+**True, and it closed the enquiry.** *The Sheet's call is never persisted, so there is
+nothing to diff against at any N.*
+
+> **BUT THAT WAS NOT THE NUMBER THAT DECIDED ANYTHING.** *The question in front of everyone
+> was how much his prior moves the automatic verdict — and `config.ts:65-66` says the
+> author built the experiment for exactly that:* **"the automatic catalyst grade is not
+> independent of it. Setting this is the control arm that measures how much it actually
+> moves."** *Approved, cheap, never run.*
+
+**UNMEASURED AND KNOWABLE BEATS UNMEASURABLE, AND THE TWO GET CONFLATED BECAUSE THE FIRST
+ANSWER IS TRUE.** *Nobody audits a correct statement.*
+
+**THE PRACTICAL FORM: before reporting a quantity unmeasurable, name the DECISION it was
+wanted for and ask which nearby quantity would settle that.** *The unmeasurable one is
+often a proxy somebody reached for first.*
+
+- **SECOND INSTANCE, same seat, same week:** *the share of board-visible rows with no
+  premarket print came back empty and was reported as unmeasurable — the population was
+  empty by construction.* **The ordering it was really about was reconstructible from
+  `percent_change`, which is stored per row per date, and Ops produced the figure the same
+  morning.**
+- **DISTINCT FROM THE RULE ABOVE IT AND FROM THE VACUOUS-QUERY ENTRY, and the distinction
+  is the point.** *A vacuous query is an instrument that could never return the failing
+  answer. This is an instrument working correctly on the wrong question* — **and the tell
+  is different: there is nothing wrong with the measurement to find.**
+
+**RECORDED ON TWO INSTANCES, NOT THE THREE OFFERED.** *Research also named its `sheet`
+source-column query. That one belongs to the vacuous-query family — `'sheet'` is a type
+member nothing assigns, so the query could not have returned it — and folding it in here
+would make the pattern look broader than it is.* **Counting instances is this desk's own
+recorded tell for a claim getting ahead of its evidence.**
+
 ## VERIFYING THE EVIDENCE OFFERED FOR A CLAIM IS NOT VERIFYING THE CLAIM
 
 **Design's formulation, 2026-09-16, after three seats carried one false sentence between
