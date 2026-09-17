@@ -273,8 +273,16 @@ at `c353cbd`. Nothing is in progress and no file is held.**
   Web from `view.ts:469` and `board.ts:22`) and agree.
 - **Warrior Trading is never named**, his ruling 2026-09-16. Swept: no public
   artboard or legal text carries it.
-- **Nothing is public yet.** Canvas is current; every route on `tmitrader.com`
-  still returns 401 to a stranger. Release 2 has not landed.
+- **THE SITE IS PUBLIC. `tmitrader.com/`, `/privacy`, `/terms` return 200 to
+  a stranger; `/desk` and `/signin` 401.** Went public 06:34Z 2026-09-16,
+  nineteen minutes after this section said it had not. Verified by Marketing
+  with curl 2026-09-17. **Every word this thread writes is now live to anyone,
+  and the prohibitions apply to the deployed page, not just the canvas.**
+- **The deployed page is behind the canvas by one commit.** Checked 2026-09-17:
+  `/` carries "None of this is on the chart" and the research section, and
+  does NOT carry the sessions paragraph from `c353cbd` ("a float does not get
+  cleaner at 09:30"). The canvas has it; the site does not. Deploys are Ops's;
+  flagged to Integration.
 
 - **The canvas URL changed form: https://claude.ai/artifact/MydyXGM4MpDZtwixpUXjvs**
   (older messages carry `claude.ai/code/artifact/a9df35ee-…`). **It carries a
@@ -312,7 +320,4 @@ at `c353cbd`. Nothing is in progress and no file is held.**
   in the Boundaries card; **Warrior Trading is not named in any public copy. HIS RULING 2026-09-16: *"do not want warrior mentioned."***
   The trade's vocabulary is usable without attribution. Complementary is shown
   by fitting beside their morning, not by saying their name.
-- **OPEN WITH HIM:** now that the reader is Cameron's student, the 07:00–10:00
-  window is *their* window; whether it returns to the page is his call.
-  **His "maybe enhance it" is Research's.**
-- **`tmitrader.com` still returns 401 to everyone.**
+- **His "maybe enhance it" is Research's.**
