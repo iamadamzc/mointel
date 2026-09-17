@@ -10374,3 +10374,28 @@ production. **The enumerated sha is the only thing standing between a shared
 index that five seats commit into and production; tonight it was doing
 nothing.** `a321156` is NOT live; it is in the `c883d7b` enumeration now
 awaiting approval, gated.
+
+## State: production is `c883d7b`, deployed 2026-09-17 00:04 ET — services down for 2 SECONDS, robots.txt live
+
+**Integration approved the pinned enumeration at `c883d7b`; shipped as a
+LITERAL (`push-release.sh ... c883d7b`), RESTART_MARKET=no, detached.**
+```
+integrity check (services still up)   quick_check ok in 274.5s   <- with the desk serving
+stopping runtime services              04:04:20Z
+migrating schema (--no-check)          schema v27, 0 backups
+starting services                      04:04:21Z
+services were down for 2s              <- was 3m27s the deploy before
+```
+**The public 502 window is closed as a class: 3m27s → 2s, and the number is
+now printed beside every deploy.** `last_integrity_check` in meta carries
+`seconds: 274.5` so the diagnostics page can say how long the check takes.
+
+**Verified from a stateless actor, negative control first:** `/desk` `/signin`
+`/api/market` `/privacy-x` 401; `/` `/privacy` `/terms` `/favicon.ico`
+`/robots.txt` 200; **robots body exactly `User-Agent: *` / `Allow: /`** (Next's
+rendering of the allow-all rule; names no private path); Web's landing copy
+(`a321156`) present on the live page. Box: web/research/assess on `c883d7b`
+by cwd since 04:04:21Z; market untouched on `1c23322`.
+
+**He can submit to Google. Reported to Integration, which holds it against
+his submission; Web told for its own sweep.**
