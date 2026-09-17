@@ -255,13 +255,43 @@ robots.txt   "User-Agent: *" / "Allow: /"   no Disallow line exists, so Disallow
 
 ### WHAT IS HIS AND OPEN
 
-1. **SHOULD THE CYCLE SEE AFTER-HOURS?** *Measured by Research (`d87eafb`): the daily bar's
-   high EXCLUDES after-hours. `cycle.ts:269-275` builds `cycleHigh` from daily highs and
-   `:156` derives retracement from it, so the flush reads SHALLOWER than it was and a name
-   reads LESS backside.* **Nobody chose this - `1Day` is requested with no session
-   parameter, so the frame is Alpaca's default.** *His universe is after-hours movers.*
-2. **SCOPE THE FLOAT MIGRATION?** *Offered, not started. Scope across Research, Design, R&D
-   - never build.*
+**NOTHING. Both items that stood here are ruled — kept below as settled, not as questions.**
+
+1. **THE CYCLE FRAME — RULED YES, AND WIDER THAN ASKED.** *He ruled after-hours; the
+   measurement then showed the defect is BOTH ends.* **`daily_bars.high` is 09:30-16:00
+   plus the closing cross. Premarket-inclusive scored ZERO of 121 discriminating rows
+   across 62 sessions.** *Calibrate `0.5` and `2.0` against the last three months; the
+   sibling's input changes in the same change; the close moves with the high (my ruling -
+   a frame is not half a frame).* **Split-adjusted calibration data is on disk at
+   `data/vendor/alpaca-1hour-split-*.json`; constants carry FRAME WARNINGS at `fbc059f`.**
+2. **THE FLOAT MIGRATION — SCOPED, AND SMALLER THAN IT LOOKED.** *`docs/sheet-coverage-audit.md`
+   already scored every field: 50 PRODUCED, 12 PRODUCIBLE, 19 NEW WORK.* **The 19 are
+   FLOAT (5 fields, one capability, Phase C), JUDGEMENT (4) and PROSE (3) - one build and
+   two product questions, not nineteen items.** *And Phase C does not return a NUMBER:
+   filings give shares outstanding, an UPPER bound. Retiring task 1 replaces a number with
+   a two-tailed verdict, conclusive at the extremes, silent in the middle, available for
+   about half of names.*
+
+### DO NOT JUSTIFY A PRODUCT DECISION BY HIS TRADING. HIS RULING 2026-09-17.
+
+> *"we need to stop doing things based on me. this is a product now. i am not the only
+> audience we are building for."*
+
+**RECORD THE RULING AS HIS. DO NOT RECORD THE REASON AS HIS.** *A justification scoped to
+one user cannot be tested or inherited — a successor reads "the morning is where his edge
+is" and has no way to weigh it against another user or to know when it stopped being true.*
+
+**THE INSTANCE, AND IT WAS MINE.** *I justified the frame finding as "he trades 07:00-10:00
+and the apparatus sees thirty minutes of it" and put it in Research's charter in those
+words.* **The product-scoped version was stronger and already public:** `tmitrader.com` says
+*"the board runs from 04:00 through the after-hours session, and a float does not get
+cleaner at 09:30"* — **the page argues against the exact boundary the classifier is built
+on, and `cycle` is one of the three things that page sells.** *Checkable by any reader,
+true for every future customer, dependent on nobody's habits.*
+
+*Counted, not asserted: 86 personal-scoped justifications across the nine charters
+(`research.md` 31, `design.md` 15, `README.md` 14, `rnd.md` 11). Coaching's are legitimate -
+that thread IS about him. The product threads' are not.*
 
 ### CLOSED TONIGHT, SO NOBODY RE-ASKS
 
