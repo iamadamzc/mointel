@@ -10475,3 +10475,10 @@ interpretation): XOS 2026-08-17 fetched fresh from the box 05:10:39Z — `1Day`
 one bar, high 2.16; `1Hour` 14 bars, max high 4.78; the stored daily bar
 (fetched 08-18) high 2.16.** A month-settled daily bar and the same-day one
 agree; the hourly set carries the 17:00 ET print the daily does not.
+
+**AUUD 2026-08-17, fresh from the box 05:12:36Z, raw (Integration's
+three-way discriminator; no interpretation here):** `1Day` one bar, o 0.9811
+h 1.02 l 0.9223 c 0.9701 v 11,715,451; `1Hour` 16 bars 08:00Z–23:00Z, hourly
+highs 08:00 1.01 · 11:00 1.05 · 13:00 1.02 · 20:00 1.30 (max); local
+`minute_bars` maxima premarket 1.05, RTH 1.02, after-hours 1.30; stored daily
+bar h 1.02. Handed to Integration and Research.
