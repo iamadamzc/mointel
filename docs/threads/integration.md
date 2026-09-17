@@ -201,137 +201,111 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
-*REWRITTEN WHOLE 2026-09-17 by the eighth session, retiring on his word after three days.
-**The previous block was 1,215 lines - a quarter of this file - because I APPENDED to it
-fifteen times instead of rewriting it. That is the one thing this heading forbids.** It
-is gone, not annotated. Everything below LIVE STATE is kept for its MECHANISMS, not its
-facts. **Verify before acting on any of it.***
+*REWRITTEN WHOLE 2026-09-17 by the ninth session. The eighth cut this from 1,215 lines to
+128 and warned that APPENDING is the one thing this heading forbids. Still true. Everything
+below LIVE STATE is kept for its MECHANISMS, not its facts. **Verify before acting on any
+of it, including this block.***
 
-### PRODUCTION - read from the box by Ops 2026-09-16 23:04 ET, not from a tip
+### THE THING I GOT WRONG, AND IT WAS WRITTEN DOWN WHERE I SHOULD HAVE READ IT
+
+**NO HUMAN HAS EVER WRITTEN OR REVIEWED THE GOOGLE SHEET. HE DOES NOT WRITE TO IT AND
+NEVER HAS.** *Scheduled ChatGPT tasks write it. `design.md:103-113` recorded this at
+`3263615` and `7f892e7` and explicitly RETRACTED the human premise; `config.ts:62-66` says
+"The prior is another model's conclusion".*
+
+**I read the `HUMAN_REVIEWED_PRIOR_ANALYSIS` label in `sheetPrior.ts:55` and rebuilt the
+retracted premise from it**, then relayed it to Commercial, which put two decisions to him
+on it. *He corrected me himself.* **The code label is the defect, not the charter:
+`openaiInterpreter.ts:107` and `:205` tell the interpreter a human reviewed it.**
+
+> **A LABEL IN CODE IS NOT A SOURCE. A charter that retracts it is.**
+
+### THE SHEET IS A MIGRATION ARTEFACT AND THE MIGRATION IS STALLED ON ONE LEG
+
+**Four ChatGPT tasks wrote it; retirement is underway at `9437928`; tasks 3 and 4 stopped.
+ONE REMAINS - the 22:00 AFTER-HOURS MOMENTUM RECAP.** *`design.md:654` says task 1 cannot
+stop because it is the SOLE WRITER of `TODAY!A:S`, where float is column I.
+`displayedFloat` is null on effectively every dossier, so the float on his board comes from
+that task.* **PHASE C - SEC-DERIVED FLOAT - IS THE CRITICAL PATH.**
+
+*`design.md` also says tasks 1 AND 2 cannot stop; he describes one running. UNRESOLVED.*
+
+**Two dependencies, routinely discussed as one:**
 
 ```
-web / research / assess   6f8894b   since 2026-09-16 06:34:28Z, unchanged
-market worker             1c23322   pid 456092, start 06:15:02Z Wed, NRestarts 0
-releases on disk          1c23322  372f5eb (pinned)  4cbd58f  6f8894b
-schema                    27        health ok, market IDLE STREAMING, tradingDate 09-17
-minute_bars retained      09-09 .. 09-16, six dates. RETENTION 20 IS IN FORCE.
-stranger sees             /desk 401   /privacy 200
+sheet prior  -> interpreter prompt       what the control arm measures
+float col I  -> pillar 5 on the board    WHAT ACTUALLY BLOCKS RETIREMENT
 ```
 
-**NOTHING HAS SHIPPED SINCE `6f8894b` AT 02:34 ET WED.** *The local tip is far ahead and
-is docs plus two deploy-script commits.* **The market worker is deliberately one release
-behind and that is not a fault.**
+**The control arm cannot see the blocker. I withdrew it to him in the form I put it.**
+*`supply.ts:293`: the Sheet float contradicts its own share count on 8 or 9 of 46 watched
+non-ADR names.*
 
-### THE PUBLIC SITE IS LIVE. THAT IS THE WEEK'S RESULT.
+### PRODUCTION - verified by me as a stranger, not from a tip
 
-**`tmitrader.com` serves a landing page, a privacy policy and terms to anyone, and the
-desk is at `/desk` behind Basic Auth.** *Verified three ways - Ops from the box, this
-seat as a stranger, and Web against the ELEVEN SUBRESOURCES the page actually requests,
-which is the check the first two missed.* **He can submit for Google verification; the
-consent screen must carry the same URLs and "verified domain" means Search Console, both
-his.**
+```
+c883d7b   shipped 00:04 ET Thu 09-17 as a LITERAL sha; market worker untouched on 1c23322
+/  /privacy  /terms  /robots.txt  /favicon.ico   200
+/desk  /signin  /api/dashboard  /api/market      401
+robots.txt   "User-Agent: *" / "Allow: /"   no Disallow line exists, so Disallow: / is
+             UNREPRESENTABLE rather than merely absent
+```
+
+**The deploy-window 502 class is closed: 3m27s became 2 SECONDS, printed by `deploy.sh`.**
 
 ### WHAT IS HIS AND OPEN
 
-1. **RUN THE CONTROL ARM?** *`RESEARCH_OMIT_SHEET_PRIOR=1`, approved, never run.* **The
-   automatic dossier verdict is produced with his Sheet's prior analysis in the prompt -
-   `config.ts:65-66` says so in the author's own words and calls this the control arm.**
-   *It sizes three decisions at once: whether the switch is free, whether the 6,512
-   stored dossiers may be narrated, and how independent the board's research actually
-   is.* **The only thing genuinely waiting on him.**
-2. **THE SESSION REPORT: build it?** *Scoped across five seats and summarised below.*
-3. **GOOGLE VERIFICATION** - his to submit, unblocked since 02:34 ET Wed.
+1. **SHOULD THE CYCLE SEE AFTER-HOURS?** *Measured by Research (`d87eafb`): the daily bar's
+   high EXCLUDES after-hours. `cycle.ts:269-275` builds `cycleHigh` from daily highs and
+   `:156` derives retracement from it, so the flush reads SHALLOWER than it was and a name
+   reads LESS backside.* **Nobody chose this - `1Day` is requested with no session
+   parameter, so the frame is Alpaca's default.** *His universe is after-hours movers.*
+2. **SCOPE THE FLOAT MIGRATION?** *Offered, not started. Scope across Research, Design, R&D
+   - never build.*
 
-### THE NINE OPEN ITEMS OPS HOLDS - its own list, taken verbatim 2026-09-16 23:04 ET
+### CLOSED TONIGHT, SO NOBODY RE-ASKS
 
-```
-1  premarket snapshot        DONE 04:38 Wed; dailyBar.t still yesterday's. WHEN it
-                             rolls is unknown and not urgent.
-2  22:00 retention observable PROVEN three rolls running. RETIRE AS A STANDING ITEM.
-3  /robots.txt               401 today. Decide with Web; do not inherit.
-4  two worker/runtime.ts     rvol_rank-seeded backfill set; "selector has no signal"
-   scopes (Research's)       log line. Neither urgent.
-5  QCLS cycle incident       with Research + Design; returns to Ops as an enumeration.
-6  lib/review scopes         token lifetime as a CONDITION (--until-revoked);
-                             sanitize path redaction.
-7  authority field           schema, Ops with Web, AFTER the public batch.
-8  access path               gates 1 and 2 moved; gate 3 is HIS SECOND YES and is NOT
-                             ASKED. Port 22 stays. /32s: 70.17.101.27, 95.17.58.175.
-9  deploy method             detached systemd-run, STANDING, already in production.
-```
+- **Indexing: HIS WORD, "index it."** Shipped, live, allow-all.
+- **Google verification: his, today.** Everything it needs verified three ways.
+- **Commercial's two decisions: WITHDRAWN** (`6df58b5`, `154f9fa`) once the premise fell.
+- **Float in a paid report: RULED under order-and-process** - narrate the VERDICT, never the
+  number. *Already computed and rendered (`float.ts:452`, `supply.ts:72`), so it is a
+  default not a build, and it can only fail toward saying less.* **His only if someone
+  proposes narrating the number.**
+- **`marketing.md` said the site was not public; `coaching.md` could not point at the
+  coaching work after it left the repo.** Both fixed by their owners.
 
-### THE TWO LIVE DESIGNS, NEITHER BUILT, NEITHER BLOCKED ON HIM
+### UNBUILT AND NOT BLOCKED ON HIM
 
-**THE CYCLE SIBLING (QCLS).** *His board showed BACKSIDE against a four-month-old high on
-a name up 270% at rank 3.* **Phase comes from settled bars; today is not in the input.**
-The classifier is correct and was denied the day that would have superseded May. Three
-parts, agreed, unbuilt: a **high-based** move test (monotone, so the latch falls out of
-the data), a **bad-print guard whose two inputs are captured from the same bar** so no
-reseed can separate them, and Design's **reference switch plus a third badge state** for
-*could not observe*. **The high-based test is a SIBLING of `isCycleStart`, not the same
-rule** - strictly more permissive, so a badge can read day-1 frontside at 14:00 and
-shadow next morning. *The morning view is the one that lost information, not the
-intraday one; tell him it that way round.*
+- **The cycle badge.** *Design's condition is genuinely unmet: no cycle flag exists in the
+  tree. `todayQualifiesAsCycleStart` is exported and UNWIRED.* **The "6% of rows" figure
+  Design gave him is denominated over the TRACKED UNIVERSE (438/6,889 on one month-old
+  date), not his board of 12-50. Design is re-running it board-denominated and corrected
+  him directly.** *Research's caveat: an order of magnitude, not a surface number.*
+- **Open Graph tags.** *The live site has ZERO. Marketing's strings verified as
+  deletion-only trims of approved copy; with Ops for the next enumeration.*
+- **`volume_base` is the literal `0` on 25,789 of 25,789 rows** *beside a truthful
+  `volume_base_source`* - **a zero wearing a source attribution, not a gap.** *Write-only;
+  nothing reads it, so no running number is wrong. `worker/runtime.ts` is OPS's file.*
 
-**THE SESSION REPORT.** *Two reports at 22:00 and 07:00, not three at the seams he named
-- the close has the least to narrate and CANNOT describe the after-hours it is meant to
-prep for.* **Market only; execution is OUT on his ruling that the report is for
-monetization.** Unread dot, never a flash, never auto-opens, gated out of review mode.
-**It cites the assessment ids it was computed from - `desk_assessments` is never pruned,
-so a cited report stays checkable forever and a 07:00 prep becomes a forecast recorded
-before its outcome.** *Two gates before shippable: which narrated fields touch the
-single-tenant Sheet, and whether prices go in - the second is his under accepted
-exposure, and Commercial's finding is that prices are the least load-bearing content and
-the most exposed.*
+### PRACTICES LEARNED TONIGHT, EACH FROM A REAL MISS
 
-### THE OTHER SEATS - AND ONE STALENESS THAT MATTERS MORE THAN THE REST
-
-- **Research-tmi** - **CURRENT as of `f6bff1f`, 2026-09-17 05:11, and it is current
-  because it rewrote it in the minutes after I flagged it.** *Its LIVE STATE had been
-  dated 2026-08-27 - three weeks - on the thread that did the most work of any this week,
-  so the only summary of it was mine.* **Read `research.md` for the anchor, the cycle
-  sibling, the report and the Sheet dependency; do NOT take my account of them over its
-  own.** *It carries six things it asserted and retracted, and the superseded section is
-  kept with its heading changed rather than deleted so the corrections keep their
-  subject.*
-  **AND ONE CORRECTION TO ME: the per-session-high levels work is DONE (`548acf8`), so
-  the cycle sibling is NEXT rather than queued.** *Nothing of Research's is behind
-  anything.*
-- **Ops-tmi** - current, and `ops.md` is the operational record. The only deploy seat.
-- **Design-tmi** - current. Owns the badge, the sign-in artboard, and state 2.
-- **Web-tmi**, **Marketing-tmi**, **Commercial-tmi** - current; Commercial and Marketing
-  idle with nothing pending.
-- **Coaching-tmi** - idle. Its extract is complete through 09-10 and he has withdrawn
-  the ask for 09-11/09-12 exports; **do not chase them.**
-- **R&D-tmi** - idle since 09-13. Not re-engaged this week.
-
-### THE SEND CHANNEL - ONE RULE, AND A MESSAGE WAS LOST TO GETTING IT WRONG
-
-```
-ALWAYS  list_sessions -> sessionId, then mcp__ccd_session_mgmt__send_message
-WHY     names go stale and A DEAD SEAT QUEUES SILENTLY behind a success receipt
-```
-
-*2026-09-14: Design's field spec never reached Research because it addressed a seat
-dormant since 09-10.* **Not a broken tool - a stale address.** *The spec survived only
-because Design had also committed it.*
-
-> **AND CHECK A THREAD'S STATE BEFORE RE-SENDING ANYTHING.** *I sent one approval THREE
-> TIMES because Ops reported it open in messages composed before mine arrived.
-> `list_events` answered in one call what three messages could not.*
-
-### WHAT THIS HANDOVER CANNOT GIVE YOU
-
-**INTEGRATION NORMALLY CROSS-CHECKS A RETIRING SEAT'S HANDOVER AGAINST THE BUS. NOBODY
-CAN CROSS-CHECK THIS ONE.** *Every fact above is either Ops's verified read or my own,
-and the second kind has been wrong repeatedly this week - three wrong absences, two
-reversals on one question, and an error filed against Design that Design had not made.*
-**Treat my summaries as pointers and open the file.**
-
-**AND THE AUDIT HE ASKED FOR IS PARTIAL.** *I checked every charter's last commit date
-and read the LIVE STATE of each that has one. I did NOT re-read `README.md` (12,710
-lines) or `research.md` (14,910) for internal contradictions* - **which is the same gap
-the 2026-09-12 audit recorded and did not close.**
+- **AN ADDED-LINE FILTER CANNOT SEE A DELETION AND DOES NOT FAIL WHEN THERE IS ONE.** *It
+  returns a plausible "comments only". Only `+22/-4` made me look again; a line count is
+  not a check.*
+- **A VACUOUS CHECK CAN PRESENT AS INSUFFICIENT DATA.** *Research's: n=33 "undetermined" was
+  the WRONG POPULATION, not too small a one - rows where both hypotheses coincide cannot
+  discriminate. Selecting rows where they disagree answered it at n=16.* **Every other
+  vacuous check here announced itself with a 0% or 100%; this one announced itself as a
+  research programme.**
+- **SCOPE DOES NOT SURVIVE A RELAY.** *I cleared "the uncommitted `vwap.ts` edit" as
+  comment-only; it reached a file as a fact about the commit, which also carried 167 lines
+  I never saw.*
+- **DO NOT INSTRUCT BEFORE READING THE SEAM.** *I told Web to build `robots.txt`; `web.md:95`
+  puts routes and nginx on Ops's carriage with Web specifying. It was already built.*
+- **THE ENUMERATED SHA IS THE ONLY THING BETWEEN A SHARED INDEX AND PRODUCTION.** *Ops
+  passed `rev-parse HEAD` and shipped four extra commits. Harmless ONLY because the peers'
+  commits happened to be inert; ungated page code landed minutes later.*
 
 ## The third delegation: deploy instructions, confirmed directly
 
