@@ -41,6 +41,25 @@ export const RVOL_BASELINE_SESSIONS = 20;
  * it started, so a rule written that way fires only on enormous movers and
  * silently never fires on ordinary ones.
  */
+/*
+ * FRAME WARNING -- THIS NUMBER WAS MEASURED IN A FRAME IT NO LONGER RUNS IN.
+ *
+ * Adam ruled the cycle frame after-hours-inclusive on 2026-09-17. This constant
+ * was calibrated against AH-EXCLUDED daily-bar highs, which is the frame
+ * `daily_bars.high` was measured to carry (31 discriminating rows, zero
+ * supporting AH-inclusive). It has NOT been re-derived, because three months of
+ * AH-inclusive highs are not in the store and are not obtainable at daily
+ * granularity -- `/v2/stocks/bars` has no session parameter at all.
+ *
+ * So it is an OLD-FRAME constant running in the new frame, and it will look
+ * exactly like a calibrated one. **Do not cite it as measured.** Integration-tmi
+ * asked for this mark for the reason this desk keeps meeting: an
+ * un-re-derived constant carrying no sign of it is a number wearing a
+ * calibration, and the next seat quotes it.
+ *
+ * Re-derivation is pending an hourly backfill, sized at ~8 pages for the 75
+ * names that have daily bars. See `docs/threads/research.md`.
+ */
 export const BACKSIDE_RETRACEMENT = 0.5;
 
 /**
@@ -370,6 +389,25 @@ export function resolveCycle(
  * rather than on a cliff — the distribution has no natural break, so this is a
  * percentile choice and should be read as one. `largestPriorAdvancePct` is
  * reported alongside so a surface never has to depend on the cut.
+ */
+/*
+ * FRAME WARNING -- THIS NUMBER WAS MEASURED IN A FRAME IT NO LONGER RUNS IN.
+ *
+ * Adam ruled the cycle frame after-hours-inclusive on 2026-09-17. This constant
+ * was calibrated against AH-EXCLUDED daily-bar highs, which is the frame
+ * `daily_bars.high` was measured to carry (31 discriminating rows, zero
+ * supporting AH-inclusive). It has NOT been re-derived, because three months of
+ * AH-inclusive highs are not in the store and are not obtainable at daily
+ * granularity -- `/v2/stocks/bars` has no session parameter at all.
+ *
+ * So it is an OLD-FRAME constant running in the new frame, and it will look
+ * exactly like a calibrated one. **Do not cite it as measured.** Integration-tmi
+ * asked for this mark for the reason this desk keeps meeting: an
+ * un-re-derived constant carrying no sign of it is a number wearing a
+ * calibration, and the next seat quotes it.
+ *
+ * Re-derivation is pending an hourly backfill, sized at ~8 pages for the 75
+ * names that have daily bars. See `docs/threads/research.md`.
  */
 export const SUPERRUNNER_ADVANCE = 2.0;
 
