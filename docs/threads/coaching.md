@@ -96,6 +96,37 @@ Two rules, and the first is not "be careful":
   dependency — which it did, and that is exactly what stopped anyone looking for
   the coverage dependency underneath.
 
+## Where this thread went, 2026-09-17
+
+**The coaching work has left the repo and this seat is the tail of it.** He moved
+it to a standalone chat: *"i want to move you out of this project and start you
+in a new separate chat only thread, no need for you to be in claude code, since
+you dont write code."*
+
+That followed his ruling that **the session report is for monetization and
+coaching is just for him** — two audiences, so two homes. The tooling below
+still exists and still runs; what moved is the conversation.
+
+**The handover pack lives in `~/.mointel-fills/coaching/`**, outside the repo for
+the same reason the fills are:
+
+    COACHING-PROMPT.md   the opening message for the new chat
+    coaching-brief.md    the trader, his system, which rules are his and which
+                         are the booklet's, how he works, open questions
+    the-record.md        every finding, marked solid / suggestive / withdrawn
+    method.md            reconstruction and the cuts, including the traps
+    round-trips.csv      every reconstructed round trip, one row each
+
+**Two things a reader should know before trusting anything in it.** The record
+is **not contiguous** — sessions he traded are missing because their exports
+were never sent, and the pack names which. And **his three session numbers are
+stale**: they were derived from an account balance that has since changed and
+have not been rescaled, which the brief says in its own open-questions section.
+
+*The pointer is here because the content is not: a reader of this file on
+2026-09-16 would have concluded the work stopped, and nothing would have
+errored.*
+
 ## What is built
 
 As of 2026-08-24, the whole loop runs:
@@ -207,6 +238,12 @@ the booklet, the live practice governs:
 
 ## Opening message for a new chat
 
+> **Read the section *Where this thread went* above before using this message.**
+> *The coaching conversation moved to a standalone chat on 2026-09-17 and its
+> opening message is `~/.mointel-fills/coaching/COACHING-PROMPT.md`, not this
+> one. What follows is for a seat that still owns the TOOLING in this repo —
+> the importer, the report, the coverage guard — not for one doing the coaching.*
+>
 > This is the **Coaching thread** for the trading desk at `A:\mointel`. Read
 > `docs/threads/coaching.md` and `docs/threads/README.md` first, then
 > `A:\extract_daytrade\Manual\DAY_TRADING_INSTRUCTION_BOOKLET.md` — that is the
