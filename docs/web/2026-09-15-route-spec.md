@@ -594,3 +594,55 @@ than a subresource and is refusing exactly as designed.**
 > not occurrences, and both links sit on one line. *A disagreement with a peer
 > is what made me re-measure instead of concluding one of us was wrong.*
 
+---
+
+## 8. THE LIVE SITE ON A PHONE — checked 2026-09-16 23:15 ET, and one latent fault
+
+**Nobody had looked at the shipped pages at phone width.** *Status codes,
+subresources and content were verified; **rendering was not**, and "mobile is a
+real case and NOT the same case as the desk" is this thread's own standard.*
+
+**Measured in a 375px viewport, all three public pages:**
+
+```
+/          horizontal overflow 0px   elements past right edge: 0
+/privacy   horizontal overflow 0px   elements past right edge: 0
+/terms     horizontal overflow 0px   elements past right edge: 0
+```
+
+**One target under 44px: the inline link *"What we hold, and what we never ask
+for"* at 18px.** *Correct, not a defect — it is inline within a sentence, which
+the System artboard exempts explicitly.*
+
+### THE LATENT FAULT, and it is armed by filling in a bracket
+
+**The processor table in the privacy policy measures 335px inside a 375px
+viewport, and its parent has `overflow-x: visible`.**
+
+> **It fits because of what the cells currently contain, not because anything
+> makes it fit.** *There is no scroll container. **40px of headroom on the
+> narrowest common phone.***
+
+**AND THE THING THAT WOULD CONSUME THAT HEADROOM IS ALREADY SCHEDULED.** *The
+three unfilled brackets in the published policy all live in that table:*
+
+```
+| [HOSTING PROVIDER] | The server and its logs | It is where the service runs, in [REGION] |
+| [EMAIL PROVIDER, IF ANY] | Email we send you | Service messages only |
+```
+
+> **`[HOSTING PROVIDER]` is 18 characters. "Amazon Web Services" is 19.
+> `[REGION]` is 8; `us-east-1` is 9.** *Answering Ops's brackets — the correct,
+> wanted, overdue thing to do — is what pushes the table past the viewport and
+> makes the policy page scroll sideways on a phone.*
+
+**THE FIX BELONGS WITH THE RENDERER, NOT THE TEXT:** *wrap the rendered table in
+`overflow-x: auto`.* **The markdown must not be reshaped to fit a screen** —
+*it is the adopted source, and narrowing a legal table to avoid a layout problem
+is the tail wagging the document.*
+
+**Recorded rather than filed as a bug, because it is not broken today.** *It is
+a fault whose trigger is a task already on the list, in a file nobody would
+connect to a layout — and the seat that fills the brackets will be thinking
+about hosting providers, not about phones.*
+
