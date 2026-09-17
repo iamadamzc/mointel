@@ -196,13 +196,34 @@ with 100--400 stored bars from 04:00) sit beside gaps of **10--66%** (TNON
 sources is not *"the day's high happened in a minute we do not hold"* -- it is
 noise, and the guard cannot tell it from a missed run.
 
-⇒ **A gap only matters if it could change the verdict.** The move test is 20%, so
-a 0.14% discrepancy is structurally incapable of flipping it while a 66% one
-obviously can. **I wrote "a defect is not a harm until the magnitude is measured"
-about ITHA this week and then shipped a guard with no magnitude threshold.** The
-fix is to refuse only when `session_high` is high enough to change the answer,
-not whenever it differs. **Until that lands, the wiring question is not answerable
-and I have withdrawn it.**
+⇒ **FIXED AT `410f750`: the high is tested as an INTERVAL, not a point.** `move`
+is monotone in the high and the true high lies between what our bars saw and
+`session_high`, so if both ends land on the same side of `CYCLE_START_MOVE_PCT`
+the gap cannot change the answer. Only a straddling gap is unverifiable. And the
+volume test is settled FIRST: when volume fails no high can qualify the day, so
+an incomplete high is **irrelevant rather than unknown** -- that ordering is most
+of the improvement.
+
+    2026-08-18   top 12  75.0% -> 8.3%     top 25 60.0% -> 8.0%   top 200 39% -> 1.0%
+    2026-08-17   top 12  16.7% -> 16.7%    top 200 6.0% -> 1.5%
+
+**REPORT IT AS COUNTS, NOT PERCENTAGES -- Design-tmi's correction and it is
+right.** The residue is **one row of twelve on 08-18 and two of twelve on
+08-17**; "8.3%" and "16.7%" are the same fact dressed as a rate over n=12, and
+16.7% reads worse than *two rows* while meaning the same thing. 08-17 did not
+improve because those two genuinely straddle the threshold, which is the state
+working rather than failing.
+
+**AND THE BOARD RATE IS STRUCTURALLY ABOVE THE UNIVERSE RATE, not noisily above
+it.** The board selects on high RVOL and high-RVOL names are the ones that ran
+before the desk was tracking them, so **the selection criterion is the cause of
+the refusal.** That is the cohort-selected-by-one-cause shape arriving in the
+NUMERATOR. It is the part that tells him whether the rate holds on a day that is
+not one of these two -- so the *why* travels with the number or neither does.
+
+**I wrote "a defect is not a harm until the magnitude is measured" about ITHA
+this week and then shipped a guard with no magnitude threshold.** Estimates:
+stored `rvol` standing in for the module's median baseline, two dates, local db.
 
 ### OPEN AND MINE
 
