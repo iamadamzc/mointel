@@ -65,3 +65,10 @@ next-env.d.ts
 *.db-wal
 *.db-shm
 /logs/
+
+# Credential files by NAME, in any directory. `/*.txt` above is root-only, so a
+# key file tidied into a folder would stop being ignored while still being a
+# key file. Named rather than `**/*.txt` so documentation text is not swallowed.
+**/httpsapi.alpaca.markets.txt
+**/openai.txt
+**/mointel1.txt
