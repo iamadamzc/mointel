@@ -67,6 +67,7 @@ history with its own corrections already attached.*
 | sha | what |
 | --- | --- |
 | `7b32e82` | **The board can no longer say a traded name did not trade.** `NO_PRINT` renders as the words *"not traded"*; after a mid-session restart the engine has no anchor and the claim was false. Now `UNKNOWN` when the anchor was not observable. **Cost no column and no surface change** — `UNKNOWN` already rendered as nothing and already round-tripped. |
+| `622e23f` | **The cycle rule's input, and the flag no longer waits on the replay decision.** `todaySoFarFromBars` takes the high and the close of the bar that set it from the SAME stored minute, and demotes `session_high` to an **auditor**: when it sits above every stored bar high, the day's real high is in a minute we do not have and the function refuses, so the verdict is `UNVERIFIABLE` rather than a false `NOT_QUALIFIED`. That is what removed the restart gate. 2026-08-18, 6,889 paired rows: 6,451 agree exactly, 438 (6.4%) refuse, **zero** in the unsafe direction. |
 | `548acf8` | **Per-session high and low, live.** The levels half of what he authorised. The whole-day high, `ahHigh` and the frozen `rthFinal` existed; the premarket high was archive-only and RTH's own high was live nowhere. Captured from the same classifier as the opens. |
 | `cb42feb` | **`formerRunnerStatus` reads bars instead of a model guess.** The interpreter was asked to judge a prior run from an evidence bundle with no price history in it. Overwritten by the measurement — **only when there are bars**, so a null `computedCycle` leaves the guess alone rather than fabricating `NONE`. |
 | `12613dd` | **`anchorThickness`** — thick/thin on the anchoring minute, binary by his ruling. Threshold is the **dead line (30)**, not the active line: measured against real anchors, a 300 cut marks 84% of board rows thin. |
@@ -112,6 +113,30 @@ dossier quality; **6,512 stored dossiers cannot be retrofitted.**
 **`focus` is a hardcoded constant.** Zero on 7,974 rows, one on 51, all before
 `d9215f7` (2026-09-08) — where the pin was removed **on his ruling** that a pin
 is display-only. It was wired, used and measured. Not a dead feature to revive.
+
+**`volume_base` IS THE LITERAL `0` ON EVERY ROW.** `worker/runtime.ts:1752-1753`
+writes `volume_base: 0` and `volume_base_through: null` as hardcoded literals;
+**25,789 of 25,789** rows confirm both. The engine holds the real values and the
+writer throws them away, and `volume_base_source` duplicates `volume_source`
+byte for byte. **This is what makes Ops's item #1 unmeasurable:**
+`cumulativeVolume = volumeBase + minuteSum` (`engine.ts:1405`), so a nonzero
+premarket volume proves a rolled bar **or** a name that merely traded while we
+streamed -- and premarket movers trade. The one field that would split the sum
+is the constant. *A constant is more dangerous than a null: my four premarket
+snapshots on 2026-08-18 read 25/25 nonzero and looked like an answer.*
+
+**`session_high` IS PREMARKET+RTH, NOT THE WHOLE DAY.** Against
+`max(minute_bars.high)` on 2026-08-18: including after-hours gave 355 rows where
+the row sat *below* our own bars; restricting to 04:00--16:00 ET gave **zero** of
+6,889. In that frame the stored bars are a lower bound on the row and never the
+reverse, which is the property the cycle guard's coverage audit rests on.
+
+**THE SETTLED PARENT'S HIGH FRAME IS UNDETERMINED.** The sibling rule is meant to
+be strictly more permissive than `isCycleStart`, which needs both to measure the
+high over the same sessions. `daily_bars` had only **33** joinable rows on
+2026-08-18 and no bucket above 33%, so I could not establish whether the daily
+bar's high includes after-hours. **Unmeasured, not verified** -- and if the
+frames differ the permissiveness property is not guaranteed.
 
 **One restart, four consequences.** In the shared rules at Integration's
 `5a548b3`. Every in-memory accumulator is zeroed and each is rebuilt from a
@@ -188,6 +213,11 @@ post-switch dossiers.
   that value, so the query could not have found one.
 - *"0 of 800 board-visible names were untraded"* → **vacuous**; board visibility
   requires volume, so the population was empty by construction.
+- *"the day-wide `sessionHigh` SURVIVES an RTH restart"* -> **only once the daily
+  bar has rolled**, which is itself unmeasured. Integration-tmi flagged it in a
+  comment whose whole purpose was telling the next seat which input is safe. It
+  degrades to LOST and never to a stale high, so nothing built on it became
+  unsafe -- but it was stated flatly and would have been read as a guarantee.
 - *"the disagreement rate is unmeasurable"* → **true, and it was the wrong
   number.** The control arm's magnitude is measurable. *"Unmeasurable" is usually
   "not that number, this one."*
