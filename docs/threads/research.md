@@ -307,6 +307,44 @@ the count and returns a **false PROVEN**, i.e. a confident low-float badge on a
 name that is not. Direction was verified against ZOOZ (162.00M / 20.00 = 8.10M),
 not derived. Any Phase C work re-checks that across split types first.
 
+**HE RULED THE FRAME AFTER-HOURS-INCLUSIVE (via Integration-tmi), calibrate
+against the last three months. THE RULING SPLITS IN TWO AND ONLY HALF IS
+BLOCKED.**
+
+**Not blocked -- the live rule.** `ahHigh` already exists on the runtime, so
+`highCeiling` becoming `max(session_high, ahHigh)` needs no history at all. The
+sibling can be built in the new frame immediately; the constants simply keep
+their current values until re-derived.
+
+**Blocked -- the constants.** `BACKSIDE_RETRACEMENT = 0.5` and
+`SUPERRUNNER_ADVANCE = 2.0` were calibrated on AH-excluded daily highs, and
+three months of AH-inclusive highs is not in the store: `minute_bars` holds two
+dates locally and ~20 in production under retention.
+
+**AND THERE IS NO EXTENDED-HOURS DAILY BAR, read off the parameter list rather
+than recalled.** `/v2/stocks/bars` takes `symbols`, `timeframe`, `start`, `end`,
+`limit`, `adjustment`, `asof`, `feed`, `currency`, `page_token`, `sort` -- **no
+session parameter, no extended-hours parameter.** `feed` picks the SOURCE, not
+the window: `sip` / `iex` / `otc` / `boats`, and **`boats` is Blue Ocean ATS
+*overnight* data (20:00-04:00), a different session on a different feed.** So the
+AH high is unobtainable at daily granularity at any parameter.
+
+⇒ **BUT THE BACKFILL MAY BE ~60x SMALLER THAN MINUTE BARS.** The derivation needs
+a daily AH-inclusive high, not minute resolution. `1Hour` bars would give it at
+~16 bars per symbol-day against ~960. **Unverified whether hourly covers
+16:00-20:00** -- one request against a known AH runner settles it, and that is a
+fetch decision rather than an analysis one. *If hourly carries AH, three months
+is a modest backfill and not a data project.*
+
+**AND THE CLOSE MUST MOVE WITH THE HIGH.** Integration-tmi flagged it and it is
+worse than a display bug: `givebackPct` AND `retracementPct` both divide against
+`latestClose`, and `retracementPct`'s own docstring says *"This, not
+givebackPct, decides the phase."* **So a half-changed frame MISCLASSIFIES the
+name** -- an AH runner that holds reads as having given it all back -- and
+deriving `0.5` against that bakes the artefact into the constant. The close must
+become the extended session's last print. **Costs nothing extra in data**: the
+same backfill supplying each day's AH high supplies that day's AH last print.
+
 ### WAITING ON HIM
 
 **The control arm** — `RESEARCH_OMIT_SHEET_PRIOR=1` on a sample, diffed against
