@@ -10419,3 +10419,29 @@ rows exist the daily-bar roll time (open item #1) is measurable from the
 store — the first row after 04:00 ET whose `volume_base` is nonzero dates the
 roll. **Live only after the next deploy AND a market restart** (worker code
 writes the rows); until then every row is still 0 and null.
+
+## The in-force privacy policy has been serving placeholder brackets to the public since 09-16 — facts handed to Web, 2026-09-17
+
+**Web read the live page as a stranger: `[PERIOD]` ×5, `[REGION]` ×2,
+`[HOSTING PROVIDER]`, `[EMAIL PROVIDER, IF ANY]`, `[FLOW COOKIE NAME]` render
+on the adopted policy; two bracketed questions written for Ops rendered too
+and Web removed them (`355f4f9`).** The facts that are Ops's, measured:
+```
+region             us-east-1 (us-east-1a)     from the account, not the doc
+hosting provider   Amazon Web Services (Lightsail instance in that region)
+email provider     NONE -- no mail service on the box, no sending code in lib/ or worker/
+server logs        nginx access/error: rotated daily, 14 kept -> 14 days
+                   journald: MaxRetentionSec=14day, SystemMaxUse=512M -> 14 days
+backups            schema backups: 3 newest kept (+ the pinned v18) by the reaper
+                   Lightsail automatic snapshots: 7-day rolling window (7 present)
+account after a close request, email exchanged   NO MECHANISM EXISTS (no accounts,
+                   no email) -- a retention number here is HIS decision, not a fact
+flow cookie name   blocked on app/auth/, legitimately
+```
+**The table wrapper Web warned about IS LIVE (shipped in `dbae021` at 23:47
+ET, `legal-table` seen on the live policy), so filling the two long values is
+safe now.** Web writes the text; the two undecided periods go to him.
+
+**`volume_base_source` now written from the unmutated base source
+(Research's review); Open Graph tags landed with Marketing's two strings.
+Both in the tree for the next enumeration.**
