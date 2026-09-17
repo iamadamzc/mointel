@@ -278,6 +278,18 @@ at `c353cbd`. Nothing is in progress and no file is held.**
   nineteen minutes after this section said it had not. Verified by Marketing
   with curl 2026-09-17. **Every word this thread writes is now live to anyone,
   and the prohibitions apply to the deployed page, not just the canvas.**
+- **PENDING DEPENDENCY, NOT A CHANGE. The sessions paragraph is live on the
+  site** (Web wrote it into `app/page.tsx` at `a321156`; verified on the wire
+  2026-09-17). It says *"the board runs from 04:00 through the after-hours
+  session."* **True of ranking, RVOL and session high. Not yet true of the
+  CYCLE badge**, which Research measured is built on a 09:30–16:00 daily bar
+  (premarket scored zero of 121 discriminating rows). He has ruled the frame
+  moves to the full extended session, so the expected fix is code moving to
+  the copy. **If that fix does not ship, this sentence needs a caveat and this
+  seat writes it.** Pre-written, deletion-safe, unused: *"…and a float does
+  not get cleaner at 09:30. The cycle read is taken on the regular session."*
+  Reopen when Research or Integration reports the frame change landed or was
+  dropped.
 - **THE CANVAS IS NOT A ROUTE TO PRODUCTION. The landing page is code,
   `app/page.tsx`, and a sentence reaches the site only when someone writes it
   there.** Found 2026-09-17: the sessions paragraph from `c353cbd` ("a float
