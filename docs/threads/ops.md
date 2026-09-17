@@ -10247,3 +10247,34 @@ the session, so a name up 270% from yesterday's close classifies as a new
 run and the badge shows today's arc. **Research owns `cycle.ts`/`history.ts`;
 Design owns the badge. Routed via Integration 12:2x ET. Nothing Ops until it
 comes to deploy.**
+
+## `/robots.txt` answers 401, which is not neutral — Web, 2026-09-17, decision is his
+
+**Integration retired at `e1cc277`; Web came direct.** Web's finding, checked
+on the wire: `/robots.txt` → 401 (also `/sitemap.xml`, `/.well-known/security.txt`).
+**An ABSENT robots file is a 404 meaning "no restrictions"; a 401 is an error,
+and crawler behaviour on it is inconsistent — some read an auth-required
+robots as a site-wide disallow.** *Stated by Web as unverified against
+Google's current spec; the certain claim is only that 401 is not 404.* So the
+crawling posture is being decided by the exemption list, not by anyone — the
+thing "not by default" was meant to prevent. My earlier lean is withdrawn.
+
+**Recommendation (Web's, agreed):** serve a two-line file, and the second
+line is empty on purpose:
+```
+User-agent: *
+Disallow:
+```
+**It must NOT list `/desk`, `/signin` or `/api/`: a Disallow line is a
+published path; those return 401 already, which is the protection; naming
+them tells a stranger they exist and protects nothing.**
+
+**Split:** the file is Ops's to serve (`app/robots.ts` returning the above,
+plus `location = /robots.txt { auth_basic off; }`, one enumeration); **whether
+the site is indexed at all is HIS.** Web's recommendation assumes yes —
+invite-only governs who gets in, not who may read. `/sitemap.xml` and
+`security.txt` need nothing. Not built until he answers.
+
+*Web's third pass also found the served markup requests
+`/favicon.ico?favicon.<hash>.ico`; `location = /favicon.ico` matches on path
+and ignores the query — checked on the wire, 200.*
