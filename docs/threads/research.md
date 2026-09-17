@@ -476,6 +476,42 @@ how bad it was, never for whether it was real. *Retracting a magnitude does not
 retract the decision it happened to support* -- which is the mirror of
 "disavowed the result and kept the conclusion", and I walked into the reflection.
 
+**THE CALIBRATION DATA IS AUDITED AND SOUND, by a method that does not compare
+the two files -- because the method I used to find MSS could not have.**
+
+I found MSS's truncation by diffing raw against split. **A symbol truncated in
+BOTH files is invisible to that**, and Ops reported 0 errors on the raw fetch
+too, so the split file's only evidence of completeness was that it differed from
+a file now known to be broken. **That is not evidence.** Integration-tmi caught
+it; same wrong-arm shape as the positive control that proved traded rows were
+detectable when the claim was about untraded ones.
+
+**THE DISTINCTION THAT MAKES A CONTIGUITY AUDIT POSSIBLE:**
+
+    TRUNCATION   dense coverage that STOPS EARLY      density ~1.0, then a gap
+    A THIN NAME  sparse THROUGHOUT                    low density, or starts late
+
+Audited each file against the 62-session window itself, flagging density >= 0.9
+with a >= 5-session tail gap:
+
+    RAW   (positive control)   MSS  ends 07-24  45/45 dates  density 1.00
+                               gap 17 sessions  last day 9 bars vs typical 14
+    SPLIT (the calibration data)   no truncation signature found
+
+**The positive control is the part that makes the silence mean anything** -- the
+detector demonstrably catches the known case, and `VOGX` (5 dates), `FSHP` (18)
+and `NTWO` (21) are correctly NOT flagged in either file, so it separates sparse
+from truncated rather than just counting rows. **MSS is complete in the split
+file: 62 dates, full range.**
+
+⇒ **Derive thresholds on `alpaca-1hour-split-...`. The raw file is the
+unadjusted record only, and it is incomplete for MSS.**
+
+**AND THE MISTAKE WORTH KEEPING IS SMALLER THAN THE FIX.** MSS appeared in my
+residue table as *"not in hourly file"* and I wrote that down as a fact **about
+the symbol** rather than a question about the **fetch**. *The data's absence
+described the instrument and I attributed it to the world.*
+
 ### OPEN AND MINE
 
 **The cycle sibling — designed across three seats, UNBUILT.** QCLS showed
