@@ -21,6 +21,12 @@
  */
 
 /** The desk's rule for a day that begins a move: 20%+ on 5x relative volume. */
+/*
+ * The bad-print ratio, from the module that already calibrated it rather than a
+ * second copy. `blueSky` imports nothing from here, so this is not a cycle.
+ */
+import { MAX_SPIKE_RATIO } from './blueSky';
+
 export const CYCLE_START_MOVE_PCT = 0.2;
 export const CYCLE_START_RVOL = 5;
 /** Sessions of prior volume the relative-volume baseline is taken from. */
@@ -496,4 +502,110 @@ export function resolveCycleHistory(
     largestPriorAdvancePct: largest,
     asOfTradingDate: bars.length > 0 ? bars[bars.length - 1].tradingDate : null,
   };
+}
+
+/**
+ * Today's session so far, for the intraday supersession test.
+ *
+ * `high` is the DAY-WIDE session high and must never be a per-session one.
+ * `sessionHighs` is not seeded (`vwap.ts`, and the note there), so a per-session
+ * value is silently understated after a mid-session restart; and the question
+ * being asked is day-level anyway, because `closeChangePct` compares a day close
+ * to the prior day's.
+ *
+ * `highBarClose` is the close of the bar that SET `high`, captured in the same
+ * moment rather than looked up later. Two numbers from one bar cannot be fed
+ * differently-rebuilt values by an asymmetric reseed, and the pair is
+ * structurally absent for a SEEDED high -- a seed carries a number, not a bar --
+ * which is how the bad-print guard declines to run rather than running on
+ * mismatched inputs.
+ */
+export interface TodaySoFar {
+  high: number | null;
+  volume: number | null;
+  highBarClose: number | null;
+}
+
+/**
+ * Whether today has begun a new cycle, judged intraday.
+ *
+ * QUALIFIED supersedes every earlier cycle, which is the module's own rule at
+ * the `SHADOW` docstring: *a qualifying start day supersedes*. The detector
+ * cannot see today because `daily_bars` is settled-only, so an old run's high
+ * reaches a name that has already left it -- QCLS reading BACKSIDE $5.49 from
+ * 2026-05-14 while up 270%.
+ *
+ * A SIBLING RULE, NOT `isCycleStart`. Same thresholds, and the move is measured
+ * on the HIGH rather than the close, because intraday there is no close yet and
+ * "has this day qualified" is properly asked of what the day has ACHIEVED. That
+ * makes it strictly more permissive than its settled parent -- a day that spikes
+ * +30% and closes +5% qualifies here and not once settled -- so a badge can read
+ * day-one during the session and revert overnight. That is the SETTLED rule
+ * losing a spike-and-fade day, not this one being provisional.
+ *
+ * MONOTONE, hence no stored latch: the high only rises and cumulative volume
+ * only rises, so a qualification cannot be withdrawn by a retracement. The
+ * `percent_change` field would NOT give this -- it moves both ways at 1s -- and
+ * a guard built on it would restore the wrong badge mid-session on the name that
+ * just ran.
+ */
+export type TodayStartVerdict = 'QUALIFIED' | 'NOT_QUALIFIED' | 'UNVERIFIABLE';
+
+export function todayQualifiesAsCycleStart(
+  bars: readonly CycleBar[],
+  today: TodaySoFar,
+): TodayStartVerdict {
+  const priorClose = bars[bars.length - 1]?.close;
+  if (typeof priorClose !== 'number' || !Number.isFinite(priorClose) || priorClose <= 0) {
+    return 'UNVERIFIABLE';
+  }
+  if (typeof today.high !== 'number' || !Number.isFinite(today.high) || today.high <= 0) {
+    return 'UNVERIFIABLE';
+  }
+  if (typeof today.volume !== 'number' || !Number.isFinite(today.volume) || today.volume < 0) {
+    return 'UNVERIFIABLE';
+  }
+
+  /*
+   * THE BAD-PRINT GUARD, and it runs BEFORE the thresholds rather than after.
+   *
+   * A high is the extreme, so one erroneous tick IS the high where it would
+   * never be the close. `blueSky.ts` already met this and calibrated the ratio:
+   * a genuine blow-off closes somewhere near its range. Its own test divides by
+   * the session's FINAL close, which does not exist yet -- and using the live
+   * price instead rejects a real fade (QCLS at 1.76 over 0.90 is 1.96), which is
+   * the case this whole fix exists to surface. So the denominator is the close
+   * of the minute that set the high: a bad tick spikes one minute's high while
+   * that same minute's close stays normal, which is the signature exactly.
+   */
+  if (typeof today.highBarClose !== 'number' || today.highBarClose <= 0) {
+    return 'UNVERIFIABLE';
+  }
+  if (today.high / today.highBarClose > MAX_SPIKE_RATIO) return 'UNVERIFIABLE';
+
+  const priorVolumes: number[] = [];
+  for (let i = bars.length - 1; i >= 0 && priorVolumes.length < RVOL_BASELINE_SESSIONS; i -= 1) {
+    const volume = bars[i].volume;
+    if (typeof volume === 'number' && Number.isFinite(volume) && volume > 0) {
+      priorVolumes.push(volume);
+    }
+  }
+  /*
+   * THE MODULE'S OWN MEDIAN, not `ticker_session.rvol`.
+   *
+   * `dailyRvol` divides by the MEDIAN of the prior sessions; the stored `rvol`
+   * divides by the MEAN from `rvol_baseline`. `CYCLE_START_RVOL` was calibrated
+   * against the median, and passing the other would be two denominators under
+   * one threshold.
+   */
+  const baseline = median(priorVolumes);
+  if (baseline === null || baseline <= 0) return 'UNVERIFIABLE';
+
+  const move = (today.high - priorClose) / priorClose;
+  const rvol = today.volume / baseline;
+
+  return move >= CYCLE_START_MOVE_PCT - THRESHOLD_EPSILON &&
+    rvol >= CYCLE_START_RVOL - THRESHOLD_EPSILON
+    ? 'QUALIFIED'
+    : 'NOT_QUALIFIED';
 }

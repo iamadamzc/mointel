@@ -7,8 +7,10 @@ import {
   isCycleStart,
   resolveCycle,
   resolveCycleHistory,
+  todayQualifiesAsCycleStart,
   type CycleArc,
   type CycleBar,
+  type TodaySoFar,
 } from '@/lib/market/cycle';
 
 /** Quiet sessions to sit a move on top of. */
@@ -407,5 +409,107 @@ describe('the as-of date on a cycle', () => {
 
   it('is null rather than invented on an empty series', () => {
     expect(resolveCycleHistory([]).asOfTradingDate).toBeNull();
+  });
+});
+
+/**
+ * The intraday supersession test — the sibling of `isCycleStart`.
+ *
+ * QCLS read `BACKSIDE $5.49` in red while up 270%; the $5.49 was a run that
+ * topped on 2026-05-14. The module already says a qualifying start day
+ * supersedes — the detector just cannot see today, because `daily_bars` is
+ * settled-only.
+ */
+describe('todayQualifiesAsCycleStart', () => {
+  const settled = base(25, 1.0, 1_000_000);
+
+  const today = (over: Partial<TodaySoFar> = {}): TodaySoFar => ({
+    high: 1.5,
+    volume: 10_000_000,
+    highBarClose: 1.45,
+    ...over,
+  });
+
+  it('qualifies a day that has moved on volume', () => {
+    // +50% on the high against a 1.00 settled close, 10x the median volume.
+    expect(todayQualifiesAsCycleStart(settled, today())).toBe('QUALIFIED');
+  });
+
+  it('refuses a big move on ordinary volume', () => {
+    expect(todayQualifiesAsCycleStart(settled, today({ volume: 2_000_000 }))).toBe(
+      'NOT_QUALIFIED',
+    );
+  });
+
+  it('refuses heavy volume without the move', () => {
+    expect(
+      todayQualifiesAsCycleStart(settled, today({ high: 1.05, highBarClose: 1.04 })),
+    ).toBe('NOT_QUALIFIED');
+  });
+
+  /*
+   * MONOTONE, WHICH IS WHY NO LATCH IS STORED. The high only rises and
+   * cumulative volume only rises, so a qualification cannot be withdrawn by a
+   * retracement. A guard on `percent_change` would lose it -- that field moves
+   * both ways at one-second granularity and would restore the wrong badge
+   * mid-session on the name that just ran.
+   */
+  it('stays qualified after the move is given back', () => {
+    // The high is 1.50 and the day is now worth far less; the high does not fall.
+    const faded = todayQualifiesAsCycleStart(settled, today({ high: 1.5 }));
+    expect(faded).toBe('QUALIFIED');
+  });
+
+  it('is strictly more permissive than its settled parent', () => {
+    /*
+     * A day that spiked +30% and closed +5% qualifies here and NOT once settled.
+     * That is the settled rule losing a spike-and-fade day -- the shape he
+     * trades -- rather than this one being provisional.
+     */
+    const spikeAndFade = { high: 1.3, volume: 10_000_000, highBarClose: 1.28 };
+    expect(todayQualifiesAsCycleStart(settled, spikeAndFade)).toBe('QUALIFIED');
+
+    const asSettled: CycleBar[] = [
+      ...settled,
+      { tradingDate: '2026-07-01', high: 1.3, low: 1.0, close: 1.05, volume: 10_000_000 },
+    ];
+    expect(isCycleStart(asSettled, asSettled.length - 1)).toBe(false);
+  });
+
+  it('refuses a high that towers over the minute that set it', () => {
+    /*
+     * One erroneous tick IS the high where it would never be the close. The
+     * ratio is `blueSky`'s calibrated 1.6, and the denominator is the close of
+     * the minute that made the high -- not the live price, which would reject a
+     * genuine fade.
+     */
+    expect(
+      todayQualifiesAsCycleStart(settled, today({ high: 5.0, highBarClose: 1.0 })),
+    ).toBe('UNVERIFIABLE');
+  });
+
+  it('admits a real one-minute blow-off that closed near its range', () => {
+    expect(
+      todayQualifiesAsCycleStart(settled, today({ high: 1.5, highBarClose: 1.1 })),
+    ).toBe('QUALIFIED');
+  });
+
+  it('cannot run on a seeded high, because a seed carries no bar', () => {
+    // The companion close is structurally absent after a restart reseed, so the
+    // guard declines rather than running on mismatched inputs.
+    expect(todayQualifiesAsCycleStart(settled, today({ highBarClose: null }))).toBe(
+      'UNVERIFIABLE',
+    );
+  });
+
+  it('is unverifiable without a settled close to measure from', () => {
+    expect(todayQualifiesAsCycleStart([], today())).toBe('UNVERIFIABLE');
+  });
+
+  it('separates an untraded day from a disqualified one', () => {
+    // No high yet is "cannot say", not "did not qualify".
+    expect(todayQualifiesAsCycleStart(settled, today({ high: null }))).toBe('UNVERIFIABLE');
+    // A measured zero volume with a real high is a verdict.
+    expect(todayQualifiesAsCycleStart(settled, today({ volume: 0 }))).toBe('NOT_QUALIFIED');
   });
 });
