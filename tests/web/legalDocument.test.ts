@@ -78,6 +78,39 @@ describe('rendering', () => {
   });
 });
 
+describe('tables scroll instead of overflowing', () => {
+  it('wraps every rendered table in a scroll container, and the real policy has one', () => {
+    const doc = renderLegalMarkdown(`---
+title: T
+adopted: 2026-09-11
+---
+
+## 1. Processors
+
+| Who | What |
+| --- | --- |
+| [HOSTING PROVIDER] | The server |
+`);
+    expect(doc.html).toContain('<div class="legal-table"><table>');
+    expect(doc.html).toContain('</table></div>');
+
+    // Both sides seen: a document with no table gets no wrapper.
+    expect(renderLegalMarkdown(`---
+title: T
+---
+
+## 1. A
+
+no table`).html).not.toContain('legal-table');
+
+    const privacy = loadLegalDocument('privacy-policy');
+    const wrapped = (privacy.html.match(/<div class="legal-table"><table>/g) ?? []).length;
+    const tables = (privacy.html.match(/<table>/g) ?? []).length;
+    expect(tables).toBeGreaterThan(0);
+    expect(wrapped).toBe(tables);
+  });
+});
+
 describe('the real files', () => {
   for (const name of ['privacy-policy', 'terms'] as const) {
     it(`${name}: renders from docs/legal at request time, adopted, with sections`, () => {

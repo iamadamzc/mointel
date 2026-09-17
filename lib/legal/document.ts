@@ -128,10 +128,26 @@ function sectionise(html: string): { html: string; sections: LegalSection[] } {
   return { html: out, sections };
 }
 
+/**
+ * Every table gets its own horizontal scroll container.
+ *
+ * Web measured the privacy policy's processor table at 335px in a 375px
+ * viewport with no scroll container: it fits because of what the cells
+ * happen to contain today. The three unfilled brackets in that table are
+ * SHORTER than the values that will replace them ("[HOSTING PROVIDER]" is 18
+ * characters, "Amazon Web Services" is 19), so answering them -- the right
+ * thing to do -- would push the table past the viewport and make the policy
+ * scroll sideways on a phone. The fix belongs here and not in the markdown:
+ * the text is the adopted source and is not reshaped to dodge a layout.
+ */
+function wrapTables(html: string): string {
+  return html.replace(/<table>[\s\S]*?<\/table>/g, (table) => `<div class="legal-table">${table}</div>`);
+}
+
 export function renderLegalMarkdown(source: string): Omit<LegalDocument, 'name' | 'sourcePath'> {
   const { data, body } = parseFrontmatter(source);
   const rendered = marked.parse(stripComments(body), { async: false, gfm: true }) as string;
-  const { html, sections } = sectionise(rendered);
+  const { html, sections } = sectionise(wrapTables(rendered));
   return {
     frontmatter: {
       title: data.title ?? '',

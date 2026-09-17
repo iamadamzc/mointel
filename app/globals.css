@@ -195,5 +195,6 @@ body {
 .legal-prose code { font-family: var(--font-mono); font-size: 0.9em; color: var(--color-ink); }
 .legal-prose blockquote { border-left: 2px solid var(--color-accent); padding-left: 0.875rem; margin: 0 0 1.25rem; }
 .legal-prose hr { border: 0; border-top: 1px solid var(--color-line); margin: 2rem 0; }
-.legal-prose table { border-collapse: collapse; margin: 0 0 1.5rem; width: 100%; }
+.legal-prose .legal-table { overflow-x: auto; margin: 0 0 1.5rem; -webkit-overflow-scrolling: touch; }
+.legal-prose table { border-collapse: collapse; margin: 0; width: 100%; min-width: 20rem; }
 .legal-prose th, .legal-prose td { border-bottom: 1px solid var(--color-line); padding: 0.5rem 0.75rem 0.5rem 0; text-align: left; font-size: 0.9375rem; line-height: 1.5; color: var(--color-ink-1); vertical-align: top; }
