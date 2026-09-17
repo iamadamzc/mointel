@@ -10399,3 +10399,23 @@ by cwd since 04:04:21Z; market untouched on `1c23322`.
 
 **He can submit to Google. Reported to Integration, which holds it against
 his submission; Web told for its own sweep.**
+
+## `volume_base` and `volume_base_through` stop being literals — `b0e8478`, 2026-09-17
+
+**Research: 25,789 of 25,789 rows carried `volume_base = 0` and
+`volume_base_through = null`, hardcoded in `toRow` while the engine held
+the real values.** Fixed: the state carries `volumeBase`, `volumeBaseThrough`,
+`volumeBaseSource` from the runtime (`engine.ts` snapshot, two lines in
+Research's file, offered for its review); `toRow` writes the first two; the
+repo reads them back; seven test fixtures gained the fields. **`volume_base_source`
+is deliberately unchanged** — it is the mutated `volumeSource` three reads this
+week depend on (the `LIKE 'alpaca-historical-minute-bars%'` split); changing
+it is a separate announced change. Test: write one value, write a different
+one, assert the stored value changed; a mutant restoring the literal kills
+exactly one test, as predicted.
+
+**What it buys:** `cumulativeVolume = volumeBase + minuteSum`, so once these
+rows exist the daily-bar roll time (open item #1) is measurable from the
+store — the first row after 04:00 ET whose `volume_base` is nonzero dates the
+roll. **Live only after the next deploy AND a market restart** (worker code
+writes the rows); until then every row is still 0 and null.
