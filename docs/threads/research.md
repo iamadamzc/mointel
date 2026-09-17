@@ -177,6 +177,33 @@ Design's label, not my field; measured for them and reported.
 different source with a different completeness — the asymmetric reseed is the
 part nobody predicts.
 
+**MY COVERAGE AUDIT HAS NO MAGNITUDE THRESHOLD, AND IT OVER-REFUSES (`622e23f`).**
+`todaySoFarFromBars` refuses whenever `session_high` exceeds the bar-derived high
+by more than float noise. Measured per rank band, the refusal rate is **strongly
+rank-dependent in the worst direction** -- the top of the board is where it fires:
+
+    2026-08-17   top 12 16.7%   top 25  8.0%   top 200  6.0%   all ranked  3.4%
+    2026-08-18   top 12 75.0%   top 25 60.0%   top 200 39.0%   all ranked 11.9%
+
+**The 6.4% I quoted was the universe rate and the board rate is up to 75%.** The
+selection criterion is the cause: high-RVOL names are the ones that ran before we
+were tracking them.
+
+**BUT INSPECTING THE TOP 12 SPLITS THE REFUSALS INTO TWO POPULATIONS.** Gaps of
+**0.1--1%** (NTWO 11.99/11.86, ENRD 10.53/10.50, SLE 7.38/7.37, SGLY, SIEB -- all
+with 100--400 stored bars from 04:00) sit beside gaps of **10--66%** (TNON
+10.11/6.09, TGL 4.25/2.94 on **5 bars**, PFSA, CAST). A sub-1% gap between two
+sources is not *"the day's high happened in a minute we do not hold"* -- it is
+noise, and the guard cannot tell it from a missed run.
+
+⇒ **A gap only matters if it could change the verdict.** The move test is 20%, so
+a 0.14% discrepancy is structurally incapable of flipping it while a 66% one
+obviously can. **I wrote "a defect is not a harm until the magnitude is measured"
+about ITHA this week and then shipped a guard with no magnitude threshold.** The
+fix is to refuse only when `session_high` is high enough to change the answer,
+not whenever it differs. **Until that lands, the wiring question is not answerable
+and I have withdrawn it.**
+
 ### OPEN AND MINE
 
 **The cycle sibling — designed across three seats, UNBUILT.** QCLS showed
