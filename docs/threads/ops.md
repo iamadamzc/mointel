@@ -10465,10 +10465,21 @@ NOMA    4.13         4.13             3.00            4.13
 ```
 **Hourly bars COVER after-hours, exactly; bars span 08:00Z–23:00Z.** Backfill:
 75 calibration symbols × 62 sessions (2026-05-20..08-18), 43,251 bars, to
-`data/vendor/alpaca-1hour-2026-05-20-to-2026-08-18.json` (gitignored) for
-Research; the box keeps no copy. *The vendor pages the multi-symbol endpoint
-in small per-symbol pages: 68 pages for the ~74k-bar bound sized at 8 — same
-data, not more.*
+`data/vendor/alpaca-1hour-raw-2026-05-20-to-2026-08-18.json` (gitignored)
+for Research; the box keeps no copy. **The vendor pages the multi-symbol
+endpoint PER SYMBOL, not by total data points as its docs say: 68 pages for
+the ~74k-bar bound Integration sized at 8. Plan fetches by symbol count, not
+by the docs' limit.**
+
+**RE-FETCHED SPLIT-ADJUSTED at 01:30 ET on Integration's correction:** the
+first fetch used `adjustment=raw` (the shape as specified) while the cycle
+runs on `daily_bars` at `adjustment=split`, and 67 of 75 symbols drift
+between the two at clean reverse-split factors — calibrating raw against
+split would reproduce the exact mismatch Research had just diagnosed.
+`data/vendor/alpaca-1hour-split-2026-05-20-to-2026-08-18.json`: 75 symbols,
+43,524 bars, 69 pages. **Both files carry the basis in the filename and the
+header; the raw one is kept as the unadjusted record.** Raw fact: split has
+273 more bars than raw for the same request; probe-name maxima identical.
 
 **His doubt, tested empirically (Integration's added request, raw, no
 interpretation): XOS 2026-08-17 fetched fresh from the box 05:10:39Z — `1Day`
