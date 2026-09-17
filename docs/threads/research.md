@@ -147,12 +147,30 @@ the row sat *below* our own bars; restricting to 04:00--16:00 ET gave **zero** o
 6,889. In that frame the stored bars are a lower bound on the row and never the
 reverse, which is the property the cycle guard's coverage audit rests on.
 
-**THE SETTLED PARENT'S HIGH FRAME IS UNDETERMINED.** The sibling rule is meant to
-be strictly more permissive than `isCycleStart`, which needs both to measure the
-high over the same sessions. `daily_bars` had only **33** joinable rows on
-2026-08-18 and no bucket above 33%, so I could not establish whether the daily
-bar's high includes after-hours. **Unmeasured, not verified** -- and if the
-frames differ the permissiveness property is not guaranteed.
+**THE DAILY BAR'S HIGH EXCLUDES AFTER-HOURS, so the frames MATCH.** First
+attempt was vacuous: all 33 joinable rows on 2026-08-18, no bucket above 33%.
+**The population was the problem, not the size** -- most names never print after
+the bell, so both hypotheses predict the same value and the comparison cannot
+discriminate. Restricted to rows where after-hours DID set a higher high than
+premarket+RTH:
+
+    2026-08-17   16 rows   daily==incl-AH  0    daily==PM+RTH 13    neither  3
+    2026-08-18   15 rows   daily==incl-AH  0    daily==PM+RTH  4    neither 11
+    combined     31 rows   daily==incl-AH  0    daily==PM+RTH 17    neither 14
+
+**Zero support for AH-inclusive across both dates.** The 08-18 `neither` count is
+the `max(trading_date)` trap from my own notes -- it is the newest date in the
+store and its daily bars are the likeliest to be half-written, so 08-17 is the
+trustworthy arm at 13 of 16. Indicative, not settled: two dates, n=31.
+
+**So `daily_bars.high` and `session_high` share one frame (premarket+RTH), and
+the sibling rule's "strictly more permissive than its settled parent" property
+rests on matched frames.** Previously recorded here as UNDETERMINED.
+
+**AND IT BEARS ON DESIGN'S BADGE, which is why they asked.** `PRIOR HIGH` reads
+as *the highest it has been* while printing a regular-session-only high, so it
+**understates on names that ran after the bell** -- not a rare case on this desk.
+Design's label, not my field; measured for them and reported.
 
 **One restart, four consequences.** In the shared rules at Integration's
 `5a548b3`. Every in-memory accumulator is zeroed and each is rebuilt from a
