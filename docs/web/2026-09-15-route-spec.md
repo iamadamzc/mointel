@@ -751,3 +751,71 @@ specifies the tags; `app/layout.tsx` is Ops's carriage.*
 > everything live at that moment, and this table is what it gets checked
 > against.*
 
+---
+
+## 11. SHARE-PREVIEW SPEC — constraints for Marketing, no new copy
+
+**Sequenced by Integration: Web sends constraints, Marketing sends words, Ops
+lands it in `app/layout.tsx`.** *This section is step one and deliberately
+contains no drafted copy.*
+
+### THE RULE THAT MAKES THIS CHEAP
+
+> **SELECT AND TRIM FROM APPROVED COPY. DO NOT WRITE FRESH.** *Integration's
+> point and it is the load-bearing one: a new sentence is a new approval cycle
+> and his attention; a trim of copy he has already ruled on is neither.*
+
+### The slots, and who owns each
+
+| tag | owner | notes |
+| --- | --- | --- |
+| `og:title` | **Marketing** | the line in the bold row of a preview card |
+| `og:description` | **Marketing** | the grey line under it; first to be truncated |
+| `og:site_name` | Web | `TMI Trader` — the name, settled, not a decision |
+| `og:type` | Web | `website` |
+| `og:url` | Web | `https://tmitrader.com/` |
+| `twitter:card` | **Web — technical, NOT Marketing's** | `summary` (no image) rather than `summary_large_image` |
+| `metadataBase` | **Web + Ops — needs no drafting hop** | `new URL('https://tmitrader.com')`; without it relative OG URLs resolve wrong |
+
+### The limits — stated as design constraints, NOT as platform facts
+
+**This seat has NOT read current platform truncation specs and will not assert
+character counts as measured.** *They differ per platform, differ between web
+and mobile, and change without notice.*
+
+> **SO THE CONSTRAINT IS WRITTEN SO IT SURVIVES ALL OF THEM: the meaning must
+> survive truncation at an unknown point.**
+>
+> - **`og:title` — aim ≤ 60 characters.** *Front-load the name. A title cut
+>   mid-word is survivable; a title whose distinguishing half was in the cut
+>   part is not.*
+> - **`og:description` — aim ≤ 110 characters, and make the FIRST CLAUSE stand
+>   alone.** *Some surfaces show ~200, some far less. If the first clause is the
+>   whole point, every truncation lands somewhere harmless.*
+
+*Both are targets for design safety, not thresholds anyone has measured.*
+
+### What is already approved and fits, measured
+
+```
+ 35  <title>, live now          TMI Trader — True Move Intelligence
+ 30  the settled tagline        Intelligence on what's moving.
+ 43  name + tagline             TMI Trader — Intelligence on what's moving.
+ 69  hero opening line          It is 07:15, a name is running, and nothing you can find explains it.
+ 99  registered stmt, sent. 1   TMI Trader is an intelligence desk for people who trade $1–$20 …
+180  meta description, live now  An intelligence desk for people who trade US small-cap momentum …
+```
+
+**The 180-character live meta description is the one thing here that does NOT
+meet the description constraint** — *it is fine as a `<meta name="description">`,
+where search engines rewrite freely anyway, and too long for a card where the
+tail is simply lost.* **A trim of it is the obvious candidate and is Marketing's
+to make.**
+
+### No image, agreed
+
+*A text card is most of the benefit; an image is the only part needing a public
+path, and it batches with whatever is live when he wants one (§10).*
+**`twitter:card` is therefore `summary`, not `summary_large_image` — the large
+variant renders a broken frame when no image is supplied.**
+
