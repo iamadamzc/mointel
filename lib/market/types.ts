@@ -322,6 +322,16 @@ export interface DemandState {
 
   cumulativeVolume: number | null;
   volumeSource: string | null;
+  /**
+   * The two halves of cumulativeVolume, as the engine holds them: volume
+   * already accounted for at bootstrap (a snapshot or a historical backfill)
+   * and the minute at which the live stream took over. Written to the store
+   * since 2026-09-17; before that the row carried literal 0 and null on every
+   * row ever written, under a source column that named a real mechanism.
+   */
+  volumeBase: number;
+  volumeBaseThrough: string | null;
+  volumeBaseSource: string | null;
   sessionHigh: number | null;
   sessionLow: number | null;
 

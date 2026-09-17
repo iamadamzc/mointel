@@ -588,6 +588,11 @@ export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandSt
     percentChange: row.percent_change,
     cumulativeVolume: row.cumulative_volume,
     volumeSource: row.volume_source,
+    volumeBase: row.volume_base ?? 0,
+    volumeBaseThrough: row.volume_base_through ?? null,
+    // The stored column is the mutated source (see toRow); the engine's raw
+    // base source is not persisted, so a re-read state carries the same value.
+    volumeBaseSource: row.volume_base_source ?? null,
     sessionHigh: row.session_high,
     sessionLow: row.session_low,
     vwap: {

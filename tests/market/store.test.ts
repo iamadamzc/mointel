@@ -85,6 +85,9 @@ function demand(symbol: string, rank: number | null): DemandState {
     percentChange: 26.4,
     cumulativeVolume: 5_131_947,
     volumeSource: 'minute-bars',
+    volumeBase: 0,
+    volumeBaseThrough: null,
+    volumeBaseSource: null,
     sessionHigh: 6.4,
     sessionLow: 4.9,
     vwap: emptySessionVwapSet(),
@@ -566,6 +569,41 @@ describe('schema upgrade reporting', () => {
    * So this asserts the stored value CHANGED. A test that only asserted "not
    * null" would pass on the broken wiring.
    */
+  it('writes the volume base as the engine holds it, and updates it on conflict', () => {
+    // Until 2026-09-17 volume_base and volume_base_through were literals in
+    // toRow -- 0 and null on 25,789 of 25,789 rows -- so a check could not
+    // fail. The test writes one value, then a DIFFERENT value, and asserts
+    // the stored value CHANGED: a constant dressed as a measurement cannot pass.
+    const db = temporaryDb();
+    const first = demand('BASE', 1);
+    upsertTickerSessions(db, [
+      toRow({ ...first, volumeBase: 1_234_567, volumeBaseThrough: '2026-08-14T08:33:00.000Z' }),
+    ]);
+    const one = db
+      .prepare('SELECT volume_base, volume_base_through FROM ticker_session WHERE symbol = ?')
+      .get('BASE') as { volume_base: number; volume_base_through: string | null };
+    expect(one.volume_base).toBe(1_234_567);
+    expect(one.volume_base_through).toBe('2026-08-14T08:33:00.000Z');
+
+    upsertTickerSessions(db, [
+      toRow({ ...first, volumeBase: 2_000_000, volumeBaseThrough: '2026-08-14T09:00:00.000Z' }),
+    ]);
+    const two = db
+      .prepare('SELECT volume_base, volume_base_through FROM ticker_session WHERE symbol = ?')
+      .get('BASE') as { volume_base: number; volume_base_through: string | null };
+    expect(two.volume_base).toBe(2_000_000);
+    expect(two.volume_base_through).toBe('2026-08-14T09:00:00.000Z');
+    expect(two).not.toEqual(one);
+
+    // And the read side carries it back, so a re-loaded state is not a
+    // constant either.
+    const states = readDemandStates(db, '2026-08-14', { limit: 10 });
+    const back = states.find((s) => s.ticker === 'BASE');
+    expect(back?.volumeBase).toBe(2_000_000);
+    expect(back?.volumeBaseThrough).toBe('2026-08-14T09:00:00.000Z');
+    db.close();
+  });
+
   it('updates activity on conflict rather than freezing it at the seeded value', () => {
     const db = temporaryDb();
 
