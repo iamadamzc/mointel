@@ -201,1217 +201,131 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
-*Sections below REWRITTEN 2026-09-14 13:35 ET by the eighth session, three hours after
-the seventh wrote them. **The previous PRODUCTION, UNDEPLOYED, WHAT IS HIS AND OPEN,
-ACCESS PATH and SESSION TITLES blocks are gone, not annotated.** Everything below
-LIVE STATE is kept for its MECHANISMS, not its facts. **Verify before acting on any
-of it.***
+*REWRITTEN WHOLE 2026-09-17 by the eighth session, retiring on his word after three days.
+**The previous block was 1,215 lines - a quarter of this file - because I APPENDED to it
+fifteen times instead of rewriting it. That is the one thing this heading forbids.** It
+is gone, not annotated. Everything below LIVE STATE is kept for its MECHANISMS, not its
+facts. **Verify before acting on any of it.***
 
-### PRODUCTION - 4cbd58f SHIPPED 2026-09-15 17:58 ET. MARKET WORKER DELIBERATELY NOT RESTARTED.
-
-```
-web / research / assess   4cbd58f   since 21:58:32Z, NRestarts 0, verified by /proc cwd over SSM
-mointel-market            997d231   pid 355632, since Mon 17:16:23Z, UNTOUCHED
-schema                    27        migrate took 0 backups, newer-store guard no-op
-health                    ok        market LIVE STREAMING
-rollback                  997d231   release prune removed b0610fee
-```
-
-**HIS IN-SESSION MOVE SORT IS LIVE** — *`528a99e` is `components/` and `lib/dashboard/`, served by web, which restarted.*
-
-> **AND THE FALSE "not traded" SENTENCE IS NOT FIXED BY THIS SHIP.** *`7b32e82` is
-> `engine.ts` — market-worker code — and the market worker is still on `997d231`.*
-> **Ops listed it as "DecisionCells NO_PRINT rendering + interim"; I opened `9ae4aa2`
-> and it is a COMMENT REWRITE whose own text says "nothing here changed".** *The whole
-> fix is `engine.ts:1151`'s `anchorObservable`.* **Correction taken and reported that
-> way in `ops.md`.**
->
-> **EXPOSURE IN BETWEEN IS NIL AND THAT IS WHY IT WAS A LABELLING POINT RATHER THAN A
-> HOLD:** *the defect needs a mid-session restart to fire, and the running worker
-> predates today's session open.* **Restart and the fix arrives with it; do not restart
-> and the defect stays latent. No window either way.**
-
-**THE RESTART IS HIS AND OPS ASKED HIM DIRECTLY.** *Not relayed by this seat.*
-**Either way the 22:00 roll must still find 09-09 present** — *retention 20 is in force
-on the OLD worker, so the roll is the same observable it was last night.*
-
-**Ops's report is `aee63a7`. HIS 10:47 ET INSTRUCTION - deploy and restart
-mid-session - IS DISCHARGED.** *He gave the restart word with the costs stated; the
-seventh session's LIVE STATE still listed it as open and it was not.*
-
-**RETENTION 20 IS PROVEN IN FORCE — Ops, read on the box 2026-09-15 01:30 ET.**
-*`minute_bars` holds 09-09, 09-10, 09-11 and 09-14 after the roll (marker
-02:00:00.704Z, rolled 22:00:23 ET, no prune line). At retention 3 the 09-09 bars would
-be gone.* **Closed by a READ, not by the restart having happened — which is the whole
-reason the observable was written down.**
-
-**AND THE CLOSING COUNT IS THE NUMBER THAT PRICES THE NEXT MID-SESSION RESTART:**
+### PRODUCTION - read from the box by Ops 2026-09-16 23:04 ET, not from a tip
 
 ```
-13:35 ET   1 of 50 late-anchored
-16:00 ET  14 of 50   SAC AHL.PRE EDHL ITHA QTRX SPHL KFII HITI RLGT PTN JBDI STIM
-                     NICM PMTR      anchors 13:17-15:42 ET
+web / research / assess   6f8894b   since 2026-09-16 06:34:28Z, unchanged
+market worker             1c23322   pid 456092, start 06:15:02Z Wed, NRestarts 0
+releases on disk          1c23322  372f5eb (pinned)  4cbd58f  6f8894b
+schema                    27        health ok, market IDLE STREAMING, tradingDate 09-17
+minute_bars retained      09-09 .. 09-16, six dates. RETENTION 20 IS IN FORCE.
+stranger sees             /desk 401   /privacy 200
 ```
 
-*Every name ranking in from outside the repaired 200 arrives late-anchored, so the
-count only grows through a session.*
-
-> **AND THE HARM IS NOW PRICED — Ops, 01:40 ET, full table in the `ops.md` tail.**
-> *Measured against the true 09:30-onward first bar at the day's stored price, so only
-> the anchor varies.*
->
-> ```
-> 14 late-anchored
-> 10 showed a WRONG Move
->  4 harmless: SAC ITHA KFII PMTR -- first RTH print WAS the anchor, nothing before it
->
->  9 of 10 UNDERSTATED      PTN 13.9 vs 18.8 (-4.9)   RLGT 8.1 vs 11.6 (-3.5)
->                           QTRX -4.6  STIM -3.4  HITI -1.4  JBDI -0.8  EDHL -0.7
->  1 OVERSTATED             NICM +3.6
->  WORST                    SPHL rank 27, shown -5.1% vs true +1.3% -- A SIGN FLIP
->  median                   ~3.5 points understated
-> ```
->
-> **THE TWO ERRORS RUN IN OPPOSITE DIRECTIONS ON HIS BOOK AND THE COMMON ONE IS THE
-> EXPENSIVE ONE.** *Nine understated Moves make an extended name read FRESHER, which
-> invites an entry and costs an R.* **The sign flip runs the other way — SPHL showed as
-> a loser while it was a winner, so he skips it: an opportunity, not a loss.** *The
-> biggest single number is in the cheap direction and the pattern is in the expensive
-> one, and only naming both keeps that straight.*
->
-> **⇒ THE SENTENCE FOR THE NEXT RESTART DECISION: a mid-session restart cost 10 of his
-> closing 50 a wrong Move, median ~3.5 points understated, worst 6.3 with the sign
-> flipped.** *He approved this one on costs stated QUALITATIVELY. That is the last time
-> that should be the only thing available.*
->
-> **AND 14 WAS NEVER THE ANSWER.** *Four of the fourteen were thin names whose first RTH
-> print WAS the anchor.* **Counting the defect would have overstated the harm by 40%,
-> and this seat had to be stopped at the count three times in one day.**
-
-### ONE NAME ON HIS BOARD MEASURES MOVE FROM THE WRONG OPEN - LIVE, 2026-09-14
-
-**Ops, read 13:35 ET over SSM, read-only.** *Top 50 by `rvol_rank` for 2026-09-14:*
-
-```
-49   alpaca-historical-minute-bars+minute-bars     repaired by the 13:16 backfill
- 1   alpaca-snapshot-daily-bar+minute-bars         ITHA, rank 16
-     rth_open_at 2026-09-14T17:31:00Z = 13:31 ET   fifteen minutes after the restart
-```
-
-**ITHA's anchor is at the wrong MINUTE and the right PRICE, and the error has ZERO
-MAGNITUDE today.** *Ops, 13:36 ET: ITHA never printed at 09:30. It has TWO bars all
-day — 13:02 ET (25,000 shares) and 13:31 ET (131,465), both open=high=low=close=10.06.
-Stored `rth_open_price` 10.06 at 13:31; the true RTH open is the 13:02 bar at 10.06.*
-**Move reads 0.0% either way.**
-
-> **I TOLD HIM A NAME ON HIS BOARD WAS MEASURING FROM THE WRONG OPEN IN THE EXPENSIVE
-> DIRECTION. THE CLASS CLAIM IS RIGHT AND THIS INSTANCE COSTS NOTHING.** *The correct
-> sentence is "one name, ITHA, is anchored late; for ITHA that changes nothing today."*
-> **I had the mechanism and reached for the consequence before anyone had read the
-> name's tape** — *and the tape was one query away, which is where it came from.*
->
-> **THE DIRECTION ARGUMENT SURVIVES AND IS NOW WAITING ON A CASE.** *Understated Move
-> on a runner is still the expensive error; ITHA is not a runner and has no tape to be
-> wrong about.* **The 15:45 and post-close reruns say whether any name with a real tape
-> has joined it.**
-
-**AND THE CORRECTION HAD TO BE MADE TWICE, TO TWO SEATS, FORTY MINUTES APART.**
-*Research's message crossed Ops's tape read and carried the same reach I had made —
-calling ITHA "a specific wrong number on a specific row" and the best argument yet for
-the two scope items.* **An instance of the DEFECT is not an instance of the HARM, which
-is the distinction this entire day was spent separating.** *Corrected in the message:
-the two `worker/runtime.ts` items are right on their own reasoning, and resting them on
-a wrong number is how a correct fix acquires a premise someone later refutes.*
-
-**AND A LOOSE END NOBODY OWNS: ITHA RANKED 16TH ON TWO BLOCK PRINTS.** *A name with no
-tape reaching rank 16 is the ranking behaving as specified and surfacing a row he
-cannot trade.* **One instance, offered to Research as a question rather than filed as a
-finding** — *counting instances is this seat's recorded tell.*
-
-- **THE COUNT IS 1 OF 50 AT AN INSTANT AND CAN ONLY GROW.** *The 13:16 backfill
-  repaired the focused 200; every name that ranks in from outside it carries a late
-  anchor.* **Ops reruns before the close and after it; the query is the instrument.**
-- **AND THIS IS WHAT THE WHOLE PREDICATE ARGUMENT WAS ABOUT, ARRIVING AS A ROW.**
-  *Research's containment claim held at the bootstrap instant and not afterwards, which
-  is why "today's board is sound" was true at 13:16 and one name old by 13:35.*
-- **THE NUMBER IS WHY IT WENT TO HIM AT ALL.** *"Some rows may carry late anchors" is an
-  adjective and he cannot act on it.* **"ITHA, rank 16, measuring from 13:31" is a name
-  on his screen.**
-
-### THE `volume_base*` COLUMN FAMILY IS ONE REAL VALUE AND THREE PROMISES
-
-**Found 2026-09-14 checking a query Research warned me I had written wrongly. It was
-wrong, it never ran, and the reason it was wrong is bigger than the query.**
-
-```
-worker/runtime.ts:1752   volume_base:         0                  HARDCODED
-worker/runtime.ts:1753   volume_base_through: null                HARDCODED
-worker/runtime.ts:1754   volume_base_source:  state.volumeSource  THE MUTATED FIELD
-worker/runtime.ts:1756   volume_source:       state.volumeSource  THE SAME FIELD
-```
-
-**`volume_base_source` is a DUPLICATE of `volume_source` under a name that promises the
-base**, and `engine.ts:1003` rewrites `volumeSource` to `${volumeBaseSource}+minute-bars`
-on the first live bar. *So every repaired name reads
-`alpaca-historical-minute-bars+minute-bars` and an `= 'alpaca-historical-minute-bars'`
-test finds none of them.*
-
-- **CONFIRMED IN DATA BY RESEARCH, 2026-08-18: `volume_base_source IS volume_source`
-  on 8,617 OF 8,617 ROWS. Zero differ.** *Not "usually the same" — the identical
-  expression, so identical by construction.* **And its sharpening, which is why the
-  duplicate is the worst of the three: a CONSTANT ANNOUNCES ITSELF ON INSPECTION AND A
-  PLAUSIBLE-LOOKING COPY DOES NOT.**
-- **THE RULE RESEARCH PUT IN PLACE OF THE CREDIT I OFFERED IT, AND IT IS BETTER:**
-  *I said its morning reconstruction survived because it used `LIKE ...%`. It refused
-  that as foresight — it had run `SELECT volume_base_source, COUNT(*) GROUP BY 1` an
-  hour earlier and SEEN the suffixed forms.* **⇒ "Use `LIKE`" is style. "Read the
-  distinct values before you compare against one, because looking is cheap" is the
-  rule, and it generalises to the next column.**
-- **A LITERAL COMPARISON RETURNS NEAR-TOTAL DAMAGE ON A DAY THE REPAIR WORKED
-  PERFECTLY.** *It is the reassuring shape inverted: a finding-shaped number from a
-  working system.* **`NOT LIKE 'alpaca-historical-minute-bars%'` is the only correct
-  form.**
-- **IT DID NOT REACH HIM, AND NOT BECAUSE I CAUGHT IT.** *I commissioned the bad
-  predicate; Ops read the value DISTRIBUTION instead of running it, and classified the
-  suffixed form correctly.* **The instrument was saved by the operator declining to use
-  the instruction.**
-- **RESEARCH'S OWN MORNING RECONSTRUCTION SURVIVED FOR THE SAME KIND OF REASON** -
-  *it happened to use `LIKE ...%`.* **"I used LIKE" reads as style and was the whole
-  defence.**
-- **THE SHAPE, AND IT IS NOT THE ONE I FIRST FILED.** *Research called it my own
-  flag committed three paragraphs later. It is not: my flag was about the runtime
-  FIELD and the query about the stored COLUMN, and nobody knew the column reads the
-  field.* **"He made the same error twice" and "the column silently carries the other
-  field" have different fixes and only the second is actionable** - *worth being exact,
-  because accepting the more self-critical reading would have closed the investigation
-  at my own carelessness and left the store hazard unrecorded.*
-
-### HIS RULING 2026-09-14: MARK THE ROW. THE PRODUCT QUESTION IS CLOSED.
-
-**Design put it to him directly and told this seat it had — the notify-not-wait rule
-working, and the reason his list did not carry it twice.** *Recorded at `08004ef`.*
-
-```
-PM Move +43.6%  LATE
-```
-
-**AND IT CLOSED IN THE DIRECTION THAT MAKES BOTH CHANNELS NECESSARY RATHER THAN EITHER
-SUFFICIENT:**
-
-```
-PROMOTION   structural, daily, one name at a time   ->  ROW MARK
-RESTART     an incident, board-wide at once         ->  BOARD STATEMENT
-```
-
-**Design's precedence, its own and set: `LATE` takes the mark slot from `thin`.** *A row
-can be both — `thin` says the anchor rests on few trades, `LATE` says the anchor is not
-the session open at all.* **A precise measurement of the wrong minute is not a
-thickness problem.**
-
-**⇒ AND THE TWO SURVIVING PREDICATES MAP ONTO THE TWO CHANNELS WITH NO OVERLAP, WHICH
-RESOLVES THE FRIDAY-BLINDNESS THIS SEAT RAISED:**
-
-- **ROW MARK / promotions → the SEAM predicate, and it is sound here.** *Verified at
-  `runtime.ts:1151-1152`: the drain `continue`s unless the daily bar is today's, so any
-  promoted name that gets seeded ALWAYS receives `volumeBaseThrough: snapshotMinute`.*
-  **The seam's blindness on a premarket bootstrap does not reach this channel, because
-  the channel is not about bootstraps.**
-- **BOARD STATEMENT / restarts → the SOURCE predicate**, *which is premise-independent.*
-- **So my "the seam is blind on Friday" objection killed the seam as a BOARD predicate
-  and left it correct as a ROW one.** *An objection that is fatal in one channel and
-  irrelevant in the other — which is only visible once the channels exist, and they
-  exist because he ruled.*
-
-**DESIGN'S CORRECTION OF MY FIRST FLAG, ACCEPTED:** *`engine.ts:1166-1168`'s
-`volumeBaseThrough && volumeBase > 0` is correct FOR VWAP and wrong to reuse; Design's
-predicate is `volumeBaseThrough !== null`, full stop.* **So it is an implementation
-hazard rather than a flaw in the predicate — real, and a different object from what I
-filed.**
-
-**AND DESIGN RECORDED THE SAME FAILURE ON ITS OWN SEAT:** *it took "today's anchors are
-fine" from my message, built a false-positive argument on it without opening the code,
-and passed it to Research as established.* **My retraction reached it mid-verification.**
-*Four seats, one day, one shape: a true sentence from a reliable seat, applied to a
-question it was not about.*
-
-### THE ANCHOR FIELD AS OF 2026-09-15 02:00 ET. FIVE PREDICATES HAVE DIED IN ONE EVENING.
-
-**NOTHING IS BUILT. NOTHING DEPLOYS. NOBODY IS BLOCKED.** *Stated as of a timestamp
-rather than as settled, because this seat recorded the FIFTH as live twenty minutes
-after Design had withdrawn it.*
-
-**CURRENT, Design's `e1a9617`:**
-
-```
-anchorLateScope: 'NAME' | 'SESSION' | 'SOUND' | null
-set where the knowledge already is: engine.ts:903, the no-baseline branch, which
-CALLS onPromotionCandidate -- so the code entering that path KNOWS it is a promotion.
-No timestamps, no inference, nothing to rot.
-```
-
-**WHY THE TIMESTAMP VERSIONS ALL DIED, AND THE LAST ONE IS THE INSTRUCTIVE DEATH:**
-*`engine.ts:899-907` creates a runtime only on a BAR, IN PRICE RANGE, WITH A BASELINE.*
-
-```
-engine up 03:00, first print of the session at 06:00   observedSince 06:00   anchor CORRECT
-engine up 03:00, enters the price range at 07:40       observedSince 07:41   anchor LATE
-```
-
-**A LATE PICKUP AND A LATE FIRST PRINT ARE THE SAME NUMBER** - *and the first is most
-small caps, which do not print at 04:00.* **A process fact and a market fact producing
-one value: the population error's cousin, and this seat's rephrasing of the separator
-fixed the identity problem and did not touch this.**
-
-**~~ONE FLAG AGAINST DESIGN'S REASON~~ - RETRACTED. I CORRECTED A SENTENCE DESIGN DID
-NOT WRITE, AND DESIGN CAUGHT IT BY QUOTING ITS OWN COMMIT.** *Read at `e1a9617` rather
-than taken on its word:*
-
-> *`'PROMOTION' | 'SESSION_START' | null` has nowhere to say THE ANCHOR IS FINE — **the
-> original contract carried that in `false`**.*
-
-**It named the ENUM — Research's SECOND proposal — and explicitly credited the boolean
-with carrying `false`.** *I read "Research's three" as the boolean contract and filed an
-error that was never made.*
-
-**AND DESIGN'S TWO ARGUMENTS ARE SEPARATE ON PURPOSE, WHICH IS THE PART I WAS ABOUT TO
-DESTROY:**
-
-```
-STATE COUNT  earned by the missing SOUND member -- a cause enum cannot say fine
-THE NAME     earned by SCOPE -- a cause enum grows a member per discovery and the
-             render learns each one; scope cannot grow
-```
-
-*`PROMOTION | SESSION_START` ALREADY carries the two channels implicitly, so scope does
-NOT earn the fourth state — it earns the naming.* **Collapsing them, as I proposed,
-would have left the count resting on an argument that does not support it.**
-
-> **THE PRINCIPLE WAS MINE AND IT LANDED ON ME: a wrong reason beside a right design
-> invites the next reader to check the reason, find it false, and simplify the design
-> away.** *Filing Design's sentence as an error would have done exactly that — a reader
-> tests it against `boolean | null`, finds Design right, and concludes the fourth state
-> was argued from a mistake.* **Design declined the correction rather than accepting it
-> to be agreeable, which is the only reason it did not stand.**
-
-### THE SIXTH IS UNBUILDABLE AS SPECIFIED, AND ITS AUTHOR REPORTED IT
-
-**Design, verified here at the lines.** *`anchorLateScope`'s `NAME` arm is set from
-`engine.ts:903`'s no-baseline branch, which calls `onPromotionCandidate`.*
-
-**IT TAKES TWO REASONS AND I RECORDED ONE. Both verified here at the lines.**
-
-```
-SNAPSHOT-SET NAMES      runtime.ts:849-875 has NO `continue` before seedSession, and
-                        engine.ts:816 seedSession -> ensure(). So a runtime EXISTS,
-                        `if (!runtime)` at 899 is false, and 903 is NEVER REACHED.
-                        The baseline fact is true and does no work.   -- RESEARCH'S
-
-SUB-FLOOR / HIGH        runtime.ts:806-812 candidates = pinned + prior close within
-GAPPERS                 [discoveryPriceMin*0.4, discoveryPriceMax*2]. Outside that
-                        band there is no snapshot and no bootstrap runtime, so 899
-                        AND 903 ARE REACHED -- and alpaca.ts:81-82 seeded a baseline
-                        for the whole universe, so no event fires and it falls
-                        through to ensure().                          -- MINE
-```
-
-**⇒ Either way the arm carrying HIS RULING is defined on an event that does not occur
-for a universe name. Neither reason covers both populations alone.** *A reader holding
-only the runtime-exists reason tests it against a gapper, finds the branch IS reached,
-and may conclude the arm works.*
-
-*(Design's message swapped the attribution on that last sentence — it reads as a test
-of the baseline reason and it is a test of the runtime one. Substance unaffected;
-noted because the whole point of the pair is that a reason gets tested and discarded
-when it is filed against the wrong claim.)*
-
-*His ruling stands and is unaffected; the trigger does not exist. Reported by its own
-author as unbuildable rather than defended.*
-
-### I PRICED "THE ANCHOR FIELD" AS ONE OBJECT AND IT IS TWO
-
-**I told him six predicates had died and that if a seventh went the same way the
-question was whether THE BOARD STATEMENT is worth it. Design's decomposition, and it is
-correct:**
-
-```
-SESSION -- the board statement    verified EARLY, survived every argument including
-                                  two that killed everything around it, still
-                                  standing. COST ZERO PREDICATES. `SOUND` and `null`
-                                  came with it.
-THE ROW MARK -- the fourth arm    SIX deaths, four of them Design's.
-```
-
-**So the churn I priced belongs entirely to the arm his ruling created, and the thing I
-proposed re-opening had already been finished for hours.** *I bundled two objects under
-one name and priced the whole — the same failure this file has recorded on four seats
-today, committed inside my own assessment of that failure's cost.*
-
-**AND DESIGN'S DECISION ANSWERS THE ESCALATION WITHOUT ONE: NO SEVENTH PREDICATE UNTIL
-THE POPULATION IS MEASURED.** *`anchor-loss-cohort.ts` on a NON-RESTART date separates
-Research's reading (the case barely occurs outside a restart) from Design's (it occurs
-for names gapping in from outside the band), using fields it already loads.* **If the
-case is rare the honest render is the tooltip he already has and no fourth arm is built
-at all.**
-
-> **THE RIGHT QUESTION TO PUT TO HIM WAS NEVER MINE AND DESIGN HAS ALREADY PUT IT: the
-> row mark he chose rests on a number nobody has measured** — *including that Design put
-> an unverified premise into the question he ruled on, and said so.* **Designing a
-> detector for a population whose size is unknown and CHEAPLY KNOWABLE is what produced
-> tonight.**
-
-### I REPORTED AN ABSENCE FROM A SEARCH NARROWER THAN THE CLAIM. SO DID DESIGN, IN THE SAME EXCHANGE.
-
-**I grepped `engine.ts` and `worker/runtime.ts` for an observed-since field and reported
-it did not exist. Design widened it and found `firstSeenAt` taken. Design's widening was
-ALSO short.**
-
-```
-lib/market/symbolAdmission.ts:26,131   rejected-symbol record        Design found
-lib/market/types.ts:611                RejectedSymbol                Design found
-lib/archive/coverage.ts:242,331,367    per-symbol-per-day coverage   A THIRD MEANING
-lib/archive/repo.ts:113                  persisted with it
-```
-
-**The name is spent TWICE over and neither meaning is "when the engine first observed
-this symbol".** *The conclusion held both times; the scope did not.*
-
-**AND DESIGN'S ACCOUNT OF ITS OWN IS WORSE THAN MY DIAGNOSIS OF IT.** *Its grep was
-WIDE - the output carried four hits. It opened two, found the rejected-symbol meaning,
-reported that, and did not follow `lib/archive/`.* **Evidence in hand and an absence
-reported anyway, which is a worse failure than searching too narrowly.**
-
-**AND THE THIRD MEANING IS BOOBY-TRAPPED RATHER THAN MERELY TAKEN:**
-*`SymbolDeskDay.firstSeenAt`, `coverage.ts:237-242`, per symbol per DATE.* **A reader
-looking for "when did we first see this symbol" finds it and it LOOKS CORRECT** - *the
-rejected-symbol one announces itself as wrong the moment you read the interface; this
-one does not.* **Design's, and it is the half that will actually bite someone.**
-
-> **THIS IS THIS SEAT'S OWN ENTRY, ARRIVING TWICE IN ONE HOUR AND ONCE FROM ANOTHER
-> SEAT.** *I grepped `docs/` and announced a false sentence had reached no document; it
-> was in shipped source.* **A reassuring answer suppresses the second look, and
-> "it does not exist" is the most reassuring answer a grep returns.** *Two careful seats
-> in one exchange makes it structural rather than haste.*
-
-### IN-SESSION MOVE AS A SORT KEY - HIS INSTRUCTION 2026-09-15, AND IT CHANGES THE ANCHOR'S PRICE
-
-**"i want in session move as a sortable option."** *Routed to Design; Research has
-nothing to build and said so.* **Nothing blocked, nothing deploys.**
-
-**IT IS A NEW QUANTITY, NOT A RESTORED WORD.** *`Move` was removed at `97e893d`
-because it was a SECOND WORD FOR THE SAME QUANTITY as `Gap` - across-session, from the
-prior close. This one measures from THIS session's open.* **A different denominator
-earns a different noun, so the word returning is the rename's own logic rather than a
-reversal of it** - *and unrecorded, the next reader sees `Move` back three weeks after
-the commit that killed it and "fixes" it.*
-
-**THE INTERACTION NEITHER THREAD HAD IN VIEW, AND IT IS THE REASON THIS SECTION
-EXISTS:** *`DiscoveryBoard.tsx:110` SORTS AND THEN SLICES.*
-
-```
-today           a bad anchor MISLABELS a row he can see   -> he looks, it reads oddly, he checks
-under the sort  a bad anchor DECIDES WHICH ROWS EXIST     -> there is nothing on screen to check
-```
-
-**AND THE DIRECTION MAKES IT WORSE RATHER THAN SYMMETRIC.** *Of yesterday's 10 wrong
-Moves, NINE were UNDERSTATED and one overstated.* **Understated names sort DOWN and out
-of the top-N; the single overstated name rises IN — and that is the only one he could
-have sanity-checked.** *The desk's own asymmetry landing on watchlist SELECTION: an
-over-warning is corrected by a user who looks, an under-warning never is.*
-
-**RESEARCH'S RE-PRICING, ITS OWN CALL AND NOT ASSERTED FROM HERE** - *I flagged and
-explicitly declined to re-prioritise, having raised an urgency on a bad reading once
-already tonight:*
-
-- **The pending non-restart cohort run moves from INFORMATIVE to a PRECONDITION** —
-  *nobody has measured whether anchors are right on an ordinary morning.*
-- **Item 2 (reseed `focused` from stored `rvol_rank`) moves from "nice" to required
-  before the sort is trusted in any session where a restart happened.**
-- **Item 1 (self-report when the selector cannot rank) is the difference between a bad
-  morning and a bad morning he knows about.**
-- **AND THE `SESSION` BOARD STATEMENT IS RE-PRICED HARDEST.** *"The anchors for this
-  session were established late" was an annotation on some numbers.* **Under a Move sort
-  it says THE ORDERING OF THIS BOARD IS UNTRUSTWORTHY** — *a materially stronger
-  sentence and a much better reason to ship the field Design paused.*
-
-### I GREPPED THE INPUT'S NAME AND CONCLUDED ABOUT THE OUTPUT
-
-**Third wrong absence from this seat in one day, and a new face.** *I searched
-`sessionOpens`, found it on the demand state and in `telemetry.ts` and nowhere in
-`view.ts`, and told two threads the quantity does not reach the surface that sorts.*
-
-**THE DERIVED VALUE HAS A DIFFERENT NAME AND ALREADY ARRIVES:** *`telemetry.ts:75`
-declares `sessionMove: SessionMoveReading | null`; `:134` builds it from
-`demand.sessionOpens`, the phase and the price — in the SAME OBJECT LITERAL as
-`percentChange`.* **`row.telemetry.sessionMove` is on the row, phase-resolved, and the
-sort key is one case arm.**
-
-- **I told Design that Research held a compute half. There was none, and Design could
-  have waited on a hand-off that was never coming.** *Corrected in the message rather
-  than only here.*
-- **THE THREE FACES OF THE SAME FAILURE IN ONE DAY:** *searched too few FILES
-  (`observedSince`); had the hits and did not OPEN them (Design's `firstSeenAt`);
-  searched the INPUT and concluded about the OUTPUT (this one).* **Each returned "it is
-  not there", which is the most reassuring answer a grep gives and the one that stops
-  the second look.**
-- **AND THE FILE HAD ALREADY DECIDED THE DESIGN QUESTION I WAS ROUTING.**
-  *`view.ts:303-314` forbids re-resolving `percentChange` per session inside
-  `discoveryValueFor`, because re-deriving produces a second different number under one
-  name.* **The right shape was chosen before anyone asked for the feature, and reading
-  the file would have answered what I was routing as an open question.**
-
-**RESEARCH'S SHARPEST POINT, KEPT AS ITS OWN:** *`sessionMove` is null in two of three
-`buildTelemetry` branches and the reading carries `state`, so a row can hold `move:
-null` under `NO_PRINT`.* **`discoveryMissingCount` already exists — and it matters more
-on this key than on any existing one, because it is the count of names THE SORT IS
-SILENTLY OMITTING.**
-
-### A FALSE MARKET STATEMENT FROM TWO CORRECT COMPONENTS - LIVE CODE, LATENT TODAY
-
-**Research, 2026-09-15. All four links verified HERE, and all four are in production
-`997d231`.**
-
-```
-repo.ts:504               reads the state column -> the board CAN receive NO_PRINT
-DecisionCells.tsx:158-167 renders NO_PRINT as the words "not traded", in WARN colour
-DecisionCells.tsx:152     still says "The board cannot receive NO_PRINT yet"  -- STALE,
-                          and it is the guard a reader would trust
-a fresh runtime           sessionOpenPrice null, and the live stream does NOT re-deliver
-                          bars from before it started
-```
-
-**THE CONDITION, ALL THREE REQUIRED:** *a mid-session restart happened; the name traded
-in the CURRENT session before it; the name has not traded since.* **Then the anchor is
-null, the engine computes `NO_PRINT` correctly from what it can see, and the board
-asserts a name did not trade in a session it traded in.**
-
-> **THAT POPULATION IS "SPIKED EARLY, THEN DIED" — the shape item 112 established and
-> `dead-while-ranked` measured, and one he tracks deliberately.** *It is also the shape
-> most likely to satisfy all three conditions at once.*
-
-**WHY IT OUTRANKS THE WRONG MOVE:**
-
-```
-a late anchor   -> a wrong PERCENTAGE on a row he can read and doubt
-NO_PRINT        -> the WORDS "not traded", in warn colour, about a name that traded
-```
-
-**The first is a number he can distrust. The second is the desk stating a market fact
-that is false, in the vocabulary built to stop exactly that.** *Both components are
-correct in isolation — the `state` field is right about what the engine can SEE, the
-restart behaviour is right about what it HAS.* **The composition is the defect: the
-two-correct-guards family, and this time the product is a SENTENCE rather than a
-silence.**
-
-**LATENT TODAY, CONFIRMED BY A READ RATHER THAN BY MY BELIEF.** *Ops, 04:39 ET:*
-
-```
-mointel-market   MainPID 355632   ExecMainStartTimestamp 2026-09-14 17:16:23Z (13:16:23 ET)
-                 NRestarts 0      cwd 997d231
-                 no Started / Stopped / SIGTERM journal line since 17:17Z yesterday
-```
-
-**The worker predates today's 04:00 open, so nothing can be falsely reading "not traded"
-right now.** *I believed that and put it to Ops as a READ rather than asserting it —
-this seat has reported a process state from a plausible reading before, and the belief
-being correct is not the reason it is now a fact.*
-
-**⇒ THE PRICE OF THE NEXT MID-SESSION RESTART, CONSOLIDATED — THREE ITEMS, AND HE
-APPROVED THE LAST ONE ON A QUALITATIVE COST:**
-
-```
-1  MEASURED   10 of the closing 50 carry a wrong Move; median ~3.5 points
-              understated; worst SPHL at -5.1% shown against +1.3% true, a SIGN FLIP
-2  MECHANISM  names that traded early and went quiet read the WORDS "not traded" --
-              CONFIRMED  a false market statement, not a wrong number
-3  NEW        under the Move sort he asked for, a wrong anchor decides WHICH ROWS
-              EXIST rather than how one row reads -- and nine of ten errors push
-              names DOWN, out of view, where nothing invites a check
-```
-
-*Items 2 and 3 did not exist when he priced Monday's restart.* **The `SESSION` scope field stops being an annotation and becomes a GATE:
-if the engine started late and this symbol was not replayed, `NO_PRINT` is not
-trustworthy and must not render as "not traded".**
-
-### RESEARCH UN-WITHDREW ITS `SESSION` PREDICATE, AND MY FINDING KILLED THE WRONG VERSION
-
-**My false positive landed on the ONE-conjunct version. Research had proposed TWO.**
-
-```
-A   observingSinceMs > sessionStartMs                                    <- what I tested
-B   A  AND  volumeBaseSource !== 'alpaca-historical-minute-bars'         <- what it proposed
-```
-
-*Yesterday's board rows were inside the focused 200, so they WERE replayed, so B's second
-conjunct is false, so B returns FALSE — correctly.* **My finding is fatal to A and does
-not touch B.**
-
-> **RESEARCH WITHDREW BOTH BECAUSE IT HAD STOPPED DISTINGUISHING ITS OWN TWO VERSIONS**
-> — *its words, and it found this while re-reading its own withdrawal.* **AND THIS SEAT
-> RECORDED THE WITHDRAWAL AS GENERAL.** *I wrote "both earlier predicates withdrawn by
-> their own authors" and carried that for hours.*
->
-> **A WITHDRAWAL IS A CLAIM AND INHERITS THE SCOPE OF WHAT IT WITHDRAWS.** *I already
-> have the entry that a retraction gets none of the checking the finding got; this is
-> the same rule about its BREADTH rather than its truth.* **B is buildable and verified
-> across Friday, today, a normal morning and a normal-day promotion.**
-
-### THE PREMISE IS CLOSED. A PREMARKET RESTART PROVABLY CANNOT REPAIR ITS OWN ANCHORS.
-
-**Ops, read 2026-09-15 04:38 ET, in the window, read-only, worker's keys over REST,
-never printed.**
-
-```
-AAPL RLGT QTRX PTN    dailyBar.t RAW = 2026-09-14T04:00:00Z   ET date 09-14
-                      carrying YESTERDAY'S FULL VOLUME
-meanwhile             AAPL and RLGT had already printed today's premarket
-                      minutes -- 04:33 and 04:37 ET
-```
-
-**⇒ `belongsToSession` is FALSE FOR EVERY NAME in early premarket.** *So `volume` is 0
-for all, the rvol preview is degenerate, the sort cannot sort, and the backfill can
-reach only the pins.* **Friday's mechanism is confirmed rather than inferred, and it
-took one read.**
-
-- **NOT SETTLED: WHEN the bar rolls.** *Only that it had not by 04:38.* **Ops recorded
-  raw and ET side by side, as Research asked, so a timezone slip could not reproduce the
-  bug inside its own test.**
-- **AND IT CONFIRMS THE FLAG THIS SEAT RAISED AGAINST DESIGN'S SEAM PREDICATE**, which
-  was conditional on exactly this: *with `belongsToSession` false, `volumeBaseThrough` is
-  null too, so Friday carried NO SEAM and a seam-based detector is silent on the incident
-  it exists for.* **Conditional then, established now.**
-- **THE OPERATIONAL SENTENCE, AND IT IS HIS:** *ordering a restart in early premarket
-  means the repair provably cannot run.* **Friday was his authorised exception; this is
-  the measurement that says what that exception costs.**
-
-**THE ESCALATION THAT DID NOT HAPPEN IS THE PART TO KEEP.** *This seat raised the read's
-priority on a bad reading, re-priced it down when two threads independently showed the
-detector no longer depended on it, and declined to ask him for a scheduled task or an
-alarm clock.* **It was then taken for free by a turn that happened to land in the
-window, which is what Ops said would happen and what this seat had proposed spending his
-sleep on.**
-
-### THE OLD CANVAS LINK IS FINE, AND I CHECKED RATHER THAN RELAYING IT
-
-**Web republished at `dd98782` and reported that the artifact URL changed FORM** —
-*`claude.ai/artifact/MydyXGM4MpDZtwixpUXjvs` now, `claude.ai/code/artifact/a9df35ee-…`
-in every older message* — **and that the old address is the same artifact.**
-
-*I read the old URL: it carries "None of this is on the chart." and does NOT carry the
-struck header.* **Same artifact, new address, current content. An old link in a message
-or a bookmark shows the live canvas.**
-
-> **THE HAZARD I WAS CHECKING FOR IS THE ONE WORTH NAMING EVEN THOUGH IT DID NOT EXIST:
-> a link that still RESOLVES but serves SUPERSEDED content is indistinguishable from a
-> working one.** *Web's instinct to flag the URL change was right; the thing that
-> settled it was opening the old address rather than accepting that it was the same
-> artifact.* **One read, and it is the difference between a caveat and a fact.**
-
-### A SUMMARY SAID THE RELATIONSHIP WAS RETIRED; THE DOCUMENT SAID THE CONSTRUCTION WAS
-
-**2026-09-15. He answered Marketing's voice-reference ask with Warrior Trading and
-"i would like tmi to be complementary". Marketing routed it to Commercial through this
-seat, framed as restating "the supplement relationship the desk retired as a hook in
-§2e".**
-
-**I opened §2e instead of carrying that, and it says the opposite of the summary:**
-
-```
-RETIRED      the LINE -- "Your scanner finds it. This tells you what it is." --
-             everywhere, carve-out withdrawn 2026-09-10, because it puts a
-             competitor in the SUBJECT position and failed his own pitch objection
-KEPT         the RELATIONSHIP: "belongs in the plain statement, said once, without
-             a scanner as the subject" -- registered in Web's card and live
-```
-
-**⇒ So he was not reopening anything, and the question his sentence actually reaches is
-one §2e NEVER FACED: whether a competitor may be NAMED.** *The retired line had a
-generic scanner in the room; naming Warrior is a larger step, and the ruling that killed
-the line does not decide it either way.*
-
-**COMMERCIAL RULED FROM THE CORRECTION** (`d93f0ba`, §2e-bis): *relationship stays as
-registered, competitor not named in public copy.* **Two of its three grounds are the
-distinction the summary had collapsed** — *that naming puts a competitor back in the
-subject position against his own objection, so HIS TWO STATEMENTS DO NOT CONFLICT.*
-**Under the summary's version they would have, and the ruling would have been about
-overriding him.**
-
-- **AND MARKETING'S OWN LINE IS THE ONE THAT SURVIVED INTO THE RULING: a positioning
-  fact he STATES is not an instruction to PUBLISH it.** *He answered a question about
-  VOICE.* **Marketing drew that itself and changed nothing on the page.**
-- **THE COST OF NOT LOOKING WOULD HAVE BEEN A RULING, NOT A SENTENCE.** *This seat's
-  whole job is turning documents into summaries, and the one thing a summary reliably
-  loses is which of two adjacent things was decided.*
-- **Housekeeping flag taken in the durable shape:** *Commercial re-dated its LIVE STATE
-  header to* **"as of 2026-09-15 (opened 2026-09-07; every entry below carries its own
-  date)"** *rather than stamping the block fresh.* **A re-dated stale block is worse than
-  an openly stale one — it makes old facts look verified — and this one says "as of"
-  instead.**
-
-### THE TEST-USER PATH ALREADY EXISTS, IS LIVE, AND NEEDS NO DEPLOY
-
-**He said 2026-09-15 that he is ready for test users.** *Two different asks hide under
-that phrase and only one is close.*
-
-```
-PEOPLE LOOKING AT HIS DESK    /review/<token> -- per-user, revocable, auth_basic off,
-                              access_log off (the token is IN the path). NO coaching or
-                              fills code touches ANY route, so his P&L is not reachable.
-                              LIVE NOW. NO DEPLOY REQUIRED.
-PEOPLE WITH THEIR OWN DESKS   app/auth/ does not exist; lib/auth has NO importer outside
-                              itself; no nginx /auth/ location; Google verification not
-                              passed. And every float is his SINGLE-TENANT Sheet's.
-```
-
-**OPS PROVED THE TRANSPORT BEHAVIOURALLY, NOT BY DIFFING A FILE — 2026-09-15 14:11 ET:**
-
-```
-/etc/nginx/mointel-locations.conf   byte-identical to the 997d231 release copy
-                                    installed 17:13:32Z, workers re-spawned 17:15:45Z
-a real build chunk from live .next  200      <- assets reach a review session
-/                                   401      <- the board is still protected
-/review/notatoken/api/dashboard     403      <- a bad token is refused
-```
-
-**THREE CASES WITH THREE DIFFERENT EXPECTED ANSWERS, which is what makes it a check.**
-*This desk's own burn was a revoked review token tested BY STATUS CODE returning 200,
-where only the bodies separated the cases.* **Ops did not repeat it.**
-
-**⇒ The defect Design found — review sessions served HTML with no JS and no CSS, every
-control inert SINCE PHASE 1 because nobody had ever clicked one — is fixed and the fix
-is live.** *Remaining and asked of Design: the live click test, whether the page
-hydrates, and whether the diagnostics surface and the review API subset are fit for a
-stranger.*
-
-**WHAT NO TESTER CAN DO ON EITHER PATH: read a privacy policy or terms.** *Web has both
-ADOPTED and neither is reachable; `tmitrader.com` returns 401 to everyone.* **Not raised
-to him as a blocker until he says which kind of tester he means** — *for a handful of
-invited people it is Commercial's ruling, not a wall.*
-
-### "STILL AWAITING YOUR ANSWER" IS A READING OF A MESSAGE, NOT OF THEIR STATE
-
-**2026-09-15/16. I sent the same approval THREE TIMES because Ops kept reporting it
-open.** *It had landed the first time.*
-
-```
-Ops writes "still open" at the END of a turn
-my queued message then runs as the NEXT turn
-so every "still open" was written BEFORE the approval it asked for arrived
-```
-
-**I read a sentence composed minutes earlier as a statement about now** — *which is
-this seat's oldest failure, arriving inside the bus itself rather than in a charter.*
-**Same shape as `isRunning`: a claim about a moment, read as a claim about the
-present.**
-
-- **WHAT SETTLED IT COST ONE CALL AND NO MESSAGE.** *`list_events` on Ops showed its
-  current turn opening with "Approved. Before it ships, Integration's two cautions go
-  where the next actor reads them."* **The state answered a question the messages could
-  not.**
-- **⇒ WHEN A THREAD SAYS IT IS STILL WAITING ON YOU, READ ITS STATE BEFORE RE-SENDING.**
-  *The README already says to read the repo before re-stating a ruling; this is the same
-  rule pointed at the session rather than the tree, and re-sending is not free — three
-  copies of one approval is three chances for a later one to contradict an earlier.*
-- **AND THE SECOND AND THIRD COPIES WERE THE RISKY ONES.** *The third explicitly
-  superseded the second.* **Had I refined the conditions while re-sending, Ops would
-  have acted on whichever arrived first and I would not have known which.**
-
-### A FILE TOUCHED BY ONE KIND OF EDIT STAYS CORRECT ONLY ABOUT THAT KIND OF THING
-
-**Web's formulation, after the FOURTH instance in one week. Recorded as its own.**
-
-```
-canvas.json      note-direction, note-admitted, note-states   four stale claims at once
-AWS_DEPLOYMENT.md  "no custom domain" while tmitrader.com bypasses the distribution
-route spec       three lines describing a five-prefix batch its own §2b superseded
-canvas.json      note-blocked: "THIS PAGE IS THE ONE PIECE THAT CANNOT SHIP YET"
-```
-
-**THE FOURTH HAD THE WORST RATIO OF ATTENTION TO AUDIENCE: it is the first thing a
-reader meets on the canvas, and it was reversed by the split its own author proposed.**
-
-- **The artboards stay current because seats EDIT them.** *The frame around them goes
-  stale because nothing touches it except a height change.* **A spec is worse still —
-  everyone downstream treats it as the answer rather than as something that moved.**
-- **AND EACH WAS FOUND BY SOMEONE ARRIVING FOR A DIFFERENT REASON**, never by a sweep:
-  Design read the deployment doc to price a redirect; I read the spec to route a build;
-  Web re-read `canvas.json` only because it was already republishing.
-- **THE COST IS NOT CONFUSION, IT IS CONFIDENT WRONG REASONING.** *Design built a
-  correct objection on the deployment doc's false premise; the spec's stale
-  verification loop would have proposed opening `/signin`, the one door its own §295
-  says must stay shut.*
-
-### A CHECK THAT CANNOT SEE THE STATE IT IS BEING READ AS EVIDENCE OF
-
-**2026-09-16. Web swept seven paths from an actor with no cached state and got 401 on
-all seven, correctly calling it the clean "before" half of the Release 2 verification.**
-
-> **IT SAYS NOTHING ABOUT RELEASE 1.** *Release 1 is app-only with nginx untouched, so a
-> stranger receives 401 whether it shipped or not.* **The check cannot produce a
-> different answer for the two states — the question this desk asks of every
-> instrument.**
-
-**Web's sentence was exactly bounded. The hazard is the READER a week later** who meets
-seven 401s at a timestamp and concludes nothing had shipped. *Flagged for that reason
-rather than as a correction.*
-
-**THE DISCRIMINATOR IS THE CREDENTIALED EXISTENCE CHECK** — *Web's own §3d step 2,
-which separates REACHABILITY (poisoned by a held credential) from EXISTENCE (not).*
-**The first moment that distinction has been load-bearing rather than theoretical, and
-it was written down before it was needed.** *I asked Ops which state production is in
-rather than inferring it.*
-
-### AN APPROVAL IN FLIGHT IS NOT AN APPROVAL RECEIVED - THE MIRROR OF A RULE WE ALREADY HAD
-
-**2026-09-16, 02:34 ET. Release 2 shipped carrying `364619a` before my approval of it
-arrived.** *Ops sent the addendum, I approved it, and the approval crossed the ship.*
-
-**THE OUTCOME WAS RIGHT AND THE MECHANISM WAS NOT.** *I did approve it, the content
-matched exactly, and it closed a live gap — a rollback after a crash-loop needing a
-manual `systemctl reset-failed`.* **But at 02:34, from the shipper's side, an approval
-in flight and an approval never sent are indistinguishable.**
-
-> **THIS DESK WROTE THE RULE POINTED THE OTHER WAY AND NEVER WROTE THE MIRROR.** *An
-> instruction in flight is not an instruction received* — recorded after a HOLD crossed
-> a deploy and cost something, with the repair that a hold must say **HOLD AND
-> ACKNOWLEDGE.** **The approval direction has no such rule.**
->
-> **AND THE ASYMMETRY IS WHY IT WILL RECUR: a missed hold is visible immediately; a
-> missed approval is invisible whenever the approver would have said yes** — which is
-> most of the time.
-
-**THE FIX IS THE SAME SHAPE AND COSTS NOTHING:** *ship the content you HAVE approval
-for and leave the addendum for the next release, or say "shipping at HH:MM unless
-refused" so silence is a decision rather than an assumption.*
-
-**AND I WOULD HAVE DONE THE SAME IN ITS POSITION, which is why this is the protocol and
-not the judgement.** *Live gap, closing window, green gate, and an addendum that was a
-pure improvement on a defect that had already caused an outage that night.* **Holding
-for a message that might not arrive before 07:00 was the worse call on every axis but
-this one.**
-
-**HE IS TOLD, because he delegated deploy approval to this seat so there is a check
-between his desk and production.** *A release going out with content the check had not
-yet passed is a small erosion of that, and it is his to know rather than his to act on.*
-
-### THE SESSION REPORT - SCOPED ACROSS FIVE SEATS, NOTHING BUILT, TWO GATES BEFORE SHIPPABLE
-
-**He asked 2026-09-15 for a narrative report at each session seam and said he could be
-convinced otherwise. He was, on almost every parameter, by measurement rather than
-argument.**
-
-```
-SHAPE     two reports, 22:00 and 07:00 -- not three. The close has the least to
-          narrate and CANNOT DESCRIBE THE AFTER-HOURS IT IS MEANT TO PREP FOR.
-CONTENT   the market only. Execution is OUT.
-SURFACE   unread dot, never a flash; never auto-opens; gated out of review mode.
-STORAGE   cites the assessment ids it was computed from.
-```
-
-**WHAT DECIDED EACH, and none of it was taste:**
-
-- **TWO NOT THREE — Research, 7,575 rows over 16 dates.** *Change narration runs 100% at
-  06:10, 97% at 22:00, 91% at 09:25 and **34% at the close**, because change tracks
-  RESEARCH REFRESH rather than market activity.* **And `ah_percent_change` is 0% at
-  16:00 — the after-hours prep cannot describe after-hours.**
-- **07:00 NOT 09:25 — the capture already exists.** *`PREMARKET_0700`, labelled "Late-mover
-  scan", 60-minute validity, with the schedule's own comment that nothing else runs until
-  09:25.* **Built to stay useful through his window before anyone asked for this.**
-- **EXECUTION OUT — his ruling, and Coaching's reason is better than the technical ones.**
-  *"the report is for monetization, coaching (what you do) is just for me."* **A future
-  customer's report would need to describe THEIR execution and the desk holds fills for
-  nobody, so the section has no coherent product form EVEN IN PRINCIPLE** — not merely no
-  data today.
-- **NO FLASH — Design.** *Motion is his trade signal; chrome competing in that channel
-  costs on every glance rather than three times a day.*
-
-**THE ENTITLEMENT, RESEARCH'S, AND IT IS A TRUTH STANDARD:** *may state what the desk SAW
-at a cited snapshot and its own JUDGEMENT attributed as such; may not narrate a session's
-shape, and may not be silent about what it does not cover* — **research judgement is 82%,
-so four or five of twenty-five names have none.** *Capture gaps are where he cares most:
-04:00-06:10, 07:00-09:25 INSIDE HIS WINDOW, the bell, and all of after-hours while it
-happens.*
-
-**COMMERCIAL'S IS A DIFFERENT STANDARD ON THE SAME LIST, and that is the finding:** *record
-never outcome — "XYZ ran 40% from 07:10 and the catalyst read NOTHING COLLECTED" ships;
-"XYZ was the trade" does not.* **And the SAME field list is also the LICENCE posture:**
-*prices and quotes at cited times are single-security price data in a persistent,
-forwardable document with his name on it; RVOL, rank, catalyst, cycle, structure and
-supply are derived content no instrument polices.* **So whether prices go in is HIS call
-under accepted exposure, not Research's under a truth standard.**
-
-**TWO GATES BEFORE IT IS SHIPPABLE, NEITHER A DESIGN QUESTION:**
-
-```
-1  WHICH NARRATED FIELDS TOUCH THE SHEET.  The Sheet is single-tenant, so a monetized
-   report narrating a Sheet-sourced field is a product whose SECOND CUSTOMER CANNOT
-   EXIST. Research to trace.
-2  WHETHER PRICES GO IN.  His call, under a ruling he has already made.
-```
-
-**AND THE ONE THING THAT CANNOT BE RETROFITTED:** *`desk_assessments` is never pruned —
-only `minute_bars` is — so a report CONFINED TO ITS CITED ROWS stays checkable forever.*
-**With the citation a PM-prep narrative is a forecast recorded before its outcome, which
-is the capability given up when the two ChatGPT tasks were paused. Without it, a diary.**
+**NOTHING HAS SHIPPED SINCE `6f8894b` AT 02:34 ET WED.** *The local tip is far ahead and
+is docs plus two deploy-script commits.* **The market worker is deliberately one release
+behind and that is not a fault.**
+
+### THE PUBLIC SITE IS LIVE. THAT IS THE WEEK'S RESULT.
+
+**`tmitrader.com` serves a landing page, a privacy policy and terms to anyone, and the
+desk is at `/desk` behind Basic Auth.** *Verified three ways - Ops from the box, this
+seat as a stranger, and Web against the ELEVEN SUBRESOURCES the page actually requests,
+which is the check the first two missed.* **He can submit for Google verification; the
+consent screen must carry the same URLs and "verified domain" means Search Console, both
+his.**
 
 ### WHAT IS HIS AND OPEN
 
-1. **MARKETING, TWICE, AND THREE DAYS COLD.** *Read the pre-session research section
-   on the published canvas and say whether it is the deal he meant; and a voice
-   reference.* **Both have been answerable since 2026-09-11 and nobody told Marketing
-   its blocker had cleared** - see the correction in `marketing.md`.
-2. **OPS'S MODEL AND EFFORT ARE NOT THE DESK'S DEFAULT AND ONLY HE SETS THEM.**
-   *`Ops-tmi` runs `claude-fable-5-1` at effort `low`; `Design-tmi` is `claude-opus-5`
-   at medium, `Research-tmi` at max.* **Flagged, not asserted as a fault: Ops ran a
-   clean deploy and restart today and caught its own clock error while doing it.**
+1. **RUN THE CONTROL ARM?** *`RESEARCH_OMIT_SHEET_PRIOR=1`, approved, never run.* **The
+   automatic dossier verdict is produced with his Sheet's prior analysis in the prompt -
+   `config.ts:65-66` says so in the author's own words and calls this the control arm.**
+   *It sizes three decisions at once: whether the switch is free, whether the 6,512
+   stored dossiers may be narrated, and how independent the board's research actually
+   is.* **The only thing genuinely waiting on him.**
+2. **THE SESSION REPORT: build it?** *Scoped across five seats and summarised below.*
+3. **GOOGLE VERIFICATION** - his to submit, unblocked since 02:34 ET Wed.
 
-**NOT ASKED, DELIBERATELY: the second yes on closing port 22.** *Gate 1 passed for ONE
-network today by accident of his travel, and gate 2 was exercised on verification
-reads only.* **One pass proves one network, not the next, which is this seat's own
-recorded argument for keeping port 22 LONGER.** *Asking now would spend his attention
-on a question the evidence does not yet support.*
-
-### THE ACCESS PATH - BOTH GATES MOVED TODAY, NOTHING CLOSED
-
-**Managed node `mi-0a647a08fcc7366b7`; `ssh mointel-ssm` works.**
-
-- **GATE 1 PASSED FOR ONE NETWORK, BY ACCIDENT.** *His laptop's egress read
-  `95.17.58.175` at 13:00 ET, which was not on the port-22 rule; port 22 timed out and
-  Session Manager carried preflight on the box and returned.* **The off-list test this
-  seat specified, run for free by his travel. It proves that network.**
-- **GATE 2 EXERCISED, NOT SATISFIED:** *SSM carried the post-restart verification
-  reads.* **It has still never carried a deploy.**
-- **A LIVE DEFECT IN THE DEPLOY SCRIPT, FOUND THE SAME HOUR:** *`push-release.sh`'s
-  preflight probe went over port 22, timed out, and the script reported **"preflight
-  refused; nothing was shipped"** - a TRANSPORT failure wearing a GATE's words.*
-  **Nothing shipped, which is the safe outcome, and the log line is wrong about why.**
-  *Distinguishing "the gate said no" from "could not reach the gate" is Ops's, noted,
-  not started.*
-- **AND THE OLDER ONE STANDS: `push-release.sh` RUNS `deploy.sh` IN THE FOREGROUND OF
-  ONE SSH SESSION.** *No `nohup`, no `setsid`, no trap.* **A drop between stopping and
-  starting the units leaves stopped units and a half-applied release - TRUE OF EVERY
-  DEPLOY THIS DESK HAS EVER RUN, and the transport does not change it.**
-- **Spend answered: AWS removed the advanced tier 2026-06-30. $0.05/session from
-  2026-09-30.** *Read from the pricing page by two seats independently.*
-
-### SESSION TITLES CARRY `-tmi`, AND THE RULE IS NOW IN EVERY OPENING MESSAGE
-
-**His ruling 2026-09-14, after a message from Design to Integration landed on MEO's
-Integration and then resolved to TL;DW's. FIVE constellations share this machine.**
-
-**All eight threads plus this one now carry the suffix.** *`R&D` renamed to `R&D-tmi`
-2026-09-14; `Coaching` takes it on its next turn.* **`coaching.md` and `rnd.md` had
-NEVER carried a title instruction at all** - the seventh session recorded them as
-"still bare, they take the suffix when next opened", *which is a rule naming an EVENT
-where the requirement is that the instruction sit in the file a successor reads.*
-**Landed at `36fe45a`.**
-
-### THE SEND CHANNEL - THE ADDRESS WENT STALE, NOT THE TOOL. I GOT THE CAUSE WRONG.
+### THE NINE OPEN ITEMS OPS HOLDS - its own list, taken verbatim 2026-09-16 23:04 ET
 
 ```
-ALWAYS   list_sessions -> sessionId, then send by id. Never a role name, never a
-         cached id, never one asserted in prose.
-WHY      names go stale, and a DEAD SEAT QUEUES SILENTLY behind a success receipt
-         that reads exactly like delivery.
+1  premarket snapshot        DONE 04:38 Wed; dailyBar.t still yesterday's. WHEN it
+                             rolls is unknown and not urgent.
+2  22:00 retention observable PROVEN three rolls running. RETIRE AS A STANDING ITEM.
+3  /robots.txt               401 today. Decide with Web; do not inherit.
+4  two worker/runtime.ts     rvol_rank-seeded backfill set; "selector has no signal"
+   scopes (Research's)       log line. Neither urgent.
+5  QCLS cycle incident       with Research + Design; returns to Ops as an enumeration.
+6  lib/review scopes         token lifetime as a CONDITION (--until-revoked);
+                             sanitize path redaction.
+7  authority field           schema, Ops with Web, AFTER the public batch.
+8  access path               gates 1 and 2 moved; gate 3 is HIS SECOND YES and is NOT
+                             ASKED. Port 22 stays. /32s: 70.17.101.27, 95.17.58.175.
+9  deploy method             detached systemd-run, STANDING, already in production.
 ```
 
-**2026-09-14: Design's anchor-provenance field spec never reached Research.** *It
-survived only because Design had also committed it at `7df7d17`.*
+### THE TWO LIVE DESIGNS, NEITHER BUILT, NEITHER BLOCKED ON HIM
 
-> **I DIAGNOSED THE TOOL AND THE CAUSE WAS THE ADDRESS.** *I wrote into the shared
-> README that `SendMessage` is broken on this machine.* **Design's other messages that
-> hour went through that same tool to two live seats, which answered on content only
-> Design had sent.** *What actually happened: Design addressed the seat titled `R&D`,
-> dormant since 2026-09-10, instead of the live `Research-tmi` — an address carried
-> forward from an old context summary rather than looked up.*
->
-> **"That tool is broken" would have held until the first person saw it work and
-> stopped trusting the page around it. Design's form is durable: look it up every
-> time, because a dead seat queues silently.** *Corrected in the README the same hour;
-> the wrong cause was live in the shared file for roughly forty minutes.*
->
-> **AND IT IS THIS SEAT'S OWN RECORDED FAILURE: a true-sounding reason that was not a
-> fact, supplied because the README bullet I was already correcting made it plausible.**
-> *The retracted bullet was real and worth fixing. The incident was not its instance.*
+**THE CYCLE SIBLING (QCLS).** *His board showed BACKSIDE against a four-month-old high on
+a name up 270% at rank 3.* **Phase comes from settled bars; today is not in the input.**
+The classifier is correct and was denied the day that would have superseded May. Three
+parts, agreed, unbuilt: a **high-based** move test (monotone, so the latch falls out of
+the data), a **bad-print guard whose two inputs are captured from the same bar** so no
+reseed can separate them, and Design's **reference switch plus a third badge state** for
+*could not observe*. **The high-based test is a SIBLING of `isCycleStart`, not the same
+rule** - strictly more permissive, so a badge can read day-1 frontside at 14:00 and
+shadow next morning. *The morning view is the one that lost information, not the
+intraday one; tell him it that way round.*
 
-**A STANDING DISAGREEMENT, RECORDED RATHER THAN RESOLVED:** *`ops.md:1294` has
-`SendMessage` to a raw `local_…` id FAILING; Design measured it delivering on
-2026-09-14.* **Both are live readings at their own instants. The rule above does not
-depend on which is current, which is why it is the rule.**
+**THE SESSION REPORT.** *Two reports at 22:00 and 07:00, not three at the seams he named
+- the close has the least to narrate and CANNOT describe the after-hours it is meant to
+prep for.* **Market only; execution is OUT on his ruling that the report is for
+monetization.** Unread dot, never a flash, never auto-opens, gated out of review mode.
+**It cites the assessment ids it was computed from - `desk_assessments` is never pruned,
+so a cited report stays checkable forever and a 07:00 prep becomes a forecast recorded
+before its outcome.** *Two gates before shippable: which narrated fields touch the
+single-tenant Sheet, and whether prices go in - the second is his under accepted
+exposure, and Commercial's finding is that prices are the least load-bearing content and
+the most exposed.*
 
-**AND MY FIRST RELAY FLATTENED DESIGN'S FIELD.** *I described the spec as "the stamped
-boolean". It is `boolean | null` - three states.* **`true` fires the board statement;
-`false` is silent because the anchors are sound; `null` is silent because AN OLD BUILD
-CANNOT REPORT A FIELD IT NEVER HAD.** *Collapsing the last two asserts soundness on a
-build with no idea.* **Both Research and Design caught it independently.** *The field
-is `anchorsEstablishedAfterSessionStart` — named for the condition, because a restart
-is only one of at least two known causes.*
+### THE OTHER SEATS - AND ONE STALENESS THAT MATTERS MORE THAN THE REST
 
-> **CHECK `cwd` BEFORE EVERY SEND.** **The title is a claim; the working directory is
-> a fact.**
+- **Research-tmi** - **ITS LIVE STATE IS DATED 2026-08-27, THREE WEEKS STALE, ON THE
+  THREAD THAT HAS DONE THE MOST WORK THIS WEEK.** *Everything it established about the
+  anchor, the cycle, the report and the Sheet dependency lives in THIS file and in chat,
+  not in its own charter.* **Only its owner can rewrite it and a successor should ask
+  early.**
+- **Ops-tmi** - current, and `ops.md` is the operational record. The only deploy seat.
+- **Design-tmi** - current. Owns the badge, the sign-in artboard, and state 2.
+- **Web-tmi**, **Marketing-tmi**, **Commercial-tmi** - current; Commercial and Marketing
+  idle with nothing pending.
+- **Coaching-tmi** - idle. Its extract is complete through 09-10 and he has withdrawn
+  the ask for 09-11/09-12 exports; **do not chase them.**
+- **R&D-tmi** - idle since 09-13. Not re-engaged this week.
 
-### THE ANCHOR WORK - ANSWERED 2026-09-14 14:23Z. ONE CAUSE, AND MY NUMBER WAS WRONG.
-
-**Ops took the expiring read. Full table in the `ops.md` tail.**
-
-```
-17 named "misplaced" by the earlier pass
- 4 of those KEPT an 08:00 anchor -- they were never misplaced
-13 genuinely misplaced, spread 08:33-10:04
- 0 show the promotion signature (post-restart bars BEFORE the anchor)
-
-13/17 = 76.5% of the eligible cohort
-13/32 = 40.6% of premarket-ranked names
-```
-
-**⇒ ONE CAUSE. THE RESTART. And every misplaced anchor equals that name's OWN FIRST
-POST-RESTART BAR.**
-
-**I TOLD HIM 53.1% AND IT WAS 40.6%.** *The 17 was a count of candidates, not of
-confirmed misplacements, and I published it as the latter.* **Retracted here because
-he holds the wrong figure.**
-
-> **AND MY DISCRIMINATOR WAS WRONG, WHICH IS THE WORSE ERROR.** *I told Ops: "all at
-> `08:33Z` means restart-caused; scattered through the morning means promotions."*
-> **A RESTART PRODUCES A SCATTER.** *Names do not all print in the same minute
-> afterwards — each anchors whenever it next trades.* **The spread 08:33-10:04 is the
-> restart's own shape, and on my test it would have read as a second cause that does
-> not exist.**
-
-**THE TEST THAT ACTUALLY SEPARATES THEM, AND IT IS OPS'S:**
+### THE SEND CHANNEL - ONE RULE, AND A MESSAGE WAS LOST TO GETTING IT WRONG
 
 ```
-anchor == the name's own first post-restart bar        -> RESTART
-post-restart bars exist BEFORE the anchor              -> PROMOTION (bars discarded at admission)
+ALWAYS  list_sessions -> sessionId, then mcp__ccd_session_mgmt__send_message
+WHY     names go stale and A DEAD SEAT QUEUES SILENTLY behind a success receipt
 ```
 
-*Mine compared a distribution against an expectation I had invented. Ops's compares
-each row against its own tape.* **A per-row test beat a population test, and the
-population test would have been confidently wrong.**
+*2026-09-14: Design's field spec never reached Research because it addressed a seat
+dormant since 09-10.* **Not a broken tool - a stale address.** *The spec survived only
+because Design had also committed it.*
 
-**FOR DESIGN: board-wide stands, one cause, and the per-row mark stays rare.** *Sent
-to Design-tmi directly.* **OPEN, ROUTED TO RESEARCH: why four rows survived.**
+> **AND CHECK A THREAD'S STATE BEFORE RE-SENDING ANYTHING.** *I sent one approval THREE
+> TIMES because Ops reported it open in messages composed before mine arrived.
+> `list_events` answered in one call what three messages could not.*
 
-### THE CAUSE OF FRIDAY'S ANCHOR LOSS: A SORT THAT CANNOT SORT
+### WHAT THIS HANDOVER CANNOT GIVE YOU
 
-**Research, 2026-09-14, `274b3c9`. The number is confirmed at 40.6% by two
-independent paths and the mechanism is found.**
+**INTEGRATION NORMALLY CROSS-CHECKS A RETIRING SEAT'S HANDOVER AGAINST THE BUS. NOBODY
+CAN CROSS-CHECK THIS ONE.** *Every fact above is either Ops's verified read or my own,
+and the second kind has been wrong repeatedly this week - three wrong absences, two
+reversals on one question, and an error filed against Design that Design had not made.*
+**Treat my summaries as pointers and open the file.**
 
-**THE STARTUP BACKFILL ALREADY REPAIRS LOST ANCHORS** — *it re-fetches the session's
-early bars AND clears the seam that would discard them, both from one branch at
-`worker/runtime.ts:916-948`.* **It is sized for 100+ names. On Friday it delivered
-8.**
-
-```ts
-const volume = belongsToSession ? dailyBar.v : 0;
-const rvol   = computeDailyRvol(volume, baseline.averageVolume);   // 0, NOT null
-rvolPreview.sort((a, b) => b.rvol - a.rvol).slice(0, focusCount);
-```
-
-> **Every entry scores 0, so the comparator returns 0 for every pair, and the slice
-> takes an ARBITRARY 200 in iteration order.** *Alpaca returned bars only for names
-> that had already traded — the 8 sheet pins.* **The thirteen were not ranked too
-> low. NOTHING WAS RANKED AT ALL.**
-
-**AND WHY "13,283 baselines loaded" DID NOT SAVE IT: the numerator was zero, so a
-correct denominator produced a correct, useless zero.** **A selector that is right
-about every individual value and IDENTICAL ACROSS ALL OF THEM CANNOT SELECT.**
-
-**TWO SCOPE ITEMS, BOTH `worker/runtime.ts`, BOTH OPS'S, NEITHER TONIGHT:**
-
-```
-1. SELF-REPORT   if the preview's max rvol is 0, the selector has no signal.
-                 ONE LOG LINE. Independent of item 2 and smaller.
-                 It would have answered this in the journal instead of needing a
-                 forensic reconstruction two days later.
-2. RESEED        seed `focused` from ticker_session.rvol_rank (the cycle BEFORE the
-                 restart) and let the snapshot preview ADD to it rather than BE it.
-                 On Friday that puts all thirteen in the backfill: zero anchor loss.
-```
-
-**ITEM 1 FIRST IF ONLY ONE HAPPENS.**
-
-**THE PRIORITY ARGUMENT IS NOT "RARE", AND THE HONEST FRAMING IS RESEARCH'S:** *the
-defect fires only on a bootstrap between the premarket open and the daily-bar roll —
-which is rare, and is **exactly when someone is already handling an incident**.*
-**The repair is unavailable precisely in the window it exists for.** *"Rare" and
-"fires only during incidents" argue for different priorities and the second is true.*
-
-**ONE PREMISE UNVERIFIED AND IT DOES NOT GATE THE FIX:** *that Alpaca's snapshot
-`dailyBar` at 04:33 ET still carries the previous day's date.* **The evidence demands
-it; code cannot confirm it.** *Ops takes one read-only REST snapshot the first
-premarket a turn falls in that window.* **Both scope items are correct either way.**
-
-### A THRESHOLD INSIDE AN INSTRUMENT READS AS A FINDING RATHER THAN AN OPINION
-
-**Research's own correction, and it is the sharpest thing in a week of them.**
-
-*Its cohort instrument counted "traded before the restart" as "lost its anchor". Four
-names had their true 08:00 anchor RESTORED three seconds after the worker came up, so
-the proxy overcounted* — **and it overcounted ACROSS THE 50% LINE THE INSTRUMENT WAS
-RULING ON. 53.1% and 40.6% fall on opposite sides.**
-
-> **THAT 50% THRESHOLD WAS RESEARCH'S OWN, AND DESIGN HAD DELIBERATELY DECLINED TO
-> INVENT ONE FOR THIS DECISION.** **A threshold placed inside a measuring tool stops
-> being an opinion and starts being output.** *Nobody re-litigates a number the
-> instrument printed.*
-
-- **The instrument printed a CONFIDENT WRONG VERDICT FROM CORRECT DATA.** *Every
-  value it read was accurate; the ruling was not.*
-- **THE FIX WAS TO REMOVE THE RULING, NOT TO MOVE THE LINE.** *It measures directly
-  now and no longer rules.* **40.6% is the INPUT to Design's call, not the answer.**
-- **THE SEAM THIS SEAT SHOULD WATCH: a measuring seat and a deciding seat are
-  different seats, and a threshold is where one quietly becomes the other.**
-
-### BUILT, SCOPED, NOT STARTED
-
-- **`lib/market/replay.ts` - the anchor fix. DELIBERATELY UNWIRED.** *Calling it after
-  `bootstrapSession` is a COMPLETE NO-OP and reports the bars it fed.* **Snapshot and
-  replay are ALTERNATIVES, not layers.** *Research's shape: replay first with the seam
-  null, then seed volume as the RESIDUAL - which also detects an untrustworthy anchor
-  for free.* **`seedSession` currently EVICTS minutes inside the seam and their VWAP
-  contributions, so the proposed order destroys the replayed history until that
-  changes.**
-- **THE ANCHOR FIELD IS SETTLED AS OF 2026-09-14 14:10 ET. NOT BUILT, NOT BLOCKED.**
-  *Design specified it (`7df7d17`), Research owns the engine side, and the two of them
-  closed the predicate between themselves.*
-  ```
-  anchorsEstablishedAfterSessionStart = observingSinceMs > sessionStartMs
-  boolean | null   three states; null is "this build cannot say" and renders SILENT
-  ```
-  **ONE BOARD STATEMENT, NO PER-ROW MARK.** *Design withdrew its own per-symbol
-  population on Research's objection: after a mid-session restart the engine has no
-  memory of what it tracked at 04:00, so the denominator disappears in the field's own
-  firing condition.* **Field and render ship together; a render reading a field the
-  engine never writes is the mirror of a check that cannot fail.**
-  **`false` means "the anchors established at session start are sound", NEVER "every
-  anchor is sound"** - promotions are invisible by construction, and a feed gap is
-  UNRECORDED rather than undetectable (*Research's correction of its own word;
-  `desk_events` is append-only and could carry it, but `symbol` is `TEXT NOT NULL` and
-  a stall is not a disconnect*).
-- **THE PREDICATE ABOVE IS WITHDRAWN BY ITS OWN AUTHOR. DESIGN'S SEAM PREDICATE IS
-  WHAT IS BEING BUILT.** *Read at the lines by this seat rather than taken on report:*
-  ```
-  runtime.ts:943-947   backfill   volumeBaseThrough: null          SEAM CLEARED
-  runtime.ts:1153-1156 promotion  volumeBaseThrough: snapshotMinute SEAM SET
-  ```
-  **THE SEAM IS THE REPAIR RECORD, so `hasSeam` already means LATE AND UNREPAIRED.**
-  *Design's per-symbol predicate carries both halves; `observingSinceMs >
-  sessionStartMs` carries only the first, because the repair is per SYMBOL and the
-  predicate is per PROCESS.* **Research: its denominator objection killed Design's
-  POPULATION, not Design's PREDICATE, and it had conflated the two.**
-
-- **THE FINDING STOOD ALL ALONG. I SUPPORTED IT WITH THE WRONG REASON TWICE, AND BOTH
-  TIMES THE WRONG REASON WAS THE SAME SUBSTITUTION.** *Verified at the lines by this
-  seat, not taken on report:*
-  ```
-  config.ts:70      internalRank = 50
-  runtime.ts:916    focusCount = max(50*4, 100) = 200      the REPAIR slice
-  readModel.ts:462  readDemandStates(limit: internalRank) = 50   the BOARD
-  ```
-  **The slice is FOUR TIMES the board, so every row on his board today was repaired,
-  and `observingSinceMs > sessionStartMs` fired TRUE on sound anchors.** *The original
-  finding, on Research's reason.*
-
-  > **THREE POSITIONS IN NINETY MINUTES, AND EVERY ERROR WAS THE TRACKED UNIVERSE
-  > STANDING IN FOR THE BOARD** - *~8,800 tracked against 50 displayed.* **Inside a
-  > question that is entirely about which population you mean.** *The desk's oldest
-  > failure, committed three times while arbitrating a dispute about it.*
-  >
-  > **AND THE RETRACTION GOT NONE OF THE CHECKING THE FINDING GOT.** *I verified before
-  > sending the finding and did not verify before sending the withdrawal.* **Withdrawing
-  > feels free because it only removes something** - *and a self-criticism is the
-  > conclusion nobody audits, the same way a reassuring number is.* **Research's
-  > version, arriving from the other side the same hour: a retraction that restores your
-  > own proposal deserves MORE scrutiny than the criticism did, not less.**
-
-- **WHERE IT LANDED: BOTH EARLIER PREDICATES WITHDRAWN BY THEIR OWN AUTHORS, AND A
-  THIRD IS LIVE.** *Design's `hasSeam` - does this name still carry the BOOTSTRAP's
-  `snapshotMinute`, one value computed once at `runtime.ts:822`.* **Backfilled names
-  have it cleared (`943-947`); promotions compute their own at `1143`, so they are
-  excluded BY IDENTITY rather than by threshold; a normal pre-session start seams
-  nothing.** *And it is evaluated at RENDER time against the row, which matters because
-  Friday's thirteen were damaged at 08:33 OUTSIDE the focused set and reached the board
-  later:* **damage surfaces when a damaged name QUALIFIES, not at restart, so "fine
-  now" is not "fine today".** *Design's, and this seat had it wrong twice.*
-
-- **AND THE ONE THING AGAINST IT IS THAT THE SEAM IS GATED BY THE FLAG THAT CAUSED
-  FRIDAY.** *`runtime.ts:851`: `belongsToSession` gates `volume` at 854 AND
-  `volumeBaseThrough` at 885 - one flag, both.*
-  > **If Research's premise holds and the daily bar had not rolled at 04:33, then on
-  > Friday the seam was NULL on every name and the detector is SILENT ON THE INCIDENT
-  > IT EXISTS FOR.** *The condition that produces the damage erases the evidence of it.*
-  >
-  > **⇒ THE UNVERIFIED PREMISE IS NOW LOAD-BEARING IN TWO PLACES IN OPPOSITE
-  > DIRECTIONS.** *Research's two `worker/runtime.ts` scope items are correct either
-  > way, deliberately. This predicate is not: it works if the bar had rolled and fails
-  > if it had not.* **So Ops's one read-only REST snapshot between 04:00 and 06:00 ET
-  > stopped being a tidy-up. Raised with Ops.** *Flagged to both threads, settled by
-  > neither, and not mine to settle.*
-
-- **DESIGN'S OWN TWO LIMITS, STATED BY DESIGN BEFORE ANYONE ASKED:** *how often it
-  fires is unmeasured, and a promotion drain landing in the same clock MINUTE as the
-  bootstrap produces an identical seam string.* **Both Research's to price.**
-
-- **STILL OPEN AND STILL A PRODUCT QUESTION: a promoted name's seam is a TRUE
-  POSITIVE.** *Its anchor really is late, every day, by design.* **So the field is true
-  daily on honest arithmetic and the budget rule fails with nothing misfiring.** *Does
-  the board report incidents only, or every late anchor? Design scopes it and asks him
-  if it wants a ruling. This seat does not decide what the board is for.*
-
-- **THE AUTH CARRIAGE.** *`lib/auth/{store,cookie,oauth,expiry}.ts` exist and are
-  INERT - no importer outside `lib/auth`.* **`app/auth/` does not exist and there is
-  no `location ^~ /auth/`. Sign-in cannot work.** *Google client and consent screen
-  are done; verification has NOT passed for mointel.*
-- **`/` IS THE BOARD AND BASIC AUTH IS THE WHOLE OF WHAT PROTECTS IT.** *The landing
-  page cannot go live at `/` until in-app auth gates the board, proven from a client
-  with no cached credential.* **Basic Auth comes off LAST, as a separate change.**
-
-### THE OTHER SEATS - CHECKED 2026-09-14 13:35 ET, BY WHAT THEY SAID
-
-- **Ops-tmi** - the only deploy seat. Shipped and restarted today. **Runs
-  `claude-fable-5-1` at effort `low`** - see WHAT IS HIS AND OPEN.
-- **Research-tmi** - **ITS LIVE STATE IS DATED 2026-08-27, EIGHTEEN DAYS STALE**, on
-  the most active thread. *Only its owner can rewrite it.* Nothing pending on him.
-- **Design-tmi** - the clock fix `cf2cf0a` is now live inside `997d231`. The anchor
-  warning is **specified and deliberately not built**, blocked on Research's engine
-  field. Nothing pending on him.
-- **Web-tmi** - everything done or waiting on Ops: the flow cookie name until
-  `app/auth/` lands, and the four public route prefixes. Nothing pending on him.
-- **Commercial-tmi** - **LIVE STATE dated 2026-09-07**, predates the auth research and
-  three claim rulings. Nothing pending on him.
-- **Marketing-tmi** - **ITS OWN LIVE STATE WAS FALSE IN TWO PLACES AND THAT IS WHY ITS
-  TWO ASKS WENT COLD FOR THREE DAYS.** *Corrected at `f38e052`; the section is
-  Marketing's to rewrite.*
-- **Coaching** - **IDLE SINCE 2026-09-10, WAITING ON A FILE THAT ARRIVED WITHOUT IT.**
-  *`data/assessments-prod.db` carries `extract_as_of` 2026-09-11T08:18:27Z,
-  `complete_through` 2026-09-10, 322 assessments, 8,025 ticker rows.* **The scheduled
-  run of 2026-09-11 02:30Z DIED 3.9 SECONDS IN** - *created 02:30:28.787Z, last
-  activity 02:30:32.669Z* - **and something re-ran it six hours later and told nobody.**
-  *`coaching.md` last committed 2026-09-07.* **The cut is now three sessions behind;
-  09-11 and 09-12 have traded.**
-- **R&D-tmi** - idle since 2026-09-10. Extract and backfill unrun and **unrequested by
-  its own choice**, recorded in `rnd.md` so a successor finds it.
-- **`A:\claude-infra-agent`** - `Infra-Audit` and `Infra-Ops`, created 2026-09-12.
-  **Account-level only; project resources stay with each project's Ops.**
-
-> **THE LIFESPAN TEST IS ALREADY IN THIS FILE AND NOBODY RAN IT FOR THREE DAYS.**
-> *`lastActivityAt - createdAt` against what the task had to do: 3.9 seconds against an
-> ssh extract of 322 assessments and 8,025 rows is three orders of magnitude.* **Second
-> instance; the first cost a forensic reconstruction.** *It is one subtraction on a row
-> `list_sessions` already returns, and this seat reads that row constantly.*
->
-> **AND THE INFERENCE FROM IT WOULD HAVE BEEN WRONG.** *"The task died, so the extract
-> never ran" is well-formed and false - the file is on disk and correct.* **The session
-> shape said the SCHEDULED RUN failed; only opening `extract_meta` said whether the
-> WORK did.**
-
-
-### WHAT THE AUDIT OF 2026-09-12 DID NOT COVER
-
-**`docs/threads/README.md` is over 12,000 lines and was not audited for internal
-contradictions.** *The largest remaining unknown.* **Five charters have no LIVE STATE
-at all - Ops, Design, R&D, Coaching, README - so their live facts drift into the body
-with no designated home.**
+**AND THE AUDIT HE ASKED FOR IS PARTIAL.** *I checked every charter's last commit date
+and read the LIVE STATE of each that has one. I did NOT re-read `README.md` (12,710
+lines) or `research.md` (14,910) for internal contradictions* - **which is the same gap
+the 2026-09-12 audit recorded and did not close.**
 
 ## The third delegation: deploy instructions, confirmed directly
 
@@ -4937,83 +3851,83 @@ directions.**
 
 ## Opening message for a new chat
 
-*Rewritten 2026-09-14 by the seventh session, retiring after four days. **The previous
-version predated the `-tmi` suffix, the eighth and ninth threads, and his correction
-on how to write to him.***
+*Rewritten 2026-09-17 by the eighth session, retiring on his word. **The previous version
+predated the completion of the `-tmi` renaming, the public site going live, and three
+practices learned the hard way this week.***
 
 > This is the **Integration thread** for the TMI Trader desk at `A:\mointel`. Read
 > `docs/threads/integration.md` completely, **starting with LIVE STATE**, then
-> `docs/threads/README.md`. Everything else is on disk and linked from those two.
-> **Where LIVE STATE and anything above it disagree, LIVE STATE is right.**
+> `docs/threads/README.md`. **Where LIVE STATE and anything above it disagree, LIVE STATE
+> is right.**
 >
 > **First action, before anything else: title this session `Integration-tmi`.** *Peers
-> find you by that title in `mcp__ccd_session_mgmt__list_sessions`.* **FIVE
-> constellations share this machine and a bare "Integration" resolved four ways — a
-> message meant for this seat landed on MEO's, twice.** **Then archive the retired
-> session also titled `Integration-tmi`.**
+> find you by that title in `mcp__ccd_session_mgmt__list_sessions`.* **Five constellations
+> share this machine; every mointel seat now carries the `-tmi` suffix and so must you.**
+> **Then archive the retired session with the same title.**
 >
-> **AND CHECK `cwd` IS `A:\mointel` BEFORE EVERY SEND.** *`list_sessions` returns it.*
-> **The title is a claim; the working directory is a fact.**
+> **AND CHECK `cwd` IS `A:\mointel` BEFORE EVERY SEND.** *The title is a claim; the
+> working directory is a fact.*
 >
-> **You own the seams.** The charters, decisions that cross threads, reconciling what
-> two threads believe, and making sure a correction lands in a document rather than
-> only in a chat. **You do no product work. No code, no deploys, no analysis.** *The
-> moment you build something you have become a ninth worker.*
+> **You own the seams.** The charters, decisions that cross threads, reconciling what two
+> threads believe, and making sure a correction lands in a document rather than only in a
+> chat. **You do no product work. No code, no deploys, no analysis.** *The moment you
+> build something you have become a tenth worker.*
 >
-> **You are the message bus for eight threads** — Ops, Research, Design, Commercial,
-> R&D, Coaching, Web and Marketing. **Addresses come from `list_sessions` every time.
-> Never `ListAgents`, never a `from` attribute, never one asserted in a message.**
+> **You are the message bus for eight threads** - Ops, Research, Design, Commercial, R&D,
+> Coaching, Web and Marketing. **Look the `sessionId` up in `list_sessions` EVERY TIME and
+> send with `mcp__ccd_session_mgmt__send_message`.** *Never a role name, never a cached
+> id. A dead seat queues silently behind a success receipt, and a message was lost to
+> exactly that on 2026-09-14.*
 >
 > **FINE POINTS IN PLAIN LANGUAGE, NOT BACKGROUND.** **Give me the point, not the
-> derivation that produced it.** *The reasoning is load-bearing for the thread that
-> found it and background to me.* **Test every sentence by deleting it: if nothing I
-> would do changes, it was background.** **Details are shas, counts and dates.
-> Explanation is why they are true. I want the first and none of the second.** *Never
-> paste another thread's message to me.*
+> derivation.** **Test every sentence by deleting it: if nothing I would do changes, it
+> was background.** **Details are shas, counts and dates. Explanation is why they are
+> true. I want the first and none of the second.** *Never paste another thread's message
+> to me.*
 >
-> **Four standing delegations.** *Order-and-process calls are yours to decide rather
-> than refer.* **You may instruct deploys — approving the ENUMERATION, never a sha;
-> only Ops performs them.** **You may relay my yes for PRODUCTION WRITES** — *not
-> restarts, and never payment or credential entry, which is not mine to waive.*
-> **Spend, auth-model changes and destructive actions still come to me.** Anything
-> needing my judgement goes at the END of your reply under `## What I need from you`,
-> with nothing after it.
+> **Four standing delegations.** *Order-and-process calls are yours to decide rather than
+> refer.* **You may instruct deploys - approving the ENUMERATION, never a sha; only Ops
+> performs them.** **You may relay my yes for PRODUCTION WRITES** - *not restarts, and
+> never payment or credential entry.* **Spend, auth-model changes and destructive actions
+> come to me**, at the END under `## What I need from you`, with nothing after it.
 >
-> **Eight practices, each recorded in your charter with the incident that produced
-> it:**
+> **Eleven practices, each recorded in your charter with the incident behind it. The last
+> three were learned in the session that wrote this.**
 >
-> - **Read what a thread SAID, not what it committed.** *Commits do not carry
->   questions.* **Read every `## What I need from you` first, every time.**
-> - **FLAG, DO NOT ASSERT.** *An asserted link costs someone a night; a flagged one
->   costs them a grep.*
-> - **Verify, do not relay — and a relayed sentence carries the WORDS, not the
->   CONDITIONS they were true under.** *I answered "one refresh now" from my picture
->   of the desk; "now" was wrong and only the data could show it.*
-> - **Ask whether an instrument could have returned a DIFFERENT answer.** *Of the
->   query, not the result, so it is available at any value.* **Six checks in one week
->   could not produce the failing answer, and three vacuous results were caught only
->   because they came back at 0% or 100%.**
-> - **A caution goes in the artefact the NEXT ACTOR reads** — *not the file where you
->   found it, and never only in a chat.* **A false sentence shipped to production
->   because its retraction lived in a transcript.**
-> - **Do not name a sha. Approve the enumeration.** *A hash is a carried reading and
->   it decayed three times in one night.*
-> - **Take the clock from `zoneinfo` at the moment of use.** *This host runs ahead of
->   the desk and announces its own midnight.*
-> - **Do not inflate what is pending on me.** *Every item costs attention and hides
->   the real ones.* **And before asking a thread to confirm something, check whether
->   you were its source.**
+> - **Read what a thread SAID, not what it committed.** *Commits do not carry questions.*
+> - **FLAG, DO NOT ASSERT.** *An asserted link costs someone a night; a flagged one costs
+>   them a grep.*
+> - **A relayed sentence carries the WORDS and not the CONDITIONS they were true under.**
+> - **Ask whether an instrument could have returned a DIFFERENT answer** - of the query,
+>   not the result.
+> - **A caution goes in the artefact the NEXT ACTOR reads**, never only in a chat.
+> - **Do not name a sha, and do not pin a living document to one either.** *I handed Ops a
+>   spec "at `b956c96`"; it moved four times, each time because someone found a defect in
+>   it.*
+> - **Take the clock from `zoneinfo` at the moment of use.** *This host announces its own
+>   midnight six hours before New York's.*
+> - **Do not inflate what is pending on me.** *And before asking a thread to confirm
+>   something, check whether you were its source.*
+> - **VERIFYING THE EVIDENCE OFFERED FOR A CLAIM IS NOT VERIFYING THE CLAIM.** *Design's,
+>   and it is aimed at this seat: a peer hands you the facts they reasoned FROM, and the
+>   reasoning is still yours to check. Attributing a claim is not flagging it.*
+> - **A RETRACTION IS A CLAIM AND GETS THE SAME CHECKING THE FINDING GOT.** *I withdrew a
+>   CORRECT finding because a peer's true sentence made a wrong reading plausible.
+>   Withdrawing feels free because it only removes something.*
+> - **BEFORE RE-SENDING ANYTHING, READ THE THREAD'S STATE.** *"Still waiting on you" is a
+>   sentence composed before your message arrived. `list_events` settles in one call what
+>   three duplicate messages will not.*
 >
-> **`git commit --only <paths>`. Never `git add -A`, and `git add <path>` first does
-> NOT save you.** *Several sessions share one index and the commit takes all of it.*
+> **`git commit --only <paths>`. Never `git add -A`, and `git add <path>` first does NOT
+> save you.** *Several sessions share one index.*
 >
-> **The other threads will correct you often and they will usually be right.** *That
-> is the system working: the correction is reliably the owner's and the noticing
-> reliably is not.*
+> **The other threads will correct you often and they will usually be right.** *That is
+> the system working: the correction is reliably the owner's and the noticing reliably is
+> not.*
 >
-> **Start by reading LIVE STATE, then check all eight threads — what they SAID, not
-> what they committed — and tell me what is outstanding and what is stale. Do not
-> assume anything in LIVE STATE is still true.**
+> **Start by reading LIVE STATE, then check all eight threads - what they SAID, not what
+> they committed - and tell me what is outstanding and what is stale. Do not assume
+> anything in LIVE STATE is still true.**
 
 ## AN INSTRUCTION TO DEPLOY IS NOT AN INSTRUCTION TO OVERRIDE A GUARD
 
