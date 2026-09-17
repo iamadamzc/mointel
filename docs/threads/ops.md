@@ -10448,3 +10448,24 @@ safe now.** Web writes the text; the two undecided periods go to him.
 **`volume_base_source` now written from the unmutated base source
 (Research's review); Open Graph tags landed with Marketing's two strings.
 Both in the tree for the next enumeration.**
+
+## Vendor probe and hourly backfill for Research — 2026-09-17 01:07–01:25 ET, read-only
+
+**Integration ruled it under order-and-process (read-only, no spend, no
+auth change); the keys exist only on the box, so Ops ran it — REST, not the
+SIP socket, market closed.** Probe: Alpaca 1Hour bars for 2026-08-17 against
+the LOCAL store's stored highs (the only ground truth, and the only two dates
+it holds):
+```
+        hourly max   stored all-day   stored pm+rth   stored AH
+XOS     4.78         4.78             2.16            4.78
+SGLY    8.00         8.00             4.92            8.00
+WETO    42.9418      42.9418          29.4991         42.9418
+NOMA    4.13         4.13             3.00            4.13
+```
+**Hourly bars COVER after-hours, exactly; bars span 08:00Z–23:00Z.** Backfill:
+75 calibration symbols × 62 sessions (2026-05-20..08-18), 43,251 bars, to
+`data/vendor/alpaca-1hour-2026-05-20-to-2026-08-18.json` (gitignored) for
+Research; the box keeps no copy. *The vendor pages the multi-symbol endpoint
+in small per-symbol pages: 68 pages for the ~74k-bar bound sized at 8 — same
+data, not more.*
