@@ -152,6 +152,48 @@ AUCTION.** Ops fetched 43,251 hourly SIP bars (75 symbols, 62 sessions,
 `data/vendor/`, gitignored, nothing written to production). Re-ran both window
 tests at 30x the population.
 
+**THE RESIDUE IS OUR OWN MISSING MINUTE BARS. I gave TWO wrong explanations
+before this one and only the third was tested against an independent source.**
+
+    residue row's daily.high reachable inside the hourly RTH-side window?
+    12 of 13 YES   (GNLN alone still open)    basis mismatch: 0
+
+For 12 of the 13 original `neither` rows, the daily bar's high **is present in
+independently-fetched hourly bars** and **absent from our stored `minute_bars`**.
+AXIL's daily 7.25 exceeds our whole stored day (7.22) and the hourly file has it;
+PFSA's 15.93 against our 25.94 and hourly 28.32; RCON 6.42 against our 5.40.
+**So `minute_bars` is missing prints, and the vendor's daily and hourly
+aggregations agree with each other.**
+
+**MY TWO WRONG EXPLANATIONS, both stated before testing:**
+1. *"the newest date is likeliest half-written"* -- 08-17 is SETTLED and carried
+   three of them. Integration-tmi refused the label and was right.
+2. *"it was the adjustment basis"* -- **1 of 14.** And the test I used was
+   miscalibrated: I compared each date's `daily/hourly` ratio against that
+   symbol's MEDIAN ratio, but the median is dominated by days whose high sits in
+   RTH, so a day whose high fell OUTSIDE RTH must deviate. **The instrument
+   flagged the finding as the anomaly.** Same family, third time tonight.
+
+**Why the third answer is different in kind: it is arbitrated by a source that
+was not part of the original disagreement.** The first two reasoned about the two
+tables that disagreed; this one asks a third, independently fetched table which
+of them is missing data. *When two sources disagree, neither is the referee.*
+
+**AND IT REACHES THE BADGE RATE I GAVE HIM.** `todaySoFarFromBars` refuses when
+`session_high` exceeds every stored bar high -- and **a minute-bar gap produces
+that signature exactly as a pre-tracking run does.** So the refusal population is
+*not* only names that ran before we tracked them; part of it is our own missing
+minutes. The interval fix at `410f750` handles both correctly, so no code changes
+-- **but the diagnosis I sent him was too confident about the cause.**
+
+**AND THE STORE HAS A WITHIN-SYMBOL BASIS INCONSISTENCY, found on the way.**
+For RCON the `daily/hourly` ratio is **200.0000 on most sessions and 0.9582 on
+08-18** -- rows for ONE symbol carrying different adjustment bases depending on
+when they were stored, because a reverse split restates everything fetched after
+it. 67 of 75 symbols drift. **Any comparison across `daily_bars` rows of
+different vintage is unsound for this universe**, and that is a separate item
+from tonight's window question.
+
 **AND THE RESIDUE WAS THE ADJUSTMENT BASIS -- neither my explanation nor the
 unpriced one.** `daily_bars` is fetched `adjustment: 'split'`; the hourly file is
 `raw`. **67 of 75 symbols drift between the two bases**, at clean reverse-split
