@@ -18,7 +18,16 @@ last_changed: 2026-09-11
   `adopted:` now carries a date, so the page renders NO draft banner.
 
   IF THIS TEXT IS MATERIALLY REDRAFTED, `adopted` GOES BACK TO null AND THE
-  BANNER RETURNS until he adopts again. A draft that renders as adopted is the
+  BANNER RETURNS until he adopts again.
+
+  AND THE RULE IS ABOUT THE TEXT, NOT THE PAGE. A change to how this file is
+  RENDERED -- a table gaining a scroll wrapper, type sizes, the dateline's
+  layout -- is presentation and does NOT touch `adopted`. Only the words do.
+
+  Flipping `adopted` to null for a presentation change would put a DRAFT BANNER
+  BACK ON AN IN-FORCE LEGAL DOCUMENT, which is worse than whatever the change
+  was fixing. The banner says "do not rely on this"; a renderer does not make
+  that true. A draft that renders as adopted is the
   failure this field exists to prevent.
 
   Every [BRACKET] below is a fact this seat does not hold. They are listed,
