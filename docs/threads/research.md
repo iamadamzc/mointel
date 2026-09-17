@@ -147,6 +147,46 @@ the row sat *below* our own bars; restricting to 04:00--16:00 ET gave **zero** o
 6,889. In that frame the stored bars are a lower bound on the row and never the
 reverse, which is the property the cycle guard's coverage audit rests on.
 
+**RETRACTED AND REPLACED BELOW: THE DAILY BAR IS REGULAR SESSION ONLY, AND THE
+FRAMES DO NOT MATCH.** I wrote *"excludes after-hours, so the frames match"* and
+tested only the after-hours boundary. **I never discriminated premarket.** On the
+38 rows where PREMARKET set a higher high than RTH: `daily.high` matched
+**RTH-only 26 times and premarket-inclusive ZERO times** (12 neither, two dates).
+
+⇒ **`daily_bars.high` is 09:30-16:00.** The AH conclusion stands -- it was
+separately discriminated, 17 exact matches to 0 -- but the window is narrower
+than I said at the other end too.
+
+⇒ **AND THIS IS THE BIGGER FINDING: the cycle apparatus is blind to nearly all of
+his trading window.** He trades 07:00-10:00 ET. A regular-session-only high sees
+**thirty minutes of it.** The after-hours ruling was about the evening; this is
+about the morning, and the morning is where his edge is.
+
+⇒ **THE FRAMES DO NOT MATCH, reversing what I reported to him and to Design.**
+The parent (`isCycleStart`, on `daily_bars.high`) measures RTH-only; the sibling
+(`todayQualifiesAsCycleStart`, on `session_high`) includes premarket. So the
+sibling is more permissive **partly because it sees a wider window**, not only
+because of its threshold logic. `session_high`'s frame was tested one-sidedly
+(zero rows below the PM+RTH bar max) and that test did not discriminate premarket
+either -- it is our engine's own accumulation and plausibly does include it, but
+**it is a separate claim from the vendor's and I conflated them.**
+
+**HOW I GOT IT WRONG IS THE LESSON I RECORDED THIS MORNING, APPLIED TO A
+DIFFERENT PAIR.** I built a discriminating population for *after-hours vs not*
+and then read a conclusion about *premarket* off the same rows -- where both
+hypotheses agreed, because most names' day high is inside RTH. **The residue was
+the tell and Integration-tmi pointed at it: 45% of the AH-test rows fit neither
+model, I called that half-written newest-date bars, and 08-17 is the SETTLED date
+and has three of them -- all matching RTH-only exactly.** A stated-as-plausible
+attribution I then relied on.
+
+**AND 8 OF THE 14 RESIDUE ROWS HAVE `daily.high` ABOVE our PM+RTH bar max**, one
+(AXIL, 7.25) above our *entire* day. **No narrower vendor window can produce
+that** -- so part of the residue is OUR minute-bar coverage being incomplete, not
+the vendor's window. That direction does not threaten the AH finding.
+
+**The superseded claim, kept so the retraction is legible:**
+
 **THE DAILY BAR'S HIGH EXCLUDES AFTER-HOURS, so the frames MATCH.** First
 attempt was vacuous: all 33 joinable rows on 2026-08-18, no bucket above 33%.
 **The population was the problem, not the size** -- most names never print after
