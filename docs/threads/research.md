@@ -130,6 +130,34 @@ comparing the high against **the close of the bar that set it** — which makes 
 immune to the asymmetric reseed and structurally unable to run on a seeded high.
 **Design waits on one latched flag meaning *today HAS qualified this session*.**
 
+**A CONSTRAINT ON THAT BUILD, and it is the reason this is in the file rather
+than only at the type.** `548acf8` added per-session highs beside the day-wide
+one. **They are never seeded** — `SessionSeed` has no plural fields, the seed path
+touches only `sessionHigh`/`sessionLow`, and the maps initialise all-null and
+rebuild from post-restart bars alone.
+
+```
+day-wide sessionHigh   SEEDED from dailyBar.h   RTH restart: SURVIVES   premarket: LOST
+per-session highs      NOT SEEDED               RTH restart: LOST       premarket: LOST
+```
+
+> **THE LATCH MUST READ THE DAY-WIDE VALUE.** Not because it is sturdier but
+> because it is the right question: `closeChangePct` compares a DAY close to the
+> PRIOR DAY's close, so *"has today qualified as a cycle start"* is day-level. A
+> latch on `sessionHighs.premarket` would look more careful, stop surviving an
+> RTH restart, and silently widen the population Design's board statement was
+> shaped for.
+
+**And the failure mode is the one this file warns about, arriving as a FRESH
+value rather than a stale one: it does not error, it answers LOW.** A restart at
+10:30 gives an RTH high measured from 10:30 and nothing on the board says so.
+Design-tmi caught it a day after I shipped it — **I had written the rule to check
+exactly this the day before, then shipped a per-session accumulator without
+asking what reseeds it.** Documented at the type in `dbae021`; seeding them is
+not possible from a snapshot (a daily bar has one high, no session breakdown),
+and the unwired `lib/market/replay.ts` would repair these and the anchors
+together.
+
 **Untraced:** whether `sheetPriorOmitted` persists readably. If it does, *"how
 many stored dossiers saw a prior"* sizes the back-catalogue exposure, and it is a
 different number from both the unmeasurable disagreement rate and the control
