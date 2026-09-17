@@ -278,11 +278,15 @@ at `c353cbd`. Nothing is in progress and no file is held.**
   nineteen minutes after this section said it had not. Verified by Marketing
   with curl 2026-09-17. **Every word this thread writes is now live to anyone,
   and the prohibitions apply to the deployed page, not just the canvas.**
-- **The deployed page is behind the canvas by one commit.** Checked 2026-09-17:
-  `/` carries "None of this is on the chart" and the research section, and
-  does NOT carry the sessions paragraph from `c353cbd` ("a float does not get
-  cleaner at 09:30"). The canvas has it; the site does not. Deploys are Ops's;
-  flagged to Integration.
+- **THE CANVAS IS NOT A ROUTE TO PRODUCTION. The landing page is code,
+  `app/page.tsx`, and a sentence reaches the site only when someone writes it
+  there.** Found 2026-09-17: the sessions paragraph from `c353cbd` ("a float
+  does not get cleaner at 09:30") is on the canvas and in no `.ts`/`.tsx` file.
+  I filed it as a deploy lag; Integration showed it was a source gap, with a
+  control (`page.tsx` carries the header line). With Web, which owns the site.
+  **From here every copy change is two claims: on the canvas, and in
+  `app/page.tsx`. The `note-build` stamp answers only the first. Check the
+  second by grep or by curl of the live page.**
 
 - **The canvas URL changed form: https://claude.ai/artifact/MydyXGM4MpDZtwixpUXjvs**
   (older messages carry `claude.ai/code/artifact/a9df35ee-…`). **It carries a
