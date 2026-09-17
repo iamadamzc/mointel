@@ -10493,3 +10493,21 @@ h 1.02 l 0.9223 c 0.9701 v 11,715,451; `1Hour` 16 bars 08:00Z–23:00Z, hourly
 highs 08:00 1.01 · 11:00 1.05 · 13:00 1.02 · 20:00 1.30 (max); local
 `minute_bars` maxima premarket 1.05, RTH 1.02, after-hours 1.30; stored daily
 bar h 1.02. Handed to Integration and Research.
+
+## Data-access facts for Integration's coaching reference — read from the box 2026-09-17 16:45 ET
+
+```
+SIP entitlement    the worker checks it at every start: "[alpaca] historical sip access
+                   confirmed" (last 06:15:03Z 09-16); every feed=sip fetch this week returned bars
+rate limit         the vendor states it per response: X-Ratelimit-Limit 10000, -Remaining, -Reset
+                   (epoch); window length not in the header -> UNKNOWN beyond that
+history depth      1Day: production daily_bars holds 945 symbols back to 2016-08-25 (>=10y)
+                   1Hour: demonstrated to 2026-05-20 only; 1Min: never bulk-fetched, UNKNOWN
+production bars    minute_bars: 09-09, 09-10, 09-11, 09-14, 09-15, 09-16, 09-17 (seven dates,
+                   retention 20 in force); the 08-17/18 minute bars exist ONLY in local data/market.db
+```
+**Credential correction from Integration: the Alpaca keys also exist locally
+(`A:\mointel\httpsapi.alpaca.markets.txt`, bare lines), so "only on the box"
+was a false premise for routing the probes to Ops; the box was still the
+right place.** Checked: the file is gitignored by `/*.txt`, untracked, and has
+never been committed on any branch.
