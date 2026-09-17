@@ -225,15 +225,34 @@ agreed with it — **and it rests on an assumption that turns out to be false.**
 > accident of the exemption list rather than by anyone.*
 
 **WEB'S RECOMMENDATION: serve a permissive `robots.txt` that names no private
-path.**
+path.** *Built by Ops at `c883d7b` as `app/robots.ts`.*
+
+> **AND THE SERVED BODY IS NOT WHAT THIS THREAD SPECIFIED.** *I wrote `Disallow:`
+> with an empty value. `app/robots.ts` returns `{ userAgent: '*', allow: '/' }`
+> and **Next emits `Allow: /`**.* **Semantically identical — both mean crawl
+> freely — and my verification said "expect those exact two lines", which would
+> have FAILED A CORRECT FILE.** *Ops flagged it before I ran it.*
+
+**SO THE CHECK ASSERTS MEANING, NOT BYTES.** *Fetch with no credential and
+require:*
 
 ```
-User-agent: *
-Disallow:
+200                       and a body that
+contains  User-agent: *
+contains  Allow: /        (or a Disallow: with an EMPTY value — either is permissive)
+contains  NONE of         /desk  /signin  /api  /auth  /review  /mcp
+NEVER     Disallow: /     <- one character from permissive, and it de-indexes everything
 ```
 
-**Two lines, and the second is empty on purpose — that is the syntax for "crawl
-freely".**
+> **`Disallow: /` IS THE CATASTROPHIC TYPO AND IT HAS NO SYMPTOM.** *The file
+> still returns `200`, is still well-formed, still names no private path — and
+> silently tells every crawler to drop the entire site.* **One character from
+> the permissive form.**
+>
+> **AND IT IS THE ONE FAILURE HERE THAT CANNOT BE UNDONE BY A DEPLOY.** *By the
+> time anyone notices the site has left the index, the fix is a request to
+> Google rather than a change to the box.* **Check the body, never just the
+> status.**
 
 - **It removes the ambiguity.** *Whatever a given crawler does with `401`, every
   crawler agrees about this.*
