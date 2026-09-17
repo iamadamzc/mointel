@@ -10416,8 +10416,11 @@ exactly one test, as predicted.
 
 **What it buys:** `cumulativeVolume = volumeBase + minuteSum`, so once these
 rows exist the daily-bar roll time (open item #1) is measurable from the
-store — the first row after 04:00 ET whose `volume_base` is nonzero dates the
-roll. **Live only after the next deploy AND a market restart** (worker code
+store — **the earliest non-null `volume_base_through` on a date dates the roll**
+(Research's correction: `volume_base > 0` requires the bar to have rolled AND
+the name to have traded, so it dates the roll LATE by however long premarket
+was quiet; `volume_base_through` is set iff `belongsToSession`, one symbol
+suffices). **Live only after the next deploy AND a market restart** (worker code
 writes the rows); until then every row is still 0 and null.
 
 ## The in-force privacy policy has been serving placeholder brackets to the public since 09-16 — facts handed to Web, 2026-09-17
