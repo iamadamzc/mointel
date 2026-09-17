@@ -10469,3 +10469,9 @@ NOMA    4.13         4.13             3.00            4.13
 Research; the box keeps no copy. *The vendor pages the multi-symbol endpoint
 in small per-symbol pages: 68 pages for the ~74k-bar bound sized at 8 — same
 data, not more.*
+
+**His doubt, tested empirically (Integration's added request, raw, no
+interpretation): XOS 2026-08-17 fetched fresh from the box 05:10:39Z — `1Day`
+one bar, high 2.16; `1Hour` 14 bars, max high 4.78; the stored daily bar
+(fetched 08-18) high 2.16.** A month-settled daily bar and the same-day one
+agree; the hourly set carries the 17:00 ET print the daily does not.
