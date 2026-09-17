@@ -10364,3 +10364,13 @@ does not recover.*
 
 **Also in the tree: `app/robots.ts` (allow all, names no private path) +
 `location = /robots.txt`, on his "yes" to indexing (to Web, 2026-09-17).**
+
+**Why the "ship the enumerated sha as a literal" rule is load-bearing and not
+bookkeeping — Integration, 2026-09-17, verified on the wire:** the four peer
+commits that rode `rev-parse HEAD` into production were inert by luck. Web's
+`a321156` — real `app/page.tsx` code, ungated by me — landed minutes later;
+twenty minutes quicker and it would have carried ungated page code into
+production. **The enumerated sha is the only thing standing between a shared
+index that five seats commit into and production; tonight it was doing
+nothing.** `a321156` is NOT live; it is in the `c883d7b` enumeration now
+awaiting approval, gated.
