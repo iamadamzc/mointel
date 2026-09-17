@@ -10511,3 +10511,27 @@ production bars    minute_bars: 09-09, 09-10, 09-11, 09-14, 09-15, 09-16, 09-17 
 was a false premise for routing the probes to Ops; the box was still the
 right place.** Checked: the file is gitignored by `/*.txt`, untracked, and has
 never been committed on any branch.
+
+## State: production is `467ffec`, deployed 2026-09-17 16:57 ET — services down 3s; Open Graph live; volume-base columns wait on the restart
+
+**Integration approved the pinned enumeration; shipped as a literal,
+RESTART_MARKET=no, detached.** quick_check 332.3s with the desk serving;
+`services were down for 3s`; schema v27, 0 backups; prune removed `6f8894b`,
+`c883d7b` is the rollback. **Verified stateless, negative control first:**
+`/desk` `/signin` `/api/market` `/privacy-x` 401; `/` `/privacy` `/terms`
+`/favicon.ico` `/robots.txt` 200; live root carries `og:title`,
+`og:description` (Marketing's two strings), `og:url https://tmitrader.com`,
+`og:type website`, `twitter:card summary`; robots body unchanged. Box:
+web/research/assess on `467ffec` by cwd since 20:57:33Z; market untouched on
+`1c23322`; health ok, market LIVE STREAMING (after-hours).
+
+**Integration verified the cycle work (`622e23f`, `410f750`, `fbc059f`) is
+INERT on the live board: every hunk sits in the new sibling surface and none
+of the exports `readModel`, `dashboard/cycle.ts`, `archive/cycles.ts` or the
+research pipeline import was touched.**
+
+**CONDITION on the restart-gated pair (`b0e8478`/`b798ffd`), accepted: the
+`volume_base` column will mean two things by row date — hardcoded 0 before
+the first market-worker start on a build carrying it, a measurement after —
+and the source column does not discriminate. The cutover is written at the
+write site with the restart timestamp once the restart lands, and here.**
