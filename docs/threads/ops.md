@@ -10324,3 +10324,43 @@ window, failing quietly in the worse direction. **So the condition for a
 market restart is "no session in progress", not an hour: closed market →
 nothing to lose; in session → understated highs that look real.** Carried
 into every restart ask from now on.
+
+## INCIDENT 2026-09-16 23:43 ET: 3m27s of public 502, caused by the deploy itself
+
+**Web measured `/`, `/privacy`, `/terms`, `/favicon.ico` → 502 at 03:45Z,
+three consecutive passes, while `/desk` and `/api/market` → 401.** *The split
+was the diagnosis: nginx answers the 401s itself; only the exempt paths are
+proxied, and the upstream was gone.* **The upstream was gone because my deploy
+of `dbae021` had stopped it:**
+```
+03:43:44Z  [deploy] stopping runtime services   -> web Stopped
+03:43:45Z  [migrate] store: ... existing store found
+03:47:12Z  [migrate] schema v27, quick_check ok, 0 backup(s)   <- 3m27s in ONE step
+03:47:12Z  [deploy] starting services           -> web Started, Ready 03:47:14Z
+```
+**quick_check on the 1.84 GB store measures 79s idle and took ~3m20s cold,
+and it ran with every service stopped.** Invisible while everything was 401;
+a public outage now that four paths are exempt, on the night before he
+submits to Google. **And it scales with the store, which retention 20 is
+growing.**
+
+**Fixed in the tree: `worker/migrate.ts --check-only` runs the check with the
+desk still serving (a read; WAL readers do not block writers; opens with
+`skipSchema` so running writers keep their version), `--no-check` migrates
+inside the stop window without it; `deploy.sh` prints "services were down
+for Ns" beside every deploy.** Expected window after the fix: seconds, not
+minutes, when nothing migrates; a real schema migration still stops the
+desk for its VACUUM INTO, which needs writers stopped.
+
+**Web's own finding, recorded because it is the desk's oldest one in a new
+place: its negative control (`/desk` → 401) PASSED throughout the outage.
+401 means "nginx refused you", not "the desk is there".** A failed service
+returns a plausible answer. Web adds an upstream-liveness line to §2.
+
+**He was told by Web not to submit to Google while a deploy is in progress;
+Ops says when each deploy is done.** *A verification fetch landing in a
+deploy window burns the retry, which is the one cost here fixing the box
+does not recover.*
+
+**Also in the tree: `app/robots.ts` (allow all, names no private path) +
+`location = /robots.txt`, on his "yes" to indexing (to Web, 2026-09-17).**
