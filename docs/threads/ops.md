@@ -10278,3 +10278,10 @@ invite-only governs who gets in, not who may read. `/sitemap.xml` and
 *Web's third pass also found the served markup requests
 `/favicon.ico?favicon.<hash>.ico`; `location = /favicon.ico` matches on path
 and ignores the query — checked on the wire, 200.*
+
+**Coordination rule while there is no Integration (Web, 2026-09-17, taken as
+standing): the seat that asks him something says so to every seat that could
+plausibly ask it too.** The indexing question went to him twice within
+minutes, from Web and from Ops, in different words. Web's phrasing is
+canonical; his answer to EITHER seat is the answer and is relayed to the
+other at once. *The bus's job was partly to be the only mouth.*
