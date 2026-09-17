@@ -402,6 +402,31 @@ export function emptySessionOpen(session: VwapSession): SessionOpen {
  * rendering is a surface rule this compute cannot enforce. Publishing the level
  * is the whole of what was authorised.
  */
+/*
+ * AND THEY ARE NEVER SEEDED, WHICH IS A DIFFERENT EXPOSURE FROM THE DAY-WIDE PAIR.
+ *
+ * `seedSession` reseeds the day-wide `sessionHigh` from `dailyBar.h`, so after an
+ * RTH restart that value survives. These do not: a daily bar carries ONE high
+ * with no session breakdown, so there is nothing to seed them from and they
+ * rebuild from post-restart bars alone.
+ *
+ *     day-wide sessionHigh      RTH restart: SURVIVES     premarket restart: LOST
+ *     these                     RTH restart: LOST         premarket restart: LOST
+ *
+ * So after ANY restart a per-session high is only as complete as this process's
+ * own observation of that session, and it will read LOW rather than null -- the
+ * post-restart high is a real number about a shorter window. Whoever renders
+ * these owns saying so; the anchor's observability answer is the same question.
+ *
+ * DO NOT USE THESE AS THE CYCLE-START INPUT. Design-tmi caught that trap:
+ * `closeChangePct` compares a DAY close to the PRIOR DAY's close, so "has today
+ * qualified" is a day-level question and the day-wide high is the correct input
+ * as well as the surviving one. A latch on a per-session high would look more
+ * careful and behave worse.
+ *
+ * The unwired `lib/market/replay.ts` would repair these and the anchors together,
+ * since both rebuild from the same replayed bars.
+ */
 export interface SessionExtremes {
   session: VwapSession;
   /** 'PM VWAP' | 'RTH VWAP' | 'AH VWAP' -- the session's own name. */
