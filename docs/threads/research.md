@@ -512,6 +512,37 @@ residue table as *"not in hourly file"* and I wrote that down as a fact **about
 the symbol** rather than a question about the **fetch**. *The data's absence
 described the instrument and I attributed it to the world.*
 
+**THE FRAME CHANGE DOES NOT FIX `isCycleStart`, AND THIS MATTERS TO THE RULING
+HE IS BEING ASKED FOR.** Integration-tmi drew the right consequence from the
+volume asymmetry -- the two halves of `CYCLE_START` are measured over different
+windows -- but attributed it to the HIGH. **It is the CLOSE**, and that is a
+worse problem than a frame:
+
+    isCycleStart (cycle.ts)   move gate = closeChangePct   prior CLOSE -> this CLOSE
+                              vol  gate = dailyRvol        daily_bars.volume
+
+**The volume reaches past 16:00 (measured NOT RTH-only, 3 of 2,747) and the close
+is a 16:00 point.** So a premarket runner puts extended-session volume into the
+RVOL gate and a regular-session move into the move gate.
+
+⇒ **AND WIDENING THE FRAME CANNOT REPAIR IT.** An extended frame gives an
+extended high and an extended close -- a 20:00 last print. **A close is a point in
+time, so no frame makes it see a premarket spike that faded by then.** A name
+that runs to +80% at 08:00 and is flat by 16:00 has a small close-to-close move
+in EVERY frame. `isCycleStart` is structurally blind to intraday extremes, not
+merely windowed wrongly.
+
+⇒ **The sibling is not affected, and this is why it was built high-based.**
+`todayQualifiesAsCycleStart` measures the move on the HIGH, which is what makes
+it *strictly more permissive than its settled parent* and what makes it catch the
+spike-and-fade day the parent loses. **Already recorded as a property of the
+sibling; now it is also the reason the frame ruling does not reach the parent.**
+
+**So the ruling splits three ways, not two:** the frame change fixes the
+high-based quantities (`cycleHigh`, `retracementPct`, the sibling's input); it
+does nothing for `isCycleStart`'s move gate; and whether the PARENT should become
+high-based is a separate question nobody has put to him.
+
 ### OPEN AND MINE
 
 **The cycle sibling — designed across three seats, UNBUILT.** QCLS showed
