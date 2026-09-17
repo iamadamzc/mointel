@@ -819,3 +819,58 @@ path, and it batches with whatever is live when he wants one (§10).*
 **`twitter:card` is therefore `summary`, not `summary_large_image` — the large
 variant renders a broken frame when no image is supplied.**
 
+---
+
+## 12. VERIFIED AFTER THE `robots.txt` DEPLOY — production `c883d7b`
+
+**Web's run, 2026-09-18, from an actor with no cached state. Third pass after
+Ops and Integration.**
+
+```
+POSITIVE   /  /privacy  /terms  /favicon.ico  /robots.txt   ->  200 x5
+NEGATIVE   /desk  /signin  /api/market  /privacy-x          ->  401 x4
+```
+
+**`robots.txt` body, byte for byte:**
+
+```
+User-Agent: *$
+Allow: /$
+$
+```
+
+- **Permissive** — `Allow: /`. *His "index it" is what the site now says.*
+- **No `Disallow:` line exists at all**, so the catastrophic `Disallow: /`
+  cannot be present. *The check that mattered most passes by construction rather
+  than by inspection.*
+- **No private path named.** *`/desk`, `/signin`, `/api` absent, as specified.*
+
+**The rest of the enumeration, verified rather than taken:** *`a321156`'s
+sessions paragraph is **live** (control string present alongside it, so the grep
+sees present cases); **all subresources 200**; **mobile 375px: zero horizontal
+overflow, zero elements past the right edge**, re-checked because the page grew
+by a paragraph.*
+
+> ### AND MY CHECK HAD A FOURTH CASE-OF-THE-SAME-KIND IN IT
+>
+> **I specified the body check as `contains User-agent: *`. Next emits
+> `User-Agent: *`.** *Capital `A`.* **`robots.txt` directives are
+> case-insensitive by spec, so the file is correct and my grep was not** — it
+> would have reported a correct file as broken.
+>
+> **Fourth time this week: the `/signin` line in the positive loop, the
+> canvas-to-page equality assertion, `Disallow:` versus `Allow: /`, and now the
+> capital `A`.** *Every one is the same mistake — **I write the expectation from
+> the thing I designed rather than from the thing that will exist**, and a check
+> written that way does not merely fail, it accuses something correct.*
+>
+> **The check now matches case-insensitively.** *Recorded as a standing habit
+> rather than a fix: **when specifying a check against output somebody else's
+> code will emit, the expectation is a property, never a literal.***
+
+**THE PUBLIC SURFACE IS COMPLETE AND CORRECT.** *Landing page, privacy, terms,
+favicon, robots — all reachable, all rendering, all saying what was approved, on
+desktop and on a phone, to a client with no credential.* **Nothing on this
+thread's surface is outstanding but the share-preview tags (§11), which are with
+Marketing.**
+
