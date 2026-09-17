@@ -577,13 +577,23 @@ describe('schema upgrade reporting', () => {
     const db = temporaryDb();
     const first = demand('BASE', 1);
     upsertTickerSessions(db, [
-      toRow({ ...first, volumeBase: 1_234_567, volumeBaseThrough: '2026-08-14T08:33:00.000Z' }),
+      toRow({
+        ...first,
+        volumeBase: 1_234_567,
+        volumeBaseThrough: '2026-08-14T08:33:00.000Z',
+        volumeBaseSource: 'alpaca-historical-minute-bars',
+        volumeSource: 'alpaca-historical-minute-bars+minute-bars',
+      }),
     ]);
     const one = db
-      .prepare('SELECT volume_base, volume_base_through FROM ticker_session WHERE symbol = ?')
-      .get('BASE') as { volume_base: number; volume_base_through: string | null };
+      .prepare('SELECT volume_base, volume_base_through, volume_base_source, volume_source FROM ticker_session WHERE symbol = ?')
+      .get('BASE') as { volume_base: number; volume_base_through: string | null; volume_base_source: string | null; volume_source: string | null };
     expect(one.volume_base).toBe(1_234_567);
     expect(one.volume_base_through).toBe('2026-08-14T08:33:00.000Z');
+    // The base's provenance is the unmutated source; the running total's is
+    // the suffixed one. Two columns, two facts, both seen.
+    expect(one.volume_base_source).toBe('alpaca-historical-minute-bars');
+    expect(one.volume_source).toBe('alpaca-historical-minute-bars+minute-bars');
 
     upsertTickerSessions(db, [
       toRow({ ...first, volumeBase: 2_000_000, volumeBaseThrough: '2026-08-14T09:00:00.000Z' }),

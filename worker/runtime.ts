@@ -1749,16 +1749,17 @@ export function toRow(state: DemandState): TickerSessionRow {
     reference_rth_close_source: state.referenceRthCloseSource,
     reference_rth_close_basis: state.referenceRthCloseBasis,
     percent_change: state.percentChange,
-    // The engine's real values, not literals. Until 2026-09-17 these two were
+    // The engine's real values, not literals. Until 2026-09-17 these were
     // hardcoded 0 and null on every row ever written, which made the daily-bar
     // roll time unmeasurable from the store and certified "nothing preceded
-    // the anchor" for every name, forever. volume_base_source stays the
-    // mutated volumeSource (suffixed `+minute-bars` once live bars arrive):
-    // three reads this week depend on that shape and changing it is its own
-    // announced change, not a side effect of this one.
+    // the anchor" for every name, forever. volume_base_source is the BASE's
+    // provenance (unmutated), on Research's review: writing it from
+    // volumeSource -- the running total's provenance, suffixed `+minute-bars`
+    // once live bars arrive -- was the trap that already cost a query. A
+    // reader wanting "did live bars arrive" reads volume_source.
     volume_base: state.volumeBase,
     volume_base_through: state.volumeBaseThrough,
-    volume_base_source: state.volumeSource,
+    volume_base_source: state.volumeBaseSource,
     cumulative_volume: state.cumulativeVolume,
     volume_source: state.volumeSource,
     session_high: state.sessionHigh,
