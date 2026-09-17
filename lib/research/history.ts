@@ -234,11 +234,35 @@ export function readSplitFactors(
  * that is half split-adjusted and half raw is not internally comparable, and
  * anything derived from it (a ceiling, a prior high) would be wrong by whatever
  * the split ratio was.
+ *
+ * AND THE LABEL IS NOT THE BASIS, WHICH MADE THE ORIGINAL VERSION UNABLE TO
+ * FIRE. It compared `SELECT DISTINCT adjustment` alone. **"Split-adjusted as of
+ * 2026-08-18" and "split-adjusted as of 2026-09-17" are different bases wearing
+ * the same label**: a reverse split between two fetches restates one and not the
+ * other, and `adjustment` still reads `'split'` on both. Measured on the local
+ * store — **every row of `daily_bars` is labelled `'split'`, all 75 symbols** —
+ * so the distinctness test returned one value unconditionally and the guard was
+ * structurally incapable of returning null. A guard that cannot fail.
+ *
+ * `fetched_at` carries the vintage the label does not, so it joins the test.
+ * 13 of those 75 symbols hold rows from two fetch dates.
+ *
+ * THIS OVER-REFUSES ON PURPOSE, and the cost is named rather than hidden: those
+ * 13 are EXPOSED, not necessarily wrong — a gap between fetches only bites if a
+ * split landed inside it. Returning null for all of them says "cannot vouch"
+ * where the old version said "comparable" without being able to know. The cheap
+ * upgrade is a `split_factor` column (`db.ts:710` migrates one in, absent from
+ * this local copy), which would let this ask whether a split ACTUALLY intervened
+ * instead of whether one could have.
  */
 export function dailyBarAdjustment(db: MarketDatabase, symbol: string): string | null {
   const rows = db
-    .prepare('SELECT DISTINCT adjustment FROM daily_bars WHERE symbol = ?')
-    .all(symbol) as Array<{ adjustment: string }>;
+    .prepare(
+      `SELECT DISTINCT adjustment, substr(fetched_at, 1, 10) AS fetchedOn
+         FROM daily_bars
+        WHERE symbol = ?`,
+    )
+    .all(symbol) as Array<{ adjustment: string; fetchedOn: string | null }>;
   if (rows.length !== 1) return null;
   return rows[0]!.adjustment;
 }
