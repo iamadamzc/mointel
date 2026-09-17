@@ -52,7 +52,119 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — handover, 2026-08-27
+## LIVE STATE — handover, 2026-09-17
+
+*The section below this one is dated 2026-08-27 and was three weeks stale on the
+desk's most active thread. Integration-tmi caught it while retiring and was
+right: everything established since lived in ITS file and in chat, so the only
+summary of three weeks of Research was written by another seat. That is the
+failure this thread named itself — **a summary is written last and read first, by
+someone with no way to doubt it.** Read this section; treat the one below as
+history with its own corrections already attached.*
+
+### SHIPPED — built, tested, and NOT deployed unless noted
+
+| sha | what |
+| --- | --- |
+| `7b32e82` | **The board can no longer say a traded name did not trade.** `NO_PRINT` renders as the words *"not traded"*; after a mid-session restart the engine has no anchor and the claim was false. Now `UNKNOWN` when the anchor was not observable. **Cost no column and no surface change** — `UNKNOWN` already rendered as nothing and already round-tripped. |
+| `548acf8` | **Per-session high and low, live.** The levels half of what he authorised. The whole-day high, `ahHigh` and the frozen `rthFinal` existed; the premarket high was archive-only and RTH's own high was live nowhere. Captured from the same classifier as the opens. |
+| `cb42feb` | **`formerRunnerStatus` reads bars instead of a model guess.** The interpreter was asked to judge a prior run from an evidence bundle with no price history in it. Overwritten by the measurement — **only when there are bars**, so a null `computedCycle` leaves the guess alone rather than fabricating `NONE`. |
+| `12613dd` | **`anchorThickness`** — thick/thin on the anchoring minute, binary by his ruling. Threshold is the **dead line (30)**, not the active line: measured against real anchors, a 300 cut marks 84% of board rows thin. |
+| `d862f29` | **`SessionOpenState`** — `NOT_STARTED` / `NO_PRINT` / `OPEN` / `UNKNOWN`. Required, not optional: the type error was the instrument reporting that a producer could not answer. |
+| `f2786fd` | The volume eviction spares `minuteCloses` and `minuteTrades` **on purpose**; the reason was nowhere and someone tidying the loop would have shortened his sparkline. |
+| `a22becf` | A retracted float phrase, quoted onward three times before anyone checked it. |
+| `55d51e7` → `664b344` | **`worker/anchor-loss-cohort.ts`** — read-only, one command. Four corrections to itself live in its history and each is a lesson: a proxy that overcounted across its own threshold (`274b3c9`), a promoted name's anchor equalling its own first bar and being scored *correct* (`883debb`), a misplaced anchor reported as a wrong number (`71d8540`), a stale literal in the default of the very parameter I had argued must not be hardcoded (`3c24f59`). |
+
+**Not mine, same window, needed to read the above:** `db502fe` schema 27 (the three `*_open_state` columns), `a225317` retention 20, `188188c`/`c7d41b9` `lib/market/replay.ts` built and deliberately unwired.
+
+### FACTS A SUCCESSOR WOULD OTHERWISE GET WRONG
+
+**The daily bar is still YESTERDAY'S at 04:38 ET.** Observed by Ops from the box,
+four symbols, two of them already printing today. So `belongsToSession` is false
+through premarket, `volume` is 0, every RVOL is 0, and the bootstrap's
+`rvolPreview` **cannot rank** — `.slice(0, 200)` takes an arbitrary 200. Friday's
+04:33 restart could only ever have backfilled the eight sheet pins.
+
+> **AND THE OBVIOUS FIX IS FAR WORSE THAN THE BUG.** The stale bar carries
+> yesterday's **full-session volume**. Accepting it in premarket would seed every
+> name's RVOL numerator with yesterday's whole day — **every RVOL about 1.0x, a
+> plausible number, universally wrong, ranking his board on yesterday.** A sort
+> that ranks nothing is visibly broken; a sort that ranks yesterday is not. The
+> only safe shape is seeding `focused` from the stored `rvol_rank`.
+
+**`moved` is a DEFECT count, not a harm count.** 13 of 32 ranked names carried a
+misplaced anchor on 09-11. A misplaced anchor is only a wrong number if the price
+moved between the true open and the stamped one — ITHA, rank 16, had the wrong
+minute and the **right price**, so its percentage was correct. I reported it as a
+wrong number on his board and it was not.
+
+**Retention is 20 sessions, not 3.** Raised on 09-14. Every claim in the older
+section about a three-day audit window is wrong by that factor.
+
+**The Sheet's prior human analysis is an interpreter input BY DEFAULT.**
+`worker/research-interpret.ts:166`, gated by `RESEARCH_OMIT_SHEET_PRIOR` which
+defaults off, and `config.ts:65-66` says so in its own words. So `structure`,
+`catalyst` and `cycle` are **not independent of his own notes** — which means
+**agreement between them is weak evidence and conflict is strong**, the opposite
+of how `deskRead`'s symmetric merge reads. The switch is the future fix and costs
+dossier quality; **6,512 stored dossiers cannot be retrofitted.**
+
+**`focus` is a hardcoded constant.** Zero on 7,974 rows, one on 51, all before
+`d9215f7` (2026-09-08) — where the pin was removed **on his ruling** that a pin
+is display-only. It was wired, used and measured. Not a dead feature to revive.
+
+**One restart, four consequences.** In the shared rules at Integration's
+`5a548b3`. Every in-memory accumulator is zeroed and each is rebuilt from a
+different source with a different completeness — the asymmetric reseed is the
+part nobody predicts.
+
+### OPEN AND MINE
+
+**The cycle sibling — designed across three seats, UNBUILT.** QCLS showed
+`BACKSIDE $5.49` in red while up 270%; the $5.49 is a four-month-old run. The
+supersession rule already exists (`cycle.ts:108-114`) and cannot see today.
+Three parts: a **high-based** move test (monotone, so the latch is free and needs
+no stored state), the provisional bar `{close, high, volume}` with `settled:
+false` letting the module use its **own** denominators, and a bad-print guard
+comparing the high against **the close of the bar that set it** — which makes it
+immune to the asymmetric reseed and structurally unable to run on a seeded high.
+**Design waits on one latched flag meaning *today HAS qualified this session*.**
+
+**Untraced:** whether `sheetPriorOmitted` persists readably. If it does, *"how
+many stored dossiers saw a prior"* sizes the back-catalogue exposure, and it is a
+different number from both the unmeasurable disagreement rate and the control
+arm's magnitude.
+
+**Scoped to Ops, mine to have scoped:** the selector self-report, and the
+`rvol_rank`-seeded focused set.
+
+### WAITING ON HIM
+
+**The control arm** — `RESEARCH_OMIT_SHEET_PRIOR=1` on a sample, diffed against
+stored verdicts. Cheap, approved, never run, and Integration put it to him four
+times. **If he says yes after Integration retires, a successor will not know it
+was asked unless this line is read.**
+
+**The session reports** — two rather than three (22:00 and 07:00, deferring the
+RTH close), whether prices are included, and whether a paid report narrates only
+post-switch dossiers.
+
+### THINGS I ASSERTED AND RETRACTED — do not act on the older section's versions
+
+- *"retention is 3"* → **20**.
+- *"the guard cannot flicker"* → **it can.** Monotone holds for RVOL and not for
+  the conjunction; `percent_change` moves both ways at 1s. Latched now.
+- *"the board can distinguish traded from cannot-say"* → **it could not**; all
+  nine columns were null and the set read `undefined`.
+- *"no `sheet` source proves the anchor is right"* → **vacuous**; no code writes
+  that value, so the query could not have found one.
+- *"0 of 800 board-visible names were untraded"* → **vacuous**; board visibility
+  requires volume, so the population was empty by construction.
+- *"the disagreement rate is unmeasurable"* → **true, and it was the wrong
+  number.** The control arm's magnitude is measurable. *"Unmeasurable" is usually
+  "not that number, this one."*
+
+## SUPERSEDED LIVE STATE — handover, 2026-08-27
 
 *Written by the session retiring on low context. Everything below is what a
 fresh Research session needs in order to act without asking me anything. If it
