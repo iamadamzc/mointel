@@ -10292,3 +10292,35 @@ scroll container, fitting only because the three unfilled brackets are
 shorter than the values that will replace them. The renderer wraps every
 table in `overflow-x: auto`; the markdown is untouched. Decoupled from the
 bracket-filling so the right thing does not break the phone.
+
+## State: production is `dbae021`, deployed 2026-09-16 23:47 ET — and it is one commit past what was enumerated
+
+**Successor Integration approved shape (a) on the explicit six-commit
+enumeration at `441ec44` (Ops `b92a4dc` table wrapper + `863129c` comment;
+Research `548acf8` per-session high/low [worker, inert until restart],
+`f2786fd` comment, `6937272` intelligence badge). Shipped `RESTART_MARKET=no`
+via the detached push-release; build 20.9s; schema 27 no backup; web/research/
+assess on `dbae021` by `/proc cwd` since 03:47:12Z; market untouched on
+`1c23322`. Stranger: `/desk` `/signin` `/api/market` `/privacy-x` 401; `/`
+`/privacy` `/terms` `/favicon.ico` 200; `legal-table` wrapper present on the
+live policy. Prune removed `4cbd58f`; `6f8894b` is the rollback.**
+
+**THE MISS: I passed `$(git rev-parse HEAD)` to push-release instead of the
+sha I had enumerated, and four peer commits had landed in the twenty minutes
+between.** Three are `.md`; one, `dbae021`, is a 25-line COMMENT block in
+`lib/market/vwap.ts` (Research: the per-session highs are never seeded — see
+below). So nothing unapproved runs. **The process failure is real anyway and
+is the Sunday case again (docs then, a comment now, code next time): a
+moving reference shipped as though it were fixed.** Rule, added to the
+checklist: **push-release takes the ENUMERATED sha as a literal, never
+`HEAD`; if the tip has moved, re-enumerate the range or ship the pin.**
+Disclosed to Integration.
+
+**Research's finding in that comment, and it sharpens the restart condition:**
+`548acf8`'s per-session high/low maps are NOT reseeded on restart (only the
+day-wide pair is, from the daily bar). After ANY in-session restart a
+per-session high reads LOW rather than null — a real number about a shorter
+window, failing quietly in the worse direction. **So the condition for a
+market restart is "no session in progress", not an hour: closed market →
+nothing to lose; in session → understated highs that look real.** Carried
+into every restart ask from now on.
