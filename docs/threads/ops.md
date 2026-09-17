@@ -10285,3 +10285,10 @@ plausibly ask it too.** The indexing question went to him twice within
 minutes, from Web and from Ops, in different words. Web's phrasing is
 canonical; his answer to EITHER seat is the answer and is relayed to the
 other at once. *The bus's job was partly to be the only mouth.*
+
+**Legal tables now scroll (`lib/legal/document.ts`, next enumeration):** Web
+found the policy's processor table at 335px in a 375px viewport with no
+scroll container, fitting only because the three unfilled brackets are
+shorter than the values that will replace them. The renderer wraps every
+table in `overflow-x: auto`; the markdown is untouched. Decoupled from the
+bracket-filling so the right thing does not break the phone.
