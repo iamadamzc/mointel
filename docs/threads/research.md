@@ -625,6 +625,32 @@ the count and returns a **false PROVEN**, i.e. a confident low-float badge on a
 name that is not. Direction was verified against ZOOZ (162.00M / 20.00 = 8.10M),
 not derived. Any Phase C work re-checks that across split types first.
 
+**THE PREMARKET HALF IS NOT RULED. DO NOT DERIVE AGAINST IT.**
+
+This is the one thing in this file most likely to be read wrong, because the two
+halves sit in different sections. **He ruled AFTER-HOURS in, when "the frame"
+meant the evening.** The premarket exclusion was measured afterwards and is the
+LARGER correction -- and it has been put to him, not answered.
+
+    AFTER-HOURS in the frame    RULED, not in doubt
+    PREMARKET   in the frame    MEASURED, PUT TO HIM, UNANSWERED
+
+Integration-tmi recorded *"ruled yes, and wider than asked"* in their own charter
+(`045efd3`) and then withdrew it: **the widening was their inference.** They had
+told him the scope would grow if the data confirmed; he has not answered that
+part. **Told and silent is not approved** -- the same rule I broke earlier the
+same night by telling Design a render was "seen and approved".
+
+⇒ **So `0.5` and `2.0` may be re-derived against an AFTER-HOURS-inclusive frame
+once he confirms, and MUST NOT be re-derived against a premarket-inclusive one
+until he rules the morning in.** Deriving against an unruled frame would bake an
+unapproved scope into two constants that then look calibrated -- which is exactly
+what the FRAME WARNING at their definition sites exists to prevent.
+
+**AND A THIRD QUESTION IS OPEN THAT NEITHER RULING COVERS:** whether
+`isCycleStart`'s move gate should measure the HIGH instead of the close. No frame
+reaches it -- see above. Also unanswered.
+
 **HE RULED THE FRAME AFTER-HOURS-INCLUSIVE (via Integration-tmi), calibrate
 against the last three months. THE RULING SPLITS IN TWO AND ONLY HALF IS
 BLOCKED.**
