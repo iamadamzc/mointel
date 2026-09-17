@@ -364,7 +364,16 @@ repo — they are public documents and re-fetchable.
   put. The question that stands instead: a paid report narrating structure
   narrates a vendor float the desk measured wrong on 8 or 9 of 46 watched
   names until Phase C replaces it — narrate the verdict, never the number;
-  whether that is enough before Phase C is his.** Research also found prices are the least
+  whether that is enough before Phase C is his.** **RULED BY INTEGRATION
+  under order-and-process, 2026-09-17: narrate the verdict, never the
+  number, is the STANDING DEFAULT and does not need him — the verdict
+  (PROVEN / NOT_PROVEN / BASIS_UNVERIFIABLE) is already computed and
+  rendered to the board, so it is a default rather than a build, and a rule
+  that can only fail toward saying less needs no signature. It becomes his
+  only if someone proposes narrating the number itself, and nobody is. The
+  larger question he holds is the migration: the report cannot narrate
+  structure honestly until the desk owns the float, which is Phase C, the
+  last leg of retiring the Sheet.** Research also found prices are the least
   load-bearing and most exposed content in the report, so the tape
   exposure there is optional, not structural.** Pricing and packaging of
   the report is open and waits on him.

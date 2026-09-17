@@ -786,6 +786,19 @@ fact. This seat's read: the honest report narrates the *verdict*, never the
 for a paid product before Phase C is his, and it is the question to put to
 him in place of the two withdrawn.
 
+**Ruled by Integration under order-and-process, 2026-09-17, so it does not
+sit on him: narrate the verdict, never the number, is the standing
+default.** Verified rather than taken: the float bound verdict — PROVEN,
+NOT_PROVEN, BASIS_UNVERIFIABLE — is computed in the float module and
+already rendered to the board by the supply cell, so this is a default,
+not a build; and a rule that can only fail toward saying less does not
+need a signature. It becomes his only if someone proposes narrating the
+number itself, and nobody is. What he does hold is the larger thing this
+question turned out to be one end of: the Sheet is a migration artefact,
+task 1 is its last leg and is blocked on Phase C, and **the report cannot
+narrate structure honestly until the desk owns the float.** Same critical
+path, seen from the product end.
+
 **And the exposure in item 1 is optional, not structural — Research's
 finding, and worth his knowing.** The reports' measured value came from the
 change summary (97% at 22:00), catalyst, structure and cycle — all derived
