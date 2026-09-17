@@ -273,6 +273,40 @@ arm's magnitude.
 **Scoped to Ops, mine to have scoped:** the selector self-report, and the
 `rvol_rank`-seeded focused set.
 
+**FILING-DERIVED FLOAT: A NUMBER IS NOT REACHABLE, BUT BOTH TAILS ARE.** Asked
+by Integration-tmi as the whole critical path of the Sheet migration's Phase C,
+and the answer was already in the type rather than needing a study.
+
+`FloatBasis` has exactly two members. `SHEET_VENDOR` is the vendor number with no
+published methodology. `FILED_SHARES_OUTSTANDING` is documented in its own
+comment as **"an UPPER bound on float, never a float -- every share an insider
+holds is inside it."** Filings publish shares OUTSTANDING; float is outstanding
+minus affiliate and restricted holdings, and that subtrahend lives in 13D/G,
+Forms 3/4/5 and the proxy, **none of which this desk collects.** So there is a
+collection gap behind the collection gap and closing it is not Phase C.
+
+**BUT PILLAR 5 ASKS *IS THE FLOAT LOW*, NOT *WHAT IS IT*, and the desk owns two
+one-sided instruments that between them cover both tails:**
+
+    float bound   LOW_FLOAT_CEILING = 10M     CONCLUSIVE WHEN LOW
+    floor ratio   supply.ts:288-291           CONCLUSIVE WHEN HIGH
+
+Silent in the middle band, and silent on the number for everyone. **Coverage of
+the bound is the figure that matters: 46.9% within `FILED_SHARES_CURRENT_DAYS`
+(45), 50.2% at 90 -- 211 issuers, 2026-08-21.** So about half of names return
+`CANNOT_VERIFY` or `NO_FILED_COUNT`. A month old, a sample, not live.
+
+⇒ **Retiring task 1 replaces a NUMBER with a two-tailed verdict, conclusive at
+the extremes, silent in the middle, available for about half of names.** Not a
+like-for-like substitution, and he should hear it in those words before ruling.
+
+**AND PHASE C HAS A HAZARD THAT FAILS REASSURINGLY.** `assessFloatBound` adjusts
+the filed count by a cumulative split factor, and its comment records that an
+**inverted factor manufactures proof** -- on a forward-split name it understates
+the count and returns a **false PROVEN**, i.e. a confident low-float badge on a
+name that is not. Direction was verified against ZOOZ (162.00M / 20.00 = 8.10M),
+not derived. Any Phase C work re-checks that across split types first.
+
 ### WAITING ON HIM
 
 **The control arm** — `RESEARCH_OMIT_SHEET_PRIOR=1` on a sample, diffed against
