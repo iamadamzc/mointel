@@ -150,7 +150,24 @@ systemctl daemon-reload
 
 # ----------------------------------------------------------------- switch ---
 
+# THE INTEGRITY CHECK RUNS BEFORE ANYTHING IS STOPPED. It is a read; WAL
+# readers do not block the running writers; and on 2026-09-17 it spent 3m27s
+# inside the stop window on a 1.8 GB store, which was 3m27s of public 502 on
+# the night before the site went to Google. The store only grows (retention
+# 20), so the window would have grown with it. A bad store fails the deploy
+# here, with everything still serving.
+MOINTEL_DB_PATH="$(sed -n 's/^MARKET_DB_PATH=//p' /etc/mointel/mointel.env | head -1)"
+[ -n "$MOINTEL_DB_PATH" ] || fail "MARKET_DB_PATH is not set in /etc/mointel/mointel.env"
+log "integrity check (services still up)"
+if ! sudo -u "$SERVICE_USER" env -C "$RELEASE" \
+       NODE_ENV=production \
+       MARKET_DB_PATH="$MOINTEL_DB_PATH" \
+       /usr/bin/node node_modules/tsx/dist/cli.mjs worker/migrate.ts --check-only; then
+  fail "the store failed its integrity check; nothing was stopped"
+fi
+
 log "stopping runtime services"
+DOWN_AT=$(date +%s)
 for unit in "${RUNTIME_UNITS[@]}"; do systemctl stop "$unit" || true; done
 if [ "$RESTART_MARKET" = "yes" ]; then
   log "stopping the market worker (RESTART_MARKET=yes)"
@@ -179,15 +196,12 @@ log "current -> $SHA"
 #
 # Only the store path is passed. The migration needs nothing else, so no
 # credential is put on a command line to do it.
-log "migrating schema"
-MOINTEL_DB_PATH="$(sed -n 's/^MARKET_DB_PATH=//p' /etc/mointel/mointel.env | head -1)"
-[ -n "$MOINTEL_DB_PATH" ] || fail "MARKET_DB_PATH is not set in /etc/mointel/mointel.env"
-
+log "migrating schema (quick_check already recorded above)"
 if ! sudo -u "$SERVICE_USER" env -C "$RELEASE" \
        NODE_ENV=production \
        MARKET_DB_PATH="$MOINTEL_DB_PATH" \
-       /usr/bin/node node_modules/tsx/dist/cli.mjs worker/migrate.ts; then
-  fail "schema migration failed — nothing was started against it"
+       /usr/bin/node node_modules/tsx/dist/cli.mjs worker/migrate.ts --no-check; then
+  fail "schema migration failed; nothing was started against it"
 fi
 
 log "starting services"
@@ -215,6 +229,9 @@ systemctl reload nginx || systemctl restart nginx
 
 # ------------------------------------------------------------------ verify ---
 
+# The number the public site pays for every deploy, in the journal beside the
+# sha rather than reconstructed from unit timestamps afterwards.
+log "services were down for $(( $(date +%s) - DOWN_AT ))s"
 log "waiting for the dashboard"
 healthy=no
 for _ in $(seq 1 60); do
