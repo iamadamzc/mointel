@@ -152,6 +152,54 @@ AUCTION.** Ops fetched 43,251 hourly SIP bars (75 symbols, 62 sessions,
 `data/vendor/`, gitignored, nothing written to production). Re-ran both window
 tests at 30x the population.
 
+**BOTH RESIDUES CLOSED, AND THEY WERE MY INSTRUMENT'S RESOLUTION, NOT THE DATA.**
+Integration-tmi flagged that I had led with TEST 1's zero while the conclusion
+rests on TEST 2, which still carried an unexplained 18.2%. Correct, and the four
+rows they asked to see resolved the whole thing.
+
+**THE PREMARKET RESIDUE IS THE 09:30 BOUNDARY.** An hourly bar starting 09:00 ET
+**straddles the open**, so its high may fall either side of 09:30 and hourly data
+cannot split it. An RTH-only daily bar takes only the post-09:30 part, which
+means it must land in the band:
+
+    RTH(10:00-16:00) max   <=   daily.high   <=   straddle(09:00-10:00) max
+
+**37 of 39 residue rows fall exactly in that band.** The other two (BLND 08-17
+1.490 vs 1.488; VTRS 07-14 16.43 vs 16.41) match the RTH max **exactly** and miss
+the upper bound at the third decimal -- rounding, not anomaly. **39 of 39.**
+
+**THE AFTER-HOURS RESIDUE IS THE CLOSING CROSS** -- all four set their high in the
+16:00-17:00 ET hour, three with no 04:00-16:00 trades at all.
+
+⇒ **ONE RULE EXPLAINS BOTH TABLES: `daily_bars.high` is 09:30-16:00 plus the
+closing cross.** Premarket-inclusive: **0 of 121**, zero in every population and
+every basis treatment I tried.
+
+**AND THE REAL LESSON IS MY OWN INSTABILITY, WHICH IS WORTH MORE THAN THE
+FINDING.** Across four filter variants the residue read **0% -> 18.2% -> 27.3% ->
+5.0% -> 32.2%** on the same data. **A quantity that moves that much under
+filter choice is measuring the filter.** Two of those filters were circular in
+ways I did not see:
+
+- *Basis-consistency by `daily/hourly_allday` spread* -- **the spread is produced
+  by the window effect being tested**, so it selected "symbols that never had an
+  extended-session high" and called it a basis property. My "67 of 75 drift in
+  basis" claim came from this and **is withdrawn.**
+- *Each date's ratio against that symbol's MEDIAN ratio* -- the median is
+  dominated by days whose high sits in RTH, so **a day whose high fell outside
+  RTH is required to deviate.** The instrument flagged the finding as the anomaly.
+
+**The stored daily series has NO split discontinuity** (largest consecutive close
+jump 6.46x on RCON, 3.52x on PFSA -- not the 200x a mixed-vintage table would
+show), so `daily_bars` is uniformly adjusted and **the within-symbol basis
+inconsistency I reported is also withdrawn.**
+
+**What survived every variant was the DIRECTION: premarket-inclusive never scored
+above zero.** A conclusion that holds across four differently-broken filters is
+worth more than a residue rate from any one of them.
+
+**SUPERSEDED (my third wrong explanation, kept legible):**
+
 **THE RESIDUE IS OUR OWN MISSING MINUTE BARS. I gave TWO wrong explanations
 before this one and only the third was tested against an independent source.**
 
