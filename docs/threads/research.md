@@ -266,8 +266,39 @@ trades at all between 04:00 and 16:00** (CEPF twice, LPCV; TONT is 10.820 agains
 ⇒ **`daily_bars.high` covers 09:30-16:00 plus the closing cross. Premarket
 EXCLUDED (18-0). Evening EXCLUDED (0 genuine cases in 15).**
 
-⇒ **HE TRADES 07:00-10:00 AND THE CYCLE APPARATUS SEES THIRTY MINUTES OF IT.**
-Unchanged by the refinement and it is the finding that matters.
+⇒ **THE PUBLISHED PRODUCT PROMISES THE OPPOSITE OF WHAT THE `cycle` FIELD DOES.**
+`tmitrader.com`, read live on 2026-09-17 and quoted exactly: *"Premarket, regular
+hours or after the close, the question is the same: what is this move standing
+on? **The board runs from 04:00 through the after-hours session, and a float does
+not get cleaner at 09:30.**"* The page **argues against the 09:30 boundary by
+name**, and lists *"where it sits in the cycle"* as one of four things the board
+puts on every row.
+
+**STATE IT PRECISELY, BECAUSE THE PUBLISHED CLAIM IS NOT SIMPLY FALSE:**
+
+    true of the board      ranking, RVOL, session_high, volume     04:00-20:00
+    FALSE of ONE field     cycle / retracement / BACKSIDE          09:30-16:00
+
+**Volume I measured rather than accepted: 3 of 2,747 discriminating rows match an
+RTH-only band (0.1%), so the daily bar's volume is decisively NOT RTH-only while
+its HIGH is.** An asymmetry inside one vendor bar. *Only 30.7% match full-session
+within 2%, so "exactly full-session" is unestablished -- the load-bearing part is
+the 0.1%.*
+
+**WHY THE JUSTIFICATION CHANGED AND THE FINDING DID NOT.** This said *"he trades
+07:00-10:00 and the apparatus sees thirty minutes of it"*. **He ruled the desk off
+that basis: *"we need to stop doing things based on me. this is a product now. i
+am not the only audience we are building for."*** And it was wrong even as a
+personal fact -- he trades RTH and AH when there is action.
+
+⇒ **RECORD THE RULING AS HIS. NEVER RECORD THE REASON AS HIS.** A justification
+scoped to one user is **unfalsifiable by anyone else and cannot be inherited** --
+a successor reads *"his edge is the morning"* and has no way to test it or weigh
+it against another user. **A published claim is testable by anyone with the page
+open**, holds for every future customer, and is a stronger argument than the one
+it replaces. Integration-tmi's framing; they counted **86 personal-scoped
+justifications across nine charters, 31 of them in this file** -- the most of any
+thread, and a function of volume rather than of carelessness. Not swept tonight.
 
 **NO LIVE DEFECT FROM THE BASIS SPLIT, and I checked before raising it.**
 `todayQualifiesAsCycleStart` divides a RAW `today.high` by a SPLIT-ADJUSTED
@@ -294,9 +325,11 @@ separately discriminated, 17 exact matches to 0 -- but the window is narrower
 than I said at the other end too.
 
 ⇒ **AND THIS IS THE BIGGER FINDING: the cycle apparatus is blind to nearly all of
-his trading window.** He trades 07:00-10:00 ET. A regular-session-only high sees
-**thirty minutes of it.** The after-hours ruling was about the evening; this is
-about the morning, and the morning is where his edge is.
+the window the product advertises.** `tmitrader.com` sells a board that "runs
+from 04:00 through the after-hours session" and says a float "does not get
+cleaner at 09:30"; the `cycle` field is computed 09:30-16:00. **The after-hours
+ruling was about the evening. The morning is the larger half and the page names
+it first.**
 
 ⇒ **THE FRAMES DO NOT MATCH, reversing what I reported to him and to Design.**
 The parent (`isCycleStart`, on `daily_bars.high`) measures RTH-only; the sibling
