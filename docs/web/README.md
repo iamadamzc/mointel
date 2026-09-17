@@ -43,6 +43,62 @@ might be.*
 **Re-stamp on every seed.** The stamp is written into `canvas.json` from
 `git rev-parse --short HEAD` immediately before seeding.
 
+### A CANVAS REPUBLISH IS NOT A ROUTE TO PRODUCTION
+
+**Integration's framing, 2026-09-17, and it names a gap this thread built
+without noticing.** *Approved copy reached the canvas at `c353cbd` and was never
+written into `app/page.tsx`, which was last built at `d560748` the day before.*
+**No sha shipped it because no sha had it.** *Nobody was wrong; there was simply
+no check.*
+
+> **THE BUILD STAMP PROVES THE CANVAS MATCHES ITS SEEDING SHA. IT SAYS NOTHING
+> ABOUT WHETHER THE PAGE WAS EVER TAUGHT THE SAME WORDS.** *Two independent
+> claims, one instrument — and the instrument answers the less important one.*
+
+**THREE ARTEFACTS, AND EACH PAIR NEEDS ITS OWN CHECK:**
+
+| | proves | does not prove |
+| --- | --- | --- |
+| `note-build` stamp | canvas == its seeding sha | canvas == page source |
+| `npm run build` | page source compiles | page source == approved copy |
+| the `curl` sweep (§2 of the route spec) | page is reachable and renders | page says what was approved |
+
+**THE MISSING CHECK, and it is one line per sentence:**
+
+```bash
+# Every load-bearing sentence must be in BOTH the artboard and the page source.
+for s in "None of this is on the chart"          "a float does not get cleaner at 09:30"          "intelligence desk for people who trade"          "It is 07:15, a name is running"; do
+  printf "%-42s canvas=%s page=%s
+" "${s:0:40}"     "$(grep -c "$s" docs/web/canvas/Main.dc.html)"     "$(grep -c "$s" app/page.tsx)"
+done
+```
+
+**THE ASSERTION IS `page >= 1`, NOT `page == canvas`.** *Run it after any copy
+pass, before claiming the pass has shipped.* **`page=0` is the failure this
+missed. A count above 1 is normal and must not be "fixed".**
+
+> *Caught by running the check on itself:* **`intelligence desk for people who
+> trade` reports `canvas=1 page=2`** — line 18 is the `<meta>` description and
+> line 306 is the body statement. *Two legitimate occurrences of one phrase,
+> because the page carries a search-results summary the artboard never had.*
+> **An equality assertion would have called that a defect and invited someone to
+> delete the meta description** — a stale check does not merely fail, it
+> proposes a fix, and this one would have proposed removing the sentence Google
+> shows in search results.
+
+> **AND THE CONTROL IS NOT OPTIONAL HERE EITHER.** *A sentence absent from both
+> reads as agreement.* **Keep at least one line in the list that is known
+> present in both — `None of this is on the chart` is the control, and if it
+> ever reports `0 0` the check is pointed at the wrong files rather than passing.**
+
+**Second artefact-pair gap on this surface this week.** *The first was the
+canvas going stale behind the sources; this is the page going stale behind the
+canvas.* **The shape is the same and so is the cure: when two artefacts must
+agree, something has to compare them, and a stamp on one of them is not that
+thing.**
+
+---
+
 **The editable canvas is the published artifact; the readable source is the
 file.** Reach for the file when someone needs to *see* it and the artifact when
 someone needs to *change* it.
