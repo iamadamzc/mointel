@@ -26,9 +26,15 @@ preference; one that can is a reason, and reasons survive review.**
 
 ---
 
-## The situation you are inheriting, stated plainly
+## The situation this thread inherited, stated plainly
 
-**`https://tmitrader.com/` returns 401 and nothing else.** The whole desk sits
+> **HISTORICAL AS OF 2026-09-16 — this is the starting position, not the
+> present.** *`/` now serves a public landing page and the board is at `/desk`.*
+> **LIVE STATE is the current fact and wins over every word in this section.**
+> *Kept because the constraints below were each bought with an incident, and a
+> successor needs the reasoning more than the snapshot.*
+
+**`https://tmitrader.com/` returned 401 and nothing else.** The whole desk sits
 behind a single shared nginx Basic Auth password. **There is no public page, no
 privacy policy, no terms, no sign-in screen, and no application auth of any
 kind.** *Measured by Ops from outside the box, 2026-09-10: ports 22/80/443 open,
@@ -197,6 +203,57 @@ hand it over — and specify it as a string Ops can implement, not as an intenti
 
 ---
 
+## `/robots.txt` — A 401 IS ALREADY A POLICY, MADE BY ACCIDENT
+
+**Measured 2026-09-17:** `/robots.txt` → `401`, and so do `/sitemap.xml` and
+`/.well-known/security.txt`.
+
+**Ops's lean, which Integration shared: add it when there is an actual decision
+about crawling, not by default.** *That is the right instinct and this thread
+agreed with it — **and it rests on an assumption that turns out to be false.***
+
+> **THE LEAN ASSUMES THE DEFAULT IS NEUTRAL. IT IS NOT.** *An absent
+> `robots.txt` is `404` and means "no restrictions". **This returns `401`**, and
+> a `401` is an error rather than an absence — **crawler behaviour on it is
+> genuinely inconsistent**, with some treating an auth-required `robots.txt` as
+> a site-wide disallow.*
+>
+> **STATED AS UNVERIFIED: this seat has not read Google's current robots
+> specification and will not assert what Google specifically does from memory.**
+> *What is certain is the weaker and sufficient claim — **`401` is not the same
+> input as `404`**, so the crawling posture is currently being decided by an
+> accident of the exemption list rather than by anyone.*
+
+**WEB'S RECOMMENDATION: serve a permissive `robots.txt` that names no private
+path.**
+
+```
+User-agent: *
+Disallow:
+```
+
+**Two lines, and the second is empty on purpose — that is the syntax for "crawl
+freely".**
+
+- **It removes the ambiguity.** *Whatever a given crawler does with `401`, every
+  crawler agrees about this.*
+- **IT MUST NOT LIST `/desk`, `/signin` OR `/api/`.** ***`robots.txt` is a public
+  file, and a `Disallow:` line is a published path.*** *Those paths already
+  return `401`, which is the actual protection; naming them in a file anyone can
+  read would tell a stranger they exist and protect nothing.* **The classic way
+  this file leaks a private surface is by trying to protect it.**
+- **Being findable is the point of having a landing page.** *A stranger who
+  hears the name and searches for it should reach the page. Invite-only governs
+  who gets in, not who may read.*
+
+**THE SPLIT: the file is Ops's to serve; whether the site should be indexed at
+all is HIS to rule.** *The recommendation above assumes yes — say so if not.*
+
+**`/sitemap.xml` and `/.well-known/security.txt` need nothing.** *Three pages do
+not need a sitemap, and a `401` there is inert.*
+
+---
+
 ## WHEN THE SHAPE OF THE SYSTEM CHANGES, EVERYTHING THAT DESCRIBES IT IS STALE UNTIL PROVEN OTHERWISE
 
 **Three instances in one afternoon, from three seats, 2026-09-15** — and they
@@ -284,100 +341,50 @@ that as a rejection.**
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**Opened 2026-09-10. As of 2026-09-11 10:00 ET: SEVEN ARTBOARDS AND BOTH LEGAL
-TEXTS DRAFTED. NOTHING DEPLOYED, NO ROUTE EXISTS.**
+**THE SITE IS PUBLIC. As of 2026-09-16, production `6f8894b`, `tmitrader.com`
+serves a page to anyone for the first time in this desk's life.**
 
-**Owned in the file tree as of `927641c`+:** `docs/web/` (the design canvas and
-the handover spec) and `docs/legal/privacy-policy.md`. **Nothing under `app/`,
-`components/` or `deploy/` — no route exists yet and none was written.**
+*This section read "NOTHING DEPLOYED, NO ROUTE EXISTS" for a day after that
+became false — the fifth instance this week of a description going stale while
+the thing it describes moved, and the first one in this thread's own charter.*
 
-- **Drafted, seven artboards:** landing (desktop and phone), sign-in, the
-  sign-in states, **signed-in-not-admitted in three conditions**, the privacy
-  page's DRAFT chrome, and the public design system. Sources are
-  `docs/web/canvas/*.dc.html`.
-- **THE PUBLISHED CANVAS DOES NOT UPDATE WHEN THE SOURCES CHANGE.** *Editing a
-  `.dc.html` leaves the artifact he opens showing the previous version, and
-  nothing reports the difference.* **Re-seed and republish is a separate act,
-  and it belongs to whoever holds the files.** *It has already nearly shown him
-  superseded copy twice.*
-- **Frame heights are MEASURED, never estimated.** *Marketing added a section
-  and both landing artboards clipped — desktop by 414px, phone by 1952px, which
-  looks like a short page rather than a broken one.*
-  `document.querySelector('x-dc > div').getBoundingClientRect()` against the
-  `file://` render answers it exactly.
-- **THE COPY IS MARKETING'S AND WEB'S TOGETHER.** *Web laid in its pass; the
-  words are Marketing's and placement findings go back rather than getting
-  trimmed.* **Never two seats in one file at once — Integration signals.**
-- **Privacy policy drafted** as one file with `adopted: null` in frontmatter —
-  **that null is what renders the DRAFT banner.** Every unknown fact is a
-  `[BRACKET]`, and `docs/web/README.md` §3 says who answers each.
-- **Blocking Google publishing:** the public home page. **Both legal texts are
-  now drafted and NEITHER IS ADOPTED** — `docs/legal/privacy-policy.md` and
-  `docs/legal/terms.md`, each with `adopted: null` rendering its DRAFT banner.
-  *Adoption is his and no thread does it for him.*
-- **THE SESSION RULE IS PUBLISHABLE AND IS NOT A DURATION.** *A session ends at
-  20:00 ET — the close of after-hours — and a sign-in after 20:00 runs to 20:00
-  the next day.* **`createSession` takes an absolute expiry, so a caller cannot
-  express "30 days" at all**, and `expiry.ts` reuses `sessionEndUtc` rather than
-  defining 20:00 ET twice.
-- **THE POLICY UNDER-DECLARED THE COOKIES AND WEB WROTE IT FROM HABIT.** *It said
-  one cookie set after sign-in; there are two, and the OAuth `state`/`nonce`
-  cookie is set BEFORE sign-in completes.* **A claim about another thread's
-  surface is a question until that thread's code answers it.**
-- **Not blocked on:** the domain (verified), the redirect URIs (registered), the
-  scopes (set), the OAuth client (his, in the console).
-- **Blocked ON Ops for:** every route and nginx location. **The full prefix list
-  is batched and specified in `docs/web/README.md` §2** — `/privacy`, `/terms`,
-  `/signin`, `/auth/`, `/favicon.ico`. **`/` is deliberately not on it.**
-- **CHECKED, NOT A REQUEST: `^~ /_next/static/` is ALREADY public**
-  (`nginx-locations.conf:143`, opened 2026-08-23 with the bundle scanned). **The
-  live trap is that `/_next/image` and `/_next/data` are deliberately NOT** — a
-  public page using `next/image`, or any raster asset served from `/`, renders
-  broken to a stranger and perfectly to everyone here. *These designs use inline
-  SVG only. An Open Graph image will need its own public path.*
-- **A DEFECT FOUND IN THIS THREAD'S OWN FIRST DRAFT, kept here because the
-  next person will reach for the same token:** `--color-muted` `#6d788a`
-  measures **4.49:1** on `#06080b` and **4.30:1** on a panel — **under AA for
-  normal text**, and it was on the footer's legal paragraph. **The public pages
-  use `#8792a3` (6.37:1) as the dimmest text and exclude `--color-muted`
-  entirely.** *The desk's own `ink-3` was raised for exactly this reason once
-  already; `muted` was not in that sweep.* **DESIGN CHECKED AND DELETED IT:
-  referenced by zero files, so the defect was latent rather than live, and it
-  measures worse again — 4.10:1 — on the striped header surface.** *Removed
-  rather than annotated, because with `@theme` a missing token renders unstyled
-  and visible instead of quietly unreadable.*
-- **THE LANDING PAGE AT `/` IS BLOCKED ON IN-APP AUTH EXISTING**, because `/` is
-  the board and Basic Auth is the only thing holding it. **Everything else on this
-  thread's surface is not.**
-- **INTEGRATION'S READING, FLAGGED NOT ASSERTED:** *Google's brand verification
-  wants "a public home page that is not only a login page". If that home page must
-  be `tmitrader.com` itself, then **Google publishing is blocked on in-app auth
-  too** — a reviewer landing on a password prompt fails.* **Nobody has confirmed
-  whether a home page elsewhere on the domain satisfies it, and nobody should
-  guess.**
-- **THE COPY IS CO-OWNED WITH A MARKETING THREAD, BY HIS RULING** — *"no, let's
-  have them both own it."* **Integration proposed Marketing writes and Web
-  places; he refused that split.** *Nothing is taken off this thread and
-  Marketing is not arriving to correct it; the brief is the same one Web was
-  just handed.* **Integration is defining the mechanics before it opens** —
-  one git index and two threads editing one file is a failure this desk
-  already knows.
-- **HIS VERDICT ON THE COPY, 2026-09-10, AND IT IS THE STANDARD NOW:** *"it just
-  misses the mark. any scoped professional will see. it's flat and distant."*
-  **The de-pitch of that same morning overshot.** *Removing persuasion is not
-  the same as having a voice, and the fix is never to put the pitch back.*
-  **Integration's diagnosis, kept because it generalises: the page was precise
-  about what was cheap to be precise about — scopes, cookies, boundaries — and
-  distant about what it is for. Accuracy migrated to where it was cheap.**
-- **AUTH SCOPES DO NOT BELONG ON THE LANDING PAGE.** *A stranger deciding
-  whether the product is for them does not need an OAuth scope list; a stranger
-  deciding whether to trust a sign-in does, and that is a different page at a
-  later moment.* **Move it, never delete it** — it lives on `/signin` and in
-  the policy.
-- **THE SIGN-IN SCREEN'S OWNERSHIP IS THE TRADER'S CALL AND IS NOT SETTLED.**
-  `ops.md`'s auth scope of 2026-09-07 assigns the sign-in surface to Design,
-  written before this thread existed. **Integration has put the question to him
-  rather than negotiating it between threads.**
+**LIVE AND VERIFIED** — Web's run 2026-09-16 from an actor with no cached state,
+third pass after Ops and Integration, recorded in
+[`../web/2026-09-15-route-spec.md`](../web/2026-09-15-route-spec.md) §7:
+
+```
+/  /privacy  /terms  /favicon.ico        ->  200    www.tmitrader.com/  ->  200
+/desk  /signin  /api/market  /privacy-x  ->  401
+11 subresources the served page asks for ->  200 (9 chunks, 2 self-hosted woff2)
+```
+
+- **The landing page is at `/` and the board is at `/desk`**, which keeps the
+  server-level `auth_basic`. **The default did not move; the board did.**
+- **Both legal texts are ADOPTED** (`adopted: 2026-09-11`, his word *"1,
+  approved"*) and **render from their source markdown at request time** — no
+  DRAFT banner, no copy in any template.
+- **Basic Auth is still the whole of what protects the desk.** *Steps 2 and 3 of
+  the sequence — in-app auth, then Basic Auth off — have not happened and are
+  not close.*
+
+**OPEN, AND BOTH ARE THIS THREAD'S**
+
+- **`/robots.txt` returns `401`, and so do `/sitemap.xml` and
+  `/.well-known/security.txt`.** *Recommendation and reasoning below; the file
+  is Ops's to serve, the crawling posture is his to rule.*
+- **`/signin` and `^~ /auth/`** — specified, deliberately deferred, and **they
+  wait on the authority field**, which waits on the public batch bedding in.
+  *Opening `/signin` before the first-admin grant exists is how the authority to
+  spend his money goes to whoever knocks first.*
+- **The flow cookie's NAME** stays bracketed in the privacy policy until it is
+  in code rather than in a message.
+
+**THE BUS IS DOWN.** *Integration retired 2026-09-17 at `e1cc277`; a successor
+opens later.* **In the gap, cross-thread traffic goes direct or to him** — *the
+route-through-Integration rule assumes an Integration.* **Tell the successor, in
+your own words, that a bus which only wakes on messages has a single point of
+failure: it dropped the Release 2 ping and this thread learned production had
+gone public an hour late.**
 
 ---
 
