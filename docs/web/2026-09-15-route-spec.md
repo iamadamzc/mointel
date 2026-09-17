@@ -874,3 +874,54 @@ desktop and on a phone, to a client with no credential.* **Nothing on this
 thread's surface is outstanding but the share-preview tags (§11), which are with
 Marketing.**
 
+---
+
+## 13. THE PUBLISHED CONTACT ADDRESS CANNOT RECEIVE MAIL — 2026-09-17 00:15 ET
+
+**`andromedagenius.com` DOES NOT EXIST IN DNS.** *Confirmed on two independent
+public resolvers, with a positive control through the same query path:*
+
+```
+8.8.8.8   tmitrader.com        -> 98.85.49.227          (control: the mechanism works)
+8.8.8.8   andromedagenius.com  -> NXDOMAIN, no MX
+1.1.1.1   andromedagenius.com  -> NXDOMAIN, no MX
+```
+
+**So `info@andromedagenius.com` cannot receive mail**, and it is published here:
+
+| surface | occurrences | role |
+| --- | --- | --- |
+| `/` | 6 | **the PRIMARY ACTION — "Ask for an invite" is a `mailto:` to it** |
+| `/privacy` | 14 | contact for every data-subject right the policy grants |
+| `/terms` | 6 | contact, and the route for closing an account |
+
+> **THE ONLY WAY IN IS A DEAD LETTER.** *Access is invite-only; the way to ask
+> for an invite is that address; a stranger who does everything right reaches
+> nobody.* **Live since 2026-09-16.**
+>
+> *And the adopted privacy policy grants rights — see, correct, delete, export —
+> that are all exercised by writing to an address that bounces.*
+
+### How this got published, and it is this seat's error
+
+**He gave the address in a message and I put it in four places without checking
+it resolved.** *No verification, at any point, by anyone.*
+
+> **"Never assert what you have not opened" applies to facts FROM HIM.** *Not as
+> distrust — **a typo, an unregistered domain and a working address are
+> indistinguishable in a message**, and the cost of one `nslookup` is nothing
+> against a dead contact on two legal documents.*
+>
+> **Same shape as everything else this week: I verified the pages' status codes,
+> subresources, rendering, mobile layout and text — and never checked that the
+> one action the page asks a stranger to take actually works.** *A `mailto:` has
+> no status code, so no sweep of mine could ever have caught it.*
+
+**WHAT IS NOT KNOWN AND SHOULD NOT BE GUESSED:** *whether the domain is
+unregistered, registered without nameservers, or simply not the address he
+meant.* **The measurable fact is delivery: it cannot happen. The correct address
+is his to give, and no seat should invent one.**
+
+**NOT CHANGED PENDING HIS ANSWER.** *A published contact address is substantive:
+replacing it is a change to adopted legal text, not a repair.*
+
