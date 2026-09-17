@@ -549,6 +549,87 @@ export interface TodaySoFar {
  * a guard built on it would restore the wrong badge mid-session on the name that
  * just ran.
  */
+/** One stored minute of today: a high, and the close of THAT SAME minute. */
+export interface TodayMinuteBar {
+  high: number | null;
+  close: number | null;
+}
+
+/*
+ * Float noise only. Prices here are 1--20, so this is ~2e-5 of a cent, while a
+ * genuine seeding gap is cents. The two cannot be confused at this width.
+ */
+const HIGH_COVERAGE_EPSILON = 1e-6;
+
+/**
+ * Builds today's provisional bar from stored minute bars, or refuses.
+ *
+ * WHY THE PAIR COMES FROM ONE SOURCE AND NOT FROM THE CHEAPEST SOURCE EACH.
+ * `ticker_session.session_high` is the more complete high -- it is seeded from
+ * `dailyBar.h` and so covers trading from before this process was streaming.
+ * There is no companion close stored anywhere for it, so pairing it with a close
+ * derived from `minute_bars` would feed the bad-print guard two numbers rebuilt
+ * from different sources with different completeness. That is the asymmetric
+ * reseed, and it is the defect that disables a guard on exactly the population
+ * the guard exists to protect. So the high and its close are taken from the SAME
+ * stored minute, and `session_high` is demoted to an auditor of that choice.
+ *
+ * THE AUDIT IS THE PART THE RULE CANNOT DO ITSELF. `todayQualifiesAsCycleStart`
+ * can see that its inputs are finite; it cannot see that the bars it was handed
+ * fail to cover the day. When `session_high` sits above every stored bar high,
+ * the day's real high happened somewhere we have no minute for, so the pair is
+ * self-consistent and about a shorter day -- which would read as NOT_QUALIFIED,
+ * a claim, rather than as "cannot tell". Refusing hands the caller UNVERIFIABLE.
+ *
+ * Measured on 2026-08-18, 6,889 paired rows: 6,451 agree exactly, 438 (6.4%)
+ * have `session_high` above every stored bar, and ZERO have it below. The stored
+ * bars are a lower bound on the row in that window and never the reverse, so
+ * this test only ever fires in the safe direction. One date, and the frame
+ * matters: `session_high` is premarket+RTH, and comparing it against a bar max
+ * that included after-hours produced 355 spurious disagreements until the
+ * windows were matched.
+ */
+export function todaySoFarFromBars(
+  minuteBars: readonly TodayMinuteBar[],
+  sessionHigh: number | null,
+  cumulativeVolume: number | null,
+): TodaySoFar | null {
+  let high: number | null = null;
+  let highBarClose: number | null = null;
+
+  for (const bar of minuteBars) {
+    if (typeof bar.high !== 'number' || !Number.isFinite(bar.high)) continue;
+    if (typeof bar.close !== 'number' || !Number.isFinite(bar.close)) continue;
+    if (high === null || bar.high > high) {
+      high = bar.high;
+      highBarClose = bar.close;
+      continue;
+    }
+    /*
+     * A TIE IS CORROBORATION AND NOT A BAD PRINT. A bogus tick is one minute
+     * reaching a level nothing else reached; two minutes reaching the same high
+     * is a level the market actually traded at. So among tied maxima keep the
+     * HIGHEST close, which is the reading least likely to trip the guard -- the
+     * conservative choice here is the permissive one.
+     */
+    if (bar.high === high && highBarClose !== null && bar.close > highBarClose) {
+      highBarClose = bar.close;
+    }
+  }
+
+  if (high === null || highBarClose === null || high <= 0) return null;
+
+  /*
+   * A null `session_high` alongside bars that exist is itself the unknown case:
+   * premarket restarts seed it null, and nothing distinguishes that from a name
+   * that never printed -- except that a name which never printed has no bars.
+   */
+  if (typeof sessionHigh !== 'number' || !Number.isFinite(sessionHigh)) return null;
+  if (sessionHigh > high * (1 + HIGH_COVERAGE_EPSILON)) return null;
+
+  return { high, volume: cumulativeVolume, highBarClose };
+}
+
 export type TodayStartVerdict = 'QUALIFIED' | 'NOT_QUALIFIED' | 'UNVERIFIABLE';
 
 export function todayQualifiesAsCycleStart(

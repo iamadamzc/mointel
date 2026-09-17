@@ -8,8 +8,10 @@ import {
   resolveCycle,
   resolveCycleHistory,
   todayQualifiesAsCycleStart,
+  todaySoFarFromBars,
   type CycleArc,
   type CycleBar,
+  type TodayMinuteBar,
   type TodaySoFar,
 } from '@/lib/market/cycle';
 
@@ -511,5 +513,89 @@ describe('todayQualifiesAsCycleStart', () => {
     expect(todayQualifiesAsCycleStart(settled, today({ high: null }))).toBe('UNVERIFIABLE');
     // A measured zero volume with a real high is a verdict.
     expect(todayQualifiesAsCycleStart(settled, today({ volume: 0 }))).toBe('NOT_QUALIFIED');
+  });
+});
+
+/**
+ * The provisional bar's BUILDER, which is where the reseed defect would enter.
+ *
+ * The rule can check that its inputs are finite. It cannot check that the bars
+ * it was handed cover the day, and it cannot see that a high and a close came
+ * from two differently-rebuilt sources.
+ */
+describe('todaySoFarFromBars', () => {
+  const bar = (high: number, close: number): TodayMinuteBar => ({ high, close });
+
+  it("takes the close of the bar that SET the high, not the latest close", () => {
+    const bars = [bar(1.2, 1.15), bar(1.9, 1.8), bar(1.4, 1.1)];
+    expect(todaySoFarFromBars(bars, 1.9, 5_000_000)).toEqual({
+      high: 1.9,
+      highBarClose: 1.8,
+      volume: 5_000_000,
+    });
+  });
+
+  it('refuses when session_high sits above every stored bar', () => {
+    // 6.4% of rows on 2026-08-18: the day's high happened before we streamed.
+    expect(todaySoFarFromBars([bar(1.4, 1.35)], 1.9, 5_000_000)).toBeNull();
+  });
+
+  it('accepts when session_high is BELOW the bars, which never happened in the frame', () => {
+    // Measured zero times in 6,889 rows, but it is the safe direction: the pair
+    // is still self-consistent, so there is nothing to refuse.
+    expect(todaySoFarFromBars([bar(1.9, 1.8)], 1.5, 1)?.high).toBe(1.9);
+  });
+
+  it('refuses a null session_high even with bars present', () => {
+    expect(todaySoFarFromBars([bar(1.9, 1.8)], null, 5_000_000)).toBeNull();
+  });
+
+  it('keeps the highest close among tied highs', () => {
+    // A level two minutes reached is corroborated, so do not hand the guard the
+    // reading most likely to call it a bad print.
+    const bars = [bar(1.9, 1.2), bar(1.9, 1.85)];
+    expect(todaySoFarFromBars(bars, 1.9, 1)?.highBarClose).toBe(1.85);
+  });
+
+  it('skips bars missing either half of the pair', () => {
+    const bars = [{ high: 2.5, close: null }, bar(1.9, 1.8), { high: null, close: 1.0 }];
+    expect(todaySoFarFromBars(bars, 1.9, 1)).toEqual({
+      high: 1.9,
+      highBarClose: 1.8,
+      volume: 1,
+    });
+  });
+
+  it('returns null with no usable bars', () => {
+    expect(todaySoFarFromBars([], 1.9, 1)).toBeNull();
+  });
+
+  it('passes a null volume through for the rule to refuse on', () => {
+    expect(todaySoFarFromBars([bar(1.9, 1.8)], 1.9, null)).toEqual({
+      high: 1.9,
+      highBarClose: 1.8,
+      volume: null,
+    });
+    expect(
+      todayQualifiesAsCycleStart(base(25, 1.0, 1_000_000), {
+        high: 1.9,
+        highBarClose: 1.8,
+        volume: null,
+      }),
+    ).toBe('UNVERIFIABLE');
+  });
+
+  it('feeds a real bad print through to UNVERIFIABLE end to end', () => {
+    // One minute spikes to 3.00 and closes at 1.00: high/close is 3.0.
+    const built = todaySoFarFromBars([bar(1.2, 1.15), bar(3.0, 1.0)], 3.0, 50_000_000);
+    expect(built).not.toBeNull();
+    expect(todayQualifiesAsCycleStart(base(25, 1.0, 1_000_000), built!)).toBe('UNVERIFIABLE');
+  });
+
+  it('lets a genuine fade through, which the live price would have rejected', () => {
+    // QCLS: high 1.76, and the setting minute closed 1.70 even though the day
+    // later faded to 0.90. Dividing by the live price gave 1.96 and lost it.
+    const built = todaySoFarFromBars([bar(1.76, 1.7), bar(1.1, 0.9)], 1.76, 50_000_000);
+    expect(todayQualifiesAsCycleStart(base(25, 1.0, 1_000_000), built!)).toBe('QUALIFIED');
   });
 });

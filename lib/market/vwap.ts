@@ -406,12 +406,30 @@ export function emptySessionOpen(session: VwapSession): SessionOpen {
  * AND THEY ARE NEVER SEEDED, WHICH IS A DIFFERENT EXPOSURE FROM THE DAY-WIDE PAIR.
  *
  * `seedSession` reseeds the day-wide `sessionHigh` from `dailyBar.h`, so after an
- * RTH restart that value survives. These do not: a daily bar carries ONE high
+ * RTH restart that value CAN survive. These cannot: a daily bar carries ONE high
  * with no session breakdown, so there is nothing to seed them from and they
  * rebuild from post-restart bars alone.
  *
- *     day-wide sessionHigh      RTH restart: SURVIVES     premarket restart: LOST
- *     these                     RTH restart: LOST         premarket restart: LOST
+ *     day-wide sessionHigh   RTH restart: SURVIVES IF ROLLED   premarket: LOST
+ *     these                  RTH restart: LOST                 premarket: LOST
+ *
+ * THE CONDITION IS LOAD-BEARING AND ITS TIME IS UNMEASURED. `belongsToSession`
+ * (`worker/runtime.ts:851-852`) compares `etDateString(dailyBar.t)` against the
+ * trading date, and `:887` seeds `null` on a mismatch -- and the bar was still
+ * YESTERDAY'S at 04:38 ET when Ops observed it from the box. The seed therefore
+ * fails to LOST and never to a stale high, which is the safe direction. But if
+ * the bar has not rolled by 09:30 then an RTH restart loses the day-wide high
+ * too. Integration-tmi flagged the flat `SURVIVES` above as something the next
+ * seat would read as a guarantee, and was right.
+ *
+ * AND IT IS NOT MEASURABLE FROM STORAGE, FOR A REASON WORTH KNOWING.
+ * `cumulativeVolume = volumeBase + minuteSum` (`engine.ts:1405`), so a nonzero
+ * stored premarket volume proves only that ONE of the two is nonzero: a rolled
+ * bar, or a name that simply traded while we were streaming. Both arms produce
+ * the same number. The column that would separate them is `volume_base` -- and
+ * it is written as the literal `0` on every row (`worker/runtime.ts:1752`; 25,789
+ * of 25,789 confirmed). The field that would date the roll is the one that does
+ * not carry what its name says.
  *
  * So after ANY restart a per-session high is only as complete as this process's
  * own observation of that session, and it will read LOW rather than null -- the
@@ -421,7 +439,7 @@ export function emptySessionOpen(session: VwapSession): SessionOpen {
  * DO NOT USE THESE AS THE CYCLE-START INPUT. Design-tmi caught that trap:
  * `closeChangePct` compares a DAY close to the PRIOR DAY's close, so "has today
  * qualified" is a day-level question and the day-wide high is the correct input
- * as well as the surviving one. A latch on a per-session high would look more
+ * as well as the better-surviving one. A latch on a per-session high would look more
  * careful and behave worse.
  *
  * The unwired `lib/market/replay.ts` would repair these and the anchors together,
