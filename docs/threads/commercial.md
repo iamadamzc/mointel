@@ -352,7 +352,19 @@ repo — they are public documents and re-fetchable.
   post-switch dossiers or accepts the exposure for the back catalogue — a
   sequencing decision, his, before the report is called shippable.
   Attribution wording amended to say the classification was produced with
-  his prior analysis available.** Research also found prices are the least
+  his prior analysis available.** **CORRECTED 2026-09-17: "his prior
+  analysis" was this seat's wrong word — no human has ever written or
+  reviewed the Sheet; ChatGPT tasks write it, which the shared rules, the
+  Design charter and the config comment all already said. Attribution
+  withdrawn and re-worded to "a second automated pipeline's conclusion".
+  Decision 1 is no longer a privacy trade and is being decided by the
+  tasks' retirement. Decision 2 dissolves: no human judgement is in the
+  back catalogue to leak; what remains is an operational dependency on a
+  retiring task, not secrecy, and the sequencing question is withdrawn as
+  put. The question that stands instead: a paid report narrating structure
+  narrates a vendor float the desk measured wrong on 8 or 9 of 46 watched
+  names until Phase C replaces it — narrate the verdict, never the number;
+  whether that is enough before Phase C is his.** Research also found prices are the least
   load-bearing and most exposed content in the report, so the tape
   exposure there is optional, not structural.** Pricing and packaging of
   the report is open and waits on him.

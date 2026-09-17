@@ -724,6 +724,68 @@ assessment row, and the no-float finding stands. The Sheet's contribution is
 upstream in the evidence, not downstream in the merge — a different and
 narrower exposure than a Sheet field narrated directly, and filed as that.
 
+**CORRECTED 2026-09-17 — the premise under the two decisions above was
+wrong, and the wrong word was this seat's.** Everything above calls the
+Sheet's prior "his prior analysis" and "his personal Sheet's analysis."
+**No human has ever written or reviewed the Sheet.** Scheduled ChatGPT
+tasks write it; he does not write to it and never has. That was already on
+the record when this section was written — the shared rules' facts section
+says he *"has never reviewed anything in it and does not write to it"*, the
+Design charter records the premise as retracted (*"No human has ever
+reviewed any of it"*, commits `3263615` and `7f892e7`), and the research
+config's own comment on the switch says *"The prior is another model's
+conclusion."* This seat took the relay's wording rather than opening the
+file, which is the failure the shared rules name most often. Corrected
+against the code and the record, not against the new relay.
+
+Re-derived under the true premise:
+
+- **The attribution wording amended above is withdrawn.** *"Produced with
+  his prior analysis available as evidence"* would credit a human review
+  that never happened — in the one artefact a second customer pays for, and
+  under his name. The honest form is *"the desk's automatic classification,
+  produced with a second automated pipeline's conclusion available as
+  evidence"*; the shorter *"the desk's automatic classification"* becomes
+  true when the switch is on.
+- **Decision 1, the switch, is no longer a privacy trade and is no longer a
+  standing choice.** It is one automated pipeline being shown another's
+  answer; its cost is measurable (the config calls it *"the control arm
+  that measures how much it actually moves"*) and it describes a dependency
+  already scheduled to end — the Design charter records the tasks retiring
+  at `9437928`, with tasks 1 and 2 held only because task 1 is the sole
+  writer of the board's float. **Nothing for him to decide here that the
+  retirement does not decide.**
+- **Decision 2, the back catalogue, largely dissolves.** There is no private
+  human judgement in the 6,512 stored dossiers to leak to a second customer.
+  What is in them is one model's reading of another model's reading, on a
+  universe the task discovered independently on every run, so it carries no
+  signal about what he personally watched. **The confidentiality exposure
+  this seat put to him was not the problem.** What remains is
+  **operational**: a paid report narrating dossiers that were shaped by a
+  scheduled task running outside the deployed system, in his personal
+  accounts, that is being retired — an availability and ownership
+  dependency, not a secrecy one, and the same dependency the single-tenancy
+  rule already names for the board. **The sequencing question — post-switch
+  dossiers only, or accept the back catalogue — is withdrawn as put; it is
+  not a decision he needs to make.** The withdrawal has gone to Integration,
+  which had carried the same premise and corrected it with him first.
+
+**The commercial question that stands instead, and nobody has put it to
+him.** The float that reaches his board comes from the retiring task's
+Sheet, relayed from a vendor, and the desk's own measurement (§2f item 3;
+`supply.ts`) is that it contradicts its own share count on 8 or 9 of 46
+non-ADR names in a watched sample. **A paid report that narrates structure
+narrates a number the desk already knows is wrong about one name in six,
+until Phase C, the filing-derived float, replaces it.** That is not a
+privacy exposure and not a licence exposure; it is a product-quality claim
+made to a paying reader, and the §2f principle applies to it directly — the
+report may state the desk's verdict on the float it was shown (*refused*,
+*bounded*, *unverifiable*) as record, and may not state a vendor float as
+fact. This seat's read: the honest report narrates the *verdict*, never the
+*number*, which the float module was built to do. Whether that is enough
+for a paid product before Phase C is his, and it is the question to put to
+him in place of the two withdrawn.
+
 **And the exposure in item 1 is optional, not structural — Research's
 finding, and worth his knowing.** The reports' measured value came from the
 change summary (97% at 22:00), catalyst, structure and cycle — all derived
