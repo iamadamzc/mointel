@@ -136,6 +136,29 @@ done
 > pass/fail against whichever the reader had in mind, so the failing value is
 > named rather than inferred.**
 >
+> **THE NEGATIVE CONTROL CANNOT SEE THE APPLICATION, AND ON 2026-09-17 IT
+> PASSED WHILE PRODUCTION WAS DOWN.** *Every public path returned `502`;
+> `/desk` and `/api/market` returned `401` and the control reported clean.*
+>
+> **`401` means nginx refused you. It does not mean the desk is there.** *nginx
+> answers those itself, before proxying — so a `401` is identical whether the
+> app is healthy, stopped, or has never existed.* **The `502`s are what exposed
+> it, and only because those four paths are exempt: before Release 2, when
+> everything was `401`, this outage would have been invisible to every check on
+> this desk.**
+>
+> **⇒ READ THE TWO HALVES IN ORDER, NEVER SEPARATELY. If the positive loop is
+> not green, the negative control's passes mean NOTHING** — *not "the desk is
+> safe", just "nothing is answering".* **A suite that reports eight passes with
+> the application stopped is not a suite; the positive loop is the only half
+> with an opinion about whether anything is alive.**
+>
+> *`/api/health` is deliberately loopback-only (`satisfy any; allow 127.0.0.1;
+> deny all`) and returns `401` from outside. **That is correct and should stay
+> that way** — a public health endpoint is another exemption and exactly the
+> kind nobody should publish. **The public pages returning `200` IS the external
+> liveness signal**, and no separate probe is needed or wanted.*
+
 > **A batch of exemptions that accidentally opened everything would pass the
 > positive loop completely and fail every line here.** *Four `200`s prove the
 > holes exist; only the `401`s prove they are holes rather than a missing wall.*
@@ -645,4 +668,32 @@ is the tail wagging the document.*
 a fault whose trigger is a task already on the list, in a file nobody would
 connect to a layout — and the seat that fills the brackets will be thinking
 about hosting providers, not about phones.*
+
+---
+
+## 9. THE DEPLOY IS NOW A PUBLIC OUTAGE — Ops's finding, and what it means here
+
+**2026-09-17: a routine deploy of `dbae021` took every public page to `502` for
+3m28s** — *unit stopped 03:43:44Z, ready 03:47:14Z; stop → migrate → start.*
+**Nothing crashed. The gap is the deploy's own.**
+
+> **IT WAS HARMLESS UNTIL RELEASE 2 AND IS NOT ANY MORE.** *While every path was
+> `401`, a stopped app was indistinguishable from a running one and the window
+> cost nothing.* **Now the same window is a public outage, every single ship.**
+>
+> *Ops has it and is reading the script's ordering. **The fix is Ops's; the
+> consequence is this thread's**, because the surface that goes dark is the one
+> this thread owns.*
+
+**TWO STANDING RULES FOR THIS THREAD:**
+
+1. **Never run §2's verification during a deploy.** *A `502` there is the deploy,
+   not a fault, and reporting it as a fault costs someone an investigation.*
+   **Ask Ops whether one is in flight before treating a `502` as news** — *this
+   seat reported one at 03:45Z that was already resolving.*
+2. **HE MUST NOT SUBMIT TO GOOGLE WHILE A DEPLOY IS IN FLIGHT.** *A reviewer
+   fetching `tmitrader.com` inside that window gets a `502`, and a failed
+   verification burns the retry — the one cost here that fixing the box does not
+   recover.* **Ops says when the next deploy is done; the submission waits for
+   that word.**
 
