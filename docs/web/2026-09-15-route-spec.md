@@ -697,3 +697,57 @@ about hosting providers, not about phones.*
    recover.* **Ops says when the next deploy is done; the submission waits for
    that word.**
 
+---
+
+## 10. THE NEXT BATCH, ASKED FOR AND ANSWERED — it is nearly empty
+
+**Integration's challenge, 2026-09-17, and it is this thread's own rule turned
+back on it:** *`/robots.txt` is the second exemption to arrive alone, and
+`web.md:150` says **"a batch is a decision; a trickle is a precedent."*** **So:
+what else is coming? Enumerated against what a browser and a crawler actually
+request, not against what seemed likely.**
+
+```
+/apple-touch-icon.png              401   Safari probes this at the root when no <link> declares one
+/apple-touch-icon-precomposed.png  401   same
+/manifest.webmanifest              401   not referenced; nothing requests it
+/sitemap.xml                       401   nothing references it
+/.well-known/security.txt          401   nothing requests it unless a researcher looks
+/robots.txt                        401   in flight at c883d7b
+```
+
+### THE ANSWER: ONE REAL GAP, AND IT NEEDS NO EXEMPTION AT ALL
+
+**THE LIVE PAGE HAS NO OPEN GRAPH METADATA.** *Measured: `og:title`,
+`og:description`, `og:image`, `twitter:card` — **zero of each**. `app/layout.tsx`
+has no `openGraph`, no `twitter`, no `metadataBase`. There is a plain
+`<meta name="description">` and nothing else.*
+
+> **So `tmitrader.com` shared in a DM, a Slack channel, an email or a post
+> renders as a BARE URL** — no title, no description, no preview. **On the page
+> whose entire job is to be the thing a stranger meets.**
+>
+> *It mattered less while the site was `401` to everyone. It matters from the
+> moment it is public and indexed, because sharing the link is how most people
+> will first see it.*
+
+**AND THE FIX REQUIRES NO NEW PUBLIC PATH.** *`og:title` and `og:description` are
+meta tags inside HTML that is **already public**.* **Only an IMAGE would need a
+path, and a text-only card is the large majority of the benefit.** *Web
+specifies the tags; `app/layout.tsx` is Ops's carriage.*
+
+### The rest, decided rather than deferred
+
+| path | decision |
+| --- | --- |
+| `/sitemap.xml` | **NOT NEEDED, and not merely "later".** *Three pages, all linked from the home page. A crawler that reads `/` finds both others by following links.* **A sitemap adds nothing and would be a third lone exemption bought for no benefit.** |
+| **an OG image** | **The only plausible future exemption.** *One exact-match path, because `/_next/image` is deliberately not exempt. **If he wants one, it batches with whatever else is live at that moment** rather than arriving alone.* |
+| `/apple-touch-icon.png` | *Safari probes it; it `401`s; the only symptom is a blank icon when someone saves the site to a home screen.* **Cosmetic. Avoidable with a `<link rel="apple-touch-icon">` declaration instead of a root file — no exemption.** |
+| `/.well-known/security.txt` | *Nothing requests it unless a researcher looks.* **A decision, not a need. Not recommended today for a one-operator invite-only service.** |
+
+> **THE BATCH IS: nothing.** *Which is the honest answer and a better one than a
+> speculative list — **the rule exists to stop exemptions arriving one at a time,
+> not to manufacture a batch.*** *The next one that does arrive should carry
+> everything live at that moment, and this table is what it gets checked
+> against.*
+
