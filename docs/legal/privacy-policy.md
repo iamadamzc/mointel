@@ -30,8 +30,18 @@ last_changed: 2026-09-11
   that true. A draft that renders as adopted is the
   failure this field exists to prevent.
 
-  Every [BRACKET] below is a fact this seat does not hold. They are listed,
-  with who can answer each, in docs/web/README.md.
+  Every [BRACKET] below is a fact this seat does not hold, and EVERY ONE OF
+  THEM RENDERS TO THE PUBLIC. They are listed, with who can answer each, in
+  docs/web/README.md.
+
+  A BRACKET IS A MISSING VALUE. IT IS NEVER A QUESTION TO ANOTHER SEAT.
+  Two [CONFIRM: ...] notes were written in this file in the same syntax and
+  rendered on the live, adopted policy from 2026-09-16 until 2026-09-18 --
+  a note to myself, published, on the document whose whole argument is candour.
+  Removed; they were annotations on claims, never claims, so no wording of the
+  policy changed and `adopted` is untouched.
+
+  Questions for another seat go in docs/web/README.md, which nobody serves.
 -->
 
 # Privacy policy
@@ -75,7 +85,7 @@ service works and so that we can tell a fault from an attack.
 
 **In server logs.** Like every website, our servers write an access log. It
 contains your IP address, the address of the page requested, your browser's
-user-agent string, and the time. [CONFIRM WHETHER ANY OTHER FIELD IS LOGGED.]
+user-agent string, and the time.
 
 **Cookies.** Two, and neither of them follows you anywhere else.
 
@@ -122,7 +132,7 @@ which is why you were not asked to dismiss a banner.
   restore service, and detect abuse of an account or of the server.
 - **To reach you about the service.** We may email you about access, outages,
   material changes to this policy, or the end of the service. We do not send
-  marketing email. [CONFIRM: is there any mailing list at all?]
+  marketing email.
 
 ## 5. Who else sees it
 
