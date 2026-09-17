@@ -23,6 +23,25 @@ describe('robots.txt', () => {
     expect(JSON.stringify(out)).not.toMatch(/disallow/i);
   });
 
+  it('is permissive, positively: never Disallow: /, in any form', () => {
+    // The failure this guards has no symptom on the wire -- 200, well-formed,
+    // no private path -- and a deploy cannot undo it once crawlers have read
+    // it. So the rule is asserted as what it IS, not only as what it lacks.
+    const out = robots();
+    const rules = Array.isArray(out.rules) ? out.rules : [out.rules];
+    for (const rule of rules) {
+      const disallow = ([] as string[]).concat(rule.disallow ?? []);
+      expect(disallow, 'a Disallow of / de-indexes the site').not.toContain('/');
+      expect(disallow, 'a Disallow of * de-indexes the site').not.toContain('*');
+      const allow = ([] as string[]).concat(rule.allow ?? []);
+      expect(allow.includes('/') || disallow.length === 0, 'the rule must permit the root').toBe(true);
+    }
+    // And the text form Next emits, which is what a crawler reads.
+    const source = fs.readFileSync(path.join(process.cwd(), 'app', 'robots.ts'), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+    expect(source).not.toMatch(/disallow\s*:\s*['"`]\/['"`]/i);
+  });
+
   it('names no private path, in the rules or in the source', () => {
     const source = fs.readFileSync(path.join(process.cwd(), 'app', 'robots.ts'), 'utf8');
     // The comment may explain the rule by naming the paths it must not list;
