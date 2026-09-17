@@ -81,3 +81,27 @@ what the move is standing on. Where it has nothing, it says so."*
 
 Sent to Integration for Ops to land in `app/layout.tsx`. Neither Web nor
 Marketing is in that file.
+
+## The three descriptions carry one set of claims, ruled 2026-09-17
+
+Integration found the two live meta descriptions name three things (moving,
+why, cycle, structure) and the card names four: supply is in the card and in
+neither meta tag. Its ruling: same set of claims, not same wording. Mine:
+**supply stays.** It is in the registered statement, it is the fourth reading
+rule, and DIRTY FLOAT is the heaviest card on the page. A description that
+omits it describes a smaller product than the page does.
+
+So the two meta descriptions gain the clause the card already has, by
+insertion of the registered statement's own words and nothing else:
+
+**`app/layout.tsx` (site-wide, 161):**
+
+> Small-cap momentum intelligence: what is moving, why, where it sits in the cycle, what the share structure actually looks like, and what supply stands behind it.
+
+**`app/page.tsx` (`/`, overrides the above, 210):**
+
+> An intelligence desk for people who trade US small-cap momentum in the premarket: what is moving, why, where it sits in the cycle, what the share structure actually looks like, and what supply stands behind it.
+
+Both over 155, which is fine: search engines rewrite snippets, and Web said
+so. The card string stays as sent. Routed to Integration for Web (the page)
+and Ops (the file). Neither string is a new sentence.
