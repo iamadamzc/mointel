@@ -286,11 +286,17 @@ the most exposed.*
 
 ### THE OTHER SEATS - AND ONE STALENESS THAT MATTERS MORE THAN THE REST
 
-- **Research-tmi** - **ITS LIVE STATE IS DATED 2026-08-27, THREE WEEKS STALE, ON THE
-  THREAD THAT HAS DONE THE MOST WORK THIS WEEK.** *Everything it established about the
-  anchor, the cycle, the report and the Sheet dependency lives in THIS file and in chat,
-  not in its own charter.* **Only its owner can rewrite it and a successor should ask
-  early.**
+- **Research-tmi** - **CURRENT as of `f6bff1f`, 2026-09-17 05:11, and it is current
+  because it rewrote it in the minutes after I flagged it.** *Its LIVE STATE had been
+  dated 2026-08-27 - three weeks - on the thread that did the most work of any this week,
+  so the only summary of it was mine.* **Read `research.md` for the anchor, the cycle
+  sibling, the report and the Sheet dependency; do NOT take my account of them over its
+  own.** *It carries six things it asserted and retracted, and the superseded section is
+  kept with its heading changed rather than deleted so the corrections keep their
+  subject.*
+  **AND ONE CORRECTION TO ME: the per-session-high levels work is DONE (`548acf8`), so
+  the cycle sibling is NEXT rather than queued.** *Nothing of Research's is behind
+  anything.*
 - **Ops-tmi** - current, and `ops.md` is the operational record. The only deploy seat.
 - **Design-tmi** - current. Owns the badge, the sign-in artboard, and state 2.
 - **Web-tmi**, **Marketing-tmi**, **Commercial-tmi** - current; Commercial and Marketing
