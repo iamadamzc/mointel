@@ -147,6 +147,52 @@ the row sat *below* our own bars; restricting to 04:00--16:00 ET gave **zero** o
 6,889. In that frame the stored bars are a lower bound on the row and never the
 reverse, which is the property the cycle guard's coverage audit rests on.
 
+**SETTLED ON 62 SESSIONS: THE DAILY BAR IS THE REGULAR SESSION PLUS THE CLOSING
+AUCTION.** Ops fetched 43,251 hourly SIP bars (75 symbols, 62 sessions,
+`data/vendor/`, gitignored, nothing written to production). Re-ran both window
+tests at 30x the population.
+
+**AND THE RESIDUE WAS THE ADJUSTMENT BASIS -- neither my explanation nor the
+unpriced one.** `daily_bars` is fetched `adjustment: 'split'`; the hourly file is
+`raw`. **67 of 75 symbols drift between the two bases**, at clean reverse-split
+factors (200.0000, 100.0000, 80.0023, 40.0146, 25.0016, 20.0004 ...). Filtering
+on basis CONSISTENCY across sessions -- the spread, not the level, so the filter
+cannot presume the answer -- leaves 8 symbols:
+
+    TEST 1  after-hours   n=15   daily==allDay  4   daily==PM+RTH 11   neither  0  (0.0%)
+    TEST 2  premarket     n=22   daily==PMhigh  0   daily==RTHside 18   neither  4 (18.2%)
+
+**`neither` collapsed from 45% to ZERO on the AH test.** So it was never
+half-written newest-date bars (my claim, labelled plausible and then relied on)
+and never an unnamed window (Integration-tmi's unpriced outcome). It was a
+comparison across two adjustment bases, and five of my original 14 residue rows
+are in the split-suspect set.
+
+**THE FOUR APPARENT AH INCLUSIONS ALL RECONCILE.** Every one set its high in the
+**16:00-17:00 ET hour** -- the closing auction -- and **three of the four had NO
+trades at all between 04:00 and 16:00** (CEPF twice, LPCV; TONT is 10.820 against
+10.800). None involves the evening session. So all 15 rows obey one rule.
+
+⇒ **`daily_bars.high` covers 09:30-16:00 plus the closing cross. Premarket
+EXCLUDED (18-0). Evening EXCLUDED (0 genuine cases in 15).**
+
+⇒ **HE TRADES 07:00-10:00 AND THE CYCLE APPARATUS SEES THIRTY MINUTES OF IT.**
+Unchanged by the refinement and it is the finding that matters.
+
+**NO LIVE DEFECT FROM THE BASIS SPLIT, and I checked before raising it.**
+`todayQualifiesAsCycleStart` divides a RAW `today.high` by a SPLIT-ADJUSTED
+`priorClose`, which looks like the same mismatch -- **it is not.** Adjustment
+restates historical prices onto the CURRENT basis, so a prior adjusted close and
+today's raw price are already comparable. **My analysis mixed bases; the
+production path does not.** The residual hazard is narrower: a `daily_bars` row
+stored before a split carries a stale basis until refetched.
+
+**Caveat: 8 clean symbols, n=15 and n=22.** Small, and the population shrank
+*because* 89% of this universe reverse-splits. The zero residue is what carries
+it, not the count.
+
+**The superseded claim, kept so the retraction is legible:**
+
 **RETRACTED AND REPLACED BELOW: THE DAILY BAR IS REGULAR SESSION ONLY, AND THE
 FRAMES DO NOT MATCH.** I wrote *"excludes after-hours, so the frames match"* and
 tested only the after-hours boundary. **I never discriminated premarket.** On the
