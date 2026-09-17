@@ -401,6 +401,48 @@ not one of these two -- so the *why* travels with the number or neither does.
 this week and then shipped a guard with no magnitude threshold.** Estimates:
 stored `rvol` standing in for the module's median baseline, two dates, local db.
 
+**THE ADJUSTMENT GUARD WAS BLIND TO VINTAGE AND IS NOW FIXED (`0821781`).
+Integration-tmi found it; recording the status precisely because "checked, none
+present" and "fixed" read differently to whoever arrives next.**
+
+`dailyBarAdjustment` (`lib/research/history.ts`) returns null when a symbol's
+daily bars mix adjustment bases, so nothing derives a ceiling or a prior high
+from a half-restated series. It compared `SELECT DISTINCT adjustment` -- the
+**label**. **Every row of `daily_bars` carries `'split'`, all 75 symbols,
+measured** -- so the distinctness test returned one value unconditionally and the
+guard had **no reachable path to null.** A branch that could not execute, not a
+gap in coverage.
+
+**The case it could not see:** *"split-adjusted as of August"* and *"split-adjusted
+as of September"* are different bases under one word, because a reverse split
+between two fetches restates one and not the other. `fetched_at` carried the
+vintage and the guard did not read it. **13 of 75 symbols span two fetch dates.**
+
+**NO CURRENT CORRUPTION, AND THAT IS NOT THE SAME AS NO FINDING.** The stored
+series has no split discontinuity (largest consecutive close jump 6.46x on RCON,
+3.52x on PFSA, against the 200x a mixed table would show), so the 13 are
+**EXPOSED rather than wrong** -- a fetch gap only bites if a split landed inside
+it. Integration-tmi's framing and it is the right one: *a guard that cannot
+detect one form of the thing it was written to prevent is a finding whether or
+not an instance exists today.* **It had nothing to catch, which is different from
+being able to catch it.**
+
+**Fixed by joining `fetched_at` to the distinctness test. It OVER-REFUSES on
+purpose** -- all 13 now return null -- and the cheap upgrade is a `split_factor`
+column, which would let it ask whether a split *actually* intervened. `db.ts:710`
+migrates one in; **the local store genuinely lacks it, verified not assumed.**
+Five tests, none existed before; label-only kills exactly one of five as
+predicted.
+
+**AND I OVER-CORRECTED ON THEIR RE-FETCH.** I said the split re-fetch "was not
+needed for the reason given". **Wrong:** they ordered it off a directly observed
+header mismatch -- `adjustment: raw` in the file against a store and a rule
+running `'split'` -- and **thresholds must be derived in the basis the rule runs
+in whether 67 symbols drift or none do.** My withdrawn 67-of-75 was evidence for
+how bad it was, never for whether it was real. *Retracting a magnitude does not
+retract the decision it happened to support* -- which is the mirror of
+"disavowed the result and kept the conclusion", and I walked into the reflection.
+
 ### OPEN AND MINE
 
 **The cycle sibling — designed across three seats, UNBUILT.** QCLS showed
