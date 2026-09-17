@@ -237,11 +237,21 @@ freely".**
 
 - **It removes the ambiguity.** *Whatever a given crawler does with `401`, every
   crawler agrees about this.*
-- **IT MUST NOT LIST `/desk`, `/signin` OR `/api/`.** ***`robots.txt` is a public
-  file, and a `Disallow:` line is a published path.*** *Those paths already
-  return `401`, which is the actual protection; naming them in a file anyone can
-  read would tell a stranger they exist and protect nothing.* **The classic way
-  this file leaks a private surface is by trying to protect it.**
+- **IT MUST NOT LIST `/desk`, `/signin` OR `/api/` — and the reason is NOT the
+  one this thread first gave.** *The original argument was disclosure: a
+  `Disallow:` line is a published path.* **Integration corrected it and was
+  right: `/desk` is already public knowledge, because this thread put three
+  links to it on the landing page labelled "Open the desk".** *Naming it
+  discloses nothing.*
+
+  **THE RULE STANDS ON A BETTER REASON: a file that names ONE private path
+  invites naming the rest.** *`/signin` and `/api/` are **not** linked from any
+  public page, so those would be real disclosures — and the next person adding
+  them "for consistency" would be following the pattern rather than breaking
+  it.* **"Name no private paths" is checkable at a glance. "Name only the ones
+  already linked" requires re-deriving the answer every time and will eventually
+  be got wrong.** *The paths return `401` regardless; the only thing a
+  `Disallow:` line buys is a crawler request saved.*
 - **Being findable is the point of having a landing page.** *A stranger who
   hears the name and searches for it should reach the page. Invite-only governs
   who gets in, not who may read.*

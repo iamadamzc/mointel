@@ -91,6 +91,32 @@ missed. A count above 1 is normal and must not be "fixed".**
 > present in both — `None of this is on the chart` is the control, and if it
 > ever reports `0 0` the check is pointed at the wrong files rather than passing.**
 
+### AND THE TABLE'S BLIND SPOT IS ABOUT TO MATTER: INDEXING LEAVES THE LOOP
+
+**Integration's caution, 2026-09-17, recorded beside the table because the table
+is exactly about instruments answering the less important question.**
+
+> **Every check on this surface answers "is the page reachable and does it
+> render".** *None of them answers **"is this a page we still want indexed"**.*
+
+**Indexing is the first decision here whose effect is OUTSIDE this thread's
+control loop.** *A route, a wrapper, a paragraph — all reversible with a deploy.*
+**Once Google holds a page, removing it is a REQUEST, not a change**, and it runs
+on their schedule.
+
+**So whatever `robots.txt` says on the day the crawler first arrives is the
+thing that propagates** — *and the day it first arrives is shortly after Ops
+ships it, unannounced.* **There is no verification step that catches a wrong
+answer here, because the failure is not visible on the wire at all: the page
+will be perfectly reachable and perfectly rendered, and indexed when it should
+not have been.**
+
+*His ruling is **"index it"** (2026-09-17, relayed by both Integration and
+received directly), so the wanted state and the propagating state agree.* **The
+line is here for the next time someone changes this file, when they may not.**
+
+---
+
 **Second artefact-pair gap on this surface this week.** *The first was the
 canvas going stale behind the sources; this is the page going stale behind the
 canvas.* **The shape is the same and so is the cure: when two artefacts must
