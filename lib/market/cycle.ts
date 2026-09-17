@@ -524,6 +524,14 @@ export interface TodaySoFar {
   high: number | null;
   volume: number | null;
   highBarClose: number | null;
+  /*
+   * The MORE COMPLETE high, when one is known -- `ticker_session.session_high`,
+   * seeded from `dailyBar.h` and so covering trading from before this process
+   * was streaming. It has no companion close anywhere, so it is NOT the high the
+   * guard runs on. It is an UPPER BOUND, used only to ask whether the gap
+   * between what we hold and what happened could change the answer.
+   */
+  highCeiling: number | null;
 }
 
 /**
@@ -555,11 +563,6 @@ export interface TodayMinuteBar {
   close: number | null;
 }
 
-/*
- * Float noise only. Prices here are 1--20, so this is ~2e-5 of a cent, while a
- * genuine seeding gap is cents. The two cannot be confused at this width.
- */
-const HIGH_COVERAGE_EPSILON = 1e-6;
 
 /**
  * Builds today's provisional bar from stored minute bars, or refuses.
@@ -625,9 +628,26 @@ export function todaySoFarFromBars(
    * that never printed -- except that a name which never printed has no bars.
    */
   if (typeof sessionHigh !== 'number' || !Number.isFinite(sessionHigh)) return null;
-  if (sessionHigh > high * (1 + HIGH_COVERAGE_EPSILON)) return null;
 
-  return { high, volume: cumulativeVolume, highBarClose };
+  /*
+   * AND THE GAP IS CARRIED RATHER THAN REFUSED ON, which is a correction to my
+   * own first version of this. It refused whenever `session_high` exceeded the
+   * bar-derived high by more than float noise. Measured per rank band, that
+   * refused **75% of the top 12** on 2026-08-18 -- and inspecting those twelve
+   * showed why: gaps of 0.1--1% (NTWO 11.99/11.86 on 132 bars from 04:00) sat
+   * beside gaps of 10--66% (TGL 4.25/2.94 on FIVE bars). A sub-1% discrepancy
+   * between two sources is noise, not a missed run, and a flat test cannot tell
+   * them apart. **A defect is not a harm until the magnitude is measured**, and
+   * the magnitude that matters is not a fixed fraction -- it is whether the gap
+   * could move the verdict across its own threshold. Only the rule knows that,
+   * so the bound goes to the rule.
+   */
+  return {
+    high,
+    volume: cumulativeVolume,
+    highBarClose,
+    highCeiling: sessionHigh > high ? sessionHigh : null,
+  };
 }
 
 export type TodayStartVerdict = 'QUALIFIED' | 'NOT_QUALIFIED' | 'UNVERIFIABLE';
@@ -682,11 +702,37 @@ export function todayQualifiesAsCycleStart(
   const baseline = median(priorVolumes);
   if (baseline === null || baseline <= 0) return 'UNVERIFIABLE';
 
-  const move = (today.high - priorClose) / priorClose;
   const rvol = today.volume / baseline;
 
-  return move >= CYCLE_START_MOVE_PCT - THRESHOLD_EPSILON &&
-    rvol >= CYCLE_START_RVOL - THRESHOLD_EPSILON
-    ? 'QUALIFIED'
-    : 'NOT_QUALIFIED';
+  /*
+   * THE VOLUME TEST IS SETTLED BEFORE THE HIGH IS CONSIDERED, and that ordering
+   * is load-bearing rather than tidy. When volume fails, no high can qualify the
+   * day -- so an incomplete high is not an unknown, it is IRRELEVANT, and
+   * refusing on it would be a "cannot tell" about a question already answered.
+   */
+  if (rvol < CYCLE_START_RVOL - THRESHOLD_EPSILON) return 'NOT_QUALIFIED';
+
+  /*
+   * AND THE HIGH IS TESTED AS AN INTERVAL, NOT A POINT.
+   *
+   * `today.high` is what our own bars saw; `today.highCeiling` is the more
+   * complete value we cannot pair with a close. The true high lies between them,
+   * and `move` is monotone in the high -- so if BOTH ends of the interval land on
+   * the same side of the threshold, the gap cannot matter and the verdict is
+   * knowable despite incomplete data. Only a gap that STRADDLES the threshold is
+   * genuinely unverifiable. This is what stops a 0.14% source discrepancy
+   * reading the same as a 66% missed run.
+   */
+  const moveAt = (high: number): number => (high - priorClose) / priorClose;
+  const lower = moveAt(today.high);
+  const upper =
+    typeof today.highCeiling === 'number' &&
+    Number.isFinite(today.highCeiling) &&
+    today.highCeiling > today.high
+      ? moveAt(today.highCeiling)
+      : lower;
+
+  if (lower >= CYCLE_START_MOVE_PCT - THRESHOLD_EPSILON) return 'QUALIFIED';
+  if (upper < CYCLE_START_MOVE_PCT - THRESHOLD_EPSILON) return 'NOT_QUALIFIED';
+  return 'UNVERIFIABLE';
 }

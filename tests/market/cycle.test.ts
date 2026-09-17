@@ -429,6 +429,7 @@ describe('todayQualifiesAsCycleStart', () => {
     high: 1.5,
     volume: 10_000_000,
     highBarClose: 1.45,
+    highCeiling: null,
     ...over,
   });
 
@@ -468,7 +469,7 @@ describe('todayQualifiesAsCycleStart', () => {
      * That is the settled rule losing a spike-and-fade day -- the shape he
      * trades -- rather than this one being provisional.
      */
-    const spikeAndFade = { high: 1.3, volume: 10_000_000, highBarClose: 1.28 };
+    const spikeAndFade = { high: 1.3, volume: 10_000_000, highBarClose: 1.28, highCeiling: null };
     expect(todayQualifiesAsCycleStart(settled, spikeAndFade)).toBe('QUALIFIED');
 
     const asSettled: CycleBar[] = [
@@ -531,13 +532,24 @@ describe('todaySoFarFromBars', () => {
     expect(todaySoFarFromBars(bars, 1.9, 5_000_000)).toEqual({
       high: 1.9,
       highBarClose: 1.8,
+      highCeiling: null,
       volume: 5_000_000,
     });
   });
 
-  it('refuses when session_high sits above every stored bar', () => {
-    // 6.4% of rows on 2026-08-18: the day's high happened before we streamed.
-    expect(todaySoFarFromBars([bar(1.4, 1.35)], 1.9, 5_000_000)).toBeNull();
+  it('carries session_high as a CEILING rather than refusing on the gap', () => {
+    // First version refused here. That refused 75% of the top 12 on 2026-08-18,
+    // because the top of the board is names that ran before we tracked them.
+    expect(todaySoFarFromBars([bar(1.4, 1.35)], 1.9, 5_000_000)).toEqual({
+      high: 1.4,
+      highBarClose: 1.35,
+      highCeiling: 1.9,
+      volume: 5_000_000,
+    });
+  });
+
+  it('leaves the ceiling null when the bars already account for the high', () => {
+    expect(todaySoFarFromBars([bar(1.9, 1.8)], 1.9, 1)?.highCeiling).toBeNull();
   });
 
   it('accepts when session_high is BELOW the bars, which never happened in the frame', () => {
@@ -562,6 +574,7 @@ describe('todaySoFarFromBars', () => {
     expect(todaySoFarFromBars(bars, 1.9, 1)).toEqual({
       high: 1.9,
       highBarClose: 1.8,
+      highCeiling: null,
       volume: 1,
     });
   });
@@ -574,6 +587,7 @@ describe('todaySoFarFromBars', () => {
     expect(todaySoFarFromBars([bar(1.9, 1.8)], 1.9, null)).toEqual({
       high: 1.9,
       highBarClose: 1.8,
+      highCeiling: null,
       volume: null,
     });
     expect(
@@ -581,6 +595,7 @@ describe('todaySoFarFromBars', () => {
         high: 1.9,
         highBarClose: 1.8,
         volume: null,
+        highCeiling: null,
       }),
     ).toBe('UNVERIFIABLE');
   });
@@ -597,5 +612,61 @@ describe('todaySoFarFromBars', () => {
     // later faded to 0.90. Dividing by the live price gave 1.96 and lost it.
     const built = todaySoFarFromBars([bar(1.76, 1.7), bar(1.1, 0.9)], 1.76, 50_000_000);
     expect(todayQualifiesAsCycleStart(base(25, 1.0, 1_000_000), built!)).toBe('QUALIFIED');
+  });
+});
+
+/**
+ * The interval test — a gap only matters if it straddles the threshold.
+ *
+ * The first version of the coverage audit refused on ANY gap above float noise,
+ * which put a 0.14% discrepancy between two sources in the same bucket as a 66%
+ * missed run and refused 75% of the top 12 on a measured date.
+ */
+describe('todayQualifiesAsCycleStart under an incomplete high', () => {
+  const settled = base(25, 1.0, 1_000_000);
+  const at = (high: number, ceiling: number | null, volume = 10_000_000): TodaySoFar => ({
+    high,
+    volume,
+    highBarClose: high * 0.98,
+    highCeiling: ceiling,
+  });
+
+  it('ignores a gap too small to cross the threshold', () => {
+    // NTWO: 11.99 against 11.86, with 132 stored bars from 04:00. Both ends of
+    // the interval are far above a 20% move, so the gap cannot change anything.
+    expect(todayQualifiesAsCycleStart(settled, at(1.5, 1.52))).toBe('QUALIFIED');
+  });
+
+  it('ignores a gap that leaves both ends BELOW the threshold', () => {
+    expect(todayQualifiesAsCycleStart(settled, at(1.05, 1.1))).toBe('NOT_QUALIFIED');
+  });
+
+  it('refuses only when the gap straddles the threshold', () => {
+    // TGL: 4.25 against 2.94 on five bars. Our high says no, the ceiling says
+    // yes, and the true high is somewhere between.
+    expect(todayQualifiesAsCycleStart(settled, at(1.1, 1.4))).toBe('UNVERIFIABLE');
+  });
+
+  it('treats an incomplete high as IRRELEVANT when volume fails', () => {
+    // No high can qualify a day on ordinary volume, so a straddling gap is not
+    // an unknown here -- the question is already answered.
+    expect(todayQualifiesAsCycleStart(settled, at(1.1, 1.4, 2_000_000))).toBe(
+      'NOT_QUALIFIED',
+    );
+  });
+
+  it('is unchanged when no ceiling is known', () => {
+    expect(todayQualifiesAsCycleStart(settled, at(1.5, null))).toBe('QUALIFIED');
+    expect(todayQualifiesAsCycleStart(settled, at(1.05, null))).toBe('NOT_QUALIFIED');
+  });
+
+  it('end to end: a real board row with a sub-1% gap still gets a verdict', () => {
+    const built = todaySoFarFromBars(
+      [{ high: 11.86, close: 11.7 }, { high: 9.0, close: 8.8 }],
+      11.99,
+      50_000_000,
+    );
+    expect(built?.highCeiling).toBe(11.99);
+    expect(todayQualifiesAsCycleStart(base(25, 8.0, 1_000_000), built!)).toBe('QUALIFIED');
   });
 });
