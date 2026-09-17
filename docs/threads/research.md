@@ -125,6 +125,22 @@ streamed -- and premarket movers trade. The one field that would split the sum
 is the constant. *A constant is more dangerous than a null: my four premarket
 snapshots on 2026-08-18 read 25/25 nonzero and looked like an answer.*
 
+> **AND IT IS WORSE THAN A MISSING VALUE, which is Integration-tmi's addition.**
+> `volume_base_source` IS written truthfully, from `state.volumeSource`. So every
+> one of the 25,789 rows says *base = 0, and the source of that base was
+> `alpaca-snapshot-daily-bar`* -- a zero wearing a real source attribution. **A
+> null would have been self-describing; this reads as a measurement**, and anyone
+> reconstructing volume history gets a confident wrong decomposition instead of a
+> gap they would have noticed. Nothing reads the column back (`runtime.ts:884-886`
+> seeds `volumeBase` from the Alpaca snapshot, never from the row), so it is a
+> **lost measurement and not a live defect** -- no running number is wrong. But
+> the archive is never pruned, so the rows accumulate.
+>
+> **`worker/runtime.ts` IS OPS'S FILE, NOT MINE.** Integration attributed it to me
+> when suggesting the fix. Both values are already in memory at the write site so
+> the change is small, and it closes the roll-date question as a side effect --
+> but it is not Research's to land, and it is flagged to Ops rather than done.
+
 **`session_high` IS PREMARKET+RTH, NOT THE WHOLE DAY.** Against
 `max(minute_bars.high)` on 2026-08-18: including after-hours gave 355 rows where
 the row sat *below* our own bars; restricting to 04:00--16:00 ET gave **zero** of
