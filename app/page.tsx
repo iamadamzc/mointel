@@ -288,6 +288,11 @@ export default function LandingPage() {
               August it was 50% movers, one after another, on nothing anyone could name at 07:15. This was built
               to close that gap, by someone who trades it, at the desk he trades it from.
             </p>
+            <p className="text-[17px] leading-relaxed text-ink-1 md:text-lg">
+              Premarket, regular hours or after the close, the question is the same: what is this move standing
+              on? The board runs from 04:00 through the after-hours session, and{' '}
+              <strong className="text-ink">a float does not get cleaner at 09:30.</strong>
+            </p>
           </div>
         </div>
       </section>
