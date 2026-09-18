@@ -149,7 +149,7 @@ handled by us and by the companies that run the machinery underneath:
 | Who | What they handle | Why |
 | --- | --- | --- |
 | Google LLC | Your sign-in | It is the identity provider you chose when you clicked the button |
-| [HOSTING PROVIDER] | The server and its logs | It is where the service runs, in [REGION] |
+| Amazon Web Services, Inc. | The server and its logs | It is where the service runs, in us-east-1 |
 | [EMAIL PROVIDER, IF ANY] | Email we send you | Service messages only |
 
 We will hand over data if we are legally required to — a court order, a
@@ -163,7 +163,7 @@ will tell you before it does.
 
 - **Your account** — for as long as you have one. After you ask us to close
   it, we have not set a period; ask and we will tell you what we hold.
-- **Server logs** — [PERIOD], then deleted.
+- **Server logs** — 14 days, then deleted.
 - **Email we exchanged with you** — we have not set a period; ask and we will
   tell you what we hold.
 
@@ -194,7 +194,7 @@ service for exercising any right on this list.
 ## 8. Where the service is, and who it is for
 
 The Momentum Intelligence Trading Desk is operated from the United States, by
-a US company, for people trading the US market. It runs on servers in [REGION]
+a US company, for people trading the US market. It runs on servers in us-east-1
 and your data is stored there.
 
 **We do not offer it to the public anywhere.** Access is by invitation, which is
