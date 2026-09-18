@@ -1757,6 +1757,21 @@ export function toRow(state: DemandState): TickerSessionRow {
     // volumeSource -- the running total's provenance, suffixed `+minute-bars`
     // once live bars arrive -- was the trap that already cost a query. A
     // reader wanting "did live bars arrive" reads volume_source.
+    //
+    // THE CUTOVER IS 2026-09-18T21:05:09Z, AND IT IS A CUTOVER IN MEANING, NOT
+    // A BUGFIX DATE. That is the market worker's ExecMainStart on the first
+    // start carrying this code (467ffec, pid 636490, restarted on his word with
+    // the after-hours session in progress). Rows written before it carry
+    // volume_base 0 and volume_base_through null AS LITERALS and always will,
+    // because nothing backfills them; rows after it are measurements. The
+    // source column does NOT discriminate between the two -- it reads
+    // 'alpaca-snapshot-daily-bar' on both sides -- so the only way to tell a
+    // literal 0 from a measured 0 is the row's date against this timestamp.
+    //
+    // AND 09-18 IS NOT A USABLE DAY FOR THE ROLL MEASUREMENT. The earliest
+    // non-null volume_base_through on 09-18 is 21:05:00Z, which dates THIS
+    // RESTART and not the daily bar rolling. The first day that can date the
+    // roll is the first full session this code starts before the premarket.
     volume_base: state.volumeBase,
     volume_base_through: state.volumeBaseThrough,
     volume_base_source: state.volumeBaseSource,
