@@ -37,6 +37,7 @@ function history(current: CycleHistory['current']): CycleHistory {
     current,
     priorCycles: [],
     formerRunnerStatus: 'NONE',
+    todayStart: 'UNVERIFIABLE',
     largestPriorAdvancePct: null,
     asOfTradingDate: '2026-08-21',
   };

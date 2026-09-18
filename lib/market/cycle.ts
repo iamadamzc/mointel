@@ -428,6 +428,17 @@ export interface CycleHistory {
   /** Completed cycles before the current one, most recent first. */
   priorCycles: PriorCycle[];
   formerRunnerStatus: FormerRunnerStatus;
+  /**
+   * Whether TODAY has itself qualified as a cycle start.
+   *
+   * `UNVERIFIABLE` from `resolveCycleHistory`, always and by construction: it is
+   * handed settled daily bars and today is not one of them, so it cannot know.
+   * The live read path overlays the measured verdict. **A consumer must treat
+   * `UNVERIFIABLE` as "the settled phase's relevance is unknown" and NOT as
+   * "today did not start a cycle"** -- collapsing the two puts the stale badge
+   * back on exactly the rows this exists to protect.
+   */
+  todayStart: TodayStartVerdict;
   /** Largest prior advance, so a consumer can band it differently. */
   largestPriorAdvancePct: number | null;
   /**
@@ -537,6 +548,7 @@ export function resolveCycleHistory(
     current,
     priorCycles,
     formerRunnerStatus,
+    todayStart: 'UNVERIFIABLE',
     largestPriorAdvancePct: largest,
     asOfTradingDate: bars.length > 0 ? bars[bars.length - 1].tradingDate : null,
   };

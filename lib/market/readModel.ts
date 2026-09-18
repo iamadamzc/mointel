@@ -11,7 +11,11 @@ import 'server-only';
 import { loadMarketConfig } from './config';
 import { projectMarketHealth } from './health';
 import { resolveActiveBoard } from './board';
-import { resolveCycleHistory } from './cycle';
+import {
+  resolveCycleHistory,
+  todayQualifiesAsCycleStart,
+  todaySoFarFromBars,
+} from './cycle';
 import type { ResearchAnalysisVersion } from '../research/types';
 import { afterHoursStartUtc, isEarlyClose, isMarketDataExpected } from './session';
 import {
@@ -38,6 +42,7 @@ import {
   countBaselines,
   countTrackedSymbols,
   readDeskEvents,
+  loadMinuteBars,
   readDemandStates,
   readFeedHealth,
 } from './store/repo';
@@ -686,18 +691,82 @@ function healthView(
  * Returns the analysis unchanged when there is no dossier or no usable bar
  * history, so an absent cycle stays absent rather than becoming a guess.
  */
+/**
+ * Today's day-wide high and volume, for the intraday supersession test.
+ *
+ * `session_high` is premarket+RTH and `ah_high` is the evening, so the day-wide
+ * high across all three sessions is the max of the two. **He ruled the cycle
+ * frame all-sessions on 2026-09-18**, which is why this is a max and not
+ * `session_high` alone.
+ *
+ * A targeted read rather than `loadTickerSessionRows`, which returns every row
+ * of the trading date -- thousands of wide rows to answer a two-column question
+ * about the handful of names that have research.
+ */
+function todaySessionFor(
+  db: MarketDatabase,
+  symbol: string,
+  tradingDate: string,
+): { high: number | null; volume: number | null } {
+  const row = db
+    .prepare(
+      `SELECT session_high, ah_high, cumulative_volume
+         FROM ticker_session
+        WHERE symbol = ? AND trading_date = ?`,
+    )
+    .get(symbol, tradingDate) as
+    | { session_high: number | null; ah_high: number | null; cumulative_volume: number | null }
+    | undefined;
+  if (!row) return { high: null, volume: null };
+
+  const highs = [row.session_high, row.ah_high].filter(
+    (value): value is number => typeof value === 'number' && Number.isFinite(value),
+  );
+  return {
+    high: highs.length > 0 ? Math.max(...highs) : null,
+    volume: row.cumulative_volume,
+  };
+}
+
 export function overlayLiveCycle(
   db: MarketDatabase,
   analysis: ResearchAnalysisVersion | null,
+  tradingDate?: string,
 ): ResearchAnalysisVersion | null {
   if (!analysis?.dossier) return analysis;
 
-  const bars = readDailyBars(db, analysis.dossier.ticker);
+  const ticker = analysis.dossier.ticker;
+  const bars = readDailyBars(db, ticker);
   if (bars.length < 2) return analysis;
+
+  const computedCycle = resolveCycleHistory(bars);
+
+  /*
+   * THE INTRADAY VERDICT, and it is additive: `todayStart` is `UNVERIFIABLE`
+   * from `resolveCycleHistory` and only becomes a claim when today's own inputs
+   * are present and self-consistent.
+   *
+   * QCLS read `BACKSIDE $5.49` in red while up 270%, off a run that topped four
+   * months earlier. The supersession rule already existed and could not see
+   * today, because `daily_bars` is settled-only.
+   *
+   * Omitting `tradingDate` leaves the verdict `UNVERIFIABLE` rather than
+   * fabricating one -- a replay or an archived assessment must not acquire a
+   * live reading it could not have had.
+   */
+  if (tradingDate) {
+    const { high, volume } = todaySessionFor(db, ticker, tradingDate);
+    const today = todaySoFarFromBars(
+      loadMinuteBars(db, ticker, tradingDate),
+      high,
+      volume,
+    );
+    if (today) computedCycle.todayStart = todayQualifiesAsCycleStart(bars, today);
+  }
 
   return {
     ...analysis,
-    dossier: { ...analysis.dossier, computedCycle: resolveCycleHistory(bars) },
+    dossier: { ...analysis.dossier, computedCycle },
   };
 }
 
@@ -736,7 +805,7 @@ function readIntelligence(
      * stored; fetching stays in the worker, for the names actually being
      * analysed.
      */
-    const analysis = overlayLiveCycle(db, stored);
+    const analysis = overlayLiveCycle(db, stored, tradingDate);
     const job = readLatestJobForTicker(db, ticker, tradingDate);
     if (!analysis && !job) continue;
 
