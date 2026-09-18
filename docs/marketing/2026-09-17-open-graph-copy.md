@@ -105,3 +105,27 @@ insertion of the registered statement's own words and nothing else:
 Both over 155, which is fine: search engines rewrite snippets, and Web said
 so. The card string stays as sent. Routed to Integration for Web (the page)
 and Ops (the file). Neither string is a new sentence.
+
+## The rename took the tagline out of the card by side effect, ruled 2026-09-18
+
+His rename (Commercial, 2026-09-18): TMI now stands for The Momentum
+Intelligence, and Trading Desk is part of the name. `siteName` moved and
+`og:title` followed it, so the card shipped as the bare name. Nobody chose
+that; a rename did it. Integration asked whether the tagline earned its place.
+
+**Ruling: it comes back.** Three reasons. The H1 is still *"Intelligence on
+what's moving."*, settled and untouched by the rename, and the card is the
+page's first line read without the page. The bare name is a category ("Trading
+Desk") and says nothing about what it does; the description underneath then
+has to carry the whole claim from a cold start. And it was a verified string
+removed by collateral, which is the shape this desk keeps catching.
+
+**The string, cut to the new name (36):**
+
+> TMI — Intelligence on what's moving.
+
+Not the long name plus the tagline: 71 chars, and "Intelligence" twice in one
+line. `og:site_name` already carries the full name on every card that shows
+one, so the title does not need to repeat it. `twitter:title` follows.
+
+For Ops's next enumeration. Not urgent.

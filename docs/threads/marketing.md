@@ -65,7 +65,9 @@ re-derive:**
   "Who this is for", and "The trading window is not the constraint. Capture is."**
 - **`docs/monetization-gates.md`** — what the desk considers worth paying for.
 - **The name and the line, settled at his direction and NOT yours to restyle:**
-  **`TMI Trader` / True Move Intelligence / *"Intelligence on what's moving."***
+  **`TMI` / The Momentum Intelligence Trading Desk / *"Intelligence on what's
+  moving."*** *Renamed by him 2026-09-18 from TMI Trader / True Move
+  Intelligence; Commercial holds the record. The tagline survived the rename.*
 
 **In one sentence, and Commercial holds the authoritative version:** **it takes the
 names that are already moving and puts everything the desk knows about each one on
@@ -263,8 +265,14 @@ subject to every prohibition above.*
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**2026-09-16. Everything this thread has written is on the published canvas
-at `c353cbd`. Nothing is in progress and no file is held.**
+**2026-09-18. Nothing is in progress and no file is held.**
+
+- **THE PRODUCT WAS RENAMED 2026-09-18:** TMI, The Momentum Intelligence
+  Trading Desk. Live on the site, the mark and the legal pages. The H1 is
+  unchanged. **The rename took the tagline out of the share card by side
+  effect; ruled back in as "TMI — Intelligence on what's moving." (36), with
+  Ops for the next enumeration.** The canvas artboards still say TMI Trader
+  and are now behind the site; that is Web's.
 
 - **The window, answered by him 2026-09-16:** no 07:00–10:00. Instead the page
   says the question is the same in premarket, regular hours and after hours.
