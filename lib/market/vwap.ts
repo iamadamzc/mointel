@@ -410,8 +410,42 @@ export function emptySessionOpen(session: VwapSession): SessionOpen {
  * with no session breakdown, so there is nothing to seed them from and they
  * rebuild from post-restart bars alone.
  *
- *     day-wide sessionHigh   RTH restart: SURVIVES IF ROLLED   premarket: LOST
- *     these                  RTH restart: LOST                 premarket: LOST
+ *     day-wide sessionHigh   premarket: LOST   RTH: SURVIVES IF ROLLED   AH: LOWERED
+ *     these                  premarket: LOST   RTH: LOST                 AH: LOST
+ *
+ * THE THIRD COLUMN IS THE ONE THAT COST REAL DATA, AND IT WAS MISSING FROM THIS
+ * TABLE UNTIL 2026-09-18. A worker restart at 21:05Z LOWERED 1,481 of 7,936 rows
+ * -- GWAV 4.20 to 2.78, MGN 5.61 to 4.21, AGMH 1.12 to 0.8501 -- and `toRow`
+ * persists it, so it is written and not a display artefact. Settled control:
+ * 09-17 understated 0 rows, 09-18 understated 1,441. Ops's measurement.
+ *
+ * **After-hours is the case where the daily bar HAS rolled, so the seed does not
+ * fail -- it SUCCEEDS, at the RTH-ONLY high.** `dailyBar.h` is 09:30-16:00 plus
+ * the closing cross (measured: premarket excluded 18-0, evening excluded, 0 of
+ * 121 rows premarket-inclusive), so after 16:00 it is a LOWER BOUND on the day's
+ * high and not a measurement of it. **The value is not lost. It is silently
+ * lowered -- and a lower number reads as an observation where a null reads as
+ * absent.** Ops's sentence and it is the right one.
+ *
+ * AND THE MECHANISM IS NOT THAT THE SEED OVERWRITES DOWNWARD -- IT CANNOT.
+ * `maxOrValue` (`engine.ts:2161`) returns the candidate only when the current
+ * value is null, so the seed is monotone and a later cycle cannot lower an
+ * already-observed high. **The loss happens at the restart**, which nulls the
+ * in-memory accumulator (`engine.ts:543`), leaving `maxOrValue` nothing to
+ * defend. *This distinction decides the fix: "make the seed refuse to lower" is
+ * already true and would be a no-op.* The real shape is that the reseed source
+ * is complete for a DIFFERENT WINDOW than the value it restores -- so the fix is
+ * to replay the stored minute bars, or to refuse to seed a known-incomplete high
+ * after 16:00 and say UNKNOWN. **A decision, not a one-liner, and unmade.**
+ *
+ * `sessionLow` has the mirror defect: `minOrValue` with `dailyBar.l` restores the
+ * RTH low, which is ABOVE a real after-hours low. Same cause, same third column.
+ *
+ * AND ENUMERATING EVENTS IS WHAT LEFT THE ROW OUT. Two rows named two restarts;
+ * three conditions exist, and the missing one is the only case where the
+ * mechanism SUCCEEDS and the outcome is still wrong. Integration-tmi flagged the
+ * flat `SURVIVES` here and I corrected it to `SURVIVES IF ROLLED` -- true, and
+ * still misleading for exactly the case where its condition is MET.
  *
  * THE CONDITION IS LOAD-BEARING AND ITS TIME IS UNMEASURED. `belongsToSession`
  * (`worker/runtime.ts:851-852`) compares `etDateString(dailyBar.t)` against the
