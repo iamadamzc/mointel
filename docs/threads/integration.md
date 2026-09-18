@@ -332,6 +332,20 @@ SECOND USER, NOT THE HUNDREDTH.** *And there is no allowlist to fall back on: th
 **Same family as the cycle frame, the landing copy and the per-tenant research prior: a
 published claim running ahead of the build, cheaper to build toward than to retrofit.**
 
+> **AND WHEN THE AUTH WORK SHIPS, ONE LINE MUST SHIP WITH IT OR THE ACCOUNTS ARE DELETED
+> BY A DEPLOY.** *Ops `e634a5a`, verified by me at the source:*
+> `lib/auth/store.ts:30-31` — `DEFAULT_IDENTITY_PATH = IDENTITY_DB_PATH ?? cwd/data/identity.db`,
+> **and `IDENTITY_DB_PATH` IS NOT SET in production** *(`/etc/mointel/mointel.env`), while the
+> units run `WorkingDirectory=/opt/mointel/current`.*
+> **So a shipped sign-in writes accounts INSIDE THE RELEASE, and `prune.sh` REMOVES old
+> releases — tonight's deploy printed `2 release(s) removed`.** *The first user's account
+> survives one deploy and is deleted by the second, with nothing in any log connecting the
+> loss to the deploy that caused it.*
+> **`openIdentityStore` calls `mkdirSync(..., {recursive:true})`, so it CREATES the doomed
+> path without erroring.** *`MARKET_DB_PATH` is `/var/lib/mointel/market.db` for exactly
+> this reason and the env file says so; the identity store inherits none of it.*
+> **SET `IDENTITY_DB_PATH` IN THE SAME MOTION AS THE AUTH SHIP. NOT A FOLLOW-UP.**
+
 ### CLOSED TONIGHT, SO NOBODY RE-ASKS
 
 - **Indexing: HIS WORD, "index it."** Shipped, live, allow-all.
