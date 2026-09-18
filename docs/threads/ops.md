@@ -8132,7 +8132,12 @@ bare-named; all three are stale and corrected here.*
 >    from the previous cycle's `rvol_rank` (the premarket selector is degenerate
 >    before the daily bar rolls — CONFIRMED by snapshot 04:38 ET 09-15); a
 >    "selector has no signal" log line that fires on every premarket bootstrap.
-> 5. Authority field (his ruling: user-based, only he is admin): schema is
+> 5. Authority field (his ruling: user-based, only he is admin). **WHOEVER
+>    SHIPS `app/auth/` SETS `IDENTITY_DB_PATH` IN `/etc/mointel/mointel.env`
+>    IN THE SAME MOTION** — it is unset, so accounts default to
+>    `process.cwd()/data/identity.db` INSIDE the release directory, and
+>    `prune.sh` removes old releases. The first account would survive one
+>    deploy and be deleted by the second, silently. Schema is
 >    yours with Web — current-status join, three states, "cannot say" ≠ null,
 >    never `issued_authority`, first admin an explicit grant. Gates the retry
 >    endpoint before Basic Auth ever leaves `/`.
@@ -10899,3 +10904,61 @@ on Google Workspace. The SOFTWARE still sends no email — that is measured — 
 if he replies to a user from that address, Google LLC processes the
 correspondence and a table saying nobody handles email is wrong about the
 company while right about the code.** *Flagged to him; not measurable from here.*
+
+## THE ACCOUNTS DATABASE WOULD LAND INSIDE THE RELEASE AND THE PRUNE WOULD DELETE IT — found 2026-09-18, before it can happen
+
+**Nothing is wrong today and this cannot fire yet. It fires on the day somebody
+ships `app/auth/`, which is open item 5, and it fires silently.**
+
+```
+lib/auth/store.ts   DEFAULT_IDENTITY_PATH =
+                      process.env.IDENTITY_DB_PATH ?? path.join(process.cwd(), 'data', 'identity.db')
+/etc/mointel/mointel.env   IDENTITY_DB_PATH is NOT SET
+systemd units              WorkingDirectory=/opt/mointel/current
+```
+
+**So a shipped sign-in creates accounts at
+`/opt/mointel/releases/<sha>/data/identity.db` — INSIDE THE RELEASE DIRECTORY.**
+
+> **`MARKET_DB_PATH` is `/var/lib/mointel/market.db` for exactly this reason, and
+> the env file says why in its own comment: the store lives outside the release
+> directory "so a deploy or a rollback cannot take the desk's history with it".
+> THE IDENTITY STORE WOULD INHERIT NONE OF THAT PROTECTION.**
+
+**And `prune.sh` does not orphan old releases, it REMOVES them** — tonight's
+deploy printed `[prune] 2 release(s) removed`. **So the first user's account
+would survive exactly one deploy and be deleted by the second, with no error
+and nothing in a log to connect the loss to the deploy that caused it.**
+
+**WHOEVER SHIPS `app/auth/` SETS `IDENTITY_DB_PATH` IN THE RUNTIME ENV IN THE
+SAME MOTION.** `sync-env.sh` writes that file; the value belongs beside
+`MARKET_DB_PATH` under the same comment.
+
+**How it was found, which is the transferable part.** Web caught me auditing
+`market.db` and reporting the result as a fact about the disk — *"personal data
+does not live in `market.db`"*, and the accounts schema is a different database.
+Checking whether that second file exists on the box (it does not; `find /`
+returns nothing, and `IDENTITY_DB_PATH` is unset) meant reading where it WOULD
+be created, and that is the defect. **The audit question "is there personal data
+in the backups" is answered `no` today by two independent routes. The question
+worth asking was "where would it appear", and only one of those two routes
+survives the answer.**
+
+**Web's general form of this, and it is better than mine:** *a sentence justified
+by "the backup contains no personal data" silently becomes false the day
+sign-in ships; a sentence justified by "a snapshot is kept 7 days" stays true.*
+**A justification that depends on today's inventory has an expiry date that
+nobody diaries.**
+
+### Confirmed at the same time, for the privacy sentence
+
+```
+Lightsail auto-snapshots   resourceType Instance, fromAttachedDisks []
+                           -> whole SYSTEM DISK; /var/log/nginx AND /var/lib/mointel
+                              are both on it. "full-server snapshot" is exact.
+```
+
+**And one retraction of my own: I told Web that `lib/dashboard/feedFailure.ts`
+imports `lib/auth`. It does not — the hit is a COMMENT at `:29` naming
+`lib/auth/store.ts:resolveSession`.** *I grepped for a path string and read the
+result as an import. Nothing outside `lib/auth/` constructs the identity store.*
