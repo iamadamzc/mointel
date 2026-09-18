@@ -3,7 +3,7 @@ title: Terms of service
 status: adopted
 adopted: 2026-09-11
 drafted: 2026-09-11
-last_changed: 2026-09-11
+last_changed: 2026-09-18
 ---
 
 <!--
@@ -79,15 +79,19 @@ last_changed: 2026-09-11
 
 # Terms of service
 
-These are the terms you agree to when you sign in to TMI Trader. They are
-written to be read. If something here is unclear, ask us before you rely on it
-rather than after.
+These are the terms you agree to when you sign in to the Momentum Intelligence
+Trading Desk. They are written to be read. If something here is unclear, ask
+us before you rely on it rather than after.
 
 ## 1. Who we are, and what this is
 
-TMI Trader is operated by **Andromeda Genius, Inc**, of 5460 Babcock Rd,
-Suite 120 PMB 95234, San Antonio, TX 78240, United States. "We" is that
-company. "You" is the person signed in. "The desk" is the service.
+**The Momentum Intelligence Trading Desk** — TMI — is operated by **Andromeda
+Genius, Inc**, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio, TX 78240,
+United States. "We" is that company. "You" is the person signed in. "The desk"
+is the service.
+
+The service was called TMI Trader until 18 September 2026; the name
+changed, nothing else did.
 
 **The desk is an information service.** It reports on publicly traded US
 equities: what is moving, what the filings underneath say, and what it does not

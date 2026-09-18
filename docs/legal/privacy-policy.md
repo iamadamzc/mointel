@@ -3,7 +3,7 @@ title: Privacy policy
 status: adopted
 adopted: 2026-09-11
 drafted: 2026-09-10
-last_changed: 2026-09-11
+last_changed: 2026-09-18
 ---
 
 <!--
@@ -50,18 +50,21 @@ last_changed: 2026-09-11
 
 # Privacy policy
 
-TMI Trader is an information service for people who trade US small-cap
-equities. This policy says what we learn about you, why we hold it, who else
-sees it, and how to make us delete it. It is written to be read, not to be
-survived.
+The Momentum Intelligence Trading Desk — TMI — is an information service for
+people who trade US small-cap equities. This policy says what we learn about
+you, why we hold it, who else sees it, and how to make us delete it. It is
+written to be read, not to be survived.
 
 ## 1. Who runs this service
 
-TMI Trader is operated by **Andromeda Genius, Inc**, of 5460 Babcock Rd,
-Suite 120 PMB 95234, San Antonio, TX 78240, United States. You can reach a
-person at info@andromedagenius.com. In this policy, "we" means that operator;
-"you" means the person signing in; and "the desk" means the signed-in service
-at tmitrader.com.
+**The Momentum Intelligence Trading Desk** is operated by **Andromeda Genius,
+Inc**, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio, TX 78240, United
+States. You can reach a person at info@andromedagenius.com. In this policy,
+"we" means that operator; "you" means the person signing in; and "the desk"
+means the signed-in service at tmitrader.com.
+
+The service was called TMI Trader until 18 September 2026; the name
+changed, nothing else did.
 
 This policy covers tmitrader.com and the desk behind it. It does not cover
 what Google does with your Google account, which is governed by Google's own
@@ -189,9 +192,9 @@ service for exercising any right on this list.
 
 ## 8. Where the service is, and who it is for
 
-TMI Trader is operated from the United States, by a US company, for people
-trading the US market. It runs on servers in [REGION] and your data is stored
-there.
+The Momentum Intelligence Trading Desk is operated from the United States, by
+a US company, for people trading the US market. It runs on servers in [REGION]
+and your data is stored there.
 
 **We do not offer it to the public anywhere.** Access is by invitation, which is
 how the scope above stays a fact rather than a sentence: we choose who is
