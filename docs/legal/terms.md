@@ -29,6 +29,35 @@ last_changed: 2026-09-11
   was fixing. The banner says "do not rely on this"; a renderer does not make
   that true.
 
+  AND THE SAME RULE HAS A COST THAT WAS NOWHERE IN WRITING UNTIL 2026-09-18.
+  A material redraft does not merely flip a field. It publishes a DRAFT banner
+  on a document that is in force, publicly, under a real company name, and it
+  stays there until he adopts again. So a redraft is NOT a commit that can sit
+  over a weekend waiting for a reply. DRAFTING AND ADOPTION ARE ONE MOTION, or
+  the document spends the gap telling the public not to rely on terms that
+  still bind them.
+
+  THE KNOWN LIST OF MATERIAL ADDITIONS, if he calls for them, in order:
+
+    1. Severability. It is one sentence and it protects sections 6, 7 and 10 --
+       the three that carry the actual risk. Without it a court striking the
+       liability cap can take more of the document with it than it should.
+    2. Payment terms. There are NONE: no billing, renewal, refund, price
+       change or tax. Section 10's cap is sound without them -- "the greater
+       of what you have paid and US$100" resolves to US$100 when nothing has
+       been paid, which is deliberate and forward-compatible, NOT the internal
+       contradiction it was once read as. The gap is real the moment the desk
+       charges for anything, and not before.
+    3. Section 6's warranty disclaimer, which is prose rather than an explicit
+       one. Also absent and unranked: entire agreement, indemnity, assignment,
+       force majeure, third-party terms.
+
+  NOBODY WITH A LAW LICENCE HAS READ THIS FILE. It was drafted by an AI seat,
+  reviewed by AI seats, and adopted 2026-09-11. Put to him 2026-09-18; a
+  boilerplate tail added without that review makes the document LOOK more like
+  a terms sheet without making it more enforceable, and the gap would then be
+  invisible.
+
   Checked against docs/marketing/what-it-is-not.md so the terms cannot promise
   something the copy is forbidden to claim, and against
   docs/legal/privacy-policy.md so the two do not disagree.

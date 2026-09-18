@@ -30,6 +30,10 @@ last_changed: 2026-09-11
   that true. A draft that renders as adopted is the
   failure this field exists to prevent.
 
+  AND THE CONVERSE HAS A SEQUENCING COST: when the text IS materially
+  redrafted, the banner is public for however long the adoption takes. Draft
+  and adoption are one motion, not a commit that waits for a reply.
+
   Every [BRACKET] below is a fact this seat does not hold, and EVERY ONE OF
   THEM RENDERS TO THE PUBLIC. They are listed, with who can answer each, in
   docs/web/README.md.
