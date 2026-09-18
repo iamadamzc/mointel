@@ -1013,3 +1013,46 @@ ADDRESS.** *Resolving and receiving mail are different properties and the offer
 conflated them.* *Confirmed on both resolvers: `tmitrader.com MX` returns
 nothing.* **It was never as available as it was presented, and it was presented
 as the safe option.**
+
+### 13d. CLOSED 2026-09-18 19:20Z — AND "THE DOMAIN RESOLVES" WAS THREE CLAIMS WEARING ONE NAME
+
+**Mail moved from the lapsed Namecheap Private Email to Google Workspace.**
+`MX 1 smtp.google.com.`, SPF to `_spf.google.com`, and the `google._domainkey`
+DKIM record. Verified on Google and Cloudflare; `smtp.google.com` answers
+`220 mx.google.com ESMTP`. **He confirmed a test message lands. The address
+published on `/`, `/privacy` and `/terms` now reaches a person.**
+
+**THE DKIM RECORD WAS PULLED BACK OUT OF DNS AND COMPARED TO THE ORIGINAL
+CHARACTER FOR CHARACTER.** *A 2048-bit key is 410 characters and a DNS TXT
+string caps at 255, so it is stored as two chunks that a receiving server
+concatenates.* **A mis-split looks completely normal in every listing and
+silently fails to verify signatures forever.** *Round-tripped from both
+resolvers, reassembled the way a mail server does, byte-identical, and the
+public key still decodes to 294 bytes of DER.*
+
+### THE LESSON, AND IT IS THE SHARPEST ONE IN THIS FILE
+
+**"THE CONTACT DOMAIN IS FIXED" WAS THREE INDEPENDENT CLAIMS SHARING ONE
+SENTENCE, AND TWO OF THEM WERE TRUE WHILE THE ADDRESS WAS STILL DEAD.**
+
+| claim | instrument | when it went green |
+| --- | --- | --- |
+| the name **resolves** | RDAP, two resolvers, NS match | 15:15Z |
+| mail is **delivered somewhere** | MX present, MX host accepts SMTP | 15:15Z — **and it was the wrong somewhere** |
+| a **mailbox receives** it | only he can see this | 19:20Z, four hours later |
+
+> **At 15:15 every check this seat could run was green.** *The registry said
+> active, both resolvers returned the four right nameservers, the MX resolved,
+> and the mail host answered on port 25 with a Postfix banner.* **And the
+> address bounced `554 5.7.1 Relay access denied`, because the MX pointed at a
+> provider whose subscription had died with the registration.**
+>
+> **AN MX RECORD PROVES A DESTINATION EXISTS. IT PROVES NOTHING ABOUT WHETHER
+> THAT DESTINATION WILL ACCEPT YOUR DOMAIN.** *The SMTP banner came from a
+> server that was, at that moment, refusing every message addressed to it.*
+
+**THE HONEST BOUNDARY HELD AND IT IS WHY THIS CLOSED CORRECTLY.** *This seat
+said, before the answer was known, that mail reaching the provider's servers
+was the limit of what it could prove and that the mailbox was his to check.
+Had "the MX resolves and answers" been reported as "the address works", the
+Google submission would have gone in against an address that bounced.*
