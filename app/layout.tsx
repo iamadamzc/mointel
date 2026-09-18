@@ -30,13 +30,13 @@ export const metadata: Metadata = {
     type: "website",
     url: "/",
     siteName: "The Momentum Intelligence Trading Desk",
-    title: "The Momentum Intelligence Trading Desk",
+    title: "TMI — Intelligence on what's moving.",
     description:
       "Why it is moving, where it sits in the cycle, what the share structure is, and what supply stands behind it.",
   },
   twitter: {
     card: "summary",
-    title: "The Momentum Intelligence Trading Desk",
+    title: "TMI — Intelligence on what's moving.",
     description:
       "Why it is moving, where it sits in the cycle, what the share structure is, and what supply stands behind it.",
   },
