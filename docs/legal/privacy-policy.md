@@ -150,7 +150,7 @@ handled by us and by the companies that run the machinery underneath:
 | --- | --- | --- |
 | Google LLC | Your sign-in | It is the identity provider you chose when you clicked the button |
 | Amazon Web Services, Inc. | The server and its logs | It is where the service runs, in us-east-1 |
-| [EMAIL PROVIDER, IF ANY] | Email we send you | Service messages only |
+| Google LLC | Email we exchange with you | Our mailbox runs on Google Workspace |
 
 We will hand over data if we are legally required to — a court order, a
 lawful demand from an authority with the power to make one. If that happens
@@ -167,9 +167,11 @@ will tell you before it does.
 - **Email we exchanged with you** — we have not set a period; ask and we will
   tell you what we hold.
 
-Backups are the honest exception: deleted data can persist in a backup for
-up to [PERIOD] before the backup itself expires. We do not restore a backup
-to bring deleted data back.
+Backups are the honest exception. A full-server snapshot is kept for 7 days,
+so deleted data can survive that long in one. Server-log entries live 14 days,
+and a snapshot taken on a log's last day carries it up to 7 days further —
+about three weeks at the outside. We do not restore a backup to bring deleted
+data back.
 
 ## 7. Your rights
 
@@ -183,8 +185,8 @@ Whoever and wherever you are, you can:
 - **Take it with you.** Ask, and we will send it in a machine-readable file.
 - **Object, or ask us to restrict what we do.** Ask, and we will answer.
 
-Write to info@andromedagenius.com. We answer within [PERIOD] and we do not
-charge for it.
+Write to info@andromedagenius.com. We answer promptly, and within 30 days at
+the latest, and we do not charge for it.
 
 **We do not sell your personal information, and we do not share it for
 cross-context behavioural advertising** — including as California defines
