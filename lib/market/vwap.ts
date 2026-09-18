@@ -410,60 +410,53 @@ export function emptySessionOpen(session: VwapSession): SessionOpen {
  * with no session breakdown, so there is nothing to seed them from and they
  * rebuild from post-restart bars alone.
  *
- *     day-wide sessionHigh   premarket: LOST   RTH: SURVIVES IF ROLLED   AH: LOWERED
- *     these                  premarket: LOST   RTH: LOST                 AH: LOST
+ * NAME THE CONDITION, NOT THE EVENT -- and the event is what the two earlier
+ * versions of this table enumerated. What decides the outcome is not WHEN the
+ * restart happened. It is **WHICH SESSION MADE THE HIGH**, because a restart
+ * rebuilds `sessionHigh` from three sources with three different windows:
  *
- * THE THIRD COLUMN IS THE ONE THAT COST REAL DATA, AND IT WAS MISSING FROM THIS
- * TABLE UNTIL 2026-09-18. A worker restart at 21:05Z LOWERED 1,481 of 7,936 rows
- * -- GWAV 4.20 to 2.78, MGN 5.61 to 4.21, AGMH 1.12 to 0.8501 -- and `toRow`
- * persists it, so it is written and not a display artefact. Settled control:
- * 09-17 understated 0 rows, 09-18 understated 1,441. Ops's measurement.
+ *     seedSession from dailyBar.h            09:30-16:00 + closing cross   ALL symbols
+ *     reconstructAfterHours (if rthClosed)   16:00 -> now                  AH-active
+ *     focused minute bars                    04:00 -> now                  ~200 symbols
  *
- * **After-hours is the case where the daily bar HAS rolled, so the seed does not
- * fail -- it SUCCEEDS, at the RTH-ONLY high.** `dailyBar.h` is 09:30-16:00 plus
- * the closing cross (measured: premarket excluded 18-0, evening excluded, 0 of
- * 121 rows premarket-inclusive), so after 16:00 it is a LOWER BOUND on the day's
- * high and not a measurement of it. **The value is not lost. It is silently
- * lowered -- and a lower number reads as an observation where a null reads as
- * absent.** Ops's sentence and it is the right one.
+ * `focusCount = max(internalRank * 4, 100)` = **200 names plus pins**
+ * (`worker/runtime.ts:916-934`), chosen off `rvolPreview`. **So premarket is
+ * recovered for the focused set and for NOBODY ELSE.** A name outside it that
+ * made its high before 09:30 is rebuilt from sources that never saw that print,
+ * and reads its RTH high instead.
  *
- * AND THE MECHANISM IS NOT THAT THE SEED OVERWRITES DOWNWARD -- IT CANNOT.
- * `maxOrValue` (`engine.ts:2161`) returns the candidate only when the current
- * value is null, so the seed is monotone and a later cycle cannot lower an
- * already-observed high. **The loss happens at the restart**, which nulls the
- * in-memory accumulator (`engine.ts:543`), leaving `maxOrValue` nothing to
- * defend. *This distinction decides the fix: "make the seed refuse to lower" is
- * already true and would be a no-op.* The real shape is that the reseed source
- * is complete for a DIFFERENT WINDOW than the value it restores -- so the fix is
- * to replay the stored minute bars, or to refuse to seed a known-incomplete high
- * after 16:00 and say UNKNOWN. **A decision, not a one-liner, and unmade.**
+ * MEASURED, 2026-09-18, Ops, after a 21:05Z restart: 1,481 of 7,936 stored rows
+ * fell -- GWAV 4.20 to 2.78, MGN 5.61 to 4.21. Of the lost highs, **1,160 printed
+ * in PREMARKET**, 229 in after-hours at the reconstruction boundary, 6 in RTH,
+ * 64 had no bar at that high. Settled control: 09-17 understated 0 rows, 09-18
+ * understated 1,441. `toRow` persists it, so it is written and not a display
+ * artefact. **It is a PREMARKET hole.**
  *
- * `sessionLow` has the mirror defect: `minOrValue` with `dailyBar.l` restores the
- * RTH low, which is ABOVE a real after-hours low. Same cause, same third column.
+ * NOTHING IS LOWERED BY AN OVERWRITE -- THAT CANNOT HAPPEN. `maxOrValue`
+ * (`engine.ts:2161`) returns the candidate only when the current value is null,
+ * so the seed is monotone. **The loss is the empty accumulator plus an incomplete
+ * rebuild**, not a downward write, and *"make the seed refuse to lower" is
+ * already true and would be a no-op patch.* The value is not lost and not
+ * lowered: it is **rebuilt from sources that never saw the print, which reads as
+ * an observation where a null would read as absent.** Ops's sentence.
  *
- * AND ENUMERATING EVENTS IS WHAT LEFT THE ROW OUT. Two rows named two restarts;
- * three conditions exist, and the missing one is the only case where the
- * mechanism SUCCEEDS and the outcome is still wrong. Integration-tmi flagged the
- * flat `SURVIVES` here and I corrected it to `SURVIVES IF ROLLED` -- true, and
- * still misleading for exactly the case where its condition is MET.
+ * AND `SURVIVES IF ROLLED` WAS TRUE AND STILL WRONG, which is the second time a
+ * correction to this line moved the problem sideways. The daily bar rolling is
+ * what the condition TESTS -- and a rolled daily bar contains no premarket, so
+ * the condition is SATISFIED and the premarket high is gone anyway.
  *
- * THE CONDITION IS LOAD-BEARING AND ITS TIME IS UNMEASURED. `belongsToSession`
- * (`worker/runtime.ts:851-852`) compares `etDateString(dailyBar.t)` against the
- * trading date, and `:887` seeds `null` on a mismatch -- and the bar was still
- * YESTERDAY'S at 04:38 ET when Ops observed it from the box. The seed therefore
- * fails to LOST and never to a stale high, which is the safe direction. But if
- * the bar has not rolled by 09:30 then an RTH restart loses the day-wide high
- * too. Integration-tmi flagged the flat `SURVIVES` above as something the next
- * seat would read as a guarantee, and was right.
+ * ONE BAR, TWO WINDOWS, AND THE JUSTIFICATION SITS WHERE THE TRAP IS.
+ * `bootstrapSession`'s own docstring (`worker/runtime.ts:773-775`) says *"Alpaca
+ * daily bars carry the full 04:00-20:00 session volume (verified against
+ * minute-bar sums)"* -- and that is right, measured independently: only 3 of
+ * 2,747 discriminating rows match an RTH-only volume band. **The same bar's HIGH
+ * is regular-session only.** So the comment that licenses taking the snapshot is
+ * true of the field beside the one that breaks.
  *
- * AND IT IS NOT MEASURABLE FROM STORAGE, FOR A REASON WORTH KNOWING.
- * `cumulativeVolume = volumeBase + minuteSum` (`engine.ts:1405`), so a nonzero
- * stored premarket volume proves only that ONE of the two is nonzero: a rolled
- * bar, or a name that simply traded while we were streaming. Both arms produce
- * the same number. The column that would separate them is `volume_base` -- and
- * it is written as the literal `0` on every row (`worker/runtime.ts:1752`; 25,789
- * of 25,789 confirmed). The field that would date the roll is the one that does
- * not carry what its name says.
+ * THE FIX IS A DECISION AND IS UNMADE. Replay the stored minute bars (accurate,
+ * and `minute_bars` kept every print), widen the focused set, or refuse to seed
+ * a known-incomplete high and say UNKNOWN. `sessionLow` has the mirror defect
+ * through `minOrValue` and `dailyBar.l`.
  *
  * So after ANY restart a per-session high is only as complete as this process's
  * own observation of that session, and it will read LOW rather than null -- the
