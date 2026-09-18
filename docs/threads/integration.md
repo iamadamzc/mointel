@@ -293,6 +293,45 @@ true for every future customer, dependent on nobody's habits.*
 (`research.md` 31, `design.md` 15, `README.md` 14, `rnd.md` 11). Coaching's are legitimate -
 that thread IS about him. The product threads' are not.*
 
+### WHAT I HOLD FOR HIM - 2026-09-18, after the Ops seat retired
+
+**Ops-tmi retired 2026-09-18 (`c92da59`); a successor takes the name. TWO OF ITS OPEN
+ITEMS ARE NOW MINE TO CARRY:**
+
+1. **THE MARKET RESTART WORD.** *Deployed at `467ffec` and inert until it happens.* **The
+   condition is "no session in progress" - NOT an hour. After-hours is a session.** *It is
+   what makes the `volume_base` fix live; until then every row is `0`/null and the OLD
+   rows stay `0` forever, so the cutover date must be written at the write site.*
+2. **TWO PRIVACY RETENTION PERIODS.** *`/privacy` carries ten live `[PLACEHOLDER]` spans;
+   Ops measured all but two `[PERIOD]`s. Those two are his: how long an account survives a
+   close request, and one other.* **`/terms` is bracket-clean - the two documents are in
+   different states and must not be reported as one.**
+
+### THE ACCESS-CONTROL GAP, AND IT IS A PUBLISHED CLAIM AHEAD OF THE BUILD
+
+```
+/signin  401  WWW-Authenticate: Basic        allowlist in lib/ app/ worker/:  NONE
+/desk    401  WWW-Authenticate: Basic
+```
+
+**nginx Basic Auth is the WHOLE of access control - `web.md:122-125`. Google sign-in gates
+nothing.** *That is why moving the consent screen to In production on 2026-09-18 was safe:
+the Google test-user list was never the gate. Safe BECAUSE of that, not because publishing
+status was doing work it was not.*
+
+> **THE ADOPTED TERMS DESCRIBE A SYSTEM THAT DOES NOT EXIST.** *§2 "Access is by
+> invitation. There is no public sign-up." §3 "One person, one account. Do not share your
+> sign-in." §9 promises access can be withdrawn from a person.* **The mechanism is ONE
+> SHARED PASSWORD - which is sharing a sign-in, and cannot be revoked for one person
+> without locking out everyone.**
+
+**Nothing is wrong today because he controls who gets the password. IT BREAKS AT THE
+SECOND USER, NOT THE HUNDREDTH.** *And there is no allowlist to fall back on: the day
+`auth_basic off` reaches `location /`, any Google account completes sign-in.*
+
+**Same family as the cycle frame, the landing copy and the per-tenant research prior: a
+published claim running ahead of the build, cheaper to build toward than to retrofit.**
+
 ### CLOSED TONIGHT, SO NOBODY RE-ASKS
 
 - **Indexing: HIS WORD, "index it."** Shipped, live, allow-all.
