@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="The Momentum Intelligence">
+  <title>The Momentum Intelligence</title>
+  <!--
+    The M of Momentum, drawn as the move it names: a peak, a shallow retrace,
+    a higher high. The outer legs reach the baseline so it reads as a letter
+    before it reads as a chart.
+
+    Retrace sits at y=34 against a first peak of y=19. Deeper and it stops
+    reading as momentum; shallower and the middle vertex closes up before 16px,
+    which is the size this has to survive.
+
+    Miter limit 3 rather than the default 4: the peak angles are sharp enough
+    that an unclipped miter grows a spike longer than the stroke is wide.
+  -->
+  <polyline points="9,52 21,19 32,34 43,10 55,52"
+            fill="none" stroke="#4d93ff" stroke-width="7.5"
+            stroke-linejoin="miter" stroke-miterlimit="3"/>
+</svg>
