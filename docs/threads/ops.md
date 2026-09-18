@@ -8088,9 +8088,14 @@ bare-named; all three are stale and corrected here.*
 >    AWS, no email provider, logs 14 days, backups 3+pinned / 7-day snapshots).
 >    **Two retention periods are HIS decisions** (account after close request;
 >    email exchanged); Web's interim sentence needs his adoption.
-> 2. **Google consent screen:** scopes `openid email profile` → no scope
->    verification. **Ask him the PUBLISHING STATUS (Testing vs In production)**
->    — Testing caps users and expires refresh tokens; unanswered at retirement.
+> 2. **Google consent screen: CLOSED.** Scopes `openid email profile` → no scope
+>    verification, and **he put the app In production on 2026-09-18** (his words
+>    to Integration: "i just put it into production"). That was safe because
+>    Google sign-in gates NOTHING today — nginx Basic Auth is the whole gate
+>    (`/signin` and `/desk` both 401 with `WWW-Authenticate: Basic`; no
+>    application allowlist exists in lib/, app/ or worker/). **Forward hazard:
+>    the day `auth_basic off` reaches `location /`, any Google account completes
+>    sign-in — the authority field and the status check must exist first.**
 > 3. QCLS cycle incident: phase computed from settled daily bars only, AND the
 >    vendor's daily bar is REGULAR SESSION ONLY (AUUD 08-17: daily h 1.02 vs
 >    premarket 1.05 / after-hours 1.30). Research is building the provisional-
@@ -10612,7 +10617,7 @@ Session Manager: mi-0a647a08fcc7366b7 Online; `ssh mointel-ssm` carries every re
   repeatedly since 09-17 16:57 ET; not given; nothing is wrong with waiting.**
 - Deploy enumeration: Integration-tmi (successor seat, opened 09-16 evening).
 - Two privacy retention periods and Web's interim sentence: HIS, unanswered.
-- Consent-screen publishing status (Testing vs In production): asked, unanswered.
+- Consent-screen publishing status: CLOSED — he put it In production 2026-09-18; safe because Basic Auth is the only gate today (see open item 2).
 - Port 22 closure (gate 3): his, not asked yet.
 
 ### THINGS THAT WOULD OTHERWISE COST A DAY
