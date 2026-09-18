@@ -1,5 +1,25 @@
 # Reaching the box without an inbound port: a proposal, not a change
 
+> **STATUS 2026-09-18 (added by Ops on retiring; the body below is the proposal
+> as written on 09-13 and is kept as the reasoning, not the state):**
+> - **B is BUILT.** Infra-Ops created `SSMServiceRole` + one activation on his
+>   word (09-13); the box registered as managed node `mi-0a647a08fcc7366b7`,
+>   Online; the laptop has the Session Manager plugin and `Host mointel-ssm` in
+>   `~/.ssh/config`. The tier step was moot (AWS removed it 2026-06-30);
+>   Session Manager on hybrid nodes is $0.05/session from 2026-09-30.
+> - **Gate 1 (off-list network): passed for ONE network** — 09-14, `ssh
+>   mointel-ssm` succeeded from an address the port 22 rule did not admit.
+>   Proves that network, not the next.
+> - **Gate 2 (real work in parallel): exercised daily** — every production read
+>   since 09-13 and every post-deploy verification went over Session Manager.
+>   **Deploys still go over port 22 by rule** (a dropped session mid-deploy is a
+>   partial deploy; the detached `systemd-run` deploy has since removed most of
+>   that risk, so this rule can be revisited).
+> - **Gate 3 (his second yes to close port 22): OPEN.** The sentence he agrees
+>   to: "a network that blocks Session Manager now locks everyone out, Ops
+>   included, with no fallback."
+> - **A (console alias) was never done.** Not needed while B works.
+
 *Scoped 2026-09-13 (Sunday evening ET) by Ops on his "yes" to scoping. Nothing here
 has been built or enabled. Every fact below was read live on the day and is dated;
 re-read before acting on any of them.*

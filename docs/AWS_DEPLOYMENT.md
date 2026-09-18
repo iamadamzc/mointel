@@ -472,41 +472,84 @@ first of those by reading the module's own source.
 
 ## Deploying a new version
 
-From the development machine, in Git Bash:
+**Rewritten 2026-09-18. The previous version of this section said `HEAD`, said
+the deploy ran in the foreground of one ssh session, and said nothing about the
+integrity check. Each of those cost something this week and is corrected here
+rather than annotated.**
+
+Deploys are gated: Integration approves an ENUMERATION of the code above
+production, by thread and by what makes each commit live (web/research restart
+vs market restart), and never a sha. Gate at the sha that ships (`npm test`,
+lint, typecheck, build). Then, from the development machine in Git Bash:
 
 ```bash
-git push
-deploy/aws/push-release.sh 98.85.49.227 /a/AWS_creds/mointel-prod-key.pem HEAD
+RESTART_MARKET=no deploy/aws/push-release.sh 98.85.49.227 /a/AWS_creds/mointel-prod-key.pem <ENUMERATED SHA>
 ```
 
-That ships the committed tree at that sha with `git archive` — no untracked
-files, no `.env.local`, no Windows `node_modules` — then runs
-`deploy/aws/deploy.sh` on the server, which:
+**Pass the enumerated sha as a LITERAL. Never `HEAD`.** Five sessions commit
+into one shared index; on 2026-09-16 `rev-parse HEAD` at ship time carried four
+peer commits nobody had gated. The enumerated sha is the only thing between the
+shared index and production.
 
-1. `npm ci` (the lockfile, not a fresh resolution; `better-sqlite3` is rebuilt
-   for Linux)
-2. `npm run build` with `NODE_ENV=production`
+`push-release.sh` ships the committed tree at that sha with `git archive`, then
+launches `deploy/aws/deploy.sh` **as a detached transient systemd unit on the
+box** (`systemd-run`, unit `mointel-deploy-<sha>-<hhmmss>`) and follows it by
+polling. A dropped laptop connection delays the report; it cannot kill the
+deploy. `deploy.sh`, from the new release's own copy:
+
+1. `npm ci` (the lockfile; `better-sqlite3` rebuilt for Linux)
+2. `npm run build` with `NODE_ENV=production`, unless `.next/BUILD_ID` already
+   exists (a `.next` without one is an interrupted build and is removed first)
 3. installs the Nginx site and the systemd units
-4. stops web / research / assess
-5. runs `mointel-migrate` on its own against the new code
-6. switches `current` and starts the services
-7. waits for `/api/health`, and **rolls back to the previous release if it never
-   comes**
+4. **runs the store integrity check (`worker/migrate.ts --check-only`) WITH THE
+   SERVICES STILL UP** — it is a read, WAL readers do not block writers, and on
+   2026-09-17 it spent 3m27s inside the stop window on a 1.8 GB store, which was
+   3m27s of public 502
+5. stops web / research / assess
+6. switches `current` and runs the migration (`--no-check`)
+7. starts the services and prints **`services were down for Ns`** — the number the
+   public site pays for every deploy; 2–3 s when nothing migrates
+8. waits for `/api/health`, and **rolls back to the previous release if it never
+   comes** — see Rollback for what that rollback does and does not guarantee
 
-**The market worker is not restarted by default.** Restarting it drops the one
-SIP connection the account is allowed, and the desk goes quiet for as long as the
-reconnect takes. When a release genuinely changes the worker:
+**The market worker is not restarted by a deploy.** Restarting it drops the one
+SIP connection the account is allowed AND resets every in-memory session anchor
+and per-session high; after an in-session restart those read LOW, not null, and
+the damage is only computable from the recorded restart time. **A market restart
+is his word, each time, with the condition "no session in progress" (after-hours
+counts). Record the ExecMainStart timestamp to the second.** When a release
+changes worker code, ship with `RESTART_MARKET=no`, verify, then restart on his
+word as a separate act:
 
 ```bash
-RESTART_MARKET=yes deploy/aws/push-release.sh 98.85.49.227 /a/AWS_creds/mointel-prod-key.pem HEAD
+ssh -i A:\AWS_creds\mointel-prod-key.pem ubuntu@98.85.49.227 'sudo systemctl restart mointel-market'
 ```
+
+Verify every deploy from the box, never from the deploy's own output: each unit's
+release by `readlink -f /proc/<MainPID>/cwd`, `PRAGMA user_version` on the store,
+`/api/health`, and — now that the site is public — a credential-free `curl` of the
+public paths with the negative control FIRST (`/desk`, `/signin`, `/api/market`,
+`/privacy-x` → 401) before the positives (`/`, `/privacy`, `/terms`,
+`/favicon.ico`, `/robots.txt` → 200).
 
 ### Rollback
+
+`deploy.sh` rolls back automatically when the health check fails after the
+switch. **On 2026-09-16 that rollback did not roll back:** web had crash-looped
+five times against a bad release and hit systemd's `StartLimitBurst`, the
+rollback's `systemctl restart` was refused with "Start request repeated too
+quickly", and the script printed "rolled back" over a dashboard that stayed down
+four minutes. It now runs `systemctl reset-failed` before restarting, verifies
+health afterwards, and prints `ROLLBACK FAILED ... THIS IS AN OUTAGE` when that
+is the truth. **The health check is the load-bearing line, not the reset.**
+
+Manual rollback:
 
 ```bash
 ssh -i A:\AWS_creds\mointel-prod-key.pem ubuntu@98.85.49.227
 ls -1t /opt/mointel/releases                        # newest first
 sudo ln -sfn /opt/mointel/releases/<older-sha> /opt/mointel/current
+sudo systemctl reset-failed mointel-web mointel-research mointel-assess   # clears a crash-loop latch
 sudo systemctl restart mointel-web mointel-research mointel-assess
 curl -fsS http://127.0.0.1/api/health
 ```
@@ -609,10 +652,19 @@ both directions: **the writers run in one place at a time.**
 ## Firewall
 
 ```
-22/tcp  → admin IPs only (three /32s as of 2026-09-12; read the live set, do not trust this line)
-80/tcp  → 0.0.0.0/0   (the distribution's origin; Basic Auth is the gate)
-443/tcp → 0.0.0.0/0
+22/tcp  → admin IPs only (two /32s as of 2026-09-14: 70.17.101.27 and his home; read the live set, do not trust this line)
+80/tcp  → 0.0.0.0/0
+443/tcp → 0.0.0.0/0   (nginx direct; Basic Auth gates everything except the public exemptions)
 ```
+
+**Port 22 is no longer the only door.** Since 2026-09-13 the box is a Systems
+Manager managed node (`mi-0a647a08fcc7366b7`, hybrid activation, agent outbound
+only), and `~/.ssh/config` on the development machine carries `Host mointel-ssm`
+with a `ProxyCommand` through Session Manager: `ssh mointel-ssm` works from any
+network with the same key and user, and every read this desk takes now goes that
+way. The port 22 rule stays until the access-path gates in
+`docs/ACCESS-PATH-PROPOSAL.md` are closed (one network verified off-list; real
+work carried; his second yes). Deploys still go over port 22 by rule.
 
 Read the live set before changing it — `put-instance-public-ports` replaces
 every rule, so the three rules above must all be resent:
@@ -624,7 +676,7 @@ aws lightsail get-instance-port-states --profile magellan_admin --region us-east
 Port 3000 is not open. Neither is anything else. SSH is key-only —
 `PasswordAuthentication no` is asserted by `bootstrap.sh`, not assumed.
 
-When the admin IP changes, SSH stops working and nothing else does:
+When the admin IP changes, SSH on port 22 stops working and nothing else does (the Session Manager path does not care). Replace, never accumulate — remove the address he has left:
 
 ```bash
 curl -s https://checkip.amazonaws.com     # the new address

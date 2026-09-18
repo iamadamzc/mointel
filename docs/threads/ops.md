@@ -8013,83 +8013,119 @@ appends. Never a bare overwrite.**
 
 ## Opening message for a new chat
 
-*Rewritten 2026-09-12 ET by Integration for the successor seat, on his authorisation
-to retire the session running through 2026-09-12. **The previous version named a sha
-as the ship order and a production state three weeks stale; both are corrected
-below.** Three further errors were caught by the retiring seat reading its own
-successor's brief, and are fixed here.*
+*Rewritten 2026-09-18 16:3x ET by the retiring Ops seat (session of 2026-09-12 →
+2026-09-18), on his instruction to retire. **Every production fact below was read
+from the box at 16:24 ET on 2026-09-18, not carried.** The previous version said
+production was `b0610fee`, that SSH was the only door, and that Integration was
+bare-named; all three are stale and corrected here.*
 
-> This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`.
-> Read `docs/threads/ops.md` — **starting with the handover at the top** — then
-> `docs/threads/README.md`. Everything else is on disk and linked from those two.
+> This is the **Ops thread** for the Momentum Intelligence desk at `A:\mointel`
+> (public name: The Momentum Intelligence Trading Desk, tmitrader.com). Read
+> `docs/threads/ops.md` — **starting with the HANDOVER at the very end of the
+> file, then this section** — then `docs/threads/README.md`. Everything else is
+> on disk and linked from those two.
 >
-> **First action, before anything else: title this session `Ops-tmi`.** Peers find you
-> by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is set, nobody
-> can reach you.
+> **First action, before anything else: title this session `Ops-tmi`.** Peers
+> find you by that title in `mcp__ccd_session_mgmt__list_sessions`; check a
+> peer's `cwd` is `A:\mointel` before every send, because Ops and Integration
+> exist in three constellations on this machine. **Then archive the retired
+> session titled `Ops-tmi-retired-2026-09-18`.**
 >
-> **You own the live desk: AWS, deploys, the market worker, incidents. You are the
-> only thread that deploys.** UI work is Design's, interpreter and model spend are
-> Research's, the public site is Web's — **if you find work there, write it into
-> that charter and hand it over rather than doing it.**
+> **You own the live desk: AWS, deploys, the market worker, incidents, the
+> deploy tooling, `lib/review/`, `lib/legal/`, the public routes and nginx
+> (`web.md` SEAMS: `app/` and nginx are Ops's carriage; Web specifies).** UI is
+> Design's, the interpreter and model spend are Research's, copy is
+> Marketing's. Find work there → write it into that charter and hand it over.
 >
-> **DEPLOY AUTHORITY, AND THE OLD VERSION OF THIS SENTENCE WAS WRONG.** Integration
-> may instruct deploys — but **it approves an ENUMERATION, never a sha.** *You
-> enumerate the tip by thread at the moment of shipping and it approves that.* **A
-> hash is a carried reading and it decayed three times in one night.** **Preflight
-> remains the authority and a refusal is an outcome, not a failure.**
+> **DEPLOY AUTHORITY.** Integration (`Integration-tmi`) approves an
+> ENUMERATION of the code above production, by thread and by what makes it
+> live; never a sha. **Ship the ENUMERATED sha as a LITERAL to
+> `push-release.sh`, never `HEAD`** — on 09-16 `HEAD` carried four ungated peer
+> commits. **An approval in flight is not an approval received:** ship only
+> what is approved, or say "shipping at HH:MM unless refused". Preflight is
+> the authority; a refusal is an outcome. Deploys run DETACHED on the box
+> (`systemd-run`, built into `push-release.sh`); the integrity check runs
+> before anything stops; `services were down for Ns` is printed — expect 2–3s.
+> **Never deploy 07:00–10:00 ET.**
 >
-> **Spend, auth-model changes, destructive actions and a `mointel-market` restart
-> are HIS, every time.** *A relay does not clear a restart — that is this thread's
-> own rule and it has been right twice.*
+> **HIS, every time, never relayed: spend, auth-model changes, destructive
+> actions, port 22 changes, and a `mointel-market` restart.** The restart
+> condition is **"no session in progress"** (after-hours counts): an in-session
+> restart resets session anchors and per-session highs, which then read LOW,
+> not null. Record the restart's ExecMainStart to the second.
 >
-> **PRODUCTION WAS VERIFIED AS `b0610fee` AT SCHEMA 26 ON FRIDAY 2026-09-11, FROM
-> THE BOX** — `user_version` by `PRAGMA` over ssh, the release read from each unit's
-> own `/proc/<pid>/cwd`, all four units named. **That is a measurement, not an
-> inference.** **It has not been re-confirmed since SSH closed on Saturday evening.**
-> **So your first action is to confirm NOTHING MOVED, not to find out what is
-> there** — *and confirm it the same way: `/proc/<pid>/cwd`, never the symlink;
-> `user_version` from the box, never the repo.*
+> **PRODUCTION AT 16:24 ET FRI 2026-09-18, FROM THE BOX:**
+> ```
+> web/research/assess   467ffec   by /proc/<pid>/cwd, since 2026-09-17 20:57:33Z
+> market worker         1c23322   pid 456092, ExecMainStart 2026-09-16 06:15:02Z, NRestarts 0
+>                                 (his restart word was ASKED and NOT YET GIVEN; nothing wrong)
+> schema                27        retention 20 IN FORCE: minute_bars 09-09..09-18, eight dates
+> backups               4 files   (reaper keeps 3 newest + the pinned v18); 64G free
+> public                / /privacy /terms /favicon.ico /robots.txt 200; /desk /signin /api/* 401
+> port 22               70.17.101.27/32 + his home /32 (95.17.58.175); egress matched
+> Session Manager       mi-0a647a08fcc7366b7 Online; `ssh mointel-ssm` from any network
+> ```
+> **Your first action is to confirm NOTHING MOVED, the same way** — never from
+> the symlink, never from the repo.
 >
-> **Four things that will otherwise cost you a day:**
+> **ABOVE PRODUCTION, UNSHIPPED (gate at the tip before you enumerate; peers
+> commit constantly):** Design/Web's site rename to "The Momentum Intelligence
+> Trading Desk" with brand assets and favicons (`66501f5`, `31131e4`, `ed5b00a`,
+> `c002ac0` — `app/layout.tsx`, `app/page.tsx`, legal pages, `BrandMark`),
+> and the `.gitignore` widening (`14a56ff`). **Web tier only; no worker code.**
 >
-> - **SSH may be shut.** *Port 22 filtered at the box; 443 and 80 serve correctly.
->   He is travelling and the rule appears source-scoped.* **The desk is fine and the
->   door is closed — do not read "unreachable" as "down".**
-> - **CORRECTED 2026-09-13: `magellan_admin` in `us-east-1` DOES see the instance.**
->   *The retiring seat searched seven regions on both profiles, found nothing, and
->   Integration wrote that up as a standing property of the estate. It was one search,
->   not a property.* **Flagged, not established: the box is LIGHTSAIL, and
->   `ec2 describe-instances` does not return Lightsail instances — the wrong service
->   returns a real empty result and an EC2 positive control still passes.** **Only
->   the security-group rule is his; the account is readable.**
-> - **EVERY SCHEDULED TASK THIS DESK HAS ARMED HAS A LIFESPAN OF THREE TO ELEVEN
->   SECONDS — INCLUDING TWO THAT REPORT `succeeded`.** *Three reported `running` for
->   hours; two reported `succeeded` after 3.4s and 3.6s.* **"Died" is established
->   only for the three, and only the deploy has an independent check — it verifiably
->   did nothing.** **A TASK'S OWN STATUS IS NOT AN INSTRUMENT HERE.
->   `lastActivityAt − startedAt` IS.** *A successor told "three died" will trust a
->   fourth that says `succeeded`.* **The mechanism is withdrawn: do not re-arm one,
->   and do not take it back to him for re-authorisation.**
-> - **A MID-SESSION MARKET-WORKER RESTART IS A DATA EVENT, NOT A GAP.** *It resets
->   session anchors in memory and nothing rebuilds them.* **Friday cost 540 of 668
->   anchors. Record the restart time every time — it is the only thing that makes
->   the damage computable, and only for three sessions.**
+> **WAITING ON HIS RESTART WORD (already deployed at `467ffec`, inert until the
+> worker restarts):** `volume_base`/`volume_base_through` written from the
+> engine (`b0e8478`, `b798ffd`) and Research's per-session highs (`548acf8`).
+> **When it lands: record the timestamp; write the cutover comment at
+> `worker/runtime.ts` toRow (rows before it carry hardcoded 0/null); tell
+> Integration the date; then the daily-bar roll time is measurable — earliest
+> non-null `volume_base_through` on a date, NOT nonzero `volume_base`.**
 >
-> **Two method notes from your predecessor, and they are worth more than the facts:**
+> **OPEN, in order of what bites first:**
+> 1. **The in-force privacy policy shows bracketed placeholders to the public**
+>    (`[PERIOD]` ×5 etc.). Ops's facts are handed to Web (region us-east-1,
+>    AWS, no email provider, logs 14 days, backups 3+pinned / 7-day snapshots).
+>    **Two retention periods are HIS decisions** (account after close request;
+>    email exchanged); Web's interim sentence needs his adoption.
+> 2. **Google consent screen:** scopes `openid email profile` → no scope
+>    verification. **Ask him the PUBLISHING STATUS (Testing vs In production)**
+>    — Testing caps users and expires refresh tokens; unanswered at retirement.
+> 3. QCLS cycle incident: phase computed from settled daily bars only, AND the
+>    vendor's daily bar is REGULAR SESSION ONLY (AUUD 08-17: daily h 1.02 vs
+>    premarket 1.05 / after-hours 1.30). Research is building the provisional-
+>    bar sibling in `lib/market/cycle.ts` (inert so far); the hourly backfill
+>    for calibration is on this disk in `data/vendor/` (raw AND split files).
+> 4. Two `worker/runtime.ts` scopes (Research): seed the bootstrap backfill set
+>    from the previous cycle's `rvol_rank` (the premarket selector is degenerate
+>    before the daily bar rolls — CONFIRMED by snapshot 04:38 ET 09-15); a
+>    "selector has no signal" log line that fires on every premarket bootstrap.
+> 5. Authority field (his ruling: user-based, only he is admin): schema is
+>    yours with Web — current-status join, three states, "cannot say" ≠ null,
+>    never `issued_authority`, first admin an explicit grant. Gates the retry
+>    endpoint before Basic Auth ever leaves `/`.
+> 6. `lib/review/`: token lifetime as a condition (`--until-revoked`);
+>    `sanitize` does not redact filesystem paths.
+> 7. `/signin` and `^~ /auth/` deferred until the authority field exists.
+> 8. Access path gate 3 (close port 22) is his; the proposal's STATUS block is
+>    current.
 >
-> - **PREDICT THE SHORTFALL FIRST.** *A mutation killing fewer tests than expected
->   says a guard is weaker than you thought — and with no number written down there
->   is no shortfall to notice.* **"One test failed" is unreadable; "I predicted two
->   and got one" is a finding.** **And a passing equality proves nothing until both
->   sides have been seen: `undefined === undefined` is green.**
-> - **DISTRUST THE HEADER, INCLUDING THE ONES IT WROTE.** *A comment is a claim about
->   code as it was the day it was written, and this desk has shipped one asserting an
->   event that never happened, sitting directly above the guard it justified.*
->   **Re-run the two-line comparison rather than trusting the note.**
+> **THREE INSTRUMENT LESSONS FROM THIS SEAT, worth more than the list:**
+> - **A 401 is not "the desk is there."** During a 3m27s public 502 the
+>   `/desk → 401` negative control passed the whole time. Positive paths are
+>   the only ones that can see the upstream.
+> - **Predict the shortfall before a mutation** ("predicted 2, got 1" is a
+>   finding), and **a diff cleared as "comment-only" must be checked for
+>   DELETED lines too** — an added-line filter returns empty on both.
+> - **Grep at HEAD answers only the present; a docs page is not a measurement.**
+>   The advanced tier the proposal priced had been removed by AWS; the vendor's
+>   "limit applies to total points" is false (it pages per symbol); the daily
+>   bar's session was settled by a fetch, not a doc.
 >
-> **Report short — fine points in plain language, not the reasoning behind them —
-> and end with `## What I need from you`, nothing after it.** **Route cross-thread
-> traffic through the `Integration` session; he is not a transport.**
+> **Report short — fine points in plain language — and end with
+> `## What I need from you`, nothing after it.** Route cross-thread traffic
+> through `Integration-tmi`; he is not a transport. With no Integration seat,
+> the seat that asks him something tells every seat that could also ask.
 
 ## THE DESK'S SERVER IS IN AN ACCOUNT THAT IS NOT IN THE ORGANISATION
 
@@ -10535,3 +10571,65 @@ research pipeline import was touched.**
 the first market-worker start on a build carrying it, a measurement after —
 and the source column does not discriminate. The cutover is written at the
 write site with the restart timestamp once the restart lands, and here.**
+
+## HANDOVER — Ops, retiring 2026-09-18 16:3x ET (session 2026-09-12 → 09-18)
+
+**Read this, then the "Opening message for a new chat" section, then nothing
+else before confirming production from the box.**
+
+### PRODUCTION, read from the box 16:24 ET Fri 2026-09-18
+```
+web/research/assess   467ffec   since 2026-09-17 20:57:33Z, NRestarts 0
+market worker         1c23322   pid 456092, ExecMainStart 2026-09-16 06:15:02Z, NRestarts 0
+current -> 467ffec;  releases 1c23322 372f5eb(pinned) 467ffec c883d7b dbae021
+schema 27; minute_bars 09-09 .. 09-18 (8 dates; retention 20 in force); trading_date 09-18
+backups 4 (3 newest + pinned v18); 64G free; health ok, market LIVE STREAMING
+stranger: /desk /signin /api/market 401; / /privacy /terms /robots.txt 200
+port 22: 70.17.101.27/32, 95.17.58.175/32 (his home); egress matched at read time
+Session Manager: mi-0a647a08fcc7366b7 Online; `ssh mointel-ssm` carries every read
+```
+
+### WHAT THIS SEAT SHIPPED (all verified from the box, all in this file above)
+- `9370ab3` schema 27 + Design's four-state render (Sun 09-13); backup reaper
+  live: 12 files/6.0 GB → 4/3.1 GB.
+- `997d231` retention 20 (in force since the 09-14 13:16 ET restart; proven
+  across five rolls), Design's ET timestamps.
+- `4cbd58f` the Move sort, the NO_PRINT engine fix (live since the 09-16
+  02:15 ET restart).
+- `1c23322` Release 1 of the public batch: board at `/desk`, landing at `/`,
+  `/privacy` and `/terms` renderers. **Three attempts; the middle one caused a
+  4-minute dashboard outage and the rollback did not roll back** (start-limit
+  latch). Both fixed.
+- `6f8894b` Release 2: four exact-match exemptions — **tmitrader.com serves a
+  public page for the first time.**
+- `c883d7b` robots.txt, the migrate split (quick_check before the stop:
+  3m27s → 2s down), detached deploys.
+- `dbae021`, `467ffec`: legal-table scroll wrapper, Open Graph card, Research's
+  guard fix, volume-base columns (inert until the restart).
+
+### AUTHORITIES AS THEY STAND
+- Market restart: HIS word, condition "no session in progress". **Asked
+  repeatedly since 09-17 16:57 ET; not given; nothing is wrong with waiting.**
+- Deploy enumeration: Integration-tmi (successor seat, opened 09-16 evening).
+- Two privacy retention periods and Web's interim sentence: HIS, unanswered.
+- Consent-screen publishing status (Testing vs In production): asked, unanswered.
+- Port 22 closure (gate 3): his, not asked yet.
+
+### THINGS THAT WOULD OTHERWISE COST A DAY
+- **Scheduled tasks are withdrawn on this desk** (every one died in 3–11 s).
+  A wait is a bounded loop in a background bash; the clock is `zoneinfo` in
+  Python — `TZ=America/New_York date` returns UTC on this host and a loop
+  keyed on it started at once.
+- **The store's `quick_check` takes 80–330 s** and grows with retention; it now
+  runs before the stop window. Do not move it back.
+- **`volume_base_source` is the base's provenance and `volume_source` the
+  running total's** (fixed 09-17). Queries on the late-anchor family use
+  `NOT LIKE 'alpaca-historical-minute-bars%'`.
+- **Every minute-bar query bound ends `.000Z`.**
+- **The vendor pages the multi-symbol bars endpoint per symbol** — size
+  fetches by symbol count; the docs' limit sentence is false.
+- **Local `data/market.db` holds only 08-17/18 minute bars and is disjoint from
+  production**; the Alpaca keys also exist locally (`httpsapi.alpaca.markets.txt`,
+  gitignored, never committed). Production-shaped reads still go via the box.
+- **Design canvas and `app/page.tsx` are independent copies**; the site name
+  changed to "The Momentum Intelligence Trading Desk" above production.
