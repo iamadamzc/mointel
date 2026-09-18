@@ -7,8 +7,8 @@ import { loadLegalDocument } from '@/lib/legal/document';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Terms of service — TMI Trader',
-  description: 'The terms under which TMI Trader is offered.',
+  title: 'Terms of service — The Momentum Intelligence Trading Desk',
+  description: 'The terms under which The Momentum Intelligence Trading Desk is offered.',
 };
 
 export default function TermsPage() {

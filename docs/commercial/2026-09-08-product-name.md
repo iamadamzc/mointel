@@ -9,6 +9,24 @@ and typed without a hyphen. Public sources only. **Nothing was registered, no
 account was created, no registrar or vendor was contacted.** The purchase is
 his.
 
+## SUPERSEDED BY THE TRADER, 2026-09-18 — THE MOMENTUM INTELLIGENCE TRADING DESK
+
+**The acronym survives and its expansion changes.** *His words: "shifting so TMI
+stands for The Momentum Intelligence and trading desk is part."*
+
+    was   TMI Trader  ·  True Move Intelligence
+    now   TMI         ·  The Momentum Intelligence Trading Desk
+
+**The domain is unaffected** — `tmitrader.com` still reads as TMI plus a
+descriptor, and §2e's reasoning about the colloquial "too much information" is
+now the point rather than a risk to manage: he named it as the memorable half.
+
+**Applied to the site, the metadata, the legal page titles and the mark.** The
+ruling below is left intact as the record of how the first name was reached; it
+is history rather than instruction, and nothing in it should be read as current.
+
+---
+
 ## DECIDED BY THE TRADER, 2026-09-08 — TMI TRADER
 
 **Brand: TMI Trader. Meaning: True Move Intelligence. Domain: tmitrader.com.

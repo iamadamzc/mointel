@@ -8,8 +8,8 @@ import { loadLegalDocument } from '@/lib/legal/document';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Privacy policy — TMI Trader',
-  description: 'What TMI Trader learns about you, why it holds it, who else sees it, and how to make it delete it.',
+  title: 'Privacy policy — The Momentum Intelligence Trading Desk',
+  description: 'What The Momentum Intelligence Trading Desk learns about you, why it holds it, who else sees it, and how to make it delete it.',
 };
 
 export default function PrivacyPage() {

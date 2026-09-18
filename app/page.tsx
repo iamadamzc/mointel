@@ -1,3 +1,4 @@
+import { BrandMark } from '@/components/BrandMark';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -13,7 +14,7 @@ import Link from 'next/link';
  */
 
 export const metadata: Metadata = {
-  title: 'TMI Trader — True Move Intelligence',
+  title: 'The Momentum Intelligence Trading Desk',
   description:
     'An intelligence desk for people who trade US small-cap momentum in the premarket: what is moving, why, where it sits in the cycle, and what the share structure actually looks like.',
 };
@@ -56,9 +57,21 @@ export default function LandingPage() {
   return (
     <div className="bg-desk text-ink">
       <header className="flex items-center justify-between gap-3 border-b border-line px-5 py-4 md:gap-8 md:px-24 md:py-5">
-        <div className="flex items-baseline gap-3">
-          <span className="font-mono text-[13px] font-medium tracking-[0.14em] md:text-[15px]">TMI TRADER</span>
-          <span className="hidden text-[13px] text-ink-3 md:inline">True Move Intelligence</span>
+        {/*
+          * THE ACRONYM IS THE MOBILE FORM, WHICH IS WHY IT EARNS ITS KEEP.
+          * "The Momentum Intelligence Trading Desk" set at 13px and tracked is
+          * about 340px, which does not fit beside the nav at 375. So the short
+          * form carries small and the full name appears once there is room --
+          * and the mark carries both.
+          */}
+        <div className="flex items-center gap-2.5">
+          <BrandMark size={22} className="text-accent" />
+          <span className="font-mono text-[13px] font-medium tracking-[0.14em] md:hidden">TMI</span>
+          <span className="hidden items-baseline gap-2 md:flex">
+            <span className="text-[10px] font-semibold tracking-[0.34em] text-ink-3 uppercase">The</span>
+            <span className="text-[15px] font-semibold tracking-[0.14em] uppercase">Momentum Intelligence</span>
+            <span className="text-[15px] font-medium tracking-[0.14em] text-accent uppercase">Trading Desk</span>
+          </span>
         </div>
         <nav className="flex items-center gap-8">
           <a href="#engines" className="hidden text-sm text-ink-1 hover:text-ink md:inline">How it works</a>
@@ -303,8 +316,8 @@ export default function LandingPage() {
         {/* The registered plain statement, verbatim. Commercial owns these words;
             docs/commercial/2026-09-08-product-name.md §2e item 2. */}
         <p className="mb-7 max-w-[74ch] text-base leading-relaxed text-ink-1 md:mb-10 md:text-lg">
-          TMI Trader is an intelligence desk for people who trade $1&ndash;$20 small-cap momentum in the
-          premarket. It is not a scanner and it is not a signal service: it takes the names that are already
+          The Momentum Intelligence Trading Desk is built for people who trade $1&ndash;$20 small-cap momentum
+          in the premarket. It is not a scanner and it is not a signal service: it takes the names that are already
           moving and puts everything the desk knows about each one on a single shared board &mdash; why it is
           moving, where it sits in the cycle, what the share structure is, and what supply stands behind it.
           Where it has nothing, it says so.
@@ -408,7 +421,7 @@ export default function LandingPage() {
             <Eyebrow>WHO RUNS IT</Eyebrow>
             <h2 className="mb-6 text-[30px] font-semibold leading-[1.18] tracking-tight">Who runs it.</h2>
             <p className="text-[17px] leading-relaxed text-ink-2">
-              TMI Trader is run by Andromeda Genius, Inc, in San Antonio, Texas. It was built for the desk its
+              TMI is run by Andromeda Genius, Inc, in San Antonio, Texas. It was built for the desk its
               operator trades from, and that is still where it runs every morning.
             </p>
           </div>
@@ -432,9 +445,17 @@ export default function LandingPage() {
 
       <footer className="border-t border-line bg-panel px-5 pb-12 pt-9 md:px-24 md:pb-[72px] md:pt-14">
         <div className="mb-6 flex flex-col gap-6 md:mb-10 md:flex-row md:items-start md:justify-between md:gap-16">
-          <div className="flex flex-col gap-1.5 md:gap-2.5">
-            <span className="font-mono text-[13px] font-medium tracking-[0.14em] md:text-sm">TMI TRADER</span>
-            <span className="text-[13px] text-ink-3">True Move Intelligence</span>
+          {/* The footer has the room the header does not, so it takes the
+              stacked lockup: brand over format, "The" diminutive and above. */}
+          <div className="flex items-center gap-3">
+            <BrandMark size={34} className="text-accent" />
+            <div className="flex flex-col gap-1">
+              <span className="text-[9px] font-semibold tracking-[0.4em] text-ink-3 uppercase">The</span>
+              <span className="text-[13px] font-semibold tracking-[0.14em] uppercase md:text-sm">
+                Momentum Intelligence
+              </span>
+              <span className="text-[10px] font-medium tracking-[0.3em] text-accent uppercase">Trading Desk</span>
+            </div>
           </div>
           <nav className="flex flex-col md:flex-row md:gap-10">
             <Link href="/privacy" className="flex min-h-12 items-center border-t border-line text-base text-ink-1 hover:text-ink md:min-h-0 md:border-0 md:text-sm">Privacy</Link>
@@ -444,7 +465,8 @@ export default function LandingPage() {
           </nav>
         </div>
         <p className="mb-3.5 max-w-[90ch] text-[13px] leading-[1.7] text-ink-3 md:mb-4">
-          TMI Trader is an information service covering publicly traded US equities. It is not a broker-dealer,
+          The Momentum Intelligence Trading Desk is an information service covering publicly traded US
+          equities. It is not a broker-dealer,
           not an investment adviser, and nothing it displays is a recommendation to buy or sell any security.
           Market data may be delayed, incomplete or wrong. Trading low-float small-cap equities carries a
           substantial risk of loss, and past movement indicates nothing about what happens next.

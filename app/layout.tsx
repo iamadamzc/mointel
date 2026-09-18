@@ -29,14 +29,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    siteName: "TMI Trader",
-    title: "TMI Trader — Intelligence on what's moving.",
+    siteName: "The Momentum Intelligence Trading Desk",
+    title: "The Momentum Intelligence Trading Desk",
     description:
       "Why it is moving, where it sits in the cycle, what the share structure is, and what supply stands behind it.",
   },
   twitter: {
     card: "summary",
-    title: "TMI Trader — Intelligence on what's moving.",
+    title: "The Momentum Intelligence Trading Desk",
     description:
       "Why it is moving, where it sits in the cycle, what the share structure is, and what supply stands behind it.",
   },
