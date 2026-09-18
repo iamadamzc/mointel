@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 206" width="192" height="206" role="img" aria-label="The Momentum Intelligence Trading Desk">
+  <title>The Momentum Intelligence Trading Desk</title>
+  <desc>The M of Momentum drawn as a move, sheltering the name.</desc>
+  <!--
+    THE ROOF LOCKUP. The mark stops being a container and becomes a roof: the
+    name shelters under the move, which is what the product does.
+
+    THE VALLEY TIP IS NOT THE VALLEY POINT. The path turns at (96,102), but at
+    that angle and a stroke of 20 the miter carries the outer tip of the V down
+    to roughly y=120. Setting THE against the path coordinate puts it under the
+    stroke instead of below it, which is why these positions are measured rather
+    than eyeballed.
+
+    TRADING DESK is the rule beneath the mark, not a fourth row of the stack.
+    Its drop and its tracking are what separate it; close it up and the effect
+    is lost.
+
+    FOR DARK GROUNDS. The ink is fixed light; the companion on-dark file is
+    the same geometry with the ink inverted. Two files rather than currentColor,
+    because currentColor does not inherit when an SVG is loaded through an img
+    tag, which is how most consumers will use it.
+
+    FONT DEPENDENCY, STATED. The type here is live text in a font stack. It
+    renders correctly where Geist is loaded and degrades to system sans
+    elsewhere. For print or any third party, the text wants outlining first;
+    that is a separate asset and a designer's job.
+  -->
+  <polyline points="20,166 58,50 96,102 134,28 172,166"
+            fill="none" stroke="#4d93ff" stroke-width="20"
+            stroke-linejoin="miter" stroke-miterlimit="3"/>
+  <g font-family="Geist, ui-sans-serif, system-ui, sans-serif" text-anchor="middle" fill="#11151c">
+    <text x="96" y="133" font-size="7"    font-weight="700" letter-spacing="4">THE</text>
+    <text x="96" y="151" font-size="10.5" font-weight="600" letter-spacing="3">MOMENTUM</text>
+    <text x="96" y="166" font-size="10.5" font-weight="600" letter-spacing="3">INTELLIGENCE</text>
+    <text x="96" y="186" font-size="7.5"  font-weight="600" letter-spacing="7" fill="#4d93ff">TRADING DESK</text>
+  </g>
+</svg>

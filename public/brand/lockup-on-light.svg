@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 362 56" width="362" height="56" role="img" aria-label="The Momentum Intelligence Trading Desk">
+  <title>The Momentum Intelligence Trading Desk</title>
+  <!--
+    THE PRIMARY LOCKUP. Horizontal, for anywhere the hero is too tall: site
+    header, email, a slide, a README. The wordmark grounds the mark, so it does
+    not float the way the bare M does.
+
+    Brand over format. THE is diminutive and above, which is what makes the
+    acronym close; Trading Desk carries the accent because it is the ownable
+    half of the name.
+
+    For dark grounds; see the on-dark companion. Same font dependency as the hero. Live text, Geist with a system fallback,
+    outline it before it leaves the building.
+  -->
+  <g transform="translate(2 6) scale(0.656)">
+    <polyline points="9,52 21,19 32,34 43,10 55,52"
+              fill="none" stroke="#4d93ff" stroke-width="7.5"
+              stroke-linejoin="miter" stroke-miterlimit="3"/>
+  </g>
+  <g font-family="Geist, ui-sans-serif, system-ui, sans-serif" fill="#11151c">
+    <text x="57" y="17" font-size="8.5" font-weight="600" letter-spacing="3.6" opacity="0.55">THE</text>
+    <text x="57" y="35" font-size="19"  font-weight="600" letter-spacing="2.5">MOMENTUM INTELLIGENCE</text>
+    <text x="57" y="49" font-size="9"   font-weight="600" letter-spacing="3.1" fill="#4d93ff">TRADING DESK</text>
+  </g>
+</svg>
