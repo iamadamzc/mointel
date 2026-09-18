@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   // domain, which is what a stranger and a crawler reach; the distribution
   // hostname is not in that path (docs/AWS_DEPLOYMENT.md, 2026-09-15).
   metadataBase: new URL("https://tmitrader.com"),
-  title: "Momentum Intelligence Trading Desk",
+  title: "The Momentum Intelligence Trading Desk",
   description:
     "Small-cap momentum intelligence: what is moving, why, where it sits in the cycle, and what the share structure actually looks like.",
   // Open Graph: Marketing's strings, verified by Integration as deletion-only
