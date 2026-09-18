@@ -244,6 +244,31 @@ renders HTTP 200 has already happened on this desk once.**
   disappears when — and only when — the trader sets a date there.
 - `drafted` and `last_changed` render into the dateline.
 
+### THE PLACEHOLDER SCAN, AND WHY THE OBVIOUS VERSION OF IT IS USELESS
+
+`python docs/web/placeholder-scan.py` — exits non-zero if any live page shows
+an unfilled `[PLACEHOLDER]` to the public. Run it after any change to
+`docs/legal/*.md`, and before any submission that puts a reviewer on these
+pages.
+
+**It scans the RENDERING, not the source, and that is the whole point.** The
+source is the truth about the words; the rendering is the truth about what is
+published. Two `[CONFIRM: ...]` drafting notes sat on the live, adopted
+privacy policy from 2026-09-16 to 2026-09-18 because every check anyone ran
+was a check on a file.
+
+**And `curl | grep '\['` does not work here.** It returns about ninety hits on
+a page with zero placeholders: Next serves its RSC flight payload inside
+`<script>`, and that payload is dense with bracket-shaped JSON — `className`
+arrays, chunk manifests, `text-[13px]`. A check whose output is ninety lines
+of noise is a check nobody reads, and the one real hit hides inside it. The
+script strips `<script>` and `<style>` **first**, then tags, then scans what a
+person would see.
+
+As of 2026-09-18 it reports `/` and `/terms` clean and `/privacy` carrying ten
+placeholders — so it currently ships with its own positive control: it is
+proven able to see a present case, not merely to return "ok".
+
 ---
 
 ## 2b. THE THREE RULINGS OF 2026-09-11, AND THE REASONING HE DELEGATED
