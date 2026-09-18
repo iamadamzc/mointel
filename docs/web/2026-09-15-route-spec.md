@@ -970,3 +970,46 @@ a.gtld-servers.net` returned an identical list of root hints for the dead
 domain AND for the control, so it carried no information either way. It was
 discarded rather than read. Without the control it would have looked like a
 finding.*
+
+### 13b. RESOLVED 2026-09-18 15:15Z — VERIFIED, AND ONE FIGURE IN §13 ABOVE IS WRONG
+
+**He registered it himself. Registration `SUCCESSFUL` 15:04:39Z, nameservers
+repointed 15:15:16Z.** *Verified from this seat, read-only, with controls:*
+
+| # | check | result |
+| --- | --- | --- |
+| 1 | registry (RDAP) | `active`, expires 2027-09-18; the four NS it holds **match `Z07160981Z2VQRO0W3LW2` exactly**, compared against a fresh read of the zone's own NS set rather than a relayed list |
+| 2 | Google + Cloudflare | both return the four NS **and the MX and SPF** — `tmitrader.com` controlling each |
+| 3 | published addresses | every `mailto:` on `/`, `/privacy`, `/terms` is `info@andromedagenius.com`, the only address on the public surface; MX hosts resolve and accept SMTP |
+
+**CHECK 2 IS THE ONE THAT MATTERS AND IT IS NOT "DOES IT RESOLVE".** *The
+registrar created an empty zone `Z07740962CDAEDVBGIPIB` and delegated to it, as
+predicted. An empty zone answers `NS` and `A` perfectly well.* **It has no MX.
+So mail records coming back is what proves the delegation landed on the zone
+with the 13 records rather than merely on A zone.** *A check that stopped at
+"the name resolves" would have passed against the empty zone.*
+
+> **THE "26 OCCURRENCES" IN §13 ABOVE IS WRONG. The real figures are 18
+> `mailto` hrefs and 4 visible-text mentions.** *26 came from counting raw
+> string occurrences in the served HTML, which double-counts: Next serializes
+> every page twice, once as markup and once in the RSC payload.* **It is the
+> exact naive-counting mistake `placeholder-scan.py` exists to avoid, made by
+> the seat that wrote it, four days later, in a commit message.** *It changed
+> nothing — the address was dead on every one of them and works on every one of
+> them now — but it was carried into three reports and a commit as a measured
+> fact.*
+
+**WHAT THIS SEAT CANNOT PROVE, AND WILL NOT:** *mail reaches the provider's
+servers; whether a mailbox named `info@` exists there and whether he can read
+it is not visible from here.* **RCPT-probing a third party's mail server to
+enumerate an address is not a check this seat will run to answer a question he
+answers by sending one message.**
+
+### 13c. AND `tmitrader.com` HAS NO MX RECORD
+
+**The fallback this seat offered him — move the published contact to an address
+on `tmitrader.com`, "which resolves today" — would have produced a SECOND DEAD
+ADDRESS.** *Resolving and receiving mail are different properties and the offer
+conflated them.* *Confirmed on both resolvers: `tmitrader.com MX` returns
+nothing.* **It was never as available as it was presented, and it was presented
+as the safe option.**
