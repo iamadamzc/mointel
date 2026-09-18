@@ -8100,12 +8100,19 @@ bare-named; all three are stale and corrected here.*
 >    refusal to reuse a number carried in a message: region `us-east-1a` and
 >    the store is on the instance's own SSD; hosting `Amazon Web Services,
 >    Inc.`; logs **14 days** (nginx `rotate 14` AND journald `14day`, size cap
->    not binding). **THE BACKUP PERIOD IS NOT A NUMBER AND "up to 7 days"
->    WOULD BE FALSE:** snapshots roll at 7 days, schema backups are bounded by
->    COUNT not age, and the pinned `market-v18-2026-08-21` baseline has NO
->    EXPIRY and is asserted present on every deploy. **Bound the pin or adopt
->    an honest sentence — HIS call**, like the two periods he already answered
->    that way (`b586271`). **And `info@andromedagenius.com` now receives on
+>    not binding). **THE BACKUP PERIOD IS ~21 DAYS AND IS WRITABLE. I FIRST
+>    REPORTED IT AS UNWRITABLE AND THAT WAS WRONG** — I noted the pinned
+>    `market-v18-2026-08-21` baseline has no expiry and did not check WHAT IS
+>    IN IT. It is a copy of `market.db`, and **`market.db` HOLDS NO PERSONAL
+>    DATA AT ALL**: every table checked, the only hits on person-shaped column
+>    names are `universe.name` / `issuer_registry.company_name` (companies),
+>    `review_tokens.token_hash` (a hash, no identity beside it) and
+>    `*_tokens` (model token COUNTS). **So the indefinite backup is irrelevant
+>    to this bullet.** The personal data on this box is IP addresses in the
+>    nginx access logs: **14 days in the log, and a full-server Lightsail
+>    snapshot taken on its last day carries it 7 more -> ~21 days worst case.**
+>    *Nothing here needs his decision; I put one in front of him that did not
+>    need making.* **And `info@andromedagenius.com` now receives on
 >    Google Workspace: the software still sends no email (measured), but if he
 >    replies to a user from it, Google LLC is a processor.**
 > 2. **Google consent screen: CLOSED.** Scopes `openid email profile` → no scope
