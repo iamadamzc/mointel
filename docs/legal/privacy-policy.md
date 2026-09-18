@@ -161,10 +161,11 @@ will tell you before it does.
 
 ## 6. How long we keep it
 
-- **Your account** — for as long as you have one, and for [PERIOD] after you
-  ask us to close it, after which it is deleted.
+- **Your account** — for as long as you have one. After you ask us to close
+  it, we have not set a period; ask and we will tell you what we hold.
 - **Server logs** — [PERIOD], then deleted.
-- **Email we exchanged with you** — [PERIOD].
+- **Email we exchanged with you** — we have not set a period; ask and we will
+  tell you what we hold.
 
 Backups are the honest exception: deleted data can persist in a backup for
 up to [PERIOD] before the backup itself expires. We do not restore a backup
