@@ -296,7 +296,16 @@ that thread IS about him. The product threads' are not.*
 ### CLOSED TONIGHT, SO NOBODY RE-ASKS
 
 - **Indexing: HIS WORD, "index it."** Shipped, live, allow-all.
-- **Google verification: his, today.** Everything it needs verified three ways.
+- **"Google verification" WAS THE WRONG NAME and the batch is done.** *From his own
+  console 2026-09-18 via Ops: scopes are `openid`, `email`, `profile`, and the console
+  reads **"Verification is not required since your app is not requesting any sensitive or
+  restricted scopes"**.* **So SCOPE verification never applied and neither did the
+  unverified-app user cap.** *What the public batch actually satisfied was the CONSENT
+  SCREEN's own requirements — authorized domain via the apex TXT token, home page and
+  privacy links. The work was required; the heading was not.*
+  **OPEN AND UNCHECKED: the app's PUBLISHING STATUS.** *Flagged, not verified — I cannot
+  see his console. Testing vs In production is a SEPARATE axis from scopes, and Testing
+  caps users and expires refresh tokens on a short clock. Confirm it reads In production.*
 - **Commercial's two decisions: WITHDRAWN** (`6df58b5`, `154f9fa`) once the premise fell.
 - **Float in a paid report: RULED under order-and-process** - narrate the VERDICT, never the
   number. *Already computed and rendered (`float.ts:452`, `supply.ts:72`), so it is a
