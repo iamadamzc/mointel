@@ -925,3 +925,48 @@ is his to give, and no seat should invent one.**
 **NOT CHANGED PENDING HIS ANSWER.** *A published contact address is substantive:
 replacing it is a change to adopted legal text, not a repair.*
 
+
+### 13a. THE CAUSE, 2026-09-18: THE REGISTRATION IS GONE, EVERYTHING ELSE IS INTACT
+
+**He said the domain exists — he has the mailbox and the site built
+(`github.com/iamadamzc/andromedagenius.com`) — and asked whether it was in
+Route 53. Both halves of that turn out to be true at once, which is why this
+was invisible.**
+
+| thing | state |
+| --- | --- |
+| Route 53 **hosted zone** `andromedagenius.com.` | **EXISTS**, `Z07160981Z2VQRO0W3LW2`, 13 records, intact |
+| The **website** | **ALIVE.** S3 website endpoint `200`, CloudFront `d1nu1o98of2vhw` `200` |
+| Route 53 **registered domains** | absent — it was never registered at AWS |
+| The **.com registry** | **HAS NO SUCH NAME** |
+
+```
+dns.google  andromedagenius.com      NS -> Status 3 NXDOMAIN
+                                     authority: a.gtld-servers.net. nstld.verisign-grs.com.
+dns.google  tmitrader.com            NS -> Status 0 exists          (control)
+RDAP verisign  andromedagenius.com   404      tmitrader.com  200    (control)
+RDAP rdap.org  andromedagenius.com   404      tmitrader.com  200    (control, IANA bootstrap)
+```
+
+**THE NXDOMAIN IS SERVED BY THE .COM REGISTRY ITSELF** — `nstld.verisign-grs.com`
+in the authority section. *That is not a resolver quirk or a propagation delay.
+The parent zone has no delegation, and RDAP returning 404 rather than a record
+with a `pendingDelete` status means the name is not in the registry at all.*
+
+**The zone's MX is `mx1/mx2.privateemail.com` with `include:spf.privateemail.com`
+— Namecheap Private Email, not Google.** *So the registration lived at another
+registrar, lapsed, ran out the redemption and pending-delete cycle, and dropped.
+A Route 53 hosted zone survives all of that and keeps serving records to
+nobody, which is exactly what makes it look configured.*
+
+> **AND A DROPPED .COM IS AVAILABLE TO ANYONE.** *Whoever registers it next
+> receives mail sent to the contact address published 26 times across three
+> live pages of this product — including data-deletion requests the privacy
+> policy invites, and anything a Google reviewer sends.* **This is the urgent
+> half, and it is his to act on: re-registering is a purchase.**
+
+**A PROBE THAT CANNOT DISCRIMINATE IS NOT A PROBE.** *`nslookup -type=NS <dom>
+a.gtld-servers.net` returned an identical list of root hints for the dead
+domain AND for the control, so it carried no information either way. It was
+discarded rather than read. Without the control it would have looked like a
+finding.*
