@@ -53,10 +53,19 @@ last_changed: 2026-09-11
        force majeure, third-party terms.
 
   NOBODY WITH A LAW LICENCE HAS READ THIS FILE. It was drafted by an AI seat,
-  reviewed by AI seats, and adopted 2026-09-11. Put to him 2026-09-18; a
-  boilerplate tail added without that review makes the document LOOK more like
-  a terms sheet without making it more enforceable, and the gap would then be
-  invisible.
+  reviewed by AI seats, and adopted 2026-09-11. A boilerplate tail added
+  without that review makes the document LOOK more like a terms sheet without
+  making it more enforceable, and the gap would then be invisible.
+
+  HIS RULING 2026-09-18, his words: "4 not a priority." SO THE TERMS STAND AS
+  ADOPTED AND NOTHING IN THE LIST ABOVE GETS DRAFTED. Do not re-raise it as an
+  open question; it was asked and answered.
+
+  IT IS DEFERRED, NOT DECLINED, AND THE TRIGGER IS WRITTEN DOWN: the gaps that
+  cost nothing today are the payment ones, and they start costing the day the
+  desk charges for anything. WHOEVER SCOPES A PAID SESSION REPORT PUTS THIS
+  BACK IN FRONT OF HIM AT THAT MOMENT, as part of that work rather than as a
+  legal review appearing from nowhere. `adopted` is untouched by this note.
 
   Checked against docs/marketing/what-it-is-not.md so the terms cannot promise
   something the copy is forbidden to claim, and against
