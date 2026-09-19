@@ -543,6 +543,44 @@ high-based quantities (`cycleHigh`, `retracementPct`, the sibling's input); it
 does nothing for `isCycleStart`'s move gate; and whether the PARENT should become
 high-based is a separate question nobody has put to him.
 
+**HIS MODEL IS ALREADY THE IMPLEMENTATION, AND I CANNOT REPRODUCE QCLS.**
+2026-09-19, his words: *"i dont think price determines a continuation, for me its
+volume, its the same run if RVOL has not returned to its original state."*
+
+**That is what `resolveCycle` does.** `wentQuiet` (3 sessions at RVOL <= 2) is
+tested BEFORE the backside branch, and `wentQuiet && sessionsSinceHigh > 10`
+retires the cycle entirely. **Price only sets the phase WITHIN a live cycle.**
+And RVOL self-rebases, so *"returned to its original state"* is literally RVOL
+~= 1: a name held at 3x for 40 sessions has a 3x median, so its RVOL reads 1 and
+the cycle expires. Verified by construction, not by reading.
+
+**FOUR SCENARIOS, NONE REPRODUCES `BACKSIDE $5.49` AGAINST A FOUR-MONTH-OLD HIGH:**
+
+    quiet then re-ignition        -> NO_CYCLE, then a NEW cycle at today's high
+    sustained elevated volume     -> RVOL rebases to 1, cycle expires
+    gaps in daily_bars            -> zero symbols of 75 have any internal gap
+    intraday spike, modest close  -> BACKSIDE, but against TODAY's high
+
+The last is defensible rather than defective: a name that touched 6.90 and closed
+3.22 has given back 62% of its advance.
+
+⇒ **SO I HAVE WITHDRAWN THE HIGH-VS-CLOSE QUESTION I PUT TO HIM.** It was aimed
+at a failure I can no longer demonstrate, and **a question carrying an
+unreproduced premise is the thing this file exists to stop.** The QCLS
+observation is recorded HERE, by me, second-hand, and every piece of the cycle
+sibling was justified by it.
+
+**WHAT REMAINS CERTAIN, AND IT IS WHAT `e48a2ca` ACTUALLY FIXES:**
+`readDailyBars` defaults to `unfinished: 'EXCLUDE'` (`history.ts:149`), so
+**today's bar is not in the cycle input at all.** A name up 270% right now has
+its cycle computed as of YESTERDAY. That is structural, needs no incident to
+justify it, and is exactly what `todayQualifiesAsCycleStart` supplies. **The
+feature stands; its headline example does not.**
+
+⇒ **NEXT STEP IS EVIDENCE, NOT A BUILD: get the actual QCLS row and date** and
+re-run `resolveCycle` against the bars it held at that moment. Until then nobody
+should change a threshold or a gate on the strength of it.
+
 ### OPEN AND MINE
 
 **The cycle sibling — designed across three seats, UNBUILT.** QCLS showed
