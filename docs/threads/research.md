@@ -689,6 +689,29 @@ deriving `0.5` against that bakes the artefact into the constant. The close must
 become the extended session's last print. **Costs nothing extra in data**: the
 same backfill supplying each day's AH high supplies that day's AH last print.
 
+**HIS RULING, 2026-09-19: THE VENDOR FLOAT STAYS ON THE DESKTOP TASK AND MUST
+NEVER MOVE SERVER-SIDE.** *"keep it as is - but i dont want to run this on a gpt
+task from the outside. it runs from my desktop gpt, not from the api."*
+
+**So task 1 is NOT retired and NOT migrated.** The distinction he is drawing is
+the one the terms turn on: **a person using the platform through their own
+desktop assistant is personal, manual use; a scheduled server-side fetch is
+not.** The float channel stays where it is.
+
+⇒ **STANDING CONSTRAINT: no worker, no API route and no scheduled job may fetch
+from `stockanalysis.com`.** Not as a "temporary" backfill, not behind a cache,
+not once. The volume is small enough (~150/day) that automating it will keep
+looking like an easy win to whoever reads the sizing without the terms -- which
+is why the sizing and this constraint live in the same file.
+
+⇒ **AND IT CHANGES THE MIGRATION'S SHAPE, NOT JUST ITS ORDER.** Integration-tmi
+had float as the blocker on retiring task 1. It is not a blocker any more because
+**the task is not being retired** -- so the remaining Sheet work is the judgement
+and prose groups, and Phase C becomes an addition beside the vendor number rather
+than a replacement for it. His *"post vendor float and then derived float, i'd be
+interested to see the differences"* is exactly that: two channels, two origins,
+side by side, and only one of them is ours to compute.
+
 **THE VENDOR FLOAT FETCH IS NOT A COST ITEM. THE SOURCE'S TERMS PROHIBIT IT.**
 Integration-tmi asked me to cost it as "the only genuinely new thing in the whole
 migration". Read live at `stockanalysis.com/terms-of-use/` on 2026-09-19 and
