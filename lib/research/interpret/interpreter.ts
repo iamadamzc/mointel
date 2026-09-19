@@ -56,7 +56,7 @@ export interface RepairRequest {
 /**
  * A disputed conclusion handed to the escalation tier.
  *
- * The human conclusion travels as a labelled prior opinion, never as evidence.
+ * The prior conclusion travels as a labelled prior opinion, never as evidence.
  * Adjudication means re-deciding from the sources — a model that simply picked
  * whichever side sounded more confident would add cost without adding rigour.
  */
@@ -67,8 +67,8 @@ export interface AdjudicationRequest {
   /** Deterministic validation findings against that output. */
   validation: string;
   field: 'structure' | 'catalyst' | 'cycle';
-  /** The human-reviewed conclusion, explicitly not a source fact. */
-  humanConclusion: string;
+  /** The prior conclusion from the Sheet, explicitly not a source fact. */
+  priorConclusion: string;
   automaticConclusion: string;
 }
 

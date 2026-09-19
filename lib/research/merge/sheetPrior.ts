@@ -52,7 +52,7 @@ export function toSheetPrior(ticker: MomentumTicker, observedAt: string | null):
     analysis: {
       // The label travels with the data so the interpreter cannot mistake a
       // human opinion for a collected source.
-      label: 'HUMAN_REVIEWED_PRIOR_ANALYSIS',
+      label: 'PRIOR_MODEL_ANALYSIS',
       catalyst: ticker.catalyst.latest || null,
       catalystGrade: ticker.catalyst.gradeRaw || null,
       structure: ticker.structure.raw || null,

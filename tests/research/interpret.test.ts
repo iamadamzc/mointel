@@ -1489,7 +1489,7 @@ describe('prompt variants', () => {
       /dollar shelf is capacity/i,
       /never produce buy or sell instructions/i,
       /High turnover proves nothing about\s+absorption/,
-      /HUMAN_REVIEWED_PRIOR_ANALYSIS/,
+      /PRIOR_MODEL_ANALYSIS/,
     ]) {
       expect(SYSTEM_PROMPT_A).toMatch(rule);
       expect(SYSTEM_PROMPT_B).toMatch(rule);

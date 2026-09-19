@@ -104,9 +104,9 @@ Distinctions that matter and are checked in software afterwards:
   evidence supports that conclusion. If coverage is incomplete, say so instead.
 - Unknown is never zero. Leave unknown values null.
 
-If the bundle includes HUMAN_REVIEWED_PRIOR_ANALYSIS, treat it as a prior
-opinion to compare against, NOT as evidence. Do not adopt its conclusions
-without support in the collected sources.
+If the bundle includes PRIOR_MODEL_ANALYSIS, treat it as a prior opinion to
+compare against, NOT as evidence. Do not adopt its conclusions without support
+in the collected sources.
 
 Never produce buy or sell instructions, price targets, or trading advice.
 Describe what the evidence shows and what remains unknown.`;
@@ -193,7 +193,7 @@ function buildRepairInput(request: RepairRequest): string {
 /**
  * Instruction for a disputed field.
  *
- * The human conclusion is stated and labelled, then explicitly denied the
+ * The prior conclusion is stated and labelled, then explicitly denied the
  * status of evidence. The task is to re-decide from the sources, which is the
  * only thing a second read can legitimately add — a model asked to choose
  * between two opinions would just be voting.
@@ -202,11 +202,12 @@ function buildAdjudicationInput(request: AdjudicationRequest): string {
   return [
     `A conclusion about ${request.bundle.ticker} is disputed: ${request.field}.`,
     '',
-    `HUMAN_REVIEWED_PRIOR_ANALYSIS says: ${request.humanConclusion}`,
+    `PRIOR_MODEL_ANALYSIS says: ${request.priorConclusion}`,
     `Automatic analysis said: ${request.automaticConclusion}`,
     '',
-    'The human conclusion is a PRIOR OPINION, not a source fact. Do not adopt it',
-    'because a person wrote it, and do not reject it because a model disagreed.',
+    'The prior conclusion is a PRIOR OPINION, not a source fact. Do not adopt',
+    'it because it was asserted, and do not reject it because it disagrees with',
+    'the automatic analysis. Both sides are model output.',
     'Decide the disputed field yourself from the evidence bundle below, and cite',
     'the source ids that support whatever you conclude.',
     '',

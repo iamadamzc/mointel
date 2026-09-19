@@ -328,7 +328,7 @@ export async function interpretTicker(
           terra: accepted,
           validation: describeViolations(validation.violations),
           field: dispute.field,
-          humanConclusion: dispute.sheet,
+          priorConclusion: dispute.sheet,
           automaticConclusion: dispute.auto,
         })
       : await escalationInterpreter.interpret(bundle);

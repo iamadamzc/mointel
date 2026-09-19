@@ -90,8 +90,28 @@ export interface HistoricalSummary {
   note: 'window high is historical context, not a current-cycle high';
 }
 
+/**
+ * The Sheet's prior analysis, and NO HUMAN HAS EVER WRITTEN OR REVIEWED IT.
+ *
+ * This label read `HUMAN_REVIEWED_PRIOR_ANALYSIS` until 2026-09-19 and reached
+ * the model in the prompt, alongside the instruction *"do not adopt it because a
+ * person wrote it"* — **an instruction whose premise was false.** The Sheet is
+ * written by a scheduled ChatGPT task. A model told a human reviewed something
+ * weights it differently from one told another model produced it, under
+ * identical wording, so every dossier in the back catalogue was interpreted
+ * against a prior it had been told carried human judgement.
+ *
+ * `config.ts`'s own comment had it right the whole time — *"the prior is another
+ * model's conclusion"* — while five files in this directory said human. The
+ * correction is his, 2026-09-19.
+ *
+ * **Do not restore the human framing.** The desk's conflict apparatus adjudicates
+ * two model pipelines with different universes, which is why agreement between
+ * them is weak evidence and disagreement is strong — the opposite of how it
+ * would read if one side were a person.
+ */
 export interface SheetPriorAnalysis {
-  label: 'HUMAN_REVIEWED_PRIOR_ANALYSIS';
+  label: 'PRIOR_MODEL_ANALYSIS';
   catalyst: string | null;
   catalystGrade: string | null;
   structure: string | null;
@@ -178,7 +198,7 @@ export interface ResearchEvidenceBundle {
    * float, and SHARES_OUTSTANDING_IS_NOT_FLOAT rejects reusing this as one.
    */
   reportedSharesOutstanding: ReportedShareCount | null;
-  /** Present only when the desk already has human research on this name. */
+  /** Present only when the Sheet already carries a prior analysis of this name. */
   priorHumanAnalysis: SheetPriorAnalysis | null;
 }
 

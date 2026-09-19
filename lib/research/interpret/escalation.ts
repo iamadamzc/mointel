@@ -40,7 +40,7 @@ function mentionsConflict(values: Array<string | null | undefined>): boolean {
 }
 
 /**
- * A structural disagreement between human research and automatic analysis.
+ * A structural disagreement between the Sheet's prior analysis and this one.
  *
  * Only a genuine two-sided dispute belongs here. If one side simply lacks
  * evidence there is nothing to adjudicate — a second model cannot supply the
@@ -164,7 +164,7 @@ export function shouldEscalate(input: EscalationInput): EscalationDecision {
     };
   }
 
-  // 5. A material structural disagreement with human research, where both
+  // 5. A material structural disagreement with the prior analysis, where both
   //    sides reasoned from evidence. This is the one case where a second
   //    opinion is genuinely about judgement rather than about missing data.
   const material = (input.sheetConflicts ?? []).filter(isMaterialStructuralConflict);
@@ -173,7 +173,7 @@ export function shouldEscalate(input: EscalationInput): EscalationDecision {
     return {
       escalate: true,
       reason: 'SHEET_AUTO_CONFLICT',
-      detail: `${dispute.field}: human review says ${dispute.sheet}, automatic analysis says ${dispute.auto}`,
+      detail: `${dispute.field}: prior analysis says ${dispute.sheet}, automatic analysis says ${dispute.auto}`,
     };
   }
 
