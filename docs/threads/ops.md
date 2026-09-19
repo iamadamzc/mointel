@@ -11170,3 +11170,57 @@ OLD key ce67f777    HTTP 400   REJECTED: invalid_grant / Invalid JWT Signature
 refuses, and a rollback that restores a dead credential is not a rollback. No
 backups remain; `.env.local` intact at 13 settings and one
 `GOOGLE_PRIVATE_KEY`.
+
+## "INERT" IS ONLY TRUE AGAINST A STATED SHA — 2026-09-19, and two seats got it wrong in opposite directions
+
+**Integration corrected the `a5924c2` enumeration: `e48a2ca` is not inert, it
+said, because its effect reaches the board through a TRANSFORMED value that a
+symbol grep cannot see.** The trace it gave is real code and sound reasoning —
+`dashboard/cycle.ts:307` turns `UNVERIFIABLE` into `PRIOR_ONLY`, `:320` lets
+`QUALIFIED` switch the reference high off a dead run's, `DiscoveryBoard.tsx:551`
+renders it. **Every site it named exists. They exist at HEAD.**
+
+```
+`todayStart` occurrences   readModel.ts   dashboard/cycle.ts   DiscoveryBoard.tsx
+  ddaf2f8  (prev prod)          0                 0                   0
+  a5924c2  (SHIPPED, live)      2                 0                   0   <- no consumer
+  HEAD     (not deployed)       2                 3                   1
+```
+
+**The consumer was added by `a9df280` "The cycle badge stops naming a side it
+cannot establish", and `git merge-base --is-ancestor a9df280 a5924c2` is FALSE.
+`mointel-web` runs `a5924c2` by `/proc/<pid>/cwd`. At the version in production
+the field is computed and NOTHING READS IT.**
+
+### I nearly confirmed the correction instead
+
+**I opened `lib/dashboard/cycle.ts:300-325` and found exactly what had been
+described, which reads as confirmation — while reading the WORKING TREE,
+several commits past what I had deployed.**
+
+> **The tell was not suspicion. It was a contradiction I could not explain:
+> `git grep todayStart ddaf2f8` returned NOTHING, while `git log` showed no
+> commit in the shipped range touching either consumer file.** *Two facts that
+> cannot both be true unless the file in front of me is a third version — which
+> it was.*
+
+**A symbol grep is not a data-flow trace, AND a data-flow trace in the working
+tree is not a statement about production.** *Integration's diagnosis was right
+one dimension over from its own error. Both of us checked the right question at
+the wrong version, on the same afternoon, in opposite directions.*
+
+**On a repo where five sessions commit into one worktree, every claim about what
+production does carries the sha beside it or it is not a claim.** *`git show
+<sha>:<path>` and `git merge-base --is-ancestor`, never an editor buffer.*
+
+### The instinct was early, not wrong
+
+**`a9df280` IS a visible board change and it is sitting above production right
+now.** When it ships, `todayStart` stops being inert: `UNVERIFIABLE` suppresses
+the verdict, `QUALIFIED` switches the reference high. **That is the QCLS fix
+reaching his screen.**
+
+**So it must be enumerated as a visible board change IN ITS OWN RIGHT — not as
+`e48a2ca`, which is its plumbing — and Design's confirmation that the render is
+its specified design gates it BEFORE it goes out.** *The review Integration
+wanted is not late; it is exactly on time for the next enumeration.*
