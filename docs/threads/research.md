@@ -689,6 +689,54 @@ deriving `0.5` against that bakes the artefact into the constant. The close must
 become the extended session's last print. **Costs nothing extra in data**: the
 same backfill supplying each day's AH high supplies that day's AH last print.
 
+**THE VENDOR FLOAT FETCH IS NOT A COST ITEM. THE SOURCE'S TERMS PROHIBIT IT.**
+Integration-tmi asked me to cost it as "the only genuinely new thing in the whole
+migration". Read live at `stockanalysis.com/terms-of-use/` on 2026-09-19 and
+quoted exactly:
+
+> *"**Automated access.** The platform and any account on it are for personal,
+> manual use via the web browser or mobile app. **You may not use bots, scripts,
+> scrapers, browser automations or any other automated or programmatic methods
+> to access the platform, collect data from it, or download data in bulk.** This
+> does not apply to search engines, AI agents, or other crawlers that follow our
+> robots.txt file. **You can also not use our content or data to build a
+> competing database or product**, or to use the data to train AI or machine
+> learning models."*
+
+**TWO SEPARATE CLAUSES AND THE SECOND IS THE HARDER ONE.** The first bars the
+access method -- a worker fetching 200 names a day is squarely "scripts... to
+collect data from it". There is a carve-out for *"search engines, AI agents, or
+other crawlers that follow our robots.txt"*, and `robots.txt` disallows only
+`/e/` and `/p/`, so the stock pages are crawlable — **but a scheduled worker is
+not a search engine or a general crawler.** The second clause bars the **USE**
+regardless of how the data was obtained: TMI Trader would display that float to
+paying customers, which is building a product on their content.
+
+**⇒ THIS IS A BUSINESS AND LEGAL DECISION, NOT AN ENGINEERING ESTIMATE**, and I
+am not going to scope it as one. The volume is trivial (below) and the volume was
+never the constraint.
+
+**THE SIZING, SO IT IS ON RECORD IF A LICENSED ROUTE OPENS:** 200 names per day
+in the top 200; 475 distinct symbols across three stored dates, so roughly 150
+new per day at that churn. With a cache and a TTL it is ~150 fetches/day. *Small
+enough that a licensed feed would be cheap and a scrape was never justified by
+scale.*
+
+**AND IT MAY DESCRIBE THE CURRENT STATE, WHICH HE SHOULD KNOW.** The float on the
+board today comes from a scheduled ChatGPT task reading that same site. **That
+task may sit inside the "AI agents" carve-out where a worker would not** -- I am
+not asserting which, because it turns on their reading and not on ours. Either
+way the second clause is about use, and the use is the same today as it would be
+after the migration.
+
+**⇒ IT STRENGTHENS PHASE C RATHER THAN BLOCKING THE MIGRATION.** SEC filings are
+public domain and carry none of this. His ruling was *"post vendor float and then
+derived float, i'd be interested to see the differences"* -- **the derived half is
+unaffected and buildable now**, and `assessFloat` (`float.ts:326`) already IS the
+containment test Integration described: it returns `IMPOSSIBLE` when a claimed
+float exceeds a current filed count. What is missing is only the vendor number,
+and that is the half with the problem.
+
 ### WAITING ON HIM
 
 **The control arm** — `RESEARCH_OMIT_SHEET_PRIOR=1` on a sample, diffed against
