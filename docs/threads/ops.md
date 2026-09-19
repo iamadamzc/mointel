@@ -11140,12 +11140,33 @@ rather than any suspicion of the grep.* **He never needed the number, and it was
 wrong when it was handed to him.** *Third instrument failure of the week and the
 first that was mine: a backslash through a shell is not a backslash.*
 
-### OPEN, AND IT IS THE ONLY THING THAT CLOSES THIS
+### CLOSED — 2026-09-19, and GOOGLE said so, not he and not I
 
-1. **HE DELETES THE OLD KEY** in the console — service account
-   `trading-desk-dashboard@mointel.iam.gserviceaccount.com` → Keys, keep
-   `07db69de…`, delete the other. **Until then the exposure is open.**
-2. **Then** `.env.local.bak-20260919T115148Z` is deleted; it holds the old key
-   and is the rollback. **Deleting the rollback before the thing it protects
-   against is resolved is the wrong order.** *Verified meanwhile: gitignored,
-   never committed on any branch.*
+**He revoked the old key and said "done". That was taken as the instruction to
+verify, not as the verification.** *Both failure modes were live: the wrong key
+deleted, or nothing actually committed in the console.*
+
+**First, the cheap one — the desk still reads the Sheet, 13 tickers. That rules
+out "he deleted the NEW key" and it proves NOTHING about the old one**: a
+running process holds a cached access token for up to an hour, so a working
+desk is consistent with a key that was never revoked *and* with one that was.
+
+**So both keys were put to Google directly — a JWT-bearer exchange at
+`oauth2.googleapis.com/token`, printing only the HTTP status and the error
+code:**
+
+```
+NEW key 07db69de    HTTP 200   ACCEPTED (live), token type Bearer
+OLD key ce67f777    HTTP 400   REJECTED: invalid_grant / Invalid JWT Signature
+```
+
+> **THE POSITIVE CONTROL IS WHAT MAKES THE REJECTION A VERDICT.** *A probe that
+> only ever returns "rejected" cannot tell a revoked key from a broken script, a
+> wrong scope or a bad clock. Running the live key through the same instrument
+> first is what turns the 400 into evidence.*
+
+**The exposure opened by the credential grep of 2026-09-18 IS CLOSED.**
+`.env.local.bak-20260919T115148Z` deleted — it held only a key Google now
+refuses, and a rollback that restores a dead credential is not a rollback. No
+backups remain; `.env.local` intact at 13 settings and one
+`GOOGLE_PRIVATE_KEY`.
