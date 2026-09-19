@@ -5,6 +5,7 @@ import {
   countCyclePhases,
   cycleDetail,
   formatHighPair,
+  formatTradingDate,
   highReading,
   cyclePhaseOf,
   cyclePhaseTone,
@@ -259,8 +260,16 @@ describe('cycle segment counts match what the filter returns', () => {
  * prices carry theirs.
  */
 describe('the high reading', () => {
-  const withHigh = (cycleHigh: number) =>
-    ({ phase: 'PULLBACK', cycleHigh }) as unknown as Parameters<typeof highReading>[0];
+  const withHigh = (cycleHigh: number, cycleHighDate = '2026-09-15') =>
+    ({ phase: 'PULLBACK', cycleHigh, cycleHighDate }) as unknown as Parameters<
+      typeof highReading
+    >[0];
+
+  /** Every case below the union is a PAIR; this narrows once instead of everywhere. */
+  const pair = (r: ReturnType<typeof highReading>) => {
+    if (!r || r.kind !== 'PAIR') throw new Error('expected a PAIR reading, got ' + r?.kind);
+    return r;
+  };
 
   /*
    * THE CONTRADICTION IS GONE BY CONSTRUCTION, not by luck. cycleHigh is
@@ -268,13 +277,13 @@ describe('the high reading', () => {
    * -> $1.80". Taking max(cycleHigh, sessionHigh) makes now > high impossible.
    */
   it('never reports a price above its own reference high', () => {
-    const r = highReading(withHigh(1.2), 1.8, 1.8, 0.01)!;
+    const r = pair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.8, 1.8, 0.01));
     expect(r.high).toBe(1.8);
     expect(r.now).toBeLessThanOrEqual(r.high);
   });
 
   it('keeps the cycle high when today has not beaten it', () => {
-    const r = highReading(withHigh(1.2), 1.05, 1.0, 0.01)!;
+    const r = pair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.05, 1.0, 0.01));
     expect(r.high).toBe(1.2);
     expect(r.label).toBeNull();
   });
@@ -285,7 +294,7 @@ describe('the high reading', () => {
    * broader reading would label names he did not describe.
    */
   it('does not say NEW HIGH for a name at its old cycle high', () => {
-    const r = highReading(withHigh(1.2), 1.2, 1.2, 0.01)!;
+    const r = pair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.2, 1.2, 0.01));
     expect(r.label).toBeNull();
   });
 
@@ -296,19 +305,19 @@ describe('the high reading', () => {
    * the same tick.
    */
   it('says NEW HIGH within a spread of a high that beat the arc', () => {
-    expect(highReading(withHigh(1.2), 1.5, 1.5, 0.01)!.label).toBe('NEW HIGH');
-    expect(highReading(withHigh(1.2), 1.5, 1.495, 0.01)!.label).toBe('NEW HIGH');
+    expect(pair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.5, 1.5, 0.01)).label).toBe('NEW HIGH');
+    expect(pair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.5, 1.495, 0.01)).label).toBe('NEW HIGH');
   });
 
   it('says OFF HIGH once it has drifted beyond the spread, measured from the NEW high', () => {
-    const r = highReading(withHigh(1.2), 1.5, 1.4, 0.01)!;
+    const r = pair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.5, 1.4, 0.01));
     expect(r.label).toBe('OFF HIGH');
     expect(r.high).toBe(1.5);
   });
 
   it('sits on the band rather than near it', () => {
-    expect(highReading(withHigh(1.2), 1.5, 1.49, 0.01)!.label).toBe('NEW HIGH');
-    expect(highReading(withHigh(1.2), 1.5, 1.4899, 0.01)!.label).toBe('OFF HIGH');
+    expect(pair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.5, 1.49, 0.01)).label).toBe('NEW HIGH');
+    expect(pair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.5, 1.4899, 0.01)).label).toBe('OFF HIGH');
   });
 
   /*
@@ -317,8 +326,8 @@ describe('the high reading', () => {
    * colour says the opposite.
    */
   it('carries a tone that matches the word', () => {
-    expect(highReading(withHigh(1.2), 1.5, 1.5, 0.01)!.tone).toBe('pos');
-    expect(highReading(withHigh(1.2), 1.5, 1.4, 0.01)!.tone).toBe('warn');
+    expect(pair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.5, 1.5, 0.01)).tone).toBe('pos');
+    expect(pair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.5, 1.4, 0.01)).tone).toBe('warn');
   });
 
   /*
@@ -326,20 +335,120 @@ describe('the high reading', () => {
    * observations and need no band, only the label does.
    */
   it('shows the prices but no override when there is no spread', () => {
-    const r = highReading(withHigh(1.2), 1.5, 1.4, null)!;
+    const r = pair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.5, 1.4, null));
     expect(r.label).toBeNull();
     expect(r.high).toBe(1.5);
     expect(r.now).toBe(1.4);
   });
 
+  /* --------------------------------------------------------------------- *
+   * THE THREE VERDICTS RENDER DIFFERENTLY, WHICH IS THE WHOLE FIX
+   * --------------------------------------------------------------------- */
+
+  /**
+   * QCLS, 2026-09-16, rank 3, up 270% on the day: the badge read
+   * `BACKSIDE $5.49 -> $1.35` in red. Both numbers were right and the pairing
+   * was not. $5.49 was a prior run's high from settled daily bars; today's move
+   * was not in the input at all, because `daily_bars` never contains today.
+   *
+   * A day-one runner off a crushed base and a genuine backside look identical in
+   * settled data, so no rule over that data separates them. The fix is a
+   * refusal, not a better verdict.
+   */
+  it('QUALIFIED: takes today as the reference, not the run that ended', () => {
+    // Today's high is BELOW the prior run's, which is the QCLS shape: a new
+    // cycle off a low base. `max(cycleHigh, sessionHigh)` would keep 5.49.
+    const r = pair(highReading(withHigh(5.49), 'QUALIFIED', 1.76, 1.64, 0.01));
+    expect(r.high).toBe(1.76);
+    expect(r.now).toBe(1.64);
+  });
+
+  it('QUALIFIED: the override then runs against a reference it can be right about', () => {
+    expect(pair(highReading(withHigh(5.49), 'QUALIFIED', 1.76, 1.76, 0.01)).label).toBe('NEW HIGH');
+    expect(pair(highReading(withHigh(5.49), 'QUALIFIED', 1.76, 1.5, 0.01)).label).toBe('OFF HIGH');
+  });
+
+  it('UNVERIFIABLE: no pair, no verdict, and the date is not decoration', () => {
+    const r = highReading(withHigh(5.49, '2026-09-15'), 'UNVERIFIABLE', 1.76, 1.64, 0.01)!;
+    expect(r.kind).toBe('PRIOR_ONLY');
+    if (r.kind !== 'PRIOR_ONLY') throw new Error('unreachable');
+    expect(r.high).toBe(5.49);
+    expect(r.at).toBe('2026-09-15');
+    expect(formatHighPair(r)).toBe('prior high $5.49 · Sep 15');
+    expect(formatHighPair(r)).not.toContain('→');
+  });
+
+  /*
+   * The arm is reached whatever today's high did, because the point is that the
+   * desk cannot say WHICH high governs -- not that today was quiet.
+   */
+  it('UNVERIFIABLE: refuses even when today beat the prior high', () => {
+    const r = highReading(withHigh(1.2), 'UNVERIFIABLE', 1.8, 1.8, 0.01)!;
+    expect(r.kind).toBe('PRIOR_ONLY');
+    if (r.kind !== 'PRIOR_ONLY') throw new Error('unreachable');
+    expect(r.high).toBe(1.2);
+  });
+
+  /*
+   * NOT_QUALIFIED means the settled verdict is ABOUT NOW. UNVERIFIABLE means we
+   * do not know what it is about. Collapsing them puts the stale badge back on
+   * exactly the rows this exists to protect, which is the defect arriving
+   * through its own fix.
+   */
+  it('NOT_QUALIFIED is not UNVERIFIABLE', () => {
+    const settled = highReading(withHigh(5.49), 'NOT_QUALIFIED', 1.76, 1.64, 0.01)!;
+    const unknown = highReading(withHigh(5.49), 'UNVERIFIABLE', 1.76, 1.64, 0.01)!;
+    expect(settled.kind).toBe('PAIR');
+    expect(unknown.kind).toBe('PRIOR_ONLY');
+  });
+
+  /*
+   * A TRADING DATE IS A CALENDAR DATE. `new Date('2026-09-15')` is UTC midnight
+   * and formatting that in ET rolls it to the 14th -- the timezone trap one
+   * field over from the one that put a UTC clock on his board.
+   */
+  it('formats a trading date', () => {
+    expect(formatTradingDate('2026-09-15')).toBe('Sep 15');
+    expect(formatTradingDate('2026-01-01')).toBe('Jan 1');
+    expect(formatTradingDate('2026-12-31')).toBe('Dec 31');
+    expect(formatTradingDate(null)).toBeNull();
+    expect(formatTradingDate('')).toBeNull();
+  });
+
+  it('parses the string rather than constructing a Date, which the case above cannot prove', async () => {
+    /*
+     * THE BEHAVIOURAL TEST IS VACUOUS WHERE IT RUNS, and mutation is what showed
+     * it. Replacing the split with `new Date(date)` killed ZERO tests here:
+     * `new Date('2026-09-15')` is UTC midnight, and on a machine at a POSITIVE
+     * offset that is still the 15th locally. It rolls back to the 14th only at a
+     * negative offset -- which is to say, in ET, which is the only timezone this
+     * desk cares about and the one no test here runs in.
+     *
+     * So the defect is invisible to an assertion on the output, and the guard
+     * has to be on the mechanism. A trading date is a calendar date; the moment
+     * it becomes an instant it acquires a timezone it never had.
+     */
+    const fs = await import('node:fs');
+    const src = fs
+      .readFileSync('lib/dashboard/cycle.ts', 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '');
+
+    const fn = src.slice(src.indexOf('export function formatTradingDate'));
+    const body = fn.slice(0, 500);
+    expect(body).toContain("split('-')");
+    expect(body).not.toContain('new Date');
+    expect(body).not.toContain('Intl.DateTimeFormat');
+  });
+
   it('returns nothing without a cycle or without a price', () => {
-    expect(highReading(null, 1.5, 1.4, 0.01)).toBeNull();
-    expect(highReading({ phase: 'NO_CYCLE' } as never, 1.5, 1.4, 0.01)).toBeNull();
-    expect(highReading(withHigh(1.2), 1.5, null, 0.01)).toBeNull();
+    expect(highReading(null, 'NOT_QUALIFIED', 1.5, 1.4, 0.01)).toBeNull();
+    expect(highReading({ phase: 'NO_CYCLE' } as never, 'NOT_QUALIFIED', 1.5, 1.4, 0.01)).toBeNull();
+    expect(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.5, null, 0.01)).toBeNull();
   });
 
   it('formats as he wrote it: dollars, four decimals under $1', () => {
-    expect(formatHighPair(highReading(withHigh(1.2), 1.5, 1.4, 0.01)!)).toBe('$1.50 → $1.40');
-    expect(formatHighPair(highReading(withHigh(0.4), 0.421, 0.389, 0.001)!)).toBe('$0.4210 → $0.3890');
+    expect(formatHighPair(highReading(withHigh(1.2), 'NOT_QUALIFIED', 1.5, 1.4, 0.01)!)).toBe('$1.50 → $1.40');
+    expect(formatHighPair(highReading(withHigh(0.4), 'NOT_QUALIFIED', 0.421, 0.389, 0.001)!)).toBe('$0.4210 → $0.3890');
   });
 });

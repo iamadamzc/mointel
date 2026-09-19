@@ -20,7 +20,12 @@
  * cycle conflict after this is showing a fiction.
  */
 
-import type { CycleHistory, CyclePhase, CycleResult } from '@/lib/market/cycle';
+import type {
+  CycleHistory,
+  CyclePhase,
+  CycleResult,
+  TodayStartVerdict,
+} from '@/lib/market/cycle';
 import type { DeskRow } from './merge';
 import type { DeskConclusion, ReadTone } from './deskRead';
 
@@ -190,7 +195,17 @@ export function countCyclePhases(rows: Iterable<DeskRow>): Record<CyclePhase, nu
  * price above the high beside a word saying it is off it. Taking the maximum
  * makes `now > high` STRUCTURALLY IMPOSSIBLE rather than merely unlikely.
  */
-export interface HighReading {
+/**
+ * TWO SHAPES, BECAUSE THE SECOND IS NOT A PAIR WITH A FIELD MISSING.
+ *
+ * `PRIOR_ONLY` is the desk declining to say which high the move is measured
+ * against. Modelling it as a pair with a null `now` would let a caller render
+ * an arrow to nothing, and would let an optional field carry a decision that
+ * the type should force. A union makes the branch unavoidable at every call
+ * site, which is the point.
+ */
+export interface HighPairReading {
+  kind: 'PAIR';
   /**
    * Label override, or null to keep the arc's phase word.
    *
@@ -216,6 +231,22 @@ export interface HighReading {
 }
 
 /**
+ * The prior high alone, when supersession cannot be established.
+ *
+ * No `now`, deliberately. There is no comparison to draw, because the thing
+ * being compared against is what is in doubt. The date is not decoration: it is
+ * what stops the number reading as a current level.
+ */
+export interface PriorHighReading {
+  kind: 'PRIOR_ONLY';
+  high: number;
+  /** Trading date the high was set, `YYYY-MM-DD`. */
+  at: string;
+}
+
+export type HighReading = HighPairReading | PriorHighReading;
+
+/**
  * Null when there is nothing to show — no cycle, or no live price.
  *
  * **The band is the SPREAD, and it is not optional for the reason it looks
@@ -229,8 +260,24 @@ export interface HighReading {
  * **No spread means no override**, not a guess. The prices still render, because
  * they are observations and need no band; only the verdict does.
  */
+/**
+ * A TRADING DATE IS A CALENDAR DATE, NOT AN INSTANT, so it is split rather than
+ * parsed. `new Date('2026-09-15')` is UTC midnight, and formatting that in ET
+ * rolls it back to the 14th -- the timezone trap one field over from the one
+ * that put a UTC clock on his board in September.
+ */
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+export function formatTradingDate(date: string | null | undefined): string | null {
+  if (!date) return null;
+  const [y, m, d] = date.split('-');
+  const month = MONTHS[Number(m) - 1];
+  if (!y || !month || !d) return null;
+  return `${month} ${Number(d)}`;
+}
+
 export function highReading(
   arc: CycleResult | null | undefined,
+  todayStart: TodayStartVerdict | null | undefined,
   sessionHigh: number | null | undefined,
   price: number | null | undefined,
   spread: number | null | undefined,
@@ -239,17 +286,45 @@ export function highReading(
   if (price === null || price === undefined || !Number.isFinite(price)) return null;
 
   const cycleHigh = arc.cycleHigh;
-  const beat =
-    sessionHigh !== null &&
-    sessionHigh !== undefined &&
-    Number.isFinite(sessionHigh) &&
-    sessionHigh > cycleHigh;
-  const high = beat ? (sessionHigh as number) : cycleHigh;
+  const liveHigh =
+    sessionHigh !== null && sessionHigh !== undefined && Number.isFinite(sessionHigh)
+      ? (sessionHigh as number)
+      : null;
 
-  if (!beat) return { label: null, tone: null, high, now: price };
+  /*
+   * UNVERIFIABLE: THE PAIR GOES, NOT JUST THE VERDICT.
+   *
+   * The desk cannot say whether today started a new cycle, so it cannot say
+   * which high the current move is measured against. `cycleHigh` would assert
+   * the old run still governs; `sessionHigh` would assert today's does. Showing
+   * either answers the question we have just admitted we cannot answer -- and
+   * stripping only the phase word leaves `$5.49 -> $1.64` still saying "far off
+   * its high", which is the same claim unlabelled.
+   *
+   * What survives is that the old high is overhead supply, which holds whichever
+   * cycle is current. So: the prior high, dated, with no arrow and no verdict.
+   */
+  if (todayStart === 'UNVERIFIABLE') {
+    return { kind: 'PRIOR_ONLY', high: cycleHigh, at: arc.cycleHighDate };
+  }
+
+  /*
+   * QUALIFIED: TODAY SUPERSEDES, SO THE REFERENCE IS TODAY'S OWN HIGH.
+   *
+   * `cycle.ts` already states the rule -- a qualifying start day supersedes --
+   * and when it fires the prior run is not what the move is measured against.
+   * Taking `max(cycleHigh, sessionHigh)` here would keep a dead run's high as
+   * the reference on a name that has started a new one, which is how a day-one
+   * frontside came to read BACKSIDE at rank 3.
+   */
+  const superseded = todayStart === 'QUALIFIED' && liveHigh !== null;
+  const beat = superseded || (liveHigh !== null && liveHigh > cycleHigh);
+  const high = beat ? (liveHigh as number) : cycleHigh;
+
+  if (!beat) return { kind: 'PAIR', label: null, tone: null, high, now: price };
 
   if (spread === null || spread === undefined || !Number.isFinite(spread)) {
-    return { label: null, tone: null, high, now: price };
+    return { kind: 'PAIR', label: null, tone: null, high, now: price };
   }
 
   /*
@@ -262,12 +337,22 @@ export function highReading(
   const scaled = (v: number) => Math.round(v * 1e6);
   const atHigh = scaled(high - price) <= scaled(Math.abs(spread));
   return atHigh
-    ? { label: 'NEW HIGH', tone: 'pos', high, now: price }
-    : { label: 'OFF HIGH', tone: 'warn', high, now: price };
+    ? { kind: 'PAIR', label: 'NEW HIGH', tone: 'pos', high, now: price }
+    : { kind: 'PAIR', label: 'OFF HIGH', tone: 'warn', high, now: price };
 }
 
 /** Prices as he wrote them: dollar signs, four decimals under $1, two above. */
 export function formatHighPair(reading: HighReading): string {
   const fmt = (v: number) => `$${v.toFixed(v < 1 ? 4 : 2)}`;
+  if (reading.kind === 'PRIOR_ONLY') {
+    /*
+     * NO ARROW. The arrow is the claim -- it says "from this, to that" -- and
+     * this arm exists because the desk cannot say what the move is measured
+     * from. The date does the work the arrow would have done wrongly: it puts
+     * the number in the past rather than offering it as a current level.
+     */
+    const at = formatTradingDate(reading.at);
+    return at ? `prior high ${fmt(reading.high)} · ${at}` : `prior high ${fmt(reading.high)}`;
+  }
   return `${fmt(reading.high)} → ${fmt(reading.now)}`;
 }

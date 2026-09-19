@@ -547,12 +547,25 @@ function DiscoveryRow({
    * impossible — the contradiction that started this. The label override fires
    * only when today's high actually beat the arc.
    */
+  const cycle = row.intelligence?.analysis?.dossier?.computedCycle ?? null;
   const high = highReading(
-    row.intelligence?.analysis?.dossier?.computedCycle?.current ?? null,
+    cycle?.current ?? null,
+    cycle?.todayStart ?? null,
     t.sessionHigh,
     t.price,
     t.spread,
   );
+  /*
+   * THE VERDICT WORD GOES WHEN THE PAIR DOES, AND IT IS THE HALF THAT MATTERS.
+   *
+   * `UNVERIFIABLE` means the settled phase's RELEVANCE is unknown, not that
+   * today did not start a cycle. Its inputs are intact -- `daily_bars` survives
+   * a restart -- so the phase is a correct answer about a run that may be over,
+   * and correctness about THEN is what makes it tempting to leave standing.
+   * Leaving it standing is how a day-one frontside read BACKSIDE in red at rank
+   * three.
+   */
+  const priorOnly = high?.kind === 'PRIOR_ONLY';
   const risk = resolveRisk(row);
   const why = resolveWhy(row);
   const ah = demand?.afterHours ?? null;
@@ -703,12 +716,14 @@ function DiscoveryRow({
 
       <td className="px-2 py-1 align-middle">
         <span className="flex flex-col items-start gap-0.5">
-          <StatusBadge
-            label={high?.label ?? conclusions.cycle.label}
-            tone={(high?.tone ?? conclusions.cycle.tone) as Tone}
-            title={conclusions.cycle.title ?? conclusions.cycle.label}
-            className="max-w-full"
-          />
+          {priorOnly ? null : (
+            <StatusBadge
+              label={(high?.kind === 'PAIR' ? high.label : null) ?? conclusions.cycle.label}
+              tone={((high?.kind === 'PAIR' ? high.tone : null) ?? conclusions.cycle.tone) as Tone}
+              title={conclusions.cycle.title ?? conclusions.cycle.label}
+              className="max-w-full"
+            />
+          )}
           {/*
             * TWO PRICES, NOT A PERCENTAGE — his ruling: "dont do a percentage,
             * it's deceptive". A ratio hides its denominator; two prices carry
@@ -724,7 +739,14 @@ function DiscoveryRow({
             * Risk cell beside it already uses 56.
             */}
           {high ? (
-            <span className="num text-[10px] leading-none font-semibold text-ink-3">
+            <span
+              className="num text-[10px] leading-none font-semibold text-ink-3"
+              title={
+                priorOnly
+                  ? 'The desk cannot establish whether today started a new cycle, so it will not say which high this move is measured against. The prior high is shown because it is overhead supply either way. Highs before today exclude after-hours.'
+                  : undefined
+              }
+            >
               {formatHighPair(high)}
             </span>
           ) : null}
