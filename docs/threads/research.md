@@ -832,6 +832,56 @@ containment test Integration described: it returns `IMPOSSIBLE` when a claimed
 float exceeds a current filed count. What is missing is only the vendor number,
 and that is the half with the problem.
 
+**SHOULD THE QUIET TEST ALSO HAVE AN ABSOLUTE FLOOR? HIS QUESTION, MEASURED,
+AND THE ANSWER IS YES — THE THRESHOLD IS HIS.**
+
+RVOL is self-relative, so **it can certify a name as "still in play" on volume
+that is absolutely untradeable.** Measured on the 2026-08-23 production snapshot,
+43,692 rows, of the 4,142 reading RVOL >= 2:
+
+    under $50k traded all day     352   ( 8.5%)
+    under $100k                   607   (14.7%)
+    under $250k                 1,131   (27.3%)
+    under $1M                   2,139   (51.6%)      p05 = $29,809
+
+**More than half of "still busy" rows traded under a million dollars**, and the
+bottom five percent under thirty thousand. A four-month-old cycle staying live on
+$30k of tape is the same defect as the consecutive-sessions one, from the other
+side.
+
+**WHAT A FLOOR WOULD COST, against board-visible rows:**
+
+    floor      cuts of RVOL>=2 rows      cuts of board top-200 rows
+    $25,000            4.1%                       0.42%
+    $50,000            8.5%                       2.17%
+    $100,000          14.7%                       5.33%
+    $200,000          24.1%                      11.67%
+    $500,000          39.5%                      23.00%
+
+**The ratio turns above $50k** — board impact 2.5x for population 1.7x. And the
+board TOP 12 never trades under **$736,363**, so any floor in this range cannot
+touch the names he actually looks at.
+
+**DOLLARS, NOT SHARES, and the reason is the frame rule.** He said "daily
+volume"; share count is price-dependent — 2M shares of a $0.30 name is $600k and
+real, the same 2M at $0.02 is $40k and is not. **Dollar volume is the only
+absolute measure that means the same thing across a $1-$20 universe.**
+
+**AND IT MUST BE A DISJUNCTION, NOT A REPLACEMENT.** The run is over when the
+typical day is back to the name's OWN normal (RVOL, which adapts per name and
+catches re-basing) **OR** below an absolute floor (which catches "busy relative
+to nothing"). Each catches what the other cannot.
+
+**Safe for fresh runs by construction:** `wentQuiet` already requires
+`sessionsInCycle > shadowSessions`, so a name that ran today cannot go quiet
+whatever its dollar volume.
+
+⇒ **UNBUILT. He said "i'm not sure", and a threshold that changes cycle labels on
+his board is his to set, not mine to pick.** My recommendation is **$50,000**:
+it removes 8.5% of the untradeable-but-busy population for 2.17% of board rows,
+sits below the turn in the ratio, and is an order of magnitude under the TOP 12
+minimum.
+
 ### WAITING ON HIM
 
 **The control arm** — `RESEARCH_OMIT_SHEET_PRIOR=1` on a sample, diffed against
