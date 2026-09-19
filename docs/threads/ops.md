@@ -11063,3 +11063,89 @@ answer for a day that had two.*
 **`volume_base` is untouched by any of this and its cutover remains
 `2026-09-18T21:05:09Z`. Rows before it are still literals. Nothing backfills
 them and the restore did not pretend to.**
+
+## THE SHEETS KEY IS ROTATED AND THE EXPOSURE IS STILL OPEN — 2026-09-19, and those are not the same sentence
+
+**GENERATED, DEPLOYED, REVOKED ARE THREE CLAIMS. Two are proven here. The third
+is his and until he takes it the exposed key still opens that Sheet.**
+
+> **Creating a new key does not revoke the old one.** *Google keeps both valid.
+> Everything below made the revocation SAFE to take; none of it took it. A
+> rotation reported as "done" with the old key still live is the same failure as
+> any other name covering three things.*
+
+### What is proven
+
+```
+local  .env.local          GOOGLE_PRIVATE_KEY fingerprint  383cb3d137e59e22
+box    /etc/mointel/…env   GOOGLE_PRIVATE_KEY fingerprint  383cb3d137e59e22   MATCH
+the exposed key was                                        ce67f7776399354b   NOT matched
+same service account (trading-desk-dashboard@mointel), new key 07db69de…
+box perms unchanged 640 root:mointel
+restarted web + research + assess;  MARKET WORKER UNTOUCHED, pid 636490
+```
+
+**The market worker needs no restart for a Google rotation and this is worth
+knowing before somebody asks him for a restart word that is not required:** it
+holds no Google credentials and reads TODAY tickers from the dashboard over
+loopback (`worker/runtime.ts:1573` `refreshSheetSymbols`, and the env header
+says so).
+
+### THE BASELINE IS THE WHOLE VERIFICATION
+
+```
+/api/dashboard over loopback -- the exact call worker/runtime.ts:1576 makes
+  BEFORE rotation   13 tickers   GLND, VRME, CRML, GRML, CYPH, TCRT, VEEE, HWH
+  AFTER  rotation   13 tickers   GLND, VRME, CRML, GRML, CYPH, TCRT, VEEE, HWH
+```
+
+**A post-rotation check alone proves the desk works. It does NOT prove the new
+key is what made it work** — a cached client, a stale process, or a read that
+never happened all pass it. *Taking the reading first means a zero afterwards
+could only be the key.* **Prove the check can see a present case before you
+trust its absence.**
+
+### THE EDIT, WITHOUT THE KEY MATERIAL EVER REACHING A TRANSCRIPT
+
+**He pasted the entire service-account JSON at the bottom of `.env.local` and
+left the old `GOOGLE_PRIVATE_KEY=` line at line 6, then asked for it to be
+fixed.** The fix was structural and stayed structural:
+
+- back up first (`.env.local.bak-…`, covered by `.gitignore:34` `.env*`);
+- parse the pasted block, take `private_key`, write it back through
+  `json.dumps`, which produces exactly the quoted `\n`-escaped single line that
+  was already there;
+- delete the block; **verify the KEY-NAME SET is identical before and after**
+  (13 either side) rather than trusting a line count;
+- dry-run printing only fingerprints, lengths and key names; apply second.
+
+**`sync-env.sh` carried it to the box on stdin and its header promise held —
+only key names appeared.** *One day after a credential grep put a live private
+key in a transcript, the whole operation ran without a value being printed once.
+That is the standard, not an achievement.*
+
+### AND MY OWN INSTRUMENT WAS WRONG, ON A NUMBER I HAD ALREADY GIVEN HIM
+
+**I told him the key line carried 48 literal `\n` escapes. It carries 28.**
+
+```
+grep -o '\n' | wc -l   through this shell   ->  48   WRONG
+Python count on the same line              ->  28
+the decoded key's real newlines            ->  28   (a 2048-bit RSA PEM)
+```
+
+*Two figures disagreed — 28 escapes in the new value against 48 in the old, at
+identical 1,734-char lengths — and the coincidence is what prompted the recheck
+rather than any suspicion of the grep.* **He never needed the number, and it was
+wrong when it was handed to him.** *Third instrument failure of the week and the
+first that was mine: a backslash through a shell is not a backslash.*
+
+### OPEN, AND IT IS THE ONLY THING THAT CLOSES THIS
+
+1. **HE DELETES THE OLD KEY** in the console — service account
+   `trading-desk-dashboard@mointel.iam.gserviceaccount.com` → Keys, keep
+   `07db69de…`, delete the other. **Until then the exposure is open.**
+2. **Then** `.env.local.bak-20260919T115148Z` is deleted; it holds the old key
+   and is the rollback. **Deleting the rollback before the thing it protects
+   against is resolved is the wrong order.** *Verified meanwhile: gitignored,
+   never committed on any branch.*
