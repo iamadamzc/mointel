@@ -8054,21 +8054,21 @@ bare-named; all three are stale and corrected here.*
 > restart resets session anchors and per-session highs, which then read LOW,
 > not null. Record the restart's ExecMainStart to the second.
 >
-> **PRODUCTION AT 21:15 UTC FRI 2026-09-18, FROM THE BOX.** *Rewritten by the
+> **PRODUCTION AT 10:36 UTC SAT 2026-09-19, FROM THE BOX.** *Rewritten by the
 > seat that took over at 20:37Z; the previous block's `467ffec` / `1c23322` /
 > pid 456092 figures were true at 16:24 ET and are now all three stale.*
 > ```
-> web/research/assess   ddaf2f8   by /proc/<pid>/cwd, since 2026-09-18 21:15:49Z
+> web/research/assess   a5924c2   by /proc/<pid>/cwd, since 2026-09-19 10:36:38Z
 > market worker         467ffec   pid 636490, ExecMainStart 2026-09-18 21:05:09Z
 >                                 (HIS restart word, given with after-hours in
 >                                  progress -- the charter condition was NOT met
 >                                  and he overrode it knowingly. See the entry.)
 > schema                27        retention 20 IN FORCE: minute_bars 09-09..09-18
 > backups               4 files   (reaper keeps 3 newest + the pinned v18); 64G free
-> rollback baseline     467ffec   (prune removed dbae021 and 1c23322)
+> rollback baseline     ddaf2f8   (prune removed c883d7b)
 > public                / /privacy /terms /favicon.ico /robots.txt 200
->                       /desk /signin /api/* 401 -- AND /icon.svg, /apple-icon.png
->                       ALSO 401, which is a DEFECT; fix is `de08944`, approved
+>                       /icon.svg, /apple-icon.png NOW 200 (fixed, shipped)
+>                       /desk /signin /api/* 401
 > port 22               70.17.101.27/32 + his home /32 (95.17.58.175); egress matched
 > Session Manager       mi-0a647a08fcc7366b7 Online; `ssh mointel-ssm` from any network
 > ```
@@ -10962,3 +10962,104 @@ Lightsail auto-snapshots   resourceType Instance, fromAttachedDisks []
 imports `lib/auth`. It does not — the hit is a COMMENT at `:29` naming
 `lib/auth/store.ts:resolveSession`.** *I grepped for a path string and read the
 result as an import. Nothing outside `lib/auth/` constructs the identity store.*
+
+## `a5924c2` IS LIVE AND 09-18 IS REPAIRED — 2026-09-19 06:36 ET Saturday
+
+**Both operations were scheduled for 20:00 ET Friday and NEITHER RAN. The
+session died on an OAuth expiry at the moment the wait fired, and the host
+slept: the bounded loop reported `SESSION CLOSED at 2026-09-19T07:25:50Z`,
+which is 03:25 ET — seven hours after the target it was watching for.**
+
+> **A BOUNDED LOOP IN A BACKGROUND SHELL SURVIVES A SLOW CLOCK. IT DOES NOT
+> SURVIVE THE SESSION THAT OWNS IT GOING AWAY.** *The loop is a timer, not a
+> scheduler, and nothing re-runs the work it was waiting to trigger. If an
+> operation must happen at a time, the time is a reminder to a person, not a
+> guarantee from this desk.* **Scheduled tasks are withdrawn here and this is
+> the gap that leaves.**
+
+**Confirmed from the box rather than from the peer's inference, which was
+correct but was still an inference:** production still `ddaf2f8`, `/icon.svg`
+and `/apple-icon.png` still 401, and 1,386 highs still needing a raise.
+
+### One thing went right by accident
+
+**`tradingDate` had rolled to `2026-09-21` and the phase read `CLOSED`.** *That
+settled empirically the question I could not answer cheaply from the code the
+night before — whether the flush loop would keep overwriting 09-18 rows. It
+had stopped, so the restore would stick.* **The delay made the restore safer
+than it would have been at 20:00.**
+
+### PREFLIGHT REFUSED THE FIRST ATTEMPT, AND IT WAS RIGHT
+
+```
+[preflight] previous checkpoint  STRUCTURAL_REFRESH (4m ago)
+[preflight] BLOCKED: inside the 5m protected window.
+```
+
+**I did not override it and I did not race the 5-minute gap it left.** *I read
+`CHECKPOINTS` in `preflight.sh` instead: 06:10, 06:25, 06:45, 07:00 with a 5m
+guard each, then the charter's own 07:00–10:00 block. The first clean gap was
+06:30–06:40 and I waited fifteen minutes for it.* **The market was shut until
+Sunday evening; nothing was urgent enough to talk past a guard I had just
+watched do its job, one day after jumping a different one.**
+
+### DEPLOYED
+
+```
+a5924c2   10:31:18Z start, live 10:36:38Z, detached, RESTART_MARKET=no
+services were down for 2s;  schema 27 -> 27, 0 backups;  prune removed c883d7b
+by /proc cwd: web/research/assess = a5924c2;  market = 467ffec, UNTOUCHED
+```
+
+**Verified as a stranger, negative control FIRST** — `/desk` `/signin`
+`/api/market` `/privacy-x` 401, then `/` `/privacy` `/terms` `/robots.txt`
+`/favicon.ico` 200. **The two visible changes both landed:**
+
+```
+/icon.svg        401 -> 200        /apple-icon.png   401 -> 200
+og:title / twitter:title   "TMI — Intelligence on what's moving."
+og:site_name               "The Momentum Intelligence Trading Desk"  (kept)
+```
+
+**A VERIFICATION METHOD THAT DOES NOT WORK, worth knowing before it wastes
+somebody's hour.** *`/icon.svg` served 982 bytes against a 963-byte repo blob
+and I nearly filed it as a defect.* **It is CRLF: 19 lines, 19 bytes, and
+identical once normalised. `git archive` applies end-of-line conversion from
+this Windows checkout, so a byte-for-byte comparison against the blob is valid
+for BINARY files (the `.ico` matched exactly) and INVALID for text ones.**
+Compare text with `tr -d '\r'` on both sides.
+
+### 09-18 RESTORED
+
+**Semantics: `max` for highs, `min` for lows — repair what the restart
+destroyed WITHOUT discarding what traded afterwards.** *A blind overwrite from
+the snapshot would have lowered the 738 names that had risen after the restart.*
+
+```
+pre-restore snapshot taken first (reversible): 8,917 rows, sha256 369a2dbe…
+BEFORE   highs too low 1,386      lows too high 793
+AFTER    highs too low 0          lows too high 0
+```
+
+**Against the independent source, `minute_bars`, 09-18 now reads exactly like
+a settled day:**
+
+```
+2026-09-17 (no restart)   understated 0   correct 7,870   over 58
+2026-09-18 (restored)     understated 0   correct 7,244   over 689
+```
+
+**The named casualties are exact again: TCRT 3.14, PAAI 5.89, GWAV 4.20,
+MGN 5.61, AGMH 1.12, FEBO 1.19.**
+
+**The `over` column is NOT a side effect of the restore and was checked rather
+than assumed: 626 rows were already over before it, 610 of the 689 are under
+1%, and the same phenomenon appears on 09-17.** *Engine values legitimately
+exceed a max over minute bars — a trade prints between bars, and a vendor
+daily-bar high can exceed every captured minute. The restore added 63 to that
+population by taking the higher of two engine runs, which is the correct
+answer for a day that had two.*
+
+**`volume_base` is untouched by any of this and its cutover remains
+`2026-09-18T21:05:09Z`. Rows before it are still literals. Nothing backfills
+them and the restore did not pretend to.**
