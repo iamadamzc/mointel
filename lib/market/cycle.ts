@@ -312,23 +312,46 @@ export function resolveCycle(
   const shadowSessions = options.shadowSessions ?? SHADOW_SESSIONS;
   const shadowLifetime = options.shadowLifetimeSessions ?? SHADOW_LIFETIME_SESSIONS;
 
-  const recentRvol: Array<number | null> = [];
-  for (let i = bars.length - 1; i >= 0 && recentRvol.length < shadowSessions; i -= 1) {
-    recentRvol.push(dailyRvol(bars, i));
-  }
-
   /*
-   * The cycle is over when nobody is trading it any more.
+   * THE QUIET TEST IS A MEDIAN OVER A WINDOW, NOT A RUN OF CONSECUTIVE SESSIONS.
    *
-   * Requires a full window of quiet sessions AND that they all sit inside the
-   * cycle — a move two days old cannot have gone quiet for three. A single
-   * missing volume reading does not end a cycle either, since an absent bar is
-   * not evidence of calm.
+   * It required `shadowSessions` CONSECUTIVE readings at or under the threshold.
+   * **A name that pops once every third session never strings three together, so
+   * its cycle never expired** — and that is the QCLS shape exactly: RVOL running
+   * `1.00 1.00 4.44 1.00 1.00 4.44` for eighty-five sessions after the high,
+   * with the board still printing BACKSIDE against a four-month-old $5.49.
+   *
+   * His ruling, 2026-09-19: *"i suppose RVOL will never go back to normal since
+   * it is a computation of days that include the high days... but that's letting
+   * the letter of the rule block the spirit of it. whatever it takes to make the
+   * intent happen do that."*
+   *
+   * The intent is **the run is over when the name's TYPICAL day is back to
+   * normal**, and the typical day is a median — which is also how `dailyRvol`
+   * builds its own baseline, so the two halves of the comparison now agree on
+   * what "typical" means. One pop in a quiet window no longer keeps a dead arc
+   * alive; a name that is genuinely still busy has a median above the threshold
+   * and stays live.
+   *
+   * Still requires the quiet to sit INSIDE the cycle — a move two days old
+   * cannot have gone quiet — and still refuses to read absence as calm: the
+   * median is taken over measured sessions only, and needs at least
+   * `shadowSessions` of them before it will end anything.
    */
+  const quietWindow = shadowSessions * 2;
+  const windowRvol: Array<number | null> = [];
+  for (let i = bars.length - 1; i >= 0 && windowRvol.length < quietWindow; i -= 1) {
+    windowRvol.push(dailyRvol(bars, i));
+  }
+  const recentRvol = windowRvol.slice(0, shadowSessions);
+
+  const measuredRvol = windowRvol.filter((rvol): rvol is number => rvol !== null);
+  const typicalRvol = measuredRvol.length >= shadowSessions ? median(measuredRvol) : null;
+
   const wentQuiet =
-    recentRvol.length === shadowSessions &&
+    typicalRvol !== null &&
     sessionsInCycle > shadowSessions &&
-    recentRvol.every((rvol) => rvol !== null && rvol <= shadowRvol);
+    typicalRvol <= shadowRvol;
 
   /*
    * A stale arc is worse than no arc: it invites a giveback measured against a

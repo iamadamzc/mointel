@@ -670,3 +670,82 @@ describe('todayQualifiesAsCycleStart under an incomplete high', () => {
     expect(todayQualifiesAsCycleStart(base(25, 8.0, 1_000_000), built!)).toBe('QUALIFIED');
   });
 });
+
+/**
+ * The quiet test, after his 2026-09-19 ruling.
+ *
+ * It required three CONSECUTIVE sessions at or under the shadow threshold. A
+ * name that pops once every third session never strings three together, so its
+ * cycle never expired — the QCLS shape: RVOL `1.00 1.00 4.44` repeating for
+ * eighty-five sessions past the high, with the board still printing BACKSIDE
+ * against a four-month-old $5.49.
+ *
+ * His words: *"that's letting the letter of the rule block the spirit of it."*
+ * The intent is that the run ends when the name's TYPICAL day is back to normal,
+ * so the test is now a median over a window.
+ */
+describe('resolveCycle quiet test', () => {
+  const day = (n: number) =>
+    `2026-${String(Math.floor(n / 28) + 1).padStart(2, '0')}-${String((n % 28) + 1).padStart(2, '0')}`;
+
+  /** 25 quiet sessions, one big run to 5.49, then `after` sessions of decline. */
+  function afterRun(after: number, volumeAt: (i: number) => number): CycleBar[] {
+    const bars: CycleBar[] = [];
+    let n = 0;
+    for (let i = 0; i < 25; i += 1) {
+      bars.push({ tradingDate: day(n++), high: 1.02, low: 0.98, close: 1.0, volume: 500_000 });
+    }
+    bars.push({ tradingDate: day(n++), high: 5.49, low: 1.0, close: 4.5, volume: 50_000_000 });
+    let price = 4.5;
+    for (let i = 0; i < after; i += 1) {
+      price *= Math.pow(0.44 / 4.5, 1 / Math.max(after, 1));
+      bars.push({
+        tradingDate: day(n++),
+        high: price * 1.05,
+        low: price * 0.95,
+        close: price,
+        volume: volumeAt(i),
+      });
+    }
+    return bars;
+  }
+
+  it('EXPIRES a dead arc that pops every third session', () => {
+    // The QCLS shape. Under the consecutive rule this stayed BACKSIDE forever.
+    const bars = afterRun(85, (i) => (i % 3 === 0 ? 4_000_000 : 900_000));
+    expect(resolveCycle(bars).phase).toBe('NO_CYCLE');
+  });
+
+  it('one pop does not keep an otherwise quiet window alive', () => {
+    const bars = afterRun(85, (i) => (i === 84 ? 6_000_000 : 900_000));
+    expect(resolveCycle(bars).phase).toBe('NO_CYCLE');
+  });
+
+  it('keeps a LIVE run live', () => {
+    const bars: CycleBar[] = [];
+    let n = 0;
+    for (let i = 0; i < 25; i += 1) {
+      bars.push({ tradingDate: day(n++), high: 1.02, low: 0.98, close: 1.0, volume: 500_000 });
+    }
+    bars.push({ tradingDate: day(n++), high: 3.0, low: 1.0, close: 2.6, volume: 20_000_000 });
+    for (let i = 0; i < 4; i += 1) {
+      bars.push({ tradingDate: day(n++), high: 2.9, low: 2.3, close: 2.7, volume: 12_000_000 });
+    }
+    expect(resolveCycle(bars).phase).not.toBe('NO_CYCLE');
+    expect(resolveCycle(bars).phase).not.toBe('SHADOW');
+  });
+
+  it('still shows SHADOW rather than nothing inside the lifetime window', () => {
+    const bars = afterRun(5, () => 500_000);
+    expect(resolveCycle(bars).phase).toBe('SHADOW');
+  });
+
+  it('refuses to read absence as calm', () => {
+    // Every post-run session has no volume reading at all: nothing is measured,
+    // so nothing may be declared quiet.
+    const bars = afterRun(85, () => 0).map((bar, i) =>
+      i > 25 ? { ...bar, volume: null } : bar,
+    );
+    expect(resolveCycle(bars).phase).not.toBe('NO_CYCLE');
+  });
+});
