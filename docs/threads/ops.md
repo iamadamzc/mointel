@@ -11224,3 +11224,29 @@ reaching his screen.**
 `e48a2ca`, which is its plumbing — and Design's confirmation that the render is
 its specified design gates it BEFORE it goes out.** *The review Integration
 wanted is not late; it is exactly on time for the next enumeration.*
+
+### AND A RETRACTION IS A CLAIM — SECOND INSTANCE IN TWO DAYS
+
+**Integration's words on its own error, and they generalise past it: *a
+retraction gets the same checking the finding got*.** *It withdrew a CORRECT
+correction and asked for the wrong one to be written down; the cost is
+asymmetric, because an unchecked finding costs a grep and an unchecked
+retraction corrupts a record that was already right.*
+
+**This is the SECOND time in two days on this desk, and the first was mine.**
+*On 09-18 I predicted the restart would understate session highs, measured it,
+then RETRACTED the finding two minutes after the restart on a transient reading
+— and the retraction was the wrong one. Same shape, opposite seat.* **The count
+is the signal.**
+
+**Integration's mechanism is worth keeping beside it:** *it found `PRIOR_ONLY`
+and `superseded` in `dashboard/cycle.ts`, knew `e48a2ca` was "the cycle commit",
+and attributed the code to it FROM READING THE CODE.* **Code carries no author
+and no timestamp on its face. `git log -S` answers both in one command.**
+
+**What stopped the ratification here was not suspicion of a peer — it was
+arithmetic that would not close.** *A peer telling you what you then "find" is
+the most comfortable possible reading, and this desk has been wrong in that
+direction twice this week. The unexplainable contradiction is the only reliable
+brake; [[peer-confirmation-is-not-a-second-source]] is the rule and this is what
+it feels like from inside.*
