@@ -543,7 +543,41 @@ high-based quantities (`cycleHigh`, `retracementPct`, the sibling's input); it
 does nothing for `isCycleStart`'s move gate; and whether the PARENT should become
 high-based is a separate question nobody has put to him.
 
-**HIS MODEL IS ALREADY THE IMPLEMENTATION, AND I CANNOT REPRODUCE QCLS.**
+**QCLS IS FULLY DOCUMENTED AND MY "CANNOT REPRODUCE" WAS A SIMULATION ERROR.**
+`docs/threads/ops.md:10297` — **INCIDENT 2026-09-16 12:22 ET**, his screenshot,
+read from the store: rank 3, price 1.635, reference close **0.4413 (09-15)**,
+`percent_change` 270.5, `session_high` 1.76, halted LUDP. Badge read
+`BACKSIDE $5.49 -> $1.35 HALTED`. **The $5.49 is 2026-05-14.**
+
+**AND THE RULE WAS NEVER WRONG.** QCLS's latest daily bar was **09-15**.
+`ensureDailyHistory` writes nothing before 20:00 ET and `readDailyBars` excludes
+unfinished bars, so today was not in the input. **The settled arc 5.49 -> 0.44
+genuinely IS backside as of yesterday's close.** The badge's left number is
+`max(cycleHigh, sessionHigh)` = 5.49 and its right is the live price, so the
+board printed **a live price against a dead run, in red, on the name ranked
+third.**
+
+⇒ **MY FOUR SCENARIOS ALL INCLUDED TODAY'S BAR IN THE SERIES, WHICH IS THE ONE
+THING THE REAL INPUT EXCLUDES.** I built each series through "today" and asked
+why the rule misbehaved. It does not misbehave — it never sees today. *I
+simulated the system I was describing rather than the one that runs, and
+concluded the incident had not happened.* **Second-hand was not the problem; my
+harness was.**
+
+⇒ **AND OPS'S FIX SHAPE IS EXACTLY WHAT SHIPPED.** Theirs, 09-16: *"a provisional
+TODAY bar (from `ticker_session`'s live anchors, session high, price, cumulative
+volume) in the cycle input during the session, so a name up 270% from yesterday's
+close classifies as a new run."* That is `todaySoFarFromBars` +
+`todayQualifiesAsCycleStart`, wired at `e48a2ca`. **The justification stands and
+the feature answers it.**
+
+⇒ **IT ALSO SETTLES HIGH-VS-CLOSE FOR THE SIBLING BY NECESSITY.** At 12:22 ET
+QCLS had a `session_high` of 1.76 and **no close at all** — intraday there is no
+close. Measuring the move on the high was not a preference. *The open question
+was only ever about the SETTLED parent, and that one remains unreproduced and
+withdrawn on its own merits.*
+
+**HIS CONTINUATION MODEL IS ALREADY THE IMPLEMENTATION.**
 2026-09-19, his words: *"i dont think price determines a continuation, for me its
 volume, its the same run if RVOL has not returned to its original state."*
 
@@ -564,22 +598,22 @@ the cycle expires. Verified by construction, not by reading.
 The last is defensible rather than defective: a name that touched 6.90 and closed
 3.22 has given back 62% of its advance.
 
-⇒ **SO I HAVE WITHDRAWN THE HIGH-VS-CLOSE QUESTION I PUT TO HIM.** It was aimed
-at a failure I can no longer demonstrate, and **a question carrying an
-unreproduced premise is the thing this file exists to stop.** The QCLS
-observation is recorded HERE, by me, second-hand, and every piece of the cycle
-sibling was justified by it.
+⇒ **THE HIGH-VS-CLOSE QUESTION STAYS WITHDRAWN, but for a narrower reason than I
+first gave.** It is a question about `isCycleStart` on SETTLED days, and the QCLS
+incident is about today being absent — so QCLS never evidenced it either way. No
+scenario I can build shows the settled rule misbehaving on a complete series.
 
-**WHAT REMAINS CERTAIN, AND IT IS WHAT `e48a2ca` ACTUALLY FIXES:**
+**THE STRUCTURAL FACT, NOW CONFIRMED AS THE ACTUAL CAUSE RATHER THAN A FALLBACK:**
 `readDailyBars` defaults to `unfinished: 'EXCLUDE'` (`history.ts:149`), so
 **today's bar is not in the cycle input at all.** A name up 270% right now has
-its cycle computed as of YESTERDAY. That is structural, needs no incident to
-justify it, and is exactly what `todayQualifiesAsCycleStart` supplies. **The
-feature stands; its headline example does not.**
+its cycle computed as of YESTERDAY. That is structural, and the 09-16 incident is
+exactly it. **The feature stands and so does its headline example.**
 
-⇒ **NEXT STEP IS EVIDENCE, NOT A BUILD: get the actual QCLS row and date** and
-re-run `resolveCycle` against the bars it held at that moment. Until then nobody
-should change a threshold or a gate on the strength of it.
+**ONE THING THE INCIDENT DOES NOT EXPLAIN AND NOBODY HAS ASKED:** why the May
+cycle was still live on 09-15 at all. `wentQuiet && sessionsSinceHigh > 10`
+retires a cycle, and 5.49 on 05-14 to 0.44 on 09-15 is four months past the high.
+**So `wentQuiet` must have been false throughout** — a name bleeding out can hold
+RVOL above 2x for a long time. Not a defect on its face, and unexamined.
 
 ### OPEN AND MINE
 
