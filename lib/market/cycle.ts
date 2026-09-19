@@ -87,6 +87,34 @@ export const SHADOW_RVOL = 2;
 export const SHADOW_SESSIONS = 3;
 
 /**
+ * Dollar volume at or below which a name is out of play regardless of RVOL.
+ *
+ * RVOL is self-relative, so it certifies a name as busy against its OWN recent
+ * history — and a dead stock's own history is dead. Measured on the 2026-08-23
+ * production snapshot, 43,692 rows: of the 4,142 sessions reading RVOL >= 2,
+ * **more than half traded under $1M all day and the bottom 5% under $29,809.**
+ * A four-month-old cycle staying live on thirty thousand dollars of tape is the
+ * consecutive-sessions defect arriving from the other side.
+ *
+ * Fifty thousand rather than a rounder number, from what a floor costs:
+ *
+ *     floor      of RVOL>=2 rows      of board top-200 rows
+ *     $25,000          4.1%                   0.42%
+ *     $50,000          8.5%                   2.17%
+ *     $100,000        14.7%                   5.33%
+ *     $200,000        24.1%                  11.67%
+ *
+ * **The ratio turns above $50k** — board impact rises 2.5x for 1.7x of the
+ * population — and the board TOP 12 never trades under $736,363, so this cannot
+ * reach the names at the top of his board. His pick, 2026-09-19.
+ *
+ * DOLLARS AND NOT SHARES, because a share count is price-dependent: 2M shares of
+ * a $0.30 name is $600k and real, the same 2M at $0.02 is $40k and is not. Only
+ * dollar volume means one thing across a $1-$20 universe.
+ */
+export const SHADOW_DOLLAR_VOLUME = 50_000;
+
+/**
  * Sessions past the cycle high after which the shadow stops meaning anything.
  *
  * Measured rather than chosen. Across 24,114 symbol-sessions of production
@@ -251,6 +279,8 @@ export interface CycleOptions {
   shadowRvol?: number;
   /** Consecutive quiet sessions that end a cycle. */
   shadowSessions?: number;
+  /** Dollar volume at or below which the name is out of play whatever its RVOL. */
+  shadowDollarVolume?: number;
   /** Sessions past the high after which the cycle expires entirely. */
   shadowLifetimeSessions?: number;
 }
@@ -311,6 +341,7 @@ export function resolveCycle(
   const shadowRvol = options.shadowRvol ?? SHADOW_RVOL;
   const shadowSessions = options.shadowSessions ?? SHADOW_SESSIONS;
   const shadowLifetime = options.shadowLifetimeSessions ?? SHADOW_LIFETIME_SESSIONS;
+  const shadowDollarVolume = options.shadowDollarVolume ?? SHADOW_DOLLAR_VOLUME;
 
   /*
    * THE QUIET TEST IS A MEDIAN OVER A WINDOW, NOT A RUN OF CONSECUTIVE SESSIONS.
@@ -340,18 +371,37 @@ export function resolveCycle(
    */
   const quietWindow = shadowSessions * 2;
   const windowRvol: Array<number | null> = [];
+  const windowDollars: number[] = [];
   for (let i = bars.length - 1; i >= 0 && windowRvol.length < quietWindow; i -= 1) {
     windowRvol.push(dailyRvol(bars, i));
+    const volume = bars[i].volume;
+    const close = bars[i].close;
+    if (
+      typeof volume === 'number' && Number.isFinite(volume) && volume > 0 &&
+      typeof close === 'number' && Number.isFinite(close) && close > 0
+    ) {
+      windowDollars.push(volume * close);
+    }
   }
   const recentRvol = windowRvol.slice(0, shadowSessions);
 
   const measuredRvol = windowRvol.filter((rvol): rvol is number => rvol !== null);
   const typicalRvol = measuredRvol.length >= shadowSessions ? median(measuredRvol) : null;
+  const typicalDollars =
+    windowDollars.length >= shadowSessions ? median(windowDollars) : null;
 
+  /*
+   * TWO WAYS TO BE OUT OF PLAY, AND NEITHER SEES THE OTHER'S CASE.
+   *
+   * RVOL adapts to the name, so it catches one that RE-BASED: a stock
+   * permanently busier than before reads 1 against its own new median and the
+   * run correctly ends. It cannot catch a name that is busy relative to nothing.
+   * The dollar floor is the reverse. So the run is over when EITHER says so.
+   */
   const wentQuiet =
-    typicalRvol !== null &&
     sessionsInCycle > shadowSessions &&
-    typicalRvol <= shadowRvol;
+    ((typicalRvol !== null && typicalRvol <= shadowRvol) ||
+      (typicalDollars !== null && typicalDollars <= shadowDollarVolume));
 
   /*
    * A stale arc is worse than no arc: it invites a giveback measured against a

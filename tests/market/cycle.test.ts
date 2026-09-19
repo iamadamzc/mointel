@@ -749,3 +749,82 @@ describe('resolveCycle quiet test', () => {
     expect(resolveCycle(bars).phase).not.toBe('NO_CYCLE');
   });
 });
+
+/**
+ * The absolute floor, his pick of $50,000 on 2026-09-19.
+ *
+ * RVOL certifies a name as busy against its OWN recent history, and a dead
+ * stock's own history is dead. Measured: of 4,142 production sessions reading
+ * RVOL >= 2, more than half traded under $1M all day and the bottom 5% under
+ * $29,809. So a cycle could stay live on tape nobody could trade.
+ *
+ * These two cases differ ONLY in price, which is what makes the floor the thing
+ * under test rather than the volume pattern.
+ */
+describe('resolveCycle dollar floor', () => {
+  const day = (n: number) =>
+    `2026-${String(Math.floor(n / 28) + 1).padStart(2, '0')}-${String((n % 28) + 1).padStart(2, '0')}`;
+
+  /** Rising volume — so RVOL stays high and only the floor can end the run. */
+  function risingVolume(close: number): CycleBar[] {
+    const bars: CycleBar[] = [];
+    let n = 0;
+    for (let i = 0; i < 25; i += 1) {
+      bars.push({ tradingDate: day(n++), high: close * 1.02, low: close * 0.98, close, volume: 50_000 });
+    }
+    bars.push({ tradingDate: day(n++), high: close * 15, low: close, close: close * 12, volume: 2_000_000 });
+    for (let i = 0; i < 12; i += 1) {
+      bars.push({
+        tradingDate: day(n++),
+        high: close * 1.05,
+        low: close * 0.95,
+        close,
+        volume: Math.round(60_000 * Math.pow(1.25, i)),
+      });
+    }
+    return bars;
+  }
+
+  it('EXPIRES a name that is busy relative to nothing', () => {
+    // $0.02 x ~875k on the last session is about $17,500 of tape.
+    const bars = risingVolume(0.02);
+    expect(resolveCycle(bars).phase).toBe('NO_CYCLE');
+  });
+
+  it('KEEPS the identical volume pattern alive at a tradeable price', () => {
+    // Same volumes, same shape, $2.00 instead of $0.02 — about $1.75M of tape.
+    const bars = risingVolume(2.0);
+    expect(resolveCycle(bars).phase).not.toBe('NO_CYCLE');
+    expect(resolveCycle(bars).phase).not.toBe('SHADOW');
+  });
+
+  it('cannot end a run that is younger than the shadow window', () => {
+    // A name that ran today on thin tape keeps its cycle: the sessionsInCycle
+    // guard runs before either quiet measure.
+    const bars: CycleBar[] = [];
+    let n = 0;
+    for (let i = 0; i < 25; i += 1) {
+      bars.push({ tradingDate: day(n++), high: 0.0204, low: 0.0196, close: 0.02, volume: 50_000 });
+    }
+    bars.push({ tradingDate: day(n++), high: 0.30, low: 0.02, close: 0.24, volume: 400_000 });
+    expect(resolveCycle(bars).phase).not.toBe('NO_CYCLE');
+    expect(resolveCycle(bars).phase).not.toBe('SHADOW');
+  });
+
+  it('refuses to read a missing price as cheap tape', () => {
+    /*
+     * Dollars need a close as well as a volume. Strip the close from all but
+     * the newest session, so the window holds too few measured dollar values to
+     * form a median — RVOL is high, so nothing may be declared quiet.
+     *
+     * The latest bar keeps its close deliberately: `resolveCycle` bails on a
+     * null latest close for its own reasons, which would pass this test for the
+     * wrong reason.
+     */
+    const bars = risingVolume(0.02);
+    const patched = bars.map((bar, i) =>
+      i > 25 && i < bars.length - 1 ? { ...bar, close: null } : bar,
+    );
+    expect(resolveCycle(patched).phase).not.toBe('NO_CYCLE');
+  });
+});
