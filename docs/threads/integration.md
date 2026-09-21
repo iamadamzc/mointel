@@ -209,8 +209,11 @@ Everything below LIVE STATE is kept for its MECHANISMS, not its facts.*
 ### PRODUCTION
 
 ```
-web / research / assess   a9df280   deployed 2026-09-21 23:13:21Z, 3s down (rollback a5924c2)
+web / research / assess   34414f4   deployed 2026-09-21 evening ET, 2s down (rollback a9df280)
 market worker             467ffec   pid 636490, restarted 2026-09-18 21:05:09Z
+                                     restart to 34414f4 HELD for 20:00 ET (after-hours close);
+                                     his word given. Worker jumps 467ffec->34414f4, 4 releases
+                                     at once. Ops predicts 0 rows lowered (vs 1,481 on 09-18).
 stranger sees             /  /privacy  /terms  /robots.txt  /favicon.ico
                           /icon.svg  /apple-icon.png            200
                           /desk  /signin  /api/*                401
