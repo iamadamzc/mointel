@@ -275,15 +275,25 @@ columns would assert parity and invite averaging a claim with a ceiling, which i
 meaningless operation here.* **The filed number is shares OUTSTANDING — a ceiling, not a
 rival estimate. Never label it "derived float".**
 
-### OWNERLESS RIGHT NOW — `deploy/aws/push-release.sh`
+### THE DEPLOY GATE — `deploy/aws/push-release.sh` (Ops seat now live)
 
-**There is NO mointel Ops seat as of this writing.** *Web routed a spec here because of it;
-it is recorded so the next Ops seat inherits it rather than losing it.*
+**An Ops seat is live again as of 2026-09-21 (`local_01494376-9bdd-4756-8220-5006c41736a6`,
+cwd A:\mointel).** *This item routed here while Ops was ownerless; it now belongs to Ops.
+Kept because the hardening is only half-built (below).*
 
 **HIS RULING 2026-09-19: the deploy gate should be enforced by the tool, not remembered by
 a seat.** *Context: `ddaf2f8` reached production 2026-09-18 with the suite red, and red
 since the rename hours earlier. There is NO test step in `deploy.sh`, `preflight.sh` or
 `push-release.sh` — verified.*
+
+> **PARTIALLY BUILT 2026-09-21: Ops's `test-gate.sh` runs the suite in a detached worktree
+> AT THE SHA (not HEAD) and Ops chains it by hand before each enumeration — it caught two
+> real releases green (`a9df280`, `34414f4`). NOT yet wired into `push-release.sh`: wiring
+> breaks `tests/desk/releaseBootstrap.test.ts` plus one undiagnosed false red.** *So the
+> ruling's intent — the tool refuses, the seat does not remember — is not met until it is
+> wired in.* **AND `lint` is NOT in the gate: it is red on main since `e48a2ca` (6
+> `no-explicit-any` in `tests/market/liveCycleOverlay.test.ts`), routed to Design to fix
+> 2026-09-21. Whether lint JOINS the gate is part of this hardening.**
 
 ```
 1  refuse a sha whose suite is not green; print failing test NAMES, not a count
