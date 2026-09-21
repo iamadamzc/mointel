@@ -201,203 +201,140 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
-*REWRITTEN WHOLE 2026-09-17 by the ninth session. The eighth cut this from 1,215 lines to
-128 and warned that APPENDING is the one thing this heading forbids. Still true. Everything
-below LIVE STATE is kept for its MECHANISMS, not its facts. **Verify before acting on any
-of it, including this block.***
+**AS OF 2026-09-21T09:36Z.** *Rewritten whole by the ninth session under the owner's
+session-hygiene rule (`A:\claude-infra-agent\docs\session-hygiene.md`, 2026-09-21).
+Everything below LIVE STATE is kept for its MECHANISMS, not its facts.*
 
-### THE THING I GOT WRONG, AND IT WAS WRITTEN DOWN WHERE I SHOULD HAVE READ IT
-
-**NO HUMAN HAS EVER WRITTEN OR REVIEWED THE GOOGLE SHEET. HE DOES NOT WRITE TO IT AND
-NEVER HAS.** *Scheduled ChatGPT tasks write it. `design.md:103-113` recorded this at
-`3263615` and `7f892e7` and explicitly RETRACTED the human premise; `config.ts:62-66` says
-"The prior is another model's conclusion".*
-
-**I read the `HUMAN_REVIEWED_PRIOR_ANALYSIS` label in `sheetPrior.ts:55` and rebuilt the
-retracted premise from it**, then relayed it to Commercial, which put two decisions to him
-on it. *He corrected me himself.* **The code label is the defect, not the charter:
-`openaiInterpreter.ts:107` and `:205` tell the interpreter a human reviewed it.**
-
-> **A LABEL IN CODE IS NOT A SOURCE. A charter that retracts it is.**
-
-### THE SHEET IS A MIGRATION ARTEFACT AND THE MIGRATION IS STALLED ON ONE LEG
-
-**Four ChatGPT tasks wrote it; retirement is underway at `9437928`; tasks 3 and 4 stopped.
-ONE REMAINS - the 22:00 AFTER-HOURS MOMENTUM RECAP.** *`design.md:654` says task 1 cannot
-stop because it is the SOLE WRITER of `TODAY!A:S`, where float is column I.
-`displayedFloat` is null on effectively every dossier, so the float on his board comes from
-that task.* **PHASE C - SEC-DERIVED FLOAT - IS THE CRITICAL PATH.**
-
-*`design.md` also says tasks 1 AND 2 cannot stop; he describes one running. UNRESOLVED.*
-
-**Two dependencies, routinely discussed as one:**
+### PRODUCTION
 
 ```
-sheet prior  -> interpreter prompt       what the control arm measures
-float col I  -> pillar 5 on the board    WHAT ACTUALLY BLOCKS RETIREMENT
+web / research / assess   a5924c2   deployed 2026-09-19 10:36Z, 2s down
+market worker             467ffec   pid 636490, restarted 2026-09-18 21:05:09Z
+stranger sees             /  /privacy  /terms  /robots.txt  /favicon.ico
+                          /icon.svg  /apple-icon.png            200
+                          /desk  /signin  /api/*                401
 ```
 
-**The control arm cannot see the blocker. I withdrew it to him in the form I put it.**
-*`supply.ts:293`: the Sheet float contradicts its own share count on 8 or 9 of 46 watched
-non-ADR names.*
+**The public site is live, indexed, named "The Momentum Intelligence Trading Desk",
+carrying the drawn mark and Marketing's share string "TMI — Intelligence on what's moving."**
+*Both legal documents carry the new name, `adopted: 2026-09-11` intact, no DRAFT banner.*
 
-### PRODUCTION - verified by me as a stranger, not from a tip
+### OPEN AND HIS
 
-```
-c883d7b   shipped 00:04 ET Thu 09-17 as a LITERAL sha; market worker untouched on 1c23322
-/  /privacy  /terms  /robots.txt  /favicon.ico   200
-/desk  /signin  /api/dashboard  /api/market      401
-robots.txt   "User-Agent: *" / "Allow: /"   no Disallow line exists, so Disallow: / is
-             UNREPRESENTABLE rather than merely absent
-```
+1. **DELETE THE OLD GOOGLE SERVICE-ACCOUNT KEY IN THE CONSOLE.** *Rotation done and
+   exercised 2026-09-19 (new fingerprint `383cb3d1…` on box and local; exposed key
+   `ce67f777…` no longer present; proven by a before/after `/api/dashboard` call returning
+   the same 13 tickers).* **Creating a key does NOT revoke the old one — the exposed key
+   still opens that Sheet until he deletes it.** *Then Ops removes
+   `.env.local.bak-20260919T115148Z`, which holds the old key (gitignored, never committed).*
+2. **SHIP DESIGN'S BADGE FIX `a9df280`?** *Written 2026-09-19, NOT deployed. Suppresses the
+   phase verdict to a dated prior high where the desk cannot establish a side, and switches
+   the reference off a dead run's high on a name that has started a new one — the QCLS fix.*
+   **Design has never seen it render and structurally cannot: it needs production data and
+   has no token.**
+3. **WHICH OF DESIGN'S TWO ITEMS TO BUILD** — the badge label, or the float render.
 
-**The deploy-window 502 class is closed: 3m27s became 2 SECONDS, printed by `deploy.sh`.**
+### THE SHEET MIGRATION — HIS RULINGS, AND THE SHAPE THAT SURVIVED THEM
 
-### WHAT IS HIS AND OPEN
+**The Sheet is a migration artefact. THREE of four ChatGPT tasks are retired; ONE remains,
+the 22:00 after-hours recap.** *No human has ever written or reviewed it —
+`design.md:103-113`, `3263615`/`7f892e7`.*
 
-**NOTHING. Both items that stood here are ruled — kept below as settled, not as questions.**
+> **THE VENDOR FLOAT STAYS ON HIS DESKTOP. `stockanalysis.com` bars automated access AND
+> bars using the data in a competing product — his ruling 2026-09-19.** *No worker, no API
+> route, no scheduled job, no "one-off backfill" may fetch it.* **Verified 2026-09-21:
+> nothing under the app reaches that source.**
 
-1. **THE CYCLE FRAME — RULED YES, AND WIDER THAN ASKED.** *He ruled after-hours; the
-   measurement then showed the defect is BOTH ends.* **`daily_bars.high` is 09:30-16:00
-   plus the closing cross. Premarket-inclusive scored ZERO of 121 discriminating rows
-   across 62 sessions.** *Calibrate `0.5` and `2.0` against the last three months; the
-   sibling's input changes in the same change; the close moves with the high (my ruling -
-   a frame is not half a frame).* **Split-adjusted calibration data is on disk at
-   `data/vendor/alpaca-1hour-split-*.json`; constants carry FRAME WARNINGS at `fbc059f`.**
-2. **THE FLOAT MIGRATION — SCOPED, AND SMALLER THAN IT LOOKED.** *`docs/sheet-coverage-audit.md`
-   already scored every field: 50 PRODUCED, 12 PRODUCIBLE, 19 NEW WORK.* **The 19 are
-   FLOAT (5 fields, one capability, Phase C), JUDGEMENT (4) and PROSE (3) - one build and
-   two product questions, not nineteen items.** *And Phase C does not return a NUMBER:
-   filings give shares outstanding, an UPPER bound. Retiring task 1 replaces a number with
-   a two-tailed verdict, conclusive at the extremes, silent in the middle, available for
-   about half of names.*
+**So the desk OWNS THE TEST and BORROWS THE CLAIM.** *The filing-derived work is already
+built and running (`assessFloatBound`, the floor ratio, rendered in the supply reading).
+SEC filings are public domain and carry none of those terms, which is why the
+filing-derived route is the one to invest in.*
 
-### DO NOT JUSTIFY A PRODUCT DECISION BY HIS TRADING. HIS RULING 2026-09-17.
-
-> *"we need to stop doing things based on me. this is a product now. i am not the only
-> audience we are building for."*
-
-**RECORD THE RULING AS HIS. DO NOT RECORD THE REASON AS HIS.** *A justification scoped to
-one user cannot be tested or inherited — a successor reads "the morning is where his edge
-is" and has no way to weigh it against another user or to know when it stopped being true.*
-
-**THE INSTANCE, AND IT WAS MINE.** *I justified the frame finding as "he trades 07:00-10:00
-and the apparatus sees thirty minutes of it" and put it in Research's charter in those
-words.* **The product-scoped version was stronger and already public:** `tmitrader.com` says
-*"the board runs from 04:00 through the after-hours session, and a float does not get
-cleaner at 09:30"* — **the page argues against the exact boundary the classifier is built
-on, and `cycle` is one of the three things that page sells.** *Checkable by any reader,
-true for every future customer, dependent on nobody's habits.*
-
-*Counted, not asserted: 86 personal-scoped justifications across the nine charters
-(`research.md` 31, `design.md` 15, `README.md` 14, `rnd.md` 11). Coaching's are legitimate -
-that thread IS about him. The product threads' are not.*
-
-### WHAT I HOLD FOR HIM - 2026-09-18, after the Ops seat retired
-
-**Ops-tmi retired 2026-09-18 (`c92da59`); a successor takes the name. TWO OF ITS OPEN
-ITEMS ARE NOW MINE TO CARRY:**
-
-1. **THE MARKET RESTART WORD.** *Deployed at `467ffec` and inert until it happens.* **The
-   condition is "no session in progress" - NOT an hour. After-hours is a session.** *It is
-   what makes the `volume_base` fix live; until then every row is `0`/null and the OLD
-   rows stay `0` forever, so the cutover date must be written at the write site.*
-2. **TWO PRIVACY RETENTION PERIODS.** *`/privacy` carries ten live `[PLACEHOLDER]` spans;
-   Ops measured all but two `[PERIOD]`s. Those two are his: how long an account survives a
-   close request, and one other.* **`/terms` is bracket-clean - the two documents are in
-   different states and must not be reported as one.**
-
-### THE ACCESS-CONTROL GAP, AND IT IS A PUBLISHED CLAIM AHEAD OF THE BUILD
+**HIS FOUR STATES, replacing the binary — he challenged "why say CANNOT VERIFY when you
+could qualify" and was right:**
 
 ```
-/signin  401  WWW-Authenticate: Basic        allowlist in lib/ app/ worker/:  NONE
-/desk    401  WWW-Authenticate: Basic
+REFUTED              current filed count, vendor exceeds it -> impossible number
+CONSISTENT           current count, vendor sits under it
+CONSISTENT (stale)   OLD count, vendor under it. Still valid: outstanding only GROWS,
+                     so a stale count can CONFIRM and can never REFUTE. Say the as-of date.
+CANNOT VERIFY        no filed count at all
 ```
 
-**nginx Basic Auth is the WHOLE of access control - `web.md:122-125`. Google sign-in gates
-nothing.** *That is why moving the consent screen to In production on 2026-09-18 was safe:
-the Google test-user list was never the gate. Safe BECAUSE of that, not because publishing
-status was doing work it was not.*
+**`FILED_SHARES_CURRENT_DAYS = 45` is MEASURED, not chosen** *(211 issuers, bimodal with a
+real valley; 30–90 days gives the same coverage within three points). 45 rather than 90
+because a stale count treated as current produces a confident IMPOSSIBLE on a company that
+simply issued shares — and that error lands hardest on the names that dilute hardest.*
+
+**Design's render, agreed and unbuilt: ONE number, ONE verdict, the bound cited INSIDE the
+verdict.** *`FLOAT 5.53M  CONSISTENT · under 12.4M filed as of Jun 30`. Two adjacent number
+columns would assert parity and invite averaging a claim with a ceiling, which is the one
+meaningless operation here.* **The filed number is shares OUTSTANDING — a ceiling, not a
+rival estimate. Never label it "derived float".**
+
+### OWNERLESS RIGHT NOW — `deploy/aws/push-release.sh`
+
+**There is NO mointel Ops seat as of this writing.** *Web routed a spec here because of it;
+it is recorded so the next Ops seat inherits it rather than losing it.*
+
+**HIS RULING 2026-09-19: the deploy gate should be enforced by the tool, not remembered by
+a seat.** *Context: `ddaf2f8` reached production 2026-09-18 with the suite red, and red
+since the rename hours earlier. There is NO test step in `deploy.sh`, `preflight.sh` or
+`push-release.sh` — verified.*
+
+```
+1  refuse a sha whose suite is not green; print failing test NAMES, not a count
+2  push-release.sh:34 already asserts the tree equals the sha but for .md/.png, so
+   running the suite in the working tree IS a test of the sha -- after that guard
+3  A SUITE THAT CANNOT RUN MUST REFUSE, NOT PASS. Require a parsed executed-test
+   count > 0. Zero executed is a refusal, not "no failures found"
+4  ALLOW_RED_SUITE=1, printed loudly AND written into the release marker beside
+   RELEASE_SHA, so "was this shipped past a red suite" is answerable from the box
+```
+
+> **AND THE ONE WEB THINKS MATTERS MORE, verified here: `push-release.sh:18` reads
+> `REF="${3:-HEAD}"` while `AWS_DEPLOYMENT.md:489` says "Pass the enumerated sha as a
+> LITERAL. Never `HEAD`." THE SCRIPT DEFAULTS TO WHAT THE DOC FORBIDS.** *Make the ref
+> required. A prose rule against a convenient default loses to the default whenever
+> somebody is in a hurry — on 2026-09-16 `rev-parse HEAD` at ship time carried four peer
+> commits nobody had gated.*
+
+### THE ACCESS-CONTROL GAP — A PUBLISHED CLAIM AHEAD OF THE BUILD
+
+```
+/signin  401 WWW-Authenticate: Basic     allowlist in lib/ app/ worker/:  NONE
+```
+
+**nginx Basic Auth is the WHOLE of access control (`web.md:122-125`). Google sign-in gates
+nothing** *— which is why moving the consent screen to In production on 2026-09-18 was
+safe: the test-user list was never the gate.*
 
 > **THE ADOPTED TERMS DESCRIBE A SYSTEM THAT DOES NOT EXIST.** *§2 "Access is by
-> invitation. There is no public sign-up." §3 "One person, one account. Do not share your
-> sign-in." §9 promises access can be withdrawn from a person.* **The mechanism is ONE
-> SHARED PASSWORD - which is sharing a sign-in, and cannot be revoked for one person
-> without locking out everyone.**
+> invitation"; §3 "One person, one account. Do not share your sign-in"; §9 promises access
+> can be withdrawn from a person.* **The mechanism is ONE SHARED PASSWORD.** *It breaks at
+> the SECOND user, not the hundredth.*
 
-**Nothing is wrong today because he controls who gets the password. IT BREAKS AT THE
-SECOND USER, NOT THE HUNDREDTH.** *And there is no allowlist to fall back on: the day
-`auth_basic off` reaches `location /`, any Google account completes sign-in.*
+**AND WHEN AUTH SHIPS, ONE LINE MUST SHIP WITH IT OR THE ACCOUNTS ARE DELETED BY A DEPLOY.**
+*`lib/auth/store.ts:30-31` defaults the identity store to `cwd/data/identity.db`;
+`IDENTITY_DB_PATH` is unset in production; the units run from the release directory, which
+`prune.sh` removes.* **The first user's account survives one deploy and is deleted by the
+second, silently. `openIdentityStore` mkdirs the doomed path without erroring.**
 
-**Same family as the cycle frame, the landing copy and the per-tenant research prior: a
-published claim running ahead of the build, cheaper to build toward than to retrofit.**
+### RESEARCH HOLDS THREE PRODUCT QUESTIONS, NONE URGENT
 
-> **AND WHEN THE AUTH WORK SHIPS, ONE LINE MUST SHIP WITH IT OR THE ACCOUNTS ARE DELETED
-> BY A DEPLOY.** *Ops `e634a5a`, verified by me at the source:*
-> `lib/auth/store.ts:30-31` — `DEFAULT_IDENTITY_PATH = IDENTITY_DB_PATH ?? cwd/data/identity.db`,
-> **and `IDENTITY_DB_PATH` IS NOT SET in production** *(`/etc/mointel/mointel.env`), while the
-> units run `WorkingDirectory=/opt/mointel/current`.*
-> **So a shipped sign-in writes accounts INSIDE THE RELEASE, and `prune.sh` REMOVES old
-> releases — tonight's deploy printed `2 release(s) removed`.** *The first user's account
-> survives one deploy and is deleted by the second, with nothing in any log connecting the
-> loss to the deploy that caused it.*
-> **`openIdentityStore` calls `mkdirSync(..., {recursive:true})`, so it CREATES the doomed
-> path without erroring.** *`MARKET_DB_PATH` is `/var/lib/mointel/market.db` for exactly
-> this reason and the env file says so; the identity store inherits none of it.*
-> **SET `IDENTITY_DB_PATH` IN THE SAME MOTION AS THE AUTH SHIP. NOT A FOLLOW-UP.**
+*How a restart should rebuild the session high (its own answer points at an hourly lookup,
+~8,400 paged requests, a rate-limit question); whether the cycle-start gate should measure
+the day's HIGH rather than its CLOSE; and the `HUMAN_REVIEWED_PRIOR_ANALYSIS` label, which
+tells the interpreter a human reviewed something no human has.*
 
-### CLOSED TONIGHT, SO NOBODY RE-ASKS
+**The cycle frame is ALL THREE SESSIONS on his ruling.** *`0.5` and `2.0` carry FRAME
+WARNINGS at their definition site — measured in the old frame, not re-derived. Calibration
+data is on disk: `data/vendor/alpaca-1hour-split-2026-05-20-to-2026-08-18.json`.*
 
-- **Indexing: HIS WORD, "index it."** Shipped, live, allow-all.
-- **"Google verification" WAS THE WRONG NAME and the batch is done.** *From his own
-  console 2026-09-18 via Ops: scopes are `openid`, `email`, `profile`, and the console
-  reads **"Verification is not required since your app is not requesting any sensitive or
-  restricted scopes"**.* **So SCOPE verification never applied and neither did the
-  unverified-app user cap.** *What the public batch actually satisfied was the CONSENT
-  SCREEN's own requirements — authorized domain via the apex TXT token, home page and
-  privacy links. The work was required; the heading was not.*
-  **OPEN AND UNCHECKED: the app's PUBLISHING STATUS.** *Flagged, not verified — I cannot
-  see his console. Testing vs In production is a SEPARATE axis from scopes, and Testing
-  caps users and expires refresh tokens on a short clock. Confirm it reads In production.*
-- **Commercial's two decisions: WITHDRAWN** (`6df58b5`, `154f9fa`) once the premise fell.
-- **Float in a paid report: RULED under order-and-process** - narrate the VERDICT, never the
-  number. *Already computed and rendered (`float.ts:452`, `supply.ts:72`), so it is a
-  default not a build, and it can only fail toward saying less.* **His only if someone
-  proposes narrating the number.**
-- **`marketing.md` said the site was not public; `coaching.md` could not point at the
-  coaching work after it left the repo.** Both fixed by their owners.
+### IDLE, NOTHING PENDING
 
-### UNBUILT AND NOT BLOCKED ON HIM
-
-- **The cycle badge.** *Design's condition is genuinely unmet: no cycle flag exists in the
-  tree. `todayQualifiesAsCycleStart` is exported and UNWIRED.* **The "6% of rows" figure
-  Design gave him is denominated over the TRACKED UNIVERSE (438/6,889 on one month-old
-  date), not his board of 12-50. Design is re-running it board-denominated and corrected
-  him directly.** *Research's caveat: an order of magnitude, not a surface number.*
-- **Open Graph tags.** *The live site has ZERO. Marketing's strings verified as
-  deletion-only trims of approved copy; with Ops for the next enumeration.*
-- **`volume_base` is the literal `0` on 25,789 of 25,789 rows** *beside a truthful
-  `volume_base_source`* - **a zero wearing a source attribution, not a gap.** *Write-only;
-  nothing reads it, so no running number is wrong. `worker/runtime.ts` is OPS's file.*
-
-### PRACTICES LEARNED TONIGHT, EACH FROM A REAL MISS
-
-- **AN ADDED-LINE FILTER CANNOT SEE A DELETION AND DOES NOT FAIL WHEN THERE IS ONE.** *It
-  returns a plausible "comments only". Only `+22/-4` made me look again; a line count is
-  not a check.*
-- **A VACUOUS CHECK CAN PRESENT AS INSUFFICIENT DATA.** *Research's: n=33 "undetermined" was
-  the WRONG POPULATION, not too small a one - rows where both hypotheses coincide cannot
-  discriminate. Selecting rows where they disagree answered it at n=16.* **Every other
-  vacuous check here announced itself with a 0% or 100%; this one announced itself as a
-  research programme.**
-- **SCOPE DOES NOT SURVIVE A RELAY.** *I cleared "the uncommitted `vwap.ts` edit" as
-  comment-only; it reached a file as a fact about the commit, which also carried 167 lines
-  I never saw.*
-- **DO NOT INSTRUCT BEFORE READING THE SEAM.** *I told Web to build `robots.txt`; `web.md:95`
-  puts routes and nginx on Ops's carriage with Web specifying. It was already built.*
-- **THE ENUMERATED SHA IS THE ONLY THING BETWEEN A SHARED INDEX AND PRODUCTION.** *Ops
-  passed `rev-parse HEAD` and shipped four extra commits. Harmless ONLY because the peers'
-  commits happened to be inert; ungated page code landed minutes later.*
+**Commercial, R&D, Coaching, Marketing.** *Coaching's work lives outside the repo at
+`C:\Users\adshu\.mointel-fills\coaching\`; `coaching.md` points at it.*
 
 ## The third delegation: deploy instructions, confirmed directly
 
