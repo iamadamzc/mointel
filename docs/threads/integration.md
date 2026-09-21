@@ -320,16 +320,36 @@ safe: the test-user list was never the gate.*
 `prune.sh` removes.* **The first user's account survives one deploy and is deleted by the
 second, silently. `openIdentityStore` mkdirs the doomed path without erroring.**
 
-### RESEARCH HOLDS THREE PRODUCT QUESTIONS, NONE URGENT
+### THE CYCLE FRAME — ONE UNRULED HALF, AND IT GATES TWO CONSTANTS
 
-*How a restart should rebuild the session high (its own answer points at an hourly lookup,
-~8,400 paged requests, a rate-limit question); whether the cycle-start gate should measure
-the day's HIGH rather than its CLOSE; and the `HUMAN_REVIEWED_PRIOR_ANALYSIS` label, which
-tells the interpreter a human reviewed something no human has.*
+**HE RULED AFTER-HOURS IN. THE PREMARKET HALF WAS MEASURED, PUT TO HIM, AND NEVER
+ANSWERED.** *Research corrected this on 2026-09-21 and it corrects me: I recorded the
+all-sessions frame as his ruling after reading RESEARCH'S SENTENCE TO HIM — "the
+all-sessions frame you just ruled" — which is a peer's claim, not his words back.*
+**Peer confirmation is not a second source.**
 
-**The cycle frame is ALL THREE SESSIONS on his ruling.** *`0.5` and `2.0` carry FRAME
-WARNINGS at their definition site — measured in the old frame, not re-derived. Calibration
-data is on disk: `data/vendor/alpaca-1hour-split-2026-05-20-to-2026-08-18.json`.*
+> **UNTIL HE RULES PREMARKET, `0.5` AND `2.0` MUST NOT BE RE-DERIVED.** *Deriving against
+> an unruled frame bakes it into two constants that then look calibrated.* **Both carry
+> FRAME WARNINGS at their definition site today — measured in the old frame, not
+> re-derived.** *Calibration data is on disk:
+> `data/vendor/alpaca-1hour-split-2026-05-20-to-2026-08-18.json`.*
+
+*`e48a2ca` shipped using `max(session_high, ah_high)` as the auditor, which includes
+premarket. It is INERT at `a5924c2` — producer, no consumer — so nothing renders it.*
+
+### RESEARCH'S QUESTIONS — ONE OPEN, NOT THREE
+
+```
+restart rebuild of sessionHigh        OPEN       waits on him. Its own answer points at
+                                                 an hourly lookup, ~8,400 paged requests,
+                                                 which is a rate-limit question
+day-high vs close, cycle-start gate   WITHDRAWN  by Research, unreproduced; QCLS never
+                                                 evidenced it either way
+HUMAN_REVIEWED_PRIOR_ANALYSIS         FIXED      dbd70d1, 2026-09-19. Now
+                                                 PRIOR_MODEL_ANALYSIS -- verified in
+                                                 bundle.ts, openaiInterpreter.ts,
+                                                 sheetPrior.ts
+```
 
 ### IDLE, NOTHING PENDING
 
