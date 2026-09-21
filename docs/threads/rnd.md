@@ -3130,6 +3130,14 @@ desk flipping at the bell, so a mismatch there is the first thing to look at.
 
 ## State as of 2026-08-23
 
+> **SUPERSEDED 2026-09-21 — A SNAPSHOT, NOT A CORRECTION.** Everything below was
+> true on 2026-08-23 and much of it is not now: the register has closed six
+> questions since, and the archive window has moved from blocked to unblocked.
+> **Kept rather than deleted because this register's rule is that corrections
+> stand beside what they replaced** — but read the register table and
+> `docs/rnd-opening-prompt.md` for live state, never this section.
+
+
 **Step 1 is built and has run.** Outcome capture plus the coverage rollup:
 `lib/archive/`, `worker/archive-backfill.ts`, `npm run archive:backfill` and
 `npm run archive:coverage`. Findings, defects and limits are in
@@ -3729,59 +3737,10 @@ intelligence, it is volume — and volume is how a genuine signal gets buried.
 
 ## Opening message for a new chat
 
-**Rewritten 2026-08-27.** The previous version told a successor to *start with
-outcome capture and a backfill*, which finished on 08-23. **A stale opening
-message is the worst thing in a handover document**, because it is the one part
-read before the reader knows enough to doubt it.
+**MOVED 2026-09-21 to `docs/rnd-opening-prompt.md`. Do not re-add it here.**
 
-> This is the **R&D thread** for the Momentum Intelligence desk at `A:\mointel`.
-> Read `docs/threads/rnd.md` and `docs/threads/README.md` first, then
-> `docs/rnd/2026-08-23-outcome-capture.md` — the findings log, which is long and
-> where the defects and limits live.
->
-> **First action, before anything else: title this session `R&D-tmi`.** *Peers find
-> you by that title in `mcp__ccd_session_mgmt__list_sessions`; until it is set,
-> nobody can reach you.* **FIVE constellations share this machine and a bare name
-> resolved four ways — a message meant for one seat landed on another project's,
-> twice.** *His ruling 2026-09-14; this thread was still bare on 2026-09-14
-> because the rule said "when next opened" instead of putting it here.*
->
-> **Addresses come from `list_sessions` every time, and you send with
-> `mcp__ccd_session_mgmt__send_message`.** *Never `ListAgents`, never the
-> `SendMessage` tool, never a `from` attribute — all three fail on this machine.*
-> **AND CHECK `cwd` IS `A:\mointel` BEFORE EVERY SEND:** *the title is a claim;
-> the working directory is a fact.*
->
-> You are a standing capability, not a project: the desk should always be
-> learning something. **Questions live in the register, at most two active, and
-> they close with a verdict — a null counts.** You also own the tape research at
-> `A:\trade_research\momentum\viscosity`. You do **not** own `lib/research/`
-> (Research Pipeline), you do **not** own the dashboard (Design), and you do
-> **not** deploy (Ops).
->
-> **CORRECTED 2026-09-12 BY INTEGRATION AUDIT — the line below said "Q1 and Q6 are
-> active" and Q6 CLOSED on 2026-09-03** (`PRE_OPEN_RANK_PREDICTS_VOLATILITY_NOT_EDGE`),
-> in the register in this same file. *This message warns that a stale opening message
-> is the worst thing in a handover, and then contained one for nine days.* **Verify
-> the register rather than this paragraph.**
->
-> **Q1 is active.** Its first half is **amended, not merely closed** — strong form
-> still excluded, but the relationship is now DETECTED at +17.9pp (2026-09-02). Its
-> second half waits on **tier A**, which is specced and unbuilt, is the largest
-> outstanding item, and also blocks Q3.
->
-> **The instrument works. `lib/archive/` and `worker/archive-backfill.ts` are
-> built and have run.** Four parked questions each carry the condition that
-> would unblock them; do not start one without checking its condition still
-> holds.
->
-> **Read these three habits before measuring anything, because each cost
-> something here:** measure a commit, not a checkout. A count across stores
-> proves nothing without a content digest — ids are per-store sequence
-> positions, not identities. And *carrying the words* and *yielding a number*
-> are different counts, which has now bitten four times.
->
-> **Corrections in this register stand beside what they replaced rather than
-> overwriting it.** Keep that. Several entries record a wrong number and its
-> replacement, and the reasoning that connects them is usually the useful part.
-
+This section warned that *"a stale opening message is the worst thing in a
+handover document"* and then held one for nine days, telling successors Q6 was
+active after it had closed. **The cause was two copies of the same thing; the
+fix is one copy.** The file also carries what this section never did: the
+retire-and-archive step, the model check, and the first task.
