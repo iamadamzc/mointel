@@ -265,91 +265,46 @@ subject to every prohibition above.*
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**2026-09-21. Nothing is in progress and no file is held.**
+**As of 2026-09-21 09:38 UTC. Nothing in progress, no file held. This session
+(`Marketing-tmi`, opened 2026-09-10) is being retired under the session-hygiene
+rule; the hand-off is `docs/marketing-opening-prompt.md`.**
 
-- **The share card carries its tagline again**, live, verified on the wire
-  2026-09-21: `og:title` = "TMI — Intelligence on what's moving.", site name
-  the full new name (Web `a5924c2`).
-- **STILL OPEN, NOT MINE TO LAND:** the two meta descriptions do not yet carry
-  "what supply stands behind it". The `/` description on the wire still names
-  three things. Strings are in `docs/marketing/2026-09-17-open-graph-copy.md`;
-  with Web and Ops.
+**Facts a fresh seat needs on day one**
 
-- **THE PRODUCT WAS RENAMED 2026-09-18:** TMI, The Momentum Intelligence
-  Trading Desk. Live on the site, the mark and the legal pages. The H1 is
-  unchanged. **The rename took the tagline out of the share card by side
-  effect; ruled back in as "TMI — Intelligence on what's moving." (36), with
-  Ops for the next enumeration.** The canvas artboards still say TMI Trader
-  and are now behind the site; that is Web's.
+- **The site is public.** `tmitrader.com/`, `/privacy`, `/terms` serve to
+  anyone; `/desk` and `/signin` refuse. Every word this thread writes is live,
+  and the prohibitions bind the deployed page.
+- **The product is TMI, The Momentum Intelligence Trading Desk** (renamed by
+  him 2026-09-18; Commercial holds the record). H1 unchanged: *"Intelligence
+  on what's moving."* Warrior Trading is never named, his ruling 2026-09-16.
+- **Public copy lives in two places that do not sync:** the design canvas
+  (`docs/web/canvas/*.dc.html`, published at
+  https://claude.ai/artifact/MydyXGM4MpDZtwixpUXjvs with a `note-build` sha
+  stamp) and the page source `app/page.tsx` / `app/layout.tsx`. A canvas
+  republish never reaches the site. Verify every copy claim in both, by grep
+  and by curl of the live page as a stranger.
+- **His standard for the words:** a working trader can tell it was written by
+  one. His two verdicts: *"flat and distant"* and *"SCREAMS AI"* (the
+  setup-and-payoff sentence). Rule: no clause whose only job is to land the
+  clause before it.
+- **Instruments, all in `docs/marketing/`:** `what-it-is-not.md` (the negation
+  list, an internal tool never a lead); `2026-09-10-landing-copy-pass.md`;
+  `2026-09-11-pre-session-research.md`; `2026-09-17-open-graph-copy.md`;
+  `voice-reference-warrior-trading.md` (the reader, not a prose style).
 
-- **The window, answered by him 2026-09-16:** no 07:00–10:00. Instead the page
-  says the question is the same in premarket, regular hours and after hours.
-  Last paragraph of Why it exists, both artboards. **Two seats derived the
-  claim from code independently** (Marketing from `session.ts` and `board.ts`;
-  Web from `view.ts:469` and `board.ts:22`) and agree.
-- **Warrior Trading is never named**, his ruling 2026-09-16. Swept: no public
-  artboard or legal text carries it.
-- **THE SITE IS PUBLIC. `tmitrader.com/`, `/privacy`, `/terms` return 200 to
-  a stranger; `/desk` and `/signin` 401.** Went public 06:34Z 2026-09-16,
-  nineteen minutes after this section said it had not. Verified by Marketing
-  with curl 2026-09-17. **Every word this thread writes is now live to anyone,
-  and the prohibitions apply to the deployed page, not just the canvas.**
-- **PENDING DEPENDENCY, NOT A CHANGE. The sessions paragraph is live on the
-  site** (Web wrote it into `app/page.tsx` at `a321156`; verified on the wire
-  2026-09-17). It says *"the board runs from 04:00 through the after-hours
-  session."* **True of ranking, RVOL and session high. Not yet true of the
-  CYCLE badge**, which Research measured is built on a 09:30–16:00 daily bar
-  (premarket scored zero of 121 discriminating rows). He has ruled the frame
-  moves to the full extended session, so the expected fix is code moving to
-  the copy. **If that fix does not ship, this sentence needs a caveat and this
-  seat writes it.** Pre-written, deletion-safe, unused: *"…and a float does
-  not get cleaner at 09:30. The cycle read is taken on the regular session."*
-  Reopen when Research or Integration reports the frame change landed or was
-  dropped.
-- **THE CANVAS IS NOT A ROUTE TO PRODUCTION. The landing page is code,
-  `app/page.tsx`, and a sentence reaches the site only when someone writes it
-  there.** Found 2026-09-17: the sessions paragraph from `c353cbd` ("a float
-  does not get cleaner at 09:30") is on the canvas and in no `.ts`/`.tsx` file.
-  I filed it as a deploy lag; Integration showed it was a source gap, with a
-  control (`page.tsx` carries the header line). With Web, which owns the site.
-  **From here every copy change is two claims: on the canvas, and in
-  `app/page.tsx`. The `note-build` stamp answers only the first. Check the
-  second by grep or by curl of the live page.**
+**Open items**
 
-- **The canvas URL changed form: https://claude.ai/artifact/MydyXGM4MpDZtwixpUXjvs**
-  (older messages carry `claude.ai/code/artifact/a9df35ee-…`). **It carries a
-  `note-build` stamp with the seeding sha.** Check `git log -1 --format=%h --
-  docs/web/canvas/` against the stamp before believing the canvas is current;
-  never ask Web and never assume. Web now pings on every republish.
-- **His verdicts 2026-09-15:** research section *"fine"*. Section header *"and
-  the fourth is the one nobody prints"* — *"SCREAMS AI"*. Replaced with **"None
-  of this is on the chart."**; same shape cut from card 03. Rule in the copy
-  pass: no sentence whose second clause exists to land the first.
+| item | owner | waits on |
+|---|---|---|
+| The two meta descriptions still name three things; the share card names four (supply). Reconciled strings are in `2026-09-17-open-graph-copy.md`. | Web / Ops | next deploy |
+| The sessions paragraph says the board runs 04:00 through after hours; the cycle badge is built on a 09:30–16:00 bar. He ruled the frame moves to the full session. If that does not ship, the caveat *"The cycle read is taken on the regular session."* goes in. | Research (code), this seat (caveat) | Integration reporting the frame change landed or dropped |
+| The canvas artboards still say TMI Trader. | Web | — |
+| *"Research for the avoid"* is cleared as a claim and is the research section's header the day the Why Not Report renders. | this seat | Design shipping the report |
+| Socials: not started, no accounts, no handles. Trigger is his. | him | his word |
 
-- **On the canvas since `e0d6523`, 2026-09-11 04:53 ET (Web):** the copy pass,
-  Commercial's rulings, the pre-session research section with four reading
-  rules, and the card 02 cut. Verified 2026-09-14: `0ec51ad` is an ancestor of
-  `e0d6523` and no artboard changed after it. **This section said "not yet
-  republished" for three days after it was. Integration-tmi caught it.**
-- **Instruments:** `docs/marketing/what-it-is-not.md` (thirteen negations, all
-  seven artboards swept clean 2026-09-10); `docs/marketing/2026-09-10-landing-copy-pass.md`;
-  `docs/marketing/2026-09-11-pre-session-research.md` (every sentence traced
-  to source, Commercial's `1a7bb66` applied).
-- **Closed by Commercial `1a7bb66`:** the one-in-six vendor-float number is
-  struck and the mechanism is on the page; *"research for the avoid"* is
-  cleared as a claim and waits for the Why Not Report to render.
-- **Not on the page, by design:** the why-not report and the book-effect axis.
-  No component renders them.
-- **The unit is the canvas**, seven artboards; the published artifact is
-  checked separately from the source, and so is this section.
-- **THE VOICE REFERENCE IS ANSWERED, 2026-09-15: Warrior Trading.** *"the
-  trading style this app is patterned after. they offer scanners and charts. i
-  would like tmi to be complementary."* Read and recorded in
-  `docs/marketing/voice-reference-warrior-trading.md`. **It is a reader, not a
-  prose style: the home page is the sales register he rejected.** The reader is
-  a Warrior student; recognition is their vocabulary used correctly.
-- **RULED BY COMMERCIAL `d93f0ba`:** the relationship is already on the page
-  in the Boundaries card; **Warrior Trading is not named in any public copy. HIS RULING 2026-09-16: *"do not want warrior mentioned."***
-  The trade's vocabulary is usable without attribution. Complementary is shown
-  by fitting beside their morning, not by saying their name.
-- **His "maybe enhance it" is Research's.**
+**Archive, 2026-09-10 to 09-21, for the record.** Commits carry the detail:
+`d73de05` not-list and copy pass; `21ddd04` Commercial's rulings on both
+artboards; `d87be21` research section; `0ec51ad` fourth reading rule;
+`fe26b0a` "None of this is on the chart"; `c353cbd` sessions paragraph;
+`f1269cd` voice reference; `ea1a8e6` Open Graph strings; `b8b600b` tagline
+back after the rename.
