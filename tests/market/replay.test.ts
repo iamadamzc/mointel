@@ -235,3 +235,86 @@ describe('the anchor, against a real engine', () => {
     db.close();
   });
 });
+
+/*
+ * THE ORDER IS THE FIX, SO THE ORDER IS WHAT IS TESTED.
+ *
+ * `worker/runtime.ts` `bootstrapSession` replays stored bars BEFORE it seeds
+ * from the daily-bar snapshot.
+ *
+ * WHICH OF THESE ACTUALLY CATCHES THE ORDERING WAS SETTLED BY MUTATION, AND THE
+ * PREDICTION WAS WRONG. Swapping replay and seed kills the premarket-high test
+ * and leaves the volume test green — the reverse of what was expected. The
+ * mechanism is `engine.ts:1010`, which discards any bar at or before
+ * `volumeBaseThrough`, so a replay after the seed loses those bars' highs
+ * outright rather than merely re-counting their volume.
+ *
+ * The volume assertion is kept anyway: it is the one that would catch the
+ * eviction breaking, which is a different defect in the same lines.
+ *
+ * The defect being fixed, measured on 2026-09-18: after a restart 1,481 rows
+ * read low, and 1,160 of those highs had printed before 09:30. The daily bar
+ * is regular session only, so premarket was covered by nothing.
+ */
+describe('replay before the snapshot seed', () => {
+  const PREMARKET_HIGH = 4.2;
+  const RTH_ONLY_HIGH = 2.78;
+
+  const options = {
+    tradingDate: DATE,
+    feed: 'sip' as const,
+    discoveryRank: 12,
+    internalRank: 50,
+    priceMin: 0.1,
+    priceMax: 20,
+    baselineSessions: 20,
+    now: () => Date.parse(`${DATE}T15:00:00.000Z`),
+  };
+
+  /** Replays a premarket high the daily bar cannot see, then seeds the RTH one. */
+  function replayedThenSeeded(symbol: string, withBars: boolean): DemandEngine {
+    const db = store();
+    if (withBars) {
+      upsertMinuteBars(db, DATE, [
+        bar(symbol, '08:00', 1.0, PREMARKET_HIGH), // premarket
+        bar(symbol, '14:00', 2.0, RTH_ONLY_HIGH), // regular session
+      ]);
+    }
+
+    const engine = new DemandEngine(options);
+    engine.setBaselines(new Map([[symbol, baseline(symbol)]]));
+    engine.track(symbol);
+
+    replaySession(db, engine, DATE);
+    engine.seedSession(symbol, {
+      volumeBase: 500000,
+      volumeBaseThrough: `${DATE}T14:00:00.000Z`,
+      volumeBaseSource: 'alpaca-snapshot-daily-bar',
+      sessionHigh: RTH_ONLY_HIGH,
+      sessionLow: 2.0,
+    });
+    db.close();
+    return engine;
+  }
+
+  it('keeps the premarket high the daily bar cannot see', () => {
+    const state = replayedThenSeeded('GWAV', true).getDemandState('GWAV');
+    expect(state?.sessionHigh).toBe(PREMARKET_HIGH);
+  });
+
+  it('does not double-count the volume the seed base already contains', () => {
+    /*
+     * Both replayed bars carry 1,000 and both fall at or before
+     * `volumeBaseThrough`, so the seed evicts them. 502,000 here would mean the
+     * eviction stopped working and every pre-snapshot minute is counted twice.
+     */
+    const state = replayedThenSeeded('GWAV', true).getDemandState('GWAV');
+    expect(state?.cumulativeVolume).toBe(500000);
+  });
+
+  it('leaves a name with no stored bars on whatever the seed gives it', () => {
+    /* Absent beats plausible: replay invents nothing for an untracked name. */
+    const state = replayedThenSeeded('NOBARS', false).getDemandState('NOBARS');
+    expect(state?.sessionHigh).toBe(RTH_ONLY_HIGH);
+  });
+});

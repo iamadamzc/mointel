@@ -640,6 +640,9 @@ export interface BackfillSummary {
   symbolsRequested: number;
   symbolsWithBars: number;
   minuteBarsIngested: number;
+  /** Stored minute bars replayed into the engine at startup, and their symbols. */
+  barsReplayed: number;
+  symbolsReplayed: number;
   snapshotSymbols: number;
   baselinesLoaded: number;
   baselinesBuilt: number;

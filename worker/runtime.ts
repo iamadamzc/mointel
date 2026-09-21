@@ -41,6 +41,7 @@ import {
   type ClassificationSummary,
 } from '../lib/market/securities';
 import { DemandEngine, type EngineEvent } from '../lib/market/engine';
+import { replaySession } from '../lib/market/replay';
 import { DEFAULT_ACTIVITY_CONFIG } from '../lib/market/activity';
 import { buildBaseline, computeDailyRvol } from '../lib/market/rvol';
 import {
@@ -786,6 +787,8 @@ export class MarketRuntime {
       symbolsRequested: 0,
       symbolsWithBars: 0,
       minuteBarsIngested: 0,
+      barsReplayed: 0,
+      symbolsReplayed: 0,
       snapshotSymbols: 0,
       baselinesLoaded: countBaselines(this.db, this.tradingDate),
       baselinesBuilt: 0,
@@ -814,6 +817,53 @@ export class MarketRuntime {
 
     summary.symbolsRequested = candidates.size;
     this.logger.info(`[demand] reconstructing session for ${candidates.size} candidate symbols`);
+
+    /*
+     * ---- 0. replay: this session's own stored minute bars, BEFORE the seed ----
+     *
+     * THE PREMARKET HOLE, measured 2026-09-18. A restart rebuilt `sessionHigh`
+     * from two sources — the daily bar, which is regular session only, and the
+     * after-hours reconstruction window — and PREMARKET WAS COVERED BY NEITHER.
+     * 1,481 rows read low against the pre-restart snapshot; 1,160 of those
+     * highs had printed before 09:30. Nothing was lost or lowered: the engine
+     * was rebuilt from sources that had never seen the print, and a low number
+     * reads as an observation while a null reads as absent.
+     *
+     * REPLAY GOES FIRST, AND THE ORDER IS THE WHOLE CORRECTNESS OF IT — BUT NOT
+     * FOR THE REASON IT LOOKS LIKE.
+     *
+     * The obvious worry is double-counted volume, and that one is handled
+     * whichever way round these go. The real reason is `engine.ts:1010`:
+     *
+     *     if (runtime.volumeBaseThrough && bar.ts <= runtime.volumeBaseThrough) return;
+     *
+     * Once the seed has set `volumeBaseThrough`, EVERY BAR AT OR BEFORE IT IS
+     * DISCARDED ENTIRELY — correctly, since its volume is already in the base,
+     * but the high goes with it. Replay after the seed would therefore throw
+     * away most of the session on a mid-session restart and rebuild the very
+     * hole this exists to close. Replay first and the bars land normally; the
+     * seed then evicts their volume and `maxOrValue` keeps their high.
+     *
+     * Established by mutation, not by reading: swapping the two kills the
+     * premarket-high test and leaves the volume test green, which is the
+     * opposite of what this comment said before someone ran it.
+     *
+     * Research owns the division and settled it by measurement rather than by
+     * argument: the daily-bar snapshot KEEPS volume, because that volume is
+     * measurably not RTH-only (3 of 2,747 rows, 0.1%), while `daily_bars.high`
+     * is 09:30–16:00 plus the closing cross and cannot supply an extreme.
+     * Different fields — they were never competing.
+     *
+     * A name with no stored bars is untouched here and takes whatever the seed
+     * gives it, which is the same direction as every other seed on this desk:
+     * absent beats plausible.
+     */
+    const replay = replaySession(this.db, this.engine, this.tradingDate);
+    summary.barsReplayed = replay.bars;
+    summary.symbolsReplayed = replay.symbols;
+    this.logger.info(
+      `[demand] replayed ${replay.bars} stored minute bars for ${replay.symbols} symbols (${replay.elapsedMs}ms)`,
+    );
 
     // ---- 1. snapshots: cumulative volume + previous close for everything ----
     const snapshots = await this.rest.getSnapshots([...candidates]);
@@ -1186,6 +1236,8 @@ export class MarketRuntime {
             symbolsRequested: 0,
             symbolsWithBars: 0,
             minuteBarsIngested: 0,
+            barsReplayed: 0,
+            symbolsReplayed: 0,
             snapshotSymbols: 0,
             baselinesLoaded: 0,
             baselinesBuilt: 0,
