@@ -8013,6 +8013,14 @@ appends. Never a bare overwrite.**
 
 ## Opening message for a new chat
 
+> **SUPERSEDED 2026-09-21 by [`docs/ops-opening-prompt.md`](../ops-opening-prompt.md),
+> which is now the single source for starting an Ops chat and carries production
+> facts read on that date.** *This section is kept as the record of what the
+> 2026-09-12 → 09-18 seat handed over; its `PRODUCTION AT` block was brought
+> current on 2026-09-19 and is current again only by coincidence after that.*
+> **Two copies of a handover drift. Edit the opening-prompt file, not this.**
+
+
 *Rewritten 2026-09-18 16:3x ET by the retiring Ops seat (session of 2026-09-12 →
 2026-09-18), on his instruction to retire. **Every production fact below was read
 from the box at 16:24 ET on 2026-09-18, not carried.** The previous version said
