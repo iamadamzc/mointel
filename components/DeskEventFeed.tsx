@@ -43,13 +43,23 @@ export function DeskEventFeed({
   universe,
   onSelect,
 }: {
-  events: DeskEvent[];
+  /**
+   * The session's events, or NULL when the desk has no snapshot at all.
+   *
+   * The distinction became load-bearing the moment this band stopped hiding
+   * itself. An empty array is a fact the desk observed -- nothing has happened
+   * yet -- while a null is the desk having nothing to observe with, and
+   * collapsing the two puts "no deterministic events yet this session" on
+   * screen during an outage, which is a claim about the market made from no
+   * data. Same shape as a `200` on a dead page.
+   */
+  events: DeskEvent[] | null;
   universe: EventUniverse;
   onSelect: (ticker: string) => void;
 }) {
   const [showAll, setShowAll] = useState(false);
 
-  const ranked = useMemo(() => prioritizeEvents(events, universe), [events, universe]);
+  const ranked = useMemo(() => prioritizeEvents(events ?? [], universe), [events, universe]);
   const material = useMemo(() => relevantEvents(ranked), [ranked]);
   const visible = showAll ? ranked : material;
   const hidden = ranked.length - material.length;
@@ -92,9 +102,11 @@ export function DeskEventFeed({
 
       {visible.length === 0 ? (
         <p className="text-[11px] text-ink-3">
-          {ranked.length === 0
-            ? 'No deterministic events yet this session.'
-            : 'No events for the names currently in view.'}
+          {events === null
+            ? 'The desk has no snapshot, so it cannot say what has happened.'
+            : ranked.length === 0
+              ? 'No deterministic events yet this session.'
+              : 'No events for the names currently in view.'}
         </p>
       ) : (
         <ul className="max-h-[108px] space-y-0.5 overflow-y-auto">

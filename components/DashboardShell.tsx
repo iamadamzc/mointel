@@ -433,13 +433,27 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           <AssessmentSnapshotBoard key={selectedAssessment} id={selectedAssessment} />
         )}
 
-        {market.snapshot && market.snapshot.events.length > 0 ? (
-          <DeskEventFeed
-            events={market.snapshot.events}
-            universe={eventUniverse}
-            onSelect={setSelectedTicker}
-          />
-        ) : null}
+        {/*
+          * PERSISTENT, and the condition that hid it was keyed on the wrong
+          * proxy.
+          *
+          * `events.length > 0` meant "nothing to say" only while events were
+          * the band's only content -- and the tell was that the feed's own
+          * empty state ("No deterministic events yet this session") was
+          * UNREACHABLE: a sentence written for a case the parent had already
+          * decided never to render. A band collapsed for saying nothing, whose
+          * silence is itself the answer to "has anything happened".
+          *
+          * §5 dispositions it "Revise -- promote to persistent" and §9 item 12
+          * makes it the Changes rail. This is the first half of that: the
+          * surface stops disappearing. The rail layout and the checkpoint
+          * merge are not here -- see `docs/threads/design.md`.
+          */}
+        <DeskEventFeed
+          events={market.snapshot?.events ?? null}
+          universe={eventUniverse}
+          onSelect={setSelectedTicker}
+        />
 
         <MomentumTable
           isFocused={focus.isFocused}
