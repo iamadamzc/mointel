@@ -102,6 +102,93 @@ independent. If it returns *"these four of forty documents are issuer-originated
 and specific"*, the interpreter still does the grading, on better evidence, and
 the dependency structure stays clean.
 
+## RESULT — run 2026-09-21. **The criterion failed at 0.790 against 0.80.**
+
+Probe: `A:\jev-test\mointel_news_triage.py`, model pinned `jev-1.13.0`, every
+answer cached by `sha256(model‖state‖questions)`. Reads mointel's production
+snapshot read-only; writes nothing to any mointel store.
+
+```
+         docs  cited  k   recall@k        RCON   17   5   9   0.40   <- worst
+RCON       17      5   9      0.40        SXTC   28   3  14   0.67
+SXTC       28      3  14      0.67        AXG    25   4  13   1.00
+AXG        25      4  13      1.00        EYPT   24   3  12   1.00
+EYPT       24      3  12      1.00        VRAX   24   4  12   0.75
+VRAX       24      4  12      0.75        RPGL   22   3  11   0.67
+RPGL       22      3  11      0.67        RETO   22   4  11   0.75
+RETO       22      4  11      0.75        NIO    22   3  11   1.00
+NIO        22      3  11      1.00        ZJK    22   6  11   0.67
+ZJK        22      6  11      0.67        YYAI   21   4  11   1.00
+YYAI       21      4  11      1.00
+
+MEAN recall@half 0.790     criterion >= 0.80   ->  FAIL
+13.0 s/ticker (~22 docs)   criterion < 20s     ->  PASS
+227 requests, 271,173 in / 30,649 out tokens   cost: UNEVALUATED, no rate card
+```
+
+**Stated before looking, missed by 0.01, and I am not rounding it up.** Four of
+ten tickers scored a perfect 1.00 and the mean is dragged by one ticker.
+
+### The questions are well formed — no flat non-answers
+
+```
+issuer_originated   std 0.258        announces_event   std 0.332
+specificity         std 0.153        category          financing 128 of 227
+```
+
+All three scalars clear the **std < 0.10** diagnostic comfortably. `category`
+concentrates hard on `financing` (56%) with `none` at only 11 of 227 — plausible
+for small-cap movers, where dilution is the dominant event class.
+
+**Two of my own measurement errors, both caught by that diagnostic:**
+its first run reported three questions at std **0.000**, which read as Jev
+declining to answer. **It was my parser** — a noul returns its probability under
+`noul`, a choice under `choice`, and I had looked for `value`/`probability`. *A
+parse bug wearing a model finding.* And collapsing the Choice to `1 - P(none)`
+produced a second false flag, because a Choice's variance lives in **which option
+it picks**, not in a derived scalar.
+
+### RCON is the whole finding, and it is not a Jev failure
+
+**All 17 of RCON's candidates are SEC filings or exhibits.** Titles read `FORM
+6-K`, `20-F`, `F-3`, `424B5`, `EFFECT filed 2026-01-14`. **There is no wire
+source, no newsroom page, nothing issuer-published outside EDGAR.**
+
+The interpreter's own catalyst summary says so in its first clause:
+
+> *"**The supplied SEC evidence** identifies a 1-for-200 share consolidation
+> effective August 18, 2026 and a previously announced up-to-$100 million ATM
+> program..."*
+
+**And its cited set includes `EFFECT filed 2026-01-14` and a `424B5`** —
+registration mechanics. An EFFECT notice announces nothing, names no party and
+carries no amount, so `announces_event` and `specificity` rank it near the
+bottom **by design.** RCON's catalyst is a *mechanism* documented across dry
+filings, not an announcement.
+
+*A mechanism I proposed and then killed: I expected `issuer_originated` to be
+flat on an all-SEC corpus and carry no information. It is not — RCON's std is
+**0.258**, the highest of the four tickers I checked. The questions discriminate
+fine; the ground truth is a different shape.*
+
+### What the run establishes
+
+- **Triage works where the candidate set is heterogeneous and the catalyst is an
+  announcement.** Four perfect scores, nothing below 0.67 outside RCON.
+- **It underperforms where the catalyst is a mechanism** spread across
+  registration documents — and no question about *what a document announces* can
+  fix that, because those documents announce nothing.
+- **13 seconds and one request per document.** The cadence claim holds: 227
+  judgments in 130 seconds, and re-runs are free from cache.
+- **The failure and the collection gap have one root.** RCON was missed in
+  production because the desk never fetched its wire release, and triage scored
+  worst on RCON because that release still is not in the corpus. **Triage was
+  asked to find a news event in a corpus containing no news.**
+
+⇒ **Read this as a failed bar with a diagnosable cause, not as a verdict on Jev.**
+Re-run the same probe after a wire feed exists and the 0.80 bar becomes
+meaningful; run it again on this corpus and it will fail the same way.
+
 ## Smallest decisive test
 
 Cheap, live-forward, and it answers the cadence claim rather than a quality claim.
