@@ -80,12 +80,32 @@ the answers sit beside the questions. Do not re-ask one.
 
 **Hazards that cost something and are not obvious from the code:**
 
-- **The cycle frame is ahead of its data.** He ruled it after-hours-inclusive on
-  2026-09-17; `daily_bars.high` is after-hours-EXCLUSIVE and cannot be
-  re-derived until an hourly backfill lands. Today's high includes after-hours
-  and the prior high does not. It errs safe — an understated prior high makes a
-  name look closer to its high — but the two sides of that comparison are in
-  different frames. `lib/market/cycle.ts:44` carries the frame warning.
+- **The cycle frame is ahead of its data, and HOW FAR ahead is unsettled.** He
+  ruled after-hours in on 2026-09-17 and premarket in on 2026-09-21, so the
+  ruled frame is all three sessions, 04:00–20:00. `daily_bars.high` is not.
+  Today's high includes every session and the prior high does not, so the two
+  sides of that comparison are in different frames. It errs safe in DIRECTION —
+  an understated prior high makes a name look closer to its high, never further
+  — but the SIZE of the understatement is an open question, and it decides
+  whether the label needs a scope clause.
+
+  **TWO MEASUREMENTS BY THE SAME SEAT DISAGREE AND NOBODY HAS RECONCILED THEM.**
+  On 2026-09-18 the daily high was measured as premarket+RTH: 17 discriminating
+  rows supporting 04:00–16:00 and zero supporting after-hours-inclusive, and
+  independently `session_high` matched `max(minute_bars.high)` over 04:00–16:00
+  on 6,889 of 6,889 rows. On 2026-09-21 Research's hand-off states it is
+  09:30–16:00 plus the closing cross — which excludes premarket as well. Those
+  cannot both hold. If the second is right the understatement is much larger and
+  lands on the session he actually trades, which is the case a scope clause
+  exists for.
+
+  **What settles it:** the same discriminating-population query, restricted to
+  rows where PREMARKET set a higher high than RTH, comparing `daily_bars.high`
+  against `max(minute_bars.high)` for the same date. Research's query shape, one
+  filter changed. Until then `PRIOR HIGH` carries no scope clause, on the ruled
+  frame rather than on the measured one, and the tooltip says the highs before
+  today exclude after-hours. `lib/market/cycle.ts:44` carries the frame
+  warning.
 - **The vendor float never touches the server.** `stockanalysis.com` bars
   automated access AND use of its data in a competing product; the second clause
   holds however politely you fetch. It arrives by his desktop path through the
