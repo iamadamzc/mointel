@@ -401,6 +401,7 @@ from an actor with no cached state, negative control first:*
 | `/signin` and `^~ /auth/` nginx locations | Ops | the authority field. *Opening `/signin` before a first-admin grant exists is how the authority to spend his money goes to whoever knocks first.* |
 | deploy gate must refuse a red suite | unassigned | **His ruling 2026-09-21: the tool refuses, not the seat remembers.** Spec sent to Integration to place; `Ops-tmi` no longer exists. Includes: `push-release.sh:18` defaults to `HEAD`, which the deploy doc forbids. |
 | consent-screen display name | him | the day he uploads the mark. *Brand verification compares consent screen, site and privacy policy; two of the three already agree.* |
+| ship `ab9c31c` (builder-claim copy fix) | Web→Integration | **His ruling 2026-09-21: hold, ride the next clean deploy.** Repo is ahead of the box; route the deploy request through Integration when the deploy-gate work lands. Published canvas artifact also stale until re-seed. |
 
 **WHY THE GATE ITEM EXISTS: `ddaf2f8` reached production 2026-09-18 with the
 test suite RED, and it had been red since the rename hours earlier.** *Nothing
