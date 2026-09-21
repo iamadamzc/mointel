@@ -3,7 +3,87 @@
 *Research seat, 2026-09-21. Reviews `docs/Jev_Tape_Research_Harness.md`. Every
 number below was read off disk or off the live TypeSafe docs on that date.*
 
-## Verdict
+## AMENDMENT, 2026-09-21 — the verdict below is WRONG and I am leaving it visible
+
+**I wrote the verdict before reading `A:\jev-test`, which he pointed me at for an
+API key and which contains a settled prior programme against this exact
+mechanism.** The review underneath is accurate about mointel's data, the frozen
+archive, the pre-answered arm B and the primitive design. **Its headline — "the
+design is sound and the hard part is already solved" — does not survive.**
+
+### `A:\jev-test\CLAUDE.md`, under "Do not":
+
+> **"Feed Jev price series, bar data, dates or arithmetic. It fails all of these
+> by design."**
+
+**That is the harness's core input, stated as a settled do-not on this machine.**
+
+### And Track A already ran the harness's arm A
+
+> *"**Jev cannot read charts (Track A, closed).** Rendering market structure as
+> anonymised prose and asking gestalt questions added **-0.005 AUC** over the
+> 24-feature OR_IB baseline, against a **+0.02 kill criterion**. Jev-only reached
+> 0.61 — real signal, but entirely redundant, because
+> `answer = g(render(scalars))` cannot exceed `scalars`."*
+
+**The formal argument is asset-agnostic.** Wherever the state handed to Jev is a
+*rendering of computable scalars*, a judgment over it is a function of those
+scalars and cannot carry more information than they do. **Three of the harness's
+four horizons — SESSION SUMMARY, LAST 5 MINUTES, LAST 60 SECONDS — are exactly
+that.** Only the raw print-and-quote tail escapes the argument, and it is the part
+the "do not" names most directly.
+
+Differences that keep this from being literally the same experiment: Track A was
+MNQ futures on OR/IB events against a 24-feature baseline; the harness is
+small-cap equities on raw tape. **But it tested the same mechanism, declared its
+kill criterion before looking, and missed it by a factor of four in the wrong
+direction.**
+
+### Three more hits from the same file
+
+- **The two questions I called "policy" return flat non-answers, and there is a
+  diagnostic.** *"Questions about whether [a state] suffices for a purpose outside
+  the text ('is this implementable?') return flat non-answers. Diagnostic: a noul
+  with std < 0.10 across varied inputs is declining to answer, not
+  discriminating. This caught three broken questions."* **"Is the current state
+  attractive for a long entry?" and "Would waiting for additional confirmation
+  improve the setup?" are that shape.** Run the variance check on every question
+  before trusting any of them.
+- **A LOOKAHEAD SURFACE THE DOC'S SEVEN-ITEM LIST MISSES ENTIRELY.** *"Jev has an
+  unpublished training cutoff... Strip dates, instrument names and absolute
+  prices."* The harness's example state carries `prior_close: 2.14`,
+  `current_price: 4.07` and a `timestamp`, and the doc lists "Catalyst/category"
+  as an input. **If the archive period sits inside Jev's training data, an
+  absolute price plus a date plus a catalyst can identify the name and its
+  outcome.** Anti-lookahead item 8: the model itself is a channel.
+- **Operational facts the harness must adopt.** Pin **`jev-1.13.0`**, never
+  `jev-latest`. **There is no seed parameter**, so reproducibility comes only from
+  caching every answer by `sha256(model‖state‖questions)` — `.jev_cache\` already
+  does this and makes re-runs free. **The Python SDK crashes on this machine**
+  (truststore/3.12 SSL recursion on Windows); call the **HTTP API** directly. The
+  key is in `A:\jev-test\jev.txt`.
+
+### What I would do instead
+
+**Do not run Phase 1 as written.** If the raw-tape question is still worth
+answering, it is one cheap decisive test rather than a three-arm programme:
+reuse `jev_gestalt.py` and `.jev_cache`, feed **only** the raw print/quote
+sequence with prices normalised to a ratio and no symbol or date, baseline
+against the desk's confirmed minute trade-count rule, **state the kill criterion
+first**, and stop at a few hundred states.
+
+**And there is a proven use of this API connection that fits mointel's actual
+gap.** Track B: *"Jev works as triage, not extraction."* Screening **604
+transcript passages took 22 seconds and $0.03, cutting reading volume 93%** and
+rediscovering the strategy-dense sources independently. **mointel's open defect is
+catalyst discovery** — the resolver finding no durable company source, 642 of 935
+citations on domains never collected from. **Triage over candidate sources is
+what Jev is demonstrably good at, and it is the opposite end of the machine from
+the tape.**
+
+---
+
+## Verdict (as first written, before reading `A:\jev-test` — superseded above)
 
 **The design is sound and the hard part is already solved.** Its anti-lookahead
 discipline is better than most production backtests, its outcome labels are
