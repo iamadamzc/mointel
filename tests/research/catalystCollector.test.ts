@@ -695,8 +695,79 @@ describe('catalyst collection', () => {
     const stored = readSources(db, 'ACME').find((s) => s.sourceType === 'SEC_EXHIBIT')!;
     expect(stored.metadata.parentForm).toBe('8-K');
     expect(stored.metadata.exhibitType).toBe('EX-99.1');
-    // The exhibit has no publication time of its own; it inherits the filing's.
+    /*
+     * THE PARENT HERE HAS NO ACCEPTANCE TIME, SO NEITHER HAS THE EXHIBIT.
+     *
+     * The seeded filing carries no precision, which stores as UNKNOWN over a
+     * date whose clock is a placeholder. `INFERRED` would claim a time derived
+     * from the parent when the parent states none, and that claim is what put
+     * all 878 stored exhibits into an evening hour bucket: midnight UTC reads
+     * as 20:00 ET. UNKNOWN keeps the row out of a latency measurement instead
+     * of into the wrong bucket.
+     */
+    expect(stored.publishedPrecision).toBe('UNKNOWN');
+  });
+
+  it('carries an exhibit at INFERRED when its parent states an acceptance time', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, null);
+
+    // EDGAR accepted the whole submission at one instant, so this is the
+    // moment the market could read the release. The exhibit inherits it and is
+    // INFERRED rather than EXACT: it is standing in for the parent's timestamp,
+    // which is the case `lib/research/time.ts` names by hand.
+    const acceptance = '2026-08-17T12:34:56.000Z';
+
+    insertResearchSources(db, [
+      {
+        ticker: 'ACME',
+        sourceType: 'SEC_FILING',
+        title: '8-K',
+        url: 'https://www.sec.gov/Archives/edgar/data/123/000000012326000002/a.htm',
+        publishedAt: acceptance,
+        publishedPrecision: 'EXACT',
+        fetchedAt: NOW.toISOString(),
+        accession: '0000000123-26-000002',
+        secForm: '8-K',
+        authority: 'SEC',
+        contentHash: 'filing-hash-exact',
+        documentFingerprint: 'filing-doc-exact',
+        excerpt: null,
+        metadata: {},
+        active: true,
+      },
+    ]);
+
+    const indexUrl =
+      'https://www.sec.gov/Archives/edgar/data/123/000000012326000002/0000000123-26-000002-index.htm';
+    const exhibit =
+      'https://www.sec.gov/Archives/edgar/data/123/000000012326000002/ex99-1.htm';
+
+    const sec = fakeSecClient({
+      [indexUrl]: `<table class="tableFile">
+        <tr><td>1</td><td>Form 8-K</td><td><a href="/x/a.htm">a.htm</a></td><td>8-K</td><td>4000</td></tr>
+        <tr><td>2</td><td>Press Release</td><td><a href="/x/ex99-1.htm">ex99-1.htm</a></td><td>EX-99.1</td><td>12000</td></tr>
+        </table>`,
+      [exhibit]:
+        '<html><body><p>Acme Announces Major Contract Award today.</p></body></html>',
+    });
+
+    await withCompanyFetch({}, () =>
+      collectCatalystEvidence(
+        db,
+        sec,
+        new CountingDiscovery(),
+        resolver,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW, disableDiscovery: true },
+      ),
+    );
+
+    const stored = readSources(db, 'ACME').find((s) => s.sourceType === 'SEC_EXHIBIT')!;
     expect(stored.publishedPrecision).toBe('INFERRED');
+    // The instant itself survives the inheritance -- an INFERRED row is usable
+    // for a latency measurement in a way an UNKNOWN one is not.
+    expect(stored.publishedAt).toBe(acceptance);
   });
 
   it('degrades gracefully when the IR site is unreachable', async () => {

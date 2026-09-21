@@ -408,7 +408,31 @@ export async function collectCatalystEvidence(
             // The exhibit inherits its parent filing's date: the exhibit file
             // itself carries no publication time of its own.
             publishedAt: filing.publishedAt,
-            publishedPrecision: 'INFERRED',
+            /*
+             * AND IT INHERITS THE PARENT'S PRECISION RATHER THAN ASSERTING ONE.
+             *
+             * `INFERRED` means a time DERIVED from something adjacent, and
+             * `time.ts` names this exact case: an acceptance timestamp standing
+             * in for an exhibit. That is the right label only when the parent
+             * HAS an acceptance timestamp. When the parent carries a bare
+             * filing date there is no time to derive, and a fixed `INFERRED`
+             * claims one anyway — which is what every stored exhibit does
+             * today: 878 of 878 INFERRED over a BARE DATE, measured
+             * 2026-09-21 against `data/market-prod-2026-08-23.db`.
+             *
+             * That mislabel is what keeps the latency question unanswerable. A
+             * bare date parses as midnight UTC, which is 20:00 ET, so any hour
+             * bucket built from these rows files press releases in the evening
+             * — the artifact that nearly argued for buying a wire licence.
+             * `UNKNOWN` keeps them out of the measurement rather than into the
+             * wrong bucket.
+             *
+             * EXACT demotes to INFERRED because the exhibit inherits the
+             * instant rather than stating it. Every other precision passes
+             * through unchanged, carrying its own warning with it.
+             */
+            publishedPrecision:
+              filing.publishedPrecision === 'EXACT' ? 'INFERRED' : filing.publishedPrecision,
             fetchedAt: now.toISOString(),
             accession: filing.accession,
             secForm: filing.secForm,
