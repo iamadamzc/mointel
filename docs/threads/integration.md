@@ -299,6 +299,30 @@ since the rename hours earlier. There is NO test step in `deploy.sh`, `preflight
 > somebody is in a hurry — on 2026-09-16 `rev-parse HEAD` at ship time carried four peer
 > commits nobody had gated.*
 
+### ALSO OWNERLESS — TWO META DESCRIPTIONS NEVER WRITTEN, NOT AWAITING A DEPLOY
+
+**Found by the NEW Marketing seat 2026-09-21, correcting a framing of mine.** *An item
+recorded as "waits on: next deploy" implies committed. It is not committed — it was never
+written.*
+
+```
+app/layout.tsx:22  and  app/page.tsx:19
+  "...and what the share structure actually looks like."     <- OLD three-item form
+  "and what supply stands behind it"                         <- ABSENT from both
+og:/twitter:description                                      <- CARRIES supply, live, correct
+live curl == source                                          <- verified 2026-09-21
+```
+
+**So the card is right and the meta descriptions are a claim short.** *The approved strings
+are in `docs/marketing/2026-09-17-open-graph-copy.md` — deletion/insertion only, two
+targets.* **Needs an edit in both files THEN a deploy. Neither Web nor Marketing works in
+those files, and there is no Ops seat.**
+
+> **"Waits on deploy" and "was never written" produce the same board state and the same
+> sentence in a handover.** *Third mis-framed item a successor seat has caught in this
+> record in one morning — which is what a handover is for, and an argument for retiring
+> this session rather than patching it further.*
+
 ### THE ACCESS-CONTROL GAP — A PUBLISHED CLAIM AHEAD OF THE BUILD
 
 ```
