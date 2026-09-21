@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { StatusBadge } from '@/components/StatusBadge';
+import { changeReading } from '@/lib/dashboard/changes';
 import type { AssessmentTickerRecord } from '@/lib/market/store/assessmentRepo';
 import type { AssessmentPanel, AssessmentSummary } from '@/lib/desk/view';
 import { formatCount, formatMultiple, formatPrice, formatSignedPercent } from '@/lib/format';
@@ -239,8 +240,25 @@ export function AssessmentSnapshotBoard({ id }: { id: number }) {
                 <td className="px-2 py-1.5 text-[11px] text-ink-2">{row.catalyst ?? '—'}</td>
                 <td className="px-2 py-1.5 text-[11px] text-ink-2">{row.structure ?? '—'}</td>
                 <td className="px-2 py-1.5 text-[11px] text-ink-2">{row.haltState ?? '—'}</td>
-                <td className="px-2 py-1.5 text-[11px] text-ink-3" title={row.changeSummary}>
-                  {row.changedFields.length > 0 ? row.changedFields.join(', ') : '—'}
+                {/*
+                  * THE SENTENCE IS THE CELL; THE ENUMS ARE NOT A FALLBACK.
+                  *
+                  * This cell rendered `changedFields.join(', ')` as its text
+                  * with the checkpoint's own wording hidden in the `title` --
+                  * `RANK_DETERIORATED, MAJOR_GIVEBACK` on screen and "rank #4
+                  * -> #9; -14.2% off session high" one hover away. It breaks
+                  * two acceptance criteria at once (no SCREAMING_SNAKE in the
+                  * trader-facing UI, no content reachable only by hover), and
+                  * the sentence it needed had been computed and stored beside
+                  * the enums the whole time.
+                  *
+                  * `changeReading` decides the words, including for the rows
+                  * whose summary is empty because the detector pushed a class
+                  * without a note. Those rows are in the store permanently and
+                  * no change to the writer reaches them.
+                  */}
+                <td className="px-2 py-1.5 text-[11px] text-ink-2">
+                  {changeReading(row)?.sentence ?? '—'}
                 </td>
               </tr>
             ))}
