@@ -138,7 +138,21 @@ function StructureSummaryBlock({
           <FieldLabel>Structure</FieldLabel>
           <StatusBadge label={summary.label} tone={summary.tone as Tone} />
         </span>
-        <span className="inline-flex items-baseline gap-1.5">
+        {/*
+          * ONE number and ONE verdict, with the bound cited inside it.
+          *
+          * The vendor's float is a CLAIM the desk borrows; the filed count is
+          * a BOUND the desk owns and the claim has to sit under. Laid out as
+          * two numbers they would read as two estimates of one quantity and
+          * invite splitting the difference — so the count appears only in the
+          * verdict's reason, where it is doing its actual job.
+          *
+          * The model's float confidence USED to sit here and was removed
+          * rather than moved: it describes the dossier's own extraction, and
+          * the number beside it is now the Sheet's. A confidence attached to a
+          * different number than the one it measured is worse than none.
+          */}
+        <span className="inline-flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
           <FieldLabel>Float</FieldLabel>
           <span
             className={`num text-[12px] font-semibold ${
@@ -147,9 +161,24 @@ function StructureSummaryBlock({
           >
             {summary.float}
           </span>
-          <span className="text-[10px] tracking-wider text-ink-3 uppercase">
-            {summary.floatConfidence.toLowerCase()} confidence
-          </span>
+          {summary.floatCheck ? (
+            <>
+              <span
+                className={`text-[10px] tracking-wider uppercase ${
+                  summary.floatCheck.tone === 'neg' ? 'text-neg' : 'text-ink-3'
+                }`}
+              >
+                {summary.floatCheck.label}
+              </span>
+              <span
+                className={`text-[11px] ${
+                  summary.floatCheck.tone === 'neg' ? 'text-neg/90' : 'text-ink-3'
+                }`}
+              >
+                · {summary.floatCheck.reason}
+              </span>
+            </>
+          ) : null}
         </span>
       </div>
 

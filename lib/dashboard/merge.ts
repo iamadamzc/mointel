@@ -8,7 +8,12 @@
  */
 
 import { computeDisplayedFloatTurnover } from '@/lib/market/derive';
-import { assessSheetPair, type SheetPairAssessment } from '@/lib/research/float';
+import {
+  assessFloatAgainstFiled,
+  assessSheetPair,
+  type FloatClaimAssessment,
+  type SheetPairAssessment,
+} from '@/lib/research/float';
 import { deriveCycleLevels, type CycleLevels } from '@/lib/data/cycleLevels';
 import { buildLevelMap, type LevelMap } from '@/lib/data/priceLevels';
 import { buildTelemetry, type MarketTelemetry } from '@/lib/dashboard/telemetry';
@@ -95,6 +100,22 @@ export interface DeskRow {
    * which is a different statement from CONSISTENT and must not render alike.
    */
   floatAssessment: SheetPairAssessment | null;
+  /**
+   * The displayed float judged against the desk's OWN filed share count.
+   *
+   * A DIFFERENT QUESTION FROM `floatAssessment`, and the two must never be
+   * collapsed. That one asks whether the vendor's row contradicts ITSELF — a
+   * float against the share count written in the same cell. This asks whether
+   * the vendor's float can be true at all, against a count the desk collected
+   * from filings. One is the source's internal consistency; the other is the
+   * desk's own test of a borrowed number, and a name can pass either and fail
+   * the other.
+   *
+   * Null when there is no float to judge. The filed bound still speaks on its
+   * own in that case, and a verdict beside an absent number would read as a
+   * failed check rather than as nothing to check.
+   */
+  floatCheck: FloatClaimAssessment | null;
   /** Current-cycle high vs historical resistance, kept strictly separate. */
   cycleLevels: CycleLevels;
   /**
@@ -141,6 +162,15 @@ export interface DeskRow {
 export interface DeskRowContext {
   /** Decides which session's VWAP is current. */
   sessionPhase?: SessionPhase;
+  /**
+   * The session date a filing's age is measured against.
+   *
+   * TAKEN FROM THE PAYLOAD, NEVER FROM A CLOCK. The desk's rule is that a gate
+   * reads an observable rather than a wall time someone derived — and this one
+   * would be derived in the BROWSER, where the zone is the viewer's. Absent,
+   * the float check reports that it has no date rather than assuming today.
+   */
+  tradingDate?: string | null;
   blueSky?: BlueSkyState;
 }
 
@@ -233,6 +263,26 @@ export function buildDeskRow(
 ): DeskRow {
   const float = resolveDisplayedFloat(research, researchRecord);
 
+  /*
+   * The borrowed float against the desk's own filed count.
+   *
+   * Judged on `float.value` — the number every other surface uses, already
+   * nulled where the Sheet's own pair refused it — rather than on the
+   * dossier's `displayedFloat`. Two surfaces checking two different floats is
+   * the contradiction this render exists to remove, so there is one claim and
+   * one verdict for the whole desk.
+   */
+  const supplyPair = intelligence?.analysis?.dossier.structure.supplyPair ?? null;
+  const floatCheck = assessFloatAgainstFiled({
+    claimedFloat: float.value,
+    reportedShares: supplyPair?.sharesOutstanding ?? null,
+    sharesAsOf: supplyPair?.sharesOutstandingAsOf ?? null,
+    factor: supplyPair?.denominatorFactor ?? null,
+    concept: supplyPair?.concept ?? null,
+    sourceId: supplyPair?.sourceId ?? null,
+    onDate: context.tradingDate ?? null,
+  });
+
   // Resolved once, here, and reused for every price-shaped decision below.
   const telemetry = buildTelemetry({
     ticker,
@@ -284,6 +334,7 @@ export function buildDeskRow(
     displayedFloat: float.value,
     displayedFloatSource: float.source,
     floatAssessment: float.assessment,
+    floatCheck,
     displayedFloatTurnover: computeDisplayedFloatTurnover(
       demand?.cumulativeVolume ?? null,
       float.value,
@@ -392,6 +443,8 @@ export function mergeDesk(
   // One session for the whole merge, so two rows can never disagree about
   // which VWAP is the current one.
   const sessionPhase = market?.discovery.sessionPhase;
+  // One date for the whole merge, from the snapshot rather than from a clock.
+  const tradingDate = market?.discovery.tradingDate ?? null;
 
   for (const ticker of sheetTickers) {
     rows.set(
@@ -403,7 +456,7 @@ export function mergeDesk(
         demandByTicker[ticker.ticker] ?? null,
         intelligenceByTicker[ticker.ticker] ?? null,
         sheetObservedAt,
-        { sessionPhase, blueSky: blueSkyByTicker[ticker.ticker] },
+        { sessionPhase, tradingDate, blueSky: blueSkyByTicker[ticker.ticker] },
       ),
     );
   }
@@ -419,7 +472,7 @@ export function mergeDesk(
         demand,
         intelligenceByTicker[symbol] ?? null,
         sheetObservedAt,
-        { sessionPhase, blueSky: blueSkyByTicker[symbol] },
+        { sessionPhase, tradingDate, blueSky: blueSkyByTicker[symbol] },
       ),
     );
   }

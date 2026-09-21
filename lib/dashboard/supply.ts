@@ -17,10 +17,12 @@
  * than either alone.
  */
 
+import { formatShares } from '@/lib/dashboard/risk';
 import {
   LOW_FLOAT_CEILING,
   assessFloatBound,
   type FloatBoundVerdict,
+  type FloatClaimAssessment,
 } from '@/lib/research/float';
 import type { SupplyExclusionReason, SupplyPair } from '@/lib/research/supply';
 
@@ -81,6 +83,18 @@ function ratioPct(ratio: number): string {
 
 function shares(count: number): string {
   return count.toLocaleString();
+}
+
+/**
+ * WHICH quantity a filed concept bounds, named only when it is LOOSER.
+ *
+ * Silence means the ordinary quantity, and an unrecorded concept says "shares"
+ * without claiming which. One implementation because two renders naming the
+ * same basis differently is how a bound and a verdict come to disagree about
+ * what they are standing on.
+ */
+function quantityWord(looser: boolean | null): string {
+  return looser === true ? 'shares issued' : looser === false ? 'shares outstanding' : 'shares';
 }
 
 function plural(n: number, word: string): string {
@@ -179,10 +193,7 @@ export function floatBoundReading(
     sourceId: pair.sourceId,
   });
 
-  // Named only when it is LOOSER. Silence here means the ordinary quantity, and
-  // an unrecorded concept says "shares" without claiming which.
-  const quantity =
-    bound.looser === true ? 'shares issued' : bound.looser === false ? 'shares outstanding' : 'shares';
+  const quantity = quantityWord(bound.looser);
 
   if (bound.verdict === 'BASIS_UNVERIFIABLE') {
     const dated = pair.sharesOutstandingAsOf ? ` dated ${pair.sharesOutstandingAsOf}` : '';
@@ -212,5 +223,99 @@ export function floatBoundReading(
         ? `Float cannot exceed the share count${asOf}, whoever holds the rest.`
         : `A share count above the ceiling does not mean the float is large; it means this cannot settle it.`,
     tone: bound.verdict === 'PROVEN' ? 'pos' : 'dim',
+  };
+}
+
+export interface FloatClaimReading {
+  verdict: FloatClaimAssessment['verdict'];
+  /** The ONE number on this line: the claim, as the desk received it. */
+  float: string;
+  /** The verdict, in his four words. */
+  label: string;
+  /** The bound, cited INSIDE the verdict. Never a second number beside it. */
+  reason: string;
+  /**
+   * Colour only where the desk is contradicting a number he might trade on.
+   *
+   * CONSISTENT is the absence of a contradiction, not a finding — it says the
+   * vendor's float is not impossible, and nothing about whether the float is
+   * small. Rendering it green would make "we could not disprove this" look
+   * like the positive structural reading, on the one pillar where a float
+   * wrongly small is what puts him IN a trade.
+   */
+  tone: 'neg' | 'dim';
+}
+
+/**
+ * A borrowed float and the desk's own filed count, as ONE line.
+ *
+ * THE SHAPE IS THE ARGUMENT. The vendor's float is a CLAIM; the filed count is
+ * a BOUND it has to sit under. Two adjacent numbers of equal weight would
+ * assert parity and invite averaging them — the one operation that means
+ * nothing on this pair — so the bound appears only INSIDE the verdict, as the
+ * reason the verdict was reached.
+ *
+ * The claim's SOURCE is deliberately not on this line. Every element a
+ * decision needs is visible — the number, the verdict, the count and its date
+ * — and provenance is the thing a reader consults afterwards, which is the
+ * same test the supply method was put behind a hover by.
+ */
+export function floatClaimReading(
+  check: FloatClaimAssessment | null | undefined,
+): FloatClaimReading | null {
+  if (!check) return null;
+
+  const float = formatShares(check.claimedFloat);
+
+  if (check.verdict === 'CANNOT_VERIFY' || check.filedSharesToday === null) {
+    return {
+      verdict: 'CANNOT_VERIFY',
+      float,
+      label: 'CANNOT VERIFY',
+      reason: check.reason ?? 'the desk has nothing to check this against',
+      tone: 'dim',
+    };
+  }
+
+  const quantity = quantityWord(check.looser);
+  const filed = `${formatShares(check.filedSharesToday)} ${quantity}`;
+  const asOf = check.asOf ? ` filed ${check.asOf}` : '';
+  // Named only when the count was actually moved, so the ordinary case reads
+  // as a plain comparison rather than as an adjustment someone should check.
+  const adjusted = check.splitAdjusted ? ', split-adjusted' : '';
+
+  if (check.verdict === 'REFUTED') {
+    return {
+      verdict: check.verdict,
+      float,
+      label: 'REFUTED',
+      reason: `above ${filed}${asOf}${adjusted} — a float cannot exceed the shares that exist`,
+      tone: 'neg',
+    };
+  }
+
+  if (check.verdict === 'CONSISTENT_STALE') {
+    return {
+      verdict: check.verdict,
+      float,
+      label: 'CONSISTENT (stale)',
+      /*
+       * The date is the point, so it is stated rather than the age alone.
+       *
+       * And the one-way sentence is carried on the line rather than left to a
+       * hover: "an older count can confirm and never refute" is what stops a
+       * reader discounting this the way an ordinary uncertainty is discounted.
+       */
+      reason: `under ${filed}${asOf}${adjusted} — an older count can confirm a float and can never refute one`,
+      tone: 'dim',
+    };
+  }
+
+  return {
+    verdict: 'CONSISTENT',
+    float,
+    label: 'CONSISTENT',
+    reason: `under ${filed}${asOf}${adjusted}`,
+    tone: 'dim',
   };
 }

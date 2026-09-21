@@ -531,3 +531,171 @@ export function assessFloatBound(input: {
     verdict: adjustedShares <= LOW_FLOAT_CEILING ? 'PROVEN' : 'NOT_PROVEN',
   };
 }
+
+/**
+ * What the desk may say about a BORROWED float against its OWN filed count.
+ *
+ * Four states, the trader's, 2026-09-22. They are not `FloatVerdict`'s six and
+ * must not be collapsed into them: `assessFloat` judges a float against a
+ * filing on the RESEARCH side and refuses everything it cannot stand behind;
+ * this judges a vendor's published float against the filed share count for the
+ * TRADER, where "I cannot check this" is itself one of the answers he asked
+ * for rather than a refusal to answer.
+ *
+ * THE TWO QUANTITIES ARE NOT PEERS AND THE TYPE SAYS SO. The vendor's number
+ * is a CLAIM the desk borrows; the filed count is a BOUND the desk owns and
+ * the claim must sit under. There is no field here for a rival estimate,
+ * because two numbers of equal weight invite averaging a claim with a ceiling
+ * — the one arithmetic operation that is meaningless on this pair.
+ */
+export type FloatClaimVerdict =
+  /** The claim sits under a CURRENT filed count. */
+  | 'CONSISTENT'
+  /** The claim sits under an OLDER filed count, moved onto today's basis. */
+  | 'CONSISTENT_STALE'
+  /** The claim EXCEEDS a current filed count. A float cannot do that. */
+  | 'REFUTED'
+  /** No filed count, no usable basis, or a stale count the claim exceeds. */
+  | 'CANNOT_VERIFY';
+
+export interface FloatClaimAssessment {
+  verdict: FloatClaimVerdict;
+  /** The claim being judged, echoed so a render cannot pair it with another. */
+  claimedFloat: number;
+  /** The filed count on TODAY's basis. Null when the basis is unverifiable. */
+  filedSharesToday: number | null;
+  /** The cover-page date that makes the filed count a quantity. */
+  asOf: string | null;
+  denominatorAgeDays: number | null;
+  /** True when the count was moved off its own basis to reach today's. */
+  splitAdjusted: boolean;
+  /**
+   * Whether the filed concept bounds a LOOSER quantity than shares outstanding.
+   *
+   * Null when no concept was recorded. Absent is not the same as tight, and a
+   * render that says "outstanding" on a null would be claiming a basis nobody
+   * established.
+   */
+  looser: boolean | null;
+  /** Why the desk could not decide, when it could not. Null otherwise. */
+  reason: string | null;
+}
+
+/**
+ * Judges a claimed float against the filed share count, on today's basis.
+ *
+ * THE ASYMMETRY IS THE WHOLE DESIGN, and split-adjustment is what makes it
+ * sound rather than merely cautious. Two things separate a filed count from
+ * today's truth: a SPLIT, which moves it in either direction, and ISSUANCE,
+ * which only ever moves it UP. The factor removes the first. What is left can
+ * only have grown, so the adjusted count is a FLOOR under today's count —
+ * a claim beneath it is genuinely consistent, and a claim above it may be
+ * explained by shares issued since rather than by a wrong float.
+ *
+ * So a stale count CONFIRMS and never REFUTES, and it earns that only after
+ * the adjustment. Without the factor the same comparison passes for free on
+ * any name that reverse-split — the count inflates, every float fits under it,
+ * and `CONSISTENT` is returned by a test that could not have failed. That case
+ * is `CANNOT_VERIFY` here, not a pass.
+ *
+ * A CLAIM OF ZERO OR LESS IS NOT A CLAIM. It returns null rather than a
+ * verdict, because the bound speaks on its own where no claim exists and a
+ * `CANNOT_VERIFY` beside an absent number reads as a failed check rather than
+ * as nothing to check.
+ */
+export function assessFloatAgainstFiled(input: {
+  claimedFloat: number | null;
+  /** The filed count as reported, on the basis of its own `asOf`. */
+  reportedShares: number | null;
+  sharesAsOf: string | null;
+  /** Cumulative split factor at `sharesAsOf`; null when unestablished. */
+  factor: number | null;
+  concept: string | null;
+  sourceId: number | null;
+  /** The session date the count's age is measured against. */
+  onDate: string | null;
+}): FloatClaimAssessment | null {
+  const { claimedFloat, reportedShares, sharesAsOf, factor, concept, sourceId, onDate } = input;
+
+  if (claimedFloat === null || !Number.isFinite(claimedFloat) || claimedFloat <= 0) return null;
+
+  const base = {
+    claimedFloat,
+    filedSharesToday: null,
+    asOf: sharesAsOf,
+    denominatorAgeDays: null,
+    splitAdjusted: false,
+    looser: concept === null ? null : !OUTSTANDING_CONCEPTS.has(concept),
+  };
+
+  if (reportedShares === null || !Number.isFinite(reportedShares) || reportedShares <= 0) {
+    return {
+      ...base,
+      verdict: 'CANNOT_VERIFY',
+      reason: 'no filed share count has been collected for this issuer',
+    };
+  }
+
+  // One implementation of the today's-basis move, shared with the bound, so the
+  // two can never disagree about what a count is worth now.
+  const bound = assessFloatBound({ reportedShares, asOf: sharesAsOf, factor, concept, sourceId });
+
+  if (bound.verdict === 'BASIS_UNVERIFIABLE' || bound.adjustedShares === null) {
+    return {
+      ...base,
+      looser: bound.looser,
+      verdict: 'CANNOT_VERIFY',
+      reason:
+        "the filed count cannot be placed on today's basis, so a split since it was filed would decide this comparison",
+    };
+  }
+
+  const filedSharesToday = bound.adjustedShares;
+  const splitAdjusted = factor !== null && factor !== 1;
+  const age =
+    sharesAsOf === null || onDate === null
+      ? null
+      : ageInDays(sharesAsOf, new Date(`${onDate}T00:00:00Z`));
+
+  const decided = {
+    ...base,
+    looser: bound.looser,
+    filedSharesToday,
+    denominatorAgeDays: age,
+    splitAdjusted,
+  };
+
+  /*
+   * An age that cannot be computed is not treated as fresh.
+   *
+   * It is the difference between CONSISTENT and CONSISTENT (stale), and
+   * between REFUTED and CANNOT_VERIFY — so guessing it picks the stronger
+   * verdict of each pair on no evidence.
+   */
+  if (age === null) {
+    return {
+      ...decided,
+      verdict: 'CANNOT_VERIFY',
+      reason:
+        onDate === null
+          ? "no session date to measure the filing's age against"
+          : 'the filed count carries an unusable date',
+    };
+  }
+
+  const current = age <= FILED_SHARES_CURRENT_DAYS;
+
+  if (claimedFloat <= filedSharesToday) {
+    return { ...decided, verdict: current ? 'CONSISTENT' : 'CONSISTENT_STALE', reason: null };
+  }
+
+  if (current) {
+    return { ...decided, verdict: 'REFUTED', reason: null };
+  }
+
+  return {
+    ...decided,
+    verdict: 'CANNOT_VERIFY',
+    reason: `the claim exceeds a count filed ${age} days ago, and shares issued since would explain that without the float being wrong`,
+  };
+}

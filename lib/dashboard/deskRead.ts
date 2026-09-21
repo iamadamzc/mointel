@@ -19,6 +19,7 @@ import {
   type IntelligenceState,
 } from '@/lib/dashboard/intelligence';
 import type { DeskRow } from '@/lib/dashboard/merge';
+import { floatClaimReading, type FloatClaimReading } from '@/lib/dashboard/supply';
 import type { MarketTelemetry } from '@/lib/dashboard/telemetry';
 import {
   levelTypeLabel,
@@ -83,6 +84,22 @@ export interface StructureSummary {
   tone: ReadTone;
   /** Float as a figure, or the word the source used for not knowing. */
   float: string;
+  /**
+   * The desk's verdict on that float, against its own filed share count.
+   *
+   * Null when there is no float to judge, or no filed count to judge it
+   * against. A surface renders the number and the verdict TOGETHER or renders
+   * neither — an unqualified float is the number he is most likely to act on
+   * and the one the desk can least stand behind.
+   */
+  floatCheck: FloatClaimReading | null;
+  /**
+   * The model's confidence in the DOSSIER's float extraction.
+   *
+   * Kept for consumers that read the dossier, and deliberately NOT rendered
+   * beside `float`, which is the Sheet's number: a confidence describing one
+   * number, printed against another, is a label that is false without context.
+   */
   floatConfidence: string;
   supply: SupplyLine[];
   /** First structural warning, verbatim. Null when none was recorded. */
@@ -355,10 +372,18 @@ export function buildStructureSummary(row: DeskRow): StructureSummary | null {
     classification: structure.structureClassification,
     label: STRUCTURE_LABEL[structure.structureClassification],
     tone: structureLabelTone(structure.structureClassification),
-    float:
-      structure.displayedFloat === null
-        ? 'Unknown'
-        : structure.displayedFloat.toLocaleString(),
+    /*
+     * THE ROW'S FLOAT, NOT THE DOSSIER'S, AND THEY ARE DIFFERENT FIELDS.
+     *
+     * `row.displayedFloat` is what the board sorts on, what turnover divides
+     * by and what the risk chip prints; `structure.displayedFloat` is the
+     * model's own extraction and reaches no other surface. The drawer showing
+     * the second while every other surface shows the first is F-19 — two
+     * values for one field, on two screens, with no reconciliation. One claim
+     * for the whole desk, and it is the one the rest of the desk already uses.
+     */
+    float: row.displayedFloat === null ? 'Unknown' : row.displayedFloat.toLocaleString(),
+    floatCheck: floatClaimReading(row.floatCheck),
     floatConfidence: structure.floatConfidence,
     supply: structure.supplyLedger.map((block) => ({
       label: block.type.replace(/_/g, ' '),
