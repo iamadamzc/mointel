@@ -39,13 +39,35 @@ when nothing needs him.**
 
 ### Where things stand
 
-The cycle apparatus was the whole of the last session's work and three defects in
-it are fixed and on `main`: today's session is now visible to the cycle rule
-(`e48a2ca`), a run no longer stays alive forever because one busy day in three
-broke a consecutive-sessions test (`1fba8fd`), and a run also ends when its
-typical day trades under $50,000 (`baece00`, his threshold). The interpreter
-prompt no longer tells the model a human reviewed the Sheet's prior analysis
-(`dbd70d1`), which no human has ever written. Suite was 2,183 across 145 files.
+**Two strands.**
+
+**The cycle apparatus** was most of the last session and three defects are fixed
+on `main`: today's session is now visible to the cycle rule (`e48a2ca`), a run no
+longer survives forever because one busy day in three defeated a
+consecutive-sessions test (`1fba8fd`), and a run also ends when its typical day
+trades under **$50,000** (`baece00`, his threshold). The interpreter prompt no
+longer tells the model a human reviewed the Sheet's prior analysis (`dbd70d1`) —
+no human has ever written it. **Suite 2,183 across 145 files.**
+
+**Jev, TypeSafe's System One model, is under evaluation for NEWS ANALYSIS** and
+three documents carry it — read them before proposing anything, the way
+`A:\jev-test\CLAUDE.md` asks:
+
+- `docs/Jev_For_News_Analysis.md` — the assessment **and the probe result**. A
+  triage probe over 227 documents **failed the 0.80 bar I set, at 0.790**, and the
+  failure is diagnosed: it scored worst on the one ticker whose entire candidate
+  set is SEC filings. Cost **1.1 cents**; the cadence claim held.
+- `docs/Jev_Tape_Research_Harness_REVIEW.md` — **read the amendment at the top.**
+  My first verdict was written before I read `A:\jev-test`, which contains a
+  settled programme closing that mechanism. Tape is another project's problem.
+- `docs/Wire_Feed_Collector_SCOPE.md` — **read "STEP 1 CHANGED SHAPE".**
+
+**`A:\jev-test` is prior art and its `CLAUDE.md` is authoritative.** Pin
+`jev-1.13.0`, never `jev-latest`; there is no seed, so cache by
+`sha256(model‖state‖questions)`; the Python SDK crashes on this box, so call the
+HTTP API. Rate card: **$0.042 per million INPUT tokens, output free.** The key is
+in `A:\jev-test\jev.txt` — he approved using it; it is **not** in mointel's env.
+The working probe is `A:\jev-test\mointel_news_triage.py`.
 
 ### First task — three things he approved on 2026-09-21, none started
 

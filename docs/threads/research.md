@@ -71,6 +71,27 @@ a new chat"; read nothing marked ARCHIVE front to back.*
 | `622e23f` | `todaySoFarFromBars` — the provisional bar's pair comes from ONE stored minute, with `session_high` demoted to an auditor. |
 | `90cb557` | `vwap.ts` restart table recast on the CONDITION (which session made the high), with the premarket hole and its measurements. |
 
+### JEV — under evaluation for news analysis, three docs, one probe run
+
+| doc | what it settles |
+| --- | --- |
+| `docs/Jev_For_News_Analysis.md` | The fit is **cadence, not judgment quality** — `config.ts:26` says discovery costs a model call so it is spaced wide, which is why a moving name reads `CATALYST UNKNOWN`. **Probe run 2026-09-21: 227 documents, mean recall@half 0.790 against the 0.80 I stated first — FAILED. 13.0s/ticker, $0.011.** Four of ten tickers perfect; RCON 0.40 because all 17 of its candidates are SEC filings and its catalyst is registration mechanics, which announcement-shaped questions rank down by design. |
+| `docs/Jev_Tape_Research_Harness_REVIEW.md` | **Read the amendment first.** `A:\jev-test\CLAUDE.md` says under Do-not: *"Feed Jev price series, bar data, dates or arithmetic. It fails all of these by design."* Track A closed the harness's arm A at **-0.005 AUC against a +0.02 kill criterion**. Tape is another project's; this doc exists so nobody re-opens it here. |
+| `docs/Wire_Feed_Collector_SCOPE.md` | **Read "STEP 1 CHANGED SHAPE".** PR Newswire's terms bar robots, scraping and commercial use; their RSS page routes to a licence. **But 669 of 878 stored exhibits ARE press releases** (EX-99, public domain), so the gap is LATENCY — and **1 of 3,253 filing rows has an exact timestamp**, so the latency is unmeasurable. Persisting `acceptanceDateTime` is free and decides whether a licence is worth buying. |
+
+**Operational, from `A:\jev-test\CLAUDE.md` — adopt, do not rediscover:** pin
+`jev-1.13.0`; no seed parameter, so cache by `sha256(model‖state‖questions)`; the
+Python SDK crashes on this box (call the HTTP API); **$0.042/Mtok input, output
+free**; key in `A:\jev-test\jev.txt`, approved for use, not in mointel's env.
+Working probe: `A:\jev-test\mointel_news_triage.py`.
+
+**Two measurement errors of mine in that probe, both caught by the published
+std<0.10 diagnostic and both worth remembering:** a parser looking for
+`value`/`probability` instead of `noul`/`choice` reported three questions at
+std 0.000, which reads as the model declining to answer; and collapsing a Choice
+to `1 - P(none)` produced a second false flag, because a Choice's variance lives
+in **which option it picks**.
+
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
 - **How a restart rebuilds `sessionHigh`** — **waits on him.** Measured 2026-09-18: a 21:05Z restart left **1,481 of 7,936 rows** carrying a high below the one that printed, and **1,160 of those highs printed in PREMARKET**. Cause: the rebuild draws `dailyBar.h` (09:30–16:00, all symbols), an after-hours reconstruction (16:00+, only once RTH closed), and a focused minute backfill from 04:00 covering **200 names plus pins** — so premarket is recovered for the focused set and nobody else. Options: replay the stored minute bars, widen the focused set, or seed nothing and say UNKNOWN. **Nothing is built.** `sessionLow` has the mirror defect.
