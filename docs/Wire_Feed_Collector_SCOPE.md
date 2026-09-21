@@ -118,6 +118,81 @@ headroom. With attribution first it is seconds.
    interpreter's input to roughly what it takes today, or the cost that moves is
    the interpreter's, not Jev's.
 
+## STEP 1 CHANGED SHAPE — it is an EDGAR timestamp, not a wire
+
+*Measured 2026-09-21, after the terms check. This supersedes the build order
+below.*
+
+### PR Newswire is a no-go for self-serve ingestion
+
+Read live at `prnewswire.com/terms-of-use/`:
+
+> *"use any **robot, spider**, site search/retrieval application, or other manual
+> or automatic device or process to **access, search, download, retrieve, index or
+> 'data mine'** any content or data from the Site"* — prohibited.
+> *"reproduce, distribute, 'frame,' 'mirror,' **'scrape,'** republish or
+> retransmit information or content provided by PR Newswire"* — prohibited
+> without written permission.
+> The licence granted is *"solely for your **personal, noncommercial use**"*, and
+> using the Site to *"**generate revenue for any business or commercial
+> purpose**"* is prohibited.
+
+Their RSS page posts **no alternative permission** — it routes commercial users to
+an **Online Publishers** programme. So there is a legitimate route and it is a
+**commercial licence**, which is his decision and not a build. *Second time this
+week the obvious data route needs a licence.*
+
+### BUT THE DESK ALREADY RECEIVES PRESS RELEASES, THROUGH EDGAR
+
+```
+SEC_EXHIBIT rows                                878
+of which EX-99 press-release exhibits           669
+```
+
+Their excerpts are plainly release text — *"...today announced"*, *"Freightos
+Reports Platform KPIs for Second Quarter..."*. **An issuer announcing a material
+event files the release as an 8-K or 6-K exhibit**, and that is public-domain SEC
+content with no licensing question at all.
+
+⇒ **So the gap is LATENCY, not existence.** The wire publishes at 08:00; the
+exhibit appears when the issuer files.
+
+### AND THE LATENCY IS UNMEASURABLE FROM THIS STORE, WHICH IS THE REAL STEP 1
+
+```
+SEC_EXHIBIT   published_precision = INFERRED     878 of 878
+SEC_FILING    UNKNOWN 3,235 | DATE_ONLY 17 | EXACT 1
+```
+
+**One row of 3,253 carries an exact timestamp.** So the desk cannot say whether a
+release became public at 08:00 or at 18:00 — and **that single number decides
+whether a wire licence is worth buying.**
+
+*An artifact I nearly reported as the finding: filtering `published_precision !=
+'INFERRED'` and bucketing by hour put **99.4% of filings in 16:00-20:00**. That is
+3,235 UNKNOWN rows whose date-only value parses as midnight UTC, which is 20:00
+ET. It would have argued hard for the licence. **The `published_precision` column
+exists to prevent exactly this and I filtered on the wrong value.***
+
+**The fix is already half-built.** `sec/collector.ts:246` reads
+`acceptanceDateTime`, and `:422` carries the comment **"ACCEPTANCE OVER FILING
+DATE, AND NO SYNTHESISED FALLBACK — `acceptanceDateTime` is when EDGAR accepted
+the filing"**. The intent is right and the value is fetched; it is **not reaching
+`published_at` with EXACT precision** on the rows that matter.
+
+⇒ **REVISED STEP 1, and it costs nothing and needs no terms check:**
+
+1. **Persist `acceptanceDateTime` with `EXACT` precision** on 8-K/6-K filings and
+   propagate it to their EX-99 exhibits, which currently inherit an inferred date.
+2. **Measure the distribution** — what share of press-release exhibits become
+   public inside 04:00-09:30 ET.
+3. **Only then price the wire licence.** If most releases are public on EDGAR
+   before the open, a licence buys minutes. If they land after the close, it buys
+   the whole premarket window and is worth paying for.
+
+**The wire question is not answerable yet, and this makes it answerable for
+free.**
+
 ## What I would build, smallest first
 
 1. **One wire, terms checked, aggregate feed, attribution through EDGAR, no
