@@ -52,7 +52,47 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — handover, 2026-09-17
+## LIVE STATE — 2026-09-21T09:40Z
+
+*A snapshot of now, not a diary. The section below this one is the diary it
+replaced and is archive. Read this, then the charter under "Opening message for
+a new chat"; read nothing marked ARCHIVE front to back.*
+
+### SHIPPED, tested, on `main` — suite 2,183 across 145 files
+
+| sha | what |
+| --- | --- |
+| `baece00` | **A run also ends when the tape is too thin to trade** — dollar-volume floor at **$50,000**, his pick, as a DISJUNCT beside the relative test. Neither measure sees the other's case. |
+| `1fba8fd` | **A run ends when its typical day is back to normal** — the quiet test is a MEDIAN over a window, not three consecutive sessions. One pop every third day was keeping dead runs alive forever. |
+| `e48a2ca` | **The cycle verdict reaches the board**, in the all-sessions frame. `CycleHistory.todayStart`; `overlayLiveCycle` computes it from today's stored minute bars with `max(session_high, ah_high)` as the auditor. |
+| `dbd70d1` | **The interpreter prompt no longer says a human reviewed the prior.** `PRIOR_MODEL_ANALYSIS`; `humanConclusion` renamed. No human has ever written or reviewed the Sheet. |
+| `410f750` | **The high is tested as an INTERVAL** — a coverage gap only matters if it straddles the threshold. Fixed a guard that refused 75% of the top 12. |
+| `0821781` | **`dailyBarAdjustment` reads the vintage, not just the label.** Every row is labelled `'split'`, so the old test had no reachable path to null. |
+| `622e23f` | `todaySoFarFromBars` — the provisional bar's pair comes from ONE stored minute, with `session_high` demoted to an auditor. |
+| `90cb557` | `vwap.ts` restart table recast on the CONDITION (which session made the high), with the premarket hole and its measurements. |
+
+### OPEN, MINE, AND WHAT EACH WAITS ON
+
+- **How a restart rebuilds `sessionHigh`** — **waits on him.** Measured 2026-09-18: a 21:05Z restart left **1,481 of 7,936 rows** carrying a high below the one that printed, and **1,160 of those highs printed in PREMARKET**. Cause: the rebuild draws `dailyBar.h` (09:30–16:00, all symbols), an after-hours reconstruction (16:00+, only once RTH closed), and a focused minute backfill from 04:00 covering **200 names plus pins** — so premarket is recovered for the focused set and nobody else. Options: replay the stored minute bars, widen the focused set, or seed nothing and say UNKNOWN. **Nothing is built.** `sessionLow` has the mirror defect.
+- **Phase C, filing-derived float** — buildable now. `assessFloat` (`float.ts:326`) already IS the containment test: `IMPOSSIBLE` when a claimed float exceeds a current filed count. **The vendor half is prohibited, not expensive** — see constraints.
+- **31 personal-scoped justifications in this file.** Integration counted 86 across nine charters. **Fix as each finding is touched**; a bulk rewrite of reasons is how a wrong reason gets a confident new sentence.
+- **`isCycleStart`'s move gate (high vs close)** — **WITHDRAWN, not open.** Unreproduced; QCLS never evidenced it either way.
+
+### STANDING CONSTRAINTS — things that must NOT be done
+
+- **Never fetch `stockanalysis.com` from a worker, an API route or a scheduled job.** Their terms bar automated access AND bar using the data in a competing product. His ruling 2026-09-19: the vendor float stays on **his desktop ChatGPT task**, not the API. Volume is ~150/day, small enough that automating it will keep looking like an easy win.
+- **`BACKSIDE_RETRACEMENT = 0.5` and `SUPERRUNNER_ADVANCE = 2.0` were measured in the OLD frame and are NOT re-derived.** Both carry a FRAME WARNING at their definition sites. Do not cite them as measured.
+- **Premarket in the cycle frame is NOT RULED.** He ruled after-hours in, when "the frame" meant the evening. The premarket half was measured afterwards, put to him, and not answered. **Do not re-derive the constants against a premarket-inclusive frame until he rules it.**
+
+### HAZARDS A FRESH SESSION MUST KNOW
+
+- **`daily_bars.high` is 09:30–16:00 plus the closing cross.** Premarket excluded 18–0, evening excluded, 0 of 121 discriminating rows premarket-inclusive. **The same bar's VOLUME is not RTH-only** (3 of 2,747 rows, 0.1%) — one bar, two windows, and `bootstrapSession`'s docstring cites the volume property right where the high is also taken.
+- **Today is not in the cycle input.** `readDailyBars` defaults to `unfinished: 'EXCLUDE'`, so a name up 270% right now is judged as of yesterday. This is the QCLS mechanism (incident `ops.md:10297`, 2026-09-16) and what `e48a2ca` supplies.
+- **`volume_base` / `volume_base_through` were literals** until Ops fixed them; `volume_base_source` now writes the unmutated source. Earliest non-null `volume_base_through` dates the daily-bar roll — **not** first nonzero `volume_base`, which conflates rolled with traded.
+- **Calibration data, audited:** `data/vendor/alpaca-1hour-split-2026-05-20-to-2026-08-18.json` (75 symbols, 62 sessions, gitignored). Derive from the **split** file. The `-raw-` file beside it is incomplete for **MSS** — a truncated fetch, 45 dense dates then a partial day then nothing.
+- **19 of 75 symbols had corporate actions in-window**, at clean factors up to 200:1. My earlier "89% drift" and "within-symbol basis inconsistency" claims are **both withdrawn** — the filters that produced them were circular.
+
+## ARCHIVE: live-state diary, 2026-09-17 to 09-21 (NOT live — superseded by the snapshot above)
 
 *The section below this one is dated 2026-08-27 and was three weeks stale on the
 desk's most active thread. Integration-tmi caught it while retiring and was
@@ -913,7 +953,7 @@ post-switch dossiers.
   number.** The control arm's magnitude is measurable. *"Unmeasurable" is usually
   "not that number, this one."*
 
-## SUPERSEDED LIVE STATE — handover, 2026-08-27
+## ARCHIVE: superseded live state — handover, 2026-08-27 (NOT live)
 
 *Written by the session retiring on low context. Everything below is what a
 fresh Research session needs in order to act without asking me anything. If it
@@ -1128,7 +1168,7 @@ the error and its resulting rule are at its `4c0d13d`. **Nothing is open for
 you here**; these lines exist so nobody re-asks it. Q8 in R&D's register is
 runnable and unblocked.
 
-## State as of 2026-08-21
+## ARCHIVE: state as of 2026-08-21 (NOT live)
 
 Research is running normally after a manual recovery at 08:11 ET. Seven of the
 board's twelve names carried a fresh grade within minutes; IBG recovered on its
@@ -1144,7 +1184,14 @@ Recovery was done **by criteria, never by ticker name** — `last_error LIKE 'HT
 released, twenty-one obsolete movers correctly left blocked. Repeat that pattern
 if it happens again.
 
-## Open items
+## ARCHIVE: open-items list to 2026-08-25 (NOT live)
+
+*Marked 2026-09-21. Its first entry is dated 2026-08-25 and the list predates
+everything in this session. **The live open items are in LIVE STATE at the top;
+anything in here that does not appear there has NOT been re-verified** and may be
+closed, superseded, or still real. Search it, do not work from it.*
+
+## Open items (archive)
 
 **00. A live catalyst miss on RCON this morning: RESOLVER found no durable
 company source and added nothing, so a wire release produced no re-analysis.**
@@ -2577,9 +2624,31 @@ on its own before any handover: it is read first and doubted last.
 >   about production, the vendor, or the market, the local store is evidence
 >   about none of them — go and look, or say which you looked at.
 >
-> **Every reply ends with `## What I need from you` and nothing after it.**
-> Credentials live in `A:\AWS_creds\` and are never printed, logged, committed
-> or moved. Never `git add -A`; stage by explicit path.
+> **Every message that needs him ends with the `## 🟠 NEEDS YOU` block and
+> nothing after it — and the block is OMITTED ENTIRELY when nothing needs him.**
+> *Superseded the older "every reply ends with `## What I need from you`" on
+> 2026-09-19: a wall of text ending in a vague ask makes him hunt for the
+> question, and a question without its options costs a round trip. Each item must
+> be decidable from the block alone.* Credentials live in `A:\AWS_creds\` and are
+> never printed, logged, committed or moved. Never `git add -A`; stage by explicit
+> path — five sessions share one index, so use `git commit --only <paths>`.
+
+---
+
+## ARCHIVE — working log to 2026-09-21, kept for the record, NOT live
+
+**Everything below this line is history.** It is the session-by-session log that
+accumulated under the charter heading above: 655 entries, including corrections
+to corrections and probes whose results are now facts in LIVE STATE or commits in
+git. **A fresh session does not read it front to back.** Search it when you need
+the reasoning behind a specific decision; trust LIVE STATE for what is true.
+
+*Boundary inserted 2026-09-21 under the session-hygiene rule
+(`A:\claude-infra-agent\docs\session-hygiene.md`). Nothing was deleted — the
+rule prefers a dated archive to a deletion, and a 13,000-line section that reads
+as charter is the specific hazard it names.*
+
+---
 
 ### Correction: the as-of hazard had no victim, and the archive is why
 
