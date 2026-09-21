@@ -47,20 +47,37 @@ typical day trades under $50,000 (`baece00`, his threshold). The interpreter
 prompt no longer tells the model a human reviewed the Sheet's prior analysis
 (`dbd70d1`), which no human has ever written. Suite was 2,183 across 145 files.
 
-### First task
+### First task — three things he approved on 2026-09-21, none started
 
-**Everything open waits on him, so start by reading his answers rather than
-building.** Two things are with him: **how a restart should rebuild
-`sessionHigh`** (the premarket hole — 1,481 of 7,936 rows on 2026-09-18, options
-named in LIVE STATE, nothing built) and **whether the cycle frame includes
-premarket** (he ruled after-hours in; the morning half was measured, put to him,
-and not answered).
+**1. Wire `lib/market/replay.ts` so a restart rebuilds `sessionHigh` from stored
+minute bars.** It is built and deliberately unwired. A restart at 21:05Z on
+2026-09-18 left **1,481 of 7,936 rows** with a high below the one that printed,
+and **1,160 of those highs were set in premarket**. The rebuild draws
+`dailyBar.h` (09:30-16:00, every symbol) plus an after-hours reconstruction plus
+a focused minute backfill covering only **200 names + pins**, so premarket is
+recovered for the focused set and nobody else. **Replay is local and exact where
+it applies; seed nothing and report UNKNOWN where no bars exist** (the promotion
+population). *And this answers the volume-ownership question that stalled replay:
+the snapshot owns VOLUME (measured NOT RTH-only, 0.1%), replay owns the HIGH and
+LOW (measured RTH-only). Different fields; the measurement decides.* The seam is
+in `worker/runtime.ts`, which is **Ops's file** — coordinate.
 
-**If he has answered neither, the unblocked work is Phase C — the
-filing-derived float.** `assessFloat` (`lib/research/float.ts:326`) is already
-the containment test: it returns `IMPOSSIBLE` when a claimed float exceeds a
-current filed count. The derived half needs no permission. **The vendor half is
-prohibited — read the standing constraints before touching it.**
+**2. The cycle frame includes PREMARKET.** He ruled after-hours in earlier and
+premarket on 2026-09-21. The live sibling already uses
+`max(session_high, ah_high)` (`e48a2ca`). What remains is the **settled** side:
+`daily_bars.high` is 09:30-16:00 plus the closing cross, so an all-sessions
+settled high must be built from `data/vendor/alpaca-1hour-split-...json`
+(audited, 75 symbols, 62 sessions). **Then re-derive `BACKSIDE_RETRACEMENT = 0.5`
+and `SUPERRUNNER_ADVANCE = 2.0`, which carry FRAME WARNINGS at their definition
+sites and must not be cited as measured until this is done.**
+
+**3. Persist EDGAR's `acceptanceDateTime` with `EXACT` precision.** See
+`docs/Wire_Feed_Collector_SCOPE.md`. `sec/collector.ts:246` already reads it and
+`:422` already prefers it, but **1 of 3,253 `SEC_FILING` rows has an exact
+timestamp and all 878 exhibits are `INFERRED`** — so the desk cannot say whether
+a press release became public at 08:00 or 18:00. **669 of those exhibits ARE
+press releases** (EX-99), public-domain, already collected. That one distribution
+decides whether a PR Newswire licence is worth buying, and measuring it is free.
 
 ---
 
