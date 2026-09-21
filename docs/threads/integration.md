@@ -201,14 +201,15 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
-**AS OF 2026-09-21T09:36Z.** *Rewritten whole by the ninth session under the owner's
-session-hygiene rule (`A:\claude-infra-agent\docs\session-hygiene.md`, 2026-09-21).
+**AS OF 2026-09-21T23:15Z.** *Base rewritten whole by the ninth session; PRODUCTION,
+OPEN AND HIS, and the sessionHigh item updated by the tenth session after the `a9df280`
+deploy (owner's session-hygiene rule, `A:\claude-infra-agent\docs\session-hygiene.md`).
 Everything below LIVE STATE is kept for its MECHANISMS, not its facts.*
 
 ### PRODUCTION
 
 ```
-web / research / assess   a5924c2   deployed 2026-09-19 10:36Z, 2s down
+web / research / assess   a9df280   deployed 2026-09-21 23:13:21Z, 3s down (rollback a5924c2)
 market worker             467ffec   pid 636490, restarted 2026-09-18 21:05:09Z
 stranger sees             /  /privacy  /terms  /robots.txt  /favicon.ico
                           /icon.svg  /apple-icon.png            200
@@ -221,18 +222,20 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
 
 ### OPEN AND HIS
 
-1. **DELETE THE OLD GOOGLE SERVICE-ACCOUNT KEY IN THE CONSOLE.** *Rotation done and
-   exercised 2026-09-19 (new fingerprint `383cb3d1…` on box and local; exposed key
-   `ce67f777…` no longer present; proven by a before/after `/api/dashboard` call returning
-   the same 13 tickers).* **Creating a key does NOT revoke the old one — the exposed key
-   still opens that Sheet until he deletes it.** *Then Ops removes
-   `.env.local.bak-20260919T115148Z`, which holds the old key (gitignored, never committed).*
-2. **SHIP DESIGN'S BADGE FIX `a9df280`?** *Written 2026-09-19, NOT deployed. Suppresses the
-   phase verdict to a dated prior high where the desk cannot establish a side, and switches
-   the reference off a dead run's high on a name that has started a new one — the QCLS fix.*
-   **Design has never seen it render and structurally cannot: it needs production data and
-   has no token.**
-3. **WHICH OF DESIGN'S TWO ITEMS TO BUILD** — the badge label, or the float render.
+1. **WHICH OF DESIGN'S TWO ITEMS TO BUILD** — the badge label, or the float render.
+   *On hold: he said "wait for instruction" 2026-09-21.*
+2. **RULE THE PREMARKET CYCLE FRAME — in or out?** *After-hours he ruled IN (2026-09-17);
+   the premarket half was measured, put to him, never answered. Gates re-derivation of
+   `BACKSIDE_RETRACEMENT = 0.5` and `SUPERRUNNER_ADVANCE = 2.0` (`lib/market/cycle.ts`),
+   both frozen with FRAME WARNINGS at their definition sites until he rules. Detail in the
+   CYCLE FRAME section below.*
+
+**RESOLVED 2026-09-21, kept briefly so the change is visible:**
+- **Old Google service-account key: HE DELETED IT in the console.** *Ops follow-up —
+  remove `.env.local.bak-20260919T115148Z` (holds the old key, gitignored) — unconfirmed
+  here; flag for the next Ops check.*
+- **Design's badge fix `a9df280`: SHIPPED** 23:13:21Z, gate green at the sha (145 files,
+  2,174 tests), 3s down — now production. First real use of the preflight test gate.
 
 ### THE SHEET MIGRATION — HIS RULINGS, AND THE SHAPE THAT SURVIVED THEM
 
@@ -364,9 +367,12 @@ premarket. It is INERT at `a5924c2` — producer, no consumer — so nothing ren
 ### RESEARCH'S QUESTIONS — ONE OPEN, NOT THREE
 
 ```
-restart rebuild of sessionHigh        OPEN       waits on him. Its own answer points at
-                                                 an hourly lookup, ~8,400 paged requests,
-                                                 which is a rate-limit question
+restart rebuild of sessionHigh        APPROVED   he approved the STORED-minute-bar replay
+                                                 (replaySession -> bootstrapSession); Ops
+                                                 building it as worker code, inert until a
+                                                 restart -> own enumeration + his restart
+                                                 word, separately. Sidesteps the ~8,400-req
+                                                 hourly fetch entirely -- no rate-limit cost
 day-high vs close, cycle-start gate   WITHDRAWN  by Research, unreproduced; QCLS never
                                                  evidenced it either way
 HUMAN_REVIEWED_PRIOR_ANALYSIS         FIXED      dbd70d1, 2026-09-19. Now
