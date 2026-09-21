@@ -25,9 +25,9 @@ import { FILED_SHARES_CURRENT_DAYS, assessFloatAgainstFiled } from '@/lib/resear
  * constant.
  */
 
-const TODAY = '2026-09-22';
+const TODAY = '2026-09-21';
 const FRESH = '2026-09-01'; // 21 days
-const ONE_YEAR = '2025-09-22';
+const ONE_YEAR = '2025-09-21';
 
 /** Shares outstanding. The tight concept; a looser one is tested by name. */
 const OUTSTANDING = 'dei:EntityCommonStockSharesOutstanding';

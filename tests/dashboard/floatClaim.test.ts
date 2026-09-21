@@ -176,7 +176,7 @@ function intelligence(float: number | null): AutoIntelligence {
   return {
     ticker: 'ZOOZ',
     state: 'ACCEPTED',
-    generatedAt: '2026-09-22T11:00:00.000Z',
+    generatedAt: '2026-09-21T11:00:00.000Z',
     coverageIncomplete: false,
     analysis: { dossier: dossier(float) },
   } as unknown as AutoIntelligence;
@@ -207,7 +207,7 @@ describe('one float for the whole desk', () => {
       null,
       intelligence(9_900_000),
       null,
-      { tradingDate: '2026-09-22' },
+      { tradingDate: '2026-09-21' },
     );
     const summary = buildStructureSummary(row)!;
 
@@ -219,7 +219,7 @@ describe('one float for the whole desk', () => {
 
   it('shows no verdict where there is no float, and does not invent Unknown into one', () => {
     const row = buildDeskRow('ZOOZ', sheetRow(''), null, null, intelligence(null), null, {
-      tradingDate: '2026-09-22',
+      tradingDate: '2026-09-21',
     });
     const summary = buildStructureSummary(row)!;
 

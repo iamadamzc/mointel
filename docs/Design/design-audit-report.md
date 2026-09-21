@@ -503,7 +503,15 @@ Only questions the interface, repository and existing requirements genuinely can
 
 5. **Should the desk ever rank by anything other than Daily RVOL / AH Participation?** Sorting exists on the watchlist but Discovery's order is fixed. Allowing a trader to re‑rank Discovery (by float, by catalyst freshness, by rank move) is cheap to build but is a real product decision — the current fixed ranking is a deliberate opinion, and the caption defends it.
 
+   > **Answered 2026‑08‑23 — settled as DEFERRED past §9 item 13, desk owner concurring.** Re‑ranking is a decision about a list that item 13 re‑targets and moves; settling the order of a list before settling which list it is answers the wrong question.
+   >
+   > *Transcribed 2026‑09‑21 from the index in [../threads/design-archive-2026-09.md](../threads/design-archive-2026-09.md), which records §11 as the authoritative home for the answers. Items 5 and 6 were settled with the other four and their answers were never carried back here — so this section read as four settled and two open for four weeks, which is exactly how a settled question gets re‑asked.*
+
 6. **Does the 09:25 pre‑open assessment ever get a validated score?** It is captured and flagged `EXPERIMENTAL`, and the UI says so. If it stays experimental indefinitely, it should probably not occupy a checkpoint slot in the trader‑facing selector at all.
+
+   > **Answered 2026‑08‑23 — HANDED TO R&D as register Q6, not settled for Design.** Whether the pre‑open assessment earns a validated score is a measurement question before it is a display one, and the same reasoning routed three of item 3's concepts to the same place. **Design builds nothing that assumes the answer in either direction**, and the `EXPERIMENTAL` flag stays on the surface until R&D reports.
+   >
+   > *Transcribed 2026‑09‑21 from the archive index, with the note on item 5 above.*
 
 ---
 

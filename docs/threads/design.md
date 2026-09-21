@@ -44,9 +44,9 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-21 09:39 UTC
+## Live state — 2026-09-21 23:40 UTC
 
-**My head is `a9df280`.** What is DEPLOYED is Ops's to say; this thread has no
+**My head is `7cc5076`.** What is DEPLOYED is Ops's to say; this thread has no
 deploy signal and a list I cannot verify is a guess with a shape.
 
 **The brand shipped this week.** TMI now expands to *The Momentum Intelligence
@@ -62,6 +62,25 @@ Three verdicts, three renders: QUALIFIED switches the reference to today's own
 high; NOT_QUALIFIED leaves the settled badge; UNVERIFIABLE drops the pair AND
 the word and shows the prior high alone, dated.
 
+**The float render is built and pushed** (`7cc5076`). His four states, ruled
+2026-09-21 ET: REFUTED, CONSISTENT, CONSISTENT (stale), CANNOT VERIFY. One
+number and one verdict, with the filed count cited INSIDE the verdict — and
+`FloatClaimReading` exposes no field carrying that count, so a two-column
+layout is not a design a later seat can choose. **The stale case split-adjusts
+the count onto today's basis, which is what makes it sound rather than merely
+cautious:** the factor removes the split, issuance only grows a count, so the
+adjusted count is a floor under today's and a claim beneath it is genuinely
+consistent. Without a factor the comparison is VACUOUS rather than careful — a
+reverse-split name inflates its old count until every float fits under it — and
+that is CANNOT VERIFY, never a pass.
+
+**It also closes F-19's two-surfaces half.** The drawer's Float now shows
+`row.displayedFloat`, the number the board sorts on and turnover divides by,
+instead of the dossier's own extraction, which reaches no other surface. The
+model's float confidence left that line rather than moving: it measures the
+dossier's number and would now be sitting against the Sheet's. **NOT VERIFIED
+LIVE** — this seat has no token and structurally cannot authenticate.
+
 **The audit remains the specification.** `docs/Design/design-audit-report.md`,
 its §9 plan and its §10 acceptance criteria. All six §11 decisions are settled;
 the answers sit beside the questions. Do not re-ask one.
@@ -70,7 +89,7 @@ the answers sit beside the questions. Do not re-ask one.
 
 | Item | Owner | Waiting on |
 | --- | --- | --- |
-| Float render — one number, one verdict, the bound cited inside it | Design | His pick; spec settled, unbuilt |
+| Float render — seeing the four states on a real row | Design | His token; built at `7cc5076`, never rendered |
 | The `prior high` label | Design | Seeing it in a real row; needs a review token |
 | The mark on a real handset | Design | His phone; nobody has looked |
 | Manual spine — the dozen things a user would misread | Design | His yes; drafted from the log, not from memory |

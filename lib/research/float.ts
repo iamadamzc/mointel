@@ -535,7 +535,7 @@ export function assessFloatBound(input: {
 /**
  * What the desk may say about a BORROWED float against its OWN filed count.
  *
- * Four states, the trader's, 2026-09-22. They are not `FloatVerdict`'s six and
+ * Four states, the trader's, 2026-09-21 ET. They are not `FloatVerdict`'s six and
  * must not be collapsed into them: `assessFloat` judges a float against a
  * filing on the RESEARCH side and refuses everything it cannot stand behind;
  * this judges a vendor's published float against the filed share count for the
