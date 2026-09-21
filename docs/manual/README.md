@@ -1,5 +1,9 @@
 # Manual — source pages
 
+**As of 2026-09-21 09:39 UTC.** The four constants below were re-verified
+against `lib/market/activity.ts:176-177` on that date and still hold: active 300
+per minute, dead ratio 10.
+
 Pages written to explain the desk to the trader, kept because he asked for them
 to be preserved for a manual: *"what you have described is important for later
 for a manual. with the images. preserve it."*
