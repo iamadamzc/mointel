@@ -126,16 +126,29 @@ inside the quote.
 >    switches the reference off a dead run's high. **Design gates the render
 >    before it ships.** Enumerate it in its own right; `e48a2ca` (already live)
 >    is only its plumbing and is genuinely inert at `a5924c2`.
-> 3. **`IDENTITY_DB_PATH` must be set in `/etc/mointel/mointel.env` in the SAME
+> 3. **Wire `replaySession` into `bootstrapSession`, so a restart rebuilds
+>    `sessionHigh`/`sessionLow` from stored minute bars.** *Handed over by the
+>    retiring Research seat 2026-09-21 on his approval. `lib/market/replay.ts`
+>    exports `replaySession(db, engine, tradingDate)` and is wired NOWHERE —
+>    verified, not taken. The seam is `worker/runtime.ts:779` `bootstrapSession`,
+>    which is this seat's.* **This is the fix for the premarket hole below:
+>    1,481 rows understated after the 09-18 restart, 1,160 of them highs set in
+>    premarket.** *Research's ruling on what owns what, its measurement and not
+>    this seat's: the daily-bar snapshot KEEPS volume (measured NOT RTH-only —
+>    3 of 2,747 rows, 0.1%), replay supplies the HIGH and LOW (`daily_bars.high`
+>    is 09:30–16:00 plus the closing cross), and a name with no bars reads
+>    UNKNOWN rather than a wrong number. Different fields; they were never
+>    competing.*
+> 4. **`IDENTITY_DB_PATH` must be set in `/etc/mointel/mointel.env` in the SAME
 >    motion as any `app/auth/` ship.** It is unset, so accounts would default
 >    to `process.cwd()/data/identity.db` — inside the release — and `prune.sh`
 >    removes old releases. The first account survives one deploy and is deleted
 >    by the second, silently.
-> 4. Authority field (his ruling: user-based, only he is admin). Gates the
+> 5. Authority field (his ruling: user-based, only he is admin). Gates the
 >    retry endpoint before Basic Auth ever leaves `/`.
-> 5. `lib/review/`: token lifetime as a condition; `sanitize` does not redact
+> 6. `lib/review/`: token lifetime as a condition; `sanitize` does not redact
 >    filesystem paths.
-> 6. Access-path gate 3 (close port 22) — his, not asked recently.
+> 7. Access-path gate 3 (close port 22) — his, not asked recently.
 >
 > ## What this session learned that cost the most
 >
