@@ -44,9 +44,9 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-21 23:40 UTC
+## Live state — 2026-09-22 00:05 UTC
 
-**My head is `7cc5076`.** What is DEPLOYED is Ops's to say; this thread has no
+**My head is `9366d3f`.** What is DEPLOYED is Ops's to say; this thread has no
 deploy signal and a list I cannot verify is a guess with a shape.
 
 **The brand shipped this week.** TMI now expands to *The Momentum Intelligence
@@ -81,6 +81,48 @@ model's float confidence left that line rather than moving: it measures the
 dossier's number and would now be sitting against the Sheet's. **NOT VERIFIED
 LIVE** — this seat has no token and structurally cannot authenticate.
 
+**§9 item 12 is started, in pieces.** Two shipped: `f303e14` renders the
+checkpoint's change SENTENCE where sixteen-plus enums were the cell text and
+the sentence was the hover, and `9366d3f` makes the events band persistent.
+**The two that are left are named below, with the reason each is held.**
+
+**WHAT ITEM 12 STILL NEEDS, AND ONE OF IT IS NOT MINE.**
+
+1. **A payload field for the checkpoint's per-ticker changes.** Checked, not
+   assumed: `MarketSnapshot.assessments` is an `AssessmentPanel`, which carries
+   `AssessmentSummary` only — no ticker rows, no `changedFields`, no
+   `changeSummary`. The data exists and is persisted (`assessment_tickers`,
+   read by `AssessmentSnapshotBoard` through its own fetch), and it is not on
+   the live payload. **`AssessmentSummary.notes` is not a substitute:** it is
+   `commentary()`'s lines JOINED INTO ONE STRING, truncated at 2,000
+   characters, and `commentary` drops every row whose summary is empty — which
+   is exactly the set `f303e14` exists to word. Building a rail from it means
+   parsing a display string back into records.
+
+   **The field, precisely.** On `MarketSnapshot`, beside `events`:
+
+       /** Per-ticker changes at the LAST completed checkpoint. */
+       lastCheckpointChanges: Array<{
+         ticker: string;
+         changedFields: string[];
+         changeSummary: string;
+         assessmentId: number;
+         /** The checkpoint's own completedAt, so the rail can timestamp it. */
+         at: string;
+       }>;
+
+   Uncapped over the checkpoint's tickers, and **rows with an empty
+   `changeSummary` are INCLUDED** — `changeReading` (`lib/dashboard/changes.ts`)
+   words them, and dropping them at the writer is what hides them today. An
+   empty array means the checkpoint found no changes; **absent means no
+   checkpoint has completed**, and the two must not collapse.
+
+2. **The rail layout.** §6 puts it in a 320 px right column, which restructures
+   the board into two columns. **Held deliberately.** Everything shipped this
+   session is content inside an existing layout, where not seeing it costs
+   little; a shell restructure on the surface he trades from is a different
+   risk class, and this seat cannot authenticate to look at it.
+
 **The audit remains the specification.** `docs/Design/design-audit-report.md`,
 its §9 plan and its §10 acceptance criteria. All six §11 decisions are settled;
 the answers sit beside the questions. Do not re-ask one.
@@ -94,7 +136,9 @@ the answers sit beside the questions. Do not re-ask one.
 | The mark on a real handset | Design | His phone; nobody has looked |
 | Manual spine — the dozen things a user would misread | Design | His yes; drafted from the log, not from memory |
 | `anchorLateScope` render (row mark + board statement) | Research builds the field | The field; ships with the render, never half |
-| §9 items 12–19 (Phase 2 structural) | Design | Unstarted, repeatedly displaced by live defects |
+| §9 item 12 — checkpoint changes in the rail | Read-model seat builds the field | `lastCheckpointChanges` on `MarketSnapshot`; spec above |
+| §9 item 12 — the 320 px rail layout | Design | His token; held, not unscoped |
+| §9 item 13–19 (rest of Phase 2) | Design | Unstarted |
 | §9 items 20–26 (Phase 3) | Design | Not scoped |
 
 **Hazards that cost something and are not obvious from the code:**
