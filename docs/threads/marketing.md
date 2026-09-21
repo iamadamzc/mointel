@@ -265,7 +265,15 @@ subject to every prohibition above.*
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**2026-09-18. Nothing is in progress and no file is held.**
+**2026-09-21. Nothing is in progress and no file is held.**
+
+- **The share card carries its tagline again**, live, verified on the wire
+  2026-09-21: `og:title` = "TMI — Intelligence on what's moving.", site name
+  the full new name (Web `a5924c2`).
+- **STILL OPEN, NOT MINE TO LAND:** the two meta descriptions do not yet carry
+  "what supply stands behind it". The `/` description on the wire still names
+  three things. Strings are in `docs/marketing/2026-09-17-open-graph-copy.md`;
+  with Web and Ops.
 
 - **THE PRODUCT WAS RENAMED 2026-09-18:** TMI, The Momentum Intelligence
   Trading Desk. Live on the site, the mark and the legal pages. The H1 is
