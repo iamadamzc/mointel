@@ -68,7 +68,81 @@ his, and it is an open question rather than a lean.
 
 ---
 
-## LIVE STATE — as of 2026-09-15 (opened 2026-09-07; every entry below carries its own date)
+## LIVE STATE — as of 2026-09-21T09:38Z
+
+**If anything above disagrees with this section, this section is right and the
+section above is stale.** This is a snapshot of now, not a diary; the diary is
+in the archive at the foot of this file.
+
+### What this seat has delivered — dated documents, unchanged since landing
+
+| document | what it settles | date |
+| --- | --- | --- |
+| [`commercial/2026-09-07-feed-licence-landscape.md`](../commercial/2026-09-07-feed-licence-landscape.md) | the licence line, vendor table, exchange layer, four product shapes, the exposure as the instruments describe it (§1b), how they would know (§1c), the 30-day notice (§1b) | 2026-09-07/08 |
+| [`commercial/2026-09-07-which-price.md`](../commercial/2026-09-07-which-price.md) | which derived prices carry a real bid and ask (only Databento Mini) | 2026-09-07 |
+| [`commercial/2026-09-07-volume-basis.md`](../commercial/2026-09-07-volume-basis.md) | which display tiers carry consolidated volume; the two floors and the defect each buys | 2026-09-07 |
+| [`commercial/2026-09-07-model-rate-card.md`](../commercial/2026-09-07-model-rate-card.md) | OpenAI Standard rates for sol / terra / luna, per-row dates and expiry (sol promotional through 2026-11-21) | 2026-09-08 |
+| [`commercial/2026-09-08-product-name.md`](../commercial/2026-09-08-product-name.md) | the name, the tagline, every claims ruling (§2e–§2g), the competitor-naming ruling, the session-report scoping | 2026-09-08 → 09-17 |
+| [`commercial/2026-09-10-auth-providers.md`](../commercial/2026-09-10-auth-providers.md) | Google OAuth consent (contradiction reported), Apple phase two (needs an App Store app) | 2026-09-10 |
+| [`commercial/2026-09-11-competitor-trademomentum.md`](../commercial/2026-09-11-competitor-trademomentum.md) | the "free watchlist ending" that did not end; a $147/mo signal product | 2026-09-11 |
+
+Gate 0 is mapped and ruled at the top of [`monetization-gates.md`](../monetization-gates.md).
+Method for all of them: public pages only, every load-bearing figure re-read by
+this seat before it carried a sha, contradictions reported not resolved.
+
+### His rulings this seat holds (verbatim in the documents; one line each here)
+
+- **Name:** TMI Trader · True Move Intelligence · tmitrader.com (registered by Ops 2026-09-08, $16/yr, Route 53) · *"Intelligence on what's moving."* Trademark search waived (*"2, waive."*). **"do not want warrior mentioned"** (2026-09-16) — no competitor named in public copy.
+- **Feed licence:** *"accept exposure … my call. the moment we have something moving, i'll sign up."* (2026-09-08). Trigger undefined; no seat invents one. Risk conversation deferred, Integration's to reopen before the page goes live.
+- **Alpaca plan:** Algo Trader Plus, his word (2026-09-07).
+- **Session report:** *"the report is for monetization, coaching is just for me."* Apple sign-in: *"phase 2."* Google consent screen: he meant OAuth consent verification.
+- **Reporting format:** the 🟠 NEEDS YOU block (2026-09-19); nothing after it, omitted when nothing needs him.
+
+### Standing rules this seat applies to claims
+
+1. A percentage describing the market's behaviour is a fact of record; one attached to a name, a time and a reader is an outcome. **Outcome claims are prohibited in any form**, loss statements included.
+2. No number about a named or inferable third party's data; no unagreed association with a named third party. The mechanism may be described without the vendor.
+3. The public page is the evidence surface under accepted exposure: it says intelligence on what's moving and never sells the tape (Web removed LAST / CHG / RVOL / TAPE LIVE, `7d81bae`).
+4. A positioning fact he states is not an instruction to publish it.
+5. A paid report narrates the float **verdict**, never a float **number** — standing default, ruled by Integration under order-and-process 2026-09-17.
+6. The registered plain statement (naming document §2e item 2) is the only description of the product; it rests on the board rendering not-researched as a state (verified by type, Design `ba13d79`).
+
+### Open items — owner and what each waits on
+
+| item | owner | waits on |
+| --- | --- | --- |
+| Pricing, packaging and terms — the commercial half of the gates map | this seat | him asking; the unit is "everything together, same board" |
+| The vendor decision (Massive Business $2,499 no spread vs Databento Plus $1,500 unstated-delay volume) | him | the undefined "something moving" trigger |
+| The pre-launch exposure conversation | Integration | the page going live (`c7ada4f` trigger) |
+| Session-report pricing and packaging | this seat | him; the report cannot narrate structure honestly until Phase C (filing-derived float) replaces the Sheet float |
+| Marketing's claims as they arrive | this seat | each one; ruled in the naming document §2f |
+| A second Alpaca account in his name (for a staging desk) | him | ruled deferred by Integration `1c0c0a6`; unresolvable from public pages; an enquiry is his |
+| Watch, no clock | this seat | CT Plan agreements (2027-04-01; migration since 2026-09-01); IEX TOPS $1,000 from 2026-10-01; sol's promotional price after 2026-11-21; a 2026 Nasdaq Basic list |
+
+### Hazards a fresh session must know on day one
+
+- **Public sources only; register nothing; no vendor contact.** An enquiry is an approach and an approach is his. Not even a pricing page behind a login.
+- **Never take a relayed word as a fact — open the file.** On 2026-09-17 this seat filed "his prior analysis" for a Sheet no human has ever written; two decisions were put to him on that premise and withdrawn. Three documents on the desk already said otherwise.
+- **WebFetch fails on PDFs and JS pages; the in-app browser and pymupdf do not. Close the browser tab when the read is done** — an idle tab played YouTube audio on his machine with no visible owner (2026-09-11).
+- **Commit with `git commit --only <paths>`;** five sessions share one index. Verify a push with `git branch -r --contains`, never by the push output.
+- **Addresses from `list_sessions` every time.** Titles carry a `-tmi` suffix now (`Integration-tmi`, `Marketing-tmi`); there are three constellations on this machine.
+- **No P&L and no figure from his fills in the repository.**
+
+**Declined, deliberately:** any enquiry to any vendor, and any recommendation
+to sign. Both are his.
+
+## Opening message for a new chat
+
+*Superseded 2026-09-21 by [`docs/commercial-opening-prompt.md`](../commercial-opening-prompt.md), which is the hand-off prompt for the next session. The paragraph that stood here from 2026-09-12 is preserved in git history.*
+
+
+---
+
+## ARCHIVE — the 2026-09-07 to 2026-09-17 diary, kept verbatim for provenance
+
+*Superseded by the live state above on 2026-09-21. Every fact a fresh session needs is in the live state; this is the record of how each was reached and corrected, and nothing here overrides the section above.*
+
+### Former LIVE STATE (as it stood 2026-09-17)
 
 **If anything above disagrees with this section, this section is right and the
 section above is stale.**
@@ -434,50 +508,3 @@ to sign. Both are his.
 
 ---
 
-## Opening message for a new chat
-
-*Written 2026-09-12 by Integration audit. **This charter had no opening message at
-all**, which meant every Commercial session started from whatever the previous chat
-happened to say.*
-
-> This is the **Commercial thread** for the TMI Trader desk at `A:\mointel`. Read
-> `docs/threads/commercial.md` completely, starting with **LIVE STATE**, then
-> `docs/threads/README.md`.
->
-> **First action, before anything else: title this session `Commercial-tmi`.** Peers find
-> you by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is set,
-> nobody can reach you.
->
-> **You own what is TRUE about this product commercially:** positioning of record,
-> the name, claim boundaries, vendor and licence questions, and the risk register.
-> **Marketing owns how things are said; you own whether they may be said at all.**
->
-> **You research from PUBLIC SOURCES ONLY. Register nothing, create no account, start
-> no enrolment, agree to no terms.** *If a number is only obtainable behind a login,
-> that is a finding — say so and stop.*
->
-> **Tooling, learned the hard way: `WebFetch` fails on PDFs and JS-rendered pages;
-> the in-app browser works where it does not.** **Re-read every number before it
-> carries a sha, and date every price and timeline** — they decay and they will be
-> quoted at me. **Close the browser tab when you are done: an idle seat with a live
-> tab is a process on my machine with no visible owner.**
->
-> **When sources contradict each other, REPORT THE CONTRADICTION. Do not resolve it.**
-> *Google's own pages disagree about whether OAuth verification is required for an
-> identity-only app; that disagreement is the finding and adjudicating it would have
-> manufactured false certainty.*
->
-> **Settled and not yours to reopen:** the name — **`TMI Trader` / True Move
-> Intelligence / *"Intelligence on what's moving."*** — the trademark search, waived;
-> and my accepted exposure on the feed licence. **The vendor decision is not due and
-> the trigger is undefined — no seat invents one.**
->
-> **The rule that separates a fact from a claim, and it is yours:** *a percentage
-> describing the MARKET'S behaviour is a fact of record; the same number attached to
-> a name, a time and a READER is an outcome.* **Outcome claims are prohibited
-> absolutely.**
->
-> **Report short — fine points in plain language, not the reasoning behind them — and
-> end with `## What I need from you`, nothing after it.** **Take the clock from
-> `zoneinfo`; this host runs ahead of the desk.** **Route cross-thread traffic
-> through the `Integration` session; I am not a transport.**
