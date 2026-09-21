@@ -299,7 +299,7 @@ export default function LandingPage() {
             <p className="text-[17px] leading-relaxed text-ink-1 md:text-lg">
               All of it is public. All of it is filed. None of it is findable in the time you actually have. In
               August it was 50% movers, one after another, on nothing anyone could name at 07:15. This was built
-              to close that gap, by someone who trades it, at the desk he trades it from.
+              to close that gap, by someone who trades it, focused on the premarket and the early regular session.
             </p>
             <p className="text-[17px] leading-relaxed text-ink-1 md:text-lg">
               Premarket, regular hours or after the close, the question is the same: what is this move standing
