@@ -1,5 +1,33 @@
 # Public route spec — handed to Ops, 2026-09-15
 
+> ## DELIVERED. READ THIS BOX AND STOP, UNLESS YOU ARE CHANGING NGINX.
+>
+> **As of 2026-09-21 09:37 UTC every route this document specifies is live and
+> verified on production `a5924c2`.** *Everything below the box is the record of
+> how it was reasoned and proved — history, kept because the reasoning is worth
+> more than the outcome, not because anything in it is a task.*
+>
+> **The live contract, which is all a fresh session needs:**
+>
+> ```
+> exact-match, auth_basic off :  /  /privacy  /terms  /favicon.ico
+>                                /icon.svg  /apple-icon.png  /robots.txt
+> everything else             :  auth_basic, including /desk and /api/*
+> ```
+>
+> **STILL DEFERRED AND STILL DELIBERATE: `/signin` and `^~ /auth/`.** *They wait
+> on the authority field. Opening `/signin` before a first-admin grant exists is
+> how the authority to spend his money goes to whoever knocks first. §3c has the
+> reasoning; do not paste them in because a check said a path was missing.*
+>
+> **THE THREE THINGS IN HERE THAT ARE STILL TRUE AND STILL BITE:**
+> *§2's negative control — a sweep that only checks for 200s passes while the
+> desk is down and nginx refuses everything; §13's dead contact address, which is
+> why nothing published is trusted until an actor with no cached state reaches it;
+> and §13d's three-claims-in-one-sentence, which is the general form of both.*
+
+---
+
 **Written by Web against `dd98782`.** Commissioned by Integration on his go:
 Google verification has not passed, he is doing it himself, and it needs
 `/privacy` publicly reachable and linked. **This is the whole batch, per Ops's

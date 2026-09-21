@@ -370,119 +370,52 @@ that as a rejection.**
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**THE SITE IS PUBLIC. As of 2026-09-16, production `6f8894b`, `tmitrader.com`
-serves a page to anyone for the first time in this desk's life.**
+**AS OF 2026-09-21 09:37 UTC. Production is `a5924c2`, read from
+`/opt/mointel/current/RELEASE_SHA` on the box, not from a deploy's own output.**
 
-*This section read "NOTHING DEPLOYED, NO ROUTE EXISTS" for a day after that
-became false — the fifth instance this week of a description going stale while
-the thing it describes moved, and the first one in this thread's own charter.*
-
-**LIVE AND VERIFIED** — Web's run 2026-09-16 from an actor with no cached state,
-third pass after Ops and Integration, recorded in
-[`../web/2026-09-15-route-spec.md`](../web/2026-09-15-route-spec.md) §7:
+**THE PUBLIC SURFACE IS COMPLETE AND VERIFIED.** *Web's run 2026-09-21, curl
+from an actor with no cached state, negative control first:*
 
 ```
-/  /privacy  /terms  /favicon.ico        ->  200    www.tmitrader.com/  ->  200
-/desk  /signin  /api/market  /privacy-x  ->  401
-11 subresources the served page asks for ->  200 (9 chunks, 2 self-hosted woff2)
+/desk  /signin  /api/market  /privacy-x                    -> 401
+/  /privacy  /terms  /favicon.ico  /robots.txt             -> 200
+/icon.svg  /apple-icon.png                                 -> 200
 ```
 
-- **The landing page is at `/` and the board is at `/desk`**, which keeps the
-  server-level `auth_basic`. **The default did not move; the board did.**
-- **Both legal texts are ADOPTED** (`adopted: 2026-09-11`, his word *"1,
-  approved"*) and **render from their source markdown at request time** — no
-  DRAFT banner, no copy in any template.
-- **Basic Auth is still the whole of what protects the desk.** *Steps 2 and 3 of
-  the sequence — in-app auth, then Basic Auth off — have not happened and are
-  not close.*
+- **The product is `The Momentum Intelligence Trading Desk`, TMI.** *The old
+  name `TMI Trader` survives in exactly two places on purpose: the domain, and
+  one history line in each legal document.*
+- **The landing page is `/`, the board is `/desk`.** Basic Auth is still the
+  whole of what protects the desk; in-app auth has not started.
+- **Both legal texts are ADOPTED** (`adopted: 2026-09-11`) and render from
+  source markdown at request time. Every placeholder he decided is filled.
+- **`info@andromedagenius.com` receives**, on Google Workspace. *The domain had
+  dropped out of the .com registry entirely; he re-registered it 2026-09-18.*
+- **The mark renders twice on `/` and is the favicon.**
 
-**OPEN, AND BOTH ARE THIS THREAD'S**
+### OPEN — each with its owner and what it waits on
 
-- **`/robots.txt` returns `401`, and so do `/sitemap.xml` and
-  `/.well-known/security.txt`.** *Recommendation and reasoning below; the file
-  is Ops's to serve, the crawling posture is his to rule.*
-- **`/signin` and `^~ /auth/`** — specified, deliberately deferred, and **they
-  wait on the authority field**, which waits on the public batch bedding in.
-  *Opening `/signin` before the first-admin grant exists is how the authority to
-  spend his money goes to whoever knocks first.*
-- **The flow cookie's NAME** stays bracketed in the privacy policy until it is
-  in code rather than in a message.
+| what | owner | waits on |
+| --- | --- | --- |
+| `[FLOW COOKIE NAME]` in the privacy policy | Web | **BLOCKED, not open.** It names a cookie the service never sets: `app/auth/` does not exist. Fill it when sign-in ships, from code. |
+| `/signin` and `^~ /auth/` nginx locations | Ops | the authority field. *Opening `/signin` before a first-admin grant exists is how the authority to spend his money goes to whoever knocks first.* |
+| deploy gate must refuse a red suite | unassigned | **His ruling 2026-09-21: the tool refuses, not the seat remembers.** Spec sent to Integration to place; `Ops-tmi` no longer exists. Includes: `push-release.sh:18` defaults to `HEAD`, which the deploy doc forbids. |
+| consent-screen display name | him | the day he uploads the mark. *Brand verification compares consent screen, site and privacy policy; two of the three already agree.* |
 
-**THE BUS IS DOWN.** *Integration retired 2026-09-17 at `e1cc277`; a successor
-opens later.* **In the gap, cross-thread traffic goes direct or to him** — *the
-route-through-Integration rule assumes an Integration.* **Tell the successor, in
-your own words, that a bus which only wakes on messages has a single point of
-failure: it dropped the Release 2 ping and this thread learned production had
-gone public an hour late.**
+**WHY THE GATE ITEM EXISTS: `ddaf2f8` reached production 2026-09-18 with the
+test suite RED, and it had been red since the rename hours earlier.** *Nothing
+was broken on the live site — the failing test was pinned to a string the
+rename removed — but nothing would have caught it if something had been.*
 
 ---
 
 ## Opening message for a new chat
 
-*Written 2026-09-10 by Integration, at his direction. Open the chat with
-`A:\mointel` as the working directory so `CLAUDE.md`, `AGENTS.md` and the project
-memory load on their own, then paste this.*
+**MOVED 2026-09-21 to [`../web-opening-prompt.md`](../web-opening-prompt.md),
+per the owner's session-hygiene rule.** *One idea lives in one place; an opening
+prompt kept in two files decays in one of them.*
 
-> This is the **Web thread** for the TMI Trader desk at `A:\mointel`. Read
-> `docs/threads/web.md` completely, then `docs/threads/README.md`. **Where LIVE
-> STATE and anything above it disagree, LIVE STATE is right.**
->
-> **First action, before anything else: title this session `Web-tmi`.** Peers find you
-> by that title in `mcp__ccd_session_mgmt__list_sessions`. Until it is set, nobody
-> can reach you.
->
-> **You are the senior web designer on this product.** You own how TMI Trader looks
-> to someone who is not yet a user, and **whether a stranger who lands on
-> `tmitrader.com` understands what it is and trusts it enough to sign in.** That is
-> the whole job.
->
-> **Bring judgement, not compliance.** Tell me which conventions you are following,
-> which you are breaking, and why. **A design decision that cannot be explained is
-> a preference; one that can is a reason.**
->
-> **What you are inheriting: nothing.** `https://tmitrader.com/` returns 401 and
-> nothing else — the whole desk is behind one shared password. **No public page, no
-> privacy policy, no terms, no sign-in screen.** Greenfield, and it is the only
-> thing standing between this product and being publishable.
->
-> **The product.** A momentum intelligence desk for small-cap traders. It finds
-> what is moving before it is obvious and says why. **`TMI Trader` / True Move
-> Intelligence / "Intelligence on what's moving."** — settled, don't restyle it
-> into something else.
->
-> **Four constraints that are not preferences, each with an incident behind it.
-> The charter has the rest.**
->
-> - **You cannot test a public page in your own browser.** Every browser here has
->   the desk password cached, so a 401 on a public page is invisible to everyone
->   who could catch it. **Use `curl`** — an actor with no cached state.
-> - **The privacy policy has ONE source of truth, rendered at request time.**
->   Never copy legal text into a template.
-> - **You draft the legal text; I adopt it.** It renders a DRAFT banner until I do.
-> - **Scopes are `email`, `profile`, `openid` and nothing else.** Don't design a
->   screen or write copy promising more access than that.
->
-> **Where the seams are.** **Ops** owns routes, `nginx`, TLS and sessions — you
-> design and specify, Ops lands it. **Design** owns everything a signed-in trader
-> sees; the boundary is authentication, not the file tree. **You own the sign-in
-> screen**, and Design owns the signed-in affordance on the other side of it —
-> **talk to each other about that seam rather than assuming it.**
-> **Route cross-thread traffic through the `Integration` session, not through me.**
->
-> **How to report.** `git commit --only <explicit paths>` — never `git add -A`, and
-> `git add <path>` first does NOT save you; several seats share one index. **Name
-> this thread in the commit message** — every commit here has the same author and
-> the charter file you touch is the only discriminator. **Take the clock from
-> `zoneinfo`**; this host runs six hours ahead of the desk. **Keep reports short —
-> fine points in plain language, not the reasoning behind them** — and end with
-> `## What I need from you`, with nothing after it.
->
-> **Start by showing me something rather than describing it.** Read the charter,
-> then **use the `design` skill to build a canvas I can edit directly** — the
-> signed-out landing page and the sign-in screen as artboards. **Draft it, don't
-> ask me what I want first; I will react to a page faster than to a question.**
-> **Then a first pass at the privacy policy**, in one file, carrying its DRAFT
-> banner. **Tell me what you would build after those two and in what order.**
+---
 
 ## A LITERAL CANNOT TELL YOU WHICH GUARANTEE BROKE — 2026-09-18
 
