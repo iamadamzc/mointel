@@ -92,6 +92,21 @@ std 0.000, which reads as the model declining to answer; and collapsing a Choice
 to `1 - P(none)` produced a second false flag, because a Choice's variance lives
 in **which option it picks**.
 
+### PRODUCTION STATE — read off the box by Ops, 2026-09-23
+
+**The units run DIFFERENT shas, so "is it deployed" has no single answer.**
+
+| unit | sha | what that means |
+| --- | --- | --- |
+| web / research / assess | `42c9a73` | carries the blue-sky trio (`27adbbd`, `b36afd1`, `6e224ca`) and the DCOY fix. **The blue-sky wording is live on his board now.** |
+| market worker | `34414f4` | replay before the seed — the premarket session-high rebuild |
+
+**`b1d64b9` and `ea2d1c9` are ancestors of BOTH releases**, so the EDGAR filing-path check and R&D's EX-99 latency measurement are unblocked wherever they run.
+
+- **`daily_bars.split_factor` EXISTS in production (schema v22).** So the blue-sky basis fix is not sitting on its missing-column fallback.
+- **`worker/basis-backfill.ts --run` has NEVER been run.** Census: **431 due, 562 established.** The ~27% recovery is inert until it runs — **his call, after the close.** Two Alpaca REST calls per ticker, so ~862, read-only against the vendor and writing only `daily_bars`.
+- **The restart fix is confirmed on real data: 0 of 1,825 rows read low** after the 2026-09-23 restart, cohort restricted to symbols WITH stored premarket bars. **Not a ratio against 1,481 of 7,936** — that was every name on the board, this is only the names replay reaches.
+
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
 - **How a restart rebuilds `sessionHigh`** — **waits on him.** Measured 2026-09-18: a 21:05Z restart left **1,481 of 7,936 rows** carrying a high below the one that printed, and **1,160 of those highs printed in PREMARKET**. Cause: the rebuild draws `dailyBar.h` (09:30–16:00, all symbols), an after-hours reconstruction (16:00+, only once RTH closed), and a focused minute backfill from 04:00 covering **200 names plus pins** — so premarket is recovered for the focused set and nobody else. Options: replay the stored minute bars, widen the focused set, or seed nothing and say UNKNOWN. **Nothing is built.** `sessionLow` has the mirror defect.

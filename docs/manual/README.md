@@ -69,14 +69,17 @@ against a store whose date is named:
   24,429 in `data/market-prod-2026-08-23.db`, 68 of 256 symbols (27%) holding
   more than one fetch date. All 2026-09-22.
 - *after a restart* — 1,481 of 7,936 rows reading low and 1,160 of those highs
-  printed before 09:30, after the 21:05Z restart on **2026-09-18**; and the
-  daily bar's volume looking regular-session-only in 3 of 2,747 rows.
+  printed before 09:30, after the 21:05Z restart on **2026-09-18**; the daily
+  bar's volume looking regular-session-only in 3 of 2,747 rows; and **0 of 1,825
+  rows reading low after the 2026-09-23 restart**, measured on the box by Ops.
 
-**One of those is a target as well as a reading.** The 1,481 is the count the
-fix exists to drive to zero, and the page says so. It has not been retaken since
-the mechanism shipped — when it is, the page's closing section is the part to
-update, and the two counts must cover the same population or they do not
-compare.
+**Those last two are not a ratio, and the page says so on its face.** 1,481 was
+out of 7,936 rows across every name on the board; the 0 is out of 1,825, the
+names replay can actually reach. A name with no stored bars is still untouched
+and can still read low without the fix being wrong. **The claim the page makes
+is the narrow one — where the mechanism applies, nothing reads low any more.**
+Anyone tempted to divide one by the other is answering a question neither was
+measured for.
 
 *A page that explains a scale is a second copy of that scale. It is worth having
 anyway — but it is a copy, and copies go stale silently.*

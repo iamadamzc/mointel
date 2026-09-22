@@ -233,12 +233,20 @@
 
   <p>A name with <strong>no stored bars</strong> is untouched by replay and takes whatever the seed gives it. If the desk was not running when that name printed its premarket high, nothing on this disk saw it and nothing here invents it. That is the same direction as every other reconstruction on this desk: <strong>absent beats plausible</strong>.</p>
 
-  <h2>The number that closes it</h2>
+  <h2>The number that closed it</h2>
 
-  <p>The mechanism is live. What settles whether it worked is one count taken after a real restart: <strong>rows whose session high reads below the pre-restart value</strong>. It was 1,481 on 2026-09-18 and it should be zero.</p>
+  <p>The test was one count taken after a real restart: <strong>rows whose session high reads below the value that printed before it</strong>. Measured on the box after this morning's restart, 2026-09-23, over the names replay is able to cover:</p>
+
+  <div class="states">
+    <div class="state">
+      <span class="what" style="color:var(--pos);font-size:13px">0 of 1,825</span>
+      <span class="means"><b>rows reading low after the restart</b>, among symbols with stored premarket bars &mdash; the population replay covers. Measured 2026-09-23.</span>
+    </div>
+  </div>
 
   <div class="callout">
-    <p><b>The two counts have to be taken over the same population or they do not compare.</b> A name with no stored bars can still read low <i>without the fix being wrong</i> &mdash; that is the exclusion above, working as intended. So the comparison must be restricted to symbols that <b>have</b> stored premarket bars, or the denominators are describing different things and a real success will look like a partial one.</p>
+    <p><b>Read that as a pass, not as a ratio against the 1,481.</b> The two counts describe different populations: 1,481 was out of 7,936 rows across everything on the board, while this one is confined to the names replay can reach. A name with no stored bars is still untouched, still takes the seed, and can still read low <i>without the fix being wrong</i> &mdash; that exclusion is working as intended.</p>
+    <p>So the honest claim is the narrow one and it is the one that matters: <b>where the mechanism applies, nothing reads low any more.</b> Dividing one of these numbers by the other would answer a question neither was measured for.</p>
   </div>
 
   <table class="scale">
@@ -246,8 +254,9 @@
     <tr><td class="val">09:30&ndash;16:00 ET</td><td>the daily bar's high</td><td>plus the closing cross, and nothing outside it</td></tr>
     <tr><td class="val">200 + pins</td><td>the focused set</td><td><code>internalRank &times; 4</code>, floor 100 &mdash; moves if that setting moves</td></tr>
     <tr><td class="val">0.1%</td><td>3 of 2,747 rows</td><td>how often the daily bar's volume looks regular-session-only</td></tr>
-    <tr><td class="bad">1,481 of 7,936</td><td>rows reading low</td><td>after the 21:05Z restart on 2026-09-18</td></tr>
+    <tr><td class="bad">1,481 of 7,936</td><td>rows reading low</td><td>after the 21:05Z restart on 2026-09-18, all names</td></tr>
     <tr><td class="bad">1,160</td><td>of those highs</td><td>had printed before 09:30</td></tr>
+    <tr><td class="val">0 of 1,825</td><td>rows reading low</td><td>after the 2026-09-23 restart, names replay covers</td></tr>
   </table>
 
   <footer>Research &middot; mechanism shipped 34414f4 &middot; 2026-09-22</footer>
