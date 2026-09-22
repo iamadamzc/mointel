@@ -185,6 +185,7 @@ export function MomentumTable({
                   onSelect={onSelect}
                   focused={isFocused(ticker.ticker)}
                   onToggleFocus={onToggleFocus}
+                  phase={sessionPhase}
                 />
               ))
             )}
@@ -203,6 +204,7 @@ function TableRow({
   onSelect,
   focused,
   onToggleFocus,
+  phase,
 }: {
   ticker: MomentumTicker;
   deskRow: DeskRow | null;
@@ -211,6 +213,16 @@ function TableRow({
   onSelect: (ticker: string) => void;
   focused: boolean;
   onToggleFocus: (ticker: string) => void;
+  /**
+   * Names the baseline on the headline figure.
+   *
+   * THIS TABLE ALWAYS LEADS WITH THE GAP, because its sort keys do not include
+   * `sessionMove` -- there is no Move ordering here to follow. The label is
+   * still mandatory: one desk, one grammar, and a reader moving between the
+   * two tables should not have to remember that only one of them names its
+   * number.
+   */
+  phase: SessionPhase | null;
 }) {
   /*
    * A row always has a DeskRow to read from. When the market worker is not
@@ -304,7 +316,12 @@ function TableRow({
       </td>
 
       <td className="px-2 py-1 align-middle">
-        <PriceMoveCell telemetry={t} blueSky={row.blueSky} suppressBlueSky={halted || backside} />
+        <PriceMoveCell
+          telemetry={t}
+          blueSky={row.blueSky}
+          suppressBlueSky={halted || backside}
+          phase={phase}
+        />
       </td>
 
       <td className="px-2 py-1 text-right align-middle">

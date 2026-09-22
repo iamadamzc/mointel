@@ -15,6 +15,7 @@ import {
   WhyCell,
 } from '@/components/DecisionCells';
 import { sessionMoveSortLabel } from '@/lib/dashboard/sessionMove';
+import { tradesLastMinute } from '@/lib/dashboard/sparkline';
 import type { SessionPhase } from '@/lib/market/types';
 import { rowKeyboardProps } from '@/components/tableKeyboard';
 import type { DeskRow } from '@/lib/dashboard/merge';
@@ -49,6 +50,17 @@ interface SortEntry {
   key: DiscoverySortKey;
   label: string;
   title: string;
+  /**
+   * Set when sorting by this key should also make its figure the HEADLINE.
+   *
+   * ON THE ENTRY FOR THE SAME REASON `resolve` IS. A `sort.key ===
+   * 'sessionMove'` in the component body is a per-key special case, which
+   * `sessionMoveSort.test.ts` forbids by reading this file's source -- and it
+   * caught exactly that here. The rule is older than the test: the sort
+   * control once read `Gap` while the header over the same number read `Move`,
+   * because two if-chains had to be kept in step by hand.
+   */
+  leads?: 'MOVE';
   /**
    * Set when the quantity's NAME depends on the session, so the button, the
    * active marker and the tooltip resolve it from one place.
@@ -94,7 +106,13 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
   { key: 'rank', label: 'Rank', title: "The board's own ranking for this session" },
   { key: 'rvol', label: 'RVOL', title: 'Relative volume' },
   { key: 'changePct', label: 'Gap', title: '', resolve: baselineLabel },
-  { key: 'sessionMove', label: 'Move', title: '', resolve: sessionMoveSortLabel },
+  { key: 'sessionMove', label: 'Move', title: '', resolve: sessionMoveSortLabel, leads: 'MOVE' },
+  {
+    key: 'now',
+    label: 'Now',
+    title:
+      'Trades in the most recent settled minute. Which names are trading heaviest right now, which is a different question from RVOL — that is a ratio against a twenty-session baseline and can stay high on a name that has stopped trading.',
+  },
   { key: 'price', label: 'Price', title: 'Last price' },
   { key: 'float', label: 'Float', title: 'Displayed float. Not known for every name.' },
 ];
@@ -120,6 +138,12 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
  */
 const MISSING_NOUN: Partial<Record<DiscoverySortKey, string>> = {
   sessionMove: 'no move',
+  /*
+   * NOT 'no trades'. An absent window means the minute was never counted, and
+   * a name trading zero times IS counted and sorts as zero. The word has to be
+   * true of the unmeasured rows only, which is what this set contains.
+   */
+  now: 'not measured',
 };
 
 /** One reader for every place a sort key's name appears. */
@@ -198,6 +222,12 @@ export function DiscoveryBoard({
   const move = baselineLabel(phase);
   const activeEntry = SORT_KEYS.find((entry) => entry.key === sort.key);
   const activeLabel = activeEntry ? resolveSortEntry(activeEntry, phase).label : 'rank';
+  /*
+   * The headline percentage follows the sort -- his ruling, 2026-09-22 -- and
+   * the decision is READ OFF THE ACTIVE ENTRY rather than tested against a key
+   * name here. Same single-source rule the labels already obey.
+   */
+  const lead = activeEntry?.leads ?? 'GAP';
 
   function changeSort(key: DiscoverySortKey) {
     setSort((current) =>
@@ -422,7 +452,7 @@ export function DiscoveryBoard({
                * number. Putting the "now" measure anywhere else would leave the
                * two readings to be joined by the trader mid-scan.
                */}
-              <Th className="w-[36px]" align="right">
+              <Th className="w-[44px]" align="right">
                 Now
                 {/*
                   * The lag, on the header rather than in the tooltip alone.
@@ -461,6 +491,8 @@ export function DiscoveryBoard({
                 priceMax={discovery?.priceMax ?? null}
                 afterHours={afterHours}
                 showFloat={showFloat}
+                phase={discovery?.sessionPhase ?? null}
+                lead={lead}
               />
             ))}
           </tbody>
@@ -521,6 +553,8 @@ function DiscoveryRow({
   priceMax,
   afterHours,
   showFloat,
+  phase,
+  lead,
 }: {
   row: DeskRow;
   selected: boolean;
@@ -533,6 +567,8 @@ function DiscoveryRow({
   priceMax: number | null;
   afterHours: boolean;
   showFloat: boolean;
+  phase: SessionPhase | null;
+  lead: 'GAP' | 'MOVE';
 }) {
   const demand = row.demand;
   // One projection for every surface: whatever the Focus strip shows for this
@@ -574,6 +610,7 @@ function DiscoveryRow({
   const badge = cycleBadge(high, cycle?.current ?? null, conclusions.cycle);
   const risk = resolveRisk(row);
   const why = resolveWhy(row);
+  const tradesNow = tradesLastMinute(row.demand);
   const ah = demand?.afterHours ?? null;
   const retention = retentionNote({
     latched: (afterHours ? ah?.latched : demand?.latched) ?? false,
@@ -650,6 +687,8 @@ function DiscoveryRow({
           telemetry={t}
           blueSky={row.blueSky}
           suppressBlueSky={halted || backside}
+          phase={phase}
+          lead={lead}
         />
       </td>
 
@@ -658,11 +697,54 @@ function DiscoveryRow({
       </td>
 
       <td className="px-1 py-1 text-right align-middle">
-        <ActivitySparkline
-          window={row.demand?.activityWindow}
-          price={row.demand?.priceWindow}
-          spreadPct={t.spreadPct}
-        />
+        {/*
+          * STACKED, NOT WIDENED, AND THE MEASUREMENT IS WHY.
+          *
+          * Putting the number beside the bars needed 72px against the 36px
+          * this column had. Measured on the live board at the 1,024px floor:
+          * the table is 982px inside a 1,014px container, so there are 32px of
+          * headroom and a side-by-side layout would have spent 36 — four px
+          * past the point where §10's "zero horizontal scrolling at the floor"
+          * stops being true. It would have looked fine at my own width.
+          *
+          * The row is 57px and this cell uses 25, so a second line costs
+          * nothing that exists. The number goes ABOVE the bars because the
+          * number is the answer and the bars are the shape of it.
+          */}
+        <span className="flex flex-col items-end gap-0.5">
+          {/*
+            * THE NUMBER THE SHAPE COULD NOT GIVE HIM.
+            *
+            * The sparkline already showed trades per minute and answered
+            * "is it moving"; it cannot answer "which of these two is busier",
+            * which is what he asked for. Same array, its last settled slot.
+            *
+            * NULL RENDERS AS AN EM DASH, NEVER AS 0. An unobserved minute and
+            * a minute with no trades are different facts, and 0 is a
+            * measurement this row does not have.
+            */}
+          <span
+            className="num text-[11px] leading-none tabular-nums text-ink-2"
+            title={
+              tradesNow === null
+                ? 'No minute has been counted for this name yet, which is not the same as no trading.'
+                : `${tradesNow.toLocaleString()} trades in the most recent settled minute. The minute in progress is never counted — it has not finished.`
+            }
+          >
+            {/*
+              * THE INTEGER, NOT A COMPACTED ONE. `formatCount` renders 2,979
+              * as "3K" and 1,309 as "1K" -- which collapses exactly the
+              * comparison this column exists to make. The range is 0 to a few
+              * thousand, so the full number costs one character.
+              */}
+            {tradesNow === null ? '—' : tradesNow.toLocaleString()}
+          </span>
+          <ActivitySparkline
+            window={row.demand?.activityWindow}
+            price={row.demand?.priceWindow}
+            spreadPct={t.spreadPct}
+          />
+        </span>
       </td>
 
       {showFloat ? (

@@ -3,6 +3,7 @@
  * dataset. Pure functions, no data fetching, no source-format knowledge.
  */
 
+import { tradesLastMinute } from '@/lib/dashboard/sparkline';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { CyclePhase } from '@/lib/market/cycle';
 import type { DiscoveryBoard } from '@/lib/market/types';
@@ -297,6 +298,7 @@ export type DiscoverySortKey =
   | 'rvol'
   | 'changePct'
   | 'sessionMove'
+  | 'now'
   | 'price'
   | 'float';
 
@@ -362,6 +364,26 @@ export function discoveryValueFor(
        * did not move. `discoveryMissingCount` is what puts that on screen.
        */
       return row.telemetry.sessionMove?.move ?? null;
+    case 'now':
+      /*
+       * WHICH NAMES ARE TRADING HEAVIEST RIGHT NOW -- his ask, 2026-09-22, and
+       * the reason he reads RANK and RVOL as one column. They ARE one ordering:
+       * `rvolRank` is assigned by sorting on `rvol` (`lib/market/rvol.ts:138`),
+       * so the board's order is a rank-transform of the RVOL column beside it.
+       * This is the question neither of them answers.
+       *
+       * RVOL IS A RATIO AGAINST A TWENTY-SESSION BASELINE -- it says how
+       * abnormal today is in total, and a name can hold a huge RVOL earned at
+       * 04:30 while nothing has traded since. This is the trade count in the
+       * most recent settled minute: not abnormality, and not the day, but now.
+       *
+       * THE SAME ARRAY THE VERDICT WAS COMPUTED FROM, and the same END of it.
+       * `resolveActivity` decides DEAD on the last `deadMinutes` slots and
+       * ACTIVE on the last `reviveMinutes`, so a number taken from the tail
+       * cannot drift away from the badge beside it -- structurally, rather
+       * than by two computations agreeing until one changes.
+       */
+      return tradesLastMinute(row.demand);
     case 'price':
       return row.telemetry.price;
     case 'float':

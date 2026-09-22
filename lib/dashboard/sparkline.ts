@@ -272,3 +272,24 @@ export function directionTone(
   if (Math.abs(movePct) <= Math.abs(spreadPct)) return 'warn';
   return movePct > 0 ? 'pos' : 'neg';
 }
+
+/**
+ * Trades in the most recent SETTLED minute, or null when nothing was measured.
+ *
+ * NULL AND ZERO ARE DIFFERENT FACTS AND THIS IS THE WHOLE CARE IN THE FUNCTION.
+ * An absent `activityWindow` means the row was never observed -- written before
+ * the column existed, or a worker that has not seen this symbol. An all-zero
+ * window is a MEASUREMENT: the name is silent, which is one of the more
+ * informative things the board can say about it. Returning 0 for the first
+ * would sort an unobserved name into the middle of the dead ones and render a
+ * confident "0 trades" over a minute nobody counted.
+ *
+ * It reads the tail of the verdict's own array rather than re-deriving a
+ * number, so the figure and the ACTIVE/DEAD badge cannot come apart.
+ */
+export function tradesLastMinute(demand: { activityWindow?: number[] } | null | undefined): number | null {
+  const window = demand?.activityWindow;
+  if (!Array.isArray(window) || window.length === 0) return null;
+  const last = window[window.length - 1];
+  return typeof last === 'number' && Number.isFinite(last) ? last : null;
+}

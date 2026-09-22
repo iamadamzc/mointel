@@ -20,6 +20,8 @@ import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { DeskRisk } from '@/lib/dashboard/risk';
 import type { DeskWhy } from '@/lib/dashboard/why';
 import type { MarketTelemetry } from '@/lib/dashboard/telemetry';
+import { baselineLabel } from '@/lib/dashboard/view';
+import type { SessionPhase } from '@/lib/market/types';
 import type { BlueSkyState } from '@/lib/market/blueSky';
 import {
   formatEtMinute,
@@ -51,19 +53,50 @@ export function PriceMoveCell({
   telemetry,
   blueSky,
   suppressBlueSky = false,
+  phase = null,
+  lead = 'GAP',
 }: {
   telemetry: MarketTelemetry;
   blueSky: BlueSkyState;
   /** True when a halt or backside warning already owns the row's colour. */
   suppressBlueSky?: boolean;
+  /** Names the baseline. The cell must never derive a session word itself. */
+  phase?: SessionPhase | null;
+  /**
+   * Which figure the headline carries, decided by the ACTIVE SORT.
+   *
+   * His ruling, 2026-09-22: the percentage should be the one the board is
+   * ordered by. Sorting by Move and reading a Gap was not merely inconsistent
+   * -- on the live board QNME's headline read +50.1% while its premarket move
+   * was -5.9%, and HUBC's read -19.7% against +0.2%. OPPOSITE SIGNS on the
+   * number a trader scans first.
+   */
+  lead?: 'GAP' | 'MOVE';
 }) {
   const change = telemetry.percentChange;
+  const gap = baselineLabel(phase);
+  const move = telemetry.sessionMove;
+
+  /*
+   * MOVE LEADS ONLY WHEN THERE IS A MOVE TO LEAD WITH.
+   *
+   * `NO_PRINT`, `NOT_STARTED` and `UNKNOWN` have no percentage, and a headline
+   * reading "—" is worse than one reading the Gap. The row falls back rather
+   * than blanking, and it stays honest because THE LABEL TRAVELS WITH THE
+   * NUMBER: a fallback row says PM GAP beside its figure, so a reader is never
+   * working out which quantity they are looking at from the sort control.
+   */
+  const leadsMove = lead === 'MOVE' && move?.state === 'OPEN' && move.move !== null;
+  const value = leadsMove ? move!.move : change;
+  const label = leadsMove ? move!.label : gap.label;
+  const title = leadsMove ? MOVE_HEADLINE_TITLE : gap.title;
+
   const changeTone =
-    telemetry.stale || change === null
+    telemetry.stale || value === null
       ? 'text-ink-2'
-      : change > 0
+      : value > 0
         ? 'text-pos'
-        : change < 0
+        : value < 0
           ? 'text-neg'
           : 'text-ink-2';
 
@@ -77,8 +110,20 @@ export function PriceMoveCell({
         >
           {formatPrice(telemetry.price)}
         </span>
-        <span className={`num text-[13px] font-semibold ${changeTone}`}>
-          {formatSignedPercent(change)}
+        {/*
+          * THE LABEL IS NOT OPTIONAL, AND IT IS WHAT MAKES THE SWAP SAFE.
+          *
+          * A headline whose meaning changes with a toggle is the class of
+          * defect this desk keeps paying for -- so the quantity is named on
+          * the line rather than inferred from which sort chip is lit.
+          * Measured at the 1,024px floor in the real font: the widest
+          * realistic case, `10.49 RTH MOVE -123.4%`, is 160px in a 172px cell.
+          */}
+        <span className="text-[10px] tracking-wide text-ink-3 uppercase" title={title}>
+          {label}
+        </span>
+        <span className={`num text-[13px] font-semibold ${changeTone}`} title={title}>
+          {formatSignedPercent(value)}
         </span>
         {telemetry.source === 'SHEET' && telemetry.sourceLabel !== '—' ? (
           <span className="text-[9px] tracking-wide text-ink-3 uppercase">
@@ -112,8 +157,46 @@ export function PriceMoveCell({
         * the move between price and VWAP would split the family and imply the
         * three are independent readings of one thing.
         */}
-      <SessionMoveLine telemetry={telemetry} />
+      {/*
+        * THE DEMOTED FIGURE, NEVER A DROPPED ONE.
+        *
+        * Whichever number the headline did not take renders here with its own
+        * label. Promoting one by DISCARDING the other would answer his
+        * complaint by creating its mirror.
+        */}
+      {leadsMove ? <GapLine telemetry={telemetry} phase={phase} /> : <SessionMoveLine telemetry={telemetry} />}
     </div>
+  );
+}
+
+/** What the headline means when the MOVE is leading it. */
+const MOVE_HEADLINE_TITLE =
+  'Change within the current session, from its own opening print. The board is sorted by this, so it is the figure shown.';
+
+/**
+ * The gap, demoted to the sub-line because the move is leading.
+ *
+ * Deliberately NOT a copy of `SessionMoveLine`'s shape: the gap has no anchor
+ * to be thin and no `not traded` state -- it is a close-to-price comparison and
+ * is either available or null. Giving it the move's states would invent
+ * conditions it cannot be in.
+ */
+function GapLine({
+  telemetry,
+  phase,
+}: {
+  telemetry: MarketTelemetry;
+  phase: SessionPhase | null;
+}) {
+  const change = telemetry.percentChange;
+  if (change === null) return null;
+
+  const { label, title } = baselineLabel(phase);
+  return (
+    <span className="num truncate text-[11px] whitespace-nowrap" title={title}>
+      <span className="text-ink-3">{label}</span>{' '}
+      <span className={change >= 0 ? 'text-pos' : 'text-neg'}>{formatSignedPercent(change)}</span>
+    </span>
   );
 }
 
