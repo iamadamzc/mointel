@@ -366,3 +366,63 @@ describe('comparableCeiling', () => {
     ).toBeNull();
   });
 });
+
+/*
+ * THE REFUSAL HAS TO NAME ITS OWN CAUSE.
+ *
+ * The board carried one sentence for every refusal: "the retained history is
+ * not split-adjusted". Measured 2026-09-22, that was false wherever it mattered
+ * -- 7,173 of 7,173 rows locally and 24,429 of 24,429 in the 2026-08-23
+ * production snapshot are labelled `'split'`, and none are raw. The trader read
+ * it as a missing feed and asked whether the desk was giving up too early. It
+ * was refusing on a vintage it could not reconcile, which is a smaller claim
+ * and a fixable one.
+ */
+describe('why a basis could not be vouched', () => {
+  it('says the history IS adjusted but was fetched more than once', () => {
+    const threshold = resolveBlueSkyThreshold(window({}), {
+      tradingDate: TODAY,
+      adjustment: null,
+      basisReason: 'UNRECONCILED_VINTAGES',
+    });
+
+    expect(threshold.verified).toBe(false);
+    expect(threshold.unverifiedReason).toContain('is split-adjusted');
+    expect(threshold.unverifiedReason).toContain('more than one date');
+    // The sentence that sent him looking for a data gap that was not there.
+    expect(threshold.unverifiedReason).not.toContain('not split-adjusted');
+  });
+
+  it('says the factors disagree when a stale vintage is actually detected', () => {
+    const threshold = resolveBlueSkyThreshold(window({}), {
+      tradingDate: TODAY,
+      adjustment: null,
+      basisReason: 'BASIS_CONFLICT',
+    });
+
+    expect(threshold.unverifiedReason).toContain('stale basis');
+    expect(threshold.unverifiedReason).not.toContain('not split-adjusted');
+  });
+
+  it('says the labels are mixed when they genuinely are', () => {
+    const threshold = resolveBlueSkyThreshold(window({}), {
+      tradingDate: TODAY,
+      adjustment: null,
+      basisReason: 'MIXED_LABELS',
+    });
+
+    expect(threshold.unverifiedReason).toContain('mixes adjustment bases');
+  });
+
+  it('keeps the original sentence for a series that really is unadjusted', () => {
+    // `raw` vouches as a basis -- it is simply the wrong one, and the old
+    // wording is exactly right for it.
+    const threshold = resolveBlueSkyThreshold(window({}), {
+      tradingDate: TODAY,
+      adjustment: 'raw',
+      basisReason: null,
+    });
+
+    expect(threshold.unverifiedReason).toContain('not split-adjusted');
+  });
+});

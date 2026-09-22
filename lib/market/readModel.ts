@@ -55,7 +55,7 @@ import {
 } from './store/researchRepo';
 import {
   DEFAULT_CYCLE_HISTORY_TRADING_DAYS,
-  dailyBarAdjustment,
+  dailyBarBasis,
   readDailyBars,
 } from '../research/history';
 import {
@@ -375,9 +375,11 @@ function blueSkyThreshold(
      * plausible history instead of to a number that would mean something.
      */
     const bars = readDailyBars(db, symbol, ALL_STORED_SESSIONS, 'INCLUDE');
+    const basis = dailyBarBasis(db, symbol);
     threshold = resolveBlueSkyThreshold(bars, {
       tradingDate,
-      adjustment: dailyBarAdjustment(db, symbol),
+      adjustment: basis.vouched ? basis.adjustment : null,
+      basisReason: basis.reason,
     });
   } catch {
     // A store written before daily_bars existed must not take the board down.

@@ -29,7 +29,7 @@
  * nobody has ever traded.
  */
 
-import type { DailyBar } from '../research/history';
+import type { DailyBar, DailyBarBasisReason } from '../research/history';
 
 export type BlueSkyStatus =
   | 'IN_BLUE_SKY'
@@ -153,6 +153,34 @@ function money(value: number): string {
 }
 
 /**
+ * Why a basis could not be vouched, in the words the board will carry.
+ *
+ * THE OLD SENTENCE NAMED THE WRONG CAUSE. It said the history was "not
+ * split-adjusted" whenever `dailyBarAdjustment` returned null — and null was
+ * mostly returned for rows that ARE split-adjusted, every one of them, but were
+ * fetched on more than one date. Measured 2026-09-22: 7,173 of 7,173 rows
+ * locally and 24,429 of 24,429 in the 2026-08-23 production snapshot are
+ * labelled `'split'`, and zero are raw. The trader read the line as a missing
+ * feed and asked whether the desk was giving up too early; it was refusing on a
+ * vintage it could not reconcile, which is a different and much smaller claim.
+ *
+ * The default is kept for the case the old sentence was actually written for: a
+ * series that really is unadjusted.
+ */
+function basisRefusal(reason: DailyBarBasisReason | null): string {
+  switch (reason) {
+    case 'MIXED_LABELS':
+      return 'The retained history mixes adjustment bases, so a prior high cannot be compared with today.';
+    case 'UNRECONCILED_VINTAGES':
+      return 'The retained history is split-adjusted but was fetched on more than one date, and no split basis is established for it — so a split between those fetches could have restated part of it and not the rest.';
+    case 'BASIS_CONFLICT':
+      return 'The retained history is split-adjusted, but its split factors disagree across its fetch dates, so part of it sits on a stale basis.';
+    default:
+      return 'The retained history is not split-adjusted, so a pre-split high cannot be compared with today.';
+  }
+}
+
+/**
  * Derives the ceiling from retained daily bars.
  *
  * `tradingDate` is excluded: overhead supply means levels established BEFORE
@@ -160,7 +188,7 @@ function money(value: number): string {
  */
 export function resolveBlueSkyThreshold(
   bars: readonly DailyBar[],
-  options: { tradingDate: string; adjustment?: string | null },
+  options: { tradingDate: string; adjustment?: string | null; basisReason?: DailyBarBasisReason | null },
 ): BlueSkyThreshold {
   const adjustment = options.adjustment ?? null;
 
@@ -208,11 +236,7 @@ export function resolveBlueSkyThreshold(
   };
 
   if (adjustment !== 'split') {
-    return {
-      ...base,
-      unverifiedReason:
-        'The retained history is not split-adjusted, so a pre-split high cannot be compared with today.',
-    };
+    return { ...base, unverifiedReason: basisRefusal(options.basisReason ?? null) };
   }
 
   if (prior.length < MIN_SESSIONS) {
