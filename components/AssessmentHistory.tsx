@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { StatusBadge } from '@/components/StatusBadge';
 import { changeReading } from '@/lib/dashboard/changes';
+import { snapshotLabel } from '@/lib/dashboard/language';
 import type { AssessmentTickerRecord } from '@/lib/market/store/assessmentRepo';
 import type { AssessmentPanel, AssessmentSummary } from '@/lib/desk/view';
 import { formatCount, formatMultiple, formatPrice, formatSignedPercent } from '@/lib/format';
@@ -236,10 +237,32 @@ export function AssessmentSnapshotBoard({ id }: { id: number }) {
                 <td className="num px-2 py-1.5 text-right text-ink-2">
                   {row.spreadPct !== null ? `${row.spreadPct.toFixed(2)}%` : '—'}
                 </td>
-                <td className="px-2 py-1.5 text-[11px] text-ink-2">{row.cycle ?? '—'}</td>
-                <td className="px-2 py-1.5 text-[11px] text-ink-2">{row.catalyst ?? '—'}</td>
-                <td className="px-2 py-1.5 text-[11px] text-ink-2">{row.structure ?? '—'}</td>
-                <td className="px-2 py-1.5 text-[11px] text-ink-2">{row.haltState ?? '—'}</td>
+                {/*
+                  * FOUR MORE COLUMNS OF THE DEFECT THE `CHANGED` CELL HAD.
+                  *
+                  * `RED_BACKSIDE`, `MODERATE_MIXED_SECONDARY`, `DIRTY_FLOAT`
+                  * and `TRADING` rendered verbatim here -- seen on the live
+                  * board 2026-09-22, one column over from the enums I had just
+                  * replaced with a sentence. Same table, same §10 criterion,
+                  * and I only found them by looking at the screen.
+                  *
+                  * `snapshotLabel` asks the CANONICAL map first rather than
+                  * lower-casing: these are the same values the drawer renders,
+                  * and a second vocabulary for one value is the defect that put
+                  * two different cycle words on two tables for one ticker.
+                  */}
+                <td className="px-2 py-1.5 text-[11px] text-ink-2">
+                  {snapshotLabel('cycle', row.cycle)}
+                </td>
+                <td className="px-2 py-1.5 text-[11px] text-ink-2">
+                  {snapshotLabel('catalyst', row.catalyst)}
+                </td>
+                <td className="px-2 py-1.5 text-[11px] text-ink-2">
+                  {snapshotLabel('structure', row.structure)}
+                </td>
+                <td className="px-2 py-1.5 text-[11px] text-ink-2">
+                  {snapshotLabel('halt', row.haltState)}
+                </td>
                 {/*
                   * THE SENTENCE IS THE CELL; THE ENUMS ARE NOT A FALLBACK.
                   *

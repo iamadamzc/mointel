@@ -11,7 +11,8 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { humanise, looksLikeEnum } from '@/lib/dashboard/language';
+import { humanise, looksLikeEnum, snapshotLabel } from '@/lib/dashboard/language';
+import { CATALYST_GRADE_LABEL, CYCLE_LABEL, STRUCTURE_LABEL } from '@/lib/research/view';
 import type {
   CatalystFreshness,
   CatalystGrade,
@@ -207,5 +208,49 @@ describe('no surface claims a human reviewed anything', () => {
         /automatic (layer|analysis|pass|research|dossier|intelligence)/i,
       );
     }
+  });
+});
+
+describe('the checkpoint snapshot columns, found leaking on the live board', () => {
+  /*
+   * `RED_BACKSIDE`, `MODERATE_MIXED_SECONDARY`, `DIRTY_FLOAT` and `TRADING`
+   * were rendering verbatim one column over from the enums already replaced
+   * with a sentence — the same §10 criterion, the same table, and visible only
+   * by looking at the screen.
+   */
+  it('renders the SAME words the rest of the desk uses, not a second vocabulary', () => {
+    // Asserted against the canonical maps rather than against typed-out
+    // strings, so a rename moves both together instead of splitting them.
+    expect(snapshotLabel('cycle', 'RED_BACKSIDE')).toBe(CYCLE_LABEL.RED_BACKSIDE);
+    expect(snapshotLabel('catalyst', 'MODERATE_MIXED_SECONDARY')).toBe(
+      CATALYST_GRADE_LABEL.MODERATE_MIXED_SECONDARY,
+    );
+    expect(snapshotLabel('structure', 'DIRTY_FLOAT')).toBe(STRUCTURE_LABEL.DIRTY_FLOAT);
+  });
+
+  it('is silent for a trading halt state, as the halt badge is', () => {
+    // A column reading "trading" on every row is a constant dressed as
+    // content, and two conventions for one field is how vocabularies split.
+    expect(snapshotLabel('halt', 'TRADING')).toBe('—');
+    expect(snapshotLabel('halt', 'HALTED')).toBe('Halted');
+    expect(snapshotLabel('halt', 'RESUMING')).toBe('Resuming');
+  });
+
+  it('never returns an enum, including for a vocabulary no map knows', () => {
+    /*
+     * The columns are `string | null` in the store, so a row written under an
+     * older vocabulary can hold a value no current map covers. It must still
+     * not reach a trader as SCREAMING_SNAKE — humanise is the floor.
+     */
+    for (const value of ['SOME_RETIRED_VALUE', 'RED_BACKSIDE', 'DIRTY_FLOAT', 'TRADING']) {
+      for (const field of ['cycle', 'catalyst', 'structure', 'halt'] as const) {
+        expect(looksLikeEnum(snapshotLabel(field, value))).toBe(false);
+      }
+    }
+  });
+
+  it('says — for an absent value rather than inventing one', () => {
+    expect(snapshotLabel('cycle', null)).toBe('—');
+    expect(snapshotLabel('structure', undefined)).toBe('—');
   });
 });

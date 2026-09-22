@@ -15,6 +15,8 @@
  * accepted dossier, and no local fixture had both.
  */
 
+import { CATALYST_GRADE_LABEL, CYCLE_LABEL, STRUCTURE_LABEL } from '@/lib/research/view';
+
 /** Phrases for the values that carry more meaning than a de-underscoring gives. */
 const ENUM_PHRASE: Record<string, string> = {
   /* Why two sides differ. */
@@ -70,4 +72,49 @@ export function humanise(value: string | null | undefined): string {
 /** True when a string still reads as an engine constant rather than as English. */
 export function looksLikeEnum(value: string): boolean {
   return /\b[A-Z][A-Z0-9]*(_[A-Z0-9]+)+\b/.test(value);
+}
+
+/**
+ * A stored assessment value, in the words the rest of the desk uses.
+ *
+ * WHY NOT JUST `humanise`. These four columns hold the dossier's typed enums,
+ * and every one of them already HAS a canonical label that other surfaces
+ * render — `RED_BACKSIDE` is `RED — BACKSIDE` in the drawer and on the board.
+ * Lower-casing it here would give one value two vocabularies, which is the
+ * defect that put `OFF HIGH` on one table and `BACKSIDE` on another for the
+ * same ticker. So the canonical map is asked first.
+ *
+ * `humanise` IS THE FLOOR, NOT THE ANSWER. The columns are typed `string |
+ * null` in the store, so a row written under an older vocabulary can hold a
+ * value no current map knows. That value still must not reach the trader as
+ * SCREAMING_SNAKE, so it falls through to `humanise` rather than to itself.
+ *
+ * HALT IS SILENT WHEN TRADING, matching `HaltBadge`, which renders nothing in
+ * that state. A column reading `trading` on every row is a constant dressed as
+ * content — and two conventions for one field is how the vocabularies split in
+ * the first place.
+ */
+export function snapshotLabel(
+  field: 'cycle' | 'catalyst' | 'structure' | 'halt',
+  value: string | null | undefined,
+): string {
+  if (!value) return '—';
+
+  const canonical =
+    field === 'cycle'
+      ? CYCLE_LABEL[value as keyof typeof CYCLE_LABEL]
+      : field === 'catalyst'
+        ? CATALYST_GRADE_LABEL[value as keyof typeof CATALYST_GRADE_LABEL]
+        : field === 'structure'
+          ? STRUCTURE_LABEL[value as keyof typeof STRUCTURE_LABEL]
+          : undefined;
+  if (canonical) return canonical;
+
+  if (field === 'halt') {
+    if (value === 'TRADING') return '—';
+    if (value === 'HALTED') return 'Halted';
+    if (value === 'RESUMING') return 'Resuming';
+  }
+
+  return humanise(value);
 }
