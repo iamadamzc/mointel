@@ -143,12 +143,24 @@ describe('overlayLiveCycle todayStart', () => {
 
   const dossier = () => analysis({ ticker: 'ACME', catalyst: {}, structure: {}, cycle: {} });
 
+  /*
+   * NO `as any` HERE, AND THE CAST WAS NEVER COVERING A TYPE GAP.
+   *
+   * `todayStart` is declared on `CycleHistory` (`lib/market/cycle.ts:514`) and
+   * `computedCycle` is optional on the dossier, so the optional chain type-checks
+   * as written. The cast only skipped the `?.`, and it cost six lint errors --
+   * which is how `npm run lint` came to be red on main from 2026-09-18.
+   *
+   * It also reads BETTER on failure: a missing `computedCycle` now fails the
+   * assertion with the value it found, where the cast threw a TypeError one
+   * property short of saying which property was missing.
+   */
   it('is UNVERIFIABLE when no tradingDate is given, so a replay cannot acquire a live reading', () => {
     const db = temporaryDb();
     seedRun(db);
     seedToday(db);
     const out = overlayLiveCycle(db, dossier());
-    expect((out!.dossier as any).computedCycle.todayStart).toBe('UNVERIFIABLE');
+    expect(out?.dossier?.computedCycle?.todayStart).toBe('UNVERIFIABLE');
   });
 
   it('QUALIFIES a day that has moved on volume against the settled series', () => {
@@ -156,7 +168,7 @@ describe('overlayLiveCycle todayStart', () => {
     seedRun(db);
     seedToday(db);
     const out = overlayLiveCycle(db, dossier(), TODAY);
-    expect((out!.dossier as any).computedCycle.todayStart).toBe('QUALIFIED');
+    expect(out?.dossier?.computedCycle?.todayStart).toBe('QUALIFIED');
   });
 
   it('uses ah_high as the CEILING when our own bars missed the evening print', () => {
@@ -180,7 +192,7 @@ describe('overlayLiveCycle todayStart', () => {
       bars: [{ ts: `${TODAY}T13:00:00.000Z`, high: 3.05, close: 3.0 }],
     });
     const out = overlayLiveCycle(db, dossier(), TODAY);
-    expect((out!.dossier as any).computedCycle.todayStart).toBe('UNVERIFIABLE');
+    expect(out?.dossier?.computedCycle?.todayStart).toBe('UNVERIFIABLE');
   });
 
   it('would read NOT_QUALIFIED on the same bars without the evening ceiling', () => {
@@ -194,7 +206,7 @@ describe('overlayLiveCycle todayStart', () => {
       bars: [{ ts: `${TODAY}T13:00:00.000Z`, high: 3.05, close: 3.0 }],
     });
     const out = overlayLiveCycle(db, dossier(), TODAY);
-    expect((out!.dossier as any).computedCycle.todayStart).toBe('NOT_QUALIFIED');
+    expect(out?.dossier?.computedCycle?.todayStart).toBe('NOT_QUALIFIED');
   });
 
   it('does NOT qualify a day on ordinary volume', () => {
@@ -202,13 +214,13 @@ describe('overlayLiveCycle todayStart', () => {
     seedRun(db);
     seedToday(db, { volume: 1_200_000 });
     const out = overlayLiveCycle(db, dossier(), TODAY);
-    expect((out!.dossier as any).computedCycle.todayStart).toBe('NOT_QUALIFIED');
+    expect(out?.dossier?.computedCycle?.todayStart).toBe('NOT_QUALIFIED');
   });
 
   it('stays UNVERIFIABLE when there is no session row for today', () => {
     const db = temporaryDb();
     seedRun(db);
     const out = overlayLiveCycle(db, dossier(), TODAY);
-    expect((out!.dossier as any).computedCycle.todayStart).toBe('UNVERIFIABLE');
+    expect(out?.dossier?.computedCycle?.todayStart).toBe('UNVERIFIABLE');
   });
 });
