@@ -233,20 +233,26 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
 
 ### OPEN AND HIS
 
-1. **WHICH OF DESIGN'S TWO ITEMS TO BUILD** — the badge label, or the float render.
-   *On hold: he said "wait for instruction" 2026-09-21.*
-2. **RULE THE PREMARKET CYCLE FRAME — in or out?** *After-hours he ruled IN (2026-09-17);
-   the premarket half was measured, put to him, never answered. Gates re-derivation of
-   `BACKSIDE_RETRACEMENT = 0.5` and `SUPERRUNNER_ADVANCE = 2.0` (`lib/market/cycle.ts`),
-   both frozen with FRAME WARNINGS at their definition sites until he rules. Detail in the
-   CYCLE FRAME section below.*
+*No standing decision open as of 2026-09-22T22:35Z.*
 
-**RESOLVED 2026-09-21, kept briefly so the change is visible:**
+**RESOLVED, kept briefly so the changes are visible:**
+- **PREMARKET CYCLE FRAME: RULED IN — his direct words 2026-09-22T22:35Z, "premarket in".**
+  *The frame is now all three sessions, 04:00–20:00 ET (after-hours ruled 2026-09-17). This
+  is HIS WORD, not a relay: the claim had propagated FALSELY three times off peer sentences
+  (`f0048eb`, `3308fb1`, `bb2901d`) before he said it himself. Unblocks re-derivation of
+  `0.5`/`2.0` — see CYCLE FRAME below.*
+- **Design's float render `7cc5076`: APPROVED (his "yes" 2026-09-21) and shipping** in the
+  `6e224ca` batch. The old "badge label vs float render — which to build" question is moot;
+  both were built.
+- **Blue-sky (a)+(b): APPROVED — his direct words 2026-09-22, "yes ship blue-sky".** *Trio
+  `6e224ca` released to Ops. The 27%-of-names recovery lights up after Ops's post-close
+  basis backfill (431 tickers / 862 calls on prod — not the 120 first quoted from a local
+  census); not "recovered" until a census confirms the basis.*
 - **Old Google service-account key: HE DELETED IT in the console.** *Ops follow-up —
   remove `.env.local.bak-20260919T115148Z` (holds the old key, gitignored) — unconfirmed
   here; flag for the next Ops check.*
-- **Design's badge fix `a9df280`: SHIPPED** 23:13:21Z, gate green at the sha (145 files,
-  2,174 tests), 3s down — now production. First real use of the preflight test gate.
+- **Design's badge fix `a9df280`: SHIPPED** 2026-09-21 23:13:21Z, 3s down — production. First
+  real use of the preflight test gate.
 
 ### THE SHEET MIGRATION — HIS RULINGS, AND THE SHAPE THAT SURVIVED THEM
 
@@ -368,18 +374,21 @@ safe: the test-user list was never the gate.*
 `prune.sh` removes.* **The first user's account survives one deploy and is deleted by the
 second, silently. `openIdentityStore` mkdirs the doomed path without erroring.**
 
-### THE CYCLE FRAME — ONE UNRULED HALF, AND IT GATES TWO CONSTANTS
+### THE CYCLE FRAME — RULED WHOLE, AND IT UNBLOCKS TWO CONSTANTS
 
-**HE RULED AFTER-HOURS IN. THE PREMARKET HALF WAS MEASURED, PUT TO HIM, AND NEVER
-ANSWERED.** *Research corrected this on 2026-09-21 and it corrects me: I recorded the
-all-sessions frame as his ruling after reading RESEARCH'S SENTENCE TO HIM — "the
-all-sessions frame you just ruled" — which is a peer's claim, not his words back.*
-**Peer confirmation is not a second source.**
+**RULED IN FULL. His direct words:**
+- **After-hours: IN — 2026-09-17.**
+- **Premarket: IN — 2026-09-22T22:35Z, "premarket in".**
 
-> **UNTIL HE RULES PREMARKET, `0.5` AND `2.0` MUST NOT BE RE-DERIVED.** *Deriving against
-> an unruled frame bakes it into two constants that then look calibrated.* **Both carry
-> FRAME WARNINGS at their definition site today — measured in the old frame, not
-> re-derived.** *Calibration data is on disk:
+**The frame is all three sessions, 04:00–20:00 ET.** *The premarket half took four asks to
+settle because it kept being recorded off a peer's sentence rather than his word — recorded
+false three times (`f0048eb`, `3308fb1`, `bb2901d`), and he was asked to double-check his own
+belief, which was itself the echo. His "premarket in" on 2026-09-22 is the first time it
+traces to him. Peer confirmation is not a second source; this is the source.*
+
+> **`0.5` AND `2.0` CAN NOW BE RE-DERIVED against the final all-sessions frame.** *Both still
+> carry FRAME WARNINGS at their definition sites — measured in the old AH-excluded frame, not
+> yet re-derived. Research's task, released by this ruling.* *Calibration data on disk:
 > `data/vendor/alpaca-1hour-split-2026-05-20-to-2026-08-18.json`.*
 
 *`e48a2ca` shipped using `max(session_high, ah_high)` as the auditor, which includes
