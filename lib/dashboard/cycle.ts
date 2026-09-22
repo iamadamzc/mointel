@@ -533,8 +533,17 @@ export function cycleBadge(
     return {
       label: high.label,
       tone: high.tone ?? 'dim',
+      /*
+       * THE PREFIX IS CONDITIONAL, AND SEEING IT RENDERED IS WHAT CAUGHT IT.
+       *
+       * "Settled reading: STARTED TODAY" is a contradiction -- STARTED TODAY
+       * is precisely the LIVE reading, produced because there is no settled
+       * one. The prefix is right for a real phase and wrong for this branch,
+       * and it read correctly in every test because the tests asserted the
+       * sentence's CONTENT and never its composition.
+       */
       title: settled
-        ? `${LIVE_TERM[high.label] ?? ''} Settled reading: ${settled}`.trim()
+        ? `${LIVE_TERM[high.label] ?? ''} ${liveStart ? '' : 'Settled reading: '}${settled}`.replace(/\s+/g, ' ').trim()
         : (LIVE_TERM[high.label] ?? high.label),
     };
   }

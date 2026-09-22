@@ -246,3 +246,39 @@ describe('DCOY: a run that started today, with no settled arc behind it', () => 
     expect(highReading(noArc, 'UNVERIFIABLE', 1.6, 1.46, 0.001)).toBeNull();
   });
 });
+
+describe('the tooltip does not call a live reading a settled one', () => {
+  const noArc = { phase: 'NO_CYCLE' } as CycleResult;
+
+  it('omits the settled prefix when the reading IS the live one', () => {
+    /*
+     * "Settled reading: STARTED TODAY" is a contradiction — that label exists
+     * precisely because there is no settled reading. Caught by looking at the
+     * rendered string on production, not by a test: every assertion here
+     * checked the sentence's CONTENT and none checked its composition.
+     */
+    const badge = cycleBadge(
+      highReading(noArc, 'QUALIFIED', 1.6, 1.46, 0.001),
+      noArc,
+      resolveComputedCycle({ current: noArc, todayStart: 'QUALIFIED' } as never),
+      'QUALIFIED',
+    )!;
+
+    expect(badge.title).toContain('STARTED TODAY');
+    expect(badge.title).not.toContain('Settled reading');
+  });
+
+  it('keeps the settled prefix where there IS a settled phase behind the word', () => {
+    // The file's own fixture, rather than a second literal that can drift from
+    // it -- and the one that would not type-check as a `CycleResult` anyway.
+    const settled = arc({ phase: 'BACKSIDE' });
+    const badge = cycleBadge(
+      highReading(settled, 'NOT_QUALIFIED', 1.6, 1.46, 0.001),
+      settled,
+      resolveComputedCycle({ current: settled, todayStart: 'NOT_QUALIFIED' } as never),
+      'NOT_QUALIFIED',
+    )!;
+
+    expect(badge.title).toContain('Settled reading: BACKSIDE');
+  });
+});
