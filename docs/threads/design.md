@@ -179,8 +179,20 @@ the answers sit beside the questions. Do not re-ask one.
 **Hazards that cost something and are not obvious from the code:**
 
 - **The cycle frame is ahead of its data, and HOW FAR ahead is unsettled.**
-  **AFTER-HOURS IS RULED IN (2026-09-17). PREMARKET IS UNRULED.** *This file
-  said he ruled premarket in on 2026-09-21. HE DID NOT.* The same false record
+  **THE FRAME IS RULED AND WHOLE: ALL THREE SESSIONS, 04:00–20:00 ET.**
+  After-hours 2026-09-17; **premarket 2026-09-22, confirmed by him directly to
+  this seat** — asked plainly ("did you rule premarket into the cycle frame
+  today?") and answered "yes i ruled premarket in today". **That is the source
+  to cite, and the FIRST first-hand one.**
+
+  *The claim was written into this repo four times before it was true.* This
+  file said he ruled it on 2026-09-21; he had not. `f0048eb`, `3308fb1` and
+  `bb2901d` are the corrections, and a fifth arrived by peer relay before this
+  confirmation. **Design declined to record the relay and asked him instead** —
+  which cost two words and is the only thing that could have ended it, because
+  nothing in the tree can refute a sentence about what he said. **If a later
+  seat finds this line, its basis is a direct answer in the Design session of
+  2026-09-22, not a forwarded one.* The same false record
   appeared in `research-opening-prompt.md:87`, was corrected once at `f0048eb`,
   came back, and the new Research seat caught it again at `3308fb1` before
   acting on it — **so this is the third appearance of one invented ruling, and
