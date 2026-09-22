@@ -44,9 +44,9 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-22 00:05 UTC
+## Live state — 2026-09-22 09:55 UTC
 
-**My head is `9366d3f`.** What is DEPLOYED is Ops's to say; this thread has no
+**My head is `3d611d4`.** What is DEPLOYED is Ops's to say; this thread has no
 deploy signal and a list I cannot verify is a guess with a shape.
 
 **The brand shipped this week.** TMI now expands to *The Momentum Intelligence
@@ -61,6 +61,40 @@ through an `img` tag.
 Three verdicts, three renders: QUALIFIED switches the reference to today's own
 high; NOT_QUALIFIED leaves the settled badge; UNVERIFIABLE drops the pair AND
 the word and shows the prior high alone, dated.
+
+**DESIGN HAS SEEN THE LIVE BOARD.** First sighted session this seat has had:
+a review token on 2026-09-22 premarket. **The token URL the script prints is
+DEAD** — `aws-create-review.ps1` defaults `-PublicUrl` to the CloudFront host,
+where every path now 301-redirects to itself, root included. The live host is
+`tmitrader.com` and the same token works there. Fix the default before anyone
+concludes review links are broken.
+
+**What the sighting established, none of it findable from the tree:**
+
+- **The cycle badge `a9df280` renders correctly** — `NO RUN`, `OFF HIGH $1.50 →
+  $1.46`, `DAY 1 $6.41 → $4.82`. That open item is closed.
+- **And it had left the other table contradicting it.** Three of the four
+  tickers on both Discovery and Researched Names showed different cycle
+  verdicts at the same moment. Same object, two readings. Fixed at `72b8c1b`:
+  one `cycleBadge` for both tables, deciding label, tone AND tooltip together.
+- **The float render works on production data** — 9 rows, 3 of the 4 states,
+  and TOMZ independently corroborated: the desk's own filed count equals the
+  `8.14M provider SO` the vendor wrote in its own cell. **6 of 9 say CANNOT
+  VERIFY for want of a filed count**, so the feature speaks on a third of the
+  researched board today. That is an SEC collection gap, not a render fault.
+- **The market payload is 802 KB and 1.29 s per poll.** F-10 targets under
+  15 KB. It is also why the board reads "Waiting for the first market payload"
+  for several seconds on load.
+- **The TODAY float cell refuses 7 of 9 live rows** — `provider SO`, `filing
+  SO`, `pro forma SO`, `post-split SO` are unrecognised tails and refuse the
+  whole cell, float included. The desk recovers via the RESEARCH tab, so
+  nothing is lost today. That is luck, not design, and it is Research's parser.
+
+**His two board observations are built** (`3d611d4`): the headline percentage
+follows the sort and both figures are now labelled, and the `Now` column
+carries the trade count for the most recent settled minute and sorts on it.
+**RANK and RVOL are provably one ordering** — `rvolRank` is assigned by sorting
+on `rvol`, confirmed 50 of 50 on the live payload.
 
 **The float render is built and pushed** (`7cc5076`). His four states, ruled
 2026-09-21 ET: REFUTED, CONSISTENT, CONSISTENT (stale), CANNOT VERIFY. One
@@ -132,7 +166,8 @@ the answers sit beside the questions. Do not re-ask one.
 | Item | Owner | Waiting on |
 | --- | --- | --- |
 | Float render — seeing the four states on a real row | Design | His token; built at `7cc5076`, never rendered |
-| The `prior high` label | Design | Seeing it in a real row; needs a review token |
+| Deploy of `aeccc89`..`3d611d4` | Ops | Five Design commits unshipped; none verified on screen |
+| `aws-create-review.ps1` prints a dead URL | Ops owns the script | Default `-PublicUrl` is the retired CloudFront host |
 | The mark on a real handset | Design | His phone; nobody has looked |
 | Manual spine — the dozen things a user would misread | Design | His yes; drafted from the log, not from memory |
 | `anchorLateScope` render (row mark + board statement) | Research builds the field | The field; ships with the render, never half |
