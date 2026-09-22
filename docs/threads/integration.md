@@ -386,10 +386,15 @@ false three times (`f0048eb`, `3308fb1`, `bb2901d`), and he was asked to double-
 belief, which was itself the echo. His "premarket in" on 2026-09-22 is the first time it
 traces to him. Peer confirmation is not a second source; this is the source.*
 
-> **`0.5` AND `2.0` CAN NOW BE RE-DERIVED against the final all-sessions frame.** *Both still
-> carry FRAME WARNINGS at their definition sites — measured in the old AH-excluded frame, not
-> yet re-derived. Research's task, released by this ruling.* *Calibration data on disk:
-> `data/vendor/alpaca-1hour-split-2026-05-20-to-2026-08-18.json`.*
+> **`0.5` AND `2.0` RE-DERIVED against the all-sessions frame — both HELD. FRAME WARNINGS
+> REMOVED (`0a1bdb7`, 2026-09-22).** *They may now be cited as measured, with their window:
+> 75 symbols, 62 sessions, 2026-05-20..08-18.* **`0.5`:** the retracement cliff sits at 0.5
+> in both frames — a four-fold fall in all-sessions. **`2.0`:** kept unchanged because the
+> frame doesn't reach it — a tail cut is insensitive to a shift that mostly lifts ordinary
+> days, and the bootstrap 90th-pct interval [218%, 441%] contains 200%, so re-deriving would
+> add false precision (the old warning's failure in the other direction). *Both frames built
+> from the ONE hourly file — pairing `daily_bars` with it re-introduces the cross-vintage
+> basis defect (an impossible AH-high-below-RTH-high row); don't.*
 
 *`e48a2ca` shipped using `max(session_high, ah_high)` as the auditor, which includes
 premarket. It is INERT at `a5924c2` — producer, no consumer — so nothing renders it.*

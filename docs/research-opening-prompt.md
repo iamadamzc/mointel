@@ -84,16 +84,13 @@ the snapshot owns VOLUME (measured NOT RTH-only, 0.1%), replay owns the HIGH and
 LOW (measured RTH-only). Different fields; the measurement decides.* The seam is
 in `worker/runtime.ts`, which is **Ops's file** — coordinate.
 
-**2. The cycle frame: AFTER-HOURS IS RULED IN (2026-09-17); PREMARKET IS UNRULED.**
-*Corrected 2026-09-21 by Integration — the prior text asserted he ruled premarket on
-2026-09-21; he did not. The ninth Integration session was corrected for exactly that
-false record (`f0048eb`), and the question is open with him again.* The live sibling
-already uses `max(session_high, ah_high)` (`e48a2ca`). The **settled** side is BLOCKED
-on his premarket ruling: `daily_bars.high` is 09:30-16:00 plus the closing cross, so an
-all-sessions settled high must be built from `data/vendor/alpaca-1hour-split-...json`
-(audited, 75 symbols, 62 sessions). **Do NOT re-derive `BACKSIDE_RETRACEMENT = 0.5` or
-`SUPERRUNNER_ADVANCE = 2.0` until he rules premarket** — they carry FRAME WARNINGS and
-re-deriving against an unruled frame bakes it in as if calibrated.
+**2. The cycle frame: RULED IN FULL — after-hours 2026-09-17, premarket 2026-09-22 (his
+words "premarket in").** The frame is all three sessions, 04:00–20:00 ET. *`BACKSIDE_RETRACEMENT
+= 0.5` and `SUPERRUNNER_ADVANCE = 2.0` were re-derived against it and both HELD; FRAME WARNINGS
+removed (`0a1bdb7`). They may be cited as measured — window 75 symbols, 62 sessions,
+2026-05-20..08-18.* The live sibling uses `max(session_high, ah_high)` (`e48a2ca`). **When
+re-running the derivation, build both frames from the ONE hourly file — never pair `daily_bars`
+with it, or the cross-vintage basis defect returns.**
 
 **3. Persist EDGAR's `acceptanceDateTime` with `EXACT` precision.** See
 `docs/Wire_Feed_Collector_SCOPE.md`. `sec/collector.ts:246` already reads it and
