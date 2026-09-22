@@ -1,0 +1,248 @@
+<title>The Blue-Sky Ceiling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600&display=swap">
+<style>
+  /* The desk's own tokens, lifted from app/globals.css so this reads as the
+     surface it depicts rather than a drawing of it. Single-theme on purpose:
+     the board is dark-only, and a light variant would depict nothing real. */
+  :root {
+    --desk:    #06080b;
+    --panel:   #0c0f14;
+    --panel-2: #11151c;
+    --line:    #1b212a;
+    --line-2:  #29313d;
+    --ink:     #e9edf3;
+    --ink-2:   #97a1b0;
+    --ink-3:   #8792a3;
+    --ink-4:   #646d7c;
+    --pos:     #2fc46f;
+    --warn:    #e8ac33;
+    --accent:  #4d93ff;
+    --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --sans: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--desk);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 40px 24px 72px; }
+
+  header { border-bottom: 1px solid var(--line-2); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-4); margin: 0 0 10px;
+  }
+  h1 { font-size: 26px; font-weight: 600; margin: 0 0 10px; letter-spacing: -0.01em; text-wrap: balance; }
+  .lede { margin: 0; color: var(--ink-2); max-width: 62ch; }
+  .lede strong { color: var(--ink); font-weight: 500; }
+
+  h2 {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.11em;
+    text-transform: uppercase; color: var(--ink-3);
+    margin: 36px 0 12px; font-weight: 600;
+  }
+  p { max-width: 66ch; color: var(--ink-2); }
+  p strong { color: var(--ink); font-weight: 500; }
+  code { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+
+  /* ---- board fragments ------------------------------------------------ */
+  .board { background: var(--panel); border: 1px solid var(--line-2); border-radius: 3px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3); font-weight: 600;
+    text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line-2);
+    background: var(--panel-2); white-space: nowrap; vertical-align: top;
+  }
+  thead th .sub {
+    display: block; font-size: 9px; letter-spacing: 0; text-transform: none;
+    color: var(--ink-4); font-weight: 400;
+  }
+  tbody td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: 0; }
+  .tick { font-family: var(--mono); font-weight: 600; color: var(--ink); white-space: nowrap; font-size: 12px; }
+  .was { color: var(--ink-4); }
+  .was b { color: var(--warn); font-weight: 500; }
+  .now-says { color: var(--ink-2); }
+  .now-says b { color: var(--ink); font-weight: 500; }
+
+  /* ---- the level ladder ----------------------------------------------- */
+  /* DELIBERATELY NOT TO SCALE, and the page says so on the figure itself:
+     600x cannot be drawn beside 1x on one axis, which is the whole argument.
+     The rungs are evenly spaced and each carries its own number. */
+  .ladder { border: 1px solid var(--line-2); border-radius: 3px; background: var(--panel); }
+  .rung {
+    display: grid; grid-template-columns: 132px 1fr 200px; gap: 14px;
+    align-items: baseline; padding: 13px 16px; border-bottom: 1px solid var(--line);
+  }
+  .rung:last-child { border-bottom: 0; }
+  .rung .px { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); font-size: 13px; }
+  .rung .px.deep { color: var(--warn); }
+  .rung .px.live { color: var(--pos); }
+  .rung .what { color: var(--ink-2); font-size: 13px; }
+  .rung .what b { color: var(--ink); font-weight: 500; }
+  .rung .basis { font-family: var(--mono); font-size: 11px; color: var(--ink-4); text-align: right; }
+  .rung .basis.bad { color: var(--warn); }
+  .rung .basis.ok { color: var(--ink-3); }
+  .break {
+    padding: 6px 16px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-4); background: var(--panel-2);
+    border-bottom: 1px solid var(--line); border-top: 1px solid var(--line);
+  }
+
+  /* ---- state legend --------------------------------------------------- */
+  .states { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line-2); border-radius: 3px; }
+  .state { background: var(--panel); padding: 12px 14px; display: grid; grid-template-columns: 186px 1fr; gap: 14px; align-items: baseline; }
+  .state .what { font-family: var(--mono); font-size: 11px; color: var(--ink); }
+  .state .means { color: var(--ink-2); font-size: 13px; }
+  .state .means b { color: var(--ink); font-weight: 500; }
+
+  .callout {
+    border-left: 2px solid var(--warn); background: var(--panel);
+    padding: 14px 16px; margin: 20px 0; border-radius: 0 3px 3px 0;
+  }
+  .callout p { margin: 0; color: var(--ink-2); max-width: none; }
+  .callout p + p { margin-top: 8px; }
+  .callout b { color: var(--ink); font-weight: 500; }
+
+  .scale { font-family: var(--mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .scale td { padding: 4px 18px 4px 0; border: 0; vertical-align: baseline; }
+  .scale .val { color: var(--accent); }
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--ink-4); font-size: 12px; font-family: var(--mono); }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Level ladder &middot; blue sky</p>
+    <h1>The Blue-Sky Ceiling</h1>
+    <p class="lede">You asked whether blue sky is just the all-time high, and whether the desk was giving up too early. <strong>The line on your board named the wrong reason.</strong> It said the retained history was not split-adjusted. Every row of it is. It was refusing on something smaller and fixable &mdash; and the all-time high, which is knowable, is still not the number you want on these names.</p>
+  </header>
+
+  <h2>What the ceiling actually is</h2>
+
+  <p>The blue-sky level is <strong>the highest prior-session high in the retained window</strong>, and nothing more. It is not an all-time high and not a 52-week high, and it is never described as one. Today is excluded on purpose: overhead supply means levels established <em>before</em> now, and today's own high is the move being assessed rather than a ceiling over it.</p>
+
+  <h2>The four things that can make a ceiling a lie</h2>
+
+  <p>Each has a guard, and any of them leaves the level unverified rather than shown.</p>
+
+  <div class="states">
+    <div class="state">
+      <span class="what">no history</span>
+      <span class="means"><b>Unavailable, not open sky.</b> Nothing retained for the name. A ceiling nobody stored is not a ceiling of zero.</span>
+    </div>
+    <div class="state">
+      <span class="what">under 40 sessions</span>
+      <span class="means"><b>Too shallow to mean anything.</b> A name with nine sessions on file is trivially at its highest. That is a fact about the cache, not about the stock.</span>
+    </div>
+    <div class="state">
+      <span class="what">high over 1.6&times; its close</span>
+      <span class="means"><b>Reads as a bad print.</b> A genuine blow-off closes somewhere near its range. A spike that towers over the close of its own session and leaves nothing behind sets a ceiling nothing ever traded at.</span>
+    </div>
+    <div class="state">
+      <span class="what">fewer than 2 within 10%</span>
+      <span class="means"><b>An isolated legacy spike.</b> One day nothing else came near is not a shelf of supply. The ceiling has to be corroborated before it is trusted.</span>
+    </div>
+  </div>
+
+  <h2>Why a quarter of your names refused</h2>
+
+  <p>A fifth condition sits in front of those four: the retained window has to sit on <strong>one adjustment basis</strong>. A price from before a 1-for-5 reverse split and a price from after it are not the same number, and a ceiling drawn across both is wrong by the split ratio.</p>
+
+  <p>The desk could not vouch for that, so it refused &mdash; and the sentence it refused with was about the wrong thing.</p>
+
+  <div class="board">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:150px">When it happens</th>
+          <th>What the board said <span class="sub">one sentence for every case</span></th>
+          <th>What it says now</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tick">Fetched on more<br>than one date</td>
+          <td class="was">&ldquo;The retained history is <b>not split-adjusted</b>, so a pre-split high cannot be compared with today.&rdquo;</td>
+          <td class="now-says">The history <b>is</b> split-adjusted but was fetched on more than one date, and no split basis is established for it &mdash; so a split between those fetches could have restated part of it and not the rest.</td>
+        </tr>
+        <tr>
+          <td class="tick">Factors disagree<br>across fetches</td>
+          <td class="was">&ldquo;The retained history is <b>not split-adjusted</b>&hellip;&rdquo;</td>
+          <td class="now-says">The history is split-adjusted, but its split factors disagree across its fetch dates, so <b>part of it sits on a stale basis</b>.</td>
+        </tr>
+        <tr>
+          <td class="tick">Labels genuinely<br>differ</td>
+          <td class="was">&ldquo;The retained history is <b>not split-adjusted</b>&hellip;&rdquo;</td>
+          <td class="now-says">The retained history <b>mixes adjustment bases</b>, so a prior high cannot be compared with today.</td>
+        </tr>
+        <tr>
+          <td class="tick">Series really is<br>unadjusted</td>
+          <td class="was">&ldquo;The retained history is not split-adjusted&hellip;&rdquo;</td>
+          <td class="now-says">Unchanged &mdash; this is the case the original sentence was written for, and for it the sentence is right.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <p><b>Measured 2026-09-22.</b> Every row of <code>daily_bars</code> in both stores is labelled split-adjusted &mdash; <span class="scale"><span class="val">7,173 of 7,173</span></span> on the local store and <span class="scale"><span class="val">24,429 of 24,429</span></span> in the 2026-08-23 production snapshot. <b>None are raw.</b></p>
+    <p>What actually triggered the refusal was a symbol holding rows from <b>more than one fetch date</b> &mdash; <span class="scale"><span class="val">68 of 256 symbols</span></span>, about <b>27%</b>, in that same snapshot. &ldquo;Split-adjusted as of August&rdquo; and &ldquo;split-adjusted as of September&rdquo; are different bases under one word, so the desk refused every name holding two. <b>That was a guess about what could have happened, not a finding about what did.</b></p>
+  </div>
+
+  <p>The desk now asks the narrower question. <strong>A split factor is the cumulative adjustment still to apply at a date</strong>, so it can only fall as the date advances &mdash; a later session has fewer splits after it. When a factor <em>rises</em> instead, two rows were adjusted on different bases, and that is the stale row showing itself: written before a 1-for-5 and never restated, it carries 1 where its neighbour carries 5, and its stored price is wrong by the same five. <strong>That is the defect seen directly rather than guessed at.</strong></p>
+
+  <h2>And the all-time high is still not the number you want</h2>
+
+  <p>It is knowable. The desk can already reach ten years back, in two vendor requests per name, and it does exactly that for a top-ten name whose price has cleared everything on file. Here is what full depth returns for BTCT.</p>
+
+  <div class="ladder">
+    <div class="rung">
+      <span class="px deep">$14,249.94</span>
+      <span class="what"><b>All-history ceiling.</b> A real session, arithmetically correct &mdash; and it traded four shares.</span>
+      <span class="basis bad">factor 600 &middot; 2 consolidations</span>
+    </div>
+    <div class="break">&mdash;&mdash;&mdash; not to scale, and it cannot be &mdash;&mdash;&mdash;</div>
+    <div class="rung">
+      <span class="px">$26.58</span>
+      <span class="what"><b>Highest prior high on today's basis.</b> The deepest level that is still the same kind of share you would be buying.</span>
+      <span class="basis ok">factor 1 &middot; 2024-11-13</span>
+    </div>
+    <div class="rung">
+      <span class="px live">$1.71</span>
+      <span class="what"><b>Where it traded</b> when this was reported on the live board, against a $1.48 retained ceiling.</span>
+      <span class="basis ok">factor 1 &middot; 2026-08-24</span>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><b>The top rung is not wrong. It is unreadable.</b> Blue sky means no trapped holders above &mdash; nobody waiting to get out even, no shelf where the last advance died. A price restated through two consolidations describes <b>shares that no longer exist in that form</b>. There is no supply at $14,249.94, because there is nobody there.</p>
+    <p>So the desk carries both: the deep ceiling with its factor beside it, and <b>the highest prior high that sits on today's basis</b>. On BTCT the verdict is the same either way &mdash; $26.58 is still ten times the price &mdash; but only one of those is a number you can act on.</p>
+  </div>
+
+  <h2>What is still switched off</h2>
+
+  <p>The narrower question can only be asked where a split basis has actually been established, and establishing one is a separate job: two vendor requests per name, once. <strong>Until that has run, a name fetched on two dates still refuses</strong> &mdash; it now says why, accurately, but it still refuses. A basis covering only part of a window does not count either, because a clean subset would otherwise vouch for rows nothing examined.</p>
+
+  <h2>The numbers on this page, if you want to check them</h2>
+
+  <table class="scale">
+    <tr><td class="val">40</td><td>sessions</td><td>below this no ceiling is trustworthy</td><td><code>MIN_SESSIONS</code></td></tr>
+    <tr><td class="val">1.6&times;</td><td>high / close</td><td>above this the ceiling reads as a bad print</td><td><code>MAX_SPIKE_RATIO</code></td></tr>
+    <tr><td class="val">2</td><td>sessions</td><td>must corroborate the ceiling</td><td><code>MIN_CORROBORATING_SESSIONS</code></td></tr>
+    <tr><td class="val">90%</td><td>of the ceiling</td><td>how near counts as corroborating</td><td><code>NEAR_CEILING</code></td></tr>
+    <tr><td class="val">25%</td><td>below</td><td>within this the level is &ldquo;in play&rdquo; rather than overhead</td><td><code>IN_PLAY_PCT</code></td></tr>
+    <tr><td class="val">1%</td><td>factor drift</td><td>within this two factors are one basis</td><td><code>SAME_BASIS</code></td></tr>
+    <tr><td class="val">10</td><td>years</td><td>how far a deep pass reaches</td><td><code>DEEP_HISTORY_YEARS</code></td></tr>
+    <tr><td class="val">10</td><td>rank</td><td>how far down the board a deep pass is worth buying</td><td><code>DEEP_HISTORY_RANK</code></td></tr>
+  </table>
+
+  <footer>Research &middot; shipped 27adbbd, b36afd1, 6e224ca &middot; 2026-09-22</footer>
+</div>
