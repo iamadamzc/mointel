@@ -178,9 +178,18 @@ the answers sit beside the questions. Do not re-ask one.
 
 **Hazards that cost something and are not obvious from the code:**
 
-- **The cycle frame is ahead of its data, and HOW FAR ahead is unsettled.** He
-  ruled after-hours in on 2026-09-17 and premarket in on 2026-09-21, so the
-  ruled frame is all three sessions, 04:00–20:00. `daily_bars.high` is not.
+- **The cycle frame is ahead of its data, and HOW FAR ahead is unsettled.**
+  **AFTER-HOURS IS RULED IN (2026-09-17). PREMARKET IS UNRULED.** *This file
+  said he ruled premarket in on 2026-09-21. HE DID NOT.* The same false record
+  appeared in `research-opening-prompt.md:87`, was corrected once at `f0048eb`,
+  came back, and the new Research seat caught it again at `3308fb1` before
+  acting on it — **so this is the third appearance of one invented ruling, and
+  my copy is the one nobody had checked.** A ruling attributed to him that he
+  never made is the worst thing this record can carry: it cannot be refuted by
+  anything in the tree, it arrives with his authority, and every seat that
+  repeats it makes it harder to doubt. **The ruled frame is after-hours plus
+  RTH; whether premarket joins it is HIS to say and has not been asked.**
+  `daily_bars.high` is neither.
   Today's high includes every session and the prior high does not, so the two
   sides of that comparison are in different frames. It errs safe in DIRECTION —
   an understated prior high makes a name look closer to its high, never further
