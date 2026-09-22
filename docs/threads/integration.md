@@ -217,11 +217,13 @@ MECHANISMS, not its facts.*
 ### PRODUCTION
 
 ```
-web / research / assess   34414f4   deployed 2026-09-21 evening ET, 2s down (rollback a9df280)
-market worker             467ffec   pid 636490, restarted 2026-09-18 21:05:09Z
-                                     restart to 34414f4 HELD for 20:00 ET (after-hours close);
-                                     his word given. Worker jumps 467ffec->34414f4, 4 releases
-                                     at once. Ops predicts 0 rows lowered (vs 1,481 on 09-18).
+web / research / assess   42c9a73   deployed 2026-09-22, 3s down. Includes the blue-sky trio
+                                     (27adbbd/b36afd1/6e224ca), Design's stack, and the DCOY
+                                     "STARTED TODAY" fix. Blue-sky WORDING live; the 27%
+                                     recovery waits on the basis --run (his call).
+market worker             34414f4   pid 875327, restarted 2026-09-22 09:57:57Z, NRestarts 0.
+                                     Replay fix PROVEN: 0 of 1,825 rows lowered (vs 1,481 on
+                                     09-18), cohort = symbols with stored premarket bars.
 stranger sees             /  /privacy  /terms  /robots.txt  /favicon.ico
                           /icon.svg  /apple-icon.png            200
                           /desk  /signin  /api/*                401
