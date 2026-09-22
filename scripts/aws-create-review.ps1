@@ -39,7 +39,23 @@ param(
 
   [string]$ServerHost = '98.85.49.227',
   [string]$KeyPath = 'A:\AWS_creds\mointel-prod-key.pem',
-  [string]$PublicUrl = 'https://dwwep02jje2ag.cloudfront.net'
+  # The custom domain, NOT the CloudFront distribution.
+  #
+  # Every path on dwwep02jje2ag.cloudfront.net now 301-redirects TO ITSELF --
+  # root included, so it is a loop and not a token problem:
+  #
+  #   GET https://dwwep02jje2ag.cloudfront.net/  ->  301  ->  (the same URL)
+  #
+  # This script printed that host into MOINTEL_PUBLIC_URL below, so every
+  # review link it has issued since the custom domain took over has been dead
+  # on arrival. Design found it with a live token on 2026-09-22 and the same
+  # token returns the real desk on tmitrader.com; verified from a stateless
+  # curl before changing this line.
+  #
+  # The distribution itself is not cleaned up here -- whether it should exist
+  # at all is an infrastructure question, and this is a one-line repair to stop
+  # issuing dead links in the meantime.
+  [string]$PublicUrl = 'https://tmitrader.com'
 )
 
 $ErrorActionPreference = 'Stop'
