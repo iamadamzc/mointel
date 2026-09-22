@@ -136,10 +136,45 @@ export function cycleDetail(current: CycleResult): string | null {
  * a not-yet-recomputed name is honest and transient; a stale model verdict
  * wearing the new labels would be neither.
  */
+/**
+ * The word for a run that started TODAY and has no settled arc behind it.
+ *
+ * NOT `DAY 1`, AND THE TWO TESTS ARE WHY. The settled `isCycleStart` measures
+ * CLOSE against prior close; the live `todayQualifiesAsCycleStart` measures
+ * today's HIGH against it. A name that spikes 40% intraday and closes flat
+ * qualifies live and will not qualify once the bar settles -- so a live `DAY 1`
+ * would be a word that silently retracts overnight, and a reader comparing two
+ * rows could not tell which kind of DAY 1 either was.
+ *
+ * It states the OBSERVATION rather than a classification, so nothing is taken
+ * back tomorrow: the run did start today, whatever the settled bar later says
+ * about its close. `NEW RUN` was considered and rejected -- one letter from
+ * `NO RUN`, which is the word this replaces, on a board read at a glance.
+ *
+ * A CONSTANT because the wording is his to change and this is the only edit
+ * that would take.
+ */
+export const LIVE_START_LABEL = 'STARTED TODAY';
+
 export function resolveComputedCycle(history: CycleHistory | null | undefined): DeskConclusion | null {
   if (!history) return null;
 
   const phase = history.current.phase;
+
+  /*
+   * The settled classifier cannot see today, so NO_CYCLE means "no run in the
+   * settled bars" -- not "no run". When the live overlay has qualified today,
+   * saying NO RUN contradicts a verdict the same object carries.
+   */
+  if (phase === 'NO_CYCLE' && history.todayStart === 'QUALIFIED') {
+    return {
+      label: LIVE_START_LABEL,
+      tone: cyclePhaseTone('DAY_ONE'),
+      provenance: 'COMPUTED',
+      title: null,
+      otherLabel: null,
+    };
+  }
 
   return {
     label: CYCLE_PHASE_LABEL[phase],
@@ -282,14 +317,39 @@ export function highReading(
   price: number | null | undefined,
   spread: number | null | undefined,
 ): HighReading | null {
-  if (!arc || arc.phase === 'NO_CYCLE') return null;
   if (price === null || price === undefined || !Number.isFinite(price)) return null;
 
-  const cycleHigh = arc.cycleHigh;
   const liveHigh =
     sessionHigh !== null && sessionHigh !== undefined && Number.isFinite(sessionHigh)
       ? (sessionHigh as number)
       : null;
+
+  /*
+   * NO SETTLED ARC, BUT TODAY STARTED ONE -- and this arm was unreachable.
+   *
+   * A COMPOSITION DEFECT, invisible from inside either half. The guard
+   * `arc.phase === 'NO_CYCLE'` was the FIRST line of this function and correct
+   * on its own: with no arc there is no `cycleHigh` to measure against, and
+   * every line below it reads one. The supersession branch thirty lines down
+   * was correct on its own too. But the guard ran first, so the branch was
+   * dead for EXACTLY the population it was written for -- a name whose entire
+   * run is today, which by construction has no settled cycle because
+   * `classifyCycle` reads settled bars and today is not one.
+   *
+   * The desk therefore computed `todayStart = QUALIFIED`, knew a run had
+   * started, and rendered NO RUN. Found on DCOY by Research; verified here.
+   *
+   * MOVING THE GUARD LOWER WOULD CRASH RATHER THAN FIX IT: `cycleHigh` does
+   * not exist on `{ phase: 'NO_CYCLE' }`. There is no prior high in this case
+   * and there should not be -- the reference is TODAY'S OWN HIGH, which is the
+   * only high there is. So this is its own arm, not a relaxed guard.
+   */
+  if (!arc || arc.phase === 'NO_CYCLE') {
+    if (todayStart !== 'QUALIFIED' || liveHigh === null) return null;
+    return liveVerdict(liveHigh, price, spread);
+  }
+
+  const cycleHigh = arc.cycleHigh;
 
   /*
    * UNVERIFIABLE: THE PAIR GOES, NOT JUST THE VERDICT.
@@ -323,10 +383,6 @@ export function highReading(
 
   if (!beat) return { kind: 'PAIR', label: null, tone: null, high, now: price };
 
-  if (spread === null || spread === undefined || !Number.isFinite(spread)) {
-    return { kind: 'PAIR', label: null, tone: null, high, now: price };
-  }
-
   /*
    * Compared at six decimals, because the raw subtraction is not stable at the
    * boundary: `1.5 - 1.49` is 0.010000000000000009 and would read as OUTSIDE a
@@ -334,6 +390,28 @@ export function highReading(
    * six cannot change a real decision and removes the float noise that would
    * otherwise flip the label on an exact-boundary print.
    */
+  return liveVerdict(high, price, spread);
+}
+
+/**
+ * Price against the high this move is measured from, once that high is chosen.
+ *
+ * Extracted so the settled-arc path and the started-today path cannot answer
+ * the same question differently -- they were one expression, and the second
+ * path was added by making the first reachable rather than by copying it.
+ *
+ * Compared at six decimals, because the raw subtraction is not stable at the
+ * boundary: `1.5 - 1.49` is 0.010000000000000009 and would read as OUTSIDE a
+ * one-cent spread. Quotes are never finer than four decimals, so rounding at
+ * six cannot change a real decision and removes the float noise that would
+ * otherwise flip the label on an exact-boundary print.
+ */
+function liveVerdict(high: number, price: number, spread: number | null | undefined): HighReading {
+  // No spread means no verdict, not a guessed band. The prices still render:
+  // they are observations and need no band; only the word does.
+  if (spread === null || spread === undefined || !Number.isFinite(spread)) {
+    return { kind: 'PAIR', label: null, tone: null, high, now: price };
+  }
   const scaled = (v: number) => Math.round(v * 1e6);
   const atHigh = scaled(high - price) <= scaled(Math.abs(spread));
   return atHigh
@@ -427,9 +505,19 @@ export function cycleBadge(
   high: HighReading | null | undefined,
   phase: CycleResult | null | undefined,
   conclusion: DeskConclusion | null | undefined,
+  todayStart?: TodayStartVerdict | null,
 ): CycleBadgeReading | null {
-  const settled =
-    phase && conclusion
+  /*
+   * A run that started today has no settled arc, so `PHASE_TERM` has nothing
+   * to say about it -- `NO_CYCLE` reads "No qualifying advance on record",
+   * which is the same false sentence the badge used to show, moved into the
+   * tooltip. It gets its own, and it names the looser basis rather than
+   * leaving a reader to assume this is the settled test.
+   */
+  const liveStart = phase?.phase === 'NO_CYCLE' && todayStart === 'QUALIFIED';
+  const settled = liveStart
+    ? `${LIVE_START_LABEL}. Today cleared the volume and advance a run needs, measured on today's HIGH against the prior close. The settled test uses the CLOSE, so this may not become a DAY 1 once the session settles.`
+    : phase && conclusion
       ? `${conclusion.label}. ${PHASE_TERM[phase.phase]}${
           conclusion.title ? ` ${conclusion.title}` : ''
         }`

@@ -266,7 +266,7 @@ function TableRow({
     t.spread,
   );
   const priorOnly = high?.kind === 'PRIOR_ONLY';
-  const badge = cycleBadge(high, cycle?.current ?? null, conclusions.cycle);
+  const badge = cycleBadge(high, cycle?.current ?? null, conclusions.cycle, cycle?.todayStart);
 
   const halted = t.haltState === 'HALTED' || t.haltState === 'RESUMING';
   const backside = conclusions.cycle.tone === 'neg';

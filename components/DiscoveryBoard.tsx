@@ -607,7 +607,7 @@ function DiscoveryRow({
    * table. The two built this badge separately and disagreed on three of four
    * shared tickers on the live board -- see `cycleBadge`.
    */
-  const badge = cycleBadge(high, cycle?.current ?? null, conclusions.cycle);
+  const badge = cycleBadge(high, cycle?.current ?? null, conclusions.cycle, cycle?.todayStart);
   const risk = resolveRisk(row);
   const why = resolveWhy(row);
   const tradesNow = tradesLastMinute(row.demand);

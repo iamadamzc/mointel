@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import {
+  LIVE_START_LABEL,
   PRIOR_HIGH_ONLY_TITLE,
   cycleBadge,
   highReading,
@@ -168,5 +169,80 @@ describe('the prior-high disclosure, after the frame was ruled whole', () => {
       // The literal living in the component is how the badges drifted.
       expect(source).not.toContain('The prior high is shown because');
     }
+  });
+});
+
+describe('DCOY: a run that started today, with no settled arc behind it', () => {
+  /*
+   * The desk computed `todayStart = QUALIFIED` — it KNEW a run had started —
+   * and rendered NO RUN. A composition defect: `highReading`'s `NO_CYCLE`
+   * guard was correct on its own and ran thirty lines before the supersession
+   * branch, which was correct on its own, so that branch was dead for exactly
+   * the population it was written for. A name whose whole run is today has no
+   * settled cycle BY CONSTRUCTION — `classifyCycle` reads settled bars and
+   * today is not one.
+   */
+  const noArc = { phase: 'NO_CYCLE' } as CycleResult;
+  const history = (todayStart: string) =>
+    ({ current: noArc, todayStart, priorCycles: [], formerRunnerStatus: 'NONE' }) as never;
+
+  it('measures against today own high, the only high there is', () => {
+    const reading = highReading(noArc, 'QUALIFIED', 1.6, 1.46, 0.001)!;
+
+    expect(reading).not.toBeNull();
+    expect(reading.kind).toBe('PAIR');
+    // The reference is today's high — there is no prior high, and inventing
+    // one from a run that does not exist is what the guard rightly prevented.
+    expect(reading.kind === 'PAIR' && reading.high).toBe(1.6);
+    expect(reading.kind === 'PAIR' && reading.label).toBe('OFF HIGH');
+  });
+
+  it('says NEW HIGH on the same arm when price is at today high', () => {
+    // The arm has to make the whole verdict, not just stop returning null.
+    const reading = highReading(noArc, 'QUALIFIED', 1.6, 1.6, 0.01)!;
+    expect(reading.kind === 'PAIR' && reading.label).toBe('NEW HIGH');
+    expect(reading.kind === 'PAIR' && reading.high).toBe(1.6);
+  });
+
+  it('gives prices but no verdict when there is no spread to band it', () => {
+    // Same rule the settled path obeys: no spread means no word, and the
+    // prices still render because they are observations needing no band.
+    const reading = highReading(noArc, 'QUALIFIED', 1.6, 1.46, null)!;
+    expect(reading.kind === 'PAIR' && reading.label).toBeNull();
+    expect(reading.kind === 'PAIR' && reading.high).toBe(1.6);
+  });
+
+  it('says STARTED TODAY rather than NO RUN', () => {
+    const badge = cycleBadge(
+      highReading(noArc, 'QUALIFIED', 1.6, 1.46, 0.001),
+      noArc,
+      resolveComputedCycle(history('QUALIFIED')),
+      'QUALIFIED',
+    )!;
+
+    expect(resolveComputedCycle(history('QUALIFIED'))!.label).toBe(LIVE_START_LABEL);
+    expect(badge.title).not.toContain('No qualifying advance on record');
+    expect(badge.title).toContain('STARTED TODAY');
+  });
+
+  it('names the looser basis, so a live start is not read as a settled DAY 1', () => {
+    const badge = cycleBadge(null, noArc, resolveComputedCycle(history('QUALIFIED')), 'QUALIFIED')!;
+
+    expect(badge.label).toBe('STARTED TODAY');
+    expect(badge.label).not.toBe('DAY 1');
+    // The settled test measures the CLOSE; this one measured the HIGH.
+    expect(badge.title).toMatch(/HIGH/);
+    expect(badge.title).toMatch(/CLOSE/);
+  });
+
+  it('still says NO RUN when today has NOT qualified', () => {
+    /*
+     * The control. Without this the fix could have turned every arc-less name
+     * into a started-today name, which is the same defect pointed the other
+     * way and would have looked like a success on the one row being checked.
+     */
+    expect(resolveComputedCycle(history('NOT_QUALIFIED'))!.label).toBe('NO RUN');
+    expect(highReading(noArc, 'NOT_QUALIFIED', 1.6, 1.46, 0.001)).toBeNull();
+    expect(highReading(noArc, 'UNVERIFIABLE', 1.6, 1.46, 0.001)).toBeNull();
   });
 });
