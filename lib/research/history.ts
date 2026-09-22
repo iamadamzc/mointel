@@ -228,12 +228,31 @@ export function readSplitFactors(
 }
 
 /**
- * The adjustment basis of a symbol's retained daily bars.
+ * How much a factor may RISE with date before the series is called conflicted.
  *
- * Null when there are none, and null when the window mixes bases — a series
- * that is half split-adjusted and half raw is not internally comparable, and
- * anything derived from it (a ceiling, a prior high) would be wrong by whatever
- * the split ratio was.
+ * Mirrors `SAME_LEVEL` in `lib/market/splits.ts`, where these factors are
+ * derived: within 1% two factors are the same level, and Alpaca's four-decimal
+ * raw closes put quote rounding well inside that.
+ */
+const SAME_BASIS = 0.01;
+
+export type DailyBarBasisReason =
+  | 'NO_ROWS'
+  | 'MIXED_LABELS'
+  | 'UNRECONCILED_VINTAGES'
+  | 'BASIS_CONFLICT';
+
+export interface DailyBarBasis {
+  /** The one adjustment label, when the rows agree on one. */
+  adjustment: string | null;
+  /** True only when the whole retained window provably sits on ONE basis. */
+  vouched: boolean;
+  /** Why it could not be vouched, for a surface that has to say so. */
+  reason: DailyBarBasisReason | null;
+}
+
+/**
+ * Whether a symbol's retained daily bars provably sit on ONE adjustment basis.
  *
  * AND THE LABEL IS NOT THE BASIS, WHICH MADE THE ORIGINAL VERSION UNABLE TO
  * FIRE. It compared `SELECT DISTINCT adjustment` alone. **"Split-adjusted as of
@@ -241,21 +260,28 @@ export function readSplitFactors(
  * the same label**: a reverse split between two fetches restates one and not the
  * other, and `adjustment` still reads `'split'` on both. Measured on the local
  * store — **every row of `daily_bars` is labelled `'split'`, all 75 symbols** —
- * so the distinctness test returned one value unconditionally and the guard was
- * structurally incapable of returning null. A guard that cannot fail.
+ * so the distinctness test returned one value unconditionally. A guard that
+ * cannot fail.
  *
- * `fetched_at` carries the vintage the label does not, so it joins the test.
- * 13 of those 75 symbols hold rows from two fetch dates.
+ * `fetched_at` carries the vintage the label does not, so it joined the test.
+ * But two vintages are only a HAZARD if a split actually landed between them,
+ * and refusing every symbol that holds two was over-refusal by design: 13 of 75
+ * locally, **68 of 256 (27%) in the 2026-08-23 production snapshot**, told the
+ * trader his history was "not split-adjusted" when every row of it was.
  *
- * THIS OVER-REFUSES ON PURPOSE, and the cost is named rather than hidden: those
- * 13 are EXPOSED, not necessarily wrong — a gap between fetches only bites if a
- * split landed inside it. Returning null for all of them says "cannot vouch"
- * where the old version said "comparable" without being able to know. The cheap
- * upgrade is a `split_factor` column (`db.ts:710` migrates one in, absent from
- * this local copy), which would let this ask whether a split ACTUALLY intervened
- * instead of whether one could have.
+ * SO THE VINTAGE TEST IS NOW THE FALLBACK AND THE FACTOR IS THE TEST.
+ * `split_factor` is the cumulative adjustment still to apply at a date, so it is
+ * NON-INCREASING as the date advances: a later session can only have fewer
+ * splits after it. A rise means two rows were adjusted on different bases —
+ * which is exactly the defect, seen directly rather than guessed at. A stale row
+ * written before a 1-for-5 carries 1 where its neighbours carry 5, and that
+ * inversion is the signature.
+ *
+ * Established for only PART of the window is not an answer. The factor has to
+ * cover every retained row before it can speak for the window, or a clean
+ * subset would vouch for rows nothing examined.
  */
-export function dailyBarAdjustment(db: MarketDatabase, symbol: string): string | null {
+export function dailyBarBasis(db: MarketDatabase, symbol: string): DailyBarBasis {
   const rows = db
     .prepare(
       `SELECT DISTINCT adjustment, substr(fetched_at, 1, 10) AS fetchedOn
@@ -263,8 +289,52 @@ export function dailyBarAdjustment(db: MarketDatabase, symbol: string): string |
         WHERE symbol = ?`,
     )
     .all(symbol) as Array<{ adjustment: string; fetchedOn: string | null }>;
-  if (rows.length !== 1) return null;
-  return rows[0]!.adjustment;
+
+  if (rows.length === 0) return { adjustment: null, vouched: false, reason: 'NO_ROWS' };
+
+  const labels = new Set(rows.map((row) => row.adjustment));
+  if (labels.size !== 1) {
+    return { adjustment: null, vouched: false, reason: 'MIXED_LABELS' };
+  }
+  const adjustment = rows[0]!.adjustment;
+
+  const vintages = new Set(rows.map((row) => row.fetchedOn));
+  if (vintages.size === 1) return { adjustment, vouched: true, reason: null };
+
+  // Two or more vintages. Answerable only from an established basis, and only
+  // when that basis covers the whole window.
+  const coverage = db
+    .prepare(
+      `SELECT COUNT(*) AS total,
+              SUM(CASE WHEN split_factor IS NULL THEN 0 ELSE 1 END) AS established
+         FROM daily_bars
+        WHERE symbol = ?`,
+    )
+    .get(symbol) as { total: number; established: number | null };
+
+  if (coverage.total === 0 || (coverage.established ?? 0) !== coverage.total) {
+    return { adjustment, vouched: false, reason: 'UNRECONCILED_VINTAGES' };
+  }
+
+  // `readSplitFactors` orders by trading date, and a Map keeps insertion order.
+  let previous: number | null = null;
+  for (const factor of readSplitFactors(db, symbol).values()) {
+    if (previous !== null && previous > 0 && factor / previous > 1 + SAME_BASIS) {
+      return { adjustment, vouched: false, reason: 'BASIS_CONFLICT' };
+    }
+    previous = factor;
+  }
+
+  return { adjustment, vouched: true, reason: null };
+}
+
+/**
+ * The adjustment basis of a symbol's retained daily bars, or null when it
+ * cannot be vouched. `dailyBarBasis` carries the reason.
+ */
+export function dailyBarAdjustment(db: MarketDatabase, symbol: string): string | null {
+  const basis = dailyBarBasis(db, symbol);
+  return basis.vouched ? basis.adjustment : null;
 }
 
 export function dailyBarCount(db: MarketDatabase, symbol: string): number {
