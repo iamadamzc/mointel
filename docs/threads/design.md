@@ -44,9 +44,9 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-22 09:55 UTC
+## Live state — 2026-09-22 23:15 UTC
 
-**My head is `3d611d4`.** What is DEPLOYED is Ops's to say; this thread has no
+**My head is `acc3095`.** What is DEPLOYED is Ops's to say; this thread has no
 deploy signal and a list I cannot verify is a guess with a shape.
 
 **The brand shipped this week.** TMI now expands to *The Momentum Intelligence
@@ -61,6 +61,23 @@ through an `img` tag.
 Three verdicts, three renders: QUALIFIED switches the reference to today's own
 high; NOT_QUALIFIED leaves the settled badge; UNVERIFIABLE drops the pair AND
 the word and shows the prior high alone, dated.
+
+**VERIFIED ON PRODUCTION `6e224ca`, 2026-09-22 after-hours.** Five of five
+render correctly: the float verdict (`FLOAT 5,680,000 CONSISTENT · under 8.14M
+shares outstanding filed 2026-08-11` on TOMZ), the change sentence (`new HOD`,
+not `NEW_HOD`), the persistent events band, the headline following the sort
+with both figures labelled, and the `Now` column with its number and sort.
+
+**ONE IS ONLY PARTIALLY VERIFIED AND MUST NOT BE WRITTEN UP AS DONE.**
+`72b8c1b`, the cycle contradiction. Both tables are demonstrably on the shared
+reading — the researched table now renders the price pair, which it never did.
+**But the test that FOUND the defect needs tickers on both tables, and after
+hours there are ZERO.** A no-overlap "no disagreements" is a check that cannot
+fail. *The extraction was re-proved working before the zero was believed.*
+**OWED: the same query during premarket, when the sets overlap.**
+
+**DCOY is the live illustration of the Now column's whole argument:** rank 1 at
+3,105× RVOL, trading 4 times a minute, while rank 3 runs at 346.
 
 **DESIGN HAS SEEN THE LIVE BOARD.** First sighted session this seat has had:
 a review token on 2026-09-22 premarket. **The token URL the script prints is
@@ -166,7 +183,8 @@ the answers sit beside the questions. Do not re-ask one.
 | Item | Owner | Waiting on |
 | --- | --- | --- |
 | Float render — seeing the four states on a real row | Design | His token; built at `7cc5076`, never rendered |
-| Deploy of `aeccc89`..`3d611d4` | Ops | Five Design commits unshipped; none verified on screen |
+| Deploy of `0efec96`, `42c9a73`, `acc3095` | Ops | His "yes to all"; `42c9a73` fixes DCOY, live at rank 1 reading NO RUN |
+| Cycle-fix overlap check | Design | Premarket, when both tables share tickers; token id 39 expires 07:04 ET |
 | `aws-create-review.ps1` prints a dead URL | Ops owns the script | Default `-PublicUrl` is the retired CloudFront host |
 | The mark on a real handset | Design | His phone; nobody has looked |
 | Manual spine — the dozen things a user would misread | Design | His yes; drafted from the log, not from memory |
