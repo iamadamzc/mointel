@@ -11258,3 +11258,123 @@ the most comfortable possible reading, and this desk has been wrong in that
 direction twice this week. The unexplainable contradiction is the only reliable
 brake; [[peer-confirmation-is-not-a-second-source]] is the rule and this is what
 it feels like from inside.*
+
+## THE PREMARKET HOLE IS CLOSED, MEASURED: 0 OF 1,825 — 2026-09-22 09:57:57Z
+
+**The restart ran IN PREMARKET on his direct word, after he was told twice that
+a session was in progress and that the next clean window was 20:00 ET.** He
+answered *"approved to restart now."* **Recorded as a decision, not a lapse.**
+
+```
+ExecMainStart   2026-09-22T09:57:57Z    pid 875327, NRestarts 0
+release         467ffec -> 34414f4      four releases of worker code in one step
+log             [demand] replayed 20807 stored minute bars for 1825 symbols (1793ms)
+                [alpaca] historical sip access confirmed
+```
+
+**The prediction was stated BEFORE the run and the run met it. Cohort restricted
+to symbols with stored premarket bars, on the retiring Research seat's
+correction — a name with no bars takes the seed and can read low without the fix
+being wrong, so an unrestricted denominator is unreadable:**
+
+```
+cohort rows                1,825      (snapshot 1,825 rows, sha256 91fd31f6…)
+highs LOWERED                  0      <- 09-18, no fix, same instrument: 1,481
+lows RAISED                    0         of which 1,160 were premarket highs
+highs held or rose         1,825
+```
+
+> **The replay count matching the cohort exactly — 1,825 replayed, 1,825 with
+> premarket bars — is a second, independent sign it did the work rather than
+> no-opping.** *By accident rather than design: `barsReplayed` counts bars FED,
+> not landed, and still cannot distinguish success from a silent no-op. Open.*
+
+**The risk actually carried was not the highs. It was the worker failing to
+start on four releases of unproven worker code inside his window.** It came up
+in six seconds with SIP confirmed.
+
+## MY MUTATION TEST WAS VACUOUS, AND RESEARCH CAUGHT IT — 2026-09-22
+
+**`34414f4`'s commit message said the ordering was "established by mutation".
+It was not.** `replayedThenSeeded()` builds its own replay-then-seed sequence
+and never calls `bootstrapSession`, **so the swap I ran swapped the test's own
+two lines.** *Research moved the REAL call in `worker/runtime.ts` to after the
+seed loop — the actual defect — and the whole suite stayed green.*
+
+**Verified before accepting it: no test calls `bootstrapSession`. The grep that
+appears to say otherwise hits a COMMENT.** *Second time this week a name-grep
+returned a comment and read as a call.*
+
+> **The mutation established that the COMPOSITION is order-sensitive. Whether
+> `bootstrapSession` composes it in the right order was untested. That is the
+> difference between a guard and a demonstration, and I shipped the second
+> while claiming the first.**
+
+**`eb96579` replaces it with source-order assertions — this repo's idiom for a
+structural invariant, since `tests/desk/minuteBarRecovery.test.ts` exists to
+forbid constructing a `MarketRuntime` where its store claim can wipe three
+tables.** *Checked rather than assumed: moving the real call after the snapshot
+fetch fails exactly two tests, predicted before running.*
+
+**Writing that test found a SECOND defect of mine: the replay call sat BELOW the
+early return for a missing REST client.** *Replay reads the local store and
+needs no network — so an Alpaca outage would have skipped a rebuild it was
+perfectly able to do, reopening the hole for want of a client it never needed.
+Moved above the guard, with its own assertion.* **`sessionLow` had no
+assertion either; Research caught that too.**
+
+## PREFLIGHT'S GUARD IS MEASURED FROM THE WRONG END — 2026-09-22
+
+**`preflight.sh` derives its 5-minute protected window from a deploy "observed
+at roughly 60-90 seconds" (its own header). That has been false since `c883d7b`
+moved `quick_check` BEFORE the stop.**
+
+```
+observed quick_check, before the stop:   242s   332s   357s
+so preflight -> service stop:            7-8 MINUTES, not 90 seconds
+```
+
+> **Preflight asks whether a checkpoint is near the START. The condition it
+> exists to protect is whether one is near the STOP.** *A 06:15 start passes the
+> guard cleanly and lands its stop at ~06:22 — three minutes inside the 06:25
+> checkpoint the guard is there to defend.*
+
+**Same shape as every other near-miss in this file: the rule names the event it
+usually coincides with rather than the condition.** *Worked around today by
+picking a start with 8+ minutes of clearance to the next checkpoint, not by
+overriding. The fix joins the deploy-path batch with the test-gate wiring and
+the `REF="${3:-HEAD}"` default — one batch, in daylight, because it ships
+through the path it changes.*
+
+## EVERY REVIEW LINK SINCE THE CUSTOM DOMAIN HAS BEEN DEAD — `2a8995b`, 2026-09-22
+
+**Design found it with a live token. `scripts/aws-create-review.ps1` defaulted
+`-PublicUrl` to the CloudFront distribution, where every path 301-redirects to
+the IDENTICAL URL — root included, which is what rules out a token problem and
+makes it a loop.**
+
+```
+https://dwwep02jje2ag.cloudfront.net/          301 -> the same URL
+https://dwwep02jje2ag.cloudfront.net/privacy   301 -> the same URL
+https://tmitrader.com/  /privacy               200
+```
+
+**Verified from a stateless curl before changing the line rather than taking the
+report.** *A defect that reads as disinterest: review links were not ignored,
+they never resolved.* **The distribution is left alone — whether it should exist
+is an infrastructure question, not something to settle inside a one-line repair.**
+
+## The prod basis census disagrees with the plan by 7x — 2026-09-22
+
+```
+[basis] researched tickers            993
+[basis] basis already established     562
+[basis] due for a basis fetch         431  ->  862 Alpaca REST calls
+```
+
+**Integration's brief said ~60 tickers / 120 calls; that was the LOCAL census.
+Production is 431/862.** *Trivial against the 10,000-per-window limit, and the
+point is not the size: `basis-backfill.ts`'s own header says the census exists
+so "the volume is priced from the tool's own output before anything runs", and
+the priced volume was seven times the quoted one.* **Held for after the close
+rather than run against live capture in his premarket.**
