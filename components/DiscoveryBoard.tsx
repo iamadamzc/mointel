@@ -19,7 +19,7 @@ import type { SessionPhase } from '@/lib/market/types';
 import { rowKeyboardProps } from '@/components/tableKeyboard';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
-import { formatHighPair, highReading } from '@/lib/dashboard/cycle';
+import { cycleBadge, formatHighPair, highReading } from '@/lib/dashboard/cycle';
 import { sparklineLagLabel } from '@/lib/dashboard/sparkline';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
@@ -566,6 +566,12 @@ function DiscoveryRow({
    * three.
    */
   const priorOnly = high?.kind === 'PRIOR_ONLY';
+  /*
+   * Label, tone and tooltip from ONE decision, shared with the researched
+   * table. The two built this badge separately and disagreed on three of four
+   * shared tickers on the live board -- see `cycleBadge`.
+   */
+  const badge = cycleBadge(high, cycle?.current ?? null, conclusions.cycle);
   const risk = resolveRisk(row);
   const why = resolveWhy(row);
   const ah = demand?.afterHours ?? null;
@@ -716,11 +722,11 @@ function DiscoveryRow({
 
       <td className="px-2 py-1 align-middle">
         <span className="flex flex-col items-start gap-0.5">
-          {priorOnly ? null : (
+          {priorOnly || !badge ? null : (
             <StatusBadge
-              label={(high?.kind === 'PAIR' ? high.label : null) ?? conclusions.cycle.label}
-              tone={((high?.kind === 'PAIR' ? high.tone : null) ?? conclusions.cycle.tone) as Tone}
-              title={conclusions.cycle.title ?? conclusions.cycle.label}
+              label={badge.label}
+              tone={badge.tone as Tone}
+              title={badge.title}
               className="max-w-full"
             />
           )}

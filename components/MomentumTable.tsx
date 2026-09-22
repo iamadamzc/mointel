@@ -15,6 +15,7 @@ import {
 import { rowKeyboardProps } from '@/components/tableKeyboard';
 import { buildDeskRow, type DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
+import { cycleBadge, formatHighPair, highReading } from '@/lib/dashboard/cycle';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
 import { baselineLabel } from '@/lib/dashboard/view';
@@ -231,6 +232,30 @@ function TableRow({
    */
   const conclusions = resolveConclusions(row);
 
+  /*
+   * THE SAME CYCLE BADGE DISCOVERY RENDERS, FROM THE SAME FUNCTION.
+   *
+   * The comment above records this cell drifting once already. It drifted a
+   * second time: Discovery took `highReading`'s live override and this table
+   * did not, so on 2026-09-22 three of the four tickers present on BOTH tables
+   * showed different cycle verdicts at the same moment -- GRML `OFF HIGH
+   * $12.10 -> $10.49` here against `DAY 1`, QNME and TOPS `OFF HIGH` against
+   * `BACKSIDE`. Same object, two readings, nothing stale to notice.
+   *
+   * Twice fixed by hand is the argument for not fixing it by hand again, so
+   * both tables now call `cycleBadge` and have nothing left to disagree about.
+   */
+  const cycle = row.intelligence?.analysis?.dossier?.computedCycle ?? null;
+  const high = highReading(
+    cycle?.current ?? null,
+    cycle?.todayStart ?? null,
+    t.sessionHigh,
+    t.price,
+    t.spread,
+  );
+  const priorOnly = high?.kind === 'PRIOR_ONLY';
+  const badge = cycleBadge(high, cycle?.current ?? null, conclusions.cycle);
+
   const halted = t.haltState === 'HALTED' || t.haltState === 'RESUMING';
   const backside = conclusions.cycle.tone === 'neg';
 
@@ -296,12 +321,29 @@ function TableRow({
 
       <td className="px-2 py-1 align-middle">
         <span className="flex flex-col items-start gap-0.5">
-          <StatusBadge
-            label={conclusions.cycle.label}
-            tone={conclusions.cycle.tone as Tone}
-            title={conclusions.cycle.title ?? conclusions.cycle.label}
-            className="max-w-full"
-          />
+          {priorOnly || !badge ? null : (
+            <StatusBadge
+              label={badge.label}
+              tone={badge.tone as Tone}
+              title={badge.title}
+              className="max-w-full"
+            />
+          )}
+          {/* The price pair, on the same terms as Discovery: two prices rather
+              than a percentage, and no arrow on the prior-high arm because the
+              arrow is itself the claim the desk has just declined to make. */}
+          {high ? (
+            <span
+              className="num text-[10px] leading-none font-semibold text-ink-3"
+              title={
+                priorOnly
+                  ? 'The desk cannot establish whether today started a new cycle, so it will not say which high this move is measured against. The prior high is shown because it is overhead supply either way. Highs before today exclude after-hours.'
+                  : undefined
+              }
+            >
+              {formatHighPair(high)}
+            </span>
+          ) : null}
           <HaltBadge state={t.haltState} raw={t.haltRaw} />
         </span>
       </td>

@@ -356,3 +356,102 @@ export function formatHighPair(reading: HighReading): string {
   }
   return `${fmt(reading.high)} → ${fmt(reading.now)}`;
 }
+
+/**
+ * What each phase word MEANS, in the language of the stock.
+ *
+ * Keyed by `CyclePhase` rather than by the rendered label, and that is the
+ * point rather than a preference: `PULLBACK` renders as `OFF HIGH`, and
+ * `highReading` produces a DIFFERENT `OFF HIGH` from a different quantity. A
+ * map keyed by the word would hand the phase's explanation to the override's
+ * badge, which is how a tooltip comes to describe a number that did not
+ * compute the label above it.
+ *
+ * Every sentence here is what `classifyCycle` actually tests, not what the
+ * word suggests — `lib/market/cycle.ts:410-432`.
+ */
+const PHASE_TERM: Record<CyclePhase, string> = {
+  DAY_ONE: 'First session of this advance, and the high is the most recent settled session.',
+  FRONTSIDE: 'Still advancing: the high is the most recent settled session.',
+  PULLBACK: 'The high is an earlier session, but most of the advance is still intact.',
+  BACKSIDE: 'Most of the advance has been given back.',
+  SHADOW: 'The run is over and the name has gone quiet. The old high is still overhead supply.',
+  NO_CYCLE: 'No qualifying advance on record.',
+};
+
+/**
+ * What the LIVE override means, which is a different question from the phase.
+ *
+ * The phase is computed from SETTLED daily bars and says where the name sits in
+ * its arc. These two compare TODAY'S price against the high that arc is
+ * measured from. Both can be true at once — a name can be on the backside and
+ * also at a new high — so the title below states both rather than choosing.
+ */
+const LIVE_TERM: Record<string, string> = {
+  'NEW HIGH': 'Price is within one spread of the high this move is measured against.',
+  'OFF HIGH': 'Price is more than one spread below the high this move is measured against.',
+};
+
+export interface CycleBadgeReading {
+  label: string;
+  tone: string;
+  /** Always present: he asked that every term on the board explain itself. */
+  title: string;
+}
+
+/**
+ * The cycle badge: ONE decision over label, tone and tooltip.
+ *
+ * WHY THIS EXISTS AS A FUNCTION RATHER THAN AS JSX IN TWO PLACES. The Discovery
+ * row and the researched row each built this badge themselves, and they drifted
+ * twice. The first time the researched table was still reading the Sheet's
+ * `ticker.cycle` after every other surface had moved to the computed phase. The
+ * second time — found on the live board 2026-09-22 — Discovery had taken
+ * `highReading`'s override and the researched table had not, so THREE of the
+ * four tickers on both tables showed different cycle verdicts at the same
+ * moment: GRML `OFF HIGH $12.10 → $10.49` against `DAY 1`, QNME and TOPS
+ * `OFF HIGH` against `BACKSIDE`.
+ *
+ * Neither was stale data. Both surfaces read the same `computedCycle` object
+ * through different readings, which is worse than stale — there is nothing to
+ * refresh and nothing looks broken from inside either file. A third correction
+ * would have been the second time this cell was fixed by hand, so it is one
+ * function now and the two tables have nothing left to disagree about.
+ *
+ * AND THE TOOLTIP COMES FROM THE SAME DECISION AS THE LABEL. It previously did
+ * not: an override badge reading `OFF HIGH` carried `cycleDetail`, which
+ * describes the settled phase — a tooltip explaining a different quantity from
+ * the one that produced the word above it.
+ */
+export function cycleBadge(
+  high: HighReading | null | undefined,
+  phase: CycleResult | null | undefined,
+  conclusion: DeskConclusion | null | undefined,
+): CycleBadgeReading | null {
+  const settled =
+    phase && conclusion
+      ? `${conclusion.label}. ${PHASE_TERM[phase.phase]}${
+          conclusion.title ? ` ${conclusion.title}` : ''
+        }`
+      : null;
+
+  if (high && high.kind === 'PAIR' && high.label) {
+    /*
+     * The override won the word, so the phase is stated INSIDE the tooltip
+     * rather than dropped. It is the sentence the researched table used to show
+     * as its whole badge, and a reader who saw both surfaces needs to find it
+     * somewhere or the two still disagree — just more quietly.
+     */
+    return {
+      label: high.label,
+      tone: high.tone ?? 'dim',
+      title: settled
+        ? `${LIVE_TERM[high.label] ?? ''} Settled reading: ${settled}`.trim()
+        : (LIVE_TERM[high.label] ?? high.label),
+    };
+  }
+
+  if (!conclusion || !phase) return null;
+
+  return { label: conclusion.label, tone: conclusion.tone, title: settled ?? conclusion.label };
+}
