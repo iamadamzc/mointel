@@ -102,8 +102,9 @@ in **which option it picks**.
 ### STANDING CONSTRAINTS — things that must NOT be done
 
 - **Never fetch `stockanalysis.com` from a worker, an API route or a scheduled job.** Their terms bar automated access AND bar using the data in a competing product. His ruling 2026-09-19: the vendor float stays on **his desktop ChatGPT task**, not the API. Volume is ~150/day, small enough that automating it will keep looking like an easy win.
-- **`BACKSIDE_RETRACEMENT = 0.5` and `SUPERRUNNER_ADVANCE = 2.0` were measured in the OLD frame and are NOT re-derived.** Both carry a FRAME WARNING at their definition sites. Do not cite them as measured.
-- **Premarket in the cycle frame is NOT RULED.** He ruled after-hours in, when "the frame" meant the evening. The premarket half was measured afterwards, put to him, and not answered. **Do not re-derive the constants against a premarket-inclusive frame until he rules it.**
+- **The cycle frame is RULED WHOLE: 04:00–20:00 ET.** After-hours 2026-09-17; premarket **2026-09-22T22:35Z, his words "premarket in"**, recorded verbatim by Integration at `3dc0c41`. That ruling was recorded FALSE three times first (`f0048eb`, `3308fb1`, `bb2901d`) off a peer's sentence rather than his own — check the record, not a relay.
+- **`BACKSIDE_RETRACEMENT = 0.5` and `SUPERRUNNER_ADVANCE = 2.0` are RE-DERIVED and the FRAME WARNINGS are gone** (2026-09-23). Both held. Backside: the recovery cliff is at 0.5 in both frames and the all-sessions frame makes it *sharper* — P(new high afterwards) falls 40%→10% across it, against 24%→11% in RTH. Superrunner: the frame moves the median (71%→90%) but not the tail (90th 307%→305%), and at n=68 the 90th's 95% interval [218%, 441%] contains 200%, so the sample cannot site it more finely. **They may now be cited as measured, with their window: 75 symbols, 62 sessions, 2026-05-20..08-18.**
+- **Both frames must be built from the ONE hourly file**, never paired with `daily_bars`. The file was fetched 2026-09-17 and the daily rows in August; 19 of 75 symbols had corporate actions in-window, and that cross-vintage pairing produced an arithmetically impossible row (an all-sessions high *below* the RTH high) before it was abandoned.
 
 ### HAZARDS A FRESH SESSION MUST KNOW
 

@@ -42,23 +42,41 @@ export const RVOL_BASELINE_SESSIONS = 20;
  * silently never fires on ordinary ones.
  */
 /*
- * FRAME WARNING -- THIS NUMBER WAS MEASURED IN A FRAME IT NO LONGER RUNS IN.
+ * RE-DERIVED IN THE ALL-SESSIONS FRAME, 2026-09-23, AND IT HELD.
  *
- * Adam ruled the cycle frame after-hours-inclusive on 2026-09-17. This constant
- * was calibrated against AH-EXCLUDED daily-bar highs, which is the frame
- * `daily_bars.high` was measured to carry (31 discriminating rows, zero
- * supporting AH-inclusive). It has NOT been re-derived, because three months of
- * AH-inclusive highs are not in the store and are not obtainable at daily
- * granularity -- `/v2/stocks/bars` has no session parameter at all.
+ * He ruled premarket in on 2026-09-22 ("premarket in"), after-hours on
+ * 2026-09-17, so the frame is 04:00-20:00 ET. The backfill the old warning was
+ * waiting on exists: `data/vendor/alpaca-1hour-split-2026-05-20-to-2026-08-18.json`
+ * carries the whole session -- 19.3% of its bars are premarket and 19.9% are
+ * after-hours -- which settles the question that blocked this, namely whether
+ * hourly bars reach outside 09:30-16:00. They do.
  *
- * So it is an OLD-FRAME constant running in the new frame, and it will look
- * exactly like a calibrated one. **Do not cite it as measured.** Integration-tmi
- * asked for this mark for the reason this desk keeps meeting: an
- * un-re-derived constant carrying no sign of it is a number wearing a
- * calibration, and the next seat quotes it.
+ * BOTH FRAMES WERE BUILT FROM THAT ONE FILE so they share a split basis. Pairing
+ * it with `daily_bars` instead would compare a September fetch against an August
+ * one across 19 symbols that had corporate actions in-window, and that comparison
+ * produced one arithmetically impossible row before it was abandoned.
  *
- * Re-derivation is pending an hourly backfill, sized at ~8 pages for the 75
- * names that have daily bars. See `docs/threads/research.md`.
+ * The frame moves the inputs a lot: over 4,392 symbol-days the extended sessions
+ * raise the high on 31.4% of them (median lift 3.0%, 90th 23.1%) and change the
+ * close on 78.3%.
+ *
+ * AND 0.5 SURVIVES IT, because the threshold sits where recovery collapses and
+ * that place did not move. P(the cycle ever prints a new high afterwards), by
+ * how much of the move had been given back:
+ *
+ *            retracement    RTH-only          ALL-SESSIONS
+ *              30-40%       29%  (n=48)       49%  (n=41)
+ *              40-50%       24%  (n=55)       40%  (n=43)
+ *              50-60%       11%  (n=64)       10%  (n=51)
+ *
+ * The cliff is at 0.5 in both, and the all-sessions frame makes it SHARPER --
+ * a four-fold fall rather than a halving. Above 60% the curve is noisy (20%,
+ * 23%, 10%), so no threshold belongs up there anyway.
+ *
+ * Limits, stated: 75 symbols over 62 sessions, 1,166 session-observations
+ * inside cycles. Bucket counts are in the forties and fifties at the boundary
+ * that matters, which is enough to place a cliff and not enough to site it to
+ * the percentage point. 0.5 is a round number on a real edge, not a fitted one.
  */
 export const BACKSIDE_RETRACEMENT = 0.5;
 
@@ -464,23 +482,35 @@ export function resolveCycle(
  * reported alongside so a surface never has to depend on the cut.
  */
 /*
- * FRAME WARNING -- THIS NUMBER WAS MEASURED IN A FRAME IT NO LONGER RUNS IN.
+ * RE-DERIVED IN THE ALL-SESSIONS FRAME, 2026-09-23. THE FRAME DOES NOT REACH IT.
  *
- * Adam ruled the cycle frame after-hours-inclusive on 2026-09-17. This constant
- * was calibrated against AH-EXCLUDED daily-bar highs, which is the frame
- * `daily_bars.high` was measured to carry (31 discriminating rows, zero
- * supporting AH-inclusive). It has NOT been re-derived, because three months of
- * AH-inclusive highs are not in the store and are not obtainable at daily
- * granularity -- `/v2/stocks/bars` has no session parameter at all.
+ * Same data and method as `BACKSIDE_RETRACEMENT` above -- both frames built from
+ * the one hourly file so they share a split basis. Cycle advances, base close to
+ * cycle high:
  *
- * So it is an OLD-FRAME constant running in the new frame, and it will look
- * exactly like a calibrated one. **Do not cite it as measured.** Integration-tmi
- * asked for this mark for the reason this desk keeps meeting: an
- * un-re-derived constant carrying no sign of it is a number wearing a
- * calibration, and the next seat quotes it.
+ *                     median    75th    90th     95th     n
+ *      RTH-only         71%     144%    307%     441%    63
+ *      ALL-SESSIONS     90%     170%    305%     376%    68
  *
- * Re-derivation is pending an hourly backfill, sized at ~8 pages for the 75
- * names that have daily bars. See `docs/threads/research.md`.
+ * THE FRAME MOVES THE MIDDLE AND NOT THE TAIL. The median rises 71% -> 90%; the
+ * 90th percentile, which is what this constant cuts against, goes 307% -> 305%.
+ * A tail cut is insensitive to a change that mostly lifts ordinary days.
+ *
+ * AND THE SAMPLE CANNOT SITE IT MORE PRECISELY THAN IT ALREADY IS. Bootstrapped
+ * at n=68, the all-sessions 90th percentile has a 95% interval of [218%, 441%];
+ * the RTH one is [171%, 552%]. Both contain 200%. Any "re-derived" value drawn
+ * from this sample would carry a precision the data does not have, which is the
+ * failure the old FRAME WARNING existed to prevent -- committed in the other
+ * direction.
+ *
+ * So it stays 2.0, now as a percentile choice that has been CHECKED against the
+ * frame rather than one merely inherited from the old one.
+ *
+ * One number above this comment does not reconcile and should not be quietly
+ * trusted: the distribution recorded there (median 71%, 90th 229%, max 1036%)
+ * came from a LONGER window than these three months. The medians agree at 71%
+ * and the tails do not, which is a window difference, not a frame one. Nothing
+ * here refutes it; the two are simply not measuring the same span.
  */
 export const SUPERRUNNER_ADVANCE = 2.0;
 
