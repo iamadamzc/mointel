@@ -301,28 +301,43 @@ export function dailyBarBasis(db: MarketDatabase, symbol: string): DailyBarBasis
   const vintages = new Set(rows.map((row) => row.fetchedOn));
   if (vintages.size === 1) return { adjustment, vouched: true, reason: null };
 
-  // Two or more vintages. Answerable only from an established basis, and only
-  // when that basis covers the whole window.
-  const coverage = db
-    .prepare(
-      `SELECT COUNT(*) AS total,
-              SUM(CASE WHEN split_factor IS NULL THEN 0 ELSE 1 END) AS established
-         FROM daily_bars
-        WHERE symbol = ?`,
-    )
-    .get(symbol) as { total: number; established: number | null };
+  /*
+   * Two or more vintages. Answerable only from an established basis, and only
+   * when that basis covers the whole window.
+   *
+   * A STORE WITHOUT THE COLUMN MUST NOT THROW. `readModel` opens the board's
+   * store `{ readonly: true, skipSchema: true }`, and a read-only open skips
+   * the migration that adds `split_factor` — so on a store no read-write
+   * process has opened since, the column is genuinely absent. A SqliteError
+   * here is caught upstream as "no daily history is retained" and turns an
+   * UNVERIFIED ceiling into UNAVAILABLE, which is a worse answer than the one
+   * this replaced. Falling back to the vintage refusal keeps the behaviour
+   * exactly as it was before the factor existed.
+   */
+  try {
+    const coverage = db
+      .prepare(
+        `SELECT COUNT(*) AS total,
+                SUM(CASE WHEN split_factor IS NULL THEN 0 ELSE 1 END) AS established
+           FROM daily_bars
+          WHERE symbol = ?`,
+      )
+      .get(symbol) as { total: number; established: number | null };
 
-  if (coverage.total === 0 || (coverage.established ?? 0) !== coverage.total) {
-    return { adjustment, vouched: false, reason: 'UNRECONCILED_VINTAGES' };
-  }
-
-  // `readSplitFactors` orders by trading date, and a Map keeps insertion order.
-  let previous: number | null = null;
-  for (const factor of readSplitFactors(db, symbol).values()) {
-    if (previous !== null && previous > 0 && factor / previous > 1 + SAME_BASIS) {
-      return { adjustment, vouched: false, reason: 'BASIS_CONFLICT' };
+    if (coverage.total === 0 || (coverage.established ?? 0) !== coverage.total) {
+      return { adjustment, vouched: false, reason: 'UNRECONCILED_VINTAGES' };
     }
-    previous = factor;
+
+    // `readSplitFactors` orders by trading date, and a Map keeps insertion order.
+    let previous: number | null = null;
+    for (const factor of readSplitFactors(db, symbol).values()) {
+      if (previous !== null && previous > 0 && factor / previous > 1 + SAME_BASIS) {
+        return { adjustment, vouched: false, reason: 'BASIS_CONFLICT' };
+      }
+      previous = factor;
+    }
+  } catch {
+    return { adjustment, vouched: false, reason: 'UNRECONCILED_VINTAGES' };
   }
 
   return { adjustment, vouched: true, reason: null };

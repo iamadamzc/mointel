@@ -205,4 +205,24 @@ describe('dailyBarBasis', () => {
   it('reports NO_ROWS rather than a basis nobody stored', () => {
     expect(dailyBarBasis(db(), 'ACME').reason).toBe('NO_ROWS');
   });
+
+  it('falls back to the vintage refusal on a store with no split_factor column', () => {
+    /*
+     * `readModel` opens the board's store `{ readonly: true, skipSchema: true }`
+     * and a read-only open skips migrations, so the column is genuinely absent
+     * on a store no read-write process has opened since. A throw here is caught
+     * upstream as "no daily history is retained", which would downgrade an
+     * UNVERIFIED ceiling to UNAVAILABLE -- a worse answer than the one this
+     * replaced, produced by a schema version rather than by the data.
+     */
+    const store = db();
+    upsertDailyBars(store, [
+      bar({ tradingDate: '2026-08-17', fetchedAt: '2026-08-17T20:10:00.000Z' }),
+      bar({ tradingDate: '2026-08-18', fetchedAt: '2026-08-18T20:23:08.497Z' }),
+    ]);
+    store.exec('ALTER TABLE daily_bars DROP COLUMN split_factor');
+
+    expect(dailyBarBasis(store, 'ACME').reason).toBe('UNRECONCILED_VINTAGES');
+    expect(dailyBarAdjustment(store, 'ACME')).toBeNull();
+  });
 });
