@@ -217,10 +217,11 @@ MECHANISMS, not its facts.*
 ### PRODUCTION
 
 ```
-web / research / assess   42c9a73   deployed 2026-09-22, 3s down. Includes the blue-sky trio
-                                     (27adbbd/b36afd1/6e224ca), Design's stack, and the DCOY
-                                     "STARTED TODAY" fix. Blue-sky WORDING live; the 27%
-                                     recovery waits on the basis --run (his call).
+web / research / assess   acc3095   deployed 2026-09-22, 2s down (rollback 42c9a73). Four clean
+                                     deploys tonight: 89a4c56->6e224ca->42c9a73->acc3095. Carries
+                                     blue-sky wording, DCOY "STARTED TODAY", Design's board stack +
+                                     4 assessment columns, and the re-derived (HELD) constants.
+                                     Blue-sky 27% recovery fills ORGANICALLY; a --run only accelerates.
 market worker             34414f4   pid 875327, restarted 2026-09-22 09:57:57Z, NRestarts 0.
                                      Replay fix PROVEN: 0 of 1,825 rows lowered (vs 1,481 on
                                      09-18), cohort = symbols with stored premarket bars.
