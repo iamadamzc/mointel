@@ -1,0 +1,254 @@
+<title>After a Restart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600&display=swap">
+<style>
+  /* The desk's own tokens, lifted from app/globals.css so this reads as the
+     surface it depicts rather than a drawing of it. Single-theme on purpose:
+     the board is dark-only, and a light variant would depict nothing real. */
+  :root {
+    --desk:    #06080b;
+    --panel:   #0c0f14;
+    --panel-2: #11151c;
+    --line:    #1b212a;
+    --line-2:  #29313d;
+    --ink:     #e9edf3;
+    --ink-2:   #97a1b0;
+    --ink-3:   #8792a3;
+    --ink-4:   #646d7c;
+    --pos:     #2fc46f;
+    --warn:    #e8ac33;
+    --neg:     #f0564a;
+    --accent:  #4d93ff;
+    --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --sans: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--desk);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 40px 24px 72px; }
+
+  header { border-bottom: 1px solid var(--line-2); padding-bottom: 20px; margin-bottom: 28px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-4); margin: 0 0 10px;
+  }
+  h1 { font-size: 26px; font-weight: 600; margin: 0 0 10px; letter-spacing: -0.01em; text-wrap: balance; }
+  .lede { margin: 0; color: var(--ink-2); max-width: 62ch; }
+  .lede strong { color: var(--ink); font-weight: 500; }
+
+  h2 {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.11em;
+    text-transform: uppercase; color: var(--ink-3);
+    margin: 36px 0 12px; font-weight: 600;
+  }
+  p { max-width: 66ch; color: var(--ink-2); }
+  p strong { color: var(--ink); font-weight: 500; }
+  code { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+
+  /* ---- the coverage figure, drawn to the real clock ------------------- */
+  /* TRUE TO SCALE on the time axis. The session window is 04:00-20:00 ET,
+     sixteen hours, so one hour is 6.25% of the width. Premarket is 04:00
+     to 09:30 = 34.375%, the regular session runs to 16:00 = 40.625%, and
+     the evening takes the remaining 25%. Every bar below is positioned in
+     those same percentages -- the premarket hole is the real width of the
+     real gap, not an illustration of one. */
+  .clock { border: 1px solid var(--line-2); border-radius: 3px; background: var(--panel); padding: 16px; }
+  .ruler { display: grid; grid-template-columns: 168px 1fr; gap: 14px; align-items: center; margin-bottom: 4px; }
+  .ruler .lab { font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.06em; }
+  .ticks { position: relative; height: 16px; }
+  .ticks span {
+    position: absolute; top: 0; font-family: var(--mono); font-size: 10px;
+    color: var(--ink-4); transform: translateX(-50%); white-space: nowrap;
+  }
+  .phases { display: grid; grid-template-columns: 168px 1fr; gap: 14px; align-items: center; margin-bottom: 10px; }
+  .phasebar { display: flex; height: 18px; border-radius: 2px; overflow: hidden; }
+  .phasebar i {
+    display: block; font-family: var(--mono); font-size: 9px; color: var(--ink-4);
+    text-align: center; line-height: 18px; letter-spacing: 0.06em; font-style: normal;
+    border-right: 1px solid var(--desk);
+  }
+  .phasebar i:last-child { border-right: 0; }
+  .ph-pre { background: var(--panel-2); width: 34.375%; }
+  .ph-rth { background: var(--line); width: 40.625%; }
+  .ph-eve { background: var(--panel-2); width: 25%; }
+
+  .src { display: grid; grid-template-columns: 168px 1fr; gap: 14px; align-items: center; padding: 5px 0; }
+  .src .name { font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+  .src .name em { display: block; font-style: normal; font-size: 10px; color: var(--ink-4); }
+  .track { position: relative; height: 12px; background: var(--panel-2); border-radius: 2px; }
+  .track b { position: absolute; top: 0; bottom: 0; border-radius: 2px; display: block; }
+  .cov  { background: color-mix(in srgb, var(--accent) 55%, transparent); }
+  .cov-part { background: color-mix(in srgb, var(--accent) 22%, transparent); border: 1px dashed var(--line-2); }
+  .cov-new { background: color-mix(in srgb, var(--pos) 55%, transparent); }
+  .hole { background: color-mix(in srgb, var(--neg) 28%, transparent); border: 1px solid color-mix(in srgb, var(--neg) 55%, transparent); }
+  .legend { margin-top: 12px; font-family: var(--mono); font-size: 10px; color: var(--ink-4); display: flex; gap: 18px; flex-wrap: wrap; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 18px; height: 8px; border-radius: 2px; display: inline-block; }
+
+  .states { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line-2); border-radius: 3px; }
+  .state { background: var(--panel); padding: 12px 14px; display: grid; grid-template-columns: 186px 1fr; gap: 14px; align-items: baseline; }
+  .state .what { font-family: var(--mono); font-size: 11px; color: var(--ink); }
+  .state .means { color: var(--ink-2); font-size: 13px; }
+  .state .means b { color: var(--ink); font-weight: 500; }
+
+  .callout {
+    border-left: 2px solid var(--warn); background: var(--panel);
+    padding: 14px 16px; margin: 20px 0; border-radius: 0 3px 3px 0;
+  }
+  .callout p { margin: 0; color: var(--ink-2); max-width: none; }
+  .callout p + p { margin-top: 8px; }
+  .callout b { color: var(--ink); font-weight: 500; }
+
+  .scale { font-family: var(--mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .scale td { padding: 4px 18px 4px 0; border: 0; vertical-align: baseline; }
+  .scale .val { color: var(--accent); }
+  .scale .bad { color: var(--warn); }
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--ink-4); font-size: 12px; font-family: var(--mono); }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Session high &middot; restart</p>
+    <h1>After a Restart</h1>
+    <p class="lede">A restart used to leave a name's session high reading <strong>lower than the price that actually printed</strong>. Nothing was lost and nothing was overwritten &mdash; the desk rebuilt itself from sources that had never seen the print. <strong>The worst of it was in premarket</strong>, which is the half of the session the rebuild had no source for at all.</p>
+  </header>
+
+  <h2>What the rebuild could see, and what it could not</h2>
+
+  <p>When the desk restarts mid-session it has to reconstruct what it already knew. It had three sources for that, and between them they left a hole.</p>
+
+  <div class="clock">
+    <div class="ruler">
+      <span class="lab"></span>
+      <span class="ticks">
+        <span style="left:0">04:00</span>
+        <span style="left:34.375%">09:30</span>
+        <span style="left:75%">16:00</span>
+        <span style="left:100%">20:00</span>
+      </span>
+    </div>
+    <div class="phases">
+      <span class="lab" style="font-family:var(--mono);font-size:10px;color:var(--ink-4);letter-spacing:0.06em">THE SESSION</span>
+      <span class="phasebar">
+        <i class="ph-pre">PREMARKET</i>
+        <i class="ph-rth">REGULAR</i>
+        <i class="ph-eve">EVENING</i>
+      </span>
+    </div>
+
+    <div class="src">
+      <span class="name">daily bar <em>every symbol</em></span>
+      <span class="track"><b class="cov" style="left:34.375%;right:25%"></b></span>
+    </div>
+    <div class="src">
+      <span class="name">evening rebuild <em>once RTH has closed</em></span>
+      <span class="track"><b class="cov" style="left:75%;right:0"></b></span>
+    </div>
+    <div class="src">
+      <span class="name">minute backfill <em>200 names + pins only</em></span>
+      <span class="track"><b class="cov-part" style="left:0;right:0"></b></span>
+    </div>
+    <div class="src">
+      <span class="name" style="color:var(--warn)">the hole <em>everyone else</em></span>
+      <span class="track"><b class="hole" style="left:0;right:65.625%"></b></span>
+    </div>
+    <div class="src">
+      <span class="name" style="color:var(--pos)">replay <em>every symbol with stored bars</em></span>
+      <span class="track"><b class="cov-new" style="left:0;right:0"></b></span>
+    </div>
+
+    <div class="legend">
+      <span><i class="cov"></i> covered, all symbols</span>
+      <span><i class="cov-part"></i> covered, focused set only</span>
+      <span><i class="hole"></i> covered by nothing</span>
+      <span><i class="cov-new"></i> what replay adds</span>
+    </div>
+  </div>
+
+  <p>The daily bar is the regular session plus the closing cross &mdash; <strong>09:30 to 16:00 and nothing outside it</strong>. The evening rebuild only runs once the bell has gone. The minute backfill does reach back to 04:00, but only for the focused set, and that is <strong>200 names plus your pins</strong> out of a candidate universe several times larger. For every other name, premarket was covered by nothing at all.</p>
+
+  <div class="callout">
+    <p><b>Measured on 2026-09-18, after a restart at 21:05Z.</b> <span class="scale"><span class="bad">1,481 of 7,936</span></span> rows carried a session high <b>below the one that had printed</b> before the restart. <span class="scale"><span class="bad">1,160 of those highs</span></span> &mdash; the large majority &mdash; had printed <b>before 09:30</b>.</p>
+    <p><b>The low half of the session had the same defect</b>, for the same reason and in the same places.</p>
+  </div>
+
+  <h2>Why a wrong number is worse than a missing one</h2>
+
+  <p>Nothing was lost and nothing was lowered. The engine came back and rebuilt itself honestly from what it could reach, and what it could reach had never seen the premarket print. <strong>That is the problem.</strong></p>
+
+  <div class="states">
+    <div class="state">
+      <span class="what">a low high</span>
+      <span class="means"><b>Reads as an observation.</b> The board says the name got to $4.10. You have no way to tell that from a name that genuinely got to $4.10, and the level you would trade against is wrong.</span>
+    </div>
+    <div class="state">
+      <span class="what">no high at all</span>
+      <span class="means"><b>Reads as absent</b>, which is true and checkable. Everywhere else on this desk a missing measurement is drawn as missing, never as zero, for exactly this reason.</span>
+    </div>
+    <div class="state">
+      <span class="what">NO_PRINT</span>
+      <span class="means"><b>The dangerous one.</b> A name that traded before a restart and not after used to read as a positive assertion that the market did not trade &mdash; a claim about the tape, produced by a process lifecycle event.</span>
+    </div>
+  </div>
+
+  <h2>What changed</h2>
+
+  <p>The desk already writes every minute bar to disk as it goes, so the session's own tape was never missing &mdash; it was simply not being read back. On restart the engine now <strong>replays those stored bars through its own ingest path first</strong>, before it seeds anything from the vendor snapshot. Premarket is recovered for every symbol that has bars on disk, not just the focused 200.</p>
+
+  <p>It replays once, before the live stream starts, and it <strong>discards the events those bars would have raised</strong>. A restart at 14:00 must not re-announce every new high since 04:00 to someone who watched them arrive the first time.</p>
+
+  <h2>The order is the whole of the fix</h2>
+
+  <p>This is the part that is easy to get backwards, and it was got backwards in writing before anyone ran it.</p>
+
+  <div class="callout">
+    <p>The snapshot seed tells the engine <b>how much volume is already accounted for, and up to which minute</b>. The engine then discards any bar at or before that minute &mdash; correctly, because its volume is already counted. <b>But the bar is discarded whole, and its high goes with it.</b></p>
+    <p>So a replay that runs <b>after</b> the seed throws away most of the session and rebuilds the very hole it exists to close, while cheerfully reporting how many bars it fed. Run it <b>before</b> the seed and the bars land normally; the seed then takes back their volume and the high survives, because a high is kept by taking the larger of the two rather than by adding.</p>
+  </div>
+
+  <h2>Which source owns which number</h2>
+
+  <p>The two mechanisms are not layers, and the question of which one wins was settled by measuring rather than by arguing. <strong>They were never competing &mdash; they own different fields.</strong></p>
+
+  <div class="states">
+    <div class="state">
+      <span class="what">volume &rarr; snapshot</span>
+      <span class="means"><b>The vendor's daily volume is not regular-session-only</b>, so it already counts the whole day. Measured at 3 of 2,747 rows, 0.1%. Summing the local minutes would only be as complete as the local minutes.</span>
+    </div>
+    <div class="state">
+      <span class="what">high, low &rarr; replay</span>
+      <span class="means"><b>The same bar's high IS regular-session-only.</b> One bar, two windows. The daily high simply cannot supply an extreme that printed at 07:40, so the stored tape has to.</span>
+    </div>
+  </div>
+
+  <h2>What this still does not fix</h2>
+
+  <p>A name with <strong>no stored bars</strong> is untouched by replay and takes whatever the seed gives it. If the desk was not running when that name printed its premarket high, nothing on this disk saw it and nothing here invents it. That is the same direction as every other reconstruction on this desk: <strong>absent beats plausible</strong>.</p>
+
+  <h2>The number that closes it</h2>
+
+  <p>The mechanism is live. What settles whether it worked is one count taken after a real restart: <strong>rows whose session high reads below the pre-restart value</strong>. It was 1,481 on 2026-09-18 and it should be zero.</p>
+
+  <div class="callout">
+    <p><b>The two counts have to be taken over the same population or they do not compare.</b> A name with no stored bars can still read low <i>without the fix being wrong</i> &mdash; that is the exclusion above, working as intended. So the comparison must be restricted to symbols that <b>have</b> stored premarket bars, or the denominators are describing different things and a real success will look like a partial one.</p>
+  </div>
+
+  <table class="scale">
+    <tr><td class="val">04:00&ndash;20:00 ET</td><td>the session window</td><td>what the desk treats as one trading day</td></tr>
+    <tr><td class="val">09:30&ndash;16:00 ET</td><td>the daily bar's high</td><td>plus the closing cross, and nothing outside it</td></tr>
+    <tr><td class="val">200 + pins</td><td>the focused set</td><td><code>internalRank &times; 4</code>, floor 100 &mdash; moves if that setting moves</td></tr>
+    <tr><td class="val">0.1%</td><td>3 of 2,747 rows</td><td>how often the daily bar's volume looks regular-session-only</td></tr>
+    <tr><td class="bad">1,481 of 7,936</td><td>rows reading low</td><td>after the 21:05Z restart on 2026-09-18</td></tr>
+    <tr><td class="bad">1,160</td><td>of those highs</td><td>had printed before 09:30</td></tr>
+  </table>
+
+  <footer>Research &middot; mechanism shipped 34414f4 &middot; 2026-09-22</footer>
+</div>
