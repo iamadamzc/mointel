@@ -201,10 +201,18 @@ thread adding a hop between itself and the trader. Push those back to
 
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
-**AS OF 2026-09-21T23:15Z.** *Base rewritten whole by the ninth session; PRODUCTION,
-OPEN AND HIS, and the sessionHigh item updated by the tenth session after the `a9df280`
-deploy (owner's session-hygiene rule, `A:\claude-infra-agent\docs\session-hygiene.md`).
-Everything below LIVE STATE is kept for its MECHANISMS, not its facts.*
+**AS OF 2026-09-22T09:59Z.** *Base rewritten whole by the ninth session; kept current by the
+tenth across the `a9df280`/`34414f4` deploys (owner's session-hygiene rule,
+`A:\claude-infra-agent\docs\session-hygiene.md`). Everything below LIVE STATE is kept for its
+MECHANISMS, not its facts.*
+
+> **STANDING APPROVAL — EXPIRES END OF 2026-09-22 ET.** *He is not trading today and approved
+> DEPLOYMENTS and RESTARTS for the day (2026-09-22T09:59Z). Scope: no trading-window hold; I
+> approve clean enumerations to Ops without returning per-deploy. UNCHANGED: gate at the sha;
+> data-integrity timing (e.g. after-hours in-session) still governs; spend, auth-model and
+> destructive actions still go to him; an unreviewed board-behaviour change is still flagged
+> before it ships. RESTARTS ARE NOT MINE TO RELAY — Ops takes the restart word from him
+> directly (charter boundary; Ops refused two such relays before and was right).*
 
 ### PRODUCTION
 
