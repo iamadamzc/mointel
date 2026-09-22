@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
 
-import { cycleBadge, highReading, resolveComputedCycle } from '@/lib/dashboard/cycle';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+import {
+  PRIOR_HIGH_ONLY_TITLE,
+  cycleBadge,
+  highReading,
+  resolveComputedCycle,
+} from '@/lib/dashboard/cycle';
 import type { CycleResult } from '@/lib/market/cycle';
 
 /**
@@ -126,5 +134,39 @@ describe('what it declines to render', () => {
     const pair = highReading(current, 'NOT_QUALIFIED', 1.6, 1.46, undefined);
     expect(pair?.kind).toBe('PAIR');
     expect(cycleBadge(pair, current, null)).toBeNull();
+  });
+});
+
+describe('the prior-high disclosure, after the frame was ruled whole', () => {
+  it('states the ruled frame and does not assert the unresolved exclusion', () => {
+    /*
+     * He ruled premarket in on 2026-09-22, so the frame is 04:00–20:00 while
+     * the stored daily high is narrower. TWO MEASUREMENTS OF THAT COLUMN
+     * DISAGREE — 04:00–16:00 on one, 09:30–16:00 on another — so after-hours
+     * is certainly excluded and premarket only possibly. The sentence has to
+     * survive either being right.
+     */
+    expect(PRIOR_HIGH_ONLY_TITLE).toContain('04:00');
+    expect(PRIOR_HIGH_ONLY_TITLE).toContain('exclude after-hours');
+    expect(PRIOR_HIGH_ONLY_TITLE).toMatch(/may exclude premarket/);
+    // The old sentence ended the exclusion at after-hours as a settled fact.
+    expect(PRIOR_HIGH_ONLY_TITLE).not.toMatch(/exclude after-hours\./);
+  });
+
+  it('reports the error as a BOUND, because it can only move one way', () => {
+    // A high measured over fewer hours can only be lower than the true one.
+    // "may be wrong" is discounted in both directions; a bound cannot be.
+    expect(PRIOR_HIGH_ONLY_TITLE).toContain('can only be understated');
+  });
+
+  it('is one string, so the two tables cannot word it differently', () => {
+    const files = ['components/DiscoveryBoard.tsx', 'components/MomentumTable.tsx'].map((file) =>
+      readFileSync(join(process.cwd(), file), 'utf8'),
+    );
+    for (const source of files) {
+      expect(source).toContain('PRIOR_HIGH_ONLY_TITLE');
+      // The literal living in the component is how the badges drifted.
+      expect(source).not.toContain('The prior high is shown because');
+    }
   });
 });

@@ -455,3 +455,27 @@ export function cycleBadge(
 
   return { label: conclusion.label, tone: conclusion.tone, title: settled ?? conclusion.label };
 }
+
+/**
+ * Why a prior high is shown alone, and what frame it was measured in.
+ *
+ * ONE STRING, TWO TABLES. It was written out in full in both `DiscoveryBoard`
+ * and `MomentumTable` — the same duplication that let their cycle badges drift
+ * into contradicting each other on the live board.
+ *
+ * THE FRAME CLAUSE WAS WRONG THE MOMENT THE FRAME WAS RULED. It said highs
+ * before today "exclude after-hours", full stop. He ruled premarket into the
+ * cycle frame on 2026-09-22, so the desk's frame is now 04:00–20:00 while the
+ * stored daily high is not — and two measurements of that stored column
+ * disagree about whether it starts at 04:00 or 09:30. Under EITHER reading it
+ * excludes after-hours; under one of them it excludes premarket too. So the
+ * sentence names what is certain and marks the rest as possible, rather than
+ * asserting the narrower exclusion that happens to be the one already written.
+ *
+ * AND IT ENDS ON THE DIRECTION, WHICH IS THE PART A READER CAN ACT ON. A high
+ * measured over fewer hours can only be lower than the same day's true high,
+ * never higher. That makes it a BOUND rather than an uncertainty — "may be
+ * wrong" gets discounted in both directions, "can only be understated" cannot.
+ */
+export const PRIOR_HIGH_ONLY_TITLE =
+  'The desk cannot establish whether today started a new cycle, so it will not say which high this move is measured against. The prior high is shown because it is overhead supply either way. The cycle frame is 04:00–20:00, but highs before today are stored over a narrower window — they exclude after-hours and may exclude premarket — so a prior high can only be understated, never overstated.';

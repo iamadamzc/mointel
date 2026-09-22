@@ -15,7 +15,7 @@ import {
 import { rowKeyboardProps } from '@/components/tableKeyboard';
 import { buildDeskRow, type DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
-import { cycleBadge, formatHighPair, highReading } from '@/lib/dashboard/cycle';
+import { PRIOR_HIGH_ONLY_TITLE, cycleBadge, formatHighPair, highReading } from '@/lib/dashboard/cycle';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
 import { baselineLabel } from '@/lib/dashboard/view';
@@ -354,7 +354,7 @@ function TableRow({
               className="num text-[10px] leading-none font-semibold text-ink-3"
               title={
                 priorOnly
-                  ? 'The desk cannot establish whether today started a new cycle, so it will not say which high this move is measured against. The prior high is shown because it is overhead supply either way. Highs before today exclude after-hours.'
+                  ? PRIOR_HIGH_ONLY_TITLE
                   : undefined
               }
             >
