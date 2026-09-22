@@ -795,29 +795,13 @@ export class MarketRuntime {
       notes: [],
     };
 
-    if (!this.rest) {
-      summary.notes.push('no REST client; skipped historical reconstruction');
-      summary.completedAt = new Date().toISOString();
-      this.backfill = summary;
-      return summary;
-    }
-
-    const baselines = loadBaselines(this.db, this.tradingDate);
-
-    // Candidate band: prior close anywhere near the discovery range, widened so
-    // a gapping name is not missed just because it closed below the floor.
-    const bandMin = this.config.discoveryPriceMin * 0.4;
-    const bandMax = this.config.discoveryPriceMax * 2;
-    const candidates = new Set<string>(pinned);
-
-    for (const [symbol, baseline] of baselines) {
-      const close = baseline.previousClose;
-      if (close !== null && close >= bandMin && close <= bandMax) candidates.add(symbol);
-    }
-
-    summary.symbolsRequested = candidates.size;
-    this.logger.info(`[demand] reconstructing session for ${candidates.size} candidate symbols`);
-
+    /*
+     * ABOVE THE REST GUARD DELIBERATELY. Replay reads the local store and feeds
+     * the local engine; it needs no network. Below the guard, a restart during
+     * an Alpaca outage would skip the rebuild it is still perfectly able to do,
+     * and would rebuild the premarket hole for want of a REST client it never
+     * needed. Found 2026-09-22 while writing the test that reaches this seam.
+     */
     /*
      * ---- 0. replay: this session's own stored minute bars, BEFORE the seed ----
      *
@@ -864,6 +848,29 @@ export class MarketRuntime {
     this.logger.info(
       `[demand] replayed ${replay.bars} stored minute bars for ${replay.symbols} symbols (${replay.elapsedMs}ms)`,
     );
+
+    if (!this.rest) {
+      summary.notes.push('no REST client; skipped historical reconstruction');
+      summary.completedAt = new Date().toISOString();
+      this.backfill = summary;
+      return summary;
+    }
+
+    const baselines = loadBaselines(this.db, this.tradingDate);
+
+    // Candidate band: prior close anywhere near the discovery range, widened so
+    // a gapping name is not missed just because it closed below the floor.
+    const bandMin = this.config.discoveryPriceMin * 0.4;
+    const bandMax = this.config.discoveryPriceMax * 2;
+    const candidates = new Set<string>(pinned);
+
+    for (const [symbol, baseline] of baselines) {
+      const close = baseline.previousClose;
+      if (close !== null && close >= bandMin && close <= bandMax) candidates.add(symbol);
+    }
+
+    summary.symbolsRequested = candidates.size;
+    this.logger.info(`[demand] reconstructing session for ${candidates.size} candidate symbols`);
 
     // ---- 1. snapshots: cumulative volume + previous close for everything ----
     const snapshots = await this.rest.getSnapshots([...candidates]);

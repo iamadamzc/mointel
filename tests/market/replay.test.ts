@@ -242,9 +242,13 @@ describe('the anchor, against a real engine', () => {
  * `worker/runtime.ts` `bootstrapSession` replays stored bars BEFORE it seeds
  * from the daily-bar snapshot.
  *
- * WHICH OF THESE ACTUALLY CATCHES THE ORDERING WAS SETTLED BY MUTATION, AND THE
- * PREDICTION WAS WRONG. Swapping replay and seed kills the premarket-high test
- * and leaves the volume test green — the reverse of what was expected. The
+ * WHICH OF THESE CATCHES A SWAP *IN THIS FILE* WAS SETTLED BY MUTATION, AND THE
+ * PREDICTION WAS WRONG. Swapping replay and seed here kills the premarket-high
+ * test and leaves the volume test green — the reverse of what was expected.
+ *
+ * READ THAT NARROWLY. The swap was of THESE TWO LINES, not of the production
+ * call; see the source-order suite at the end of this file for why that
+ * distinction cost a guard. The
  * mechanism is `engine.ts:1010`, which discards any bar at or before
  * `volumeBaseThrough`, so a replay after the seed loses those bars' highs
  * outright rather than merely re-counting their volume.
@@ -302,6 +306,12 @@ describe('replay before the snapshot seed', () => {
     expect(state?.sessionHigh).toBe(PREMARKET_HIGH);
   });
 
+  it('keeps the premarket low the daily bar cannot see', () => {
+    /* The mirror of the high, and free in this fixture: 1.0 against a seeded 2.0. */
+    const state = replayedThenSeeded('GWAV', true).getDemandState('GWAV');
+    expect(state?.sessionLow).toBe(1.0);
+  });
+
   it('does not double-count the volume the seed base already contains', () => {
     /*
      * Both replayed bars carry 1,000 and both fall at or before
@@ -316,5 +326,58 @@ describe('replay before the snapshot seed', () => {
     /* Absent beats plausible: replay invents nothing for an untracked name. */
     const state = replayedThenSeeded('NOBARS', false).getDemandState('NOBARS');
     expect(state?.sessionHigh).toBe(RTH_ONLY_HIGH);
+  });
+});
+
+/*
+ * THE PRODUCTION SEAM, WHICH THE TESTS ABOVE DO NOT REACH.
+ *
+ * The suite above builds its own replay-then-seed sequence and asserts the
+ * composition behaves. That is worth having and it is NOT a guard on the
+ * shipped code: Research moved the real call in `worker/runtime.ts` to after
+ * the seed loop — the actual defect — and the entire suite stayed green.
+ *
+ * MY MUTATION HAD SWAPPED THE TEST'S OWN TWO LINES, NOT THE PRODUCTION ONE,
+ * and I reported it as having established the ordering. It established that the
+ * composition is order-sensitive. Whether `bootstrapSession` composes it in the
+ * right order was untested, which is the difference between a guard and a
+ * demonstration.
+ *
+ * These assert on source text because a behavioural test has to construct a
+ * `MarketRuntime`, and `tests/desk/minuteBarRecovery.test.ts` exists to forbid
+ * exactly that in the place where its store claim can wipe three tables. Source
+ * assertions are this repo's idiom for a structural invariant; they are weaker
+ * than behaviour and they catch the mutation that actually happened.
+ */
+describe('bootstrapSession composes replay and seed in the right order', () => {
+  const SOURCE = fs.readFileSync(
+    path.join(process.cwd(), 'worker', 'runtime.ts'),
+    'utf8',
+  );
+
+  it('replays before it fetches the snapshots it seeds from', () => {
+    /*
+     * engine.ts discards any bar at or before `volumeBaseThrough`, so a replay
+     * after the seed loses those bars' highs outright. This is the ordering
+     * whose reversal reopens the premarket hole.
+     */
+    const replay = SOURCE.indexOf('replaySession(this.db, this.engine');
+    const snapshots = SOURCE.indexOf('await this.rest.getSnapshots');
+    expect(replay).toBeGreaterThan(-1);
+    expect(snapshots).toBeGreaterThan(-1);
+    expect(replay).toBeLessThan(snapshots);
+  });
+
+  it('replays even when there is no REST client to seed from', () => {
+    /*
+     * Replay reads the local store and needs no network. Below the early return
+     * for a missing REST client it would be skipped during an Alpaca outage —
+     * rebuilding the hole for want of a client it never needed. Found while
+     * writing this file, on 2026-09-22.
+     */
+    const replay = SOURCE.indexOf('replaySession(this.db, this.engine');
+    const restGuard = SOURCE.indexOf("no REST client; skipped historical reconstruction");
+    expect(restGuard).toBeGreaterThan(-1);
+    expect(replay).toBeLessThan(restGuard);
   });
 });
