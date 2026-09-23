@@ -206,13 +206,17 @@ tenth across the `a9df280`/`34414f4` deploys (owner's session-hygiene rule,
 `A:\claude-infra-agent\docs\session-hygiene.md`). Everything below LIVE STATE is kept for its
 MECHANISMS, not its facts.*
 
-> **STANDING APPROVAL — EXPIRES END OF 2026-09-22 ET.** *He is not trading today and approved
-> DEPLOYMENTS and RESTARTS for the day (2026-09-22T09:59Z). Scope: no trading-window hold; I
-> approve clean enumerations to Ops without returning per-deploy. UNCHANGED: gate at the sha;
-> data-integrity timing (e.g. after-hours in-session) still governs; spend, auth-model and
-> destructive actions still go to him; an unreviewed board-behaviour change is still flagged
-> before it ships. RESTARTS ARE NOT MINE TO RELAY — Ops takes the restart word from him
-> directly (charter boundary; Ops refused two such relays before and was right).*
+> **STANDING APPROVALS — recorded 2026-09-23T03:58Z (2026-09-22 23:58 ET).** *Supersedes the
+> earlier today-only grant.*
+> - **Pushes/deploys:** ongoing go-ahead for necessary ones — Integration approves clean
+>   enumerations to Ops without returning per-deploy. UNCHANGED: gate at the sha; data-integrity
+>   timing (e.g. after-hours in-session) still governs; spend, auth-model and destructive actions
+>   still go to him; an unreviewed board-behaviour change is still flagged before it ships.
+> - **Restarts: NOT Integration's to relay.** He said "restarts go ahead," but Ops takes the
+>   restart word from him DIRECTLY (charter boundary; Ops refused two such relays and was right).
+>   Integration surfaces a needed restart to him; it does not authorize one.
+> - **Late-Sep prod snapshot (R&D's EX-99 first read): PRE-APPROVED** — read-only `research_sources`
+>   copy-down; Ops does it when R&D needs it without returning to him.
 
 ### PRODUCTION
 
