@@ -12,6 +12,7 @@
  */
 
 import type { DeskRow } from '@/lib/dashboard/merge';
+import { DEFAULT_CATALYST_WINDOWS, resolveCatalystFreshness } from '@/lib/research/time';
 import type { CatalystFreshness } from '@/lib/research/types';
 
 export type WhyCode = 'GRADED' | 'NO_FRESH_CATALYST' | 'NOT_RESEARCHED' | 'RESEARCHING' | 'UNKNOWN';
@@ -171,11 +172,29 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
    * disagreeing with the words beside it — which is the defect this column has
    * already produced twice.
    *
-   * SO IT IS READ ONCE HERE. When the derived reader lands, this single line
-   * changes and every consumer moves with it, including the freshness FILTER,
-   * which reads this reading rather than the dossier.
+   * SO IT IS READ ONCE HERE, AND THAT IS NOW THE DERIVED READER (`f224f3d`).
+   * Every consumer moved with it in one edit, including the freshness FILTER,
+   * which asks this reading rather than the dossier.
+   *
+   * WHAT THE DERIVATION CORRECTS, measured by Research on the 2026-08-23
+   * production snapshot: 33 of 227 analyses carrying an event timestamp
+   * claimed FRESH on something older than the 36-hour window, and 19 more
+   * claimed FRESH with no timestamp at all — 52 of 325, 16% unsupported. This
+   * file computed the age arithmetically three lines above and still took the
+   * colour from the model's word, so a catalyst stamped `28d` rendered green.
+   *
+   * IT DEMOTES TO RECENT AND NOT TO STALE, and past the window the model keeps
+   * its own RECENT/STALE call — his ruling of 2026-09-23, "leave to the
+   * model". The age disproves FRESH and proves nothing about STALE.
    */
-  const freshness: CatalystFreshness | null = catalyst?.freshness ?? null;
+  const freshness: CatalystFreshness | null = catalyst
+    ? resolveCatalystFreshness(
+        catalyst.eventTimestamp,
+        new Date(nowMs),
+        DEFAULT_CATALYST_WINDOWS,
+        catalyst.freshness,
+      )
+    : null;
 
   const tone: DeskWhy['tone'] = freshness ? FRESHNESS_TONE[freshness] : 'dim';
 

@@ -32,7 +32,31 @@ import type { CatalystFreshness } from '@/lib/research/types';
  *    select a population the visible text contradicts.
  */
 
+/**
+ * How old the event must be for a stored freshness to still decide.
+ *
+ * SINCE `f224f3d` THE STORED WORD NO LONGER DECIDES ON ITS OWN. `resolveWhy`
+ * derives freshness: inside the 36-hour window the answer is FRESH whatever
+ * the model said, and only PAST it does the model's RECENT/STALE call stand.
+ *
+ * These fixtures used a fixed timestamp hours old AND a stored `STALE`, which
+ * was a coherent world before the derivation and is a contradiction after it —
+ * two tests failed for exactly that reason. So the age is now chosen to put
+ * each stored word in the world where it actually governs, relative to the
+ * real clock rather than to a date written into the file.
+ */
+const AGE_FOR: Record<CatalystFreshness, number | null> = {
+  FRESH: 2,
+  RECENT: 24 * 30,
+  STALE: 24 * 30,
+  // No timestamp at all: the derivation cannot place it, so it is UNKNOWN.
+  UNKNOWN: null,
+};
+
 function intelligence(freshness: CatalystFreshness, grade: string): AutoIntelligence {
+  const hours = AGE_FOR[freshness];
+  const eventTimestamp =
+    hours === null ? null : new Date(Date.now() - hours * 3600_000).toISOString();
   return {
     ticker: 'HOWL',
     state: 'ACCEPTED',
@@ -48,7 +72,7 @@ function intelligence(freshness: CatalystFreshness, grade: string): AutoIntellig
           confidence: 'HIGH',
           summary: 'Something happened.',
           whyTradersMayCare: null,
-          eventTimestamp: '2026-09-23T09:00:00.000Z',
+          eventTimestamp,
           plausiblyExplainsMove: true,
           unknowns: [],
           citations: [],
@@ -247,5 +271,75 @@ describe('freshness has ONE read, which is the seam Research replaces', () => {
     const view = readFileSync(join(process.cwd(), 'lib/dashboard/view.ts'), 'utf8');
     expect(view).toContain('why.freshness');
     expect(view).not.toMatch(/dossier[\s\S]{0,40}freshness/);
+  });
+});
+
+describe('the 28-day catalyst that rendered green', () => {
+  /*
+   * The defect he saw, at the render seam rather than in the derivation.
+   * `why.ts` computed the age arithmetically three lines above the colour and
+   * still took the colour from the model's word — so a catalyst stamped `28d`
+   * came out FRESH and green. Research measured the scale on the 2026-08-23
+   * snapshot: 52 of 325 analyses claimed FRESH unsupported, 16%.
+   */
+  function aged(hours: number | null, claimed: CatalystFreshness) {
+    const at = hours === null ? null : new Date(Date.now() - hours * 3600_000).toISOString();
+    const intel = {
+      ticker: 'HOWL',
+      state: 'ACCEPTED',
+      generatedAt: new Date().toISOString(),
+      coverageIncomplete: false,
+      analysis: {
+        dossier: {
+          ticker: 'HOWL',
+          catalyst: {
+            catalystGrade: 'STRONG',
+            catalystStatus: 'FRESH_FOUND',
+            freshness: claimed,
+            confidence: 'HIGH',
+            summary: 'Something happened.',
+            whyTradersMayCare: null,
+            eventTimestamp: at,
+            plausiblyExplainsMove: true,
+            unknowns: [],
+            citations: [],
+          },
+          structure: { structureClassification: 'CLEAN', supplyLedger: [], structuralWarnings: [] },
+          cycle: { cycleClassification: 'UNKNOWN' },
+        },
+      },
+    } as unknown as AutoIntelligence;
+    return buildDeskRow('HOWL', null, null, null, intel);
+  }
+
+  it('no longer renders green, and no longer passes the chip', () => {
+    const row = aged(28 * 24, 'FRESH');
+
+    expect(resolveWhy(row).freshness).toBe('RECENT');
+    expect(resolveWhy(row).tone).not.toBe('pos');
+    expect(rowMatchesFilters(row, filters({ catalyst: 'FRESH' }))).toBe(false);
+  });
+
+  it('demotes to RECENT and not to STALE, which the age cannot prove', () => {
+    // His ruling, 2026-09-23: past the window the model keeps the call. The
+    // age disproves FRESH and says nothing about STALE, so inventing the
+    // stronger verdict would be the same overreach pointed the other way.
+    expect(resolveWhy(aged(28 * 24, 'FRESH')).freshness).toBe('RECENT');
+    expect(resolveWhy(aged(28 * 24, 'STALE')).freshness).toBe('STALE');
+  });
+
+  it('still calls a genuinely recent catalyst FRESH', () => {
+    // The control. Without it the fix could have demoted everything, which
+    // would empty the chip and look like it was working.
+    const row = aged(2, 'FRESH');
+
+    expect(resolveWhy(row).freshness).toBe('FRESH');
+    expect(rowMatchesFilters(row, filters({ catalyst: 'FRESH' }))).toBe(true);
+  });
+
+  it('is UNKNOWN with no timestamp, rather than taking the claim on trust', () => {
+    // 19 of the 52 unsupported claims had no timestamp at all.
+    expect(resolveWhy(aged(null, 'FRESH')).freshness).toBe('UNKNOWN');
+    expect(rowMatchesFilters(aged(null, 'FRESH'), filters({ catalyst: 'FRESH' }))).toBe(false);
   });
 });
