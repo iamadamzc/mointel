@@ -3,7 +3,9 @@
  * dataset. Pure functions, no data fetching, no source-format knowledge.
  */
 
+import { resolveRisk } from '@/lib/dashboard/risk';
 import { tradesLastMinute } from '@/lib/dashboard/sparkline';
+import { resolveWhy } from '@/lib/dashboard/why';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { CyclePhase } from '@/lib/market/cycle';
 import type { DiscoveryBoard } from '@/lib/market/types';
@@ -41,7 +43,26 @@ const CYCLE_FILTER_PHASE: Record<Exclude<CycleFilter, 'ALL'>, CyclePhase> = {
  */
 export type CyclePhaseLookup = (ticker: string) => CyclePhase | null;
 export type StructureFilter = 'ALL' | 'DIRTY' | 'UNKNOWN' | 'OTHER';
-export type CatalystFilter = 'ALL' | 'A' | 'B' | 'C';
+/**
+ * FRESHNESS, not grade.
+ *
+ * `'A' | 'B' | 'C'` filtered the Sheet's grade bucket under a chip reading
+ * "fresh catalyst" — two different quantities, so the word and the predicate
+ * disagreed by construction. The letters are gone rather than kept beside the
+ * new value: leaving them would let a caller re-select the meaning this
+ * replaced.
+ */
+export type CatalystFilter = 'ALL' | 'FRESH' | 'RECENT' | 'STALE';
+
+/**
+ * The catalyst's STRENGTH, which is a different axis from its freshness.
+ *
+ * Split out rather than dropped. One control used to carry `A | B | C` under
+ * the word "Catalyst" while the summary chip beside it said "fresh catalyst"
+ * and set the same field — so the two controls disagreed about what the field
+ * meant. Two axes, two controls, each named for the quantity it filters.
+ */
+export type GradeFilter = 'ALL' | 'A' | 'B' | 'C';
 
 export interface FilterState {
   search: string;
@@ -49,6 +70,7 @@ export interface FilterState {
   cycle: CycleFilter;
   structure: StructureFilter;
   catalyst: CatalystFilter;
+  grade: GradeFilter;
 }
 
 export const DEFAULT_FILTERS: FilterState = {
@@ -57,6 +79,7 @@ export const DEFAULT_FILTERS: FilterState = {
   cycle: 'ALL',
   structure: 'ALL',
   catalyst: 'ALL',
+  grade: 'ALL',
 };
 
 export type SortKey = 'priority' | 'ticker' | 'price' | 'changePct' | 'volume' | 'float';
@@ -84,7 +107,8 @@ export function isFilterActive(filters: FilterState): boolean {
     filters.priority !== 'ALL' ||
     filters.cycle !== 'ALL' ||
     filters.structure !== 'ALL' ||
-    filters.catalyst !== 'ALL'
+    filters.catalyst !== 'ALL' ||
+    filters.grade !== 'ALL'
   );
 }
 
@@ -118,10 +142,6 @@ export function applyFilters(
       ) {
         return false;
       }
-    }
-
-    if (filters.catalyst !== 'ALL' && ticker.catalyst.gradeBucket !== filters.catalyst) {
-      return false;
     }
 
     return true;
@@ -526,4 +546,66 @@ export function baselineLabel(phase: SessionPhase | null): { label: string; titl
        */
       return { label: 'Gap', title: 'Change from the most recent session close' };
   }
+}
+
+/**
+ * Does this row match the filters — asked of a DESK ROW, not a sheet ticker.
+ *
+ * WHY THIS EXISTS RATHER THAN A SECOND CALL TO `applyFilters`. That function
+ * takes `MomentumTicker[]`, which only sheet rows are, so it can only ever
+ * filter the researched table. **Discovery was never filtered by anything** —
+ * not the chips, not the cycle control — and a lit chip changed nothing on the
+ * board he was reading. He described it exactly: "when I click fresh catalyst
+ * nothing happens ... certainly not non-green falling off the screen."
+ *
+ * AND WIRING THE OLD PREDICATE TO DISCOVERY WOULD HAVE BEEN WORSE THAN THE
+ * BUG. `ticker.catalyst.gradeBucket` is a Sheet field and Discovery names
+ * generally have no sheet row, so every Discovery name would have vanished the
+ * moment any chip was lit — which looks exactly like a filter working.
+ *
+ * SO EACH PREDICATE READS THE READING THE CELL RENDERS. `resolveWhy` for the
+ * catalyst, `resolveRisk` for structure, the computed phase for cycle. A
+ * filter that disagrees with the visible text is then impossible rather than
+ * prevented by keeping two definitions in step — the same move that stopped
+ * the two tables naming one cycle differently.
+ */
+export function rowMatchesFilters(
+  row: DeskRow,
+  filters: FilterState,
+  cyclePhase?: CyclePhaseLookup,
+): boolean {
+  const search = filters.search.trim().toUpperCase();
+  if (search && !row.ticker.includes(search)) return false;
+
+  if (filters.cycle !== 'ALL') {
+    const phase = cyclePhase?.(row.ticker) ?? null;
+    if (phase !== CYCLE_FILTER_PHASE[filters.cycle]) return false;
+  }
+
+  if (filters.structure !== 'ALL') {
+    // The chip's own words: the risk cell is what says DIRTY FLOAT on screen.
+    const code = resolveRisk(row).code;
+    const dirty = code === 'DIRTY_FLOAT';
+    const unknown = code === 'STRUCTURE_UNKNOWN' || code === 'NOT_RESEARCHED';
+    if (filters.structure === 'DIRTY' && !dirty) return false;
+    if (filters.structure === 'UNKNOWN' && !unknown) return false;
+    if (filters.structure === 'OTHER' && (dirty || unknown)) return false;
+  }
+
+  /*
+   * BOTH CATALYST AXES READ `resolveWhy`, WHICH IS WHAT THE CELL RENDERS.
+   *
+   * The freshness filter used to test the Sheet's GRADE bucket while its chip
+   * read "fresh catalyst" — grade is strength and freshness is a different
+   * field, so an A-graded stale catalyst passed and a genuinely fresh B did
+   * not. His expectation, in his words, is that non-green rows leave the
+   * screen, and green is exactly `freshness === 'FRESH'`.
+   */
+  if (filters.catalyst !== 'ALL' || filters.grade !== 'ALL') {
+    const why = resolveWhy(row);
+    if (filters.catalyst !== 'ALL' && why.freshness !== filters.catalyst) return false;
+    if (filters.grade !== 'ALL' && why.grade !== filters.grade) return false;
+  }
+
+  return true;
 }

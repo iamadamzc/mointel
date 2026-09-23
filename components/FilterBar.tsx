@@ -4,6 +4,7 @@ import type {
   CatalystFilter,
   CycleFilter,
   FilterState,
+  GradeFilter,
   PriorityFilter,
   StructureFilter,
 } from '@/lib/dashboard/view';
@@ -137,10 +138,31 @@ export function FilterBar({ filters, onChange, onReset, isActive }: FilterBarPro
         ]}
       />
 
+      {/*
+        * TWO CONTROLS, BECAUSE THE WHY CELL SHOWS TWO QUANTITIES.
+        *
+        * One control labelled "Catalyst" carried A/B/C while the summary chip
+        * beside it read "fresh catalyst" and set the SAME field — so the two
+        * disagreed about what that field meant, and the chip's word lost.
+        * The letter in the Why column is the GRADE and its colour is the
+        * FRESHNESS; these now match, one control each.
+        */}
       <OptionGroup<CatalystFilter>
-        label="Catalyst"
+        label="Freshness"
         value={filters.catalyst}
         onSelect={(catalyst) => onChange({ ...filters, catalyst })}
+        options={[
+          { value: 'ALL', label: 'All' },
+          { value: 'FRESH', label: 'Fresh' },
+          { value: 'RECENT', label: 'Recent' },
+          { value: 'STALE', label: 'Stale' },
+        ]}
+      />
+
+      <OptionGroup<GradeFilter>
+        label="Grade"
+        value={filters.grade}
+        onSelect={(grade) => onChange({ ...filters, grade })}
         options={[
           { value: 'ALL', label: 'All' },
           { value: 'A', label: 'A' },

@@ -390,7 +390,20 @@ export function WhyCell({ why }: { why: DeskWhy }) {
   return (
     <div className="flex flex-col gap-px leading-tight">
       <span className="flex items-baseline gap-1.5">
-        <span className={`num text-[13px] font-bold ${WHY_TONE[why.tone]}`}>{why.grade}</span>
+        {/*
+          * THE LETTER EXPLAINS ITSELF NOW.
+          *
+          * It carried no title at all, and he read a green `A` as "fresh
+          * catalyst" — reasonably, since the COLOUR does mean fresh. The
+          * letter is the grade. Two quantities in one glyph, and only one of
+          * them was ever named on screen.
+          */}
+        <span
+          className={`num text-[13px] font-bold ${WHY_TONE[why.tone]}`}
+          title={why.title}
+        >
+          {why.grade}
+        </span>
         {why.age ? (
           <span className="num text-[11px] text-ink-2" title={why.eventAt ?? undefined}>
             {why.age}

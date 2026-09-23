@@ -114,9 +114,18 @@ export function MarketSummary({
       label: 'fresh catalyst',
       value: summary.strongCatalysts,
       tone: 'text-pos',
-      hint: 'Catalyst graded A',
-      apply: (current) => ({ ...current, catalyst: current.catalyst === 'A' ? 'ALL' : 'A' }),
-      active: (current) => current.catalyst === 'A',
+      /*
+       * THE HINT SAID `Catalyst graded A` AND THE CHIP SAID `fresh catalyst`.
+       *
+       * Those are different quantities: the grade is how STRONG a catalyst is
+       * and freshness is a separate field, so an A-graded stale catalyst
+       * passed this filter and a genuinely fresh B did not. The predicate now
+       * matches the word — and matches the COLOUR in the Why column, which is
+       * what he reads green as.
+       */
+      hint: 'The desk found a catalyst and it is FRESH — the green rows in Why',
+      apply: (current) => ({ ...current, catalyst: current.catalyst === 'FRESH' ? 'ALL' : 'FRESH' }),
+      active: (current) => current.catalyst === 'FRESH',
     },
   ];
 

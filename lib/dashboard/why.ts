@@ -30,6 +30,17 @@ export interface DeskWhy {
   explainsMove: boolean | null;
   freshness: CatalystFreshness | null;
   tone: 'pos' | 'warn' | 'neg' | 'dim';
+  /**
+   * What the letter and the colour each MEAN, from the same decision that
+   * picks them.
+   *
+   * He read a green `A` as "fresh catalyst" and had no way to learn otherwise:
+   * the letter carried no title at all. It is two quantities in one glyph —
+   * the letter is STRENGTH and the colour is FRESHNESS — so the explanation is
+   * computed here beside the tone rather than written into the component,
+   * where the two could drift apart.
+   */
+  title: string;
 }
 
 const MINUTE = 60_000;
@@ -89,6 +100,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       explainsMove: null,
       freshness: null,
       tone: 'dim',
+      title: 'Not researched yet, so there is no catalyst grade and no freshness to colour.',
     };
   }
 
@@ -102,6 +114,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       explainsMove: null,
       freshness: null,
       tone: 'dim',
+      title: 'The desk is looking for the catalyst now. Nothing here is a grade yet.',
     };
   }
 
@@ -130,8 +143,24 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       explainsMove: null,
       freshness: null,
       tone: 'dim',
+      title: 'No catalyst established for this name, from either the outside research or the desk.',
     };
   }
+
+  /*
+   * COLOUR MEANS FRESHNESS, ALWAYS — his ruling, 2026-09-23.
+   *
+   * It used to fall back to `gradeTone(grade)` whenever there was no dossier
+   * catalyst, so the same green carried FRESHNESS on most rows and STRENGTH on
+   * some, with nothing on screen to tell them apart. A cue that changes
+   * meaning by row is worse than no cue: it is read at a glance, which is the
+   * one mode in which a reader cannot check which axis is lit.
+   *
+   * With no catalyst there is no freshness, so the letter goes dim and the
+   * colour claims nothing. That costs a cue on unresearched rows and buys a
+   * colour that means exactly one thing everywhere.
+   */
+  const tone: DeskWhy['tone'] = catalyst ? FRESHNESS_TONE[catalyst.freshness] : 'dim';
 
   const noFresh =
     catalyst !== null &&
@@ -146,8 +175,42 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
     headline,
     explainsMove: catalyst?.plausiblyExplainsMove ?? null,
     freshness: catalyst?.freshness ?? null,
-    tone: catalyst ? FRESHNESS_TONE[catalyst.freshness] : gradeTone(grade),
+    tone,
+    title: whyTitle(grade, catalyst?.freshness ?? null),
   };
+}
+
+const GRADE_MEANING: Record<string, string> = {
+  A: 'strong, or legitimately positive',
+  B: 'moderate, mixed or secondary',
+  C: 'weak, negative or dilutive',
+};
+
+const FRESHNESS_MEANING: Record<CatalystFreshness, string> = {
+  FRESH: 'green because the catalyst is FRESH',
+  RECENT: 'amber because the catalyst is RECENT rather than fresh',
+  STALE: 'amber because the catalyst is STALE',
+  UNKNOWN: 'grey because the desk could not establish how fresh it is',
+};
+
+/**
+ * The cell's own explanation of its two axes.
+ *
+ * TWO QUANTITIES IN ONE GLYPH, and naming only one of them is how the letter
+ * came to be read as freshness. The letter is the GRADE — how strong the
+ * catalyst is — and the colour is the FRESHNESS. A green `B` is a fresh
+ * catalyst the desk rates moderate, which is unreadable unless both are said.
+ */
+function whyTitle(grade: string, freshness: CatalystFreshness | null): string {
+  const meaning = GRADE_MEANING[grade];
+  const letter = meaning
+    ? `Catalyst grade ${grade} — ${meaning}. That is how STRONG it is, not how fresh.`
+    : 'No catalyst grade established.';
+
+  // Silence rather than a sentence about a colour that is carrying nothing:
+  // with no freshness the letter renders dim and says only what it is.
+  const colour = freshness ? ` The colour is its FRESHNESS: ${FRESHNESS_MEANING[freshness]}.` : '';
+  return `${letter}${colour}`;
 }
 
 function gradeLetter(grade: string): string {

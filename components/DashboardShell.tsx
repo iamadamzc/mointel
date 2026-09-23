@@ -19,6 +19,7 @@ import {
   DEFAULT_FILTERS,
   DEFAULT_SORT,
   applyFilters,
+  rowMatchesFilters,
   isFilterActive,
   selectFocusRows,
   sortTickers,
@@ -270,9 +271,44 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
     [tickers, merged],
   );
 
+  /*
+   * ONE PREDICATE FOR BOTH TABLES.
+   *
+   * `applyFilters` still owns PRIORITY and the ticker search, because priority
+   * is a Sheet judgement that exists only on these rows. Everything a DESK ROW
+   * can answer — freshness, grade, structure, cycle — is asked through
+   * `rowMatchesFilters`, so the researched table and Discovery cannot filter
+   * to different populations. They did: one was filtered and one was not.
+   */
   const filtered = useMemo(
-    () => applyFilters(tickers, filters, cyclePhase),
-    [tickers, filters, cyclePhase],
+    () =>
+      applyFilters(tickers, filters, cyclePhase).filter((ticker) => {
+        const row = merged.rows.get(ticker.ticker);
+        // `mergeDesk` builds a row for every sheet ticker, so this is a
+        // guarantee rather than a fallback — and excluding on its absence
+        // would hide a row the trader can see listed.
+        return row ? rowMatchesFilters(row, filters, cyclePhase) : true;
+      }),
+    [tickers, filters, cyclePhase, merged],
+  );
+
+  /*
+   * THE FILTERS REACH DISCOVERY NOW, WHICH THEY NEVER DID.
+   *
+   * `applyFilters` takes sheet tickers, so it could only ever act on the
+   * researched table — a lit chip changed nothing on the board above it. He
+   * described it precisely: "when I click fresh catalyst nothing happens ...
+   * certainly not non-green falling off the screen", and noticed the SCROLLBAR
+   * move, which was the researched table below quietly filtering.
+   *
+   * PRIORITY IS DELIBERATELY NOT APPLIED HERE. A/B/C is a Sheet judgement and
+   * Discovery names do not have one, so a priority filter would empty the
+   * board — correct or surprising depending on a product call he has not made
+   * yet. Left alone rather than guessed: see `docs/threads/design.md`.
+   */
+  const discoveryRows = useMemo(
+    () => merged.discovery.filter((row) => rowMatchesFilters(row, filters, cyclePhase)),
+    [merged, filters, cyclePhase],
   );
   const sorted = useMemo(
     () => sortTickers(filtered, sort, telemetry),
@@ -420,7 +456,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         {selectedAssessment === null ? (
           <DiscoveryBoard
             discovery={discovery}
-            rows={merged.discovery}
+            rows={discoveryRows}
             onSelect={setSelectedTicker}
             selectedTicker={selectedTicker}
             marketOffline={health.offline}
