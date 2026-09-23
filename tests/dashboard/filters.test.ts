@@ -206,3 +206,46 @@ describe('the active sort is readable from the board, not only the toolbar', () 
     expect(source).toContain('trades in the last settled minute');
   });
 });
+
+describe('freshness has ONE read, which is the seam Research replaces', () => {
+  /*
+   * `resolveCatalystFreshness` is being written to derive freshness at read
+   * time (FRESH within 36h, otherwise the model's own RECENT/STALE, UNKNOWN
+   * with no timestamp) so stored dossiers are corrected as they are rendered.
+   *
+   * The risk in that handoff is not the derivation, it is the SWAP: four
+   * places read `catalyst.freshness` independently — the colour, the NO FRESH
+   * CATALYST verdict, the returned field and the tooltip — and a swap that
+   * misses one leaves the colour disagreeing with the words beside it. This
+   * asserts there is exactly one read to change.
+   */
+  const source = readFileSync(join(process.cwd(), 'lib/dashboard/why.ts'), 'utf8');
+  /*
+   * COMMENTS STRIPPED BEFORE COUNTING, because the first pass counted the
+   * comment that EXPLAINS the seam and reported two reads. This thread has
+   * read a comment as code more than once; a source-reading test is the place
+   * it is most likely to happen and the least likely to be noticed.
+   */
+  const code = source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  const reads = [...code.matchAll(/catalyst\??\.freshness/g)].length;
+
+  it('reads the dossier field exactly once', () => {
+    expect(reads).toBe(1);
+  });
+
+  it('serves the colour, the verdict, the field and the tooltip from that read', () => {
+    // Each consumer takes the local, so none can be left behind on a swap.
+    for (const consumer of ['FRESHNESS_TONE[freshness]', "freshness === 'STALE'", 'whyTitle(grade, freshness)']) {
+      expect(source).toContain(consumer);
+    }
+  });
+
+  it('keeps the filter on the same reading, so it inherits the fix', () => {
+    // `rowMatchesFilters` asks `resolveWhy`, not the dossier — so when the
+    // derived reader lands, the fresh-catalyst chip moves with the colour and
+    // needs no separate change.
+    const view = readFileSync(join(process.cwd(), 'lib/dashboard/view.ts'), 'utf8');
+    expect(view).toContain('why.freshness');
+    expect(view).not.toMatch(/dossier[\s\S]{0,40}freshness/);
+  });
+});

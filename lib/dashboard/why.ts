@@ -160,11 +160,28 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
    * colour claims nothing. That costs a cue on unresearched rows and buys a
    * colour that means exactly one thing everywhere.
    */
-  const tone: DeskWhy['tone'] = catalyst ? FRESHNESS_TONE[catalyst.freshness] : 'dim';
+  /*
+   * ONE READ OF FRESHNESS, AND IT IS THE SEAM.
+   *
+   * Four places used to read `catalyst.freshness` independently — the tone,
+   * the `noFresh` verdict, the returned field and the tooltip. Research is
+   * replacing the stored value with a derived one (`resolveCatalystFreshness`,
+   * read-time, so it also corrects dossiers already written). With four reads
+   * that swap is four edits and the first one missed leaves the colour
+   * disagreeing with the words beside it — which is the defect this column has
+   * already produced twice.
+   *
+   * SO IT IS READ ONCE HERE. When the derived reader lands, this single line
+   * changes and every consumer moves with it, including the freshness FILTER,
+   * which reads this reading rather than the dossier.
+   */
+  const freshness: CatalystFreshness | null = catalyst?.freshness ?? null;
+
+  const tone: DeskWhy['tone'] = freshness ? FRESHNESS_TONE[freshness] : 'dim';
 
   const noFresh =
     catalyst !== null &&
-    (catalyst.catalystStatus === 'NONE_FOUND' || catalyst.freshness === 'STALE') &&
+    (catalyst.catalystStatus === 'NONE_FOUND' || freshness === 'STALE') &&
     catalyst.plausiblyExplainsMove !== true;
 
   return {
@@ -174,9 +191,9 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
     eventAt: etTimestamp(eventAt),
     headline,
     explainsMove: catalyst?.plausiblyExplainsMove ?? null,
-    freshness: catalyst?.freshness ?? null,
+    freshness,
     tone,
-    title: whyTitle(grade, catalyst?.freshness ?? null),
+    title: whyTitle(grade, freshness),
   };
 }
 
