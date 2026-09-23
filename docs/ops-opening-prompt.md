@@ -1,8 +1,7 @@
 # Opening prompt — the Ops seat
 
-**Written 2026-09-21 09:40 UTC, at the end of the session that ran 2026-09-18
-to 2026-09-21. Every production fact below was read from the box on that date,
-not carried forward.**
+**Rewritten 2026-09-22 23:4x UTC. Every production fact below was read from
+the box at that time, not carried forward.**
 
 Open a new chat with `A:\mointel` as the working directory, so `CLAUDE.md`,
 `AGENTS.md` and the project memory load on their own. Then paste everything
@@ -43,20 +42,24 @@ inside the quote.
 > nginx are Ops's carriage; **Web specifies, you carry**). UI is Design's, the
 > interpreter and model spend are Research's, copy is Marketing's.
 >
-> ## PRODUCTION AT 09:38 UTC MON 2026-09-21, READ FROM THE BOX
+> ## PRODUCTION AT 23:4x UTC TUE 2026-09-22, READ FROM THE BOX
 >
 > ```
-> web/research/assess   a5924c2   by /proc/<pid>/cwd, since 2026-09-19 10:36:38Z
-> market worker         467ffec   pid 636490, ExecMainStart 2026-09-18 21:05:09Z,
->                                 NRestarts 0
+> web/research/assess   acc3095   by /proc/<pid>/cwd, since 2026-09-22 ~23:22Z
+> market worker         34414f4   pid 875327, ExecMainStart 2026-09-22 09:57:57Z,
+>                                 NRestarts 0 -- THE REPLAY BUILD
 > schema                27        health ok, no problem
-> market                LIVE STREAMING, PREMARKET, trading date 2026-09-21
-> minute_bars           09-09 .. 09-21 (9 dates; retention 20 in force)
-> backups               4 files (reaper keeps 3 newest + the pinned v18); 64G free
-> rollback baseline     ddaf2f8
+> market                LIVE STREAMING; trading date 2026-09-22
+> minute_bars           09-09 .. 09-22 (10 dates; retention 20 in force)
+> backups               4 files (reaper keeps 3 newest + the pinned v18); 63G free
+> rollback baseline     42c9a73
 > public                / /privacy /terms /favicon.ico /icon.svg /apple-icon.png
 >                       /robots.txt 200;  /desk /signin /api/* 401
-> port 22               70.17.101.27/32 + his home 95.17.58.175/32
+> port 22               70.17.101.27/32 + his home /32 (95.17.58.175) -- UNCHANGED
+>                       by his ruling 2026-09-22; his egress moved and moved back.
+> DEPLOY TRANSPORT      `-ServerHost mointel-ssm`, NOT the IP. Four deploys went
+>                       that way on 09-22. Direct port 22 fails from any network
+>                       not on the two /32s above.
 > Session Manager       mi-0a647a08fcc7366b7 Online; `ssh mointel-ssm` from anywhere
 > ```
 >
@@ -112,43 +115,31 @@ inside the quote.
 >
 > ## Open, in order of what bites first
 >
-> 1. **The preflight test gate. HIS WORDS: "preflight is cool."** Nothing in
->    the deploy path runs the suite — `push-release.sh`, `preflight.sh` and
->    `deploy.sh` have no test step — so production shipped with a red test on
->    2026-09-18 and no deploy could have caught it. **Agreed design: run the
->    suite in preflight, BLOCK on red, honour
->    `DEPLOY_TESTS_OVERRIDE="why this cannot wait"` mirroring the existing
->    `DEPLOY_WINDOW_OVERRIDE`.** *Its own enumeration, in daylight, with the
->    suite green first — it is a change to the deploy path that ships through
->    the deploy path it changes.*
-> 2. **`a9df280` is a visible board change sitting above production** — the
->    cycle badge stops naming a side it cannot establish, and `QUALIFIED`
->    switches the reference off a dead run's high. **Design gates the render
->    before it ships.** Enumerate it in its own right; `e48a2ca` (already live)
->    is only its plumbing and is genuinely inert at `a5924c2`.
-> 3. **Wire `replaySession` into `bootstrapSession`, so a restart rebuilds
->    `sessionHigh`/`sessionLow` from stored minute bars.** *Handed over by the
->    retiring Research seat 2026-09-21 on his approval. `lib/market/replay.ts`
->    exports `replaySession(db, engine, tradingDate)` and is wired NOWHERE —
->    verified, not taken. The seam is `worker/runtime.ts:779` `bootstrapSession`,
->    which is this seat's.* **This is the fix for the premarket hole below:
->    1,481 rows understated after the 09-18 restart, 1,160 of them highs set in
->    premarket.** *Research's ruling on what owns what, its measurement and not
->    this seat's: the daily-bar snapshot KEEPS volume (measured NOT RTH-only —
->    3 of 2,747 rows, 0.1%), replay supplies the HIGH and LOW (`daily_bars.high`
->    is 09:30–16:00 plus the closing cross), and a name with no bars reads
->    UNKNOWN rather than a wrong number. Different fields; they were never
->    competing.*
-> 4. **`IDENTITY_DB_PATH` must be set in `/etc/mointel/mointel.env` in the SAME
+> 1. **Wire the test gate into `push-release.sh`, and fix preflight's window.**
+>    *`deploy/aws/test-gate.sh` EXISTS and works — it runs the suite in a
+>    detached worktree AT THE SHA and refused a red sha in anger. It is NOT
+>    called by `push-release.sh`: doing so breaks
+>    `tests/desk/releaseBootstrap.test.ts`, which drives that script through
+>    stubbed ssh/git/uname.* **And preflight's 5-minute guard is measured from
+>    the START while the thing it protects is the STOP** — its header assumes a
+>    "60-90 second" deploy, but `quick_check` now runs BEFORE the stop
+>    (388s-521s observed), so preflight-to-stop is 7-9 MINUTES. A start it
+>    passes can land its stop inside a checkpoint. **One deploy-path batch, in
+>    daylight, with the suite green first.**
+> 2. **`barsReplayed` counts bars FED, not landed**, so it cannot tell a
+>    successful replay from a silent no-op. *Research's finding. Cheap fix:
+>    assert `volumeBaseThrough` is null for replayed symbols at replay time,
+>    making the ordering a checked invariant rather than a convention.*
+> 3. **`IDENTITY_DB_PATH` must be set in `/etc/mointel/mointel.env` in the SAME
 >    motion as any `app/auth/` ship.** It is unset, so accounts would default
 >    to `process.cwd()/data/identity.db` — inside the release — and `prune.sh`
 >    removes old releases. The first account survives one deploy and is deleted
 >    by the second, silently.
-> 5. Authority field (his ruling: user-based, only he is admin). Gates the
+> 4. Authority field (his ruling: user-based, only he is admin). Gates the
 >    retry endpoint before Basic Auth ever leaves `/`.
-> 6. `lib/review/`: token lifetime as a condition; `sanitize` does not redact
+> 5. `lib/review/`: token lifetime as a condition; `sanitize` does not redact
 >    filesystem paths.
-> 7. Access-path gate 3 (close port 22) — his, not asked recently.
+> 6. Access-path gate 3 (close port 22) — his, not asked recently.
 >
 > ## What this session learned that cost the most
 >

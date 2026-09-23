@@ -11378,3 +11378,91 @@ point is not the size: `basis-backfill.ts`'s own header says the census exists
 so "the volume is priced from the tool's own output before anything runs", and
 the priced volume was seven times the quoted one.* **Held for after the close
 rather than run against live capture in his premarket.**
+
+## FOUR DEPLOYS, AND HIS RULINGS THAT CLOSE FOUR OPEN ITEMS — 2026-09-22 evening ET
+
+```
+89a4c56   22:41Z   down 4s   quick_check 520.9s   Design's stack
+6e224ca   23:00Z   down 3s   quick_check 468.2s   + the blue-sky trio, on his word
+42c9a73   23:07Z   down 3s                        DCOY "NO RUN", rank 1 on the live board
+acc3095   23:22Z   down 2s   quick_check 388.3s   four more enum columns
+```
+
+**All four over SESSION MANAGER, not port 22. The market worker was untouched
+throughout and stayed on `34414f4` at pid 875327.**
+
+### The deploy transport changed, and the ruling it overrides was checked first
+
+**Direct SSH timed out all evening: his egress moved to `12.172.21.122` and port
+22 still admits only `70.17.101.27/32` and `95.17.58.175/32`.** *The allowlist
+was unchanged — nobody retired SSH, and Design independently reached the same
+dead end from its own host.*
+
+**The 2026-09-13 entry says deploys stay on port 22. Its stated reason was that
+`deploy.sh` ran in the FOREGROUND of one ssh session, so a dropped transport
+would SIGHUP it mid-stop and leave a half-applied release.** *That entry's own
+closing line names the fix as "noted, not started".* **It has since been done:
+`push-release.sh:135` launches the deploy via `systemd-run --collect`,
+detached.** So the hazard it protected against no longer exists, and the
+override was made by reading the old ruling rather than by forgetting it.
+
+> **Four deploys is now the evidence gate 3 was waiting for: the SSM path
+> carries WRITES, not only the verification reads it was scoped to on 09-13.**
+
+### HIS RULINGS, recorded as rulings
+
+- **Basis backfill: NO. It fills organically.** *The 27% accrues on its own
+  through `basisFetchDue` as names are researched. `worker/basis-backfill.ts
+  --run` is not to be run; the item is CLOSED, not deferred.*
+- **Port 22: no allowlist change.** *He is back on his home /32; Design uses
+  Session Manager. Gate 3 is untouched by this — it closes the question of
+  adding `12.172.21.122`, not the question of closing 22.*
+- **A late-September read-only `research_sources` copy-down for R&D:
+  PRE-APPROVED.** *Do it when R&D asks; do not return to him for it.*
+- **Deploys: standing go-ahead for necessary ones**, with Integration
+  continuing to approve enumerations. *Boundaries unchanged: gate at the sha,
+  spend/auth/destructive to him, board-behaviour changes flagged.*
+- **RESTARTS: UNCHANGED, AND INTEGRATION DECLINED TO BE THE CHANNEL WITHOUT
+  BEING ASKED.** *He said "restarts that need to be done go ahead"; Integration
+  refused to relay it and will surface the need to him so the word comes
+  direct.* **Twice this week a restart and a credential rotation reached this
+  seat through that relay and were refused; the third time the relay refused
+  itself.**
+
+### What the census found, and the limit on it
+
+```
+[basis] researched 993 · established 562 · due 431 -> 862 Alpaca REST calls
+journal lines matching "[basis]"    0
+split_factor rows                   820,141, spread evenly across every date
+```
+
+**A bulk run would show as one dominant cluster and there is none, so the 562
+is organic.** *But journald keeps 14 DAYS: zero `[basis]` lines proves no run
+since ~09-08, NOT "never". The data is the honest instrument for "never"; the
+log cannot reach past a fortnight.* **Integration's brief had said ~60 tickers /
+120 calls — that was the LOCAL census, not production.**
+
+### A suspicion that did not hold, recorded because it was worth checking
+
+**Design's review URL returned EXACTLY 1,051,722 bytes on three consecutive
+reads across two deploys and half an hour of live prints.** *If review pages
+were cached, every verification Design did tonight would have been against a
+frozen page.*
+
+```
+cache-control                private, no-store, max-age=0
+plain / cache-busted         1,051,690 / 1,051,779 bytes
+```
+
+**Not cached. Three identical readings inside a ±100-byte band was coincidence.**
+*The suspicion was reasonable, the check was thirty seconds, and it was wrong.*
+
+### An instrument that lies, worth more than the deploys
+
+**An INVALID review token answers HTTP 200, not 401** — 11,552 bytes of
+"unauthorised", matching zero of `rvol`/`sessionHigh`/`cumulativeVolume`.
+**So a status-code check calls a dead review link healthy.** *Design uses byte
+count and is right to. Same shape as the CloudFront 301-loop it found the same
+morning: the failure and the success are indistinguishable to the instrument
+anyone would reach for first.*
