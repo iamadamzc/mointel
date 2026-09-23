@@ -12,6 +12,11 @@
  */
 
 import type { ResearchEvidenceBundle } from './bundle';
+import {
+  DEFAULT_CATALYST_WINDOWS,
+  resolveCatalystFreshness,
+  type CatalystWindows,
+} from '../time';
 import type {
   Confidence,
   ResearchDossier,
@@ -232,6 +237,8 @@ function computeSupplyBound(
 export function validateDossier(
   dossier: ResearchDossier,
   bundle: ResearchEvidenceBundle,
+  now: Date = new Date(),
+  windows: CatalystWindows = DEFAULT_CATALYST_WINDOWS,
 ): ValidationResult {
   const violations: Violation[] = [];
   const corrected: ResearchDossier = {
@@ -304,6 +311,40 @@ export function validateDossier(
       catalyst.catalystType = 'UNKNOWN';
     }
   }
+
+  /*
+   * FRESHNESS IS NORMALISED HERE, AND DELIBERATELY NOT RAISED AS A VIOLATION.
+   *
+   * It is arithmetic over `eventTimestamp`, so the right treatment at write
+   * time is to COMPUTE the field rather than to accept and then judge it.
+   *
+   * WHY NOT A VIOLATION, WHICH WAS THE FIRST VERSION AND WAS WRONG. The only
+   * severities are REJECT and DOWNGRADE, so flagging this turns the dossier
+   * PARTIAL -- and on the 2026-08-23 snapshot the model's freshness disagrees
+   * with the event date on **52 of 325 analyses, 16%**. That would have moved a
+   * sixth of the board to PARTIAL as a side effect of a colour fix nobody asked
+   * for, and it broke two pipeline tests on the way, which is how it was found.
+   *
+   * AND THE MODEL WAS NEVER TOLD THE RULE. `schema.ts` declares the freshness
+   * enum with no description and the prompt never defines its boundaries. A
+   * penalty for failing an unstated requirement is not a guardrail; the enum
+   * wanting a stated definition is a separate fix worth making.
+   *
+   * The board does not depend on this either way -- `why.ts` derives freshness
+   * at read time, which is what corrects the dossiers already stored, since
+   * this table is append-only. This only stops a wrong value being WRITTEN, so
+   * a future reader of the stored field inherits nothing.
+   *
+   * `DEFAULT_CATALYST_WINDOWS` is the live value (the env override is commented
+   * out in `.env.example`); the parameter exists so a caller that ever sets it
+   * passes the configured one rather than diverging silently.
+   */
+  catalyst.freshness = resolveCatalystFreshness(
+    catalyst.eventTimestamp,
+    now,
+    windows,
+    catalyst.freshness,
+  );
 
   // The exact no-catalyst phrase is a conclusion about coverage, not a shrug.
   const saysNoFresh = (catalyst.summary ?? '').includes('NO FRESH CATALYST FOUND');

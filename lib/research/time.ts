@@ -12,6 +12,7 @@
  */
 
 import { etClock, etDateString, MARKET_TIME_ZONE } from '../market/session';
+import type { CatalystFreshness } from './types';
 
 /**
  * How precisely a publication time is known.
@@ -194,6 +195,60 @@ export function withinActiveWindow(
   const published = Date.parse(time.utc);
   if (Number.isNaN(published)) return null;
   return now.getTime() - published <= windows.activeFreshnessHours * 3600_000;
+}
+
+/**
+ * A catalyst's freshness, DERIVED from its event time rather than believed.
+ *
+ * THE DEFECT THIS EXISTS FOR, measured 2026-09-23. `freshness` was whatever the
+ * model put in `catalyst.freshness`, and `schema.ts` declares that enum with NO
+ * description while the interpreter prompt never defines its boundaries. The
+ * model was being asked for a temporal judgement with no threshold given, and
+ * nothing downstream checked the answer against the event date the desk already
+ * holds.
+ *
+ * `why.ts` then computed the age arithmetically three lines above taking the
+ * colour from the model's word, so a catalyst stamped `28d` rendered green. On
+ * the 2026-08-23 production snapshot, **33 of 227 analyses carrying an event
+ * timestamp claimed FRESH on something older than the window, and 19 more
+ * claimed FRESH with no timestamp at all** -- 52 of 325, 16%, unsupported.
+ *
+ * The window is not invented here. `activeFreshnessHours` is the desk's own
+ * published span, "the prior session's after-hours through this morning's
+ * premarket", which is where a morning gap originates.
+ *
+ * PAST THE WINDOW THE MODEL KEEPS THE RECENT/STALE CALL. His ruling,
+ * 2026-09-23: *"leave to the model"*. The desk has never published a RECENT
+ * boundary, and collapsing everything past the window to STALE would newly
+ * trigger `NO_FRESH_CATALYST` on rows nobody asked to hide -- 39 of them in
+ * that snapshot. So this corrects the claim it can disprove and no more.
+ *
+ * A claim of FRESH that the age contradicts falls to RECENT, not STALE: the
+ * age proves the catalyst is not fresh, and proves nothing about whether it is
+ * stale. Inventing the stronger verdict is the same overreach in the other
+ * direction.
+ *
+ * AND A FUTURE TIMESTAMP IS UNKNOWN, NOT FRESH. `withinActiveWindow` below
+ * tests `now - published <= window`, which a future date satisfies -- it was
+ * written for published sources, where that cannot arise. A model-supplied
+ * event date can.
+ */
+export function resolveCatalystFreshness(
+  eventTimestamp: string | null | undefined,
+  now: Date,
+  windows: CatalystWindows,
+  claimed: CatalystFreshness | null | undefined,
+): CatalystFreshness {
+  if (!eventTimestamp) return 'UNKNOWN';
+
+  const at = Date.parse(eventTimestamp);
+  if (!Number.isFinite(at)) return 'UNKNOWN';
+
+  const elapsed = now.getTime() - at;
+  if (elapsed < 0) return 'UNKNOWN';
+  if (elapsed <= windows.activeFreshnessHours * 3600_000) return 'FRESH';
+
+  return claimed === 'RECENT' || claimed === 'STALE' ? claimed : 'RECENT';
 }
 
 /** Whether a normalised time falls inside the context lookback. */
