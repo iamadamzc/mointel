@@ -1200,6 +1200,38 @@ export class DemandEngine {
     return runtime.volumeBaseSource === REPLAYED_VOLUME_BASE_SOURCE;
   }
 
+  /**
+   * Whether `qualifiedAt` is a market fact or an artefact of when this process
+   * started.
+   *
+   * `qualifiedAt` latches when the desk FIRST SEES a name qualify, so after a
+   * 05:30 restart a name that broke at 04:10 is stamped 05:30. An hour rendered
+   * off that -- `STARTED 5AM` -- would be a market claim manufactured from a
+   * process fact, which is the shape this desk keeps meeting. False withholds
+   * the hour and the badge degrades to `STARTED TODAY`.
+   *
+   * THE ANSWER IS EXPORTED, NOT THE INGREDIENT. `observingSince` alone cannot
+   * settle it: the question is whether the OPEN OF THE SESSION THE LATCH FELL
+   * IN was covered, and only the engine knows both when it began watching and
+   * whether this symbol's base was rebuilt by the bootstrap replay. A consumer
+   * handed the raw instant would have to re-derive that, and a gate searched
+   * for at the wrong layer reads as absent -- already paid for once on the
+   * session-move anchor.
+   *
+   * A timestamp that resolves to no session at all is FALSE rather than true:
+   * unable to vouch is not the same as vouching, and false is the safe arm.
+   */
+  private qualificationObserved(runtime: TickerRuntime): boolean {
+    if (!runtime.qualifiedAt) return false;
+    const session = vwapSessionForTs(
+      runtime.qualifiedAt,
+      this.tradingDate,
+      this.rthCloseMinutes,
+    );
+    if (session === null) return false;
+    return this.anchorObservable(runtime, session);
+  }
+
   /** The three sessions' own highs and lows, each from its own bars. */
   private sessionExtremesOf(runtime: TickerRuntime): SessionExtremesSet {
     const read = (session: VwapSession): SessionExtremes => {
@@ -2132,6 +2164,7 @@ export class DemandEngine {
             price: runtime.qualifiedPrice ?? 0,
             rvol: runtime.qualifiedRvol,
             rank: runtime.qualifiedRank,
+            observed: this.qualificationObserved(runtime),
           }
         : null,
       latched: runtime.latched,
