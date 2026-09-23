@@ -68,6 +68,26 @@ interface SortEntry {
    */
   leads?: 'MOVE';
   /**
+   * What the column MEASURES, in units, for the line that announces the sort.
+   *
+   * `NOW` reads as "recent" and says nothing about trades, volume or dollars —
+   * he asked "what's it sorting" for exactly that reason. The units belong
+   * somewhere always visible while that sort is active, and the column header
+   * has no room for them.
+   */
+  metric?: string;
+  /**
+   * Which HEADER this key sorts, so the marked column is read off the table
+   * rather than from a chain of `sort.key === ...` tests in the markup.
+   *
+   * Three keys share the price column, and `sessionMoveSort.test.ts` forbids a
+   * per-key special case in this component by reading its source — it caught
+   * exactly that here, for the second time. The rule predates the test: two
+   * if-chains over the same keys are how the sort control once read `Gap`
+   * while the header above the same number read `Move`.
+   */
+  column: 'rank' | 'rvol' | 'price' | 'now' | 'float';
+  /**
    * Set when the quantity's NAME depends on the session, so the button, the
    * active marker and the tooltip resolve it from one place.
    *
@@ -109,18 +129,33 @@ interface SortEntry {
  * floor to one decimal and caught a 12.8px overflow that eye-balling passed.
  */
 const SORT_KEYS: ReadonlyArray<SortEntry> = [
-  { key: 'rank', label: 'Rank', title: "The board's own ranking for this session" },
-  { key: 'rvol', label: 'RVOL', title: 'Relative volume' },
-  { key: 'changePct', label: 'Gap', title: '', resolve: baselineLabel },
-  { key: 'sessionMove', label: 'Move', title: '', resolve: sessionMoveSortLabel, leads: 'MOVE' },
+  { key: 'rank', label: 'Rank', title: "The board's own ranking for this session", column: 'rank' },
+  {
+    key: 'rvol',
+    label: 'RVOL',
+    title: 'Relative volume',
+    metric: 'session volume against a 20-session baseline',
+    column: 'rvol',
+  },
+  { key: 'changePct', label: 'Gap', title: '', resolve: baselineLabel, column: 'price' },
+  {
+    key: 'sessionMove',
+    label: 'Move',
+    title: '',
+    resolve: sessionMoveSortLabel,
+    leads: 'MOVE',
+    column: 'price',
+  },
   {
     key: 'now',
     label: 'Now',
     title:
       'Trades in the most recent settled minute. Which names are trading heaviest right now, which is a different question from RVOL — that is a ratio against a twenty-session baseline and can stay high on a name that has stopped trading.',
+    metric: 'trades in the last settled minute',
+    column: 'now',
   },
-  { key: 'price', label: 'Price', title: 'Last price' },
-  { key: 'float', label: 'Float', title: 'Displayed float. Not known for every name.' },
+  { key: 'price', label: 'Price', title: 'Last price', column: 'price' },
+  { key: 'float', label: 'Float', title: 'Displayed float. Not known for every name.', column: 'float' },
 ];
 
 /**
@@ -220,7 +255,8 @@ export function DiscoveryBoard({
   const visible = sorted.slice(0, size);
   const sortActive = sort.key !== DISCOVERY_DEFAULT_SORT.key;
   const missing = discoveryMissingCount(rows, sort.key, sortBoard);
-  const showFloat = sort.key === 'float';
+  // Read off the entry like every other per-key fact in this component.
+  const showFloat = SORT_KEYS.find((entry) => entry.key === sort.key)?.column === 'float';
   // Resolved once: the button, the active marker and the tooltip must never
   // disagree about what the percent change is measured from.
   // Null phase falls to the neutral label rather than guessing a session.
@@ -234,6 +270,8 @@ export function DiscoveryBoard({
    * name here. Same single-source rule the labels already obey.
    */
   const lead = activeEntry?.leads ?? 'GAP';
+  const activeMetric = sortActive ? activeEntry?.metric : undefined;
+  const activeColumn = activeEntry?.column;
 
   function changeSort(key: DiscoverySortKey) {
     setSort((current) =>
@@ -288,6 +326,20 @@ export function DiscoveryBoard({
             }
           >
             sorted by {activeLabel.toLowerCase()}
+            {activeMetric ? (
+              /*
+               * THE UNITS, BESIDE THE SORT RATHER THAN IN A HOVER.
+               *
+               * He sorted by NOW and asked what it was sorting: the column
+               * header has room for `−1m` and not for `trades`, so the
+               * quantity was nowhere on screen. It is stated here, where a
+               * reader is already looking when they change the order.
+               */
+              <span className="font-normal tracking-normal normal-case text-ink-3">
+                {' '}
+                · {activeMetric}
+              </span>
+            ) : null}
           </span>
         ) : null}
 
@@ -430,7 +482,26 @@ export function DiscoveryBoard({
               <Th className="w-[24px]" srOnly>
                 Changed
               </Th>
-              <Th className="w-[44px]" align="right">
+              {/*
+                * RANK IS THE BOARD'S ORDER, NOT THE ROW ORDER — and under any
+                * other sort those two differ, which is what made the board
+                * look unsorted. He read 3, 2, 21, 8, 5 down the rank column
+                * while the rows were in perfect NOW order and concluded
+                * nothing was sorting. The column is not wrong; it answers a
+                * different question, and nothing said so.
+                */}
+              <Th
+                className="w-[44px]"
+                align="right"
+                sorted={activeColumn === 'rank'}
+                title={
+                  activeColumn === 'rank'
+                    ? "The board's own order for this session, and the order the rows are in."
+                    : // `rankingLabel` is the desk's own name for the active
+                      // ranking, so this cannot drift from the caption below.
+                      `The board's own ${discovery?.rankingLabel ?? 'session'} rank. The rows are ordered by ${activeLabel.toLowerCase()} instead, so these numbers will not run 1, 2, 3.`
+                }
+              >
                 Rank
               </Th>
               <Th className="w-[112px]">Ticker</Th>
@@ -446,8 +517,13 @@ export function DiscoveryBoard({
                  * named neither. `Gap` names one of them in the desk's own
                  * word, at zero width -- it is shorter than `Move`.
                  */}
-              <Th className="w-[172px]">Price · {move.label} · VWAP</Th>
-              <Th className="w-[68px]" align="right">
+              <Th
+                className="w-[172px]"
+                sorted={activeColumn === 'price'}
+              >
+                Price · {move.label} · VWAP
+              </Th>
+              <Th className="w-[68px]" align="right" sorted={activeColumn === 'rvol'}>
                 RVOL
               </Th>
               {/*
@@ -458,7 +534,7 @@ export function DiscoveryBoard({
                * number. Putting the "now" measure anywhere else would leave the
                * two readings to be joined by the trader mid-scan.
                */}
-              <Th className="w-[44px]" align="right">
+              <Th className="w-[44px]" align="right" sorted={activeColumn === 'now'}>
                 Now
                 {/*
                   * The lag, on the header rather than in the tooltip alone.
@@ -474,7 +550,7 @@ export function DiscoveryBoard({
                 </span>
               </Th>
               {showFloat ? (
-                <Th className="w-[84px]" align="right">
+                <Th className="w-[84px]" align="right" sorted={activeColumn === 'float'}>
                   Float
                 </Th>
               ) : null}
@@ -530,20 +606,38 @@ function Th({
   className = '',
   align,
   srOnly = false,
+  sorted = false,
+  title,
 }: {
   children: React.ReactNode;
   className?: string;
   align?: 'right';
   srOnly?: boolean;
+  /** The column the board is ordered by right now. */
+  sorted?: boolean;
+  title?: string;
 }) {
   return (
     <th
       scope="col"
-      className={`border-b border-line-2 bg-panel-2 px-2 py-1 text-[11px] font-semibold tracking-[0.08em] whitespace-nowrap text-ink-3 uppercase ${
-        align === 'right' ? 'text-right' : 'text-left'
-      } ${className}`}
+      aria-sort={sorted ? 'descending' : undefined}
+      title={title}
+      /*
+       * THE SORTED COLUMN IS MARKED IN THE TABLE, NOT ONLY ABOVE IT.
+       *
+       * A `sorted by now` badge already sat in the toolbar and he still read
+       * the board as unsorted — because the RANK column is the first thing the
+       * eye lands on and it was showing 3, 2, 21, 8, 5. The order is in the
+       * table, so the marker has to be too.
+       */
+      className={`border-b px-2 py-1 text-[11px] font-semibold tracking-[0.08em] whitespace-nowrap uppercase ${
+        sorted
+          ? 'border-accent/60 bg-accent/10 text-accent'
+          : 'border-line-2 bg-panel-2 text-ink-3'
+      } ${align === 'right' ? 'text-right' : 'text-left'} ${className}`}
     >
       {srOnly ? <span className="sr-only">{children}</span> : children}
+      {sorted && !srOnly ? <span aria-hidden="true"> ▼</span> : null}
     </th>
   );
 }

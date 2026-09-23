@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { describe, expect, it } from 'vitest';
 
 import { buildDeskRow } from '@/lib/dashboard/merge';
@@ -154,5 +157,52 @@ describe('the predicate reads what the cell renders', () => {
   it('matches the ticker search without regard to the other axes', () => {
     expect(rowMatchesFilters(discoveryRow('STALE'), filters({ search: 'HOW' }))).toBe(true);
     expect(rowMatchesFilters(discoveryRow('FRESH'), filters({ search: 'ZZZ' }))).toBe(false);
+  });
+});
+
+describe('the active sort is readable from the board, not only the toolbar', () => {
+  /*
+   * He sorted by NOW and reported "no obvious sort". It WAS sorting — the rows
+   * were in perfect NOW order — but the RANK column showed 3, 2, 21, 8, 5,
+   * because rank is the board's own ordering and not the row position. A
+   * `sorted by now` badge already sat in the toolbar and lost to the numbers.
+   *
+   * These read the component's source because the marker is JSX: what is
+   * assertable is that every sort key declares which column it marks, and that
+   * every declared column is actually wired to a header.
+   */
+  const source = readFileSync(join(process.cwd(), 'components/DiscoveryBoard.tsx'), 'utf8');
+  /*
+   * The window has to clear the LONGEST entry, and a first pass at 320
+   * characters silently missed `now` — whose title and metric sit between its
+   * key and its column. The entry list came back without the one key this
+   * change is about, and the coverage check below would have passed over it.
+   */
+  const entries = [...source.matchAll(/key:\s*'(\w+)'[\s\S]{0,900}?column:\s*'(\w+)'/g)].map(
+    (m) => ({ key: m[1]!, column: m[2]! }),
+  );
+
+  it('found the sort entries, so the checks below are not vacuously empty', () => {
+    expect(entries.length).toBeGreaterThanOrEqual(7);
+    expect(entries.map((e) => e.key)).toContain('now');
+    expect(entries.find((e) => e.key === 'now')?.column).toBe('now');
+  });
+
+  it('declares a column for every sort key', () => {
+    // A key with no column silently marks nothing, which is the state he
+    // reported: an ordering with no visible sign of itself.
+    const keys = [...source.matchAll(/\{\s*key:\s*'(\w+)'/g)].map((m) => m[1]!);
+    expect(new Set(entries.map((e) => e.key))).toEqual(new Set(keys));
+  });
+
+  it('wires every declared column to a header marker', () => {
+    for (const column of new Set(entries.map((e) => e.column))) {
+      expect(source).toContain(`activeColumn === '${column}'`);
+    }
+  });
+
+  it('names the units for NOW, which reads as recency and not as a quantity', () => {
+    // "-1m" says when, never what. He asked "what's it sorting" for that reason.
+    expect(source).toContain('trades in the last settled minute');
   });
 });
