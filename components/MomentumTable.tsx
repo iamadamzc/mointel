@@ -15,7 +15,13 @@ import {
 import { rowKeyboardProps } from '@/components/tableKeyboard';
 import { buildDeskRow, type DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
-import { PRIOR_HIGH_ONLY_TITLE, cycleBadge, formatHighPair, highReading } from '@/lib/dashboard/cycle';
+import {
+  PRIOR_HIGH_ONLY_TITLE,
+  cycleBadge,
+  formatHighPair,
+  highReading,
+  startedLabel,
+} from '@/lib/dashboard/cycle';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
 import { baselineLabel } from '@/lib/dashboard/view';
@@ -266,7 +272,18 @@ function TableRow({
     t.spread,
   );
   const priorOnly = high?.kind === 'PRIOR_ONLY';
-  const badge = cycleBadge(high, cycle?.current ?? null, conclusions.cycle, cycle?.todayStart);
+  const badge = cycleBadge(
+    high,
+    cycle?.current ?? null,
+    conclusions.cycle,
+    cycle?.todayStart,
+    startedLabel({
+      qualifiedAt: row.demand?.qualified?.at,
+      qualifiedRvol: row.demand?.qualified?.rvol,
+      // Undefined until the producer answers it; undefined keeps the hour off.
+      observed: row.demand?.qualified?.observed,
+    }),
+  );
 
   const halted = t.haltState === 'HALTED' || t.haltState === 'RESUMING';
   const backside = conclusions.cycle.tone === 'neg';

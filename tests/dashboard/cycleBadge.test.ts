@@ -9,6 +9,7 @@ import {
   cycleBadge,
   highReading,
   resolveComputedCycle,
+  startedLabel,
 } from '@/lib/dashboard/cycle';
 import type { CycleResult } from '@/lib/market/cycle';
 
@@ -280,5 +281,74 @@ describe('the tooltip does not call a live reading a settled one', () => {
     )!;
 
     expect(badge.title).toContain('Settled reading: BACKSIDE');
+  });
+});
+
+describe('the start HOUR, and the guard that keeps it honest', () => {
+  const noArc = { phase: 'NO_CYCLE' } as CycleResult;
+  // 09:12Z in September is 05:12 EDT.
+  const AT = '2026-09-22T09:12:00Z';
+
+  it('says STARTED 5AM when the desk was watching from the open', () => {
+    const started = startedLabel({ qualifiedAt: AT, qualifiedRvol: 8.42, observed: true });
+
+    expect(started.label).toBe('STARTED 5AM');
+    // The hour is what he scans; the minute and the reading are the check.
+    expect(started.detail).toContain('05:12 ET');
+    expect(started.detail).toContain('RVOL 8.4x');
+  });
+
+  it('WITHHOLDS the hour when the desk was not watching from the open', () => {
+    /*
+     * The guard he approved. `at` latches when the desk FIRST SEES a name, so
+     * after a 05:30 restart a name that broke at 04:10 is stamped 05:30 —
+     * `STARTED 5AM` would be a market claim manufactured from a process fact.
+     */
+    const started = startedLabel({ qualifiedAt: AT, qualifiedRvol: 8.42, observed: false });
+
+    expect(started.label).toBe(LIVE_START_LABEL);
+    expect(started.label).not.toMatch(/\d/);
+    // Silent on the badge, explained in the tooltip rather than hidden.
+    expect(started.detail).toContain('FIRST SEEN');
+  });
+
+  it('withholds it for an UNANSWERED guard too, not only a false one', () => {
+    // The field does not exist on the payload yet. Undefined must behave like
+    // false — an unfilled guard is not permission.
+    expect(startedLabel({ qualifiedAt: AT, qualifiedRvol: 8.42, observed: undefined }).label).toBe(
+      LIVE_START_LABEL,
+    );
+  });
+
+  it('degrades to the word already on the board, never to a blank', () => {
+    const none = startedLabel({ qualifiedAt: null, qualifiedRvol: null, observed: true });
+    expect(none.label).toBe(LIVE_START_LABEL);
+    expect(none.detail.length).toBeGreaterThan(0);
+  });
+
+  it('puts the hour on the BADGE and keeps the tooltip agreeing with it', () => {
+    const badge = cycleBadge(
+      highReading(noArc, 'QUALIFIED', 1.6, 1.46, 0.001),
+      noArc,
+      resolveComputedCycle({ current: noArc, todayStart: 'QUALIFIED' } as never),
+      'QUALIFIED',
+      startedLabel({ qualifiedAt: AT, qualifiedRvol: 8.42, observed: true }),
+    )!;
+
+    // The override owns the word here, so the hour lives in the tooltip — and
+    // it must be the SAME word, not a second way of naming the start.
+    expect(badge.title).toContain('STARTED 5AM');
+    expect(badge.title).not.toContain('STARTED TODAY');
+    expect(badge.title).toContain('05:12 ET');
+  });
+
+  it('reads 8AM in November and 9AM in October, off the same UTC clock hour', () => {
+    // A conversion constant with an expiry date is a defect with a start date:
+    // minus four is EDT, EST is minus five, and DST ends 2026-11-01.
+    const oct = startedLabel({ qualifiedAt: '2026-10-30T13:00:00Z', qualifiedRvol: null, observed: true });
+    const nov = startedLabel({ qualifiedAt: '2026-11-02T13:00:00Z', qualifiedRvol: null, observed: true });
+
+    expect(oct.label).toBe('STARTED 9AM');
+    expect(nov.label).toBe('STARTED 8AM');
   });
 });

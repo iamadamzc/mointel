@@ -159,3 +159,28 @@ export function truncate(value: string, maxLength: number): string {
   const lastSpace = clipped.lastIndexOf(' ');
   return `${(lastSpace > maxLength * 0.6 ? clipped.slice(0, lastSpace) : clipped).trimEnd()}…`;
 }
+
+const hourFormatter = new Intl.DateTimeFormat('en-US', {
+  timeZone: MARKET_TIME_ZONE,
+  hour: 'numeric',
+  hour12: true,
+});
+
+/**
+ * The ET HOUR alone, as he writes it: `5AM`, `11AM`, `4PM`.
+ *
+ * VIA `Intl` IN THE MARKET ZONE, NEVER BY ARITHMETIC. Subtracting four from
+ * UTC is EDT and EST is minus five, so a hardcoded offset starts producing a
+ * wrong-by-one-hour reading at the DST transition, silently, looking exactly
+ * as authoritative as it does today. Verified across the boundary: 13:00Z is
+ * 9AM on 2026-10-30 and 8AM on 2026-11-02.
+ *
+ * Null rather than a fallback: an hour that could not be read is a clause the
+ * caller omits, not a guess it prints.
+ */
+export function formatEtHour(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return null;
+  return hourFormatter.format(date).replace(/\s/g, '').toUpperCase();
+}

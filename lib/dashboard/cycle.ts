@@ -28,6 +28,7 @@ import type {
 } from '@/lib/market/cycle';
 import type { DeskRow } from './merge';
 import type { DeskConclusion, ReadTone } from './deskRead';
+import { formatEtHour, formatEtMinute } from '@/lib/format';
 
 /**
  * Trader-facing words for the six phases. Settled with the desk owner
@@ -506,6 +507,8 @@ export function cycleBadge(
   phase: CycleResult | null | undefined,
   conclusion: DeskConclusion | null | undefined,
   todayStart?: TodayStartVerdict | null,
+  /** The qualification moment, for the started-hour label he asked for. */
+  started?: StartedReading | null,
 ): CycleBadgeReading | null {
   /*
    * A run that started today has no settled arc, so `PHASE_TERM` has nothing
@@ -515,8 +518,16 @@ export function cycleBadge(
    * leaving a reader to assume this is the settled test.
    */
   const liveStart = phase?.phase === 'NO_CYCLE' && todayStart === 'QUALIFIED';
+  /*
+   * The hour rides on the SAME word, so there is one label rather than two
+   * that could disagree: `STARTED 5AM` where the hour is earned, `STARTED
+   * TODAY` where it is not. A reader never has to work out which variant they
+   * are looking at, because the fallback IS the word that was already there.
+   */
+  const startWord = liveStart ? (started?.label ?? LIVE_START_LABEL) : LIVE_START_LABEL;
+  const startDetail = liveStart && started?.detail ? ` ${started.detail}` : '';
   const settled = liveStart
-    ? `${LIVE_START_LABEL}. Today cleared the volume and advance a run needs, measured on today's HIGH against the prior close. The settled test uses the CLOSE, so this may not become a DAY 1 once the session settles.`
+    ? `${startWord}. Today cleared the volume and advance a run needs, measured on today's HIGH against the prior close. The settled test uses the CLOSE, so this may not become a DAY 1 once the session settles.${startDetail}`
     : phase && conclusion
       ? `${conclusion.label}. ${PHASE_TERM[phase.phase]}${
           conclusion.title ? ` ${conclusion.title}` : ''
@@ -550,7 +561,10 @@ export function cycleBadge(
 
   if (!conclusion || !phase) return null;
 
-  return { label: conclusion.label, tone: conclusion.tone, title: settled ?? conclusion.label };
+  // The live-start branch takes its word from `started` too, so the badge and
+  // its tooltip cannot name the start differently.
+  const label = liveStart ? startWord : conclusion.label;
+  return { label, tone: conclusion.tone, title: settled ?? conclusion.label };
 }
 
 /**
@@ -576,3 +590,63 @@ export function cycleBadge(
  */
 export const PRIOR_HIGH_ONLY_TITLE =
   'The desk cannot establish whether today started a new cycle, so it will not say which high this move is measured against. The prior high is shown because it is overhead supply either way. The cycle frame is 04:00–20:00, but highs before today are stored over a narrower window — they exclude after-hours and may exclude premarket — so a prior high can only be understated, never overstated.';
+
+export interface StartedReading {
+  /** `STARTED 5AM` when the hour can be stood behind, else `STARTED TODAY`. */
+  label: string;
+  /** The precise minute and the RVOL at that moment, when known. */
+  detail: string;
+}
+
+/**
+ * The hour a run started, which he asked for, with the guard he approved.
+ *
+ * His definition, 2026-09-22: the moment the name first broke RVOL. The desk
+ * has no such moment as a THRESHOLD CROSSING — `rankByRvol` ranks every name
+ * carrying an RVOL and rank is relative to that day's field, so nothing is
+ * ever "crossed". `qualified.at` is his answer as the desk actually records
+ * it: the first instant the name entered the tracked population, ranked by
+ * RVOL with its price inside the band. It carries the RVOL from that instant,
+ * which is why the detail can say what the reading WAS rather than only when.
+ *
+ * `observed` IS THE WHOLE GUARD AND IT IS NOT OPTIONAL POLISH. These stamps
+ * latch when the desk FIRST SEES a name. If the worker restarts at 05:30, a
+ * name that broke at 04:10 is stamped 05:30 — and `STARTED 5AM` would then be
+ * a market claim manufactured from a process fact, stated on the board with no
+ * mark on it. That is the defect class this desk keeps paying for, so the
+ * hour is shown only when the producer says it was watching from the session
+ * open.
+ *
+ * ABSENT MEANS SILENT, NOT ASSUMED. `observed` is undefined until the field
+ * exists on the payload, and an undefined guard degrades to `STARTED TODAY` —
+ * the word already on the board — rather than to an unguarded hour. So this
+ * ships dark and lights up when the field lands, and the failure mode of it
+ * never landing is the status quo rather than a wrong time.
+ */
+export function startedLabel(input: {
+  qualifiedAt: string | null | undefined;
+  qualifiedRvol: number | null | undefined;
+  /** Producer's answer to "were we watching from the session open". */
+  observed: boolean | null | undefined;
+}): StartedReading {
+  const { qualifiedAt, qualifiedRvol, observed } = input;
+  const minute = formatEtMinute(qualifiedAt);
+  const rvol = typeof qualifiedRvol === 'number' && Number.isFinite(qualifiedRvol)
+    ? `, RVOL ${qualifiedRvol.toFixed(1)}x at that moment`
+    : '';
+
+  if (observed !== true || !minute) {
+    return {
+      label: LIVE_START_LABEL,
+      detail: minute
+        ? `First ranked at ${minute}${rvol} — but the desk was not watching from the session open, so that is when it was FIRST SEEN and not necessarily when it started.`
+        : 'The desk has no first-ranked time for this name.',
+    };
+  }
+
+  const hour = formatEtHour(qualifiedAt);
+  return {
+    label: hour ? `STARTED ${hour}` : LIVE_START_LABEL,
+    detail: `First ranked at ${minute}${rvol}.`,
+  };
+}

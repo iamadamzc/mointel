@@ -20,7 +20,13 @@ import type { SessionPhase } from '@/lib/market/types';
 import { rowKeyboardProps } from '@/components/tableKeyboard';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
-import { PRIOR_HIGH_ONLY_TITLE, cycleBadge, formatHighPair, highReading } from '@/lib/dashboard/cycle';
+import {
+  PRIOR_HIGH_ONLY_TITLE,
+  cycleBadge,
+  formatHighPair,
+  highReading,
+  startedLabel,
+} from '@/lib/dashboard/cycle';
 import { sparklineLagLabel } from '@/lib/dashboard/sparkline';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
@@ -607,7 +613,18 @@ function DiscoveryRow({
    * table. The two built this badge separately and disagreed on three of four
    * shared tickers on the live board -- see `cycleBadge`.
    */
-  const badge = cycleBadge(high, cycle?.current ?? null, conclusions.cycle, cycle?.todayStart);
+  const badge = cycleBadge(
+    high,
+    cycle?.current ?? null,
+    conclusions.cycle,
+    cycle?.todayStart,
+    startedLabel({
+      qualifiedAt: row.demand?.qualified?.at,
+      qualifiedRvol: row.demand?.qualified?.rvol,
+      // Undefined until the producer answers it; undefined keeps the hour off.
+      observed: row.demand?.qualified?.observed,
+    }),
+  );
   const risk = resolveRisk(row);
   const why = resolveWhy(row);
   const tradesNow = tradesLastMinute(row.demand);

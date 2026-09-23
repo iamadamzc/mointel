@@ -213,6 +213,28 @@ export interface DiscoveryQualification {
   price: number;
   rvol: number | null;
   rank: number | null;
+  /**
+   * Whether the desk was WATCHING from this session's open when `at` latched.
+   *
+   * **DECLARED, NOT YET PRODUCED.** Nothing writes it today; the engine holds
+   * the answer privately in `anchorObservable` and `observingSinceMs`, neither
+   * of which is projected. Optional so the reader compiles and stays silent
+   * until a producer fills it — the same shape as `activityWindow`.
+   *
+   * WHY THE FIELD IS THE ANSWER RATHER THAN THE INGREDIENT. Exporting
+   * `observingSince` would make every consumer re-derive "was the session open
+   * covered", which is a question only the producer can answer — it knows when
+   * it started AND whether this symbol's base was replayed by the bootstrap.
+   * A gate searched for at the wrong layer reads as absent, which this desk
+   * has already paid for once on the session-move anchor.
+   *
+   * WHAT IT GUARDS: `at` latches when the desk FIRST SEES a name. After a
+   * 05:30 restart a name that broke at 04:10 is stamped 05:30, and a label
+   * reading `STARTED 5AM` would be a market claim manufactured from a process
+   * fact. With this false, the hour is withheld and the badge says
+   * `STARTED TODAY` instead.
+   */
+  observed?: boolean;
 }
 
 /**
