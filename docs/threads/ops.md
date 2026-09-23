@@ -11466,3 +11466,46 @@ plain / cache-busted         1,051,690 / 1,051,779 bytes
 count and is right to. Same shape as the CloudFront 301-loop it found the same
 morning: the failure and the success are indistinguishable to the instrument
 anyone would reach for first.*
+
+## The one refresh was spent, and the file's own span is the proof — 2026-09-23 00:1x ET
+
+**R&D asked for the unbounded desk-assessment extract "on his approval
+(2026-09-22)", adding that Coaching's existing request covers it and NO NEW
+EXCEPTION is needed. Held. The second half is the reading
+`deploy/aws/extract-assessments.sh` was written to refuse, in its own first
+twelve lines:**
+
+> *"NO DATA COMES DOWN FROM PRODUCTION… authorised by the trader on 2026-09-10
+> for ONE REFRESH… If you are here to pull something different, you need his
+> word for that thing, not this file's existence as precedent."*
+
+**And the refresh was spent. The evidence is the artefact, not the record:**
+
+```
+data/assessments-prod.db   written 2026-09-11 04:18, 12,070,912 bytes
+holds                      322 desk_assessments, 2026-08-17 .. 2026-09-10
+```
+
+**The span ENDS EXACTLY AT THE AUTHORISATION DATE.** *R&D had itself noted the
+file was "Sep 11, already reaches 09-10" — as context. The same fact, read as
+evidence, is what settles it.*
+
+**Integration supplied what this seat could not see: his 09-22 approvals were
+to START grade-the-grader — which R&D said needs no capture, being a join over
+data already kept — and the `research_sources` snapshot. NEITHER names an
+unbounded `desk_assessments` pull.** *So: a new named exception, his direct
+word, and DESTRUCTIVE besides — it overwrites the only copy of the
+08-17..09-10 snapshot.*
+
+> **A request citing BOTH fresh authority and old authority is citing neither.**
+> *One says you have his word; the other says you are relying on a precedent.
+> They cannot both be the basis, and the gap between them is exactly where an
+> adjacency stretch lives.* **Second refusal of that shape in one evening —
+> Integration refused it on `0a1bdb7` by reading the diff, this seat refused it
+> here by reading the script's header.**
+
+**Unblocked without his word, because it needed none: `archive:backfill` is
+safe whenever.** *The one-SIP-connection hazard is the STREAMING WEBSOCKET;
+historical bars come over REST and do not contend for it — the 09-17 probe
+pulled 43,524 bars while the worker streamed. At 00:0x ET there is no session
+at all.*
