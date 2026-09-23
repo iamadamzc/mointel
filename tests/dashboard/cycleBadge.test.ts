@@ -352,3 +352,42 @@ describe('the start HOUR, and the guard that keeps it honest', () => {
     expect(nov.label).toBe('STARTED 8AM');
   });
 });
+
+describe('the hour reaches the badge from the PAYLOAD, not just from the function', () => {
+  /*
+   * Everything above calls `startedLabel` directly, which proves the wording
+   * and proves nothing about whether the value ARRIVES. Design sits at the end
+   * of these chains and an addition that never reaches this surface fails
+   * SILENTLY — the activity columns were populated and climbing in production
+   * for days while the key was absent from the payload entirely.
+   *
+   * A first pass tried to build a DeskRow and kept hitting telemetry fields
+   * the fixture did not carry. That was testing `buildTelemetry`, not the
+   * question. The question is whether the PRODUCER writes the field the reader
+   * reads, and only the producer's source can answer it.
+   */
+  const engine = readFileSync(join(process.cwd(), 'lib/market/engine.ts'), 'utf8');
+
+  it('projects observed INSIDE the qualified object the reader reads', () => {
+    // `f3375af`. Written from `anchorObservable` with the session resolved
+    // from `qualifiedAt` itself rather than from now, which is the detail that
+    // makes a late-session qualification answerable at all.
+    const qualified = engine.match(/qualified: runtime\.qualifiedAt[\s\S]{0,320}/);
+    expect(qualified).not.toBeNull();
+    expect(qualified![0]).toContain('observed:');
+    expect(qualified![0]).toContain('qualificationObserved');
+  });
+
+  it('answers false rather than guessing when there is no qualification', () => {
+    const fn = engine.match(/private qualificationObserved[\s\S]{0,420}/);
+    expect(fn).not.toBeNull();
+    expect(fn![0]).toContain('if (!runtime.qualifiedAt) return false;');
+    // The session comes from the qualification instant, not from `now`.
+    expect(fn![0]).toContain('runtime.qualifiedAt,');
+  });
+
+  it('is still optional on the type, so a payload without it stays silent', () => {
+    const types = readFileSync(join(process.cwd(), 'lib/market/types.ts'), 'utf8');
+    expect(types).toContain('observed?: boolean;');
+  });
+});
