@@ -30,7 +30,7 @@ function bar(symbol: string, ts: number, close: number): MarketObservation {
 }
 /** Runs a session whose latch falls at 05:30 ET, with the desk starting when told. */
 function qualifyAt(observingSince: number, replayed = false) {
-  let clock = at(90); // 05:30 ET
+  const clock = at(90); // 05:30 ET
   const engine = new DemandEngine({
     tradingDate: TRADING_DATE, feed: 'sip', discoveryRank: 12, internalRank: 50,
     priceMin: 1, priceMax: 20, baselineSessions: 20,
@@ -77,7 +77,7 @@ describe('DiscoveryQualification.observed', () => {
      * the guard was correct and unexercised, which is how it would survive an
      * edit later.
      */
-    let clock = Date.UTC(2026, 7, 15, 0, 30, 0); // 20:30 ET on the trading date
+    const clock = Date.UTC(2026, 7, 15, 0, 30, 0); // 20:30 ET on the trading date
     const engine = new DemandEngine({
       tradingDate: TRADING_DATE, feed: 'sip', discoveryRank: 12, internalRank: 50,
       priceMin: 1, priceMax: 20, baselineSessions: 20,
