@@ -73,10 +73,72 @@ describe('resolveCatalystFreshness', () => {
     expect(resolveCatalystFreshness('2026-09-26', NOW)).toBe('UNKNOWN');
   });
 
-  it('ignores the model entirely, in both directions', () => {
-    // The old contract deferred to it past the window. It no longer has a say.
-    expect(resolveCatalystFreshness('2026-08-27', NOW, undefined, 'FRESH')).toBe('STALE');
-    expect(resolveCatalystFreshness('2026-09-24', NOW, undefined, 'STALE')).toBe('FRESH');
+  /*
+   * HIS WINDOW, 2026-09-24: the prior session's close to now. Only a CLOCKED
+   * event can be tested against it -- a bare date states no time, so whether it
+   * fell after 16:00 is unanswerable, and bare dates are 77% of the store.
+   */
+  describe("the prior session's close", () => {
+    // NOW is 10:00 ET on Thursday the 24th; the prior close is Wednesday 16:00.
+    const priorClose = new Date('2026-09-23T20:00:00.000Z');
+
+    it('makes a clocked after-hours release FRESH, though the day band calls it yesterday', () => {
+      // 2026-09-23T22:00Z is 18:00 ET Wednesday -- after the close, inside the
+      // overnight window a morning gap comes from. This is the 6-row change.
+      expect(resolveCatalystFreshness('2026-09-23T22:00:00.000Z', NOW, priorClose)).toBe('FRESH');
+      expect(resolveCatalystFreshness('2026-09-23T22:00:00.000Z', NOW)).toBe('RECENT');
+    });
+
+    it('leaves a clocked event from yesterday DAYTIME at RECENT', () => {
+      // 14:00Z is 10:00 ET Wednesday -- before the close, so outside the window.
+      expect(resolveCatalystFreshness('2026-09-23T14:00:00.000Z', NOW, priorClose)).toBe('RECENT');
+    });
+
+    it('keeps a catalyst breaking during TODAY fresh, never demoted below an older one', () => {
+      expect(resolveCatalystFreshness('2026-09-24T13:45:00.000Z', NOW, priorClose)).toBe('FRESH');
+    });
+
+    it('does not reach a BARE date, which states no time to compare', () => {
+      // His date-only rule stands: today FRESH, yesterday RECENT.
+      expect(resolveCatalystFreshness('2026-09-23', NOW, priorClose)).toBe('RECENT');
+      expect(resolveCatalystFreshness('2026-09-24', NOW, priorClose)).toBe('FRESH');
+    });
+
+    it('REFUSES a boundary older than five days, because a stale calendar reads as one', () => {
+      /*
+       * `previousTradingDate` filters to days before the date and takes the
+       * newest, so a calendar that stopped refreshing returns a weeks-old date
+       * rather than null. An ancient boundary would make ancient catalysts
+       * FRESH -- the dangerous direction -- so it is disbelieved and the day
+       * bands stand.
+       */
+      const stale = new Date('2026-09-04T20:00:00.000Z'); // 20 days back
+      expect(resolveCatalystFreshness('2026-09-10T22:00:00.000Z', NOW, stale)).toBe('STALE');
+    });
+
+    it('is inclusive AT the close, and a 16:15 release is inside it', () => {
+      /*
+       * The boundary instant itself has to be pinned: shifting it by an hour
+       * changed no test until this one, and production holds real examples at
+       * 16:15 and 16:30 ET -- releases that cross moments after the bell and
+       * are exactly the overnight catalyst this window exists for.
+       */
+      expect(resolveCatalystFreshness('2026-09-23T20:00:00.000Z', NOW, priorClose)).toBe('FRESH');
+      expect(resolveCatalystFreshness('2026-09-23T20:15:00.000Z', NOW, priorClose)).toBe('FRESH');
+      // And one minute before the bell is outside it.
+      expect(resolveCatalystFreshness('2026-09-23T19:59:00.000Z', NOW, priorClose)).toBe('RECENT');
+    });
+
+    it('falls back to the day bands when no boundary is supplied', () => {
+      expect(resolveCatalystFreshness('2026-09-23T22:00:00.000Z', NOW, null)).toBe('RECENT');
+    });
+
+    it('ignores a boundary that is not a Date rather than throwing on the board', () => {
+      // A caller compiled against an older shape passed a config object here
+      // and `getTime` threw. A board banding one day wider beats one that dies.
+      const notADate = { activeFreshnessHours: 36 } as unknown as Date;
+      expect(resolveCatalystFreshness('2026-09-23T22:00:00.000Z', NOW, notADate)).toBe('RECENT');
+    });
   });
 });
 

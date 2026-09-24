@@ -335,18 +335,35 @@ export function catalystAge(
  * evidence of anything, and the old elapsed-time test read it as maximally
  * fresh.
  */
+/**
+ * How stale a supplied `freshFrom` may be before it is disbelieved.
+ *
+ * The prior session's close is at most a long holiday weekend behind now --
+ * Wednesday's close to Monday morning is about four and a half days. Anything
+ * beyond five days is a CACHED CALENDAR THAT HAS STOPPED BEING REFRESHED, and
+ * `previousTradingDate` does not say so: it filters to days before the date and
+ * takes the newest, so a calendar ending three weeks ago returns a date three
+ * weeks ago rather than null.
+ *
+ * That failure runs in the dangerous direction -- an ancient boundary makes
+ * ancient catalysts FRESH -- so it is refused here rather than trusted.
+ */
+const MAX_FRESH_FROM_AGE_MS = 5 * 86_400_000;
+
 export function resolveCatalystFreshness(
   eventTimestamp: string | null | undefined,
   now: Date,
-  /*
-   * Accepted and IGNORED. Both were load-bearing under the 36-hour contract and
-   * the band rule needs neither -- the model no longer judges freshness, and
-   * the window no longer bounds it. They stay in the signature only so callers
-   * wired against the previous shape keep compiling while they drop the
-   * arguments; remove the parameters once none passes them.
+  /**
+   * The prior SESSION's close, as an instant. Null or omitted falls back to the
+   * day bands alone, which is the behaviour before his 2026-09-24 refinement
+   * and is safe rather than merely tolerable.
+   *
+   * The caller supplies it because only the caller has the store: it is
+   * `afterHoursStartUtc(previousTradingDate(db, tradingDate))`, computed ONCE
+   * per render rather than per row, and it must be the prior SESSION -- on a
+   * Monday that is Friday, and a holiday moves it again.
    */
-  _windows?: CatalystWindows,
-  _claimed?: CatalystFreshness | null,
+  freshFrom?: Date | null,
 ): CatalystFreshness {
   /*
    * DERIVED FROM `catalystAge` SO THE TWO CANNOT DRIFT. Banding on the ET day
@@ -356,6 +373,41 @@ export function resolveCatalystFreshness(
    */
   const age = catalystAge(eventTimestamp, now);
   if (age === null) return 'UNKNOWN';
+
+  /*
+   * HIS WINDOW, 2026-09-24: the prior session's close to now -- yesterday's
+   * after-hours and this morning's premarket, which is the span a morning gap
+   * originates in. It OPENS at that close and runs to now rather than stopping
+   * at the open, so a catalyst breaking during today's session is never
+   * demoted below an older one.
+   *
+   * ONLY A CLOCKED EVENT CAN BE TESTED AGAINST IT. A bare date states no time,
+   * so asking whether it fell after 16:00 is unanswerable -- and bare dates are
+   * 77% of the stored values. They keep the day bands below, which is exactly
+   * his date-only rule: today FRESH, yesterday RECENT.
+   *
+   * The `precision` test is enforced by the TYPE SYSTEM, not by a test: drop it
+   * and `tsc` rejects `age.elapsedMs`, which the DATE arm does not carry. It
+   * survives mutation at runtime for the same reason -- `NaN >= boundary` is
+   * false, so the fall-through is identical. Keep it anyway; the day it stops
+   * being redundant is the day someone gives the DATE arm an elapsed span.
+   */
+  if (age.precision === 'CLOCK' && freshFrom) {
+    /*
+     * A BOUNDARY THAT IS NOT A USABLE DATE IS IGNORED, NOT THROWN ON.
+     *
+     * Same category as the stale one above: the desk cannot trust it, so it
+     * falls back to the day bands. `tsc` already rejects a wrong type, so the
+     * only way here is a caller compiled against an older shape -- and a board
+     * that quietly bands one day wider beats a board that crashes. Found when
+     * a stale four-argument call passed a config object and `getTime` threw.
+     */
+    const boundary = freshFrom instanceof Date ? freshFrom.getTime() : Number.NaN;
+    const stale = now.getTime() - boundary > MAX_FRESH_FROM_AGE_MS;
+    if (Number.isFinite(boundary) && !stale && now.getTime() - age.elapsedMs >= boundary) {
+      return 'FRESH';
+    }
+  }
 
   if (age.days === 0) return 'FRESH';
   if (age.days === 1) return 'RECENT';
