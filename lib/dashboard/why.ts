@@ -15,7 +15,15 @@ import type { DeskRow } from '@/lib/dashboard/merge';
 import { DEFAULT_CATALYST_WINDOWS, resolveCatalystFreshness } from '@/lib/research/time';
 import type { CatalystFreshness } from '@/lib/research/types';
 
-export type WhyCode = 'GRADED' | 'NO_FRESH_CATALYST' | 'NOT_RESEARCHED' | 'RESEARCHING' | 'UNKNOWN';
+export type WhyCode =
+  | 'GRADED'
+  /** The desk searched and found no catalyst at all. */
+  | 'NO_FRESH_CATALYST'
+  /** A catalyst exists, and it is older than yesterday. */
+  | 'OLD_CATALYST'
+  | 'NOT_RESEARCHED'
+  | 'RESEARCHING'
+  | 'UNKNOWN';
 
 export interface DeskWhy {
   code: WhyCode;
@@ -198,13 +206,24 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
 
   const tone: DeskWhy['tone'] = freshness ? FRESHNESS_TONE[freshness] : 'dim';
 
-  const noFresh =
-    catalyst !== null &&
-    (catalyst.catalystStatus === 'NONE_FOUND' || freshness === 'STALE') &&
-    catalyst.plausiblyExplainsMove !== true;
+  /*
+   * ONE BADGE FIRED FOR TWO DIFFERENT FACTS, AND THEY ARE NOT THE SAME NEWS.
+   *
+   * `no fresh news` fired both when the desk found NO catalyst and when it
+   * found one that is old. Those argue differently: the first says nothing
+   * happened, the second says something did and it was a while ago. He defined
+   * the older band as OLD on 2026-09-24, so the row can now say which.
+   *
+   * BOTH STILL REQUIRE `plausiblyExplainsMove !== true`, unchanged. A month-old
+   * catalyst the desk believes is still driving the move is old, and neither
+   * "no fresh news" nor a warning is the right sentence about it.
+   */
+  const unexplained = catalyst !== null && catalyst.plausiblyExplainsMove !== true;
+  const nothingFound = unexplained && catalyst.catalystStatus === 'NONE_FOUND';
+  const onlyOld = unexplained && !nothingFound && freshness === 'STALE';
 
   return {
-    code: noFresh ? 'NO_FRESH_CATALYST' : 'GRADED',
+    code: nothingFound ? 'NO_FRESH_CATALYST' : onlyOld ? 'OLD_CATALYST' : 'GRADED',
     grade,
     age,
     eventAt: etTimestamp(eventAt),

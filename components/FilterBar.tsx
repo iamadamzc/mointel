@@ -153,9 +153,18 @@ export function FilterBar({ filters, onChange, onReset, isActive }: FilterBarPro
         onSelect={(catalyst) => onChange({ ...filters, catalyst })}
         options={[
           { value: 'ALL', label: 'All' },
-          { value: 'FRESH', label: 'Fresh' },
-          { value: 'RECENT', label: 'Recent' },
-          { value: 'STALE', label: 'Stale' },
+          { value: 'FRESH', label: 'Fresh', title: 'The catalyst is from today' },
+          { value: 'RECENT', label: 'Recent', title: 'The catalyst is from yesterday' },
+          /*
+           * HIS WORD IS "OLD", THE STORED VALUE IS STILL `STALE`.
+           *
+           * He defined the bands on 2026-09-24 — fresh today, recent
+           * yesterday, old beyond that — and the desk's vocabulary should be
+           * his. Renaming the enum is Research's to do and changes a stored
+           * contract; renaming the LABEL is this seat's and changes a word. So
+           * the word moves now and the value follows if they rename it.
+           */
+          { value: 'STALE', label: 'Old', title: 'The catalyst is from before yesterday' },
         ]}
       />
 

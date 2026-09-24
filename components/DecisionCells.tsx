@@ -414,9 +414,26 @@ export function WhyCell({ why }: { why: DeskWhy }) {
             not the move
           </span>
         ) : null}
+        {/*
+          * TWO CAUSES, TWO WORDS. This badge said `no fresh news` both when
+          * the desk found NO catalyst and when it found an OLD one — the same
+          * mark for "nothing happened" and "something did, a while ago". His
+          * band word for the second is OLD.
+          */}
         {why.code === 'NO_FRESH_CATALYST' ? (
-          <span className="text-[9px] font-semibold tracking-wide text-warn uppercase">
-            no fresh news
+          <span
+            className="text-[9px] font-semibold tracking-wide text-warn uppercase"
+            title="The desk searched its sources and found no catalyst for this move."
+          >
+            no catalyst found
+          </span>
+        ) : null}
+        {why.code === 'OLD_CATALYST' ? (
+          <span
+            className="text-[9px] font-semibold tracking-wide text-warn uppercase"
+            title="A catalyst exists but it is older than yesterday, and the desk does not think it explains today's move."
+          >
+            old
           </span>
         ) : null}
       </span>

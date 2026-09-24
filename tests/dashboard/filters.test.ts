@@ -301,7 +301,12 @@ describe('the 28-day catalyst that rendered green', () => {
    * came out FRESH and green. Research measured the scale on the 2026-08-23
    * snapshot: 52 of 325 analyses claimed FRESH unsupported, 16%.
    */
-  function aged(days: number | null, claimed: CatalystFreshness, explainsMove: boolean | null = true) {
+  function aged(
+    days: number | null,
+    claimed: CatalystFreshness,
+    explainsMove: boolean | null = true,
+    status = 'FRESH_FOUND',
+  ) {
     const at = days === null ? null : etDaysAgo(days);
     const intel = {
       ticker: 'HOWL',
@@ -313,7 +318,7 @@ describe('the 28-day catalyst that rendered green', () => {
           ticker: 'HOWL',
           catalyst: {
             catalystGrade: 'STRONG',
-            catalystStatus: 'FRESH_FOUND',
+            catalystStatus: status,
             freshness: claimed,
             confidence: 'HIGH',
             summary: 'Something happened.',
@@ -353,7 +358,22 @@ describe('the 28-day catalyst that rendered green', () => {
     const row = aged(28, 'FRESH', false);
 
     expect(resolveWhy(row).freshness).toBe('STALE');
-    expect(resolveWhy(row).code).toBe('NO_FRESH_CATALYST');
+    // `OLD_CATALYST`, not `NO_FRESH_CATALYST`: a catalyst EXISTS here and it
+    // is old, which is a different fact from the desk finding none.
+    expect(resolveWhy(row).code).toBe('OLD_CATALYST');
+  });
+
+  it('says NO CATALYST FOUND only when the desk actually found none', () => {
+    /*
+     * The other half of the split. One badge used to fire for both, so the row
+     * could not tell "nothing happened" from "something did, a while ago" —
+     * and those argue differently about whether to look further.
+     */
+    const found = aged(28, 'FRESH', false);
+    const none = aged(28, 'FRESH', false, 'NONE_FOUND');
+
+    expect(resolveWhy(found).code).toBe('OLD_CATALYST');
+    expect(resolveWhy(none).code).toBe('NO_FRESH_CATALYST');
   });
 
   it('withholds that badge when the analysis says the catalyst DOES explain the move', () => {
