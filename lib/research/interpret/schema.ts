@@ -88,7 +88,23 @@ const CATALYST = required({
   },
   summary: nullableString,
   eventTimestamp: nullableString,
-  freshness: { type: 'string', enum: ['FRESH', 'RECENT', 'STALE', 'UNKNOWN'] },
+  /*
+   * `freshness` IS NOT ASKED FOR. His ruling, 2026-09-24.
+   *
+   * It used to be declared here with NO description, and the prompt never
+   * defined its boundaries either -- so the model was answering a temporal
+   * question with no threshold given, and nothing checked the answer against
+   * the event date the desk already holds. A catalyst stamped `28d` rendered
+   * green; 52 of 325 analyses claimed FRESH on something the date refuted or
+   * could not support.
+   *
+   * It is arithmetic now, from `eventTimestamp` alone: `resolveCatalystFreshness`
+   * computes it on the read path and `validateDossier` writes it, so asking the
+   * model would buy a value that is overwritten before anyone sees it -- while
+   * still costing tokens on every call and leaving a field a later reader could
+   * mistake for authoritative. `eventTimestamp` below is the real input, and it
+   * is a fact the model extracts rather than a judgement it makes.
+   */
   whyTradersMayCare: nullableString,
   plausiblyExplainsMove: { type: ['boolean', 'null'] },
   confidence: { type: 'string', enum: CONFIDENCE },

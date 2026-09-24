@@ -126,9 +126,7 @@ in **which option it picks**.
 
 - **How a restart rebuilds `sessionHigh` — CLOSED.** Ops shipped `34414f4` (replay before the seed) and it is confirmed on real data: **0 of 1,825 rows read low** after the 2026-09-23 restart, against 1,481 of 7,936 on 09-18. **Not a ratio** — the second cohort is only the symbols replay can reach. Explained for him in `docs/manual/after-a-restart.html`.
 - **THREE THINGS WAIT ON HIS WORD, all small, none blocking:**
-  1. **Does anything change past 21 days?** He defined OLD as "2 up to 21 days", but anything past 21 lands in the same band, so **21 currently separates nothing** and is deliberately not implemented. Either drop it from the rule or build a real fourth state (its own value, colour and chip — Design's).
-  2. **Drop the model's `freshness` field from `schema.ts`?** Nothing reads it now. Saves tokens every interpretation call and retires the undefined-enum problem entirely.
-  3. **Remove `_windows` / `_claimed`** from `resolveCatalystFreshness` once Design's `why.ts` is on the two-argument form. They are accepted and ignored only so an in-flight caller keeps compiling.
+  1. **All three are RULED and done.** 2026-09-24: the 21-day line is **dropped — no fourth state**, everything two days or older is OLD; the model's dead `freshness` field is **out of the schema**; and `_windows`/`_claimed` are gone from `resolveCatalystFreshness`. Nothing in this group is outstanding.
 - **Phase C, filing-derived float** — buildable now. `assessFloat` (`float.ts:326`) already IS the containment test: `IMPOSSIBLE` when a claimed float exceeds a current filed count. **The vendor half is prohibited, not expensive** — see constraints.
 - **31 personal-scoped justifications in this file.** Integration counted 86 across nine charters. **Fix as each finding is touched**; a bulk rewrite of reasons is how a wrong reason gets a confident new sentence.
 - **`isCycleStart`'s move gate (high vs close)** — **WITHDRAWN, not open.** Unreproduced; QCLS never evidenced it either way.

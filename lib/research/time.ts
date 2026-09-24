@@ -325,11 +325,11 @@ export function catalystAge(
  * for them at all. A day band is answerable from a bare date. The data chose
  * the scheme.
  *
- * HIS 21 DAYS IS NOT IMPLEMENTED AS A BOUNDARY, DELIBERATELY. He put OLD at
- * "2 up to 21 days", and anything past 21 lands in the same band, so 21
- * currently separates nothing. A constant that changes no behaviour while
- * looking like a threshold is the shape this desk keeps finding, so it is left
- * out until there is a fourth state for it to divide.
+ * THERE IS NO 21-DAY BOUNDARY, AND THAT IS SETTLED RATHER THAN PENDING. He
+ * first said OLD ran "2 up to 21 days"; anything past 21 landed in the same
+ * band, so 21 separated nothing. **He dropped it on 2026-09-24 — no fourth
+ * state.** Everything two days or older is OLD. Recorded here so the number is
+ * not reintroduced later as a threshold it never was.
  *
  * A FUTURE DATE IS UNKNOWN, NOT FRESH -- an event claiming tomorrow is not
  * evidence of anything, and the old elapsed-time test read it as maximally
