@@ -233,6 +233,11 @@ MECHANISMS, not its facts.*
 >   Integration surfaces a needed restart to him; it does not authorize one.
 > - **Late-Sep prod snapshot (R&D's EX-99 first read): PRE-APPROVED** — read-only `research_sources`
 >   copy-down; Ops does it when R&D needs it without returning to him.
+> - **Invites / access grants (auth, D6 2026-09-24): his DIRECT word to the admin-agent, NOT
+>   Integration's to relay.** *An invite is a grant, and a granted user is access/cost —
+>   spend-adjacent, so it sits with spend and restarts, not with the production-writes Integration
+>   may relay. The invite-agent acts only on his explicit per-invite instruction: never a default,
+>   never a batch (Web's flag, and it is the authority-field concern in a new shape).*
 
 ### PRODUCTION
 
