@@ -255,10 +255,22 @@ the auth suite):
 - **`e03b7ef`** — `lib/auth/gate.ts` (`authenticate` = `resolveSession` +
   Ops's `isUserInvited` at `978f2f2`). Built but NOT wired — see below. 106 tests.
 
-**The auth logic layer is complete: config, start, callback, signout, gate.**
-Open Web pieces: the `/signin` screen (buildable now, ships behind Basic Auth),
-wiring the gate into `/desk` and `/api/*` (the sequenced step 2 — NOT now, see
-§3), and — deferred to the ship — filling the privacy placeholder. **The placeholder stays `[FLOW COOKIE
+- **`51dcca6`** — `/signin` screen, from the artboard in the app's tokens.
+  Verified live desktop + mobile (landmarks, list-of-one, button →
+  `/auth/start/google`, all links resolve, no console errors).
+
+**The Web surface is built: config, start, callback, signout, gate, /signin.**
+What remains is coordination and two polish items, not new surface:
+- **Step 2 — wire the gate into `/desk` and `/api/*`** (the coordinated
+  cut-over; NOT now, see §3). Integration orchestrates the checklist when he
+  schedules it: `/signin` + `/auth/*` nginx exemptions, box env/creds,
+  `IDENTITY_DB_PATH`, the live-proof method, Basic-Auth-off-last.
+- **Polish, deferred (both behind Basic Auth, so nothing is exposed):** the
+  callback's 400/503/500 responses currently have empty bodies — they need
+  minimal Web pages carrying the honest status; and `/signin` could show a "you
+  didn't finish signing in" note on `?e=cancelled` (the callback redirects
+  cancelled → `/signin`). Neither blocks the cut-over.
+- **The privacy placeholder** — filled at the ship, from the live cookie name. **The placeholder stays `[FLOW COOKIE
 NAME]` until sign-in reaches production:** the code sets `mointel_oauth`, but the
 live site does not yet (not deployed, `/auth/` not exempted, Basic Auth on), and
 the policy must not name a cookie the live service does not set — a user can
