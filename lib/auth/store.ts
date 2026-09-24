@@ -25,7 +25,7 @@ import Database from 'better-sqlite3';
 
 export type IdentityDatabase = Database.Database;
 
-export const IDENTITY_SCHEMA_VERSION = 2;
+export const IDENTITY_SCHEMA_VERSION = 3;
 
 export const DEFAULT_IDENTITY_PATH =
   process.env.IDENTITY_DB_PATH ?? path.join(process.cwd(), 'data', 'identity.db');
@@ -176,7 +176,8 @@ CREATE TABLE IF NOT EXISTS invited_emails (
   email      TEXT PRIMARY KEY,
   invited_at TEXT NOT NULL,
   invited_by TEXT,
-  revoked_at TEXT
+  revoked_at TEXT,
+  revoked_by TEXT
 );
 `;
 
@@ -463,6 +464,8 @@ export interface InvitedEmail {
   invitedAt: string;
   invitedBy: string | null;
   revokedAt: string | null;
+  /** Whose word withdrew it. A revocation with no attribution cannot be reviewed. */
+  revokedBy: string | null;
 }
 
 /**
@@ -494,9 +497,10 @@ export function inviteEmail(
      VALUES (?, ?, ?, NULL)
      ON CONFLICT(email) DO UPDATE SET invited_at = excluded.invited_at,
                                       invited_by = excluded.invited_by,
-                                      revoked_at = NULL`,
+                                      revoked_at = NULL,
+                                      revoked_by = NULL`,
   ).run(normalised, at, invitedBy);
-  return { email: normalised, invitedAt: at, invitedBy, revokedAt: null };
+  return { email: normalised, invitedAt: at, invitedBy, revokedAt: null, revokedBy: null };
 }
 
 /**
@@ -518,6 +522,7 @@ export function inviteEmail(
 export function revokeEmail(
   db: IdentityDatabase,
   email: string,
+  revokedBy: string | null = null,
   now: Date = new Date(),
 ): { revoked: boolean; sessionsEnded: number } {
   const normalised = normaliseEmail(email);
@@ -525,8 +530,10 @@ export function revokeEmail(
 
   const apply = db.transaction(() => {
     const result = db
-      .prepare('UPDATE invited_emails SET revoked_at = ? WHERE email = ? AND revoked_at IS NULL')
-      .run(at, normalised);
+      .prepare(
+        'UPDATE invited_emails SET revoked_at = ?, revoked_by = ? WHERE email = ? AND revoked_at IS NULL',
+      )
+      .run(at, revokedBy, normalised);
 
     const ended = db
       .prepare(
@@ -562,7 +569,8 @@ export function isEmailInvited(db: IdentityDatabase, email: string | null | unde
 export function listInvitedEmails(db: IdentityDatabase): InvitedEmail[] {
   return db
     .prepare(
-      `SELECT email, invited_at AS invitedAt, invited_by AS invitedBy, revoked_at AS revokedAt
+      `SELECT email, invited_at AS invitedAt, invited_by AS invitedBy,
+              revoked_at AS revokedAt, revoked_by AS revokedBy
          FROM invited_emails ORDER BY invited_at DESC`,
     )
     .all() as InvitedEmail[];
