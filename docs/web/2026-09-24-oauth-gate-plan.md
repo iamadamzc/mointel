@@ -141,6 +141,14 @@ From the charter, and each clause bought with reasoning already on file:
 
 ## 4. Design decisions to settle (surfaced, not decided unilaterally)
 
+> **SEAM DECISIONS SETTLED 2026-09-24 (Integration).** **D3: Web writes the
+> `/auth/*` route handlers** — the infra is Ops's, the handlers are Web's;
+> Integration is correcting the charter's "OAuth callbacks under Ops" line to
+> match. **D1, D4, D7 confirmed as recommended** — allowlist keyed by verified
+> email, gate in the Node runtime via one `requireSession()`, cookie
+> `mointel_oauth` with the privacy-policy name filled from code. **D2, D5, D6
+> remain his** and are with him now.
+
 **D1 — Allowlist keyed by EMAIL, identity keyed by SUB. These do not conflict.**
 The store deliberately keys *identity* on Google `sub` and warns against email as
 an identifier — that is about durable identity linking and stays as is. *Authorization*
