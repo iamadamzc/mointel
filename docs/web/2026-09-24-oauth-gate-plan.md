@@ -265,11 +265,11 @@ What remains is coordination and two polish items, not new surface:
   cut-over; NOT now, see §3). Integration orchestrates the checklist when he
   schedules it: `/signin` + `/auth/*` nginx exemptions, box env/creds,
   `IDENTITY_DB_PATH`, the live-proof method, Basic-Auth-off-last.
-- **Polish, deferred (both behind Basic Auth, so nothing is exposed):** the
-  callback's 400/503/500 responses currently have empty bodies — they need
-  minimal Web pages carrying the honest status; and `/signin` could show a "you
-  didn't finish signing in" note on `?e=cancelled` (the callback redirects
-  cancelled → `/signin`). Neither blocks the cut-over.
+- **Polish — DONE (`09f5fa4`), verified live.** The callback's 400/503/500
+  responses now render a self-contained styled page (no external requests)
+  carrying the honest status (`/auth/callback/google` → 500 with a real page,
+  confirmed on the wire); `/signin?e=cancelled` shows a calm note and the
+  callback redirects cancelled there. 111 auth tests.
 - **The privacy placeholder** — filled at the ship, from the live cookie name. **The placeholder stays `[FLOW COOKIE
 NAME]` until sign-in reaches production:** the code sets `mointel_oauth`, but the
 live site does not yet (not deployed, `/auth/` not exempted, Basic Auth on), and
