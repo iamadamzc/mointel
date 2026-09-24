@@ -210,7 +210,8 @@ export function withinActiveWindow(
  * So a bare date is taken AS the calendar date, never converted into an
  * instant. Only a value that genuinely carries a time is resolved to its ET day.
  */
-function eventEtDate(raw: string): string | null {
+export function eventEtDate(raw: string | null | undefined): string | null {
+  if (!raw) return null;
   const trimmed = raw.trim();
   if (trimmed.length === 0) return null;
 
@@ -236,6 +237,65 @@ function etDaysBetween(from: string, to: string): number | null {
   const b = Date.parse(`${to}T00:00:00Z`);
   if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
   return Math.round((b - a) / 86_400_000);
+}
+
+/**
+ * How old a catalyst is, AND AT WHAT PRECISION, which is the part a renderer
+ * cannot safely work out for itself.
+ *
+ * THE DEFECT THIS EXISTS FOR, measured 2026-09-24. `relativeAge` in `why.ts`
+ * ran `Date.parse` over the same `eventTimestamp`, and at 10:00 ET:
+ *
+ *     2026-09-24  (today)       rendered "14h"   <- hours that do not exist
+ *     2026-09-23  (yesterday)   rendered "2d"    <- off by one
+ *     2026-08-27  (28 days)     rendered "29d"   <- off by one
+ *
+ * Two faults in one call. Every bare date is a day early, so the age is
+ * inflated across the 200 of 260 rows that carry no clock; and a bare date
+ * rendered in HOURS invents a precision the source never stated.
+ *
+ * AND THE SECOND FAULT IS WHY THIS RETURNS A PRECISION RATHER THAN A NUMBER.
+ * "Can I say hours?" is exactly the question that was got wrong, and a caller
+ * handed only a day count or only an elapsed span has to re-derive it. Same
+ * rule as `DiscoveryQualification.observed`: the producer answers, because only
+ * the producer has looked at the raw value.
+ *
+ * `days` is the ET CALENDAR-DAY difference in both arms, deliberately the same
+ * quantity `resolveCatalystFreshness` bands on -- so the age a row shows and
+ * the badge it wears cannot disagree.
+ *
+ * Null when there is no usable date, or when the event claims the future.
+ */
+export type CatalystAge =
+  | { precision: 'CLOCK'; days: number; elapsedMs: number }
+  | { precision: 'DATE'; days: number };
+
+export function catalystAge(
+  eventTimestamp: string | null | undefined,
+  now: Date,
+): CatalystAge | null {
+  const eventDate = eventEtDate(eventTimestamp);
+  if (eventDate === null) return null;
+
+  const days = etDaysBetween(eventDate, etDateString(now));
+  if (days === null || days < 0) return null;
+
+  /*
+   * A bare calendar date states no time, so no clock is offered for it. The
+   * ET-wall-clock form is not treated as CLOCK either: its date is Eastern and
+   * its offset is not stated, so an exact elapsed span would be a guess.
+   */
+  const raw = (eventTimestamp ?? '').trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw) || /\sET$/i.test(raw)) {
+    return { precision: 'DATE', days };
+  }
+
+  const ms = Date.parse(raw);
+  if (!Number.isFinite(ms)) return { precision: 'DATE', days };
+
+  const elapsedMs = now.getTime() - ms;
+  if (elapsedMs < 0) return null;
+  return { precision: 'CLOCK', days, elapsedMs };
 }
 
 /**
@@ -288,16 +348,17 @@ export function resolveCatalystFreshness(
   _windows?: CatalystWindows,
   _claimed?: CatalystFreshness | null,
 ): CatalystFreshness {
-  if (!eventTimestamp) return 'UNKNOWN';
+  /*
+   * DERIVED FROM `catalystAge` SO THE TWO CANNOT DRIFT. Banding on the ET day
+   * alone called an event timed LATER TODAY `FRESH` -- 21:00 ET read at 10:00
+   * ET is the same calendar day and has not happened yet. `catalystAge` already
+   * refused it, so the two disagreed until this delegated.
+   */
+  const age = catalystAge(eventTimestamp, now);
+  if (age === null) return 'UNKNOWN';
 
-  const eventDate = eventEtDate(eventTimestamp);
-  if (eventDate === null) return 'UNKNOWN';
-
-  const days = etDaysBetween(eventDate, etDateString(now));
-  if (days === null || days < 0) return 'UNKNOWN';
-
-  if (days === 0) return 'FRESH';
-  if (days === 1) return 'RECENT';
+  if (age.days === 0) return 'FRESH';
+  if (age.days === 1) return 'RECENT';
   return 'STALE';
 }
 
