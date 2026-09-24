@@ -199,6 +199,22 @@ the relay rather than after.
 thread adding a hop between itself and the trader. Push those back to
 `## What I need from you` where he will see them.
 
+## RELAY THE DEFECT, NOT THE FIX SHAPE
+
+**Design's naming, 2026-09-24, after the third instance in one week.** A seat that finds a
+defect in another thread's file sees the defect clearly and cannot see the CONTEXT that file
+runs in. Three times a prescribed repair assumed a server context `why.ts` does not have:
+
+- **DCOY:** "move the `NO_CYCLE` return" would have read `arc.cycleHigh`, absent on that arm.
+- **`observed`:** the guard needed a PROJECTED boolean, not the raw timestamp the browser can't judge.
+- **FRESH prior-close:** the fix needed `previousTradingDate(db, …)`, and `resolveWhy` runs in
+  the browser (`'use client'`) with no store.
+
+Each ANALYSIS was right; each repair SHAPE was one layer off. **So when relaying a cross-thread
+fix: carry the defect and the evidence, and leave the fix shape to the owning seat** — it alone
+knows its file's runtime (browser / worker / server), its types, and what it can reach. A shape
+from the finding seat is a hypothesis; flag it as one, never relay it as the instruction.
+
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
 **AS OF 2026-09-22T09:59Z.** *Base rewritten whole by the ninth session; kept current by the
