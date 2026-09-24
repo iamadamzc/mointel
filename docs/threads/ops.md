@@ -11572,3 +11572,83 @@ SEQUENCE, if this seat is not the one that runs it
 ```
 
 **Do not report the plural maps as proven until step 6 returns a number.**
+
+## THE AUTH BUILD, OPS'S HALF — 2026-09-24
+
+**His ruling: Google sign-in plus an invited-email allowlist, passwordless, where
+invite and revoke mean adding and removing an email.** *Integration settled the
+seam (D3): Web writes the `/auth/*` route handlers; this seat owns nginx, the
+env, the box and the allowlist store. Far more of `lib/auth/` already existed
+than the open item implied — the whole OAuth dance, on the `openid email
+profile` scopes he approved.*
+
+```
+1a8c324   the identity landmine       DONE
+d9e759b   the allowlist store         DONE
+60d4f69   the agent-invokable admin   DONE
+978f2f2   isUserInvited, the gate read DONE
+          seed the first address      HIS WORD, outstanding
+          auth_basic off              LAST, gated on a PROVEN refusal
+```
+
+### The landmine, and why it was unrecoverable rather than merely wrong
+
+**`IDENTITY_DB_PATH` was unset, so accounts defaulted to
+`process.cwd()/data/identity.db` with `WorkingDirectory=/opt/mointel/current` —
+inside the release `prune.sh` removes with `rm -rf`.** *The first user survives
+one deploy and is deleted by the second.* **What made it silent was that
+`openIdentityStore` mkdir'd that path and could not fail.** Now: the env carries
+the path beside `MARKET_DB_PATH`, stripped from `.env.local` so a dev value
+cannot reach the server, and the store REFUSES a path with a `releases` segment
+before it creates anything. *It refuses the PLACE, not the absence of a setting
+— an explicit path into a release is exactly as wrong as a defaulted one.*
+
+### Two silent fail-closed traps in the gate read, each caught by checking
+
+> **A GATE BROKEN SO THAT IT REFUSES EVERYONE IS INDISTINGUISHABLE FROM A GATE
+> CORRECTLY REFUSING EVERYONE — and it generates no bug report, because nobody
+> files one against a desk that is merely "not open yet".**
+
+- **`i.email_verified = 1` is only right if the column holds literally 1.**
+  *Verified, not assumed: `verifiedFlag()` returns 1, 0 or null. A JS boolean or
+  a string there and the join matches NOBODY.*
+- **The invited side is stored folded; the identity side arrives raw from
+  Google.** *Folding one side only also matches nobody. `lower(trim(i.email))`.*
+
+**Both were mutation-proven with the count predicted first: dropping the
+verified requirement kills exactly the two verification tests; folding one side
+kills exactly the case test.**
+
+### What the D6 guardrail is, and what it is not
+
+**Web's objection is right — an agent that grants desk access is an agent that
+can effectively spend his money. But a check inside a script cannot enforce
+that, because the agent runs the script: a check it can see is a check it can
+pass.**
+
+```
+ENFORCED IN scripts/allowlist.ts      one address per invocation; no wildcard;
+                                      --authority required, rejected when blank
+                                      AND when it is the word "authority";
+                                      default deny; soft deletes
+NOT ENFORCEABLE IN CODE               whether the agent actually had his word
+```
+
+**That last line lives on the authority list beside spend, restarts and
+credential entry.** *A guardrail believed to be technical when it is procedural
+is worse than an honestly procedural one: it buys confidence without buying
+safety.*
+
+### Decisions that are policy, and therefore live with the schema
+
+**`isUserInvited(db, userId)` holds three, each of which would otherwise have
+been decided in Web's gate by a seat that does not own this schema:** *only a
+verified address counts (NULL is not verified); ANY verified invited address
+admits rather than all, so linking a second Google account does not revoke you;
+and revoked and never-invited give the SAME answer, because a different one
+would tell an uninvited caller which addresses exist.*
+
+**`revoked_by` was added an hour after the store, on finding the revoking
+authority was printed and then discarded.** *"Who let this person in" and "who
+took it away" are the same question asked twice; a row answering only the first
+is half an audit.*
