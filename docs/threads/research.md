@@ -52,13 +52,13 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-21T09:40Z
+## LIVE STATE — 2026-09-24T14:50Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
 a new chat"; read nothing marked ARCHIVE front to back.*
 
-### SHIPPED, tested, on `main` — suite 2,183 across 145 files
+### SHIPPED, tested, on `main` — suite 2,335 across 153 files
 
 | sha | what |
 | --- | --- |
@@ -67,7 +67,22 @@ a new chat"; read nothing marked ARCHIVE front to back.*
 | `e48a2ca` | **The cycle verdict reaches the board**, in the all-sessions frame. `CycleHistory.todayStart`; `overlayLiveCycle` computes it from today's stored minute bars with `max(session_high, ah_high)` as the auditor. |
 | `dbd70d1` | **The interpreter prompt no longer says a human reviewed the prior.** `PRIOR_MODEL_ANALYSIS`; `humanConclusion` renamed. No human has ever written or reviewed the Sheet. |
 | `410f750` | **The high is tested as an INTERVAL** — a coverage gap only matters if it straddles the threshold. Fixed a guard that refused 75% of the top 12. |
-| `0821781` | **`dailyBarAdjustment` reads the vintage, not just the label.** Every row is labelled `'split'`, so the old test had no reachable path to null. |
+| `0821781` | **`dailyBarAdjustment` reads the vintage, not just the label.** Every row is labelled `'split'`, so the old test had no reachable path to null. **Superseded by `27adbbd`.** |
+
+### SHIPPED 2026-09-22..24 — the catalyst-freshness and basis work
+
+| sha | what |
+| --- | --- |
+| `3570114` | **`catalystAge` returns the day count AND its precision.** `relativeAge` ran `Date.parse` over bare dates, rendering today's as `"14h"`, yesterday's as `"2d"` and a 28-day-old one as `"29d"`. `resolveCatalystFreshness` now derives from it, which also fixed an inconsistency where an event timed later today banded FRESH. |
+| `d16dd14` | **Freshness is his ET calendar bands** — today FRESH, yesterday RECENT, two days or more STALE. His ruling 2026-09-24. Days rather than hours **because 77% of stored event timestamps carry no clock**. |
+| `fadfe17` | A disproven FRESH goes to **STALE**, his ruling — that is what renders `no fresh news`. |
+| `f224f3d` | **Freshness stopped being the model's word.** `schema.ts:91` declares the enum with no description and the prompt never defined it. The write side NORMALISES rather than flags: flagging would have moved 16% of dossiers to PARTIAL. |
+| `0a1bdb7` | **`BACKSIDE_RETRACEMENT` and `SUPERRUNNER_ADVANCE` re-derived in the all-sessions frame; both HELD.** FRAME WARNINGS gone. Backside's recovery cliff sits at 0.5 in both frames and is sharper in all-sessions (40%→10%). Superrunner's 90th moves 307%→305%, and at n=68 its 95% interval [218%, 441%] contains 200%. |
+| `6e224ca` | A store without `split_factor` falls back to the vintage refusal instead of throwing — `readModel` opens `{ readonly, skipSchema }` and skips the migration. |
+| `b36afd1` | **The blue-sky refusal names its own cause.** It said "not split-adjusted" when every row is. |
+| `27adbbd` | **`dailyBarBasis`** — two fetch dates are not two bases. A split factor can only fall as the date advances; a rise is the stale-vintage signature. |
+| `f3375af` | **`DiscoveryQualification.observed`** — projects `anchorObservable`, so Design's `STARTED 5AM` cannot print an hour that is an artefact of when the process started. |
+| `ea2d1c9` | An exhibit inherits its parent's precision. 878 of 878 claimed a derived time over a bare date. |
 | `622e23f` | `todaySoFarFromBars` — the provisional bar's pair comes from ONE stored minute, with `session_high` demoted to an auditor. |
 | `90cb557` | `vwap.ts` restart table recast on the CONDITION (which session made the high), with the premarket hole and its measurements. |
 
@@ -77,7 +92,7 @@ a new chat"; read nothing marked ARCHIVE front to back.*
 | --- | --- |
 | `docs/Jev_For_News_Analysis.md` | The fit is **cadence, not judgment quality** — `config.ts:26` says discovery costs a model call so it is spaced wide, which is why a moving name reads `CATALYST UNKNOWN`. **Probe run 2026-09-21: 227 documents, mean recall@half 0.790 against the 0.80 I stated first — FAILED. 13.0s/ticker, $0.011.** Four of ten tickers perfect; RCON 0.40 because all 17 of its candidates are SEC filings and its catalyst is registration mechanics, which announcement-shaped questions rank down by design. |
 | `docs/Jev_Tape_Research_Harness_REVIEW.md` | **Read the amendment first.** `A:\jev-test\CLAUDE.md` says under Do-not: *"Feed Jev price series, bar data, dates or arithmetic. It fails all of these by design."* Track A closed the harness's arm A at **-0.005 AUC against a +0.02 kill criterion**. Tape is another project's; this doc exists so nobody re-opens it here. |
-| `docs/Wire_Feed_Collector_SCOPE.md` | **Read "STEP 1 CHANGED SHAPE".** PR Newswire's terms bar robots, scraping and commercial use; their RSS page routes to a licence. **But 669 of 878 stored exhibits ARE press releases** (EX-99, public domain), so the gap is LATENCY — and **1 of 3,253 filing rows has an exact timestamp**, so the latency is unmeasurable. Persisting `acceptanceDateTime` is free and decides whether a licence is worth buying. |
+| `docs/Wire_Feed_Collector_SCOPE.md` | **Read "STEP 1 CHANGED SHAPE".** PR Newswire's terms bar robots, scraping and commercial use; their RSS page routes to a licence. **But 669 of 878 stored exhibits ARE press releases** (EX-99, public domain), so the gap is LATENCY. **The "1 of 3,253 filing rows has an exact timestamp" line is NOT evidence of a defect** — every row in that store predates `b1d64b9`, which added the timestamp-reading code, so it had no post-change arm and could not have returned another number. The measurement is forward-looking; see the EX-99 hazard below. |
 
 **Operational, from `A:\jev-test\CLAUDE.md` — adopt, do not rediscover:** pin
 `jev-1.13.0`; no seed parameter, so cache by `sha256(model‖state‖questions)`; the
@@ -104,12 +119,16 @@ in **which option it picks**.
 **`b1d64b9` and `ea2d1c9` are ancestors of BOTH releases**, so the EDGAR filing-path check and R&D's EX-99 latency measurement are unblocked wherever they run.
 
 - **`daily_bars.split_factor` EXISTS in production (schema v22).** So the blue-sky basis fix is not sitting on its missing-column fallback.
-- **`worker/basis-backfill.ts --run` has NEVER been run.** Census: **431 due, 562 established.** The ~27% recovery is inert until it runs — **his call, after the close.** Two Alpaca REST calls per ticker, so ~862, read-only against the vendor and writing only `daily_bars`.
+- **`worker/basis-backfill.ts --run` will NOT be run — he chose ORGANIC FILL** (`8f331ed`, 2026-09-22). The ~27% blue-sky recovery arrives gradually through `basisFetchDue` on the research job path instead of in one backfill. Census at the time: 431 due, 562 established. **Do not propose the `--run` again without new reason.**
 - **The restart fix is confirmed on real data: 0 of 1,825 rows read low** after the 2026-09-23 restart, cohort restricted to symbols WITH stored premarket bars. **Not a ratio against 1,481 of 7,936** — that was every name on the board, this is only the names replay reaches.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
-- **How a restart rebuilds `sessionHigh`** — **waits on him.** Measured 2026-09-18: a 21:05Z restart left **1,481 of 7,936 rows** carrying a high below the one that printed, and **1,160 of those highs printed in PREMARKET**. Cause: the rebuild draws `dailyBar.h` (09:30–16:00, all symbols), an after-hours reconstruction (16:00+, only once RTH closed), and a focused minute backfill from 04:00 covering **200 names plus pins** — so premarket is recovered for the focused set and nobody else. Options: replay the stored minute bars, widen the focused set, or seed nothing and say UNKNOWN. **Nothing is built.** `sessionLow` has the mirror defect.
+- **How a restart rebuilds `sessionHigh` — CLOSED.** Ops shipped `34414f4` (replay before the seed) and it is confirmed on real data: **0 of 1,825 rows read low** after the 2026-09-23 restart, against 1,481 of 7,936 on 09-18. **Not a ratio** — the second cohort is only the symbols replay can reach. Explained for him in `docs/manual/after-a-restart.html`.
+- **THREE THINGS WAIT ON HIS WORD, all small, none blocking:**
+  1. **Does anything change past 21 days?** He defined OLD as "2 up to 21 days", but anything past 21 lands in the same band, so **21 currently separates nothing** and is deliberately not implemented. Either drop it from the rule or build a real fourth state (its own value, colour and chip — Design's).
+  2. **Drop the model's `freshness` field from `schema.ts`?** Nothing reads it now. Saves tokens every interpretation call and retires the undefined-enum problem entirely.
+  3. **Remove `_windows` / `_claimed`** from `resolveCatalystFreshness` once Design's `why.ts` is on the two-argument form. They are accepted and ignored only so an in-flight caller keeps compiling.
 - **Phase C, filing-derived float** — buildable now. `assessFloat` (`float.ts:326`) already IS the containment test: `IMPOSSIBLE` when a claimed float exceeds a current filed count. **The vendor half is prohibited, not expensive** — see constraints.
 - **31 personal-scoped justifications in this file.** Integration counted 86 across nine charters. **Fix as each finding is touched**; a bulk rewrite of reasons is how a wrong reason gets a confident new sentence.
 - **`isCycleStart`'s move gate (high vs close)** — **WITHDRAWN, not open.** Unreproduced; QCLS never evidenced it either way.
@@ -122,6 +141,10 @@ in **which option it picks**.
 - **Both frames must be built from the ONE hourly file**, never paired with `daily_bars`. The file was fetched 2026-09-17 and the daily rows in August; 19 of 75 symbols had corporate actions in-window, and that cross-vintage pairing produced an arithmetically impossible row (an all-sessions high *below* the RTH high) before it was abandoned.
 
 ### HAZARDS A FRESH SESSION MUST KNOW
+
+- **`Date.parse` ON AN `eventTimestamp` AGES IT BY A DAY.** **200 of the 260 stored values are bare dates** like `2026-08-17`, and `Date.parse` reads those as midnight UTC, which is **20:00 ET the previous day**. Anything computing an age or a band from them skews one day stale. Use `catalystAge` / `eventEtDate` (`lib/research/time.ts`); never `Date.parse`. The stored data also holds ET wall clocks (`2026-08-16 20:00:00 ET`) whose `Date.parse` behaviour is implementation-defined and whose offset is not stated — those get DATE precision, not CLOCK.
+- **The EX-99 latency measurement is FORWARD-LOOKING and the existing 878 exhibits can never answer it.** `research_sources` inserts are `INSERT OR IGNORE` and nothing updates `published_at`/`published_precision`, so stored rows are frozen. A fresh snapshot does not help. The measurable population is EX-99 exhibits whose **parent filing row** was inserted after `b1d64b9` — and exhibits inherit from the **stored** parent, which is frozen too. Partition on whether `published_at` carries a clock, not on the precision label.
+- **Build both cycle frames from the ONE hourly file**, never paired with `daily_bars`. The file was fetched 2026-09-17, those rows in August, and 19 of 75 symbols had corporate actions in-window; the cross-vintage pairing produced an arithmetically impossible row (an all-sessions high *below* the RTH high).
 
 - **`daily_bars.high` is 09:30–16:00 plus the closing cross.** Premarket excluded 18–0, evening excluded, 0 of 121 discriminating rows premarket-inclusive. **The same bar's VOLUME is not RTH-only** (3 of 2,747 rows, 0.1%) — one bar, two windows, and `bootstrapSession`'s docstring cites the volume property right where the high is also taken.
 - **Today is not in the cycle input.** `readDailyBars` defaults to `unfinished: 'EXCLUDE'`, so a name up 270% right now is judged as of yesterday. This is the QCLS mechanism (incident `ops.md:10297`, 2026-09-16) and what `e48a2ca` supplies.
