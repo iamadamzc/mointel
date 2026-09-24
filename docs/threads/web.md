@@ -92,7 +92,7 @@ a page built to satisfy it.**
 |---|---|
 | **Web** | **Everything a stranger sees.** The public surface of `tmitrader.com`: the signed-out landing page, `/privacy`, `/terms`, and the sign-in screen — its provider buttons, its error and refusal copy, and the seconds before the click. The public design system and brand. |
 | **Design** | **Everything a signed-in trader sees.** The board, Discovery, Researched Names, the Move family, sparklines, `components/`. **The signed-in affordance is Design's** — the boundary is authentication, not the file tree. |
-| **Ops** | **The carriage.** Routes, `nginx`, TLS, sessions, cookies, OAuth callbacks, the identity store. **Nothing rendered.** |
+| **Ops** | **The carriage.** `nginx`, TLS, env, the box, session/cookie infra, the `lib/auth` primitives, OAuth `state`/`nonce`, the identity store, the allowlist store. **The `/auth/*` route HANDLERS are WEB's** (user-facing compositions of Ops's primitives — status codes and refusal copy); Ops owns everything under them. Settled 2026-09-24 (D3), and both seats already read it this way. **Nothing rendered.** |
 | **Commercial** | **Positioning and the name.** `TMI Trader` / `True Move Intelligence` / *"Intelligence on what's moving."* — **settled at his direction, and not yours to restyle into something else.** |
 | **the trader** | **Adopting the legal text.** You draft it; **he adopts it.** |
 
