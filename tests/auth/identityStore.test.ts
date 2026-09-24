@@ -229,3 +229,48 @@ describe('what a session records about entitlement', () => {
     db.close();
   });
 });
+
+/*
+ * THE STORE MUST REFUSE A RELEASE DIRECTORY, AND THE OLD FAILURE WAS SILENT.
+ *
+ * Unset, IDENTITY_DB_PATH defaults to `cwd/data/identity.db`, and the services
+ * run with WorkingDirectory=/opt/mointel/current -- so accounts landed inside
+ * the release that prune.sh removes with `rm -rf`. `openIdentityStore` mkdir'd
+ * that path and could not fail, so the first user survived one deploy and was
+ * deleted by the second with nothing reporting it.
+ *
+ * The guard refuses the PLACE, not the absence of a setting: an explicit path
+ * into a release is exactly as wrong as a defaulted one.
+ */
+describe('where the identity store refuses to live', () => {
+  it('refuses a path inside a release directory', () => {
+    const doomed = path.join(
+      fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-rel-')),
+      'releases',
+      'a9df2809dec6',
+      'data',
+      'identity.db',
+    );
+    expect(() => openIdentityStore(doomed)).toThrow(/release directory/i);
+  });
+
+  it('creates nothing when it refuses', () => {
+    /* The mkdir is what made the old failure invisible; a refusal that still
+     * created the directory would leave the same litter behind. */
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-rel-'));
+    const doomed = path.join(root, 'releases', 'abc123', 'data', 'identity.db');
+    expect(() => openIdentityStore(doomed)).toThrow();
+    expect(fs.existsSync(path.dirname(doomed))).toBe(false);
+  });
+
+  it('accepts a path outside one, so the guard is not simply refusing everything', () => {
+    const fine = path.join(
+      fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-ok-')),
+      'data',
+      'identity.db',
+    );
+    const db = openIdentityStore(fine);
+    expect(fs.existsSync(fine)).toBe(true);
+    db.close();
+  });
+});

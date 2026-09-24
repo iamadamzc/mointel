@@ -32,7 +32,7 @@ cd "$ROOT"
 
 # Everything from .env.local, minus the settings that describe a Windows
 # development machine rather than the application.
-LOCAL_ENV="$(grep -v '^\s*#' .env.local | grep -v '^\s*$' | grep -vE '^(MARKET_DB_PATH|MOINTEL_DASHBOARD_URL|NODE_ENV)=' || true)"
+LOCAL_ENV="$(grep -v '^\s*#' .env.local | grep -v '^\s*$' | grep -vE '^(MARKET_DB_PATH|IDENTITY_DB_PATH|MOINTEL_DASHBOARD_URL|NODE_ENV)=' || true)"
 
 # Alpaca credentials live outside .env.local on the development machine: the
 # loader accepts a root-level text file, which is what Alpaca's key dialog
@@ -75,6 +75,19 @@ NODE_ENV=production
 # so a deploy or a rollback cannot take the desk's history with it.
 MARKET_DB_PATH=/var/lib/mointel/market.db
 # Schema backups are written next to the store, in /var/lib/mointel/backups.
+
+# The identity store, for the same reason and with a sharper edge.
+#
+# Unset, it defaults to `process.cwd()/data/identity.db` -- and the services run
+# with WorkingDirectory=/opt/mointel/current, so accounts would be written INSIDE
+# the release directory that prune.sh removes (prune.sh:102, `rm -rf`). The first
+# user's account would survive one deploy and be deleted by the second, silently:
+# `openIdentityStore` mkdirs that path without erroring, so nothing would report
+# it at any point.
+#
+# Set here rather than in .env.local, and stripped from the local file above, so
+# a development value cannot reach the server and put it back.
+IDENTITY_DB_PATH=/var/lib/mointel/identity.db
 
 # The market worker reads TODAY-sheet tickers from the dashboard rather than
 # holding Google credentials itself. Loopback, so it never meets Basic Auth.
