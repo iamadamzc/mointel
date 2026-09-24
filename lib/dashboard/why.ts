@@ -12,7 +12,11 @@
  */
 
 import type { DeskRow } from '@/lib/dashboard/merge';
-import { DEFAULT_CATALYST_WINDOWS, resolveCatalystFreshness } from '@/lib/research/time';
+import {
+  DEFAULT_CATALYST_WINDOWS,
+  catalystAge,
+  resolveCatalystFreshness,
+} from '@/lib/research/time';
 import type { CatalystFreshness } from '@/lib/research/types';
 
 export type WhyCode =
@@ -62,16 +66,38 @@ const DAY = 24 * HOUR;
  * Never a raw ISO timestamp, and never in UTC. A catalyst's age is the whole
  * question; making somebody subtract two timestamps to find it is the defect.
  */
+/**
+ * How old the catalyst is, at the precision the source actually stated.
+ *
+ * THIS READ `Date.parse` ON EVERY TIMESTAMP, AND 77% OF THEM CARRY NO TIME OF
+ * DAY. A bare calendar date is stored at noon UTC so it lands on the right ET
+ * day; reading that back as an instant invents a clock the source never gave.
+ * So a date-only catalyst from yesterday rendered `16h` -- precision from a
+ * storage convention -- and the same row at another hour rendered `2d`, which
+ * is a different DAY from the one the desk banded it into.
+ *
+ * HIS BANDS MADE THAT A VISIBLE CONTRADICTION rather than a quiet inaccuracy:
+ * a yesterday bare date derives RECENT, and an age reading `2d` beside it says
+ * OLD. On the majority of rows, the moment the bands ship.
+ *
+ * SO THE DAY COUNT COMES FROM THE ET CALENDAR, always, and hours are offered
+ * only where a clock exists. `catalystAge` is the one implementation -- the
+ * same seam as `resolveCatalystFreshness`, so the age and the band cannot
+ * disagree about which day an event fell on.
+ *
+ * `today` RATHER THAN `0d`, because zero days is not how anyone says it and a
+ * bare date from this morning is exactly the row he is looking for.
+ */
 export function relativeAge(at: string | null | undefined, nowMs: number): string | null {
-  if (!at) return null;
-  const ms = Date.parse(at);
-  if (!Number.isFinite(ms)) return null;
+  const age = catalystAge(at, new Date(nowMs));
+  if (age === null) return null;
 
-  const elapsed = nowMs - ms;
-  if (elapsed < 0) return null;
-  if (elapsed < HOUR) return `${Math.max(1, Math.round(elapsed / MINUTE))}m`;
-  if (elapsed < DAY) return `${Math.round(elapsed / HOUR)}h`;
-  return `${Math.round(elapsed / DAY)}d`;
+  if (age.precision === 'CLOCK') {
+    if (age.elapsedMs < HOUR) return `${Math.max(1, Math.round(age.elapsedMs / MINUTE))}m`;
+    if (age.elapsedMs < DAY) return `${Math.round(age.elapsedMs / HOUR)}h`;
+  }
+
+  return age.days === 0 ? 'today' : `${age.days}d`;
 }
 
 /** ET wall clock for the tooltip and the drawer. Never a UTC ISO string. */

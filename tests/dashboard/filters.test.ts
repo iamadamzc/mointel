@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import { buildDeskRow } from '@/lib/dashboard/merge';
-import { resolveWhy } from '@/lib/dashboard/why';
+import { relativeAge, resolveWhy } from '@/lib/dashboard/why';
 import { DEFAULT_FILTERS, rowMatchesFilters, type FilterState } from '@/lib/dashboard/view';
 import { normalizeSheetRows } from '@/lib/data/rows';
 import type { AutoIntelligence } from '@/lib/research/view';
@@ -61,7 +61,22 @@ function etDaysAgo(days: number): string {
     month: '2-digit',
     day: '2-digit',
   }).format(new Date());
-  return new Date(Date.parse(`${et}T16:00:00Z`) - days * 86_400_000).toISOString();
+  /*
+   * A BARE DATE, WHICH IS ALSO WHAT 77% OF STORED EVENT TIMESTAMPS ARE.
+   *
+   * A first pass returned an instant at 16:00Z — midday in both EDT and EST,
+   * chosen so no fixture could straddle an ET day boundary. It straddled a
+   * different one: before noon ET that instant is in the FUTURE, and a future
+   * event is correctly UNKNOWN rather than FRESH. Six tests passed at the hour
+   * I wrote them and failed at 14:42Z the same day.
+   *
+   * A bare date has no clock to be ahead of. It cannot be future-dated by the
+   * time of day the suite happens to run at, and it exercises the shape most
+   * of the real data has.
+   */
+  return new Date(Date.parse(`${et}T12:00:00Z`) - days * 86_400_000)
+    .toISOString()
+    .slice(0, 10);
 }
 
 /** The ET calendar day each band lives on. */
@@ -541,4 +556,76 @@ describe('the bands themselves, on the ET calendar', () => {
     expect(rowMatchesFilters(discoveryRowOn(0), filters({ catalyst: 'FRESH' }))).toBe(true);
     expect(rowMatchesFilters(discoveryRowOn(1), filters({ catalyst: 'FRESH' }))).toBe(false);
   });
+});
+
+describe('the age and the band cannot disagree about which day it was', () => {
+  /*
+   * Research's ship-blocker, found before the batch went out. `relativeAge`
+   * read `Date.parse` on every timestamp, and 77% of stored event timestamps
+   * carry no time of day — a bare date is stored at noon UTC so it lands on
+   * the right ET day, and reading that back as an instant invents a clock.
+   *
+   * His bands turned that from a quiet inaccuracy into a visible contradiction:
+   * a yesterday bare date derives RECENT while the age beside it rendered
+   * `2d`, which reads OLD. On the majority of rows, the moment the bands ship.
+   */
+  it('renders a DAY count for a bare date, never an hour', () => {
+    // `16h` on a date-only source is precision from a storage convention.
+    expect(relativeAge(etDaysAgo(1), Date.now())).toBe('1d');
+    expect(relativeAge(etDaysAgo(3), Date.now())).toBe('3d');
+    expect(relativeAge(etDaysAgo(1), Date.now())).not.toMatch(/h$/);
+  });
+
+  it('says today rather than 0d, because nobody says zero days', () => {
+    expect(relativeAge(etDaysAgo(0), Date.now())).toBe('today');
+  });
+
+  it('agrees with the band on the same row, which is the whole point', () => {
+    const table = [
+      { days: 0, age: 'today', band: 'FRESH' },
+      { days: 1, age: '1d', band: 'RECENT' },
+      { days: 2, age: '2d', band: 'STALE' },
+    ] as const;
+
+    for (const row of table) {
+      expect(relativeAge(etDaysAgo(row.days), Date.now())).toBe(row.age);
+      expect(resolveWhy(discoveryRowOnDay(row.days)).freshness).toBe(row.band);
+    }
+  });
+
+  it('still offers hours where a real clock exists', () => {
+    // The control. A fix that dropped hour precision everywhere would pass the
+    // three tests above and lose the one thing an exact timestamp is for.
+    const twoHoursAgo = new Date(Date.now() - 2 * 3600_000).toISOString();
+    expect(relativeAge(twoHoursAgo, Date.now())).toBe('2h');
+  });
+
+  function discoveryRowOnDay(days: number) {
+    const intel = {
+      ticker: 'HOWL',
+      state: 'ACCEPTED',
+      generatedAt: new Date().toISOString(),
+      coverageIncomplete: false,
+      analysis: {
+        dossier: {
+          ticker: 'HOWL',
+          catalyst: {
+            catalystGrade: 'STRONG',
+            catalystStatus: 'FRESH_FOUND',
+            freshness: 'FRESH',
+            confidence: 'HIGH',
+            summary: 'Something happened.',
+            whyTradersMayCare: null,
+            eventTimestamp: etDaysAgo(days),
+            plausiblyExplainsMove: false,
+            unknowns: [],
+            citations: [],
+          },
+          structure: { structureClassification: 'CLEAN', supplyLedger: [], structuralWarnings: [] },
+          cycle: { cycleClassification: 'UNKNOWN' },
+        },
+      },
+    } as unknown as AutoIntelligence;
+    return buildDeskRow('HOWL', null, null, null, intel);
+  }
 });
