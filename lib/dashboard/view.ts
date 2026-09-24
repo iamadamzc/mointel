@@ -112,41 +112,20 @@ export function isFilterActive(filters: FilterState): boolean {
   );
 }
 
-export function applyFilters(
-  tickers: MomentumTicker[],
-  filters: FilterState,
-  cyclePhase?: CyclePhaseLookup,
-): MomentumTicker[] {
-  const search = filters.search.trim().toUpperCase();
-
-  return tickers.filter((ticker) => {
-    if (search && !ticker.ticker.includes(search)) return false;
-
-    if (filters.priority !== 'ALL' && ticker.priority.bucket !== filters.priority) return false;
-
-    if (filters.cycle !== 'ALL') {
-      // A name whose cycle has not been computed is not "not matching" — it is
-      // unknown. Excluding it is still right, because the filter asks for a
-      // phase and this row cannot be said to be in one.
-      const phase = cyclePhase?.(ticker.ticker) ?? null;
-      if (phase !== CYCLE_FILTER_PHASE[filters.cycle]) return false;
-    }
-
-    if (filters.structure !== 'ALL') {
-      const state = ticker.structure.state;
-      if (filters.structure === 'DIRTY' && state !== 'DIRTY_FLOAT') return false;
-      if (filters.structure === 'UNKNOWN' && state !== 'UNKNOWN_STRUCTURE') return false;
-      if (
-        filters.structure === 'OTHER' &&
-        (state === 'DIRTY_FLOAT' || state === 'UNKNOWN_STRUCTURE')
-      ) {
-        return false;
-      }
-    }
-
-    return true;
-  });
-}
+/*
+ * `applyFilters` WAS HERE AND IS DELETED, WHICH CLOSES A HAZARD I CREATED.
+ *
+ * It took `MomentumTicker[]` and filtered structure on `ticker.structure.state`
+ * while `rowMatchesFilters` filters it on `resolveRisk(row).code`. Both ran
+ * over the watchlist because the Discovery fix LAYERED the new predicate on
+ * top of the old one instead of replacing it — so the watchlist was showing
+ * the INTERSECTION of two different definitions of the same filter, and a row
+ * could be visible on Discovery and hidden below it.
+ *
+ * Nobody would have seen that as a bug; it reads as "the filter is stricter
+ * here". One predicate over both tables is the only version that cannot
+ * develop an opinion about which table you are looking at.
+ */
 
 /** Parsed numbers sort numerically; unparsed/Unknown values always sort last. */
 function compareNumeric(a: number | null, b: number | null, direction: SortDirection): number {
@@ -576,6 +555,21 @@ export function rowMatchesFilters(
 ): boolean {
   const search = filters.search.trim().toUpperCase();
   if (search && !row.ticker.includes(search)) return false;
+
+  if (filters.priority !== 'ALL') {
+    /*
+     * HIS RULING, 2026-09-23: a selected priority HIDES non-matching rows,
+     * Discovery included — "a filter should filter".
+     *
+     * Priority is a Sheet judgement, so a Discovery name without a sheet row
+     * has no bucket and matches no letter. That is the ruling working rather
+     * than a gap: selecting A means "show me the names I rated A", and a name
+     * nobody rated is not one of them. The alternative — leaving unrated rows
+     * on screen under a priority filter — is the same lie the fresh-catalyst
+     * chip was telling.
+     */
+    if (row.research?.priority.bucket !== filters.priority) return false;
+  }
 
   if (filters.cycle !== 'ALL') {
     const phase = cyclePhase?.(row.ticker) ?? null;

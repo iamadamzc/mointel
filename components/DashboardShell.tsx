@@ -18,7 +18,6 @@ import { dedupeSheetRows, mergeDesk } from '@/lib/dashboard/merge';
 import {
   DEFAULT_FILTERS,
   DEFAULT_SORT,
-  applyFilters,
   rowMatchesFilters,
   isFilterActive,
   selectFocusRows,
@@ -272,17 +271,18 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   );
 
   /*
-   * ONE PREDICATE FOR BOTH TABLES.
+   * ONE PREDICATE, BOTH TABLES, NO SECOND OPINION.
    *
-   * `applyFilters` still owns PRIORITY and the ticker search, because priority
-   * is a Sheet judgement that exists only on these rows. Everything a DESK ROW
-   * can answer — freshness, grade, structure, cycle — is asked through
-   * `rowMatchesFilters`, so the researched table and Discovery cannot filter
-   * to different populations. They did: one was filtered and one was not.
+   * This used to run `applyFilters` over the sheet tickers AND
+   * `rowMatchesFilters` over their rows — the Discovery fix layered the new
+   * predicate on the old one instead of replacing it. The two disagreed about
+   * structure (sheet field versus the risk cell), so the watchlist quietly
+   * showed the INTERSECTION and a row could be visible above and hidden below.
+   * `applyFilters` is gone; every filter decision is now one function.
    */
   const filtered = useMemo(
     () =>
-      applyFilters(tickers, filters, cyclePhase).filter((ticker) => {
+      tickers.filter((ticker) => {
         const row = merged.rows.get(ticker.ticker);
         // `mergeDesk` builds a row for every sheet ticker, so this is a
         // guarantee rather than a fallback — and excluding on its absence
@@ -293,23 +293,17 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   );
 
   /*
-   * THE FILTERS REACH DISCOVERY NOW, WHICH THEY NEVER DID.
+   * THE FILTERS REACH DISCOVERY, WHICH THEY NEVER DID BEFORE `09593a0`.
    *
-   * `applyFilters` takes sheet tickers, so it could only ever act on the
-   * researched table — a lit chip changed nothing on the board above it. He
-   * described it precisely: "when I click fresh catalyst nothing happens ...
-   * certainly not non-green falling off the screen", and noticed the SCROLLBAR
-   * move, which was the researched table below quietly filtering.
-   *
-   * PRIORITY IS DELIBERATELY NOT APPLIED HERE. A/B/C is a Sheet judgement and
-   * Discovery names do not have one, so a priority filter would empty the
-   * board — correct or surprising depending on a product call he has not made
-   * yet. Left alone rather than guessed: see `docs/threads/design.md`.
+   * Same predicate as the watchlist above, so the two tables cannot filter to
+   * different populations — including PRIORITY, which he ruled on 2026-09-23
+   * should HIDE non-matching rows here rather than pass them through.
    */
   const discoveryRows = useMemo(
     () => merged.discovery.filter((row) => rowMatchesFilters(row, filters, cyclePhase)),
     [merged, filters, cyclePhase],
   );
+
   const sorted = useMemo(
     () => sortTickers(filtered, sort, telemetry),
     [filtered, sort, telemetry],

@@ -282,7 +282,7 @@ describe('the 28-day catalyst that rendered green', () => {
    * came out FRESH and green. Research measured the scale on the 2026-08-23
    * snapshot: 52 of 325 analyses claimed FRESH unsupported, 16%.
    */
-  function aged(hours: number | null, claimed: CatalystFreshness) {
+  function aged(hours: number | null, claimed: CatalystFreshness, explainsMove: boolean | null = true) {
     const at = hours === null ? null : new Date(Date.now() - hours * 3600_000).toISOString();
     const intel = {
       ticker: 'HOWL',
@@ -300,7 +300,7 @@ describe('the 28-day catalyst that rendered green', () => {
             summary: 'Something happened.',
             whyTradersMayCare: null,
             eventTimestamp: at,
-            plausiblyExplainsMove: true,
+            plausiblyExplainsMove: explainsMove,
             unknowns: [],
             citations: [],
           },
@@ -315,17 +315,51 @@ describe('the 28-day catalyst that rendered green', () => {
   it('no longer renders green, and no longer passes the chip', () => {
     const row = aged(28 * 24, 'FRESH');
 
-    expect(resolveWhy(row).freshness).toBe('RECENT');
+    expect(resolveWhy(row).freshness).toBe('STALE');
     expect(resolveWhy(row).tone).not.toBe('pos');
     expect(rowMatchesFilters(row, filters({ catalyst: 'FRESH' }))).toBe(false);
   });
 
-  it('demotes to RECENT and not to STALE, which the age cannot prove', () => {
-    // His ruling, 2026-09-23: past the window the model keeps the call. The
-    // age disproves FRESH and says nothing about STALE, so inventing the
-    // stronger verdict would be the same overreach pointed the other way.
-    expect(resolveWhy(aged(28 * 24, 'FRESH')).freshness).toBe('RECENT');
-    expect(resolveWhy(aged(28 * 24, 'STALE')).freshness).toBe('STALE');
+  it('demotes a DISPROVEN fresh claim to STALE, and says so on the row', () => {
+    /*
+     * HIS RULING, 2026-09-24, REVERSING THE EARLIER ONE (`fadfe17`). An
+     * earlier assertion here expected RECENT, on the reasoning that the age
+     * disproves FRESH and proves nothing about STALE. He chose STALE, and the
+     * reason is the consequence rather than the taxonomy: STALE is what puts
+     * `no fresh news` on the row, which is the mark he said was missing.
+     *
+     * So the visible effect is asserted here, not just the word — it is the
+     * thing the ruling actually bought, on roughly 39 rows.
+     */
+    const row = aged(28 * 24, 'FRESH', false);
+
+    expect(resolveWhy(row).freshness).toBe('STALE');
+    expect(resolveWhy(row).code).toBe('NO_FRESH_CATALYST');
+  });
+
+  it('withholds that badge when the analysis says the catalyst DOES explain the move', () => {
+    /*
+     * STALE alone does not put `no fresh news` on a row — `noFresh` also
+     * requires `plausiblyExplainsMove !== true`. I stated that qualification
+     * to him when giving the ~39-row figure, and a first pass at the test
+     * above missed it: the fixture claimed the catalyst explained the move, so
+     * the badge never fired and the assertion failed for the right reason.
+     *
+     * It is the honest behaviour. A month-old catalyst the desk believes is
+     * still driving the move is old, but "no fresh news" would be the wrong
+     * sentence about it.
+     */
+    const row = aged(28 * 24, 'FRESH', true);
+
+    expect(resolveWhy(row).freshness).toBe('STALE');
+    expect(resolveWhy(row).code).toBe('GRADED');
+  });
+
+  it('leaves a model RECENT alone, so the demotion is not a blanket', () => {
+    // Only a DISPROVEN claim moves. A model that said RECENT keeps it — the
+    // over-hiding he ruled against was model-RECENT rows, and these are not
+    // those. Without this the rule could collapse everything past the window.
+    expect(resolveWhy(aged(28 * 24, 'RECENT')).freshness).toBe('RECENT');
   });
 
   it('still calls a genuinely recent catalyst FRESH', () => {
@@ -341,5 +375,61 @@ describe('the 28-day catalyst that rendered green', () => {
     // 19 of the 52 unsupported claims had no timestamp at all.
     expect(resolveWhy(aged(null, 'FRESH')).freshness).toBe('UNKNOWN');
     expect(rowMatchesFilters(aged(null, 'FRESH'), filters({ catalyst: 'FRESH' }))).toBe(false);
+  });
+});
+
+describe('priority hides non-matching rows, Discovery included', () => {
+  /*
+   * His ruling, 2026-09-23: "a filter should filter". Priority is a Sheet
+   * judgement, so a Discovery name has no bucket and matches no letter — which
+   * is the ruling working rather than a gap. Selecting A means "the names I
+   * rated A", and a name nobody rated is not one of them.
+   */
+  it('keeps a watchlist row whose bucket matches', () => {
+    expect(rowMatchesFilters(sheetRow('FRESH'), filters({ priority: 'A' }))).toBe(true);
+  });
+
+  it('hides a watchlist row whose bucket does not match', () => {
+    expect(rowMatchesFilters(sheetRow('FRESH'), filters({ priority: 'C' }))).toBe(false);
+  });
+
+  it('hides a DISCOVERY row, which carries no priority at all', () => {
+    // Before this, priority filtered only the researched table and Discovery
+    // sat underneath it unchanged — the shape of his original complaint.
+    const row = discoveryRow('FRESH');
+    expect(row.research ?? null).toBeNull();
+    expect(rowMatchesFilters(row, filters({ priority: 'A' }))).toBe(false);
+  });
+
+  it('leaves every row alone when no priority is selected', () => {
+    // The control: without it, a predicate that excluded unrated rows
+    // unconditionally would pass the three tests above and empty the board.
+    expect(rowMatchesFilters(discoveryRow('FRESH'), filters({ priority: 'ALL' }))).toBe(true);
+    expect(rowMatchesFilters(sheetRow('STALE'), filters({ priority: 'ALL' }))).toBe(true);
+  });
+});
+
+describe('one predicate, so the two tables cannot disagree', () => {
+  it('is the only filter function the shell imports', () => {
+    /*
+     * `applyFilters` filtered structure on the SHEET field while
+     * `rowMatchesFilters` filters it on the risk cell, and the Discovery fix
+     * layered them rather than replacing — so the watchlist showed the
+     * INTERSECTION of two definitions and a row could be visible above and
+     * hidden below. Nobody would read that as a bug; it looks like the filter
+     * being stricter in one place.
+     */
+    // Comments stripped on BOTH files: the comments that explain the deletion
+    // name the deleted function, and a first pass counted them as survivors.
+    // That is the same trap this suite already hit once, in the seam guard.
+    const strip = (text: string) =>
+      text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+
+    const shell = strip(readFileSync(join(process.cwd(), 'components/DashboardShell.tsx'), 'utf8'));
+    expect(shell).toContain('rowMatchesFilters');
+    expect(shell).not.toContain('applyFilters');
+
+    const view = strip(readFileSync(join(process.cwd(), 'lib/dashboard/view.ts'), 'utf8'));
+    expect(view).not.toContain('applyFilters');
   });
 });
