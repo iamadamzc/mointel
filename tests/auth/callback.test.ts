@@ -124,7 +124,7 @@ describe('completeCallback', () => {
       deps({ url: new URL('https://tmitrader.com/auth/callback/google?error=access_denied') }),
     );
     expect(res.status).toBe(303);
-    expect(res.location).toBe('/signin');
+    expect(res.location).toBe('/signin?e=cancelled');
     expect(cookieNamed(res.setCookies, 'mointel_session')).toBeNull();
     expect(clearsFlowCookie(res.setCookies)).toBe(true);
   });
