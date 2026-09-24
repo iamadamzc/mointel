@@ -252,9 +252,13 @@ the auth suite):
   `IDENTITY_DB_PATH` per call) + `POST /auth/signout`.
 - **`f26352a`** — `lib/auth/callback.ts` (`completeCallback`, the testable core)
   + `GET /auth/callback/google`. 97 auth tests green.
+- **`e03b7ef`** — `lib/auth/gate.ts` (`authenticate` = `resolveSession` +
+  Ops's `isUserInvited` at `978f2f2`). Built but NOT wired — see below. 106 tests.
 
-Open Web pieces: the gate, the `/signin` screen, and — deferred to the ship, not
-now — filling the privacy placeholder. **The placeholder stays `[FLOW COOKIE
+**The auth logic layer is complete: config, start, callback, signout, gate.**
+Open Web pieces: the `/signin` screen (buildable now, ships behind Basic Auth),
+wiring the gate into `/desk` and `/api/*` (the sequenced step 2 — NOT now, see
+§3), and — deferred to the ship — filling the privacy placeholder. **The placeholder stays `[FLOW COOKIE
 NAME]` until sign-in reaches production:** the code sets `mointel_oauth`, but the
 live site does not yet (not deployed, `/auth/` not exempted, Basic Auth on), and
 the policy must not name a cookie the live service does not set — a user can
