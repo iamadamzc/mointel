@@ -178,9 +178,40 @@ CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
  * not know about is load-bearing for authentication.
  */
 export function openIdentityStore(file: string = DEFAULT_IDENTITY_PATH): IdentityDatabase {
-  fs.mkdirSync(path.dirname(path.resolve(file)), { recursive: true });
+  const resolved = path.resolve(file);
 
-  const db = new Database(file);
+  /*
+   * A RELEASE DIRECTORY IS NOT A PLACE TO KEEP ACCOUNTS, AND THE OLD FAILURE
+   * WAS SILENT BY CONSTRUCTION.
+   *
+   * `DEFAULT_IDENTITY_PATH` is `process.cwd()/data/identity.db`, and the
+   * services run with `WorkingDirectory=/opt/mointel/current`. So with
+   * `IDENTITY_DB_PATH` unset, accounts land inside the release that
+   * `prune.sh` removes with `rm -rf`: the first user survives one deploy and
+   * is deleted by the second, with nothing in any log tying the loss to the
+   * deploy that caused it.
+   *
+   * The `mkdirSync` below is what made it silent -- it CREATES the doomed
+   * directory and cannot fail. So the refusal has to come first, and it
+   * refuses the PLACE rather than the absence of a setting: an explicit
+   * IDENTITY_DB_PATH pointing into a release is exactly as wrong as a
+   * defaulted one, and a guard that only checked for "unset" would pass it.
+   */
+  // Split on BOTH separators without a backslash literal: an escaped one did
+  // not survive being written here, the guard matched nothing on Windows, and
+  // only the test caught that it had never fired.
+  const segments = resolved.split(path.sep).flatMap((part) => part.split('/'));
+  if (segments.includes('releases')) {
+    throw new Error(
+      `refusing to open an identity store inside a release directory: ${resolved}. ` +
+        'Accounts do not survive prune.sh. Set IDENTITY_DB_PATH to a path outside ' +
+        'the release tree (the server uses /var/lib/mointel/identity.db).',
+    );
+  }
+
+  fs.mkdirSync(path.dirname(resolved), { recursive: true });
+
+  const db = new Database(resolved);
   db.pragma('journal_mode = WAL');
   db.pragma('busy_timeout = 5000');
   db.pragma('foreign_keys = ON');
