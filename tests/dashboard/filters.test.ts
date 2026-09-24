@@ -287,12 +287,23 @@ describe('freshness has ONE read, which is the seam Research replaces', () => {
   const code = source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
   const reads = [...code.matchAll(/catalyst\??\.freshness/g)].length;
 
-  it('reads the dossier field exactly once', () => {
-    expect(reads).toBe(1);
+  it('never reads the dossier freshness field at all', () => {
+    /*
+     * THIS ASSERTED "EXACTLY ONE" AND THE ANSWER IS NOW ZERO, which is the
+     * seam having done its job and then been made redundant by his ruling.
+     * The one read existed so Research's derived reader could replace it in a
+     * single edit. His calendar bands went further: the model is out of the
+     * freshness judgement entirely, so the stored word is not consulted.
+     *
+     * Zero is the stronger claim and the one worth pinning — a regression that
+     * reintroduced the model's word anywhere would fail here.
+     */
+    expect(reads).toBe(0);
   });
 
-  it('serves the colour, the verdict, the field and the tooltip from that read', () => {
-    // Each consumer takes the local, so none can be left behind on a swap.
+  it('serves the colour, the verdict and the tooltip from ONE derived value', () => {
+    // Still one local, still every consumer taking it — what changed is where
+    // it comes from, not how many places read it.
     for (const consumer of ['FRESHNESS_TONE[freshness]', "freshness === 'STALE'", 'whyTitle(grade, freshness)']) {
       expect(source).toContain(consumer);
     }

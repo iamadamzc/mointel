@@ -44,9 +44,9 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-22 23:15 UTC
+## Live state — 2026-09-24 15:20 UTC
 
-**My head is `acc3095`.** What is DEPLOYED is Ops's to say; this thread has no
+**My head is the batch tip; see git.** What is DEPLOYED is Ops's to say; this thread has no
 deploy signal and a list I cannot verify is a guess with a shape.
 
 **The brand shipped this week.** TMI now expands to *The Momentum Intelligence
@@ -136,6 +136,25 @@ LIVE** — this seat has no token and structurally cannot authenticate.
 checkpoint's change SENTENCE where sixteen-plus enums were the cell text and
 the sentence was the hover, and `9366d3f` makes the events band persistent.
 **The two that are left are named below, with the reason each is held.**
+
+**THE PRIOR-CLOSE FRESHNESS REFINEMENT NEEDS ONE INSTANT ON THE PAYLOAD.**
+`resolveCatalystFreshness` takes an optional third argument — the prior
+session's close — and its own doc says the caller supplies it *"because only
+the caller has the store"*. **This caller is the BROWSER.** `resolveWhy` runs
+inside `'use client'` components, where there is no database and no
+`previousTradingDate`. Omitting it falls back to the day bands, which Research
+documents as safe rather than merely tolerable, so the board is correct today
+and merely less refined.
+
+    MarketSnapshot.catalystFreshFrom: string | null
+      = afterHoursStartUtc(previousTradingDate(db, tradingDate))
+      computed ONCE per snapshot, never per row
+
+**Absent must keep meaning "bands only".** The same shape as
+`qualified.observed`: ask the producer for the answer, and let the reader stay
+on the safe behaviour until it arrives. *Third time a prescribed repair has
+assumed a server context this file does not have — the analysis was right each
+time and the repair shape was one layer off.*
 
 **WHAT ITEM 12 STILL NEEDS, AND ONE OF IT IS NOT MINE.**
 

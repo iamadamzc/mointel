@@ -12,11 +12,7 @@
  */
 
 import type { DeskRow } from '@/lib/dashboard/merge';
-import {
-  DEFAULT_CATALYST_WINDOWS,
-  catalystAge,
-  resolveCatalystFreshness,
-} from '@/lib/research/time';
+import { catalystAge, resolveCatalystFreshness } from '@/lib/research/time';
 import type { CatalystFreshness } from '@/lib/research/types';
 
 export type WhyCode =
@@ -217,17 +213,30 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
    * file computed the age arithmetically three lines above and still took the
    * colour from the model's word, so a catalyst stamped `28d` rendered green.
    *
-   * IT DEMOTES TO RECENT AND NOT TO STALE, and past the window the model keeps
-   * its own RECENT/STALE call — his ruling of 2026-09-23, "leave to the
-   * model". The age disproves FRESH and proves nothing about STALE.
+   * HIS RULINGS SUPERSEDED THIS TWICE AND THE COMMENT IS REWRITTEN, NOT
+   * PATCHED. It used to say the demotion goes to RECENT and the model keeps
+   * its call past the window. On 2026-09-23 he ruled arm 5 STALE, because
+   * STALE is what puts `no fresh news` on the row; on 2026-09-24 he defined
+   * freshness as calendar bands, which removes the model from the judgement
+   * altogether. A comment describing a rule that was replaced twice is worse
+   * than none — it reads as the reason the code is shaped this way.
+   *
+   *     today       FRESH        yesterday   RECENT        older   STALE
+   *
+   * THE PRIOR-CLOSE REFINEMENT IS NOT WIRED HERE, AND IT CANNOT BE FROM THIS
+   * FILE. `resolveCatalystFreshness` takes an optional third argument — the
+   * prior session's close — and its own documentation says the caller supplies
+   * it "because only the caller has the store". THIS CALLER IS THE BROWSER:
+   * `resolveWhy` runs inside `'use client'` components, where there is no
+   * database and no `previousTradingDate`. Omitting it falls back to the day
+   * bands, which Research documents as safe rather than merely tolerable.
+   *
+   * So the refinement needs the instant on the PAYLOAD, computed once on the
+   * server — the same shape as `qualified.observed`. Specified in
+   * `docs/threads/design.md`; until it exists this stays on the bands.
    */
   const freshness: CatalystFreshness | null = catalyst
-    ? resolveCatalystFreshness(
-        catalyst.eventTimestamp,
-        new Date(nowMs),
-        DEFAULT_CATALYST_WINDOWS,
-        catalyst.freshness,
-      )
+    ? resolveCatalystFreshness(catalyst.eventTimestamp, new Date(nowMs))
     : null;
 
   const tone: DeskWhy['tone'] = freshness ? FRESHNESS_TONE[freshness] : 'dim';
