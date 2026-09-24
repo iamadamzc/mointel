@@ -45,18 +45,37 @@ import type { CatalystFreshness } from '@/lib/research/types';
  * each stored word in the world where it actually governs, relative to the
  * real clock rather than to a date written into the file.
  */
-const AGE_FOR: Record<CatalystFreshness, number | null> = {
-  FRESH: 2,
-  RECENT: 24 * 30,
-  STALE: 24 * 30,
+/**
+ * An event on the ET calendar day `days` ago, anchored at midday.
+ *
+ * NOT AN HOUR OFFSET, AND THE BANDS ARE WHY. He defined freshness as calendar
+ * bands on the ET date — FRESH today, RECENT yesterday — so a fixture saying
+ * "two hours ago" lands on the previous ET day whenever the suite runs between
+ * midnight and 02:00 ET, and the same assertion flips. Anchoring at 16:00Z is
+ * midday in both EDT and EST, so no fixture can straddle a boundary.
+ */
+function etDaysAgo(days: number): string {
+  const et = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date());
+  return new Date(Date.parse(`${et}T16:00:00Z`) - days * 86_400_000).toISOString();
+}
+
+/** The ET calendar day each band lives on. */
+const DAYS_FOR: Record<CatalystFreshness, number | null> = {
+  FRESH: 0,
+  RECENT: 1,
+  STALE: 30,
   // No timestamp at all: the derivation cannot place it, so it is UNKNOWN.
   UNKNOWN: null,
 };
 
 function intelligence(freshness: CatalystFreshness, grade: string): AutoIntelligence {
-  const hours = AGE_FOR[freshness];
-  const eventTimestamp =
-    hours === null ? null : new Date(Date.now() - hours * 3600_000).toISOString();
+  const days = DAYS_FOR[freshness];
+  const eventTimestamp = days === null ? null : etDaysAgo(days);
   return {
     ticker: 'HOWL',
     state: 'ACCEPTED',
@@ -282,8 +301,8 @@ describe('the 28-day catalyst that rendered green', () => {
    * came out FRESH and green. Research measured the scale on the 2026-08-23
    * snapshot: 52 of 325 analyses claimed FRESH unsupported, 16%.
    */
-  function aged(hours: number | null, claimed: CatalystFreshness, explainsMove: boolean | null = true) {
-    const at = hours === null ? null : new Date(Date.now() - hours * 3600_000).toISOString();
+  function aged(days: number | null, claimed: CatalystFreshness, explainsMove: boolean | null = true) {
+    const at = days === null ? null : etDaysAgo(days);
     const intel = {
       ticker: 'HOWL',
       state: 'ACCEPTED',
@@ -313,7 +332,7 @@ describe('the 28-day catalyst that rendered green', () => {
   }
 
   it('no longer renders green, and no longer passes the chip', () => {
-    const row = aged(28 * 24, 'FRESH');
+    const row = aged(28, 'FRESH');
 
     expect(resolveWhy(row).freshness).toBe('STALE');
     expect(resolveWhy(row).tone).not.toBe('pos');
@@ -331,7 +350,7 @@ describe('the 28-day catalyst that rendered green', () => {
      * So the visible effect is asserted here, not just the word — it is the
      * thing the ruling actually bought, on roughly 39 rows.
      */
-    const row = aged(28 * 24, 'FRESH', false);
+    const row = aged(28, 'FRESH', false);
 
     expect(resolveWhy(row).freshness).toBe('STALE');
     expect(resolveWhy(row).code).toBe('NO_FRESH_CATALYST');
@@ -349,23 +368,32 @@ describe('the 28-day catalyst that rendered green', () => {
      * still driving the move is old, but "no fresh news" would be the wrong
      * sentence about it.
      */
-    const row = aged(28 * 24, 'FRESH', true);
+    const row = aged(28, 'FRESH', true);
 
     expect(resolveWhy(row).freshness).toBe('STALE');
     expect(resolveWhy(row).code).toBe('GRADED');
   });
 
-  it('leaves a model RECENT alone, so the demotion is not a blanket', () => {
-    // Only a DISPROVEN claim moves. A model that said RECENT keeps it — the
-    // over-hiding he ruled against was model-RECENT rows, and these are not
-    // those. Without this the rule could collapse everything past the window.
-    expect(resolveWhy(aged(28 * 24, 'RECENT')).freshness).toBe('RECENT');
+  it('ignores what the model claimed, because the bands are calendar arithmetic', () => {
+    /*
+     * SUPERSEDED TWICE IN TWO DAYS, AND THE ASSERTION IS REMOVED RATHER THAN
+     * RELAXED. This asserted that a model `RECENT` survived the demotion, which
+     * was true under the 36-hour contract. He then defined freshness as age
+     * bands on the ET calendar — FRESH today, RECENT yesterday, older is not
+     * either — which takes the model out of the judgement altogether.
+     *
+     * So the model's word no longer changes the answer for ANY claim, and that
+     * is what is asserted: same age, three different claims, one verdict.
+     */
+    for (const claimed of ['FRESH', 'RECENT', 'STALE'] as const) {
+      expect(resolveWhy(aged(28, claimed)).freshness).toBe('STALE');
+    }
   });
 
   it('still calls a genuinely recent catalyst FRESH', () => {
     // The control. Without it the fix could have demoted everything, which
     // would empty the chip and look like it was working.
-    const row = aged(2, 'FRESH');
+    const row = aged(0, 'FRESH');
 
     expect(resolveWhy(row).freshness).toBe('FRESH');
     expect(rowMatchesFilters(row, filters({ catalyst: 'FRESH' }))).toBe(true);
@@ -431,5 +459,66 @@ describe('one predicate, so the two tables cannot disagree', () => {
 
     const view = strip(readFileSync(join(process.cwd(), 'lib/dashboard/view.ts'), 'utf8'));
     expect(view).not.toContain('applyFilters');
+  });
+});
+
+describe('the bands themselves, on the ET calendar', () => {
+  /*
+   * His definition, 2026-09-24: FRESH is today, RECENT is yesterday, older is
+   * neither. Asserted through `resolveWhy` rather than against the research
+   * function directly, because what matters here is that the BOARD lands in
+   * the right band — the colour, the chip and the badge all read this.
+   */
+  function onDay(days: number) {
+    return resolveWhy(discoveryRowOn(days));
+  }
+
+  function discoveryRowOn(days: number) {
+    const intel = {
+      ticker: 'HOWL',
+      state: 'ACCEPTED',
+      generatedAt: new Date().toISOString(),
+      coverageIncomplete: false,
+      analysis: {
+        dossier: {
+          ticker: 'HOWL',
+          catalyst: {
+            catalystGrade: 'STRONG',
+            catalystStatus: 'FRESH_FOUND',
+            // Deliberately the WRONG claim on every row: the bands are
+            // arithmetic now and the model's word must not move the answer.
+            freshness: 'FRESH',
+            confidence: 'HIGH',
+            summary: 'Something happened.',
+            whyTradersMayCare: null,
+            eventTimestamp: etDaysAgo(days),
+            plausiblyExplainsMove: false,
+            unknowns: [],
+            citations: [],
+          },
+          structure: { structureClassification: 'CLEAN', supplyLedger: [], structuralWarnings: [] },
+          cycle: { cycleClassification: 'UNKNOWN' },
+        },
+      },
+    } as unknown as AutoIntelligence;
+    return buildDeskRow('HOWL', null, null, null, intel);
+  }
+
+  it('is FRESH today and RECENT yesterday', () => {
+    expect(onDay(0).freshness).toBe('FRESH');
+    expect(onDay(1).freshness).toBe('RECENT');
+  });
+
+  it('is neither from the day before that onwards', () => {
+    // The boundary, asserted on both sides so an off-by-one moves a test.
+    expect(onDay(2).freshness).not.toBe('FRESH');
+    expect(onDay(2).freshness).not.toBe('RECENT');
+  });
+
+  it('greens only the FRESH band, so the chip and the colour still agree', () => {
+    expect(onDay(0).tone).toBe('pos');
+    expect(onDay(1).tone).not.toBe('pos');
+    expect(rowMatchesFilters(discoveryRowOn(0), filters({ catalyst: 'FRESH' }))).toBe(true);
+    expect(rowMatchesFilters(discoveryRowOn(1), filters({ catalyst: 'FRESH' }))).toBe(false);
   });
 });
