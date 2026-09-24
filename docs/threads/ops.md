@@ -11509,3 +11509,66 @@ safe whenever.** *The one-SIP-connection hazard is the STREAMING WEBSOCKET;
 historical bars come over REST and do not contend for it — the 09-17 probe
 pulled 43,524 bars while the worker streamed. At 00:0x ET there is no session
 at all.*
+
+## A RESTART PERMANENTLY LOSES ABOUT ONE MINUTE OF `minute_bars`, AND WAITING DOES NOT PREVENT IT — measured 2026-09-24
+
+**Integration asked whether an in-session restart is now data-safe. Two parts of
+the answer were known; this one was not, and it changes how the timing question
+should be framed.**
+
+```
+09-22, restart 09:57:57Z   09:54 176 | 09:55 164 | 09:56 175 | 09:57 TWELVE | 09:58 158
+09-18, restart 21:05:09Z   21:03 184 | 21:04 192 | 21:05 ABSENT ENTIRELY | 21:06 181
+control 09-23, same clock window      all nine minutes present
+```
+
+**Minute bars are emitted at the END of their minute, so a restart swallows the
+emission of the minute in progress — for every tracked symbol at once. The
+startup backfill does NOT fill it; those rows are still missing days later.**
+
+> **THE 09-18 RESTART WAS AFTER-HOURS AND LOST THE WHOLE MINUTE ANYWAY.** *So
+> "wait for after-hours" does not avoid the hole. It only changes how many
+> prints are inside the minute that disappears — roughly 165 symbol-minutes in
+> premarket against roughly 185 after the close. The honest comparison is not
+> lossless-later versus lossy-now.*
+
+**It ages out with retention in 20 days. But `minute_bars` is what the replay
+fix itself READS, so every future restart replays a day with a one-minute hole
+in it, and anything measuring per-minute activity on that date has one minute
+that reads quiet when it was not.**
+
+### What is proven, what is reasoned, and the difference
+
+- **Day-wide `session_high`/`session_low`: PROVEN in session.** *09-18 without
+  the fix lost 1,481 of 7,936; 09-22 with it lost 0 of 1,825, measured against a
+  snapshot taken immediately before.*
+- **The PLURAL per-session maps (`sessionHighs`/`sessionLows`): SOUND BY CODE,
+  NOT MEASURED, and not to be called proven.** *`engine.ts:1010` discards bars at
+  or before `volumeBaseThrough`; `:1152` updates the plural maps and sits
+  DOWNSTREAM of it. Replay runs before `seedSession`, so the field is still null
+  and replayed bars reach 1152.* **That is a code read. `ah_high`, `ah_low` and
+  `rth_final_high` are persisted, so it is measurable the same way — but only a
+  restart while those values already exist is a real test, and 09-22's was in
+  premarket before any of them had been written.**
+
+### HIS RULING 2026-09-24: after the close — and the reason is measurement, not safety
+
+**Safety was settled by the 09-22 result. The post-close restart is the only
+version that can close the plural-map claim, because `ah_high` does not exist
+until after 16:00.**
+
+```
+SEQUENCE, if this seat is not the one that runs it
+  1  after 16:05 ET (RTH_CLOSE guards 15:55-16:05; next checkpoint is 22:00)
+  2  re-RUN deploy/aws/test-gate.sh 757cf6a   -- do not carry an old result
+  3  push-release.sh mointel-ssm <key> 757cf6a   RESTART_MARKET=no
+  4  snapshot BEFORE the restart:
+       select symbol, trading_date, session_high, session_low, ah_high, ah_low
+       from ticker_session where trading_date = <today>
+  5  systemctl restart mointel-market; record ExecMainStart to the second
+  6  compare after vs the snapshot, cohort-restricted to symbols WITH stored
+     premarket bars, and report LOWERED counts for BOTH the singular and the
+     plural columns
+```
+
+**Do not report the plural maps as proven until step 6 returns a number.**
