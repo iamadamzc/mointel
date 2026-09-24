@@ -149,6 +149,24 @@ From the charter, and each clause bought with reasoning already on file:
 > `mointel_oauth` with the privacy-policy name filled from code. **D2, D5, D6
 > remain his** and are with him now.
 
+> **HIS DECISIONS SETTLED 2026-09-24. GO on the build.** **D2 confirmed**: refuse
+> at the point of use, issue a session even to a not-yet-admitted person. **D5**:
+> seed `iamadamzc@gmail.com` first. **D6**: user admin is done by an **AGENT**,
+> not a CLI or web UI — the allowlist store exposes add/remove/list an agent can
+> invoke, and the admin path needs a guardrail (an invite is a grant on his
+> explicit instruction, never a default), because an agent that grants access can
+> spend his money. Relayed to Integration.
+
+> **§1's allowlist row is SUPERSEDED: the store is now BUILT (`d9e759b`, a peer,
+> schema v2).** It exposes exactly what the gate needs: `isEmailInvited(db,
+> email)` (revoked and never-invited both return false — no oracle),
+> `inviteEmail`, `revokeEmail` (ends live sessions in the SAME transaction — his
+> "immediate"), `listInvitedEmails`, `normaliseEmail` (trim+lowercase, no
+> plus/dot folding). **The gate composes against `isEmailInvited`.** So the
+> remaining Web work is the four route handlers, the gate module, the `/signin`
+> screen, and filling the privacy placeholder — the allowlist is no longer a Web
+> dependency to wait on.
+
 **D1 — Allowlist keyed by EMAIL, identity keyed by SUB. These do not conflict.**
 The store deliberately keys *identity* on Google `sub` and warns against email as
 an identifier — that is about durable identity linking and stays as is. *Authorization*
