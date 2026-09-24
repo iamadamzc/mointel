@@ -10,6 +10,7 @@ import {
   createSession,
   inviteEmail,
   isEmailInvited,
+  isUserInvited,
   listInvitedEmails,
   linkIdentity,
   openIdentityStore,
@@ -384,6 +385,74 @@ describe('the invited-email allowlist', () => {
     const db = temporaryStore();
     inviteEmail(db, 'adam@example.com');
     expect(revokeEmail(db, 'adam@example.com').sessionsEnded).toBe(0);
+    db.close();
+  });
+});
+
+/*
+ * THE GATE'S READ: session -> userId -> here. Web calls only this.
+ *
+ * The unverified case is the one with teeth. `email_verified` is the provider
+ * asserting the person controls the mailbox; without it an allowlist keyed on a
+ * claimed address admits whoever claims the right address. It is tested
+ * separately from the invited case because the two together are the guarantee
+ * and either alone is not.
+ */
+describe('isUserInvited', () => {
+  function userWith(db: ReturnType<typeof temporaryStore>, email: string, verified: boolean | null) {
+    return linkIdentity(db, {
+      provider: 'google',
+      subject: `sub-${email}-${String(verified)}`,
+      email,
+      emailVerified: verified,
+    }).userId;
+  }
+
+  it('admits a verified address that is invited', () => {
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com', 'his word');
+    expect(isUserInvited(db, userWith(db, 'adam@example.com', true))).toBe(true);
+    db.close();
+  });
+
+  it('REFUSES an invited address the provider has not verified', () => {
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com', 'his word');
+    expect(isUserInvited(db, userWith(db, 'adam@example.com', false))).toBe(false);
+    db.close();
+  });
+
+  it('refuses when the provider said nothing about verification', () => {
+    /* Absent is not verified. NULL must not read as yes. */
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com', 'his word');
+    expect(isUserInvited(db, userWith(db, 'adam@example.com', null))).toBe(false);
+    db.close();
+  });
+
+  it('refuses a user whose address was never invited', () => {
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com', 'his word');
+    expect(isUserInvited(db, userWith(db, 'stranger@example.com', true))).toBe(false);
+    db.close();
+  });
+
+  it('refuses once the invitation is withdrawn', () => {
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com', 'his word');
+    const userId = userWith(db, 'adam@example.com', true);
+    expect(isUserInvited(db, userId)).toBe(true);
+    revokeEmail(db, 'adam@example.com', 'his word');
+    expect(isUserInvited(db, userId)).toBe(false);
+    db.close();
+  });
+
+  it('folds case on the identity side too, not only the invited side', () => {
+    /* The invited side is stored folded. A join folding one side only admits
+     * nobody, and would look like a correctly empty allowlist. */
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com', 'his word');
+    expect(isUserInvited(db, userWith(db, 'Adam@Example.COM', true))).toBe(true);
     db.close();
   });
 });
