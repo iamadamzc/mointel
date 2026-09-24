@@ -25,7 +25,7 @@ import Database from 'better-sqlite3';
 
 export type IdentityDatabase = Database.Database;
 
-export const IDENTITY_SCHEMA_VERSION = 1;
+export const IDENTITY_SCHEMA_VERSION = 2;
 
 export const DEFAULT_IDENTITY_PATH =
   process.env.IDENTITY_DB_PATH ?? path.join(process.cwd(), 'data', 'identity.db');
@@ -164,6 +164,20 @@ CREATE TABLE IF NOT EXISTS sessions (
 );
 
 CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
+
+/*
+ * WHO MAY SIGN IN AT ALL, asked before any user row exists for them.
+ * users.status is the sibling question about somebody already signed in.
+ * (No backticks in here: SCHEMA is a template literal and one would end it.)
+ * Revocation is a comparison and never a delete, as with sessions: a deleted
+ * row cannot say who invited this address, or when it was withdrawn.
+ */
+CREATE TABLE IF NOT EXISTS invited_emails (
+  email      TEXT PRIMARY KEY,
+  invited_at TEXT NOT NULL,
+  invited_by TEXT,
+  revoked_at TEXT
+);
 `;
 
 /**
@@ -417,4 +431,139 @@ export function revokeSession(
     now,
     hashSessionId(id),
   );
+}
+
+/*
+ * THE INVITED-EMAIL ALLOWLIST.
+ *
+ * His ruling 2026-09-24: Google sign-in plus an invited-email allowlist, where
+ * "invite and revoke" means adding and removing an email. That sentence is why
+ * this lives in the store rather than in config: in config every invitation is
+ * a deploy, or an env-sync and a restart. Here it is a row.
+ *
+ * It is the SIBLING of `users.status`, not a replacement for it. That column
+ * governs somebody who has already signed in; this table governs whether an
+ * address may sign in at all, before any user row exists for it. Two different
+ * questions about two different objects, and the gate asks both.
+ *
+ * ADDRESSES ARE NORMALISED ON THE WAY IN AND ON THE WAY OUT, which is the whole
+ * correctness of an allowlist. `Adam@Example.com` from a typed invitation and
+ * `adam@example.com` from a Google claim are the same person, and an allowlist
+ * that treats them as two is a gate that silently refuses the person it was
+ * built to admit. Normalising in one place and not the other is worse than
+ * neither, so both go through `normaliseEmail`.
+ *
+ * REVOCATION IS A COMPARISON, NEVER A DELETE -- the same discipline the sessions
+ * table already keeps. A deleted row cannot answer "was this person ever
+ * invited, and by whom, and when was that withdrawn", and that is exactly the
+ * question anyone asks after an incident.
+ */
+export interface InvitedEmail {
+  email: string;
+  invitedAt: string;
+  invitedBy: string | null;
+  revokedAt: string | null;
+}
+
+/**
+ * Lower-cased and trimmed. Nothing clever: no plus-address stripping and no
+ * dot-folding, because those are provider-specific rules and guessing them
+ * wrong admits somebody the invitation did not name.
+ */
+export function normaliseEmail(email: string): string {
+  return email.trim().toLowerCase();
+}
+
+/**
+ * Invites an address, or reinstates one that was revoked.
+ *
+ * Reinstatement clears `revoked_at` deliberately: re-inviting somebody is the
+ * obvious repair for a revocation made in error, and an invitation that left
+ * the old revocation in place would look applied and do nothing.
+ */
+export function inviteEmail(
+  db: IdentityDatabase,
+  email: string,
+  invitedBy: string | null = null,
+  now: Date = new Date(),
+): InvitedEmail {
+  const normalised = normaliseEmail(email);
+  const at = now.toISOString();
+  db.prepare(
+    `INSERT INTO invited_emails (email, invited_at, invited_by, revoked_at)
+     VALUES (?, ?, ?, NULL)
+     ON CONFLICT(email) DO UPDATE SET invited_at = excluded.invited_at,
+                                      invited_by = excluded.invited_by,
+                                      revoked_at = NULL`,
+  ).run(normalised, at, invitedBy);
+  return { email: normalised, invitedAt: at, invitedBy, revokedAt: null };
+}
+
+/**
+ * Withdraws an invitation AND ends that person's live sessions in the same
+ * transaction.
+ *
+ * HIS RULING 2026-09-24, in one word: "immediate." The alternative was letting
+ * the session expire at the close, which is hours rather than forever -- but the
+ * adopted terms promise access "can be withdrawn from a person", and withdrawn
+ * by close of business is a different promise from withdrawn.
+ *
+ * Both writes or neither: a revocation that removed the invitation and left the
+ * session alive would report success while the person kept working.
+ *
+ * Returns the number of sessions ended, because "revoked" and "revoked, and
+ * this many people were actually signed in at the time" are different facts and
+ * the second is the one worth seeing.
+ */
+export function revokeEmail(
+  db: IdentityDatabase,
+  email: string,
+  now: Date = new Date(),
+): { revoked: boolean; sessionsEnded: number } {
+  const normalised = normaliseEmail(email);
+  const at = now.toISOString();
+
+  const apply = db.transaction(() => {
+    const result = db
+      .prepare('UPDATE invited_emails SET revoked_at = ? WHERE email = ? AND revoked_at IS NULL')
+      .run(at, normalised);
+
+    const ended = db
+      .prepare(
+        `UPDATE sessions SET revoked_at = ?
+          WHERE revoked_at IS NULL
+            AND user_id IN (SELECT user_id FROM identities WHERE lower(email) = ?)`,
+      )
+      .run(at, normalised);
+
+    return { revoked: result.changes > 0, sessionsEnded: ended.changes };
+  });
+
+  return apply();
+}
+
+/**
+ * The read the sign-in gate calls. Web owns the gate; this owns the answer.
+ *
+ * A revoked invitation answers false, and so does an address that was never
+ * invited -- deliberately the same answer, because the gate has no business
+ * distinguishing them and a different response would tell an uninvited caller
+ * which addresses exist.
+ */
+export function isEmailInvited(db: IdentityDatabase, email: string | null | undefined): boolean {
+  if (!email) return false;
+  const row = db
+    .prepare('SELECT revoked_at AS revokedAt FROM invited_emails WHERE email = ?')
+    .get(normaliseEmail(email)) as { revokedAt: string | null } | undefined;
+  return row !== undefined && row.revokedAt === null;
+}
+
+/** Every invitation, revoked ones included, newest first. For the admin script. */
+export function listInvitedEmails(db: IdentityDatabase): InvitedEmail[] {
+  return db
+    .prepare(
+      `SELECT email, invited_at AS invitedAt, invited_by AS invitedBy, revoked_at AS revokedAt
+         FROM invited_emails ORDER BY invited_at DESC`,
+    )
+    .all() as InvitedEmail[];
 }

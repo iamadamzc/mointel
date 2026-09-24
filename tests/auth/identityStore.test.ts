@@ -8,9 +8,12 @@ import { sessionExpiry } from '@/lib/auth/expiry';
 import {
   IDENTITY_SCHEMA_VERSION,
   createSession,
+  inviteEmail,
+  isEmailInvited,
   linkIdentity,
   openIdentityStore,
   resolveSession,
+  revokeEmail,
   revokeSession,
 } from '@/lib/auth/store';
 
@@ -271,6 +274,90 @@ describe('where the identity store refuses to live', () => {
     );
     const db = openIdentityStore(fine);
     expect(fs.existsSync(fine)).toBe(true);
+    db.close();
+  });
+});
+
+/*
+ * THE ALLOWLIST. Two of these are the whole reason it can be trusted.
+ *
+ * Case normalisation is THE allowlist defect: an invitation typed as
+ * Adam@Example.com and a Google claim of adam@example.com are one person, and a
+ * gate that treats them as two silently refuses exactly the person it was built
+ * to admit. It is tested in both directions because normalising on write and
+ * not on read is worse than normalising in neither place.
+ *
+ * And revocation is tested for ENDING A LIVE SESSION, not merely for setting a
+ * column. His ruling 2026-09-24 was one word -- "immediate" -- and a revocation
+ * that removed the invitation while the person kept working would report
+ * success and be false.
+ */
+describe('the invited-email allowlist', () => {
+  it('admits an invited address', () => {
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com');
+    expect(isEmailInvited(db, 'adam@example.com')).toBe(true);
+    db.close();
+  });
+
+  it('admits regardless of the case either side was written in', () => {
+    const db = temporaryStore();
+    inviteEmail(db, '  Adam@Example.COM  ');
+    expect(isEmailInvited(db, 'adam@example.com')).toBe(true);
+    expect(isEmailInvited(db, 'ADAM@EXAMPLE.COM')).toBe(true);
+    db.close();
+  });
+
+  it('refuses an address nobody invited', () => {
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com');
+    expect(isEmailInvited(db, 'stranger@example.com')).toBe(false);
+    db.close();
+  });
+
+  it('refuses a revoked address, and says nothing different from never-invited', () => {
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com');
+    revokeEmail(db, 'adam@example.com');
+    expect(isEmailInvited(db, 'adam@example.com')).toBe(false);
+    expect(isEmailInvited(db, 'never@example.com')).toBe(false);
+    db.close();
+  });
+
+  it('reinstates on re-invite, so an accidental revocation is repairable', () => {
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com');
+    revokeEmail(db, 'adam@example.com');
+    inviteEmail(db, 'adam@example.com');
+    expect(isEmailInvited(db, 'adam@example.com')).toBe(true);
+    db.close();
+  });
+
+  it('ENDS A LIVE SESSION when the invitation is withdrawn', () => {
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com');
+    const user = linkIdentity(db, {
+      provider: 'google',
+      subject: 'sub-revoke',
+      email: 'adam@example.com',
+    });
+    const issued = createSession(db, user.userId, sessionExpiry(new Date()));
+    expect(resolveSession(db, issued.id)).not.toBeNull();
+
+    const result = revokeEmail(db, 'adam@example.com');
+
+    expect(result.revoked).toBe(true);
+    expect(result.sessionsEnded).toBe(1);
+    expect(resolveSession(db, issued.id)).toBeNull();
+    db.close();
+  });
+
+  it('reports zero sessions ended when nobody was signed in', () => {
+    /* "revoked" and "revoked, and somebody was actually using it" are different
+     * facts; the count is the one worth seeing after an incident. */
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com');
+    expect(revokeEmail(db, 'adam@example.com').sessionsEnded).toBe(0);
     db.close();
   });
 });
