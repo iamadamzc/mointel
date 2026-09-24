@@ -73,6 +73,9 @@ a new chat"; read nothing marked ARCHIVE front to back.*
 
 | sha | what |
 | --- | --- |
+| `757cf6a` | Two `prefer-const` lint errors of mine that the release gate reported as green. I had run `tsc` and `vitest` and never `lint`. |
+| `a12bfd6` | **The model is no longer asked for `freshness`** — out of `schema.ts`. And the **21-day line is DROPPED, his ruling** — no fourth state, everything two days or older is OLD. |
+| `684902f` | **FRESH = the prior SESSION's close → now, for clocked events only.** His ruling 2026-09-24. **⚠️ BUILT AND DORMANT — see below.** |
 | `3570114` | **`catalystAge` returns the day count AND its precision.** `relativeAge` ran `Date.parse` over bare dates, rendering today's as `"14h"`, yesterday's as `"2d"` and a 28-day-old one as `"29d"`. `resolveCatalystFreshness` now derives from it, which also fixed an inconsistency where an event timed later today banded FRESH. |
 | `d16dd14` | **Freshness is his ET calendar bands** — today FRESH, yesterday RECENT, two days or more STALE. His ruling 2026-09-24. Days rather than hours **because 77% of stored event timestamps carry no clock**. |
 | `fadfe17` | A disproven FRESH goes to **STALE**, his ruling — that is what renders `no fresh news`. |
@@ -123,6 +126,9 @@ in **which option it picks**.
 - **The restart fix is confirmed on real data: 0 of 1,825 rows read low** after the 2026-09-23 restart, cohort restricted to symbols WITH stored premarket bars. **Not a ratio against 1,481 of 7,936** — that was every name on the board, this is only the names replay reaches.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
+
+- **⚠️ THE PRIOR-SESSION-CLOSE FRESH WINDOW IS BUILT AND NOT RUNNING.** `684902f` implements it; nothing supplies the boundary, so it never fires and **clocked after-hours releases still band RECENT** (6 rows in the 2026-08-23 snapshot). `resolveCatalystFreshness` has two callers and both pass two arguments: `why.ts` runs in the BROWSER (`'use client'`, no store), and `validateDossier` takes no `db` either. The fallback is deliberate and safe — it is exactly his date-only rule — **but do not read `684902f` as live.**
+  **What activates it:** `MarketSnapshot.catalystFreshFrom = afterHoursStartUtc(previousTradingDate(db, tradingDate))`, computed once per snapshot server-side and passed as the third argument. **Mine, queued after the board batch.** Design specced the field; the shape is the same producer-supplies-the-answer rule as `observed`.
 
 - **How a restart rebuilds `sessionHigh` — CLOSED.** Ops shipped `34414f4` (replay before the seed) and it is confirmed on real data: **0 of 1,825 rows read low** after the 2026-09-23 restart, against 1,481 of 7,936 on 09-18. **Not a ratio** — the second cohort is only the symbols replay can reach. Explained for him in `docs/manual/after-a-restart.html`.
 - **THREE THINGS WAIT ON HIS WORD, all small, none blocking:**
