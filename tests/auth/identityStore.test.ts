@@ -10,6 +10,7 @@ import {
   createSession,
   inviteEmail,
   isEmailInvited,
+  listInvitedEmails,
   linkIdentity,
   openIdentityStore,
   resolveSession,
@@ -349,6 +350,31 @@ describe('the invited-email allowlist', () => {
     expect(result.revoked).toBe(true);
     expect(result.sessionsEnded).toBe(1);
     expect(resolveSession(db, issued.id)).toBeNull();
+    db.close();
+  });
+
+  it('records WHOSE WORD withdrew it, not only that it was withdrawn', () => {
+    /* "Who let this person in" and "who took it away" are the same question
+     * asked twice; a row that answers only the first is half an audit. */
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com', 'his words: yes invite adam');
+    revokeEmail(db, 'adam@example.com', 'his words: remove adam');
+    const row = listInvitedEmails(db).find((r) => r.email === 'adam@example.com');
+    expect(row?.revokedBy).toBe('his words: remove adam');
+    expect(row?.invitedBy).toBe('his words: yes invite adam');
+    db.close();
+  });
+
+  it('clears the old revocation attribution when reinstated', () => {
+    /* A reinstated address carrying a stale revokedBy would read as revoked by
+     * somebody who did not revoke this time. */
+    const db = temporaryStore();
+    inviteEmail(db, 'adam@example.com', 'first');
+    revokeEmail(db, 'adam@example.com', 'withdrawn');
+    inviteEmail(db, 'adam@example.com', 'second');
+    const row = listInvitedEmails(db).find((r) => r.email === 'adam@example.com');
+    expect(row?.revokedAt).toBeNull();
+    expect(row?.revokedBy).toBeNull();
     db.close();
   });
 
