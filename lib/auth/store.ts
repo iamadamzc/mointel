@@ -575,3 +575,43 @@ export function listInvitedEmails(db: IdentityDatabase): InvitedEmail[] {
     )
     .all() as InvitedEmail[];
 }
+
+/**
+ * Is this user currently invited? The gate's read: session -> userId -> here.
+ *
+ * THE JOIN LIVES HERE BECAUSE IT IS NOT ONLY A JOIN. Three policy decisions sit
+ * inside it, and each would otherwise be made in the gate, by a seat that does
+ * not own this schema and could not see them being made:
+ *
+ * 1. ONLY A VERIFIED ADDRESS COUNTS. `email_verified` is the provider asserting
+ *    the person controls the mailbox. An unverified claim is a string the caller
+ *    typed, and an allowlist keyed on one admits whoever types the right string.
+ *    NULL is not verified: absent means no, never assumed.
+ *
+ * 2. ANY verified invited address admits, not ALL. A person invited at one
+ *    address who later links a second identity has not thereby lost access, and
+ *    requiring every linked address to be invited would revoke people for
+ *    signing in with a different Google account.
+ *
+ * 3. REVOKED AND NEVER-INVITED ARE THE SAME ANSWER, as in isEmailInvited. The
+ *    gate has no business distinguishing them, and a different response would
+ *    tell an uninvited caller which addresses exist.
+ *
+ * Addresses are folded the same way normaliseEmail folds them -- lower and trim
+ * -- because the invited side is stored folded and a join that folded one side
+ * only would silently admit nobody.
+ */
+export function isUserInvited(db: IdentityDatabase, userId: number): boolean {
+  const row = db
+    .prepare(
+      `SELECT 1 AS ok
+         FROM identities i
+         JOIN invited_emails e ON e.email = lower(trim(i.email))
+        WHERE i.user_id = ?
+          AND i.email_verified = 1
+          AND e.revoked_at IS NULL
+        LIMIT 1`,
+    )
+    .get(userId) as { ok: number } | undefined;
+  return row !== undefined;
+}
