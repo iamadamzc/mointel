@@ -250,10 +250,17 @@ the auth suite):
   flow cookie `mointel_oauth`) + `GET /auth/start/google`.
 - **`6acc4c3`** — `lib/auth/db.ts` (cached identity handle, resolves
   `IDENTITY_DB_PATH` per call) + `POST /auth/signout`.
+- **`f26352a`** — `lib/auth/callback.ts` (`completeCallback`, the testable core)
+  + `GET /auth/callback/google`. 97 auth tests green.
 
-Open Web pieces: the callback (designed below), the gate, the `/signin` screen,
-filling the privacy placeholder. Gate is blocked only on an Ops store read
-(`isUserInvited(db, userId)`, verified-emails-only) — requested.
+Open Web pieces: the gate, the `/signin` screen, and — deferred to the ship, not
+now — filling the privacy placeholder. **The placeholder stays `[FLOW COOKIE
+NAME]` until sign-in reaches production:** the code sets `mointel_oauth`, but the
+live site does not yet (not deployed, `/auth/` not exempted, Basic Auth on), and
+the policy must not name a cookie the live service does not set — a user can
+check it in their own inspector. Fill it in the deploy that ships sign-in. The
+gate is blocked only on an Ops store read (`isUserInvited(db, userId)`,
+verified-emails-only) — requested.
 
 ## 5c. THE CALLBACK DESIGN, recorded before it is code
 
