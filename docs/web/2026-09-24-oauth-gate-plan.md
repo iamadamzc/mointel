@@ -241,6 +241,61 @@ estimate is step-2 verification, not the code.
 
 ---
 
+## 5b. BUILD LOG — what has landed, verified
+
+Each slice committed separately, each with the full gate green (tsc + eslint +
+the auth suite):
+
+- **`672ecce`** — `lib/auth/config.ts` (`loadAuthConfig`, fails closed; names the
+  flow cookie `mointel_oauth`) + `GET /auth/start/google`.
+- **`6acc4c3`** — `lib/auth/db.ts` (cached identity handle, resolves
+  `IDENTITY_DB_PATH` per call) + `POST /auth/signout`.
+
+Open Web pieces: the callback (designed below), the gate, the `/signin` screen,
+filling the privacy placeholder. Gate is blocked only on an Ops store read
+(`isUserInvited(db, userId)`, verified-emails-only) — requested.
+
+## 5c. THE CALLBACK DESIGN, recorded before it is code
+
+**The decision that shapes everything else, and it follows from D2:** the
+callback **issues a session for any valid Google auth and gates on nothing** —
+not invitation, not `email_verified`. **ALL admission is the gate's**, at the
+point of use. That is what "refuse at point of use" means, and it is why the
+landing page can send a stranger through sign-in to a refusal screen rather than
+bounce them at the callback. The callback's only refusals are replies that are
+invalid or do not belong to a request this browser made.
+
+**THE FLOW COOKIE IS CLEARED ON EVERY EXIT — success and failure alike.** The
+published privacy policy promises exactly that. One exit helper attaches
+`clearedFlowCookie`, so a failure mode added later inherits it rather than
+having to remember.
+
+**Outcome → response.** *(codes from README §2's table; the two it did not name
+are marked.)*
+
+| outcome | code | action |
+| --- | --- | --- |
+| valid auth (checkClaims passes) | `303` → `/desk` | `linkIdentity`, `createSession`, set session cookie |
+| Google returned `error=` (user cancelled) | `303` → `/signin` | benign; lands on the 200 sign-in screen |
+| missing code, missing/!expired flow cookie, or `state` mismatch | **`400`** *(not in the table — a forged or stale reply)* | no session |
+| token exchange threw / token endpoint 5xx | `503` | Google not answering |
+| `id_token` missing / unreadable / `checkClaims` fails | **`400`** *(not in the table — an invalid reply)* | no session |
+| config missing, or an unexpected throw | `500` | our fault |
+
+**`state` IS COMPARED TIMING-SAFE** (`secretsMatch`), and the **`nonce` fed to
+`checkClaims` comes from the cookie**, not the reply — the cookie is the only
+place this browser's flow is recorded, which is the whole point of it.
+
+**The callback does NOT set `users.status`.** There is no store setter for it and
+billing is out of scope; `issued_status` records the default until a status
+model is decided. Flagged, not invented.
+
+**Testable core.** The handler delegates to a pure `completeCallback({ url,
+cookieHeader, config, db, fetchImpl, now })` returning `{ status, location?,
+setCookies }`; `exchangeCode` already takes an injectable `fetchImpl`, so the
+whole flow — including the token exchange and every failure branch — is unit
+tested without mocking globals or standing up Next.
+
 ## 6. What this plan does NOT cover
 
 - Billing. The store records a session per ET day (`issued_status`, no reaper) as
