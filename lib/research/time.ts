@@ -198,63 +198,107 @@ export function withinActiveWindow(
 }
 
 /**
- * A catalyst's freshness, DERIVED from its event time rather than believed.
+ * The ET CALENDAR DATE an event happened on, parsed by hand.
+ *
+ * `Date.parse` CANNOT BE USED HERE and the reason is measured. 200 of the 260
+ * stored `eventTimestamp` values carry no clock at all -- they are bare dates
+ * like `2026-08-17` -- and `Date.parse` reads those as midnight UTC, which is
+ * **20:00 ET on 2026-08-16**. Every bare date would land a day early, and every
+ * band would skew one day old in the direction that makes a catalyst look
+ * staler than it is.
+ *
+ * So a bare date is taken AS the calendar date, never converted into an
+ * instant. Only a value that genuinely carries a time is resolved to its ET day.
+ */
+function eventEtDate(raw: string): string | null {
+  const trimmed = raw.trim();
+  if (trimmed.length === 0) return null;
+
+  // Already a calendar date. This is the majority case.
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+
+  /*
+   * An ET wall clock, e.g. `2026-08-16 20:00:00 ET`, which is in the stored
+   * data. Its date component is ALREADY Eastern, so converting would move it.
+   * `Date.parse` on this form is implementation-defined anyway.
+   */
+  const etWall = /^(\d{4}-\d{2}-\d{2})[ T]\d{2}:\d{2}(?::\d{2})?\s*ET$/i.exec(trimmed);
+  if (etWall) return etWall[1]!;
+
+  const ms = Date.parse(trimmed);
+  if (!Number.isFinite(ms)) return null;
+  return etDateString(new Date(ms));
+}
+
+/** Whole days between two ET calendar dates. Both are dates, so this is exact. */
+function etDaysBetween(from: string, to: string): number | null {
+  const a = Date.parse(`${from}T00:00:00Z`);
+  const b = Date.parse(`${to}T00:00:00Z`);
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
+  return Math.round((b - a) / 86_400_000);
+}
+
+/**
+ * A catalyst's freshness, DERIVED from its event date rather than believed.
  *
  * THE DEFECT THIS EXISTS FOR, measured 2026-09-23. `freshness` was whatever the
  * model put in `catalyst.freshness`, and `schema.ts` declares that enum with NO
  * description while the interpreter prompt never defines its boundaries. The
  * model was being asked for a temporal judgement with no threshold given, and
  * nothing downstream checked the answer against the event date the desk already
- * holds.
- *
- * `why.ts` then computed the age arithmetically three lines above taking the
+ * holds. `why.ts` computed the age arithmetically three lines above taking the
  * colour from the model's word, so a catalyst stamped `28d` rendered green. On
- * the 2026-08-23 production snapshot, **33 of 227 analyses carrying an event
- * timestamp claimed FRESH on something older than the window, and 19 more
- * claimed FRESH with no timestamp at all** -- 52 of 325, 16%, unsupported.
+ * the 2026-08-23 snapshot, **33 of 227 analyses carrying an event timestamp
+ * claimed FRESH on something older than the window, and 19 more claimed FRESH
+ * with no timestamp at all.**
  *
- * The window is not invented here. `activeFreshnessHours` is the desk's own
- * published span, "the prior session's after-hours through this morning's
- * premarket", which is where a morning gap originates.
+ * HIS BANDS, 2026-09-24, and they take the model out of this entirely:
  *
- * PAST THE WINDOW, A MODEL RECENT OR STALE IS KEPT -- his ruling 2026-09-23,
- * *"leave to the model"* -- BUT A DISPROVEN FRESH FALLS TO STALE, his ruling
- * 2026-09-24.
+ *     today          FRESH
+ *     yesterday      RECENT
+ *     2 days or more STALE   (his word is OLD; `STALE` is the enum value that
+ *                             renders `no fresh news`)
  *
- * I first sent that second arm to RECENT, reasoning that the age disproves
- * FRESH and says nothing about STALE. That was wrong, and Integration had the
- * better argument: the over-hiding he ruled against was model-RECENT rows, and
- * these are not those. A catalyst the model called fresh and the calendar
- * refutes is exactly the stale-looking-fresher case he raised, and STALE is
- * what puts `no fresh news` on the row -- the thing he said was missing.
+ * WHY CALENDAR DAYS RATHER THAN HOURS, which reverses my own earlier 36-hour
+ * window. **77% of stored event timestamps have no time of day**, so no
+ * hours-based rule -- mine, or a "since the prior close" one -- can be computed
+ * for them at all. A day band is answerable from a bare date. The data chose
+ * the scheme.
  *
- * THIS IS AN INTERIM CONTRACT. On 2026-09-24 he defined freshness as age bands
- * -- FRESH today, RECENT two days, OLD out to twenty-one -- which removes the
- * model from this judgement altogether. That rebuild is held pending the exact
- * FRESH boundary, because it is also RECENT's lower bound and cannot be built
- * around. What stands here closes his 28-day case in the meantime.
+ * HIS 21 DAYS IS NOT IMPLEMENTED AS A BOUNDARY, DELIBERATELY. He put OLD at
+ * "2 up to 21 days", and anything past 21 lands in the same band, so 21
+ * currently separates nothing. A constant that changes no behaviour while
+ * looking like a threshold is the shape this desk keeps finding, so it is left
+ * out until there is a fourth state for it to divide.
  *
- * AND A FUTURE TIMESTAMP IS UNKNOWN, NOT FRESH. `withinActiveWindow` below
- * tests `now - published <= window`, which a future date satisfies -- it was
- * written for published sources, where that cannot arise. A model-supplied
- * event date can.
+ * A FUTURE DATE IS UNKNOWN, NOT FRESH -- an event claiming tomorrow is not
+ * evidence of anything, and the old elapsed-time test read it as maximally
+ * fresh.
  */
 export function resolveCatalystFreshness(
   eventTimestamp: string | null | undefined,
   now: Date,
-  windows: CatalystWindows,
-  claimed: CatalystFreshness | null | undefined,
+  /*
+   * Accepted and IGNORED. Both were load-bearing under the 36-hour contract and
+   * the band rule needs neither -- the model no longer judges freshness, and
+   * the window no longer bounds it. They stay in the signature only so callers
+   * wired against the previous shape keep compiling while they drop the
+   * arguments; remove the parameters once none passes them.
+   */
+  _windows?: CatalystWindows,
+  _claimed?: CatalystFreshness | null,
 ): CatalystFreshness {
   if (!eventTimestamp) return 'UNKNOWN';
 
-  const at = Date.parse(eventTimestamp);
-  if (!Number.isFinite(at)) return 'UNKNOWN';
+  const eventDate = eventEtDate(eventTimestamp);
+  if (eventDate === null) return 'UNKNOWN';
 
-  const elapsed = now.getTime() - at;
-  if (elapsed < 0) return 'UNKNOWN';
-  if (elapsed <= windows.activeFreshnessHours * 3600_000) return 'FRESH';
+  const days = etDaysBetween(eventDate, etDateString(now));
+  if (days === null || days < 0) return 'UNKNOWN';
 
-  return claimed === 'RECENT' ? 'RECENT' : 'STALE';
+  if (days === 0) return 'FRESH';
+  if (days === 1) return 'RECENT';
+  return 'STALE';
 }
 
 /** Whether a normalised time falls inside the context lookback. */

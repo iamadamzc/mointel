@@ -12,11 +12,7 @@
  */
 
 import type { ResearchEvidenceBundle } from './bundle';
-import {
-  DEFAULT_CATALYST_WINDOWS,
-  resolveCatalystFreshness,
-  type CatalystWindows,
-} from '../time';
+import { resolveCatalystFreshness } from '../time';
 import type {
   Confidence,
   ResearchDossier,
@@ -238,7 +234,6 @@ export function validateDossier(
   dossier: ResearchDossier,
   bundle: ResearchEvidenceBundle,
   now: Date = new Date(),
-  windows: CatalystWindows = DEFAULT_CATALYST_WINDOWS,
 ): ValidationResult {
   const violations: Violation[] = [];
   const corrected: ResearchDossier = {
@@ -335,16 +330,12 @@ export function validateDossier(
    * this table is append-only. This only stops a wrong value being WRITTEN, so
    * a future reader of the stored field inherits nothing.
    *
-   * `DEFAULT_CATALYST_WINDOWS` is the live value (the env override is commented
-   * out in `.env.example`); the parameter exists so a caller that ever sets it
-   * passes the configured one rather than diverging silently.
+   * It takes no window any more. His bands, 2026-09-24, are calendar days --
+   * today FRESH, yesterday RECENT, two or more OLD -- because 77% of stored
+   * event timestamps carry no clock and no hours-based rule can be computed for
+   * them at all.
    */
-  catalyst.freshness = resolveCatalystFreshness(
-    catalyst.eventTimestamp,
-    now,
-    windows,
-    catalyst.freshness,
-  );
+  catalyst.freshness = resolveCatalystFreshness(catalyst.eventTimestamp, now);
 
   // The exact no-catalyst phrase is a conclusion about coverage, not a shrug.
   const saysNoFresh = (catalyst.summary ?? '').includes('NO FRESH CATALYST FOUND');

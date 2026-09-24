@@ -1,72 +1,76 @@
 import { describe, expect, it } from 'vitest';
 
-import { DEFAULT_CATALYST_WINDOWS, resolveCatalystFreshness } from '@/lib/research/time';
+import { resolveCatalystFreshness } from '@/lib/research/time';
 
 /*
- * FRESHNESS IS ARITHMETIC, AND IT WAS BEING TAKEN ON THE MODEL'S WORD.
+ * FRESHNESS IS ARITHMETIC OVER AN ET CALENDAR DATE.
  *
- * `schema.ts` declares the enum with no description and the interpreter prompt
- * never defines its boundaries, so the model was asked for a temporal judgement
- * with no threshold given. `why.ts` computed the age three lines above taking
- * the colour from that answer, and a catalyst stamped `28d` rendered green.
+ * It was whatever the model put in `catalyst.freshness` -- `schema.ts` declares
+ * that enum with no description and the prompt never defines its boundaries, so
+ * the model answered a temporal question with no threshold given. `why.ts`
+ * computed the age three lines above taking the colour from that answer, and a
+ * catalyst stamped `28d` rendered green.
  *
- * Measured on the 2026-08-23 production snapshot: 33 of 227 analyses with an
- * event timestamp claimed FRESH past the window, 19 more claimed it with no
- * timestamp at all.
+ * His bands, 2026-09-24: today FRESH, yesterday RECENT, two days or more OLD.
+ * Calendar days rather than hours because 77% of stored event timestamps carry
+ * no clock, so no hours-based rule can be computed for them at all.
  */
-const NOW = new Date('2026-09-23T14:00:00.000Z');
-const W = DEFAULT_CATALYST_WINDOWS;
-const agoHours = (h: number) => new Date(NOW.getTime() - h * 3600_000).toISOString();
+const NOW = new Date('2026-09-24T14:00:00.000Z'); // 10:00 ET, Thursday
 
 describe('resolveCatalystFreshness', () => {
-  it('sends the 28-day catalyst he screenshotted to STALE, whatever the model said', () => {
-    // STALE is what puts `no fresh news` on the row (why.ts:207 ->
-    // DecisionCells.tsx:417), which is the half of his complaint that a demotion
-    // to RECENT left unsaid. His ruling, 2026-09-24.
-    expect(resolveCatalystFreshness(agoHours(28 * 24), NOW, W, 'FRESH')).toBe('STALE');
+  it("sends his 28-day screenshot row to STALE, which is what renders 'no fresh news'", () => {
+    expect(resolveCatalystFreshness('2026-08-27', NOW)).toBe('STALE');
   });
 
-  it('keeps FRESH inside the published window', () => {
-    // 36h covers the prior session's after-hours through this morning's premarket.
-    expect(resolveCatalystFreshness(agoHours(35), NOW, W, 'FRESH')).toBe('FRESH');
-    expect(resolveCatalystFreshness(agoHours(36), NOW, W, 'STALE')).toBe('FRESH');
+  it('calls today FRESH and yesterday RECENT', () => {
+    expect(resolveCatalystFreshness('2026-09-24', NOW)).toBe('FRESH');
+    expect(resolveCatalystFreshness('2026-09-23', NOW)).toBe('RECENT');
   });
 
-  it('turns fresh OFF one hour past the window, not one day', () => {
-    expect(resolveCatalystFreshness(agoHours(37), NOW, W, 'FRESH')).toBe('STALE');
+  it('turns OLD on at two days, not at three', () => {
+    expect(resolveCatalystFreshness('2026-09-22', NOW)).toBe('STALE');
   });
 
-  it('leaves the RECENT/STALE call to the model past the window', () => {
-    /*
-     * His ruling, 2026-09-23: "leave to the model". The desk has never
-     * published a RECENT boundary, and collapsing past-window to STALE would
-     * newly fire NO_FRESH_CATALYST on 39 rows nobody asked to hide.
-     */
-    expect(resolveCatalystFreshness(agoHours(100), NOW, W, 'RECENT')).toBe('RECENT');
-    expect(resolveCatalystFreshness(agoHours(100), NOW, W, 'STALE')).toBe('STALE');
+  /*
+   * THE BARE-DATE TRAP, AND IT IS THE MAJORITY CASE.
+   *
+   * 200 of 260 stored timestamps are bare dates. `Date.parse('2026-09-24')` is
+   * midnight UTC, which is 20:00 ET on 2026-09-23 -- so a naive parse calls
+   * today's catalyst yesterday's, and every band skews one day stale.
+   */
+  it('reads a bare date as that ET day, not as midnight UTC the evening before', () => {
+    expect(resolveCatalystFreshness('2026-09-24', NOW)).toBe('FRESH');
+    // The proof it is not going through Date.parse: that would yield RECENT.
+    expect(new Date(Date.parse('2026-09-24')).getUTCHours()).toBe(0);
   });
 
-  it('falls to STALE when the model gave no usable call past the window', () => {
-    // A disproven FRESH, an UNKNOWN, or nothing at all: none is a RECENT claim,
-    // and only a RECENT claim is kept. Keeping the row silent about staleness
-    // was the earlier reading and he overruled it.
-    expect(resolveCatalystFreshness(agoHours(100), NOW, W, 'UNKNOWN')).toBe('STALE');
-    expect(resolveCatalystFreshness(agoHours(100), NOW, W, null)).toBe('STALE');
+  it('handles an ET wall clock, whose date is already Eastern', () => {
+    // A real stored shape. Date.parse on it is implementation-defined.
+    expect(resolveCatalystFreshness('2026-09-24 08:30:00 ET', NOW)).toBe('FRESH');
+    expect(resolveCatalystFreshness('2026-09-23 20:00:00 ET', NOW)).toBe('RECENT');
+  });
+
+  it('converts a real instant to its ET day rather than its UTC one', () => {
+    // 2026-09-25T01:00Z is 21:00 ET on the 24th -- still today in New York.
+    expect(resolveCatalystFreshness('2026-09-25T01:00:00.000Z', NOW)).toBe('FRESH');
+    // 2026-09-24T02:00Z is 22:00 ET on the 23rd -- yesterday.
+    expect(resolveCatalystFreshness('2026-09-24T02:00:00.000Z', NOW)).toBe('RECENT');
   });
 
   it('is UNKNOWN with no timestamp, however confident the model was', () => {
-    // The 19 rows that claimed FRESH with nothing at all behind it.
-    expect(resolveCatalystFreshness(null, NOW, W, 'FRESH')).toBe('UNKNOWN');
-    expect(resolveCatalystFreshness('', NOW, W, 'FRESH')).toBe('UNKNOWN');
-    expect(resolveCatalystFreshness('not a date', NOW, W, 'FRESH')).toBe('UNKNOWN');
+    // The 19 rows that claimed FRESH with nothing at all behind them.
+    expect(resolveCatalystFreshness(null, NOW)).toBe('UNKNOWN');
+    expect(resolveCatalystFreshness('', NOW)).toBe('UNKNOWN');
+    expect(resolveCatalystFreshness('not a date', NOW)).toBe('UNKNOWN');
   });
 
-  it('is UNKNOWN for an event dated in the FUTURE, which the window test alone reads as fresh', () => {
-    /*
-     * `withinActiveWindow` tests `now - published <= window`, satisfied by any
-     * future date. It was written for published sources where that cannot
-     * arise; a model-supplied event date can.
-     */
-    expect(resolveCatalystFreshness(agoHours(-48), NOW, W, 'FRESH')).toBe('UNKNOWN');
+  it('is UNKNOWN for an event dated in the future, which elapsed time read as fresh', () => {
+    expect(resolveCatalystFreshness('2026-09-26', NOW)).toBe('UNKNOWN');
+  });
+
+  it('ignores the model entirely, in both directions', () => {
+    // The old contract deferred to it past the window. It no longer has a say.
+    expect(resolveCatalystFreshness('2026-08-27', NOW, undefined, 'FRESH')).toBe('STALE');
+    expect(resolveCatalystFreshness('2026-09-24', NOW, undefined, 'STALE')).toBe('FRESH');
   });
 });
