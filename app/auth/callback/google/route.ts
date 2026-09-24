@@ -13,6 +13,7 @@
  */
 
 import { OAUTH_FLOW_COOKIE, loadAuthConfig } from '@/lib/auth/config';
+import { authErrorPage } from '@/lib/auth/authErrorPage';
 import { completeCallback, type CallbackResult } from '@/lib/auth/callback';
 import { clearedFlowCookie, cookieSecureDefault } from '@/lib/auth/cookie';
 import { getIdentityDb } from '@/lib/auth/db';
@@ -23,9 +24,18 @@ export const runtime = 'nodejs';
 function respond(result: CallbackResult): Response {
   const headers = new Headers();
   for (const cookie of result.setCookies) headers.append('Set-Cookie', cookie);
-  if (result.location) headers.set('Location', result.location);
   headers.set('Cache-Control', 'no-store');
-  return new Response(null, { status: result.status, headers });
+
+  // Redirects (success -> /desk, cancelled -> /signin) carry a Location and no
+  // body. Terminal errors (400/503/500) carry the honest status AND a page the
+  // person can act on -- never a blank body dressed as nothing wrong.
+  if (result.location) {
+    headers.set('Location', result.location);
+    return new Response(null, { status: result.status, headers });
+  }
+
+  headers.set('Content-Type', 'text/html; charset=utf-8');
+  return new Response(authErrorPage(result.status), { status: result.status, headers });
 }
 
 export async function GET(request: Request): Promise<Response> {

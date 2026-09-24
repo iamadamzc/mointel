@@ -85,7 +85,7 @@ export async function completeCallback(deps: CallbackDeps): Promise<CallbackResu
   // The user stopped at Google (declined consent, closed the tab). Benign: send
   // them back to the sign-in screen, which is a 200 page.
   if (params.get('error')) {
-    return result(303, { location: '/signin' });
+    return result(303, { location: '/signin?e=cancelled' });
   }
 
   // The reply must belong to a request THIS browser made. The flow cookie is the

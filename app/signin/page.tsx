@@ -59,7 +59,14 @@ const GRANTED = [
   'The account identifier Google gives us for you',
 ];
 
-export default function SignInPage() {
+export default async function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ e?: string | string[] }>;
+}) {
+  const { e } = await searchParams;
+  const cancelled = e === 'cancelled';
+
   return (
     <div className="flex min-h-full flex-col bg-desk text-ink">
       <header className="flex items-center justify-between gap-3 border-b border-line px-5 py-4 md:gap-8 md:px-24 md:py-5">
@@ -87,6 +94,18 @@ export default function SignInPage() {
               One account, one identity provider. There is no password to set, and none for us to store.
             </p>
           </div>
+
+          {/* Cancelled at Google is benign, not a wall: nothing was shared, and the
+              action that changes the outcome is the button right below. */}
+          {cancelled && (
+            <div
+              role="status"
+              className="rounded border border-line-2 bg-panel px-4 py-3.5 text-sm leading-relaxed text-ink-1"
+            >
+              You didn&rsquo;t finish signing in. Nothing was shared with the desk &mdash; sign in below
+              when you&rsquo;re ready.
+            </div>
+          )}
 
           {/* A LIST OF ONE — grows a second provider without a rewrite. */}
           <div className="flex flex-col gap-3">
