@@ -217,16 +217,22 @@ export function withinActiveWindow(
  * published span, "the prior session's after-hours through this morning's
  * premarket", which is where a morning gap originates.
  *
- * PAST THE WINDOW THE MODEL KEEPS THE RECENT/STALE CALL. His ruling,
- * 2026-09-23: *"leave to the model"*. The desk has never published a RECENT
- * boundary, and collapsing everything past the window to STALE would newly
- * trigger `NO_FRESH_CATALYST` on rows nobody asked to hide -- 39 of them in
- * that snapshot. So this corrects the claim it can disprove and no more.
+ * PAST THE WINDOW, A MODEL RECENT OR STALE IS KEPT -- his ruling 2026-09-23,
+ * *"leave to the model"* -- BUT A DISPROVEN FRESH FALLS TO STALE, his ruling
+ * 2026-09-24.
  *
- * A claim of FRESH that the age contradicts falls to RECENT, not STALE: the
- * age proves the catalyst is not fresh, and proves nothing about whether it is
- * stale. Inventing the stronger verdict is the same overreach in the other
- * direction.
+ * I first sent that second arm to RECENT, reasoning that the age disproves
+ * FRESH and says nothing about STALE. That was wrong, and Integration had the
+ * better argument: the over-hiding he ruled against was model-RECENT rows, and
+ * these are not those. A catalyst the model called fresh and the calendar
+ * refutes is exactly the stale-looking-fresher case he raised, and STALE is
+ * what puts `no fresh news` on the row -- the thing he said was missing.
+ *
+ * THIS IS AN INTERIM CONTRACT. On 2026-09-24 he defined freshness as age bands
+ * -- FRESH today, RECENT two days, OLD out to twenty-one -- which removes the
+ * model from this judgement altogether. That rebuild is held pending the exact
+ * FRESH boundary, because it is also RECENT's lower bound and cannot be built
+ * around. What stands here closes his 28-day case in the meantime.
  *
  * AND A FUTURE TIMESTAMP IS UNKNOWN, NOT FRESH. `withinActiveWindow` below
  * tests `now - published <= window`, which a future date satisfies -- it was
@@ -248,7 +254,7 @@ export function resolveCatalystFreshness(
   if (elapsed < 0) return 'UNKNOWN';
   if (elapsed <= windows.activeFreshnessHours * 3600_000) return 'FRESH';
 
-  return claimed === 'RECENT' || claimed === 'STALE' ? claimed : 'RECENT';
+  return claimed === 'RECENT' ? 'RECENT' : 'STALE';
 }
 
 /** Whether a normalised time falls inside the context lookback. */

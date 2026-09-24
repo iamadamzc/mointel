@@ -19,8 +19,11 @@ const W = DEFAULT_CATALYST_WINDOWS;
 const agoHours = (h: number) => new Date(NOW.getTime() - h * 3600_000).toISOString();
 
 describe('resolveCatalystFreshness', () => {
-  it('refuses FRESH on the 28-day catalyst he screenshotted, whatever the model said', () => {
-    expect(resolveCatalystFreshness(agoHours(28 * 24), NOW, W, 'FRESH')).toBe('RECENT');
+  it('sends the 28-day catalyst he screenshotted to STALE, whatever the model said', () => {
+    // STALE is what puts `no fresh news` on the row (why.ts:207 ->
+    // DecisionCells.tsx:417), which is the half of his complaint that a demotion
+    // to RECENT left unsaid. His ruling, 2026-09-24.
+    expect(resolveCatalystFreshness(agoHours(28 * 24), NOW, W, 'FRESH')).toBe('STALE');
   });
 
   it('keeps FRESH inside the published window', () => {
@@ -30,7 +33,7 @@ describe('resolveCatalystFreshness', () => {
   });
 
   it('turns fresh OFF one hour past the window, not one day', () => {
-    expect(resolveCatalystFreshness(agoHours(37), NOW, W, 'FRESH')).toBe('RECENT');
+    expect(resolveCatalystFreshness(agoHours(37), NOW, W, 'FRESH')).toBe('STALE');
   });
 
   it('leaves the RECENT/STALE call to the model past the window', () => {
@@ -43,12 +46,12 @@ describe('resolveCatalystFreshness', () => {
     expect(resolveCatalystFreshness(agoHours(100), NOW, W, 'STALE')).toBe('STALE');
   });
 
-  it('falls to RECENT rather than STALE when the age only disproves FRESH', () => {
-    // The age proves it is not fresh. It proves nothing about being stale, and
-    // asserting the stronger verdict is the same overreach in the other
-    // direction. UNKNOWN would discard an age the desk actually holds.
-    expect(resolveCatalystFreshness(agoHours(100), NOW, W, 'UNKNOWN')).toBe('RECENT');
-    expect(resolveCatalystFreshness(agoHours(100), NOW, W, null)).toBe('RECENT');
+  it('falls to STALE when the model gave no usable call past the window', () => {
+    // A disproven FRESH, an UNKNOWN, or nothing at all: none is a RECENT claim,
+    // and only a RECENT claim is kept. Keeping the row silent about staleness
+    // was the earlier reading and he overruled it.
+    expect(resolveCatalystFreshness(agoHours(100), NOW, W, 'UNKNOWN')).toBe('STALE');
+    expect(resolveCatalystFreshness(agoHours(100), NOW, W, null)).toBe('STALE');
   });
 
   it('is UNKNOWN with no timestamp, however confident the model was', () => {
