@@ -269,6 +269,42 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
    relayed (an invite is a grant; Ops raises it when the tooling reaches production).
 3. **When to run the cut-over** — a window outside his trading hours; Basic-Auth-off is his call.
 
+> **⚠️ THE FRESH-BOUNDARY SHIP SET IS NOT APPROVED, AND THE ENUMERATION IS THE REASON.** *Design
+  handed over `7a0ad0c` + `ccaf77b` + `bd509e9` as "the ship set, stacked and GATED ON THE
+  PRODUCTION BASE", 13 files, **zero under `app/auth/`, `lib/auth/`, `app/signin`,
+  `scripts/allowlist` — checked by PATH, which is the right check and still cannot answer this.***
+  **Verified here 2026-09-25: the by-file claim is TRUE and the shas are NOT shippable.**
+
+```
+cone over 757cf6a      7a0ad0c  42 commits    ccaf77b  48      bd509e9  66
+auth commits inside    10 touching app/auth, lib/auth, /signin, scripts/allowlist.ts
+branch holding the picks onto the production base   NONE  (git branch --contains bd509e9 -> main only)
+```
+
+> - **The three named shas are MAIN-LINEAGE. A literal ship of any of them deploys the whole auth
+    cut-over.** *This is `b371dca` in the README arriving within the hour, on a seat that had
+    independently re-derived the warning and still wrote an enumeration that reads as three shas.
+    Content-disjoint by path; buried by ancestry. **The by-path check on the COMMITS is a better
+    instrument than reading commit messages and is still the wrong instrument for the cone.***
+> - **THE GATED ARTEFACT HAS NO SHA.** *2,364 tests / 0 lint were run against a local apply onto
+    `757cf6a` that is committed nowhere. Whatever Ops cherry-picks produces NEW shas, and the rule
+    is unchanged and is the oldest one here: **gate at the sha that ships.** A gate on a different
+    tree is not a gate.*
+> - **AND THE BASE EXPIRES AT ~10:06 ET — the half neither seat has.** *`49efd1a` ships this
+    morning and becomes the new production base. **Two of the three files `ccaf77b` touches are
+    files `49efd1a` changes** — `components/DiscoveryBoard.tsx` and `tests/dashboard/filters.test.ts`
+    (measured, `comm -12`). So the gate Design ran onto `757cf6a` does not cover the tree that will
+    exist when the pick is made. Design checked `ccaf77b` against `49efd1a` ALONE, which is not the
+    same base as `49efd1a`-plus-the-others.*
+> - **`ccaf77b` is ALSO blocked on HIM, separately: it renames the Now column to TRADES**, a label
+    he reads every morning, and that question is in his NEEDS YOU unanswered. *So the set is not
+    one unit: `7a0ad0c` + `bd509e9` stand or fall together (`bd509e9` reads a field that does not
+    exist on the type before `7a0ad0c`); `ccaf77b` waits on his word regardless of any gate.*
+>
+> **Relayed as the DEFECT, not as a fix shape — the re-basing and the pick order are Ops's, and the
+  route is Design's (it chose `DeskRowContext` over a 4th `resolveWhy` argument, and its reason —
+  four callers is four chances to miss one — is better than the route I had pointed at).**
+
 **Also open, not blocking launch:**
 - **Sort legibility (Design): FIX DONE, cherry-picked SORT-ONLY as `49efd1a`** (branch
   `ops/sort-legibility`, gate green 153/2,345/0-lint) — **START 10:06–10:08 ET under standing
