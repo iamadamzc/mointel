@@ -1,6 +1,9 @@
 # Spec — production `research_analysis_versions` read-only copy-down
 
-**Status: SPEC. NOT RUN. Awaiting his confirmation that this is ONE decision.**
+**Status: SPEC. NOT RUN. DEFERRED BY HIM 2026-09-25 — "not yet".** Do not run
+it, do not stage it, do not ask Ops for the copy-down. See *Deferral* below
+before acting on anything in this document; the body is unrevised and stands as
+costed.
 
 Written 2026-09-25 by R&D at Integration's request, after he ruled on the
 grade-confidence question against this seat's recommendation. His words,
@@ -169,6 +172,41 @@ Pre-registered here, before the data exists:
 - **Secondary, no new data needed:** does confidence add anything *beyond* the
   grade? If the HIGH/MEDIUM split inside legitimate-positive is flat, confidence
   is a restatement of the grade and should not be surfaced as a second signal.
+
+## Deferral — 2026-09-25, his call, on live grounds
+
+> *"i think we have much to be improved in our catalyst reporting based on a
+> conversation im having with R&D around how i still work with chatgpt outside
+> the desk"*
+
+**Deferred, not rejected, and the reason is stronger than the spec's own
+argument for running now.** §1 justified taking the whole `dossier` partly
+because it baselines what the interpreter writes today, ahead of the deeper
+catalyst read he asked for the same day. **He inverted that: pulling a baseline
+of a thing immediately before changing it buys a snapshot of something about to
+move.**
+
+**AND THE URGENCY IN §1 WAS WRONG ON A CHECKABLE FACT, WHICH IS WHY THE DEFERRAL
+COSTS NOTHING.** Verified 2026-09-25 rather than recalled: there is **no `DELETE`
+or `DROP` against `research_analysis_versions` anywhere in `lib/` or `worker/`**
+(the one hit in `db.ts:740` is an add-column migration), and `claimStoreForMode`
+— the mode-switch nuke that clears assessments, jobs, bars and events —
+explicitly spares it. **The store is append-only.** So the pre-change write-ups
+are not perishable: **the "before" arm can be pulled after the change ships and
+will contain the same rows.** A baseline that cannot be lost is not a reason to
+hurry.
+
+**What must be re-decided when this returns, and it is not a schema question.**
+The right baseline is a question about the **new** shape of catalyst reporting,
+not the current one. **A future seat must not read this as "approved in
+principle, deferred on timing" and run it unchanged** — by then the dossier's
+fields, and what is worth asking of them, will both have moved. Re-cost §4
+against whatever the interpreter writes at that point; the *method* in §4 and
+§5 survives, the *numbers* may not.
+
+**What is unaffected:** part (a) — weakly detected, ~+7pp, both owed
+overturn-checks run — is closeable on its own whenever he wants the register
+slot back. Part (b) stays open, holding a slot, which is the cost of his call.
 
 ## Related
 
