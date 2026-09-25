@@ -13106,6 +13106,31 @@ in. *That is the check that closed it, and it was a check on the ARTEFACT rather
 field: the instrument ran correctly against the wrong scope.** *When warning about a RANGE, count the
 range. `rev-list --count` is one command and the number is the warning's whole content.*
 
+## A NEW STORE'S PATH VARIABLE NEEDS BOTH HALVES IN THE SAME MOTION, OR IT DIES TWICE
+
+**Ops's requirement, 2026-09-25, stated as a condition on `trades.db` and drawn from two failures this desk
+has ALREADY had — one old, one found the same day.**
+
+> **The path env var must reach `/etc/mointel/mointel.env` AND `deploy/aws/sync-env.sh` in the same motion as
+> the first code that opens it. Both halves or neither.**
+
+```
+half 1 missing   IDENTITY_DB_PATH unset -> openIdentityStore mkdirs a path INSIDE the release
+                 -> prune.sh deletes old releases -> the store survives ONE deploy and is
+                 silently deleted by the SECOND
+half 2 missing   sync-env.sh:108 installs /etc/mointel/mointel.env WHOLESALE -> a value typed
+                 onto the box survives deploys and is erased by the next sync, with nothing
+                 reporting it (found with DISCOVERY_PRICE_MIN, 2026-09-25)
+```
+
+**BOTH FAILURES ARE SILENT AND BOTH ARE DELAYED, WHICH IS WHY THE RULE IS "SAME MOTION" RATHER THAN "DO NOT
+FORGET".** *One kills the data on the second deploy; the other reverts the setting on the next sync. **Neither
+fires at the moment the mistake is made, and neither reports anything when it fires** — the family this file
+records over and over: a state that looks identical whether or not the mechanism holds.*
+
+*And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
+convenience that destroys the data it was written to keep.*
+
 ## A HEAVY READ DURING A DEPLOY IS CONTENTION, AND IT MAY BE THE TRIGGER FOR THE FALSE `is live`
 
 **Ops, 2026-09-25, while waiting for a cutover and trying to take a before-reading.** *Its query timed out
