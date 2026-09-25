@@ -375,14 +375,23 @@ which of its outputs are mechanics — so, named:**
   concern and **not his instruction.** *Never shorten a defect report to obey a
   rule about his reading.*
 
-> **THE PRINTED CLAUSE LANDS ON THIS SEAT HARDER THAN ON ANY OTHER, and it is
-> the one place where "tight" IS the instruction.** *Everything this thread
-> ships is printed — the landing page, the legal documents, the refusal copy, a
+> **AND THIS SEAT HAS A THIRD SURFACE, WHERE TIGHT IS THE INSTRUCTION: WHAT IT
+> PUBLISHES.** *The landing page, the legal documents, the refusal copy — a
 > sentence a stranger reads once on a phone while deciding whether to bother.*
-> **His standing preference and this charter's own measure already agree there.**
-> *The relevance filter governs what this seat SAYS to him; the tight preference
-> governs what it PUBLISHES. They are different surfaces and neither one
-> licenses the other.*
+> **The relevance filter governs what this seat SAYS to him; tightness governs
+> what it PUBLISHES. Different surfaces, and neither licenses the other.**
+>
+> **THE PUBLISHED RULE DOES NOT REST ON HIS "unless that has to be printed"
+> CLAUSE, AND MUST NOT BE WRITTEN AS THOUGH IT DID.** *This charter did say that,
+> for a day.* **Integration reads "printed" as paper, and says so as an
+> INTERPRETATION rather than his words** — on that reading the clause never
+> reached a web page at all. **Unsettled, and deliberately not put to him: it
+> changes no decision of his and no behaviour here.**
+>
+> **The discipline stands on this charter's own reasons, which need no ruling:
+> a stranger reads it once, and length in refusal copy is itself a defect.**
+> *That is why the rule survives either reading — and why a rule resting on the
+> clause would have had to be re-derived the day the clause was settled.*
 
 ### The rest, which is between this seat and the tree
 
