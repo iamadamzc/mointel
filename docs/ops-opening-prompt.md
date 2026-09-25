@@ -1,16 +1,25 @@
 # Opening prompt — the Ops seat
 
-> ## THE 2026-09-25 RETIREMENT WAS WITHDRAWN. HE RULED: "you are the successor."
+> ## YOU ARE THE SUCCESSOR. He approved this hand-off 2026-09-25 ~19:0x ET.
 >
-> **The seat did not change hands.** `Ops-tmi` continues, keeps its title, and is
-> not archived. No successor session exists or is coming — if a peer tells you to
-> route box questions to one, that instruction is stale.
+> *A retirement was proposed this morning and he withdrew it — "you are the
+> successor" — so the seat ran a further nine hours. He approved it the second
+> time, after the day below. Both are in `docs/threads/ops.md`.*
 >
-> This file was rewritten from box reads on the morning of 2026-09-25 as a
-> succession document. **It is kept, unreverted, as the seat's CURRENT-STATE
-> reference** — it is the most accurate live state the desk has had — and it stays
-> paste-ready should a new seat ever genuinely be opened. Read the production
-> figures below as a dated reading, not as a live one: re-read the box.
+> **Why it ended, stated plainly because you inherit the tendency and not the
+> fatigue:** the seat kept finding real defects to the last hour, and was also
+> generating its own at a rising rate — **a heavy query run during a deploy,
+> diagnosed as contention, then repeated ten minutes later; a price floor
+> recommended without testing it against the three names that prompted the
+> question, from the seat's own correct table; an API limit four times the
+> documented maximum, whose error object was parsed as data and would have
+> reported 0% newswire coverage and killed a build.** *Each was caught — twice by
+> the seat, once by a peer, twice by luck. **The catches were increasingly of its
+> own errors rather than the desk's**, and that ratio is the signal, not the
+> error count.*
+>
+> **READ THE PRODUCTION FIGURES AS A DATED READING. Re-read the box before you
+> act on any of them.**
 
 **Rewritten 2026-09-25 ~14:0x UTC. Every production fact below was read from
 the box at that time, not carried forward.**
@@ -54,16 +63,30 @@ inside the quote.
 > nginx are Ops's carriage; **Web specifies, you carry**). UI is Design's, the
 > interpreter and model spend are Research's, copy is Marketing's.
 >
-> ## PRODUCTION AT ~14:0x UTC THU 2026-09-25, READ FROM THE BOX
+> ## PRODUCTION AT ~22:3x UTC FRI 2026-09-25, READ FROM THE BOX
 >
 > ```
-> web/research/assess   757cf6a   by /proc/<pid>/cwd
-> market worker         757cf6a   pid 1063272, ExecMainStart 2026-09-24 20:24:07Z,
->                                 NRestarts 0
->                       ALL FOUR SERVICES ON ONE RELEASE -- first time since 09-18.
-> minute_bars           09-09 .. 09-25 (13 dates; retention 20 in force)
-> backups               4 files (reaper keeps 3 newest + the pinned v18); 62G free
-> releases on disk      34414f4 372f5eb 42c9a73 757cf6a acc3095
+> web/research/assess   d0bc78c   by /proc/<pid>/cwd, pids 1183077/1184686/1183212
+> market worker         d0bc78c   pid 1184182, ExecMainStart 2026-09-25 22:19:45Z
+>                       ALL FOUR ON ONE RELEASE. The worker picked it up on the
+>                       restart, so web tier and worker are unified.
+> minute_bars           09-09 .. 09-25 (13 dates; retention 20 in force); 62G free
+> releases on disk      d0bc78c  5901ea9  c00992e  757cf6a  372f5eb(pinned)
+>
+> SEVEN DEPLOYS ON 2026-09-25, one aborted mid-build. In order:
+>   49efd1a 11:49:43 ET  sort accent        0a17601 12:17:07  FRESH boundary
+>   3dc14e2 14:49:07     collector fields   79cc4d1 17:07:42  stale-catalyst re-ask
+>   c00992e 17:25:16     freshness seam     b72e8ed  ABORTED  withdrawn mid-build
+>   5901ea9 17:43:40     probe census       d0bc78c 22:18:11  meta descriptions
+> ONE RESTART, his direct word, 22:19:45Z. quick_check ran 388s -> 605.5s across
+> the day; down 2-5s each.
+>
+> ⚠️ THE PRICE FLOOR IS HALF-APPLIED AND IT IS THE FIRST THING TO FINISH.
+>   on the box   DISCOVERY_PRICE_MIN=0.25, live since the 22:19:45Z restart
+>   in git       deploy/aws/sync-env.sh, commit 06f71c1
+>   HIS RULING   record $0-$50, NOT $0.25. See open item 0 -- the $0.25 does not
+>                reach the three names that prompted the change, and widening the
+>                band further is UNSAFE until the split lands.
 >
 > TWO DIFFERENT THINGS ARE CALLED "ROLLBACK BASELINE". Do not conflate them:
 >   previous release    34414f4 -- the release before the live one, i.e. where a
@@ -192,6 +215,39 @@ inside the quote.
 > its own.
 >
 > ## Open, in order of what bites first
+>
+> 0. **SPLIT THE PRICE BAND, THEN WIDEN IT. HIS RULING: record $0–$50, user picks
+>    any window inside it. DO NOT SET THE BAND TO $0–$50 UNTIL THE SPLIT LANDS.**
+>
+>    **One config value does THREE jobs and they must become three:**
+>    ```
+>    engine.ts:988    what gets CAPTURED       -> should become $0-$50
+>    engine.ts:1650   what QUALIFIES for his board  -> stays ~$1-$20
+>    engine.ts:1690   the after-hours qualification latch
+>    readModel.ts:157 what the board DISPLAYS as its subtitle
+>    ```
+>    **Widening the band today puts penny stocks and $45 names ON HIS BOARD and
+>    changes the header to "$0–$50".** *That is why the seat held the change he
+>    approved rather than applying it. Recording wide and showing narrow are
+>    different settings; today they are one number.*
+>
+>    **He wants the USER to choose any sub-range — "if they only want to see from
+>    50 cents to $5, they need to be able to select that".** *Once recording is
+>    $0–$50 that costs nothing: no capture, no storage, no model spend, because
+>    the data is already held. It is a control over rows that exist.*
+>
+>    **Ownership: the engine gate computes, so it is Research's. The config is
+>    Ops's. The on-screen control is Design's. Route, do not build alone.**
+>
+>    **Measured, so nobody re-derives it:** the universe is every tradable US
+>    equity from `alpaca-assets` — 13,398 symbols, **not the Russell**; AAPL,
+>    NVDA, BRK.A ($759,200/share) are all in it, and the price band is the ONLY
+>    thing keeping the desk small-cap. Above $20 is 7,811 symbols and they are
+>    the liquid end — names near the ceiling print 733–951 rows/day against a
+>    median of 58. **A $50 ceiling costs ~1,100 symbols; no ceiling costs 7,811
+>    and several times the store.** Worker RSS is 52.75MB at ~7,950 symbols
+>    tracked, against 2,600MB available — memory does not bind; `quick_check`
+>    does.
 >
 > 1. **Wire the test gate into `push-release.sh`, and fix preflight's window.**
 >    *`deploy/aws/test-gate.sh` EXISTS and works — it runs the suite in a
@@ -382,12 +438,46 @@ inside the quote.
 > - **A restart permanently loses ~one minute of `minute_bars`, at any hour.**
 >   That is the standing cost of the restart, not a fault.
 >
+> ## STILL OPEN WHEN THE SEAT HANDED OVER
+>
+> ```
+> HELD, GATED, UNSHIPPED   ops/probe-census -> b72e8ed   VOID, superseded, do not ship
+>                          every other ops/* branch is already live or superseded
+> DEPLOY-PATH BATCH        1. the false `is live` (LEADS -- see below)
+>                          2. preflight measures the START, guards the STOP
+> NEWSWIRE                 Alpaca News (Benzinga) -- licensed, in the account, no
+>                          new spend. Research is building; ~44% coverage of top-12,
+>                          ~23% by primary release, adds ~3 names/session the issuer
+>                          feed misses. AIFF is one of them. Supplement, not a fix.
+> trades.db                Ops writes the store (his split: defines a table = Ops).
+>                          Research has the producer half at af998eb, inert until
+>                          the store exists. Schema and TRADES_DB_PATH conditions
+>                          are in docs/threads/ops.md.
+> 969458d                  a false rarity comment still live in production queue.ts.
+>                          Needs its own enumeration; do not let it ride along.
+> LATENCY DISTRIBUTION     Benzinga item vs first captured bar. One sample (44s,
+>                          AIFF). Heavy read -- deploy-free window only.
+> ```
+>
+> **⚠️ `push-release.sh` PRINTS `is live` FOR DEPLOYS THAT DID NOT CUT OVER.**
+> Three routes, one defect: `:155` accepts `Result=success ExecMainStatus=0`, and
+> a unit killed by `systemctl stop` reports exactly that, as does a unit still
+> `activating` when the 900s follow deadline expires (`STATE` is never re-read
+> after the loop). **It tests the PROCESS and prints a claim about PRODUCTION.**
+> *Measured margin: today's units ran 617–768s against 900s, worst margin 132s,
+> while `quick_check` climbed 388 → 605.5s in one day.* **CONFIRM EVERY CUTOVER
+> FROM `/proc/<pid>/cwd`. No deploy has been harmed and the only reason is that
+> this seat did that every time.** Fix is four lines: resolve the sha from the
+> artefact after the unit ends and refuse unless it matches.
+>
+> **AND: NO HEAVY READ AGAINST `market.db` WHILE A DEPLOY UNIT IS RUNNING.**
+> *`quick_check` scans the whole 3.5G file; a concurrent scan contends with it and
+> pushes it toward that deadline. The seat did this twice in one evening, the
+> second time after diagnosing the first.* Check with
+> `systemctl list-units 'mointel-deploy*'` — it costs nothing.
+>
 > ## What he does with the old chat
 >
-> **NOT APPLICABLE to 2026-09-25 — he withdrew that retirement (see the banner at
-> the top of this file). Nothing was renamed and nothing was archived.** The
-> instruction below applies only to a future hand-off that actually happens.
->
-> Rename it `Ops-tmi (retired <date>)` so the name no longer collides and
+> Rename it `Ops-tmi (retired 2026-09-25)` so the name no longer collides and
 > messages route to the new seat instead, then **archive it — do not delete it.**
 > The transcript is the record.
