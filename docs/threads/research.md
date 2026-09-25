@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T19:14Z
+## LIVE STATE — 2026-09-25T19:33Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -158,7 +158,20 @@ record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
-- **⚠️ THE NEWSWIRE PIPELINE IS LICENCE-UNBLOCKED BUT COVERAGE-UNVERIFIED, AND THOSE ARE DIFFERENT CLAIMS.** Commercial's landscape (`977e0d2`) establishes that **Alpaca News (Benzinga) is readable today** on the accepted-exposure posture he already ruled — no new vendor, no new spend, no new exposure category — and that the three primary wires are not: **PR Newswire bars automated retrieval AND commercial reuse explicitly; Business Wire permits RSS retrieval but bars competing use and commercial activity without written consent; GlobeNewswire published no terms at six places checked, which is a gap in what is PUBLISHED and not a permission**, and its individual releases carry third-party syndication terms so the feed is not one contract.
+- **✅ COVERAGE ANSWERED, AND IT INVERTS THE FINDING: THE DESK HAD THE RELEASE 44 SECONDS BEFORE IT ASKED, IN A SOURCE THE ACCOUNT ALREADY PAYS FOR, AND LOOKED SOMEWHERE ELSE.** Ops's probe, 2026-09-25, `data.alpaca.markets/v1beta1/news?symbols=AIFF` — HTTP 200, 2 items.
+
+| time (ET) | what |
+| --- | --- |
+| 07:45:00 | `AIFF`'s first captured bar — the move starts |
+| **07:47:17** | **Benzinga has the GlobeNewswire release** |
+| 07:48:01 | the desk's research job 5000 queues and starts |
+| 07:53 | he reads it in a competing scanner, already +5% |
+
+  **THE DESK WAS NOT TOO SLOW. IT LOOKED IN THE WRONG PLACE.** It fetched `fireflyneuro.com/rss`, which does not carry that release, still does not, and never would. **The issuer feed was the wrong INSTRUMENT, not a slow one** — so `NO_RECENT_SOURCE_LOCATED` was sound, the collector was working, and the answer was still wrong. *This retires "the desk cannot find wire releases" and replaces it with something much worse and much more fixable.*
+  **⚠️ THE FILTER TRAP, AND IT IS TODAY'S DEFECT IN A FOURTH COSTUME: the item arrives with `source: benzinga`, NOT `globenewswire`.** The originating wire leaves **no trace in that field.** **A collector filtering for `globenewswire` returns nothing and looks exactly like no coverage.**
+  **⚠️ AND A SECONDARY MENTION IS NOT A CATALYST.** The second item — *"12 Health Care Stocks Moving In Friday's Pre-Market Session"*, 08:05:42 ET — is a market-wrap roundup **18 minutes after the fact**. A collector accepting any tagged item would attribute the move to a listicle. **Proposed discriminator, untested: the `symbols` array LENGTH.** A primary issuer release tags one name; a roundup tags twelve. Ops's query filtered by symbol so the returned arrays were not inspected — **one re-query settles it, and it must be settled before the filter is written, not after.**
+
+- **⚠️ LICENCE VERSUS COVERAGE — THE DISTINCTION THAT PRODUCED THE PROBE, KEPT BECAUSE IT GENERALISES.** Commercial's landscape (`977e0d2`) establishes that **Alpaca News (Benzinga) is readable today** on the accepted-exposure posture he already ruled — no new vendor, no new spend, no new exposure category — and that the three primary wires are not: **PR Newswire bars automated retrieval AND commercial reuse explicitly; Business Wire permits RSS retrieval but bars competing use and commercial activity without written consent; GlobeNewswire published no terms at six places checked, which is a gap in what is PUBLISHED and not a permission**, and its individual releases carry third-party syndication terms so the feed is not one contract.
   **WHAT IS NOT ESTABLISHED, AND IT DECIDES WHETHER THE PIPELINE FIXES ANYTHING: whether Alpaca News CARRIES the item that was missed.** `AIFF`'s 2026-09-25 release — the case that started this — was a **GlobeNewswire** item. Commercial answered the LICENCE question. **Nobody has answered the COVERAGE question**, and a licensed intermediary that does not carry small-cap GlobeNewswire releases is an instrument that cannot see the case it was built for. *That is the RCON lesson exactly: triage was asked to find a news event in a corpus containing no news.*
   **THIS SEAT CANNOT TEST IT: `.env.local` holds no Alpaca credentials** — `GOOGLE_*`, `SEC_*`, `RESEARCH_*`, `OPENAI_*` and nothing else. The market keys are worker-side on the box, which is the charter working as intended. **So the decisive probe belongs to whoever holds them.**
   **THE PROBE, and it is one query: Alpaca News for `AIFF`, 2026-09-25, 07:00–10:00 ET.** Three things come back at once — **does the release appear at all** (coverage), **at what timestamp** (latency against the ~07:50 ET wire time), and **what `source` does Benzinga attribute it to** (whether GlobeNewswire items arrive under their own name or an aggregator's, which decides how the collector filters). **Do not design the collector before that answer.** A second query over a week of top-12 names would turn coverage from an anecdote into a rate.
