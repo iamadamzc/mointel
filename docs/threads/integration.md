@@ -291,6 +291,25 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
 > COUNT             >= 1, and MORE than predicted is EXPECTED, never a defect
 > ```
 >
+> **⚠️ AND A THIRD EXPECTED-AMBER CASE, INVISIBLE ON THE BOARD (Research, `096da7b`, before the
+  ship).** *A catalyst written `2026-09-25T08:30:32 ET` gets **DATE** precision and therefore can
+  NEVER reach FRESH through the prior-close boundary — Research tested the same instant in three
+  shapes:* `…T21:18:00.000Z` → CLOCK → FRESH; `…T17:18:00-04:00` → CLOCK → FRESH;
+  `…T17:18:00 ET` → DATE → **RECENT**. **So an ` ET`-shaped row sits amber beside two greens for a
+  reason nothing on the screen explains, and a verifier reads it as a defect in the new feature.**
+  *It is not. Design's named rows are all `Z`-shaped and unaffected; this is an ADDITIONAL case to
+  expect, not a change to the criterion.*
+>
+> > **AND THE FIX IS EASY, AVAILABLE AND WRONG — the part to carry.** *`etWallClockToUtc` already
+> > exists and would convert those stamps perfectly correctly. **33 of 260 stored timestamps carry
+> > the ` ET` shape and 31 of the 33 are EXACTLY `20:00:00 ET`** — the end of after-hours. That is
+> > a FILL VALUE, not a published time, so parsing them as clocks would promote **7 analyses
+> > RECENT → FRESH out of a storage convention.*** **`3570114`'s defect — precision inherited from
+> > a storage convention — arriving by a new route**, and the mirror of the bare-date proposal this
+> > thread caught earlier (treating bare dates as after-hours because the clocked ones mostly are).
+> > *Research had the 7-row measurement in hand and read it as an opportunity before checking what
+> > time of day the stamps carried.*
+
 > **And the positive case is already proven present, which is the whole reason this check can
   fail honestly: `INLF` is a known in-band row.** *Ops's condition — "zero is the only unambiguous
   failure, and only if the before-reading was non-zero" — is satisfied without a new computation.*
