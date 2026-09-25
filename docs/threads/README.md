@@ -12137,6 +12137,40 @@ over.** The 46 carry every stage timestamp identically to the 74 that do report.
 **A clean boundary with no residue is the strongest form this answer takes — there
 is nothing left for a story to attach to.**
 
+## AN ORDER OF WORK IS A CLAIM ABOUT THE CODE, NOT JUST ABOUT THE COUNTS
+
+**Integration, 2026-09-25, and R&D refuted it within the hour.** *R&D measured 454 archived research
+jobs that "could not look properly" and proposed a three-item order; Integration approved it under
+the order-and-process delegation — **registration, then expire the stored negative, then look more
+than once** — on the strength of the counts alone.* **The middle item already exists.**
+
+```
+irRegistry.ts:40   NEGATIVE_COOLDOWN_MS     = 24h   "we looked and there is genuinely nothing"
+irRegistry.ts:50   UNREACHABLE_COOLDOWN_MS  =  1h   "we could not fetch"  -- chosen so a 06:00
+                                                    failure does not cost the name his 07:00-10:00
+```
+*Not merely present: differentiated, and the one-hour value reasoned in the file against his trading
+window. **The spec would have told Research to build a thing it had already built, better.***
+
+> **AN ORDER OF WORK LOOKS LIKE A PROCESS CALL AND IS THEREFORE THE EASIEST PLACE TO SKIP THE READ.**
+> *A deploy gets a cone check and a ruling gets its turn verified. A priority list arrives as three
+> verbs and gets waved through — **but every item in it asserts that the thing does not exist yet**,
+> and that is a claim about the tree, checkable in one grep. The delegation that made it Integration's
+> call is exactly what removed the seat that would have opened the file.*
+
+**AND THE REPLACEMENT NUMBER CARRIED THE SAME CLASS OF DEFECT ONE LAYER DOWN.** *The revised order
+rests on **286 of 454 (63%)** tracing to resolution never finding a newsroom — which folds in the 186
+jobs that reused a stored negative. **Both cooldown branches return the identical
+`detail: 'reused stored negative result'` (`irRegistry.ts:165`), so that field cannot tell "no
+newsroom exists" from "we could not fetch one" — different levers, and one of them was already
+disproved for AIFF by read 3.*** **Research's own rule from the same day, applied to the seat that
+wrote it: ask whether a store can tell its failure modes apart BEFORE measuring over it.**
+
+*And the obvious fix for the split is barred by a third trap: `stored.note` does separate the two, but
+`researchRepo.ts:460` updates `issuer_registry.company_sources` with `COALESCE` IN PLACE — so today's
+note is not the note as of an August job, and classifying one by the other is reading a reassessed
+field's final value backwards.*
+
 ## A shape match is not a mechanism match
 
 Two anomalies shared a shape: `COMPLETE` reached with a required stage silent.

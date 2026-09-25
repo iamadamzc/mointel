@@ -335,6 +335,18 @@ stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /
    REPLACES its own earlier proposal that put invocation first.* **Its own caveat, repeated: this is the
    18–21 August snapshot, today's production shows 40% not 62% in that bucket, and it would not size
    work from these exact numbers.**
+   > **THE WRITE-UP IS `e108929` (`docs/rnd/2026-09-25-catalyst-source-reach-spec.md`) AND THE ORDER I
+   > AUTHORISED WAS WRONG — R&D refuted the middle item by opening `irRegistry.ts`, which I had not
+   > done.** *The expiry EXISTS and is differentiated: 24h for a confirmed negative, 1h for
+   > unreachable, the hour reasoned in the file against his 07:00–10:00 window.* **Revised order, its
+   > own: RESOLUTION REACH first (63%), the one-shot urgent gate second and posed as a question, then
+   > invocation.** *The reach limit is six guessed index paths and six feed paths on the ISSUER'S OWN
+   > domain — the large-cap shape, uncommon in this universe where IR is routinely off-domain. It
+   > deliberately did NOT name which hosts to add, because that is pipeline knowledge it does not own.*
+   > **My flag back, unresolved and Research's to weigh: both cooldown branches return the SAME
+   > `detail` string (`irRegistry.ts:165`), so the 186 folded into that 63% cannot separate "no
+   > newsroom exists" from "could not fetch" — and `researchRepo.ts:460` COALESCEs the registry note in
+   > place, so today's note cannot classify an August job.** *Mechanism in `README.md`.*
 7. **✅ CLOSED — BOTH RETIREMENTS ARE DONE, and both closed within minutes of my putting them in a
    NEEDS YOU block.** *`Commercial-tmi` is a FRESH seat at `local_60b84fba`, onboarded off `bc9847f`,
    idle with nothing pending; `Integration-tmi-retired` (`local_d1d60c77`) is renamed and archived.*
