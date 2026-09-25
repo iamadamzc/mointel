@@ -11730,3 +11730,58 @@ inside an assessment checkpoint. One batch, in daylight, suite green first.
 **nginx Basic Auth is still the only thing in front of `/desk`, and must be
 dropped LAST** — after the allowlist is proven to refuse a non-allowlisted
 account against the live box, not after it is proven to admit one.
+
+---
+
+## 2026-09-25 afternoon — two ships, and an investigation I got wrong twice
+
+**Shipped, both windows clean.** `49efd1a` (sort accent) cutover 11:49:43 ET,
+down 3s. `0a17601` (FRESH boundary) cutover 12:17:07 ET, down 2s. Worker
+untouched on `757cf6a` throughout, `RESTART_MARKET=no`, no restart authority in
+play and no minute of bars lost. Prune as projected both times; the pinned
+`rollback-baseline` (`372f5eb`) survived both. `ops/sort-legibility` pushed on
+his word, verified at his own turn rather than through a relay.
+
+**The first ship was due at 10:06 and landed at 11:49, and the cause was mine.**
+An approved, gated, enumerated release sat unshipped for ninety minutes because
+I told him "ping me and it goes" and then treated his silence as a hold — a
+trigger I invented and that nothing required. Integration noticed at 11:34,
+unprompted, and asked; he never mentioned it. **The fix is mechanical, not
+resolve: the second ship fired off a timer.** *Detection existed and was slow.
+That recommends a timer; "the owner caught it" would have recommended an
+external watcher, and it was not true.*
+
+### THE DESK CANNOT SEE SUB-$1 STOCKS
+
+His question, from three missing symbols in a data export. **`minute_bars` is
+not a tape.** The stream subscribes whole-market by wildcard, but
+`runtime.ts:1484` persists only TRACKED symbols, and `engine.ts:958` adopts a
+symbol only inside `DISCOVERY_PRICE_MIN=1`/`MAX=20`. **920 sub-$1 symbols are
+invisible, 176 of them carrying >1M average volume, and he round-trips them.**
+A sub-$1 runner is captured only from the minute it crosses $1. Full detail and
+the ruling-pending note are in `docs/ops-opening-prompt.md` open item 5.
+
+### AIFF: THE SCANNER WAS FAST; I WAS WRONG ABOUT THE REST, TWICE
+
+He asked when AIFF hit the scanner versus its catalyst. **First bar 07:45:00,
+qualified 07:48:00.711, research started 07:48:01.268 — 37ms after
+qualification — completed 07:48:31 with zero sources added.** The pipeline is
+fast. **AIFF ran with no discoverable catalyst: a real negative, and an instance
+of R&D's structure-break question rather than an artefact of it.**
+
+**I held three positions in forty minutes and only the third was supported.**
+*"It never looked"* — from partitioning a census on `companySourceDetail`, which
+is written only in resolver branches and says `'not attempted'` on the path that
+does the fetching. *"We cannot tell"* — from finding `networkRequests` absent
+from the persisted record. *"It looked, and the verdict is sound"* — by reading
+the path: single exit at 1081, no early returns, the fetch guard at 587 at
+function top-level indentation, and `state` recomputed at 1083-1089 where
+`NO_RECENT_SOURCE_LOCATED` is reachable only when `knownSourceUrl` was truthy.
+
+**Both wrong versions came from reading one gate, inferring a mechanism, and
+reporting it with real numbers attached — and the numbers are what made them
+convincing.** Research found the same defect independently and its fix comment
+now cites my census as the reason it mattered. *The claim that never moved
+across all three positions — `networkRequests` is not persisted — was correct
+throughout and checkable in ten seconds. The unit of reliability is the claim,
+not the message that carried it.*

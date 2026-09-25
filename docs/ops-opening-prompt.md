@@ -263,9 +263,34 @@ inside the quote.
 > cut-over. `7a0ad0c` looks like it failed and shipped exactly right. In both
 > cases the visible result is a bad guide to what happened, and only
 > `git log <production>..<sha>` settles it. It is NOT in `49efd1a`.*
-> 5. `lib/review/`: token lifetime as a condition; `sanitize` does not redact
+> 5. **THE DESK CANNOT SEE SUB-$1 STOCKS, AND HE TRADES THEM. HIS RULING IS
+>    PENDING.** `minute_bars` is NOT a tape — `worker/runtime.ts:1484` persists
+>    only TRACKED symbols (*"whole-market bar traffic is not a tick warehouse"*),
+>    and `engine.ts:958` adopts a symbol only inside the discovery price band.
+>    `DISCOVERY_PRICE_MIN=1` / `MAX=20` (`lib/market/config.ts:71`, defaults, NOT
+>    overridden on the box). Measured 2026-09-25 over 13,405 baselines:
+>    ```
+>    $1-$20   captured    4,674
+>    under $1 INVISIBLE     920   <- 176 of these carry >1M average volume
+>    over $20 INVISIBLE   7,811   <- by design, matches his strategy
+>    ```
+>    **He round-tripped GSUN ($0.23), SDST ($0.12) and SNYR ($0.09) in the last
+>    two weeks and the desk holds ZERO bars for them.** SNYR is the proof: it was
+>    captured on 09-10 and 09-11, then fell under $1 and vanished.
+>    **And the sharper cost: a stock at $0.80 that runs to $3 is captured only
+>    from the moment it crosses $1** — the first leg, often the steepest, is
+>    structurally absent, and it appears mid-move with no history behind it.
+>    *Lowering the floor is an env change and a restart, no code and no deploy.
+>    The cost is engine memory and `minute_bars` growth (13.6M rows) on a
+>    3,832 MB box that has had a capacity incident. MEASURE THE PROJECTION
+>    BEFORE CHANGING IT.*
+> 6. `lib/review/`: token lifetime as a condition; `sanitize` does not redact
 >    filesystem paths.
-> 6. Access-path gate 3 (close port 22) — his, not asked recently.
+> 7. Access-path gate 3 (close port 22) — his, not asked recently.
+> 8. **70 of today's 173 research jobs are `COVERAGE_INCOMPLETE`** — no durable
+>    source on file, or one that could not be reached. **"No catalyst" is NOT
+>    established for those**, unlike the 27 `NO_RECENT_SOURCE_LOCATED` (which are
+>    sound — see below). Unexamined; offered to him, not yet ruled on.
 >
 > ## What this session learned that cost the most
 >
