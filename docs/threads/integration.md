@@ -751,6 +751,42 @@ material he did not ask for.
 
 ## A deploy instruction is a request; preflight is the authority
 
+> ## ⚠️ AND "THE AUTHORITY" DOES NOT SAY *WHICH* AUTHORITY — THE WORST FAILURE THIS SECTION HAS
+> **Ops measured it 2026-09-25 with `PREFLIGHT_NOW_MINUTES`; re-derived here from the `CHECKPOINTS`
+> array rather than by running the deploy tool.** **PREFLIGHT DOES NOT GUARD HIS TRADING WINDOW.**
+>
+> ```
+> 07:30  08:00  08:30  09:00  09:15 ET      ALL PASS -- every one inside "never deploy 07:00-10:00"
+> the only blocks in that window (07:00, 09:30) are INCIDENTAL: assessment checkpoints that
+> happen to land there. Between PREMARKET_0700 (07:00) and OPEN_SPIKE (09:25) there is nothing.
+> ```
+>
+> **Preflight is not broken; it was never built for this.** Its checkpoints are ASSESSMENT-INTEGRITY
+> collisions. *The trading window is a different concern with a different cost — a skipped
+> checkpoint versus **his board going dark mid-trade** — and only one of the two is mechanised.*
+>
+> **THE HAZARD IS THIS SECTION'S OWN HEADING, AND I WROTE IT.** *It was born from preflight
+> refusing `0778533` at 01:57 with `NEXT_DAY_RECAP` due at 02:00 — a guard working perfectly,
+> inside its domain. The sentence then generalised from "preflight caught an assessment collision"
+> to "preflight is the authority", and **a guard proven in one domain, cited as authority in all
+> of them, converts its SILENCE into CONSENT.*** A seat that reads this heading and sees a
+> preflight pass at 08:30 has been told by a machine that it is clear — and the machine's agreement
+> is precisely what makes it feel checked.
+>
+> **Ops's own instance, which is the sharpest evidence: at 07:46 it told me the ship could not go.
+> True by the written rule — and preflight would have allowed it.** *Right for a reason it had not
+> verified, while saying "preflight decides the moment" in the same breath.*
+>
+> **SO, FOR ANY SEAT READING THIS: the 07:00–10:00 ET rule is HUMAN-ENFORCED ONLY. You are the
+> guard. Preflight will not stop you.** *Recorded, NOT fixed — folding the window into preflight
+> belongs in the deploy-path batch, and Ops is correctly not touching the deploy tool in the
+> 45 minutes before using it. `docs/ops-opening-prompt.md` open item 1.*
+>
+> *This is `two-constraints-one-number` in its worst form. There, two schedules shared a number and
+> pointed opposite ways. Here one constraint is enforced by a machine and the other lives only in a
+> sentence — and the machine's silence reads as consent.*
+
+
 **Added 2026-08-24 after this thread's first use of the deploy delegation.** I
 named `0778533` at 01:57:44Z with `NEXT_DAY_RECAP` due at **02:00**, having never
 looked at the checkpoint schedule. **Preflight refused it and caught what I should
