@@ -727,6 +727,20 @@ or lose a promotion for a reason that has nothing to do with any deploy** — an
 two causes are indistinguishable. *IFBD's verdict happened not to change; that is luck, not
 safety.*
 
+> **AND THE WHOLE CHECK RESTS ON ONE ROW — swept, not assumed.** *Design searched all twelve rows
+> for clocked / `days >= 1` / at-or-after the prior close and **`INLF` is the single hit**, so there
+> is no replacement to name if it leaves.* **The honest outcome distribution is therefore
+> PROVED or NOT PROVED, never DISPROVED: an amber `INLF` after the ship is a real defect signal; an
+> ABSENT `INLF` is silence, and silence must not be written up as either.** *Not a reason to hold a
+> gated release — the standing instruction is ship anyway and defer verification to the next mover
+> — but a single-positive-control check is one churn away from being unrunnable, and that has to be
+> said before the result comes in rather than after.*
+>
+> **AND READ EARLY, BECAUSE THE INFORMATION IS THE SAME AND THE TIME TO ACT ON IT IS NOT.** *Design
+> took its presence check at 11:51 for a 12:06 ship rather than at 12:04, deliberately: if the
+> control had already gone, that bought fifteen minutes to decide instead of two.* **A check timed
+> so its answer arrives too late to change anything only produces regret.**
+>
 > **THE CONSEQUENCE FOR ANY BEFORE/AFTER CHECK ON THIS COLUMN: re-read each named row's TIMESTAMP,
 > not only its colour, and DISQUALIFY a row whose shape or instant moved rather than counting it as
 > a defect.** *Design's, and without it a re-analysis would have been reported as the deploy's
@@ -735,7 +749,10 @@ safety.*
 *It also re-answers Research's ` ET` question: at 09:15 the honest answer was "no ` ET` row at
 `days >= 1` on this board"; by 11:38 there was one, **`IFBD`, and it arrived by a row being
 RE-WRITTEN rather than by a new row appearing.*** **The ` ET` population does not only vary — it
-GROWS OUT OF ROWS THAT WERE PREVIOUSLY CLOCKED.** *Seven of twelve rows left the board in the same
+GROWS OUT OF ROWS THAT WERE PREVIOUSLY CLOCKED.** ***And that fact has now been true, false and
+true again inside three hours*** *(`IFBD` carried it; it left between 11:38 and 11:51 while `TDIC`
+arrived).* **So never record it without a timestamp beside it: it is a SHAPE that recurs, not a
+count that holds.** *Seven of twelve rows left the board in the same
 window; the bare-date tripwire survived under a new name (ONCO left, CNET took its place).*
 
 ### QUEUED BOX READS — TWO, BOTH FOR OPS, NEITHER URGENT, IN THIS ORDER
