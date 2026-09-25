@@ -14,7 +14,7 @@ then paste that charter's opening message.
 | **Design** | The trader-facing UI, the audit remediation | [design.md](design.md) |
 | **Research Pipeline** | The interpreter, evidence collection, model spend | [research.md](research.md) |
 | **R&D** | Standing analysis capability — the question register, the archive, the tape research | [rnd.md](rnd.md) |
-| **Coaching** | Daily fills, execution against the playbook | [coaching.md](coaching.md) |
+| ~~**Coaching**~~ **MOVED OUT 2026-09-25 (`73bb4af`)** | Daily fills, execution against the playbook. **No longer a mointel seat:** it is `TradeCoach1` in `A:\TradeCoach`, a cross-project peer holding NO mointel authority — its asks go to him like anyone else's. *The charter stays here as a POINTER, and the tooling (`lib/coaching/fills/`, `worker/fills-*.ts`) stays in this repo because it needs these `node_modules`.* Opening message: `A:\TradeCoach\docs\COACHING-PROMPT.md`, never this table. | [coaching.md](coaching.md) |
 | **Commercial** | Naming, vendors, licensing, the commercial risk register | [commercial.md](commercial.md) |
 | **Web** | Everything a stranger sees — the public site, the legal pages, the sign-in screen | [web.md](web.md) |
 | **Marketing** | Copy, content and voice; socials when he says so | [marketing.md](marketing.md) |
