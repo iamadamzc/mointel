@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T11:38Z
+## LIVE STATE — 2026-09-25T12:24Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -73,6 +73,7 @@ a new chat"; read nothing marked ARCHIVE front to back.*
 
 | sha | what |
 | --- | --- |
+| `7a0ad0c` | **`MarketSnapshot.catalystFreshFrom`** — the producer half of the FRESH boundary, 2026-09-25. Suite 2,421 across 161 files. **The consumer half is Design's and is not done**; see the open item. |
 | `757cf6a` | Two `prefer-const` lint errors of mine that the release gate reported as green. I had run `tsc` and `vitest` and never `lint`. |
 | `a12bfd6` | **The model is no longer asked for `freshness`** — out of `schema.ts`. And the **21-day line is DROPPED, his ruling** — no fourth state, everything two days or older is OLD. |
 | `684902f` | **FRESH = the prior SESSION's close → now, for clocked events only.** His ruling 2026-09-24. **⚠️ BUILT AND DORMANT — see below.** |
@@ -142,8 +143,9 @@ he was told rather than assume it.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
-- **⚠️ THE PRIOR-SESSION-CLOSE FRESH WINDOW IS BUILT AND NOT RUNNING.** `684902f` implements it; nothing supplies the boundary, so it never fires and **clocked after-hours releases still band RECENT** (6 rows in the 2026-08-23 snapshot). `resolveCatalystFreshness` has two callers and both pass two arguments: `why.ts` runs in the BROWSER (`'use client'`, no store), and `validateDossier` takes no `db` either. The fallback is deliberate and safe — it is exactly his date-only rule — **but do not read `684902f` as live.**
-  **What activates it:** `MarketSnapshot.catalystFreshFrom = afterHoursStartUtc(previousTradingDate(db, tradingDate))`, computed once per snapshot server-side and passed as the third argument. **Mine, queued after the board batch.** Design specced the field; the shape is the same producer-supplies-the-answer rule as `observed`.
+- **⚠️ THE PRIOR-SESSION-CLOSE FRESH WINDOW: PRODUCER SHIPPED `7a0ad0c`, CONSUMER IS DESIGN'S AND NOT DONE.** `684902f` implements the band; `7a0ad0c` supplies the boundary as **`MarketSnapshot.catalystFreshFrom`**, computed once per snapshot server-side in `getMarketSnapshot`, null on both degraded snapshots and whenever the answer would be a guess. **Nothing on his board changes until Design passes it as the third argument** at `lib/dashboard/why.ts:239` — four `resolveWhy` call sites, routed to Design through Integration 2026-09-25. Until then **clocked after-hours releases still band RECENT** (6 rows in the 2026-08-23 snapshot), which is his date-only rule and is safe.
+  **Two decisions inside `7a0ad0c` that went beyond the spec, both asserted in `tests/research/catalystFreshFrom.test.ts`:** it takes the **prior session's OWN close** rather than `afterHoursStartUtc`'s 16:00 default, which is three hours late the day after an early close; and the producer **refuses a stale calendar** rather than leaning on `resolveCatalystFreshness`'s five-day guard — and the test is that **the calendar still covers the date asked about**, not the size of the gap to the previous session, because an unscheduled closure produces the same gap with a current calendar and there the wide window is CORRECT. `calendarDays` is now exported from `lib/desk/checkpointDates.ts` rather than the calendar being parsed a third time.
+  **Size, measured before building: 6 of 325 analyses.** Only clocked events can be tested against a close boundary and 77% of stored timestamps carry no clock. A larger number after Design wires it means something is wrong.
 
 - **Phase C, filing-derived float** — buildable now. `assessFloat` (`float.ts:326`) already IS the containment test: `IMPOSSIBLE` when a claimed float exceeds a current filed count. **The vendor half is prohibited, not expensive** — see constraints.
 - **31 personal-scoped justifications in this file.** Integration counted 86 across nine charters. **Fix as each finding is touched**; a bulk rewrite of reasons is how a wrong reason gets a confident new sentence.
