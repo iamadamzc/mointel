@@ -1073,6 +1073,15 @@ time after which silence is a decision. It named the time and did not honour it.
 > asked a status question in exactly the shape the rule forbids.* **Ask for the state, do not offer
 > the menu.**
 >
+> **✅ THE FIX, AND IT IS OPS'S: FIRE ON THE CLOCK, VERIFY AFTER — DO NOT WAIT TO BE TOLD.**
+> *`0a17601` was put on a timer for 12:06:30 BEFORE the GO arrived, so it could not be held hostage
+> to a prompt that might not come.* **The morning's failure was a gated, approved deploy waiting on
+> a trigger Ops had invented; the correction is not "watch harder", it is to remove the human
+> trigger from the path.** *Ops also undertook to send the confirmation unasked, which closes the
+> other half — my half — without relying on me to remember.* **A process that depends on two seats
+> both remembering is the one that failed; a timer plus an unsolicited confirmation depends on
+> neither.**
+>
 > **So: after issuing an enumeration with a named window, ASK AT THE WINDOW.** *A deploy that did
 > not happen looks identical, from here, to one that went perfectly — silence is the reported state
 > in both cases. The cost is not the delay; it is that a report to him was wrong for ninety minutes
