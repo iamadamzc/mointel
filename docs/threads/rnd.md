@@ -1313,6 +1313,74 @@ change in what gets stored.* **A census cannot separate those**, Ops declined to
 guess, and neither should the next reader. **The rate moved; the reason has not
 been established.**
 
+#### THE DIRTY-FLOAT CHARACTERISATION IS 90% BUILT AND THE FLOAT ITSELF IS 0.9%. 2026-09-25.
+
+**His direction, and it is the founding concept of the product:** *"The concept
+of dirty float is really where this product was born out of. And if we can
+derive our own float, but at the same time, characterize that float and the
+structure and educate and inform the trader in an easy way at the same time, we
+should focus on doing all of that."*
+
+**Measured on the latest dossier per ticker, `market-prod-2026-08-23.db`, n=231
+(08-17…08-21, five sessions — the usual staleness caveat, and the SHAPE is what
+this entry asserts):**
+
+    supplyLedger non-empty        208   90.0%
+    structuralWarnings present    231  100.0%
+    reverseSplitHistory present    80   34.6%
+    displayedFloat non-null         2    0.9%   <- THE ANCHOR
+
+> **THE DESK ALREADY KNOWS WHAT IS DIRTY ABOUT A FLOAT. IT DOES NOT KNOW THE
+> FLOAT.** *657 supply blocks across 231 tickers, ~3 per name, and **54.8% carry
+> an actual share count.*** **The numerator is built. The denominator is
+> missing.**
+
+**The vocabulary already in production, and it is exactly the dirty-float one:**
+
+    WARRANTS                   132     ATM                         60
+    REGISTERED_RESALE          104     CONVERTIBLES                40
+    SHELF_CAPACITY              91     EQUITY_PURCHASE_AGREEMENT   29
+    OTHER_ISSUED_SHARES         86     PREFERRED_CONVERSION        17
+    RECENT_OFFERING             67     PIPE                        16
+                                       ACQUISITION_SHARES          15
+
+**And each block already carries its own provenance and explanation** —
+`sourceFiling`, `registrationStatus`, `amountShares`, `dollarCapacity`. A real
+one, verbatim: *`{"type":"WARRANTS","amountShares":8600000,"sourceFiling":"8-K
+exhibit dated August 12, 2026","registrationStatus":"The company reported 8.6
+million stock options and unexercised warrants…"}`*. **The "educate and inform"
+half he asked for is already written, per block, with the filing it came from.**
+
+**WHY THE MISSING ANCHOR COSTS ALMOST EVERYTHING.** *"8.6M warrants" is not
+information.* Against a **759k** float it is **11x the float** and the name is
+untradeable on a pop; against a **50M** float it is noise. **The desk stores the
+warrant count and cannot say which.** **With an anchor, ~360 blocks that already
+carry share counts become ratios immediately.**
+
+**AND IT CONVERTS A JUDGEMENT INTO ARITHMETIC, which is the differentiation
+claim.** Current classifications: **CAUTION 125, UNKNOWN 76, DIRTY_FLOAT 30.**
+*`DIRTY_FLOAT` is a model judgement on 13% of names.* **With a float,
+*"registered resale is 27x the float"* is a computed fact with its filing
+attached — not an opinion, not a label.** *An intelligence platform hands over
+the reasoning; a ratio with a source filing IS the reasoning.* **That is the
+`8c2d2d5` framing satisfied by arithmetic rather than by prose.**
+
+**WHAT THIS DOES TO THE PHASE C SCOPE, and it is a redirection rather than a
+refinement.** Phase C was scoped to ship **shares outstanding** — a ceiling
+measured at **median 1.77x the true float** in the filings measured the same day.
+**Putting a 1.77x-too-large denominator under a 657-block ledger makes every
+ratio look ~44% safer than it is**, in the same direction as every other float
+defect this register has recorded. **A wrong anchor is worse than no anchor,
+because the ledger multiplies it.**
+
+**THE TARGET INSTEAD:** *float stated verbatim in a filing, with its as-of date,
+plus the ledger blocks filed since.* **Both halves already exist in stored text**
+— the anchor unparsed in ~15% of researched names (only ~3% within three
+months), the ledger populated on 90%. **Neither needs new fetching.**
+
+**THE OPEN QUESTION IS NO LONGER COVERAGE. It is whether a dated anchor plus
+subsequent dilution is TRADEABLE at 07:00, which is his to answer and only his.**
+
 #### THE DESK IS A 94%-SEC PRODUCT, AND TWO THIRDS OF ISSUERS HAVE NO SITE PATH AT ALL. 2026-09-25.
 
 **His narrowing, and it is the right one:** *"we know sec filings are 100%,
