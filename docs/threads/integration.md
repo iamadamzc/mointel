@@ -215,6 +215,27 @@ fix: carry the defect and the evidence, and leave the fix shape to the owning se
 knows its file's runtime (browser / worker / server), its types, and what it can reach. A shape
 from the finding seat is a hypothesis; flag it as one, never relay it as the instruction.
 
+## PRODUCTION CARRIES ONE KNOWN-FALSE COMMENT, AND IT HAS A DATED TRIGGER
+
+**`969458d` is unshipped, so production `queue.ts` still says the 2026-08-23 snapshot contains no instance
+of the case that fires the stale re-ask gate.** *It does not: the window is 08-17..08-21 and holds a Monday
+with five clocked catalysts. Research corrected the sentence; the correction is a comment and a test
+docblock, no runtime effect.*
+
+**DELIBERATELY NOT SHIPPED 2026-09-25.** *A comment does not earn a deploy cycle, and letting a docs-shaped
+fix ride an unenumerated range is exactly what this seat spent the evening forbidding.*
+
+> **THE TRIGGER, because "the next research ship" is not one — that is a hold waiting on a state that may
+> never arrive, which is this desk's own family of defect:**
+>
+> - **It RIDES the next Research enumeration, named in that enumeration's file set.**
+> - **If nothing Research-side ships by MONDAY 2026-09-28 PREMARKET (04:00 ET), Integration enumerates it
+>   alone** — the drift between production and main in that file is then one commit and it is cheap to
+>   close.
+> - **The hazard if forgotten is small and real: a seat reading production's `queue.ts` to understand the
+>   gate reads a rarity claim the desk has retracted**, and a false comment beside correct code is how the
+>   next seat's reasoning starts one step behind.
+
 ## THE DEPLOY-PATH BATCH — ORDER RULED 2026-09-25, AND THE ORDER IS MEASURED
 
 **1. THE FALSE `is live` LEADS IT.** *`push-release.sh:153-163` prints a claim about PRODUCTION from the
