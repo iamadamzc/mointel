@@ -44,102 +44,44 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-25 13:05 UTC
+## Live state — 2026-09-25 20:13 UTC / 16:13 ET
 
-**My head is `bd509e9` on `main`. THE SHIPPABLE ARTEFACTS ARE TWO TAGS, NOT
-SHAS ON MAIN, AND THAT IS THE DAY'S LESSON.** *What is DEPLOYED is Ops's to
-say.* Observed on the board at 08:16 ET today: the freshness bands, the badge
-split, the sort marker, the filter work and the DCOY fix are live, and the head
-over the trades column still reads `NOW` / `−1m`, so neither of mine is.
+**LIVE ON THE DESK, VERIFIED BY THIS SEAT ON THE BOARD:**
 
-    design/fresh-boundary-gated   0a17601   49efd1a + producer + consumer
-    design/now-header-gated       363f40d   the above + the Now header
+    49efd1a   the sort accent            cutover 11:49:43 ET
+    0a17601   the FRESH prior-close      cutover 12:17:07 ET, verified 12:18
 
-**Each tag's CONE IS THE SHIP SET, so the tip is safe to deploy** — which was
-never true of a sha on `main`. **Every figure carries its base, because the
-first version of this paragraph did not:**
+*The boundary's effect was read at 12:18 ET after a reload:* `catalystFreshFrom`
+**absent at 12:05, `'2026-09-24T20:00:00.000Z'` at 12:18**; `INLF` amber `16h`
+→ **green** `19h`; `MGLD` amber and unmoved three hours eighteen the wrong side
+of the same close; `LFS`/`KITT` green and unmoved; **one row changed, zero
+demotions.** *That is the full section above under "What he ruled" — do not
+re-derive it.*
 
-    base       ref                            commits   files
-    757cf6a    design/fresh-boundary-gated          3      13
-    757cf6a    design/now-header-gated              4      14
-    49efd1a    design/fresh-boundary-gated          2      10
-    49efd1a    design/now-header-gated              3      13
+**COMMITTED, GATED, AND PARKED ON HIS WORD — NEITHER IS LIVE:**
 
-**ZERO under `app/auth/`, `lib/auth/`, `app/signin` or `scripts/allowlist` at
-every one of those bases, by path.** Gated AT THOSE EXACT SHAS in the pinned
-worktree with a clean status: **2,364 / 2,367 tests, lint 0 errors, build OK,
-typecheck clean.** Ops has since gated `0a17601` independently. *The three
-extra files over `757cf6a` are `49efd1a`'s own.*
+    design/now-header-gated  363f40d   `Now` -> `TRADES`, gated at the sha
+    (untagged)               36bbddd   the Monday `3d`-in-green fix
 
-**THE BOUNDARY IS LIVE AND VERIFIED ON THE BOARD. 2026-09-25 12:18 ET.**
-*The one claim nobody on this desk could make honestly all day, and it is
-closed by observation rather than by a borrowed count.*
+**ONE DECISION OWED BY HIM, THREE PARTS, AND IT SHIPS AS ONE CHANGE** because
+all three land in the same cells:
 
-    payload   catalystFreshFrom = '2026-09-24T20:00:00.000Z'
-              NON-NULL, and exactly the predicted prior-session close
-              (Thursday 16:00 ET). The key was ABSENT at 12:05.
+1. **The column tooltips.** His direction, and his own limiter is *"if it makes
+   sense"* — which excludes a tooltip restating its header (`Price` /
+   *"Last price"*). The mechanism exists; the content is uneven. **`Gap`'s
+   empty static `title` is NOT a hole** — it carries `resolve: baselineLabel`,
+   which supplies a phase-resolved title, so filling it would change nothing
+   while looking like a fix.
+2. **Does `Now` → `TRADES` still earn its place** once a tooltip carries the
+   depth? A tooltip answers *what is this column*; it does not answer *why does
+   this head name a TIME where every other names a QUANTITY*. **His tooltip
+   message does not mention the rename and must not be read as approving it.**
+3. **Does `since Thu close` replace the age on WITHIN-DAY promoted rows**, or
+   only where it misleads by days? **That question exists because the
+   generalisation is MINE, not his** — see the verbatim section above.
 
-    INLF      AMBER 16h  ->  GREEN 19h     the promotion, as predicted
-    MGLD      AMBER, stayed                14:00 ET Thu, 3h18m the wrong
-                                           side of the same close
-    LFS KITT  GREEN, stayed                nothing demoted
-    MSGY AXG AIFF RDGT CNET   amber, stayed
-
-**ONE ROW CHANGED. ZERO DEMOTIONS. AND THE PAIR IS DISCRIMINATING:** `INLF`
-and `MGLD` are both Thursday catalysts **three hours and eighteen minutes
-apart**, on opposite sides of 16:00 ET, and they landed on opposite verdicts.
-*That is the boundary doing what it says rather than a change that turns
-things green.*
-
-**Timestamps were re-read BEFORE the colours**, so a precision flip could not
-be mistaken for the deploy: all three controls unchanged. *The first render
-read returned "no discovery table" — the board's own few seconds before its
-first payload, not a finding, and not concluded from.*
-
-**THE PAIRING DEFECT IS ON THE SCREEN RIGHT NOW: `INLF` READS `19h` IN
-GREEN.** Mild today because 19 hours looks plausible beside green; on Monday
-the same row reads `3d`. `36bbddd` fixes it and is committed, not deployed.
-
-**`design/now-header-gated` IS BLOCKED ON HIS ANSWER** — it renames the column
-to `TRADES` and that is unanswered in his NEEDS YOU block. Not on a relayed
-yes, from any seat. **It also stacks on the boundary, so a yes arriving BEFORE
-the boundary ships means re-cutting it standalone rather than shipping the
-pair.** Integration and Ops are sequencing these as **two releases, not one**,
-so a wrong-looking board has one candidate cause instead of two.
-
-**WHAT I HANDED OVER FIRST WAS A RECIPE, AND A RECIPE IS NOT AN ARTEFACT.**
-Three literal shas plus the sentence "these are cherry-picks, not shas to
-deploy". Integration refused it and was right twice over:
-
-- **The gated tree was committed NOWHERE.** I ran `git cherry-pick -n` onto the
-  production base, gated it, and reset it away. The numbers were real and they
-  described a tree that no longer existed — so whatever Ops picked would be new
-  shas that nothing had gated. **My own rule says a gate in a shared tree gates
-  a MOMENT and not a SHA; this was the same failure with the worktree
-  discipline done correctly and the ARTEFACT still missing.**
-- **An enumeration of shas is read as shas.** `bd509e9`'s cone over production
-  is 66 commits containing 10 auth commits, and `0170418` is the record of that
-  exact misreading happening. A prohibition in the sentence above does not
-  survive being quoted.
-
-*One correction to the objection, because the instrument matters: the by-path
-check was run on the CHERRY-PICKED FILES, not on the commits in the cone, and
-on a pick that is the right object. What was wrong was handing over something
-that could be deployed as a tip at all.*
-
-**AND THE BRANCH NAMES WERE IN OPS'S NAMESPACE, WHICH IS HALF OF A NEAR-MISS
-THAT IS RECORDED AS OPS'S.** Ops ran `git branch -f ops/fresh-boundary` on a
-name it assumed was free; it was mine, holding unpushed work, and only a
-worktree lock refused it. **It looked free because I put it under `ops/`.** The
-refs above are TAGS, under `design/`: immutable, and not in another seat's
-prefix. See the shared-ref rule now in `README.md` (`16d77b4`).
-
-*`npm run typecheck` on that base fails twice before it passes, and neither
-failure is the change.* With a stale `.next` it cannot resolve three `app/auth/`
-routes that do not exist at `757cf6a`; with `.next` deleted it loses
-`LayoutProps`, which only Next's build generates. **Build first, then
-typecheck** — the mechanism already recorded in the working rules, met at a
-second base.
+*`36bbddd` has until Monday premarket, which is the first session where a
+promoted row can read `3d` in green.*
 
 **VERIFICATION ACCESS IS SOLVED. This was the biggest standing limit on the
 seat and it is gone.**
@@ -268,11 +210,12 @@ restates the header.
 
 | Item | Owner | Waiting on |
 | --- | --- | --- |
-| Deploy of `7a0ad0c` + `ccaf77b` + `bd509e9` | Ops | A stacked cherry-pick onto the production base; gated there, auth-free by path |
+| ~~Deploy of the FRESH boundary~~ | ~~Ops~~ | **DONE** `0a17601` live 12:17 ET, verified on the board 12:18 |
 | ~~`catalystFreshFrom` on the payload~~ | ~~Research~~ | **DONE** `7a0ad0c` producer, `bd509e9` consumer |
 | `lastCheckpointChanges` on the payload | Engine/Research seat | Spec above; §9 item 12's rail blocks on it |
-| ~~The `Now` column HEADER label~~ | ~~Design~~ | **DONE `ccaf77b`** — head reads `TRADES` / `−1m` |
-| Confirm the boundary's VISIBLE effect | Design | The deploy. Six rows RECENT→FRESH is Research's measurement, not an observation of mine |
+| ~~The `Now` column HEADER label~~ | ~~Design~~ | Built `ccaf77b`, tagged `363f40d`, **PARKED on his word** |
+| ~~Confirm the boundary's VISIBLE effect~~ | ~~Design~~ | **DONE** one row moved, zero demotions, discriminating pair |
+| The package: tooltips + `TRADES` + the within-day question | His call | One decision, three parts, ships as one change |
 | A fourth freshness band past 21 days | His call | Research left 21 unimplemented: it currently divides nothing |
 | §9 item 12 — the 320 px rail layout | Design | The rail restructures the board into two columns |
 | §9 items 13–19 (rest of Phase 2) | Design | Unstarted |
