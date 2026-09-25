@@ -306,6 +306,46 @@ barely under-represented in this bucket relative to the whole researched set.*
 **If the coverage number comes back high overall, check it separately for that
 segment before retiring the issuer path.**
 
+### RESOLVED 2026-09-25: THE ORDER HOLDS. Reach stays the dominant lever.
+
+**Research answered from measurements that already existed: Benzinga PRIMARY
+coverage of top-12 names is ~23%.** *At 70% the order would have flipped. At 23%
+it does not.*
+
+> **THE SENTENCE THAT SURVIVES: reach is displaced by AT MOST about a quarter,
+> and the intersection is unmeasured.** **23% is Benzinga's COVERAGE RATE, not
+> the displacement of the 63%** — those are equal only if wire coverage is
+> independent of newsroom quality. **DO NOT write 23% into this spec as the
+> displacement.** *A number reused one step from where it was measured is this
+> desk's most frequent defect and it bit four times on 2026-09-25 alone.*
+
+**AND THE INDEPENDENCE ASSUMPTION IS FALSE IN THE DIRECTION THAT SHRINKS THE
+DISPLACEMENT.** *Integration's mechanism: the issuers a wire covers are the ones
+who PAY a wire — larger, more professionally run, hence most likely to have a
+conventional newsroom at one of the six guessed paths.* **Tested here on stored
+data:**
+
+    newsroom-not-found, whole population       125 of 240   52.1%   <- base rate
+    newsroom-not-found among wire-carrying       2 of  18   11.1%
+
+**Wire-carrying names are roughly five times LESS likely to lack a newsroom.**
+*n=18 and directional only.* **But the sampling bias runs AGAINST the finding
+and therefore strengthens it:** the desk's newswire copies are found by the
+*discovery fallback*, which stays available precisely when the issuer path fails
+(the XOS case in `irRegistry.ts`). **That bias should make wire-carrying names
+MORE likely to lack a newsroom, and the opposite is observed.**
+
+> **So the true displacement is below 23%, and reach work is not materially
+> reduced by the wire.**
+
+**THE NUMBER STILL WORTH WAITING FOR, and it is cheap: coverage by PRICE BAND.**
+*If Benzinga covers the AIFF class but not the sub-$1 names he actually trades,
+both levers stay at full size.* **Research has it queued as a re-cut of an
+existing query — no new API calls, no deploy window.** **Do not spend on reach
+before that split lands**, and **ask for it as a split rather than a total** —
+the same pooled-versus-conditional error this seat made on the coverage rate the
+same afternoon.
+
 **AND A DELIBERATE DECISION IS OWED ON THE PROBE CENSUS** (`d734d6f`,
 `candidatesReturned/Probed/Fetched`), which this seat argued for hours earlier.
 **If a wire lands first, that census partly measures a problem the desk has
