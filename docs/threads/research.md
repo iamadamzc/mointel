@@ -2776,8 +2776,28 @@ changes what the board does. The `candidatesProbed` rename, the three retracted
 bounds, the census plumbing and this seat's four self-corrections are not, and
 reporting them cost his attention for nothing.*
 
-**Between seats the rule is different and looser: relay the defect and the
-evidence, drop the narration.**
+**BETWEEN SEATS AND IN DOCUMENTS: BE AS LONG AS THE WORK REQUIRES. His own
+boundary, given minutes after the rule above and recorded verbatim in
+`README.md` (`47efeb4`):**
+
+> *"i dont care what you say to each other and unless that has to be printed, be
+> as long as you need to be. don't sacrifice excellence for brevity. i just am
+> having trouble understanding what's going on when i have to read through all
+> the shop chatter."*
+
+**So the two limits are different in KIND and must not be collapsed again.** His
+channel is filtered by **relevance**, not length — long is fine if every part
+changes a decision of his or what the product does, short is wrong if it is
+mechanics, and **anything PRINTED stays tight.** Seat-to-seat traffic and
+documents are limited only by **context cost**, which is the session-hygiene
+rule's concern and not his.
+
+*This line first read "relay the defect and the evidence, drop the narration",
+which he never said — it was a peer's characterisation and this seat copied it
+into its own charter without checking it against his words, hours after
+refusing to start a build on exactly that kind of characterisation. **The
+long messages are why three wrong numbers died before anything was built on
+them; a compressed version of 2026-09-25 would have shipped the unnamed keys.***
 
 
 - **Facts come from deterministic parsing; the model only interprets.** Never
