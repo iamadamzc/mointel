@@ -186,6 +186,20 @@ inside the quote.
 > **Already unblocked: `49efd1a` on branch `ops/sort-legibility`** — production
 > plus those three files, zero auth, **gate ALL GREEN (153 files, 2,345 tests,
 > 0 lint errors)**. Ship that one, not `34cf6f3`.
+>
+> ### AND THE SAME PROBLEM WEARING THE OPPOSITE FACE
+>
+> **`7a0ad0c` (Research) adds `MarketSnapshot.catalystFreshFrom` — server side
+> only.** Verified: it touches `lib/` and tests, no `components/`, no `app/`,
+> and nothing consumes `catalystFreshFrom` in the UI yet. **A deploy carrying it
+> changes NOTHING on his board, and that is correct, not a failed ship.** Design
+> owes the consumer half; Research routes it through Integration when both
+> halves are in.
+>
+> *Note the pair. `34cf6f3` looks like it ships three files and ships the auth
+> cut-over. `7a0ad0c` looks like it failed and shipped exactly right. In both
+> cases the visible result is a bad guide to what happened, and only
+> `git log <production>..<sha>` settles it. It is NOT in `49efd1a`.*
 > 5. `lib/review/`: token lifetime as a condition; `sanitize` does not redact
 >    filesystem paths.
 > 6. Access-path gate 3 (close port 22) — his, not asked recently.
