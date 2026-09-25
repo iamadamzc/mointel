@@ -334,10 +334,43 @@ calls and $1.28/day, 18% of the bill, on the most expensive model**, selected by
 `CONFLICTING` heuristic. Selecting those by calibrated uncertainty instead is the
 documented pattern and would target the desk's dearest per-token spend.
 
-## What this seat would actually propose
+## ⚠️ WITHDRAWN: "what this seat would actually propose"
 
-**Not a replacement. A demotion of the model's role in three places, none of which
-touches the prose.**
+**He asked whether the proposal below was an improvement or an accommodation of
+his question. It was partly an accommodation, and this heading is the correction
+rather than a deletion, because the reasoning is worth keeping visible.**
+
+**The ANALYSIS above stands** — Jev cannot replace the interpreter, the money is
+in output tokens, the saving is $1.09 a session. **The proposal did not.** Asked
+what role Jev COULD play, this seat went and found roles. Tested properly:
+
+- **Triage in front of discovery — NOT currently justified.** The probe failed its
+  own bar at 0.790, and the diagnosis was that RCON's corpus contained no news to
+  find. **Triage would re-rank a corpus that is missing the documents.** The
+  blocker is the collection gap — 69% of cited domains the desk never fetches —
+  and sorting an empty shelf faster does not fill it.
+- **The catalyst enums — RATIONALISATION, and the weakest item.** The defect class
+  is real and cost this desk three findings in one day. **But all three were fixed
+  without Jev, at zero marginal cost.** The remedy for an undescribed enum is to
+  DESCRIBE it — a paragraph in `schema.ts` and the prompt. Jev's API does
+  structurally prevent the shape, which is a true property; **choosing a model
+  vendor to enforce a discipline a docstring enforces is an expensive way to buy a
+  lint rule.**
+- **Confidence-gated escalation — real but tiny.** A self-asserted `confidence`
+  enum genuinely is not calibrated and Jev's is. The prize is **11 calls and $1.28
+  a day.**
+
+**What a neutral question would have produced.** Asked "what should change in the
+research pipeline" rather than "what could Jev do", this seat would not have said
+Jev. It would have said: **describe the enums the model is asked for, and close
+the collection gap.** Neither needs a vendor.
+
+**The strongest honest case for Jev remains the CADENCE argument in the section
+above, and it cannot be tested until a wire feed exists.** Today it is a solution
+waiting for its precondition. **Do not read the list below as a recommendation;
+read it as what a Jev integration would look like IF the precondition lands.**
+
+### What it would look like, if the precondition lands
 
 1. **Triage in front of discovery** — the section above, unchanged, still the
    highest-value use, and justified by cadence rather than by $1.09.
