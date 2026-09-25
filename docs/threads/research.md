@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T15:33Z
+## LIVE STATE — 2026-09-25T15:48Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -177,6 +177,8 @@ record. He has it from this seat directly as well.
 - **`isCycleStart`'s move gate (high vs close)** — **WITHDRAWN, not open.** Unreproduced; QCLS never evidenced it either way.
 
 ### STANDING CONSTRAINTS — things that must NOT be done
+
+- **DO NOT PUT DEPLOY TIMING TO HIM FOR A BACKEND-ONLY CHANGE. Integration approves clean enumerations to Ops without returning per-deploy** — standing approval recorded `2026-09-23T03:58Z` in `integration.md`, which **supersedes the earlier today-only grant**. What still goes to him: **spend, auth-model changes, destructive actions, and an unreviewed BOARD-BEHAVIOUR change.** Restarts are not Integration's to relay either — Ops takes that word from him directly. *Verified at the artifact 2026-09-25 rather than taken from the relay, and it held.* **This seat spent his attention on a call he had already delegated, by not looking for the grant.** The hand-off prompt warns that a superseded grant reads exactly like a live one; **the inverse costs too, and it is the cheaper mistake to make twice** — a live standing grant reads exactly like no grant if nobody opens the file.
 
 - **Never fetch `stockanalysis.com` from a worker, an API route or a scheduled job.** Their terms bar automated access AND bar using the data in a competing product. His ruling 2026-09-19: the vendor float stays on **his desktop ChatGPT task**, not the API. Volume is ~150/day, small enough that automating it will keep looking like an easy win.
 - **The cycle frame is RULED WHOLE: 04:00–20:00 ET.** After-hours 2026-09-17; premarket **2026-09-22T22:35Z, his words "premarket in"**, recorded verbatim by Integration at `3dc0c41`. That ruling was recorded FALSE three times first (`f0048eb`, `3308fb1`, `bb2901d`) off a peer's sentence rather than his own — check the record, not a relay.
