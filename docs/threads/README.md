@@ -13137,6 +13137,38 @@ personally instructed the answer to.** *Research's line is the rule — **open t
 mark it superseded in the same commit.** *A charter paragraph ending "and that is larger than a routing call"
 is a description of an open question. The day it closes, it is a lie with a date on it.*
 
+## A RECOMMENDATION DRAWN FROM THE WRONG COLUMN OF A CORRECT MEASUREMENT
+
+**Ops's error, 2026-09-25, found by Ops within an hour of his approval and reported before he could act on
+it.** *He asked for the capture floor to be lowered because three names he trades had never produced a single
+`minute_bars` row. Ops measured the options properly, recommended **\$0.25**, and wrote that it "covers the
+sub-\$1 runners you actually trade". **He approved it. It covers none of them.***
+
+```
+GSUN  prev_close 0.232     SDST  0.115     SNYR  0.0905      <- the three that prompted the question
+$0.25 floor: admits 117 previously-invisible symbols, leaves 410 invisible -- INCLUDING ALL THREE
+the same table also held:  $0.10 adds 314        $0.00 adds 517
+```
+
+> **THE FAILURE IS NOT A MISSING MEASUREMENT. THE NUMBERS WERE ALL IN ONE TABLE.** *The recommendation was
+> drawn from the CHEAPEST COLUMN, and the sentence attached to it — a claim about his specific names — was
+> never checked against those names.* **A correct measurement can carry a false recommendation, and the
+> prose around a number is where it happens.**
+
+**THE RULE: TEST A RECOMMENDATION AGAINST THE CASES THAT PROMPTED THE QUESTION, NOT ONLY AGAINST ITS OWN
+COST.** *Three tickers, one comparison each. The whole error was available for the price of looking at the
+thing that started it.*
+
+*And it is a near-miss of the most expensive kind: **an approved, applied, restarted configuration change that
+would have read as DONE.** The floor was on the box, the worker had read it, capture had widened by 117
+symbols — every claim true, the motivating problem untouched, and nothing in the system would ever have said
+so. **He would have discovered it the next time one of those three ran.***
+
+**WHY IT WAS CAUGHT: Integration had required the positive control** — *not "did the worker restart" but "is a
+sub-\$1 name being captured that could not have been before".* **Ops went to build that control, and the
+control could not fire, which is what exposed the floor.** *A process check would have reported complete
+success.*
+
 ## WHEN THE COST OF A CHOICE LANDS ON SOMEONE ELSE LATER, MAKE THE CHOICE WHILE IT IS STILL FREE
 
 **Research's generalisation, 2026-09-25, from three instances in one day — and the three are in different
