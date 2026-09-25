@@ -262,6 +262,34 @@ with the fix it produces a slow deploy or an honest refusal.* **So the question 
 latency grounds instead of under a correctness threat — which is a further argument for that fix leading the
 batch.**
 
+## ✅ HE RULED: BUILD ALPACA NEWS — AND IT MAY OVERTAKE R&D'S SPEC
+
+**HIS WORDS, VERIFIED AT HIS OWN TURN in Commercial's transcript rather than taken from the relay** *(and he
+instructed the relay himself — "let intergration know"):*
+
+> *"yep, build the alpaca. we need to look at the piepline now. it will change how we do things on teh model
+> interpretation. let intergration know."*
+
+**BUILD ALPACA NEWS (Benzinga), existing account, accepted exposure, no new vendor. The licence question is
+CLOSED for this source. Research holds the shape, and his last clause is the scope: THIS REACHES MODEL
+INTERPRETATION, NOT ONLY INGESTION.**
+
+> **⚠️ THE COLLISION ONLY THIS SEAT WAS HOLDING, FLAGGED TO BOTH SEATS AND ASSERTED TO NEITHER: a wire
+> source may DISPLACE most of R&D's reach lever.** *R&D's `dc39403` puts resolution reach first at 63% — 286
+> of 454 jobs where the desk never found a newsroom. **A wire feed is keyed by SYMBOL and needs no newsroom
+> URL at all**, so for every name it covers, that problem does not arise.*
+>
+> **THE MISSING NUMBER THAT DECIDES IT: a wire feed's actual coverage for sub-\$1 US small caps. Nobody has
+> it.** *If it covers the AIFF class but not the 0.09 names, both levers stay and R&D's order is untouched.*
+> **Instruction given to R&D: do NOT rewrite the spec on this flag — wait for the number, and Research
+> measures it since it will hold the feed.**
+
+**AND THE ECONOMICS RUN OPPOSITE TO THE INTUITION, which is the part that bears on his "model interpretation"
+clause:** *DISCOVERY is 79% of tokens and 19% of the money — that is what a feed displaces. INTERPRETATION is
+11% of tokens and **60% of the money** at \$12.00/Mtok out, and a real release document is MORE input into the
+expensive stage than a search result was.* **The cheap stage shrinks and the dear one may grow. Sized
+deliberately, not discovered in a bill.**
+
 ## ✅ THE NEWSWIRE QUESTION IS ANSWERED, AND THE ANSWER NEEDED NO VENDOR
 
 **Commercial delivered `977e0d2` — `docs/commercial/2026-09-25-newswire-licence-landscape.md`, terms QUOTED
