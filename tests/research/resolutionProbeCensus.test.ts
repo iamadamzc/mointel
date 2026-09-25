@@ -84,6 +84,41 @@ describe('the probe loop counts what it tried', () => {
     expect(source).toContain('probeIndex');
   });
 
+  it('documents probed as ATTEMPTED and fetched as ANSWERED, not the reverse', async () => {
+    /*
+     * THE FIX THAT ALMOST SHIPPED CONTRADICTING ITSELF. `e197a80` renamed the
+     * fields to name their unit and carried the old docblock through unchanged:
+     * `candidatesProbed` was documented as "actually fetched", which is what
+     * `candidatesFetched` counts. Side by side the two lines read as a coherent
+     * pair meaning the wrong thing -- probed as the successes and fetched as a
+     * subset of them.
+     *
+     * That INVERTS the reachability arm. `candidatesFetched === 0` with
+     * `candidatesProbed > 0` is "every host refused us"; a reader holding those
+     * backwards concludes the opposite about a name. The prose block above the
+     * fields is correct and does not save it, because a reader takes the unit
+     * from the line attached to the field.
+     */
+    const source = await read('lib/research/catalyst/irRegistry.ts');
+    const at = source.indexOf('candidatesProbed: number;');
+    expect(at).toBeGreaterThan(-1);
+    const doc = source.slice(Math.max(0, at - 420), at);
+    expect(doc).toContain('ATTEMPTED');
+    /*
+     * The DEFINITION line must not come back. The docblock deliberately quotes
+     * the old phrasing as history -- *it said "actually fetched" until
+     * 2026-09-25* -- and a blunt `not.toContain` cannot tell a citation from a
+     * definition. It failed on exactly that when this test was written, which
+     * is the instrument distinguishing the two rather than obstructing it.
+     */
+    expect(doc).not.toContain('Candidates actually fetched');
+
+    const fetchedAt = source.indexOf('candidatesFetched: number;');
+    const fetchedDoc = source.slice(Math.max(0, fetchedAt - 520), fetchedAt);
+    expect(fetchedDoc).toContain('answered with a body');
+    expect(fetchedDoc).toContain('REACHABILITY');
+  });
+
   it('seeds `candidatesReturned` from the candidate list, not from the probe cap', async () => {
     /*
      * `returned` must count what the RESOLVER named, before `MAX_CANDIDATE_PROBES`
