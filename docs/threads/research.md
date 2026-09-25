@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T20:08Z
+## LIVE STATE — 2026-09-25T20:26Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -185,6 +185,8 @@ record. He has it from this seat directly as well.
   **BENZINGA IS ADDITIVE BUT MODEST: ~10 points, about THREE names a session, and roughly half of what it finds the issuer feed already had.** *The issuer feed finds MORE names than Benzinga does — it just missed the one he traded.* **`AIFF` sits in the `benzONLY` column on 09-25, one of two such names out of thirty. The build is justified by the CLASS it catches, not by the rate.**
   **⚠️ AND THE NUMBER THAT BOUNDS THE DESK'S CENTRAL CLAIM: even the UNION leaves ~56% of top-12 names with NO catalyst from either source.** R&D's founding question is *"50%+ movers running with no catalyst"* — **and the instrument that produces "no catalyst" tops out at ~44% coverage.** *So "no catalyst found" is substantially a property of what the desk can see, and **two partial instruments failing to find something is not evidence it is absent.*** **Nothing here establishes that those names genuinely had no published catalyst, and nothing may be claimed as though it did.** *Ops's own framing, and it is the distinction it got wrong twice today and refused to repeat.*
   **NOT MEASURED: the latency distribution.** 44 seconds remains ONE sample; the union query did not carry first-bar times. Outstanding, next deploy-free window, and recorded as outstanding rather than folded in.
+  **⚠️ AND DO NOT WRITE THE 23% DOWN AS THE DISPLACEMENT OF R&D'S REACH WORK — THIS SEAT DID, TO INTEGRATION, AND IT IS THE DESK'S MOST FREQUENT DEFECT IN ITS FIFTH COSTUME TODAY.** Coverage and displacement are different quantities: R&D's lever is *"resolution never found a newsroom"* (286 of 454 jobs), and what a wire feed removes is the **INTERSECTION** of that set with the names carrying a Benzinga primary — **not the size of the second set.** *They are equal only if coverage is independent of newsroom quality, and there is a plausible reason it is not, pointing the other way: a wire's covered issuers are the ones who PAY a wire — larger and better run, and therefore the issuers MOST likely to have a conventional newsroom at one of the six guessed paths.* **If that holds, the covered names are disproportionately the ones resolution already succeeds on and true displacement is BELOW 23%.**
+  **The safe statement: reach is displaced by AT MOST about a quarter, and the real figure needs the intersection.** R&D's ordering survives either way and survives more strongly if the correlation is real. *Integration's catch, and it protected a number of mine from travelling one step past where it was measured.*
 
 - **📐 BENZINGA COVERAGE MEASURED — ~47% ANY, ~23% PRIMARY. IT SUPPLEMENTS THE ISSUER FEED AND CANNOT REPLACE IT.** Ops, five sessions, top-12 names, 07:00–10:00 ET:
 
