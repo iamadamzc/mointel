@@ -107,21 +107,27 @@ That followed his ruling that **the session report is for monetization and
 coaching is just for him** — two audiences, so two homes. The tooling below
 still exists and still runs; what moved is the conversation.
 
-**The handover pack lives in `~/.mointel-fills/coaching/`**, outside the repo for
-the same reason the fills are:
+**The coaching work now has its own project folder, `A:\TradeCoach`** — created
+2026-09-25, not a git repository, and nothing in it ships:
 
-    COACHING-PROMPT.md   the opening message for the new chat
-    coaching-brief.md    the trader, his system, which rules are his and which
-                         are the booklet's, how he works, open questions
-    the-record.md        every finding, marked solid / suggestive / withdrawn
-    method.md            reconstruction and the cuts, including the traps
-    round-trips.csv      every reconstructed round trip, one row each
+    A:\TradeCoach\README.md          where everything lives, handling rules
+    A:\TradeCoach\docs\             brief, record, method, data-access, prompt
+    A:\TradeCoach\data\             the reconstructed round trips
 
-**Two things a reader should know before trusting anything in it.** The record
-is **not contiguous** — sessions he traded are missing because their exports
-were never sent, and the pack names which. And **his three session numbers are
-stale**: they were derived from an account balance that has since changed and
-have not been rescaled, which the brief says in its own open-questions section.
+**The raw fills stay at `~/.mointel-fills/`** — the database and the exports.
+Those are personal financial records and do not live in any project folder.
+
+**The tooling stays here.** `lib/coaching/fills/` and `worker/fills-*.ts` still
+own import, report, rules and the coverage guard, and are run from this repo
+because they need its `node_modules`. They address the database absolutely, so
+the working directory does not matter beyond npm.
+
+**Three things a reader should know.** The record is now near-complete — a
+fuller export on 09-17 filled five missing sessions and **corrected two that had
+already been reported on**, so a partial export mis-reconstructs rather than
+merely omitting. **His three session numbers are stale**, derived from an account
+size that has since changed. And **he has ruled that the balance is not to be
+asked for**, which makes anything scaled to account size uncomputable by design.
 
 *The pointer is here because the content is not: a reader of this file on
 2026-09-16 would have concluded the work stopped, and nothing would have
@@ -240,7 +246,7 @@ the booklet, the live practice governs:
 
 > **Read the section *Where this thread went* above before using this message.**
 > *The coaching conversation moved to a standalone chat on 2026-09-17 and its
-> opening message is `~/.mointel-fills/coaching/COACHING-PROMPT.md`, not this
+> opening message is `A:\TradeCoach\docs\COACHING-PROMPT.md`, not this
 > one. What follows is for a seat that still owns the TOOLING in this repo —
 > the importer, the report, the coverage guard — not for one doing the coaching.*
 >
