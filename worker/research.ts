@@ -545,6 +545,8 @@ async function main(): Promise<void> {
           recordCollectorReport(db, job.id, {
             discoveryMode: catalystReport.discoveryMode,
             companySourceDetail: catalystReport.companySourceDetail,
+            companyFetchDetail: catalystReport.companyFetchDetail,
+            networkRequests: catalystReport.networkRequests,
             companySourceUrl:
               catalystReport.companySources.feedUrl ??
               catalystReport.companySources.pressReleaseIndexUrl ??

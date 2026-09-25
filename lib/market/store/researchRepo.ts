@@ -1048,6 +1048,21 @@ export interface CollectorReportRecord {
   discoveryMode: string | null;
   /** Sanitized outcome, e.g. "located newsroom index". */
   companySourceDetail: string | null;
+  /**
+   * Whether the issuer's own feed was FETCHED this pass, and what came back.
+   *
+   * Added 2026-09-25 because the report object knew this and the stored record
+   * did not, so "fetched and found nothing" and "never fetched" were ONE
+   * observation here. A census read `companySourceDetail` as if it answered
+   * the question; that field is RESOLUTION's, and resolution is correctly
+   * skipped when a usable url is already on file.
+   */
+  companyFetchDetail: string | null;
+  /**
+   * Network requests this pass. The counter behind the readable field above,
+   * kept beside it because a string can drift and a count cannot.
+   */
+  networkRequests: number | null;
   /** The durable location on file after this pass, when there is one. */
   companySourceUrl: string | null;
   companySourceShape: string | null;

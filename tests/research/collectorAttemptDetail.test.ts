@@ -41,16 +41,59 @@ async function attemptBlock(): Promise<string> {
 }
 
 describe('the attempt is observable from the report', () => {
-  it('still initialises the field to the not-attempted default', async () => {
-    // The instrument. If this default is ever removed, the assertions below
-    // stop meaning anything and this test says so rather than passing.
+  it('still initialises both fields to the not-attempted default', async () => {
+    // The instrument. If either default is removed, the assertions below stop
+    // meaning anything and this test says so rather than passing.
     const source = await read();
     expect(source).toContain("companySourceDetail: 'not attempted'");
+    expect(source).toContain("companyFetchDetail: 'not attempted'");
   });
 
-  it('writes the detail on the deterministic path, not only in the resolver', async () => {
+  it('persists the fetch detail and the counter, not just the summary', async () => {
+    /*
+     * The gap that made this expensive was not the missing field in the report
+     * object -- it was that the STORED record is an eight-field summary. The
+     * report knew whether the fetch ran; `collector_report` did not, so
+     * "fetched and found nothing" and "never fetched" were one observation in
+     * the only place a reader can reach without an SSH session.
+     */
+    const repo = await fs.readFile(
+      path.join(process.cwd(), 'lib/market/store/researchRepo.ts'),
+      'utf8',
+    );
+    const start = repo.indexOf('export interface CollectorReportRecord');
+    expect(start).toBeGreaterThan(-1);
+    const record = repo.slice(start, repo.indexOf('}', start));
+    expect(record).toContain('companyFetchDetail');
+    expect(record).toContain('networkRequests');
+
+    const worker = await fs.readFile(path.join(process.cwd(), 'worker/research.ts'), 'utf8');
+    expect(worker).toContain('companyFetchDetail: catalystReport.companyFetchDetail,');
+    expect(worker).toContain('networkRequests: catalystReport.networkRequests,');
+  });
+
+  it('writes a FETCH detail on the deterministic path', async () => {
     const block = await attemptBlock();
-    expect(block).toContain('report.companySourceDetail =');
+    expect(block).toContain('report.companyFetchDetail =');
+  });
+
+  it('never writes the RESOLUTION field from the fetch path', async () => {
+    /*
+     * THE FIRST VERSION OF THIS FIX DID EXACTLY THAT, AND IT WAS A REGRESSION.
+     *
+     * `companySourceDetail` is declared as "what issuer-source RESOLUTION did,
+     * or why it was not offered a turn". Resolution runs BEFORE this block, so
+     * writing the fetch's outcome here overwrote a resolution detail that had
+     * been recorded correctly -- destroying information while appearing to add
+     * it. Two steps, two fields.
+     *
+     * And it means `'not attempted'` on the resolution field is CORRECT for a
+     * ticker that already has a usable url: resolution is gated on
+     * `!usableCompanySourceBefore` and is rightly skipped. It never meant the
+     * desk did not look, which is the reading that cost a production census.
+     */
+    const block = await attemptBlock();
+    expect(block).not.toContain('report.companySourceDetail =');
   });
 
   it('records the attempt BEFORE the outcome is known', async () => {
@@ -60,7 +103,7 @@ describe('the attempt is observable from the report', () => {
      * to `'not attempted'` -- the same wrong answer, reached by a rarer route.
      */
     const block = await attemptBlock();
-    const attempt = block.indexOf('report.companySourceDetail = `attempted');
+    const attempt = block.indexOf('report.companyFetchDetail = `attempted');
     const fetchCall = block.indexOf('await fetchCompanyPage(knownSourceUrl');
     expect(attempt, 'no attempt marker on the deterministic path').toBeGreaterThan(-1);
     expect(fetchCall).toBeGreaterThan(-1);

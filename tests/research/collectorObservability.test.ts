@@ -49,6 +49,8 @@ function job(ticker: string): number {
 const RESOLVED = {
   discoveryMode: 'RESOLVER',
   companySourceDetail: 'located newsroom index',
+  companyFetchDetail: 'read 3 items via FEED',
+  networkRequests: 1,
   companySourceUrl: 'https://www.einride.tech/press',
   companySourceShape: 'INDEX',
   modelCalls: 1,
@@ -80,6 +82,8 @@ describe('the collector report stored on a job', () => {
       ...RESOLVED,
       discoveryMode: null,
       companySourceDetail: 'reused stored negative result',
+      companyFetchDetail: 'read 3 items via FEED',
+      networkRequests: 1,
       companySourceUrl: null,
       companySourceShape: null,
       modelCalls: 0,
