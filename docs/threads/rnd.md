@@ -1201,6 +1201,92 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
+#### THE FOUNDING QUESTION HAS BEEN MISLABELLED SINCE IT WAS POSED. 2026-09-25.
+
+**Not "unmeasurable" — MEASURING SOMETHING ELSE. That distinction is the whole
+entry, because "unmeasurable" throws away a good number and this does not.**
+
+**AIFF RESOLVED, and he supplied the decisive evidence himself.** He read the
+release in **Warrior Trading's DayTrade Dash at ~07:53 ET, with AIFF already up
+5%** — a competing scanner held the catalyst while the move was running. Ops
+measured production at 14:30:
+
+    AIFF sources dated 2026-09-25   ZERO   (newest still 2026-09-17)
+    AIFF research jobs today        ONE, 07:48, rank 9 of the top 12, NEVER RE-RAN
+    re-run triggers that fired      09:25, 10:00, 10:30 — eleven tickers each; AIFF got none
+
+**Seven hours, rank 9, one look. A three-minute RSS lag resolves by 08:30; zero
+sources at 14:30 is an absence, not a lag.** *The latency hypothesis — mine — is
+dead.*
+
+> **SO: THE INSTRUMENT WAS HONEST AND THE ANSWER WAS WRONG.** The fetch ran, the
+> feed was reachable, it held nothing, `NO_RECENT_SOURCE_LOCATED` was correct —
+> **and a public catalyst existed the whole time.** *Every defence of the
+> collector today was right and none of it mattered.*
+
+**THE INVOCATION DEFECT, CONFIRMED INDEPENDENTLY FROM THIS ARCHIVE — no
+production access, 26 sessions.** Ops's sentence is *"even a perfect collector
+finds nothing if it is only ever invoked once, before the catalyst is indexed."*
+Measured here on within-session `evidence_fingerprint` churn:
+
+    ticker-days with >=2 board observations      evidence NEVER changed all session
+      moved +50% or more     n=289   41.9%   (averaging 12.7 observations each)
+      moved +100% or more    n=130   43.8%   (averaging 13.4 observations each)
+      moved under +10%       n=611   73.6%
+      distinct evidence sets across a whole session, 50%+ movers:
+        1 set 41.9%   2 sets 32.9%   3 sets 14.5%   4+ 10.7%
+
+**FOUR IN TEN BIG MOVERS WERE ON THE BOARD TWELVE TIMES AND THE DESK'S EVIDENCE
+NEVER CHANGED ONCE.** *AIFF is not an outlier; it is the modal case.* **Nobody
+asked how often the collector is invoked — the entire day was spent asking
+whether it looked CORRECTLY.** *A correct fetch three minutes into a move,
+before any index has propagated, is a correct answer to a question asked at the
+wrong time.*
+
+**THE RELABEL, WHICH IS WHAT THIS ENTRY IS FOR.** Integration proposed the
+status *"unmeasurable with current instrumentation"*. **Too strong in one
+direction and too weak in the other.** The quantity is perfectly measurable;
+**it has been carrying the wrong name.**
+
+    WHAT IS MEASURED, and it is sound, useful and ours:
+      "the fraction of big movers for which THE DESK HELD a catalyst at the
+       moment of decision"  -> 22.6% pooled, 32.1% on a complete pre-open pass
+      This is a PRODUCT COVERAGE metric. It is a fact about our sources and our
+      invocation schedule.
+
+    WHAT IT HAS BEEN QUOTED AS, and never supported:
+      "the fraction of big movers that HAVE a catalyst"
+      This is a MARKET claim. It requires ground truth the desk does not hold.
+
+> **THE FOUNDING QUESTION — *why do 50%+ movers no longer carry catalysts* —
+> ASSUMES THE SECOND AND HAS ONLY EVER BEEN FED THE FIRST.** *It has been a
+> market thesis resting on a process measurement since the day it was written,
+> and AIFF is the first case where the two were separated by an outside source.*
+> **A competing scanner had the catalyst. The desk did not. That is not a fact
+> about the market.**
+
+**WHAT IS AND IS NOT OVERTURNED — stated narrowly, because the temptation is to
+discard everything:**
+
+- **NOT overturned:** Q1's catalyst CONTRAST (+17.9pp) and Q14's grade contrast
+  (~+7pp). *Both compare graded classes against each other, so a coverage
+  shortfall that hits both arms similarly leaves the contrast standing.* **Only
+  if the shortfall correlates with the grade do they move — untested.**
+- **OVERTURNED AS A MARKET CLAIM:** every catalyst-less-mover LEVEL. The
+  register's 83%, today's 22.6% and 32.1%. **They survive, relabelled, as
+  product coverage.** *Quote them as "the desk held no catalyst for X% of
+  movers" and they are true; quote them as "X% of movers had no catalyst" and
+  they are unsupported.*
+- **The hand-check is now the only route to the market claim**, and its value
+  has gone up rather than down: it is the sole instrument that brings outside
+  ground truth to a named, dated mover-day. **The 50-case frame stands.**
+
+**AND THE HONEST NOTE ON WHERE THIS CAME FROM.** *He found it, twice — first by
+telling this seat the printed catalyst was "completely different", then by
+producing the competing scanner that had it.* **Both times the desk's own
+instruments said everything was fine, and both times they were right about
+themselves and wrong about the world.**
+
 #### THE PARSE-CHANNEL CAVEAT IS PERMANENT ON THIS ARCHIVE, NOT A HOLD THAT LIFTS. 2026-09-25.
 
 **Integration dated the unanswerable window and the arithmetic against this
