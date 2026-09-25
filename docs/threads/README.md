@@ -12950,6 +12950,30 @@ contradicting them.**
 **That layout is worth more than the fix.** A summary printed on its own, or above
 its evidence, or in a different message, is never checked against it.
 
+## A RUN THAT LOSES TEST FILES REPORTS ITSELF AS A CODE DEFECT
+
+**Research, 2026-09-25, after nearly chasing one.** *A full-suite run came back with 3 failing files
+and 8 errors. **It had collected 2,339 tests where the tree holds ~2,470.** It was memory pressure
+dropping test FILES; a clean re-run is 165 files and 2,471 tests.*
+
+**THE FAILURE ANNOUNCES ITSELF IN THE COSTUME OF A RESULT, and the direction matters:**
+
+- **Reported as failures, it sends the author into their own diff** — the most expensive possible
+  reading, and the one a conscientious seat takes first.
+- **AT A GATE IT IS WORSE, because a short collection can come back ALL GREEN.** *A gate that
+  collected 120 of 165 files and passed everything it collected prints a pass. **The count is the only
+  thing that distinguishes it from a real one** — which is why Ops prints files AND tests at every
+  gate, and why `2,371 -> 2,381` was worth stating when ten tests were added.*
+
+> **So read the COLLECTION COUNT before reading the failures, and compare it to the tree.** *Research's
+> own response is the rule: it verified the five files it had touched on their own rather than trusting
+> one green over everything.* **A number that should have grown by ten and shrank by a hundred is an
+> environment fact, and no amount of reading the diff will find it.**
+
+*Same family as the stale bundle and the false `ec2` empty: the instrument answered, plausibly, about
+something other than what was asked. **This one is rarer and nastier because the instrument's own
+failure output is indistinguishable in KIND from the thing it is supposed to detect.***
+
 ## An unmoved count is a prediction too
 
 Two threads' work landed between two gates and the test count did not change —
