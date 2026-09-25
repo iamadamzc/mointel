@@ -136,6 +136,7 @@ function snapshot(demands: DemandState[]): MarketSnapshot {
     intelligence: {},
     blueSky: {},
     events: [],
+    catalystFreshFrom: null,
     fetchedAt: '2026-08-14T13:31:02.000Z',
   };
 }

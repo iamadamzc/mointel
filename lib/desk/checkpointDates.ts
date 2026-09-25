@@ -26,12 +26,25 @@
 
 import { getMeta, type MarketDatabase } from '../market/store/db';
 
-interface CalendarDay {
+export interface CalendarDay {
   date: string;
   close?: string;
 }
 
-function calendar(db: MarketDatabase): CalendarDay[] {
+/**
+ * The cached exchange calendar, or an empty list when there is none.
+ *
+ * Exported because it is the only parse of this meta key that is not private to
+ * its own file: `worker/desk-assessments.ts` grew a second copy to read a day's
+ * `close`, and a third was about to be written for the catalyst-freshness
+ * boundary. Callers that need a day's close read it from here.
+ *
+ * AN EMPTY LIST AND A STALE LIST LOOK THE SAME FROM INSIDE. Nothing here dates
+ * the calendar; the worker refreshes it across -120/+14 days, so a caller that
+ * cares whether it is current tests for a day at or after its own date rather
+ * than trusting the newest entry.
+ */
+export function calendarDays(db: MarketDatabase): CalendarDay[] {
   const raw = getMeta(db, 'calendar');
   if (!raw) return [];
   try {
@@ -45,7 +58,7 @@ function calendar(db: MarketDatabase): CalendarDay[] {
 /** The scheduled session immediately before `date`, from the cached calendar. */
 export function previousTradingDate(db: MarketDatabase, date: string): string | null {
   return (
-    calendar(db)
+    calendarDays(db)
       .map((day) => day.date)
       .filter((day) => day < date)
       .sort()
@@ -56,7 +69,7 @@ export function previousTradingDate(db: MarketDatabase, date: string): string | 
 /** The scheduled session immediately after `date`, from the cached calendar. */
 export function nextTradingDate(db: MarketDatabase, date: string): string | null {
   return (
-    calendar(db)
+    calendarDays(db)
       .map((day) => day.date)
       .filter((day) => day > date)
       .sort()[0] ?? null
