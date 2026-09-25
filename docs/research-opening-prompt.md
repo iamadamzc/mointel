@@ -1,8 +1,10 @@
 # Opening prompt — Research seat, mointel
 
-*Written 2026-09-21. Every sentence below was true on that date. The session that
-wrote it retired at context saturation under
-`A:\claude-infra-agent\docs\session-hygiene.md`.*
+*Written 2026-09-25. Every sentence below was true on that date, and where
+something is NOT verified it says so rather than reading as fact. The session
+that wrote it ran from 2026-09-21 and retired under
+`A:\claude-infra-agent\docs\session-hygiene.md` at four days and twenty-three
+hours, on his instruction to check saturation.*
 
 ---
 
@@ -16,89 +18,135 @@ You are the **Research seat** of the mointel desk.
 
 **Read, in this order, and nothing else first:**
 
-1. `docs/threads/research.md` — **`## LIVE STATE — 2026-09-21T09:40Z`** first (about
-   40 lines: what shipped, what is open and what it waits on, the standing
-   constraints, the hazards). Then the charter under **`## Opening message for a
-   new chat`**, which holds who you are, what you own, and the working rules.
-   **Skip every section whose heading begins `ARCHIVE`** — there are four, and one
-   of them is 13,000 lines of working log. Search them; do not read them through.
+1. `docs/threads/research.md` — **`## LIVE STATE — 2026-09-25T11:38Z`** first.
+   It is about 60 lines: what shipped, the deploy state and what is unconfirmed
+   about it, what is open, the standing constraints, the hazards. Then the
+   charter under **`## Opening message for a new chat`** — who you are, what you
+   own, the working rules. **Skip every heading beginning `ARCHIVE`**; one of
+   them is 13,000 lines. Search them, never read them through.
 2. `A:\claude-infra-agent\docs\session-hygiene.md` — the owner's rule on model,
    context, documents and hand-off. It governs this session.
 3. `docs/threads/README.md` — only if you need the map of the other seats.
 
 **Check your own model now** and report it to him in your first message per
 section 1 of the hygiene rule. This seat makes irreversible changes to a live
-trading board and reasons across several files at once, so **Opus is the right
-model for it**; recommend no change if you are on Opus, and tell him with this
-reasoning if you are above it.
+trading board and reasons across several files at once, so **Opus is right for
+it**; recommend no change if you are on Opus, and tell him with this reasoning
+if you are above it.
 
 **Follow the session-hygiene rule for the rest of the session**, including the
 `## 🟠 NEEDS YOU` block — one fixed searchable block at the end of any message
-that needs him, each item decidable from the block alone, and **omitted entirely
+that needs him, each item decidable from the block alone, **omitted entirely
 when nothing needs him.**
 
 ### Where things stand
 
-**Two strands.**
+**The whole of the last four days was one thread and it is finished:** a name
+graded green `A` at `28d` on his board. It was not a threshold bug. `freshness`
+was a MODEL output against an enum that `schema.ts` declared with no description
+and the prompt never defined, sitting three lines from an age the desk computed
+correctly and never compared it to. It is arithmetic now — his ET calendar
+bands, today FRESH, yesterday RECENT, two days or more OLD — and the model is no
+longer asked for it at all.
 
-**The cycle apparatus** was most of the last session and three defects are fixed
-on `main`: today's session is now visible to the cycle rule (`e48a2ca`), a run no
-longer survives forever because one busy day in three defeated a
-consecutive-sessions test (`1fba8fd`), and a run also ends when its typical day
-trades under **$50,000** (`baece00`, his threshold). The interpreter prompt no
-longer tells the model a human reviewed the Sheet's prior analysis (`dbd70d1`) —
-no human has ever written it. **Suite 2,183 across 145 files.**
+Seven commits carry it (`ea2d1c9`, `f224f3d`, `fadfe17`, `d16dd14`, `3570114`,
+`684902f`, `a12bfd6`), plus `757cf6a` for two lint errors of mine that a release
+gate reported as green. Earlier in the same window: the blue-sky basis work
+(`27adbbd`, `b36afd1`, `6e224ca`), `f3375af` for `DiscoveryQualification.observed`,
+and `0a1bdb7` re-deriving `BACKSIDE_RETRACEMENT` and `SUPERRUNNER_ADVANCE` in the
+all-sessions frame — both held, and the FRAME WARNINGS are gone.
 
-**Jev, TypeSafe's System One model, is under evaluation for NEWS ANALYSIS** and
-three documents carry it — read them before proposing anything, the way
-`A:\jev-test\CLAUDE.md` asks:
+**Suite at hand-off: 2,409 across 160 files, `tsc` clean, lint 0 errors.**
 
-- `docs/Jev_For_News_Analysis.md` — the assessment **and the probe result**. A
-  triage probe over 227 documents **failed the 0.80 bar I set, at 0.790**, and the
-  failure is diagnosed: it scored worst on the one ticker whose entire candidate
-  set is SEC filings. Cost **1.1 cents**; the cadence claim held.
-- `docs/Jev_Tape_Research_Harness_REVIEW.md` — **read the amendment at the top.**
-  My first verdict was written before I read `A:\jev-test`, which contains a
-  settled programme closing that mechanism. Tape is another project's problem.
-- `docs/Wire_Feed_Collector_SCOPE.md` — **read "STEP 1 CHANGED SHAPE".**
+**⚠️ TWO THINGS I COULD NOT CONFIRM, and you should not assume either.**
 
-**`A:\jev-test` is prior art and its `CLAUDE.md` is authoritative.** Pin
-`jev-1.13.0`, never `jev-latest`; there is no seed, so cache by
-`sha256(model‖state‖questions)`; the Python SDK crashes on this box, so call the
-HTTP API. Rate card: **$0.042 per million INPUT tokens, output free.** The key is
-in `A:\jev-test\jev.txt` — he approved using it; it is **not** in mointel's env.
-The working probe is `A:\jev-test\mointel_news_triage.py`.
+1. **Whether `757cf6a` actually shipped.** I routed it to Ops through
+   Integration on 2026-09-24 to gate at the literal sha and ship after the
+   close. I never saw confirmation. The PRODUCTION STATE table in LIVE STATE is
+   Ops's reading of **2026-09-23** and predates it. **Ask Ops before telling him
+   anything about what his board is running.**
+2. **Whether he was told that the prior-close FRESH refinement is NOT in that
+   batch.** Integration undertook to say so when routing. If he was not told, a
+   16:15 ET release still reading RECENT will look like a failed fix when it is
+   a switch nobody has thrown yet.
 
-### First task — three things he approved on 2026-09-21, none started
+### First task — `MarketSnapshot.catalystFreshFrom`
 
-**1. Wire `lib/market/replay.ts` so a restart rebuilds `sessionHigh` from stored
-minute bars.** It is built and deliberately unwired. A restart at 21:05Z on
-2026-09-18 left **1,481 of 7,936 rows** with a high below the one that printed,
-and **1,160 of those highs were set in premarket**. The rebuild draws
-`dailyBar.h` (09:30-16:00, every symbol) plus an after-hours reconstruction plus
-a focused minute backfill covering only **200 names + pins**, so premarket is
-recovered for the focused set and nobody else. **Replay is local and exact where
-it applies; seed nothing and report UNKNOWN where no bars exist** (the promotion
-population). *And this answers the volume-ownership question that stalled replay:
-the snapshot owns VOLUME (measured NOT RTH-only, 0.1%), replay owns the HIGH and
-LOW (measured RTH-only). Different fields; the measurement decides.* The seam is
-in `worker/runtime.ts`, which is **Ops's file** — coordinate.
+**It activates a ruling of his that is currently dark, and it is the only thing
+queued to me.**
 
-**2. The cycle frame: RULED IN FULL — after-hours 2026-09-17, premarket 2026-09-22 (his
-words "premarket in").** The frame is all three sessions, 04:00–20:00 ET. *`BACKSIDE_RETRACEMENT
-= 0.5` and `SUPERRUNNER_ADVANCE = 2.0` were re-derived against it and both HELD; FRAME WARNINGS
-removed (`0a1bdb7`). They may be cited as measured — window 75 symbols, 62 sessions,
-2026-05-20..08-18.* The live sibling uses `max(session_high, ah_high)` (`e48a2ca`). **When
-re-running the derivation, build both frames from the ONE hourly file — never pair `daily_bars`
-with it, or the cross-vintage basis defect returns.**
+He ruled on 2026-09-24 that **FRESH means the prior SESSION's close to now** —
+yesterday's after-hours and this morning's premarket, the span a morning gap
+originates in. `684902f` implements it and **nothing runs it**, because
+`resolveCatalystFreshness` needs the boundary passed in and both callers pass
+two arguments: `why.ts` is a browser component with no store, and
+`validateDossier` takes no `db` either. The fallback is his date-only rule and
+is safe — but the refinement is dark.
 
-**3. Persist EDGAR's `acceptanceDateTime` with `EXACT` precision.** See
-`docs/Wire_Feed_Collector_SCOPE.md`. `sec/collector.ts:246` already reads it and
-`:422` already prefers it, but **1 of 3,253 `SEC_FILING` rows has an exact
-timestamp and all 878 exhibits are `INFERRED`** — so the desk cannot say whether
-a press release became public at 08:00 or 18:00. **669 of those exhibits ARE
-press releases** (EX-99), public-domain, already collected. That one distribution
-decides whether a PR Newswire licence is worth buying, and measuring it is free.
+**What Design specced, and it is the same producer-supplies-the-answer shape as
+`observed`:**
+
+```ts
+MarketSnapshot.catalystFreshFrom =
+  afterHoursStartUtc(previousTradingDate(db, tradingDate))
+```
+
+Computed **once per snapshot, server-side**, then passed by `why.ts` as the
+third argument. Absent still means day bands, so it degrades safely.
+
+**Three things I already established that you should not re-derive:**
+
+- **It must be the prior SESSION close, not literally yesterday.** On a Monday
+  that is Friday; a holiday moves it again. `previousTradingDate`
+  (`lib/desk/checkpointDates.ts:46`) is holiday-aware and reads a calendar the
+  worker refreshes across −120/+14 days.
+- **`previousTradingDate` does not return null on a stale calendar.** It filters
+  to days before the date and takes the newest, so a calendar that stopped
+  refreshing hands back a weeks-old date. `resolveCatalystFreshness` already
+  refuses a boundary more than five days old for exactly that reason — a long
+  holiday weekend is about four and a half — but the producer should not rely on
+  the consumer's guard.
+- **Size, measured before building: it changes 6 of 325 analyses.** Only clocked
+  events can be tested against a 16:00 boundary, and **77% of stored event
+  timestamps carry no clock at all**, so bare dates keep the day bands unchanged.
+
+### After that, in rough order
+
+- **Phase C, filing-derived float.** Buildable now. `assessFloat`
+  (`lib/research/float.ts:326`) already IS the containment test. **The vendor
+  half is prohibited, not expensive** — read the standing constraints first.
+- **The EX-99 latency measurement is waiting on TIME, not work.** The 878 stored
+  exhibits can never answer it; see the hazard in LIVE STATE and
+  `docs/Wire_Feed_Collector_SCOPE.md`, which I corrected on 2026-09-25 because
+  it had been carrying the opposite reading.
+- **31 personal-scoped justifications in `research.md`.** Fix as each finding is
+  touched; a bulk rewrite is how a wrong reason gets a confident new sentence.
+
+### What cost this session the most
+
+- **Run the gate, don't re-read the report of it.** Twice in one day a check I
+  ran myself disagreed with a report I was given — a peer's green gate had two
+  lint errors in it, and they were mine. My habit was `tsc` + `vitest`; this
+  project's gate also runs `npm run lint`, where `prefer-const` is an **error**.
+- **A superseded grant reads exactly like a live one.** I opened a deploy
+  approval, found it scoped to one day and expired, and refused to hand over a
+  sha — correctly on the evidence I had. It had been replaced hours earlier by a
+  standing one I never looked for. Opening the artifact is necessary and not
+  sufficient.
+- **A mutation that silently did not apply looks exactly like a guard that is
+  vacuous.** `str.replace` does nothing when the anchor has moved and returns
+  the string unchanged; my harness printed success anyway. I was one edit from
+  writing a test for a defect that did not exist. Assert the anchor matched.
+- **Measure the cohort before reasoning from it.** Integration proposed treating
+  bare-date catalysts as after-hours because the clocked ones mostly are. Clock
+  availability correlates with catalyst type — the bare population is
+  disproportionately `SECONDARY_STALE` and `UNKNOWN` — so that inference would
+  have promoted the stalest rows to green.
+- **Peer confirmation is not a second source, and it cost this desk four asks.**
+  The premarket ruling was recorded FALSE three times off a peer's sentence
+  before his own words were captured at `3dc0c41`. **The prompt you are reading
+  now was written by a session that received one with an invented ruling in
+  it** — check the record, not the relay, including this document.
 
 ---
 
@@ -106,8 +154,8 @@ decides whether a PR Newswire licence is worth buying, and measuring it is free.
 
 1. Open a new chat in `A:\mointel` and paste everything above.
 2. It will title itself `Research-tmi`.
-3. Rename this old chat to **`Research-tmi (retired 2026-09-21)`** so the name no
+3. Rename this old chat to **`Research-tmi (retired 2026-09-25)`** so the name no
    longer collides and peer messages route to the new session.
 4. **Archive the old chat, do not delete it** — the transcript is the record.
-5. The seats that talk to this one (Integration, Ops, Design) can find the new
-   session by title; no id needs passing by hand.
+5. The seats that talk to this one (Integration, Ops, Design, R&D) can find the
+   new session by title; no id needs passing by hand.
