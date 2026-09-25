@@ -262,6 +262,40 @@ with the fix it produces a slow deploy or an honest refusal.* **So the question 
 latency grounds instead of under a correctness threat — which is a further argument for that fix leading the
 batch.**
 
+## ✅ THE NEWSWIRE QUESTION IS ANSWERED, AND THE ANSWER NEEDED NO VENDOR
+
+**Commercial delivered `977e0d2` — `docs/commercial/2026-09-25-newswire-licence-landscape.md`, terms QUOTED
+not characterised, no cost case, public documentation only. Findings went to him directly.**
+
+**THE ANSWER: a source ALREADY IN THE ACCOUNT. Alpaca News (Benzinga) — no new vendor, no new spend, no new
+exposure category**, readable on the same basis as the SIP feed: personal, non-commercial use under the
+accepted-exposure posture, with *"something moving"* as the trigger that reopens it. **Research is routed to
+design on that source and is NOT waiting on him.**
+
+```
+PR Newswire     BARRED explicitly -- automated retrieval AND commercial reuse both named
+Business Wire   RSS retrieval EXPLICITLY PERMITTED, but "compete directly or indirectly" and
+                "commercial activities of any kind" both barred without written consent
+GlobeNewswire   NO published terms at six places checked -- a gap in what is PUBLISHED, not
+                permission. Individual releases carry THIRD-PARTY syndication terms (AINW, NNW),
+                so the feed is not one contract even if a blanket term existed
+```
+
+**THE LOAD-BEARING POINT FOR ANY DESIGN: the AIFF release that started this was a GlobeNewswire item, and
+GlobeNewswire's terms could not be established AT ALL.** *So "fetch the wire's feed directly" is built on an
+unestablished right whichever wire is chosen — which is exactly why a licensed intermediary is the answer
+rather than a compromise.*
+
+> **THE ONE OPEN QUESTION IS HIS AND COMMERCIAL PUT IT TO HIM: does NEWS change the character of the exposure
+> he has accepted?** *The same undefined "something moving" trigger now governs a second, distinct kind of
+> content on the same account.* **NOT a blocker and NOT re-asked by this seat — an ask in two channels is an
+> ask he has to answer twice.** *Consequence for Research, relayed: do not build something expensive to
+> unwind if the answer is "news is different".*
+
+*Routing note kept because the precedent held: Commercial first was right. The binding constraint WAS the
+licence — two of the three primary wires bar the use outright and the third publishes nothing — so a
+pipeline designed first would have been designed against a source the desk cannot have.*
+
 ## THE NEWSWIRE RESEARCH — ROUTED 2026-09-25 ON HIS ASK, COMMERCIAL FIRST
 
 **His words: *"somebody needs to research newswire source"*. ROUTED TO COMMERCIAL, then Research. NOT R&D.**
