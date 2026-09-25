@@ -376,6 +376,59 @@ today at the last settled minute; with a rolling window ending at `updatedAt`
 it is exact. *I argued for `TRADES` on the ground that the head named a time;
 he kept `Now` and the field turns his word into the accurate one.*
 
+## ASSIGNED — the price-window control and header (his ruling, 2026-09-25)
+
+**HIS SHAPE: the desk RECORDS $0–$50 and the user PICKS a window inside it.
+Record wide, show narrow.** Research splits capture from qualification in the
+engine; Ops holds the config; **the control and the header are mine.**
+
+**VERIFIED, not relayed — one predicate, four readers:** `inPriceRange`
+(`engine.ts:1612`) is `price >= priceMin && price <= priceMax` and is read at
+`988` (CAPTURE), `1650` (QUALIFICATION) and `1690` (the after-hours latch).
+`readModel.ts:157` projects the same pair onto `DiscoveryState`, and
+`DiscoveryBoard.tsx:332` prints it: `Daily RVOL rank · $1–$20`. **Widening the
+config today would put $45 names on his board AND rewrite that caption. The
+header is the tell that one knob is doing three jobs.**
+
+**THE PROBLEM NOBODY HAS NAMED, AND IT IS THE REAL DESIGN DECISION.** The
+board's `rank` is `rvolRank`, computed in the ENGINE over everything that
+qualifies. **If the engine qualifies $0–$50 and he views $1–$20, the rank
+column runs 1, 4, 7, 12 — gapped, because the missing numbers are the names
+his window hides.** *He has already read a gapped rank column as "the board
+isn't sorting": on a correctly ordered board he saw 3, 2, 21, 8, 5 and
+concluded nothing was working. That cost a fix and a second pass.* Three ways
+out, and the difference is what `Rank` MEANS:
+
+    keep engine ranks   honest about the universe; gapped, and he has
+                        misread exactly this before
+    re-rank in window   runs 1,2,3; but then two people with different
+                        windows see different "rank 1" for the same session
+    show both           #3 of 41 in view / #7 overall — costs width in the
+                        narrowest column on the board
+
+**Not guessed. It is his, and it is in the NEEDS YOU block.**
+
+**TWO CONSTRAINTS I AM TAKING AS SETTLED, both raised by Integration and both
+right:**
+
+1. **The header states the WINDOW HE IS LOOKING AT, never the recording
+   band.** They diverge the moment this ships, and a caption naming the
+   recorded band above rows showing a narrower one is the `3d`-in-green
+   pairing defect again — a number beside a word, computed from a different
+   quantity, agreeing until the day it does not.
+2. **The default window is TODAY'S band, $1–$20, not the new one.** A
+   stranger, or he at 07:00 on Monday, sees exactly today's desk unless they
+   move the control. **Always-on in the store, opt-in on the screen.**
+
+*Scale, for what the control is choosing within: 13,398 symbols in the
+universe, BRK.A among them at $759,200. Above $20 is 7,811 symbols; a $50
+ceiling is ~1,100. **The price band is the only thing keeping this desk
+small-cap**, which is why the control cannot quietly become the capture knob.*
+
+**NOTHING SHIPS UNTIL THE ENGINE SPLIT LANDS.** Same pattern as
+`catalystFreshFrom` and `tradesLast60s`: ask the producer for the answer,
+build the reader to be safe without it.
+
 ## Open items
 
 | Item | Owner | Waiting on |
@@ -384,6 +437,7 @@ he kept `Now` and the field turns his word into the accurate one.*
 | ~~`catalystFreshFrom` on the payload~~ | ~~Research~~ | **DONE** `7a0ad0c` producer, `bd509e9` consumer |
 | `lastCheckpointChanges` on the payload | Engine/Research seat | Spec above; §9 item 12's rail blocks on it |
 | `tradesLast60s` on the payload | Engine seat | Spec above; reader is safe without it, sub-line names which grain |
+| Price-window control + header | Design | HIS call on what `Rank` means in a narrowed window; engine split first |
 | Sub-minute CAPTURE (true 10s) | R&D / Research | His ruling: commissioned. Unblocks R&D Q2; Design builds nothing until it exists |
 | ~~The `Now` column HEADER label~~ | ~~Design~~ | Built `ccaf77b`, tagged `363f40d`, **PARKED on his word** |
 | ~~Confirm the boundary's VISIBLE effect~~ | ~~Design~~ | **DONE** one row moved, zero demotions, discriminating pair |
