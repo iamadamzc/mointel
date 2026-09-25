@@ -217,31 +217,54 @@ from the finding seat is a hypothesis; flag it as one, never relay it as the ins
 
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
-**AS OF 2026-09-25T20:15Z (16:15 ET).** *Rewritten at hand-off by the eleventh Integration under his
+**AS OF 2026-09-25T21:00Z (17:00 ET).** *Carried forward by the TWELFTH Integration; the snapshot below was
+rewritten at hand-off by the eleventh under his
 instruction. A SNAPSHOT, not a diary: the day's mechanisms were promoted to `README.md`, and
 everything below this section is kept for MECHANISMS, not facts.*
 
 ### PRODUCTION
 
 ```
-web / research / assess   0a17601   cutover 2026-09-25 12:17:07 ET, 2s down
+web / research / assess   3dc14e2   cutover 2026-09-25 14:49:07 ET, 3s down
+                                    READ OFF THE BOX BY OPS 2026-09-25 ~16:50 ET, at the
+                                    twelfth Integration's ask. pids 1145035/1145092/1145161.
 market worker             757cf6a   UNTOUCHED, NRestarts 0 since 2026-09-24 20:24:07Z
                                     Different releases is DELIBERATE, not drift.
 releases on disk          0a17601  49efd1a  757cf6a   + 372f5eb (PINNED rollback-baseline, v18)
 web-tier rollback         49efd1a
 today's ships             49efd1a  11:49:43 ET (sort accent) | 0a17601  12:17:07 ET (FRESH boundary)
+                          3dc14e2  14:49:07 ET (collector attempt telemetry)
+                          THREE, all RESTART_MARKET=no. Nothing since 14:49:07 ET.
 stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /apple-icon.png  200
                           /desk /signin /api/*  401        /privacy-x negative control FIRES
 ```
 
-> **✅ `3dc14e2` SHIPPED — cutover ~14:49:40 ET, `quick_check` 585.7s, 3s down, stop landed ten
-> minutes clear of the 15:00 checkpoint. Web/research/assess on `3dc14e2`, worker untouched on
-> `757cf6a`.** *Collector attempt telemetry is LIVE: `companyFetchDetail` + `networkRequests` are
+> **✅ `3dc14e2` SHIPPED AND CONFIRMED OFF THE BOX — cutover **14:49:07** ET, health `ok:true` at
+> **14:49:43**, `quick_check` 585.7s, 3s down, stop landed ten minutes clear of the 15:00 checkpoint.
+> Web/research/assess on `3dc14e2`, worker untouched on `757cf6a`.** *The hand-off wrote "~14:49:40
+> cutover", which MERGED THE CUTOVER WITH ITS HEALTH CONFIRMATION — Ops's correction, and the reason
+> it matters is that the merged number becomes a phantom 33-second gap for whoever rebuilds the
+> timeline. **Two right numbers naming different events read as one number.*** *Collector attempt telemetry is LIVE: `companyFetchDetail` + `networkRequests` are
 > persisted from this cutover forward.*
 >
-> **⚠️ AWAITING ENUMERATION — `388c57f` and `8687f04` (Research), on his re-ask ruling.** *Reported
-> as* **"yes, re-ask stale catalysts — top 12 only"** *— **VERIFY THAT AT HIS TURN before enumerating;
-> this thread refused three relayed rulings today and was right each time.*** `8687f04` stops a STALE
+> **✅ ENUMERATED AND APPROVED 2026-09-25 ~17:00 ET — `388c57f` then `8687f04` (Research),
+> CHERRY-PICKED onto production `3dc14e2`, gate at the sha that ships, window Ops's, `RESTART_MARKET=no`.**
+> *The ruling was **verified at his own turn in Research's transcript** — `"yes, re-ask stale catalysts
+> — top 12 only"`, answering a block whose third option was "Yes, but only for the Top 12" — and
+> `queue.ts` was READ rather than taken from this section's own summary of it. `git log 3dc14e2..8687f04`
+> is **143 commits**, the whole auth surface, which is why it is a pick; and **only those two commits
+> touch any of the four files** in the cone, so the pick has no missing dependency.*
+>
+> **⚠️ THE FRESHNESS SEAM, FLAGGED TO RESEARCH, NOT A HOLD — and `8687f04`'s own comment states the
+> opposite of it.** *The gate calls `resolveCatalystFreshness(eventTimestamp, options.now)`
+> (`queue.ts:284`); the board passes a third argument (`why.ts:298`, `row.catalystFreshFrom`), and
+> `time.ts:395` only reaches the prior-close arm when it is supplied — with `MAX_FRESH_FROM_AGE_MS` at
+> 5 days so a long weekend qualifies.* **So for a CLOCKED catalyst after the prior session's close the
+> board says FRESH and the gate says STALE, while the comment says they "cannot disagree".** *`why.ts:334`
+> already computes that exact set as `promotedByPriorClose`, so the class is named and rendered rather
+> than hypothetical; `388c57f` shares the seam through `guardrails.ts:338`.* **It first bites MONDAY
+> PREMARKET. Not held, because re-asking a Friday-evening catalyst on Monday is his accuracy-over-speed
+> rule rather than a breach of it — and HOW MANY top-12 names that is on a Monday is UNMEASURED.** `8687f04` stops a STALE
 > catalyst counting as answered inside rank 12 (literal 12, not `autoRank`, which reads
 > `RESEARCH_AUTO_RANK` and could silently widen his ruling); staleness DERIVED against `now` rather
 > than read off the write-time band; no timestamp bands UNKNOWN, not STALE. `388c57f` demotes
@@ -279,7 +302,29 @@ stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /
 4. **AUTH CUT-OVER — the last launch gate.** *His inputs: **Google OAuth credentials** and **a window
    outside his trading hours**. The seed word is a STEP of the cut-over, not a prerequisite — do not
    ask for it early, two seats did, three times each, and it was never runnable.*
-5. **`Commercial-tmi` still awaits retirement** — his words 2026-09-25: *"Coaching done; will do
+5. **THE MODEL BILL IS MEASURED AND IT INVERTS THE STRUCTURAL CLAIM I WAS ABOUT TO PASS ON.**
+   *Research, `8061055`, rates read first-hand from the published list because its training data
+   predates these model names:* **$6.99 for 2026-09-25, $0.103 per researched ticker, ~$1,760/yr at 252
+   sessions — bounded above by $12.17, the gap being ONE published number (the short/long context
+   threshold) it could not source and refused to guess.** *Ops measured the volume and said spend is
+   dominated by LOOKING for catalysts; that is true of TOKENS and false of MONEY.* **DISCOVERY is 79% of
+   tokens and 19% of the bill; INTERPRETATION is 11% of tokens and 60% of it.** *So a wire feed would
+   displace the CHEAPEST stage — ceiling ~$1.35 a session, not most of $6.99.* **The news-feed case is
+   ACCURACY, his own rule, and must be made on that; the cost case is small.** *Its second claim HOLDS:
+   volume is bounded by board slots (68 researched of 8,031 captured), so lowering the capture floor
+   changes WHICH names take 12 slots, not how many — spend roughly flat. And $6.99 is ONE light session:
+   2026-08-18 ran 403 jobs and over 12M input tokens.*
+6. **R&D OPENED `COVERAGE_INCOMPLETE` AND IT IS THE MAJORITY BUCKET — `d7abc05`, and it has two asks
+   for him.** *Across 729 archived jobs: **454 (62%) could not look properly**, 196 found something, 79
+   looked and found nothing — **the desk spent today arguing about the 11% bucket.*** Of the 454,
+   **82% had NO company news source at all**, and **186 (41%) re-served a stored negative** — 116 of
+   them on the URGENT path — so *a company that had no investor-news page in August and has built one
+   since is never found.* **That is the ratchet, measured.** *Its order: **registration first** (~8x the
+   size of re-invocation), then expire the stored failures, then look more than once per session — which
+   REPLACES its own earlier proposal that put invocation first.* **Its own caveat, repeated: this is the
+   18–21 August snapshot, today's production shows 40% not 62% in that bucket, and it would not size
+   work from these exact numbers.**
+7. **`Commercial-tmi` still awaits retirement** — his words 2026-09-25: *"Coaching done; will do
    commercial."* *Its hand-off is written and pushed (`bc9847f`).*
 
 ### AUTH — BUILT ON MAIN, ZERO IN PRODUCTION, AND THE SHADOW IS PERMANENT UNTIL CUT-OVER
