@@ -260,8 +260,25 @@ describe('the active sort is readable from the board, not only the toolbar', () 
   });
 
   it('names the units for NOW, which reads as recency and not as a quantity', () => {
-    // "-1m" says when, never what. He asked "what's it sorting" for that reason.
-    expect(source).toContain('trades in the last settled minute');
+    /*
+     * "-1m" says when, never what. He asked "what's it sorting" for that
+     * reason -- TWICE, which is why this assertion moved.
+     *
+     * It used to pin the exact caption string `trades in the last settled
+     * minute`. That string satisfied the letter of the rule and not the rule:
+     * the caption renders only while this sort is ALREADY ACTIVE, so a reader
+     * who has not chosen the sort still had no way to learn the units. The
+     * fix put the quantity in the HEAD, where every other column states its
+     * own, and the assertion follows it there.
+     *
+     * Asserted on the entry rather than on the head's markup because the head
+     * now reads its word from here -- see `leadAndNow.test.ts`, which holds
+     * that single-source half.
+     */
+    const entry = source.slice(source.indexOf("key: 'now'"));
+    expect(entry.slice(0, entry.indexOf('},'))).toMatch(/label: 'Trades'/);
+    // And the window is still stated somewhere a reader can reach without hover.
+    expect(source).toContain('in the last settled minute');
   });
 });
 

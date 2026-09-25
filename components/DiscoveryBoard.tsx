@@ -146,12 +146,33 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
     leads: 'MOVE',
     column: 'price',
   },
+  /*
+   * `Trades`, NOT `Now`. THE HEADER NAMED A TIME WHERE EVERY OTHER HEADER
+   * NAMES A QUANTITY.
+   *
+   * He asked twice what this column was sorting, and the column answered with
+   * `Now` over `−1m` -- two statements of WHEN and none of WHAT. The units
+   * existed only in the sort caption, so they were on screen only while this
+   * sort was ALREADY ACTIVE: the one reader who has not chosen it yet is the
+   * one who cannot find out what it is.
+   *
+   * The currency claim does not leave the surface. It moves to where it is
+   * true rather than where it is prominent: `−1m` under the head states the
+   * offset, and the tooltip carries the contrast with RVOL.
+   *
+   * THE COMMENT SITS OUTSIDE THE BRACE DELIBERATELY. `filters.test.ts:252`
+   * enumerates the keys with `/\{\s*key:\s*'(\w+)'/`, so a comment between the
+   * brace and `key` drops this entry out of the set that test compares -- and
+   * it fails as "no column declared for a sort key", which points at the
+   * wiring rather than at the formatting.
+   */
   {
     key: 'now',
-    label: 'Now',
+    label: 'Trades',
     title:
       'Trades in the most recent settled minute. Which names are trading heaviest right now, which is a different question from RVOL — that is a ratio against a twenty-session baseline and can stay high on a name that has stopped trading.',
-    metric: 'trades in the last settled minute',
+    /* Reads after the label: "sorted by trades · in the last settled minute". */
+    metric: 'in the last settled minute',
     column: 'now',
   },
   { key: 'price', label: 'Price', title: 'Last price', column: 'price' },
@@ -262,6 +283,8 @@ export function DiscoveryBoard({
   // Null phase falls to the neutral label rather than guessing a session.
   const phase = discovery?.sessionPhase ?? null;
   const move = baselineLabel(phase);
+  /* The head over the trades column and the control that sorts it, one source. */
+  const nowEntry = SORT_KEYS.find((entry) => entry.key === 'now');
   const activeEntry = SORT_KEYS.find((entry) => entry.key === sort.key);
   const activeLabel = activeEntry ? resolveSortEntry(activeEntry, phase).label : 'rank';
   /*
@@ -534,14 +557,42 @@ export function DiscoveryBoard({
                * number. Putting the "now" measure anywhere else would leave the
                * two readings to be joined by the trader mid-scan.
                */}
-              <Th className="w-[44px]" align="right" sorted={activeColumn === 'now'}>
-                Now
+              {/*
+               * THE HEAD IS READ OFF `SORT_KEYS`, NOT TYPED HERE.
+               *
+               * Same repair as `move.label` on the price head: a hand-written
+               * word over a column and a second hand-written word on the
+               * control that sorts it are two spellings of one quantity, and
+               * on this board they have already drifted apart once.
+               *
+               * MEASURED, NOT SIZED BY ARITHMETIC. Geist 600 at 11px with the
+               * head's `0.08em` tracking, uppercased as the cell renders it,
+               * on the live board at the 1,024px floor:
+               *
+               *     NOW  29.5px     NOW ▼  45.3px
+               *     TRADES  48.5px  TRADES ▼  64.2px
+               *
+               * `px-2` each side costs 16, so the sorted head needs 80.2px and
+               * `w-[44px]` was already 1.5px short of the word it used to
+               * carry. 84 leaves 3.8px. The table is `w-full table-fixed` at
+               * 982px of content, so the 40px comes out of `Why` and `Risk`
+               * (183 -> 163): they carry prose measured at 1,300-2,300px
+               * truncated to one line, so the cost is about four characters of
+               * a sentence already cut to a tenth, and row height is fixed at
+               * 56.9px either way -- no row is lost.
+               */}
+              <Th
+                className="w-[84px]"
+                align="right"
+                sorted={activeColumn === 'now'}
+                title={nowEntry?.title}
+              >
+                {nowEntry ? resolveSortEntry(nowEntry, phase).label : 'Trades'}
                 {/*
                   * The lag, on the header rather than in the tooltip alone.
-                  * `Now` is the strongest currency claim available and the
-                  * newest slot is two minutes old; he discovered that by
-                  * hovering. §10 rules out hover-only, and this column was on
-                  * the wrong side of a rule already enforced on the Move
+                  * The newest slot is two minutes old and he discovered that
+                  * by hovering. §10 rules out hover-only, and this column was
+                  * on the wrong side of a rule already enforced on the Move
                   * control. The span stays in the title -- this is the offset,
                   * which is the part that changes how the bars are read.
                   */}
