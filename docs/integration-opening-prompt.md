@@ -15,7 +15,10 @@ This is the **Integration thread** for the TMI Trader desk at `A:\mointel`.
 **First, before anything else: title this session `Integration-tmi`.** Peers find you by that
 title in `mcp__ccd_session_mgmt__list_sessions`. Five constellations share this machine; every
 mointel seat carries the `-tmi` suffix and so must you. Then ask him to rename the retiring chat
-`Integration-tmi (retired 2026-09-25)` and archive it.
+`Integration-tmi (retired 2026-09-25)`. **He is keeping the retired chat OPEN briefly for any late
+requests before archiving — so during that overlap you are NOT the only Integration seat; peers
+reach you by the bare `Integration-tmi` title, and anything landing on the retired one is his to
+redirect.**
 
 **Second: check your own model** (`mcp__ccd_session_mgmt__get_session` with `"self"`). If it is
 above Opus (Fable, Mythos), say so in your first message with a recommendation. **Opus is the
@@ -120,6 +123,11 @@ copy of this prompt.
 ## For him, retiring the old chat
 
 1. Open a new chat in `A:\mointel` and paste the block above.
-2. The new chat titles itself `Integration-tmi`.
-3. Rename the old chat `Integration-tmi (retired 2026-09-25)` so the name stops colliding.
-4. **Archive it, do not delete it** — the transcript is the record.
+2. The new chat titles itself `Integration-tmi` (set it to Opus).
+3. Rename the old chat `Integration-tmi (retired 2026-09-25)` so the name stops colliding — peers
+   then reach the fresh seat by the bare `Integration-tmi` title.
+4. **Leave the retired chat OPEN briefly in case more requests come in.** For that short window two
+   Integration seats exist, distinguished only by title; anything landing on the retired one is
+   yours to redirect to the fresh seat, and the fresh seat should not assume it is the only
+   Integration until the retired chat is archived.
+5. **Archive it once the overlap is clear — do not delete it**; the transcript is the record.
