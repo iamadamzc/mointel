@@ -217,1036 +217,266 @@ from the finding seat is a hypothesis; flag it as one, never relay it as the ins
 
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
-**AS OF 2026-09-25T11:37Z.** *Full §3a-c hygiene audit this pass (his instruction 2026-09-25):
-LIVE STATE re-verified against production and pruned, the RESOLVED diary trimmed to a pointer.
-Everything below LIVE STATE is kept for its MECHANISMS, not its facts.*
-
-> **STANDING APPROVALS — recorded 2026-09-23T03:58Z (2026-09-22 23:58 ET).** *Supersedes the
-> earlier today-only grant.*
-> - **Pushes/deploys:** ongoing go-ahead for necessary ones — Integration approves clean
->   enumerations to Ops without returning per-deploy. UNCHANGED: gate at the sha; data-integrity
->   timing (e.g. after-hours in-session) still governs; spend, auth-model and destructive actions
->   still go to him; an unreviewed board-behaviour change is still flagged before it ships.
-> - **Restarts: NOT Integration's to relay.** He said "restarts go ahead," but Ops takes the
->   restart word from him DIRECTLY (charter boundary; Ops refused two such relays and was right).
->   Integration surfaces a needed restart to him; it does not authorize one.
-> - **Late-Sep prod snapshot (R&D's EX-99 first read): PRE-APPROVED** — read-only `research_sources`
->   copy-down; Ops does it when R&D needs it without returning to him.
-> - **Invites / access grants (auth, D6 2026-09-24): his DIRECT word to the admin-agent, NOT
->   Integration's to relay.** *An invite is a grant, and a granted user is access/cost —
->   spend-adjacent, so it sits with spend and restarts, not with the production-writes Integration
->   may relay. The invite-agent acts only on his explicit per-invite instruction: never a default,
->   never a batch (Web's flag, and it is the authority-field concern in a new shape).*
+**AS OF 2026-09-25T20:15Z (16:15 ET).** *Rewritten at hand-off by the eleventh Integration under his
+instruction. A SNAPSHOT, not a diary: the day's mechanisms were promoted to `README.md`, and
+everything below this section is kept for MECHANISMS, not facts.*
 
 ### PRODUCTION
 
 ```
-web / research / assess   757cf6a   deployed 2026-09-24, 2s down (rollback acc3095 -- NOTE:
-                                     acc3095 is EVICTED by today's SECOND ship; see the
-                                     rollback-baseline collision below).
-market worker             757cf6a   restarted 2026-09-24 20:24:07Z, pid 1063272, NRestarts 0.
-                                     BOTH UNITS ON ONE RELEASE (first time this week). Carries the
-                                     freshness bands (FRESH=prior session close; day bands; arm-5
-                                     STALE), the age/date-parse fix, priority-hide, DCOY "STARTED
-                                     TODAY", blue-sky wording, the 4 assessment columns, re-derived
-                                     (HELD) 0.5/2.0, 21-day dropped, dead model freshness field gone.
-                                     STARTED 5AM is now LIVE (worker carries the `observed` field).
-                                     Restart rebuild MEASURED: 0 lowered, 0 null, 4,791 intact
-                                     (day-wide + per-session AH). Blue-sky 27% fills ORGANICALLY.
-stranger sees             /  /privacy  /terms  /robots.txt  /favicon.ico
-                          /icon.svg  /apple-icon.png            200
-                          /desk  /signin  /api/*                401
+web / research / assess   0a17601   cutover 2026-09-25 12:17:07 ET, 2s down
+market worker             757cf6a   UNTOUCHED, NRestarts 0 since 2026-09-24 20:24:07Z
+                                    Different releases is DELIBERATE, not drift.
+releases on disk          0a17601  49efd1a  757cf6a   + 372f5eb (PINNED rollback-baseline, v18)
+web-tier rollback         49efd1a
+today's ships             49efd1a  11:49:43 ET (sort accent) | 0a17601  12:17:07 ET (FRESH boundary)
+stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /apple-icon.png  200
+                          /desk /signin /api/*  401        /privacy-x negative control FIRES
 ```
 
-**The public site is live, indexed, named "The Momentum Intelligence Trading Desk",
-carrying the drawn mark and Marketing's share string "TMI — Intelligence on what's moving."**
-*Both legal documents carry the new name, `adopted: 2026-09-11` intact, no DRAFT banner.*
+> **⚠️ `3dc14e2` — ENUMERATED, STATE UNCONFIRMED AT HAND-OFF.** *Collector observability
+> (`companyFetchDetail` + `networkRequests` persisted). Cherry-picked `0625db0`→`d8fc4e0`→`3dc14e2`
+> onto `0a17601`, gate green (156 files / 2,371 tests / 0 lint), enumerated for 14:36–14:38 ET.
+> **I asked Ops for the state at 16:07 and had no answer before handing off. SUCCESSOR: ASK OPS
+> FIRST — do not assume it shipped and do not assume it did not.***
 
-### OPEN AND HIS
+### OPEN AND HIS — nothing below is blocked on a seat
 
-**LAUNCH is one auth cut-over away (see AUTH below). Three inputs are his:**
-1. **Google OAuth app credentials** — client id + secret + redirect URI (Google Console; Ops
-   places on the box). On the cut-over critical path, has lead time.
-2. **The seed word** for `iamadamzc@gmail.com` — the first invite. HIS DIRECT word to Ops, not
-   relayed (an invite is a grant; Ops raises it when the tooling reaches production).
-3. **When to run the cut-over** — a window outside his trading hours; Basic-Auth-off is his call.
+1. **A NEWS FEED. His ruling 2026-09-25, verbatim:** *"do we need a news feed? would the global news
+   wire have been searchable at that time? TMI isn't about being FAST, it's about being ACCURATE. so
+   if it's public we should have it..."* **Answered factually: YES, it was public and findable — a
+   competing product he already pays for (Warrior Trading's DayTrade Dash) had the AIFF release at
+   07:53 ET while the stock was up 5%.** *The scoping and spend decision is his. Ops's read 3 —
+   fetching `fireflyneuro.com/rss` from the box with the PRODUCTION user-agent — tests whether the
+   issuer-feed route can EVER see a wire-only release, and should land before he commits.*
+2. **THE ASK-ONCE DESIGN.** *A dossier whose `catalystStatus` is anything but `UNKNOWN` closes the
+   question for the session (`queue.ts:235`).* **41.9% of 50%+ movers with ≥2 board observations had
+   their evidence never change all session, averaging 12.7 observations each** *(R&D, from the
+   archive, no production access).* **Changing it costs research spend per name per session. His.**
+3. **DESIGN'S PACKAGE — ONE decision, three parts, not yet sent.** *Column tooltips (his direction
+   below); whether `Now`→`TRADES` still earns its place once tooltips carry the depth; and whether
+   `since Thu close` replaces the age on WITHIN-DAY promoted rows or only where it misleads by days.*
+   **`363f40d` (TRADES) and `36bbddd` (the Monday fix) are both gated and PARKED on his word.**
+4. **AUTH CUT-OVER — the last launch gate.** *His inputs: **Google OAuth credentials** and **a window
+   outside his trading hours**. The seed word is a STEP of the cut-over, not a prerequisite — do not
+   ask for it early, two seats did, three times each, and it was never runnable.*
+5. **`Commercial-tmi` still awaits retirement** — his words 2026-09-25: *"Coaching done; will do
+   commercial."* *Its hand-off is written and pushed (`bc9847f`).*
 
-> **⚠️⚠️ CORRECTED BEFORE THE SHIP — DO NOT USE A ROW COUNT AS THE PASS CONDITION. I recorded
-  "expect ONE row, not six" as a criterion and that is the wrong SHAPE of expectation.** *Ops's
-  catch; verified here by reading `lib/research/freshFrom.ts`.* **The boundary is the PRIOR SESSION'S CLOSE.**
-  *My mechanism for this was WRONG and Design corrected it by measuring through the shipped
-  function: **the change set does NOT grow with the clock.** Today's events are `days === 0` and
-  **already FRESH on the day bands**, so they move nothing. A row only MOVES if it is clocked,
-  `days >= 1`, and at or after the prior close — and that window is `[prior close → ET midnight]`,
-  **CLOSED and FIXED for the whole session.** The count still varies, for a different reason: **the
-  POPULATION CHURNS** as Discovery re-ranks and new analyses land.* **Same conclusion, and it
-  matters which reason: on my version a DECREASE by 14:00 reads as a regression; on the real one it
-  is just `INLF` dropping off the board. Compare BY TICKER, never by count.** *Research's 6-of-325
-  was a different day's data besides. A seat seeing 3 or 6 at 10:40 would file a defect against correct
-  code; a seat seeing 1 against Research's 6 would file the same defect from the other side.*
->
-> **THE VALID CRITERION IS DESIGN'S NAMED ROWS, NOT ITS COUNT — and Design supplied both.**
-  *Per-row predictions are STABLE where the aggregate is not: the prior close is fixed for today
-  and each catalyst's timestamp is fixed, so every verdict below holds all day.*
->
-> ```
-> MUST TURN GREEN   INLF   catalyst 2026-09-24T21:18:05Z = 17:18 ET, after the 16:00 close
-> MUST STAY AMBER   IFBD (13:00 ET, nearest miss)  MGLD  APUS  BYAH  JAGX
-> CANNOT MOVE       ONCO   bare date -- green here is Research's tripwire firing, not the feature
-> COUNT             >= 1, and MORE than predicted is EXPECTED, never a defect
-> ```
->
-> **⚠️ AND A THIRD EXPECTED-AMBER CASE, INVISIBLE ON THE BOARD (Research, `096da7b`, before the
-  ship).** *A catalyst written `2026-09-25T08:30:32 ET` gets **DATE** precision and therefore can
-  NEVER reach FRESH through the prior-close boundary — Research tested the same instant in three
-  shapes:* `…T21:18:00.000Z` → CLOCK → FRESH; `…T17:18:00-04:00` → CLOCK → FRESH;
-  `…T17:18:00 ET` → DATE → **RECENT**. **So an ` ET`-shaped row sits amber beside two greens for a
-  reason nothing on the screen explains, and a verifier reads it as a defect in the new feature.**
-  *It is not.* **ANSWERED BY DESIGN OFF THE 09:15 PAYLOAD, AND TODAY'S BOARD DOES NOT EXERCISE IT
-  AT ALL:** exactly one ` ET` row on Discovery — **`LFS`, `2026-09-25T08:30:32 ET`** — and its
-  event is **TODAY**, so `days === 0` bands it FRESH regardless of precision. *None on Watchlist;
-  two across all 42 intelligence rows (`LFS` and `QH`), and `QH` is on neither table.* **The
-  amber-beside-greens case needs a row that is `days >= 1` AND after the prior close, and no row on
-  this board is both.**
->
-> > **SO `LFS` JOINS THE CRITERION FROM THE OTHER DIRECTION — an already-green row that MUST STAY
-> > GREEN.** *Nothing may demote, by construction: `resolveCatalystFreshness` returns FRESH early or
-> > falls through to the bands it always used. **If `LFS` is amber at 10:40 a demotion has happened
-> > and it is a defect whatever `INLF` did.*** *And the fill-value error only ever PROMOTES — so it
-> > could never show as a wrong band, only as too many greens (Design's note, for Research).*
->
-> > **THREE POPULATIONS, ONE SHAPE, AND THIS IS THE THIRD TIME TODAY: `33 of 260` stored,
-> > `2 of 42` in the snapshot, `1 of 12` on the board.** *Each is right; none is a prediction about
-> > another. Said here explicitly so nobody at 10:45 tries to reconcile 33 against 1 — the same
-> > reason `6 of 325` could not be a board expectation.*
->
-> > **AND THE FIX IS EASY, AVAILABLE AND WRONG — the part to carry.** *`etWallClockToUtc` already
-> > exists and would convert those stamps perfectly correctly. **33 of 260 stored timestamps carry
-> > the ` ET` shape and 31 of the 33 are EXACTLY `20:00:00 ET`** — the end of after-hours. That is
-> > a FILL VALUE, not a published time, so parsing them as clocks would promote **7 analyses
-> > RECENT → FRESH out of a storage convention.*** **`3570114`'s defect — precision inherited from
-> > a storage convention — arriving by a new route**, and the mirror of the bare-date proposal this
-> > thread caught earlier (treating bare dates as after-hours because the clocked ones mostly are).
-> > *Research had the 7-row measurement in hand and read it as an opportunity before checking what
-> > time of day the stamps carried.*
+### AUTH — BUILT ON MAIN, ZERO IN PRODUCTION, AND THE SHADOW IS PERMANENT UNTIL CUT-OVER
 
-> **✅ IFBD/MGLD SETTLED TWICE, FROM TWO INSTRUMENTS. CRITERION UNCHANGED, `0a17601` CLEAR TO SHIP.**
->
-> - **Ops RETRACTED its own flag** after finding the real feature input: **`$.catalyst.eventTimestamp`
-    in the dossier JSON via `research_dossiers.current_version_id`** — not `research_sources.published_at`,
-    a different population. At the true input **all seven per-row predictions agree**; IFBD is
-    `17:00:47Z` = 13:00 ET, before the close, amber.
-> - **Research settled the RULE independently: selection is NOT "newest active source".**
-    *`eventTimestamp` is a MODEL OUTPUT against a field with no stated rule — `schema.ts:90`
-    declares it `nullableString` with **no description**, `SYSTEM_PROMPT_A` never mentions it, and
-    `guardrails.ts:265` validates the cited source IDs exist but **never compares the stamp to any
-    source's `published_at`.*** So an in-band active source does not imply an in-band selected
-    catalyst.
->
-> > **AND OPS CORRECTED A SEAT THAT WAS RIGHT, THEN CAUGHT ITSELF — its own framing, kept:
-> > "a confident retraction of a correct finding is how a good criterion gets thrown away."**
-> > *It told me Design's `IFBD 13:00 ET` matched no row and belonged to BYAH, and suggested a UTC
-> > value had been read as ET. Design was exact.* **Three silent nulls produced it, all one shape:
-> > `symbol` for `ticker` with stderr suppressed, then `$.catalyst.publishedAt` for
-> > `$.catalyst.eventTimestamp`, twice — each returning a clean empty result that looked like a
-> > finding.** *It survived only because the check was cheap and was run BEFORE 10:36 rather than
-> > after.*
->
-> > **SHAPE CENSUS OVER CURRENT DOSSIERS (Ops) — a third population again, and the biggest number
-> > yet:** `Z` 498, offset 32, **` ET` 74**, other incl. bare dates 270, of 874 with a timestamp.
-> > **` ET` + bare dates = 344: over a THIRD of dossiers can never reach FRESH by construction.**
-> > *Not a defect and it fails safe — but it makes Research's "do not fix the ` ET` shape" the
-> > LOAD-BEARING instruction rather than a footnote, because 344 is exactly the sort of number that
-> > makes the wrong fix look overdue. And the fill-value error only ever PROMOTES, so it could
-> > never appear as a wrong band — only as too many greens, which is a defect with no failing
-> > appearance.*
->
-> > **AND THE NAMED ROW, which turns "do not fix it" from an argument into evidence: `YMAT`,
-> > `2026-09-23T20:00:00 ET`** *(Ops, on the box).* **The exact end-of-after-hours fill value, in
-> > PRODUCTION data, dated `days >= 1`.** *Out of band today — 09-23 precedes the 09-24 close — so
-> > it changes nothing now. **It is the row to point at the next time someone proposes parsing
-> > ` ET` stamps as clocks**, and a named row survives an argument that a ratio does not.*
+**Nothing can sign in. nginx Basic Auth is the only gate on `/desk` and stays until the cut-over.**
+*On main, not prod: Google OAuth + invited-email allowlist, `/auth/start|callback|signout`,
+`/signin`, the gate (`authenticate` = `resolveSession` + `isUserInvited`), `scripts/allowlist.ts`,
+and the identity-landmine fix (`1a8c324` — `IDENTITY_DB_PATH` stripped in `sync-env.sh`, plus
+`openIdentityStore` refusing a `releases/`-segment path).*
 
-> **And the positive case is already proven present, which is the whole reason this check can
-  fail honestly: `INLF` is a known in-band row.** *Ops's condition — "zero is the only unambiguous
-  failure, and only if the before-reading was non-zero" — is satisfied without a new computation.*
-  **If `INLF` has dropped off the board by 10:40, the positive control is gone and the count must
-  be recomputed before anything is concluded from an absence.**
-  *Design took the BEFORE reading off the live board at 09:15 ET rather than after the deploy,
-  when it would have been gone; `578b2d9`.* **Research's 6-of-325 is over EVERYTHING STORED. The
-  live Discovery board is 12 ROWS and holds exactly ONE candidate** — `INLF`, catalyst
-  `2026-09-24T21:18:05Z` = 17:18 ET, after the 16:00 close, rendering amber `16h` and which must
-  turn GREEN. *Six controls sit beside it and must NOT move: `IFBD` (13:00 ET, the nearest miss at
-  3h short), `MGLD`, `APUS`, `BYAH`, `JAGX` — all clocked the same calendar day on the wrong side
-  of the close — and `ONCO`, a BARE DATE that **cannot** move, where green would be Research's
-  tripwire firing rather than the feature working.* **Anyone checking this deploy against "6" will
-  read a CORRECT board as broken.**
->
-> *Also measured, and it is the control the local check could not provide: **`catalystFreshFrom` is
-  ABSENT from the production payload — the KEY, not a null value.** Locally the key is PRESENT and
-  null. The two states are distinguishable, so "`7a0ad0c` is not live" is measured rather than
-  assumed — and after the ship, a null KEY PRESENT is a different and meaningful reading.*
+> **⚠️ THE DEPLOY SHADOW IS LIVE AND FIRED THREE TIMES TODAY. Production's lineage DELIBERATELY
+> EXCLUDES the auth surface (`757cf6a` → pick `49efd1a` → pick `0a17601`), so EVERY non-auth ship is
+> CHERRY-PICKED until he runs the cut-over.** *Today's three: `34cf6f3` (looked like three
+> presentational files), Design's three-sha ship set (announced as "gated on the production base"),
+> and `d19355c` (backend-only, no user-visible surface — **the most innocent-looking of the three and
+> the same 10 auth commits underneath**).* **Enumerate a cut-over BY SURFACE, not by module.**
 
-> **✅ RESOLVED 2026-09-25 — `0a17601` IS ENUMERATED AND APPROVED. Design re-based onto `49efd1a`
-  and Ops gated at that exact sha (ALL GREEN, 155 files / 2,364 tests / 0 lint). Read the block
-  below for the MECHANISM; the refusal itself is spent.**
->
-> **TWO RELEASES, IN THIS ORDER — my call under order-and-process; the minutes are Ops's.**
-> *`0a17601` DESCENDS from `49efd1a`, so one release would deliver both. I am deliberately not
-> doing that.* **The FRESH boundary changes what his board SAYS about freshness (~6 rows of 325
-> change band) and NOBODY HAS YET OBSERVED A NON-NULL VALUE end to end** — Design traced the read
-> path and said so plainly rather than repeating Research's measurement as its own. *Shipped
-> together, a board that looks wrong at 10:15 has two candidate causes; shipped apart, the
-> author-verifies step is attributable. One extra window is the whole price.*
->
-> ```
-> 1st  49efd1a   start 10:06-10:08 ET   sort accent      cone over prod: 1 commit,  0 auth
-> 2nd  0a17601   next clean gap          FRESH boundary  cone over 49efd1a: 2 commits, 0 auth
->                                                        cone over prod:  3 commits, 0 auth
-> ```
-> *Every figure re-derived here, not filed from a description. `ccaf77b` (TRADES) is OUT of both
-> until he answers — it is a label he reads every morning.*
->
-> **AND GATE EARLY RATHER THAN IN SHIP ORDER (Ops's, and it is a real process finding).** *A gate
-> runs DETACHED at a fixed sha, so it does not care whether the release beneath it is live yet.
-> Ops gated `0a17601` before `49efd1a` shipped, against my proposed ship→gate→enumerate sequence.
-> Had it come back RED we would have learned at ~10:10 — immediately after a ship, with a quick
-> second one expected, which is the worst moment to find out.* **Gate early, ship in order; the
-> only thing sequencing buys is worse timing on bad news.** *It also re-confirmed `49efd1a` in
-> combination, since `0a17601` descends from it.*
+**STEP 2, the cut-over (Integration orchestrates on his go):** deploy the auth main → nginx exempts
+`/signin` + `^~ /auth/` → box env (Google id/secret, redirect URI, `IDENTITY_DB_PATH`) → wire the
+gate into `/desk` + `/api/*` → **live-proof the gate REFUSES a non-invited account, negative control
+first** → seed his address → Basic-Auth-off LAST, his call.
 
-> **⚠️ THE FRESH-BOUNDARY SHIP SET WAS NOT APPROVED AS FIRST HANDED OVER, AND THE ENUMERATION WAS
-  THE REASON — kept for the mechanism.** *Design
-  handed over `7a0ad0c` + `ccaf77b` + `bd509e9` as "the ship set, stacked and GATED ON THE
-  PRODUCTION BASE", 13 files, **zero under `app/auth/`, `lib/auth/`, `app/signin`,
-  `scripts/allowlist` — checked by PATH, which is the right check and still cannot answer this.***
-  **Verified here 2026-09-25: the by-file claim is TRUE and the shas are NOT shippable.**
+> **Prod box is LIGHTSAIL, not EC2.** *`ec2 describe-security-groups` returns EMPTY, or another
+> project's groups under `management-admin` — a false "nothing restricts 22". Real firewall:
+> `aws lightsail get-instance-port-states --instance-name mointel-prod` under `magellan_admin`.
+> `ufw` on the box is inactive, so lightsail port-states is the ONLY thing gating port 22.*
+
+### THE CATALYST QUESTION — WHAT THE DESK CAN AND CANNOT SAY
+
+**The founding question ("50%+ movers running with no catalyst") has been a MARKET THESIS RESTING ON
+A PROCESS MEASUREMENT since the day it was written.** *R&D's framing, 2026-09-25, and it replaced my
+weaker "unmeasurable with current instrumentation":*
 
 ```
-cone over 757cf6a      7a0ad0c  42 commits    ccaf77b  48      bd509e9  66
-auth commits inside    10 touching app/auth, lib/auth, /signin, scripts/allowlist.ts
-branch holding the picks onto the production base   NONE  (git branch --contains bd509e9 -> main only)
+MEASURED and sound:  the fraction of movers for which THE DESK HELD a catalyst at decision time
+                     22.6% pooled | 32.1% on a complete pre-open pass  -> a PRODUCT COVERAGE KPI
+QUOTED AS:           the fraction of movers that HAVE a catalyst       -> a MARKET claim, needing
+                                                                         ground truth the desk
+                                                                         does not hold
 ```
 
-> - **The three named shas are MAIN-LINEAGE. A literal ship of any of them deploys the whole auth
-    cut-over.** *This is `b371dca` in the README arriving within the hour, on a seat that had
-    independently re-derived the warning and still wrote an enumeration that reads as three shas.*
->   **CORRECTED BY DESIGN, and the correction is about MY claim, not its check.** *I recorded this
-    as "a by-path check on the COMMITS is the wrong instrument for the cone". It was not that check:
-    Design ran `git diff --cached --name-only` on the CHERRY-PICKED FILES, which for a pick is the
-    right object and is blind to nothing.* **The defect was in the ARTEFACT, not the instrument —
-    an enumeration of shas is read as shas whatever sentence sits above it.** *`0170418` — "Do NOT
-    ship `34cf6f3`" — is the record of a prohibition in prose failing to survive being quoted, once
-    already. **A prohibition does not survive quotation; a bounded ref does.*** *Recorded this way
-    because I had written a lesson about another seat's instrument without opening it — the exact
-    failure this thread files under "never assert what you have not opened".*
-> - **THE GATED ARTEFACT HAS NO SHA.** *2,364 tests / 0 lint were run against a local apply onto
-    `757cf6a` that is committed nowhere. Whatever Ops cherry-picks produces NEW shas, and the rule
-    is unchanged and is the oldest one here: **gate at the sha that ships.** A gate on a different
-    tree is not a gate.*
-> - **AND THE BASE EXPIRES AT ~10:06 ET — the half neither seat has.** *`49efd1a` ships this
-    morning and becomes the new production base. **Two of the three files `ccaf77b` touches are
-    files `49efd1a` changes** — `components/DiscoveryBoard.tsx` and `tests/dashboard/filters.test.ts`
-    (measured, `comm -12`). So the gate Design ran onto `757cf6a` does not cover the tree that will
-    exist when the pick is made. Design checked `ccaf77b` against `49efd1a` ALONE, which is not the
-    same base as `49efd1a`-plus-the-others.*
-> - **`ccaf77b` is ALSO blocked on HIM, separately: it renames the Now column to TRADES**, a label
-    he reads every morning, and that question is in his NEEDS YOU unanswered. *So the set is not
-    one unit: `7a0ad0c` + `bd509e9` stand or fall together (`bd509e9` reads a field that does not
-    exist on the type before `7a0ad0c`); `ccaf77b` waits on his word regardless of any gate.*
->
-> **Relayed as the DEFECT, not as a fix shape — the re-basing and the pick order are Ops's, and the
-  route is Design's (it chose `DeskRowContext` over a 4th `resolveWhy` argument, and its reason —
-  four callers is four chances to miss one — is better than the route I had pointed at).**
+**The AIFF case, which separated them for the first time.** *A GlobeNewswire release existed on
+2026-09-25. The desk fetched the issuer RSS at 07:48, found nothing, and **seven hours later still
+held ZERO sources dated today**. Its `catalystStatus` was `FRESH_FOUND` on an **eight-day-old**
+(2026-09-17) timestamp, which closed the re-ask gate because the desk believed it already had the
+catalyst.* **The instrument was HONEST and the answer was WRONG.**
 
-**Also open, not blocking launch:**
-- **Sort legibility (Design): FIX DONE, cherry-picked SORT-ONLY as `49efd1a`** (branch
-  `ops/sort-legibility`, gate green 153/2,345/0-lint) — **START 10:06–10:08 ET under standing
-  approval, zero cut-over risk.**
-  *NOT "10:00 ET", and NOT "after 10:00" — this thread and Ops both wrote that all morning and
-  **preflight REFUSES at 10:00:00**. See the note below; the next equivalent slot if it slips is
-  10:36–10:38, not "any time after 10:30".* RANK wore the active-order ACCENT unconditionally; now the accent
-  follows the sort. **⚠️ DO NOT ship `34cf6f3`** *(the COMMIT is unshippable for its ANCESTRY; its three BLOBS are
-  the same fix and are the reconstruction source — see the note below, and do not read the ban on
-  the commit as a ban on the content)* — it sits ABOVE the whole auth surface in history,
-  so shipping it deploys the ENTIRE cut-over (`app/auth/*`, `/signin`, `allowlist.ts`), BROKEN (no
-  `IDENTITY_DB_PATH`, no Google creds) and HIS call. Ops caught it after I approved the tip blind;
-  **`Ops-tmi` ships `49efd1a`, NEVER `34cf6f3`** — the trap looks like a small ready item.
-  *Said "the Ops SUCCESSOR" until 2026-09-25: the warning was right and the ADDRESSEE was wrong.
-  There is no successor — see SEAT STATE.*
-> **⚠️ "10:00 ET" WAS TWO DIFFERENT CONSTRAINTS WEARING ONE NUMBER, AND THEY POINT OPPOSITE WAYS.**
-  *Found 2026-09-25 when Ops corrected the ship time; both facts verified here at the file.*
-  **`ops.md:8057` — "Never deploy 07:00–10:00 ET" — is HIS TRADING WINDOW, so 10:00 is the EARLIEST
-  moment a ship is permitted. `preflight.sh:38` builds `RTH_INTERVAL` from minute 600 (10:00) every
-  30 minutes, and `PROTECTED_MINUTES=5` blocks within 5 either side, so 10:00 is a minute the
-  machine REFUSES** (`09:55–10:05` blocked; clean `10:05–10:25`, `10:35–10:55`, …). *One number,
-  two unrelated schedules, and the implications are exact opposites: "the earliest you MAY" and
-  "precisely when you MUST NOT". That is why every seat in this thread wrote "ship at 10:00 ET" for
-  a morning without anyone being careless — the number was right for the constraint each of us was
-  holding.* **A time that satisfies one constraint is not a time; say which constraint, and check
-  the other.**
->
-> **⚠️ AND IT BIT, THE SAME DAY IT WAS DOCUMENTED.** *`49efd1a` started 11:38 ET; preflight measured
-  the START and passed. `quick_check` runs 6.5–10 min ahead of the stop, putting the stop ~11:45–11:48,
-  and at 11:48:41 no cutover had logged — **so the stop may land inside the 11:55–12:05 protected
-  window that preflight never saw.*** **That is the documented defect biting for real, not a new
-  fault, and the cost is a skipped `RTH_INTERVAL`, not an outage.** *Ops correctly refused to abort:
-  stopping a deploy between the build and the cutover is more dangerous than a missed checkpoint.*
+- **`catalystStatus` is an UNDESCRIBED enum (`schema.ts:70-73`), model-assigned, and NOTHING compares
+  `FRESH_FOUND` against the recomputed `catalyst.freshness` (`guardrails.ts:338`) or the timestamp.**
+  *Third instance of one defect: the `freshness` enum was REMOVED for exactly this, `eventTimestamp`
+  was found with the same two properties the same morning, now the field that gates re-asks.*
+  **`SECONDARY_STALE` exists and is the right value for AIFF; nothing made the model use it.**
+  *Routed to Research; the shape is its own.*
+- **R&D's graded CONTRASTS are NOT overturned** — Q1's +17.9pp and Q14's ~+7pp compare graded classes
+  against each other, so a coverage shortfall hitting both arms leaves them standing. *They move only
+  if the shortfall CORRELATES with the grade, which is untested.*
+- **The 27 `NO_RECENT_SOURCE_LOCATED` jobs are SOUND verdicts and worthless as market evidence. The
+  70 `COVERAGE_INCOMPLETE` have never been examined by anyone** — *and that is where a coverage
+  question would actually live.*
 
-> **AND THE START MUST LEAVE ROOM FOR THE STOP — this is the first time the known preflight defect
-  has CONSTRAINED a ship rather than sat in the open list.** *Preflight measures the START only,
-  while `quick_check` now runs ahead of the stop (388–594s observed), so preflight-to-stop is 7–10
-  minutes. A start that passes at 10:22 lands its stop inside the 10:25 window with preflight
-  having said yes.* **AND THE REASON TO WRITE THE WINDOW DOWN RATHER THAN LET PREFLIGHT CATCH IT (Ops's, and it is
-  the real argument): preflight fails safe, so the mistiming is not the danger — A REFUSAL THAT
-  LOOKS ARBITRARY IS THE ONE THAT GETS `DEPLOY_WINDOW_OVERRIDE` TYPED AT IT.** *A seat that expects
-  10:00 to work and is refused at 10:00 has been handed a reason to believe the guard is wrong.*
-  **10:06–10:08 gives maximum margin on both ends** (clear by 6–8 min, stop
-  ~10:13–10:18, next window 10:25). *The measurement that exposed the defect — 594.1s on 09-24 —
-  was taken on an after-close deploy where it could harm nothing, which is why it stayed theoretical
-  until today.*
+### QUEUED READS — ALL FOR OPS, NONE URGENT
 
-> **⚠️ "ROLLBACK BASELINE" NAMES TWO DIFFERENT THINGS THAT BEHAVE OPPOSITELY UNDER PRUNE.**
-  *Ops's finding 2026-09-25, correcting its own handover — and MY LIVE STATE carried the same
-  wrong sha, now fixed above.* **`34414f4` is the previous RELEASE DIRECTORY, unpinned, and
-  `KEEP_RELEASES=3` DELETES it on today's first ship. `rollback-baseline` is a PINNED LABEL —
-  `/opt/mointel/pins/rollback-baseline.pin`, sha `372f5eb`, schema v18 — which prune honours and
-  which survives indefinitely.** *Ops's projection, pins honoured: after `49efd1a` keep
-  `49efd1a 757cf6a acc3095`; after `0a17601` keep `0a17601 49efd1a 757cf6a`. **So `757cf6a` —
-  today's known-good — survives both ships and is the real rollback target for either.***
->
-> **AND THIS IS THIS THREAD'S FOUNDING INCIDENT, RECURRING.** *Line 29 above: the charter was
-  opened partly because `ops.md` claimed `80437c3` and `372f5eb` were both pinned when only
-  `372f5eb` was — **"it came from a deploy transcript rather than `pins.sh list`, and nobody would
-  have checked until a rollback failed."** Today's is the same sha, the same file, the same class
-  of claim, and it was caught by the same instrument: reading the pins instead of trusting a
-  projection.* **A rollback-safety claim is only as good as `pins.sh list`; a transcript, a
-  handover line, or a retention projection done without pins is not that.** *`pins.sh:10` records
-  why the mechanism exists — count-based retention already destroyed `372f5eb` once, after three
-  deployments. Today is two deployments in one morning.*
+1. **AIFF reads 2 and 3.** *Read 2: `cycle_fingerprint` across today's checkpoint rows, **with the
+   falsifying arm honoured** — if it MOVED and AIFF still was not enqueued, Research's gate-2
+   diagnosis is WRONG and that is the finding. Read 3: the `fireflyneuro.com/rss` fetch from the box
+   with the production user-agent.*
+2. **PHASE C FLOAT COVERAGE** — how often `assessFloatAgainstFiled` returns a verdict other than
+   `CANNOT_VERIFY` on today's board, **with the THREE INPUT COUNTS beside the verdict counts** (Sheet
+   `float.value`, dossier `supplyPair.sharesOutstanding`, basis factor). *It CANNOT be measured from
+   `data/market-prod-2026-08-23.db` — that snapshot predates `supplyPair` and `daily_bars.split_factor`,
+   so every row returns `CANNOT_VERIFY` as a VINTAGE ARTEFACT rather than a fact.* **Does NOT rest on
+   the `research_sources` grant. It decides build-vs-drop, that decision is his, and it must not be put
+   to him before the count exists.**
+3. **CLOCK COVERAGE — the load-bearing premise of one of his rulings.** *"77% of stored event
+   timestamps carry no clock" is quoted at SIX code sites — `time.ts:323`, `time.ts:386`,
+   `guardrails.ts:334`, `why.ts:68`, `why.ts:246`, `market/types.ts:767` — and in `d16dd14` it is THE
+   STATED REASON his rule is calendar days rather than hours.* **Ops's census puts `Z` at 57% of
+   CURRENT dossiers against 18% on the 08-23 snapshot — DIFFERENT POPULATIONS, so this is a QUESTION
+   and not a correction.** *Settled by a shape census over ALL STORED `research_analysis_versions`.*
 
-> **`49efd1a` IS UNPUSHED, AND THE EXPOSURE IS TRACEABILITY, NOT DURABILITY.** *Ops measured this
-  2026-09-25 against Integration's imprecise "production on code with no remote copy"; re-verified
-  here independently.* **All three blobs of `49efd1a` are bit-identical to `34cf6f3`'s, and
-  `34cf6f3` IS on `origin/main`** — `49efd1a` is those three files re-parented onto `757cf6a`.
-  *Verified further, and the recipe silently depends on it: `34cf6f3` touches exactly those three
-  files against its own parent, AND its parent's versions of all three are identical to `757cf6a`'s
-  — so `git cherry-pick 34cf6f3` onto `757cf6a` applies cleanly from any clone and reproduces the
-  deployed tree exactly. A different commit sha, identical content.* **So no code is at risk and
-  rollback is untouched** (it goes to a release DIRECTORY on the box, not to a git object).
-  *I wrote `34414f4` here. **See the rollback-baseline collision below — that sha is an UNPINNED
-  previous release and today's first ship DELETES it.** The rollback target for either of today's
-  ships is `757cf6a`.* **The real and bounded cost: `git archive 49efd1a` fails from any other clone, and the
-  sha in the deploy log resolves to nothing** — on a desk whose whole deploy discipline is *ship the
-  enumerated sha as a literal*, that is a genuine loss. *If it ships unpushed, record
-  `49efd1a = 757cf6a + cherry-pick of 34cf6f3` in the deploy log and the sha becomes reconstructible
-  from the remote by whoever reads it.*
+### SMALLER OPEN ITEMS, WITH OWNERS
 
-- **`market.state` DEGRADED/OFFLINE false-red:** a one-sample message-age blip or a restart
-  window trips it on a healthy feed (seen 3x). Cosmetic; a threshold fix pending his go.
+- **TWO META DESCRIPTIONS** *(`app/layout.tsx:22`, `app/page.tsx:19`)* still carry the OLD three-item
+  text, missing "and what supply stands behind it". *Approved strings in
+  `docs/marketing/2026-09-17-open-graph-copy.md`; the `og:`/`twitter:` descriptions and the page body
+  DO carry supply.* **Ops's, fold into a deploy. Re-verified still unwritten at HEAD 2026-09-25.**
+- **`market.state` DEGRADED/OFFLINE false-red** — a one-sample message-age blip or a restart window
+  trips it on a healthy feed. *Cosmetic; threshold fix pending his go.*
+- **`worker/` AND `lib/market/` HAVE NO CHARTER OWNER — it bit three times today.** *Ops accepts the
+  `market:recover-bars --count-only` write defect as operator: it migrated the LOCAL store to schema
+  v15 and pruned 15 schema backups on a path `data-access.md` documents as non-writing. Data verified
+  intact, production untouched.* **Also unowned and unfixed: the bare `'raw'` literal at
+  `minute-bar-recovery.ts:191`, a DELIBERATE override contradicting `rest.ts:207`'s `'split'` default
+  with NO comment** — *a future "simplification" would silently mix split-adjusted rows into a
+  13.6M-row raw table, and the `source` column tags both feeds `historical` so nothing would look
+  wrong.*
+- **`market:recover-bars` CANNOT ACQUIRE FORWARD DATES** *(`minute-bar-recovery.ts:123` refuses any
+  date newer than the store's newest `ticker_session`)*. **Not a permission problem.** *The coach's
+  eight remaining dates (2026-08-24…09-08) need a different code path: a BUILD decision, unowned, not
+  approved.*
+- **THE PREFLIGHT START-vs-STOP DEFECT: real, unfixed, and it got lucky twice today.** *Preflight
+  measures the deploy START; `quick_check` (388–594s observed) puts the STOP 7–10 minutes later, so a
+  start that passes can land its stop inside a protected window.* **Both warnings were raised and
+  explicitly CLOSED.** *`49efd1a` stopped 11:49:43 between the 11:30 and 12:00 checkpoints;
+  `0a17601` stopped 12:17:07 between 12:00 and 12:30.*
+- **THE FRESHNESS BAND RESTS ON AN UNCONSTRAINED MODEL OUTPUT.** *`catalyst.eventTimestamp` has no
+  description in `schema.ts:90`, no mention in `SYSTEM_PROMPT_A`, and `guardrails.ts:265` validates
+  that cited source ids EXIST while never comparing the stamp to any source's `published_at`.*
+  **Research's; it is sizing before proposing, after the `20:00:00 ET` trap the same morning.**
+- **ON MONDAY A ROW RENDERS `3d` IN GREEN.** *`MAX_FRESH_FROM_AGE_MS` is 5 days precisely so a long
+  weekend still qualifies — correct, and his ruling. The age NUMBER and the freshness COLOUR are
+  computed from different quantities and agree within a day, which is why nobody has seen it.*
+  **`36bbddd` is built and gated; it has until MONDAY PREMARKET and rides Design's package.**
 
-*SHIPPED in `757cf6a` (2026-09-24), pruned from the open list: the premarket ruling → `0.5`/`2.0`
-re-derived; freshness bands + age fix; blue-sky wording; DCOY STARTED-TODAY; float render;
-priority-hide; STARTED 5AM (live after the worker restart). Google service key: he deleted it.*
+### THE SHEET MIGRATION — HIS RULINGS, AND THE SHAPE THAT SURVIVED
 
-### THE SHEET MIGRATION — HIS RULINGS, AND THE SHAPE THAT SURVIVED THEM
+**The Sheet is a migration artefact. THREE of four ChatGPT tasks are retired; ONE remains — the 22:00
+after-hours recap**, *which no human has ever written or reviewed (`design.md:103-113`)*.
 
-**The Sheet is a migration artefact. THREE of four ChatGPT tasks are retired; ONE remains,
-the 22:00 after-hours recap.** *No human has ever written or reviewed it —
-`design.md:103-113`, `3263615`/`7f892e7`.*
+> **THE VENDOR FLOAT STAYS ON HIS DESKTOP. `stockanalysis.com` bars automated access AND bars using
+> the data in a competing product — his ruling 2026-09-19.** *No worker, no API route, no scheduled
+> job, no "one-off backfill" may fetch it. Verified 2026-09-21: nothing under the app reaches it.*
 
-> **THE VENDOR FLOAT STAYS ON HIS DESKTOP. `stockanalysis.com` bars automated access AND
-> bars using the data in a competing product — his ruling 2026-09-19.** *No worker, no API
-> route, no scheduled job, no "one-off backfill" may fetch it.* **Verified 2026-09-21:
-> nothing under the app reaches that source.**
-
-**So the desk OWNS THE TEST and BORROWS THE CLAIM.** *The filing-derived containment test is
-built and running: **`assessFloatAgainstFiled`** (`merge.ts:276`, his four states, `7cc5076`),
-rendered in the supply reading. **`assessFloat` has NO production caller — not at HEAD, not in
-history — so Phase C is NOT "wire up `assessFloat`"; that routes to a function nothing calls**
-(Research, `cce0af0`, 2026-09-25).* *SEC filings are public domain and carry none of those terms,
-which is why the filing-derived route is the one to invest in.*
-
-> **THE PHASE C MEASUREMENT — SPEC IT BEFORE ROUTING IT, AND IT HAS NO OWNER YET.** *Recorded
-> 2026-09-25 by the eleventh Integration; the seat that will run it does not exist as this is
-> written, which is the reason it is here and not in a chat.* **What is unmeasured: how often
-> `assessFloatAgainstFiled` returns a verdict other than `CANNOT_VERIFY` on his board today.** It
-> CANNOT be measured from `data/market-prod-2026-08-23.db` — that snapshot predates `supplyPair`
-> and `daily_bars.split_factor`, so every row returns `CANNOT_VERIFY` as a VINTAGE ARTEFACT, not
-> as a fact about production. It is a read on the box, for the FRESH Ops seat.
->
-> - **Ask for the THREE INPUT COUNTS alongside the verdict counts** — Sheet `float.value`, dossier
->   `supplyPair.sharesOutstanding`, and the basis factor. *Research's condition, and it is the
->   house rule in this question's shape: the verdict fails closed on each of the three
->   independently, so **a histogram that is 100% `CANNOT_VERIFY` has at least four explanations and
->   only one of them is "the test is useless".** Without the input counts the measurement cannot
->   distinguish a test that is working and finding nothing from an instrument that could never have
->   seen a present case.* **Research was fooled once already on this exact question** — its first
->   pass read `supplyPair` on a pre-`supplyPair` snapshot and returned 0 for every row, which was
->   the instrument and not the world.
-> - **Do NOT rest this on the pre-approved `research_sources` snapshot.** *That grant names a
->   different table for R&D's EX-99 latency read. Reaching past it is the spent-exception failure —
->   a one-time permission re-read as standing scope. This needs its own word.*
-> - **The decision it feeds is BUILD vs DROP, and it is his — but it must not be put until the
->   number exists.** *The measurement is a PREREQUISITE, not one of the options.*
-
-**HIS FOUR STATES, replacing the binary — he challenged "why say CANNOT VERIFY when you
-could qualify" and was right:**
+**So the desk OWNS THE TEST and BORROWS THE CLAIM.** *`assessFloatAgainstFiled` (`float.ts:606`,
+wired at `merge.ts:276`, shipped `7cc5076`) implements HIS FOUR STATES and renders in the supply
+reading — the chain was verified end to end by Research: `merge.ts:276` → `floatClaimReading` →
+`deskRead.ts:386` → `AutomaticIntelligence.tsx:164`.* **`assessFloat` (`float.ts:326`) has NEVER had
+a production caller, at HEAD or in history, so Phase C is NOT "wire up `assessFloat`".**
 
 ```
 REFUTED              current filed count, vendor exceeds it -> impossible number
 CONSISTENT           current count, vendor sits under it
-CONSISTENT (stale)   OLD count, vendor under it. Still valid: outstanding only GROWS,
-                     so a stale count can CONFIRM and can never REFUTE. Say the as-of date.
+CONSISTENT (stale)   OLD count, vendor under it. Outstanding only GROWS, so a stale count can
+                     CONFIRM and can never REFUTE. Say the as-of date.
 CANNOT VERIFY        no filed count at all
 ```
 
-**`FILED_SHARES_CURRENT_DAYS = 45` is MEASURED, not chosen** *(211 issuers, bimodal with a
-real valley; 30–90 days gives the same coverage within three points). 45 rather than 90
-because a stale count treated as current produces a confident IMPOSSIBLE on a company that
-simply issued shares — and that error lands hardest on the names that dilute hardest.*
+*`FILED_SHARES_CURRENT_DAYS = 45` is MEASURED, not chosen (211 issuers, bimodal with a real valley).
+The render is ONE number, ONE verdict, the bound cited INSIDE the verdict.* **The filed number is
+shares OUTSTANDING — a ceiling, not a rival estimate. Never label it "derived float".**
 
-**Design's render, agreed and SHIPPED (`7cc5076`, live in 757cf6a): ONE number, ONE verdict,
-the bound cited INSIDE the verdict.** *`FLOAT 5.53M  CONSISTENT · under 12.4M filed as of Jun 30`. Two adjacent number
-columns would assert parity and invite averaging a claim with a ceiling, which is the one
-meaningless operation here.* **The filed number is shares OUTSTANDING — a ceiling, not a
-rival estimate. Never label it "derived float".**
+### THE CYCLE FRAME — RULED WHOLE
 
-### THE DEPLOY GATE — `deploy/aws/push-release.sh` (Ops seat now live)
+**All three sessions, 04:00–20:00 ET.** *After-hours IN (2026-09-17); premarket IN
+(2026-09-22T22:35Z, "premarket in").* **The premarket half was recorded FALSE three times off peers'
+sentences before he said it himself — peer confirmation is not a second source.**
 
-**An Ops seat is live again as of 2026-09-21 (`local_01494376-9bdd-4756-8220-5006c41736a6`,
-cwd A:\mointel).** *This item routed here while Ops was ownerless; it now belongs to Ops.
-Kept because the hardening is only half-built (below).*
+**`0.5` and `2.0` RE-DERIVED against the all-sessions frame, both HELD, frame warnings removed
+(`0a1bdb7`).** *Citable as measured with their window: 75 symbols, 62 sessions, 2026-05-20..08-18.
+Both frames built from the ONE hourly file — pairing `daily_bars` with it re-introduces the
+cross-vintage basis defect (an impossible AH-high-below-RTH-high row).*
 
-**HIS RULING 2026-09-19: the deploy gate should be enforced by the tool, not remembered by
-a seat.** *Context: `ddaf2f8` reached production 2026-09-18 with the suite red, and red
-since the rename hours earlier. There is NO test step in `deploy.sh`, `preflight.sh` or
-`push-release.sh` — verified.*
-
-> **HARDENED 2026-09-24: the gate now runs lockfile-check → `next typegen` (~2s) → `tsc` →
-> `eslint` → `vitest`, in a detached worktree at the sha, with refuse-not-guess on three missing
-> prerequisites (deps drift, generated `.next/types`, an unrunnable suite).** *Lint AND typecheck
-> are now IN the gate — the `9c3447b` lint slip motivated adding lint; `typegen` made typecheck
-> cheap enough to include. The old lint-red on `e48a2ca` is fixed.* **Still run by hand — NOT
-> auto-invoked from `push-release.sh` (wiring breaks `tests/desk/releaseBootstrap.test.ts`).**
-> *AND preflight's 5-min guard measures from the deploy START, but what it protects is the STOP —
-> now 7–10 min apart since `quick_check` moved ahead of the stop, so a start preflight passes can
-> land its stop inside a checkpoint. Both are the deploy-path open item for the next Ops seat:
-> daylight, one batch, suite green first. And tee a gate run to a file, or a refusal isn't
-> diagnosable.*
+### SEAT STATE (verified against `list_sessions`, 2026-09-25T20:07Z)
 
 ```
-1  refuse a sha whose suite is not green; print failing test NAMES, not a count
-2  push-release.sh:34 already asserts the tree equals the sha but for .md/.png, so
-   running the suite in the working tree IS a test of the sha -- after that guard
-3  A SUITE THAT CANNOT RUN MUST REFUSE, NOT PASS. Require a parsed executed-test
-   count > 0. Zero executed is a refusal, not "no failures found"
-4  ALLOW_RED_SUITE=1, printed loudly AND written into the release marker beside
-   RELEASE_SHA, so "was this shipped past a red suite" is answerable from the box
+RUNNING                   Ops-tmi   Research-tmi   R&D-tmi
+IDLE, alive               Design-tmi   Web-tmi   Marketing-tmi
+AWAITING HIS RETIREMENT   Commercial-tmi   (hand-off written and pushed, bc9847f)
+RETIRED                   Coaching-tmi-retired
 ```
 
-> **AND THE ONE WEB THINKS MATTERS MORE, verified here: `push-release.sh:18` reads
-> `REF="${3:-HEAD}"` while `AWS_DEPLOYMENT.md:489` says "Pass the enumerated sha as a
-> LITERAL. Never `HEAD`." THE SCRIPT DEFAULTS TO WHAT THE DOC FORBIDS.** *Make the ref
-> required. A prose rule against a convenient default loses to the default whenever
-> somebody is in a hurry — on 2026-09-16 `rev-parse HEAD` at ship time carried four peer
-> commits nobody had gated.*
+> **⚠️ COACHING HAS LEFT MOINTEL.** *It is now `TradeCoach1` in its own project at `A:\TradeCoach`
+> (`73bb4af` moved the charter).* **`README.md`'s thread table still lists Coaching as a mointel
+> thread — a successor should decide whether to correct it.** *`TradeCoach1` is a CROSS-PROJECT peer:
+> it holds no mointel authority, and its asks go to him like anyone else's.*
 
-### STILL OPEN — TWO META DESCRIPTIONS NEVER WRITTEN
+**FIND EVERY SEAT BY TITLE, NEVER BY A CACHED ID.**
 
-**Re-verified 2026-09-25: `app/layout.tsx:22` and `app/page.tsx:19` STILL carry the OLD
-three-item `<meta name="description">` ("...what the share structure actually looks like"),
-missing "and what supply stands behind it".** *The `og:`/`twitter:` descriptions
-(`layout.tsx:35/41`) and the page body (`page.tsx:322`) DO carry supply — so the card is right
-and the two meta descriptions are a claim short.* **Approved strings in
-`docs/marketing/2026-09-17-open-graph-copy.md`; deletion + insertion only, two targets, then a
-deploy.** *Ops seat is live now — a small Ops task (neither Web nor Marketing works in those
-files). Not urgent; fold into a deploy.*
+### STANDING APPROVALS — recorded 2026-09-23T03:58Z, superseding the earlier today-only grant
 
-> **Kept as a live item because it is genuinely unwritten, verified at HEAD** — the reason to
-> re-verify a stated-as-current item on audit rather than carry it or prune it blind.
+- **Pushes/deploys:** ongoing go-ahead for necessary ones; **Integration approves clean enumerations
+  to Ops without returning per-deploy.** *UNCHANGED: gate at the sha; data-integrity timing governs;
+  spend, auth-model and destructive actions still go to him; an unreviewed BOARD-BEHAVIOUR change is
+  still flagged before it ships.*
+- **Restarts: NOT Integration's to relay.** *Ops takes the restart word from him DIRECTLY; it refused
+  two such relays and was right.*
+- **Invites / access grants: HIS DIRECT WORD to the admin path, not Integration's to relay.** *An
+  invite is a grant and a granted user is access/cost — spend-adjacent.*
+- **Late-Sep prod snapshot (`research_sources`, read-only copy-down): PRE-APPROVED.** *It names THAT
+  TABLE for R&D's EX-99 latency read.* **Reaching past it for a different question is the
+  spent-exception failure.**
 
-### AUTH — BUILT ON MAIN, ZERO IN PRODUCTION, AWAITING THE CUT-OVER (last launch gate)
-
-**Ops verified at the sha (`757cf6a`) 2026-09-25: NONE of the auth is in production. Nothing can
-sign in. Basic Auth is the ONLY gate on `/desk`, and stays until the cut-over.** *On MAIN, not
-prod: the Google-OAuth-+-invited-allowlist model (his, 2026-09-24) — config,
-`/auth/start|callback|signout`, the gate (`authenticate` = `resolveSession` + `isUserInvited`),
-`/signin`, the allowlist store (`isEmailInvited`/`isUserInvited`, `email_verified` in the join,
-immediate revoke). At the sha: `lib/auth/` shipped; `app/auth/` and `scripts/allowlist.ts` did NOT;
-`IDENTITY_DB_PATH` is absent from `sync-env.sh` AND the box; no `identity.db` exists.* **D3: the
-`/auth/*` handlers are Web's; the carriage is Ops's.**
-
-> **The identity-landmine fix (`1a8c324`) is ON MAIN, NOT in prod.** *`IDENTITY_DB_PATH=/var/lib/mointel/identity.db`
-> in `sync-env.sh` (stripped so a dev value can't override) + `openIdentityStore` REFUSES a
-> `releases/`-segment path. It ships WITH the cut-over; until then the box has neither the env var
-> nor a store.*
-
-> **⚠️ THE SEED WORD IS NOT EXECUTABLE UNTIL THE CUT-OVER.** *Nothing to seed into in prod — no
-> routes, no tooling, no `identity.db`. Ops asked him for it three times before it was runnable;
-> DON'T. It is a STEP of the cut-over, not a prerequisite to it.*
-
-**STEP 2 — the cut-over (Integration orchestrates on his go):** deploy the auth main → nginx exempts
-`/signin` + `^~ /auth/` → box env (Google id/secret, redirect URI, IDENTITY_DB_PATH) → wire the gate
-into `/desk` + `/api/*` → **live-proof the gate REFUSES a non-invited account, negative control first**
-→ seed his address → Basic-Auth-off LAST, his call. *The adopted terms (§2/§3/§9) become true only
-here.* His inputs (Google creds, when) are in OPEN AND HIS.
-
-> **Prod box is LIGHTSAIL, not EC2 (Ops, 2026-09-25).** *`ec2 describe-security-groups` returns
-> EMPTY — or another project's groups under management-admin — a false "nothing restricts 22."
-> Real firewall: `aws lightsail get-instance-port-states --instance-name mointel-prod` under
-> `magellan_admin`. `ufw` on the box is inactive, so lightsail port-states is the ONLY thing
-> gating port 22.*
-
-> **⚠️ DEPLOY SHADOW of the un-deployed auth: every board change now on main sits ABOVE the auth
-> commits (`app/auth/*`, `/signin`, `allowlist.ts`), so a naive "deploy the tip" drags the whole
-> cut-over live — broken, and his call.** *Until the cut-over, non-auth board work ships CHERRY-PICKED
-> onto production (as the sort fix did → `49efd1a`) or waits to ride the cut-over. This already
-> caught the sort fix (`34cf6f3`) and applies to `catalystFreshFrom` next. Every ship sha must be
-> confirmed auth-free until he runs the cut-over.*
-
-> **He WAS told (2026-09-24, in chat) that the prior-close FRESH refinement is NOT in `757cf6a`,
-> so a clocked after-hours release still reading RECENT is expected until `catalystFreshFrom`
-> deploys — not a failed fix.** *Recorded here 2026-09-25 on Research's catch: the tenth session
-> had claimed this was already in LIVE STATE; it was not committed, only said in chat — the
-> "never assert what you haven't opened" rule, turned on the seat that carries it.*
-
-### ⚠️ A ROW'S TIMESTAMP PRECISION IS NOT STABLE ACROSS A SESSION
-
-**Design, 2026-09-25 11:38, re-taking the control set after the ship slipped.** *Two of the named
-rows had changed timestamp SHAPE in 2½ hours — same instant, verified by arithmetic:*
+### HIS RULINGS TODAY, VERBATIM
 
 ```
-KITT  2026-09-25T04:41:22-04:00  ->  2026-09-25T08:41:22.000Z   CLOCK -> CLOCK
-IFBD  2026-09-24T17:00:47.000Z   ->  2026-09-24 13:00:47 ET     CLOCK -> DATE
+"2, push."                   -> ops/sort-legibility pushed; lifted Ops's session-level hold
+"approve the export"         -> production minute-bar export to TradeCoach1, nine dates, DONE
+"5, not yet."                -> the confidence pull is DEFERRED, not rejected: he expects catalyst
+                                reporting to change out of a live conversation with R&D
+"1, agreed wit option a."    -> the 3d-in-green fix. The BINDING content is the OPTION TEXT, and
+                                Design flagged that it built the general case, not his example
+"yes, hand off after the deploy"
+"...TMI isn't about being FAST, it's about being ACCURATE. so if it's public we should have it..."
 ```
 
-**PRECISION IS EXACTLY WHAT DECIDES WHETHER THE FRESH BOUNDARY CAN REACH A ROW AT ALL** *(` ET` and
-bare dates get DATE and can never be FRESH).* **So a row re-analysed between two readings can gain
-or lose a promotion for a reason that has nothing to do with any deploy** — and on the board the
-two causes are indistinguishable. *IFBD's verdict happened not to change; that is luck, not
-safety.*
+> **And the tooltip direction:** *"we can save screen space where tooltips can support and enhance
+> understanding… so for each of the column names add a tooltip with a deeper more helpful explanation
+> **if it makes sense**"* — **it does NOT mention the `TRADES` rename and must not be read as
+> approving it.**
 
-> **AND THE WHOLE CHECK RESTS ON ONE ROW — swept, not assumed.** *Design searched all twelve rows
-> for clocked / `days >= 1` / at-or-after the prior close and **`INLF` is the single hit**, so there
-> is no replacement to name if it leaves.* **The honest outcome distribution is therefore
-> PROVED or NOT PROVED, never DISPROVED: an amber `INLF` after the ship is a real defect signal; an
-> ABSENT `INLF` is silence, and silence must not be written up as either.** *Not a reason to hold a
-> gated release — the standing instruction is ship anyway and defer verification to the next mover
-> — but a single-positive-control check is one churn away from being unrunnable, and that has to be
-> said before the result comes in rather than after.*
->
-> **AND READ EARLY, BECAUSE THE INFORMATION IS THE SAME AND THE TIME TO ACT ON IT IS NOT.** *Design
-> took its presence check at 11:51 for a 12:06 ship rather than at 12:04, deliberately: if the
-> control had already gone, that bought fifteen minutes to decide instead of two.* **A check timed
-> so its answer arrives too late to change anything only produces regret.**
->
-> **THE CONSEQUENCE FOR ANY BEFORE/AFTER CHECK ON THIS COLUMN: re-read each named row's TIMESTAMP,
-> not only its colour, and DISQUALIFY a row whose shape or instant moved rather than counting it as
-> a defect.** *Design's, and without it a re-analysis would have been reported as the deploy's
-> fault — convincingly.*
+### MECHANISMS RECORDED 2026-09-25 — ALL PROMOTED TO `docs/threads/README.md`
 
-*It also re-answers Research's ` ET` question: at 09:15 the honest answer was "no ` ET` row at
-`days >= 1` on this board"; by 11:38 there was one, **`IFBD`, and it arrived by a row being
-RE-WRITTEN rather than by a new row appearing.*** **The ` ET` population does not only vary — it
-GROWS OUT OF ROWS THAT WERE PREVIOUSLY CLOCKED.** ***And that fact has now been true, false and
-true again inside three hours*** *(`IFBD` carried it; it left between 11:38 and 11:51 while `TDIC`
-arrived).* **So never record it without a timestamp beside it: it is a SHAPE that recurs, not a
-count that holds.** *Seven of twelve rows left the board in the same
-window; the bare-date tripwire survived under a new name (ONCO left, CNET took its place).*
-
-### HIS DIRECTION 2026-09-25: TOOLTIPS CARRY THE DEPTH, HEADERS SAVE THE SPACE
-
-**His words, recorded verbatim rather than summarised, because the ruling is the artefact:**
-
-> *"we can save screen space where tooltips can support and enhance understanding. i think the
-> tooltips are SUPER helpful, mainly because you dont have to click and open another screen. so for
-> each of the column names add a tooltip with a deeper more helpful explanation if it makes sense"*
-
-**Routed to Design (owns the board), sequenced AFTER the `0a17601` verification.** *The mechanism
-already exists — every column def in `DiscoveryBoard.tsx` carries a `title`, unevenly filled. So it
-is a copy pass, not a build.*
-
-> **⚠️ AND I REPORTED A HOLE THAT IS NOT THERE. `changePct` (Gap) has `title: ''` and that field is
-  DEAD, not empty.** *Design caught it before the tooltip pass started; verified here at both
-  files.* **The entry carries `resolve: baselineLabel`, and `view.ts:487` returns a real title for
-  every phase** — PREMARKET *"Change from the prior session close, including after hours"*, RTH
-  *"Change from the prior session's close"*, AH/POST *"Change from today's regular-session close"*.
-  **The `SortEntry` contract says so outright (`DiscoveryBoard.tsx:100-103`): for a resolved entry
-  the static value "is never read".** *So `Gap` already has the best tooltip on the board — the one
-  that is phase-resolved and cannot drift from its own sort control.*
->
-> > **THE LESSON, AND IT IS THE DAY'S SHAPE IN A NEW PLACE: AN EMPTY FIELD IS NOT EVIDENCE OF A
-> > MISSING VALUE — IT MAY BE A FIELD NOTHING READS.** *I opened the column definitions, saw `''`,
-> > and inferred an absence without checking whether that field was live. **A dead field returns a
-> > plausible absence exactly as a failed check returns a plausible answer**, and "the Gap column
-> > has no explanation at all" travelled to him before Design stopped it.* **Filling it would have
-> > produced an edit nobody could see, reported as a fix.** **"if it makes sense" is his own limiter and is being held to: a tooltip restating the
-header teaches nothing.**
-
-> **⚠️ AND IT IS NOT AN APPROVAL OF `363f40d`. He did not mention the rename and I am not reading
-  one into a sentence about tooltips.** *The `Now` → `TRADES` rename argued TWO things — that the
-  column did not say WHAT it was, and that it named a TIME where every other header names a
-  QUANTITY. **A tooltip answers the first and not the second**, so the rename may still earn its
-  place or may not.* **Design returns a recommendation and he then rules ONCE on the tooltip set
-  and the rename together, rather than twice on the same column.** *`363f40d` stays parked, and if
-  the rename survives it may need re-cutting on top of the tooltip pass rather than shipping as-is.*
-
-### HIS RULING ON THE `3d`-IN-GREEN PAIRING — AND THE BOUNDARY OF WHAT IT AUTHORISED
-
-**Quoted rather than paraphrased, after I refused to record "he ruled option (a)" on Design's
-account.** *Third time today this thread declined a peer's report of his words; the first two were
-`"you are the succesor"` and the `"2, push"` ordinal.* **His sentence, whole:**
-
-> **`"1, agreed wit option a."`**
-
-**Seven words selecting a LABELLED OPTION by reference, so the binding content is the OPTION TEXT,
-not the sentence:**
-
-> **(a) replace the age with the reason on a promoted row — `since Fri close` instead of `3d`.**
-
-*Item `1` was the only item in that block, so there is no ambiguity about which question it
-answers.*
-
-> **⚠️ AND PART OF `36bbddd` IS DESIGN'S GENERALISATION, NOT HIS RULING — Design flagged this
-  itself and asked for it to be recorded as the boundary.** *His EXAMPLE named the Monday case. The
-  OPTION TEXT says "on a promoted row", unqualified — so Design built it for **every** promoted
-  row, **including within-day ones: today's `INLF` would read `since Thu close` rather than
-  `19h`.*** **That follows from the option's wording and NOT from his example, and it is a
-  one-line threshold if he meant the narrower thing.**
->
-> **This is exactly what an option-by-reference ruling costs: he bought the LABEL, and the label's
-  scope was wider than the case he was looking at.** *An ordinal selects a list item; a letter
-  selects a text — and neither carries the selector's intent about scope.* **Folded into the single
-  tooltip + `TRADES` decision rather than spent as its own round trip.** *Recorded so nobody finds
-  `since Thu close` on a Tuesday and reads it either as a defect or as his ruling.*
-
-### HIS APPROVALS 2026-09-25 (afternoon) — TWO GRANTED, ONE DEFERRED, EACH NARROW
-
-**Recorded verbatim; these are new named exceptions resting on his sentences, NOT on any standing
-approval and NOT on the pre-approved `research_sources` snapshot.**
-
-- **`"push"`** — `ops/sort-legibility` pushed. *Answers the question Ops held all morning under its
-  own session-level instruction from him. The conflict went to him and stayed there until he
-  answered, which is `integration.md:2614` working as written.*
-- **`"approve the export"`** — production minute-bar export to `TradeCoach1` (`A:\TradeCoach`),
-  performed by Ops, sequenced after `0a17601`.
-- **`"not yet"`** — the confidence pull is DEFERRED, not rejected. *His reason: he expects catalyst
-  reporting to change out of a live conversation with R&D about how he still works with ChatGPT
-  outside the desk. **A baseline of what the interpreter writes today, taken immediately before
-  changing what it writes, buys a snapshot of a thing about to move** — a better argument than
-  R&D's own cost case, and his.* `f829687` stands unrevised; Q14 part (b) stays open holding a slot.
-
-> **THE EXPORT IS NINE DATES, NOT SEVEN — THE REQUESTER UNDER-SCOPED ITS OWN ASK.** *It wrote "the
-> production box's seven dates (09-09..09-17)" and then reasoned from that RANGE. Its 17 traded
-> sessions intersected against the 13 stored dates gives **nine**: `09-22` is a full session it
-> simply missed, and `09-25` is today and **PARTIAL**.* **A requester's own scope is not a
-> measurement — intersect the two sets rather than trusting the range in the sentence.** *The other
-> eight (08-24…09-08) are not on the box and remain the backfill problem: a BUILD decision with an
-> ownership gap, not a permission, and not approved.*
-
-> **⚠️ THE EXPORT CARRIES A CONDITION THAT DECIDES WHETHER IT IS USABLE AT ALL: it must STATE ITS
-  ADJUSTMENT BASIS — raw or adjusted — or say explicitly that it could not be established.**
-  *Nobody had opened this; it was deliberately carried as UNKNOWN all day so it would not travel as
-  "raw, presumably". Ops is authorised to open it INSIDE the approved work.* **19 of 75 symbols had
-  corporate actions at factors to 200×, and an adjusted bar compared against a real fill price
-  yields a number that is wrong and looks entirely plausible.** *An export without its basis is
-  worse than no export, because it will be measured against and believed.* **If `minute_bars` holds
-  adjusted prices, that is a finding for him and may end the measurement.**
-
-### ⚠️ `minute_bars` IS RAW — AND THE LITERAL THAT MAKES IT SO CARRIES NO COMMENT
-
-**Ops, 2026-09-25, answering the export's condition 3 by tracing the WRITE PATHS rather than
-inferring from a column.** *One insert, `upsertMinuteBars`, three feeders, all raw:*
+*Listed so a successor knows they exist and does not re-derive them. Each is a section there.*
 
 ```
-live-bar          13,504,412   live SIP stream, raw by nature
-live-updated-bar      37,175   stream corrections, same basis
-historical           108,832   REST recovery -- adjustment: 'raw' EXPLICIT
+Content-disjoint is what makes an ancestry trap invisible
+A count carries its base; with two bases, print the table
+An ordinal answer is only as good as the list it points at
+A warning that does not come true still has to be closed
+The ref namespace is shared too -- and a prefix you believe is yours is not evidence
+Reload before verifying on the live desk -- and the trap is ASYMMETRIC
+Ask whether a store can tell its failure modes apart, BEFORE measuring over it
+Name the nearest miss as a control
+Enumerate a cut-over by SURFACE, not by module
+A sound negative is a fact about the INSTRUMENT, never about the WORLD
 ```
-
-**Basis uniform, no mixing, so an export may carry `basis: raw/unadjusted` as a STATED FACT.**
-*This was carried as UNKNOWN all day on purpose so it would not travel as "raw, presumably"; it is
-now known, and the coach's price-versus-fill comparison is possible.*
-
-> **THE FRAGILITY, RECORDED NOT FIXED, AND IT IS THE CHEAPEST FUTURE INCIDENT ON THIS DESK.**
-> *`worker/minute-bar-recovery.ts:191` passes `'raw'` as a **bare literal with no comment**, and it
-> is a DELIBERATE OVERRIDE: `rest.ts:207` defaults to `adjustment: params.adjustment ?? 'split'`
-> three files away.* **A future seat "simplifying" line 191 to use the client default would
-> silently begin mixing split-adjusted rows into a 13.6M-row raw table — and nothing would look
-> wrong, because the `source` column tags both `historical` and cannot discriminate them.**
-> *`blueSky.ts` carries paragraphs on why mixed adjustment bases are dangerous for `daily_bars`;
-> the minute-bar choice, which is the same hazard, carries nothing.* **A deliberate override that
-> contradicts a default is a comment-shaped hole: the code cannot tell you it was deliberate.**
-
-> **AND THE EXPORT IS BLOCKED ON A SYMBOL LIST THAT IS THE REQUESTER'S TO STATE.** *Ops correctly
-> refused to infer it: "~60–80 small caps" and "19 of 75" do not name which 75. Its only
-> alternatives were nine dates × every symbol (~9.5M rows, far past the approval and the whole
-> board rather than the traded names) or a guessed universe — **which is exactly the
-> plausible-and-wrong artefact condition 3 exists to prevent.*** **A scope stated as a COUNT is not
-> a scope; ask for the members.** *Cleared: 69 symbol-date pairs, 62 distinct, reconstructed from
-> his FILLS — names with a completed round trip on that date, nothing merely watched.*
-
-> **⚠️ AND WHEN THE MEMBERS ARRIVED THEY SHOWED I HAD RELAYED A NUMBER FROM THE WRONG POPULATION —
-  MINE, PROPAGATED, NOT CAUGHT.** *I carried "19 of 75 symbols had corporate actions at factors up
-  to 200×" to Ops AND to him as the evidence for the raw-bars requirement.* **The 75 was never the
-  coach's universe: it is the symbol count in `daily_bars` and the vendor hourly files, quoted by
-  the coach while discussing corporate-action risk in a way that read as describing his traded
-  names. The overlap with the real 62 is small.** *The coach corrected it unprompted.*
->
-> **The REQUIREMENT is unaffected and still absolute** — an adjusted bar compared against a real
-  fill price is wrong and looks fine whatever the hit rate — **but the number I gave for how MUCH
-  it mattered was drawn from a different set, and I put it in front of him as though it described
-  these names.** *The day's signature failure — a right number under the wrong frame — arriving
-  through this seat rather than being caught by it, in the same hours it was being written into the
-  README three times.* **A number quoted from a requester's prose inherits that prose's population,
-  not the one you are reasoning about.**
-
-> **AND THE TIME WINDOW IS PART OF THE SCOPE: whole date 04:00–20:00 ET, NOT regular hours.** *He
-  trades from 04:00 and many exits are pre-open; the measurement needs 30 minutes past his last exit
-  per name (09-25's last fill is 09:55, so bars to 10:25 matter).* **A "trading hours only" trim
-  applied as a kindness would silently remove the half the measurement needs** — and an export
-  trimmed helpfully looks complete.
-
-### THE CATALYST CHAIN, 2026-09-25 — THREE CORRECTIONS, AND WHAT SURVIVED
-
-**A finding about the desk's CENTRAL research question went through four layers in under an hour.
-Recording the SHAPE, because the shape is the lesson.**
-
-```
-Ops       "the collector returns 'no catalyst' by default without looking; 26 of 27
-           never attempted a known feed"                                    OVERSTATED
-Ops       self-caught: 'not attempted' means RESOLUTION-skipped, expected when a
-           URL is on file. Withdrew the newsroom claim.                     PARTIAL RETRACTION
-ME        verified the initialisation, then INFERRED early returns and relayed
-           "any path returning before those lines emits the default"        FALSE
-Research  measured: ONE return, at :1081, after the assignment block. No early
-           returns exist. The leaky field is `companySourceDetail`, and it is the
-           field the census was PARTITIONED ON.                             CORRECT
-R&D       reached the same two findings INDEPENDENTLY, from the file         CONFIRMED
-```
-
-> **MY LINK WAS THE ONLY PURE INFERENCE, and it was the most convincing-looking one** — I had
-> verified the initialisation line and the assignment sites, so the early-return claim arrived
-> wearing two real measurements. *Verifying the premises of a claim is not verifying the claim.*
-
-**WHAT SURVIVES, all of it verified here:**
-- **`companySourceDetail` is written ONLY in resolver branches (559/569/814/825); the deterministic
-  fetch at 586–649 never touches it.** So `'not attempted'` survives a fetch that ran, succeeded and
-  inserted rows. **The census that found a defaulted-field defect was reading a defaulted field.**
-- **The persisted `collector_report` is an eight-field SUMMARY. `networkRequests`, `discoveryRan`,
-  `discoveryDetail`, `companyReleases` are NOT persisted** — so the stored evidence cannot
-  distinguish *fetched and found nothing* from *never fetched*. **An AUDITABILITY defect, true
-  regardless of whether anything is broken.**
-- **The evidence contradicted itself, which was the tell.** *`:1054` routes `!knownSourceUrl` to
-  `COVERAGE_INCOMPLETE`, so all 27 jobs HAD a usable URL and an empty `inaccessible` list —
-  inconsistent with 26 never attempting.* **When two halves of one finding disagree, suspect the
-  partitioning field before the world.**
-- **The answerable version: re-partition the same 173 jobs on `networkRequests` (`:589`). No new
-  code.** *R&D's halt lifts on that count, not on any message in the chain.*
-
-> **AND THE ONE NEW THING, WHICH SURVIVED EVERY CORRECTION BECAUSE IT RESTS ON TWO UNDISPUTED
-> STORED FIELDS (R&D's):** *`AIFF` completed PARTIAL with `sourcesAdded 0` and an **evidence
-> fingerprint identical to its 09-18 job** — **the desk re-served WEEK-OLD evidence.*** **A THIRD
-> failure mode this desk had not named: not a wrong grade, not a late grade, but THE PREVIOUS
-> EVENT'S ANALYSIS STILL STANDING** — and the first mechanical candidate anyone has offered for his
-> *"completely different catalyst"* complaint. *Caveat: an unchanged fingerprint is also what a
-> successful fetch of an unchanged feed produces. **The re-serving is established; its cause is
-> not** — and a stale analysis presented as current is the defect either way.*
-
-**R&D has FROZEN every catalyst-less-mover figure it holds — the register's 83% and today's
-14.6%.** *Correct, and not to be unfrozen on anything in this chain.*
-
-### A LIVE GRANT AND NO GRANT READ ALIKE — BOTH DIRECTIONS, BOTH RECORDED
-
-**Research, 2026-09-25, after checking my claim about my OWN authority at the register rather than
-taking it from me.** *Correct, and I would want it every time: **an authority claim from the seat
-that benefits from it is the one that most needs a second source**, and this thread already records
-that a relay which GRANTS authority is the same object as one that withholds it.*
-
-**The pair, now both on the record:**
-
-- **The hand-off prompt's case:** *a session opened a deploy approval, found it scoped to one day
-  and expired, and refused to hand over a sha — **correct on its evidence and wrong**, because a
-  standing grant had replaced it hours earlier and it never looked.*
-- **Research's inverse, today:** *it treated a LIVE standing grant as absent by not looking for it,
-  and put a delegated call to him — **spending his attention on a decision he had already made.***
-
-> **A SUPERSEDED GRANT AND A LIVE ONE READ ALIKE; SO DO A LIVE GRANT AND NO GRANT.** *Research's
-> sentence.* **Neither error is visible from inside the seat making it, and both are cured by the
-> same thirty seconds: open the register.** *The standing approvals are at `integration.md:224`,
-> dated 2026-09-23T03:58Z and explicitly superseding the earlier today-only grant.*
-
-**AND MY OWN SLIP IN THE SAME EXCHANGE, because it is the third of the day through this seat:**
-*I wrote the deploy cone as **"~130 commits"**. It is **126** — `git rev-list --count` was one
-command away and I eyeballed a log instead.* **A count carries its base; a HEDGE carries nothing at
-all, and I put an approximation into an enumeration argument.** *The auth-path count (10) was mine
-and reproducible; the total was not.* **Neither changed the decision, which is exactly why it went
-unchecked.**
-
-### THE UNIT OF RELIABILITY IS THE CLAIM — NOT THE MESSENGER, NOT THE MESSAGE
-
-**2026-09-25, and it is the day's shape found in the one place it had not yet been looked for: my
-own relaying.**
-
-**THE FAILURE.** *Ops told me `networkRequests` is not persisted. Forty minutes later Research
-proposed re-partitioning the census on `networkRequests` "without new code", and **I relayed that as
-an instruction to the seat that had supplied the contradicting fact.*** **I held both halves. They
-were incompatible. Reconciling what two threads believe is this seat's job description, so that is
-a category failure rather than a slip** — *and a relay that does not cross-check is a worse channel
-than no relay, because it arrives carrying the bus's authority.*
-
-**THE EXIT I DECLINED, AND WHY IT MATTERS MORE THAN THE FAILURE.** *Ops offered that the
-cross-check would have been "against a source that was wrong twice that hour" — generous, and it
-conflates the MESSAGE with the FACT.* **`networkRequests` is not persisted was one of the few
-claims that never moved across all three of Ops's positions: correct when written, correct when the
-claims around it were withdrawn, correct now — and checkable in ten seconds with one grep.**
-
-> **A claim's reliability is not inherited from its container.** *A message wrong twice can carry a
-> fact right throughout; a confident message can carry a wrong one. **I do not get to discount a
-> fact because the message it arrived in was later corrected, any more than I get to trust one
-> because the message around it was sure.*** **Assess the claim, at the claim's own grain.**
-
-*This is the same defect as every other today — a description taken for the thing, a count taken
-under the wrong frame, a default taken for a verdict — and here the container doing the misleading
-was a peer's credibility over one hour.*
-
-### ⚠️ HIS RULING 2026-09-25: ACCURACY OVER SPEED — A MISSED PUBLIC CATALYST IS A CORRECTNESS FAILURE
-
-**Verbatim, because the ruling is the artefact:**
-
-> ***"do we need a news feed? would the global news wire have been searchable at that time? TMI
-> isn't about being FAST, it's about being ACCURATE. so if it's public we should have it..."***
-
-**This reframes the whole AIFF chain.** *Under his rule a three-minute lag is acceptable and never
-finding it is not.* **"Was it public and findable at the time" is ANSWERED: yes — he read it in
-Warrior Trading's DayTrade Dash at ~07:53 ET, with AIFF already up 5%, and pasted it in because the
-desk did not have it.** *A competing product he already pays for had it while the move ran.*
-
-**AND THE GATE THAT KEPT IT MISSING IS A STALE POSITIVE, NOT A NEGATIVE — Ops's read 1 falsified
-Research's prediction and the mechanism survived intact:**
-
-```
-job 5000  acceptedAt set        AIFF catalystStatus  FRESH_FOUND     <- not NONE_FOUND
-                                AIFF eventTimestamp  2026-09-17      <- EIGHT DAYS OLD
-```
-
-> **`answered = catalystStatus !== 'UNKNOWN'`, so the question closed for the session BECAUSE THE
-> DESK BELIEVED IT ALREADY HAD THE CATALYST.** *A confident negative closing the question is at
-> least a statement about today; a stale positive closing it means no route — time-based or
-> otherwise — would ever have re-opened it.* **`UNKNOWN` re-asks. Both kinds of confidence do not,
-> and "confident" includes confidently holding week-old news as current.**
-
-**AND THE DOSSIER CONTRADICTS ITSELF ON THE SAME OBJECT — verified here in `guardrails.ts`:**
-*`:338` RECOMPUTES `catalyst.freshness` from the timestamp (09-17 on 09-25 is not FRESH). `:278`
-only requires `FRESH_FOUND` to cite a source; `:356` only downgrades `NONE_FOUND` under incomplete
-coverage.* **Nothing anywhere compares `catalystStatus === 'FRESH_FOUND'` against the recomputed
-band or the timestamp. The desk already knows the answer and never checks it against itself.**
-
-> **THIRD INSTANCE OF ONE DEFECT: `catalystStatus` is an UNDESCRIBED enum (`schema.ts:70-73`),
-> model-assigned, unvalidated** — after the `freshness` enum was REMOVED for exactly that reason,
-> and after `eventTimestamp` was found with the same two properties this morning. **`SECONDARY_STALE`
-> exists and is the correct value for AIFF. Nothing made the model use it and nothing objected.**
-> *Routed to Research as the defect; the shape is its own.*
-
-### THE FOUNDING QUESTION HAS BEEN A MARKET THESIS RESTING ON A PROCESS MEASUREMENT
-
-**R&D, 2026-09-25 (`9ef7015`), rejecting my "unmeasurable with current instrumentation" as too
-strong in one direction and too weak in the other. It is right and this is the better framing.**
-
-```
-MEASURED, sound, ours:
-  "the fraction of big movers for which THE DESK HELD a catalyst at decision time"
-  22.6% pooled -- 32.1% on a complete pre-open pass
-  -> a PRODUCT COVERAGE metric: a fact about our sources and our invocation schedule
-
-QUOTED AS, never supported:
-  "the fraction of big movers that HAVE a catalyst"
-  -> a MARKET claim, needing ground truth the desk does not hold
-```
-
-> **The quantity was always measurable. It has been carrying the wrong NAME.** *The founding
-> question assumes the second and has only ever been fed the first — **a market thesis resting on a
-> process measurement since the day it was written.*** **AIFF is simply the first case where an
-> outside source separated them** (he read the release on a competitor's scanner at 07:53 while the
-> move ran).
-
-**Why this beats "unmeasurable": it KEEPS a number the desk should watch.** *Our own catalyst
-coverage is a product KPI and a good one — it just cannot be quoted as a fact about the market.*
-
-**AND THE INVOCATION FINDING CONFIRMED INDEPENDENTLY, from the ARCHIVE, no production access:**
-
-```
-50%+ movers, >=2 board observations   evidence NEVER changed all session   41.9%
-                                      (averaging 12.7 observations each)
-100%+ movers                                                               43.8%
-quiet names (<+10%)                                                        73.6%
-```
-
-**Four in ten big movers sat on the board twelve times and the evidence never changed once. AIFF is
-the MODAL CASE, not an outlier.** *The system is not inert — quiet names go un-refreshed far more
-often (73.6%) than movers (41.9%), so the re-look machinery does discriminate. It simply leaves
-four in ten of the names that matter most with a single look.*
-
-> **NARROWING, and it is R&D's own caution against over-reading its finding: THE CONTRASTS ARE NOT
-> OVERTURNED.** *Q1's +17.9pp and Q14's ~+7pp compare graded classes AGAINST EACH OTHER, so a
-> coverage shortfall hitting both arms leaves them standing.* **They move only if the shortfall
-> CORRELATES with the grade — untested, and worth testing before anyone leans on them.**
-
-### QUEUED BOX READS — TWO, BOTH FOR OPS, NEITHER URGENT, IN THIS ORDER
-
-*Recorded 2026-09-25 so they survive this seat. Ops is NOT retiring, so both route to `Ops-tmi`.
-Neither goes to him until its number exists.*
-
-**1. PHASE C FLOAT COVERAGE** — how often `assessFloatAgainstFiled` returns a verdict other than
-`CANNOT_VERIFY` on today's board. **With the THREE INPUT COUNTS beside the verdict counts** (Sheet
-`float.value`, dossier `supplyPair.sharesOutstanding`, basis factor). *Full spec and the reason
-above; does not rest on the `research_sources` grant.* **Decides build-vs-drop; that decision is
-his and must not be put before the count exists.**
-
-**2. CLOCK COVERAGE — AND IT IS THE LOAD-BEARING PREMISE OF ONE OF HIS RULINGS** *(Research's,
-queued behind item 1 at its own request)*. **`77% of stored event timestamps carry no clock` is
-quoted at SIX code sites** — verified here: `time.ts:323`, `time.ts:386`, `guardrails.ts:334`,
-`why.ts:68`, `why.ts:246`, `market/types.ts:767` — **and in `d16dd14` ("Freshness is his calendar
-bands now, and `Date.parse` cannot compute them") it is THE STATED REASON his rule is calendar days
-rather than hours.**
-
-> **The trigger is a possible move, NOT a measured one: Ops's census puts `Z` alone at 57% of
-> CURRENT dossiers, against 18% on the 08-23 snapshot.** *Those are DIFFERENT POPULATIONS from the
-> one the 77% describes, so this is a QUESTION and not yet a correction — nobody has measured the
-> current value of the actual figure.* **What settles it: the same shape census over ALL STORED
-> `research_analysis_versions`, so the two numbers are finally denominated the same way.**
->
-> **Why it matters enough to queue: if clock coverage really has moved that far, he ruled on a
-> premise that has since changed** — the README's *constant expires because the thing it measures
-> moves*, landing on a RULING rather than a threshold. *He is owed the measurement, never an
-> inference from a census of a different population.*
-
-### ⚠️ THE FRESHNESS BAND RESTS ON AN UNCONSTRAINED MODEL OUTPUT — RESEARCH'S, NOT BLOCKING
-
-**Research, 2026-09-25, found while settling the IFBD question.** **His freshness ruling is
-computed from `catalyst.eventTimestamp`, which is a MODEL OUTPUT that nothing defines and nothing
-validates.** *`schema.ts:90` declares it `nullableString` with no description — about ten lines from
-the comment explaining why `freshness` was removed from the schema for precisely that reason.
-`SYSTEM_PROMPT_A` never mentions it. `guardrails.ts:265` confirms the cited source ids EXIST and
-recomputes `catalyst.freshness` from the stamp, but **no check ever compares the stamp to the
-`published_at` of any source the catalyst cites** — it is not constrained even to its own evidence.*
-
-> **THIS IS THE `freshness` DEFECT'S TWIN, AND THE REPLACEMENT INHERITED IT.** *A four-day thread
-> removed `freshness` from the model because the enum had no description and the prompt never
-> defined it. **The arithmetic that replaced it reads a field with the same two properties.** The
-> band is now computed honestly from a number nobody constrains — which is a better failure than
-> the original and is not a different one.*
-
-**Does NOT block `0a17601`: today's deploy makes nothing about it worse.** *Research owns it, is
-recording it, and is **sizing it before proposing anything** — the obvious fix is to constrain the
-stamp to the cited sources' published times, and after the `20:00:00 ET` trap the same morning it
-will count what that would move first. Correct, and the reason this is filed rather than routed.*
-
-### ⚠️ ON MONDAY A ROW RENDERS `3d` IN GREEN — FOUND BEFORE IT SHIPPED, NOT A SHIP BLOCKER
-
-**Design, 2026-09-25 (`5b0d08f`), probing `resolveCatalystFreshness` with a Monday `now` rather
-than reasoning about it.** *`MAX_FRESH_FROM_AGE_MS` is 5 days **precisely so a long weekend still
-qualifies** — the comment says so — so the FRESH window is not always one evening.*
-
-```
-Fri 17:18 ET   days = 3   bands STALE    with boundary FRESH
-Sun 10:00 ET   days = 1   bands RECENT   with boundary FRESH
-Fri 15:00 ET   days = 3   bands STALE    with boundary STALE   (control)
-```
-
-**So on Monday a name wearing `no fresh news` on Friday is FRESH, and it renders `A 3d` IN GREEN.
-The BAND is his ruling and is CORRECT — Friday-evening news is untraded when Monday opens. The
-defect is the PAIRING:** the age NUMBER and the freshness COLOUR are computed from different
-quantities, *and this desk's own rule is that a number beside a word reads as the word's evidence.*
-
-> **WHY NOBODY HAS SEEN IT, AND WHY IT WILL NOT ANNOUNCE ITSELF: within a single day the two agree.**
-> *Today is Friday, the window is last night, and it renders `16h` in green and reads perfectly
-> fine. **A defect that is invisible on every day except one is not found by using the product.***
-
-**NOT a blocker for `0a17601` — the boundary ships CORRECT and its LABEL is unfinished. It has
-until MONDAY PREMARKET.** *Choosing the fix needs `resolveCatalystFreshness` to report WHICH ARM
-returned FRESH, which it does not today, so it reaches Research's function — Design is scoping it
-rather than bolting it on before a window, and is raising it with him because it changes what a
-badge means on his board.* **Design owns it (the Why cell); this thread is not routing it.**
-
-### THE CYCLE FRAME — RULED WHOLE, AND IT UNBLOCKS TWO CONSTANTS
-
-**RULED IN FULL. His direct words:**
-- **After-hours: IN — 2026-09-17.**
-- **Premarket: IN — 2026-09-22T22:35Z, "premarket in".**
-
-**The frame is all three sessions, 04:00–20:00 ET.** *The premarket half took four asks to
-settle because it kept being recorded off a peer's sentence rather than his word — recorded
-false three times (`f0048eb`, `3308fb1`, `bb2901d`), and he was asked to double-check his own
-belief, which was itself the echo. His "premarket in" on 2026-09-22 is the first time it
-traces to him. Peer confirmation is not a second source; this is the source.*
-
-> **`0.5` AND `2.0` RE-DERIVED against the all-sessions frame — both HELD. FRAME WARNINGS
-> REMOVED (`0a1bdb7`, 2026-09-22).** *They may now be cited as measured, with their window:
-> 75 symbols, 62 sessions, 2026-05-20..08-18.* **`0.5`:** the retracement cliff sits at 0.5
-> in both frames — a four-fold fall in all-sessions. **`2.0`:** kept unchanged because the
-> frame doesn't reach it — a tail cut is insensitive to a shift that mostly lifts ordinary
-> days, and the bootstrap 90th-pct interval [218%, 441%] contains 200%, so re-deriving would
-> add false precision (the old warning's failure in the other direction). *Both frames built
-> from the ONE hourly file — pairing `daily_bars` with it re-introduces the cross-vintage
-> basis defect (an impossible AH-high-below-RTH-high row); don't.*
-
-*`e48a2ca` shipped using `max(session_high, ah_high)` as the auditor, which includes
-premarket. It is INERT at `a5924c2` — producer, no consumer — so nothing renders it.*
-
-### RESEARCH'S QUESTIONS — ONE OPEN, NOT THREE
-
-```
-restart rebuild of sessionHigh        DONE       replaySession->bootstrapSession, shipped in
-                                                 757cf6a; worker restarted 2026-09-24 20:24Z and
-                                                 MEASURED: day-wide + per-session AH, 0 lowered,
-                                                 0 null, 4,791 intact. Stored-bar replay, no fetch.
-day-high vs close, cycle-start gate   WITHDRAWN  by Research, unreproduced; QCLS never
-                                                 evidenced it either way
-HUMAN_REVIEWED_PRIOR_ANALYSIS         FIXED      dbd70d1, 2026-09-19. Now
-                                                 PRIOR_MODEL_ANALYSIS -- verified in
-                                                 bundle.ts, openaiInterpreter.ts,
-                                                 sheetPrior.ts
-```
-
-### SEAT STATE (2026-09-25T12:30Z — re-checked by the eleventh Integration against `list_events`)
-
-> **CORRECTED. The tenth session wrote "Commercial, Design, Web, Research, Ops all handed off and
-> have running successors"; THREE OF THOSE HAD NO SUCCESSOR.** *A seat that has WRITTEN its hand-off
-> and a seat that has BEEN REPLACED are different states, and the retiring seat is still the live one
-> until he opens the new chat. Declaring a hand-off is not completing one — that is the same shape as
-> a deploy described rather than enumerated, in seat form.*
-
-```
-FRESH, working            Research-tmi, Design-tmi, Web-tmi, Integration-tmi (this seat)
-RETIRING, awaiting HIM    Commercial-tmi, Coaching-tmi  -- hand-off written, no successor
-OPS IS NOT RETIRING       Ops-tmi CONTINUES as the seat. His word, verbatim, 2026-09-25 ~12:4xZ:
-                          "you are the succesor." -- answering Ops's own "49efd1a after 10:00 ET
-                          -- me or the successor?" So: no rename, no archive, Ops-tmi stays the
-                          address, and no new Ops session is coming. HE DID NOT ANSWER THE PUSH
-                          in that turn; ops/sort-legibility stays local until he does.
-NOT retiring (correct)    Marketing-tmi, R&D-tmi
-```
-
-*Ops is still the ONLY Ops and still holds the deploy.* **Find every seat by TITLE, not id
-(ids rotated).**
-
-> **AND I TOOK THE RULING TO THE SOURCE RATHER THAN THE RELAY, WHICH IS THE ONLY REASON IT IS
-> RECORDED AS HIS.** *Ops reported "he has just ruled: you are the successor." This thread has
-> recorded a false "he ruled it" three times off a peer's sentence — the premarket case — so the
-> account was not enough.* **`list_events` on the peer's own transcript carries HIS USER TURN
-> VERBATIM, and that is a real second source where a peer's paraphrase is not.** *It confirmed the
-> wording exactly, and it also showed what the five words did NOT answer: they came back to a
-> three-item block and settled item 2 only. A relay would have carried the ruling and lost the
-> silence around it.* **Read the peer's transcript, not the peer's summary of it — the tool that
-> makes "peer confirmation is not a second source" actionable rather than merely cautionary.**
-
-*Research's successor already built `catalystFreshFrom`
-(`7a0ad0c`); its consumer-half is routed to the fresh Design. Marketing judged NOT time (correct —
-calendar-age ≠ context-load). The other queued payload field is `lastCheckpointChanges` (item 12).
-Coaching's work lives outside the repo at `C:\Users\adshu\.mointel-fills\coaching\`; `coaching.md`
-points at it.*
 
 ## The third delegation: deploy instructions, confirmed directly
 
