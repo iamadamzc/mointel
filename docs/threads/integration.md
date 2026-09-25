@@ -271,8 +271,11 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
 
 **Also open, not blocking launch:**
 - **Sort legibility (Design): FIX DONE, cherry-picked SORT-ONLY as `49efd1a`** (branch
-  `ops/sort-legibility`, gate green 153/2,345/0-lint) — **ship it at 10:00 ET under standing
-  approval, zero cut-over risk.** RANK wore the active-order ACCENT unconditionally; now the accent
+  `ops/sort-legibility`, gate green 153/2,345/0-lint) — **START 10:06–10:08 ET under standing
+  approval, zero cut-over risk.**
+  *NOT "10:00 ET", and NOT "after 10:00" — this thread and Ops both wrote that all morning and
+  **preflight REFUSES at 10:00:00**. See the note below; the next equivalent slot if it slips is
+  10:36–10:38, not "any time after 10:30".* RANK wore the active-order ACCENT unconditionally; now the accent
   follows the sort. **⚠️ DO NOT ship `34cf6f3`** *(the COMMIT is unshippable for its ANCESTRY; its three BLOBS are
   the same fix and are the reconstruction source — see the note below, and do not read the ban on
   the commit as a ban on the content)* — it sits ABOVE the whole auth surface in history,
@@ -281,6 +284,27 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
   **`Ops-tmi` ships `49efd1a`, NEVER `34cf6f3`** — the trap looks like a small ready item.
   *Said "the Ops SUCCESSOR" until 2026-09-25: the warning was right and the ADDRESSEE was wrong.
   There is no successor — see SEAT STATE.*
+> **⚠️ "10:00 ET" WAS TWO DIFFERENT CONSTRAINTS WEARING ONE NUMBER, AND THEY POINT OPPOSITE WAYS.**
+  *Found 2026-09-25 when Ops corrected the ship time; both facts verified here at the file.*
+  **`ops.md:8057` — "Never deploy 07:00–10:00 ET" — is HIS TRADING WINDOW, so 10:00 is the EARLIEST
+  moment a ship is permitted. `preflight.sh:38` builds `RTH_INTERVAL` from minute 600 (10:00) every
+  30 minutes, and `PROTECTED_MINUTES=5` blocks within 5 either side, so 10:00 is a minute the
+  machine REFUSES** (`09:55–10:05` blocked; clean `10:05–10:25`, `10:35–10:55`, …). *One number,
+  two unrelated schedules, and the implications are exact opposites: "the earliest you MAY" and
+  "precisely when you MUST NOT". That is why every seat in this thread wrote "ship at 10:00 ET" for
+  a morning without anyone being careless — the number was right for the constraint each of us was
+  holding.* **A time that satisfies one constraint is not a time; say which constraint, and check
+  the other.**
+>
+> **AND THE START MUST LEAVE ROOM FOR THE STOP — this is the first time the known preflight defect
+  has CONSTRAINED a ship rather than sat in the open list.** *Preflight measures the START only,
+  while `quick_check` now runs ahead of the stop (388–594s observed), so preflight-to-stop is 7–10
+  minutes. A start that passes at 10:22 lands its stop inside the 10:25 window with preflight
+  having said yes.* **10:06–10:08 gives maximum margin on both ends** (clear by 6–8 min, stop
+  ~10:13–10:18, next window 10:25). *The measurement that exposed the defect — 594.1s on 09-24 —
+  was taken on an after-close deploy where it could harm nothing, which is why it stayed theoretical
+  until today.*
+
 > **`49efd1a` IS UNPUSHED, AND THE EXPOSURE IS TRACEABILITY, NOT DURABILITY.** *Ops measured this
   2026-09-25 against Integration's imprecise "production on code with no remote copy"; re-verified
   here independently.* **All three blobs of `49efd1a` are bit-identical to `34cf6f3`'s, and
