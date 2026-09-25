@@ -95,6 +95,15 @@ itself be the defect signal.**
             MGLD  18:00:36Z (14:00 ET)
             APUS  12:30:00Z   BYAH 12:27:00Z   JAGX 10:01:32Z
 
+    IF `INLF` HAS LEFT THE BOARD BY 10:40 THE POSITIVE CONTROL IS GONE and a
+    null result proves nothing until it is recomputed. Check the row list
+    BEFORE concluding anything from an absence. *Ops's caveat, and it is the
+    failed-check-returns-a-plausible-answer shape exactly.*
+
+    MORE movers than predicted is NOT a defect -- the population churns all
+    session as Discovery re-ranks and new analyses land. The criterion is the
+    NAMED ROWS, never the count.
+
     BARE-DATE CONTROL -- Research's tripwire, as a row on his screen
             ONCO  `2026-09-24`  amber, and it CANNOT move. Green here is a
                   defect and not the feature.
@@ -106,6 +115,34 @@ itself be the defect signal.**
 `2026-09-25T08:30:32 ET` and `KITT` stores `2026-09-25T04:41:22-04:00` — three
 timestamp shapes in one column. Both currently band correctly, so `catalystAge`
 copes; it is worth knowing the column is not uniform.*
+
+**THE MONDAY CASE, FOUND WHILE CHECKING A PEER'S MECHANISM AND MEASURED RATHER
+THAN REASONED.** The promote window is [prior session close → ET midnight],
+because anything after midnight is `days === 0` and already FRESH on the bands.
+**Today that window is last night. ON A MONDAY IT SPANS THE WEEKEND** — about
+56 hours — and `MAX_FRESH_FROM_AGE_MS` is 5 days precisely so a long weekend
+still qualifies. Probed through the shipped function with a Monday `now`:
+
+    Fri 17:18 ET   days = 3   bands STALE    with boundary FRESH
+    Sun 10:00 ET   days = 1   bands RECENT   with boundary FRESH
+    Fri 15:00 ET   days = 3   bands STALE    with boundary STALE   (control)
+
+**SO ON MONDAY A ROW RENDERS `A 3d` IN GREEN, AND A NAME WEARING `no fresh
+news` ON FRIDAY IS FRESH ON MONDAY.** The band is his ruling and it is right —
+Friday-evening news is untraded when Monday opens. **The DEFECT IS THE PAIRING:
+the age number and the freshness colour are computed from DIFFERENT QUANTITIES**
+(elapsed days; the session boundary), and this desk's own rule is that a number
+beside a word reads as the word's evidence. Within a day they agree — `16h`
+green reads fine, which is why nobody has seen this. Across a weekend they
+contradict each other on the row.
+
+**Nobody has looked because today is Friday.** It bites on a Monday premarket,
+which is a session he trades. Not a blocker for `0a17601`: today's window
+produces `16h`, and the honest reading is that the boundary ships correct and
+its LABEL is unfinished. Options are a scope clause on the age (`since Fri
+close` instead of `3d`), both, or leaving it to the tooltip — and choosing
+needs `resolveCatalystFreshness` to report WHICH arm returned FRESH, which it
+does not today.
 
 **`design/now-header-gated` IS BLOCKED ON HIS ANSWER** — it renames the column
 to `TRADES` and that is unanswered in his NEEDS YOU block. Not on a relayed
