@@ -246,3 +246,138 @@ separate from `LEGITIMATE_POSITIVE`** — is untouched and is the next pre-regis
 cut. The second overturn-check (coverage split: is the graded class simply
 better-covered in a way that itself predicts the move) is also still owed before
 part (a) closes.
+
+## OVERTURN-CHECK C1 — COVERAGE. Run 2026-09-25. Does NOT overturn part (a).
+
+**The instrument was rebuilt from scratch and reproduces the published 26-session
+first-entry figures exactly** — nPOS=155, nCMP=693, medians 5.16% / 2.63%, 19/26
+sessions, +6.68pp, sd 17.32, t=1.97, exact two-sided sign p=0.0290. Every cut
+below uses that same paired-session statistic, so the rows are comparable
+line-for-line.
+
+**Coverage inside the contrast population is binary, and that was worth knowing
+before designing the test.** The uncovered states (`NOT_ANALYZED` 592,
+`ANALYSIS_FAILED` 18, `COLLECTING_SOURCES` 6, `ANALYZING` 5) carry **only**
+null/UNKNOWN grades — already excluded by the pre-registration. So every graded
+name is either `INTELLIGENCE_AVAILABLE` (599) or `PARTIAL_INTELLIGENCE` (249),
+and the check is a two-way stratification rather than a covered/uncovered one.
+
+**Pre-registered overturn criterion, stated before running:** part (a) is
+overturned if the larger stratum's sign count falls to <=13/26 or the gap
+collapses below +2pp.
+
+    stratified on intelligence_status at FIRST ENTRY
+    INTELLIGENCE_AVAILABLE   nPOS=121 nCMP=478   17/25   +6.99pp  sd 15.75  t=2.22   sign p=0.108
+    PARTIAL_INTELLIGENCE     nPOS= 34 nCMP=215   13/19   +5.95pp  sd 21.53  t=1.20   sign p=0.167
+    coverage ALONE (grade ignored, AVAILABLE vs PARTIAL)
+                                                 20/26   +2.36pp  sd  7.45  t=1.61   sign p=0.0094
+
+> **NOT OVERTURNED. The grade effect survives holding coverage constant, at the
+> same size in both strata** — +6.99pp and +5.95pp against the pooled +6.68pp.
+> **If coverage drove it the gap would concentrate in one stratum; it does not.**
+> Coverage is ruled out as the driver of part (a).
+
+**But coverage is itself a predictor, and its DIRECTION is more reliable than the
+grade's.** Better-covered names beat partially-covered ones in **20 of 26
+sessions (p=0.0094)** — a tighter sign result than the grade contrast's own
+19/26 (p=0.029) — while being **a third the size** (+2.36pp against +6.68pp) and
+not clearing the magnitude test (t=1.61). **Recorded as a finding in its own
+right, not as a caveat:** "was this name researched at all" carries direction
+information about the 09:30-10:00 move. It does not dissolve the grade result,
+because the grade result is measured within each coverage level, but any future
+cut that compares graded classes across different coverage mixes inherits it.
+
+## OVERTURN-CHECK C2 — DECISION-TIME AVAILABILITY. New, not previously owed.
+
+**The census raised this before the coverage check could be written.** "First
+board entry" is not the same as "available before the window being predicted".
+**310 of the 848 graded ticker-days (37%) had their first entry AFTER 09:30 ET**
+— 193 via `NEXT_DAY_RECAP` (runs ~22:00 ET), 98 via a post-window `RTH_INTERVAL`,
+19 via `RTH_CLOSE`. Their grade could not have been on the screen during the
+09:30-10:00 move it is scored against. **This is the same look-ahead channel the
+2026-09-23 retraction closed, one level down: the retraction fixed "strongest
+grade seen" and left "first entry, whenever that was".**
+
+Cut at `started_at < 13:30Z` (09:30 ET; every date 08-17..09-22 is EDT, UTC-4):
+
+    BEFORE window   nPOS=104 nCMP=434   15/24   +15.23pp  sd 34.22  t=2.18  sign p=0.308
+    AFTER  window   nPOS= 51 nCMP=259   16/23   + 7.99pp  sd 25.85  t=1.48  sign p=0.093
+
+> **NOT OVERTURNED, and it cuts the opposite way to the worry that prompted it.**
+> If the residual effect were look-ahead, the AFTER group would carry it and the
+> BEFORE group would be flat. **The BEFORE group's gap is more than twice as
+> large (+15.2pp against +8.0pp).** The grade that was genuinely on the screen
+> before the window separates outcomes harder than the one assigned after it.
+
+**What C2 costs, and it is the honest half:** splitting 26 sessions into 24 and 23
+destroys the direction statistic that was part (a)'s strongest evidence. **No
+sub-population clears the sign test on its own** (p=0.31 and p=0.09). The
+magnitude t holds up (2.18) and the effect size roughly doubles, but session
+medians on ~4 POS names a session are noisy. **This is power, not absence** — the
+two cuts disagree about which statistic is convincing, and neither is a null.
+
+**The BEFORE population also moves more in absolute terms** (medians 9.98% /
+5.40% against 2.78% / 1.55%), which is a population fact rather than a grade
+fact: names boarded premarket are the gappers.
+
+> **VERDICT, part (a): WEAKLY DETECTED stands, and both owed overturn-checks are
+> now run and neither overturns it.** The corrected reading after C1 and C2:
+> **a small, real effect of roughly +7pp on the pooled population, concentrated
+> in (and roughly doubled within) the names graded before the window, not
+> explained by research coverage.** What would still overturn it: an outcome
+> window chosen after seeing these results, or a session-weighting that upweights
+> the six sessions carrying the largest gaps. **Part (a) is clear to close on
+> this; Q14 as a whole does not close until part (b) is settled.**
+
+## PART (b) IS NOT RUNNABLE AS THE HANDOVER DESCRIBED IT. 2026-09-25.
+
+**The opening prompt told this seat part (b) was newly runnable "now that 26
+sessions give more than the n=8 STRONG had". It is still n=8.** Measured:
+
+    ticker-days in the 26-session extract        1,999
+    STRONG at any point during the day              20
+    STRONG at FIRST entry                            8   (40% of ever-STRONG)
+    POS   at first entry                           162   (61% of ever-POS)
+
+    the 194 store-wide STRONG rows are 20 ticker-days re-stamped:
+      RTH_INTERVAL 151 | RTH_CLOSE 11 | OPEN_SPIKE 8 | NEXT_DAY_RECAP 7
+      PREMARKET_0700 6 | PREMARKET_0645 6 | PREMARKET_0625 3 | STRUCTURAL_REFRESH 2
+
+**The backfill bought nothing here and could not have.** The binding constraint on
+the STRONG/LEGITIMATE_POSITIVE split is not sessions — it is that **STRONG is a
+1%-of-ticker-days label (20 in 1,999) assigned late in 60% of the cases it is
+assigned at all.** Doubling the sessions doubles a number that starts at four.
+**Six of 26 sessions carry both classes.** No session-paired test exists on that.
+
+*Descriptive only, and the row is thin — n=8, do not quote it:* median
+`gain_open_30_pct` 43.81% for first-entry STRONG against 4.17% for
+LEGITIMATE_POSITIVE. **That is eight names. It is printed to show the instrument
+runs, exactly as the feasibility table above was, and it is not a result.**
+
+**And the confidence arm has no input in this store at all.** `catalyst.confidence`
+(HIGH/MEDIUM/LOW) is **not a column on `desk_assessment_tickers`** — it lives
+inside the `dossier` JSON on `research_analysis_versions`, which is in the
+**market** DB, not the assessments extract. The newest production market snapshot
+on disk is `data/market-prod-2026-08-23.db`: **325 versions spanning 2026-08-17
+to 08-21, five sessions**, against the archive's 26. Distribution there is
+MEDIUM 156 / LOW 99 / HIGH 70.
+
+> **So part (b) is BLOCKED, in two different ways, and neither is a power problem
+> that waiting fixes:**
+> - **(b1) STRONG vs LEGITIMATE_POSITIVE — blocked on RARITY, not on sessions.**
+>   At ~0.8 first-entry STRONG per session it needs on the order of 100+ sessions,
+>   or it is not this instrument's question. **Do not re-propose it after the next
+>   backfill; the arithmetic above is why.**
+> - **(b2) confidence calibration — blocked on an INPUT THAT IS NOT HERE.** It
+>   needs a read-only copy-down of production `research_analysis_versions`, which
+>   is **a fresh named exception requiring his by-name word.** It is **NOT**
+>   covered by `8f331ed`: that grant names `research_sources`, for the EX-99
+>   latency read, a different table for a different measurement. **Resting this
+>   request on it would be the spent-exception failure the register already
+>   recorded once.**
+
+**What this means for closing Q14.** Part (a) is settled. Part (b) cannot be
+settled on the data this desk holds. **The question is whether Q14 closes as
+"(a) weakly detected, (b) not answerable without a new pull" or stays open
+holding a register slot against a copy-down decision — and that is his call, not
+this seat's.**

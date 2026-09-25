@@ -55,7 +55,7 @@ questions is a thread that has stopped working.
 | Q11 | How often does the 5-minute drop rule remove a name that subsequently runs? | 2026-09-03 | **ANSWERED 2026-09-04** — tradeable miss rate **27.1% premarket, 9.4% RTH, 1.5% after-hours** on 577 replayed drops; highest where the threshold was calibrated, by 18x |
 | Q12 | Is a name's eventual activity predictable at the moment the board ranks it? | 2026-09-04 | proposed — **not blocked, QUEUED**; decides whether the 45.5% yield finding is a defect or a description |
 | Q13 | Is an aggregate momentum state across the top gappers measurable, and does it predict anything? | 2026-09-04 | **CLOSED 2026-09-04 — NOT DETECTABLE at n=13, dial NOT BUILT.** Underpowered null, not absence; ~31 sessions would settle dispersion. `250388f` |
-| Q14 | Grade the grader — does the catalyst grade at board entry predict the outcome, and how good is the grade? | 2026-09-22 | **ACTIVE — part (a) WEAKLY DETECTED on 26 sessions (first-entry grade), 2026-09-23.** Backfill lifted the archive to 26 sessions. Pre-registered contrast on `gain_open_30_pct`: POS beats CMP median **19 of 26 sessions** (sign test p≈0.029), stable **+6.7pp median**, but magnitude borderline (t≈1.97). Small, direction-reliable, noisy in size — between the retracted look-ahead 13/13 and the 13-session null. Part (b) grade-confidence + the coverage overturn-check still open. [rnd/2026-09-22-grade-the-grader.md](../rnd/2026-09-22-grade-the-grader.md) |
+| Q14 | Grade the grader — does the catalyst grade at board entry predict the outcome, and how good is the grade? | 2026-09-22 | **ACTIVE — part (a) WEAKLY DETECTED on 26 sessions (first-entry grade), 2026-09-23.** Backfill lifted the archive to 26 sessions. Pre-registered contrast on `gain_open_30_pct`: POS beats CMP median **19 of 26 sessions** (sign test p≈0.029), stable **+6.7pp median**, but magnitude borderline (t≈1.97). Small, direction-reliable, noisy in size — between the retracted look-ahead 13/13 and the 13-session null. **BOTH OVERTURN-CHECKS RUN 2026-09-25 AND NEITHER OVERTURNS IT** — coverage stratification holds the gap at +6.99pp / +5.95pp in the two strata, and restricting to grades that existed BEFORE 09:30 ET (37% of rows did not) roughly DOUBLES the gap to +15.2pp. **Part (a) clear to close.** **PART (b) IS BLOCKED, NOT MERELY OPEN:** STRONG is still n=8 at first entry on 26 sessions (rarity, not power), and `catalyst.confidence` is not in the extract at all — it needs a production `research_analysis_versions` copy-down, a FRESH named exception. [rnd/2026-09-22-grade-the-grader.md](../rnd/2026-09-22-grade-the-grader.md) |
 
 #### The closing pass, 2026-08-27
 
@@ -3578,6 +3578,24 @@ ends in `L`, so no fifth-letter W/U/R convention would ever have reached it.
 One name at rank 43 is the entire justification for a name-based rule.
 
 ## Working rules
+
+**A LOOK-AHEAD CHANNEL CLOSED AT ONE LEVEL REOPENS AT THE NEXT.** Recorded
+2026-09-25, Integration's framing of the C2 result, because the shape has now
+appeared **twice inside a single question** and is the thing to check on the next
+instrument rather than a fact about Q14.
+
+- **First appearance:** the grade used was *the strongest seen that day* — which
+  ~45% of the time was assigned after the move being predicted. Retracted.
+- **Second appearance, one layer down:** the fix, *grade at first board entry*,
+  still admitted **37% of rows whose first entry was after 09:30 ET** — mostly
+  the 22:00 ET `NEXT_DAY_RECAP`. *First entry* names when the desk first wrote a
+  grade, not whether a grade existed when the decision had to be made.
+
+> **The general form: a fix that names the EARLIEST RECORD is not a fix that
+> names WHAT WAS KNOWN AT THE DECISION MOMENT**, and the two differ by exactly
+> the rows where the desk was late. **Ask of any reassessed field: could this
+> value have been read off the screen before the window it is scored against?**
+> Cut on the clock, not on the ordinal.
 
 **AGREEMENT IS THE SOLVENT. A rule that only fires when you dislike the answer
 is not a rule.** Recorded 2026-09-04 as the general form of two failures on the

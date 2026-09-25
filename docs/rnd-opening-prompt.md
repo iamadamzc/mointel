@@ -137,11 +137,17 @@ route to it.
 
 ## First task for the new seat
 
-**Q14 is live and has two unstarted, unblocked pieces you may take without asking
-(Adam gave "as you see fit" on the overturn-checks, 2026-09-23):** the coverage
-overturn-check, then part (b) — grade-confidence and the STRONG/LEGITIMATE_POSITIVE
-split, now that 26 sessions give more than the n=8 STRONG had. Pre-register each
-cut before running it. If he opens Q12 or tier A instead, those take priority.
+**DONE 2026-09-25 — do not re-take this.** The coverage overturn-check ran and
+does not overturn part (a); a second check nobody had registered (was the grade
+even available before 09:30 ET? 37% of rows were not) also does not overturn it
+and roughly doubles the effect on the clean subset. **Part (b) is BLOCKED, and
+the claim below that 26 sessions fixed its power was WRONG — STRONG is still n=8
+at first entry**, because STRONG is a 1%-of-ticker-days label assigned late, and
+`catalyst.confidence` is not in the assessments extract at all. See
+`docs/rnd/2026-09-22-grade-the-grader.md`. *Superseded text kept:* ~~part (b) —
+grade-confidence and the STRONG/LEGITIMATE_POSITIVE split, now that 26 sessions
+give more than the n=8 STRONG had.~~ Pre-register each cut before running it.
+If he opens Q12 or tier A instead, those take priority.
 **The archive backfill is DONE — do not re-ask it**, and do not re-run the extract
 without his by-name word.
 
