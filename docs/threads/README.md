@@ -12950,6 +12950,53 @@ contradicting them.**
 **That layout is worth more than the fix.** A summary printed on its own, or above
 its evidence, or in a different message, is never checked against it.
 
+## AGREEING WITH A SENTENCE AND DRESSING IT AS A SECOND SOURCE
+
+**Ops's own account, 2026-09-25, and it is the mechanism that made another seat's false claim feel
+confirmed.** *Integration asserted that the 08-23 snapshot spans Tue–Fri and so could not contain the
+case that fires the new re-ask gate. Ops did not check the window. **It replied "your instinct is right
+and it is checkable rather than arguable" — and then supplied a justification OF ITS OWN**: that this
+was the same shape as the morning's `ah_high` measurement, which is only possible after 16:00 because
+the quantity does not exist before it.*
+
+**THAT SECOND REASON IS WHAT DID THE DAMAGE.** *A bare "agreed" would have left the claim at one source
+and Integration would still have gone looking. **A fresh-sounding analogy reads as independent
+corroboration**, so the originating seat files its own inference as confirmed and stops checking. The
+window contained a Monday with five clocked catalysts; the claim was simply false.*
+
+> **THIS IS ONE STEP PAST "PEER CONFIRMATION IS NOT A SECOND SOURCE", AND WORSE, BECAUSE IT DEFEATS THE
+> TEST THAT RULE TEACHES.** *That rule says: a thread that can only answer from what you told it returns
+> your own sentence with a second name on it — and you catch it by noticing the sentence is yours. **A
+> manufactured second reason does not look like your sentence.** It looks like a different seat arriving
+> at your conclusion by another road, which is exactly the evidence you were waiting for.*
+
+**So when you agree with a claim you have not opened, say ONLY that you have not opened it.** *An
+analogy, a shape match, a "same class as" — offered in support of someone else's unverified claim — is
+new evidence that does not exist. **If the analogy is good, it is still not a check: it is a reason to
+go and look.***
+
+*Ops's own tally is the reason this is recorded rather than smoothed: **twice in one day it endorsed
+something it had not opened**, and the first instance cost R&D a wrong conclusion about the desk's
+founding question.*
+
+## A PRE-REGISTERED COUNT MET BY A MEASUREMENT TAKEN IN IGNORANCE OF IT
+
+**Integration and Ops, 2026-09-25, and the ignorance is the whole point.** *Integration predicted
+`b72e8ed`'s gate would report **158 test files** (`c00992e`'s 157 plus the one file `d734d6f` adds). Ops
+had already gated and measured **158 files / 2,390 tests** before that message was delivered — its
+delivery status says queued behind the turn that ran the gate.* **Neither number was available to the
+other when it was written.**
+
+> **A prediction the measurer can see is a prediction they can be talked into.** *Not by dishonesty — by
+> the ordinary pull of a stated expectation on an ambiguous readout, which is precisely where "157 files,
+> green" sat two hours earlier.* **A pre-registration confirmed by a measurement taken in ignorance of it
+> is the only version of this check that cannot converge by agreement.**
+
+**Cheap to arrange and it should be the default on every enumeration: the approving seat names the count
+in the approval; the gating seat reports what it measured.** *If they match, a short collection is ruled
+out by arithmetic. If they differ, the disagreement names which of the two is wrong instead of leaving a
+green result to be trusted or doubted on instinct.*
+
 ## THE LICENCE TO CORRECT COMES FROM HAVING OPENED THE THING, NOT FROM OWNING IT
 
 **R&D's observation, 2026-09-25, and Integration's correction of it the same hour — kept together
