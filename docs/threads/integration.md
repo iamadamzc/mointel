@@ -957,6 +957,33 @@ R&D       reached the same two findings INDEPENDENTLY, from the file         CON
 **R&D has FROZEN every catalyst-less-mover figure it holds — the register's 83% and today's
 14.6%.** *Correct, and not to be unfrozen on anything in this chain.*
 
+### THE UNIT OF RELIABILITY IS THE CLAIM — NOT THE MESSENGER, NOT THE MESSAGE
+
+**2026-09-25, and it is the day's shape found in the one place it had not yet been looked for: my
+own relaying.**
+
+**THE FAILURE.** *Ops told me `networkRequests` is not persisted. Forty minutes later Research
+proposed re-partitioning the census on `networkRequests` "without new code", and **I relayed that as
+an instruction to the seat that had supplied the contradicting fact.*** **I held both halves. They
+were incompatible. Reconciling what two threads believe is this seat's job description, so that is
+a category failure rather than a slip** — *and a relay that does not cross-check is a worse channel
+than no relay, because it arrives carrying the bus's authority.*
+
+**THE EXIT I DECLINED, AND WHY IT MATTERS MORE THAN THE FAILURE.** *Ops offered that the
+cross-check would have been "against a source that was wrong twice that hour" — generous, and it
+conflates the MESSAGE with the FACT.* **`networkRequests` is not persisted was one of the few
+claims that never moved across all three of Ops's positions: correct when written, correct when the
+claims around it were withdrawn, correct now — and checkable in ten seconds with one grep.**
+
+> **A claim's reliability is not inherited from its container.** *A message wrong twice can carry a
+> fact right throughout; a confident message can carry a wrong one. **I do not get to discount a
+> fact because the message it arrived in was later corrected, any more than I get to trust one
+> because the message around it was sure.*** **Assess the claim, at the claim's own grain.**
+
+*This is the same defect as every other today — a description taken for the thing, a count taken
+under the wrong frame, a default taken for a verdict — and here the container doing the misleading
+was a peer's credibility over one hour.*
+
 ### QUEUED BOX READS — TWO, BOTH FOR OPS, NEITHER URGENT, IN THIS ORDER
 
 *Recorded 2026-09-25 so they survive this seat. Ops is NOT retiring, so both route to `Ops-tmi`.
