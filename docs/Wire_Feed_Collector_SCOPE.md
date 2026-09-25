@@ -157,41 +157,73 @@ content with no licensing question at all.
 ⇒ **So the gap is LATENCY, not existence.** The wire publishes at 08:00; the
 exhibit appears when the issuer files.
 
-### AND THE LATENCY IS UNMEASURABLE FROM THIS STORE, WHICH IS THE REAL STEP 1
+### AND THE LATENCY IS UNMEASURABLE FROM THIS STORE — BUT NOT FOR THE REASON WRITTEN HERE FIRST
+
+**CORRECTED 2026-09-25. The original reading of this section was wrong and is
+kept below only as the mistake it was.**
 
 ```
 SEC_EXHIBIT   published_precision = INFERRED     878 of 878
 SEC_FILING    UNKNOWN 3,235 | DATE_ONLY 17 | EXACT 1
 ```
 
-**One row of 3,253 carries an exact timestamp.** So the desk cannot say whether a
-release became public at 08:00 or at 18:00 — and **that single number decides
-whether a wire licence is worth buying.**
+**"One row of 3,253 carries an exact timestamp" is NOT evidence of a defect, and
+it was read as one.** Every row in `data/market-prod-2026-08-23.db` predates
+`b1d64b9` (2026-09-06T23:40Z), the commit that added **both** the
+`acceptanceDateTime` parse and the `EXACT` write. **That store has no
+post-change arm; it could not have returned another number.** The filing path
+was not half-built — it was built, and the population was measured on the wrong
+side of its own boundary. `sec/collector.ts` says so at its `SEC_ACCEPTANCE_BOUNDARY`
+comment: *"never compare a rate across the boundary without partitioning."*
 
-*An artifact I nearly reported as the finding: filtering `published_precision !=
-'INFERRED'` and bucketing by hour put **99.4% of filings in 16:00-20:00**. That is
-3,235 UNKNOWN rows whose date-only value parses as midnight UTC, which is 20:00
-ET. It would have argued hard for the licence. **The `published_precision` column
-exists to prevent exactly this and I filtered on the wrong value.***
+*The other artifact, which the original section did catch and which still
+stands: filtering `published_precision != 'INFERRED'` and bucketing by hour put
+**99.4% of filings in 16:00-20:00**. Those are date-only values parsing as
+midnight UTC, which is 20:00 ET. It would have argued hard for the licence.*
 
-**The fix is already half-built.** `sec/collector.ts:246` reads
-`acceptanceDateTime`, and `:422` carries the comment **"ACCEPTANCE OVER FILING
-DATE, AND NO SYNTHESISED FALLBACK — `acceptanceDateTime` is when EDGAR accepted
-the filing"**. The intent is right and the value is fetched; it is **not reaching
-`published_at` with EXACT precision** on the rows that matter.
+**The EXHIBIT half WAS a real defect and is fixed.** `catalyst/collector.ts`
+hardcoded `publishedPrecision: 'INFERRED'` regardless of the parent, so all 878
+claimed a derived time over a bare date. Fixed at `ea2d1c9`: an exhibit now
+inherits its parent's precision, and a parent with only a date yields `UNKNOWN`
+rather than a false `INFERRED`.
 
-⇒ **REVISED STEP 1, and it costs nothing and needs no terms check:**
+### ⚠️ THE MEASUREMENT IS FORWARD-LOOKING, AND THE 878 CAN NEVER ANSWER IT
 
-1. **Persist `acceptanceDateTime` with `EXACT` precision** on 8-K/6-K filings and
-   propagate it to their EX-99 exhibits, which currently inherit an inferred date.
-2. **Measure the distribution** — what share of press-release exhibits become
-   public inside 04:00-09:30 ET.
-3. **Only then price the wire licence.** If most releases are public on EDGAR
-   before the open, a licence buys minutes. If they land after the close, it buys
-   the whole premarket window and is worth paying for.
+**This is the part that changes the plan, and a snapshot will not help.**
 
-**The wire question is not answerable yet, and this makes it answerable for
-free.**
+`insertResearchSources` is `INSERT OR IGNORE` (`researchRepo.ts:558`). The only
+UPDATEs on that table touch `cluster_id`/`canonical` (`:710`) and `active`
+(`:732`). **Nothing anywhere writes `published_at` or `published_precision` on an
+existing row**, and an exhibit's fingerprint is `hash(accession|exhibitName)`, so
+re-collecting it is a no-op. Those rows are frozen.
+
+It compounds: the exhibit branch reads its parent from the **stored** rows
+(`collector.ts:378`, capped at `MAX_FILINGS_FOR_EXHIBITS = 4` per ticker) and
+inherits that row's `publishedAt` — and parents are frozen the same way. So a new
+exhibit hung off an old parent still inherits a bare date.
+
+⇒ **The measurable population is EX-99 exhibits whose PARENT FILING ROW was
+inserted after both `b1d64b9` and `ea2d1c9` were running in production.** New
+filings only. It accrues from the deploy instant; the first useful read is some
+sessions out.
+
+⇒ **REVISED STEP 1:**
+
+1. **Confirm production runs past both shas** — an Ops question, and the answer
+   on 2026-09-23 was yes for both (`42c9a73` web/research, `34414f4` market).
+2. **Let it accrue**, then copy down. The late-Sep EX-99 snapshot is
+   **pre-approved** (`8f331ed`).
+3. **Partition on the VALUE, not the label** — ask whether `published_at`
+   carries a clock, not whether `published_precision` says so. That works
+   whichever code wrote the row, and it is the specific guard against the
+   midnight-UTC artifact rebuilding itself.
+4. **Measure** what share of press-release exhibits become public inside
+   04:00–09:30 ET, **then** price the licence. If most are public on EDGAR
+   before the open, a licence buys minutes; if they land after the close, it
+   buys the whole premarket window.
+
+**The wire question is still not answerable, and the thing that makes it
+answerable is time rather than work.**
 
 ## What I would build, smallest first
 
