@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { describe, expect, it } from 'vitest';
 
 import { tradesLastMinute } from '@/lib/dashboard/sparkline';
@@ -82,5 +85,55 @@ describe('the Now sort orders by it, and counts what it cannot place', () => {
       row(),
     ];
     expect(discoveryMissingCount(rows, 'now', board)).toBe(2);
+  });
+});
+
+/* ------------------------------------------------------------------------- *
+ * THE HEAD NAMES THE QUANTITY
+ * ------------------------------------------------------------------------- */
+
+/**
+ * He asked twice what this column was sorting. The head said `Now` over `−1m`
+ * — two statements of WHEN and none of WHAT — and the units lived only in the
+ * sort caption, which is on screen only while that sort is already active.
+ *
+ * Source-asserted because `SORT_KEYS` is private to the component. The
+ * comment strip is not optional here: four separate claims on this desk have
+ * been a comment read as code, and one of them was a comment its own author
+ * had written.
+ */
+describe('the trades column head states what, not when', () => {
+  function head(): string {
+    const src = readFileSync(join(process.cwd(), 'components/DiscoveryBoard.tsx'), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '');
+    const open = src.indexOf("activeColumn === 'now'");
+    expect(open).toBeGreaterThan(-1);
+    const close = src.indexOf('</Th>', open);
+    expect(close).toBeGreaterThan(open);
+    return src.slice(open, close);
+  }
+
+  it('takes the word from the sort entry rather than typing a second one', () => {
+    /*
+     * The `Gap`/`Move` drift was two hand-written words for one quantity, on
+     * the control and on the head above the same number. Removing the literal
+     * makes the drift impossible rather than forbidden.
+     */
+    expect(head()).toContain('resolveSortEntry(nowEntry');
+  });
+
+  it('does not name a time where every other head names a quantity', () => {
+    const src = readFileSync(join(process.cwd(), 'components/DiscoveryBoard.tsx'), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '');
+    /* The entry the head and the control both read. */
+    expect(src).toMatch(/key: 'now',\s*label: 'Trades',/);
+    expect(src).not.toMatch(/key: 'now',\s*label: 'Now',/);
+  });
+
+  it('keeps the lag on the head, which is the part hover may not carry', () => {
+    /* §10 rules out hover-only content; the offset changes how the bars read. */
+    expect(head()).toContain('sparklineLagLabel()');
   });
 });
