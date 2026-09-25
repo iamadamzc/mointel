@@ -274,6 +274,22 @@ instructed the relay himself — "let intergration know"):*
 CLOSED for this source. Research holds the shape, and his last clause is the scope: THIS REACHES MODEL
 INTERPRETATION, NOT ONLY INGESTION.**
 
+> **✅ RESOLVED SAME EVENING: REACH SURVIVES AS THE DOMINANT LEVER AND R&D'S ORDER STANDS.** *Research
+> answered from measurements that already existed — **Benzinga PRIMARY coverage of top-12 is ~23%**, so a feed
+> moots resolution reach for about a quarter of the population. At 70% the order would have flipped.*
+> **CAUTION CARRIED TO BOTH SEATS: 23% is the COVERAGE RATE, not the DISPLACEMENT of the 63%** — the
+> displacement is |A ∩ B|, and wire-covered issuers are the ones who PAY a wire, hence larger and likelier to
+> have a conventional newsroom, so set B may overlap the names resolution ALREADY succeeds on. *Direction
+> flagged, size not claimed.* **The sentence that survives is "at most a quarter, intersection unmeasured".**
+> *Still open and queued as a cheap re-cut of an existing query: coverage BY PRICE BAND — if the feed misses
+> the sub-\$1 names he trades, both levers stay at full size.*
+>
+> **AND THE ECONOMICS FLAG CLOSED BETTER THAN IT WAS RAISED: the dear stage does NOT scale with this, because
+> its output is bounded by the SCHEMA** — *19 free-text fields and 8 enums, so more evidence makes the dossier
+> better rather than longer. Input growth is ~6.6 wire items a session at \$2.00/Mtok: **six cents at a
+> full-article 5,000 tokens**, against \$4.22 interpretation and \$1.35 discovery.* **The case remains accuracy,
+> now with arithmetic instead of agreement.**
+>
 > **⚠️ THE COLLISION ONLY THIS SEAT WAS HOLDING, FLAGGED TO BOTH SEATS AND ASSERTED TO NEITHER: a wire
 > source may DISPLACE most of R&D's reach lever.** *R&D's `dc39403` puts resolution reach first at 63% — 286
 > of 454 jobs where the desk never found a newsroom. **A wire feed is keyed by SYMBOL and needs no newsroom
