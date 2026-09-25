@@ -44,36 +44,57 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-25 12:27 UTC
+## Live state — 2026-09-25 13:05 UTC
 
-**My head is `bd509e9`** — the `Now` header (`ccaf77b`) and the FRESH
-boundary's consumer half (`bd509e9`), both pushed to `origin/main`. *What is
-DEPLOYED is Ops's to say.* What this seat OBSERVED on the board at 08:16 ET
-today: the freshness bands, the badge split, the sort marker, the filter work
-and the DCOY fix are all live, and the head over the trades column still reads
-`NOW` / `−1m`, so neither of mine is live.
+**My head is `bd509e9` on `main`. THE SHIPPABLE ARTEFACTS ARE TWO TAGS, NOT
+SHAS ON MAIN, AND THAT IS THE DAY'S LESSON.** *What is DEPLOYED is Ops's to
+say.* Observed on the board at 08:16 ET today: the freshness bands, the badge
+split, the sort marker, the filter work and the DCOY fix are live, and the head
+over the trades column still reads `NOW` / `−1m`, so neither of mine is.
 
-**THESE ARE CHERRY-PICKS FOR OPS, NOT SHAS TO DEPLOY.** The cone over the
-recorded production sha `757cf6a` is ~50 commits and carries the entire auth
-surface — the same hazard `0170418` names, which is why the sort fix shipped as
-the picked `49efd1a` rather than as `34cf6f3`.
+    design/fresh-boundary-gated   0a17601   49efd1a + producer + consumer
+    design/now-header-gated       363f40d   the above + the Now header
 
-**THE SHIP SET, STACKED AND GATED ON THE `757cf6a` BASE RATHER THAN REASONED
-ABOUT — in this order:**
+**Each tag's CONE IS THE SHIP SET, so the tip is safe to deploy** — which was
+never true of a sha on `main`. Over `757cf6a` that is 3 and 4 commits; 10 and 13
+files; **ZERO under `app/auth/`, `lib/auth/`, `app/signin` or
+`scripts/allowlist`, by path.** Gated AT THOSE EXACT SHAS in the pinned
+worktree with a clean status: **2,364 / 2,367 tests, lint 0 errors, build OK,
+typecheck clean.** Ops has since gated `0a17601` independently.
 
-    7a0ad0c   the producer (Research): MarketSnapshot.catalystFreshFrom
-    ccaf77b   the Now header -> TRADES
-    bd509e9   the consumer: the boundary onto the row
+**`design/now-header-gated` IS BLOCKED ON HIS ANSWER** — it renames the column
+to `TRADES` and that is unanswered in his NEEDS YOU block. Not on a relayed
+yes, from any seat. **It also stacks on the boundary, so a yes arriving BEFORE
+the boundary ships means re-cutting it standalone rather than shipping the
+pair.** Integration and Ops are sequencing these as **two releases, not one**,
+so a wrong-looking board has one candidate cause instead of two.
 
-**Thirteen files, every one under `components/`, `lib/dashboard/`,
-`lib/desk/`, `lib/market/`, `lib/research/` or `tests/`. ZERO under
-`app/auth/`, `lib/auth/`, `app/signin` or `scripts/allowlist` — checked by
-path, not by reading the messages.** All three apply with a clean text merge
-and the stack gates: **2,364 tests, lint 0 errors, build OK, typecheck clean.**
+**WHAT I HANDED OVER FIRST WAS A RECIPE, AND A RECIPE IS NOT AN ARTEFACT.**
+Three literal shas plus the sentence "these are cherry-picks, not shas to
+deploy". Integration refused it and was right twice over:
 
-**`bd509e9` CANNOT SHIP WITHOUT `7a0ad0c`** — it reads a field that does not
-exist on the type before it. `ccaf77b` is independent of both and also applies
-onto `49efd1a` alone.
+- **The gated tree was committed NOWHERE.** I ran `git cherry-pick -n` onto the
+  production base, gated it, and reset it away. The numbers were real and they
+  described a tree that no longer existed — so whatever Ops picked would be new
+  shas that nothing had gated. **My own rule says a gate in a shared tree gates
+  a MOMENT and not a SHA; this was the same failure with the worktree
+  discipline done correctly and the ARTEFACT still missing.**
+- **An enumeration of shas is read as shas.** `bd509e9`'s cone over production
+  is 66 commits containing 10 auth commits, and `0170418` is the record of that
+  exact misreading happening. A prohibition in the sentence above does not
+  survive being quoted.
+
+*One correction to the objection, because the instrument matters: the by-path
+check was run on the CHERRY-PICKED FILES, not on the commits in the cone, and
+on a pick that is the right object. What was wrong was handing over something
+that could be deployed as a tip at all.*
+
+**AND THE BRANCH NAMES WERE IN OPS'S NAMESPACE, WHICH IS HALF OF A NEAR-MISS
+THAT IS RECORDED AS OPS'S.** Ops ran `git branch -f ops/fresh-boundary` on a
+name it assumed was free; it was mine, holding unpushed work, and only a
+worktree lock refused it. **It looked free because I put it under `ops/`.** The
+refs above are TAGS, under `design/`: immutable, and not in another seat's
+prefix. See the shared-ref rule now in `README.md` (`16d77b4`).
 
 *`npm run typecheck` on that base fails twice before it passes, and neither
 failure is the change.* With a stale `.next` it cannot resolve three `app/auth/`
@@ -279,6 +300,28 @@ code beside it. Rulings that still bind were carried above.
 
 ## Working rules
 
+- **HAND OVER AN ARTEFACT, NEVER A RECIPE — AND GATE THE SHA THAT SHIPS.**
+  I gave Ops three shas and the instruction to cherry-pick them, having gated
+  an **uncommitted** `cherry-pick -n` onto the production base and then reset it
+  away. The numbers were true of a tree that existed for four minutes and is
+  committed nowhere, so **every sha Ops would actually deploy was ungated.**
+  A tag whose CONE IS THE SHIP SET fixes both halves at once: the tip is safe to
+  deploy, and the thing gated is the thing that ships. *This is the worktree
+  rule's blind side — I had the pinned tree, the clean status and the literal
+  sha, and still produced a gate with no artefact behind it.*
+  - **AN ENUMERATION OF SHAS IS READ AS SHAS, whatever sentence sits above it.**
+    `bd509e9`'s cone over production was 66 commits carrying 10 auth commits,
+    and `0170418` is the record of that misreading already happening once. **A
+    prohibition does not survive being quoted; a bounded ref does.**
+  - **ANCESTRY AND CONTENT ANSWER DIFFERENT QUESTIONS — NAME WHICH ONE YOU ARE
+    ASKING.** Both of the day's failures are that one root in opposite
+    directions: `34cf6f3` had innocent content and dangerous ancestry;
+    `0a17601` had the needed content and no ancestry a `--contains` query could
+    follow. Ops's and Integration's halves are in `README.md` (`16d77b4`).
+  - **AND A BRANCH NAME IS A SHARED WRITABLE RESOURCE, LIKE THE INDEX.** Mine
+    were under `ops/`, which is why Ops read one as free and came a worktree
+    lock away from force-updating my unpushed work. **A ref I create goes under
+    `design/`, and to pin a sha it is a TAG.**
 - **A MUTATION THAT SURVIVES IS NOT ALWAYS A VACUOUS CHECK — LOOK FOR THE
   SECOND DEFENCE BEFORE REWRITING THE ASSERTION.** Six mutants on the FRESH
   boundary, five killed singly; removing the `age.precision === 'CLOCK'` guard
