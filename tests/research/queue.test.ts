@@ -52,7 +52,12 @@ const PAST_THE_INTERVAL = new Date('2026-08-17T14:05:00Z');
  */
 function acceptDossier(
   db: ReturnType<typeof temporaryDb>,
-  options: { status: CatalystStatus; acceptedAt: string | null; completedAt?: string },
+  options: {
+    status: CatalystStatus;
+    acceptedAt: string | null;
+    completedAt?: string;
+    eventTimestamp?: string | null;
+  },
 ) {
   saveAnalysisVersion(db, {
     ticker: 'ACME',
@@ -70,7 +75,7 @@ function acceptDossier(
         catalystType: 'UNKNOWN',
         catalystGrade: 'UNKNOWN',
         summary: null,
-        eventTimestamp: null,
+        eventTimestamp: options.eventTimestamp ?? null,
         freshness: 'UNKNOWN',
         whyTradersMayCare: null,
         plausiblyExplainsMove: null,
@@ -439,5 +444,149 @@ describe('time to intelligence', () => {
     });
     expect(timing.totalMs).toBeNull();
     expect(timing.queuedToCollectionMs).toBeNull();
+  });
+});
+
+/**
+ * A catalyst the desk itself calls STALE is not an answer — top 12 only.
+ *
+ * HIS RULING, 2026-09-25: *"yes, re-ask stale catalysts — top 12 only"*, under
+ * his product rule of the same day: *"TMI isn't about being FAST, it's about
+ * being ACCURATE. so if it's public we should have it."*
+ *
+ * THE CASE. `AIFF` ran on a GLOBE NEWSWIRE release; a competing scanner had it
+ * at 07:53 ET with the name already up 5%; the desk asked ONCE at 07:48 —
+ * three minutes into the move, before the wire had propagated — and never
+ * asked again in seven hours. It did not stop because it found nothing. Its
+ * dossier carried `FRESH_FOUND` on a catalyst from eight days earlier, so the
+ * question closed because the desk believed it already had the answer.
+ */
+describe('a stale catalyst re-opens the question, inside the top 12', () => {
+  const EIGHT_DAYS_OLD = '2026-08-09T12:00:00Z';
+  const TODAY = '2026-08-17T11:00:00Z';
+
+  it('re-asks a top-12 name whose catalyst has gone stale', () => {
+    const db = temporaryDb();
+    acceptDossier(db, {
+      status: 'FRESH_FOUND',
+      acceptedAt: '2026-08-17T13:40:00Z',
+      eventTimestamp: EIGHT_DAYS_OLD,
+    });
+
+    const decisions = queueDiscoveryResearch(db, [candidate({ rank: 9 })], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: PAST_THE_INTERVAL,
+    });
+
+    expect(decisions[0].queued).toBe(true);
+  });
+
+  it('still skips when that same catalyst is from today', () => {
+    /*
+     * The gate must ADMIT as well as refuse. Without this, a change that
+     * re-asked EVERY accepted name would pass the test above and quietly
+     * multiply the desk's job count.
+     */
+    const db = temporaryDb();
+    acceptDossier(db, {
+      status: 'FRESH_FOUND',
+      acceptedAt: '2026-08-17T13:40:00Z',
+      eventTimestamp: TODAY,
+    });
+
+    const decisions = queueDiscoveryResearch(db, [candidate({ rank: 9 })], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: PAST_THE_INTERVAL,
+    });
+
+    expect(decisions[0].queued).toBe(false);
+    expect(decisions[0].reason).toContain('accepted');
+  });
+
+  it('does NOT re-ask below rank 12, which is the half he bounded', () => {
+    const db = temporaryDb();
+    acceptDossier(db, {
+      status: 'FRESH_FOUND',
+      acceptedAt: '2026-08-17T13:40:00Z',
+      eventTimestamp: EIGHT_DAYS_OLD,
+    });
+
+    const decisions = queueDiscoveryResearch(db, [candidate({ rank: 13 })], {
+      tradingDate: DATE,
+      autoRank: 50,
+      now: PAST_THE_INTERVAL,
+    });
+
+    expect(decisions[0].queued).toBe(false);
+  });
+
+  it('keeps his 12 even when autoRank is configured wider', () => {
+    /*
+     * `autoRank` reads RESEARCH_AUTO_RANK from the environment. Gating on it
+     * would have widened his ruling to 50 the day that variable moved, which
+     * is naming when the bound usually holds rather than what he decided.
+     */
+    const db = temporaryDb();
+    acceptDossier(db, {
+      status: 'FRESH_FOUND',
+      acceptedAt: '2026-08-17T13:40:00Z',
+      eventTimestamp: EIGHT_DAYS_OLD,
+    });
+
+    const inside = queueDiscoveryResearch(db, [candidate({ rank: 12 })], {
+      tradingDate: DATE,
+      autoRank: 50,
+      now: PAST_THE_INTERVAL,
+    });
+
+    expect(inside[0].queued).toBe(true);
+  });
+
+  it('does not re-ask a catalyst whose age is unknown', () => {
+    /*
+     * No timestamp bands UNKNOWN, not STALE. An unknown age is not an
+     * established staleness, and treating it as one would be this desk's
+     * oldest mistake arriving by a new route.
+     */
+    const db = temporaryDb();
+    acceptDossier(db, {
+      status: 'FRESH_FOUND',
+      acceptedAt: '2026-08-17T13:40:00Z',
+      eventTimestamp: null,
+    });
+
+    const decisions = queueDiscoveryResearch(db, [candidate({ rank: 9 })], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: PAST_THE_INTERVAL,
+    });
+
+    expect(decisions[0].queued).toBe(false);
+  });
+
+  it('is still bounded by the re-ask interval, not the 5s board loop', () => {
+    /*
+     * Re-opening the question must not mean asking on every board cycle. The
+     * time bound sits below this gate and still governs: below the collector's
+     * discovery interval a re-ask cannot see anything the last one did not.
+     */
+    const db = temporaryDb();
+    acceptDossier(db, {
+      status: 'FRESH_FOUND',
+      acceptedAt: '2026-08-17T13:40:00Z',
+      completedAt: '2026-08-17T13:45:00Z',
+      eventTimestamp: EIGHT_DAYS_OLD,
+    });
+
+    const decisions = queueDiscoveryResearch(db, [candidate({ rank: 9 })], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: new Date('2026-08-17T13:48:00Z'), // 3 minutes later
+    });
+
+    expect(decisions[0].queued).toBe(false);
+    expect(decisions[0].reason).toContain('re-asked');
   });
 });

@@ -21,6 +21,7 @@ import {
 } from '../market/store/researchRepo';
 import { computeEvidenceFingerprint } from './fingerprint';
 import { evaluateRetry } from './retry';
+import { resolveCatalystFreshness } from './time';
 
 export interface QueueCandidate {
   ticker: string;
@@ -141,6 +142,24 @@ const LIVE_STATUSES = ['QUEUED', 'COLLECTING', 'SOURCES_READY', 'ANALYZING'];
 const DEFAULT_RECHECK_AFTER_MS = 10 * 60_000;
 
 /**
+ * How far down the board a STALE catalyst re-opens the research question.
+ *
+ * HIS RULING, 2026-09-25: *"yes, re-ask stale catalysts -- top 12 only"*, given
+ * against his product rule of the same day: *"TMI isn't about being FAST, it's
+ * about being ACCURATE. so if it's public we should have it."* Under that rule
+ * a three-minute lag behind the wire is acceptable and never finding a public
+ * release is not.
+ *
+ * A LITERAL 12 RATHER THAN `autoRank`, WHICH IS THE WHOLE POINT OF THE
+ * CONSTANT. `autoRank` defaults to 12 but reads `RESEARCH_AUTO_RANK` from the
+ * environment, so gating on it would silently widen his ruling to 50 the day
+ * that variable moved -- naming when the bound usually holds instead of what he
+ * actually decided. The effective bound is the MINIMUM of the two, so this can
+ * never reach past his 12 nor past the queue's own ceiling.
+ */
+const STALE_REASK_MAX_RANK = 12;
+
+/**
  * Reconciles research coverage for the eligible Top-N.
  *
  * Deliberately reconciliatory rather than edge-triggered: it looks at the
@@ -231,9 +250,46 @@ export function queueDiscoveryResearch(
      * is UNKNOWN is precisely the one worth re-asking.
      */
     const currentAnalysis = readCurrentAnalysis(db, candidate.ticker);
+
+    /*
+     * AND A CATALYST THE DESK ITSELF CALLS STALE IS NOT AN ANSWER EITHER.
+     *
+     * His ruling, 2026-09-25, top 12 only. THE CASE THAT PRODUCED IT: `AIFF`
+     * ran on a GLOBE NEWSWIRE release that morning; a competing scanner had it
+     * at 07:53 with the name already up 5%; the desk asked ONCE at 07:48, three
+     * minutes into the move and before the wire had propagated, and never asked
+     * again in seven hours. It did not stop because it found nothing -- it
+     * stopped because its dossier carried `FRESH_FOUND` on a catalyst from
+     * 2026-09-17, eight days old. **The question closed because the desk
+     * believed it already had the answer.**
+     *
+     * `UNKNOWN` re-asked and both kinds of confidence did not, and "confident"
+     * included confidently holding week-old news as current.
+     *
+     * DERIVED HERE RATHER THAN READ OFF THE DOSSIER, and that is not
+     * incidental. `catalyst.freshness` was banded by the guardrails against the
+     * clock at WRITE time; a catalyst written yesterday as RECENT is STALE
+     * today and the stored word still says RECENT. Re-deriving against
+     * `options.now` is the same seam `why.ts` uses, so the gate and the board
+     * cannot disagree about whether a name's news has gone old.
+     *
+     * A catalyst with NO timestamp bands UNKNOWN, not STALE, so it does not
+     * re-ask on this path. An unknown age is not an established staleness, and
+     * widening it here would be this desk's oldest mistake in a new place.
+     */
+    const staleReaskApplies =
+      candidate.rank <= Math.min(options.autoRank, STALE_REASK_MAX_RANK);
+    const catalystIsStale =
+      currentAnalysis !== null &&
+      resolveCatalystFreshness(
+        currentAnalysis.dossier.catalyst.eventTimestamp,
+        options.now,
+      ) === 'STALE';
+
     const answered =
       currentAnalysis !== null &&
-      currentAnalysis.dossier.catalyst.catalystStatus !== 'UNKNOWN';
+      currentAnalysis.dossier.catalyst.catalystStatus !== 'UNKNOWN' &&
+      !(staleReaskApplies && catalystIsStale);
 
     if (answered && existingJob?.acceptedAt) {
       decisions.push({
