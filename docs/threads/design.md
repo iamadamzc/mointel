@@ -44,174 +44,113 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-24 15:20 UTC
+## Live state — 2026-09-25 11:40 UTC
 
-**My head is the batch tip; see git.** What is DEPLOYED is Ops's to say; this thread has no
-deploy signal and a list I cannot verify is a guess with a shape.
+**My head is `34cf6f3`.** *What is DEPLOYED is Ops's to say.* What this seat
+OBSERVED on the board at 07:36 ET today: the freshness bands, the badge split,
+the sort marker, the filter work and the DCOY fix are all live. `34cf6f3` is
+committed and gated at the literal sha and is NOT live.
 
-**The brand shipped this week.** TMI now expands to *The Momentum Intelligence
-Trading Desk* — his ruling of 2026-09-18, which supersedes the 2026-09-08 name
-decision. The supersession is recorded in
-`docs/commercial/2026-09-08-product-name.md` above the original. Assets are in
-`public/brand/`; the mark is one component, `components/BrandMark.tsx`, and the
-standalone files exist per-ground because `currentColor` does not inherit
-through an `img` tag.
+**VERIFICATION ACCESS IS SOLVED. This was the biggest standing limit on the
+seat and it is gone.**
 
-**The cycle badge no longer names a side it cannot establish** (`a9df280`).
-Three verdicts, three renders: QUALIFIED switches the reference to today's own
-high; NOT_QUALIFIED leaves the settled badge; UNVERIFIABLE drops the pair AND
-the word and shows the prior high alone, dated.
+    scriptsws-create-review.ps1 -ServerHost mointel-ssm -Hours 6 -Label design
 
-**VERIFIED ON PRODUCTION `6e224ca`, 2026-09-22 after-hours.** Five of five
-render correctly: the float verdict (`FLOAT 5,680,000 CONSISTENT · under 8.14M
-shares outstanding filed 2026-08-11` on TOMZ), the change sentence (`new HOD`,
-not `NEW_HOD`), the persistent events band, the headline following the sort
-with both figures labelled, and the `Now` column with its number and sort.
+*SSH on port 22 times out from this host — his egress IP moved off the
+allowlist and nobody retired SSH — but Session Manager goes straight through.*
+**The URL prints ONCE. Capture it or the token is orphaned** (I lost one that
+way; revoke with `-Action revoke -Id N`). Read-only, time-limited, and the only
+way this seat sees production: the desk is otherwise behind one shared password
+it must never type.
 
-**ONE IS ONLY PARTIALLY VERIFIED AND MUST NOT BE WRITTEN UP AS DONE.**
-`72b8c1b`, the cycle contradiction. Both tables are demonstrably on the shared
-reading — the researched table now renders the price pair, which it never did.
-**But the test that FOUND the defect needs tickers on both tables, and after
-hours there are ZERO.** A no-overlap "no disagreements" is a check that cannot
-fail. *The extraction was re-proved working before the zero was believed.*
-**OWED: the same query during premarket, when the sets overlap.**
+**READ A REVIEW LINK BY CONTENT, NEVER BY STATUS.** A dead or expired token
+answers **HTTP 200** with ~11 KB. The live desk is ~1.1 MB with `RVOL` present.
 
-**DCOY is the live illustration of the Now column's whole argument:** rank 1 at
-3,105× RVOL, trading 4 times a minute, while rank 3 runs at 346.
+## What is verified ON THE LIVE BOARD
 
-**DESIGN HAS SEEN THE LIVE BOARD.** First sighted session this seat has had:
-a review token on 2026-09-22 premarket. **The token URL the script prints is
-DEAD** — `aws-create-review.ps1` defaults `-PublicUrl` to the CloudFront host,
-where every path now 301-redirects to itself, root included. The live host is
-`tmitrader.com` and the same token works there. Fix the default before anyone
-concludes review links are broken.
+*Nothing below is inferred from tests.* Sessions of 2026-09-22 and 2026-09-25.
 
-**What the sighting established, none of it findable from the tree:**
+- **The cycle badge's three renders** (`a9df280`) — `NO RUN`, `OFF HIGH $1.50 →
+  $1.46`, `DAY 1 $6.41 → $4.82`.
+- **The cross-table cycle contradiction is CLOSED** (`72b8c1b`), and it took
+  premarket to close: 2026-09-25 07:36 ET, five tickers on both tables, **five
+  agreeing, zero disagreeing**, pair included. *The after-hours attempt found
+  zero shared tickers, and a no-overlap "no disagreements" is a check that
+  cannot fail — it was recorded as partially verified for three days rather
+  than counted.*
+- **The float verdict** — `FLOAT 5,680,000 CONSISTENT · under 8.14M shares
+  outstanding filed 2026-08-11` on TOMZ, independently corroborated: the desk's
+  filed count equals the `8.14M provider SO` the vendor wrote in its own cell.
+  **It speaks on 3 of 9 researched rows; the other 6 say CANNOT VERIFY for want
+  of a filed count.** An SEC collection gap, not a render fault.
+- **The DCOY fix with its silent control** (`42c9a73`) — ten qualified rows
+  moved to `OFF HIGH <today's high>`, and TBPH, `NO_CYCLE` with
+  `todayStart: NOT_QUALIFIED`, still reads `NO RUN`.
+- **The change sentence** (`new HOD`, not `NEW_HOD`), the persistent events
+  band, the sort-following headline, the `Now` column and its sort.
 
-- **The cycle badge `a9df280` renders correctly** — `NO RUN`, `OFF HIGH $1.50 →
-  $1.46`, `DAY 1 $6.41 → $4.82`. That open item is closed.
-- **And it had left the other table contradicting it.** Three of the four
-  tickers on both Discovery and Researched Names showed different cycle
-  verdicts at the same moment. Same object, two readings. Fixed at `72b8c1b`:
-  one `cycleBadge` for both tables, deciding label, tone AND tooltip together.
-- **The float render works on production data** — 9 rows, 3 of the 4 states,
-  and TOMZ independently corroborated: the desk's own filed count equals the
-  `8.14M provider SO` the vendor wrote in its own cell. **6 of 9 say CANNOT
-  VERIFY for want of a filed count**, so the feature speaks on a third of the
-  researched board today. That is an SEC collection gap, not a render fault.
+## What the live board showed that no test could
+
+- **DCOY: rank 1 at 3,105× RVOL, trading 4 times a minute**, while rank 3 ran
+  at 346. The whole argument for the `Now` column, on one row.
 - **The market payload is 802 KB and 1.29 s per poll.** F-10 targets under
   15 KB. It is also why the board reads "Waiting for the first market payload"
-  for several seconds on load.
-- **The TODAY float cell refuses 7 of 9 live rows** — `provider SO`, `filing
-  SO`, `pro forma SO`, `post-split SO` are unrecognised tails and refuse the
-  whole cell, float included. The desk recovers via the RESEARCH tab, so
-  nothing is lost today. That is luck, not design, and it is Research's parser.
+  for seconds on load — which I briefly mistook for a defect and measured
+  before saying so.
+- **The TODAY float cell refuses 7 of 9 live rows** — `provider SO`,
+  `filing SO`, `pro forma SO`, `post-split SO` are unrecognised tails and
+  refuse the whole cell, float included. The desk recovers via the RESEARCH
+  tab, so nothing is lost today. **That is luck, not design**, and the parser
+  is Research's.
+- **A page loaded BEFORE a deploy keeps its old bundle.** I read DCOY as still
+  broken three minutes after the fix shipped and reported it. *"Verify after
+  the deploy" means RELOAD, not look.*
 
-**His two board observations are built** (`3d611d4`): the headline percentage
-follows the sort and both figures are now labelled, and the `Now` column
-carries the trade count for the most recent settled minute and sorts on it.
-**RANK and RVOL are provably one ordering** — `rvolRank` is assigned by sorting
-on `rvol`, confirmed 50 of 50 on the live payload.
+## The payload fields this seat is waiting on
 
-**The float render is built and pushed** (`7cc5076`). His four states, ruled
-2026-09-21 ET: REFUTED, CONSISTENT, CONSISTENT (stale), CANNOT VERIFY. One
-number and one verdict, with the filed count cited INSIDE the verdict — and
-`FloatClaimReading` exposes no field carrying that count, so a two-column
-layout is not a design a later seat can choose. **The stale case split-adjusts
-the count onto today's basis, which is what makes it sound rather than merely
-cautious:** the factor removes the split, issuance only grows a count, so the
-adjusted count is a floor under today's and a claim beneath it is genuinely
-consistent. Without a factor the comparison is VACUOUS rather than careful — a
-reverse-split name inflates its old count until every float fits under it — and
-that is CANNOT VERIFY, never a pass.
+**Both are the same shape: ask the producer for the ANSWER, and let the reader
+sit on safe behaviour until it arrives.** `qualified.observed` proved the
+pattern works — it was declared here, built by the engine seat, and
+`STARTED 5AM` lit up with no further Design work.
 
-**It also closes F-19's two-surfaces half.** The drawer's Float now shows
-`row.displayedFloat`, the number the board sorts on and turnover divides by,
-instead of the dossier's own extraction, which reaches no other surface. The
-model's float confidence left that line rather than moving: it measures the
-dossier's number and would now be sitting against the Sheet's. **NOT VERIFIED
-LIVE** — this seat has no token and structurally cannot authenticate.
+1. **`MarketSnapshot.catalystFreshFrom: string | null`**
+   `= afterHoursStartUtc(previousTradingDate(db, tradingDate))`, computed ONCE
+   per snapshot. **`resolveWhy` runs in the BROWSER** — `'use client'`, no
+   database, no `previousTradingDate` — so the prior-close freshness refinement
+   cannot be computed here. Omitting it falls back to his day bands, which
+   Research documents as safe. **Absent must keep meaning "bands only".**
+2. **`MarketSnapshot.lastCheckpointChanges`** — §9 item 12's rail. Per-ticker
+   `changedFields` + `changeSummary` + the checkpoint's `completedAt`.
+   **`AssessmentSummary.notes` is NOT a substitute**: it is `commentary()`'s
+   lines joined into one string, truncated at 2,000 characters, and
+   `commentary` drops every row whose summary is empty — exactly the set
+   `f303e14` exists to word. **Rows with an empty summary must be INCLUDED;
+   empty array ≠ absent.**
 
-**§9 item 12 is started, in pieces.** Two shipped: `f303e14` renders the
-checkpoint's change SENTENCE where sixteen-plus enums were the cell text and
-the sentence was the hover, and `9366d3f` makes the events band persistent.
-**The two that are left are named below, with the reason each is held.**
-
-**THE PRIOR-CLOSE FRESHNESS REFINEMENT NEEDS ONE INSTANT ON THE PAYLOAD.**
-`resolveCatalystFreshness` takes an optional third argument — the prior
-session's close — and its own doc says the caller supplies it *"because only
-the caller has the store"*. **This caller is the BROWSER.** `resolveWhy` runs
-inside `'use client'` components, where there is no database and no
-`previousTradingDate`. Omitting it falls back to the day bands, which Research
-documents as safe rather than merely tolerable, so the board is correct today
-and merely less refined.
-
-    MarketSnapshot.catalystFreshFrom: string | null
-      = afterHoursStartUtc(previousTradingDate(db, tradingDate))
-      computed ONCE per snapshot, never per row
-
-**Absent must keep meaning "bands only".** The same shape as
-`qualified.observed`: ask the producer for the answer, and let the reader stay
-on the safe behaviour until it arrives. *Third time a prescribed repair has
-assumed a server context this file does not have — the analysis was right each
-time and the repair shape was one layer off.*
-
-**WHAT ITEM 12 STILL NEEDS, AND ONE OF IT IS NOT MINE.**
-
-1. **A payload field for the checkpoint's per-ticker changes.** Checked, not
-   assumed: `MarketSnapshot.assessments` is an `AssessmentPanel`, which carries
-   `AssessmentSummary` only — no ticker rows, no `changedFields`, no
-   `changeSummary`. The data exists and is persisted (`assessment_tickers`,
-   read by `AssessmentSnapshotBoard` through its own fetch), and it is not on
-   the live payload. **`AssessmentSummary.notes` is not a substitute:** it is
-   `commentary()`'s lines JOINED INTO ONE STRING, truncated at 2,000
-   characters, and `commentary` drops every row whose summary is empty — which
-   is exactly the set `f303e14` exists to word. Building a rail from it means
-   parsing a display string back into records.
-
-   **The field, precisely.** On `MarketSnapshot`, beside `events`:
-
-       /** Per-ticker changes at the LAST completed checkpoint. */
-       lastCheckpointChanges: Array<{
-         ticker: string;
-         changedFields: string[];
-         changeSummary: string;
-         assessmentId: number;
-         /** The checkpoint's own completedAt, so the rail can timestamp it. */
-         at: string;
-       }>;
-
-   Uncapped over the checkpoint's tickers, and **rows with an empty
-   `changeSummary` are INCLUDED** — `changeReading` (`lib/dashboard/changes.ts`)
-   words them, and dropping them at the writer is what hides them today. An
-   empty array means the checkpoint found no changes; **absent means no
-   checkpoint has completed**, and the two must not collapse.
-
-2. **The rail layout.** §6 puts it in a 320 px right column, which restructures
-   the board into two columns. **Held deliberately.** Everything shipped this
-   session is content inside an existing layout, where not seeing it costs
-   little; a shell restructure on the surface he trades from is a different
-   risk class, and this seat cannot authenticate to look at it.
-
-**The audit remains the specification.** `docs/Design/design-audit-report.md`,
-its §9 plan and its §10 acceptance criteria. All six §11 decisions are settled;
-the answers sit beside the questions. Do not re-ask one.
 
 ## Open items
 
 | Item | Owner | Waiting on |
 | --- | --- | --- |
-| Float render — seeing the four states on a real row | Design | His token; built at `7cc5076`, never rendered |
-| Deploy of `0efec96`, `42c9a73`, `acc3095` | Ops | His "yes to all"; `42c9a73` fixes DCOY, live at rank 1 reading NO RUN |
-| Cycle-fix overlap check | Design | Premarket, when both tables share tickers; token id 39 expires 07:04 ET |
-| `aws-create-review.ps1` prints a dead URL | Ops owns the script | Default `-PublicUrl` is the retired CloudFront host |
-| The mark on a real handset | Design | His phone; nobody has looked |
-| Manual spine — the dozen things a user would misread | Design | His yes; drafted from the log, not from memory |
-| `anchorLateScope` render (row mark + board statement) | Research builds the field | The field; ships with the render, never half |
-| §9 item 12 — checkpoint changes in the rail | Read-model seat builds the field | `lastCheckpointChanges` on `MarketSnapshot`; spec above |
-| §9 item 12 — the 320 px rail layout | Design | His token; held, not unscoped |
-| §9 item 13–19 (rest of Phase 2) | Design | Unstarted |
+| Deploy of `34cf6f3` | Ops | The accent fix for the sort legibility; gated at the sha |
+| `catalystFreshFrom` on the payload | Engine/Research seat | Spec above; reader is safe without it |
+| `lastCheckpointChanges` on the payload | Engine/Research seat | Spec above; §9 item 12's rail blocks on it |
+| The `Now` column HEADER label | Design | A width measured in the real font at the 1,024 px floor |
+| A fourth freshness band past 21 days | His call | Research left 21 unimplemented: it currently divides nothing |
+| §9 item 12 — the 320 px rail layout | Design | The rail restructures the board into two columns |
+| §9 items 13–19 (rest of Phase 2) | Design | Unstarted |
 | §9 items 20–26 (Phase 3) | Design | Not scoped |
+| The mark on a real handset | Design | His phone; nobody has looked |
+| Manual spine — the dozen things a user would misread | Design | His yes; drafted from the log |
+| `anchorLateScope` render (row mark + board statement) | Research builds the field | The field; ships with the render, never half |
+
+**The `Now` header is the one to pick up first** — it is small, it is the last
+loose end of a complaint he raised twice, and the measurement is the whole job:
+the table is 990 px inside a 1,014 px container at the floor, so the unit has
+about 24 px to live in. `−1m` says WHEN and never WHAT; the units are on screen
+only while that sort is active, in the line that reads
+`sorted by now · trades in the last settled minute`.
+
 
 **Hazards that cost something and are not obvious from the code:**
 
