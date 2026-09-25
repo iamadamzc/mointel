@@ -117,6 +117,15 @@ that HIS reading is buried in shop chatter, not that the chatter exists.*
 the same moment as the ruling: the first draft of this section had the rule right and the scope wrong, and
 it took him a second message to fix it.*
 
+> **"PRINTED" — INTEGRATION'S INTERPRETATION, FLAGGED AS ONE BECAUSE IT IS NOT HIS WORDS.** *Read as
+> material that physically gets printed: paper. His standing preference is recorded as "Preserve printing",
+> and his sentence sets length against a case where length has a physical cost.* **Web asked whether it
+> means printed REPORTS or PUBLISHED pages; both readings land on the same discipline for that seat, so it
+> was not put to him — asking would have been the shop chatter he had just ruled against.** *Landing-page
+> and legal copy stay tight for reasons independent of the clause: a stranger reads them once, and length in
+> refusal copy is itself a defect. **If a seat ever finds a case where the two readings diverge and the
+> answer matters, that is the moment to ask him — not before.***
+
 > **AND HIS SECOND MESSAGE DOES NOT RETIRE HIS FIRST — R&D's framing, and it is the one to keep.** *The
 > defect he named was a RATIO: a dozen reports against three actionable findings. **That is a relevance
 > failure, and brevity was never the fix.*** A seat that answers this rule by writing shorter reports about
