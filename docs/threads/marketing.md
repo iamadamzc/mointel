@@ -268,13 +268,16 @@ has an answer, it is a commit message or a charter line, not a message to him.**
 
 - **Show him copy, not descriptions of copy.** *He reacts to a page faster than to
   a question.* **Use the `design` skill or hand Web finished words.**
+- **Brevity is a CRAFT constraint on PRINTED copy, not a reporting one.** *His
+  standing preference, 2026-09-25: anything a reader will see stays tight. But he
+  ruled the same day against trading excellence for brevity between seats — so a
+  report, a relay or a doc is as long as the work requires, bounded only by context
+  cost. Do not compress reasoning he asked for; do compress the words on the page.*
 - **`git commit --only <explicit paths>`. Never `git add -A`, and `git add <path>`
   first does NOT save you. NAME THIS THREAD in the message** — every commit in this
   repo carries the same author; the charter file touched is the only discriminator.
 - **Take the clock from `zoneinfo` at the moment of use.**
-- **Route cross-thread traffic through Integration; he is not a transport** — and
-  the same economy binds peer messages: relay what changed for the product, not the
-  narration.
+- **Route cross-thread traffic through Integration; he is not a transport.**
 
 ---
 
