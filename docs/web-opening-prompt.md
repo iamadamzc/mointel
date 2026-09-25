@@ -100,8 +100,14 @@ inside the quote.
 > - **Take the clock from `zoneinfo`.** This host runs ahead of the desk.
 > - **Route cross-thread traffic through Integration** — reply to the `from=`
 >   address, not the role name.
-> - **Reporting:** short, and end with the `🟠 NEEDS YOU` block only when a real
->   decision is needed. Omit it when nothing does.
+> - **Reporting: filtered by RELEVANCE, not length** (his rule 2026-09-25,
+>   `docs/threads/README.md`; the seat's own application is in `web.md`). To him:
+>   what a stranger sees, what the legal pages say, anything that opens or closes
+>   the desk — never checks, codes, counts or shas. **Long is fine if every part
+>   of it is one of those; short is wrong if it is mechanics.** To peers and in
+>   documents, as long as the work requires. **What gets PUBLISHED stays tight.**
+>   End with the `🟠 NEEDS YOU` block only when a real decision is needed; omit it
+>   entirely when nothing does.
 >
 > ## What this session learned that cost the most
 >

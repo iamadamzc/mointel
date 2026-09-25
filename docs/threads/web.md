@@ -364,6 +364,26 @@ which of its outputs are mechanics — so, named:**
 > **The conclusion is still product; only the instrument is mechanics.** *Report
 > what is true of the live site. Never report the sweep.*
 
+**AND THE RULE GOVERNS HIS CHANNEL ONLY. THE AXIS IS RELEVANCE, NOT LENGTH.**
+*His own boundary, given minutes after the rule and recorded at `47efeb4`:*
+**"don't sacrifice excellence for brevity."**
+
+- **To him: long is fine if every part of it changes a decision of his or what
+  the product does. Short is wrong if it is mechanics.**
+- **To Integration, to other seats, and in this file: as long as the work
+  requires** — bounded by context cost, which is the session-hygiene rule's
+  concern and **not his instruction.** *Never shorten a defect report to obey a
+  rule about his reading.*
+
+> **THE PRINTED CLAUSE LANDS ON THIS SEAT HARDER THAN ON ANY OTHER, and it is
+> the one place where "tight" IS the instruction.** *Everything this thread
+> ships is printed — the landing page, the legal documents, the refusal copy, a
+> sentence a stranger reads once on a phone while deciding whether to bother.*
+> **His standing preference and this charter's own measure already agree there.**
+> *The relevance filter governs what this seat SAYS to him; the tight preference
+> governs what it PUBLISHES. They are different surfaces and neither one
+> licenses the other.*
+
 ### The rest, which is between this seat and the tree
 
 - **`git commit --only <explicit paths>`. Never `git add -A`, and `git add <path>`
