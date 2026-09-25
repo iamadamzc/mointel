@@ -206,6 +206,33 @@ verbatim and not re-paraphrased here): tooltips are welcome on column names
 *"if it makes sense"* — his own limiter, and it excludes a tooltip that
 restates the header.
 
+**2026-09-25, on sub-minute:**
+
+> *"1, both. 2, now with updated tooltip. but 1 is going to impact 2, at least
+> on messging."*
+
+**`1` and `2` are the two items in that block; `both` selects both options
+under item 1, which read:**
+
+> **(i) The rolling 60-second count** — same grain, no capture needed, removes
+> 60–120s of lag from the number and from the sort. Days, not weeks.
+>
+> **(ii) True 10s grain** — needs sub-minute CAPTURE first, which is R&D's Q2
+> and currently blocked. Weeks, and it is a Research build before it is a
+> Design one.
+>
+> *My recommendation is (i) now and (ii) commissioned.*
+
+**So the capture is commissioned by his word, not by my characterisation of
+it** — and `2, now` is the header ruling, where `now` is the WORD `Now` and
+not an instruction about timing, which the clause that follows confirms.
+
+*Research declined to start a storage-bearing build on my summary and asked
+for the words. That was correct and the omission was mine: I wrote "his
+ruling: commissioned" into the open items ONE MESSAGE after recording that
+this thread has published a false "he ruled it" before. **A standard I state
+and then do not apply to my own next entry is not a standard.***
+
 ## The 10-second question, measured 2026-09-25
 
 **HIS CLAIM, AND HE ASKED FOR IT ON THE RECORD:** *"im a thousand percent
@@ -294,6 +321,36 @@ they sort against each other honestly. A 10s count against a 60s count does
 not — it is a sixth of the number for the same activity, and the sort would
 put every non-hi-res name on top.** That is the whole reason (i) can ship
 before capture and (ii) cannot.
+
+**THE COUNTER MUST NOT SIT WHERE A COUNTER WOULD NATURALLY GO — Research's
+finding, verified here at `engine.ts:1394`.** `ingestTrade` runs three guards
+before it records anything, and **two of them are PRICE semantics that a COUNT
+must not inherit:**
+
+    price === null || price <= 0      price validity
+    !this.inSessionWindow(ts)         session membership   <- the only one a count owns
+    !isNewerObservation(priceAt, ts)  MONOTONICITY
+
+`isNewerObservation` is `candidate >= current`, so same-millisecond trades
+survive and **OUT-OF-ORDER ARRIVALS ARE DROPPED.** A counter added inside the
+existing flow sits below that and undercounts — **worst during the
+highest-rate minutes, when out-of-order arrival is most likely, which is
+precisely the minute this field exists to reveal.** *It would ship a fix for
+undercounting that undercounts, and the error would look like the defect.*
+
+**The count's only legitimate predicate is session membership.** Research
+named the monotonicity guard; the price guard sits ABOVE the session check
+too, so counting after `inSessionWindow` still inherits it. **Cleanest is to
+test the session first, count, then apply both price guards** — but that
+ordering is the engine seat's call and not mine to make in their file.
+**Either way: if the number arrives and reads low, these three lines are the
+first place to look.**
+
+*And `ingestTrade` retains no timestamps at all today — it updates price,
+`priceAt` and the session highs. So this is genuinely NEW state, a rolling
+window per hi-res symbol, not a projection of something already counted. The
+spec must not read as "expose what the engine already has": it counts
+nothing.*
 
 **WHAT THE READER DOES, AND IT IS SAFE AT EVERY STAGE:**
 
