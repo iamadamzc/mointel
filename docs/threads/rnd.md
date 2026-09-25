@@ -4067,6 +4067,42 @@ One name at rank 43 is the entire justification for a name-based rule.
 
 ## Working rules
 
+**THE LICENCE TO CORRECT COMES FROM HAVING OPENED THE THING — NOT FROM OWNING
+IT.** Recorded 2026-09-25 after six corrections in one afternoon across four
+seats, and **recorded in its corrected form because this seat first wrote it
+wrong and told the trader the wrong version.**
+
+**The claim I made, and it is false:** *every correction ran from the seat that
+owns the file toward the seat reasoning about it, never the other way.*
+**Integration refuted it from the day's own ledger, and the counter-examples
+include two of the three best catches:**
+
+    this seat refuted Integration's approved work order
+      by opening lib/research/catalyst/irRegistry.ts   -- RESEARCH owns that file
+    Integration refuted this seat's url bound
+      by opening irRegistry.ts:200                     -- Integration owns NO code at all
+    Integration refuted a short-collection alarm
+      by counting test files at four shas              -- nobody owns that number
+
+> **Ownership was incidental. It correlates only because owners open their own
+> files most often.** **The invariant is that every correction came from whoever
+> OPENED THE ARTEFACT OR RAN THE QUERY, and not one came from a seat that had
+> not.**
+
+**WHY THE WRONG VERSION IS ACTIVELY HARMFUL, which is the reason this is a rule
+and not an anecdote.** *"Route it to the owner and defer"* would have suppressed
+**the expiry that already existed** — found by a seat that does not own that
+file — and **the broken url bound** — found by a seat forbidden product work
+entirely. **Deference to the owner is exactly what let `FRESH_FOUND` stand on an
+eight-day-old timestamp for seven hours: everyone deferred to the field's owner
+and nobody opened `schema.ts`.**
+
+**The usable form: opening the artefact licenses the correction, and that
+licence is available to every seat, including the ones with no code.** *The
+converse of this register's existing rule — never assert what you have not
+opened — and the more useful half, because the existing one only tells you when
+to stay quiet.*
+
 **A LOOK-AHEAD CHANNEL CLOSED AT ONE LEVEL REOPENS AT THE NEXT.** Recorded
 2026-09-25, Integration's framing of the C2 result, because the shape has now
 appeared **twice inside a single question** and is the thing to check on the next
