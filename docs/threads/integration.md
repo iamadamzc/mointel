@@ -330,6 +330,37 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
 > > *Research had the 7-row measurement in hand and read it as an opportunity before checking what
 > > time of day the stamps carried.*
 
+> **✅ IFBD/MGLD SETTLED TWICE, FROM TWO INSTRUMENTS. CRITERION UNCHANGED, `0a17601` CLEAR TO SHIP.**
+>
+> - **Ops RETRACTED its own flag** after finding the real feature input: **`$.catalyst.eventTimestamp`
+    in the dossier JSON via `research_dossiers.current_version_id`** — not `research_sources.published_at`,
+    a different population. At the true input **all seven per-row predictions agree**; IFBD is
+    `17:00:47Z` = 13:00 ET, before the close, amber.
+> - **Research settled the RULE independently: selection is NOT "newest active source".**
+    *`eventTimestamp` is a MODEL OUTPUT against a field with no stated rule — `schema.ts:90`
+    declares it `nullableString` with **no description**, `SYSTEM_PROMPT_A` never mentions it, and
+    `guardrails.ts:265` validates the cited source IDs exist but **never compares the stamp to any
+    source's `published_at`.*** So an in-band active source does not imply an in-band selected
+    catalyst.
+>
+> > **AND OPS CORRECTED A SEAT THAT WAS RIGHT, THEN CAUGHT ITSELF — its own framing, kept:
+> > "a confident retraction of a correct finding is how a good criterion gets thrown away."**
+> > *It told me Design's `IFBD 13:00 ET` matched no row and belonged to BYAH, and suggested a UTC
+> > value had been read as ET. Design was exact.* **Three silent nulls produced it, all one shape:
+> > `symbol` for `ticker` with stderr suppressed, then `$.catalyst.publishedAt` for
+> > `$.catalyst.eventTimestamp`, twice — each returning a clean empty result that looked like a
+> > finding.** *It survived only because the check was cheap and was run BEFORE 10:36 rather than
+> > after.*
+>
+> > **SHAPE CENSUS OVER CURRENT DOSSIERS (Ops) — a third population again, and the biggest number
+> > yet:** `Z` 498, offset 32, **` ET` 74**, other incl. bare dates 270, of 874 with a timestamp.
+> > **` ET` + bare dates = 344: over a THIRD of dossiers can never reach FRESH by construction.**
+> > *Not a defect and it fails safe — but it makes Research's "do not fix the ` ET` shape" the
+> > LOAD-BEARING instruction rather than a footnote, because 344 is exactly the sort of number that
+> > makes the wrong fix look overdue. And the fill-value error only ever PROMOTES, so it could
+> > never appear as a wrong band — only as too many greens, which is a defect with no failing
+> > appearance.*
+
 > **And the positive case is already proven present, which is the whole reason this check can
   fail honestly: `INLF` is a known in-band row.** *Ops's condition — "zero is the only unambiguous
   failure, and only if the before-reading was non-zero" — is satisfied without a new computation.*
@@ -666,6 +697,27 @@ here.* His inputs (Google creds, when) are in OPEN AND HIS.
 > deploys — not a failed fix.** *Recorded here 2026-09-25 on Research's catch: the tenth session
 > had claimed this was already in LIVE STATE; it was not committed, only said in chat — the
 > "never assert what you haven't opened" rule, turned on the seat that carries it.*
+
+### ⚠️ THE FRESHNESS BAND RESTS ON AN UNCONSTRAINED MODEL OUTPUT — RESEARCH'S, NOT BLOCKING
+
+**Research, 2026-09-25, found while settling the IFBD question.** **His freshness ruling is
+computed from `catalyst.eventTimestamp`, which is a MODEL OUTPUT that nothing defines and nothing
+validates.** *`schema.ts:90` declares it `nullableString` with no description — about ten lines from
+the comment explaining why `freshness` was removed from the schema for precisely that reason.
+`SYSTEM_PROMPT_A` never mentions it. `guardrails.ts:265` confirms the cited source ids EXIST and
+recomputes `catalyst.freshness` from the stamp, but **no check ever compares the stamp to the
+`published_at` of any source the catalyst cites** — it is not constrained even to its own evidence.*
+
+> **THIS IS THE `freshness` DEFECT'S TWIN, AND THE REPLACEMENT INHERITED IT.** *A four-day thread
+> removed `freshness` from the model because the enum had no description and the prompt never
+> defined it. **The arithmetic that replaced it reads a field with the same two properties.** The
+> band is now computed honestly from a number nobody constrains — which is a better failure than
+> the original and is not a different one.*
+
+**Does NOT block `0a17601`: today's deploy makes nothing about it worse.** *Research owns it, is
+recording it, and is **sizing it before proposing anything** — the obvious fix is to constrain the
+stamp to the cited sources' published times, and after the `20:00:00 ET` trap the same morning it
+will count what that would move first. Correct, and the reason this is filed rather than routed.*
 
 ### ⚠️ ON MONDAY A ROW RENDERS `3d` IN GREEN — FOUND BEFORE IT SHIPPED, NOT A SHIP BLOCKER
 
