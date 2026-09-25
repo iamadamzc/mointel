@@ -1201,7 +1201,57 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
-#### SUSPECTED INSTRUMENT FAULT ON THE FOUNDING QUESTION: "no catalyst" may be a DEFAULT. 2026-09-25. MECHANISM NOT YET ESTABLISHED.
+#### AUDITABILITY DEFECT, NOT AN INSTRUMENT FAULT — and the stored-default hypothesis is REFUTED. 2026-09-25.
+
+> **THIS ENTRY WAS OPENED AS "the instrument returns no-catalyst without
+> looking" AND THAT IS NOT WHAT IT IS.** Three corrections landed within the
+> hour, from three seats. **The last is mine and it releases most of the hold.**
+> Kept in order, per the register rule that a correction stands beside what it
+> replaced.
+>
+> **1. Integration WITHDREW the number that made it convincing** — *"26 of 27
+> never attempted a known company feed"*. `companySourceDetail: 'not attempted'`
+> refers to the **RESOLUTION** step — discovering the feed URL — which is
+> correctly skipped when a URL is already on file. **It was never evidence about
+> the fetch.**
+>
+> **2. Integration re-framed what survives, and the re-framing is right.** The
+> stored `collector_report` is an **eight-field summary**, and
+> `networkRequests`, `discoveryRan`, `discoveryDetail` and `companyReleases` are
+> **NOT PERSISTED**. *So the remedy I sent Integration and Ops — check
+> `networkRequests` — cannot run against stored data at all. That was my error
+> and it is corrected here rather than quietly dropped.*
+>
+> **3. MINE, and it refutes the premise outright.** `recordCollectorReport` is
+> called in `worker/research.ts` **after** the collector returns, and the
+> collector has **no early returns** — its only `return report` follows the
+> state reassignment. **So the initialised `NO_RECENT_SOURCE_LOCATED` can NEVER
+> reach the database.** Every persisted state is a real evaluation. **And
+> `NO_RECENT_SOURCE_LOCATED` requires a truthy `knownSourceUrl`, which forces
+> the fetch** — a skipped fetch routes to `COVERAGE_INCOMPLETE`. *So a stored
+> `NO_RECENT_SOURCE_LOCATED` means: the desk held a usable source, fetched it
+> successfully, and it carried nothing recent. **An honest negative.***
+>
+> **Research reached the same conclusion independently and has patched the
+> field** — `companySourceDetail` now reads `attempted <url>` at the fetch site,
+> with this incident recorded in the comment. *Line numbers below predate that
+> patch and have shifted.*
+>
+> **WHAT SURVIVES IS NARROW AND CHECKABLE.** One false-negative channel remains:
+> **fetch succeeds, parse succeeds, zero recent items come back.** A read
+> *failure* routes to `COVERAGE_INCOMPLETE`, but **a read that parses cleanly
+> and yields nothing falls through to `NO_RECENT_SOURCE_LOCATED` and is
+> indistinguishable from a true negative.** **AIFF this morning fits it exactly**
+> — `sourcesAdded: 0` against a feed on file, fingerprint identical to its 09-18
+> job.
+>
+> **HOLD STATUS: the broad hold is RELEASED; a narrow one stands.** The levels
+> (the register's `83%`, today's `14.6%`) are **not** measuring a collector that
+> never looked. They remain **unverified against the parse channel above**,
+> which is bounded and testable rather than open-ended. **Quote them with that
+> caveat; never bare.**
+
+#### As first recorded, 2026-09-25 — kept because the reasoning is what is worth reading
 
 **Raised by Ops via Integration today; the code claims are verified HERE rather
 than relayed, and two of them do not hold. Recorded before the mechanism is
