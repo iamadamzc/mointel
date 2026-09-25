@@ -623,6 +623,15 @@ and NOT ONE of the 24 touches any of the three files the sort fix changes.*** `g
 > > number under the wrong frame gets re-derived, found not to match, and costs the reader their
 > > trust in the whole hand-off rather than in the figure.*** *Neither instance was carelessness,
 > > and neither would have been caught by checking the arithmetic.*
+>
+> **THIRD FORM, same day, and this one is an EXPECTED VALUE rather than a reported one.** *Research
+> measured 6 of 325 rows changing band, over everything STORED. The live board is 12 rows and holds
+> ONE candidate. Both numbers are right; **a verifier who takes "6" to the deploy reads a correct
+> board as broken.*** **An expected value borrowed from another population is the same defect as a
+> count borrowed from another base — and it is worse, because it fires at the moment of
+> verification, where a false negative gets filed as a regression.** *Say the population with the
+> number, every time, and when handing an expectation to whoever will CHECK the thing, state it in
+> the population THEY will be looking at.*
 
 **That single fact is doing two opposite jobs at once, and that is the trap:**
 

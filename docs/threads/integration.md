@@ -271,6 +271,22 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
    relayed (an invite is a grant; Ops raises it when the tooling reaches production).
 3. **When to run the cut-over** — a window outside his trading hours; Basic-Auth-off is his call.
 
+> **⚠️ AFTER `0a17601` SHIPS, EXPECT **ONE** ROW TO CHANGE — NOT SIX. SIX WOULD BE THE DEFECT.**
+  *Design took the BEFORE reading off the live board at 09:15 ET rather than after the deploy,
+  when it would have been gone; `578b2d9`.* **Research's 6-of-325 is over EVERYTHING STORED. The
+  live Discovery board is 12 ROWS and holds exactly ONE candidate** — `INLF`, catalyst
+  `2026-09-24T21:18:05Z` = 17:18 ET, after the 16:00 close, rendering amber `16h` and which must
+  turn GREEN. *Six controls sit beside it and must NOT move: `IFBD` (13:00 ET, the nearest miss at
+  3h short), `MGLD`, `APUS`, `BYAH`, `JAGX` — all clocked the same calendar day on the wrong side
+  of the close — and `ONCO`, a BARE DATE that **cannot** move, where green would be Research's
+  tripwire firing rather than the feature working.* **Anyone checking this deploy against "6" will
+  read a CORRECT board as broken.**
+>
+> *Also measured, and it is the control the local check could not provide: **`catalystFreshFrom` is
+  ABSENT from the production payload — the KEY, not a null value.** Locally the key is PRESENT and
+  null. The two states are distinguishable, so "`7a0ad0c` is not live" is measured rather than
+  assumed — and after the ship, a null KEY PRESENT is a different and meaningful reading.*
+
 > **✅ RESOLVED 2026-09-25 — `0a17601` IS ENUMERATED AND APPROVED. Design re-based onto `49efd1a`
   and Ops gated at that exact sha (ALL GREEN, 155 files / 2,364 tests / 0 lint). Read the block
   below for the MECHANISM; the refusal itself is spent.**
