@@ -67,10 +67,21 @@ someone holding a task and asking who takes it.**
 
 Routed the immediate work rather than the module: the universe capture goes to
 Research, on the same basis as `lib/review/` went to Ops — it is the only thread
-already writing there, having added `lib/market/cycle.ts`. **The module itself
-is deliberately left to the trader.** `lib/review/` was operational machinery and
-small; `lib/market/` decides who does most future work on this desk, and that is
-larger than a routing call.
+already writing there, having added `lib/market/cycle.ts`. `lib/review/` was
+operational machinery and small; `lib/market/` decides who does most future work on
+this desk, and that is larger than a routing call.
+
+> **❌ SUPERSEDED THE SAME DAY, AND THIS PARAGRAPH SAID "the module itself is deliberately left to the
+> trader" FOR THIRTEEN MONTHS AFTER IT STOPPED BEING TRUE.** *He instructed; Integration assigned;
+> `63ef1d6` wrote the assignment into `README.md` — **"Who owns `lib/market/`"**, live at HEAD:* **`Does it
+> define, migrate or version a table? Ops. Does it compute? Research.`** *`lib/market/store/` → Ops;
+> the rest → Research.*
+>
+> **THIS LINE THEN MISLED THE ELEVENTH AND TWELFTH SEATS, and the twelfth nearly spent his attention
+> re-deciding something he had personally instructed.** *Research caught it by opening the register.*
+> **A CHARTER THAT NARRATES A DECISION IS A SECOND COPY OF IT — and the copy that does not get updated
+> becomes the authority, because it is the one the owning seat reads first.** *The record lives in
+> `README.md`; this paragraph should have ended at the routing call.*
 
 ## A relayed delegation does not answer a question put to him directly
 
@@ -728,7 +739,12 @@ vacuous rather than honest.* **It is honest: the desk read the right feed and th
   DO carry supply.* **Ops's, fold into a deploy. Re-verified still unwritten at HEAD 2026-09-25.**
 - **`market.state` DEGRADED/OFFLINE false-red** — a one-sample message-age blip or a restart window
   trips it on a healthy feed. *Cosmetic; threshold fix pending his go.*
-- **`worker/` AND `lib/market/` HAVE NO CHARTER OWNER — it bit three times today.** *Ops accepts the
+- **`worker/` HAS NO CHARTER OWNER — it bit three times today.** *❌ **CORRECTED 2026-09-25: this line
+  originally read "`worker/` AND `lib/market/`" and the second half is FALSE.** `lib/market/` was assigned
+  on 2026-08-24 at his instruction (`63ef1d6`, `README.md` — store → Ops, the rest → Research). `worker/`
+  is genuinely unassigned, verified: it appears nowhere in the ownership register. **Two modules carried in
+  one sentence, one true and one false — the same collapse this desk spent the day finding in counters,
+  arriving in a charter line.*** *Ops accepts the
   `market:recover-bars --count-only` write defect as operator: it migrated the LOCAL store to schema
   v15 and pruned 15 schema backups on a path `data-access.md` documents as non-writing. Data verified
   intact, production untouched.* **Also unowned and unfixed: the bare `'raw'` literal at
