@@ -67,7 +67,7 @@ no check.*
 
 ```bash
 # Every load-bearing sentence must be in BOTH the artboard and the page source.
-for s in "None of this is on the chart"          "a float does not get cleaner at 09:30"          "intelligence desk for people who trade"          "It is 07:15, a name is running"; do
+for s in "None of this is on the chart"          "a float does not get cleaner at 09:30"          "is built for people who trade"          "It is 07:15, a name is running"; do
   printf "%-42s canvas=%s page=%s
 " "${s:0:40}"     "$(grep -c "$s" docs/web/canvas/Main.dc.html)"     "$(grep -c "$s" app/page.tsx)"
 done
@@ -77,14 +77,23 @@ done
 pass, before claiming the pass has shipped.* **`page=0` is the failure this
 missed. A count above 1 is normal and must not be "fixed".**
 
-> *Caught by running the check on itself:* **`intelligence desk for people who
-> trade` reports `canvas=1 page=2`** — line 18 is the `<meta>` description and
-> line 306 is the body statement. *Two legitimate occurrences of one phrase,
-> because the page carries a search-results summary the artboard never had.*
+> *Caught by running the check on itself, 2026-09-17:* **`intelligence desk for
+> people who trade` reported `canvas=1 page=2`** — the `<meta>` description and
+> the body statement. *Two legitimate occurrences of one phrase, because the page
+> carries a search-results summary the artboard never had.*
 > **An equality assertion would have called that a defect and invited someone to
 > delete the meta description** — a stale check does not merely fail, it
 > proposes a fix, and this one would have proposed removing the sentence Google
 > shows in search results.
+
+> **AND THAT SAME PHRASE IS WHY THE THIRD LINE WAS REPLACED, 2026-09-25.** *The
+> body statement was rewritten on 2026-09-21 to name the price band — `is built
+> for people who trade $1–$20 small-cap momentum in the premarket` — so the old
+> phrase survived **only** in the `<meta>` description.* **The check still
+> reported `page=1`, still passed, and would have passed with the visible
+> sentence deleted.** *A literal that drifts off the visible page does not go
+> red; it goes quiet.* **The line now greps `is built for people who trade`,
+> which is in the body — verified `canvas=1 page=1 live=1` at `0170418`.**
 
 > **AND THE CONTROL IS NOT OPTIONAL HERE EITHER.** *A sentence absent from both
 > reads as agreement.* **Keep at least one line in the list that is known
