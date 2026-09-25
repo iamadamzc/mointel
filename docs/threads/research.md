@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T12:24Z
+## LIVE STATE — 2026-09-25T12:41Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -111,14 +111,31 @@ std 0.000, which reads as the model declining to answer; and collapsing a Choice
 to `1 - P(none)` produced a second false flag, because a Choice's variance lives
 in **which option it picks**.
 
-### PRODUCTION STATE — read off the box by Ops, 2026-09-23
+### PRODUCTION STATE — read off the box by Ops, 2026-09-25
 
-**The units run DIFFERENT shas, so "is it deployed" has no single answer.**
+**ALL FOUR UNITS ON `757cf6a`, first time since 09-18.** Read by Ops from
+`/proc/<pid>/cwd`, not from the symlink and not from the repo: `mointel-web`,
+`mointel-research`, `mointel-assess`, `mointel-market`, all active. The web tier
+deployed 2026-09-24 as a literal sha with `RESTART_MARKET=no` (public down 2s,
+`quick_check` 594.1s); the worker restarted separately at 20:24:07Z on his
+direct word, replaying 1,101,967 stored minute bars across 8,026 symbols in 47s.
 
 | unit | sha | what that means |
 | --- | --- | --- |
-| web / research / assess | `42c9a73` | carries the blue-sky trio (`27adbbd`, `b36afd1`, `6e224ca`) and the DCOY fix. **The blue-sky wording is live on his board now.** |
-| market worker | `34414f4` | replay before the seed — the premarket session-high rebuild |
+| web / research / assess / market | `757cf6a` | the whole catalyst-freshness thread is LIVE on his board: his 28-day row is amber, has lost the fresh chip, gained `no fresh news`, and reads `28d`. Carries the blue-sky trio and the replay build; `42c9a73` and `34414f4` are superseded, not lost. |
+
+**The premarket `sessionHigh` rebuild is now MEASURED, not inferred** — Ops's
+post-restart snapshot, 8,859 rows: day-wide cohort 3,239 with 0 highs lowered
+and 0 lows raised; per-session AH cohort 4,811 with 0 now-null, 0 lowered, 0
+raised. It was only measurable after 16:00 because `ah_high` does not exist
+during premarket.
+
+**Two cautions from Ops that belong in any reading of this table:** a restart
+permanently loses ~one minute of `minute_bars` at any hour, and `market.state`
+reads DEGRADED/OFFLINE on a quiet tape and for seconds after a restart — three
+false readings this week. Confirm against the log (`connected`,
+`authenticated SIP`, `whole-market bars subscribed`) before calling it an
+incident.
 
 **`b1d64b9` and `ea2d1c9` are ancestors of BOTH releases**, so the EDGAR filing-path check and R&D's EX-99 latency measurement are unblocked wherever they run.
 
@@ -126,26 +143,24 @@ in **which option it picks**.
 - **`worker/basis-backfill.ts --run` will NOT be run — he chose ORGANIC FILL** (`8f331ed`, 2026-09-22). The ~27% blue-sky recovery arrives gradually through `basisFetchDue` on the research job path instead of in one backfill. Census at the time: 431 due, 562 established. **Do not propose the `--run` again without new reason.**
 - **The restart fix is confirmed on real data: 0 of 1,825 rows read low** after the 2026-09-23 restart, cohort restricted to symbols WITH stored premarket bars. **Not a ratio against 1,481 of 7,936** — that was every name on the board, this is only the names replay reaches.
 
-### DEPLOY STATE OF MY LAST BATCH — UNCONFIRMED, CHECK BEFORE ASSUMING
+### THE `757cf6a` BATCH — CONFIRMED SHIPPED, 2026-09-25
 
-**`757cf6a` was routed to Ops on 2026-09-24 to gate at the literal sha and ship
-AFTER THE CLOSE. I never saw confirmation that it shipped.** The PRODUCTION
-STATE table above is Ops's reading of **2026-09-23** and predates it.
+**Resolved. It shipped on 2026-09-24 after the close** and all four units carry
+it; see PRODUCTION STATE above. The previous session never saw the confirmation
+and handed this over as unconfirmed, which was the right call on its evidence.
 
-**What is in that batch:** the whole catalyst-freshness thread — his 28-day row
-goes amber, leaves the fresh chip, gains `no fresh news`, and reads `28d` rather
-than `29d` — plus Design's `why.ts` half (`9c3447b`) and the label work.
-
-**What is NOT in it:** the prior-session-close FRESH window. See the first open
-item. **A 16:15 ET release still reading RECENT after this deploy is EXPECTED,
-not a failed fix.** Integration undertook to tell him that when routing; confirm
-he was told rather than assume it.
+**He WAS told that the prior-session-close FRESH window is not in it** —
+Integration reports flagging it when routing, so **a clocked after-hours release
+still reading RECENT is expected, not a failed fix.** Noted honestly: the
+sentence Integration quoted appears nowhere in this repo, now or anywhere in its
+history, so that rests on Integration's account of the exchange rather than on a
+record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
 - **⚠️ THE PRIOR-SESSION-CLOSE FRESH WINDOW: PRODUCER SHIPPED `7a0ad0c`, CONSUMER IS DESIGN'S AND NOT DONE.** `684902f` implements the band; `7a0ad0c` supplies the boundary as **`MarketSnapshot.catalystFreshFrom`**, computed once per snapshot server-side in `getMarketSnapshot`, null on both degraded snapshots and whenever the answer would be a guess. **Nothing on his board changes until Design passes it as the third argument** at `lib/dashboard/why.ts:239` — four `resolveWhy` call sites, routed to Design through Integration 2026-09-25. Until then **clocked after-hours releases still band RECENT** (6 rows in the 2026-08-23 snapshot), which is his date-only rule and is safe.
   **Two decisions inside `7a0ad0c` that went beyond the spec, both asserted in `tests/research/catalystFreshFrom.test.ts`:** it takes the **prior session's OWN close** rather than `afterHoursStartUtc`'s 16:00 default, which is three hours late the day after an early close; and the producer **refuses a stale calendar** rather than leaning on `resolveCatalystFreshness`'s five-day guard — and the test is that **the calendar still covers the date asked about**, not the size of the gap to the previous session, because an unscheduled closure produces the same gap with a current calendar and there the wide window is CORRECT. `calendarDays` is now exported from `lib/desk/checkpointDates.ts` rather than the calendar being parsed a third time.
-  **Size, measured before building: 6 of 325 analyses.** Only clocked events can be tested against a close boundary and 77% of stored timestamps carry no clock. A larger number after Design wires it means something is wrong.
+  **Size: 6 of 325 analyses, RE-MEASURED by this seat 2026-09-25 rather than inherited.** On `data/market-prod-2026-08-23.db`, through the shipped `resolveCatalystFreshness` rather than a second implementation of the band: 260 of 325 carry an event timestamp, **59 of those 260 carry a clock (201 bare, 77%)**, and **6 change band — every one of them RECENT → FRESH**, all clocked releases between 16:30 and 20:00 ET (XOS x2, TRUG, AIXC, PURR, ABUS). A larger number after Design wires it means something is wrong.
 
 - **Phase C, filing-derived float** — buildable now. `assessFloat` (`float.ts:326`) already IS the containment test: `IMPOSSIBLE` when a claimed float exceeds a current filed count. **The vendor half is prohibited, not expensive** — see constraints.
 - **31 personal-scoped justifications in this file.** Integration counted 86 across nine charters. **Fix as each finding is touched**; a bulk rewrite of reasons is how a wrong reason gets a confident new sentence.
