@@ -415,6 +415,12 @@ here.* His inputs (Google creds, when) are in OPEN AND HIS.
 > caught the sort fix (`34cf6f3`) and applies to `catalystFreshFrom` next. Every ship sha must be
 > confirmed auth-free until he runs the cut-over.*
 
+> **He WAS told (2026-09-24, in chat) that the prior-close FRESH refinement is NOT in `757cf6a`,
+> so a clocked after-hours release still reading RECENT is expected until `catalystFreshFrom`
+> deploys — not a failed fix.** *Recorded here 2026-09-25 on Research's catch: the tenth session
+> had claimed this was already in LIVE STATE; it was not committed, only said in chat — the
+> "never assert what you haven't opened" rule, turned on the seat that carries it.*
+
 ### THE CYCLE FRAME — RULED WHOLE, AND IT UNBLOCKS TWO CONSTANTS
 
 **RULED IN FULL. His direct words:**
