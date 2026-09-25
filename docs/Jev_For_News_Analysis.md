@@ -230,3 +230,139 @@ Cheap, live-forward, and it answers the cadence claim rather than a quality clai
 - **Not a way to reach new domains.** Triage ranks what discovery finds. **If the
   desk never fetches a domain, Jev cannot judge it** — the 69% gap is a collection
   problem first, and triage only becomes valuable once more candidates arrive.
+
+---
+
+# Could Jev REPLACE GPT on this desk? — priced assessment, 2026-09-25
+
+*Research seat. His question. The section above assessed Jev for one stage and
+closed with **"cost: UNEVALUATED, no rate card"** — both rate cards now exist, so
+the replacement question is answerable in dollars for the first time. Rates read
+first-hand today from the published lists, not recalled.*
+
+## The rate cards, both read 2026-09-25
+
+| model | input /Mtok | cached /Mtok | output /Mtok | source |
+| --- | ---: | ---: | ---: | --- |
+| `jev-1.13.0` | **$0.042** | — | **free** | `docs.typesafe.ai/models.md` |
+| `gpt-5.6-luna` | $0.20 | $0.02 | $1.20 | `developers.openai.com/api/docs/pricing` |
+| `gpt-5.6-terra` | $2.00 | $0.20 | $12.00 | same |
+| `gpt-5.6-sol` | $4.00 | $0.40 | $20.00 | same |
+
+Jev also: **64k context per request, 32k for `state` plus the longest question**;
+250k tok/s and 1,200 req/min; **text only**.
+
+## The answer in one line
+
+**Jev cannot replace the interpreter, because the expensive half of the expensive
+stage is generated prose and Jev does not generate text.** It can replace the
+*judgments* inside it — and the reason to want that is **correctness, not cost**.
+
+## Why not the interpreter: the money is in the output
+
+INTERPRETATION is **60.5% of the daily bill** ($4.22 of $6.99). Split it:
+
+```
+input   775,672 uncached @ $2.00  +  104,488 cached @ $0.20   =  $1.57   37%
+output  221,016            @ $12.00                           =  $2.65   63%
+```
+
+**63% of the cost of the most expensive stage is OUTPUT TOKENS.** Jev's output is
+free because Jev has no output to sell: it returns typed answers and
+probabilities, never text.
+
+And the dossier is mostly text. Schema census, `lib/research/interpret/schema.ts`:
+**19 free-text fields, 8 enum fields, 3 arrays.** The free-text fields are the
+product — `summary`, `whyTradersMayCare`, `reasoning`, the structure and cycle
+narratives. **Deleting GPT deletes those.** A dossier of eight enums and no prose
+is not the thing on his board.
+
+⇒ **Replacing the interpreter is not on the table at any price.** The stage would
+have to keep running for the prose, its input bundle would be unchanged, and Jev's
+cost would be *added* to it, not subtracted.
+
+## Where Jev genuinely wins, and it is not where the tokens are
+
+**DISCOVERY is 79% of tokens and 19% of dollars** ($1.35/day), because it runs on
+`luna` at a tenth of `terra`'s input rate and a tenth of its output rate.
+
+| | today | on Jev |
+| --- | ---: | ---: |
+| discovery input | 6,268,877 tok @ $0.20 | @ **$0.042** |
+| discovery cost | **$1.35/day** | **~$0.26/day** |
+
+**So the whole cash saving available from the stage Jev is actually suited to is
+about $1.09 a session — roughly $275 a year.** That is not a reason to do
+anything. **The reason is cadence, and the section above already establishes it:**
+`config.ts:26` spaces discovery wide *because a model call costs money*, and that
+is why a moving name reads `CATALYST UNKNOWN`. At Jev's price and rate limit the
+spacing constraint stops binding.
+
+**⚠️ ONE HARD SHAPE CONSTRAINT, MEASURED: the current discovery call would NOT FIT.**
+Discovery averages **43,534 input tokens per call**, and Jev's budget is **32k for
+`state` plus the longest question.** So Jev cannot be dropped into the existing
+call. It fits the **per-document** decomposition the probe already used —
+271,173 tokens over 227 requests is **1,195 tokens per request**, comfortably
+inside. *Jev does not replace the discovery call; it replaces the reason discovery
+is rationed.*
+
+Interpretation's bundles average **10,866 tokens** and would fit.
+
+## The strongest argument, and it is not economic
+
+**Three defects on 2026-09-25, one cause: a model output against an enum with no
+description.**
+
+| field | what happened |
+| --- | --- |
+| `freshness` | `schema.ts` declared the enum with no description; the prompt never defined it; a 28-day catalyst rendered green. Removed from the model entirely (`a12bfd6`). |
+| `eventTimestamp` | Bare `nullableString`, no description, no selection rule in the prompt, and nothing validates it against the sources the catalyst cites. **Still open.** |
+| `catalystStatus` | Undescribed enum. `FRESH_FOUND` on an eight-day-old event, on **41 of 138** analyses (30%). It also closed the re-ask, which is how `AIFF` went unresearched for seven hours (`388c57f`, `8687f04`). |
+
+**That defect class is structurally unavailable in Jev's API.** A Choice must
+carry `criteria` defining its options; a Noul must state the condition; a Score's
+levels must "describe concrete situations and stand on their own". **You cannot
+ask Jev for an undefined enum — there is nowhere to put one.** The JSON-schema
+interface permits exactly that, and this desk has now paid for it three times in
+one day.
+
+**And the answers arrive calibrated.** Today `catalystStatus` comes with a
+model-asserted `confidence` enum beside it, which is another undescribed field.
+Jev returns a probability per option plus a confidence derived from distribution
+concentration — which is what confidence-gated routing needs. **ESCALATION is 11
+calls and $1.28/day, 18% of the bill, on the most expensive model**, selected by a
+`CONFLICTING` heuristic. Selecting those by calibrated uncertainty instead is the
+documented pattern and would target the desk's dearest per-token spend.
+
+## What this seat would actually propose
+
+**Not a replacement. A demotion of the model's role in three places, none of which
+touches the prose.**
+
+1. **Triage in front of discovery** — the section above, unchanged, still the
+   highest-value use, and justified by cadence rather than by $1.09.
+2. **The catalyst enums as Jev judgments, with the interpreter still writing the
+   prose.** `catalystStatus`, `catalystType`, `catalystGrade` are a Choice, a
+   Choice and a Score over sets the desk already has. **The enums get definitions
+   because Jev's API will not accept them without.**
+3. **Confidence-gated escalation** in place of the `CONFLICTING` heuristic.
+
+**⚠️ AND A HARD BOUNDARY, from the prior project's settled findings, which must not
+be re-litigated:** *"Feed Jev price series, bar data, dates or arithmetic. It
+fails all of these by design."* **So the `cycle` block, the supply pair, the float
+work and every freshness computation stay exactly where they are.** Freshness is
+now arithmetic on this desk precisely because it should never have been a model's
+word — handing it to a different model would be the same mistake in a new coat.
+
+## What is NOT established, and must be before any of this is built
+
+- **The 0.80 triage bar still fails at 0.790**, and the diagnosis is that RCON's
+  corpus contains no news to find. **That re-runs only after a wire feed exists.**
+- **No Jev question here has been measured against this desk's enums.** The
+  std < 0.10 diagnostic must run on each before any of them is trusted.
+- **Contamination bites evaluation, not use.** Any historical "did Jev grade this
+  right" benchmark is contaminated by an unpublished training cutoff. **Validate
+  forward, on live sessions, which this desk can do natively.**
+- **The saving is not the case.** Total addressable spend across every stage Jev
+  could touch is **under $1.50 a session.** *Anyone arguing this on cost is
+  arguing for a rounding error; the argument is cadence and definition.*
