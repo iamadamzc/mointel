@@ -42,7 +42,11 @@ const INDEX_PATHS = ['/press', '/news', '/newsroom', '/press-releases', '/media'
  * cannot tell "did not look" from "looked and found nothing" is the defect
  * these counts exist to prevent, so the three no-probe returns say so.
  */
-const NO_PROBES: ResolutionProbeCensus = { returned: 0, probed: 0, fetched: 0 };
+const NO_PROBES: ResolutionProbeCensus = {
+  candidatesReturned: 0,
+  candidatesProbed: 0,
+  candidatesFetched: 0,
+};
 
 const MAX_CANDIDATE_PROBES = 6;
 
@@ -110,12 +114,30 @@ export interface ResolveResult {
 }
 
 export interface ResolutionProbeCensus {
+  /**
+   * THE UNIT IS CANDIDATES, NOT REQUESTS, AND THE NAMES SAY SO DELIBERATELY.
+   *
+   * `fetchCompanyPage` is called from THREE places in this file: the candidate
+   * loop below, `probeFeed`, and `probeIndex`. **Only the first is counted
+   * here.** `probeFeed` walks every entry in `FEED_PATHS` and `probeIndex` adds
+   * another, so one resolution can issue several requests this census never
+   * sees.
+   *
+   * So a reader who takes `probed` for a request count does not merely lack a
+   * unit -- they undercount, in the direction that matters most to the first
+   * question anyone will bring here, which is rate limits. Ops raised it and it
+   * was right: **do not leave a counter whose unit has to be learned from the
+   * source.** Renamed before any row was written, because a persisted JSON key
+   * renamed after the fact leaves the desk two keys across vintages forever and
+   * every later reader must know both -- which is 2026-09-25's own defect in a
+   * new place.
+   */
   /** Candidates the resolver named, before the probe cap. */
-  returned: number;
+  candidatesReturned: number;
   /** Candidates actually fetched, bounded by `MAX_CANDIDATE_PROBES`. */
-  probed: number;
+  candidatesProbed: number;
   /** Of those probed, how many returned a body rather than a failure. */
-  fetched: number;
+  candidatesFetched: number;
 }
 
 /**
@@ -349,15 +371,19 @@ async function selectCollectionPoint(
   let unreachable = false;
   // Counted here rather than inferred later: this loop is the only place that
   // knows how many candidates it tried and how many answered.
-  const probes: ResolutionProbeCensus = { returned: candidates.length, probed: 0, fetched: 0 };
+  const probes: ResolutionProbeCensus = {
+    candidatesReturned: candidates.length,
+    candidatesProbed: 0,
+    candidatesFetched: 0,
+  };
 
   for (const candidate of candidates.slice(0, MAX_CANDIDATE_PROBES)) {
     if (seen.has(candidate.url)) continue;
     seen.add(candidate.url);
 
     const page = await fetchCompanyPage(candidate.url, { userAgent, timeoutMs: 6000 });
-    probes.probed += 1;
-    if (!page.failure) probes.fetched += 1;
+    probes.candidatesProbed += 1;
+    if (!page.failure) probes.candidatesFetched += 1;
     const verdict = classifyCollectionPoint(candidate.url, page.failure ? null : page.body);
 
     if (verdict.shape === 'FEED')

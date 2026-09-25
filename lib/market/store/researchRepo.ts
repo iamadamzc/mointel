@@ -1064,7 +1064,13 @@ export interface CollectorReportRecord {
    */
   networkRequests: number | null;
   /**
-   * Why RESOLUTION found nothing, as `returned/probed/fetched`.
+   * Why RESOLUTION found nothing, counted in CANDIDATES.
+   *
+   * Named `candidatesReturned/Probed/Fetched` rather than the shorter forms
+   * because the resolver also issues requests from `probeFeed` and `probeIndex`
+   * that this census does not count -- so a rate-limit reading taken from a
+   * field called `probed` would undercount. Named before any row existed; after
+   * that the desk would carry two keys across vintages forever.
    *
    * Added 2026-09-25 so the REACH vs REACHABILITY split is measurable forward.
    * Neither was answerable from storage: the archived report carries no note
@@ -1078,7 +1084,11 @@ export interface CollectorReportRecord {
    * host refused us" from "pages answered and none was a collection point" --
    * different fixes, and the second is the more common one.
    */
-  resolutionProbes: { returned: number; probed: number; fetched: number } | null;
+  resolutionProbes: {
+    candidatesReturned: number;
+    candidatesProbed: number;
+    candidatesFetched: number;
+  } | null;
   /** The durable location on file after this pass, when there is one. */
   companySourceUrl: string | null;
   companySourceShape: string | null;
