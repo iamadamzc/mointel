@@ -704,6 +704,35 @@ here.* His inputs (Google creds, when) are in OPEN AND HIS.
 > had claimed this was already in LIVE STATE; it was not committed, only said in chat — the
 > "never assert what you haven't opened" rule, turned on the seat that carries it.*
 
+### QUEUED BOX READS — TWO, BOTH FOR OPS, NEITHER URGENT, IN THIS ORDER
+
+*Recorded 2026-09-25 so they survive this seat. Ops is NOT retiring, so both route to `Ops-tmi`.
+Neither goes to him until its number exists.*
+
+**1. PHASE C FLOAT COVERAGE** — how often `assessFloatAgainstFiled` returns a verdict other than
+`CANNOT_VERIFY` on today's board. **With the THREE INPUT COUNTS beside the verdict counts** (Sheet
+`float.value`, dossier `supplyPair.sharesOutstanding`, basis factor). *Full spec and the reason
+above; does not rest on the `research_sources` grant.* **Decides build-vs-drop; that decision is
+his and must not be put before the count exists.**
+
+**2. CLOCK COVERAGE — AND IT IS THE LOAD-BEARING PREMISE OF ONE OF HIS RULINGS** *(Research's,
+queued behind item 1 at its own request)*. **`77% of stored event timestamps carry no clock` is
+quoted at SIX code sites** — verified here: `time.ts:323`, `time.ts:386`, `guardrails.ts:334`,
+`why.ts:68`, `why.ts:246`, `market/types.ts:767` — **and in `d16dd14` ("Freshness is his calendar
+bands now, and `Date.parse` cannot compute them") it is THE STATED REASON his rule is calendar days
+rather than hours.**
+
+> **The trigger is a possible move, NOT a measured one: Ops's census puts `Z` alone at 57% of
+> CURRENT dossiers, against 18% on the 08-23 snapshot.** *Those are DIFFERENT POPULATIONS from the
+> one the 77% describes, so this is a QUESTION and not yet a correction — nobody has measured the
+> current value of the actual figure.* **What settles it: the same shape census over ALL STORED
+> `research_analysis_versions`, so the two numbers are finally denominated the same way.**
+>
+> **Why it matters enough to queue: if clock coverage really has moved that far, he ruled on a
+> premise that has since changed** — the README's *constant expires because the thing it measures
+> moves*, landing on a RULING rather than a threshold. *He is owed the measurement, never an
+> inference from a census of a different population.*
+
 ### ⚠️ THE FRESHNESS BAND RESTS ON AN UNCONSTRAINED MODEL OUTPUT — RESEARCH'S, NOT BLOCKING
 
 **Research, 2026-09-25, found while settling the IFBD question.** **His freshness ruling is
