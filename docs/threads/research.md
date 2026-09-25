@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T14:33Z
+## LIVE STATE — 2026-09-25T14:52Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -184,6 +184,12 @@ record. He has it from this seat directly as well.
 - **Both frames must be built from the ONE hourly file**, never paired with `daily_bars`. The file was fetched 2026-09-17 and the daily rows in August; 19 of 75 symbols had corporate actions in-window, and that cross-vintage pairing produced an arithmetically impossible row (an all-sessions high *below* the RTH high) before it was abandoned.
 
 ### HAZARDS A FRESH SESSION MUST KNOW
+
+- **`minute_bars` IS A PARTIAL ARCHIVE BY DESIGN, AND THREE DIFFERENT CAUSES COLLAPSE INTO THE SAME ZERO ROWS.** Established in code 2026-09-25 after a coaching export found three symbol-dates he TRADED with no bars at all (`GSUN` 09-16 and `SDST` 09-17, zero rows on any date; `SNYR` captured 09-10 and 09-11 only). **`worker/runtime.ts:1485` filters the live-stream write to tracked symbols** — *"whole-market bar traffic is not a tick warehouse"* — so the state those names are in is **subscribed, received, ranked, and deliberately not retained.**
+  **The board does NOT miss movers by this mechanism, and the ordering is the proof:** `runtime.ts:1266-1272` calls `this.engine.ingest(observation)` **unconditionally, BEFORE** queuing the bar for persistence. Every whole-market bar reaches the engine, so discovery ranks over the entire market; only the archive is filtered. Bars are wildcard-subscribed at `stream.ts:298`; the degraded-universe fallback logs itself at `stream.ts:311` and is distinguishable from the LOG but not from the store.
+  **What IS true and is the finding: never tracked, tracked and silent, and never subscribed are ONE observation in `minute_bars` — zero rows.** `SNYR` is the informative case and needs no ticker mismatch to explain: tracking is per-date and follows the board, so it ranked twice and not the third time.
+  **The consequence lands on retrospective work, not on the desk:** the archive is partial in exactly the population coaching cares about — names he traded that never ranked. Excluding them explicitly and stating the reduced n is the right handling, not a workaround.
+  **The reusable half, and this desk hit both sides of it in one day:** `catalystFreshFrom` ABSENT-as-a-key versus PRESENT-and-null is distinguishable, and that is what let Design MEASURE "`7a0ad0c` is not live" instead of assuming it. Here three causes share one zero. **Whether a store can tell its own failure modes apart is a question to ask BEFORE running a measurement over it, not after the result comes back interesting.**
 
 - **⚠️ DO NOT "FIX" THE ET WALL-CLOCK TIMESTAMPS INTO CLOCK PRECISION. MEASURED 2026-09-25, AND IT IS A TRAP THAT LOOKS LIKE A BUG.** Three shapes are live in the catalyst timestamp column today — `2026-09-24T21:18:05.000Z`, `2026-09-25T04:41:22-04:00`, and `2026-09-25T08:30:32 ET`. The third gets **DATE** precision, so it can never reach FRESH through the prior-close boundary: **the same event written three ways bands two ways**, and after `catalystFreshFrom` is wired that shows on the board as an amber row beside two green ones for a reason invisible on it. That reads exactly like a defect in the new feature.
   **It is not, and the count says why. 33 of 260 stored timestamps carry the ` ET` shape — and 31 of those 33 are EXACTLY `20:00:00 ET`,** the end of the after-hours session. That is a FILL VALUE, not an observed release time. Parsing them as clocks would promote **7 analyses RECENT → FRESH out of a storage convention** — the same defect `3570114` fixed when bare dates were rendering as `16h`, arriving by a new route. The remaining two (`05:19:28`, `17:00:00`) are the only ones that look observed.
