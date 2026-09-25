@@ -544,9 +544,16 @@ skipped.
 ## CONTENT-DISJOINT IS WHAT MAKES AN ANCESTRY TRAP INVISIBLE
 
 **Ops and Integration, 2026-09-25, reconstructing why `34cf6f3` nearly shipped the auth cut-over
-described as "the sort fix".** *Measured, not reasoned: **25 commits sit between production
-`757cf6a` and `34cf6f3` — the entire Google-OAuth surface — and NOT ONE of them touches any of the
-three files the sort fix changes.*** `git log 757cf6a..34cf6f3^ -- <the three files>` returns empty.
+described as "the sort fix".** *Measured, not reasoned: **24 commits sit BELOW `34cf6f3`
+and above production `757cf6a` — 25 including `34cf6f3` itself — the entire Google-OAuth surface,
+and NOT ONE of the 24 touches any of the three files the sort fix changes.*** `git log
+757cf6a..34cf6f3^ -- <the three files>` returns empty.
+
+> *Both numbers are stated because the first draft said "25 between" while checking against
+> `34cf6f3^`, and Ops caught it: **both readings are defensible, which is precisely the problem.**
+> Whoever re-derives this gets 24, finds it does not match, and starts doubting the RULE rather
+> than the COUNT. An ambiguous number inside a rule is load-bearing in a way it is not inside a
+> report.*
 
 **That single fact is doing two opposite jobs at once, and that is the trap:**
 

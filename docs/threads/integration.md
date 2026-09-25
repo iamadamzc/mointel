@@ -300,7 +300,11 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
   has CONSTRAINED a ship rather than sat in the open list.** *Preflight measures the START only,
   while `quick_check` now runs ahead of the stop (388–594s observed), so preflight-to-stop is 7–10
   minutes. A start that passes at 10:22 lands its stop inside the 10:25 window with preflight
-  having said yes.* **10:06–10:08 gives maximum margin on both ends** (clear by 6–8 min, stop
+  having said yes.* **AND THE REASON TO WRITE THE WINDOW DOWN RATHER THAN LET PREFLIGHT CATCH IT (Ops's, and it is
+  the real argument): preflight fails safe, so the mistiming is not the danger — A REFUSAL THAT
+  LOOKS ARBITRARY IS THE ONE THAT GETS `DEPLOY_WINDOW_OVERRIDE` TYPED AT IT.** *A seat that expects
+  10:00 to work and is refused at 10:00 has been handed a reason to believe the guard is wrong.*
+  **10:06–10:08 gives maximum margin on both ends** (clear by 6–8 min, stop
   ~10:13–10:18, next window 10:25). *The measurement that exposed the defect — 594.1s on 09-24 —
   was taken on an after-close deploy where it could harm nothing, which is why it stayed theoretical
   until today.*
