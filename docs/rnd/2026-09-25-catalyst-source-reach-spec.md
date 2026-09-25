@@ -64,6 +64,30 @@ appears:**
 > a failure from within the last day). **The lever is not retry cadence. It is
 > whether the finder can locate a small-cap issuer's newsroom at all.**
 
+**THAT 286 WAS CHALLENGED AND IT SURVIVES WITH A BOUND. Integration's objection,
+which was correct in form:** both cooldown branches return the **identical**
+detail string (`irRegistry.ts:165`), so `reused stored negative result` cannot
+by itself distinguish **reach** (*there is genuinely no newsroom*) from
+**reachability** (*we could not fetch one*). **Different levers.** And
+`stored.note`, which would separate them, is updated in place with `COALESCE`
+(`researchRepo.ts:460`) — *so today's note is not the note as of an August job,
+and classifying one with it reads a reassessed field's final value backwards.*
+**Confirmed: the archived `collector_report` carries no `note` field at all.**
+
+**But the split is bounded from the job row alone, with no reassessed field.**
+**A ticker with no source url on file cannot be an unreachable-fetch case —
+there was nothing to fetch:**
+
+    of the 286                          HAS a source url
+      reused stored negative   n=186        5   2.7%
+      no durable source        n=100        5   5.0%
+      -> NO url at all         276  96.5%   <- can ONLY be reach
+      -> url on file            10   3.5%   <- could be reachability
+
+> **At least 96.5% of the 286 is reach. At most 3.5% is reachability.** *The
+> ordering below is unaffected.* **Recorded because the objection was right to
+> make and the answer is a bound rather than a rebuttal.**
+
 ## Where the reach actually runs out
 
 `irRegistry.ts` probes a fixed candidate list on the issuer's own domain:
