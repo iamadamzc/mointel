@@ -486,6 +486,13 @@ branch holding the picks onto the production base   NONE  (git branch --contains
   holding.* **A time that satisfies one constraint is not a time; say which constraint, and check
   the other.**
 >
+> **⚠️ AND IT BIT, THE SAME DAY IT WAS DOCUMENTED.** *`49efd1a` started 11:38 ET; preflight measured
+  the START and passed. `quick_check` runs 6.5–10 min ahead of the stop, putting the stop ~11:45–11:48,
+  and at 11:48:41 no cutover had logged — **so the stop may land inside the 11:55–12:05 protected
+  window that preflight never saw.*** **That is the documented defect biting for real, not a new
+  fault, and the cost is a skipped `RTH_INTERVAL`, not an outage.** *Ops correctly refused to abort:
+  stopping a deploy between the build and the cutover is more dangerous than a missed checkpoint.*
+
 > **AND THE START MUST LEAVE ROOM FOR THE STOP — this is the first time the known preflight defect
   has CONSTRAINED a ship rather than sat in the open list.** *Preflight measures the START only,
   while `quick_check` now runs ahead of the stop (388–594s observed), so preflight-to-stop is 7–10
@@ -969,6 +976,15 @@ time after which silence is a decision. It named the time and did not honour it.
 > enumerated it is the seat that has to ask whether the event happened.** *Exactly the shape of
 > every other failure recorded today — a description taken for the thing — applied to my own
 > instruction, which is the one I was least likely to check.*
+>
+> **AND WHEN I FINALLY ASKED, I OFFERED THREE STATES AND THE TRUE ONE WAS NOT AMONG THEM.**
+> *I wrote "shipped, held, or refused — any of the three is a fine answer". The answer was
+> **IN FLIGHT**: the deploy unit active, build complete, nginx installed, sitting in the
+> `quick_check` integrity phase that runs BEFORE anything stops.* **A question that enumerates the
+> outcomes forces the responder to pick the nearest wrong one, and a less careful seat would have
+> said "held".** *This desk's own house rule is `it is N states, not a value and an absence` — I
+> asked a status question in exactly the shape the rule forbids.* **Ask for the state, do not offer
+> the menu.**
 >
 > **So: after issuing an enumeration with a named window, ASK AT THE WINDOW.** *A deploy that did
 > not happen looks identical, from here, to one that went perfectly — silence is the reported state
