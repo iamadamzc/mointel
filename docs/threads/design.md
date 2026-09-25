@@ -56,11 +56,20 @@ over the trades column still reads `NOW` / `−1m`, so neither of mine is.
     design/now-header-gated       363f40d   the above + the Now header
 
 **Each tag's CONE IS THE SHIP SET, so the tip is safe to deploy** — which was
-never true of a sha on `main`. Over `757cf6a` that is 3 and 4 commits; 10 and 13
-files; **ZERO under `app/auth/`, `lib/auth/`, `app/signin` or
-`scripts/allowlist`, by path.** Gated AT THOSE EXACT SHAS in the pinned
+never true of a sha on `main`. **Every figure carries its base, because the
+first version of this paragraph did not:**
+
+    base       ref                            commits   files
+    757cf6a    design/fresh-boundary-gated          3      13
+    757cf6a    design/now-header-gated              4      14
+    49efd1a    design/fresh-boundary-gated          2      10
+    49efd1a    design/now-header-gated              3      13
+
+**ZERO under `app/auth/`, `lib/auth/`, `app/signin` or `scripts/allowlist` at
+every one of those bases, by path.** Gated AT THOSE EXACT SHAS in the pinned
 worktree with a clean status: **2,364 / 2,367 tests, lint 0 errors, build OK,
-typecheck clean.** Ops has since gated `0a17601` independently.
+typecheck clean.** Ops has since gated `0a17601` independently. *The three
+extra files over `757cf6a` are `49efd1a`'s own.*
 
 **`design/now-header-gated` IS BLOCKED ON HIS ANSWER** — it renames the column
 to `TRADES` and that is unanswered in his NEEDS YOU block. Not on a relayed
@@ -300,6 +309,17 @@ code beside it. Rulings that still bind were carried above.
 
 ## Working rules
 
+- **ONE SENTENCE CAN NAME ONE BASE AND CARRY FIGURES FROM TWO, AND EVERY
+  FIGURE IN IT IS CORRECT.** I wrote *"over `757cf6a`: 3 and 4 commits, 10 and
+  13 files."* The commit counts were over `757cf6a`; the file counts were over
+  `49efd1a`. **Nothing was miscounted — the two halves were measured against
+  different bases and joined by one preposition.** Caught by Integration, in a
+  hand-off that had already been corrected once.
+  **A wrong number gets challenged; a right number under the wrong frame gets
+  RE-DERIVED, disagreed with, and costs the reader their trust in the whole
+  hand-off rather than in the figure.** So a count travels with its base
+  attached to it, not to the paragraph — and when there are two bases, print
+  the table and stop writing the sentence.
 - **HAND OVER AN ARTEFACT, NEVER A RECIPE — AND GATE THE SHA THAT SHIPS.**
   I gave Ops three shas and the instruction to cherry-pick them, having gated
   an **uncommitted** `cherry-pick -n` onto the production base and then reset it
