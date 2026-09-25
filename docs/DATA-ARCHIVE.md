@@ -198,6 +198,194 @@ archive meant to last. History must not live where a mode switch can reach it.
    migrated rather than a moving one.
 4. **Fills ingest** for the coaching workstream.
 
+## Capture-for-analysis — spec, 2026-09-22
+
+**On his direct approval, relayed by Integration.** Two benefits he named:
+**grade the grader** (measure how good our catalyst grades are) and **catalyst
+analysis** (which catalysts actually create movement). He floated "store
+everything"; Integration reframed it and he agreed, to the principle this
+document already runs on:
+
+> **Store what a source WON'T give back, not what it will.** Do not duplicate
+> Alpaca/SEC-served data. Blanket hoarding grows unbounded and re-stores what
+> sources already persist.
+
+**This is a spec + cost, not a build.** Nothing here ships until he approves the
+cost via Integration.
+
+### Gap 1 — newswire catalyst TEXT is dropped. Real, but the fix is a licence, not a fetch.
+
+> **HIS RULING, 2026-09-22 (via Integration): the FREE EX-99 path only. No wire
+> licence, and no wire-body capture/scraping — not now, not as a fallback.** He
+> took the free route over a licence or a terms-override, consistent with the
+> `stockanalysis.com` constraint. **This is a standing decision recorded so a
+> later seat does not reopen the scrape as an option.** The rest of this section
+> is retained as the reasoning behind the ruling, not as a menu of live choices.
+
+**Verified in the store, not from the relay.** The web-discovery branch of
+[`../lib/research/catalyst/collector.ts:889`](../lib/research/catalyst/collector.ts)
+stores each discovered source with `excerpt: null` — its own comment (`:902`):
+*"we did not retrieve the page, so no excerpt is stored."* SEC exhibits (`:448`)
+and company IR/newsroom releases (`:639`) store `excerpt` because those paths
+fetch the page. Counts by content check:
+
+    store                        NEWSWIRE   SECONDARY_DISCOVERY   SEC_EXHIBIT   COMPANY_IR
+    market-prod-2026-08-23.db    31 / 0     54 / 0                878 / 878     93 / 88
+    market.db (Sep 7)           15 / 0     17 / 0                251 / 251     4 / 4
+                                (rows / rows carrying text)
+
+**So the drop is by construction and covers EVERY web-discovered source, not
+newswire specifically** — the condition is *discovered-but-never-fetched*.
+
+**THE BLOCKER IS TERMS, NOT ANTI-BOT — Research-tmi's correction, 2026-09-22,
+and it changes the whole item.** To retain wire text the discovery pass would
+have to *fetch and store the wire page body*. For a commercial product that is
+the act the wire terms govern:
+
+- **PRNewswire is already answered, and the answer is no.**
+  [`Wire_Feed_Collector_SCOPE.md`](Wire_Feed_Collector_SCOPE.md) records a read
+  of `prnewswire.com/terms-of-use/` (2026-09-21): automated retrieval by robot
+  or spider prohibited, scraping/republishing without written permission
+  prohibited, licensed for personal noncommercial use only. Their RSS page
+  routes commercial users to a **licensing programme**. So there is a legitimate
+  route and it is a **licence — his decision, not a build.**
+- **The other four wires are unread and must not be probed.** GlobeNewswire,
+  Businesswire, AccessWire, Newsfile need a **manual desktop terms read** first.
+  A retrieval probe *is* the automated access those terms govern, so "does it
+  403" is the wrong question in the wrong order — a host that serves a bot can
+  still forbid it in writing. This is the `stockanalysis.com` shape (his standing
+  constraint, 2026-09-19): never fetch from a worker/route/job when the terms bar
+  automated or competing-product use, and *the volume is small enough that
+  automating it keeps looking like an easy win.*
+- **Not a policy being relaxed — a new decision.** The code's only stated reason
+  for not fetching is the comment; nothing conditions it on latency and
+  `domainPolicy` governs which domains are searched/stored, not whether a page is
+  retrieved. The terms question was never faced because nothing ever fetched.
+  Do not write this as loosening an existing guard.
+
+**AND THE CAPTURE THAT MATTERS ALREADY EXISTS, PUBLIC-DOMAIN AND STORED.**
+SEC EX-99 exhibits are press releases the issuer files with the SEC —
+**669 of 878 stored SEC_EXHIBIT rows are EX-99*, every one already carrying a
+full excerpt** (independently re-counted here: EX-99.1 562, EX-99.2 103, EX-99.3
+2, EX-99 2; SEC content is public domain, no terms problem). **So the gap is
+LATENCY, not existence:** the wire crosses at ~08:00; the EX-99 appears when the
+issuer files, which can be later. A wire licence buys the *earlier arrival* of
+text the desk already gets — nothing more.
+
+**⇒ The right first instrument is free, and it must run before any wire cost is
+quoted.** Use EDGAR `acceptanceDateTime` (public-domain, re-fetchable; already
+read by `lib/research/sec/submissions.ts`) to measure **what share of EX-99 press
+releases become public inside 04:00–09:30 ET.** That one distribution decides
+whether a wire licence buys minutes or buys the whole premarket window — and
+pricing a wire fetch before it prices a thing the desk may not need.
+
+**THE INSTRUMENT IS FORWARD-LOOKING, NOT A QUERY OVER A SNAPSHOT — Research-tmi,
+2026-09-22, and it changes the dependency put to him.** The existing 878 stored
+exhibits **cannot be measured by anything**, and a fresh copy-down does not
+change that:
+
+- `insertResearchSources` is **`INSERT OR IGNORE`** (`../lib/market/store/researchRepo.ts:558`,
+  verified here). The only UPDATEs on `research_sources` touch `cluster_id`/
+  `canonical` (`:710`) and `active` (`:732`) — **no path writes `published_at` or
+  `published_precision` on an existing row.** An exhibit's document fingerprint
+  is `hash(accession|exhibitName)`, so re-collecting the same exhibit is ignored.
+  Those 878 keep INFERRED-over-a-bare-date **permanently**; `ea2d1c9` cannot reach
+  backwards and neither can a snapshot.
+- It compounds: the exhibit branch inherits its parent's date from the **stored**
+  `SEC_FILING` row (`collector.ts:378`, capped 4/ticker), and parents are frozen
+  by the same `INSERT OR IGNORE`. So a *new* exhibit hung off an *old* parent
+  inherits the old bare date. **The measurable population is EX-99 exhibits whose
+  parent filing row was itself inserted after both shas were live in production**
+  — new filings, accruing from the deploy instant. First useful read is some
+  sessions out, not a one-shot on a pull.
+- **Two deploy preconditions, not one:** `b1d64b9` (parent gets an acceptance
+  instant, 2026-09-06) **and** `ea2d1c9` (exhibit stops claiming a derived time
+  from a parent that states none). **Which sha production runs is an Ops
+  question, to settle before any copy-down** — a snapshot taken before both is
+  the same dead end as `market-prod-2026-08-23.db`.
+- **Partition on the VALUE, not the label:** ask whether the exhibit's
+  `published_at` carries a time-of-day clock at all, never filter on
+  `published_precision`. Without `ea2d1c9` the old code stamped every row
+  INFERRED, so a `precision != 'UNKNOWN'` filter sweeps in bare dates — which
+  parse as midnight UTC = **20:00 ET**, filing press releases in the evening and
+  arguing hard for a licence nobody needs. This is the artifact the measurement
+  exists to avoid, so it must not be built out of the same mislabel.
+- **Not misread as a defect:** the 1-of-3,253-EXACT figure in
+  `market-prod-2026-08-23.db` is that store predating `b1d64b9` with no
+  post-change arm, not a bug.
+
+**PRECONDITION MET 2026-09-22 (Ops read the box, via Integration):** `b1d64b9`
+and `ea2d1c9` are both ancestors of both live releases, research worker included.
+**So accrual begins now.** New EX-99 exhibits hung off post-deploy parent filings
+carry a real acceptance instant from here on; the first useful premarket-latency
+read is some sessions out.
+
+**The one dependency the FIRST READ carries (not now):** to run the 04:00–09:30
+distribution I need a **post-deploy production snapshot** — the newest market DB
+on disk (`market-prod-2026-08-23.db`) predates the shas and cannot answer it. So
+once ~a handful of post-deploy sessions have accrued (≈late Sep), a read-only
+copy-down of production `research_sources` is the trigger to take the first read.
+Flagged here so a forward-accruing instrument is not forgotten. **That copy-down
+is PRE-APPROVED — his ongoing grant `8f331ed` (confirmed via Integration
+2026-09-23) — so when it has accrued, Ops runs it without returning to him.** The
+wire ruling above means this measurement only ever decides whether the desk
+already has the text in time, never a scrape.
+
+**Cost of Gap 1: nothing to build.** His ruling is free-path-only; the EX-99
+instrument is forward-accruing with its precondition now met, and its only future
+ask is a read-only production copy-down once data has accrued.
+
+### Gap 2 — grade the grader needs NO new capture. It is analysis, not storage.
+
+**This is the scoping correction, and it changes what gets built.** Integration
+framed the grade→outcome join as "the missing half." Both halves are **already
+retained**:
+
+- **Grades are kept forever.** `research_analysis_versions` is never pruned —
+  no `DELETE` anywhere in `lib/` or `worker/`, and `claimStoreForMode`
+  ([`../lib/market/store/db.ts:1391`](../lib/market/store/db.ts)) — the mode-
+  switch nuke that clears assessments, jobs, bars and events — explicitly spares
+  it.
+- **Outcomes are re-fetchable from bars** and already rolled into
+  `symbol_outcomes` (archive.db, 939 rows, keyed symbol + trading date).
+
+**So under the principle above there is nothing to capture:** grades won't be
+given back but we already keep them; outcomes the vendor *will* give back on
+demand. The grade→outcome link is **derivable today** by `(ticker,
+trading_date)` — `research_analysis_versions` carries `ticker` and
+`generated_at`; `symbol_outcomes` carries symbol and date. It is an
+**analysis/rollup**, cost ≈ query work, **zero new storage.**
+
+**Two traps for whoever builds the rollup, both already in the R&D register:**
+
+1. **`generated_at` → trading_date is a session-boundary conversion**, not a
+   string slice — a grade generated at 19:25 ET and a premarket grade belong to
+   different sessions than a naive UTC date implies. Use the session logic, not
+   `substr(generated_at,1,10)`.
+2. **`id`/`analysis_version_id` is a per-store sequence position, not an
+   identity across stores.** Join on `(ticker, date)` and content, never on a
+   version id carried between the grades store and the archive.
+
+**A null is a result here.** If grade quality shows no relationship to outcome,
+that is as useful as any positive and is reported with its coverage caveat —
+`research_coverage` (above) must be held constant first, or a billing outage
+reads as a bad grader.
+
+### Where this lands
+
+- Gap 1: a fetch added to the discovery path + the existing `excerpt` column.
+  **Research-tmi owns the pipeline change**; R&D owns the analysis it feeds.
+- Gap 2: an R&D rollup over the two existing stores. No pipeline change, no
+  capture, no new table required to start — a query.
+
+**Status: SPEC. Not built.** Gap 2 (grade the grader) is free analysis, startable
+on his word. Gap 1 (wire text) is **not a build** — a manual terms read of four
+wires plus a licensing decision that are his, both gated behind a free EX-99
+latency measurement. That measurement is **forward-accruing**: its only
+precondition is confirming production runs past both `b1d64b9` and `ea2d1c9` (an
+Ops question), after which it accrues from the deploy instant — not a query a
+snapshot answers. Back to him via Integration before anything ships.
+
 ## Related
 
 - [threads/rnd.md](threads/rnd.md) — the thread that owns this, and the question it serves

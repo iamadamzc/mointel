@@ -55,6 +55,7 @@ questions is a thread that has stopped working.
 | Q11 | How often does the 5-minute drop rule remove a name that subsequently runs? | 2026-09-03 | **ANSWERED 2026-09-04** — tradeable miss rate **27.1% premarket, 9.4% RTH, 1.5% after-hours** on 577 replayed drops; highest where the threshold was calibrated, by 18x |
 | Q12 | Is a name's eventual activity predictable at the moment the board ranks it? | 2026-09-04 | proposed — **not blocked, QUEUED**; decides whether the 45.5% yield finding is a defect or a description |
 | Q13 | Is an aggregate momentum state across the top gappers measurable, and does it predict anything? | 2026-09-04 | **CLOSED 2026-09-04 — NOT DETECTABLE at n=13, dial NOT BUILT.** Underpowered null, not absence; ~31 sessions would settle dispersion. `250388f` |
+| Q14 | Grade the grader — does the catalyst grade at board entry predict the outcome, and how good is the grade? | 2026-09-22 | **ACTIVE — part (a) WEAKLY DETECTED on 26 sessions (first-entry grade), 2026-09-23.** Backfill lifted the archive to 26 sessions. Pre-registered contrast on `gain_open_30_pct`: POS beats CMP median **19 of 26 sessions** (sign test p≈0.029), stable **+6.7pp median**, but magnitude borderline (t≈1.97). Small, direction-reliable, noisy in size — between the retracted look-ahead 13/13 and the 13-session null. Part (b) grade-confidence + the coverage overturn-check still open. [rnd/2026-09-22-grade-the-grader.md](../rnd/2026-09-22-grade-the-grader.md) |
 
 #### The closing pass, 2026-08-27
 
@@ -1202,6 +1203,21 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 
 #### STANDING ITEM FOR THE NEXT R&D SEAT: the archive window is unblocked. 2026-09-10.
 
+> **CORRECTION 2026-09-23 — "no new exception" was WRONG, and it cost a bad ask.**
+> This entry's claim that *Coaching's request already covers it, no new
+> exception* does not survive contact with the extract script. Ops read
+> `deploy/aws/extract-assessments.sh`: the 2026-09-10 authorisation was **one
+> refresh, now SPENT** — it produced `data/assessments-prod.db`, which spans
+> **exactly to 09-10**, matching the auth date. An **unbounded** pull through a
+> later session is a **NEW named exception requiring his by-name word**, and the
+> script's header explicitly refuses its own existence as precedent. I relied on
+> this line in good faith and sent Ops a two-basis request ("his approval" AND
+> "no new exception") that contradicted itself; Ops was right to hold. **A spent
+> one-time exception recorded as standing permission is how a copy-down happens
+> that nobody decided to authorise.** Everything below is the 2026-09-10
+> reasoning, kept, but read this first: the extract is a fresh exception every
+> time, never covered.
+
 **Read this before planning any session-level question. It supersedes the entry
 below, which said the rebuild was blocked on a copy-down decision.**
 
@@ -1258,7 +1274,16 @@ raw and NOT at the partial (0.356, needs ~31).** Any re-test must still be
 pre-registered as a test of **dispersion specifically** — it is a candidate
 selected for looking best on 13 points.
 
-**STATE, AS OF THIS WRITING:**
+> **UPDATE 2026-09-23 — DONE. The window is no longer the binding constraint.**
+> He approved the unbounded extract by name to Ops; Ops ran it to
+> `data/assessments-prod-2026-09-23.db` (474 assessments, 26 dates, 08-17…09-22,
+> old snapshot preserved). I ran `npm run archive:backfill --market-db` against
+> it: archive now holds **1,999 outcome rows over 26 sessions** (was 939 / 13).
+> Critical |r| drops from 0.553 (13) toward ~0.39 (26). The stale bullets below
+> are kept for the record but are superseded. **Do not re-run the extract** — it
+> is a fresh named exception every time (see the correction banner above).
+
+**STATE, AS OF WRITING (2026-09-10, SUPERSEDED 2026-09-23):**
 
 - **the extract is unrun**, and its source is the **new unbounded** one — NOT
   `data/assessments-prod-2026-09-02.db`, which stops at 09-02;
