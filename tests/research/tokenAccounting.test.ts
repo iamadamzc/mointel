@@ -52,6 +52,7 @@ function job(ticker: string, outcome: { sourcesAdded: number; fingerprintChanged
     companySourceDetail: 'recovery: no durable company source located',
     companyFetchDetail: 'not attempted',
     networkRequests: 0,
+    resolutionProbes: { returned: 3, probed: 3, fetched: 2 },
     companySourceUrl: null,
     companySourceShape: null,
     modelCalls: 1,

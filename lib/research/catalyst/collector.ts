@@ -42,7 +42,11 @@ import type {
 } from '../types';
 import { EMPTY_COMPANY_SOURCES, SOURCE_AUTHORITY_RANK } from '../types';
 import type { SecClient } from '../sec/client';
-import { resolveCompanySources, hasUsableSource } from './irRegistry';
+import {
+  resolveCompanySources,
+  hasUsableSource,
+  type ResolutionProbeCensus,
+} from './irRegistry';
 import type { ProviderUsage } from './discovery';
 import type { CompanySourceResolverProvider } from './companySourceContract';
 
@@ -196,6 +200,21 @@ export interface CatalystCollectionReport {
    * fetch ran.
    */
   companyFetchDetail: string;
+  /**
+   * Why RESOLUTION found nothing, as counts rather than a label.
+   *
+   * `returned` 0 -- the resolver named no candidate. **REACH.**
+   * `probed` > 0 with `fetched` 0 -- every host refused us. **REACHABILITY.**
+   * `fetched` > 0 and still no durable point -- pages answered and none was an
+   * index or a feed. **REACH again**, and the XOS case, where every candidate
+   * was a newswire copy.
+   *
+   * **A single `unreachable` boolean cannot separate the last two** -- it is a
+   * sticky OR across the probe loop, so one refusing host sets it even when a
+   * later candidate answered fine. R&D needs exactly that split to know whether
+   * the fix is more guessed paths or a different fetch policy.
+   */
+  resolutionProbes: ResolutionProbeCensus;
   /** Why discovery ran, when it did. */
   discoveryTrigger: DiscoveryTrigger | null;
   /** Which interval tier applied, in minutes. */
@@ -367,6 +386,7 @@ export async function collectCatalystEvidence(
     discoveryMode: null,
     companySourceDetail: 'not attempted',
     companyFetchDetail: 'not attempted',
+    resolutionProbes: { returned: 0, probed: 0, fetched: 0 },
     discoveryTrigger: null,
     discoveryIntervalMinutes: 0,
     resolved: false,
@@ -567,6 +587,7 @@ export async function collectCatalystEvidence(
         );
       }
       report.companySourceDetail = `${label}: ${resolution.detail}`;
+      report.resolutionProbes = resolution.probes;
       urgentResolutionResolved = Boolean(
         hasUsableSource(registry),
       );
@@ -855,6 +876,7 @@ export async function collectCatalystEvidence(
         noteUsage('RESOLVER', discoveryPurpose, resolution.usage, resolution.toolConfig);
       }
       report.companySourceDetail = resolution.detail;
+      report.resolutionProbes = resolution.probes;
       report.discoveryRan = resolution.resolved;
       report.discoveryDetail = `issuer source resolution: ${resolution.detail}`;
       resolverSpentThePass = resolution.modelCalls > 0;

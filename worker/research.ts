@@ -547,6 +547,7 @@ async function main(): Promise<void> {
             companySourceDetail: catalystReport.companySourceDetail,
             companyFetchDetail: catalystReport.companyFetchDetail,
             networkRequests: catalystReport.networkRequests,
+            resolutionProbes: catalystReport.resolutionProbes,
             companySourceUrl:
               catalystReport.companySources.feedUrl ??
               catalystReport.companySources.pressReleaseIndexUrl ??
