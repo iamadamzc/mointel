@@ -13137,6 +13137,34 @@ personally instructed the answer to.** *Research's line is the rule — **open t
 mark it superseded in the same commit.** *A charter paragraph ending "and that is larger than a routing call"
 is a description of an open question. The day it closes, it is a lie with a date on it.*
 
+## WHEN THE COST OF A CHOICE LANDS ON SOMEONE ELSE LATER, MAKE THE CHOICE WHILE IT IS STILL FREE
+
+**Research's generalisation, 2026-09-25, from three instances in one day — and the three are in different
+materials, which is what makes it a rule and not a habit.**
+
+```
+the capture population   rows in market.db lengthen every FUTURE deploy's quick_check, for EVERY seat.
+                         At top-12 it is ~1%. The cost arrives when a later seat widens it, and that
+                         seat sees a storage decision, not a deploy one.       -> separate file, now
+the probed unit          a counter whose unit must be learned from the source is wrong for whoever
+                         reads the census MONTHS later.                        -> named before rows existed
+the rename clock         a persisted JSON key renamed after rows exist leaves TWO spellings across
+                         vintages, forever, and every later reader must know both.  -> renamed in the
+                                                                                      one window it was free
+```
+
+> **THE COMMON SHAPE: the person paying is not the person choosing, and the bill arrives after the moment
+> when the choice was reversible.** *Each of these was cheap at the moment of decision and permanent
+> afterwards — and in every case the seat that would pay could not have seen the decision being made.*
+
+**So the test at the point of any such choice is not "is this fine?" but "is this still free, and for how
+long?"** *Ops's version of it, which is the sharpest: **the cost is paid by a different seat at a later time,
+and it is invisible at the moment the widening is made.***
+
+*Distinct from ordinary technical debt in one way that matters: debt is visible to whoever inherits it. These
+are invisible — a wider capture population reads as a storage setting, a counter reads as a number, a key
+reads as a name. **Nothing marks them as decisions that were once free.***
+
 ## KNOW WHICH EVENT YOUR READING BRACKETS
 
 **Research's generalisation of an Ops ordering call, 2026-09-25 — both seats named it the most useful thing
