@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T14:52Z
+## LIVE STATE — 2026-09-25T15:21Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -184,6 +184,11 @@ record. He has it from this seat directly as well.
 - **Both frames must be built from the ONE hourly file**, never paired with `daily_bars`. The file was fetched 2026-09-17 and the daily rows in August; 19 of 75 symbols had corporate actions in-window, and that cross-vintage pairing produced an arithmetically impossible row (an all-sessions high *below* the RTH high) before it was abandoned.
 
 ### HAZARDS A FRESH SESSION MUST KNOW
+
+- **⚠️ `collector_report` ROWS FROM 2026-08-18 UNTIL `d19355c` DEPLOYS CARRY `companySourceDetail: 'not attempted'` ON SUCCESSFUL FETCHES, AND NO FETCH WITNESS AT ALL.** The affected window opens at `8c94390` / `8f212fe`, both 2026-08-18. **Production is `0a17601`, whose `collector.ts` is `ea2d1c9`, so the window is still open.** `d19355c` repairs the FUTURE and cannot repair the census: anyone re-partitioning stored rows on that field gets the wrong answer again, and the comment explaining why is not in the release they are reading.
+  **What that field actually means: RESOLUTION, not the fetch.** `collector.ts:189` declares it *"what issuer-source resolution did, or why it was not offered a turn"*, and resolution is gated on `!usableCompanySourceBefore` — so `'not attempted'` is CORRECT and healthy for any ticker that already has a usable url on file. **It never meant the desk did not look.** A production census of 173 jobs read it the other way on 2026-09-25 and concluded the collector returns "no catalyst" without looking; R&D halted a count on that. Both were withdrawn.
+  **`AIFF` on 2026-09-25 is inside the window and is NOT answerable from the table**, now or later: qualified 07:48:00.711, job 07:48:01.268–07:48:31.977, `sourcesAdded 0`, fingerprint identical to its 09-18 job — which is equally what a successful fetch of an unchanged feed produces, since `research_sources` inserts are `INSERT OR IGNORE`. **Leave it open rather than concluding it.**
+  **After `d19355c` deploys, `companyFetchDetail` and `networkRequests` are both persisted**, so fetched-and-empty is distinguishable from never-fetched from the table rather than from an argument about control flow that three seats re-derived in one afternoon.
 
 - **`minute_bars` IS A PARTIAL ARCHIVE BY DESIGN, AND THREE DIFFERENT CAUSES COLLAPSE INTO THE SAME ZERO ROWS.** Established in code 2026-09-25 after a coaching export found three symbol-dates he TRADED with no bars at all (`GSUN` 09-16 and `SDST` 09-17, zero rows on any date; `SNYR` captured 09-10 and 09-11 only). **`worker/runtime.ts:1485` filters the live-stream write to tracked symbols** — *"whole-market bar traffic is not a tick warehouse"* — so the state those names are in is **subscribed, received, ranked, and deliberately not retained.**
   **The board does NOT miss movers by this mechanism, and the ordering is the proof:** `runtime.ts:1266-1272` calls `this.engine.ingest(observation)` **unconditionally, BEFORE** queuing the bar for persistence. Every whole-market bar reaches the engine, so discovery ranks over the entire market; only the archive is filtered. Bars are wildcard-subscribed at `stream.ts:298`; the degraded-universe fallback logs itself at `stream.ts:311` and is distinguishable from the LOG but not from the store.
