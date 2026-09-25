@@ -1201,6 +1201,64 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
+#### STALE-EVIDENCE SERVING — measured 2026-09-25. MOSTLY A NULL, and the null is the useful part.
+
+**Run after the AIFF case suggested the desk re-serves previous days' evidence.
+Pre-registered before running: first-entry `evidence_fingerprint` per ticker-day
+against the same ticker's earlier sessions; primary contrast stale-rate among
+50%+ movers versus quiet names; and stated in advance that an unchanged
+fingerprint is CORRECT when there is genuinely no new news, so this measures
+"the desk held no new information about a name that moved", never "the desk
+missed news".**
+
+Population: 862 ticker-days that had appeared on an earlier session (the only
+ones that *can* be stale), 26 sessions.
+
+    ALL repeat names        n=862   prior day's evidence 45.8%   median age 4d
+    moved +25% or more      n=317                        36.0%              3d
+    moved +50% or more      n=161                        31.1%              1d
+    moved +100% or more     n= 71                        31.0%              3d
+    moved under +10%        n=375                        57.1%              5d
+
+> **THE HYPOTHESIS IS NOT SUPPORTED, AND THE DIRECTION IS THE RIGHT ONE.**
+> **Big movers 31.1% against quiet names 57.1% — a ratio of 0.54.** *The desk
+> refreshes evidence roughly twice as often on a name that moves as on one that
+> does not.* **That is the behaviour a working refresh produces**, and the
+> "research re-serves last week's analysis" story does not hold as a general
+> account. **Reported as a null because it is one.**
+
+**WHAT SURVIVES, AND IT IS NOT NOTHING.** **Roughly one in three 50%+ movers is
+still served evidence the desk already held** — median one day old, with a long
+tail:
+
+    RETO 2026-09-15  +2118%  evidence unchanged 29d
+    AIXI 2026-09-15    +76%                     20d
+    MEDS 2026-09-15   +345%                     15d
+    REED 2026-09-15    +77%                     14d
+    LHSW 2026-09-22   +260%                     13d
+
+**AND THIS MEASUREMENT CANNOT SAY WHETHER THAT IS WRONG.** *An unchanged
+fingerprint on a name that ran 2118% is exactly what a correct negative looks
+like when the move genuinely had no news — which is this thread's founding
+question, not a defect.* **It is the same wall the AIFF case hit: "we held
+nothing new" and "there was nothing new" are indistinguishable from the stored
+record.** **Do not quote 31% as a defect rate. It is an upper bound on one.**
+
+**WHAT IT IS GOOD FOR: it is a SAMPLING FRAME.** The 50 big movers served prior
+evidence are a named, dated list where the catalyst can be checked by hand
+against public sources. **That is the only route this desk currently has to
+separating a real negative from a missed one** — and it is the same route AIFF
+needs. *Ten of those checked by hand would settle, for the first time, what
+fraction of catalyst-less movers actually had a catalyst.*
+
+**Method limit to carry:** `evidence_fingerprint` is over *stored sources*, and
+inserts are `INSERT OR IGNORE`, so a successful fetch that returns an unchanged
+feed and a fetch that returned nothing both leave the fingerprint identical.
+**The same two numbers, two causes.** Research's `companyFetchDetail`
+(`read N item(s)`) separates them **from the deploy forward only** — production
+is `0a17601` with `collector.ts` at `ea2d1c9`, so **no row written before that
+ship carries it and no retrospective read can recover it.**
+
 #### AUDITABILITY DEFECT, NOT AN INSTRUMENT FAULT — and the stored-default hypothesis is REFUTED. 2026-09-25.
 
 > **THIS ENTRY WAS OPENED AS "the instrument returns no-catalyst without
