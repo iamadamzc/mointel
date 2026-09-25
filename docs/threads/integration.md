@@ -271,7 +271,31 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
    relayed (an invite is a grant; Ops raises it when the tooling reaches production).
 3. **When to run the cut-over** — a window outside his trading hours; Basic-Auth-off is his call.
 
-> **⚠️ AFTER `0a17601` SHIPS, EXPECT **ONE** ROW TO CHANGE — NOT SIX. SIX WOULD BE THE DEFECT.**
+> **⚠️⚠️ CORRECTED BEFORE THE SHIP — DO NOT USE A ROW COUNT AS THE PASS CONDITION. I recorded
+  "expect ONE row, not six" as a criterion and that is the wrong SHAPE of expectation.** *Ops's
+  catch; verified here by reading `lib/research/freshFrom.ts`.* **The boundary is the PRIOR
+  SESSION'S CLOSE and the band runs [prior close → NOW], so the band's start is pinned and its end
+  ADVANCES ALL DAY.** *The in-band count is therefore a time-varying, monotonically NON-DECREASING
+  quantity — a reading at 10:40 and one at 14:00 SHOULD differ, and Research's 6-of-325 was a
+  different day's data besides. A seat seeing 3 or 6 at 10:40 would file a defect against correct
+  code; a seat seeing 1 against Research's 6 would file the same defect from the other side.*
+>
+> **THE VALID CRITERION IS DESIGN'S NAMED ROWS, NOT ITS COUNT — and Design supplied both.**
+  *Per-row predictions are STABLE where the aggregate is not: the prior close is fixed for today
+  and each catalyst's timestamp is fixed, so every verdict below holds all day.*
+>
+> ```
+> MUST TURN GREEN   INLF   catalyst 2026-09-24T21:18:05Z = 17:18 ET, after the 16:00 close
+> MUST STAY AMBER   IFBD (13:00 ET, nearest miss)  MGLD  APUS  BYAH  JAGX
+> CANNOT MOVE       ONCO   bare date -- green here is Research's tripwire firing, not the feature
+> COUNT             >= 1, and MORE than predicted is EXPECTED, never a defect
+> ```
+>
+> **And the positive case is already proven present, which is the whole reason this check can
+  fail honestly: `INLF` is a known in-band row.** *Ops's condition — "zero is the only unambiguous
+  failure, and only if the before-reading was non-zero" — is satisfied without a new computation.*
+  **If `INLF` has dropped off the board by 10:40, the positive control is gone and the count must
+  be recomputed before anything is concluded from an absence.**
   *Design took the BEFORE reading off the live board at 09:15 ET rather than after the deploy,
   when it would have been gone; `578b2d9`.* **Research's 6-of-325 is over EVERYTHING STORED. The
   live Discovery board is 12 ROWS and holds exactly ONE candidate** — `INLF`, catalyst
