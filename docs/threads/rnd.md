@@ -4112,6 +4112,46 @@ final.**
 ends in `L`, so no fifth-letter W/U/R convention would ever have reached it.
 One name at rank 43 is the entire justification for a name-based rule.
 
+## Reporting — his rule, 2026-09-25, and this seat was a heavy offender
+
+**His words are in [README.md](README.md) (`60a2f08`) and override every
+reporting habit here.** *"I care about the information that impacts the app
+relative to my decisions and what we're doing with the product."*
+
+**THE TEST, BEFORE ANY SENTENCE REACHES HIM: which decision of his does this
+change, or what can the product now do? If neither has an answer, it belongs in
+this register and in a commit message — not in a report.**
+
+**What this seat specifically must stop sending, because it sent all of it on
+2026-09-25:**
+
+- **Retractions of its own intermediate reasoning.** *Seven corrections that day.
+  He needed the ONE surviving number — 49.4% of research jobs cannot look — and
+  none of the bounds that died on the way to it.* **A retraction reaches him only
+  when he already acted on the wrong figure.**
+- **Which seat corrected whom, and who opened whose file.** *Recorded here as a
+  working rule because it changes how THIS desk works. It changes nothing he
+  decides.*
+- **Mechanism internals** — sticky ORs, cooldown constants, probe censuses,
+  which column discriminates. **The finding is "the desk cannot find company
+  newsrooms for half the names it looks at". The rest is how it was established.**
+- **The register's own numbering.** *He does not follow it; name the question in
+  plain words.* Already recorded, and still violated twice that day.
+
+**What DOES reach him from this seat, unchanged:**
+
+- **A finding that changes what the desk can CLAIM** — *"our catalyst-coverage
+  number is a fact about our sources, not about the market"* is the model case,
+  because it retires a claim the product was making.
+- **A decision that is his** — a production read, a spend, a scope call — in the
+  `🟠 NEEDS YOU` block, decidable from the block alone.
+- **A risk to his trading window or his data.** *The 07:00-09:25 recording hole
+  qualifies; the reason it went unnoticed does not.*
+
+**The honest measure of the failure:** on 2026-09-25 this seat produced three
+findings he could act on and roughly a dozen reports. **The ratio is the defect,
+not the length of any one of them.**
+
 ## Working rules
 
 **THE LICENCE TO CORRECT COMES FROM HAVING OPENED THE THING — NOT FROM OWNING
