@@ -251,6 +251,30 @@ stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /
 > **✅ SHIPPED — `79cc4d1` IS PRODUCTION, cutover 17:07:42 ET, confirmed from `/proc`. The enumeration
 > below is CLOSED.**
 >
+> **✅ ENUMERATED AND APPROVED 2026-09-25 ~17:35 ET — `d734d6f` (Research), the reach-vs-reachability
+> census. Base `79cc4d1`, OR a second pick on top of `8942a94` in the same build — BOTH shapes approved,
+> because only Ops knows where that build is. What is NOT approved is gating one sha and shipping
+> another.** *No file overlap with `8942a94`, verified, so either order picks clean. Additive keys on the
+> existing `collector_report` JSON column — no schema change, no migration, no model spend, no surface.*
+>
+> **R&D's ONE BOOLEAN WAS REFUTED, and this is the durable version.** *`unreachable` is a **sticky OR**
+> across the probe loop — returned alongside a SUCCESSFUL point, so it can read true on a resolution
+> that worked — and it files the XOS case (every candidate a newswire copy: a REACH failure) as
+> reachability. **Opposite fixes.** Three counts instead: `returned` (seeded from `candidates.length`,
+> not the capped slice) / `probed` / `fetched`, with `NO_PROBES` on the three returns that precede any
+> probing so a reused stored answer cannot read as a resolver that found nothing.*
+>
+> **⚠️ AND THE AUGUST ARCHIVE IS PERMANENTLY CLOSED ON THIS QUESTION — forward only, from the first
+> session after `d734d6f` deploys.** *Both routes confirmed shut by Research: no note field on the
+> archived report, and the same `if (!durable)` branch with no url persisted either way. **The
+> withholding must STAY** — a newswire url would look like success and permanently block the discovery
+> fallback, which is how XOS reached its Air Force release.*
+>
+> *Two census caveats flagged to Research, neither a hold, both about how the field will be READ:
+> `probed`'s comment says "Candidates actually fetched", which is what `fetched` counts — `probed`
+> increments before the outcome is known; and `probed` counts CANDIDATES, never HTTP requests, because
+> `probeIndex` spends uncounted fetches inside the loop.*
+>
 > **✅ ENUMERATED AND APPROVED 2026-09-25 ~17:20 ET — `8942a94`, base `79cc4d1`, Research's correction
 > to the freshness seam. Ops picks, gates at the resulting sha, ships.** *It touches a FIFTH file
 > (`lib/research/interpret/pipeline.ts`), outside the afternoon's approved set, which is why the set is
