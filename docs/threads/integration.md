@@ -884,7 +884,29 @@ now known, and the coach's price-versus-fill comparison is possible.*
 > alternatives were nine dates × every symbol (~9.5M rows, far past the approval and the whole
 > board rather than the traded names) or a guessed universe — **which is exactly the
 > plausible-and-wrong artefact condition 3 exists to prevent.*** **A scope stated as a COUNT is not
-> a scope; ask for the members.**
+> a scope; ask for the members.** *Cleared: 69 symbol-date pairs, 62 distinct, reconstructed from
+> his FILLS — names with a completed round trip on that date, nothing merely watched.*
+
+> **⚠️ AND WHEN THE MEMBERS ARRIVED THEY SHOWED I HAD RELAYED A NUMBER FROM THE WRONG POPULATION —
+  MINE, PROPAGATED, NOT CAUGHT.** *I carried "19 of 75 symbols had corporate actions at factors up
+  to 200×" to Ops AND to him as the evidence for the raw-bars requirement.* **The 75 was never the
+  coach's universe: it is the symbol count in `daily_bars` and the vendor hourly files, quoted by
+  the coach while discussing corporate-action risk in a way that read as describing his traded
+  names. The overlap with the real 62 is small.** *The coach corrected it unprompted.*
+>
+> **The REQUIREMENT is unaffected and still absolute** — an adjusted bar compared against a real
+  fill price is wrong and looks fine whatever the hit rate — **but the number I gave for how MUCH
+  it mattered was drawn from a different set, and I put it in front of him as though it described
+  these names.** *The day's signature failure — a right number under the wrong frame — arriving
+  through this seat rather than being caught by it, in the same hours it was being written into the
+  README three times.* **A number quoted from a requester's prose inherits that prose's population,
+  not the one you are reasoning about.**
+
+> **AND THE TIME WINDOW IS PART OF THE SCOPE: whole date 04:00–20:00 ET, NOT regular hours.** *He
+  trades from 04:00 and many exits are pre-open; the measurement needs 30 minutes past his last exit
+  per name (09-25's last fill is 09:55, so bars to 10:25 matter).* **A "trading hours only" trim
+  applied as a kindness would silently remove the half the measurement needs** — and an export
+  trimmed helpfully looks complete.
 
 ### QUEUED BOX READS — TWO, BOTH FOR OPS, NEITHER URGENT, IN THIS ORDER
 
