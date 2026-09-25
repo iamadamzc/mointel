@@ -854,6 +854,38 @@ approval and NOT on the pre-approved `research_sources` snapshot.**
   worse than no export, because it will be measured against and believed.* **If `minute_bars` holds
   adjusted prices, that is a finding for him and may end the measurement.**
 
+### ⚠️ `minute_bars` IS RAW — AND THE LITERAL THAT MAKES IT SO CARRIES NO COMMENT
+
+**Ops, 2026-09-25, answering the export's condition 3 by tracing the WRITE PATHS rather than
+inferring from a column.** *One insert, `upsertMinuteBars`, three feeders, all raw:*
+
+```
+live-bar          13,504,412   live SIP stream, raw by nature
+live-updated-bar      37,175   stream corrections, same basis
+historical           108,832   REST recovery -- adjustment: 'raw' EXPLICIT
+```
+
+**Basis uniform, no mixing, so an export may carry `basis: raw/unadjusted` as a STATED FACT.**
+*This was carried as UNKNOWN all day on purpose so it would not travel as "raw, presumably"; it is
+now known, and the coach's price-versus-fill comparison is possible.*
+
+> **THE FRAGILITY, RECORDED NOT FIXED, AND IT IS THE CHEAPEST FUTURE INCIDENT ON THIS DESK.**
+> *`worker/minute-bar-recovery.ts:191` passes `'raw'` as a **bare literal with no comment**, and it
+> is a DELIBERATE OVERRIDE: `rest.ts:207` defaults to `adjustment: params.adjustment ?? 'split'`
+> three files away.* **A future seat "simplifying" line 191 to use the client default would
+> silently begin mixing split-adjusted rows into a 13.6M-row raw table — and nothing would look
+> wrong, because the `source` column tags both `historical` and cannot discriminate them.**
+> *`blueSky.ts` carries paragraphs on why mixed adjustment bases are dangerous for `daily_bars`;
+> the minute-bar choice, which is the same hazard, carries nothing.* **A deliberate override that
+> contradicts a default is a comment-shaped hole: the code cannot tell you it was deliberate.**
+
+> **AND THE EXPORT IS BLOCKED ON A SYMBOL LIST THAT IS THE REQUESTER'S TO STATE.** *Ops correctly
+> refused to infer it: "~60–80 small caps" and "19 of 75" do not name which 75. Its only
+> alternatives were nine dates × every symbol (~9.5M rows, far past the approval and the whole
+> board rather than the traded names) or a guessed universe — **which is exactly the
+> plausible-and-wrong artefact condition 3 exists to prevent.*** **A scope stated as a COUNT is not
+> a scope; ask for the members.**
+
 ### QUEUED BOX READS — TWO, BOTH FOR OPS, NEITHER URGENT, IN THIS ORDER
 
 *Recorded 2026-09-25 so they survive this seat. Ops is NOT retiring, so both route to `Ops-tmi`.
