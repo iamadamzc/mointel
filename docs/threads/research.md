@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T16:12Z
+## LIVE STATE — 2026-09-25T16:40Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -157,6 +157,11 @@ history, so that rests on Integration's account of the exchange rather than on a
 record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
+
+- **✅ RULED AND SHIPPED — A STALE CATALYST RE-OPENS THE QUESTION, TOP 12 ONLY.** *His words, 2026-09-25: **"yes, re-ask stale catalysts — top 12 only"**, under his product rule of the same day: **"do we need a news feed? would the global news wire have been searchable at that time? TMI isn't about being FAST, it's about being ACCURATE. so if it's public we should have it..."*** **Under that rule a three-minute lag behind the wire is acceptable and never finding a public release is not.** `8687f04` — `queue.ts` no longer counts a STALE catalyst as answered inside rank 12.
+  **Three decisions inside it, each asserted:** the bound is a **literal 12**, not `autoRank`, which reads `RESEARCH_AUTO_RANK` from the environment and would have widened his ruling to 50 the day that variable moved; staleness is **DERIVED against `now`**, not read off `catalyst.freshness`, which was banded at WRITE time and still says RECENT today on a catalyst written yesterday; and **no timestamp bands UNKNOWN, not STALE**, so an unknown age does not re-ask. **The re-ask is still bounded by the existing interval, not the 5s board loop**, and the test asserts WHICH gate refuses so the two can never be confused.
+  **`388c57f` is the other half and is separate on purpose:** the write side now demotes `FRESH_FOUND` to `SECONDARY_STALE` when its own band says STALE. **Measured first: 41 of 138 `FRESH_FOUND` analyses — 30% — carried an event the desk bands STALE, the oldest by 13 days, and `AutomaticIntelligence.tsx:365` renders status and freshness ADJACENT, so those rows printed "Fresh found · Stale" on one line of his drawer.** Normalised rather than flagged, the same decision as `f224f3d`: flagging turns an eighth of the board PARTIAL as a side effect of making two fields agree.
+  **`catalystStatus` is the THIRD undescribed model enum to cause this in one day** — `freshness` (removed `a12bfd6`), `eventTimestamp` (open, unsized), and now the status field that gates re-asks. `SECONDARY_STALE` existed all along and nothing made the model use it.
 
 - **⚠️ THE DESK ASKS ONCE, AND A CONFIDENT NEGATIVE CLOSES THE QUESTION FOR THE SESSION. Established in code 2026-09-25; TWO box reads queued to confirm, and one of them can falsify it.** His own evidence started this: he read the `AIFF` release in a competing scanner at ~07:53 ET with the name already up 5%, GLOBE NEWSWIRE, pediatric ADHD. Ops measured production — **zero `AIFF` sources dated 2026-09-25, newest still 09-17; ONE research job all day, 07:48, never re-run in seven hours**, while the cycle-context trigger fired for 11 tickers at each of 09:25, 10:00 and 10:30. **So latency is dead as an explanation: a feed lagging the wire by three minutes resolves by 08:30, and zero at 14:30 is an absence.**
   **GATE 1 — `lib/research/queue.ts:235`.** `answered = currentAnalysis !== null && catalystStatus !== 'UNKNOWN'`, and `if (answered && existingJob?.acceptedAt) continue`. **`UNKNOWN` re-opens; `NONE_FOUND` does not.** A clean negative skips the name for the rest of the session, past the time-based re-ask below it, which it never reaches. **The desk treats "there is no catalyst" as durable knowledge — and it is the most time-sensitive verdict it produces, because a catalyst can appear after the check and an absence is never a stable fact.**
