@@ -337,6 +337,45 @@ export function validateDossier(
    */
   catalyst.freshness = resolveCatalystFreshness(catalyst.eventTimestamp, now);
 
+  /*
+   * AND THE STATUS IS RECONCILED WITH THE BAND, BECAUSE NOTHING ELSE DID.
+   *
+   * `catalystStatus` is a MODEL output against an undescribed enum
+   * (`schema.ts:70`), and until this line nothing anywhere compared it to the
+   * event date the desk already holds -- the checks above test only that a
+   * positive status CITES a source, and that NONE_FOUND is not claimed on
+   * incomplete coverage. So a dossier could carry, on the same object, a
+   * recomputed band saying the catalyst is OLD and a status saying
+   * `FRESH_FOUND`.
+   *
+   * IT IS NOT RARE AND IT IS ON HIS BOARD. Measured on the 2026-08-23
+   * snapshot: of 138 `FRESH_FOUND` analyses, **41 -- 30% -- carry an event the
+   * desk's own arithmetic bands STALE**, the oldest by 13 days. And
+   * `AutomaticIntelligence.tsx:365` renders the two ADJACENT, so those rows
+   * print "Fresh found - Stale" side by side.
+   *
+   * THE PRODUCTION CASE THAT FOUND IT, 2026-09-25: `AIFF` carried
+   * `FRESH_FOUND` on a 2026-09-17 timestamp, eight days old, while a wire
+   * release from that morning was never collected. The stale positive also
+   * CLOSED the re-ask (`queue.ts:236` treats any non-`UNKNOWN` status as
+   * answered), so the desk stopped looking because it believed it already had
+   * the catalyst.
+   *
+   * NORMALISED RATHER THAN FLAGGED, which is the same decision as `f224f3d`
+   * and for the same measured reason: the only severities are REJECT and
+   * DOWNGRADE, so raising this turns 41 of 325 analyses PARTIAL -- an eighth
+   * of the board -- as a side effect of making two fields agree. And the model
+   * was never told what `FRESH_FOUND` means, so a penalty here would punish an
+   * unstated requirement.
+   *
+   * `SECONDARY_STALE` is the enum's own word for this and already exists. It
+   * does NOT reopen the re-ask, which is deliberate: that gate is a separate
+   * question with a spend consequence and is not this function's to decide.
+   */
+  if (catalyst.catalystStatus === 'FRESH_FOUND' && catalyst.freshness === 'STALE') {
+    catalyst.catalystStatus = 'SECONDARY_STALE';
+  }
+
   // The exact no-catalyst phrase is a conclusion about coverage, not a shrug.
   const saysNoFresh = (catalyst.summary ?? '').includes('NO FRESH CATALYST FOUND');
   if (saysNoFresh && bundle.coverage.incomplete) {
