@@ -148,18 +148,21 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
     column: 'price',
   },
   /*
-   * `Trades`, NOT `Now`. THE HEADER NAMED A TIME WHERE EVERY OTHER HEADER
-   * NAMES A QUANTITY.
+   * `Now`, AND IT IS HIS WORD KEPT ON PURPOSE AFTER I ARGUED FOR `TRADES`.
    *
-   * He asked twice what this column was sorting, and the column answered with
-   * `Now` over `−1m` -- two statements of WHEN and none of WHAT. The units
-   * existed only in the sort caption, so they were on screen only while this
-   * sort was ALREADY ACTIVE: the one reader who has not chosen it yet is the
-   * one who cannot find out what it is.
+   * The rename argued two things: that the head did not say WHAT the column
+   * was, and that it named a TIME where every other head names a QUANTITY. He
+   * then directed tooltips on the column names, which answers the first — the
+   * hover below carries the quantity and the contrast with RVOL — and ruled
+   * `Now` back. **His reason is the one I did not weigh: he sorts by this
+   * column because it self-sorts live, so the word names what he is looking
+   * for rather than what is stored.**
    *
-   * The currency claim does not leave the surface. It moves to where it is
-   * true rather than where it is prominent: `−1m` under the head states the
-   * offset, and the tooltip carries the contrast with RVOL.
+   * AND THE MEASUREMENT MADE HIS WORD THE MORE ACCURATE ONE, NOT THE MORE
+   * FORGIVING. `Now` is currently a slight overclaim — the figure is the last
+   * SETTLED minute, 60-120s behind — and the rolling-60s field specified in
+   * `design.md` makes it literally true. `TRADES` would have been correct and
+   * would have thrown away the word that becomes exact.
    *
    * THE COMMENT SITS OUTSIDE THE BRACE DELIBERATELY. `filters.test.ts:252`
    * enumerates the keys with `/\{\s*key:\s*'(\w+)'/`, so a comment between the
@@ -169,11 +172,11 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
    */
   {
     key: 'now',
-    label: 'Trades',
+    label: 'Now',
     title:
       'Trades in the most recent settled minute. Which names are trading heaviest right now, which is a different question from RVOL — that is a ratio against a twenty-session baseline and can stay high on a name that has stopped trading.',
-    /* Reads after the label: "sorted by trades · in the last settled minute". */
-    metric: 'in the last settled minute',
+    /* Reads after the label: "sorted by now · trades in the last settled minute". */
+    metric: 'trades in the last settled minute',
     column: 'now',
   },
   { key: 'price', label: 'Price', title: 'Last price', column: 'price' },
@@ -577,24 +580,22 @@ export function DiscoveryBoard({
                * on the live board at the 1,024px floor:
                *
                *     NOW  29.5px     NOW ▼  45.3px
-               *     TRADES  48.5px  TRADES ▼  64.2px
                *
-               * `px-2` each side costs 16, so the sorted head needs 80.2px and
-               * `w-[44px]` was already 1.5px short of the word it used to
-               * carry. 84 leaves 3.8px. The table is `w-full table-fixed` at
-               * 982px of content, so the 40px comes out of `Why` and `Risk`
-               * (183 -> 163): they carry prose measured at 1,300-2,300px
-               * truncated to one line, so the cost is about four characters of
-               * a sentence already cut to a tenth, and row height is fixed at
-               * 56.9px either way -- no row is lost.
+               * `px-2` each side costs 16, so the SORTED head needs 61.3px —
+               * and `w-[44px]`, which this column carried for its whole life,
+               * was 17px short of its own word whenever it was the active
+               * sort. **The overflow was invisible because a fixed table cell
+               * does not clip: the caret simply leaned into `RVOL`.** 68 leaves
+               * 6.7px. The 16px this costs `Why` and `Risk` (183 -> 175) buys
+               * a head that fits in the state he looks at it in.
                */}
               <Th
-                className="w-[84px]"
+                className="w-[68px]"
                 align="right"
                 sorted={activeColumn === 'now'}
                 title={nowEntry?.title}
               >
-                {nowEntry ? resolveSortEntry(nowEntry, phase).label : 'Trades'}
+                {nowEntry ? resolveSortEntry(nowEntry, phase).label : 'Now'}
                 {/*
                   * The lag, on the header rather than in the tooltip alone.
                   * The newest slot is two minutes old and he discovered that

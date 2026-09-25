@@ -267,6 +267,58 @@ it will be refused on evidence that does not apply.*
 than ranked names, and `high-low` carries a spread component on thin names —
 though the named examples all cleared 248 trades in the minute.*
 
+## FIELD SPEC — `DemandState.tradesLast60s`, his ruling 2026-09-25
+
+**HE RULED BOTH: the rolling 60-second count NOW, and true 10s capture
+COMMISSIONED.** *"1, both. 2, now with updated tooltip. but 1 is going to
+impact 2, at least on messging."*
+
+**THE PRODUCER'S HALF, for the engine seat — same shape as
+`catalystFreshFrom`: ask for the ANSWER, and let the reader sit on safe
+behaviour until it arrives.**
+
+    DemandState.tradesLast60s: number | null
+
+    the count of trades in the 60 seconds ENDING AT `updatedAt`, for names
+    carrying the hi-res (trade-level) subscription.
+
+    NULL = not available for this name. It is NOT zero, and it is not an
+    error: outside the hi-res cap there is no trade stream to count.
+
+**WHY 60 SECONDS AND NOT 10, WHEN 10 IS WHAT HE ASKED ABOUT.** *Because the
+UNIT has to survive being mixed in one ordering.* Only hi-res names can carry
+this — about 6 of 12 rows on a live board — so the column will hold two
+populations whatever we do. **A rolling 60s and a settled minute are the same
+unit measured over the same span, differing only in where the window ENDS, so
+they sort against each other honestly. A 10s count against a 60s count does
+not — it is a sixth of the number for the same activity, and the sort would
+put every non-hi-res name on top.** That is the whole reason (i) can ship
+before capture and (ii) cannot.
+
+**WHAT THE READER DOES, AND IT IS SAFE AT EVERY STAGE:**
+
+- **The NUMBER** uses `tradesLast60s` when present, and the settled minute
+  otherwise. Same unit either way.
+- **The BARS DO NOT CHANGE.** They stay minute-grain, because they are the
+  ACTIVE/DEAD verdict's own array and that identity is what stops the chart
+  disagreeing with the badge beside it. **The number is the live reading; the
+  bars are the last five minutes of context.**
+- **The SUB-LINE NAMES WHICH ONE IS ON SCREEN** — `60s` when rolling, `−1m`
+  when settled. That is the one thing that must never be silent, because the
+  two look identical and only one is current.
+- **The SORT follows the number**, which is the entire point: he sorts by this
+  column for its live ordering, and today a name exploding now cannot reach
+  the top until its minute closes.
+
+**WHAT IT IS WORTH, MEASURED RATHER THAN ARGUED** — see the section above:
+during a ≥25% minute the figure on screen is a median **3.1× short** of what
+that minute produces, and does not update until the move is over.
+
+**AND THE HEAD STAYS `Now`, WHICH THIS MAKES TRUE.** It is a slight overclaim
+today at the last settled minute; with a rolling window ending at `updatedAt`
+it is exact. *I argued for `TRADES` on the ground that the head named a time;
+he kept `Now` and the field turns his word into the accurate one.*
+
 ## Open items
 
 | Item | Owner | Waiting on |
@@ -274,6 +326,8 @@ though the named examples all cleared 248 trades in the minute.*
 | ~~Deploy of the FRESH boundary~~ | ~~Ops~~ | **DONE** `0a17601` live 12:17 ET, verified on the board 12:18 |
 | ~~`catalystFreshFrom` on the payload~~ | ~~Research~~ | **DONE** `7a0ad0c` producer, `bd509e9` consumer |
 | `lastCheckpointChanges` on the payload | Engine/Research seat | Spec above; §9 item 12's rail blocks on it |
+| `tradesLast60s` on the payload | Engine seat | Spec above; reader is safe without it, sub-line names which grain |
+| Sub-minute CAPTURE (true 10s) | R&D / Research | His ruling: commissioned. Unblocks R&D Q2; Design builds nothing until it exists |
 | ~~The `Now` column HEADER label~~ | ~~Design~~ | Built `ccaf77b`, tagged `363f40d`, **PARKED on his word** |
 | ~~Confirm the boundary's VISIBLE effect~~ | ~~Design~~ | **DONE** one row moved, zero demotions, discriminating pair |
 | The package: tooltips + `TRADES` + the within-day question | His call | One decision, three parts, ships as one change |

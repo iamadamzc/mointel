@@ -276,9 +276,17 @@ describe('the active sort is readable from the board, not only the toolbar', () 
      * that single-source half.
      */
     const entry = source.slice(source.indexOf("key: 'now'"));
-    expect(entry.slice(0, entry.indexOf('},'))).toMatch(/label: 'Trades'/);
-    // And the window is still stated somewhere a reader can reach without hover.
-    expect(source).toContain('in the last settled minute');
+    const block = entry.slice(0, entry.indexOf('},'));
+    /*
+     * HE RULED `Now` BACK on 2026-09-25 after directing column tooltips, so
+     * the head is his word and the UNIT is asserted where he put it: the
+     * hover, plus the caption while the sort is active. What must never
+     * return is a column whose unit is nowhere at all, which is the state he
+     * complained about twice.
+     */
+    expect(block).toMatch(/label: 'Now'/);
+    expect(block).toContain('Trades in the most recent settled minute');
+    expect(source).toContain('trades in the last settled minute');
   });
 });
 

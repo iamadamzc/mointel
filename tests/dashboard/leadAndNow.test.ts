@@ -123,13 +123,29 @@ describe('the trades column head states what, not when', () => {
     expect(head()).toContain('resolveSortEntry(nowEntry');
   });
 
-  it('does not name a time where every other head names a quantity', () => {
+  it('keeps HIS word, and the quantity lives in the hover', () => {
+    /*
+     * THIS ASSERTED THE OPPOSITE AND HE OVERRULED IT, so the test records the
+     * ruling rather than being deleted. I argued `TRADES`: the head named a
+     * TIME where every other head names a QUANTITY. He directed column
+     * tooltips, which answers the half a header cannot, and kept `Now` —
+     * because he sorts by this column for its LIVE ordering, so the word names
+     * what he is looking for.
+     *
+     * **The measurement then made his word the more accurate one.** `Now` is
+     * a slight overclaim today at the last settled minute, and the rolling-60s
+     * field makes it exact. The rename would have discarded the word that
+     * becomes true.
+     *
+     * So what is asserted is the COMPOSITION he ruled: his word on the head,
+     * the quantity in the hover, neither carrying the other's job.
+     */
     const src = readFileSync(join(process.cwd(), 'components/DiscoveryBoard.tsx'), 'utf8')
       .replace(/\/\*[\s\S]*?\*\//g, '')
       .replace(/^\s*\/\/.*$/gm, '');
-    /* The entry the head and the control both read. */
-    expect(src).toMatch(/key: 'now',\s*label: 'Trades',/);
-    expect(src).not.toMatch(/key: 'now',\s*label: 'Now',/);
+    expect(src).toMatch(/key: 'now',\s*label: 'Now',/);
+    // The head is bare; the hover is where the unit is stated.
+    expect(src).toMatch(/title:\s+'Trades in the most recent settled minute/);
   });
 
   it('keeps the lag on the head, which is the part hover may not carry', () => {
