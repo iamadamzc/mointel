@@ -908,6 +908,55 @@ now known, and the coach's price-versus-fill comparison is possible.*
   applied as a kindness would silently remove the half the measurement needs** — and an export
   trimmed helpfully looks complete.
 
+### THE CATALYST CHAIN, 2026-09-25 — THREE CORRECTIONS, AND WHAT SURVIVED
+
+**A finding about the desk's CENTRAL research question went through four layers in under an hour.
+Recording the SHAPE, because the shape is the lesson.**
+
+```
+Ops       "the collector returns 'no catalyst' by default without looking; 26 of 27
+           never attempted a known feed"                                    OVERSTATED
+Ops       self-caught: 'not attempted' means RESOLUTION-skipped, expected when a
+           URL is on file. Withdrew the newsroom claim.                     PARTIAL RETRACTION
+ME        verified the initialisation, then INFERRED early returns and relayed
+           "any path returning before those lines emits the default"        FALSE
+Research  measured: ONE return, at :1081, after the assignment block. No early
+           returns exist. The leaky field is `companySourceDetail`, and it is the
+           field the census was PARTITIONED ON.                             CORRECT
+R&D       reached the same two findings INDEPENDENTLY, from the file         CONFIRMED
+```
+
+> **MY LINK WAS THE ONLY PURE INFERENCE, and it was the most convincing-looking one** — I had
+> verified the initialisation line and the assignment sites, so the early-return claim arrived
+> wearing two real measurements. *Verifying the premises of a claim is not verifying the claim.*
+
+**WHAT SURVIVES, all of it verified here:**
+- **`companySourceDetail` is written ONLY in resolver branches (559/569/814/825); the deterministic
+  fetch at 586–649 never touches it.** So `'not attempted'` survives a fetch that ran, succeeded and
+  inserted rows. **The census that found a defaulted-field defect was reading a defaulted field.**
+- **The persisted `collector_report` is an eight-field SUMMARY. `networkRequests`, `discoveryRan`,
+  `discoveryDetail`, `companyReleases` are NOT persisted** — so the stored evidence cannot
+  distinguish *fetched and found nothing* from *never fetched*. **An AUDITABILITY defect, true
+  regardless of whether anything is broken.**
+- **The evidence contradicted itself, which was the tell.** *`:1054` routes `!knownSourceUrl` to
+  `COVERAGE_INCOMPLETE`, so all 27 jobs HAD a usable URL and an empty `inaccessible` list —
+  inconsistent with 26 never attempting.* **When two halves of one finding disagree, suspect the
+  partitioning field before the world.**
+- **The answerable version: re-partition the same 173 jobs on `networkRequests` (`:589`). No new
+  code.** *R&D's halt lifts on that count, not on any message in the chain.*
+
+> **AND THE ONE NEW THING, WHICH SURVIVED EVERY CORRECTION BECAUSE IT RESTS ON TWO UNDISPUTED
+> STORED FIELDS (R&D's):** *`AIFF` completed PARTIAL with `sourcesAdded 0` and an **evidence
+> fingerprint identical to its 09-18 job** — **the desk re-served WEEK-OLD evidence.*** **A THIRD
+> failure mode this desk had not named: not a wrong grade, not a late grade, but THE PREVIOUS
+> EVENT'S ANALYSIS STILL STANDING** — and the first mechanical candidate anyone has offered for his
+> *"completely different catalyst"* complaint. *Caveat: an unchanged fingerprint is also what a
+> successful fetch of an unchanged feed produces. **The re-serving is established; its cause is
+> not** — and a stale analysis presented as current is the defect either way.*
+
+**R&D has FROZEN every catalyst-less-mover figure it holds — the register's 83% and today's
+14.6%.** *Correct, and not to be unfrozen on anything in this chain.*
+
 ### QUEUED BOX READS — TWO, BOTH FOR OPS, NEITHER URGENT, IN THIS ORDER
 
 *Recorded 2026-09-25 so they survive this seat. Ops is NOT retiring, so both route to `Ops-tmi`.
