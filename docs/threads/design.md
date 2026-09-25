@@ -71,74 +71,34 @@ worktree with a clean status: **2,364 / 2,367 tests, lint 0 errors, build OK,
 typecheck clean.** Ops has since gated `0a17601` independently. *The three
 extra files over `757cf6a` are `49efd1a`'s own.*
 
-**THE BEFORE READING, RE-TAKEN 2026-09-25 15:38 UTC / 11:38 ET.** Neither
-release shipped at 10:36; the 09:15 control set was 2.5 hours stale and
-**7 of its 12 rows had left the board.** Payload kept as
-`before2-market-1538Z.json` in this session's scratchpad. *`catalystFreshFrom`
-is still ABSENT from the production payload — the key, not a null — so
-`7a0ad0c` is confirmed not live, checked rather than taken on a peer's word.*
+**THE BOUNDARY IS LIVE AND VERIFIED ON THE BOARD. 2026-09-25 12:18 ET.**
+*The one claim nobody on this desk could make honestly all day, and it is
+closed by observation rather than by a borrowed count.*
 
-    MOVER            INLF  2026-09-24T21:18:05Z = 17:18 ET, AFTER the close
-                           amber now; MUST turn GREEN.  Positive control
-                           survived the churn.
+    payload   catalystFreshFrom = '2026-09-24T20:00:00.000Z'
+              NON-NULL, and exactly the predicted prior-session close
+              (Thursday 16:00 ET). The key was ABSENT at 12:05.
 
-    MUST STAY AMBER  MGLD 18:00:36Z  MSGY 12:00:25Z  AXG 09-21  AIFF 09-17
-                     RDGT 09-09  IZM 09-11      all clocked, all before it
+    INLF      AMBER 16h  ->  GREEN 19h     the promotion, as predicted
+    MGLD      AMBER, stayed                14:00 ET Thu, 3h18m the wrong
+                                           side of the same close
+    LFS KITT  GREEN, stayed                nothing demoted
+    MSGY AXG AIFF RDGT CNET   amber, stayed
 
-    MUST STAY GREEN  LFS (today, ` ET` shape)   KITT (today, clocked)
-                     the DEMOTION direction — nothing may move backwards
+**ONE ROW CHANGED. ZERO DEMOTIONS. AND THE PAIR IS DISCRIMINATING:** `INLF`
+and `MGLD` are both Thursday catalysts **three hours and eighteen minutes
+apart**, on opposite sides of 16:00 ET, and they landed on opposite verdicts.
+*That is the boundary doing what it says rather than a change that turns
+things green.*
 
-    CANNOT MOVE      CNET bare date `2026-08-18`   KRSP no timestamp
-                     IFBD ` ET` shape at days = 1
+**Timestamps were re-read BEFORE the colours**, so a precision flip could not
+be mistaken for the deploy: all three controls unchanged. *The first render
+read returned "no discovery table" — the board's own few seconds before its
+first payload, not a finding, and not concluded from.*
 
-**TWO ROWS CHANGED TIMESTAMP SHAPE IN 2.5 HOURS, SAME INSTANT, AND THAT IS A
-CONFOUNDER IN MY OWN CONTROL SET.** Verified as identical instants by
-arithmetic, not assumed:
-
-    KITT  2026-09-25T04:41:22-04:00  ->  2026-09-25T08:41:22.000Z   CLOCK -> CLOCK
-    IFBD  2026-09-24T17:00:47.000Z   ->  2026-09-24 13:00:47 ET     CLOCK -> DATE
-
-**A row's PRECISION is not stable across a session.** `IFBD` flipped
-CLOCK -> DATE, which is the precision that decides whether the boundary can
-reach a row at all. *It happens not to change IFBD's verdict — 13:00 ET is
-before the close, so it stays amber either way, and the two reasons are
-indistinguishable on screen.* **But a row that flipped the other way, or
-flipped while sitting after the close, would gain or lose a promotion for a
-reason that has nothing to do with the deploy.**
-
-**SO THE AFTER-CHECK RE-READS EACH NAMED ROW'S TIMESTAMP FROM THE PAYLOAD,
-NOT ONLY ITS COLOUR.** A row whose shape or instant changed is DISQUALIFIED as
-a control rather than counted as a defect. Without that, a re-analysis between
-the two readings is indistinguishable from the boundary misbehaving — and it
-would have been read as the deploy's fault.
-
-*The bare-date tripwire survived the churn under a new name: `ONCO` left,
-`CNET` took its place.*
-
-**THE OUTCOME SPACE IS ASYMMETRIC, BECAUSE THE WHOLE CHECK RESTS ON ONE ROW.**
-Swept all twelve rows rather than assumed: **`INLF` is the only in-band mover
-and there is no replacement.** So:
-
-    INLF renders GREEN    ->  PROVED
-    INLF renders AMBER    ->  DISPROVED, a real defect signal
-    INLF is ABSENT        ->  SILENCE, and it is NEITHER
-
-**The absent case must never be written up as a pass.** It is the
-failed-check-returns-a-plausible-answer shape: a board with no in-band row
-looks exactly like a board where the boundary did nothing. *Not a reason to
-hold the release — the boundary is gated, approved and correct, and "shipped,
-verification deferred to the next in-band row" is an honest state.*
-
-**AND A FACT WITH NO STABLE VALUE NEEDS A TIMESTAMP BESIDE IT OR IT SHOULD NOT
-BE WRITTEN DOWN.** "There is one ` ET`-shaped row at `days >= 1` on the board"
-has been true, false, and true again inside three hours, on one row
-(`IFBD`) that left the board between 11:38 and 11:51. **Recorded as a SHAPE
-THAT RECURS, never as a count that holds** — a count without its moment is a
-claim someone will later find false and blame the record for.
-
-**A VERIFICATION CRITERION HAS A SHORTER SHELF LIFE THAN THE APPROVAL IT
-CHECKS.** The gate and the enumeration were still valid three hours later; the
-control set was not. Integration's framing, and it is the right one.
+**THE PAIRING DEFECT IS ON THE SCREEN RIGHT NOW: `INLF` READS `19h` IN
+GREEN.** Mild today because 19 hours looks plausible beside green; on Monday
+the same row reads `3d`. `36bbddd` fixes it and is committed, not deployed.
 
 **`design/now-header-gated` IS BLOCKED ON HIS ANSWER** — it renames the column
 to `TRADES` and that is unanswered in his NEEDS YOU block. Not on a relayed
