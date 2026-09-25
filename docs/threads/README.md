@@ -12950,6 +12950,34 @@ contradicting them.**
 **That layout is worth more than the fix.** A summary printed on its own, or above
 its evidence, or in a different message, is never checked against it.
 
+## THE LICENCE TO CORRECT COMES FROM HAVING OPENED THE THING, NOT FROM OWNING IT
+
+**R&D's observation, 2026-09-25, and Integration's correction of it the same hour — kept together
+because the corrected version prevents a rule the original would have created.** *R&D noticed that
+every correction that day ran "from the seat that owns the file toward the seat reasoning about it,
+and never once the other way", and called it a routing fact rather than a virtue.* **Checked against
+the day's ledger, it is false in three places, all load-bearing:**
+
+```
+R&D refuted Integration's work order   by opening lib/research/catalyst/irRegistry.ts -- RESEARCH's file
+Integration refuted R&D's url bound    by opening irRegistry.ts:200 -- Integration owns NO code at all
+Integration refuted Research's short-  by counting test files at four shas -- nobody owns that number
+collection alarm
+```
+
+**THE INVARIANT IS THAT EVERY CORRECTION CAME FROM WHOEVER OPENED THE ARTEFACT OR RAN THE QUERY, AND
+NONE FROM A SEAT THAT HAD NOT.** *Ownership correlates because owners open their own files most often.
+It was not the cause.*
+
+> **THE RULE THE ORIGINAL VERSION WOULD HAVE PRODUCED — route it to the owner and defer — WOULD HAVE
+> SUPPRESSED TWO OF THE DAY'S THREE BEST CATCHES.** *And deference to the owner is what let
+> `FRESH_FOUND` on an eight-day-old timestamp stand for seven hours: everyone deferred to the field's
+> owner and nobody opened `schema.ts`.*
+
+**So the licence is available to every seat, including the ones forbidden to write code.** *The bus's
+own account of its day is the cleanest evidence: its two errors were inferences relayed without
+opening, and its two catches were files it had no standing in and read anyway.*
+
 ## A DEAD LAUNCHER AND A FAILED DEPLOY ARE THE SAME OBSERVATION FROM HERE
 
 **Ops, 2026-09-25, on the fourth ship of the day.** *Its local deploy wrapper was reported **STOPPED

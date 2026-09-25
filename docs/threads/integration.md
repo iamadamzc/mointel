@@ -257,6 +257,24 @@ stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /
 >
 > **✅ SHIPPED — `79cc4d1`, cutover 17:07:42 ET, confirmed from `/proc`. Enumeration CLOSED.**
 >
+> **⏸ BUILT, GATED AND HELD — `b72e8ed` (`c00992e` + pick `d734d6f`), gate 158 files / 2,390 tests
+> AGAINST A PREDICTED 158. Ops holds it because `c00992e` is still mid-`quick_check`; it ships the moment
+> `/proc` shows `c00992e`.** *Ops built onto the base production is ABOUT to be — a third shape, outside
+> the two I wrote, carrying no unapproved content, ratified.*
+>
+> **⚠️ THE CONDITION ON THAT HOLD, WHICH THE HOLD ITSELF DOES NOT COVER: if `c00992e` fails its
+> `quick_check` or is rolled back, `b72e8ed`'s APPROVAL LAPSES** — it contains `c00992e`, so shipping it
+> after a rollback re-ships what just failed under an approval written for a healthy base. *Ops returns
+> it to this seat for re-enumeration.* **A hold waiting on a state that never arrives is indistinguishable
+> from a hold that was forgotten.**
+>
+> **✅ DECIDED, not escalated — the `probed` UNIT.** *Ops: "do not leave a counter whose unit has to be
+> learned from the source", and the first rate-limit investigation will read `probed` as requests.* **Ship
+> NOT held: `probed`/`fetched` as a pair is defensible, only the doc comment misleads, and R&D already
+> carries both caveats in its own spec with attribution.** *Comment fix rides Research's next ship. The
+> RENAME is Research's call as owner and it has a clock: renaming a persisted JSON key after rows exist
+> leaves two keys across vintages permanently, so tonight is the cheapest it will ever be.*
+>
 > **✅ ENUMERATED AND APPROVED 2026-09-25 ~17:35 ET — `d734d6f` (Research), the reach-vs-reachability
 > census. Base `79cc4d1`, OR a second pick on top of `8942a94` in the same build — BOTH shapes approved,
 > because only Ops knows where that build is. What is NOT approved is gating one sha and shipping
