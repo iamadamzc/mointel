@@ -46,20 +46,34 @@ for design documents.
 
 ## Live state — 2026-09-25 12:27 UTC
 
-**My head is `ccaf77b`** — the `Now` header, pushed to `origin/main`. *What is
+**My head is `bd509e9`** — the `Now` header (`ccaf77b`) and the FRESH
+boundary's consumer half (`bd509e9`), both pushed to `origin/main`. *What is
 DEPLOYED is Ops's to say.* What this seat OBSERVED on the board at 08:16 ET
 today: the freshness bands, the badge split, the sort marker, the filter work
 and the DCOY fix are all live, and the head over the trades column still reads
-`NOW` / `−1m`, so `ccaf77b` is NOT live.
+`NOW` / `−1m`, so neither of mine is live.
 
-**`ccaf77b` IS A CHERRY-PICK FOR OPS, NOT A SHA TO DEPLOY.** Its cone over the
-recorded production sha `757cf6a` is 48 commits and carries the entire auth
+**THESE ARE CHERRY-PICKS FOR OPS, NOT SHAS TO DEPLOY.** The cone over the
+recorded production sha `757cf6a` is ~50 commits and carries the entire auth
 surface — the same hazard `0170418` names, which is why the sort fix shipped as
-the picked `49efd1a` rather than as `34cf6f3`. The commit touches three files,
-all in `components/` and `tests/`: no `lib/`, no `app/`, no payload field.
-Checked rather than assumed — it applies with a clean text merge onto both
-`757cf6a` and `49efd1a`, and gated on the `757cf6a` base in the pinned worktree:
-**2,345 tests, lint 0 errors, build OK, typecheck clean.**
+the picked `49efd1a` rather than as `34cf6f3`.
+
+**THE SHIP SET, STACKED AND GATED ON THE `757cf6a` BASE RATHER THAN REASONED
+ABOUT — in this order:**
+
+    7a0ad0c   the producer (Research): MarketSnapshot.catalystFreshFrom
+    ccaf77b   the Now header -> TRADES
+    bd509e9   the consumer: the boundary onto the row
+
+**Thirteen files, every one under `components/`, `lib/dashboard/`,
+`lib/desk/`, `lib/market/`, `lib/research/` or `tests/`. ZERO under
+`app/auth/`, `lib/auth/`, `app/signin` or `scripts/allowlist` — checked by
+path, not by reading the messages.** All three apply with a clean text merge
+and the stack gates: **2,364 tests, lint 0 errors, build OK, typecheck clean.**
+
+**`bd509e9` CANNOT SHIP WITHOUT `7a0ad0c`** — it reads a field that does not
+exist on the type before it. `ccaf77b` is independent of both and also applies
+onto `49efd1a` alone.
 
 *`npm run typecheck` on that base fails twice before it passes, and neither
 failure is the change.* With a stale `.next` it cannot resolve three `app/auth/`
@@ -134,17 +148,20 @@ answers **HTTP 200** with ~11 KB. The live desk is ~1.1 MB with `RVOL` present.
 
 ## The payload fields this seat is waiting on
 
-**Both are the same shape: ask the producer for the ANSWER, and let the reader
-sit on safe behaviour until it arrives.** `qualified.observed` proved the
-pattern works — it was declared here, built by the engine seat, and
-`STARTED 5AM` lit up with no further Design work.
+**The shape: ask the producer for the ANSWER, and let the reader sit on safe
+behaviour until it arrives.** `qualified.observed` proved the pattern works, and
+**`catalystFreshFrom` is the second proof — declared here, built by Research at
+`7a0ad0c`, consumed at `bd509e9` with no renegotiation.** One remains.
 
-1. **`MarketSnapshot.catalystFreshFrom: string | null`**
-   `= afterHoursStartUtc(previousTradingDate(db, tradingDate))`, computed ONCE
-   per snapshot. **`resolveWhy` runs in the BROWSER** — `'use client'`, no
-   database, no `previousTradingDate` — so the prior-close freshness refinement
-   cannot be computed here. Omitting it falls back to his day bands, which
-   Research documents as safe. **Absent must keep meaning "bands only".**
+1. ~~**`MarketSnapshot.catalystFreshFrom`**~~ — **ARRIVED `7a0ad0c`, WIRED
+   `bd509e9`.** It goes on the ROW, via `DeskRowContext`, not through
+   `resolveWhy` as a fourth argument: `resolveWhy` has four callers and this is
+   the reading that has already produced a colour disagreeing with the words
+   beside it twice, so the instant arrives WITH the row and no caller can
+   forget it. Read off `market`, **not** off `market.discovery`, which is where
+   `sessionPhase` and `tradingDate` beside it in the same context object come
+   from. Null still means the day bands, and that is a rule rather than a
+   fallback.
 2. **`MarketSnapshot.lastCheckpointChanges`** — §9 item 12's rail. Per-ticker
    `changedFields` + `changeSummary` + the checkpoint's `completedAt`.
    **`AssessmentSummary.notes` is NOT a substitute**: it is `commentary()`'s
@@ -158,10 +175,11 @@ pattern works — it was declared here, built by the engine seat, and
 
 | Item | Owner | Waiting on |
 | --- | --- | --- |
-| Deploy of `34cf6f3` | Ops | The accent fix for the sort legibility; gated at the sha |
-| `catalystFreshFrom` on the payload | Engine/Research seat | Spec above; reader is safe without it |
+| Deploy of `7a0ad0c` + `ccaf77b` + `bd509e9` | Ops | A stacked cherry-pick onto the production base; gated there, auth-free by path |
+| ~~`catalystFreshFrom` on the payload~~ | ~~Research~~ | **DONE** `7a0ad0c` producer, `bd509e9` consumer |
 | `lastCheckpointChanges` on the payload | Engine/Research seat | Spec above; §9 item 12's rail blocks on it |
-| ~~The `Now` column HEADER label~~ | ~~Design~~ | **DONE `ccaf77b`** — head reads `TRADES` / `−1m`; cherry-pick for Ops, see live state |
+| ~~The `Now` column HEADER label~~ | ~~Design~~ | **DONE `ccaf77b`** — head reads `TRADES` / `−1m` |
+| Confirm the boundary's VISIBLE effect | Design | The deploy. Six rows RECENT→FRESH is Research's measurement, not an observation of mine |
 | A fourth freshness band past 21 days | His call | Research left 21 unimplemented: it currently divides nothing |
 | §9 item 12 — the 320 px rail layout | Design | The rail restructures the board into two columns |
 | §9 items 13–19 (rest of Phase 2) | Design | Unstarted |
@@ -261,6 +279,32 @@ code beside it. Rulings that still bind were carried above.
 
 ## Working rules
 
+- **A MUTATION THAT SURVIVES IS NOT ALWAYS A VACUOUS CHECK — LOOK FOR THE
+  SECOND DEFENCE BEFORE REWRITING THE ASSERTION.** Six mutants on the FRESH
+  boundary, five killed singly; removing the `age.precision === 'CLOCK'` guard
+  killed nothing. **The shortfall was right and the test was fine**: `time.ts`
+  already documents that the guard is defended TWICE — `tsc` rejects
+  `age.elapsedMs` on the DATE arm, and at runtime `NaN >= boundary` is false —
+  so no single mutation can reach the rule. A two-part mutation (guard removed
+  AND the bare arm given a zero elapsed span) does kill it. **Predicting the
+  count is still the discipline; the reading of a shortfall is "find the other
+  defence or admit the check is vacuous", and both answers are common.**
+- **A WRITE THAT RAISES MID-CALL LEAVES THE FILE EMPTY, AND REPORTS NOTHING.**
+  A Python `open(p, 'w')` truncates before it writes; a `UnicodeEncodeError` on
+  a surrogate pair in the replacement string then ended the process with the
+  file at **zero bytes**. My own new test file, 240 lines, gone — and the
+  traceback named the encoding, not the destruction. **Sibling of *never `cat >`
+  a path without knowing it is new*: the danger is not the tool, it is that
+  TRUNCATION HAPPENS FIRST and is not conditional on the write succeeding.**
+  Read-modify-write a file you care about in BYTE mode to a temp path, then
+  move it — the same day proved the other half, that a text-mode write on this
+  host can silently fail to take at all (three attempts, all reporting success,
+  the re-read returning the ORIGINAL length).
+- **`npm test` GREEN IS NOT THE GATE GREEN. Vitest does not typecheck.** 2,431
+  tests passed on a test file whose import `tsc` rejects outright — the suite
+  ran the code and never checked the types, so the only thing that caught it was
+  running the whole gate. *The gate's four commands are not four opinions about
+  the same question.*
 - **A FACT SHOWN ONLY UNDER A CONDITION TEACHES NOBODY WHO HAS NOT MET IT.**
   The units of the `Now` column lived in the sort caption, which renders only
   while that sort is ALREADY ACTIVE. So the column explained itself to every
