@@ -422,6 +422,32 @@ writable, global resource on this machine exactly like the index is.*
 > and dangerous ANCESTRY; `0a17601` had the needed content and no ancestry the query could follow.
 > **Ancestry and content answer different questions — name which one you are asking.***
 
+## A WARNING THAT DOES NOT COME TRUE STILL HAS TO BE CLOSED
+
+**Ops, 2026-09-25, retracting its own stop-window warning within the hour it issued it.** *It had
+warned that `49efd1a`'s stop would land inside the 11:55–12:05 protected window — the known
+preflight defect, start-measured and stop-exposed. **It did not: the stop landed 11:49:43, six
+minutes clear, between a completed 11:30 and a scheduled 12:00.** Ops closed the warning explicitly
+rather than letting it stand.*
+
+> **Its sentence, kept: "a warning that does not come true still has to be closed, or the next seat
+> inherits a hazard it cannot distinguish from a live one."**
+
+**This is the mirror of every other failure this desk records, and it had no rule.** *We are careful
+that a claim be TRUE WHEN MADE and careless about whether it is STILL TRUE — and **a live warning
+and a spent one read identically in a document.*** A seat inheriting both plans around both, which
+costs it either caution it does not need or trust it should not give.
+
+- **Close a warning you issued, in the place you issued it, whether it fired or not.** *"Did not
+  materialise, here is why" is a finding.*
+- **Distinguish the WARNING from the DEFECT.** *Ops's stop-window hazard remains real and unfixed;
+  what closed is the prediction about one deploy. Retracting the first must not be read as fixing
+  the second — so say both.*
+- **The same applies to a hazard NAMED AND THEN AVOIDED.** *`34414f4` — the sha a handover wrongly
+  called "rollback baseline" — was corrected at ~07:00 and deleted by prune at 11:49, about four
+  hours later. **The correction landed before the trap fired**, so nothing happened, and "nothing
+  happened" is exactly what makes a correction look unnecessary in hindsight.*
+
 ## The rule that keeps them separate
 
 A thread that finds work belonging to another **writes it down and hands it
