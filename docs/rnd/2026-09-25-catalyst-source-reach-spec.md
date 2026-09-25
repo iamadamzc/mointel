@@ -84,9 +84,53 @@ there was nothing to fetch:**
       -> NO url at all         276  96.5%   <- can ONLY be reach
       -> url on file            10   3.5%   <- could be reachability
 
-> **At least 96.5% of the 286 is reach. At most 3.5% is reachability.** *The
-> ordering below is unaffected.* **Recorded because the objection was right to
-> make and the answer is a bound rather than a rebuttal.**
+> **RETRACTED WITHIN THE HOUR. THE BOUND ABOVE IS INVALID — do not use it.**
+> Integration opened the write path and the premise is false. **Both outcomes
+> take the same branch and neither persists a url** (`irRegistry.ts:200-209`):
+>
+>     if (!durable) {                     <- BOTH cases land here
+>       note: unreachable ? UNREACHABLE_NOTE : 'no durable ... located'
+>       sourceShape: null                 <- and NO url either way
+>     }
+>
+> **`unreachable` means candidates DID exist and none could be read** — the
+> resolver produced urls, up to six were probed, every one failed. *The url is
+> withheld deliberately and for a good reason (recording a newswire copy would
+> look like success and permanently block the discovery fallback), but it means
+> absence-of-url is produced by the reachability case too.*
+>
+> **And the error ran in the direction that flattered my conclusion:** every
+> host that refused all six probes was booked as a reach failure. **96.5% is
+> simply the fraction with no url, which is a different quantity from what I
+> claimed it bounded.**
+
+**SO THE 286 REMAINS UNSPLIT, AND ONE CLAIM IN THIS SPEC MUST BE WEAKENED.**
+*"The failure is concentrated in candidate GENERATION, not in fetching"* — as
+originally written below — **is not established.** The 286 splits into two
+sub-causes in unknown proportion, **and they have different fixes:**
+
+    (a) REACH          the resolver produced no viable candidate
+                       -> fix is candidate generation (off-domain IR hosts, subdomains)
+    (b) REACHABILITY   candidates existed; every probe failed
+                       -> fix is fetch robustness: the 6s timeout, MAX_CANDIDATE_PROBES=6,
+                          the user-agent, whether a refusing host is retried at all
+
+**The ORDER below is unaffected** — both live inside resolution, ahead of the
+gate and ahead of invocation. **Only the sub-diagnosis is open.**
+
+**THE MINIMAL THING THAT WOULD SEPARATE THEM, and it is one boolean.** The
+distinguishing bit **already exists in memory** — `unreachable`, returned by
+`selectCollectionPoint` at `irRegistry.ts:194` — and is written **only** into
+the registry `note`, which `researchRepo.ts:460` updates in place with
+`COALESCE`. **It never reaches the job row.**
+
+> **And the forward telemetry shipped today does NOT cover this. Verified:**
+> `networkRequests` is incremented at the company fetch (`collector.ts:626`,
+> `:656`) and for SEC requests (`:1122`) — **the resolver's own candidate probes
+> are not counted anywhere**, and `companyFetchDetail` describes the
+> deterministic fetch of a known url, not the probing that precedes having one.
+> **So `3dc14e2` does not make this measurable either, forward or backward.**
+> *Persisting the `unreachable` flag on the collector report is the whole ask.*
 
 ## Where the reach actually runs out
 
@@ -106,9 +150,14 @@ same day.
 
 **This spec does not tell Research which hosts to add** — that is a pipeline
 fact R&D does not own, and guessing it here would be this seat writing someone
-else's domain knowledge into an artefact. **What it asserts is where to look:
-the failure is concentrated in candidate GENERATION, not in fetching, parsing,
-retry or classification, all four of which were checked today and are sound.**
+else's domain knowledge into an artefact. **What it asserts is narrower than an
+earlier draft claimed, and the retraction above is why: the failure is
+concentrated in RESOLUTION — in the desk ending a job with no usable company
+source — and NOT in the deterministic fetch, the parse, the retry cooldowns or
+the state classification, all four of which were opened today and are sound.**
+**Whether resolution fails because no candidate was generated or because every
+candidate refused to be read is UNRESOLVED**, and the one boolean that would
+settle it is named above.
 
 ## Order of work, and this is the part the document asserts
 
