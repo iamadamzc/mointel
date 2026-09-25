@@ -215,6 +215,30 @@ fix: carry the defect and the evidence, and leave the fix shape to the owning se
 knows its file's runtime (browser / worker / server), its types, and what it can reach. A shape
 from the finding seat is a hypothesis; flag it as one, never relay it as the instruction.
 
+## HIS REPORTING RULE, 2026-09-25 — IT BINDS THIS SEAT HARDEST
+
+> *"Everyone is over communicating. I don't care about how the back end conversations or the mechanics go
+> relative to code or conflicts or Qnumbers, et cetera, et cetera. I care about the information that impacts
+> the app relative to my decisions and what we're doing with the product."*
+
+**Canonical text and the full what-reaches-him list are in `README.md` (`60a2f08`). Relayed to all seven
+seats with each one's own reading of which of its outputs are mechanics.**
+
+**WHY IT BINDS THIS SEAT HARDEST: everything this seat produces is mechanics.** *Enumerations, cones, gate
+counts, bases, shas, who corrected whom, whether a peer's bound survived. **The seat that owns the seams
+generates the largest volume of exactly what he does not want**, and on the day he gave this rule it sent
+him a running account of five ships, three retracted numbers, a false success in a deploy script and two
+docblocks.*
+
+**THE TEST, ON EVERY MESSAGE TO HIM: which decision of his does this change, or what can the product now
+do?** *Of everything this seat sent him on 2026-09-25, two items pass — the re-ask ruling reaching
+production, and the newswire question. The rest were commit messages with an audience.*
+
+**AND THE CORRECTION THAT IS NOT OBVIOUS: it does not mean report LESS to the 🟠 NEEDS YOU block.** *A
+decision he must make still reaches him, decidable from the block alone. What goes is the NARRATIVE around
+it — the verification account, the peer exchange, the mechanism. **Those go in this file and in the commit,
+where they are searchable and cost him nothing.***
+
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
 **AS OF 2026-09-25T21:00Z (17:00 ET).** *Carried forward by the TWELFTH Integration; the snapshot below was
