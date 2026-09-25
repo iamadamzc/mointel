@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T19:52Z
+## LIVE STATE — 2026-09-25T20:08Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -170,6 +170,21 @@ record. He has it from this seat directly as well.
   **THE DESK WAS NOT TOO SLOW. IT LOOKED IN THE WRONG PLACE.** It fetched `fireflyneuro.com/rss`, which does not carry that release, still does not, and never would. **The issuer feed was the wrong INSTRUMENT, not a slow one** — so `NO_RECENT_SOURCE_LOCATED` was sound, the collector was working, and the answer was still wrong. *This retires "the desk cannot find wire releases" and replaces it with something much worse and much more fixable.*
   **⚠️ THE FILTER TRAP, AND IT IS TODAY'S DEFECT IN A FOURTH COSTUME: the item arrives with `source: benzinga`, NOT `globenewswire`.** The originating wire leaves **no trace in that field.** **A collector filtering for `globenewswire` returns nothing and looks exactly like no coverage.**
   **⚠️ AND A SECONDARY MENTION IS NOT A CATALYST.** The second item — *"12 Health Care Stocks Moving In Friday's Pre-Market Session"*, 08:05:42 ET — is a market-wrap roundup **18 minutes after the fact**. A collector accepting any tagged item would attribute the move to a listicle. **Proposed discriminator, untested: the `symbols` array LENGTH.** A primary issuer release tags one name; a roundup tags twelve. Ops's query filtered by symbol so the returned arrays were not inspected — **one re-query settles it, and it must be settled before the filter is written, not after.**
+
+- **⚠⚠ THE UNION OF BOTH SOURCES REACHES ~44% OF TOP-12 NAMES, AND THAT BOUNDS WHAT THIS DESK MAY CLAIM ABOUT CATALYST-LESS MOVERS.** Ops, five sessions, deploy-free window, `AIFF`/09-25 carried inside the query as a known-present control and returning `primary=YES`:
+
+| | mean per session |
+| --- | ---: |
+| issuer feed finds | ~9.6 of 28 (**~34%**) |
+| Benzinga primaries | ~6.6 |
+| **both sources agree** | **3.6** |
+| Benzinga ONLY | 3.0 |
+| issuer ONLY | 6.0 |
+| **UNION** | **~44%** |
+
+  **BENZINGA IS ADDITIVE BUT MODEST: ~10 points, about THREE names a session, and roughly half of what it finds the issuer feed already had.** *The issuer feed finds MORE names than Benzinga does — it just missed the one he traded.* **`AIFF` sits in the `benzONLY` column on 09-25, one of two such names out of thirty. The build is justified by the CLASS it catches, not by the rate.**
+  **⚠️ AND THE NUMBER THAT BOUNDS THE DESK'S CENTRAL CLAIM: even the UNION leaves ~56% of top-12 names with NO catalyst from either source.** R&D's founding question is *"50%+ movers running with no catalyst"* — **and the instrument that produces "no catalyst" tops out at ~44% coverage.** *So "no catalyst found" is substantially a property of what the desk can see, and **two partial instruments failing to find something is not evidence it is absent.*** **Nothing here establishes that those names genuinely had no published catalyst, and nothing may be claimed as though it did.** *Ops's own framing, and it is the distinction it got wrong twice today and refused to repeat.*
+  **NOT MEASURED: the latency distribution.** 44 seconds remains ONE sample; the union query did not carry first-bar times. Outstanding, next deploy-free window, and recorded as outstanding rather than folded in.
 
 - **📐 BENZINGA COVERAGE MEASURED — ~47% ANY, ~23% PRIMARY. IT SUPPLEMENTS THE ISSUER FEED AND CANNOT REPLACE IT.** Ops, five sessions, top-12 names, 07:00–10:00 ET:
 
