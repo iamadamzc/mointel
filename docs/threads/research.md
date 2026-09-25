@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T14:02Z
+## LIVE STATE — 2026-09-25T14:18Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -187,6 +187,20 @@ record. He has it from this seat directly as well.
 
 - **⚠️ DO NOT "FIX" THE ET WALL-CLOCK TIMESTAMPS INTO CLOCK PRECISION. MEASURED 2026-09-25, AND IT IS A TRAP THAT LOOKS LIKE A BUG.** Three shapes are live in the catalyst timestamp column today — `2026-09-24T21:18:05.000Z`, `2026-09-25T04:41:22-04:00`, and `2026-09-25T08:30:32 ET`. The third gets **DATE** precision, so it can never reach FRESH through the prior-close boundary: **the same event written three ways bands two ways**, and after `catalystFreshFrom` is wired that shows on the board as an amber row beside two green ones for a reason invisible on it. That reads exactly like a defect in the new feature.
   **It is not, and the count says why. 33 of 260 stored timestamps carry the ` ET` shape — and 31 of those 33 are EXACTLY `20:00:00 ET`,** the end of the after-hours session. That is a FILL VALUE, not an observed release time. Parsing them as clocks would promote **7 analyses RECENT → FRESH out of a storage convention** — the same defect `3570114` fixed when bare dates were rendering as `16h`, arriving by a new route. The remaining two (`05:19:28`, `17:00:00`) are the only ones that look observed.
+  **THE NUMBER THAT WILL MAKE THE WRONG FIX LOOK OVERDUE, and it is why the instruction above is load-bearing rather than a footnote.** Ops's census of the CURRENT dossiers, 2026-09-25 — **a different and larger population than the 33 of 260 above**, which is `research_analysis_versions` on a month-old snapshot:
+
+| shape | count | reaches FRESH? |
+| --- | ---: | --- |
+| `Z` (CLOCK) | 498 | yes |
+| numeric offset (CLOCK) | 32 | yes |
+| ` ET` (DATE) | 74 | **never** |
+| other, incl. bare dates | 270 | **never** |
+| **total with a catalyst timestamp** | **874** | |
+
+  **344 of 874 — over a third — can never reach FRESH by construction.** It fails in the safe direction, but 344 is exactly the size of number that makes someone read it as under-reporting and reach for `etWallClockToUtc`, which promotes the 31 `20:00:00 ET` fill values. *Design's direction note, which sharpens this: the fill-value error can ONLY ever promote, never demote — so it could never appear as a wrong band, only as too many greens. **A defect with no failing appearance is one nobody reports.***
+
+  **⚠️ AND THAT CENSUS PUTS A QUESTION MARK OVER THE "77%" THIS DESK QUOTES IN SIX PLACES** — `time.ts:323`, `time.ts:386`, `guardrails.ts:334`, `why.ts:68`, `why.ts:246`, and the `d16dd14` row above, where it is **the stated reason his rule is calendar days rather than hours.** That 77% is denominated in the 08-23 snapshot's 260 timestamps. Ops's current-dossier census has `Z` alone at 57% where that snapshot had 18%. **THE TWO ARE DIFFERENT POPULATIONS and I have NOT measured the current one, so nothing here is a claim that 77% is wrong** — it is a claim that the figure is old, denominated somewhere else, and load-bearing. **What would settle it: the same shape census over the population the 77% actually refers to.** Do not quote 77% again without its denominator, and do not reopen his day-band ruling on a relayed number — if clock coverage really has moved that far, he ruled on a premise that has changed and he is owed the measurement, not the inference.
+
   **So the DATE treatment is right, and for a stronger reason than the one recorded below:** not merely that the offset is unstated, but that 94% of these values state a time nobody published. `etWallClockToUtc` (`lib/market/session.ts`) exists and would convert them correctly, which is exactly what makes this worth writing down — the fix is easy, available, and wrong.
 
 - **`Date.parse` ON AN `eventTimestamp` AGES IT BY A DAY.** **200 of the 260 stored values are bare dates** like `2026-08-17`, and `Date.parse` reads those as midnight UTC, which is **20:00 ET the previous day**. Anything computing an age or a band from them skews one day stale. Use `catalystAge` / `eventEtDate` (`lib/research/time.ts`); never `Date.parse`. The stored data also holds ET wall clocks (`2026-08-16 20:00:00 ET`) whose `Date.parse` behaviour is implementation-defined and whose offset is not stated — those get DATE precision, not CLOCK.
