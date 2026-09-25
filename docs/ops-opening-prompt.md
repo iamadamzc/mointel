@@ -64,7 +64,18 @@ inside the quote.
 > minute_bars           09-09 .. 09-25 (13 dates; retention 20 in force)
 > backups               4 files (reaper keeps 3 newest + the pinned v18); 62G free
 > releases on disk      34414f4 372f5eb 42c9a73 757cf6a acc3095
-> rollback baseline     34414f4  (the release immediately before the live one)
+>
+> TWO DIFFERENT THINGS ARE CALLED "ROLLBACK BASELINE". Do not conflate them:
+>   previous release    34414f4 -- the release before the live one, i.e. where a
+>                       plain rollback lands. It is NOT pinned and prune WILL
+>                       delete it: KEEP_RELEASES=3 keeps only the three newest.
+>   rollback-baseline   372f5eb -- a PINNED label in /opt/mointel/pins/, schema
+>                       v18, "pre-v19 incident baseline", carrying its own backup
+>                       (market-v18-2026-08-21T01-17-39-942Z.db). prune.sh honours
+>                       pins, so this one survives any number of deploys.
+> Read the pins with `sudo cat /opt/mointel/pins/*.pin` -- never assume the
+> previous release is still there. `pins.sh:10` exists because count-based
+> retention already destroyed 372f5eb once, after three deployments.
 > public                / /privacy /terms /favicon.ico /icon.svg /apple-icon.png
 >                       /robots.txt 200;  /desk /signin /api/market 401
 >                       /privacy-x 401 -- the control fired, so the sweep is honest
