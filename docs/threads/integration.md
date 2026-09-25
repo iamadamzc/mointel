@@ -234,7 +234,26 @@ stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /
                           /desk /signin /api/*  401        /privacy-x negative control FIRES
 ```
 
-> **⚠️ `3dc14e2` — ENUMERATED, STATE UNCONFIRMED AT HAND-OFF.** *Collector observability
+> **✅ `3dc14e2` SHIPPED — cutover ~14:49:40 ET, `quick_check` 585.7s, 3s down, stop landed ten
+> minutes clear of the 15:00 checkpoint. Web/research/assess on `3dc14e2`, worker untouched on
+> `757cf6a`.** *Collector attempt telemetry is LIVE: `companyFetchDetail` + `networkRequests` are
+> persisted from this cutover forward.*
+>
+> **⚠️ AWAITING ENUMERATION — `388c57f` and `8687f04` (Research), on his re-ask ruling.** *Reported
+> as* **"yes, re-ask stale catalysts — top 12 only"** *— **VERIFY THAT AT HIS TURN before enumerating;
+> this thread refused three relayed rulings today and was right each time.*** `8687f04` stops a STALE
+> catalyst counting as answered inside rank 12 (literal 12, not `autoRank`, which reads
+> `RESEARCH_AUTO_RANK` and could silently widen his ruling); staleness DERIVED against `now` rather
+> than read off the write-time band; no timestamp bands UNKNOWN, not STALE. `388c57f` demotes
+> `FRESH_FOUND` → `SECONDARY_STALE` when the desk's own band says STALE — **41 of 138 (30%) carried
+> a STALE event, oldest by 13 days, and `AutomaticIntelligence.tsx:365` has been printing
+> "Fresh found · Stale" on one line of his drawer.** *`388c57f` is safe alone; **`8687f04` is the one
+> to watch after deploy** — model spend roughly flat (an unmoved fingerprint returns
+> `REUSED_UNCHANGED` without a call) but job rows, SEC polling and worker slots rise for top-12 names
+> with stale catalysts. **That cost belongs IN the enumeration, not in a bill.** If top-12 job count
+> rises far beyond a handful of stale names, the staleness derivation is firing wider than intended.*
+>
+> **OLD TEXT, KEPT AS THE LESSON: this block said "ENUMERATED, STATE UNCONFIRMED AT HAND-OFF".** *Collector observability
 > (`companyFetchDetail` + `networkRequests` persisted). Cherry-picked `0625db0`→`d8fc4e0`→`3dc14e2`
 > onto `0a17601`, gate green (156 files / 2,371 tests / 0 lint), enumerated for 14:36–14:38 ET.
 > **I asked Ops for the state at 16:07 and had no answer before handing off. SUCCESSOR: ASK OPS
@@ -321,13 +340,40 @@ catalyst.* **The instrument was HONEST and the answer was WRONG.**
   70 `COVERAGE_INCOMPLETE` have never been examined by anyone** — *and that is where a coverage
   question would actually live.*
 
-### QUEUED READS — ALL FOR OPS, NONE URGENT
+### ✅ THE AIFF READS ARE DONE — AND READ 2 FALSIFIED THE DIAGNOSIS, WHICH MADE THE FIX HARDER
 
-1. **AIFF reads 2 and 3.** *Read 2: `cycle_fingerprint` across today's checkpoint rows, **with the
-   falsifying arm honoured** — if it MOVED and AIFF still was not enqueued, Research's gate-2
-   diagnosis is WRONG and that is the finding. Read 3: the `fireflyneuro.com/rss` fetch from the box
-   with the production user-agent.*
-2. **PHASE C FLOAT COVERAGE** — how often `assessFloatAgainstFiled` returns a verdict other than
+**READ 2 — FALSIFIED, and reported as a falsification rather than reconciled.** *Research predicted a
+byte-identical `cycle_fingerprint` booked no re-look.*
+```
+AIFF, 2026-09-25, 14 checkpoints -> NINE DISTINCT FINGERPRINTS, rank 2 to rank 7, top-12 all day
+```
+**The fingerprint MOVED at least eight times and AIFF still got ONE research job.**
+
+> **THE RECONCILIATION IS WORTH MORE THAN THE ORIGINAL DIAGNOSIS: gate 1 SHORT-CIRCUITS before gate 2
+> is ever consulted.** *`answered` is true because `catalystStatus` is `FRESH_FOUND`, so `queue.ts`
+> `continue`s past everything downstream and the cycle path never gets a turn.* **So making the
+> fingerprint more sensitive — the obvious fix — would do NOTHING for this class while gate 1 stands.**
+> *Only the falsifying arm could have produced that.*
+
+**READ 3 — THE ISSUER-FEED ROUTE IS BLIND TO THIS RELEASE BY CONSTRUCTION.**
+```
+https://fireflyneuro.com/rss -> 301 -> /feed/  HTTP 200, 13,385 bytes, valid RSS
+"NeuroSigma" matches 0      "2026-09-25" matches 0
+companySource.ts:77 sets redirect: 'follow'  -- the collector DID read the real feed
+```
+*Ops checked the redirect specifically, because a 301 returning zero bytes would have made the verdict
+vacuous rather than honest.* **It is honest: the desk read the right feed and the release is not in it.**
+
+> **SO HIS NEWS-FEED QUESTION IS ANSWERED YES, AND EVIDENCED — BOTH ROUTES FAILED, FOR DIFFERENT
+> REASONS, SO FIXING EITHER ALONE LEAVES THE GAP.** *Issuer feed: structurally cannot carry a
+> GLOBE NEWSWIRE release the company's own WordPress feed never published — no amount of polling finds
+> it. DISCOVERY: ran, one model call, missed a wire release a competing scanner had by 07:53 — and it
+> is **79% of the desk's entire token spend**.* **A wire source would DISPLACE the most expensive
+> stage rather than adding to it.**
+
+### QUEUED READS — FOR OPS, NONE URGENT
+
+1. **PHASE C FLOAT COVERAGE** — how often `assessFloatAgainstFiled` returns a verdict other than
    `CANNOT_VERIFY` on today's board, **with the THREE INPUT COUNTS beside the verdict counts** (Sheet
    `float.value`, dossier `supplyPair.sharesOutstanding`, basis factor). *It CANNOT be measured from
    `data/market-prod-2026-08-23.db` — that snapshot predates `supplyPair` and `daily_bars.split_factor`,
@@ -342,6 +388,21 @@ catalyst.* **The instrument was HONEST and the answer was WRONG.**
    and not a correction.** *Settled by a shape census over ALL STORED `research_analysis_versions`.*
 
 ### SMALLER OPEN ITEMS, WITH OWNERS
+
+- **MODEL SPEND — HE ASKED FOR THE RATE CARD APPLIED, plus the whole LLM architecture.** *Ops measured
+  volume on production 2026-09-25 (264 calls, 7,935,363 input / **844,636 cached (10.6%)** / 454,592
+  output; DISCOVERY alone is 79% of input) and correctly declined to invent prices. **Rates and the
+  daily total are Research's**, and it has already said its training cutoff predates these model names,
+  so the figures MUST come from a published list.* **Ops is building the architecture writeup and
+  diagram.** *Two structural claims for Research to confirm: spend is dominated by LOOKING for
+  catalysts rather than reasoning about them; and research volume is bounded by BOARD SLOTS (68 of
+  8,031 captured), so lowering the capture floor changes WHICH names occupy 12 slots, not how many —
+  expected spend roughly FLAT, which answers his price-floor question if it holds.*
+- **A MESSAGE QUEUED TO A SEAT THAT THEN RETIRES IS NOT A MESSAGE DELIVERED.** *Research's, learned
+  today: its enumeration request for `388c57f`/`8687f04` sat queued against this seat. **It put the
+  routing state of everything it produced into `research.md` (`265b527`) rather than leaving it in a
+  peer's queue** — the right response, and the reason those two shas are recorded above rather than
+  lost.* **A retiring bus must be assumed to have dropped whatever it had not answered.**
 
 - **TWO META DESCRIPTIONS** *(`app/layout.tsx:22`, `app/page.tsx:19`)* still carry the OLD three-item
   text, missing "and what supply stands behind it". *Approved strings in
