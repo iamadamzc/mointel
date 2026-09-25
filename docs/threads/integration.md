@@ -360,6 +360,12 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
 > > makes the wrong fix look overdue. And the fill-value error only ever PROMOTES, so it could
 > > never appear as a wrong band — only as too many greens, which is a defect with no failing
 > > appearance.*
+>
+> > **AND THE NAMED ROW, which turns "do not fix it" from an argument into evidence: `YMAT`,
+> > `2026-09-23T20:00:00 ET`** *(Ops, on the box).* **The exact end-of-after-hours fill value, in
+> > PRODUCTION data, dated `days >= 1`.** *Out of band today — 09-23 precedes the 09-24 close — so
+> > it changes nothing now. **It is the row to point at the next time someone proposes parsing
+> > ` ET` stamps as clocks**, and a named row survives an argument that a ratio does not.*
 
 > **And the positive case is already proven present, which is the whole reason this check can
   fail honestly: `INLF` is a known in-band row.** *Ops's condition — "zero is the only unambiguous
