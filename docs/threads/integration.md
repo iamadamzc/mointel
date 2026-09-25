@@ -225,7 +225,8 @@ everything below this section is kept for MECHANISMS, not facts.*
 ### PRODUCTION
 
 ```
-web / research / assess   79cc4d1   cutover 2026-09-25 17:07:42 ET, 3s down, quick_check 597.3s
+web / research / assess   c00992e   cutover ~17:13 ET (fifth ship; 79cc4d1 + pick 8942a94)
+                          79cc4d1   cutover 2026-09-25 17:07:42 ET, 3s down, quick_check 597.3s
                                     READ OFF THE BOX FROM /proc/<pid>/cwd at the twelfth
                                     Integration's ask. pids 1157361/1157423/1157510.
 market worker             757cf6a   UNTOUCHED, NRestarts 0 since 2026-09-24 20:24:07Z
@@ -248,8 +249,13 @@ stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /
 > timeline. **Two right numbers naming different events read as one number.*** *Collector attempt telemetry is LIVE: `companyFetchDetail` + `networkRequests` are
 > persisted from this cutover forward.*
 >
-> **✅ SHIPPED — `79cc4d1` IS PRODUCTION, cutover 17:07:42 ET, confirmed from `/proc`. The enumeration
-> below is CLOSED.**
+> **✅ SHIPPED — `c00992e` IS PRODUCTION (`79cc4d1` + pick `8942a94`), FIFTH ship of the day, gate 157
+> files / 2,385 tests, cutover ~17:13 ET, `RESTART_MARKET=no`.** *Ops re-ran my `validateDossier` caller
+> sweep at the pick sha rather than accepting it and found the same three.* **`d734d6f`'s base is
+> therefore `c00992e`, and the pre-registered gate expectation is 158 TEST FILES — `d734d6f` adds exactly
+> one.**
+>
+> **✅ SHIPPED — `79cc4d1`, cutover 17:07:42 ET, confirmed from `/proc`. Enumeration CLOSED.**
 >
 > **✅ ENUMERATED AND APPROVED 2026-09-25 ~17:35 ET — `d734d6f` (Research), the reach-vs-reachability
 > census. Base `79cc4d1`, OR a second pick on top of `8942a94` in the same build — BOTH shapes approved,
@@ -285,10 +291,15 @@ stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /
 > fixes the caller you remember and leaves the others on the old behaviour; a repair or an escalation
 > banding differently from the accepted dossier would be the same defect in a different hat.*
 >
-> *Open, and NOT a condition of the ship: `8942a94`'s comment cites "the 2026-08-23 snapshot contains no
-> instance of the firing case". **That window spans Tuesday to Friday and the case needs a Monday or a
-> post-holiday session, so it may be absent by construction** — put to Research. The FIX does not rest
-> on it; only the rarity claim does.*
+> **❌ MY OBJECTION TO THAT COMMENT WAS RIGHT AND MY REASON WAS FALSE, AND OPS HAD ALREADY ADOPTED THE
+> REASON.** *I said the 08-23 window spans Tue–Fri so the firing case was absent by construction.
+> Research queried it: **2026-08-17..08-21, weekdays Mon 5 / Tue 13 / Wed 6 / Thu 23 / Fri 11.** There IS
+> a Monday. The case could have appeared and did not.* **My "Tue–Fri" came from R&D's prose about a
+> DIFFERENT population — its archived-jobs window is 08-18..08-21 — applied to Research's clocked
+> catalysts.** *That is the eleventh Integration's own recorded failure of this morning, repeated by its
+> successor before the day ended, and Ops confirmed it back to me in good faith, which is how a bus error
+> becomes a desk belief.* **The objection stands on Research's reason instead: n=5 supports no rate.
+> Corrected at `969458d`.**
 >
 > **✅ ENUMERATED, APPROVED AND GATED 2026-09-25 ~17:00 ET — `388c57f` then `8687f04` (Research),
 > CHERRY-PICKED onto production `3dc14e2`, window Ops's, `RESTART_MARKET=no`. SHIPPING AS THE LITERAL

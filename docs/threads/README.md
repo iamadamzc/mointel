@@ -12999,6 +12999,24 @@ dropping test FILES; a clean re-run is 165 files and 2,471 tests.*
 > one green over everything.* **A number that should have grown by ten and shrank by a hundred is an
 > environment fact, and no amount of reading the diff will find it.**
 
+> **AND THE COUNT IS ONLY A SIGNAL AGAINST ITS OWN TREE — the rule produced a false alarm within hours
+> of being written.** *Research read Ops's gate at `79cc4d1` — **157 files** — against its own clean runs
+> of 164–166 and asked for a re-run. Counted at the shas:*
+> ```
+> git ls-tree -r --name-only <sha> | grep -c '\.(test|spec)\.(ts|tsx)$'
+> 3dc14e2  156     79cc4d1  157     8942a94  165     d734d6f  166
+> ```
+> **`79cc4d1` holds exactly 157. Nothing was lost; main simply carries eight test files that
+> production-plus-two-picks does not.** *A production tree built by cherry-pick is SMALLER than main by
+> construction, so comparing its gate to a main-branch run reports tree composition and calls it an
+> environment failure.* **That is the same base-carrying defect as every count on this desk, arriving
+> inside the very rule written to catch instrument failures — and its cost is the expensive direction:
+> re-running a clean gate, and teaching a seat to doubt a correct instrument.**
+>
+> **THE CHEAP FIX, now standard here: PREDICT THE COUNT BEFORE THE GATE.** *`d734d6f` adds exactly one
+> test file, so its gate should report 158. A prediction that matches rules out a short collection with
+> a number; a disagreement names which of the two things is wrong.*
+
 *Same family as the stale bundle and the false `ec2` empty: the instrument answered, plausibly, about
 something other than what was asked. **This one is rarer and nastier because the instrument's own
 failure output is indistinguishable in KIND from the thing it is supposed to detect.***
