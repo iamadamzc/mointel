@@ -113,6 +113,7 @@ this seat before it carried a sha, contradictions reported not resolved.
 - **Alpaca plan:** Algo Trader Plus, his word (2026-09-07).
 - **Session report:** *"the report is for monetization, coaching is just for me."* Apple sign-in: *"phase 2."* Google consent screen: he meant OAuth consent verification.
 - **Reporting format:** the 🟠 NEEDS YOU block (2026-09-19); nothing after it, omitted when nothing needs him.
+- **Newswire source, 2026-09-25, verbatim:** *"yep, build the alpaca. we need to look at the pipeline now. it will change how we do things on the model interpretation."* Build Alpaca News (Benzinga-sourced, already in the account) under the accepted-exposure posture already ruled — no new vendor, no new spend, no new exposure category. Routed to Integration for Research to scope; this seat's licence question on this source is closed. A contracted commercial licence (Benzinga direct, or a primary wire) stays open below, not asked for.
 - **What reaches him, 2026-09-25 (`README.md` "His rule: report what changes the product, not how the work went", `60a2f08`):** *"I don't care about how the back end conversations or the mechanics go relative to code or conflicts or Qnumbers... I care about the information that impacts the app relative to my decisions and what we're doing with the product."* **Applied to this seat:** a claims ruling, a licence-posture change, a vendor decision, or anything that changes what the product may say or fetch, reaches him. Which document records a ruling, register housekeeping, session titles, sha provenance and which seat corrected which peer do not — those stay in this charter and the commits. The vendor-float constraint (below) is the model of a ruling that reaches him because it changes what the app may DO; the fact that it lives in `commercial-seat-research-tooling.md` versus `commercial.md` does not.
 
 ### Standing rules this seat applies to claims
@@ -134,7 +135,7 @@ this seat before it carried a sha, contradictions reported not resolved.
 | Session-report pricing and packaging | this seat | him; the report cannot narrate structure honestly until Phase C (filing-derived float) replaces the Sheet float |
 | Marketing's claims as they arrive | this seat | each one; ruled in the naming document §2f |
 | A second Alpaca account in his name (for a staging desk) | him | ruled deferred by Integration `1c0c0a6`; unresolvable from public pages; an enquiry is his |
-| A contracted newswire licence (vs. reading Alpaca News under the existing accepted-exposure posture) | him | an enquiry to Benzinga or a primary wire's licensing desk; no vendor publishes a self-serve price (`2026-09-25-newswire-licence-landscape.md`) |
+| A contracted newswire licence (a Benzinga or primary-wire agreement, vs. the accepted-exposure posture below) | him | an enquiry to Benzinga or a primary wire's licensing desk; no vendor publishes a self-serve price (`2026-09-25-newswire-licence-landscape.md`); not asked for, not needed to build |
 | Watch, no clock | this seat | CT Plan agreements (2027-04-01; migration since 2026-09-01); IEX TOPS $1,000 from 2026-10-01; sol's promotional price after 2026-11-21; a 2026 Nasdaq Basic list |
 
 ### Hazards a fresh session must know on day one
