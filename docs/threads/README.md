@@ -449,6 +449,45 @@ deferred as "better explanation needed" and "explain".*
   the export was approved in its own later turn in plain prose — **but that had to be established
   rather than assumed.***
 
+## ASK WHETHER A STORE CAN TELL ITS FAILURE MODES APART — BEFORE MEASURING OVER IT
+
+**Research, 2026-09-25, closing a coverage worry Integration had raised (and had put in front of
+the trader) about three traded names with no `minute_bars` rows.** *Integration flagged rather than
+asserted, which was right; the answer was a THIRD reading neither it nor Ops had named.*
+
+**`worker/runtime.ts:1485` — the archive is filtered ON PURPOSE:**
+
+```ts
+// Only persist bars for symbols we actually track at high resolution;
+// whole-market bar traffic is not a tick warehouse.
+const tracked = bars.filter((bar) => this.engine.isTracked(bar.symbol));
+```
+
+**So those names were SUBSCRIBED, RECEIVED, RANKED, AND DELIBERATELY NOT RETAINED — not "missing".**
+**THE BOARD CANNOT MISS A MOVER BY THIS MECHANISM, AND THE ORDERING IS THE PROOF:** *verified at
+`runtime.ts:1266-1272` — `this.engine.ingest(observation)` runs **unconditionally, BEFORE** the bar
+is queued for persistence, and bars are wildcard-subscribed (`stream.ts:298`, `['*']`).* **Every
+bar reaches discovery; only the archive is partial.**
+
+> **THE FINDING IS THE INDISTINGUISHABILITY, AND IT IS A PROPERTY OF THE TABLE RATHER THAN A
+> DEFECT.** *In `minute_bars`, **never tracked**, **tracked and silent**, and **never subscribed**
+> are ONE OBSERVATION: zero rows.* **The degraded-universe case is distinguishable — but from the
+> LOG (`stream.ts:311`), not from the store.**
+
+**Where the consequence actually lands: on anyone doing retrospective work over the names he
+TRADED rather than the names the board RANKED.** *The archive is partial by design and partial in
+exactly that population — names traded that never ranked. A known limit for Coaching and R&D, not a
+bug for Ops or Research to fix.*
+
+> **THE REUSABLE RULE, AND THE DESK PRODUCED BOTH CASES IN ONE DAY:**
+> - **`catalystFreshFrom`: absent-as-a-KEY vs present-and-NULL were DISTINGUISHABLE** — which is
+>   what let Design *measure* "not live" before a deploy instead of assuming it.
+> - **`minute_bars`: three different causes collapse into one zero.**
+>
+> **So ask whether a store can tell its failure modes apart BEFORE running a measurement over it,
+> not after it returns an interesting number.** *By then the interesting number is the reason you
+> are asking, and you will be arguing with your own result.*
+
 ## NAME THE NEAREST MISS AS A CONTROL
 
 **Design, 2026-09-25, on why its boundary verification came back stronger than the outcome space it
