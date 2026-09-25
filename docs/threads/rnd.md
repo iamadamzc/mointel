@@ -1313,6 +1313,52 @@ change in what gets stored.* **A census cannot separate those**, Ops declined to
 guess, and neither should the next reader. **The rate moved; the reason has not
 been established.**
 
+#### PRODUCTION READS: GET THE WINDOW FROM OPS, AND PIN WHAT THE BASELINE BRACKETS. 2026-09-25.
+
+**A new rule binds this seat harder than most, because production reads are what
+it asks for.** Recorded in [README.md](README.md) at `20b2499`, from an Ops
+finding: **no heavy read against production `market.db` while a deploy unit is
+running.**
+
+**The cost does not land on the reader, which is why it is a rule.**
+`PRAGMA quick_check` is a full integrity scan of a 3.5G file and has drifted to
+**388–597s against a 900s deadline**, with a measured margin of **132s** on the
+worst deploy. **An expensive read can push it past the deadline and make the
+deploy tool announce a cutover that never happened.** *Nothing in this seat's
+query result would show that it caused it.*
+
+> **So: when he authorises a read, ASK OPS FOR THE WINDOW. Do not pick a
+> quiet-looking moment** — only Ops can say whether a unit is running, and the
+> re-scoped anchor-plus-dilution join is **larger** than the read originally
+> sized.
+
+**AND THE ORDERING POINT, APPLIED TO THIS SEAT'S OWN BASELINE RATHER THAN
+NOTED.** Ops's finding included that a before-reading must bracket the right
+event — its own moved to after cutover and before restart, because *the restart
+is the event the reading exists to bracket*, and taking it later would have
+destroyed it. **Two boundaries that look interchangeable, and only one is.**
+
+**This seat has exactly one live before-reading: the catalyst-coverage baseline
+the source-reach work is supposed to move.** *It brackets "Research ships
+resolution-reach changes", not a deploy and not a restart.*
+
+    BASELINE, PINNED 2026-09-25 — the "before" arm, do not re-derive it later
+      22.6% pooled / 32.1% on a complete pre-open pass   26 sessions, board capture
+      48.1% COVERAGE_INCOMPLETE over 28 sessions; 49.4% this week   Ops, n=4,812
+
+**VERIFIED, NOT ASSUMED, THAT IT IS STILL A CLEAN "BEFORE".** Five commits
+touched the resolution path today — `0625db0`, `d19355c`, `d734d6f`, `e197a80`,
+`be497db`. **Diffed across all five: no change to `INDEX_PATHS`, `FEED_PATHS`,
+`MAX_CANDIDATE_PROBES`, either cooldown, `hasUsableSource` or the
+`firstQualification` gate.** The only occurrences of those names in the diff are
+**comments**. *So today's work is telemetry and naming; resolution behaviour is
+unchanged and the baseline is banked on the correct side of the boundary.*
+
+**What a successor must not do: re-derive this baseline after the reach work
+ships and compare it to itself.** *The numbers above are the before arm. Once
+resolution changes, the population that produced them cannot be reconstructed —
+the same permanence that already applies to the August census.*
+
 #### THE DIRTY-FLOAT CHARACTERISATION IS 90% BUILT AND THE FLOAT ITSELF IS 0.9%. 2026-09-25.
 
 **His direction, and it is the founding concept of the product:** *"The concept
