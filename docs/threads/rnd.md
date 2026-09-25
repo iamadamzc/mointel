@@ -4122,6 +4122,23 @@ relative to my decisions and what we're doing with the product."*
 change, or what can the product now do? If neither has an answer, it belongs in
 this register and in a commit message — not in a report.**
 
+> **SCOPE, AND THE FIRST VERSION OF THIS SECTION GOT IT WRONG.** He corrected the
+> over-application himself within minutes (`47efeb4`): *"i dont care what you say
+> to each other and unless that has to be printed, be as long as you need to be.
+> don't sacrifice excellence for brevity."*
+>
+> **HIS channel is filtered by RELEVANCE, not by length** — a long message is
+> fine if every part changes a decision of his or what the product does, and a
+> short one is still wrong if it is mechanics. **Anything PRINTED stays tight.**
+>
+> **SEAT-TO-SEAT AND DOCUMENTS: as long as the work requires**, bounded only by
+> context cost, which is a technical constraint and **not his instruction.**
+> **Do not compress a defect report, a relay or a register entry to look brief.**
+> *The concrete cost if this seat gets it wrong: the compressed version of its
+> 2026-09-25 source-reach relay would have shipped a spec telling Research to
+> build an expiry that already existed. The long form is what changed the work
+> order twice before anything was built.*
+
 **What this seat specifically must stop sending, because it sent all of it on
 2026-09-25:**
 
