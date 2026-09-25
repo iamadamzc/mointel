@@ -273,6 +273,46 @@ work does not drift into it.** The same release usually appears on the issuer's
 own newsroom, which is a permitted source and already a live source type
 (`COMPANY_NEWSROOM`).
 
+## ADDENDUM 2026-09-25 — a wire source may DISPLACE this spec's first item. Population measured; coverage not.
+
+**He ruled the same evening to build an Alpaca News (Benzinga) feed.** A wire
+feed is **keyed by SYMBOL and needs no newsroom URL at all**, so for every name
+it covers, **resolution reach does not arise.** *The 63% may be the size of a
+problem a wire routes around rather than one the desk has to solve.*
+
+**THIS SPEC IS NOT REWRITTEN AND MUST NOT BE, until the coverage number exists.**
+*Integration flagged rather than asserted, correctly: nobody has measured what a
+wire feed covers for this universe, and that measurement belongs to Research,
+which will hold the feed.*
+
+**What R&D CAN settle is the other half — WHO is in the bucket — because a
+wire's coverage depends on listing characteristics. Measured on the 125 tickers
+whose resolution found no newsroom (`market-prod-2026-08-23.db`):**
+
+    exchange        Nasdaq 107   NYSE 17   null 1     -> 99% major-exchange listed
+    SEC sources     125 of 125                        -> 100% reporting registrants, all with a CIK
+    foreign issuer  44 (35.2%)                        -> against 40.0% of all researched names
+
+> **These are not OTC shells. They are Nasdaq and NYSE companies that file with
+> the SEC and simply have no newsroom at a guessable URL.** *That is exactly the
+> population a commercial wire indexes well*, so **the population
+> characteristics are favourable to the displacement hypothesis** — without
+> confirming it, because coverage is a fact about the vendor and not about the
+> names.
+
+**THE SEGMENT WHERE REACH WORK MAY SURVIVE REGARDLESS: the 35% foreign
+issuers.** *Foreign private issuers are where wire coverage thins, and they are
+barely under-represented in this bucket relative to the whole researched set.*
+**If the coverage number comes back high overall, check it separately for that
+segment before retiring the issuer path.**
+
+**AND A DELIBERATE DECISION IS OWED ON THE PROBE CENSUS** (`d734d6f`,
+`candidatesReturned/Probed/Fetched`), which this seat argued for hours earlier.
+**If a wire lands first, that census partly measures a problem the desk has
+stopped having.** *It is not wasted — it says which names still need the issuer
+path, which is precisely the foreign-issuer question above. But its PURPOSE
+changes, and that should be decided rather than discovered.*
+
 ## Related
 
 - [../threads/rnd.md](../threads/rnd.md) — the register entries of 2026-09-25: the 94%-SEC corpus, the `COVERAGE_INCOMPLETE` decomposition, and the product-coverage-versus-market-claim relabel
