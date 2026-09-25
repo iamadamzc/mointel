@@ -227,6 +227,30 @@ under item 1, which read:**
 it** — and `2, now` is the header ruling, where `now` is the WORD `Now` and
 not an instruction about timing, which the clause that follows confirms.
 
+> ### ⚠ SUPERSEDED THE SAME EVENING: HE REJECTED THE 60-SECOND COLUMN.
+>
+> **Reported to Integration in his own words — *"I honestly don't understand
+> the purpose of a 60 second column… unless somebody can convince me why we
+> need that, no"* — and confirmed by him directly when Integration asked:
+> *"yes i rejected the 60s."*** **THIS SEAT HAS NOT SEEN EITHER SENTENCE
+> FIRST-HAND**, which is recorded because that is the standard Research held
+> me to four messages earlier and it applies to a rejection exactly as it
+> applies to an approval.
+>
+> **A LATER RULING WINS. `1, both` is spent on the 60s half.** *It was given
+> against my own labelled option, and the option I wrote described a rolling
+> 60-second count as days of work that would fix the sort — so he approved a
+> thing, saw it argued again, and said no. **Nothing about that is a
+> contradiction and it needs no reconciling: he changed his mind, which is
+> what a ruling is for.***
+>
+> **WHAT SURVIVES: the 10-second CAPTURE.** *Both halves were selected by one
+> word and only one half was rejected, so I am not reading the rejection any
+> wider than its sentence — but I am also not treating the capture as
+> unambiguously live off `1, both` alone. **It needs one clean question to
+> him, in a block, and it is in the open items as needing that rather than as
+> commissioned.***
+
 *Research declined to start a storage-bearing build on my summary and asked
 for the words. That was correct and the omission was mine: I wrote "his
 ruling: commissioned" into the open items ONE MESSAGE after recording that
@@ -294,10 +318,16 @@ it will be refused on evidence that does not apply.*
 than ranked names, and `high-low` carries a spread component on thin names —
 though the named examples all cleared 248 trades in the minute.*
 
-## FIELD SPEC — `DemandState.tradesLast60s`, his ruling 2026-09-25
+## ~~FIELD SPEC — `DemandState.tradesLast60s`~~ — REJECTED 2026-09-25
 
-**HE RULED BOTH: the rolling 60-second count NOW, and true 10s capture
-COMMISSIONED.** *"1, both. 2, now with updated tooltip. but 1 is going to
+**⚠ HE REJECTED THIS THE SAME EVENING. KEPT, NOT DELETED, because the
+reasoning about WHY 60s and not 10s is the part a successor would otherwise
+re-derive — and because a spec that vanishes leaves no record that it was
+considered and refused.** *Nothing was built: no field, no code, no payload
+change. `63325a4`, whose title names the rolling 60s, contains only the header
+revert and this spec — there is no 60-second behaviour anywhere in the tree.*
+
+**The superseded ruling:** *"1, both. 2, now with updated tooltip. but 1 is going to
 impact 2, at least on messging."*
 
 **THE PRODUCER'S HALF, for the engine seat — same shape as
@@ -436,9 +466,9 @@ build the reader to be safe without it.
 | ~~Deploy of the FRESH boundary~~ | ~~Ops~~ | **DONE** `0a17601` live 12:17 ET, verified on the board 12:18 |
 | ~~`catalystFreshFrom` on the payload~~ | ~~Research~~ | **DONE** `7a0ad0c` producer, `bd509e9` consumer |
 | `lastCheckpointChanges` on the payload | Engine/Research seat | Spec above; §9 item 12's rail blocks on it |
-| `tradesLast60s` on the payload | Engine seat | Spec above; reader is safe without it, sub-line names which grain |
+| ~~`tradesLast60s` on the payload~~ | ~~Engine seat~~ | **REJECTED by him 2026-09-25.** Nothing was built |
 | Price-window control + header | Design | HIS call on what `Rank` means in a narrowed window; engine split first |
-| Sub-minute CAPTURE (true 10s) | R&D / Research | His ruling: commissioned. Unblocks R&D Q2; Design builds nothing until it exists |
+| Sub-minute CAPTURE (true 10s) | His call, then R&D | **Selected by `1, both`, whose OTHER half he then rejected. Needs one clean question before anyone builds** |
 | ~~The `Now` column HEADER label~~ | ~~Design~~ | Built `ccaf77b`, tagged `363f40d`, **PARKED on his word** |
 | ~~Confirm the boundary's VISIBLE effect~~ | ~~Design~~ | **DONE** one row moved, zero demotions, discriminating pair |
 | The package: tooltips + `TRADES` + the within-day question | His call | One decision, three parts, ships as one change |
