@@ -13106,6 +13106,53 @@ in. *That is the check that closed it, and it was a check on the ARTEFACT rather
 field: the instrument ran correctly against the wrong scope.** *When warning about a RANGE, count the
 range. `rev-list --count` is one command and the number is the warning's whole content.*
 
+## A CHARTER THAT NARRATES A DECISION BECOMES THE AUTHORITY WHEN THE RECORD MOVES
+
+**Research refusing Integration's correction, 2026-09-25, and it was right.** *Integration told it that
+`lib/market/` had no charter owner and that a new database file might therefore need HIS ruling, citing two
+lines in `integration.md`. **The module was assigned on 2026-08-24 at his own instruction** — `63ef1d6`, the
+"Who owns `lib/market/`" section of this file, live at HEAD: `Does it define, migrate or version a table? Ops.
+Does it compute? Research.`*
+
+**THE TWO LINES, AND THEY FAIL DIFFERENTLY:**
+
+- **`integration.md:71` was the PRE-ASSIGNMENT paragraph from the SAME DAY** — *"the module itself is
+  deliberately left to the trader"*. **He then instructed, Integration assigned, the assignment was written
+  HERE, and the narrative paragraph was never retracted.** *It stood for thirteen months and misled two
+  consecutive seats.*
+- **`integration.md:731` carried `worker/` and `lib/market/` in one sentence as both unowned.** *One half
+  true, one half false — `worker/` appears nowhere in the register; `lib/market/` is assigned.* **The same
+  collapse this desk spent the day finding in counters, arriving in a charter line.**
+
+> **THE MECHANISM: "one idea, one place" IS FOLLOWED FOR THE RECORD AND BROKEN BY THE NARRATIVE AROUND IT.**
+> *The decision went where it belonged. What stayed behind was the STORY of arriving at it — and a story
+> written before the decision reads exactly like a decision.* **The owning seat reads its own charter first,
+> so the stale copy is the one with authority.**
+
+**THE COST WAS NEARLY HIS ATTENTION: Integration was about to route a question back to him that he had
+personally instructed the answer to.** *Research's line is the rule — **open the register before escalating**
+— and it is the same cure Integration had applied to Research hours earlier over deploy timing.*
+
+**SO: when a decision leaves a charter for the register, DELETE the paragraph that was arguing toward it, or
+mark it superseded in the same commit.** *A charter paragraph ending "and that is larger than a routing call"
+is a description of an open question. The day it closes, it is a lie with a date on it.*
+
+## KNOW WHICH EVENT YOUR READING BRACKETS
+
+**Research's generalisation of an Ops ordering call, 2026-09-25 — both seats named it the most useful thing
+either produced that night.** *Ops's before-reading for the capture floor moved to AFTER the deploy's cutover
+and BEFORE the worker restart. Taking it later than planned cost nothing, because a web-tier deploy does not
+touch `minute_bars`. **Taking it after the RESTART would have destroyed it**, because the restart is the event
+the reading exists to bracket.*
+
+> **THE RULE IS NOT "MEASURE PROMPTLY". IT IS "KNOW WHICH EVENT YOUR READING BRACKETS".** *A reading taken
+> after that event has already fired is DESTROYED, not late — and it comes back as a plausible number with no
+> sign that it answers a different question than the one asked.*
+
+**Two boundaries can look interchangeable while only one of them matters.** *Same shape as a reassessed
+field's final value standing in for its value at the decision moment, recorded separately on this desk, and
+as `ah_high` being measurable only after 16:00 because the quantity does not exist before it.*
+
 ## A NEW STORE'S PATH VARIABLE NEEDS BOTH HALVES IN THE SAME MOTION, OR IT DIES TWICE
 
 **Ops's requirement, 2026-09-25, stated as a condition on `trades.db` and drawn from two failures this desk
