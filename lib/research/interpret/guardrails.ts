@@ -234,6 +234,20 @@ export function validateDossier(
   dossier: ResearchDossier,
   bundle: ResearchEvidenceBundle,
   now: Date = new Date(),
+  /**
+   * The prior SESSION's close, as an instant. Supplied by the caller because
+   * only the caller has the store -- `interpretTicker` holds both the `db` and
+   * the trading date; this function holds neither.
+   *
+   * Omitted falls back to the day bands, which is his date-only rule and safe.
+   * But it must be SUPPLIED in production, because `why.ts` supplies it: with
+   * it absent here and present there, a clocked catalyst after the prior
+   * close is banded STALE at write time and rendered FRESH on the board, and
+   * the status normalisation below then demotes a row the board shows green.
+   * That is the contradiction this function exists to remove, arriving from
+   * the other side.
+   */
+  freshFrom: Date | null = null,
 ): ValidationResult {
   const violations: Violation[] = [];
   const corrected: ResearchDossier = {
@@ -335,7 +349,7 @@ export function validateDossier(
    * event timestamps carry no clock and no hours-based rule can be computed for
    * them at all.
    */
-  catalyst.freshness = resolveCatalystFreshness(catalyst.eventTimestamp, now);
+  catalyst.freshness = resolveCatalystFreshness(catalyst.eventTimestamp, now, freshFrom);
 
   /*
    * AND THE STATUS IS RECONCILED WITH THE BAND, BECAUSE NOTHING ELSE DID.

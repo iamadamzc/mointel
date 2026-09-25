@@ -22,6 +22,7 @@ import {
 import { computeEvidenceFingerprint } from './fingerprint';
 import { evaluateRetry } from './retry';
 import { resolveCatalystFreshness } from './time';
+import { catalystFreshFromUtc } from './freshFrom';
 
 export interface QueueCandidate {
   ticker: string;
@@ -214,6 +215,26 @@ export function queueDiscoveryResearch(
 
   const recheckAfterMs = options.recheckAfterMs ?? DEFAULT_RECHECK_AFTER_MS;
 
+  /*
+   * THE SAME BOUNDARY THE BOARD USES, COMPUTED ONCE PER PASS.
+   *
+   * `8687f04` derived staleness with a TWO-argument call and its comment
+   * claimed the gate and the board could not disagree. That was wrong, and
+   * Integration caught it. `why.ts` passes a third argument -- the prior
+   * session's close -- so a CLOCKED catalyst after that close bands FRESH on
+   * the board while the day bands alone call it STALE.
+   *
+   * WHERE IT BITES, and it is narrower than it first looks: a day-band-1
+   * catalyst diverges RECENT/FRESH, which this gate ignores because it only
+   * re-asks on STALE. The consequence is confined to a catalyst that is TWO OR
+   * MORE ET days old AND falls after the prior session's close -- which is
+   * Monday morning holding Friday evening's news, and the day after a holiday.
+   * Measured on the 2026-08-23 snapshot: 6 of 59 clocked catalysts diverge and
+   * ALL SIX are day-band 1, so that snapshot contains no instance of the case
+   * that would fire here. Rare is not absent, and Monday is not a rare day.
+   */
+  const freshFrom = catalystFreshFromUtc(db, options.tradingDate);
+
   for (const { candidate, priority } of ordered) {
     const existingJob = readLatestJobForTicker(db, candidate.ticker, options.tradingDate);
 
@@ -270,8 +291,10 @@ export function queueDiscoveryResearch(
      * incidental. `catalyst.freshness` was banded by the guardrails against the
      * clock at WRITE time; a catalyst written yesterday as RECENT is STALE
      * today and the stored word still says RECENT. Re-deriving against
-     * `options.now` is the same seam `why.ts` uses, so the gate and the board
-     * cannot disagree about whether a name's news has gone old.
+     * `options.now` AND the prior-session boundary above is the same seam and
+     * the same inputs `why.ts` uses. **An earlier version of this comment said
+     * the two could not disagree while passing only two arguments, which was
+     * the disagreement.**
      *
      * A catalyst with NO timestamp bands UNKNOWN, not STALE, so it does not
      * re-ask on this path. An unknown age is not an established staleness, and
@@ -284,6 +307,7 @@ export function queueDiscoveryResearch(
       resolveCatalystFreshness(
         currentAnalysis.dossier.catalyst.eventTimestamp,
         options.now,
+        freshFrom === null ? null : new Date(freshFrom),
       ) === 'STALE';
 
     const answered =

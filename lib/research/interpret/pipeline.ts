@@ -23,6 +23,7 @@ import { assessSupplyOverhang, computeSupplyPair } from '../supply';
 import type { ResearchDossier } from '../types';
 import { buildEvidenceBundle, type ResearchEvidenceBundle, type SheetPriorAnalysis } from './bundle';
 import { describeViolations, validateDossier, type Violation } from './guardrails';
+import { catalystFreshFromUtc } from '../freshFrom';
 import {
   isMaterialStructuralConflict,
   shouldEscalate,
@@ -226,6 +227,19 @@ export async function interpretTicker(
   });
   base.coverageIncomplete = bundle.coverage.incomplete;
 
+  /*
+   * The prior SESSION's close, computed once per interpretation.
+   *
+   * `validateDossier` recomputes `catalyst.freshness` and reconciles
+   * `catalystStatus` against it, and both must band the way the BOARD bands or
+   * the write side demotes a row the reader sees green. `why.ts` supplies this
+   * boundary from the payload; this supplies it from the store, and they are
+   * the same instant by construction -- one implementation, in
+   * `lib/research/freshFrom.ts`.
+   */
+  const catalystFreshFrom = catalystFreshFromUtc(db, options.tradingDate);
+  const freshFrom = catalystFreshFrom === null ? null : new Date(catalystFreshFrom);
+
   log(`[interpret] ${ticker} started evidence=${bundle.sources.length} sources`);
 
   const first = await interpreter.interpret(bundle);
@@ -251,7 +265,7 @@ export async function interpretTicker(
     return { ...base, outcome: 'FAILED', error: first.error, dossier: existing?.dossier ?? null };
   }
 
-  let validation = validateDossier(first.dossier, bundle);
+  let validation = validateDossier(first.dossier, bundle, new Date(), freshFrom);
   let accepted = validation.dossier;
   let repaired = false;
 
@@ -273,7 +287,7 @@ export async function interpretTicker(
     repaired = true;
 
     if (repair.dossier) {
-      validation = validateDossier(repair.dossier, bundle);
+      validation = validateDossier(repair.dossier, bundle, new Date(), freshFrom);
       accepted = validation.dossier;
       if (validation.ok) log(`[interpret] ${ticker} repair succeeded`);
     }
@@ -337,7 +351,7 @@ export async function interpretTicker(
     noteUsage('ESCALATION', escalation.model, escalation.usage);
 
     if (escalation.dossier) {
-      const escalatedValidation = validateDossier(escalation.dossier, bundle);
+      const escalatedValidation = validateDossier(escalation.dossier, bundle, new Date(), freshFrom);
       // Only adopt the escalated result if it is at least as valid.
       if (escalatedValidation.ok || !validation.ok) {
         validation = escalatedValidation;

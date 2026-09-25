@@ -60,7 +60,7 @@ describe('the write side reconciles the two', () => {
     // and must still come BEFORE the reconciliation, or the status would be
     // compared against a freshness the model supplied.
     const recompute = source.indexOf(
-      'catalyst.freshness = resolveCatalystFreshness(catalyst.eventTimestamp, now);',
+      'catalyst.freshness = resolveCatalystFreshness(catalyst.eventTimestamp, now, freshFrom);',
     );
     expect(recompute).toBeGreaterThan(-1);
 
@@ -93,5 +93,83 @@ describe('the write side reconciles the two', () => {
     );
     const block = source.slice(at, at + 200);
     expect(block).not.toContain('violations.push');
+  });
+});
+
+/**
+ * The three readers must band with ONE boundary, or the fix above inverts.
+ *
+ * `8687f04` derived staleness with a two-argument call and its comment claimed
+ * the gate and the board could not disagree. They could: `why.ts` passes the
+ * prior session's close as a third argument, so a CLOCKED catalyst after that
+ * close bands FRESH on the board while the day bands alone call it STALE.
+ *
+ * WHERE IT BITES is narrower than it first appears. A day-band-1 catalyst
+ * diverges RECENT/FRESH, which the re-ask gate ignores because it only fires on
+ * STALE. The consequence needs a catalyst TWO OR MORE ET days old that still
+ * falls after the prior session's close -- Monday morning holding Friday
+ * evening's news, and the day after a holiday. Measured on the 2026-08-23
+ * snapshot: 6 of 59 clocked catalysts diverge and ALL SIX are day-band 1, so
+ * that snapshot holds no instance of the firing case. Rare is not absent, and
+ * Monday is not a rare day.
+ *
+ * The worse half was the WRITE side: `validateDossier` banding STALE while the
+ * board renders green would demote `catalystStatus` on a row the reader sees as
+ * fresh -- the contradiction that function exists to remove, arriving from the
+ * other side.
+ */
+describe('one boundary, three readers', () => {
+  const FRIDAY_EVENING = '2026-09-18T20:30:00Z'; // 16:30 ET Friday, after the close
+  const MONDAY_MORNING = new Date('2026-09-21T13:00:00Z'); // 09:00 ET Monday
+  const FRIDAY_CLOSE = new Date('2026-09-18T20:00:00Z');
+
+  it('is the case that bites: three ET days old, but after the prior session close', () => {
+    // The instrument. If this stopped being a day-band STALE the divergence
+    // below would be untestable and this file would pass while proving nothing.
+    expect(resolveCatalystFreshness(FRIDAY_EVENING, MONDAY_MORNING)).toBe('STALE');
+    expect(resolveCatalystFreshness(FRIDAY_EVENING, MONDAY_MORNING, FRIDAY_CLOSE)).toBe('FRESH');
+  });
+
+  it('the re-ask gate supplies the boundary', async () => {
+    const fs = await import('node:fs/promises');
+    const path = await import('node:path');
+    const source = await fs.readFile(path.join(process.cwd(), 'lib/research/queue.ts'), 'utf8');
+    expect(source).toContain('catalystFreshFromUtc(db, options.tradingDate)');
+    // And it is the value actually passed, not merely computed and dropped.
+    const at = source.indexOf('resolveCatalystFreshness(');
+    expect(source.slice(at, at + 220)).toContain('freshFrom');
+  });
+
+  it('the write side takes the boundary and the pipeline supplies it', async () => {
+    const fs = await import('node:fs/promises');
+    const path = await import('node:path');
+    const guardrails = await fs.readFile(
+      path.join(process.cwd(), 'lib/research/interpret/guardrails.ts'),
+      'utf8',
+    );
+    expect(guardrails).toContain(
+      'catalyst.freshness = resolveCatalystFreshness(catalyst.eventTimestamp, now, freshFrom);',
+    );
+
+    const pipeline = await fs.readFile(
+      path.join(process.cwd(), 'lib/research/interpret/pipeline.ts'),
+      'utf8',
+    );
+    expect(pipeline).toContain('catalystFreshFromUtc(db, options.tradingDate)');
+    // All three validate calls, not just the first: a repair or an escalation
+    // banding differently from the accepted dossier is the same defect again.
+    expect(pipeline.match(/validateDossier\([\s\S]{0,80}?freshFrom\)/g)).toHaveLength(3);
+  });
+
+  it('all three read ONE implementation of the boundary', async () => {
+    const fs = await import('node:fs/promises');
+    const path = await import('node:path');
+    for (const [file, specifier] of [
+      ['lib/research/queue.ts', "from './freshFrom'"],
+      ['lib/research/interpret/pipeline.ts', "from '../freshFrom'"],
+    ] as const) {
+      const source = await fs.readFile(path.join(process.cwd(), file), 'utf8');
+      expect(source).toContain(specifier);
+    }
   });
 });
