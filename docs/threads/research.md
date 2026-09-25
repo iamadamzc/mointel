@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T19:33Z
+## LIVE STATE — 2026-09-25T19:52Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -170,6 +170,24 @@ record. He has it from this seat directly as well.
   **THE DESK WAS NOT TOO SLOW. IT LOOKED IN THE WRONG PLACE.** It fetched `fireflyneuro.com/rss`, which does not carry that release, still does not, and never would. **The issuer feed was the wrong INSTRUMENT, not a slow one** — so `NO_RECENT_SOURCE_LOCATED` was sound, the collector was working, and the answer was still wrong. *This retires "the desk cannot find wire releases" and replaces it with something much worse and much more fixable.*
   **⚠️ THE FILTER TRAP, AND IT IS TODAY'S DEFECT IN A FOURTH COSTUME: the item arrives with `source: benzinga`, NOT `globenewswire`.** The originating wire leaves **no trace in that field.** **A collector filtering for `globenewswire` returns nothing and looks exactly like no coverage.**
   **⚠️ AND A SECONDARY MENTION IS NOT A CATALYST.** The second item — *"12 Health Care Stocks Moving In Friday's Pre-Market Session"*, 08:05:42 ET — is a market-wrap roundup **18 minutes after the fact**. A collector accepting any tagged item would attribute the move to a listicle. **Proposed discriminator, untested: the `symbols` array LENGTH.** A primary issuer release tags one name; a roundup tags twelve. Ops's query filtered by symbol so the returned arrays were not inspected — **one re-query settles it, and it must be settled before the filter is written, not after.**
+
+- **📐 BENZINGA COVERAGE MEASURED — ~47% ANY, ~23% PRIMARY. IT SUPPLEMENTS THE ISSUER FEED AND CANNOT REPLACE IT.** Ops, five sessions, top-12 names, 07:00–10:00 ET:
+
+| session | top12 | any item | primary only |
+| --- | ---: | ---: | ---: |
+| 2026-09-18 | 28 | 46% | 25% |
+| 2026-09-22 | 28 | 50% | 25% |
+| 2026-09-23 | 28 | 53% | 25% |
+| 2026-09-24 | 28 | 39% | 17% |
+| 2026-09-25 | 30 | 46% | 23% |
+| **mean** | | **~47%** | **~23%** |
+
+  **So on a typical session roughly THREE IN FOUR top-12 names have no issuer release on this wire in his window.** Design for a supplement. **And the gap between 47% and 23% is roundup noise: half of all "coverage" is a name appearing in someone else's listicle.**
+  **THE DISCRIMINATOR IS `symbols.length === 1`, CONFIRMED WITH ITS CONTROL.** The primary tags `['AIFF']`; the *"12 Health Care Stocks Moving"* roundup tags twelve. **An UNFILTERED query over the same window returned identical arrays**, so the API does not echo the symbol filter and the field is real rather than an artefact of how it was asked.
+  **DO NOT DISCARD THE ROUNDUPS — CLASSIFY THEM.** A listicle 18 minutes late is not the catalyst, but it is evidence something is moving, and the desk already has the machinery: `SOURCE_AUTHORITY_RANK` and a `SECONDARY_STALE` status. **`symbols.length === 1` is a candidate PRIMARY; `> 1` is an aggregator mention that may never be the catalyst on its own.** Discarding them loses a signal; promoting them attributes a move to a market wrap.
+  **⚠️ THE NEAR-MISS, AND IT IS THE FIFTH COSTUME TODAY: AN API ERROR AND AN EMPTY RESULT PARSED IDENTICALLY.** Ops's first coverage run returned **0 items on all five days, including the day it had personally confirmed contained the `AIFF` release**. Cause: `limit=200` against an undocumented maximum of 50, and a parser reading `.news` from the **error object**. **It would have reported 0% coverage and this collector would not have been built.** It was caught only because a positive control already existed — **and that control was accidental, not designed.** *Had the rate query run before the single-item probe, the 0% would have stood.* **Every coverage query here runs with a known-present case in it.**
+  **NOT MEASURED AND NOT ESTIMATED: the latency distribution.** 44 seconds is ONE sample. The join needs first-bar times per symbol-day from `minute_bars`, which is the heavy read Ops's own deploy-contention rule governs; it runs in a deploy-free window.
+  **THE BETTER QUESTION, Ops's, and nobody has measured it: the UNION.** ~23% primary Benzinga coverage against an issuer feed that found the `AIFF` case 0% of the time — **two partial instruments whose gaps may not overlap.** Measurable from `collector_report.state` against the Benzinga set over the same symbol-days.
 
 - **⚠️ LICENCE VERSUS COVERAGE — THE DISTINCTION THAT PRODUCED THE PROBE, KEPT BECAUSE IT GENERALISES.** Commercial's landscape (`977e0d2`) establishes that **Alpaca News (Benzinga) is readable today** on the accepted-exposure posture he already ruled — no new vendor, no new spend, no new exposure category — and that the three primary wires are not: **PR Newswire bars automated retrieval AND commercial reuse explicitly; Business Wire permits RSS retrieval but bars competing use and commercial activity without written consent; GlobeNewswire published no terms at six places checked, which is a gap in what is PUBLISHED and not a permission**, and its individual releases carry third-party syndication terms so the feed is not one contract.
   **WHAT IS NOT ESTABLISHED, AND IT DECIDES WHETHER THE PIPELINE FIXES ANYTHING: whether Alpaca News CARRIES the item that was missed.** `AIFF`'s 2026-09-25 release — the case that started this — was a **GlobeNewswire** item. Commercial answered the LICENCE question. **Nobody has answered the COVERAGE question**, and a licensed intermediary that does not carry small-cap GlobeNewswire releases is an instrument that cannot see the case it was built for. *That is the RCON lesson exactly: triage was asked to find a news event in a corpus containing no news.*
