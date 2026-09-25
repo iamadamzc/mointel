@@ -41,7 +41,7 @@ import {
   type DiscoverySortState,
 } from '@/lib/dashboard/view';
 import type { DiscoveryState } from '@/lib/market/types';
-import { formatCount, formatMultiple, formatRankChange } from '@/lib/format';
+import { formatCount, formatMultiple } from '@/lib/format';
 
 const VIEW_SIZES = [12, 25, 50] as const;
 type ViewSize = (typeof VIEW_SIZES)[number];
@@ -510,27 +510,29 @@ export function DiscoveryBoard({
                 Changed
               </Th>
               {/*
-                * RANK IS THE BOARD'S ORDER, NOT THE ROW ORDER — and under any
-                * other sort those two differ, which is what made the board
-                * look unsorted. He read 3, 2, 21, 8, 5 down the rank column
-                * while the rows were in perfect NOW order and concluded
-                * nothing was sorting. The column is not wrong; it answers a
-                * different question, and nothing said so.
+                * THERE IS NO RANK COLUMN. HIS RULING, 2026-09-25: *"I'm making
+                * the call to remove the rank column. Allow the user to rank it
+                * however they want to with the data sorts provided."*
+                *
+                * IT DISSOLVES A PROBLEM RATHER THAN ANSWERING IT. The open
+                * question was what `Rank` should mean once he narrows the
+                * price window -- the engine ranks over everything that
+                * qualifies, so a narrowed view would read 1, 4, 7, 12. Every
+                * answer available was a compromise; removing the column
+                * removes the question, and it removes the defect that came
+                * before it too: a leftmost column announcing an order the rows
+                * were not in, which he read as "random" twice.
+                *
+                * THE ORDERING IS NOT LOST, ONLY THE DISPLAY. `rankByRvol`
+                * (`rvol.ts:134`) sorts descending on `rvol` with an
+                * alphabetical tie-break, so RANK ASCENDING IS RVOL DESCENDING
+                * -- the same ordering, still one chip away. **And the `Rank`
+                * SORT survives deliberately: after the bell it is the only
+                * route to AH-participation order, because `discoveryValueFor`
+                * is board-aware on `rank` and NOT on `rvol`.** Removing the
+                * chip with the column would have left the evening board with
+                * no way back to its own ordering.
                 */}
-              <Th
-                className="w-[44px]"
-                align="right"
-                sorted={activeColumn === 'rank'}
-                title={
-                  activeColumn === 'rank'
-                    ? "The board's own order for this session, and the order the rows are in."
-                    : // `rankingLabel` is the desk's own name for the active
-                      // ranking, so this cannot drift from the caption below.
-                      `The board's own ${discovery?.rankingLabel ?? 'session'} rank. The rows are ordered by ${activeLabel.toLowerCase()} instead, so these numbers will not run 1, 2, 3.`
-                }
-              >
-                Rank
-              </Th>
               <Th className="w-[112px]">Ticker</Th>
               {/*
                  * `move.label`, NOT a typed "Move".
@@ -810,13 +812,20 @@ function DiscoveryRow({
   const halted = t.haltState === 'HALTED' || t.haltState === 'RESUMING';
   const backside = conclusions.cycle.tone === 'neg';
 
-  const rank = (afterHours ? (ah?.rank ?? null) : t.rvolRank) ?? null;
-  const rankChange = afterHours ? (ah?.rankChange ?? null) : t.rvolRankChange;
-
+  /*
+   * THE ANNOUNCEMENT SAYS WHAT THE ROW SHOWS, AND IT USED TO SAY THE RANK.
+   *
+   * With the rank column gone, reading "rank 7" to a screen reader would
+   * announce a number no sighted user can see -- the two surfaces saying
+   * different things about the same row, which is the defect this desk keeps
+   * finding in other clothes. RVOL replaces it: it is the quantity the board
+   * ranks ON, it is rendered in its own column, and position in the list is
+   * already carried by the table itself.
+   */
   return (
     <tr
       {...rowKeyboardProps(
-        `${row.ticker}, rank ${rank ?? 'unranked'}. ${why.grade} catalyst. ${risk.label}. Open dossier.`,
+        `${row.ticker}, RVOL ${formatMultiple(t.rvol)}. ${why.grade} catalyst. ${risk.label}. Open dossier.`,
         () => onSelect(row.ticker),
       )}
       onClick={() => onSelect(row.ticker)}
@@ -826,40 +835,6 @@ function DiscoveryRow({
     >
       <td className="px-1 py-1 text-center align-middle">
         <ChangeMarker changed={changed} />
-      </td>
-
-      <td className="num px-2 py-1 text-right align-middle">
-        {/*
-          * THE ACCENT MEANS "THIS IS THE ORDERING", AND IT WAS NAILED TO THE
-          * WRONG COLUMN.
-          *
-          * Accent is already the desk's mark for the active ordering — it is
-          * what lights the sort chip. RANK wore it unconditionally, so under
-          * any other sort the leftmost, most saturated column was announcing
-          * an order the rows were not in. He read a correctly sorted board as
-          * "random" twice: once on NOW, once on PM MOVE, where the values ran
-          * 30.5, 8.3, 7.0, 4.2 down the page while RANK read 8, 13, 26, 38.
-          *
-          * A caret and a header note did not fix it, because they competed
-          * with a colour rather than removing it. The number stays — it is the
-          * board's own ranking and he wants it — it just stops claiming to be
-          * the order when it is not.
-          */}
-        <span
-          className={`text-[13px] font-semibold ${
-            activeColumn === 'rank' ? 'text-accent' : 'text-ink-2'
-          }`}
-        >
-          {rank ?? '—'}
-        </span>
-        {rankChange ? (
-          <span
-            className={`ml-1 text-[10px] ${rankChange > 0 ? 'text-pos' : 'text-neg'}`}
-            title="Rank movement since the previous ranking pass"
-          >
-            {formatRankChange(rankChange)}
-          </span>
-        ) : null}
       </td>
 
       <td className="px-2 py-1 align-middle">

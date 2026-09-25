@@ -254,9 +254,23 @@ describe('the active sort is readable from the board, not only the toolbar', () 
   });
 
   it('wires every declared column to a header marker', () => {
+    /*
+     * `rank` IS THE ONE SORT WITH NO COLUMN, AND THAT IS HIS RULING RATHER
+     * THAN AN OVERSIGHT (2026-09-25): the rank COLUMN is gone and the
+     * ordering stays available as a chip. It is deliberately still a sort --
+     * after the bell it is the only route to AH-participation order, because
+     * `discoveryValueFor` is board-aware on `rank` and not on `rvol`.
+     *
+     * Listed by name rather than filtered by a rule, so adding a second
+     * column-less sort has to come back through this test.
+     */
+    const noColumnOfItsOwn = new Set(['rank']);
     for (const column of new Set(entries.map((e) => e.column))) {
+      if (noColumnOfItsOwn.has(column)) continue;
       expect(source).toContain(`activeColumn === '${column}'`);
     }
+    // And the exception is real: no header claims to be the rank column.
+    expect(source).not.toMatch(/<Th[^>]*activeColumn === 'rank'/);
   });
 
   it('names the units for NOW, which reads as recency and not as a quantity', () => {
@@ -691,10 +705,26 @@ describe('the accent marks the active ordering, and only that', () => {
   const source = readFileSync(join(process.cwd(), 'components/DiscoveryBoard.tsx'), 'utf8');
   const cells = readFileSync(join(process.cwd(), 'components/DecisionCells.tsx'), 'utf8');
 
-  it('gives RANK the accent only when RANK is the sort', () => {
-    // The number stays either way: it is the board's own ranking and he wants
-    // it. It just stops claiming to be the order when it is not.
-    expect(source).toContain("activeColumn === 'rank' ? 'text-accent' : 'text-ink-2'");
+  it('has no rank cell left to wear the wrong accent', () => {
+    /*
+     * THIS ASSERTED THE FIX; HIS RULING REMOVED THE DEFECT INSTEAD.
+     *
+     * The original: accent is the desk's mark for the active ordering, and
+     * RANK wore it unconditionally, so under any other sort the leftmost and
+     * most saturated column announced an order the rows were not in. He read
+     * a correctly sorted board as "random" twice. The repair made the accent
+     * conditional.
+     *
+     * On 2026-09-25 he removed the rank column outright. **A column that does
+     * not exist cannot wear an accent it has not earned** -- the desk's own
+     * preference for making a defect impossible rather than handled, arriving
+     * from the product side rather than the code side. So the assertion moves
+     * from "the condition is correct" to "there is nothing to condition".
+     */
+    expect(source).not.toContain("activeColumn === 'rank' ? 'text-accent'");
+    expect(source).not.toMatch(/\{rank \?\? '—'\}/);
+    // The ordering itself survives as a sort, which is the half he kept.
+    expect(source).toMatch(/key: 'rank', label: 'Rank'/);
   });
 
   it('marks the sorted figure on its LABEL, never on the percentage', () => {
