@@ -149,6 +149,24 @@ inside the quote.
 >    (388s–594s observed), so preflight-to-stop is 7–10 MINUTES. A start it
 >    passes can land its stop inside a checkpoint. **One deploy-path batch, in
 >    daylight, with the suite green first.**
+>
+>    **THE ARITHMETIC, because "after 10:00 ET" is wrong and every thread here
+>    said it anyway.** `preflight.sh:38` adds `RTH_INTERVAL` every 30 minutes
+>    from minute 600 (10:00) to 960 (16:00); `PROTECTED_MINUTES=5`. So:
+>    ```
+>    BLOCKED  09:55-10:05  10:25-10:35  10:55-11:05  ...
+>    CLEAN    10:05-10:25  10:35-10:55  ...
+>    ```
+>    **10:00 ET is a CHECKPOINT, not the moment the road opens** — a ship
+>    attempted at 10:00 is refused with `RTH_INTERVAL is 0m away`. And because
+>    preflight measures only the START, the start must leave 7–10 minutes for
+>    the stop: **a start that PASSES at 10:22 lands its stop inside the 10:25
+>    window.** Aim at the front of a gap (10:06–10:08, 10:36–10:38), never the
+>    back of one.
+>
+>    *A refusal that looks arbitrary is the one that gets `DEPLOY_WINDOW_OVERRIDE`
+>    typed at it. That is the real cost of leaving this unfixed: preflight is
+>    right, looks wrong, and teaches the seat to override it.*
 > 2. **`barsReplayed` counts bars FED, not landed**, so it cannot tell a
 >    successful replay from a silent no-op. *Research's finding. Cheap fix:
 >    assert `volumeBaseThrough` is null for replayed symbols at replay time,
