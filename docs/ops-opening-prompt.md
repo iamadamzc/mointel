@@ -1,6 +1,6 @@
 # Opening prompt — the Ops seat
 
-**Rewritten 2026-09-22 23:4x UTC. Every production fact below was read from
+**Rewritten 2026-09-25 ~14:0x UTC. Every production fact below was read from
 the box at that time, not carried forward.**
 
 Open a new chat with `A:\mointel` as the working directory, so `CLAUDE.md`,
@@ -19,7 +19,7 @@ inside the quote.
 >
 > **Second: check your own model and report it**, per
 > `A:\claude-infra-agent\docs\session-hygiene.md` §1. *The previous seat ran on
-> Opus and recommends it stays: much of the work is mechanical — running
+> Opus 5 and recommends it stays: much of the work is mechanical — running
 > deploys, reading logs — but the failures that cost the most were judgment
 > calls under peer pressure, and this seat performs irreversible actions
 > (deploys, database writes, credential transport) that cannot be un-done by
@@ -42,26 +42,37 @@ inside the quote.
 > nginx are Ops's carriage; **Web specifies, you carry**). UI is Design's, the
 > interpreter and model spend are Research's, copy is Marketing's.
 >
-> ## PRODUCTION AT 23:4x UTC TUE 2026-09-22, READ FROM THE BOX
+> ## PRODUCTION AT ~14:0x UTC THU 2026-09-25, READ FROM THE BOX
 >
 > ```
-> web/research/assess   acc3095   by /proc/<pid>/cwd, since 2026-09-22 ~23:22Z
-> market worker         34414f4   pid 875327, ExecMainStart 2026-09-22 09:57:57Z,
->                                 NRestarts 0 -- THE REPLAY BUILD
-> schema                27        health ok, no problem
-> market                LIVE STREAMING; trading date 2026-09-22
-> minute_bars           09-09 .. 09-22 (10 dates; retention 20 in force)
-> backups               4 files (reaper keeps 3 newest + the pinned v18); 63G free
-> rollback baseline     42c9a73
+> web/research/assess   757cf6a   by /proc/<pid>/cwd
+> market worker         757cf6a   pid 1063272, ExecMainStart 2026-09-24 20:24:07Z,
+>                                 NRestarts 0
+>                       ALL FOUR SERVICES ON ONE RELEASE -- first time since 09-18.
+> minute_bars           09-09 .. 09-25 (13 dates; retention 20 in force)
+> backups               4 files (reaper keeps 3 newest + the pinned v18); 62G free
+> releases on disk      34414f4 372f5eb 42c9a73 757cf6a acc3095
+> rollback baseline     34414f4  (the release immediately before the live one)
 > public                / /privacy /terms /favicon.ico /icon.svg /apple-icon.png
->                       /robots.txt 200;  /desk /signin /api/* 401
+>                       /robots.txt 200;  /desk /signin /api/market 401
+>                       /privacy-x 401 -- the control fired, so the sweep is honest
 > port 22               70.17.101.27/32 + his home /32 (95.17.58.175) -- UNCHANGED
->                       by his ruling 2026-09-22; his egress moved and moved back.
-> DEPLOY TRANSPORT      `-ServerHost mointel-ssm`, NOT the IP. Four deploys went
->                       that way on 09-22. Direct port 22 fails from any network
->                       not on the two /32s above.
 > Session Manager       mi-0a647a08fcc7366b7 Online; `ssh mointel-ssm` from anywhere
 > ```
+>
+> **THE BOX IS LIGHTSAIL, NOT EC2** — instance `mointel-prod`, 98.85.49.227,
+> profile `magellan_admin`, region us-east-1. This matters the first time you
+> check the firewall: `ec2 describe-security-groups` returns **empty**, and
+> empty reads exactly like "nothing restricts port 22". It is the wrong API.
+> `ufw` on the box is **inactive**, so the Lightsail firewall is the only thing
+> gating 22. Read it with:
+>
+> ```bash
+> AWS_PROFILE=magellan_admin aws lightsail get-instance-port-states --instance-name mointel-prod
+> ```
+>
+> *(`management-admin` is a different account — that is where the DOMAINS live,
+> not the box. Using it here returns another project's security groups.)*
 >
 > **Your first action is to confirm NOTHING MOVED, the same way — by
 > `/proc/<pid>/cwd`, never from the `current` symlink and never from the repo.**
@@ -123,20 +134,37 @@ inside the quote.
 >    stubbed ssh/git/uname.* **And preflight's 5-minute guard is measured from
 >    the START while the thing it protects is the STOP** — its header assumes a
 >    "60-90 second" deploy, but `quick_check` now runs BEFORE the stop
->    (388s-521s observed), so preflight-to-stop is 7-9 MINUTES. A start it
+>    (388s–594s observed), so preflight-to-stop is 7–10 MINUTES. A start it
 >    passes can land its stop inside a checkpoint. **One deploy-path batch, in
 >    daylight, with the suite green first.**
 > 2. **`barsReplayed` counts bars FED, not landed**, so it cannot tell a
 >    successful replay from a silent no-op. *Research's finding. Cheap fix:
 >    assert `volumeBaseThrough` is null for replayed symbols at replay time,
 >    making the ordering a checked invariant rather than a convention.*
-> 3. **`IDENTITY_DB_PATH` must be set in `/etc/mointel/mointel.env` in the SAME
->    motion as any `app/auth/` ship.** It is unset, so accounts would default
->    to `process.cwd()/data/identity.db` — inside the release — and `prune.sh`
->    removes old releases. The first account survives one deploy and is deleted
->    by the second, silently.
-> 4. Authority field (his ruling: user-based, only he is admin). Gates the
->    retry endpoint before Basic Auth ever leaves `/`.
+> 3. **THE AUTH ROLLOUT IS HALF-LANDED, AND THE HALF THAT LANDED IS THE INERT
+>    HALF.** Measured on the box 2026-09-25:
+>    ```
+>    lib/auth/              IN the live release        (library only)
+>    app/auth/              NOT in it   -- no routes, nobody can sign in
+>    scripts/allowlist.ts   NOT in it   -- no way to invite
+>    IDENTITY_DB_PATH       NOT in mointel.env, NOT in sync-env.sh at 757cf6a
+>    identity.db            does not exist
+>    nginx Basic Auth       STILL IN FORCE
+>    ```
+>    **Ship order matters and the env var is the landmine**: `IDENTITY_DB_PATH`
+>    must reach `/etc/mointel/mointel.env` in the SAME motion as any `app/auth/`
+>    ship. Unset, accounts default to `process.cwd()/data/identity.db` — inside
+>    the release — and `prune.sh` deletes old releases. The first account
+>    survives one deploy and is silently deleted by the second. *(`store.ts`
+>    now refuses a path under `releases/`, so this fails loudly rather than
+>    silently — but only if that refusal ships with it.)*
+>    **Seeding `iamadamzc@gmail.com` as the first invited address needs HIS
+>    direct word — and is NOT executable until the three absent pieces land.
+>    Do not ask him for it before then; this seat asked three times for
+>    something that could not have been run.**
+> 4. **Drop nginx Basic Auth LAST**, and only once the allowlist is proven to
+>    REFUSE a non-allowlisted Google account against the live box. Basic Auth is
+>    currently the only thing in front of `/desk`.
 > 5. `lib/review/`: token lifetime as a condition; `sanitize` does not redact
 >    filesystem paths.
 > 6. Access-path gate 3 (close port 22) — his, not asked recently.
@@ -146,36 +174,49 @@ inside the quote.
 > - **A restart rebuilds `sessionHigh` from the daily bar (regular session
 >   only) and the startup reconstruction window (after-hours only). PREMARKET
 >   IS COVERED BY NEITHER.** 1,160 of 1,481 lost highs on 09-18 printed in
->   premarket. The value is not lost and not lowered — it is rebuilt from
->   sources that never saw the print, and a low number reads as an observation
->   while a null reads as absent.
+>   premarket. **Fixed and MEASURED after the close on 09-24**: cohort 4,811
+>   after-hours highs, 0 nulled, 0 lowered, 0 raised. *That measurement was only
+>   possible post-close, because `ah_high` does not exist during premarket — the
+>   claim sat unproven for six days for want of the right hour.*
+> - **A test that only proves a gate REFUSES cannot tell a working gate from one
+>   welded shut**, and a gate broken closed files no bug report, because nobody
+>   complains about a service that is merely "not open yet". Write the ADMITS
+>   test first and make it fail before you make it pass.
 > - **Take a snapshot BEFORE any destructive operation.** It is the only
 >   instrument that separates damage from lag, because `minute_bars` keep
->   growing and a live comparison cannot. The 09-18 repair was a restore rather
->   than a reconstruction because of one CSV.
-> - **"Inert" is a claim about a SHA, not about a file.** Two seats traced the
->   same data flow at the wrong version on the same afternoon, in opposite
->   directions. Use `git show <sha>:<path>` and
->   `git merge-base --is-ancestor`, never an editor buffer.
+>   growing and a live comparison cannot.
+> - **"Inert" is a claim about a SHA, not about a file.** Use
+>   `git show <sha>:<path>` and `git merge-base --is-ancestor`, never an editor
+>   buffer. *This seat confirmed the auth state above that way rather than from
+>   memory, and memory was wrong about which half had shipped.*
 > - **A retraction is a claim and gets the same checking the finding got.**
->   Twice in two days here. An unchecked finding costs a grep; an unchecked
->   retraction corrupts a record that was already right.
-> - **Verify a peer's correction, especially when it confirms easily.** The
->   brake is arithmetic that will not close, not suspicion.
-> - **A bounded loop in a background shell survives a slow clock. It does not
->   survive the session that owns it going away**, and nothing re-runs the work
->   it was waiting to trigger. Scheduled tasks are withdrawn on this desk, so a
->   time is a reminder to a person.
+>   An unchecked finding costs a grep; an unchecked retraction corrupts a record
+>   that was already right.
+> - **An empty result from a check is not an answer until the check is shown to
+>   see a present case.** `describe-security-groups` returned empty here because
+>   the box is Lightsail — indistinguishable, at a glance, from "port 22 is
+>   unrestricted".
+> - **Code written through a heredoc or a generated string loses an escape
+>   level.** A path guard meant to split on a Windows separator shipped
+>   splitting on the wrong one, compiled, typechecked, and never fired. Only a
+>   test caught it. *Write files with the editor tool, not `cat <<EOF`.*
 > - **`git archive` applies EOL conversion from this Windows checkout**, so
 >   byte-for-byte comparison against a blob is valid for BINARY files and
 >   invalid for text. Normalise with `tr -d '\r'` before comparing.
 > - **The store is `/var/lib/mointel/market.db`.** `MARKET_DB_PATH` in the
 >   release `.env` is relative; the real value is in `/etc/mointel/mointel.env`.
-> - **`quick_check` takes 80–330s and runs BEFORE the stop.** Do not move it
+> - **`quick_check` takes 80–594s and runs BEFORE the stop.** Do not move it
 >   back; it is what took the public outage window from 3m27s to 2s.
+> - **`market.state` reads DEGRADED/OFFLINE on a quiet tape and for a few
+>   seconds after a restart** — the gap before the first inbound message. Three
+>   false readings in one week. Confirm against the log (`connected`,
+>   `authenticated SIP`, `whole-market bars subscribed`) before calling it an
+>   incident.
+> - **A restart permanently loses ~one minute of `minute_bars`, at any hour.**
+>   That is the standing cost of the restart, not a fault.
 >
 > ## What he does with the old chat
 >
-> Rename it `Ops-tmi (retired 2026-09-21)` so the name no longer collides and
+> Rename it `Ops-tmi (retired 2026-09-25)` so the name no longer collides and
 > messages route here instead, then **archive it — do not delete it.** The
 > transcript is the record.

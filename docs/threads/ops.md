@@ -11652,3 +11652,74 @@ would tell an uninvited caller which addresses exist.*
 authority was printed and then discarded.** *"Who let this person in" and "who
 took it away" are the same question asked twice; a row answering only the first
 is half an audit.*
+
+---
+
+## HANDOVER — Ops, retiring 2026-09-25 ~14:0x UTC (session 2026-09-18 → 09-25)
+
+**The successor's opening prompt is `docs/ops-opening-prompt.md`, rewritten
+today from box reads. This section is the why; that file is the what.**
+
+Retiring on my own judgment under the session-hygiene rule, not on instruction.
+The tell was not the message count — it was three tracking errors in one day:
+asking for the seed word three times for something that could not be executed,
+telling a peer the market was shut until Sunday on a Wednesday morning, and
+losing the gate's failing test names to my own output filter. The work is also
+at a genuine stopping point, which is the right moment rather than a forced one.
+
+### Live state at retirement, read from the box
+
+```
+all four services   757cf6a    ONE RELEASE -- first time since 09-18
+market worker       pid 1063272, ExecMainStart 2026-09-24 20:24:07Z, NRestarts 0
+minute_bars         09-09 .. 09-25 (13 dates)      backups 4      62G free
+public sweep        7x 200, 4x 401, /privacy-x control fired
+port 22             two /32s, UNCHANGED            SSM Online
+```
+
+### The two things this session got wrong about its own instruments
+
+**The box is Lightsail, not EC2.** `ec2 describe-security-groups` returns
+empty for it, and empty is indistinguishable from "nothing restricts port 22".
+I nearly wrote that into this handover as a security fact. The firewall is
+`aws lightsail get-instance-port-states --instance-name mointel-prod` under the
+`magellan_admin` profile; `management-admin` is the account where the DOMAINS
+live and returns an unrelated project's groups. *The rule that caught it: an
+empty result is not an answer until the check is shown to see a present case.*
+
+**Memory was wrong about which half of auth had shipped.** I believed the
+allowlist tooling was live-ish and pending a seed word. Read at the sha:
+`lib/auth/` shipped, `app/auth/` and `scripts/allowlist.ts` did not,
+`IDENTITY_DB_PATH` is absent from both `sync-env.sh` at 757cf6a and the box's
+env, and no `identity.db` exists. **Nothing can sign in.** So the seed request I
+pressed three times was never executable — not a judgment call I lost, an
+unrunnable one. *"Inert" is a claim about a SHA, not about a file.*
+
+### What actually landed
+
+The premarket `sessionHigh` hole — the defect that cost 1,481 highs on 09-18 —
+is **fixed and now measured**, not inferred: post-close 09-24, cohort 4,811
+after-hours highs, 0 nulled, 0 lowered, 0 raised. That measurement was only
+possible after 16:00, because `ah_high` does not exist during premarket. It sat
+unproven for six days purely for want of the right hour, and it got proven
+because he chose "after the close" rather than "now".
+
+Also: the Google service-account key rotation end to end (old key confirmed dead
+by Google, HTTP 400 `invalid_grant`); `deploy/aws/test-gate.sh`, which runs the
+suite at the shipping sha in a detached worktree and has refused a red sha in
+anger; the invited-email allowlist with revocation that ends live sessions in
+the same transaction, per his one-word ruling "immediate".
+
+### Open, and why each is still open
+
+The ordered list lives in the opening prompt. The one that bites first is the
+deploy path: **the test gate is not wired into `push-release.sh`** (doing so
+breaks `tests/desk/releaseBootstrap.test.ts`, which drives that script through
+stubbed ssh/git/uname), **and preflight's 5-minute guard measures from the start
+while the thing it protects is the stop** — now 7–10 minutes apart because
+`quick_check` runs before the stop. A start preflight passes can land its stop
+inside an assessment checkpoint. One batch, in daylight, suite green first.
+
+**nginx Basic Auth is still the only thing in front of `/desk`, and must be
+dropped LAST** — after the allowlist is proven to refuse a non-allowlisted
+account against the live box, not after it is proven to admit one.
