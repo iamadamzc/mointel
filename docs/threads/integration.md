@@ -262,6 +262,36 @@ with the fix it produces a slow deploy or an honest refusal.* **So the question 
 latency grounds instead of under a correctness threat — which is a further argument for that fix leading the
 batch.**
 
+## DESIGN'S BOARD SET — RESOLVED, ENUMERATED, UNBUILT, AND ONE PIECE HAS A MONDAY DEADLINE
+
+**FINAL ENUMERATION 2026-09-25, four individual cherry-picks, superseding two earlier versions of mine:**
+
+```
+36bbddd  the Monday-premarket fix  <- DEADLINE 07:00 ET MON 2026-09-28. Without it a Friday-evening
+                                     catalyst bands FRESH while the row reads 3d: a three-day-old age
+                                     rendered green, in a premarket he trades.
+1f4bbc3  column tooltips           his request, his limiter ("if it makes sense"). ALL SIX STRINGS
+ea179ce  tooltips cut              were put in front of him 2026-09-25 before shipping.
+ec7a484  remove the rank column    HIS WORDS, verified.
+8 code files. docs/threads/design.md FROM PRODUCTION -- the ONLY file that conflicts in any
+combination Design tested. 159 test files pre-registered. BUILD BEFORE TYPECHECK.
+DROPPED: ccaf77b + 63325a4, a NET-ZERO rename pair (TRADES, then revert to Now). NEVER ccaf77b alone.
+```
+
+**UNBUILT: Ops cannot deploy until he clears its session. If the clearance does not come, `36bbddd` needs
+whichever seat holds deploy permission before Monday 07:00 ET.**
+
+**❌ AND MY OWN ERROR, RECORDED BECAUSE IT REACHED HIM: I asked him whether he rejected "Now stays / rolling
+60s" and he said yes. `63325a4` CONTAINS NO 60-SECOND BEHAVIOUR** — *only comments and a spec that was never
+built. **I took a commit's title for its content and put a real rejection around a thing that does not
+exist.*** *His rejection of Research's 60-second COLUMN is real and stands. Design is putting the actual
+distinction to him once, properly, when it is a decision rather than a correction — **and asking him tonight
+about something not in the deploy would have been the shop chatter he ruled against.***
+
+*Also carried, not chased: `63325a4` holds a 44px → 68px width fix. `NOW ▼` is 61.3px in a 44px cell, so the
+caret overflows into RVOL whenever that column is the active sort — his favourite sort. Cosmetic, live for
+months, rides whenever main does.*
+
 ## DESIGN'S BOARD SET — ONE VERIFIED, ONE REJECTED, THREE UNVERIFIED
 
 **They were never waiting on an Ops window. They were waiting on an ENUMERATION, and that was this seat's
@@ -537,6 +567,24 @@ this one, in the same hour it wrote the rule down.
 rewritten at hand-off by the eleventh under his
 instruction. A SNAPSHOT, not a diary: the day's mechanisms were promoted to `README.md`, and
 everything below this section is kept for MECHANISMS, not facts.*
+
+### ⚠️ PRODUCTION IS UNCONFIRMED AS OF 2026-09-25 19:45 ET — READ THIS FIRST
+
+**`10b4dce` WAS LAUNCHED AND ITS CUTOVER WAS NEVER VERIFIED.** *`d5fe8bc` cherry-picked onto `d0bc78c`,
+one commit, 2 files, gate green at `10b4dce` (158 files / 2,394 tests), `/proc` showed `d0bc78c` on all four
+services with no deploy unit before launch, fired 19:36 ET with `RESTART_MARKET=no`.*
+
+> **THEN OPS'S SESSION PERMISSION CLASSIFIER BEGAN REFUSING EVERY PRODUCTION-DEPLOY ACTION — including
+> reading its own deploy log and a READ-ONLY `git log`.** *It did not work around the refusal and **it refused
+> to accept a peer relay of his word as clearance**, both of which are correct: a control on a session is not
+> another seat's to lift.* **It has asked him directly.**
+
+**SO THE STATE IS: a deploy fired, and no seat can currently read the box.** *And the launcher's `is live`
+string is worthless by Ops's own finding — it prints from a process exit status. **Production is either
+`d0bc78c` or `10b4dce` and nothing on this desk knows which.***
+
+**FIRST ACTION FOR WHOEVER READS THIS: get the cutover confirmed from `/proc/<pid>/cwd`. Nothing else
+matters until that is known.**
 
 ### PRODUCTION
 
