@@ -585,17 +585,51 @@ export async function collectCatalystEvidence(
     : null;
 
   if (knownSourceUrl) {
+    /*
+     * THE ATTEMPT IS RECORDED BEFORE ITS OUTCOME, AND THAT ORDER IS THE FIX.
+     *
+     * `companySourceDetail` initialises to `'not attempted'` and was assigned
+     * ONLY in the resolver branches (the `${label}:` and `resolution failed`
+     * lines above and below). This path -- the deterministic fetch of the
+     * issuer's own feed, which is the one that actually looks -- never wrote
+     * it. So a fetch that was attempted, succeeded, read its items and
+     * inserted rows still reported `'not attempted'`, and the field that was
+     * supposed to say whether the desk looked said "no" on the path where it
+     * had.
+     *
+     * IT WAS READ AS A FINDING, WHICH IS WHY THIS IS NOT COSMETIC. A
+     * production census of 173 jobs on 2026-09-25 partitioned on this field
+     * and concluded that 26 of 27 `NO_RECENT_SOURCE_LOCATED` jobs had never
+     * attempted a known feed -- a claim that, had it stood, said the
+     * instrument behind R&D's founding question returns "no catalyst" without
+     * looking. The two halves of that evidence disagreed: `!knownSourceUrl`
+     * routes to COVERAGE_INCOMPLETE at the classification below, so those 27
+     * jobs all HELD a usable url with an empty `inaccessible` list, which a
+     * skipped fetch cannot produce.
+     *
+     * `networkRequests` was already the honest counter and remains it. This
+     * makes the human-readable field agree with it instead of contradicting
+     * it, because the next reader will reach for the string, not the count.
+     */
+    report.companySourceDetail = `attempted ${knownSourceUrl}`;
+
     const page = await fetchCompanyPage(knownSourceUrl, { userAgent });
     report.networkRequests += 1;
 
     if (page.failure) {
       inaccessible.push({ url: knownSourceUrl, failure: page.failure, detail: page.detail });
+      report.companySourceDetail = `unreachable (${page.failure})`;
       // An unreachable IR site never invalidates SEC evidence for this ticker.
       warnings.push(`company source unreachable (${page.failure}); SEC evidence unaffected`);
     } else {
       const read = readCompanySource(page);
       if (read.failure) {
         inaccessible.push({ url: knownSourceUrl, failure: read.failure, detail: read.detail });
+        report.companySourceDetail = `unreadable (${read.failure})`;
+      } else {
+        report.companySourceDetail = `read ${read.items.length} item${
+          read.items.length === 1 ? '' : 's'
+        } via ${read.mode}`;
       }
 
       const cutoffMs = now.getTime() - config.catalyst.contextLookbackDays * 86_400_000;
