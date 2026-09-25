@@ -704,6 +704,33 @@ here.* His inputs (Google creds, when) are in OPEN AND HIS.
 > had claimed this was already in LIVE STATE; it was not committed, only said in chat — the
 > "never assert what you haven't opened" rule, turned on the seat that carries it.*
 
+### ⚠️ A ROW'S TIMESTAMP PRECISION IS NOT STABLE ACROSS A SESSION
+
+**Design, 2026-09-25 11:38, re-taking the control set after the ship slipped.** *Two of the named
+rows had changed timestamp SHAPE in 2½ hours — same instant, verified by arithmetic:*
+
+```
+KITT  2026-09-25T04:41:22-04:00  ->  2026-09-25T08:41:22.000Z   CLOCK -> CLOCK
+IFBD  2026-09-24T17:00:47.000Z   ->  2026-09-24 13:00:47 ET     CLOCK -> DATE
+```
+
+**PRECISION IS EXACTLY WHAT DECIDES WHETHER THE FRESH BOUNDARY CAN REACH A ROW AT ALL** *(` ET` and
+bare dates get DATE and can never be FRESH).* **So a row re-analysed between two readings can gain
+or lose a promotion for a reason that has nothing to do with any deploy** — and on the board the
+two causes are indistinguishable. *IFBD's verdict happened not to change; that is luck, not
+safety.*
+
+> **THE CONSEQUENCE FOR ANY BEFORE/AFTER CHECK ON THIS COLUMN: re-read each named row's TIMESTAMP,
+> not only its colour, and DISQUALIFY a row whose shape or instant moved rather than counting it as
+> a defect.** *Design's, and without it a re-analysis would have been reported as the deploy's
+> fault — convincingly.*
+
+*It also re-answers Research's ` ET` question: at 09:15 the honest answer was "no ` ET` row at
+`days >= 1` on this board"; by 11:38 there was one, **`IFBD`, and it arrived by a row being
+RE-WRITTEN rather than by a new row appearing.*** **The ` ET` population does not only vary — it
+GROWS OUT OF ROWS THAT WERE PREVIOUSLY CLOCKED.** *Seven of twelve rows left the board in the same
+window; the bare-date tripwire survived under a new name (ONCO left, CNET took its place).*
+
 ### QUEUED BOX READS — TWO, BOTH FOR OPS, NEITHER URGENT, IN THIS ORDER
 
 *Recorded 2026-09-25 so they survive this seat. Ops is NOT retiring, so both route to `Ops-tmi`.
