@@ -24,6 +24,7 @@ import {
 } from '@/lib/dashboard/cycle';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
+import { COLUMN_TITLE, priceColumnTitle } from '@/lib/dashboard/columnTitles';
 import { baselineLabel } from '@/lib/dashboard/view';
 import type { SessionPhase } from '@/lib/market/types';
 import type { SortKey, SortState } from '@/lib/dashboard/view';
@@ -53,6 +54,16 @@ interface ColumnDefinition {
   className: string;
   align?: 'right';
   srOnly?: boolean;
+  /**
+   * The hover, from `columnTitles` and never typed here.
+   *
+   * THIS FILE ALREADY PROMISED "a trader reading both lists reads one
+   * grammar", and it has broken that promise once with a hand-typed header
+   * word. A hand-typed EXPLANATION would break it the same way and more
+   * quietly, because two tooltips saying different things about one column is
+   * not visible on the screen at all -- you would have to hover both.
+   */
+  title?: string;
 }
 
 /*
@@ -80,11 +91,17 @@ function columnsFor(phase: SessionPhase | null): ColumnDefinition[] {
   { key: 'changed', label: 'Changed', className: 'w-[24px]', srOnly: true },
   { key: 'priority', label: 'Pri', sortKey: 'priority', className: 'w-[62px]' },
   { key: 'ticker', label: 'Ticker', sortKey: 'ticker', className: 'w-[112px]' },
-  { key: 'price', label: `Price · ${baselineLabel(phase).label} · VWAP`, sortKey: 'price', className: 'w-[172px]' },
-  { key: 'rvol', label: 'RVOL', className: 'w-[68px]', align: 'right' },
-  { key: 'why', label: 'Why', className: '' },
-  { key: 'risk', label: 'Risk', className: '' },
-  { key: 'cycle', label: 'Cycle', className: 'w-[152px]' },
+  {
+    key: 'price',
+    label: `Price · ${baselineLabel(phase).label} · VWAP`,
+    sortKey: 'price',
+    className: 'w-[172px]',
+    title: priceColumnTitle(phase),
+  },
+  { key: 'rvol', label: 'RVOL', className: 'w-[68px]', align: 'right', title: COLUMN_TITLE.rvol },
+  { key: 'why', label: 'Why', className: '', title: COLUMN_TITLE.why },
+  { key: 'risk', label: 'Risk', className: '', title: COLUMN_TITLE.risk },
+  { key: 'cycle', label: 'Cycle', className: 'w-[152px]', title: COLUMN_TITLE.cycle },
   ];
 }
 
@@ -141,6 +158,7 @@ export function MomentumTable({
                   <th
                     key={column.key}
                     scope="col"
+                    title={column.title}
                     aria-sort={
                       isSorted ? (sort.direction === 'asc' ? 'ascending' : 'descending') : undefined
                     }
