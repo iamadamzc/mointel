@@ -28,6 +28,7 @@ import {
   startedLabel,
 } from '@/lib/dashboard/cycle';
 import { sparklineLagLabel } from '@/lib/dashboard/sparkline';
+import { COLUMN_TITLE, priceColumnTitle } from '@/lib/dashboard/columnTitles';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
 import {
@@ -543,10 +544,16 @@ export function DiscoveryBoard({
               <Th
                 className="w-[172px]"
                 sorted={activeColumn === 'price'}
+                title={priceColumnTitle(phase)}
               >
                 Price · {move.label} · VWAP
               </Th>
-              <Th className="w-[68px]" align="right" sorted={activeColumn === 'rvol'}>
+              <Th
+                className="w-[68px]"
+                align="right"
+                sorted={activeColumn === 'rvol'}
+                title={COLUMN_TITLE.rvol}
+              >
                 RVOL
               </Th>
               {/*
@@ -601,13 +608,20 @@ export function DiscoveryBoard({
                 </span>
               </Th>
               {showFloat ? (
-                <Th className="w-[84px]" align="right" sorted={activeColumn === 'float'}>
+                <Th
+                  className="w-[84px]"
+                  align="right"
+                  sorted={activeColumn === 'float'}
+                  title={COLUMN_TITLE.float}
+                >
                   Float
                 </Th>
               ) : null}
-              <Th>Why</Th>
-              <Th>Risk</Th>
-              <Th className="w-[152px]">Cycle</Th>
+              <Th title={COLUMN_TITLE.why}>Why</Th>
+              <Th title={COLUMN_TITLE.risk}>Risk</Th>
+              <Th className="w-[152px]" title={COLUMN_TITLE.cycle}>
+                Cycle
+              </Th>
             </tr>
           </thead>
           <tbody>
