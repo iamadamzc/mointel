@@ -312,9 +312,16 @@ branch holding the picks onto the production base   NONE  (git branch --contains
 
 > - **The three named shas are MAIN-LINEAGE. A literal ship of any of them deploys the whole auth
     cut-over.** *This is `b371dca` in the README arriving within the hour, on a seat that had
-    independently re-derived the warning and still wrote an enumeration that reads as three shas.
-    Content-disjoint by path; buried by ancestry. **The by-path check on the COMMITS is a better
-    instrument than reading commit messages and is still the wrong instrument for the cone.***
+    independently re-derived the warning and still wrote an enumeration that reads as three shas.*
+>   **CORRECTED BY DESIGN, and the correction is about MY claim, not its check.** *I recorded this
+    as "a by-path check on the COMMITS is the wrong instrument for the cone". It was not that check:
+    Design ran `git diff --cached --name-only` on the CHERRY-PICKED FILES, which for a pick is the
+    right object and is blind to nothing.* **The defect was in the ARTEFACT, not the instrument —
+    an enumeration of shas is read as shas whatever sentence sits above it.** *`0170418` — "Do NOT
+    ship `34cf6f3`" — is the record of a prohibition in prose failing to survive being quoted, once
+    already. **A prohibition does not survive quotation; a bounded ref does.*** *Recorded this way
+    because I had written a lesson about another seat's instrument without opening it — the exact
+    failure this thread files under "never assert what you have not opened".*
 > - **THE GATED ARTEFACT HAS NO SHA.** *2,364 tests / 0 lint were run against a local apply onto
     `757cf6a` that is committed nowhere. Whatever Ops cherry-picks produces NEW shas, and the rule
     is unchanged and is the oldest one here: **gate at the sha that ships.** A gate on a different

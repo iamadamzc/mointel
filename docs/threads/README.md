@@ -386,6 +386,15 @@ someone who knew to look.
 same fact in a different namespace, and it had no rule at all.** *A branch name is a shared,
 writable, global resource on this machine exactly like the index is.*
 
+- **A REF PREFIX IS OWNERSHIP, AND VIOLATING IT IS HALF OF THIS NEAR-MISS.** *Design's own catch,
+  and it had been recorded as entirely Ops's fault: the name read as free to Ops **because Design
+  had put its branch under `ops/`.*** A seat that names a ref in another seat's namespace has
+  removed the one signal the other seat reads. **Prefix your refs with your own seat name
+  (`design/`, `ops/`, `research/`), and treat a ref under someone else's prefix as theirs even when
+  you do not recognise it.**
+- **Prefer an immutable TAG over a branch for anything you hand to another seat.** *Design's refs
+  are `design/`-prefixed tags now — a tag cannot be fast-forwarded out from under the seat that was
+  given it, and a handover naming a tag survives being quoted in a way a branch name does not.*
 - **Before creating or forcing any branch: `git worktree list` AND `git branch --list <name>`.**
 - **To pin a sha, use a NEW name or a TAG. Never `-f` on a name that already exists.**
 - **`-f` FAILING IS INFORMATION, NOT AN OBSTACLE TO ADD FLAGS UNTIL IT PASSES.** *The protection is
