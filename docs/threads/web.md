@@ -318,6 +318,54 @@ what describes it before changing it, the way a deletion is a list of readers.**
 
 ## How it reports
 
+### HIS RULE, 2026-09-25: WHAT CHANGES THE PRODUCT, NOT HOW THE WORK WENT
+
+**His words are in [`README.md`](README.md), recorded once at `60a2f08`.** *Not
+re-quoted here; one idea lives in one place.* **The test before anything reaches
+him: WHICH DECISION OF HIS DOES THIS CHANGE, OR WHAT CAN THE PRODUCT NOW DO? If
+neither has an answer, it is a commit message or a line in this file.**
+
+**The rule is his. The application is this seat's, because only this seat knows
+which of its outputs are mechanics — so, named:**
+
+**REACHES HIM:**
+
+- **Words a stranger reads that are new or different**, on the landing page, the
+  sign-in screen, its refusal copy, or either legal document.
+- **A material redraft of the legal text**, because that sets `adopted` to null
+  and **re-adoption is his act, not a formality.**
+- **Anything that opens or closes the desk to the public** — the cut-over, Basic
+  Auth coming off, a public page that has stopped being reachable, and above all
+  **the desk being reachable without a password.**
+- **Indexing**, because it is the one decision here whose effect leaves this
+  thread's control loop: once Google holds a page, removal is a request on their
+  schedule, not a deploy.
+- **A claim on a public page the product can no longer back**, the day the
+  capability behind it changes.
+- **What this seat needs FROM him** — the Google credentials, the seed invite,
+  an adoption date, the consent-screen name.
+
+**DOES NOT REACH HIM, however hard-won:**
+
+- **The `curl` sweep's status codes when they are green.** *Verify to this
+  charter's standard and state the conclusion.* **A GREEN sweep is not news; a
+  RED one is not a sweep result either — it is "the desk is reachable without a
+  password", and it goes to him in those words, not as a table of codes.**
+- **Test counts, shas, nginx location strings, cookie names, grep patterns,
+  placeholder-scan output while the only hit is the known deferred one, canvas
+  build stamps and re-seeds, which seat owns which handler.**
+- **The account of how anything was verified.** *It belongs in the commit and in
+  this file, where it is searchable and costs him nothing.*
+- **Process defects and their fixes** — in a check, a script, a doc, this
+  charter — **unless the defect reached, or could reach, a public page.**
+
+> **AND THE TRAP IN APPLYING THIS RULE HERE:** *most of what this seat does is
+> verification, and verification is exactly what the rule calls mechanics.*
+> **The conclusion is still product; only the instrument is mechanics.** *Report
+> what is true of the live site. Never report the sweep.*
+
+### The rest, which is between this seat and the tree
+
 - **`git commit --only <explicit paths>`. Never `git add -A`, and `git add <path>`
   first does NOT save you.** *Several seats share one working tree and one git
   index; a commit takes whatever a peer left staged.*
@@ -327,7 +375,10 @@ what describes it before changing it, the way a deletion is a list of readers.**
 - **A finding about code carries an implicit "as of `<sha>`". Write the sha.**
 - **Take the clock from `zoneinfo` at the moment of use.** *This host runs six
   hours ahead of the desk and announces its own midnight.*
-- **End every report with `## What I need from you`, and put nothing after it.**
+- **End with the `🟠 NEEDS YOU` block ONLY when a decision is his, and put nothing
+  after it.** *Decidable from the block alone.* **When nothing needs deciding, omit the
+  block entirely** — a standing empty section trains him to skip the one place a real ask
+  will appear.
 - **SHOW THE WORK VISUALLY.** *Use the `design` skill to build a canvas he edits
   directly rather than describing changes back through a session.* **Draft the
   artboards; let him iterate without waiting on you.**
