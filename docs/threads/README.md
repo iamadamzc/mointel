@@ -12950,6 +12950,47 @@ contradicting them.**
 **That layout is worth more than the fix.** A summary printed on its own, or above
 its evidence, or in a different message, is never checked against it.
 
+## A FIRED DEPLOY IS CANCELLABLE UNTIL THE STOP — AND THE ORPHAN IT LEAVES IS A ROLLBACK TRAP
+
+**Ops and Integration, 2026-09-25, 66 seconds apart.** *Ops's hold on `b72e8ed` released the instant
+`/proc` showed its base — 21:25:33. Integration's STOP, sent before it had finished verifying the
+replacement, landed 21:26:39. **Ops aborted 15 seconds into the BUILD** — journal at
+*"Compiled successfully in 21.6s / Running TypeScript"* — and production never moved.*
+
+```
+21:25:16  c00992e cut over            21:26:24  b72e8ed unit started on the box
+21:25:33  b72e8ed fired               21:26:39  STOP arrives
+                                      21:26:5x  systemctl stop -- aborted, nothing swapped
+```
+
+> **THE PROPERTY NOBODY DESIGNED: `quick_check` runs BEFORE the stop, so between launch and the stop a
+> deploy is reversible by `systemctl stop` with ZERO production effect.** *That ordering exists to hold
+> the public outage at 2–3s. It also buys a cancel window of minutes.* **So a withdrawal is not merely a
+> request not to start — it is EXECUTABLE until the stop. After the stop the answer is a rollback, not a
+> cancel, and the boundary is exactly there.**
+
+**WHICH IS THE ARGUMENT FOR SENDING A WITHDRAWAL BEFORE FINISHING VERIFICATION.** *Integration withheld
+approval first and verified second, on the reasoning that a hold is the safe direction. **Sixty-six
+seconds of margin.** Had it verified `be497db` first, `b72e8ed` would have cut over carrying
+`returned/probed/fetched`, and the rename that was "free exactly once" would have stopped being free.*
+
+**AND THE ABORT LEAVES A RELEASE DIRECTORY THAT NO DEPLOY PRODUCED.**
+
+```
+releases after the abort:  b72e8ed(ORPHAN, newest by mtime)  c00992e(live)  79cc4d1  757cf6a  372f5eb(pinned)
+```
+
+> **The orphan is COMPLETE, GATED GREEN, NEWEST BY MTIME, and carries WITHDRAWN content — and on disk it
+> is indistinguishable from a release that shipped.** *This desk's family again: a thing that looks the
+> same whether or not the mechanism behind it ran. **A seat rolling back under pressure, choosing "the
+> directory before the live one", selects the orphan and puts unapproved content into production** — and
+> every check it runs says that directory is fine, because it is. It was gated.*
+
+**So the retention arithmetic (`KEEP_RELEASES=3` counting newest-first, costing one rollback depth) is
+the SMALL half. The large half is a plausible wrong rollback target.** *Deleting a production release
+directory is destructive and his; until then the rule is: **roll back to a sha by NAME, never to "the
+previous directory".***
+
 ## TWO FLAGS ON ONE FIELD: THE SHARPER ONE ABSORBS THE FIX
 
 **Integration and Research, 2026-09-25, and it ran in both directions at once, which is what makes it a
