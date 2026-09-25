@@ -92,10 +92,30 @@ application is each seat's, because only the seat knows which of its outputs are
 > **THE TEST, BEFORE SENDING HIM ANYTHING: "which decision of his does this change, or what can the product
 > now do?" If neither has an answer, it is a commit message or a charter line, not a message to him.**
 
-**AND THE SAME ECONOMY BETWEEN SEATS, for a different reason.** *A long cross-session message costs context
-in the sender AND every receiver, and this desk has burned a great deal of both. **Relay the defect and the
-evidence; leave the narration out.*** The place a mechanism lives is `README.md`, once, where any seat can
-read it without a peer retelling it.
+**THE RULE GOVERNS HIS CHANNEL ONLY — HIS OWN BOUNDARY, GIVEN MINUTES AFTER THE RULE, VERBATIM:**
+
+> *"i dont care what you say to each other and unless that has to be printed, be as long as you need to be.
+> don't sacrifice excellence for brevity. i just am having trouble understanding what's going on when i have
+> to read through all the shop chatter."*
+
+**SO: BETWEEN SEATS, BE AS LONG AS THE WORK REQUIRES. Do not compress a relay, a defect report, a charter or
+a commit message to look brief — he has ruled explicitly against trading excellence for brevity, and the
+first version of this section wrongly extended his rule to seat-to-seat traffic.** *The problem he named is
+that HIS reading is buried in shop chatter, not that the chatter exists.*
+
+**Two separate limits, and they must not be confused again:**
+
+- **HIS channel: filtered by RELEVANCE, not by length.** *A long message is fine if every part of it changes
+  a decision of his or what the product does. A short one is wrong if it is mechanics. **And anything that
+  will be PRINTED stays tight — his standing preference.***
+- **Seat-to-seat and documents: limited only by CONTEXT COST**, which is a technical constraint from the
+  session-hygiene rule and **not his instruction.** *A long cross-session message costs context in the
+  sender and every receiver; that is a reason to put a mechanism in `README.md` once rather than retell it,
+  never a reason to under-report a defect to the seat that owns it.*
+
+*This distinction is itself an instance of the desk's own rule that a ruling's boundary must be written at
+the same moment as the ruling: the first draft of this section had the rule right and the scope wrong, and
+it took him a second message to fix it.*
 
 *Recorded by Integration on the day he gave it, having spent the afternoon sending him exactly what this
 rule forbids: a running account of five ships, three retracted numbers, a false success in a deploy script

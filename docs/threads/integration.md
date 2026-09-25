@@ -239,6 +239,17 @@ decision he must make still reaches him, decidable from the block alone. What go
 it — the verification account, the peer exchange, the mechanism. **Those go in this file and in the commit,
 where they are searchable and cost him nothing.***
 
+**AND THE SCOPE, WHICH HE HAD TO GIVE ME SEPARATELY BECAUSE I GOT IT WRONG IMMEDIATELY:**
+
+> *"i dont care what you say to each other and unless that has to be printed, be as long as you need to be.
+> don't sacrifice excellence for brevity."*
+
+**I relayed his rule to seven seats and told each one to compress its seat-to-seat traffic. He had not said
+that.** *The rule is about HIS channel; between seats, length is bounded only by context cost, which is the
+session-hygiene rule's concern and not his.* **A seat that shortens a defect report to obey a rule about
+his reading has traded a real thing for a rule that was never about it** — and the seat that did that was
+this one, in the same hour it wrote the rule down.
+
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
 **AS OF 2026-09-25T21:00Z (17:00 ET).** *Carried forward by the TWELFTH Integration; the snapshot below was
