@@ -217,10 +217,9 @@ from the finding seat is a hypothesis; flag it as one, never relay it as the ins
 
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
-**AS OF 2026-09-22T09:59Z.** *Base rewritten whole by the ninth session; kept current by the
-tenth across the `a9df280`/`34414f4` deploys (owner's session-hygiene rule,
-`A:\claude-infra-agent\docs\session-hygiene.md`). Everything below LIVE STATE is kept for its
-MECHANISMS, not its facts.*
+**AS OF 2026-09-25T11:37Z.** *Full §3a-c hygiene audit this pass (his instruction 2026-09-25):
+LIVE STATE re-verified against production and pruned, the RESOLVED diary trimmed to a pointer.
+Everything below LIVE STATE is kept for its MECHANISMS, not its facts.*
 
 > **STANDING APPROVALS — recorded 2026-09-23T03:58Z (2026-09-22 23:58 ET).** *Supersedes the
 > earlier today-only grant.*
@@ -242,14 +241,16 @@ MECHANISMS, not its facts.*
 ### PRODUCTION
 
 ```
-web / research / assess   acc3095   deployed 2026-09-22, 2s down (rollback 42c9a73). Four clean
-                                     deploys tonight: 89a4c56->6e224ca->42c9a73->acc3095. Carries
-                                     blue-sky wording, DCOY "STARTED TODAY", Design's board stack +
-                                     4 assessment columns, and the re-derived (HELD) constants.
-                                     Blue-sky 27% recovery fills ORGANICALLY; a --run only accelerates.
-market worker             34414f4   pid 875327, restarted 2026-09-22 09:57:57Z, NRestarts 0.
-                                     Replay fix PROVEN: 0 of 1,825 rows lowered (vs 1,481 on
-                                     09-18), cohort = symbols with stored premarket bars.
+web / research / assess   757cf6a   deployed 2026-09-24, 2s down (rollback acc3095).
+market worker             757cf6a   restarted 2026-09-24 20:24:07Z, pid 1063272, NRestarts 0.
+                                     BOTH UNITS ON ONE RELEASE (first time this week). Carries the
+                                     freshness bands (FRESH=prior session close; day bands; arm-5
+                                     STALE), the age/date-parse fix, priority-hide, DCOY "STARTED
+                                     TODAY", blue-sky wording, the 4 assessment columns, re-derived
+                                     (HELD) 0.5/2.0, 21-day dropped, dead model freshness field gone.
+                                     STARTED 5AM is now LIVE (worker carries the `observed` field).
+                                     Restart rebuild MEASURED: 0 lowered, 0 null, 4,791 intact
+                                     (day-wide + per-session AH). Blue-sky 27% fills ORGANICALLY.
 stranger sees             /  /privacy  /terms  /robots.txt  /favicon.ico
                           /icon.svg  /apple-icon.png            200
                           /desk  /signin  /api/*                401
@@ -261,26 +262,23 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
 
 ### OPEN AND HIS
 
-*No standing decision open as of 2026-09-22T22:35Z.*
+**LAUNCH is one auth cut-over away (see AUTH below). Three inputs are his:**
+1. **Google OAuth app credentials** — client id + secret + redirect URI (Google Console; Ops
+   places on the box). On the cut-over critical path, has lead time.
+2. **The seed word** for `iamadamzc@gmail.com` — the first invite. HIS DIRECT word to Ops, not
+   relayed (an invite is a grant; Ops raises it when the tooling reaches production).
+3. **When to run the cut-over** — a window outside his trading hours; Basic-Auth-off is his call.
 
-**RESOLVED, kept briefly so the changes are visible:**
-- **PREMARKET CYCLE FRAME: RULED IN — his direct words 2026-09-22T22:35Z, "premarket in".**
-  *The frame is now all three sessions, 04:00–20:00 ET (after-hours ruled 2026-09-17). This
-  is HIS WORD, not a relay: the claim had propagated FALSELY three times off peer sentences
-  (`f0048eb`, `3308fb1`, `bb2901d`) before he said it himself. Unblocks re-derivation of
-  `0.5`/`2.0` — see CYCLE FRAME below.*
-- **Design's float render `7cc5076`: APPROVED (his "yes" 2026-09-21) and shipping** in the
-  `6e224ca` batch. The old "badge label vs float render — which to build" question is moot;
-  both were built.
-- **Blue-sky (a)+(b): APPROVED — his direct words 2026-09-22, "yes ship blue-sky".** *Trio
-  `6e224ca` released to Ops. The 27%-of-names recovery lights up after Ops's post-close
-  basis backfill (431 tickers / 862 calls on prod — not the 120 first quoted from a local
-  census); not "recovered" until a census confirms the basis.*
-- **Old Google service-account key: HE DELETED IT in the console.** *Ops follow-up —
-  remove `.env.local.bak-20260919T115148Z` (holds the old key, gitignored) — unconfirmed
-  here; flag for the next Ops check.*
-- **Design's badge fix `a9df280`: SHIPPED** 2026-09-21 23:13:21Z, 3s down — production. First
-  real use of the preflight test gate.
+**Also open, not blocking launch:**
+- **Sort legibility (Design):** a non-RANK sort (NOW, PM MOVE) reads as random because the RANK
+  column dominates the eye and the sort key is buried in the price cell. First pass shipped;
+  sharper fix in progress.
+- **`market.state` DEGRADED/OFFLINE false-red:** a one-sample message-age blip or a restart
+  window trips it on a healthy feed (seen 3x). Cosmetic; a threshold fix pending his go.
+
+*SHIPPED in `757cf6a` (2026-09-24), pruned from the open list: the premarket ruling → `0.5`/`2.0`
+re-derived; freshness bands + age fix; blue-sky wording; DCOY STARTED-TODAY; float render;
+priority-hide; STARTED 5AM (live after the worker restart). Google service key: he deleted it.*
 
 ### THE SHEET MIGRATION — HIS RULINGS, AND THE SHAPE THAT SURVIVED THEM
 
@@ -314,8 +312,8 @@ real valley; 30–90 days gives the same coverage within three points). 45 rathe
 because a stale count treated as current produces a confident IMPOSSIBLE on a company that
 simply issued shares — and that error lands hardest on the names that dilute hardest.*
 
-**Design's render, agreed and unbuilt: ONE number, ONE verdict, the bound cited INSIDE the
-verdict.** *`FLOAT 5.53M  CONSISTENT · under 12.4M filed as of Jun 30`. Two adjacent number
+**Design's render, agreed and SHIPPED (`7cc5076`, live in 757cf6a): ONE number, ONE verdict,
+the bound cited INSIDE the verdict.** *`FLOAT 5.53M  CONSISTENT · under 12.4M filed as of Jun 30`. Two adjacent number
 columns would assert parity and invite averaging a claim with a ceiling, which is the one
 meaningless operation here.* **The filed number is shares OUTSTANDING — a ceiling, not a
 rival estimate. Never label it "derived float".**
@@ -331,14 +329,14 @@ a seat.** *Context: `ddaf2f8` reached production 2026-09-18 with the suite red, 
 since the rename hours earlier. There is NO test step in `deploy.sh`, `preflight.sh` or
 `push-release.sh` — verified.*
 
-> **PARTIALLY BUILT 2026-09-21: Ops's `test-gate.sh` runs the suite in a detached worktree
-> AT THE SHA (not HEAD) and Ops chains it by hand before each enumeration — it caught two
-> real releases green (`a9df280`, `34414f4`). NOT yet wired into `push-release.sh`: wiring
-> breaks `tests/desk/releaseBootstrap.test.ts` plus one undiagnosed false red.** *So the
-> ruling's intent — the tool refuses, the seat does not remember — is not met until it is
-> wired in.* **AND `lint` is NOT in the gate: it is red on main since `e48a2ca` (6
-> `no-explicit-any` in `tests/market/liveCycleOverlay.test.ts`), routed to Design to fix
-> 2026-09-21. Whether lint JOINS the gate is part of this hardening.**
+> **HARDENED 2026-09-24: the gate now runs lockfile-check → `next typegen` (~2s) → `tsc` →
+> `eslint` → `vitest`, in a detached worktree at the sha, with refuse-not-guess on three missing
+> prerequisites (deps drift, generated `.next/types`, an unrunnable suite).** *Lint AND typecheck
+> are now IN the gate — the `9c3447b` lint slip motivated adding lint; `typegen` made typecheck
+> cheap enough to include. The old lint-red on `e48a2ca` is fixed.* **Still Ops's tool, run by
+> hand before each enumeration; whether it's auto-invoked from `push-release.sh` is Ops's to
+> confirm.** *Process note (Ops, 09-24): a gate refusal is only diagnosable if the run is teed to
+> a file — a filter ate the failing test names once.*
 
 ```
 1  refuse a sha whose suite is not green; print failing test NAMES, not a count
@@ -357,50 +355,40 @@ since the rename hours earlier. There is NO test step in `deploy.sh`, `preflight
 > somebody is in a hurry — on 2026-09-16 `rev-parse HEAD` at ship time carried four peer
 > commits nobody had gated.*
 
-### ALSO OWNERLESS — TWO META DESCRIPTIONS NEVER WRITTEN, NOT AWAITING A DEPLOY
+### STILL OPEN — TWO META DESCRIPTIONS NEVER WRITTEN
 
-**Found by the NEW Marketing seat 2026-09-21, correcting a framing of mine.** *An item
-recorded as "waits on: next deploy" implies committed. It is not committed — it was never
-written.*
+**Re-verified 2026-09-25: `app/layout.tsx:22` and `app/page.tsx:19` STILL carry the OLD
+three-item `<meta name="description">` ("...what the share structure actually looks like"),
+missing "and what supply stands behind it".** *The `og:`/`twitter:` descriptions
+(`layout.tsx:35/41`) and the page body (`page.tsx:322`) DO carry supply — so the card is right
+and the two meta descriptions are a claim short.* **Approved strings in
+`docs/marketing/2026-09-17-open-graph-copy.md`; deletion + insertion only, two targets, then a
+deploy.** *Ops seat is live now — a small Ops task (neither Web nor Marketing works in those
+files). Not urgent; fold into a deploy.*
 
-```
-app/layout.tsx:22  and  app/page.tsx:19
-  "...and what the share structure actually looks like."     <- OLD three-item form
-  "and what supply stands behind it"                         <- ABSENT from both
-og:/twitter:description                                      <- CARRIES supply, live, correct
-live curl == source                                          <- verified 2026-09-21
-```
+> **Kept as a live item because it is genuinely unwritten, verified at HEAD** — the reason to
+> re-verify a stated-as-current item on audit rather than carry it or prune it blind.
 
-**So the card is right and the meta descriptions are a claim short.** *The approved strings
-are in `docs/marketing/2026-09-17-open-graph-copy.md` — deletion/insertion only, two
-targets.* **Needs an edit in both files THEN a deploy. Neither Web nor Marketing works in
-those files, and there is no Ops seat.**
+### AUTH — BUILT ON MAIN, AWAITING THE CUT-OVER (the last launch gate)
 
-> **"Waits on deploy" and "was never written" produce the same board state and the same
-> sentence in a handover.** *Third mis-framed item a successor seat has caught in this
-> record in one morning — which is what a handover is for, and an argument for retiring
-> this session rather than patching it further.*
+**The whole auth surface is built and green on main, NOT yet deployed — Basic Auth still fronts
+everything, so nothing is exposed.** *Google OAuth + invited-email allowlist (his model, 2026-09-24):
+config, `/auth/start|callback|signout`, the gate (`authenticate` = `resolveSession` + `isUserInvited`),
+`/signin` (verified live desktop/mobile), and Ops's allowlist store — `isEmailInvited`, `isUserInvited`
+with the `email_verified` filter IN THE JOIN (spoof refused there, mutation-proven), immediate revoke.*
+**D3: the `/auth/*` route handlers are Web's; the carriage (nginx, primitives, stores) is Ops's.**
 
-### THE ACCESS-CONTROL GAP — A PUBLISHED CLAIM AHEAD OF THE BUILD
+> **The identity-store landmine is FIXED (`1a8c324`):** *`IDENTITY_DB_PATH=/var/lib/mointel/identity.db`
+> in `sync-env.sh` (stripped so a dev value can't override), and `openIdentityStore` REFUSES a
+> `releases/`-segment path. The "first account survives one deploy, deleted by the second" hazard
+> is closed.*
 
-```
-/signin  401 WWW-Authenticate: Basic     allowlist in lib/ app/ worker/:  NONE
-```
-
-**nginx Basic Auth is the WHOLE of access control (`web.md:122-125`). Google sign-in gates
-nothing** *— which is why moving the consent screen to In production on 2026-09-18 was
-safe: the test-user list was never the gate.*
-
-> **THE ADOPTED TERMS DESCRIBE A SYSTEM THAT DOES NOT EXIST.** *§2 "Access is by
-> invitation"; §3 "One person, one account. Do not share your sign-in"; §9 promises access
-> can be withdrawn from a person.* **The mechanism is ONE SHARED PASSWORD.** *It breaks at
-> the SECOND user, not the hundredth.*
-
-**AND WHEN AUTH SHIPS, ONE LINE MUST SHIP WITH IT OR THE ACCOUNTS ARE DELETED BY A DEPLOY.**
-*`lib/auth/store.ts:30-31` defaults the identity store to `cwd/data/identity.db`;
-`IDENTITY_DB_PATH` is unset in production; the units run from the release directory, which
-`prune.sh` removes.* **The first user's account survives one deploy and is deleted by the
-second, silently. `openIdentityStore` mkdirs the doomed path without erroring.**
+**STEP 2 — the coordinated cut-over (Integration orchestrates on his go):** nginx exempts `/signin`
++ `^~ /auth/` → box env (Google id/secret, redirect URI, IDENTITY_DB_PATH) → wire the gate into
+`/desk` + `/api/*` → **live-proof the gate REFUSES a non-invited account, negative control first**
+→ Basic-Auth-off LAST, his call. *The adopted terms (§2 invitation, §3 one-account, §9 withdrawable)
+become true only at this cut-over; until then it is one shared password.* His three inputs are in
+OPEN AND HIS.
 
 ### THE CYCLE FRAME — RULED WHOLE, AND IT UNBLOCKS TWO CONSTANTS
 
@@ -430,12 +418,10 @@ premarket. It is INERT at `a5924c2` — producer, no consumer — so nothing ren
 ### RESEARCH'S QUESTIONS — ONE OPEN, NOT THREE
 
 ```
-restart rebuild of sessionHigh        APPROVED   he approved the STORED-minute-bar replay
-                                                 (replaySession -> bootstrapSession); Ops
-                                                 building it as worker code, inert until a
-                                                 restart -> own enumeration + his restart
-                                                 word, separately. Sidesteps the ~8,400-req
-                                                 hourly fetch entirely -- no rate-limit cost
+restart rebuild of sessionHigh        DONE       replaySession->bootstrapSession, shipped in
+                                                 757cf6a; worker restarted 2026-09-24 20:24Z and
+                                                 MEASURED: day-wide + per-session AH, 0 lowered,
+                                                 0 null, 4,791 intact. Stored-bar replay, no fetch.
 day-high vs close, cycle-start gate   WITHDRAWN  by Research, unreproduced; QCLS never
                                                  evidenced it either way
 HUMAN_REVIEWED_PRIOR_ANALYSIS         FIXED      dbd70d1, 2026-09-19. Now
@@ -444,9 +430,11 @@ HUMAN_REVIEWED_PRIOR_ANALYSIS         FIXED      dbd70d1, 2026-09-19. Now
                                                  sheetPrior.ts
 ```
 
-### IDLE, NOTHING PENDING
+### SEAT STATE (2026-09-25 saturation check broadcast to all mointel seats)
 
-**Commercial, R&D, Coaching, Marketing.** *Coaching's work lives outside the repo at
+**All seats told to self-assess context saturation and run §3 hygiene if they judge it time
+(his instruction 2026-09-25).** *Commercial judged it time and handed off (`bc9847f`, standing
+down on his word). Others self-assessing. Coaching's work lives outside the repo at
 `C:\Users\adshu\.mointel-fills\coaching\`; `coaching.md` points at it.*
 
 ## The third delegation: deploy instructions, confirmed directly
