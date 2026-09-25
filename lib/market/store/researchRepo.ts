@@ -1063,6 +1063,22 @@ export interface CollectorReportRecord {
    * kept beside it because a string can drift and a count cannot.
    */
   networkRequests: number | null;
+  /**
+   * Why RESOLUTION found nothing, as `returned/probed/fetched`.
+   *
+   * Added 2026-09-25 so the REACH vs REACHABILITY split is measurable forward.
+   * Neither was answerable from storage: the archived report carries no note
+   * field, and `irRegistry.ts` takes the same `if (!durable)` branch for both
+   * outcomes with `sourceShape: null` and no url persisted -- correctly, since
+   * recording a newswire url would look like success and permanently block the
+   * discovery fallback, but it also erases the discriminator.
+   *
+   * **Counts rather than the single `unreachable` boolean that was requested.**
+   * That flag is a sticky OR across the probe loop and cannot separate "every
+   * host refused us" from "pages answered and none was a collection point" --
+   * different fixes, and the second is the more common one.
+   */
+  resolutionProbes: { returned: number; probed: number; fetched: number } | null;
   /** The durable location on file after this pass, when there is one. */
   companySourceUrl: string | null;
   companySourceShape: string | null;

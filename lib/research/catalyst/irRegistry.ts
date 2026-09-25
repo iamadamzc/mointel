@@ -34,6 +34,16 @@ const FEED_PATHS = ['/rss', '/feed', '/rss.xml', '/feed.xml', '/news/rss', '/inv
 const INDEX_PATHS = ['/press', '/news', '/newsroom', '/press-releases', '/media', '/investors'];
 
 /** Most candidates worth fetching before giving up and letting discovery run. */
+/**
+ * No probing happened on this path.
+ *
+ * Distinct from `{returned: 0}` after a resolver ran: this says the desk never
+ * asked, because it reused a stored answer or had no resolver. A census that
+ * cannot tell "did not look" from "looked and found nothing" is the defect
+ * these counts exist to prevent, so the three no-probe returns say so.
+ */
+const NO_PROBES: ResolutionProbeCensus = { returned: 0, probed: 0, fetched: 0 };
+
 const MAX_CANDIDATE_PROBES = 6;
 
 /** A confirmed negative is worth a day; re-asking every cycle relearns it. */
@@ -71,6 +81,41 @@ export interface ResolveResult {
   resolved: boolean;
   modelCalls: number;
   detail: string;
+  /**
+   * Why resolution found nothing, as three counts rather than one label.
+   *
+   * THE SPLIT THESE EXIST FOR: **reach** is whether the desk generated a
+   * candidate worth trying; **reachability** is whether the host answered. They
+   * need different fixes -- more guessed paths against a longer timeout, a
+   * different user-agent, or a retry policy -- and nothing stored could tell
+   * them apart.
+   *
+   * ONE BOOLEAN WOULD NOT HAVE DONE IT, which is why this is not the `unreachable`
+   * flag R&D asked for. That flag is a sticky OR across the probe loop: one
+   * refusing host sets it even when a later candidate answered fine and simply
+   * was not a collection point. It cannot separate the three failures:
+   *
+   *   returned 0                      -- the resolver named nothing. REACH.
+   *   returned N, fetched 0           -- every host refused us. REACHABILITY.
+   *   returned N, fetched M, none durable -- pages answered and none was an
+   *                                          index or a feed. REACH, and it is
+   *                                          the XOS case: every candidate a
+   *                                          newswire copy.
+   *
+   * With the counts, the split is arithmetic. With the boolean, the second and
+   * third cases are one observation -- the defect shape this desk hit three
+   * times on 2026-09-25 and does not need a fourth.
+   */
+  probes: ResolutionProbeCensus;
+}
+
+export interface ResolutionProbeCensus {
+  /** Candidates the resolver named, before the probe cap. */
+  returned: number;
+  /** Candidates actually fetched, bounded by `MAX_CANDIDATE_PROBES`. */
+  probed: number;
+  /** Of those probed, how many returned a body rather than a failure. */
+  fetched: number;
 }
 
 /**
@@ -142,7 +187,13 @@ export async function resolveCompanySources(
   const stored = shedNonDurable(db, options.ticker, raw);
 
   if (!options.force && hasUsableSource(stored)) {
-    return { registry: stored, resolved: false, modelCalls: 0, detail: 'reused stored IR source' };
+    return {
+      registry: stored,
+      resolved: false,
+      modelCalls: 0,
+      detail: 'reused stored IR source',
+      probes: NO_PROBES,
+    };
   }
 
   /*
@@ -163,6 +214,7 @@ export async function resolveCompanySources(
         registry: stored,
         resolved: false,
         modelCalls: 0,
+        probes: NO_PROBES,
         detail: 'reused stored negative result',
       };
     }
@@ -181,6 +233,7 @@ export async function resolveCompanySources(
       registry,
       resolved: false,
       modelCalls: 0,
+      probes: NO_PROBES,
       detail: 'resolver unavailable; IR source unknown',
     };
   }
@@ -191,7 +244,11 @@ export async function resolveCompanySources(
     companyName: options.companyName,
   });
 
-  const { point: durable, unreachable } = await selectCollectionPoint(result.candidates, userAgent);
+  const {
+    point: durable,
+    unreachable,
+    probes,
+  } = await selectCollectionPoint(result.candidates, userAgent);
 
   if (!durable) {
     /*
@@ -214,6 +271,7 @@ export async function resolveCompanySources(
       registry,
       resolved: true,
       modelCalls: result.modelCalls,
+      probes,
       usage: result.usage ?? null,
       toolConfig: result.toolConfig ?? null,
       detail: 'no durable company source located',
@@ -228,6 +286,7 @@ export async function resolveCompanySources(
       registry: stored,
       resolved: true,
       modelCalls: result.modelCalls,
+      probes,
       usage: result.usage ?? null,
       toolConfig: result.toolConfig ?? null,
       detail: 'bad URL',
@@ -260,6 +319,7 @@ export async function resolveCompanySources(
     registry,
     resolved: true,
     modelCalls: result.modelCalls,
+    probes,
     usage: result.usage ?? null,
     toolConfig: result.toolConfig ?? null,
     detail: `located ${durable.shape === 'FEED' ? 'feed' : 'newsroom index'}`,
@@ -283,22 +343,27 @@ interface DurablePoint {
 async function selectCollectionPoint(
   candidates: readonly { url: string }[],
   userAgent: string,
-): Promise<{ point: DurablePoint | null; unreachable: boolean }> {
+): Promise<{ point: DurablePoint | null; unreachable: boolean; probes: ResolutionProbeCensus }> {
   const seen = new Set<string>();
   let fallbackFromArticle: DurablePoint | null = null;
   let unreachable = false;
+  // Counted here rather than inferred later: this loop is the only place that
+  // knows how many candidates it tried and how many answered.
+  const probes: ResolutionProbeCensus = { returned: candidates.length, probed: 0, fetched: 0 };
 
   for (const candidate of candidates.slice(0, MAX_CANDIDATE_PROBES)) {
     if (seen.has(candidate.url)) continue;
     seen.add(candidate.url);
 
     const page = await fetchCompanyPage(candidate.url, { userAgent, timeoutMs: 6000 });
+    probes.probed += 1;
+    if (!page.failure) probes.fetched += 1;
     const verdict = classifyCollectionPoint(candidate.url, page.failure ? null : page.body);
 
     if (verdict.shape === 'FEED')
-      return { point: { url: candidate.url, shape: 'FEED' }, unreachable };
+      return { point: { url: candidate.url, shape: 'FEED' }, unreachable, probes };
     if (verdict.shape === 'INDEX')
-      return { point: { url: candidate.url, shape: 'INDEX' }, unreachable };
+      return { point: { url: candidate.url, shape: 'INDEX' }, unreachable, probes };
 
     // Not probed for an index: a host that just refused us will refuse the
     // derived path too, and spending a request to learn that is what the
@@ -311,7 +376,7 @@ async function selectCollectionPoint(
     }
   }
 
-  return { point: fallbackFromArticle, unreachable };
+  return { point: fallbackFromArticle, unreachable, probes };
 }
 
 async function probeFeed(origin: string, userAgent: string): Promise<string | null> {
