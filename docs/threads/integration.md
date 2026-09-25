@@ -247,8 +247,19 @@ stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /
 > timeline. **Two right numbers naming different events read as one number.*** *Collector attempt telemetry is LIVE: `companyFetchDetail` + `networkRequests` are
 > persisted from this cutover forward.*
 >
-> **✅ ENUMERATED AND APPROVED 2026-09-25 ~17:00 ET — `388c57f` then `8687f04` (Research),
-> CHERRY-PICKED onto production `3dc14e2`, gate at the sha that ships, window Ops's, `RESTART_MARKET=no`.**
+> **✅ ENUMERATED, APPROVED AND GATED 2026-09-25 ~17:00 ET — `388c57f` then `8687f04` (Research),
+> CHERRY-PICKED onto production `3dc14e2`, window Ops's, `RESTART_MARKET=no`. SHIPPING AS THE LITERAL
+> SHA `79cc4d1`; CUTOVER NOT YET CONFIRMED AT THIS WRITING — an enumeration is finished when confirmed
+> SHIPPED, so whoever reads this next ASKS.**
+>
+> ```
+> 3dc14e2 -> pick 388c57f -> 0b7608c -> pick 8687f04 -> 79cc4d1   branch ops/stale-catalyst-reask
+> cone 3dc14e2..79cc4d1   2 commits | 4 files | +344 -3 | NO auth surface   <- verified HERE, not relayed
+> gate at 79cc4d1         157 files | 2,381 tests | 0 lint   (2,371 -> 2,381: the ten new tests RUN)
+> window                  16:55 ET, nearest checkpoint 55 min BEHIND, next 22:00 ET
+> ```
+> *Ops's window note is worth keeping: this is the FIRST deploy today where the preflight start-vs-stop
+> defect had no bearing, and it said so rather than leaving the reader to assume it had forgotten.*
 > *The ruling was **verified at his own turn in Research's transcript** — `"yes, re-ask stale catalysts
 > — top 12 only"`, answering a block whose third option was "Yes, but only for the Top 12" — and
 > `queue.ts` was READ rather than taken from this section's own summary of it. `git log 3dc14e2..8687f04`
@@ -324,8 +335,13 @@ stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /
    REPLACES its own earlier proposal that put invocation first.* **Its own caveat, repeated: this is the
    18–21 August snapshot, today's production shows 40% not 62% in that bucket, and it would not size
    work from these exact numbers.**
-7. **`Commercial-tmi` still awaits retirement** — his words 2026-09-25: *"Coaching done; will do
-   commercial."* *Its hand-off is written and pushed (`bc9847f`).*
+7. **✅ CLOSED — BOTH RETIREMENTS ARE DONE, and both closed within minutes of my putting them in a
+   NEEDS YOU block.** *`Commercial-tmi` is a FRESH seat at `local_60b84fba`, onboarded off `bc9847f`,
+   idle with nothing pending; `Integration-tmi-retired` (`local_d1d60c77`) is renamed and archived.*
+   **The charter's own rule caught me: do not put a LIVE state in front of him, because any state I
+   check is already old when he reads it.** *Verified by `list_sessions` with `include_archived`, not
+   by either seat's say-so — and the tell that a session was RESET rather than reopened is a "new seat"
+   announcing itself at an id that was already listed minutes earlier.*
 
 ### AUTH — BUILT ON MAIN, ZERO IN PRODUCTION, AND THE SHADOW IS PERMANENT UNTIL CUT-OVER
 
