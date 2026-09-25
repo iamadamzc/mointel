@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T16:58Z
+## LIVE STATE — 2026-09-25T17:26Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -157,6 +157,23 @@ history, so that rests on Integration's account of the exchange rather than on a
 record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
+
+- **💰 THE MODEL BILL, PRICED 2026-09-25 — $6.99 for the session, and THE TOKEN SHARE INVERTS THE DOLLAR SHARE.** Volume measured on production by Ops; rates read first-hand from the published list (`developers.openai.com/api/docs/pricing`, read 2026-09-25) and **not quoted from memory** — these model names postdate this seat's training data entirely.
+
+| stage | model | calls | input tok | **% tokens** | cost | **% dollars** |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| DISCOVERY | `gpt-5.6-luna` | 144 | 6,268,877 | **79.0%** | $1.35 | **19.3%** |
+| INTERPRETATION | `gpt-5.6-terra` | 81 | 880,160 | **11.1%** | **$4.22** | **60.5%** |
+| RESOLVER | `gpt-5.6-luna` | 27 | 617,843 | 7.8% | $0.14 | 2.0% |
+| ESCALATION | `gpt-5.6-sol` | 11 | 146,522 | 1.8% | $1.28 | 18.3% |
+| RECOVERY | `gpt-5.6-luna` | 1 | 21,961 | 0.3% | $0.005 | 0.1% |
+| **TOTAL** | | **264** | **7,935,363** | | **$6.99** | |
+
+  **⚠️ OPS'S STRUCTURAL CLAIM — *"spend is dominated by LOOKING FOR catalysts, not reasoning about them"* — IS TRUE OF TOKENS AND FALSE OF MONEY.** DISCOVERY runs on `luna` at **$0.20/Mtok in**; INTERPRETATION runs on `terra` at **$2.00 in and $12.00 out** — **10x and 10x.** So **79% of tokens is 19% of the bill, and 11% of tokens is 60% of it.** *This matters for the news-feed decision he is holding: a deterministic wire feed would displace the CHEAPEST stage, not the most expensive one. The saving is ~$1.35/session at most, not ~79% of $6.99.*
+  **Method, stated because it changes the number:** `cachedInputTokens` reads `usage.input_tokens_details.cached_tokens` (`openaiDiscovery.ts:75`, `openaiInterpreter.ts:58`), which is a breakdown OF input — **cached is a SUBSET, not an addition** — so billable input is `(input − cached)` at the input rate plus `cached` at the cached rate. Cached was 844,636, **10.6% of input**, and priced separately as Integration asked.
+  **⚠️ ONE RATE INPUT IS UNRESOLVED AND I WILL NOT GUESS IT: the SHORT vs LONG context threshold is not stated on that page.** Priced at **short context**, which is the tier the per-call averages sit in comfortably on any plausible threshold (DISCOVERY averages 43.5k input/call, the rest 11k–23k). **If any stage bills long-context the total is $12.17.** So the honest figure is **$6.99, bounded above by $12.17**, and the gap is one unresolved published number.
+  **Ops's SECOND structural claim HOLDS, verified in code:** `readBoardCandidates(db, { autoRank })` filters in SQL and `isEligible` filters again on `rank > autoRank`, with `DEFAULT_AUTO_RANK` 12 and `DEFAULT_CONCURRENCY` 2. **Research volume is bounded by board slots, not universe size** — 68 researched of 8,031 captured. **So lowering the price floor changes WHICH names occupy 12 slots, not how many exist, and expected spend is roughly FLAT rather than proportional.** *Roughly, not identically: a name carrying many SEC filings costs more to interpret than one carrying few, so a floor change that admits a different KIND of name moves the number somewhat.*
+  **TODAY IS ONE SESSION AND NOT A WORST CASE.** 2026-08-18 ran **403 research jobs and >12M input tokens** (see "Why this is its own thread"). **Do not budget off $6.99 without saying it is one quiet-ish day**, and note that `8687f04` — his re-ask ruling — pushes top-12 job count up from here.
 
 - **⚠️ DEPLOY ROUTING OF THIS SEAT'S WORK — read this before assuming anything is live. Recorded 2026-09-25T16:58Z BECAUSE IT DEPENDED ON A RETIRING SEAT'S QUEUE.**
 
