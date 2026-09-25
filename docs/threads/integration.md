@@ -792,6 +792,39 @@ header teaches nothing.**
   and the rename together, rather than twice on the same column.** *`363f40d` stays parked, and if
   the rename survives it may need re-cutting on top of the tooltip pass rather than shipping as-is.*
 
+### HIS APPROVALS 2026-09-25 (afternoon) — TWO GRANTED, ONE DEFERRED, EACH NARROW
+
+**Recorded verbatim; these are new named exceptions resting on his sentences, NOT on any standing
+approval and NOT on the pre-approved `research_sources` snapshot.**
+
+- **`"push"`** — `ops/sort-legibility` pushed. *Answers the question Ops held all morning under its
+  own session-level instruction from him. The conflict went to him and stayed there until he
+  answered, which is `integration.md:2614` working as written.*
+- **`"approve the export"`** — production minute-bar export to `TradeCoach1` (`A:\TradeCoach`),
+  performed by Ops, sequenced after `0a17601`.
+- **`"not yet"`** — the confidence pull is DEFERRED, not rejected. *His reason: he expects catalyst
+  reporting to change out of a live conversation with R&D about how he still works with ChatGPT
+  outside the desk. **A baseline of what the interpreter writes today, taken immediately before
+  changing what it writes, buys a snapshot of a thing about to move** — a better argument than
+  R&D's own cost case, and his.* `f829687` stands unrevised; Q14 part (b) stays open holding a slot.
+
+> **THE EXPORT IS NINE DATES, NOT SEVEN — THE REQUESTER UNDER-SCOPED ITS OWN ASK.** *It wrote "the
+> production box's seven dates (09-09..09-17)" and then reasoned from that RANGE. Its 17 traded
+> sessions intersected against the 13 stored dates gives **nine**: `09-22` is a full session it
+> simply missed, and `09-25` is today and **PARTIAL**.* **A requester's own scope is not a
+> measurement — intersect the two sets rather than trusting the range in the sentence.** *The other
+> eight (08-24…09-08) are not on the box and remain the backfill problem: a BUILD decision with an
+> ownership gap, not a permission, and not approved.*
+
+> **⚠️ THE EXPORT CARRIES A CONDITION THAT DECIDES WHETHER IT IS USABLE AT ALL: it must STATE ITS
+  ADJUSTMENT BASIS — raw or adjusted — or say explicitly that it could not be established.**
+  *Nobody had opened this; it was deliberately carried as UNKNOWN all day so it would not travel as
+  "raw, presumably". Ops is authorised to open it INSIDE the approved work.* **19 of 75 symbols had
+  corporate actions at factors to 200×, and an adjusted bar compared against a real fill price
+  yields a number that is wrong and looks entirely plausible.** *An export without its basis is
+  worse than no export, because it will be measured against and believed.* **If `minute_bars` holds
+  adjusted prices, that is a finding for him and may end the measurement.**
+
 ### QUEUED BOX READS — TWO, BOTH FOR OPS, NEITHER URGENT, IN THIS ORDER
 
 *Recorded 2026-09-25 so they survive this seat. Ops is NOT retiring, so both route to `Ops-tmi`.
