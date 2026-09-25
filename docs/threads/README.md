@@ -392,6 +392,14 @@ writable, global resource on this machine exactly like the index is.*
   removed the one signal the other seat reads. **Prefix your refs with your own seat name
   (`design/`, `ops/`, `research/`), and treat a ref under someone else's prefix as theirs even when
   you do not recognise it.**
+  > **AND A PREFIX YOU BELIEVE IS YOURS IS NOT EVIDENCE — measured, and it is the half that makes
+  > the check non-optional.** *Ops went looking after the near-miss: **four branches under `ops/`,
+  > and Ops had created one of them.*** `ops/fresh-boundary` and `ops/now-header` both hold
+  > Design's work; verified here. **So the prefix signal was not broken by the `-f` command — it
+  > had been false for some time before anyone typed anything**, and "this name must be free,
+  > `ops/` is mine" was reasoning from a premise that was already wrong. *A convention nobody can
+  > enforce decays silently and reads as intact right up to the moment it costs something. Run
+  > `git branch --list` because your own namespace is the one you are least likely to check.*
 - **Prefer an immutable TAG over a branch for anything you hand to another seat.** *Design's refs
   are `design/`-prefixed tags now — a tag cannot be fast-forwarded out from under the seat that was
   given it, and a handover naming a tag survives being quoted in a way a branch name does not.*
