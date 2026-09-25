@@ -50,6 +50,8 @@ function job(ticker: string, outcome: { sourcesAdded: number; fingerprintChanged
   recordCollectorReport(db, id, {
     discoveryMode: 'RECOVERY',
     companySourceDetail: 'recovery: no durable company source located',
+    companyFetchDetail: 'not attempted',
+    networkRequests: 0,
     companySourceUrl: null,
     companySourceShape: null,
     modelCalls: 1,
