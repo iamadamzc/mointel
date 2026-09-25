@@ -29,6 +29,14 @@ import type { SessionPhase } from '@/lib/market/types';
  * a grade is strength and the colour is freshness. Each of those is a mistake
  * this desk has watched someone make, including its own seats.
  *
+ * **AND THEY STAY TIGHT, WHICH IS HIS STANDING PREFERENCE FOR ANYTHING
+ * PRINTED** (2026-09-25). The first draft shipped at 68 and 78 words for
+ * `why` and `risk` — five sentences each, on a hover, for a trader reading
+ * at 07:30. **What was cut was self-reference (*"as a chip rather than a
+ * sentence you have to hover"* tells him about the design, not the stock) and
+ * restatement.** What was kept is the clause that says what the column is NOT,
+ * because that is the only part a header can never carry.
+ *
  * **WRITTEN IN THE LANGUAGE OF THE STOCK, NOT THE PIPELINE.** No enum, no
  * field name, no module. `LATCH` was removed from this product for being
  * engine vocabulary on a trader's screen.
@@ -48,13 +56,13 @@ export const NO_TITLE_NEEDED = ['changed', 'ticker', 'priority'] as const;
  * which `npm test` was happy with and `tsc` was not.
  */
 export const COLUMN_TITLE = {
-  rvol: 'Relative volume: this session’s volume so far against the average for the same stock over the previous 20 eligible sessions. It is cumulative and never decays within a session, so a name that ran at 07:15 and stopped can still show a large number at 10:00. The trades column beside it is the correction for that.',
+  rvol: 'Relative volume: this session’s volume so far against the average for the same stock over the previous 20 eligible sessions. It is cumulative and never decays within a session, so a name that ran at 07:15 and stopped can still show a large number at 10:00. Now, beside it, is the correction.',
 
   float: 'The float this desk can show, which is a borrowed number and not always a verified one. It is not known for every name, and blank means the desk could not establish it rather than that the float is small.',
 
-  why: 'The catalyst, in three parts. The letter is how strong it is — A strong, B moderate or secondary, C weak, negative or dilutive. The colour is how fresh it is, which is a different question: green is today or since the prior session’s close, amber is older. The line is the headline itself. A green A and an amber A are the same strength and different news.',
+  why: 'Two quantities in one cell. The letter is strength — A strong, B moderate or secondary, C weak or dilutive. The colour is freshness, which is a different question: green is today or since the prior session’s close, amber is older. A green A and an amber A are the same strength and different news.',
 
-  risk: 'What would kill the trade, as a chip rather than a sentence you have to hover. DIRTY FLOAT means the tradable supply is larger than the float suggests. SUPPLY OVERHEAD is stock that can arrive. STRUCTURE CAUTION and STRUCTURE UNKNOWN mean the desk found a concern, or could not establish the structure at all — which is not the same as finding nothing. NO FLAG FOUND is the desk looking and finding nothing, and it is a result.',
+  risk: 'What would kill the trade. DIRTY FLOAT: tradable supply is larger than the float suggests. SUPPLY OVERHEAD: stock that can arrive. STRUCTURE CAUTION or UNKNOWN: the desk found a concern, or could not establish the structure — which is not the same as finding nothing. NO FLAG FOUND: the desk looked and found nothing, which is a result.',
 
   cycle: 'Where the name sits in its own run: NO RUN, DAY 1, FRONTSIDE, OFF HIGH, BACKSIDE, or PRIOR RUN for a move that has already finished. The two prices are the run’s high and the last price, so the give-back is readable without arithmetic.',
 } as const;

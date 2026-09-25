@@ -498,6 +498,29 @@ code beside it. Rulings that still bind were carried above.
 change, or what can the product now do? If neither has an answer, it is a
 commit message.**
 
+**IT IS A RELEVANCE FILTER, NOT A LENGTH LIMIT, AND HE SAID SO HIMSELF WITHIN
+MINUTES OF THE RULE:**
+
+> *"i dont care what you say to each other and unless that has to be printed,
+> be as long as you need to be. don't sacrifice excellence for brevity. i just
+> am having trouble understanding what's going on when i have to read through
+> all the shop chatter."*
+
+**So a long message to him is fine if every part of it changes a decision or
+the product; a short one is wrong if it is mechanics.** *The first reading of
+his rule in this folder extended it to seat-to-seat traffic and to length —
+neither is what he said. Between seats and in this file: as long as the work
+requires, bounded only by context cost.*
+
+**AND THE ONE PLACE LENGTH IS HIS INSTRUCTION IS MINE: ANYTHING PRINTED STAYS
+TIGHT.** *That is this seat's surfaces — labels, headers, badges, and the
+column tooltips. They shipped at 68 and 78 words on `Why` and `Risk`, five
+sentences each, for a trader hovering at 07:30. Cut to 55 and 58 by removing
+self-reference and restatement; the clause saying what the column is NOT was
+kept, because a header can never carry it.* **A tooltip is printed copy, and
+the excellence he does not want sacrificed is in what it says, not in how
+much of it there is.**
+
 **THIS SEAT IS THE HARDEST CASE AND IT CUTS BOTH WAYS.** *The board IS the
 product, so my output is closer to his attention than any other seat's — and
 that makes it easier, not harder, to smuggle mechanics in beside it.*
