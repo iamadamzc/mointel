@@ -71,6 +71,42 @@ worktree with a clean status: **2,364 / 2,367 tests, lint 0 errors, build OK,
 typecheck clean.** Ops has since gated `0a17601` independently. *The three
 extra files over `757cf6a` are `49efd1a`'s own.*
 
+**THE BEFORE READING IS TAKEN, AND IT REPLACES A BORROWED NUMBER WITH A
+FALSIFIABLE PREDICTION.** Captured from the live board at 2026-09-25 13:15 UTC
+/ 09:15 ET, an hour before the window, because after the deploy it is gone.
+Payload kept at `before-market-2026-09-25T1315Z.json` in this session's
+scratchpad.
+
+**`catalystFreshFrom` IS ABSENT FROM THE PRODUCTION PAYLOAD** — the key, not a
+null. That is the control my local check could not give me: locally the key is
+PRESENT with a null value, in production it is MISSING entirely, and the two
+states are distinguishable. `7a0ad0c` is not live, measured rather than assumed.
+
+**THE LIVE BOARD IS 12 DISCOVERY ROWS, NOT 325 STORED ANALYSES, SO EXPECT ONE
+MOVER AND NOT SIX.** Research's 6-of-325 is over everything stored; it is not a
+prediction about what he will see. **Reading six changes on this board would
+itself be the defect signal.**
+
+    MOVER   INLF  2026-09-24T21:18:05Z  17:18 ET, AFTER the 16:00 close
+                  renders amber `16h` now; must turn GREEN
+
+    CONTROLS THAT MUST NOT MOVE -- same calendar day, wrong side of the close
+            IFBD  17:00:47Z (13:00 ET)   the nearest miss, 3h short
+            MGLD  18:00:36Z (14:00 ET)
+            APUS  12:30:00Z   BYAH 12:27:00Z   JAGX 10:01:32Z
+
+    BARE-DATE CONTROL -- Research's tripwire, as a row on his screen
+            ONCO  `2026-09-24`  amber, and it CANNOT move. Green here is a
+                  defect and not the feature.
+
+    UNCHANGED  LFS, KITT already FRESH today - AIFF 8d, EDBL 23d old -
+               YHGJ no timestamp
+
+*One format oddity for Research, not a defect of mine: `LFS` stores
+`2026-09-25T08:30:32 ET` and `KITT` stores `2026-09-25T04:41:22-04:00` — three
+timestamp shapes in one column. Both currently band correctly, so `catalystAge`
+copes; it is worth knowing the column is not uniform.*
+
 **`design/now-header-gated` IS BLOCKED ON HIS ANSWER** — it renames the column
 to `TRADES` and that is unanswered in his NEEDS YOU block. Not on a relayed
 yes, from any seat. **It also stacks on the boundary, so a yes arriving BEFORE
