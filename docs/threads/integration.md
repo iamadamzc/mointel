@@ -1011,6 +1011,50 @@ claims around it were withdrawn, correct now — and checkable in ten seconds wi
 under the wrong frame, a default taken for a verdict — and here the container doing the misleading
 was a peer's credibility over one hour.*
 
+### THE FOUNDING QUESTION HAS BEEN A MARKET THESIS RESTING ON A PROCESS MEASUREMENT
+
+**R&D, 2026-09-25 (`9ef7015`), rejecting my "unmeasurable with current instrumentation" as too
+strong in one direction and too weak in the other. It is right and this is the better framing.**
+
+```
+MEASURED, sound, ours:
+  "the fraction of big movers for which THE DESK HELD a catalyst at decision time"
+  22.6% pooled -- 32.1% on a complete pre-open pass
+  -> a PRODUCT COVERAGE metric: a fact about our sources and our invocation schedule
+
+QUOTED AS, never supported:
+  "the fraction of big movers that HAVE a catalyst"
+  -> a MARKET claim, needing ground truth the desk does not hold
+```
+
+> **The quantity was always measurable. It has been carrying the wrong NAME.** *The founding
+> question assumes the second and has only ever been fed the first — **a market thesis resting on a
+> process measurement since the day it was written.*** **AIFF is simply the first case where an
+> outside source separated them** (he read the release on a competitor's scanner at 07:53 while the
+> move ran).
+
+**Why this beats "unmeasurable": it KEEPS a number the desk should watch.** *Our own catalyst
+coverage is a product KPI and a good one — it just cannot be quoted as a fact about the market.*
+
+**AND THE INVOCATION FINDING CONFIRMED INDEPENDENTLY, from the ARCHIVE, no production access:**
+
+```
+50%+ movers, >=2 board observations   evidence NEVER changed all session   41.9%
+                                      (averaging 12.7 observations each)
+100%+ movers                                                               43.8%
+quiet names (<+10%)                                                        73.6%
+```
+
+**Four in ten big movers sat on the board twelve times and the evidence never changed once. AIFF is
+the MODAL CASE, not an outlier.** *The system is not inert — quiet names go un-refreshed far more
+often (73.6%) than movers (41.9%), so the re-look machinery does discriminate. It simply leaves
+four in ten of the names that matter most with a single look.*
+
+> **NARROWING, and it is R&D's own caution against over-reading its finding: THE CONTRASTS ARE NOT
+> OVERTURNED.** *Q1's +17.9pp and Q14's ~+7pp compare graded classes AGAINST EACH OTHER, so a
+> coverage shortfall hitting both arms leaves them standing.* **They move only if the shortfall
+> CORRELATES with the grade — untested, and worth testing before anyone leans on them.**
+
 ### QUEUED BOX READS — TWO, BOTH FOR OPS, NEITHER URGENT, IN THIS ORDER
 
 *Recorded 2026-09-25 so they survive this seat. Ops is NOT retiring, so both route to `Ops-tmi`.
