@@ -68,11 +68,26 @@ his, and it is an open question rather than a lean.
 
 ---
 
-## LIVE STATE — as of 2026-09-21T09:38Z
+## LIVE STATE — as of 2026-09-25T11:38Z (re-verified; last substantive update 2026-09-21T09:38Z)
 
 **If anything above disagrees with this section, this section is right and the
 section above is stale.** This is a snapshot of now, not a diary; the diary is
 in the archive at the foot of this file.
+
+**This seat's tenure, 2026-09-21 to 2026-09-25.** A naming collision on
+2026-09-21 briefly put two sessions on the `Marketing-tmi` title and handed
+this session a conflicting Commercial/Marketing instruction; resolved the same
+day by direct exchange with the peer sessions — this session took the
+Commercial-tmi title, the prior Commercial session (`dd4f492`) retired clean
+with nothing pending on it. **No new commercial research or rulings were
+produced in this tenure.** `git log` since `dd4f492` shows no commit touching
+`docs/threads/commercial.md`, `docs/commercial/` or
+`docs/monetization-gates.md` — everything below is re-verified unchanged, not
+re-derived. Retiring now per the owner's session-hygiene rule
+(`A:\claude-infra-agent\docs\session-hygiene.md`, his rule of 2026-09-21), on
+Integration's prompt to judge context saturation, after a multi-day session
+carrying heavy cross-session traffic. Hand-off prompt:
+[`docs/commercial-opening-prompt.md`](../commercial-opening-prompt.md).
 
 ### What this seat has delivered — dated documents, unchanged since landing
 
