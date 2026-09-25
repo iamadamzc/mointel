@@ -11917,5 +11917,5 @@ write that kills the worker on BUSY is Research's.
 
 ### Housekeeping
 
-The retired chat is still titled `Ops-tmi` (local_01494376…), so a send by
-name can reach it. Renaming it is his, per the opening prompt.
+The retired chat is renamed `Ops-tmie-retired` and archived (his act, confirmed
+22:58Z). `Ops-tmi` now resolves only to this seat, local_7c4ce1d1….
