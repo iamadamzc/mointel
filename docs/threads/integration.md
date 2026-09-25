@@ -867,7 +867,10 @@ vacuous rather than honest.* **It is honest: the desk read the right feed and th
   DO carry supply.* **Ops's, fold into a deploy. Re-verified still unwritten at HEAD 2026-09-25.**
 - **`market.state` DEGRADED/OFFLINE false-red** — a one-sample message-age blip or a restart window
   trips it on a healthy feed. *Cosmetic; threshold fix pending his go.*
-- **`worker/` HAS NO CHARTER OWNER — it bit three times today.** *❌ **CORRECTED 2026-09-25: this line
+- **✅ `worker/` IS OPS'S — assigned 2026-09-25 at his instruction ("send it to ops"), WITH PROCESS SHAPE.
+  Register entry: `README.md`, "Who owns `worker/`". DO NOT restate the reasoning here — the last module
+  narrated in this file went stale and misled two seats.** *It bit three times before the assignment.*
+  ~~**`worker/` HAS NO CHARTER OWNER**~~ *❌ **CORRECTED 2026-09-25: this line
   originally read "`worker/` AND `lib/market/`" and the second half is FALSE.** `lib/market/` was assigned
   on 2026-08-24 at his instruction (`63ef1d6`, `README.md` — store → Ops, the rest → Research). `worker/`
   is genuinely unassigned, verified: it appears nowhere in the ownership register. **Two modules carried in
