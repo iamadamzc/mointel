@@ -306,6 +306,10 @@ record. He has it from this seat directly as well.
 
 ### HAZARDS A FRESH SESSION MUST KNOW
 
+- **⚠️ QUOTING HIM VERBATIM CARRIES THE CLAUSES NEXT TO IT, WHICH MAY BE ADDRESSED TO ANOTHER SEAT. New failure mode, 2026-09-25, and it is the MIRROR of the rule that produced it.** This desk quotes his own words rather than paraphrasing precisely so a relay cannot drift. **That same fidelity delivered this seat an instruction it was never given:** Integration quoted *"0-50 confirmed. handoff, write the prompt, engage hygiene protocol"* to verify the band ruling — **the first clause was the verification; the rest was addressed to OPS in the Ops session**, which acted on it correctly. *And it is MORE convincing than a paraphrase, because it is genuinely his voice.*
+  **The fix is one line of discipline: quote the clause, and NAME THE SEAT the rest was addressed to.**
+  **What made it catchable was saying WHICH evidence was acted on.** This seat wrote out its three independent signals instead of writing *"on his instruction"* — and Integration checked because the reasoning was visible. **A decision justified by a relay alone gives nobody a reason to look.**
+
 - **⚠️ A TEST-FILE COUNT IS A SHORT-COLLECTION SIGNAL ONLY AGAINST THE COUNT FOR *THAT TREE*. This seat got it wrong on 2026-09-25 and told Ops to distrust a working gate.** A real short collection happened that day — a run reported 3 failed files and 8 errors while collecting **2,339 tests where ~2,470 were expected**, which is memory pressure wearing the appearance of a code defect. **But the NEXT count I challenged was sound.** Ops's gate reported **157 files** at `79cc4d1`; I compared it to main's 164–166 and called it short. Counted at the trees themselves:
 
 | sha | test files |
