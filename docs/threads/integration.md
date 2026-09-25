@@ -463,11 +463,24 @@ HUMAN_REVIEWED_PRIOR_ANALYSIS         FIXED      dbd70d1, 2026-09-19. Now
                                                  sheetPrior.ts
 ```
 
-### SEAT STATE (2026-09-25 saturation check broadcast to all mointel seats)
+### SEAT STATE (2026-09-25T12:30Z — re-checked by the eleventh Integration against `list_events`)
 
-**Saturation check (his instruction 2026-09-25) drove a hand-off wave; the fresh seats are now UP.**
-*Commercial, Design, Web, Research, Ops all handed off and have running successors as of ~2026-09-25
-12:1xZ — find them by TITLE, not id (ids rotated). Research's successor already built `catalystFreshFrom`
+> **CORRECTED. The tenth session wrote "Commercial, Design, Web, Research, Ops all handed off and
+> have running successors"; THREE OF THOSE HAD NO SUCCESSOR.** *A seat that has WRITTEN its hand-off
+> and a seat that has BEEN REPLACED are different states, and the retiring seat is still the live one
+> until he opens the new chat. Declaring a hand-off is not completing one — that is the same shape as
+> a deploy described rather than enumerated, in seat form.*
+
+```
+FRESH, working            Research-tmi, Design-tmi, Web-tmi, Integration-tmi (this seat)
+RETIRING, awaiting HIM    Ops-tmi, Commercial-tmi, Coaching-tmi  -- hand-off written, no successor
+NOT retiring (correct)    Marketing-tmi, R&D-tmi
+```
+
+*Ops is still the ONLY Ops and still holds the deploy; its "successor" language refers to a prompt
+written, not a seat that exists.* **Find every seat by TITLE, not id (ids rotated).**
+
+*Research's successor already built `catalystFreshFrom`
 (`7a0ad0c`); its consumer-half is routed to the fresh Design. Marketing judged NOT time (correct —
 calendar-age ≠ context-load). The other queued payload field is `lastCheckpointChanges` (item 12).
 Coaching's work lives outside the repo at `C:\Users\adshu\.mointel-fills\coaching\`; `coaching.md`
