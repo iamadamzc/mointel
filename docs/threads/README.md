@@ -541,6 +541,37 @@ produces a second finding. That belongs beside the rule that a retraction must
 reach every inference resting on it — same family, and the same cost when it is
 skipped.
 
+## CONTENT-DISJOINT IS WHAT MAKES AN ANCESTRY TRAP INVISIBLE
+
+**Ops and Integration, 2026-09-25, reconstructing why `34cf6f3` nearly shipped the auth cut-over
+described as "the sort fix".** *Measured, not reasoned: **25 commits sit between production
+`757cf6a` and `34cf6f3` — the entire Google-OAuth surface — and NOT ONE of them touches any of the
+three files the sort fix changes.*** `git log 757cf6a..34cf6f3^ -- <the three files>` returns empty.
+
+**That single fact is doing two opposite jobs at once, and that is the trap:**
+
+- It is why `git cherry-pick 34cf6f3` onto `757cf6a` applies cleanly — same base, same patch. The
+  reconstruction is guaranteed rather than lucky.
+- **It is why the trap was invisible.** Diff the sha against production *by file* and you see three
+  presentational files and 90 lines. That reading is CORRECT and it is the whole danger: the sort
+  fix and the auth surface are genuinely disjoint in CONTENT and merely adjacent in HISTORY.
+
+> **So the rule is not "check the diff carefully" — the diff was right.** A file-level review cannot
+> see ancestry AT ALL; it is not a weaker instrument for the question, it is a different one.
+> **`git log <production>..<sha>` is the only reading that answers what a deploy carries**, and it
+> must be run even when — especially when — the content review came back small and clean.
+
+**The counter-intuitive half, and the reason this earns a section:** the more clearly a change is
+confined to its own files, the *more* reassuring its diff looks and the *less* that tells you about
+its cone. **How safe a change looks by content and how much its sha carries are not merely
+different questions — they are anticorrelated in how convincing they feel.** *A change entangled
+with the danger would have shown up in review; this one could not have.*
+
+*Worked pair, both live on this desk 2026-09-25: `34cf6f3` looks like three presentational files
+and ships an entire un-deployed auth cut-over. `7a0ad0c` looks like a failed ship — a deploy
+carrying it changes nothing visible — and is exactly right. In both, the visible outcome is a bad
+guide to what happened.*
+
 ## Integration can instruct deploys; only Ops performs them
 
 **Added 2026-08-24. The trader delegated deploy instructions to Integration and
