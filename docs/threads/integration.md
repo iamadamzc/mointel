@@ -278,7 +278,9 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
   the commit as a ban on the content)* — it sits ABOVE the whole auth surface in history,
   so shipping it deploys the ENTIRE cut-over (`app/auth/*`, `/signin`, `allowlist.ts`), BROKEN (no
   `IDENTITY_DB_PATH`, no Google creds) and HIS call. Ops caught it after I approved the tip blind;
-  **the Ops SUCCESSOR ships `49efd1a`, NEVER `34cf6f3`** — the trap looks like a small ready item.
+  **`Ops-tmi` ships `49efd1a`, NEVER `34cf6f3`** — the trap looks like a small ready item.
+  *Said "the Ops SUCCESSOR" until 2026-09-25: the warning was right and the ADDRESSEE was wrong.
+  There is no successor — see SEAT STATE.*
 > **`49efd1a` IS UNPUSHED, AND THE EXPOSURE IS TRACEABILITY, NOT DURABILITY.** *Ops measured this
   2026-09-25 against Integration's imprecise "production on code with no remote copy"; re-verified
   here independently.* **All three blobs of `49efd1a` are bit-identical to `34cf6f3`'s, and
@@ -513,12 +515,27 @@ HUMAN_REVIEWED_PRIOR_ANALYSIS         FIXED      dbd70d1, 2026-09-19. Now
 
 ```
 FRESH, working            Research-tmi, Design-tmi, Web-tmi, Integration-tmi (this seat)
-RETIRING, awaiting HIM    Ops-tmi, Commercial-tmi, Coaching-tmi  -- hand-off written, no successor
+RETIRING, awaiting HIM    Commercial-tmi, Coaching-tmi  -- hand-off written, no successor
+OPS IS NOT RETIRING       Ops-tmi CONTINUES as the seat. His word, verbatim, 2026-09-25 ~12:4xZ:
+                          "you are the succesor." -- answering Ops's own "49efd1a after 10:00 ET
+                          -- me or the successor?" So: no rename, no archive, Ops-tmi stays the
+                          address, and no new Ops session is coming. HE DID NOT ANSWER THE PUSH
+                          in that turn; ops/sort-legibility stays local until he does.
 NOT retiring (correct)    Marketing-tmi, R&D-tmi
 ```
 
-*Ops is still the ONLY Ops and still holds the deploy; its "successor" language refers to a prompt
-written, not a seat that exists.* **Find every seat by TITLE, not id (ids rotated).**
+*Ops is still the ONLY Ops and still holds the deploy.* **Find every seat by TITLE, not id
+(ids rotated).**
+
+> **AND I TOOK THE RULING TO THE SOURCE RATHER THAN THE RELAY, WHICH IS THE ONLY REASON IT IS
+> RECORDED AS HIS.** *Ops reported "he has just ruled: you are the successor." This thread has
+> recorded a false "he ruled it" three times off a peer's sentence — the premarket case — so the
+> account was not enough.* **`list_events` on the peer's own transcript carries HIS USER TURN
+> VERBATIM, and that is a real second source where a peer's paraphrase is not.** *It confirmed the
+> wording exactly, and it also showed what the five words did NOT answer: they came back to a
+> three-item block and settled item 2 only. A relay would have carried the ruling and lost the
+> silence around it.* **Read the peer's transcript, not the peer's summary of it — the tool that
+> makes "peer confirmation is not a second source" actionable rather than merely cautionary.**
 
 *Research's successor already built `catalystFreshFrom`
 (`7a0ad0c`); its consumer-half is routed to the fresh Design. Marketing judged NOT time (correct —
