@@ -302,8 +302,23 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
   shapes:* `…T21:18:00.000Z` → CLOCK → FRESH; `…T17:18:00-04:00` → CLOCK → FRESH;
   `…T17:18:00 ET` → DATE → **RECENT**. **So an ` ET`-shaped row sits amber beside two greens for a
   reason nothing on the screen explains, and a verifier reads it as a defect in the new feature.**
-  *It is not. Design's named rows are all `Z`-shaped and unaffected; this is an ADDITIONAL case to
-  expect, not a change to the criterion.*
+  *It is not.* **ANSWERED BY DESIGN OFF THE 09:15 PAYLOAD, AND TODAY'S BOARD DOES NOT EXERCISE IT
+  AT ALL:** exactly one ` ET` row on Discovery — **`LFS`, `2026-09-25T08:30:32 ET`** — and its
+  event is **TODAY**, so `days === 0` bands it FRESH regardless of precision. *None on Watchlist;
+  two across all 42 intelligence rows (`LFS` and `QH`), and `QH` is on neither table.* **The
+  amber-beside-greens case needs a row that is `days >= 1` AND after the prior close, and no row on
+  this board is both.**
+>
+> > **SO `LFS` JOINS THE CRITERION FROM THE OTHER DIRECTION — an already-green row that MUST STAY
+> > GREEN.** *Nothing may demote, by construction: `resolveCatalystFreshness` returns FRESH early or
+> > falls through to the bands it always used. **If `LFS` is amber at 10:40 a demotion has happened
+> > and it is a defect whatever `INLF` did.*** *And the fill-value error only ever PROMOTES — so it
+> > could never show as a wrong band, only as too many greens (Design's note, for Research).*
+>
+> > **THREE POPULATIONS, ONE SHAPE, AND THIS IS THE THIRD TIME TODAY: `33 of 260` stored,
+> > `2 of 42` in the snapshot, `1 of 12` on the board.** *Each is right; none is a prediction about
+> > another. Said here explicitly so nobody at 10:45 tries to reconcile 33 against 1 — the same
+> > reason `6 of 325` could not be a board expectation.*
 >
 > > **AND THE FIX IS EASY, AVAILABLE AND WRONG — the part to carry.** *`etWallClockToUtc` already
 > > exists and would convert those stamps perfectly correctly. **33 of 260 stored timestamps carry
