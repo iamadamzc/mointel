@@ -13106,6 +13106,28 @@ in. *That is the check that closed it, and it was a check on the ARTEFACT rather
 field: the instrument ran correctly against the wrong scope.** *When warning about a RANGE, count the
 range. `rev-list --count` is one command and the number is the warning's whole content.*
 
+## A HEAVY READ DURING A DEPLOY IS CONTENTION, AND IT MAY BE THE TRIGGER FOR THE FALSE `is live`
+
+**Ops, 2026-09-25, while waiting for a cutover and trying to take a before-reading.** *Its query timed out
+at 120s. `quick_check` runs `PRAGMA quick_check` — a full integrity scan of a 3.5G `market.db` — and Ops
+ran `NOT EXISTS` scans over 14M `minute_bars` rows against the same file at the same moment.*
+
+> **THE CONNECTION IS THE FINDING, NOT THE TIMEOUT: `quick_check` already runs 388–597s against a 900s
+> follow deadline, and the false `is live` fires when a unit is STILL RUNNING at that deadline.** *A
+> concurrent expensive read is exactly the thing that pushes it there.* **So a seat taking a production
+> measurement during a deploy can cause the deploy tool to announce a cutover that has not happened — two
+> defects recorded separately on the same day, and one is the other's trigger.**
+
+**THE RULE, and it binds every seat that reads production, not only the one that deploys:** *no heavy read
+against `market.db` — full scans, `NOT EXISTS` over `minute_bars`, census queries — while a deploy unit is
+running. **Ask Ops for the window.** A read that would take seconds on an idle box can take minutes against
+a running `quick_check`, and the cost does not land on the reader.*
+
+**AND THE ORDERING LESSON IS SEPARATE AND ALSO USEFUL: Ops's before-reading moved to AFTER cutover and
+BEFORE the restart.** *`minute_bars` is untouched by a web-tier deploy, so nothing was lost by taking it
+later — **but taking it after the RESTART would have destroyed it**, because the restart is the event the
+reading exists to bracket. The two boundaries look interchangeable and only one of them is.*
+
 ## THE DEPLOY TOOL PRINTED "IS LIVE" FOR A SHIP THAT NEVER CUT OVER
 
 **Ops found it in its own file, 2026-09-25, and it is the day's most consequential finding.** *For the
