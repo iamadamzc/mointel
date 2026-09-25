@@ -215,6 +215,42 @@ fix: carry the defect and the evidence, and leave the fix shape to the owning se
 knows its file's runtime (browser / worker / server), its types, and what it can reach. A shape
 from the finding seat is a hypothesis; flag it as one, never relay it as the instruction.
 
+## OPEN DESIGN QUESTION — WHERE THE 10s BUCKETS LIVE, AND AN OWNERSHIP GAP IT NEARLY CLOSED BY ACCIDENT
+
+**ROUTED TO OPS 2026-09-25 for its OPERATIONAL judgement, not answered.** *Research asks whether the 10s
+trade buckets belong in `market.db` or in their own file, before it writes the store rather than after it
+holds rows.*
+
+**THE ARGUMENT IS OPS'S CONTENTION FINDING EXTENDED FROM READS TO WRITES, and the extension is sound:
+`quick_check` scans the WHOLE FILE, so anything that GROWS `market.db` lengthens every future deploy's
+integrity check and eats the 132s margin — permanently, not once.** *Research's numbers, labelled by it as a
+LOCAL upper bound over two sessions, not production:*
+
+```
+top-12,  5-day retention    ~292k rows   ~30MB    ~1% growth   negligible -- it would not have raised it
+top-250, 20-day retention   ~15.8M rows  ~1.6GB   ~45% more file for quick_check to scan
+```
+
+**The live point is not tonight's setting: it is that A FUTURE SEAT WIDENING THE CAPTURE POPULATION WOULD BE
+MAKING A DEPLOY-SAFETY CHANGE WITHOUT KNOWING IT.** *In Research's standing constraints, not a comment.*
+
+> **⚠️ THE PREMISE I CORRECTED BEFORE RELAYING: Research said table definition and versioning is "Ops's
+> under the `lib/market/` split". IT IS NOT — `lib/market/` and `worker/` have NO charter owner and the
+> module was deliberately left to HIM (`:71`, `:695`).** *So Ops was asked for what it does own —
+> `quick_check` cost, pins, backups, rollback, retention, the cost of a fifth database file — and told that
+> **if its answer implies a migration pattern or an owner for that module, that part goes to him.*** **A
+> routing message must not close an ownership gap by accident; this desk has twice found an unowned module
+> only when a task needed a home.**
+
+*Precedent noted for Ops rather than invented: `archive.db`, `assessments.db` and `identity.db` already sit
+beside `market.db`.*
+
+**AND THE REFRAME THAT MAY DECIDE IT: once the artefact check lands, store growth stops being a CORRECTNESS
+problem.** *Today a slow `quick_check` can make the tool print `is live` for a deploy that never cut over;
+with the fix it produces a slow deploy or an honest refusal.* **So the question can be settled on storage and
+latency grounds instead of under a correctness threat — which is a further argument for that fix leading the
+batch.**
+
 ## THE NEWSWIRE RESEARCH — ROUTED 2026-09-25 ON HIS ASK, COMMERCIAL FIRST
 
 **His words: *"somebody needs to research newswire source"*. ROUTED TO COMMERCIAL, then Research. NOT R&D.**
