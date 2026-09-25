@@ -488,6 +488,34 @@ bug for Ops or Research to fix.*
 > not after it returns an interesting number.** *By then the interesting number is the reason you
 > are asking, and you will be arguing with your own result.*
 
+## A SOUND NEGATIVE IS A FACT ABOUT THE INSTRUMENT, NEVER ABOUT THE WORLD
+
+**Ops's sentence, 2026-09-25, narrowing the scope of its own proof after being right.** *It had
+established by construction that the catalyst collector DID fetch the issuer feed: the stored state
+`NO_RECENT_SOURCE_LOCATED` is reachable only when a usable url existed and nothing was inaccessible,
+and a usable url is exactly what triggers the fetch.* **That proof is sound. What it proves is that
+the collector LOOKED — and nothing whatever about what was there to find.**
+
+**AIFF is the worked case and it cost a day.** *The desk fetched `fireflyneuro.com/rss` at 07:48 and
+found nothing recent. **A catalyst existed** — a GlobeNewswire release dated the same morning, which
+the trader pasted in himself because the desk did not have it.* **All three are true together.**
+
+> **THE CONFLATION RAN IN BOTH DIRECTIONS IN ONE DAY, FROM THE SAME SEAT, AND IT WROTE THE WARNING
+> ITSELF.** *At 13:00 Ops wrote: **"the desk did not look" is the claim; "there was nothing" is
+> not** — against a premature claim that the collector was broken. **At 15:00 it proved the fetch
+> ran and let that collapse into proof that nothing was there.*** *Integration relayed the second
+> version to the trader as the answer to the desk's founding question.* **Same conflation, facing
+> the other way, hours apart, by the seat that had named it.**
+
+- **A negative result has TWO readings and the instrument can only ever certify one of them.**
+  *"Our sources contained nothing" is a fact about coverage. "Nothing existed" is a claim about the
+  world, and no amount of proving the instrument worked will get you there.*
+- **This is the most expensive form of the desk's `it is N states` rule**, because the missing state
+  is not absent from the data — it is *outside* it.
+- **And it lands hardest on a question of the form "why do movers no longer carry catalysts",**
+  where the answer is drawn from the very instrument whose coverage is in question. *The first
+  worked instance offered as evidence was a mover that DID carry one.*
+
 ## NAME THE NEAREST MISS AS A CONTROL
 
 **Design, 2026-09-25, on why its boundary verification came back stronger than the outcome space it
