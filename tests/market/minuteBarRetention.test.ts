@@ -50,6 +50,17 @@ function seed(db: ReturnType<typeof temporaryDb>, dates: string[]) {
   }
 }
 
+/** Records the SQL of every DELETE the code prepares on this handle. */
+function recordDeletes(db: ReturnType<typeof temporaryDb>): string[] {
+  const seen: string[] = [];
+  const prepare = db.prepare.bind(db);
+  db.prepare = ((sql: string) => {
+    if (/^\s*DELETE\b/i.test(sql)) seen.push(sql);
+    return prepare(sql);
+  }) as typeof db.prepare;
+  return seen;
+}
+
 function survivingDates(db: ReturnType<typeof temporaryDb>, dates: string[]): string[] {
   return dates.filter((d) => loadMinuteBars(db, 'ABCD', d).length > 0);
 }
@@ -125,6 +136,43 @@ describe('minute bar retention counts sessions, not calendar days', () => {
     seed(db, ALL);
 
     expect(retainedMinuteBarDates(db, 3, '2026-09-07')).toContain('2026-09-07');
+    db.close();
+  });
+
+  /**
+   * The prune runs at every worker start, before the socket connects. When
+   * nothing is stale it must not issue a write at all: the old NOT IN delete
+   * was a full table scan under the write lock and starved research and assess
+   * for ~100s on 2026-09-25.
+   */
+  it('issues no delete when every stored date is kept', () => {
+    const db = temporaryDb();
+    seed(db, ALL);
+    const deletes = recordDeletes(db);
+
+    expect(pruneMinuteBars(db, [...ALL, '2026-09-08'])).toBe(0);
+    expect(deletes).toEqual([]);
+    expect(survivingDates(db, ALL).sort()).toEqual([...ALL].sort());
+    db.close();
+  });
+
+  it('plans every delete it issues on the date index, never a table scan', () => {
+    const db = temporaryDb();
+    const dates = ['2026-08-31', '2026-09-01', ...ALL];
+    seed(db, dates);
+    const deletes = recordDeletes(db);
+
+    expect(pruneMinuteBars(db, ALL)).toBe(2);
+    expect(deletes.length).toBeGreaterThan(0);
+    for (const sql of deletes) {
+      const params = (sql.match(/\?/g) ?? []).map(() => '2026-08-31');
+      const plan = db.prepare(`EXPLAIN QUERY PLAN ${sql}`).all(...params) as Array<{
+        detail: string;
+      }>;
+      const detail = plan.map((row) => row.detail).join(' | ');
+      expect(detail).not.toMatch(/^SCAN minute_bars$|SCAN minute_bars(?! USING)/);
+      expect(detail).toMatch(/idx_minute_bars_date/);
+    }
     db.close();
   });
 

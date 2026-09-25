@@ -282,13 +282,38 @@ export function retainedMinuteBarDates(
   return [...keep];
 }
 
+/**
+ * Deletes every stored date not in `keepDates`, one date per statement.
+ *
+ * The first version was one `DELETE ... WHERE trading_date NOT IN (keep)`.
+ * NOT IN cannot use `idx_minute_bars_date`, so SQLite planned it as a full
+ * `SCAN minute_bars` -- every row of a multi-GB table read under the write
+ * lock, even when nothing was stale. It runs at every worker start and every
+ * roll, before the socket connects: on 2026-09-25 it was most of a 116s gap
+ * between backfill and SIP, and research and assess died on `database is
+ * locked` inside it.
+ *
+ * So: find the stale dates through the covering index, return without any
+ * write when there are none, and delete each stale date by equality, which
+ * the index serves. Retention is a ceiling, not an invariant, so a failure
+ * part-way leaves extra old dates, never missing new ones.
+ */
 export function pruneMinuteBars(db: MarketDatabase, keepDates: string[]): number {
   if (keepDates.length === 0) return 0;
-  const placeholders = keepDates.map(() => '?').join(',');
-  const result = db
-    .prepare(`DELETE FROM minute_bars WHERE trading_date NOT IN (${placeholders})`)
-    .run(...keepDates);
-  return result.changes;
+  const keep = new Set(keepDates);
+  const stale = (
+    db.prepare('SELECT DISTINCT trading_date FROM minute_bars').all() as Array<{
+      trading_date: string;
+    }>
+  )
+    .map((row) => row.trading_date)
+    .filter((date) => !keep.has(date));
+  if (stale.length === 0) return 0;
+
+  const remove = db.prepare('DELETE FROM minute_bars WHERE trading_date = ?');
+  let removed = 0;
+  for (const date of stale) removed += remove.run(date).changes;
+  return removed;
 }
 
 /* -------------------------------------------------------------- ticker session */
