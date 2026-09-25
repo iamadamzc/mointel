@@ -408,6 +408,13 @@ here.* His inputs (Google creds, when) are in OPEN AND HIS.
 > `magellan_admin`. `ufw` on the box is inactive, so lightsail port-states is the ONLY thing
 > gating port 22.*
 
+> **⚠️ DEPLOY SHADOW of the un-deployed auth: every board change now on main sits ABOVE the auth
+> commits (`app/auth/*`, `/signin`, `allowlist.ts`), so a naive "deploy the tip" drags the whole
+> cut-over live — broken, and his call.** *Until the cut-over, non-auth board work ships CHERRY-PICKED
+> onto production (as the sort fix did → `49efd1a`) or waits to ride the cut-over. This already
+> caught the sort fix (`34cf6f3`) and applies to `catalystFreshFrom` next. Every ship sha must be
+> confirmed auth-free until he runs the cut-over.*
+
 ### THE CYCLE FRAME — RULED WHOLE, AND IT UNBLOCKS TWO CONSTANTS
 
 **RULED IN FULL. His direct words:**
@@ -450,16 +457,13 @@ HUMAN_REVIEWED_PRIOR_ANALYSIS         FIXED      dbd70d1, 2026-09-19. Now
 
 ### SEAT STATE (2026-09-25 saturation check broadcast to all mointel seats)
 
-**All seats told to self-assess context saturation and run §3 hygiene if they judge it time
-(his instruction 2026-09-25).** *Handed off in the 2026-09-25 wave, standing down on his word —
-FIVE fresh seats to be started: Commercial (`bc9847f`), Design (`4d58661`/`da6f696`), Web
-(`web-opening-prompt.md`, surface complete through `09f5fa4`), Research (`1330e4a`), Ops
-(`ops-opening-prompt.md`/`7588888`, recommends Opus 5 — UNPUSHED, branch ahead 6). Marketing
-self-assessed NOT time (calendar-age ≠ context-load — correct). R&D / Coaching pending.
-The new Design + Research seats coordinate two payload fields: `catalystFreshFrom` (the prior-close
-FRESH refinement — Research builds, the reader consumes) and `lastCheckpointChanges` (item 12).
-Coaching's work lives outside the repo at `C:\Users\adshu\.mointel-fills\coaching\`;
-`coaching.md` points at it.*
+**Saturation check (his instruction 2026-09-25) drove a hand-off wave; the fresh seats are now UP.**
+*Commercial, Design, Web, Research, Ops all handed off and have running successors as of ~2026-09-25
+12:1xZ — find them by TITLE, not id (ids rotated). Research's successor already built `catalystFreshFrom`
+(`7a0ad0c`); its consumer-half is routed to the fresh Design. Marketing judged NOT time (correct —
+calendar-age ≠ context-load). The other queued payload field is `lastCheckpointChanges` (item 12).
+Coaching's work lives outside the repo at `C:\Users\adshu\.mointel-fills\coaching\`; `coaching.md`
+points at it.*
 
 ## The third delegation: deploy instructions, confirmed directly
 
