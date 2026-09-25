@@ -16,13 +16,41 @@ verification design and builds none of it.**
 research jobs carrying a `collector_report`, in `market-prod-2026-08-23.db`,
 covering 2026-08-18 to 2026-08-21 — FOUR SESSIONS.**
 
-> **DO NOT SIZE WORK OR START BUILDING FROM THESE PROPORTIONS.** Today's
-> production split is **40%** `COVERAGE_INCOMPLETE` against this store's **62%**,
-> so the registry has grown materially in five weeks. **The ORDERING below is
-> what this document asserts; the magnitudes are directional and stale.** A
-> current re-measure is with him as a named production read. *A number that
-> travels without its base is the defect this desk logged twice in one day, in
-> two different seats.*
+> **DO NOT SIZE WORK OR START BUILDING FROM THESE PROPORTIONS.** **The ORDERING
+> below is what this document asserts; the magnitudes are directional and stale.**
+> *A number that travels without its base is the defect this desk logged twice in
+> one day, in two different seats.*
+
+> ## RE-MEASURED 2026-09-25 — his named production read, run by Ops. SIZE ON 49.4%.
+>
+> **Ops reproduced this document's window first, exactly** — n=729,
+> 62.3 / 26.9 / 10.8 — *so the new figures measure the same population rather
+> than an adjacent one.* **Then, by period, n=4,812 over 28 sessions
+> (2026-08-18…09-25):**
+>
+>     Aug 18-21 (this doc)  n=  729   COV_INC 62.3%   RECENT 26.9%   NO_RECENT 10.8%
+>     late Aug              n=  944           42.2%          35.9%             21.9%
+>     early Sep             n=2,166           43.5%          37.6%             18.8%
+>     THIS WEEK             n=  791           49.4%          30.1%             20.5%
+>     whole population      n=4,812           48.1%          33.4%             18.5%
+>
+> **THE ORDERING HOLDS IN EVERY PERIOD** — `COVERAGE_INCOMPLETE > RECENT >
+> NO_RECENT. *That is what this document asserts and it survives.*
+>
+> **THREE CORRECTIONS THE MAGNITUDES FORCE, TWO OF THEM TO THIS DOCUMENT:**
+>
+> 1. **"The registry has grown materially in five weeks" is true end-to-end and
+>    HIDES A SIX-POINT REGRESSION.** 62.3 → 42.2 → 43.5 → **49.4 this week.**
+>    **Size reach work on 49.4%, not on the trend.** *A monotone story fitted to
+>    the endpoints is exactly the shape this register keeps catching.*
+> 2. **The "40% today" this document quoted was a PARTIAL-DAY number** — 173 jobs
+>    measured mid-afternoon. **Today's full session is n=214, 47.7%.** *A
+>    session's split measured before the session ends is not the session's
+>    split.* Ops named the error as its own; it is corrected here because it
+>    travelled in this document.
+> 3. **`NO_RECENT_SOURCE_LOCATED` nearly DOUBLED, 10.8% → 20.5%.** After today's
+>    fixes that bucket reads as *"looked and found nothing"*, so **one row in
+>    five now, against one in ten in August.**
 
 ## What the buckets are, and which one was being argued about
 

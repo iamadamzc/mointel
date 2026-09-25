@@ -1266,6 +1266,53 @@ data and should be before anyone sizes work from it.** *The shape — most of th
 bucket being "no source at all" rather than "source failed" — is what matters
 and is unlikely to have inverted.*
 
+#### THE 77% NO-CLOCK PREMISE HAS EXPIRED — measured 2026-09-25. It is a FOSSIL, not an error, and it sits under a ruling of his.
+
+**Ops's census, run read-only on production the same day, on the SAME population
+the original figure was denominated in (`research_analysis_versions`, so this is
+a like-for-like update rather than a different measurement):**
+
+    ALL stored research_analysis_versions        n=2,318
+      Z (CLOCK)          1,139     offset (CLOCK)     77   -> CLOCKED   1,216
+      ' ET' suffix (DATE)  148     bare date         640   -> NO CLOCK    805
+      other                 17     no timestamp at all     297
+
+    NO-CLOCK RATE   39.8%  of rows carrying a timestamp
+                    47.5%  if the 297 missing are counted as no-clock
+
+**Neither reading is 77%.** The figure is quoted at **six code sites** —
+`lib/dashboard/why.ts:83`, `lib/market/types.ts:774`,
+`lib/research/interpret/guardrails.ts:348`, `lib/research/time.ts:323` and
+`:386` — and **`d16dd14` makes it the STATED REASON his freshness rule is
+calendar days rather than hours.**
+
+> **EXPIRED, NOT WRONG, AND THE DISTINCTION DECIDES WHAT HAPPENS NEXT.**
+> Integration's note puts `Z` at 18% on the 08-23 snapshot, **consistent with
+> ~77% no-clock having been TRUE WHEN IT WAS MEASURED.** The population has
+> since shifted hard toward clocked timestamps. **So a correct measurement
+> became a fossil while staying quoted as current, and it is load-bearing under
+> a decision he made.**
+
+**HOW THIS MUST REACH HIM, and Ops framed it correctly before I did:** as
+***"the premise moved"*, never as *"the rule is wrong"*.** *The rule may still
+be right for other reasons — **calendar days fail safe where hours do not**, and
+that argument is untouched by the census.* **A seat that carries this to him as
+a defect is asking him to re-decide on a frame nobody has re-derived.**
+
+**WHAT THE CENSUS DOES NOT ANSWER, and it must not be read as closing it.**
+`lib/market/types.ts:774` already records a *separate* hazard, raised before
+this census: the 77% is **denominated in `research_analysis_versions`, not in
+the dossiers the field is actually read against**, and *"the two are not the
+same population"*. **Ops's census re-measures the ORIGINAL population. It does
+not touch the population-mismatch hazard.** *Two different problems, and only
+one is now answered.*
+
+**AND THE CAUSE IS UNMEASURED, stated because the obvious inference is
+unsupported:** *whether the shift reflects real collection improvement or a
+change in what gets stored.* **A census cannot separate those**, Ops declined to
+guess, and neither should the next reader. **The rate moved; the reason has not
+been established.**
+
 #### THE DESK IS A 94%-SEC PRODUCT, AND TWO THIRDS OF ISSUERS HAVE NO SITE PATH AT ALL. 2026-09-25.
 
 **His narrowing, and it is the right one:** *"we know sec filings are 100%,
