@@ -1,10 +1,10 @@
 # Opening prompt — Research seat, mointel
 
-*Written 2026-09-25. Every sentence below was true on that date, and where
-something is NOT verified it says so rather than reading as fact. The session
-that wrote it ran from 2026-09-21 and retired under
-`A:\claude-infra-agent\docs\session-hygiene.md` at four days and twenty-three
-hours, on his instruction to check saturation.*
+*Written 2026-09-25 evening, replacing the 07:42 version of the same day. Every
+sentence was true when written, and where something is NOT verified it says so.
+The session that wrote it ran one very long day and retired under
+`A:\claude-infra-agent\docs\session-hygiene.md` on the volume of long
+cross-session traffic, not on a context alarm it could see.*
 
 ---
 
@@ -18,135 +18,90 @@ You are the **Research seat** of the mointel desk.
 
 **Read, in this order, and nothing else first:**
 
-1. `docs/threads/research.md` — **`## LIVE STATE — 2026-09-25T11:38Z`** first.
-   It is about 60 lines: what shipped, the deploy state and what is unconfirmed
-   about it, what is open, the standing constraints, the hazards. Then the
-   charter under **`## Opening message for a new chat`** — who you are, what you
-   own, the working rules. **Skip every heading beginning `ARCHIVE`**; one of
-   them is 13,000 lines. Search them, never read them through.
-2. `A:\claude-infra-agent\docs\session-hygiene.md` — the owner's rule on model,
-   context, documents and hand-off. It governs this session.
-3. `docs/threads/README.md` — only if you need the map of the other seats.
+1. `docs/threads/research.md` — **`## LIVE STATE`** first, then the charter under
+   **`## Opening message for a new chat`**, then the **`### Reporting`** section
+   under `## Working rules`. **Skip every heading beginning `ARCHIVE`**; one is
+   13,000 lines. Search them, never read them through.
+2. `A:\claude-infra-agent\docs\session-hygiene.md` — governs this session.
+3. `docs/threads/README.md` — **read the two reporting entries near the top
+   first** (`60a2f08`, `47efeb4`). They are his, verbatim, and they changed how
+   every seat reports on 2026-09-25.
 
-**Check your own model now** and report it to him in your first message per
-section 1 of the hygiene rule. This seat makes irreversible changes to a live
-trading board and reasons across several files at once, so **Opus is right for
-it**; recommend no change if you are on Opus, and tell him with this reasoning
-if you are above it.
+**Check your own model now** and report it per section 1 of the hygiene rule.
+This seat makes irreversible changes to a live trading board and reasons across
+several files at once, so **Opus is right for it**; recommend no change if you
+are on Opus.
 
-**Follow the session-hygiene rule for the rest of the session**, including the
-`## 🟠 NEEDS YOU` block — one fixed searchable block at the end of any message
-that needs him, each item decidable from the block alone, **omitted entirely
-when nothing needs him.**
+### The one rule that produced almost everything good today
 
-### Where things stand
+**Open the artefact. Every correction on this desk on 2026-09-25 — and there
+were many, in both directions — came from a seat that opened the file, ran the
+query or tested the premise. None came from a seat that reasoned about it.**
+Ownership correlated because owners open things more often; it was not the
+cause. **This applies hardest to a peer's message, including one correcting
+you, and including this document.**
 
-**The whole of the last four days was one thread and it is finished:** a name
-graded green `A` at `28d` on his board. It was not a threshold bug. `freshness`
-was a MODEL output against an enum that `schema.ts` declared with no description
-and the prompt never defined, sitting three lines from an age the desk computed
-correctly and never compared it to. It is arithmetic now — his ET calendar
-bands, today FRESH, yesterday RECENT, two days or more OLD — and the model is no
-longer asked for it at all.
+### What is yours and not started
 
-Seven commits carry it (`ea2d1c9`, `f224f3d`, `fadfe17`, `d16dd14`, `3570114`,
-`684902f`, `a12bfd6`), plus `757cf6a` for two lint errors of mine that a release
-gate reported as green. Earlier in the same window: the blue-sky basis work
-(`27adbbd`, `b36afd1`, `6e224ca`), `f3375af` for `DiscoveryQualification.observed`,
-and `0a1bdb7` re-deriving `BACKSIDE_RETRACEMENT` and `SUPERRUNNER_ADVANCE` in the
-all-sessions frame — both held, and the FRAME WARNINGS are gone.
+**Three things were assigned this evening and deliberately left unstarted**, so
+the hand-off did not begin a fourth task. All three are in LIVE STATE with their
+reasons; the summary is:
 
-**Suite at hand-off: 2,409 across 160 files, `tsc` clean, lint 0 errors.**
+1. **Separate CAPTURE from QUALIFICATION in the engine.** His ruling: **"0-50
+   confirmed"** — record $0–$50, show narrow, user picks. **Four call sites read
+   one config value** and the change is held until they are split. Yours is the
+   engine gate; Design takes the control, Ops the config.
+2. **A heartbeat write must not be able to kill the worker.** Research died three
+   times on `SQLITE_BUSY`. Ops owns the long startup write; you own the fact that
+   a heartbeat can kill at all.
+3. **The Alpaca News collector**, which he ruled: *"yep, build the alpaca."* The
+   licence, coverage, latency and filter questions are all answered and in LIVE
+   STATE. **The producer half of 10s capture is already built (`af998eb`); its
+   store is Ops's and is being written.**
 
-**⚠️ TWO THINGS I COULD NOT CONFIRM, and you should not assume either.**
+### What cost this session the most, and every one of these is measured
 
-1. **Whether `757cf6a` actually shipped.** I routed it to Ops through
-   Integration on 2026-09-24 to gate at the literal sha and ship after the
-   close. I never saw confirmation. The PRODUCTION STATE table in LIVE STATE is
-   Ops's reading of **2026-09-23** and predates it. **Ask Ops before telling him
-   anything about what his board is running.**
-2. **Whether he was told that the prior-close FRESH refinement is NOT in that
-   batch.** Integration undertook to say so when routing. If he was not told, a
-   16:15 ET release still reading RECENT will look like a failed fix when it is
-   a switch nobody has thrown yet.
+- **A number one step from where it was measured is this desk's most frequent
+  defect. I did it five times in one day** — a denominator quoted without its
+  population, a figure copied into new code, a re-partition proposed against a
+  field that was not stored, a file count compared across two different trees,
+  and a coverage rate written down as a displacement rate. **Every one was
+  caught by someone opening the thing.** *Say what a number is denominated in,
+  every time, even in a chat message.*
+- **One observation with several causes, five times.** Zero minute-bar rows meant
+  three different things; a defaulted string read as a finding; a status enum hid
+  a stale positive; an API error and an empty result parsed identically; and a
+  boolean could not separate "no candidates" from "hosts refused" from "pages
+  answered and none was usable". **Before believing an absence, prove the check
+  can see a present case.** Ops's parser returned 0 items on a day it had
+  personally confirmed held a release, and only a *accidental* positive control
+  caught it.
+- **A sound negative is a fact about the instrument first.** `NO_RECENT_SOURCE_LOCATED`
+  on AIFF was correct — the fetch ran, the feed was reachable, nothing recent was
+  in it — and the answer was still wrong, because the desk had the release
+  through Alpaca News **44 seconds before it asked** and looked at the issuer's
+  own feed instead.
+- **Run the gate, and predict its count.** `git ls-tree -r --name-only <base> |
+  grep -cE '\.(test|spec)\.(ts|tsx)$'`, plus the test files your pick adds. **A
+  run that collects fewer files than its own tree is an environment failure
+  wearing a result's clothes** — one reported 10 failed files at 161 of 166;
+  `--no-file-parallelism` gave 166/2,483 green. **And a count is evidence only
+  against its own tree**: I told Ops its 157-file gate looked short by comparing
+  it to main's 166, and it was a smaller tree.
+- **Never `git checkout HEAD -- <file>` to undo a mutation test.** It reverted an
+  hour of uncommitted work. Copy to a temp file and restore from that.
+- **Check a ruling at his own words before building on it.** A peer's
+  characterisation of "he commissioned X" is not the ruling. This was refused
+  once, correctly — and then this seat copied a peer's *invented* rule straight
+  into its own charter without applying the same test.
 
-### First task — `MarketSnapshot.catalystFreshFrom`
+### Standing, and they are in LIVE STATE in full
 
-**It activates a ruling of his that is currently dark, and it is the only thing
-queued to me.**
-
-He ruled on 2026-09-24 that **FRESH means the prior SESSION's close to now** —
-yesterday's after-hours and this morning's premarket, the span a morning gap
-originates in. `684902f` implements it and **nothing runs it**, because
-`resolveCatalystFreshness` needs the boundary passed in and both callers pass
-two arguments: `why.ts` is a browser component with no store, and
-`validateDossier` takes no `db` either. The fallback is his date-only rule and
-is safe — but the refinement is dark.
-
-**What Design specced, and it is the same producer-supplies-the-answer shape as
-`observed`:**
-
-```ts
-MarketSnapshot.catalystFreshFrom =
-  afterHoursStartUtc(previousTradingDate(db, tradingDate))
-```
-
-Computed **once per snapshot, server-side**, then passed by `why.ts` as the
-third argument. Absent still means day bands, so it degrades safely.
-
-**Three things I already established that you should not re-derive:**
-
-- **It must be the prior SESSION close, not literally yesterday.** On a Monday
-  that is Friday; a holiday moves it again. `previousTradingDate`
-  (`lib/desk/checkpointDates.ts:46`) is holiday-aware and reads a calendar the
-  worker refreshes across −120/+14 days.
-- **`previousTradingDate` does not return null on a stale calendar.** It filters
-  to days before the date and takes the newest, so a calendar that stopped
-  refreshing hands back a weeks-old date. `resolveCatalystFreshness` already
-  refuses a boundary more than five days old for exactly that reason — a long
-  holiday weekend is about four and a half — but the producer should not rely on
-  the consumer's guard.
-- **Size, measured before building: it changes 6 of 325 analyses.** Only clocked
-  events can be tested against a 16:00 boundary, and **77% of stored event
-  timestamps carry no clock at all**, so bare dates keep the day bands unchanged.
-
-### After that, in rough order
-
-- **Phase C, filing-derived float.** Buildable now. `assessFloat`
-  (`lib/research/float.ts:326`) already IS the containment test. **The vendor
-  half is prohibited, not expensive** — read the standing constraints first.
-- **The EX-99 latency measurement is waiting on TIME, not work.** The 878 stored
-  exhibits can never answer it; see the hazard in LIVE STATE and
-  `docs/Wire_Feed_Collector_SCOPE.md`, which I corrected on 2026-09-25 because
-  it had been carrying the opposite reading.
-- **31 personal-scoped justifications in `research.md`.** Fix as each finding is
-  touched; a bulk rewrite is how a wrong reason gets a confident new sentence.
-
-### What cost this session the most
-
-- **Run the gate, don't re-read the report of it.** Twice in one day a check I
-  ran myself disagreed with a report I was given — a peer's green gate had two
-  lint errors in it, and they were mine. My habit was `tsc` + `vitest`; this
-  project's gate also runs `npm run lint`, where `prefer-const` is an **error**.
-- **A superseded grant reads exactly like a live one.** I opened a deploy
-  approval, found it scoped to one day and expired, and refused to hand over a
-  sha — correctly on the evidence I had. It had been replaced hours earlier by a
-  standing one I never looked for. Opening the artifact is necessary and not
-  sufficient.
-- **A mutation that silently did not apply looks exactly like a guard that is
-  vacuous.** `str.replace` does nothing when the anchor has moved and returns
-  the string unchanged; my harness printed success anyway. I was one edit from
-  writing a test for a defect that did not exist. Assert the anchor matched.
-- **Measure the cohort before reasoning from it.** Integration proposed treating
-  bare-date catalysts as after-hours because the clocked ones mostly are. Clock
-  availability correlates with catalyst type — the bare population is
-  disproportionately `SECONDARY_STALE` and `UNKNOWN` — so that inference would
-  have promoted the stalest rows to green.
-- **Peer confirmation is not a second source, and it cost this desk four asks.**
-  The premarket ruling was recorded FALSE three times off a peer's sentence
-  before his own words were captured at `3dc0c41`. **The prompt you are reading
-  now was written by a session that received one with an invented ruling in
-  it** — check the record, not the relay, including this document.
+**Never fetch `stockanalysis.com` from a worker, route or job.** **No heavy read
+against production `market.db` while a deploy unit is running** — `quick_check`
+scans a 3.5G file against a 900s deadline with 132s of measured margin, and your
+census query can make the deploy tool announce a cutover that did not happen.
+**Anything that grows `market.db` does the same thing permanently.**
 
 ---
 
@@ -154,8 +109,6 @@ third argument. Absent still means day bands, so it degrades safely.
 
 1. Open a new chat in `A:\mointel` and paste everything above.
 2. It will title itself `Research-tmi`.
-3. Rename this old chat to **`Research-tmi (retired 2026-09-25)`** so the name no
-   longer collides and peer messages route to the new session.
-4. **Archive the old chat, do not delete it** — the transcript is the record.
-5. The seats that talk to this one (Integration, Ops, Design, R&D) can find the
-   new session by title; no id needs passing by hand.
+3. Rename this old chat to **`Research-tmi (retired 2026-09-25)`**.
+4. **Archive it, do not delete it** — the transcript is the record.
+5. Peers find the new session by title; no id needs passing by hand.
