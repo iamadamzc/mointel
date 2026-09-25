@@ -540,6 +540,17 @@ board.
 > it is running it, getting a clean answer, and having measured the browser's cache. The whole
 > value of this rule is that the author is the one person who knows what should have changed, and
 > that is exactly the person a stale bundle misleads hardest.*
+>
+> **AND THE TRAP IS ASYMMETRIC — Design, later the same day, after the check it had warned about
+> came back positive.** *A green `INLF` required BOTH the new payload field AND the new client
+> bundle that reads it; **an old bundle holding the new field renders AMBER.*** **So a stale bundle
+> produces "the feature is broken", never "the feature works" — which makes a POSITIVE result
+> self-certifying against this specific trap, and a NEGATIVE one not.** *The reload still has to
+> happen; what changes is where the burden falls. A pass could not have been manufactured by the
+> stale bundle. A failure could have been, and must prove the reload before it is believed.*
+> **Ask which direction your trap fails in before deciding how hard to prove you avoided it** —
+> the same asymmetry as a fill-value error that can only ever promote, recorded hours earlier on
+> this desk in a different column.
 
 This is the gap the Phase 1 enum leak went through. It was reported fixed on
 local fixtures that could not have tested it, and production found it. Every
