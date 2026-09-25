@@ -640,3 +640,48 @@ describe('the age and the band cannot disagree about which day it was', () => {
     return buildDeskRow('HOWL', null, null, null, intel);
   }
 });
+
+describe('the accent marks the active ordering, and only that', () => {
+  /*
+   * He read a correctly sorted board as "random" TWICE — once on NOW, once on
+   * PM MOVE, where the values ran 30.5, 8.3, 7.0, 4.2 down the page while RANK
+   * read 8, 13, 26, 38 beside them.
+   *
+   * The cause was a colour, not a missing marker. Accent is already this
+   * desk's mark for the active ordering — it lights the sort chip — and RANK
+   * wore it unconditionally, so the leftmost and most saturated column
+   * announced an order the rows were not in. A caret and a header note
+   * competed with that colour instead of removing it, which is why the first
+   * pass did not land.
+   */
+  const source = readFileSync(join(process.cwd(), 'components/DiscoveryBoard.tsx'), 'utf8');
+  const cells = readFileSync(join(process.cwd(), 'components/DecisionCells.tsx'), 'utf8');
+
+  it('gives RANK the accent only when RANK is the sort', () => {
+    // The number stays either way: it is the board's own ranking and he wants
+    // it. It just stops claiming to be the order when it is not.
+    expect(source).toContain("activeColumn === 'rank' ? 'text-accent' : 'text-ink-2'");
+  });
+
+  it('marks the sorted figure on its LABEL, never on the percentage', () => {
+    /*
+     * The percentage's colour carries DIRECTION — green up, red down. Putting
+     * "this is the sort" on it too would be two meanings on one colour, which
+     * is the defect this board keeps producing. The label carries nothing
+     * else, so it is free to say where the order came from.
+     */
+    expect(cells).toContain("sorted ? 'font-semibold text-accent' : 'text-ink-3'");
+    const pct = cells.match(/\{formatSignedPercent\(value\)\}/);
+    expect(pct).not.toBeNull();
+    // The percentage keeps its direction tone and gains nothing conditional.
+    expect(cells).toContain('${changeTone}');
+  });
+
+  it('routes the mark through the sort table, not a per-key test', () => {
+    // Same rule the rest of this component obeys, and the same guard that has
+    // caught me twice: no `sort.key === ...` in the markup.
+    const code = source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+    expect(code).not.toMatch(/sort\.key === '(sessionMove|changePct|now|rvol)'/);
+    expect(code).toContain('activeColumn');
+  });
+});
