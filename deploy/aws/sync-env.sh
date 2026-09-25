@@ -97,6 +97,27 @@ MOINTEL_DASHBOARD_URL=http://127.0.0.1:3000
 ALPACA_DATA_FEED=sip
 $ALPACA
 
+# HIS RULING 2026-09-25: lower the capture floor to 25c.
+#
+# `minute_bars` is not a tape. The SIP stream is subscribed whole-market by
+# wildcard, but `runtime.ts` persists only TRACKED symbols, and `engine.ts`
+# adopts a symbol only inside this band -- so a bar outside it is discarded on
+# arrival and leaves no trace anywhere. At the \$1 default, 517 symbols he can
+# and does trade had NEVER produced a single row, and a sub-\$1 runner was
+# captured only from the minute it crossed \$1, losing the steepest leg.
+#
+# MEASURED COST, 2026-09-25: +120 symbols, +1.5% rows, ~90MB at 20-day
+# retention. NO VENDOR COST -- the bars already arrive on the existing
+# wildcard subscription and are thrown away, and all 920 sub-\$1 names already
+# carry rvol baselines. Research volume is bounded by BOARD SLOTS, not by
+# capture, so model spend is flat: the same 12 slots, different names in them.
+#
+# SET HERE AND NOT ONLY ON THE BOX. `sync-env.sh` rewrites
+# /etc/mointel/mointel.env wholesale, so a value typed onto the server survives
+# deploys and is silently erased by the next sync -- and capture would narrow
+# back with nothing reporting it.
+DISCOVERY_PRICE_MIN=0.25
+
 # --- carried over from .env.local ----------------------------------------
 $LOCAL_ENV
 EOF
