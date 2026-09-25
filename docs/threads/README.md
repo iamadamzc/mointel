@@ -13054,6 +13054,18 @@ day: an instrument that lost part of its input (test files), an instrument answe
 resource (`ec2` on a Lightsail box), and now **an instrument reporting on its own health while being
 asked about someone else's work.***
 
+> **OPS NAMED THE FAMILY, 2026-09-25, and it is the one sentence to carry out of all of them: every
+> member is A THING THAT LOOKS THE SAME WHETHER OR NOT THE MECHANISM BEHIND IT RAN.** *A dead launcher
+> reporting failure for a deploy that succeeded. A `state` field defaulting to a verdict. A warning left
+> open after it stopped being true. A gate green over a short collection. **A hold waiting on a state
+> that never arrives, which is indistinguishable from a hold that was forgotten.***
+>
+> **THE COUNTERMEASURE IS THE SAME EVERY TIME AND IT IS NOT MORE CARE: give the silent state a DEADLINE
+> or a POSITIVE CONTROL, so that "nothing happened" becomes a thing that can fail.** *Ops's own
+> application, within a minute of the rule: its hold on `b72e8ed` got a wall-clock limit — if `/proc`
+> has not shown `c00992e` by ten minutes past its due cutover, it is treated as FAILED and reported,
+> rather than waited on indefinitely.*
+
 ## A RUN THAT LOSES TEST FILES REPORTS ITSELF AS A CODE DEFECT
 
 **Research, 2026-09-25, after nearly chasing one.** *A full-suite run came back with 3 failing files
