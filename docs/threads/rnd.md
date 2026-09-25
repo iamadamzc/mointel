@@ -1201,6 +1201,71 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
+#### THE `COVERAGE_INCOMPLETE` BUCKET, EXAMINED FOR THE FIRST TIME — and it is the majority, not a remainder. 2026-09-25.
+
+**Integration's parting flag: *"the 70 `COVERAGE_INCOMPLETE` have never been
+examined by anyone, and are where a coverage question would actually live."*
+Right, and examinable from data this seat already holds — `research_jobs` in
+`market-prod-2026-08-23.db` carries `collector_report` on 729 jobs, four times
+today's production sample.**
+
+**THE PROPORTIONS FIRST, BECAUSE THEY REFRAME THE WHOLE DAY:**
+
+    COVERAGE_INCOMPLETE        454   62.3%    <- never examined by anyone
+    RECENT_SOURCE_LOCATED      196   26.9%
+    NO_RECENT_SOURCE_LOCATED    79   10.8%    <- four seats spent a day on this one
+
+> **The bucket four seats fought over all day is a tenth of the jobs. The
+> majority sat unopened.** *Today's production split is 70/76/27, so the ratio
+> has improved — but the attention went to the small bucket in both.*
+
+**WHY THE DESK COULD NOT LOOK — the decomposition, n=454:**
+
+    NO company source url at all   374   82.4%   <- nothing to fetch
+    HAS a url, something failed     80   17.6%
+
+**82% of the time the desk did not fail to read a source. It had no source to
+read.** *This is the issuer-registry gap (65.9% of issuers with nothing
+registered) confirmed independently at the job level, from a different table.*
+
+**AND THE RATCHET IS REAL AND MEASURED.** `companySourceDetail` across the
+bucket:
+
+    186   41%   "reused stored negative result"  (116 urgent + 70 normal)
+    129   28%   "not attempted"
+    100   22%   "no durable company source located"
+     36    8%   located a newsroom index or feed
+
+> **Two in five of these jobs are re-serving a PREVIOUS failure to find a
+> source.** *The desk decided once that this issuer has no findable newsroom and
+> now declines to look again — including on the `urgent` path, which is 116 of
+> the 186.* **That is the registration ratchet named in the entry above, and it
+> is not a theory any more.**
+
+**THE CONTRAST WITH THE OTHER BUCKET SHARPENS IT.** All 79
+`NO_RECENT_SOURCE_LOCATED` jobs **have** a company source url — as the code
+requires — and 21 of them added 5+ sources. *That bucket is the machinery
+working.* **`COVERAGE_INCOMPLETE` is the machinery never getting started.**
+
+**WHAT THIS MEANS FOR HIS NARROWING** — *"its sites and wires, this is where the
+mechanism needs to improve"*:
+
+1. **The single biggest lever is REGISTRATION**, not fetching, not parsing, not
+   invocation. **374 jobs had nothing to fetch.**
+2. **The second is RETRY POLICY on registration.** 186 jobs reused a stored
+   negative. *A company that had no newsroom in August may have one now, and
+   nothing re-checks.* **The stored negative needs an expiry.**
+3. **Invocation frequency is third** — real, and it cost AIFF, but it only helps
+   the 34% of issuers that have a source at all.
+
+**LIMITS.** Local snapshot, 08-18…08-21, 729 jobs — **the same five-session
+window as the registry figures and carrying the same staleness**. Today's
+production ratio (40% `COVERAGE_INCOMPLETE`) is better than this 62%, so the
+registry has grown; **the decomposition has NOT been re-measured on current
+data and should be before anyone sizes work from it.** *The shape — most of the
+bucket being "no source at all" rather than "source failed" — is what matters
+and is unlikely to have inverted.*
+
 #### THE DESK IS A 94%-SEC PRODUCT, AND TWO THIRDS OF ISSUERS HAVE NO SITE PATH AT ALL. 2026-09-25.
 
 **His narrowing, and it is the right one:** *"we know sec filings are 100%,
