@@ -215,6 +215,48 @@ fix: carry the defect and the evidence, and leave the fix shape to the owning se
 knows its file's runtime (browser / worker / server), its types, and what it can reach. A shape
 from the finding seat is a hypothesis; flag it as one, never relay it as the instruction.
 
+## THE NEWSWIRE RESEARCH — ROUTED 2026-09-25 ON HIS ASK, COMMERCIAL FIRST
+
+**His words: *"somebody needs to research newswire source"*. ROUTED TO COMMERCIAL, then Research. NOT R&D.**
+
+**THE REASON IS A PRECEDENT, NOT A PREFERENCE: the binding constraint is the LICENCE, not the pipeline.**
+*`stockanalysis.com` is the worked case — technically trivial to fetch, barred on two grounds, one of them
+"no use in a competing product". **A wire service is a paid vendor whose terms decide whether this desk may
+use the content in a product he sells at all**, so asking the pipeline question first risks designing
+against a source that cannot be licensed.*
+
+- **Commercial: which services carry US small-cap issuer releases, what their terms permit for a COMMERCIAL
+  product, and what the cheapest lawful shape costs.** *Terms QUOTED, never characterised. No vendor
+  contact, no signing, no payment — his.*
+- **Research: the pipeline shape, once a source is named.** *Not waiting on Commercial and not blocking it.*
+- **R&D: not in this.** *It answers from the archive; this has no archival component.*
+
+> **AND THE CASE MUST BE BUILT ON ACCURACY, NOT COST — instructed explicitly, because the obvious case is
+> the wrong one.** *DISCOVERY is 79% of input tokens and 19% of the money, so a deterministic feed displaces
+> the CHEAPEST stage: a ceiling of ~\$1.35 a session against a \$6.99 bill.* **His own rule carries it
+> instead: *"if it's public we should have it"*, and a missed public catalyst is a CORRECTNESS failure.**
+
+*Technical brief relayed to Commercial verbatim from Ops: the issuer feed cannot carry a wire-only release
+by construction (`fireflyneuro.com/rss`, 200, 13,385 bytes, zero mentions hours later); DISCOVERY ran and
+missed it; a competing product he pays for had it at 07:53 ET with the name up 5%.*
+
+## THE CAPTURE FLOOR — HIS APPROVAL IS ON THE BOX AND IN NOBODY'S HISTORY
+
+**`DISCOVERY_PRICE_MIN=0.25` approved 2026-09-25. Applied to `/etc/mointel/mointel.env` (backup taken,
+perms unchanged). NOT IN EFFECT — the worker re-reads config only on restart, and THE RESTART IS HIS,
+asked for by name. "Approved the floor" and "approved a restart" are two claims and Ops refused to merge
+them.**
+
+> **THE DURABILITY HAZARD, AND IT NEEDS A COMMIT RATHER THAN AN ENUMERATION.** *`sync-env.sh:108` installs
+> `/etc/mointel/mointel.env` WHOLESALE, so a value typed on the box survives deploys and is erased by the
+> next sync — capture would narrow back to \$1 with nothing reporting it.* **The code half sat UNCOMMITTED
+> in the shared tree; it is Ops's to commit with `--only`.**
+>
+> **AND THE SEQUENCING QUESTION I HAD TO ANSWER BEFORE APPROVING A DEPLOY: `deploy.sh:43` only asserts the
+> env file EXISTS, and NOTHING in the deploy path invokes `sync-env.sh`.** *So no deploy reverts the floor,
+> and the meta-description ship was safe. **Verified in the script, because a deploy that rewrote that file
+> would have silently undone a ruling he had just given.***
+
 ## PRODUCTION CARRIES ONE KNOWN-FALSE COMMENT, AND IT HAS A DATED TRIGGER
 
 **`969458d` is unshipped, so production `queue.ts` still says the 2026-08-23 snapshot contains no instance
