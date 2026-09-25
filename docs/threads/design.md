@@ -230,6 +230,40 @@ behaviour until it arrives.** `qualified.observed` proved the pattern works, and
    empty array ≠ absent.**
 
 
+## What he ruled, verbatim
+
+**HIS WORDS, NOT A SUMMARY OF THEM.** *This thread has written a false "he
+ruled it" into the repo before — the premarket-frame claim appeared four times
+before it was true — and a ruling attributed to him that he never made cannot
+be refuted by anything in the tree.*
+
+**2026-09-25, on the Monday `3d`-in-green pairing:**
+
+> *"1, agreed wit option a."*
+
+**That is the whole of it: seven words selecting a labelled option by
+reference.** So the binding content is the OPTION TEXT he selected, and it is
+recorded here beside his words rather than left in a transcript:
+
+> **(a) replace the age with the reason on a promoted row — `since Fri close`
+> instead of `3d`.**
+
+Item `1` was the only item in that block. Implemented at `36bbddd`.
+
+**ONE GENERALISATION IS MINE AND IS MARKED AS MINE.** His example names the
+Monday case. The option's own wording is general — *"on a promoted row"* — so
+the build applies it to EVERY promoted row, including within-day ones: today's
+`INLF` would read `since Thu close` rather than `19h`. **That follows from the
+option text and not from his example, and the distinction is written down here
+so nobody later finds `since Thu close` on a Tuesday and reads it as a
+defect.** If he meant it only where the age is misleading by days, it is a
+one-line threshold and he should say so.
+
+**2026-09-25, on column tooltips** (relayed by Integration, quoted there
+verbatim and not re-paraphrased here): tooltips are welcome on column names
+*"if it makes sense"* — his own limiter, and it excludes a tooltip that
+restates the header.
+
 ## Open items
 
 | Item | Owner | Waiting on |
