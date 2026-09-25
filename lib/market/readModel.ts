@@ -73,6 +73,7 @@ import {
   type AutoIntelligence,
 } from '../research/view';
 import type { DiscoveryState, MarketFeedHealth, MarketSnapshot } from './types';
+import { catalystFreshFromUtc } from '../research/freshFrom';
 
 const globalStore = globalThis as typeof globalThis & {
   __momentumMarketDb?: { db: MarketDatabase; path: string } | null;
@@ -415,6 +416,8 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       intelligence: {},
       blueSky: {},
       events: [],
+      // No store to read a calendar from, so the boundary would be a guess.
+      catalystFreshFrom: null,
       fetchedAt,
     };
   }
@@ -576,6 +579,12 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       intelligence,
       blueSky,
       events: readDeskEvents(db, tradingDate, 60),
+      /*
+       * Computed once here rather than per row, and deliberately not from
+       * `closeMinutes` above: that is TODAY's close, and this is the previous
+       * session's.
+       */
+      catalystFreshFrom: catalystFreshFromUtc(db, tradingDate),
       fetchedAt,
     };
   } catch (error) {
@@ -594,6 +603,8 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       intelligence: {},
       blueSky: {},
       events: [],
+      // No store to read a calendar from, so the boundary would be a guess.
+      catalystFreshFrom: null,
       fetchedAt,
     };
   }

@@ -748,5 +748,26 @@ export interface MarketSnapshot {
    */
   blueSky: Record<string, BlueSkyState>;
   events: DeskEvent[];
+  /**
+   * The instant a catalyst must be newer than to band FRESH: the PRIOR
+   * SESSION'S close, his ruling of 2026-09-24.
+   *
+   * ON THE PAYLOAD BECAUSE THE BAND IS READ IN THE BROWSER. `resolveWhy` runs
+   * inside `'use client'` components, which have no store and no exchange
+   * calendar, so they cannot work out which session came before this one --
+   * on a Monday it is Friday, and a holiday moves it again. The server
+   * computes it ONCE per snapshot and every row reads the same answer.
+   *
+   * NULL MEANS THE DAY BANDS, WHICH IS A RULE AND NOT A FALLBACK: today FRESH,
+   * yesterday RECENT, two days or more STALE. It is null whenever the boundary
+   * would be a guess -- an unreadable store, no trading date, or a calendar
+   * that has stopped refreshing -- and it is null for the two degraded
+   * snapshots for the same reason.
+   *
+   * Only a CLOCKED event can be tested against it, and 77% of stored event
+   * timestamps carry no time of day, so this changes the band on a minority of
+   * rows by construction.
+   */
+  catalystFreshFrom: string | null;
   fetchedAt: string;
 }
