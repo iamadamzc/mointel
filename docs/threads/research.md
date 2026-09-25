@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T17:26Z
+## LIVE STATE — 2026-09-25T17:52Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -228,6 +228,19 @@ record. He has it from this seat directly as well.
 - **Both frames must be built from the ONE hourly file**, never paired with `daily_bars`. The file was fetched 2026-09-17 and the daily rows in August; 19 of 75 symbols had corporate actions in-window, and that cross-vintage pairing produced an arithmetically impossible row (an all-sessions high *below* the RTH high) before it was abandoned.
 
 ### HAZARDS A FRESH SESSION MUST KNOW
+
+- **⚠️ A TEST-FILE COUNT IS A SHORT-COLLECTION SIGNAL ONLY AGAINST THE COUNT FOR *THAT TREE*. This seat got it wrong on 2026-09-25 and told Ops to distrust a working gate.** A real short collection happened that day — a run reported 3 failed files and 8 errors while collecting **2,339 tests where ~2,470 were expected**, which is memory pressure wearing the appearance of a code defect. **But the NEXT count I challenged was sound.** Ops's gate reported **157 files** at `79cc4d1`; I compared it to main's 164–166 and called it short. Counted at the trees themselves:
+
+| sha | test files |
+| --- | ---: |
+| `3dc14e2` (production) | 156 |
+| `79cc4d1` (production + 2 picks) | **157** |
+| `c00992e` (+ `8942a94`) | 157 |
+| `8942a94` (main) | 165 |
+| `d734d6f` (main) | 166 |
+
+  **A cherry-pick branch carries eight fewer test files than main — my own work among them — so 157 was a smaller TREE, not a short collection.** I compared a number denominated in one population against one denominated in another, **which is the exact count-frame error I had corrected three times that day**, and I did it while accusing someone else's instrument. *Telling a peer to distrust a working gate is the more expensive direction: it costs a re-run and it teaches doubt about a correct result.*
+  **THE PRACTICE, cheap and now standard: PREDICT THE COUNT BEFORE THE GATE.** `git ls-tree -r --name-only <base> | grep -cE '\.(test|spec)\.(ts|tsx)$'`, then add the test files the pick introduces. `d734d6f` adds exactly one, so its gate onto `c00992e` must report **158**. **A number ruling out short collection beats an argument about one.**
 
 - **⚠️ `collector_report` ROWS FROM 2026-08-18 UNTIL `d19355c` DEPLOYS CARRY `companySourceDetail: 'not attempted'` ON SUCCESSFUL FETCHES, AND NO FETCH WITNESS AT ALL.** The affected window opens at `8c94390` / `8f212fe`, both 2026-08-18. **Production is `0a17601`, whose `collector.ts` is `ea2d1c9`, so the window is still open.** `d19355c` repairs the FUTURE and cannot repair the census: anyone re-partitioning stored rows on that field gets the wrong answer again, and the comment explaining why is not in the release they are reading.
   **What that field actually means: RESOLUTION, not the fetch.** `collector.ts:189` declares it *"what issuer-source resolution did, or why it was not offered a turn"*, and resolution is gated on `!usableCompanySourceBefore` — so `'not attempted'` is CORRECT and healthy for any ticker that already has a usable url on file. **It never meant the desk did not look.** A production census of 173 jobs read it the other way on 2026-09-25 and concluded the collector returns "no catalyst" without looking; R&D halted a count on that. Both were withdrawn.
