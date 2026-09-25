@@ -134,9 +134,22 @@ export interface ResolutionProbeCensus {
    */
   /** Candidates the resolver named, before the probe cap. */
   candidatesReturned: number;
-  /** Candidates actually fetched, bounded by `MAX_CANDIDATE_PROBES`. */
+  /**
+   * Candidates ATTEMPTED, bounded by `MAX_CANDIDATE_PROBES`.
+   *
+   * Incremented before the verdict is known, so it counts the try and not the
+   * outcome. It said "actually fetched" until 2026-09-25, which is what the
+   * field BELOW counts.
+   */
   candidatesProbed: number;
-  /** Of those probed, how many returned a body rather than a failure. */
+  /**
+   * Of those attempted, how many answered with a body rather than a failure.
+   *
+   * **`candidatesFetched === 0` with `candidatesProbed > 0` is the
+   * REACHABILITY signal** -- every host refused us. A reader who has these two
+   * the wrong way round concludes the opposite about a name, which is why the
+   * pair is spelled out here rather than left to the prose above.
+   */
   candidatesFetched: number;
 }
 
