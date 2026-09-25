@@ -178,6 +178,28 @@ inside the quote.
 >    *A refusal that looks arbitrary is the one that gets `DEPLOY_WINDOW_OVERRIDE`
 >    typed at it. That is the real cost of leaving this unfixed: preflight is
 >    right, looks wrong, and teaches the seat to override it.*
+>
+>    **AND PREFLIGHT DOES NOT GUARD HIS TRADING WINDOW AT ALL. MEASURED
+>    2026-09-25 with `PREFLIGHT_NOW_MINUTES`:**
+>    ```
+>    07:30 ET  clear of every checkpoint by more than 5m
+>    08:00 ET  clear of every checkpoint by more than 5m
+>    08:30 ET  clear of every checkpoint by more than 5m
+>    09:00 ET  clear of every checkpoint by more than 5m
+>    09:15 ET  clear of every checkpoint by more than 5m
+>    ```
+>    **Every one of those is inside "never deploy 07:00–10:00 ET", and preflight
+>    passes all of them.** It was never built to know about the trading window —
+>    its `CHECKPOINTS` are ASSESSMENT-integrity collisions, a different concern
+>    with a different cost (a skipped checkpoint, versus HIS BOARD GOING DARK
+>    MID-TRADE).
+>
+>    **So "PREFLIGHT IS THE AUTHORITY" is true only of checkpoint collisions, and
+>    the charter does not say which authority.** A seat that reads that line and
+>    treats a preflight pass as clearance will deploy at 08:30 with the machine
+>    agreeing. The 07:00–10:00 rule is HUMAN-ENFORCED ONLY — you are the guard.
+>    *Fold it into preflight in the deploy-path batch; do NOT patch the deploy
+>    tool in the hour before using it.*
 > 2. **`barsReplayed` counts bars FED, not landed**, so it cannot tell a
 >    successful replay from a silent no-op. *Research's finding. Cheap fix:
 >    assert `volumeBaseThrough` is null for replayed symbols at replay time,
