@@ -342,7 +342,24 @@ export function discoveryValueFor(
         ? (row.demand?.afterHours?.rank ?? null)
         : row.telemetry.rvolRank;
     case 'rvol':
-      return row.telemetry.rvol;
+      /*
+       * THE BOARD'S RANKING QUANTITY, MATCHING WHAT THE COLUMN RENDERS.
+       *
+       * This returned Daily RVOL on every board while the header now reads
+       * `PART` after the bell and the cell shows participation. **A column
+       * that displays one number and orders by another is the defect this
+       * board has produced twice already** -- he read a correctly sorted
+       * board as "random" both times, because the visible figures did not
+       * descend.
+       *
+       * Same repair, and the same reason, as the `rank` case above: the
+       * evening board ranks on participation, so the column that shows it
+       * must sort on it. `board` is REQUIRED on this function precisely so
+       * neither case can quietly default to the daytime answer.
+       */
+      return board === 'AFTER_HOURS'
+        ? (row.demand?.afterHours?.participation ?? null)
+        : row.telemetry.rvol;
     case 'changePct':
       return row.telemetry.percentChange;
     case 'sessionMove':

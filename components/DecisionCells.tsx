@@ -516,7 +516,31 @@ export function RiskCell({ risk }: { risk: DeskRisk }) {
 
 /* ------------------------------------------------------------------- rvol */
 
-export function RvolCell({ telemetry }: { telemetry: MarketTelemetry }) {
+/**
+ * The quantity the board RANKED ON, which changes identity at the bell.
+ *
+ * `participation` non-null means the after-hours board is showing, and it is
+ * what that board ordered by. Daily RVOL is not merely less relevant then —
+ * it is STALE: it stops moving at 16:00 and keeps whatever the day earned, so
+ * a column headed with the ranking quantity would have been showing a number
+ * that had ranked nothing since the close.
+ *
+ * NO `low` MARK ON PARTICIPATION. `rvolConfidence` is a statement about the
+ * RVOL baseline, and whether it carries to this ratio has not been
+ * established. Rendering it here would assert something nobody measured.
+ */
+export function RvolCell({
+  telemetry,
+  participation = null,
+}: {
+  telemetry: MarketTelemetry;
+  participation?: number | null;
+}) {
+  if (participation !== null) {
+    return (
+      <span className="num text-[13px] font-semibold text-ink">{formatMultiple(participation)}</span>
+    );
+  }
   if (telemetry.rvol === null) return <span className="num text-[13px] text-ink-3">—</span>;
 
   return (

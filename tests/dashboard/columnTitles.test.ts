@@ -3,7 +3,12 @@ import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { COLUMN_TITLE, NO_TITLE_NEEDED, priceColumnTitle } from '@/lib/dashboard/columnTitles';
+import {
+  COLUMN_TITLE,
+  NO_TITLE_NEEDED,
+  priceColumnTitle,
+  rankingQuantity,
+} from '@/lib/dashboard/columnTitles';
 
 /**
  * HIS DIRECTION, 2026-09-25: a tooltip on each column name "if it makes sense".
@@ -64,10 +69,23 @@ describe('one source, so two tables cannot explain one column differently', () =
   it('gives the shared columns the same words in both places', () => {
     const discovery = strip(read('components/DiscoveryBoard.tsx'));
     const watchlist = strip(read('components/MomentumTable.tsx'));
-    for (const column of ['why', 'risk', 'cycle', 'rvol']) {
+    for (const column of ['why', 'risk', 'cycle']) {
       expect(discovery).toContain(`COLUMN_TITLE.${column}`);
       expect(watchlist).toContain(`COLUMN_TITLE.${column}`);
     }
+    /*
+     * `rvol` IS THE ONE EXCEPTION AND IT IS A REAL ONE, not a drift.
+     *
+     * Discovery swaps that column to after-hours participation at the bell,
+     * so its hover resolves on the BOARD; the watchlist has no evening board
+     * and keeps the constant. **They must still say the identical thing
+     * whenever they are showing the identical quantity**, which is what this
+     * asserts rather than a string appearing in two files.
+     */
+    expect(discovery).toContain('rankingQuantity(board).title');
+    expect(watchlist).toContain('COLUMN_TITLE.rvol');
+    expect(rankingQuantity('DAILY_RVOL').title).toBe(COLUMN_TITLE.rvol);
+    expect(rankingQuantity('AFTER_HOURS').title).not.toBe(COLUMN_TITLE.rvol);
   });
 });
 
@@ -158,5 +176,34 @@ describe('trader language, not pipeline language', () => {
     for (const [, title] of TITLES) {
       expect(title).not.toMatch(/\.ts\b|\bnpm \b|[a-z]+\.[a-z]+\(/);
     }
+  });
+});
+
+describe('the ranking quantity changes identity at the bell', () => {
+  it('names what the board actually ranked on, in both sessions', () => {
+    /*
+     * His ruling, 2026-09-25, after the rank column went: the column that
+     * answers "why does this rank" has to show the quantity that ranked it.
+     * Daily RVOL stops moving at 16:00 and keeps what the day earned, so on
+     * the evening board it is the STALE number, not merely the less useful
+     * one.
+     */
+    expect(rankingQuantity('DAILY_RVOL').label).toBe('RVOL');
+    expect(rankingQuantity('AFTER_HOURS').label).toBe('Part');
+  });
+
+  it('says in the evening hover that Daily RVOL is NOT what ranked it', () => {
+    // The part a four-letter header can never carry.
+    expect(rankingQuantity('AFTER_HOURS').title).toMatch(/Daily RVOL is not/i);
+  });
+
+  it('keeps the evening label short enough to survive being the active sort', () => {
+    /*
+     * MEASURED at the 1,024px floor, Geist 600 / 11px / 0.08em, uppercased:
+     * `AH PART ▼` is 67.7px and needs 83.7 with padding in a 68px cell,
+     * and after the bell this column usually IS the sort. `PART ▼` is 63.1.
+     * Four characters is the constraint, so the test states it.
+     */
+    expect(rankingQuantity('AFTER_HOURS').label.length).toBeLessThanOrEqual(4);
   });
 });

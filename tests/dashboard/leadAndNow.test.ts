@@ -153,3 +153,48 @@ describe('the trades column head states what, not when', () => {
     expect(head()).toContain('sparklineLagLabel()');
   });
 });
+
+/* ------------------------------------------------------------------------- *
+ * THE COLUMN AND ITS SORT MOVE TOGETHER
+ * ------------------------------------------------------------------------- */
+
+/**
+ * After the bell the board ranks on after-hours participation, so the column
+ * that shows the ranking quantity shows participation and must ORDER by it.
+ *
+ * A column that displays one number and sorts on another is the defect this
+ * board has produced twice: he read a correctly sorted board as "random" both
+ * times, because the visible figures did not descend.
+ */
+describe('the ranking column sorts on what it displays, in both sessions', () => {
+  function rowWith(rvol: number, participation: number | null): DeskRow {
+    return {
+      ticker: 'HOWL',
+      telemetry: { rvol },
+      demand: { afterHours: { participation } },
+    } as unknown as DeskRow;
+  }
+
+  it('orders by Daily RVOL on the day board', () => {
+    expect(discoveryValueFor(rowWith(12, 99), 'rvol', 'DAILY_RVOL')).toBe(12);
+  });
+
+  it('orders by PARTICIPATION on the evening board, not the stale RVOL', () => {
+    /*
+     * Both arms, because the day arm is the control: if this returned
+     * participation everywhere the assertion would pass while the day board
+     * silently reordered.
+     */
+    expect(discoveryValueFor(rowWith(12, 99), 'rvol', 'AFTER_HOURS')).toBe(99);
+    expect(discoveryValueFor(rowWith(12, 99), 'rvol', 'DAILY_RVOL')).toBe(12);
+  });
+
+  it('is NULL rather than the daytime number when participation is unknown', () => {
+    /*
+     * The safe direction. Falling back to Daily RVOL would order the evening
+     * board by a number that stopped moving at 16:00 while the header said
+     * PART — silently, and looking correct.
+     */
+    expect(discoveryValueFor(rowWith(12, null), 'rvol', 'AFTER_HOURS')).toBeNull();
+  });
+});
