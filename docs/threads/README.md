@@ -449,6 +449,27 @@ deferred as "better explanation needed" and "explain".*
   the export was approved in its own later turn in plain prose — **but that had to be established
   rather than assumed.***
 
+## NAME THE NEAREST MISS AS A CONTROL
+
+**Design, 2026-09-25, on why its boundary verification came back stronger than the outcome space it
+had agreed.** *The check was specified as: one row must promote, six named rows must not. It
+returned a **discriminating pair** instead — `INLF` promoted and `MGLD` did not, both **Thursday**
+catalysts **three hours eighteen minutes apart**, on opposite sides of the 16:00 close.*
+
+**A single positive proves the code RUNS. A near-miss that correctly does NOT move proves it runs
+on the RIGHT QUANTITY.** *Nothing else in the control set could have shown that: a row from three
+days earlier staying amber is consistent with the feature doing nothing at all.*
+
+> **And Design's honest account of it, which is the part that makes this a rule rather than a
+> boast: it did not know the gap was three hours eighteen until the read.** *It named `MGLD` as a
+> control because it was clocked the same day on the wrong side of the close — **the nearest miss
+> it could find** — and wrote down that it must not move. **The population then obliged.**
+
+**So when specifying a before/after check: include the nearest miss you can identify, not only
+comfortable negatives.** *It costs nothing when the population does not oblige — it is simply
+another row that correctly did not move — and when it does oblige, a pass becomes a demonstration
+that the threshold sits where it claims to.*
+
 ## A WARNING THAT DOES NOT COME TRUE STILL HAS TO BE CLOSED
 
 **Ops, 2026-09-25, retracting its own stop-window warning within the hour it issued it.** *It had

@@ -792,6 +792,35 @@ header teaches nothing.**
   and the rename together, rather than twice on the same column.** *`363f40d` stays parked, and if
   the rename survives it may need re-cutting on top of the tooltip pass rather than shipping as-is.*
 
+### HIS RULING ON THE `3d`-IN-GREEN PAIRING — AND THE BOUNDARY OF WHAT IT AUTHORISED
+
+**Quoted rather than paraphrased, after I refused to record "he ruled option (a)" on Design's
+account.** *Third time today this thread declined a peer's report of his words; the first two were
+`"you are the succesor"` and the `"2, push"` ordinal.* **His sentence, whole:**
+
+> **`"1, agreed wit option a."`**
+
+**Seven words selecting a LABELLED OPTION by reference, so the binding content is the OPTION TEXT,
+not the sentence:**
+
+> **(a) replace the age with the reason on a promoted row — `since Fri close` instead of `3d`.**
+
+*Item `1` was the only item in that block, so there is no ambiguity about which question it
+answers.*
+
+> **⚠️ AND PART OF `36bbddd` IS DESIGN'S GENERALISATION, NOT HIS RULING — Design flagged this
+  itself and asked for it to be recorded as the boundary.** *His EXAMPLE named the Monday case. The
+  OPTION TEXT says "on a promoted row", unqualified — so Design built it for **every** promoted
+  row, **including within-day ones: today's `INLF` would read `since Thu close` rather than
+  `19h`.*** **That follows from the option's wording and NOT from his example, and it is a
+  one-line threshold if he meant the narrower thing.**
+>
+> **This is exactly what an option-by-reference ruling costs: he bought the LABEL, and the label's
+  scope was wider than the case he was looking at.** *An ordinal selects a list item; a letter
+  selects a text — and neither carries the selector's intent about scope.* **Folded into the single
+  tooltip + `TRADES` decision rather than spent as its own round trip.** *Recorded so nobody finds
+  `since Thu close` on a Tuesday and reads it either as a defect or as his ruling.*
+
 ### HIS APPROVALS 2026-09-25 (afternoon) — TWO GRANTED, ONE DEFERRED, EACH NARROW
 
 **Recorded verbatim; these are new named exceptions resting on his sentences, NOT on any standing
