@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T18:41Z
+## LIVE STATE — 2026-09-25T19:14Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -157,6 +157,13 @@ history, so that rests on Integration's account of the exchange rather than on a
 record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
+
+- **⚠️ THE NEWSWIRE PIPELINE IS LICENCE-UNBLOCKED BUT COVERAGE-UNVERIFIED, AND THOSE ARE DIFFERENT CLAIMS.** Commercial's landscape (`977e0d2`) establishes that **Alpaca News (Benzinga) is readable today** on the accepted-exposure posture he already ruled — no new vendor, no new spend, no new exposure category — and that the three primary wires are not: **PR Newswire bars automated retrieval AND commercial reuse explicitly; Business Wire permits RSS retrieval but bars competing use and commercial activity without written consent; GlobeNewswire published no terms at six places checked, which is a gap in what is PUBLISHED and not a permission**, and its individual releases carry third-party syndication terms so the feed is not one contract.
+  **WHAT IS NOT ESTABLISHED, AND IT DECIDES WHETHER THE PIPELINE FIXES ANYTHING: whether Alpaca News CARRIES the item that was missed.** `AIFF`'s 2026-09-25 release — the case that started this — was a **GlobeNewswire** item. Commercial answered the LICENCE question. **Nobody has answered the COVERAGE question**, and a licensed intermediary that does not carry small-cap GlobeNewswire releases is an instrument that cannot see the case it was built for. *That is the RCON lesson exactly: triage was asked to find a news event in a corpus containing no news.*
+  **THIS SEAT CANNOT TEST IT: `.env.local` holds no Alpaca credentials** — `GOOGLE_*`, `SEC_*`, `RESEARCH_*`, `OPENAI_*` and nothing else. The market keys are worker-side on the box, which is the charter working as intended. **So the decisive probe belongs to whoever holds them.**
+  **THE PROBE, and it is one query: Alpaca News for `AIFF`, 2026-09-25, 07:00–10:00 ET.** Three things come back at once — **does the release appear at all** (coverage), **at what timestamp** (latency against the ~07:50 ET wire time), and **what `source` does Benzinga attribute it to** (whether GlobeNewswire items arrive under their own name or an aggregator's, which decides how the collector filters). **Do not design the collector before that answer.** A second query over a week of top-12 names would turn coverage from an anecdote into a rate.
+  **Economics unchanged and the case is ACCURACY, not cost:** a deterministic news source displaces DISCOVERY, **79% of tokens and 19% of the money, ceiling ~$1.35 a session.** His rule carries it — *"if it's public we should have it"* — and a missed public catalyst is a correctness failure.
+  **One design constraint from Commercial's flag: do not build something expensive to unwind.** The same undefined *"something moving"* trigger now governs a second, distinct kind of content on the same account, and he may yet draw that line differently for News.
 
 - **💰 THE MODEL BILL, PRICED 2026-09-25 — $6.99 for the session, and THE TOKEN SHARE INVERTS THE DOLLAR SHARE.** Volume measured on production by Ops; rates read first-hand from the published list (`developers.openai.com/api/docs/pricing`, read 2026-09-25) and **not quoted from memory** — these model names postdate this seat's training data entirely.
 
