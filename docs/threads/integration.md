@@ -270,9 +270,13 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
 3. **When to run the cut-over** — a window outside his trading hours; Basic-Auth-off is his call.
 
 **Also open, not blocking launch:**
-- **Sort legibility (Design): FIX DONE (`34cf6f3`), gated, awaiting Ops deploy.** RANK wore the
-  active-ordering ACCENT colour unconditionally; now the accent follows the sort and RANK keeps
-  its number. (`9961313`'s caret/aria-sort was already live — "not enough," a colour cause.)
+- **Sort legibility (Design): FIX DONE, cherry-picked SORT-ONLY as `49efd1a`** (branch
+  `ops/sort-legibility`, gate green 153/2,345/0-lint) — **ship it at 10:00 ET under standing
+  approval, zero cut-over risk.** RANK wore the active-order ACCENT unconditionally; now the accent
+  follows the sort. **⚠️ DO NOT ship `34cf6f3`** — it sits ABOVE the whole auth surface in history,
+  so shipping it deploys the ENTIRE cut-over (`app/auth/*`, `/signin`, `allowlist.ts`), BROKEN (no
+  `IDENTITY_DB_PATH`, no Google creds) and HIS call. Ops caught it after I approved the tip blind;
+  **the Ops SUCCESSOR ships `49efd1a`, NEVER `34cf6f3`** — the trap looks like a small ready item.
 - **`market.state` DEGRADED/OFFLINE false-red:** a one-sample message-age blip or a restart
   window trips it on a healthy feed (seen 3x). Cosmetic; a threshold fix pending his go.
 
