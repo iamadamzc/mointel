@@ -223,20 +223,42 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
    *
    *     today       FRESH        yesterday   RECENT        older   STALE
    *
-   * THE PRIOR-CLOSE REFINEMENT IS NOT WIRED HERE, AND IT CANNOT BE FROM THIS
-   * FILE. `resolveCatalystFreshness` takes an optional third argument — the
-   * prior session's close — and its own documentation says the caller supplies
-   * it "because only the caller has the store". THIS CALLER IS THE BROWSER:
-   * `resolveWhy` runs inside `'use client'` components, where there is no
-   * database and no `previousTradingDate`. Omitting it falls back to the day
-   * bands, which Research documents as safe rather than merely tolerable.
+   * THE PRIOR-CLOSE REFINEMENT IS WIRED NOW, AND THE ROUTE IS THE POINT.
    *
-   * So the refinement needs the instant on the PAYLOAD, computed once on the
-   * server — the same shape as `qualified.observed`. Specified in
-   * `docs/threads/design.md`; until it exists this stays on the bands.
+   * This comment used to say the refinement COULD NOT be wired from this file,
+   * and that was true of the obvious route: `resolveCatalystFreshness` takes
+   * the prior session's close as an optional third argument, its own
+   * documentation says the caller supplies it "because only the caller has the
+   * store", and THIS CALLER IS THE BROWSER — `resolveWhy` runs inside
+   * `'use client'` components, where there is no database, no exchange
+   * calendar and no `previousTradingDate`.
+   *
+   * The server computes it once per snapshot and puts it on the payload
+   * (`MarketSnapshot.catalystFreshFrom`, `7a0ad0c`), and the MERGE puts it on
+   * the row. So this file reads it off the row like any other fact, and the
+   * four callers of `resolveWhy` pass nothing and cannot forget anything. A
+   * fourth argument would have been four call sites to keep in step, on the
+   * one reading that has already produced a colour disagreeing with the words
+   * beside it twice.
+   *
+   * NULL IS THE DAY BANDS, AND THAT IS A RULE RATHER THAN A FALLBACK — his
+   * date-only ruling, unchanged. It is what an offline market, a degraded
+   * snapshot and every test fixture get, and it is what 77% of stored
+   * timestamps get anyway because a bare date states no time of day and cannot
+   * be tested against an instant.
+   *
+   * THE REFINEMENT CAN ONLY PROMOTE. `resolveCatalystFreshness` returns FRESH
+   * early or falls through to the same bands it always used, so no row can
+   * move the other way and none can leave FRESH. That is by construction, not
+   * by observation — which is what makes "any row demoting is a defect" a
+   * usable tripwire rather than a hope.
    */
   const freshness: CatalystFreshness | null = catalyst
-    ? resolveCatalystFreshness(catalyst.eventTimestamp, new Date(nowMs))
+    ? resolveCatalystFreshness(
+        catalyst.eventTimestamp,
+        new Date(nowMs),
+        row.catalystFreshFrom ? new Date(row.catalystFreshFrom) : null,
+      )
     : null;
 
   const tone: DeskWhy['tone'] = freshness ? FRESHNESS_TONE[freshness] : 'dim';

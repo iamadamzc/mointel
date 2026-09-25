@@ -156,6 +156,28 @@ export interface DeskRow {
    * unavailable state, so no surface has to guess what silence meant.
    */
   blueSky: BlueSkyState;
+  /**
+   * The instant a CLOCKED catalyst must be newer than to band FRESH — the
+   * prior session's close, his refinement of 2026-09-24.
+   *
+   * ON THE ROW, NOT ON A PROP, AND THAT IS THE WHOLE DESIGN DECISION.
+   * `resolveWhy` is called from four places and reads freshness once; a
+   * fourth argument threaded through four call sites is four chances to miss
+   * one, and a missed one leaves the colour disagreeing with the words beside
+   * it — the defect this column has already produced twice. Carried here it
+   * arrives with the row and no caller can forget it.
+   *
+   * IT IS THE SAME SHAPE AND THE SAME REASON AS `tradingDate` above: a
+   * snapshot-level fact the browser cannot derive, taken from the payload and
+   * never from a clock. Null means the day bands, which is a RULE and not a
+   * fallback.
+   *
+   * Kept as the payload's ISO string rather than a `Date` so a row stays a
+   * plain serialisable object — `lib/mcp/tools.ts` and `lib/review/` both hand
+   * merged rows onward. The parse is per row and it is not the expensive part:
+   * what is computed once per snapshot, on the server, is the BOUNDARY.
+   */
+  catalystFreshFrom: string | null;
 }
 
 /** Extra context the merge needs but a single row cannot know for itself. */
@@ -172,6 +194,14 @@ export interface DeskRowContext {
    */
   tradingDate?: string | null;
   blueSky?: BlueSkyState;
+  /**
+   * `MarketSnapshot.catalystFreshFrom`, straight from the payload.
+   *
+   * Optional, and absent falls to the day bands — so every existing caller,
+   * including the market-offline fallback row in `MomentumTable`, keeps the
+   * behaviour it had before the refinement existed.
+   */
+  catalystFreshFrom?: string | null;
 }
 
 /**
@@ -379,6 +409,7 @@ export function buildDeskRow(
     // snapshot has no daily history to reason from, which is unavailable —
     // not open sky.
     blueSky,
+    catalystFreshFrom: context.catalystFreshFrom ?? null,
   };
 }
 
@@ -445,6 +476,16 @@ export function mergeDesk(
   const sessionPhase = market?.discovery.sessionPhase;
   // One date for the whole merge, from the snapshot rather than from a clock.
   const tradingDate = market?.discovery.tradingDate ?? null;
+  /*
+   * One freshness boundary for the whole merge, for the same reason.
+   *
+   * READ OFF `market`, NOT OFF `market.discovery`. `tradingDate` and
+   * `sessionPhase` above sit on the discovery projection and this one does
+   * not — it is a sibling of `intelligence`, `blueSky` and `events` on the
+   * snapshot itself. Every instinct points at the wrong object here, so the
+   * control is `market?.events`, a field known to be present beside it.
+   */
+  const catalystFreshFrom = market?.catalystFreshFrom ?? null;
 
   for (const ticker of sheetTickers) {
     rows.set(
@@ -456,7 +497,7 @@ export function mergeDesk(
         demandByTicker[ticker.ticker] ?? null,
         intelligenceByTicker[ticker.ticker] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, blueSky: blueSkyByTicker[ticker.ticker] },
+        { sessionPhase, tradingDate, catalystFreshFrom, blueSky: blueSkyByTicker[ticker.ticker] },
       ),
     );
   }
@@ -472,7 +513,7 @@ export function mergeDesk(
         demand,
         intelligenceByTicker[symbol] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, blueSky: blueSkyByTicker[symbol] },
+        { sessionPhase, tradingDate, catalystFreshFrom, blueSky: blueSkyByTicker[symbol] },
       ),
     );
   }
