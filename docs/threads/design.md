@@ -206,6 +206,67 @@ verbatim and not re-paraphrased here): tooltips are welcome on column names
 *"if it makes sense"* — his own limiter, and it excludes a tooltip that
 restates the header.
 
+## The 10-second question, measured 2026-09-25
+
+**HIS CLAIM, AND HE ASKED FOR IT ON THE RECORD:** *"im a thousand percent
+certain a 10s shows you something a minute doesn't. ive seen stocks go up 50
+percent and volume quintuple inside 30 seconds."*
+
+**HE IS RIGHT ON THE DATES, AND IT MATTERS LESS THAN THE SCOPE.** R&D closed
+`NO_SUBMINUTE_INCREMENTAL_SIGNAL` on **2026-08-21**; `activityWindow` shipped
+**2026-09-04** (`fce254c`) and the `Now` column **2026-09-22** (`3d611d4`) —
+so the verdict predates the column by a month. *That alone does not overturn
+it: the study had its own data and did not need this column.* **What settles
+it is that the register already says the null closed a PREDICTIVE line only,
+and that sub-minute data is still required for MEASUREMENT and was never
+tested.** His question was never the one that was closed.
+
+**MEASURED ON `data/market.db`, 782,393 minute bars with ≥10 trades, three
+sessions (2026-08-17/18/19), local desk store and not production:**
+
+    intra-minute range >= 10%    974 bars      >= 25%   87 bars
+                       >= 50%      7 bars      >= 100%   0 bars
+
+    the largest: JAB  $10.955 -> $19.00 in ONE minute  (73.4%, 1,153 trades)
+                 OABI  $3.39  ->  $5.90                (74.0%,   248 trades)
+
+**A ≥50% move inside a single minute is real and it happens.** *Minute bars
+cannot prove 30 seconds — only capture can — but they prove ≤60, seven times
+in three sessions.* His "quintuple" is real too: **403 of 124,720
+minute-over-minute transitions from a base of ≥100 trades quintupled (0.32%).**
+
+**THE FINDING THAT DECIDES IT IS NOT THE MOVE, IT IS WHAT THE COLUMN WAS
+SHOWING DURING THE MOVE.** `Now` renders the most recent SETTLED minute, so
+during minute *M* it displays *M−1*:
+
+    sym    the >=25% minute        this minute   was ON SCREEN
+    GNPX   2026-08-18T11:08        6,951 trades        128
+    VOGX   2026-08-18T08:04          722 trades         11
+    YYAI   2026-08-17T13:01          808 trades         24
+    APUS   2026-08-17T10:44        2,348 trades        236
+
+**Median jump over the prior minute across all 79 such events: 3.1×. So the
+number on screen while the move was happening was about 32% of what that
+minute actually produced, and it did not update until the move was over.**
+
+**AND THE SORT IS THE REAL CASUALTY, WHICH IS HIS OWN POINT SHARPENED.** He
+sorts by `Now` because *"it self sorts once selected so you can see what's
+active"* — the ordering is live. **A name exploding right now cannot sort to
+the top until its minute closes.** The column is least informative at exactly
+the moment it exists for, and the sort he uses most is the one the lag damages
+most.
+
+**WHAT THIS DOES AND DOES NOT ESTABLISH.** It establishes that minute grain
+hides moves he would act on, and that the column's lag is worst during them.
+**It does not establish that a 10s series PREDICTS anything** — that is the
+line R&D closed and nothing here reopens it. *The case for sub-minute is
+measurement and currency, not prediction, and it should be argued that way or
+it will be refused on evidence that does not apply.*
+
+*Limits, stated: three sessions, the LOCAL store, the whole universe rather
+than ranked names, and `high-low` carries a spread component on thin names —
+though the named examples all cleared 248 trades in the minute.*
+
 ## Open items
 
 | Item | Owner | Waiting on |
