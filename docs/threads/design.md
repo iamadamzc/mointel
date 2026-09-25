@@ -651,6 +651,29 @@ he hears it first.**
   hand-off rather than in the figure.** So a count travels with its base
   attached to it, not to the paragraph — and when there are two bases, print
   the table and stop writing the sentence.
+- **I APPLIED THE CONE RULE CORRECTLY TWICE AND THEN TOLD OPS TO DEPLOY A
+  TIP.** *Same day. I wrote the rule below, sent Integration a correction built
+  on it before lunch, and in the evening handed Ops five shas with "cut
+  whatever set you want from the tip — nothing between `757cf6a` and here that
+  belongs to me touches auth."* **`d0bc78c..main` is 250 commits carrying 10
+  auth commits from other seats.** Ops refused it.
+  - **THE CHECK WAS RIGHT AND POINTED AT THE WRONG OBJECT.** "Nothing of MINE
+    touches auth" answers *is my work auth-free* and says **nothing** about
+    what the sha carries. It is the identical shape to the finding I had sent
+    Integration that morning — a by-path check belongs on the PICKED FILES and
+    never on the cone.
+  - **KNOWING A RULE IS NOT THE SAME AS HAVING IT AT THE MOMENT OF THE HAND-OFF,
+    AND THAT IS THE DURABLE PART.** *The rule was in this file, in my memory and
+    in a message I had already sent. What defeated it was a sentence that FELT
+    like the check — it contained the words "auth", "by path" and a verified
+    negative — while measuring a different set.* **Say which set the check ran
+    over, in the sentence, every time: "picked files: zero" and "cone: 250
+    commits, 10 auth" are the same discipline pointed at two objects, and only
+    one of them decides whether a tip is safe.**
+  - **AND I RELAYED HIS "ok" TO OPS AS DEPLOY AUTHORITY.** It was approval of
+    the WORK; the enumeration is Integration's. **An approval and an
+    enumeration are different objects too**, which is the same error twice in
+    one message.
 - **HAND OVER AN ARTEFACT, NEVER A RECIPE — AND GATE THE SHA THAT SHIPS.**
   I gave Ops three shas and the instruction to cherry-pick them, having gated
   an **uncommitted** `cherry-pick -n` onto the production base and then reset it
