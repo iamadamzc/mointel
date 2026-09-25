@@ -55,6 +55,7 @@ export function PriceMoveCell({
   suppressBlueSky = false,
   phase = null,
   lead = 'GAP',
+  sorted = false,
 }: {
   telemetry: MarketTelemetry;
   blueSky: BlueSkyState;
@@ -72,6 +73,16 @@ export function PriceMoveCell({
    * number a trader scans first.
    */
   lead?: 'GAP' | 'MOVE';
+  /**
+   * True when the board is ordered by the figure this cell leads with.
+   *
+   * The LABEL takes the accent, never the percentage. The percentage's colour
+   * already carries DIRECTION — green up, red down — and overloading it with
+   * "this is the sort" would put two meanings on one colour, which is the
+   * defect this board keeps producing. The label carries nothing else, so it
+   * is free to say which column the order came from.
+   */
+  sorted?: boolean;
 }) {
   const change = telemetry.percentChange;
   const gap = baselineLabel(phase);
@@ -119,7 +130,12 @@ export function PriceMoveCell({
           * Measured at the 1,024px floor in the real font: the widest
           * realistic case, `10.49 RTH MOVE -123.4%`, is 160px in a 172px cell.
           */}
-        <span className="text-[10px] tracking-wide text-ink-3 uppercase" title={title}>
+        <span
+          className={`text-[10px] tracking-wide uppercase ${
+            sorted ? 'font-semibold text-accent' : 'text-ink-3'
+          }`}
+          title={title}
+        >
           {label}
         </span>
         <span className={`num text-[13px] font-semibold ${changeTone}`} title={title}>

@@ -575,6 +575,7 @@ export function DiscoveryBoard({
                 showFloat={showFloat}
                 phase={discovery?.sessionPhase ?? null}
                 lead={lead}
+                activeColumn={activeColumn}
               />
             ))}
           </tbody>
@@ -655,6 +656,7 @@ function DiscoveryRow({
   showFloat,
   phase,
   lead,
+  activeColumn,
 }: {
   row: DeskRow;
   selected: boolean;
@@ -669,6 +671,8 @@ function DiscoveryRow({
   showFloat: boolean;
   phase: SessionPhase | null;
   lead: 'GAP' | 'MOVE';
+  /** Which column the board is ordered by, so the accent can follow it. */
+  activeColumn?: string;
 }) {
   const demand = row.demand;
   // One projection for every surface: whatever the Focus strip shows for this
@@ -759,7 +763,29 @@ function DiscoveryRow({
       </td>
 
       <td className="num px-2 py-1 text-right align-middle">
-        <span className="text-[13px] font-semibold text-accent">{rank ?? '—'}</span>
+        {/*
+          * THE ACCENT MEANS "THIS IS THE ORDERING", AND IT WAS NAILED TO THE
+          * WRONG COLUMN.
+          *
+          * Accent is already the desk's mark for the active ordering — it is
+          * what lights the sort chip. RANK wore it unconditionally, so under
+          * any other sort the leftmost, most saturated column was announcing
+          * an order the rows were not in. He read a correctly sorted board as
+          * "random" twice: once on NOW, once on PM MOVE, where the values ran
+          * 30.5, 8.3, 7.0, 4.2 down the page while RANK read 8, 13, 26, 38.
+          *
+          * A caret and a header note did not fix it, because they competed
+          * with a colour rather than removing it. The number stays — it is the
+          * board's own ranking and he wants it — it just stops claiming to be
+          * the order when it is not.
+          */}
+        <span
+          className={`text-[13px] font-semibold ${
+            activeColumn === 'rank' ? 'text-accent' : 'text-ink-2'
+          }`}
+        >
+          {rank ?? '—'}
+        </span>
         {rankChange ? (
           <span
             className={`ml-1 text-[10px] ${rankChange > 0 ? 'text-pos' : 'text-neg'}`}
@@ -800,6 +826,7 @@ function DiscoveryRow({
           suppressBlueSky={halted || backside}
           phase={phase}
           lead={lead}
+          sorted={activeColumn === 'price'}
         />
       </td>
 
