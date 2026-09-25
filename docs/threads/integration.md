@@ -273,11 +273,16 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
 
 > **⚠️⚠️ CORRECTED BEFORE THE SHIP — DO NOT USE A ROW COUNT AS THE PASS CONDITION. I recorded
   "expect ONE row, not six" as a criterion and that is the wrong SHAPE of expectation.** *Ops's
-  catch; verified here by reading `lib/research/freshFrom.ts`.* **The boundary is the PRIOR
-  SESSION'S CLOSE and the band runs [prior close → NOW], so the band's start is pinned and its end
-  ADVANCES ALL DAY.** *The in-band count is therefore a time-varying, monotonically NON-DECREASING
-  quantity — a reading at 10:40 and one at 14:00 SHOULD differ, and Research's 6-of-325 was a
-  different day's data besides. A seat seeing 3 or 6 at 10:40 would file a defect against correct
+  catch; verified here by reading `lib/research/freshFrom.ts`.* **The boundary is the PRIOR SESSION'S CLOSE.**
+  *My mechanism for this was WRONG and Design corrected it by measuring through the shipped
+  function: **the change set does NOT grow with the clock.** Today's events are `days === 0` and
+  **already FRESH on the day bands**, so they move nothing. A row only MOVES if it is clocked,
+  `days >= 1`, and at or after the prior close — and that window is `[prior close → ET midnight]`,
+  **CLOSED and FIXED for the whole session.** The count still varies, for a different reason: **the
+  POPULATION CHURNS** as Discovery re-ranks and new analyses land.* **Same conclusion, and it
+  matters which reason: on my version a DECREASE by 14:00 reads as a regression; on the real one it
+  is just `INLF` dropping off the board. Compare BY TICKER, never by count.** *Research's 6-of-325
+  was a different day's data besides. A seat seeing 3 or 6 at 10:40 would file a defect against correct
   code; a seat seeing 1 against Research's 6 would file the same defect from the other side.*
 >
 > **THE VALID CRITERION IS DESIGN'S NAMED ROWS, NOT ITS COUNT — and Design supplied both.**
@@ -646,6 +651,33 @@ here.* His inputs (Google creds, when) are in OPEN AND HIS.
 > deploys — not a failed fix.** *Recorded here 2026-09-25 on Research's catch: the tenth session
 > had claimed this was already in LIVE STATE; it was not committed, only said in chat — the
 > "never assert what you haven't opened" rule, turned on the seat that carries it.*
+
+### ⚠️ ON MONDAY A ROW RENDERS `3d` IN GREEN — FOUND BEFORE IT SHIPPED, NOT A SHIP BLOCKER
+
+**Design, 2026-09-25 (`5b0d08f`), probing `resolveCatalystFreshness` with a Monday `now` rather
+than reasoning about it.** *`MAX_FRESH_FROM_AGE_MS` is 5 days **precisely so a long weekend still
+qualifies** — the comment says so — so the FRESH window is not always one evening.*
+
+```
+Fri 17:18 ET   days = 3   bands STALE    with boundary FRESH
+Sun 10:00 ET   days = 1   bands RECENT   with boundary FRESH
+Fri 15:00 ET   days = 3   bands STALE    with boundary STALE   (control)
+```
+
+**So on Monday a name wearing `no fresh news` on Friday is FRESH, and it renders `A 3d` IN GREEN.
+The BAND is his ruling and is CORRECT — Friday-evening news is untraded when Monday opens. The
+defect is the PAIRING:** the age NUMBER and the freshness COLOUR are computed from different
+quantities, *and this desk's own rule is that a number beside a word reads as the word's evidence.*
+
+> **WHY NOBODY HAS SEEN IT, AND WHY IT WILL NOT ANNOUNCE ITSELF: within a single day the two agree.**
+> *Today is Friday, the window is last night, and it renders `16h` in green and reads perfectly
+> fine. **A defect that is invisible on every day except one is not found by using the product.***
+
+**NOT a blocker for `0a17601` — the boundary ships CORRECT and its LABEL is unfinished. It has
+until MONDAY PREMARKET.** *Choosing the fix needs `resolveCatalystFreshness` to report WHICH ARM
+returned FRESH, which it does not today, so it reaches Research's function — Design is scoping it
+rather than bolting it on before a window, and is raising it with him because it changes what a
+badge means on his board.* **Design owns it (the Why cell); this thread is not routing it.**
 
 ### THE CYCLE FRAME — RULED WHOLE, AND IT UNBLOCKS TWO CONSTANTS
 
