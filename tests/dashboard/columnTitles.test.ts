@@ -140,10 +140,22 @@ describe('"if it makes sense" is his limiter and it is enforced', () => {
 
   it('says what each column is NOT, which is the part the screen cannot show', () => {
     // Each of these is a mistake someone has actually made on this desk.
-    expect(COLUMN_TITLE.rvol).toContain('never decays');
-    expect(COLUMN_TITLE.why).toMatch(/different question/i);
-    expect(COLUMN_TITLE.risk).toMatch(/could not establish/i);
-    expect(COLUMN_TITLE.float).toMatch(/not known for every name/i);
+    /*
+     * ASSERTED AS FACTS, NOT AS PHRASES. These pinned exact wording and broke
+     * when he sent two of the strings back to be rewritten -- a test failing
+     * on copy it was never guarding. What each column must still SAY:
+     */
+    // RVOL: that it is cumulative, so a dead name keeps a big number.
+    expect(COLUMN_TITLE.rvol).toMatch(/never decays|cumulative/i);
+    // WHY: that the letter and the colour are different quantities.
+    expect(COLUMN_TITLE.why).toMatch(/different question|two quantities/i);
+    // RISK: capacity is not flow -- permission to sell is not selling.
+    expect(COLUMN_TITLE.risk).toMatch(/not evidence anyone|permission to sell/i);
+    // RISK: an unestablished structure is not a cleared one.
+    expect(COLUMN_TITLE.risk).toMatch(/not the same as finding nothing/i);
+    // FLOAT: what a float IS, and that blank does not mean small.
+    expect(COLUMN_TITLE.float).toMatch(/available to trade/i);
+    expect(COLUMN_TITLE.float).toMatch(/never that the float is small/i);
   });
 });
 
