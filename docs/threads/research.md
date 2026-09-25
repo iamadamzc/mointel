@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T20:26Z
+## LIVE STATE — 2026-09-25T20:44Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -157,6 +157,23 @@ history, so that rests on Integration's account of the exchange rather than on a
 record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
+
+- **🆕 ASSIGNED 2026-09-25 EVENING, NOT STARTED — SEPARATE CAPTURE FROM QUALIFICATION IN THE ENGINE.** His ruling, relayed by Integration from his own turn: **"0-50 confirmed"** — record $0–$50, and the user picks any window inside it. **The config change is HELD until this lands**, because four call sites read ONE value and setting it today would put penny stocks and $45 names on his board:
+
+| site | what it decides | must become |
+| --- | --- | --- |
+| `engine.ts:988` | what gets CAPTURED | **$0–$50** |
+| `engine.ts:1650` | what QUALIFIES for his board | stays narrow |
+| `engine.ts:1690` | the after-hours qualification latch | stays narrow |
+| `readModel.ts:157` | what the board DISPLAYS as its header | stays narrow |
+
+  **Mine is the engine gate only.** Design takes the on-screen control; Ops takes the config. **Nothing ships until all three land.** *Scale, from Ops: the universe is 13,398 symbols including BRK.A at $759,200 — **the price band is the only thing keeping this desk small-cap.** A $50 ceiling is ~1,100 symbols; above $20 is 7,811 symbols printing 733–951 rows/day against a median of 58.*
+  **⚠️ A COST THAT BELONGS IN THE DESIGN RATHER THAN IN A LATER SURPRISE: a worker restart now costs ~3.5 MINUTES of capture, not one.** Measured by Ops tonight — 3m43s to SIP: a 50s replay of 1,075,636 bars, session reconstruction for 9,208 symbols, then 110s of silence. **Startup scales with the replay, the replay scales with the price band, and widening the band itself requires a restart.** *So a wider band makes every future restart permanently more expensive. Free-now rule: decide it while it is still cheap.*
+
+- **🆕 ASSIGNED 2026-09-25 EVENING, NOT STARTED — A HEARTBEAT WRITE MUST NOT BE ABLE TO KILL THE WORKER.** `researchRepo.ts:901`, `writeResearchHealth`. **Research died three times on `SQLITE_BUSY`** — 22:22:03 / 22:22:22 / 22:22:55, `NRestarts=3`, clean from 22:23:20 — while the market worker's post-backfill persistence held the write lock. `busy_timeout` is 5000ms against a 110s startup gap. *Self-healed, after-hours, no public effect.* **Ops owns the long startup write; THIS HALF IS MINE, and it is the same class as the 08-28/08-29 lock crashes at a THIRD site — a third sufficient cause beside the two pre-registered on 09-03.** Neither half is fixed.
+
+- **🆕 REPORTING RULE FOR THE WIRE COVERAGE WORK — SPLIT, NEVER A TOTAL.** R&D's and Integration's, and it has two segments. **A single figure across all price bands hides the only case that matters: whether the feed reaches the sub-$1 names he trades.** And R&D measured a second: **of the 125 tickers whose resolution found no newsroom, 44 (35.2%) are FOREIGN PRIVATE ISSUERS**, which is where wire coverage thins. *A high overall number could still leave a third of the bucket uncovered.*
+  **R&D's supporting measurement, and it handled its own bias honestly:** newsroom-not-found is **52.1% across the population and 11.1% among wire-carrying names — 5x less likely** — and the desk's wire copies are found by a fallback that runs **precisely when the issuer path fails**, so the sampling bias points the other way and the result survived it. *That is the correlation predicted above, measured.*
 
 - **✅ COVERAGE ANSWERED, AND IT INVERTS THE FINDING: THE DESK HAD THE RELEASE 44 SECONDS BEFORE IT ASKED, IN A SOURCE THE ACCOUNT ALREADY PAYS FOR, AND LOOKED SOMEWHERE ELSE.** Ops's probe, 2026-09-25, `data.alpaca.markets/v1beta1/news?symbols=AIFF` — HTTP 200, 2 items.
 
