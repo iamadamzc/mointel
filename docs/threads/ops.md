@@ -11655,10 +11655,17 @@ is half an audit.*
 
 ---
 
-## HANDOVER — Ops, retiring 2026-09-25 ~14:0x UTC (session 2026-09-18 → 09-25)
+## HANDOVER — Ops, 2026-09-25 ~14:0x UTC — ***WITHDRAWN, THE SEAT CONTINUES***
 
-**The successor's opening prompt is `docs/ops-opening-prompt.md`, rewritten
-today from box reads. This section is the why; that file is the what.**
+> **HE RULED "you are the successor" at ~12:3x UTC. This hand-off did not
+> happen.** `Ops-tmi` keeps its title, is not archived, and remains the Ops seat.
+> There is no successor session. Everything below was written as a retirement
+> note and is KEPT because its content is current and was read from the box —
+> read it as a state-of-the-desk entry, not as a succession. Where it says "the
+> successor", read "this seat".
+
+**The opening prompt is `docs/ops-opening-prompt.md`, rewritten today from box
+reads. This section is the why; that file is the what.**
 
 Retiring on my own judgment under the session-hygiene rule, not on instruction.
 The tell was not the message count — it was three tracking errors in one day:

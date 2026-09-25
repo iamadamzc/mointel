@@ -1,5 +1,17 @@
 # Opening prompt — the Ops seat
 
+> ## THE 2026-09-25 RETIREMENT WAS WITHDRAWN. HE RULED: "you are the successor."
+>
+> **The seat did not change hands.** `Ops-tmi` continues, keeps its title, and is
+> not archived. No successor session exists or is coming — if a peer tells you to
+> route box questions to one, that instruction is stale.
+>
+> This file was rewritten from box reads on the morning of 2026-09-25 as a
+> succession document. **It is kept, unreverted, as the seat's CURRENT-STATE
+> reference** — it is the most accurate live state the desk has had — and it stays
+> paste-ready should a new seat ever genuinely be opened. Read the production
+> figures below as a dated reading, not as a live one: re-read the box.
+
 **Rewritten 2026-09-25 ~14:0x UTC. Every production fact below was read from
 the box at that time, not carried forward.**
 
@@ -252,6 +264,10 @@ inside the quote.
 >
 > ## What he does with the old chat
 >
-> Rename it `Ops-tmi (retired 2026-09-25)` so the name no longer collides and
-> messages route here instead, then **archive it — do not delete it.** The
-> transcript is the record.
+> **NOT APPLICABLE to 2026-09-25 — he withdrew that retirement (see the banner at
+> the top of this file). Nothing was renamed and nothing was archived.** The
+> instruction below applies only to a future hand-off that actually happens.
+>
+> Rename it `Ops-tmi (retired <date>)` so the name no longer collides and
+> messages route to the new seat instead, then **archive it — do not delete it.**
+> The transcript is the record.
