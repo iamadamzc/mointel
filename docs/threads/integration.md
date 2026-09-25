@@ -241,7 +241,9 @@ Everything below LIVE STATE is kept for its MECHANISMS, not its facts.*
 ### PRODUCTION
 
 ```
-web / research / assess   757cf6a   deployed 2026-09-24, 2s down (rollback acc3095).
+web / research / assess   757cf6a   deployed 2026-09-24, 2s down (rollback acc3095 -- NOTE:
+                                     acc3095 is EVICTED by today's SECOND ship; see the
+                                     rollback-baseline collision below).
 market worker             757cf6a   restarted 2026-09-24 20:24:07Z, pid 1063272, NRestarts 0.
                                      BOTH UNITS ON ONE RELEASE (first time this week). Carries the
                                      freshness bands (FRESH=prior session close; day bands; arm-5
@@ -381,6 +383,25 @@ branch holding the picks onto the production base   NONE  (git branch --contains
   was taken on an after-close deploy where it could harm nothing, which is why it stayed theoretical
   until today.*
 
+> **⚠️ "ROLLBACK BASELINE" NAMES TWO DIFFERENT THINGS THAT BEHAVE OPPOSITELY UNDER PRUNE.**
+  *Ops's finding 2026-09-25, correcting its own handover — and MY LIVE STATE carried the same
+  wrong sha, now fixed above.* **`34414f4` is the previous RELEASE DIRECTORY, unpinned, and
+  `KEEP_RELEASES=3` DELETES it on today's first ship. `rollback-baseline` is a PINNED LABEL —
+  `/opt/mointel/pins/rollback-baseline.pin`, sha `372f5eb`, schema v18 — which prune honours and
+  which survives indefinitely.** *Ops's projection, pins honoured: after `49efd1a` keep
+  `49efd1a 757cf6a acc3095`; after `0a17601` keep `0a17601 49efd1a 757cf6a`. **So `757cf6a` —
+  today's known-good — survives both ships and is the real rollback target for either.***
+>
+> **AND THIS IS THIS THREAD'S FOUNDING INCIDENT, RECURRING.** *Line 29 above: the charter was
+  opened partly because `ops.md` claimed `80437c3` and `372f5eb` were both pinned when only
+  `372f5eb` was — **"it came from a deploy transcript rather than `pins.sh list`, and nobody would
+  have checked until a rollback failed."** Today's is the same sha, the same file, the same class
+  of claim, and it was caught by the same instrument: reading the pins instead of trusting a
+  projection.* **A rollback-safety claim is only as good as `pins.sh list`; a transcript, a
+  handover line, or a retention projection done without pins is not that.** *`pins.sh:10` records
+  why the mechanism exists — count-based retention already destroyed `372f5eb` once, after three
+  deployments. Today is two deployments in one morning.*
+
 > **`49efd1a` IS UNPUSHED, AND THE EXPOSURE IS TRACEABILITY, NOT DURABILITY.** *Ops measured this
   2026-09-25 against Integration's imprecise "production on code with no remote copy"; re-verified
   here independently.* **All three blobs of `49efd1a` are bit-identical to `34cf6f3`'s, and
@@ -389,8 +410,10 @@ branch holding the picks onto the production base   NONE  (git branch --contains
   files against its own parent, AND its parent's versions of all three are identical to `757cf6a`'s
   — so `git cherry-pick 34cf6f3` onto `757cf6a` applies cleanly from any clone and reproduces the
   deployed tree exactly. A different commit sha, identical content.* **So no code is at risk and
-  rollback is untouched** (it goes to a release DIRECTORY on the box, `34414f4`, not to a git
-  object). **The real and bounded cost: `git archive 49efd1a` fails from any other clone, and the
+  rollback is untouched** (it goes to a release DIRECTORY on the box, not to a git object).
+  *I wrote `34414f4` here. **See the rollback-baseline collision below — that sha is an UNPINNED
+  previous release and today's first ship DELETES it.** The rollback target for either of today's
+  ships is `757cf6a`.* **The real and bounded cost: `git archive 49efd1a` fails from any other clone, and the
   sha in the deploy log resolves to nothing** — on a desk whose whole deploy discipline is *ship the
   enumerated sha as a literal*, that is a genuine loss. *If it ships unpushed, record
   `49efd1a = 757cf6a + cherry-pick of 34cf6f3` in the deploy log and the sha becomes reconstructible
