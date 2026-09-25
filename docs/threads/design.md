@@ -318,6 +318,39 @@ it will be refused on evidence that does not apply.*
 than ranked names, and `high-low` carries a spread component on thin names —
 though the named examples all cleared 248 trades in the minute.*
 
+## SUB-MINUTE CAPTURE IS FOR THE COLUMN, NOT FOR A STUDY
+
+**HIS CORRECTION, 2026-09-25, and he is right:** *"The whole idea and what I
+understood behind all of this was that if we can get sub one minute capture,
+then the now column can be near live."*
+
+**I HAD FILED IT AS A MEASUREMENT QUESTION AND THAT LOST THE POINT.** The
+register entry read "unblocks R&D Q2" and my question to him argued it as what
+would let someone measure a 30-second move. *Both true, and neither is why he
+wants it.* **The product purpose is a live column, and the research value is a
+by-product.**
+
+**WHY HE IS RIGHT, MECHANICALLY.** The column lags because `engine.ts:1026`
+fills its counts from `bar.tradeCount` on minute BARS, and a bar does not exist
+until its minute closes. **`ingestTrade` counts nothing today** — it updates
+price and the session highs and retains no timestamps. So:
+
+    capture        = a per-symbol time-bucketed COUNTER + persistence
+    live column    = the same COUNTER + a read of the newest bucket
+
+**The counter is the shared part and it is the whole of the work.** Once the
+engine buckets trades at 10s, the column reads the newest settled bucket and
+the figure is **10–20s behind instead of 60–120s**, plus the 4s poll. *That is
+why "capture, then the column is near live" is the correct model and my
+"capture is for measurement" was the wrong one.*
+
+**THE ONE REAL CONSTRAINT IS COVERAGE, AND IT IS UNCHANGED BY THE GRAIN.**
+Only names carrying the hi-res trade subscription can be counted — about 6 of
+12 rows on a live board. **A 10s figure is roughly a sixth of a 60s figure for
+identical activity, so a counted row and an uncounted row cannot share one
+sort without the uncounted names sorting to the top.** *That is his open
+question and it is the thing to settle before the reader is built, not after.*
+
 ## ~~FIELD SPEC — `DemandState.tradesLast60s`~~ — REJECTED 2026-09-25
 
 **⚠ HE REJECTED THIS THE SAME EVENING. KEPT, NOT DELETED, because the
@@ -468,7 +501,7 @@ build the reader to be safe without it.
 | `lastCheckpointChanges` on the payload | Engine/Research seat | Spec above; §9 item 12's rail blocks on it |
 | ~~`tradesLast60s` on the payload~~ | ~~Engine seat~~ | **REJECTED by him 2026-09-25.** Nothing was built |
 | Price-window control + header | Design | HIS call on what `Rank` means in a narrowed window; engine split first |
-| Sub-minute CAPTURE (true 10s) | His call, then R&D | **Selected by `1, both`, whose OTHER half he then rejected. Needs one clean question before anyone builds** |
+| Sub-minute capture -> a near-live `Now` | Engine, then Design | **ON. His confirmation 2026-09-25: "Sub minute capture absolutely still on."** The counting is shared: capture stores the buckets, the column reads the newest |
 | ~~The `Now` column HEADER label~~ | ~~Design~~ | Built `ccaf77b`, tagged `363f40d`, **PARKED on his word** |
 | ~~Confirm the boundary's VISIBLE effect~~ | ~~Design~~ | **DONE** one row moved, zero demotions, discriminating pair |
 | The package: tooltips + `TRADES` + the within-day question | His call | One decision, three parts, ships as one change |
