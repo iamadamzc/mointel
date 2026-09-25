@@ -755,6 +755,28 @@ arrived).* **So never record it without a timestamp beside it: it is a SHAPE tha
 count that holds.** *Seven of twelve rows left the board in the same
 window; the bare-date tripwire survived under a new name (ONCO left, CNET took its place).*
 
+### HIS DIRECTION 2026-09-25: TOOLTIPS CARRY THE DEPTH, HEADERS SAVE THE SPACE
+
+**His words, recorded verbatim rather than summarised, because the ruling is the artefact:**
+
+> *"we can save screen space where tooltips can support and enhance understanding. i think the
+> tooltips are SUPER helpful, mainly because you dont have to click and open another screen. so for
+> each of the column names add a tooltip with a deeper more helpful explanation if it makes sense"*
+
+**Routed to Design (owns the board), sequenced AFTER the `0a17601` verification.** *The mechanism
+already exists — every column def in `DiscoveryBoard.tsx` carries a `title`, unevenly filled, and
+`changePct` (Gap) at line 140 has `title: ''`. So it is a copy pass with one real hole, not a
+build.* **"if it makes sense" is his own limiter and is being held to: a tooltip restating the
+header teaches nothing.**
+
+> **⚠️ AND IT IS NOT AN APPROVAL OF `363f40d`. He did not mention the rename and I am not reading
+  one into a sentence about tooltips.** *The `Now` → `TRADES` rename argued TWO things — that the
+  column did not say WHAT it was, and that it named a TIME where every other header names a
+  QUANTITY. **A tooltip answers the first and not the second**, so the rename may still earn its
+  place or may not.* **Design returns a recommendation and he then rules ONCE on the tooltip set
+  and the rename together, rather than twice on the same column.** *`363f40d` stays parked, and if
+  the rename survives it may need re-cutting on top of the tooltip pass rather than shipping as-is.*
+
 ### QUEUED BOX READS — TWO, BOTH FOR OPS, NEITHER URGENT, IN THIS ORDER
 
 *Recorded 2026-09-25 so they survive this seat. Ops is NOT retiring, so both route to `Ops-tmi`.
