@@ -764,9 +764,19 @@ export interface MarketSnapshot {
    * that has stopped refreshing -- and it is null for the two degraded
    * snapshots for the same reason.
    *
-   * Only a CLOCKED event can be tested against it, and 77% of stored event
-   * timestamps carry no time of day, so this changes the band on a minority of
-   * rows by construction.
+   * ONLY A CLOCKED EVENT CAN BE TESTED AGAINST IT, so this changes the band on
+   * a minority of rows by construction. **344 of 874 current dossiers carry a
+   * catalyst timestamp that can never reach FRESH** -- 270 bare or otherwise
+   * unclocked, and 74 in the ` ET` wall-clock shape, which is DATE precision.
+   * Ops's census, 2026-09-25.
+   *
+   * That figure is stated with its population on purpose. This comment first
+   * read "77% of stored event timestamps carry no time of day", which is the
+   * number this desk quotes in five other places -- and it is denominated in a
+   * month-old snapshot of `research_analysis_versions`, not in the dossiers
+   * this field is read against. The two are not the same population and the
+   * current value of the 77% has not been measured; see the hazard in
+   * `docs/threads/research.md`.
    */
   catalystFreshFrom: string | null;
   fetchedAt: string;
