@@ -21,10 +21,10 @@ import { describe, expect, it } from 'vitest';
  * loop: one refusing host sets it even when a later candidate answered fine and
  * simply was not a collection point. So it cannot separate:
  *
- *     returned 0                           the resolver named nothing    REACH
- *     returned N, fetched 0                every host refused us    REACHABILITY
- *     returned N, fetched M, none durable  pages answered, none was an index
- *                                          or a feed                      REACH
+ *     candidatesReturned 0        the resolver named nothing            REACH
+ *     ...Probed > 0, Fetched 0    every host refused us           REACHABILITY
+ *     ...Fetched > 0, none durable  pages answered, none was an index or
+ *                                   a feed                               REACH
  *
  * The second and third would be one observation under the boolean -- the defect
  * shape this desk hit three times on 2026-09-25 (`minute_bars` zero rows,
@@ -44,16 +44,47 @@ describe('the probe loop counts what it tried', () => {
     // Instrument first: the loop these counters hang off must still be here.
     expect(source).toContain('for (const candidate of candidates.slice(0, MAX_CANDIDATE_PROBES))');
 
-    const at = source.indexOf('probes.probed += 1;');
+    const at = source.indexOf('probes.candidatesProbed += 1;');
     expect(at, 'nothing counts a probe').toBeGreaterThan(-1);
 
     // The fetch counter must be conditional. An unconditional increment would
     // make `fetched` equal `probed` always, which is the boolean's blindness
     // rebuilt out of integers.
-    expect(source).toContain('if (!page.failure) probes.fetched += 1;');
+    expect(source).toContain('if (!page.failure) probes.candidatesFetched += 1;');
   });
 
-  it('seeds `returned` from the candidate list, not from the probe cap', async () => {
+
+  it('names its unit, because the obvious guess is wrong', async () => {
+    /*
+     * `fetchCompanyPage` is called from THREE places in irRegistry: the
+     * candidate loop, `probeFeed`, and `probeIndex`. Only the first is counted.
+     * So a field called `probed` read as a REQUEST count undercounts -- and
+     * rate limits are the first question anyone brings to a counter like this.
+     *
+     * Renamed before any row was written. After that the desk carries two keys
+     * across vintages forever and every reader must know both, which is the
+     * defect this census was built to avoid, one layer up.
+     */
+    const source = await read('lib/research/catalyst/irRegistry.ts');
+    expect(source).toContain('candidatesReturned');
+    expect(source).toContain('candidatesProbed');
+    expect(source).toContain('candidatesFetched');
+
+    // The unnamed forms must be gone from the census, not merely joined by the
+    // named ones -- two spellings of one field is the thing being prevented.
+    const at = source.indexOf('export interface ResolutionProbeCensus');
+    const block = source.slice(at, source.indexOf('}', at));
+    expect(block).not.toMatch(/^\s*returned:/m);
+    expect(block).not.toMatch(/^\s*probed:/m);
+    expect(block).not.toMatch(/^\s*fetched:/m);
+
+    // And the fetch sites this census does NOT count are named where a reader
+    // of the field will be standing.
+    expect(source).toContain('probeFeed');
+    expect(source).toContain('probeIndex');
+  });
+
+  it('seeds `candidatesReturned` from the candidate list, not from the probe cap', async () => {
     /*
      * `returned` must count what the RESOLVER named, before `MAX_CANDIDATE_PROBES`
      * truncates it. Seeding it from the slice would report 6 for a resolver that
@@ -61,7 +92,7 @@ describe('the probe loop counts what it tried', () => {
      * against a capped prober while the second is a resolver running dry.
      */
     const source = await read('lib/research/catalyst/irRegistry.ts');
-    expect(source).toContain('returned: candidates.length');
+    expect(source).toContain('candidatesReturned: candidates.length');
   });
 
   it('distinguishes "did not look" from "looked and found nothing"', async () => {

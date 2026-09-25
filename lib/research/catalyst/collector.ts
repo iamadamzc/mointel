@@ -203,11 +203,16 @@ export interface CatalystCollectionReport {
   /**
    * Why RESOLUTION found nothing, as counts rather than a label.
    *
-   * `returned` 0 -- the resolver named no candidate. **REACH.**
-   * `probed` > 0 with `fetched` 0 -- every host refused us. **REACHABILITY.**
-   * `fetched` > 0 and still no durable point -- pages answered and none was an
-   * index or a feed. **REACH again**, and the XOS case, where every candidate
-   * was a newswire copy.
+   * `candidatesReturned` 0 -- the resolver named nothing. **REACH.**
+   * `candidatesProbed` > 0 with `candidatesFetched` 0 -- every host refused us.
+   * **REACHABILITY.**
+   * `candidatesFetched` > 0 and still no durable point -- pages answered and
+   * none was an index or a feed. **REACH again**, and the XOS case, where every
+   * candidate was a newswire copy.
+   *
+   * **The unit is CANDIDATES, not requests.** `probeFeed` and `probeIndex` each
+   * issue requests this census does not count, so a rate-limit reading taken
+   * from here undercounts.
    *
    * **A single `unreachable` boolean cannot separate the last two** -- it is a
    * sticky OR across the probe loop, so one refusing host sets it even when a
@@ -386,7 +391,7 @@ export async function collectCatalystEvidence(
     discoveryMode: null,
     companySourceDetail: 'not attempted',
     companyFetchDetail: 'not attempted',
-    resolutionProbes: { returned: 0, probed: 0, fetched: 0 },
+    resolutionProbes: { candidatesReturned: 0, candidatesProbed: 0, candidatesFetched: 0 },
     discoveryTrigger: null,
     discoveryIntervalMinutes: 0,
     resolved: false,
