@@ -130,7 +130,50 @@ the registry `note`, which `researchRepo.ts:460` updates in place with
 > are not counted anywhere**, and `companyFetchDetail` describes the
 > deterministic fetch of a known url, not the probing that precedes having one.
 > **So `3dc14e2` does not make this measurable either, forward or backward.**
-> *Persisting the `unreachable` flag on the collector report is the whole ask.*
+> ~~*Persisting the `unreachable` flag on the collector report is the whole ask.*~~
+
+> **THE ONE-BOOLEAN ASK IS REFUTED TOO — by Research, with a sharper argument
+> than the objection that killed my previous claim. Verified in the file rather
+> than relayed.**
+>
+> **`unreachable` is a STICKY OR across the probe loop** — `let unreachable =
+> false` (`:349`), set true on any `NOT_FETCHED` (`:371`), and **returned
+> alongside a SUCCESSFUL point** (`:364`, `:366`). *So it reads true on a
+> resolution that worked*, and in a mixed run — one host refuses, another
+> answers but is not durable — it files a **reach** failure as **reachability**.
+> **Opposite fixes.** It collapses three outcomes into two:
+>
+>     returned 0                            resolver named nothing        REACH
+>     returned N, fetched 0                 every host refused us         REACHABILITY
+>     returned N, fetched M, none durable   pages answered, none was an   REACH
+>                                           index or a feed  <- the XOS case
+>
+> **So it is three counts, not one boolean, and they are already in the tree:**
+> `ResolutionProbeCensus { returned, probed, fetched }` (`:45`, `:116`, `:352`),
+> shipping as **`d734d6f`**. *Approved and enumerated by Integration; not this
+> seat's to design, and my version would have been wrong.*
+>
+> **TWO HAZARDS FOR WHOEVER READS THAT CENSUS, and R&D will be that reader:**
+> 1. **`probed` is incremented BEFORE the outcome is known** (`:359`, ahead of
+>    the verdict checks at `:364`+). **It means *candidates attempted*, not
+>    *candidates that answered*** — `fetched` is the one that counts bodies
+>    returned (`:117`). **Reading `probed` as "answered" gets the reachability
+>    arm backwards.**
+> 2. **`probed` counts CANDIDATES, not HTTP REQUESTS.** `probeIndex` spends
+>    extra fetches inside the loop that the census never sees, **so it cannot be
+>    read as load or as cost.**
+>
+> **AND THE URL WITHHOLDING MUST STAY.** Recording a newswire copy would look
+> like success and permanently block the discovery fallback — *which is how XOS
+> reached its Air Force release.* **The absence of a url is not the defect and
+> must not be "fixed".**
+
+> **NOTHING RETROSPECTIVE IS RECOVERED. The August proportions in this document
+> are the last word on August, permanently** — the archived report carries no
+> `note`, and the `!durable` branch stored no url either way. **The split becomes
+> measurable only from the first session after `d734d6f` deploys.** *A future
+> seat must not wait for this instrument to resolve the August census; it never
+> will.*
 
 ## Where the reach actually runs out
 
