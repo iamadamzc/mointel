@@ -71,85 +71,53 @@ worktree with a clean status: **2,364 / 2,367 tests, lint 0 errors, build OK,
 typecheck clean.** Ops has since gated `0a17601` independently. *The three
 extra files over `757cf6a` are `49efd1a`'s own.*
 
-**THE BEFORE READING IS TAKEN, AND IT REPLACES A BORROWED NUMBER WITH A
-FALSIFIABLE PREDICTION.** Captured from the live board at 2026-09-25 13:15 UTC
-/ 09:15 ET, an hour before the window, because after the deploy it is gone.
-Payload kept at `before-market-2026-09-25T1315Z.json` in this session's
-scratchpad.
+**THE BEFORE READING, RE-TAKEN 2026-09-25 15:38 UTC / 11:38 ET.** Neither
+release shipped at 10:36; the 09:15 control set was 2.5 hours stale and
+**7 of its 12 rows had left the board.** Payload kept as
+`before2-market-1538Z.json` in this session's scratchpad. *`catalystFreshFrom`
+is still ABSENT from the production payload — the key, not a null — so
+`7a0ad0c` is confirmed not live, checked rather than taken on a peer's word.*
 
-**`catalystFreshFrom` IS ABSENT FROM THE PRODUCTION PAYLOAD** — the key, not a
-null. That is the control my local check could not give me: locally the key is
-PRESENT with a null value, in production it is MISSING entirely, and the two
-states are distinguishable. `7a0ad0c` is not live, measured rather than assumed.
+    MOVER            INLF  2026-09-24T21:18:05Z = 17:18 ET, AFTER the close
+                           amber now; MUST turn GREEN.  Positive control
+                           survived the churn.
 
-**THE LIVE BOARD IS 12 DISCOVERY ROWS, NOT 325 STORED ANALYSES, SO EXPECT ONE
-MOVER AND NOT SIX.** Research's 6-of-325 is over everything stored; it is not a
-prediction about what he will see. **Reading six changes on this board would
-itself be the defect signal.**
+    MUST STAY AMBER  MGLD 18:00:36Z  MSGY 12:00:25Z  AXG 09-21  AIFF 09-17
+                     RDGT 09-09  IZM 09-11      all clocked, all before it
 
-    MOVER   INLF  2026-09-24T21:18:05Z  17:18 ET, AFTER the 16:00 close
-                  renders amber `16h` now; must turn GREEN
+    MUST STAY GREEN  LFS (today, ` ET` shape)   KITT (today, clocked)
+                     the DEMOTION direction — nothing may move backwards
 
-    CONTROLS THAT MUST NOT MOVE -- same calendar day, wrong side of the close
-            IFBD  17:00:47Z (13:00 ET)   the nearest miss, 3h short
-            MGLD  18:00:36Z (14:00 ET)
-            APUS  12:30:00Z   BYAH 12:27:00Z   JAGX 10:01:32Z
+    CANNOT MOVE      CNET bare date `2026-08-18`   KRSP no timestamp
+                     IFBD ` ET` shape at days = 1
 
-    IF `INLF` HAS LEFT THE BOARD BY 10:40 THE POSITIVE CONTROL IS GONE and a
-    null result proves nothing until it is recomputed. Check the row list
-    BEFORE concluding anything from an absence. *Ops's caveat, and it is the
-    failed-check-returns-a-plausible-answer shape exactly.*
+**TWO ROWS CHANGED TIMESTAMP SHAPE IN 2.5 HOURS, SAME INSTANT, AND THAT IS A
+CONFOUNDER IN MY OWN CONTROL SET.** Verified as identical instants by
+arithmetic, not assumed:
 
-    MORE movers than predicted is NOT a defect -- the population churns all
-    session as Discovery re-ranks and new analyses land. The criterion is the
-    NAMED ROWS, never the count.
+    KITT  2026-09-25T04:41:22-04:00  ->  2026-09-25T08:41:22.000Z   CLOCK -> CLOCK
+    IFBD  2026-09-24T17:00:47.000Z   ->  2026-09-24 13:00:47 ET     CLOCK -> DATE
 
-    THE ` ET` SHAPE IS ON THE BOARD ONCE AND IS UNAFFECTED. `LFS`
-    `2026-09-25T08:30:32 ET` gets DATE precision and can never be promoted
-    by the boundary -- and does not need to be: its event is TODAY, so
-    `days === 0` bands it FRESH anyway. Watchlist: none. So there is no
-    amber-beside-greens case on this board, and LFS is a control in the
-    OTHER direction: already green, and it must STAY green.
+**A row's PRECISION is not stable across a session.** `IFBD` flipped
+CLOCK -> DATE, which is the precision that decides whether the boundary can
+reach a row at all. *It happens not to change IFBD's verdict — 13:00 ET is
+before the close, so it stays amber either way, and the two reasons are
+indistinguishable on screen.* **But a row that flipped the other way, or
+flipped while sitting after the close, would gain or lose a promotion for a
+reason that has nothing to do with the deploy.**
 
-    BARE-DATE CONTROL -- Research's tripwire, as a row on his screen
-            ONCO  `2026-09-24`  amber, and it CANNOT move. Green here is a
-                  defect and not the feature.
+**SO THE AFTER-CHECK RE-READS EACH NAMED ROW'S TIMESTAMP FROM THE PAYLOAD,
+NOT ONLY ITS COLOUR.** A row whose shape or instant changed is DISQUALIFIED as
+a control rather than counted as a defect. Without that, a re-analysis between
+the two readings is indistinguishable from the boundary misbehaving — and it
+would have been read as the deploy's fault.
 
-    UNCHANGED  LFS, KITT already FRESH today - AIFF 8d, EDBL 23d old -
-               YHGJ no timestamp
+*The bare-date tripwire survived the churn under a new name: `ONCO` left,
+`CNET` took its place.*
 
-*One format oddity for Research, not a defect of mine: `LFS` stores
-`2026-09-25T08:30:32 ET` and `KITT` stores `2026-09-25T04:41:22-04:00` — three
-timestamp shapes in one column. Both currently band correctly, so `catalystAge`
-copes; it is worth knowing the column is not uniform.*
-
-**THE MONDAY CASE, FOUND WHILE CHECKING A PEER'S MECHANISM AND MEASURED RATHER
-THAN REASONED.** The promote window is [prior session close → ET midnight],
-because anything after midnight is `days === 0` and already FRESH on the bands.
-**Today that window is last night. ON A MONDAY IT SPANS THE WEEKEND** — about
-56 hours — and `MAX_FRESH_FROM_AGE_MS` is 5 days precisely so a long weekend
-still qualifies. Probed through the shipped function with a Monday `now`:
-
-    Fri 17:18 ET   days = 3   bands STALE    with boundary FRESH
-    Sun 10:00 ET   days = 1   bands RECENT   with boundary FRESH
-    Fri 15:00 ET   days = 3   bands STALE    with boundary STALE   (control)
-
-**SO ON MONDAY A ROW RENDERS `A 3d` IN GREEN, AND A NAME WEARING `no fresh
-news` ON FRIDAY IS FRESH ON MONDAY.** The band is his ruling and it is right —
-Friday-evening news is untraded when Monday opens. **The DEFECT IS THE PAIRING:
-the age number and the freshness colour are computed from DIFFERENT QUANTITIES**
-(elapsed days; the session boundary), and this desk's own rule is that a number
-beside a word reads as the word's evidence. Within a day they agree — `16h`
-green reads fine, which is why nobody has seen this. Across a weekend they
-contradict each other on the row.
-
-**Nobody has looked because today is Friday.** It bites on a Monday premarket,
-which is a session he trades. Not a blocker for `0a17601`: today's window
-produces `16h`, and the honest reading is that the boundary ships correct and
-its LABEL is unfinished. Options are a scope clause on the age (`since Fri
-close` instead of `3d`), both, or leaving it to the tooltip — and choosing
-needs `resolveCatalystFreshness` to report WHICH arm returned FRESH, which it
-does not today.
+**A VERIFICATION CRITERION HAS A SHORTER SHELF LIFE THAN THE APPROVAL IT
+CHECKS.** The gate and the enumeration were still valid three hours later; the
+control set was not. Integration's framing, and it is the right one.
 
 **`design/now-header-gated` IS BLOCKED ON HIS ANSWER** — it renames the column
 to `TRADES` and that is unanswered in his NEEDS YOU block. Not on a relayed
