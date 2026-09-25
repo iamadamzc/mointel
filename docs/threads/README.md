@@ -12950,6 +12950,35 @@ contradicting them.**
 **That layout is worth more than the fix.** A summary printed on its own, or above
 its evidence, or in a different message, is never checked against it.
 
+## A DEAD LAUNCHER AND A FAILED DEPLOY ARE THE SAME OBSERVATION FROM HERE
+
+**Ops, 2026-09-25, on the fourth ship of the day.** *Its local deploy wrapper was reported **STOPPED
+with no completion record** — the launching process died before the session ended. **The deploy had
+already completed on the box**: `push-release.sh` runs `deploy.sh` under `systemd-run --collect`, and
+the detached unit does not care whether the machine that launched it is still alive.
+`mointel-deploy-79cc4d1-205629.service: Deactivated successfully`, 2min 11s CPU, 1.7G peak.*
+
+**THIS IS THE MORE DANGEROUS TWIN OF THE SHORT TEST RUN, and the direction is why.** *A short
+collection at least reports that something is wrong. **A dead launcher reports a FAILURE for a deploy
+that SUCCEEDED** — so the conscientious seat, reading its own stopped task, tells the bus "it did not
+ship".*
+
+> **AND THAT SENTENCE HAS A SECOND VICTIM.** *Integration was at that moment deciding the base for the
+> next enumeration. Told "it did not ship", it would have enumerated onto `3dc14e2` — **approving a
+> cherry-pick onto a base that was one ship stale, with the gate green and every commit real.** A
+> wrong base is invisible in a diff: the picks apply, the tests pass, and the shipped tree silently
+> lacks two commits it was supposed to contain.*
+
+**THE RULE: the artefact on the far side is the evidence, never the process that was supposed to
+produce it.** *`/proc/<pid>/cwd` on the running services, the release directories, the journal — all
+three are on the box. **Ops read the box rather than its own task, which is the only reason the answer
+was right.***
+
+*Same family as the false `ec2` empty and the stale bundle, and it completes a set recorded in one
+day: an instrument that lost part of its input (test files), an instrument answering about the wrong
+resource (`ec2` on a Lightsail box), and now **an instrument reporting on its own health while being
+asked about someone else's work.***
+
 ## A RUN THAT LOSES TEST FILES REPORTS ITSELF AS A CODE DEFECT
 
 **Research, 2026-09-25, after nearly chasing one.** *A full-suite run came back with 3 failing files

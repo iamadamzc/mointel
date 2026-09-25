@@ -225,16 +225,17 @@ everything below this section is kept for MECHANISMS, not facts.*
 ### PRODUCTION
 
 ```
-web / research / assess   3dc14e2   cutover 2026-09-25 14:49:07 ET, 3s down
-                                    READ OFF THE BOX BY OPS 2026-09-25 ~16:50 ET, at the
-                                    twelfth Integration's ask. pids 1145035/1145092/1145161.
+web / research / assess   79cc4d1   cutover 2026-09-25 17:07:42 ET, 3s down, quick_check 597.3s
+                                    READ OFF THE BOX FROM /proc/<pid>/cwd at the twelfth
+                                    Integration's ask. pids 1157361/1157423/1157510.
 market worker             757cf6a   UNTOUCHED, NRestarts 0 since 2026-09-24 20:24:07Z
                                     Different releases is DELIBERATE, not drift.
-releases on disk          0a17601  49efd1a  757cf6a   + 372f5eb (PINNED rollback-baseline, v18)
-web-tier rollback         49efd1a
+releases on disk          79cc4d1  3dc14e2  0a17601  757cf6a  + 372f5eb (PINNED baseline, v18)
+web-tier rollback         3dc14e2
 today's ships             49efd1a  11:49:43 ET (sort accent) | 0a17601  12:17:07 ET (FRESH boundary)
                           3dc14e2  14:49:07 ET (collector attempt telemetry)
-                          THREE, all RESTART_MARKET=no. Nothing since 14:49:07 ET.
+                          79cc4d1  17:07:42 ET (stale-catalyst re-ask, top 12 -- HIS RULING)
+                          FOUR, all RESTART_MARKET=no, worker never restarted.
 stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /apple-icon.png  200
                           /desk /signin /api/*  401        /privacy-x negative control FIRES
 ```
@@ -246,6 +247,24 @@ stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /
 > it matters is that the merged number becomes a phantom 33-second gap for whoever rebuilds the
 > timeline. **Two right numbers naming different events read as one number.*** *Collector attempt telemetry is LIVE: `companyFetchDetail` + `networkRequests` are
 > persisted from this cutover forward.*
+>
+> **✅ SHIPPED — `79cc4d1` IS PRODUCTION, cutover 17:07:42 ET, confirmed from `/proc`. The enumeration
+> below is CLOSED.**
+>
+> **✅ ENUMERATED AND APPROVED 2026-09-25 ~17:20 ET — `8942a94`, base `79cc4d1`, Research's correction
+> to the freshness seam. Ops picks, gates at the resulting sha, ships.** *It touches a FIFTH file
+> (`lib/research/interpret/pipeline.ts`), outside the afternoon's approved set, which is why the set is
+> written out again.* **What I read before approving: sole commit touching those four files in the cone;
+> `catalystFreshFromUtc` already present at `79cc4d1` (`freshFrom.ts:69`); `db` and `options.tradingDate`
+> in scope at `queue.ts:236`; and — the one that mattered — `git grep` at the sha shows THREE
+> `validateDossier` callers outside tests and ALL THREE carry the boundary.** *A defaulted parameter
+> fixes the caller you remember and leaves the others on the old behaviour; a repair or an escalation
+> banding differently from the accepted dossier would be the same defect in a different hat.*
+>
+> *Open, and NOT a condition of the ship: `8942a94`'s comment cites "the 2026-08-23 snapshot contains no
+> instance of the firing case". **That window spans Tuesday to Friday and the case needs a Monday or a
+> post-holiday session, so it may be absent by construction** — put to Research. The FIX does not rest
+> on it; only the rarity claim does.*
 >
 > **✅ ENUMERATED, APPROVED AND GATED 2026-09-25 ~17:00 ET — `388c57f` then `8687f04` (Research),
 > CHERRY-PICKED onto production `3dc14e2`, window Ops's, `RESTART_MARKET=no`. SHIPPING AS THE LITERAL
@@ -511,8 +530,9 @@ vacuous rather than honest.* **It is honest: the desk read the right feed and th
   eight remaining dates (2026-08-24…09-08) need a different code path: a BUILD decision, unowned, not
   approved.*
 - **THE PREFLIGHT START-vs-STOP DEFECT: real, unfixed, and it got lucky twice today.** *Preflight
-  measures the deploy START; `quick_check` (388–594s observed) puts the STOP 7–10 minutes later, so a
-  start that passes can land its stop inside a protected window.* **Both warnings were raised and
+  measures the deploy START; `quick_check` puts the STOP 7–10 minutes later, so a start that passes can
+  land its stop inside a protected window.* **THE CEILING MOVED 2026-09-25: `597.3s` on `79cc4d1`,
+  above the 388–594s band quoted all day. USE 600s for any front-of-gap arithmetic.** **Both warnings were raised and
   explicitly CLOSED.** *`49efd1a` stopped 11:49:43 between the 11:30 and 12:00 checkpoints;
   `0a17601` stopped 12:17:07 between 12:00 and 12:30.*
 - **THE FRESHNESS BAND RESTS ON AN UNCONSTRAINED MODEL OUTPUT.** *`catalyst.eventTimestamp` has no
