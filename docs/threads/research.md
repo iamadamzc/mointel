@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T16:40Z
+## LIVE STATE — 2026-09-25T16:58Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -157,6 +157,18 @@ history, so that rests on Integration's account of the exchange rather than on a
 record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
+
+- **⚠️ DEPLOY ROUTING OF THIS SEAT'S WORK — read this before assuming anything is live. Recorded 2026-09-25T16:58Z BECAUSE IT DEPENDED ON A RETIRING SEAT'S QUEUE.**
+
+| sha | what | routing state |
+| --- | --- | --- |
+| `0625db0` + `d19355c` | collector attempt telemetry; `companyFetchDetail` + `networkRequests` persisted | **ENUMERATED.** Ops producing a cherry-pick onto `0a17601`; **both, in that order** — `d19355c` reverts part of `0625db0`, and they are the only two commits in the whole 126-commit cone touching those three files. |
+| `388c57f` | `FRESH_FOUND` demoted to `SECONDARY_STALE` when the desk's own band says STALE | **NOT CONFIRMED ENUMERATED.** Sent to Integration; that seat announced its retirement in the same window. |
+| `8687f04` | his re-ask ruling — a STALE catalyst re-opens the question, top 12 only | **NOT CONFIRMED ENUMERATED.** Same message, same risk. **This one changes how often the desk does paid work** — job rows, SEC polling and worker slots up for top-12 names carrying stale catalysts; model spend roughly flat, because an unmoved evidence fingerprint returns `REUSED_UNCHANGED` without a call. **Name that cost in the enumeration rather than let it be found in a bill.** |
+| `7a0ad0c` | `MarketSnapshot.catalystFreshFrom` | **Producer only. NOT routed by this seat** — it changes nothing until Design wires the consumer half. |
+
+  **A message queued to a seat that then retires is not a message delivered**, which is why this table exists rather than a sentence in a chat. **Ask the fresh Integration to confirm each row rather than assume the hand-off carried it.**
+  **After `8687f04` deploys, the thing to watch is top-12 job count.** If it rises far beyond what a handful of stale-catalyst names explains, the staleness derivation is firing wider than intended — worth knowing before the next session, not after.
 
 - **✅ RULED AND SHIPPED — A STALE CATALYST RE-OPENS THE QUESTION, TOP 12 ONLY.** *His words, 2026-09-25: **"yes, re-ask stale catalysts — top 12 only"**, under his product rule of the same day: **"do we need a news feed? would the global news wire have been searchable at that time? TMI isn't about being FAST, it's about being ACCURATE. so if it's public we should have it..."*** **Under that rule a three-minute lag behind the wire is acceptable and never finding a public release is not.** `8687f04` — `queue.ts` no longer counts a STALE catalyst as answered inside rank 12.
   **Three decisions inside it, each asserted:** the bound is a **literal 12**, not `autoRank`, which reads `RESEARCH_AUTO_RANK` from the environment and would have widened his ruling to 50 the day that variable moved; staleness is **DERIVED against `now`**, not read off `catalyst.freshness`, which was banded at WRITE time and still says RECENT today on a catalyst written yesterday; and **no timestamp bands UNKNOWN, not STALE**, so an unknown age does not re-ask. **The re-ask is still bounded by the existing interval, not the 5s board loop**, and the test asserts WHICH gate refuses so the two can never be confused.
