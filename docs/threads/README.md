@@ -12950,6 +12950,54 @@ contradicting them.**
 **That layout is worth more than the fix.** A summary printed on its own, or above
 its evidence, or in a different message, is never checked against it.
 
+## THE DEPLOY TOOL PRINTED "IS LIVE" FOR A SHIP THAT NEVER CUT OVER
+
+**Ops found it in its own file, 2026-09-25, and it is the day's most consequential finding.** *For the
+deploy Integration withdrew and Ops killed mid-build, the launcher printed:*
+
+```
+[release] b72e8ed is live on mointel-ssm        <- the tool
+[exited with code 0]
+web/research/assess  c00992e   symlink c00992e  <- the box
+```
+
+**`push-release.sh:153-163` tests the PROCESS and prints a claim about PRODUCTION:**
+
+```bash
+RESULT="$(systemctl show $UNIT -p Result -p ExecMainStatus --value)"
+case "$RESULT" in "success 0 "*) ;; *) exit 7 ;; esac
+echo "[release] $SHORT is live on $HOST"
+```
+
+**THREE ROUTES TO THAT STRING WITHOUT A CUTOVER, and the desk found them ten minutes apart:**
+
+- **Killed** — `systemctl stop` is a clean SIGTERM, which systemd calls `success 0`, byte-identical to a
+  run that completed. *Ops's.*
+- **STILL RUNNING** — the wait loop breaks on `inactive|failed` **or falls out when
+  `DEPLOY_FOLLOW_SECONDS` (900) expires, and nothing afterwards re-checks `STATE`.** `Result` is the last
+  run's result rather than a running verdict, so a deploy still mid-flight prints "is live" too.
+  *Integration's, found by reading the loop above the case statement.* **`quick_check` has drifted 388s
+  → 594s → 597.3s against that 900s deadline; the margin shrinks on its own.**
+- **The original defect, for any exit systemd scores as success.**
+
+*The `unreachable` path is safe by accident: the `RESULT` query fails too, so the `*)` arm exits 7.*
+
+> **THE SCOPE IS EVERY `is live` THE TOOL HAS EVER PRINTED.** *No deploy has been harmed — Ops reads
+> `/proc/<pid>/cwd` after every ship, seven times on 2026-09-25 alone. **But the confirmation has always
+> come from that habit and never from the tool.** Remove the habit and the desk has been trusting a
+> string.*
+
+**THE FIX IS FOUR LINES AND ITS VIRTUE IS THAT IT DOES NOT ENUMERATE THE FAILURE MODES: after the unit
+ends, resolve the shipped sha from the ARTEFACT — `/proc/<pid>/cwd` per service, or `current` — and refuse
+unless it matches.** *That converts a process assertion into a measurement and answers all three routes
+without having listed them correctly. **Which matters, because a fourth route was found ten minutes after
+the third**: any fix that depended on the list being complete would have shipped incomplete.*
+
+*Ops's own rule from the same morning, violated by its own tooling: **the process that was supposed to
+produce the thing is never evidence about the thing.** Third subsystem in one day — a dead launcher
+reporting failure for a success, `companySourceDetail` reporting "not attempted" for an attempt, and this
+reporting "is live" for a deploy that never happened.*
+
 ## A FIRED DEPLOY IS CANCELLABLE UNTIL THE STOP — AND THE ORPHAN IT LEAVES IS A ROLLBACK TRAP
 
 **Ops and Integration, 2026-09-25, 66 seconds apart.** *Ops's hold on `b72e8ed` released the instant
