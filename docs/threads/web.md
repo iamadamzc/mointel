@@ -370,14 +370,13 @@ that as a rejection.**
 
 ## LIVE STATE — rewrite or delete this section, never let it go stale
 
-**AS OF 2026-09-22. Production carries the builder-copy fix (`ab9c31c`);
-Integration reports it rode deploy `34414f4`. That sha is a peer's deploy
-report, NOT read from `/opt/mointel/current/RELEASE_SHA` by this seat — the
-box-read is Ops's. What this seat verified is the live content, below.**
+**AS OF 2026-09-25. The public site is live behind nginx Basic Auth; the
+in-app OAuth gate is BUILT but NOT WIRED and NOT LIVE.** Production sha last
+reported by Integration as `34414f4` (2026-09-22, the builder-copy fix); the
+box-read of `/opt/mointel/current/RELEASE_SHA` is Ops's, not this seat's.
 
-**THE PUBLIC SURFACE IS COMPLETE AND VERIFIED.** *Web's run 2026-09-22, curl
-from an actor with no cached state, negative control first; the corrected
-builder line read verbatim off the live page:*
+**THE PUBLIC SURFACE IS COMPLETE AND VERIFIED**, unchanged since. *Web's run
+2026-09-22, curl from an actor with no cached state, negative control first:*
 
 ```
 /desk  /signin  /api/market  /privacy-x                    -> 401
@@ -389,26 +388,33 @@ builder line read verbatim off the live page:*
   name `TMI Trader` survives in exactly two places on purpose: the domain, and
   one history line in each legal document.*
 - **The landing page is `/`, the board is `/desk`.** Basic Auth is still the
-  whole of what protects the desk; in-app auth has not started.
+  whole of what protects the desk.
 - **Both legal texts are ADOPTED** (`adopted: 2026-09-11`) and render from
-  source markdown at request time. Every placeholder he decided is filled.
-- **`info@andromedagenius.com` receives**, on Google Workspace. *The domain had
-  dropped out of the .com registry entirely; he re-registered it 2026-09-18.*
+  source markdown at request time.
+- **`info@andromedagenius.com` receives**, on Google Workspace.
 - **The mark renders twice on `/` and is the favicon.**
+
+**THE OAUTH GATE — WEB SURFACE COMPLETE, NOT WIRED, NOT LIVE (built 2026-09-24/25).**
+*His approved model: Google sign-in + an invited-email allowlist (invite = add
+an email, revoke = remove; user admin by an AGENT, not a CLI or UI).* Every Web
+piece is built, gate-green (111 auth tests), and sits behind Basic Auth. **The
+authoritative build record — commits, the callback design, the outcome→status
+table, why the placeholder waits — is the build log in
+[`../web/2026-09-24-oauth-gate-plan.md`](../web/2026-09-24-oauth-gate-plan.md);
+read it, do not re-derive it here.** In one line: `config`, `/auth/start`,
+`/auth/callback`, `/auth/signout`, the point-of-use gate, `/signin`, and the
+callback error pages all exist under `app/auth/`, `app/signin/` and `lib/auth/`;
+the allowlist store and `isUserInvited` are Ops's and built; **the gate is
+deliberately NOT wired into `/desk` — that is part of the cut-over, not before.**
 
 ### OPEN — each with its owner and what it waits on
 
 | what | owner | waits on |
 | --- | --- | --- |
-| `[FLOW COOKIE NAME]` in the privacy policy | Web | **BLOCKED, not open.** It names a cookie the service never sets: `app/auth/` does not exist. Fill it when sign-in ships, from code. |
-| `/signin` and `^~ /auth/` nginx locations | Ops | the authority field. *Opening `/signin` before a first-admin grant exists is how the authority to spend his money goes to whoever knocks first.* |
-| deploy gate must refuse a red suite | unassigned | **His ruling 2026-09-21: the tool refuses, not the seat remembers.** Spec sent to Integration to place; `Ops-tmi` no longer exists. Includes: `push-release.sh:18` defaults to `HEAD`, which the deploy doc forbids. |
-| consent-screen display name | him | the day he uploads the mark. *Brand verification compares consent screen, site and privacy policy; two of the three already agree.* |
-
-**WHY THE GATE ITEM EXISTS: `ddaf2f8` reached production 2026-09-18 with the
-test suite RED, and it had been red since the rename hours earlier.** *Nothing
-was broken on the live site — the failing test was pinned to a string the
-rename removed — but nothing would have caught it if something had been.*
+| **the step-2 cut-over (take the gate live)** | **him to schedule; Integration orchestrates** | his **Google client id + secret** (to the box via Ops — NEVER this seat) and confirmation to **seed `iamadamzc@gmail.com`** as the first invite. Then, in order: nginx exempt `= /signin` and `^~ /auth/`; box env (`GOOGLE_CLIENT_ID/SECRET`, `OAUTH_REDIRECT_URI`, `IDENTITY_DB_PATH=/var/lib/mointel/identity.db`); **Web wires the gate into `/desk` + `/api/*`**; **live-proof against a client with NO cached Basic-Auth password** (the testing trap); **Basic-Auth-off LAST, its own change.** |
+| `[FLOW COOKIE NAME]` in the privacy policy | Web | the cut-over. *Fill from the live cookie name `mointel_oauth` (now set by `/auth/start`) on the deploy that ships sign-in — never before the live site sets it, or the policy names a cookie a user cannot find.* |
+| consent-screen display name | him | the day he uploads the mark. *Brand verification compares consent screen, site and privacy policy.* |
+| deploy gate must refuse a red suite | **not Web's — with Integration** | recorded here only as provenance; a peer built `deploy/aws/test-gate.sh`. Status is Integration's to confirm, not this seat's to track. |
 
 ---
 

@@ -326,15 +326,17 @@ backstop for someone who signs in without an invite.*
 | ~~2~~ | **CLOSED 2026-09-18/21, every value measured from the box or decided by him.** Region `us-east-1`; hosting `Amazon Web Services, Inc.`; server logs **14 days** (nginx logrotate and journald agree, and the 512M cap is not binding); backups written as the **mechanism** — a full-server snapshot kept 7 days, a log entry living 14, so ~21 days at the outside — rather than as an audit of what is currently stored, *because a sentence justified by "the backup contains no personal data" expires the day sign-in ships and one justified by "a snapshot is kept 7 days" does not*; account and email retention say plainly that **no period is set**, on his adoption; email provider is **Google LLC**, because `info@` now reaches users on Workspace even though the service itself still sends no email. | closed |
 | ~~2b~~ | **SATISFIED, and built stronger than asked.** Ops made it structural rather than two calls: the callback has **no bare `return`** — every exit goes through one helper that attaches the cleared flow cookie, so a failure mode added later inherits it. Tests assert the header **on the failure paths by name**, not only on success. *That is the assertion the sentence actually needed.* | closed |
 | ~~3~~ | **ANSWERED BY MECHANISM, not by a number, and verified in code.** There is no duration: `createSession` takes an **absolute expiry** (`store.ts:293`) and `sessionExpiry` (`lib/auth/expiry.ts`) returns 20:00 ET, reusing `sessionEndUtc` from `lib/market/session` — **no second definition of the one number this desk keeps getting wrong.** *Published as the rule rather than as "30 days", because a rule is something a person can reason about instead of trust.* | closed |
-| 4 | **The flow cookie's NAME is not established.** Relayed to Web as `mointel_oauth` carrying `<state>.<nonce>`; **the only occurrence in the tree is `mointel_oauth_state`, in `tests/auth/cookie.test.ts`, passed as an argument** — and `1e120ac` asserts no name at all. *A policy that names a cookie is one of the few claims a user can check in their own browser inspector.* **Not published on a relay the code disagrees with.** | Ops |
+| ~~4~~ | **SETTLED 2026-09-24: the flow cookie is `mointel_oauth`**, defined once in `lib/auth/config.ts` (`OAUTH_FLOW_COOKIE`) and set by `/auth/start/google`. The placeholder is filled from that name — not a relay — on the deploy that ships sign-in, never before the live site sets it. | Web, at the cut-over |
 | ~~5~~ | **ANSWERED BY HIM 2026-09-10:** *"anyone that trades US market i suppose, but i dont want any overhang on interinational regs."* US market, US company, offered nowhere to the public — §8 says so, and §7 promises to honour a foreign right rather than argue about which law applies. | closed |
 | 6 | Whether Google's "home page" must be `tmitrader.com` itself, or whether a page elsewhere on the domain satisfies it | nobody has confirmed; **do not guess** |
 | ~~7~~ | **DRAFTED AND ADOPTED**, both decisions settled on his "your rec." — see §2b. | closed |
 
-**AS OF 2026-09-21 EXACTLY ONE `[BRACKET]` RENDERS ON THE PUBLIC SITE:**
-`[FLOW COOKIE NAME]`, row 4 — and it is **blocked, not open.** *`app/auth/` does
-not exist, so the policy names a cookie the service never sets. Fill it from
-code when sign-in ships, never from a relay.* **Verify with
+**AS OF 2026-09-25 EXACTLY ONE `[BRACKET]` RENDERS ON THE PUBLIC SITE:**
+`[FLOW COOKIE NAME]`, row 4 — **deferred to the cut-over, not blocked.** *The
+code now sets `mointel_oauth` (`/auth/start/google`), but the live site does not
+yet — `/auth/*` is unexempted and undeployed — so filling the policy now would
+name a cookie a user cannot find in their inspector. Fill it on the deploy that
+ships sign-in, from `OAUTH_FLOW_COOKIE`.* **Verify with
 `python docs/web/placeholder-scan.py`, which exits non-zero while any remain.**
 
 ---
