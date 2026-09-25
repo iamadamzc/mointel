@@ -302,6 +302,29 @@ history — so Phase C is NOT "wire up `assessFloat`"; that routes to a function
 (Research, `cce0af0`, 2026-09-25).* *SEC filings are public domain and carry none of those terms,
 which is why the filing-derived route is the one to invest in.*
 
+> **THE PHASE C MEASUREMENT — SPEC IT BEFORE ROUTING IT, AND IT HAS NO OWNER YET.** *Recorded
+> 2026-09-25 by the eleventh Integration; the seat that will run it does not exist as this is
+> written, which is the reason it is here and not in a chat.* **What is unmeasured: how often
+> `assessFloatAgainstFiled` returns a verdict other than `CANNOT_VERIFY` on his board today.** It
+> CANNOT be measured from `data/market-prod-2026-08-23.db` — that snapshot predates `supplyPair`
+> and `daily_bars.split_factor`, so every row returns `CANNOT_VERIFY` as a VINTAGE ARTEFACT, not
+> as a fact about production. It is a read on the box, for the FRESH Ops seat.
+>
+> - **Ask for the THREE INPUT COUNTS alongside the verdict counts** — Sheet `float.value`, dossier
+>   `supplyPair.sharesOutstanding`, and the basis factor. *Research's condition, and it is the
+>   house rule in this question's shape: the verdict fails closed on each of the three
+>   independently, so **a histogram that is 100% `CANNOT_VERIFY` has at least four explanations and
+>   only one of them is "the test is useless".** Without the input counts the measurement cannot
+>   distinguish a test that is working and finding nothing from an instrument that could never have
+>   seen a present case.* **Research was fooled once already on this exact question** — its first
+>   pass read `supplyPair` on a pre-`supplyPair` snapshot and returned 0 for every row, which was
+>   the instrument and not the world.
+> - **Do NOT rest this on the pre-approved `research_sources` snapshot.** *That grant names a
+>   different table for R&D's EX-99 latency read. Reaching past it is the spent-exception failure —
+>   a one-time permission re-read as standing scope. This needs its own word.*
+> - **The decision it feeds is BUILD vs DROP, and it is his — but it must not be put until the
+>   number exists.** *The measurement is a PREREQUISITE, not one of the options.*
+
 **HIS FOUR STATES, replacing the binary — he challenged "why say CANNOT VERIFY when you
 could qualify" and was right:**
 
