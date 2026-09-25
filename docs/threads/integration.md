@@ -269,7 +269,36 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
    relayed (an invite is a grant; Ops raises it when the tooling reaches production).
 3. **When to run the cut-over** — a window outside his trading hours; Basic-Auth-off is his call.
 
-> **⚠️ THE FRESH-BOUNDARY SHIP SET IS NOT APPROVED, AND THE ENUMERATION IS THE REASON.** *Design
+> **✅ RESOLVED 2026-09-25 — `0a17601` IS ENUMERATED AND APPROVED. Design re-based onto `49efd1a`
+  and Ops gated at that exact sha (ALL GREEN, 155 files / 2,364 tests / 0 lint). Read the block
+  below for the MECHANISM; the refusal itself is spent.**
+>
+> **TWO RELEASES, IN THIS ORDER — my call under order-and-process; the minutes are Ops's.**
+> *`0a17601` DESCENDS from `49efd1a`, so one release would deliver both. I am deliberately not
+> doing that.* **The FRESH boundary changes what his board SAYS about freshness (~6 rows of 325
+> change band) and NOBODY HAS YET OBSERVED A NON-NULL VALUE end to end** — Design traced the read
+> path and said so plainly rather than repeating Research's measurement as its own. *Shipped
+> together, a board that looks wrong at 10:15 has two candidate causes; shipped apart, the
+> author-verifies step is attributable. One extra window is the whole price.*
+>
+> ```
+> 1st  49efd1a   start 10:06-10:08 ET   sort accent      cone over prod: 1 commit,  0 auth
+> 2nd  0a17601   next clean gap          FRESH boundary  cone over 49efd1a: 2 commits, 0 auth
+>                                                        cone over prod:  3 commits, 0 auth
+> ```
+> *Every figure re-derived here, not filed from a description. `ccaf77b` (TRADES) is OUT of both
+> until he answers — it is a label he reads every morning.*
+>
+> **AND GATE EARLY RATHER THAN IN SHIP ORDER (Ops's, and it is a real process finding).** *A gate
+> runs DETACHED at a fixed sha, so it does not care whether the release beneath it is live yet.
+> Ops gated `0a17601` before `49efd1a` shipped, against my proposed ship→gate→enumerate sequence.
+> Had it come back RED we would have learned at ~10:10 — immediately after a ship, with a quick
+> second one expected, which is the worst moment to find out.* **Gate early, ship in order; the
+> only thing sequencing buys is worse timing on bad news.** *It also re-confirmed `49efd1a` in
+> combination, since `0a17601` descends from it.*
+
+> **⚠️ THE FRESH-BOUNDARY SHIP SET WAS NOT APPROVED AS FIRST HANDED OVER, AND THE ENUMERATION WAS
+  THE REASON — kept for the mechanism.** *Design
   handed over `7a0ad0c` + `ccaf77b` + `bd509e9` as "the ship set, stacked and GATED ON THE
   PRODUCTION BASE", 13 files, **zero under `app/auth/`, `lib/auth/`, `app/signin`,
   `scripts/allowlist` — checked by PATH, which is the right check and still cannot answer this.***
