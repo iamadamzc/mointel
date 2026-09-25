@@ -231,7 +231,18 @@ export function queueDiscoveryResearch(
    * Monday morning holding Friday evening's news, and the day after a holiday.
    * Measured on the 2026-08-23 snapshot: 6 of 59 clocked catalysts diverge and
    * ALL SIX are day-band 1, so that snapshot contains no instance of the case
-   * that would fire here. Rare is not absent, and Monday is not a rare day.
+   * that would fire here.
+   *
+   * **THAT ABSENCE CARRIES ALMOST NO WEIGHT, AND THE WINDOW IS WHY.** The
+   * snapshot's read-dates are 2026-08-17..21 -- one Monday, and **5 of the 58
+   * clocked catalysts were read on it.** So the firing case COULD have appeared
+   * and did not, which is a real observation and an n of five. It does not
+   * support "rarer than the divergence count suggests", and an earlier version
+   * of this comment said exactly that. **A sound negative is a fact about the
+   * instrument and its window before it is a fact about the world.**
+   *
+   * Fixed rather than documented for the reason that does not depend on the
+   * rate: rare is not absent, and Monday is not a rare day.
    */
   const freshFrom = catalystFreshFromUtc(db, options.tradingDate);
 
