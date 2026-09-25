@@ -11854,3 +11854,68 @@ the directory is destructive and is his.** *Choose a rollback target by NAME,
 never by mtime — Integration's framing, and it is the sharper one: the
 retention slot is the small half, a plausible wrong rollback target is the
 large one.*
+
+---
+
+## SUCCESSOR SEAT OPENS — 2026-09-25 22:5x UTC (18:5x ET Fri)
+
+**Nothing moved, read from `/proc/<pid>/cwd`:** web 1183077, research 1184686,
+assess 1183212, market 1184182 all on `d0bc78c`; `current` agrees; pins show
+only `rollback-baseline` 372f5eb; releases d0bc78c 5901ea9 c00992e 757cf6a
+372f5eb; `DISCOVERY_PRICE_MIN=0.25` on the box; 62G free; no `mointel-deploy*`
+unit. Public sweep: 4x 401 with `/privacy-x` firing, 7x 200.
+
+**One thing the hand-off did not record: research `NRestarts=3`.**
+
+### THE 22:19:45Z RESTART COST ~3.5 MINUTES OF CAPTURE, NOT ~ONE
+
+Market worker startup, from its own journal:
+```
+22:19:45  started
+22:19:47  13221 baselines loaded
+22:20:38  replayed 1,075,636 stored minute bars for 7,928 symbols (50,306ms)
+22:21:26  session reconstruction for 9,208 candidates done
+22:21:32  startup backfill complete through 22:20:54Z
+          -- 110s with no log line --
+22:23:28  connected / authenticated SIP / whole-market bars subscribed
+```
+**3m43s from start to SIP.** `minute_bars` for 2026-09-25, per minute, by source:
+```
+22:10-22:18   ~20-31 historical + ~91-118 live-bar per minute
+22:19         21 historical, 0 live-bar
+22:20         0
+22:21         0
+22:22         0
+22:23         135 live-bar, and ~125-147/min after
+```
+**Three whole minutes and the live half of a fourth are absent.** The standing
+line "a restart permanently loses ~one minute of minute_bars" is now false; the
+loss is start-to-SIP time and that time scales with the replay (1.07M bars
+today, and it grows with the price band — the 0.25 floor already raised it and
+$0-$50 raises it further). **The restart cost belongs in any restart request to
+him from now on, measured, not quoted from the charter.** *In his window this is
+also the blackout a crash-restart would cost mid-premarket; systemd `Restart=`
+does not make that free.*
+
+### And the same 110s gap is a write lock that starved two services
+
+Inside the silent 22:21:32 -> 22:23:22 stretch:
+```
+22:22:03  research fatal SQLITE_BUSY at writeResearchHealth (researchRepo.ts:901), restart 1
+22:22:22  research fatal, same site; assess "cycle failed: database is locked"
+22:22:52  assess cycle failed: database is locked
+22:22:55  research fatal, same site, restart 3 at 22:23:20; clean since (0 lock lines)
+```
+`busy_timeout` is 5000ms (`db.ts:1196`), so something held the write lock
+>5s repeatedly for ~70s+ — the market worker's post-backfill persistence is the
+only writer active in that gap. Self-healed; no public effect; after-hours.
+**Same class as the 08-28/08-29 lock crashes (line ~2197), a third site**
+(`writeResearchHealth`, the heartbeat), and a THIRD sufficient cause beside the
+two pre-registered on 2026-09-03: **a market restart.** WAL 579,201,992 B.
+Unfixed. Owner split: the startup write is the market worker (Ops); a heartbeat
+write that kills the worker on BUSY is Research's.
+
+### Housekeeping
+
+The retired chat is still titled `Ops-tmi` (local_01494376…), so a send by
+name can reach it. Renaming it is his, per the opening prompt.
