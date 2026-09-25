@@ -165,6 +165,27 @@ inside the quote.
 > 4. **Drop nginx Basic Auth LAST**, and only once the allowlist is proven to
 >    REFUSE a non-allowlisted Google account against the live box. Basic Auth is
 >    currently the only thing in front of `/desk`.
+>
+> ### A LIVE TRAP, AND IT WILL BE OFFERED TO YOU AS A SMALL READY ITEM
+>
+> **Design's sort-legibility fix `34cf6f3` is three presentational files. Its
+> SHA carries the entire OAuth surface underneath it** — `app/auth/*`,
+> `app/signin/page.tsx` and `scripts/allowlist.ts`, none of them in production.
+> Shipping it performs the auth cut-over, which is HIS and not Integration's to
+> relay, and it would ship broken: no `IDENTITY_DB_PATH` on the box, no Google
+> credentials, and `store.ts` refusing a `releases/` path means `/auth/callback`
+> throws.
+>
+> **A DEPLOY SHIPS A CONE, AN ENUMERATION NAMES COMMITS, AND THEY ARE NOT THE
+> SAME CLAIM.** Before every deploy run `git log <production>..<sha>` and read
+> what is actually between them. The diff is not the answer; the ancestry is.
+> *Integration approved this in good faith and inside genuine authority. Design
+> finished the fix correctly. Neither could see the composition, because neither
+> owns the deploy.*
+>
+> **Already unblocked: `49efd1a` on branch `ops/sort-legibility`** — production
+> plus those three files, zero auth, **gate ALL GREEN (153 files, 2,345 tests,
+> 0 lint errors)**. Ship that one, not `34cf6f3`.
 > 5. `lib/review/`: token lifetime as a condition; `sanitize` does not redact
 >    filesystem paths.
 > 6. Access-path gate 3 (close port 22) — his, not asked recently.
