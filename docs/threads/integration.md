@@ -262,6 +262,33 @@ with the fix it produces a slow deploy or an honest refusal.* **So the question 
 latency grounds instead of under a correctness threat — which is a further argument for that fix leading the
 batch.**
 
+## DESIGN'S BOARD SET — ONE VERIFIED, ONE REJECTED, THREE UNVERIFIED
+
+**They were never waiting on an Ops window. They were waiting on an ENUMERATION, and that was this seat's
+gap** — *the new Ops seat found it and said so plainly: "it's a missing enumeration, not a missing window".*
+
+```
+ec7a484  remove the rank column     ✅ HIS WORDS, verified at his turn: "I'm making the call to remove
+                                       the rank column. Allow the user to rank it however they want to
+                                       with the data sorts provided."
+63325a4  Now stays / rolling 60s    ❌ BLOCKED. "yes i rejected the 60s" -- HIS WORDS TO THIS SEAT,
+                                       2026-09-25. Ships ONLY if the commit REMOVES the column.
+ccaf77b  Now header                 ❓ unverified -- Design asked where he ruled
+1f4bbc3  column tooltips            ❓ unverified
+ea179ce  tooltips cut               ❓ unverified, rides 1f4bbc3
+```
+
+> **⚠️ THE TRAP TO CHECK BEFORE ANY SET IS BUILT: is `63325a4` an ANCESTOR of the others?** *If the
+> 60-second work sits under a shippable sha, picking that sha carries a surface HE HAS EXPLICITLY REJECTED —
+> the ancestry trap in its worst form. **`git log --oneline <base>..<sha>` per CANDIDATE, not per set.***
+
+**AND THE PROCESS FAILURE THAT COST HIM SOMETHING, recorded as this seat's own: I put the 60-second question
+in PROSE instead of the 🟠 NEEDS YOU block. He had to notice it and answer it unprompted, and his reply was
+"you should have appended that note NEEDED FROM YOU".** *A decision that needs him goes in the block or it does
+not reach him. **The block is not a formatting convention — it is the only channel he searches**, and burying a
+decision in prose after he had just ruled against exactly that kind of noise is the same failure twice in one
+evening.*
+
 ## ✅ HE RULED THE PRICE BAND: RECORD \$0–\$50, USER PICKS THE WINDOW — ASSIGNED THREE WAYS
 
 **HIS WORDS, VERIFIED AT HIS OWN TURN and not taken from the relay** — *he asked first (**"explain to me split
