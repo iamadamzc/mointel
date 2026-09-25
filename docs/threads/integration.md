@@ -347,6 +347,21 @@ stranger sees             / /privacy /terms /robots.txt /favicon.ico /icon.svg /
    > `detail` string (`irRegistry.ts:165`), so the 186 folded into that 63% cannot separate "no
    > newsroom exists" from "could not fetch" — and `researchRepo.ts:460` COALESCEs the registry note in
    > place, so today's note cannot classify an August job.** *Mechanism in `README.md`.*
+   >
+   > **RESOLVED, AND BOTH OF US WERE WRONG ONCE. SPEC IS `dc39403` — read that sha, not `e108929` or
+   > `137f72c`; each carried a claim since retracted.** *R&D bounded the split at 96.5% reach using
+   > "has a source url on file"; **`irRegistry.ts:200` takes the same `if (!durable)` branch for both
+   > outcomes and persists no url either way**, so that bound is retracted. Then I told him `3dc14e2`'s
+   > telemetry made it measurable forward; **it does not** — `networkRequests` counts the company fetch
+   > and SEC, `companyFetchDetail` is `attempted ${knownSourceUrl}` for an ALREADY-RESOLVED url
+   > (`collector.ts:623`), and the resolver's probes at `irRegistry.ts:295` are counted nowhere.*
+   > **WHAT SURVIVES: the ORDER (reach, then the urgent gate as a question, then invocation), because
+   > both sub-causes sit inside resolution ahead of both. WHAT IS OPEN: the reach-vs-reachability
+   > split, unmeasured in either direction, with genuinely different fixes.** *R&D's minimal ask, one
+   > boolean: persist `unreachable` (already in memory at `irRegistry.ts:194`) on the collector report
+   > and it is measurable from the next session forward. **Shape is Research's.*** **ROUTED TO RESEARCH
+   > 2026-09-25 ~17:30 ET and it QUEUED rather than delivered — recorded here rather than left in its
+   > queue, per the lesson that a message queued to a seat that then retires is not delivered.**
 7. **✅ CLOSED — BOTH RETIREMENTS ARE DONE, and both closed within minutes of my putting them in a
    NEEDS YOU block.** *`Commercial-tmi` is a FRESH seat at `local_60b84fba`, onboarded off `bc9847f`,
    idle with nothing pending; `Integration-tmi-retired` (`local_d1d60c77`) is renamed and archived.*

@@ -12171,6 +12171,28 @@ wrote it: ask whether a store can tell its failure modes apart BEFORE measuring 
 note is not the note as of an August job, and classifying one by the other is reading a reassessed
 field's final value backwards.*
 
+> **THE SAME MOVE PRODUCED A GOOD DISCRIMINATOR AND A BAD ONE, AND NOTHING IN THE MOVE SAID WHICH.**
+> *R&D replaced the conflated detail string with a column built for another purpose — whether a source
+> url is on file — and bounded the split at "96.5% reach, at most 3.5% reachability". **`irRegistry.ts:200`
+> takes the same `if (!durable)` branch for both outcomes, `sourceShape: null` and no url persisted
+> either way**, and `unreachable` means candidates DID exist and none of six probes could be read. So
+> absence-of-url is produced by both causes.* **R&D's own note on retracting it is the rule: the error
+> ran in the direction that flattered its conclusion, which is the thing to be suspicious of — check
+> hardest when you agree.** *Withholding that url is deliberate and right for the reason at line 201; it
+> merely also erases the discriminator, which is why reading the comment is not a substitute for
+> reading the branch.*
+>
+> **AND THE BUS THEN DID IT TOO, IN THE SAME HOUR, TO THE OWNER'S FACE.** *Integration told him
+> `3dc14e2`'s "collector attempt telemetry" made the split measurable FORWARD — inferred from that
+> phrase in a LIVE STATE section rather than from the file.* **`report.networkRequests` counts the
+> company fetch (`collector.ts:626`, `:656`) and SEC (`:1122`); `companyFetchDetail` is written
+> `attempted ${knownSourceUrl}` at `:623`, describing the fetch of an ALREADY-RESOLVED url. The
+> resolver's probes call `fetchCompanyPage` directly at `irRegistry.ts:295` with no report in scope and
+> are counted NOWHERE.** *A field named for an attempt counts the attempt it was built for. **The
+> instrument's NAME described the stage after the one in question, and a summary phrase in a document
+> was allowed to stand for the code** — which is the whole failure this file keeps recording, arriving
+> this time as an offer of good news.*
+
 ## A shape match is not a mechanism match
 
 Two anomalies shared a shape: `COMPLETE` reached with a required stage silent.
