@@ -262,6 +262,56 @@ with the fix it produces a slow deploy or an honest refusal.* **So the question 
 latency grounds instead of under a correctness threat — which is a further argument for that fix leading the
 batch.**
 
+## ✅ HE RULED THE PRICE BAND: RECORD \$0–\$50, USER PICKS THE WINDOW — ASSIGNED THREE WAYS
+
+**HIS WORDS, VERIFIED AT HIS OWN TURN and not taken from the relay** — *he asked first (**"explain to me split
+the band. I don't understand."**), had it explained, then ruled:*
+
+> **"0-50 confirmed. handoff, write the prompt, engage hygiene protocol."**
+
+**RECORD WIDE, SHOW NARROW, USER CHOOSES. THE CONFIG IS HELD DELIBERATELY UNTIL THE SPLIT EXISTS, because
+four call sites read ONE value:**
+
+```
+engine.ts:988      what gets CAPTURED              -> becomes $0-$50        RESEARCH
+engine.ts:1650     what QUALIFIES for his board    -> stays narrow          RESEARCH
+engine.ts:1690     the after-hours qualification latch                      RESEARCH
+readModel.ts:157   what the board DISPLAYS as its header                    DESIGN
+the config value                                                            OPS
+```
+
+*Setting it today would put penny stocks and \$45 names on his board and rewrite the header to "\$0–\$50" —
+the opposite of the ruling.* **Nothing ships until the split lands. Assigned 2026-09-25; no seat is waiting on
+him.**
+
+**SCALE, from Ops: the universe is `alpaca-assets`, 13,398 symbols including BRK.A at \$759,200 — THE PRICE
+BAND IS THE ONLY THING KEEPING THIS DESK SMALL-CAP.** *Above \$20 is 7,811 symbols printing 733–951 rows/day
+against a median of 58; a \$50 ceiling is ~1,100 symbols.*
+
+> **⚠️ THE COST THAT MUST BE IN THE DESIGN RATHER THAN DISCOVERED AFTER IT: A RESTART NOW COSTS ~3.5
+> MINUTES OF CAPTURE, NOT ONE — and the charter said one.** *Measured 2026-09-25 by the new Ops seat: 3m43s
+> from start to SIP (50s replay of 1,075,636 bars, session reconstruction for 9,208 symbols, then 110s
+> silent), with `minute_bars` at 0 rows for 22:20–22:22 against ~100–145 a minute either side.* **Startup
+> scales with the replay, the replay scales with the price band, and THE WIDEN ITSELF REQUIRES A RESTART — so
+> a wider band makes every future restart permanently dearer.** *Every restart request to him now carries a
+> measured cost.*
+
+## ⚠️ THE SQLITE_BUSY LOCK CRASHES — A THIRD SITE, SPLIT BETWEEN TWO SEATS, NEITHER FIXED
+
+**Found by Ops in the 22:19:45Z restart's 110-second startup gap.** *The market worker's post-backfill
+persistence held the write lock; `busy_timeout` is 5000ms.*
+
+```
+researchRepo.ts:901  writeResearchHealth -- Research DIED 3x (22:22:03 / :22 / :55), NRestarts=3,
+                                            clean since 22:23:20
+assess               failed two cycles, "database is locked", 22:22:22 and 22:22:52
+```
+
+**THE SPLIT: the long startup write is OPS's. A HEARTBEAT WRITE THAT KILLS THE RESEARCH WORKER ON BUSY IS
+RESEARCH'S** — *routed with the site named and the fix shape left to it.* **Same class as the 08-28/08-29 lock
+crashes at a THIRD site, and a third sufficient cause beside the two pre-registered on 09-03.** *Self-healed,
+after-hours, no public effect. Neither half fixed.*
+
 ## ✅ HE RULED: BUILD ALPACA NEWS — AND IT MAY OVERTAKE R&D'S SPEC
 
 **HIS WORDS, VERIFIED AT HIS OWN TURN in Commercial's transcript rather than taken from the relay** *(and he
