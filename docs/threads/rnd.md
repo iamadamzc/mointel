@@ -1201,6 +1201,77 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
+#### THE DESK IS A 94%-SEC PRODUCT, AND TWO THIRDS OF ISSUERS HAVE NO SITE PATH AT ALL. 2026-09-25.
+
+**His narrowing, and it is the right one:** *"we know sec filings are 100%,
+that's not the issue. its sites and wires. this is where the mechanism needs to
+improve."* **Measured against `market-prod-2026-08-23.db` — 258 issuers, 4,882
+sources. Snapshot caveat below and it is load-bearing.**
+
+**1. WHERE THE DESK'S EVIDENCE ACTUALLY COMES FROM:**
+
+    SEC_FILING          3253        SEC total      4,599   94.2%
+    SEC_EXHIBIT          878        COMPANY_IR       198    4.1%
+    SEC_SUBMISSIONS      257        SECONDARY         54    1.1%
+    SEC_COMPANY_FACTS    211        NEWSWIRE          31    0.6%
+    COMPANY_NEWSROOM     105
+    COMPANY_IR            93      -> ~19 of every 20 sources the desk holds is an SEC document
+    SECONDARY_DISCOVERY   54
+    NEWSWIRE              31
+
+**2. AND FOR MOST ISSUERS THE SITES PATH DOES NOT EXIST:**
+
+    issuers in the registry                258
+      USABLE  feedUrl proved                52   20.2%
+      USABLE  index/newsroom with a shape   36   14.0%
+      NO company source registered at all  170   65.9%
+      no CIK (neither path)                  1    0.4%
+
+> **The desk can attempt the company-site path for 34.1% of issuers. For the
+> other two thirds, SEC is not the primary path — it is the ONLY path.** *A
+> perfect SEC reach over a universe whose catalysts are announced on wires is a
+> complete answer to a fraction of the question.*
+
+**3. THE DISTINCTION THAT MAKES HIS POINT PRECISE, AND IT IS WORTH STATING
+SEPARATELY.** *"SEC is 100%"* is true **about reach** — the register already
+carries CIK resolution at 99.8%. **It says nothing about what fraction of
+catalysts ever become SEC documents.** A small-cap partnership or distribution
+announcement frequently has **no 8-K at all**; it goes out on GlobeNewswire and
+lives on the company's newsroom. **Perfect reach into a corpus that does not
+contain the event is still a miss**, and that is exactly the AIFF shape.
+
+**4. WHAT THIS MEANS FOR THE FIX, INCLUDING ONE HALF HE HAS ALREADY CLOSED.**
+
+- **The wire half is ruled out by his own standing decision** — free EX-99 path
+  only, no licence, no wire-body scrape, *not as a fallback*. **Recorded here so
+  the mechanism work does not drift into it.**
+- **So the improvable half is SITES**, and it is the larger one anyway: **170 of
+  258 issuers have nothing registered.** *The same press release that goes to a
+  wire almost always appears on the issuer's own newsroom, which is a permitted
+  source and is already a live source type (`COMPANY_NEWSROOM`, 105 rows).*
+- **The bottleneck is REGISTRATION, not fetching.** Source resolution is gated
+  to first qualification or a recovery episode (`collector.ts`), so **a ticker
+  that qualified once, failed to resolve a source, and never hit a recovery
+  episode stays sourceless permanently.** *That is a ratchet, and 65.9% is what
+  a ratchet looks like after five sessions.*
+
+**5. WHAT AIFF DOES AND DOES NOT PROVE ABOUT THE SITES PATH.** AIFF **had** a
+usable feed — it is in the 34%. **It does not follow that its newsroom lacked
+the release**, because the desk fetched that feed **once, at 07:48, and never
+again in seven hours.** *Zero sources dated 09-25 at 14:30 is consistent with a
+site that published at 08:10 and was never re-read.* **So AIFF is evidence for
+the INVOCATION defect and is NOT evidence that the sites path would have
+failed.** *Do not let it be quoted as the latter — the fix it argues for is
+re-invocation, and that fix might well have caught it.*
+
+**SNAPSHOT CAVEAT, AND IT IS REAL.** This is the **2026-08-23** store: 258
+issuers accumulated over ~5 sessions. **The registry grows, so current site
+coverage is probably better than 34.1%** and the absolute counts are stale.
+**The SHAPE — an overwhelmingly SEC corpus with a site path missing for most
+issuers — is not plausibly inverted in five weeks, but the percentage must be
+re-measured before it is quoted anywhere he will act on.** *A current number
+needs the production pull that is deferred; this one is directional.*
+
 #### THE FOUNDING QUESTION HAS BEEN MISLABELLED SINCE IT WAS POSED. 2026-09-25.
 
 **Not "unmeasurable" — MEASURING SOMETHING ELSE. That distinction is the whole
