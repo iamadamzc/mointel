@@ -534,7 +534,23 @@ export function DiscoveryBoard({
                * number. Putting the "now" measure anywhere else would leave the
                * two readings to be joined by the trader mid-scan.
                */}
-              <Th className="w-[44px]" align="right" sorted={activeColumn === 'now'}>
+              {/*
+                * 68, NOT 44, AND THE SORTED STATE IS THE ONE THAT MATTERS.
+                *
+                * Measured on the live board at the 1,024px floor, Geist 600 at
+                * 11px with the head's 0.08em tracking, uppercased as the cell
+                * renders it: `NOW` is 29.5px and `NOW ▼` is 45.3. With
+                * `px-2` either side that is 61.3px of content in a 44px cell,
+                * so the caret has been leaning into RVOL WHENEVER THIS COLUMN
+                * IS THE ACTIVE SORT -- and it is the sort he uses most.
+                *
+                * Invisible until measured because a fixed table cell does not
+                * clip: nothing overflows, nothing scrolls, the neighbour is
+                * simply crowded. 68 leaves 6.7px. The 24px comes out of `Why`
+                * and `Risk`, which carry prose truncated to one line, so the
+                * cost is a few characters of a sentence already cut short.
+                */}
+              <Th className="w-[68px]" align="right" sorted={activeColumn === 'now'}>
                 Now
                 {/*
                   * The lag, on the header rather than in the tooltip alone.
