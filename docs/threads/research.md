@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T13:47Z
+## LIVE STATE — 2026-09-25T14:02Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -157,6 +157,11 @@ history, so that rests on Integration's account of the exchange rather than on a
 record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
+
+- **⚠️ `eventTimestamp` IS THE `freshness` DEFECT'S TWIN AND IT IS STILL LIVE. Established in code 2026-09-25, NOT yet sized.** The four-day thread took `freshness` away from the model because `schema.ts` declared the enum with no description and the prompt never defined it. **The arithmetic that replaced it reads `catalyst.eventTimestamp` — and that is a model output against `schema.ts:90` `eventTimestamp: nullableString`, declared with NO description, about ten lines from the comment explaining why `freshness` was removed for exactly that.** `SYSTEM_PROMPT_A` (`openaiInterpreter.ts:70`) never mentions it: searched for `eventTimestamp`, "newest", "most recent", "latest", "select the", "choose the" — nothing. The model is handed a bundle and never told which source's time to put there.
+  **And nothing validates it.** `guardrails.ts:265` `checkIds` confirms the cited source ids EXIST in the bundle; `guardrails.ts:338` recomputes `freshness` FROM the timestamp. **No check ever compares `eventTimestamp` to the `published_at` of any source the catalyst cites** — the stamp is not constrained even to its own evidence. So the band is computed honestly from a number nobody constrains.
+  **The operational consequence, settled for Ops 2026-09-25 before the `0a17601` ship:** a ticker's newest ACTIVE SOURCE being in band does NOT imply its SELECTED CATALYST is. Those are different quantities, and `max(published_at)` across active sources is an upper bound on candidates rather than a count of movers.
+  **NOT sized, and no mechanism proposed.** The obvious repair — constrain the stamp to the cited sources' published times — is exactly the shape of thing that needs a count first; see the `20:00:00 ET` trap in the hazards, found the same morning by having the measurement and reading it the wrong way round for a moment.
 
 - **⚠️ THE PRIOR-SESSION-CLOSE FRESH WINDOW: PRODUCER SHIPPED `7a0ad0c`, CONSUMER IS DESIGN'S AND NOT DONE.** `684902f` implements the band; `7a0ad0c` supplies the boundary as **`MarketSnapshot.catalystFreshFrom`**, computed once per snapshot server-side in `getMarketSnapshot`, null on both degraded snapshots and whenever the answer would be a guess. **Nothing on his board changes until Design passes it as the third argument** at `lib/dashboard/why.ts:239` — four `resolveWhy` call sites, routed to Design through Integration 2026-09-25. Until then **clocked after-hours releases still band RECENT** (6 rows in the 2026-08-23 snapshot), which is his date-only rule and is safe.
   **Two decisions inside `7a0ad0c` that went beyond the spec, both asserted in `tests/research/catalystFreshFrom.test.ts`:** it takes the **prior session's OWN close** rather than `afterHoursStartUtc`'s 16:00 default, which is three hours late the day after an early close; and the producer **refuses a stale calendar** rather than leaning on `resolveCatalystFreshness`'s five-day guard — and the test is that **the calendar still covers the date asked about**, not the size of the gap to the previous session, because an unscheduled closure produces the same gap with a current calendar and there the wide window is CORRECT. `calendarDays` is now exported from `lib/desk/checkpointDates.ts` rather than the calendar being parsed a third time.
