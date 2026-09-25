@@ -485,6 +485,52 @@ The week-by-week working record to 2026-09-21 is in
 "why is it like that"; every conclusion is also in a commit message, with the
 code beside it. Rulings that still bind were carried above.
 
+## Reporting to him — his rule, 2026-09-25
+
+**HIS WORDS, VERBATIM, AND THEY OVERRIDE EVERY REPORTING HABIT BELOW:**
+
+> *"Everyone is over communicating. I don't care about how the back end
+> conversations or the mechanics go relative to code or conflicts or Qnumbers,
+> et cetera, et cetera. I care about the information that impacts the app
+> relative to my decisions and what we're doing with the product."*
+
+**THE TEST BEFORE ANYTHING REACHES HIM: which decision of his does this
+change, or what can the product now do? If neither has an answer, it is a
+commit message.**
+
+**THIS SEAT IS THE HARDEST CASE AND IT CUTS BOTH WAYS.** *The board IS the
+product, so my output is closer to his attention than any other seat's — and
+that makes it easier, not harder, to smuggle mechanics in beside it.*
+
+    PRODUCT, and his          what a row now SAYS. what a column MEANS.
+                              what he can read off the board that he could
+                              not. what the board now refuses to claim.
+
+    MECHANICS, and NOT his    which argument the value rides on. how the
+                              payload carries it. widths, unless a column
+                              got cut. gate numbers, mutation counts, shas,
+                              tags, cherry-picks, bundle staleness.
+                              control rows, discriminating pairs, and every
+                              near-miss that made a verification sound.
+
+**A MEASUREMENT REACHES HIM ONLY AS ITS CONSEQUENCE.** *"During a 25% minute
+the number on screen is a median 3.1× short and does not update until the move
+is over"* is product — it says what the board cannot do. **The population,
+the store, the bar filter and the three sessions are the method, and the
+method belongs in this file.** State the limit in one clause if the limit
+changes how far he should trust it; otherwise it is here.
+
+**A PEER'S CORRECTION NEVER REACHES HIM — only what it changed.** *Today I
+reported a guard I had written wrongly, a gate command that lied, an escape
+level lost three times, and which seat caught which. **None of it changed a
+row on his board.*** Say what shipped; the record of how is `git log`.
+
+**AND MY OWN ERRORS ARE MECHANICS TOO, WHICH IS THE PART THAT WILL BE HARDEST
+TO KEEP.** *Reporting them reads as honesty and costs him the same attention
+as any other narration. It is honesty owed to THIS FILE.* **The exception is
+an error that reached, or could have reached, the app — that is product and
+he hears it first.**
+
 ## Working rules
 
 - **ONE SENTENCE CAN NAME ONE BASE AND CARRY FIGURES FROM TWO, AND EVERY
