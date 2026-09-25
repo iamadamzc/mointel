@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T17:52Z
+## LIVE STATE — 2026-09-25T18:41Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -219,6 +219,11 @@ record. He has it from this seat directly as well.
 - **`isCycleStart`'s move gate (high vs close)** — **WITHDRAWN, not open.** Unreproduced; QCLS never evidenced it either way.
 
 ### STANDING CONSTRAINTS — things that must NOT be done
+
+- **NO HEAVY READ AGAINST PRODUCTION `market.db` WHILE A DEPLOY UNIT IS RUNNING — ask Ops for the window.** Ops's finding 2026-09-25, `README.md` `20b2499`. `quick_check` is a `PRAGMA quick_check` full integrity scan of a **3.5G** file, already running **388–597s against a 900s follow deadline**, and the false `is live` fires when a unit is still running at that deadline — **measured margin 132s on the day's worst deploy.** A concurrent census scan is exactly what pushes it over. **So a measurement of mine can make the deploy tool announce a cutover of mine that has not happened, and nothing in my query's own result would show it.** This binds the `collector_report` scan for `candidatesReturned/Probed/Fetched`, which starts accumulating next session and is precisely the kind of full scan meant here.
+  **⚠️ AND IT LANDS ON THE 10s CAPTURE DESIGN, WHICH IS WHY IT IS HERE AND NOT ONLY IN THE HAZARDS.** `quick_check` scans the WHOLE FILE, so **anything that grows `market.db` lengthens every future deploy's integrity check and eats that 132s margin.** Sized against the population choice, upper bound from the local store: **top-12 at 5-day retention is ~292k rows (~30MB, ~1% growth) — negligible. Top-250 at 20-day is ~15.8M rows (~1.6GB), which would be a 45% increase in the file `quick_check` must scan.** *So the population and retention choice for 10s capture is a DEPLOY-SAFETY decision as well as a storage one, and it would otherwise be discovered by a deploy timing out.*
+  **The store's LOCATION is therefore a question for Ops, not this seat.** A separate database file keeps `quick_check` off the 10s buckets entirely and makes the population choice purely a storage question — and the desk already runs `archive.db`, `assessments.db` and `identity.db` beside `market.db`, so the pattern exists. **But a new database file defines, migrates and versions tables, which is Ops's by the `lib/market/` split.** Raised, not decided.
+  **The ORDERING half is separate and also binds a measurement: Ops's before-reading moved to AFTER cutover and BEFORE the restart.** A web-tier deploy does not touch `minute_bars`, so nothing was lost by taking it later — **but taking it after the RESTART would have destroyed it, because the restart is the event the reading exists to bracket.** Two boundaries that look interchangeable; only one is.
 
 - **DO NOT PUT DEPLOY TIMING TO HIM FOR A BACKEND-ONLY CHANGE. Integration approves clean enumerations to Ops without returning per-deploy** — standing approval recorded `2026-09-23T03:58Z` in `integration.md`, which **supersedes the earlier today-only grant**. What still goes to him: **spend, auth-model changes, destructive actions, and an unreviewed BOARD-BEHAVIOUR change.** Restarts are not Integration's to relay either — Ops takes that word from him directly. *Verified at the artifact 2026-09-25 rather than taken from the relay, and it held.* **This seat spent his attention on a call he had already delegated, by not looking for the grant.** The hand-off prompt warns that a superseded grant reads exactly like a live one; **the inverse costs too, and it is the cheaper mistake to make twice** — a live standing grant reads exactly like no grant if nobody opens the file.
 
