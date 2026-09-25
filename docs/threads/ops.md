@@ -11919,3 +11919,41 @@ write that kills the worker on BUSY is Research's.
 
 The retired chat is renamed `Ops-tmie-retired` and archived (his act, confirmed
 22:58Z). `Ops-tmi` now resolves only to this seat, local_7c4ce1d1….
+
+## 2026-09-25 evening — one ship launched and UNCONFIRMED; one set enumerated and held
+
+**THE 110s GAP IS EXPLAINED: `pruneMinuteBars`.** `DELETE ... WHERE trading_date
+NOT IN (keep)` planned as `SCAN minute_bars`: a full read of the 3.7G table under
+the write lock, at every worker start and every 22:00 ET roll, before the socket
+connects, deleting NOTHING (retention 20, 13 dates stored). The nightly rolls show
+the same backfill->connected interval: 49-111s. Fixed in `d5fe8bc`: stale dates are
+found through the covering index, no write happens when none are stale, and each
+stale date is deleted by equality. The mutant (the old NOT IN) kills exactly the two
+new tests. **Expected restart cost after it lands: ~2 min, not <1.** Replay +
+reconstruction (~107s) is untouched, and that half scales with the price band.
+His capture-vs-compute question survives this fix.
+
+```
+10b4dce  = d5fe8bc cherry-picked onto d0bc78c, branch ops/retention-prune, 1 commit, 2 files
+gate     158/158, 2394 tests, ALL GREEN. The first run was red on releaseBootstrap.test.ts
+         beside Git Bash "fork: Resource temporarily unavailable"; 9/9 in isolation at both
+         shas; clean re-run; no override.
+pre      /proc: d0bc78c x4, no deploy unit, 19:36 ET
+launched 19:36 ET, RESTART_MARKET=no, push-release.sh mointel-ssm
+CUTOVER  UNCONFIRMED. After launch this session's permission classifier refused every
+         production-deploy action ("[Production Deploy]"), including reading the
+         deploy log. Not worked around. His direct clearance was requested.
+```
+
+**HELD, ENUMERATED BY INTEGRATION (final version of three):** `36bbddd`, `1f4bbc3`,
+`ea179ce`, `ec7a484` as four individual picks onto whatever `/proc` shows;
+`docs/threads/design.md` taken from production; **159** test files pre-registered;
+build before typecheck; `RESTART_MARKET=no`. `ccaf77b` + `63325a4` stay out (a
+net-zero pair). **`36bbddd` must be live before Mon 2026-09-28 07:00 ET.** I
+recommended to him the two picks he ruled on in his own words (`36bbddd`, `ec7a484`),
+because the tooltip strings in the other two are copy he had not read at approval
+time.
+
+**Lock starvation, OPS half:** fixed in `d5fe8bc`, live only once `10b4dce` is
+confirmed. Research's half (a heartbeat write that kills the worker on BUSY) is
+still open and still Research's.
