@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { normalizeSheetRows } from '@/lib/data/rows';
 import { buildDeskRow, mergeDesk } from '@/lib/dashboard/merge';
-import { resolveWhy } from '@/lib/dashboard/why';
+import { priorCloseLabel, resolveWhy } from '@/lib/dashboard/why';
 import type { AutoIntelligence } from '@/lib/research/view';
 import type { MarketSnapshot } from '@/lib/market/types';
 import type { DashboardState } from '@/lib/data/types';
@@ -254,5 +254,136 @@ describe('the merge carries the boundary to every row', () => {
 
     expect(merged.discovery[0]!.catalystFreshFrom).toBeNull();
     expect(merged.watchlist[0]!.catalystFreshFrom).toBeNull();
+  });
+});
+
+/* ------------------------------------------------------------------------- *
+ * A PROMOTED ROW SHOWS WHAT MADE IT GREEN
+ * ------------------------------------------------------------------------- */
+
+/**
+ * His ruling, 2026-09-25, option (a): on a row the prior close promoted,
+ * replace the age with the reason.
+ *
+ * The defect is a PAIRING and not a wrong value. `3d` is correct and so is the
+ * green; they are computed from different quantities and only disagree once the
+ * boundary reaches across a weekend — which is why a Friday cannot show it and
+ * a Monday premarket can.
+ */
+describe('a row promoted by the prior close states the reason, not the age', () => {
+  /** Monday 2026-09-28, 08:00 ET. Prior session close: Friday 16:00 ET. */
+  const MON = Date.parse('2026-09-28T12:00:00.000Z');
+  const FRI_CLOSE = '2026-09-25T20:00:00.000Z';
+
+  it('replaces `3d` with the session that made it fresh', () => {
+    /*
+     * The case nobody could see on the day it was found. Both arms, because
+     * the bands-only arm is the control: without it this asserts nothing about
+     * the boundary having done the promoting.
+     */
+    const at = '2026-09-25T21:18:05.000Z'; // Fri 17:18 ET, after the close
+
+    const promoted = resolveWhy(rowWithEvent(at, FRI_CLOSE), MON);
+    expect(promoted.freshness).toBe('FRESH');
+    expect(promoted.age).toBe('since Fri close');
+    expect(promoted.ageIsPriorClose).toBe(true);
+
+    const unpromoted = resolveWhy(rowWithEvent(at, null), MON);
+    expect(unpromoted.freshness).toBe('STALE');
+    expect(unpromoted.age).toBe('3d');
+    expect(unpromoted.ageIsPriorClose).toBe(false);
+  });
+
+  it('names the weekday off the boundary, so it is not a constant', () => {
+    /*
+     * A fixed word would be right four days in five. Thursday's close on a
+     * Friday board, Friday's close on a Monday board, and a holiday moves it
+     * again — so the label is read from the instant the desk banded on.
+     */
+    const friBoard = resolveWhy(
+      rowWithEvent('2026-09-24T21:18:05.000Z', '2026-09-24T20:00:00.000Z'),
+      Date.parse('2026-09-25T13:00:00.000Z'),
+    );
+    expect(friBoard.age).toBe('since Thu close');
+  });
+
+  it('LEAVES THE AGE ALONE on a row the day bands already called fresh', () => {
+    /*
+     * The control that decides whether the predicate is right rather than
+     * merely firing. Today's news is FRESH either way, so the boundary did not
+     * promote it and the age must survive — a check that only exercises the
+     * firing case cannot tell you the condition is correct.
+     */
+    const today = resolveWhy(rowWithEvent('2026-09-28T11:30:00.000Z', FRI_CLOSE), MON);
+    expect(today.freshness).toBe('FRESH');
+    expect(today.age).toBe('30m');
+    expect(today.ageIsPriorClose).toBe(false);
+  });
+
+  it('LEAVES THE AGE ALONE on a row that was never promoted', () => {
+    // Friday 15:00 ET — before the close, so it stays STALE and keeps `3d`.
+    const before = resolveWhy(rowWithEvent('2026-09-25T19:00:00.000Z', FRI_CLOSE), MON);
+    expect(before.freshness).toBe('STALE');
+    expect(before.age).toBe('3d');
+    expect(before.ageIsPriorClose).toBe(false);
+  });
+
+  it('keeps the exact instant reachable and says WHY in the title', () => {
+    /*
+     * The age moved to the hover; it was not deleted. `eventAt` is the title on
+     * that element, and the grade's title now carries the reason — otherwise
+     * the row says `since Fri close` in green and the reader cannot tell
+     * whether that is one day or four.
+     */
+    const promoted = resolveWhy(rowWithEvent('2026-09-25T21:18:05.000Z', FRI_CLOSE), MON);
+    expect(promoted.eventAt).toContain('ET');
+    expect(promoted.title).toContain("prior session's close");
+    expect(promoted.title).toContain('since Fri close');
+
+    const plain = resolveWhy(rowWithEvent('2026-09-25T19:00:00.000Z', FRI_CLOSE), MON);
+    expect(plain.title).not.toContain("prior session's close");
+  });
+
+  it('keeps the age when the boundary is not a usable date', () => {
+    /*
+     * RENAMED AFTER A MUTANT SURVIVED, because the first name claimed more
+     * than the test reaches. This does NOT exercise `priorCloseLabel`'s own
+     * guard: an unusable boundary cannot promote in the first place
+     * (`resolveCatalystFreshness` refuses it and falls to the bands), so the
+     * label function is never called and removing its `Number.isFinite` check
+     * left this green. What it actually proves is the composition — a broken
+     * boundary produces a normal STALE row and never a guessed weekday.
+     *
+     * The guard itself is covered directly below.
+     */
+    const broken = resolveWhy(rowWithEvent('2026-09-25T21:18:05.000Z', 'not-a-date'), MON);
+    expect(broken.freshness).toBe('STALE');
+    expect(broken.age).toBe('3d');
+    expect(broken.ageIsPriorClose).toBe(false);
+  });
+});
+
+describe('priorCloseLabel, reached directly because the composition hides it', () => {
+  it('names the boundary weekday in ET', () => {
+    // 20:00Z is 16:00 ET, and the weekday must be read there and not in UTC.
+    expect(priorCloseLabel('2026-09-25T20:00:00.000Z')).toBe('since Fri close');
+    expect(priorCloseLabel('2026-09-24T20:00:00.000Z')).toBe('since Thu close');
+  });
+
+  it('crosses midnight UTC without moving the ET day', () => {
+    /*
+     * The one arithmetic this label can get wrong. 2026-09-26T01:00Z is still
+     * FRIDAY evening in New York; a UTC read would call it Saturday and print
+     * a session that does not exist.
+     */
+    expect(priorCloseLabel('2026-09-26T01:00:00.000Z')).toBe('since Fri close');
+  });
+
+  it('returns NULL rather than a guess on anything unparseable', () => {
+    // Null is what lets the caller keep the elapsed age instead of inventing
+    // a weekday. `new Date(NaN)` would make `Intl.format` throw outright.
+    for (const bad of ['not-a-date', '', null, undefined]) {
+      expect(priorCloseLabel(bad)).toBeNull();
+    }
   });
 });

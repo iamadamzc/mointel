@@ -29,8 +29,23 @@ export interface DeskWhy {
   code: WhyCode;
   /** 'A' | 'B' | 'C' | '—', or a word when there is no grade to give. */
   grade: string;
-  /** Relative age of the catalyst event: '12m', '16h', '3d'. Null when unknown. */
+  /**
+   * Relative age of the catalyst event: '12m', '16h', '3d'. Null when unknown.
+   *
+   * ON A ROW PROMOTED BY THE PRIOR CLOSE THIS CARRIES THE REASON INSTEAD --
+   * `since Fri close` -- because the age and the colour are computed from
+   * different quantities and disagree across a weekend. `ageIsPriorClose` says
+   * which one is in here, so a renderer never has to pattern-match the string.
+   */
   age: string | null;
+  /**
+   * True when `age` holds the prior-close reason rather than an elapsed span.
+   *
+   * The render reads this to drop `tabular-nums`: the slot is `.num` because it
+   * normally holds a figure, and prose in a numerals font is the small version
+   * of the same mistake this field exists to fix.
+   */
+  ageIsPriorClose: boolean;
   /** Absolute ET time behind the age, for the title and the drawer. */
   eventAt: string | null;
   /** One short line: the headline, clamped by CSS rather than cut here. */
@@ -96,6 +111,29 @@ export function relativeAge(at: string | null | undefined, nowMs: number): strin
   return age.days === 0 ? 'today' : `${age.days}d`;
 }
 
+/**
+ * `since Thu close` — the session whose close made a catalyst FRESH.
+ *
+ * THE WEEKDAY IS THE POINT AND IT IS WHY THIS IS NOT A CONSTANT. On a Friday
+ * the prior session is Thursday; on a Monday it is Friday, and after a holiday
+ * it is neither. A fixed word would be right four days in five, which is the
+ * worst ratio a label can have.
+ *
+ * Taken from the boundary the desk actually banded on, formatted in ET through
+ * `Intl` rather than derived from the instant by arithmetic. Null on anything
+ * unparseable, so the caller keeps the age rather than printing a guess.
+ */
+export function priorCloseLabel(freshFrom: string | null | undefined): string | null {
+  if (!freshFrom) return null;
+  const ms = Date.parse(freshFrom);
+  if (!Number.isFinite(ms)) return null;
+  const weekday = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    weekday: 'short',
+  }).format(new Date(ms));
+  return `since ${weekday} close`;
+}
+
 /** ET wall clock for the tooltip and the drawer. Never a UTC ISO string. */
 export function etTimestamp(at: string | null | undefined): string | null {
   if (!at) return null;
@@ -126,6 +164,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       code: 'NOT_RESEARCHED',
       grade: '—',
       age: null,
+      ageIsPriorClose: false,
       eventAt: null,
       headline: 'Not researched yet.',
       explainsMove: null,
@@ -140,6 +179,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       code: 'RESEARCHING',
       grade: '—',
       age: null,
+      ageIsPriorClose: false,
       eventAt: null,
       headline: 'Looking for the catalyst.',
       explainsMove: null,
@@ -169,6 +209,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       code: 'UNKNOWN',
       grade: '—',
       age: null,
+      ageIsPriorClose: false,
       eventAt: null,
       headline: headline ?? 'No catalyst established.',
       explainsMove: null,
@@ -264,6 +305,37 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
   const tone: DeskWhy['tone'] = freshness ? FRESHNESS_TONE[freshness] : 'dim';
 
   /*
+   * A PROMOTED ROW SHOWS WHAT MADE IT GREEN, NOT HOW OLD IT IS. His ruling,
+   * 2026-09-25, option (a): replace the age with the reason.
+   *
+   * THE DEFECT IT REMOVES IS A PAIRING, NOT A WRONG VALUE. The age is elapsed
+   * days; the colour is the session boundary. Within one day they agree and
+   * `16h` beside green reads fine — which is exactly why this was invisible on
+   * the Friday it was found. ON A MONDAY THE BOUNDARY REACHES BACK ACROSS THE
+   * WEEKEND (`MAX_FRESH_FROM_AGE_MS` is five days precisely so a long weekend
+   * still qualifies), so the row renders `3d` in green and a name wearing
+   * `no fresh news` on Friday is FRESH on Monday. A number beside a word reads
+   * as the word's evidence, and `3 days old` is not evidence of freshness.
+   *
+   * ASKED BY CALLING THE SHIPPED FUNCTION TWICE, NOT BY ADDING A `via` FIELD
+   * TO IT. "Promoted" means FRESH with the boundary and not FRESH without it,
+   * which is the definition rather than a restatement of it — so this cannot
+   * drift from the branch it describes, and `lib/research/time.ts` is
+   * untouched. Both calls are pure; the second costs one more parse per row.
+   *
+   * NOTHING IS LOST. The exact ET instant is already the `title` on this
+   * element (`DecisionCells.tsx:424` renders `why.eventAt` there), so the age
+   * moves from the cell to the hover rather than disappearing.
+   */
+  const promotedByPriorClose =
+    freshness === 'FRESH' &&
+    catalyst !== null &&
+    row.catalystFreshFrom !== null &&
+    resolveCatalystFreshness(catalyst.eventTimestamp, new Date(nowMs)) !== 'FRESH';
+
+  const priorClose = promotedByPriorClose ? priorCloseLabel(row.catalystFreshFrom) : null;
+
+  /*
    * ONE BADGE FIRED FOR TWO DIFFERENT FACTS, AND THEY ARE NOT THE SAME NEWS.
    *
    * `no fresh news` fired both when the desk found NO catalyst and when it
@@ -282,13 +354,19 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
   return {
     code: nothingFound ? 'NO_FRESH_CATALYST' : onlyOld ? 'OLD_CATALYST' : 'GRADED',
     grade,
-    age,
+    /*
+     * `priorClose ?? age`, never both. Two quantities in one slot is the thing
+     * being removed, not a layout to economise on: `3d · since Fri close`
+     * would put the contradiction inside one cell instead of across two.
+     */
+    age: priorClose ?? age,
+    ageIsPriorClose: priorClose !== null,
     eventAt: etTimestamp(eventAt),
     headline,
     explainsMove: catalyst?.plausiblyExplainsMove ?? null,
     freshness,
     tone,
-    title: whyTitle(grade, freshness),
+    title: whyTitle(grade, freshness, priorClose),
   };
 }
 
@@ -313,7 +391,11 @@ const FRESHNESS_MEANING: Record<CatalystFreshness, string> = {
  * catalyst is — and the colour is the FRESHNESS. A green `B` is a fresh
  * catalyst the desk rates moderate, which is unreadable unless both are said.
  */
-function whyTitle(grade: string, freshness: CatalystFreshness | null): string {
+function whyTitle(
+  grade: string,
+  freshness: CatalystFreshness | null,
+  priorClose: string | null = null,
+): string {
   const meaning = GRADE_MEANING[grade];
   const letter = meaning
     ? `Catalyst grade ${grade} — ${meaning}. That is how STRONG it is, not how fresh.`
@@ -322,7 +404,16 @@ function whyTitle(grade: string, freshness: CatalystFreshness | null): string {
   // Silence rather than a sentence about a colour that is carrying nothing:
   // with no freshness the letter renders dim and says only what it is.
   const colour = freshness ? ` The colour is its FRESHNESS: ${FRESHNESS_MEANING[freshness]}.` : '';
-  return `${letter}${colour}`;
+  /*
+   * THE CELL NO LONGER STATES THE AGE, SO THE HOVER MUST SAY WHY. Without this
+   * the row says `since Fri close` in green and the reader is left to work out
+   * whether that is one day or four -- which is the information the change
+   * moved off the cell, not information it was entitled to delete.
+   */
+  const why = priorClose
+    ? ` It is FRESH because it broke after the prior session's close (${priorClose}), so the market has not traded on it yet -- not because it is recent by the calendar. The exact time is below.`
+    : '';
+  return `${letter}${colour}${why}`;
 }
 
 function gradeLetter(grade: string): string {

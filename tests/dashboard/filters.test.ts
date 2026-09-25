@@ -321,9 +321,18 @@ describe('freshness has ONE read, which is the seam Research replaces', () => {
   it('serves the colour, the verdict and the tooltip from ONE derived value', () => {
     // Still one local, still every consumer taking it — what changed is where
     // it comes from, not how many places read it.
-    for (const consumer of ['FRESHNESS_TONE[freshness]', "freshness === 'STALE'", 'whyTitle(grade, freshness)']) {
+    for (const consumer of ['FRESHNESS_TONE[freshness]', "freshness === 'STALE'"]) {
       expect(source).toContain(consumer);
     }
+    /*
+     * MATCHED, NOT PINNED, AND THE DIFFERENCE COST A RED GATE. This read
+     * `toContain('whyTitle(grade, freshness)')` and broke when `whyTitle`
+     * gained a third argument for the prior-close reason — a change that adds
+     * an argument, not a second freshness source, so the rule this test exists
+     * for was never violated. **An assertion on exact call text fails on
+     * shape; the rule here is about the VALUE being passed.**
+     */
+    expect(source).toMatch(/whyTitle\(grade, freshness[,)]/);
   });
 
   it('keeps the filter on the same reading, so it inherits the fix', () => {

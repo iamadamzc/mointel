@@ -420,8 +420,28 @@ export function WhyCell({ why }: { why: DeskWhy }) {
         >
           {why.grade}
         </span>
+        {/*
+          * `.num` ONLY WHILE THIS HOLDS A NUMBER.
+          *
+          * The slot is Geist Mono with `tabular-nums` because it normally
+          * carries an elapsed span, and tabular figures are what make a column
+          * of ages scan. On a row promoted by the prior close it carries a
+          * REASON instead — `since Fri close` — and prose set in a numerals
+          * font is the small version of the mistake the reason exists to fix.
+          *
+          * READ OFF `ageIsPriorClose`, NEVER pattern-matched from the string.
+          * A renderer testing for a digit would be a second place that decides
+          * what this field means, and the two would drift the first time a
+          * weekday abbreviation changed.
+          *
+          * The title is `eventAt` either way, so the exact ET instant the cell
+          * stopped printing is one hover away rather than gone.
+          */}
         {why.age ? (
-          <span className="num text-[11px] text-ink-2" title={why.eventAt ?? undefined}>
+          <span
+            className={`text-[11px] text-ink-2 ${why.ageIsPriorClose ? '' : 'num'}`}
+            title={why.eventAt ?? undefined}
+          >
             {why.age}
           </span>
         ) : null}
