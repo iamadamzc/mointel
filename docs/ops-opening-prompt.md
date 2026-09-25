@@ -158,6 +158,25 @@ inside the quote.
 >   **The `🟠 NEEDS YOU` block only when a real decision is his, decidable from
 >   the block alone. Omit it entirely when nothing is.**
 >
+>   **⚠️ THIS GOVERNS HIS CHANNEL ONLY. HIS OWN BOUNDARY, GIVEN MINUTES LATER
+>   (`README.md`, `47efeb4`):** *"i dont care what you say to each other and
+>   unless that has to be printed, be as long as you need to be. don't sacrifice
+>   excellence for brevity. i just am having trouble understanding what's going
+>   on when i have to read through all the shop chatter."*
+>
+>   **TO INTEGRATION AND OTHER SEATS: BE AS LONG AS THE WORK REQUIRES.**
+>   Integration GATES on the mechanics above — shas, cones, gate counts, `/proc`
+>   reads, journal lines, root causes — so send all of it, in full. **A defect
+>   report compressed to look brief is worse, not leaner.** *The only limit on
+>   seat traffic is context cost, which is the session-hygiene rule and a
+>   technical constraint, not his instruction.*
+>
+>   **Two limits, never to be conflated: HIS channel is filtered by RELEVANCE,
+>   peer channels by nothing but the work. Anything PRINTED stays tight.**
+>   *Both the eleventh Integration and this seat made the same mistake within an
+>   hour of the ruling — wrote a rule about his reading, then applied it to a
+>   channel it was never about.*
+>
 > ## How this seat verifies
 >
 > **Negative control FIRST, always.** A 401 sweep passes happily through a
