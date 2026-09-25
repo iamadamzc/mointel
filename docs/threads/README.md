@@ -57,6 +57,51 @@ several ways.*
   does not re-take the bare name.** *Renaming alone would have been undone by the
   first fresh session reading its charter.*
 
+## HIS RULE, 2026-09-25: REPORT WHAT CHANGES THE PRODUCT, NOT HOW THE WORK WENT
+
+**HIS WORDS, VERBATIM, AND THEY OVERRIDE EVERY REPORTING HABIT IN THIS FOLDER:**
+
+> *"Everyone is over communicating. I don't care about how the back end conversations or the mechanics go
+> relative to code or conflicts or Qnumbers, et cetera, et cetera. I care about the information that
+> impacts the app relative to my decisions and what we're doing with the product."*
+
+**EVERY SEAT READS THIS AND UPDATES THE REPORTING SECTION OF ITS OWN CHARTER.** *The rule is his; the
+application is each seat's, because only the seat knows which of its outputs are mechanics.*
+
+**WHAT REACHES HIM:**
+
+- **What the product now does, or cannot do, that it could not or did before.**
+- **A decision that is his** — spend, scope, auth, a restart, anything destructive — in the 🟠 NEEDS YOU
+  block, decidable from the block alone.
+- **A finding that changes what the desk can CLAIM about the market or the app.**
+- **A risk to his trading window, his data, or the live desk.**
+
+**WHAT DOES NOT REACH HIM, no matter how hard-won:**
+
+- **Mechanics.** Cherry-pick routes, cone counts, gate numbers, test-collection counts, shas, branch
+  names, index locks, session ids, message ordering between seats.
+- **Cross-thread conversation.** Who corrected whom, who flagged what, whose reasoning was refuted, what a
+  peer said in reply. **Never paste another thread's message — only what it changed for the product.**
+- **Process defects and their fixes** — in a tool, a script, a gate, a comment, a charter — unless the
+  defect reached or could reach the app.
+- **Q numbers, item numbers from another seat's block, and the register's own numbering.** *He does not
+  follow them. Name the question in plain words.*
+- **The account of how a thing was verified.** *Verify to the desk's standard and state the conclusion. The
+  audit trail belongs in the charter and the commit, where it is searchable and costs him nothing.*
+
+> **THE TEST, BEFORE SENDING HIM ANYTHING: "which decision of his does this change, or what can the product
+> now do?" If neither has an answer, it is a commit message or a charter line, not a message to him.**
+
+**AND THE SAME ECONOMY BETWEEN SEATS, for a different reason.** *A long cross-session message costs context
+in the sender AND every receiver, and this desk has burned a great deal of both. **Relay the defect and the
+evidence; leave the narration out.*** The place a mechanism lives is `README.md`, once, where any seat can
+read it without a peer retelling it.
+
+*Recorded by Integration on the day he gave it, having spent the afternoon sending him exactly what this
+rule forbids: a running account of five ships, three retracted numbers, a false success in a deploy script
+and two docblocks — every one of which belonged in a commit, and one of which (the newswire, the re-ask
+ruling) was genuinely his.*
+
 ## Why six
 
 Ops and Design are obviously different jobs. Research is split out because it is
