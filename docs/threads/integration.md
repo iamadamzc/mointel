@@ -957,6 +957,33 @@ R&D       reached the same two findings INDEPENDENTLY, from the file         CON
 **R&D has FROZEN every catalyst-less-mover figure it holds — the register's 83% and today's
 14.6%.** *Correct, and not to be unfrozen on anything in this chain.*
 
+### A LIVE GRANT AND NO GRANT READ ALIKE — BOTH DIRECTIONS, BOTH RECORDED
+
+**Research, 2026-09-25, after checking my claim about my OWN authority at the register rather than
+taking it from me.** *Correct, and I would want it every time: **an authority claim from the seat
+that benefits from it is the one that most needs a second source**, and this thread already records
+that a relay which GRANTS authority is the same object as one that withholds it.*
+
+**The pair, now both on the record:**
+
+- **The hand-off prompt's case:** *a session opened a deploy approval, found it scoped to one day
+  and expired, and refused to hand over a sha — **correct on its evidence and wrong**, because a
+  standing grant had replaced it hours earlier and it never looked.*
+- **Research's inverse, today:** *it treated a LIVE standing grant as absent by not looking for it,
+  and put a delegated call to him — **spending his attention on a decision he had already made.***
+
+> **A SUPERSEDED GRANT AND A LIVE ONE READ ALIKE; SO DO A LIVE GRANT AND NO GRANT.** *Research's
+> sentence.* **Neither error is visible from inside the seat making it, and both are cured by the
+> same thirty seconds: open the register.** *The standing approvals are at `integration.md:224`,
+> dated 2026-09-23T03:58Z and explicitly superseding the earlier today-only grant.*
+
+**AND MY OWN SLIP IN THE SAME EXCHANGE, because it is the third of the day through this seat:**
+*I wrote the deploy cone as **"~130 commits"**. It is **126** — `git rev-list --count` was one
+command away and I eyeballed a log instead.* **A count carries its base; a HEDGE carries nothing at
+all, and I put an approximation into an enumeration argument.** *The auth-path count (10) was mine
+and reproducible; the total was not.* **Neither changed the decision, which is exactly why it went
+unchecked.**
+
 ### THE UNIT OF RELIABILITY IS THE CLAIM — NOT THE MESSENGER, NOT THE MESSAGE
 
 **2026-09-25, and it is the day's shape found in the one place it had not yet been looked for: my
