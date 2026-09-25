@@ -295,10 +295,12 @@ the 22:00 after-hours recap.** *No human has ever written or reviewed it —
 > route, no scheduled job, no "one-off backfill" may fetch it.* **Verified 2026-09-21:
 > nothing under the app reaches that source.**
 
-**So the desk OWNS THE TEST and BORROWS THE CLAIM.** *The filing-derived work is already
-built and running (`assessFloatBound`, the floor ratio, rendered in the supply reading).
-SEC filings are public domain and carry none of those terms, which is why the
-filing-derived route is the one to invest in.*
+**So the desk OWNS THE TEST and BORROWS THE CLAIM.** *The filing-derived containment test is
+built and running: **`assessFloatAgainstFiled`** (`merge.ts:276`, his four states, `7cc5076`),
+rendered in the supply reading. **`assessFloat` has NO production caller — not at HEAD, not in
+history — so Phase C is NOT "wire up `assessFloat`"; that routes to a function nothing calls**
+(Research, `cce0af0`, 2026-09-25).* *SEC filings are public domain and carry none of those terms,
+which is why the filing-derived route is the one to invest in.*
 
 **HIS FOUR STATES, replacing the binary — he challenged "why say CANNOT VERIFY when you
 could qualify" and was right:**
