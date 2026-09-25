@@ -52,13 +52,13 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-24T14:50Z
+## LIVE STATE — 2026-09-25T11:38Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
 a new chat"; read nothing marked ARCHIVE front to back.*
 
-### SHIPPED, tested, on `main` — suite 2,335 across 153 files
+### SHIPPED, tested, on `main` — suite 2,409 across 160 files, `tsc` clean, lint 0 errors
 
 | sha | what |
 | --- | --- |
@@ -125,14 +125,26 @@ in **which option it picks**.
 - **`worker/basis-backfill.ts --run` will NOT be run — he chose ORGANIC FILL** (`8f331ed`, 2026-09-22). The ~27% blue-sky recovery arrives gradually through `basisFetchDue` on the research job path instead of in one backfill. Census at the time: 431 due, 562 established. **Do not propose the `--run` again without new reason.**
 - **The restart fix is confirmed on real data: 0 of 1,825 rows read low** after the 2026-09-23 restart, cohort restricted to symbols WITH stored premarket bars. **Not a ratio against 1,481 of 7,936** — that was every name on the board, this is only the names replay reaches.
 
+### DEPLOY STATE OF MY LAST BATCH — UNCONFIRMED, CHECK BEFORE ASSUMING
+
+**`757cf6a` was routed to Ops on 2026-09-24 to gate at the literal sha and ship
+AFTER THE CLOSE. I never saw confirmation that it shipped.** The PRODUCTION
+STATE table above is Ops's reading of **2026-09-23** and predates it.
+
+**What is in that batch:** the whole catalyst-freshness thread — his 28-day row
+goes amber, leaves the fresh chip, gains `no fresh news`, and reads `28d` rather
+than `29d` — plus Design's `why.ts` half (`9c3447b`) and the label work.
+
+**What is NOT in it:** the prior-session-close FRESH window. See the first open
+item. **A 16:15 ET release still reading RECENT after this deploy is EXPECTED,
+not a failed fix.** Integration undertook to tell him that when routing; confirm
+he was told rather than assume it.
+
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
 - **⚠️ THE PRIOR-SESSION-CLOSE FRESH WINDOW IS BUILT AND NOT RUNNING.** `684902f` implements it; nothing supplies the boundary, so it never fires and **clocked after-hours releases still band RECENT** (6 rows in the 2026-08-23 snapshot). `resolveCatalystFreshness` has two callers and both pass two arguments: `why.ts` runs in the BROWSER (`'use client'`, no store), and `validateDossier` takes no `db` either. The fallback is deliberate and safe — it is exactly his date-only rule — **but do not read `684902f` as live.**
   **What activates it:** `MarketSnapshot.catalystFreshFrom = afterHoursStartUtc(previousTradingDate(db, tradingDate))`, computed once per snapshot server-side and passed as the third argument. **Mine, queued after the board batch.** Design specced the field; the shape is the same producer-supplies-the-answer rule as `observed`.
 
-- **How a restart rebuilds `sessionHigh` — CLOSED.** Ops shipped `34414f4` (replay before the seed) and it is confirmed on real data: **0 of 1,825 rows read low** after the 2026-09-23 restart, against 1,481 of 7,936 on 09-18. **Not a ratio** — the second cohort is only the symbols replay can reach. Explained for him in `docs/manual/after-a-restart.html`.
-- **THREE THINGS WAIT ON HIS WORD, all small, none blocking:**
-  1. **All three are RULED and done.** 2026-09-24: the 21-day line is **dropped — no fourth state**, everything two days or older is OLD; the model's dead `freshness` field is **out of the schema**; and `_windows`/`_claimed` are gone from `resolveCatalystFreshness`. Nothing in this group is outstanding.
 - **Phase C, filing-derived float** — buildable now. `assessFloat` (`float.ts:326`) already IS the containment test: `IMPOSSIBLE` when a claimed float exceeds a current filed count. **The vendor half is prohibited, not expensive** — see constraints.
 - **31 personal-scoped justifications in this file.** Integration counted 86 across nine charters. **Fix as each finding is touched**; a bulk rewrite of reasons is how a wrong reason gets a confident new sentence.
 - **`isCycleStart`'s move gate (high vs close)** — **WITHDRAWN, not open.** Unreproduced; QCLS never evidenced it either way.
@@ -148,8 +160,6 @@ in **which option it picks**.
 
 - **`Date.parse` ON AN `eventTimestamp` AGES IT BY A DAY.** **200 of the 260 stored values are bare dates** like `2026-08-17`, and `Date.parse` reads those as midnight UTC, which is **20:00 ET the previous day**. Anything computing an age or a band from them skews one day stale. Use `catalystAge` / `eventEtDate` (`lib/research/time.ts`); never `Date.parse`. The stored data also holds ET wall clocks (`2026-08-16 20:00:00 ET`) whose `Date.parse` behaviour is implementation-defined and whose offset is not stated — those get DATE precision, not CLOCK.
 - **The EX-99 latency measurement is FORWARD-LOOKING and the existing 878 exhibits can never answer it.** `research_sources` inserts are `INSERT OR IGNORE` and nothing updates `published_at`/`published_precision`, so stored rows are frozen. A fresh snapshot does not help. The measurable population is EX-99 exhibits whose **parent filing row** was inserted after `b1d64b9` — and exhibits inherit from the **stored** parent, which is frozen too. Partition on whether `published_at` carries a clock, not on the precision label.
-- **Build both cycle frames from the ONE hourly file**, never paired with `daily_bars`. The file was fetched 2026-09-17, those rows in August, and 19 of 75 symbols had corporate actions in-window; the cross-vintage pairing produced an arithmetically impossible row (an all-sessions high *below* the RTH high).
-
 - **`daily_bars.high` is 09:30–16:00 plus the closing cross.** Premarket excluded 18–0, evening excluded, 0 of 121 discriminating rows premarket-inclusive. **The same bar's VOLUME is not RTH-only** (3 of 2,747 rows, 0.1%) — one bar, two windows, and `bootstrapSession`'s docstring cites the volume property right where the high is also taken.
 - **Today is not in the cycle input.** `readDailyBars` defaults to `unfinished: 'EXCLUDE'`, so a name up 270% right now is judged as of yesterday. This is the QCLS mechanism (incident `ops.md:10297`, 2026-09-16) and what `e48a2ca` supplies.
 - **`volume_base` / `volume_base_through` were literals** until Ops fixed them; `volume_base_source` now writes the unmutated source. Earliest non-null `volume_base_through` dates the daily-bar roll — **not** first nonzero `volume_base`, which conflates rolled with traded.
