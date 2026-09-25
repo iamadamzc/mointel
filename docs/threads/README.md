@@ -3458,6 +3458,39 @@ on the same reasoning. Both were invisible until a task needed a home — which
 means the charters describe *work* well and *code* poorly, and a third will
 surface the same way.
 
+## Who owns `worker/` — AND PROCESS SHAPE
+
+**OPS. Assigned 2026-09-25 at his instruction — he asked whether the desk needed an
+ARCHITECT seat, was recommended an assignment instead, and ruled: "send it to ops".**
+*This is the THIRD module found unowned by the route the section above predicted: a task
+needed a home and no charter claimed it.*
+
+**IT CARRIES MORE THAN THE DIRECTORY. Ops owns PROCESS SHAPE:** *what runs in which
+process, the startup order, when the socket connects, and whether capture and compute
+belong in one process at all.*
+
+- **Why Ops rather than Research:** it owns the feed connection, the restarts, the service
+  units and every operational consequence — and **`stream.ts` allows exactly ONE long-lived
+  WebSocket per worker process**, which is an operational fact before it is a design one.
+  Research owns the engine that consumes the stream but does not deploy, and this decides
+  what happens at process start.
+- **The question that produced the assignment, and it is the first task:** *he asked whether
+  capture should be insulated from restarts.* **A restart costs ~3m43s of capture because the
+  process does its replay and reconstruction BEFORE it connects — not because capture is
+  slow.** Two candidate shapes, measure before choosing: **connect and buffer first** (cheap,
+  no split, may recover most of the 3m43s), or **separate ingest from compute** (right shape,
+  real engineering, and the one-socket constraint means the ingest process must be the sole
+  subscriber). **The 110-second unexplained gap in that startup is the number that decides
+  which.**
+- **And it gets dearer on its own: startup scales with the replay, the replay scales with the
+  price band, and the \$0–\$50 widen itself requires a restart.**
+
+**NOT ASSIGNED, and deliberately: the ARCHITECT seat.** *Recommended against — a seat whose
+entire output is opinions about code it does not open is the highest-risk category on this
+desk, and the day this was asked produced five failures of exactly that shape from the
+Integration seat alone.* **A time-boxed architecture REVIEW with a written target shape and an
+end date was offered instead and he has not ruled on it.**
+
 ## Shared state, single source of truth
 
 Do not restate these in a thread doc; link to them.
