@@ -747,3 +747,113 @@ describe('high-resolution interest set', () => {
 function hodEvents(events: EngineEvent[]): EngineEvent[] {
   return events.filter((event) => event.type === 'NEW_HOD');
 }
+
+/**
+ * Ten-second trade capture — his ruling, 2026-09-25.
+ *
+ * *"im a thousand percent certain a 10s shows you something a minute doesn't.
+ * ive seen stocks go up 50 percent and volume quintuple inside 30 seconds."*
+ * He overruled a 60-second column offered as a cheaper intermediate — *"I
+ * honestly don't understand the purpose of a 60 second column"* — and was right
+ * that it is the same measurement arriving sooner rather than a different one.
+ *
+ * THE DEFECT THESE TESTS EXIST FOR is positional. `ingestTrade` ends with
+ * `isNewerObservation(runtime.priceAt, observation.ts)`, which is correct for
+ * "latest price wins" and wrong for a count: it drops out-of-order arrivals,
+ * which are likeliest when the tape is fastest. A counter below that guard would
+ * undercount worst inside the very minutes this capture exists to reveal.
+ */
+describe('ten-second trade capture', () => {
+  function highResEngine() {
+    const engine = createEngine({ internalRank: 3 });
+    const baselines = new Map<string, RvolBaseline>();
+    for (const symbol of ['AAA', 'QUIET']) baselines.set(symbol, baseline(symbol, 1_000_000));
+    engine.setBaselines(baselines);
+    engine.track('AAA');
+    engine.ingest(bar('AAA', ts(1), { c: 5, v: 5_000_000 }));
+    engine.recompute();
+    return engine;
+  }
+
+  function trade(symbol: string, at: string, price: number | null = 5): MarketObservation {
+    return { symbol, kind: 'trade', ts: at, feed: 'sip', price, receivedAt: at };
+  }
+
+  it('buckets trades by ten seconds of event time', () => {
+    const engine = highResEngine();
+    expect(engine.highResSymbols()).toContain('AAA');
+
+    engine.ingest(trade('AAA', ts(2, 1)));
+    engine.ingest(trade('AAA', ts(2, 4)));
+    engine.ingest(trade('AAA', ts(2, 9)));
+    engine.ingest(trade('AAA', ts(2, 11)));
+
+    const rows = engine.drainTradeBuckets(Date.parse(ts(3)));
+    expect(rows).toHaveLength(2);
+    expect(rows[0].trades).toBe(3);
+    expect(rows[1].trades).toBe(1);
+    // Bucket starts are floored to the grain, not the first trade's time.
+    expect(rows[1].bucketTs - rows[0].bucketTs).toBe(10_000);
+  });
+
+  it('COUNTS AN OUT-OF-ORDER TRADE, which the price path discards', () => {
+    /*
+     * The regression this capture was built around. The second trade is OLDER
+     * than the first, so `isNewerObservation` returns false and everything below
+     * it is skipped -- the price is correctly left alone. The COUNT must still
+     * see it.
+     */
+    const engine = highResEngine();
+    engine.ingest(trade('AAA', ts(2, 5), 6));
+    engine.ingest(trade('AAA', ts(2, 3), 5.5));
+
+    const rows = engine.drainTradeBuckets(Date.parse(ts(3)));
+    expect(rows).toHaveLength(1);
+    expect(rows[0].trades).toBe(2);
+    // And the out-of-order trade still did not move the price.
+    expect(engine.getDemandState('AAA')?.price).toBe(6);
+  });
+
+  it('does not count a print with no usable price', () => {
+    // A trade with no price is a mapping failure on our side, not activity.
+    const engine = highResEngine();
+    engine.ingest(trade('AAA', ts(2, 1), null));
+    engine.ingest(trade('AAA', ts(2, 2), 0));
+    expect(engine.drainTradeBuckets(Date.parse(ts(3)))).toHaveLength(0);
+  });
+
+  it('reports NOTHING for a name with no trade subscription, not zeroes', () => {
+    /*
+     * A name without a trade-level subscription receives no trades at all, so a
+     * zero row would assert that it printed nothing in ten seconds -- a
+     * different and much louder claim than "nobody was listening".
+     */
+    const engine = highResEngine();
+    engine.track('QUIET');
+    expect(engine.highResSymbols()).not.toContain('QUIET');
+    engine.ingest(trade('QUIET', ts(2, 1)));
+    expect(engine.drainTradeBuckets(Date.parse(ts(3)))).toHaveLength(0);
+  });
+
+  it('re-emits the filling bucket and drops the settled ones', () => {
+    /*
+     * The store key is (symbol, trading_date, bucket_ts) and the write replaces
+     * the count, so re-emitting a bucket still filling is idempotent and settles
+     * at its final value. Withholding it until it closed would delay the newest
+     * ten seconds, which is the only data this capture exists for.
+     */
+    const engine = highResEngine();
+    engine.ingest(trade('AAA', ts(2, 1)));
+    engine.ingest(trade('AAA', ts(2, 15)));
+
+    // Drain while the SECOND bucket is still the current one.
+    const first = engine.drainTradeBuckets(Date.parse(ts(2, 16)));
+    expect(first).toHaveLength(2);
+
+    // The settled bucket is gone; the filling one comes back with its new total.
+    engine.ingest(trade('AAA', ts(2, 17)));
+    const second = engine.drainTradeBuckets(Date.parse(ts(2, 18)));
+    expect(second).toHaveLength(1);
+    expect(second[0].trades).toBe(2);
+  });
+});

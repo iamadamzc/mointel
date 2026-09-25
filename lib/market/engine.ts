@@ -107,6 +107,26 @@ import type {
 } from './types';
 
 /** Minimum gap between NEW_HOD events for one symbol. */
+/**
+ * The capture grain: ten seconds, his ruling 2026-09-25.
+ *
+ * He asked for it directly -- *"im a thousand percent certain a 10s shows you
+ * something a minute doesn't. ive seen stocks go up 50 percent and volume
+ * quintuple inside 30 seconds"* -- and overruled a 60-second column offered as
+ * a cheaper intermediate: *"I honestly don't understand the purpose of a 60
+ * second column."* He was right: the 60s version is the same measurement
+ * arriving sooner rather than a different one.
+ */
+const TRADE_BUCKET_MS = 10_000;
+
+/** One symbol's trades inside one ten-second bucket. */
+export interface TradeBucketRow {
+  symbol: string;
+  /** Bucket start, epoch ms, floored to `TRADE_BUCKET_MS`. */
+  bucketTs: number;
+  trades: number;
+}
+
 const HOD_COOLDOWN_MS = 60_000;
 /** A symbol must sit outside the discovery rank this long before re-entry counts. */
 const RANK_REENTRY_COOLDOWN_MS = 5 * 60_000;
@@ -282,6 +302,15 @@ interface TickerRuntime {
   haltAt: string | null;
 
   highRes: boolean;
+  /**
+   * Trades per 10-second bucket, keyed by the bucket's start in epoch ms.
+   *
+   * Accumulated ONLY for high-resolution names, because only they carry a
+   * trade-level subscription. A name without one produces no trades at all, so
+   * an empty map here and a genuinely quiet name are the same object -- which is
+   * why the drain reports nothing for it rather than a row of zeroes.
+   */
+  tradeBuckets: Map<number, number>;
   /**
    * First moment this session that rank crossed into the discovery threshold.
    *
@@ -576,6 +605,7 @@ export class DemandEngine {
       haltRaw: null,
       haltAt: null,
       highRes: false,
+      tradeBuckets: new Map(),
       top12EnteredAt: null,
       qualifiedAt: null,
       qualifiedPrice: null,
@@ -1395,6 +1425,33 @@ export class DemandEngine {
     const price = observation.price ?? null;
     if (price === null || price <= 0) return;
     if (!this.inSessionWindow(observation.ts)) return;
+
+    /*
+     * COUNTED HERE, ABOVE THE MONOTONICITY GUARD, AND THE POSITION IS THE POINT.
+     *
+     * The line below returns early on any trade not newer than the last recorded
+     * price time -- correct for "latest price wins", wrong for a count.
+     * `isNewerObservation` is `candidate >= current` (`derive.ts:152`), so
+     * same-millisecond trades survive but **out-of-order arrivals are dropped**,
+     * and they are likeliest exactly when the tape is fastest.
+     *
+     * A counter below that guard would undercount worst during the minutes this
+     * capture exists to reveal. Design measured the figure already on screen at a
+     * median 3.1x short during a >=25% minute; a capture inheriting this guard
+     * would ship that same shortfall inside its own replacement. Moving these
+     * lines below it is a mutation the suite kills by design.
+     *
+     * It sits BELOW the price-validity guard on purpose: a print with no usable
+     * price is a mapping failure on our side, not market activity.
+     */
+    if (runtime.highRes) {
+      const at = Date.parse(observation.ts);
+      if (Number.isFinite(at)) {
+        const bucket = Math.floor(at / TRADE_BUCKET_MS) * TRADE_BUCKET_MS;
+        runtime.tradeBuckets.set(bucket, (runtime.tradeBuckets.get(bucket) ?? 0) + 1);
+      }
+    }
+
     if (!isNewerObservation(runtime.priceAt, observation.ts)) return;
 
     runtime.price = price;
@@ -2106,6 +2163,41 @@ export class DemandEngine {
   }
 
   /** Tickers changed since the last drain, for incremental persistence. */
+  /**
+   * Ten-second trade buckets ready to persist, oldest first.
+   *
+   * IDEMPOTENT BY DESIGN AND THAT IS WHY THE CURRENT BUCKET IS RE-EMITTED. The
+   * store's key is `(symbol, trading_date, bucket_ts)` and the write replaces
+   * the count, so a bucket still filling is emitted on every flush and settles
+   * at its final value. The alternative -- withholding the newest bucket until
+   * it closes -- delays the most recent ten seconds, which is the only data this
+   * capture exists for.
+   *
+   * COMPLETED buckets are dropped once returned; the newest is kept so it can
+   * keep accumulating. A restart therefore loses only part of one in-flight
+   * bucket, and the key makes replaying the rest harmless.
+   *
+   * Nothing is returned for a name without a trade subscription, rather than
+   * zeroes: no trade ever arrives for it, so a zero would assert that it printed
+   * nothing in ten seconds -- a different and much louder claim.
+   */
+  drainTradeBuckets(now: number = this.now()): TradeBucketRow[] {
+    const rows: TradeBucketRow[] = [];
+    const current = Math.floor(now / TRADE_BUCKET_MS) * TRADE_BUCKET_MS;
+
+    for (const runtime of this.tickers.values()) {
+      if (runtime.tradeBuckets.size === 0) continue;
+      for (const [bucketTs, trades] of [...runtime.tradeBuckets.entries()].sort(
+        (a, b) => a[0] - b[0],
+      )) {
+        rows.push({ symbol: runtime.symbol, bucketTs, trades });
+        // Keep the bucket that is still filling; it is re-emitted next flush.
+        if (bucketTs < current) runtime.tradeBuckets.delete(bucketTs);
+      }
+    }
+    return rows;
+  }
+
   drainDirty(): DemandState[] {
     const changed: DemandState[] = [];
     for (const runtime of this.tickers.values()) {
