@@ -270,9 +270,9 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
 3. **When to run the cut-over** — a window outside his trading hours; Basic-Auth-off is his call.
 
 **Also open, not blocking launch:**
-- **Sort legibility (Design):** a non-RANK sort (NOW, PM MOVE) reads as random because the RANK
-  column dominates the eye and the sort key is buried in the price cell. First pass shipped;
-  sharper fix in progress.
+- **Sort legibility (Design): FIX DONE (`34cf6f3`), gated, awaiting Ops deploy.** RANK wore the
+  active-ordering ACCENT colour unconditionally; now the accent follows the sort and RANK keeps
+  its number. (`9961313`'s caret/aria-sort was already live — "not enough," a colour cause.)
 - **`market.state` DEGRADED/OFFLINE false-red:** a one-sample message-age blip or a restart
   window trips it on a healthy feed (seen 3x). Cosmetic; a threshold fix pending his go.
 
@@ -433,9 +433,14 @@ HUMAN_REVIEWED_PRIOR_ANALYSIS         FIXED      dbd70d1, 2026-09-19. Now
 ### SEAT STATE (2026-09-25 saturation check broadcast to all mointel seats)
 
 **All seats told to self-assess context saturation and run §3 hygiene if they judge it time
-(his instruction 2026-09-25).** *Commercial judged it time and handed off (`bc9847f`, standing
-down on his word). Others self-assessing. Coaching's work lives outside the repo at
-`C:\Users\adshu\.mointel-fills\coaching\`; `coaching.md` points at it.*
+(his instruction 2026-09-25).** *Handed off in the 2026-09-25 wave, standing down on his word —
+FOUR fresh seats to be started: Commercial (`bc9847f`), Design (`4d58661`/`da6f696`), Web
+(`web-opening-prompt.md`, surface complete through `09f5fa4`), Research (`1330e4a`). Marketing
+self-assessed NOT time (calendar-age ≠ context-load — correct). Ops / R&D / Coaching pending.
+The new Design + Research seats coordinate two payload fields: `catalystFreshFrom` (the prior-close
+FRESH refinement — Research builds, the reader consumes) and `lastCheckpointChanges` (item 12).
+Coaching's work lives outside the repo at `C:\Users\adshu\.mointel-fills\coaching\`;
+`coaching.md` points at it.*
 
 ## The third delegation: deploy instructions, confirmed directly
 
