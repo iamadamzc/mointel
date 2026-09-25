@@ -273,10 +273,27 @@ carrying the drawn mark and Marketing's share string "TMI — Intelligence on wh
 - **Sort legibility (Design): FIX DONE, cherry-picked SORT-ONLY as `49efd1a`** (branch
   `ops/sort-legibility`, gate green 153/2,345/0-lint) — **ship it at 10:00 ET under standing
   approval, zero cut-over risk.** RANK wore the active-order ACCENT unconditionally; now the accent
-  follows the sort. **⚠️ DO NOT ship `34cf6f3`** — it sits ABOVE the whole auth surface in history,
+  follows the sort. **⚠️ DO NOT ship `34cf6f3`** *(the COMMIT is unshippable for its ANCESTRY; its three BLOBS are
+  the same fix and are the reconstruction source — see the note below, and do not read the ban on
+  the commit as a ban on the content)* — it sits ABOVE the whole auth surface in history,
   so shipping it deploys the ENTIRE cut-over (`app/auth/*`, `/signin`, `allowlist.ts`), BROKEN (no
   `IDENTITY_DB_PATH`, no Google creds) and HIS call. Ops caught it after I approved the tip blind;
   **the Ops SUCCESSOR ships `49efd1a`, NEVER `34cf6f3`** — the trap looks like a small ready item.
+> **`49efd1a` IS UNPUSHED, AND THE EXPOSURE IS TRACEABILITY, NOT DURABILITY.** *Ops measured this
+  2026-09-25 against Integration's imprecise "production on code with no remote copy"; re-verified
+  here independently.* **All three blobs of `49efd1a` are bit-identical to `34cf6f3`'s, and
+  `34cf6f3` IS on `origin/main`** — `49efd1a` is those three files re-parented onto `757cf6a`.
+  *Verified further, and the recipe silently depends on it: `34cf6f3` touches exactly those three
+  files against its own parent, AND its parent's versions of all three are identical to `757cf6a`'s
+  — so `git cherry-pick 34cf6f3` onto `757cf6a` applies cleanly from any clone and reproduces the
+  deployed tree exactly. A different commit sha, identical content.* **So no code is at risk and
+  rollback is untouched** (it goes to a release DIRECTORY on the box, `34414f4`, not to a git
+  object). **The real and bounded cost: `git archive 49efd1a` fails from any other clone, and the
+  sha in the deploy log resolves to nothing** — on a desk whose whole deploy discipline is *ship the
+  enumerated sha as a literal*, that is a genuine loss. *If it ships unpushed, record
+  `49efd1a = 757cf6a + cherry-pick of 34cf6f3` in the deploy log and the sha becomes reconstructible
+  from the remote by whoever reads it.*
+
 - **`market.state` DEGRADED/OFFLINE false-red:** a one-sample message-age blip or a restart
   window trips it on a healthy feed (seen 3x). Cosmetic; a threshold fix pending his go.
 
