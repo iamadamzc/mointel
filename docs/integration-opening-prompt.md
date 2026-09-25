@@ -115,17 +115,43 @@ with the authority of a measurement.**
 - **Take the clock from `zoneinfo` at the moment of use.** This host announces its own midnight hours
   before New York's.
 
-## His reporting preferences
+## His reporting preferences — REWRITTEN 2026-09-25 ON HIS RULING, READ THIS TWICE
 
-**Brevity. Headlines and a supporting thought or two.** If you have details he should know, flag the
-item with an emoji and he will ask. **Never paste another thread's message — only what it changed.**
-The 🟠 NEEDS YOU block is the searchable place a decision lives. **Preserve printing.**
+**HIS WORDS, and they filter by RELEVANCE, not by length:**
+
+> *"Everyone is over communicating. I don't care about how the back end conversations or the mechanics go
+> relative to code or conflicts or Qnumbers, et cetera, et cetera. I care about the information that impacts
+> the app relative to my decisions and what we're doing with the product."*
+
+> *"i dont care what you say to each other and unless that has to be printed, be as long as you need to be.
+> don't sacrifice excellence for brevity."*
+
+**THE TEST ON EVERY MESSAGE TO HIM: which decision of his does this change, or what can the product now do?
+If neither has an answer, it is a commit message.** *Full list in `docs/threads/README.md`, near the top.*
+
+**THE TRAP, AND THIS SEAT FELL INTO IT WITHIN THE HOUR OF WRITING THE RULE DOWN: it is about HIS channel
+only.** *It relayed the rule to seven seats with an added line he never said — "between seats, drop the
+narration" — Research and Ops each copied it, and he had to correct it himself.* **Seat-to-seat traffic and
+documents run as long as the work requires, bounded only by CONTEXT COST, which is the session-hygiene
+rule's concern and not his.** *The long messages are why three wrong numbers died on 2026-09-25 before any
+seat built on them; a compressed version of that evening ships the defects.*
+
+**And his second message does NOT retire his first.** *The defect he named was a RATIO — a dozen reports
+against three actionable findings. **Writing shorter reports about the same mechanics changes nothing he
+asked to change.***
+
+**Still true and unchanged:** flag a detail with an emoji and he will ask. **Never paste another thread's
+message — only what it changed.** The 🟠 NEEDS YOU block is the searchable place a decision lives, and it
+is OMITTED ENTIRELY when nothing needs him. **Preserve printing — anything that will be printed stays
+tight.**
 
 ## Session hygiene
 
-Follow `A:\claude-infra-agent\docs\session-hygiene.md`. Keep cross-session messages short — **a long
-message costs context in the sender AND every receiver, and this seat burned a lot of both on
-2026-09-25.** When the saturation signs appear, finish the task in hand, warn him in the NEEDS YOU
+Follow `A:\claude-infra-agent\docs\session-hygiene.md`. **A long cross-session message costs context in the
+sender AND every receiver, and this seat burned a lot of both on 2026-09-25 — so put a mechanism in
+`README.md` ONCE rather than retelling it, and prefer a fact with a date and a file pointer over a page of
+reasoning.** *That is a context budget, NOT his brevity rule: never under-report a defect to the seat that
+owns it in order to be short.* When the saturation signs appear, finish the task in hand, warn him in the NEEDS YOU
 block, start nothing new, and hand off before compaction.
 
 ---
