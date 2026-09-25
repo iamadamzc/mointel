@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://tmitrader.com"),
   title: "The Momentum Intelligence Trading Desk",
   description:
-    "Small-cap momentum intelligence: what is moving, why, where it sits in the cycle, and what the share structure actually looks like.",
+    "Small-cap momentum intelligence: what is moving, why, where it sits in the cycle, what the share structure actually looks like, and what supply stands behind it.",
   // Open Graph: Marketing's strings, verified by Integration as deletion-only
   // trims of copy already live on the page (the H1 and app/page.tsx:309).
   // Text card only; an image is the one part that would need a public path.
