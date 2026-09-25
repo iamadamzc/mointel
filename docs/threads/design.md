@@ -44,17 +44,43 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-25 11:40 UTC
+## Live state — 2026-09-25 12:27 UTC
 
-**My head is `34cf6f3`.** *What is DEPLOYED is Ops's to say.* What this seat
-OBSERVED on the board at 07:36 ET today: the freshness bands, the badge split,
-the sort marker, the filter work and the DCOY fix are all live. `34cf6f3` is
-committed and gated at the literal sha and is NOT live.
+**My head is `ccaf77b`** — the `Now` header, pushed to `origin/main`. *What is
+DEPLOYED is Ops's to say.* What this seat OBSERVED on the board at 08:16 ET
+today: the freshness bands, the badge split, the sort marker, the filter work
+and the DCOY fix are all live, and the head over the trades column still reads
+`NOW` / `−1m`, so `ccaf77b` is NOT live.
+
+**`ccaf77b` IS A CHERRY-PICK FOR OPS, NOT A SHA TO DEPLOY.** Its cone over the
+recorded production sha `757cf6a` is 48 commits and carries the entire auth
+surface — the same hazard `0170418` names, which is why the sort fix shipped as
+the picked `49efd1a` rather than as `34cf6f3`. The commit touches three files,
+all in `components/` and `tests/`: no `lib/`, no `app/`, no payload field.
+Checked rather than assumed — it applies with a clean text merge onto both
+`757cf6a` and `49efd1a`, and gated on the `757cf6a` base in the pinned worktree:
+**2,345 tests, lint 0 errors, build OK, typecheck clean.**
+
+*`npm run typecheck` on that base fails twice before it passes, and neither
+failure is the change.* With a stale `.next` it cannot resolve three `app/auth/`
+routes that do not exist at `757cf6a`; with `.next` deleted it loses
+`LayoutProps`, which only Next's build generates. **Build first, then
+typecheck** — the mechanism already recorded in the working rules, met at a
+second base.
 
 **VERIFICATION ACCESS IS SOLVED. This was the biggest standing limit on the
 seat and it is gone.**
 
-    scriptsws-create-review.ps1 -ServerHost mointel-ssm -Hours 6 -Label design
+    scripts\aws-create-review.ps1 -ServerHost mointel-ssm -Hours 6 -Label design
+
+*That line held a literal **BEL byte** where its backslash belongs until
+2026-09-25 — `scripts` + `0x07` + `ws-...`, i.e. `\a` interpreted once on the
+way in. It renders as `scriptsws-create-review.ps1` in every reader and as a
+correct-looking path in none. **Three repair attempts failed and reported
+success**: `perl -0pi -e s/\x07/.../`, and two Python text-mode writes whose
+re-read returned the ORIGINAL length. Only a byte-mode read/replace/write took.
+A path is the worst place for this — the damage is invisible, because a mangled
+filename still looks like a filename.*
 
 *SSH on port 22 times out from this host — his egress IP moved off the
 allowlist and nobody retired SSH — but Session Manager goes straight through.*
@@ -135,7 +161,7 @@ pattern works — it was declared here, built by the engine seat, and
 | Deploy of `34cf6f3` | Ops | The accent fix for the sort legibility; gated at the sha |
 | `catalystFreshFrom` on the payload | Engine/Research seat | Spec above; reader is safe without it |
 | `lastCheckpointChanges` on the payload | Engine/Research seat | Spec above; §9 item 12's rail blocks on it |
-| The `Now` column HEADER label | Design | A width measured in the real font at the 1,024 px floor |
+| ~~The `Now` column HEADER label~~ | ~~Design~~ | **DONE `ccaf77b`** — head reads `TRADES` / `−1m`; cherry-pick for Ops, see live state |
 | A fourth freshness band past 21 days | His call | Research left 21 unimplemented: it currently divides nothing |
 | §9 item 12 — the 320 px rail layout | Design | The rail restructures the board into two columns |
 | §9 items 13–19 (rest of Phase 2) | Design | Unstarted |
@@ -144,12 +170,26 @@ pattern works — it was declared here, built by the engine seat, and
 | Manual spine — the dozen things a user would misread | Design | His yes; drafted from the log |
 | `anchorLateScope` render (row mark + board statement) | Research builds the field | The field; ships with the render, never half |
 
-**The `Now` header is the one to pick up first** — it is small, it is the last
-loose end of a complaint he raised twice, and the measurement is the whole job:
-the table is 990 px inside a 1,014 px container at the floor, so the unit has
-about 24 px to live in. `−1m` says WHEN and never WHAT; the units are on screen
-only while that sort is active, in the line that reads
-`sorted by now · trades in the last settled minute`.
+**The `Now` header is DONE at `ccaf77b`.** The head reads `TRADES` over `−1m` —
+what, then when — and takes its word from the `SORT_KEYS` entry so it cannot
+drift from the control that sorts it.
+
+**THE FLOOR MEASUREMENT THIS FILE CARRIED WAS WRONG, AND WRONG IN THE DIRECTION
+THAT INVENTS ROOM.** It said *"the table is 990 px inside a 1,014 px container,
+so the unit has about 24 px to live in."* Measured on the live board at the
+1,024 px floor: the container is **1,014.2 px, the table is 982.2 px, and the
+32 px between them is the parent's own `px-4`** — the table is `w-full
+table-fixed`, so it is already exactly as wide as it can be and **there is no
+slack at all**. Every added pixel comes out of `Why` and `Risk`, the two
+columns with no declared width.
+
+*That is not a reason not to spend it.* `Why` and `Risk` carry prose measured
+at **1,300–2,300 px truncated to a single line**, so 20 px each costs about
+four characters of a sentence already cut to a tenth of itself, and **row
+height does not move** (56.9 px either way, so no row is lost). **Size the cost
+in what the cell is actually rendering, not in pixels** — a column losing 11%
+of its width and a column losing 11% of its content are different facts, and
+here they are 40 px apart.
 
 
 **Hazards that cost something and are not obvious from the code:**
@@ -221,6 +261,28 @@ code beside it. Rulings that still bind were carried above.
 
 ## Working rules
 
+- **A FACT SHOWN ONLY UNDER A CONDITION TEACHES NOBODY WHO HAS NOT MET IT.**
+  The units of the `Now` column lived in the sort caption, which renders only
+  while that sort is ALREADY ACTIVE. So the column explained itself to every
+  reader except the one who had not yet chosen it and was asking what it was —
+  which is the entire population of the question. **The previous fix satisfied
+  §10's no-hover-only rule and missed the rule behind it**, because a caption
+  gated on a click is hover-only wearing different clothes.
+  - **AND THE TEST PINNED THE CONDITIONAL SURFACE.** `filters.test.ts` asserted
+    the exact caption string `trades in the last settled minute`, so it passed
+    on the defect and would have failed on the repair. **An assertion inherits
+    the blind spot of the surface it reads**: it cannot notice that the string
+    it found is behind a condition, because a string match has no idea what
+    renders. When a check reads a rendering, name the STATE the rendering
+    requires, or the check is about the string and not about the reader.
+- **A COMMENT BETWEEN `{` AND `key:` DELETED AN ENTRY FROM A SOURCE-READING
+  TEST.** `filters.test.ts:252` enumerates the sort keys with
+  `/\{\s*key:\s*'(\w+)'/`. Documenting the `now` entry from inside its own brace
+  dropped it out of that set, and the failure read **"declares a column for
+  every sort key"** — which points at the wiring, not at a comment. *The fifth
+  time a comment and code have been confused in this thread, and the first where
+  the comment was invisible to the TEST rather than to the reader.* The comment
+  sits outside the brace now and says why.
 - **Never state what is deployed. State what is COMMITTED.** Both pending lists
   I gave Integration were wrong — three pieces live when I said none, and
   `b2399a2` live when I called it pending. Design has no deploy signal, and a
