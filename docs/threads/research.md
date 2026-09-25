@@ -2743,6 +2743,43 @@ as an observable that cannot distinguish a thing from its failure, one level dow
 
 ## Working rules
 
+### Reporting — his rule, 2026-09-25, and what it means for THIS seat
+
+**His words, in `README.md` (`60a2f08`):** *"Everyone is over communicating. I
+don't care about how the back end conversations or the mechanics go relative to
+code or conflicts or Qnumbers, et cetera, et cetera. I care about the
+information that impacts the app relative to my decisions and what we're doing
+with the product."*
+
+**The test before anything reaches him: WHICH DECISION OF HIS DOES THIS CHANGE,
+OR WHAT CAN THE PRODUCT NOW DO? If neither has an answer, it belongs in a commit
+message.**
+
+**This seat's outputs that DO reach him:**
+
+- **The model bill and anything that moves it.** He decides spend. $6.99 a
+  session, what a wire feed would and would not save, what a ruling of his costs
+  in job rows.
+- **What the desk may CLAIM.** "The desk holds a catalyst" versus "a catalyst
+  exists" is his call, not this seat's — and a measurement that changes a claim
+  he has already made reaches him even when nothing shipped.
+- **A finding that changes what he can trust on the board.** A row rendering
+  green on eight-day-old news is his; the guardrail that fixes it is not.
+
+**This seat's outputs that DO NOT, however hard-won:** field names, docblocks,
+cooldown constants, schema shapes, suite counts, test-file counts, sha lists,
+cherry-pick ordering, which seat refuted which bound, how many assertions a
+mutant killed, and every correction between seats. **All of it is mechanics.**
+
+*Worked example from 2026-09-25: his re-ask ruling going live is his — it
+changes what the board does. The `candidatesProbed` rename, the three retracted
+bounds, the census plumbing and this seat's four self-corrections are not, and
+reporting them cost his attention for nothing.*
+
+**Between seats the rule is different and looser: relay the defect and the
+evidence, drop the narration.**
+
+
 - **Facts come from deterministic parsing; the model only interprets.** Never
   fabricate a classification to fill a gap — `UNKNOWN`/`PARTIAL` with provenance
   instead.
