@@ -472,6 +472,14 @@ the way the trader asked. So a deploy is not finished when `current` switches.
 It is finished when the thread that wrote the change has looked at the real
 board.
 
+> **AND RELOAD BEFORE LOOKING — the way this verification silently confirms the wrong thing.**
+> *Design, 2026-09-25, saying it out loud before doing it rather than after.* **A page opened
+> BEFORE the deploy keeps its old bundle, so the author checks the live desk, sees the old
+> behaviour, and reports a failed fix convincingly.** *The failure mode is not missing the check —
+> it is running it, getting a clean answer, and having measured the browser's cache. The whole
+> value of this rule is that the author is the one person who knows what should have changed, and
+> that is exactly the person a stale bundle misleads hardest.*
+
 This is the gap the Phase 1 enum leak went through. It was reported fixed on
 local fixtures that could not have tested it, and production found it. Every
 charter already says *verify on the live desk*; none of them said **when**, and
@@ -595,6 +603,18 @@ and NOT ONE of the 24 touches any of the three files the sort fix changes.*** `g
 > Whoever re-derives this gets 24, finds it does not match, and starts doubting the RULE rather
 > than the COUNT. An ambiguous number inside a rule is load-bearing in a way it is not inside a
 > report.*
+>
+> **THE GENERAL FORM, after this happened TWICE IN ONE DAY in two different seats, both inside ship
+> enumerations** *(Ops's 24-vs-25 above; Design's hand-off saying "over `757cf6a`: 3 and 4 commits,
+> 10 and 13 files" where the COMMIT counts were over `757cf6a` and the FILE counts over `49efd1a`,
+> joined by one preposition)*: **a count travels with its base attached to IT, not to the
+> paragraph. With two bases, print the table and stop writing the sentence.**
+>
+> > **And note which kind of error this is, because it is the expensive one — Design's framing:
+> > nothing was miscounted.** *Every figure was correct. **A WRONG number gets challenged; a RIGHT
+> > number under the wrong frame gets re-derived, found not to match, and costs the reader their
+> > trust in the whole hand-off rather than in the figure.*** *Neither instance was carelessness,
+> > and neither would have been caught by checking the arithmetic.*
 
 **That single fact is doing two opposite jobs at once, and that is the trap:**
 
