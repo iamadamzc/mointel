@@ -1201,6 +1201,53 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
+#### THE PARSE-CHANNEL CAVEAT IS PERMANENT ON THIS ARCHIVE, NOT A HOLD THAT LIFTS. 2026-09-25.
+
+**Integration dated the unanswerable window and the arithmetic against this
+thread's own data is total, which neither of us said out loud:**
+
+    unanswerable window          2026-08-18  ->  the d19355c deploy (unshipped)
+      `8c94390` introduced `companySourceDetail`, `8f212fe` stored it, both 08-18
+      inside it: 'not attempted' survives a SUCCESSFUL fetch, and no fetch
+      witness (`networkRequests`) is written at all
+
+    this thread's archive         2026-08-17 .. 2026-09-22   26 sessions
+    this thread's extract         2026-08-17 .. 2026-09-22   26 sessions
+
+> **EVERY SESSION THIS THREAD HOLDS IS INSIDE THE WINDOW — and 08-17 is WORSE,
+> predating the field entirely.** *So the parse-channel question — did a fetch
+> return zero items, or plenty of items none of them recent — is **permanently
+> unanswerable for 100% of the data behind every finding in this register.***
+
+**THIS IS NOT A HOLD AWAITING A DEPLOY. IT IS A BOUND ON THE EXISTING ARCHIVE.**
+The deploy fixes the *next* archive. **No re-query, no re-partition and no
+production pull recovers a witness that was never written** — the defect
+destroyed its own evidence, and a green re-read would mean *invisible*, not
+*absent*.
+
+**What that changes in practice, and it is the reason to write it down:**
+
+- **The caveat travels with the numbers FOREVER**, the way the ranks-1-25 bound
+  does. *"Unverified against the parse channel"* is a permanent property of
+  every catalyst-coverage figure drawn from 08-17…09-22, including the
+  conditional 32.1%.
+- **Waiting buys nothing for these questions.** A future seat tempted to defer
+  the founding question until "the data is better" should know the existing 26
+  sessions never get better. **Only new sessions do.**
+- **So the hand-check is not a nice-to-have, it is the ONLY instrument that
+  reaches this archive.** Reading public sources for named mover-days and asking
+  *was there a catalyst the desk did not hold* is the single route that does not
+  depend on a witness the desk failed to write. **The 50-case sampling frame
+  above exists for exactly this.**
+
+**One epistemic note, Research's own and recorded at its request.** Integration
+credited Research with having solved the parse-channel question before it was
+asked; **Research refused the credit — it put the item count in the string
+because that was the natural thing to put there, not because it had considered
+the channel.** *Luck of the shape, not foresight.* **Recorded so the next reader
+does not trust reasoning that never happened** — the same failure as the day's
+main one, one size down.
+
 #### STALE-EVIDENCE SERVING — measured 2026-09-25. MOSTLY A NULL, and the null is the useful part.
 
 **Run after the AIFF case suggested the desk re-serves previous days' evidence.
