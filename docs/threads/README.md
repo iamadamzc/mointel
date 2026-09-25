@@ -422,6 +422,33 @@ writable, global resource on this machine exactly like the index is.*
 > and dangerous ANCESTRY; `0a17601` had the needed content and no ancestry the query could follow.
 > **Ancestry and content answer different questions — name which one you are asking.***
 
+## AN ORDINAL ANSWER IS ONLY AS GOOD AS THE LIST IT POINTS AT
+
+**Ops, 2026-09-25, refusing a relayed "push" it was almost certainly owed.** *He answered a NEEDS
+YOU block with `"2, push. 5, not yet."` Ops could see a FOUR-item block in the transcript where 2
+was the PULL and 3 was the push, and no item 5 at all — so on the list it could see, the relay was
+wrong. It held and asked rather than acting on a probably-correct ordinal.*
+
+**The numbering was in fact against an eight-item block Ops could not see, and the mapping was
+confirmable — but only because he had numbered the SAME block twice.** *His previous turn answered
+it item-by-item, and two answers were unforgeable: "Coaching done; will do commercial" against an
+item naming exactly those two chats, and "not answerable without a new pull" quoting the Q14
+option verbatim. The two items he then answered — 2 and 5 — were precisely the two he had earlier
+deferred as "better explanation needed" and "explain".*
+
+- **A bare ordinal is a pointer into a list the reader may not hold.** *Every seat sees a different
+  transcript; the block a relay quotes is not the block a peer can see.*
+- **So a relay of an ordinal answer CARRIES THE LIST, or it carries nothing.** *Restate the item in
+  words alongside the number — "his #2, `ops/sort-legibility` push" — and the peer can check the
+  mapping instead of trusting it.*
+- **And the requester's right move is to REFUSE, not to comply on a high probability.** *Ops's own
+  standard: "probably right, plus an ordinal I cannot verify" is not the bar for the one question it
+  had refused on that morning. The cost of holding was near zero and it named that too.*
+- **CHECK WHAT ELSE THE MAPPING MOVED.** *Ops's sharpest point: if an ordinal slipped, it slipped
+  for every item, so a second grant riding the same message is suspect as well. Here it was not —
+  the export was approved in its own later turn in plain prose — **but that had to be established
+  rather than assumed.***
+
 ## A WARNING THAT DOES NOT COME TRUE STILL HAS TO BE CLOSED
 
 **Ops, 2026-09-25, retracting its own stop-window warning within the hour it issued it.** *It had
