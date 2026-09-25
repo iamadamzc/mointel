@@ -31,16 +31,62 @@ that ran 50%+ across 26 sessions, 257 never got a positive catalyst grade, and:
 **Two thirds of the time the system found the news and marked it down.** It did
 not miss it. **It graded it down and never said why.**
 
-**His AIFF example is the proof and it is worth stating plainly: ChatGPT reached
-the SAME verdict our grader did** — *"legitimate headline, but only a moderate
-catalyst"*. **It did not find a catalyst the desk missed.** What it supplied was
-the *reasoning* — the device was already cleared, the clearance belongs to the
-partner, no contract value, no purchase commitment, no exclusivity.
-
-> **So the defect is not detection and it is not the grade. It is that a
-> downgrade arrives with no reason attached, which leaves him unable to tell a
-> correct downgrade from a miss — and when he cannot tell, he goes and asks
-> ChatGPT.** That is the behaviour to remove.
+> ## RETRACTION, SAME DAY — HE REFUTED THE PREMISE AND HE IS RIGHT
+>
+> **This section originally claimed ChatGPT reached the same verdict our grader
+> did and "did not find a catalyst the desk missed". WRONG, in two independent
+> ways.**
+>
+> **1. I compared VERDICTS and inferred the CATALYSTS matched.** Both said
+> "moderate". **Two analyses can agree on a grade while naming completely
+> different events** — which is what he reports for AIFF on the **2026-09-25**
+> session: *"look at the catalyst for AIFF at this time vs the one that was
+> printed on the desk. completely different."* **No store on this machine holds
+> the 09-25 session, so his actual case is unchecked here.**
+>
+> **2. The find-rate under it used "EVER during the day", re-admitting the
+> look-ahead I had removed from part (a) the same morning.** I called it *"the
+> honest cut"*. It counts a catalyst found at 15:00 ET as a find on a name that
+> ran at 09:40. **Corrected, at decision time:**
+>
+>       50%+ movers, positive catalyst    at first entry 13.7%
+>                                         before 09:30   14.6%
+>                                         EVER           26.6%   <- what I quoted
+>
+> **~15% of the big movers carry a positive catalyst when it matters, not 27%.
+> Of names that DO eventually get one, 45% had nothing positive before the open
+> — 50% among the 100%+ movers.**
+>
+> **A worked instance, found while checking him, and NOT his case.** AIFF
+> 2026-09-17, `intelligence_status = INTELLIGENCE_AVAILABLE` throughout:
+>
+>       09:25 ET  $1.03  +10.7%   catalyst NONE
+>       14:30 ET  $1.17  +25.8%   catalyst NONE
+>       15:00 ET  $1.37  +47.1%   catalyst NONE -> LEGITIMATE_POSITIVE
+>
+> The change log at 15:00 records `CATALYST_CHANGED` and `NEW_EVIDENCE`.
+> **Research had run, returned NONE through a 47% move, and corrected itself
+> after it was over.** Not a downgrade missing its reason — **a wrong answer
+> that later fixed itself, which is a different defect with a different fix.**
+>
+> **Two failure modes, separated, measured on 26 sessions:**
+> - **Arrives late** — ~45% of eventual positives had nothing positive before
+>   09:30.
+> - **Says NONE, then flips** — ~17% were shown `NONE`/blank first. **Worse: the
+>   desk actively told him there was nothing there.**
+>
+> **THE CAPTURE GAP, WHICH IS THE REAL FINDING.**
+> `desk_assessment_tickers` stores the catalyst **label and nothing else.** The
+> catalyst TEXT — *which event the desk named* — exists only in the `dossier` in
+> the production market store. **So "the desk named the wrong catalyst" is
+> invisible to every instrument this desk has.** Every find-rate figure in this
+> register measures whether a GRADE was present, never whether the named event
+> was the right one. **His complaint is about something nothing here can see.**
+>
+> **What survives:** the qualifier work is still worth doing — 166 researched
+> downgrades is a real population and a reasonless downgrade is a real defect.
+> **But it is SECOND.** A reason attached to the wrong catalyst, or attached at
+> 15:00, is worth nothing. **Latency and correctness come first.**
 
 ## What to build: `catalystQualifiers`
 
