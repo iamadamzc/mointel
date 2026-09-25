@@ -11804,3 +11804,53 @@ now cites my census as the reason it mattered. *The claim that never moved
 across all three positions — `networkRequests` is not persisted — was correct
 throughout and checkable in ten seconds. The unit of reliability is the claim,
 not the message that carried it.*
+
+### Evening — seven ships, one abort, and a tool that lies
+
+```
+49efd1a  11:49:43 ET  3s   sort accent
+0a17601  12:17:07     2s   FRESH boundary
+3dc14e2  14:49:07     3s   collector fetch fields + networkRequests persisted
+79cc4d1  17:07:42     3s   stale catalyst re-opens the question, top 12 only
+c00992e  17:25:16     3s   freshness seam: gate and board read one boundary
+b72e8ed     ABORTED        withdrawn mid-build; see below
+5901ea9  17:43:40     2s   probe census, keys named candidatesReturned/Probed/Fetched
+```
+**Worker untouched all seven. `RESTART_MARKET=no` throughout, `NRestarts 0`
+since 2026-09-24 20:24:07Z, not a minute of bars lost.**
+
+**`push-release.sh` PRINTS `is live` FOR DEPLOYS THAT DID NOT CUT OVER. Three
+routes, all the same defect.** `:155` accepts `Result=success ExecMainStatus=0`
+— and (a) a unit killed by `systemctl stop` reports exactly that, (b) a unit
+still `activating` when the 900s follow deadline expires reports it too, because
+`STATE` is never re-read after the loop, and (c) the original case. **The script
+tests the PROCESS and prints a claim about PRODUCTION.**
+
+**Measured margin, today's units start-to-end against the 900s deadline:**
+```
+3dc14e2 768s (132s)   79cc4d1 713s (187s)   49efd1a 710s (190s)
+c00992e 687s (213s)   0a17601 617s (283s)   5901ea9 ~660s
+quick_check drift today: 388 -> 552 -> 569 -> 594 -> 597.3
+```
+**132 seconds of headroom at the worst, on a number that grew all day.** *Fix is
+four lines — resolve the sha from `/proc` after the unit ends and refuse unless
+it matches. It leads the deploy-path batch, ahead of the preflight start-vs-stop
+item: that one costs a skipped checkpoint, this one costs a false statement
+about production. No deploy has been harmed, and the only reason is that this
+seat reads `/proc` every time.*
+
+**THE CANCEL WINDOW, discovered by using it.** `quick_check` runs BEFORE the
+stop so the public outage stays 2–3s. It also means **a fired deploy is
+reversible by `systemctl stop` with zero production effect until the stop** —
+`b72e8ed` was withdrawn 66 seconds after launch and aborted 15s into the build,
+services untouched. **After the stop the answer is a rollback, not a cancel.**
+
+**AND THE ABORT LEFT A TRAP: a complete, gated-green release directory holding
+WITHDRAWN content, newest by mtime, indistinguishable on disk from one that
+shipped.** It has since consumed a retention slot and pushed `79cc4d1` out, so
+`b72e8ed` now sits between the live release and the real rollback target.
+**A marker file inside it names it withdrawn and names its supersedor; removing
+the directory is destructive and is his.** *Choose a rollback target by NAME,
+never by mtime — Integration's framing, and it is the sharper one: the
+retention slot is the small half, a plausible wrong rollback target is the
+large one.*
