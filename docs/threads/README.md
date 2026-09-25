@@ -373,6 +373,38 @@ Every thread works in `A:\mointel`. Rules, in order of how much they matter:
    2026-08-27, the day both of a held commit's successors reached origin under
    two different threads' routine pushes within the hour.)*
 
+## FIVE SEATS, ONE `.git` — AND THE REF NAMESPACE IS SHARED TOO
+
+**Ops, 2026-09-25, after coming three characters from deleting a peer's unpushed morning.** *It ran
+`git branch -f ops/fresh-boundary` on a name it assumed was free. The name was Design's, holding
+two unpushed commits. **Git refused — `cannot force update the branch used by worktree` — and that
+refusal was the only thing that prevented it.*** Had Design switched branches in its worktree
+first, the force would have discarded the work silently, recoverable only through the reflog by
+someone who knew to look.
+
+**The rules above cover the shared INDEX (`git commit --only`, never `git add -A`). This is the
+same fact in a different namespace, and it had no rule at all.** *A branch name is a shared,
+writable, global resource on this machine exactly like the index is.*
+
+- **Before creating or forcing any branch: `git worktree list` AND `git branch --list <name>`.**
+- **To pin a sha, use a NEW name or a TAG. Never `-f` on a name that already exists.**
+- **`-f` FAILING IS INFORMATION, NOT AN OBSTACLE TO ADD FLAGS UNTIL IT PASSES.** *The protection is
+  narrow and accidental: it holds only while the branch is checked out somewhere. It is not a
+  safety net, it is a coincidence that happened to fire once.*
+
+> **AND A `--contains <sha>` QUERY CANNOT SEE A RE-BASED BRANCH.** *Integration's, the same hour,
+> from the other end of the same exchange: it reported "no branch holds these picks" from
+> `git branch -a --contains bd509e9` while Design's re-based branch was sitting in a worktree with
+> **identical content under different shas**. A rebase is precisely the operation that separates
+> content from ancestry, so a sha-ancestry query is blind to it by construction — a **true** answer
+> to the question asked and a false one to the question meant.* **Use `git worktree list` and
+> `git branch --list`, which ask about NAMES, when the question is "does this work exist
+> somewhere".**
+>
+> *Both of the day's failures are one root in opposite directions: `34cf6f3` had innocent CONTENT
+> and dangerous ANCESTRY; `0a17601` had the needed content and no ancestry the query could follow.
+> **Ancestry and content answer different questions — name which one you are asking.***
+
 ## The rule that keeps them separate
 
 A thread that finds work belonging to another **writes it down and hands it
