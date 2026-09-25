@@ -11766,8 +11766,27 @@ the ruling-pending note are in `docs/ops-opening-prompt.md` open item 5.
 He asked when AIFF hit the scanner versus its catalyst. **First bar 07:45:00,
 qualified 07:48:00.711, research started 07:48:01.268 — 37ms after
 qualification — completed 07:48:31 with zero sources added.** The pipeline is
-fast. **AIFF ran with no discoverable catalyst: a real negative, and an instance
-of R&D's structure-break question rather than an artefact of it.**
+fast. That part stands.
+
+> **CORRECTED SAME DAY, ~16:0x: I WROTE THAT AIFF "RAN WITH NO DISCOVERABLE
+> CATALYST: A REAL NEGATIVE". THAT WAS WRONG.** He pasted the press release into
+> R&D's session this morning — *"Firefly (NASDAQ: AIFF) and NeuroSigma Partner to
+> Expand Access to First FDA-Cleared, Non-Drug Treatment for Pediatric ADHD",
+> 2026-09-25, GLOBE NEWSWIRE.* **He pasted it because the desk did not have it.**
+>
+> **A catalyst existed AND the collector fetched the feed AND found nothing. All
+> three are true and none contradict the others.** What is NOT established is the
+> release's publication time against the 07:48 fetch: if it crossed at ~07:45,
+> a company RSS lagging three minutes explains it entirely — **a source-LATENCY
+> finding, not an absence one**, and testable as a sibling of the EX-99
+> acceptance-latency work. Open.
+>
+> **The error is mine and it is the exact distinction I drew myself at the start
+> of this chain and then discarded at the end: *"the desk did not look" is the
+> claim; "there was nothing" is not.*** I proved the fetch ran, and let that
+> collapse into "there was provably nothing" — the same conflation facing the
+> other way. **A sound negative is a fact about the INSTRUMENT, never about the
+> WORLD.** The structural proof is untouched; only what it MEANS changed.
 
 **I held three positions in forty minutes and only the third was supported.**
 *"It never looked"* — from partitioning a census on `companySourceDetail`, which
