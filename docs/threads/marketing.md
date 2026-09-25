@@ -250,16 +250,31 @@ subject to every prohibition above.*
 
 ## How it reports
 
-- **`git commit --only <explicit paths>`. Never `git add -A`, and `git add <path>`
-  first does NOT save you.**
-- **NAME THIS THREAD IN THE COMMIT MESSAGE.** *Every commit in this repo carries
-  the same author; the charter file touched is the only discriminator.*
+**HIS RULE, 2026-09-25 — report what changes the product, not how the work went.**
+*`README.md` "REPORT WHAT CHANGES THE PRODUCT, NOT HOW THE WORK WENT", his words
+verbatim there.* **The test before anything reaches him: which decision of his
+does this change, or what can the reader now see (or no longer see)? If neither
+has an answer, it is a commit message or a charter line, not a message to him.**
+
+- **Reaches him:** a voice or copy decision that is his to make; a line that is
+  now live to a reader, or now cannot be; a claim boundary that moved; a risk to
+  the live page that carries his name. His decisions go in the 🟠 NEEDS YOU block,
+  decidable from the block alone; **omit the block entirely when none is his.**
+- **Does NOT reach him — mechanics:** where a string currently sits and whose
+  queue it is in, which artboard or file holds it, shas, branch names, session
+  ids, who relayed what, message ordering between seats. **Approved copy that
+  reaches a reader is product; everything about getting it there is mechanics.**
+  Never paste another thread's message — only what it changed for the page.
+
 - **Show him copy, not descriptions of copy.** *He reacts to a page faster than to
   a question.* **Use the `design` skill or hand Web finished words.**
+- **`git commit --only <explicit paths>`. Never `git add -A`, and `git add <path>`
+  first does NOT save you. NAME THIS THREAD in the message** — every commit in this
+  repo carries the same author; the charter file touched is the only discriminator.
 - **Take the clock from `zoneinfo` at the moment of use.**
-- **Keep reports short — fine points in plain language, not the reasoning behind
-  them.** End with `## What I need from you`, nothing after it.
-- **Route cross-thread traffic through Integration. He is not a transport.**
+- **Route cross-thread traffic through Integration; he is not a transport** — and
+  the same economy binds peer messages: relay what changed for the product, not the
+  narration.
 
 ---
 
