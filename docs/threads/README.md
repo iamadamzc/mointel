@@ -13029,6 +13029,50 @@ contradicting them.**
 **That layout is worth more than the fix.** A summary printed on its own, or above
 its evidence, or in a different message, is never checked against it.
 
+## CHECK WHAT A RULE RESTS ON, NOT ONLY WHETHER THE RULE IS RIGHT
+
+**Web, 2026-09-25, correcting Integration's clearance of its charter.** *Integration had ruled on an
+ambiguity in his wording and told Web its charter needed no edit under either reading, because Web had
+reached the right discipline by a route that did not depend on the ambiguity.* **It had not. The text read
+"his standing preference and this charter's own measure already agree there" — a CITATION of his authority
+for a reading he never gave.**
+
+> **A RULE AND ITS FOUNDATION FAIL INDEPENDENTLY.** *The rule was correct, the wording was kept, and the
+> defect was entirely in what it rested on: **a rule resting on a citation of an ambiguous clause has to be
+> re-derived the day the clause is settled. A rule resting on its own reasons never moves.*** *Web's test,
+> and it is the usable form: **if he ruled either way tomorrow, does anything in this text change?** If yes,
+> the text is citing rather than reasoning.*
+
+**AND THE CLEARANCE WAS THE SAME FAILURE ONE LEVEL UP.** *Integration wrote, in the same message, that
+stating an interpretation as his ruling is what had gone wrong earlier that day — and simultaneously cleared
+a charter without opening it, on a claim about what route its text took.* **The route was inferred from the
+conclusion being right.**
+
+*Kept because the day already holds the general form four times: verifying the premises of a claim is not
+verifying the claim, and a correct conclusion says nothing about the derivation that reached it.*
+
+## A GREEN CHECK IS EVIDENCE ONLY IF IT CAN GO RED WHEN THE SUBJECT MOVES
+
+**Web's generalisation, 2026-09-25, and it is deliberately narrower than "add controls".** *Two instruments
+failed the same way in unrelated subsystems on one day:*
+
+```
+the copy check       grepped a phrase that had been REWRITTEN elsewhere on the page -> returned 1, blind
+push-release.sh      read the exit status of a script that had REACHED ITS END      -> printed "is live"
+```
+
+**Both answered from something other than the thing they claimed to measure — one from the meta description,
+one from having finished its own run — and NEITHER can be caught by looking at a green result.**
+
+> **THE RULE: for any check whose SUBJECT CAN MOVE — a phrase that can be reworded, a file that can be
+> renamed, a process that can die after the call returns — a green result is evidence only if the check has
+> been SHOWN to go red when the subject moves.** *Web demonstrated it the cheap way: a throwaway copy of the
+> page with the sentence reworded out. The old pattern still returned 1; the new one returned 0.*
+
+**That is cheap, it takes minutes, and nobody does it by default.** *The distinction from "add a negative
+control" is that this one names WHICH checks need it: the ones watching something that can be moved out from
+under them without anybody touching the check.*
+
 ## I CHECKED THE COMMIT I SUSPECTED, NOT THE RANGE I WAS WARNING ABOUT
 
 **Integration, 2026-09-25, inside the very instruction that forbade a range.** *The enumeration said:
