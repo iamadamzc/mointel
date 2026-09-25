@@ -110,8 +110,16 @@ describe('the write side reconciles the two', () => {
  * falls after the prior session's close -- Monday morning holding Friday
  * evening's news, and the day after a holiday. Measured on the 2026-08-23
  * snapshot: 6 of 59 clocked catalysts diverge and ALL SIX are day-band 1, so
- * that snapshot holds no instance of the firing case. Rare is not absent, and
- * Monday is not a rare day.
+ * that snapshot holds no instance of the firing case.
+ *
+ * THAT ABSENCE IS WORTH LITTLE AND THE WINDOW SAYS WHY: the read-dates are
+ * 2026-08-17..21, which holds ONE Monday, and 5 of the 58 clocked catalysts
+ * were read on it. The case could have appeared and did not -- an n of five,
+ * not a rate. A sound negative is a fact about the instrument and its window
+ * before it is a fact about the world.
+ *
+ * Fixed rather than documented for the reason that does not depend on the rate:
+ * rare is not absent, and Monday is not a rare day.
  *
  * The worse half was the WRITE side: `validateDossier` banding STALE while the
  * board renders green would demote `catalystStatus` on a row the reader sees as
