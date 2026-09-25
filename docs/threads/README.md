@@ -516,6 +516,33 @@ the trader pasted in himself because the desk did not have it.* **All three are 
   where the answer is drawn from the very instrument whose coverage is in question. *The first
   worked instance offered as evidence was a mover that DID carry one.*
 
+## ENUMERATE A CUT-OVER BY SURFACE, NOT BY MODULE
+
+**Research and Integration, 2026-09-25, reconciling two auth-commit counts over the same cone —
+9 against 10.** *Both path sets were defensible; the single commit between them settles which frame
+is right for this question.*
+
+```
+by MODULE  (Research)   lib/auth  app/api/auth  lib/identity                     9
+by SURFACE (Integration) app/auth  lib/auth  app/signin  scripts/allowlist.ts    10
+the difference           51dcca6  "Web: the /signin screen"   -- a strict subset, nothing the other way
+```
+
+**The commit that fell through is the one a human would name FIRST if asked what the auth cut-over
+is.** *Research built its set from where auth LOGIC lives; the surface set caught the sign-in page
+itself.*
+
+> **For a cut-over, the SURFACE is what ships visibly, so enumerate by what a reader would point
+> at — not by where the code is organised.** *A module-shaped path set will keep missing exactly
+> the commits that matter most to whoever reads the enumeration, because the most visible part of
+> a feature is rarely in the module named after it.*
+
+**And the meta-point, which is why this is a section rather than a footnote: two seats produced
+different counts of the same thing and neither was careless.** *The reconciliation was cheap — list
+the commits, diff the sets, name the one in between — and it converted "9 or 10, does it matter"
+into a rule about how to draw the boundary.* **When two counts of one population disagree, the
+useful artefact is the ELEMENT in the difference, not the number.**
+
 ## NAME THE NEAREST MISS AS A CONTROL
 
 **Design, 2026-09-25, on why its boundary verification came back stronger than the outcome space it
