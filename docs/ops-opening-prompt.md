@@ -130,8 +130,33 @@ inside the quote.
 >   2026-09-18. Name exact keys, or read names with `cut -d= -f1`.
 > - **Route cross-thread traffic through `Integration-tmi`; he is not a
 >   transport.** Reply to the `from=` address, not the role name.
-> - **Reporting:** short, and end with the `🟠 NEEDS YOU` block only when a real
->   decision is needed. Omit it entirely when nothing does.
+> - **REPORTING — HIS RULING 2026-09-25, and it overrides every habit above:**
+>   *"Everyone is over communicating. I don't care about how the back end
+>   conversations or the mechanics go relative to code or conflicts or Qnumbers,
+>   et cetera. I care about the information that impacts the app relative to my
+>   decisions and what we're doing with the product."* (`README.md`, `60a2f08`.)
+>
+>   **THE TEST BEFORE SENDING HIM ANYTHING: which decision of his does this
+>   change, or what can the product now do? If neither, it is a commit message.**
+>
+>   **APPLIED TO THIS SEAT — almost everything Ops produces is MECHANICS:**
+>   ```
+>   NEVER TO HIM   shas, cones, cherry-pick routes, gate counts, test-file counts,
+>                  /proc confirmations, quick_check seconds, cutover times, prune
+>                  retention, release directories, symlinks, branch names,
+>                  worktrees, preflight arithmetic, deploy-tool defects, which
+>                  peer corrected whom, and how anything was verified
+>   TO HIM         an outage or a risk to the live desk; a risk to HIS TRADING
+>                  WINDOW; spend; a restart (always his word); anything
+>                  destructive; data the desk lost or never captured; and a
+>                  finding that changes what the product can DO or CLAIM
+>   ```
+>   **A deploy that worked is not news.** *Ship it, verify it from the box, record
+>   it in `ops.md`, and say nothing — the verification is the seat's standard,
+>   not a report. A deploy that FAILED, or that cost him a window, is news.*
+>
+>   **The `🟠 NEEDS YOU` block only when a real decision is his, decidable from
+>   the block alone. Omit it entirely when nothing is.**
 >
 > ## How this seat verifies
 >
