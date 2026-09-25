@@ -115,6 +115,27 @@ would have been read as the deploy's fault.
 *The bare-date tripwire survived the churn under a new name: `ONCO` left,
 `CNET` took its place.*
 
+**THE OUTCOME SPACE IS ASYMMETRIC, BECAUSE THE WHOLE CHECK RESTS ON ONE ROW.**
+Swept all twelve rows rather than assumed: **`INLF` is the only in-band mover
+and there is no replacement.** So:
+
+    INLF renders GREEN    ->  PROVED
+    INLF renders AMBER    ->  DISPROVED, a real defect signal
+    INLF is ABSENT        ->  SILENCE, and it is NEITHER
+
+**The absent case must never be written up as a pass.** It is the
+failed-check-returns-a-plausible-answer shape: a board with no in-band row
+looks exactly like a board where the boundary did nothing. *Not a reason to
+hold the release — the boundary is gated, approved and correct, and "shipped,
+verification deferred to the next in-band row" is an honest state.*
+
+**AND A FACT WITH NO STABLE VALUE NEEDS A TIMESTAMP BESIDE IT OR IT SHOULD NOT
+BE WRITTEN DOWN.** "There is one ` ET`-shaped row at `days >= 1` on the board"
+has been true, false, and true again inside three hours, on one row
+(`IFBD`) that left the board between 11:38 and 11:51. **Recorded as a SHAPE
+THAT RECURS, never as a count that holds** — a count without its moment is a
+claim someone will later find false and blame the record for.
+
 **A VERIFICATION CRITERION HAS A SHORTER SHELF LIFE THAN THE APPROVAL IT
 CHECKS.** The gate and the enumeration were still valid three hours later; the
 control set was not. Integration's framing, and it is the right one.
