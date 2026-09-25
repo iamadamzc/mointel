@@ -1201,6 +1201,117 @@ terminated rather than hung. **Only the 7 QUEUED never ran.**
 > own in the four hours after.** Recognising the shape in someone else's number
 > is evidently not the same skill as noticing it in my own.
 
+#### SUSPECTED INSTRUMENT FAULT ON THE FOUNDING QUESTION: "no catalyst" may be a DEFAULT. 2026-09-25. MECHANISM NOT YET ESTABLISHED.
+
+**Raised by Ops via Integration today; the code claims are verified HERE rather
+than relayed, and two of them do not hold. Recorded before the mechanism is
+known because the RISK is what must not be lost, and because a wrong mechanism
+in the record sends the next reader hunting a defect that does not exist.**
+
+**THE RISK, WHICH IS REAL WHATEVER THE MECHANISM TURNS OUT TO BE.** This
+thread's founding question is *"why do 50%+ movers no longer carry catalysts"*.
+**If the instrument that emits "no catalyst" can emit it without having looked,
+then every catalyst-less-mover count measures the collector rather than the
+market.** Same family as the `supplyPair`-on-a-pre-`supplyPair`-snapshot zero and
+Research's three-causes-one-zero on `minute_bars`. **The finding and the artifact
+are indistinguishable from outside the collector.**
+
+**Production figures, Ops's, not re-derived here (no production access):**
+
+    173 research jobs today
+      RECENT_SOURCE_LOCATED      76
+      COVERAGE_INCOMPLETE        70
+      NO_RECENT_SOURCE_LOCATED   27   <- Ops reports 26 never attempted a company feed
+      81 jobs had a companySourceUrl on file and did not attempt it
+
+**WHAT I VERIFIED IN THE CODE, AND TWO RELAYED CLAIMS FAIL.**
+
+- **TRUE:** the report is initialised `state: 'NO_RECENT_SOURCE_LOCATED'` at
+  `lib/research/catalyst/collector.ts:346`, with `companySourceDetail:
+  'not attempted'` at `:359`.
+- **FALSE — "any path returning before those lines emits the default".**
+  **There are NO early returns.** The only `return report` is at `:1081`, and
+  `:1049-1056` recomputes the state on every path except
+  `SOURCE_DISCOVERY_FAILED`. **A reader sent to find an early return will not
+  find one.**
+- **NOT SUPPORTED — `companySourceDetail: 'not attempted'` as evidence the feed
+  was never fetched.** That field is assigned **only in IR-source RESOLUTION
+  paths** (`:559`, `:569`, `:814`, `:825`). It records whether *resolution* ran,
+  and resolution is correctly skipped when a source is already on file. **It says
+  nothing about whether the feed was fetched.** The fetch is at `:588` and is
+  unconditional given a `knownSourceUrl`.
+
+**THE MECHANISM THAT IS ACTUALLY AVAILABLE FROM THE CODE, AND IT IS NARROWER.**
+`:1053-1055` reads:
+
+    if (nowHasRecent)                                  RECENT_SOURCE_LOCATED
+    else if (inaccessible.length > 0 || !knownSourceUrl) COVERAGE_INCOMPLETE
+    else                                                NO_RECENT_SOURCE_LOCATED
+
+So `NO_RECENT_SOURCE_LOCATED` requires a **truthy `knownSourceUrl`** — which
+forces the fetch at `:588`. **A skipped fetch (`hasUsableSource` false) lands in
+`COVERAGE_INCOMPLETE`, which is the honest bucket.** *So the code as written
+does not obviously produce the 26-of-27 Ops observed, and the gap between the
+code and the production count is the thing to explain.*
+
+**THE FIELD THAT WOULD SETTLE IT is `report.networkRequests`**, incremented at
+`:589` on the company fetch. **A `NO_RECENT_SOURCE_LOCATED` job whose
+`networkRequests` is consistent with no company fetch proves the claim; the
+`companySourceDetail` string does not.** Ops has production; this seat does not.
+
+> **HOUSE RULES THIS SITS ON, BOTH ALREADY RECORDED, WHICH IS WHY IT DESERVES A
+> SLOT EVEN IF THE COUNT IS WRONG:** *"a tool that reports NOT FOUND the same way
+> it reports NONE is not an instrument"* (README) and *"it is N states, not a
+> value and an absence"*. **"Did not look" and "looked and found nothing" must be
+> separate states in the vocabulary.** Whatever the production count turns out
+> to be, that distinction is worth holding.
+
+**THE DISCIPLINE, ADOPTED — Ops's, and it is right:** *"the desk did not look"
+is a claim this data can support; **"there was nothing" is not.*** Nothing here
+establishes whether AIFF had news this morning — that needs a source outside the
+desk.
+
+**WHAT THIS SEAT IS NOT DOING UNTIL THE MECHANISM IS KNOWN.** No re-run and no
+re-report of any figure counting catalyst-less movers. **That freezes, among
+others, the register's `83% of movers with no legitimate-positive catalyst`, and
+today's own decision-time find-rates (14.6% of 50%+ movers before 09:30).**
+**Q1's first half is a CONTRAST (+17.9pp) rather than a level and is less
+exposed — but only if the default fires independently of the grade, which
+nobody has shown.** *Do not quote the levels; the contrast is quotable with this
+caveat attached.*
+
+**AND ONE OPS OBSERVATION THAT DOES NOT DEPEND ON ANY OF THE ABOVE**, from this
+morning's AIFF job — a name he traded and asked about: **research completed
+`PARTIAL` with `sourcesAdded 0` and an evidence fingerprint IDENTICAL to its
+09-18 job.** *So the desk re-served week-old evidence.* **That is a direct
+candidate explanation for his report that the printed catalyst was "completely
+different" from the real one: not a wrong grade and not a late grade, but the
+PREVIOUS event's analysis still standing.** It also refutes the slow-scanner
+hypothesis in the good direction — three minutes print-to-board, research firing
+37ms after qualifying. **The pipeline is fast; the catalyst LOOKUP is what
+fails.**
+
+#### THE 07:00-09:25 CAPTURE HOLE — measured 2026-09-25, and it bounds every premarket figure in this register
+
+**Found while answering his question about what the desk printed at ~07:50 ET.**
+The screen is live (the dashboard polls the sheet every 4s behind a 10s cache,
+`lib/data/index.ts:21`), **but the RECORD is not:**
+
+    06:10 STRUCTURAL_REFRESH   06:25 / 06:45 / 07:00 PREMARKET
+    ......... 2h25m, nothing .........
+    09:25 OPEN_SPIKE   10:00+ RTH_INTERVAL every 30m
+
+    assessments captured between 07:31 and 09:25 ET across all 26 sessions: 2
+
+> **So what he saw between 07:00 and 09:25 was never written down**, and the
+> front of his stated trading window (07:00-10:00) is the least recorded part of
+> the session. **Every premarket figure this thread has produced — including
+> today's "positive catalyst before 09:30" rates — is built on captures at 07:00
+> and earlier plus one at 09:25, with the intervening 2h25m unobserved.**
+> **This is a bound on the instrument, not a defect finding**, and it must travel
+> with any premarket claim the way the ranks-1-25 bound travels with board
+> figures.
+
 #### STANDING ITEM FOR THE NEXT R&D SEAT: the archive window is unblocked. 2026-09-10.
 
 > **CORRECTION 2026-09-23 — "no new exception" was WRONG, and it cost a bad ask.**
