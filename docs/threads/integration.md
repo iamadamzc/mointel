@@ -215,6 +215,22 @@ fix: carry the defect and the evidence, and leave the fix shape to the owning se
 knows its file's runtime (browser / worker / server), its types, and what it can reach. A shape
 from the finding seat is a hypothesis; flag it as one, never relay it as the instruction.
 
+## THE DEPLOY-PATH BATCH — ORDER RULED 2026-09-25, AND THE ORDER IS MEASURED
+
+**1. THE FALSE `is live` LEADS IT.** *`push-release.sh:153-163` prints a claim about PRODUCTION from the
+exit status of a PROCESS. Three routes to it with no cutover: a killed unit (`systemctl stop` scores
+`success 0`), a unit STILL RUNNING at the `DEPLOY_FOLLOW_SECONDS` deadline (the loop falls out and `STATE`
+is never re-read), and any exit systemd scores as success.* **Ops measured the margin: worst deploy today
+768s against a 900s deadline — 132 SECONDS, 17%** — *while `quick_check` climbed 388 → 597.3s in one day.*
+**Fix is four lines and checks the ARTEFACT, which answers all three routes without enumerating them** —
+the point, since a fourth route turned up ten minutes after the third.
+
+**2. THE PREFLIGHT START-vs-STOP DEFECT follows it.** *That one costs a skipped checkpoint. The first costs
+a false statement about production, caught today only by one seat's habit.*
+
+**Neither is written tonight, on Ops's own rule: a deploy-path change gets its own enumeration and gate, and
+not in the hours around using the tool.**
+
 ## HIS REPORTING RULE, 2026-09-25 — IT BINDS THIS SEAT HARDEST
 
 > *"Everyone is over communicating. I don't care about how the back end conversations or the mechanics go
@@ -260,13 +276,21 @@ everything below this section is kept for MECHANISMS, not facts.*
 ### PRODUCTION
 
 ```
-web / research / assess   c00992e   cutover ~17:13 ET (fifth ship; 79cc4d1 + pick 8942a94)
+web / research / assess   5901ea9   cutover 17:43:40 ET, 2s down, quick_check 569.4s, public sweep
+                                    clean with the control firing. SIXTH ship. Rollback target
+                                    c00992e BY NAME -- see the orphan below.
+                          c00992e   cutover ~17:13 ET (fifth ship; 79cc4d1 + pick 8942a94)
                           79cc4d1   cutover 2026-09-25 17:07:42 ET, 3s down, quick_check 597.3s
                                     READ OFF THE BOX FROM /proc/<pid>/cwd at the twelfth
                                     Integration's ask. pids 1157361/1157423/1157510.
 market worker             757cf6a   UNTOUCHED, NRestarts 0 since 2026-09-24 20:24:07Z
                                     Different releases is DELIBERATE, not drift.
-releases on disk          79cc4d1  3dc14e2  0a17601  757cf6a  + 372f5eb (PINNED baseline, v18)
+releases on disk          5901ea9(live)  b72e8ed(WITHDRAWN, NEVER LIVE)  c00992e  757cf6a
+                                         + 372f5eb (PINNED baseline, v18)
+                          ⚠ 79cc4d1 WAS PRUNED as predicted -- the withdrawn directory consumed its
+                            retention slot, so b72e8ed NOW SITS BETWEEN THE LIVE RELEASE AND THE REAL
+                            ROLLBACK TARGET BY MTIME. Ops wrote DO-NOT-ROLL-BACK-TO-THIS.txt inside it
+                            (additive, 25 entries verified untouched). REMOVAL IS HIS.
 web-tier rollback         3dc14e2
 today's ships             49efd1a  11:49:43 ET (sort accent) | 0a17601  12:17:07 ET (FRESH boundary)
                           3dc14e2  14:49:07 ET (collector attempt telemetry)

@@ -117,6 +117,11 @@ that HIS reading is buried in shop chatter, not that the chatter exists.*
 the same moment as the ruling: the first draft of this section had the rule right and the scope wrong, and
 it took him a second message to fix it.*
 
+> **AND HIS SECOND MESSAGE DOES NOT RETIRE HIS FIRST — R&D's framing, and it is the one to keep.** *The
+> defect he named was a RATIO: a dozen reports against three actionable findings. **That is a relevance
+> failure, and brevity was never the fix.*** A seat that answers this rule by writing shorter reports about
+> the same mechanics has changed nothing he asked to change.
+
 *Recorded by Integration on the day he gave it, having spent the afternoon sending him exactly what this
 rule forbids: a running account of five ships, three retracted numbers, a false success in a deploy script
 and two docblocks — every one of which belonged in a commit, and one of which (the newswire, the re-ask
@@ -13015,6 +13020,39 @@ contradicting them.**
 **That layout is worth more than the fix.** A summary printed on its own, or above
 its evidence, or in a different message, is never checked against it.
 
+## I CHECKED THE COMMIT I SUSPECTED, NOT THE RANGE I WAS WARNING ABOUT
+
+**Integration, 2026-09-25, inside the very instruction that forbade a range.** *The enumeration said:
+pick three shas individually, **never a range**, because `ebfe5d0` sits between picks 2 and 3. It then
+stated the range was "three commits, one of them nobody's business" — and offered a check: the name lists
+of the three picks intersected with `ebfe5d0`'s, empty, therefore benign.*
+
+```
+git rev-list --count d734d6f..be497db    ->  13        <- the real range
+what the message said                    ->   3
+of those 13: docs-only                       10
+             ebfe5d0  design.md               1        <- the one I looked for
+             969458d  lib/research/queue.ts + tests    <- CODE, already live via 8687f04
+```
+
+**THE INTERSECTION WAS CORRECT AND ITS SCOPE WAS WRONG.** *It compared the picks against ONE suspected
+commit and the conclusion was stated about ELEVEN unexamined ones.* **And the output was on screen: a
+`git log --oneline` of that exact range had printed all thirteen lines minutes earlier. The error was not
+a missing check, it was a check aimed at the commit that had caught the eye.**
+
+> **THE ERROR RAN IN ITS AUTHOR'S FAVOUR, WHICH IS THE PART TO BE SUSPICIOUS OF.** *"Only one stray commit,
+> and it is harmless" supports the instruction being given. Thirteen commits including a live-code change
+> supports it far better — **so the mistake weakened the correct argument while feeling like it confirmed
+> it.***
+
+**Ops followed the instruction, then verified the EXCLUSION rather than trusting that the picks achieved
+it:** `5901ea9:lib/research/queue.ts == c00992e:lib/research/queue.ts`, identical, so `969458d` did not come
+in. *That is the check that closed it, and it was a check on the ARTEFACT rather than on the procedure.*
+
+**Same shape as `--contains` answering a question nobody asked, and as a census partitioned on the wrong
+field: the instrument ran correctly against the wrong scope.** *When warning about a RANGE, count the
+range. `rev-list --count` is one command and the number is the warning's whole content.*
+
 ## THE DEPLOY TOOL PRINTED "IS LIVE" FOR A SHIP THAT NEVER CUT OVER
 
 **Ops found it in its own file, 2026-09-25, and it is the day's most consequential finding.** *For the
@@ -13062,6 +13100,19 @@ the third**: any fix that depended on the list being complete would have shipped
 produce the thing is never evidence about the thing.** Third subsystem in one day — a dead launcher
 reporting failure for a success, `companySourceDetail` reporting "not attempted" for an attempt, and this
 reporting "is live" for a deploy that never happened.*
+
+> **AND THEN OPS MEASURED THE MARGIN, WHICH MOVED THE FIX FROM CORRECT TO URGENT.** *Every deploy unit on
+> 2026-09-25, start to end, against the 900s `DEPLOY_FOLLOW_SECONDS` deadline:*
+> ```
+> 3dc14e2 768s (margin 132s)   79cc4d1 713s   49efd1a 710s   c00992e 687s   0a17601 617s
+> ```
+> **132 seconds — 17% headroom — from printing "is live" for a deploy that is still running.** *And it
+> shrinks unaided: `quick_check` went 388 → 552 → 569 → 594 → 597.3s across one day. One bad night of store
+> growth and the tool announces a cutover that has not happened, with `Result=success` behind it.*
+>
+> **ORDER-AND-PROCESS RULING, Integration: this LEADS the deploy-path batch, ahead of the preflight
+> start-vs-stop fix.** *The preflight defect costs a skipped checkpoint. This one costs a false statement
+> about production, and the only thing catching it today is one seat's habit of reading `/proc`.*
 
 ## A FIRED DEPLOY IS CANCELLABLE UNTIL THE STOP — AND THE ORPHAN IT LEAVES IS A ROLLBACK TRAP
 
@@ -13180,6 +13231,15 @@ go and look.***
 *Ops's own tally is the reason this is recorded rather than smoothed: **twice in one day it endorsed
 something it had not opened**, and the first instance cost R&D a wrong conclusion about the desk's
 founding question.*
+
+> **THE SAME MECHANISM RAN ONCE MORE THAT EVENING, ON A RULING RATHER THAN A MEASUREMENT, AND IT TOOK HIM
+> TO STOP IT.** *Integration relayed his reporting rule to seven seats and added a line he never said —
+> "between seats, relay the defect and drop the narration". **Research copied that line into its own
+> charter without checking it against his words**, hours after refusing to start a build on a
+> characterisation rather than a ruling.* **One seat invented it, a second ratified it, and it was a desk
+> belief in writing within the hour.** *He corrected it himself: "i dont care what you say to each other
+> … don't sacrifice excellence for brevity."* **A relay two seats agree on has exactly one source, and
+> the second name on it adds nothing.**
 
 ## A PRE-REGISTERED COUNT MET BY A MEASUREMENT TAKEN IN IGNORANCE OF IT
 
