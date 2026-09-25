@@ -926,6 +926,36 @@ The failure this fixes is not politeness. **A long report costs him the reading 
 well as the deciding**, and the decisions he actually has to make get buried in
 material he did not ask for.
 
+## AN ENUMERATION IS FINISHED WHEN IT IS CONFIRMED SHIPPED, NOT WHEN IT IS APPROVED
+
+**2026-09-25. Both of the morning's windows passed unused and NOBODY NOTICED FOR NINETY MINUTES.**
+*`49efd1a` was approved at 09:1x, gated green, with a named start of 10:06–10:08. At 11:34 production
+was still `757cf6a` — no preflight refusal, no fault, nothing to investigate.* **Ops named its own
+half: it told him "ping me at 10:05 and it goes", then read his silence as a hold — a trigger it
+invented and that nothing required.** *Its own standing rule is: ship what is approved, or name a
+time after which silence is a decision. It named the time and did not honour it.*
+
+> **AND THIS THREAD'S HALF, WHICH IS THE ONE THAT BELONGS IN THIS CHARTER: I ISSUED THE
+> INSTRUCTION AND NEVER CLOSED THE LOOP.** *I reported "both ships on" three times on the strength
+> of an APPROVAL rather than a CONFIRMATION, and only asked at 11:34 — after the second window had
+> also gone.* **An approval is a claim about intent; a deploy is an event, and the seat that
+> enumerated it is the seat that has to ask whether the event happened.** *Exactly the shape of
+> every other failure recorded today — a description taken for the thing — applied to my own
+> instruction, which is the one I was least likely to check.*
+>
+> **So: after issuing an enumeration with a named window, ASK AT THE WINDOW.** *A deploy that did
+> not happen looks identical, from here, to one that went perfectly — silence is the reported state
+> in both cases. The cost is not the delay; it is that a report to him was wrong for ninety minutes
+> and would have stayed wrong.*
+
+**AND A VERIFICATION CRITERION HAS A SHORTER SHELF LIFE THAN THE APPROVAL IT SERVES.** *The gate at
+`0a17601` survived the slip untouched — a gate is detached at a fixed sha and does not decay. **The
+control set did not.** Design measured INLF/LFS and five ambers off the 09:15 payload against a
+10:36 ship; by 11:35 the row LIST may have churned, and without `INLF` on the board the positive
+control is gone and a null proves nothing.* **Nobody costed that this morning because everyone
+assumed the named window would be used.** *So a slipped ship re-opens the expectation even though
+it does not re-open the gate.*
+
 ## A deploy instruction is a request; preflight is the authority
 
 > ## ⚠️ AND "THE AUTHORITY" DOES NOT SAY *WHICH* AUTHORITY — THE WORST FAILURE THIS SECTION HAS
