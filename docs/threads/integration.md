@@ -1011,6 +1011,44 @@ claims around it were withdrawn, correct now — and checkable in ten seconds wi
 under the wrong frame, a default taken for a verdict — and here the container doing the misleading
 was a peer's credibility over one hour.*
 
+### ⚠️ HIS RULING 2026-09-25: ACCURACY OVER SPEED — A MISSED PUBLIC CATALYST IS A CORRECTNESS FAILURE
+
+**Verbatim, because the ruling is the artefact:**
+
+> ***"do we need a news feed? would the global news wire have been searchable at that time? TMI
+> isn't about being FAST, it's about being ACCURATE. so if it's public we should have it..."***
+
+**This reframes the whole AIFF chain.** *Under his rule a three-minute lag is acceptable and never
+finding it is not.* **"Was it public and findable at the time" is ANSWERED: yes — he read it in
+Warrior Trading's DayTrade Dash at ~07:53 ET, with AIFF already up 5%, and pasted it in because the
+desk did not have it.** *A competing product he already pays for had it while the move ran.*
+
+**AND THE GATE THAT KEPT IT MISSING IS A STALE POSITIVE, NOT A NEGATIVE — Ops's read 1 falsified
+Research's prediction and the mechanism survived intact:**
+
+```
+job 5000  acceptedAt set        AIFF catalystStatus  FRESH_FOUND     <- not NONE_FOUND
+                                AIFF eventTimestamp  2026-09-17      <- EIGHT DAYS OLD
+```
+
+> **`answered = catalystStatus !== 'UNKNOWN'`, so the question closed for the session BECAUSE THE
+> DESK BELIEVED IT ALREADY HAD THE CATALYST.** *A confident negative closing the question is at
+> least a statement about today; a stale positive closing it means no route — time-based or
+> otherwise — would ever have re-opened it.* **`UNKNOWN` re-asks. Both kinds of confidence do not,
+> and "confident" includes confidently holding week-old news as current.**
+
+**AND THE DOSSIER CONTRADICTS ITSELF ON THE SAME OBJECT — verified here in `guardrails.ts`:**
+*`:338` RECOMPUTES `catalyst.freshness` from the timestamp (09-17 on 09-25 is not FRESH). `:278`
+only requires `FRESH_FOUND` to cite a source; `:356` only downgrades `NONE_FOUND` under incomplete
+coverage.* **Nothing anywhere compares `catalystStatus === 'FRESH_FOUND'` against the recomputed
+band or the timestamp. The desk already knows the answer and never checks it against itself.**
+
+> **THIRD INSTANCE OF ONE DEFECT: `catalystStatus` is an UNDESCRIBED enum (`schema.ts:70-73`),
+> model-assigned, unvalidated** — after the `freshness` enum was REMOVED for exactly that reason,
+> and after `eventTimestamp` was found with the same two properties this morning. **`SECONDARY_STALE`
+> exists and is the correct value for AIFF. Nothing made the model use it and nothing objected.**
+> *Routed to Research as the defect; the shape is its own.*
+
 ### THE FOUNDING QUESTION HAS BEEN A MARKET THESIS RESTING ON A PROCESS MEASUREMENT
 
 **R&D, 2026-09-25 (`9ef7015`), rejecting my "unmeasurable with current instrumentation" as too
