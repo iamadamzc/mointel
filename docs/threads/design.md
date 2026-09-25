@@ -104,6 +104,13 @@ itself be the defect signal.**
     session as Discovery re-ranks and new analyses land. The criterion is the
     NAMED ROWS, never the count.
 
+    THE ` ET` SHAPE IS ON THE BOARD ONCE AND IS UNAFFECTED. `LFS`
+    `2026-09-25T08:30:32 ET` gets DATE precision and can never be promoted
+    by the boundary -- and does not need to be: its event is TODAY, so
+    `days === 0` bands it FRESH anyway. Watchlist: none. So there is no
+    amber-beside-greens case on this board, and LFS is a control in the
+    OTHER direction: already green, and it must STAY green.
+
     BARE-DATE CONTROL -- Research's tripwire, as a row on his screen
             ONCO  `2026-09-24`  amber, and it CANNOT move. Green here is a
                   defect and not the feature.
