@@ -401,6 +401,18 @@ The one real constraint is the other way round and it belongs to the deploy:
 local repo and would otherwise put code on production that exists in no remote.
 That is Ops's check at deploy time, not a reason to centralise pushing.
 
+> **AND THE SCRIPT DOES NOT ENFORCE IT — read this before citing the line as a
+> blocker.** *Verified 2026-09-25 by Integration after asserting the opposite to Ops,
+> which Ops corrected by opening the file.* `push-release.sh` contains **no `git push`,
+> no `origin`, no `ls-remote`** — it is `git rev-parse` then `git archive "$SHA"` (line
+> 79), so it will ship an unpushed sha without complaint. **The "because" clause above
+> names the script and reads like a dependency of it; it is not one.** The rule is a
+> DURABILITY policy with a real hazard — an unpushed ship puts production on code that
+> exists on exactly one disk — and the enforcement is Ops's judgement at deploy time,
+> nothing else. *So it is a hazard to weigh, never a mechanical prerequisite to cite at
+> another seat; and a seat holding a push for a reason of its own is not blocked from
+> deploying by this line.*
+
 Only Ops deploys. Design and Research produce commits; Ops puts them on the
 server. This is deliberate — the deploy gate has checkpoint windows and pin
 rules that a thread focused on a component will not have in mind.
