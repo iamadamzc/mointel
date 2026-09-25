@@ -764,9 +764,24 @@ window; the bare-date tripwire survived under a new name (ONCO left, CNET took i
 > each of the column names add a tooltip with a deeper more helpful explanation if it makes sense"*
 
 **Routed to Design (owns the board), sequenced AFTER the `0a17601` verification.** *The mechanism
-already exists — every column def in `DiscoveryBoard.tsx` carries a `title`, unevenly filled, and
-`changePct` (Gap) at line 140 has `title: ''`. So it is a copy pass with one real hole, not a
-build.* **"if it makes sense" is his own limiter and is being held to: a tooltip restating the
+already exists — every column def in `DiscoveryBoard.tsx` carries a `title`, unevenly filled. So it
+is a copy pass, not a build.*
+
+> **⚠️ AND I REPORTED A HOLE THAT IS NOT THERE. `changePct` (Gap) has `title: ''` and that field is
+  DEAD, not empty.** *Design caught it before the tooltip pass started; verified here at both
+  files.* **The entry carries `resolve: baselineLabel`, and `view.ts:487` returns a real title for
+  every phase** — PREMARKET *"Change from the prior session close, including after hours"*, RTH
+  *"Change from the prior session's close"*, AH/POST *"Change from today's regular-session close"*.
+  **The `SortEntry` contract says so outright (`DiscoveryBoard.tsx:100-103`): for a resolved entry
+  the static value "is never read".** *So `Gap` already has the best tooltip on the board — the one
+  that is phase-resolved and cannot drift from its own sort control.*
+>
+> > **THE LESSON, AND IT IS THE DAY'S SHAPE IN A NEW PLACE: AN EMPTY FIELD IS NOT EVIDENCE OF A
+> > MISSING VALUE — IT MAY BE A FIELD NOTHING READS.** *I opened the column definitions, saw `''`,
+> > and inferred an absence without checking whether that field was live. **A dead field returns a
+> > plausible absence exactly as a failed check returns a plausible answer**, and "the Gap column
+> > has no explanation at all" travelled to him before Design stopped it.* **Filling it would have
+> > produced an edit nobody could see, reported as a fix.** **"if it makes sense" is his own limiter and is being held to: a tooltip restating the
 header teaches nothing.**
 
 > **⚠️ AND IT IS NOT AN APPROVAL OF `363f40d`. He did not mention the rename and I am not reading
