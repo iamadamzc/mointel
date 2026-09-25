@@ -333,10 +333,13 @@ since the rename hours earlier. There is NO test step in `deploy.sh`, `preflight
 > `eslint` → `vitest`, in a detached worktree at the sha, with refuse-not-guess on three missing
 > prerequisites (deps drift, generated `.next/types`, an unrunnable suite).** *Lint AND typecheck
 > are now IN the gate — the `9c3447b` lint slip motivated adding lint; `typegen` made typecheck
-> cheap enough to include. The old lint-red on `e48a2ca` is fixed.* **Still Ops's tool, run by
-> hand before each enumeration; whether it's auto-invoked from `push-release.sh` is Ops's to
-> confirm.** *Process note (Ops, 09-24): a gate refusal is only diagnosable if the run is teed to
-> a file — a filter ate the failing test names once.*
+> cheap enough to include. The old lint-red on `e48a2ca` is fixed.* **Still run by hand — NOT
+> auto-invoked from `push-release.sh` (wiring breaks `tests/desk/releaseBootstrap.test.ts`).**
+> *AND preflight's 5-min guard measures from the deploy START, but what it protects is the STOP —
+> now 7–10 min apart since `quick_check` moved ahead of the stop, so a start preflight passes can
+> land its stop inside a checkpoint. Both are the deploy-path open item for the next Ops seat:
+> daylight, one batch, suite green first. And tee a gate run to a file, or a refusal isn't
+> diagnosable.*
 
 ```
 1  refuse a sha whose suite is not green; print failing test NAMES, not a count
@@ -369,26 +372,37 @@ files). Not urgent; fold into a deploy.*
 > **Kept as a live item because it is genuinely unwritten, verified at HEAD** — the reason to
 > re-verify a stated-as-current item on audit rather than carry it or prune it blind.
 
-### AUTH — BUILT ON MAIN, AWAITING THE CUT-OVER (the last launch gate)
+### AUTH — BUILT ON MAIN, ZERO IN PRODUCTION, AWAITING THE CUT-OVER (last launch gate)
 
-**The whole auth surface is built and green on main, NOT yet deployed — Basic Auth still fronts
-everything, so nothing is exposed.** *Google OAuth + invited-email allowlist (his model, 2026-09-24):
-config, `/auth/start|callback|signout`, the gate (`authenticate` = `resolveSession` + `isUserInvited`),
-`/signin` (verified live desktop/mobile), and Ops's allowlist store — `isEmailInvited`, `isUserInvited`
-with the `email_verified` filter IN THE JOIN (spoof refused there, mutation-proven), immediate revoke.*
-**D3: the `/auth/*` route handlers are Web's; the carriage (nginx, primitives, stores) is Ops's.**
+**Ops verified at the sha (`757cf6a`) 2026-09-25: NONE of the auth is in production. Nothing can
+sign in. Basic Auth is the ONLY gate on `/desk`, and stays until the cut-over.** *On MAIN, not
+prod: the Google-OAuth-+-invited-allowlist model (his, 2026-09-24) — config,
+`/auth/start|callback|signout`, the gate (`authenticate` = `resolveSession` + `isUserInvited`),
+`/signin`, the allowlist store (`isEmailInvited`/`isUserInvited`, `email_verified` in the join,
+immediate revoke). At the sha: `lib/auth/` shipped; `app/auth/` and `scripts/allowlist.ts` did NOT;
+`IDENTITY_DB_PATH` is absent from `sync-env.sh` AND the box; no `identity.db` exists.* **D3: the
+`/auth/*` handlers are Web's; the carriage is Ops's.**
 
-> **The identity-store landmine is FIXED (`1a8c324`):** *`IDENTITY_DB_PATH=/var/lib/mointel/identity.db`
-> in `sync-env.sh` (stripped so a dev value can't override), and `openIdentityStore` REFUSES a
-> `releases/`-segment path. The "first account survives one deploy, deleted by the second" hazard
-> is closed.*
+> **The identity-landmine fix (`1a8c324`) is ON MAIN, NOT in prod.** *`IDENTITY_DB_PATH=/var/lib/mointel/identity.db`
+> in `sync-env.sh` (stripped so a dev value can't override) + `openIdentityStore` REFUSES a
+> `releases/`-segment path. It ships WITH the cut-over; until then the box has neither the env var
+> nor a store.*
 
-**STEP 2 — the coordinated cut-over (Integration orchestrates on his go):** nginx exempts `/signin`
-+ `^~ /auth/` → box env (Google id/secret, redirect URI, IDENTITY_DB_PATH) → wire the gate into
-`/desk` + `/api/*` → **live-proof the gate REFUSES a non-invited account, negative control first**
-→ Basic-Auth-off LAST, his call. *The adopted terms (§2 invitation, §3 one-account, §9 withdrawable)
-become true only at this cut-over; until then it is one shared password.* His three inputs are in
-OPEN AND HIS.
+> **⚠️ THE SEED WORD IS NOT EXECUTABLE UNTIL THE CUT-OVER.** *Nothing to seed into in prod — no
+> routes, no tooling, no `identity.db`. Ops asked him for it three times before it was runnable;
+> DON'T. It is a STEP of the cut-over, not a prerequisite to it.*
+
+**STEP 2 — the cut-over (Integration orchestrates on his go):** deploy the auth main → nginx exempts
+`/signin` + `^~ /auth/` → box env (Google id/secret, redirect URI, IDENTITY_DB_PATH) → wire the gate
+into `/desk` + `/api/*` → **live-proof the gate REFUSES a non-invited account, negative control first**
+→ seed his address → Basic-Auth-off LAST, his call. *The adopted terms (§2/§3/§9) become true only
+here.* His inputs (Google creds, when) are in OPEN AND HIS.
+
+> **Prod box is LIGHTSAIL, not EC2 (Ops, 2026-09-25).** *`ec2 describe-security-groups` returns
+> EMPTY — or another project's groups under management-admin — a false "nothing restricts 22."
+> Real firewall: `aws lightsail get-instance-port-states --instance-name mointel-prod` under
+> `magellan_admin`. `ufw` on the box is inactive, so lightsail port-states is the ONLY thing
+> gating port 22.*
 
 ### THE CYCLE FRAME — RULED WHOLE, AND IT UNBLOCKS TWO CONSTANTS
 
@@ -434,9 +448,10 @@ HUMAN_REVIEWED_PRIOR_ANALYSIS         FIXED      dbd70d1, 2026-09-19. Now
 
 **All seats told to self-assess context saturation and run §3 hygiene if they judge it time
 (his instruction 2026-09-25).** *Handed off in the 2026-09-25 wave, standing down on his word —
-FOUR fresh seats to be started: Commercial (`bc9847f`), Design (`4d58661`/`da6f696`), Web
-(`web-opening-prompt.md`, surface complete through `09f5fa4`), Research (`1330e4a`). Marketing
-self-assessed NOT time (calendar-age ≠ context-load — correct). Ops / R&D / Coaching pending.
+FIVE fresh seats to be started: Commercial (`bc9847f`), Design (`4d58661`/`da6f696`), Web
+(`web-opening-prompt.md`, surface complete through `09f5fa4`), Research (`1330e4a`), Ops
+(`ops-opening-prompt.md`/`7588888`, recommends Opus 5 — UNPUSHED, branch ahead 6). Marketing
+self-assessed NOT time (calendar-age ≠ context-load — correct). R&D / Coaching pending.
 The new Design + Research seats coordinate two payload fields: `catalystFreshFrom` (the prior-close
 FRESH refinement — Research builds, the reader consumes) and `lastCheckpointChanges` (item 12).
 Coaching's work lives outside the repo at `C:\Users\adshu\.mointel-fills\coaching\`;
