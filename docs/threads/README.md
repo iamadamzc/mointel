@@ -12950,6 +12950,54 @@ contradicting them.**
 **That layout is worth more than the fix.** A summary printed on its own, or above
 its evidence, or in a different message, is never checked against it.
 
+## TWO FLAGS ON ONE FIELD: THE SHARPER ONE ABSORBS THE FIX
+
+**Integration and Research, 2026-09-25, and it ran in both directions at once, which is what makes it a
+pattern rather than one seat's lapse.** *Two flags reached the same new counter. Ops's sounded harder —
+**"do not leave a counter whose unit has to be learned from the source"**. Integration's was mild: a
+docblock naming the wrong quantity, `probed` documented as "Candidates actually fetched".*
+
+**The rename landed and the docblock survived it, INSIDE the sha whose entire purpose was to stop a
+counter being misread.**
+
+```
+e197a80   candidatesProbed   /** Candidates actually fetched, bounded by MAX_CANDIDATE_PROBES. */
+          candidatesFetched  /** Of those probed, how many returned a body rather than a failure. */
+```
+
+- **Research had the wrong line under its cursor and copied it through.** *Its own account: it was editing
+  the field, read the docblock, and did not read it. The line had been wrong BEFORE the rename.*
+- **Integration flagged it, then nearly enumerated past it** — because the file was open, the field was
+  renamed, and the neighbouring line looked dealt with.
+
+> **AND THE PAIR IS WORSE THAN EITHER LINE ALONE, which is the reason it had to be held rather than
+> deferred.** *"Actually fetched" against "of those probed, how many returned a body" reads as a coherent
+> pair meaning the wrong thing — it invites the reading that `candidatesProbed` is the successful fetches.
+> **That inverts the reachability arm**: `candidatesFetched === 0` with `candidatesProbed > 0` is the
+> "every host refused us" signal, and a reader holding the two backwards concludes the opposite about a
+> name.* **A reader takes the unit from the line ATTACHED to the field, never from the prose above it —
+> and `e197a80`'s prose block was excellent and did not save it.**
+
+**So when two flags arrive on one thing, close them SEPARATELY and say which one you are closing.** *The
+mild one gets filed as fixed by association, and "rides the next ship" was the wrong call here for the
+reason that decided it: **a sha existing to fix a clarity defect cannot ship a line that misstates the
+quantity.** That is the fix contradicting itself, not a cost to defer.*
+
+## A TEST THAT CANNOT TELL A CITATION FROM THE DEFECT FORCES THE HISTORY TO BE DELETED
+
+**Research, 2026-09-25, from writing the test for the docblock above.** *It failed on its first run. **The
+new docblock QUOTES the old wrong phrasing as history** — *it said "actually fetched" until 2026-09-25* —
+and a blunt `not.toContain` could not distinguish a citation from a definition.*
+
+> **A test that forbids a STRING rather than a DEFINITION makes the record of a defect indistinguishable
+> from the defect.** *The next author gets a red suite, sees the offending phrase sitting in a comment,
+> and deletes the sentence explaining WHY the field is named as it is — to get green. **The assertion
+> pins the definition line now.***
+
+**This desk writes its reasons next to its code on purpose, so every guard over that code must be able to
+tell a quoted wrong answer from a live one.** *Same family as `/privacy-x`: a negative control has to be
+able to fire, and a historical quotation has to be able to survive.*
+
 ## AGREEING WITH A SENTENCE AND DRESSING IT AS A SECOND SOURCE
 
 **Ops's own account, 2026-09-25, and it is the mechanism that made another seat's false claim feel
