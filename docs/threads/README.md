@@ -13333,6 +13333,29 @@ ship 2   anything after it        preflight from the tooling       -> FIRST GUAR
 > and the NEXT deploy is the guard's first production test.** *So the ship after a tooling change is the one to
 > read carefully — **a refusal there may be the new guard working rather than a fault**, and reaching for the
 > override is exactly the wrong first move.*
+>
+> **✅ IT HAPPENED WITHIN THE HOUR, AND THE OLD GUARD REFUSED THE SHIP THAT WOULD HAVE REPLACED IT.** *2026-09-26
+> 10:05 ET: the tooling ship was BLOCKED by the live preflight on a checkpoint reason that does not apply on a
+> Saturday — **the old preflight does not know what day it is.** Nothing shipped.*
+>
+> **AND THE NEW ONE CARRIES THE SAME BLINDNESS ON THE OTHER ARM.** *Checked, because the next ship was minutes
+> away:*
+> ```
+> preflight.sh:123   if (( dow <= 5 )) && ... TRADING_END ...   <- the trading-window arm KNOWS it is Saturday
+> preflight.sh:137   if (( PROTECTED_MINUTES > 0 )) && ...      <- the CHECKPOINT arm does NOT
+> ```
+> **The fix that taught the tool about weekends taught only the arm it was written for.** *A second arm, in the
+> same file, with the same oversight, shipped in the same commit as the fix for the first.*
+
+> **AND A GUARD PLACED EARLIER MOVED THE THING IT GUARDS FURTHER FROM THE DECISION.** *The same commit set made
+> `push-release` run the test gate BEFORE preflight — right, because a refusal discovered after five minutes of
+> tests is worse. **But it inserted those five minutes between the operator's intent and the check, so a launch
+> can no longer be AIMED at a clear window.*** *Ops hit it on the first use and reached for `DEPLOY_TESTS_SKIP`.*
+>
+> **THE CURE IS RE-CHECKING, NOT ANNOUNCING: have the guard re-evaluate AFTER the slow step, so the pass or
+> refusal is judged against the ACTUAL moment rather than a predicted one.** *The alternative — the launcher
+> printing when the check will run — leaves a human doing arithmetic under time pressure, which is how an
+> override gets reached for.*
 
 **The same holds for anything the box executes from `current`: `preflight.sh`, `status.sh`.** *It does NOT hold
 for `push-release.sh` itself, which runs from the dev machine's tree — so a fix to the LAUNCHER takes effect on
