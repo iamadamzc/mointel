@@ -101,6 +101,7 @@ carrying heavy cross-session traffic. Hand-off prompt:
 | [`commercial/2026-09-10-auth-providers.md`](../commercial/2026-09-10-auth-providers.md) | Google OAuth consent (contradiction reported), Apple phase two (needs an App Store app) | 2026-09-10 |
 | [`commercial/2026-09-11-competitor-trademomentum.md`](../commercial/2026-09-11-competitor-trademomentum.md) | the "free watchlist ending" that did not end; a $147/mo signal product | 2026-09-11 |
 | [`commercial/2026-09-25-newswire-licence-landscape.md`](../commercial/2026-09-25-newswire-licence-landscape.md) | four wire services' terms on redistribution (two bar it outright, two publish nothing on point); Alpaca News is bound by the same personal-use clause as the SIP tape, not a looser one; no vendor here publishes a self-serve commercial price | 2026-09-25 |
+| [`commercial/2026-09-26-billing-onboarding-support-scope.md`](../commercial/2026-09-26-billing-onboarding-support-scope.md) | billing provider options (Stripe rail vs. Merchant of Record), packaging restated from Gate 2, the payment-terms trigger in the adopted `terms.md`, the licence exposure restated (not re-opened), support defined as one email address; leads a three-part scope with Web's stranger-facing flow and Ops's infra half | 2026-09-26 |
 
 Gate 0 is mapped and ruled at the top of [`monetization-gates.md`](../monetization-gates.md).
 Method for all of them: public pages only, every load-bearing figure re-read by
@@ -113,6 +114,7 @@ this seat before it carried a sha, contradictions reported not resolved.
 - **Alpaca plan:** Algo Trader Plus, his word (2026-09-07).
 - **Session report:** *"the report is for monetization, coaching is just for me."* Apple sign-in: *"phase 2."* Google consent screen: he meant OAuth consent verification.
 - **Reporting format:** the 🟠 NEEDS YOU block (2026-09-19); nothing after it, omitted when nothing needs him.
+- **Billing/onboarding/support, 2026-09-26, one word: *"scope it."*** Answering Integration's report that these have no owner and no build. Scope delivered same day (`2026-09-26-billing-onboarding-support-scope.md`); nothing built, nothing signed, four items waiting on him in its NEEDS YOU block.
 - **Newswire source, 2026-09-25, verbatim:** *"yep, build the alpaca. we need to look at the pipeline now. it will change how we do things on the model interpretation."* Build Alpaca News (Benzinga-sourced, already in the account) under the accepted-exposure posture already ruled — no new vendor, no new spend, no new exposure category. Routed to Integration for Research to scope; this seat's licence question on this source is closed. A contracted commercial licence (Benzinga direct, or a primary wire) stays open below, not asked for.
 - **What reaches him, 2026-09-25 (`README.md` "His rule: report what changes the product, not how the work went", `60a2f08`):** *"I don't care about how the back end conversations or the mechanics go relative to code or conflicts or Qnumbers... I care about the information that impacts the app relative to my decisions and what we're doing with the product."* **Applied to this seat:** a claims ruling, a licence-posture change, a vendor decision, or anything that changes what the product may say or fetch, reaches him. Which document records a ruling, register housekeeping, session titles, sha provenance and which seat corrected which peer do not — those stay in this charter and the commits. The vendor-float constraint (below) is the model of a ruling that reaches him because it changes what the app may DO; the fact that it lives in `commercial-seat-research-tooling.md` versus `commercial.md` does not.
 
@@ -129,7 +131,7 @@ this seat before it carried a sha, contradictions reported not resolved.
 
 | item | owner | waits on |
 | --- | --- | --- |
-| Pricing, packaging and terms — the commercial half of the gates map | this seat | him asking; the unit is "everything together, same board" |
+| Billing, onboarding, terms of sale and support — scoped 2026-09-26 (`2026-09-26-billing-onboarding-support-scope.md`), Web's stranger-facing flow linked in it | him | four items in that document's NEEDS YOU block: the payment-terms trigger, the terms-of-sale route, invite-by-hand vs. self-serve, and a refund-policy shape |
 | The vendor decision (Massive Business $2,499 no spread vs Databento Plus $1,500 unstated-delay volume) | him | the undefined "something moving" trigger |
 | The pre-launch exposure conversation | Integration | the page going live (`c7ada4f` trigger) |
 | Session-report pricing and packaging | this seat | him; the report cannot narrate structure honestly until Phase C (filing-derived float) replaces the Sheet float |
