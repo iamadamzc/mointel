@@ -77,6 +77,12 @@ import {
 } from '../lib/market/alpaca/rest';
 import { redact, type AlpacaCredentials } from '../lib/market/credentials';
 import type { MarketConfig } from '../lib/market/config';
+import {
+  openTradesStoreOrNull,
+  persistTradeBuckets,
+  pruneTradeBuckets,
+  type TradesDatabase,
+} from '../lib/market/store/trades';
 import type {
   BackfillSummary,
   ConnectionState,
@@ -190,6 +196,13 @@ export interface RuntimeOptions {
 
 export class MarketRuntime {
   readonly db: MarketDatabase;
+  /**
+   * The ten-second trade store, or null when it could not be opened. A
+   * secondary store must never take capture down with it: without it the
+   * worker still drains the engine's buckets (so they cannot grow without
+   * bound in memory) and discards them, loudly.
+   */
+  private trades: TradesDatabase | null = null;
   readonly config: MarketConfig;
   readonly logger: RuntimeLogger;
   readonly mode: MarketMode;
@@ -261,6 +274,10 @@ export class MarketRuntime {
     if (upgrade.toVersion !== null) {
       this.logger.info(`[db] migration complete: v${upgrade.toVersion}`);
     }
+
+    this.trades = openTradesStoreOrNull(this.config.tradesDbPath, this.logger, (error) =>
+      this.redactError(error),
+    );
 
     const claim = claimStoreForMode(this.db, options.mode);
     if (claim.cleared) {
@@ -1486,6 +1503,15 @@ export class MarketRuntime {
       if (tracked.length) upsertMinuteBars(this.db, this.tradingDate, tracked);
     }
 
+    // Drained every flush whether or not the store is open; see persistTradeBuckets.
+    persistTradeBuckets(
+      () => this.engine.drainTradeBuckets(),
+      this.trades,
+      this.tradingDate,
+      this.logger,
+      (error) => this.redactError(error),
+    );
+
     const result = this.engine.recompute();
     this.recordEvents(result.events);
 
@@ -1760,6 +1786,15 @@ export class MarketRuntime {
 
     const removed = pruneMinuteBars(this.db, keep);
     if (removed > 0) this.logger.info(`[store] pruned ${removed} minute bars`);
+
+    if (this.trades) {
+      const buckets = pruneTradeBuckets(
+        this.trades,
+        this.config.minuteBarRetentionDays,
+        this.tradingDate,
+      );
+      if (buckets > 0) this.logger.info(`[trades] pruned ${buckets} ten-second buckets`);
+    }
   }
 
   shutdown(): void {
@@ -1773,6 +1808,11 @@ export class MarketRuntime {
     try {
       writeFeedHealth(this.db, this.health);
       this.db.close();
+    } catch {
+      /* shutting down anyway */
+    }
+    try {
+      this.trades?.close();
     } catch {
       /* shutting down anyway */
     }
