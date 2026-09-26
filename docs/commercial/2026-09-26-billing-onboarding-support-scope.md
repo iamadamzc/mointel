@@ -168,12 +168,15 @@ drafted as text, since this is scope and drafting is a separate step:**
   cap's own reasoning); pro-rated refund on cancellation; or a short unconditional
   window (e.g. seven days) before the no-refund rule applies. **This is his to weigh
   against who these first few people actually are.**
-- **Cancellation** — how a person cancels (a reply to the same email that invoiced them,
-  at this scale), when access ends (immediately vs. end of paid period), and how it
-  composes with `revokeEmail`'s existing immediate-session-termination behaviour (Web's
-  §3 — a lapsed subscription already has a working mechanism to end a live session;
-  cancellation needs the same one, deliberately, not left to fire on payment failure
-  alone).
+- **Cancellation, requested by the person** — how they ask (a reply to the same email
+  that invoiced them, at this scale) and when access ends (immediately vs. end of paid
+  period). **A different and separately-owned question, flagged by Web and not this
+  document's to answer: what happens on non-payment rather than a request** — a card
+  failing at 08:14 is not the same event as somebody asking to leave, `revokeEmail`'s
+  immediate-termination behaviour was ruled for revoking someone who shouldn't be there,
+  and Integration has already put the non-payment policy to him as its own decision.
+  **This document's cancellation terms should compose with whatever he rules there, not
+  duplicate or pre-empt it.**
 - **Tax.** None owed if this stays US-only, non-resale, low-volume, and Stripe's standard
   processing handles remittance the merchant owes on its own income the same way as any
   US company's revenue — a question for whoever handles the company's taxes generally,
@@ -200,14 +203,17 @@ conversation it already owns**, not resolved here.
 
 ## 5. SUPPORT — WHAT IT MEANS AT ONE PAYING USER
 
-**Adopting Web's framing exactly, because it's the honest answer and inventing a larger
-one would misdescribe what actually exists:** **at one to a handful of paying users,
-support is an email address, read by a person.** Not a ticketing system, not an SLA, not
-a status page. The same channel that already handles the invite request handles a
-support question, a billing question, and a cancellation request — one inbox, one
-person, for as long as that's true. **Writing this plainly on the page, rather than
-implying a desk that doesn't exist, is Web's call on copy and this seat's ruling on
-what "support" is scoped to mean.**
+**Adopting Web's framing exactly, and sharpened by Web's own correction of it: say what
+it is, not what it's called.** *"support"* as a noun invites an expectation about hours
+and response time nobody has agreed to; the true sentence is narrower and already
+live. **`info@andromedagenius.com` — already the invite address on the public page
+(`app/page.tsx:22,463`) and already described in the adopted privacy policy as reaching
+"a person, not a queue" — is also the support address, the billing address, and the
+cancellation address.** One inbox, one person, for as long as that's true; nothing new
+to build, register, or announce, because the channel already exists and already carries
+this description. **Writing this plainly, rather than implying a desk that doesn't
+exist, is Web's call on copy and this seat's ruling on what "support" is scoped to
+mean.**
 
 **Where a vendor's own support obligations would only start to matter:** if he ever
 authorizes a Merchant of Record (§1b), Paddle's own page states it will *"handle queries
