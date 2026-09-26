@@ -13271,6 +13271,35 @@ records over and over: a state that looks identical whether or not the mechanism
 *And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
 convenience that destroys the data it was written to keep.*
 
+## A RETRACTION MUST REACH EVERYONE THE ASSERTION REACHED
+
+**Integration's, 2026-09-26, found by the seat that inherited it.** *At 07:41 ET this seat told Design that
+`$1–$20` was **"a default he has named"**. Hours later it established that his sentence was UNRULED and moot,
+and wrote that down — **to Ops, and in its own charter. Not to Design.***
+
+```
+the assertion reached   a message to Design -> design.md -> docs/design-opening-prompt.md
+the retraction reached  a message to Ops    -> integration.md
+elapsed                 ~6 hours and one Design hand-off
+```
+
+**Both Design documents were written AFTER the retraction existed, and both recorded the assertion as his
+ruling.** *The new Design seat read his actual turn in the transcript, found it names neither half, and struck
+the text out rather than deleting it (`713192b`). **Nothing reached code.***
+
+> **AN ASSERTION THAT LANDS IN A PEER'S CHARTER OUTLIVES THE CONVERSATION BY HOWEVER LONG THAT SEAT LIVES — and
+> its OPENING PROMPT is worse, because that is read FIRST, before any peer is present to object.**
+
+**SO, ON EVERY RETRACTION: list who received the claim, and send the withdrawal to all of them — not to whoever
+happens to be in the conversation when you notice.** *A correction that goes only to the seat you are currently
+talking to is a correction in one place and an assertion in two.*
+
+**THE SWEEP THIS PROMPTED FOUND ANOTHER, load-bearing on a build rather than a default:** *`research.md:172`
+still read "FIVE SITES, NOT THREE, AND ALL FIVE READ ONE PAIR THROUGH `inPriceRange`" — **after the count had
+been corrected to about ten, with the two that matter (`runtime.ts:862-863`, `MIN*0.4` / `MAX*2`) never calling
+the predicate at all.*** **A split built from that line would have missed the multiplier, and `MAX=50` bootstraps
+to \$100.** *Routed. **Grep the charters for your own corrected claims; a message is not a document.***
+
 ## REUSING A RULED PATTERN IS NOT A PATTERN DECISION
 
 **Integration's own boundary, tested 2026-09-26 and held.** *When `worker/` and `lib/market/store/` were
@@ -13444,7 +13473,8 @@ engine.ts:2088     if (rankOf(runtime) <= internalRank && alive) selected.add(..
 ```
 
 **If qualification widens to `$0–$50`, small caps compete for 50 slots against everything up to `$50` — and
-7,811 of the universe's 13,398 symbols sit above `$20`.** *A name pushed past rank 50 never reaches the
+**about 5,000 baselines sit above `$20` and ~1,100 of them are `discovery_eligible`** (measured; see the
+postscript — the "7,811" this entry originally carried was two populations added together).** *A name pushed past rank 50 never reaches the
 payload **and loses its trade-level subscription.***
 
 > **THE FAILURE MODE IS NOT "THE BOARD SHOWS THE WRONG ROWS". IT IS "A NAME IS MISSING AND NOTHING SAYS SO"**
