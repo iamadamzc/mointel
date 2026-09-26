@@ -569,6 +569,27 @@ everything up to $50 — **and 7,811 of the universe's 13,398 symbols are above
 $20.*** **A `$1–$20` name can be pushed below rank 50 and never reach the
 payload at all. He would not see it filtered out; he would see it absent.**
 
+**AND `internalRank` HAS A SECOND CALLER, WHICH MAKES IT WORSE.** Verified at
+`engine.ts:2088`: the same constant selects the **HIGH-RESOLUTION
+SUBSCRIPTION SET**. *So a crowded-out name does not merely fall off the
+payload — **the desk stops collecting its trades and quotes.*** The comment
+directly above that line records this failure having already happened once:
+*"a dead name at rank 3 held a trades/quotes slot that a live name at rank
+251 was waiting for."* **The set is capped and crowding it is a defect this
+desk has experienced, not a hypothetical.**
+
+**THAT REACHES THE CAPTURE WORK TOO.** Sub-minute counting is only possible
+for hi-res names. **So widening what QUALIFIES would thin the 10s capture for
+exactly his names, at the same moment and through the same constant** — two
+separate pieces of work failing together on one number.
+
+**AND THE FAILURE MODE HAS NO SYMPTOM.** He has twice reported the board "not
+sorting" from something he could SEE — a rank column reading 3, 2, 21, 8, 5,
+and a ranking column whose figures did not descend. **This one shows him
+nothing: a name is missing and there is no mark, no hover and no count that
+says so.** *A defect he can see costs a message; a defect with no symptom
+costs the trade and never gets reported.*
+
 **WHICH MEANS THE WINDOW CANNOT BE A DISPLAY FILTER OVER A WIDER QUALIFIED
 SET.** The three knobs Integration separated already say it:
 
