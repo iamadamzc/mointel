@@ -492,7 +492,32 @@ small-cap**, which is why the control cannot quietly become the capture knob.*
 `catalystFreshFrom` and `tradesLast60s`: ask the producer for the answer,
 build the reader to be safe without it.
 
-## VERIFIED ON THE BOARD after `5254bca` — 2026-09-25 21:44 ET
+## `8fd7887` IS LIVE AND HALF-VERIFIED — the evening arm waits for Monday
+
+**Shipped 22:06:50 ET. Read at 22:17 and the board had already rolled:**
+*"No session in progress. Discovery populates from 04:00 ET on 2026-09-28",*
+`0 eligible`, caption back to **`Daily RVOL rank`**. **The after-hours board
+closed between my 21:44 reading and the ship.**
+
+    VERIFIED   the DAY arm. The sort chip reads `RVOL`, not `Part`, on a
+               DAILY_RVOL board -- so `rankingQuantity(board)` is running live
+               and returning the daytime label. That is the control side.
+
+    NOT        the EVENING arm. No Discovery table renders on an empty board,
+    VERIFIED   so neither the `PART` header, nor the participation values, nor
+               the `Now` header width can be measured. **Next opportunity is
+               MONDAY after 16:00 ET.**
+
+**NEITHER IS A DEFECT AND NEITHER IS A PASS.** An empty Discovery at 22:17 on
+a Friday is the correct state, and an absent table is not evidence about a
+column — the same absent-renderer trap this file already records. **Written
+down because "shipped and looked fine" is what an unverifiable reading turns
+into overnight.**
+
+*The case for the change is unaffected: it was SEEN at 21:44, on the same
+production code path, and that reading is below.*
+
+## Verified on the board after `5254bca` — 2026-09-25 21:44 ET
 
 **Live and read after a reload, on the AFTER-HOURS board:**
 
@@ -530,7 +555,7 @@ reasoning.
 | ~~`catalystFreshFrom` on the payload~~ | ~~Research~~ | **DONE** `7a0ad0c` producer, `bd509e9` consumer |
 | `lastCheckpointChanges` on the payload | Engine/Research seat | Spec above; §9 item 12's rail blocks on it |
 | ~~`tradesLast60s` on the payload~~ | ~~Engine seat~~ | **REJECTED by him 2026-09-25.** Nothing was built |
-| `e7e629f` — PART after the bell | Ops | **Evening defect now SEEN: RVOL column orders nothing on the AH board.** Ready to enumerate |
+| Read the EVENING board after `8fd7887` | Design | **Monday after 16:00 ET.** Shipped 22:06 Fri, board had already rolled; day arm verified, evening arm not |
 | Price-window control + header | Design | Engine split first; the `Rank`-meaning question is moot now the column is gone |
 | Sub-minute capture -> a near-live `Now` | Engine, then Design | **ON. His confirmation 2026-09-25: "Sub minute capture absolutely still on."** The counting is shared: capture stores the buckets, the column reads the newest |
 | ~~The `Now` column HEADER label~~ | ~~Design~~ | Built `ccaf77b`, tagged `363f40d`, **PARKED on his word** |
