@@ -32,7 +32,7 @@ cd "$ROOT"
 
 # Everything from .env.local, minus the settings that describe a Windows
 # development machine rather than the application.
-LOCAL_ENV="$(grep -v '^\s*#' .env.local | grep -v '^\s*$' | grep -vE '^(MARKET_DB_PATH|IDENTITY_DB_PATH|TRADES_DB_PATH|MOINTEL_DASHBOARD_URL|NODE_ENV)=' || true)"
+LOCAL_ENV="$(grep -v '^\s*#' .env.local | grep -v '^\s*$' | grep -vE '^(MARKET_DB_PATH|IDENTITY_DB_PATH|TRADES_DB_PATH|OAUTH_REDIRECT_URI|MOINTEL_DASHBOARD_URL|NODE_ENV)=' || true)"
 
 # Alpaca credentials live outside .env.local on the development machine: the
 # loader accepts a root-level text file, which is what Alpaca's key dialog
@@ -94,6 +94,14 @@ IDENTITY_DB_PATH=/var/lib/mointel/identity.db
 # but a path this load-bearing is stated, not inferred; and openTradesStore
 # refuses any path inside a release directory.
 TRADES_DB_PATH=/var/lib/mointel/trades.db
+
+# Google sign-in's redirect is a fact about THIS deployment, so it is set here
+# and stripped from .env.local (a localhost value must never reach the server).
+# It must match an authorised redirect URI on the Google OAuth client exactly.
+# GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET are his to create; they are carried
+# from .env.local like every other secret. A secret placed ONLY on the box is
+# erased by the next run of this script, which rewrites the env wholesale.
+OAUTH_REDIRECT_URI=https://tmitrader.com/auth/callback/google
 
 # The market worker reads TODAY-sheet tickers from the dashboard rather than
 # holding Google credentials itself. Loopback, so it never meets Basic Auth.
