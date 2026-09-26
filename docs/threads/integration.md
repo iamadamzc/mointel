@@ -561,6 +561,52 @@ session-hygiene rule's concern and not his.* **A seat that shortens a defect rep
 his reading has traded a real thing for a rule that was never about it** — and the seat that did that was
 this one, in the same hour it wrote the rule down.
 
+## LAUNCH STATE — WHAT MUST BE TRUE, WHO OWNS IT, WHERE IT STANDS
+
+**Written 2026-09-26 because Ops asked "what is launch state in your register" and THE HONEST ANSWER WAS
+THAT NO SUCH LIST EXISTED.** *Three partial ones did — `monetization-gates.md` (commercial, dated 09-07/08
+and stale in parts), `ops.md`'s access-path gates, and `integration.md` calling the auth cut-over "the last
+launch gate". **Three numberings, no consolidated list, and the numbers collide** — "gate 3" means the
+reliability bar in one and closing port 22 in another.* **Never use a gate number with him; name the thing.**
+
+**BLOCKING — a stranger cannot pay until all of these are true:**
+
+```
+1  NOBODY REACHES THE DESK WITHOUT SIGNING IN, and only invited accounts get in.
+   Built on MAIN, ZERO in production. nginx Basic Auth is the only gate today.
+   HIS: Google OAuth credentials + a window outside his trading hours.
+   OPS: IDENTITY_DB_PATH in sync-env.sh AND the box; identity.db outside releases/;
+        Basic Auth dropped LAST, after a proven refusal of a non-invited account.
+   WEB: the /signin screen and the callback error pages (on main, unshipped).
+2  THE DEPLOY PATH TELLS THE TRUTH. push-release.sh prints "is live" from a PROCESS
+   exit status -- three routes to that string with no cutover, and 132s of margin on a
+   quick_check that climbed 388 -> 605.5s in one day. OPS, 4 lines, artefact check.
+   YOU CANNOT OPERATE A PAID SERVICE ON A TOOL THAT REPORTS A SHIP THAT DID NOT HAPPEN.
+3  TERMS AND PRIVACY A STRANGER CAN READ. WEB -- LIVE, and the negative control fires.
+4  BILLING, ONBOARDING, SUPPORT. NO OWNER. Not started. HIS to scope or to defer.
+```
+
+**NOT BLOCKING, and each for a reason rather than by omission:**
+
+```
+TENANCY   nothing is keyed by user; everything by trading date. NOT a blocker under HIS
+          OWN RULING -- "same board to start. we're serving this same market for now."
+THE SHEET one ChatGPT task remains: the 22:00 after-hours recap, which no human has
+          reviewed. A hand-maintained Sheet is not production grade -- his words -- but
+          it does not gate a first paying viewer.
+PORT 22   closing it is HIS and it is hardening, not a launch condition.
+```
+
+> **AND THE ONE THAT IS NOT A CHECKLIST ITEM: THE RELIABILITY BAR.** *`monetization-gates.md`'s own sentence
+> and it has not been bettered: **"A single trader tolerates a defect because he can see round it. A paying
+> subscriber cannot."*** *In one weekend it listed a weekly mass deletion of the minute grain, a latch
+> destroyed in the population it served, a shipped price line that never rendered, a taxonomy built and
+> unwired, and a treatment flag never once set — **none found by a test, all found by looking.*** **2026-09-25
+> added: a retention prune scanning a 3.7G table under the write lock and killing two workers, a deploy tool
+> that reports success for a killed deploy, and an approved capture floor that admitted none of the three
+> names that prompted it.** *The defect rate IS the product risk, and the desk has still never been operated
+> to a standard where an outsider depended on it.*
+
 ## LIVE STATE - rewrite or delete this section, never let it go stale
 
 **AS OF 2026-09-25T21:00Z (17:00 ET).** *Carried forward by the TWELFTH Integration; the snapshot below was
