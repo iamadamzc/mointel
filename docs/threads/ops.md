@@ -12048,3 +12048,40 @@ TRADES_DB_PATH, GOOGLE_CLIENT_ID/SECRET, OAUTH_REDIRECT_URI. No identity.db, no 
    Then prove admission for his. Refusal first.
 6  LAST: auth_basic off in nginx-locations.conf (12 lines today), reload, sweep.
 ```
+
+## BILLING / ONBOARDING / SUPPORT — THE INFRASTRUCTURE HALF (scope, 2026-09-26)
+
+**His ruling: "scope it."** No owner yet; Integration routes the lead (Commercial is the
+natural one for pricing, provider, terms of sale, support policy). This is Ops's half:
+what the box, the routes and the auth store must do. Questions marked HIS are not ours.
+
+**Precondition, unruled in writing:** `monetization-gates.md` GATE 1, *what is sold*. The
+working answer is signed-in access to the same board (GATE 2, ruled "same board"). Billing's
+shape follows from it: one subscription = one invited Google address.
+
+```
+PAYMENT       a HOSTED checkout + customer portal, so no card data ever touches this box
+              (keeps PCI scope minimal). Which provider, and price: HIS / Commercial.
+ACCESS        the allowlist IS the access control -- no second gate. Payment state drives it:
+              paid -> invite the address; lapsed -> revoke (revocation already ends live
+              sessions in the same transaction). Grace period on a failed renewal: HIS.
+              The owner's own address must be exempt from billing-driven revocation.
+WEBHOOK       one POST route (e.g. /api/billing/webhook): exempt from Basic Auth in nginx,
+              provider signature verified, IDEMPOTENT by event id (providers redeliver),
+              writes beside identity.db (outside releases/, same path rule).
+RECONCILE     webhooks get lost. A daily read of the provider's subscription list vs the
+              allowlist, reporting drift -- folds into the one standing check, not a new one.
+SECRETS       provider secret key + webhook signing secret: in .env.local, carried by
+              sync-env (a box-only secret is erased by the next sync). Test keys first.
+NO STAGING    there is no staging box. Test mode runs against production routes with the
+              provider's test keys; the webhook must be proven with a test event end to end
+              before a live key is ever set.
+ONBOARDING    the checkout email must be the Google account they sign in with. A mismatch
+              is the predictable #1 support case: the flow must say so before payment.
+SUPPORT       a contact address and one runbook: "paid but cannot sign in" (email mismatch,
+              webhook not landed, revoked by lapse). Who answers it: HIS.
+```
+
+**Order against the sign-in cut-over:** billing cannot precede it. Sign-in (invited-only)
+goes live first and is proven to REFUSE; billing then automates what the allowlist script
+does by hand today.
