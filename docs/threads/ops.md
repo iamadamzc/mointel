@@ -11992,3 +11992,59 @@ Down 2s. web/research/assess on 8fd7887; market untouched on d0bc78c. Sweep clea
 Releases: 8fd7887 5254bca 10b4dce d0bc78c 372f5eb(pinned).
 **First ship today cut from production rather than picked around the auth
 surface. Prefer this pattern until he runs the auth cut-over.**
+
+---
+
+## 2026-09-26 (Sat) — toward launch state
+
+**"make it 1-20" = the board's default WINDOW, not the capture band** (Integration's
+reading, from the turn it answered). The box stays `DISCOVERY_PRICE_MIN=0.25`. My sync-env
+commit was reverted (`d3b70ef`): the file must match the box while a question is open.
+
+**The desk already records $20-$40.** `runtime.ts:863-864` bootstraps candidates with prior
+close in [MIN x 0.4, MAX x 2] = [$0.10, $40] at every restart AND every 22:00 roll, and
+tracked names persist bars. Measured on 09-25: 3,443 symbols at $20-50 captured (359K rows),
+0 above $50. Populations measured (bucket = rvol_baseline.previous_close):
+```
+          all baselines  discovery-eligible  captured 09-25 (syms / rows)
+<0.25         416            64                 47 /   4,788
+0.25-1        508           324                357 /  43,678
+1-20        4,674         3,031              4,170 / 684,839
+20-50       5,013         1,124              3,443 / 358,793
+>50         2,803         1,356                  0 /       0
+```
+The handed-down "7,811 above $20" is ALL baselines; "~1,100 at $50" is the ELIGIBLE $20-50
+slice. Never size from either without naming the population.
+
+**Deploy path: DONE on main**, each with an admits test and predicted mutant kills.
+```
+ea0e146  'is live' read from /proc; still-running at deadline -> exit 8; stale -> exit 9
+aa6055b  preflight guards the STOP (+2..+12m) and his 07:00-10:00 ET weekday window
+         (06:48 is the first refused minute; own override, TRADING_WINDOW_OVERRIDE)
+475b2f2  push-release runs test-gate.sh at the full sha BEFORE preflight
+```
+push-release changes act from the dev tree immediately; **aa6055b acts only once a release
+carrying it is live on the box** (preflight runs from the deployed release).
+
+**trades.db: DONE on main, `9436da4`.** Separate file, beside market.db unless
+TRADES_DB_PATH; refuses releases/; MAX(count) on conflict; the flush always drains.
+**af998eb (Research's producer) must never ship without it: unbounded bucket growth.**
+
+**Auth prep, Ops half, in git:** IDENTITY_DB_PATH (already, line 90), TRADES_DB_PATH, and
+OAUTH_REDIRECT_URI=https://tmitrader.com/auth/callback/google, all stripped from .env.local.
+Box env read (names only) 2026-09-26: has MARKET_DB_PATH; lacks IDENTITY_DB_PATH,
+TRADES_DB_PATH, GOOGLE_CLIENT_ID/SECRET, OAUTH_REDIRECT_URI. No identity.db, no trades.db.
+
+### THE SIGN-IN CUT-OVER, in order (his to schedule)
+```
+1  HIS: create the Google OAuth client; authorised redirect = OAUTH_REDIRECT_URI above.
+   The id/secret go into .env.local (NOT only onto the box: sync-env rewrites the env).
+2  sync-env.sh -> box env gains IDENTITY_DB_PATH, TRADES_DB_PATH, OAUTH_REDIRECT_URI,
+   GOOGLE_CLIENT_ID/SECRET. Read back key NAMES only.
+3  ship the auth surface (app/auth, app/signin, scripts/allowlist, Web's error pages)
+   on Integration's enumeration; web restarts pick up the env.
+4  HIS WORD: seed iamadamzc@gmail.com via scripts/allowlist.ts --authority.
+5  PROVE REFUSAL against the live box: a non-invited Google account is refused.
+   Then prove admission for his. Refusal first.
+6  LAST: auth_basic off in nginx-locations.conf (12 lines today), reload, sweep.
+```
