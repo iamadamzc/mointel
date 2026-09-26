@@ -13271,6 +13271,44 @@ records over and over: a state that looks identical whether or not the mechanism
 *And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
 convenience that destroys the data it was written to keep.*
 
+## VERIFYING THE ITEMS ON A LIST IS NOT VERIFYING THE LIST
+
+**Research's own formulation, 2026-09-26, after doing it twice in one evening from opposite directions.**
+
+*Integration handed it three `inPriceRange` call sites. **It verified all three carefully and never ran the
+one-line grep that returns five.*** *An hour earlier, asked whether the \$0.25 floor covered GSUN/SDST/SNYR, it
+opened the retention gate that CONFIRMED its answer and not the admission gate above it — which is where those
+names were actually excluded.*
+
+> **BOTH TIMES IT AUDITED WHAT IT WAS POINTED AT INSTEAD OF ENUMERATING WHAT EXISTS.** *The check on each item
+> was sound. **The completeness of the list was never checked, and a list handed over by a colleague arrives
+> looking finished.***
+
+**THE RULE, in its words: ENUMERATE THE CALLERS; DO NOT AUDIT THE ONES YOU WERE HANDED.** *`grep` the accessor,
+the constant, the field — whatever the thing is read THROUGH — and compare the count to the list you were
+given. It is one command and it is the only step that can find a site nobody mentioned.*
+
+*Same family as verifying the premises of a claim rather than the claim, and as a union of partial lists reading
+like a complete one. **The distinguishing feature is that every individual check passes**, which is what makes
+the result feel earned.*
+
+## A SENTENCE THAT IS TRUE OF A MECHANISM AND FALSE OF THE CONFIGURATION IS A CLEARANCE
+
+**Research, 2026-09-26, naming its own near-miss and the routing that made it dangerous.** *It wrote
+**"`:988` can take `$0–$50` today without touching either"** — true of the mechanism, because an admitted name
+that fails price eligibility never receives a rank and never competes. **False of the configuration: there is
+ONE `priceMin`/`priceMax` pair read at five sites, so a config change widens all five at once — which is the
+crowding case itself.***
+
+> **AND IT WENT TO THE SEAT THAT ROUTES TO THE SEAT HOLDING THE CONFIG.** *Its own words: "I wrote a
+> clearance-shaped sentence to the seat that routes to the seat holding the config."* **A statement about what
+> is POSSIBLE, phrased with "today" and "without touching", arrives at an operator as permission** — and the
+> relay in the middle is exactly where the distinction gets lost, because a bus forwards conclusions.
+
+**So when a mechanism is sound but the plumbing does not exist yet, say which one you are asserting.** *"Safe in
+principle, not available in practice until a second pair exists" is four more words and it is the whole
+difference between a design note and an instruction to change production.*
+
 ## WIDENING WHAT QUALIFIES SILENTLY EVICTS THE NAMES YOU WIDENED IT FOR
 
 **Design found it, Integration verified it and found a second half, 2026-09-26 — before either was built, which
