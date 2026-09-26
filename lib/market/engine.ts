@@ -390,8 +390,32 @@ export interface EngineOptions {
   feed: MarketFeed;
   discoveryRank: number;
   internalRank: number;
+  /**
+   * The QUALIFY band: what may rank, latch, and reach his board.
+   *
+   * His ruling 2026-09-26 — *"The one to 20 is the default setting for the
+   * board... this is not the default setting for the system."* Default
+   * `$1–$20`. **This is the band the top-50 rank cap allocates against**, so
+   * widening it crowds his names out of the payload AND the trades/quotes
+   * subscription, invisibly: he would see a name absent rather than filtered.
+   */
   priceMin: number;
   priceMax: number;
+  /**
+   * The RECORD band: what the desk captures at all, and nothing else.
+   *
+   * His ruling 2026-09-26 — *"we need to be able to show from 25 cents up to
+   * 50, if that's what people want to see."* **Wider than the qualify band on
+   * purpose**, so a user can later choose a range the desk already holds data
+   * for rather than one it must start collecting.
+   *
+   * ABSENT, IT FALLS BACK TO THE QUALIFY BAND, which is exactly today's
+   * behaviour and is why this can land before any config moves. **The two
+   * must not be one value: one pair gating both is what makes widening the
+   * record band widen qualification**, which is the thing his ruling forbids.
+   */
+  capturePriceMin?: number;
+  capturePriceMax?: number;
   baselineSessions: number;
   /**
    * The exchange's regular-session close, in minutes since ET midnight.
@@ -1006,7 +1030,15 @@ export class DemandEngine {
     if (!runtime) {
       if (observation.kind !== 'bar' && observation.kind !== 'updatedBar') return [];
       const price = observation.bar?.close ?? observation.price ?? null;
-      if (price === null || !this.inPriceRange(price)) return [];
+      /*
+       * ADMISSION USES THE RECORD BAND, NOT THE QUALIFY ONE — his ruling
+       * 2026-09-26. A name inside the record band and outside the qualify band
+       * is captured and can never rank: `:1650`/`:1848` gate on
+       * `inPriceRange`, `latched` is only ever set inside it, and `ranked`
+       * filters on a non-null rank. So it never reaches the payload and never
+       * takes a trades/quotes slot.
+       */
+      if (price === null || !this.inCaptureRange(price)) return [];
       if (!this.baselines.has(symbol)) {
         this.options.onPromotionCandidate?.(symbol, price);
         return [];
@@ -1632,6 +1664,18 @@ export class DemandEngine {
 
   private inPriceRange(price: number): boolean {
     return price >= this.options.priceMin && price <= this.options.priceMax;
+  }
+
+  /**
+   * The RECORD band, for admission only.
+   *
+   * Falls back to the qualify band when unset, so an engine constructed the old
+   * way behaves exactly as it did. Nothing is captured that is outside BOTH.
+   */
+  private inCaptureRange(price: number): boolean {
+    const min = this.options.capturePriceMin ?? this.options.priceMin;
+    const max = this.options.capturePriceMax ?? this.options.priceMax;
+    return price >= min && price <= max;
   }
 
   /** Operating-company equity only; everything else is tracked but unranked. */
