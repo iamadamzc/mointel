@@ -119,6 +119,27 @@ import type {
  */
 const TRADE_BUCKET_MS = 10_000;
 
+/**
+ * How many settled buckets are kept before dropping, and why it is not zero.
+ *
+ * THE HOLE IT CLOSES, found by Ops in the store review. The drain used to drop
+ * a bucket the moment `bucketTs < current`. A trade for that bucket arriving
+ * moments later -- flush timing against a late print on a fast tape -- creates
+ * the bucket again at 1, and the next drain emits a settled minute's worth of
+ * activity as a single trade.
+ *
+ * `trades.ts` upserts `MAX(trades, excluded.trades)`, so a revived 1 cannot
+ * clobber a stored N. **That is a floor under the defect, not a fix for it**:
+ * it bounds the damage to the late prints and cannot recover them. Keeping the
+ * bucket in memory is what actually counts them.
+ *
+ * TWO rather than one because the cost is redundant writes and the benefit is
+ * tolerance: at ~50 high-resolution names this re-emits roughly 150 rows a
+ * flush, which the upsert absorbs, and it buys 20s against arrivals that are
+ * typically sub-second.
+ */
+const TRADE_BUCKET_GRACE = 2;
+
 /** One symbol's trades inside one ten-second bucket. */
 export interface TradeBucketRow {
   symbol: string;
@@ -2173,9 +2194,12 @@ export class DemandEngine {
    * it closes -- delays the most recent ten seconds, which is the only data this
    * capture exists for.
    *
-   * COMPLETED buckets are dropped once returned; the newest is kept so it can
-   * keep accumulating. A restart therefore loses only part of one in-flight
-   * bucket, and the key makes replaying the rest harmless.
+   * COMPLETED buckets are dropped after a GRACE of `TRADE_BUCKET_GRACE`, not
+   * immediately: a trade arriving for a just-dropped bucket would otherwise
+   * recreate it at 1 and emit a settled minute's activity as a single trade.
+   * The newest is kept so it can keep accumulating. A restart therefore loses
+   * only part of one in-flight bucket, and the key makes replaying the rest
+   * harmless.
    *
    * Nothing is returned for a name without a trade subscription, rather than
    * zeroes: no trade ever arrives for it, so a zero would assert that it printed
@@ -2191,8 +2215,11 @@ export class DemandEngine {
         (a, b) => a[0] - b[0],
       )) {
         rows.push({ symbol: runtime.symbol, bucketTs, trades });
-        // Keep the bucket that is still filling; it is re-emitted next flush.
-        if (bucketTs < current) runtime.tradeBuckets.delete(bucketTs);
+        // Keep the filling bucket AND a grace of settled ones, so a late print
+        // adds to its bucket instead of resurrecting it at 1.
+        if (bucketTs < current - TRADE_BUCKET_GRACE * TRADE_BUCKET_MS) {
+          runtime.tradeBuckets.delete(bucketTs);
+        }
       }
     }
     return rows;
