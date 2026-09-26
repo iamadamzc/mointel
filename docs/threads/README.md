@@ -13356,10 +13356,26 @@ wrote it has moved on.* **Make "capture is being discarded" answerable without r
 > ALERTING are separate decisions** — and correctly, `tradeCapture` is NOT part of `ok`, because a secondary
 > store must not turn the desk red.
 >
-> *Looking for the standing check to fold it into found there is none: four scheduled tasks, every one a dated
-> one-off, including a 2026-09-08 investigation into an incident long resolved — **still installed, still running
-> read-only against production eighteen days later.** Which is `README`'s own rule two hundred lines up: a
-> scheduled instruction whose purpose is met does not become inert.*
+> *Looking for the standing check to fold it into found there is none: the desk has no recurring check at all.*
+>
+> **❌ AND THE CLAIM INTEGRATION ATTACHED TO THAT IS FALSE, CORRECTED BY OPS THE SAME HOUR.** *It wrote that a
+> 2026-09-08 one-off was **"still installed, still running read-only against production eighteen days later"** and
+> cited this file's rule about spent scheduled instructions.* **Ops opened the scheduler instead of taking the
+> premise. All eight tasks are ONE-TIME with `enabled: false` and a single `lastRunAt`; the most recent fired
+> 09-15. NOTHING is executing on a schedule.** *Verified independently: `list_scheduled_tasks` returns
+> `enabled`, `fireAt` and `lastRunAt` for every one.*
+>
+> **THE ERROR: reading the SKILL.md descriptions in a directory listing and inferring the RUN STATE from them.**
+> *A task directory is history; the scheduler's state is a separate call and it was one call away.* **"Still
+> listed" is not "still scheduled" — and the rule cited does not apply, because a disabled one-time task that
+> already fired IS inert.** *Same shape as everything else recorded today: the NAMES were enumerated and the
+> STATE was asserted.*
+>
+> *What survived the correction: `tradeCapture=DISCARDING` is **answerable on demand and not alerted**, which Ops
+> chose deliberately — an alert on a feature that does not exist in production yet is noise. **When the pair
+> ships it will propose ONE standing daily read-only check** — unit shas from `/proc`, the roll marker, universe
+> freshness, `tradeCapture`, research `NRestarts` — **and a standing instruction is his to approve, not a seat's
+> to install.***
 
 *Neither half's author could see this from inside their own half: the version guard is correct, the degradation
 is correct, and the gap is only visible to someone holding both.*
