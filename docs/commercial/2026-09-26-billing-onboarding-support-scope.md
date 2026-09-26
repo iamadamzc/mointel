@@ -222,39 +222,78 @@ relevant only if that path is ever chosen, not before.
 
 ---
 
-## 6. OPS'S SECTION — HELD OPEN, WITH ONE THING FLAGGED AHEAD OF IT
+## 6. OPS'S SECTION — LANDED, AND IT CONFIRMS THE SEQUENCE RATHER THAN CONTRADICTING §0
 
-**Not yet landed.** Integration's brief scoped it as the infra half: where a provider's
-webhooks land, secrets transport, how a paid account maps onto `isUserInvited`, and the
-failure modes (webhook down, payment lapsed, revoke on non-payment).
+**Read in full at its canonical location,
+[`../threads/ops.md`](../threads/ops.md#billing--onboarding--support--the-infrastructure-half-scope-2026-09-26)
+("BILLING / ONBOARDING / SUPPORT — THE INFRASTRUCTURE HALF"), not from the relay that
+announced it.** Ops scopes what an automated, webhook-driven billing build would require;
+this document's §0 recommends not building that yet. **The two are not in tension — Ops's
+own closing line settles the order:** *"Sign-in (invited-only) goes live first and is
+proven to REFUSE; billing then automates what the allowlist script does by hand today."*
+**That is §0's manual-first model, stated from the infrastructure side.** `scripts/allowlist.ts`
+run by hand now, a webhook automating the same action later, if and when §0's condition for
+building self-serve is met.
 
-**Flagged for whoever writes it, not written for them:** if §0's invite-by-hand model
-holds, **there may be no webhook to scope for phase one.** Web's §3 already establishes
-that `refused` is a correct, live-session-issuing state and that `revokeEmail` already
-ends sessions immediately — the mechanism this desk needs is a person updating
-`isUserInvited` after confirming a Stripe Dashboard or email notification, which is an
-operational runbook, not new infrastructure. Ops's section may be shorter than briefed,
-or may be exactly as briefed if he decides self-serve is where this starts — that's
-still his to weigh, not assumed here either way.
+**What Ops's scope adds that this document did not have:**
+
+- **Provider filter, for whenever a provider is chosen:** hosted checkout **and** a
+  customer portal (so card data never touches this box — minimal PCI scope disqualifies
+  any provider that puts card fields on the desk's own pages); signed webhooks with
+  redelivery and a stable event id (the desk will be idempotent by event id, since
+  providers redeliver); and a test mode with test keys, load-bearing because **there is
+  no staging box** — test mode runs against production routes and must be proven end to
+  end before a live key is ever set. Stripe and Paddle (§1) both publish all three
+  capabilities; neither was checked against this specific filter before Ops's scope
+  named it, and doing so is this seat's next step once he answers §7's provider question.
+- **Reconciliation, not just admission.** A daily read of the provider's subscription
+  list against the allowlist, catching a lost webhook — folded into the desk's one
+  standing check rather than a new one.
+- **His own address is exempt from billing-driven revocation** — the safety detail a
+  purely commercial scope would not have thought to name.
+- **The predictable #1 support case, named precisely:** someone pays with one email and
+  signs in with a different Google account. Ops's fix is at checkout — the flow must say
+  "use the Google account you'll sign in with" *before* payment — and the runbook's first
+  entry is "paid but cannot sign in" (email mismatch, webhook not landed, or revoked by
+  lapse). **This is Web's flow to build and this seat's support scope (§5) to carry as
+  the first line of the one runbook** the single inbox actually needs.
+- **A sharper form of a question §7 already asked**, and Ops calls it a precondition
+  rather than an open item: **Gate 1, "what is sold," has never been ruled in writing.**
+  Ops's working assumption — one subscription equals one invited Google address — is the
+  only shape that fits signed-in access to one shared board (Gate 2), but it has not been
+  put to him as a decision, only assumed by two threads independently. Folded into §7
+  below rather than left as a separate open item each document names differently.
 
 ---
 
 ## 7. 🟠 WHAT THIS PUTS IN FRONT OF HIM
 
-**Four items, none blocking the rest of the scope, each answerable in a sentence.**
+**Seven items, none blocking the rest of the scope, each answerable in a sentence. The
+first is Ops's precondition and belongs ahead of the rest — the other six follow more
+easily once it's answered.**
 
-1. **Does the payment-terms trigger fire now (scoping a paid tier) or at the first
+1. **What is sold (Gate 1) — is it signed-in access to the one shared board, one
+   subscription per invited Google address?** Two threads have independently assumed
+   this and neither has heard him rule it. If the answer is anything else — a report,
+   a brief — the shape of everything below changes.
+2. **Does the payment-terms trigger fire now (scoping a paid tier) or at the first
    actual charge?** His 2026-09-18 ruling deferred to the second reading; this scope
    may or may not be that moment — his call, not this seat's to decide by proceeding.
-2. **If he wants a terms-of-sale document at all right now: which route** — nothing yet,
+3. **If he wants a terms-of-sale document at all right now: which route** — nothing yet,
    a separate document (this seat's recommendation), or a redraft of the adopted terms
    (puts a DRAFT banner on the live page until re-adopted)?
-3. **Does he want the invite-by-hand model Web recommends, at least to start** — meaning
-   a Stripe Payment Link sent by email rather than a public checkout — or does he want
-   self-serve scoped and built now?
-4. **Refund policy shape**, if he wants one drafted: no refunds, pro-rated, or a short
+4. **Does he want the invite-by-hand model Web and Ops both point toward, at least to
+   start** — meaning a Stripe Payment Link sent by email and `scripts/allowlist.ts` run
+   by hand, rather than a public checkout — or does he want self-serve scoped and built
+   now?
+5. **Refund policy shape**, if he wants one drafted: no refunds, pro-rated, or a short
    unconditional window before it — a judgement about the first handful of people, not
    a market fact this seat can supply.
+6. **Grace period on a failed renewal, before revocation fires** — Ops's question, named
+   here because it is a business term as much as an engineering one.
+7. **Who monitors the support/billing inbox** — the address itself is already settled
+   (§5, `info@andromedagenius.com`, already live); who reads it as paying customers start
+   arriving is still open.
 
 Nothing above blocks Research's work on the newswire pipeline or any other thread's
 work; this is a parked scope, waiting on him, exactly as briefed.

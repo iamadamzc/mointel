@@ -101,7 +101,7 @@ carrying heavy cross-session traffic. Hand-off prompt:
 | [`commercial/2026-09-10-auth-providers.md`](../commercial/2026-09-10-auth-providers.md) | Google OAuth consent (contradiction reported), Apple phase two (needs an App Store app) | 2026-09-10 |
 | [`commercial/2026-09-11-competitor-trademomentum.md`](../commercial/2026-09-11-competitor-trademomentum.md) | the "free watchlist ending" that did not end; a $147/mo signal product | 2026-09-11 |
 | [`commercial/2026-09-25-newswire-licence-landscape.md`](../commercial/2026-09-25-newswire-licence-landscape.md) | four wire services' terms on redistribution (two bar it outright, two publish nothing on point); Alpaca News is bound by the same personal-use clause as the SIP tape, not a looser one; no vendor here publishes a self-serve commercial price | 2026-09-25 |
-| [`commercial/2026-09-26-billing-onboarding-support-scope.md`](../commercial/2026-09-26-billing-onboarding-support-scope.md) | billing provider options (Stripe rail vs. Merchant of Record), packaging restated from Gate 2, the payment-terms trigger in the adopted `terms.md`, the licence exposure restated (not re-opened), support defined as one email address; leads a three-part scope with Web's stranger-facing flow and Ops's infra half | 2026-09-26 |
+| [`commercial/2026-09-26-billing-onboarding-support-scope.md`](../commercial/2026-09-26-billing-onboarding-support-scope.md) | billing provider options (Stripe rail vs. Merchant of Record) filtered by Ops's PCI/webhook/no-staging requirements, packaging restated from Gate 2, Gate 1 ("what is sold") named as unruled and load-bearing, the payment-terms trigger in the adopted `terms.md`, the licence exposure restated (not re-opened), support at `info@andromedagenius.com`; three-part scope complete (Web's flow and Ops's infra half both landed and linked) | 2026-09-26 |
 
 Gate 0 is mapped and ruled at the top of [`monetization-gates.md`](../monetization-gates.md).
 Method for all of them: public pages only, every load-bearing figure re-read by
@@ -131,7 +131,7 @@ this seat before it carried a sha, contradictions reported not resolved.
 
 | item | owner | waits on |
 | --- | --- | --- |
-| Billing, onboarding, terms of sale and support — scoped 2026-09-26 (`2026-09-26-billing-onboarding-support-scope.md`), Web's stranger-facing flow linked in it | him | four items in that document's NEEDS YOU block: the payment-terms trigger, the terms-of-sale route, invite-by-hand vs. self-serve, and a refund-policy shape |
+| Billing, onboarding, terms of sale and support — scoped 2026-09-26, complete (`2026-09-26-billing-onboarding-support-scope.md`), with Web's flow and Ops's infra both landed and linked | him | seven items in that document's NEEDS YOU block, led by Gate 1 ("what is sold") — unruled and assumed by two threads independently |
 | The vendor decision (Massive Business $2,499 no spread vs Databento Plus $1,500 unstated-delay volume) | him | the undefined "something moving" trigger |
 | The pre-launch exposure conversation | Integration | the page going live (`c7ada4f` trigger) |
 | Session-report pricing and packaging | this seat | him; the report cannot narrate structure honestly until Phase C (filing-derived float) replaces the Sheet float |
