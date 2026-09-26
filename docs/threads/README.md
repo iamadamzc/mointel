@@ -13311,6 +13311,21 @@ hypothesis — and the fix for it was to gate on liveness, which does nothing ab
 subscription this cap allocates. **A composition defect is invisible from inside either piece of work** — and
 this one was found only because one seat read the payload limit while another owned the engine.*
 
+> **AND THE SAME DEFECT HAD A SECOND FLOOR: THERE ARE FIVE `inPriceRange` CALL SITES, NOT THREE.** *Design
+> listed `:988`, `:1650`, `:1690` and the header; Research listed `:988` against `:1650`/`:1690`; Integration
+> relayed both lists.* **All three missed `:1848` and `:1893` — the AFTER-HOURS qualification and latch, whose
+> own comment reads "The \$1–\$20 rule, applied at the relevant point of the AFTER-HOURS move".**
+>
+> **A split covering three sites would qualify on the WIDE band after the bell** — *crowding his names out of
+> the payload and the trades/quotes set in the exact evening session that `8fd7887` had just been built to fix,
+> and only after 16:00. **The evening ranking column would be sorting a population that had already lost his
+> small caps, and it would look correct while doing it.***
+>
+> **FOUND BY GREPPING THE FUNCTION RATHER THAN THE SITES PEOPLE HAD NAMED.** *Three seats each enumerated the
+> callers they knew and every list was a subset. **When a constant is read in several places, `grep` the
+> ACCESSOR, never assemble the list from what colleagues have mentioned** — a union of partial lists reads like
+> a complete one and nothing marks the gap.*
+
 ## A HEAVY READ DURING A DEPLOY IS CONTENTION, AND IT MAY BE THE TRIGGER FOR THE FALSE `is live`
 
 **Ops, 2026-09-25, while waiting for a cutover and trying to take a before-reading.** *Its query timed out
