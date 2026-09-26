@@ -13271,6 +13271,34 @@ records over and over: a state that looks identical whether or not the mechanism
 *And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
 convenience that destroys the data it was written to keep.*
 
+## WHEN A PEER ASKS FOR SOMETHING YOU HAVE ALREADY ANSWERED, DO NOT ANSWER AGAIN
+
+**Four crossings in two days, all benign, one nearly expensive.** *Cross-session messages queue behind the
+receiver's current turn, so **a peer's question routinely predates your answer to it.** Ops asked Integration
+for `e197a80` three separate times; each ask was written before the reply reached it.*
+
+> **THE FAILURE IS NOT THE CROSSING. IT IS RE-ANSWERING.** *Answer a second time and two statements of the same
+> decision are in flight at once — **and they can differ**, because you have learned something in between.*
+
+**THE INCIDENT THAT SHOWS THE COST: Integration sent Ops THREE versions of one Design enumeration in an hour —
+three picks, then two, then four — each superseding the last while the previous was still queued.** *Ops was
+holding version two and reported it back as final. **Nothing shipped wrong only because the last message said
+"THIS SUPERSEDES BOTH" in the first line.***
+
+**THE RULES THAT FOLLOW:**
+
+- **Before re-answering, check whether the answer is already in flight.** *If it is, say nothing; the queue
+  delivers it. Silence is correct here and looks like neglect, which is why it needs writing down.*
+- **Every revision of an enumeration names what it supersedes, in the first line.** *"Three picks, not two"
+  is not enough — `WITHDRAWN: the two-pick set` is.*
+- **Never split one enumeration across two messages.** *That is how a peer builds from half of it.*
+- **And an approval SUPERSEDED while held is as void as one whose base rolled back.** *Say so explicitly; a
+  held sha does not expire on its own.*
+
+*The deeper reason this desk hits it: the bus revises as it learns, and revision plus queueing produces
+multiple live authorities for one decision. **A seat reading its inbox in order sees your reasoning evolve; a
+seat acting on the first thing it reads does not.***
+
 ## VERIFYING THE ITEMS ON A LIST IS NOT VERIFYING THE LIST
 
 **Research's own formulation, 2026-09-26, after doing it twice in one evening from opposite directions.**
