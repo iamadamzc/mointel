@@ -138,6 +138,9 @@ function run(extraEnv: Record<string, string> = {}): { status: number; output: s
         // answered on the first poll, so no real waiting is wanted.
         DEPLOY_POLL_SECONDS: '0',
         DEPLOY_FOLLOW_SECONDS: '5',
+        // The real test gate would run the whole suite inside this test. Its
+        // wiring is asserted separately below, against a stubbed gate.
+        DEPLOY_TESTS_SKIP: '1',
         ...extraEnv,
         PATH: `${stubs}${path.delimiter}${process.env.PATH}`,
       },
@@ -243,6 +246,39 @@ describe('release bootstrap', () => {
     expect(result.status).toBe(8);
     expect(result.output).toContain("still 'activating' at the follow deadline");
     expect(result.output).not.toContain('is live');
+  });
+
+  /** A stand-in for test-gate.sh that records the sha it was given. */
+  function stubGate(exitCode: number): string {
+    const gate = path.join(sandbox, 'test-gate.sh');
+    fs.writeFileSync(
+      gate,
+      `#!/usr/bin/env bash\necho "GATE $1" >> "${log.replace(/\\/g, '/')}"\nexit ${exitCode}\n`,
+      { encoding: 'utf8', mode: 0o755 },
+    );
+    return gate.replace(/\\/g, '/');
+  }
+
+  it('runs the test gate at the shipping sha before anything is sent', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0 });
+
+    const result = run({ DEPLOY_TESTS_SKIP: '', TEST_GATE_SH: stubGate(0) });
+
+    expect(result.status).toBe(0);
+    // The full sha, not HEAD: peers move HEAD under a deploy.
+    expect(transcript()).toContain('GATE abc1234def');
+    expect(transcript().indexOf('GATE')).toBeLessThan(transcript().indexOf('GIT archive'));
+  });
+
+  it('ships nothing when the test gate refuses', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0 });
+
+    const result = run({ DEPLOY_TESTS_SKIP: '', TEST_GATE_SH: stubGate(3) });
+
+    expect(result.status).toBe(3);
+    expect(result.output).toContain('the test gate refused abc1234');
+    expect(transcript()).not.toContain('GIT archive');
+    expect(transcript()).not.toContain('systemd-run');
   });
 
   it('refuses when the fallback gate blocks, and ships nothing', () => {
