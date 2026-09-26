@@ -568,8 +568,27 @@ export interface FeedSubscriptionCounts {
   lulds: number;
 }
 
+/**
+ * Whether ten-second trade counts are reaching `trades.db`.
+ *
+ * DISCARDING is the state a rollback to a build older than the store produces:
+ * the store refuses a newer schema, the worker degrades rather than dying, and
+ * the desk otherwise reports healthy. Without this field the only evidence was
+ * one startup log line nobody reads while watching what they rolled back FOR.
+ */
+export interface TradeCaptureHealth {
+  state: 'RECORDING' | 'DISCARDING';
+  /** Why it is discarding; null while recording. Sanitized. */
+  detail: string | null;
+  /** Bucket rows written / thrown away since this worker started. */
+  bucketsWritten: number;
+  bucketsDiscarded: number;
+}
+
 export interface MarketFeedHealth {
   mode: MarketMode;
+  /** Absent from workers older than the trades store. */
+  tradeCapture?: TradeCaptureHealth;
   feed: MarketFeed;
   connectionState: ConnectionState;
   /** 'VERIFIED' once an authenticated SIP session has been established. */

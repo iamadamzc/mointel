@@ -129,31 +129,44 @@ describe('trades store: the market worker seam', () => {
   it('lands a drained flush in the store', () => {
     const db = openTradesStore(path.join(tempDir(), 'trades.db'));
     const log = logger();
-    expect(persistTradeBuckets(() => [bucket], db, DATE, log)).toBe(1);
+    expect(persistTradeBuckets(() => [bucket], db, DATE, log)).toEqual({
+      written: 1,
+      discarded: 0,
+    });
     expect(loadTradeBuckets(db, 'ABCD', DATE)).toEqual([bucket]);
     db.close();
   });
 
-  it('still drains when the store is unavailable, so buckets cannot pile up', () => {
+  /**
+   * Drains AND counts what it throws away. The count is what makes DISCARDING
+   * visible in health: after a rollback below the store's schema, everything
+   * else about the desk reads healthy.
+   */
+  it('still drains when the store is unavailable, and counts what it discards', () => {
     let drained = 0;
     const log = logger();
-    persistTradeBuckets(
+    const result = persistTradeBuckets(
       () => {
         drained += 1;
-        return [bucket];
+        return [bucket, { ...bucket, bucketTs: B1 }];
       },
       null,
       DATE,
       log,
     );
     expect(drained).toBe(1);
+    expect(result).toEqual({ written: 0, discarded: 2 });
   });
 
-  it('logs a failed write and does not throw out of the flush', () => {
+  it('logs a failed write, counts it discarded, and does not throw out of the flush', () => {
     const db = openTradesStore(path.join(tempDir(), 'trades.db'));
     db.close(); // any write now throws
     const log = logger();
-    expect(() => persistTradeBuckets(() => [bucket], db, DATE, log)).not.toThrow();
+    let result: ReturnType<typeof persistTradeBuckets> | undefined;
+    expect(() => {
+      result = persistTradeBuckets(() => [bucket], db, DATE, log);
+    }).not.toThrow();
+    expect(result).toEqual({ written: 0, discarded: 1 });
     expect(log.lines.error.join('\n')).toContain('[trades] write failed');
   });
 

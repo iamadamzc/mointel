@@ -275,8 +275,19 @@ export class MarketRuntime {
       this.logger.info(`[db] migration complete: v${upgrade.toVersion}`);
     }
 
-    this.trades = openTradesStoreOrNull(this.config.tradesDbPath, this.logger, (error) =>
-      this.redactError(error),
+    // The refusal line is kept, not only logged: it becomes health.tradeCapture
+    // below, so DISCARDING is answerable without reading a startup log.
+    let tradesProblem: string | null = null;
+    this.trades = openTradesStoreOrNull(
+      this.config.tradesDbPath,
+      {
+        info: (message) => this.logger.info(message),
+        error: (message) => {
+          tradesProblem = message;
+          this.logger.error(message);
+        },
+      },
+      (error) => this.redactError(error),
     );
 
     const claim = claimStoreForMode(this.db, options.mode);
@@ -323,6 +334,12 @@ export class MarketRuntime {
       backfill: null,
       rejectedSymbols: [],
       rthCloseCapture: null,
+      tradeCapture: {
+        state: this.trades ? 'RECORDING' : 'DISCARDING',
+        detail: this.trades ? null : tradesProblem,
+        bucketsWritten: 0,
+        bucketsDiscarded: 0,
+      },
     };
   }
 
@@ -1504,13 +1521,17 @@ export class MarketRuntime {
     }
 
     // Drained every flush whether or not the store is open; see persistTradeBuckets.
-    persistTradeBuckets(
+    const traded = persistTradeBuckets(
       () => this.engine.drainTradeBuckets(),
       this.trades,
       this.tradingDate,
       this.logger,
       (error) => this.redactError(error),
     );
+    if (this.health.tradeCapture) {
+      this.health.tradeCapture.bucketsWritten += traded.written;
+      this.health.tradeCapture.bucketsDiscarded += traded.discarded;
+    }
 
     const result = this.engine.recompute();
     this.recordEvents(result.events);
