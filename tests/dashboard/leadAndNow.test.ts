@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { describe, expect, it } from 'vitest';
 
 import { tradesLastMinute } from '@/lib/dashboard/sparkline';
@@ -82,5 +85,116 @@ describe('the Now sort orders by it, and counts what it cannot place', () => {
       row(),
     ];
     expect(discoveryMissingCount(rows, 'now', board)).toBe(2);
+  });
+});
+
+/* ------------------------------------------------------------------------- *
+ * THE HEAD NAMES THE QUANTITY
+ * ------------------------------------------------------------------------- */
+
+/**
+ * He asked twice what this column was sorting. The head said `Now` over `−1m`
+ * — two statements of WHEN and none of WHAT — and the units lived only in the
+ * sort caption, which is on screen only while that sort is already active.
+ *
+ * Source-asserted because `SORT_KEYS` is private to the component. The
+ * comment strip is not optional here: four separate claims on this desk have
+ * been a comment read as code, and one of them was a comment its own author
+ * had written.
+ */
+describe('the trades column head states what, not when', () => {
+  function head(): string {
+    const src = readFileSync(join(process.cwd(), 'components/DiscoveryBoard.tsx'), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '');
+    const open = src.indexOf("activeColumn === 'now'");
+    expect(open).toBeGreaterThan(-1);
+    const close = src.indexOf('</Th>', open);
+    expect(close).toBeGreaterThan(open);
+    return src.slice(open, close);
+  }
+
+  it('takes the word from the sort entry rather than typing a second one', () => {
+    /*
+     * The `Gap`/`Move` drift was two hand-written words for one quantity, on
+     * the control and on the head above the same number. Removing the literal
+     * makes the drift impossible rather than forbidden.
+     */
+    expect(head()).toContain('resolveSortEntry(nowEntry');
+  });
+
+  it('keeps HIS word, and the quantity lives in the hover', () => {
+    /*
+     * THIS ASSERTED THE OPPOSITE AND HE OVERRULED IT, so the test records the
+     * ruling rather than being deleted. I argued `TRADES`: the head named a
+     * TIME where every other head names a QUANTITY. He directed column
+     * tooltips, which answers the half a header cannot, and kept `Now` —
+     * because he sorts by this column for its LIVE ordering, so the word names
+     * what he is looking for.
+     *
+     * **The measurement then made his word the more accurate one.** `Now` is
+     * a slight overclaim today at the last settled minute, and the rolling-60s
+     * field makes it exact. The rename would have discarded the word that
+     * becomes true.
+     *
+     * So what is asserted is the COMPOSITION he ruled: his word on the head,
+     * the quantity in the hover, neither carrying the other's job.
+     */
+    const src = readFileSync(join(process.cwd(), 'components/DiscoveryBoard.tsx'), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '');
+    expect(src).toMatch(/key: 'now',\s*label: 'Now',/);
+    // The head is bare; the hover is where the unit is stated.
+    expect(src).toMatch(/title:\s+'Trades in the most recent settled minute/);
+  });
+
+  it('keeps the lag on the head, which is the part hover may not carry', () => {
+    /* §10 rules out hover-only content; the offset changes how the bars read. */
+    expect(head()).toContain('sparklineLagLabel()');
+  });
+});
+
+/* ------------------------------------------------------------------------- *
+ * THE COLUMN AND ITS SORT MOVE TOGETHER
+ * ------------------------------------------------------------------------- */
+
+/**
+ * After the bell the board ranks on after-hours participation, so the column
+ * that shows the ranking quantity shows participation and must ORDER by it.
+ *
+ * A column that displays one number and sorts on another is the defect this
+ * board has produced twice: he read a correctly sorted board as "random" both
+ * times, because the visible figures did not descend.
+ */
+describe('the ranking column sorts on what it displays, in both sessions', () => {
+  function rowWith(rvol: number, participation: number | null): DeskRow {
+    return {
+      ticker: 'HOWL',
+      telemetry: { rvol },
+      demand: { afterHours: { participation } },
+    } as unknown as DeskRow;
+  }
+
+  it('orders by Daily RVOL on the day board', () => {
+    expect(discoveryValueFor(rowWith(12, 99), 'rvol', 'DAILY_RVOL')).toBe(12);
+  });
+
+  it('orders by PARTICIPATION on the evening board, not the stale RVOL', () => {
+    /*
+     * Both arms, because the day arm is the control: if this returned
+     * participation everywhere the assertion would pass while the day board
+     * silently reordered.
+     */
+    expect(discoveryValueFor(rowWith(12, 99), 'rvol', 'AFTER_HOURS')).toBe(99);
+    expect(discoveryValueFor(rowWith(12, 99), 'rvol', 'DAILY_RVOL')).toBe(12);
+  });
+
+  it('is NULL rather than the daytime number when participation is unknown', () => {
+    /*
+     * The safe direction. Falling back to Daily RVOL would order the evening
+     * board by a number that stopped moving at 16:00 while the header said
+     * PART — silently, and looking correct.
+     */
+    expect(discoveryValueFor(rowWith(12, null), 'rvol', 'AFTER_HOURS')).toBeNull();
   });
 });

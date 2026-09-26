@@ -1,5 +1,5 @@
 import { baselineLabel } from './view';
-import type { SessionPhase } from '@/lib/market/types';
+import type { DiscoveryBoard, SessionPhase } from '@/lib/market/types';
 
 /**
  * What each column MEANS, for the hover.
@@ -89,4 +89,37 @@ export const COLUMN_TITLE = {
 export function priceColumnTitle(phase: SessionPhase | null): string {
   const { label, title } = baselineLabel(phase);
   return `Three numbers. The price is the last trade. ${label} is the ${title.charAt(0).toLowerCase()}${title.slice(1)}. VWAP is the volume-weighted average price for the current session, so a name trading above it is holding its gains and one below it is giving them back.`;
+}
+
+/**
+ * The quantity the board is RANKING ON, which is not the same one all day.
+ *
+ * HIS RULING, 2026-09-25. Until the rank column was removed, the ranking
+ * quantity was readable from the rank number itself. It is not any more — and
+ * after the bell `RVOL` is the STALE one: the evening board ranks on
+ * after-hours participation, while Daily RVOL still carries whatever the day
+ * earned. **So the column that answers "why does this rank" showed a number
+ * that had not ranked anything since 16:00.**
+ *
+ * ONE RESOLVER FOR THE HEAD, THE SORT CHIP AND THE HOVER, on the BOARD and
+ * never on the phase. `baselineLabel`'s own comment records what reading a
+ * proxy costs: the board is what the engine actually ranked on, and phase is
+ * a different fact that usually agrees.
+ *
+ * `PART`, NOT `AH PART`, AND IT WAS MEASURED. In Geist 600 at 11px with the
+ * head's tracking, uppercased: `AH PART` is 52.0px and `AH PART ▼` is 67.7,
+ * which needs 83.7 with padding in a 68px cell — and after the bell this
+ * column usually IS the sort, so the sorted width is the real one. `PART ▼`
+ * is 63.1 and fits with 4.9 to spare. **The caption directly above reads
+ * "AH participation rank", so the full word is never off screen.**
+ */
+export function rankingQuantity(board: DiscoveryBoard): { label: string; title: string } {
+  if (board === 'AFTER_HOURS') {
+    return {
+      label: 'Part',
+      title:
+        'After-hours participation: volume since the 16:00 close against the same stock’s average full-session volume. It is what the evening board ranks on. Daily RVOL is not — it still carries what the day earned and stops moving at the bell.',
+    };
+  }
+  return { label: 'RVOL', title: COLUMN_TITLE.rvol };
 }

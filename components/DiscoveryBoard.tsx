@@ -16,7 +16,12 @@ import {
 } from '@/components/DecisionCells';
 import { sessionMoveSortLabel } from '@/lib/dashboard/sessionMove';
 import { tradesLastMinute } from '@/lib/dashboard/sparkline';
-import type { SessionPhase } from '@/lib/market/types';
+/*
+ * ALIASED because this file EXPORTS a component called `DiscoveryBoard`, and
+ * the type of the same name is a different thing. Without the alias `tsc`
+ * reads the component where the union was meant.
+ */
+import type { DiscoveryBoard as BoardKind, SessionPhase } from '@/lib/market/types';
 import { rowKeyboardProps } from '@/components/tableKeyboard';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
@@ -28,7 +33,7 @@ import {
   startedLabel,
 } from '@/lib/dashboard/cycle';
 import { sparklineLagLabel } from '@/lib/dashboard/sparkline';
-import { COLUMN_TITLE, priceColumnTitle } from '@/lib/dashboard/columnTitles';
+import { COLUMN_TITLE, priceColumnTitle, rankingQuantity } from '@/lib/dashboard/columnTitles';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
 import {
@@ -103,6 +108,15 @@ interface SortEntry {
    * rather than a second spelling of a phase label.
    */
   resolve?: (phase: SessionPhase | null) => { label: string; title: string };
+  /**
+   * Resolved on the BOARD rather than the phase, for the one quantity that
+   * changes identity at the bell.
+   *
+   * Separate from `resolve` instead of widening it, because the two answer
+   * different questions and the board is not derivable from the phase without
+   * reading a proxy. Preferred when present.
+   */
+  resolveByBoard?: (board: BoardKind) => { label: string; title: string };
 }
 
 /*
@@ -136,6 +150,8 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
     label: 'RVOL',
     title: 'Relative volume',
     metric: 'session volume against a 20-session baseline',
+    /* The head, the chip and the hover all take the board's own quantity. */
+    resolveByBoard: rankingQuantity,
     column: 'rvol',
   },
   { key: 'changePct', label: 'Gap', title: '', resolve: baselineLabel, column: 'price' },
@@ -147,11 +163,35 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
     leads: 'MOVE',
     column: 'price',
   },
+  /*
+   * `Now`, AND IT IS HIS WORD KEPT ON PURPOSE AFTER I ARGUED FOR `TRADES`.
+   *
+   * The rename argued two things: that the head did not say WHAT the column
+   * was, and that it named a TIME where every other head names a QUANTITY. He
+   * then directed tooltips on the column names, which answers the first — the
+   * hover below carries the quantity and the contrast with RVOL — and ruled
+   * `Now` back. **His reason is the one I did not weigh: he sorts by this
+   * column because it self-sorts live, so the word names what he is looking
+   * for rather than what is stored.**
+   *
+   * AND THE MEASUREMENT MADE HIS WORD THE MORE ACCURATE ONE, NOT THE MORE
+   * FORGIVING. `Now` is currently a slight overclaim — the figure is the last
+   * SETTLED minute, 60-120s behind — and the rolling-60s field specified in
+   * `design.md` makes it literally true. `TRADES` would have been correct and
+   * would have thrown away the word that becomes exact.
+   *
+   * THE COMMENT SITS OUTSIDE THE BRACE DELIBERATELY. `filters.test.ts:252`
+   * enumerates the keys with `/\{\s*key:\s*'(\w+)'/`, so a comment between the
+   * brace and `key` drops this entry out of the set that test compares -- and
+   * it fails as "no column declared for a sort key", which points at the
+   * wiring rather than at the formatting.
+   */
   {
     key: 'now',
     label: 'Now',
     title:
       'Trades in the most recent settled minute. Which names are trading heaviest right now, which is a different question from RVOL — that is a ratio against a twenty-session baseline and can stay high on a name that has stopped trading.',
+    /* Reads after the label: "sorted by now · trades in the last settled minute". */
     metric: 'trades in the last settled minute',
     column: 'now',
   },
@@ -192,7 +232,9 @@ const MISSING_NOUN: Partial<Record<DiscoverySortKey, string>> = {
 function resolveSortEntry(
   entry: SortEntry,
   phase: SessionPhase | null,
+  board: BoardKind,
 ): { label: string; title: string } {
+  if (entry.resolveByBoard) return entry.resolveByBoard(board);
   return entry.resolve ? entry.resolve(phase) : entry;
 }
 
@@ -262,9 +304,17 @@ export function DiscoveryBoard({
   // disagree about what the percent change is measured from.
   // Null phase falls to the neutral label rather than guessing a session.
   const phase = discovery?.sessionPhase ?? null;
+  /*
+   * THE BOARD, NOT THE PHASE, and null falls to the day board -- which is what
+   * `afterHours` below already does, so the two cannot disagree about which
+   * board is showing before the first payload lands.
+   */
+  const board: BoardKind = discovery?.board ?? 'DAILY_RVOL';
   const move = baselineLabel(phase);
+  /* The head over the trades column and the control that sorts it, one source. */
+  const nowEntry = SORT_KEYS.find((entry) => entry.key === 'now');
   const activeEntry = SORT_KEYS.find((entry) => entry.key === sort.key);
-  const activeLabel = activeEntry ? resolveSortEntry(activeEntry, phase).label : 'rank';
+  const activeLabel = activeEntry ? resolveSortEntry(activeEntry, phase, board).label : 'rank';
   /*
    * The headline percentage follows the sort -- his ruling, 2026-09-22 -- and
    * the decision is READ OFF THE ACTIVE ENTRY rather than tested against a key
@@ -395,7 +445,7 @@ export function DiscoveryBoard({
             <div className="flex overflow-hidden rounded-sm border border-line-2">
               {SORT_KEYS.map((entry) => {
                 const active = entry.key === sort.key;
-                const resolved = resolveSortEntry(entry, phase);
+                const resolved = resolveSortEntry(entry, phase, board);
                 return (
                   <button
                     key={entry.key}
@@ -527,13 +577,22 @@ export function DiscoveryBoard({
               >
                 Price · {move.label} · VWAP
               </Th>
+              {/*
+                * THE RANKING QUANTITY, WHICH IS NOT THE SAME ONE ALL DAY.
+                *
+                * Read off `rankingQuantity(board)` so the head, the sort chip
+                * and the hover cannot say three things. After the bell this
+                * is `PART` -- the evening board ranks on after-hours
+                * participation, and Daily RVOL is the STALE number then: it
+                * stops moving at 16:00 and still carries what the day earned.
+                */}
               <Th
                 className="w-[68px]"
                 align="right"
                 sorted={activeColumn === 'rvol'}
-                title={COLUMN_TITLE.rvol}
+                title={rankingQuantity(board).title}
               >
-                RVOL
+                {rankingQuantity(board).label}
               </Th>
               {/*
                * Beside RVOL deliberately: this is the CORRECTION to it.
@@ -543,14 +602,40 @@ export function DiscoveryBoard({
                * number. Putting the "now" measure anywhere else would leave the
                * two readings to be joined by the trader mid-scan.
                */}
-              <Th className="w-[44px]" align="right" sorted={activeColumn === 'now'}>
-                Now
+              {/*
+               * THE HEAD IS READ OFF `SORT_KEYS`, NOT TYPED HERE.
+               *
+               * Same repair as `move.label` on the price head: a hand-written
+               * word over a column and a second hand-written word on the
+               * control that sorts it are two spellings of one quantity, and
+               * on this board they have already drifted apart once.
+               *
+               * MEASURED, NOT SIZED BY ARITHMETIC. Geist 600 at 11px with the
+               * head's `0.08em` tracking, uppercased as the cell renders it,
+               * on the live board at the 1,024px floor:
+               *
+               *     NOW  29.5px     NOW ▼  45.3px
+               *
+               * `px-2` each side costs 16, so the SORTED head needs 61.3px —
+               * and `w-[44px]`, which this column carried for its whole life,
+               * was 17px short of its own word whenever it was the active
+               * sort. **The overflow was invisible because a fixed table cell
+               * does not clip: the caret simply leaned into `RVOL`.** 68 leaves
+               * 6.7px. The 16px this costs `Why` and `Risk` (183 -> 175) buys
+               * a head that fits in the state he looks at it in.
+               */}
+              <Th
+                className="w-[68px]"
+                align="right"
+                sorted={activeColumn === 'now'}
+                title={nowEntry?.title}
+              >
+                {nowEntry ? resolveSortEntry(nowEntry, phase, board).label : 'Now'}
                 {/*
                   * The lag, on the header rather than in the tooltip alone.
-                  * `Now` is the strongest currency claim available and the
-                  * newest slot is two minutes old; he discovered that by
-                  * hovering. §10 rules out hover-only, and this column was on
-                  * the wrong side of a rule already enforced on the Move
+                  * The newest slot is two minutes old and he discovered that
+                  * by hovering. §10 rules out hover-only, and this column was
+                  * on the wrong side of a rule already enforced on the Move
                   * control. The span stays in the title -- this is the offset,
                   * which is the part that changes how the bars are read.
                   */}
@@ -773,7 +858,9 @@ function DiscoveryRow({
   return (
     <tr
       {...rowKeyboardProps(
-        `${row.ticker}, RVOL ${formatMultiple(t.rvol)}. ${why.grade} catalyst. ${risk.label}. Open dossier.`,
+        `${row.ticker}, ${afterHours ? 'after-hours participation' : 'RVOL'} ${formatMultiple(
+          afterHours ? (ah?.participation ?? null) : t.rvol,
+        )}. ${why.grade} catalyst. ${risk.label}. Open dossier.`,
         () => onSelect(row.ticker),
       )}
       onClick={() => onSelect(row.ticker)}
@@ -820,7 +907,7 @@ function DiscoveryRow({
       </td>
 
       <td className="px-2 py-1 text-right align-middle">
-        <RvolCell telemetry={t} />
+        <RvolCell telemetry={t} participation={afterHours ? (ah?.participation ?? null) : null} />
       </td>
 
       <td className="px-1 py-1 text-right align-middle">
