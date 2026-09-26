@@ -690,6 +690,45 @@ the part that pays.**
 the register/charter split are certainly mointel-shaped; and **the canonical document is `Infra-Ops`'s to edit —
 better one owner than five forks of the rule.***
 
+## ⚠️ BILLING MEETS HIS "IMMEDIATE" REVOCATION AND THROWS A TRADER OFF MID-SESSION
+
+**Web found it by opening `revokeEmail` rather than reasoning about it. VERIFIED HERE.**
+
+```
+lib/auth/store.ts:515-521   "Both writes or neither: a revocation that removed the invitation and
+                             left the session alive would report success while the person kept working."
+revokeEmail                  ends live sessions IN THE SAME TRANSACTION, per his ruling: "immediate"
+```
+
+**So a lapsed or refunded subscription ends a live session the instant it is processed — and the session this
+desk exists for is 07:00–10:00 ET.** *His "immediate" was ruled for REVOCATION OF ACCESS — a person who should
+not be there. **Applied to NON-PAYMENT it means a card that fails at 08:14 removes a trader from the board
+mid-move.*** **That is his own ruling meeting a context it was not given for, and it is nobody's decision yet.**
+
+**IT IS HIS, and it is one question: is non-payment revocation IMMEDIATE, or does it take effect at the end of
+the session / the end of the day?** *A grace period is a product decision with a money consequence; a seat
+cannot rule it. **And the gate must not learn about payment** — Web's point, and it is right: that would put a
+second authority on admission.*
+
+## ⚠️ A BUY BUTTON SHIPS A FALSEHOOD UNLESS THE LANDING PAGE CHANGES FIRST
+
+**`app/page.tsx:432`, LIVE on `tmitrader.com` right now:** *"There are no public sign-ups. An invite request goes
+to the operator by email and is answered by a person."*
+
+**So payment cannot be added to the public site before that paragraph changes. It is a SEQUENCING CONSTRAINT,
+not a decision** — and it is the strongest argument for the manual route Web recommends: **a human invite keeps
+the sentence true, and it also dissolves the refusal-screen problem entirely, because the allowlist is updated
+before the person ever signs in.**
+
+*And the pay-to-admitted gap is NOT a missing mechanism: `refused` already means "valid session, user not on the
+allowlist", so a stranger who pays lands there today holding a real session. **What is missing is a screen that
+can tell that person from an uninvited stranger** — today it would tell someone who has just paid that they are
+not invited. The PAGE needs the payment fact carried separately; the gate must not.*
+
+*Commercial's addition, cited not re-derived: **billing does not create a new licence exposure — admitting a
+second human does, and invite-only already does it.** So the exposure conversation he already owns should land
+before or alongside billing rather than after.*
+
 ## LAUNCH STATE — WHAT MUST BE TRUE, WHO OWNS IT, WHERE IT STANDS
 
 **Written 2026-09-26 because Ops asked "what is launch state in your register" and THE HONEST ANSWER WAS
