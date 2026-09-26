@@ -547,6 +547,50 @@ screen: the column headed with the ranking quantity shows a number that orders
 nothing.** Stronger than what I argued, and found by looking rather than by
 reasoning.
 
+## THE PRICE WINDOW: his default is `$1–$20`, and the control's BOUNDS are the open question
+
+**HIS WORD, 2026-09-26, answering Ops's offer of a window inside the recorded
+band: "make it 1-20."** *That is the WINDOW, not a reversal of the `$0–$50`
+recording — he is answering the clause that offered him the choice.* **And it
+is exactly today's band, so a stranger, or he at 07:00, sees precisely today's
+desk unless the control is moved.**
+
+**INTEGRATION ASKED ME ONE QUESTION — should the control reach the recording
+bounds? — AND THERE IS A HARDER ONE UNDERNEATH IT THAT DECIDES THE ANSWER.**
+
+    the payload carries `limit: config.internalRank`   readModel.ts:472
+    internalRank is 50                                  config.ts:70
+    ranking runs over everything that QUALIFIES         engine.ts:1650
+
+**SO THE BOARD RECEIVES THE TOP 50 BY RANK, AND `Top 12/25/50` SLICES THAT
+CLIENT-SIDE.** *If the engine QUALIFIES `$0–$50` and the user merely FILTERS
+to `$1–$20` on screen, his own names compete for those 50 slots against
+everything up to $50 — **and 7,811 of the universe's 13,398 symbols are above
+$20.*** **A `$1–$20` name can be pushed below rank 50 and never reach the
+payload at all. He would not see it filtered out; he would see it absent.**
+
+**WHICH MEANS THE WINDOW CANNOT BE A DISPLAY FILTER OVER A WIDER QUALIFIED
+SET.** The three knobs Integration separated already say it:
+
+    RECORD    $0-$50    engine.ts:988    the store. Research can ask wider
+                                          questions of data that exists.
+    QUALIFY   $1-$20    engine.ts:1650   HIS BAND. What is ranked, what
+                        engine.ts:1690   reaches the payload, what is
+                                          subscribed at trade level.
+    WINDOW    within    the control      narrowing INSIDE the qualified band,
+              $1-$20                      which can never crowd anything out.
+
+**SO THE CONTROL'S BOUNDS ARE `$1–$20` — his band — AND NOT `$0–$50`.** *A
+slider reaching $45 would not merely show him names he has never asked to
+see; used at all, it would change which names the engine ranks, and every
+narrower view would then be drawn from a population that had already lost his
+small caps.* **Recording wide is for the store. Seeing wide is a deliberate
+change to the qualifying band, not a drag of a control.**
+
+*What I am NOT deciding: whether he ever wants the board itself at `$0–$50`.
+That is his, and it is the difference between a research question and this
+product. `$1–$20` is what he named this morning.*
+
 ## Open items
 
 | Item | Owner | Waiting on |
