@@ -13271,6 +13271,53 @@ records over and over: a state that looks identical whether or not the mechanism
 *And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
 convenience that destroys the data it was written to keep.*
 
+## REUSING A RULED PATTERN IS NOT A PATTERN DECISION
+
+**Integration's own boundary, tested 2026-09-26 and held.** *When `worker/` and `lib/market/store/` were
+assigned, the line drawn was: **implementation is the owner's; ESTABLISHING a pattern comes back to be put to
+him.** Ops then gave `trades.db` a `PRAGMA user_version` guard and asked, correctly, whether that crossed it.*
+
+**It did not, and the check is one grep:** *`lib/auth/store.ts:184-194` already documents the behaviour —
+"REFUSES A STORE NEWER THAN THIS BUILD, which is the archive store's behaviour and deliberately NOT the market
+store's" — **with the reason: `db.ts` upgrades unconditionally, so old code opening a newer store writes its own
+lower version back and silently marks the store BACKWARDS.** Found 2026-09-10.* **So `trades.db` is the THIRD
+store using a documented, already-reasoned pattern.**
+
+> **THE TEST: does this ADD a behaviour the desk has not ruled on, or SELECT among behaviours it has?** *A new
+> pattern would have been a fourth policy, or migration code where none existed.* **And note which way the
+> burden ran: keeping the guard needed no permission — DROPPING it would have been the change requiring
+> justification.**
+
+*The boundary is only worth having if it is cheap to apply, and a seat that escalates every instance of a ruled
+pattern spends his attention on decisions he already made — which this desk did once, nearly asking him to
+re-decide a module assignment he had personally instructed.*
+
+## TWO RIGHT HALVES MEETING AT A ROLLBACK
+
+**Flagged by Integration in Ops's `trades.db`, 2026-09-26, before either half had shipped.**
+
+```
+trades.ts:70    REFUSES a store newer than the build                     -- right, prevents corruption
+trades.ts:117   a refusal "degrades to discarding counts -- loudly --
+                rather than throwing out of the worker's constructor"    -- right, a secondary store
+                                                                           must not take capture down
+trades.ts:132   `[trades] store unavailable, ten-second counts are being DISCARDED: ...`
+```
+
+**Individually correct. Composed: after a ROLLBACK to a build older than the store, the desk runs perfectly,
+reports healthy, and captures no 10-second data — and the only evidence is one line at worker start.** *Checked:
+nothing reads that line. No health field, no `market.state` contribution, nothing in the dashboard.*
+
+> **AND THE TRIGGER IS THE WORST POSSIBLE MOMENT: a rollback is exactly when nobody is reading worker startup
+> logs, because they are watching the thing they rolled back FOR.**
+
+**THE RULE: when a guard's failure mode is DEGRADE-AND-LOG, ask what READS the log.** *"Loudly" describes the
+writer, not the reader — and a log line with no consumer is the same as no signal at all once the person who
+wrote it has moved on.* **Make "capture is being discarded" answerable without reading a startup log.**
+
+*Neither half's author could see this from inside their own half: the version guard is correct, the degradation
+is correct, and the gap is only visible to someone holding both.*
+
 ## A PRODUCER WHOSE ONLY REAPER LIVES IN ITS UNBUILT CONSUMER IS NOT INERT
 
 **Ops found it, Integration verified it, 2026-09-26 — and both seats had been calling the commit "inert" for a
