@@ -223,6 +223,9 @@ describe('deployment preflight', () => {
   it('proceeds with an override and records the reason', () => {
     const out = sh(PREFLIGHT_SH, [], {
       PROTECTED_MINUTES: '2000',
+      // Saturday: the checkpoint override must not depend on the real weekday,
+      // because it deliberately does not cover his trading window.
+      PREFLIGHT_NOW_DOW: '6',
       DEPLOY_WINDOW_OVERRIDE: 'production incident: symbol loop',
     });
 
@@ -268,5 +271,80 @@ describe('deployment preflight', () => {
     expect(() =>
       sh(PREFLIGHT_SH, [], { PROTECTED_MINUTES: '5', PREFLIGHT_NOW_MINUTES: '960' }),
     ).toThrow();
+  });
+
+  /** Runs preflight at a pinned ET minute and weekday; returns exit status and output. */
+  function preflightAt(minutes: number, dow: number, extra: Record<string, string> = {}) {
+    try {
+      const out = sh(PREFLIGHT_SH, [], {
+        PROTECTED_MINUTES: '5',
+        PREFLIGHT_NOW_MINUTES: String(minutes),
+        PREFLIGHT_NOW_DOW: String(dow),
+        ...extra,
+      });
+      return { status: 0, out };
+    } catch (error) {
+      const failure = error as { status?: number; stdout?: string; stderr?: string };
+      return { status: failure.status ?? 1, out: `${failure.stdout ?? ''}${failure.stderr ?? ''}` };
+    }
+  }
+
+  /**
+   * What is protected is the STOP. quick_check runs before it, so the stop
+   * lands 2-12 minutes after the start. A start at 10:22 used to pass and put
+   * its stop inside the 10:25 window.
+   */
+  it('refuses a start whose stop can land inside the next checkpoint window', () => {
+    const at1022 = preflightAt(622, 2);
+    expect(at1022.status).toBe(3);
+    expect(at1022.out).toContain('RTH_INTERVAL is 8m away');
+  });
+
+  it('admits a start at the front of a gap, where the stop clears both neighbours', () => {
+    // 10:36: the 10:30 checkpoint is behind it by more than the stop minimum
+    // plus the window, and 11:00 is beyond the stop maximum plus the window.
+    const at1036 = preflightAt(636, 2);
+    expect(at1036.status).toBe(0);
+    expect(at1036.out).toContain('clear of every checkpoint');
+  });
+
+  /**
+   * His trading window is a different concern from a checkpoint: no checkpoint
+   * sits between 07:00 and 09:25, so the checkpoint check alone passed 07:30,
+   * 08:00, 08:30 and 09:00 — every one of them inside "never deploy 07:00-10:00".
+   */
+  it('refuses every weekday start that would run inside 07:00-10:00 ET', () => {
+    for (const minutes of [410, 450, 480, 510, 540, 555, 599]) {
+      const result = preflightAt(minutes, 3);
+      expect(result.status, `at minute ${minutes}`).toBe(3);
+      expect(result.out).toContain('his trading window');
+    }
+  });
+
+  it('admits the same hours at a weekend', () => {
+    const saturday0800 = preflightAt(480, 6);
+    expect(saturday0800.status).toBe(0);
+  });
+
+  it('draws the trading-window edge at the latest possible finish, not the start', () => {
+    // Checkpoints switched off so this isolates the trading window.
+    // 06:47 + 12m = 06:59: the deploy is over before 07:00.
+    expect(preflightAt(407, 1, { PROTECTED_MINUTES: '0' }).status).toBe(0);
+    // 06:48 + 12m = 07:00: it could still be running at 07:00.
+    expect(preflightAt(408, 1, { PROTECTED_MINUTES: '0' }).status).toBe(3);
+    // 10:00 itself is outside the window.
+    expect(preflightAt(600, 1, { PROTECTED_MINUTES: '0' }).status).toBe(0);
+  });
+
+  it('does not let the checkpoint override cover his trading window', () => {
+    const result = preflightAt(480, 2, { DEPLOY_WINDOW_OVERRIDE: 'incident' });
+    expect(result.status).toBe(3);
+    expect(result.out).toContain('his trading window');
+  });
+
+  it('proceeds inside the trading window only on its own override, and records why', () => {
+    const result = preflightAt(480, 2, { TRADING_WINDOW_OVERRIDE: 'his word: board down' });
+    expect(result.status).toBe(0);
+    expect(result.out).toContain('TRADING WINDOW OVERRIDE REASON: his word: board down');
   });
 });
