@@ -11,15 +11,29 @@
 # and not a plan: a 09:25 open-spike assessment has a ten-minute window and
 # cannot be caught up at all.
 #
-# The protected window is derived from what the scheduler actually costs. A
-# deploy stops web/research/assess, runs npm ci, builds, migrates and restarts —
-# observed at roughly 60-90 seconds — and the scheduler polls every 20 seconds.
-# Five minutes either side of a checkpoint covers a slow deploy plus a poll
-# cycle with room to spare, without making ordinary deploys difficult.
+# WHAT IS PROTECTED IS THE STOP, NOT THE START. deploy.sh builds and runs the
+# store's quick_check with the services still UP, then stops, switches and
+# restarts them in 2-3 seconds. quick_check alone has run 80-605s, so the stop
+# lands roughly DEPLOY_STOP_MIN..DEPLOY_STOP_MAX minutes after this script
+# passes. A check of the start alone passed at 10:22 and put the stop inside
+# the 10:25 window. So a checkpoint blocks when the stop's possible landing
+# span comes within PROTECTED_MINUTES of it.
+#
+# AND HIS TRADING WINDOW, which is a different concern from a checkpoint: a
+# skipped checkpoint is a repair, his board going dark mid-trade is not, and a
+# build on this 4 GB box during it competes with the live worker. No deploy
+# may be RUNNING at any moment of 07:00-10:00 ET on a weekday, so a start is
+# refused from DEPLOY_STOP_MAX minutes before 07:00 until 10:00.
+# DEPLOY_WINDOW_OVERRIDE does not cover this; it has its own, deliberately.
 set -euo pipefail
 
 PROTECTED_MINUTES=${PROTECTED_MINUTES:-5}
 OVERRIDE=${DEPLOY_WINDOW_OVERRIDE:-}
+TRADING_OVERRIDE=${TRADING_WINDOW_OVERRIDE:-}
+STOP_MIN=${DEPLOY_STOP_MIN:-2}
+STOP_MAX=${DEPLOY_STOP_MAX:-12}
+TRADING_START=420   # 07:00 ET
+TRADING_END=600     # 10:00 ET
 
 log() { echo "[preflight] $*"; }
 
@@ -54,9 +68,20 @@ now_et_minutes() {
   echo $(( 10#${hm% *} * 60 + 10#${hm#* } ))
 }
 
+# ISO day of week in ET, 1=Monday .. 7=Sunday. PREFLIGHT_NOW_DOW for tests.
+now_et_dow() {
+  if [ -n "${PREFLIGHT_NOW_DOW:-}" ]; then
+    echo "$PREFLIGHT_NOW_DOW"
+    return
+  fi
+  TZ=America/New_York date +%u
+}
+
 main() {
-  local now diff nearest_name nearest_diff prev_name prev_diff next_name next_diff
+  local now dow diff nearest_name nearest_diff prev_name prev_diff next_name next_diff
+  local stop_hit_name="" stop_hit_ahead=0
   now=$(now_et_minutes)
+  dow=$(now_et_dow)
   nearest_diff=99999; nearest_name=""
   prev_diff=99999; prev_name=""
   next_diff=99999; next_name=""
@@ -75,6 +100,15 @@ main() {
     if (( abs < nearest_diff )); then nearest_diff=$abs; nearest_name="$name"; fi
     if (( diff >= 0 && diff < prev_diff )); then prev_diff=$diff; prev_name="$name"; fi
     if (( diff < 0 && -diff < next_diff )); then next_diff=$(( -diff )); next_name="$name"; fi
+
+    # ahead = minutes from now until the checkpoint. The stop lands somewhere
+    # in [now+STOP_MIN, now+STOP_MAX]; it collides when that span comes within
+    # PROTECTED_MINUTES of the checkpoint.
+    local ahead=$(( -diff ))
+    if [ -z "$stop_hit_name" ] && (( ahead >= STOP_MIN - PROTECTED_MINUTES )) \
+        && (( ahead <= STOP_MAX + PROTECTED_MINUTES )); then
+      stop_hit_name="$name"; stop_hit_ahead=$ahead
+    fi
   done
 
   log "ET now $(TZ=America/New_York date +%H:%M)"
@@ -85,24 +119,36 @@ main() {
     bash "$(dirname "$0")/pins.sh" check || log "WARNING: pins are not satisfiable"
   fi
 
+  # His trading window first: it is his, and a checkpoint override is not.
+  if (( dow <= 5 )) && (( now < TRADING_END )) && (( now + STOP_MAX >= TRADING_START )); then
+    if [ -n "$TRADING_OVERRIDE" ]; then
+      log "TRADING WINDOW OVERRIDE: a deploy will be running inside 07:00-10:00 ET"
+      log "TRADING WINDOW OVERRIDE REASON: $TRADING_OVERRIDE"
+    else
+      echo "[preflight] BLOCKED: his trading window. No deploy may be running 07:00-10:00 ET on a weekday, and one started now can run until +${STOP_MAX}m." >&2
+      echo "[preflight] Wait until 10:00 ET clears its own checkpoints, or re-run with TRADING_WINDOW_OVERRIDE=\"his word, and why\"." >&2
+      exit 3
+    fi
+  fi
+
   # PROTECTED_MINUTES=0 means NO protected window, so it must not block.
   # `0 <= 0` blocked on the exact minute of every checkpoint, which is a
   # deploy refused for a window the operator had switched off.
-  if (( PROTECTED_MINUTES > 0 )) && (( nearest_diff <= PROTECTED_MINUTES )); then
+  if (( PROTECTED_MINUTES > 0 )) && [ -n "$stop_hit_name" ]; then
     if [ -n "$OVERRIDE" ]; then
       # Recorded in deployment output and therefore in the operator's shell
       # history and any CI log. An override is a decision, not a flag.
-      log "OVERRIDE: deploying inside the ${PROTECTED_MINUTES}m window around ${nearest_name}"
+      log "OVERRIDE: the stop may land inside the ${PROTECTED_MINUTES}m window around ${stop_hit_name}"
       log "OVERRIDE REASON: $OVERRIDE"
       log "note: persistent catch-up remains active; this does not disable it"
       return 0
     fi
-    echo "[preflight] BLOCKED: ${nearest_name} is ${nearest_diff}m away, inside the ${PROTECTED_MINUTES}m protected window." >&2
+    echo "[preflight] BLOCKED: ${stop_hit_name} is ${stop_hit_ahead}m away, and the services stop ${STOP_MIN}-${STOP_MAX}m after a start -- inside its ${PROTECTED_MINUTES}m protected window." >&2
     echo "[preflight] Wait, or re-run with DEPLOY_WINDOW_OVERRIDE=\"why this cannot wait\"." >&2
     exit 3
   fi
 
-  log "clear of every checkpoint by more than ${PROTECTED_MINUTES}m"
+  log "clear of every checkpoint: the stop lands ${STOP_MIN}-${STOP_MAX}m from now, more than ${PROTECTED_MINUTES}m from any"
 }
 
 main "$@"
