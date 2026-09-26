@@ -109,6 +109,9 @@ paraphrase a ruling into the record; peers will refuse it and they are right to.
   1-20."` is UNRULED** — it answered a sentence offering two things and names
   neither; Integration withdrew its reading (`e8cd17d`) and says do not ask a
   third time. Production is `$0.25–$20`. See `design.md`, THE PRICE RANGE.
+  **Then RULED the same morning, his words to Design:** *"The one to 20 is the
+  default setting for the board… this is not the default setting for the
+  system. The user will be able to identify their own range overall."*
   What IS his, verbatim, is the product framing that rules out building only
   for his band: *"we are building a product for a monetization, not just for
   me."*

@@ -299,11 +299,26 @@ exactly today's desk - and it is not a reversal of recording `$0-$50`.~~
 > split lands, and he dismissed the question twice — do not ask him a third
 > time.** And production is `DISCOVERY_PRICE_MIN=0.25` (Ops, `6fe1341`), so
 > today's board is `$0.25–$20`, not `$1–$20`.
-> **For Design: the control is built with a CONFIGURABLE default and the value
+> ~~**For Design: the control is built with a CONFIGURABLE default and the value
 > is not hard-coded from this sentence.** When the split lands, the default is
-> the one question to put to him, in plain words, once. *This charter wrote a
+> the one question to put to him, in plain words, once.~~ *This charter wrote a
 > false "he ruled it" into the repo for the fourth time; the premarket-frame
 > precedent is in "What he ruled, verbatim".*
+
+> **NOW RULED — HIS WORDS, TO THIS SEAT DIRECTLY, 2026-09-26 ~13:55 UTC,
+> unprompted:**
+>
+> > *"The one to 20 is the default setting for the board. Correct? However,
+> > this is not the default setting for the system. The user will be able to
+> > identify their own range overall. We're just talking about what the system
+> > defaults to."*
+>
+> **Binding content:** the BOARD opens on `$1–$20`; the USER sets any range and
+> the server ranks inside it; the SYSTEM (recording) band is NOT `$1–$20` — it
+> stays wide per his *"show from 25 cents up to 50"*. The default is still
+> built as a setting rather than a literal, because users change it.
+> *The earlier "unruled" state was correct at the time and is superseded by
+> this, not contradicted.*
 
 **And his product framing, which rules out building only for his band:**
 *"we are building a product for a monetization, not just for me. So we need to
