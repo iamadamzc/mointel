@@ -561,6 +561,41 @@ session-hygiene rule's concern and not his.* **A seat that shortens a defect rep
 his reading has traded a real thing for a rule that was never about it** — and the seat that did that was
 this one, in the same hour it wrote the rule down.
 
+## THE HYGIENE APPROACH WAS RELAYED TO `Infra-Ops` 2026-09-26, AT HIS INSTRUCTION
+
+**He asked for the ENTIRE approach to go to `Infra-Ops` (`A:\claude-infra-agent`) for relay to other projects.**
+*Sent. **The canonical file is THEIRS** — `A:\claude-infra-agent\docs\session-hygiene.md`, unmodified since
+2026-09-21 05:34 — and mointel keeps NO local copy, so every seat reads theirs.*
+
+**THE POINT OF THE RELAY IS THAT THE DOCUMENT IS FIVE DAYS OLD AND UNAMENDED WHILE THIS DESK HAS PRACTISED IT
+DAILY. What was sent beyond §1–§6, each item from an incident:**
+
+```
+A  the prompt is a lead, not a source -- THREE consecutive prompts carried a false "he ruled it" line,
+   and one went stale TWO MINUTES after being written
+B  retire on a JUDGEMENT slip, not a context reading -- you cannot see the meter, you CAN see yourself
+   breaking a rule you wrote down
+C  start nothing new after the warning -- three clean assignments beat three half-finished ones
+D  when a decision leaves a charter for the register, DELETE the argument -- an arguing paragraph stood
+   thirteen months and misled two seats
+E  every open item gets a DATED TRIGGER, never "rides the next X"
+F  a message queued to a seat that then retires is NOT delivered -- routing state goes in the file
+G  titles are addresses; after a hand-off reply to the `from=` id, because two sessions share a title
+H  verify a relayed ruling at his own turn -- and quoting his sentence VERBATIM carries the clauses
+   next to it, which two seats then acted on as theirs
+I  his reporting rule AND its boundary, flagged as probably machine-wide, with the warning that this
+   seat relayed it with an invented line and he had to correct it himself
+J  never put a LIVE state in front of him -- two NEEDS YOU items closed within minutes of sending
+```
+
+**Also sent: the nine-part contract our hand-off prompt satisfies, with the note that part 5 — THE RETIRING
+SEAT'S OWN FAILURES, in its own voice, as mechanisms — is the part other projects are most likely to omit and
+the part that pays.**
+
+*Two things deliberately NOT claimed: this seat has read no other project's charters, so the `-tmi` suffix and
+the register/charter split are certainly mointel-shaped; and **the canonical document is `Infra-Ops`'s to edit —
+better one owner than five forks of the rule.***
+
 ## LAUNCH STATE — WHAT MUST BE TRUE, WHO OWNS IT, WHERE IT STANDS
 
 **Written 2026-09-26 because Ops asked "what is launch state in your register" and THE HONEST ANSWER WAS
