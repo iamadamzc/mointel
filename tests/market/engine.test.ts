@@ -917,3 +917,96 @@ describe('ten-second trade capture', () => {
     expect(second[1].trades).toBe(2);
   });
 });
+
+/**
+ * RECORD wide, QUALIFY narrow — his ruling, 2026-09-26.
+ *
+ * *"we need to be able to show from 25 cents up to 50, if that's what people
+ * want to see"* against *"The one to 20 is the default setting for the board...
+ * this is not the default setting for the system."*
+ *
+ * WHY THE TWO MUST NOT BE ONE VALUE. Until this split there was a single
+ * `priceMin`/`priceMax` pair read by admission, daytime qualification and its
+ * latch, the after-hours pair, and the bootstrap multiplier. Widening it to let
+ * the desk RECORD more would have widened what QUALIFIES — and the top-50 rank
+ * cap allocates both the payload and the trades/quotes subscription, so his
+ * $1–$20 names would have been crowded out of the board with nothing on screen
+ * to say so. Absent, not filtered.
+ */
+describe('the record band is wider than the qualify band', () => {
+  function splitEngine() {
+    const engine = createEngine({
+      priceMin: 1,
+      priceMax: 20,
+      capturePriceMin: 0.25,
+      capturePriceMax: 50,
+      internalRank: 50,
+    });
+    const baselines = new Map<string, RvolBaseline>();
+    for (const symbol of ['MID', 'HIGH', 'LOW', 'BELOW']) {
+      baselines.set(symbol, baseline(symbol, 1_000_000));
+    }
+    engine.setBaselines(baselines);
+    return engine;
+  }
+
+  it('captures a $35 name that the qualify band excludes', () => {
+    const engine = splitEngine();
+    engine.ingest(bar('HIGH', ts(1), { c: 35, v: 9_000_000 }));
+    // Admitted: it has a runtime and a price.
+    expect(engine.getDemandState('HIGH')?.price).toBe(35);
+  });
+
+  it('NEVER RANKS that name, so it cannot take a board slot or a trade feed', () => {
+    /*
+     * The whole safety argument in one assertion. Rank is assigned only to
+     * price-eligible names, `ranked` filters on a non-null rank, and the
+     * high-resolution set is drawn from `ranked` — so an admitted-but-not-
+     * qualified name is structurally unable to crowd anything.
+     */
+    const engine = splitEngine();
+    engine.ingest(bar('HIGH', ts(1), { c: 35, v: 9_000_000 }));
+    engine.ingest(bar('MID', ts(1), { c: 5, v: 1_000_000 }));
+    engine.recompute();
+
+    expect(engine.getDemandState('HIGH')?.rvolRank).toBeNull();
+    expect(engine.highResSymbols()).not.toContain('HIGH');
+    // And the narrow-band name is unaffected.
+    expect(engine.getDemandState('MID')?.rvolRank).not.toBeNull();
+  });
+
+  it('still refuses a name below the RECORD floor', () => {
+    // The floor did not move: 0.25 is his, and production already had it.
+    const engine = splitEngine();
+    engine.ingest(bar('BELOW', ts(1), { c: 0.1, v: 9_000_000 }));
+    expect(engine.getDemandState('BELOW')).toBeNull();
+  });
+
+  it('admits a sub-$1 name that the qualify band excludes', () => {
+    /*
+     * GSUN 0.232, SDST 0.115, SNYR 0.0905 — names he TRADED with no bars in the
+     * store, because a sub-floor name never gets a runtime at all. 0.50 is
+     * inside the record band and outside qualify, which is the case this exists
+     * for.
+     */
+    const engine = splitEngine();
+    engine.ingest(bar('LOW', ts(1), { c: 0.5, v: 9_000_000 }));
+    expect(engine.getDemandState('LOW')?.price).toBe(0.5);
+    engine.recompute();
+    expect(engine.getDemandState('LOW')?.rvolRank).toBeNull();
+  });
+
+  it('falls back to the qualify band when no record band is given', () => {
+    /*
+     * An engine constructed the old way must behave exactly as it did, which is
+     * what lets this land before any config moves. A default that silently
+     * widened capture would be the ruling reversed.
+     */
+    const engine = createEngine({ priceMin: 1, priceMax: 20 });
+    const baselines = new Map<string, RvolBaseline>();
+    baselines.set('HIGH', baseline('HIGH', 1_000_000));
+    engine.setBaselines(baselines);
+    engine.ingest(bar('HIGH', ts(1), { c: 35, v: 9_000_000 }));
+    expect(engine.getDemandState('HIGH')).toBeNull();
+  });
+});
