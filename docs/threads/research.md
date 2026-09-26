@@ -162,10 +162,16 @@ record. He has it from this seat directly as well.
 
 | site | what it decides | must become |
 | --- | --- | --- |
-| `engine.ts:988` | what gets CAPTURED | **$0–$50** |
-| `engine.ts:1650` | what QUALIFIES for his board | stays narrow |
-| `engine.ts:1690` | the after-hours qualification latch | stays narrow |
-| `readModel.ts:157` | what the board DISPLAYS as its header | stays narrow |
+| `engine.ts:988` | ADMISSION — what gets captured at all | **$0–$50** |
+| `engine.ts:1650` | daytime qualification (`\|\| latched`) | stays **$1–$20** |
+| `engine.ts:1690` | the daytime latch | stays **$1–$20** |
+| `engine.ts:1848` | **AFTER-HOURS qualification** (`\|\| ahLatched`) | stays **$1–$20** |
+| `engine.ts:1893` | **the after-hours latch** | stays **$1–$20** |
+| `readModel.ts:157` | the board's displayed header | Design's |
+
+  **⚠️ FIVE SITES, NOT THREE, AND ALL FIVE READ ONE PAIR THROUGH `inPriceRange` (`engine.ts:1612`).** *Design's list had three plus the header; this seat's had `:988` against `:1650`/`:1690`.* **NEITHER INCLUDED THE EVENING PAIR** — whose own comment calls it *"the $1–$20 rule, applied at the relevant point of the AFTER-HOURS move"*, and which is the exact surface `8fd7887` shipped. **A split covering three sites and missing `:1848`/`:1893` would qualify on the WIDE band after the bell** — crowding his names in the session Design has just spent two days fixing, only after 16:00, which is the hardest time to notice.
+  **⚠️ AND `:988` CANNOT TAKE THE WIDE BAND TODAY. There is exactly ONE `priceMin`/`priceMax` pair, so a config change widens all five at once** — which IS the crowding case. **Admission widening is safe in PRINCIPLE and unavailable in PRACTICE until a second pair exists.** *This seat wrote "`:988` can take $0–$50 today" to the routing seat, which holds the config; it was true of the mechanism and false of the configuration, and a seat could have acted on it.*
+  **THE LESSON, and it is the second time in one evening: VERIFYING THE ITEMS ON A LIST IS NOT VERIFYING THE LIST.** This seat was given three sites, verified all three, and never ran `grep -n "inPriceRange"` — one command, five results. *The same shape as opening the retention gate that confirmed an answer and not the admission gate above it.* **Enumerate the callers; do not audit the ones you were handed.**
 
   **Mine is the engine gate only.** Design takes the on-screen control; Ops takes the config. **Nothing ships until all three land.** *Scale, from Ops: the universe is 13,398 symbols including BRK.A at $759,200 — **the price band is the only thing keeping this desk small-cap.** A $50 ceiling is ~1,100 symbols; above $20 is 7,811 symbols printing 733–951 rows/day against a median of 58.*
   **⚠️ A COST THAT BELONGS IN THE DESIGN RATHER THAN IN A LATER SURPRISE: a worker restart now costs ~3.5 MINUTES of capture, not one.** Measured by Ops tonight — 3m43s to SIP: a 50s replay of 1,075,636 bars, session reconstruction for 9,208 symbols, then 110s of silence. **Startup scales with the replay, the replay scales with the price band, and widening the band itself requires a restart.** *So a wider band makes every future restart permanently more expensive. Free-now rule: decide it while it is still cheap.*
