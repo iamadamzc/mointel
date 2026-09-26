@@ -1,6 +1,6 @@
 # Design — opening prompt for a new chat
 
-**Written 2026-09-25. Every sentence below was true on that date, checked
+**Written 2026-09-26. Every sentence below was true on that date, checked
 against the tree or the live board rather than remembered.**
 
 Paste the block between the rules into a new chat opened in `A:\mointel`.
@@ -20,11 +20,11 @@ owner's rule for every seat: model, context saturation, hand-off, and the
 🟠 NEEDS YOU block that ends any message needing him.
 
 **Read in this order.** `docs/threads/design.md` — live state, what is verified
-on the live board, the payload fields this seat waits on, open items, hazards,
-and the working rules at the bottom. **The working rules are the most valuable
-thing in this repo for this seat**; several cost a live defect to learn and at
-least four were re-learned the hard way in the session that wrote this prompt.
-Then `docs/threads/README.md` for how the seats talk, and
+on the live board, the one payload field this seat waits on, the price-range
+design, open items, and the working rules at the bottom. **The working rules
+are the most valuable thing in this repo for this seat**; several cost a live
+defect to learn, and the newest four were paid for on 2026-09-25. Then
+`docs/threads/README.md` for how the seats talk and the shared mechanisms, and
 `docs/Design/design-audit-report.md` completely — that audit is the design
 authority and its §9 plan and §10 acceptance criteria are the specification.
 All six §11 decisions are settled and the answers sit beside the questions.
@@ -35,70 +35,107 @@ host, but Session Manager is not:
     scripts\aws-create-review.ps1 -ServerHost mointel-ssm -Hours 6 -Label design
 
 The URL prints **once** — capture it or the token is orphaned. Revoke with
-`-Action revoke -Id N`. **Check the link by CONTENT, never by status:** a dead
-token answers HTTP 200 with ~11 KB; the live desk is ~1.1 MB with `RVOL`
-present. **Almost everything this seat got wrong in the last week was invisible
-to tests and obvious on the board within seconds** — a badge contradicting
-another table, an age reading `2d` beside a band saying RECENT, a filter that
-never touched the list he was looking at. Look before you conclude, and
-**reload after a deploy**: a page opened beforehand keeps its old bundle and
-will confirm the bug is still there, convincingly.
+`-Action revoke -Id N` when you are finished rather than letting it expire.
+**Check the link by CONTENT, never by status:** a dead token answers HTTP 200
+with ~11 KB; the live desk is ~1.1 MB with `RVOL` present. **Almost everything
+this seat has got wrong was invisible to tests and obvious on the board within
+seconds.** Look before you conclude, and **reload after a deploy**: a page
+opened beforehand keeps its old bundle. *That trap is asymmetric and it is
+worth knowing which way — a stale bundle makes a shipped fix look ABSENT, so a
+positive reading is self-certifying against it and a negative one is not.*
 
-**First task: the `Now` column header.** It says `−1m`, which states WHEN and
-never WHAT, and he asked twice what that column was sorting. The units are on
-screen only while that sort is active. The whole job is a width measured in the
-real font at the 1,024 px floor: the table is 990 px inside a 1,014 px
-container, so roughly 24 px are free. Do not size it by arithmetic — take the
-measurement in the browser with `measureText` at the real computed font, which
-is how the sort-label width was settled. *`DiscoveryBoard.tsx:128` points at
-that method; the pointer itself is stale by a few lines, so read the comment
-rather than the line number.*
+**FIRST TASK: read the EVENING board after 16:00 ET on Monday 2026-09-28.**
+`8fd7887` shipped at 22:06 ET on 09-25 and the board had already rolled to
+Monday, so **the day arm is verified and the evening arm has never been seen.**
+Expect the ranking column to read `PART` and to carry after-hours participation
+descending cleanly; before the fix it showed Daily RVOL, which on that board
+runs in no order at all. *An empty Discovery is the correct state out of hours
+and is not evidence about a column — if the board has no rows, you have learned
+nothing and must come back.*
 
-**You do not deploy; Ops does.** You may commit and push. Stage by explicit path
-and use `git commit --only <paths>` — five seats share one index and a plain
-commit takes whatever a peer left staged. **Gate before every commit**:
-`npm test`, `npm run lint`, `npm run typecheck`, `npm run build`. **Lint is
-part of the gate and it is easy to forget** — it was RED on main for four days
-because no deploy script runs it and nobody's habit included it. **State what is COMMITTED,
-never what is deployed**, and when you hand Ops a sha, gate it in the detached
-worktree at `A:\mointel-design` — it cannot see a peer's uncommitted edits.
-`npm ci` there first: it pins source and not `node_modules`, and a stale-deps
-failure reads exactly like a real regression at the sha.
+**You do not deploy, and you do not enumerate.** You may commit and push.
+**Integration decides what ships; Ops builds the pick and ships it.** Hand them
+a sha, the files, and **where he ruled on it** — they will refuse a relayed
+approval, correctly, and they have refused mine. **A deploy ships a CONE, not
+your commits:** `main` runs ahead of production by an un-shipped auth surface,
+so a tip deploy would perform the auth cut-over. *Checking that nothing of
+YOURS touches auth is the wrong object; check the cone.* If a pick conflicts in
+a board component it comes back to you to re-cut on the production base —
+never let the deploying seat resolve it.
 
-**Verify before you assert.** Open the file, at the line, at the moment the code
-has to answer. A grep at HEAD answers only the present; `git log -S` answers who
-and when. **A peer's finding is a lead, not a source** — three times in one week
-a peer's diagnosis was exactly right and its prescribed repair assumed a server
-context this code does not run in. Take the analysis, write the fix yourself.
+**Gate before every commit**: `npm test`, `npm run lint`, `npm run typecheck`,
+`npm run build`. **Run the BUILD BEFORE the typecheck** — `tsc` fails on
+`LayoutProps` and `.next/types` until a build has generated them. **And do not
+pipe the gate into `tail`**: the pipe masks the exit code and will print green
+over a red gate. Stage by explicit path and use `git commit --only <paths>` —
+five seats share one index. Gate a sha you hand over in the detached worktree
+at `A:\mointel-design` (`npm ci` there first), and **check `git status` for
+peers' uncommitted files before trusting any gate result.**
+
+**Verify before you assert.** Open the file, at the line, at the moment the
+code has to answer. **And enumerate the population rather than confirming the
+list you were handed** — this seat opened four `inPriceRange` call sites it was
+given, wrote "verified, not relayed", and there were five. **A peer's finding
+is a lead, not a source**, and the correction runs both ways: peers have caught
+real defects here and have also been wrong about this seat's own files.
 
 **Mutation-test every new assertion, and predict the kill count first.** The
-shortfall is the signal. A guard that dies too quietly is vacuous, and this seat
-shipped four such checks in one night before the rule existed.
+shortfall is the signal. *A surviving mutant is not always a vacuous check —
+sometimes the rule is defended twice — so the reading is "find the other
+defence or admit it is vacuous", and both answers are common.*
 
 ---
 
 ## What he ruled recently, so you do not re-ask
 
-- **Premarket is IN the cycle frame** (2026-09-22, his words to this seat). With
-  after-hours (09-17) the frame is all three sessions, 04:00–20:00 ET. *The
-  claim that he ruled this on 09-21 was written into this repo four times before
-  it was true; it is sourced now.*
-- **Catalyst freshness is calendar bands** (2026-09-24): FRESH today, RECENT
-  yesterday, older is neither. The model is out of the judgement entirely.
-- **A disproven FRESH goes to STALE** (2026-09-24), because STALE is what puts
-  a badge on the row. He chose the consequence, not the taxonomy.
-- **A priority filter HIDES non-matching rows**, Discovery included — "a filter
-  should filter".
-- **His float states**: REFUTED, CONSISTENT, CONSISTENT (stale), CANNOT VERIFY,
-  with the stale count split-adjusted onto today's basis.
-- **Tooltips are welcome.** He said the explanations are "very helpful" — the
-  terms on this board are dense and every one should explain itself.
+Quoted verbatim in `design.md` under **What he ruled, verbatim**. Do not
+paraphrase a ruling into the record; peers will refuse it and they are right to.
+
+- **The rank column is REMOVED** — *"Allow the user to rank it however they
+  want to with the data sorts provided."* The `Rank` SORT survives and must:
+  after the bell it is the only route to participation order.
+- **`Now` stays as the column head.** He overruled a rename to `TRADES`;
+  `363f40d` is superseded and its tag should be retired, not shipped.
+- **Tooltips on column names, "if it makes sense"** — his limiter, and it
+  excludes a tooltip restating its header. He read the six strings and approved
+  them: *"Tool tips are good."*
+- **A promoted row says `since Fri close`, not `3d`** — *"1, agreed wit option
+  a."*
+- **Sub-minute capture is ON** — *"Sub minute capture absolutely still on."*
+  And its purpose is the live `Now` column, not a study. **He rejected the
+  rolling 60-second column.**
+- **The price range: default `$1–$20`, record `$0.25–$50`** — *"make it 1-20."*
+  And the product framing that rules out building only for his band: *"we are
+  building a product for a monetization, not just for me."*
+- **Premarket is IN the cycle frame** (2026-09-22, his words to this seat);
+  with after-hours the frame is all three sessions, 04:00–20:00 ET.
+- **Catalyst freshness is calendar bands** (2026-09-24), refined by the prior
+  session's close. **A disproven FRESH goes to STALE.**
+- **A priority filter HIDES non-matching rows**, Discovery included.
+
+## How he wants to be told things
+
+**His rule, 2026-09-25:** *"I care about the information that impacts the app
+relative to my decisions and what we're doing with the product."* **The test:
+which decision of his does this change, or what can the product now do? If
+neither has an answer, it is a commit message.**
+
+**It is a RELEVANCE filter, not a length limit** — his own correction minutes
+later: *"be as long as you need to be. don't sacrifice excellence for
+brevity."* **Seat-to-seat traffic and documents are unbounded.** The one place
+length is his instruction is yours: **anything PRINTED stays tight** — labels,
+headers, badges, tooltips.
+
+**What does not reach him:** shas, tags, cherry-picks, cone counts, gate
+numbers, mutation counts, widths unless a column got cut, which seat corrected
+whom, and your own process errors — *those are honesty owed to `design.md`.*
+**The exception is an error that reached, or could have reached, the app.**
 
 ## What he does with the old chat
 
 1. Open the new chat in `A:\mointel` and paste the block above.
 2. The new chat titles itself `Design-tmi`.
-3. Rename the old chat `Design-tmi (retired 2026-09-25)` so messages route to
+3. Rename the old chat `Design-tmi (retired 2026-09-26)` so messages route to
    the new one.
 4. Archive the old chat — do not delete it; the transcript is the record.
 5. Integration, Ops and Research talk to this seat and will find it by title.

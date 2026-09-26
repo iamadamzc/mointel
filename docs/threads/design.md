@@ -58,7 +58,7 @@ seat had committed and approved went out on 2026-09-25 in two ships, and
 `TRADES` rename) is SUPERSEDED — he ruled `Now` stays — and its tag should be
 retired rather than shipped.*
 
-**THE ONE THING OWED: the EVENING board after 16:00 ET, Monday 2026-09-29.**
+**THE ONE THING OWED: the EVENING board after 16:00 ET, Monday 2026-09-28.**
 See "Deploys of 2026-09-25" below. *It is the first task of the next session.*
 
 **THE BIG OPEN PIECE OF WORK is the price range** — design settled with him
@@ -394,7 +394,7 @@ read on the board, in "What is verified ON THE LIVE BOARD" above.*
 
 | Item | Owner | Waiting on |
 | --- | --- | --- |
-| **Read the EVENING board** after `8fd7887` | **Design — FIRST TASK** | Monday 2026-09-29 after 16:00 ET. Day arm verified, evening arm never seen |
+| **Read the EVENING board** after `8fd7887` | **Design — FIRST TASK** | Monday 2026-09-28 after 16:00 ET. Day arm verified, evening arm never seen |
 | The price range: any-range server-side ranking | Research, then Design | The engine split. Design builds the control and the header AFTER it lands |
 | Sub-minute capture -> a near-live `Now` | Research, then Design | **ON, his word.** The counter is shared with capture; mind the `ingestTrade` guard |
 | Subscription load test (250 / 500 symbols) | Ops | Nobody has run the worker above ~6. It is the number that sizes the product |
