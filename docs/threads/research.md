@@ -158,11 +158,26 @@ record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
-- **🆕 ASSIGNED 2026-09-25 EVENING, NOT STARTED — SEPARATE CAPTURE FROM QUALIFICATION IN THE ENGINE.** His ruling, relayed by Integration from his own turn: **"0-50 confirmed"** — record $0–$50, and the user picks any window inside it. **The config change is HELD until this lands**, because four call sites read ONE value and setting it today would put penny stocks and $45 names on his board:
+- **🟢 RULED 2026-09-26 AND IN BUILD — SEPARATE CAPTURE FROM QUALIFICATION IN THE ENGINE. His words, two turns, and they CORRECT the band everyone was carrying:**
+
+  > *"we need to be able to show from 25 cents up to 50, if that's what people want to see"*
+  > *"The one to 20 is the default setting for the board... this is not the default setting for the system. The user will be able to identify their own range overall."*
+
+```
+RECORD / system   $0.25 - $50   THE FLOOR DOES NOT MOVE. DISCOVERY_PRICE_MIN=0.25 is already
+                                correct in production; only the CEILING widens, $20 -> $50.
+BOARD default     $1 - $20      what the board opens on
+USER range        anywhere inside the recorded band, AND THE SERVER RANKS INSIDE IT
+```
+
+  **"$0–$50" was wrong in this charter and in the opening prompt** — an earlier relay of *"0-50 confirmed"* read as a floor of zero. **It is 25 cents, which production already has.**
+  **⚠️ AND THE USER RANGE IS A REQUEST PARAMETER, NOT A CONFIG VALUE.** *"The user will be able to identify their own range overall"* means the server ranks inside whatever range the user has set, defaulting to `$1–$20`. **That is a larger change than splitting one constant into two, and it is NOT what this item builds** — see the scoping note at the end.
+  **⚠️ BOX ENV STAYS AS IT IS: `DISCOVERY_PRICE_MIN=0.25`, `DISCOVERY_PRICE_MAX=20`, until the split lands.** Today one pair gates recording AND the board, so widening it now would widen qualification — which is exactly what he has just said `$1–$20` is not.
+  **He already knows about the top-50 cap and is reasoning about it** — *"the board is going to be limited in terms of what it can present because of how many it can show at a single time"* — so the crowding interaction is a live product question of his, not a defect to protect him from.
 
 | site | what it decides | must become |
 | --- | --- | --- |
-| `engine.ts:988` | ADMISSION — what gets captured at all | **$0–$50** |
+| `engine.ts:988` | ADMISSION — what gets captured at all | **$0.25–$50** |
 | `engine.ts:1650` | daytime qualification (`\|\| latched`) | stays **$1–$20** |
 | `engine.ts:1690` | the daytime latch | stays **$1–$20** |
 | `engine.ts:1848` | **AFTER-HOURS qualification** (`\|\| ahLatched`) | stays **$1–$20** |

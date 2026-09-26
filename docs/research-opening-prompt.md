@@ -48,7 +48,11 @@ the hand-off did not begin a fourth task. All three are in LIVE STATE with their
 reasons; the summary is:
 
 1. **Separate CAPTURE from QUALIFICATION in the engine.** His ruling: **"0-50
-   confirmed"** — record $0–$50, show narrow, user picks. **About TEN sites read
+   confirmed"**, corrected at his own turn 2026-09-26 to **record $0.25–$50**
+   — *"we need to be able to show from 25 cents up to 50"*. **The FLOOR does not
+   move; production already has 0.25. Only the ceiling widens.** Board default
+   `$1–$20`, and the user's own range is a REQUEST PARAMETER the server ranks
+   inside, not a config value. **About TEN sites read
    or DERIVE one config pair**, and the change is held until they are split.
    **The two that matter most never call `inPriceRange`:** `worker/runtime.ts:862-863`
    multiplies (`MAX*2`, so `MAX=50` bootstraps to **$100**) and
