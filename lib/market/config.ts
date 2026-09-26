@@ -20,6 +20,8 @@ function bool(value: string | undefined, fallback = false): boolean {
 export interface MarketConfig {
   /** Absolute path of the shared SQLite state store. */
   dbPath: string;
+  /** Absolute path of the ten-second trade store (`trades.db`), kept apart from `dbPath`. */
+  tradesDbPath: string;
   /** Trader-facing discovery population size (Top N). */
   discoveryRank: number;
   /** Internal high-resolution candidate count. */
@@ -66,6 +68,12 @@ export function loadMarketConfig(env: NodeJS.ProcessEnv = process.env): MarketCo
 
   return {
     dbPath,
+    // Unset, it sits BESIDE market.db: /var/lib/mointel/trades.db on the server,
+    // and a test's own temp directory under a test. A cwd-relative default
+    // would land inside the release on the server and in the repo under tests.
+    tradesDbPath: env.TRADES_DB_PATH
+      ? path.resolve(env.TRADES_DB_PATH)
+      : path.join(path.dirname(dbPath), 'trades.db'),
     discoveryRank: num(env.RVOL_DISCOVERY_RANK, 12),
     internalRank: num(env.RVOL_INTERNAL_RANK, 50),
     discoveryPriceMin: num(env.DISCOVERY_PRICE_MIN, 1),

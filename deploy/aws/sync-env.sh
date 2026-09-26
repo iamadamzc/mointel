@@ -32,7 +32,7 @@ cd "$ROOT"
 
 # Everything from .env.local, minus the settings that describe a Windows
 # development machine rather than the application.
-LOCAL_ENV="$(grep -v '^\s*#' .env.local | grep -v '^\s*$' | grep -vE '^(MARKET_DB_PATH|IDENTITY_DB_PATH|MOINTEL_DASHBOARD_URL|NODE_ENV)=' || true)"
+LOCAL_ENV="$(grep -v '^\s*#' .env.local | grep -v '^\s*$' | grep -vE '^(MARKET_DB_PATH|IDENTITY_DB_PATH|TRADES_DB_PATH|MOINTEL_DASHBOARD_URL|NODE_ENV)=' || true)"
 
 # Alpaca credentials live outside .env.local on the development machine: the
 # loader accepts a root-level text file, which is what Alpaca's key dialog
@@ -88,6 +88,12 @@ MARKET_DB_PATH=/var/lib/mointel/market.db
 # Set here rather than in .env.local, and stripped from the local file above, so
 # a development value cannot reach the server and put it back.
 IDENTITY_DB_PATH=/var/lib/mointel/identity.db
+
+# The ten-second trade store, a separate file so its rows never lengthen
+# market.db's pre-stop quick_check. Unset it would still land beside market.db,
+# but a path this load-bearing is stated, not inferred; and openTradesStore
+# refuses any path inside a release directory.
+TRADES_DB_PATH=/var/lib/mointel/trades.db
 
 # The market worker reads TODAY-sheet tickers from the dashboard rather than
 # holding Google credentials itself. Loopback, so it never meets Basic Auth.
