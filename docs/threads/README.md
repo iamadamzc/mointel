@@ -13363,6 +13363,28 @@ this one was found only because one seat read the payload limit while another ow
 > callers they knew and every list was a subset. **When a constant is read in several places, `grep` the
 > ACCESSOR, never assemble the list from what colleagues have mentioned** — a union of partial lists reads like
 > a complete one and nothing marks the gap.*
+>
+> **AND THE ACCESSOR GREP WAS A SUBSET TOO — THIRD ITERATION, AND THE RULE HAS TO GO ONE LEVEL DEEPER: GREP THE
+> DATA, NOT THE FUNCTION.** *`inPriceRange` gives five. `discoveryPriceMin`/`priceMax` gives about ten — and the
+> two that matter most **never call the predicate at all**:*
+> ```
+> worker/runtime.ts:862-863   bandMin = discoveryPriceMin * 0.4   bandMax = discoveryPriceMax * 2
+> worker/anchor-loss-cohort.ts:188   DUPLICATES the same *0.4 / *2 arithmetic
+> ```
+> **A DERIVED USE CANNOT BE FOUND BY AN ACCESSOR GREP, because it reads the field and does its own arithmetic.**
+> *So: Design's three → Integration's five → ten. **Every list was complete-looking and every one was a
+> subset**, and each seat verified its own items correctly.*
+>
+> **THE CONSEQUENCE THE MULTIPLIER CARRIES: `bootstrapSession` seeds candidates by prior close in
+> `[MIN*0.4, MAX*2]`, seeds them as TRACKED, and `flush()` persists bars for everything tracked — at every
+> restart AND every 22:00 ET roll, daily.** *Measured on the box for 2026-09-25: **3,443 symbols priced \$20–\$50
+> captured, 359K rows, a THIRD of the day's rows, against a configured ceiling of \$20.*** **So the desk's real
+> recording band was never the configured one, and `MAX=50` would bootstrap to \$100.**
+
+*Postscript on the cost estimates: every figure quoted while sizing this — "7,811 above \$20", "~1,100 at a \$50
+ceiling", "4,674" — mixed two populations (all baselines vs `discovery_eligible`), and all of them ignored that
+the \$20–\$40 slice **is already in the store**. **A widening that was priced as new capacity was mostly already
+paid for.** The measured table lives in `integration.md`; name the column with the number.*
 
 ## A HEAVY READ DURING A DEPLOY IS CONTENTION, AND IT MAY BE THE TRIGGER FOR THE FALSE `is live`
 
