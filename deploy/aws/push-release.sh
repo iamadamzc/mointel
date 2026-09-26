@@ -35,6 +35,18 @@ if ! git diff --quiet "$SHA" -- ':!*.md' ':!*.png'; then
   echo "[release] WARNING: tracked files differ from $SHORT — deploying the commit, not the working tree" >&2
 fi
 
+# ------------------------------------------------------------ test gate ---
+#
+# The suite, lint and typecheck AT THIS SHA, in a detached worktree -- not at
+# HEAD and not at the working tree, which peers move constantly. Before this
+# it was a separate command the operator had to remember. It runs BEFORE
+# preflight because it takes minutes, and preflight's estimate of where the
+# stop lands is only good at the moment it runs.
+# DEPLOY_TESTS_OVERRIDE / DEPLOY_TESTS_SKIP are test-gate.sh's own, and loud.
+# TEST_GATE_SH exists so the suite can drive this wiring against a stub.
+bash "${TEST_GATE_SH:-$ROOT/deploy/aws/test-gate.sh}" "$SHA" \
+  || { echo "[release] the test gate refused $SHORT; nothing was shipped" >&2; exit 3; }
+
 # ------------------------------------------------------------- preflight ---
 #
 # What is about to run, and is the rollback baseline still there. Runs on the
