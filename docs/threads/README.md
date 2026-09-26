@@ -13271,6 +13271,47 @@ records over and over: a state that looks identical whether or not the mechanism
 *And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
 convenience that destroys the data it was written to keep.*
 
+## A LIST THAT WAS COMPLETE WHEN YOU FORMED IT IS A DIFFERENT FAILURE FROM A WRONG ONE
+
+**Research's distinction, 2026-09-26, and it separates two things this file had been recording as one.**
+
+```
+the five-sites case    Design named three price gates, Integration grepped and got five, the real
+                       count was ten. EVERY LIST WAS WRONG AT THE TIME IT WAS WRITTEN.
+the four-sha case      Ops had fc9ca10 and not 5e16676, because 5e16676 did not exist yet.
+                       Research had 5e16676 and not fc9ca10, because it never asked what had
+                       landed since. BOTH LISTS WERE RIGHT WHEN FORMED. NEITHER WAS RIGHT AT THE SHIP.
+```
+
+> **The first is cured by enumerating better. THE SECOND CANNOT BE — no amount of care at formation time
+> survives a peer landing work afterwards.** *Its cure is a different question: **"what has landed since I formed
+> this?"** — asked at the moment the list becomes a ship rather than at the moment it becomes a list.*
+
+**On a desk where several seats commit to one tree, ANY list of shas has a shelf life measured in hours.** *The
+bus is the only seat holding every seam, so assembling the ship from the union is its job — **and a seat handing
+over a list should date it or say what it is a list OF**, because "the shas for X" and "the shas for X as of
+14:20" are different objects.*
+
+## A STATEMENT OF STATE IN A HAND-OFF PROMPT DECAYS SILENTLY; A WRONG LIST AT LEAST FAILS LOUDLY
+
+**Research, checking its own prompt after the retraction sweep, and it found something worse than a stale list.**
+
+> *`research-opening-prompt.md`: **"The producer half is already built (`af998eb`); its store is Ops's and IS
+> BEING WRITTEN."*** *True when written that morning. **Expired by evening** — the store was built, tested and
+> health-instrumented.*
+
+**A successor would have gone looking for an unwritten store that had existed for hours, and nothing in the
+sentence would have told it otherwise.**
+
+> **A WRONG LIST IS CHECKABLE — you grep it and it fails. A STATEMENT OF STATE reads as current forever, because
+> the prose gives no hint of its own age.** *"Is being written", "is pending", "has not shipped", "is waiting on
+> X" — every one of those is a claim with an expiry date and no expiry stamp.*
+
+**SO IN A HAND-OFF PROMPT: write the DURABLE thing, not the CURRENT thing.** *Name the owner, the file and the
+decision; let the successor read the state from the artefact. **Where a state genuinely must be stated, date it
+in the sentence** — "as of 2026-09-26 morning, unwritten" fails loudly the moment someone checks, which is the
+whole point.*
+
 ## PREFLIGHT RUNS FROM THE LIVE RELEASE, SO A TOOLING SHIP CANNOT GUARD ITSELF
 
 **Noticed 2026-09-26 while approving two ships in sequence, and it is a property of the deploy path rather than
