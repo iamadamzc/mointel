@@ -379,6 +379,60 @@ audit's sweep is <=12 names in 2-5s, ten rows are visible at the floor, and
 anything past 50 is a query rather than a board. *The list only needed to grow
 under the broken design where filtering happened after a global ranking.*
 
+### THE CONTROL'S SHAPE — Design's answer to Integration, 2026-09-26
+
+*Asked for before Research builds the server half. Research's `cea5ed2`
+(unshipped) split RECORD from QUALIFY in the engine and deliberately left
+"the user sets their own range" out, correctly: it is a payload contract.*
+
+**1. WHAT THE CONTROL SETS: the range travels WITH THE REQUEST.** The board
+asks `/api/market?min=&max=` each poll; the server ranks inside that range
+and returns Top N of it. The chosen range is remembered **in the browser**
+(a per-viewer convenience, try/catch, falls back to the default).
+- **No identity is needed to rank**, which matters because there is none:
+  production is one shared Basic-Auth password and the sign-in surface is
+  unshipped. A per-account preference cannot exist before sign-in, so any
+  design that needs it is blocked on the auth cut-over for no gain.
+- When sign-in ships, the stored preference moves to the account. The
+  request contract does not change — that is the point of putting it in the
+  request.
+- **Bounds `$0.25–$50`** (his "25 cents up to 50"); **default `$1–$20`** (his
+  ruling above). Both are config, never literals in the component.
+
+**2. HOW THE CAP IS PRESENTED: say the denominator.** Because the server ranks
+INSIDE the user's range, `Top 25` is always the true top 25 **of that range** —
+nothing out of range can crowd a name out, so the no-symptom absence is gone
+by construction, not by disclosure. What remains beyond the cap is genuinely
+lower-ranked, and the caption says how much:
+`Daily RVOL rank · $1–$20 · top 25 of 312`. Absence becomes a number.
+
+**3. THE HEADER WHEN THE RANGE IS NOT THE DEFAULT.** The caption ALWAYS
+prints the range the rows were drawn from — **the range the server echoes
+back in the payload, never the one the control holds.** *Otherwise a poll in
+flight during a change shows new words over old rows: the header-names-one-
+quantity-rows-drawn-from-another defect, one layer out.* When it differs from
+the default the range is in `accent` (user-owned, §8) with a one-click
+`$1–$20` reset. No banner.
+
+**4. WHAT A CUSTOM RANGE BREAKS, found while answering, and it is the part a
+contract would miss: every stored RANK is a rank in the qualify band, not in
+the viewer's range.** `rankChange` (`afterHours.ts:134`), `previousRanks`
+(`engine.ts:469`) and `deadAtRank` (`engine.ts:1580`, printed by
+`Graveyard.tsx:214`) are all global ordinals. Under `$0.50–$10`, "held rank
+7" would be a rank in a list the viewer is not looking at. **The server must
+either return in-range ordinals or omit these fields for a non-default
+range; the board must never print a stored rank beside a range it was not
+computed in.** Research's call which; Design's rule that one of them holds.
+
+**5. WHAT IS NOT DESIGN'S AND IS NOT SOLVED BY ANY OF THE ABOVE: the trade
+feed.** Ranking in-range fixes the ROW; the live trades/quotes subscription
+is still granted by `internalRank` over the qualify band (`engine.ts:2088`).
+A name ranked 8th in a user's range but outside the global top 50 gets a row
+and no live feed. **The row shows the settled-minute figure and says so**
+(the COVERAGE GAPS line above); the subscription policy — the union of
+viewed ranges, bounded by the box — is Research's and Ops's, sized by the
+load test nobody has run.
+
 **THE LATCH ALREADY SOFTENS THE TOP EDGE.** `engine.ts:1844`: a name that
 qualified in range and then ran THROUGH the top stays on the board for the
 session. **A $4 stock that rips to $25 does not vanish at the moment it starts
