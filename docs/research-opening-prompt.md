@@ -60,8 +60,21 @@ reasons; the summary is:
    a heartbeat can kill at all.
 3. **The Alpaca News collector**, which he ruled: *"yep, build the alpaca."* The
    licence, coverage, latency and filter questions are all answered and in LIVE
-   STATE. **The producer half of 10s capture is already built (`af998eb`); its
-   store is Ops's and is being written.**
+   STATE. **The 10s capture is BUILT AND UNSHIPPED, and it is FOUR shas that go
+   as one enumeration, not three:**
+
+   ```
+   af998eb   accumulate in the engine, above the monotonicity guard
+   9436da4   trades.db, and the drain wired in worker/runtime.ts:1508   (Ops)
+   fc9ca10   tradeCapture RECORDING|DISCARDING in /api/health           (Ops)
+   5e16676   the grace of two, so a late print counts instead of reviving
+   ```
+
+   **`af998eb` ALONE LEAKS** — the only reaper lives in the drain, and nothing
+   called it until `9436da4`. **And without `fc9ca10` the rollback case is
+   invisible: a store newer than the build refuses, capture is silently
+   discarded, and nothing says so.** *Each of two seats named a subset of this
+   list and neither subset was the ship. The restart is his.*
 
 ### What cost this session the most, and every one of these is measured
 
