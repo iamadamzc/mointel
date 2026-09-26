@@ -12085,3 +12085,31 @@ SUPPORT       a contact address and one runbook: "paid but cannot sign in" (emai
 **Order against the sign-in cut-over:** billing cannot precede it. Sign-in (invited-only)
 goes live first and is proven to REFUSE; billing then automates what the allowlist script
 does by hand today.
+
+### Saturday ships, CONFIRMED from /proc, on his "go on both"
+
+```
+8147cf4  tooling (ea0e146 aa6055b 475b2f2 on 8fd7887)   launched 10:36:33 ET, down 3s
+         the NEW launcher printed "is live (3 services confirmed from /proc)" -- first real use
+3b78b8c  trade capture (af998eb 9436da4 fc9ca10 5e16676 on 8147cf4, sync-env kept from base)
+         launched 11:04:29 ET, down 3s -- FIRST SHIP GUARDED BY THE NEW PREFLIGHT
+env      TRADES_DB_PATH appended to /etc/mointel/mointel.env (backup mointel.env.bak-20260926-trades)
+market   d0bc78c, untouched. Capture, the prune fix and the restart re-measure wait on HIS restart.
+health   /api/health market.tradeCapture = null (old worker), which proves the field is live
+```
+
+**Three refusals before the two ships, all the guard being right and me aiming wrong:**
+1. 10:05 -- the test gate (now first) ran ~5 min, so preflight landed at C+5. **The gate-first order
+   made a launch un-aimable.** Fix owed: preflight re-checks after the gate (Integration's pick).
+2. 10:35 -- I aimed by the NEW preflight's rule; the box still ran the OLD one (start +/-5, inclusive).
+   **Aim by the preflight that is LIVE, not the one being shipped.**
+3. 11:02 -- new preflight, correctly: stop span 11:04-11:14 within 5m of 11:00. Its message said
+   "-2m away" for a checkpoint 2m past; fix the wording.
+
+**DEPLOY_TESTS_SKIP was used twice, each under ONE condition: the same sha was gated ALL GREEN in
+this session minutes earlier (8147cf4 twice; 3b78b8c at 11:02). Without that, the skip is not
+available -- wait for the gate.**
+
+**The checkpoint arm is weekend-blind.** Assess logged nothing Saturday: the schedule resolves
+against the market calendar, so no checkpoint fires. Preflight refused Saturday deploys to
+protect jobs that do not exist. The trading arm knows the weekday; this one must too. Owed.
