@@ -445,9 +445,28 @@ he kept `Now` and the field turns his word into the accurate one.*
 Record wide, show narrow.** Research splits capture from qualification in the
 engine; Ops holds the config; **the control and the header are mine.**
 
-**VERIFIED, not relayed — one predicate, four readers:** `inPriceRange`
-(`engine.ts:1612`) is `price >= priceMin && price <= priceMax` and is read at
-`988` (CAPTURE), `1650` (QUALIFICATION) and `1690` (the after-hours latch).
+**FIVE CALL SITES, NOT THREE — AND I ENUMERATED THE ONES I WAS HANDED RATHER
+THAN THE ONES THAT EXIST.** `inPriceRange` (`engine.ts:1612`) is
+`price >= priceMin && price <= priceMax`, read at:
+
+    988    admission
+    1650   DAYTIME qualification      1690   daytime latch
+    1848   AFTER-HOURS qualification  1893   after-hours latch
+
+**I opened the four sites Integration named, confirmed them, and wrote
+"verified, not relayed".** *That was true of those four and said nothing about
+whether there were more — a list confirmed is not a population enumerated.*
+**One `grep` of the function name finds five. Integration found the evening
+pair the same way, after three seats had each checked a list.** `1848`'s own
+comment even says it: *"The $1–$20 rule, applied at the relevant point of the
+AFTER-HOURS move."*
+
+**AND THE MISSING PAIR IS THE EVENING PATH, WHICH LANDS ON WHAT SHIPPED LAST
+NIGHT.** A split covering three sites would qualify on the WIDE band after the
+bell — crowding his names out of the payload and the trades/quotes set in
+exactly the session `8fd7887` exists to fix, **and only after 16:00.** The new
+participation column would be ordering a population that had already lost his
+small caps, **and it would look correct while doing it.**
 `readModel.ts:157` projects the same pair onto `DiscoveryState`, and
 `DiscoveryBoard.tsx:332` prints it: `Daily RVOL rank · $1–$20`. **Widening the
 config today would put $45 names on his board AND rewrite that caption. The
@@ -483,10 +502,15 @@ right:**
    stranger, or he at 07:00 on Monday, sees exactly today's desk unless they
    move the control. **Always-on in the store, opt-in on the screen.**
 
-*Scale, for what the control is choosing within: 13,398 symbols in the
-universe, BRK.A among them at $759,200. Above $20 is 7,811 symbols; a $50
-ceiling is ~1,100. **The price band is the only thing keeping this desk
-small-cap**, which is why the control cannot quietly become the capture knob.*
+**⚠ THE SCALE FIGURES ARE WITHDRAWN.** *"13,398 universe / 7,811 above $20 /
+~1,100 at a $50 ceiling" came to me through Integration from Ops and I put
+them into a message to him. **They cannot all count the same population** —
+~1,100 is presumably the $20–$50 slice — and Research caught the
+inconsistency. **Nothing should be sized off them until Ops states which
+population each counts.*** **The mechanism does not depend on them and is not
+weakened by their withdrawal:** the crowding-out follows from one capped set
+and a wider qualifying band, at any ratio. *I relayed an unreconciled number
+into his channel, which is the thing this file already says not to do.*
 
 **NOTHING SHIPS UNTIL THE ENGINE SPLIT LANDS.** Same pattern as
 `catalystFreshFrom` and `tradesLast60s`: ask the producer for the answer,
@@ -565,8 +589,7 @@ bounds? — AND THERE IS A HARDER ONE UNDERNEATH IT THAT DECIDES THE ANSWER.**
 **SO THE BOARD RECEIVES THE TOP 50 BY RANK, AND `Top 12/25/50` SLICES THAT
 CLIENT-SIDE.** *If the engine QUALIFIES `$0–$50` and the user merely FILTERS
 to `$1–$20` on screen, his own names compete for those 50 slots against
-everything up to $50 — **and 7,811 of the universe's 13,398 symbols are above
-$20.*** **A `$1–$20` name can be pushed below rank 50 and never reach the
+everything up to $50.*** **A `$1–$20` name can be pushed below rank 50 and never reach the
 payload at all. He would not see it filtered out; he would see it absent.**
 
 **AND `internalRank` HAS A SECOND CALLER, WHICH MAKES IT WORSE.** Verified at
