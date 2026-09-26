@@ -568,6 +568,32 @@ rewritten at hand-off by the eleventh under his
 instruction. A SNAPSHOT, not a diary: the day's mechanisms were promoted to `README.md`, and
 everything below this section is kept for MECHANISMS, not facts.*
 
+### ⏸ ONE ENUMERATION APPROVED AND UNCLEARED — `8fd7887`, WAITING ON HIS WORD IN OPS'S SESSION
+
+**CONTENT APPROVED by this seat. NOT cleared to ship.** *He said "ship it all" to DESIGN and @-mentioned Ops;
+his last word in OPS's session was "we will stop there". **Deploy clearance for that seat comes from him
+THERE, and a relay does not substitute** — Ops held, Design agreed, and neither treated the relay as override.
+All three correct.*
+
+```
+sha             8fd7887   evening ranking column + the Now header width, re-cut on 5254bca
+base            5254bca   ITS PARENT IS PRODUCTION (verified: git log -1 --format='%p')
+route           FAST-FORWARD, NOT A PICK. 1 commit, 6 files, ZERO auth paths.
+PRE-REGISTERED  159 test files, unchanged from 5254bca. Build before typecheck.
+both changes    HIS: the after-bell ranking column is "1, your rec"; the 44px -> 68px width
+                is the repair deferred from the net-zero rename pair, cut standalone.
+DO NOT SHIP     e7e629f and a74082a -- both CONFLICT on 5254bca, built on the TRADES lineage
+                production never received. 8fd7887 REPLACES both.
+```
+
+> **⭐ AND THE ROUTE IS THE LESSON: `8fd7887`'S PARENT IS PRODUCTION. Design cut from `5254bca` rather than
+> from main, so there is NO auth shadow, no pick, no cone to audit and nothing to exclude.** *Eight ships today
+> were cherry-picks around the auth surface.* **This is the first that is not, and it should be the default
+> until he runs the cut-over: a branch cut from production cannot carry a surface production does not have.**
+
+*Also: the conflict rule worked as written. `e7e629f`/`a74082a` conflicted on production, the conflict went
+BACK TO DESIGN rather than being hand-resolved by the deployer, and Design re-cut it clean.*
+
 ### ✅ PRODUCTION CONFIRMED 2026-09-25 ~20:0x ET — `5254bca`, EIGHT SHIPS TODAY
 
 ```
