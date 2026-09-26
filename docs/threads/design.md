@@ -44,133 +44,102 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-25 20:13 UTC / 16:13 ET
+## Live state — 2026-09-26 13:36 UTC / 09:36 ET
 
-**LIVE ON THE DESK, VERIFIED BY THIS SEAT ON THE BOARD:**
+**MY HEAD IS ON `main`; what is DEPLOYED is Ops's to say.** Everything this
+seat had committed and approved went out on 2026-09-25 in two ships, and
+**both were read on the live board afterwards.**
 
-    49efd1a   the sort accent            cutover 11:49:43 ET
-    0a17601   the FRESH prior-close      cutover 12:17:07 ET, verified 12:18
+    5254bca   Monday `since Fri close` fix, column tooltips + the cut copy,
+              the rank column REMOVED
+    8fd7887   evening ranking column shows PARTICIPATION, `Now` header 44->68px
 
-*The boundary's effect was read at 12:18 ET after a reload:* `catalystFreshFrom`
-**absent at 12:05, `'2026-09-24T20:00:00.000Z'` at 12:18**; `INLF` amber `16h`
-→ **green** `19h`; `MGLD` amber and unmoved three hours eighteen the wrong side
-of the same close; `LFS`/`KITT` green and unmoved; **one row changed, zero
-demotions.** *That is the full section above under "What he ruled" — do not
-re-derive it.*
+**NOTHING OF MINE IS COMMITTED-AND-UNSHIPPED.** *`363f40d` (the `Now` ->
+`TRADES` rename) is SUPERSEDED — he ruled `Now` stays — and its tag should be
+retired rather than shipped.*
 
-**COMMITTED, GATED, AND PARKED ON HIS WORD — NEITHER IS LIVE:**
+**THE ONE THING OWED: the EVENING board after 16:00 ET, Monday 2026-09-29.**
+See "Deploys of 2026-09-25" below. *It is the first task of the next session.*
 
-    design/now-header-gated  363f40d   `Now` -> `TRADES`, gated at the sha
-    (untagged)               36bbddd   the Monday `3d`-in-green fix
+**THE BIG OPEN PIECE OF WORK is the price range** — design settled with him
+2026-09-26, engine not built. See "THE PRICE RANGE" below; **nothing of it is
+Design's to build until Research lands the engine split.**
 
-**ONE DECISION OWED BY HIM, THREE PARTS, AND IT SHIPS AS ONE CHANGE** because
-all three land in the same cells:
-
-1. **The column tooltips.** His direction, and his own limiter is *"if it makes
-   sense"* — which excludes a tooltip restating its header (`Price` /
-   *"Last price"*). The mechanism exists; the content is uneven. **`Gap`'s
-   empty static `title` is NOT a hole** — it carries `resolve: baselineLabel`,
-   which supplies a phase-resolved title, so filling it would change nothing
-   while looking like a fix.
-2. **Does `Now` → `TRADES` still earn its place** once a tooltip carries the
-   depth? A tooltip answers *what is this column*; it does not answer *why does
-   this head name a TIME where every other names a QUANTITY*. **His tooltip
-   message does not mention the rename and must not be read as approving it.**
-3. **Does `since Thu close` replace the age on WITHIN-DAY promoted rows**, or
-   only where it misleads by days? **That question exists because the
-   generalisation is MINE, not his** — see the verbatim section above.
-
-*`36bbddd` has until Monday premarket, which is the first session where a
-promoted row can read `3d` in green.*
-
-**VERIFICATION ACCESS IS SOLVED. This was the biggest standing limit on the
-seat and it is gone.**
+**HOW THIS SEAT SEES PRODUCTION — the biggest standing limit on it, and it is
+gone:**
 
     scripts\aws-create-review.ps1 -ServerHost mointel-ssm -Hours 6 -Label design
 
-*That line held a literal **BEL byte** where its backslash belongs until
-2026-09-25 — `scripts` + `0x07` + `ws-...`, i.e. `\a` interpreted once on the
-way in. It renders as `scriptsws-create-review.ps1` in every reader and as a
-correct-looking path in none. **Three repair attempts failed and reported
-success**: `perl -0pi -e s/\x07/.../`, and two Python text-mode writes whose
-re-read returned the ORIGINAL length. Only a byte-mode read/replace/write took.
-A path is the worst place for this — the damage is invisible, because a mangled
-filename still looks like a filename.*
-
 *SSH on port 22 times out from this host — his egress IP moved off the
 allowlist and nobody retired SSH — but Session Manager goes straight through.*
-**The URL prints ONCE. Capture it or the token is orphaned** (I lost one that
-way; revoke with `-Action revoke -Id N`). Read-only, time-limited, and the only
-way this seat sees production: the desk is otherwise behind one shared password
-it must never type.
+**The URL prints ONCE. Capture it or the token is orphaned** (revoke with
+`-Action revoke -Id N`; revoke when finished rather than leaving it to expire).
+Read-only and time-limited: the desk is otherwise behind one shared password
+this seat must never type.
 
 **READ A REVIEW LINK BY CONTENT, NEVER BY STATUS.** A dead or expired token
 answers **HTTP 200** with ~11 KB. The live desk is ~1.1 MB with `RVOL` present.
 
+*That command line held a literal **BEL byte** where its backslash belongs
+until 2026-09-25 — `\a` interpreted once on the way in, rendering as
+`scriptsws-create-review.ps1`. **Three repair attempts failed and reported
+success**; only a byte-mode read/replace/write took. A path is the worst place
+for this: a mangled filename still looks like a filename.*
+
 ## What is verified ON THE LIVE BOARD
 
-*Nothing below is inferred from tests.* Sessions of 2026-09-22 and 2026-09-25.
+*Nothing here is inferred from tests.* Sessions of 2026-09-22 and 2026-09-25.
 
-- **The cycle badge's three renders** (`a9df280`) — `NO RUN`, `OFF HIGH $1.50 →
-  $1.46`, `DAY 1 $6.41 → $4.82`.
+- **The FRESH prior-close boundary works and DISCRIMINATES** (2026-09-25
+  12:18). `catalystFreshFrom` absent at 12:05 and
+  `'2026-09-24T20:00:00.000Z'` at 12:18; `INLF` amber `16h` -> **green** `19h`;
+  **`MGLD` amber and unmoved, three hours eighteen the wrong side of the same
+  close**; `LFS`/`KITT` green and unmoved. **One row changed, zero demotions.**
+  *A discriminating pair is a stronger result than a promotion — and it was
+  luck in the population, not design: I named MGLD as a control because it was
+  clocked the same day, not knowing how close it sat.*
+- **The rank column is gone, tooltips are live** (2026-09-25 21:44, after
+  `5254bca`): eight columns, `Rank` surviving as the active sort chip.
+- **The cycle badge's three renders** (`a9df280`) — `NO RUN`, `OFF HIGH $1.50
+  -> $1.46`, `DAY 1 $6.41 -> $4.82`.
 - **The cross-table cycle contradiction is CLOSED** (`72b8c1b`), and it took
-  premarket to close: 2026-09-25 07:36 ET, five tickers on both tables, **five
-  agreeing, zero disagreeing**, pair included. *The after-hours attempt found
-  zero shared tickers, and a no-overlap "no disagreements" is a check that
-  cannot fail — it was recorded as partially verified for three days rather
-  than counted.*
-- **The float verdict** — `FLOAT 5,680,000 CONSISTENT · under 8.14M shares
-  outstanding filed 2026-08-11` on TOMZ, independently corroborated: the desk's
-  filed count equals the `8.14M provider SO` the vendor wrote in its own cell.
-  **It speaks on 3 of 9 researched rows; the other 6 say CANNOT VERIFY for want
-  of a filed count.** An SEC collection gap, not a render fault.
-- **The DCOY fix with its silent control** (`42c9a73`) — ten qualified rows
-  moved to `OFF HIGH <today's high>`, and TBPH, `NO_CYCLE` with
-  `todayStart: NOT_QUALIFIED`, still reads `NO RUN`.
-- **The change sentence** (`new HOD`, not `NEW_HOD`), the persistent events
-  band, the sort-following headline, the `Now` column and its sort.
+  premarket: five tickers on both tables, five agreeing, zero disagreeing.
+  *The after-hours attempt found zero shared tickers, and a no-overlap "no
+  disagreements" is a check that cannot fail.*
+- **The float verdict speaks on 3 of 9 researched rows**; the other 6 say
+  CANNOT VERIFY for want of a filed count. An SEC collection gap, not a render
+  fault.
 
 ## What the live board showed that no test could
 
-- **DCOY: rank 1 at 3,105× RVOL, trading 4 times a minute**, while rank 3 ran
-  at 346. The whole argument for the `Now` column, on one row.
 - **The market payload is 802 KB and 1.29 s per poll.** F-10 targets under
   15 KB. It is also why the board reads "Waiting for the first market payload"
-  for seconds on load — which I briefly mistook for a defect and measured
-  before saying so.
+  for seconds on load — **which is NOT a defect and NOT evidence about a
+  column**; a first render returning "no discovery table" means the payload
+  has not landed, and I have twice had to wait rather than conclude.
 - **The TODAY float cell refuses 7 of 9 live rows** — `provider SO`,
   `filing SO`, `pro forma SO`, `post-split SO` are unrecognised tails and
   refuse the whole cell, float included. The desk recovers via the RESEARCH
   tab, so nothing is lost today. **That is luck, not design**, and the parser
   is Research's.
-- **A page loaded BEFORE a deploy keeps its old bundle.** I read DCOY as still
-  broken three minutes after the fix shipped and reported it. *"Verify after
-  the deploy" means RELOAD, not look.*
+- **A page loaded BEFORE a deploy keeps its old bundle**, and **the trap is
+  ASYMMETRIC.** A stale bundle makes a shipped fix look absent, so it fails in
+  the NEGATIVE direction: a POSITIVE result is self-certifying against it, a
+  negative one is not and must be re-checked after a reload.
 
-## The payload fields this seat is waiting on
+## The payload field this seat is waiting on
 
 **The shape: ask the producer for the ANSWER, and let the reader sit on safe
-behaviour until it arrives.** `qualified.observed` proved the pattern works, and
-**`catalystFreshFrom` is the second proof — declared here, built by Research at
-`7a0ad0c`, consumed at `bd509e9` with no renegotiation.** One remains.
+behaviour until it arrives.** `qualified.observed` proved it and
+`catalystFreshFrom` proved it twice — declared here, built by Research at
+`7a0ad0c`, consumed at `bd509e9` with no renegotiation. **One remains.**
 
-1. ~~**`MarketSnapshot.catalystFreshFrom`**~~ — **ARRIVED `7a0ad0c`, WIRED
-   `bd509e9`.** It goes on the ROW, via `DeskRowContext`, not through
-   `resolveWhy` as a fourth argument: `resolveWhy` has four callers and this is
-   the reading that has already produced a colour disagreeing with the words
-   beside it twice, so the instant arrives WITH the row and no caller can
-   forget it. Read off `market`, **not** off `market.discovery`, which is where
-   `sessionPhase` and `tradingDate` beside it in the same context object come
-   from. Null still means the day bands, and that is a rule rather than a
-   fallback.
-2. **`MarketSnapshot.lastCheckpointChanges`** — §9 item 12's rail. Per-ticker
-   `changedFields` + `changeSummary` + the checkpoint's `completedAt`.
-   **`AssessmentSummary.notes` is NOT a substitute**: it is `commentary()`'s
-   lines joined into one string, truncated at 2,000 characters, and
-   `commentary` drops every row whose summary is empty — exactly the set
-   `f303e14` exists to word. **Rows with an empty summary must be INCLUDED;
-   empty array ≠ absent.**
-
+**`MarketSnapshot.lastCheckpointChanges`** — §9 item 12's rail. Per-ticker
+`changedFields` + `changeSummary` + the checkpoint's `completedAt`.
+**`AssessmentSummary.notes` is NOT a substitute**: it is `commentary()`'s lines
+joined into one string, truncated at 2,000 characters, and `commentary` drops
+every row whose summary is empty — exactly the set `f303e14` exists to word.
+**Rows with an empty summary must be INCLUDED; empty array is not absent.**
 
 ## What he ruled, verbatim
 
@@ -257,398 +226,179 @@ ruling: commissioned" into the open items ONE MESSAGE after recording that
 this thread has published a false "he ruled it" before. **A standard I state
 and then do not apply to my own next entry is not a standard.***
 
-## The 10-second question, measured 2026-09-25
+## SUB-MINUTE: it is ON, and it is for the `Now` column
 
-**HIS CLAIM, AND HE ASKED FOR IT ON THE RECORD:** *"im a thousand percent
-certain a 10s shows you something a minute doesn't. ive seen stocks go up 50
-percent and volume quintuple inside 30 seconds."*
+**HIS CONFIRMATION, 2026-09-26: *"Sub minute capture absolutely still on."***
+And his correction of my framing, which I had filed as a research question:
+*"if we can get sub one minute capture, then the now column can be near live.
+Am I incorrect?"* **He is not. The product purpose is a live column; the
+research value is a by-product.**
 
-**HE IS RIGHT ON THE DATES, AND IT MATTERS LESS THAN THE SCOPE.** R&D closed
-`NO_SUBMINUTE_INCREMENTAL_SIGNAL` on **2026-08-21**; `activityWindow` shipped
-**2026-09-04** (`fce254c`) and the `Now` column **2026-09-22** (`3d611d4`) —
-so the verdict predates the column by a month. *That alone does not overturn
-it: the study had its own data and did not need this column.* **What settles
-it is that the register already says the null closed a PREDICTIVE line only,
-and that sub-minute data is still required for MEASUREMENT and was never
-tested.** His question was never the one that was closed.
+**THE MECHANISM, and why capture and the live column are one job.**
+`engine.ts:1026` fills the column's counts from `bar.tradeCount` on minute
+BARS, and a bar does not exist until its minute closes. **`ingestTrade` counts
+nothing today** - it updates price and the session highs and retains no
+timestamps. So:
 
-**MEASURED ON `data/market.db`, 782,393 minute bars with ≥10 trades, three
-sessions (2026-08-17/18/19), local desk store and not production:**
+    capture      = a per-symbol time-bucketed COUNTER + persistence
+    live column  = the same COUNTER + a read of the newest bucket
 
-    intra-minute range >= 10%    974 bars      >= 25%   87 bars
-                       >= 50%      7 bars      >= 100%   0 bars
+**The counter is the shared part and it is the whole of the work.** At 10s
+buckets the figure is **10-20s behind instead of 60-120s**, plus the 4s poll.
 
-    the largest: JAB  $10.955 -> $19.00 in ONE minute  (73.4%, 1,153 trades)
-                 OABI  $3.39  ->  $5.90                (74.0%,   248 trades)
+> ### THE COUNTER MUST NOT GO WHERE A COUNTER NATURALLY GOES
+> **Research's finding, verified at `engine.ts:1394`.** `ingestTrade` runs
+> three guards before recording anything and **two are PRICE semantics a COUNT
+> must not inherit** - price validity, session membership, and
+> **MONOTONICITY**. `isNewerObservation` is `candidate >= current`, so
+> same-millisecond trades survive and **out-of-order arrivals are DROPPED.**
+> A counter added inside the existing flow sits below that and undercounts,
+> **worst during the highest-rate minutes** - exactly the minute the field
+> exists to reveal. *It would ship a fix for undercounting that undercounts.*
+> **The count's only legitimate predicate is session membership.**
 
-**A ≥50% move inside a single minute is real and it happens.** *Minute bars
-cannot prove 30 seconds — only capture can — but they prove ≤60, seven times
-in three sessions.* His "quintuple" is real too: **403 of 124,720
-minute-over-minute transitions from a base of ≥100 trades quintupled (0.32%).**
+**WHAT THE MEASUREMENT ESTABLISHED, 2026-09-25** - `data/market.db`, 782,393
+minute bars with >=10 trades, three sessions, LOCAL store not production:
 
-**THE FINDING THAT DECIDES IT IS NOT THE MOVE, IT IS WHAT THE COLUMN WAS
-SHOWING DURING THE MOVE.** `Now` renders the most recent SETTLED minute, so
-during minute *M* it displays *M−1*:
+    intra-minute range >=25%: 87 bars   >=50%: 7 bars
+    largest: JAB $10.955 -> $19.00 inside ONE minute (73.4%, 1,153 trades)
+    trade count quintupled minute-over-minute (base >=100): 403 of 124,720
 
-    sym    the >=25% minute        this minute   was ON SCREEN
-    GNPX   2026-08-18T11:08        6,951 trades        128
-    VOGX   2026-08-18T08:04          722 trades         11
-    YYAI   2026-08-17T13:01          808 trades         24
-    APUS   2026-08-17T10:44        2,348 trades        236
+**And the finding that decides it: during a >=25% minute the figure ON SCREEN
+is a median 3.1x short of what that minute produces, and does not update until
+the move is over.** *GNPX showed 128 while 6,951 were happening.* **Minute bars
+prove <=60 seconds; only capture can prove 30.**
 
-**Median jump over the prior minute across all 79 such events: 3.1×. So the
-number on screen while the move was happening was about 32% of what that
-minute actually produced, and it did not update until the move was over.**
+**R&D's `NO_SUBMINUTE_INCREMENTAL_SIGNAL` (2026-08-21) DOES NOT REFUSE THIS.**
+It closed a PREDICTIVE line, and the register says in writing that sub-minute
+is still required for MEASUREMENT and was never tested. *Argue this as
+measurement and currency, never as prediction, or it gets refused on evidence
+that does not apply.* **He also noted, correctly, that the verdict predates
+this column by a month** (`activityWindow` 2026-09-04, the column 2026-09-22).
 
-**AND THE SORT IS THE REAL CASUALTY, WHICH IS HIS OWN POINT SHARPENED.** He
-sorts by `Now` because *"it self sorts once selected so you can see what's
-active"* — the ordering is live. **A name exploding right now cannot sort to
-the top until its minute closes.** The column is least informative at exactly
-the moment it exists for, and the sort he uses most is the one the lag damages
-most.
+**REJECTED, AND KEPT AS A DECISION RATHER THAN DELETED: a rolling 60-second
+window** (`DemandState.tradesLast60s`). *"yes i rejected the 60s."* It needed
+the same counter and still said sixty seconds. **Nothing was built - no field,
+no code, no payload change.** *One line of its reasoning still matters: a 10s
+figure is roughly a sixth of a 60s figure for identical activity, so two rows
+counted at different grains cannot share one sort.*
 
-**WHAT THIS DOES AND DOES NOT ESTABLISH.** It establishes that minute grain
-hides moves he would act on, and that the column's lag is worst during them.
-**It does not establish that a 10s series PREDICTS anything** — that is the
-line R&D closed and nothing here reopens it. *The case for sub-minute is
-measurement and currency, not prediction, and it should be argued that way or
-it will be refused on evidence that does not apply.*
+## THE PRICE RANGE - the current design, 2026-09-26
 
-*Limits, stated: three sessions, the LOCAL store, the whole universe rather
-than ranked names, and `high-low` carries a spread component on thin names —
-though the named examples all cleared 248 trades in the minute.*
+**HIS RULING: *"make it 1-20."*** That is the DEFAULT the board opens on -
+exactly today's desk - and it is not a reversal of recording `$0-$50`.
+**And his product framing, which rules out building only for his band:**
+*"we are building a product for a monetization, not just for me. So we need to
+be able to show from 25 cents up to 50, if that's what people want to see."*
 
-## SUB-MINUTE CAPTURE IS FOR THE COLUMN, NOT FOR A STUDY
-
-**HIS CORRECTION, 2026-09-25, and he is right:** *"The whole idea and what I
-understood behind all of this was that if we can get sub one minute capture,
-then the now column can be near live."*
-
-**I HAD FILED IT AS A MEASUREMENT QUESTION AND THAT LOST THE POINT.** The
-register entry read "unblocks R&D Q2" and my question to him argued it as what
-would let someone measure a 30-second move. *Both true, and neither is why he
-wants it.* **The product purpose is a live column, and the research value is a
-by-product.**
-
-**WHY HE IS RIGHT, MECHANICALLY.** The column lags because `engine.ts:1026`
-fills its counts from `bar.tradeCount` on minute BARS, and a bar does not exist
-until its minute closes. **`ingestTrade` counts nothing today** — it updates
-price and the session highs and retains no timestamps. So:
-
-    capture        = a per-symbol time-bucketed COUNTER + persistence
-    live column    = the same COUNTER + a read of the newest bucket
-
-**The counter is the shared part and it is the whole of the work.** Once the
-engine buckets trades at 10s, the column reads the newest settled bucket and
-the figure is **10–20s behind instead of 60–120s**, plus the 4s poll. *That is
-why "capture, then the column is near live" is the correct model and my
-"capture is for measurement" was the wrong one.*
-
-**THE ONE REAL CONSTRAINT IS COVERAGE, AND IT IS UNCHANGED BY THE GRAIN.**
-Only names carrying the hi-res trade subscription can be counted — about 6 of
-12 rows on a live board. **A 10s figure is roughly a sixth of a 60s figure for
-identical activity, so a counted row and an uncounted row cannot share one
-sort without the uncounted names sorting to the top.** *That is his open
-question and it is the thing to settle before the reader is built, not after.*
-
-## ~~FIELD SPEC — `DemandState.tradesLast60s`~~ — REJECTED 2026-09-25
-
-**⚠ HE REJECTED THIS THE SAME EVENING. KEPT, NOT DELETED, because the
-reasoning about WHY 60s and not 10s is the part a successor would otherwise
-re-derive — and because a spec that vanishes leaves no record that it was
-considered and refused.** *Nothing was built: no field, no code, no payload
-change. `63325a4`, whose title names the rolling 60s, contains only the header
-revert and this spec — there is no 60-second behaviour anywhere in the tree.*
-
-**The superseded ruling:** *"1, both. 2, now with updated tooltip. but 1 is going to
-impact 2, at least on messging."*
-
-**THE PRODUCER'S HALF, for the engine seat — same shape as
-`catalystFreshFrom`: ask for the ANSWER, and let the reader sit on safe
-behaviour until it arrives.**
-
-    DemandState.tradesLast60s: number | null
-
-    the count of trades in the 60 seconds ENDING AT `updatedAt`, for names
-    carrying the hi-res (trade-level) subscription.
-
-    NULL = not available for this name. It is NOT zero, and it is not an
-    error: outside the hi-res cap there is no trade stream to count.
-
-**WHY 60 SECONDS AND NOT 10, WHEN 10 IS WHAT HE ASKED ABOUT.** *Because the
-UNIT has to survive being mixed in one ordering.* Only hi-res names can carry
-this — about 6 of 12 rows on a live board — so the column will hold two
-populations whatever we do. **A rolling 60s and a settled minute are the same
-unit measured over the same span, differing only in where the window ENDS, so
-they sort against each other honestly. A 10s count against a 60s count does
-not — it is a sixth of the number for the same activity, and the sort would
-put every non-hi-res name on top.** That is the whole reason (i) can ship
-before capture and (ii) cannot.
-
-**THE COUNTER MUST NOT SIT WHERE A COUNTER WOULD NATURALLY GO — Research's
-finding, verified here at `engine.ts:1394`.** `ingestTrade` runs three guards
-before it records anything, and **two of them are PRICE semantics that a COUNT
-must not inherit:**
-
-    price === null || price <= 0      price validity
-    !this.inSessionWindow(ts)         session membership   <- the only one a count owns
-    !isNewerObservation(priceAt, ts)  MONOTONICITY
-
-`isNewerObservation` is `candidate >= current`, so same-millisecond trades
-survive and **OUT-OF-ORDER ARRIVALS ARE DROPPED.** A counter added inside the
-existing flow sits below that and undercounts — **worst during the
-highest-rate minutes, when out-of-order arrival is most likely, which is
-precisely the minute this field exists to reveal.** *It would ship a fix for
-undercounting that undercounts, and the error would look like the defect.*
-
-**The count's only legitimate predicate is session membership.** Research
-named the monotonicity guard; the price guard sits ABOVE the session check
-too, so counting after `inSessionWindow` still inherits it. **Cleanest is to
-test the session first, count, then apply both price guards** — but that
-ordering is the engine seat's call and not mine to make in their file.
-**Either way: if the number arrives and reads low, these three lines are the
-first place to look.**
-
-*And `ingestTrade` retains no timestamps at all today — it updates price,
-`priceAt` and the session highs. So this is genuinely NEW state, a rolling
-window per hi-res symbol, not a projection of something already counted. The
-spec must not read as "expose what the engine already has": it counts
-nothing.*
-
-**WHAT THE READER DOES, AND IT IS SAFE AT EVERY STAGE:**
-
-- **The NUMBER** uses `tradesLast60s` when present, and the settled minute
-  otherwise. Same unit either way.
-- **The BARS DO NOT CHANGE.** They stay minute-grain, because they are the
-  ACTIVE/DEAD verdict's own array and that identity is what stops the chart
-  disagreeing with the badge beside it. **The number is the live reading; the
-  bars are the last five minutes of context.**
-- **The SUB-LINE NAMES WHICH ONE IS ON SCREEN** — `60s` when rolling, `−1m`
-  when settled. That is the one thing that must never be silent, because the
-  two look identical and only one is current.
-- **The SORT follows the number**, which is the entire point: he sorts by this
-  column for its live ordering, and today a name exploding now cannot reach
-  the top until its minute closes.
-
-**WHAT IT IS WORTH, MEASURED RATHER THAN ARGUED** — see the section above:
-during a ≥25% minute the figure on screen is a median **3.1× short** of what
-that minute produces, and does not update until the move is over.
-
-**AND THE HEAD STAYS `Now`, WHICH THIS MAKES TRUE.** It is a slight overclaim
-today at the last settled minute; with a rolling window ending at `updatedAt`
-it is exact. *I argued for `TRADES` on the ground that the head named a time;
-he kept `Now` and the field turns his word into the accurate one.*
-
-## ASSIGNED — the price-window control and header (his ruling, 2026-09-25)
-
-**HIS SHAPE: the desk RECORDS $0–$50 and the user PICKS a window inside it.
-Record wide, show narrow.** Research splits capture from qualification in the
-engine; Ops holds the config; **the control and the header are mine.**
-
-**FIVE CALL SITES, NOT THREE — AND I ENUMERATED THE ONES I WAS HANDED RATHER
-THAN THE ONES THAT EXIST.** `inPriceRange` (`engine.ts:1612`) is
-`price >= priceMin && price <= priceMax`, read at:
+**FIVE `inPriceRange` CALL SITES, and I enumerated the ones I was HANDED
+rather than the ones that exist.** `engine.ts:1612` is read at:
 
     988    admission
     1650   DAYTIME qualification      1690   daytime latch
     1848   AFTER-HOURS qualification  1893   after-hours latch
 
-**I opened the four sites Integration named, confirmed them, and wrote
-"verified, not relayed".** *That was true of those four and said nothing about
-whether there were more — a list confirmed is not a population enumerated.*
-**One `grep` of the function name finds five. Integration found the evening
-pair the same way, after three seats had each checked a list.** `1848`'s own
-comment even says it: *"The $1–$20 rule, applied at the relevant point of the
-AFTER-HOURS move."*
+*I opened the four Integration named, confirmed them, and wrote "verified, not
+relayed" - true of those four, and silent about whether more existed.* **A
+list confirmed is not a population enumerated; one `grep` of the function
+finds five.** `readModel.ts:157` projects the pair onto `DiscoveryState` and
+`DiscoveryBoard.tsx:332` prints it as the caption.
 
-**AND THE MISSING PAIR IS THE EVENING PATH, WHICH LANDS ON WHAT SHIPPED LAST
-NIGHT.** A split covering three sites would qualify on the WIDE band after the
-bell — crowding his names out of the payload and the trades/quotes set in
-exactly the session `8fd7887` exists to fix, **and only after 16:00.** The new
-participation column would be ordering a population that had already lost his
-small caps, **and it would look correct while doing it.**
-`readModel.ts:157` projects the same pair onto `DiscoveryState`, and
-`DiscoveryBoard.tsx:332` prints it: `Daily RVOL rank · $1–$20`. **Widening the
-config today would put $45 names on his board AND rewrite that caption. The
-header is the tell that one knob is doing three jobs.**
+**THE HAZARD THAT SHAPES THE WHOLE DESIGN.** `internalRank` (50) caps the
+payload (`readModel.ts:472`) **and selects the high-resolution subscription
+set** (`engine.ts:2088`). *Its own comment records the failure already
+happening: "a dead name at rank 3 held a trades/quotes slot that a live name
+at rank 251 was waiting for."* **So if the engine ranks a WIDE band and the
+user merely FILTERS on screen, his names compete for those 50 slots, can be
+pushed below rank 50, and lose both the payload and the trade feed.**
 
-**THE PROBLEM NOBODY HAS NAMED, AND IT IS THE REAL DESIGN DECISION.** The
-board's `rank` is `rvolRank`, computed in the ENGINE over everything that
-qualifies. **If the engine qualifies $0–$50 and he views $1–$20, the rank
-column runs 1, 4, 7, 12 — gapped, because the missing numbers are the names
-his window hides.** *He has already read a gapped rank column as "the board
-isn't sorting": on a correctly ordered board he saw 3, 2, 21, 8, 5 and
-concluded nothing was working. That cost a fix and a second pass.* Three ways
-out, and the difference is what `Rank` MEANS:
+> **AND THE FAILURE HAS NO SYMPTOM.** He has twice reported the board "not
+> sorting" from something he could SEE. **This one shows nothing: a name is
+> missing, with no mark, no hover and no count.** *A defect he can see costs a
+> message; a defect with no symptom costs the trade and is never reported.*
 
-    keep engine ranks   honest about the universe; gapped, and he has
-                        misread exactly this before
-    re-rank in window   runs 1,2,3; but then two people with different
-                        windows see different "rank 1" for the same session
-    show both           #3 of 41 in view / #7 overall — costs width in the
-                        narrowest column on the board
+### The design, after two of mine were wrong
 
-**Not guessed. It is his, and it is in the NEEDS YOU block.**
+**RANKING AND SUBSCRIBING ARE DIFFERENT COSTS AND I CONFLATED THEM.** Ranking a
+price slice is a query - `WHERE price BETWEEN ? AND ? ORDER BY rvol` - and the
+desk already holds RVOL for every qualifying name. **Only the live trade feed
+has a real budget.** I put the budget's constraint onto the ranking and
+invented preset windows to manage it.
 
-**TWO CONSTRAINTS I AM TAKING AS SETTLED, both raised by Integration and both
-right:**
+**PRESET WINDOWS ARE REJECTED, and his question killed them:** *"what would a
+user do if they wanted to see .50 to $10?"* **Any fixed set of windows has
+users straddling its boundaries**, and a straddler silently loses the slice
+that falls outside - the same no-symptom failure, reintroduced by the fix.
 
-1. **The header states the WINDOW HE IS LOOKING AT, never the recording
-   band.** They diverge the moment this ships, and a caption naming the
-   recorded band above rows showing a narrower one is the `3d`-in-green
-   pairing defect again — a number beside a word, computed from a different
-   quantity, agreeing until the day it does not.
-2. **The default window is TODAY'S band, $1–$20, not the new one.** A
-   stranger, or he at 07:00 on Monday, sees exactly today's desk unless they
-   move the control. **Always-on in the store, opt-in on the screen.**
+    ANY RANGE       the user asks for what they want; the SERVER ranks inside
+                    it, so Top 12/25/50 is always full and never missing a
+                    name. No boundary to straddle.
+    SUBSCRIPTIONS   server-side, invisible to the user, the union of what is
+                    actually being viewed, bounded by the BOX rather than by
+                    a rank threshold.
+    COVERAGE GAPS   a name with no live subscription shows the SETTLED-MINUTE
+                    figure and the sub-line says which grain is on screen.
+                    **Degrading to "a minute old" and saying so is honest; a
+                    missing row is not.**
 
-**⚠ THE SCALE FIGURES ARE WITHDRAWN.** *"13,398 universe / 7,811 above $20 /
-~1,100 at a $50 ceiling" came to me through Integration from Ops and I put
-them into a message to him. **They cannot all count the same population** —
-~1,100 is presumably the $20–$50 slice — and Research caught the
-inconsistency. **Nothing should be sized off them until Ops states which
-population each counts.*** **The mechanism does not depend on them and is not
-weakened by their withdrawal:** the crowding-out follows from one capped set
-and a wider qualifying band, at any ratio. *I relayed an unreconciled number
-into his channel, which is the thing this file already says not to do.*
+**VIEW SIZES STAY.** `Top 12/25/50` and 50 rows per range are right: the
+audit's sweep is <=12 names in 2-5s, ten rows are visible at the floor, and
+anything past 50 is a query rather than a board. *The list only needed to grow
+under the broken design where filtering happened after a global ranking.*
 
-**NOTHING SHIPS UNTIL THE ENGINE SPLIT LANDS.** Same pattern as
-`catalystFreshFrom` and `tradesLast60s`: ask the producer for the answer,
-build the reader to be safe without it.
+**THE LATCH ALREADY SOFTENS THE TOP EDGE.** `engine.ts:1844`: a name that
+qualified in range and then ran THROUGH the top stays on the board for the
+session. **A $4 stock that rips to $25 does not vanish at the moment it starts
+working.**
 
-## `8fd7887` IS LIVE AND HALF-VERIFIED — the evening arm waits for Monday
+**WHAT IS UNKNOWN AND IS A LOAD TEST, NOT A DESIGN QUESTION:** where the
+subscription budget bends. `highResMax` defaults to 250 and **nothing sets
+it**; the worker runs about six subscribed symbols today. *Nobody has run it
+at 250 or 500.* **Ops's to measure, and it is the number that turns "it can be
+built" into "it can be sold to N users."**
 
-**Shipped 22:06:50 ET. Read at 22:17 and the board had already rolled:**
-*"No session in progress. Discovery populates from 04:00 ET on 2026-09-28",*
-`0 eligible`, caption back to **`Daily RVOL rank`**. **The after-hours board
-closed between my 21:44 reading and the ship.**
+**SCALE FIGURES WITHDRAWN.** *"13,398 universe / 7,811 above $20 / ~1,100 at
+a $50 ceiling" reached me through a relay and I put them into HIS channel.
+They cannot all count the same population.* **Size nothing off them.** *The
+mechanism holds at any ratio.*
 
-    VERIFIED   the DAY arm. The sort chip reads `RVOL`, not `Part`, on a
-               DAILY_RVOL board -- so `rankingQuantity(board)` is running live
-               and returning the daytime label. That is the control side.
+**LICENSING vs TECHNICAL, because the two get conflated:** the **one
+concurrent SIP connection** is the vendor's and cannot be engineered around.
+**The 50 and the 250 are OURS** - `RVOL_INTERNAL_RANK` is in `.env.example`
+and `highResMax` has no setter. *Whether the plan caps SYMBOLS on that one
+connection is unknown to this repo and he has parked it: "I'm not concerned
+about licensing right now."*
 
-    NOT        the EVENING arm. No Discovery table renders on an empty board,
-    VERIFIED   so neither the `PART` header, nor the participation values, nor
-               the `Now` header width can be measured. **Next opportunity is
-               MONDAY after 16:00 ET.**
+## Deploys of 2026-09-25, and the one reading still owed
 
-**NEITHER IS A DEFECT AND NEITHER IS A PASS.** An empty Discovery at 22:17 on
-a Friday is the correct state, and an absent table is not evidence about a
-column — the same absent-renderer trap this file already records. **Written
-down because "shipped and looked fine" is what an unverifiable reading turns
-into overnight.**
+**Live: `5254bca` then `8fd7887` (22:06:50 ET).** Read after a reload at 21:44
+and 22:17. **Confirmed: eight columns, no rank column, `Rank` surviving as the
+active sort chip, header tooltips present with the corrected copy.**
 
-*The case for the change is unaffected: it was SEEN at 21:44, on the same
-production code path, and that reading is below.*
+**STILL OWED, AND IT IS THE FIRST TASK: read the EVENING board after 16:00 ET
+on Monday.** `8fd7887` shipped at 22:06 and the board had already rolled to
+Monday, so **the day arm is verified (the chip reads `RVOL` on a day board)
+and the EVENING arm is not** - no `PART` header, no participation values, no
+`Now` header width has been seen. *An empty Discovery is the correct state at
+that hour and is NOT evidence about a column.*
 
-## Verified on the board after `5254bca` — 2026-09-25 21:44 ET
-
-**Live and read after a reload, on the AFTER-HOURS board:**
-
-    header row   CHANGED | TICKER | PRICE·AH GAP·VWAP | RVOL | NOW −1m | WHY | RISK | CYCLE
-                 EIGHT columns. **No rank column.** `Rank▲` survives as the
-                 first sort chip and is the active sort.
-    tooltips     present and reading the corrected copy.
-
-**AND THE EVENING DEFECT `e7e629f` FIXES IS VISIBLE RIGHT NOW, WHICH IS THE
-CONFIRMATION I WAS HOLDING IT FOR.** The board is ordered by AH participation
-and that figure descends cleanly in the ticker cell — **407x, 333x, 286x,
-45.5x, 31.5x, 29.3x, 24.8x, 20.1x.** Beside it the RVOL column reads:
-
-    1555x   5369x   1414x   47.3x   1152x   15.0x   14.9x   192x
-
-**In no order at all.** *A trader scanning down the ranking column on the
-evening board sees numbers that jump — which is exactly the "the board isn't
-sorting" complaint he raised twice, live, every night, on the column that is
-supposed to say why a name ranks.*
-
-**ONE OF MY OWN ARGUMENTS FOR THAT FIX WAS WRONG AND THE FIX IS RIGHT ANYWAY.**
-I told him participation was *"a hover and nothing else"* after the rank column
-went. **It is not: it renders in the ticker cell as `11.19M · 407x`,** volume
-and participation, visible without hovering. *So the §10 hover-only argument
-does not apply and I should not have made it.* **The real case is the one on
-screen: the column headed with the ranking quantity shows a number that orders
-nothing.** Stronger than what I argued, and found by looking rather than by
-reasoning.
-
-## THE PRICE WINDOW: his default is `$1–$20`, and the control's BOUNDS are the open question
-
-**HIS WORD, 2026-09-26, answering Ops's offer of a window inside the recorded
-band: "make it 1-20."** *That is the WINDOW, not a reversal of the `$0–$50`
-recording — he is answering the clause that offered him the choice.* **And it
-is exactly today's band, so a stranger, or he at 07:00, sees precisely today's
-desk unless the control is moved.**
-
-**INTEGRATION ASKED ME ONE QUESTION — should the control reach the recording
-bounds? — AND THERE IS A HARDER ONE UNDERNEATH IT THAT DECIDES THE ANSWER.**
-
-    the payload carries `limit: config.internalRank`   readModel.ts:472
-    internalRank is 50                                  config.ts:70
-    ranking runs over everything that QUALIFIES         engine.ts:1650
-
-**SO THE BOARD RECEIVES THE TOP 50 BY RANK, AND `Top 12/25/50` SLICES THAT
-CLIENT-SIDE.** *If the engine QUALIFIES `$0–$50` and the user merely FILTERS
-to `$1–$20` on screen, his own names compete for those 50 slots against
-everything up to $50.*** **A `$1–$20` name can be pushed below rank 50 and never reach the
-payload at all. He would not see it filtered out; he would see it absent.**
-
-**AND `internalRank` HAS A SECOND CALLER, WHICH MAKES IT WORSE.** Verified at
-`engine.ts:2088`: the same constant selects the **HIGH-RESOLUTION
-SUBSCRIPTION SET**. *So a crowded-out name does not merely fall off the
-payload — **the desk stops collecting its trades and quotes.*** The comment
-directly above that line records this failure having already happened once:
-*"a dead name at rank 3 held a trades/quotes slot that a live name at rank
-251 was waiting for."* **The set is capped and crowding it is a defect this
-desk has experienced, not a hypothetical.**
-
-**THAT REACHES THE CAPTURE WORK TOO.** Sub-minute counting is only possible
-for hi-res names. **So widening what QUALIFIES would thin the 10s capture for
-exactly his names, at the same moment and through the same constant** — two
-separate pieces of work failing together on one number.
-
-**AND THE FAILURE MODE HAS NO SYMPTOM.** He has twice reported the board "not
-sorting" from something he could SEE — a rank column reading 3, 2, 21, 8, 5,
-and a ranking column whose figures did not descend. **This one shows him
-nothing: a name is missing and there is no mark, no hover and no count that
-says so.** *A defect he can see costs a message; a defect with no symptom
-costs the trade and never gets reported.*
-
-**WHICH MEANS THE WINDOW CANNOT BE A DISPLAY FILTER OVER A WIDER QUALIFIED
-SET.** The three knobs Integration separated already say it:
-
-    RECORD    $0-$50    engine.ts:988    the store. Research can ask wider
-                                          questions of data that exists.
-    QUALIFY   $1-$20    engine.ts:1650   HIS BAND. What is ranked, what
-                        engine.ts:1690   reaches the payload, what is
-                                          subscribed at trade level.
-    WINDOW    within    the control      narrowing INSIDE the qualified band,
-              $1-$20                      which can never crowd anything out.
-
-**SO THE CONTROL'S BOUNDS ARE `$1–$20` — his band — AND NOT `$0–$50`.** *A
-slider reaching $45 would not merely show him names he has never asked to
-see; used at all, it would change which names the engine ranks, and every
-narrower view would then be drawn from a population that had already lost his
-small caps.* **Recording wide is for the store. Seeing wide is a deliberate
-change to the qualifying band, not a drag of a control.**
-
-*What I am NOT deciding: whether he ever wants the board itself at `$0–$50`.
-That is his, and it is the difference between a research question and this
-product. `$1–$20` is what he named this morning.*
+**WHAT THE EVENING DEFECT LOOKED LIKE BEFORE THE FIX, read at 21:44:**
+participation descending cleanly - 407x, 333x, 286x, 45.5x, 31.5x, 29.3x,
+24.8x, 20.1x - beside an RVOL column reading **1555x, 5369x, 1414x, 47.3x,
+1152x, 15.0x, 14.9x, 192x, in no order at all.**
 
 ## Open items
 
+*Closed items are not listed. They are in the commit log and, where they were
+read on the board, in "What is verified ON THE LIVE BOARD" above.*
+
 | Item | Owner | Waiting on |
 | --- | --- | --- |
-| ~~Deploy of the FRESH boundary~~ | ~~Ops~~ | **DONE** `0a17601` live 12:17 ET, verified on the board 12:18 |
-| ~~`catalystFreshFrom` on the payload~~ | ~~Research~~ | **DONE** `7a0ad0c` producer, `bd509e9` consumer |
-| `lastCheckpointChanges` on the payload | Engine/Research seat | Spec above; §9 item 12's rail blocks on it |
-| ~~`tradesLast60s` on the payload~~ | ~~Engine seat~~ | **REJECTED by him 2026-09-25.** Nothing was built |
-| Read the EVENING board after `8fd7887` | Design | **Monday after 16:00 ET.** Shipped 22:06 Fri, board had already rolled; day arm verified, evening arm not |
-| Price-window control + header | Design | Engine split first; the `Rank`-meaning question is moot now the column is gone |
-| Sub-minute capture -> a near-live `Now` | Engine, then Design | **ON. His confirmation 2026-09-25: "Sub minute capture absolutely still on."** The counting is shared: capture stores the buckets, the column reads the newest |
-| ~~The `Now` column HEADER label~~ | ~~Design~~ | Built `ccaf77b`, tagged `363f40d`, **PARKED on his word** |
-| ~~Confirm the boundary's VISIBLE effect~~ | ~~Design~~ | **DONE** one row moved, zero demotions, discriminating pair |
-| The package: tooltips + `TRADES` + the within-day question | His call | One decision, three parts, ships as one change |
+| **Read the EVENING board** after `8fd7887` | **Design — FIRST TASK** | Monday 2026-09-29 after 16:00 ET. Day arm verified, evening arm never seen |
+| The price range: any-range server-side ranking | Research, then Design | The engine split. Design builds the control and the header AFTER it lands |
+| Sub-minute capture -> a near-live `Now` | Research, then Design | **ON, his word.** The counter is shared with capture; mind the `ingestTrade` guard |
+| Subscription load test (250 / 500 symbols) | Ops | Nobody has run the worker above ~6. It is the number that sizes the product |
+| `lastCheckpointChanges` on the payload | Research | Spec above; §9 item 12's rail blocks on it |
 | A fourth freshness band past 21 days | His call | Research left 21 unimplemented: it currently divides nothing |
 | §9 item 12 — the 320 px rail layout | Design | The rail restructures the board into two columns |
 | §9 items 13–19 (rest of Phase 2) | Design | Unstarted |
@@ -656,88 +406,6 @@ product. `$1–$20` is what he named this morning.*
 | The mark on a real handset | Design | His phone; nobody has looked |
 | Manual spine — the dozen things a user would misread | Design | His yes; drafted from the log |
 | `anchorLateScope` render (row mark + board statement) | Research builds the field | The field; ships with the render, never half |
-
-**The `Now` header is DONE at `ccaf77b`.** The head reads `TRADES` over `−1m` —
-what, then when — and takes its word from the `SORT_KEYS` entry so it cannot
-drift from the control that sorts it.
-
-**THE FLOOR MEASUREMENT THIS FILE CARRIED WAS WRONG, AND WRONG IN THE DIRECTION
-THAT INVENTS ROOM.** It said *"the table is 990 px inside a 1,014 px container,
-so the unit has about 24 px to live in."* Measured on the live board at the
-1,024 px floor: the container is **1,014.2 px, the table is 982.2 px, and the
-32 px between them is the parent's own `px-4`** — the table is `w-full
-table-fixed`, so it is already exactly as wide as it can be and **there is no
-slack at all**. Every added pixel comes out of `Why` and `Risk`, the two
-columns with no declared width.
-
-*That is not a reason not to spend it.* `Why` and `Risk` carry prose measured
-at **1,300–2,300 px truncated to a single line**, so 20 px each costs about
-four characters of a sentence already cut to a tenth of itself, and **row
-height does not move** (56.9 px either way, so no row is lost). **Size the cost
-in what the cell is actually rendering, not in pixels** — a column losing 11%
-of its width and a column losing 11% of its content are different facts, and
-here they are 40 px apart.
-
-
-**Hazards that cost something and are not obvious from the code:**
-
-- **The cycle frame is ahead of its data, and HOW FAR ahead is unsettled.**
-  **THE FRAME IS RULED AND WHOLE: ALL THREE SESSIONS, 04:00–20:00 ET.**
-  After-hours 2026-09-17; **premarket 2026-09-22, confirmed by him directly to
-  this seat** — asked plainly ("did you rule premarket into the cycle frame
-  today?") and answered "yes i ruled premarket in today". **That is the source
-  to cite, and the FIRST first-hand one.**
-
-  *The claim was written into this repo four times before it was true.* This
-  file said he ruled it on 2026-09-21; he had not. `f0048eb`, `3308fb1` and
-  `bb2901d` are the corrections, and a fifth arrived by peer relay before this
-  confirmation. **Design declined to record the relay and asked him instead** —
-  which cost two words and is the only thing that could have ended it, because
-  nothing in the tree can refute a sentence about what he said. **If a later
-  seat finds this line, its basis is a direct answer in the Design session of
-  2026-09-22, not a forwarded one.* The same false record
-  appeared in `research-opening-prompt.md:87`, was corrected once at `f0048eb`,
-  came back, and the new Research seat caught it again at `3308fb1` before
-  acting on it — **so this is the third appearance of one invented ruling, and
-  my copy is the one nobody had checked.** A ruling attributed to him that he
-  never made is the worst thing this record can carry: it cannot be refuted by
-  anything in the tree, it arrives with his authority, and every seat that
-  repeats it makes it harder to doubt. **The ruled frame is after-hours plus
-  RTH; whether premarket joins it is HIS to say and has not been asked.**
-  `daily_bars.high` is neither.
-  Today's high includes every session and the prior high does not, so the two
-  sides of that comparison are in different frames. It errs safe in DIRECTION —
-  an understated prior high makes a name look closer to its high, never further
-  — but the SIZE of the understatement is an open question, and it decides
-  whether the label needs a scope clause.
-
-  **TWO MEASUREMENTS BY THE SAME SEAT DISAGREE AND NOBODY HAS RECONCILED THEM.**
-  On 2026-09-18 the daily high was measured as premarket+RTH: 17 discriminating
-  rows supporting 04:00–16:00 and zero supporting after-hours-inclusive, and
-  independently `session_high` matched `max(minute_bars.high)` over 04:00–16:00
-  on 6,889 of 6,889 rows. On 2026-09-21 Research's hand-off states it is
-  09:30–16:00 plus the closing cross — which excludes premarket as well. Those
-  cannot both hold. If the second is right the understatement is much larger and
-  lands on the session he actually trades, which is the case a scope clause
-  exists for.
-
-  **What settles it:** the same discriminating-population query, restricted to
-  rows where PREMARKET set a higher high than RTH, comparing `daily_bars.high`
-  against `max(minute_bars.high)` for the same date. Research's query shape, one
-  filter changed. Until then `PRIOR HIGH` carries no scope clause, on the ruled
-  frame rather than on the measured one, and the tooltip says the highs before
-  today exclude after-hours. `lib/market/cycle.ts:44` carries the frame
-  warning.
-- **The vendor float never touches the server.** `stockanalysis.com` bars
-  automated access AND use of its data in a competing product; the second clause
-  holds however politely you fetch. It arrives by his desktop path through the
-  Sheet. Nothing under `app/` may reach it.
-- **The desk and a review link mount the same `DashboardShell`.** Anything added
-  to the board renders to whoever holds a token. `tests/dashboard/reviewLeak.test.ts`
-  guards the import; the rule it enforces is about what the board RENDERS, not
-  only what a column stores.
-- **A derived boolean leaks the number behind it.** "Red stop: touched" says his
-  P&L reached a figure without printing it.
 
 ## Where the rest of the record is
 
