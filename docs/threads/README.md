@@ -13271,6 +13271,46 @@ records over and over: a state that looks identical whether or not the mechanism
 *And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
 convenience that destroys the data it was written to keep.*
 
+## WIDENING WHAT QUALIFIES SILENTLY EVICTS THE NAMES YOU WIDENED IT FOR
+
+**Design found it, Integration verified it and found a second half, 2026-09-26 — before either was built, which
+is the only reason it is a note rather than an incident.**
+
+*The plan was RECORD `$0–$50`, and let the user narrow the board to a WINDOW inside it. That reads as three
+independent knobs. It is not.*
+
+```
+config.ts:70       internalRank = num(env.RVOL_INTERNAL_RANK, 50)
+readModel.ts:472   limit: config.internalRank        <- THE PAYLOAD IS TOP 50 BY RANK
+engine.ts:1650     ranking runs over everything that QUALIFIES
+engine.ts:2088     if (rankOf(runtime) <= internalRank && alive) selected.add(...)
+                   <- THE SAME CAP ALSO SELECTS THE TRADES/QUOTES SUBSCRIPTION SET
+```
+
+**If qualification widens to `$0–$50`, small caps compete for 50 slots against everything up to `$50` — and
+7,811 of the universe's 13,398 symbols sit above `$20`.** *A name pushed past rank 50 never reaches the
+payload **and loses its trade-level subscription.***
+
+> **THE FAILURE MODE IS NOT "THE BOARD SHOWS THE WRONG ROWS". IT IS "A NAME IS MISSING AND NOTHING SAYS SO"**
+> — *no mark, no hover, no count. A display filter announces itself; eviction from the ranked set does not.*
+> **He has twice reported the board "not sorting" from a VISIBLE symptom. This one has no symptom at all.**
+
+**So the knobs are RECORD / QUALIFY / WINDOW, and QUALIFY must stay at his band while RECORD widens:**
+
+```
+RECORD    $0-$50   engine.ts:988          the store, for wider research questions
+QUALIFY   $1-$20   engine.ts:1650/:1690   HIS BAND -- ranked, payloaded, SUBSCRIBED
+WINDOW    inside    the control            narrowing WITHIN the qualified band
+```
+
+**AND THE CAP HAS ALREADY BITTEN ONCE, in its own comment: *"a dead name at rank 3 held a trades/quotes slot
+that a live name at rank 251 was waiting for."*** *So crowding that set is an experienced defect, not a
+hypothesis — and the fix for it was to gate on liveness, which does nothing about price.*
+
+*Two separate builds shared the constant: the band split and the 10s trade capture, which needs exactly the
+subscription this cap allocates. **A composition defect is invisible from inside either piece of work** — and
+this one was found only because one seat read the payload limit while another owned the engine.*
+
 ## A HEAVY READ DURING A DEPLOY IS CONTENTION, AND IT MAY BE THE TRIGGER FOR THE FALSE `is live`
 
 **Ops, 2026-09-25, while waiting for a cutover and trying to take a before-reading.** *Its query timed out
