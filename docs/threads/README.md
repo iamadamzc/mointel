@@ -13271,6 +13271,38 @@ records over and over: a state that looks identical whether or not the mechanism
 *And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
 convenience that destroys the data it was written to keep.*
 
+## PREFLIGHT RUNS FROM THE LIVE RELEASE, SO A TOOLING SHIP CANNOT GUARD ITSELF
+
+**Noticed 2026-09-26 while approving two ships in sequence, and it is a property of the deploy path rather than
+a defect.**
+
+```
+push-release.sh:73-74   bash /opt/mointel/current/deploy/aws/preflight.sh
+                        -- the LIVE release's copy, never the one being shipped
+```
+
+**So a ship that IMPROVES preflight is checked by the preflight it replaces:**
+
+```
+ship 1   the tooling fix          preflight from the OLD release   -> UNGUARDED, necessarily
+ship 2   anything after it        preflight from the tooling       -> FIRST GUARDED SHIP
+```
+
+> **THE CONSEQUENCE WORTH PLANNING AROUND: the deploy that installs a guard is always the last unguarded one,
+> and the NEXT deploy is the guard's first production test.** *So the ship after a tooling change is the one to
+> read carefully — **a refusal there may be the new guard working rather than a fault**, and reaching for the
+> override is exactly the wrong first move.*
+
+**The same holds for anything the box executes from `current`: `preflight.sh`, `status.sh`.** *It does NOT hold
+for `push-release.sh` itself, which runs from the dev machine's tree — so a fix to the LAUNCHER takes effect on
+the next run, while a fix to what the BOX checks takes effect one ship later.* **Two halves of one tool with
+different activation times, and an enumeration that treats them the same will mis-state when the fix is live.**
+
+*Corollary found the same hour: `sync-env.sh` is never executed from a release at all — the only references to it
+in the deploy scripts are error strings telling a human to run it. **So a conflict in the release's copy is
+operationally moot, and taking main's version would have dragged unshipped auth config into a release.** Keeping
+the base copy was correct, and knowing WHICH files the box actually runs is what made that answerable.*
+
 ## A RETRACTION MUST REACH EVERYONE THE ASSERTION REACHED
 
 **Integration's, 2026-09-26, found by the seat that inherited it.** *At 07:41 ET this seat told Design that
