@@ -13344,6 +13344,23 @@ nothing reads that line. No health field, no `market.state` contribution, nothin
 writer, not the reader — and a log line with no consumer is the same as no signal at all once the person who
 wrote it has moved on.* **Make "capture is being discarded" answerable without reading a startup log.**
 
+> **✅ FIXED SAME DAY (`fc9ca10`), AND THE FIX FOUND A SECOND TRAP ON ITS WAY: `market.tradeCapture` —
+> `RECORDING|DISCARDING`, the sanitized refusal line, `bucketsWritten`, `bucketsDiscarded` — had to be read RAW
+> from `feed_health`, because the snapshot's `healthView` projects a FIXED FIELD LIST and would have silently
+> dropped it.** *An allowlist projection turns a new health field into no health field, and the route's own
+> comment already documented the trap.* **`/api/health` got its first test ever, with the field-dropped mutant
+> killing both route tests as predicted.**
+>
+> **AND THE LIMIT, WHICH IS WHERE THIS KIND OF FIX USUALLY STOPS: THE FIELD IS ANSWERABLE, AND NOTHING ASKS.**
+> *A field nobody queries and a log line nobody greps fail the same way one level apart.* **Visibility and
+> ALERTING are separate decisions** — and correctly, `tradeCapture` is NOT part of `ok`, because a secondary
+> store must not turn the desk red.
+>
+> *Looking for the standing check to fold it into found there is none: four scheduled tasks, every one a dated
+> one-off, including a 2026-09-08 investigation into an incident long resolved — **still installed, still running
+> read-only against production eighteen days later.** Which is `README`'s own rule two hundred lines up: a
+> scheduled instruction whose purpose is met does not become inert.*
+
 *Neither half's author could see this from inside their own half: the version guard is correct, the degradation
 is correct, and the gap is only visible to someone holding both.*
 
