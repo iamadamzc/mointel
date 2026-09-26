@@ -4,6 +4,17 @@
 Written on Integration's relay of his *"scope it"* — the third section of a
 three-part scope that **Commercial leads and holds**; Ops holds the infra half.
 
+**The lead document is
+[`../commercial/2026-09-26-billing-onboarding-support-scope.md`](../commercial/2026-09-26-billing-onboarding-support-scope.md),
+which links to this one rather than absorbing it** — each thread's file stays
+under its own charter. *That path is Commercial's stated one and did not exist yet
+when this was written at `606a555`; if the link is dead, the document is still
+being written rather than missing.* **The split with Commercial, agreed 2026-09-26: this seat
+scopes the pricing page's EXISTENCE, its states and what has to be true for it to
+be honest, and specifies a hole; Commercial fills the tiers, the numbers and the
+inclusions.** *No placeholder price from this side, no page design from that
+one.*
+
 > ## SCOPE, NOT BUILD. NOTHING HERE IS A DECISION.
 >
 > **No provider is selected, nobody has been contacted, nothing is signed, and
@@ -97,25 +108,36 @@ own adoption, and the existing terms stay adopted and stay rendering. *Which
 route is taken is a drafting decision, not a Web decision; I flag only that one
 route blanks a live banner on a public page and the other does not.*
 
-### The constraint that does not wait for a price — Commercial's, cited not re-derived
+### The market-data licence — ALREADY RULED, and it is not a caveat on this flow
 
-**`docs/commercial/2026-09-07-feed-licence-landscape.md` §1 draws the market-data
-licence line at any person other than the subscriber seeing the data, and states
-explicitly that it is NOT drawn at payment.** *Seven sources quoted there to that
-effect.* **The adopted terms §5 already carries the consequence** — no
-redistribution, no reselling access, no running a service for other people —
-*and it is named in the file as the one clause that is not boilerplate.*
+**Commercial's, cited rather than re-derived, and confirmed by Commercial
+2026-09-26 as the framing this section takes.**
 
-> **SO BILLING IS NOT WHAT CREATES THIS EXPOSURE. Admitting a second human
-> being is, paid or free — which the invite model already does.** *What a paid
-> tier changes is that it converts his recorded stance — "build it on the
-> personal license and if we get traction then we pursue the commercial
-> compliance" — from a plan into a due date.*
+**`docs/commercial/2026-09-07-feed-licence-landscape.md` §1 draws the licence
+line at the first viewer who is not the subscriber — and states explicitly that
+it is NOT drawn at payment.** *Seven sources quoted there to that effect.* **His
+ruling 2026-09-08, verbatim in that file:** *"accept exposure. not going to pay
+for something i'm not sure is going to be used. my call. the moment we have
+something moving, i'll sign up."*
 
-**RAISED WITH COMMERCIAL, NOT RULED ON HERE, AND NOT PUT TO HIM FROM THIS SEAT.**
-*It decides whether my §1 describes a flow ending in a paid account, or one
-ending in a paid account subject to a licence position being resolved
-separately. That is one paragraph of this document and nothing else.*
+> **SO THIS FLOW IS NOT "SUBJECT TO A LICENCE POSITION BEING RESOLVED". THE
+> POSITION IS RESOLVED AND THE EXPOSURE IS ACCEPTED, BY HIM, ON THE RECORD.**
+> *An earlier draft of this section hedged it as an open question; Commercial
+> corrected it, and the hedge would have published a doubt he had already
+> settled.*
+
+**What is true, stated without hedging it:** **the exposure begins at the first
+outside viewer, invited or paying, so the invite-only gate already reaches it the
+day it admits anyone who is not him.** *Billing does not create it and this scope
+does not change it.* **What a paid tier changes is that it makes the accepted
+exposure concrete for the first time.**
+
+**AND THE TRIGGER IS DELIBERATELY UNDEFINED — "something moving" — with that
+file's own instruction that NO SEAT IS TO INVENT A THRESHOLD FOR IT.** *So this
+document does not say a paying customer is that trigger, which would be
+inventing one under a different name.* **Commercial holds the mapping and is
+raising it to Integration for the risk conversation Integration already owns.**
+*Named here only so a reader of this scope does not conclude it was overlooked.*
 
 ---
 
