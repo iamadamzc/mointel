@@ -492,6 +492,36 @@ small-cap**, which is why the control cannot quietly become the capture knob.*
 `catalystFreshFrom` and `tradesLast60s`: ask the producer for the answer,
 build the reader to be safe without it.
 
+## VERIFIED ON THE BOARD after `5254bca` — 2026-09-25 21:44 ET
+
+**Live and read after a reload, on the AFTER-HOURS board:**
+
+    header row   CHANGED | TICKER | PRICE·AH GAP·VWAP | RVOL | NOW −1m | WHY | RISK | CYCLE
+                 EIGHT columns. **No rank column.** `Rank▲` survives as the
+                 first sort chip and is the active sort.
+    tooltips     present and reading the corrected copy.
+
+**AND THE EVENING DEFECT `e7e629f` FIXES IS VISIBLE RIGHT NOW, WHICH IS THE
+CONFIRMATION I WAS HOLDING IT FOR.** The board is ordered by AH participation
+and that figure descends cleanly in the ticker cell — **407x, 333x, 286x,
+45.5x, 31.5x, 29.3x, 24.8x, 20.1x.** Beside it the RVOL column reads:
+
+    1555x   5369x   1414x   47.3x   1152x   15.0x   14.9x   192x
+
+**In no order at all.** *A trader scanning down the ranking column on the
+evening board sees numbers that jump — which is exactly the "the board isn't
+sorting" complaint he raised twice, live, every night, on the column that is
+supposed to say why a name ranks.*
+
+**ONE OF MY OWN ARGUMENTS FOR THAT FIX WAS WRONG AND THE FIX IS RIGHT ANYWAY.**
+I told him participation was *"a hover and nothing else"* after the rank column
+went. **It is not: it renders in the ticker cell as `11.19M · 407x`,** volume
+and participation, visible without hovering. *So the §10 hover-only argument
+does not apply and I should not have made it.* **The real case is the one on
+screen: the column headed with the ranking quantity shows a number that orders
+nothing.** Stronger than what I argued, and found by looking rather than by
+reasoning.
+
 ## Open items
 
 | Item | Owner | Waiting on |
@@ -500,7 +530,8 @@ build the reader to be safe without it.
 | ~~`catalystFreshFrom` on the payload~~ | ~~Research~~ | **DONE** `7a0ad0c` producer, `bd509e9` consumer |
 | `lastCheckpointChanges` on the payload | Engine/Research seat | Spec above; §9 item 12's rail blocks on it |
 | ~~`tradesLast60s` on the payload~~ | ~~Engine seat~~ | **REJECTED by him 2026-09-25.** Nothing was built |
-| Price-window control + header | Design | HIS call on what `Rank` means in a narrowed window; engine split first |
+| `e7e629f` — PART after the bell | Ops | **Evening defect now SEEN: RVOL column orders nothing on the AH board.** Ready to enumerate |
+| Price-window control + header | Design | Engine split first; the `Rank`-meaning question is moot now the column is gone |
 | Sub-minute capture -> a near-live `Now` | Engine, then Design | **ON. His confirmation 2026-09-25: "Sub minute capture absolutely still on."** The counting is shared: capture stores the buckets, the column reads the newest |
 | ~~The `Now` column HEADER label~~ | ~~Design~~ | Built `ccaf77b`, tagged `363f40d`, **PARKED on his word** |
 | ~~Confirm the boundary's VISIBLE effect~~ | ~~Design~~ | **DONE** one row moved, zero demotions, discriminating pair |
