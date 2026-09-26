@@ -561,6 +561,41 @@ session-hygiene rule's concern and not his.* **A seat that shortens a defect rep
 his reading has traded a real thing for a rule that was never about it** — and the seat that did that was
 this one, in the same hour it wrote the rule down.
 
+## ⏸ THE TRADE-CAPTURE SHIP — FOUR SHAS, ENUMERATED, WAITING ON HIS RESTART
+
+```
+base      confirm from /proc (8fd7887 today, or the tooling sha if that lands first)
+pick 1    af998eb   accumulate 10s buckets in the engine
+pick 2    9436da4   trades.db + the worker drains into it every flush
+pick 3    fc9ca10   tradeCapture RECORDING|DISCARDING in /api/health
+pick 4    5e16676   a grace of two buckets before dropping   <- NEWEST, after fc9ca10
+EXCLUDED  281641e / ed55847 / 6fe1341 -- all DOCS-ONLY, all inside the range. NO RANGE PICK.
+COUNT     base + 2 test files (tradesStore.test.ts, healthTradeCapture.test.ts). 161 over 8fd7887.
+env       TRADES_DB_PATH on the box in the same motion; unset it falls beside market.db
+```
+
+**EACH SEAT NAMED A SUBSET AND NEITHER NAMED THE SHIP: Research listed three and omitted `fc9ca10`; Ops had
+named `fc9ca10` as required with `9436da4` and did not have `5e16676`, which did not exist yet.** *Third
+instance of the same thing in two days — a list assembled from what colleagues mentioned.*
+
+**WHY ALL FOUR:** *`fc9ca10` — without it the rollback case (store newer than build → refuse → silent discard) is
+invisible again. `5e16676` — without it `MAX(trades, excluded.trades)` carries a producer defect alone; the
+`MAX` stops a revived bucket clobbering a settled count and **cannot recover the late prints**, and holding the
+bucket two buckets longer is what counts them.*
+
+**❌ AND A CORRECTION TO THIS SEAT: THE REAPER IS WIRED AT HEAD.** *`worker/runtime.ts:1525` calls
+`drainTradeBuckets()`, wired in `9436da4`, verified.* **So "`af998eb` leaks" is true of that commit ALONE and
+false of the tree, and it was stated in a way that read as both.** *The plan is unchanged; the reason is
+stronger — they ship together to avoid a LIVE leak rather than a dormant producer.*
+
+> **THE DETAIL THAT MAKES THE FAILURE MODES INDEPENDENT, and Research flagged it as the thing it would have got
+> wrong: THE DRAIN RUNS EVERY FLUSH WHETHER OR NOT THE STORE IS OPEN.** *So a degraded store cannot become an
+> unbounded Map — `bucketsDiscarded` rises and memory stays flat.* **Two separate failures instead of one
+> compound one, which is what lets the health field report honestly.**
+
+*Gate note for whoever runs it: Research collected 168 test files against 167 predicted because a peer landed a
+file mid-run. **Over-collection is a peer; UNDER-collection is the environment.** Only one direction is a stop.*
+
 ## THE MEASURED POPULATION TABLE — USE THIS, AND NAME THE COLUMN
 
 **Measured off the box by Ops 2026-09-26, read-only, no deploy running. It SUPERSEDES every price-band figure
