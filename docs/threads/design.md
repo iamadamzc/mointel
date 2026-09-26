@@ -285,8 +285,26 @@ counted at different grains cannot share one sort.*
 
 ## THE PRICE RANGE - the current design, 2026-09-26
 
-**HIS RULING: *"make it 1-20."*** That is the DEFAULT the board opens on -
-exactly today's desk - and it is not a reversal of recording `$0-$50`.
+~~**HIS RULING: *"make it 1-20."*** That is the DEFAULT the board opens on -
+exactly today's desk - and it is not a reversal of recording `$0-$50`.~~
+
+> **CORRECTED 2026-09-26 13:50 UTC by the successor seat: `$1–$20` IS NOT A
+> RULING, AND THE DESK IS NOT `$1–$20` TODAY.** Read at his own turn
+> (transcript `54c1eecd…`, 11:36:48Z): his whole reply was *"make it 1-20."* to
+> Ops's line *"recording $0–$50 while letting you choose the range the board
+> shows."* **The sentence offers two things and his reply names neither.** Ops
+> read the recording band, Integration read the window, and this charter took
+> Integration's 07:41 ET relay (*"a default he has named"*) as the ruling.
+> **Integration withdrew that at 09:20 ET (`e8cd17d`): unruled, moot until the
+> split lands, and he dismissed the question twice — do not ask him a third
+> time.** And production is `DISCOVERY_PRICE_MIN=0.25` (Ops, `6fe1341`), so
+> today's board is `$0.25–$20`, not `$1–$20`.
+> **For Design: the control is built with a CONFIGURABLE default and the value
+> is not hard-coded from this sentence.** When the split lands, the default is
+> the one question to put to him, in plain words, once. *This charter wrote a
+> false "he ruled it" into the repo for the fourth time; the premarket-frame
+> precedent is in "What he ruled, verbatim".*
+
 **And his product framing, which rules out building only for his band:**
 *"we are building a product for a monetization, not just for me. So we need to
 be able to show from 25 cents up to 50, if that's what people want to see."*
@@ -360,7 +378,12 @@ built" into "it can be sold to N users."**
 **SCALE FIGURES WITHDRAWN.** *"13,398 universe / 7,811 above $20 / ~1,100 at
 a $50 ceiling" reached me through a relay and I put them into HIS channel.
 They cannot all count the same population.* **Size nothing off them.** *The
-mechanism holds at any ratio.*
+mechanism holds at any ratio.* **The measured replacement, with each
+population named, is Ops's table in `ops.md` under "2026-09-26 (Sat)"
+(`6fe1341`)** — and it carries a fact that changes this design's cost: the
+worker's bootstrap band is `[MIN×0.4, MAX×2]` (`worker/runtime.ts`), so the
+desk ALREADY captures $20–$40 names every day (3,443 symbols on 09-25), and
+the qualification gate is what keeps them off the board (Research, `39e6f21`).
 
 **LICENSING vs TECHNICAL, because the two get conflated:** the **one
 concurrent SIP connection** is the vendor's and cannot be engineered around.

@@ -104,9 +104,14 @@ paraphrase a ruling into the record; peers will refuse it and they are right to.
 - **Sub-minute capture is ON** — *"Sub minute capture absolutely still on."*
   And its purpose is the live `Now` column, not a study. **He rejected the
   rolling 60-second column.**
-- **The price range: default `$1–$20`, record `$0.25–$50`** — *"make it 1-20."*
-  And the product framing that rules out building only for his band: *"we are
-  building a product for a monetization, not just for me."*
+- ~~**The price range: default `$1–$20`, record `$0.25–$50`** — *"make it 1-20."*~~
+  **Corrected 2026-09-26 by the seat that received this prompt: `"make it
+  1-20."` is UNRULED** — it answered a sentence offering two things and names
+  neither; Integration withdrew its reading (`e8cd17d`) and says do not ask a
+  third time. Production is `$0.25–$20`. See `design.md`, THE PRICE RANGE.
+  What IS his, verbatim, is the product framing that rules out building only
+  for his band: *"we are building a product for a monetization, not just for
+  me."*
 - **Premarket is IN the cycle frame** (2026-09-22, his words to this seat);
   with after-hours the frame is all three sessions, 04:00–20:00 ET.
 - **Catalyst freshness is calendar bands** (2026-09-24), refined by the prior
