@@ -7,9 +7,8 @@ three-part scope that **Commercial leads and holds**; Ops holds the infra half.
 **The lead document is
 [`../commercial/2026-09-26-billing-onboarding-support-scope.md`](../commercial/2026-09-26-billing-onboarding-support-scope.md),
 which links to this one rather than absorbing it** — each thread's file stays
-under its own charter. *That path is Commercial's stated one and did not exist yet
-when this was written at `606a555`; if the link is dead, the document is still
-being written rather than missing.* **The split with Commercial, agreed 2026-09-26: this seat
+under its own charter. *Landed at `1644109` and it links back to this
+file; the reciprocal pair is checked, not assumed.* **The split with Commercial, agreed 2026-09-26: this seat
 scopes the pricing page's EXISTENCE, its states and what has to be true for it to
 be honest, and specifies a hole; Commercial fills the tiers, the numbers and the
 inclusions.** *No placeholder price from this side, no page design from that
