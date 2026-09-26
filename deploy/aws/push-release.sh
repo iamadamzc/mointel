@@ -151,6 +151,17 @@ done
 
 "${SSH[@]}" "sudo journalctl -u $UNIT --no-pager -o cat" 2>/dev/null | grep -v -E '^\s*(added|npm warn|>|$)'
 
+# The deadline is not an outcome. A unit still running when it passes has not
+# cut over yet, and nothing below may speak for it.
+case "$STATE" in
+  inactive|failed) ;;
+  *)
+    echo "[release] deploy unit $UNIT is still '$STATE' at the follow deadline -- NOT confirmed." >&2
+    echo "[release] it keeps running on the box; confirm the cutover from /proc before calling it live." >&2
+    exit 8
+    ;;
+esac
+
 RESULT="$("${SSH[@]}" "systemctl show $UNIT -p Result -p ExecMainStatus --value" 2>/dev/null | tr '\n' ' ')"
 case "$RESULT" in
   "success 0 "*) ;;
@@ -161,4 +172,25 @@ case "$RESULT" in
     ;;
 esac
 
-echo "[release] $SHORT is live on $HOST"
+# A unit's exit status is a fact about a PROCESS. "Live" is a fact about what
+# the services are running, so read that instead: each unit's working directory
+# from /proc, which is the release it actually loaded. A deploy killed by
+# `systemctl stop` exits success/0 too, and before this check it printed
+# "is live" over a production that never moved.
+UNITS="mointel-web mointel-research mointel-assess"
+[ "${RESTART_MARKET:-no}" = "yes" ] && UNITS="$UNITS mointel-market"
+LIVE="$("${SSH[@]}" "for u in $UNITS; do p=\$(systemctl show -p MainPID --value \$u); echo \"\$u \$(sudo readlink -f /proc/\$p/cwd)\"; done" 2>/dev/null || true)"
+WANT="/opt/mointel/releases/$SHA"
+CONFIRMED=0
+STALE=""
+for u in $UNITS; do
+  got="$(printf '%s\n' "$LIVE" | awk -v u="$u" '$1 == u { print $2 }')"
+  if [ "$got" = "$WANT" ]; then CONFIRMED=$((CONFIRMED + 1)); else STALE="$STALE $u=${got:-unreadable}"; fi
+done
+if [ -n "$STALE" ]; then
+  echo "[release] the unit succeeded but production did NOT cut over to $SHORT:$STALE" >&2
+  echo "[release] deploy.sh rolls back on its own failures; read the journal above before acting." >&2
+  exit 9
+fi
+
+echo "[release] $SHORT is live on $HOST ($CONFIRMED services confirmed from /proc)"
