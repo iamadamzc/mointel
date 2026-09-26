@@ -13294,11 +13294,23 @@ the text out rather than deleting it (`713192b`). **Nothing reached code.***
 happens to be in the conversation when you notice.** *A correction that goes only to the seat you are currently
 talking to is a correction in one place and an assertion in two.*
 
+> **AND THE SHARPEST INSTANCE IS RESEARCH'S OWN, WHICH NOBODY OUTSIDE IT COULD HAVE SEEN: it refused to put
+> three unreconciled figures into HIS block — and left them stated as fact in its own charter.** *Its sentence,
+> which is the rule: **"I applied the standard to his channel and not to the artefact that outlives me."***
+>
+> **A SEAT CAN BE SCRUPULOUS ABOUT WHAT REACHES THE OWNER AND CARELESS ABOUT WHAT REACHES ITS SUCCESSOR — and
+> the successor has less to check against.** *He can push back; a fresh seat reading an opening prompt has
+> nothing else to go on.* **So the discipline that governs his channel governs the charter and the prompt, and
+> the prompt hardest of all: the charter is read by a seat already working, the PROMPT is read by a seat that
+> has nothing else.**
+
 **THE SWEEP THIS PROMPTED FOUND ANOTHER, load-bearing on a build rather than a default:** *`research.md:172`
 still read "FIVE SITES, NOT THREE, AND ALL FIVE READ ONE PAIR THROUGH `inPriceRange`" — **after the count had
 been corrected to about ten, with the two that matter (`runtime.ts:862-863`, `MIN*0.4` / `MAX*2`) never calling
 the predicate at all.*** **A split built from that line would have missed the multiplier, and `MAX=50` bootstraps
-to \$100.** *Routed. **Grep the charters for your own corrected claims; a message is not a document.***
+to \$100.** *Routed — and it was in TWO of Research's files, including `research-opening-prompt.md`, where it had become
+"four call sites read one config value".* **Grep the charters AND the opening prompts for your own corrected
+claims; a message is not a document, and a document read first is not the same as a document read late.**
 
 ## REUSING A RULED PATTERN IS NOT A PATTERN DECISION
 
