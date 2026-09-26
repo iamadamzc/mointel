@@ -148,14 +148,15 @@ export function persistTradeBuckets(
   tradingDate: string,
   logger: TradesLogger,
   redactError: (error: unknown) => string = String,
-): number {
+): { written: number; discarded: number } {
   const buckets = drain();
-  if (!store || buckets.length === 0) return 0;
+  if (buckets.length === 0) return { written: 0, discarded: 0 };
+  if (!store) return { written: 0, discarded: buckets.length };
   try {
-    return upsertTradeBuckets(store, tradingDate, buckets);
+    return { written: upsertTradeBuckets(store, tradingDate, buckets), discarded: 0 };
   } catch (error) {
     logger.error(`[trades] write failed: ${redactError(error)}`);
-    return 0;
+    return { written: 0, discarded: buckets.length };
   }
 }
 

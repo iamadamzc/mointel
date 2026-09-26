@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import { getMarketSnapshot } from '@/lib/market/readModel';
 import { loadMarketConfig } from '@/lib/market/config';
 import { databaseExists, openDatabase, SCHEMA_VERSION } from '@/lib/market/store/db';
+import { readFeedHealth } from '@/lib/market/store/repo';
+import type { TradeCaptureHealth } from '@/lib/market/types';
 
 /**
  * Operational health, in one request.
@@ -27,6 +29,9 @@ export async function GET() {
   let schemaVersion: number | null = null;
   let dbReachable = false;
   let dbProblem: string | null = null;
+  // Read raw rather than through the snapshot's healthView, which projects a
+  // fixed set of fields and would drop this one silently.
+  let tradeCapture: TradeCaptureHealth | null = null;
 
   if (!databaseExists(config.dbPath)) {
     dbProblem = 'no state store on disk';
@@ -34,6 +39,11 @@ export async function GET() {
     try {
       const db = openDatabase(config.dbPath, { readonly: true, skipSchema: true });
       schemaVersion = Number(db.pragma('user_version', { simple: true }));
+      try {
+        tradeCapture = readFeedHealth(db)?.tradeCapture ?? null;
+      } catch {
+        tradeCapture = null; // an older store without feed_health; not a health failure
+      }
       db.close();
       dbReachable = true;
       if (schemaVersion !== SCHEMA_VERSION) {
@@ -78,6 +88,13 @@ export async function GET() {
         tradingDate: snapshot.discovery.tradingDate,
         sessionPhase: snapshot.discovery.sessionPhase,
         board: snapshot.discovery.board,
+        /*
+         * Ten-second trade capture: RECORDING or DISCARDING, with counts. Not
+         * part of `ok` for the same reason worker state is not, but it must be
+         * visible here: after a rollback below the store's schema the desk is
+         * otherwise healthy in every other field while capturing nothing.
+         */
+        tradeCapture,
       },
       research: snapshot && {
         state: snapshot.researchHealth.state,
