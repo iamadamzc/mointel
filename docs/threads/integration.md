@@ -626,7 +626,49 @@ populations mixed in one sentence, and this seat passed all three on unreconcile
 > over, and `MAX=50` would bootstrap to \$100.** *`runtime.ts:862-863` is a build constraint on Research's split
 > — routed.*
 
-## ⚠️ "MAKE IT 1-20" IS UNRULED AND MOOT — DO NOT ASK HIM A THIRD TIME
+## ✅ RULED 2026-09-26 ~13:55 UTC — RECORD \$0.25–\$50, BOARD DEFAULTS \$1–\$20, USER SETS THEIR OWN
+
+**HIS WORDS, verified at his own turn in the Design session (transcript `00e6d551`), not from a relay:**
+
+> *"The one to 20 is the default setting for the board. Correct? However, this is not the default setting for the
+> system. The user will be able to identify their own range overall. We're just talking about what the system
+> defaults to. That's the question, right?"*
+
+**AND THE SYSTEM BAND, from a separate turn of his, which CORRECTS A FIGURE THIS SEAT RELAYED AS SPEC:**
+
+> *"…we are building a product for a monetization, not just for me. **So we need to be able to show from 25 cents
+> up to 50**, if that's what people want to see. Now, what I hear you're saying is the board is going to be
+> limited in terms of what it can present because of how many it can show at a single time…"*
+
+```
+RECORD / system   $0.25 - $50   <- THE FLOOR IS 25 CENTS, NOT ZERO. "$0-$50" was never the spec.
+                                   Production ALREADY HAS 0.25. Only the CEILING moves: 20 -> 50.
+BOARD default     $1 - $20
+USER range        their own, inside the recorded band -- THE SERVER RANKS INSIDE IT
+```
+
+**SO `DISCOVERY_PRICE_MIN=0.25` IS THE RULED VALUE, not a temporary floor.** *Ops's revert of `59dde3c` landed on
+exactly the right number, and its note calling it "Integration's reading" can now cite his turn.*
+
+> **AND HE ALREADY KNOWS ABOUT THE CAP — read his last clause: "the board is going to be limited in terms of what
+> it can present because of how many it can show at a single time… top 12 or a top 25 or top…"** *The crowding
+> finding reached him and he is reasoning inside it.* **So `internalRank = 50` against a user-set range is a live
+> product question he is already in, not a defect to shield him from.**
+
+**WHAT THIS CHANGES FOR THE BUILD: "the user will be able to identify their own range overall" makes the
+qualification band a REQUEST PARAMETER, not an env pair.** *This is no longer "split one constant into two" — one
+pair for RECORDING, and the board's band becomes PER-USER with the server ranking inside it. Bigger than the
+split as scoped, and he has now specified it twice.*
+
+**STILL NOT AUTHORISED: any env change. `DISCOVERY_PRICE_MAX` stays `20` until the split lands**, because one pair
+gates recording and the board, so widening the ceiling today widens QUALIFICATION — exactly what he says `$1–$20`
+is not. *And `MAX=50` makes `runtime.ts:862-863` bootstrap `[0.10, 100]`: a live number now, feeding the restart
+cost and `quick_check` growth.*
+
+*The "unruled" state was correct until he spoke. **Superseded, not contradicted** — and the reading this seat held
+was right, which is worth less than the fact that it was held as unruled rather than asserted.*
+
+## ❌ SUPERSEDED — "MAKE IT 1-20" WAS UNRULED UNTIL 2026-09-26 13:55 UTC
 
 **He said "make it 1-20" on 2026-09-26, replying to an Ops status line that offered him a choice:
 *"recording \$0–\$50 while letting you choose the range the board shows."* Ops read it as the RECORDING band;
