@@ -13271,6 +13271,61 @@ records over and over: a state that looks identical whether or not the mechanism
 *And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
 convenience that destroys the data it was written to keep.*
 
+## WHEN CONVERSION IS IMPOSSIBLE, OMIT — LABELLING ADDS A SECOND FRAME TO THE SAME ROW
+
+**Research, 2026-09-26, and it is a deliberate exception to this desk's own "convert AND label" rule.**
+
+*Four board fields print an ordinal computed over the QUALIFY band — `rankChange`, `previousRanks`, `deadAtRank`
+and the graveyard's aria-label. Under a user-chosen range those ordinals are no longer in the range the reader is
+looking at.* **Three options, and the usual cure is the wrong one:**
+
+```
+convert to in-range   IMPOSSIBLE. rankChange needs a PREVIOUS ranking in the same range, and previous
+                      ranks exist only for the qualify band -- one per viewer range is unbounded.
+                      deadAtRank is a fact about a name that is GONE: producing it for a new range
+                      needs a re-rank of a past moment against a membership nobody recorded.
+mix                   WORSE. An in-range rank minus a global previous rank is a delta between two
+                      different lists.
+label it              the row ALREADY carries a denominator -- "top 25 of 312". Adding "held rank 7
+                      of $1-$20" puts a SECOND frame on a row, which is the defect the caption
+                      rule exists to remove.
+OMIT, SERVER-SIDE     chosen.
+```
+
+> **"CONVERT AND LABEL" ASSUMES CONVERSION EXISTS. Where it does not, a label does not rescue the number — it
+> adds a second denominator to a row that has just been given one.** *Two frames on one row is the thing the
+> denominator was introduced to fix.*
+
+**AND OMIT SERVER-SIDE RATHER THAN CLIENT-SIDE, in its words: *a component told not to print something is a
+RULE; a field that is not there is a CONSTRAINT.*** *The same reasoning as making a store refuse a path rather
+than documenting that nobody should use it.*
+
+## THE TRIGGER MUST NAME THE REQUIREMENT, NOT THE CASE WHERE IT CURRENTLY HOLDS
+
+**Research sharpening Design's rule, 2026-09-26 — and it is this file's "name the condition, not the event" rule
+caught in the act, by the seat implementing it.**
+
+*Design's rule: omit the stored ordinals when the range is **non-default**. Research's correction: the ordinals are
+computed in the **QUALIFY band**, so the test is **"requested range ≠ the band the ordinals were computed in"**.*
+
+```
+today          the default range and the qualify band COINCIDE at $1-$20  -> both readings agree
+the day after  change the default and "non-default" starts omitting on a range where the ordinals
+               are VALID, or printing on one where they are NOT
+```
+
+> **THE TWO READINGS AGREEING TODAY IS PRECISELY WHY THE WRONG ONE IS INVISIBLE.** *A rule that names the case
+> where a requirement currently holds passes every test written today, and breaks on the day someone changes an
+> unrelated default — with no failing test to catch it, because the test was written against the same
+> coincidence.*
+
+*Fourth instance on this desk of a rule naming its circumstance rather than its requirement. **The tell is always
+two conditions that happen to be equal**, and the cure is to write down which of them the code actually needs.*
+
+*Related, from the same review: the graveyard prints `deadAtRank` in its `aria-label` as well as its cell
+(`Graveyard.tsx:187` and `:214`). **A screen-reader user would have heard the exact rank the visible rule
+removed** — the surface everyone checks, and the one nobody does.*
+
 ## SEED EXACTLY WHAT YOU RECORD — a widening multiplier on a ruled band compounds it
 
 **Ops's ruling on the bootstrap band, 2026-09-26, and it beat the options Integration had offered.**
