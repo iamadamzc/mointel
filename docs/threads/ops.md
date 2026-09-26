@@ -11980,3 +11980,15 @@ will do the full scan once more, and research may take its BUSY deaths again
 **Next:** the next restart request carries the measured cost; then the ops/board
 branches are superseded. `a74082a` (NOW ▼ width) deferred by Integration.
 `e7e629f` stays out until it has been seen on an evening board.
+
+### 8fd7887 CONFIRMED from /proc — 2026-09-25 22:1x ET, on his direct "ship it after 1005pm et"
+
+Design's re-cut ON 5254bca (parent = production, 1 commit, 6 files, 0 auth): the
+evening ranking column shows AH participation, and the Now header goes 44->68px.
+It replaces e7e629f and a74082a, which conflict on 5254bca; do not ship those.
+Enumerated by Integration. Gate 159/159, 2422 tests, ALL GREEN. Launched 22:06:50 ET
+after the 22:00 roll finished (roll backfill->SIP 88s: the old prune, as predicted).
+Down 2s. web/research/assess on 8fd7887; market untouched on d0bc78c. Sweep clean.
+Releases: 8fd7887 5254bca 10b4dce d0bc78c 372f5eb(pinned).
+**First ship today cut from production rather than picked around the auth
+surface. Prefer this pattern until he runs the auth cut-over.**
