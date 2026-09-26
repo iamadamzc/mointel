@@ -700,6 +700,27 @@ reliability bar in one and closing port 22 in another.* **Never use a gate numbe
 
 **BLOCKING — a stranger cannot pay until all of these are true:**
 
+> **✅ UPDATE 2026-09-26: TWO OF THE FOUR MOVED.** *He ruled **"will do"** on the Google OAuth client — redirect
+> `https://tmitrader.com/auth/callback/google`, and the id and secret go into `.env.local`, **NOT only onto the
+> box, because `sync-env.sh` rewrites the env wholesale.** *Second time this week that trap would have bitten a
+> value typed straight onto the server.* **His "will do" is a commitment to CREATE a credential — it is NOT
+> clearance to run the cut-over, which stays his word, as does seeding his address.***
+>
+> *And on billing/onboarding/support he ruled **"scope it"**, so the routing was this seat's:* **COMMERCIAL
+> LEADS and holds the document** (pricing, packaging, provider options, terms of sale, refund/cancellation, what
+> support means at one paying user — already its charter); **OPS writes the infra half as one section** (webhook
+> carriage, secrets transport, paid account → `isUserInvited`, failure modes); **WEB writes the stranger-facing
+> flow** (the path from wanting it to signed in, and every page that does not exist yet).
+>
+> **⚠️ THE BOUNDARY, stated to all three: "SCOPE IT" MEANS A SCOPE. No provider selected, nobody contacted, no
+> account created, no payment details entered, nothing signed — all his, and it is the standing rule rather than
+> a caution.** *The deliverable is options, costs, what each requires of this desk, and the decisions only he can
+> make, in one document that goes to HIM.*
+>
+> *The question put first, because it reshapes everything else: **ASK WHAT LAUNCH MEANS.** He has never defined
+> it, **"a stranger can pay" and "a stranger can use it" are different products**, and a single invited paying
+> user needs almost none of what self-serve signup does.*
+
 ```
 1  NOBODY REACHES THE DESK WITHOUT SIGNING IN, and only invited accounts get in.
    Built on MAIN, ZERO in production. nginx Basic Auth is the only gate today.
