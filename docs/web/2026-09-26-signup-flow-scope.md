@@ -188,6 +188,26 @@ to a refusal in the middle of the session the desk exists for.** *Naming it here
 because it is the one case where the honest copy and the trading day are in
 direct conflict, and it is not a state anybody has drawn.*
 
+> **STATUS, 2026-09-26: WITH HIM, AND DELIBERATELY UNOWNED UNTIL HE ANSWERS.**
+> *Integration verified the behaviour independently and put it to him rather than
+> routing it as design work, on the reasoning that **"immediate" was ruled for
+> revoking somebody who should not be there, and non-payment is not that case.***
+> **A grace period is a product decision with a money consequence, so no seat can
+> rule it, and the design cannot be scoped before the policy exists.**
+
+**THE CONSTRAINT THAT BINDS WHATEVER HE RULES, and it is recorded in
+`lib/auth/gate.ts` rather than only here:** **the allowlist stays the single
+authority on admission.** *A gate consulting both the allowlist and a payment fact
+would hold two authorities on one question — and this repo already has a worked
+example of two individually correct guards where one silently disabled the other.*
+**The page carries the payment fact; the gate carries the allowlist.**
+
+> **AND THIS ENTRY IS NOT THE WARNING — IT IS A COPY OF IT.** *Whoever wires
+> payment will be working in `lib/auth/` and will not open this file, so the
+> caution is written into the gate's own docblock where the trigger is pulled.*
+> **Same correction Integration made about the `whyNot` dependency in
+> `docs/web/README.md` §4b, applied at the moment of writing rather than after.*
+
 ---
 
 ## 4. THE RECOMMENDATION THAT MAKES MOST OF THIS UNNECESSARY FOR NOW

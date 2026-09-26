@@ -25,6 +25,32 @@
  * that could tell them apart would eventually branch on the difference, which is
  * how "your session expired" becomes an oracle for which ids once existed. That
  * is `resolveSession`'s discipline and the gate keeps it.
+ *
+ * ---
+ *
+ * IF YOU ARE HERE TO MAKE THIS GATE UNDERSTAND PAYMENT: DO NOT. The allowlist is
+ * the single authority on admission, and a paid-access model does not change
+ * that -- it changes who gets onto the allowlist and who puts them there.
+ *
+ * A gate that consulted both the allowlist and a payment fact would hold two
+ * authorities on one question, which is how "is this person allowed in" acquires
+ * two answers that disagree. This repo already has a worked example of two
+ * individually correct guards where one silently disabled the other.
+ *
+ * The state a paid model actually needs is NOT in this file. `refused` already
+ * covers a valid session whose user is not invited, so somebody who has paid and
+ * is not yet on the allowlist lands here correctly, with no change -- but the
+ * PAGE cannot tell them from an uninvited stranger and so tells them they are
+ * not invited. That is a copy and page-state problem, solved where the payment
+ * fact is known, never by teaching this function about money.
+ *
+ * AND THE POLICY THIS WOULD NEED DOES NOT EXIST YET. `revokeEmail` ends live
+ * sessions in the same transaction -- his ruling "immediate", 2026-09-24, given
+ * for revoking somebody who should not be there. Non-payment is a different
+ * case: a card failing at 08:14 takes a trader off the board mid-move. Whether
+ * that gets a grace period is a product decision with a money consequence, so no
+ * seat can rule it; it was put to him on 2026-09-26 and is deliberately unowned
+ * until he answers. Scope: `docs/web/2026-09-26-signup-flow-scope.md`.
  */
 
 import { isUserInvited, resolveSession, type IdentityDatabase } from '@/lib/auth/store';
