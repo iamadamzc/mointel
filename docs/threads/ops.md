@@ -11957,3 +11957,26 @@ time.
 **Lock starvation, OPS half:** fixed in `d5fe8bc`, live only once `10b4dce` is
 confirmed. Research's half (a heartbeat write that kills the worker on BUSY) is
 still open and still Research's.
+
+### Both ships CONFIRMED from /proc — 2026-09-25, after his direct "deploy and verify"
+
+```
+10b4dce  retention prune         cutover ~23:4xZ, down 2s   web/research/assess on 10b4dce
+5254bca  board, 5 picks on 10b4dce  launched 23:56:58Z, down 3s  web/research/assess on 5254bca
+         36bbddd 1f4bbc3 ea179ce(design.md from base) ec7a484 249dbf8 -> 8 code files, 0 auth
+         gate 159/159, 2413 tests ALL GREEN; Design re-gated GREEN independently
+         tooltip strings: he ruled "Tool tips are good" (via Design, at his turn)
+market   d0bc78c, pid 1184182, untouched (RESTART_MARKET=no both times)
+releases 5254bca 10b4dce d0bc78c 372f5eb(pinned)   public sweep clean after each
+```
+
+**CORRECTION TO MY OWN CLAIM: the prune fix is NOT live at the 22:00 ET roll.** The
+roll runs `bootstrapTradingDate` inside the ALREADY-RUNNING market process, which
+is on d0bc78c. The fix is in `lib/market/store/repo.ts`, loaded by that process.
+**It takes effect only at the next market restart (his word).** Tonight's 22:00 roll
+will do the full scan once more, and research may take its BUSY deaths again
+(self-healing). The restart re-measure is deferred to that restart; expect ~2 min.
+
+**Next:** the next restart request carries the measured cost; then the ops/board
+branches are superseded. `a74082a` (NOW ▼ width) deferred by Integration.
+`e7e629f` stays out until it has been seen on an evening board.
