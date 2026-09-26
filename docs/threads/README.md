@@ -13271,6 +13271,49 @@ records over and over: a state that looks identical whether or not the mechanism
 *And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
 convenience that destroys the data it was written to keep.*
 
+## A PRODUCER WHOSE ONLY REAPER LIVES IN ITS UNBUILT CONSUMER IS NOT INERT
+
+**Ops found it, Integration verified it, 2026-09-26 — and both seats had been calling the commit "inert" for a
+day.**
+
+*Research's `af998eb` accumulates 10-second trade counts in an in-memory Map. **The only code that DELETES from
+that Map lives inside `drainTradeBuckets`** — and nothing in production calls the drain, because the store that
+would call it (`9436da4`) was not built yet.*
+
+```
+af998eb   drainTradeBuckets(now) { ... if (bucketTs < current) tradeBuckets.delete(bucketTs) }
+shipped alone   nothing calls it -> every bucket that ever sees a trade stays for the life of the process
+```
+
+> **"INERT" WAS AN INFERENCE FROM THE ABSENCE OF A CONSUMER, and it was exactly backwards: the missing consumer
+> is what makes it grow.** *Two seats repeated it for a day. **Neither opened the deletion path**, which is the
+> one place the question is answered.*
+
+**THE GENERAL SHAPE: when a producer and its reaper ship separately, the producer alone is not a no-op — it is
+the leak.** *Ask where the DELETE lives before calling an unconsumed producer harmless, and enumerate the pair
+as one ship.*
+
+*And state the SIZE rather than the word. Here it is ~50 high-res symbols × 5,760 buckets a session — a few
+hundred thousand entries a day, modest in megabytes, genuinely unbounded in a worker that had run four days
+with `NRestarts 0`. **"Leak" invites a panic ship; the correct response was the opposite** — hold both and
+enumerate them together.*
+
+## A FLOOR UNDER A PRODUCER DEFECT IS NOT A FIX FOR IT
+
+**Ops, in the same commit.** *`drainTradeBuckets` drops a bucket once `bucketTs < current`. A trade for that
+bucket arriving moments later — flush timing against a late print on a fast tape — **revives the bucket at 1**,
+and a REPLACING write would clobber a settled `N` with `1`.*
+
+```
+the store does   ON CONFLICT ... DO UPDATE SET trades = MAX(trades, excluded.trades)
+what that buys   keeps N, loses only the late trades themselves
+the real fix     a GRACE of k buckets before dropping: bucketTs < current - k*TRADE_BUCKET_MS  (producer's)
+```
+
+> **The `MAX` bounds the damage and cannot recover it. Say which you have built.** *A store-side guard that
+> turns a WRONG number into a SLIGHTLY LOW number reads, in a summary, exactly like a correction — and the
+> producer defect stays open underneath it, now harder to notice because the symptom is smaller.*
+
 ## WHEN A PEER ASKS FOR SOMETHING YOU HAVE ALREADY ANSWERED, DO NOT ANSWER AGAIN
 
 **Four crossings in two days, all benign, one nearly expensive.** *Cross-session messages queue behind the
