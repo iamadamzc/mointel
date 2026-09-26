@@ -48,9 +48,13 @@ the hand-off did not begin a fourth task. All three are in LIVE STATE with their
 reasons; the summary is:
 
 1. **Separate CAPTURE from QUALIFICATION in the engine.** His ruling: **"0-50
-   confirmed"** — record $0–$50, show narrow, user picks. **Four call sites read
-   one config value** and the change is held until they are split. Yours is the
-   engine gate; Design takes the control, Ops the config.
+   confirmed"** — record $0–$50, show narrow, user picks. **About TEN sites read
+   or DERIVE one config pair**, and the change is held until they are split.
+   **The two that matter most never call `inPriceRange`:** `worker/runtime.ts:862-863`
+   multiplies (`MAX*2`, so `MAX=50` bootstraps to **$100**) and
+   `worker/anchor-loss-cohort.ts:188` duplicates that arithmetic. *The list grew
+   from three to five to ten in two days, each version looking complete.* Yours
+   is the engine gate; Design takes the control, Ops the config.
 2. **A heartbeat write must not be able to kill the worker.** Research died three
    times on `SQLITE_BUSY`. Ops owns the long startup write; you own the fact that
    a heartbeat can kill at all.
@@ -88,6 +92,10 @@ reasons; the summary is:
   `--no-file-parallelism` gave 166/2,483 green. **And a count is evidence only
   against its own tree**: I told Ops its 157-file gate looked short by comparing
   it to main's 166, and it was a smaller tree.
+- **A retraction must reach everyone the assertion reached.** *A correction
+  delivered in a message does not reach the charter the assertion was written
+  into, and that charter outlives the conversation. This bit Design once and
+  this seat once, on the same day and on the same subject.*
 - **Never `git checkout HEAD -- <file>` to undo a mutation test.** It reverted an
   hour of uncommitted work. Copy to a temp file and restore from that.
 - **Check a ruling at his own words before building on it.** A peer's
