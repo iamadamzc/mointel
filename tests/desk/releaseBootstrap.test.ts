@@ -30,7 +30,16 @@ let log: string;
  * pretending to have a preflight, plus a `git` that answers the two questions
  * the script asks before it ships anything.
  */
-function writeStubs(options: { deployedHasPreflight: boolean; preflightExit: number }) {
+function writeStubs(options: {
+  deployedHasPreflight: boolean;
+  preflightExit: number;
+  /** What the deploy unit reports on every poll. */
+  activeState?: string;
+  /** The release every service's /proc cwd resolves to after the deploy. */
+  liveRelease?: string;
+}) {
+  const activeState = options.activeState ?? 'inactive';
+  const liveRelease = options.liveRelease ?? '/opt/mointel/releases/abc1234def';
   fs.writeFileSync(
     path.join(stubs, 'ssh'),
     `#!/usr/bin/env bash
@@ -56,8 +65,14 @@ case "\$remote" in
     echo "Running as unit: stub.service"
     exit 0
     ;;
+  *"/proc/"*)
+    # Every service's working directory: the release it actually loaded.
+    for u in mointel-web mointel-research mointel-assess mointel-market; do
+      echo "\$u ${liveRelease}"
+    done
+    ;;
   *"systemctl show"*"ActiveState"*)
-    echo "inactive"
+    echo "${activeState}"
     ;;
   *"systemctl show"*"Result"*)
     printf 'success
@@ -177,6 +192,57 @@ describe('release bootstrap', () => {
     expect(result.status).toBe(0);
     expect(result.output).toContain('is live on');
     expect(transcript()).toContain('GIT archive');
+  });
+
+  /**
+   * "Is live" is a claim about production, so it is read from the services'
+   * /proc cwd, not from the deploy unit's exit status. The ADMITS case comes
+   * first: a check that only ever refuses cannot tell a working gate from a
+   * welded one.
+   */
+  it('says live only after every service is confirmed on the shipped release', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0 });
+
+    const result = run();
+
+    expect(result.status).toBe(0);
+    expect(result.output).toContain('is live on 10.0.0.1 (3 services confirmed from /proc)');
+    expect(transcript()).toContain('/proc/');
+  });
+
+  it('also confirms the market worker when the deploy restarts it', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0 });
+
+    const result = run({ RESTART_MARKET: 'yes' });
+
+    expect(result.status).toBe(0);
+    expect(result.output).toContain('(4 services confirmed from /proc)');
+  });
+
+  it('refuses to say live when the unit succeeded but production did not move', () => {
+    // A unit killed by `systemctl stop` reports success/0 exactly like this.
+    writeStubs({
+      deployedHasPreflight: true,
+      preflightExit: 0,
+      liveRelease: '/opt/mointel/releases/0ldre1ease',
+    });
+
+    const result = run();
+
+    expect(result.status).toBe(9);
+    expect(result.output).toContain('did NOT cut over');
+    expect(result.output).toContain('mointel-web=/opt/mointel/releases/0ldre1ease');
+    expect(result.output).not.toContain('is live');
+  });
+
+  it('refuses to say live when the unit is still running at the deadline', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0, activeState: 'activating' });
+
+    const result = run({ DEPLOY_FOLLOW_SECONDS: '1', DEPLOY_POLL_SECONDS: '0.3' });
+
+    expect(result.status).toBe(8);
+    expect(result.output).toContain("still 'activating' at the follow deadline");
+    expect(result.output).not.toContain('is live');
   });
 
   it('refuses when the fallback gate blocks, and ships nothing', () => {
