@@ -561,6 +561,36 @@ session-hygiene rule's concern and not his.* **A seat that shortens a defect rep
 his reading has traded a real thing for a rule that was never about it** — and the seat that did that was
 this one, in the same hour it wrote the rule down.
 
+## THE MEASURED POPULATION TABLE — USE THIS, AND NAME THE COLUMN
+
+**Measured off the box by Ops 2026-09-26, read-only, no deploy running. It SUPERSEDES every price-band figure
+quoted before it, including the ones this seat relayed.** *Bucket = `rvol_baseline.previous_close` (the 09-25
+close, 13,188 baselines). "Eligible" = `universe.discovery_eligible`, **5,901 of 13,398** — the rest are
+ETF/warrant/unit/preferred.*
+
+```
+bucket      all baselines   discovery-eligible   CAPTURED 09-25: symbols / minute_bars rows
+<0.25            416              64                   47 /   4,788
+0.25-1           508             324                  357 /  43,678
+1-20           4,674           3,031                4,170 / 684,839
+20-50          5,013           1,124                3,443 / 358,793
+>50            2,803           1,356                    0 /       0
+```
+
+**RECONCILIATION OF THE FIGURES THAT WERE IN CIRCULATION: "4,674" was the \$1–20 slice of ALL baselines; "7,811
+above \$20" was 5,013 + 2,803; "~1,100 for a \$50 ceiling" was the ELIGIBLE \$20–50 slice (1,124).** *Two
+populations mixed in one sentence, and this seat passed all three on unreconciled to Research and Design.*
+
+> **⭐ AND THE FINDING THAT CHANGES THE WHOLE BAND DISCUSSION: THE DESK ALREADY RECORDS \$20–\$40, DAILY, AND IT
+> IS NOT `DISCOVERY_PRICE_MAX`.** *`worker/runtime.ts:862-863` builds the bootstrap/ROLL candidate set at
+> `[MIN*0.4, MAX*2]`, seeds those symbols as TRACKED, and `flush()` persists bars for everything tracked. It
+> runs at every restart AND every 22:00 ET roll.* **3,443 symbols priced \$20–\$50 captured on 09-25 — 359K rows,
+> a THIRD of the day's — against a configured ceiling of \$20. Nothing above ~\$50 at all: 0 rows.**
+>
+> **SO: the \$0–\$50 recording plan is MOSTLY ALREADY PAID FOR, every cost estimate given for it was wrong twice
+> over, and `MAX=50` would bootstrap to \$100.** *`runtime.ts:862-863` is a build constraint on Research's split
+> — routed.*
+
 ## ⚠️ "MAKE IT 1-20" IS UNRULED AND MOOT — DO NOT ASK HIM A THIRD TIME
 
 **He said "make it 1-20" on 2026-09-26, replying to an Ops status line that offered him a choice:
