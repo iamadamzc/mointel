@@ -13271,6 +13271,55 @@ records over and over: a state that looks identical whether or not the mechanism
 *And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
 convenience that destroys the data it was written to keep.*
 
+## SEED EXACTLY WHAT YOU RECORD — a widening multiplier on a ruled band compounds it
+
+**Ops's ruling on the bootstrap band, 2026-09-26, and it beat the options Integration had offered.**
+
+*`worker/runtime.ts:862-863` seeds the startup candidate set at `[MIN*0.4, MAX*2]`. With a RECORD band newly ruled
+at `$0.25–$50`, three shapes were on the table:*
+
+```
+inherit the multiplier      record * 2   -> bootstrap $100. Tracks names the desk MAY NOT RECORD,
+                                            purely to grow the replay -- the restart cost being shrunk.
+keep it on the qualify band  qualify * 2  -> bootstrap $40. Leaves $40-$50 UNSEEDED after a restart
+                                            while LIVE ADMISSION still tracks them.
+Ops's rule                   seed exactly the record band, NO multiplier.
+```
+
+> **THE ARGUMENT THAT DECIDED IT WAS NOT COST, IT WAS CONSISTENCY: `qualify * 2` would leave the store holding a
+> RESTART-SHAPED HOLE in exactly the slice he asked to record.** *The `$40–$50` names would be present when live
+> admission caught them and absent when a restart seeded the session — **so the store's contents would depend on
+> whether a restart happened**, which is a fact about operations masquerading as a fact about the market.*
+
+**And the multiplier's original purpose expired when the band became deliberate.** *`*2` and `*0.4` existed so a
+name **gapping INTO** the discovery band from outside it was seeded at start. **Once the recorded band is itself
+the ruled answer to "what may this desk ever keep", there is no outside to gap in from** — the widening is
+answering a question that no longer exists.*
+
+*Landing shape, same as the split it follows: **fallback to today's `qualify * 0.4 / * 2` when no record band is
+configured**, so the code lands inert and the behaviour changes only when the config does.*
+
+## I DIAGNOSED A FLAKE FROM A COLLEAGUE'S SENTENCE INSTEAD OF THE TEST
+
+**Integration, 2026-09-26.** *Research reported a test failing once and passing on re-run, and described it as
+"it reads real checkpoint proximity". **Integration turned that into a diagnosis** — "a wall-clock-dependent test,
+the same class you already pinned for the override test" — and routed it as such.*
+
+```
+tests/desk/releaseRetention.test.ts:264-265   PROTECTED_MINUTES: '0'   PREFLIGHT_NOW_MINUTES: '960'
+```
+
+**The test pins the clock. At 960 with the protected window at 0, NEITHER arm can depend on the time** — the
+trading arm needs `now < 600` and the checkpoint arm is switched off. **Ops opened the file and said so; the
+leading suspect is Git Bash fork exhaustion, which had already failed a different suite in the same run.**
+
+> **A COLLEAGUE'S CHARACTERISATION IS NOT A DIAGNOSIS, AND ADDING "the same class as X" TO IT MAKES IT ONE.** *The
+> relayed half was theirs and defensible as a description. **The classification was mine and it was checkable in
+> one grep** — and a wrong class sends the owning seat to fix the wrong thing.*
+
+*Ops is pinning the weekday anyway and looking for the real cause rather than assuming it, which is the correct
+response to a diagnosis it has just disproved.*
+
 ## A LIST THAT WAS COMPLETE WHEN YOU FORMED IT IS A DIFFERENT FAILURE FROM A WRONG ONE
 
 **Research's distinction, 2026-09-26, and it separates two things this file had been recording as one.**
