@@ -835,25 +835,85 @@ describe('ten-second trade capture', () => {
     expect(engine.drainTradeBuckets(Date.parse(ts(3)))).toHaveLength(0);
   });
 
-  it('re-emits the filling bucket and drops the settled ones', () => {
+  it('COUNTS A LATE PRINT into its own bucket instead of reviving it at 1', () => {
     /*
-     * The store key is (symbol, trading_date, bucket_ts) and the write replaces
-     * the count, so re-emitting a bucket still filling is idempotent and settles
-     * at its final value. Withholding it until it closed would delay the newest
-     * ten seconds, which is the only data this capture exists for.
+     * The hole Ops found in the store review. The drain used to drop a bucket
+     * the moment it settled, so a trade arriving for it moments later -- flush
+     * timing against a late print on a fast tape -- recreated the bucket at 1,
+     * and a settled minute's activity was emitted as a single trade.
+     *
+     * `trades.ts` upserts MAX(trades, excluded.trades), which stops a revived 1
+     * clobbering a stored N. That is a FLOOR under the defect, not a fix: it
+     * bounds the damage to the late prints and cannot recover them. Keeping the
+     * bucket in memory for a grace period is what actually counts them.
+     */
+    const engine = highResEngine();
+    engine.ingest(trade('AAA', ts(2, 1)));
+    engine.ingest(trade('AAA', ts(2, 3)));
+
+    // Drain well after that bucket settled -- previously it was dropped here.
+    const first = engine.drainTradeBuckets(Date.parse(ts(2, 25)));
+    expect(first).toHaveLength(1);
+    expect(first[0].trades).toBe(2);
+
+    // A late print for the SETTLED bucket.
+    engine.ingest(trade('AAA', ts(2, 5)));
+
+    const second = engine.drainTradeBuckets(Date.parse(ts(2, 26)));
+    const revived = second.find((r) => r.bucketTs === first[0].bucketTs);
+    // Three, not one: the late trade joined its bucket rather than replacing it.
+    expect(revived?.trades).toBe(3);
+  });
+
+  it('still drops a bucket once it is past the grace, so the map cannot grow forever', () => {
+    /*
+     * The grace must not become a leak. `af998eb` shipped alone had NO reaper
+     * in production -- the only deletion lives in this drain and nothing called
+     * it -- so every bucket that ever saw a trade would have stayed for the
+     * life of the process. The consumer is wired now; this asserts the drain
+     * still reaps.
+     */
+    const engine = highResEngine();
+    engine.ingest(trade('AAA', ts(2, 1)));
+    engine.drainTradeBuckets(Date.parse(ts(2, 25)));
+
+    /*
+     * The drain EMITS a bucket and then reaps it, so the call that ages a
+     * bucket out still returns it once. The call after that is the empty one,
+     * and that ordering is deliberate: a bucket must be written before it is
+     * forgotten.
+     */
+    const ages = engine.drainTradeBuckets(Date.parse(ts(4)));
+    expect(ages).toHaveLength(1);
+
+    const after = engine.drainTradeBuckets(Date.parse(ts(4, 30)));
+    expect(after).toHaveLength(0);
+  });
+
+  it('re-emits within the grace, and the filling bucket keeps accumulating', () => {
+    /*
+     * The store key is (symbol, trading_date, bucket_ts) and the upsert takes
+     * MAX, so re-emitting a bucket is idempotent and it settles at its final
+     * value. Withholding the newest bucket until it closed would delay the most
+     * recent ten seconds, which is the only data this capture exists for.
+     *
+     * REWRITTEN when the grace landed. It previously asserted that a settled
+     * bucket is gone on the next drain, which was the behaviour that let a late
+     * print revive it at 1.
      */
     const engine = highResEngine();
     engine.ingest(trade('AAA', ts(2, 1)));
     engine.ingest(trade('AAA', ts(2, 15)));
 
-    // Drain while the SECOND bucket is still the current one.
     const first = engine.drainTradeBuckets(Date.parse(ts(2, 16)));
     expect(first).toHaveLength(2);
 
-    // The settled bucket is gone; the filling one comes back with its new total.
     engine.ingest(trade('AAA', ts(2, 17)));
     const second = engine.drainTradeBuckets(Date.parse(ts(2, 18)));
-    expect(second).toHaveLength(1);
-    expect(second[0].trades).toBe(2);
+
+    // Both still present -- the settled one is inside the grace.
+    expect(second).toHaveLength(2);
+    // And the filling one carries its new total rather than restarting.
+    expect(second[1].trades).toBe(2);
   });
 });
