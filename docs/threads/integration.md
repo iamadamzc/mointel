@@ -561,6 +561,35 @@ session-hygiene rule's concern and not his.* **A seat that shortens a defect rep
 his reading has traded a real thing for a rule that was never about it** — and the seat that did that was
 this one, in the same hour it wrote the rule down.
 
+## ⚠️ "MAKE IT 1-20" IS UNRULED AND MOOT — DO NOT ASK HIM A THIRD TIME
+
+**He said "make it 1-20" on 2026-09-26, replying to an Ops status line that offered him a choice:
+*"recording \$0–\$50 while letting you choose the range the board shows."* Ops read it as the RECORDING band;
+this seat read it as the WINDOW. **He was asked twice — once in a NEEDS YOU block, once by Ops — and dismissed
+it both times.***
+
+**NOTHING WAS APPLIED. Production is `DISCOVERY_PRICE_MIN=0.25`, the worker is untouched, no restart happened.**
+*Ops's permission control refused the env write before the stop reached it.*
+
+> **A COMMIT WAS ARMED ON MAIN AND IS NOW REVERTED: `59dde3c` set `sync-env.sh` to `$1–$20` while the box said
+> `0.25`, and THAT FILE REWRITES THE ENV WHOLESALE. Any seat running the documented procedure would have
+> applied an unruled decision silently.** *Reverted at `d3b70ef`.* **THE REVERT'S JUSTIFICATION IS "THE FILE
+> MUST MATCH THE BOX WHILE THE QUESTION IS OPEN" — NOT that this seat's reading is correct.** *That argument
+> holds whichever way he rules; a revert justified by my reading would be this seat ruling on his sentence.*
+
+**WHY IT IS MOOT, AND WHY A THIRD ASK WOULD BE THE NOISE HE RULED AGAINST:**
+
+```
+window reading    config stays 0.25 until the split lands            -> no action today
+capture reading   config would move -- but that reverses HIS OWN floor approval of 2026-09-25,
+                  which he has now declined to confirm twice
+either way        ONE priceMin/priceMax pair is read at FIVE sites, so the config CANNOT move
+                  before the engine split exists
+```
+
+**The question becomes live when the split lands, or when he raises it himself. Until then: hold at `0.25`, and
+if he says he meant the capture band, `59dde3c` is re-applied and nothing was lost.**
+
 ## THE HYGIENE APPROACH WAS RELAYED TO `Infra-Ops` 2026-09-26, AT HIS INSTRUCTION
 
 **He asked for the ENTIRE approach to go to `Infra-Ops` (`A:\claude-infra-agent`) for relay to other projects.**
