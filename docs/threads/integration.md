@@ -920,7 +920,12 @@ MARKETING  idle.
 ```
 969458d   ENUMERATED ALONE to Ops: base 3b78b8c (conditional on /proc), one pick, 161 test files
           pre-registered, deadline MON 04:00 ET. Sequenced AFTER his restart + its minute_bars
-          reading if he gives it today. Awaiting Ops's /proc report of the resulting sha.
+          reading if he gives it today. BUILT + GATED as 240f27e (ops/queue-comment): 161/161 files
+          as pre-registered, 2458 tests green, every changed line a comment. NOT SHIPPED: Ops's
+          permission control needs HIS word in its session for any deploy (since 09-25), so the
+          enumeration alone does not ship it. Asked of him 2026-09-27. If MON 04:00 ET passes
+          unshipped, the cost is one stale comment in production -- re-date, do not escalate.
+          /proc confirmed 10:57Z: web/research/assess 3b78b8c, market d0bc78c, NRestarts 0 all.
 design    36bbddd/1f4bbc3/ea179ce/ec7a484 are IN production (as 0f26bc2/314f9cb/369575b/54f8539,
           under 8fd7887) -- verified by git log 757cf6a..3b78b8c. The Monday-07:00 fix is not owed.
 web       says a THIRD item sits with him that LIVE STATE above omitted: payment terms in the
