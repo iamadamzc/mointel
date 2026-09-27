@@ -1008,6 +1008,13 @@ measure. NOT ruled either way.** *Routed to Commercial for an addendum: the day 
 per-login charging mechanics (quoted), whether charging at the door dissolves the non-payment revocation question,
 tier evidence, and the `app/page.tsx:432` sentence.*
 
+**Commercial's addendum `aedde77` (opened here before it went to him): the day maps onto the 22:00 roll. Gaps put to
+him: 20:00-22:00 and the late login. The $0.30 fixed fee compounds per login, so a multi-day pass or a monthly cap is
+worth considering. Charge-at-login MOOTS the non-payment half of the revocation question (revokeEmail keeps its job
+for fraud/abuse), so that item leaves his open list. Flat pricing is the only measure the desk can observe, because
+notional traded lives in the subscriber's brokerage. A Stripe saved-card flow requires the terms of sale
+already owed.**
+
 ### THE RESIDUAL NOBODY HAS CLOSED
 
 **The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
