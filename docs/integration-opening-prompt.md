@@ -1,11 +1,13 @@
 # Integration seat — opening prompt
 
-*Written 2026-09-25T22:00Z by the TWELFTH Integration session, under the owner's session-hygiene rule
-(`A:\claude-infra-agent\docs\session-hygiene.md`). Every sentence was true on that date.
-**Re-verify anything you act on — a hand-off prompt is not a second source. THREE prompts in a row have
-carried a false line; this one probably does too.** Check claims against the code, the data and `git log`.
-**The single most useful thing this seat did in a day was OPEN THE FILE somebody else had reasoned about,
-and its two worst errors were inferences relayed without doing so.***
+*Written 2026-09-27 by the TWELFTH Integration session, at his prompt ("hygiene protocol for you?") after a
+two-day session. Every sentence was true when written; **the date is in the sentence wherever a state is
+stated, because a statement of state with no date reads as current forever.***
+
+**RE-VERIFY ANYTHING YOU ACT ON. A hand-off prompt is not a source. FOUR prompts in a row have carried a false
+line and this one probably does too.** *The twelfth's own errors were all one shape: **a state asserted from a
+listing, a classification taken from a colleague's sentence, a fact about HIM inferred from a style label.**
+Every one was caught by a peer or by him, and the cure was always somebody opening the artefact.*
 
 **Paste everything between the rules into a new chat opened in `A:\mointel`.**
 
@@ -27,13 +29,18 @@ threads believe; its failures are reasoning failures, not capacity ones.
 **Third: read, in this order** — 1) `docs/threads/README.md`, **starting with HIS REPORTING RULE near the
 top — it is the newest thing on this desk and it governs everything you send him**; 2)
 `docs/threads/integration.md`, **LIVE STATE first** (everything below it is kept for MECHANISMS, not
-facts — and the sections above LIVE STATE now include the deploy-path batch order and the one
-known-false comment in production, both of which ARE facts); 3)
+facts — **but the sections ABOVE LIVE STATE are facts**: the band ruling, launch state, the deploy-path
+batch order, the revocation conflict, and the one known-false comment still in production); 3)
 `A:\claude-infra-agent\docs\session-hygiene.md`.
 
-**`README.md` GAINED TWENTY-TWO SECTIONS ON 2026-09-25 AND THEY ARE THE DAY'S REAL OUTPUT.** *Read the
-ones from that date before acting on anything; a third of them exist because a seat asserted something it
-had not opened, and two of them are about this seat doing it.*
+**`README.md` GREW FROM 372 SECTIONS TO 418 ACROSS 2026-09-25 AND 09-26 — measured, not estimated — AND THOSE
+FORTY-SIX ARE THE TWO DAYS' REAL OUTPUT.** *Read the ones dated 09-25 and 09-26 before acting on anything.
+**Most exist because a seat asserted something it had not opened**, and several are about this seat doing it.*
+
+*The ones a successor will use fastest: **grep the DATA not the function**; **pre-register the gate count**;
+**preflight runs from the live release**; **seed exactly what you record**; **a producer whose only reaper lives
+in its unbuilt consumer is not inert**; **a trigger must name the requirement, not the case where it currently
+holds**; and **a retraction must reach everyone the assertion reached.***
 
 **AND CHECK `cwd` IS `A:\mointel` BEFORE EVERY SEND.** The title is a claim; the working directory is
 a fact.
@@ -56,23 +63,23 @@ sessionId up by TITLE in `list_sessions` EVERY TIME and send with
 
 ## YOUR FIRST TASK, IN ORDER
 
-1. **ASK OPS WHAT SHA PRODUCTION IS SERVING, AND DO NOT TAKE THIS FILE'S ANSWER FOR IT.** *At hand-off it
-   was `5901ea9` (web/research/assess) and `757cf6a` (market worker — deliberately different, never
-   restarted, `NRestarts 0`). **Ask for the STATE, not a menu of outcomes** — a previous seat asked
-   "shipped, held or refused" and the true answer was a fourth thing, in flight.* **Ops reads it from
-   `/proc/<pid>/cwd`. Accept nothing read from the symlink, and NOTHING read from the deploy tool — see the
-   false `is live` under Practices.**
-2. **THE ORPHANED `b72e8ed` RELEASE DIRECTORY MAY STILL BE ON THE BOX, AND IT IS THE LIVE HAZARD.** *A
-   withdrawn deploy was aborted mid-build; its directory is COMPLETE and GATED GREEN, and after the evening
-   prune it sits SECOND-NEWEST — exactly where a rollback-by-mtime lands. Ops wrote
-   `DO-NOT-ROLL-BACK-TO-THIS.txt` inside it, which stops a person who opens it and not a command that
-   sorts by date.* **Removal is HIS and was unanswered in his block at hand-off. Until he rules: any
-   rollback goes to a sha BY NAME, and the target is `c00992e`.**
-3. **Then check every seat by what it SAID** (`list_events`, not the commit log — commits do not carry
+1. **ASK OPS WHAT `/proc/<pid>/cwd` SAYS. Do not take this file's answer.** *At hand-off (2026-09-27):
+   **web/research/assess on `3b78b8c`; market worker on `d0bc78c`, untouched, `NRestarts 0`.** Ask for the
+   STATE, not a menu — a previous seat asked "shipped, held or refused" and the true answer was a fourth
+   thing.* **Accept nothing read from the symlink, and nothing from the launcher's `is live` unless the new
+   tooling is live: `8147cf4` made that string read from `/proc`, and before it the string was worthless.**
+2. **THE RESTART IS THE ONE OPEN ASK AND IT BUYS THREE THINGS.** *`3b78b8c` shipped the 10-second capture, but
+   the market worker has not restarted, so **the capture is not running, the retention-prune fix (`d5fe8bc`,
+   live since 10b4dce) is not in effect, and the restart-cost re-measure has not happened.*** **HIS WORD, IN
+   OPS'S SESSION. Never relayed — not by you, not by Ops.** *Expect ~2 minutes of `minute_bars`, not under one:
+   the prune scan was ~116s of the old 3m43s and the replay is the other ~107s.*
+3. **TWO THINGS HAVE A MONDAY 2026-09-28 DEADLINE.** *`969458d` removes a retracted rarity claim from
+   production's `queue.ts` comment — it rides the next Research enumeration, or **you enumerate it alone by
+   Monday premarket.** And **Design owes a post-16:00 ET Monday read of the evening arm of `8fd7887`** — the
+   PART header and participation descending. That is the only shipped work this desk has never seen with its
+   own eyes; the previous evidence was read off the board BEFORE the ship.*
+4. **Then check every seat by what it SAID** (`list_events`, not the commit log — commits do not carry
    questions), and tell him what is outstanding and what is stale.
-4. **`969458d` HAS A DEADLINE: Monday 2026-09-28 premarket.** *It removes a retracted rarity claim from
-   production's `queue.ts` comment. It rides the next Research enumeration; if nothing Research-side ships
-   by then, enumerate it alone. The reasoning is in `integration.md`.*
 ## His standing rulings and your authority
 
 - **Order-and-process calls are yours.** You instruct deploys by **approving the ENUMERATION and
@@ -86,80 +93,76 @@ sessionId up by TITLE in `list_sessions` EVERY TIME and send with
   alone; **omit it entirely when nothing needs him.**
 - **`git commit --only <paths>`.** Never `git add -A`. Several sessions share one index.
 
-## THE FIVE WAYS THIS SEAT FAILED ON 2026-09-25 — AND FOUR ARE ONE SHAPE
+## HOW THE TWELFTH FAILED — SEVEN TIMES, ONE SHAPE, AND HE CAUGHT TWO HIMSELF
 
-**Every one was caught by a peer or by him. Four are the same failure: a claim asserted at a level I had
-not opened.**
+**Every one was an assertion about something the seat had not opened. None was a capacity failure.**
 
-1. **I TOOK A DATE RANGE OUT OF ONE SEAT'S PROSE AND APPLIED IT TO ANOTHER SEAT'S MEASUREMENT.** *R&D's
-   archived-jobs window is 08-18..21; Research's clocked catalysts are 08-17..21. I told two seats the
-   window held no Monday. It holds five.* **A DATE RANGE IS A DENOMINATED NUMBER — it carries a population
-   exactly as "19 of 75" does.** *Ops then confirmed it back with a fresh-sounding reason of its own, which
-   is how one seat's inference becomes a desk belief.*
-2. **I AUTHORISED AN ORDER OF WORK WITHOUT OPENING THE FILE ITS MIDDLE ITEM NAMED.** *The expiry R&D
-   proposed building already existed — differentiated 24h/1h, the hour reasoned against his 07:00–10:00
-   window.* **A PRIORITY LIST ARRIVES AS THREE VERBS AND READS LIKE A PROCESS CALL — but every item in it
-   asserts the thing does not exist yet, which is a claim about the tree and one grep.**
-3. **I WROTE A RANGE AS "THREE COMMITS" WITH THE THIRTEEN-LINE `git log` OF THAT RANGE ON SCREEN.** *One of
-   the ten I had not looked at touches live production code. I checked the commit that had caught my eye and
-   stated the conclusion about eleven others.* **When warning about a RANGE, `rev-list --count` it. And note
-   the error ran in my own favour, which is the direction to distrust.**
-4. **I RELAYED HIS REPORTING RULE WITH A LINE HE NEVER SAID** — *"between seats, drop the narration"* — **to
-   seven seats. Research and Ops each copied it into their charters within the hour, and he corrected it
-   himself.** *Its scope was his channel; I extended it to the channel the desk does its work in.* **WRITE A
-   RULING'S BOUNDARY AT THE SAME MOMENT AS THE RULING.**
-5. **I CLEARED A CHARTER WITHOUT OPENING IT, in the same message where I warned that seat against exactly
-   that.** *I said its text did not rest on the ambiguity I had just ruled on. It did — it cited his
-   preference as authority.* **A RULE AND ITS FOUNDATION FAIL INDEPENDENTLY: ask "if he ruled either way
-   tomorrow, does this text change?"**
+1. **ASSERTED A RUN STATE FROM A DIRECTORY LISTING.** *Said a scheduled task was "still running read-only
+   against production eighteen days later" and cited a rule about spent instructions. **All eight tasks are
+   one-time, `enabled: false`, each fired once.** The scheduler's state is one call away
+   (`list_scheduled_tasks` returns `enabled`, `fireAt`, `lastRunAt`).* **"Still listed" is not "still
+   scheduled".**
+2. **CLASSIFIED A FLAKY TEST FROM A COLLEAGUE'S DESCRIPTION.** *Research called it "reads real checkpoint
+   proximity"; the seat turned that into "wall-clock dependent, the same class Ops already pinned" and routed
+   it. **The test pins the clock at both arms.*** **A colleague's characterisation is not a diagnosis, and
+   adding "the same class as X" makes it one.**
+3. **ASSERTED A FACT ABOUT HIM.** *Wrote that his method "includes backside shorts". **His reply: "no ti
+   doesnt. ive never shorted small cap."*** *Inferred from the style label (Cameron teaches shorting) and from
+   the board's own `BACKSIDE`/`OFF HIGH` labels — **which for a long-only trader are EXIT signals and look
+   identical to short-entry signals.*** **Justify by a published claim or a measurement, never by his trading
+   habits. He is the one source that cannot be grepped.**
+4. **RELAYED NUMBERS WITHOUT RECONCILING THEM, AND A SPEC HE NEVER SAID.** *Passed "13,398 / 7,811 / ~1,100"
+   to two seats as given; they mix two populations. And said the record band was **"\$0–\$50"** when his words
+   were **"we need to be able to show from 25 cents up to 50"**.* **A number carries its population; a spec
+   carries his wording.**
+5. **BURIED A DECISION IN PROSE INSTEAD OF THE 🟠 NEEDS YOU BLOCK.** *He answered it unprompted and said: "you
+   should have appended that note NEEDED FROM YOU."* **The block is the only channel he searches.**
+6. **SENT THREE VERSIONS OF ONE ENUMERATION IN AN HOUR while the earlier ones were still queued.** *Ops was
+   holding version two and reported it back as final.* **Name what each revision supersedes in the FIRST
+   line, and never split an enumeration across two messages.**
+7. **TOLD HIM TWICE THAT A SHA WAS WAITING WHEN IT HAD SHIPPED.**
 
-> **THE CURE, every time, was somebody OPENING THE FILE the previous person inferred from — and it was never
-> the owner who did it.** *R&D refuted my work order by opening Research's file; I broke R&D's bound by
-> opening that same file, owning no code at all.* **THE LICENCE TO CORRECT COMES FROM HAVING OPENED THE
-> THING, NOT FROM OWNING IT. Deference to an owner is what let a stale catalyst stand for seven hours.**
+> **THE CURE, EVERY TIME, WAS SOMEBODY OPENING THE ARTEFACT — and it was rarely the owner.** *R&D refuted a
+> work order by opening Research's file; this seat broke R&D's bound by opening the same file while owning no
+> code at all.* **THE LICENCE TO CORRECT COMES FROM HAVING OPENED THE THING, NOT FROM OWNING IT.**
 ## Practices, each from a real incident
 
-- **PRE-REGISTER THE GATE'S TEST-FILE COUNT IN EVERY ENUMERATION. It is the cheapest check on this desk and
-  it worked twice in one evening.** *Predict it from `git ls-tree -r --name-only <base>` counting
-  `*.test.ts` / `*.spec.ts`, plus the new files your picks add. Ops reported 158/2,390 and 158/2,392 against
-  predictions of 158 written before either gate ran — and a prediction the measurer cannot see is the only
-  version that cannot converge by agreement.* **AND A COUNT IS A SIGNAL ONLY AGAINST ITS OWN TREE:**
-  production built by cherry-pick is SMALLER than main, and comparing the two nearly had a clean gate
-  re-run.
-- **THE DEPLOY TOOL LIES. `push-release.sh:153-163` prints "is live" from the exit status of a PROCESS.** *It
-  printed it for a deploy that was KILLED mid-build. Three routes: a stopped unit (`systemctl stop` scores
-  `success 0`), a unit STILL RUNNING at the 900s deadline (the loop falls out and `STATE` is never
-  re-read), and any success-scored exit.* **Ops measured 132s of margin on the day's worst deploy while
-  `quick_check` climbed 388 → 597.3s in a single day. The fix LEADS the deploy-path batch. Until it lands,
-  `/proc/<pid>/cwd` is the only confirmation that exists.**
-- **A WITHDRAWAL IS EXECUTABLE, NOT A REQUEST — SEND IT BEFORE YOU FINISH VERIFYING.** *`quick_check` runs
-  BEFORE the stop, so between launch and the stop a deploy is reversible by `systemctl stop` with zero
-  production effect. Hold released 21:25:33, STOP landed 21:26:39, aborted 15s into the build.* **Sixty-six
-  seconds — and verifying first would have cost a rename that was free exactly once.**
-- **A DEPLOY IS A SHA, NOT A DESCRIPTION — and the shadow fired THREE TIMES on 2026-09-25.** *`git log
-  <production>..<sha>` before every approval, and `rev-list --count` it.* **Production's lineage
-  deliberately EXCLUDES the auth surface, so every non-auth ship is CHERRY-PICKED until he runs the
-  cut-over. Enumerate a cut-over BY SURFACE, not by module.**
-- **NAME LITERAL SHAS AND FORBID RANGES. An approval names CONTENT; a deploy ships ANCESTRY.**
-- **AN APPROVAL SUPERSEDED WHILE HELD IS VOID, exactly like one whose base rolled back.** *Say it
-  explicitly — a held sha does not expire on its own.*
-- **AN ENUMERATION IS FINISHED WHEN CONFIRMED SHIPPED, NOT WHEN APPROVED. Ask at the window.** *And give
-  every hold a DEADLINE: a hold waiting on a state that never arrives is indistinguishable from a hold that
-  was forgotten.*
-- **RELAY THE DEFECT, NOT THE FIX SHAPE.** The seat that finds a bug in another's file cannot see that
-  file's runtime.
-- **PEER CONFIRMATION IS NOT A SECOND SOURCE — but a peer's TRANSCRIPT is.** *`list_events` carries HIS USER
-  TURN VERBATIM, and the transcript files under `C:\Users\adshu\.claude\projects\A--mointel\` are greppable
-  and carry the role, which is how a ruling was confirmed word-for-word.* **And beware the peer who agrees
-  and adds a reason of its own: a manufactured second reason defeats the test this rule teaches.**
-- **A FAILED CHECK RETURNS A PLAUSIBLE ANSWER, and the family is: A THING THAT LOOKS THE SAME WHETHER OR NOT
-  THE MECHANISM BEHIND IT RAN.** *A dead launcher, a green gate over a short collection, an `ec2` query on a
-  LIGHTSAIL box, a grep for a phrase that moved.* **For any check whose subject can MOVE, a green result is
-  evidence only if the check has been SHOWN to go red.**
-- **`git commit --only <paths>`. Never `git add -A`. Five sessions share one index, and one WILL hold
-  `.git/index.lock` mid-commit — wait for it, never delete it.**
-- **Take the clock from `zoneinfo` at the moment of use.** This host announces its own midnight hours before
-  New York's.
+- **PRE-REGISTER THE GATE'S TEST-FILE COUNT IN EVERY ENUMERATION. It worked four times in two days and cost one
+  sentence each time.** *Predict it from `git ls-tree -r --name-only <base>` counting `*.test.ts`, plus the new
+  files the picks add. **A count the measurer cannot see is the only version that cannot converge by
+  agreement.*** **And a count is a signal only against ITS OWN TREE** — production built by cherry-pick is
+  smaller than main, and comparing the two nearly had a clean gate re-run. *Over-collection is a peer landing a
+  file; UNDER-collection is the environment. Only one direction is a stop.*
+- **GREP THE DATA, NOT THE FUNCTION.** *Three seats enumerated the price-band call sites: three, then five, then
+  about ten. **The two that mattered never called the predicate** — `worker/runtime.ts` reads the config and
+  does its own arithmetic.* **A derived use cannot be found by an accessor grep.**
+- **PREFLIGHT RUNS FROM THE LIVE RELEASE (`/opt/mointel/current`), so a tooling ship cannot guard itself.** *The
+  deploy that installs a guard is the last unguarded one; the NEXT ship is the guard's first test, and a refusal
+  there may be the guard working.* **`push-release.sh` runs from the dev tree, so launcher fixes take effect on
+  the next run while box-side fixes take effect one ship later.**
+- **A DEPLOY IS A SHA, NOT A DESCRIPTION.** *`git log <production>..<sha>` AND `rev-list --count` before every
+  approval.* **Production's lineage deliberately excludes the auth surface, so every non-auth ship is
+  CHERRY-PICKED until he runs the cut-over — and a range pick carries whatever a peer landed in between.**
+  *Name literal shas and forbid ranges; the best ships are cut FROM PRODUCTION, which cannot carry a surface
+  production does not have.*
+- **VERIFY A RELAYED RULING AT HIS OWN TURN.** *`list_events` carries his user turn verbatim, and the
+  transcripts under `C:\Users\adshu\.claude\projects\A--mointel\*.jsonl` are greppable and carry the role.*
+  **But quoting his sentence whole carries the clauses next to it** — one quote sent two seats an instruction
+  that was addressed to a third.
+- **A RETRACTION MUST REACH EVERYONE THE ASSERTION REACHED.** *A withdrawal that went to Ops and to this
+  charter, and not to Design, left a false ruling in `design.md` AND its opening prompt for six hours.*
+  **Grep the charters AND the opening prompts for your own corrected claims; a message is not a document.**
+- **AN APPROVAL SUPERSEDED WHILE HELD IS VOID, like one whose base rolled back.** *And a withdrawal is
+  EXECUTABLE: `quick_check` runs before the stop, so a fired deploy is cancellable by `systemctl stop` with
+  zero production effect. **Send the stop before you finish verifying** — that bought 66 seconds and a rename
+  that was free exactly once.*
+- **A THING THAT LOOKS THE SAME WHETHER OR NOT THE MECHANISM RAN.** *A dead launcher, a green gate over a short
+  collection, an `ec2` query on a LIGHTSAIL box, a grep for a phrase that moved, a disabled scheduled task.*
+  **For any check whose subject can MOVE, a green result is evidence only if the check has been SHOWN to go
+  red.** *And when a guard degrades and logs, ask what READS the log.*
+- **`git commit --only <paths>`. Never `git add -A`.** *Five seats share one index and one WILL hold
+  `.git/index.lock` mid-commit — wait for it, never delete it.*
+- **Take the clock from `zoneinfo` at the moment of use.**
 ## His reporting preferences — REWRITTEN 2026-09-25 ON HIS RULING, READ THIS TWICE
 
 **HIS WORDS, and they filter by RELEVANCE, not by length:**
