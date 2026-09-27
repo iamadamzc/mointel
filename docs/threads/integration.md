@@ -935,6 +935,27 @@ titles    an ARCHIVED session still carries the bare title `Integration-tmi` (lo
           resolves two ways -- check cwd AND isArchived.
 ```
 
+### ✅ RULED 2026-09-27 ~22:35Z — FOUR SESSION REPORTS, ONE WRITER + ONE CHECKER, DESIGN FIRST
+
+*His request (his own words, in this session): a narrative report to start each session — premarket from AH
+activity, going into RTH ("what went up and back down, what held, the real catalysts, and what to keep an eye
+on for RH pop"), going into power hour, and AH — "something that makes people feel like they have asssitants
+working for them".* **His ruling on the shape I put to him: "1, yes. go ahead and start now."** *Approved item:
+one writer + one checker, NOT a multi-agent team (the "AI hedge fund" video he sent, `docs/aihedgefund.txt`, was
+the prompt); the seats are briefed; A DESIGN RETURNS TO HIM BEFORE ANY BUILD.*
+
+```
+RESEARCH    LEAD. docs/research/session-reports/design.md -- writer, checker, inputs, model, cost, failures
+DESIGN      docs/research/session-reports/design-seat.md  -- placement, arrival, fresh vs stale
+MARKETING   docs/research/session-reports/marketing.md    -- the voice, specimens on REAL stored facts
+COMMERCIAL  docs/research/session-reports/commercial.md   -- commentary vs advice, disclaimer
+OPS         consulted by Research on process shape, NOT before his restart tonight
+briefed     2026-09-27 ~22:45Z, all four delivered. Return: Research -> me -> him, whole, never piecemeal.
+```
+
+**He called this "the final thing before going live". It is NOT the only one.** *Told him: sign-in cut-over,
+billing, and non-payment revocation are still open. The reports run in parallel with those and do not replace them.*
+
 ### THE RESIDUAL NOBODY HAS CLOSED
 
 **The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
