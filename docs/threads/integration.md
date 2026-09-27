@@ -953,7 +953,7 @@ OPS         consulted by Research on process shape, NOT before his restart tonig
 briefed     2026-09-27 ~22:45Z, all four delivered. Return: Research -> me -> him, whole, never piecemeal.
 ```
 
-**DESIGN RETURNED WHOLE 2026-09-27 23:00Z (`be0c4a9`), opened by this seat before it went to him** (design.md
+**DESIGN RETURNED WHOLE 2026-09-27 23:00Z (`be0c4a9`; FINAL `077790e`, corrections only, nothing for him changed), opened by this seat before it went to him** (design.md
 in full; Design's band question at design-seat.md:251; Commercial's §3 ruling and §6a). Put to him: the band,
 build approval, and counsel. *Research's message said his restart was "last night". It was not: at 23:00Z
 (19:00 ET) it was still pending that evening. It had no effect on the design.*
