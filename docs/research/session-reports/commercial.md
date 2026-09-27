@@ -189,30 +189,48 @@ actually encounter it at the moment they read a report that names specific ticke
 
 ## 6. ADDED 2026-09-27, ON RESEARCH'S OWN FLAG — A DIRECTIONAL SIGNAL RENDERED NEUTRALLY CAN STILL IMPLY THE UNTESTED TRADE
 
-**Research's point, and it is a real one, distinct from §3.** §3 struck directive
-*verbs* ("keep an eye on," "watch"). This is different: **a purely descriptive
-sentence can still carry an implied direction if the thing it describes was defined
-for a decision this product does not make.** `lib/coaching/fills/roundtrips.ts:13`
-states plainly, verified rather than taken from the relay: *"is long-only."* The
-board's own cycle taxonomy (`lib/dashboard/cycle.ts:48-53`) renders `BACKSIDE` —
-defined at line 456 as *"Most of the advance has been given back"* — and `OFF HIGH`
-— defined at line 471 as *"Price is more than one spread below the high this move is
-measured against."* **Both definitions are already direction-neutral as written: they
-describe what price did, not what to do about it, and neither says "bearish,"
-"short," or "sell."** The risk Research names is not in the code's own definitions —
-it is in what a stranger, without this product's long-only frame, could read into
-a bare label like `BACKSIDE` appearing in a personal-feeling narrative report:
-exhaustion of an upward move can be misread as a signal to reverse into, not merely
-a signal this desk would not enter fresh.
+**CORRECTED 2026-09-27 by Research, and the correction is the kind that propagates
+rather than the kind that matters: the citations below originally read `cycle.ts:456`
+and `:471` with no path, and there are two files named `cycle.ts` that do opposite
+jobs.** `lib/market/cycle.ts` computes the *phase* (`BACKSIDE_RETRACEMENT = 0.5` at
+line 81; `phase = 'BACKSIDE'` set at line 445) — lines 456 and 471 in **that** file are
+unrelated code, not a definition. **The English definitions this section relies on
+live in `lib/dashboard/cycle.ts`**, verified there directly: line 456,
+`BACKSIDE: 'Most of the advance has been given back.'`; line 471, `'OFF HIGH':
+'Price is more than one spread below the high this move is measured against.'`
+**Every citation below now carries its full path, because a bare filename shared by
+two files is worse than no citation — the next reader who opens the wrong one has to
+decide whether the ruling or the receipt was wrong, and it was neither.**
 
-**Ruling: the report layer should always render the DEFINITION, never the bare
-label, for exactly this reason — and this is not a new rule, it is §3's rule applied
-to labels the same way it applies to verbs.** *"BACKSIDE"* alone, in a sentence
-built to feel like an assistant talking to you, reads as a signal name; *"most of
-X's advance has been given back since its high"* reads as what it is — a fact about
-price, with no direction implied past the fact itself. **The store's own language
-already supports this**: `cycle.ts`'s definitions are written this way already; the
-report's job is to keep using them rather than compress back down to the enum.
+**Research's point itself, and it is a real one, distinct from §3.** §3 struck
+directive *verbs* ("keep an eye on," "watch"). This is different: **a purely
+descriptive sentence can still carry an implied direction if the thing it describes
+was defined for a decision this product does not make.**
+`lib/coaching/fills/roundtrips.ts:13` states plainly, verified rather than taken from
+the relay: *"is long-only."* The board's own cycle taxonomy
+(`lib/dashboard/cycle.ts:48-53`) renders `BACKSIDE` — defined at
+`lib/dashboard/cycle.ts:456` as *"Most of the advance has been given back"* — and
+`OFF HIGH` — defined at `lib/dashboard/cycle.ts:471` as *"Price is more than one
+spread below the high this move is measured against."* **Both definitions are
+already direction-neutral as written: they describe what price did, not what to do
+about it, and neither says "bearish," "short," or "sell."** The risk Research names
+is not in the code's own definitions — it is in what a stranger, without this
+product's long-only frame, could read into a bare label like `BACKSIDE` appearing in
+a personal-feeling narrative report: exhaustion of an upward move can be misread as a
+signal to reverse into, not merely a signal this desk would not enter fresh.
+
+**Ruling, sharpened by Research past what this seat first wrote: the report layer
+should render through the EXISTING RENDERER, not compose a fresh phrasing of the
+definition.** `lib/dashboard/cycle.ts:99`, `cycleDetail()`, already produces exactly
+this from live data: *`` `${pct(current.retracementPct * 100)} of the move given
+back` ``*. **"Write the definition" invites a second hand-composed phrasing that can
+drift from the first one; pointing at the renderer keeps one source of truth** — the
+same discipline `lib/dashboard/language.ts` already applies to labels generally, per
+Research. This seat's reasoning is unchanged; the instruction is cheaper to obey.
+**Marketing's own never-use list independently reaches the same place**
+(`docs/research/session-reports/marketing.md:119`), and its specimen already
+satisfies this in substance — printing *"60% off its high"* beside the label,
+framed as exit-and-avoid rather than a setup.
 
 **And the existing disclaimer already reaches this, textually, without new
 drafting.** `terms.md` §7, quoted already in §2: *"a suggestion to buy **or sell**
