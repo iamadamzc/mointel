@@ -217,7 +217,13 @@ the preference for making a problem IMPOSSIBLE over making it VISIBLE.
   If writer + checker latency plus a late checkpoint passes 09:30, the
   report publishes marked `late`. **Research should measure writer +
   checker latency before promising "before the open".**
-- **⚠ A LEAD FOR RESEARCH, NOT A FINDING: the premarket report has the same
+- **RESOLVED 2026-09-27 by Research (`ec04c02`): the premarket report is built
+  on the 22:00 recap, and 07:00 is at most an update.** His own words assign
+  its content: *"covers the stocks to watch based on AH activity"*. The recap
+  is also the first checkpoint of the new session (its target date is the
+  next session, and the date rolls at 22:00). Not a question for him. The
+  lead as first written, kept for the record:
+- ~~**⚠ A LEAD FOR RESEARCH, NOT A FINDING: the premarket report has the same~~
   shape as the 15:00 defect.** The session it serves opens at 04:00; a
   report built on the 07:00 checkpoint arrives three hours into it. Research's
   own rule ("built from the checkpoint BEFORE the moment it serves") would put
