@@ -206,11 +206,29 @@ be inventing a strategy he does not trade.*
 ## SEAT FILES
 
 - **`design-seat.md` — Design. LANDED (`5da8d47`).** *One briefing line between Focus and Discovery; six worded arrival states; an unchecked draft never renders and a missed report is never filled with yesterday's; fresh-vs-stale is a predicate, not an age threshold.*
-- `marketing.md` — Marketing. *Voice framework in progress; specimens pending the facts file below.*
-- `commercial.md` — Commercial. *Pending.*
+- **`marketing.md` — Marketing. LANDED (`bf56acb`).** *Voice principles, the never-use list, the "we don't know" register, and two specimens written against real 2026-09-18 rows with every clause traced to a stored field.*
+- **`commercial.md` — Commercial. LANDED (`2cb28c2`).** *Both flagged phrases ruled; the forward frame needs no new disclaimer; `terms.md` §7 already covers in-app.*
 - **`facts-2026-09-18.md` — real stored facts for the specimens, pulled by this seat.** *A production SNAPSHOT on this disk, not production.*
 
 *Research assembles; nothing goes to him piecemeal.*
+
+---
+
+## ✅ ASSEMBLED — ALL FOUR HALVES IN. THE ONE FINDING NO SEAT COULD SEE ALONE
+
+**Commercial names the sharpest practical risk in the whole design, and Design had already closed it — independently, before it was named.**
+
+> **Commercial (`commercial.md`):** *"the sharpest practical risk in this whole design, and it has nothing to do with legal wording... **The entire discipline in §3 (state, not action) can be defeated by truncation alone**: a compliant sentence ending in "...has not been priced out" reads as complete and inert; a banner that cuts it to "X is at its premarket high" and stops there reads as an implicit tip — not because anyone wrote it that way but because the medium removed the qualifying half."*
+>
+> **Design (`design-seat.md:105-107`):** *"**Arrival is in the app only.** ... **No push, no email, no sound.**"*
+
+**⚠️ SO THE COMPLIANCE PROPERTY HOLDS ONLY BECAUSE OF A SURFACE DECISION IN A DIFFERENT SEAT'S FILE, AND NEITHER FILE SAYS SO.** *Design chose in-app-only for readerly reasons — a report is not an alert — and the effect is that Commercial's truncation risk cannot arise. **Add push later for a good product reason and the discipline breaks silently**, because the sentence that protected it lives in a document nobody re-reads when adding a notification.*
+
+⇒ **RECORDED AS A COUPLING RATHER THAN A COINCIDENCE: any decision to push, email or otherwise excerpt a report re-opens Commercial's §4 and must go back to it.** *This is the "two correct guards" shape in its benign direction — and benign is exactly when nobody writes it down.*
+
+**WHAT COMMERCIAL RULED, so the writer contract carries it:** *"keep an eye on for RH pop"* and *"one to watch"* are **struck as directive**, replaced by a descriptive-state pattern that **reuses `assessment.ts`'s existing rule rather than inventing a new one**. **The forward-looking frame itself needs no new disclaimer.**
+
+**AND COMMERCIAL SAID PLAINLY WHAT IT IS NOT: this is not a clearance.** *State-level adviser law is unchecked and counsel is his call.* **That sentence travels with this document to him — it is not a footnote to be assembled away.**
 
 ---
 
