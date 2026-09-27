@@ -102,6 +102,7 @@ carrying heavy cross-session traffic. Hand-off prompt:
 | [`commercial/2026-09-11-competitor-trademomentum.md`](../commercial/2026-09-11-competitor-trademomentum.md) | the "free watchlist ending" that did not end; a $147/mo signal product | 2026-09-11 |
 | [`commercial/2026-09-25-newswire-licence-landscape.md`](../commercial/2026-09-25-newswire-licence-landscape.md) | four wire services' terms on redistribution (two bar it outright, two publish nothing on point); Alpaca News is bound by the same personal-use clause as the SIP tape, not a looser one; no vendor here publishes a self-serve commercial price | 2026-09-25 |
 | [`commercial/2026-09-26-billing-onboarding-support-scope.md`](../commercial/2026-09-26-billing-onboarding-support-scope.md) | billing provider options (Stripe rail vs. Merchant of Record) filtered by Ops's PCI/webhook/no-staging requirements, packaging restated from Gate 2, Gate 1 ("what is sold") named as unruled and load-bearing, the payment-terms trigger in the adopted `terms.md`, the licence exposure restated (not re-opened), support at `info@andromedagenius.com`; three-part scope complete (Web's flow and Ops's infra half both landed and linked) | 2026-09-26 |
+| [`commercial/2026-09-26-india-momentum-traders.md`](../commercial/2026-09-26-india-momentum-traders.md) | India, US small-cap momentum traders: the LRS margin ban (primary RBI text), the FINRA PDT-rule removal (moot given LRS), and two named platforms (Vested, INDmoney) that engineered around the cash-account settlement cap without leverage as of mid-2026 — the practical-access barrier is mostly gone; population sizing for "day traders," "momentum traders" and "US small caps" specifically remains three separate, mostly unevidenceable claims, reported as such rather than merged | 2026-09-26 |
 
 Gate 0 is mapped and ruled at the top of [`monetization-gates.md`](../monetization-gates.md).
 Method for all of them: public pages only, every load-bearing figure re-read by
@@ -139,6 +140,7 @@ this seat before it carried a sha, contradictions reported not resolved.
 | A second Alpaca account in his name (for a staging desk) | him | ruled deferred by Integration `1c0c0a6`; unresolvable from public pages; an enquiry is his |
 | A contracted newswire licence (a Benzinga or primary-wire agreement, vs. the accepted-exposure posture below) | him | an enquiry to Benzinga or a primary wire's licensing desk; no vendor publishes a self-serve price (`2026-09-25-newswire-licence-landscape.md`); not asked for, not needed to build |
 | Watch, no clock | this seat | CT Plan agreements (2027-04-01; migration since 2026-09-01); IEX TOPS $1,000 from 2026-10-01; sol's promotional price after 2026-11-21; a 2026 Nasdaq Basic list |
+| India as a market — deliverable sent 2026-09-26 (`2026-09-26-india-momentum-traders.md`) | him | reading it; the "can they" question is answered (mostly yes, recently), "do they" is not answerable from public sources — a market-research vendor or a direct platform question, both enquiries and both his |
 
 ### Hazards a fresh session must know on day one
 
