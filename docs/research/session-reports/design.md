@@ -103,6 +103,12 @@ reading taken at the boundary describes the moment rather than preceding it.
 **The RTH interval runs 10:00 every 30 minutes (`schedule.ts:80-81`), so 14:30
 exists and needs no new checkpoint.**
 
+**✅ ONE CHECKPOINT PER REPORT — established by Marketing reading the store first-hand, and it SIMPLIFIES the writer/checker contract rather than constraining it.** *His "what went up and back down" arc lives INSIDE A SINGLE ROW — `session_high` against `price` — so no report needs to reach across checkpoints to tell it.*
+  ⇒ **Anything not in the report's own checkpoint is exactly what the checker strikes**, which makes the checker's job a row lookup rather than a timeline reconstruction.
+  *Consequence for Design's contract: `dataAsOf[]` and `checkpoints[]` now always carry ONE entry. The array shape was built for the premarket 22:00 + 07:00 pairing, which this retired — **keep it, because an update republished into the same slot is still a second entry**, but nothing reads a second one today.*
+
+**⚠️ AND A CLAIM OF MINE THAT THIS RULE KILLED: I wrote "IMCC was #1 at every checkpoint" AFTER moving the premarket source to 22:00, where it is #4.** Verified: `22:00 #4 · 09:25 #1 · 14:30 #1 · 16:00 #1`. *It was true of the original four moments and became false the moment I changed the mapping — **and I had the disproving line in my own hands**: I quoted the recap's `changeSummary`, `"IMCC: rank #1 → #4"`, in the same message that asserted #1 throughout.* **A fact repeated after the frame it was measured in has moved. The checker would have struck it, which is the argument for the checker.**
+
 **WHAT EACH REPORT READS, per ticker, all already persisted
 (`assessmentRepo.ts:59-96`):** `price`, `percentChange`, `rvol`, `rvolRank`,
 `ahPercentChange`, `ahVolume`, `ahParticipation`, `ahRank`, `sessionHigh`,
