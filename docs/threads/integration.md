@@ -966,6 +966,14 @@ test before any ship), Design (panel + report-range choice), Commercial (tiers, 
 live-feed coupling as a product constraint).* **On the restart he asked whether to wait for the build. Advised
 against: restart tonight, separately.**
 
+**BUILD GAPS FOUND 2026-09-27 ~23:50Z, each routed:** *(a) `high_res` lives on `ticker_session` (live row,
+`db.ts:121`), not `desk_assessment_tickers` (frozen row, `db.ts:618`), so a report built after its checkpoint
+cannot know the feed state then. ROUTED TO OPS: one nullable column frozen at capture, where old rows read NULL and
+never 0. Until then Research OMITS `liveFeed` rather than guessing (`boolean | null` in Design's contract).
+(b) UNCONFIRMED, this seat's reading of `engine.ts:1713-1760`: rank and latch are both gated on the QUALIFY band,
+so a name trading entirely in $20–$50 never gets a live feed unless pinned. Put to Research and Commercial
+to verify.* Commercial scope is at `6cf59df`.
+
 **He called this "the final thing before going live". It is NOT the only one.** *Told him: sign-in cut-over,
 billing, and non-payment revocation are still open. The reports run in parallel with those and do not replace them.*
 
