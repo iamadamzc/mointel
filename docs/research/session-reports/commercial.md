@@ -187,7 +187,53 @@ actually encounter it at the moment they read a report that names specific ticke
 
 ---
 
-## 6. WHETHER THIS NEEDS A LAWYER — HIS CALL, NAMED PLAINLY
+## 6. ADDED 2026-09-27, ON RESEARCH'S OWN FLAG — A DIRECTIONAL SIGNAL RENDERED NEUTRALLY CAN STILL IMPLY THE UNTESTED TRADE
+
+**Research's point, and it is a real one, distinct from §3.** §3 struck directive
+*verbs* ("keep an eye on," "watch"). This is different: **a purely descriptive
+sentence can still carry an implied direction if the thing it describes was defined
+for a decision this product does not make.** `lib/coaching/fills/roundtrips.ts:13`
+states plainly, verified rather than taken from the relay: *"is long-only."* The
+board's own cycle taxonomy (`lib/dashboard/cycle.ts:48-53`) renders `BACKSIDE` —
+defined at line 456 as *"Most of the advance has been given back"* — and `OFF HIGH`
+— defined at line 471 as *"Price is more than one spread below the high this move is
+measured against."* **Both definitions are already direction-neutral as written: they
+describe what price did, not what to do about it, and neither says "bearish,"
+"short," or "sell."** The risk Research names is not in the code's own definitions —
+it is in what a stranger, without this product's long-only frame, could read into
+a bare label like `BACKSIDE` appearing in a personal-feeling narrative report:
+exhaustion of an upward move can be misread as a signal to reverse into, not merely
+a signal this desk would not enter fresh.
+
+**Ruling: the report layer should always render the DEFINITION, never the bare
+label, for exactly this reason — and this is not a new rule, it is §3's rule applied
+to labels the same way it applies to verbs.** *"BACKSIDE"* alone, in a sentence
+built to feel like an assistant talking to you, reads as a signal name; *"most of
+X's advance has been given back since its high"* reads as what it is — a fact about
+price, with no direction implied past the fact itself. **The store's own language
+already supports this**: `cycle.ts`'s definitions are written this way already; the
+report's job is to keep using them rather than compress back down to the enum.
+
+**And the existing disclaimer already reaches this, textually, without new
+drafting.** `terms.md` §7, quoted already in §2: *"a suggestion to buy **or sell**
+any security"* — the clause is already bidirectional. **What it does not do is
+prevent a stranger from misreading a neutral sentence as a short thesis in the
+moment of reading it; a disclaimer clears the desk's liability, it does not clear
+the sentence's ambiguity.** So this is a wording fix (above), not a text-of-terms
+fix — nothing in §4's recommendation changes.
+
+**One further option, sized rather than drafted, because it is cheap and this
+product has never said it out loud:** a single standing sentence, appearing once in
+the report format's own explanation (not repeated per-sentence) — something to the
+effect that *the desk evaluates entries for the long side only, and a name marked
+`BACKSIDE` or `OFF HIGH` is a fact about that name's move, not a short recommendation
+this desk has ever measured.* **This is Web's or Marketing's copy to write, not
+this seat's — named here because Research asked for the judgement call on whether
+"BACKSIDE" sits inside or outside the existing rule, and the honest answer is: the
+label alone risks sitting outside it, the definition sits inside it, and one
+sentence stated once closes the gap between them for a reader encountering it cold.**
+
+## 7. WHETHER THIS NEEDS A LAWYER — HIS CALL, NAMED PLAINLY
 
 **Federal law and one comparable's practice both support the shape this design already
 has.** That is not the same as clearance, and this seat says so directly rather than
