@@ -169,12 +169,15 @@ And two more the voice states plainly rather than smoothing over:
    could not see. *If `CONFLICT` ever appears, the README principle governs: show
    the disagreement, do not resolve it silently. Until then, no specimen.*
 
-6. **We did not observe it** — only the top 50 by rank get trade-level capture
-   (`engine.ts:2088`, via `design.md` §5). The voice **must not imply the absence
-   of activity when the absence is of observation.** A quiet line outside the top
-   50 is a name the desk was not watching tick by tick, not a name that did
-   nothing.
-   → *"[NAME] sat below the desk's live-capture cut, so we can't speak to how it
+6. **We did not observe it live** — trade-level (10s) capture covers the live
+   high-resolution set, not the whole board: pinned names, the ranked-and-alive
+   names up to a cap, after the bell the day's leaders, and any latched name still
+   alive — capped at 250 (`engine.ts:2121-2185`; corrects the "top 50" line that
+   came through `design.md` §5). Names outside that set are not watched tick by
+   tick. The voice **must not imply an absence of activity when the absence is of
+   observation** — it marks which names were observed live rather than calling an
+   unobserved name quiet.
+   → *"[NAME] was outside the desk's live-capture set, so we can't speak to how it
    traded intraday."* Never *"[NAME] was quiet."*
 
 7. **The checkpoint did not run** — the report says the session has no assessment
