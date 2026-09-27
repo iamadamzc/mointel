@@ -838,6 +838,41 @@ PORT 22   closing it is HIS and it is hardening, not a launch condition.
 > names that prompted it.** *The defect rate IS the product risk, and the desk has still never been operated
 > to a standard where an outsider depended on it.*
 
+## THE ERROR LEDGER — HIS ADDITION TO THE HYGIENE RULE, 2026-09-27
+
+**His instruction, verbatim: *"keep track of errors and types and proactively initiate the protocol (with
+permission) when the breaches are attributed to saturation."*** *Routed to `Infra-Ops`, which owns the canonical
+`session-hygiene.md` — **the RULE is his (`9daf3f2`, his own commit, 2026-09-21); that project holds the document
+and amended it 2026-09-26 08:05 under his approval.** It did not originate there.*
+
+**THE TRIGGER IS NOT THE COUNT, AND THIS SEAT IS THE EVIDENCE. Seven errors in two days, ALL ONE TYPE: a state
+asserted from something not opened.** *A count-based trigger fires on day one and says nothing. A type-based one
+says "same class, seven times" and still cannot tell a careless seat from a saturating one.*
+
+> **THE TELL IS REPEATING A CLASS YOU HAVE ALREADY CORRECTED IN THIS SESSION.** *This seat wrote "never assert
+> what you have not opened" into `README.md` itself, more than once, **and then did it three more times after
+> writing it.*** **A fresh seat makes a new mistake; a saturating seat re-makes a corrected one.**
+
+```
+THE LEDGER, three columns:   the error (what was asserted vs what was true)
+                             its TYPE (a class name REUSED across entries, not a description)
+                             ALREADY LOGGED? (was a correction for this class recorded earlier this session)
+THE ESCALATION:              on the FIRST repeat of an already-corrected class, warn him in the NEEDS YOU
+                             block and PROPOSE the protocol. Do not initiate it -- his permission, his words.
+```
+
+**TWO PRACTICES FROM THIS SESSION, both about where the ledger lives:**
+
+- **IT BELONGS IN THE CHARTER, NOT THE SESSION.** *A session cannot see its own history after compaction; a file
+  can. **And it is what the successor's "how this seat failed" section is written from** — which on this desk is
+  the section that gets used.*
+- **DISTINGUISH AN ERROR CAUGHT BY A PEER FROM ONE CAUGHT BY HIM.** *Of this seat's seven, two were his.* **A peer
+  catching things is the system working; the owner catching them is the system billing him for it — and the
+  second is the signal.**
+
+*This seat's own ledger is the "HOW THE TWELFTH FAILED" section of `docs/integration-opening-prompt.md`, with all
+seven typed and attributed.*
+
 ## LIVE STATE — AS OF 2026-09-27, AT THE TWELFTH SEAT'S HAND-OFF
 
 *A SNAPSHOT. Everything dated above this section is a FACT and is not repeated here; everything below it is the
