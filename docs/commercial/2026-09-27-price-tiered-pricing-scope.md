@@ -6,11 +6,14 @@ if you're trading the bigger dollar stocks should you be charged more?"* Offered
 Commercial scope; his answer: *"2 yes."* **Document only. No provider chosen, no
 customer or vendor contacted, nothing signed, nothing built.**
 
-**The short answer, before the reasoning:** **no evidence supports charging more for
-data-capture cost, because that cost is already being paid for a different reason.**
-**But there is a real, unmeasured product reason a $20–$50 tier could ship a worse
-report than the $1–$20 tier it's priced above, and that is not a footnote — it is the
-thing to settle before pricing anything.**
+**The short answer, before the reasoning, CORRECTED 2026-09-27 (§2 — Integration's
+second catch, verified, sharper than the first draft):** **no evidence supports
+charging more for data-capture cost, because that cost is already being paid for a
+different reason.** **And the $20–$50 tier's data-quality problem is not a risk to
+measure — it is a near-certainty by construction: today's qualify band ($0.25–$20)
+means almost every $20–$50 name is minute-bar-only, permanently, unless it happens to
+be one of the few that qualified below $20 and rose above it. The fix is a specific,
+already-identified, not-yet-authorised config change, not a hypothetical.**
 
 ---
 
@@ -44,50 +47,79 @@ has not been measured because nothing above $50 has ever been recorded.
 
 ---
 
-## 2. THE REAL COUPLING, AND WHY IT IS A PRODUCT CONSTRAINT RATHER THAN A FOOTNOTE
+## 2. THE REAL COUPLING — CORRECTED AGAIN, 2026-09-27: NOT UNMEASURED CROWDING, EXCLUSION BY CONSTRUCTION
 
-**Verified directly in `lib/market/engine.ts`, because the line Integration cited had
-moved and a wrong citation here would be worse than none — the same failure this desk
-corrected on itself in the session-reports work two hours ago.** The mechanism that
-actually governs data richness, `applyHighResSelection()` (`lib/market/engine.ts:2121`):
+**Integration's second correction, verified directly rather than taken on the relay,
+and it changes this section's conclusion, not just its wording.** The paragraph below
+first read "none of the four admission paths are scoped by price band" — **that line
+was wrong, and the error was conflating two different questions this codebase keeps
+carefully separate: gets CAPTURED (minute bars, via the worker's own bootstrap) is not
+the same question as gets RANKED (eligible for `applyHighResSelection` at all).**
 
-- **A name gets trades/quotes/10-second-grain capture (`highRes = true`) through a
-  priority queue, not a hard top-50 cutoff — four admission paths, not one.**
-  **CORRECTED 2026-09-27, Integration's precision, verified:** pinned symbols fill
-  first; then names ranked `<= internalRank` (default **50**, `lib/market/
-  config.ts:78`, `RVOL_INTERNAL_RANK`) **and alive** (`engine.ts:2153`); then, only
-  after the bell (`rthClosed`), the daytime top-`discoveryRank` names regardless of
-  aliveness — deliberately, so a Focus name or a daytime leader does not go dark
-  just because it is quiet after hours (`engine.ts:2160-2170`); then any other
-  "latched and alive" name fills remaining room. **None of the four paths are
-  scoped by price band**, which is the fact this document's argument actually rests
-  on and none of the correction changes it.
-- **The whole set is capped at `highResMax`, hardcoded to 250** (`lib/market/
-  engine.ts:2185`, `this.options.highResMax ?? 250` — verified nowhere in the codebase
-  is this ever set to anything else, so production always runs at 250).
-- **The rank itself, `rankOf()` at `lib/market/engine.ts:2128`, is `runtime.rvolRank`
-  (or `ahRank` after hours) — a GLOBAL rank over the whole universe, not scoped by
-  price band.** A $20–$50 name and a $1–$20 name compete for the identical 250 slots
-  on the identical ranking.
+**The ranking gate, `engine.ts:1710-1716`:**
 
-**And his own set-ranges ruling makes this concrete rather than theoretical.** Per
-`docs/research/session-reports/design.md`: *"Each range's report RANKS INSIDE ITS OWN
-RANGE"* — the $20–$50 report ranks $20–$50 names against each other, which is right
-for readability. **But ranking well within a band is not the same as qualifying for
-high-resolution capture, which is decided globally.** A name could be #1 in the
-$20–$50 report and still have only minute-bar data behind it, if $1–$20 names
-(the population this desk is built around and ranks most aggressively) fill the 250
-global slots first. **Whether $20–$50 names actually crack that global ranking often
-enough for their report to read as rich as the $1–$20 report's has not been measured —
-the load test that would answer it has not been run.**
+> *"const priceEligible = runtime.price !== null && (this.inPriceRange(runtime.price)
+> || runtime.latched); if (runtime.rvol !== null && priceEligible &&
+> this.isRankEligible(runtime.symbol)) { eligible.push(...) }"*
 
-**Named plainly because it inverts the pricing intuition:** *if* $20–$50 names are
-systematically lower-RVOL than the $1–$20 population this desk is tuned to rank
-highest — plausible, not verified — **a $20–$50 tier priced ABOVE the base tier could
-ship a report with LESS granular data behind it, not more.** Selling a premium price
-on an unmeasured discount in data quality is the shape of complaint this desk would
-have to answer for, not a hypothetical: the paying customer would be the one to find
-it.
+**A symbol gets an `rvolRank` at all only if it is currently inside the qualify band
+(`inPriceRange`) or already `latched` from an earlier session in which it was.** And
+`latched` is set in exactly one place, `engine.ts:1748-1757`, gated on the identical
+`inPriceRange` check — **a name can only ever become `latched` while trading inside
+the qualify band.** The code's own comment two hundred lines above the check (`engine.
+ts:1035-1039`) already says this plainly: *"ADMISSION USES THE RECORD BAND, NOT THE
+QUALIFY ONE... A name inside the record band and outside the qualify band is captured
+and can never rank... it never reaches the payload and never takes a trades/quotes
+slot."*
+
+**And the qualify band, today, in production, is $0.25–$20** — `discoveryPriceMin`/
+`discoveryPriceMax` (`lib/market/config.ts:79-80`), confirmed live at those values per
+`docs/threads/integration.md`'s own record of his 2026-09-25/26 rulings
+(`DISCOVERY_PRICE_MIN=0.25` applied; *"`DISCOVERY_PRICE_MAX` stays `20` until the
+split lands"*). **A `capturePriceMin`/`capturePriceMax` split exists in the engine's
+own options type and is exercised by a unit test (`tests/market/engine.test.ts:941-
+942`, values `0.25`/`50`) — but it is never wired to production config or the worker
+anywhere in the codebase.** So today, `inCaptureRange` (what the worker bootstraps
+and persists as minute bars) and `inPriceRange` (what can ever be ranked) fall back
+to the identical single pair: **$0.25–$20.**
+
+**What this means for a name that has traded its entire life at $20–$50 and never
+once dipped into the qualify band: it is captured (§1's 359K rows are real), it is
+never ranked, it can never latch, and it therefore can never enter `applyHighResSelection`'s
+eligible set — not "loses the competition for one of 250 slots," but never a
+candidate for a slot at all, unless it happens to be pinned.** The only $20–$50 names
+that CAN be ranked and can win a high-resolution slot are **"crossers"** — names that
+qualified (latched) while trading inside $0.25–$20 and have since risen above $20,
+carrying their latch with them. Everything else in the $20–$50 population is
+minute-bar-only, by construction, today.
+
+**So §2's original framing — "could ship a worse report, unmeasured" — understates
+it.** The corrected form: **a $20–$50 report will be built almost entirely from
+minute-bar data for names that never qualified below $20, and rich (trades/quotes/
+10-second) data only for the crossers among them — a fraction this document cannot
+size without knowing how many of a given day's $20–$50 names are crossers versus
+never-qualified.** *That* is what a load test should measure — not whether $20–$50
+names can out-rank $1–$20 names for a shared pool, but **what fraction of the $20–$50
+report's own population is even eligible to be ranked at all**, and Integration's
+own framing of this is the right one: *"the load test only sizes the crossers."*
+
+**And the fix is already named, elsewhere, as a pending build decision — this
+document does not propose a new one.** Widening the qualify ceiling
+(`DISCOVERY_PRICE_MAX` past 20) is exactly the change *"STILL NOT AUTHORISED... until
+the split lands"* per his own ruling on the record/qualify band split. **A genuinely
+rich $20–$50 tier is not blocked by an unmeasured risk; it is blocked by a specific,
+already-identified, not-yet-authorised config change.** Selling the tier before that
+lands would be selling access to a report this codebase cannot currently fill for
+most of its own named population.
+
+**Two facts that still hold from the uncorrected version, because the correction
+narrows the claim rather than reversing it entirely:** the 250-slot cap
+(`highResMax`, `engine.ts:2185`, never overridden in the codebase) is real and
+global once a name IS eligible; and ranking, for the names that do qualify, is
+computed on `rvolRank` (`engine.ts:2128`) without further price-band segmentation —
+**crossers from every band compete for the same 250 slots on the same terms.** The
+new, sharper finding is upstream of that: most of a $20–$50 report's population never
+reaches the competition to begin with.
 
 ---
 
@@ -111,8 +143,8 @@ on which is even buildable, and this document sizes options rather than picks on
 | shape | what it is | what it needs before it is buildable |
 | --- | --- | --- |
 | **A — no price tier** | Today's shape, extended: one subscription, the board defaults to $1–$20, any subscriber can already set their own range up to the recorded $0.25–$50 ceiling (his own ruling, 2026-09-26) at no extra charge. | Nothing — this is already how the product works. Costs nothing to keep. |
-| **B — an add-on** | Base subscription includes the $1–$20 report/range; a $20–$50 (and/or sub-$1) report is a paid add-on on top of it. | An access gate on report/range visibility (not built anywhere today — Gate 2's "tenancy is access, not isolation" already fits this shape structurally); the §2 load test, so the add-on's report quality can be described honestly before it is sold. |
-| **C — parallel tiers per range** | Each set range (under $1 / $1–$20 / $20–$50) is its own priced subscription, mirroring the report-range structure directly. | Same access gate as B; the same load test; and a decision on whether a $20–$50-only subscriber sees the $1–$20 board at all, which nothing today answers. |
+| **B — an add-on** | Base subscription includes the $1–$20 report/range; a $20–$50 (and/or sub-$1) report is a paid add-on on top of it. | **First, the qualify-band widening this seat did not identify and does not need to** — `DISCOVERY_PRICE_MAX` past 20 is *"not authorised... until the split lands"* per his own ruling elsewhere on this desk; without it, per §2, a $20–$50 add-on is minute-bar-only for almost every name in it. Then: an access gate on report/range visibility (not built anywhere today — Gate 2's "tenancy is access, not isolation" already fits this shape structurally); the crosser-fraction measurement §2 names, so the add-on's report quality can be described honestly before it is sold. |
+| **C — parallel tiers per range** | Each set range (under $1 / $1–$20 / $20–$50) is its own priced subscription, mirroring the report-range structure directly. | The same config change and the same crosser measurement as B; the same access gate; and a decision on whether a $20–$50-only subscriber sees the $1–$20 board at all, which nothing today answers. |
 
 **The report-range list is configuration, not a fixed constant** (Research's design.md:
 *"the range list is configuration... Commercial's tier scope may redraw the
@@ -136,20 +168,29 @@ population first produces elsewhere on this desk.
 
 **What does NOT wait on Gate 1, and is settled regardless of which way it goes:** the
 facts in §§1–3. The capture cost is already sunk whether the unit sold is a board, a
-report, or a brief. The global rank-scarcity constraint bites any report-shaped or
-board-shaped product that names $20–$50 stocks at all. The demand-population gap is
-true regardless of packaging. **So this document's facts stand now; the tier DECISION
-is sized to wait for Gate 1, and shape A costs nothing to hold in the meantime.**
+report, or a brief. **The qualify-band exclusion in §2 bites any report-shaped or
+board-shaped product that names $20–$50 stocks at all, and it is a fact about today's
+config, not about packaging.** The demand-population gap is true regardless of
+packaging. **So this document's facts stand now; the tier DECISION is sized to wait
+for Gate 1, and shape A costs nothing to hold in the meantime.**
 
 ---
 
 ## 6. SOURCES
 
 `docs/threads/integration.md` (the measured population table, Ops 2026-09-26, and his
-verbatim rulings of 2026-09-26 and 2026-09-27); `worker/runtime.ts:862-863`;
-`lib/market/engine.ts:2121` (`applyHighResSelection`), `:2128` (`rankOf`), `:2153`
-(the `internalRank` fill), `:2185` (`highResMax`); `lib/market/config.ts:78`
-(`internalRank` default); `docs/research/session-reports/design.md` (the set-ranges
-ruling and the configuration note); this seat's own `2026-09-26-billing-onboarding-
-support-scope.md` (Gate 1, unruled). All read directly in this session; none
-characterised from a relay without opening the file first.
+verbatim rulings of 2026-09-25/26/27, including `DISCOVERY_PRICE_MIN=0.25` applied and
+`DISCOVERY_PRICE_MAX` staying 20 "until the split lands"); `worker/runtime.ts:862-863`;
+`lib/market/engine.ts:1035-1039` (the code's own comment on record-band-vs-qualify-band
+admission), `:1710-1716` (`priceEligible`, the ranking gate), `:1748-1757` (`latched`,
+set only inside `inPriceRange`), `:2121` (`applyHighResSelection`), `:2128` (`rankOf`),
+`:2153` (the `internalRank` fill), `:2160-2170` (the after-bell `discoveryRank`
+branch), `:2185` (`highResMax`), `:1675-1679` (`inCaptureRange`, falling back to
+`priceMin`/`priceMax` since `capturePriceMin`/`capturePriceMax` are never wired to
+production); `lib/market/config.ts:78-80` (`internalRank`, `discoveryPriceMin`,
+`discoveryPriceMax` defaults); `tests/market/engine.test.ts:941-942` (the only place
+`capturePriceMin`/`capturePriceMax` are exercised, confirming the split exists in code
+and not in production wiring); `docs/research/session-reports/design.md` (the
+set-ranges ruling and the configuration note); this seat's own
+`2026-09-26-billing-onboarding-support-scope.md` (Gate 1, unruled). All read directly
+in this session; none characterised from a relay without opening the file first.
