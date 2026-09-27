@@ -211,12 +211,14 @@ be inventing a strategy he does not trade.*
 
 ## SEAT FILES
 
-- **`design-seat.md` — Design. LANDED (`5da8d47`).** *One briefing line between Focus and Discovery; six worded arrival states; an unchecked draft never renders and a missed report is never filled with yesterday's; fresh-vs-stale is a predicate, not an age threshold.*
-- **`marketing.md` — Marketing. LANDED (`bf56acb`).** *Voice principles, the never-use list, the "we don't know" register, and two specimens written against real 2026-09-18 rows with every clause traced to a stored field.*
-- **`commercial.md` — Commercial. LANDED (`2cb28c2`).** *Both flagged phrases ruled; the forward frame needs no new disclaimer; `terms.md` §7 already covers in-app.*
+- **`design-seat.md` — Design. LANDED (`23ebbb9`).** *One briefing line between Focus and Discovery; six worded arrival states; an unchecked draft never renders and a missed report is never filled with yesterday's; fresh-vs-stale is a predicate, not an age threshold.*
+- **`marketing.md` — Marketing. LANDED (`0f7f5b6`).** *Voice principles, the never-use list, the "we don't know" register, and two specimens written against real 2026-09-18 rows with every clause traced to a stored field.*
+- **`commercial.md` — Commercial. LANDED (`3740d61`).** *Both flagged phrases ruled; the forward frame needs no new disclaimer; `terms.md` §7 already covers in-app.*
 - **`facts-2026-09-18.md` — real stored facts for the specimens, pulled by this seat.** *A production SNAPSHOT on this disk, not production.*
 
 *Research assembles; nothing goes to him piecemeal.*
+
+**⚠️ EVERY SEAT FILE MOVED AFTER ITS SEAT CALLED IT FINISHED — all three, in one evening.** Design `5da8d47`→`23ebbb9`, Marketing `bf56acb`→`0f7f5b6`, Commercial `2cb28c2`→`3740d61`, and this file four times. **Each change was a correction rather than an addition, and each was found by a seat OTHER than the author.** *So "the doc is whole" is a statement with a shelf life: **quote the sha, never the word.** A reader given "whole" cannot tell which version was whole.*
 
 ---
 
