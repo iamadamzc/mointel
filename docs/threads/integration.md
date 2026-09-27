@@ -983,6 +983,16 @@ session at 23:17Z (transcript `54c1eecd`); the outcome was asked for.***
 **He called this "the final thing before going live". It is NOT the only one.** *Told him: sign-in cut-over,
 billing, and non-payment revocation are still open. The reports run in parallel with those and do not replace them.*
 
+### ✅ MARKET WORKER RESTARTED 2026-09-27 23:17:45Z, ON HIS WORD IN OPS'S SESSION
+
+```
+market    pid 1347535, /proc 3b78b8c, NRestarts 0. Prune fix d5fe8bc LIVE (date scans ~0.9s, no write lock;
+          research/assess 0 lock errors). tradeCapture=RECORDING, trades.db v1, 0 rows (Sunday).
+cost      54s start-to-SIP, NOT a weekday number: it replayed 0 bars. The weekday re-measure is still owed.
+          ~51s backfill-to-SIP remains, suspected first flush, UNMEASURED.
+owed      Ops confirms trades.db rows land after 04:00 ET MON 2026-09-28 before capture is called working.
+```
+
 ### THE RESIDUAL NOBODY HAS CLOSED
 
 **The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
