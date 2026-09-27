@@ -227,13 +227,32 @@ and it must be measured before this ships.**
 
 ## 5. FAILURE MODES
 
+**⚠️ CORRECTED 2026-09-27 — "ONLY THE TOP 50 GET A LIVE FEED" IS WRONG, AND IT REACHED THIS DOCUMENT AND THE PAYLOAD CONTRACT.** *Integration's brief said it, this seat repeated it twice, Commercial found it, and I verified `applyHighResSelection` (`engine.ts:2121`) myself.* **The set is:**
+
+```
+pinned names
++ top internalRank (50) by rank AND alive
++ after the bell, the daytime top discoveryRank
++ EVERY LATCHED name still alive -- qualified at any point today
+capped at highResMax ?? 250, pinned first, then by rank
+```
+
+  **So a name outside the top 50 that qualified earlier and is not DEAD DOES have a feed.** *And the aliveness test fails OPEN: only a positive `DEAD` gives up a subscription, because `'UNKNOWN'` means the engine looked and could not say.*
+
+**⚠️ AND THE DESIGN GAP INTEGRATION ASKED ME TO CONFIRM IS REAL, AND NARROWER THAN IT LOOKS: `high_res` IS PERSISTED — ON THE LIVE ROW, NOT ON THE CHECKPOINT.** `ticker_session.high_res` exists (`db.ts:121`, read at `repo.ts:656`). **`desk_assessment_tickers` has no such column.**
+
+  ⇒ **A report written AT its checkpoint can read the live set. A report built later — a catch-up, or any re-render from stored rows — CANNOT RECOVER what the set was at that moment**, because the live row has moved on. **Inferring it from rank is the same defect in code, and it is wrong in both directions: it misses latched-and-alive names and it over-claims for a dead name still inside the top 50.**
+
+  **THE FIX IS ONE COLUMN ON THE ASSESSMENT TICKER ROW, FROZEN AT CAPTURE — and that is Ops's, because it defines and migrates a table.** *Until it exists: **`liveFeed` is omitted rather than guessed**, and `coverage` reports `withLiveFeed` only for a report written at its own checkpoint. **An unknown feed state must not render as `false`** — that is an absence of observation published as an absence of data, which is the defect this whole layer is built to avoid.*
+
+
 | failure | what the report must do |
 | --- | --- |
 | **The checkpoint did not run** | say the session has no assessment at that time — **never fall back to an older checkpoint silently.** A report built from 09:25 that silently used 07:00 describes a market two hours gone. |
 | **A stale dossier** | `catalyst` on the row is a stored grade; freshness is derived. **Use the desk's own derivation, not the stored word.** |
 | **A holiday or a half day** | the checkpoint set differs; `previousTradingDate` is holiday-aware. **A report for a session that did not happen must not be generated at all.** |
 | **The report is slower than its head-room** | **UNMEASURED, and it must be measured before anything promises "before the open".** Into-RTH has 5 minutes from 09:25, checkpoints already run late (`generatedLate`), and writer + checker is two sequential model calls. **Past 09:30 it publishes marked late rather than silently.** |
-| **A name with no live feed** | **only the top 50 by rank get trades/quotes and 10s capture (`engine.ts:2088`).** A report must not narrate trade-level detail for a name that has none — and **must not imply the absence of activity when the absence is of observation.** |
+| **A name with no live feed** | **the live-feed set is NOT "top 50 by rank" — see the correction below.** A report must not narrate trade-level detail for a name that has none — and **must not imply the absence of activity when the absence is of observation.** |
 | **No catalyst found** | **"no catalyst found in our sources", never "no catalyst".** Coverage misses wire-only releases until the Benzinga collector ships: `AIFF` ran on a release the desk had in an API it already pays for and never queried. |
 
 ---
