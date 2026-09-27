@@ -996,6 +996,18 @@ comment   969458d/240f27e NOT SHIPPED: gate refused twice on the DEV MACHINE's W
           Past MON 04:00 ET, the cost is one stale comment for one more day.
 ```
 
+### WHAT IS SOLD: HIS STATED PLAN, 2026-09-28 ~00:00Z (this session, verbatim)
+
+> *"my plan was a subscriber pays for a days usage of everything. beginning with the first report to the end of
+> that day's after hours is one full day. you log in, you get charged. this was before the dsicussion on different
+> pricing tiers. but as i thikn abou tit. penny stocks would be the cheapest, but there are people that do 10,000
+> dollars on a penny stock so maybe stock price isn't the correct tier measure. i dont know."*
+
+**UNIT = A DAY PASS TO EVERYTHING, charged at login. TIERS: OPEN, his lean is away from share price as the
+measure. NOT ruled either way.** *Routed to Commercial for an addendum: the day boundary against the 22:00 roll,
+per-login charging mechanics (quoted), whether charging at the door dissolves the non-payment revocation question,
+tier evidence, and the `app/page.tsx:432` sentence.*
+
 ### THE RESIDUAL NOBODY HAS CLOSED
 
 **The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
