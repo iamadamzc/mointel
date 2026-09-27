@@ -317,13 +317,15 @@ after-hours move, not a move from the prior close.*
   narrate this as a halt — it is the desk *losing halt observability*, not a halt
   event, and reporting it as one would be the "absence of observation as an event"
   defect. Silence is correct.
-- **`TCRT` does not appear in this report at all** — it is absent from the 22:00
-  recap (it closed −24.4% and dropped off the board). A report built from one
-  checkpoint cannot say "it fell off", because that is a fact about the *gap*
-  between the close and the recap, not in either row. It is a real and vivid beat
-  (the round-trip name doesn't just fade, it stops being ranked) but it needs a
-  cross-checkpoint read the current one-checkpoint design does not do — flagged
-  for Research as a design choice, not written as a sentence.
+- **`TCRT` does not appear in this report at all** — it closed #6 but is absent
+  from the recap's stored rows. The tempting beat — "the round-trip name doesn't
+  just fade, it drops off the board" — is **not writable**, and not only because
+  it is cross-checkpoint. **Every checkpoint stores exactly 25 rows, so absence
+  from the recap means "not in the top 25 at 22:00", not "left the board" — `TCRT`
+  may be #26** (Research verified, `1333cf6`). A genuine exit beat needs a stored
+  EVENT, not an inference from absence — symmetric with why entry is not inferable
+  from a rank first appearing. **Ruled: no cross-checkpoint reads**, and this is
+  the better reason for it than the one-checkpoint rule's convenience.
 
 ---
 
