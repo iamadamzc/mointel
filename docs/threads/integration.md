@@ -973,6 +973,12 @@ never 0. Until then Research OMITS `liveFeed` rather than guessing (`boolean | n
 (b) UNCONFIRMED, this seat's reading of `engine.ts:1713-1760`: rank and latch are both gated on the QUALIFY band,
 so a name trading entirely in $20–$50 never gets a live feed unless pinned. Put to Research and Commercial
 to verify.* Commercial scope is at `6cf59df`.
+*Ops accepted (a): a nullable column copied from `ticker_session.high_res` at capture (assess cannot read engine
+memory), lagging by at most one flush. **COST: a schema bump 27→28 means the migration's `VACUUM INTO` of the 3.7G
+store runs after web/research/assess stop, which is a MULTI-MINUTE PUBLIC OUTAGE.** Ruled (order and process): Ops
+scopes a pre-deploy backup so the migration can skip its own, as a separate deploy-path enumeration. It goes to him
+only if the result is worse than a planned evening outage. **He said "restart" and "ship the comment fix" in Ops's
+session at 23:17Z (transcript `54c1eecd`); the outcome was asked for.***
 
 **He called this "the final thing before going live". It is NOT the only one.** *Told him: sign-in cut-over,
 billing, and non-payment revocation are still open. The reports run in parallel with those and do not replace them.*
