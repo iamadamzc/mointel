@@ -225,6 +225,33 @@ and it must be measured before this ships.**
 
 ---
 
+## ✅ CONFIRMED — A \$20–\$50 REPORT IS A MINUTE-BAR REPORT BY CONSTRUCTION, NOT BY MEASUREMENT
+
+*Integration's reading, put to this seat to confirm or refute by opening the code. **Confirmed, every link, with lines.** It decides what a non-default tier can ever contain and it goes to him beside Commercial's tier scope.*
+
+```
+engine.ts:1713-1714   priceEligible = price !== null && (inPriceRange(price) || latched)
+engine.ts:1755-1762   latched   = true  ONLY inside inPriceRange      (the single setter)
+engine.ts:1958-1962   ahLatched = true  ONLY inside inPriceRange      (the single setter)
+engine.ts:2152-2156   high-res arm 1: rank <= internalRank AND alive, over `ranked`
+engine.ts:2165-2172   high-res arm 2: after the bell, daytime rvolRank <= discoveryRank
+engine.ts:2174+       high-res arm 3: latched AND alive
+engine.ts:2185        capped at highResMax ?? 250, pinned first
+```
+
+**A name trading ENTIRELY in \$20–\$50 while QUALIFY stays at his \$1–\$20 is never `inPriceRange`, therefore never latched and never `ahLatched`, therefore never `priceEligible`, therefore NEVER RANKED — so it satisfies no high-res arm except `pinned`.**
+
+⇒ **NO LIVE FEED AND NO 10s CAPTURE, ZERO BY CONSTRUCTION.** *Not "unmeasured crowding" — a load test would only ever report on names that CROSSED UP from inside the band, which is a different population and would read as reassurance.*
+
+**AND THE SAME CHAIN GOVERNS THE 10s CAPTURE**, because `af998eb` gates accumulation on `runtime.highRes`. **So the \$20–\$50 tier has no sub-minute data either — the thing he commissioned most recently does not reach the tier he has just asked for reports on.**
+
+**WHAT THAT MEANS FOR THE BUILD, and it is not a blocker:**
+- **The \$20–\$50 report is honest and thin. Its `liveFeed` flags will say so — IF they read the engine's actual set** rather than inferring from rank, which is the gap recorded below.
+- **In-range RANKING (`4b7fca4`) gives that report a sensible order. LIVE-FEED ALLOCATION DOES NOT FOLLOW IT.** *Two different questions that look like one: what a report RANKS is now per-range; what the desk OBSERVES is still allocated over the qualify band.*
+- **This is the price-band split behaving exactly as designed** — `capturePriceMin/Max` widens ADMISSION so those names have minute bars, and qualification stays narrow so they never crowd his board. **The thinness is the intended trade, stated rather than discovered.**
+
+**⚠️ ONE THING I CHECKED THAT COULD HAVE MADE IT WORSE, AND DID NOT: arm 2 compares `rvolRank <= discoveryRank`, and `null <= 12` is TRUE in JavaScript.** *If that arm iterated every ticker, an after-hours-only name with a null daytime rank would be admitted by coercion.* **It does not — `engine.ts:2166-2167` filters `rvolRank !== null` before sorting.** *The `as number` casts are safe because both arms iterate pre-filtered arrays. Verified rather than assumed, because a silent null-coercion into a capped set is exactly the defect that would never show up as an error.*
+
 ## 5. FAILURE MODES
 
 **⚠️ CORRECTED 2026-09-27 — "ONLY THE TOP 50 GET A LIVE FEED" IS WRONG, AND IT REACHED THIS DOCUMENT AND THE PAYLOAD CONTRACT.** *Integration's brief said it, this seat repeated it twice, Commercial found it, and I verified `applyHighResSelection` (`engine.ts:2121`) myself.* **The set is:**
@@ -277,7 +304,7 @@ be inventing a strategy he does not trade.*
 ## SEAT FILES
 
 - **`design-seat.md` — Design. LANDED (`23ebbb9`).** *One briefing line between Focus and Discovery; six worded arrival states; an unchecked draft never renders and a missed report is never filled with yesterday's; fresh-vs-stale is a predicate, not an age threshold.*
-- **`marketing.md` — Marketing. LANDED (`0f7f5b6`).** *Voice principles, the never-use list, the "we don't know" register, and two specimens written against real 2026-09-18 rows with every clause traced to a stored field.*
+- **`marketing.md` — Marketing. LANDED (`33256f9`).** *Voice principles, the never-use list, the "we don't know" register, and two specimens written against real 2026-09-18 rows with every clause traced to a stored field.*
 - **`commercial.md` — Commercial. LANDED (`3740d61`).** *Both flagged phrases ruled; the forward frame needs no new disclaimer; `terms.md` §7 already covers in-app.*
 - **`facts-2026-09-18.md` — real stored facts for the specimens, pulled by this seat.** *A production SNAPSHOT on this disk, not production.*
 
