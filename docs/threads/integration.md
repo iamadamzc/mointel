@@ -838,40 +838,30 @@ PORT 22   closing it is HIS and it is hardening, not a launch condition.
 > names that prompted it.** *The defect rate IS the product risk, and the desk has still never been operated
 > to a standard where an outsider depended on it.*
 
-## THE ERROR LEDGER — HIS ADDITION TO THE HYGIENE RULE, 2026-09-27
+## THE ERROR LEDGER — CANONICAL TEXT IS `session-hygiene.md` §2, NOT HERE
 
-**His instruction, verbatim: *"keep track of errors and types and proactively initiate the protocol (with
-permission) when the breaches are attributed to saturation."*** *Routed to `Infra-Ops`, which owns the canonical
-`session-hygiene.md` — **the RULE is his (`9daf3f2`, his own commit, 2026-09-21); that project holds the document
-and amended it 2026-09-26 08:05 under his approval.** It did not originate there.*
+**His addition, 2026-09-27: *"keep track of errors and types and proactively initiate the protocol (with
+permission) when the breaches are attributed to saturation."*** **Written into the canonical rule by `Infra-Ops`
+at `c21df1b` — `A:\claude-infra-agent\docs\session-hygiene.md` §2, owner-approved in that session.**
 
-**THE TRIGGER IS NOT THE COUNT, AND THIS SEAT IS THE EVIDENCE. Seven errors in two days, ALL ONE TYPE: a state
-asserted from something not opened.** *A count-based trigger fires on day one and says nothing. A type-based one
-says "same class, seven times" and still cannot tell a careless seat from a saturating one.*
+**DO NOT RESTATE IT HERE. Read §2.** *This section was a full parallel copy for about an hour, which is the
+divergence defect this desk has spent two days recording — a second copy decays and the one nobody updates
+becomes the authority. **Ownership: the RULE is his (`9daf3f2`, his own commit, 2026-09-21); `claude-infra-agent`
+holds the document. It did not originate there.***
 
-> **THE TELL IS REPEATING A CLASS YOU HAVE ALREADY CORRECTED IN THIS SESSION.** *This seat wrote "never assert
-> what you have not opened" into `README.md` itself, more than once, **and then did it three more times after
-> writing it.*** **A fresh seat makes a new mistake; a saturating seat re-makes a corrected one.**
+**WHAT IS MOINTEL'S AND BELONGS HERE — the evidence that shaped the trigger, and where this seat's ledger lives:**
 
 ```
-THE LEDGER, three columns:   the error (what was asserted vs what was true)
-                             its TYPE (a class name REUSED across entries, not a description)
-                             ALREADY LOGGED? (was a correction for this class recorded earlier this session)
-THE ESCALATION:              on the FIRST repeat of an already-corrected class, warn him in the NEEDS YOU
-                             block and PROPOSE the protocol. Do not initiate it -- his permission, his words.
+this seat, 2026-09-25/26   SEVEN errors, ALL ONE TYPE: a state asserted from something not opened.
+                           A COUNT-based trigger fires on day one and says nothing; a TYPE-based one
+                           says "same class, seven times" and still cannot tell careless from saturating.
+the trigger that works     re-making a class ALREADY CORRECTED THIS SESSION. This seat wrote "never
+                           assert what you have not opened" into README.md itself, more than once,
+                           and then did it three more times after writing it.
+two of the seven           were caught by HIM, not by a peer.
+this seat's ledger         the "HOW THE TWELFTH FAILED" section of docs/integration-opening-prompt.md,
+                           all seven typed and attributed -- which is what §3d is written from.
 ```
-
-**TWO PRACTICES FROM THIS SESSION, both about where the ledger lives:**
-
-- **IT BELONGS IN THE CHARTER, NOT THE SESSION.** *A session cannot see its own history after compaction; a file
-  can. **And it is what the successor's "how this seat failed" section is written from** — which on this desk is
-  the section that gets used.*
-- **DISTINGUISH AN ERROR CAUGHT BY A PEER FROM ONE CAUGHT BY HIM.** *Of this seat's seven, two were his.* **A peer
-  catching things is the system working; the owner catching them is the system billing him for it — and the
-  second is the signal.**
-
-*This seat's own ledger is the "HOW THE TWELFTH FAILED" section of `docs/integration-opening-prompt.md`, with all
-seven typed and attributed.*
 
 ## LIVE STATE — AS OF 2026-09-27, AT THE TWELFTH SEAT'S HAND-OFF
 
