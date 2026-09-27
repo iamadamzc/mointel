@@ -991,6 +991,9 @@ market    pid 1347535, /proc 3b78b8c, NRestarts 0. Prune fix d5fe8bc LIVE (date 
 cost      54s start-to-SIP, NOT a weekday number: it replayed 0 bars. The weekday re-measure is still owed.
           ~51s backfill-to-SIP remains, suspected first flush, UNMEASURED.
 owed      Ops confirms trades.db rows land after 04:00 ET MON 2026-09-28 before capture is called working.
+comment   969458d/240f27e NOT SHIPPED: gate refused twice on the DEV MACHINE's Windows commit exhaustion
+          (2.3G of 36.2G free, OOM in lint and tests, 160 of 161 files collected). No skip. Needs memory freed.
+          Past MON 04:00 ET, the cost is one stale comment for one more day.
 ```
 
 ### THE RESIDUAL NOBODY HAS CLOSED
