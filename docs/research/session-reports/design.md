@@ -228,6 +228,15 @@ be inventing a strategy he does not trade.*
 
 **WHAT COMMERCIAL RULED, so the writer contract carries it:** *"keep an eye on for RH pop"* and *"one to watch"* are **struck as directive**, replaced by a descriptive-state pattern that **reuses `assessment.ts`'s existing rule rather than inventing a new one**. **The forward-looking frame itself needs no new disclaimer.**
 
+**COMMERCIAL'S §6 — THE DIRECTIONAL-LABEL RULING, AND A BETTER FORM OF IT THAN EITHER OF US WROTE.** It ruled that report copy must render a label's DEFINITION rather than its enum name, because he is long-only and a bare `BACKSIDE` can read as a short thesis. **Agreed — and the definition it wants ALREADY EXISTS IN CODE, so the writer must not compose its own.**
+
+```
+lib/dashboard/cycle.ts:99    `${pct(retracementPct*100)} of the move given back`
+```
+
+  ⇒ **The rule is not "write the definition", it is "USE THE EXISTING RENDERER"** — the same discipline as `language.ts` for labels, and it keeps one source of truth instead of a second phrasing that can drift from the first. *Marketing's specimen already satisfies it in substance: it prints "60% off its high" beside the label and frames it exit-and-avoid.*
+  **⚠️ AND ONE CITATION CORRECTION, because it is the kind that propagates: Commercial verified against `lib/market/cycle.ts:456` / `:471`. The definitions are not there — that file computes the PHASE (`phase = 'BACKSIDE'` at `:445`). The human rendering lives in `lib/dashboard/cycle.ts`.** *There are two files named `cycle.ts` and they do opposite jobs: one decides the label, one says it in English. **Commercial read the engine and reported on the renderer**, which is exactly how a verified-looking citation goes wrong.* *Its RULING is unaffected and correct; only the receipt pointed at the wrong file.*
+
 **AND COMMERCIAL SAID PLAINLY WHAT IT IS NOT: this is not a clearance.** *State-level adviser law is unchecked and counsel is his call.* **That sentence travels with this document to him — it is not a footnote to be assembled away.**
 
 ---
